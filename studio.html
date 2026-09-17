@@ -593,7 +593,7 @@
       </figure>
       <div class="status" id="status"></div>
       <div class="witness" id="witness">
-        <button class="live-badge" id="live-badge" type="button" title="A hash of the pixels on this canvas. A video would loop; a still never changes; a living sim has to keep moving.">
+        <button class="live-badge" id="live-badge" type="button" title="LIVE when the field is still computing">
           <span class="dot" aria-hidden="true"></span>
           <span id="live-label">Still</span>
           <span class="live-fp" id="live-fp">——</span>
@@ -633,9 +633,9 @@
         technique, seed and parameters, so you can send someone a plate. <b>Copy link</b> puts that URL on the clipboard.
         <b>Settings JSON</b> is the verbose fallback (schema <b>v: 1</b>). Session history under the tabs holds the last plates;
         <b>Timeline</b> hides that strip (H). <b>Clear</b> on the left of it empties it. <b>Reset</b> restores the current technique to its factory plate.
-        <b>Focus</b> (F) hides the chrome so the plate fills the window; Esc brings it back. Click the seed label to copy it. P pauses a living sim.
-        Click a living plate to disturb the field — drag to draw a stroke. A video cannot answer. The <b>LIVE</b> badge is a fingerprint of the pixels
-        themselves, and the strip beside it is frames from this run, not a loop. <b>Save</b> (B) keeps a plate in the gallery; <b>Gallery</b> (G) opens it.
+        <b>Focus</b> (F) hides the chrome so the plate fills the window; Esc brings it back. Click the seed label to copy it. P pauses a running plate.
+        Click and drag to disturb the field. The <b>LIVE</b> badge means the simulation is still computing; <b>Still</b> means this frame is finished.
+        <b>Save</b> (B) keeps a plate in the gallery; <b>Gallery</b> (G) opens it.
         Shortcuts: space generate, S surprise, E export, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, P pause, 1–9 tabs, [ ] history, ? this list.</p>
 
       <h3>License</h3>
@@ -1480,7 +1480,6 @@ void main(){
       toast(e.state.running ? 'Running' : 'Paused');
       return;
     }
-    toast('This plate is a computed still');
   }
   function renderHistory() {
     const wrap = $('history'); if (!wrap) return;
@@ -1614,7 +1613,7 @@ void main(){
   /* ---- living witness: pixel fingerprint + frame strip + poke ---- */
   const probe = document.createElement('canvas');
   probe.width = probe.height = 24;
-  let lastFp = '', stillMs = 0, stripAt = 0, pokedLive = false, pokedStill = false, witnessClock = 0, liveNow = false, liveStreak = 0;
+  let lastFp = '', stillMs = 0, stripAt = 0, witnessClock = 0, liveNow = false, liveStreak = 0;
   function fingerprint(canvas) {
     if (!canvas || !canvas.width) return '';
     try {
@@ -1664,12 +1663,7 @@ void main(){
     }
     if (fpEl && fp) fpEl.textContent = fp.slice(-4);
     const poke = !!(e.inst && e.inst.disturb);
-    if (hint) {
-      if (liveNow && poke) hint.textContent = 'Drag across the plate to disturb it';
-      else if (liveNow) hint.textContent = 'The field is stepping — not a video';
-      else if (poke) hint.textContent = 'A computed still · drag to poke it anyway';
-      else hint.textContent = 'Computed still · Generate rebuilds it from the seed';
-    }
+    if (hint) hint.textContent = (liveNow && poke) ? 'Drag to disturb' : '';
     if (force) {
       pushWitnessFrame(e.canvas);
       stripAt = Date.now();
@@ -1705,10 +1699,7 @@ void main(){
   }
   function onPokeDown(e, ev) {
     if (ev.button && ev.button !== 0) return;
-    if (!e.inst || !e.inst.disturb) {
-      if (!pokedStill) { toast('This technique is a computed still. Generate to watch it rebuild from the seed.'); pokedStill = true; }
-      return;
-    }
+    if (!e.inst || !e.inst.disturb) return;
     ev.preventDefault();
     try { e.canvas.setPointerCapture(ev.pointerId); } catch (err) { /* ignore */ }
     const uv = pokeUV(e.canvas, ev);
@@ -1731,7 +1722,6 @@ void main(){
     if (!dirty) return;
     snapshot('poke');
     scheduleHistory({ allowSameHash: true });
-    if (!pokedLive) { toast('The field has to answer. A video cannot.'); pokedLive = true; }
   }
 
   function switchTo(id) {
@@ -2583,11 +2573,6 @@ void main(){
     try { panelSide = localStorage.getItem(STORE + 'panel') === 'right' ? 'right' : 'left'; } catch (err) { panelSide = 'left'; }
     applyPanelSide();
     renderHistory();
-    $('live-badge').addEventListener('click', () => {
-      toast(liveNow
-        ? 'That fingerprint is a hash of the pixels on the canvas. A video would loop; a still never changes.'
-        : 'Still: the pixels have not moved. Living techniques pulse LIVE. Click a living plate to poke the field.');
-    });
     witnessClock = setInterval(() => { if (!document.hidden) tickWitness(); }, 400);
     window.addEventListener('hashchange', () => { if (!hashSilent) applyHash(); });
     const framed = window.self !== window.top;
