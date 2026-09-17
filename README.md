@@ -4,10 +4,27 @@ Generative art from real scientific simulations.
 
 One HTML file. Thirty-five pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
 
-```
-GENChase
-pattern from process
-```
+<p align="center">
+  <img src="plates/snowflake.jpg" alt="Gravner–Griffeath snow crystal" width="640" />
+</p>
+<p align="center"><sub>Gravner–Griffeath snow crystal. Grown on a hexagonal lattice, not drawn.</sub></p>
+
+<p align="center">
+  <img src="plates/pearls.jpg" width="32%" alt="Indra's pearls" />
+  <img src="plates/hofstadter.jpg" width="32%" alt="Hofstadter butterfly" />
+  <img src="plates/hexagons.jpg" width="32%" alt="Swift–Hohenberg hexagons" />
+</p>
+<p align="center">
+  <img src="plates/caustics.jpg" width="32%" alt="Optical caustics" />
+  <img src="plates/physarum.jpg" width="32%" alt="Physarum network" />
+  <img src="plates/spinodal.jpg" width="32%" alt="Cahn–Hilliard spinodal" />
+</p>
+<p align="center">
+  <img src="plates/scars.jpg" width="32%" alt="Helmholtz scars" />
+  <img src="plates/twelve.jpg" width="32%" alt="Lifshitz–Petrich 12-fold quasicrystal" />
+  <img src="plates/tilings.jpg" width="32%" alt="Penrose tiling" />
+</p>
+<p align="center"><sub>Indra’s pearls · Hofstadter · Swift–Hohenberg · Berry caustics · Physarum · Cahn–Hilliard · Helmholtz scars · Lifshitz–Petrich 12-fold · Penrose. Frames from the live studio, not stills from a video.</sub></p>
 
 Every tab is a system that already exists in a paper: Gray–Scott chemistry, Physarum transport, Lenia, Navier–Stokes, Cahn–Hilliard spinodal, Swift–Hohenberg convection, Lifshitz–Petrich 12-fold quasicrystals, Gravner–Griffeath snow crystals, hat and spectre monotiles, Helmholtz scars, optical caustics, and the rest. The governing equations are the medium. Nothing here is a style filter sitting on noise.
 
