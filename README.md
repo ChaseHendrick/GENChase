@@ -15,8 +15,8 @@ One HTML file. Thirty-five pattern-forming systems. A seed that reprints. A hash
   <img src="gallery/spinodal.jpg" width="32%" alt="Cahn–Hilliard spinodal" />
 </p>
 <p align="center">
-  <img src="gallery/scars.jpg" width="32%" alt="Helmholtz scars" />
-  <img src="gallery/twelve.jpg" width="32%" alt="Lifshitz–Petrich 12-fold quasicrystal" />
+  <img src="gallery/scars.png" width="32%" alt="Helmholtz scars" />
+  <img src="gallery/twelve.png" width="32%" alt="Lifshitz–Petrich 12-fold quasicrystal" />
   <img src="gallery/tilings.jpg" width="32%" alt="Penrose tiling" />
 </p>
 <p align="center"><sub>Gravner–Griffeath · Hofstadter · Swift–Hohenberg · Berry caustics · Physarum · Cahn–Hilliard · Helmholtz scars · Lifshitz–Petrich 12-fold · Penrose. Frames from the live studio.</sub></p>
