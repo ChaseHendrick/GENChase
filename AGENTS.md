@@ -34,4 +34,4 @@ python3 -m http.server 8080
 # http://127.0.0.1:8080/studio.html
 ```
 
-Space generate · S surprise · E export · L copy link · B save · G gallery · Z undo · R reset · H timeline · F focus · P pause
+Space generate · S surprise · E export · L copy link · B save · G gallery · Z undo · R reset · H timeline · F focus · P pause · V record

@@ -185,6 +185,8 @@
   .btn.small { padding: 4px 8px; font-size: 12px; }
   .btn:disabled { opacity: .45; cursor: default; }
   .btn svg { width: 14px; height: 14px; }
+  .btn.rec { border-color: #c8392b; color: #c8392b; }
+  .btn.rec::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #c8392b; animation: livepulse 1.2s ease-out infinite; }
   .bar select { border: 1px solid var(--line-strong); background: var(--panel-2); border-radius: 6px; padding: 7px 10px; max-width: 150px; }
 
   /* ---------- tabs ---------- */
@@ -551,6 +553,7 @@
     <button class="btn primary" id="btn-generate" type="button">Generate</button>
     <button class="btn" id="btn-copy-link" type="button" title="Copy a shareable link to this exact plate (L)">Link</button>
     <button class="btn" id="btn-save" type="button" title="Save this plate to your gallery (B)">Save</button>
+    <button class="btn" id="btn-record" type="button" hidden aria-pressed="false" title="Record a clip of this living plate, up to 60 s (V)">Record</button>
     <button class="btn" id="btn-gallery" type="button" title="Open saved plates (G)">Gallery</button>
     <button class="btn" id="btn-undo" type="button" title="Undo last generate, surprise, or recipe (Z)">Undo</button>
     <button class="btn" id="btn-reset" type="button" title="Restore this technique to its factory defaults (R)">Reset</button>
@@ -634,9 +637,10 @@
         <b>Settings JSON</b> is the verbose fallback (schema <b>v: 1</b>). Session history under the tabs holds the last plates;
         <b>Timeline</b> hides that strip (H). <b>Clear</b> on the left of it empties it. <b>Reset</b> restores the current technique to its factory plate.
         <b>Focus</b> (F) hides the chrome so the plate fills the window; Esc brings it back. Click the seed label to copy it. P pauses a running plate.
+        <b>Record</b> (V) appears while a plate is Live and saves a clip of up to 60 seconds as WebM, or MP4 where the browser only encodes that.
         Click and drag to disturb the field. The <b>LIVE</b> badge means the simulation is still computing; <b>Still</b> means this frame is finished.
         <b>Save</b> (B) keeps a plate in the gallery; <b>Gallery</b> (G) opens it.
-        Shortcuts: space generate, S surprise, E export, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, P pause, 1–9 tabs, [ ] history, ? this list.</p>
+        Shortcuts: space generate, S surprise, E export, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, P pause, V record, 1–9 tabs, [ ] history, ? this list.</p>
 
       <h3>License</h3>
       <p>The studio <b>code</b> is licensed under the <b>Business Source License 1.1</b>. You can run it, study it, and
@@ -1630,6 +1634,7 @@ void main(){
     const badge = $('live-badge'), label = $('live-label');
     if (badge) badge.classList.toggle('is-live', liveNow);
     if (label) label.textContent = liveNow ? 'Live' : 'Still';
+    updateRecordUI();
   }
   function resetWitness() {
     lastFp = ''; stillMs = 0; stripAt = 0; liveStreak = 0;
@@ -1640,6 +1645,68 @@ void main(){
   function markPokeable() {
     const e = instances[currentId];
     if (e && e.canvas) e.canvas.classList.toggle('pokeable', !!(e.inst && e.inst.disturb));
+  }
+
+  /* ---- video capture: a clip of a living plate ---- */
+  // The Record button only appears while the witness says Live, so a still plate never offers a video of nothing.
+  // WebM is preferred; MP4 is the fallback where the browser only encodes that.
+  let recorder = null, recTimer = 0, recStart = 0;
+  const REC_MAX_MS = 60000;
+  function pickRecMime() {
+    const M = window.MediaRecorder;
+    if (!M || typeof M.isTypeSupported !== 'function') return '';
+    const types = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm', 'video/mp4;codecs=avc1', 'video/mp4'];
+    for (const t of types) { try { if (M.isTypeSupported(t)) return t; } catch (err) { /* keep looking */ } }
+    return '';
+  }
+  function updateRecordUI() {
+    const btn = $('btn-record'); if (!btn) return;
+    const on = !!recorder;
+    btn.hidden = !(on || liveNow);
+    btn.classList.toggle('rec', on);
+    btn.setAttribute('aria-pressed', String(on));
+    if (!on) { btn.textContent = 'Record'; return; }
+    const ms = Date.now() - recStart;
+    btn.textContent = 'Stop ' + Math.floor(ms / 1000) + 's';
+    if (ms >= REC_MAX_MS) stopRecord();
+  }
+  function toggleRecord() { if (recorder) stopRecord(); else startRecord(); }
+  function startRecord() {
+    const e = instances[currentId]; if (!e || !e.canvas) return;
+    if (!window.MediaRecorder || typeof e.canvas.captureStream !== 'function') { toast('This browser cannot record a canvas'); return; }
+    const mime = pickRecMime();
+    if (!mime) { toast('No video format is available for recording'); return; }
+    let stream, rec;
+    try {
+      stream = e.canvas.captureStream(30);
+      rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 12e6 });
+    } catch (err) { toast('Could not start recording: ' + err.message); return; }
+    const chunks = [];
+    const ext = mime.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+    const name = 'genchase-' + e.mod.id + '-' + e.state.seed.replace(/[^a-z0-9_-]+/gi, '_') + '-clip.' + ext;
+    rec.ondataavailable = ev => { if (ev.data && ev.data.size) chunks.push(ev.data); };
+    rec.onstop = () => {
+      for (const t of stream.getTracks()) t.stop();
+      if (recorder === rec) recorder = null;
+      clearInterval(recTimer); recTimer = 0;
+      updateRecordUI();
+      if (!chunks.length) { toast('Nothing was recorded'); return; }
+      const blob = new Blob(chunks, { type: mime.split(';')[0] });
+      const url = URL.createObjectURL(blob);
+      const a = h('a', { href: url, download: name });
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+      toast('Saved ' + name + ' (' + (blob.size / 1048576).toFixed(1) + ' MB)');
+    };
+    recorder = rec; recStart = Date.now();
+    rec.start(250);
+    recTimer = setInterval(updateRecordUI, 250);
+    updateRecordUI();
+    toast('Recording. Press V or Stop to finish; clips cap at 60 s.');
+  }
+  function stopRecord() {
+    if (!recorder) return;
+    try { if (recorder.state !== 'inactive') recorder.stop(); } catch (err) { /* already stopped */ }
   }
   function tickWitness(force) {
     const e = instances[currentId], badge = $('live-badge'), fpEl = $('live-fp'), hint = $('witness-hint');
@@ -1728,6 +1795,7 @@ void main(){
     if (!byId[id]) id = modules[0].id;
     if (currentId === id) return;
     const prev = instances[currentId];
+    if (recorder) stopRecord();
     if (prev) { prev.canvas.hidden = true; try { prev.inst.pause && prev.inst.pause(); } catch (e) { /* ignore */ } }
     currentId = id;
     const e = ensureEntry(byId[id]);
@@ -2485,6 +2553,7 @@ void main(){
       } catch (err) { $('settings-err').textContent = 'That is not valid JSON: ' + err.message; $('settings-err').hidden = false; }
     });
     $('btn-save').addEventListener('click', saveToGallery);
+    $('btn-record').addEventListener('click', toggleRecord);
     $('btn-gallery').addEventListener('click', openGallery);
     const galClose = $('gallery-close');
     if (galClose) galClose.addEventListener('click', () => { $('modal-gallery').hidden = true; });
@@ -2544,6 +2613,7 @@ void main(){
       else if (ev.key === 'h' || ev.key === 'H') { ev.preventDefault(); setHistoryVisible(!historyVisible); }
       else if (ev.key === 'f' || ev.key === 'F') { ev.preventDefault(); setFocus(!focusMode); }
       else if (ev.key === 'p' || ev.key === 'P') { ev.preventDefault(); togglePause(); }
+      else if (ev.key === 'v' || ev.key === 'V') { ev.preventDefault(); toggleRecord(); }
       else if (ev.key === '?' ) { $('modal-about').hidden = false; }
       else if (ev.key >= '1' && ev.key <= '9') {
         const m = modules[Number(ev.key) - 1];
