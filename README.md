@@ -1,6 +1,8 @@
 # GENChase
 
-Generative art from real scientific simulations.
+**Gen art, print ready.**
+
+Generative art from real scientific simulations, built to leave the screen. Every plate is seeded, resolution-independent, and exports in inches at giclée resolution.
 
 One HTML file. Thirty-five pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
 
