@@ -559,6 +559,7 @@
     <button class="btn" id="btn-reset" type="button" title="Restore this technique to its factory defaults (R)">Reset</button>
     <button class="btn" id="btn-history" type="button" role="switch" aria-checked="true" title="Show or hide the session timeline (H)">Timeline</button>
     <button class="btn" id="btn-focus" type="button" aria-pressed="false" title="Hide the chrome and look at the plate (F)">Focus</button>
+    <button class="btn" id="btn-ambient" type="button" aria-pressed="false" title="Walk the techniques on a 30 s timer with fresh seeds (A)">Ambient</button>
     <button class="btn" id="btn-about" type="button">About</button>
     <button class="btn" id="btn-settings" type="button" title="Settings JSON — verbose recipe fallback">JSON</button>
     <button class="btn" id="btn-side" type="button" title="Move the settings panel to the other side">
@@ -638,9 +639,10 @@
         <b>Timeline</b> hides that strip (H). <b>Clear</b> on the left of it empties it. <b>Reset</b> restores the current technique to its factory plate.
         <b>Focus</b> (F) hides the chrome so the plate fills the window; Esc brings it back. Click the seed label to copy it. P pauses a running plate.
         <b>Record</b> (V) appears while a plate is Live and saves a clip of up to 60 seconds as WebM, or MP4 where the browser only encodes that.
+        <b>Ambient</b> (A) enters focus and walks the techniques every 30 seconds with a fresh seed, for a second monitor or a wall; Esc stops it.
         Click and drag to disturb the field. The <b>LIVE</b> badge means the simulation is still computing; <b>Still</b> means this frame is finished.
         <b>Save</b> (B) keeps a plate in the gallery; <b>Gallery</b> (G) opens it.
-        Shortcuts: space generate, S surprise, E export, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, P pause, V record, 1–9 tabs, [ ] history, ? this list.</p>
+        Shortcuts: space generate, S surprise, E export, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, P pause, V record, A ambient, 1–9 tabs, [ ] history, ? this list.</p>
 
       <h3>License</h3>
       <p>The studio <b>code</b> is licensed under the <b>Business Source License 1.1</b>. You can run it, study it, and
@@ -1475,7 +1477,30 @@ void main(){
     if (app) app.classList.toggle('focus', focusMode);
     const btn = $('btn-focus');
     if (btn) btn.setAttribute('aria-pressed', String(focusMode));
+    if (!focusMode && ambientOn) setAmbient(false);
     refit();
+  }
+
+  /* ---- ambient mode: walk the tabs on a timer, a fresh seed each time ---- */
+  let ambientOn = false, ambientTimer = 0;
+  const AMBIENT_MS = 30000;
+  function ambientStep() {
+    const ids = [...document.querySelectorAll('button.tab[data-id]')].map(b => b.dataset.id);
+    if (!ids.length) return;
+    const next = ids[(ids.indexOf(currentId) + 1) % ids.length];
+    switchTo(next);
+    $('btn-generate').click();   // a fresh seed through the same path as the Generate button
+  }
+  function setAmbient(on) {
+    ambientOn = !!on;
+    clearInterval(ambientTimer); ambientTimer = 0;
+    const btn = $('btn-ambient');
+    if (btn) btn.setAttribute('aria-pressed', String(ambientOn));
+    if (!ambientOn) return;
+    if (!focusMode) setFocus(true);
+    ambientStep();
+    ambientTimer = setInterval(ambientStep, AMBIENT_MS);
+    toast('Ambient: a new technique every 30 s. Esc or A stops it.');
   }
   function togglePause() {
     const e = instances[currentId]; if (!e) return;
@@ -2585,6 +2610,7 @@ void main(){
       histBtn.addEventListener('click', () => setHistoryVisible(!historyVisible));
     }
     $('btn-focus').addEventListener('click', () => setFocus(!focusMode));
+    $('btn-ambient').addEventListener('click', () => setAmbient(!ambientOn));
     $('seed-copy').addEventListener('click', () => {
       const e = instances[currentId]; if (!e) return;
       copyText(e.state.seed, 'Seed copied', 'Copy the seed field');
@@ -2614,6 +2640,7 @@ void main(){
       else if (ev.key === 'f' || ev.key === 'F') { ev.preventDefault(); setFocus(!focusMode); }
       else if (ev.key === 'p' || ev.key === 'P') { ev.preventDefault(); togglePause(); }
       else if (ev.key === 'v' || ev.key === 'V') { ev.preventDefault(); toggleRecord(); }
+      else if (ev.key === 'a' || ev.key === 'A') { ev.preventDefault(); setAmbient(!ambientOn); }
       else if (ev.key === '?' ) { $('modal-about').hidden = false; }
       else if (ev.key >= '1' && ev.key <= '9') {
         const m = modules[Number(ev.key) - 1];
@@ -12799,7 +12826,7 @@ void main(){
         if (spec.midFS) midPass = new G.Pass(gl, spec.midFS);
       } catch (err) { console.error(err); return dead('Shader compilation failed on this GPU'); }
 
-      let C = null, muT = null, midT = null, gw = 0, gh = 0, ramp = null, rampKey = '';
+      let C = null, muT = null, midT = null, gw = 0, gh = 0, gbc = '', ramp = null, rampKey = '';
       const redBuf = new Uint8Array(RED * RED * 4);
       let reduceT = null, raf = 0, chunkTimer = 0, stepCount = 0, nOff = 0, meanV = 0, absV = 0;
 
@@ -12811,12 +12838,14 @@ void main(){
       }
       function ensureGrid(s) {
         const [W, H] = sizeOf(s);
-        if (C && gw === W && gh === H) return;
+        // clamp-to-edge sampling makes every finite difference see its own value past the wall: a zero-gradient (no-flux) boundary
+        const wrap = s.bc === 'noflux' ? 'clamp' : 'repeat';
+        if (C && gw === W && gh === H && gbc === wrap) return;
         if (C) { C.dispose(); muT.dispose(); if (midT) midT.dispose(); }
-        C = new G.PingPong(gl, W, H, { type: texType, filter: 'nearest', wrap: 'repeat' });
-        muT = new G.Target(gl, W, H, { type: texType, filter: 'nearest', wrap: 'repeat' });
-        midT = midPass ? new G.Target(gl, W, H, { type: texType, filter: 'nearest', wrap: 'repeat' }) : null;
-        gw = W; gh = H;
+        C = new G.PingPong(gl, W, H, { type: texType, filter: 'nearest', wrap });
+        muT = new G.Target(gl, W, H, { type: texType, filter: 'nearest', wrap });
+        midT = midPass ? new G.Target(gl, W, H, { type: texType, filter: 'nearest', wrap }) : null;
+        gw = W; gh = H; gbc = wrap;
         if (reduceT) reduceT.dispose();
         reduceT = new G.Target(gl, RED, RED, { type: 'rgba8', filter: 'nearest' });
       }
@@ -12969,6 +12998,8 @@ void main(){
   const GRID = [
     { group: 'Grid', key: 'grid', label: 'Grid', type: 'seg', kind: GEOM, options: [[128, '128'], [192, '192'], [256, '256'], [384, '384'], [512, '512']] },
     { group: 'Grid', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
+    { group: 'Grid', key: 'bc', label: 'Boundary', type: 'seg', kind: GEOM, options: [['periodic', 'Periodic'], ['noflux', 'No-flux']],
+      hint: 'Periodic wraps the plate into a torus, so patterns tile. No-flux is a closed dish: zero gradient at the walls, so domains and stripes meet the edge instead of continuing through it.' },
   ];
   function simFields() {
     return [
@@ -13021,7 +13052,7 @@ void main(){
       ['field', 'Composition'], ['abs', '|c|'], ['grad', 'Interfaces'], ['shade', 'Relief'], ['mu', 'μ'],
     ])),
     defaults: {
-      grid: 192, aspect: '1:1',
+      grid: 192, aspect: '1:1', bc: 'periodic',
       c0: 0, eps: 1.1, M: 1, deg: false, amp: 0.12, noise: 0.004, init: 'quench',
       running: true, steps: 3, dt: 0.03, warmup: 450,
       view: 'field', lo: -1, hi: 1, bump: 4, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.06,
@@ -13122,7 +13153,7 @@ void main(){
       ['field', 'Composition'], ['abs', '|u|'], ['grad', 'Interfaces'], ['shade', 'Relief'], ['mu', 'μ'],
     ])),
     defaults: {
-      grid: 192, aspect: '1:1',
+      grid: 192, aspect: '1:1', bc: 'periodic',
       c0: 0, eps: 1.05, sigma: 8, M: 1, deg: false, amp: 0.14, noise: 0.003, init: 'quench',
       running: true, steps: 3, dt: 0.025, warmup: 700,
       view: 'field', lo: -1, hi: 1, bump: 4, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.08, grain: 0.05,
@@ -13218,7 +13249,7 @@ void main(){
       ['field', 'Field'], ['abs', '|u|'], ['grad', '|∇u|'], ['shade', 'Relief'], ['orient', 'Orientation'],
     ])),
     defaults: {
-      grid: 192, aspect: '1:1',
+      grid: 192, aspect: '1:1', bc: 'periodic',
       r: 0.35, k0: 0.62, g: 0, cub: 1, noise: 0.006, init: 'noise',
       running: true, steps: 3, dt: 0.025, warmup: 500,
       view: 'field', lo: -1.2, hi: 1.2, bump: 5, lightAng: 40, exposure: 1, gamma: 1, contrast: 1.08, grain: 0.05,
@@ -13307,7 +13338,7 @@ void main(){
       ['shade', 'Relief'], ['field', 'Height'], ['grad', 'Slope'], ['abs', '|u|'], ['orient', 'Cells'],
     ])),
     defaults: {
-      grid: 192, aspect: '1:1',
+      grid: 192, aspect: '1:1', bc: 'periodic',
       nu: 1, alpha: 1, noise: 0.008, init: 'noise',
       running: true, steps: 3, dt: 0.018, warmup: 350,
       view: 'shade', lo: -2.5, hi: 2.5, bump: 3.5, lightAng: 50, exposure: 1.05, gamma: 0.95, contrast: 1.1, grain: 0.06,
@@ -13401,7 +13432,7 @@ void main(){
       ['field', 'Density'], ['abs', '|ψ|'], ['grad', '|∇ψ|'], ['shade', 'Relief'], ['orient', 'Orientation'], ['mu', 'μ'],
     ])),
     defaults: {
-      grid: 192, aspect: '1:1',
+      grid: 192, aspect: '1:1', bc: 'periodic',
       r: -0.25, psi0: 0.28, k0: 0.72, M: 0.35, amp: 0.55, misori: 12, noise: 0.002, init: 'seed',
       running: true, steps: 5, dt: 0.005, warmup: 800,
       view: 'field', lo: -0.35, hi: 1.15, bump: 5, lightAng: 40, exposure: 1, gamma: 1, contrast: 1.08, grain: 0.05,
