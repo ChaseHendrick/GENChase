@@ -5,19 +5,19 @@ Generative art from real scientific simulations.
 One HTML file. Thirty-five pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
 
 <p align="center">
-  <img src="plates/snowflake.jpg" width="32%" alt="Gravner–Griffeath snow crystal" />
-  <img src="plates/hofstadter.jpg" width="32%" alt="Hofstadter butterfly" />
-  <img src="plates/hexagons.jpg" width="32%" alt="Swift–Hohenberg hexagons" />
+  <img src="gallery/snowflake.jpg" width="32%" alt="Gravner–Griffeath snow crystal" />
+  <img src="gallery/hofstadter.jpg" width="32%" alt="Hofstadter butterfly" />
+  <img src="gallery/hexagons.jpg" width="32%" alt="Swift–Hohenberg hexagons" />
 </p>
 <p align="center">
-  <img src="plates/caustics.jpg" width="32%" alt="Optical caustics" />
-  <img src="plates/physarum.jpg" width="32%" alt="Physarum network" />
-  <img src="plates/spinodal.jpg" width="32%" alt="Cahn–Hilliard spinodal" />
+  <img src="gallery/caustics.jpg" width="32%" alt="Optical caustics" />
+  <img src="gallery/physarum.jpg" width="32%" alt="Physarum network" />
+  <img src="gallery/spinodal.jpg" width="32%" alt="Cahn–Hilliard spinodal" />
 </p>
 <p align="center">
-  <img src="plates/scars.jpg" width="32%" alt="Helmholtz scars" />
-  <img src="plates/twelve.jpg" width="32%" alt="Lifshitz–Petrich 12-fold quasicrystal" />
-  <img src="plates/tilings.jpg" width="32%" alt="Penrose tiling" />
+  <img src="gallery/scars.jpg" width="32%" alt="Helmholtz scars" />
+  <img src="gallery/twelve.jpg" width="32%" alt="Lifshitz–Petrich 12-fold quasicrystal" />
+  <img src="gallery/tilings.jpg" width="32%" alt="Penrose tiling" />
 </p>
 <p align="center"><sub>Gravner–Griffeath · Hofstadter · Swift–Hohenberg · Berry caustics · Physarum · Cahn–Hilliard · Helmholtz scars · Lifshitz–Petrich 12-fold · Penrose. Frames from the live studio.</sub></p>
 
