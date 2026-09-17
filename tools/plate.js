@@ -11,6 +11,7 @@ const { chromium } = require('playwright');
   const p = await b.newPage({ viewport: { width: cssW + 560, height: cssW + 200 }, deviceScaleFactor: 2 });
   await p.goto('file://' + studio + '#' + hash);
   await p.keyboard.press('f');            // focus mode: the plate fills the window
+  await p.addStyleTag({ content: '.witness, #status, #toast { display: none !important; }' });   // overlays sit above the canvas
   await p.waitForTimeout(wait);
   const c = p.locator('canvas.art:visible').first();
   const box = await c.boundingBox();
