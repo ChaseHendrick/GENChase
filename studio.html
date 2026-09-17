@@ -13627,8 +13627,9 @@ void main(){
         if (s.grain > 0) {
           const img = g.getImageData(0, 0, w, h), d = img.data;
           const amp = s.grain * 28;
+          const rng = U.makeRng(s.seed + '/grain/' + w + 'x' + h);
           for (let i = 0; i < d.length; i += 4) {
-            const nz = (Math.random() - 0.5) * amp;
+            const nz = (rng() - 0.5) * amp;
             d[i] += nz; d[i + 1] += nz; d[i + 2] += nz;
           }
           g.putImageData(img, 0, 0);
@@ -13850,8 +13851,9 @@ void main(){
         }
         if (s.grain > 0) {
           const amp = s.grain * 22;
+          const rng = U.makeRng(s.seed + '/grain/' + dens.length);
           for (let i = 0; i < rgba.length; i += 4) {
-            const nz = (Math.random() - 0.5) * amp;
+            const nz = (rng() - 0.5) * amp;
             rgba[i] += nz; rgba[i + 1] += nz; rgba[i + 2] += nz;
           }
         }
@@ -13904,8 +13906,9 @@ void main(){
           const s = host.getState();
           if (!walkers) return;
           const th0 = p.x * TWO, p0 = (1 - p.y) * TWO;
+          const rng = U.makeRng(s.seed + '/poke/' + walkers.length);
           for (let i = 0; i < 40; i++) {
-            walkers.push({ th: th0 + (Math.random() - 0.5) * 0.08, p: p0 + (Math.random() - 0.5) * 0.08, ux: 1, uy: 0, lam: 0, n: 0, hue: Math.random() });
+            walkers.push({ th: th0 + (rng() - 0.5) * 0.08, p: p0 + (rng() - 0.5) * 0.08, ux: 1, uy: 0, lam: 0, n: 0, hue: rng() });
           }
           if (!raf) start();
         },
@@ -13948,10 +13951,11 @@ void main(){
     return out;
   }
   function hex01(hex) { const rgb = U.hexToRgb(hex || '#000'); return [rgb[0]/255, rgb[1]/255, rgb[2]/255]; }
-  function grainPut(g, w, h, amt) {
+  function grainPut(g, w, h, amt, seed) {
     if (!(amt > 0)) return;
+    const rng = U.makeRng(String(seed == null ? 'grain' : seed) + '/film/' + w + 'x' + h);
     const img = g.getImageData(0, 0, w, h), d = img.data, a = amt * 24;
-    for (let i = 0; i < d.length; i += 4) { const n = (Math.random() - 0.5) * a; d[i]+=n; d[i+1]+=n; d[i+2]+=n; }
+    for (let i = 0; i < d.length; i += 4) { const n = (rng() - 0.5) * a; d[i]+=n; d[i+1]+=n; d[i+2]+=n; }
     g.putImageData(img, 0, 0);
   }
   function toneMap(dens, W, H, s, rgba) {
@@ -14356,7 +14360,7 @@ void main(){
         } else toneMap(dens, BW, BH, s, img.data);
         bctx.putImageData(img,0,0);
         blit(ctx, buf, BW, BH, w, h);
-        grainPut(ctx, w, h, s.grain);
+        grainPut(ctx, w, h, s.grain, s.seed);
       }
       return {
         aspect(s){ return ASPECTS[s.aspect]||1; },
@@ -14527,7 +14531,7 @@ void main(){
           img.data[o]=lut[li]; img.data[o+1]=lut[li+1]; img.data[o+2]=lut[li+2]; img.data[o+3]=255;
         }
         ctx.putImageData(img,0,0);
-        grainPut(ctx,w,h,s.grain);
+        grainPut(ctx,w,h,s.grain,s.seed);
       }
       function waveStep() {
         const nxt = new Float64Array(N*N);
@@ -14679,7 +14683,7 @@ void main(){
         const img=buf.getContext('2d').createImageData(BW,BH);
         toneMap(dens,BW,BH,s,img.data);
         buf.getContext('2d').putImageData(img,0,0);
-        blit(ctx,buf,BW,BH,w,h); grainPut(ctx,w,h,s.grain);
+        blit(ctx,buf,BW,BH,w,h); grainPut(ctx,w,h,s.grain,s.seed);
       }
       return {
         aspect(s){ return ASPECTS[s.aspect]||1; },
@@ -14771,7 +14775,7 @@ void main(){
             ctx.restore();
           }
         }
-        grainPut(ctx,w,h,s.grain);
+        grainPut(ctx,w,h,s.grain,s.seed);
       }
       return {
         aspect(){ return 1; },
@@ -14955,7 +14959,7 @@ void main(){
         }
         ctx.strokeStyle=rgb(0.12);
         ctx.stroke();
-        grainPut(ctx,w,h,s.grain);
+        grainPut(ctx,w,h,s.grain,s.seed);
       }
       return {
         aspect(){ return 1; },
@@ -15136,7 +15140,7 @@ void main(){
             ctx.fill();
           }
         }
-        grainPut(ctx,w,h,s.grain);
+        grainPut(ctx,w,h,s.grain,s.seed);
       }
       function meanDiv() {
         if (!divs.length) return 0;
@@ -15295,7 +15299,7 @@ void main(){
           if (s.view!=='stroke') { ctx.globalAlpha=s.view==='fill'?0.55:0.18; ctx.fillStyle=col; ctx.fill(); ctx.globalAlpha=1; }
           if (s.view!=='fill') { ctx.strokeStyle=col; ctx.stroke(); }
         }
-        grainPut(ctx,w,h,s.grain);
+        grainPut(ctx,w,h,s.grain,s.seed);
       }
       return {
         aspect(){ return 1; },
@@ -15429,7 +15433,7 @@ void main(){
           ctx.lineWidth=Math.max(0.5, s.lw * Math.min(w,h)/700 * (s.view==='age' ? 0.4+0.8*(1-t) : 0.85));
           ctx.beginPath(); ctx.moveTo(a[0]*w,a[1]*h); ctx.lineTo(b[0]*w,b[1]*h); ctx.stroke();
         }
-        grainPut(ctx,w,h,s.grain);
+        grainPut(ctx,w,h,s.grain,s.seed);
       }
       return {
         aspect(){ return 1; },
@@ -15695,7 +15699,7 @@ void main(){
           }
           g.closePath(); g.fill();
         }
-        grainPut(g,w,h,s.grain);
+        grainPut(g,w,h,s.grain,s.seed);
       }
       function draw(){ paintTo(ctx, canvas.width, canvas.height); }
       function stop(){ cancelAnimationFrame(raf); raf=0; }
@@ -15925,7 +15929,7 @@ void main(){
           }
         }
         ctx.putImageData(img,0,0);
-        grainPut(ctx,w,h,s.grain);
+        grainPut(ctx,w,h,s.grain,s.seed);
       }
       function rms() {
         let s=0; for (let i=0;i<psi.length;i++) s+=psi[i]*psi[i];
