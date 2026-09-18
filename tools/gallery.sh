@@ -21,7 +21,7 @@ R drainage.jpg    "landscape/howard-1994"                      70000 network
 R froth.jpg       "potts/graner-1992/eyJncmlkIjo0MDB9"         60000 sides
 # every tick is a rectangle
 R matrices.jpg    "rmt/dyson-1962"                             45000 sweep
-# the Eden cluster is one pixel per lattice cell, drawn with nearest-neighbour scaling
+# the Eden cluster is one pixel per lattice cell, drawn with nearest-neighbor scaling
 R eden.jpg        "kpz/kardar-1986"                            45000 eden
 # geodesic arcs, computed per cell
 R hyperbolic.jpg  "hyperbolic/poincare-1882"                   50000 spots

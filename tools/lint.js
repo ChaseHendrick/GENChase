@@ -87,7 +87,7 @@ for (const m of mods) {
 // several techniques splice it into their schema. Scanning only the module body therefore misses exactly
 // the families where one edit changes six tabs at once, which is where this went wrong in the first
 // place. So the search falls back to the last grid options array declared earlier in the same script
-// block, which is how these files are actually organised.
+// block, which is how these files are actually organized.
 const GRID_OPTS = /key: 'grid'[\s\S]{0,240}?options: \[\[([\s\S]*?)\]\]/g;
 const blockStartFor = i => {
   let best = 0;

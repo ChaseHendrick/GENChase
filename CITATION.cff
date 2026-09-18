@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+title: "GENChase: a single-file studio of seeded scientific simulations, built for print"
+message: "If you use GENChase, or a plate made with it, in published work, please cite it and also cite the researchers named in the technique's own credit line."
+type: software
+authors:
+  - name: "Chaos"
+    website: "https://github.com/SharpMeow"
+repository-code: "https://github.com/SharpMeow/GENChase"
+url: "https://github.com/SharpMeow/GENChase"
+license-url: "https://github.com/SharpMeow/GENChase/blob/main/LICENSE"
+abstract: >-
+  GENChase is one HTML file containing sixty-one pattern-forming systems from
+  physics, chemistry, biology and mathematics, each implemented as a real
+  simulation rather than as a style applied to noise. Every plate is
+  deterministic from a seed, reconstructible from a URL hash, and exportable at
+  print resolution in inches, as vectors where the picture is discrete marks.
+  Most techniques measure a quantity that theory predicts, from the field
+  currently on screen, and print it alongside the value theory gives: the mean
+  side count of a two-dimensional froth against Euler's six, unfolded level
+  spacing against the Wigner surmise, roughening exponents against the
+  Kardar-Parisi-Zhang and Edwards-Wilkinson values, number fluctuations against
+  the equilibrium square root. None of the science is original to the project;
+  each technique credits the work it implements.
+keywords:
+  - generative art
+  - scientific visualization
+  - simulation
+  - reaction-diffusion
+  - pattern formation
+  - WebGL
+  - partial differential equations
+  - random matrix theory
+  - hyperbolic geometry
+  - landscape evolution
+  - active matter
+  - Bose-Einstein condensate
+  - cellular Potts model
+  - KPZ universality
+  - neural field theory
+  - print
