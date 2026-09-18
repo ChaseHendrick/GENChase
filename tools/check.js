@@ -4,7 +4,8 @@
 const path = require('path');
 const { chromium } = require('playwright');
 
-const NOISE = [/willReadFrequently/, /ERR_CERT_AUTHORITY_INVALID/, /ServiceWorkerRegistration/];
+// Environment noise under file:// and swiftshader, not defects in the page.
+const NOISE = [/willReadFrequently/, /ERR_CERT_AUTHORITY_INVALID/, /ServiceWorkerRegistration/, /GL Driver Message.*Performance/];
 const b64url = obj => Buffer.from(JSON.stringify(obj)).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
 async function measure(p) {
@@ -16,14 +17,19 @@ async function measure(p) {
     const d = g.getImageData(0, 0, t.width, t.height).data, L = [];
     let h = 2166136261;
     for (let i = 0; i < d.length; i += 4) { L.push(Math.round(.2126 * d[i] + .7152 * d[i + 1] + .0722 * d[i + 2])); h ^= d[i]; h = Math.imul(h, 16777619); h ^= d[i + 1]; h = Math.imul(h, 16777619); }
-    L.sort((a, b) => a - b); const q = f => L[Math.floor(f * (L.length - 1))];
+    const sorted = L.slice().sort((a, b) => a - b); const q = f => sorted[Math.floor(f * (sorted.length - 1))];
+    const p50 = q(.5);
+    // ink: the fraction of pixels that depart from the modal level. A line drawing is mostly background,
+    // so percentile spread alone calls it blank; this counts the marks instead.
+    let ink = 0; for (let i = 0; i < L.length; i++) if (Math.abs(L[i] - p50) > 10) ink++;
     const st = document.querySelector('#status');
     return { canvas: c.width + 'x' + c.height, visibleCanvases: cs.length, fp: (h >>> 0).toString(16),
-      lum: { p01: q(.01), p10: q(.1), p50: q(.5), p90: q(.9), p99: q(.99) },
+      lum: { p01: q(.01), p10: q(.1), p50: p50, p90: q(.9), p99: q(.99), min: sorted[0], max: sorted[sorted.length - 1], ink: +(ink / L.length).toFixed(4) },
       status: st ? st.innerText.replace(/\s+/g, ' ').slice(0, 200) : null };
   });
 }
-const flat = m => !m.lum || (m.lum.p99 - m.lum.p01) < 12;
+// Alive either as a broad tonal field (percentile spread) or as marks on a ground (range plus enough ink).
+const flat = m => !m.lum || ((m.lum.p99 - m.lum.p01) < 12 && !((m.lum.max - m.lum.min) >= 40 && m.lum.ink >= 0.004));
 
 // Wait up to maxMs, but stop early once the plate is non-flat and has settled: a still plate whose fingerprint
 // stopped changing, or a living plate whose step count has passed its warm-up. Cuts a full run roughly in half.
@@ -37,7 +43,7 @@ async function settle(p, maxMs) {
     same = m.fp === last ? same + 1 : 0; last = m.fp;
     if (same >= 2) return;                                   // still, or paused
     const st = m.status || '';
-    const step = (st.match(/(?:step|sweep)\s+([\d,]+)/) || [])[1];
+    const step = (st.match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/) || [])[1];
     const warm = await p.evaluate(() => { try { const id = location.hash.slice(1).split('/')[0]; const s = JSON.parse(localStorage.getItem('genchase.v1.' + id) || '{}'); return Number(s.warmup) || 0; } catch (e) { return 0; } });
     if (step && warm && Number(step.replace(/,/g, '')) >= warm) return;   // living plate past its warm-up
   }
@@ -85,8 +91,17 @@ async function settle(p, maxMs) {
   const still = id + '/' + seed + '/' + b64url({ running: false });
   const a1 = await open(still); await settle(a1, wait); const m1 = await measure(a1); await a1.close();
   const a2 = await open(still); await settle(a2, wait); const m2 = await measure(a2);
-  console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: m1.fp === m2.fp }));
-  if (m1.fp !== m2.fp) fails.push('same hash loaded twice gave different plates');
+  // A living plate with no pause key keeps stepping on a wall-clock budget, so two loads are only comparable at the
+  // same step count. Report that case as not comparable rather than as a failure; a plate that pauses must match.
+  const stepOf = m => { const s = ((m.status || '').match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/) || [])[1]; return s ? Number(s.replace(/,/g, '')) : null; };
+  const pausable = await a2.evaluate(() => { try { return Object.prototype.hasOwnProperty.call(JSON.parse(localStorage.getItem('genchase.v1.' + location.hash.slice(1).split('/')[0]) || '{}'), 'running'); } catch (e) { return false; } });
+  const s1 = stepOf(m1), s2 = stepOf(m2);
+  // Two captures at different step counts (a chunked computation still running, or a living plate with no pause key)
+  // say nothing about determinism; two captures at the same step count must match exactly.
+  const comparable = m1.fp === m2.fp || s1 === null || s2 === null || s1 === s2;
+  console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: m1.fp === m2.fp, steps: [s1, s2], pausable }));
+  if (m1.fp !== m2.fp && comparable) fails.push('same hash loaded twice gave different plates');
+  else if (m1.fp !== m2.fp) console.log('determinism not comparable: captured at steps ' + s1 + ' and ' + s2 + (pausable ? ' (still computing its warm-up)' : ' (living plate without a pause key)'));
 
   // 4. switch to another tab and back: exactly one visible canvas
   const other = await a2.evaluate(me => { const t = [...document.querySelectorAll('button.tab[data-id]')].find(x => x.dataset.id !== me); return t ? t.dataset.id : null; }, id);

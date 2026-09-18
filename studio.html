@@ -23,11 +23,11 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GENChase — generative art from real simulations">
-<meta property="og:description" content="Fifty-one pattern-forming systems from physics, chemistry and biology, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution with its own governing equation printed alongside.">
+<meta property="og:description" content="Fifty-two pattern-forming systems from physics, chemistry and biology, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution with its own governing equation printed alongside.">
 <meta property="og:site_name" content="GENChase">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GENChase — generative art from real simulations">
-<meta name="twitter:description" content="Fifty-one pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<meta name="twitter:description" content="Fifty-two pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "A generative art studio built from real scientific simulations. Fifty-one techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution.",
+  "description": "A generative art studio built from real scientific simulations. Fifty-two techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution.",
   "featureList": [
     "Flow fields with collision-avoiding strokes",
     "Gray-Scott reaction-diffusion",
@@ -80,6 +80,7 @@
     "Rayleigh-Benard convection",
     "Active Model B+ bubbly phase separation",
     "Random domino tilings of the Aztec diamond (arctic circle)",
+    "Schramm-Loewner evolution curves",
     "Video capture of living plates",
     "Seeded reproducibility and parameter export",
     "Museum-quality print export at 300 to 600 ppi with a printed colophon"
@@ -635,7 +636,7 @@
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>None of these algorithms are new. What is unusual is the assembly. Fifty-one unrelated sciences share one control surface,
+      <p>None of these algorithms are new. What is unusual is the assembly. Fifty-two unrelated sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -1113,6 +1114,23 @@
     float fbm(vec2 p, int oct){ float s=0.0, a=1.0, n=0.0; for(int i=0;i<8;i++){ if(i>=oct) break; s += vnoise(p)*a; n += a; a *= 0.5; p = p*2.02 + vec2(31.7,-17.3);} return s/n; }`,
     // sample a palette ramp: u_ramp is a 256x1 RGBA8 texture built with rampTexture()
     ramp: `uniform sampler2D u_ramp; vec3 ramp(float t){ return texture(u_ramp, vec2(clamp(t,0.0,1.0), 0.5)).rgb; }`,
+    // Catmull-Rom bicubic from 16 nearest taps, for showing a coarse simulation grid at print size.
+    // A field of a few hundred cells magnifies to thousands of pixels; nearest sampling turns that into a
+    // mosaic of hard squares and bilinear into mush. Catmull-Rom interpolates smoothly and keeps edges.
+    // Needs no filtering mode on the texture, so simulation passes that sample at exact texel centres are unaffected.
+    bicubic: `float crW(float x){ x = abs(x);
+      if (x < 1.0) return 1.5*x*x*x - 2.5*x*x + 1.0;
+      if (x < 2.0) return -0.5*x*x*x + 2.5*x*x - 4.0*x + 2.0;
+      return 0.0; }
+    float texCR(sampler2D t, vec2 uv, vec2 res){
+      vec2 p = uv * res - 0.5, f = fract(p), base = floor(p);
+      float sum = 0.0, wsum = 0.0;
+      for (int j = -1; j <= 2; j++) for (int i = -1; i <= 2; i++) {
+        float w = crW(float(i) - f.x) * crW(float(j) - f.y);
+        sum += texture(t, (base + vec2(float(i), float(j)) + 0.5) / res).r * w;
+        wsum += w;
+      }
+      return sum / max(wsum, 1e-6); }`,
     splatFS: `#version 300 es
 precision highp float;
 in vec2 v_uv; out vec4 outColor;
@@ -1527,6 +1545,10 @@ void main(){
       toast(e.state.running ? 'Running' : 'Paused');
       return;
     }
+    // no running key: hold the plate through the same pause/resume the shell uses when switching tabs
+    e.paused = !e.paused;
+    try { if (e.paused) e.inst.pause && e.inst.pause(); else e.inst.resume && e.inst.resume(); } catch (err) { showError(err); }
+    toast(e.paused ? 'Paused' : 'Running');
   }
   function renderHistory() {
     const wrap = $('history'); if (!wrap) return;
@@ -1641,6 +1663,7 @@ void main(){
     if (!(opts && opts.skipSnap)) snapshot(opts && opts.snapLabel || 'generate');
     clearTimeout(regenTimer);
     fitCanvas(e);
+    e.paused = false;
     try { e.inst.regenerate(); } catch (err) { showError(err); }
     updateDims();
     persist(currentId);
@@ -1859,7 +1882,7 @@ void main(){
     if (!e.started) { e.started = true; regenerate({ skipHistory: true, skipSnap: true }); }
     else {
       if (changed && e.inst.resize) { try { e.inst.resize(); } catch (err) { showError(err); } }
-      try { e.inst.resume && e.inst.resume(); } catch (err) { showError(err); }
+      if (!e.paused) { try { e.inst.resume && e.inst.resume(); } catch (err) { showError(err); } }
     }
     persist(id);
     updateDims();
@@ -2683,7 +2706,7 @@ void main(){
     });
     document.addEventListener('visibilitychange', () => {
       const e = instances[currentId]; if (!e) return;
-      try { if (document.hidden) e.inst.pause && e.inst.pause(); else e.inst.resume && e.inst.resume(); } catch (err) { /* ignore */ }
+      try { if (document.hidden) e.inst.pause && e.inst.pause(); else if (!e.paused) e.inst.resume && e.inst.resume(); } catch (err) { /* ignore */ }
     });
     (async function () {
       try { if (window.claude && typeof window.claude.use === 'function') downloads = await window.claude.use('downloads'); } catch (err) { downloads = null; }
@@ -12308,7 +12331,7 @@ void main(){
     RANGE('Simulation', 'steps', 'Steps per frame', LIVE, 1, 8, 1, String),
     RANGE('Simulation', 'dt', 'Time step', LIVE, 0.08, 0.8, 0.02, f2),
     RANGE('Simulation', 'iters', 'Poisson iterations', LIVE, 8, 40, 2, String),
-    RANGE('Simulation', 'warmup', 'Warm-up steps', GEOM, 0, 2000, 50, String),
+    RANGE('Simulation', 'warmup', 'Warm-up steps', GEOM, 0, 4000, 50, String),
     { group: 'Simulation', key: 'burst', label: 'Run 400 steps', type: 'action' },
     { group: 'Simulation', key: 'reseed', label: 'Reseed', type: 'action' },
 
@@ -12812,9 +12835,11 @@ uniform float u_exposure, u_gamma, u_contrast, u_grain, u_lo, u_hi, u_bump, u_li
 uniform vec3 u_bg;
 ${G.GLSL.hash}
 ${G.GLSL.ramp}
+${G.GLSL.bicubic}
 void main(){
   vec2 px = 1.0 / u_res;
-  float u = texture(u_c, v_uv).r;
+  // the grid is far coarser than the plate, so the displayed value is interpolated rather than blocked up
+  float u = texCR(u_c, v_uv, u_res);
   float gx = 0.5 * (texture(u_c, v_uv + vec2(px.x, 0.0)).r - texture(u_c, v_uv - vec2(px.x, 0.0)).r);
   float gy = 0.5 * (texture(u_c, v_uv + vec2(0.0, px.y)).r - texture(u_c, v_uv - vec2(0.0, px.y)).r);
   float t;
@@ -13041,6 +13066,16 @@ void main(){
     };
   }
 
+  // Largest explicit-Euler step for a Cahn-Hilliard-type flow dc/dt = M lap(c^3 - c - eps^2 lap c).
+  // On the 5-point stencil with dx = 1 the operator -lap has eigenvalues in [0, 8], so the stiffest mode
+  // decays at M(eps^2 L^2 - L) with L = 8; the cubic term adds up to 3c^2 L on top. Stability needs
+  // dt below 2 / that rate, and we keep a margin because the bound is linear and the flow is not.
+  function chMaxDt(M, eps, cMax) {
+    const L = 8, cubic = 3 * (cMax || 1.2) * (cMax || 1.2);
+    const rate = Math.max(1e-6, (M || 1) * (eps * eps * L * L + cubic * L - L));
+    return 1.6 / rate;
+  }
+
   function seedNoise(s, W, H, amp, mean) {
     const rng = U.makeRng(s.seed + '/pde');
     const data = new Float32Array(W * H * 4);
@@ -13110,7 +13145,7 @@ void main(){
     defaults: {
       grid: 192, aspect: '1:1', bc: 'periodic',
       c0: 0, eps: 1.1, M: 1, deg: false, amp: 0.12, noise: 0.004, init: 'quench',
-      running: true, steps: 3, dt: 0.03, warmup: 450,
+      running: true, steps: 3, dt: 0.014, warmup: 2000,
       view: 'field', lo: -1, hi: 1, bump: 4, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.06,
       seed: 'cahn-1958',
     },
@@ -13128,7 +13163,7 @@ void main(){
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (A → B)',
     headline: 'c0', headlineLabel: 'mean c₀',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.03, 0.005, 0.15); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.014, 0.002, chMaxDt(s.M, s.eps)); },
     surprise(rng) {
       const c0 = rng.pick([0, 0, 0.05, -0.3, 0.35, -0.45]);
       return {
@@ -13136,7 +13171,7 @@ void main(){
         c0, eps: rng.range(0.85, 1.6), M: rng.range(0.7, 1.4), deg: rng() < 0.25,
         amp: rng.range(0.08, 0.25), noise: rng.pick([0, 0.003, 0.01]),
         init: Math.abs(c0) < 0.15 ? rng.pick(['quench', 'quench', 'bands']) : 'quench',
-        running: true, steps: rng.int(2, 4), dt: 0.03, warmup: rng.int(250, 700),
+        running: true, steps: rng.int(2, 4), dt: 0.014, warmup: rng.int(1400, 3000),
         view: rng.pick(['field', 'field', 'grad', 'shade']), lo: -1, hi: 1, bump: rng.range(3, 8),
         lightAng: rng.int(0, 360), exposure: rng.range(0.9, 1.15), gamma: rng.range(0.85, 1.2),
         contrast: rng.range(0.95, 1.2), grain: rng.pick([0, 0.05, 0.1]),
@@ -13197,8 +13232,8 @@ void main(){
       RANGE('Copolymer', 'c0', 'Mean m', GEOM, -0.5, 0.5, 0.01, f2, {
         hint: 'm = 0: lamellae. |m| ≳ 0.2: spots of the minority block. The mean is conserved.' }),
       RANGE('Copolymer', 'eps', 'Interface width ε', LIVE, 0.7, 2.2, 0.05, f2),
-      RANGE('Copolymer', 'sigma', 'Long-range σ', LIVE, 0, 24, 0.2, f1, {
-        hint: 'σ=0 is plain Cahn–Hilliard (coarsens forever). σ>0 sets the domain size. Larger σ, finer pattern.' }),
+      RANGE('Copolymer', 'sigma', 'Long-range σ', LIVE, 0, 0.24, 0.002, f3, {
+        hint: 'σ=0 is plain Cahn–Hilliard (coarsens forever). σ>0 sets the domain size: larger σ, finer pattern. The melt is only unstable while σ < 1/(4ε²), about 0.23 at the default ε, so past that the film stays uniform.' }),
       RANGE('Copolymer', 'M', 'Mobility M', LIVE, 0.2, 2.5, 0.05, f2),
       { group: 'Copolymer', key: 'deg', label: 'Degenerate mobility', type: 'toggle', kind: LIVE },
       RANGE('Copolymer', 'amp', 'Quench amplitude', GEOM, 0.02, 0.5, 0.01, f2),
@@ -13210,17 +13245,17 @@ void main(){
     ])),
     defaults: {
       grid: 192, aspect: '1:1', bc: 'periodic',
-      c0: 0, eps: 1.05, sigma: 8, M: 1, deg: false, amp: 0.14, noise: 0.003, init: 'quench',
-      running: true, steps: 3, dt: 0.025, warmup: 700,
+      c0: 0, eps: 1.05, sigma: 0.06, M: 1, deg: false, amp: 0.14, noise: 0.003, init: 'quench',
+      running: true, steps: 3, dt: 0.015, warmup: 2200,
       view: 'field', lo: -1, hi: 1, bump: 4, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.08, grain: 0.05,
       seed: 'ohta-1986',
     },
     presets: {
-      lamellae: pre('Lamellae', { c0: 0, sigma: 8, init: 'quench', view: 'field', warmup: 800 }, Pal.graphite),
-      spots: pre('Spots', { c0: -0.32, sigma: 10, init: 'quench', view: 'field', warmup: 900, amp: 0.2 }, Pal.petri),
-      fingerprint: pre('Fingerprint', { c0: 0.08, sigma: 12, view: 'grad', warmup: 750, eps: 0.9 }, Pal.xray),
-      relief: pre('Relief', { c0: 0, sigma: 7, view: 'shade', bump: 6, warmup: 700 }, Pal.harbor),
-      coarse: pre('Soft σ', { c0: 0, sigma: 2.5, view: 'field', warmup: 600 }, Pal.glacier),
+      lamellae: pre('Lamellae', { c0: 0, sigma: 0.05, init: 'quench', view: 'field', warmup: 800 }, Pal.graphite),
+      spots: pre('Spots', { c0: -0.32, sigma: 0.09, init: 'quench', view: 'field', warmup: 900, amp: 0.2 }, Pal.petri),
+      fingerprint: pre('Fingerprint', { c0: 0.08, sigma: 0.12, view: 'grad', warmup: 750, eps: 0.9 }, Pal.xray),
+      relief: pre('Relief', { c0: 0, sigma: 0.05, view: 'shade', bump: 6, warmup: 700 }, Pal.harbor),
+      coarse: pre('Soft σ', { c0: 0, sigma: 0.015, view: 'field', warmup: 600 }, Pal.glacier),
     },
     closedGroups: ['Seeding'],
     hints: {
@@ -13228,14 +13263,14 @@ void main(){
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (A → B)',
     headline: 'sigma', headlineLabel: 'σ',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.025, 0.005, 0.12); s.sigma = U.clamp(Number(s.sigma) || 0, 0, 40); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.015, 0.002, chMaxDt(s.M, s.eps)); s.sigma = U.clamp(Number(s.sigma) || 0, 0, 0.3); },
     surprise(rng) {
       const c0 = rng.pick([0, 0, 0.05, -0.3, 0.32]);
       return {
         grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5']),
-        c0, eps: rng.range(0.85, 1.5), sigma: rng.pick([4, 7, 8, 12, 16]), M: 1, deg: rng() < 0.15,
+        c0, eps: rng.range(0.85, 1.5), sigma: rng.range(0.02, 0.11), M: 1, deg: rng() < 0.15,
         amp: rng.range(0.08, 0.22), noise: rng.pick([0, 0.003, 0.01]), init: 'quench',
-        running: true, steps: rng.int(2, 4), dt: 0.025, warmup: rng.int(400, 900),
+        running: true, steps: rng.int(2, 4), dt: 0.015, warmup: rng.int(1500, 3200),
         view: rng.pick(['field', 'field', 'grad', 'shade']), lo: -1, hi: 1, bump: rng.range(3, 8),
         lightAng: rng.int(0, 360), exposure: rng.range(0.9, 1.15), gamma: rng.range(0.85, 1.2),
         contrast: rng.range(0.95, 1.2), grain: rng.pick([0, 0.05, 0.1]),
@@ -13248,8 +13283,10 @@ void main(){
       muUniforms: s => ({ u_eps2: s.eps * s.eps }),
       stepUniforms: s => ({ u_M: s.M, u_deg: s.deg ? 1 : 0, u_sigma: s.sigma, u_m: s.c0 }),
       status: (s, mean, abs) => {
-        const kind = Math.abs(s.c0) < 0.18 ? (s.sigma < 1 ? 'coarsening' : 'lamellar') : 'spots';
-        return '<span>⟨u⟩ <b>' + mean.toFixed(2) + '</b> · ' + kind + '</span><span>σ <b>' + s.sigma.toFixed(1) + '</b></span>';
+        const kind = Math.abs(s.c0) < 0.18 ? (s.sigma < 0.02 ? 'coarsening' : 'lamellar') : 'spots';
+        // the melt only patterns while sigma is below 1/(4 eps^2); past that it relaxes to uniform
+        const uniform = s.sigma >= 1 / (4 * s.eps * s.eps);
+        return '<span>⟨u⟩ <b>' + mean.toFixed(2) + '</b> · ' + (uniform ? 'uniform (σ past 1/4ε²)' : kind) + '</span><span>σ <b>' + s.sigma.toFixed(3) + '</b></span>';
       },
       seed(s, W, H) {
         const rng = U.makeRng(s.seed + '/ohta');
@@ -13310,7 +13347,7 @@ void main(){
     defaults: {
       grid: 192, aspect: '1:1', bc: 'periodic',
       zeta: -4, lambda: 1, c0: -0.4, eps: 1.1, M: 1, amp: 0.15, noise: 0.004, init: 'quench',
-      running: true, steps: 3, dt: 0.02, warmup: 600,
+      running: true, steps: 3, dt: 0.013, warmup: 1800,
       view: 'field', lo: -1, hi: 1, bump: 4, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.06,
       seed: 'tjhung-2018',
     },
@@ -13332,7 +13369,7 @@ void main(){
     sanitize(s) {
       s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512);
       // the zeta current acts like a diffusion of either sign; keep the explicit step inside its stability band
-      s.dt = U.clamp(Number(s.dt) || 0.02, 0.005, Math.min(0.06, 0.24 / (1 + Math.abs(Number(s.zeta) || 0))));
+      s.dt = U.clamp(Number(s.dt) || 0.013, 0.002, Math.min(chMaxDt(s.M, s.eps), 0.24 / (1 + Math.abs(Number(s.zeta) || 0))));
     },
     surprise(rng) {
       const c0 = rng.pick([-0.4, -0.45, -0.35, 0.4, 0, -0.5]);
@@ -13340,7 +13377,7 @@ void main(){
         grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5', '5:4']),
         zeta: rng.range(-6, -1.5), lambda: rng.range(-0.5, 2.5), c0, eps: rng.range(0.85, 1.5), M: 1,
         amp: rng.range(0.1, 0.25), noise: rng.pick([0, 0.004, 0.01]), init: 'quench',
-        running: true, steps: 3, dt: 0.02, warmup: rng.int(400, 800),
+        running: true, steps: 3, dt: 0.013, warmup: rng.int(1200, 2600),
         view: rng.pick(['field', 'field', 'grad', 'shade']), lo: -1, hi: 1, bump: rng.range(3, 8),
         lightAng: rng.int(0, 360), exposure: rng.range(0.9, 1.15), gamma: rng.range(0.85, 1.2),
         contrast: rng.range(0.95, 1.2), grain: rng.pick([0, 0.05, 0.1]),
@@ -13700,7 +13737,7 @@ void main(){
     name: 'Swarmalators',
     subtitle: 'oscillators that sync and swarm · 2017',
     order: 55.5,
-    equation: 'ẋᵢ = (1/N) Σⱼ (xⱼ−xᵢ)/rᵢⱼ · (1 + J cos Δθ),   θ̇ᵢ = (K/N) Σⱼ sin(Δθ)/rᵢⱼ',
+    equation: 'ẋᵢ = (1/N) Σⱼ [ (xⱼ−xᵢ)/rᵢⱼ · (1 + J cos Δθ) − (xⱼ−xᵢ)/rᵢⱼ² ],   θ̇ᵢ = (K/N) Σⱼ sin(Δθ)/rᵢⱼ',
     credit: "Kevin P. O’Keeffe, Hyunsuk Hong and Steven H. Strogatz, Nature Communications 8, 1504 (2017), 'Oscillators that sync and swarm'. Identical agents with a phase and a position: spatial attraction depends on phase agreement, and phase coupling falls with distance. Five collective states live in the (J, K) plane, including a static rainbow ring and an active phase wave.",
     blurb: 'A firefly that walks. Each agent has a place and a phase, and the two talk: agents of similar phase attract, opposite phase repel, and the phase coupling itself dies with distance. That is enough for five states that do not exist in either the Kuramoto model or a swarm alone. The rainbow ring is the one you cannot unsee — phase locked to polar angle, a colour wheel of bodies. Turn K a little negative and the ring splinters. More negative, and it never sits still.',
     schema: [
@@ -13798,8 +13835,10 @@ void main(){
             const ir = 1 / r;
             const coss = cs[j] * ci + sn[j] * si;
             const sinn = sn[j] * ci - cs[j] * si;
-            const coup = 1 + J * coss;
-            sx += dx * ir * coup; sy += dy * ir * coup; st += sinn * ir;
+            // attraction (A + J cos Δθ)·r̂ minus the hard-core repulsion B·r̂/r: without the second term
+            // every pair attracts at unit strength at any range and the swarm collapses to one point
+            const f = ir * (1 + J * coss) - ir * ir;
+            sx += dx * f; sy += dy * f; st += sinn * ir;
           }
           fx[i] = sx * invN; fy[i] = sy * invN; ft[i] = K * st * invN;
         }
@@ -15083,13 +15122,19 @@ void main(){
   }
   function extToHalf(z){ return cmul([0,1], cdiv([z[0]-1, z[1]], [z[0]+1, z[1]])); }
   function halfToExt(w){ return cdiv([w[0], w[1]+1], [-w[0], 1-w[1]]); }
+  // Attach a radial slit of capacity c at z = 1 on the exterior of the unit disk. In the half-plane chart w = i(z-1)/(z+1)
+  // the point z = 1 is w = 0 and infinity is w = i; the map w -> sqrt(w^2 - 4t) opens a vertical slit of height 2 sqrt(t)
+  // at 0 (the sign matters: with + 4t it would remove a slit and the cluster never grows), and the dilation by
+  // 1/sqrt(1 + 4t) keeps w = i fixed so that infinity stays where it is under every composition.
   function slitMap(z, c){
-    const t = Math.max(1e-10, Math.exp(c) - 1);
+    // the chart has derivative 1/2 at z = 1, so a slit that grows the conformal radius by e^c needs t = (e^c - 1) / 4
+    const t = Math.max(1e-10, (Math.exp(c) - 1) / 4);
     let w = extToHalf(z);
-    const w2 = [w[0]*w[0] - w[1]*w[1] + 4*t, 2*w[0]*w[1]];
+    const w2 = [w[0]*w[0] - w[1]*w[1] - 4*t, 2*w[0]*w[1]];
     w = csqrt(w2);
     if (w[1] < 0) w = [-w[0], -w[1]];
-    return halfToExt(w);
+    const k = 1 / Math.sqrt(1 + 4*t);
+    return halfToExt([w[0]*k, w[1]*k]);
   }
   function attachAt(z, theta, c) {
     const e=[Math.cos(theta), Math.sin(theta)], em=[e[0], -e[1]];
@@ -15192,7 +15237,8 @@ void main(){
           ctx.fill();
           ctx.globalAlpha = 1;
         }
-        ctx.strokeStyle=rgb(0.12);
+        // the outline view has nothing but this line, so it takes the ink that contrasts with the ground
+        ctx.strokeStyle = s.view==='outline' ? U.inkFor(s.bg) : rgb(0.12);
         ctx.stroke();
         grainPut(ctx,w,h,s.grain,s.seed);
       }
@@ -15218,7 +15264,7 @@ void main(){
           for (let i=0;i<boundary.length;i++) { const x=cx+boundary[i][0]*sc, y=cy+boundary[i][1]*sc; if(i===0) g.moveTo(x,y); else g.lineTo(x,y); }
           g.closePath();
           if (s.view!=='outline') { const li=180*3; g.fillStyle='rgb('+lut[li]+','+lut[li+1]+','+lut[li+2]+')'; g.fill(); }
-          g.strokeStyle='rgb('+lut[40*3]+','+lut[40*3+1]+','+lut[40*3+2]+')';
+          g.strokeStyle = s.view==='outline' ? U.inkFor(s.bg) : 'rgb('+lut[40*3]+','+lut[40*3+1]+','+lut[40*3+2]+')';
           g.lineWidth=Math.max(0.8,s.lw*Math.min(w,h)/700); g.stroke();
           return U.toBlob(out);
         },
@@ -15273,7 +15319,7 @@ void main(){
       golden: pre('Golden', { lam: 0.14, N: 240, view: 'dots' }, Pal.tram),
       voronoi: pre('Voronoi', { lam: 0.14, N: 180, view: 'voronoi' }, Pal.graphite),
       para: pre('Parastichies', { lam: 0.12, N: 280, view: 'para' }, Pal.ember),
-      tight: pre('Tight λ', { lam: 0.08, N: 320, view: 'dots', size: 0.8 }, Pal.meadow),
+      tight: pre('Tight λ', { lam: 0.08, N: 600, view: 'dots', size: 1.6 }, Pal.meadow),
     },
     hints: { Meristem: 'λ is the only number that matters. Too small: a radial pile-up. Too large: opposite pairs. In between: 137.5° and the Fibonacci spirals.' },
     palette: true, defaultPalette: 'tram', paletteLabel: 'Colors',
@@ -15803,7 +15849,7 @@ void main(){
     ],
     defaults: { rho: 0.40, beta: 1.35, alpha: 0.08, theta: 0.025, kappa: 0.005, mu: 0.015, R: 72, view: 'ice', grain: 0.04, running: true, seed: 'gravner-2008' },
     presets: {
-      dendrite: pre('Stellar dendrite', { rho:0.40, beta:1.35, kappa:0.005, mu:0.07, R:72 }, Pal.glacier),
+      dendrite: pre('Stellar dendrite', { rho:0.42, beta:1.3, kappa:0.004, mu:0.02, R:72 }, Pal.glacier),
       fern: pre('Fern', { rho:0.32, beta:1.1, kappa:0.003, mu:0.02, R:80 }, Pal.xray),
       plate: pre('Plate', { rho:0.58, beta:2.6, kappa:0.05, alpha:0.12, R:64 }, Pal.graphite),
       sectored: pre('Sectored plate', { rho:0.48, beta:1.9, alpha:0.1, kappa:0.01, R:70 }, Pal.harbor),
@@ -20748,6 +20794,241 @@ void main(){
             body += '<rect x="' + r(ox + d[0] * cell + g) + '" y="' + r(oy + d[1] * cell + g) + '" width="' + r((d[3] ? 2 : 1) * cell - 2 * g) + '" height="' + r((d[3] ? 1 : 2) * cell - 2 * g) + '" fill="' + colorOf(s, d, k) + '"' + stroke + '/>';
           }
           if (s.circle) body += '<circle cx="' + r(w / 2) + '" cy="' + r(h / 2) + '" r="' + r(side / 2) + '" fill="none" stroke="' + U.inkFor(s.bg) + '" stroke-opacity="0.8" stroke-width="' + r(Math.max(1, cell * 0.35)) + '"/>';
+          return U.svgDoc(w, h, s.bg, body);
+        },
+      };
+    },
+  });
+})();
+</script>
+<script>
+/* modules/sle.js */
+/* GENChase: Schramm-Loewner evolution, the random curve driven by Brownian motion through the Loewner equation. */
+(function () {
+  'use strict';
+  const U = Studio.util;
+  const GEOM = 'geom', PAINT = 'paint';
+  const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2), pct = v => Math.round(v * 100) + '%';
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
+    Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const Pal = Studio.PALETTES;
+  const pre = (label, p, pal) => ({ label, p, palette: pal });
+
+  // Principal square root of a complex number, then the root in the closed upper half plane.
+  function sqrtH(re, im) {
+    const r = Math.hypot(re, im);
+    let a = Math.sqrt(Math.max(0, (r + re) / 2)), b = Math.sqrt(Math.max(0, (r - re) / 2));
+    if (im < 0) b = -b;
+    if (b < 0) { a = -a; b = -b; }
+    return [a, b];
+  }
+
+  // Chordal SLE in the upper half plane with a piecewise-constant driving function U_k on steps of length dt.
+  // The elementary inverse map is f_k(w) = U_k + sqrt((w - U_k)^2 - 4 dt), and the tip after n steps is
+  // f_1(f_2(... f_{n-1}(U_n + 2i sqrt(dt)))). O(N^2) in total, chunked so the page stays responsive.
+  function makeTrace(drive, dt) {
+    const N = drive.length, xs = new Float64Array(N), ys = new Float64Array(N);
+    const h = 2 * Math.sqrt(dt), four = 4 * dt;
+    let n = 0;
+    return {
+      N, xs, ys,
+      done() { return n >= N; },
+      progress() { return n / N; },
+      step(ms) {
+        const t0 = performance.now();
+        while (n < N && performance.now() - t0 < ms) {
+          let re = drive[n], im = h;
+          for (let k = n - 1; k >= 0; k--) {
+            const u = drive[k], dr = re - u;
+            const q = sqrtH(dr * dr - im * im - four, 2 * dr * im);
+            re = u + q[0]; im = q[1];
+          }
+          xs[n] = re; ys[n] = im; n++;
+        }
+      },
+    };
+  }
+
+  function brownian(rng, N, dt, kappa) {
+    const d = new Float64Array(N), s = Math.sqrt(kappa * dt);
+    let u = 0;
+    for (let i = 0; i < N; i++) { u += s * rng.gauss(); d[i] = u; }
+    return d;
+  }
+
+  const KAPPAS = { lerw: 2, saw: 8 / 3, gff: 4, perc: 6, ust: 8 };
+  const SWEEP = [1, 2, 8 / 3, 4, 6, 8];
+
+  /* ---------- Schramm-Loewner Evolution ---------- */
+  Studio.register({
+    id: 'sle',
+    name: 'Schramm-Loewner Evolution',
+    tab: 'SLE',
+    subtitle: 'the random curve of critical two-dimensional systems · 2000',
+    order: 38,
+    equation: '∂g_t/∂t = 2 / (g_t(z) − √κ B_t),   γ(t) = g_t⁻¹(√κ B_t);   κ = 2 loop-erased walk, 8/3 self-avoiding walk, 4 level lines, 6 percolation, 8 Peano curve',
+    credit: "Oded Schramm, Israel Journal of Mathematics 118, 221 (2000), 'Scaling limits of loop-erased random walks and uniform spanning trees'. Charles Loewner's 1923 equation grows a curve into the upper half plane from a real driving function; Schramm showed that the only conformally invariant random curves with the domain Markov property come from driving it with Brownian motion of variance κ, and identified κ with the critical models whose interfaces they describe. Gregory Lawler, Schramm and Wendelin Werner computed the exponents; Stanislav Smirnov proved the percolation case. The curve is computed here as a composition of vertical slit maps, after Tom Kennedy, Journal of Statistical Physics 137, 839 (2009).",
+    blurb: 'One family of random curves stands behind the interfaces of every critical two-dimensional model with conformal symmetry: the boundary of a percolation cluster, the loop-erased random walk, the level line of a Gaussian free field. Loewner\'s equation turns a real-valued function of time into a curve growing into the half plane; Schramm put Brownian motion in as the driver. A single number κ selects the model. Below 4 the curve is simple. Between 4 and 8 it touches itself and its own past. At 8 and beyond it fills the plane. The sweep preset drives every κ with the same Brownian path, so you can watch one noise open into six curves.',
+    schema: [
+      RANGE('Curve', 'kappa', 'κ', GEOM, 0.2, 12, 0.1, f1, { hint: '2: loop-erased random walk. 8/3: self-avoiding walk. 4: level line of the Gaussian free field. 6: percolation hull. 8: uniform spanning tree Peano curve.' }),
+      RANGE('Curve', 'N', 'Steps', GEOM, 300, 8000, 100, String, { hint: 'Resolution of the driving function. Cost grows as N², so 8000 takes a few seconds.' }),
+      { group: 'Curve', key: 'mode', label: 'Plate', type: 'seg', kind: GEOM, wrap: true,
+        options: [['single', 'One curve'], ['sweep', 'κ sweep, same noise'], ['seeds', 'Several seeds']] },
+      RANGE('Curve', 'curves', 'Curves', GEOM, 2, 12, 1, String, { dimUnless: s => s.mode === 'seeds' }),
+      { group: 'Ink', key: 'color', label: 'Color by', type: 'seg', kind: PAINT, wrap: true,
+        options: [['curve', 'Curve'], ['time', 'Time along curve'], ['ink', 'Single ink']] },
+      RANGE('Ink', 'width', 'Line weight', PAINT, 0.3, 6, 0.1, f1),
+      RANGE('Ink', 'alpha', 'Opacity', PAINT, 0.1, 1, 0.05, pct),
+      { group: 'Ink', key: 'axis', label: 'Draw the real axis', type: 'toggle', kind: PAINT },
+      RANGE('Ink', 'margin', 'Margin', PAINT, 0, 0.25, 0.01, f2),
+      { group: 'Finish', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
+    ],
+    defaults: {
+      kappa: 6, N: 3000, mode: 'single', curves: 6, color: 'time', width: 1.4, alpha: 1, axis: true, margin: 0.08, aspect: '5:4',
+      seed: 'schramm-2000',
+    },
+    presets: {
+      perc: pre('Percolation, κ = 6', { kappa: 6, N: 4000, mode: 'single', color: 'time', width: 1.4, aspect: '5:4' }, Pal.thermal),
+      saw: pre('Self-avoiding walk, κ = 8/3', { kappa: 8 / 3, N: 5000, mode: 'single', color: 'time', width: 1.6, aspect: '4:5' }, Pal.glacier),
+      lerw: pre('Loop-erased walk, κ = 2', { kappa: 2, N: 5000, mode: 'single', color: 'ink', width: 2, aspect: '4:5' }, Pal.graphite),
+      gff: pre('Level line, κ = 4', { kappa: 4, N: 4000, mode: 'single', color: 'time', width: 1.4, aspect: '5:4' }, Pal.verdigris),
+      peano: pre('Space filling, κ = 8', { kappa: 8, N: 6000, mode: 'single', color: 'time', width: 1, aspect: '1:1' }, Pal.ember),
+      sweep: pre('One noise, six κ', { mode: 'sweep', N: 3000, color: 'curve', width: 1.2, alpha: 0.9, aspect: '5:4' }, Pal.kiln),
+      bundle: pre('Twelve seeds, κ = 6', { kappa: 6, mode: 'seeds', curves: 12, N: 2000, color: 'curve', width: 1, alpha: 0.75, aspect: '3:2' }, Pal.harbor),
+    },
+    hints: {
+      Curve: 'κ is the whole story. The seed fixes the Brownian driving function, so the same seed at two κ values gives two curves opened from the same noise.',
+      Ink: 'Time along curve runs the palette from the start of the curve to its tip. Curve gives each curve of a sweep or bundle its own color.',
+    },
+    palette: true, defaultPalette: 'thermal', paletteLabel: 'Colors (start → tip, or per curve)',
+    headline: 'kappa', headlineLabel: 'κ',
+    sanitize(s) { s.N = U.clamp(Math.round(Number(s.N) / 100) * 100, 300, 8000); s.kappa = U.clamp(Number(s.kappa) || 6, 0.2, 12); },
+    surprise(rng) {
+      const mode = rng.pick(['single', 'single', 'single', 'sweep', 'seeds']);
+      return {
+        kappa: rng.pick([2, 8 / 3, 3, 4, 5, 6, 6, 7, 8]), N: rng.pick([2000, 3000, 4000, 5000]), mode, curves: rng.int(4, 12),
+        color: rng.pick(['time', 'time', 'curve', 'ink']), width: rng.range(0.8, 2.2), alpha: mode === 'single' ? 1 : rng.range(0.6, 0.95),
+        axis: rng() < 0.6, margin: 0.08, aspect: rng.pick(['1:1', '4:5', '5:4', '3:2']),
+      };
+    },
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d');
+      const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+      let traces = [], timer = 0, building = false;
+
+      function plan(s) {
+        const dt = 1 / s.N;
+        if (s.mode === 'sweep') {
+          const base = brownian(U.makeRng(s.seed + '/sle'), s.N, dt, 1);
+          return SWEEP.map(k => ({ kappa: k, drive: base.map(v => v * Math.sqrt(k)) }));
+        }
+        if (s.mode === 'seeds') {
+          return Array.from({ length: s.curves }, (_, i) => ({ kappa: s.kappa, drive: brownian(U.makeRng(s.seed + '/sle/' + i), s.N, dt, s.kappa) }));
+        }
+        return [{ kappa: s.kappa, drive: brownian(U.makeRng(s.seed + '/sle'), s.N, dt, s.kappa) }];
+      }
+      function build(s, onProgress, done) {
+        clearTimeout(timer); building = true;
+        const dt = 1 / s.N;
+        traces = plan(s).map(p => Object.assign(makeTrace(p.drive, dt), { kappa: p.kappa }));
+        let i = 0;
+        (function chunk() {
+          const t0 = performance.now();
+          while (i < traces.length && performance.now() - t0 < 40) { traces[i].step(40); if (traces[i].done()) i++; }
+          onProgress();
+          if (i < traces.length) timer = setTimeout(chunk, 0); else { building = false; done(); }
+        })();
+      }
+      function bounds() {
+        let x0 = Infinity, x1 = -Infinity, y1 = 0;
+        for (const t of traces) { const n = t.done() ? t.N : Math.max(1, Math.round(t.progress() * t.N)); for (let i = 0; i < n; i++) { if (t.xs[i] < x0) x0 = t.xs[i]; if (t.xs[i] > x1) x1 = t.xs[i]; if (t.ys[i] > y1) y1 = t.ys[i]; } }
+        if (!isFinite(x0)) { x0 = -1; x1 = 1; y1 = 1; }
+        return [x0, x1, Math.max(y1, 1e-6)];
+      }
+      function paint(c2, W, H, forSvg) {
+        const s = host.getState();
+        c2.fillStyle = s.bg; c2.fillRect(0, 0, W, H);
+        if (!traces.length) return;
+        const [x0, x1, y1] = bounds();
+        const m = s.margin, availW = W * (1 - 2 * m), availH = H * (1 - 2 * m);
+        const scale = Math.min(availW / Math.max(x1 - x0, 1e-6), availH / y1);
+        const cx = (x0 + x1) / 2, ox = W / 2 - cx * scale, oy = H * (1 - m);
+        const lw = s.width * Math.min(W, H) / 700;
+        if (s.axis) { c2.strokeStyle = U.inkRgba(s.bg, 0.35); c2.lineWidth = Math.max(0.6, lw * 0.6); c2.beginPath(); c2.moveTo(0, oy); c2.lineTo(W, oy); c2.stroke(); }
+        c2.lineWidth = lw; c2.lineCap = 'round'; c2.lineJoin = 'round'; c2.globalAlpha = s.alpha;
+        const P = s.palette, ramp = U.makeRamp(P, null);
+        traces.forEach((t, ti) => {
+          const n = t.done() ? t.N : Math.round(t.progress() * t.N);
+          if (n < 2) return;
+          const X = i => ox + t.xs[i] * scale, Y = i => oy - t.ys[i] * scale;
+          if (s.color === 'time') {
+            const segs = 48, per = Math.ceil(n / segs);
+            for (let a = 0; a < n - 1; a += per) {
+              const b = Math.min(n - 1, a + per);
+              const col = ramp(a / n); c2.strokeStyle = U.rgbToHex(col[0], col[1], col[2]);
+              c2.beginPath();
+              if (a > 0) c2.moveTo(X(a), Y(a)); else { c2.moveTo(ox, oy); c2.lineTo(X(0), Y(0)); }   // the curve starts at the origin
+              for (let i = a + 1; i <= b; i++) c2.lineTo(X(i), Y(i));
+              c2.stroke();
+            }
+          } else {
+            c2.strokeStyle = s.color === 'ink' ? U.inkFor(s.bg) : P[ti % P.length];
+            c2.beginPath(); c2.moveTo(ox, oy);
+            for (let i = 0; i < n; i++) c2.lineTo(X(i), Y(i));
+            c2.stroke();
+          }
+        });
+        c2.globalAlpha = 1;
+      }
+      function render() { paint(ctx, canvas.width, canvas.height); }
+      function status(extra) {
+        const s = host.getState();
+        const phase = s.kappa <= 4 ? 'simple' : (s.kappa < 8 ? 'self-touching' : 'space filling');
+        const head = s.mode === 'sweep' ? '<span>κ <b>1 to 8</b> · one driving path</span>' : '<span>κ <b>' + f1(s.kappa) + '</b> · ' + phase + '</span>';
+        host.setStatus(head + '<span>' + traces.length + (traces.length === 1 ? ' curve' : ' curves') + ' · ' + s.N.toLocaleString() + ' steps</span>' + (extra ? '<span>' + extra + '</span>' : ''));
+      }
+
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        regenerate() {
+          const s = host.getState();
+          build(s, () => { render(); status('computing ' + Math.round(100 * traces.reduce((a, t) => a + t.progress(), 0) / traces.length) + '%'); }, () => { render(); status(); });
+        },
+        repaint() { if (!building) render(); },
+        resize() { render(); },
+        pause() {}, resume() { if (!building) render(); },
+        async exportPNG(w, h) {
+          if (!traces.length) throw new Error('nothing to export');
+          const c = document.createElement('canvas'); c.width = w; c.height = h;
+          paint(c.getContext('2d'), w, h);
+          return U.toBlob(c);
+        },
+        exportSVG(w, h) {
+          if (!traces.length) throw new Error('nothing to export');
+          const s = host.getState();
+          const [x0, x1, y1] = bounds();
+          const m = s.margin, scale = Math.min(w * (1 - 2 * m) / Math.max(x1 - x0, 1e-6), h * (1 - 2 * m) / y1);
+          const ox = w / 2 - (x0 + x1) / 2 * scale, oy = h * (1 - m), lw = s.width * Math.min(w, h) / 700;
+          const r = v => Math.round(v * 100) / 100, P = s.palette, ramp = U.makeRamp(P, null);
+          let body = '';
+          if (s.axis) body += '<line x1="0" y1="' + r(oy) + '" x2="' + w + '" y2="' + r(oy) + '" stroke="' + U.inkFor(s.bg) + '" stroke-opacity="0.35" stroke-width="' + r(Math.max(0.6, lw * 0.6)) + '"/>';
+          const attrs = ' fill="none" stroke-width="' + r(lw) + '" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="' + s.alpha + '"';
+          traces.forEach((t, ti) => {
+            const n = t.N, X = i => r(ox + t.xs[i] * scale), Y = i => r(oy - t.ys[i] * scale);
+            if (s.color === 'time') {
+              const segs = 48, per = Math.ceil(n / segs);
+              for (let a = 0; a < n - 1; a += per) {
+                const b = Math.min(n - 1, a + per), col = ramp(a / n);
+                let d = a > 0 ? 'M' + X(a) + ' ' + Y(a) : 'M' + r(ox) + ' ' + r(oy) + ' L' + X(0) + ' ' + Y(0);
+                for (let i = a + 1; i <= b; i++) d += ' L' + X(i) + ' ' + Y(i);
+                body += '<path d="' + d + '" stroke="' + U.rgbToHex(col[0], col[1], col[2]) + '"' + attrs + '/>';
+              }
+            } else {
+              let d = 'M' + r(ox) + ' ' + r(oy);
+              for (let i = 0; i < n; i++) d += ' L' + X(i) + ' ' + Y(i);
+              body += '<path d="' + d + '" stroke="' + (s.color === 'ink' ? U.inkFor(s.bg) : P[ti % P.length]) + '"' + attrs + '/>';
+            }
+          });
           return U.svgDoc(w, h, s.bg, body);
         },
       };

@@ -122,7 +122,15 @@ Recency rank, 10 newest to 100 oldest, by publication year of the system. Existi
 
 ## Status line
 
-`host.setStatus('<span>grid <b>256×256</b></span><span>T <b>2.27</b> · critical</span><span>step <b>1,204</b></span>')`. Keep it to three or four spans.
+`host.setStatus('<span>grid <b>256×256</b></span><span>T <b>2.27</b> · critical</span><span>step <b>1,204</b></span>')`. Keep it to three or four spans. The shell appends `dt` on its own when the state has a numeric `dt` and your status does not already mention it, and always appends the seed. Put a `step` (or `sweep`) count in the status of a living plate: the harness reads it to know when the warm-up is done and whether two loads are comparable.
+
+## Pause
+
+A tab with a `running` toggle is paused through it (P key, tab switch). A tab without one is paused by the shell calling `pause()` and later `resume()`, so both must be real: `pause()` stops every loop and timer, `resume()` restarts only what was running. A still plate's `pause()` and `resume()` can be no-ops.
+
+## Palettes for several species
+
+`Studio.PALETTES.triad` has three equally weighted colors for plates that color by species or by one of three states.
 
 ## Copy
 
