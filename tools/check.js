@@ -90,10 +90,12 @@ async function settle(p, maxMs) {
   const stepOf = m => { const s = ((m.status || '').match(/(?:step|sweep)\s+([\d,]+)/) || [])[1]; return s ? Number(s.replace(/,/g, '')) : null; };
   const pausable = await a2.evaluate(() => { try { return Object.prototype.hasOwnProperty.call(JSON.parse(localStorage.getItem('genchase.v1.' + location.hash.slice(1).split('/')[0]) || '{}'), 'running'); } catch (e) { return false; } });
   const s1 = stepOf(m1), s2 = stepOf(m2);
-  const comparable = m1.fp === m2.fp || pausable || s1 === null || s2 === null || s1 === s2;
+  // Two captures at different step counts (a chunked computation still running, or a living plate with no pause key)
+  // say nothing about determinism; two captures at the same step count must match exactly.
+  const comparable = m1.fp === m2.fp || s1 === null || s2 === null || s1 === s2;
   console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: m1.fp === m2.fp, steps: [s1, s2], pausable }));
   if (m1.fp !== m2.fp && comparable) fails.push('same hash loaded twice gave different plates');
-  else if (m1.fp !== m2.fp) console.log('determinism not comparable: living plate without a pause key, captured at steps ' + s1 + ' and ' + s2);
+  else if (m1.fp !== m2.fp) console.log('determinism not comparable: captured at steps ' + s1 + ' and ' + s2 + (pausable ? ' (still computing its warm-up)' : ' (living plate without a pause key)'));
 
   // 4. switch to another tab and back: exactly one visible canvas
   const other = await a2.evaluate(me => { const t = [...document.querySelectorAll('button.tab[data-id]')].find(x => x.dataset.id !== me); return t ? t.dataset.id : null; }, id);
