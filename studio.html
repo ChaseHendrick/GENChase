@@ -20069,6 +20069,112 @@ void main(){
       seed: seedTuring,
     }),
   });
+
+  /* ---------- Cyclic Competition ---------- */
+  function cycDtMax(s) {
+    const c = Number(s.scale) || 1, lap9 = Number(s.lap) === 9;
+    return Math.min(dtDiff(Math.max(0.05, s.D), c, lap9), 0.2);
+  }
+  function seedCyclic(s, W, H) {
+    const rng = U.makeRng(s.seed + '/cyclic');
+    const p0 = 1 / (1 + s.a + s.b), amp = s.amp;
+    const data = new Float32Array(W * H * 4);
+    const k = Math.max(1, Math.round(s.fronts));
+    const sites = [];
+    for (let i = 0; i < (s.init === 'patches' ? k * 6 : k); i++) sites.push({ x: rng() * W, y: rng() * H, sp: i % 3, rot: rng() * TAU, dir: rng() < 0.5 ? 1 : -1 });
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 4;
+      let u = p0, v = p0, w = p0;
+      if (s.init === 'sectors' || s.init === 'patches') {
+        let best = 0, bd = 1e12;
+        for (let j = 0; j < sites.length; j++) {
+          const dx = wrapD(x - sites[j].x, W), dy = wrapD(y - sites[j].y, H), d = dx * dx + dy * dy;
+          if (d < bd) { bd = d; best = j; }
+        }
+        let sp = sites[best].sp;
+        if (s.init === 'sectors') {
+          const dx = wrapD(x - sites[best].x, W), dy = wrapD(y - sites[best].y, H);
+          const ang = Math.atan2(dy, dx) * sites[best].dir + sites[best].rot;
+          sp = ((Math.floor(ang / TAU * 3) % 3) + 3) % 3;
+        }
+        u = sp === 0 ? 0.8 : 0.05; v = sp === 1 ? 0.8 : 0.05; w = sp === 2 ? 0.8 : 0.05;
+      }
+      data[i] = Math.max(0, u * (1 + amp * (rng() * 2 - 1)));
+      data[i + 1] = Math.max(0, v * (1 + amp * (rng() * 2 - 1)));
+      data[i + 2] = Math.max(0, w * (1 + amp * (rng() * 2 - 1)));
+      data[i + 3] = 1;
+    }
+    return data;
+  }
+  Studio.register({
+    id: 'cyclic',
+    name: 'Cyclic Competition',
+    subtitle: 'rock, paper, scissors in space · 2007',
+    order: 31,
+    equation: '∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v)',
+    credit: 'Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a < 1 < b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.',
+    blurb: 'Three species each beat one neighbor and lose to the other: u outcompetes v, v outcompetes w, w outcompetes u, rock, paper, scissors. Without space the cycle spins ever wider until one species is left. With diffusion the same rule sends fronts across the plate, each species chasing the one it beats and fleeing the one that beats it, and the fronts wind into spirals whose arms carry all three colors in order. Reichenbach, Mobilia and Frey found that this is how mobile competitors keep their diversity: as long as the spiral wavelength fits inside the arena everyone survives. a and b are how hard each species is beaten and beats; the cycle needs a < 1 < b. D sets the wavelength. The dominance view paints each cell with the color of whichever species is winning there, so the spirals read as three-armed pinwheels.',
+    schema: GRID.concat([scaleField(0.5, 4, '2')]).concat([
+      RANGE('Competition', 'a', 'a (weak interaction)', LIVE, 0.2, 0.99, 0.01, f2, {
+        hint: 'How much a species is held back by the one it beats. The cycle needs a < 1 < b; the closer a + b is to 2 the gentler the oscillation.' }),
+      RANGE('Competition', 'b', 'b (strong interaction)', LIVE, 1.01, 3, 0.01, f2),
+      RANGE('Competition', 'D', 'Mobility D', LIVE, 0.02, 2, 0.01, f2, {
+        hint: 'Diffusion of all three species. The spiral wavelength grows with the square root of D. Reichenbach et al.: diversity is lost once the spirals outgrow the arena.' }),
+      { group: 'Seeding', key: 'init', label: 'Seeding', type: 'seg', kind: GEOM,
+        options: [['sectors', 'Spiral cores'], ['patches', 'Patches'], ['noise', 'Noise']] },
+      RANGE('Seeding', 'fronts', 'Cores', GEOM, 1, 12, 1, String),
+      RANGE('Seeding', 'amp', 'Seed noise', GEOM, 0, 0.6, 0.01, f2),
+    ]).concat(simFields(0.002, 0.2, 0.001, 6000)).concat(pictureFields([
+      ['dom', 'Dominance'], ['u', 'Species u'], ['v', 'Species v'], ['w', 'Species w'], ['diff', 'u − v'], ['grad', 'Fronts'], ['shade', 'Relief'],
+    ])),
+    defaults: Object.assign({
+      grid: 192, aspect: '1:1', lap: 5, scale: 2,
+      a: 0.6, b: 1.6, D: 0.1,
+      init: 'sectors', fronts: 4, amp: 0.05,
+      running: true, steps: 6, dt: 0.1, warmup: 1500, noise: 0,
+      view: 'dom', seed: 'rps-2007',
+    }, PICTURE_DEFAULTS),
+    presets: {
+      pinwheels: pre('Pinwheels', { a: 0.6, b: 1.6, D: 0.1, init: 'sectors', fronts: 4, view: 'dom', warmup: 1500, scale: 2, dt: 0.1 }, Pal.kiln),
+      many: pre('Many cores', { a: 0.6, b: 1.6, D: 0.08, init: 'sectors', fronts: 10, view: 'dom', warmup: 1200, scale: 2, dt: 0.1 }, Pal.risograph),
+      patches: pre('Patch war', { a: 0.5, b: 1.8, D: 0.1, init: 'patches', fronts: 4, view: 'dom', warmup: 1200, scale: 2, dt: 0.1 }, Pal.tram),
+      noise: pre('From noise', { a: 0.7, b: 1.5, D: 0.1, init: 'noise', amp: 0.5, fronts: 3, view: 'dom', warmup: 2500, scale: 2, dt: 0.1 }, Pal.meadow),
+      single: pre('One species', { a: 0.6, b: 1.6, D: 0.1, init: 'sectors', fronts: 4, view: 'u', warmup: 1500, scale: 2, dt: 0.1 }, Pal.glacier),
+      relief: pre('Front relief', { a: 0.6, b: 1.6, D: 0.2, init: 'sectors', fronts: 4, view: 'shade', bump: 5, warmup: 1500, scale: 2, dt: 0.1 }, Pal.graphite),
+    },
+    closedGroups: ['Seeding'],
+    hints: {
+      Competition: 'a < 1 < b is the whole game: each species suppresses one rival strongly and the other weakly. D is the mobility, the wavelength of the spirals.',
+      Seeding: 'Spiral cores seeds three sectors around each core, one species each, so every core spins from the first step. Patches is a random map of territories. Noise starts near coexistence and waits for the instability.',
+      Picture: 'Dominance colors each cell by its winning species, three palette colors. The single-species views show one population as a density.',
+    },
+    palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (three species)',
+    headline: 'D', headlineLabel: 'mobility D',
+    sanitize(s) {
+      gridClamp(s);
+      if (s.a >= 1) s.a = 0.99;
+      if (s.b <= 1) s.b = 1.01;
+      s.dt = U.clamp(Math.min(Number(s.dt) || 0.1, cycDtMax(s)), 0.001, 0.2);
+    },
+    surprise(rng) {
+      const init = rng.pick(['sectors', 'sectors', 'patches', 'noise']);
+      return Object.assign({
+        grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5', '5:4']), lap: rng.pick([5, 9]),
+        scale: rng.range(1.5, 2.5), a: rng.range(0.45, 0.8), b: rng.range(1.4, 2), D: rng.range(0.05, 0.25),
+        init, fronts: init === 'sectors' ? rng.int(1, 8) : rng.int(2, 6), amp: init === 'noise' ? rng.range(0.3, 0.6) : rng.range(0, 0.1),
+        running: true, steps: rng.int(4, 8), dt: 0.1, warmup: init === 'noise' ? rng.int(2000, 3000) : rng.int(1000, 1800), noise: 0,
+      }, surprisePicture(rng, ['dom', 'dom', 'dom', 'u', 'shade']));
+    },
+    create: rdxCreate({
+      id: 'cyclic', stepFS: STEP_CYC, n: 3, prim: 0, sec: 1,
+      views: { dom: 7, u: 0, v: 1, w: 2, diff: 4, grad: 5, shade: 6 },
+      pokeAdd: [0.9, 0, 0, 0], pokeRad: 0.05, pokeMode: 1,
+      dtMax: cycDtMax,
+      stepUniforms: s => ({ u_a: s.a, u_b: s.b, u_D: s.D }),
+      status: (s, m) => '<span>a <b>' + s.a.toFixed(2) + '</b> · b <b>' + s.b.toFixed(2) + '</b>' + (s.a + s.b > 2 ? ' · heteroclinic' : ' · stable coexistence') + '</span><span>dt <b>' + m.dt.toFixed(3) + '</b></span>',
+      seed: seedCyclic,
+    }),
+  });
 })();
 </script>
 <script>Studio.boot();</script>
