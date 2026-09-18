@@ -20264,6 +20264,110 @@ void main(){
       seed: seedChemotaxis,
     }),
   });
+
+  /* ---------- Vegetation Bands ---------- */
+  function vegDtMax(s) {
+    const c = Number(s.scale) || 1, lap9 = Number(s.lap) === 9;
+    const diff = dtDiff(Math.max(s.Dw, s.Dn, 0.05), c, lap9);
+    const adv = s.slope > 0 ? 0.8 / (s.slope * c) : 1;
+    return Math.min(diff, adv, 0.5 / Math.max(s.m, 0.05), 0.25);
+  }
+  function seedVegetation(s, W, H) {
+    const rng = U.makeRng(s.seed + '/vegetation');
+    const data = blank(W, H, s.a, 0);
+    const amp = s.amp;
+    if (s.init === 'patches') {
+      const k = rng.int(30, 70);
+      for (let f = 0; f < k; f++) paintDisk(data, W, H, rng() * W, rng() * H, rng.range(1.5, 4) * Math.max(1, s.scale), 1, 1.4);
+    }
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 4;
+      let n = data[i + 1];
+      if (s.init === 'noise') n = 0.9 * (1 + amp * (rng() * 2 - 1));
+      else if (s.init === 'stripes') n = Math.sin((x / W) * TAU * 7 + 0.4 * Math.sin((y / H) * TAU * 2)) > 0.2 ? 1.2 : 0.02;
+      n *= 1 + amp * 0.5 * (rng() * 2 - 1);
+      data[i + 1] = Math.max(0, n);
+      data[i] = s.a / (1 + n * n);
+    }
+    return data;
+  }
+  Studio.register({
+    id: 'vegetation',
+    name: 'Vegetation Bands',
+    subtitle: 'tiger bush on a dry hillside · 1999',
+    order: 46,
+    equation: '∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n',
+    credit: 'Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n², because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.',
+    blurb: 'On a dry hillside plants cannot cover the ground, so they line up. Rain runs downhill over bare crusted soil until it meets a band of bushes, which drink it; the downhill edge of the band starves and the uphill edge, which gets the runoff first, grows. The whole band walks uphill a few centimeters a year. Klausmeier put that into two equations, and in them the bands appear by themselves when rainfall a drops below a threshold that depends on the plant mortality m. Water flows toward the left of the plate. Rainfall increases from the bottom edge to the top, so one plate shows the whole transition: bare soil where it is driest, bands in the middle, and closed vegetation where it is wet enough. The plants view is the print; the water view shows the runoff that pools against each band.',
+    schema: GRID.concat([scaleField(0.3, 3, '1')]).concat([
+      RANGE('Hillside', 'a', 'Rainfall a', LIVE, 0.1, 3, 0.02, f2, {
+        hint: 'Mean rainfall. Uniform vegetation needs a > 2m; below that only bands survive; far below, nothing does. Klausmeier: 0.94 to 2.81 for grass.' }),
+      RANGE('Hillside', 'agrad', 'Rainfall gradient', LIVE, 0, 1, 0.02, f2, {
+        hint: 'a varies linearly from a(1 − g) at the bottom edge to a(1 + g) at the top, so the plate spans bare, banded and uniform.' }),
+      RANGE('Hillside', 'm', 'Plant mortality m', LIVE, 0.05, 1.2, 0.01, f2, {
+        hint: 'Klausmeier: 0.45 for grass, 0.045 for trees. Higher m needs more rain; the tree value is slow, its bands take hundreds of time units to form.' }),
+      RANGE('Hillside', 'slope', 'Slope (water speed v)', LIVE, 0, 120, 1, String, {
+        hint: 'Downhill water speed. Klausmeier used 182.5 in these units. Zero is flat ground, where water diffusion has to do the work and the pattern becomes spots or a labyrinth.' }),
+      RANGE('Hillside', 'Dw', 'Water diffusion', LIVE, 0, 40, 0.5, f1),
+      RANGE('Hillside', 'Dn', 'Plant diffusion', LIVE, 0.2, 3, 0.05, f2),
+      { group: 'Seeding', key: 'init', label: 'Seeding', type: 'seg', kind: GEOM,
+        options: [['noise', 'Noisy cover'], ['patches', 'Patches'], ['stripes', 'Stripes']] },
+      RANGE('Seeding', 'amp', 'Seed noise', GEOM, 0, 0.8, 0.01, f2),
+    ]).concat(simFields(0.001, 0.25, 0.001, 6000)).concat(pictureFields([
+      ['v', 'Plants n'], ['u', 'Water w'], ['diff', 'w − n'], ['grad', 'Band edges'], ['shade', 'Relief'],
+    ])),
+    defaults: Object.assign({
+      grid: 192, aspect: '1:1', lap: 5, scale: 1,
+      a: 1.1, agrad: 0.6, m: 0.45, slope: 40, Dw: 1, Dn: 1,
+      init: 'noise', amp: 0.5,
+      running: true, steps: 8, dt: 0.02, warmup: 1800, noise: 0,
+      view: 'v', seed: 'klausmeier-1999',
+    }, PICTURE_DEFAULTS),
+    presets: {
+      tiger: pre('Tiger bush', { a: 1.1, agrad: 0.6, m: 0.45, slope: 40, Dw: 1, Dn: 1, scale: 1, lap: 5, init: 'noise', amp: 0.5, view: 'v', warmup: 1800, dt: 0.02 }, Pal.meadow),
+      sparse: pre('Sparse bands: a = 0.75', { a: 0.75, agrad: 0, m: 0.45, slope: 40, Dw: 1, Dn: 1, scale: 1, lap: 5, init: 'stripes', amp: 0.3, view: 'v', warmup: 1800, dt: 0.02 }, Pal.kiln),
+      steep: pre('Steep slope', { a: 1.1, agrad: 0.6, m: 0.45, slope: 100, Dw: 1, Dn: 1, scale: 0.8, lap: 5, init: 'noise', amp: 0.5, view: 'v', warmup: 1500, dt: 0.01 }, Pal.verdigris),
+      gentle: pre('Gentle slope', { a: 0.9, agrad: 0.3, m: 0.45, slope: 12, Dw: 2, Dn: 1, scale: 1, lap: 5, init: 'noise', amp: 0.5, view: 'v', warmup: 1500, dt: 0.05 }, Pal.petri),
+      flat: pre('Flat ground', { a: 0.95, agrad: 0.25, m: 0.45, slope: 0, Dw: 40, Dn: 1, scale: 0.5, lap: 9, init: 'noise', amp: 0.5, view: 'v', warmup: 2500, dt: 0.03 }, Pal.graphite),
+      water: pre('Runoff', { a: 1.1, agrad: 0.6, m: 0.45, slope: 40, Dw: 1, Dn: 1, scale: 1, lap: 5, init: 'noise', amp: 0.5, view: 'u', warmup: 1800, dt: 0.02 }, Pal.glacier),
+      relief: pre('Relief', { a: 1.1, agrad: 0.6, m: 0.45, slope: 40, Dw: 1, Dn: 1, scale: 1, lap: 5, init: 'noise', amp: 0.5, view: 'shade', bump: 6, lightAng: 20, warmup: 1800, dt: 0.02 }, Pal.xray),
+    },
+    closedGroups: ['Seeding'],
+    hints: {
+      Hillside: 'a against 2m decides whether closed cover can exist. v is the slope and sets the band spacing along with plant diffusion. The gradient turns the plate into a rainfall map.',
+      Seeding: 'Noisy cover is full vegetation with noise, the way a wet decade would leave a hillside before a drought. Patches is scattered bushes on bare soil. Stripes starts the bands in place, which is how sparse bands survive rainfall too low for cover to take hold on its own.',
+      Picture: 'Plants n is the aerial photograph. Water w is the runoff, brightest just downhill of each band. Band edges is |∇n|.',
+    },
+    palette: true, defaultPalette: 'meadow', paletteLabel: 'Colors (bare → dense)',
+    headline: 'a', headlineLabel: 'rainfall a',
+    sanitize(s) {
+      gridClamp(s);
+      s.dt = U.clamp(Math.min(Number(s.dt) || 0.02, vegDtMax(s)), 0.0005, 0.25);
+    },
+    surprise(rng) {
+      const slope = rng.pick([12, 25, 40, 40, 60, 100]);
+      return Object.assign({
+        grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5', '3:2', '16:9']), lap: 5,
+        scale: slope >= 60 ? 0.8 : rng.range(0.8, 1.2), a: slope <= 12 ? rng.range(0.85, 1) : rng.range(0.8, 1.4), agrad: rng.pick([0, 0.3, 0.6, 0.8]),
+        m: rng.range(0.38, 0.5), slope, Dw: rng.pick([0.5, 1, 2]), Dn: 1,
+        init: rng.pick(['noise', 'noise', 'patches', 'stripes']), amp: rng.range(0.3, 0.6),
+        running: true, steps: 8, dt: 0.05, warmup: rng.int(1500, 2500), noise: 0,
+      }, surprisePicture(rng, ['v', 'v', 'v', 'u', 'shade']));
+    },
+    create: rdxCreate({
+      id: 'vegetation', stepFS: STEP_VEG, n: 2, prim: 1, sec: 0,
+      views: { v: 1, u: 0, diff: 4, grad: 5, shade: 6 },
+      pokeAdd: [0, 1, 0, 0], pokeRad: 0.05, pokeMode: 1,
+      dtMax: vegDtMax,
+      stepUniforms: s => ({ u_a: s.a, u_agrad: s.agrad, u_m: s.m, u_v: s.slope, u_Dw: s.Dw, u_Dn: s.Dn }),
+      status: (s, m) => {
+        const lo = s.a * (1 - s.agrad), hi = s.a * (1 + s.agrad);
+        const regime = hi < 2 * s.m ? 'bands only' : lo > 2 * s.m ? 'closed cover possible' : 'bare → bands → cover';
+        return '<span>a <b>' + lo.toFixed(2) + '–' + hi.toFixed(2) + '</b> · 2m = ' + (2 * s.m).toFixed(2) + ' · ' + regime + '</span><span>dt <b>' + m.dt.toFixed(3) + '</b></span>';
+      },
+      seed: seedVegetation,
+    }),
+  });
 })();
 </script>
 <script>Studio.boot();</script>
