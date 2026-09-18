@@ -25,6 +25,24 @@ async function measure(p) {
 }
 const flat = m => !m.lum || (m.lum.p99 - m.lum.p01) < 12;
 
+// Wait up to maxMs, but stop early once the plate is non-flat and has settled: a still plate whose fingerprint
+// stopped changing, or a living plate whose step count has passed its warm-up. Cuts a full run roughly in half.
+async function settle(p, maxMs) {
+  const t0 = Date.now(); let last = '', same = 0;
+  while (Date.now() - t0 < Math.max(2500, maxMs)) {
+    await p.waitForTimeout(700);
+    if (Date.now() - t0 < 2500) continue;
+    const m = await measure(p);
+    if (m.err || flat(m)) { last = m.fp || ''; same = 0; continue; }
+    same = m.fp === last ? same + 1 : 0; last = m.fp;
+    if (same >= 2) return;                                   // still, or paused
+    const st = m.status || '';
+    const step = (st.match(/(?:step|sweep)\s+([\d,]+)/) || [])[1];
+    const warm = await p.evaluate(() => { try { const id = location.hash.slice(1).split('/')[0]; const s = JSON.parse(localStorage.getItem('genchase.v1.' + id) || '{}'); return Number(s.warmup) || 0; } catch (e) { return 0; } });
+    if (step && warm && Number(step.replace(/,/g, '')) >= warm) return;   // living plate past its warm-up
+  }
+}
+
 (async () => {
   const id = process.argv[2], wait = +(process.argv[3] || 8000);
   if (!id) { console.error('usage: node tools/check.js <id> [waitMs]'); process.exit(1); }
@@ -44,7 +62,7 @@ const flat = m => !m.lum || (m.lum.p99 - m.lum.p01) < 12;
   // 1. default plate with a fixed seed
   const seed = 'check-' + id;
   const p = await open(id + '/' + seed);
-  await p.waitForTimeout(wait);
+  await settle(p, wait);
   const def = await measure(p);
   console.log('default', JSON.stringify(def));
   if (def.err) fails.push('default: ' + def.err);
@@ -54,7 +72,7 @@ const flat = m => !m.lum || (m.lum.p99 - m.lum.p01) < 12;
   const presets = await p.evaluate(() => [...document.querySelectorAll('#preset option')].map(o => o.value).filter(Boolean));
   for (const key of presets) {
     await p.evaluate(k => { const s = document.querySelector('#preset'); s.value = k; s.dispatchEvent(new Event('change', { bubbles: true })); }, key);
-    await p.waitForTimeout(wait);
+    await settle(p, wait);
     const m = await measure(p);
     console.log('preset ' + key, JSON.stringify(m));
     if (m.err) fails.push('preset ' + key + ': ' + m.err);
@@ -64,8 +82,8 @@ const flat = m => !m.lum || (m.lum.p99 - m.lum.p01) < 12;
 
   // 3. same hash twice must give the same plate (running:false so living fields stop after warm-up)
   const still = id + '/' + seed + '/' + b64url({ running: false });
-  const a1 = await open(still); await a1.waitForTimeout(wait); const m1 = await measure(a1); await a1.close();
-  const a2 = await open(still); await a2.waitForTimeout(wait); const m2 = await measure(a2);
+  const a1 = await open(still); await settle(a1, wait); const m1 = await measure(a1); await a1.close();
+  const a2 = await open(still); await settle(a2, wait); const m2 = await measure(a2);
   console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: m1.fp === m2.fp }));
   if (m1.fp !== m2.fp) fails.push('same hash loaded twice gave different plates');
 
