@@ -107,19 +107,30 @@ A generative art tool can get away with a plausible-looking integrator. A plate 
 
 ---
 
-## Rare in a browser
+## What is actually new here, and what is not
 
-None of the science is new, and the credits say whose it is. What is unusual is that these particular systems are running in a tab, seeded, and printable, on one control surface:
+Worth being precise about, because the credits matter.
 
-- **Cortical planforms.** A Wilson–Cowan neural field taken through the retinocortical map, which turns cortical stripes into Klüver's form constants: fan, tunnel, spiral, cobweb.
-- **Hyperbolic Turing.** Gray–Scott chemistry on a {p, q} tiling of the hyperbolic plane, where the area at distance r grows like e^r and a pattern with a preferred wavelength cannot simply repeat.
-- **Vortex Lattice.** Gross–Pitaevskii in the rotating frame, relaxed in imaginary time into an Abrikosov lattice, with the vortices located from the phase rather than from the picture.
-- **Random Matrices.** Level repulsion as one continuous slider from independence to a near-crystal, which the classical three ensembles cannot express.
-- **Drainage Networks.** A landscape evolution model of the kind that normally lives in Fortran and Python research codes.
-- **Rough Growth.** Three roughening universality classes side by side with the exponent fitted live.
-- **Foam & Grains, Flocking, Spanning Trees**, and the rest.
+**No new science.** Every equation, algorithm and result in this file is published, and each tab names the people whose work it implements. Gray–Scott is Gray and Scott. The donor stack is Braun and Willett. Wilson's algorithm is Wilson's. Nothing here is a research claim, and the blurbs are written to make that impossible to misread.
 
----
+**New as artifacts.** Every plate is an image that did not exist before it was computed, and the license says it is yours. That is the point of the object.
+
+**New as working software, as far as I can tell.** These are not new ideas, but I am not aware of another browser implementation you can open, seed and print:
+
+- **Hyperbolic Turing.** Gray–Scott on a {p, q} tiling of the hyperbolic plane, built by reflecting one polygon in its own sides, drawn as geodesic arcs in the Poincaré disk, exported as vectors, and self-checking: it counts the cells meeting at each interior vertex and reports the fraction that is exactly q.
+- **Random Matrices.** β-ensemble spectra with β swept continuously down one sheet, from independence to a near-crystal. The mathematics that makes it cheap is Dumitriu and Edelman, 2002; drawing the whole continuum as a single image is a presentation choice, not a result.
+- **Vortex Lattice.** Rotating Gross–Pitaevskii relaxed in imaginary time, with vortices located by walking the winding number around every plaquette and then filtered by whether the field also has a density minimum there, and exported as a vector point set with its bond-orientational order measured.
+- **Cortical Planforms.** A Wilson–Cowan field taken through the retinocortical map, interactive and seeded, with the patterning window computed in closed form so the tab can say when the drive is outside it.
+- **Drainage Networks.** A landscape evolution model of the kind that normally lives in research Fortran and Python, with the channel network exported as vectors.
+
+**New as engineering, and small but general.** Four ideas here would transfer to other projects:
+
+- **Plates that check themselves.** Each technique measures a quantity theory predicts, from the field on screen, and prints it next to the theoretical value. I have not seen a generative art tool do this, and it is the part of the project I would defend hardest: it converts "trust me, it is a simulation" into a number a reader can argue with.
+- **A renderer declaring when it is band-limited.** `fieldCells()` lets a technique tell the pipeline that its output is already limited by a simulation grid, so the pipeline stops spending memory adding resolution that cannot exist. That applies to any simulation-to-print path.
+- **A sharpness measure with two numbers rather than one.** Average detail alone cannot tell a blurred field from a picture that is mostly flat areas with hard edges, and calls a Penrose tiling blurry. Edge acutance and multi-scale acuity together can.
+- **Linting controls that lie.** A size control that offers an option its own validator clamps away is a button that moves while nothing happens. That is mechanically checkable, and now it is checked.
+
+**A caveat on all of the above.** This build was assembled without network access, so "as far as I can tell" is doing real work in that sentence: I could not survey what else exists. Treat the browser-first claims as unverified.
 
 ## For people (and agents) adding to it
 
