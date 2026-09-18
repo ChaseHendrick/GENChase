@@ -660,7 +660,8 @@
         <b>Ambient</b> (A) enters focus and walks the techniques every 30 seconds with a fresh seed, for a second monitor or a wall; Esc stops it.
         Click and drag to disturb the field. The <b>LIVE</b> badge means the simulation is still computing; <b>Still</b> means this frame is finished.
         <b>Save</b> (B) keeps a plate in the gallery; <b>Gallery</b> (G) opens it.
-        Shortcuts: space generate, S surprise, E export, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, P pause, V record, A ambient, 1–9 tabs, [ ] history, ? this list.</p>
+        <b>,</b> and <b>.</b> walk the preset list without opening the menu. <b>C</b> copies the plate to the clipboard at screen size, for pasting into a message; E is still the route to a file at print resolution.
+        Shortcuts: space generate, S surprise, E export, C copy image, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, P pause, V record, A ambient, , . presets, 1–9 tabs, [ ] history, ? this list.</p>
 
       <h3>License</h3>
       <p>The studio <b>code</b> is licensed under the <b>Business Source License 1.1</b>. You can run it, study it, and
@@ -1223,6 +1224,7 @@ void main(){
   function randomSeed() { return WORDS[Math.floor(Math.random() * WORDS.length)] + '-' + String(Math.floor(Math.random() * 10000)).padStart(4, '0'); }
   let currentId = null;
   const instances = {};        // id -> { inst, canvas, state, anim... }
+  const presetAt = {};         // id -> the preset key last applied, so , and . can walk the list
   let regenTimer = null, historyTimer = null;
   let downloads = null;
   let hashSilent = false;
@@ -1461,6 +1463,45 @@ void main(){
     catch (err) {
       list.forEach(x => { delete x.thumb; });
       try { localStorage.setItem(GALLERY_KEY, JSON.stringify(list.slice(0, GALLERY_MAX))); } catch (e2) { /* quota */ }
+    }
+  }
+  /* ---- presets: the menu and the , . keys both come through here ---- */
+  function applyPreset(key) {
+    const e = instances[currentId]; const p = e && e.mod.presets[key];
+    if (!p) return false;
+    presetAt[currentId] = key;
+    e.state = sanitize(e.mod, Object.assign({}, e.state, p.p, p.palette ? { palette: p.palette.colors.slice(), bg: p.palette.bg } : {}));
+    buildSidebar(e); syncAll(e); regenerate({ snapLabel: 'preset' });
+    return true;
+  }
+  // Walk the preset list without opening the menu, so you can find the one you want by looking at the plate.
+  // Parameters edited by hand do not clear the position: stepping continues from the last preset applied.
+  function stepPreset(dir) {
+    const e = instances[currentId]; if (!e) return;
+    const keys = Object.keys(e.mod.presets || {});
+    if (!keys.length) { toast('This technique has no presets'); return; }
+    const i = keys.indexOf(presetAt[currentId] || '');
+    const key = i < 0 ? keys[dir > 0 ? 0 : keys.length - 1] : keys[(i + dir + keys.length) % keys.length];
+    if (applyPreset(key)) toast(e.mod.presets[key].label + '  ·  ' + (keys.indexOf(key) + 1) + ' of ' + keys.length);
+  }
+  // Copy the plate as it stands on screen. This is the screen image; E is still the route to a file at
+  // print pixels. The clipboard write needs a secure context, and Safari wants the blob's promise handed
+  // to ClipboardItem inside the gesture rather than an already-awaited blob.
+  async function copyPlate() {
+    const e = instances[currentId];
+    if (!e || !e.canvas || !e.canvas.width) return;
+    if (!(navigator.clipboard && navigator.clipboard.write && window.ClipboardItem)) {
+      toast('This browser will not put an image on the clipboard. Export with E.');
+      return;
+    }
+    try {
+      const src = e.canvas, c = document.createElement('canvas');
+      c.width = src.width; c.height = src.height;
+      c.getContext('2d').drawImage(src, 0, 0);
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': util.toBlob(c) })]);
+      toast('Plate copied  ·  ' + src.width + ' × ' + src.height + ' px, screen size');
+    } catch (err) {
+      toast('The browser refused the clipboard. Export with E instead.');
     }
   }
   function saveToGallery() {
@@ -2559,10 +2600,8 @@ void main(){
     $('btn-generate').addEventListener('click', roll);
     $('btn-surprise').addEventListener('click', surprise);
     $('preset').addEventListener('change', () => {
-      const e = instances[currentId]; const sel = $('preset'); const p = e && e.mod.presets[sel.value]; sel.value = '';
-      if (!p) return;
-      e.state = sanitize(e.mod, Object.assign({}, e.state, p.p, p.palette ? { palette: p.palette.colors.slice(), bg: p.palette.bg } : {}));
-      buildSidebar(e); syncAll(e); regenerate({ snapLabel: 'preset' });
+      const sel = $('preset'); const key = sel.value; sel.value = '';
+      applyPreset(key);
     });
     const inchSel = $('export-inches'), dpiSel = $('export-dpi');
     try {
@@ -2694,6 +2733,9 @@ void main(){
       else if (ev.key === 'p' || ev.key === 'P') { ev.preventDefault(); togglePause(); }
       else if (ev.key === 'v' || ev.key === 'V') { ev.preventDefault(); toggleRecord(); }
       else if (ev.key === 'a' || ev.key === 'A') { ev.preventDefault(); setAmbient(!ambientOn); }
+      else if (ev.key === 'c' || ev.key === 'C') { if (!ev.metaKey && !ev.ctrlKey) { ev.preventDefault(); copyPlate(); } }
+      else if (ev.key === ',' || ev.key === '<') { ev.preventDefault(); stepPreset(-1); }
+      else if (ev.key === '.' || ev.key === '>') { ev.preventDefault(); stepPreset(1); }
       else if (ev.key === '?' ) { $('modal-about').hidden = false; }
       else if (ev.key >= '1' && ev.key <= '9') {
         const m = modules[Number(ev.key) - 1];
