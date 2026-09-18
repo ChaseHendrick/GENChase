@@ -19005,6 +19005,169 @@ void main(){
       };
     },
   });
+
+  /* ---------- Hydrogen Orbitals ---------- */
+  Studio.register({
+    id: 'orbitals',
+    name: 'Hydrogen orbitals',
+    tab: 'Orbitals',
+    subtitle: 'hydrogen atom probability density |ψₙₗₘ|² · 1926',
+    order: 96,
+    equation: 'ψₙₗₘ = Rₙₗ(r) Yₗₘ(θ, φ),   Rₙₗ ∝ ρˡ e^{−ρ/2} L²ˡ⁺¹ₙ₋ₗ₋₁(ρ),   ρ = 2r / n a₀',
+    credit: "Erwin Schrödinger, Quantisierung als Eigenwertproblem, Annalen der Physik 79, 361 (1926), solved the hydrogen atom as a wave equation; the radial functions are associated Laguerre polynomials and the angular parts spherical harmonics. The plate evaluates |ψ|² exactly from those polynomials and either integrates it along view rays or cuts a plane through it.",
+    blurb: 'The three integers n, l, m pick one stationary state of the electron in a hydrogen atom, and the picture is where you would find it. The radial part has n − l − 1 spherical nodes, the angular part l nodal surfaces, so 1s is a fuzzy ball, 2p a dumbbell and 3d_z² a dumbbell threaded through a torus. Real combinations replace e^{imφ} by cos mφ or sin mφ, which is how chemists get the lobed p_x, d_xy and friends. The ray view integrates the density through the cloud from a camera you can orbit; the section cuts a plane and colors each lobe by the sign of ψ. Exposure is measured from the rendered density, not guessed from a formula, so every orbital lands on the page.',
+    schema: [
+      RANGE('Orbital', 'n', 'Principal n', GEOM, 1, NMAX, 1, String),
+      RANGE('Orbital', 'l', 'Angular l', GEOM, 0, NMAX - 1, 1, String, { hint: 'l runs 0 to n − 1; larger values are clamped.' }),
+      RANGE('Orbital', 'm', 'Magnetic |m|', GEOM, 0, NMAX - 1, 1, String, { hint: '|m| runs 0 to l.' }),
+      { group: 'Orbital', key: 'real', label: 'Angular form', type: 'seg', kind: GEOM, options: [['complex', 'e^{imφ}'], ['cos', 'cos mφ'], ['sin', 'sin mφ']], hint: 'The complex orbital has no φ dependence in |ψ|², so it is a ring. Real combinations give the lobes.' },
+      { group: 'View', key: 'view', label: 'View', type: 'seg', kind: GEOM, options: [['volume', 'Ray integrated'], ['section', 'Section']] },
+      RANGE('View', 'yaw', 'Yaw', GEOM, 0, 360, 1, deg, { dimUnless: s => s.view === 'volume' }),
+      RANGE('View', 'pitch', 'Pitch', GEOM, -89, 89, 1, deg, { dimUnless: s => s.view === 'volume' }),
+      RANGE('View', 'steps', 'Ray steps', GEOM, 48, 384, 8, String, { dimUnless: s => s.view === 'volume' }),
+      { group: 'View', key: 'plane', label: 'Section plane', type: 'seg', kind: GEOM, options: [['xz', 'xz (through the axis)'], ['xy', 'xy (equator)'], ['yz', 'yz']], dimUnless: s => s.view === 'section' },
+      RANGE('View', 'offset', 'Plane offset', GEOM, -0.9, 0.9, 0.01, f2, { dimUnless: s => s.view === 'section', hint: 'As a fraction of the framing radius.' }),
+      RANGE('View', 'frame', 'Framing', GEOM, 0.4, 1.6, 0.02, f2, { hint: 'Half-width of the picture relative to the sphere holding 99.5% of the radial probability.' }),
+      ASPECT_FIELD,
+      { group: 'Picture', key: 'phase', label: 'Phase coloring (sign of ψ)', type: 'toggle', kind: PAINT },
+      { group: 'Picture', key: 'tone', label: 'Tone', type: 'seg', kind: PAINT, options: [['log', 'Log'], ['sqrt', 'Square root'], ['linear', 'Linear']] },
+      RANGE('Picture', 'expo', 'Exposure', PAINT, 0.25, 4, 0.05, f2),
+      RANGE('Picture', 'gamma', 'Gamma', PAINT, 0.4, 2.2, 0.02, f2),
+    ],
+    defaults: {
+      n: 3, l: 2, m: 0, real: 'cos', view: 'volume', yaw: 30, pitch: 18, steps: 128, plane: 'xz', offset: 0, frame: 1, aspect: '1:1',
+      phase: false, tone: 'log', expo: 1, gamma: 1, seed: 'schrodinger-1926',
+    },
+    presets: {
+      dz2: pre('3d z² torus', { n: 3, l: 2, m: 0, real: 'cos', view: 'volume', yaw: 30, pitch: 18, steps: 128, frame: 1, phase: false, tone: 'log', expo: 1, gamma: 1 }, Pal.glacier),
+      pz: pre('2p z section', { n: 2, l: 1, m: 0, real: 'cos', view: 'section', plane: 'xz', offset: 0, frame: 1, phase: true, tone: 'sqrt', expo: 0.8, gamma: 1 }, Pal.harbor),
+      fz3: pre('4f z³ phase', { n: 4, l: 3, m: 0, real: 'cos', view: 'volume', yaw: 20, pitch: 12, steps: 160, frame: 1, phase: true, tone: 'log', expo: 1.2, gamma: 1 }, Pal.thermal),
+      dxy: pre('3d xy section', { n: 3, l: 2, m: 2, real: 'sin', view: 'section', plane: 'xy', offset: 0, frame: 1, phase: true, tone: 'sqrt', expo: 0.8, gamma: 1 }, Pal.risograph),
+      g: pre('5g cloud', { n: 5, l: 4, m: 2, real: 'cos', view: 'volume', yaw: 45, pitch: 30, steps: 160, frame: 1, phase: false, tone: 'log', expo: 1, gamma: 1 }, Pal.bioluminescent),
+      s6: pre('6s shells', { n: 6, l: 0, m: 0, real: 'cos', view: 'section', plane: 'xz', offset: 0, frame: 1, phase: true, tone: 'log', expo: 1, gamma: 0.9 }, Pal.xray),
+      dxz: pre('4d xz cloud', { n: 4, l: 2, m: 1, real: 'cos', view: 'volume', yaw: 60, pitch: 10, steps: 128, frame: 1, phase: true, tone: 'log', expo: 1, gamma: 1 }, Pal.nightshade),
+    },
+    hints: {
+      Orbital: 'n sets the size and energy, l the shape, m the orientation. The status line counts the nodes found in the polynomials.',
+      View: 'Ray integrated sums |ψ|² along each line of sight through a sphere that holds 99.5% of the electron. Section cuts one plane and shows the density in it.',
+      Picture: 'Exposure is relative to the measured 99.5th percentile of the rendered density, so 1.0 always fills the tonal range.',
+    },
+    closedGroups: ['Picture'],
+    palette: true, defaultPalette: 'glacier', paletteLabel: 'Density (background → colors)',
+    headline: 'n', headlineLabel: 'principal n',
+    sanitize(s) {
+      s.n = U.clamp(Math.round(Number(s.n) || 1), 1, NMAX);
+      s.l = U.clamp(Math.round(Number(s.l) || 0), 0, s.n - 1);
+      s.m = U.clamp(Math.round(Number(s.m) || 0), 0, s.l);
+      s.steps = U.clamp(Math.round(Number(s.steps) || 128), 32, 512);
+    },
+    surprise(rng) {
+      const n = rng.int(2, 6), l = rng.int(Math.min(1, n - 1), n - 1), m = rng.int(0, l);
+      const view = rng() < 0.6 ? 'volume' : 'section';
+      return {
+        n, l, m, real: rng.pick(['cos', 'cos', 'sin', 'complex']), view,
+        yaw: rng.int(0, 359), pitch: rng.int(-40, 60), steps: 128, plane: rng.pick(['xz', 'xz', 'xy', 'yz']), offset: rng() < 0.3 ? rng.range(-0.4, 0.4) : 0,
+        frame: rng.range(0.8, 1.2), aspect: rng.pick(['1:1', '1:1', '4:5', '5:4']),
+        phase: rng() < 0.5, tone: rng.pick(['log', 'log', 'sqrt']), expo: rng.range(0.8, 1.4), gamma: rng.range(0.85, 1.15),
+      };
+    },
+    create(host) {
+      const start = glStart(host);
+      if (!start.gl) return start.dead;
+      const gl = start.gl;
+      let pass;
+      try { pass = new G.Pass(gl, ORB_FS); } catch (err) { console.error(err); return start.dead('Shader compilation failed on this GPU'); }
+      let ramp = null, pal = null, rampKey = '', orb = null, orbKey = '', scale = 1, token = 0;
+      const MEAS = 128;
+      let measT = null, measW = 0, measH = 0;
+      function ensureRamp(s) {
+        const key = s.bg + '|' + s.palette.join(',');
+        if (ramp && rampKey === key) return;
+        if (ramp) { ramp.dispose(); pal.dispose(); }
+        ramp = G.rampTexture(gl, s.palette, s.bg);
+        pal = G.rampTexture(gl, s.palette, null);
+        rampKey = key;
+      }
+      function ensureOrbital(s) {
+        const key = s.n + '/' + s.l + '/' + s.m;
+        if (orb && orbKey === key) return orb;
+        orb = orbital(s.n, s.l, s.m); orbKey = key;
+        return orb;
+      }
+      function camera(s) {
+        const y = s.yaw * PI / 180, p = s.pitch * PI / 180;
+        const f = [-Math.cos(p) * Math.cos(y), -Math.cos(p) * Math.sin(y), -Math.sin(p)];
+        // right = normalize(cross(forward, z))
+        let r = [f[1], -f[0], 0];
+        const rl = Math.hypot(r[0], r[1]) || 1;
+        r = [r[0] / rl, r[1] / rl, 0];
+        const u = [r[1] * f[2] - r[2] * f[1], r[2] * f[0] - r[0] * f[2], r[0] * f[1] - r[1] * f[0]];
+        return [r[0], r[1], r[2], u[0], u[1], u[2], f[0], f[1], f[2]];
+      }
+      function uniforms(s, w, h, ox, oy, raw) {
+        ensureRamp(s);
+        const o = ensureOrbital(s);
+        return {
+          u_res: [w, h], u_off: [ox, oy], u_lag: o.lag, u_leg: o.leg,
+          u_n: { int: s.n }, u_l: { int: s.l }, u_m: { int: s.m }, u_real: { int: s.real === 'cos' ? 1 : (s.real === 'sin' ? 2 : 0) },
+          u_view: { int: s.view === 'section' ? 1 : 0 }, u_steps: { int: s.steps }, u_plane: { int: s.plane === 'xy' ? 1 : (s.plane === 'yz' ? 2 : 0) },
+          u_tone: { int: s.tone === 'log' ? 0 : (s.tone === 'sqrt' ? 1 : 2) }, u_phase: { int: s.phase ? 1 : 0 }, u_raw: { int: raw ? 1 : 0 },
+          u_norm: o.norm, u_anorm: o.anorm, u_rmax: o.rmax, u_frame: s.frame, u_offset: s.offset * o.rmax * s.frame,
+          u_scale: scale, u_expo: s.expo, u_gamma: s.gamma, u_cam: camera(s),
+          u_bg: hex01(s.bg), u_ramp: ramp, u_pal: pal,
+        };
+      }
+      // exposure: render a small copy of the same composition, read the packed log density and take the
+      // 99.5th percentile of the pixels inside the sphere; then() draws once the readback lands
+      function measure(s, then) {
+        const ar = ASPECTS[s.aspect] || 1;
+        const mw = MEAS, mh = Math.max(8, Math.round(MEAS * ar));
+        if (!measT || measW !== mw || measH !== mh) {
+          if (measT) measT.dispose();
+          measT = new G.Target(gl, mw, mh, { type: 'rgba8', filter: 'nearest' });
+          measW = mw; measH = mh;
+        }
+        pass.draw(measT, uniforms(s, mw, mh, 0, 0, true));
+        const mine = ++token;
+        readAsync(gl, measT).then(px => {
+          if (mine !== token) return;
+          const vals = [];
+          for (let i = 0; i < mw * mh; i++) {
+            const v = px[i * 4] / 255 + px[i * 4 + 1] / (255 * 255);
+            if (v > 0) vals.push(Math.pow(2, v * 90 - 60));
+          }
+          let hi = 0;
+          if (vals.length) { vals.sort((a, b) => a - b); hi = vals[Math.min(vals.length - 1, Math.floor(0.995 * (vals.length - 1)))]; }
+          scale = hi > 0 ? 1 / hi : 1;
+          then();
+        }, err => { console.error(err); scale = 1; then(); });
+      }
+      function draw() {
+        const s = host.getState();
+        pass.draw(null, uniforms(s, host.canvas.width, host.canvas.height, 0, 0, false));
+        gl.finish();
+        const o = orb;
+        host.setStatus(
+          '<span><b>' + orbitalName(s) + '</b></span>' +
+          '<span>radial nodes <b>' + o.radialNodes + '</b> · angular <b>' + (o.thetaNodes + s.m) + '</b></span>' +
+          '<span>r₉₉.₅ <b>' + f1(o.rmax) + ' a₀</b></span>' +
+          '<span>' + (s.view === 'section' ? s.plane + ' section' : s.steps + ' ray steps') + '</span>');
+      }
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        regenerate() { measure(host.getState(), draw); },
+        repaint() { draw(); },
+        resize() { draw(); },
+        pause() {}, resume() { draw(); },
+        async exportPNG(w, h) {
+          const s = host.getState();
+          const blob = await exportTiled(gl, w, h, (target, ox, oy) => { pass.draw(target, uniforms(s, w, h, ox, oy, false)); gl.finish(); });
+          draw();
+          return blob;
+        },
+      };
+    },
+  });
 })();
 </script>
 <script>Studio.boot();</script>
