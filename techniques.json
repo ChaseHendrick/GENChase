@@ -2,7 +2,7 @@
   "project": "GENChase",
   "repository": "https://github.com/SharpMeow/GENChase",
   "file": "studio.html",
-  "count": 62,
+  "count": 63,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "techniques": [
     {
@@ -273,6 +273,26 @@
         "young",
         "hot",
         "area"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "liesegang",
+      "name": "Liesegang Rings",
+      "subtitle": "periodic precipitation in a gel · 1896",
+      "equation": "∂a/∂t = Dₐ∇²a − kab,  ∂b/∂t = D_b∇²b − kab,  ∂c/∂t = D_c∇²c + kab − S,  ∂d/∂t = S",
+      "credit": "Raphael E. Liesegang, 'Ueber einige Eigenschaften von Gallerten', Naturwissenschaftliche Wochenschrift 11 (30), 353 (1896), reported the rings that silver nitrate leaves when it diffuses into a gel loaded with potassium dichromate. Wilhelm Ostwald, in his note on those lines in Zeitschrift für physikalische Chemie 23, 365 (1897), explained them by supersaturation: the solution ahead of the front passes a nucleation threshold, a band nucleates, and the band then drains the solution around it back below saturation, so the next band has to wait for the front to move on. That supersaturation cycle is what this tab integrates. The geometric spacing is Karol Jablczynski, 'La formation rythmique des précipités: les anneaux de Liesegang', Bulletin de la Société Chimique de France 33, 1592 (1923). Tibor Antal, Michel Droz, Jacques Magnin and Zoltán Rácz, 'Formation of Liesegang patterns: a spinodal decomposition scenario', Physical Review Letters 83, 2880 (1999), derive x_n ~ Q(1+p)^n and the Matalon-Packter form of p from a moving particle source driving a spinodal quench, which is a different mechanism from the one computed here; the spacing law is common to both.",
+      "blurb": "Silver nitrate is poured onto a gel loaded with dichromate. The two meet, react, and the product precipitates, but not as a smooth stain: as a set of sharp rings with clear gel between them, the spacing widening as you go out. Ostwald's account is the one this tab computes. The reaction front makes a soluble intermediate; the intermediate has to reach a supersaturation threshold before anything crystallises; once a band has nucleated it grows greedily, pulling the intermediate out of solution for some distance around it, and no new band can form until the front has run far enough ahead to build the concentration back up. Because the front moves as the square root of time it keeps slowing down, so each gap takes longer and is wider than the last, and the band positions form a geometric series. The status line measures that ratio off the plate rather than asserting it. Supersaturation c* is the knob that matters: raise it and the bands are fewer, wider apart and sharper, lower it and the deposit closes up into a continuous stain.",
+      "order": 35,
+      "seed": "liesegang-1896",
+      "presets": [
+        "rings",
+        "plate",
+        "bands",
+        "twin",
+        "intermediate",
+        "front",
+        "crystallites"
       ],
       "vectors": false
     },
