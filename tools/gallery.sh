@@ -1,9 +1,10 @@
 #!/bin/sh
 # sh tools/gallery.sh   -- regenerate every README gallery tile from the current studio.html
 # Each entry is: outputName hash waitMs preset(optional). Seeds are explicit so every tile reprints.
-set -e
 mkdir -p tools/shots/tiles
-R() { NODE_PATH=/opt/node22/lib/node_modules timeout 400 node tools/plate.js "$2" "tools/shots/tiles/$1" "$3" 1000 "$4" >/dev/null 2>&1 && echo "  $1"; }
+R() {
+  if NODE_PATH=/opt/node22/lib/node_modules timeout 600 node tools/plate.js "$2" "tools/shots/tiles/$1" "$3" 1000 "$4" >/dev/null 2>&1; then echo "  ok   $1"; else echo "  FAIL $1"; fi
+}
 R snowflake.jpg   "snowflake/gravner-2008"     26000 ""
 R hofstadter.jpg  "hofstadter/hofstadter-1976" 20000 ""
 R hexagons.jpg    "swift/swift-1977"           20000 hex
