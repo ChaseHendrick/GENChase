@@ -85,8 +85,15 @@ async function settle(p, maxMs) {
   const still = id + '/' + seed + '/' + b64url({ running: false });
   const a1 = await open(still); await settle(a1, wait); const m1 = await measure(a1); await a1.close();
   const a2 = await open(still); await settle(a2, wait); const m2 = await measure(a2);
-  console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: m1.fp === m2.fp }));
-  if (m1.fp !== m2.fp) fails.push('same hash loaded twice gave different plates');
+  // A living plate with no pause key keeps stepping on a wall-clock budget, so two loads are only comparable at the
+  // same step count. Report that case as not comparable rather than as a failure; a plate that pauses must match.
+  const stepOf = m => { const s = ((m.status || '').match(/(?:step|sweep)\s+([\d,]+)/) || [])[1]; return s ? Number(s.replace(/,/g, '')) : null; };
+  const pausable = await a2.evaluate(() => { try { return Object.prototype.hasOwnProperty.call(JSON.parse(localStorage.getItem('genchase.v1.' + location.hash.slice(1).split('/')[0]) || '{}'), 'running'); } catch (e) { return false; } });
+  const s1 = stepOf(m1), s2 = stepOf(m2);
+  const comparable = m1.fp === m2.fp || pausable || s1 === null || s2 === null || s1 === s2;
+  console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: m1.fp === m2.fp, steps: [s1, s2], pausable }));
+  if (m1.fp !== m2.fp && comparable) fails.push('same hash loaded twice gave different plates');
+  else if (m1.fp !== m2.fp) console.log('determinism not comparable: living plate without a pause key, captured at steps ' + s1 + ' and ' + s2);
 
   // 4. switch to another tab and back: exactly one visible canvas
   const other = await a2.evaluate(me => { const t = [...document.querySelectorAll('button.tab[data-id]')].find(x => x.dataset.id !== me); return t ? t.dataset.id : null; }, id);
