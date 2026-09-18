@@ -20175,6 +20175,95 @@ void main(){
       seed: seedCyclic,
     }),
   });
+
+  /* ---------- Chemotaxis ---------- */
+  function ksDtMax(s) {
+    const c = Number(s.scale) || 1, lap9 = Number(s.lap) === 9;
+    return Math.min(dtDiff(Math.max(1 + 0.6 * s.chi, s.D), c, lap9), 0.2);
+  }
+  function seedChemotaxis(s, W, H) {
+    const rng = U.makeRng(s.seed + '/chemotaxis');
+    const v0 = 1 / Math.max(s.a, 1e-3), amp = s.amp;
+    const data = blank(W, H, s.init === 'noise' ? 1 : 0.02, s.init === 'noise' ? v0 : 0.02 * v0);
+    if (s.init === 'colony') paintDisk(data, W, H, W / 2, H / 2, 0.14 * Math.min(W, H), 0, 1);
+    else if (s.init === 'scatter') {
+      const k = rng.int(6, 14);
+      for (let f = 0; f < k; f++) paintDisk(data, W, H, rng() * W, rng() * H, rng.range(2, 5) * Math.max(1, s.scale), 0, 1);
+    }
+    for (let i = 0; i < W * H; i++) {
+      data[i * 4] = Math.max(0, data[i * 4] * (1 + amp * (rng() * 2 - 1)));
+      if (s.init !== 'noise') data[i * 4 + 1] = data[i * 4] * v0;
+    }
+    return data;
+  }
+  Studio.register({
+    id: 'chemotaxis',
+    name: 'Chemotaxis',
+    subtitle: 'Keller-Segel aggregation · 1970',
+    order: 71,
+    equation: '∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²)',
+    credit: 'Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) < c/2 − D − a.',
+    blurb: 'Cells that secrete an attractant and crawl up its gradient cannot stay evenly spread. Wherever a few more cells gather, more attractant is made there, and more cells arrive: Keller and Segel wrote that feedback down for the amoebae of Dictyostelium streaming toward a common point before they build a fruiting body. In the plain model the collapse runs away to a singularity. Here the sensitivity χ(u) falls off in a crowd and the cells reproduce logistically, so the run-away stops at finite density and the plate settles into spots, worms and honeycombs of cells around pools of attractant. c is how strongly cells respond, a how fast the attractant decays, D how fast it spreads. The chemotactic flux is differenced conservatively across cell faces, so the total number of cells is exactly what growth and death make it.',
+    schema: GRID.concat([scaleField(0.5, 4, '2.2')]).concat([
+      RANGE('Cells', 'chi', 'Sensitivity c', LIVE, 0.5, 8, 0.05, f2, {
+        hint: 'Chemotactic strength. Patterns need c/2 − D − a > 2√(aD); at the defaults that is c > 2.6. Around 3.3 to 3.6 the aggregates are spots and short worms.' }),
+      RANGE('Cells', 'a', 'Attractant decay a', LIVE, 0.02, 1.5, 0.01, f2),
+      RANGE('Cells', 'D', 'Attractant diffusion D', LIVE, 0.02, 3, 0.01, f2),
+      { group: 'Seeding', key: 'init', label: 'Seeding', type: 'seg', kind: GEOM,
+        options: [['noise', 'Noise'], ['colony', 'Colony'], ['scatter', 'Scatter']] },
+      RANGE('Seeding', 'amp', 'Seed noise', GEOM, 0, 0.6, 0.01, f2),
+    ]).concat(simFields(0.001, 0.1, 0.0005, 6000)).concat(pictureFields([
+      ['u', 'Cells u'], ['v', 'Attractant v'], ['diff', 'u − v'], ['grad', 'Edges'], ['shade', 'Relief'],
+    ])),
+    defaults: Object.assign({
+      grid: 192, aspect: '1:1', lap: 9, scale: 2.2,
+      chi: 3.5, a: 0.2, D: 0.2,
+      init: 'noise', amp: 0.2,
+      running: true, steps: 6, dt: 0.02, warmup: 1200, noise: 0,
+      view: 'u', seed: 'keller-1970',
+    }, PICTURE_DEFAULTS),
+    presets: {
+      spots: pre('Spots', { chi: 3.5, a: 0.2, D: 0.2, scale: 2.2, init: 'noise', view: 'u', warmup: 1200 }, Pal.petri),
+      worms: pre('Worms', { chi: 3.3, a: 0.2, D: 0.2, scale: 2.2, init: 'noise', view: 'u', warmup: 1600 }, Pal.verdigris),
+      honeycomb: pre('Honeycomb', { chi: 5, a: 0.25, D: 0.2, scale: 2, init: 'noise', view: 'v', warmup: 1400 }, Pal.bioluminescent),
+      colony: pre('Colony', { chi: 3.6, a: 0.2, D: 0.2, scale: 2, init: 'colony', view: 'u', warmup: 2200 }, Pal.meadow),
+      scatter: pre('Scattered founders', { chi: 3.6, a: 0.2, D: 0.3, scale: 2, init: 'scatter', view: 'u', warmup: 1800 }, Pal.harbor),
+      relief: pre('Relief', { chi: 3.5, a: 0.2, D: 0.2, scale: 2.2, init: 'noise', view: 'shade', bump: 5, warmup: 1200 }, Pal.xray),
+    },
+    closedGroups: ['Seeding'],
+    hints: {
+      Cells: 'c is the pull of the gradient, a and D are the life and reach of the attractant. The instability condition is in the credit line; the status line says whether you are past it.',
+      Seeding: 'Noise starts at the uniform density and lets the instability pick the pattern. Colony is one dense disk on empty ground: an invasion wave with aggregates forming behind it.',
+      Picture: 'Cells u is the density, the print. Attractant v is smoother and follows the cells. Edges is |∇u|.',
+    },
+    palette: true, defaultPalette: 'petri', paletteLabel: 'Colors (sparse → dense)',
+    headline: 'chi', headlineLabel: 'sensitivity c',
+    sanitize(s) {
+      gridClamp(s);
+      s.dt = U.clamp(Math.min(Number(s.dt) || 0.02, ksDtMax(s)), 0.0005, 0.1);
+    },
+    surprise(rng) {
+      const init = rng.pick(['noise', 'noise', 'colony', 'scatter']);
+      return Object.assign({
+        grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5', '5:4']), lap: 9,
+        scale: rng.range(1.8, 2.6), chi: rng.range(3.1, 5.5), a: rng.range(0.15, 0.35), D: rng.range(0.12, 0.4),
+        init, amp: rng.range(0.1, 0.3),
+        running: true, steps: 6, dt: 0.02, warmup: init === 'noise' ? rng.int(1000, 1800) : rng.int(1800, 2600), noise: 0,
+      }, surprisePicture(rng, ['u', 'u', 'v', 'shade']));
+    },
+    create: rdxCreate({
+      id: 'chemotaxis', stepFS: STEP_KS, n: 2, prim: 0, sec: 1,
+      views: { u: 0, v: 1, diff: 4, grad: 5, shade: 6 },
+      pokeAdd: [0.8, 0, 0, 0], pokeRad: 0.05, pokeMode: 1,
+      dtMax: ksDtMax,
+      stepUniforms: s => ({ u_chi: s.chi, u_a: s.a, u_D: s.D }),
+      status: (s, m) => {
+        const unstable = 2 * Math.sqrt(s.a * s.D) < s.chi / 2 - s.D - s.a;
+        return '<span>c <b>' + s.chi.toFixed(2) + '</b> · ' + (unstable ? 'aggregating' : 'uniform is stable') + '</span><span>dt <b>' + m.dt.toFixed(3) + '</b></span>';
+      },
+      seed: seedChemotaxis,
+    }),
+  });
 })();
 </script>
 <script>Studio.boot();</script>
