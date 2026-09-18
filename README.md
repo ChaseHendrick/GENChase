@@ -4,46 +4,31 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded, resolution-independent, and exports in inches at giclée resolution.
 
-One HTML file. Sixty pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
+One HTML file. Sixty-one pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
 
 <p align="center">
-  <img src="gallery/snowflake.jpg" width="32%" alt="Gravner–Griffeath snow crystal" />
-  <img src="gallery/hofstadter.jpg" width="32%" alt="Hofstadter butterfly" />
-  <img src="gallery/hexagons.jpg" width="32%" alt="Swift–Hohenberg hexagons" />
+  <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
+  <img src="gallery/vortex.jpg" width="32%" alt="Abrikosov vortex lattice in a rotating condensate" />
+  <img src="gallery/froth.jpg" width="32%" alt="Cellular Potts froth coloured by side count" />
 </p>
 <p align="center">
-  <img src="gallery/caustics.jpg" width="32%" alt="Optical caustics" />
-  <img src="gallery/physarum.jpg" width="32%" alt="Physarum network" />
-  <img src="gallery/spinodal.jpg" width="32%" alt="Cahn–Hilliard spinodal" />
+  <img src="gallery/cortex.jpg" width="32%" alt="Cortical planform through the retinocortical map: the tunnel form constant" />
+  <img src="gallery/hyperbolic.jpg" width="32%" alt="Gray-Scott chemistry on a {7,3} hyperbolic tiling in the Poincare disk" />
+  <img src="gallery/matrices.jpg" width="32%" alt="Beta-ensemble spectra swept from independence to rigidity" />
 </p>
 <p align="center">
-  <img src="gallery/scars.png" width="32%" alt="Helmholtz scars" />
-  <img src="gallery/twelve.png" width="32%" alt="Lifshitz–Petrich 12-fold quasicrystal" />
+  <img src="gallery/eden.jpg" width="32%" alt="Eden cluster coloured by growth time" />
+  <img src="gallery/snowflake.jpg" width="32%" alt="Gravner-Griffeath snow crystal" />
   <img src="gallery/tilings.jpg" width="32%" alt="Penrose tiling" />
 </p>
-<p align="center">
-  <img src="gallery/sandpile.jpg" width="32%" alt="Abelian sandpile group identity" />
-  <img src="gallery/pendulum.jpg" width="32%" alt="Double pendulum flip-time fractal" />
-  <img src="gallery/excitable.jpg" width="32%" alt="Barkley excitable media spirals" />
-</p>
-<p align="center">
-  <img src="gallery/schrodinger.jpg" width="32%" alt="Schrödinger double slit detector exposure" />
-  <img src="gallery/holomorphic.jpg" width="32%" alt="Mandelbrot seahorse valley" />
-  <img src="gallery/turing.jpg" width="32%" alt="Schnakenberg Turing spots" />
-</p>
-<p align="center">
-  <img src="gallery/aztec.jpg" width="32%" alt="Arctic circle in a random domino tiling of the Aztec diamond" />
-  <img src="gallery/hl.jpg" width="32%" alt="Hastings–Levitov conformal growth with age rings" />
-  <img src="gallery/sle.jpg" width="32%" alt="Schramm–Loewner curves, six kappa values from one driving path" />
-</p>
-<p align="center"><sub>Gravner–Griffeath · Hofstadter · Swift–Hohenberg · Berry caustics · Physarum · Cahn–Hilliard · Helmholtz scars · Lifshitz–Petrich 12-fold · Penrose · Bak–Tang–Wiesenfeld sandpile · double pendulum · Barkley · Schrödinger · Mandelbrot · Turing · Elkies–Kuperberg–Larsen–Propp · Hastings–Levitov · Schramm. Frames from the live studio.</sub></p>
+<p align="center"><sub>Howard stream power · Gross-Pitaevskii · Graner-Glazier · Ermentrout-Cowan · Gray-Scott on {7,3} · Dumitriu-Edelman · Eden · Gravner-Griffeath · Penrose. Frames from the live studio, at print resolution.</sub></p>
 
 
 Every tab is a system that already exists in a paper: Gray–Scott chemistry, Physarum transport, Lenia, Navier–Stokes, Cahn–Hilliard spinodal, Swift–Hohenberg convection, Lifshitz–Petrich 12-fold quasicrystals, Gravner–Griffeath snow crystals, hat and spectre monotiles, Helmholtz scars, optical caustics, Barkley excitable media, the Ising model, Bak–Tang–Wiesenfeld sandpiles, Schrödinger wave packets, Rayleigh–Bénard convection, the arctic circle of random domino tilings, Schramm–Loewner curves, and the rest. The governing equations are the medium. Nothing here is a style filter sitting on noise.
 
 A seed plus its parameters is the piece. Same seed, same world, at any size, years later. The URL hash carries the recipe. Export is sized in inches at print resolution, with an optional colophon — technique, equation, seed, every parameter — printed under the image the way a scientific plate used to carry its method.
 
-Images you generate are yours. Sell them. The source is [Business Source License 1.1](LICENSE).
+Images you generate are yours, whoever you are. Sell them. The source is [PolyForm Small Business 1.0.0](LICENSE): free for individuals and for companies under 100 people and 1,000,000 USD of revenue, paid above that.
 
 ---
 
@@ -58,7 +43,7 @@ The usual options fall down in different places:
 - **An image model.** It will draw a snowflake that never froze and a quasicrystal that is a hexagon with extra steps. There is no seed that reprints, and no way to show that anything was solved.
 - **A recorded loop.** It looks alive until you touch it.
 
-GENChase is the other object: sixty sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
+GENChase is the other object: sixty-one sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
 
 | | On disk | What you get | How you reprint |
 |---|---|---|---|
@@ -163,7 +148,7 @@ Click the seed label to copy it. Presets are starting points. The URL is the pie
 
 ## Techniques
 
-Artificial Life (Lenia), Physarum, Physarum 3D, Phyllotaxis, Hastings–Levitov, Lichtenberg, Gravner–Griffeath snowflakes, differential growth, fractals, CPPNs, chimera states, swarmalators, Cahn–Hilliard, Ohta–Kawasaki, Swift–Hohenberg, phase-field crystal, XY / Kosterlitz–Thouless, complex Ginzburg–Landau, Lifshitz–Petrich 12-fold, active nematics, fluids, Kuramoto–Sivashinsky, dendritic growth, flow fields, smectic focal conics, Gray–Scott, Penrose / hat / spectre tilings, attractors, Chirikov, Hofstadter, Helmholtz scars, optical caustics, Talbot, Indra’s pearls, Chladni, cortical planforms, random matrices, drainage networks, rough growth, foam and grain coarsening, condensate vortex lattices, Toner-Tu flocking, hyperbolic Turing patterns.
+Artificial Life (Lenia), Physarum, Physarum 3D, Phyllotaxis, Hastings–Levitov, Lichtenberg, Gravner–Griffeath snowflakes, differential growth, fractals, CPPNs, chimera states, swarmalators, Cahn–Hilliard, Ohta–Kawasaki, Swift–Hohenberg, phase-field crystal, XY / Kosterlitz–Thouless, complex Ginzburg–Landau, Lifshitz–Petrich 12-fold, active nematics, fluids, Kuramoto–Sivashinsky, dendritic growth, flow fields, smectic focal conics, Gray–Scott, Penrose / hat / spectre tilings, attractors, Chirikov, Hofstadter, Helmholtz scars, optical caustics, Talbot, Indra’s pearls, Chladni, cortical planforms, random matrices, drainage networks, rough growth, foam and grain coarsening, condensate vortex lattices, Toner-Tu flocking, hyperbolic Turing patterns, uniform spanning trees.
 
 Each tab names the researchers. The implementations are original.
 
@@ -171,12 +156,12 @@ Each tab names the researchers. The implementations are original.
 
 ## License
 
-[Business Source License 1.1](LICENSE).
+[PolyForm Small Business 1.0.0](LICENSE).
 
-Use it. Study it. Make work. Sell the work.
+**Free** for individuals, students, researchers, and for any company with fewer than 100 people and less than 1,000,000 USD of revenue in its prior tax year. Use it, change it, redistribute it, build on it.
 
-Do not offer GENChase as a hosted studio, and do not sell the source. On 17 September 2030 this version becomes Apache 2.0.
+**Paid** above that threshold. If your company is larger than that and GENChase is useful to you, buy a licence: [open an issue](https://github.com/SharpMeow/GENChase/issues). That is the whole arrangement, and it exists so that the people who can afford to pay are the ones who do.
 
-Artwork generated by running it is not the Licensed Work. It belongs to you.
+**The artwork is always yours.** The images, animations and vector files you produce by running GENChase are not the software and are not licensed by these terms. Sell them, exhibit them, license them, at any company size, whether or not you hold a licence for the code. The LICENSE file grants this explicitly rather than leaving it to be argued about.
 
 Built by Chaos.

@@ -2,7 +2,7 @@
 
 GENChase is a single-file generative art studio. The product is `studio.html`. There is no package to install and no app to wrap it in.
 
-Each tab is a scientific simulation with a seeded RNG, a hash recipe, and print export. Generated images belong to the human. The source is Business Source License 1.1.
+Each tab is a scientific simulation with a seeded RNG, a hash recipe, and print export. Generated images belong to the human, always and at any company size. The source is PolyForm Small Business 1.0.0: free for individuals and small companies, paid above 100 people or 1,000,000 USD of revenue.
 
 ## Add a technique here when
 
@@ -14,7 +14,7 @@ Each tab is a scientific simulation with a seeded RNG, a hash recipe, and print 
 
 - Turn this into a game, a SaaS, or a model-hosting app.
 - Split `studio.html` into a bundler or a framework tree.
-- Relicense as MIT.
+- Relicense. The licence is PolyForm Small Business 1.0.0 and the commercial terms depend on it.
 
 ## Verify before you commit
 
