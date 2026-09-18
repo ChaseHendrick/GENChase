@@ -47,7 +47,13 @@ Two failures worth knowing about because they both looked fine in a preview:
 - The share format is the URL hash (`#id/seed?...`). Settings JSON is the fallback. Keep schema `v: 1` until a default change would break old recipes, then bump it on purpose.
 - Witness: still plates start Still and stay Still. Live means the pixels changed twice in a row. Never greet a still plate with Live.
 - Timeline snapshots happen on pointer up, and only if the recipe hash changed.
-- If the medium is lines, `exportSVG` should be real vectors. Rasterizing them for print is a bug.
+- If the picture is discrete marks (strokes, edges, tiles, a traced curve), `exportSVG` emits real
+  vectors. Print is the point: a vector file rasterizes at the printer's own resolution instead of
+  at whatever the canvas happened to be, so rasterizing marks yourself throws that away.
+- If the picture is accumulated density (an orbit histogram, a deposited trail field, a solved
+  lattice), raster is the honest format and there is nothing to vectorize. Attractors iterates
+  millions of points and counts how often each pixel is hit; the image is the histogram, not the
+  path, and an SVG of it would be both enormous and a lie about what was computed.
 - Credit the paper in `credit` / `blurb`. Do not present the simulation as original research.
 - No analytics, no extra network calls, no service-worker platform.
 

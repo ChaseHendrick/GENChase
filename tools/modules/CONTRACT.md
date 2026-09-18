@@ -78,7 +78,8 @@ pause() / resume()
 action(key)        an action field was pressed
 disturb(p)         only on living fields; p = { x, y, yGL, dx, dy } with x, y in 0..1 from the top left, yGL flipped for GL
 exportPNG(w, h)    -> Promise<Blob> of exactly w x h pixels
-exportSVG(w, h)    -> string or Blob; only when the medium is lines
+exportSVG(w, h)    -> string or Blob; implement it when the picture is discrete marks, omit it when
+                   the picture is accumulated density and there is no geometry to emit
 ```
 
 ## GL helpers (`G = Studio.gl`)
