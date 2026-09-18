@@ -1358,7 +1358,13 @@ void main(){
   })();
 
   const STORE = 'genchase.v1.';
-  const RECIPE_V = 1;
+  // Recipe version. Bumped to 2 when the default grids were raised so that plates print sharp.
+  // A hash carries only what differs from the defaults, so raising a default would silently reprint
+  // every older recipe that never named a grid at a resolution it was not made at. Modules that
+  // changed a default therefore declare the old value under the version that changed it, and
+  // legacyFill gives it back to any recipe written before that version. Reprinting a seed years
+  // later is the product; a default is allowed to move, a finished plate is not.
+  const RECIPE_V = 2;
   const WORDS = ['kiln', 'harbor', 'moss', 'ember', 'slate', 'tide', 'quartz', 'loam', 'gale', 'reed', 'ochre', 'flint', 'delta', 'fern', 'basalt', 'wren', 'spore', 'lichen', 'coral', 'nacre'];
   // A seed you type can be any string up to 64 characters, so the input has never been the limit. The
   // roll was: one of twenty words and four digits is two hundred thousand seeds, and a birthday
@@ -1404,9 +1410,24 @@ void main(){
     return out;
   }
 
+  // What a module's defaults were at an earlier recipe version. mod.legacy is { <version>: { key: old } },
+  // read as "recipes older than <version> were made with these values". Keys the recipe states itself
+  // always win: it only fills what the recipe left to the defaults.
+  function legacyFill(mod, src) {
+    const v = Number(src.v);
+    if (!mod.legacy || !isFinite(v) || v >= RECIPE_V) return null;
+    const out = {};
+    for (const step of Object.keys(mod.legacy)) {
+      if (v >= Number(step)) continue;
+      const vals = mod.legacy[step];
+      for (const k of Object.keys(vals)) if (!(k in src)) out[k] = vals[k];
+    }
+    return out;
+  }
+
   function sanitize(mod, s) {
     const src = own(s);
-    const out = Object.assign({}, mod.defaults, src);
+    const out = Object.assign({}, mod.defaults, legacyFill(mod, src), src);
     for (const f of mod.schema) {
       if (f.type === 'range') {
         let v = Number(out[f.key]);
@@ -1788,10 +1809,17 @@ void main(){
     if (!rec || !rec.id || !byId[rec.id]) return false;
     const { id } = rec;
     const rest = own(rec);
-    delete rest.id; delete rest.v;
+    delete rest.id;
     if (currentId !== id) switchTo(id);
     const e = instances[id]; if (!e) return false;
-    e.state = sanitize(e.mod, Object.assign(own(e.state), rest));
+    // A hash that names a seed is a complete recipe, so it is built on the module's defaults rather
+    // than on whatever the viewer happened to have on screen. Merging it into the current state
+    // instead meant every key the recipe did not name was inherited from the viewer's own last
+    // session, so two people opening the same link got two different plates and a published recipe
+    // did not reprint. rest keeps its v so legacyFill can see how old the recipe is. A bare '#id',
+    // which names nothing at all, still means 'this tab as I left it'.
+    const base = rest.seed != null ? {} : own(e.state);
+    e.state = sanitize(e.mod, Object.assign(base, rest));
     e.host.getState = () => e.state;
     buildSidebar(e); syncAll(e);
     regenerate({ skipSnap: opts && opts.skipSnap, skipHistory: true });
@@ -12780,7 +12808,7 @@ void main(){
   ];
 
   const DEFAULTS = {
-    grid: 192, aspect: '1:1',
+    grid: 512, aspect: '1:1',
     zeta: 2.4, gamma: 1, lambda: 0.9,
     K: 0.45, Gamma: 0.8, S0: 1, noise: 0.006,
     init: 'pairs', nDefects: 4, defectSep: 0.22, pairAngle: 0, alignAngle: 25, coreXi: 2.8, seedNoise: 0.04,
@@ -12813,6 +12841,7 @@ void main(){
     credit: "Continuum active nematohydrodynamics: Aditi Simha and Ramaswamy (2002); Beris–Edwards Q-tensor hydrodynamics. The experimental archetype is the microtubule–kinesin active gel of Sanchez, Chen, DeCamp, Heymann and Dogic, Nature 2012. Defect statistics and active turbulence: Giomi, PRL / Phys. Rev. X 2015; Doostmohammadi, Ignés-Mullol, Yeomans and Sagués, Nat. Commun. 2018. Flow here is the frictional (substrate) Stokes limit, incompressible: γ u = −∇P − ζ ∇·Q.",
     blurb: 'A nematic liquid crystal is a fluid of rods that share a direction but not a head. In two dimensions that direction can only break in two kinds of defect: a comet-shaped +½ and a trefoil −½. Give the rods an engine — kinesin motors walking microtubules apart, or myosin pulling actin — and the stress they generate is not isotropic. Extensile rods push out along their axis. The +½ defect, which looks like a comet, has a built-in arrow and self-propels; the −½ is a three-fold sink and mostly sits. When the activity is high enough the pairs unbind and the film becomes a two-dimensional turbulence whose vortices are topological defects, not eddies of inertia. That is an active nematic. The picture is the one from the microscope: crossed polarizers (schlieren) or a comb of the director field.',
     schema: SCHEMA,
+    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: DEFAULTS,
     presets: PRESETS,
     closedGroups: ['Seeding', 'Nematic'],
@@ -13596,8 +13625,9 @@ void main(){
     ]).concat(simFields()).concat(pictureFields([
       ['field', 'Composition'], ['abs', '|c|'], ['grad', 'Interfaces'], ['shade', 'Relief'], ['mu', 'μ'],
     ])),
+    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: {
-      grid: 192, aspect: '1:1', bc: 'periodic',
+      grid: 512, aspect: '1:1', bc: 'periodic',
       c0: 0, eps: 1.1, M: 1, deg: false, amp: 0.12, noise: 0.004, init: 'quench',
       running: true, steps: 3, dt: 0.014, warmup: 2000,
       view: 'field', lo: -1, hi: 1, bump: 4, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.06,
@@ -13697,8 +13727,9 @@ void main(){
     ]).concat(simFields()).concat(pictureFields([
       ['field', 'Composition'], ['abs', '|u|'], ['grad', 'Interfaces'], ['shade', 'Relief'], ['mu', 'μ'],
     ])),
+    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: {
-      grid: 192, aspect: '1:1', bc: 'periodic',
+      grid: 512, aspect: '1:1', bc: 'periodic',
       c0: 0, eps: 1.05, sigma: 0.06, M: 1, deg: false, amp: 0.14, noise: 0.003, init: 'quench',
       running: true, steps: 3, dt: 0.015, warmup: 2200,
       view: 'field', lo: -1, hi: 1, bump: 4, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.08, grain: 0.05,
@@ -13798,8 +13829,9 @@ void main(){
     ]).concat(simFields()).concat(pictureFields([
       ['field', 'Composition'], ['abs', '|φ|'], ['grad', 'Interfaces'], ['shade', 'Relief'], ['mu', 'μ'],
     ])),
+    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: {
-      grid: 192, aspect: '1:1', bc: 'periodic',
+      grid: 512, aspect: '1:1', bc: 'periodic',
       zeta: -4, lambda: 1, c0: -0.4, eps: 1.1, M: 1, amp: 0.15, noise: 0.004, init: 'quench',
       running: true, steps: 3, dt: 0.013, warmup: 1800,
       view: 'field', lo: -1, hi: 1, bump: 4, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.06,
@@ -13888,8 +13920,9 @@ void main(){
     ]).concat(simFields()).concat(pictureFields([
       ['field', 'Field'], ['abs', '|u|'], ['grad', '|∇u|'], ['shade', 'Relief'], ['orient', 'Orientation'],
     ])),
+    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: {
-      grid: 192, aspect: '1:1', bc: 'periodic',
+      grid: 512, aspect: '1:1', bc: 'periodic',
       r: 0.35, k0: 0.62, g: 0, cub: 1, noise: 0.006, init: 'noise',
       running: true, steps: 3, dt: 0.025, warmup: 500,
       view: 'field', lo: -1.2, hi: 1.2, bump: 5, lightAng: 40, exposure: 1, gamma: 1, contrast: 1.08, grain: 0.05,
@@ -13980,8 +14013,9 @@ void main(){
     ]).concat(simFields()).concat(pictureFields([
       ['shade', 'Relief'], ['field', 'Height'], ['grad', 'Slope'], ['abs', '|u|'], ['orient', 'Cells'],
     ])),
+    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: {
-      grid: 192, aspect: '1:1', bc: 'periodic',
+      grid: 512, aspect: '1:1', bc: 'periodic',
       nu: 1, alpha: 1, noise: 0.008, init: 'noise',
       running: true, steps: 3, dt: 0.018, warmup: 350,
       view: 'shade', lo: -2.5, hi: 2.5, bump: 3.5, lightAng: 50, exposure: 1.05, gamma: 0.95, contrast: 1.1, grain: 0.06,
@@ -14074,8 +14108,9 @@ void main(){
     ]).concat(simFields()).concat(pictureFields([
       ['field', 'Density'], ['abs', '|ψ|'], ['grad', '|∇ψ|'], ['shade', 'Relief'], ['orient', 'Orientation'], ['mu', 'μ'],
     ])),
+    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: {
-      grid: 192, aspect: '1:1', bc: 'periodic',
+      grid: 512, aspect: '1:1', bc: 'periodic',
       r: -0.25, psi0: 0.28, k0: 0.72, M: 0.35, amp: 0.55, misori: 12, noise: 0.002, init: 'seed',
       running: true, steps: 5, dt: 0.005, warmup: 800,
       view: 'field', lo: -0.35, hi: 1.15, bump: 5, lightAng: 40, exposure: 1, gamma: 1, contrast: 1.08, grain: 0.05,
@@ -20508,8 +20543,9 @@ void main(){
     ]).concat(simFields(0.001, 0.12, 0.0005, 4000)).concat(pictureFields([
       ['u', 'Activator u'], ['v', 'Recovery v'], ['diff', 'u − v'], ['grad', 'Fronts'], ['shade', 'Relief'],
     ])),
+    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: Object.assign({
-      grid: 192, aspect: '1:1', lap: 5, scale: 2.5,
+      grid: 512, aspect: '1:1', lap: 5, scale: 2.5,
       model: 'barkley', a: 0.75, b: 0.01, eps: 0.02, D: 0,
       fa: 0.5, fb: -0.7, feps: 0.1, fD: 0,
       init: 'spiral', fronts: 2, amp: 0.01,
@@ -20667,8 +20703,9 @@ void main(){
     ]).concat(simFields(0.0005, 0.05, 0.0005, 6000)).concat(pictureFields([
       ['u', 'Activator u'], ['v', 'Inhibitor v'], ['diff', 'u − v'], ['grad', 'Edges'], ['shade', 'Relief'],
     ])),
+    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: Object.assign({
-      grid: 192, aspect: '1:1', lap: 9, scale: 0.6,
+      grid: 512, aspect: '1:1', lap: 9, scale: 0.6,
       tmodel: 'schnak', D: 100, sa: 0.1, sb: 0.9, ba: 2, bb: 3, ga: 0.02, gb: 1, gc: 1.5, gK: 0, la: 10, lb: 0.2, lsig: 20,
       init: 'noise', amp: 0.25,
       running: true, steps: 8, dt: 0.01, warmup: 1500, noise: 0,
@@ -20788,8 +20825,9 @@ void main(){
     ]).concat(simFields(0.002, 0.2, 0.001, 6000)).concat(pictureFields([
       ['dom', 'Dominance'], ['u', 'Species u'], ['v', 'Species v'], ['w', 'Species w'], ['diff', 'u − v'], ['grad', 'Fronts'], ['shade', 'Relief'],
     ])),
+    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: Object.assign({
-      grid: 192, aspect: '1:1', lap: 5, scale: 2,
+      grid: 512, aspect: '1:1', lap: 5, scale: 2,
       a: 0.6, b: 1.6, D: 0.1,
       init: 'sectors', fronts: 4, amp: 0.05,
       running: true, steps: 6, dt: 0.1, warmup: 1500, noise: 0,
@@ -20876,8 +20914,9 @@ void main(){
     ]).concat(simFields(0.001, 0.1, 0.0005, 6000)).concat(pictureFields([
       ['u', 'Cells u'], ['v', 'Attractant v'], ['diff', 'u − v'], ['grad', 'Edges'], ['shade', 'Relief'],
     ])),
+    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: Object.assign({
-      grid: 192, aspect: '1:1', lap: 9, scale: 2.2,
+      grid: 512, aspect: '1:1', lap: 9, scale: 2.2,
       chi: 3.5, a: 0.2, D: 0.2,
       init: 'noise', amp: 0.2,
       running: true, steps: 6, dt: 0.02, warmup: 1200, noise: 0,
@@ -20977,8 +21016,9 @@ void main(){
     ]).concat(simFields(0.001, 0.25, 0.001, 6000)).concat(pictureFields([
       ['v', 'Plants n'], ['u', 'Water w'], ['diff', 'w − n'], ['grad', 'Band edges'], ['shade', 'Relief'],
     ])),
+    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: Object.assign({
-      grid: 192, aspect: '1:1', lap: 5, scale: 1,
+      grid: 512, aspect: '1:1', lap: 5, scale: 1,
       a: 1.1, agrad: 0.6, m: 0.45, slope: 40, Dw: 1, Dn: 1,
       init: 'noise', amp: 0.5,
       running: true, steps: 8, dt: 0.02, warmup: 1800, noise: 0,
@@ -21811,8 +21851,9 @@ void main(){
       RANGE('Picture', 'contrast', 'Contrast', PAINT, 0.5, 2.2, 0.02, f2),
       RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.6, 0.02, pct),
     ],
+    legacy: { 2: { grid: 256 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: {
-      grid: 256, aspect: '1:1',
+      grid: 512, aspect: '1:1',
       s1: 2.2, ratio: 2.1, A1: 1.9, A2: 1.75, beta: 7, theta: 0.35, h: 0.28,
       plan: 'spiral', start: 0.25, startNoise: 0.12, h0: 0,
       running: true, steps: 3, dt: 0.12, noise: 0.004, warmup: 600,
@@ -23615,8 +23656,9 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
       RANGE('Picture', 'contrast', 'Contrast', PAINT, 0.5, 2.2, 0.02, f2),
       RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.6, 0.02, pct),
     ],
+    legacy: { 2: { grid: 256 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: {
-      mode: 'ground', grid: 256, omega: 0.75, g: 600, half: 9, trap: 1, startNoise: 0.2,
+      mode: 'ground', grid: 512, omega: 0.75, g: 600, half: 9, trap: 1, startNoise: 0.2,
       running: true, steps: 40, dtScale: 0.35, warmup: 16000,
       view: 'density', markR: 1.2, bond: 0.8,
       exposure: 1, gamma: 1, contrast: 1, grain: 0.03,
@@ -24591,8 +24633,9 @@ void main(){
       RANGE('Picture', 'contrast', 'Contrast', PAINT, 0.5, 2.2, 0.02, f2),
       RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.6, 0.02, pct),
     ],
+    legacy: { 2: { grid: 256 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: {
-      grid: 256, aspect: '1:1',
+      grid: 512, aspect: '1:1',
       a0: 0.3, a1: 1.2, beta: 1, sigma: 0.6, nu: 1.2, lambda: 0.9, noise: 0.03, startNoise: 0.35,
       running: true, steps: 4, dtScale: 0.4, warmup: 2500,
       view: 'density', streak: 0.5, lo: 0, hi: 1.6,
@@ -26962,8 +27005,9 @@ void main(){
       RANGE('Picture', 'contrast', 'Contrast', PAINT, 0.5, 2.2, 0.02, f2),
       RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.6, 0.02, pct),
     ],
+    legacy: { 2: { grid: 128 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
     defaults: {
-      grid: 128, aspect: '1:1',
+      grid: 384, aspect: '1:1',
       geom: 'point', srad: 4, b0: 0.22, gnoise: 0.03, gscale: 45,
       k: 2, Da: 1, Dbr: 0.12, Dcr: 0.3,
       cnuc: 0.055, csr: 0.22, pn: 1, pg: 3, dsat: 0.3, njit: 0,

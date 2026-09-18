@@ -84,7 +84,7 @@ The same data in machine-readable form is [\`techniques.json\`](techniques.json)
 None of the science is original to this project. Each technique names the people whose work it implements.
 
 `;
-  for (const m of mods) md += `**${esc(m.name)}** — ${esc(m.credit)}\n\n`;
+  for (const m of mods) md += `**${esc(m.name)}**. ${esc(m.credit)}\n\n`;
   fs.writeFileSync(path.resolve(__dirname, '..', 'TECHNIQUES.md'), md);
   console.log('wrote TECHNIQUES.md and techniques.json:', mods.length, 'techniques');
 })();

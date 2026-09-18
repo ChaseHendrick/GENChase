@@ -26,6 +26,25 @@ jobs:
       - name: Structural checks
         run: node tools/lint.js
 
+  recipes:
+    name: recipe compatibility
+    runs-on: ubuntu-latest
+    needs: lint
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright@1.49.1
+          npx playwright install --with-deps chromium
+      # Every `legacy:` declaration in studio.html becomes four assertions, so a default that moves
+      # without declaring what it used to be fails here rather than silently rewriting old plates.
+      - name: Older recipes still reprint
+        run: node tools/recipe.js
+
   plates:
     name: plates (${{ matrix.id }})
     runs-on: ubuntu-latest
