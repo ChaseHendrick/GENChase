@@ -1,0 +1,74 @@
+name: check
+
+# The browser harness is the real verification, but a full sweep of 52 techniques takes hours on a
+# software renderer, so running all of it on every push would mean nobody waits for it. Split it:
+# the structural lint is instant and gates every push, and the browser jobs cover one technique from
+# each architecture family, which is what catches a change to a shared factory.
+#
+# Before merging anything that touches a simulation, run the full sweep locally:
+#   sh tools/checkall.sh studio.html /tmp/all.log <every id printed by tools/lint.js>
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Structural checks
+        run: node tools/lint.js
+
+  plates:
+    name: plates (${{ matrix.id }})
+    runs-on: ubuntu-latest
+    needs: lint
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        # One per architecture family: the shared GPU pde factory, the multi-species reaction
+        # factory, the waves block, a CPU lattice, vector line work, a CPU density map, a raymarch,
+        # and a continuous cellular automaton.
+        id: [cahn, turing, schrodinger, ising, tilings, attractors, fractal, life]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright@1.49.1
+          npx playwright install --with-deps chromium
+      - name: Plate check
+        run: node tools/check.js ${{ matrix.id }} 12000
+
+  prints:
+    name: print export (${{ matrix.id }})
+    runs-on: ubuntu-latest
+    needs: lint
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        # Export recomputes the field at print pixels rather than upscaling the screen, so it is a
+        # different code path from the plate check. One raster technique and one vector technique.
+        id: [cahn, tilings]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright@1.49.1
+          npx playwright install --with-deps chromium
+      - name: Export at 8 in, 300 ppi
+        run: node tools/export.js ${{ matrix.id }} 8 300 8000 240000
