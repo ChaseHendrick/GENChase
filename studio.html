@@ -17851,6 +17851,382 @@ void main(){
       exportPNG(w, h) { if (!S) return Promise.reject(new Error('nothing to export')); return rig.exportPNG(w, h, render); },
     };
   }
+
+  /* ---------- Rayleigh–Bénard ---------- */
+  Studio.register({
+    id: 'convection',
+    name: 'Rayleigh–Bénard',
+    tab: 'Convection',
+    subtitle: 'heated from below · 1900',
+    order: 99,
+    equation: '∂ω/∂t + u·∇ω = √(Pr/Ra) ∇²ω + ∂T/∂x,   ∂T/∂t + u·∇T = ∇²T/√(Ra Pr),   ∇²ψ = −ω,   u = ∂ψ/∂y, v = −∂ψ/∂x',
+    credit: "Henri Bénard, Revue générale des Sciences pures et appliquées 11, 1261 (1900), saw the cells in a thin layer of spermaceti heated from below. Lord Rayleigh, Philosophical Magazine 32, 529 (1916), showed with the Boussinesq equations that the layer turns over only once the number now named for him passes a threshold: 657.5 for free surfaces, 1708 for rigid plates (Jeffreys 1928; Pellew and Southwell 1940). This is the two-dimensional Boussinesq system in vorticity-streamfunction form, scaled by the free-fall time, with a red-black SOR Poisson solve for ψ, semi-Lagrangian advection and Thom's wall vorticity.",
+    blurb: 'A pan of fluid, hot floor and cold lid. Below Ra ≈ 1708 heat simply conducts and nothing moves. Above it the layer rolls over in cells whose width is about the depth of the pan. Push Ra to a hundred thousand and the rolls give way to plumes: thin thermal boundary layers grow on the plates until a blob of hot fluid tears free and rises as a mushroom, its cold twin falling from the lid. Push further and the plumes fight each other in a turbulent soup. The plate shows temperature, or the vorticity that drives it, or a schlieren view of the temperature gradient, the way a shadowgraph shows convection in a lab. Drag to drop a warm blob into the flow.',
+    schema: GRID.concat([
+      RANGE('Convection', 'logRa', 'Rayleigh number', LIVE, 3, 7, 0.05, fmtRa, {
+        hint: 'Buoyancy against viscosity and diffusion. Onset at 1708 (rigid plates). 10⁴ to 10⁵: steady cells. 10⁵ to 10⁶: plumes. Higher: turbulent (under-resolved at these grids).' }),
+      RANGE('Convection', 'Pr', 'Prandtl number', LIVE, 0.1, 10, 0.1, f1, { hint: 'Viscosity over thermal diffusivity. 0.7 is air, 7 is water. Low Pr: swirling, inertial. High Pr: sluggish, viscous.' }),
+      { group: 'Convection', key: 'wall', label: 'Plates', type: 'seg', kind: LIVE, options: [['noslip', 'No-slip'], ['free', 'Free-slip']] },
+      { group: 'Seeding', key: 'init', label: 'Perturbation', type: 'seg', kind: GEOM, options: [['noise', 'Noise'], ['rolls', 'Rolls'], ['blobs', 'Blobs'], ['plume', 'One plume']] },
+      RANGE('Seeding', 'pert', 'Amplitude', GEOM, 0.01, 0.5, 0.01, f2),
+      RANGE('Seeding', 'rolls', 'Rolls across', GEOM, 1, 12, 1, String, { dimUnless: s => s.init === 'rolls' }),
+    ]).concat(simFields(0.0005, 0.03, 0.0005, v => v.toFixed(4))).concat([
+      RANGE('Simulation', 'iters', 'SOR sweeps per step', LIVE, 1, 12, 1, String, { hint: 'Red-black SOR passes on ∇²ψ = −ω each step, warm-started from the last step.' }),
+    ]).concat([
+      { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, wrap: true, options: [['temp', 'Temperature'], ['etched', 'Etched'], ['vort', 'Vorticity'], ['schlieren', 'Schlieren']] },
+      RANGE('Picture', 'etch', 'Etch depth', PAINT, 0, 1, 0.02, f2, { dimUnless: s => s.view === 'etched' }),
+    ]).concat(toneFields()),
+    defaults: {
+      grid: 192, aspect: '16:9',
+      logRa: 5.6, Pr: 1, wall: 'noslip', init: 'noise', pert: 0.25, rolls: 2,
+      running: true, steps: 3, dt: 0.011, warmup: 600, iters: 4,
+      view: 'etched', etch: 0.5, exposure: 1.3, gamma: 1, contrast: 1.05, grain: 0.04,
+      seed: 'benard-1900',
+    },
+    presets: {
+      plumes: pre('Plumes', { logRa: 5.6, Pr: 1, init: 'noise', pert: 0.25, view: 'etched', etch: 0.5, exposure: 1.3, warmup: 600 }, Pal.thermal),
+      rolls: pre('Rolls', { logRa: 4.7, Pr: 1, init: 'rolls', rolls: 1, pert: 0.25, grid: 128, view: 'temp', exposure: 1.2, warmup: 1200, aspect: '3:2' }, Pal.harbor),
+      mushroom: pre('Mushrooms', { logRa: 5.8, Pr: 1, init: 'blobs', pert: 0.2, view: 'etched', etch: 0.6, exposure: 1.3, warmup: 700 }, Pal.kiln),
+      turbulent: pre('Turbulent', { logRa: 6.5, Pr: 0.7, init: 'noise', pert: 0.2, grid: 256, view: 'temp', warmup: 900, gamma: 0.9 }, Pal.ember),
+      schlieren: pre('Schlieren', { logRa: 5.8, Pr: 1, init: 'noise', pert: 0.2, view: 'schlieren', warmup: 900, exposure: 1 }, Pal.xray),
+      vorticity: pre('Vorticity', { logRa: 5.5, Pr: 0.7, init: 'blobs', pert: 0.2, view: 'vort', warmup: 800 }, Pal.glacier),
+      oneplume: pre('One plume', { logRa: 5.6, Pr: 1, init: 'plume', pert: 0.4, view: 'etched', etch: 0.5, exposure: 1.3, warmup: 800, aspect: '16:9' }, Pal.verdigris),
+    },
+    closedGroups: ['Seeding'],
+    hints: {
+      Convection: 'Ra is the whole story: conduction, cells, plumes, turbulence, in that order. Pr decides whether the plumes are wispy (low) or blobby (high). Time is in free-fall units, so a plume crosses the layer in about one.',
+      Simulation: 'The time step is clamped to the explicit diffusion bound for this Ra, Pr and grid, so low Ra runs slowly. More SOR sweeps track the streamfunction more tightly.',
+      Picture: 'Temperature is T through the palette, floor at the bottom. Etched darkens the edges of the plumes. Schlieren is |∇T|, the shadowgraph of the lab.',
+    },
+    palette: true, defaultPalette: 'thermal', paletteLabel: 'Colors (cold → hot)',
+    headline: 'logRa', headlineLabel: 'Ra',
+    sanitize(s) {
+      s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512);
+      s.logRa = U.clamp(Number(s.logRa) || 5, 3, 7);
+      s.Pr = U.clamp(Number(s.Pr) || 1, 0.1, 10);
+      s.iters = U.clamp(Math.round(Number(s.iters) || 4), 1, 12);
+      s.dt = U.clamp(Math.min(Number(s.dt) || 0.008, convDtMax(s)), 0.00005, 0.03);
+    },
+    surprise(rng) {
+      const logRa = rng.pick([4.5, 5, 5.3, 5.6, 6, 6.4]);
+      const init = rng.pick(['noise', 'noise', 'blobs', 'rolls', 'plume']);
+      return {
+        grid: rng.pick([192, 192, 256]), aspect: rng.pick(['16:9', '16:9', '3:2']),
+        logRa, Pr: rng.pick([0.7, 1, 1, 2]), wall: rng() < 0.8 ? 'noslip' : 'free',
+        init, pert: rng.range(0.15, 0.35), rolls: rng.int(1, 3),
+        running: true, steps: rng.int(2, 4), dt: 0.011, warmup: rng.int(600, 900), iters: 4,
+        view: rng.pick(['temp', 'temp', 'etched', 'schlieren', 'vort']), etch: rng.range(0.4, 0.8),
+        exposure: rng.range(0.95, 1.2), gamma: rng.range(0.85, 1.1), contrast: rng.range(1, 1.2), grain: rng.pick([0, 0.04, 0.08]),
+      };
+    },
+    create: convectionCreate,
+  });
+
+  function raOf(s) { return Math.pow(10, s.logRa); }
+  function fmtRa(v) {
+    const e = Math.floor(v), m = Math.pow(10, v - e);
+    const sup = String(e).replace(/\d/g, d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[+d]);
+    return m.toFixed(1) + '×10' + sup;
+  }
+  // Explicit diffusion limit on the 5-point Laplacian plus a semi-Lagrangian accuracy cap.
+  function convDtMax(s) {
+    const [, H] = sizeOf(s);
+    const dx = 1 / (H - 1);
+    const Ra = raOf(s), Pr = s.Pr;
+    const kappa = 1 / Math.sqrt(Ra * Pr), nu = Math.sqrt(Pr / Ra);
+    return Math.min(0.2 * dx * dx / Math.max(kappa, nu), 1.2 * dx);
+  }
+
+  // Free-fall units: length = layer depth, velocity = sqrt(g alpha dT d). F texture: r = T, g = omega.
+  // PSI texture: r = psi. VEL texture: r = psi, g = u, b = v. x is periodic (hardware repeat); y walls are
+  // handled in the shaders: row 0 is the hot floor, row H-1 the cold lid.
+  // Advection pass: semi-Lagrangian back-trace (RK2 midpoint) with a clamped bicubic fetch of (T, omega).
+  // Wall rows get their fixed temperature and Thom's vorticity (no-slip) or zero (free-slip).
+  const CONV_ADV_FS = HEAD + `
+uniform sampler2D u_f, u_vel;
+uniform vec2 u_res;
+uniform float u_dt, u_dx;
+uniform int u_wall;
+${BILERP}
+${BICUBIC}
+void main(){
+  vec2 ij = floor(v_uv * u_res);
+  float H = u_res.y;
+  if (ij.y < 0.5 || ij.y > H - 1.5) {
+    float inner = ij.y < 0.5 ? 1.0 : H - 2.0;
+    float psi1 = texture(u_vel, (vec2(ij.x, inner) + 0.5) / u_res).r;
+    float w = (u_wall == 0) ? -2.0 * psi1 / (u_dx * u_dx) : 0.0;
+    outColor = vec4(ij.y < 0.5 ? 1.0 : 0.0, w, 0.0, 1.0);
+    return;
+  }
+  vec2 v0 = texture(u_vel, v_uv).gb / u_dx;
+  vec2 mid = ij + 0.5 - 0.5 * u_dt * v0;
+  vec2 vm = bilerp(u_vel, mid, u_res).gb / u_dx;
+  vec2 src = ij + 0.5 - u_dt * vm;
+  vec2 adv = bicubic(u_f, src, u_res).rg;
+  outColor = vec4(adv, 0.0, 1.0);
+}`;
+
+  // Diffusion and buoyancy pass on the advected field. Diffusing the advected field (not the old one) is what
+  // keeps the grid-scale mode stable when the back-trace moves more than half a cell.
+  const CONV_DIFF_FS = HEAD + `
+uniform sampler2D u_f;
+uniform vec2 u_res;
+uniform float u_dt, u_kappa, u_nu, u_dx;
+vec4 F(vec2 ij){ ij.y = clamp(ij.y, 0.0, u_res.y - 1.0); return texture(u_f, (ij + 0.5) / u_res); }
+void main(){
+  vec2 ij = floor(v_uv * u_res);
+  vec2 c = texture(u_f, v_uv).rg;
+  if (ij.y < 0.5 || ij.y > u_res.y - 1.5) { outColor = vec4(c, 0.0, 1.0); return; }
+  vec2 e = F(ij + vec2(1.0, 0.0)).rg, w = F(ij - vec2(1.0, 0.0)).rg;
+  vec2 n = F(ij + vec2(0.0, 1.0)).rg, s = F(ij - vec2(0.0, 1.0)).rg;
+  vec2 lap = (e + w + n + s - 4.0 * c) / (u_dx * u_dx);
+  float Tx = (e.x - w.x) / (2.0 * u_dx);
+  float T = c.x + u_dt * u_kappa * lap.x;
+  float om = c.y + u_dt * (u_nu * lap.y + Tx);
+  outColor = vec4(clamp(T, 0.0, 1.0), om, 0.0, 1.0);
+}`;
+
+  // One red-black SOR half sweep for lap psi = -omega with psi = 0 on the walls.
+  const CONV_SOR_FS = HEAD + `
+uniform sampler2D u_psi, u_f;
+uniform vec2 u_res;
+uniform float u_dx, u_omega;
+uniform int u_parity;
+float Ps(vec2 ij){ ij.y = clamp(ij.y, 0.0, u_res.y - 1.0); return texture(u_psi, (ij + 0.5) / u_res).r; }
+void main(){
+  vec2 ij = floor(v_uv * u_res);
+  float cur = texture(u_psi, v_uv).r;
+  if (ij.y < 0.5 || ij.y > u_res.y - 1.5) { outColor = vec4(0.0, 0.0, 0.0, 1.0); return; }
+  float parity = mod(ij.x + ij.y, 2.0);
+  if (abs(parity - float(u_parity)) > 0.5) { outColor = vec4(cur, 0.0, 0.0, 1.0); return; }
+  float om = texture(u_f, v_uv).g;
+  float sum = Ps(ij + vec2(1.0, 0.0)) + Ps(ij - vec2(1.0, 0.0)) + Ps(ij + vec2(0.0, 1.0)) + Ps(ij - vec2(0.0, 1.0));
+  float gs = 0.25 * (sum + u_dx * u_dx * om);
+  outColor = vec4(cur + u_omega * (gs - cur), 0.0, 0.0, 1.0);
+}`;
+
+  const CONV_VEL_FS = HEAD + `
+uniform sampler2D u_psi;
+uniform vec2 u_res;
+uniform float u_dx;
+uniform int u_wall;
+float Ps(vec2 ij){ ij.y = clamp(ij.y, 0.0, u_res.y - 1.0); return texture(u_psi, (ij + 0.5) / u_res).r; }
+void main(){
+  vec2 ij = floor(v_uv * u_res);
+  float p = texture(u_psi, v_uv).r;
+  float u = (Ps(ij + vec2(0.0, 1.0)) - Ps(ij - vec2(0.0, 1.0))) / (2.0 * u_dx);
+  float v = -(Ps(ij + vec2(1.0, 0.0)) - Ps(ij - vec2(1.0, 0.0))) / (2.0 * u_dx);
+  bool wall = ij.y < 0.5 || ij.y > u_res.y - 1.5;
+  if (wall) { v = 0.0; if (u_wall == 0) u = 0.0; }
+  outColor = vec4(p, u, v, 1.0);
+}`;
+
+  const CONV_RENDER_FS = HEAD + `
+uniform sampler2D u_f;
+uniform vec2 u_res;
+uniform int u_view;
+uniform float u_wMax, u_gMax, u_dx, u_exposure, u_gamma, u_contrast, u_grain, u_etch;
+${G.GLSL.hash}
+${G.GLSL.ramp}
+${BILERP}
+${TONE}
+void main(){
+  vec2 p = v_uv * u_res;
+  vec4 c = bilerp(u_f, p, u_res);
+  float T = c.r;
+  vec2 gT = vec2(bilerp(u_f, p + vec2(1.0, 0.0), u_res).r - bilerp(u_f, p - vec2(1.0, 0.0), u_res).r,
+                 bilerp(u_f, p + vec2(0.0, 1.0), u_res).r - bilerp(u_f, p - vec2(0.0, 1.0), u_res).r) / (2.0 * u_dx);
+  float g = length(gT) / max(u_gMax, 1e-6);
+  vec3 col;
+  if (u_view == 1) {
+    float t = 0.5 + 0.5 * clamp(c.g / max(u_wMax, 1e-6) * u_exposure, -1.0, 1.0);
+    col = ramp(pow(t, u_gamma));
+  } else if (u_view == 2) {
+    float t = pow(1.0 - exp(-g * u_exposure * 1.5), u_gamma);
+    col = ramp(t);
+  } else {
+    float t = pow(clamp(0.5 + (T - 0.5) * u_exposure, 0.0, 1.0), u_gamma);
+    col = ramp(t);
+    if (u_view == 3) col *= 1.0 - u_etch * clamp(g * 1.2, 0.0, 1.0);
+  }
+  outColor = vec4(tone(col, u_contrast, u_grain), 1.0);
+}`;
+
+  // Per block: rg = 16-bit (0.5 + mean v T) for the Nusselt estimate, b = log max |omega|, a = log max |grad T|.
+  const CONV_REDUCE_FS = HEAD + `
+uniform sampler2D u_f, u_vel; uniform vec2 u_res, u_block; uniform float u_dx;
+void main(){
+  vec2 o = floor(v_uv * (u_res / u_block)) * u_block;
+  vec2 px = 1.0 / u_res;
+  float svt = 0.0, mw = 0.0, mg = 0.0;
+  for (int y = 0; y < 8; y++) for (int x = 0; x < 8; x++) {
+    vec2 uv = (o + (vec2(x, y) + 0.5) * u_block * 0.125) / u_res;
+    vec4 c = texture(u_f, uv);
+    vec4 v = texture(u_vel, uv);
+    svt += v.b * c.r;
+    mw = max(mw, abs(c.g));
+    float gx = (texture(u_f, uv + vec2(px.x, 0.0)).r - texture(u_f, uv - vec2(px.x, 0.0)).r) / (2.0 * u_dx);
+    float gy = (texture(u_f, uv + vec2(0.0, px.y)).r - texture(u_f, uv - vec2(0.0, px.y)).r) / (2.0 * u_dx);
+    mg = max(mg, length(vec2(gx, gy)));
+  }
+  float m = clamp(0.5 + svt / 64.0, 0.0, 1.0) * 255.0;
+  float hi = floor(m) / 255.0, lo = fract(m);
+  outColor = vec4(hi, lo, clamp(log2(1.0 + mw) / 32.0, 0.0, 1.0), clamp(log2(1.0 + mg) / 32.0, 0.0, 1.0));
+}`;
+
+  function convectionCreate(host) {
+    const rig = makeRig(host, { adv: CONV_ADV_FS, diff: CONV_DIFF_FS, sor: CONV_SOR_FS, vel: CONV_VEL_FS, render: CONV_RENDER_FS, reduce: CONV_REDUCE_FS, splat: G.GLSL.splatFS });
+    if (rig.dead) return rig.dead;
+    const gl = rig.gl, P = rig.P;
+    let F = null, PSI = null, velT = null, gw = 0, gh = 0, dx = 1;
+    let wMax = 0, gMax = 0, nusselt = 1, simTime = 0;
+
+    function ensureGrid(s) {
+      const [W, H] = sizeOf(s);
+      if (F && gw === W && gh === H) return;
+      if (F) { F.dispose(); PSI.dispose(); velT.dispose(); }
+      F = new G.PingPong(gl, W, H, { type: rig.texType, filter: 'nearest', wrap: 'repeat' });
+      PSI = new G.PingPong(gl, W, H, { type: rig.texType, filter: 'nearest', wrap: 'repeat' });
+      velT = new G.Target(gl, W, H, { type: rig.texType, filter: 'nearest', wrap: 'repeat' });
+      gw = W; gh = H; dx = 1 / (H - 1);
+    }
+    function seedField(s) {
+      const rng = U.makeRng(s.seed + '/convection');
+      const data = new Float32Array(gw * gh * 4);
+      const blobs = [];
+      const nb = s.init === 'plume' ? 1 : rng.int(4, 8);
+      for (let i = 0; i < nb; i++) {
+        blobs.push({ x: rng() * gw, y: s.init === 'plume' ? 2 : rng.range(0.15, 0.85) * gh, r: rng.range(0.04, 0.09) * gw, sg: s.init === 'plume' ? 1 : (rng() < 0.5 ? -1 : 1) });
+      }
+      for (let y = 0; y < gh; y++) for (let x = 0; x < gw; x++) {
+        const yn = y / (gh - 1);
+        let pert = 0;
+        if (s.init === 'noise') pert = rng() * 2 - 1;
+        else if (s.init === 'rolls') pert = Math.cos(TAU * s.rolls * x / gw + 0.3 * (rng() - 0.5)) + 0.15 * (rng() * 2 - 1);
+        else {
+          for (const b of blobs) {
+            let ddx = x - b.x; if (ddx > gw / 2) ddx -= gw; if (ddx < -gw / 2) ddx += gw;
+            const ddy = y - b.y;
+            pert += b.sg * 2 * Math.exp(-(ddx * ddx + ddy * ddy) / (2 * b.r * b.r));
+          }
+          pert += 0.05 * (rng() * 2 - 1);
+        }
+        const i = (y * gw + x) * 4;
+        let T = 1 - yn + s.pert * pert * Math.sin(PI * yn);
+        if (y === 0) T = 1; else if (y === gh - 1) T = 0;
+        data[i] = U.clamp(T, 0, 1); data[i + 1] = 0; data[i + 2] = 0; data[i + 3] = 1;
+      }
+      return data;
+    }
+    function coeffs(s) {
+      const Ra = raOf(s), Pr = s.Pr;
+      return { kappa: 1 / Math.sqrt(Ra * Pr), nu: Math.sqrt(Pr / Ra) };
+    }
+    function solvePsi(s, iters) {
+      // a little under the optimal factor: at 4 sweeps per step the optimum leaves an oscillatory residual next to strong sources
+      const om = 0.95 * 2 / (1 + Math.sin(PI / gh));
+      for (let i = 0; i < iters; i++) {
+        for (let par = 0; par < 2; par++) {
+          P.sor.draw(PSI.write, { u_psi: PSI.read, u_f: F.read, u_res: [gw, gh], u_dx: dx, u_omega: om, u_parity: { int: par } });
+          PSI.swap();
+        }
+      }
+      P.vel.draw(velT, { u_psi: PSI.read, u_res: [gw, gh], u_dx: dx, u_wall: { int: s.wall === 'free' ? 1 : 0 } });
+    }
+    function step(n) {
+      const s = host.getState();
+      const c = coeffs(s);
+      for (let i = 0; i < n; i++) {
+        solvePsi(s, s.iters);
+        P.adv.draw(F.write, { u_f: F.read, u_vel: velT, u_res: [gw, gh], u_dt: s.dt, u_dx: dx, u_wall: { int: s.wall === 'free' ? 1 : 0 } });
+        F.swap();
+        P.diff.draw(F.write, { u_f: F.read, u_res: [gw, gh], u_dt: s.dt, u_kappa: c.kappa, u_nu: c.nu, u_dx: dx });
+        F.swap();
+      }
+      rig.stepCount += n; simTime += n * s.dt;
+    }
+    function measure(extra) {
+      rig.reduce({ u_f: F.read, u_vel: velT, u_res: [gw, gh], u_block: [gw / RED, gh / RED], u_dx: dx }, b => applyMeasure(b, extra));
+    }
+    function applyMeasure(b, extra) {
+      const s = host.getState();
+      // white points come from the interior blocks (the wall rows carry Thom's vorticity and the wall gradient)
+      let svt = 0;
+      const ws = [], gs = [];
+      for (let i = 0; i < RED * RED; i++) {
+        svt += (b[i * 4] + b[i * 4 + 1] / 255) / 255 - 0.5;
+        const row = Math.floor(i / RED);
+        if (row >= 2 && row < RED - 2) { ws.push(b[i * 4 + 2]); gs.push(b[i * 4 + 3]); }
+      }
+      nusselt = 1 + Math.sqrt(raOf(s) * s.Pr) * (svt / (RED * RED));
+      ws.sort((x, y) => x - y); gs.sort((x, y) => x - y);
+      const q = Math.floor(0.97 * (ws.length - 1));
+      const tw = Math.max(decLog(ws[q]), 1e-3), tg = Math.max(decLog(gs[q]), 1e-3);
+      const a = rig.raf ? 0.5 : 1;
+      wMax = U.lerp(wMax, tw, a);
+      gMax = U.lerp(gMax, tg, a);
+      status(extra);
+      if (!rig.raf) render();
+    }
+    function status(extra) {
+      const s = host.getState();
+      const Ra = raOf(s);
+      const regime = Ra < 1708 ? 'conductive' : Ra < 2e4 ? 'rolls' : Ra < 5e5 ? 'plumes' : 'turbulent';
+      host.setStatus(
+        '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
+        '<span>Ra <b>' + fmtRa(s.logRa) + '</b> · Pr <b>' + s.Pr.toFixed(1) + '</b> · ' + regime + '</span>' +
+        '<span>Nu ≈ <b>' + Math.max(1, nusselt).toFixed(1) + '</b> · t <b>' + simTime.toFixed(1) + '</b></span>' +
+        '<span>step <b>' + rig.stepCount.toLocaleString() + '</b></span>' +
+        (extra ? '<span>' + extra + '</span>' : '')
+      );
+    }
+    function render(target) {
+      const s = host.getState();
+      const [ramp] = rig.ramps(s);
+      const view = s.view === 'vort' ? 1 : s.view === 'schlieren' ? 2 : s.view === 'etched' ? 3 : 0;
+      P.render.draw(target || null, {
+        u_f: F.read, u_res: [gw, gh], u_ramp: ramp, u_view: { int: view },
+        u_wMax: wMax, u_gMax: gMax, u_dx: dx, u_etch: s.etch,
+        u_exposure: s.exposure, u_gamma: s.gamma, u_contrast: s.contrast, u_grain: s.grain,
+      });
+    }
+    function loop() { rig.startLoop(step, render, measure); }
+    function burst(total) { rig.burst(total, step, render, measure, status, () => { measure(''); loop(); }); }
+
+    return {
+      aspect(s) { return ASPECTS[s.aspect] || 1; },
+      regenerate() {
+        rig.stop(); rig.stepCount = 0; simTime = 0; wMax = 30; gMax = 3; nusselt = 1;
+        const s = host.getState();
+        ensureGrid(s);
+        rig.upload(F.read, seedField(s));
+        PSI.read.clear(0, 0, 0, 1); PSI.write.clear(0, 0, 0, 1); velT.clear(0, 0, 0, 1);
+        // a deeper first solve so the warm start has something to start from
+        solvePsi(s, 40);
+        if (s.warmup > 0) burst(s.warmup); else { render(); measure(''); loop(); }
+      },
+      repaint() { if (F) render(); },
+      live(key) { if (!F) return; if (key === 'running') loop(); else if (!rig.raf) loop(); },
+      resize() { if (F) render(); },
+      pause() { rig.stop(); },
+      resume() { if (F) { render(); loop(); } },
+      action(key) {
+        if (key === 'reseed') this.regenerate();
+        else if (key === 'burst') burst(400);
+      },
+      disturb(p) {
+        if (!F) return;
+        // a warm blob under the pointer, spun by the drag
+        const swirl = U.clamp((p.dx || 0) * 40, -1, 1) * 20;
+        P.splat.draw(F.write, { u_src: F.read, u_pos: [p.x, p.yGL], u_add: [0.5, swirl, 0, 0], u_rad: 0.045, u_amt: 1, u_mode: { int: 1 } });
+        F.swap();
+        render();
+        if (!rig.raf) loop();
+      },
+      exportPNG(w, h) { if (!F) return Promise.reject(new Error('nothing to export')); return rig.exportPNG(w, h, render); },
+    };
+  }
 })();
 </script>
 <script>Studio.boot();</script>
