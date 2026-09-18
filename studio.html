@@ -13203,8 +13203,8 @@ void main(){
       RANGE('Copolymer', 'c0', 'Mean m', GEOM, -0.5, 0.5, 0.01, f2, {
         hint: 'm = 0: lamellae. |m| ≳ 0.2: spots of the minority block. The mean is conserved.' }),
       RANGE('Copolymer', 'eps', 'Interface width ε', LIVE, 0.7, 2.2, 0.05, f2),
-      RANGE('Copolymer', 'sigma', 'Long-range σ', LIVE, 0, 24, 0.2, f1, {
-        hint: 'σ=0 is plain Cahn–Hilliard (coarsens forever). σ>0 sets the domain size. Larger σ, finer pattern.' }),
+      RANGE('Copolymer', 'sigma', 'Long-range σ', LIVE, 0, 0.24, 0.002, f3, {
+        hint: 'σ=0 is plain Cahn–Hilliard (coarsens forever). σ>0 sets the domain size: larger σ, finer pattern. The melt is only unstable while σ < 1/(4ε²), about 0.23 at the default ε, so past that the film stays uniform.' }),
       RANGE('Copolymer', 'M', 'Mobility M', LIVE, 0.2, 2.5, 0.05, f2),
       { group: 'Copolymer', key: 'deg', label: 'Degenerate mobility', type: 'toggle', kind: LIVE },
       RANGE('Copolymer', 'amp', 'Quench amplitude', GEOM, 0.02, 0.5, 0.01, f2),
@@ -13216,17 +13216,17 @@ void main(){
     ])),
     defaults: {
       grid: 192, aspect: '1:1', bc: 'periodic',
-      c0: 0, eps: 1.05, sigma: 8, M: 1, deg: false, amp: 0.14, noise: 0.003, init: 'quench',
+      c0: 0, eps: 1.05, sigma: 0.06, M: 1, deg: false, amp: 0.14, noise: 0.003, init: 'quench',
       running: true, steps: 3, dt: 0.025, warmup: 700,
       view: 'field', lo: -1, hi: 1, bump: 4, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.08, grain: 0.05,
       seed: 'ohta-1986',
     },
     presets: {
-      lamellae: pre('Lamellae', { c0: 0, sigma: 8, init: 'quench', view: 'field', warmup: 800 }, Pal.graphite),
-      spots: pre('Spots', { c0: -0.32, sigma: 10, init: 'quench', view: 'field', warmup: 900, amp: 0.2 }, Pal.petri),
-      fingerprint: pre('Fingerprint', { c0: 0.08, sigma: 12, view: 'grad', warmup: 750, eps: 0.9 }, Pal.xray),
-      relief: pre('Relief', { c0: 0, sigma: 7, view: 'shade', bump: 6, warmup: 700 }, Pal.harbor),
-      coarse: pre('Soft σ', { c0: 0, sigma: 2.5, view: 'field', warmup: 600 }, Pal.glacier),
+      lamellae: pre('Lamellae', { c0: 0, sigma: 0.05, init: 'quench', view: 'field', warmup: 800 }, Pal.graphite),
+      spots: pre('Spots', { c0: -0.32, sigma: 0.09, init: 'quench', view: 'field', warmup: 900, amp: 0.2 }, Pal.petri),
+      fingerprint: pre('Fingerprint', { c0: 0.08, sigma: 0.12, view: 'grad', warmup: 750, eps: 0.9 }, Pal.xray),
+      relief: pre('Relief', { c0: 0, sigma: 0.05, view: 'shade', bump: 6, warmup: 700 }, Pal.harbor),
+      coarse: pre('Soft σ', { c0: 0, sigma: 0.015, view: 'field', warmup: 600 }, Pal.glacier),
     },
     closedGroups: ['Seeding'],
     hints: {
@@ -13234,12 +13234,12 @@ void main(){
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (A → B)',
     headline: 'sigma', headlineLabel: 'σ',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.025, 0.005, 0.12); s.sigma = U.clamp(Number(s.sigma) || 0, 0, 40); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.025, 0.005, 0.12); s.sigma = U.clamp(Number(s.sigma) || 0, 0, 0.3); },
     surprise(rng) {
       const c0 = rng.pick([0, 0, 0.05, -0.3, 0.32]);
       return {
         grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5']),
-        c0, eps: rng.range(0.85, 1.5), sigma: rng.pick([4, 7, 8, 12, 16]), M: 1, deg: rng() < 0.15,
+        c0, eps: rng.range(0.85, 1.5), sigma: rng.range(0.02, 0.11), M: 1, deg: rng() < 0.15,
         amp: rng.range(0.08, 0.22), noise: rng.pick([0, 0.003, 0.01]), init: 'quench',
         running: true, steps: rng.int(2, 4), dt: 0.025, warmup: rng.int(400, 900),
         view: rng.pick(['field', 'field', 'grad', 'shade']), lo: -1, hi: 1, bump: rng.range(3, 8),
@@ -13254,8 +13254,10 @@ void main(){
       muUniforms: s => ({ u_eps2: s.eps * s.eps }),
       stepUniforms: s => ({ u_M: s.M, u_deg: s.deg ? 1 : 0, u_sigma: s.sigma, u_m: s.c0 }),
       status: (s, mean, abs) => {
-        const kind = Math.abs(s.c0) < 0.18 ? (s.sigma < 1 ? 'coarsening' : 'lamellar') : 'spots';
-        return '<span>⟨u⟩ <b>' + mean.toFixed(2) + '</b> · ' + kind + '</span><span>σ <b>' + s.sigma.toFixed(1) + '</b></span>';
+        const kind = Math.abs(s.c0) < 0.18 ? (s.sigma < 0.02 ? 'coarsening' : 'lamellar') : 'spots';
+        // the melt only patterns while sigma is below 1/(4 eps^2); past that it relaxes to uniform
+        const uniform = s.sigma >= 1 / (4 * s.eps * s.eps);
+        return '<span>⟨u⟩ <b>' + mean.toFixed(2) + '</b> · ' + (uniform ? 'uniform (σ past 1/4ε²)' : kind) + '</span><span>σ <b>' + s.sigma.toFixed(3) + '</b></span>';
       },
       seed(s, W, H) {
         const rng = U.makeRng(s.seed + '/ohta');
@@ -13706,7 +13708,7 @@ void main(){
     name: 'Swarmalators',
     subtitle: 'oscillators that sync and swarm · 2017',
     order: 55.5,
-    equation: 'ẋᵢ = (1/N) Σⱼ (xⱼ−xᵢ)/rᵢⱼ · (1 + J cos Δθ),   θ̇ᵢ = (K/N) Σⱼ sin(Δθ)/rᵢⱼ',
+    equation: 'ẋᵢ = (1/N) Σⱼ [ (xⱼ−xᵢ)/rᵢⱼ · (1 + J cos Δθ) − (xⱼ−xᵢ)/rᵢⱼ² ],   θ̇ᵢ = (K/N) Σⱼ sin(Δθ)/rᵢⱼ',
     credit: "Kevin P. O’Keeffe, Hyunsuk Hong and Steven H. Strogatz, Nature Communications 8, 1504 (2017), 'Oscillators that sync and swarm'. Identical agents with a phase and a position: spatial attraction depends on phase agreement, and phase coupling falls with distance. Five collective states live in the (J, K) plane, including a static rainbow ring and an active phase wave.",
     blurb: 'A firefly that walks. Each agent has a place and a phase, and the two talk: agents of similar phase attract, opposite phase repel, and the phase coupling itself dies with distance. That is enough for five states that do not exist in either the Kuramoto model or a swarm alone. The rainbow ring is the one you cannot unsee — phase locked to polar angle, a colour wheel of bodies. Turn K a little negative and the ring splinters. More negative, and it never sits still.',
     schema: [
@@ -13804,8 +13806,10 @@ void main(){
             const ir = 1 / r;
             const coss = cs[j] * ci + sn[j] * si;
             const sinn = sn[j] * ci - cs[j] * si;
-            const coup = 1 + J * coss;
-            sx += dx * ir * coup; sy += dy * ir * coup; st += sinn * ir;
+            // attraction (A + J cos Δθ)·r̂ minus the hard-core repulsion B·r̂/r: without the second term
+            // every pair attracts at unit strength at any range and the swarm collapses to one point
+            const f = ir * (1 + J * coss) - ir * ir;
+            sx += dx * f; sy += dy * f; st += sinn * ir;
           }
           fx[i] = sx * invN; fy[i] = sy * invN; ft[i] = K * st * invN;
         }
