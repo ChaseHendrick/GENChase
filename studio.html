@@ -1434,7 +1434,16 @@ void main(){
         if (!isFinite(v)) v = mod.defaults[f.key];
         out[f.key] = clamp(v, f.min, f.max);
       } else if (f.type === 'seg') {
-        if (!f.options.some(o => o[0] === out[f.key])) out[f.key] = mod.defaults[f.key];
+        // Exact match first. Failing that, a numeric option matched by a numeric string: the Settings
+        // JSON is a text box a person edits by hand, and "grid": "512" is a reasonable thing to type.
+        // Strict equality alone silently threw that away and reset the control to its default, which
+        // is the same class of lie as a control that offers an option its validator clamps away.
+        if (!f.options.some(o => o[0] === out[f.key])) {
+          const v = out[f.key];
+          const loose = (typeof v === 'string' && v.trim() !== '' && isFinite(Number(v)))
+            ? f.options.find(o => typeof o[0] === 'number' && o[0] === Number(v)) : null;
+          out[f.key] = loose ? loose[0] : mod.defaults[f.key];
+        }
       } else if (f.type === 'toggle') out[f.key] = !!out[f.key];
     }
     if (mod.palette) {
