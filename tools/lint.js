@@ -76,6 +76,47 @@ for (const m of mods) {
 // for missing defaults on grid controls they do not have. A check that cries wolf gets switched off,
 // which costs more than it saves; the browser harness catches an undefined control as a blank plate.
 
+/* ---- 6b. a size control may not offer more than its own sanitizer allows ---- */
+// Three tabs shipped a grid control whose largest options did nothing: the segmented control offered
+// 1024 while the technique's own sanitize() clamped the value to 512 or 768 on the way in. The button
+// moved, the label changed, the plate did not, and nothing anywhere said so. A control that lies about
+// what it does is worse than a missing control, and this is the one kind of lie that can be checked
+// mechanically, so it is.
+//
+// The options are often not inside the module that uses them: a block defines one shared GRID array and
+// several techniques splice it into their schema. Scanning only the module body therefore misses exactly
+// the families where one edit changes six tabs at once, which is where this went wrong in the first
+// place. So the search falls back to the last grid options array declared earlier in the same script
+// block, which is how these files are actually organised.
+const GRID_OPTS = /key: 'grid'[\s\S]{0,240}?options: \[\[([\s\S]*?)\]\]/g;
+const blockStartFor = i => {
+  let best = 0;
+  for (const b of blocks) { if (b.index <= i && b.index > best) best = b.index; }
+  return best;
+};
+for (const m of mods) {
+  const cl = /s\.grid = U\.clamp\(Math\.round\(Number\(s\.grid\) \/ 2\) \* 2, (\d+), (\d+)\)/.exec(m.body);
+  if (!cl) continue;
+  let optsText = null;
+  const own = new RegExp(GRID_OPTS.source).exec(m.body);
+  if (own) optsText = own[1];
+  else {
+    const from = blockStartFor(m.start);
+    const before = src.slice(from, m.start);
+    let last = null, g = new RegExp(GRID_OPTS.source, 'g'), h;
+    while ((h = g.exec(before))) last = h;
+    if (last) optsText = last[1];
+  }
+  if (!optsText) continue;
+  const offered = [...optsText.matchAll(/(\d+),/g)].map(x => +x[1]);
+  if (!offered.length) continue;
+  const max = Math.max(...offered);
+  if (max > +cl[2]) {
+    fail(m.id + ' (line ' + m.line + ') offers grid ' + max + ' but its sanitize clamps grid to ' + cl[2] +
+      ': the larger options do nothing');
+  }
+}
+
 /* ---- 7. the prose agrees with the file ---- */
 const WORDS = { 49: 'Forty-nine', 50: 'Fifty', 51: 'Fifty-one', 52: 'Fifty-two', 53: 'Fifty-three', 54: 'Fifty-four',
   55: 'Fifty-five', 56: 'Fifty-six', 57: 'Fifty-seven', 58: 'Fifty-eight', 59: 'Fifty-nine', 60: 'Sixty', 61: 'Sixty-one',
