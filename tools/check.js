@@ -113,6 +113,18 @@ async function settle(p, maxMs, seed) {
     p.on('pageerror', e => { if (!NOISE.some(r => r.test(e.message))) errs.push('pageerror: ' + e.message); });
     // a 1 MB single file whose first module starts computing on load: give it time under a loaded machine
     await p.goto(url + '#' + hash, { waitUntil: 'domcontentloaded', timeout: 90000 });
+    // The studio paints a random plate while it boots and applies the hash immediately after. On a
+    // cold JIT that handover can take longer than a settle budget, and measuring before it lands
+    // reads the boot plate instead of the requested one: a false determinism failure, and a status
+    // with no grid in it, which silently disables the checkerboard detector. Wait for the seed the
+    // hash asked for before anything else looks at the page.
+    const want = decodeURIComponent((hash.split('/')[1] || ''));
+    if (want) {
+      try {
+        await p.waitForFunction(s2 => { const el = document.querySelector('#seed'); return !!el && el.value === s2; },
+                                want, { timeout: 60000, polling: 250 });
+      } catch (e) { errs.push('the studio never applied the seed "' + want + '" from the hash'); }
+    }
     return p;
   };
 
@@ -125,6 +137,17 @@ async function settle(p, maxMs, seed) {
   if (def.err) fails.push('default: ' + def.err);
   else if (flat(def)) fails.push('default plate is flat');
   else if (checker(def)) fails.push('default plate is the grid-scale checkerboard (neighbour correlation ' + def.nyq + '): the integrator is unstable');
+
+  // Capture the full recipe of the default plate before the preset loop mutates the persisted state.
+  // The determinism check used to load "id/seed/{running:false}", which pins only that one key and
+  // takes every other parameter from localStorage. By then the preset loop had rewritten it, so the
+  // two loads could legitimately be different plates and the test was measuring the wrong thing.
+  const fullRecipe = await p.evaluate(() => {
+    document.querySelector('#btn-settings').click();
+    const raw = (document.querySelector('#settings-text') || {}).value || '';
+    document.querySelector('#settings-close').click();
+    try { return JSON.parse(raw); } catch (e) { return null; }
+  });
 
   // 2. every preset
   const presets = await p.evaluate(() => [...document.querySelectorAll('#preset option')].map(o => o.value).filter(Boolean));
@@ -140,7 +163,9 @@ async function settle(p, maxMs, seed) {
   if (!presets.length) fails.push('no presets registered');
 
   // 3. same hash twice must give the same plate (running:false so living fields stop after warm-up)
-  const still = id + '/' + seed + '/' + b64url({ running: false });
+  const stillRecipe = fullRecipe ? Object.assign({}, fullRecipe, { running: false }) : { running: false };
+  const still = id + '/' + seed + '/' + b64url(stillRecipe);
+  if (!fullRecipe) console.log('determinism: could not read the settings JSON, falling back to a partial recipe');
   const a1 = await open(still); await settle(a1, wait, seed); const m1 = await measure(a1); await a1.close();
   const a2 = await open(still); await settle(a2, wait, seed); const m2 = await measure(a2);
   // A living plate with no pause key keeps stepping on a wall-clock budget, so two loads are only comparable at the
