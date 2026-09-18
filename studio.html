@@ -9135,8 +9135,11 @@ ${inCode}${layers}
   }
 
   // Gaussian weights, fan-in normalised; biases; per-neuron activation ids. All from the seed.
-  function buildWeights(s, arch) {
-    const rng = U.makeRng(s.seed + '/weights'), arng = U.makeRng(s.seed + '/act');
+  // attempt 0 uses the original sub-seeds, so every plate that already works is bit-for-bit what it
+  // was; only a draw that comes out degenerate advances to another one.
+  function buildWeights(s, arch, attempt) {
+    const tag = attempt ? '#' + attempt : '';
+    const rng = U.makeRng(s.seed + '/weights' + tag), arng = U.makeRng(s.seed + '/act' + tag);
     const data = new Float32Array(arch.cols * arch.rows * 4);
     let row = 0;
     for (let l = 0; l <= arch.L; l++) {
@@ -9211,7 +9214,7 @@ ${inCode}${layers}
       plasma: { label: 'Plasma', p: P({ layers: 4, width: 16, activation: 'sin', weightScale: 1.1, periodic: true, periodicFreq: 2.5, output: 'duo', contrast: 1.5, gamma: 0.9 }), palette: Studio.PALETTES.thermal },
       mandala: { label: 'Mandala', p: P({ layers: 4, width: 16, activation: 'mixed', weightScale: 1.3, symmetry: 'rot', symN: 8, output: 'duo', contrast: 1.5, zoom: 0.85 }), palette: Studio.PALETTES.ember },
       inkwash: { label: 'Ink wash', p: P({ layers: 3, width: 16, activation: 'gauss', weightScale: 1, theta: false, output: 'ramp', warp: 0.6, warpScale: 2, contrast: 1.1, gamma: 1.4, aspect: '2:3' }), palette: Studio.PALETTES.graphite },
-      circuit: { label: 'Circuit', p: P({ layers: 5, width: 16, activation: 'abs', weightScale: 3, output: 'duo', levels: 6, contrast: 1.6, symmetry: 'xy', theta: false }), palette: Studio.PALETTES.bioluminescent },
+      circuit: { label: 'Circuit', p: P({ layers: 4, width: 16, activation: 'abs', weightScale: 1.2, output: 'duo', levels: 6, contrast: 1.6, symmetry: 'xy', theta: false }), palette: Studio.PALETTES.bioluminescent },
       aurora: { label: 'Aurora', p: P({ layers: 3, width: 12, activation: 'mixed', weightScale: 1.2, output: 'duo', warp: 0.7, warpScale: 1, rotation: 20, aspect: '16:9', contrast: 1.3, gamma: 1.1, theta: false }), palette: Studio.PALETTES.glacier },
     },
     hints: {
@@ -9263,6 +9266,7 @@ ${inCode}${layers}
       const programs = new Map();   // arch key -> Pass (recompiled only when the architecture changes)
       let pass = null, ramp = null, rampKey = '', warpOff = [0, 0], ready = false;
       let raf = 0, animT = 0, last = 0, frameNo = 0;
+      let redrawn = 0;              // how many degenerate weight draws were skipped for this plate
 
       function ensureProgram(arch) {
         let p = programs.get(arch.key);
@@ -9300,7 +9304,9 @@ ${inCode}${layers}
       function status() {
         const s = host.getState();
         host.setStatus('<span>net <b>' + Math.round(s.layers) + '×' + s.width + '</b></span><span>' + s.activation + '</span>' +
-          '<span>z <b>' + zEff(s).toFixed(2) + '</b></span>' + (raf ? '<span>drifting</span>' : ''));
+          '<span>z <b>' + zEff(s).toFixed(2) + '</b></span>' + (raf ? '<span>drifting</span>' : '') +
+          // Say so rather than quietly handing back a different genome than the seed first drew.
+          (redrawn ? '<span title="The first draw from this seed saturated to a flat colour at these settings; a lower weight scale or fewer layers will find one that does not">redrawn <b>×' + redrawn + '</b></span>' : ''));
       }
       function stop() { cancelAnimationFrame(raf); raf = 0; }
       function frame(now) {
@@ -9316,6 +9322,31 @@ ${inCode}${layers}
         status();
       }
 
+      // Render a small probe and report whether the whole thing is one colour. Cheap: 48x48 through
+      // the same shader the plate uses, so it tests what will actually be drawn rather than a model
+      // of it.
+      function degenerate() {
+        const N = 48;
+        let T = null;
+        try {
+          T = new G.Target(gl, N, N, { type: 'rgba8' });
+          draw(T, N, N);
+          const px = new Uint8Array(N * N * 4);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, T.fbo);
+          gl.readPixels(0, 0, N, N, gl.RGBA, gl.UNSIGNED_BYTE, px);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+          let lo = 255, hi = 0;
+          for (let i = 0; i < px.length; i += 4) {
+            const L = 0.2126 * px[i] + 0.7152 * px[i + 1] + 0.0722 * px[i + 2];
+            if (L < lo) lo = L;
+            if (L > hi) hi = L;
+          }
+          return hi - lo < 8;
+        } catch (err) {
+          return false;                 // a probe that cannot run is not evidence of a bad draw
+        } finally { if (T) T.dispose(); }
+      }
+
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
         regenerate() {
@@ -9323,11 +9354,21 @@ ${inCode}${layers}
           const s = host.getState(), arch = archOf(s);
           try { ensureProgram(arch); }
           catch (err) { console.error(err); ready = false; host.setStatus('Shader compilation failed on this GPU'); return; }
-          gl.bindTexture(gl.TEXTURE_2D, wtex);
-          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, arch.cols, arch.rows, 0, gl.RGBA, gl.FLOAT, buildWeights(s, arch));
           const wr = U.makeRng(s.seed + '/warp');
           warpOff = [wr.range(0, 100), wr.range(0, 100)];
           ready = true;
+          // A CPPN is a random function and some draws are degenerate: every neuron lands in the
+          // same place for every pixel and the plate comes out one flat colour. It is not a rare
+          // curiosity. abs is expansive rather than saturating, so a deep stack of it blows up, and
+          // the mixed pool contains abs; measured, one seed in eight did this on Mandala. Redraw
+          // rather than hand back a blank sheet. Attempt 0 is the original draw, so a plate that
+          // already works does not move.
+          for (let attempt = 0; attempt < 4; attempt++) {
+            gl.bindTexture(gl.TEXTURE_2D, wtex);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, arch.cols, arch.rows, 0, gl.RGBA, gl.FLOAT, buildWeights(s, arch, attempt));
+            redrawn = attempt;
+            if (!degenerate()) break;
+          }
           paint(); startLoop();
         },
         repaint() { paint(); status(); },
