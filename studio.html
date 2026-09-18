@@ -953,9 +953,21 @@
   function isLight(hex) { return luminance(hex) > 128; }
   function inkFor(bg) { return isLight(bg) ? '#141008' : '#F5F0E8'; }
   function inkRgba(bg, a) { return isLight(bg) ? 'rgba(20,16,8,' + a + ')' : 'rgba(245,240,232,' + a + ')'; }
+  // sRGB is a display encoding, not a measure of light: the byte 128 is about 21.6% of the light of
+  // the byte 255, not half of it. Mixing two colours by averaging their bytes therefore lands well
+  // below the true midpoint, which is why a blend between two saturated hues goes dark and muddy
+  // through the middle instead of passing through a bright mixture. Undo the encoding, mix the
+  // light, put the encoding back. Constants are the sRGB transfer function (IEC 61966-2-1).
+  const srgbToLinear = v => { v /= 255; return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+  const linearToSrgb = v => 255 * (v <= 0.0031308 ? v * 12.92 : 1.055 * Math.pow(Math.max(v, 0), 1 / 2.4) - 0.055);
+  const mixLinear = (A, B, t) => [
+    linearToSrgb(lerp(srgbToLinear(A[0]), srgbToLinear(B[0]), t)),
+    linearToSrgb(lerp(srgbToLinear(A[1]), srgbToLinear(B[1]), t)),
+    linearToSrgb(lerp(srgbToLinear(A[2]), srgbToLinear(B[2]), t)),
+  ];
   function mixHex(a, b, t) {
-    const A = hexToRgb(a), B = hexToRgb(b);
-    return rgbToHex(lerp(A[0], B[0], t), lerp(A[1], B[1], t), lerp(A[2], B[2], t));
+    const c = mixLinear(hexToRgb(a), hexToRgb(b), t);
+    return rgbToHex(c[0], c[1], c[2]);
   }
   // A color ramp through the palette: ramp(t) for t in [0,1] -> [r,g,b] (0..255 floats).
   // Pass bg to start the ramp from the background (useful for density maps).
@@ -963,11 +975,14 @@
     const stops = (bg ? [bg] : []).concat(colors).map(hexToRgb);
     const n = stops.length;
     if (n === 1) return () => stops[0].slice();
+    // Interpolated in linear light, so the midpoint between two stops is the colour that actually
+    // sits halfway between them rather than the one whose byte values do.
+    const lin = stops.map(c => [srgbToLinear(c[0]), srgbToLinear(c[1]), srgbToLinear(c[2])]);
     return function (t) {
       t = clamp(t, 0, 1) * (n - 1);
       const i = Math.min(n - 2, Math.floor(t)), f = t - i;
-      const A = stops[i], B = stops[i + 1];
-      return [lerp(A[0], B[0], f), lerp(A[1], B[1], f), lerp(A[2], B[2], f)];
+      const A = lin[i], B = lin[i + 1];
+      return [linearToSrgb(lerp(A[0], B[0], f)), linearToSrgb(lerp(A[1], B[1], f)), linearToSrgb(lerp(A[2], B[2], f))];
     };
   }
   // 256-entry lookup table version for hot loops: Uint8ClampedArray of rgb triples
@@ -1207,6 +1222,8 @@ void main(){
     const lut = makeRampLUT(colors, bg, 256);
     const data = new Uint8Array(256 * 4);
     for (let i = 0; i < 256; i++) { data[i * 4] = lut[i * 3]; data[i * 4 + 1] = lut[i * 3 + 1]; data[i * 4 + 2] = lut[i * 3 + 2]; data[i * 4 + 3] = 255; }
+    // The 256 entries are correct now; the hardware still blends between neighbouring entries in
+    // sRGB, but adjacent entries of a 256-step ramp are close enough that the residual is invisible.
     const t = new Target(gl, 256, 1, { type: 'rgba8', filter: 'linear', data });
     return t;
   }
