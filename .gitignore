@@ -1,2 +1,5 @@
 .DS_Store
 *.log
+tools/dist/
+tools/shots/
+tools/modules/*.js

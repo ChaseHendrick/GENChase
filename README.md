@@ -4,7 +4,7 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded, resolution-independent, and exports in inches at giclée resolution.
 
-One HTML file. Thirty-five pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
+One HTML file. Fifty-one pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
 
 <p align="center">
   <img src="gallery/snowflake.jpg" width="32%" alt="Gravner–Griffeath snow crystal" />
@@ -21,7 +21,17 @@ One HTML file. Thirty-five pattern-forming systems. A seed that reprints. A hash
   <img src="gallery/twelve.png" width="32%" alt="Lifshitz–Petrich 12-fold quasicrystal" />
   <img src="gallery/tilings.jpg" width="32%" alt="Penrose tiling" />
 </p>
-<p align="center"><sub>Gravner–Griffeath · Hofstadter · Swift–Hohenberg · Berry caustics · Physarum · Cahn–Hilliard · Helmholtz scars · Lifshitz–Petrich 12-fold · Penrose. Frames from the live studio.</sub></p>
+<p align="center">
+  <img src="gallery/sandpile.jpg" width="32%" alt="Abelian sandpile group identity" />
+  <img src="gallery/pendulum.jpg" width="32%" alt="Double pendulum flip-time fractal" />
+  <img src="gallery/excitable.jpg" width="32%" alt="Barkley excitable media spirals" />
+</p>
+<p align="center">
+  <img src="gallery/schrodinger.jpg" width="32%" alt="Schrödinger double slit detector exposure" />
+  <img src="gallery/holomorphic.jpg" width="32%" alt="Mandelbrot seahorse valley" />
+  <img src="gallery/turing.jpg" width="32%" alt="Schnakenberg Turing spots" />
+</p>
+<p align="center"><sub>Gravner–Griffeath · Hofstadter · Swift–Hohenberg · Berry caustics · Physarum · Cahn–Hilliard · Helmholtz scars · Lifshitz–Petrich 12-fold · Penrose · Bak–Tang–Wiesenfeld sandpile · double pendulum · Barkley · Schrödinger · Mandelbrot · Turing. Frames from the live studio.</sub></p>
 
 
 Every tab is a system that already exists in a paper: Gray–Scott chemistry, Physarum transport, Lenia, Navier–Stokes, Cahn–Hilliard spinodal, Swift–Hohenberg convection, Lifshitz–Petrich 12-fold quasicrystals, Gravner–Griffeath snow crystals, hat and spectre monotiles, Helmholtz scars, optical caustics, and the rest. The governing equations are the medium. Nothing here is a style filter sitting on noise.
@@ -43,7 +53,7 @@ The usual options fall down in different places:
 - **An image model.** It will draw a snowflake that never froze and a quasicrystal that is a hexagon with extra steps. There is no seed that reprints, and no way to show that anything was solved.
 - **A recorded loop.** It looks alive until you touch it.
 
-GENChase is the other object: thirty-five sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
+GENChase is the other object: fifty-one sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
 
 | | On disk | What you get | How you reprint |
 |---|---|---|---|
