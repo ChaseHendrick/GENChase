@@ -201,6 +201,12 @@ async function settle(p, maxMs, seed) {
   // quietly stopped running while still printing PASS. A check that can silently not run is worse than
   // no check, so this waits for real stillness and then insists on an answer below.
   const detWait = Math.max(wait, Number(process.env.DET_WAIT) || 150000);
+  // Close the page the presets ran on before comparing. Every file:// page shares one localStorage, so
+  // leaving it open leaves a second writer racing the two loads below: it can add a timeline entry
+  // between them, the strip appears, the stage loses two pixels and the plate is drawn at a different
+  // size. That is what 725x725 against 727x727 was, and clearing history in the init script could not
+  // fix it because the other page wrote again afterwards. Nothing below needs this page.
+  await p.close();
   const a1 = await open(still); await settle(a1, detWait, seed); const m1 = await measure(a1); await a1.close();
   const a2 = await open(still); await settle(a2, detWait, seed); const m2 = await measure(a2);
   // A living plate with no pause key keeps stepping on a wall-clock budget, so two loads are only comparable at the
@@ -217,13 +223,17 @@ async function settle(p, maxMs, seed) {
   // drawn at a different size is legitimately different pixels and says nothing about determinism.
   const comparable = m1.fp === m2.fp || (m1.canvas === m2.canvas && s1 !== null && s2 !== null && s1 === s2);
   console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: m1.fp === m2.fp, steps: [s1, s2], canvas: [m1.canvas, m2.canvas], pausable }));
-  if (m1.fp !== m2.fp && m1.canvas !== m2.canvas) console.log('determinism not comparable: drawn at ' + m1.canvas + ' and ' + m2.canvas);
+  // Two loads drawn at different canvas sizes are legitimately different pixels: the plate is
+  // resolution-independent by design, and a scrollbar appearing on one load is enough to move the
+  // size by two pixels. That case keeps its excuse and must not reach the warm-up failure below.
+  const sizeMismatch = m1.canvas !== m2.canvas;
+  if (m1.fp !== m2.fp && sizeMismatch) console.log('determinism not comparable: drawn at ' + m1.canvas + ' and ' + m2.canvas);
   if (m1.fp !== m2.fp && comparable) fails.push('same hash loaded twice gave different plates');
   // A plate that can be paused was loaded with running:false, so within the budget above it must reach
   // a still state and the two loads must then match. If it did not, the check did not run, and that is
   // a failure of this harness or of the plate rather than something to note and pass over. A plate with
   // no pause key genuinely cannot be compared this way and keeps its excuse.
-  else if (m1.fp !== m2.fp && pausable) fails.push('determinism never became comparable within ' + Math.round(detWait / 1000) + ' s: captured at steps ' + s1 + ' and ' + s2 + ', still inside its warm-up. Raise DET_WAIT or lower the plate\'s warm-up.');
+  else if (m1.fp !== m2.fp && pausable && !sizeMismatch) fails.push('determinism never became comparable within ' + Math.round(detWait / 1000) + ' s: captured at steps ' + s1 + ' and ' + s2 + ', still inside its warm-up. Raise DET_WAIT or lower the plate\'s warm-up.');
   else if (m1.fp !== m2.fp) console.log('determinism not comparable: captured at steps ' + s1 + ' and ' + s2 + ' (living plate without a pause key)');
 
   // 4. switch to another tab and back: exactly one visible canvas
@@ -238,7 +248,7 @@ async function settle(p, maxMs, seed) {
     if (m3.visibleCanvases !== 1) fails.push('after tab switch, visible canvases = ' + m3.visibleCanvases);
     if (m3.err || flat(m3)) fails.push('plate flat or missing after tab switch');
   }
-  await a2.close(); await p.close();
+  await a2.close();   // p was already closed before the determinism loads
   await b.close();
 
   const uniq = [...new Set(errs)];

@@ -75,10 +75,17 @@ function cases(src) {
   const LABEL = { grid: 'Grid' };
   for (const c of cs) {
     const label = LABEL[c.key] || c.key;
+    // The values were parsed out of the source as text, so they have to go back into a recipe as the
+    // type the schema actually uses. A seg validates its options by strict equality, so a grid written
+    // as the string "192" is not the option 192, and the first version of this test shipped that bug:
+    // it built a recipe naming a string, the shell correctly rejected it, and the test blamed the
+    // shell. Hence both a typed case and an explicit string case below.
+    const typed = /^-?\d+(\.\d+)?$/.test(c.old) ? Number(c.old) : c.old;
     const trials = [
       ['#' + c.id + '/recipe-check', c.now, 'bare hash uses today\'s default'],
       ['#' + c.id + '/recipe-check/' + b64({ v: c.ver - 1 }), c.old, 'v' + (c.ver - 1) + ' recipe gets the old default back'],
-      ['#' + c.id + '/recipe-check/' + b64({ v: c.ver, [c.key]: c.old }), c.old, 'a current recipe that names the key keeps its own value'],
+      ['#' + c.id + '/recipe-check/' + b64({ v: c.ver, [c.key]: typed }), c.old, 'a current recipe that names the key keeps its own value'],
+      ['#' + c.id + '/recipe-check/' + b64({ v: c.ver, [c.key]: String(c.old) }), c.old, 'a hand-edited recipe storing it as a string still works'],
       ['#' + c.id + '/recipe-check/' + b64({ v: c.ver }), c.now, 'v' + c.ver + ' recipe uses today\'s default'],
     ];
     for (const [hash, want, why] of trials) {
