@@ -1528,6 +1528,10 @@ void main(){
       toast(e.state.running ? 'Running' : 'Paused');
       return;
     }
+    // no running key: hold the plate through the same pause/resume the shell uses when switching tabs
+    e.paused = !e.paused;
+    try { if (e.paused) e.inst.pause && e.inst.pause(); else e.inst.resume && e.inst.resume(); } catch (err) { showError(err); }
+    toast(e.paused ? 'Paused' : 'Running');
   }
   function renderHistory() {
     const wrap = $('history'); if (!wrap) return;
@@ -1642,6 +1646,7 @@ void main(){
     if (!(opts && opts.skipSnap)) snapshot(opts && opts.snapLabel || 'generate');
     clearTimeout(regenTimer);
     fitCanvas(e);
+    e.paused = false;
     try { e.inst.regenerate(); } catch (err) { showError(err); }
     updateDims();
     persist(currentId);
@@ -1860,7 +1865,7 @@ void main(){
     if (!e.started) { e.started = true; regenerate({ skipHistory: true, skipSnap: true }); }
     else {
       if (changed && e.inst.resize) { try { e.inst.resize(); } catch (err) { showError(err); } }
-      try { e.inst.resume && e.inst.resume(); } catch (err) { showError(err); }
+      if (!e.paused) { try { e.inst.resume && e.inst.resume(); } catch (err) { showError(err); } }
     }
     persist(id);
     updateDims();
@@ -2684,7 +2689,7 @@ void main(){
     });
     document.addEventListener('visibilitychange', () => {
       const e = instances[currentId]; if (!e) return;
-      try { if (document.hidden) e.inst.pause && e.inst.pause(); else e.inst.resume && e.inst.resume(); } catch (err) { /* ignore */ }
+      try { if (document.hidden) e.inst.pause && e.inst.pause(); else if (!e.paused) e.inst.resume && e.inst.resume(); } catch (err) { /* ignore */ }
     });
     (async function () {
       try { if (window.claude && typeof window.claude.use === 'function') downloads = await window.claude.use('downloads'); } catch (err) { downloads = null; }
