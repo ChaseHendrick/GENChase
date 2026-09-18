@@ -16520,6 +16520,303 @@ void main(){
       };
     },
   });
+
+  /* ---------- Abelian Sandpile ---------- */
+  // Topple every unstable site of an n x n grid with a sink boundary until none is left. Sites are taken from a
+  // LIFO stack and toppled floor(h/4) times at once; the Abelian property makes the final state independent of order.
+  // Runs for at most `ms` milliseconds and returns whether it finished. `mark`, when given, records the drop index.
+  function makeGridToppler(n) {
+    const N = n * n, stack = new Int32Array(N), inq = new Uint8Array(N);
+    let sp = 0, pops = 0;
+    function push(i) { if (!inq[i]) { inq[i] = 1; stack[sp++] = i; } }
+    function run(h, ms, mark, tag) {
+      const t0 = performance.now();
+      let k = 0;
+      while (sp > 0) {
+        const p = stack[--sp]; inq[p] = 0;
+        const v = h[p]; if (v < 4) continue;
+        const t = v >> 2; h[p] = v - 4 * t; pops++;
+        if (mark) mark[p] = tag;
+        const x = p % n, y = (p / n) | 0;
+        if (x > 0) { const q = p - 1; if ((h[q] += t) >= 4) push(q); }
+        if (x < n - 1) { const q = p + 1; if ((h[q] += t) >= 4) push(q); }
+        if (y > 0) { const q = p - n; if ((h[q] += t) >= 4) push(q); }
+        if (y < n - 1) { const q = p + n; if ((h[q] += t) >= 4) push(q); }
+        if ((++k & 4095) === 0 && performance.now() - t0 > ms) return false;
+      }
+      return true;
+    }
+    function seedAll(h) { sp = 0; for (let i = 0; i < N; i++) { inq[i] = 0; if (h[i] >= 4) { inq[i] = 1; stack[sp++] = i; } } }
+    return { push, run, seedAll, pops: () => pops };
+  }
+  // Single-source pile: one octant 0 <= y <= x of the square lattice, using its 8-fold symmetry. When a representative
+  // topples, its whole orbit topples, so each folded neighbor receives |orbit(p)| / |orbit(q)| grains per toppling.
+  function makeOctantPile(N) {
+    const R = Math.ceil(0.4 * Math.sqrt(N)) + 6;      // measured: the pile radius is about 0.367 sqrt(N)
+    const cells = (R + 1) * (R + 2) / 2;
+    const idx = (x, y) => x * (x + 1) / 2 + y;
+    const orb = (x, y) => x === 0 ? 1 : (y === 0 || y === x) ? 4 : 8;
+    const nq = new Int32Array(cells * 4).fill(-1), nw = new Int32Array(cells * 4);
+    for (let x = 0; x <= R; x++) for (let y = 0; y <= x; y++) {
+      const p = idx(x, y), op = orb(x, y);
+      const qs = [], ws = [];
+      for (let d = 0; d < 4; d++) {
+        let fx = Math.abs(x + (d === 0 ? 1 : d === 1 ? -1 : 0)), fy = Math.abs(y + (d === 2 ? 1 : d === 3 ? -1 : 0));
+        if (fy > fx) { const t = fx; fx = fy; fy = t; }
+        if (fx > R) continue;
+        const q = idx(fx, fy), w = op / orb(fx, fy);
+        const j = qs.indexOf(q);
+        if (j < 0) { qs.push(q); ws.push(w); } else ws[j] += w;
+      }
+      for (let k = 0; k < qs.length; k++) { nq[p * 4 + k] = qs[k]; nw[p * 4 + k] = Math.round(ws[k]); }
+    }
+    const h = new Float64Array(cells), inq = new Uint8Array(cells), stack = new Int32Array(cells);
+    let sp = 0, pops = 0;
+    h[0] = N; stack[sp++] = 0; inq[0] = 1;
+    function run(ms) {
+      const t0 = performance.now();
+      let k = 0;
+      while (sp > 0) {
+        const p = stack[--sp]; inq[p] = 0;
+        const t = Math.floor(h[p] / 4); if (t <= 0) continue;
+        h[p] -= 4 * t; pops++;
+        for (let d = 0; d < 4; d++) {
+          const q = nq[p * 4 + d]; if (q < 0) break;
+          h[q] += nw[p * 4 + d] * t;
+          if (h[q] >= 4 && !inq[q]) { inq[q] = 1; stack[sp++] = q; }
+        }
+        if ((++k & 4095) === 0 && performance.now() - t0 > ms) return false;
+      }
+      return true;
+    }
+    function extent() {
+      for (let x = R; x >= 0; x--) for (let y = 0; y <= x; y++) if (h[idx(x, y)] > 0) return x;
+      return 0;
+    }
+    // grain count at any lattice point, folded into the octant
+    function at(x, y) {
+      x = Math.abs(x); y = Math.abs(y);
+      if (y > x) { const t = x; x = y; y = t; }
+      return x > R ? 0 : h[idx(x, y)];
+    }
+    return { run, extent, at, pops: () => pops, R };
+  }
+  const SAND_MODE = { pile: 'Single source', identity: 'Group identity', soc: 'Random drops' };
+  Studio.register({
+    id: 'sandpile',
+    name: 'Abelian Sandpile',
+    tab: 'Sandpile',
+    subtitle: 'self-organized criticality · 1987',
+    order: 60.5,
+    equation: 'if hᵢ ≥ 4: hᵢ −= 4, hⱼ += 1 for each neighbor j;   identity e = (2m − (2m)°)°, m = all 3',
+    credit: "Per Bak, Chao Tang and Kurt Wiesenfeld, Phys. Rev. Lett. 59, 381 (1987); Deepak Dhar, Phys. Rev. Lett. 64, 1613 (1990). Bak, Tang and Wiesenfeld dropped grains one at a time on a lattice with a toppling threshold and found avalanches of every size, a power law with no tuning: self-organized criticality. Dhar showed the toppling operators commute, so the final stable state does not depend on the order of toppling, and the recurrent configurations form an Abelian group. The identity of that group, computed on a square, is the fractal plate in the second mode.",
+    blurb: 'Grains stack four high, then the pile topples: four grains, one to each neighbor, and those neighbors may topple in turn. That is the whole rule. Drop a million grains on one site and the pile that settles is a square-ish medallion of arabesques with sharp lines running to the corners, patterned to the last cell, with nothing random in it. The group identity is stranger: stabilize a plate of sixes, subtract it from sixes, stabilize again, and the result is the one configuration that adds to any recurrent state without changing it. Random drops give the third picture, the critical state itself, where the last avalanches are lit by size.',
+    schema: [
+      { group: 'Pile', key: 'mode', label: 'Mode', type: 'seg', kind: GEOM, wrap: true,
+        options: [['pile', 'Single source'], ['identity', 'Identity'], ['soc', 'Random drops']] },
+      { group: 'Pile', key: 'grains', label: 'Grains', type: 'seg', kind: GEOM, wrap: true, dimUnless: s => s.mode === 'pile',
+        options: [[4096, '2¹²'], [16384, '2¹⁴'], [65536, '2¹⁶'], [131072, '2¹⁷'], [262144, '2¹⁸'], [1048576, '2²⁰']],
+        hint: 'Grains dropped on the center. The work grows like the square of the count: 2¹⁸ takes several seconds, 2²⁰ a minute or two, with progress shown.' },
+      { group: 'Pile', key: 'size', label: 'Grid', type: 'seg', kind: GEOM, dimUnless: s => s.mode !== 'pile',
+        options: [[64, '64'], [96, '96'], [128, '128'], [192, '192'], [256, '256']],
+        hint: 'Side of the square for the identity and random drop modes. The identity at 256 takes about ten seconds.' },
+      RANGE('Pile', 'drops', 'Drops', GEOM, 2000, 200000, 1000, v => v.toLocaleString(), { dimUnless: s => s.mode === 'soc',
+        hint: 'Random grains added one at a time from a seeded start of 0 to 3 grains per site.' }),
+      { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, dimUnless: s => s.mode === 'soc',
+        options: [['grains', 'Grains'], ['avalanche', 'Recent avalanches'], ['patches', 'Avalanche patches']] },
+      { group: 'Picture', key: 'zero', label: 'Empty sites', type: 'seg', kind: PAINT, options: [['paper', 'Paper'], ['ink', 'Ink']],
+        hint: 'Paper leaves sites with no grains as background. Ink gives all four counts a palette color.' },
+      RANGE('Picture', 'memory', 'Avalanche memory', PAINT, 5, 2000, 5, String, { dimUnless: s => s.mode === 'soc' && s.view === 'avalanche',
+        hint: 'How many drops back an avalanche stays lit. The last one is brightest; older ones sink down the ramp.' }),
+      RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.4, 0.02, pct),
+    ],
+    defaults: { mode: 'pile', grains: 65536, size: 128, drops: 30000, view: 'grains', zero: 'paper', memory: 100, grain: 0, seed: 'btw-1987' },
+    presets: {
+      medallion: pre('Medallion 2¹⁶', { mode: 'pile', grains: 65536, zero: 'paper', view: 'grains' }, Pal.kiln),
+      big: pre('Medallion 2¹⁷', { mode: 'pile', grains: 131072, zero: 'ink', view: 'grains' }, Pal.nightshade),
+      identity: pre('Identity 128', { mode: 'identity', size: 128, zero: 'paper', view: 'grains' }, Pal.graphite),
+      identity96: pre('Identity 96', { mode: 'identity', size: 96, zero: 'ink', view: 'grains' }, Pal.tram),
+      soc: pre('Random drops', { mode: 'soc', size: 128, drops: 30000, view: 'avalanche', memory: 100, zero: 'paper' }, Pal.ember),
+      patches: pre('Avalanche patches', { mode: 'soc', size: 192, drops: 50000, view: 'patches', memory: 100, zero: 'paper' }, Pal.thermal),
+      small: pre('Small pile 2¹⁴', { mode: 'pile', grains: 16384, zero: 'ink', view: 'grains' }, Pal.risograph),
+    },
+    closedGroups: [],
+    hints: {
+      Pile: 'Single source drops every grain on the center of an infinite plane and computes one octant of the symmetric result. Identity is the sandpile group identity on a square with sink edges. Random drops is the Bak-Tang-Wiesenfeld experiment itself.',
+      Picture: 'Cells hold 0 to 3 grains after toppling and take four steps of the palette. In random drops, Recent avalanches lights the last few footprints by age and Avalanche patches gives every footprint its own color, later ones stamped over earlier ones.',
+    },
+    palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (0 → 3 grains)',
+    headline: 'drops', headlineLabel: 'drops',
+    sanitize(s) {
+      s.drops = U.clamp(Math.round(Number(s.drops) / 1000) * 1000, 2000, 200000);
+      s.memory = U.clamp(Math.round(Number(s.memory) / 5) * 5, 5, 2000);
+    },
+    surprise(rng) {
+      const mode = rng.pick(['pile', 'pile', 'identity', 'soc']);
+      return {
+        mode, grains: rng.pick([16384, 65536, 65536, 131072]), size: rng.pick([96, 128, 128, 192]), drops: rng.pick([20000, 30000, 50000]),
+        view: mode === 'soc' ? rng.pick(['avalanche', 'patches']) : 'grains', zero: rng.pick(['paper', 'ink']), memory: rng.pick([40, 100, 300]), grain: rng.pick([0, 0, 0.05]),
+      };
+    },
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d');
+      let buf = document.createElement('canvas'), bw = 0, bh = 0;
+      let timer = 0, job = null, done = false, key = '';
+      // results
+      let heights = null, marks = null, n = 0, drops = 0, topples = 0, maxAv = 0, sumAv = 0, pile = null, radius = 0;
+
+      function colors(s) {
+        const lut = U.makeRampLUT(s.palette, null, 256), bg = U.hexToRgb(s.bg);
+        if (s.zero === 'ink') return [lutColor(lut, 0), lutColor(lut, 1 / 3), lutColor(lut, 2 / 3), lutColor(lut, 1)];
+        return [bg, lutColor(lut, 0), lutColor(lut, 0.5), lutColor(lut, 1)];
+      }
+      function paint(progress) {
+        const s = host.getState();
+        if (!bw) return;
+        const g = buf.getContext('2d'), img = g.createImageData(bw, bh), d = img.data;
+        const col = colors(s), bg = U.hexToRgb(s.bg);
+        const lut = U.makeRampLUT(s.palette, s.bg, 256);
+        const soc = s.mode === 'soc' && s.view !== 'grains' && marks;
+        if (s.mode === 'pile' && pile) {
+          const c = (bw - 1) / 2;
+          for (let y = 0; y < bh; y++) for (let x = 0; x < bw; x++) {
+            const h = Math.min(3, pile.at(x - c, y - c) | 0), o = (y * bw + x) * 4, k = col[h];
+            d[o] = k[0]; d[o + 1] = k[1]; d[o + 2] = k[2]; d[o + 3] = 255;
+          }
+        } else if (heights) {
+          for (let i = 0, o = 0; i < bw * bh; i++, o += 4) {
+            let k = col[Math.min(3, heights[i])];
+            if (soc) {
+              const m = marks[i], age = m < 0 ? Infinity : drops - 1 - m;
+              if (s.view === 'patches') {
+                // every cell wears the color of the last avalanche that toppled it: nested footprints, later over earlier
+                k = m < 0 ? bg : lutColor(lut, 0.15 + 0.85 * ((m * 0.6180339887) % 1));
+              } else if (age < s.memory) {
+                k = lutColor(lut, 0.2 + 0.8 * (1 - age / s.memory));
+              } else k = [k[0] * 0.5 + bg[0] * 0.5, k[1] * 0.5 + bg[1] * 0.5, k[2] * 0.5 + bg[2] * 0.5];
+            }
+            d[o] = k[0]; d[o + 1] = k[1]; d[o + 2] = k[2]; d[o + 3] = 255;
+          }
+        }
+        if (!progress) grainImage(img, s.grain, s.seed);
+        g.putImageData(img, 0, 0);
+        nearestBlit(ctx, buf, canvas.width, canvas.height, s.bg);
+      }
+      function status(extra) {
+        const s = host.getState();
+        let mid;
+        if (s.mode === 'pile') mid = '<span>grains <b>' + Number(s.grains).toLocaleString() + '</b> · radius <b>' + radius + '</b></span>';
+        else if (s.mode === 'identity') mid = '<span>identity <b>' + n + '×' + n + '</b></span>';
+        else mid = '<span>drops <b>' + drops.toLocaleString() + '</b> · largest avalanche <b>' + maxAv.toLocaleString() + '</b> · mean <b>' + (drops ? (sumAv / drops).toFixed(1) : '0') + '</b></span>';
+        host.setStatus('<span><b>' + SAND_MODE[s.mode] + '</b></span>' + mid + '<span>topplings <b>' + topples.toLocaleString() + '</b></span>' + (extra ? '<span>' + extra + '</span>' : ''));
+      }
+      function stop() { clearTimeout(timer); timer = 0; job = null; }
+      function setBuffer(w, h) { bw = w; bh = h; buf.width = w; buf.height = h; }
+
+      function startPile(s) {
+        const N = Number(s.grains) || 65536;
+        pile = makeOctantPile(N); heights = null; marks = null; radius = 0;
+        setBuffer(2 * pile.R + 1, 2 * pile.R + 1);
+        return {
+          run(ms) {
+            const fin = pile.run(ms);
+            topples = pile.pops();
+            if (fin) {
+              radius = pile.extent();
+              // crop the plate to the pile plus a margin
+              const side = 2 * (radius + 3) + 1;
+              setBuffer(side, side);
+            }
+            return fin;
+          },
+          label: () => 'toppling ' + topples.toLocaleString(),
+        };
+      }
+      function startIdentity(s) {
+        n = Number(s.size) || 128; pile = null; marks = null;
+        const N = n * n; heights = new Int32Array(N); heights.fill(6);
+        setBuffer(n, n);
+        const top = makeGridToppler(n); top.seedAll(heights);
+        let phase = 0;
+        return {
+          run(ms) {
+            const fin = top.run(heights, ms);
+            topples = top.pops();
+            if (!fin) return false;
+            if (phase === 0) {
+              phase = 1;
+              for (let i = 0; i < N; i++) heights[i] = 6 - heights[i];
+              top.seedAll(heights);
+              return false;
+            }
+            return true;
+          },
+          label: () => (phase === 0 ? 'stabilizing 2m' : 'stabilizing 2m − (2m)°') + ' · ' + topples.toLocaleString(),
+        };
+      }
+      function startSoc(s) {
+        n = Number(s.size) || 128; pile = null;
+        const N = n * n, rng = U.makeRng(s.seed + '/soc');
+        heights = new Int32Array(N); marks = new Int32Array(N).fill(-1);
+        for (let i = 0; i < N; i++) heights[i] = rng.int(0, 3);
+        setBuffer(n, n);
+        const top = makeGridToppler(n), total = s.drops | 0;
+        let pops0 = 0, touched = [];
+        drops = 0; maxAv = 0; sumAv = 0;
+        return {
+          run(ms) {
+            const t0 = performance.now();
+            while (drops < total) {
+              const i = rng.int(0, N - 1);
+              if (++heights[i] >= 4) {
+                top.push(i);
+                top.run(heights, 1e9, marks, drops);
+                const size = top.pops() - pops0; pops0 = top.pops();
+                sumAv += size; if (size > maxAv) maxAv = size;
+              }
+              drops++;
+              if ((drops & 31) === 0 && performance.now() - t0 > ms) { topples = top.pops(); return false; }
+            }
+            topples = top.pops();
+            return true;
+          },
+          label: () => 'dropping ' + drops.toLocaleString() + ' / ' + total.toLocaleString(),
+        };
+      }
+      function compute() {
+        stop();
+        const s = host.getState();
+        done = false; topples = 0;
+        job = s.mode === 'identity' ? startIdentity(s) : s.mode === 'soc' ? startSoc(s) : startPile(s);
+        const quiet = host.reducedMotion();
+        const rec = () => {
+          if (!job) return;
+          const fin = job.run(40);
+          if (fin) { done = true; job = null; paint(false); status(); return; }
+          if (!quiet) { paint(true); status(job.label() + '…'); }
+          timer = setTimeout(rec, 0);
+        };
+        rec();
+      }
+      return {
+        aspect() { return 1; },
+        regenerate() {
+          const s = host.getState();
+          const k = [s.mode, s.grains, s.size, s.drops, s.seed].join('|');
+          if (k === key && done) { paint(false); status(); return; }
+          key = k; compute();
+        },
+        repaint() { if (done) { paint(false); status(); } },
+        resize() { if (done) paint(false); },
+        pause() {}, resume() { if (done) paint(false); },
+        exportPNG(w, h) {
+          if (!done) return Promise.reject(new Error('the pile is still toppling'));
+          paint(false);
+          return crispExport(buf, w, h);
+        },
+      };
+    },
+  });
 })();
 </script>
 <script>Studio.boot();</script>
