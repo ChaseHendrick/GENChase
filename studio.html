@@ -15089,13 +15089,19 @@ void main(){
   }
   function extToHalf(z){ return cmul([0,1], cdiv([z[0]-1, z[1]], [z[0]+1, z[1]])); }
   function halfToExt(w){ return cdiv([w[0], w[1]+1], [-w[0], 1-w[1]]); }
+  // Attach a radial slit of capacity c at z = 1 on the exterior of the unit disk. In the half-plane chart w = i(z-1)/(z+1)
+  // the point z = 1 is w = 0 and infinity is w = i; the map w -> sqrt(w^2 - 4t) opens a vertical slit of height 2 sqrt(t)
+  // at 0 (the sign matters: with + 4t it would remove a slit and the cluster never grows), and the dilation by
+  // 1/sqrt(1 + 4t) keeps w = i fixed so that infinity stays where it is under every composition.
   function slitMap(z, c){
-    const t = Math.max(1e-10, Math.exp(c) - 1);
+    // the chart has derivative 1/2 at z = 1, so a slit that grows the conformal radius by e^c needs t = (e^c - 1) / 4
+    const t = Math.max(1e-10, (Math.exp(c) - 1) / 4);
     let w = extToHalf(z);
-    const w2 = [w[0]*w[0] - w[1]*w[1] + 4*t, 2*w[0]*w[1]];
+    const w2 = [w[0]*w[0] - w[1]*w[1] - 4*t, 2*w[0]*w[1]];
     w = csqrt(w2);
     if (w[1] < 0) w = [-w[0], -w[1]];
-    return halfToExt(w);
+    const k = 1 / Math.sqrt(1 + 4*t);
+    return halfToExt([w[0]*k, w[1]*k]);
   }
   function attachAt(z, theta, c) {
     const e=[Math.cos(theta), Math.sin(theta)], em=[e[0], -e[1]];
@@ -15198,7 +15204,8 @@ void main(){
           ctx.fill();
           ctx.globalAlpha = 1;
         }
-        ctx.strokeStyle=rgb(0.12);
+        // the outline view has nothing but this line, so it takes the ink that contrasts with the ground
+        ctx.strokeStyle = s.view==='outline' ? U.inkFor(s.bg) : rgb(0.12);
         ctx.stroke();
         grainPut(ctx,w,h,s.grain,s.seed);
       }
@@ -15224,7 +15231,7 @@ void main(){
           for (let i=0;i<boundary.length;i++) { const x=cx+boundary[i][0]*sc, y=cy+boundary[i][1]*sc; if(i===0) g.moveTo(x,y); else g.lineTo(x,y); }
           g.closePath();
           if (s.view!=='outline') { const li=180*3; g.fillStyle='rgb('+lut[li]+','+lut[li+1]+','+lut[li+2]+')'; g.fill(); }
-          g.strokeStyle='rgb('+lut[40*3]+','+lut[40*3+1]+','+lut[40*3+2]+')';
+          g.strokeStyle = s.view==='outline' ? U.inkFor(s.bg) : 'rgb('+lut[40*3]+','+lut[40*3+1]+','+lut[40*3+2]+')';
           g.lineWidth=Math.max(0.8,s.lw*Math.min(w,h)/700); g.stroke();
           return U.toBlob(out);
         },
@@ -15279,7 +15286,7 @@ void main(){
       golden: pre('Golden', { lam: 0.14, N: 240, view: 'dots' }, Pal.tram),
       voronoi: pre('Voronoi', { lam: 0.14, N: 180, view: 'voronoi' }, Pal.graphite),
       para: pre('Parastichies', { lam: 0.12, N: 280, view: 'para' }, Pal.ember),
-      tight: pre('Tight λ', { lam: 0.08, N: 320, view: 'dots', size: 0.8 }, Pal.meadow),
+      tight: pre('Tight λ', { lam: 0.08, N: 600, view: 'dots', size: 1.6 }, Pal.meadow),
     },
     hints: { Meristem: 'λ is the only number that matters. Too small: a radial pile-up. Too large: opposite pairs. In between: 137.5° and the Fibonacci spirals.' },
     palette: true, defaultPalette: 'tram', paletteLabel: 'Colors',
