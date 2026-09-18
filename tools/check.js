@@ -12,24 +12,64 @@ async function measure(p) {
   return p.evaluate(() => {
     const cs = [...document.querySelectorAll('canvas')].filter(c => c.offsetParent !== null && c.width > 100);
     const c = cs[0]; if (!c) return { err: 'no visible canvas', visibleCanvases: cs.length };
+    const st = document.querySelector('#status');
+    const status = st ? st.innerText.replace(/\s+/g, ' ').slice(0, 200) : null;
+
+    // Grid-scale checkerboard test. When an explicit integrator goes unstable the field fills with the Nyquist
+    // mode; shrunk to a thumbnail that averages into a plausible plate, which is how such a bug survives review.
+    // Point-sampling at simulation-cell centres and correlating neighbours catches it: a checkerboard correlates
+    // near -1, a smooth field near +1, an uncorrelated field near 0. Catmull-Rom is interpolating, so sampling at
+    // cell centres returns the true cell values even through the display pass.
+    let nyq = null;
+    const gm = /grid\s+(\d+)\s*[x\u00d7]\s*(\d+)/i.exec(status || '');
+    if (gm) {
+      const gw = +gm[1], gh = +gm[2];
+      if (gw >= 8 && gh >= 8 && c.width >= gw * 2) {
+        const f = document.createElement('canvas'); f.width = c.width; f.height = c.height;
+        const fg = f.getContext('2d', { willReadFrequently: true }); fg.drawImage(c, 0, 0);
+        const d = fg.getImageData(0, 0, c.width, c.height).data;
+        const L = new Float64Array(gw * gh);
+        for (let j2 = 0; j2 < gh; j2++) for (let i2 = 0; i2 < gw; i2++) {
+          const x = Math.min(c.width - 1, Math.floor((i2 + 0.5) * c.width / gw));
+          const y = Math.min(c.height - 1, Math.floor((j2 + 0.5) * c.height / gh));
+          const o = (y * c.width + x) * 4;
+          L[j2 * gw + i2] = 0.2126 * d[o] + 0.7152 * d[o + 1] + 0.0722 * d[o + 2];
+        }
+        let mean = 0; for (let k = 0; k < L.length; k++) mean += L[k]; mean /= L.length;
+        let varr = 0; for (let k = 0; k < L.length; k++) { const v = L[k] - mean; varr += v * v; }
+        varr /= L.length;
+        if (varr >= 1) {
+          let cov = 0, n = 0;
+          for (let j2 = 0; j2 < gh; j2++) for (let i2 = 0; i2 < gw; i2++) {
+            const a = L[j2 * gw + i2] - mean;
+            if (i2 + 1 < gw) { cov += a * (L[j2 * gw + i2 + 1] - mean); n++; }
+            if (j2 + 1 < gh) { cov += a * (L[(j2 + 1) * gw + i2] - mean); n++; }
+          }
+          nyq = Math.round(((cov / n) / varr) * 1000) / 1000;
+        }
+      }
+    }
+
     const t = document.createElement('canvas'); t.width = 200; t.height = Math.max(1, Math.round(200 * c.height / c.width));
     const g = t.getContext('2d'); g.drawImage(c, 0, 0, t.width, t.height);
-    const d = g.getImageData(0, 0, t.width, t.height).data, L = [];
+    const d2 = g.getImageData(0, 0, t.width, t.height).data, L2 = [];
     let h = 2166136261;
-    for (let i = 0; i < d.length; i += 4) { L.push(Math.round(.2126 * d[i] + .7152 * d[i + 1] + .0722 * d[i + 2])); h ^= d[i]; h = Math.imul(h, 16777619); h ^= d[i + 1]; h = Math.imul(h, 16777619); }
-    const sorted = L.slice().sort((a, b) => a - b); const q = f => sorted[Math.floor(f * (sorted.length - 1))];
+    for (let i = 0; i < d2.length; i += 4) { L2.push(Math.round(.2126 * d2[i] + .7152 * d2[i + 1] + .0722 * d2[i + 2])); h ^= d2[i]; h = Math.imul(h, 16777619); h ^= d2[i + 1]; h = Math.imul(h, 16777619); }
+    const sorted = L2.slice().sort((a, b) => a - b); const q = f2 => sorted[Math.floor(f2 * (sorted.length - 1))];
     const p50 = q(.5);
     // ink: the fraction of pixels that depart from the modal level. A line drawing is mostly background,
     // so percentile spread alone calls it blank; this counts the marks instead.
-    let ink = 0; for (let i = 0; i < L.length; i++) if (Math.abs(L[i] - p50) > 10) ink++;
-    const st = document.querySelector('#status');
-    return { canvas: c.width + 'x' + c.height, visibleCanvases: cs.length, fp: (h >>> 0).toString(16),
-      lum: { p01: q(.01), p10: q(.1), p50: p50, p90: q(.9), p99: q(.99), min: sorted[0], max: sorted[sorted.length - 1], ink: +(ink / L.length).toFixed(4) },
-      status: st ? st.innerText.replace(/\s+/g, ' ').slice(0, 200) : null };
+    let ink = 0; for (let i = 0; i < L2.length; i++) if (Math.abs(L2[i] - p50) > 10) ink++;
+    return { canvas: c.width + 'x' + c.height, visibleCanvases: cs.length, fp: (h >>> 0).toString(16), nyq,
+      lum: { p01: q(.01), p10: q(.1), p50: p50, p90: q(.9), p99: q(.99), min: sorted[0], max: sorted[sorted.length - 1], ink: +(ink / L2.length).toFixed(4) },
+      status };
   });
 }
 // Alive either as a broad tonal field (percentile spread) or as marks on a ground (range plus enough ink).
 const flat = m => !m.lum || ((m.lum.p99 - m.lum.p01) < 12 && !((m.lum.max - m.lum.min) >= 40 && m.lum.ink >= 0.004));
+// Strongly negative neighbour correlation at the grid scale means the plate is the integrator blowing up, not a pattern.
+const NYQ = -0.35;
+const checker = m => m.nyq !== null && m.nyq !== undefined && m.nyq < NYQ;
 
 // Wait up to maxMs, but stop early once the plate is non-flat and has settled: a still plate whose fingerprint
 // stopped changing, or a living plate whose step count has passed its warm-up. Cuts a full run roughly in half.
@@ -74,6 +114,7 @@ async function settle(p, maxMs) {
   console.log('default', JSON.stringify(def));
   if (def.err) fails.push('default: ' + def.err);
   else if (flat(def)) fails.push('default plate is flat');
+  else if (checker(def)) fails.push('default plate is the grid-scale checkerboard (neighbour correlation ' + def.nyq + '): the integrator is unstable');
 
   // 2. every preset
   const presets = await p.evaluate(() => [...document.querySelectorAll('#preset option')].map(o => o.value).filter(Boolean));
@@ -84,6 +125,7 @@ async function settle(p, maxMs) {
     console.log('preset ' + key, JSON.stringify(m));
     if (m.err) fails.push('preset ' + key + ': ' + m.err);
     else if (flat(m)) fails.push('preset ' + key + ' is flat');
+    else if (checker(m)) fails.push('preset ' + key + ' is the grid-scale checkerboard (neighbour correlation ' + m.nyq + ')');
   }
   if (!presets.length) fails.push('no presets registered');
 
