@@ -17074,6 +17074,182 @@ void main(){
       };
     },
   });
+
+  /* ---------- Percolation ---------- */
+  const PC_SITE = 0.592746, PC_BOND = 0.5;
+  // Hoshen-Kopelman cluster labeling by union-find with path halving.
+  function findRoot(parent, i) {
+    while (parent[i] !== i) { parent[i] = parent[parent[i]]; i = parent[i]; }
+    return i;
+  }
+  function unite(parent, a, b) {
+    a = findRoot(parent, a); b = findRoot(parent, b);
+    if (a !== b) parent[b] = a;
+  }
+  Studio.register({
+    id: 'percolation',
+    name: 'Percolation',
+    tab: 'Percolation',
+    subtitle: 'site and bond percolation on the square lattice · 1957',
+    order: 88,
+    equation: 'site occupied iff rᵢ < p;   bond open iff rᵢⱼ < p;   p_c(site) ≈ 0.5927,   p_c(bond) = 1/2',
+    credit: "S. R. Broadbent and J. M. Hammersley, Proc. Cambridge Philos. Soc. 53, 629 (1957); J. Hoshen and R. Kopelman, Phys. Rev. B 14, 3438 (1976); Harry Kesten, Comm. Math. Phys. 74, 41 (1980). Broadbent and Hammersley asked how a fluid spreads through a random porous medium and found a sharp threshold: below p_c every cluster is finite, above it one cluster spans the lattice. Kesten proved the bond threshold on the square lattice is exactly 1/2. The site threshold, about 0.592746, is known only numerically. Hoshen and Kopelman gave the one-pass labeling that finds the clusters.",
+    blurb: 'Fill each site with probability p and ask whether you can walk from the top edge to the bottom on filled sites. Below the threshold you cannot, no matter how large the lattice; above it, almost surely you can. Right at p_c the largest cluster is a fractal, with holes at every size and a mass that grows like L^1.896. This plate keeps one random number per site, so sliding p only adds sites: you watch the same clusters swell and join rather than a new draw each time. Clusters are colored by size rank, biggest first through the palette, and the spanning cluster, once it exists, is lit.',
+    schema: [
+      { group: 'Lattice', key: 'type', label: 'Type', type: 'seg', kind: GEOM, options: [['site', 'Site'], ['bond', 'Bond']],
+        hint: 'Site: sites are filled, neighbors connect. Bond: every site is present, the links between them open.' },
+      { group: 'Lattice', key: 'grid', label: 'Grid', type: 'seg', kind: GEOM, options: [[128, '128'], [192, '192'], [256, '256'], [384, '384'], [512, '512']] },
+      { group: 'Lattice', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
+      RANGE('Occupation', 'p', 'Probability p', PAINT, 0.3, 0.8, 0.001, f3, {
+        hint: 'Sweeping p re-labels the same random field: sites are only added, never re-rolled. p_c is 0.5927 for sites, 0.5 for bonds.' }),
+      { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['rank', 'Size rank'], ['size', 'Log size'], ['occupied', 'Occupied']] },
+      { group: 'Picture', key: 'highlight', label: 'Light the spanning cluster', type: 'toggle', kind: PAINT },
+      RANGE('Picture', 'minSize', 'Hide clusters under', PAINT, 1, 50, 1, String, { hint: 'Clusters smaller than this are drawn as background, which clears the dust around the big ones.' }),
+      RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.4, 0.02, pct),
+    ],
+    defaults: { type: 'site', grid: 256, aspect: '1:1', p: 0.5927, view: 'rank', highlight: true, minSize: 1, grain: 0, seed: 'hammersley-1957' },
+    presets: {
+      critical: pre('Site at p_c', { type: 'site', grid: 256, p: 0.5927, view: 'rank', highlight: true, minSize: 1 }, Pal.graphite),
+      sub: pre('Below threshold', { type: 'site', grid: 256, p: 0.55, view: 'rank', highlight: true, minSize: 2 }, Pal.harbor),
+      sup: pre('Spanning', { type: 'site', grid: 256, p: 0.63, view: 'size', highlight: true, minSize: 1 }, Pal.ember),
+      bondc: pre('Bond at 1/2', { type: 'bond', grid: 192, p: 0.5, view: 'rank', highlight: true, minSize: 1 }, Pal.xray),
+      bondsub: pre('Bond below', { type: 'bond', grid: 192, p: 0.45, view: 'size', highlight: false, minSize: 3 }, Pal.meadow),
+      ink: pre('Occupied ink', { type: 'site', grid: 256, p: 0.6, view: 'occupied', highlight: true, minSize: 1 }, Pal.risograph),
+      fine: pre('Fine critical', { type: 'site', grid: 512, p: 0.5927, view: 'rank', highlight: true, minSize: 4 }, Pal.glacier),
+    },
+    closedGroups: [],
+    hints: {
+      Occupation: 'The one dial. The picture below p_c is dust, above it one cluster, and at p_c the largest cluster is a fractal that only just holds together.',
+      Picture: 'Size rank sends the largest cluster to the top of the palette and the rest down the ramp by rank. Log size colors by cluster mass. Occupied is the bare lattice, ink on paper.',
+    },
+    palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (small → large)',
+    headline: 'p', headlineLabel: 'p',
+    sanitize(s) {
+      s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 64, 512);
+      s.p = U.clamp(Number(s.p) || 0.5927, 0.3, 0.8);
+      s.minSize = U.clamp(Math.round(Number(s.minSize) || 1), 1, 50);
+    },
+    surprise(rng) {
+      const type = rng.pick(['site', 'site', 'bond']);
+      const pc = type === 'site' ? PC_SITE : PC_BOND;
+      return {
+        type, grid: rng.pick([192, 256, 256, 384]), aspect: rng.pick(['1:1', '1:1', '4:5', '5:4', '16:9']),
+        p: +(pc + rng.pick([-0.04, -0.015, 0, 0, 0.01, 0.03])).toFixed(3),
+        view: rng.pick(['rank', 'rank', 'size', 'occupied']), highlight: rng() < 0.8, minSize: rng.pick([1, 1, 2, 4]), grain: rng.pick([0, 0, 0.04]),
+      };
+    },
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d');
+      const buf = document.createElement('canvas');
+      let W = 0, H = 0, field = null, bonds = null, fieldKey = '';
+      let parent = null, size = null, rank = null, spanRoot = -1, nClusters = 0, maxSize = 0, labelKey = '';
+
+      function ensureField(s) {
+        const [w, h] = gridSize(s);
+        const key = [s.seed, s.type, w, h].join('|');
+        if (key === fieldKey) return;
+        fieldKey = key; W = w; H = h;
+        const rng = U.makeRng(s.seed + '/perc');
+        field = new Float32Array(W * H);
+        for (let i = 0; i < W * H; i++) field[i] = rng();
+        bonds = new Float32Array(W * H * 2);
+        for (let i = 0; i < W * H * 2; i++) bonds[i] = rng();
+        parent = new Int32Array(W * H); size = new Int32Array(W * H); rank = new Int32Array(W * H);
+        labelKey = '';
+      }
+      function label(s) {
+        const key = fieldKey + '|' + s.p;
+        if (key === labelKey) return;
+        labelKey = key;
+        const N = W * H, p = s.p, bond = s.type === 'bond';
+        for (let i = 0; i < N; i++) parent[i] = i;
+        for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+          const i = y * W + x;
+          if (bond) {
+            if (x < W - 1 && bonds[i * 2] < p) unite(parent, i, i + 1);
+            if (y < H - 1 && bonds[i * 2 + 1] < p) unite(parent, i, i + W);
+          } else {
+            if (field[i] >= p) continue;
+            if (x > 0 && field[i - 1] < p) unite(parent, i, i - 1);
+            if (y > 0 && field[i - W] < p) unite(parent, i, i - W);
+          }
+        }
+        size.fill(0);
+        const top = new Uint8Array(N), bottom = new Uint8Array(N);
+        for (let i = 0; i < N; i++) {
+          if (!bond && field[i] >= p) { parent[i] = -1; continue; }
+          const r = findRoot(parent, i); parent[i] = r; size[r]++;
+          if (i < W) top[r] = 1;
+          if (i >= N - W) bottom[r] = 1;
+        }
+        const roots = [];
+        spanRoot = -1; maxSize = 0;
+        for (let i = 0; i < N; i++) if (size[i] > 0) {
+          roots.push(i);
+          if (size[i] > maxSize) maxSize = size[i];
+          if (top[i] && bottom[i] && (spanRoot < 0 || size[i] > size[spanRoot])) spanRoot = i;
+        }
+        roots.sort((a, b) => size[b] - size[a]);
+        nClusters = roots.length;
+        for (let k = 0; k < roots.length; k++) rank[roots[k]] = k;
+      }
+      function paint() {
+        const s = host.getState();
+        ensureField(s); label(s);
+        const bond = s.type === 'bond', p = s.p;
+        const bw = bond ? 2 * W - 1 : W, bh = bond ? 2 * H - 1 : H;
+        buf.width = bw; buf.height = bh;
+        const g = buf.getContext('2d'), img = g.createImageData(bw, bh), d = img.data;
+        const lut = U.makeRampLUT(s.palette, s.bg, 256), bg = U.hexToRgb(s.bg);
+        const logN = Math.log1p(Math.max(1, nClusters)), logMax = Math.log(Math.max(2, maxSize));
+        const top = s.highlight && spanRoot >= 0 ? 0.72 : 1;
+        const colorOf = i => {
+          const r = parent[i];
+          if (r < 0 || size[r] < s.minSize) return bg;
+          if (s.highlight && r === spanRoot) return lutColor(lut, 1);
+          let t;
+          if (s.view === 'size') t = Math.log(size[r]) / logMax;
+          else if (s.view === 'occupied') t = 0.55;
+          else t = 1 - Math.log1p(rank[r]) / logN;
+          return lutColor(lut, 0.08 + (top - 0.08) * U.clamp(t, 0, 1));
+        };
+        for (let y = 0; y < bh; y++) for (let x = 0; x < bw; x++) {
+          const o = (y * bw + x) * 4;
+          let k;
+          if (!bond) k = colorOf(y * W + x);
+          else if ((x & 1) && (y & 1)) k = bg;
+          else if (x & 1) { const i = (y >> 1) * W + (x >> 1); k = bonds[i * 2] < p ? colorOf(i) : bg; }
+          else if (y & 1) { const i = (y >> 1) * W + (x >> 1); k = bonds[i * 2 + 1] < p ? colorOf(i) : bg; }
+          else k = colorOf((y >> 1) * W + (x >> 1));
+          d[o] = k[0]; d[o + 1] = k[1]; d[o + 2] = k[2]; d[o + 3] = 255;
+        }
+        grainImage(img, s.grain, s.seed);
+        g.putImageData(img, 0, 0);
+        nearestBlit(ctx, buf, canvas.width, canvas.height, s.bg);
+      }
+      function status() {
+        const s = host.getState(), pc = s.type === 'bond' ? PC_BOND : PC_SITE;
+        const rel = s.p < pc - 0.004 ? 'below' : s.p > pc + 0.004 ? 'above' : 'at';
+        host.setStatus(
+          '<span><b>' + (s.type === 'bond' ? 'bond' : 'site') + '</b> ' + W + '×' + H + '</span>' +
+          '<span>p <b>' + s.p.toFixed(3) + '</b> · ' + rel + ' p<sub>c</sub> ' + pc.toFixed(4) + '</span>' +
+          '<span>spanning <b>' + (spanRoot >= 0 ? 'yes' : 'no') + '</b> · largest <b>' + pct(maxSize / (W * H)) + '</b></span>' +
+          '<span>clusters <b>' + nClusters.toLocaleString() + '</b></span>'
+        );
+      }
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        regenerate() { paint(); status(); },
+        repaint() { paint(); status(); },
+        resize() { if (W) nearestBlit(ctx, buf, canvas.width, canvas.height, host.getState().bg); },
+        pause() {}, resume() { if (W) nearestBlit(ctx, buf, canvas.width, canvas.height, host.getState().bg); },
+        exportPNG(w, h) {
+          if (!W) return Promise.reject(new Error('nothing to export'));
+          return crispExport(buf, w, h);
+        },
+      };
+    },
+  });
 })();
 </script>
 <script>Studio.boot();</script>
