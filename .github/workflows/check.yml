@@ -67,7 +67,9 @@ jobs:
           npm install --no-save playwright@1.49.1
           npx playwright install --with-deps chromium
       - name: Plate check
-        run: node tools/check.js ${{ matrix.id }} 12000
+        # 25 s rather than 12: the default grids are 512 on the field families now, and on a software
+        # renderer a 12 s budget judged every preset at about a quarter of its warm-up.
+        run: node tools/check.js ${{ matrix.id }} 25000
 
   prints:
     name: print export (${{ matrix.id }})
