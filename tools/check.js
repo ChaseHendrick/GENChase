@@ -55,7 +55,8 @@ async function settle(p, maxMs) {
     const p = await b.newPage({ viewport: { width: 1400, height: 900 } });
     p.on('console', m => { const t = m.text(); if ((m.type() === 'error' || m.type() === 'warning') && !NOISE.some(r => r.test(t))) errs.push(m.type() + ': ' + t); });
     p.on('pageerror', e => { if (!NOISE.some(r => r.test(e.message))) errs.push('pageerror: ' + e.message); });
-    await p.goto(url + '#' + hash);
+    // a 1 MB single file whose first module starts computing on load: give it time under a loaded machine
+    await p.goto(url + '#' + hash, { waitUntil: 'domcontentloaded', timeout: 90000 });
     return p;
   };
 

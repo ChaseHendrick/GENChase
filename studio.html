@@ -4243,7 +4243,7 @@ void main(){
     }
     const data = new Float32Array(w * h * 4);
     for (let i = 0, j = 0; i < w * h; i++, j += 4) {
-      if (mask[i]) { data[j] = 0.5 + (rng() - 0.5) * 0.02; data[j + 1] = 0.25 + (rng() - 0.5) * 0.02; }
+      if (mask[i]) { data[j] = 0.5 + (rng() - 0.5) * 0.02; data[j + 1] = (Number(s.seedV) || 0.25) + (rng() - 0.5) * 0.02; }
       else { data[j] = 1.0; data[j + 1] = 0.0; }
       data[j + 3] = 1.0;
     }
@@ -4268,6 +4268,8 @@ void main(){
       { group: 'Grid', key: 'boundary', label: 'Boundary', type: 'seg', kind: 'geom', options: [['wrap', 'Wrap'], ['clamp', 'Clamp']] },
       { group: 'Grid', key: 'seeding', label: 'Seeding', type: 'seg', kind: 'geom', wrap: true, options: [['random', 'Noise'], ['disk', 'Disk'], ['disks', 'Disks'], ['ring', 'Ring'], ['stripes', 'Stripes'], ['threshold', 'Blobs'], ['grid', 'Glyphs']] },
       RANGE('Grid', 'density', 'Seed density', 'geom', 0.05, 1, 0.01, fmt2),
+      RANGE('Grid', 'seedV', 'Seed strength', 'geom', 0.1, 1, 0.05, fmt2, {
+        hint: 'V inside the seeded regions. Pearson used 0.25, which is enough at low feed rates; the high-feed regimes (bubbles, worms) need a strong seed or V dies before the pattern forms.' }),
 
       RANGE('Chemistry', 'F', 'Feed F', 'live', 0.01, 0.11, 0.0005, fmt4),
       RANGE('Chemistry', 'k', 'Kill k', 'live', 0.04, 0.075, 0.0005, fmt4),
@@ -4305,7 +4307,7 @@ void main(){
       RANGE('Lighting', 'smooth', 'Smoothing', 'paint', 0, 2, 0.05, fmt2),
     ],
     defaults: {
-      resolution: 512, aspect: '1:1', boundary: 'wrap', seeding: 'random', density: 0.4,
+      resolution: 512, aspect: '1:1', boundary: 'wrap', seeding: 'random', density: 0.4, seedV: 0.25,
       F: 0.0545, k: 0.062, Du: 1.0, Dv: 0.5, dt: 1.0,
       gradF: 0, gradK: 0, gradAngle: 0, noiseAmt: 0, noiseScale: 2.5,
       aniso: 0, anisoAngle: 45, drift: 0, driftAngle: 0,
@@ -4315,12 +4317,12 @@ void main(){
     },
     presets: {
       coral: { label: 'Coral', p: { F: 0.0545, k: 0.062, seeding: 'random', density: 0.4, channel: 'v', light: 0.35, lightAngle: 315, posterize: false, gradF: 0, gradK: 0, noiseAmt: 0, aniso: 0, drift: 0, boundary: 'wrap', exposure: 1, gamma: 1, contrast: 1, low: 0, high: 1 }, palette: Studio.PALETTES.petri },
-      mitosis: { label: 'Mitosis', p: { F: 0.0367, k: 0.0649, seeding: 'disks', density: 0.35, channel: 'v', light: 0.5, lightAngle: 300, posterize: false, gradF: 0, gradK: 0, noiseAmt: 0, aniso: 0, drift: 0, boundary: 'wrap', exposure: 1.1, gamma: 0.9, contrast: 1.1, low: 0, high: 1 }, palette: Studio.PALETTES.bioluminescent },
+      mitosis: { label: 'Mitosis', p: { F: 0.034, k: 0.0618, seeding: 'threshold', density: 0.45, channel: 'v', light: 0.5, lightAngle: 300, posterize: false, gradF: 0, gradK: 0, noiseAmt: 0, aniso: 0, drift: 0, boundary: 'wrap', exposure: 1.1, gamma: 0.9, contrast: 1.1, low: 0, high: 1 }, palette: Studio.PALETTES.bioluminescent },
       fingerprint: { label: 'Fingerprint', p: { F: 0.037, k: 0.06, seeding: 'threshold', density: 0.5, channel: 'v', light: 0.25, lightAngle: 315, posterize: false, gradF: 0, gradK: 0, noiseAmt: 0, aniso: 0.35, anisoAngle: 30, drift: 0, boundary: 'wrap', exposure: 1, gamma: 1, contrast: 1.2, low: 0, high: 0.95 }, palette: Studio.PALETTES.graphite },
       spots: { label: 'Spots', p: { F: 0.026, k: 0.061, seeding: 'random', density: 0.6, channel: 'v', light: 0.45, lightAngle: 320, posterize: false, gradF: 0, gradK: 0, noiseAmt: 0, aniso: 0, drift: 0, boundary: 'wrap', exposure: 1, gamma: 1, contrast: 1, low: 0, high: 1 }, palette: Studio.PALETTES.verdigris },
-      worms: { label: 'Worms', p: { F: 0.078, k: 0.061, seeding: 'threshold', density: 0.45, channel: 'v', light: 0.6, lightAngle: 300, posterize: false, gradF: 0, gradK: 0, noiseAmt: 0, aniso: 0, drift: 0, boundary: 'wrap', exposure: 1.1, gamma: 1, contrast: 1, low: 0, high: 1 }, palette: Studio.PALETTES.ember },
+      worms: { label: 'Worms', p: { F: 0.062, k: 0.061, seeding: 'threshold', density: 0.45, channel: 'v', light: 0.6, lightAngle: 300, posterize: false, gradF: 0, gradK: 0, noiseAmt: 0, aniso: 0, drift: 0, boundary: 'wrap', exposure: 1.1, gamma: 1, contrast: 1, low: 0, high: 1 }, palette: Studio.PALETTES.ember },
       maze: { label: 'Maze', p: { F: 0.029, k: 0.057, seeding: 'random', density: 0.5, channel: 'v', light: 0.3, lightAngle: 315, posterize: false, gradF: 0, gradK: 0, noiseAmt: 0, aniso: 0, drift: 0, boundary: 'wrap', exposure: 1, gamma: 1, contrast: 1.1, low: 0, high: 1 }, palette: Studio.PALETTES.harbor },
-      bubbles: { label: 'Bubbles', p: { F: 0.098, k: 0.057, seeding: 'threshold', density: 0.5, channel: 'u', light: 0.5, lightAngle: 320, posterize: false, gradF: 0, gradK: 0, noiseAmt: 0, aniso: 0, drift: 0, boundary: 'wrap', exposure: 1, gamma: 1.2, contrast: 1.2, low: 0.1, high: 1 }, palette: Studio.PALETTES.glacier },
+      bubbles: { label: 'Bubbles', p: { F: 0.098, k: 0.057, seeding: 'threshold', density: 0.5, seedV: 1, channel: 'u', light: 0.5, lightAngle: 320, posterize: false, gradF: 0, gradK: 0, noiseAmt: 0, aniso: 0, drift: 0, boundary: 'wrap', exposure: 1, gamma: 1.2, contrast: 1.2, low: 0.1, high: 1 }, palette: Studio.PALETTES.glacier },
       solitons: { label: 'Solitons', p: { F: 0.03, k: 0.062, seeding: 'grid', density: 0.5, channel: 'v', light: 0.4, lightAngle: 315, posterize: false, gradF: 0, gradK: 0, noiseAmt: 0, aniso: 0, drift: 0, boundary: 'wrap', exposure: 1, gamma: 1, contrast: 1, low: 0, high: 1 }, palette: Studio.PALETTES.nightshade },
       map: { label: 'Parameter map', p: { F: 0.05, k: 0.06, gradF: 0.08, gradK: 0.024, gradAngle: 0, noiseAmt: 0, seeding: 'threshold', density: 0.55, boundary: 'clamp', aniso: 0, drift: 0, channel: 'v', light: 0.3, lightAngle: 315, posterize: false, exposure: 1, gamma: 1, contrast: 1, low: 0, high: 1 }, palette: Studio.PALETTES.thermal },
     },
