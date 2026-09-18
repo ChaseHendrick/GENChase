@@ -23,11 +23,11 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GENChase — generative art from real simulations">
-<meta property="og:description" content="Forty-nine pattern-forming systems from physics, chemistry and biology, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution with its own governing equation printed alongside.">
+<meta property="og:description" content="Fifty-one pattern-forming systems from physics, chemistry and biology, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution with its own governing equation printed alongside.">
 <meta property="og:site_name" content="GENChase">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GENChase — generative art from real simulations">
-<meta name="twitter:description" content="Forty-nine pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<meta name="twitter:description" content="Fifty-one pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "A generative art studio built from real scientific simulations. Forty-nine techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution.",
+  "description": "A generative art studio built from real scientific simulations. Fifty-one techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution.",
   "featureList": [
     "Flow fields with collision-avoiding strokes",
     "Gray-Scott reaction-diffusion",
@@ -78,6 +78,8 @@
     "Hydrogen orbital densities",
     "Schrodinger wave packets on a detector",
     "Rayleigh-Benard convection",
+    "Active Model B+ bubbly phase separation",
+    "Random domino tilings of the Aztec diamond (arctic circle)",
     "Video capture of living plates",
     "Seeded reproducibility and parameter export",
     "Museum-quality print export at 300 to 600 ppi with a printed colophon"
@@ -633,7 +635,7 @@
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>None of these algorithms are new. What is unusual is the assembly. Forty-nine unrelated sciences share one control surface,
+      <p>None of these algorithms are new. What is unusual is the assembly. Fifty-one unrelated sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -1157,6 +1159,7 @@ void main(){
     thermal:    { bg: '#0A0710', colors: ['#2C0F4A', '#8A1C6B', '#E63946', '#FF9F1C', '#FFF1A8'] },
     petri:      { bg: '#F4F1EA', colors: ['#D9C7A7', '#B08968', '#7F5539', '#3E2C22', '#9C6644'] },
     xray:       { bg: '#000000', colors: ['#1D2A3A', '#3F6B8E', '#88B7D5', '#E0F2FF', '#FFFFFF'] },
+    triad:      { bg: '#F3EFE6', colors: ['#C4472B', '#2A7AB8', '#E9B949'] },   // three equal weights, for three-species plates
   };
   function generatePalette(rng) {
     const baseH = rng() * 360;
@@ -1626,7 +1629,10 @@ void main(){
 
   function renderStatus() {
     const e = instances[currentId]; if (!e) return;
-    $('status').innerHTML = e.statusHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
+    // every integrator with a time step shows it, so a preset that changes dt says so
+    const dt = Number(e.state.dt);
+    const dtHtml = isFinite(dt) && dt > 0 && !/\bdt\b/.test(e.statusHtml) ? '<span>dt <b>' + (dt >= 1 ? dt.toFixed(1) : dt.toFixed(3).replace(/0+$/, '').replace(/\.$/, '')) + '</b></span>' : '';
+    $('status').innerHTML = e.statusHtml + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
   }
 
   /* ---- lifecycle ---- */
@@ -8382,7 +8388,7 @@ void main() {
       mode: 'lenia', grid: 256, aspect: '1:1', R: 13,
       T: 10, mu: 0.28, sigma: 0.05, flow: false, flowGain: 14, flowAlpha: 1, flowDrift: 0.6, rings: 1, w1: 1, w2: 0.5, w3: 0.67,
       b1: 0.28, b2: 0.37, s1: 0.28, s2: 0.48,
-      init: 'symmetric', density: 0.4, blobs: 30, warmup: 60,
+      init: 'blobs', density: 0.35, blobs: 24, warmup: 60,
       running: true, steps: 2, decay: 0.85,
       gamma: 0.9, contrast: 1.1, high: 1, ageAmt: 0.35, ageSpan: 60, pixelate: false,
     },
@@ -12670,6 +12676,39 @@ void main(){
   outColor = vec4(clamp(c, -1.7, 1.7), 0.0, 0.0, 1.0);
 }`;
 
+  // Active Model B+: mu gains lambda |grad phi|^2, and the Laplacian of phi rides along in .g for the zeta current
+  const MU_AMB = HEAD + `
+uniform sampler2D u_c; uniform vec2 u_res; uniform float u_eps2, u_lambda;
+void main(){
+  vec2 px = 1.0 / u_res;
+  float c = texture(u_c, v_uv).r;
+  float L = lap(u_c, v_uv, px);
+  float gx = 0.5 * (texture(u_c, v_uv + vec2(px.x, 0.0)).r - texture(u_c, v_uv - vec2(px.x, 0.0)).r);
+  float gy = 0.5 * (texture(u_c, v_uv + vec2(0.0, px.y)).r - texture(u_c, v_uv - vec2(0.0, px.y)).r);
+  float mu = (c * c * c - c) - u_eps2 * L + u_lambda * (gx * gx + gy * gy);
+  outColor = vec4(mu, L, 0.0, 1.0);
+}`;
+
+  const STEP_AMB = HEAD + `
+uniform sampler2D u_c, u_mu; uniform vec2 u_res;
+uniform float u_dt, u_M, u_zeta, u_noise, u_step, u_nOff;
+${G.GLSL.hash}
+void main(){
+  vec2 px = 1.0 / u_res;
+  float c = texture(u_c, v_uv).r;
+  vec2 E = vec2(px.x, 0.0), N = vec2(0.0, px.y);
+  // zeta current J = zeta (lap phi) grad phi, divergence from face-centered fluxes so mass is conserved
+  float Lc = texture(u_mu, v_uv).g;
+  float Le = texture(u_mu, v_uv + E).g, Lw = texture(u_mu, v_uv - E).g, Ln = texture(u_mu, v_uv + N).g, Ls = texture(u_mu, v_uv - N).g;
+  float ce = texture(u_c, v_uv + E).r, cw = texture(u_c, v_uv - E).r, cn = texture(u_c, v_uv + N).r, cs = texture(u_c, v_uv - N).r;
+  float div = 0.5 * (Lc + Le) * (ce - c) - 0.5 * (Lc + Lw) * (c - cw)
+            + 0.5 * (Lc + Ln) * (cn - c) - 0.5 * (Lc + Ls) * (c - cs);
+  float n = 0.0;
+  if (u_noise > 0.0) n = (hash21(v_uv * u_res + vec2(u_nOff, u_step)) - 0.5) * 2.0 * u_noise;
+  c += u_dt * (u_M * lap(u_mu, v_uv, px) - u_zeta * div + n);
+  outColor = vec4(clamp(c, -1.7, 1.7), 0.0, 0.0, 1.0);
+}`;
+
   const MU_SH = HEAD + `
 uniform sampler2D u_c; uniform vec2 u_res;
 void main(){
@@ -13233,6 +13272,99 @@ void main(){
           for (let i = 0; i < W * H; i++) {
             data[i * 4] = s.c0 + (rng() * 2 - 1) * s.amp;
             data[i * 4 + 3] = 1;
+          }
+        }
+        return data;
+      },
+    }),
+  });
+
+  /* ---------- Active Model B+ ---------- */
+  Studio.register({
+    id: 'amb',
+    name: 'Active Model B+',
+    tab: 'Active B+',
+    subtitle: 'phase separation that never finishes · 2018',
+    order: 55.7,
+    equation: '∂φ/∂t = ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ|∇φ|²',
+    credit: "Elsen Tjhung, Cesare Nardini and Michael E. Cates, Physical Review X 8, 031080 (2018). Cahn-Hilliard describes a passive mixture relaxing toward equilibrium. Two extra gradient terms, λ|∇φ|² in the chemical potential and a current ζ(∇²φ)∇φ that cannot come from any free energy, are the leading ways an active system (motile bacteria, self-propelled colloids) can break time-reversal symmetry while still conserving φ. They give the two phases different interfacial tensions, and when the tension felt by the minority phase turns negative the Ostwald process runs backward: large droplets shed material to small ones and coarsening stops.",
+    blurb: 'Quench a passive mixture and the droplets eat each other forever: the big ones grow, the small ones vanish, and the plate slowly empties out. Make the mixture active and it can refuse. With ζ and λ set so the minority phase has negative effective tension, big droplets lose material to small ones, the size distribution locks, and you get a bubbly foam that stays a foam. ζ = λ = 0 is plain Cahn-Hilliard, for comparison. The interesting corner is ζ well below zero with the minority phase in bubbles.',
+    schema: GRID.concat([
+      RANGE('Activity', 'zeta', 'Current ζ', LIVE, -8, 8, 0.1, f1, {
+        hint: 'The non-equilibrium current ζ(∇²φ)∇φ. Negative and large, the minority phase stops coarsening: reverse Ostwald ripening.' }),
+      RANGE('Activity', 'lambda', 'Potential λ', LIVE, -4, 4, 0.1, f1, {
+        hint: 'λ|∇φ|² in μ: an active correction that can be written as a free-energy term only when ζ = 0.' }),
+      RANGE('Mixture', 'c0', 'Mean composition φ₀', GEOM, -0.6, 0.6, 0.01, f2, {
+        hint: 'Off-critical means droplets of the minority phase, which is where reverse Ostwald shows. φ₀ near 0 gives a bicontinuous labyrinth.' }),
+      RANGE('Mixture', 'eps', 'Interface width ε', LIVE, 0.6, 2.4, 0.05, f2),
+      RANGE('Mixture', 'M', 'Mobility M', LIVE, 0.2, 2.5, 0.05, f2),
+      RANGE('Mixture', 'amp', 'Quench amplitude', GEOM, 0.02, 0.5, 0.01, f2),
+      RANGE('Mixture', 'noise', 'Thermal noise', LIVE, 0, 0.08, 0.002, f3),
+      { group: 'Seeding', key: 'init', label: 'Seeding', type: 'seg', kind: GEOM, wrap: true,
+        options: [['quench', 'Quench'], ['drops', 'Drops']] },
+    ]).concat(simFields()).concat(pictureFields([
+      ['field', 'Composition'], ['abs', '|φ|'], ['grad', 'Interfaces'], ['shade', 'Relief'], ['mu', 'μ'],
+    ])),
+    defaults: {
+      grid: 192, aspect: '1:1', bc: 'periodic',
+      zeta: -4, lambda: 1, c0: -0.4, eps: 1.1, M: 1, amp: 0.15, noise: 0.004, init: 'quench',
+      running: true, steps: 3, dt: 0.02, warmup: 600,
+      view: 'field', lo: -1, hi: 1, bump: 4, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.06,
+      seed: 'tjhung-2018',
+    },
+    presets: {
+      bubbly: pre('Bubbly phase separation', { zeta: -4, lambda: 1, c0: -0.4, init: 'quench', view: 'field', warmup: 600 }, Pal.petri),
+      foam: pre('Foam', { zeta: -5, lambda: 1, c0: -0.45, init: 'quench', view: 'field', warmup: 800, eps: 1 }, Pal.xray),
+      passive: pre('Passive (Cahn-Hilliard)', { zeta: 0, lambda: 0, c0: -0.4, init: 'quench', view: 'field', warmup: 600 }, Pal.graphite),
+      labyrinth: pre('Active labyrinth', { zeta: -2, lambda: 2, c0: 0, init: 'quench', view: 'field', warmup: 500 }, Pal.verdigris),
+      drops: pre('Seeded drops', { zeta: -5, lambda: 1, c0: -0.45, init: 'drops', view: 'field', warmup: 400 }, Pal.harbor),
+      relief: pre('Relief', { zeta: -4, lambda: 1, c0: -0.4, init: 'quench', view: 'shade', bump: 6, warmup: 600 }, Pal.glacier),
+    },
+    closedGroups: ['Seeding'],
+    hints: {
+      Activity: 'ζ and λ are the two leading-order ways activity enters a conserved scalar field. ζ = λ = 0 recovers Cahn-Hilliard. The reverse-Ostwald regime is ζ negative with the minority phase in droplets.',
+      Picture: 'Composition is φ itself through the palette. Interfaces is |∇φ|. Relief treats φ as height.',
+    },
+    palette: true, defaultPalette: 'petri', paletteLabel: 'Colors (A → B)',
+    headline: 'zeta', headlineLabel: 'ζ',
+    sanitize(s) {
+      s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512);
+      // the zeta current acts like a diffusion of either sign; keep the explicit step inside its stability band
+      s.dt = U.clamp(Number(s.dt) || 0.02, 0.005, Math.min(0.06, 0.24 / (1 + Math.abs(Number(s.zeta) || 0))));
+    },
+    surprise(rng) {
+      const c0 = rng.pick([-0.4, -0.45, -0.35, 0.4, 0, -0.5]);
+      return {
+        grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5', '5:4']),
+        zeta: rng.range(-6, -1.5), lambda: rng.range(-0.5, 2.5), c0, eps: rng.range(0.85, 1.5), M: 1,
+        amp: rng.range(0.1, 0.25), noise: rng.pick([0, 0.004, 0.01]), init: 'quench',
+        running: true, steps: 3, dt: 0.02, warmup: rng.int(400, 800),
+        view: rng.pick(['field', 'field', 'grad', 'shade']), lo: -1, hi: 1, bump: rng.range(3, 8),
+        lightAng: rng.int(0, 360), exposure: rng.range(0.9, 1.15), gamma: rng.range(0.85, 1.2),
+        contrast: rng.range(0.95, 1.2), grain: rng.pick([0, 0.05, 0.1]),
+      };
+    },
+    create: pdeCreate({
+      id: 'amb', muFS: MU_AMB, stepFS: STEP_AMB,
+      views: { field: 0, abs: 1, grad: 2, shade: 3, mu: 4 },
+      pokeAdd: [1, 0, 0, 1], pokeRad: 0.06, pokeMode: 0,
+      muUniforms: s => ({ u_eps2: s.eps * s.eps, u_lambda: s.lambda }),
+      stepUniforms: s => ({ u_M: s.M, u_zeta: s.zeta }),
+      status: (s, mean, abs, step) => {
+        const regime = s.zeta === 0 && s.lambda === 0 ? 'passive' : (s.zeta < -1 ? 'reverse Ostwald' : 'active');
+        return '<span>⟨φ⟩ <b>' + mean.toFixed(2) + '</b> · ' + regime + '</span>';
+      },
+      seed(s, W, H) {
+        const rng = U.makeRng(s.seed + '/amb');
+        const data = new Float32Array(W * H * 4);
+        for (let i = 0; i < W * H; i++) { data[i * 4] = s.c0 + (rng() * 2 - 1) * s.amp; data[i * 4 + 3] = 1; }
+        if (s.init === 'drops') {
+          const n = 14;
+          for (let k = 0; k < n; k++) {
+            const cx = rng.range(0.08, 0.92) * W, cy = rng.range(0.08, 0.92) * H, R = rng.range(4, 14);
+            for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+              if (Math.hypot(x - cx, y - cy) < R) data[(y * W + x) * 4] = 0.95;
+            }
           }
         }
         return data;
@@ -14152,7 +14284,7 @@ void main(){
     name: 'Complex Ginzburg–Landau',
     tab: 'CGL',
     subtitle: 'spirals, defect chaos, frozen vortex glass',
-    order: 58,
+    order: 58.1,
     equation: '∂A/∂t = A + (1 + iα) ∇²A − (1 + iβ) |A|² A',
     credit: "The complex Ginzburg–Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969–71). The (α, β) plane was mapped by Aranson and Kramer: Benjamin–Feir when 1+αβ<0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.",
     blurb: 'A complex amplitude is enough. Real diffusion, imaginary dispersion, a cubic that saturates. The zeros of A are vortices, and they cannot die alone. In one corner of the (α, β) plane they freeze into a glass. In another they birth and annihilate forever — spiral defect chaos, the weather of an oscillatory medium. Colour by phase and you see the spirals. Colour by amplitude and you see the holes they leave.',
@@ -15908,7 +16040,7 @@ void main(){
     name: 'Lifshitz–Petrich',
     tab: '12-fold',
     subtitle: 'two-scale quasicrystal · 1997',
-    order: 58,
+    order: 57.9,
     equation: '∂tψ = εψ − (∇²+1)²(∇²+q²)²ψ + α ψ² − ψ³,   q = 2 cos(π/12)',
     credit: "Ron Lifshitz and Dean M. Petrich, Phys. Rev. Lett. 79, 1261 (1997). Faraday waves with two frequencies impose two length scales. The free energy with operator (∇²+1)²(∇²+q²)² and a quadratic term is enough to stabilize a dodecagonal quasicrystal when q = 2 cos(π/12) ≈ 1.932. Hexagons and stripes are the other ground states. This plate is a semi-implicit spectral integration of that PDE.",
     blurb: 'One length scale makes stripes or hexagons. Two, in the right ratio, make a tiling that never repeats and still has twelve-fold order — a quasicrystal you can grow from noise. Lifshitz and Petrich wrote Faraday’s two-frequency experiment as a free energy. The quadratic term is three-body physics in disguise: without it you get stripes; with it the 12-fold can win. q is not a decoration. It is 2 cos(π/12), the chord of a dodecagon.',
@@ -17804,7 +17936,10 @@ void main(){
       host.setStatus(
         '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
         '<span>' + SCH_LABEL[s.kind] + ' · k <b>' + s.k.toFixed(2) + '</b></span>' +
-        '<span>norm <b>' + Math.round(100 * normNow / Math.max(norm0, 1e-9)) + '%</b> · t <b>' + simTime.toFixed(0) + '</b></span>' +
+        // the exposure view integrates the packet over its whole flight, so what matters there is the dose, not what is left in the box
+        (s.view === 'density' || s.view === 'phase'
+          ? '<span>norm <b>' + Math.round(100 * normNow / Math.max(norm0, 1e-9)) + '%</b> · t <b>' + simTime.toFixed(0) + '</b></span>'
+          : '<span>exposure to t <b>' + simTime.toFixed(0) + '</b> · packet left <b>' + Math.round(100 * normNow / Math.max(norm0, 1e-9)) + '%</b></span>') +
         '<span>step <b>' + rig.stepCount.toLocaleString() + '</b></span>' +
         (extra ? '<span>' + extra + '</span>' : '')
       );
@@ -20150,7 +20285,7 @@ void main(){
       view: 'dom', seed: 'rps-2007',
     }, PICTURE_DEFAULTS),
     presets: {
-      pinwheels: pre('Pinwheels', { a: 0.6, b: 1.6, D: 0.1, init: 'sectors', fronts: 4, view: 'dom', warmup: 1500, scale: 2, dt: 0.1 }, Pal.kiln),
+      pinwheels: pre('Pinwheels', { a: 0.6, b: 1.6, D: 0.1, init: 'sectors', fronts: 4, view: 'dom', warmup: 1500, scale: 2, dt: 0.1 }, Pal.triad),
       many: pre('Many cores', { a: 0.6, b: 1.6, D: 0.08, init: 'sectors', fronts: 10, view: 'dom', warmup: 1200, scale: 2, dt: 0.1 }, Pal.risograph),
       patches: pre('Patch war', { a: 0.5, b: 1.8, D: 0.1, init: 'patches', fronts: 4, view: 'dom', warmup: 1200, scale: 2, dt: 0.1 }, Pal.tram),
       noise: pre('From noise', { a: 0.7, b: 1.5, D: 0.1, init: 'noise', amp: 0.5, fronts: 3, view: 'dom', warmup: 2500, scale: 2, dt: 0.1 }, Pal.meadow),
@@ -20163,7 +20298,7 @@ void main(){
       Seeding: 'Spiral cores seeds three sectors around each core, one species each, so every core spins from the first step. Patches is a random map of territories. Noise starts near coexistence and waits for the instability.',
       Picture: 'Dominance colors each cell by its winning species, three palette colors. The single-species views show one population as a density.',
     },
-    palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (three species)',
+    palette: true, defaultPalette: 'triad', paletteLabel: 'Colors (three species)',
     headline: 'D', headlineLabel: 'mobility D',
     sanitize(s) {
       gridClamp(s);
