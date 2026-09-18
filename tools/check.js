@@ -142,9 +142,26 @@ async function settle(p, maxMs, seed) {
   // 1. default plate with a fixed seed
   const seed = 'check-' + id;
   const p = await open(id + '/' + seed);
+  // A living technique whose structure takes thousands of steps to appear cannot be judged at the few
+  // hundred a software renderer manages inside a settle budget. Physarum's storm preset reads as a
+  // near-uniform haze at step 300 and is a field of rippling voids by step 2,800. Say so next to the
+  // numbers rather than leaving a low reading to be misread as a dead plate.
+  const progressNote = (m, target) => {
+    const st = (m.status || '').match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/);
+    if (!st || !target) return '';
+    const at = Number(st[1].replace(/,/g, ''));
+    return at < target * 0.5 ? ' judged early: step ' + at.toLocaleString() + ' of ' + target.toLocaleString() : '';
+  };
+  const runTarget = await p.evaluate(() => {
+    try {
+      const st = JSON.parse(localStorage.getItem('genchase.v1.' + location.hash.slice(1).split('/')[0]) || '{}');
+      return Number(st.stopAfter) || Number(st.warmup) || 0;
+    } catch (e) { return 0; }
+  });
+
   await settle(p, wait, seed);
   const def = await measure(p);
-  console.log('default', JSON.stringify(def));
+  console.log('default', JSON.stringify(def) + progressNote(def, runTarget));
   if (def.err) fails.push('default: ' + def.err);
   else if (flat(def)) fails.push('default plate is flat');
   else if (checker(def)) fails.push('default plate is the grid-scale checkerboard (neighbour correlation ' + def.nyq + '): the integrator is unstable');
@@ -166,7 +183,7 @@ async function settle(p, maxMs, seed) {
     await p.evaluate(k => { const s = document.querySelector('#preset'); s.value = k; s.dispatchEvent(new Event('change', { bubbles: true })); }, key);
     await settle(p, wait, seed);
     const m = await measure(p);
-    console.log('preset ' + key, JSON.stringify(m));
+    console.log('preset ' + key, JSON.stringify(m) + progressNote(m, runTarget));
     if (m.err) fails.push('preset ' + key + ': ' + m.err);
     else if (flat(m)) fails.push('preset ' + key + ' is flat');
     else if (checker(m)) fails.push('preset ' + key + ' is the grid-scale checkerboard (neighbour correlation ' + m.nyq + ')');
