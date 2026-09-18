@@ -4,7 +4,8 @@
 const path = require('path');
 const { chromium } = require('playwright');
 
-const NOISE = [/willReadFrequently/, /ERR_CERT_AUTHORITY_INVALID/, /ServiceWorkerRegistration/];
+// Environment noise under file:// and swiftshader, not defects in the page.
+const NOISE = [/willReadFrequently/, /ERR_CERT_AUTHORITY_INVALID/, /ServiceWorkerRegistration/, /GL Driver Message.*Performance/];
 const b64url = obj => Buffer.from(JSON.stringify(obj)).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
 async function measure(p) {
@@ -42,7 +43,7 @@ async function settle(p, maxMs) {
     same = m.fp === last ? same + 1 : 0; last = m.fp;
     if (same >= 2) return;                                   // still, or paused
     const st = m.status || '';
-    const step = (st.match(/(?:step|sweep)\s+([\d,]+)/) || [])[1];
+    const step = (st.match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/) || [])[1];
     const warm = await p.evaluate(() => { try { const id = location.hash.slice(1).split('/')[0]; const s = JSON.parse(localStorage.getItem('genchase.v1.' + id) || '{}'); return Number(s.warmup) || 0; } catch (e) { return 0; } });
     if (step && warm && Number(step.replace(/,/g, '')) >= warm) return;   // living plate past its warm-up
   }
@@ -92,7 +93,7 @@ async function settle(p, maxMs) {
   const a2 = await open(still); await settle(a2, wait); const m2 = await measure(a2);
   // A living plate with no pause key keeps stepping on a wall-clock budget, so two loads are only comparable at the
   // same step count. Report that case as not comparable rather than as a failure; a plate that pauses must match.
-  const stepOf = m => { const s = ((m.status || '').match(/(?:step|sweep)\s+([\d,]+)/) || [])[1]; return s ? Number(s.replace(/,/g, '')) : null; };
+  const stepOf = m => { const s = ((m.status || '').match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/) || [])[1]; return s ? Number(s.replace(/,/g, '')) : null; };
   const pausable = await a2.evaluate(() => { try { return Object.prototype.hasOwnProperty.call(JSON.parse(localStorage.getItem('genchase.v1.' + location.hash.slice(1).split('/')[0]) || '{}'), 'running'); } catch (e) { return false; } });
   const s1 = stepOf(m1), s2 = stepOf(m2);
   // Two captures at different step counts (a chunked computation still running, or a living plate with no pause key)

@@ -1114,6 +1114,23 @@
     float fbm(vec2 p, int oct){ float s=0.0, a=1.0, n=0.0; for(int i=0;i<8;i++){ if(i>=oct) break; s += vnoise(p)*a; n += a; a *= 0.5; p = p*2.02 + vec2(31.7,-17.3);} return s/n; }`,
     // sample a palette ramp: u_ramp is a 256x1 RGBA8 texture built with rampTexture()
     ramp: `uniform sampler2D u_ramp; vec3 ramp(float t){ return texture(u_ramp, vec2(clamp(t,0.0,1.0), 0.5)).rgb; }`,
+    // Catmull-Rom bicubic from 16 nearest taps, for showing a coarse simulation grid at print size.
+    // A field of a few hundred cells magnifies to thousands of pixels; nearest sampling turns that into a
+    // mosaic of hard squares and bilinear into mush. Catmull-Rom interpolates smoothly and keeps edges.
+    // Needs no filtering mode on the texture, so simulation passes that sample at exact texel centres are unaffected.
+    bicubic: `float crW(float x){ x = abs(x);
+      if (x < 1.0) return 1.5*x*x*x - 2.5*x*x + 1.0;
+      if (x < 2.0) return -0.5*x*x*x + 2.5*x*x - 4.0*x + 2.0;
+      return 0.0; }
+    float texCR(sampler2D t, vec2 uv, vec2 res){
+      vec2 p = uv * res - 0.5, f = fract(p), base = floor(p);
+      float sum = 0.0, wsum = 0.0;
+      for (int j = -1; j <= 2; j++) for (int i = -1; i <= 2; i++) {
+        float w = crW(float(i) - f.x) * crW(float(j) - f.y);
+        sum += texture(t, (base + vec2(float(i), float(j)) + 0.5) / res).r * w;
+        wsum += w;
+      }
+      return sum / max(wsum, 1e-6); }`,
     splatFS: `#version 300 es
 precision highp float;
 in vec2 v_uv; out vec4 outColor;
@@ -12314,7 +12331,7 @@ void main(){
     RANGE('Simulation', 'steps', 'Steps per frame', LIVE, 1, 8, 1, String),
     RANGE('Simulation', 'dt', 'Time step', LIVE, 0.08, 0.8, 0.02, f2),
     RANGE('Simulation', 'iters', 'Poisson iterations', LIVE, 8, 40, 2, String),
-    RANGE('Simulation', 'warmup', 'Warm-up steps', GEOM, 0, 2000, 50, String),
+    RANGE('Simulation', 'warmup', 'Warm-up steps', GEOM, 0, 4000, 50, String),
     { group: 'Simulation', key: 'burst', label: 'Run 400 steps', type: 'action' },
     { group: 'Simulation', key: 'reseed', label: 'Reseed', type: 'action' },
 
@@ -12818,9 +12835,11 @@ uniform float u_exposure, u_gamma, u_contrast, u_grain, u_lo, u_hi, u_bump, u_li
 uniform vec3 u_bg;
 ${G.GLSL.hash}
 ${G.GLSL.ramp}
+${G.GLSL.bicubic}
 void main(){
   vec2 px = 1.0 / u_res;
-  float u = texture(u_c, v_uv).r;
+  // the grid is far coarser than the plate, so the displayed value is interpolated rather than blocked up
+  float u = texCR(u_c, v_uv, u_res);
   float gx = 0.5 * (texture(u_c, v_uv + vec2(px.x, 0.0)).r - texture(u_c, v_uv - vec2(px.x, 0.0)).r);
   float gy = 0.5 * (texture(u_c, v_uv + vec2(0.0, px.y)).r - texture(u_c, v_uv - vec2(0.0, px.y)).r);
   float t;
@@ -13047,6 +13066,16 @@ void main(){
     };
   }
 
+  // Largest explicit-Euler step for a Cahn-Hilliard-type flow dc/dt = M lap(c^3 - c - eps^2 lap c).
+  // On the 5-point stencil with dx = 1 the operator -lap has eigenvalues in [0, 8], so the stiffest mode
+  // decays at M(eps^2 L^2 - L) with L = 8; the cubic term adds up to 3c^2 L on top. Stability needs
+  // dt below 2 / that rate, and we keep a margin because the bound is linear and the flow is not.
+  function chMaxDt(M, eps, cMax) {
+    const L = 8, cubic = 3 * (cMax || 1.2) * (cMax || 1.2);
+    const rate = Math.max(1e-6, (M || 1) * (eps * eps * L * L + cubic * L - L));
+    return 1.6 / rate;
+  }
+
   function seedNoise(s, W, H, amp, mean) {
     const rng = U.makeRng(s.seed + '/pde');
     const data = new Float32Array(W * H * 4);
@@ -13116,7 +13145,7 @@ void main(){
     defaults: {
       grid: 192, aspect: '1:1', bc: 'periodic',
       c0: 0, eps: 1.1, M: 1, deg: false, amp: 0.12, noise: 0.004, init: 'quench',
-      running: true, steps: 3, dt: 0.03, warmup: 450,
+      running: true, steps: 3, dt: 0.014, warmup: 2000,
       view: 'field', lo: -1, hi: 1, bump: 4, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.06,
       seed: 'cahn-1958',
     },
@@ -13134,7 +13163,7 @@ void main(){
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (A → B)',
     headline: 'c0', headlineLabel: 'mean c₀',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.03, 0.005, 0.15); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.014, 0.002, chMaxDt(s.M, s.eps)); },
     surprise(rng) {
       const c0 = rng.pick([0, 0, 0.05, -0.3, 0.35, -0.45]);
       return {
@@ -13142,7 +13171,7 @@ void main(){
         c0, eps: rng.range(0.85, 1.6), M: rng.range(0.7, 1.4), deg: rng() < 0.25,
         amp: rng.range(0.08, 0.25), noise: rng.pick([0, 0.003, 0.01]),
         init: Math.abs(c0) < 0.15 ? rng.pick(['quench', 'quench', 'bands']) : 'quench',
-        running: true, steps: rng.int(2, 4), dt: 0.03, warmup: rng.int(250, 700),
+        running: true, steps: rng.int(2, 4), dt: 0.014, warmup: rng.int(1400, 3000),
         view: rng.pick(['field', 'field', 'grad', 'shade']), lo: -1, hi: 1, bump: rng.range(3, 8),
         lightAng: rng.int(0, 360), exposure: rng.range(0.9, 1.15), gamma: rng.range(0.85, 1.2),
         contrast: rng.range(0.95, 1.2), grain: rng.pick([0, 0.05, 0.1]),
@@ -13217,7 +13246,7 @@ void main(){
     defaults: {
       grid: 192, aspect: '1:1', bc: 'periodic',
       c0: 0, eps: 1.05, sigma: 0.06, M: 1, deg: false, amp: 0.14, noise: 0.003, init: 'quench',
-      running: true, steps: 3, dt: 0.025, warmup: 700,
+      running: true, steps: 3, dt: 0.015, warmup: 2200,
       view: 'field', lo: -1, hi: 1, bump: 4, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.08, grain: 0.05,
       seed: 'ohta-1986',
     },
@@ -13234,14 +13263,14 @@ void main(){
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (A → B)',
     headline: 'sigma', headlineLabel: 'σ',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.025, 0.005, 0.12); s.sigma = U.clamp(Number(s.sigma) || 0, 0, 0.3); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.015, 0.002, chMaxDt(s.M, s.eps)); s.sigma = U.clamp(Number(s.sigma) || 0, 0, 0.3); },
     surprise(rng) {
       const c0 = rng.pick([0, 0, 0.05, -0.3, 0.32]);
       return {
         grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5']),
         c0, eps: rng.range(0.85, 1.5), sigma: rng.range(0.02, 0.11), M: 1, deg: rng() < 0.15,
         amp: rng.range(0.08, 0.22), noise: rng.pick([0, 0.003, 0.01]), init: 'quench',
-        running: true, steps: rng.int(2, 4), dt: 0.025, warmup: rng.int(400, 900),
+        running: true, steps: rng.int(2, 4), dt: 0.015, warmup: rng.int(1500, 3200),
         view: rng.pick(['field', 'field', 'grad', 'shade']), lo: -1, hi: 1, bump: rng.range(3, 8),
         lightAng: rng.int(0, 360), exposure: rng.range(0.9, 1.15), gamma: rng.range(0.85, 1.2),
         contrast: rng.range(0.95, 1.2), grain: rng.pick([0, 0.05, 0.1]),
@@ -13318,7 +13347,7 @@ void main(){
     defaults: {
       grid: 192, aspect: '1:1', bc: 'periodic',
       zeta: -4, lambda: 1, c0: -0.4, eps: 1.1, M: 1, amp: 0.15, noise: 0.004, init: 'quench',
-      running: true, steps: 3, dt: 0.02, warmup: 600,
+      running: true, steps: 3, dt: 0.013, warmup: 1800,
       view: 'field', lo: -1, hi: 1, bump: 4, lightAng: 35, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.06,
       seed: 'tjhung-2018',
     },
@@ -13340,7 +13369,7 @@ void main(){
     sanitize(s) {
       s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512);
       // the zeta current acts like a diffusion of either sign; keep the explicit step inside its stability band
-      s.dt = U.clamp(Number(s.dt) || 0.02, 0.005, Math.min(0.06, 0.24 / (1 + Math.abs(Number(s.zeta) || 0))));
+      s.dt = U.clamp(Number(s.dt) || 0.013, 0.002, Math.min(chMaxDt(s.M, s.eps), 0.24 / (1 + Math.abs(Number(s.zeta) || 0))));
     },
     surprise(rng) {
       const c0 = rng.pick([-0.4, -0.45, -0.35, 0.4, 0, -0.5]);
@@ -13348,7 +13377,7 @@ void main(){
         grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5', '5:4']),
         zeta: rng.range(-6, -1.5), lambda: rng.range(-0.5, 2.5), c0, eps: rng.range(0.85, 1.5), M: 1,
         amp: rng.range(0.1, 0.25), noise: rng.pick([0, 0.004, 0.01]), init: 'quench',
-        running: true, steps: 3, dt: 0.02, warmup: rng.int(400, 800),
+        running: true, steps: 3, dt: 0.013, warmup: rng.int(1200, 2600),
         view: rng.pick(['field', 'field', 'grad', 'shade']), lo: -1, hi: 1, bump: rng.range(3, 8),
         lightAng: rng.int(0, 360), exposure: rng.range(0.9, 1.15), gamma: rng.range(0.85, 1.2),
         contrast: rng.range(0.95, 1.2), grain: rng.pick([0, 0.05, 0.1]),
