@@ -16,14 +16,19 @@ async function measure(p) {
     const d = g.getImageData(0, 0, t.width, t.height).data, L = [];
     let h = 2166136261;
     for (let i = 0; i < d.length; i += 4) { L.push(Math.round(.2126 * d[i] + .7152 * d[i + 1] + .0722 * d[i + 2])); h ^= d[i]; h = Math.imul(h, 16777619); h ^= d[i + 1]; h = Math.imul(h, 16777619); }
-    L.sort((a, b) => a - b); const q = f => L[Math.floor(f * (L.length - 1))];
+    const sorted = L.slice().sort((a, b) => a - b); const q = f => sorted[Math.floor(f * (sorted.length - 1))];
+    const p50 = q(.5);
+    // ink: the fraction of pixels that depart from the modal level. A line drawing is mostly background,
+    // so percentile spread alone calls it blank; this counts the marks instead.
+    let ink = 0; for (let i = 0; i < L.length; i++) if (Math.abs(L[i] - p50) > 10) ink++;
     const st = document.querySelector('#status');
     return { canvas: c.width + 'x' + c.height, visibleCanvases: cs.length, fp: (h >>> 0).toString(16),
-      lum: { p01: q(.01), p10: q(.1), p50: q(.5), p90: q(.9), p99: q(.99) },
+      lum: { p01: q(.01), p10: q(.1), p50: p50, p90: q(.9), p99: q(.99), min: sorted[0], max: sorted[sorted.length - 1], ink: +(ink / L.length).toFixed(4) },
       status: st ? st.innerText.replace(/\s+/g, ' ').slice(0, 200) : null };
   });
 }
-const flat = m => !m.lum || (m.lum.p99 - m.lum.p01) < 12;
+// Alive either as a broad tonal field (percentile spread) or as marks on a ground (range plus enough ink).
+const flat = m => !m.lum || ((m.lum.p99 - m.lum.p01) < 12 && !((m.lum.max - m.lum.min) >= 40 && m.lum.ink >= 0.004));
 
 // Wait up to maxMs, but stop early once the plate is non-flat and has settled: a still plate whose fingerprint
 // stopped changing, or a living plate whose step count has passed its warm-up. Cuts a full run roughly in half.
