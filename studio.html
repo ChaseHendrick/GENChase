@@ -17252,6 +17252,607 @@ void main(){
   });
 })();
 </script>
+<script>
+/* modules/wavesflow.js */
+/* GENChase: Schrodinger wave packets (Visscher staggered leapfrog) and Rayleigh-Benard convection (vorticity-streamfunction Boussinesq), both GPU grids. */
+(function () {
+  'use strict';
+  const U = Studio.util, G = Studio.gl;
+  const TAU = U.TAU, PI = Math.PI;
+  const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  const RED = 32;
+  const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2), f3 = v => v.toFixed(3);
+  const pct = v => Math.round(v * 100) + '%';
+  const deg = v => v + '°';
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
+    Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const Pal = Studio.PALETTES;
+  const pre = (label, p, pal) => ({ label, p, palette: pal });
+
+  function toHalf(f32) {
+    const out = new Uint16Array(f32.length), fb = new Float32Array(1), ib = new Int32Array(fb.buffer);
+    for (let i = 0; i < f32.length; i++) {
+      fb[0] = f32[i];
+      const x = ib[0], sign = (x >> 16) & 0x8000, exp = ((x >> 23) & 0xff) - 112;
+      out[i] = exp <= 0 ? sign : exp >= 31 ? sign | 0x7c00 : sign | (exp << 10) | ((x >> 13) & 0x3ff);
+    }
+    return out;
+  }
+  function hexToRgb01(hex) {
+    const rgb = U.hexToRgb(hex || '#000000');
+    return [rgb[0] / 255, rgb[1] / 255, rgb[2] / 255];
+  }
+  function sizeOf(s) {
+    const n = Number(s.grid) || 192;
+    const ar = ASPECTS[s.aspect] || 1;
+    const W = n, H = Math.max(64, Math.round(n * ar));
+    return [W & ~1, H & ~1];
+  }
+  // Both reduce passes store large positive quantities as log2(1 + v) / 32 in one byte.
+  const decLog = b => Math.pow(2, (b / 255) * 32) - 1;
+
+  const HEAD = `#version 300 es
+precision highp float;
+in vec2 v_uv; out vec4 outColor;
+`;
+  // Bilinear sample of a nearest-filtered texture at continuous cell coordinates p (cell centers at k + 0.5).
+  // x wraps through the texture's repeat mode, y is clamped to the outermost rows.
+  const BILERP = `
+vec4 bilerp(sampler2D t, vec2 p, vec2 res){
+  vec2 q = p - 0.5; vec2 i = floor(q); vec2 f = q - i;
+  float y0 = clamp(i.y, 0.0, res.y - 1.0), y1 = clamp(i.y + 1.0, 0.0, res.y - 1.0);
+  vec4 a = texture(t, (vec2(i.x, y0) + 0.5) / res), b = texture(t, (vec2(i.x + 1.0, y0) + 0.5) / res);
+  vec4 c = texture(t, (vec2(i.x, y1) + 0.5) / res), d = texture(t, (vec2(i.x + 1.0, y1) + 0.5) / res);
+  return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
+`;
+  // Catmull-Rom bicubic on the same lattice, clamped to the range of the 4 nearest cells so it cannot overshoot.
+  const BICUBIC = `
+vec4 tap(sampler2D t, vec2 ij, vec2 res){ ij.y = clamp(ij.y, 0.0, res.y - 1.0); return texture(t, (ij + 0.5) / res); }
+vec4 cubicRow(sampler2D t, vec2 ij, float fx, vec2 res){
+  vec4 a = tap(t, ij + vec2(-1.0, 0.0), res), b = tap(t, ij, res), c = tap(t, ij + vec2(1.0, 0.0), res), d = tap(t, ij + vec2(2.0, 0.0), res);
+  vec4 r = b + 0.5 * fx * (c - a + fx * (2.0 * a - 5.0 * b + 4.0 * c - d + fx * (3.0 * (b - c) + d - a)));
+  return r;
+}
+vec4 bicubic(sampler2D t, vec2 p, vec2 res){
+  vec2 q = p - 0.5; vec2 i = floor(q); vec2 f = q - i;
+  vec4 r0 = cubicRow(t, i + vec2(0.0, -1.0), f.x, res), r1 = cubicRow(t, i, f.x, res);
+  vec4 r2 = cubicRow(t, i + vec2(0.0, 1.0), f.x, res), r3 = cubicRow(t, i + vec2(0.0, 2.0), f.x, res);
+  vec4 r = r1 + 0.5 * f.y * (r2 - r0 + f.y * (2.0 * r0 - 5.0 * r1 + 4.0 * r2 - r3 + f.y * (3.0 * (r1 - r2) + r3 - r0)));
+  vec4 b00 = tap(t, i, res), b10 = tap(t, i + vec2(1.0, 0.0), res), b01 = tap(t, i + vec2(0.0, 1.0), res), b11 = tap(t, i + vec2(1.0, 1.0), res);
+  return clamp(r, min(min(b00, b10), min(b01, b11)), max(max(b00, b10), max(b01, b11)));
+}
+`;
+  const TONE = `
+vec3 tone(vec3 col, float con, float grain){
+  col = clamp((clamp(col, 0.0, 1.0) - 0.5) * con + 0.5, 0.0, 1.0);
+  if (grain > 0.0) col = clamp(col + (hash21(gl_FragCoord.xy * 0.73) - 0.5) * grain * 0.4, 0.0, 1.0);
+  return col;
+}
+`;
+
+  /* Shared GPU rig: context, float format, palette ramps, reduce readback, loop, burst, export. */
+  function makeRig(host, passes) {
+    const gl = G.createGL(host.canvas);
+    const noop = () => {};
+    const dead = msg => {
+      host.setStatus(msg);
+      return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
+    };
+    if (!gl) return { dead: dead('WebGL2 is not available in this browser') };
+    const texType = gl.floatExt ? 'rgba32f' : 'rgba16f';
+    if (!gl.floatExt) gl.getExtension('EXT_color_buffer_half_float');
+    const P = {};
+    try {
+      for (const k in passes) P[k] = new G.Pass(gl, passes[k]);
+    } catch (err) { console.error(err); return { dead: dead('Shader compilation failed on this GPU') }; }
+    const reduceT = new G.Target(gl, RED, RED, { type: 'rgba8', filter: 'nearest' });
+    const redBuf = new Uint8Array(RED * RED * 4);
+    const pbo = gl.createBuffer();
+    let fence = null, pollTimer = 0, next = null;
+    let ramp = null, ramp2 = null, rampKey = '';
+    const rig = {
+      gl, texType, P, raf: 0, chunkTimer: 0, stepCount: 0,
+      upload(target, f32) {
+        gl.bindTexture(gl.TEXTURE_2D, target.tex);
+        if (texType === 'rgba32f') gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.FLOAT, f32);
+        else gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.HALF_FLOAT, toHalf(f32));
+      },
+      // [ramp with the background as its first stop, ramp of the palette colors only]
+      ramps(s) {
+        const key = (s.bg || '') + '|' + (s.palette || []).join(',');
+        if (!ramp || rampKey !== key) {
+          if (ramp) { ramp.dispose(); ramp2.dispose(); }
+          ramp = G.rampTexture(gl, s.palette, s.bg);
+          ramp2 = G.rampTexture(gl, s.palette, null);
+          rampKey = key;
+        }
+        return [ramp, ramp2];
+      },
+      // Runs the reduce pass over the field and hands its RED x RED x 4 bytes to cb once the GPU is done.
+      // The readback goes through a pixel pack buffer and a fence, so the CPU never stalls on the GPU.
+      // One readback in flight at a time; a request made while one is pending runs after it (only the latest is kept).
+      reduce(uniforms, cb) {
+        if (fence) { next = [uniforms, cb]; return; }
+        P.reduce.draw(reduceT, uniforms);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, reduceT.fbo);
+        gl.bindBuffer(gl.PIXEL_PACK_BUFFER, pbo);
+        gl.bufferData(gl.PIXEL_PACK_BUFFER, RED * RED * 4, gl.STREAM_READ);
+        gl.readPixels(0, 0, RED, RED, gl.RGBA, gl.UNSIGNED_BYTE, 0);
+        gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        fence = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
+        gl.flush();
+        const poll = () => {
+          pollTimer = 0;
+          if (!fence) return;
+          if (gl.getSyncParameter(fence, gl.SYNC_STATUS) !== gl.SIGNALED) { pollTimer = setTimeout(poll, 4); return; }
+          gl.deleteSync(fence); fence = null;
+          gl.bindBuffer(gl.PIXEL_PACK_BUFFER, pbo);
+          gl.getBufferSubData(gl.PIXEL_PACK_BUFFER, 0, redBuf);
+          gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
+          cb(redBuf);
+          if (next) { const n = next; next = null; rig.reduce(n[0], n[1]); }
+        };
+        pollTimer = setTimeout(poll, 0);
+      },
+      stop() {
+        cancelAnimationFrame(rig.raf); rig.raf = 0;
+        clearTimeout(rig.chunkTimer); rig.chunkTimer = 0;
+        clearTimeout(pollTimer); pollTimer = 0; next = null;
+        if (fence) { gl.deleteSync(fence); fence = null; }
+      },
+      // Living loop: step, render, measure every 16 steps. Never animates under reduced motion.
+      startLoop(step, render, measure) {
+        rig.stop();
+        const s = host.getState();
+        if (s.running && !host.reducedMotion()) {
+          const frame = () => {
+            rig.raf = 0;
+            const st = host.getState();
+            step(st.steps);
+            render();
+            if (rig.stepCount % 64 < st.steps) measure('');
+            rig.raf = requestAnimationFrame(frame);
+          };
+          rig.raf = requestAnimationFrame(frame);
+        } else { measure(!s.running ? 'paused' : ''); render(); }
+      },
+      // Warm-up in chunks so the UI never blocks; the plate is painted progressively.
+      burst(total, step, render, measure, status, then) {
+        rig.stop();
+        let left = total, k = 0;
+        (function chunk() {
+          const n = Math.min(24, left); left -= n;
+          step(n);
+          if (k % 4 === 0 || left <= 0) render();
+          if (k++ === 0) measure('warming up'); else status('warming up');
+          if (left > 0) rig.chunkTimer = setTimeout(chunk, 0);
+          else then();
+        })();
+      },
+      async exportPNG(w, h, render) {
+        const max = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+        if (w > max || h > max) throw new Error('larger than this GPU allows (' + max + ' px)');
+        const Tgt = new G.Target(gl, w, h, { type: 'rgba8' });
+        render(Tgt);
+        const px = new Uint8Array(w * h * 4);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, Tgt.fbo);
+        gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, px);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        Tgt.dispose();
+        const c = document.createElement('canvas'); c.width = w; c.height = h;
+        const ctx = c.getContext('2d'), img = ctx.createImageData(w, h);
+        for (let y = 0; y < h; y++) img.data.set(px.subarray((h - 1 - y) * w * 4, (h - y) * w * 4), y * w * 4);
+        ctx.putImageData(img, 0, 0);
+        return U.toBlob(c);
+      },
+    };
+    return rig;
+  }
+
+  const GRID = [
+    { group: 'Grid', key: 'grid', label: 'Grid', type: 'seg', kind: GEOM, options: [[128, '128'], [192, '192'], [256, '256'], [384, '384'], [512, '512']] },
+    { group: 'Grid', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
+  ];
+  function simFields(dtMin, dtMax, dtStep, dtFmt) {
+    return [
+      { group: 'Simulation', key: 'running', label: 'Running', type: 'toggle', kind: LIVE },
+      RANGE('Simulation', 'steps', 'Steps per frame', LIVE, 1, 8, 1, String),
+      RANGE('Simulation', 'dt', 'Time step', LIVE, dtMin, dtMax, dtStep, dtFmt),
+      RANGE('Simulation', 'warmup', 'Warm-up steps', GEOM, 0, 3000, 50, String),
+      { group: 'Simulation', key: 'burst', label: 'Run 400 steps', type: 'action' },
+      { group: 'Simulation', key: 'reseed', label: 'Reseed', type: 'action' },
+    ];
+  }
+  function toneFields() {
+    return [
+      RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.2, 4, 0.02, f2),
+      RANGE('Picture', 'gamma', 'Gamma', PAINT, 0.3, 2.2, 0.02, f2),
+      RANGE('Picture', 'contrast', 'Contrast', PAINT, 0.5, 2.2, 0.02, f2),
+      RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.6, 0.02, pct),
+    ];
+  }
+
+  /* ---------- Schrödinger ---------- */
+  Studio.register({
+    id: 'schrodinger',
+    name: 'Schrödinger',
+    tab: 'Schrödinger',
+    subtitle: 'wave packet on a detector · 1926',
+    order: 53,
+    equation: 'i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps',
+    credit: "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): the real part is advanced on whole steps and the imaginary part on half steps, so the discrete norm Re² + Im₋ Im₊ is conserved exactly and no complex arithmetic is needed. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979.",
+    blurb: 'A Gaussian wave packet is launched with a momentum and left to meet a potential: a wall with one or two slits, a barrier it can only tunnel through, a bowl, a stadium of hard walls, a lattice, or a random landscape that pins it in place (Anderson localization). The plate is not one frame of the wave. It is the detector: |ψ|² integrated over the whole run, the way a photographic plate behind the slits records where the particle was likely to be. Density and Phase show the live wave; the phase view colors the complex argument through the palette. An absorbing layer at the edge swallows whatever leaves the frame, so what you print is the part of the history that happened in front of the camera. Drag to add a packet moving along your stroke.',
+    schema: GRID.concat([
+      { group: 'Potential', key: 'kind', label: 'Potential', type: 'seg', kind: GEOM, wrap: true,
+        options: [['double', 'Double slit'], ['single', 'Single slit'], ['barrier', 'Barrier'], ['well', 'Harmonic well'], ['stadium', 'Stadium'], ['lattice', 'Lattice'], ['disorder', 'Disorder'], ['free', 'Free']] },
+      RANGE('Potential', 'V0', 'Strength V₀', GEOM, 0, 6, 0.02, f2, { dimUnless: usesV0,
+        hint: 'Barrier height, well depth at the frame edge, lattice bump height, or disorder width. The packet energy is k²/2.' }),
+      RANGE('Potential', 'wallX', 'Wall position', GEOM, 0.2, 0.8, 0.01, f2, { dimUnless: usesWallX }),
+      RANGE('Potential', 'thick', 'Wall thickness', GEOM, 2, 16, 1, v => v + ' px', { dimUnless: usesWallX }),
+      RANGE('Potential', 'slitW', 'Slit width', GEOM, 2, 24, 1, v => v + ' px', { dimUnless: usesSlit }),
+      RANGE('Potential', 'slitSep', 'Slit separation', GEOM, 6, 80, 1, v => v + ' px', { dimUnless: s => s.kind === 'double' }),
+      { group: 'Potential', key: 'wallMode', label: 'Wall', type: 'seg', kind: GEOM, options: [['hard', 'Hard'], ['absorbing', 'Absorbing']], dimUnless: usesSlit,
+        hint: 'A hard wall reflects the packet back over the source, an absorbing one only lets the slits through.' },
+      RANGE('Potential', 'period', 'Lattice period', GEOM, 6, 48, 1, v => v + ' px', { dimUnless: s => s.kind === 'lattice' }),
+      RANGE('Potential', 'corr', 'Disorder grain', GEOM, 1, 12, 1, v => v + ' px', { dimUnless: s => s.kind === 'disorder' }),
+      RANGE('Packet', 'px', 'Packet x', GEOM, 0.05, 0.95, 0.01, f2),
+      RANGE('Packet', 'py', 'Packet y', GEOM, 0.05, 0.95, 0.01, f2),
+      RANGE('Packet', 'sigma', 'Width σ', GEOM, 3, 30, 0.5, v => v + ' px'),
+      RANGE('Packet', 'k', 'Momentum k', GEOM, 0, 1.6, 0.02, f2, { hint: 'In 1/cell. Wavelength 2π/k; speed k cells per unit time. Above about 1.5 the grid cannot carry the wave.' }),
+      RANGE('Packet', 'ang', 'Direction', GEOM, 0, 359, 1, deg),
+    ]).concat(simFields(0.02, 0.3, 0.005, f3)).concat([
+      RANGE('Simulation', 'absorb', 'Absorber width', LIVE, 0, 0.2, 0.01, pct, { hint: 'Fraction of the frame, on every side, where the wave is damped. Off inside the stadium.' }),
+      RANGE('Simulation', 'damp', 'Absorber strength', LIVE, 0.05, 1.5, 0.05, f2),
+    ]).concat([
+      { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['detector', 'Detector'], ['density', '|ψ|²'], ['phase', 'Phase']] },
+      { group: 'Picture', key: 'showV', label: 'Show potential', type: 'toggle', kind: PAINT },
+    ]).concat(toneFields()),
+    defaults: {
+      grid: 192, aspect: '1:1',
+      kind: 'double', V0: 0.6, wallX: 0.42, thick: 4, slitW: 5, slitSep: 22, wallMode: 'absorbing', period: 16, corr: 2,
+      px: 0.2, py: 0.5, sigma: 12, k: 0.9, ang: 0,
+      running: true, steps: 4, dt: 0.2, warmup: 1000, absorb: 0.1, damp: 0.6,
+      view: 'detector', showV: true, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.04,
+      seed: 'visscher-1991',
+    },
+    presets: {
+      double: pre('Double slit', { kind: 'double', px: 0.2, py: 0.5, sigma: 12, k: 0.9, ang: 0, wallMode: 'absorbing', slitW: 5, slitSep: 22, warmup: 1000, view: 'detector', exposure: 1, gamma: 1 }, Pal.xray),
+      mirror: pre('Reflecting wall', { kind: 'double', px: 0.2, py: 0.5, sigma: 12, k: 0.9, ang: 0, wallMode: 'hard', slitW: 5, slitSep: 22, warmup: 1000, view: 'detector', exposure: 1, gamma: 1 }, Pal.harbor),
+      single: pre('Single slit', { kind: 'single', px: 0.2, py: 0.5, sigma: 14, k: 1, ang: 0, wallMode: 'absorbing', slitW: 6, warmup: 1000, view: 'detector', exposure: 1, gamma: 1 }, Pal.glacier),
+      tunnel: pre('Tunneling', { kind: 'barrier', V0: 0.5, wallX: 0.5, thick: 3, px: 0.22, py: 0.5, sigma: 12, k: 0.95, ang: 0, warmup: 1000, view: 'detector', exposure: 1 }, Pal.thermal),
+      orbit: pre('Coherent orbit', { kind: 'well', V0: 2, px: 0.5, py: 0.72, sigma: 8, k: 0.6, ang: 0, warmup: 1500, view: 'detector', exposure: 1 }, Pal.nightshade),
+      stadium: pre('Stadium', { kind: 'stadium', px: 0.36, py: 0.5, sigma: 8, k: 1.1, ang: 28, warmup: 1500, view: 'detector', exposure: 1, aspect: '3:2' }, Pal.graphite),
+      lattice: pre('Lattice', { kind: 'lattice', V0: 0.5, period: 14, px: 0.25, py: 0.5, sigma: 12, k: 0.8, ang: 15, warmup: 1000, view: 'detector', exposure: 1 }, Pal.bioluminescent),
+      anderson: pre('Anderson', { kind: 'disorder', V0: 3, corr: 2, px: 0.5, py: 0.5, sigma: 6, k: 0.4, ang: 0, warmup: 1200, view: 'detector', exposure: 1 }, Pal.ember),
+    },
+    closedGroups: ['Packet'],
+    hints: {
+      Potential: 'The slits, barrier and well are what the packet meets. V₀ against k²/2 decides whether it passes, tunnels, or is turned back.',
+      Packet: 'Where the packet starts, how wide it is, and which way it moves. Narrow packets spread faster (uncertainty). The seed jitters position and aim slightly.',
+      Simulation: 'The time step is clamped against the Visscher bound dt < 2/(4 + V₀) so the leapfrog stays unitary. The absorber is an imaginary potential over the frame edge.',
+      Picture: 'Detector is the print: |ψ|² summed over the run and shown with a film-like response. Density and Phase are the live wave.',
+    },
+    palette: true, defaultPalette: 'xray', paletteLabel: 'Colors (dark → bright)',
+    headline: 'k', headlineLabel: 'momentum k',
+    sanitize(s) {
+      s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512);
+      s.V0 = U.clamp(Number(s.V0) || 0, 0, 8);
+      s.k = U.clamp(Number(s.k) || 0, 0, 1.6);
+      // Visscher: |E| dt < 2 with E up to 4/dx^2 + V0 on the 5-point Laplacian (dx = 1); stay well inside it
+      const dtMax = Math.min(0.25, 1.6 / (4 + Math.abs(s.V0)));
+      s.dt = U.clamp(Number(s.dt) || 0.2, 0.01, dtMax);
+      s.sigma = U.clamp(Number(s.sigma) || 12, 2, 40);
+      s.absorb = U.clamp(Number(s.absorb) || 0, 0, 0.25);
+    },
+    surprise(rng) {
+      const kind = rng.pick(['double', 'double', 'single', 'barrier', 'well', 'stadium', 'lattice', 'disorder']);
+      const k = kind === 'disorder' ? rng.range(0.3, 0.6) : rng.range(0.6, 1.2);
+      const side = kind === 'well' || kind === 'stadium' || kind === 'disorder' || kind === 'free';
+      return {
+        grid: rng.pick([192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5', '3:2']),
+        kind, V0: kind === 'barrier' ? k * k * 0.5 * rng.range(0.8, 1.4) : kind === 'well' ? rng.range(1, 3) : kind === 'disorder' ? rng.range(2, 4) : rng.range(0.3, 0.8),
+        wallX: rng.range(0.38, 0.55), thick: rng.int(3, 7), slitW: rng.int(4, 8), slitSep: rng.int(14, 34),
+        wallMode: rng.pick(['hard', 'absorbing']), period: rng.int(10, 22), corr: rng.int(1, 4),
+        px: side ? rng.range(0.35, 0.65) : rng.range(0.15, 0.25), py: side ? rng.range(0.35, 0.7) : rng.range(0.42, 0.58),
+        sigma: rng.range(6, 16), k, ang: side ? rng.int(0, 359) : (rng.int(-8, 8) + 360) % 360,
+        running: true, steps: rng.int(3, 5), dt: 0.2, warmup: rng.int(800, 1500), absorb: rng.pick([0.08, 0.1, 0.12]), damp: rng.range(0.4, 0.8),
+        view: 'detector', showV: rng() < 0.8, exposure: rng.range(0.7, 1.5), gamma: rng.range(0.85, 1.15), contrast: rng.range(1, 1.2), grain: rng.pick([0, 0.04, 0.08]),
+      };
+    },
+    create: schrodingerCreate,
+  });
+
+  function usesV0(s) { return s.kind === 'barrier' || s.kind === 'well' || s.kind === 'lattice' || s.kind === 'disorder'; }
+  function usesSlit(s) { return s.kind === 'single' || s.kind === 'double'; }
+  function usesWallX(s) { return usesSlit(s) || s.kind === 'barrier'; }
+
+  // State texture: r = Re psi (integer steps), g = Im psi (half steps), b = time-integrated |psi|^2 (the detector).
+  // Potential texture: r = V, g = hard wall (1 inside), b = absorber weight 0..1.
+  const SCH_POT_FS = HEAD + `
+uniform vec2 u_res;
+uniform int u_kind, u_wallMode;
+uniform float u_V0, u_slitW, u_slitSep, u_wallX, u_thick, u_period, u_corr, u_nOff, u_absorb;
+${G.GLSL.hash}
+void main(){
+  vec2 c = floor(v_uv * u_res);
+  vec2 ctr = 0.5 * (u_res - 1.0);
+  float V = 0.0, wall = 0.0;
+  float wx = u_wallX * u_res.x;
+  if (u_kind == 1 || u_kind == 2) {
+    bool inWall = abs(c.x - wx) < 0.5 * u_thick;
+    float dy = c.y - ctr.y;
+    bool open = (u_kind == 1) ? abs(dy) < 0.5 * u_slitW
+              : (abs(dy - 0.5 * u_slitSep) < 0.5 * u_slitW || abs(dy + 0.5 * u_slitSep) < 0.5 * u_slitW);
+    if (inWall && !open) wall = 1.0;
+  } else if (u_kind == 3) {
+    if (abs(c.x - wx) < 0.5 * u_thick) V = u_V0;
+  } else if (u_kind == 4) {
+    vec2 d = (c - ctr) / (0.5 * min(u_res.x, u_res.y));
+    V = u_V0 * dot(d, d);
+  } else if (u_kind == 5) {
+    float r = 0.44 * u_res.y, L2 = max(0.0, 0.46 * u_res.x - r);
+    vec2 d = c - ctr;
+    vec2 q = vec2(max(abs(d.x) - L2, 0.0), d.y);
+    if (length(q) > r) wall = 1.0;
+  } else if (u_kind == 6) {
+    vec2 ph = 6.28318530718 * c / u_period;
+    V = u_V0 * (0.5 + 0.5 * cos(ph.x)) * (0.5 + 0.5 * cos(ph.y));
+  } else if (u_kind == 7) {
+    vec2 site = floor(c / max(u_corr, 1.0));
+    V = u_V0 * (hash21(site + vec2(u_nOff, u_nOff * 0.37)) - 0.5);
+  }
+  // absorbing layer over the outer fraction of the grid (off inside a hard-wall stadium)
+  float edge = min(min(c.x, u_res.x - 1.0 - c.x), min(c.y, u_res.y - 1.0 - c.y));
+  float layer = u_absorb * min(u_res.x, u_res.y);
+  float a = (u_kind == 5 || layer < 1.0) ? 0.0 : clamp(1.0 - edge / layer, 0.0, 1.0);
+  a = a * a;
+  float drawn = wall;
+  if (u_wallMode == 1 && wall > 0.5 && u_kind != 5) { wall = 0.0; a = 1.0; }
+  outColor = vec4(V, wall, a, drawn);
+}`;
+
+  const SCH_STEP_FS = HEAD + `
+uniform sampler2D u_p, u_pot;
+uniform vec2 u_res;
+uniform float u_dt, u_dtE, u_damp;
+uniform int u_phase;
+float lapc(vec2 uv, vec2 px, int ch){
+  vec4 e = texture(u_p, uv + vec2(px.x, 0.0)), w = texture(u_p, uv - vec2(px.x, 0.0));
+  vec4 n = texture(u_p, uv + vec2(0.0, px.y)), s = texture(u_p, uv - vec2(0.0, px.y));
+  vec4 c = texture(u_p, uv);
+  vec4 l = e + w + n + s - 4.0 * c;
+  return ch == 0 ? l.r : l.g;
+}
+void main(){
+  vec2 px = 1.0 / u_res;
+  vec4 c = texture(u_p, v_uv);
+  vec4 pot = texture(u_pot, v_uv);
+  float V = pot.r, keep = 1.0 - pot.g;
+  float damp = exp(-u_dt * u_damp * pot.b);
+  if (u_phase == 0) {
+    // Re(t + dt) = Re(t) + dt * H Im(t + dt/2)
+    float HI = -0.5 * lapc(v_uv, px, 1) + V * c.g;
+    float R = (c.r + u_dt * HI) * keep * damp;
+    outColor = vec4(R, c.g, c.b, 1.0);
+  } else {
+    // Im(t + 3dt/2) = Im(t + dt/2) - dt * H Re(t + dt); density at t + dt is Re^2 + Im_old * Im_new (Visscher)
+    float HR = -0.5 * lapc(v_uv, px, 0) + V * c.r;
+    float I = (c.g - u_dt * HR) * keep * damp;
+    float dens = max(c.r * c.r + c.g * I, 0.0);
+    outColor = vec4(c.r, I, c.b + u_dtE * dens, 1.0);
+  }
+}`;
+
+  // Adds a Gaussian packet at the pointer, moving along the drag direction (or at rest).
+  const SCH_KICK_FS = HEAD + `
+uniform sampler2D u_p;
+uniform vec2 u_res, u_pos, u_kv;
+uniform float u_rad, u_amp;
+void main(){
+  vec4 c = texture(u_p, v_uv);
+  vec2 d = (v_uv - u_pos) * u_res;
+  float g = exp(-dot(d, d) / (4.0 * u_rad * u_rad));
+  float ph = dot(u_kv, d);
+  outColor = vec4(c.r + u_amp * g * cos(ph), c.g + u_amp * g * sin(ph), c.b, 1.0);
+}`;
+
+  const SCH_RENDER_FS = HEAD + `
+uniform sampler2D u_p, u_pot, u_ramp2;
+uniform vec2 u_res;
+uniform int u_view, u_showV;
+uniform float u_expScale, u_densScale, u_vMax, u_exposure, u_gamma, u_contrast, u_grain;
+uniform vec3 u_bg, u_ink;
+${G.GLSL.hash}
+${G.GLSL.ramp}
+${BILERP}
+${TONE}
+void main(){
+  vec2 p = v_uv * u_res;
+  vec4 c = bilerp(u_p, p, u_res);
+  vec4 pot = bilerp(u_pot, p, u_res);
+  float dens = c.r * c.r + c.g * c.g;
+  vec3 col;
+  float K = 12.0 * u_exposure;
+  if (u_view == 0) {
+    float x = clamp(c.b * u_expScale, 0.0, 1.0);
+    col = ramp(pow(log(1.0 + K * x) / log(1.0 + K), u_gamma));
+  } else if (u_view == 1) {
+    float x = clamp(dens * u_densScale, 0.0, 1.0);
+    col = ramp(pow(log(1.0 + K * x) / log(1.0 + K), u_gamma));
+  } else {
+    float ph = atan(c.g, c.r) / 6.28318530718 + 0.5;
+    float m = pow(clamp(sqrt(dens * u_densScale) * u_exposure, 0.0, 1.0), u_gamma);
+    vec3 hue = texture(u_ramp2, vec2(1.0 - abs(2.0 * ph - 1.0), 0.5)).rgb;
+    col = mix(u_bg, hue, m);
+  }
+  if (u_showV == 1) {
+    col = mix(col, mix(u_bg, u_ink, 0.4), 0.9 * clamp(pot.a, 0.0, 1.0));
+    float vn = clamp(abs(pot.r) / max(u_vMax, 1e-6), 0.0, 1.0);
+    col = mix(col, u_ink, 0.22 * vn);
+  }
+  outColor = vec4(tone(col, u_contrast, u_grain), 1.0);
+}`;
+
+  // Per block: rg = 16-bit mean density (for the norm), b = log mean exposure, a = log max density.
+  const SCH_REDUCE_FS = HEAD + `
+uniform sampler2D u_p; uniform vec2 u_res, u_block;
+void main(){
+  vec2 o = floor(v_uv * (u_res / u_block)) * u_block;
+  float sd = 0.0, se = 0.0, md = 0.0;
+  for (int y = 0; y < 8; y++) for (int x = 0; x < 8; x++) {
+    vec2 uv = (o + (vec2(x, y) + 0.5) * u_block * 0.125) / u_res;
+    vec4 c = texture(u_p, uv);
+    float d = c.r * c.r + c.g * c.g;
+    sd += d; se += c.b; md = max(md, d);
+  }
+  float m = clamp(sd / 64.0 / 4.0, 0.0, 1.0) * 255.0;
+  float hi = floor(m) / 255.0, lo = fract(m);
+  outColor = vec4(hi, lo, clamp(log2(1.0 + se / 64.0) / 32.0, 0.0, 1.0), clamp(log2(1.0 + md) / 32.0, 0.0, 1.0));
+}`;
+
+  const SCH_KINDS = { free: 0, single: 1, double: 2, barrier: 3, well: 4, stadium: 5, lattice: 6, disorder: 7 };
+  const SCH_LABEL = { free: 'free packet', single: 'single slit', double: 'double slit', barrier: 'barrier', well: 'harmonic well', stadium: 'stadium billiard', lattice: 'periodic lattice', disorder: 'Anderson disorder' };
+
+  function schrodingerCreate(host) {
+    const rig = makeRig(host, { pot: SCH_POT_FS, step: SCH_STEP_FS, kick: SCH_KICK_FS, render: SCH_RENDER_FS, reduce: SCH_REDUCE_FS });
+    if (rig.dead) return rig.dead;
+    const gl = rig.gl, P = rig.P;
+    let S = null, potT = null, gw = 0, gh = 0;
+    let nOff = 0, norm0 = 0, normNow = 0, expWhite = 0, densWhite = 0, simTime = 0;
+
+    function ensureGrid(s) {
+      const [W, H] = sizeOf(s);
+      if (S && gw === W && gh === H) return;
+      if (S) { S.dispose(); potT.dispose(); }
+      S = new G.PingPong(gl, W, H, { type: rig.texType, filter: 'nearest', wrap: 'repeat' });
+      potT = new G.Target(gl, W, H, { type: rig.texType, filter: 'nearest', wrap: 'repeat' });
+      gw = W; gh = H;
+    }
+    function buildPotential(s) {
+      P.pot.draw(potT, {
+        u_res: [gw, gh], u_kind: { int: SCH_KINDS[s.kind] || 0 }, u_wallMode: { int: s.wallMode === 'absorbing' ? 1 : 0 },
+        u_V0: s.V0, u_slitW: s.slitW, u_slitSep: s.slitSep, u_wallX: s.wallX, u_thick: s.thick,
+        u_period: s.period, u_corr: s.corr, u_nOff: nOff, u_absorb: s.absorb,
+      });
+    }
+    function packet(s) {
+      const rng = U.makeRng(s.seed + '/schrodinger/packet');
+      const data = new Float32Array(gw * gh * 4);
+      const x0 = s.px * (gw - 1) + rng.range(-1.5, 1.5), y0 = s.py * (gh - 1) + rng.range(-1.5, 1.5);
+      const ang = (s.ang + rng.range(-1, 1)) * PI / 180;
+      const kx = s.k * Math.cos(ang), ky = s.k * Math.sin(ang);
+      const sig2 = 4 * s.sigma * s.sigma;
+      norm0 = 0;
+      for (let y = 0; y < gh; y++) for (let x = 0; x < gw; x++) {
+        const dx = x - x0, dy = y - y0;
+        const g = Math.exp(-(dx * dx + dy * dy) / sig2);
+        const ph = kx * dx + ky * dy;
+        const i = (y * gw + x) * 4;
+        data[i] = g * Math.cos(ph); data[i + 1] = g * Math.sin(ph); data[i + 2] = 0; data[i + 3] = 1;
+        norm0 += g * g;
+      }
+      return data;
+    }
+    function halfStep(s, dt, dtE, phase) {
+      P.step.draw(S.write, { u_p: S.read, u_pot: potT, u_res: [gw, gh], u_dt: dt, u_dtE: dtE, u_damp: s.damp, u_phase: { int: phase } });
+      S.swap();
+    }
+    function step(n) {
+      const s = host.getState();
+      for (let i = 0; i < n; i++) { halfStep(s, s.dt, 0, 0); halfStep(s, s.dt, s.dt, 1); }
+      rig.stepCount += n; simTime += n * s.dt;
+    }
+    function measure(extra) {
+      rig.reduce({ u_p: S.read, u_res: [gw, gh], u_block: [gw / RED, gh / RED] }, b => applyMeasure(b, extra));
+    }
+    function applyMeasure(b, extra) {
+      let sn = 0, me = 0, md = 0;
+      for (let i = 0; i < RED * RED; i++) {
+        sn += ((b[i * 4] + b[i * 4 + 1] / 255) / 255) * 4;
+        me = Math.max(me, decLog(b[i * 4 + 2]));
+        md = Math.max(md, decLog(b[i * 4 + 3]));
+      }
+      normNow = (sn / (RED * RED)) * gw * gh;
+      // white point: the brightest block mean; the log film curve in the render pass lifts the dim parts
+      const tE = Math.max(me, 1e-6), tD = Math.max(md, 1e-6);
+      const a = rig.raf ? 0.5 : 1;
+      expWhite = U.lerp(expWhite, tE, a);
+      densWhite = U.lerp(densWhite, tD, a);
+      status(extra);
+      if (!rig.raf) render();
+    }
+    function status(extra) {
+      const s = host.getState();
+      host.setStatus(
+        '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
+        '<span>' + SCH_LABEL[s.kind] + ' · k <b>' + s.k.toFixed(2) + '</b></span>' +
+        '<span>norm <b>' + Math.round(100 * normNow / Math.max(norm0, 1e-9)) + '%</b> · t <b>' + simTime.toFixed(0) + '</b></span>' +
+        '<span>step <b>' + rig.stepCount.toLocaleString() + '</b></span>' +
+        (extra ? '<span>' + extra + '</span>' : '')
+      );
+    }
+    function render(target) {
+      const s = host.getState();
+      const [ramp, ramp2] = rig.ramps(s);
+      const view = s.view === 'density' ? 1 : s.view === 'phase' ? 2 : 0;
+      P.render.draw(target || null, {
+        u_p: S.read, u_pot: potT, u_res: [gw, gh], u_ramp: ramp, u_ramp2: ramp2,
+        u_view: { int: view }, u_showV: { int: s.showV ? 1 : 0 },
+        u_expScale: 1 / Math.max(expWhite, 1e-6), u_densScale: 1 / Math.max(densWhite, 1e-6),
+        u_vMax: Math.max(Math.abs(s.V0), 1e-3),
+        u_exposure: s.exposure, u_gamma: s.gamma, u_contrast: s.contrast, u_grain: s.grain,
+        u_bg: hexToRgb01(s.bg), u_ink: hexToRgb01(U.inkFor(s.bg)),
+      });
+    }
+    function loop() { rig.startLoop(step, render, measure); }
+    function burst(total) { rig.burst(total, step, render, measure, status, () => { measure(''); loop(); }); }
+
+    return {
+      aspect(s) { return ASPECTS[s.aspect] || 1; },
+      regenerate() {
+        rig.stop(); rig.stepCount = 0; simTime = 0; norm0 = 0; normNow = 0; expWhite = 0; densWhite = 0;
+        const s = host.getState();
+        nOff = U.makeRng(s.seed + '/schrodinger/off').range(0, 900);
+        ensureGrid(s);
+        buildPotential(s);
+        rig.upload(S.read, packet(s));
+        // Im lives on half steps: move it to t = dt/2 before the leapfrog starts
+        halfStep(s, 0.5 * s.dt, 0, 1);
+        normNow = norm0;
+        expWhite = 2 * s.sigma / Math.max(s.k, 0.1); densWhite = 1;
+        if (s.warmup > 0) burst(s.warmup); else { measure(''); render(); loop(); }
+      },
+      repaint() { if (S) render(); },
+      live(key) {
+        if (!S) return;
+        if (key === 'absorb') buildPotential(host.getState());
+        if (key === 'running') loop(); else if (!rig.raf) loop();
+      },
+      resize() { if (S) render(); },
+      pause() { rig.stop(); },
+      resume() { if (S) { render(); loop(); } },
+      action(key) {
+        if (key === 'reseed') this.regenerate();
+        else if (key === 'burst') burst(400);
+      },
+      disturb(p) {
+        if (!S) return;
+        const s = host.getState();
+        const L = Math.hypot(p.dx, p.dy);
+        const kv = L > 1e-4 ? [p.dx / L * s.k, p.dy / L * s.k] : [0, 0];
+        P.kick.draw(S.write, { u_p: S.read, u_res: [gw, gh], u_pos: [p.x, p.yGL], u_kv: kv, u_rad: Math.max(3, s.sigma * 0.6), u_amp: 0.5 });
+        S.swap();
+        render();
+        if (!rig.raf) loop();
+      },
+      exportPNG(w, h) { if (!S) return Promise.reject(new Error('nothing to export')); return rig.exportPNG(w, h, render); },
+    };
+  }
+})();
+</script>
 <script>Studio.boot();</script>
 
 </body>
