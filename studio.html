@@ -16076,6 +16076,452 @@ void main(){
   });
 })();
 </script>
+<script>
+/* modules/lattice.js */
+/* Statistical physics on the square lattice: Ising Metropolis, the Abelian sandpile, cyclic and Greenberg-Hastings automata, site and bond percolation. */
+(function () {
+  'use strict';
+  const U = Studio.util, G = Studio.gl;
+  const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  const RED = 32;
+  const f2 = v => v.toFixed(2), f3 = v => v.toFixed(3);
+  const pct = v => Math.round(v * 100) + '%';
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
+    Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const Pal = Studio.PALETTES;
+  const pre = (label, p, pal) => ({ label, p, palette: pal });
+
+  function toHalf(f32) {
+    const out = new Uint16Array(f32.length), fb = new Float32Array(1), ib = new Int32Array(fb.buffer);
+    for (let i = 0; i < f32.length; i++) {
+      fb[0] = f32[i];
+      const x = ib[0], sign = (x >> 16) & 0x8000, exp = ((x >> 23) & 0xff) - 112;
+      out[i] = exp <= 0 ? sign : exp >= 31 ? sign | 0x7c00 : sign | (exp << 10) | ((x >> 13) & 0x3ff);
+    }
+    return out;
+  }
+  function hex01(hex) { const rgb = U.hexToRgb(hex || '#000000'); return [rgb[0] / 255, rgb[1] / 255, rgb[2] / 255]; }
+
+  // Grid schema entries shared by the GPU tabs; cells stay isotropic: W = grid, H = round(grid * aspect).
+  const GRID = [
+    { group: 'Grid', key: 'grid', label: 'Grid', type: 'seg', kind: GEOM, options: [[128, '128'], [192, '192'], [256, '256'], [384, '384'], [512, '512']] },
+    { group: 'Grid', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
+  ];
+  function gridSize(s) {
+    const n = Number(s.grid) || 256, ar = ASPECTS[s.aspect] || 1;
+    return [n & ~1, Math.max(64, Math.round(n * ar)) & ~1];
+  }
+  function simFields(label) {
+    return [
+      { group: 'Simulation', key: 'running', label: 'Running', type: 'toggle', kind: LIVE },
+      RANGE('Simulation', 'steps', label, LIVE, 1, 8, 1, String),
+      RANGE('Simulation', 'warmup', 'Warm-up steps', GEOM, 0, 1500, 25, String),
+      { group: 'Simulation', key: 'burst', label: 'Run 300 steps', type: 'action' },
+      { group: 'Simulation', key: 'reseed', label: 'Reseed', type: 'action' },
+    ];
+  }
+  function toneFields() {
+    return [
+      RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.5, 2.2, 0.02, f2),
+      RANGE('Picture', 'gamma', 'Gamma', PAINT, 0.4, 2.2, 0.02, f2),
+      RANGE('Picture', 'contrast', 'Contrast', PAINT, 0.5, 2.2, 0.02, f2),
+      RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.6, 0.02, pct),
+    ];
+  }
+
+  const HEAD = `#version 300 es
+precision highp float;
+in vec2 v_uv; out vec4 outColor;
+`;
+  // Per-site random numbers for the GPU: an integer hash of (site, tick) where tick = seed offset + step index.
+  // The shared float hash21 loses bits once its inputs pass a few thousand, and a Metropolis acceptance test is
+  // sensitive to that, so this one mixes 32-bit integers (lowbias32) and is exact for any step count.
+  const HASH_U = `
+uint uhash(uint x){ x ^= x >> 16u; x *= 0x7feb352du; x ^= x >> 15u; x *= 0x846ca68bu; x ^= x >> 16u; return x; }
+float siteHash(ivec2 site, int t){
+  uint h = uhash(uint(site.x + 65536) * 0x9E3779B1u + uhash(uint(site.y + 65536) * 0x85EBCA77u + uhash(uint(t + 1048576))));
+  return (float(h >> 8u) + 0.5) / 16777216.0;
+}
+`;
+  const TONE = `
+vec3 tone(vec3 col, float exposure, float gamma, float contrast, float grain){
+  col = pow(clamp(col, 0.0, 1.0), vec3(gamma)) * exposure;
+  col = clamp((col - 0.5) * contrast + 0.5, 0.0, 1.0);
+  if (grain > 0.0) col = clamp(col + (siteHash(ivec2(gl_FragCoord.xy), 977) - 0.5) * grain * 0.4, 0.0, 1.0);
+  return col;
+}
+`;
+  // Block reduce: .r = 0.5 + 0.5 * mean of channel r (clamped to -1..1), .g = mean of channel b (0..1).
+  const REDUCE_FS = HEAD + `
+uniform sampler2D u_c; uniform vec2 u_res, u_block;
+void main(){
+  vec2 o = floor(v_uv * (u_res / u_block)) * u_block;
+  float sm = 0.0, sb = 0.0;
+  for (int y = 0; y < 8; y++) for (int x = 0; x < 8; x++) {
+    vec2 uv = (o + vec2(x, y) * u_block * 0.125 + 0.5) / u_res;
+    vec4 v = texture(u_c, uv);
+    sm += v.r; sb += v.b;
+  }
+  outColor = vec4(0.5 + 0.5 * clamp(sm / 64.0, -1.0, 1.0), clamp(sb / 64.0, 0.0, 1.0), 0.0, 1.0);
+}`;
+
+  // WebGL2 context plus the rgba32f / rgba16f selection every GPU tab makes. Returns null when WebGL2 is missing.
+  function gpuInit(host) {
+    const gl = G.createGL(host.canvas);
+    if (!gl) return null;
+    const texType = gl.floatExt ? 'rgba32f' : 'rgba16f';
+    if (!gl.floatExt) gl.getExtension('EXT_color_buffer_half_float');
+    const upload = (target, f32) => {
+      gl.bindTexture(gl.TEXTURE_2D, target.tex);
+      if (texType === 'rgba32f') gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.FLOAT, f32);
+      else gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.HALF_FLOAT, toHalf(f32));
+    };
+    return { gl, texType, upload };
+  }
+  function deadInstance(host, msg) {
+    host.setStatus(msg);
+    const noop = () => {};
+    return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
+  }
+  // Render the display pass into a w x h target and hand back a PNG blob of exactly that size.
+  async function gpuExport(gl, w, h, render) {
+    const max = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+    if (w > max || h > max) throw new Error('larger than this GPU allows (' + max + ' px)');
+    const Tgt = new G.Target(gl, w, h, { type: 'rgba8' });
+    render(Tgt);
+    const px = new Uint8Array(w * h * 4);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, Tgt.fbo);
+    gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, px);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    Tgt.dispose();
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const ctx = c.getContext('2d'), img = ctx.createImageData(w, h);
+    for (let y = 0; y < h; y++) img.data.set(px.subarray((h - 1 - y) * w * 4, (h - y) * w * 4), y * w * 4);
+    ctx.putImageData(img, 0, 0);
+    return U.toBlob(c);
+  }
+  // Read the reduce target back: mean of channel r (-1..1) and mean of channel b (0..1).
+  function gpuMeasure(gl, reducePass, reduceT, src, gw, gh, buf) {
+    reducePass.draw(reduceT, { u_c: src, u_res: [gw, gh], u_block: [gw / RED, gh / RED] });
+    gl.bindFramebuffer(gl.FRAMEBUFFER, reduceT.fbo);
+    gl.readPixels(0, 0, RED, RED, gl.RGBA, gl.UNSIGNED_BYTE, buf);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    let sm = 0, sb = 0;
+    for (let i = 0; i < RED * RED; i++) { sm += (buf[i * 4] / 255) * 2 - 1; sb += buf[i * 4 + 1] / 255; }
+    return { mean: sm / (RED * RED), act: sb / (RED * RED) };
+  }
+
+  // CPU still plates: a cell buffer painted with nearest-neighbor scaling so cells stay crisp on screen and in print.
+  function nearestBlit(ctx, buf, w, h, bg) {
+    ctx.imageSmoothingEnabled = false;
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+    ctx.drawImage(buf, 0, 0, w, h);
+  }
+  function crispExport(buf, w, h) { return U.toBlob(U.upscale(buf, w, h, false)); }
+  function grainImage(img, amt, seed) {
+    if (!(amt > 0)) return;
+    const rng = U.makeRng(seed + '/grain'), d = img.data, a = amt * 24;
+    for (let i = 0; i < d.length; i += 4) { const n = (rng() - 0.5) * a; d[i] += n; d[i + 1] += n; d[i + 2] += n; }
+  }
+  function lutColor(lut, t) {
+    const li = (U.clamp(t, 0, 1) * 255 | 0) * 3;
+    return [lut[li], lut[li + 1], lut[li + 2]];
+  }
+
+  /* ---------- Ising Model ---------- */
+  const T_C = 2 / Math.log(1 + Math.SQRT2);
+  const ISING_STEP = HEAD + `
+uniform sampler2D u_s; uniform vec2 u_res;
+uniform int u_parity, u_tick, u_hMode;
+uniform float u_T, u_h, u_bands;
+${HASH_U}
+float sg(float v){ return v >= 0.0 ? 1.0 : -1.0; }
+void main(){
+  ivec2 site = ivec2(gl_FragCoord.xy);
+  float s = sg(texture(u_s, v_uv).r);
+  if (((site.x + site.y) & 1) != u_parity) { outColor = vec4(s, 0.0, 0.0, 1.0); return; }
+  vec2 px = 1.0 / u_res;
+  float nb = sg(texture(u_s, v_uv + vec2(px.x, 0.0)).r) + sg(texture(u_s, v_uv - vec2(px.x, 0.0)).r)
+           + sg(texture(u_s, v_uv + vec2(0.0, px.y)).r) + sg(texture(u_s, v_uv - vec2(0.0, px.y)).r);
+  float h = u_h;
+  if (u_hMode == 1) h *= sg(sin(6.28318530718 * u_bands * v_uv.x));
+  else if (u_hMode == 2) h *= 2.0 * v_uv.x - 1.0;
+  else if (u_hMode == 3) h *= sg(sin(6.28318530718 * u_bands * v_uv.x) * sin(6.28318530718 * u_bands * v_uv.y * u_res.y / u_res.x));
+  float dE = 2.0 * s * (nb + h);
+  float r = siteHash(site, u_tick);
+  if (dE <= 0.0 || r < exp(-dE / u_T)) s = -s;
+  outColor = vec4(s, 0.0, 0.0, 1.0);
+}`;
+  const ISING_BLUR = HEAD + `
+uniform sampler2D u_c; uniform vec2 u_res; uniform float u_amt;
+void main(){
+  vec2 px = 1.0 / u_res;
+  float c = texture(u_c, v_uv).r;
+  float avg = (4.0 * c + texture(u_c, v_uv + vec2(px.x, 0.0)).r + texture(u_c, v_uv - vec2(px.x, 0.0)).r
+             + texture(u_c, v_uv + vec2(0.0, px.y)).r + texture(u_c, v_uv - vec2(0.0, px.y)).r) / 8.0;
+  outColor = vec4(mix(c, avg, u_amt), 0.0, 0.0, 1.0);
+}`;
+  const ISING_RENDER = HEAD + `
+uniform sampler2D u_s, u_m; uniform vec2 u_res;
+uniform int u_view; uniform bool u_pixel;
+uniform float u_lo, u_hi, u_wall, u_exposure, u_gamma, u_contrast, u_grain;
+${HASH_U}
+${G.GLSL.ramp}
+${TONE}
+float sg(float v){ return v >= 0.0 ? 1.0 : -1.0; }
+float bil(sampler2D t, vec2 uv){
+  vec2 p = uv * u_res - 0.5; vec2 i = floor(p), f = fract(p);
+  float a = texture(t, (i + 0.5) / u_res).r, b = texture(t, (i + vec2(1.5, 0.5)) / u_res).r;
+  float c = texture(t, (i + vec2(0.5, 1.5)) / u_res).r, d = texture(t, (i + 1.5) / u_res).r;
+  return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
+void main(){
+  vec2 px = 1.0 / u_res;
+  float span = max(u_hi - u_lo, 1e-4), t;
+  if (u_view == 0) {
+    t = (sg(texture(u_s, v_uv).r) - u_lo) / span;
+  } else if (u_view == 1) {
+    float m = u_pixel ? texture(u_m, v_uv).r : bil(u_m, v_uv);
+    t = (m - u_lo) / span;
+  } else if (u_view == 2) {
+    float gx = 0.5 * (texture(u_m, v_uv + vec2(px.x, 0.0)).r - texture(u_m, v_uv - vec2(px.x, 0.0)).r);
+    float gy = 0.5 * (texture(u_m, v_uv + vec2(0.0, px.y)).r - texture(u_m, v_uv - vec2(0.0, px.y)).r);
+    t = length(vec2(gx, gy)) * u_wall;
+  } else {
+    float s = sg(texture(u_s, v_uv).r);
+    float nb = sg(texture(u_s, v_uv + vec2(px.x, 0.0)).r) + sg(texture(u_s, v_uv - vec2(px.x, 0.0)).r)
+             + sg(texture(u_s, v_uv + vec2(0.0, px.y)).r) + sg(texture(u_s, v_uv - vec2(0.0, px.y)).r);
+    t = (4.0 - s * nb) / 8.0;
+  }
+  vec3 col = ramp(clamp(t, 0.0, 1.0));
+  outColor = vec4(tone(col, u_exposure, u_gamma, u_contrast, u_grain), 1.0);
+}`;
+  const ISING_VIEWS = { spins: 0, mag: 1, walls: 2, energy: 3 };
+  const ISING_HMODES = { uniform: 0, stripes: 1, gradient: 2, checks: 3 };
+  function isingSeed(s, W, H) {
+    const rng = U.makeRng(s.seed + '/ising');
+    const data = new Float32Array(W * H * 4);
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      let v;
+      if (s.init === 'cold') v = 1;
+      else if (s.init === 'split') v = x < W / 2 ? 1 : -1;
+      else v = rng() < 0.5 ? 1 : -1;
+      data[(y * W + x) * 4] = v;
+      data[(y * W + x) * 4 + 3] = 1;
+    }
+    return data;
+  }
+  Studio.register({
+    id: 'ising',
+    name: 'Ising Model',
+    tab: 'Ising',
+    subtitle: 'Metropolis Monte Carlo on the square lattice · 1925',
+    order: 98,
+    equation: 'E = −J Σ⟨ij⟩ sᵢsⱼ − h Σᵢ sᵢ,   P(flip) = min(1, e^{−ΔE/T}),   T_c = 2/ln(1+√2) ≈ 2.269',
+    credit: "Ernst Ising, Z. Phys. 31, 253 (1925); Lars Onsager, Phys. Rev. 65, 117 (1944); Nicholas Metropolis, Arianna W. Rosenbluth, Marshall N. Rosenbluth, Augusta H. Teller and Edward Teller, J. Chem. Phys. 21, 1087 (1953). Ising solved the chain and found no transition. Onsager solved the square lattice exactly and found one at T_c = 2/ln(1+√2). The Metropolis algorithm samples the Boltzmann distribution by proposing single flips and accepting them with probability min(1, exp(−ΔE/T)). Here the lattice is updated as a checkerboard: two half-sweeps per step, each parity with its neighbors held fixed, so the GPU can flip every site of one color at once.",
+    blurb: 'Every site is a spin, up or down, and each one would rather agree with its four neighbors. Temperature is the argument against. Well below T_c the plate is nearly all one color with the odd flipped island; well above it is salt and pepper. At T_c itself, the critical point, there are islands inside islands at every size, which is why the critical plate has no scale you can point to. Quench from hot to cold and watch the domains coarsen, walls straightening and shrinking, the same picture Cahn-Hilliard paints with a conserved field. An external field h tips the balance; paint it in stripes and the spins print the stripes.',
+    schema: GRID.concat([
+      RANGE('Model', 'T', 'Temperature T', LIVE, 0.5, 5, 0.01, f2, {
+        hint: 'In units of J/k_B. T_c ≈ 2.269. Below: ordered domains. Above: disorder. At T_c: fluctuations at every scale.' }),
+      RANGE('Model', 'h', 'Field h', LIVE, -2, 2, 0.02, f2, { hint: 'External field per spin. Positive favors up. Zero at the transition keeps the symmetry.' }),
+      { group: 'Model', key: 'hMode', label: 'Field shape', type: 'seg', kind: LIVE, wrap: true,
+        options: [['uniform', 'Uniform'], ['stripes', 'Stripes'], ['gradient', 'Gradient'], ['checks', 'Checks']] },
+      RANGE('Model', 'bands', 'Bands', LIVE, 1, 12, 1, String, { dimUnless: s => s.hMode === 'stripes' || s.hMode === 'checks' }),
+      { group: 'Model', key: 'init', label: 'Start', type: 'seg', kind: GEOM, options: [['hot', 'Hot'], ['cold', 'Cold'], ['split', 'Split']],
+        hint: 'Hot is random spins (a quench when T is low). Cold is all up. Split is two halves.' },
+    ]).concat(simFields('Sweeps per frame')).concat([
+      { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, wrap: true,
+        options: [['spins', 'Spins'], ['mag', 'Magnetization'], ['walls', 'Domain walls'], ['energy', 'Bond energy']] },
+      RANGE('Picture', 'blur', 'Blur passes', PAINT, 0, 16, 1, String, { dimUnless: s => s.view === 'mag' || s.view === 'walls',
+        hint: 'Jacobi averaging of the spin field before the magnetization and wall views.' }),
+      RANGE('Picture', 'lo', 'Black point', PAINT, -2, 1, 0.02, f2),
+      RANGE('Picture', 'hi', 'White point', PAINT, 0, 2, 0.02, f2),
+      RANGE('Picture', 'wall', 'Wall gain', PAINT, 0.3, 4, 0.05, f2, { dimUnless: s => s.view === 'walls' }),
+      { group: 'Picture', key: 'pixelate', label: 'Pixelate', type: 'toggle', kind: PAINT },
+    ]).concat(toneFields()),
+    defaults: {
+      grid: 256, aspect: '1:1',
+      T: 2.27, h: 0, hMode: 'uniform', bands: 6, init: 'hot',
+      running: true, steps: 2, warmup: 250,
+      view: 'spins', blur: 3, lo: -1, hi: 1, wall: 1.2, pixelate: true,
+      exposure: 1, gamma: 1, contrast: 1.05, grain: 0,
+      seed: 'ising-1925',
+    },
+    presets: {
+      critical: pre('Critical point', { T: 2.27, h: 0, hMode: 'uniform', init: 'hot', warmup: 300, view: 'spins', grid: 256 }, Pal.graphite),
+      quench: pre('Quench coarsening', { T: 1.2, h: 0, hMode: 'uniform', init: 'hot', warmup: 120, view: 'mag', blur: 4, pixelate: false, grid: 256 }, Pal.harbor),
+      below: pre('Just below T_c', { T: 2.12, h: 0, hMode: 'uniform', init: 'hot', warmup: 300, view: 'spins', grid: 256 }, Pal.xray),
+      stripes: pre('Field stripes', { T: 2.0, h: 0.5, hMode: 'stripes', bands: 6, init: 'hot', warmup: 150, view: 'spins', grid: 256 }, Pal.kiln),
+      walls: pre('Domain walls', { T: 1.6, h: 0, hMode: 'uniform', init: 'hot', warmup: 200, view: 'walls', blur: 2, wall: 1.6, grid: 256 }, Pal.ember),
+      gradient: pre('Field gradient', { T: 2.3, h: 1.2, hMode: 'gradient', init: 'hot', warmup: 200, view: 'mag', blur: 3, pixelate: false, grid: 256 }, Pal.thermal),
+      energy: pre('Bond energy', { T: 2.27, h: 0, hMode: 'uniform', init: 'hot', warmup: 300, view: 'energy', grid: 256 }, Pal.verdigris),
+    },
+    closedGroups: [],
+    hints: {
+      Model: 'T is the whole story. Sweep it through 2.27 and watch the plate go from domains to critical clouds to noise. h breaks the up/down symmetry; the stripes and checks shapes alternate its sign across the plate.',
+      Picture: 'Spins is the raw lattice. Magnetization averages it so domains read as tone. Domain walls is |∇| of that average. Bond energy counts how many of the four neighbors disagree, five levels through the palette.',
+    },
+    palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (down → up)',
+    headline: 'T', headlineLabel: 'temperature',
+    sanitize(s) {
+      s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 64, 512);
+      s.T = U.clamp(Number(s.T) || 2.27, 0.3, 6);
+      s.blur = U.clamp(Math.round(Number(s.blur) || 0), 0, 16);
+      s.bands = U.clamp(Math.round(Number(s.bands) || 1), 1, 12);
+    },
+    surprise(rng) {
+      const T = rng.pick([1.3, 1.8, 2.12, 2.27, 2.27, 2.35, 2.6]);
+      const hMode = rng.pick(['uniform', 'uniform', 'uniform', 'stripes', 'gradient', 'checks']);
+      const view = rng.pick(['spins', 'spins', 'mag', 'walls', 'energy']);
+      return {
+        grid: rng.pick([192, 256, 256, 384]), aspect: rng.pick(['1:1', '1:1', '4:5', '5:4']),
+        T, h: hMode === 'uniform' ? rng.pick([0, 0, 0, 0.1]) : rng.range(0.4, 1.2), hMode, bands: rng.int(3, 9), init: 'hot',
+        running: true, steps: rng.int(1, 3), warmup: rng.int(150, 450),
+        view, blur: rng.int(2, 6), lo: -1, hi: 1, wall: rng.range(1, 2), pixelate: view !== 'mag',
+        exposure: rng.range(0.9, 1.1), gamma: rng.range(0.85, 1.15), contrast: rng.range(0.95, 1.2), grain: rng.pick([0, 0, 0.05]),
+      };
+    },
+    create(host) {
+      const gpu = gpuInit(host);
+      if (!gpu) return deadInstance(host, 'WebGL2 is not available in this browser');
+      const { gl, texType, upload } = gpu;
+      let stepPass, blurPass, renderPass, reducePass, splatPass;
+      try {
+        stepPass = new G.Pass(gl, ISING_STEP);
+        blurPass = new G.Pass(gl, ISING_BLUR);
+        renderPass = new G.Pass(gl, ISING_RENDER);
+        reducePass = new G.Pass(gl, REDUCE_FS);
+        splatPass = new G.Pass(gl, G.GLSL.splatFS);
+      } catch (err) { console.error(err); return deadInstance(host, 'Shader compilation failed on this GPU'); }
+
+      let C = null, B = null, reduceT = null, gw = 0, gh = 0, ramp = null, rampPal = null, rampKey = '';
+      const redBuf = new Uint8Array(RED * RED * 4);
+      let raf = 0, chunkTimer = 0, sweeps = 0, tick0 = 0, meanM = 0;
+
+      function ensureGrid(s) {
+        const [W, H] = gridSize(s);
+        if (C && gw === W && gh === H) return;
+        if (C) { C.dispose(); B.dispose(); reduceT.dispose(); }
+        C = new G.PingPong(gl, W, H, { type: texType, filter: 'nearest', wrap: 'repeat' });
+        B = new G.PingPong(gl, W, H, { type: texType, filter: 'nearest', wrap: 'repeat' });
+        reduceT = new G.Target(gl, RED, RED, { type: 'rgba8', filter: 'nearest' });
+        gw = W; gh = H;
+      }
+      function ensureRamp(s) {
+        const key = (s.bg || '') + '|' + (s.palette || []).join(',');
+        if (ramp && rampKey === key) return;
+        if (ramp) { ramp.dispose(); rampPal.dispose(); }
+        // walls rise from the background; spins, magnetization and energy run first color to last
+        ramp = G.rampTexture(gl, s.palette, s.bg);
+        rampPal = G.rampTexture(gl, s.palette, null);
+        rampKey = key;
+      }
+      function step(n) {
+        const s = host.getState();
+        const u = { u_res: [gw, gh], u_T: s.T, u_h: s.h, u_bands: s.bands, u_hMode: { int: ISING_HMODES[s.hMode] || 0 } };
+        for (let i = 0; i < n; i++) {
+          for (let parity = 0; parity < 2; parity++) {
+            u.u_s = C.read; u.u_parity = { int: parity }; u.u_tick = { int: tick0 + 2 * (sweeps + i) + parity };
+            stepPass.draw(C.write, u);
+            C.swap();
+          }
+        }
+        sweeps += n;
+      }
+      // Jacobi averaging of the spin field into B.read; zero passes copies the spins through.
+      function smooth(s) {
+        const n = Math.max(1, s.blur | 0);
+        for (let i = 0; i < n; i++) {
+          blurPass.draw(B.write, { u_c: i === 0 ? C.read : B.read, u_res: [gw, gh], u_amt: s.blur > 0 ? 1 : 0 });
+          B.swap();
+        }
+      }
+      function render(target) {
+        const s = host.getState();
+        ensureRamp(s);
+        if (s.view === 'mag' || s.view === 'walls') smooth(s);
+        renderPass.draw(target || null, {
+          u_s: C.read, u_m: B.read, u_ramp: s.view === 'walls' ? ramp : rampPal, u_res: [gw, gh],
+          u_view: { int: ISING_VIEWS[s.view] || 0 }, u_pixel: !!s.pixelate,
+          u_lo: s.lo, u_hi: s.hi, u_wall: s.wall,
+          u_exposure: s.exposure, u_gamma: s.gamma, u_contrast: s.contrast, u_grain: s.grain,
+        });
+      }
+      function measure() { meanM = gpuMeasure(gl, reducePass, reduceT, C.read, gw, gh, redBuf).mean; }
+      function status(extra) {
+        const s = host.getState(), r = s.T / T_C;
+        const phase = r < 0.93 ? 'ordered' : r < 1.07 ? 'critical' : 'disordered';
+        host.setStatus(
+          '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
+          '<span>T <b>' + s.T.toFixed(2) + '</b> · ' + r.toFixed(2) + ' T<sub>c</sub> · ' + phase + '</span>' +
+          '<span>m <b>' + (meanM >= 0 ? '+' : '') + meanM.toFixed(2) + '</b></span>' +
+          '<span>sweep <b>' + sweeps.toLocaleString() + '</b></span>' +
+          (extra ? '<span>' + extra + '</span>' : '')
+        );
+      }
+      function stop() { cancelAnimationFrame(raf); raf = 0; clearTimeout(chunkTimer); chunkTimer = 0; }
+      function frame() {
+        raf = 0;
+        const s = host.getState();
+        step(s.steps); render();
+        if (sweeps % 16 < s.steps) { measure(); status(); }
+        raf = requestAnimationFrame(frame);
+      }
+      function startLoop() {
+        stop();
+        const s = host.getState();
+        if (s.running && !host.reducedMotion()) raf = requestAnimationFrame(frame);
+        else { measure(); status(s.running ? '' : 'paused'); render(); }
+      }
+      function burst(total) {
+        stop();
+        let left = total;
+        (function chunk() {
+          const n = Math.min(24, left); left -= n;
+          step(n); render();
+          if (left > 0) chunkTimer = setTimeout(chunk, 0);
+          else { measure(); status(); startLoop(); }
+        })();
+      }
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        regenerate() {
+          stop(); sweeps = 0;
+          const s = host.getState();
+          tick0 = U.makeRng(s.seed + '/ising/tick').int(0, 1e6);
+          ensureGrid(s);
+          upload(C.read, isingSeed(s, gw, gh));
+          B.read.clear(0, 0, 0, 1);
+          const warm = host.reducedMotion() ? Math.min(s.warmup, 100) : s.warmup;
+          if (warm > 0) burst(warm);
+          else { render(); measure(); status(); startLoop(); }
+        },
+        repaint() { if (C) render(); },
+        live(key) { if (key === 'running') startLoop(); else if (!raf) startLoop(); },
+        resize() { if (C) render(); },
+        pause() { stop(); },
+        resume() { if (C) { render(); startLoop(); } },
+        action(key) {
+          if (key === 'reseed') this.regenerate();
+          else if (key === 'burst') burst(300);
+        },
+        disturb(p) {
+          if (!C) return;
+          // paint a disk of the minority spin so the poke is visible whatever the plate's majority
+          const v = meanM > 0 ? -1 : 1;
+          splatPass.draw(C.write, { u_src: C.read, u_pos: [p.x, p.yGL], u_add: [v, 0, 0, 1], u_rad: 0.05, u_amt: 1, u_mode: { int: 0 } });
+          C.swap(); render(); startLoop();
+        },
+        exportPNG(w, h) {
+          if (!C) return Promise.reject(new Error('nothing to export'));
+          return gpuExport(gl, w, h, render);
+        },
+      };
+    },
+  });
+})();
+</script>
 <script>Studio.boot();</script>
 
 </body>
