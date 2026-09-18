@@ -16817,6 +16817,263 @@ void main(){
       };
     },
   });
+
+  /* ---------- Cyclic Automaton ---------- */
+  const CCA_STEP = HEAD + `
+uniform sampler2D u_s; uniform vec2 u_res;
+uniform int u_k, u_range, u_thr, u_rule, u_nbhd;
+void main(){
+  vec2 px = 1.0 / u_res;
+  vec4 c = texture(u_s, v_uv);
+  int s = int(c.r + 0.5) % u_k;
+  int target = u_rule == 0 ? (s + 1) % u_k : 1;
+  int count = 0;
+  for (int dy = -u_range; dy <= u_range; dy++) for (int dx = -u_range; dx <= u_range; dx++) {
+    if (dx == 0 && dy == 0) continue;
+    if (u_nbhd == 1 && abs(dx) + abs(dy) > u_range) continue;
+    int nb = int(texture(u_s, v_uv + vec2(float(dx), float(dy)) * px).r + 0.5) % u_k;
+    if (nb == target) count++;
+  }
+  int ns = s;
+  if (u_rule == 0) { if (count >= u_thr) ns = target; }
+  else if (s == 0) { if (count >= u_thr) ns = 1; }
+  else ns = (s + 1) % u_k;
+  // age: steps since the last front passed. Cyclic: since the cell last advanced. GH: since it was last excited.
+  bool fresh = u_rule == 0 ? ns != s : (s == 0 && ns == 1);
+  float age = fresh ? 0.0 : min(c.g + 1.0, 4000.0);
+  outColor = vec4(float(ns), age, ns == s ? 0.0 : 1.0, 1.0);
+}`;
+  const CCA_RENDER = HEAD + `
+uniform sampler2D u_s, u_pal; uniform vec2 u_res; uniform vec3 u_bg;
+uniform int u_k, u_view;
+uniform float u_phase, u_ageAmt, u_ageSpan, u_exposure, u_gamma, u_contrast, u_grain;
+${HASH_U}
+${G.GLSL.ramp}
+${TONE}
+void main(){
+  vec4 c = texture(u_s, v_uv);
+  float s = floor(c.r + 0.5), k = float(u_k);
+  float ageT = clamp(c.g / u_ageSpan, 0.0, 1.0);
+  vec3 col;
+  if (u_view == 0) col = ramp(s / max(k - 1.0, 1.0));
+  else if (u_view == 1) col = texture(u_pal, vec2(fract(s / k + u_phase), 0.5)).rgb;
+  else col = ramp(1.0 - ageT);
+  if (u_view != 2) col = mix(col, u_bg, u_ageAmt * ageT);
+  outColor = vec4(tone(col, u_exposure, u_gamma, u_contrast, u_grain), 1.0);
+}`;
+  const CCA_VIEWS = { states: 0, cyclic: 1, fronts: 2 };
+  function ccaSeed(s, W, H) {
+    const rng = U.makeRng(s.seed + '/cca');
+    const k = s.k | 0, data = new Float32Array(W * H * 4);
+    const put = (x, y, v) => { x = ((x % W) + W) % W; y = ((y % H) + H) % H; data[(y * W + x) * 4] = v; };
+    if (s.init === 'random') {
+      for (let i = 0; i < W * H; i++) data[i * 4] = rng.int(0, k - 1);
+    } else if (s.init === 'sparse') {
+      for (let i = 0; i < W * H; i++) data[i * 4] = rng() < s.density ? rng.int(1, k - 1) : 0;
+    } else {
+      // broken wavefronts: a short excited line with a refractory line behind it, each end curls into a spiral
+      const nSeg = Math.max(2, Math.round(s.density * 80));
+      for (let i = 0; i < nSeg; i++) {
+        const cx = rng.int(0, W - 1), cy = rng.int(0, H - 1), L = rng.int(Math.round(Math.min(W, H) * 0.05), Math.round(Math.min(W, H) * 0.18));
+        const horiz = rng() < 0.5, dir = rng() < 0.5 ? 1 : -1;
+        for (let j = -L; j <= L; j++) {
+          for (let w = 0; w < k - 1; w++) {
+            const v = 1 + w;
+            if (horiz) put(cx + j, cy + dir * w, v); else put(cx + dir * w, cy + j, v);
+          }
+        }
+      }
+    }
+    for (let i = 0; i < W * H; i++) data[i * 4 + 3] = 1;
+    return data;
+  }
+  Studio.register({
+    id: 'cyclicca',
+    name: 'Cyclic Automaton',
+    tab: 'Cyclic CA',
+    subtitle: 'cyclic and Greenberg-Hastings excitable automata · 1991',
+    order: 54.5,
+    equation: 'cyclic: s → s+1 (mod k) if ≥ θ neighbors within range r are in state s+1;   GH: 0 → 1 if ≥ θ excited, 1 → 2 → … → k−1 → 0',
+    credit: "Robert Fisch, Janko Gravner and David Griffeath, Statistics and Computing 1, 23 (1991), on threshold-range scaling of excitable automata; David Griffeath, Notices of the AMS, 1988, for the cyclic cellular automaton; James M. Greenberg and Stuart P. Hastings, SIAM J. Appl. Math. 34, 515 (1978), for the excitable rest-excited-refractory rule. In the cyclic automaton every state eats the one below it, so k colors chase each other around the cycle and a random soup organizes into spirals. Greenberg-Hastings is the same cycle with one excitable state: waves propagate, refractory tails follow, and broken fronts curl into spiral pairs.",
+    blurb: 'Rock, paper, scissors with k hands. A cell in state s advances to s+1 as soon as enough of its neighbors are already there, and s+1 is in turn eaten by s+2, all the way around the cycle. From random noise the plate first goes through debris, then droplets where the cycle closes on itself, and then the spirals win, because a spiral is a defect that never runs out of successors. Range and threshold change the geometry: wide ranges make thick smooth waves, high thresholds make the automaton fixate into a still mosaic. The Greenberg-Hastings rule is the same cycle with a single excitable state, the textbook model of a heart wave.',
+    schema: GRID.concat([
+      { group: 'Rule', key: 'rule', label: 'Rule', type: 'seg', kind: GEOM, options: [['cca', 'Cyclic'], ['gh', 'Greenberg-Hastings']] },
+      RANGE('Rule', 'k', 'States k', LIVE, 3, 24, 1, String, { hint: 'Number of colors in the cycle. For Greenberg-Hastings, one rest state, one excited, k−2 refractory.' }),
+      RANGE('Rule', 'range', 'Range r', LIVE, 1, 5, 1, String, { hint: 'Neighborhood radius in cells.' }),
+      RANGE('Rule', 'thr', 'Threshold θ', LIVE, 1, 30, 1, String, { hint: 'How many neighbors in the successor state it takes to advance. Small θ: spirals. Large θ: the automaton fixates.' }),
+      { group: 'Rule', key: 'nbhd', label: 'Neighborhood', type: 'seg', kind: LIVE, options: [['moore', 'Box'], ['vn', 'Diamond']] },
+      { group: 'Seeding', key: 'init', label: 'Start', type: 'seg', kind: GEOM, options: [['random', 'Noise'], ['sparse', 'Sparse'], ['seeds', 'Fronts']],
+        hint: 'Noise is every cell random. Sparse is mostly rest with scattered excited sites. Fronts drops broken wave segments that curl into spirals.' },
+      RANGE('Seeding', 'density', 'Density', GEOM, 0.01, 0.5, 0.01, f2, { dimUnless: s => s.init !== 'random' }),
+    ]).concat(simFields('Steps per frame')).concat([
+      { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['states', 'States'], ['cyclic', 'Cycle'], ['fronts', 'Fronts']] },
+      RANGE('Picture', 'phase', 'Cycle phase', PAINT, 0, 1, 0.01, f2, { dimUnless: s => s.view === 'cyclic' }),
+      RANGE('Picture', 'ageAmt', 'Age fade', PAINT, 0, 1, 0.01, f2, { hint: 'Cells that have not changed for a while sink toward the background, so the moving fronts carry the light.' }),
+      RANGE('Picture', 'ageSpan', 'Age span', PAINT, 5, 400, 1, String, { dimUnless: s => s.ageAmt > 0 || s.view === 'fronts' }),
+    ]).concat(toneFields()),
+    defaults: {
+      grid: 256, aspect: '1:1',
+      rule: 'cca', k: 14, range: 1, thr: 1, nbhd: 'vn', init: 'random', density: 0.08,
+      running: true, steps: 1, warmup: 300,
+      view: 'states', phase: 0, ageAmt: 0.25, ageSpan: 80,
+      exposure: 1, gamma: 1, contrast: 1.05, grain: 0,
+      seed: 'griffeath-1991',
+    },
+    presets: {
+      griffeath: pre('Griffeath 14', { rule: 'cca', k: 14, range: 1, thr: 1, nbhd: 'vn', init: 'random', warmup: 300, view: 'cyclic', ageAmt: 0.2 }, Pal.risograph),
+      eight: pre('Eight colors', { rule: 'cca', k: 8, range: 1, thr: 1, nbhd: 'moore', init: 'random', warmup: 120, view: 'states', ageAmt: 0.25 }, Pal.kiln),
+      turbulent: pre('Turbulent r=2', { rule: 'cca', k: 4, range: 2, thr: 5, nbhd: 'moore', init: 'random', warmup: 150, view: 'cyclic', ageAmt: 0.3 }, Pal.thermal),
+      fixation: pre('Fixation', { rule: 'cca', k: 6, range: 3, thr: 12, nbhd: 'moore', init: 'random', warmup: 100, view: 'states', ageAmt: 0 }, Pal.petri),
+      gh: pre('Greenberg-Hastings', { rule: 'gh', k: 8, range: 1, thr: 1, nbhd: 'moore', init: 'seeds', density: 0.1, warmup: 120, view: 'states', ageAmt: 0.3 }, Pal.glacier),
+      ghwide: pre('Wide excitable waves', { rule: 'gh', k: 5, range: 3, thr: 6, nbhd: 'moore', init: 'seeds', density: 0.1, warmup: 150, view: 'states', ageAmt: 0 }, Pal.bioluminescent),
+      ghdense: pre('Dense excitable', { rule: 'gh', k: 3, range: 2, thr: 3, nbhd: 'vn', init: 'random', warmup: 100, view: 'states', ageAmt: 0.4 }, Pal.xray),
+    },
+    closedGroups: ['Seeding'],
+    hints: {
+      Rule: 'k, r and θ are the whole phase diagram. Threshold 1 with range 1 is Griffeath’s original cyclic space. Raise θ toward the neighborhood size and the plate fixates into a mosaic; raise r and the waves thicken.',
+      Picture: 'States runs the k colors up the palette from the background. Cycle wraps them around the palette so the spiral arms read as a continuous chase. Fronts lights the cells that changed most recently.',
+    },
+    palette: true, defaultPalette: 'risograph', paletteLabel: 'Colors (state 0 → k−1)',
+    headline: 'k', headlineLabel: 'states',
+    sanitize(s) {
+      s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 64, 512);
+      s.k = U.clamp(Math.round(Number(s.k) || 3), 3, 24);
+      s.range = U.clamp(Math.round(Number(s.range) || 1), 1, 5);
+      const nb = s.nbhd === 'vn' ? 2 * s.range * (s.range + 1) : (2 * s.range + 1) * (2 * s.range + 1) - 1;
+      s.thr = U.clamp(Math.round(Number(s.thr) || 1), 1, Math.min(30, nb));
+    },
+    surprise(rng) {
+      const rule = rng.pick(['cca', 'cca', 'gh']);
+      const range = rng.pick([1, 1, 2, 3]);
+      const nbhd = rng.pick(['moore', 'vn']);
+      const nb = nbhd === 'vn' ? 2 * range * (range + 1) : (2 * range + 1) * (2 * range + 1) - 1;
+      return {
+        grid: rng.pick([192, 256, 256, 384]), aspect: rng.pick(['1:1', '1:1', '4:5', '5:4']),
+        rule, k: rule === 'gh' ? rng.int(3, 10) : rng.pick([4, 6, 8, 12, 14, 16]), range, thr: rng.int(1, Math.max(1, Math.round(nb * 0.35))), nbhd,
+        init: rule === 'gh' ? rng.pick(['seeds', 'sparse', 'random']) : 'random', density: rng.range(0.04, 0.15),
+        running: true, steps: 1, warmup: rng.int(100, 350),
+        view: rng.pick(['states', 'cyclic', 'cyclic', 'fronts']), phase: rng(), ageAmt: rng.range(0, 0.4), ageSpan: rng.int(30, 120),
+        exposure: rng.range(0.9, 1.1), gamma: rng.range(0.85, 1.15), contrast: rng.range(0.95, 1.2), grain: rng.pick([0, 0, 0.05]),
+      };
+    },
+    create(host) {
+      const gpu = gpuInit(host);
+      if (!gpu) return deadInstance(host, 'WebGL2 is not available in this browser');
+      const { gl, texType, upload } = gpu;
+      let stepPass, renderPass, reducePass, splatPass;
+      try {
+        stepPass = new G.Pass(gl, CCA_STEP);
+        renderPass = new G.Pass(gl, CCA_RENDER);
+        reducePass = new G.Pass(gl, REDUCE_FS);
+        splatPass = new G.Pass(gl, G.GLSL.splatFS);
+      } catch (err) { console.error(err); return deadInstance(host, 'Shader compilation failed on this GPU'); }
+
+      let C = null, reduceT = null, gw = 0, gh = 0, ramp = null, palTex = null, rampKey = '';
+      const redBuf = new Uint8Array(RED * RED * 4);
+      let raf = 0, chunkTimer = 0, stepCount = 0, activity = 0;
+
+      function ensureGrid(s) {
+        const [W, H] = gridSize(s);
+        if (C && gw === W && gh === H) return;
+        if (C) { C.dispose(); reduceT.dispose(); }
+        C = new G.PingPong(gl, W, H, { type: texType, filter: 'nearest', wrap: 'repeat' });
+        reduceT = new G.Target(gl, RED, RED, { type: 'rgba8', filter: 'nearest' });
+        gw = W; gh = H;
+      }
+      function ensureRamp(s) {
+        const key = (s.bg || '') + '|' + (s.palette || []).join(',');
+        if (ramp && rampKey === key) return;
+        if (ramp) { ramp.dispose(); palTex.dispose(); }
+        ramp = G.rampTexture(gl, s.palette, s.bg);
+        // the cycle view wraps: palette only, first color repeated at the end so the seam is continuous
+        palTex = G.rampTexture(gl, s.palette.concat([s.palette[0]]), null);
+        rampKey = key;
+      }
+      function step(n) {
+        const s = host.getState();
+        const u = { u_res: [gw, gh], u_k: { int: s.k | 0 }, u_range: { int: s.range | 0 }, u_thr: { int: s.thr | 0 },
+          u_rule: { int: s.rule === 'gh' ? 1 : 0 }, u_nbhd: { int: s.nbhd === 'vn' ? 1 : 0 } };
+        for (let i = 0; i < n; i++) { u.u_s = C.read; stepPass.draw(C.write, u); C.swap(); }
+        stepCount += n;
+      }
+      function render(target) {
+        const s = host.getState();
+        ensureRamp(s);
+        renderPass.draw(target || null, {
+          u_s: C.read, u_ramp: ramp, u_pal: palTex, u_res: [gw, gh], u_bg: hex01(s.bg),
+          u_k: { int: s.k | 0 }, u_view: { int: CCA_VIEWS[s.view] || 0 },
+          u_phase: s.phase, u_ageAmt: s.ageAmt, u_ageSpan: s.ageSpan,
+          u_exposure: s.exposure, u_gamma: s.gamma, u_contrast: s.contrast, u_grain: s.grain,
+        });
+      }
+      function measure() { activity = gpuMeasure(gl, reducePass, reduceT, C.read, gw, gh, redBuf).act; }
+      function status(extra) {
+        const s = host.getState();
+        host.setStatus(
+          '<span><b>' + (s.rule === 'gh' ? 'Greenberg-Hastings' : 'Cyclic') + '</b> · k ' + s.k + ' · r ' + s.range + ' · θ ' + s.thr + '</span>' +
+          '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
+          '<span>active <b>' + pct(activity) + '</b>' + (activity < 0.002 ? ' · fixated' : '') + '</span>' +
+          '<span>step <b>' + stepCount.toLocaleString() + '</b></span>' +
+          (extra ? '<span>' + extra + '</span>' : '')
+        );
+      }
+      function stop() { cancelAnimationFrame(raf); raf = 0; clearTimeout(chunkTimer); chunkTimer = 0; }
+      function frame() {
+        raf = 0;
+        const s = host.getState();
+        step(s.steps); render();
+        if (stepCount % 12 < s.steps) { measure(); status(); }
+        raf = requestAnimationFrame(frame);
+      }
+      function startLoop() {
+        stop();
+        const s = host.getState();
+        if (s.running && !host.reducedMotion()) raf = requestAnimationFrame(frame);
+        else { measure(); status(s.running ? '' : 'paused'); render(); }
+      }
+      function burst(total) {
+        stop();
+        let left = total;
+        (function chunk() {
+          const n = Math.min(24, left); left -= n;
+          step(n); render();
+          if (left > 0) chunkTimer = setTimeout(chunk, 0);
+          else { measure(); status(); startLoop(); }
+        })();
+      }
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        regenerate() {
+          stop(); stepCount = 0;
+          const s = host.getState();
+          ensureGrid(s);
+          upload(C.read, ccaSeed(s, gw, gh));
+          const warm = host.reducedMotion() ? Math.min(s.warmup, 100) : s.warmup;
+          if (warm > 0) burst(warm);
+          else { render(); measure(); status(); startLoop(); }
+        },
+        repaint() { if (C) render(); },
+        live(key) { if (key === 'running') startLoop(); else if (!raf) startLoop(); },
+        resize() { if (C) render(); },
+        pause() { stop(); },
+        resume() { if (C) { render(); startLoop(); } },
+        action(key) {
+          if (key === 'reseed') this.regenerate();
+          else if (key === 'burst') burst(300);
+        },
+        disturb(p) {
+          if (!C) return;
+          // erase a disk to the rest state: a hole in the pattern that the waves have to grow back into
+          splatPass.draw(C.write, { u_src: C.read, u_pos: [p.x, p.yGL], u_add: [0, 0, 0, 1], u_rad: 0.04, u_amt: 1, u_mode: { int: 0 } });
+          C.swap(); render(); startLoop();
+        },
+        exportPNG(w, h) {
+          if (!C) return Promise.reject(new Error('nothing to export'));
+          return gpuExport(gl, w, h, render);
+        },
+      };
+    },
+  });
 })();
 </script>
 <script>Studio.boot();</script>
