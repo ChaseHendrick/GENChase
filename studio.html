@@ -18811,6 +18811,200 @@ void main(){
       };
     },
   });
+
+  /* ---------- Double Pendulum Flip Time ---------- */
+  Studio.register({
+    id: 'pendulum',
+    name: 'Double pendulum flip time',
+    tab: 'Pendulum',
+    subtitle: 'first flip of a chaotic double pendulum · 1992',
+    order: 51,
+    equation: 'L = (m l² / 6)(ω₂² + 4ω₁² + 3ω₁ω₂ cos(θ₁ − θ₂)) + (m g l / 2)(3 cos θ₁ + cos θ₂);   plate = first t with |θ₁| > π or |θ₂| > π',
+    credit: "Troy Shinbrot, Celso Grebogi, Jack Wisdom and James A. Yorke, Chaos in a double pendulum, American Journal of Physics 60, 491 (1992), measured the exponential divergence of nearby trajectories on a real double pendulum. The flip-time plot itself is a widely reproduced numerical experiment rather than a paper: every pixel is an initial pair of angles released from rest, colored by the time until either arm first passes over the top.",
+    blurb: 'Two identical rods hang from each other. Release them from rest at the angles (θ₁, θ₂) that a pixel stands for and watch until one of them swings over the top; that time is the color. Near the middle the rods hang almost straight down and there is not enough energy to flip at all, which is the dark lens where 3 cos θ₁ + cos θ₂ > 2. Just outside it the flip comes late and the boundary is smooth; further out the motion is chaotic and the flip time changes wildly from one pixel to the next, so the plate turns to grain and filigree. The integration runs on the GPU while you watch and stops when the horizon is reached. A print recomputes every pixel from scratch at its own resolution.',
+    schema: [
+      RANGE('Pendulum', 'horizon', 'Time horizon', GEOM, 5, 200, 1, v => v + ' √(l/g)', { hint: 'How long each pixel is integrated before it is declared unflipped. Longer horizons fill in the outer chaos and cost time in proportion.' }),
+      RANGE('Pendulum', 'dt', 'Time step', GEOM, 0.01, 0.06, 0.005, f3),
+      RANGE('Pendulum', 'perFrame', 'Draws per frame', LIVE, 1, 8, 1, String, { hint: 'Each draw is four RK4 substeps. Higher is faster and less responsive.' }),
+      { group: 'Frame', key: 'grid', label: 'Screen grid', type: 'seg', kind: GEOM, options: [[128, '128'], [192, '192'], [256, '256'], [384, '384'], [512, '512']], hint: 'Resolution of the screen computation. Prints recompute at print pixels regardless.' },
+      RANGE('Frame', 'c1', 'Center θ₁', GEOM, -3.14, 3.14, 0.01, f2),
+      RANGE('Frame', 'c2', 'Center θ₂', GEOM, -3.14, 3.14, 0.01, f2),
+      RANGE('Frame', 'span', 'Width (rad)', GEOM, 0.5, 6.2832, 0.01, f2),
+      ASPECT_FIELD,
+      { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['time', 'Flip time'], ['arm', 'Which arm']] },
+      { group: 'Picture', key: 'tone', label: 'Tone', type: 'seg', kind: PAINT, options: [['log', 'Log'], ['sqrt', 'Square root'], ['linear', 'Linear']] },
+      RANGE('Picture', 'gamma', 'Gamma', PAINT, 0.4, 2.2, 0.02, f2),
+      RANGE('Picture', 'shift', 'Color shift', PAINT, 0, 1, 0.01, f2),
+    ],
+    defaults: {
+      horizon: 32, dt: 0.04, perFrame: 3, grid: 256, c1: 0, c2: 0, span: 6.2832, aspect: '1:1',
+      view: 'time', tone: 'log', gamma: 1, shift: 0, seed: 'pendulum-1992',
+    },
+    presets: {
+      classic: pre('Full square', { horizon: 32, dt: 0.04, grid: 256, c1: 0, c2: 0, span: 6.2832, aspect: '1:1', view: 'time', tone: 'log', gamma: 1, shift: 0 }, Pal.thermal),
+      lens: pre('The lens', { horizon: 32, dt: 0.04, grid: 256, c1: 0, c2: 0, span: 4.4, aspect: '1:1', view: 'time', tone: 'sqrt', gamma: 1, shift: 0 }, Pal.glacier),
+      arms: pre('Which arm', { horizon: 20, dt: 0.04, grid: 256, c1: 0, c2: 0, span: 6.2832, aspect: '1:1', view: 'arm', tone: 'log', gamma: 1, shift: 0 }, Pal.risograph),
+      edge: pre('Edge of chaos', { horizon: 30, dt: 0.04, grid: 256, c1: 1.9, c2: -1.2, span: 1.8, aspect: '4:5', view: 'time', tone: 'linear', gamma: 1.2, shift: 0.1 }, Pal.bioluminescent),
+      long: pre('Long horizon', { horizon: 48, dt: 0.05, grid: 192, c1: 0, c2: 0, span: 6.2832, aspect: '1:1', view: 'time', tone: 'log', gamma: 1.1, shift: 0 }, Pal.nightshade),
+      wide: pre('Wide band', { horizon: 24, dt: 0.04, grid: 256, c1: 0, c2: 0.9, span: 6.2832, aspect: '16:9', view: 'time', tone: 'log', gamma: 1, shift: 0.3 }, Pal.ember),
+    },
+    hints: {
+      Pendulum: 'Time is in units of √(l/g), about 0.3 s for a 1 m rod on Earth. The plate is deterministic: the same angles always flip at the same time.',
+      Frame: 'The whole square is θ₁, θ₂ in [−π, π]. Narrow the width to zoom into the lens boundary or the chaotic corners.',
+      Picture: 'Unflipped cells take the background color. Flip time runs through the palette from early to late.',
+    },
+    closedGroups: ['Frame'],
+    palette: true, defaultPalette: 'thermal', paletteLabel: 'Flip time (early → late)',
+    headline: 'horizon', headlineLabel: 'horizon',
+    sanitize(s) {
+      s.grid = U.clamp(Math.round(Number(s.grid) || 256), 64, 512);
+      s.dt = U.clamp(Number(s.dt) || 0.04, 0.005, 0.08);
+      s.horizon = U.clamp(Number(s.horizon) || 32, 2, 400);
+      s.span = U.clamp(Number(s.span) || TAU, 0.1, TAU);
+    },
+    surprise(rng) {
+      const zoomed = rng() < 0.4;
+      // a zoomed frame should sit on the lens boundary, where the flips begin, not inside the dead lens
+      let c1 = 0, c2 = 0;
+      if (zoomed) {
+        for (let k = 0; k < 16; k++) {
+          c1 = rng.range(-2.6, 2.6); c2 = rng.range(-2.6, 2.6);
+          const e = 3 * Math.cos(c1) + Math.cos(c2);
+          if (e > -0.6 && e < 1.8) break;
+        }
+      }
+      return {
+        horizon: rng.pick([24, 32, 32, 40]), dt: 0.04, perFrame: 3, grid: rng.pick([192, 256, 256]),
+        c1: Math.round(c1 * 100) / 100, c2: Math.round(c2 * 100) / 100,
+        span: zoomed ? rng.range(1, 3) : TAU, aspect: rng.pick(['1:1', '1:1', '4:5', '5:4']),
+        view: rng() < 0.8 ? 'time' : 'arm', tone: rng.pick(['log', 'log', 'sqrt']), gamma: rng.range(0.8, 1.2), shift: rng.range(0, 1),
+      };
+    },
+    create(host) {
+      const start = glStart(host);
+      if (!start.gl) return start.dead;
+      const gl = start.gl, texType = start.texType;
+      let initPass, stepPass, renderPass;
+      try {
+        initPass = new G.Pass(gl, PEND_INIT);
+        stepPass = new G.Pass(gl, PEND_STEP);
+        renderPass = new G.Pass(gl, PEND_RENDER);
+      } catch (err) { console.error(err); return start.dead('Shader compilation failed on this GPU'); }
+      let P = null, gw = 0, gh = 0, pal = null, palKey = '';
+      let raf = 0, timer = 0, stepCount = 0, simT = 0, total = 0, t0 = 0, done = false;
+
+      function sizeOf(s) {
+        const n = s.grid, ar = ASPECTS[s.aspect] || 1;
+        return [n, Math.max(32, Math.round(n * ar))];
+      }
+      function ensureGrid(s) {
+        const [W, H] = sizeOf(s);
+        if (P && gw === W && gh === H) return;
+        if (P) P.dispose();
+        P = new G.PingPong(gl, W, H, { type: texType, filter: 'nearest', wrap: 'clamp' });
+        gw = W; gh = H;
+      }
+      function ensurePal(s) {
+        const key = s.bg + '|' + s.palette.join(',');
+        if (pal && palKey === key) return;
+        if (pal) pal.dispose();
+        pal = G.rampTexture(gl, s.palette, null); palKey = key;
+      }
+      function frameUniforms(s, w, h, ox, oy) { return { u_res: [w, h], u_off: [ox, oy], u_center: [s.c1, s.c2], u_span: s.span }; }
+      function stepsFor(s) { return Math.ceil(s.horizon / s.dt / PEND_SUB); }
+      // integrate n draws of PEND_SUB substeps on a PingPong
+      function integrate(pp, s, n, at) {
+        for (let i = 0; i < n; i++) {
+          stepPass.draw(pp.write, { u_state: pp.read, u_dt: s.dt, u_t: at, u_sub: { int: PEND_SUB } });
+          pp.swap();
+          at += s.dt * PEND_SUB;
+        }
+        return at;
+      }
+      function render(target, pp) {
+        const s = host.getState();
+        ensurePal(s);
+        renderPass.draw(target || null, {
+          u_state: (pp || P).read, u_pal: pal, u_horizon: s.horizon, u_gamma: s.gamma, u_shift: s.shift,
+          u_view: { int: s.view === 'arm' ? 1 : 0 }, u_tone: { int: s.tone === 'log' ? 0 : (s.tone === 'sqrt' ? 1 : 2) }, u_bg: hex01(s.bg),
+        });
+      }
+      function status(extra) {
+        host.setStatus(
+          '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
+          '<span>t <b>' + f1(Math.min(simT, host.getState().horizon)) + '</b> / ' + host.getState().horizon + ' √(l/g)</span>' +
+          '<span>RK4 steps <b>' + (stepCount * PEND_SUB).toLocaleString() + '</b></span>' +
+          (extra ? '<span>' + extra + '</span>' : ''));
+      }
+      function stop() { cancelAnimationFrame(raf); raf = 0; clearTimeout(timer); timer = 0; }
+      function finish() {
+        done = true;
+        render();
+        status('done in ' + ((performance.now() - t0) / 1000).toFixed(1) + ' s');
+      }
+      function frame() {
+        raf = 0;
+        const s = host.getState();
+        const n = Math.min(s.perFrame, total - stepCount);
+        simT = integrate(P, s, n, simT);
+        stepCount += n;
+        render();
+        if (stepCount >= total) finish();
+        else { status(); raf = requestAnimationFrame(frame); }
+      }
+      // reduced motion: same integration in timer chunks without painting the intermediate frames
+      function chunk() {
+        timer = 0;
+        const s = host.getState();
+        const n = Math.min(6, total - stepCount);
+        simT = integrate(P, s, n, simT);
+        stepCount += n;
+        if (stepCount >= total) finish();
+        else timer = setTimeout(chunk, 0);
+      }
+      function begin() {
+        stop();
+        const s = host.getState();
+        ensureGrid(s);
+        initPass.draw(P.write, frameUniforms(s, gw, gh, 0, 0));
+        P.swap();
+        stepCount = 0; simT = 0; done = false; total = stepsFor(s); t0 = performance.now();
+        render(); status();
+        if (host.reducedMotion()) timer = setTimeout(chunk, 0);
+        else raf = requestAnimationFrame(frame);
+      }
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        regenerate() { begin(); },
+        repaint() { if (P) render(); },
+        live() { /* perFrame is read on the next frame */ },
+        resize() { if (P) render(); },
+        pause() { stop(); },
+        resume() { if (!P) return; render(); if (!done && !raf && !timer) { if (host.reducedMotion()) timer = setTimeout(chunk, 0); else raf = requestAnimationFrame(frame); } },
+        async exportPNG(w, h) {
+          if (!P) throw new Error('nothing to export');
+          const s = host.getState();
+          const n = stepsFor(s);
+          const blob = await exportTiled(gl, w, h, async (target, ox, oy) => {
+            const pp = new G.PingPong(gl, target.w, target.h, { type: texType, filter: 'nearest', wrap: 'clamp' });
+            try {
+              initPass.draw(pp.write, frameUniforms(s, w, h, ox, oy));
+              pp.swap();
+              let at = 0;
+              for (let k = 0; k < n; k += 12) {
+                at = integrate(pp, s, Math.min(12, n - k), at);
+                gl.finish();
+                await yieldNow();
+              }
+              render(target, pp);
+            } finally { pp.dispose(); }
+          });
+          render();
+          return blob;
+        },
+      };
+    },
+  });
 })();
 </script>
 <script>Studio.boot();</script>
