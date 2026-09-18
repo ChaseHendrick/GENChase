@@ -78,7 +78,7 @@ function cases(src) {
     const trials = [
       ['#' + c.id + '/recipe-check', c.now, 'bare hash uses today\'s default'],
       ['#' + c.id + '/recipe-check/' + b64({ v: c.ver - 1 }), c.old, 'v' + (c.ver - 1) + ' recipe gets the old default back'],
-      ['#' + c.id + '/recipe-check/' + b64({ v: c.ver - 1, [c.key]: c.old === c.now ? c.now : c.now }), c.now, 'a recipe that names the key keeps its own value'],
+      ['#' + c.id + '/recipe-check/' + b64({ v: c.ver, [c.key]: c.old }), c.old, 'a current recipe that names the key keeps its own value'],
       ['#' + c.id + '/recipe-check/' + b64({ v: c.ver }), c.now, 'v' + c.ver + ' recipe uses today\'s default'],
     ];
     for (const [hash, want, why] of trials) {
