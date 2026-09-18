@@ -13487,10 +13487,10 @@ void main(){
     order: 57,
     equation: '∂u/∂t = r u − (k₀² + ∇²)² u + g u² − u³',
     credit: "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is the universal envelope of Rayleigh–Bénard convection just above onset: a real scalar field with a preferred wavenumber k₀. The quadratic term g selects hexagons over rolls; at slightly negative r a localized pulse can sit in a stable zero background (snaking).",
-    blurb: 'A fluid heated from below does not boil at once. Near onset it organizes into stripes or hexagons whose wavelength is set by the depth of the layer. Swift–Hohenberg is that fact written as a PDE: a band of wavenumbers around k₀ is unstable when r>0, everything else is damped, and the cubic term stops the growth. Set g=0 and you get rolls. Give g a sign and the stripes break into a hexagonal lattice. Park r just below zero and drop a bump — a localized convecton can persist, a spot of pattern in a quiet field.',
+    blurb: 'A fluid heated from below does not boil at once. Near onset it organizes into stripes or hexagons whose wavelength is set by the depth of the layer. Swift–Hohenberg is that fact written as a PDE: a band of wavenumbers around k₀ is unstable when r>0, everything else is damped, and the cubic term stops the growth. Set g=0 and you get rolls. Give g a sign and the stripes break into a hexagonal lattice. The quadratic term does something else as well: past about g=0.85 the bifurcation turns subcritical, pattern and quiet background become bistable, and a bump dropped at r just below zero neither dies nor spreads. It settles into a convecton, a patch of rolls with a sharp edge sitting in a flat field.',
     schema: GRID.concat([
       RANGE('Onset', 'r', 'Control r', LIVE, -0.4, 1.2, 0.01, f2, {
-        hint: 'r is the reduced Rayleigh number. r>0: patterns grow. r just below 0: a localized bump can survive. r≪0: decay.' }),
+        hint: 'r is the reduced Rayleigh number. r>0: patterns grow. r just below 0: a bump survives as a localized patch, but only once g is past about 0.85 and the bifurcation is subcritical. At g=0 anything below onset decays. r≪0: decay regardless.' }),
       RANGE('Onset', 'k0', 'Wavenumber k₀', LIVE, 0.35, 1.2, 0.01, f2, {
         hint: 'Preferred spatial frequency, in 1/cells. λ ≈ 2π/k₀. Smaller k₀, fatter rolls.' }),
       RANGE('Onset', 'g', 'Quadratic g', LIVE, -1.2, 1.2, 0.02, f2, {
@@ -13510,11 +13510,11 @@ void main(){
       seed: 'swift-1977',
     },
     presets: {
-      rolls: pre('Rolls', { r: 0.3, g: 0, init: 'noise', view: 'field', warmup: 550 }, Pal.harbor),
+      rolls: pre('Rolls', { r: 0.3, g: 0, k0: 0.62, init: 'noise', view: 'field', warmup: 550 }, Pal.harbor),
       hex: pre('Hexagons', { r: 0.25, g: 0.7, init: 'noise', view: 'field', warmup: 700, k0: 0.58 }, Pal.glacier),
-      localized: pre('Localized', { r: -0.08, g: 0, init: 'bump', view: 'field', warmup: 400, k0: 0.7 }, Pal.nightshade),
-      target: pre('Target', { r: 0.4, init: 'target', view: 'abs', warmup: 450 }, Pal.thermal),
-      relief: pre('Convection relief', { r: 0.45, g: 0, view: 'shade', bump: 7, warmup: 500 }, Pal.xray),
+      localized: pre('Localized', { r: -0.1, g: 1.2, init: 'bump', view: 'field', warmup: 900, k0: 0.7 }, Pal.nightshade),
+      target: pre('Target', { r: 0.4, g: 0, k0: 0.62, init: 'target', view: 'abs', warmup: 450 }, Pal.thermal),
+      relief: pre('Convection relief', { r: 0.45, g: 0, k0: 0.62, view: 'shade', bump: 7, warmup: 500 }, Pal.xray),
     },
     closedGroups: ['Seeding'],
     hints: {
@@ -13525,13 +13525,16 @@ void main(){
     headline: 'r', headlineLabel: 'control r',
     sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.025, 0.005, Math.min(0.12, shMaxDt(s.r, s.k0))); },
     surprise(rng) {
-      const g = rng.pick([0, 0, 0, 0.6, -0.5]);
-      const r = rng.pick([0.2, 0.3, 0.4, 0.55, -0.06]);
+      const r = rng.pick([0.2, 0.3, 0.4, 0.55, -0.1]);
+      // Below onset only the subcritical branch has anything to show, and that needs g past about 0.85
+      // (the weakly nonlinear condition is g^2 > 27/38). Drawing g=0 with r<0 gives a plate that decays to nothing.
+      const g = r < 0 ? rng.pick([1.2, 1.0, -1.1]) : rng.pick([0, 0, 0, 0.6, -0.5]);
       return {
         grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5']),
-        r, k0: rng.range(0.48, 0.85), g, cub: 1, noise: rng.pick([0, 0.004, 0.01]),
+        r, k0: rng.range(0.48, 0.85), g, cub: 1, noise: r < 0 ? 0 : rng.pick([0, 0.004, 0.01]),
         init: r < 0 ? 'bump' : rng.pick(['noise', 'noise', 'roll', 'target']),
-        running: true, steps: rng.int(2, 4), dt: 0.025, warmup: rng.int(300, 700),
+        // A convecton takes longer to settle on its edge than a field of rolls takes to fill.
+        running: true, steps: rng.int(2, 4), dt: 0.025, warmup: r < 0 ? rng.int(800, 1200) : rng.int(300, 700),
         view: rng.pick(['field', 'field', 'shade', 'orient']), lo: -1.2, hi: 1.2,
         bump: rng.range(4, 9), lightAng: rng.int(0, 360),
         exposure: rng.range(0.9, 1.2), gamma: rng.range(0.85, 1.2), contrast: rng.range(0.95, 1.25),
