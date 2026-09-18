@@ -23,11 +23,11 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GENChase — generative art from real simulations">
-<meta property="og:description" content="Fifty-eight pattern-forming systems from physics, chemistry and biology, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution with its own governing equation printed alongside.">
+<meta property="og:description" content="Sixty pattern-forming systems from physics, chemistry and biology, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution with its own governing equation printed alongside.">
 <meta property="og:site_name" content="GENChase">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GENChase — generative art from real simulations">
-<meta name="twitter:description" content="Fifty-eight pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<meta name="twitter:description" content="Sixty pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "A generative art studio built from real scientific simulations. Fifty-eight techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution.",
+  "description": "A generative art studio built from real scientific simulations. Sixty techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution.",
   "featureList": [
     "Flow fields with collision-avoiding strokes",
     "Gray-Scott reaction-diffusion",
@@ -679,7 +679,7 @@
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>None of these algorithms are new. What is unusual is the assembly. Fifty-eight unrelated sciences share one control surface,
+      <p>None of these algorithms are new. What is unusual is the assembly. Sixty unrelated sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -786,6 +786,10 @@
           n−6 law measured on the plate. Graner and Glazier, 1992.</li>
         <li><b>Vortex Lattice</b> — a rotating condensate answering with quantised vortices in an Abrikosov lattice,
           found from the phase winding rather than from the density. Gross and Pitaevskii, 1961.</li>
+        <li><b>Flocking</b> — Toner–Tu hydrodynamics of a polar active fluid: clustering, active turbulence, and
+          number fluctuations measured against the equilibrium square root. Toner and Tu, 1995.</li>
+        <li><b>Hyperbolic Turing</b> — Gray–Scott chemistry on a {p,q} tiling of the hyperbolic plane, drawn in the
+          Poincaré disk, where the area at distance r grows like e^r and a pattern cannot simply repeat.</li>
       </ul>
 
       <h3>How it is built</h3>
@@ -24330,6 +24334,1043 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
           const c = document.createElement('canvas'); c.width = w; c.height = h;
           paint(c.getContext('2d'), w, h);
           return U.toBlob(c);
+        },
+      };
+    },
+  });
+})();
+</script>
+<script>
+/* modules/tonertu.js */
+/* GENChase — Toner-Tu: a polar active fluid, its travelling bands, and the giant number fluctuations measured on the plate. */
+(function () {
+  'use strict';
+  const U = Studio.util, G = Studio.gl;
+  const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  const RED = 32;
+  const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2), f3 = v => v.toFixed(3);
+  const pct = v => Math.round(v * 100) + '%';
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
+    Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const Pal = Studio.PALETTES;
+  const pre = (label, p, pal) => ({ label, p, palette: pal });
+
+  function toHalf(f32) {
+    const out = new Uint16Array(f32.length), fb = new Float32Array(1), ib = new Int32Array(fb.buffer);
+    for (let i = 0; i < f32.length; i++) {
+      fb[0] = f32[i];
+      const x = ib[0], sign = (x >> 16) & 0x8000, exp = ((x >> 23) & 0xff) - 112;
+      out[i] = exp <= 0 ? sign : exp >= 31 ? sign | 0x7c00 : sign | (exp << 10) | ((x >> 13) & 0x3ff);
+    }
+    return out;
+  }
+
+  const HEAD = `#version 300 es
+precision highp float;
+in vec2 v_uv; out vec4 outColor;
+uniform sampler2D u_f;
+uniform vec2 u_res;
+vec3 F(vec2 uv){ return texture(u_f, uv).rgb; }
+`;
+
+  // One explicit step. Three things here are chosen rather than default, and each of them is the
+  // difference between a flock and a blown-up field:
+  //
+  // The continuity equation is written in conservative flux form with an upwind density at each face.
+  // Writing it as -rho div v - v . grad rho with centred differences does not conserve mass on the
+  // lattice, and the error accumulates where the density is sharpest, which in this model is exactly
+  // inside the bands that are the thing being drawn.
+  //
+  // The advection of velocity by itself is upwinded for the same reason a centred scheme fails on any
+  // hyperbolic term: at the grid scale a centred first derivative has zero numerical dissipation and the
+  // odd-even modes are free to grow.
+  //
+  // The self-propulsion coefficient is density dependent. With a constant alpha the model orders
+  // uniformly and there is nothing to see; it is the fact that dense regions order and dilute ones do
+  // not that makes the ordered phase phase-separate into travelling bands, which is Toner and Tu's point.
+  const STEP = HEAD + `
+uniform float u_dt, u_dx, u_a0, u_a1, u_beta, u_sigma, u_nu, u_lambda, u_rho0, u_noise, u_step, u_nOff, u_vmax;
+${G.GLSL.hash}
+void main(){
+  vec2 px = 1.0 / u_res;
+  vec3 c = F(v_uv);
+  vec3 e = F(v_uv + vec2(px.x, 0.0)), w = F(v_uv - vec2(px.x, 0.0));
+  vec3 n = F(v_uv + vec2(0.0, px.y)), s = F(v_uv - vec2(0.0, px.y));
+  float rho = max(c.r, 1e-4);
+  vec2 v = c.gb;
+
+  // conservative upwind fluxes on the four faces
+  float vE = 0.5 * (c.g + e.g), vW = 0.5 * (w.g + c.g);
+  float vN = 0.5 * (c.b + n.b), vS = 0.5 * (s.b + c.b);
+  float fE = vE * (vE > 0.0 ? c.r : e.r);
+  float fW = vW * (vW > 0.0 ? w.r : c.r);
+  float fN = vN * (vN > 0.0 ? c.r : n.r);
+  float fS = vS * (vS > 0.0 ? s.r : c.r);
+  float drho = -((fE - fW) + (fN - fS)) / u_dx;
+
+  // upwind (v . grad) v
+  vec2 dvdx = v.x > 0.0 ? (c.gb - w.gb) / u_dx : (e.gb - c.gb) / u_dx;
+  vec2 dvdy = v.y > 0.0 ? (c.gb - s.gb) / u_dx : (n.gb - c.gb) / u_dx;
+  vec2 adv = v.x * dvdx + v.y * dvdy;
+
+  vec2 gradRho = vec2(e.r - w.r, n.r - s.r) / (2.0 * u_dx);
+  vec2 lapV = (e.gb + w.gb + n.gb + s.gb - 4.0 * c.gb) / (u_dx * u_dx);
+
+  float alpha = u_a0 + u_a1 * (rho / u_rho0 - 1.0);
+  float v2 = dot(v, v);
+  vec2 dv = -u_lambda * adv + (alpha - u_beta * v2) * v - u_sigma * gradRho + u_nu * lapV;
+  if (u_noise > 0.0) {
+    vec2 r2 = vec2(hash21(v_uv * u_res + vec2(u_nOff, u_step)), hash21(v_uv * u_res + vec2(u_nOff + 37.0, u_step))) - 0.5;
+    dv += r2 * 2.0 * u_noise;
+  }
+  float nr = max(rho + u_dt * drho, 1e-4);
+  vec2 nv = v + u_dt * dv;
+  // A ceiling at the speed the model itself permits, not an arbitrary large number. The local dynamics
+  // dv/dt = (alpha - beta v^2) v has its fixed point at sqrt(alpha/beta); a few times that is far outside
+  // anything physical, so anything reaching it is a numerical excursion and clamping there keeps one bad
+  // cell from driving the step bound for the whole field. A clamp at eight instead let the field sit
+  // pinned at the ceiling and still call itself a flock.
+  float sp = length(nv);
+  if (sp > u_vmax) nv *= u_vmax / sp;
+  outColor = vec4(nr, nv, 1.0);
+}`;
+
+  const RENDER_FS = `#version 300 es
+precision highp float;
+in vec2 v_uv; out vec4 outColor;
+uniform sampler2D u_f;
+uniform vec2 u_res;
+uniform int u_view;
+uniform float u_lo, u_hi, u_exposure, u_gamma, u_contrast, u_grain, u_rho0, u_streak;
+uniform vec3 u_bg;
+${G.GLSL.hash}
+${G.GLSL.ramp}
+${G.GLSL.bicubic}
+void main(){
+  vec4 c = texCR4(u_f, v_uv, u_res);
+  float rho = c.r;
+  vec2 v = c.gb;
+  float t;
+  if (u_view == 1) t = (length(v) - u_lo) / max(u_hi - u_lo, 1e-4);
+  else if (u_view == 2) {
+    // Heading. The ramp is not cyclic, so the angle is folded to |theta|/pi rather than wrapped: a
+    // straight wrap leaves a seam at +/- pi that reads as a line in the flock and is not one.
+    t = abs(atan(v.y, v.x)) / 3.14159265;
+  } else if (u_view == 3) {
+    float d = (rho / u_rho0 - u_lo) / max(u_hi - u_lo, 1e-4);
+    float ang = abs(atan(v.y, v.x)) / 3.14159265;
+    t = mix(d, ang, u_streak);
+  } else t = (rho / u_rho0 - u_lo) / max(u_hi - u_lo, 1e-4);
+  t = clamp(t, 0.0, 1.0);
+  vec3 col = ramp(t);
+  col = pow(clamp(col, 0.0, 1.0), vec3(u_gamma));
+  col *= u_exposure;
+  col = clamp((col - 0.5) * u_contrast + 0.5, 0.0, 1.0);
+  if (u_grain > 0.0) col = clamp(col + (hash21(gl_FragCoord.xy * 0.73) - 0.5) * u_grain * 0.4, 0.0, 1.0);
+  outColor = vec4(col, 1.0);
+}`;
+
+  // Density packed to bytes, so the fluctuation statistics can be taken on the CPU without depending on
+  // float readback being supported.
+  const ENCODE_FS = `#version 300 es
+precision highp float;
+in vec2 v_uv; out vec4 outColor;
+uniform sampler2D u_f; uniform float u_rho0;
+void main(){
+  vec3 c = texture(u_f, v_uv).rgb;
+  outColor = vec4(clamp(c.r / (4.0 * u_rho0), 0.0, 1.0), clamp(length(c.gb) / 4.0, 0.0, 1.0), 0.0, 1.0);
+}`;
+
+  const REDUCE_FS = `#version 300 es
+precision highp float;
+in vec2 v_uv; out vec4 outColor;
+uniform sampler2D u_f; uniform vec2 u_res, u_block; uniform float u_rho0;
+void main(){
+  vec2 o = floor(v_uv * (u_res / u_block)) * u_block;
+  float sr = 0.0, sv = 0.0;
+  vec2 sdir = vec2(0.0);
+  for (int y = 0; y < 8; y++) for (int x = 0; x < 8; x++) {
+    vec2 uv = (o + vec2(x, y) * u_block * 0.125 + 0.5) / u_res;
+    vec3 c = texture(u_f, uv).rgb;
+    sr += c.r / u_rho0; sv += length(c.gb);
+    sdir += c.gb;
+  }
+  outColor = vec4(clamp(sr / 64.0, 0.0, 4.0) / 4.0, clamp(sv / 64.0, 0.0, 4.0) / 4.0,
+                  clamp(length(sdir) / 64.0, 0.0, 4.0) / 4.0, 1.0);
+}`;
+
+  function hexToRgb01(hex) {
+    const rgb = U.hexToRgb(hex || '#000000');
+    return [rgb[0] / 255, rgb[1] / 255, rgb[2] / 255];
+  }
+
+  /* ---------- Flocking ---------- */
+  Studio.register({
+    id: 'tonertu',
+    name: 'Flocking',
+    tab: 'Flock',
+    subtitle: 'Toner-Tu, a polar active fluid · 1995',
+    order: 37,
+    equation: '∂ρ/∂t + ∇·(ρv) = 0;   ∂v/∂t + λ(v·∇)v = (α(ρ) − β|v|²)v − σ∇ρ + ν∇²v + η',
+    credit: "John Toner and Yuhai Tu, 'Long-range order in a two-dimensional dynamical XY model: how birds fly together', Physical Review Letters 75, 4326 (1995), and Phys. Rev. E 58, 4828 (1998). The particle model it coarse-grains is Tamás Vicsek, András Czirók, Eshel Ben-Jacob, Inon Cohen and Ofer Shochet, Phys. Rev. Lett. 75, 1226 (1995). That the ordered state phase separates into travelling bands rather than ordering uniformly is Guillaume Grégoire and Hugues Chaté, Phys. Rev. Lett. 92, 025702 (2004), and Chaté, Francesco Ginelli, Grégoire and Franck Raynaud, Phys. Rev. E 77, 046113 (2008). Giant number fluctuations in active matter are Sriram Ramaswamy, R. Aditi Simha and John Toner, Europhysics Letters 62, 196 (2003).",
+    blurb: 'A flock is not a fluid at rest that happens to be moving. Every element drives itself, so momentum is not conserved, and that one missing conservation law changes what the system is allowed to do. Toner and Tu wrote down the hydrodynamics of it: a density that is conserved, a velocity that is not, and a term that makes speed relax toward a preferred value rather than toward zero. Two things fall out that no equilibrium fluid does. The ordered state does not order evenly, it breaks into dense travelling bands moving through a dilute disordered sea, because dense regions align and sparse ones do not. And the number of elements in a box fluctuates far more than the square root of the mean, which in an equilibrium system it cannot: count the flock in boxes and the fluctuations are giant. The status line measures that exponent on the plate.',
+    schema: [
+      { group: 'Flock', key: 'grid', label: 'Grid', type: 'seg', kind: GEOM, options: [[128, '128'], [192, '192'], [256, '256'], [320, '320']] },
+      { group: 'Flock', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
+      RANGE('Flock', 'a0', 'Drive α₀', LIVE, -1, 2, 0.02, f2, { hint: 'The self-propulsion at the mean density. Below zero the flock is disordered everywhere; above it the ordered state exists, and near the crossing is where the bands live.' }),
+      RANGE('Flock', 'a1', 'Density coupling α₁', LIVE, 0, 6, 0.05, f2, { hint: 'How much denser regions order more strongly. Set it to zero and the flock orders uniformly with nothing to look at: this term is what makes it band.' }),
+      RANGE('Flock', 'beta', 'Saturation β', LIVE, 0.2, 4, 0.05, f2),
+      RANGE('Flock', 'sigma', 'Pressure σ', LIVE, 0.05, 3, 0.05, f2),
+      RANGE('Flock', 'nu', 'Viscosity ν', LIVE, 0.02, 2, 0.02, f2),
+      RANGE('Flock', 'lambda', 'Advection λ', LIVE, 0, 2, 0.05, f2),
+      RANGE('Flock', 'noise', 'Noise', LIVE, 0, 0.3, 0.005, f3),
+      RANGE('Flock', 'startNoise', 'Initial disorder', GEOM, 0.02, 1, 0.02, f2),
+      { group: 'Simulation', key: 'running', label: 'Running', type: 'toggle', kind: LIVE },
+      RANGE('Simulation', 'steps', 'Steps per frame', LIVE, 1, 12, 1, String),
+      RANGE('Simulation', 'dtScale', 'Step fraction', LIVE, 0.1, 1, 0.02, f2, { hint: 'As a fraction of the computed stability bound, which the status line prints. At one the scheme is at its limit; the default leaves margin for the nonlinearity the linear estimate does not see.' }),
+      RANGE('Simulation', 'warmup', 'Warm-up steps', GEOM, 0, 8000, 100, String),
+      { group: 'Simulation', key: 'burst', label: 'Run 1,500 steps', type: 'action' },
+      { group: 'Picture', key: 'view', label: 'Draw', type: 'seg', kind: PAINT, wrap: true,
+        options: [['density', 'Density'], ['speed', 'Order'], ['heading', 'Heading'], ['both', 'Density and heading']] },
+      RANGE('Picture', 'streak', 'Heading mix', PAINT, 0, 1, 0.02, f2, { dimUnless: s => s.view === 'both' }),
+      RANGE('Picture', 'lo', 'Black point', PAINT, -1, 2, 0.02, f2),
+      RANGE('Picture', 'hi', 'White point', PAINT, 0, 4, 0.02, f2),
+      RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.5, 2.2, 0.02, f2),
+      RANGE('Picture', 'gamma', 'Gamma', PAINT, 0.4, 2.2, 0.02, f2),
+      RANGE('Picture', 'contrast', 'Contrast', PAINT, 0.5, 2.2, 0.02, f2),
+      RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.6, 0.02, pct),
+    ],
+    defaults: {
+      grid: 256, aspect: '1:1',
+      a0: 0.3, a1: 1.2, beta: 1, sigma: 0.6, nu: 1.2, lambda: 0.9, noise: 0.03, startNoise: 0.35,
+      running: true, steps: 4, dtScale: 0.4, warmup: 2500,
+      view: 'density', streak: 0.5, lo: 0, hi: 1.6,
+      exposure: 1, gamma: 1, contrast: 1, grain: 0.03,
+      seed: 'toner-1995',
+    },
+    presets: {
+      bands: pre('Dense clusters', { a0: 0.12, a1: 1.8, sigma: 0.6, nu: 0.3, noise: 0.03, view: 'density', lo: 0, hi: 1.8, warmup: 3000 }, Pal.thermal),
+      ordered: pre('Ordered, and even', { a0: 0.9, a1: 0.2, sigma: 0.5, nu: 0.4, noise: 0.02, view: 'heading', lo: 0, hi: 1, warmup: 2500 }, Pal.harbor),
+      disordered: pre('Below the transition', { a0: -0.3, a1: 1.4, sigma: 0.5, nu: 0.3, noise: 0.08, view: 'speed', lo: 0, hi: 0.8, warmup: 2000 }, Pal.graphite),
+      turbulent: pre('Active turbulence', { a0: 0.6, a1: 2.4, sigma: 1.2, nu: 0.12, lambda: 1.4, noise: 0.05, view: 'both', streak: 0.45, lo: 0, hi: 2, warmup: 3500 }, Pal.nightshade),
+      sparse: pre('Sparse and clumped', { a0: 0.05, a1: 3, sigma: 0.35, nu: 0.25, noise: 0.04, view: 'density', lo: 0, hi: 2.6, warmup: 3500 }, Pal.ember),
+      wide: pre('A wide sky, where bands can run', { a0: 0.12, a1: 1.8, sigma: 0.6, nu: 0.3, noise: 0.03, view: 'density', lo: 0, hi: 1.8, warmup: 3000, aspect: '16:9' }, Pal.glacier),
+      heading: pre('Heading alone', { a0: 0.4, a1: 1.2, sigma: 0.5, nu: 0.5, noise: 0.03, view: 'heading', lo: 0, hi: 1, warmup: 2500 }, Pal.risograph),
+    },
+    hints: {
+      Flock: 'Density is measured against its mean, which is conserved exactly by the flux form of the continuity equation. The status line prints the step bound it computed and the number-fluctuation exponent it measured.',
+      Picture: 'A continuous field with no geometry to emit, so the export is raster and stays raster.',
+    },
+    palette: true, defaultPalette: 'thermal',
+    headline: 'a1', headlineLabel: 'α₁',
+    sanitize(s) {
+      s.startNoise = U.clamp(Number(s.startNoise) || 0.35, 0.02, 1);
+    },
+    surprise(rng) {
+      return {
+        a0: rng.range(-0.2, 0.8), a1: rng.range(0.6, 3.2), beta: rng.range(0.6, 1.6),
+        sigma: rng.range(0.25, 1.4), nu: rng.range(0.1, 0.8), lambda: rng.range(0.4, 1.5),
+        noise: rng.range(0.01, 0.09), startNoise: rng.range(0.15, 0.7),
+        view: rng.pick(['density', 'density', 'heading', 'speed', 'both']),
+        streak: rng.range(0.2, 0.8), lo: 0, hi: rng.range(1.2, 2.6),
+        aspect: rng.pick(['1:1', '1:1', '5:4', '3:2', '16:9']),
+      };
+    },
+    create(host) {
+      const gl = G.createGL(host.canvas);
+      const noop = () => {};
+      const dead = msg => {
+        host.setStatus(msg); host.fault(msg);
+        return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
+      };
+      if (!gl) return dead('WebGL2 is not available in this browser');
+      const texType = gl.floatExt ? 'rgba32f' : 'rgba16f';
+      if (!gl.floatExt) gl.getExtension('EXT_color_buffer_half_float');
+      let stepPass, renderPass, reducePass, encodePass, splatPass;
+      try {
+        stepPass = new G.Pass(gl, STEP);
+        renderPass = new G.Pass(gl, RENDER_FS);
+        reducePass = new G.Pass(gl, REDUCE_FS);
+        encodePass = new G.Pass(gl, ENCODE_FS);
+        splatPass = new G.Pass(gl, G.GLSL.splatFS);
+      } catch (err) { console.error(err); return dead('Shader compilation failed on this GPU'); }
+
+      const RHO0 = 1, DX = 1;
+      let P = null, gw = 0, gh = 0, ramp = null, rampKey = '', reduceT = null, encT = null;
+      const redBuf = new Uint8Array(RED * RED * 4);
+      let raf = 0, chunkTimer = 0, stepCount = 0, nOff = 0;
+      let meanRho = 1, meanSpeed = 0, order = 0, gnf = null;
+
+      // Two bounds, both computed. The viscous term is diffusion on the 5-point stencil, whose symbol runs
+      // over [-8, 0], so an explicit step needs dt < 2/(8 nu / dx^2). The pressure term together with the
+      // continuity equation is a wave system of speed sqrt(sigma rho), which with the advection speed gives
+      // the usual Courant condition dt < dx/(|v| + c). The step is the smaller of the two, times a margin,
+      // because neither estimate sees the cubic saturation term.
+      // The largest self-propulsion the density field can reach, and the speed that goes with it. Density
+      // in a banded state runs to a few times the mean, so this is taken against that rather than against
+      // the mean, which would leave the bands themselves outside the bound that was computed for them.
+      function scales(s) {
+        const rhoPeak = Math.max(meanRho * 3, 1);
+        const alphaMax = Math.max(s.a0 + s.a1 * (rhoPeak / RHO0 - 1), 0.05);
+        const vEq = Math.sqrt(alphaMax / Math.max(s.beta, 1e-3));
+        return { alphaMax, vEq, vmax: 3 * vEq };
+      }
+      function bounds(s) {
+        const k = scales(s);
+        const dtVisc = 2 / Math.max(1e-6, 8 * s.nu / (DX * DX));
+        const c = Math.sqrt(Math.max(s.sigma * Math.max(meanRho, 0.1), 1e-9));
+        const speed = Math.max(meanSpeed, k.vEq, 0.2);
+        const dtCfl = DX / Math.max(1e-6, (1 + s.lambda) * speed + c);
+        // The cubic saturation is the term the linear estimates do not see, and at large speed it is the
+        // tightest of the three: linearising (alpha - beta v^2) v about the clamp gives a rate
+        // |alpha - 3 beta vmax^2|, and forward Euler needs twice its reciprocal.
+        const dtReact = 2 / Math.max(1e-6, Math.abs(k.alphaMax - 3 * s.beta * k.vmax * k.vmax));
+        return { dtVisc, dtCfl, dtReact, dt: Math.min(dtVisc, dtCfl, dtReact) * 0.8 };
+      }
+      const dtOf = s => bounds(s).dt * s.dtScale;
+
+      function sizeOf(s) {
+        const n = Number(s.grid) || 256, ar = ASPECTS[s.aspect] || 1;
+        return [n & ~1, Math.max(64, Math.round(n * ar)) & ~1];
+      }
+      function ensureGrid(s) {
+        const [W, H] = sizeOf(s);
+        if (P && gw === W && gh === H) return;
+        if (P) { P.dispose(); if (encT) encT.dispose(); }
+        P = new G.PingPong(gl, W, H, { type: texType, filter: 'nearest', wrap: 'repeat' });
+        gw = W; gh = H;
+        if (reduceT) reduceT.dispose();
+        reduceT = new G.Target(gl, RED, RED, { type: 'rgba8', filter: 'nearest' });
+        encT = new G.Target(gl, W, H, { type: 'rgba8', filter: 'nearest' });
+      }
+      function upload(target, f32) {
+        gl.bindTexture(gl.TEXTURE_2D, target.tex);
+        if (texType === 'rgba32f') gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.FLOAT, f32);
+        else gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.HALF_FLOAT, toHalf(f32));
+      }
+      function ensureRamp(s) {
+        const key = (s.bg || '') + '|' + (s.palette || []).join(',');
+        if (ramp && rampKey === key) return;
+        if (ramp) ramp.dispose();
+        ramp = G.rampTexture(gl, s.palette, s.bg); rampKey = key;
+      }
+      function seedField(s) {
+        const rng = U.makeRng(s.seed + '/tonertu');
+        const data = new Float32Array(gw * gh * 4);
+        for (let i = 0; i < gw * gh; i++) {
+          const th = rng() * U.TAU, sp = s.startNoise * rng();
+          data[i * 4] = RHO0 * (1 + (rng() * 2 - 1) * s.startNoise * 0.4);
+          data[i * 4 + 1] = sp * Math.cos(th);
+          data[i * 4 + 2] = sp * Math.sin(th);
+          data[i * 4 + 3] = 1;
+        }
+        return data;
+      }
+      function step(n) {
+        const s = host.getState();
+        const dt = dtOf(s);
+        for (let i = 0; i < n; i++) {
+          stepPass.draw(P.write, {
+            u_f: P.read, u_res: [gw, gh], u_dt: dt, u_dx: DX,
+            u_a0: s.a0, u_a1: s.a1, u_beta: s.beta, u_sigma: s.sigma, u_nu: s.nu, u_lambda: s.lambda,
+            u_rho0: RHO0, u_noise: s.noise, u_step: (stepCount + i) * 1.17, u_nOff: nOff,
+            u_vmax: scales(s).vmax,
+          });
+          P.swap();
+        }
+        stepCount += n;
+      }
+      function render(target) {
+        const s = host.getState();
+        ensureRamp(s);
+        renderPass.draw(target || null, {
+          u_f: P.read, u_ramp: ramp, u_res: [gw, gh],
+          u_view: { int: { density: 0, speed: 1, heading: 2, both: 3 }[s.view] || 0 },
+          u_lo: s.lo, u_hi: s.hi, u_exposure: s.exposure, u_gamma: s.gamma, u_contrast: s.contrast,
+          u_grain: s.grain, u_rho0: RHO0, u_streak: s.streak, u_bg: hexToRgb01(s.bg),
+        });
+      }
+      function measure() {
+        reducePass.draw(reduceT, { u_f: P.read, u_res: [gw, gh], u_block: [gw / RED, gh / RED], u_rho0: RHO0 });
+        gl.bindFramebuffer(gl.FRAMEBUFFER, reduceT.fbo);
+        gl.readPixels(0, 0, RED, RED, gl.RGBA, gl.UNSIGNED_BYTE, redBuf);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        let sr = 0, sv = 0, sd = 0;
+        for (let i = 0; i < RED * RED; i++) {
+          sr += (redBuf[i * 4] / 255) * 4;
+          sv += (redBuf[i * 4 + 1] / 255) * 4;
+          sd += (redBuf[i * 4 + 2] / 255) * 4;
+        }
+        meanRho = (sr / (RED * RED)) * RHO0;
+        meanSpeed = sv / (RED * RED);
+        order = meanSpeed > 1e-6 ? Math.min(1, (sd / (RED * RED)) / meanSpeed) : 0;
+      }
+
+      // Giant number fluctuations. Count the field in square boxes of several sizes; for each size take the
+      // mean count and the standard deviation across boxes, then fit log(deltaN) against log(N). An
+      // equilibrium system with short-ranged correlations gives one half, by the central limit theorem.
+      // Anything reliably above that is the claim this tab is making, and it is measured here rather than
+      // asserted, from the density on the plate.
+      function fitGNF() {
+        gnf = null;
+        if (!P || !encT) return;
+        encodePass.draw(encT, { u_f: P.read, u_rho0: RHO0 });
+        const bytes = new Uint8Array(gw * gh * 4);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, encT.fbo);
+        gl.readPixels(0, 0, gw, gh, gl.RGBA, gl.UNSIGNED_BYTE, bytes);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        const rho = new Float64Array(gw * gh);
+        for (let i = 0; i < gw * gh; i++) rho[i] = (bytes[i * 4] / 255) * 4 * RHO0;
+        const pts = [];
+        for (let b = 4; b <= Math.min(gw, gh) / 4; b *= 2) {
+          const nx = Math.floor(gw / b), ny = Math.floor(gh / b);
+          if (nx * ny < 16) break;
+          let sum = 0, sum2 = 0, cnt = 0;
+          for (let by = 0; by < ny; by++) for (let bx = 0; bx < nx; bx++) {
+            let N = 0;
+            for (let y = 0; y < b; y++) { const row = (by * b + y) * gw + bx * b; for (let x = 0; x < b; x++) N += rho[row + x]; }
+            sum += N; sum2 += N * N; cnt++;
+          }
+          const m = sum / cnt, v = Math.max(0, sum2 / cnt - m * m);
+          if (m > 1e-6 && v > 0) pts.push([Math.log(m), Math.log(Math.sqrt(v))]);
+        }
+        if (pts.length < 3) return;
+        let sx = 0, sy = 0, sxx = 0, sxy = 0;
+        for (const [x, y] of pts) { sx += x; sy += y; sxx += x * x; sxy += x * y; }
+        const n = pts.length, den = n * sxx - sx * sx;
+        if (Math.abs(den) > 1e-9) gnf = (n * sxy - sx * sy) / den;
+      }
+
+      function status(extra) {
+        const s = host.getState();
+        const b = bounds(s);
+        host.setStatus(
+          '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
+          '<span>order <b>' + order.toFixed(2) + '</b> · mean speed ' + meanSpeed.toFixed(2) + '</span>' +
+          '<span>step bound <b>' + b.dt.toFixed(3) + '</b> (' +
+            (b.dtReact <= b.dtCfl && b.dtReact <= b.dtVisc ? 'saturation' : b.dtCfl <= b.dtVisc ? 'Courant' : 'viscous') +
+            ') · using ' + dtOf(s).toFixed(3) + '</span>' +
+          (gnf !== null ? '<span>ΔN ~ N<sup>' + gnf.toFixed(2) + '</sup> (equilibrium: 0.50)</span>' : '') +
+          '<span>step <b>' + stepCount.toLocaleString() + '</b></span>' +
+          (extra ? '<span>' + extra + '</span>' : '')
+        );
+      }
+      function stop() { cancelAnimationFrame(raf); raf = 0; clearTimeout(chunkTimer); chunkTimer = 0; }
+      function frame() {
+        raf = 0;
+        const s = host.getState();
+        step(s.steps); render();
+        if (stepCount % 64 < s.steps) { measure(); status(); }
+        if (stepCount % 512 < s.steps) fitGNF();
+        raf = requestAnimationFrame(frame);
+      }
+      function startLoop() {
+        stop();
+        const s = host.getState();
+        if (s.running && !host.reducedMotion()) raf = requestAnimationFrame(frame);
+        else { measure(); fitGNF(); status(!s.running ? 'paused' : ''); render(); }
+      }
+      function burst(total) {
+        stop();
+        let left = total;
+        (function chunk() {
+          const n = Math.min(60, left); left -= n;
+          step(n); render();
+          if (left > 0) chunkTimer = setTimeout(chunk, 0);
+          else { measure(); fitGNF(); status(); startLoop(); }
+        })();
+      }
+
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        regenerate() {
+          stop(); stepCount = 0; gnf = null;
+          const s = host.getState();
+          nOff = U.makeRng(s.seed + '/tonertu/off').range(0, 900);
+          ensureGrid(s);
+          meanRho = RHO0; meanSpeed = 0.2;
+          upload(P.read, seedField(s));
+          const warm = host.reducedMotion() ? Math.min(s.warmup, 400) : s.warmup;
+          if (warm > 0) burst(warm);
+          else { render(); measure(); status(); startLoop(); }
+        },
+        repaint() { if (P) render(); },
+        live(key) { if (key === 'running') startLoop(); else if (!raf) startLoop(); },
+        resize() { if (P) render(); },
+        pause() { stop(); },
+        resume() { if (P) { render(); startLoop(); } },
+        action(key) { if (key === 'burst') burst(1500); },
+        disturb(p) {
+          if (!P) return;
+          splatPass.draw(P.write, {
+            u_src: P.read, u_pos: [p.x, p.yGL],
+            u_add: [0.8, (p.dx || 0) * 6, -(p.dy || 0) * 6, 0], u_rad: 0.05, u_amt: 1, u_mode: { int: 1 },
+          });
+          P.swap(); render(); startLoop();
+        },
+        async exportPNG(w, h) {
+          if (!P) throw new Error('nothing to export');
+          const max = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+          if (w > max || h > max) throw new Error('larger than this GPU allows (' + max + ' px)');
+          const T = new G.Target(gl, w, h, { type: 'rgba8' });
+          render(T);
+          const px = new Uint8Array(w * h * 4);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, T.fbo);
+          gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, px);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+          T.dispose();
+          const c = document.createElement('canvas'); c.width = w; c.height = h;
+          const ctx = c.getContext('2d'), img = ctx.createImageData(w, h);
+          for (let y = 0; y < h; y++) img.data.set(px.subarray((h - 1 - y) * w * 4, (h - y) * w * 4), y * w * 4);
+          ctx.putImageData(img, 0, 0);
+          return U.toBlob(c);
+        },
+      };
+    },
+  });
+})();
+</script>
+<script>
+/* modules/hyperbolic.js */
+/* GENChase — reaction-diffusion on a {p,q} hyperbolic tiling, drawn in the Poincare disk. */
+(function () {
+  'use strict';
+  const U = Studio.util;
+  const TAU = U.TAU, PI = Math.PI;
+  const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
+  const ASPECT = 1;
+  const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2), f3 = v => v.toFixed(3), f4 = v => v.toFixed(4);
+  const pct = v => Math.round(v * 100) + '%';
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
+    Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const Pal = Studio.PALETTES;
+  const pre = (label, p, pal) => ({ label, p, palette: pal });
+
+  // The {p,q} tiling exists in the hyperbolic plane exactly when 1/p + 1/q < 1/2. At equality it is
+  // Euclidean ({3,6}, {4,4}, {6,3}) and above it spherical, and in both of those cases the construction
+  // below does not terminate the way it does here, so the schema only offers hyperbolic pairs.
+  const isHyperbolic = (p, q) => 1 / p + 1 / q < 0.5 - 1e-9;
+
+  // Circumradius of the central {p,q} cell in the Poincare disk. Everything else follows from reflecting
+  // this one polygon, so if this is wrong the tiling is wrong everywhere and it will not close up around
+  // a vertex. The status line checks exactly that: it counts how many cells meet at each interior vertex
+  // and reports the fraction where the answer is q.
+  function circumradius(p, q) {
+    const a = PI / p, b = PI / q;
+    const num = Math.cos(a + b), den = Math.cos(a - b);
+    if (!(den > 1e-12) || num <= 0) return 0;
+    return Math.sqrt(num / den);
+  }
+
+  // Reflection across the geodesic through two points of the disk. A geodesic is an arc of the circle
+  // orthogonal to the unit circle, and reflection across it is inversion in that circle. Its centre C
+  // satisfies |C - a| = |C - b| = R together with |C|^2 = 1 + R^2, and eliminating R turns both into
+  // linear equations: 2 C . a = 1 + |a|^2 and 2 C . b = 1 + |b|^2. When a and b lie on a diameter the
+  // system is singular, because the geodesic is that diameter and the reflection is an ordinary Euclidean
+  // one; that case has to be handled or the central cell of an even-sided tiling comes out as NaN.
+  function geodesic(a, b) {
+    const d = 2 * (a[0] * b[1] - a[1] * b[0]);
+    const ra = 1 + a[0] * a[0] + a[1] * a[1];
+    const rb = 1 + b[0] * b[0] + b[1] * b[1];
+    if (Math.abs(d) < 1e-12) {
+      // a, b and the origin are collinear: reflect in the line through them
+      const len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+      return { line: true, nx: -(b[1] - a[1]) / len, ny: (b[0] - a[0]) / len };
+    }
+    const cx = (ra * b[1] - rb * a[1]) / d;
+    const cy = (rb * a[0] - ra * b[0]) / d;
+    const r2 = cx * cx + cy * cy - 1;
+    if (!(r2 > 1e-14)) {
+      const len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+      return { line: true, nx: -(b[1] - a[1]) / len, ny: (b[0] - a[0]) / len };
+    }
+    return { line: false, cx, cy, r2, r: Math.sqrt(r2) };
+  }
+  function reflect(g, z) {
+    if (g.line) {
+      const d = 2 * (z[0] * g.nx + z[1] * g.ny);
+      return [z[0] - d * g.nx, z[1] - d * g.ny];
+    }
+    const dx = z[0] - g.cx, dy = z[1] - g.cy;
+    const dd = dx * dx + dy * dy;
+    if (dd < 1e-18) return [z[0], z[1]];
+    const k = g.r2 / dd;
+    return [g.cx + dx * k, g.cy + dy * k];
+  }
+
+  /* ---------- Hyperbolic Turing ---------- */
+  Studio.register({
+    id: 'hyperbolic',
+    name: 'Hyperbolic Turing',
+    tab: 'Curved',
+    subtitle: 'reaction-diffusion on a {p,q} tiling · Poincare disk',
+    order: 38,
+    equation: '∂u/∂t = D_u Δ_G u − uv² + F(1−u),   ∂v/∂t = D_v Δ_G v + uv² − (F+k)v,   Δ_G u_i = Σ_{j∼i}(u_j − u_i)',
+    credit: "The chemistry is the Gray-Scott model, Peter Gray and Stephen Scott, Chemical Engineering Science 38, 29 (1983) and 39, 1087 (1984), on Alan Turing's mechanism, 'The chemical basis of morphogenesis', Phil. Trans. R. Soc. B 237, 37 (1952). The substrate is the regular hyperbolic tessellation {p,q}, in the disk model Henri Poincare introduced in 1882; the construction by reflection in the sides of a fundamental polygon is standard, and the drawing convention of geodesics as circular arcs orthogonal to the boundary is what makes the model conformal. The Laplacian used is the degree-normalised graph Laplacian, which on a tiling of equal-area cells is the natural discretisation and, unlike the combinatorial one, means the same thing whatever p is.",
+    blurb: 'Every pattern-forming system in this studio runs on a flat sheet, where the amount of space at distance r from a point grows like r. In the hyperbolic plane it grows like e^r, and nothing about a Turing pattern survives that unchanged. There is exponentially more room further out, so a pattern with a preferred wavelength cannot simply repeat: it has to keep branching to fill the space, and every cell is effectively near a boundary because almost all of the plane is. The tiling is built by taking one regular p-gon with q of them around each vertex and reflecting it in its own sides, forever; the Poincare disk squeezes all of that into a finite picture, which is why the cells shrink toward the edge. They are all the same size. It is the picture that is distorted, and the chemistry does not know.',
+    schema: [
+      { group: 'Tiling', key: 'pq', label: 'Tiling {p,q}', type: 'seg', kind: GEOM, wrap: true,
+        options: [['7,3', '{7,3}'], ['5,4', '{5,4}'], ['4,5', '{4,5}'], ['6,4', '{6,4}'], ['3,7', '{3,7}'], ['8,3', '{8,3}']],
+        hint: 'p sides per cell, q cells around each vertex. A tiling is hyperbolic exactly when 1/p + 1/q is less than a half; at equality it is the flat plane and the picture would be an ordinary lattice.' },
+      RANGE('Tiling', 'rmax', 'Reach', GEOM, 0.8, 0.999, 0.002, f3, { hint: 'How far toward the boundary of the disk to build. Euclidean radius is a badly compressed ruler here: the first ring of cells already sits near 0.5 and the fourth near 0.93, so reaching a few more rings means going to three nines, and the cell cap below is what actually decides where it stops.' }),
+      RANGE('Tiling', 'maxCells', 'Cell cap', GEOM, 400, 12000, 100, String),
+      RANGE('Tiling', 'spin', 'Rotation', PAINT, 0, 360, 5, v => v + '°'),
+      RANGE('Chemistry', 'F', 'Feed F', LIVE, 0.005, 0.11, 0.001, f3),
+      RANGE('Chemistry', 'k', 'Kill k', LIVE, 0.03, 0.075, 0.0005, f4),
+      RANGE('Chemistry', 'Du', 'Diffusion Dᵤ', LIVE, 0.1, 1.4, 0.02, f2),
+      RANGE('Chemistry', 'Dv', 'Diffusion D_v', LIVE, 0.05, 0.7, 0.01, f2, {
+        hint: 'Turing needs the inhibitor to outrun the activator, which here means Dᵤ above D_v by a factor of two or so. Bring them together and the pattern dissolves. The operator is normalised by the number of neighbours, so these numbers mean the same thing on every tiling offered.' }),
+      RANGE('Chemistry', 'seedCells', 'Seed sites', GEOM, 1, 40, 1, String),
+      RANGE('Chemistry', 'seedRadius', 'Seed radius', GEOM, 1, 6, 1, String, {
+        hint: 'In cells. Below two the seed diffuses away before the reaction can take hold and the field relaxes back to nothing at all.' }),
+      { group: 'Simulation', key: 'running', label: 'Running', type: 'toggle', kind: LIVE },
+      RANGE('Simulation', 'steps', 'Steps per frame', LIVE, 1, 40, 1, String),
+      RANGE('Simulation', 'dtScale', 'Step fraction', LIVE, 0.1, 1, 0.02, f2),
+      RANGE('Simulation', 'warmup', 'Warm-up steps', GEOM, 0, 20000, 250, String),
+      { group: 'Simulation', key: 'burst', label: 'Run 3,000 steps', type: 'action' },
+      { group: 'Picture', key: 'view', label: 'Draw', type: 'seg', kind: PAINT, wrap: true,
+        options: [['v', 'Inhibitor'], ['u', 'Activator'], ['ring', 'Distance from centre'], ['plain', 'The tiling']] },
+      { group: 'Picture', key: 'arcs', label: 'Geodesic edges', type: 'toggle', kind: PAINT,
+        hint: 'On, each cell wall is the circular arc that a straight line actually is in this model. Off, walls are chords, which is faster and wrong in a way that only shows on the largest cells.' },
+      RANGE('Picture', 'wall', 'Wall weight', PAINT, 0, 3, 0.1, f1),
+      RANGE('Picture', 'lo', 'Black point', PAINT, 0, 0.6, 0.01, f2),
+      RANGE('Picture', 'hi', 'White point', PAINT, 0.05, 1, 0.01, f2),
+      RANGE('Picture', 'margin', 'Margin', PAINT, 0, 0.15, 0.01, f2),
+      RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.6, 0.02, pct),
+    ],
+    defaults: {
+      pq: '7,3', rmax: 0.996, maxCells: 3500, spin: 0,
+      F: 0.037, k: 0.06, Du: 0.64, Dv: 0.32, seedCells: 8, seedRadius: 3,
+      running: true, steps: 12, dtScale: 0.5, warmup: 9000,
+      view: 'v', arcs: true, wall: 0.6, lo: 0.06, hi: 0.3, margin: 0.04, grain: 0.03,
+      seed: 'poincare-1882',
+    },
+    presets: {
+      spots: pre('Spots on {7,3}', { pq: '7,3', F: 0.037, k: 0.06, view: 'v', arcs: true, wall: 0.5, lo: 0.06, hi: 0.3, rmax: 0.996, maxCells: 3500 }, Pal.nightshade),
+      worms: pre('Worms on {5,4}', { pq: '5,4', F: 0.03, k: 0.056, view: 'v', arcs: true, wall: 0.4, lo: 0.06, hi: 0.3, rmax: 0.996, maxCells: 3000 }, Pal.verdigris),
+      mitosis: pre('Mitosis on {4,5}', { pq: '4,5', F: 0.028, k: 0.062, view: 'v', arcs: true, wall: 0.4, lo: 0.06, hi: 0.3, rmax: 0.996, maxCells: 3000 }, Pal.ember),
+      coral: pre('Coral on {8,3}', { pq: '8,3', F: 0.055, k: 0.062, view: 'v', arcs: true, wall: 0.5, lo: 0.06, hi: 0.3, rmax: 0.996, maxCells: 3500 }, Pal.harbor),
+      triangles: pre('{3,7}, and very many cells', { pq: '3,7', F: 0.037, k: 0.06, view: 'v', arcs: false, wall: 0.2, lo: 0.06, hi: 0.3, rmax: 0.997, maxCells: 6000 }, Pal.thermal),
+      rings: pre('Distance from the centre', { pq: '7,3', view: 'ring', arcs: true, wall: 0.8, rmax: 0.996, maxCells: 3500 }, Pal.glacier),
+      tiling: pre('The tiling alone', { pq: '5,4', view: 'plain', arcs: true, wall: 1.4, rmax: 0.996, maxCells: 3500 }, Pal.graphite),
+    },
+    hints: {
+      Tiling: 'The tiling is built by reflecting one cell in its own sides. The status line reports what fraction of interior vertices have exactly q cells around them, which is the check that the construction closed up rather than drifted.',
+      Chemistry: 'The operator is the graph Laplacian: the sum of a cell’s neighbours minus its own value times how many it has. On a regular tiling that is the natural discretisation, and it is what makes the chemistry blind to the fact that the picture is distorted.',
+    },
+    palette: true, defaultPalette: 'nightshade',
+    headline: 'k', headlineLabel: 'kill',
+    sanitize(s) {
+      s.maxCells = U.clamp(Math.round(Number(s.maxCells) || 4000), 400, 12000);
+      s.rmax = U.clamp(Number(s.rmax) || 0.995, 0.8, 0.999);
+    },
+    surprise(rng) {
+      return {
+        pq: rng.pick(['7,3', '5,4', '4,5', '6,4', '8,3', '3,7']),
+        F: rng.range(0.02, 0.07), k: rng.range(0.05, 0.068),
+        Du: rng.range(0.4, 0.9), Dv: rng.range(0.2, 0.45),
+        seedCells: rng.int(3, 20), seedRadius: rng.int(2, 5),
+        view: rng.pick(['v', 'v', 'v', 'u', 'ring']),
+        arcs: rng() < 0.85, wall: rng.range(0.2, 1.2),
+        rmax: rng.pick([0.99, 0.995, 0.997]), maxCells: rng.pick([1500, 2500, 4000]),
+        spin: rng.int(0, 71) * 5,
+      };
+    },
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d');
+      let cells = null, nbr = null, nbrOff = null, gen = null;
+      let u = null, v = null, u2 = null, v2 = null;
+      let timer = 0, building = false, stepNo = 0, vertexOk = null, maxGen = 0, vMin = 0, vMax = 0;
+
+      function stop() { clearTimeout(timer); clearTimeout(timer); }
+
+      /* ---- build the tiling ---- */
+      function buildTiling(s) {
+        const [p, q] = String(s.pq).split(',').map(Number);
+        if (!isHyperbolic(p, q)) return null;
+        const R = circumradius(p, q);
+        if (!(R > 0)) return null;
+        const verts = [];
+        for (let k = 0; k < p; k++) verts.push([R * Math.cos(TAU * k / p), R * Math.sin(TAU * k / p)]);
+        const out = [{ v: verts, c: [0, 0], g: 0 }];
+        // Dedup by centroid. Cells shrink toward the boundary as (1 - |c|^2), so a fixed tolerance either
+        // merges distinct outer cells or fails to merge the two arrivals at the same inner cell. Scaling
+        // the tolerance by that same factor is what makes one rule work across the whole disk.
+        const buckets = new Map();
+        const key = c => Math.round(c[0] * 500) + ',' + Math.round(c[1] * 500);
+        const put = c => {
+          const k0 = key(c);
+          let arr = buckets.get(k0);
+          if (!arr) { arr = []; buckets.set(k0, arr); }
+          arr.push(c);
+        };
+        const seen = c => {
+          const bx = Math.round(c[0] * 500), by = Math.round(c[1] * 500);
+          const tol = 3e-3 * Math.max(1e-5, 1 - c[0] * c[0] - c[1] * c[1]);
+          for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
+            const arr = buckets.get((bx + dx) + ',' + (by + dy));
+            if (!arr) continue;
+            for (const o of arr) if (Math.hypot(o[0] - c[0], o[1] - c[1]) < tol) return true;
+          }
+          return false;
+        };
+        put([0, 0]);
+        const rmax2 = s.rmax * s.rmax;
+        for (let head = 0; head < out.length && out.length < s.maxCells; head++) {
+          const cell = out[head];
+          for (let e = 0; e < p; e++) {
+            if (out.length >= s.maxCells) break;
+            const a = cell.v[e], b = cell.v[(e + 1) % p];
+            const g = geodesic(a, b);
+            const nv = new Array(p);
+            let cx = 0, cy = 0, ok = true;
+            for (let i = 0; i < p; i++) {
+              const z = reflect(g, cell.v[i]);
+              if (!isFinite(z[0]) || !isFinite(z[1])) { ok = false; break; }
+              nv[i] = z; cx += z[0]; cy += z[1];
+            }
+            if (!ok) continue;
+            cx /= p; cy /= p;
+            if (cx * cx + cy * cy > rmax2) continue;
+            if (seen([cx, cy])) continue;
+            put([cx, cy]);
+            out.push({ v: nv, c: [cx, cy], g: cell.g + 1 });
+          }
+        }
+        return { p, q, R, list: out };
+      }
+
+      // Adjacency from shared vertices: two cells are neighbours when they have two vertices in common,
+      // which is one whole edge. Matching on the edge midpoint rather than on the vertices themselves
+      // avoids having to decide which of two floating point vertices is "the same" one twice over.
+      function buildAdjacency(T) {
+        const list = T.list, p = T.p, n = list.length;
+        const edges = new Map();
+        const ekey = (a, b) => {
+          const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+          return Math.round(mx * 20000) + ',' + Math.round(my * 20000);
+        };
+        for (let i = 0; i < n; i++) {
+          const cv = list[i].v;
+          for (let e = 0; e < p; e++) {
+            const k = ekey(cv[e], cv[(e + 1) % p]);
+            let arr = edges.get(k);
+            if (!arr) { arr = []; edges.set(k, arr); }
+            arr.push(i);
+          }
+        }
+        const adj = new Array(n);
+        for (let i = 0; i < n; i++) adj[i] = [];
+        for (const arr of edges.values()) {
+          if (arr.length !== 2) continue;
+          adj[arr[0]].push(arr[1]);
+          adj[arr[1]].push(arr[0]);
+        }
+        nbrOff = new Int32Array(n + 1);
+        let tot = 0;
+        for (let i = 0; i < n; i++) { nbrOff[i] = tot; tot += adj[i].length; }
+        nbrOff[n] = tot;
+        nbr = new Int32Array(tot);
+        let w = 0;
+        for (let i = 0; i < n; i++) for (const j of adj[i]) nbr[w++] = j;
+
+        // Does the tiling actually close up? At an interior vertex of a {p,q} tiling exactly q cells meet.
+        // Counting them is the one check that catches a wrong circumradius, a bad reflection or a dedup
+        // tolerance that merged cells it should not have, none of which look wrong in the picture.
+        const vmap = new Map();
+        for (let i = 0; i < n; i++) for (const z of list[i].v) {
+          const k = Math.round(z[0] * 20000) + ',' + Math.round(z[1] * 20000);
+          vmap.set(k, (vmap.get(k) || 0) + 1);
+        }
+        let good = 0, tested = 0;
+        const inner = s2 => s2 < (0.75 * 0.75);
+        for (const [k, cnt] of vmap) {
+          const parts = k.split(',');
+          const x = +parts[0] / 20000, y = +parts[1] / 20000;
+          if (!inner(x * x + y * y)) continue;
+          tested++;
+          if (cnt === T.q) good++;
+        }
+        vertexOk = tested > 0 ? good / tested : null;
+      }
+
+      /* ---- chemistry ---- */
+      // The graph Laplacian has eigenvalues in [-2 deg, 0] on a regular graph of degree deg, so an
+      // explicit step needs dt below 2 over the largest of (D * 2 deg) plus whatever the reaction
+      // contributes. Past it the field fills with the cell-scale checkerboard, which at this cell size
+      // reads as texture rather than as the failure it is.
+      function maxDt(s) {
+        const diff = Math.max(s.Du, s.Dv) * 2;
+        const react = 3;
+        return 2 / Math.max(1e-6, diff + react);
+      }
+      const dtOf = s => maxDt(s) * s.dtScale;
+
+      // Seeds are balls of cells, not single cells. A one-cell seed with its immediate neighbours does not
+      // survive: diffusion spreads it below the threshold where u v^2 can beat (F + k) v before the
+      // reaction has anything to work with, and the whole field relaxes silently back to u = 1, v = 0.
+      // The plate then shows a perfectly good tiling with no chemistry on it, which looks like a design
+      // choice rather than a dead simulation. A ball of radius two or more grows.
+      function ball(i, radius, mark) {
+        const seenSet = new Set([i]);
+        let frontier = [i];
+        for (let d = 0; d < radius; d++) {
+          const next = [];
+          for (const c of frontier) for (let m = nbrOff[c]; m < nbrOff[c + 1]; m++) {
+            const j = nbr[m];
+            if (seenSet.has(j)) continue;
+            seenSet.add(j); next.push(j);
+          }
+          frontier = next;
+        }
+        for (const c of seenSet) mark(c);
+      }
+      function seedChem(s, T) {
+        const n = T.list.length;
+        u = new Float32Array(n).fill(1);
+        v = new Float32Array(n).fill(0);
+        u2 = new Float32Array(n); v2 = new Float32Array(n);
+        const rng = U.makeRng(s.seed + '/hyperbolic');
+        // Seeds are spread across rings, not drawn uniformly from the cell list. In hyperbolic space the
+        // number of cells grows exponentially with the ring, so almost every cell is in the outermost one
+        // and a uniform draw puts every seed against the boundary: the first version did exactly that and
+        // produced a plate with a ring of spots around an empty middle. Picking a ring first and then a
+        // cell within it gives the pattern somewhere to start at every scale, which in this model is what
+        // self-similar detail looks like.
+        const byGen = [];
+        for (let i = 0; i < n; i++) { const g = gen[i]; (byGen[g] || (byGen[g] = [])).push(i); }
+        const rings = byGen.filter(Boolean);
+        ball(0, s.seedRadius, c => { u[c] = 0.5; v[c] = 0.25; });
+        for (let k = 0; k < s.seedCells; k++) {
+          const ring = rings[Math.min(rings.length - 1, Math.floor(rng() * rings.length))];
+          const i = ring[Math.min(ring.length - 1, Math.floor(rng() * ring.length))];
+          ball(i, s.seedRadius, c => { u[c] = 0.5; v[c] = 0.25; });
+        }
+      }
+      function stepChem(s, n) {
+        const N = u.length, dt = dtOf(s);
+        for (let it = 0; it < n; it++) {
+          for (let i = 0; i < N; i++) {
+            const a = nbrOff[i], b = nbrOff[i + 1];
+            let su = 0, sv = 0;
+            for (let m = a; m < b; m++) { su += u[nbr[m]]; sv += v[nbr[m]]; }
+            const deg = b - a;
+            // Degree-normalised Laplacian: the average of the neighbours minus the cell, not the sum.
+            // The combinatorial version makes the diffusion coefficient mean something different on every
+            // tiling, because a {3,7} cell has three neighbours and an {8,3} cell has eight, so the same
+            // F and k give a pattern on one and a washed-out gradient on the next. Normalising also puts
+            // the operator's spectrum in [-2, 0] regardless of p, which is what lets one step bound and
+            // one set of Gray-Scott coefficients work across all of them.
+            const inv = deg > 0 ? 1 / deg : 0;
+            const lu = (su - deg * u[i]) * inv, lv = (sv - deg * v[i]) * inv;
+            const uv2 = u[i] * v[i] * v[i];
+            u2[i] = u[i] + dt * (s.Du * lu - uv2 + s.F * (1 - u[i]));
+            v2[i] = v[i] + dt * (s.Dv * lv + uv2 - (s.F + s.k) * v[i]);
+          }
+          const tu = u; u = u2; u2 = tu;
+          const tv = v; v = v2; v2 = tv;
+        }
+        stepNo += n;
+        vMin = Infinity; vMax = -Infinity;
+        for (let i = 0; i < N; i++) { if (v[i] < vMin) vMin = v[i]; if (v[i] > vMax) vMax = v[i]; }
+      }
+
+      let T0 = null;
+
+      /* ---- picture ---- */
+      let lut = null, lutKey = '';
+      function ensureLut(s) {
+        const key = (s.palette || []).join(',');
+        if (lut && lutKey === key) return;
+        lut = U.makeRampLUT(s.palette, null, 256); lutKey = key;
+      }
+      function colorOf(s, i) {
+        let t;
+        if (s.view === 'u') t = (u[i] - s.lo) / Math.max(s.hi - s.lo, 1e-4);
+        else if (s.view === 'ring') t = maxGen > 0 ? gen[i] / maxGen : 0;
+        else if (s.view === 'plain') t = 0.55;
+        else t = (v[i] - s.lo) / Math.max(s.hi - s.lo, 1e-4);
+        const c = Math.max(0, Math.min(255, Math.round(U.clamp(t, 0, 1) * 255))) * 3;
+        return 'rgb(' + lut[c] + ',' + lut[c + 1] + ',' + lut[c + 2] + ')';
+      }
+
+      function cellPath(c2, cell, cx, cy, R, arcs) {
+        const p = cell.v.length;
+        const X = z => cx + z[0] * R, Y = z => cy - z[1] * R;
+        c2.beginPath();
+        c2.moveTo(X(cell.v[0]), Y(cell.v[0]));
+        for (let e = 0; e < p; e++) {
+          const a = cell.v[e], b = cell.v[(e + 1) % p];
+          if (!arcs) { c2.lineTo(X(b), Y(b)); continue; }
+          const g = geodesic(a, b);
+          if (g.line) { c2.lineTo(X(b), Y(b)); continue; }
+          // the geodesic arc, in screen coordinates; y is flipped, so the sweep direction flips with it
+          const gx = cx + g.cx * R, gy = cy - g.cy * R, gr = g.r * R;
+          let a0 = Math.atan2(Y(a) - gy, X(a) - gx);
+          let a1 = Math.atan2(Y(b) - gy, X(b) - gx);
+          let d = a1 - a0;
+          while (d > PI) d -= TAU;
+          while (d < -PI) d += TAU;
+          c2.arc(gx, gy, gr, a0, a0 + d, d < 0);
+        }
+        c2.closePath();
+      }
+
+      function paint(c2, W, H) {
+        const s = host.getState();
+        c2.fillStyle = s.bg; c2.fillRect(0, 0, W, H);
+        if (!T0 || !u) return;
+        ensureLut(s);
+        const R = Math.min(W, H) * (1 - 2 * s.margin) / 2;
+        const cx = W / 2, cy = H / 2;
+        const rot = s.spin * PI / 180;
+        const cs = Math.cos(rot), sn = Math.sin(rot);
+        const list = T0.list;
+        // rotation is applied to the disk, not to the tiling, so the chemistry is untouched by it
+        const rotated = rot === 0 ? list : list.map(cell => ({
+          v: cell.v.map(z => [z[0] * cs - z[1] * sn, z[0] * sn + z[1] * cs]),
+          c: cell.c, g: cell.g,
+        }));
+        c2.lineJoin = 'round';
+        const wallW = s.wall * Math.min(W, H) / 900;
+        for (let i = 0; i < rotated.length; i++) {
+          cellPath(c2, rotated[i], cx, cy, R, s.arcs);
+          c2.fillStyle = colorOf(s, i);
+          c2.fill();
+          if (wallW > 0) { c2.lineWidth = wallW; c2.strokeStyle = U.inkRgba(s.bg, 0.55); c2.stroke(); }
+        }
+        if (s.grain > 0 && !building) {
+          const img = c2.getImageData(0, 0, W, H), px = img.data;
+          const rng = U.makeRng(s.seed + '/grain'), amp = s.grain * 28;
+          for (let i = 0; i < px.length; i += 4) { const g2 = (rng() - 0.5) * amp; px[i] += g2; px[i + 1] += g2; px[i + 2] += g2; }
+          c2.putImageData(img, 0, 0);
+        }
+      }
+      function render() { paint(ctx, canvas.width, canvas.height); }
+
+      function status(extra) {
+        const s = host.getState();
+        const [p, q] = String(s.pq).split(',').map(Number);
+        host.setStatus(
+          '<span>tiling <b>{' + p + ',' + q + '}</b> · ' + (T0 ? T0.list.length.toLocaleString() : 0) + ' cells</span>' +
+          (vertexOk !== null ? '<span>vertices with exactly <b>' + q + '</b> cells: ' + Math.round(vertexOk * 100) + '%</span>' : '') +
+          '<span>rings <b>' + maxGen + '</b> deep</span>' +
+          (v ? '<span>inhibitor <b>' + vMin.toFixed(3) + ' … ' + vMax.toFixed(3) + '</b></span>' : '') +
+          '<span>step <b>' + stepNo.toLocaleString() + '</b> · dt ' + dtOf(s, p).toFixed(3) + '</span>' +
+          (extra ? '<span>' + extra + '</span>' : '')
+        );
+      }
+
+      let raf = 0;
+      function stopAll() { cancelAnimationFrame(raf); raf = 0; clearTimeout(timer); timer = 0; }
+      function frame() {
+        raf = 0;
+        const s = host.getState();
+        stepChem(s, s.steps);
+        render();
+        if (stepNo % 200 < s.steps) status();
+        raf = requestAnimationFrame(frame);
+      }
+      function startLoop() {
+        stopAll();
+        const s = host.getState();
+        if (s.running && !host.reducedMotion()) raf = requestAnimationFrame(frame);
+        else { render(); status(!s.running ? 'paused' : ''); }
+      }
+      function burst(total) {
+        stopAll(); building = true;
+        let left = total;
+        const s = host.getState();
+        (function chunk() {
+          const t0 = performance.now();
+          while (left > 0 && performance.now() - t0 < 40) { const n = Math.min(40, left); stepChem(s, n); left -= n; }
+          if (left > 0) { status('running'); timer = setTimeout(chunk, 0); }
+          else { building = false; render(); status(); startLoop(); }
+        })();
+      }
+
+      return {
+        aspect() { return ASPECT; },
+        regenerate() {
+          stopAll(); stepNo = 0; building = true;
+          const s = host.getState();
+          T0 = buildTiling(s);
+          if (!T0) { building = false; host.setStatus('that {p,q} is not hyperbolic'); host.fault('{p,q} must satisfy 1/p + 1/q < 1/2'); return; }
+          buildAdjacency(T0);
+          gen = new Int32Array(T0.list.length);
+          maxGen = 0;
+          for (let i = 0; i < T0.list.length; i++) { gen[i] = T0.list[i].g; if (gen[i] > maxGen) maxGen = gen[i]; }
+          seedChem(s, T0);
+          building = false;
+          render();
+          const warm = host.reducedMotion() ? Math.min(s.warmup, 800) : s.warmup;
+          if (warm > 0) burst(warm); else { status(); startLoop(); }
+        },
+        repaint() { if (T0) render(); },
+        live(key) { if (key === 'running') startLoop(); else if (!raf) startLoop(); },
+        resize() { if (T0) render(); },
+        pause() { stopAll(); },
+        resume() { if (T0) { render(); startLoop(); } },
+        action(key) { if (key === 'burst') burst(3000); },
+        // A poke lands on the nearest cell to the pointer, measured in the picture rather than in the
+        // hyperbolic metric, which is what the viewer is actually aiming at.
+        disturb(pt) {
+          if (!T0 || !u) return;
+          const s = host.getState();
+          const rot = -s.spin * PI / 180;
+          const x = (pt.x - 0.5) * 2 / (1 - 2 * s.margin);
+          const y = -(pt.y - 0.5) * 2 / (1 - 2 * s.margin);
+          const dx = x * Math.cos(rot) - y * Math.sin(rot), dy = x * Math.sin(rot) + y * Math.cos(rot);
+          let best = -1, bd = Infinity;
+          for (let i = 0; i < T0.list.length; i++) {
+            const c = T0.list[i].c;
+            const d = (c[0] - dx) * (c[0] - dx) + (c[1] - dy) * (c[1] - dy);
+            if (d < bd) { bd = d; best = i; }
+          }
+          if (best < 0) return;
+          u[best] = 0.5; v[best] = 0.25;
+          for (let m = nbrOff[best]; m < nbrOff[best + 1]; m++) { u[nbr[m]] = 0.5; v[nbr[m]] = 0.25; }
+          render(); startLoop();
+        },
+        async exportPNG(w, h) {
+          if (!T0) throw new Error('nothing to export');
+          const c = document.createElement('canvas'); c.width = w; c.height = h;
+          paint(c.getContext('2d'), w, h);
+          return U.toBlob(c);
+        },
+        // Cells are discrete marks with real geometry, so the vector file is the tiling itself: each cell
+        // a path of geodesic arcs, at the printer's resolution rather than at the canvas's.
+        exportSVG(w, h) {
+          if (!T0 || !u) throw new Error('nothing to export');
+          const s = host.getState();
+          ensureLut(s);
+          const R = Math.min(w, h) * (1 - 2 * s.margin) / 2, cx = w / 2, cy = h / 2;
+          const rot = s.spin * PI / 180, cs = Math.cos(rot), sn = Math.sin(rot);
+          const r2 = val => Math.round(val * 100) / 100;
+          const wallW = s.wall * Math.min(w, h) / 900;
+          let body = '';
+          for (let i = 0; i < T0.list.length; i++) {
+            const cell = T0.list[i];
+            const vs = cell.v.map(z => [z[0] * cs - z[1] * sn, z[0] * sn + z[1] * cs]);
+            const X = z => cx + z[0] * R, Y = z => cy - z[1] * R;
+            let d = 'M' + r2(X(vs[0])) + ' ' + r2(Y(vs[0]));
+            for (let e = 0; e < vs.length; e++) {
+              const a = vs[e], b = vs[(e + 1) % vs.length];
+              const g = s.arcs ? geodesic(a, b) : { line: true };
+              if (g.line) { d += 'L' + r2(X(b)) + ' ' + r2(Y(b)); continue; }
+              const gx = cx + g.cx * R, gy = cy - g.cy * R, gr = g.r * R;
+              let a0 = Math.atan2(Y(a) - gy, X(a) - gx), a1 = Math.atan2(Y(b) - gy, X(b) - gx);
+              let da = a1 - a0;
+              while (da > PI) da -= TAU;
+              while (da < -PI) da += TAU;
+              d += 'A' + r2(gr) + ' ' + r2(gr) + ' 0 0 ' + (da > 0 ? 1 : 0) + ' ' + r2(X(b)) + ' ' + r2(Y(b));
+            }
+            d += 'Z';
+            body += '<path d="' + d + '" fill="' + colorOf(s, i) + '"' +
+              (wallW > 0 ? ' stroke="' + U.inkFor(s.bg) + '" stroke-opacity="0.55" stroke-width="' + r2(wallW) + '"' : '') + '/>';
+          }
+          return U.svgBlob(w, h, s.bg, body);
         },
       };
     },
