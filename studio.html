@@ -23,11 +23,11 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GENChase — generative art from real simulations">
-<meta property="og:description" content="Sixty-one pattern-forming systems from physics, chemistry and biology, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution with its own governing equation printed alongside.">
+<meta property="og:description" content="Sixty-two pattern-forming systems from physics, chemistry and biology, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution with its own governing equation printed alongside.">
 <meta property="og:site_name" content="GENChase">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GENChase — generative art from real simulations">
-<meta name="twitter:description" content="Sixty-one pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<meta name="twitter:description" content="Sixty-two pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "A generative art studio built from real scientific simulations. Sixty-one techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution.",
+  "description": "A generative art studio built from real scientific simulations. Sixty-two techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution.",
   "featureList": [
     "Flow fields with collision-avoiding strokes",
     "Gray-Scott reaction-diffusion",
@@ -679,7 +679,7 @@
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>None of these algorithms are new. What is unusual is the assembly. Sixty-one unrelated sciences share one control surface,
+      <p>None of these algorithms are new. What is unusual is the assembly. Sixty-two unrelated sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -786,7 +786,7 @@
           universality classes, with the exponent fitted from the deposit on the plate. Kardar, Parisi and Zhang, 1986.</li>
         <li><b>Foam &amp; Grains</b> — the cellular Potts model coarsening into a froth, with the von Neumann–Mullins
           n−6 law measured on the plate. Graner and Glazier, 1992.</li>
-        <li><b>Vortex Lattice</b> — a rotating condensate answering with quantised vortices in an Abrikosov lattice,
+        <li><b>Vortex Lattice</b> — a rotating condensate answering with quantized vortices in an Abrikosov lattice,
           found from the phase winding rather than from the density. Gross and Pitaevskii, 1961.</li>
         <li><b>Flocking</b> — Toner–Tu hydrodynamics of a polar active fluid: clustering, active turbulence, and
           number fluctuations measured against the equilibrium square root. Toner and Tu, 1995.</li>
@@ -794,6 +794,8 @@
           Poincaré disk, where the area at distance r grows like e^r and a pattern cannot simply repeat.</li>
         <li><b>Spanning Trees</b> — a uniform spanning tree of the grid, sampled exactly by Wilson's algorithm, and the
           loop-erased random walk inside it whose scaling limit is SLE at κ = 2. Wilson, 1996.</li>
+        <li><b>Force Chains</b> — a soft-sphere granular packing settled under gravity, drawn as the network of contacts
+          that carries the load. Cundall and Strack, 1979; Majmudar and Behringer, 2005.</li>
       </ul>
 
       <h3>How it is built</h3>
@@ -974,7 +976,7 @@
   function inkFor(bg) { return isLight(bg) ? '#141008' : '#F5F0E8'; }
   function inkRgba(bg, a) { return isLight(bg) ? 'rgba(20,16,8,' + a + ')' : 'rgba(245,240,232,' + a + ')'; }
   // sRGB is a display encoding, not a measure of light: the byte 128 is about 21.6% of the light of
-  // the byte 255, not half of it. Mixing two colours by averaging their bytes therefore lands well
+  // the byte 255, not half of it. Mixing two colors by averaging their bytes therefore lands well
   // below the true midpoint, which is why a blend between two saturated hues goes dark and muddy
   // through the middle instead of passing through a bright mixture. Undo the encoding, mix the
   // light, put the encoding back. Constants are the sRGB transfer function (IEC 61966-2-1).
@@ -995,7 +997,7 @@
     const stops = (bg ? [bg] : []).concat(colors).map(hexToRgb);
     const n = stops.length;
     if (n === 1) return () => stops[0].slice();
-    // Interpolated in linear light, so the midpoint between two stops is the colour that actually
+    // Interpolated in linear light, so the midpoint between two stops is the color that actually
     // sits halfway between them rather than the one whose byte values do.
     const lin = stops.map(c => [srgbToLinear(c[0]), srgbToLinear(c[1]), srgbToLinear(c[2])]);
     return function (t) {
@@ -1196,7 +1198,7 @@
     // Catmull-Rom bicubic from 16 nearest taps, for showing a coarse simulation grid at print size.
     // A field of a few hundred cells magnifies to thousands of pixels; nearest sampling turns that into a
     // mosaic of hard squares and bilinear into mush. Catmull-Rom interpolates smoothly and keeps edges.
-    // Needs no filtering mode on the texture, so simulation passes that sample at exact texel centres are unaffected.
+    // Needs no filtering mode on the texture, so simulation passes that sample at exact texel centers are unaffected.
     bicubic: `float crW(float x){ x = abs(x);
       if (x < 1.0) return 1.5*x*x*x - 2.5*x*x + 1.0;
       if (x < 2.0) return -0.5*x*x*x + 2.5*x*x - 4.0*x + 2.0;
@@ -1242,7 +1244,7 @@ void main(){
     const lut = makeRampLUT(colors, bg, 256);
     const data = new Uint8Array(256 * 4);
     for (let i = 0; i < 256; i++) { data[i * 4] = lut[i * 3]; data[i * 4 + 1] = lut[i * 3 + 1]; data[i * 4 + 2] = lut[i * 3 + 2]; data[i * 4 + 3] = 255; }
-    // The 256 entries are correct now; the hardware still blends between neighbouring entries in
+    // The 256 entries are correct now; the hardware still blends between neighboring entries in
     // sRGB, but adjacent entries of a 256-step ramp are close enough that the residual is invisible.
     const t = new Target(gl, 256, 1, { type: 'rgba8', filter: 'linear', data });
     return t;
@@ -3925,7 +3927,7 @@ void main(){
     id: 'flow', name: 'Flow Field', subtitle: 'collision-avoiding strokes in a noise field · 1985', equation: 'theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta)', credit: "Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code.", order: 70,
     blurb: 'A flow field assigns a direction to every point of the plane, here from fractal Perlin noise (summed octaves, ' +
       'optionally warped through itself) or from analytic vortex, radial, wave and lane fields. Strokes are particles integrated ' +
-      'through that field one step at a time; a spatial hash lets each one stop the moment it would touch a neighbour, so the ' +
+      'through that field one step at a time; a spatial hash lets each one stop the moment it would touch a neighbor, so the ' +
       'picture packs itself like a river braids or a bundle of fibres settles. Widths come from a geometric series of size ' +
       'classes, and everything lives in a 1000-unit virtual canvas so a seed reproduces identically at any export size.',
     schema: SCHEMA,
@@ -3983,23 +3985,23 @@ void main(){
     { group: 'Colony', key: 'agents', label: 'Agents', type: 'range', kind: 'geom', min: 1000, max: 200000, step: 1000, fmt: v => v.toLocaleString() },
     { group: 'Colony', key: 'res', label: 'Grid resolution', type: 'seg', kind: 'geom', options: [['384', '384'], ['512', '512'], ['768', '768'], ['1024', '1024'], ['1536', '1536'], ['2048', '2048']] },
     { group: 'Colony', key: 'spawn', label: 'Spawn', type: 'seg', kind: 'geom', wrap: true,
-      options: [['random', 'Random'], ['disk', 'Centre disk'], ['ring', 'Ring'], ['edge', 'Edge band'], ['noise', 'Noise patches']] },
+      options: [['random', 'Random'], ['disk', 'Center disk'], ['ring', 'Ring'], ['edge', 'Edge band'], ['noise', 'Noise patches']] },
     { group: 'Colony', key: 'boundary', label: 'Boundary', type: 'seg', kind: 'live', options: [['wrap', 'Wrap (torus)'], ['bounce', 'Bounce']] },
     { group: 'Colony', key: 'crowd', label: 'One agent per cell', type: 'toggle', kind: 'live',
       hint: 'Jones\u2019 occupancy rule: an agent whose next cell is taken stays put and picks a new random heading. Dense colonies then push outward instead of collapsing.' },
     { group: 'Colony', key: 'aspect', label: 'Aspect', type: 'seg', kind: 'geom', options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
-    // ---- Behaviour
-    { group: 'Behaviour', key: 'sensorAngle', label: 'Sensor angle', type: 'range', kind: 'live', min: 5, max: 90, step: 1, fmt: deg },
-    { group: 'Behaviour', key: 'sensorDist', label: 'Sensor distance', type: 'range', kind: 'live', min: 1, max: 30, step: 0.5, fmt: v => f1(v) + ' cells' },
-    { group: 'Behaviour', key: 'rotAngle', label: 'Rotation angle', type: 'range', kind: 'live', min: 5, max: 90, step: 1, fmt: deg },
-    { group: 'Behaviour', key: 'stepSize', label: 'Step size', type: 'range', kind: 'live', min: 0.3, max: 3, step: 0.1, fmt: f1 },
-    { group: 'Behaviour', key: 'deposit', label: 'Deposit', type: 'range', kind: 'live', min: 0.5, max: 15, step: 0.5, fmt: f1 },
-    { group: 'Behaviour', key: 'decay', label: 'Decay', type: 'range', kind: 'live', min: 0.5, max: 15, step: 0.5, fmt: v => f1(v) + '%' },
-    { group: 'Behaviour', key: 'diffusion', label: 'Diffusion', type: 'range', kind: 'live', min: 0, max: 1, step: 0.05, fmt: f2 },
-    { group: 'Behaviour', key: 'speed', label: 'Speed', type: 'range', kind: 'live', min: 1, max: 8, step: 1, fmt: v => v + ' sub-steps',
+    // ---- Behavior
+    { group: 'Behavior', key: 'sensorAngle', label: 'Sensor angle', type: 'range', kind: 'live', min: 5, max: 90, step: 1, fmt: deg },
+    { group: 'Behavior', key: 'sensorDist', label: 'Sensor distance', type: 'range', kind: 'live', min: 1, max: 30, step: 0.5, fmt: v => f1(v) + ' cells' },
+    { group: 'Behavior', key: 'rotAngle', label: 'Rotation angle', type: 'range', kind: 'live', min: 5, max: 90, step: 1, fmt: deg },
+    { group: 'Behavior', key: 'stepSize', label: 'Step size', type: 'range', kind: 'live', min: 0.3, max: 3, step: 0.1, fmt: f1 },
+    { group: 'Behavior', key: 'deposit', label: 'Deposit', type: 'range', kind: 'live', min: 0.5, max: 15, step: 0.5, fmt: f1 },
+    { group: 'Behavior', key: 'decay', label: 'Decay', type: 'range', kind: 'live', min: 0.5, max: 15, step: 0.5, fmt: v => f1(v) + '%' },
+    { group: 'Behavior', key: 'diffusion', label: 'Diffusion', type: 'range', kind: 'live', min: 0, max: 1, step: 0.05, fmt: f2 },
+    { group: 'Behavior', key: 'speed', label: 'Speed', type: 'range', kind: 'live', min: 1, max: 8, step: 1, fmt: v => v + ' sub-steps',
       hint: 'Sub-steps per frame. With many agents the module lowers this automatically to keep the frame rate up.' },
-    { group: 'Behaviour', key: 'stopAfter', label: 'Run for', type: 'range', kind: 'live', min: 200, max: 6000, step: 100, fmt: v => v >= 6000 ? '∞' : v + ' steps' },
-    { group: 'Behaviour', key: 'reset', label: 'Restart from seed', type: 'action' },
+    { group: 'Behavior', key: 'stopAfter', label: 'Run for', type: 'range', kind: 'live', min: 200, max: 6000, step: 100, fmt: v => v >= 6000 ? '∞' : v + ' steps' },
+    { group: 'Behavior', key: 'reset', label: 'Restart from seed', type: 'action' },
     // ---- Food
     { group: 'Food', key: 'food', label: 'Food spots', type: 'range', kind: 'geom', min: 0, max: 40, step: 1 },
     { group: 'Food', key: 'foodStrength', label: 'Food strength', type: 'range', kind: 'live', min: 0.5, max: 10, step: 0.5, fmt: f1, dimUnless: s => s.food > 0 },
@@ -4048,7 +4050,7 @@ void main(){
     blurb: 'Physarum polycephalum, the many-headed slime mold, is a single giant cell that finds shortest paths through mazes and once rebuilt the Tokyo rail map out of oat flakes. Jeff Jones (2010) showed that a swarm of simple agents reproduces its networks: each one smells the trail ahead through three sensors, turns toward the strongest scent, steps forward and leaves a little more trail behind. The trail diffuses and fades, so only paths that many agents keep using survive — faint tracks merge into veins, veins compete, and a transport network emerges with nobody in charge.',
     schema, defaults, presets,
     hints: {
-      Behaviour: 'Sensor angle and distance set how far ahead an agent smells; rotation angle is how sharply it turns. Small rotation with a long sensor makes sweeping filaments, wide sensors with quick turns make tight cellular veins. Decay is how fast old trail fades, diffusion how far it spreads.',
+      Behavior: 'Sensor angle and distance set how far ahead an agent smells; rotation angle is how sharply it turns. Small rotation with a long sensor makes sweeping filaments, wide sensors with quick turns make tight cellular veins. Decay is how fast old trail fades, diffusion how far it spreads.',
       Food: 'Food spots deposit trail constantly, so agents discover them and build paths between them — the classic shortest-network experiment.',
       Color: 'Exposure scales the trail before the palette ramp (background at zero). Glow adds a blurred copy of the veins.',
     },
@@ -4651,7 +4653,7 @@ void main(){
 
   Studio.register({
     id: 'reaction', name: 'Reaction-Diffusion', subtitle: 'Gray-Scott activator/inhibitor chemistry · 1983', equation: 'du/dt = Du·lap u - u·v^2 + F(1-u);   dv/dt = Dv·lap v + u·v^2 - (F+k)v', credit: "Gray-Scott model: Peter Gray and Stephen Scott, 1983-84. The idea that two diffusing chemicals can break symmetry into pattern is Alan Turing, 'The chemical basis of morphogenesis', 1952.", order: 80,
-    blurb: 'Two virtual chemicals share a grid: U is fed in at rate F, converted into V by the reaction U + 2V → 3V, and V is removed at rate F + k. U diffuses faster than V, so a growing spot of V starves its own centre while its edges keep spreading. Depending only on F and k, this single rule settles into spots, stripes, mazes, mitosis or coral — Pearson mapped the whole zoo in 1993, and the same maths shapes zebra stripes, seashell pigment and fingerprint ridges.',
+    blurb: 'Two virtual chemicals share a grid: U is fed in at rate F, converted into V by the reaction U + 2V → 3V, and V is removed at rate F + k. U diffuses faster than V, so a growing spot of V starves its own center while its edges keep spreading. Depending only on F and k, this single rule settles into spots, stripes, mazes, mitosis or coral — Pearson mapped the whole zoo in 1993, and the same maths shapes zebra stripes, seashell pigment and fingerprint ridges.',
 
     schema: [
       { group: 'Grid', key: 'resolution', label: 'Resolution', type: 'seg', kind: 'geom', options: [[384, '384'], [512, '512'], [768, '768'], [1024, '1024'], [1536, '1536'], [2048, '2048']] },
@@ -4900,7 +4902,7 @@ void main(){
   const U = Studio.util;
   const TAU = U.TAU;
   const W = 1000;            // virtual width in "units"; everything (radii, widths) is measured in units
-  const NB = 32;             // colour buckets for gradient / curvature strokes
+  const NB = 32;             // color buckets for gradient / curvature strokes
   const MAX_SNAPS = 72;      // ghost snapshots kept before thinning
   const FRAME_BUDGET_MS = 22;
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
@@ -4936,11 +4938,11 @@ void main(){
     { group: 'Forces', key: 'split', label: 'Split distance', type: 'range', kind: 'live', min: 2, max: 40, step: 0.5, fmt: f1 },
     { group: 'Forces', key: 'merge', label: 'Merge distance', type: 'range', kind: 'live', min: 0.5, max: 20, step: 0.5, fmt: f1 },
     // ---- Boundary
-    { group: 'Boundary', key: 'boundary', label: 'Mode', type: 'seg', kind: 'live', options: [['none', 'None'], ['circle', 'Circle'], ['frame', 'Frame'], ['center', 'Centre pull']] },
+    { group: 'Boundary', key: 'boundary', label: 'Mode', type: 'seg', kind: 'live', options: [['none', 'None'], ['circle', 'Circle'], ['frame', 'Frame'], ['center', 'Center pull']] },
     { group: 'Boundary', key: 'margin', label: 'Margin', type: 'range', kind: 'live', min: 0, max: 300, step: 5, dimUnless: s => s.boundary === 'circle' || s.boundary === 'frame' },
     { group: 'Boundary', key: 'boundaryStrength', label: 'Strength', type: 'range', kind: 'live', min: 0.05, max: 1, step: 0.05, fmt: f2, dimUnless: s => s.boundary !== 'none' },
     // ---- Color
-    { group: 'Color', key: 'colorMode', label: 'Line colour', type: 'seg', kind: 'paint', options: [['ring', 'Per curve'], ['gradient', 'Along curve'], ['curvature', 'By curvature']] },
+    { group: 'Color', key: 'colorMode', label: 'Line color', type: 'seg', kind: 'paint', options: [['ring', 'Per curve'], ['gradient', 'Along curve'], ['curvature', 'By curvature']] },
     { group: 'Color', key: 'fill', label: 'Fill', type: 'seg', kind: 'paint', options: [['none', 'None'], ['rings', 'Per curve'], ['evenodd', 'Alternating']] },
     { group: 'Color', key: 'fillAlpha', label: 'Fill opacity', type: 'range', kind: 'paint', min: 0.05, max: 1, step: 0.05, fmt: f2, dimUnless: s => s.fill !== 'none' },
     { group: 'Color', key: 'strokeWidth', label: 'Stroke width', type: 'range', kind: 'paint', min: 0, max: 8, step: 0.1, fmt: f1 },
@@ -5025,7 +5027,7 @@ void main(){
     }
   }
 
-  // Per-node piece: mid(prev,k) -> k -> mid(k,next), used for bucketed colouring.
+  // Per-node piece: mid(prev,k) -> k -> mid(k,next), used for bucketed coloring.
   function nodePiece(path, xs, ys, k, c, closed) {
     let ax, ay, bx, by;
     if (closed || k > 0) { const p = (k + c - 1) % c; ax = (xs[p] + xs[k]) / 2; ay = (ys[p] + ys[k]) / 2; } else { ax = xs[k]; ay = ys[k]; }
@@ -5038,8 +5040,8 @@ void main(){
      module
   ================================================================ */
   Studio.register({
-    id: 'growth', name: 'Differential Growth', subtitle: 'buckling curves, coral and cortex folding · 2010s', equation: 'pi <- pi + a·(neighbours) - r·sum|pj-pi|<R (pj-pi);   split an edge when |e| > dmax', credit: "Differential line growth as a digital technique, documented by Anders Hoff (inconvergent) and indexed in Jason Webb's morphogenesis resources. The underlying idea is D'Arcy Wentworth Thompson, On Growth and Form, 1917.", order: 30,
-    blurb: 'Differential growth is the geometry behind coral, lettuce leaves and the folded cortex: a surface that grows faster than the space it is allowed to occupy has to buckle. Here a closed curve of nodes is pulled tight by its neighbours, pushed away from every other part of itself, smoothed toward the local midpoint, and steadily given new nodes. Excess length has nowhere to go, so the curve wrinkles into ever finer lobes, each fold making room for the next.',
+    id: 'growth', name: 'Differential Growth', subtitle: 'buckling curves, coral and cortex folding · 2010s', equation: 'pi <- pi + a·(neighbors) - r·sum|pj-pi|<R (pj-pi);   split an edge when |e| > dmax', credit: "Differential line growth as a digital technique, documented by Anders Hoff (inconvergent) and indexed in Jason Webb's morphogenesis resources. The underlying idea is D'Arcy Wentworth Thompson, On Growth and Form, 1917.", order: 30,
+    blurb: 'Differential growth is the geometry behind coral, lettuce leaves and the folded cortex: a surface that grows faster than the space it is allowed to occupy has to buckle. Here a closed curve of nodes is pulled tight by its neighbors, pushed away from every other part of itself, smoothed toward the local midpoint, and steadily given new nodes. Excess length has nowhere to go, so the curve wrinkles into ever finer lobes, each fold making room for the next.',
     schema, defaults, presets,
     hints: {
       Forces: 'Repulsion inflates the curve, attraction pulls it taut, alignment irons out kinks. Edges longer than the split distance gain a node; nodes closer than the merge distance collapse.',
@@ -5239,7 +5241,7 @@ void main(){
               }
               fx += rx * rep; fy += ry * rep;
             }
-            // attraction to chain neighbours + alignment (perpendicular smoothing)
+            // attraction to chain neighbors + alignment (perpendicular smoothing)
             const hasPrev = closed || k > 0, hasNext = closed || k < c - 1;
             if (hasPrev && hasNext) {
               const ip = st + (k + c - 1) % c, inx = st + (k + 1) % c;
@@ -5548,7 +5550,7 @@ void main(){
   const HEAD = `#version 300 es
   precision highp float;
   in vec2 v_uv; out vec4 outColor;`;
-  // true for the one-texel border (pixel centres sit at 0.5, 1.5, ...)
+  // true for the one-texel border (pixel centers sit at 0.5, 1.5, ...)
   const EDGE = `bool edge(vec2 uv, vec2 res){ vec2 ip = uv * res; return ip.x < 1.0 || ip.y < 1.0 || ip.x > res.x - 1.0 || ip.y > res.y - 1.0; }`;
 
   // Semi-Lagrangian advection (RK2 midpoint back-trace). Velocity is stored in texels-per-step of the sim grid,
@@ -5653,7 +5655,7 @@ void main(){
     outColor = vec4(v, 0.0, 1.0);
   }`;
 
-  // Dye is rgba: rgb = coverage-weighted colour, a = coverage (so black ink and colour mixing both work).
+  // Dye is rgba: rgb = coverage-weighted color, a = coverage (so black ink and color mixing both work).
   // u_col[i*4..] = r, g, b, amount.
   const SPLAT_FS = `${HEAD}
   uniform sampler2D u_dye;
@@ -5673,7 +5675,7 @@ void main(){
     outColor = d;
   }`;
 
-  // Initial dye field: 0 none, 1 blobs (fbm), 2 bands, 3 rings. Colours come from the palette-only ramp.
+  // Initial dye field: 0 none, 1 blobs (fbm), 2 bands, 3 rings. Colors come from the palette-only ramp.
   const INIT_DYE_FS = `${HEAD}
   uniform int u_mode;
   uniform vec2 u_aspect, u_off;
@@ -5721,12 +5723,12 @@ void main(){
     outColor = vec4(v, 0.0, 1.0);
   }`;
 
-  // Paint pass: dye -> tone -> either palette ramp (by coverage) or direct colour, composed as ink on paper
+  // Paint pass: dye -> tone -> either palette ramp (by coverage) or direct color, composed as ink on paper
   // (multiply) or light on dark (screen), with shading from |curl| or |velocity| and a vignette.
   /* ---------------- Lagrangian coherent structures ----------------
      Dye shows where the fluid has been; the FTLE field shows the skeleton organising where it can go.
      A tracer starts in every cell and is carried by the flow; after t steps the Jacobian of that flow
-     map says how fast neighbouring tracers separated. Ridges of the finite-time Lyapunov exponent are
+     map says how fast neighboring tracers separated. Ridges of the finite-time Lyapunov exponent are
      the transport barriers that dye can never cross (Haller; Shadden, Lekien and Marsden, 2005).
      Integrating the present velocity field treats it as frozen over the window, which is the usual
      visualisation shortcut: honest for slow fields, approximate for fast ones. */
@@ -5839,11 +5841,11 @@ void main(){
       RANGE('Forces', 'dye', 'Dye amount', 'live', 0, 1, 0.01, fmt2, { dimUnless: hasEmitters }),
       RANGE('Forces', 'tempo', 'Tempo', 'live', 0.1, 3, 0.05, fmt2, { dimUnless: hasEmitters }),
       RANGE('Forces', 'noiseScale', 'Noise scale', 'live', 0.5, 8, 0.1, v => v.toFixed(1), { dimUnless: s => s.mode === 'curl' }),
-      { group: 'Forces', key: 'colorMode', label: 'Emitter colours', type: 'seg', kind: 'geom', options: [['order', 'Palette order'], ['random', 'By emitter'], ['cycle', 'Cycling']], dimUnless: hasEmitters },
+      { group: 'Forces', key: 'colorMode', label: 'Emitter colors', type: 'seg', kind: 'geom', options: [['order', 'Palette order'], ['random', 'By emitter'], ['cycle', 'Cycling']], dimUnless: hasEmitters },
 
       { group: 'Coherent structures', key: 'ftle', label: 'Show FTLE ridges', type: 'toggle', kind: 'live',
 
-        hint: 'Reveals the invisible transport barriers that organise the mixing: ridges of the finite-time Lyapunov exponent, the skeleton the dye is obeying.' },
+        hint: 'Reveals the invisible transport barriers that organize the mixing: ridges of the finite-time Lyapunov exponent, the skeleton the dye is obeying.' },
 
       { group: 'Coherent structures', key: 'ftleDir', label: 'Structures', type: 'seg', kind: 'live',
 
@@ -5871,7 +5873,7 @@ void main(){
       { group: 'Fluid', key: 'clear', label: 'Clear dye', type: 'action' },
       { group: 'Fluid', key: 'restart', label: 'Restart', type: 'action' },
 
-      { group: 'Color', key: 'useRamp', label: 'Palette ramp', type: 'toggle', kind: 'paint', hint: 'On: dye density is mapped through the ramp from background to the palette. Off: emitters carry the palette colours directly.' },
+      { group: 'Color', key: 'useRamp', label: 'Palette ramp', type: 'toggle', kind: 'paint', hint: 'On: dye density is mapped through the ramp from background to the palette. Off: emitters carry the palette colors directly.' },
       { group: 'Color', key: 'inkMode', label: 'Composite', type: 'seg', kind: 'paint', options: [['auto', 'Auto'], ['ink', 'Ink on paper'], ['light', 'Light on dark']] },
       { group: 'Color', key: 'shade', label: 'Shading', type: 'seg', kind: 'paint', options: [['none', 'None'], ['curl', '|curl|'], ['velocity', '|velocity|']] },
       RANGE('Color', 'shadeAmt', 'Shading strength', 'paint', 0, 1, 0.01, fmt2, { dimUnless: s => s.shade !== 'none' }),
@@ -5900,7 +5902,7 @@ void main(){
     },
     hints: {
       Forces: 'Jets push from fixed seeded points, orbit emitters paint along Lissajous paths, curl noise stirs the whole field with a divergence-free turbulence, swirl spins vortex cores, splats fire seeded random bursts. Tempo scales every animated part.',
-      Fluid: 'Dissipation below 1 lets momentum and colour fade each step. Vorticity confinement sharpens the small eddies the grid would otherwise smooth away; more pressure iterations give a tighter incompressibility solve.',
+      Fluid: 'Dissipation below 1 lets momentum and color fade each step. Vorticity confinement sharpens the small eddies the grid would otherwise smooth away; more pressure iterations give a tighter incompressibility solve.',
       'Initial state': 'A pre-drawn dye field (bands for marbling, blobs for nebulae) and a single seeded stir that sets the fluid moving before the emitters start.',
     },
     closedGroups: ['Initial state', 'Coherent structures'],
@@ -5985,7 +5987,7 @@ void main(){
       }
       const aspectVec = () => { const m = Math.max(sw, sh); return [sw / m, sh / m]; };
 
-      // Seeded emitter rig: positions, aim, wobble, Lissajous frequencies, vortex sign, colour pick.
+      // Seeded emitter rig: positions, aim, wobble, Lissajous frequencies, vortex sign, color pick.
       function buildRig(s) {
         const rng = U.makeRng(s.seed + '/emitters');
         rig = [];
@@ -6213,7 +6215,7 @@ void main(){
   const U = Studio.util;
   const TAU = U.TAU;
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '2:3': 1.5, '16:9': 9 / 16 };
-  const LUT_N = 1024;              // entries in the colour ramps
+  const LUT_N = 1024;              // entries in the color ramps
   const FLOW_WALKERS = 6;          // parallel trajectories for 3D flows (fills the attractor faster)
   const FRAME_MARGIN = 0.06;       // empty border around the auto-framed attractor
   const FRAME_BUDGET_MS = 24;      // max accumulation time per animation frame
@@ -6444,8 +6446,8 @@ void main(){
     { group: 'Color', key: 'tone', label: 'Tone map', type: 'seg', kind: 'paint', options: [['log', 'Log'], ['power', 'Power']] },
     { group: 'Color', key: 'exposure', label: 'Exposure', type: 'range', kind: 'paint', min: 0.1, max: 8, step: 0.05, fmt: f2 },
     { group: 'Color', key: 'gamma', label: 'Gamma', type: 'range', kind: 'paint', min: 0.3, max: 3, step: 0.05, fmt: f2 },
-    { group: 'Color', key: 'colorMode', label: 'Colour by', type: 'seg', kind: 'geom', options: [['density', 'Density'], ['velocity', 'Velocity'], ['direction', 'Direction']] },
-    { group: 'Color', key: 'colorMix', label: 'Colour mix', type: 'range', kind: 'paint', min: 0, max: 1, step: 0.05, fmt: f2, dimUnless: s => s.colorMode !== 'density' },
+    { group: 'Color', key: 'colorMode', label: 'Color by', type: 'seg', kind: 'geom', options: [['density', 'Density'], ['velocity', 'Velocity'], ['direction', 'Direction']] },
+    { group: 'Color', key: 'colorMix', label: 'Color mix', type: 'range', kind: 'paint', min: 0, max: 1, step: 0.05, fmt: f2, dimUnless: s => s.colorMode !== 'density' },
     { group: 'Color', key: 'blur', label: 'Smoothing', type: 'range', kind: 'paint', min: 0, max: 4, step: 0.25, fmt: f2 },
     { group: 'Color', key: 'sortRamp', label: 'Sort ramp by contrast', type: 'toggle', kind: 'paint' },
     { group: 'Color', key: 'invert', label: 'Invert', type: 'toggle', kind: 'paint' },
@@ -6479,7 +6481,7 @@ void main(){
   };
 
   /* ================================================================
-     colour helpers
+     color helpers
   ================================================================ */
   function rampColors(s) {
     if (!s.sortRamp) return s.palette;
@@ -6501,7 +6503,7 @@ void main(){
     for (; b < B - 1; b++) { acc += hist[b]; if (acc >= target) break; }
     return Math.max(1, Math.expm1((b + 1) / B * lm));
   }
-  /* 2%..98% range of the per-pixel average colour value (velocity or direction). */
+  /* 2%..98% range of the per-pixel average color value (velocity or direction). */
   function colorRange(col, d, N) {
     const stride = Math.max(1, Math.floor(N / 1.5e6));
     let lo = Infinity, hi = -Infinity;
@@ -6547,7 +6549,7 @@ void main(){
   }
 
   /* ================================================================
-     accumulator: density (+ colour) buffers for one seed/state at W x H
+     accumulator: density (+ color) buffers for one seed/state at W x H
   ================================================================ */
   function buildAcc(s, W, H) {
     const sys = sysOf(s);
@@ -6679,7 +6681,7 @@ void main(){
     hints: {
       System: 'Coefficients mean different things per system. Clifford, De Jong, Svensson, Tinkerbell, Ikeda and Aizawa use all four; Gumowski-Mira uses a (μ), b (α), c (σ); Hopalong a, b, c; Lorenz a = σ, b = ρ, c = β; Rössler a, b, c; Bedhead a, b; Thomas and Halvorsen only a. Harmonograph: a = frequency ratio, b = detune, c = damping, d = phase. Unused coefficients are dimmed. Reroll draws a new set from the seed and keeps only sets that pass a quick “is it interesting” test.',
       Framing: 'The attractor is auto-framed from a sample of its orbit; zoom, offset and rotation adjust that frame. Yaw and pitch orient the 3D flows before they are flattened onto the canvas.',
-      Color: 'Density is tone-mapped through the palette, starting at the background. Velocity and direction colouring tint each pixel by how fast, or which way, the orbit moves there.',
+      Color: 'Density is tone-mapped through the palette, starting at the background. Velocity and direction coloring tint each pixel by how fast, or which way, the orbit moves there.',
     },
     closedGroups: ['Framing'],
     palette: true, defaultPalette: 'xray', paletteLabel: 'Colors (ramp from background → last)',
@@ -6878,7 +6880,7 @@ void main(){
 
   /* Matching-rule arc decorations, verified to join across every shared edge.
      corners: which two polygon corners carry an arc; r: arc radii; fam: which of the two
-     arc families (colours) each belongs to. Distances are in tile-edge units. */
+     arc families (colors) each belongs to. Distances are in tile-edge units. */
   const ARCS = {
     p3: [{ c: [0, 2], r: [IPHI2, IPHI2], f: [0, 0] },      // thin rhomb: two small arcs at the 36° corners
          { c: [1, 3], r: [IPHI2, IPHI], f: [0, 1] }],      // thick rhomb: small + large at the 72° corners
@@ -7118,7 +7120,7 @@ void main(){
     const ch = node.children[n];
     return afPt(ch.T, ch.geom.shape[i]);
   }
-  function hatRecentre(node) {
+  function hatRecenter(node) {
     let cx = 0, cy = 0, n = node.shape.length;
     for (const p of node.shape) { cx += p.x; cy += p.y; }
     cx /= n; cy /= n;
@@ -7200,7 +7202,7 @@ void main(){
     );
     const AAA = nH[2], BBB = afAdd(nH[1], afSub(nH[4], nH[5])), CCC = afPt(afRotAbout(BBB, -Math.PI / 3), AAA);
     const T = hatMeta([BBB, CCC, AAA], [patch.children[11]]);
-    hatRecentre(H); hatRecentre(P); hatRecentre(F); hatRecentre(T);
+    hatRecenter(H); hatRecenter(P); hatRecenter(F); hatRecenter(T);
     return [H, T, P, F];
   }
 
@@ -7403,9 +7405,9 @@ void main(){
     const hy = spanOf(depth, s.zoom, M.inflate), hx = hy / ar;
     const rng = U.makeRng(s.seed + '/tilings/' + s.mode);
     const th = s.rotation * Math.PI / 180, co = Math.cos(th), si = Math.sin(th);
-    // view centre in tiling coordinates: pan plus a seeded crop offset, in view-heights
+    // view center in tiling coordinates: pan plus a seeded crop offset, in view-heights
     const ccx = (s.panx + rng.range(-1.2, 1.2)) * hy, ccy = (s.pany + rng.range(-1.2, 1.2)) * hy;
-    // world -> view: rotate by -th about the view centre
+    // world -> view: rotate by -th about the view center
     const xf = { c: co, s: si, tx: -(ccx * co + ccy * si), ty: -(-ccx * si + ccy * co) };
     const margin = 2.5 + 0.05 * Math.max(hx, hy);
     const rect = { x0: -hx - margin, x1: hx + margin, y0: -hy - margin, y1: hy + margin };
@@ -7622,11 +7624,11 @@ void main(){
     { group: 'Tiles', key: 'superLevel', label: 'Supertile generation', type: 'range', kind: GEOM, min: 1, max: 5, step: 1,
       dimUnless: s => s.fill === 'gen' && (s.mode === 'p3' || s.mode === 'p2') },
     { group: 'Tiles', key: 'shift', label: 'Palette offset', type: 'range', kind: PAINT, min: 0, max: 15, step: 1, dimUnless: s => s.fill !== 'none' },
-    { group: 'Tiles', key: 'jitter', label: 'Colour jitter', type: 'range', kind: PAINT, min: 0, max: 1, step: 0.02, fmt: pct, dimUnless: s => s.fill !== 'none' },
+    { group: 'Tiles', key: 'jitter', label: 'Color jitter', type: 'range', kind: PAINT, min: 0, max: 1, step: 0.02, fmt: pct, dimUnless: s => s.fill !== 'none' },
     { group: 'Tiles', key: 'inset', label: 'Gap inset (grout)', type: 'range', kind: PAINT, min: 0, max: 0.12, step: 0.002, fmt: v => v.toFixed(3) },
 
     { group: 'Line', key: 'strokeWidth', label: 'Stroke weight', type: 'range', kind: PAINT, min: 0, max: 5, step: 0.1, fmt: f1 },
-    { group: 'Line', key: 'strokeColor', label: 'Stroke colour index', type: 'range', kind: PAINT, min: 0, max: 15, step: 1, dimUnless: s => s.strokeWidth > 0 },
+    { group: 'Line', key: 'strokeColor', label: 'Stroke color index', type: 'range', kind: PAINT, min: 0, max: 15, step: 1, dimUnless: s => s.strokeWidth > 0 },
     { group: 'Line', key: 'linework', label: 'Edge-only line drawing', type: 'toggle', kind: PAINT, dimUnless: s => s.inset === 0,
       hint: 'Draws each shared edge once instead of outlining every tile — true hairlines, no doubled strokes.' },
     { group: 'Line', key: 'levels', label: 'Inflation levels', type: 'range', kind: PAINT, min: 0, max: 5, step: 1,
@@ -7636,7 +7638,7 @@ void main(){
 
     { group: 'Matching rules', key: 'arcs', label: 'Penrose arcs', type: 'toggle', kind: PAINT, dimUnless: s => s.mode === 'p3' || s.mode === 'p2' },
     { group: 'Matching rules', key: 'arcWidth', label: 'Arc weight', type: 'range', kind: PAINT, min: 0.2, max: 5, step: 0.1, fmt: f1, dimUnless: s => s.arcs },
-    { group: 'Matching rules', key: 'arcColor', label: 'Arc colour index', type: 'range', kind: PAINT, min: 0, max: 15, step: 1, dimUnless: s => s.arcs },
+    { group: 'Matching rules', key: 'arcColor', label: 'Arc color index', type: 'range', kind: PAINT, min: 0, max: 15, step: 1, dimUnless: s => s.arcs },
 
     { group: 'Finish', key: 'grain', label: 'Grain', type: 'range', kind: PAINT, min: 0, max: 1, step: 0.05, fmt: pct },
     { group: 'Finish', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
@@ -7679,12 +7681,12 @@ void main(){
     closedGroups: ['Matching rules'],
     hints: {
       'Tiling': 'Depth is the number of substitution steps: the patch stays the same size on the page and the tiles shrink, so it doubles as a density control. The seed picks which region of the infinite tiling is cropped — reseed to travel. Hat and Spectre grow a supertile of that depth (the 2023 monotiles); zoom crops it.',
-      'Tiles': 'Colouring by supertile reveals the parent tiles a few generations up, the hierarchy that makes these tilings quasiperiodic rather than random.',
+      'Tiles': 'Coloring by supertile reveals the parent tiles a few generations up, the hierarchy that makes these tilings quasiperiodic rather than random.',
       'Matching rules': 'Penrose marked each rhomb with two arcs. A tiling is legal exactly when every arc continues across every edge, which is why the curves close up into loops instead of stopping.',
     },
     palette: true,
     defaultPalette: 'kiln',
-    paletteLabel: 'Colours (tile types, then accents)',
+    paletteLabel: 'Colors (tile types, then accents)',
     headline: 'depth',
     headlineLabel: 'depth',
 
@@ -7848,7 +7850,7 @@ uniform vec3 u_bg;
 ${G.GLSL.hash}
 ${G.GLSL.ramp}
 
-// one slice of the atlas, clamped inside its tile so bilinear never bleeds into the neighbour
+// one slice of the atlas, clamped inside its tile so bilinear never bleeds into the neighbor
 float sliceAt(vec2 xy, float z) {
   float tx = floor(mod(z, u_cols));
   float ty = floor(z / u_cols);
@@ -7912,18 +7914,18 @@ void main() {
     { group: 'Colony', key: 'spawn', label: 'Spawn', type: 'seg', kind: GEOM, wrap: true,
       options: [['uniform', 'Uniform'], ['shell', 'Shell'], ['filament', 'Filament seeds'], ['noise', 'Noise']] },
     { group: 'Colony', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
-    // ---- Behaviour
-    { group: 'Behaviour', key: 'sensorAngle', label: 'Sensor angle', type: 'range', kind: LIVE, min: 8, max: 80, step: 1, fmt: deg },
-    { group: 'Behaviour', key: 'sensorDist', label: 'Sensor distance', type: 'range', kind: LIVE, min: 1, max: 24, step: 0.5, fmt: v => f1(v) + ' cells' },
-    { group: 'Behaviour', key: 'turnRate', label: 'Turn rate', type: 'range', kind: LIVE, min: 5, max: 90, step: 1, fmt: deg },
-    { group: 'Behaviour', key: 'stepSize', label: 'Step size', type: 'range', kind: LIVE, min: 0.2, max: 2.5, step: 0.1, fmt: f1 },
-    { group: 'Behaviour', key: 'deposit', label: 'Deposit', type: 'range', kind: LIVE, min: 0.5, max: 15, step: 0.5, fmt: f1 },
-    { group: 'Behaviour', key: 'decay', label: 'Decay', type: 'range', kind: LIVE, min: 0.5, max: 15, step: 0.5, fmt: v => f1(v) + '%' },
-    { group: 'Behaviour', key: 'respawn', label: 'Respawn', type: 'range', kind: LIVE, min: 0, max: 3, step: 0.1, fmt: v => v.toFixed(1) + '% / step' },
-    { group: 'Behaviour', key: 'blurEvery', label: 'Blur interval', type: 'range', kind: LIVE, min: 1, max: 8, step: 1, fmt: v => v === 1 ? 'every step' : 'every ' + v + ' steps' },
-    { group: 'Behaviour', key: 'stepsPerFrame', label: 'Steps per frame', type: 'range', kind: LIVE, min: 1, max: 6, step: 1 },
-    { group: 'Behaviour', key: 'stopAfter', label: 'Run for', type: 'range', kind: LIVE, min: 200, max: 4000, step: 100, fmt: v => v >= 4000 ? '∞' : v + ' steps' },
-    { group: 'Behaviour', key: 'reset', label: 'Restart from seed', type: 'action' },
+    // ---- Behavior
+    { group: 'Behavior', key: 'sensorAngle', label: 'Sensor angle', type: 'range', kind: LIVE, min: 8, max: 80, step: 1, fmt: deg },
+    { group: 'Behavior', key: 'sensorDist', label: 'Sensor distance', type: 'range', kind: LIVE, min: 1, max: 24, step: 0.5, fmt: v => f1(v) + ' cells' },
+    { group: 'Behavior', key: 'turnRate', label: 'Turn rate', type: 'range', kind: LIVE, min: 5, max: 90, step: 1, fmt: deg },
+    { group: 'Behavior', key: 'stepSize', label: 'Step size', type: 'range', kind: LIVE, min: 0.2, max: 2.5, step: 0.1, fmt: f1 },
+    { group: 'Behavior', key: 'deposit', label: 'Deposit', type: 'range', kind: LIVE, min: 0.5, max: 15, step: 0.5, fmt: f1 },
+    { group: 'Behavior', key: 'decay', label: 'Decay', type: 'range', kind: LIVE, min: 0.5, max: 15, step: 0.5, fmt: v => f1(v) + '%' },
+    { group: 'Behavior', key: 'respawn', label: 'Respawn', type: 'range', kind: LIVE, min: 0, max: 3, step: 0.1, fmt: v => v.toFixed(1) + '% / step' },
+    { group: 'Behavior', key: 'blurEvery', label: 'Blur interval', type: 'range', kind: LIVE, min: 1, max: 8, step: 1, fmt: v => v === 1 ? 'every step' : 'every ' + v + ' steps' },
+    { group: 'Behavior', key: 'stepsPerFrame', label: 'Steps per frame', type: 'range', kind: LIVE, min: 1, max: 6, step: 1 },
+    { group: 'Behavior', key: 'stopAfter', label: 'Run for', type: 'range', kind: LIVE, min: 200, max: 4000, step: 100, fmt: v => v >= 4000 ? '∞' : v + ' steps' },
+    { group: 'Behavior', key: 'reset', label: 'Restart from seed', type: 'action' },
     // ---- Food
     { group: 'Food', key: 'food', label: 'Food points', type: 'range', kind: GEOM, min: 0, max: 40, step: 1 },
     { group: 'Food', key: 'foodStrength', label: 'Food strength', type: 'range', kind: LIVE, min: 0.5, max: 10, step: 0.5, fmt: f1, dimUnless: s => s.food > 0 },
@@ -7980,9 +7982,9 @@ void main() {
     schema, defaults, presets,
     hints: {
       Colony: 'The volume is V³ float cells on the CPU, packed into a 2D atlas texture (⌈√V⌉ slices per row) because WebGL2 fullscreen passes have no 3D textures. 96³ with 60k agents is the sweet spot: about 20 ms of simulation per frame. 128³ and 160³ quadruple the diffusion and upload cost — drop steps per frame to 1 there.',
-      Behaviour: 'Sensor angle and distance set how wide and how far ahead an agent smells; turn rate is how much of that angle it actually takes per step, so a small turn rate with long sensors sweeps out long filaments and a large one knots them into tight cells. Decay runs every step (one multiply over the whole volume) but the separable 3×3×3 blur only runs every few steps — that is what keeps a frame inside its budget. Blurring every step is the most expensive setting here.',
+      Behavior: 'Sensor angle and distance set how wide and how far ahead an agent smells; turn rate is how much of that angle it actually takes per step, so a small turn rate with long sensors sweeps out long filaments and a large one knots them into tight cells. Decay runs every step (one multiply over the whole volume) but the separable 3×3×3 blur only runs every few steps — that is what keeps a frame inside its budget. Blurring every step is the most expensive setting here.',
       Food: 'Food points deposit trail constantly, so the colony discovers them and builds filaments between them. This is the cosmic-web construction: galaxies become emitters and the network the slime mold settles into traces the matter between them. "Filament seeds" also releases the agents around those points.',
-      Render: 'The ray takes this many samples through the volume and composites them front to back. Density scale sets how opaque the medium is, exposure and gamma map density onto the palette ramp, and emission ⇄ absorption slides from a purely absorbing dust (0, best on a light background) to a self-luminous gas (1.5). Density is normalised against a measured high percentile of the volume every frame, so the picture stays exposed as the network grows. The atlas is re-uploaded once per frame at 64³ and 96³ and every second frame above that, where packing the bytes costs more than the draw.',
+      Render: 'The ray takes this many samples through the volume and composites them front to back. Density scale sets how opaque the medium is, exposure and gamma map density onto the palette ramp, and emission ⇄ absorption slides from a purely absorbing dust (0, best on a light background) to a self-luminous gas (1.5). Density is normalized against a measured high percentile of the volume every frame, so the picture stays exposed as the network grows. The atlas is re-uploaded once per frame at 64³ and 96³ and every second frame above that, where packing the bytes costs more than the draw.',
     },
     closedGroups: ['Food'],
     palette: true, defaultPalette: 'xray', paletteLabel: 'Colors (empty → dense)',
@@ -8466,7 +8468,7 @@ void main() {
   const ASPECTS = { '1:1': 1, '4:5': 1.25 };
   const MODES = { lenia: 0, life: 1, highlife: 1, daynight: 1, seeds: 1, ltl: 2 };
   const MODE_LABEL = { lenia: 'Lenia', life: 'Life B3/S23', highlife: 'HighLife B36/S23', daynight: 'Day & Night', seeds: 'Seeds B2/S', ltl: 'Larger than Life' };
-  // bitmasks over neighbour counts 0..8 for the Life family
+  // bitmasks over neighbor counts 0..8 for the Life family
   const bits = a => a.reduce((m, n) => m | (1 << n), 0);
   const RULES = { life: [bits([3]), bits([2, 3])], highlife: [bits([3, 6]), bits([2, 3])], daynight: [bits([3, 6, 7, 8]), bits([3, 4, 6, 7, 8])], seeds: [bits([2]), 0] };
   const KW = 512; // kernel list texture width (entries are laid out row-major)
@@ -8564,8 +8566,8 @@ void main() {
     outColor = vec4(f, c.g, 1.0);
   }`;
 
-  // Pass 3: reintegration tracking. Each source cell in the 5x5 neighbourhood ships its mass to the
-  // unit square centred on its displaced position; the overlap with this cell is our share. The
+  // Pass 3: reintegration tracking. Each source cell in the 5x5 neighborhood ships its mass to the
+  // unit square centered on its displaced position; the overlap with this cell is our share. The
   // shares of any one source sum to 1, which is what keeps the total exactly constant.
   const TRANSPORT_FS = `#version 300 es
   precision highp float;
@@ -8638,7 +8640,7 @@ void main() {
   }
 
   // Kernel as a compact list of non-zero taps. Lenia: ring shell of bell curves (1-3 rings, per-ring peak weight),
-  // normalised so the weighted sum is a neighbourhood mean. Discrete: every cell of the (2R+1)^2 box except the centre.
+  // normalized so the weighted sum is a neighborhood mean. Discrete: every cell of the (2R+1)^2 box except the center.
   function buildKernel(s) {
     const lenia = isLenia(s), R = radiusOf(s), rings = lenia ? Math.round(s.rings) : 1;
     let w = [s.w1, s.w2, s.w3].slice(0, rings);
@@ -8735,16 +8737,16 @@ void main() {
 
   Studio.register({
     id: 'life', name: 'Artificial Life', subtitle: 'Lenia, Flow Lenia and cellular automata · 2019-23', equation: 'A <- clamp(A + (1/T)·G(K*A)),   G(u) = 2·exp(-(u-mu)^2 / 2·sigma^2) - 1', credit: "Lenia: Bert Wang-Chak Chan, 2018-19. The discrete rules go back to John Conway's Game of Life, 1970, and Stanislaw Ulam and John von Neumann's cellular automata in the 1940s.", order: 8,
-    blurb: 'Conway\'s Game of Life turns a grid of on/off cells into gliders, oscillators and guns from one rule about eight neighbours. Lenia (Bert Chan, 2019) makes everything continuous: cells hold a value between 0 and 1, the neighbourhood is a smooth ring-shaped kernel of radius R, and a bell-shaped growth function nudges each cell up when the weighted neighbourhood mean is near μ and down otherwise, a small step 1/T at a time. Out of that come self-organising creatures — Orbium, the first discovered, swims steadily across the grid, holding its shape while every cell in it is continuously being remade.',
+    blurb: 'Conway\'s Game of Life turns a grid of on/off cells into gliders, oscillators and guns from one rule about eight neighbors. Lenia (Bert Chan, 2019) makes everything continuous: cells hold a value between 0 and 1, the neighborhood is a smooth ring-shaped kernel of radius R, and a bell-shaped growth function nudges each cell up when the weighted neighborhood mean is near μ and down otherwise, a small step 1/T at a time. Out of that come self-organising creatures — Orbium, the first discovered, swims steadily across the grid, holding its shape while every cell in it is continuously being remade.',
 
     schema: [
       { group: 'Automaton', key: 'mode', label: 'Rule', type: 'seg', kind: 'geom', wrap: true, options: [['lenia', 'Lenia'], ['life', 'Life'], ['highlife', 'HighLife'], ['daynight', 'Day & Night'], ['seeds', 'Seeds'], ['ltl', 'Larger than Life']] },
       { group: 'Automaton', key: 'grid', label: 'Grid', type: 'seg', kind: 'geom', options: [[128, '128'], [192, '192'], [256, '256'], [384, '384'], [512, '512'], [768, '768']] },
       { group: 'Automaton', key: 'aspect', label: 'Aspect', type: 'seg', kind: 'geom', options: [['1:1', '1:1'], ['4:5', '4:5']] },
-      RANGE('Automaton', 'R', 'Radius R', 'geom', 6, 24, 1, String, { dimUnless: s => LENIA(s) || LTL(s), hint: 'Neighbourhood radius in cells for Lenia and Larger than Life; the classic rules use radius 1.' }),
+      RANGE('Automaton', 'R', 'Radius R', 'geom', 6, 24, 1, String, { dimUnless: s => LENIA(s) || LTL(s), hint: 'Neighborhood radius in cells for Lenia and Larger than Life; the classic rules use radius 1.' }),
 
       RANGE('Lenia', 'T', 'Time T', 'live', 2, 20, 1, String, { dimUnless: LENIA }),
-      RANGE('Lenia', 'mu', 'Growth centre μ', 'live', 0.1, 0.5, 0.001, fmt3, { dimUnless: LENIA }),
+      RANGE('Lenia', 'mu', 'Growth center μ', 'live', 0.1, 0.5, 0.001, fmt3, { dimUnless: LENIA }),
       RANGE('Lenia', 'sigma', 'Growth width σ', 'live', 0.005, 0.1, 0.0005, v => v.toFixed(4), { dimUnless: LENIA }),
       { group: 'Lenia', key: 'flow', label: 'Conserve mass (Flow Lenia)', type: 'toggle', kind: 'live', dimUnless: LENIA,
         hint: 'Growth becomes a flow rather than a source: mass is transported up the growth gradient instead of created, so the total never changes and creatures compete for a fixed budget.' },
@@ -8774,7 +8776,7 @@ void main() {
 
       RANGE('Color', 'gamma', 'Gamma', 'paint', 0.3, 3, 0.01, fmt2),
       RANGE('Color', 'contrast', 'Contrast', 'paint', 0.5, 3, 0.01, fmt2),
-      RANGE('Color', 'high', 'Ramp top', 'paint', 0.3, 1, 0.01, fmt2, { hint: 'Where a fully alive cell lands on the ramp. Lower it on palettes whose last colour is close to the background.' }),
+      RANGE('Color', 'high', 'Ramp top', 'paint', 0.3, 1, 0.01, fmt2, { hint: 'Where a fully alive cell lands on the ramp. Lower it on palettes whose last color is close to the background.' }),
       RANGE('Color', 'ageAmt', 'Age tint', 'paint', 0, 1, 0.01, fmt2),
       RANGE('Color', 'ageSpan', 'Age span', 'paint', 5, 400, 1, String, { dimUnless: s => s.ageAmt > 0 }),
       { group: 'Color', key: 'pixelate', label: 'Pixelate', type: 'toggle', kind: 'paint' },
@@ -8799,8 +8801,8 @@ void main() {
       seeds: { label: 'Seeds', p: { mode: 'seeds', grid: 256, init: 'blobs', density: 0.12, blobs: 4, warmup: 30, steps: 1, decay: 0.92, gamma: 1, contrast: 1, high: 1, ageAmt: 0, pixelate: true, running: true }, palette: Studio.PALETTES.thermal },
     },
     hints: {
-      Lenia: 'The kernel is a ring of bell curves around each cell; the growth function rewards a neighbourhood mean near μ (width σ). Orbium lives at μ 0.15, σ 0.015. Small changes to μ and σ move between gliders, blobs, coral and extinction.',
-      'Larger than Life': 'Birth and survival intervals as a fraction of the (2R+1)² − 1 neighbourhood. The defaults are Bosco\'s rule (R = 5): B 34–45, S 34–58 of 120.',
+      Lenia: 'The kernel is a ring of bell curves around each cell; the growth function rewards a neighborhood mean near μ (width σ). Orbium lives at μ 0.15, σ 0.015. Small changes to μ and σ move between gliders, blobs, coral and extinction.',
+      'Larger than Life': 'Birth and survival intervals as a fraction of the (2R+1)² − 1 neighborhood. The defaults are Bosco\'s rule (R = 5): B 34–45, S 34–58 of 120.',
       Color: 'The trail channel is painted through the palette ramp from the background. Age tint slides long-lived cells back down the ramp so fronts glow and settled regions calm down.',
     },
     closedGroups: ['Larger than Life'],
@@ -9170,7 +9172,7 @@ ${inCode}${layers}
     return { ins, NI, C0, K, L, HK, rows: L * K + 1, cols: 4 * HK + 2, key: L + '|' + K + '|' + ins.join(',') };
   }
 
-  // Gaussian weights, fan-in normalised; biases; per-neuron activation ids. All from the seed.
+  // Gaussian weights, fan-in normalized; biases; per-neuron activation ids. All from the seed.
   // attempt 0 uses the original sub-seeds, so every plate that already works is bit-for-bit what it
   // was; only a draw that comes out degenerate advances to another one.
   function buildWeights(s, arch, attempt) {
@@ -9210,7 +9212,7 @@ ${inCode}${layers}
 
   Studio.register({
     id: 'cppn', name: 'Neural Patterns', subtitle: 'compositional pattern-producing networks evaluated per pixel · 2007', equation: 'c(x,y) = sigma(Wn · phi( ... phi(W1 · [x, y, r, theta, z, 1]) ... ))', credit: "CPPNs: Kenneth O. Stanley, 2007, 'Compositional pattern producing networks: a novel abstraction of development'. The lineage of evolved images starts with Karl Sims, 'Artificial evolution for computer graphics', 1991.", order: 50,
-    blurb: 'A compositional pattern-producing network (Stanley, 2007) is a tiny neural network that is never trained: every pixel feeds its own coordinates — x, y, distance from the centre, angle, a latent z — through a few layers of randomly weighted neurons and reads the colour off the outputs. Because the inputs are continuous, the picture is a smooth function with infinite resolution; because each layer composes the last, symmetry, repetition and gradients in the inputs become organic structure in the output. Sines give ripples and plasma, Gaussians give ridges, |x| gives creases; random weights pick the composition and the seed is the whole genome.',
+    blurb: 'A compositional pattern-producing network (Stanley, 2007) is a tiny neural network that is never trained: every pixel feeds its own coordinates — x, y, distance from the center, angle, a latent z — through a few layers of randomly weighted neurons and reads the color off the outputs. Because the inputs are continuous, the picture is a smooth function with infinite resolution; because each layer composes the last, symmetry, repetition and gradients in the inputs become organic structure in the output. Sines give ripples and plasma, Gaussians give ridges, |x| gives creases; random weights pick the composition and the seed is the whole genome.',
 
     schema: [
       RANGE('Network', 'layers', 'Hidden layers', 'geom', 1, 6, 1, String),
@@ -9255,7 +9257,7 @@ ${inCode}${layers}
     },
     hints: {
       Network: 'Depth and width set how intricate the function can be; weight scale sets how sharply it turns. Mixed picks an activation per neuron from the seed.',
-      Inputs: 'Periodic inputs tile the plane; warp bends every input through fbm noise. z is a spare input: sliding it morphs the whole piece through neighbouring designs.',
+      Inputs: 'Periodic inputs tile the plane; warp bends every input through fbm noise. z is a spare input: sliding it morphs the whole piece through neighboring designs.',
       Finish: 'Posterize with an ink outline gives lead lines along every level boundary — contour maps and stained glass.',
     },
     closedGroups: ['View'],
@@ -9342,7 +9344,7 @@ ${inCode}${layers}
         host.setStatus('<span>net <b>' + Math.round(s.layers) + '×' + s.width + '</b></span><span>' + s.activation + '</span>' +
           '<span>z <b>' + zEff(s).toFixed(2) + '</b></span>' + (raf ? '<span>drifting</span>' : '') +
           // Say so rather than quietly handing back a different genome than the seed first drew.
-          (redrawn ? '<span title="The first draw from this seed saturated to a flat colour at these settings; a lower weight scale or fewer layers will find one that does not">redrawn <b>×' + redrawn + '</b></span>' : ''));
+          (redrawn ? '<span title="The first draw from this seed saturated to a flat color at these settings; a lower weight scale or fewer layers will find one that does not">redrawn <b>×' + redrawn + '</b></span>' : ''));
       }
       function stop() { cancelAnimationFrame(raf); raf = 0; }
       function frame(now) {
@@ -9358,7 +9360,7 @@ ${inCode}${layers}
         status();
       }
 
-      // Render a small probe and report whether the whole thing is one colour. Cheap: 48x48 through
+      // Render a small probe and report whether the whole thing is one color. Cheap: 48x48 through
       // the same shader the plate uses, so it tests what will actually be drawn rather than a model
       // of it.
       function degenerate() {
@@ -9394,7 +9396,7 @@ ${inCode}${layers}
           warpOff = [wr.range(0, 100), wr.range(0, 100)];
           ready = true;
           // A CPPN is a random function and some draws are degenerate: every neuron lands in the
-          // same place for every pixel and the plate comes out one flat colour. It is not a rare
+          // same place for every pixel and the plate comes out one flat color. It is not a rare
           // curiosity. abs is expansive rather than saturating, so a deep stack of it blows up, and
           // the mixed pool contains abs; measured, one seed in eight did this on Mandala. Redraw
           // rather than hand back a blank sheet. Attempt 0 is the original draw, so a plate that
@@ -10027,7 +10029,7 @@ void main(){
   const TAU = U.TAU;
 
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '2:3': 1.5, '16:9': 9 / 16 };
-  const LUT_N = 512;               // entries in the colour ramps
+  const LUT_N = 512;               // entries in the color ramps
   const FRAME_BUDGET_MS = 20;      // simulation work per animation frame
   const REDUCED_BUDGET_MS = 3500;  // synchronous budget when prefers-reduced-motion is on
   const POLAR_RES = 1100;          // offscreen resolution of the ring view
@@ -10041,7 +10043,7 @@ void main(){
   /* ================================================================
      Nonlocal coupling kernels on the ring.
 
-     Every kernel returns a function conv(x, y) writing the normalised weighted
+     Every kernel returns a function conv(x, y) writing the normalized weighted
      circular mean  y_i = sum_j G(d_ij) x_j / sum_j G  into y. The coupling term
      sum_j G sin(th_i - th_j + a) is then
         sin(th_i + a) * conv(cos th) - cos(th_i + a) * conv(sin th),
@@ -10219,7 +10221,7 @@ void main(){
     return sim;
   }
 
-  /* local order parameter r_i = |mean of exp(i theta) over a box neighbourhood| */
+  /* local order parameter r_i = |mean of exp(i theta) over a box neighborhood| */
   let scratchC = null, scratchS = null;
   function scratch(n) {
     if (!scratchC || scratchC.length < n) { scratchC = new Float64Array(n); scratchS = new Float64Array(n); }
@@ -10291,7 +10293,7 @@ void main(){
   }
 
   /* ================================================================
-     colour
+     color
   ================================================================ */
   function cyclicLUT(s) {
     if (s.cyc === 'hue') {
@@ -10388,7 +10390,7 @@ void main(){
       options: [['spacetime', 'Space-time'], ['ring', 'Ring'], ['grid', '2D grid']] },
     { group: 'Oscillators', key: 'N', label: 'Oscillators', type: 'range', kind: 'geom', min: 256, max: 2048, step: 64, dimUnless: s => !isGrid(s) },
     { group: 'Oscillators', key: 'side', label: 'Grid side', type: 'range', kind: 'geom', min: 96, max: 160, step: 8, dimUnless: isGrid,
-      hint: 'The torus is side × side oscillators, each coupled to every neighbour inside the coupling radius.' },
+      hint: 'The torus is side × side oscillators, each coupled to every neighbor inside the coupling radius.' },
     { group: 'Oscillators', key: 'init', label: 'Initial phases', type: 'seg', kind: 'geom', wrap: true,
       options: [['bump', 'Perturbed bump'], ['random', 'Uniform random'], ['domains', 'Two domains'], ['wave', 'Twisted wave'], ['spiral', 'Spiral pair']] },
     // ---- Coupling
@@ -10407,8 +10409,8 @@ void main(){
     { group: 'Time', key: 'rows', label: 'Time window', type: 'range', kind: 'geom', min: 240, max: 1200, step: 20, dimUnless: s => !isGrid(s) },
     { group: 'Time', key: 'whenFull', label: 'When full', type: 'seg', kind: 'geom', options: [['stop', 'Stop'], ['scroll', 'Scroll']], dimUnless: s => !isGrid(s) },
     { group: 'Time', key: 'settle', label: 'Settle steps', type: 'range', kind: 'geom', min: 200, max: 6000, step: 100, dimUnless: isGrid },
-    // ---- Colour
-    { group: 'Color', key: 'colorSrc', label: 'Colour by', type: 'seg', kind: 'paint',
+    // ---- Color
+    { group: 'Color', key: 'colorSrc', label: 'Color by', type: 'seg', kind: 'paint',
       options: [['phase', 'Phase'], ['order', 'Order r'], ['blend', 'Blend']] },
     { group: 'Color', key: 'cyc', label: 'Cyclic mapping', type: 'seg', kind: 'paint',
       options: [['wrap', 'Wrap'], ['mirror', 'Mirror'], ['hue', 'Hue wheel']], dimUnless: s => s.colorSrc !== 'order' },
@@ -10460,12 +10462,12 @@ void main(){
     subtitle: 'identical oscillators that split into synchrony and chaos · 2004',
     equation: 'dθi/dt = ω − (1/N) Σj G(|i−j|) sin(θi − θj + α)',
     credit: 'Yoshiki Kuramoto and Dorjsuren Battogtokh found a ring of identical, identically coupled oscillators splitting into a coherent and an incoherent domain in 2002 — a state everyone had assumed impossible. Daniel Abrams and Steven Strogatz named it the chimera state in 2004, after the Greek beast assembled from mismatched animals.',
-    blurb: 'Every oscillator here is identical and every one is coupled to its neighbours in exactly the same way, with a strength that falls off with distance around the ring. Symmetry says they should all do the same thing: lock together, or not. Instead, for a phase lag α just under a right angle, the ring spontaneously tears in two — part of it locks into a smooth travelling wave while the rest drifts in permanent disorder, and the border between them stays put. Nothing in the equations picks that border; the pattern chooses it. The space-time plot puts oscillator index across and time downward, so the coherent domain reads as smooth diagonal banding and the incoherent one as a permanent scramble beside it. On a 2D torus the same coupling makes spiral waves whose cores never lock.',
+    blurb: 'Every oscillator here is identical and every one is coupled to its neighbors in exactly the same way, with a strength that falls off with distance around the ring. Symmetry says they should all do the same thing: lock together, or not. Instead, for a phase lag α just under a right angle, the ring spontaneously tears in two — part of it locks into a smooth traveling wave while the rest drifts in permanent disorder, and the border between them stays put. Nothing in the equations picks that border; the pattern chooses it. The space-time plot puts oscillator index across and time downward, so the coherent domain reads as smooth diagonal banding and the incoherent one as a permanent scramble beside it. On a 2D torus the same coupling makes spiral waves whose cores never lock.',
     schema, defaults, presets,
     hints: {
       Coupling: 'G is the nonlocal kernel: exponential exp(−κd) (Kuramoto and Battogtokh used κ = 4), the cosine 1 + A·cos(2πd) that Abrams and Strogatz could solve exactly, or a top hat of radius R. Distance is measured around the ring, so d runs 0 … 0.5. Chimeras need α close to π/2: the useful window is roughly β = π/2 − α between 0.05 and 0.18; below it the ring drifts apart, above it everything locks. On the 2D grid the kernel is truncated at the coupling radius and κ or A then set how fast it falls off across that radius.',
       Time: 'The space-time views record one row every few integration steps until the time window is full, then stop or scroll. The 2D grid has no rows: there, Steps per row is how far the simulation advances each animation frame, and Settle steps is where the run stops. Heun is enough for these smooth phase equations; RK4 costs twice as much and gives a visually identical chimera.',
-      Color: 'Phase is cyclic, so its ramp wraps: Wrap runs through the palette and back to the first colour, Mirror reflects it, Hue wheel rotates hue through a full turn at the palette\'s saturation. The local order parameter r is the length of the average of exp(iθ) over a neighbourhood — near 1 where oscillators lock, near zero where they drift — and Blend keeps the phase colour but fades the incoherent domain towards the background.',
+      Color: 'Phase is cyclic, so its ramp wraps: Wrap runs through the palette and back to the first color, Mirror reflects it, Hue wheel rotates hue through a full turn at the palette\'s saturation. The local order parameter r is the length of the average of exp(iθ) over a neighborhood — near 1 where oscillators lock, near zero where they drift — and Blend keeps the phase color but fades the incoherent domain towards the background.',
     },
     closedGroups: ['Time'],
     palette: true, defaultPalette: 'nightshade', paletteLabel: 'Colors (cyclic: last wraps to first)',
@@ -10965,7 +10967,7 @@ void main(){
       { group: 'Grid', key: 'boundary', label: 'Boundary', type: 'seg', kind: 'geom', options: [['wrap', 'Periodic'], ['insulate', 'Insulating']] },
       RANGE('Grid', 'dt', 'Time step', 'live', 0.00002, 0.0003, 0.00001, fmtExp, { hint: 'Explicit Euler: past about dx²τ/4ε², or dx²·0.375 for the heat field, the integration goes unstable and the whole field blows up into a checkerboard within a few hundred steps. The status line warns as soon as dt is over that limit.' }),
 
-      { group: 'Seed', key: 'seeding', label: 'Seeding', type: 'seg', kind: 'geom', options: [['center', 'Centre'], ['scatter', 'Scatter'], ['line', 'Line']] },
+      { group: 'Seed', key: 'seeding', label: 'Seeding', type: 'seg', kind: 'geom', options: [['center', 'Center'], ['scatter', 'Scatter'], ['line', 'Line']] },
       RANGE('Seed', 'nuclei', 'Nuclei', 'geom', 1, 40, 1, String, { dimUnless: s => s.seeding === 'scatter' }),
       RANGE('Seed', 'radius', 'Nucleus radius', 'geom', 2, 14, 0.5, fmt1),
       RANGE('Seed', 'undercooling', 'Undercooling', 'live', 0.2, 1.8, 0.01, fmt2),
@@ -12069,7 +12071,7 @@ void main(){
       hint: 'Kosterlitz–Thouless unbinding on the square lattice sits near T/J ≈ 0.89. Below it vortices bind in pairs and the phase has quasi-long-range order; above it they unbind into a plasma and correlations decay exponentially.' }),
     RANGE('Thermodynamics', 'J', 'Coupling J', LIVE, 0.2, 2, 0.02, f2),
     RANGE('Thermodynamics', 'J2', 'Diagonal coupling', LIVE, 0, 0.8, 0.02, f2, {
-      hint: 'Next-nearest (diagonal) neighbours. A little J₂ stiffens the lattice and slightly raises T_KT; too much pushes it toward an Ising-like transition.' }),
+      hint: 'Next-nearest (diagonal) neighbors. A little J₂ stiffens the lattice and slightly raises T_KT; too much pushes it toward an Ising-like transition.' }),
     RANGE('Thermodynamics', 'dt', 'Time step', LIVE, 0.02, 0.25, 0.01, f2),
     RANGE('Thermodynamics', 'h', 'External field h', LIVE, 0, 1.2, 0.02, f2),
     RANGE('Thermodynamics', 'hAngle', 'Field angle', LIVE, 0, 360, 1, deg, { dimUnless: s => s.h > 0.001 }),
@@ -12093,7 +12095,7 @@ void main(){
       options: [['phase', 'Phase'], ['blend', 'Blend'], ['licphase', 'LIC + phase'], ['lic', 'LIC'], ['vorticity', 'Vorticity'], ['order', 'Order r'], ['energy', 'Energy']] },
     { group: 'Picture', key: 'cyc', label: 'Phase ramp', type: 'seg', kind: PAINT, options: [['wrap', 'Wrap'], ['mirror', 'Mirror'], ['hue', 'Hue wheel']],
       dimUnless: s => s.view === 'phase' || s.view === 'blend' || s.view === 'licphase' || s.view === 'vorticity' },
-    RANGE('Picture', 'orderW', 'Order neighbourhood', PAINT, 1, 4, 1, String, { dimUnless: s => s.view === 'blend' || s.view === 'order' }),
+    RANGE('Picture', 'orderW', 'Order neighborhood', PAINT, 1, 4, 1, String, { dimUnless: s => s.view === 'blend' || s.view === 'order' }),
     RANGE('Picture', 'licLen', 'LIC length', PAINT, 4, 24, 1, String, { dimUnless: s => s.view === 'lic' || s.view === 'licphase' }),
     RANGE('Picture', 'licStep', 'LIC step', PAINT, 0.4, 1.6, 0.05, f2, { dimUnless: s => s.view === 'lic' || s.view === 'licphase' }),
     { group: 'Picture', key: 'cores', label: 'Mark vortex cores', type: 'toggle', kind: PAINT },
@@ -12135,7 +12137,7 @@ void main(){
     order: 58,
     equation: 'H = −J Σ_<ij> cos(θ_i−θ_j);   dθ_i/dt = J Σ_j sin(θ_j−θ_i) + √(2T) η',
     credit: "J. M. Kosterlitz and D. J. Thouless, 'Ordering, metastability and phase transitions in two-dimensional systems', J. Phys. C 6, 1181 (1973). V. L. Berezinskii reached the same unbinding picture in 1971. Nobel Prize in Physics, 2016. The lattice XY Hamiltonian is the classical planar rotor; overdamped Langevin dynamics (model A) is used here so the plate can be watched as it thermalizes.",
-    blurb: 'Every site of a square lattice carries an angle, a little arrow that can point anywhere in the plane, and neighbouring arrows want to agree. In two dimensions that is not enough to pick a direction: thermal ripples destroy true long-range order at any T > 0. What survives below a critical temperature is subtler — arrows still wander, but slowly, and the defects that would scramble them, vortices and antivortices, stay bound in pairs. Heat the lattice through T_KT ≈ 0.89 J and the pairs unbind. Free vortices roam, correlations collapse exponentially, and the film has melted. That is the Kosterlitz–Thouless transition, the reason a thin superfluid film can still be superfluid, and the reason the phase portrait of this model is a plate of bound charges below T_KT and a plasma above it.',
+    blurb: 'Every site of a square lattice carries an angle, a little arrow that can point anywhere in the plane, and neighboring arrows want to agree. In two dimensions that is not enough to pick a direction: thermal ripples destroy true long-range order at any T > 0. What survives below a critical temperature is subtler — arrows still wander, but slowly, and the defects that would scramble them, vortices and antivortices, stay bound in pairs. Heat the lattice through T_KT ≈ 0.89 J and the pairs unbind. Free vortices roam, correlations collapse exponentially, and the film has melted. That is the Kosterlitz–Thouless transition, the reason a thin superfluid film can still be superfluid, and the reason the phase portrait of this model is a plate of bound charges below T_KT and a plasma above it.',
     schema: SCHEMA,
     defaults: DEFAULTS,
     presets: PRESETS,
@@ -12143,7 +12145,7 @@ void main(){
     hints: {
       Thermodynamics: 'T is measured in units of the coupling J. The square-lattice XY model unbinds near 0.89; 0.6 is a bound-pair liquid with quasi-long-range order, 1.3 is a vortex plasma. An external field h pins a global direction and rounds the transition into a crossover. Diagonal coupling J₂ is a small perturbation unless you push it.',
       Seeding: 'Hot is a fully random quench. Vortex pair is the textbook KT picture: a +1 and a −1, total winding zero so it fits on the torus. A single vortex cannot live on periodic boundaries. Twist lays a uniform winding across the frame and lets it relax.',
-      Picture: 'Phase colours the angle. Blend fades disordered regions toward the paper. LIC (line integral convolution) combs the spin field into hair — the print view. Vorticity lights the plaquettes whose winding is ±1. Mark cores if you want the defects drawn on top.',
+      Picture: 'Phase colors the angle. Blend fades disordered regions toward the paper. LIC (line integral convolution) combs the spin field into hair — the print view. Vorticity lights the plaquettes whose winding is ±1. Mark cores if you want the defects drawn on top.',
     },
     palette: true, defaultPalette: 'nightshade', paletteLabel: 'Colors (cyclic phase, then paper)',
     headline: 'T', headlineLabel: 'T / J',
@@ -13890,7 +13892,7 @@ void main(){
     closedGroups: ['Seeding'],
     hints: {
       Onset: 'r is the heat. k₀ is the depth of the pan, in disguise — it sets the stripe width. g is whether the fluid prefers hexagons (the usual weakly nonlinear result with non-Boussinesq effects).',
-      Picture: 'Field is u itself. Orientation colours the local roll direction. Relief is u as height, the convection cells as terrain.',
+      Picture: 'Field is u itself. Orientation colors the local roll direction. Relief is u as height, the convection cells as terrain.',
     },
     palette: true, defaultPalette: 'harbor', paletteLabel: 'Colors',
     headline: 'r', headlineLabel: 'control r',
@@ -13982,7 +13984,7 @@ void main(){
     closedGroups: ['Seeding'],
     hints: {
       Flame: 'ν is the cell size. α is how violently the front steepens. Together they set the Lyapunov chaos of the plate. There is no parameter that “settles” 2D KS — if it looks still, you paused it.',
-      Picture: 'Relief is the honest flame-front picture: u as height, lit. Slope is |∇u|. Cells colours the local facet orientation.',
+      Picture: 'Relief is the honest flame-front picture: u as height, lit. Slope is |∇u|. Cells colors the local facet orientation.',
     },
     palette: true, defaultPalette: 'thermal', paletteLabel: 'Colors',
     headline: 'nu', headlineLabel: 'viscosity ν',
@@ -14077,7 +14079,7 @@ void main(){
     closedGroups: ['Seeding'],
     hints: {
       Crystal: 'This is Swift–Hohenberg with a conservation law. r and ψ₀ together pick the phase: liquid, stripes, or triangular crystal. k₀ is the lattice constant. Two orientations meeting is a grain boundary.',
-      Picture: 'Density is ψ, the atomic density wave. Orientation colours the local lattice angle — that is how you read grains. Relief treats atoms as height.',
+      Picture: 'Density is ψ, the atomic density wave. Orientation colors the local lattice angle — that is how you read grains. Relief treats atoms as height.',
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors',
     headline: 'r', headlineLabel: 'quench r',
@@ -14181,7 +14183,7 @@ void main(){
     order: 55.5,
     equation: 'ẋᵢ = (1/N) Σⱼ [ (xⱼ−xᵢ)/rᵢⱼ · (1 + J cos Δθ) − (xⱼ−xᵢ)/rᵢⱼ² ],   θ̇ᵢ = (K/N) Σⱼ sin(Δθ)/rᵢⱼ',
     credit: "Kevin P. O’Keeffe, Hyunsuk Hong and Steven H. Strogatz, Nature Communications 8, 1504 (2017), 'Oscillators that sync and swarm'. Identical agents with a phase and a position: spatial attraction depends on phase agreement, and phase coupling falls with distance. Five collective states live in the (J, K) plane, including a static rainbow ring and an active phase wave.",
-    blurb: 'A firefly that walks. Each agent has a place and a phase, and the two talk: agents of similar phase attract, opposite phase repel, and the phase coupling itself dies with distance. That is enough for five states that do not exist in either the Kuramoto model or a swarm alone. The rainbow ring is the one you cannot unsee — phase locked to polar angle, a colour wheel of bodies. Turn K a little negative and the ring splinters. More negative, and it never sits still.',
+    blurb: 'A firefly that walks. Each agent has a place and a phase, and the two talk: agents of similar phase attract, opposite phase repel, and the phase coupling itself dies with distance. That is enough for five states that do not exist in either the Kuramoto model or a swarm alone. The rainbow ring is the one you cannot unsee — phase locked to polar angle, a color wheel of bodies. Turn K a little negative and the ring splinters. More negative, and it never sits still.',
     schema: [
       { group: 'Agents', key: 'N', label: 'Agents', type: 'range', kind: GEOM, min: 80, max: 800, step: 20 },
       { group: 'Agents', key: 'init', label: 'Seeding', type: 'seg', kind: GEOM, wrap: true,
@@ -14216,7 +14218,7 @@ void main(){
     },
     hints: {
       Coupling: 'The whole phase diagram is these two numbers. Rainbow ring: J=1, K=0. Sync crystal: K positive. Active chaos: K negative and J positive.',
-      Picture: 'Agents are coloured by phase through the palette. Trails keep a ghost of the motion — that is how you see an active phase wave is actually moving.',
+      Picture: 'Agents are colored by phase through the palette. Trails keep a ghost of the motion — that is how you see an active phase wave is actually moving.',
     },
     palette: true, defaultPalette: 'thermal', paletteLabel: 'Phase colors',
     headline: 'K', headlineLabel: 'phase K',
@@ -14434,7 +14436,7 @@ void main(){
     order: 91,
     equation: 'pₙ₊₁ = pₙ + K sin θₙ,   θₙ₊₁ = θₙ + pₙ₊₁   (mod 2π)',
     credit: "Boris V. Chirikov, Physics Reports 52, 263 (1979); the map itself in 1969. The Chirikov–Taylor standard map is the Poincaré section of a kicked rotor, and the textbook picture of Kolmogorov–Arnold–Moser theory: as K grows, invariant curves break, islands shrink, and a chaotic sea floods the torus. The last golden KAM curve dies at K ≈ 0.971635.",
-    blurb: 'A kicked rotor, reduced to two numbers and a kick. Each orbit is a point on a torus; iterate, and the torus fills in two textures at once: closed curves that never mix (the KAM islands) and a sea that does. Colour by density and you see the islands as dark continents. Colour by Lyapunov exponent and the sea lights up — that is chaos, measured. K is the only coupling that matters. Below one, a world of islands. At 0.9716 the last circle breaks. Above two, almost everything wanders.',
+    blurb: 'A kicked rotor, reduced to two numbers and a kick. Each orbit is a point on a torus; iterate, and the torus fills in two textures at once: closed curves that never mix (the KAM islands) and a sea that does. Color by density and you see the islands as dark continents. Color by Lyapunov exponent and the sea lights up — that is chaos, measured. K is the only coupling that matters. Below one, a world of islands. At 0.9716 the last circle breaks. Above two, almost everything wanders.',
     schema: [
       { group: 'Map', key: 'K', label: 'Kick K', type: 'range', kind: GEOM, min: 0, max: 6, step: 0.01, fmt: f2,
         hint: 'Chirikov’s stochasticity parameter. K≈0.97 is the death of the last golden KAM curve. Below: islands. Above: a growing sea.' },
@@ -14463,7 +14465,7 @@ void main(){
       chaos: pre('Global chaos', { K: 4, view: 'density', orbits: 2000, iters: 160, exposure: 1.3 }, Pal.ember),
     },
     hints: {
-      Map: 'K is the whole story. The famous number is 0.9716: Greene’s residue criterion for the last golden invariant circle. Density is the portrait; Lyapunov colours chaos versus order.',
+      Map: 'K is the whole story. The famous number is 0.9716: Greene’s residue criterion for the last golden invariant circle. Density is the portrait; Lyapunov colors chaos versus order.',
     },
     palette: true, defaultPalette: 'xray', paletteLabel: 'Colors',
     headline: 'K', headlineLabel: 'kick K',
@@ -14770,7 +14772,7 @@ void main(){
     order: 58.1,
     equation: '∂A/∂t = A + (1 + iα) ∇²A − (1 + iβ) |A|² A',
     credit: "The complex Ginzburg–Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969–71). The (α, β) plane was mapped by Aranson and Kramer: Benjamin–Feir when 1+αβ<0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.",
-    blurb: 'A complex amplitude is enough. Real diffusion, imaginary dispersion, a cubic that saturates. The zeros of A are vortices, and they cannot die alone. In one corner of the (α, β) plane they freeze into a glass. In another they birth and annihilate forever — spiral defect chaos, the weather of an oscillatory medium. Colour by phase and you see the spirals. Colour by amplitude and you see the holes they leave.',
+    blurb: 'A complex amplitude is enough. Real diffusion, imaginary dispersion, a cubic that saturates. The zeros of A are vortices, and they cannot die alone. In one corner of the (α, β) plane they freeze into a glass. In another they birth and annihilate forever — spiral defect chaos, the weather of an oscillatory medium. Color by phase and you see the spirals. Color by amplitude and you see the holes they leave.',
     schema: [
       { group: 'Grid', key: 'grid', label: 'Grid', type: 'seg', kind: GEOM, options: [[128,'128'],[192,'192'],[256,'256'],[384,'384'],[512,'512'],[768,'768']] },
       { group: 'Grid', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1','1:1'],['4:5','4:5'],['5:4','5:4'],['16:9','16:9']] },
@@ -14992,7 +14994,7 @@ void main(){
     subtitle: 'almost-Mathieu spectrum · 1976',
     order: 92,
     equation: 'ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ',
-    credit: "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron coloured them. At rational α=p/q the Harper matrix is q×q.",
+    credit: "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron colored them. At rational α=p/q the Harper matrix is q×q.",
     blurb: 'A lattice, a magnetic field, and nothing else. Plot energy against flux and a butterfly appears, identical at every scale. Each wing is a gap, each gap a Chern number, the integer quantum Hall effect written as a moth. Rational fluxes give finite matrices; the irrationals, a Cantor spectrum. This plate diagonalizes the Harper operator at every coprime p/q up to a cutoff and lays the eigenvalues down as density.',
     schema: [
       { group: 'Spectrum', key: 'Q', label: 'Max denominator q', type: 'range', kind: GEOM, min: 12, max: 48, step: 1, fmt: String,
@@ -15007,11 +15009,11 @@ void main(){
     defaults: { Q: 32, view: 'density', tone: 'log', exposure: 1.2, gamma: 0.9, aspect: '1:1', grain: 0.04, seed: 'hofstadter-1976' },
     presets: {
       classic: pre('Classic', { Q: 36, view: 'density' }, Pal.xray),
-      chern: pre('Chern colour', { Q: 28, view: 'chern' }, Pal.thermal),
+      chern: pre('Chern color', { Q: 28, view: 'chern' }, Pal.thermal),
       fine: pre('Fine q=44', { Q: 44, view: 'density' }, Pal.graphite),
       ink: pre('Ink', { Q: 32, view: 'density', exposure: 1.4 }, Pal.ember),
     },
-    hints: { Spectrum: 'q is resolution. The last golden-mean flux is the most broken wing. Chern colours the gaps by the Hall integer of the band below.' },
+    hints: { Spectrum: 'q is resolution. The last golden-mean flux is the most broken wing. Chern colors the gaps by the Hall integer of the band below.' },
     palette: true, defaultPalette: 'xray', paletteLabel: 'Colors',
     headline: 'Q', headlineLabel: 'max q',
     sanitize(s){ s.Q = U.clamp(Math.round(Number(s.Q)||32), 8, 56); },
@@ -15425,7 +15427,7 @@ void main(){
     subtitle: 'Dupin cyclides · Friedel 1910',
     order: 72,
     equation: 'layers: Dupin cyclides of a confocal ellipse–hyperbola pair',
-    credit: "G. Friedel, Annales de Physique 18, 273 (1910). Smectic-A layers prefer equal spacing and may bend; the surfaces of constant spacing whose centres of curvature lie on an ellipse and a confocal hyperbola are Dupin cyclides. Packed in the plane they are toroidal focal conic domains — an Apollonian foam of nested rings.",
+    credit: "G. Friedel, Annales de Physique 18, 273 (1910). Smectic-A layers prefer equal spacing and may bend; the surfaces of constant spacing whose centers of curvature lie on an ellipse and a confocal hyperbola are Dupin cyclides. Packed in the plane they are toroidal focal conic domains — an Apollonian foam of nested rings.",
     blurb: 'A smectic is a stack of liquid pages. Bend them and the only defects they will tolerate are perfect: an ellipse and a hyperbola sharing foci, the layers wrapping as cyclides. Look down on a film and you see circles inside circles, packed until the gaps themselves grow smaller circles — Friedel’s focal conics, the baroque of liquid crystals. This plate packs seeded disks and fills each with the concentric traces of a toroidal domain.',
     schema: [
       { group: 'Packing', key: 'n', label: 'Domains', type: 'range', kind: GEOM, min: 8, max: 80, step: 1, fmt: String },
@@ -15590,7 +15592,7 @@ void main(){
     order: 26,
     equation: 'Φₙ = Φₙ₋₁ ∘ f_{θₙ,cₙ},   cₙ ∝ |Φ′(e^{iθ})|^{−α}',
     credit: "M. B. Hastings and L. S. Levitov, Physica D 116, 244 (1998). Laplacian growth (viscous fingering, DLA in a limit) as iterated conformal maps of the exterior disk. α=0 grows a disk; α=2 is DLA-like; the transition at α=1 is sharp. Each particle is a slit map of capacity c composed onto the cluster.",
-    blurb: 'DLA is a rumour of this. Hastings and Levitov grow the cluster by composing tiny conformal maps: each particle is a slit attached at a random harmonic-measure angle. One exponent α decides whether you get a disk, a finger, or frozen lightning. The boundary is a map of the circle, so it is sharp at any print size. Colour by age and the growth rings are the history of the harmonic measure.',
+    blurb: 'DLA is a rumour of this. Hastings and Levitov grow the cluster by composing tiny conformal maps: each particle is a slit attached at a random harmonic-measure angle. One exponent α decides whether you get a disk, a finger, or frozen lightning. The boundary is a map of the circle, so it is sharp at any print size. Color by age and the growth rings are the history of the harmonic measure.',
     schema: [
       { group: 'Growth', key: 'N', label: 'Particles', type: 'range', kind: GEOM, min: 80, max: 1200, step: 20, fmt: String },
       { group: 'Growth', key: 'alpha', label: 'α', type: 'range', kind: GEOM, min: 0, max: 2.4, step: 0.05, fmt: f2,
@@ -19984,7 +19986,7 @@ uniform int u_view, u_prim, u_sec, u_n, u_smooth;
 ${G.GLSL.bicubic}
 float ch(vec4 v, int i){ return i == 0 ? v.r : (i == 1 ? v.g : (i == 2 ? v.b : v.a)); }
 // A few hundred cells shown across a few thousand pixels: bilinear leaves the diamond creases of the grid
-// on every front, so the smooth view is Catmull-Rom. It interpolates, so a tap at a texel centre is exact.
+// on every front, so the smooth view is Catmull-Rom. It interpolates, so a tap at a texel center is exact.
 vec4 fetch(vec2 uv){
   if (u_smooth == 0) return texture(u_s, uv);
   return texCR4(u_s, uv, u_res);
@@ -21573,7 +21575,7 @@ void main(){
   // log eccentricity, cortical y is polar angle. The field is periodic in y by construction, so one turn of
   // the retina is exactly one wrap of the texture and the seam closes. The warp is analytic per output pixel,
   // so the print recomputes it rather than enlarging a screen buffer. Near the fovea the map compresses many
-  // cortical cells into one pixel, so the retinal view takes four samples per pixel; without that the centre
+  // cortical cells into one pixel, so the retinal view takes four samples per pixel; without that the center
   // aliases into a moire that looks like structure and is not.
   const RENDER_FS = HEAD + `
 uniform sampler2D u_c;
@@ -21676,7 +21678,7 @@ void main(){
   // Below it the sheet relaxes flat at the low branch, above it flat at the high branch, and in both cases the
   // status line says so rather than leaving a uniform plate to be read as a subtle one. At u0 = theta the
   // sigmoid's second derivative vanishes, the quadratic term with it, and stripes beat hexagons; that is the
-  // centre of the window, h = theta - W0 / 2.
+  // center of the window, h = theta - W0 / 2.
   function bandWindow(s) {
     const s2 = s.s1 * s.ratio;
     const k = critK(s.A1, s.s1, s.A2, s2);
@@ -21752,7 +21754,7 @@ void main(){
     order: 10,
     equation: '∂u/∂t = −u + ∫ w(|x−x′|) f(u(x′)) dx′ + h,   w = A₁ G_σ₁ − A₂ G_σ₂,   f(u) = 1/(1+e^{−β(u−θ)})',
     credit: "Neural field with lateral inhibition: Hugh R. Wilson and Jack D. Cowan, Biophysical Journal 12, 1 (1972) and Kybernetik 13, 55 (1973); Shun-ichi Amari, Biological Cybernetics 27, 77 (1977). The claim that a Turing bifurcation in such a sheet, pushed through the retinocortical map, produces the visual hallucinations catalogued by Heinrich Klüver (Mescal, 1928; Mescal and Mechanisms of Hallucinations, 1966) is G. Bard Ermentrout and Jack D. Cowan, 'A mathematical theory of visual hallucination patterns', Biological Cybernetics 34, 137 (1979). The complex-logarithm form of the map follows Eric Schwartz, Biological Cybernetics 25, 181 (1977). Paul Bressloff, Jack Cowan, Martin Golubitsky, Peter Thomas and Matthew Wiener, Philosophical Transactions of the Royal Society B 356, 299 (2001), extended the account to contoured planforms by adding orientation preference as a third coordinate; that extension is not what this tab computes.",
-    blurb: 'A sheet of neurons that excite their close neighbours and inhibit their distant ones has a preferred wavelength, and past a threshold in drive it stops being uniform and breaks into stripes, hexagons or rhombs. That is Turing\'s instability with a synaptic kernel in place of two diffusing chemicals. The second half of the argument is anatomical: primary visual cortex is laid out as roughly the complex logarithm of the visual field, so cortical distance is log eccentricity and the direction across the cortex is polar angle. Push a cortical stripe through that map and it is not a stripe any more. Stripes along one cortical axis become a radial fan, along the other they become concentric rings, obliquely they become a spiral, and a hexagonal cortical lattice becomes a cobweb. Those are the form constants people report under mescaline, flicker and migraine, and nothing in the model was told about them.',
+    blurb: 'A sheet of neurons that excite their close neighbors and inhibit their distant ones has a preferred wavelength, and past a threshold in drive it stops being uniform and breaks into stripes, hexagons or rhombs. That is Turing\'s instability with a synaptic kernel in place of two diffusing chemicals. The second half of the argument is anatomical: primary visual cortex is laid out as roughly the complex logarithm of the visual field, so cortical distance is log eccentricity and the direction across the cortex is polar angle. Push a cortical stripe through that map and it is not a stripe any more. Stripes along one cortical axis become a radial fan, along the other they become concentric rings, obliquely they become a spiral, and a hexagonal cortical lattice becomes a cobweb. Those are the form constants people report under mescaline, flicker and migraine, and nothing in the model was told about them.',
     schema: [
       { group: 'Sheet', key: 'grid', label: 'Grid', type: 'seg', kind: GEOM, options: [[128, '128'], [192, '192'], [256, '256'], [384, '384'], [512, '512'], [768, '768']] },
       { group: 'Sheet', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
@@ -21783,7 +21785,7 @@ void main(){
         options: [['field', 'Field'], ['bands', 'Contours'], ['relief', 'Relief'], ['lines', 'Contour lines']] },
       RANGE('Picture', 'zoom', 'Eccentricity', PAINT, 0.4, 3, 0.02, f2, { dimUnless: s => s.view === 'retina' }),
       RANGE('Picture', 'fovea', 'Foveal radius', PAINT, 0.004, 0.25, 0.002, f3, { dimUnless: s => s.view === 'retina',
-        hint: 'The log map has no value at the centre of gaze, so the inner disc is clamped. Small values open a deep tunnel; large ones leave a plain hub.' }),
+        hint: 'The log map has no value at the center of gaze, so the inner disc is clamped. Small values open a deep tunnel; large ones leave a plain hub.' }),
       RANGE('Picture', 'twist', 'Rotation', PAINT, 0, 360, 5, v => v + '°', { dimUnless: s => s.view === 'retina' }),
       RANGE('Picture', 'bands', 'Contour count', PAINT, 1, 16, 1, String, { dimUnless: s => s.style === 'bands' }),
       RANGE('Picture', 'lo', 'Black point', PAINT, -3, 1, 0.05, f2),
@@ -21816,7 +21818,7 @@ void main(){
     },
     hints: {
       Kernel: 'Short-range excitation and longer-range inhibition. The instability needs the inhibition to win the second-moment comparison, A₂σ₂² > A₁σ₁²; when it does not, the status line says so and the sheet saturates flat instead of patterning.',
-      Picture: 'Cortical x is log eccentricity and cortical y is polar angle, so the visual-field view is the inverse complex logarithm of the sheet. It is computed per output pixel, which is why the print is sharp at the centre rather than an enlargement of the screen.',
+      Picture: 'Cortical x is log eccentricity and cortical y is polar angle, so the visual-field view is the inverse complex logarithm of the sheet. It is computed per output pixel, which is why the print is sharp at the center rather than an enlargement of the screen.',
     },
     palette: true, defaultPalette: 'nightshade',
     headline: 'h', headlineLabel: 'drive',
@@ -21832,7 +21834,7 @@ void main(){
       const beta = Math.round(rng.range(5, 12) * 5) / 5, theta = Math.round(rng.range(0.1, 0.7) * 50) / 50;
       const w = bandWindow({ s1, ratio, A1, A2, beta, theta });
       const plan = rng.pick(['fan', 'rings', 'spiral', 'spiral', 'lattice', 'square', 'noise']);
-      // stripe planforms want the middle of the window, hexagons want to sit off-centre where the quadratic term bites
+      // stripe planforms want the middle of the window, hexagons want to sit off-center where the quadratic term bites
       const frac = plan === 'lattice' ? rng.pick([0.24, 0.76]) : rng.range(0.42, 0.58);
       const h = w.ok ? w.hLo + frac * (w.hHi - w.hLo) : theta - (A1 - A2) / 2;
       return {
@@ -22180,7 +22182,7 @@ void main(){
     }
   }
 
-  // Unfolded nearest-neighbour spacings. The raw gaps mix level repulsion with the semicircle's varying
+  // Unfolded nearest-neighbor spacings. The raw gaps mix level repulsion with the semicircle's varying
   // density, so each gap is divided by the local mean spacing before the statistics are taken. The
   // coefficient of variation is then comparable with the Wigner surmise, which gives sqrt(4/pi - 1) = 0.523
   // at beta = 1 and sqrt(3 pi/8 - 1) = 0.422 at beta = 2, against 1 for an uncorrelated (Poisson) sequence.
@@ -22209,7 +22211,7 @@ void main(){
         options: [['rows', 'Stacked spectra'], ['sweep', 'β sweep'], ['dyson', 'Dyson paths']],
         hint: 'Stacked spectra draws many independent samples at one β. The sweep varies β down the plate, from clumping to rigidity. Dyson paths let one matrix diffuse and traces its eigenvalues.' },
       { group: 'Ensemble', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
-      RANGE('Ensemble', 'n', 'Matrix size n', GEOM, 24, 400, 4, String, { hint: 'Eigenvalues per sample. The spectrum fills [−2√(βn), 2√(βn)], so larger n is a finer comb, not a wider one, once the plate is normalised.' }),
+      RANGE('Ensemble', 'n', 'Matrix size n', GEOM, 24, 400, 4, String, { hint: 'Eigenvalues per sample. The spectrum fills [−2√(βn), 2√(βn)], so larger n is a finer comb, not a wider one, once the plate is normalized.' }),
       RANGE('Ensemble', 'beta', 'Repulsion β', GEOM, 0.05, 20, 0.05, f2, { dimUnless: s => s.mode === 'rows',
         hint: 'β = 0 is independence, 1 real symmetric (GOE), 2 complex Hermitian (GUE), 4 quaternionic (GSE). Above that the levels approach a rigid lattice.' }),
       RANGE('Ensemble', 'rows', 'Samples', GEOM, 24, 400, 4, String, { dimUnless: s => s.mode !== 'dyson' }),
@@ -22220,7 +22222,7 @@ void main(){
       RANGE('Diffusion', 'slices', 'Time samples', GEOM, 120, 1200, 20, String, { dimUnless: s => s.mode === 'dyson',
         hint: 'Each sample is one full diagonalisation, so the cost grows as n³ per slice; the count is capped against the matrix size and the status line says when it was.' }),
       RANGE('Diffusion', 'span', 'Time span', GEOM, 0.5, 24, 0.5, f1, { dimUnless: s => s.mode === 'dyson' }),
-      { group: 'Picture', key: 'ink', label: 'Colour by', type: 'seg', kind: PAINT, wrap: true,
+      { group: 'Picture', key: 'ink', label: 'Color by', type: 'seg', kind: PAINT, wrap: true,
         options: [['position', 'Position'], ['spacing', 'Local spacing'], ['row', 'Sample'], ['flat', 'One ink']] },
       { group: 'Picture', key: 'norm', label: 'Scale', type: 'seg', kind: PAINT,
         options: [['global', 'One scale'], ['row', 'Per sample']],
@@ -22394,7 +22396,7 @@ void main(){
         host.setStatus(P.join(''));
       }
 
-      // A 256-entry ramp rather than the palette array indexed directly. Indexing the array quantises a
+      // A 256-entry ramp rather than the palette array indexed directly. Indexing the array quantizes a
       // continuous quantity into as many vertical bands as there are swatches, which reads as structure in
       // the plate and is not: the eigenvalues do not come in eight kinds. The palette is the ramp's stops.
       let lut = null, lutKey = '';
@@ -22538,7 +22540,7 @@ void main(){
 </script>
 <script>
 /* modules/landscape.js */
-/* GENChase — landscape evolution by stream-power incision and hillslope diffusion, and the drainage networks it organises. */
+/* GENChase — landscape evolution by stream-power incision and hillslope diffusion, and the drainage networks it organizes. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -22680,7 +22682,7 @@ void main(){
         if (s.bc === 'bottom') return y === H - 1;
         return x === 0 || y === 0 || x === W - 1 || y === H - 1;
       }
-      // The belt wraps left to right, so a neighbour that walks off one side comes back on the other.
+      // The belt wraps left to right, so a neighbor that walks off one side comes back on the other.
       // Everything else, including the flood, goes through this one function so the two geometries cannot drift.
       function nb(s, x, y, d) {
         let nx = x + DX[d];
@@ -22910,7 +22912,7 @@ void main(){
                 const t = Math.log(Math.max(area[i], 1)) / Math.max(logMax, 1e-6);
                 const c = rgb(t); r = c[0]; g = c[1]; b = c[2];
               } else if (s.view === 'basins') {
-                // a cheap integer hash so neighbouring outlet indices do not get neighbouring colours
+                // a cheap integer hash so neighboring outlet indices do not get neighboring colors
                 const hsh = ((basin[i] * 2654435761) >>> 0) / 4294967296;
                 const c = rgb(hsh); r = c[0]; g = c[1]; b = c[2];
               } else if (s.view === 'hypso') {
@@ -23032,7 +23034,7 @@ void main(){
     order: 33,
     equation: '∂h/∂t = ν∇²h + (λ/2)(∇h)² + η,   W(t) ~ t^β with β = 1/3 in 1+1 dimensions',
     credit: "Mehran Kardar, Giorgio Parisi and Yi-Cheng Zhang, 'Dynamic scaling of growing interfaces', Physical Review Letters 56, 889 (1986). The scaling form W(L, t) = L^α f(t/L^z) is Fereydoon Family and Tamás Vicsek, J. Phys. A 18, L75 (1985). Ballistic deposition is Murray Vold (1959) and Michael Sutherland (1966); the restricted solid-on-solid model is Jin Min Kim and Joel Kosterlitz, Phys. Rev. Lett. 62, 2289 (1989); surface relaxation is Family, J. Phys. A 19, L441 (1986); the cluster model is Murray Eden, in the Berkeley Symposium proceedings (1961). That the edge fluctuations follow the Tracy-Widom distributions is Michael Prähofer and Herbert Spohn, Phys. Rev. Lett. 84, 4882 (2000), and Kazumasa Takeuchi and Masaki Sano measured it in turbulent liquid crystal, Phys. Rev. Lett. 104, 230601 (2010).",
-    blurb: 'Drop particles on a surface at random and the surface gets rough. How rough, and how fast, depends on almost nothing about the particles: three rules that differ only in what a particle does when it lands fall into three universality classes with three different exponents, and the exponents are all the physics there is. If the particle simply stacks where it fell, the height is a sum of independent Poisson counts and the width grows as t^(1/2) forever. If it hops to the lowest of its three candidate sites, lateral relaxation smooths the surface and the width grows as t^(1/4). If it sticks to the first thing it touches, so that a tall column reaches sideways and shadows its neighbours, growth is locally normal to the surface, a nonlinear term appears, and the width grows as t^(1/3). That last number is Kardar, Parisi and Zhang, and it has since been measured in turbulent liquid crystal and in bacterial colonies. The plate colours every particle by when it landed, so the strata are the history of the interface.',
+    blurb: 'Drop particles on a surface at random and the surface gets rough. How rough, and how fast, depends on almost nothing about the particles: three rules that differ only in what a particle does when it lands fall into three universality classes with three different exponents, and the exponents are all the physics there is. If the particle simply stacks where it fell, the height is a sum of independent Poisson counts and the width grows as t^(1/2) forever. If it hops to the lowest of its three candidate sites, lateral relaxation smooths the surface and the width grows as t^(1/4). If it sticks to the first thing it touches, so that a tall column reaches sideways and shadows its neighbors, growth is locally normal to the surface, a nonlinear term appears, and the width grows as t^(1/3). That last number is Kardar, Parisi and Zhang, and it has since been measured in turbulent liquid crystal and in bacterial colonies. The plate colors every particle by when it landed, so the strata are the history of the interface.',
     schema: [
       { group: 'Growth', key: 'model', label: 'Rule', type: 'seg', kind: GEOM, wrap: true,
         options: [['ballistic', 'Ballistic'], ['rsos', 'RSOS'], ['relax', 'Relaxation'], ['random', 'Random'], ['eden', 'Eden cluster']],
@@ -23043,7 +23045,7 @@ void main(){
       { group: 'Picture', key: 'view', label: 'Draw', type: 'seg', kind: PAINT, wrap: true,
         options: [['strata', 'Strata'], ['rings', 'Interfaces'], ['both', 'Both']] },
       RANGE('Picture', 'bands', 'Strata', PAINT, 1, 60, 1, String, { dimUnless: s => s.view !== 'rings',
-        hint: 'Quantises deposition time into layers. One band is a smooth gradient; many bands read as bedding planes and make the roughening legible layer by layer.' }),
+        hint: 'Quantizes deposition time into layers. One band is a smooth gradient; many bands read as bedding planes and make the roughening legible layer by layer.' }),
       { group: 'Picture', key: 'logTime', label: 'Space the layers logarithmically', type: 'toggle', kind: PAINT },
       RANGE('Picture', 'lines', 'Interface count', PAINT, 2, 48, 1, String, { dimUnless: s => s.view !== 'strata' }),
       RANGE('Picture', 'lw', 'Line weight', PAINT, 0.2, 5, 0.1, f1, { dimUnless: s => s.view !== 'strata' }),
@@ -23153,7 +23155,7 @@ void main(){
           let y;
           if (s.model === 'random') y = h[x] + 1;
           else if (s.model === 'ballistic') {
-            // stick to the first thing touched: the particle lands beside a tall neighbour rather than on top
+            // stick to the first thing touched: the particle lands beside a tall neighbor rather than on top
             // of its own column, which is the lateral growth that makes this KPZ rather than Edwards-Wilkinson
             const l = x > 0 ? h[x - 1] : h[W - 1], r = x < W - 1 ? h[x + 1] : h[0];
             y = Math.max(h[x] + 1, l, r);
@@ -23168,7 +23170,7 @@ void main(){
           } else {
             const lx = x > 0 ? x - 1 : W - 1, rx = x < W - 1 ? x + 1 : 0;
             y = h[x] + 1;
-            if (y - h[lx] > 1 || y - h[rx] > 1) continue;   // RSOS: the step to a neighbour may not exceed one
+            if (y - h[lx] > 1 || y - h[rx] > 1) continue;   // RSOS: the step to a neighbor may not exceed one
           }
           if (y > top) { target = nPart; return true; }
           cell[y * W + x] = ++nPart;
@@ -23258,7 +23260,7 @@ void main(){
 
       function paintLattice(s) {
         // The cells are the picture, so the lattice is drawn at one pixel per cell and scaled up with
-        // nearest-neighbour sampling; smoothing it would invent material that was never deposited.
+        // nearest-neighbor sampling; smoothing it would invent material that was never deposited.
         const off = document.createElement('canvas');
         off.width = W; off.height = H;
         const g = off.getContext('2d');
@@ -23422,7 +23424,7 @@ vec2 psiAt(vec2 uv){ return texture(u_psi, uv).rg; }
 `;
 
   // Imaginary time. The equation becomes a damped diffusion, so the ground state is whatever survives:
-  // relax, renormalise, repeat. In the rotating frame the Hamiltonian carries -Omega L_z, which is what
+  // relax, renormalize, repeat. In the rotating frame the Hamiltonian carries -Omega L_z, which is what
   // makes vortices cheaper than the kinetic energy of rigid rotation and so makes them appear at all.
   //
   // Explicit Euler is used here and nowhere near as casually as that sounds. The 5-point Laplacian has
@@ -23526,12 +23528,12 @@ void main(){
 }`;
 
   // The reduction is read back through an 8-bit target, so what it measures has to be scaled into that
-  // range or the answer is quantisation noise. An absolute density is the wrong quantity to encode: a
+  // range or the answer is quantization noise. An absolute density is the wrong quantity to encode: a
   // Thomas-Fermi cloud in a box of half-width nine has a peak density around 0.02, which over a fixed
-  // range of 0 to 8 lands on byte value one. The renormalisation then reads a norm that is wrong by a
+  // range of 0 to 8 lands on byte value one. The renormalization then reads a norm that is wrong by a
   // factor of ten, shrinks the condensate every stride, and the plate fades to nothing with no error
   // anywhere. Everything here is therefore measured against u_ref, the mean density the seed was
-  // normalised to, which is known exactly: one over the area of the box.
+  // normalized to, which is known exactly: one over the area of the box.
   const REDUCE_FS = `#version 300 es
 precision highp float;
 in vec2 v_uv; out vec4 outColor;
@@ -23570,8 +23572,8 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
     tab: 'Condensate',
     subtitle: 'Gross-Pitaevskii, rotating · 1961',
     order: 12,
-    equation: 'iℏ ∂ψ/∂t = [−½∇² + V(r) + g|ψ|² − Ω L_z] ψ,   circulation quantised in units of h/m',
-    credit: "The mean-field equation is Eugene Gross, Il Nuovo Cimento 20, 454 (1961), and Lev Pitaevskii, Soviet Physics JETP 13, 451 (1961). That a rotating superfluid answers with a triangular array of singly quantised vortices rather than rigid rotation is Alexei Abrikosov's 1957 result for type-II superconductors, Soviet Physics JETP 5, 1174, carried over to condensates; it was seen in the laboratory by Kirk Madison, Frédéric Chevy, Wendel Wohlleben and Jean Dalibard, Phys. Rev. Lett. 84, 806 (2000), and resolved into a lattice of well over a hundred vortices by Jamil Abo-Shaeer, Chandra Raman, Johnny Vogels and Wolfgang Ketterle, Science 292, 476 (2001). The staggered explicit scheme used in real time follows P. B. Visscher, Computers in Physics 5, 596 (1991). The quantisation of circulation is Lars Onsager (1949) and Richard Feynman (1955).",
+    equation: 'iℏ ∂ψ/∂t = [−½∇² + V(r) + g|ψ|² − Ω L_z] ψ,   circulation quantized in units of h/m',
+    credit: "The mean-field equation is Eugene Gross, Il Nuovo Cimento 20, 454 (1961), and Lev Pitaevskii, Soviet Physics JETP 13, 451 (1961). That a rotating superfluid answers with a triangular array of singly quantized vortices rather than rigid rotation is Alexei Abrikosov's 1957 result for type-II superconductors, Soviet Physics JETP 5, 1174, carried over to condensates; it was seen in the laboratory by Kirk Madison, Frédéric Chevy, Wendel Wohlleben and Jean Dalibard, Phys. Rev. Lett. 84, 806 (2000), and resolved into a lattice of well over a hundred vortices by Jamil Abo-Shaeer, Chandra Raman, Johnny Vogels and Wolfgang Ketterle, Science 292, 476 (2001). The staggered explicit scheme used in real time follows P. B. Visscher, Computers in Physics 5, 596 (1991). The quantization of circulation is Lars Onsager (1949) and Richard Feynman (1955).",
     blurb: 'A condensate cannot rotate the way a bucket of water does. Its velocity field is the gradient of a phase, so it is irrotational everywhere the wavefunction is non-zero, and the only way to carry angular momentum is to make places where the wavefunction is zero and wind the phase by a whole turn around each of them. Those are vortices, and their circulation is not adjustable: it comes in units of Planck\'s constant over the mass. Spin the trap faster and the condensate does not spin faster, it makes more vortices, and they arrange themselves into the triangular lattice that minimises their mutual energy. This is the same lattice Abrikosov predicted for magnetic flux in a superconductor, and the same one photographed in sodium in 2001. The plate solves the equation and then finds the phase singularities directly, by walking the winding number around every plaquette, so the vortices marked are the ones the field actually has.',
     schema: [
       { group: 'Condensate', key: 'mode', label: 'Evolution', type: 'seg', kind: GEOM, wrap: true,
@@ -23594,7 +23596,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
         options: [['density', 'Density'], ['phase', 'Phase'], ['both', 'Density and phase'], ['vortices', 'Vortices']] },
       RANGE('Picture', 'markR', 'Vortex mark', PAINT, 0.2, 4, 0.1, f1, { dimUnless: s => s.view === 'vortices' }),
       RANGE('Picture', 'bond', 'Bond weight', PAINT, 0, 3, 0.1, f1, { dimUnless: s => s.view === 'vortices',
-        hint: 'Draws the nearest-neighbour bonds between vortices, which is where the triangular order is visible rather than inferred.' }),
+        hint: 'Draws the nearest-neighbor bonds between vortices, which is where the triangular order is visible rather than inferred.' }),
       RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.5, 2.2, 0.02, f2),
       RANGE('Picture', 'gamma', 'Gamma', PAINT, 0.4, 2.2, 0.02, f2),
       RANGE('Picture', 'contrast', 'Contrast', PAINT, 0.5, 2.2, 0.02, f2),
@@ -23723,7 +23725,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
           data[o + 1] = amp * jitter * Math.sin(ph);
           data[o + 3] = 1;
         }
-        // Normalise exactly here, on the CPU, so the reference the GPU measurement is scaled against is
+        // Normalize exactly here, on the CPU, so the reference the GPU measurement is scaled against is
         // known rather than estimated: after this the mean density is one over the area of the box.
         let sum = 0;
         for (let i = 0; i < n * n; i++) sum += data[i * 4] * data[i * 4] + data[i * 4 + 1] * data[i * 4 + 1];
@@ -23735,12 +23737,12 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
 
       // Imaginary time does not conserve the norm: it damps every state by exp(-E tau), so left alone the
       // condensate simply fades to nothing and the plate goes black with no error anywhere. The fix is to
-      // renormalise, and the cheapest way to do it is to reuse the stepping pass with the time step set to
+      // renormalize, and the cheapest way to do it is to reuse the stepping pass with the time step set to
       // zero, which then does nothing but multiply. Measuring every step would mean a GPU readback every
       // step, so it is done on a stride; the decay over that stride is a few tens of percent, well inside
       // what a single rescale corrects exactly.
       const NORM_EVERY = 32;
-      function renormalise(s, base) {
+      function renormalize(s, base) {
         measure();
         const area = (2 * s.half) * (2 * s.half);
         const integral = normV * area;
@@ -23758,7 +23760,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
           if (s.mode === 'ground') {
             imPass.draw(P.write, Object.assign({ u_psi: P.read, u_omega: s.omega, u_scale: 1 }, base));
             P.swap();
-            if (((stepCount + i + 1) % NORM_EVERY) === 0) renormalise(s, base);
+            if (((stepCount + i + 1) % NORM_EVERY) === 0) renormalize(s, base);
           } else {
             rePass.draw(P.write, Object.assign({ u_psi: P.read, u_omega: 0, u_scale: 1, u_part: { int: 0 } }, base));
             P.swap();
@@ -23802,7 +23804,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
         // there registers a winding, so it has to be excluded. Excluding by the local density is exactly
         // wrong, though, and cost this tab half its vortices: a vortex core is a density zero, so a
         // threshold that keeps out the vacuum also keeps out the thing being looked for. The mask is
-        // therefore the neighbourhood maximum, taken separably over a few healing lengths: a core stays
+        // therefore the neighborhood maximum, taken separably over a few healing lengths: a core stays
         // inside it because the bulk around it is bright, and the vacuum stays outside because nothing is.
         const RAD = 5;
         const tmpM = new Float32Array(n * n), mask = new Float32Array(n * n);
@@ -23832,7 +23834,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
           if (wnd !== 0) out.push({ x: (i + 1) / n, y: (j + 1) / n, w: wnd });
         }
         // bond-orientational order: |psi6| is one for a perfect triangular lattice and near zero for a
-        // disordered set of points. Six nearest neighbours per vortex, angles taken in the plate's frame.
+        // disordered set of points. Six nearest neighbors per vortex, angles taken in the plate's frame.
         psi6 = null;
         if (out.length >= 7) {
           let acc = 0, cnt = 0;
@@ -23854,7 +23856,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
         // Bond length, measured rather than assumed. Estimating the lattice spacing from the vortex count
         // and the plate area assumes the vortices fill the plate; they fill the cloud, which is a fraction
         // of it, so that estimate comes out two to three times too long and the bond drawing joins every
-        // pair to every other. The median nearest-neighbour distance makes no such assumption.
+        // pair to every other. The median nearest-neighbor distance makes no such assumption.
         bondLen = 0;
         if (out.length > 2) {
           const nn = [];
@@ -24061,9 +24063,9 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
-  // Second-order neighbourhood. The four-neighbour version of this model grows square grains: on that
+  // Second-order neighborhood. The four-neighbor version of this model grows square grains: on that
   // stencil the boundary energy of a staircase equals the energy of the straight line it approximates,
-  // so the lattice axes cost nothing and the froth inherits them. Eight neighbours restores enough
+  // so the lattice axes cost nothing and the froth inherits them. Eight neighbors restores enough
   // isotropy for the boundaries to be curves.
   const NX = [1, 1, 0, -1, -1, -1, 0, 1], NY = [0, 1, 1, 1, 0, -1, -1, -1];
 
@@ -24076,7 +24078,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
     order: 34,
     equation: 'H = Σ_⟨ij⟩ J(1 − δ_{σi σj}) + λ Σ_c (a_c − A)²;   accept a copy with min(1, e^{−ΔH/T})',
     credit: "The extended, area-constrained Potts model is François Graner and James Glazier, 'Simulation of biological cell sorting using a two-dimensional extended Potts model', Physical Review Letters 69, 2013 (1992), building on Malcolm Anderson, David Srolovitz, Gary Grest and Paul Sahni, Acta Metallurgica 32, 783 (1984), who used the plain q-state Potts model for grain growth. The law the plate measures is John von Neumann's, in Metal Interfaces (1952), as extended by William Mullins, J. Appl. Phys. 27, 900 (1956): a two-dimensional cell with n sides changes area at a rate proportional to n − 6. The average side count being exactly six is Euler's formula, not a fit. Differential adhesion as the explanation for cell sorting is Malcolm Steinberg, Science 141, 401 (1963).",
-    blurb: 'Give every cell a label, charge energy for every pair of neighbouring sites whose labels differ, and let the labels copy into each other at a finite temperature. That is all. What comes out is a froth: cells meeting three at a time at roughly a hundred and twenty degrees, small cells vanishing, large ones swallowing them, the whole pattern coarsening while staying statistically the same shape. The law behind it is exact and almost absurdly simple. Because the boundaries move by curvature and the angles at the vertices are fixed, a cell with fewer than six sides is bounded by curves that bow inward and must shrink, a cell with more than six grows, and one with exactly six is neutral. The average over the whole froth is six, forced by Euler. Add an area constraint and the cells stop being able to vanish, which is the difference between a metal grain structure and a soap foam that holds its bubbles.',
+    blurb: 'Give every cell a label, charge energy for every pair of neighboring sites whose labels differ, and let the labels copy into each other at a finite temperature. That is all. What comes out is a froth: cells meeting three at a time at roughly a hundred and twenty degrees, small cells vanishing, large ones swallowing them, the whole pattern coarsening while staying statistically the same shape. The law behind it is exact and almost absurdly simple. Because the boundaries move by curvature and the angles at the vertices are fixed, a cell with fewer than six sides is bounded by curves that bow inward and must shrink, a cell with more than six grows, and one with exactly six is neutral. The average over the whole froth is six, forced by Euler. Add an area constraint and the cells stop being able to vanish, which is the difference between a metal grain structure and a soap foam that holds its bubbles.',
     schema: [
       { group: 'Froth', key: 'mode', label: 'System', type: 'seg', kind: GEOM, wrap: true,
         options: [['grains', 'Grain growth'], ['foam', 'Constrained foam']],
@@ -24084,7 +24086,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
       { group: 'Froth', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
       { group: 'Froth', key: 'grid', label: 'Lattice', type: 'seg', kind: GEOM, options: [[192, '192'], [256, '256'], [320, '320'], [400, '400']] },
       { group: 'Froth', key: 'wrap', label: 'Wrap the lattice', type: 'toggle', kind: GEOM,
-        hint: 'A torus has no walls, so no cell is cut off by the edge and the side counts are the ones the law is about. Unwrapped, the boundary cells have fewer neighbours and drag the average below six.' },
+        hint: 'A torus has no walls, so no cell is cut off by the edge and the side counts are the ones the law is about. Unwrapped, the boundary cells have fewer neighbors and drag the average below six.' },
       RANGE('Froth', 'seeds', 'Initial cells', GEOM, 40, 1200, 10, String),
       RANGE('Froth', 'sweeps', 'Sweeps', GEOM, 40, 3000, 20, String, { hint: 'One sweep is one attempted copy per lattice site. Coarsening is diffusive, so the mean area grows roughly linearly in sweeps and the cell count falls as its inverse.' }),
       RANGE('Energy', 'T', 'Temperature', GEOM, 0.5, 24, 0.5, f1, { hint: 'Too cold and the boundaries freeze onto the lattice; too hot and they fray into noise and stop being curves. The froth lives in between.' }),
@@ -24105,16 +24107,16 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
     },
     presets: {
       coarse: pre('Coarsened grains', { mode: 'grains', seeds: 600, sweeps: 900, T: 8, view: 'flat', wallW: 1 }, Pal.graphite),
-      sides: pre('Coloured by side count', { mode: 'grains', seeds: 700, sweeps: 700, T: 8, view: 'sides', wallW: 1.4 }, Pal.thermal),
+      sides: pre('Colored by side count', { mode: 'grains', seeds: 700, sweeps: 700, T: 8, view: 'sides', wallW: 1.4 }, Pal.thermal),
       foam: pre('A foam that holds', { mode: 'foam', lam: 0.6, targetScale: 1, seeds: 500, sweeps: 900, T: 8, view: 'flat', wallW: 1.2 }, Pal.harbor),
       walls: pre('Walls only', { mode: 'grains', seeds: 500, sweeps: 800, T: 8, view: 'walls', wallW: 1.6 }, Pal.kiln),
       young: pre('Early, still fine', { mode: 'grains', seeds: 1200, sweeps: 150, T: 8, view: 'flat', wallW: 0.6 }, Pal.verdigris),
       hot: pre('Rough boundaries', { mode: 'grains', seeds: 500, sweeps: 700, T: 18, view: 'flat', wallW: 1 }, Pal.ember),
-      area: pre('Coloured by area', { mode: 'grains', seeds: 700, sweeps: 1000, T: 8, view: 'area', wallW: 1 }, Pal.glacier),
+      area: pre('Colored by area', { mode: 'grains', seeds: 700, sweeps: 1000, T: 8, view: 'area', wallW: 1 }, Pal.glacier),
     },
     hints: {
       Energy: 'Only differences of energy matter, so J is fixed at one and the temperature is measured against it.',
-      Picture: 'Sides colours each cell by how many neighbours it has, which is the quantity the von Neumann-Mullins law is written in: five-sided cells are shrinking, seven-sided ones are growing, six-sided ones are doing neither.',
+      Picture: 'Sides colors each cell by how many neighbors it has, which is the quantity the von Neumann-Mullins law is written in: five-sided cells are shrinking, seven-sided ones are growing, six-sided ones are doing neither.',
     },
     palette: true, defaultPalette: 'graphite',
     headline: 'sweeps', headlineLabel: 'sweeps',
@@ -24178,8 +24180,8 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
         areaAt = null;
       }
 
-      // One attempted copy: pick a site, pick one of its eight neighbours, and try to take that
-      // neighbour's label. Energy is counted only over the eight bonds of the site being changed, which is
+      // One attempted copy: pick a site, pick one of its eight neighbors, and try to take that
+      // neighbor's label. Energy is counted only over the eight bonds of the site being changed, which is
       // exact because no other bond in the lattice involves it.
       function attempt(s, rng) {
         const i = (rng() * N) | 0;
@@ -24323,7 +24325,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
         const cache = new Int32Array(nLab).fill(-1);
         for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
           const i = y * W + x, k = lab[i], o = i * 4;
-          // a wall pixel is one whose right or lower neighbour has a different label
+          // a wall pixel is one whose right or lower neighbor has a different label
           const wall = s.wallW > 0 && (lab[idx(s, x + 1, y) < 0 ? i : idx(s, x + 1, y)] !== k || lab[idx(s, x, y + 1) < 0 ? i : idx(s, x, y + 1)] !== k);
           px[o + 3] = 255;
           if (s.view === 'walls') {
@@ -24377,7 +24379,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
 </script>
 <script>
 /* modules/tonertu.js */
-/* GENChase — Toner-Tu: a polar active fluid, its travelling bands, and the giant number fluctuations measured on the plate. */
+/* GENChase — Toner-Tu: a polar active fluid, its traveling bands, and the giant number fluctuations measured on the plate. */
 (function () {
   'use strict';
   const U = Studio.util, G = Studio.gl;
@@ -24413,17 +24415,17 @@ vec3 F(vec2 uv){ return texture(u_f, uv).rgb; }
   // difference between a flock and a blown-up field:
   //
   // The continuity equation is written in conservative flux form with an upwind density at each face.
-  // Writing it as -rho div v - v . grad rho with centred differences does not conserve mass on the
+  // Writing it as -rho div v - v . grad rho with centered differences does not conserve mass on the
   // lattice, and the error accumulates where the density is sharpest, which in this model is exactly
   // inside the bands that are the thing being drawn.
   //
-  // The advection of velocity by itself is upwinded for the same reason a centred scheme fails on any
-  // hyperbolic term: at the grid scale a centred first derivative has zero numerical dissipation and the
+  // The advection of velocity by itself is upwinded for the same reason a centered scheme fails on any
+  // hyperbolic term: at the grid scale a centered first derivative has zero numerical dissipation and the
   // odd-even modes are free to grow.
   //
   // The self-propulsion coefficient is density dependent. With a constant alpha the model orders
   // uniformly and there is nothing to see; it is the fact that dense regions order and dilute ones do
-  // not that makes the ordered phase phase-separate into travelling bands, which is Toner and Tu's point.
+  // not that makes the ordered phase phase-separate into traveling bands, which is Toner and Tu's point.
   const STEP = HEAD + `
 uniform float u_dt, u_dx, u_a0, u_a1, u_beta, u_sigma, u_nu, u_lambda, u_rho0, u_noise, u_step, u_nOff, u_vmax;
 ${G.GLSL.hash}
@@ -24548,8 +24550,8 @@ void main(){
     subtitle: 'Toner-Tu, a polar active fluid · 1995',
     order: 37,
     equation: '∂ρ/∂t + ∇·(ρv) = 0;   ∂v/∂t + λ(v·∇)v = (α(ρ) − β|v|²)v − σ∇ρ + ν∇²v + η',
-    credit: "John Toner and Yuhai Tu, 'Long-range order in a two-dimensional dynamical XY model: how birds fly together', Physical Review Letters 75, 4326 (1995), and Phys. Rev. E 58, 4828 (1998). The particle model it coarse-grains is Tamás Vicsek, András Czirók, Eshel Ben-Jacob, Inon Cohen and Ofer Shochet, Phys. Rev. Lett. 75, 1226 (1995). That the ordered state phase separates into travelling bands rather than ordering uniformly is Guillaume Grégoire and Hugues Chaté, Phys. Rev. Lett. 92, 025702 (2004), and Chaté, Francesco Ginelli, Grégoire and Franck Raynaud, Phys. Rev. E 77, 046113 (2008). Giant number fluctuations in active matter are Sriram Ramaswamy, R. Aditi Simha and John Toner, Europhysics Letters 62, 196 (2003).",
-    blurb: 'A flock is not a fluid at rest that happens to be moving. Every element drives itself, so momentum is not conserved, and that one missing conservation law changes what the system is allowed to do. Toner and Tu wrote down the hydrodynamics of it: a density that is conserved, a velocity that is not, and a term that makes speed relax toward a preferred value rather than toward zero. Two things fall out that no equilibrium fluid does. The ordered state does not order evenly, it breaks into dense travelling bands moving through a dilute disordered sea, because dense regions align and sparse ones do not. And the number of elements in a box fluctuates far more than the square root of the mean, which in an equilibrium system it cannot: count the flock in boxes and the fluctuations are giant. The status line measures that exponent on the plate.',
+    credit: "John Toner and Yuhai Tu, 'Long-range order in a two-dimensional dynamical XY model: how birds fly together', Physical Review Letters 75, 4326 (1995), and Phys. Rev. E 58, 4828 (1998). The particle model it coarse-grains is Tamás Vicsek, András Czirók, Eshel Ben-Jacob, Inon Cohen and Ofer Shochet, Phys. Rev. Lett. 75, 1226 (1995). That the ordered state phase separates into traveling bands rather than ordering uniformly is Guillaume Grégoire and Hugues Chaté, Phys. Rev. Lett. 92, 025702 (2004), and Chaté, Francesco Ginelli, Grégoire and Franck Raynaud, Phys. Rev. E 77, 046113 (2008). Giant number fluctuations in active matter are Sriram Ramaswamy, R. Aditi Simha and John Toner, Europhysics Letters 62, 196 (2003).",
+    blurb: 'A flock is not a fluid at rest that happens to be moving. Every element drives itself, so momentum is not conserved, and that one missing conservation law changes what the system is allowed to do. Toner and Tu wrote down the hydrodynamics of it: a density that is conserved, a velocity that is not, and a term that makes speed relax toward a preferred value rather than toward zero. Two things fall out that no equilibrium fluid does. The ordered state does not order evenly, it breaks into dense traveling bands moving through a dilute disordered sea, because dense regions align and sparse ones do not. And the number of elements in a box fluctuates far more than the square root of the mean, which in an equilibrium system it cannot: count the flock in boxes and the fluctuations are giant. The status line measures that exponent on the plate.',
     schema: [
       { group: 'Flock', key: 'grid', label: 'Grid', type: 'seg', kind: GEOM, options: [[128, '128'], [192, '192'], [256, '256'], [320, '320'], [512, '512'], [768, '768']] },
       { group: 'Flock', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
@@ -24904,7 +24906,7 @@ void main(){
   }
 
   // Reflection across the geodesic through two points of the disk. A geodesic is an arc of the circle
-  // orthogonal to the unit circle, and reflection across it is inversion in that circle. Its centre C
+  // orthogonal to the unit circle, and reflection across it is inversion in that circle. Its center C
   // satisfies |C - a| = |C - b| = R together with |C|^2 = 1 + R^2, and eliminating R turns both into
   // linear equations: 2 C . a = 1 + |a|^2 and 2 C . b = 1 + |b|^2. When a and b lie on a diameter the
   // system is singular, because the geodesic is that diameter and the reflection is an ordinary Euclidean
@@ -24947,7 +24949,7 @@ void main(){
     subtitle: 'reaction-diffusion on a {p,q} tiling · Poincare disk',
     order: 38,
     equation: '∂u/∂t = D_u Δ_G u − uv² + F(1−u),   ∂v/∂t = D_v Δ_G v + uv² − (F+k)v,   Δ_G u_i = Σ_{j∼i}(u_j − u_i)',
-    credit: "The chemistry is the Gray-Scott model, Peter Gray and Stephen Scott, Chemical Engineering Science 38, 29 (1983) and 39, 1087 (1984), on Alan Turing's mechanism, 'The chemical basis of morphogenesis', Phil. Trans. R. Soc. B 237, 37 (1952). The substrate is the regular hyperbolic tessellation {p,q}, in the disk model Henri Poincare introduced in 1882; the construction by reflection in the sides of a fundamental polygon is standard, and the drawing convention of geodesics as circular arcs orthogonal to the boundary is what makes the model conformal. The Laplacian used is the degree-normalised graph Laplacian, which on a tiling of equal-area cells is the natural discretisation and, unlike the combinatorial one, means the same thing whatever p is.",
+    credit: "The chemistry is the Gray-Scott model, Peter Gray and Stephen Scott, Chemical Engineering Science 38, 29 (1983) and 39, 1087 (1984), on Alan Turing's mechanism, 'The chemical basis of morphogenesis', Phil. Trans. R. Soc. B 237, 37 (1952). The substrate is the regular hyperbolic tessellation {p,q}, in the disk model Henri Poincare introduced in 1882; the construction by reflection in the sides of a fundamental polygon is standard, and the drawing convention of geodesics as circular arcs orthogonal to the boundary is what makes the model conformal. The Laplacian used is the degree-normalized graph Laplacian, which on a tiling of equal-area cells is the natural discretisation and, unlike the combinatorial one, means the same thing whatever p is.",
     blurb: 'Every pattern-forming system in this studio runs on a flat sheet, where the amount of space at distance r from a point grows like r. In the hyperbolic plane it grows like e^r, and nothing about a Turing pattern survives that unchanged. There is exponentially more room further out, so a pattern with a preferred wavelength cannot simply repeat: it has to keep branching to fill the space, and every cell is effectively near a boundary because almost all of the plane is. The tiling is built by taking one regular p-gon with q of them around each vertex and reflecting it in its own sides, forever; the Poincare disk squeezes all of that into a finite picture, which is why the cells shrink toward the edge. They are all the same size. It is the picture that is distorted, and the chemistry does not know.',
     schema: [
       { group: 'Tiling', key: 'pq', label: 'Tiling {p,q}', type: 'seg', kind: GEOM, wrap: true,
@@ -24960,7 +24962,7 @@ void main(){
       RANGE('Chemistry', 'k', 'Kill k', LIVE, 0.03, 0.075, 0.0005, f4),
       RANGE('Chemistry', 'Du', 'Diffusion Dᵤ', LIVE, 0.1, 1.4, 0.02, f2),
       RANGE('Chemistry', 'Dv', 'Diffusion D_v', LIVE, 0.05, 0.7, 0.01, f2, {
-        hint: 'Turing needs the inhibitor to outrun the activator, which here means Dᵤ above D_v by a factor of two or so. Bring them together and the pattern dissolves. The operator is normalised by the number of neighbours, so these numbers mean the same thing on every tiling offered.' }),
+        hint: 'Turing needs the inhibitor to outrun the activator, which here means Dᵤ above D_v by a factor of two or so. Bring them together and the pattern dissolves. The operator is normalized by the number of neighbors, so these numbers mean the same thing on every tiling offered.' }),
       RANGE('Chemistry', 'seedCells', 'Seed sites', GEOM, 1, 40, 1, String),
       RANGE('Chemistry', 'seedRadius', 'Seed radius', GEOM, 1, 6, 1, String, {
         hint: 'In cells. Below two the seed diffuses away before the reaction can take hold and the field relaxes back to nothing at all.' }),
@@ -24970,7 +24972,7 @@ void main(){
       RANGE('Simulation', 'warmup', 'Warm-up steps', GEOM, 0, 20000, 250, String),
       { group: 'Simulation', key: 'burst', label: 'Run 3,000 steps', type: 'action' },
       { group: 'Picture', key: 'view', label: 'Draw', type: 'seg', kind: PAINT, wrap: true,
-        options: [['v', 'Inhibitor'], ['u', 'Activator'], ['ring', 'Distance from centre'], ['plain', 'The tiling']] },
+        options: [['v', 'Inhibitor'], ['u', 'Activator'], ['ring', 'Distance from center'], ['plain', 'The tiling']] },
       { group: 'Picture', key: 'arcs', label: 'Geodesic edges', type: 'toggle', kind: PAINT,
         hint: 'On, each cell wall is the circular arc that a straight line actually is in this model. Off, walls are chords, which is faster and wrong in a way that only shows on the largest cells.' },
       RANGE('Picture', 'wall', 'Wall weight', PAINT, 0, 3, 0.1, f1),
@@ -24992,12 +24994,12 @@ void main(){
       mitosis: pre('Mitosis on {4,5}', { pq: '4,5', F: 0.028, k: 0.062, view: 'v', arcs: true, wall: 0.4, lo: 0.06, hi: 0.3, rmax: 0.996, maxCells: 3000 }, Pal.ember),
       coral: pre('Coral on {8,3}', { pq: '8,3', F: 0.055, k: 0.062, view: 'v', arcs: true, wall: 0.5, lo: 0.06, hi: 0.3, rmax: 0.996, maxCells: 3500 }, Pal.harbor),
       triangles: pre('{3,7}, and very many cells', { pq: '3,7', F: 0.037, k: 0.06, view: 'v', arcs: false, wall: 0.2, lo: 0.06, hi: 0.3, rmax: 0.997, maxCells: 6000 }, Pal.thermal),
-      rings: pre('Distance from the centre', { pq: '7,3', view: 'ring', arcs: true, wall: 0.8, rmax: 0.996, maxCells: 3500 }, Pal.glacier),
+      rings: pre('Distance from the center', { pq: '7,3', view: 'ring', arcs: true, wall: 0.8, rmax: 0.996, maxCells: 3500 }, Pal.glacier),
       tiling: pre('The tiling alone', { pq: '5,4', view: 'plain', arcs: true, wall: 1.4, rmax: 0.996, maxCells: 3500 }, Pal.graphite),
     },
     hints: {
       Tiling: 'The tiling is built by reflecting one cell in its own sides. The status line reports what fraction of interior vertices have exactly q cells around them, which is the check that the construction closed up rather than drifted.',
-      Chemistry: 'The operator is the graph Laplacian: the sum of a cell’s neighbours minus its own value times how many it has. On a regular tiling that is the natural discretisation, and it is what makes the chemistry blind to the fact that the picture is distorted.',
+      Chemistry: 'The operator is the graph Laplacian: the sum of a cell’s neighbors minus its own value times how many it has. On a regular tiling that is the natural discretisation, and it is what makes the chemistry blind to the fact that the picture is distorted.',
     },
     palette: true, defaultPalette: 'nightshade',
     headline: 'k', headlineLabel: 'kill',
@@ -25081,7 +25083,7 @@ void main(){
         return { p, q, R, list: out };
       }
 
-      // Adjacency from shared vertices: two cells are neighbours when they have two vertices in common,
+      // Adjacency from shared vertices: two cells are neighbors when they have two vertices in common,
       // which is one whole edge. Matching on the edge midpoint rather than on the vertices themselves
       // avoids having to decide which of two floating point vertices is "the same" one twice over.
       function buildAdjacency(T) {
@@ -25147,7 +25149,7 @@ void main(){
       }
       const dtOf = s => maxDt(s) * s.dtScale;
 
-      // Seeds are balls of cells, not single cells. A one-cell seed with its immediate neighbours does not
+      // Seeds are balls of cells, not single cells. A one-cell seed with its immediate neighbors does not
       // survive: diffusion spreads it below the threshold where u v^2 can beat (F + k) v before the
       // reaction has anything to work with, and the whole field relaxes silently back to u = 1, v = 0.
       // The plate then shows a perfectly good tiling with no chemistry on it, which looks like a design
@@ -25196,10 +25198,10 @@ void main(){
             let su = 0, sv = 0;
             for (let m = a; m < b; m++) { su += u[nbr[m]]; sv += v[nbr[m]]; }
             const deg = b - a;
-            // Degree-normalised Laplacian: the average of the neighbours minus the cell, not the sum.
+            // Degree-normalized Laplacian: the average of the neighbors minus the cell, not the sum.
             // The combinatorial version makes the diffusion coefficient mean something different on every
-            // tiling, because a {3,7} cell has three neighbours and an {8,3} cell has eight, so the same
-            // F and k give a pattern on one and a washed-out gradient on the next. Normalising also puts
+            // tiling, because a {3,7} cell has three neighbors and an {8,3} cell has eight, so the same
+            // F and k give a pattern on one and a washed-out gradient on the next. Normalizing also puts
             // the operator's spectrum in [-2, 0] regardless of p, which is what lets one step bound and
             // one set of Gray-Scott coefficients work across all of them.
             const inv = deg > 0 ? 1 / deg : 0;
@@ -25433,7 +25435,7 @@ void main(){
 
   // Directions in screen order: 0 east, 1 west, 2 south, 3 north.
   const DX = [1, -1, 0, 0], DY = [0, 0, 1, -1];
-  // Depth colours are quantized into bands so a plate is a few dozen stroked paths rather than one
+  // Depth colors are quantized into bands so a plate is a few dozen stroked paths rather than one
   // path per edge. At 48 bands the steps are below what the eye separates on a continuous ramp, and
   // the exported SVG is a few hundred kilobytes instead of several megabytes.
   const BANDS = 48;
@@ -25478,7 +25480,7 @@ void main(){
           let u = at, took = 0;
           while (!inTree[u] && took < 30000) {
             let d, v;
-            // Redraw until the neighbour exists. That is uniform over the neighbours a cell actually
+            // Redraw until the neighbor exists. That is uniform over the neighbors a cell actually
             // has, which is the simple random walk on this graph, and it is what the boundary cells
             // need: a walk that always drew from four directions and treated the off-grid ones as
             // legal would be walking on a different graph and sampling a different measure.
@@ -25648,7 +25650,7 @@ void main(){
           (extra ? '<span>' + extra + '</span>' : ''));
       }
 
-      // Everything drawn is a set of straight segments in one of a handful of colours, so both the
+      // Everything drawn is a set of straight segments in one of a handful of colors, so both the
       // canvas and the SVG are built from the same list of groups. The segment arrays are flat,
       // x1, y1, x2, y2 per segment, in device pixels.
       function groupsFor(s, Wpx, Hpx) {
@@ -25660,7 +25662,7 @@ void main(){
         const put = (a, x1, y1, x2, y2) => a.push(ox + x1 * cell, oy + y1 * cell, ox + x2 * cell, oy + y2 * cell);
 
         // One tree edge, from cell i to its parent. An edge that wraps is drawn as two half-cell stubs,
-        // one at each side of the plate: the two cells really are neighbours, and a line straight
+        // one at each side of the plate: the two cells really are neighbors, and a line straight
         // across the picture would say the opposite.
         function edgeSegs(i, arr) {
           const d = next[i], x = i % W, y = (i / W) | 0;
@@ -25712,7 +25714,7 @@ void main(){
           if (s.dim > 0.02) {
             const seg = [];
             for (let i = 0; i < N; i++) if (i !== rootIx) edgeSegs(i, seg);
-            // The rest of the tree is a neutral ghost rather than a palette colour, so the palette is
+            // The rest of the tree is a neutral ghost rather than a palette color, so the palette is
             // free to belong entirely to the walk.
             groups.push({ color: U.mixHex(s.bg, U.inkFor(s.bg), s.dim), w: lw * 0.8, cap: 'round', seg });
           }
@@ -25727,7 +25729,7 @@ void main(){
             groups.push({ color: U.rgbToHex(c[0], c[1], c[2]), w: lw * 2.4, cap: 'round', seg: buckets[b] });
           }
           if (s.mark) {
-            const c = ramp(1);   // the corner the walk started from, in the colour its first edge carries
+            const c = ramp(1);   // the corner the walk started from, in the color its first edge carries
             dots.push({ x: ox + (path[0] % W + 0.5) * cell, y: oy + (((path[0] / W) | 0) + 0.5) * cell,
               r: Math.max(lw * 1.6, cell * 0.7), c: U.rgbToHex(c[0], c[1], c[2]) });
           }
@@ -25803,6 +25805,760 @@ void main(){
           }
           for (const d of gg.dots) {
             body += '<circle cx="' + r(d.x) + '" cy="' + r(d.y) + '" r="' + r(d.r) + '" fill="' + U.svgEsc(d.c) + '"/>\n';
+          }
+          return U.svgBlob(w, h, s.bg, body);
+        },
+      };
+    },
+  });
+})();
+</script>
+<script>
+/* modules/grains.js */
+/* GENChase: a soft-sphere discrete element packing of polydisperse disks settling under gravity, and the branching network of contact forces it carries. */
+(function () {
+  'use strict';
+  const U = Studio.util;
+  const GEOM = 'geom', PAINT = 'paint';
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  const f2 = v => v.toFixed(2);
+  const pct = v => Math.round(v * 100) + '%';
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
+    Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const Pal = Studio.PALETTES;
+  const pre = (label, p, pal) => ({ label, p, palette: pal });
+
+  /* ================= the model =================
+
+     Cundall and Strack's distinct element method. Every disk is a rigid body carrying a position, a
+     velocity and a spin; two disks interact only where they overlap, through a linear spring and a
+     dashpot along the line of centers plus a tangential spring capped by Coulomb friction. Nothing is
+     solved implicitly and no constraint is enforced: the packing is a large system of stiff damped
+     oscillators integrated forward until it stops moving, and the picture is what the contacts are
+     carrying when it does.
+
+     Units: the box is 1 wide, the floor is y = 0, y points up. Grain density is 1, so a disk of
+     radius r has mass pi r^2 and moment of inertia (1/2) m r^2.
+
+     Gravity and stiffness are not independent. The settled packing depends on them only through the
+     dimensionless hardness k_n r0 / (m0 g), the number of grain weights it takes to squash a contact
+     by a radius, so turning gravity up is the same thing as making the grains softer. Quote the
+     stiffness against a fixed reference weight rather than against the current one and the gravity
+     slider becomes a real control instead of a relabelling of the clock, which is what it was in the
+     first draft: gravity 0.25 and gravity 4 printed the same plate down to the contact count.
+  */
+
+  const PHI = 0.80;          // solid fraction the settled packing is sized for; 2D polydisperse jamming sits near 0.84
+  const PHI0 = 0.60;         // solid fraction of the loose starting lattice, so the pile only collapses about a third of its height
+  const KT_KN = 0.8;         // tangential stiffness as a fraction of normal; Cundall and Strack keep k_t <= k_n
+  const SAFETY = 35;         // dt = contact period / SAFETY
+  const SKIN = 0.55;         // Verlet skin, in units of the mean radius
+  const KE_TOL = 2e-7;       // stop settling when kinetic energy per grain falls below this many m0 g r0
+  // At rest for drawing purposes. KE_TOL is the target the settle runs for; this looser number is what
+  // counts as stopped when the status line reports, because a frictionless packing sits on soft modes
+  // and relaxes slowly enough that whether it reaches KE_TOL inside the budget depends on the seed. A
+  // grain at KE_REST is moving at a few thousandths of the speed it picks up falling the height of the
+  // pile, which is nothing on the plate; the corner of the parameter space that genuinely runs out of
+  // budget, very stiff grains under weak gravity, lands two hundred times above it.
+  const KE_REST = 1e-3;
+
+  // Everything the simulation needs that is not a raw control, derived once from state. sanitize and
+  // create both call this, so the timestep that gets reported is the timestep that gets used.
+  function derive(s) {
+    const ar = ASPECTS[s.aspect] || 1;
+    const n = Math.max(40, Math.round(s.n)), p = U.clamp(Number(s.poly) || 0, 0, 0.6);
+    // Size the grains so n disks at solid fraction PHI fill a box 1 wide and ar tall. Radii are
+    // uniform on [1-p, 1+p] r0, so <r^2> = r0^2 (1 + p^2/3) and the area budget fixes r0.
+    const r0 = Math.sqrt(PHI * ar / (n * Math.PI * (1 + p * p / 3)));
+    const rmin = r0 * (1 - p), rmax = r0 * (1 + p);
+    const g = U.clamp(Number(s.grav) || 1, 0.25, 4);
+    const m0 = Math.PI * r0 * r0;
+    // Stiffness is quoted as a hardness against a mean grain at the reference gravity of 1:
+    // k_n = hard * m0 / r0, so at that gravity one grain resting on another squashes the contact by
+    // r0 / hard and a column of H / 2 r0 grains squashes the bottom contact by about (H / 2 r0) / hard
+    // of a radius. hard = 4000 at the default geometry is a relative overlap near one percent. That is
+    // soft next to a real photoelastic disk, and it is the price of an explicit scheme: harder grains
+    // mean a shorter contact period and more steps. What the packing actually feels is hard / g, so
+    // the two sliders push the same dimensionless number in opposite directions.
+    const kn = s.hard * m0 / r0;
+
+    /* THE STEP, DERIVED, NOT GUESSED.
+       A binary contact is a harmonic oscillator: two disks joined by the contact spring oscillate at
+       omega = sqrt(k_n / m_eff) with m_eff = m_i m_j / (m_i + m_j), so the contact period is
+       T = 2 pi sqrt(m_eff / k_n). An explicit integrator has to resolve that period, and the rule of
+       thumb through the DEM literature is dt <= T / 30. We take T / 35 because the tangential spring
+       and the Coulomb switch, which can flip inside a step, add behavior the linear estimate does not
+       see. The stiffest contact in the packing is the one with the smallest effective mass, which is
+       two of the smallest grains touching each other: m_eff = m_min / 2. A grain against a wall has
+       m_eff = m_min, since the wall is infinitely heavy, so it is softer and the pair bound covers it.
+       Guess this number instead of computing it and the packing does not merely look wrong, it
+       detonates: the overlap grows every cycle and the plate is a scatter of grains thrown off frame. */
+    const mEffMin = 0.5 * Math.PI * rmin * rmin;
+    const period = 2 * Math.PI * Math.sqrt(mEffMin / kn);
+    const dt = period / SAFETY;
+
+    // Step budget. How many steps a pile needs to settle is the ratio of its fall time to the
+    // timestep, so it grows with grain count and hardness, and with weak gravity, which lengthens the
+    // fall without lengthening the contact period. Cap the total work so a large count stays a few
+    // seconds instead of a minute; the status line reports the residual kinetic energy, so a packing
+    // that ran out of budget says so out loud rather than pretending it is at rest.
+    const budget = U.clamp(Math.round(4e7 / n / Math.sqrt(g)), 12000, 40000);
+    return { ar, n, p, r0, rmin, rmax, g, m0, kn, kt: KT_KN * kn, period, dt, budget };
+  }
+
+  /* ---- the packing ---- */
+  function makeSim(s, D) {
+    const N = D.n, LX = 1, periodic = s.geom === 'periodic';
+    const dt = s.dt, mu = s.mu, damp = s.damp;
+    const x = new Float64Array(N), y = new Float64Array(N);
+    const vx = new Float64Array(N), vy = new Float64Array(N), om = new Float64Array(N);
+    const fx = new Float64Array(N), fy = new Float64Array(N), tq = new Float64Array(N);
+    const r = new Float64Array(N), m = new Float64Array(N), im = new Float64Array(N), iI = new Float64Array(N);
+    // Tangential springs against the walls: one slot per grain per wall, 0 floor, 1 left, 2 right, 3 lid.
+    const wxi = new Float64Array(N * 4);
+
+    const rng = U.makeRng(s.seed + '/grains');
+    // Polydispersity is not decoration. Equal disks poured under gravity crystallize in patches into
+    // the triangular lattice, and wherever they do the contacts line up into long straight rails that
+    // all carry the same load: tidy, and a lie about how granular matter transmits stress. Set it to
+    // zero and the plate shows it, straight rows along the floor and up the walls. A spread of radii
+    // frustrates the lattice, and what comes out instead is the sparse branching network the
+    // photoelastic experiments show.
+    for (let i = 0; i < N; i++) {
+      r[i] = D.r0 * (1 + D.p * (2 * rng() - 1));
+      m[i] = Math.PI * r[i] * r[i];
+      im[i] = 1 / m[i];
+      iI[i] = 1 / (0.5 * m[i] * r[i] * r[i]);
+    }
+
+    // Loose staggered lattice. Row spacing comes from the starting solid fraction, so the pile
+    // collapses by about a third of its height and no further. Dropping grains from a great height
+    // gives the same packing once it has settled and costs several times the steps to get there.
+    const cellArea = Math.PI * D.r0 * D.r0 * (1 + D.p * D.p / 3) / PHI0;
+    const cols = Math.max(2, Math.floor(LX / (2 * D.rmax * 1.02)));
+    const dx0 = LX / cols;
+    const dy0 = Math.max(1.9 * D.r0, cellArea / dx0);
+    const jit = 0.11 * dx0;
+    for (let i = 0; i < N; i++) {
+      const c = i % cols, rw = Math.floor(i / cols);
+      x[i] = (c + 0.5 + (rw & 1) * 0.5) * dx0 + (2 * rng() - 1) * jit;
+      y[i] = D.rmax + (rw + 0.5) * dy0 + (2 * rng() - 1) * jit;
+      // A small seeded kick decorrelates grains that start on the same row. Its scale is a fraction
+      // of the speed a grain picks up falling its own radius.
+      const sp = 0.7 * Math.sqrt(D.g * D.r0);
+      vx[i] = rng.gauss() * sp; vy[i] = rng.gauss() * sp;
+      if (periodic) { if (x[i] < 0) x[i] += LX; else if (x[i] >= LX) x[i] -= LX; }
+      else x[i] = U.clamp(x[i], r[i], LX - r[i]);
+    }
+
+    /* ---- neighbor finding: a uniform grid hash feeding a Verlet list ----
+       Testing every pair is O(N^2) and dies above a few hundred grains. Grains are bucketed into a
+       uniform grid whose cell is the interaction range, so only nine cells are ever consulted, and
+       the pairs found that way are kept in a Verlet list with a skin, so the grid is only rebuilt once
+       something has moved far enough to change the answer. The list also gives the tangential springs
+       a home: between rebuilds the pair order is fixed, so a spring is a parallel array entry with no
+       lookup at all, which is the difference between a packing that settles in seconds and one that
+       does not. */
+    let cap = Math.max(256, N * 12);
+    let pi_ = new Int32Array(cap), pj_ = new Int32Array(cap), pxi = new Float64Array(cap), np = 0;
+    let cnt = null, start = null, cells = 0;
+    const ord = new Int32Array(N);
+    const lx0 = new Float64Array(N), ly0 = new Float64Array(N);   // positions at the last rebuild
+    const skin = SKIN * D.r0;
+
+    function grow() {
+      cap *= 2;
+      const a = new Int32Array(cap), b = new Int32Array(cap), c = new Float64Array(cap);
+      a.set(pi_); b.set(pj_); c.set(pxi);
+      pi_ = a; pj_ = b; pxi = c;
+    }
+
+    function buildPairs() {
+      // Carry the tangential springs across the rebuild. Only loaded contacts hold a non-zero spring,
+      // so this map holds a few entries per grain and a rebuild happens every few tens of steps.
+      // Dropping the springs instead lets the packing creep downhill forever and it never settles.
+      const carry = new Map();
+      for (let k = 0; k < np; k++) if (pxi[k] !== 0) carry.set(pi_[k] * N + pj_[k], pxi[k]);
+
+      let ymax = 0;
+      for (let i = 0; i < N; i++) { const t = y[i] + r[i]; if (t > ymax) ymax = t; }
+      const range = 2 * D.rmax + skin;
+      const gx = Math.max(1, Math.floor(LX / range));
+      const csx = LX / gx, csy = range;
+      const gy = Math.max(1, Math.ceil((ymax + 2 * range) / csy));
+      const nc = gx * gy;
+      if (nc + 2 > cells) { cells = nc + 2; cnt = new Int32Array(cells); start = new Int32Array(cells); }
+      cnt.fill(0, 0, nc + 1);
+      const cellOf = i => {
+        let cx = Math.floor(x[i] / csx); cx = cx < 0 ? 0 : cx >= gx ? gx - 1 : cx;
+        let cy = Math.floor(y[i] / csy); cy = cy < 0 ? 0 : cy >= gy ? gy - 1 : cy;
+        return cy * gx + cx;
+      };
+      for (let i = 0; i < N; i++) cnt[cellOf(i) + 1]++;
+      for (let c = 0; c < nc; c++) cnt[c + 1] += cnt[c];
+      start.set(cnt.subarray(0, nc + 1));
+      for (let i = 0; i < N; i++) ord[start[cellOf(i)]++] = i;
+      start.set(cnt.subarray(0, nc + 1));
+
+      // A one-cell box cannot be wrapped without a grain seeing itself, so only wrap when there is
+      // room for it; three cells across is the smallest honest periodic box.
+      const wrap = periodic && gx >= 3;
+      np = 0;
+      const half = LX / 2;
+      for (let cy = 0; cy < gy; cy++) for (let cx = 0; cx < gx; cx++) {
+        const a0 = start[cy * gx + cx], a1 = cnt[cy * gx + cx + 1];
+        for (let a = a0; a < a1; a++) {
+          const i = ord[a];
+          // All nine neighbor cells, keeping only i < j. Scanning half of them is cheaper, but the
+          // bookkeeping goes wrong under a wrapped x and rebuilds are rare enough not to care.
+          for (let oy = -1; oy <= 1; oy++) {
+            const ny = cy + oy; if (ny < 0 || ny >= gy) continue;
+            for (let ox = -1; ox <= 1; ox++) {
+              let nx = cx + ox;
+              if (wrap) { if (nx < 0) nx += gx; else if (nx >= gx) nx -= gx; }
+              else if (nx < 0 || nx >= gx) continue;
+              const b0 = start[ny * gx + nx], b1 = cnt[ny * gx + nx + 1];
+              for (let b = b0; b < b1; b++) {
+                const j = ord[b]; if (j <= i) continue;
+                let dx = x[j] - x[i];
+                if (wrap) { if (dx > half) dx -= LX; else if (dx < -half) dx += LX; }
+                const dy = y[j] - y[i], reach = r[i] + r[j] + skin;
+                if (dx * dx + dy * dy > reach * reach) continue;
+                if (np >= cap) grow();
+                pi_[np] = i; pj_[np] = j;
+                const had = carry.get(i * N + j);
+                pxi[np] = had === undefined ? 0 : had;
+                np++;
+              }
+            }
+          }
+        }
+      }
+      for (let i = 0; i < N; i++) { lx0[i] = x[i]; ly0[i] = y[i]; }
+    }
+
+    // Rebuild once any grain has moved half the skin since the last build: past that a pair that was
+    // out of reach could have come into contact without ever entering the list.
+    function stale() {
+      const lim = 0.25 * skin * skin, half = LX / 2;
+      for (let i = 0; i < N; i++) {
+        let dx = x[i] - lx0[i];
+        if (periodic) { if (dx > half) dx -= LX; else if (dx < -half) dx += LX; }
+        const dy = y[i] - ly0[i];
+        if (dx * dx + dy * dy > lim) return true;
+      }
+      return false;
+    }
+
+    const sim = {
+      N, LX, periodic, x, y, vx, vy, om, r, m, D,
+      lidY: Infinity, lidVy: 0, lidOn: false, ke: 1, step: 0,
+    };
+
+    // One grain-grain contact. n points from j to i, so a positive normal force pushes i away from j;
+    // t is n turned a quarter turn counterclockwise. springIdx is the pair's slot in the Verlet list.
+    function contact(i, j, nx, ny, delta, mEff, springIdx) {
+      const kn = D.kn;
+      const tx = -ny, ty = nx;
+      // Relative velocity of i with respect to j at the contact point, spin included.
+      const rvx = vx[i] - vx[j], rvy = vy[i] - vy[j];
+      const vn = rvx * nx + rvy * ny;
+      const vt = rvx * tx + rvy * ty - (r[i] * om[i] + r[j] * om[j]);
+      // Damping quoted as a ratio of critical for this pair, so one slider means the same thing for a
+      // small grain on a large one as for two of a size.
+      const gamma = 2 * damp * Math.sqrt(mEff * kn);
+      // The dashpot resists approach (vn < 0) and opposes separation (vn > 0). Left alone it would
+      // pull the grains back together at the end of a collision, a glue that no dry contact has;
+      // clamping at zero makes the contact something that can only push.
+      let fn = kn * delta - gamma * vn;
+      if (fn < 0) fn = 0;
+      // Cundall and Strack's tangential spring: integrate the relative tangential motion since the
+      // contact formed, hold it back elastically, then cap at the Coulomb limit and shorten the spring
+      // to match so it never stores force the contact cannot carry.
+      let xi = pxi[springIdx] + vt * dt;
+      let ft = -D.kt * xi;
+      const lim = mu * fn;
+      if (ft > lim) { ft = lim; xi = -ft / D.kt; }
+      else if (ft < -lim) { ft = -lim; xi = -ft / D.kt; }
+      pxi[springIdx] = xi;
+      const Fx = fn * nx + ft * tx, Fy = fn * ny + ft * ty;
+      fx[i] += Fx; fy[i] += Fy; tq[i] -= r[i] * ft;
+      fx[j] -= Fx; fy[j] -= Fy; tq[j] -= r[j] * ft;
+    }
+
+    // A wall is the same contact against an infinitely heavy, possibly moving partner.
+    function wall(i, nx, ny, delta, slot, wvy) {
+      const kn = D.kn, k = i * 4 + slot;
+      const tx = -ny, ty = nx;
+      const rvx = vx[i], rvy = vy[i] - wvy;
+      const vn = rvx * nx + rvy * ny;
+      const vt = rvx * tx + rvy * ty - r[i] * om[i];
+      const gamma = 2 * damp * Math.sqrt(m[i] * kn);
+      let fn = kn * delta - gamma * vn;
+      if (fn < 0) fn = 0;
+      let xi = wxi[k] + vt * dt;
+      let ft = -D.kt * xi;
+      const lim = mu * fn;
+      if (ft > lim) { ft = lim; xi = -ft / D.kt; }
+      else if (ft < -lim) { ft = -lim; xi = -ft / D.kt; }
+      wxi[k] = xi;
+      fx[i] += fn * nx + ft * tx;
+      fy[i] += fn * ny + ft * ty;
+      tq[i] -= r[i] * ft;
+    }
+
+    // Background drag. Packing generation in real DEM codes uses a non-physical body damping to bleed
+    // off the collective kinetic energy, because otherwise a pile rings for thousands of contact
+    // periods before it is quiet enough to call settled. It does not enter the static force balance,
+    // so the network it leaves behind is the one gravity built; it only decides how long you wait.
+    const drag = 0.5 * damp * Math.sqrt(D.g / D.r0);
+
+    function forces() {
+      const g = D.g, half = LX / 2;
+      for (let i = 0; i < N; i++) {
+        fx[i] = -drag * m[i] * vx[i];
+        fy[i] = -m[i] * g - drag * m[i] * vy[i];
+        tq[i] = -drag * om[i] / iI[i];
+      }
+      for (let k = 0; k < np; k++) {
+        const i = pi_[k], j = pj_[k];
+        let dx = x[j] - x[i];
+        if (periodic) { if (dx > half) dx -= LX; else if (dx < -half) dx += LX; }
+        const dy = y[j] - y[i];
+        const d2 = dx * dx + dy * dy, sum = r[i] + r[j];
+        if (d2 >= sum * sum || d2 === 0) { pxi[k] = 0; continue; }
+        const dist = Math.sqrt(d2);
+        contact(i, j, -dx / dist, -dy / dist, sum - dist, m[i] * m[j] / (m[i] + m[j]), k);
+      }
+      for (let i = 0; i < N; i++) {
+        let d = r[i] - y[i];
+        if (d > 0) wall(i, 0, 1, d, 0, 0); else wxi[i * 4] = 0;
+        if (!periodic) {
+          d = r[i] - x[i];
+          if (d > 0) wall(i, 1, 0, d, 1, 0); else wxi[i * 4 + 1] = 0;
+          d = r[i] - (LX - x[i]);
+          if (d > 0) wall(i, -1, 0, d, 2, 0); else wxi[i * 4 + 2] = 0;
+        }
+        if (sim.lidOn) {
+          d = r[i] - (sim.lidY - y[i]);
+          if (d > 0) wall(i, 0, -1, d, 3, sim.lidVy); else wxi[i * 4 + 3] = 0;
+        }
+      }
+    }
+
+    /* Semi-implicit (symplectic) Euler: velocity from the forces at the current state, then position
+       from the velocity that just came out. Velocity-Verlet is the usual choice for conservative
+       forces, but half of what acts here depends on velocity (the dashpot, the background drag, and
+       the Coulomb switch, which can flip inside a step), and Verlet's second half kick would have to
+       be evaluated at a velocity it does not have yet. Symplectic Euler is consistent with all three
+       and is what DEM codes actually run. */
+    function step() {
+      forces();
+      let ke = 0;
+      for (let i = 0; i < N; i++) {
+        vx[i] += dt * fx[i] * im[i];
+        vy[i] += dt * fy[i] * im[i];
+        om[i] += dt * tq[i] * iI[i];
+        x[i] += dt * vx[i];
+        y[i] += dt * vy[i];
+        if (periodic) { if (x[i] < 0) x[i] += LX; else if (x[i] >= LX) x[i] -= LX; }
+        ke += 0.5 * (m[i] * (vx[i] * vx[i] + vy[i] * vy[i]) + om[i] * om[i] / iI[i]);
+      }
+      // Reported in units of the energy it takes to lift a mean grain by its own radius, so the
+      // number means the same thing at any gravity, grain count or aspect.
+      sim.ke = ke / (N * D.m0 * D.g * D.r0);
+      sim.step++;
+      if (stale()) buildPairs();
+    }
+
+    buildPairs();
+    sim.stepOnce = step;
+    sim.top = function () { let t = 0; for (let i = 0; i < N; i++) { const v = y[i] + r[i]; if (v > t) t = v; } return t; };
+    sim.pairs = function () { return { np, pi_, pj_ }; };
+    return sim;
+  }
+
+  /* ---- the contact network, measured once the packing has stopped ----
+     At rest the dashpot contributes nothing, so the static normal force is k_n times the overlap and
+     the whole network is read straight off the geometry. */
+  function network(sim, D, s) {
+    const N = sim.N, LX = sim.LX, periodic = sim.periodic, x = sim.x, y = sim.y, r = sim.r;
+    const p = sim.pairs(), half = LX / 2;
+    const ci = [], cj = [], cf = [], cdx = [], cdy = [];
+    const load = new Float64Array(N), wallDeg = new Int32Array(N);
+    for (let k = 0; k < p.np; k++) {
+      const i = p.pi_[k], j = p.pj_[k];
+      let dx = x[j] - x[i];
+      if (periodic) { if (dx > half) dx -= LX; else if (dx < -half) dx += LX; }
+      const dy = y[j] - y[i], d2 = dx * dx + dy * dy, sum = r[i] + r[j];
+      if (d2 >= sum * sum || d2 === 0) continue;
+      const f = D.kn * (sum - Math.sqrt(d2));
+      ci.push(i); cj.push(j); cf.push(f); cdx.push(dx); cdy.push(dy);
+      load[i] += f; load[j] += f;
+    }
+    // Wall contacts are not drawn, but a grain pressed against the floor is carrying that load and is
+    // not a rattler, so they count toward both the load map and the coordination number.
+    for (let i = 0; i < N; i++) {
+      let d = r[i] - y[i];
+      if (d > 0) { load[i] += D.kn * d; wallDeg[i]++; }
+      if (!periodic) {
+        d = r[i] - x[i]; if (d > 0) { load[i] += D.kn * d; wallDeg[i]++; }
+        d = r[i] - (LX - x[i]); if (d > 0) { load[i] += D.kn * d; wallDeg[i]++; }
+      }
+      if (sim.lidOn) { d = r[i] - (sim.lidY - y[i]); if (d > 0) { load[i] += D.kn * d; wallDeg[i]++; } }
+    }
+
+    const nc = cf.length;
+    let total = 0; for (let k = 0; k < nc; k++) total += cf[k];
+    const mean = nc ? total / nc : 1;
+    const sorted = cf.slice().sort((a, b) => b - a);
+    // How concentrated the network is: the share of the total contact load carried by the strongest
+    // tenth of the contacts. A network that spread the load evenly would give 10 percent; a real
+    // packing gives three to four times that, which is the number behind the photoelastic picture.
+    let top = 0; const nt = Math.max(1, Math.round(0.1 * nc));
+    for (let k = 0; k < nt; k++) top += sorted[k];
+    const top10 = total > 0 ? top / total : 0;
+    // Color reference. The top of the ramp is the 99th percentile force rather than the maximum,
+    // which one freak contact would otherwise own, and rather than the 95th, which in a homogeneous
+    // frictionless packing leaves the whole lower half of the plate clipped to one flat color.
+    const fHi = nc ? Math.max(sorted[Math.floor(0.01 * (nc - 1))], 1e-30) : 1;
+
+    /* Coordination number over the load-bearing backbone. Rattlers, grains sitting loose in a pocket
+       with fewer than two contacts, carry nothing and drag the mean down without saying anything
+       about the packing, so strip them, and strip repeatedly because removing one can orphan its
+       neighbor. For a frictionless 2D packing at jamming, isostaticity gives Z = 4; friction adds
+       tangential constraints, so fewer contacts are needed to fix a grain and Z falls toward 3. */
+    const alive = new Uint8Array(N).fill(1), dg = new Int32Array(N);
+    for (let pass = 0; pass < 30; pass++) {
+      dg.fill(0);
+      for (let k = 0; k < nc; k++) { const i = ci[k], j = cj[k]; if (alive[i] && alive[j]) { dg[i]++; dg[j]++; } }
+      let cut = 0;
+      for (let i = 0; i < N; i++) if (alive[i] && dg[i] + wallDeg[i] < 2) { alive[i] = 0; cut++; }
+      if (!cut) break;
+    }
+    let back = 0, bc = 0;
+    for (let i = 0; i < N; i++) if (alive[i]) { back++; bc += dg[i] + wallDeg[i]; }
+    const Z = back ? bc / back : 0;
+
+    const ls = Array.from(load).sort((a, b) => a - b);
+    const load95 = Math.max(ls[Math.floor(0.95 * (N - 1))], 1e-30);
+    return { ci, cj, cf, cdx, cdy, nc, mean, fHi, top10, Z, back, load, load95 };
+  }
+
+  /* ---- drawing ---- */
+  /* A 64-entry ramp over the palette, ordered by contrast against the background rather than by the
+     order the palette happens to list its colors. The plate encodes force as visibility, so the ramp
+     has to run from the color nearest the background to the color furthest from it, and several of
+     the light-ground palettes carry a near-white that would otherwise land in the middle of the ramp
+     and cut a band of invisible contacts out of the network. The offset control slides the whole force
+     range up the ramp instead of rotating it, which the other modules do with a cyclic shift: rotating
+     a contrast-ordered ramp would put an invisible color back in the middle, and the one thing this
+     plate must not do is hide its own strongest contacts. The ramp does not start from the background
+     itself either: a contact that is drawn at all should be visible, and the threshold decides which
+     contacts are drawn. */
+  function rampLUT(s) {
+    const lb = U.luminance(s.bg);
+    const sorted = s.palette.slice().sort((a, b) => Math.abs(U.luminance(a) - lb) - Math.abs(U.luminance(b) - lb));
+    const ramp = U.makeRamp(sorted);
+    const off = U.clamp((s.shift | 0) / 20, 0, 0.75);
+    const lut = [];
+    for (let i = 0; i < 64; i++) { const c = ramp(off + (1 - off) * i / 63); lut.push(U.rgbToHex(c[0], c[1], c[2])); }
+    return lut;
+  }
+  const bin = t => Math.min(63, Math.max(0, Math.floor(t * 63)));
+
+  // Fit the settled packing into the frame. The box is always 1 wide; the height is whatever the pile
+  // ended up at, which is why the plate fills the sheet whether the packing compacted or arched.
+  function frame(sim, s, W, H) {
+    const top = Math.max(sim.top(), 1e-6), mg = s.margin;
+    const sc = Math.min(W * (1 - 2 * mg) / sim.LX, H * (1 - 2 * mg) / top);
+    return { sc, ox: (W - sim.LX * sc) / 2, oy: (H - top * sc) / 2, top };
+  }
+
+  /* ---------- Force Chains ---------- */
+  Studio.register({
+    id: 'grains',
+    name: 'Force Chains',
+    tab: 'Chains',
+    subtitle: 'a granular packing and the network that carries it · 1979',
+    order: 36,
+    equation: 'F_n = k_n δ − γ_n v_n  for δ = r_i + r_j − |x_ij| > 0,   |F_t| ≤ μ F_n;   m ẍ = Σ F − m g ŷ;   Δt = T/35,  T = 2π√(m_eff/k_n)',
+    credit: "Peter Cundall and Otto Strack, 'A discrete numerical model for granular assemblies', Geotechnique 29, 47 (1979), gave the distinct element method used here: rigid disks, a linear normal spring with a dashpot, a tangential spring capped by Coulomb friction, and an explicit step bounded by the contact period. Trushant Majmudar and Robert Behringer, Nature 435, 1079 (2005), measured the grain-scale normal and tangential forces inside a two-dimensional photoelastic packing and showed the filamentary chains directly. Farhang Radjai, Michel Jean, Jean-Jacques Moreau and Stephane Roux, Physical Review Letters 77, 274 (1996), found that the contact force distribution decays exponentially above the mean and as a power law below it; Radjai, Dietrich Wolf, Jean and Moreau, Physical Review Letters 80, 61 (1998), split the packing into a strong network above the mean force, which carries the deviatoric stress, and a weak network below it, which does not.",
+    blurb: 'Pour disks into a box and they jam. Weigh the contacts afterwards and almost none of them are doing the work: the load runs down a sparse branching skeleton of heavily squeezed grains while the rest of the packing idles beside it, and the same picture comes out of a simulation as out of a tray of photoelastic disks under crossed polarizers. Every disk here is integrated from its own forces, a spring and a dashpot wherever two of them overlap plus a friction spring that slips at the Coulomb limit, until the pile stops moving. The chains view draws one line per contact, weighted and colored by the force it carries; the grains view colors the disks by their total load. Stiffness and damping say how hard and how dead the grains are, friction decides how much the packing can arch, and polydispersity keeps it from crystallising, which would replace the branching with straight rails of equal weight.',
+    schema: [
+      RANGE('Packing', 'n', 'Grains', GEOM, 200, 3500, 50, v => Math.round(v).toLocaleString(),
+        { hint: 'Cost is grains times steps. A few hundred reads as individual disks, two thousand reads as a material.' }),
+      RANGE('Packing', 'poly', 'Polydispersity', GEOM, 0, 0.5, 0.01, f2,
+        { hint: 'Half-width of the radius spread. At zero the packing crystallizes in patches and those patches carry the load along straight rails of equal weight, which is neither what a real sand does nor worth looking at. A third of the mean radius is enough to frustrate it.' }),
+      { group: 'Packing', key: 'geom', label: 'Sides', type: 'seg', kind: GEOM,
+        options: [['walls', 'Rigid walls'], ['periodic', 'Periodic']] },
+      RANGE('Packing', 'press', 'Top load', GEOM, 0, 0.05, 0.002, f2,
+        { hint: 'Compressive strain applied by a rigid lid once the pile has settled. Zero leaves a free surface and gravity alone.' }),
+      RANGE('Grains', 'hard', 'Stiffness', GEOM, 800, 12000, 100, v => Math.round(v).toLocaleString(),
+        { hint: 'Contact stiffness in grain weights per radius, measured at gravity 1. Harder grains overlap less and need a shorter step, so the settle costs more.' }),
+      RANGE('Grains', 'damp', 'Damping', GEOM, 0.05, 0.9, 0.01, f2,
+        { hint: 'Contact damping as a fraction of critical. Below about 0.15 the pile rings for a long time and may not settle inside the step budget.' }),
+      RANGE('Grains', 'mu', 'Friction', GEOM, 0, 0.8, 0.02, f2,
+        { hint: 'Coulomb coefficient. More friction means fewer contacts are needed to hold a grain in place, so the coordination number falls and the packing can arch.' }),
+      RANGE('Grains', 'grav', 'Gravity', GEOM, 0.25, 4, 0.05, f2,
+        { hint: 'Only the ratio of stiffness to gravity matters to the settled packing, so heavy gravity and soft grains are the same thing. Turning it up deepens every overlap and compacts the pile.' }),
+      { group: 'Network', key: 'view', label: 'Draw', type: 'seg', kind: PAINT, wrap: true,
+        options: [['chains', 'Force chains'], ['grains', 'Grains'], ['both', 'Both']] },
+      RANGE('Network', 'wexp', 'Force → width', PAINT, 0.2, 2.5, 0.05, f2,
+        { hint: 'Line width goes as force over mean force, raised to this power. Above 1 the strong network stands out and the weak one recedes.' }),
+      RANGE('Network', 'weight', 'Line weight', PAINT, 0.2, 3, 0.05, f2),
+      RANGE('Network', 'thresh', 'Force threshold', PAINT, 0, 1.2, 0.02, f2,
+        { hint: 'Contacts carrying less than this many mean forces are not drawn. At one mean force what is left is exactly the strong network of Radjai and colleagues.' }),
+      RANGE('Network', 'shift', 'Palette offset', PAINT, 0, 15, 1, String,
+        { hint: 'Slides the force range up the color ramp, which runs from the palette color closest to the background to the one furthest from it. At zero the weakest contacts are almost invisible; raise it and the whole network inks up.' }),
+      RANGE('Finish', 'margin', 'Margin', PAINT, 0, 0.2, 0.01, f2),
+      RANGE('Finish', 'grain', 'Grain', PAINT, 0, 0.6, 0.02, pct),
+      { group: 'Finish', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM,
+        options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
+    ],
+    defaults: {
+      n: 1100, poly: 0.32, geom: 'walls', press: 0,
+      hard: 4000, damp: 0.35, mu: 0.4, grav: 1,
+      view: 'chains', wexp: 1.15, weight: 1.1, thresh: 0.12, shift: 0,
+      margin: 0.06, grain: 0.04, aspect: '1:1',
+      dt: 1e-4,                 // hidden: sanitize derives it from the contact period; never set by hand
+      seed: 'cundall-1979',
+    },
+    presets: {
+      pour: pre('Poured under gravity', { n: 1100, poly: 0.32, geom: 'walls', press: 0, mu: 0.4, hard: 4000, damp: 0.35, view: 'chains', wexp: 1.15, weight: 1.1, thresh: 0.12, shift: 0, aspect: '1:1' }, Pal.kiln),
+      photo: pre('Photoelastic', { n: 900, poly: 0.34, geom: 'walls', press: 0.03, mu: 0.3, hard: 5000, damp: 0.4, view: 'both', wexp: 1.4, weight: 1.2, thresh: 0.05, shift: 0, aspect: '1:1' }, Pal.xray),
+      strong: pre('Strong network only', { n: 1600, poly: 0.36, geom: 'periodic', press: 0.04, mu: 0.45, hard: 4000, damp: 0.4, view: 'chains', wexp: 1.8, weight: 1.6, thresh: 0.9, shift: 3, aspect: '5:4' }, Pal.ember),
+      arch: pre('Arching on high friction', { n: 1300, poly: 0.3, geom: 'walls', press: 0, mu: 0.8, hard: 4000, damp: 0.3, view: 'chains', wexp: 1.2, weight: 1.2, thresh: 0.1, shift: 0, aspect: '4:5' }, Pal.verdigris),
+      slip: pre('Frictionless, Z near 4', { n: 1200, poly: 0.4, geom: 'periodic', press: 0.03, mu: 0, hard: 4000, damp: 0.45, view: 'chains', wexp: 1, weight: 0.9, thresh: 0.08, shift: 0, aspect: '3:2' }, Pal.glacier),
+      disks: pre('The grains themselves', { n: 700, poly: 0.42, geom: 'walls', press: 0, mu: 0.35, hard: 4000, damp: 0.35, view: 'grains', wexp: 1, weight: 1, thresh: 0, shift: 0, aspect: '1:1' }, Pal.petri),
+      column: pre('Tall column, Janssen', { n: 1500, poly: 0.3, geom: 'walls', press: 0, mu: 0.6, hard: 4000, damp: 0.35, view: 'both', wexp: 1.3, weight: 1, thresh: 0.08, shift: 0, aspect: '4:5' }, Pal.graphite),
+    },
+    hints: {
+      Packing: 'Grains fall from a loose lattice and compact under gravity. The seed fixes every radius, every starting jitter and every initial kick, so a seed and these numbers reprint the same packing exactly.',
+      Grains: 'Stiffness, damping and friction are the whole contact law, and what the packing feels is stiffness divided by gravity. The timestep is not a control: it is derived from the stiffest contact in the packing, because an explicit scheme needs about a thirtieth of the contact period or the overlaps grow every cycle and the pile explodes.',
+      Network: 'Width and color both read the normal force at the contact. Raise the threshold past one mean force and what is left is the strong network, the part of the packing that carries the shear.',
+    },
+    closedGroups: ['Finish'],
+    palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (weak force → strong)',
+    headline: 'n', headlineLabel: 'grains',
+    sanitize(s) {
+      s.n = U.clamp(Math.round(Number(s.n) / 50) * 50, 200, 3500);
+      s.poly = U.clamp(Number(s.poly) || 0, 0, 0.5);
+      s.hard = U.clamp(Math.round(Number(s.hard) || 4000), 800, 12000);
+      s.damp = U.clamp(Number(s.damp) || 0.35, 0.05, 0.9);
+      s.mu = U.clamp(Number(s.mu) || 0, 0, 0.8);
+      s.grav = U.clamp(Number(s.grav) || 1, 0.25, 4);
+      s.press = U.clamp(Number(s.press) || 0, 0, 0.05);
+      // The timestep is not a control. It is the contact period of the stiffest pair in this packing
+      // divided by SAFETY, computed in derive from the actual smallest mass and the actual stiffness,
+      // then floored so no combination of sliders can drive it to zero and hang the settle.
+      s.dt = Math.max(1e-9, derive(s).dt);
+    },
+    surprise(rng) {
+      return {
+        n: rng.pick([700, 900, 1100, 1300, 1600]),
+        poly: rng.range(0.25, 0.45),
+        geom: rng() < 0.6 ? 'walls' : 'periodic',
+        press: rng.pick([0, 0, 0.02, 0.03]),
+        hard: rng.pick([3000, 4000, 5000]),
+        damp: rng.range(0.25, 0.5),
+        mu: rng.pick([0, 0.2, 0.4, 0.6, 0.8]),
+        grav: 1,
+        view: rng.pick(['chains', 'chains', 'chains', 'both', 'grains']),
+        wexp: rng.range(0.9, 1.9),
+        weight: rng.range(0.8, 1.6),
+        thresh: rng.pick([0, 0.08, 0.15, 0.6, 1]),
+        shift: rng.int(0, 4),
+        margin: 0.06,
+        grain: rng.pick([0, 0.04, 0.08]),
+        aspect: rng.pick(['1:1', '1:1', '4:5', '5:4', '3:2']),
+      };
+    },
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d');
+      let sim = null, net = null, D = null, timer = 0, building = false, paused = false;
+      let phase = 0, phaseEnd = 0, lidFrom = 0, lidTo = 0, lidFirst = 0, budget = 0;
+
+      function progress() {
+        host.setStatus('<span>grains <b>' + (D ? D.n.toLocaleString() : '0') + '</b></span>' +
+          '<span>settling <b>' + (sim ? sim.step.toLocaleString() : '0') + '</b> / ' + budget.toLocaleString() + '</span>' +
+          '<span>KE/grain <b>' + (sim ? sim.ke.toExponential(1) : '-') + '</b> · dt <b>' + host.getState().dt.toExponential(1) + '</b></span>');
+      }
+      function status() {
+        // Z is the coordination number over the load-bearing backbone: 4 for a frictionless 2D packing
+        // at jamming, falling toward 3 as friction rises. The last span is the residual kinetic energy
+        // per grain in units of m0 g r0, and it says so when the packing ran out of budget before it
+        // came to rest, because a plate of a pile that is still moving is not the plate it claims.
+        const rest = sim.ke < KE_REST;
+        host.setStatus('<span>grains <b>' + D.n.toLocaleString() + '</b> · contacts <b>' + net.nc.toLocaleString() + '</b></span>' +
+          '<span>Z <b>' + net.Z.toFixed(2) + '</b></span>' +
+          '<span>strongest 10% carry <b>' + Math.round(100 * net.top10) + '%</b></span>' +
+          '<span>KE/grain <b>' + sim.ke.toExponential(1) + '</b>' + (rest ? '' : ' · still creeping') +
+          ' · dt <b>' + D.dt.toExponential(1) + '</b></span>');
+      }
+
+      // Phase 0 settles under gravity; phase 1 drives a lid down by the requested strain; phase 2 lets
+      // it settle again; phase 3 is done. With no top load the whole budget goes to phase 0.
+      function advance(s) {
+        if (phase === 0 && s.press > 0) {
+          phase = 1; lidFirst = sim.step;
+          phaseEnd = Math.min(budget, sim.step + Math.round(0.25 * budget));
+          lidFrom = sim.top(); lidTo = lidFrom * (1 - s.press);
+          sim.lidOn = true; sim.lidY = lidFrom;
+          // Strain control rather than force control, because a ramp of known length is guaranteed to
+          // terminate and a servo is not.
+          sim.lidVy = (lidTo - lidFrom) / Math.max(1, phaseEnd - lidFirst) / s.dt;
+        } else if (phase === 1) { phase = 2; sim.lidVy = 0; phaseEnd = budget; }
+        else phase = 3;
+      }
+
+      // Run up to count steps of the settle, stopping early once it is finished. The only thing a
+      // caller varies is how many steps it asks for, so a chunked build and a blocking one produce the
+      // same packing step for step.
+      function tick(s, count) {
+        for (let q = 0; q < count && phase < 3; q++) {
+          if (phase === 1) {
+            const t = U.clamp((sim.step - lidFirst) / Math.max(1, phaseEnd - lidFirst), 0, 1);
+            sim.lidY = lidFrom + (lidTo - lidFrom) * t;
+          }
+          sim.stepOnce();
+          if (sim.step >= phaseEnd || (phase !== 1 && sim.ke < KE_TOL && sim.step > 600)) advance(s);
+        }
+      }
+      function settled(s) { building = false; net = network(sim, D, s); render(); status(); }
+
+      /* The settle is chunked so the page never blocks, but the physics must not depend on where the
+         chunks fall or the same recipe would give different plates on two machines. The wall clock
+         only decides when to yield; what decides when to stop is the step budget and the kinetic
+         energy, and both are functions of state alone. */
+      function build(s) {
+        clearTimeout(timer); building = true; paused = false;
+        D = derive(s); budget = D.budget;
+        sim = makeSim(s, D);
+        phase = 0; phaseEnd = s.press > 0 ? Math.round(0.5 * budget) : budget;
+        (function chunk() {
+          if (paused) return;
+          const t0 = performance.now();
+          while (phase < 3 && performance.now() - t0 < 32) tick(s, 24);
+          if (phase >= 3) { settled(s); return; }
+          progress();
+          timer = setTimeout(chunk, 0);
+        })();
+      }
+
+      /* An export must never fail because the settle has not caught up. Yielding between chunks is
+         right while somebody is watching the step count climb, but an export is a one-shot they asked
+         for, so finish whatever is left in one blocking pass. exportSVG is synchronous and has no other
+         option, and the packing it lands on is the one the screen was a second away from showing. This
+         is not hypothetical: the print harness presses export a fixed number of seconds after switching
+         preset, and the slowest preset was still settling when it did. */
+      function finishNow() {
+        if (!building || !sim) return;
+        clearTimeout(timer);
+        const s = host.getState();
+        tick(s, budget + 8);         // the whole settle is bounded by budget, so this always completes
+        phase = 3;
+        settled(s);
+      }
+
+      function paint(c2, W, H) {
+        const s = host.getState();
+        c2.fillStyle = s.bg; c2.fillRect(0, 0, W, H);
+        if (!net) return;
+        const F = frame(sim, s, W, H), sc = F.sc, ox = F.ox, oy = F.oy;
+        const lut = rampLUT(s), rpx = D.r0 * sc;
+        const X = i => ox + sim.x[i] * sc, Y = i => oy + (F.top - sim.y[i]) * sc;
+
+        if (s.view === 'grains' || s.view === 'both') {
+          c2.globalAlpha = s.view === 'both' ? 0.35 : 1;
+          for (let i = 0; i < sim.N; i++) {
+            c2.fillStyle = lut[bin(Math.pow(U.clamp(net.load[i] / net.load95, 0, 1), 0.65))];
+            c2.beginPath(); c2.arc(X(i), Y(i), sim.r[i] * sc, 0, U.TAU); c2.fill();
+          }
+          c2.globalAlpha = 1;
+        }
+        if (s.view === 'chains' || s.view === 'both') {
+          c2.lineCap = 'round';
+          const cut = s.thresh * net.mean;
+          for (let k = 0; k < net.nc; k++) {
+            const f = net.cf[k]; if (f < cut) continue;
+            c2.lineWidth = U.clamp(s.weight * 0.22 * rpx * Math.pow(f / net.mean, s.wexp), 0.35, 1.4 * rpx);
+            c2.strokeStyle = lut[bin(Math.pow(U.clamp(f / net.fHi, 0, 1), 0.7))];
+            const i = net.ci[k], j = net.cj[k];
+            const x1 = X(i), y1 = Y(i), dx = net.cdx[k] * sc, dy = -net.cdy[k] * sc;
+            c2.beginPath(); c2.moveTo(x1, y1); c2.lineTo(x1 + dx, y1 + dy); c2.stroke();
+            // A contact across the periodic seam leaves one side of the frame and arrives at the
+            // other: draw it from both ends and let the frame clip the halves that fall outside.
+            const x2 = X(j);
+            if (Math.abs(x1 + dx - x2) > 0.5 * sc) {
+              c2.beginPath(); c2.moveTo(x2, Y(j)); c2.lineTo(x2 - dx, Y(j) - dy); c2.stroke();
+            }
+          }
+        }
+        if (s.grain > 0) {
+          const rng = U.makeRng(s.seed + '/grain'), img = c2.getImageData(0, 0, W, H), px = img.data, a = s.grain * 28;
+          for (let i = 0; i < px.length; i += 4) { const v = (rng() - 0.5) * a; px[i] += v; px[i + 1] += v; px[i + 2] += v; }
+          c2.putImageData(img, 0, 0);
+        }
+      }
+      function render() { paint(ctx, canvas.width, canvas.height); }
+
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        regenerate() {
+          const s = host.getState();
+          net = null;
+          ctx.fillStyle = s.bg; ctx.fillRect(0, 0, canvas.width, canvas.height);
+          build(s);
+          progress();
+        },
+        repaint() { if (!building) render(); },
+        resize() { if (!building) render(); },
+        pause() { paused = true; clearTimeout(timer); },
+        resume() {
+          if (!paused) return;
+          paused = false;
+          // A settle interrupted halfway is restarted from the seed rather than resumed, because the
+          // chunk closure is gone; the result is the same packing, since nothing here reads the clock.
+          if (building) build(host.getState());
+          else if (net) render();
+        },
+        async exportPNG(w, h) {
+          finishNow();
+          if (!net) throw new Error('the packing has not settled yet');
+          const c = document.createElement('canvas'); c.width = w; c.height = h;
+          paint(c.getContext('2d'), w, h);
+          return U.toBlob(c);
+        },
+        exportSVG(w, h) {
+          finishNow();
+          if (!net) throw new Error('the packing has not settled yet');
+          const s = host.getState();
+          const F = frame(sim, s, w, h), sc = F.sc, ox = F.ox, oy = F.oy;
+          const lut = rampLUT(s), rpx = D.r0 * sc, rr = v => Math.round(v * 100) / 100;
+          const X = i => ox + sim.x[i] * sc, Y = i => oy + (F.top - sim.y[i]) * sc;
+          let body = '';
+          if (s.view === 'grains' || s.view === 'both') {
+            const op = s.view === 'both' ? ' fill-opacity="0.35"' : '';
+            for (let i = 0; i < sim.N; i++) {
+              body += '<circle cx="' + rr(X(i)) + '" cy="' + rr(Y(i)) + '" r="' + rr(sim.r[i] * sc) +
+                '" fill="' + lut[bin(Math.pow(U.clamp(net.load[i] / net.load95, 0, 1), 0.65))] + '"' + op + '/>';
+            }
+          }
+          if (s.view === 'chains' || s.view === 'both') {
+            const cut = s.thresh * net.mean;
+            for (let k = 0; k < net.nc; k++) {
+              const f = net.cf[k]; if (f < cut) continue;
+              const wd = U.clamp(s.weight * 0.22 * rpx * Math.pow(f / net.mean, s.wexp), 0.35, 1.4 * rpx);
+              const col = lut[bin(Math.pow(U.clamp(f / net.fHi, 0, 1), 0.7))];
+              const i = net.ci[k], j = net.cj[k];
+              const x1 = X(i), y1 = Y(i), dx = net.cdx[k] * sc, dy = -net.cdy[k] * sc;
+              const seg = (ax, ay, bx, by) => '<line x1="' + rr(ax) + '" y1="' + rr(ay) + '" x2="' + rr(bx) +
+                '" y2="' + rr(by) + '" stroke="' + col + '" stroke-width="' + rr(wd) + '" stroke-linecap="round"/>';
+              body += seg(x1, y1, x1 + dx, y1 + dy);
+              const x2 = X(j);
+              if (Math.abs(x1 + dx - x2) > 0.5 * sc) body += seg(x2, Y(j), x2 - dx, Y(j) - dy);
+            }
           }
           return U.svgBlob(w, h, s.bg, body);
         },

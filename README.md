@@ -4,12 +4,12 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded, resolution-independent, and exports in inches at giclée resolution.
 
-One HTML file. Sixty-one pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
+One HTML file. Sixty-two pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
   <img src="gallery/vortex.jpg" width="32%" alt="Abrikosov vortex lattice in a rotating condensate" />
-  <img src="gallery/froth.jpg" width="32%" alt="Cellular Potts froth coloured by side count" />
+  <img src="gallery/froth.jpg" width="32%" alt="Cellular Potts froth colored by side count" />
 </p>
 <p align="center">
   <img src="gallery/cortex.jpg" width="32%" alt="Cortical planform through the retinocortical map: the tunnel form constant" />
@@ -17,7 +17,7 @@ One HTML file. Sixty-one pattern-forming systems. A seed that reprints. A hash y
   <img src="gallery/matrices.jpg" width="32%" alt="Beta-ensemble spectra swept from independence to rigidity" />
 </p>
 <p align="center">
-  <img src="gallery/eden.jpg" width="32%" alt="Eden cluster coloured by growth time" />
+  <img src="gallery/eden.jpg" width="32%" alt="Eden cluster colored by growth time" />
   <img src="gallery/snowflake.jpg" width="32%" alt="Gravner-Griffeath snow crystal" />
   <img src="gallery/tilings.jpg" width="32%" alt="Penrose tiling" />
 </p>
@@ -43,7 +43,7 @@ The usual options fall down in different places:
 - **An image model.** It will draw a snowflake that never froze and a quasicrystal that is a hexagon with extra steps. There is no seed that reprints, and no way to show that anything was solved.
 - **A recorded loop.** It looks alive until you touch it.
 
-GENChase is the other object: sixty-one sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
+GENChase is the other object: sixty-two sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
 
 | | On disk | What you get | How you reprint |
 |---|---|---|---|
@@ -68,6 +68,56 @@ GENChase is the other object: sixty-one sciences on one control surface, determi
 **A witness, not a trailer.** Click a living plate. Drag a stroke. The field has to answer. The LIVE badge is a fingerprint of the pixels on the canvas — a video would loop, a still never changes, a simulation has to keep moving. Still plates start Still and stay Still. They do not get to flash Live as a greeting.
 
 **Nothing to phone home.** No build, no framework, no account, no analytics, no CDN. WebGL2 where the method needs a GPU, CPU where that is faster. It runs from a folder.
+
+---
+
+## The plates check themselves
+
+This is the part that is hard to copy, and the reason to trust the pictures. Most tabs measure a quantity that theory predicts, **from the plate in front of you**, and print it in the status line and on the colophon. Not quoted from a paper: computed from the field that is currently on screen.
+
+| Tab | What it measures | What theory says | What the plate measured |
+|---|---|---|---|
+| Foam & Grains | mean number of sides in the froth | exactly 6, forced by Euler | **6.11** |
+| Foam & Grains | von Neumann–Mullins law | dA/dt ∝ (n − 6) | **dA/dt = 0.34 (n − 6)**, r = 0.60 |
+| Random Matrices | unfolded level spacing, β = 1 | Wigner surmise 0.523 | **0.540** |
+| Random Matrices | unfolded level spacing, β = 2 | Wigner surmise 0.422 | **0.419** |
+| Rough Growth | roughening exponent, random deposition | 1/2 | **0.498** |
+| Rough Growth | roughening exponent, surface relaxation | 1/4 (Edwards–Wilkinson) | **0.217** |
+| Rough Growth | roughening exponent, RSOS | 1/3 (KPZ) | **0.307** |
+| Flocking | number fluctuations, ΔN ~ N^a | above 1/2 out of equilibrium | **0.74** |
+| Hyperbolic Turing | cells meeting at a vertex of {p, q} | exactly q | **100%** |
+| Drainage Networks | drainage area, P(A > a) ~ a^−β | near 0.45 in real basins | **0.53** |
+| Vortex Lattice | vortices, by phase winding | quantized circulation | **counted, not guessed** |
+
+When a measurement disagrees with theory the tab says so rather than rounding toward it. Ballistic deposition fits **under** 1/3 because its crossover to KPZ is slow at plate size, and the hint says exactly that instead of quietly presenting 0.33. A neural field outside its patterning window prints "h is outside it, the sheet will go flat" rather than leaving a blank plate to be read as a subtle one.
+
+---
+
+## Where the numerics are the actual work
+
+A generative art tool can get away with a plausible-looking integrator. A plate that claims to be a solved equation cannot, and most of the engineering here is in that gap.
+
+**Step bounds are derived, not guessed.** The 5-point Laplacian has symbol on [−8, 0], so every explicit scheme in the file computes its own stability limit and clamps to it, and the status line prints which term is binding. Kuramoto–Sivashinsky gives 64ν − 8. Swift–Hohenberg gives (8 − k₀²)² − r. A rotating condensate has two bounds at once, one kinetic and one from the rotation term, which is first order in space with an imaginary coefficient and unstable on its own. A flock has three, and the tightest is the cubic saturation, which the linear estimates do not see. Past any of these bounds a field fills with the grid-scale checkerboard, which a thumbnail averages into a perfectly plausible plate; `tools/check.js` measures the neighbor correlation and fails it.
+
+**Samplers are exact where an exact sampler exists.** Uniform spanning trees by Wilson's algorithm, not by a randomised Prim that only looks uniform. Random domino tilings by Elkies–Kuperberg–Larsen–Propp shuffling. β-ensembles by the Dumitriu–Edelman tridiagonal models, which give any β > 0 in O(n²) rather than the three classical cases. Dyson Brownian motion by diagonalising a genuine matrix Ornstein–Uhlenbeck process, so the eigenvalues never cross because the matrix process says so, not because a denominator was softened.
+
+**Algorithms are the ones the field actually uses.** Landscapes are solved on the Braun–Willett donor stack, one linear pass up the drainage tree and one back down, with priority-flood depression filling. Vortices are found by walking the winding number around every plaquette, then filtered by whether the plate also has a density minimum there, because a winding alone counts grid-scale phase noise and a density minimum alone misses the cores. Hyperbolic tilings are built by reflection in the sides of a fundamental polygon and then verify themselves by counting the cells around each vertex.
+
+**Print is not an afterthought.** Where the picture is discrete marks the export is real vectors, rasterised at the printer's resolution rather than at whatever the canvas happened to be. Where it is a field, the sheet now states the field's own resolution rather than pretending the paper is the limit. `tools/sharp.js` measures how much detail a sheet really carries, and `tools/lint.js` fails a size control that offers an option its own sanitizer clamps away.
+
+---
+
+## Rare in a browser
+
+None of the science is new, and the credits say whose it is. What is unusual is that these particular systems are running in a tab, seeded, and printable, on one control surface:
+
+- **Cortical planforms.** A Wilson–Cowan neural field taken through the retinocortical map, which turns cortical stripes into Klüver's form constants: fan, tunnel, spiral, cobweb.
+- **Hyperbolic Turing.** Gray–Scott chemistry on a {p, q} tiling of the hyperbolic plane, where the area at distance r grows like e^r and a pattern with a preferred wavelength cannot simply repeat.
+- **Vortex Lattice.** Gross–Pitaevskii in the rotating frame, relaxed in imaginary time into an Abrikosov lattice, with the vortices located from the phase rather than from the picture.
+- **Random Matrices.** Level repulsion as one continuous slider from independence to a near-crystal, which the classical three ensembles cannot express.
+- **Drainage Networks.** A landscape evolution model of the kind that normally lives in Fortran and Python research codes.
+- **Rough Growth.** Three roughening universality classes side by side with the exponent fitted live.
+- **Foam & Grains, Flocking, Spanning Trees**, and the rest.
 
 ---
 
@@ -148,7 +198,10 @@ Click the seed label to copy it. Presets are starting points. The URL is the pie
 
 ## Techniques
 
-Artificial Life (Lenia), Physarum, Physarum 3D, Phyllotaxis, Hastings–Levitov, Lichtenberg, Gravner–Griffeath snowflakes, differential growth, fractals, CPPNs, chimera states, swarmalators, Cahn–Hilliard, Ohta–Kawasaki, Swift–Hohenberg, phase-field crystal, XY / Kosterlitz–Thouless, complex Ginzburg–Landau, Lifshitz–Petrich 12-fold, active nematics, fluids, Kuramoto–Sivashinsky, dendritic growth, flow fields, smectic focal conics, Gray–Scott, Penrose / hat / spectre tilings, attractors, Chirikov, Hofstadter, Helmholtz scars, optical caustics, Talbot, Indra’s pearls, Chladni, cortical planforms, random matrices, drainage networks, rough growth, foam and grain coarsening, condensate vortex lattices, Toner-Tu flocking, hyperbolic Turing patterns, uniform spanning trees.
+The full list, with the hash that reconstructs each plate and the papers each one implements, is in **[TECHNIQUES.md](TECHNIQUES.md)**. The same data in machine-readable form is [`techniques.json`](techniques.json). Both are generated from `studio.html` by `node tools/index.js`, so neither can drift away from what the file actually contains.
+
+
+Artificial Life (Lenia), Physarum, Physarum 3D, Phyllotaxis, Hastings–Levitov, Lichtenberg, Gravner–Griffeath snowflakes, differential growth, fractals, CPPNs, chimera states, swarmalators, Cahn–Hilliard, Ohta–Kawasaki, Swift–Hohenberg, phase-field crystal, XY / Kosterlitz–Thouless, complex Ginzburg–Landau, Lifshitz–Petrich 12-fold, active nematics, fluids, Kuramoto–Sivashinsky, dendritic growth, flow fields, smectic focal conics, Gray–Scott, Penrose / hat / spectre tilings, attractors, Chirikov, Hofstadter, Helmholtz scars, optical caustics, Talbot, Indra’s pearls, Chladni, cortical planforms, random matrices, drainage networks, rough growth, foam and grain coarsening, condensate vortex lattices, Toner-Tu flocking, hyperbolic Turing patterns, uniform spanning trees, granular force chains.
 
 Each tab names the researchers. The implementations are original.
 
@@ -160,8 +213,8 @@ Each tab names the researchers. The implementations are original.
 
 **Free** for individuals, students, researchers, and for any company with fewer than 100 people and less than 1,000,000 USD of revenue in its prior tax year. Use it, change it, redistribute it, build on it.
 
-**Paid** above that threshold. If your company is larger than that and GENChase is useful to you, buy a licence: [open an issue](https://github.com/SharpMeow/GENChase/issues). That is the whole arrangement, and it exists so that the people who can afford to pay are the ones who do.
+**Paid** above that threshold. If your company is larger than that and GENChase is useful to you, buy a license: [open an issue](https://github.com/SharpMeow/GENChase/issues). That is the whole arrangement, and it exists so that the people who can afford to pay are the ones who do.
 
-**The artwork is always yours.** The images, animations and vector files you produce by running GENChase are not the software and are not licensed by these terms. Sell them, exhibit them, license them, at any company size, whether or not you hold a licence for the code. The LICENSE file grants this explicitly rather than leaving it to be argued about.
+**The artwork is always yours.** The images, animations and vector files you produce by running GENChase are not the software and are not licensed by these terms. Sell them, exhibit them, license them, at any company size, whether or not you hold a license for the code. The LICENSE file grants this explicitly rather than leaving it to be argued about.
 
 Built by Chaos.

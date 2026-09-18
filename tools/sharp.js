@@ -112,7 +112,7 @@ const NOISE = [/willReadFrequently/, /ERR_CERT_AUTHORITY_INVALID/, /ServiceWorke
 
   if (res.err) { console.log(JSON.stringify({ id, err: res.err })); await b.close(); return; }
   // Edge acutance, not average detail. Averaging over the whole plate answers a question about how much
-  // of it is flat: a Penrose tiling is mostly the insides of tiles, where neighbouring pixels are
+  // of it is flat: a Penrose tiling is mostly the insides of tiles, where neighboring pixels are
   // identical, so it scores as badly as a blurred field while having perfectly hard edges. What separates
   // the two is whether the plate has any hard edges at all, so this takes the 99th percentile of the
   // one-pixel difference against the plate's own contrast. Crisp geometry comes out near or above one.
