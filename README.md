@@ -115,13 +115,17 @@ If you are an agent:
 
 ## Run it
 
-There is nothing to install on any platform. Download the folder, then double-click the launcher for your system:
+There is nothing to install on any platform.
+
+**[Download GENChase](https://github.com/SharpMeow/GENChase/archive/refs/heads/main.zip)** (about 8 MB, most of it the gallery images). Unzip it, then double-click the launcher for your system:
 
 | | Double-click |
 |---|---|
 | macOS | `run/GENChase (macOS).command` |
 | Windows | `run/GENChase (Windows).bat` |
 | Linux | `run/genchase.sh` |
+
+On macOS the first launch of a downloaded script is refused by Gatekeeper. Right-click the file and choose Open, and it will run from then on.
 
 Each one starts Python's own web server on a free loopback port, opens `studio.html`, and stops when you close the window. Nothing is installed, nothing is bundled, and the port is not reachable from the network. If Python is missing the launcher opens the file directly instead and says so.
 
