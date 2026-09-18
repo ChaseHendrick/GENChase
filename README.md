@@ -107,7 +107,7 @@ If you are an agent:
 3. All noise through `U.makeRng(seed)`. `Math.random` in a sim is a bug.
 4. Share via the hash. Bump `v` only when a default change would break old recipes.
 5. Still is Still. Live has to move. Snapshot the timeline on pointer up, and only if the recipe changed.
-6. Line work exports as vectors.
+6. Discrete marks export as vectors. Accumulated density does not, and should not pretend to.
 7. Credit the paper. Do not claim the science. Do not relicense the source as MIT.
 8. The human’s images are theirs. The source is not.
 
