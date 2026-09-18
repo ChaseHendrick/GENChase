@@ -115,24 +115,42 @@ If you are an agent:
 
 ## Run it
 
+There is nothing to install on any platform. Download the folder, then double-click the launcher for your system:
+
+| | Double-click |
+|---|---|
+| macOS | `run/GENChase (macOS).command` |
+| Windows | `run/GENChase (Windows).bat` |
+| Linux | `run/genchase.sh` |
+
+Each one starts Python's own web server on a free loopback port, opens `studio.html`, and stops when you close the window. Nothing is installed, nothing is bundled, and the port is not reachable from the network. If Python is missing the launcher opens the file directly instead and says so.
+
+Or do it by hand:
+
 ```bash
 git clone https://github.com/SharpMeow/GENChase.git
 cd GENChase
 python3 -m http.server 8080
 ```
 
-Then [http://127.0.0.1:8080/studio.html](http://127.0.0.1:8080/studio.html). Double-clicking the file also works; a few GPU modules are happier with a local server.
+Then [http://127.0.0.1:8080/studio.html](http://127.0.0.1:8080/studio.html).
+
+Double-clicking `studio.html` works too, and every technique runs that way. The launchers exist so nobody has to open a terminal, and because browsers put `file://` pages under restrictions that vary by vendor and version. Served from a real origin there is nothing to vary.
 
 | Key | |
 |---|---|
 | Space | new seed |
 | S | surprise (new parameters, new palette) |
 | E | export |
+| C | copy the plate to the clipboard |
+| , . | previous / next preset |
 | L | copy recipe link |
 | B / G | save / gallery |
 | H | timeline |
 | F | focus |
 | P | pause |
+| V | record a clip while the plate is live |
+| A | ambient: focus, and a new technique every 30 seconds |
 | R | reset this technique |
 
 Click the seed label to copy it. Presets are starting points. The URL is the piece.
