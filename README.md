@@ -21,7 +21,17 @@ One HTML file. Forty-nine pattern-forming systems. A seed that reprints. A hash 
   <img src="gallery/twelve.png" width="32%" alt="Lifshitz–Petrich 12-fold quasicrystal" />
   <img src="gallery/tilings.jpg" width="32%" alt="Penrose tiling" />
 </p>
-<p align="center"><sub>Gravner–Griffeath · Hofstadter · Swift–Hohenberg · Berry caustics · Physarum · Cahn–Hilliard · Helmholtz scars · Lifshitz–Petrich 12-fold · Penrose. Frames from the live studio.</sub></p>
+<p align="center">
+  <img src="gallery/sandpile.jpg" width="32%" alt="Abelian sandpile group identity" />
+  <img src="gallery/pendulum.jpg" width="32%" alt="Double pendulum flip-time fractal" />
+  <img src="gallery/excitable.jpg" width="32%" alt="Barkley excitable media spirals" />
+</p>
+<p align="center">
+  <img src="gallery/schrodinger.jpg" width="32%" alt="Schrödinger double slit detector exposure" />
+  <img src="gallery/holomorphic.jpg" width="32%" alt="Mandelbrot seahorse valley" />
+  <img src="gallery/turing.jpg" width="32%" alt="Schnakenberg Turing spots" />
+</p>
+<p align="center"><sub>Gravner–Griffeath · Hofstadter · Swift–Hohenberg · Berry caustics · Physarum · Cahn–Hilliard · Helmholtz scars · Lifshitz–Petrich 12-fold · Penrose · Bak–Tang–Wiesenfeld sandpile · double pendulum · Barkley · Schrödinger · Mandelbrot · Turing. Frames from the live studio.</sub></p>
 
 
 Every tab is a system that already exists in a paper: Gray–Scott chemistry, Physarum transport, Lenia, Navier–Stokes, Cahn–Hilliard spinodal, Swift–Hohenberg convection, Lifshitz–Petrich 12-fold quasicrystals, Gravner–Griffeath snow crystals, hat and spectre monotiles, Helmholtz scars, optical caustics, and the rest. The governing equations are the medium. Nothing here is a style filter sitting on noise.
