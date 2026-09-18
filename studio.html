@@ -13085,6 +13085,23 @@ void main(){
     return 1.6 / rate;
   }
 
+  // Explicit Euler on the 5-point lattice. The discrete Laplacian's symbol runs over [-8, 0], so the stiffest
+  // linear mode always sits at the grid scale and the step has to satisfy dt < 2/|lambda| there.
+  //
+  // Kuramoto-Sivashinsky is du/dt = -nu L^2 u - L u with L the discrete Laplacian, so lambda(L) = -nu L^2 - L
+  // and the worst case at L = -8 is |lambda| = 64 nu - 8. Past that the grid-scale mode grows every step and
+  // the plate becomes a checkerboard, which a thumbnail averages back into a plausible flame. The 0.8 factor
+  // leaves room for the (alpha/2)|grad u|^2 term, which the linear estimate does not see.
+  function ksMaxDt(nu) {
+    return 1.6 / Math.max(1e-6, 64 * (Number(nu) || 1) - 8);
+  }
+  // Swift-Hohenberg is lambda(L) = r - (L + k0^2)^2, again worst at L = -8. This is a ceiling on the dt
+  // control only: every shipped preset sits well inside it, so no existing plate moves.
+  function shMaxDt(r, k0) {
+    const g = 8 - (Number(k0) || 0.62) ** 2;
+    return 2 / Math.max(1e-6, g * g - (Number(r) || 0));
+  }
+
   function seedNoise(s, W, H, amp, mean) {
     const rng = U.makeRng(s.seed + '/pde');
     const data = new Float32Array(W * H * 4);
@@ -13464,7 +13481,7 @@ void main(){
     },
     palette: true, defaultPalette: 'harbor', paletteLabel: 'Colors',
     headline: 'r', headlineLabel: 'control r',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.025, 0.005, 0.12); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.025, 0.005, Math.min(0.12, shMaxDt(s.r, s.k0))); },
     surprise(rng) {
       const g = rng.pick([0, 0, 0, 0.6, -0.5]);
       const r = rng.pick([0.2, 0.3, 0.4, 0.55, -0.06]);
@@ -13553,7 +13570,7 @@ void main(){
     },
     palette: true, defaultPalette: 'thermal', paletteLabel: 'Colors',
     headline: 'nu', headlineLabel: 'viscosity ν',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.018, 0.004, 0.08); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 512); s.dt = U.clamp(Number(s.dt) || 0.018, 0.004, Math.min(0.08, ksMaxDt(s.nu))); },
     surprise(rng) {
       return {
         grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5', '16:9']),
