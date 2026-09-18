@@ -44,6 +44,33 @@ Two failures worth knowing about because they both looked fine in a preview:
   `g = 0`, where the bifurcation is supercritical and nothing below onset survives. The physics has
   to permit what the preset asks for.
 
+## Print sharpness
+
+`tools/sharp.js` drives the real export path and measures how much detail a sheet actually carries;
+`sh tools/sharpall.sh` runs it over every tab. It reports two numbers, because one is not enough: `edge`
+is the 99th percentile of the one-pixel difference over the plate's own contrast, and `acuity` is how
+much of the average detail survives at the pixel scale. A plate is soft only when it has neither hard
+edges nor fine texture. A Penrose tiling is mostly the flat insides of tiles, so any average-based
+measure calls it blurry while its edges are perfectly hard; this one does not.
+
+Standing result at 8 in and 300 ppi, over all 62 tabs: 34 sharp, 11 borderline, 15 soft. The soft ones
+are field simulations at their default grids. That is arithmetic, not a bug: a 192-cell field across
+2,400 print pixels is twelve pixels per cell and there is no detail under that. Three things follow,
+and all three are already in place.
+
+- The shell no longer supersamples a plate that a technique has declared grid-limited through
+  `fieldCells()`. Rendering at twice the print size and averaging down is right for a technique that
+  recomputes per pixel and wrong for a magnified field, where it is a second low-pass for twice the
+  memory. Worth about 11 per cent of the pixel-scale detail on Cahn-Hilliard.
+- The sheet states the field's own resolution rather than letting the paper take the blame.
+- The grid ceilings go to 1024 on the 2D GPU families. Cahn-Hilliard at 512 instead of 192 measures
+  edge 0.73 against 0.39. This is the real lever, and the defaults deliberately do not pull it: changing
+  a default grid changes every saved recipe that did not name one, and reprinting a seed years later is
+  the product. Raising a default is a `v` bump, done on purpose, not a quiet improvement.
+
+If you add a technique that magnifies a grid, implement `fieldCells()` and splice `G.GLSL.bicubic` into
+the render shader. Nearest sampling gives a mosaic and bilinear leaves a lattice crease on every front.
+
 ## Working in the file
 
 - Copy a neighbor `Studio.register({ id, name, schema, defaults, create })`. Do not start a parallel architecture.
