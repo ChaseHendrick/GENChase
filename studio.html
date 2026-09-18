@@ -141,7 +141,7 @@
 
   .app {
     display: flex; flex-direction: column;
-    height: 100vh; min-height: 560px;
+    height: 100vh; height: 100dvh; min-height: 560px;
   }
   .bar, .tabs, .history { flex: 0 0 auto; }
   .main { flex: 1 1 auto; min-height: 0; }
@@ -288,6 +288,17 @@
   input[type="range"]:hover::-webkit-slider-thumb, input[type="range"]:active::-webkit-slider-thumb { border-color: var(--accent); transform: scale(1.15); }
   input[type="range"]:focus-visible { outline: none; }
   input[type="range"]:focus-visible::-webkit-slider-thumb { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  /* Firefox range thumbs get no ring from the rule above, which is -webkit- only. */
+  input[type="range"]:focus-visible::-moz-range-thumb { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  /* Sliders are the main control surface of the studio, and a 14 px thumb is not a touch target.
+     Only coarse pointers pay the extra height, so the desktop layout is unchanged. */
+  @media (pointer: coarse) {
+    input[type="range"] { height: 30px; }
+    input[type="range"]::-webkit-slider-thumb { width: 24px; height: 24px; margin-top: -11px; }
+    input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; }
+    .sw .ops button { width: 32px; height: 32px; }
+    .gitem .gdel { width: 30px; height: 30px; opacity: 1; }
+  }
 
   .seg { grid-column: 1 / -1; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: 1px solid var(--line-strong); border-radius: 6px; overflow: hidden; }
   .seg.wrap { grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); }
@@ -332,6 +343,26 @@
     letter-spacing: 0.02em; display: flex; gap: 16px; font-variant-numeric: tabular-nums; flex-wrap: wrap;
   }
   .status b { color: var(--ink-2); font-weight: 500; }
+
+  /* A technique that cannot run used to report it in 11px muted type at the bottom of an unpainted
+     rectangle, which reads as a broken page rather than as a message. It takes the stage now. */
+  .fault {
+    position: absolute; inset: 0; display: grid; place-items: center; padding: 24px;
+    background: color-mix(in srgb, var(--bg) 88%, transparent); z-index: 4;
+  }
+  .fault-card {
+    max-width: 30rem; text-align: center; background: var(--panel); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 12px; padding: 22px 24px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+  }
+  .fault-card h3 { margin: 0 0 8px; font-size: 16px; font-weight: 600; }
+  .fault-card p { margin: 0 0 16px; font-size: 13px; line-height: 1.5; color: var(--ink-2); }
+  .fault-acts { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .fault-acts button {
+    font: inherit; font-size: 13px; padding: 7px 14px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--panel-2); color: var(--ink);
+  }
+  .fault-acts button:hover { border-color: var(--accent); }
 
   .witness {
     position: absolute; top: 12px; right: 14px; z-index: 4;
@@ -506,7 +537,7 @@
   .app.focus .history,
   .app.focus .side { display: none !important; }
   .app.focus .main, .app.focus .main.side-right { display: block; }
-  .app.focus .stage { height: 100vh; padding: 12px; }
+  .app.focus .stage { height: 100vh; height: 100dvh; padding: 12px; }
   .kbd {
     display: inline-block; font-family: "Geist Mono", ui-monospace, monospace; font-size: 10px;
     border: 1px solid var(--line-strong); border-radius: 3px; padding: 0 4px; color: var(--ink-2);
@@ -531,13 +562,15 @@
 
   /* Narrow: the picture stays pinned at the top while the settings scroll beneath it */
   @media (max-width: 760px) {
-    .app { display: block; height: auto; min-height: 100vh; }
+    .app { display: block; height: auto; min-height: 100vh; min-height: 100dvh; }
     .main, .main.side-right { display: flex; flex-direction: column; }
     .stage { order: -1; position: sticky; top: 0; z-index: 5; height: 46vh; min-height: 260px; padding-block: 14px; padding-inline: 16px; border-bottom: 1px solid var(--line); }
     .status { left: 12px; bottom: 6px; gap: 10px; font-size: 10px; }
     .witness { top: 8px; right: 8px; max-width: 42%; }
     .witness-strip img { width: 28px; height: 28px; }
-    .witness-hint { display: none; }
+    /* The hint was hidden outright on narrow screens, so a touch user was never told the plate
+       answers a drag. Keep it, smaller, on its own line. */
+    .witness-hint { display: block; font-size: 10px; margin: 4px 0 0; line-height: 1.3; }
     .side, .main.side-right .side { order: 1; border-right: 0; border-left: 0; overflow: visible; }
     .seedbox input { width: 100px; }
     #btn-side { display: none; }
@@ -613,7 +646,17 @@
           <div class="colo-params" id="colo-params"></div>
         </figcaption>
       </figure>
-      <div class="status" id="status"></div>
+      <div class="fault" id="fault" hidden role="alert">
+        <div class="fault-card">
+          <h3 id="fault-title">This technique cannot run here</h3>
+          <p id="fault-msg"></p>
+          <div class="fault-acts">
+            <button type="button" id="fault-retry">Try again</button>
+            <button type="button" id="fault-other">Pick another technique</button>
+          </div>
+        </div>
+      </div>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
       <div class="witness" id="witness">
         <button class="live-badge" id="live-badge" type="button" title="LIVE when the field is still computing">
           <span class="dot" aria-hidden="true"></span>
@@ -1529,7 +1572,7 @@ void main(){
     }
     list.forEach(item => {
       const card = h('button', { class: 'gitem', type: 'button', title: item.name + ' · ' + item.seed, onclick: () => {
-        $('modal-gallery').hidden = true;
+        closeModal('modal-gallery');
         restoreHistory(item);
       }});
       if (item.thumb) card.appendChild(h('img', { src: item.thumb, alt: '' }));
@@ -1544,7 +1587,7 @@ void main(){
   }
   function openGallery() {
     renderGallery();
-    $('modal-gallery').hidden = false;
+    openModal('modal-gallery');
   }
   let historyVisible = true;
   let focusMode = false;
@@ -1649,17 +1692,18 @@ void main(){
   }
 
   const reducedMotion = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const coarsePointer = () => !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
 
   /* ---- entry (per-module runtime) ---- */
-  function ensureEntry(mod) {
+  function ensureEntry(mod, initialState) {
     if (instances[mod.id]) return instances[mod.id];
-    const canvas = h('canvas', { class: 'art', 'aria-label': mod.name + ' artwork' });
+    const canvas = h('canvas', { class: 'art', role: 'img', 'aria-label': mod.name + ' artwork' });
     canvas.hidden = true;
     const sheet = $('sheet');
     const cap = $('colo-preview');
     if (sheet && cap) sheet.insertBefore(canvas, cap);
     else $('stage').insertBefore(canvas, $('status'));
-    const e = { mod, canvas, state: loadState(mod), inst: null, statusHtml: '' };
+    const e = { mod, canvas, state: initialState || loadState(mod), inst: null, statusHtml: '' };
     const host = {
       canvas,
       util, gl: glh,
@@ -1668,10 +1712,30 @@ void main(){
       reducedMotion,
       isActive: () => currentId === mod.id && !document.hidden,
       requestRepaint: () => { if (currentId === mod.id) repaint(); },
+      // A technique that cannot run reports it here as well as in the status line, so the stage says
+      // so instead of sitting empty. Only the technique on screen gets to raise the panel.
+      fault: (msg, opts) => { if (currentId === mod.id) showFault(mod.id, msg, opts); },
     };
     e.host = host;
     e.inst = mod.create(host);
     instances[mod.id] = e;
+
+    // A browser may take the GL context away at any time: a phone backgrounding the tab, a driver
+    // reset, memory pressure. Without this the plate goes blank and stays blank for the rest of the
+    // session, with nothing said. preventDefault is what makes a restore possible at all.
+    canvas.addEventListener('webglcontextlost', ev => {
+      ev.preventDefault();
+      e.contextLost = true;
+      try { e.inst.pause && e.inst.pause(); } catch (err) { /* it is already gone */ }
+      if (currentId === mod.id) {
+        showFault(mod.id, 'The browser took back the graphics context, which usually means this tab was in the background or the device was short of memory. The plate can be rebuilt from its seed.',
+                  { title: 'Graphics context lost', retry: true });
+      }
+    });
+    canvas.addEventListener('webglcontextrestored', () => {
+      if (e.contextLost) rebuildEntry(mod.id);
+    });
+
     e.canvas.addEventListener('pointerdown', ev => onPokeDown(e, ev));
     e.canvas.addEventListener('pointermove', onPokeMove);
     e.canvas.addEventListener('pointerup', onPokeUp);
@@ -1690,7 +1754,15 @@ void main(){
     const ar = (e.inst.aspect && e.inst.aspect(e.state)) || 1;
     let cw = Math.max(120, availW), ch = cw * ar;
     if (ch > availH) { ch = Math.max(120, availH); cw = ch / ar; }
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    // The device ratio is capped at 2, but the CSS size is whatever the stage is, and the stage is
+    // as wide as the window. On a 5K display that alone reaches roughly 28 megapixels of backbuffer
+    // before any technique allocates its own, and the CPU techniques that raster at canvas size pay
+    // it twice. Cap the drawing buffer by area instead and let CSS scale the last few percent: past
+    // this size the limit is the screen, not the plate. Export is unaffected, since it recomputes at
+    // print pixels rather than reading this canvas.
+    const MAX_CANVAS_PX = 8e6;
+    let dpr = Math.min(2, window.devicePixelRatio || 1);
+    if (cw * ch * dpr * dpr > MAX_CANVAS_PX) dpr = Math.sqrt(MAX_CANVAS_PX / Math.max(1, cw * ch));
     e.canvas.style.width = cw + 'px';
     e.canvas.style.height = ch + 'px';
     const pw = Math.round(cw * dpr), ph = Math.round(ch * dpr);
@@ -1732,6 +1804,51 @@ void main(){
     console.error(err);
     toast('Something went wrong in this module: ' + (err && err.message ? err.message.split('\n')[0] : err));
   }
+
+  /* ---- modals: open and close through here so focus goes in and comes back ---- */
+  const MODALS = ['modal-export', 'modal-settings', 'modal-about', 'modal-gallery'];
+  let returnFocusTo = null;
+  function openModal(id) {
+    const m = $(id);
+    if (!m) return;
+    returnFocusTo = document.activeElement;
+    m.hidden = false;
+    // Land on something inside rather than leaving focus on the button behind the overlay.
+    const first = [...m.querySelectorAll('button, [href], input, select, textarea')]
+      .find(el => !el.hidden && !el.disabled && el.offsetParent !== null);
+    if (first) { try { first.focus(); } catch (err) { /* nothing focusable yet */ } }
+  }
+  function closeModal(id) {
+    const m = $(id);
+    if (m) m.hidden = true;
+    if (returnFocusTo && document.contains(returnFocusTo)) { try { returnFocusTo.focus(); } catch (err) { /* gone */ } }
+    returnFocusTo = null;
+  }
+  function closeAllModals() { for (const id of MODALS) { const m = $(id); if (m) m.hidden = true; } closeModal(null); }
+
+  /* ---- a technique that cannot run says so on the stage, not in 11px at the bottom ---- */
+  // A GPU technique with no WebGL2, or whose shaders will not compile, returns a stub whose only
+  // report was host.setStatus(). The canvas is then sized but never painted, so the page reads as
+  // broken rather than as a message. This takes the stage and offers the two things worth doing.
+  function showFault(id, msg, opts) {
+    const panel = $('fault');
+    if (!panel) return;
+    faultFor = id;
+    faulted.add(id);
+    $('fault-title').textContent = (opts && opts.title) || 'This technique cannot run here';
+    $('fault-msg').textContent = msg || 'Something went wrong starting this technique.';
+    $('fault-retry').hidden = !(opts && opts.retry);
+    panel.hidden = false;
+  }
+  function clearFault() {
+    const panel = $('fault');
+    if (panel) panel.hidden = true;
+    faultFor = null;
+  }
+  let faultFor = null;
+  // On a device with no WebGL2 every GPU technique fails the same way, so offering "the next one"
+  // just shows the same panel again. Skip the ones already known to fail here.
+  const faulted = new Set();
 
   /* ---- living witness: pixel fingerprint + frame strip + poke ---- */
   const probe = document.createElement('canvas');
@@ -1849,7 +1966,8 @@ void main(){
     }
     if (fpEl && fp) fpEl.textContent = fp.slice(-4);
     const poke = !!(e.inst && e.inst.disturb);
-    if (hint) hint.textContent = (liveNow && poke) ? 'Drag to disturb' : '';
+    // "Drag" is a mouse word; on a touch screen the gesture has a different name.
+    if (hint) hint.textContent = (liveNow && poke) ? (coarsePointer() ? 'Touch and drag to disturb' : 'Drag to disturb') : '';
     if (force) {
       pushWitnessFrame(e.canvas);
       stripAt = Date.now();
@@ -1917,11 +2035,13 @@ void main(){
     if (recorder) stopRecord();
     if (prev) { prev.canvas.hidden = true; try { prev.inst.pause && prev.inst.pause(); } catch (e) { /* ignore */ } }
     currentId = id;
+    if (faultFor && faultFor !== id) clearFault();
     const e = ensureEntry(byId[id]);
     e.canvas.hidden = false;
     for (const b of document.querySelectorAll('.tab')) {
       const on = b.dataset.id === id;
       b.setAttribute('aria-selected', String(on));
+      b.tabIndex = on ? 0 : -1;
       // the strip scrolls horizontally on narrow screens, so pull the active tab into view
       if (on && b.scrollIntoView) { try { b.scrollIntoView({ inline: 'center', block: 'nearest' }); } catch (err) { b.scrollIntoView(); } }
     }
@@ -2443,7 +2563,7 @@ void main(){
     pnote.hidden = false;
     pnote.textContent = 'Prints ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in (' + cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) +
       ' cm) at ' + sp.effDpi + ' ppi.' + (colophon ? ' The image sits in a paper margin with the technique, its rule, the seed and every parameter captioned beneath.' : '') + (sp.clamped ? ' Requested ' + sp.dpi + ' ppi was clamped to the largest file a browser can encode.' : '');
-    modal.hidden = false;
+    openModal('modal-export');
     await new Promise(r => setTimeout(r, 30));
     if (colophon && document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (err) { /* metrics fall back */ } }
     try {
@@ -2556,6 +2676,36 @@ void main(){
     buildSidebar(e); syncAll(e);
     regenerate({ skipSnap: true });
   }
+  // Build the technique's runtime again from the state it already has, keeping the seed and every
+  // parameter, so a plate recovers from a lost GL context without becoming a different plate.
+  // A canvas whose context is gone cannot be handed a new one, so the element itself is replaced;
+  // ensureEntry creates that, which is why the old one is removed rather than swapped.
+  function rebuildEntry(id) {
+    const old = instances[id];
+    if (!old || !byId[id]) return false;
+    let keep;
+    try { keep = JSON.parse(JSON.stringify(old.state)); } catch (err) { keep = old.state; }
+    const wasCurrent = currentId === id;
+    const wasHidden = old.canvas.hidden;
+    try { old.inst.pause && old.inst.pause(); } catch (err) { /* the context is already gone */ }
+    try { old.inst.dispose && old.inst.dispose(); } catch (err) { /* likewise */ }
+    old.canvas.remove();
+    delete instances[id];
+
+    const next = ensureEntry(byId[id], keep);
+    next.canvas.hidden = wasCurrent ? false : wasHidden;
+    if (!wasCurrent) return true;
+    clearFault();
+    buildSidebar(next);
+    buildTopControls(next);
+    next.started = true;
+    fitCanvas(next);
+    try { regenerate({ skipSnap: true, skipHistory: true }); }
+    catch (err) { showError(err); return false; }
+    renderStatus();
+    return true;
+  }
+
   function resetModule() {
     const e = instances[currentId]; if (!e) return;
     snapshot('reset');
@@ -2582,7 +2732,9 @@ void main(){
     window.addEventListener('resize', markScroll);
     setTimeout(markScroll, 0);
     for (const m of modules) {
-      tabs.appendChild(h('button', { class: 'tab', role: 'tab', type: 'button', 'data-id': m.id, 'aria-selected': 'false', title: m.subtitle || m.name, onclick: () => switchTo(m.id) }, [
+      // Roving tabindex: the strip is one tab stop and the arrow keys move within it. Fifty-two
+      // sequential tab stops is what a tablist without this costs a keyboard user.
+      tabs.appendChild(h('button', { class: 'tab', role: 'tab', type: 'button', 'data-id': m.id, 'aria-selected': 'false', tabindex: '-1', title: m.subtitle || m.name, onclick: () => switchTo(m.id) }, [
         h('span', { class: 'tab-name', text: m.tab || m.name }),
       ]));
     }
@@ -2640,21 +2792,21 @@ void main(){
     }
     $('btn-export').addEventListener('click', doExport);
     $('export-save').addEventListener('click', saveViaCapability);
-    $('export-close').addEventListener('click', () => { $('modal-export').hidden = true; });
-    $('modal-export').addEventListener('click', ev => { if (ev.target === $('modal-export')) $('modal-export').hidden = true; });
+    $('export-close').addEventListener('click', () => { closeModal('modal-export'); });
+    $('modal-export').addEventListener('click', ev => { if (ev.target === $('modal-export')) closeModal('modal-export'); });
     // settings JSON
-    $('btn-about').addEventListener('click', () => { $('modal-about').hidden = false; });
-    $('about-close').addEventListener('click', () => { $('modal-about').hidden = true; });
-    $('modal-about').addEventListener('click', ev => { if (ev.target === $('modal-about')) $('modal-about').hidden = true; });
+    $('btn-about').addEventListener('click', () => { openModal('modal-about'); });
+    $('about-close').addEventListener('click', () => { closeModal('modal-about'); });
+    $('modal-about').addEventListener('click', ev => { if (ev.target === $('modal-about')) closeModal('modal-about'); });
     $('btn-settings').addEventListener('click', () => {
       const e = instances[currentId];
       const payload = Object.assign({ v: RECIPE_V, id: e.mod.id }, e.state);
       $('settings-text').value = JSON.stringify(payload, null, 2);
       $('settings-err').hidden = true;
-      $('modal-settings').hidden = false;
+      openModal('modal-settings');
     });
-    $('settings-close').addEventListener('click', () => { $('modal-settings').hidden = true; });
-    $('modal-settings').addEventListener('click', ev => { if (ev.target === $('modal-settings')) $('modal-settings').hidden = true; });
+    $('settings-close').addEventListener('click', () => { closeModal('modal-settings'); });
+    $('modal-settings').addEventListener('click', ev => { if (ev.target === $('modal-settings')) closeModal('modal-settings'); });
     $('settings-copy').addEventListener('click', async () => { try { await navigator.clipboard.writeText($('settings-text').value); toast('Settings copied'); } catch (err) { $('settings-text').select(); toast('Select the text and copy it manually'); } });
     $('settings-apply').addEventListener('click', () => {
       const e = instances[currentId];
@@ -2666,14 +2818,14 @@ void main(){
         const e2 = instances[currentId];
         e2.state = sanitize(e2.mod, Object.assign(own(e2.state), obj));
         e2.host.getState = () => e2.state;
-        buildSidebar(e2); syncAll(e2); $('modal-settings').hidden = true; regenerate({ snapLabel: 'settings JSON' }); toast('Settings applied');
+        buildSidebar(e2); syncAll(e2); closeModal('modal-settings'); regenerate({ snapLabel: 'settings JSON' }); toast('Settings applied');
       } catch (err) { $('settings-err').textContent = 'That is not valid JSON: ' + err.message; $('settings-err').hidden = false; }
     });
     $('btn-save').addEventListener('click', saveToGallery);
     $('btn-record').addEventListener('click', toggleRecord);
     $('btn-gallery').addEventListener('click', openGallery);
     const galClose = $('gallery-close');
-    if (galClose) galClose.addEventListener('click', () => { $('modal-gallery').hidden = true; });
+    if (galClose) galClose.addEventListener('click', () => { closeModal('modal-gallery'); });
     $('btn-copy-link').addEventListener('click', async () => {
       writeHash();
       const url = location.href;
@@ -2708,12 +2860,69 @@ void main(){
       copyText(e.state.seed, 'Seed copied', 'Copy the seed field');
     });
     $('btn-side').addEventListener('click', () => { panelSide = panelSide === 'right' ? 'left' : 'right'; applyPanelSide(); persist(currentId); });
+    $('fault-retry').addEventListener('click', () => {
+      const id = faultFor || currentId;
+      clearFault();
+      if (!rebuildEntry(id)) toast('That technique still will not start on this device');
+    });
+    $('fault-other').addEventListener('click', () => {
+      clearFault();
+      const next = modules.find(m => !faulted.has(m.id));
+      if (next) switchTo(next.id);
+      else toast('Every technique tried so far has failed on this device');
+    });
+
+    // The tablist's keyboard contract: arrows move, Home and End jump. Declaring role="tablist"
+    // without this tells a screen reader the arrows work when they do not.
+    $('tabs').addEventListener('keydown', ev => {
+      const keys = ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Home', 'End'];
+      if (keys.indexOf(ev.key) < 0) return;
+      const list = [...document.querySelectorAll('.tab[data-id]')];
+      if (!list.length) return;
+      const at = Math.max(0, list.findIndex(b => b.dataset.id === currentId));
+      let to = at;
+      if (ev.key === 'Home') to = 0;
+      else if (ev.key === 'End') to = list.length - 1;
+      else if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown') to = (at + 1) % list.length;
+      else to = (at - 1 + list.length) % list.length;
+      ev.preventDefault();
+      switchTo(list[to].dataset.id);
+      const now = document.querySelector('.tab[aria-selected="true"]');
+      if (now) now.focus();
+    });
+
+    // Modals are role="dialog" aria-modal="true", which promises the focus stays inside. It did not:
+    // Tab walked straight out into the tab strip behind the overlay, and closing never gave focus
+    // back to whatever opened it.
+    document.addEventListener('keydown', ev => {
+      if (ev.key !== 'Tab') return;
+      const open = MODALS.map($).find(m => m && !m.hidden);
+      if (!open) return;
+      const items = [...open.querySelectorAll('button, [href], input, select, textarea, [tabindex]')]
+        .filter(el => !el.hidden && !el.disabled && el.tabIndex !== -1 && el.offsetParent !== null);
+      if (!items.length) return;
+      const first = items[0], last = items[items.length - 1];
+      if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+      else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+      else if (!open.contains(document.activeElement)) { ev.preventDefault(); first.focus(); }
+    });
+
+    // Anything thrown outside a wrapped module call — a key handler, a slider listener, a promise
+    // nobody awaited — used to die in the console with the page looking fine. Say so instead.
+    window.addEventListener('error', ev => {
+      if (!ev || !ev.message) return;
+      toast('Something went wrong: ' + String(ev.message).split('\n')[0].slice(0, 120));
+    });
+    window.addEventListener('unhandledrejection', ev => {
+      const r = ev && ev.reason;
+      toast('Something went wrong: ' + String((r && r.message) || r || 'a background task failed').split('\n')[0].slice(0, 120));
+    });
     document.addEventListener('keydown', ev => {
       const tag = (ev.target && ev.target.tagName) || '';
       const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || ev.target.isContentEditable;
       if (ev.key === 'Escape') {
         if (focusMode) { setFocus(false); return; }
-        $('modal-export').hidden = true; $('modal-settings').hidden = true; $('modal-about').hidden = true; $('modal-gallery').hidden = true;
+        closeAllModals();
         return;
       }
       if (typing) return;
@@ -2736,7 +2945,7 @@ void main(){
       else if (ev.key === 'c' || ev.key === 'C') { if (!ev.metaKey && !ev.ctrlKey) { ev.preventDefault(); copyPlate(); } }
       else if (ev.key === ',' || ev.key === '<') { ev.preventDefault(); stepPreset(-1); }
       else if (ev.key === '.' || ev.key === '>') { ev.preventDefault(); stepPreset(1); }
-      else if (ev.key === '?' ) { $('modal-about').hidden = false; }
+      else if (ev.key === '?' ) { openModal('modal-about'); }
       else if (ev.key >= '1' && ev.key <= '9') {
         const m = modules[Number(ev.key) - 1];
         if (m) switchTo(m.id);
@@ -4436,6 +4645,7 @@ void main(){
       const noop = () => {};
       const dead = msg => {
         host.setStatus(msg);
+        host.fault(msg);
         return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
       };
       if (!gl) return dead('WebGL2 is not available in this browser');
@@ -5611,6 +5821,7 @@ void main(){
       const noop = () => {};
       const dead = msg => {
         host.setStatus(msg);
+        host.fault(msg);
         return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
       };
       if (!gl) return dead('WebGL2 is not available in this browser');
@@ -8527,6 +8738,7 @@ void main() {
       const noop = () => {};
       const dead = msg => {
         host.setStatus(msg);
+        host.fault(msg);
         return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
       };
       if (!gl) return dead('WebGL2 is not available in this browser');
@@ -8964,6 +9176,7 @@ ${inCode}${layers}
       const noop = () => {};
       const dead = msg => {
         host.setStatus(msg);
+        host.fault(msg);
         return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
       };
       if (!gl) return dead('WebGL2 is not available in this browser');
@@ -10697,6 +10910,7 @@ void main(){
       const noop = () => {};
       const dead = msg => {
         host.setStatus(msg);
+        host.fault(msg);
         return { aspect: () => 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
       };
       if (!gl) return dead('WebGL2 is not available in this browser');
@@ -11813,6 +12027,7 @@ void main(){
       const noop = () => {};
       const dead = msg => {
         host.setStatus(msg);
+        host.fault(msg);
         return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
       };
       if (!gl) return dead('WebGL2 is not available in this browser');
@@ -12474,6 +12689,7 @@ void main(){
       const noop = () => {};
       const dead = msg => {
         host.setStatus(msg);
+        host.fault(msg);
         return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
       };
       if (!gl) return dead('WebGL2 is not available in this browser');
@@ -12943,6 +13159,7 @@ void main(){
       const noop = () => {};
       const dead = msg => {
         host.setStatus(msg);
+        host.fault(msg);
         return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
       };
       if (!gl) return dead('WebGL2 is not available in this browser');
@@ -14452,7 +14669,7 @@ void main(){
     create(host) {
       const gl = G.createGL(host.canvas);
       const noop = () => {};
-      const dead = msg => ({ aspect: s => ASPECTS[s.aspect]||1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) });
+      const dead = msg => { host.setStatus(msg); host.fault(msg); return { aspect: s => ASPECTS[s.aspect]||1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) }; };
       if (!gl) return dead('WebGL2 is not available in this browser');
       const texType = gl.floatExt ? 'rgba32f' : 'rgba16f';
       if (!gl.floatExt) gl.getExtension('EXT_color_buffer_half_float');
@@ -16447,6 +16664,7 @@ void main(){
   }
   function deadInstance(host, msg) {
     host.setStatus(msg);
+    host.fault(msg);
     const noop = () => {};
     return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
   }
@@ -17604,6 +17822,7 @@ vec3 tone(vec3 col, float con, float grain){
     const noop = () => {};
     const dead = msg => {
       host.setStatus(msg);
+      host.fault(msg);
       return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
     };
     if (!gl) return { dead: dead('WebGL2 is not available in this browser') };
@@ -18527,6 +18746,7 @@ void main(){
     const noop = () => {};
     const dead = msg => {
       host.setStatus(msg);
+      host.fault(msg);
       return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), repaint: noop, live: noop, resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
     };
     if (!gl) return { gl: null, dead: dead('WebGL2 is not available in this browser') };
@@ -19725,6 +19945,7 @@ void main(){
       const noop = () => {};
       const dead = msg => {
         host.setStatus(msg);
+        host.fault(msg);
         return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: () => host.setStatus(msg), resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(msg)) };
       };
       if (!gl) return dead('WebGL2 is not available in this browser');
