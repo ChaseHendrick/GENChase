@@ -109,6 +109,17 @@ async function settle(p, maxMs, seed) {
   const errs = [];
   const open = async hash => {
     const p = await b.newPage({ viewport: { width: 1400, height: 900 } });
+    // Normalise the layout before the shell boots. file:// pages share one localStorage, so the
+    // timeline strip fills up as the run proceeds and changes the stage height, which changes the
+    // canvas size, which changes every pixel. Two loads of one recipe were being compared at
+    // different canvas sizes and reported as non-determinism. Ising is byte-identical across three
+    // loads on a clean profile; it was the strip growing between them.
+    await p.addInitScript(() => {
+      try {
+        localStorage.removeItem('genchase.v1.history');
+        localStorage.setItem('genchase.v1.timeline', '0');
+      } catch (e) { /* a profile that refuses storage is already normalised */ }
+    });
     p.on('console', m => { const t = m.text(); if ((m.type() === 'error' || m.type() === 'warning') && !NOISE.some(r => r.test(t))) errs.push(m.type() + ': ' + t); });
     p.on('pageerror', e => { if (!NOISE.some(r => r.test(e.message))) errs.push('pageerror: ' + e.message); });
     // a 1 MB single file whose first module starts computing on load: give it time under a loaded machine
@@ -178,8 +189,11 @@ async function settle(p, maxMs, seed) {
   // Two captures say something about determinism only when we know they were taken at the same point
   // in the computation. A plate reporting no step count gives no way to know that, so a difference
   // there is not evidence of anything. This read the other way round and failed such plates.
-  const comparable = m1.fp === m2.fp || (s1 !== null && s2 !== null && s1 === s2);
-  console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: m1.fp === m2.fp, steps: [s1, s2], pausable }));
+  // Equal canvas size as well: the plate is resolution-independent by design, so the same recipe
+  // drawn at a different size is legitimately different pixels and says nothing about determinism.
+  const comparable = m1.fp === m2.fp || (m1.canvas === m2.canvas && s1 !== null && s2 !== null && s1 === s2);
+  console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: m1.fp === m2.fp, steps: [s1, s2], canvas: [m1.canvas, m2.canvas], pausable }));
+  if (m1.fp !== m2.fp && m1.canvas !== m2.canvas) console.log('determinism not comparable: drawn at ' + m1.canvas + ' and ' + m2.canvas);
   if (m1.fp !== m2.fp && comparable) fails.push('same hash loaded twice gave different plates');
   else if (m1.fp !== m2.fp) console.log('determinism not comparable: captured at steps ' + s1 + ' and ' + s2 + (pausable ? ' (still computing its warm-up)' : ' (living plate without a pause key)'));
 

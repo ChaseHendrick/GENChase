@@ -82,8 +82,10 @@ const spelled = WORDS[mods.length];
 const readme = fs.existsSync(path.join(root, 'README.md')) ? fs.readFileSync(path.join(root, 'README.md'), 'utf8') : '';
 for (const [label, text] of [['studio.html', src], ['README.md', readme]]) {
   if (!text) continue;
-  const claims = [...text.matchAll(/\b(Forty|Fifty|Sixty)[- ]?(one|two|three|four|five|six|seven|eight|nine)?\b/gi)]
-    .map(x => x[0]).filter(x => !/^\s*$/.test(x));
+  // Only a spelled number that is actually counting techniques. Matching the word on its own
+  // flagged a code comment about sixty-three animation loops, which is not a claim about anything.
+  const claims = [...text.matchAll(/\b((?:Forty|Fifty|Sixty)(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?)\b(?=(?:\s+\w+){0,2}\s+(?:pattern-forming systems|sciences|techniques|tabs)\b)/gi)]
+    .map(x => x[1]);
   for (const c of new Set(claims)) {
     if (spelled && c.toLowerCase() !== spelled.toLowerCase()) {
       fail(label + ' says "' + c + '" but the file registers ' + mods.length + ' techniques (' + spelled + ')');
