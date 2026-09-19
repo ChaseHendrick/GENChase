@@ -2,7 +2,7 @@
   "project": "GENChase",
   "repository": "https://github.com/SharpMeow/GENChase",
   "file": "studio.html",
-  "count": 108,
+  "count": 116,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "techniques": [
     {
@@ -2048,6 +2048,26 @@
       "vectors": true
     },
     {
+      "id": "track",
+      "name": "Track",
+      "subtitle": "a breather that paves the index it runs on, drawn as its worldline",
+      "equation": "φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1)",
+      "credit": "The sine-Gordon breather is exact; Seeger, Donth and Kochendörfer (1953), Faddeev and Takhtajan. A prescribed index n(x) is an inhomogeneous Josephson junction. A beam that writes the index it travels in is a self-written waveguide: Monro, de Sterke and Poladian, J. Mod. Opt. 45, 1998, and the photorefractive soliton of Segev. This plate puts that idea on a sine-Gordon breather, writes n from strain, and checks the open loop against the Lorentz speed. It is not a new law and it is not named as one.",
+      "blurb": "A sine-Gordon breather is a lump that rings and never radiates. Give the medium an index n written from the lump's own strain and you have the self-written waveguide, which is a 1990s optics literature, running on a Josephson breather. Open loop (η = 0) has to match the Lorentz boost; that is the check. Close it and the worldline is an Archimedean spiral, because radius is space and angle is time. Braid is three lumps at once. Torn is the failure, kept as a preset. The status line prints v_meas / v against 1.",
+      "order": 100,
+      "seed": "",
+      "presets": [
+        "pave",
+        "braid",
+        "open",
+        "road",
+        "strip",
+        "rest",
+        "torn"
+      ],
+      "vectors": false
+    },
+    {
       "id": "knotlight",
       "name": "Knotted Light",
       "subtitle": "a trefoil of darkness, an open book, a bark with no tangent · 2001 / this plate",
@@ -2067,12 +2087,12 @@
       "vectors": false
     },
     {
-      "id": "hendrick",
-      "name": "Hendrick",
+      "id": "causticsea",
+      "name": "Caustic Sea",
       "subtitle": "a sea that focuses its own light, and the light that writes the sea",
       "equation": "∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/|det(I + s Hess h)|",
-      "credit": "The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class of experiments. The closed loop — a Swift–Hohenberg height acting as its own phase screen, the caustic writing that height — is not a paper. It is named Hendrick in this file because it did not exist until the plate did. No law is claimed; the coupling is the artifact.",
-      "blurb": "A patterned sea focuses light. The light heats the sea. The sea changes, and so does the focus. Each piece of that sentence is published. The sentence itself is not: Swift–Hohenberg never looked at its own caustic, and Berry’s map never wrote the height that made it. Close the loop and the folds lock to the crests. Open it (η = 0) and you have an ordinary pattern with an ordinary caustic sitting on top, uncorrelated. The status line reports corr(h, I), which the loop drives positive and the open system leaves near 0.",
+      "credit": "The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). This plate is that family with the caustic in the loop, and it reports corr(h, I) against the open-loop control. It is not a new equation and it is not named as one.",
+      "blurb": "A patterned sea focuses light. The light heats the sea. The sea changes, and so does the focus. That loop is the photothermal / LIPSS family, not a private invention: Rudenko et al. already run Swift–Hohenberg on laser-written surfaces. What the plate adds is the open-loop control on the same sea, so corr(h, I) can be watched going from near 0 to locked when η is raised. The status line is that number.",
       "order": 102,
       "seed": "",
       "presets": [
@@ -2086,21 +2106,162 @@
       "vectors": false
     },
     {
-      "id": "track",
-      "name": "Track",
-      "subtitle": "a breather that paves the index it runs on",
-      "equation": "φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1)",
-      "credit": "The sine-Gordon breather is exact; Seeger–Donth–Kochendörfer (1953), Faddeev–Takhtajan. A prescribed index n(x) is an inhomogeneous Josephson junction, which is a paper. Writing n from the breather’s own strain, so the lump lays the track it runs on, is not. Open loop (η = 0) must recover the Lorentz speed; the plate reports v_meas / v against 1, and exterior energy against 0. No law is claimed. The coupling is the artifact.",
-      "blurb": "A sine-Gordon breather is a lump that rings and never radiates. Give the medium an index n that the lump writes from its own strain, and the same exact solution is no longer exact: it paves a faster track and keeps its bound envelope, until you write too hard and it tears. The control is η = 0, where the measured speed has to match the Lorentz boost. The status line prints both numbers. If the open loop were wrong, the closed loop would not be a result.",
-      "order": 103,
+      "id": "kp",
+      "name": "Soliton Web",
+      "subtitle": "resonant line-soliton webs of the Kadomtsev–Petviashvili equation",
+      "equation": "(−4 u_t + u_xxx + 6 u u_x)_x + 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = Σ_I det(A_I) Δ(k_I) e^{Σ θ}",
+      "credit": "The KP equation is Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). The tau function as a Wronskian of exponentials is Sato and Hirota. Resonant Y-junctions are Miles, J. Fluid Mech. 79, 171 (1977). The classification of the webs by totally nonnegative Grassmannians is Biondini and Chakravarty, J. Math. Phys. 47, 033514 (2006), and Kodama. Asymptotic webs expand and keep their morphology: Horowitz and Zarmi, Physica D 300, 1 (2015). This plate evaluates the exact tau function. It is not a new equation.",
+      "blurb": "A one-dimensional soliton is a ridge. In two dimensions the Kadomtsev–Petviashvili equation lets those ridges meet. Miles found they can meet in a Y: two incoming lines become one, amplitudes adding as (k_j − k_i)²/2. Sato’s tau function, a Wronskian of plane waves, makes the whole web exact — O-type boxes, spiders, the hexagonal net — with no integrator. The status line reports the Hirota bilinear residual against 0, and the peak height against the largest line-soliton amplitude in the combinatorial type. If the Wronskian were wrong, both would fail.",
+      "order": 109,
       "seed": "",
       "presets": [
-        "pave",
-        "open",
+        "y",
+        "o",
+        "spider",
+        "web",
+        "late",
+        "line",
+        "relief"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "gerstner",
+      "name": "Gerstner",
+      "subtitle": "trochoidal waves, the exact Euler deep-water solution · 1802",
+      "equation": "X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1",
+      "credit": "Gerstner, Theorie der Wellen, Abh. Bohm. Ges. Wiss. (1802), found the unique exact periodic deep-water gravity wave of finite amplitude: every particle traces a circle, the free surface is an inverted trochoid, and the pressure is constant along it. Rankine, On the exact form of waves near the surface of deep water, Phil. Trans. Roy. Soc. 153, 127 (1863), rediscovered the same motion. Superposing two Gerstners (the Two trains control) is graphics practice, Tessendorf, Simulating Ocean Water, SIGGRAPH course notes (2001), and is not an Euler solution. This plate is a seeded print of the exact Lagrangian map. It is not a new equation.",
+      "blurb": "In deep water a periodic gravity wave of finite height has an exact Euler solution, and only one: Gerstner (1802), rediscovered by Rankine. Each particle labeled (a, b) goes in a circle of radius A e^{k b}, so the orbits shrink exponentially with depth, and the free surface is an inverted trochoid, pointed at the crests, round in the troughs. At steepness σ = k A → 1 the crests cusp and the curve is a cycloid. The status line reports the RMS radial deviation from a circle, against 0, and the surface radius against A. If the map were a stacked sine, both would fail. Two trains superposes a second Gerstner; that is a rendering trick, not a solution, and the orbits stop being circles.",
+      "order": 110,
+      "seed": "",
+      "presets": [
+        "swell",
+        "steep",
+        "cross",
+        "deep",
+        "trails",
+        "cycloid",
+        "woodcut"
+      ],
+      "vectors": true
+    },
+    {
+      "id": "eight",
+      "name": "Figure Eight",
+      "subtitle": "three equal masses chasing on a planar figure-eight · 1993 / 2000",
+      "equation": "r̈_i = −Σ_{j≠i} (r_i−r_j)/|r_i−r_j|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0",
+      "credit": "Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.",
+      "blurb": "Three equal masses chase each other around a single figure-eight. Moore found the orbit; Chenciner and Montgomery proved it. The plate is that choreography as worldlines: a three-metal ribbon on a dark sheet, time as fade, or wrapped as a wreath with angle for time. Shape space kills rotation and scale, and the curve is still an eight. Braid is x against t. Broken is a nearby Euler initial condition that does not close, kept so the status line can fail. The check is |L| against 0, energy drift against 0, and the return to the initial configuration at t = T against 0.",
+      "order": 111,
+      "seed": "",
+      "presets": [
+        "eight",
+        "long",
+        "braid",
+        "shape",
+        "broken",
+        "three",
+        "tight"
+      ],
+      "vectors": true
+    },
+    {
+      "id": "peakon",
+      "name": "Peakon",
+      "subtitle": "Camassa–Holm peaked traveling waves · 1993",
+      "equation": "u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−|x−x_i|},   m = u − u_xx",
+      "credit": "The Camassa–Holm equation and the peakon u = c exp(−|x − c t|) are R. Camassa and D. D. Holm, Phys. Rev. Lett. 71, 1661 (1993). Multi-peakon collisions, including the Stieltjes / Hankel closed form used here, are R. Beals, D. H. Sattinger and J. Szmigielski, Inverse Problems 15, L1 (1999) and Adv. Math. 154, 229 (2000). This plate evaluates that exact N-peakon formula. It is not a new soliton.",
+      "blurb": "A KdV soliton is smooth. The Camassa–Holm peakon is a traveling corner: u = c exp(−|x − c t|), and the speed is the height. Two of them collide exactly. They pass through each other and pick up a phase shift; the peak stays a corner, never rounding. The plate is the Beals–Sattinger–Szmigielski formula, not an integrator. The status line is the measured peak speed over c, which theory says is 1, and the left and right slopes at the crest, which theory says are +c and −c. If this were the wrong PDE, or the wrong exponential, both would fail.",
+      "order": 112,
+      "seed": "",
+      "presets": [
+        "one",
+        "collide",
+        "three",
+        "spacetime",
         "rest",
-        "hard",
+        "overtake",
+        "train"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "photon",
+      "name": "Photon Sphere",
+      "subtitle": "Schwarzschild photon sphere · 1916",
+      "equation": "d²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M",
+      "credit": "K. Schwarzschild, Sitzungsber. Preuss. Akad. Wiss. (1916). The unstable circular photon orbit at r = 3M is a textbook consequence of that metric. C. Darwin, Proc. R. Soc. Lond. A 249, 180 (1959) and J. L. Synge, Mon. Not. R. Astron. Soc. 131, 463 (1966) integrated the null geodesics and the capture cross-section. The plate is a seeded print of those equatorial (or slightly inclined) rays. It is not a new black hole.",
+      "blurb": "Light that aims too close at a Schwarzschild hole never comes out. The last ray that still can is the photon sphere, an unstable circle at r = 3M, and on the sky of a distant observer it sits at impact parameter b = 3√3 M. Inside that, a dark disk. Just outside, a razor of light that wound once or more around the hole. The plate integrates the equatorial null geodesic, not a painted ring: the status line is the measured capture boundary over 3√3 M, and the radius the circular orbit actually holds, over 3M. If the integrator is wrong, the ring is in the wrong place.",
+      "order": 113,
+      "seed": "",
+      "presets": [
+        "ring",
+        "spray",
+        "einstein",
+        "weak",
+        "capture",
+        "polar",
+        "impact"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "crapper",
+      "name": "Crapper",
+      "subtitle": "exact finite-amplitude pure-capillary waves · 1957",
+      "equation": "X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4|A|/(π(1−A²))",
+      "credit": "Crapper, An exact solution for progressive capillary waves of arbitrary amplitude, J. Fluid Mech. 2, 532 (1957), found the unique closed-form finite-amplitude pure-capillary wave on deep water: crests flatten, troughs sharpen, and at s* ≈ 0.730 the trough pinches a bubble of air. Hur and Vanden-Broeck, Eur. J. Mech. B/Fluids 83, 190 (2020), arXiv:2003.00950, showed that the same profile is a periodic traveling wave of a constant-vorticity Euler flow with g=0 and σ=0. The flows underneath differ. Constantin and Martín, On Crapper's wave, J. Nonlinear Math. Phys. (2011), proved the interior map is a diffeomorphism only for |A| ≤ 3−2√2 ≈ 0.172, a smaller range than the bubble. This plate is a seeded print of the exact map. It is not a new equation.",
+      "blurb": "A pure capillary wave on deep water has an exact Euler solution, and only one: Crapper (1957). The free surface is an inverted cousin of Gerstner's trochoid, rounded at the crests and needle-sharp in the troughs. Steepness s = crest-to-trough over a period is 4|A|/(π(1−A²)) identically. At A* ≈ 0.455, s* ≈ 0.730, the trough pinches a bubble of air. The interior map is a diffeomorphism only out to |A| ≤ 3−2√2 ≈ 0.172 (Constantin-Martín); do not treat those two limits as the same. The Dual Euler reading keeps the profile and replaces irrotational Crapper streamlines by a constant-vorticity shear (Hur and Vanden-Broeck 2020, g=0 and σ=0). The status line reports measured s against 4|A|/(π(1−A²)). If the map were a stacked sine, that ratio would fail.",
+      "order": 114,
+      "seed": "",
+      "presets": [
+        "ripple",
+        "moderate",
+        "steep",
+        "bubble",
+        "dual",
+        "deep",
+        "woodcut"
+      ],
+      "vectors": true
+    },
+    {
+      "id": "hasimoto",
+      "name": "Hasimoto",
+      "subtitle": "a soliton on a vortex filament · 1972",
+      "equation": "γ_t = γ_s × γ_ss,   ψ = κ exp(i ∫ τ ds),   κ = 2ν sech(ν(s−2τ₀ t)),   c = 2τ₀",
+      "credit": "H. Hasimoto, J. Fluid Mech. 51, 477 (1972), mapped the local-induction approximation for a thin vortex filament to the cubic nonlinear Schrödinger equation and found the sech soliton: a loop of helical motion that travels along a line vortex at speed equal to twice the torsion. The explicit traveling-wave curve sampled here is the solitary-wave member of S. Kida, J. Fluid Mech. 112, 397 (1981). This plate is a print of that curve. It is not a new law of vortex motion.",
+      "blurb": "Local induction sends a thin vortex along its binormal, γ_t = γ_s × γ_ss. Hasimoto packed curvature and torsion into a complex field that obeys NLS. The sech soliton of NLS is a loop of helical motion riding a line vortex. Speed along the filament equals twice the torsion. The plate is Kida’s traveling-wave curve, gold on dark: the loop itself, head-on so the helix reads as a winding, a print of measured curvature and torsion, spacetime of the sech bump, or two snapshots overlay. The status line is peak curvature over 2ν, envelope speed over 2τ₀, and the LIA residual, all from finite differences of the polyline. If speed is not twice the torsion, the curve is wrong.",
+      "order": 115,
+      "seed": "",
+      "presets": [
+        "loop",
         "tight",
-        "torn"
+        "helix",
+        "planar",
+        "space",
+        "overlay",
+        "head"
+      ],
+      "vectors": true
+    },
+    {
+      "id": "lump",
+      "name": "Lump",
+      "subtitle": "KP-I lumps · 1977",
+      "equation": "(u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b²",
+      "credit": "Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Multi-lumps: Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). They pass through each other with no phase shift. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.",
+      "blurb": "KP-II makes Y-junctions of lines. KP-I, the other sign in front of u_yy, makes lumps: rational, decaying as 1/r², a 2D solitary wave that is exact. Two of them pass through each other and come out unshifted. The status line is the Hirota bilinear residual of KP-I against 0, and the peak against 4b². If the tau function is the wrong KP, both fail.",
+      "order": 116,
+      "seed": "",
+      "presets": [
+        "one",
+        "two",
+        "three",
+        "collide",
+        "spacetime",
+        "oblique",
+        "tight"
       ],
       "vectors": false
     }
