@@ -84,13 +84,18 @@
   // A rotor advances 0 -> 1 -> 2 -> 3 -> 0, which is a quarter turn clockwise on the plate.
 
   // Lattice half-width. The aggregate of n particles has radius about sqrt(n / pi); a particle only ever
-  // moves while it is standing on an occupied site, so it can never get outside the aggregate, and the
-  // margin below was not approached anywhere in the runs behind this tab, which go to n = 50,000, the
-  // largest the slider offers. That is a measurement on the sizes actually offered and not a proof, so
-  // every loop here checks whether a particle has come to rest on the border ring, stops if one ever
-  // does, and says so in the status line rather than quietly drawing a clipped aggregate.
+  // moves while it is standing on an occupied site, so it can never get outside the aggregate. At
+  // n = 50,000, the largest the slider offers, the half-width is 167 cells and the measured outradius
+  // ran 128.4 to 128.9 over six seeds of the random aggregate and 126.9 for the rotor one, so the
+  // nearest any run came to the border was 38 cells. That is a measurement on the sizes actually
+  // offered and not a proof, so every loop here checks whether a particle has come to rest on the
+  // border ring, stops if one ever does, and says so in the status line rather than quietly drawing a
+  // clipped aggregate.
   const latticeR = n => Math.ceil(Math.sqrt(n / Math.PI)) + 12 + Math.ceil(2.5 * Math.log(Math.max(2, n)));
-  // Half-width of the plate itself, fixed in advance from n so the picture does not jump size while it builds.
+  // Half-width of the plate itself, fixed in advance from n so the picture does not jump size while it
+  // builds. Six cells of margin past sqrt(n / pi) is what the fluctuation needs: the outradius sits about
+  // 2.3 cells outside that circle at n = 8,000 and the excess grows like a logarithm, and the tightest
+  // clearance measured at n = 50,000 over six seeds was 4.1 cells with a spread of half a cell.
   const plateR = n => Math.ceil(Math.sqrt(n / Math.PI)) + 6;
 
   // The starting rotors are built once, into an array, and both firing orders are handed the same array.
@@ -350,9 +355,15 @@
     // is blind to the line being the wrong shape. The residual standard error says how far the four
     // rung means miss a straight line, and it is blind to how well each mean is known. Reporting the
     // smaller of the two would claim a precision neither of them supports, so the larger is used and
-    // both were looked at: on the default seed they are 0.029 and 0.018, the bootstrap winning.
+    // both were looked at: on the default seed with all rotors east they are 0.0418 and 0.0078, the
+    // bootstrap winning by a factor of five. Which one won is carried out with the number, because it
+    // decides how the deviation is read. A bootstrap standard deviation over four hundred resamples is
+    // read as a normal deviate; a residual standard error on two degrees of freedom is not one, and
+    // has to go through the same Student's t the rotor slope does or it would overstate the result.
     const bootSd = sl.length > 1 ? meanSe(sl).sd : NaN;
-    const bootSe = isFinite(bootSd) && isFinite(fi.se) ? Math.max(bootSd, fi.se) : (isFinite(bootSd) ? bootSd : fi.se);
+    const useBoot = isFinite(bootSd) && (!isFinite(fi.se) || bootSd >= fi.se);
+    const bootSe = useBoot ? bootSd : fi.se;
+    const bootDf = useBoot ? 0 : fi.df;   // 0 means "read as a normal deviate"
 
     // The ratio of the two rim widths at the top rung. When the rotor side is a single exact number the
     // whole relative error is the random side's; when the starting rotors are scattered both sides have
@@ -368,7 +379,7 @@
       rSpread: rs[T], iSpread: is[T], rExact,
       rOut: rOut[T], rIn: rIn[T], iOut: iOut[T], iIn: iIn[T],
       ratio, ratioSe, ratioZ: sigmas(ratio, ratioSe, 1),
-      pLog, fr, fi, bootSe,
+      pLog, fr, fi, bootSe, bootDf,
       // out - sqrt(n/pi) and sqrt(n/pi) - in at the top rung. The theorem does not say either of these
       // is zero. It bounds the second by O(log r) and the first only by O(r^alpha) for alpha above a
       // half, so zero is the wrong reference to take a sigma against on either side, and the status
@@ -397,7 +408,7 @@
     order: 41,
     equation: 'at an occupied site turn the rotor a quarter turn and follow it; stop at the first unoccupied site.   inradius ≥ r − O(log r),  outradius ≤ r + O(r^α) for every α > 1 − 1/d,  r = √(n/π) in d = 2',
     credit: "Lionel Levine and Yuval Peres, 'Strong spherical asymptotics for rotor-router aggregation and the divisible sandpile', Potential Analysis 30, 1 (2009), is the theorem this plate measures. For an aggregate of n particles in d dimensions, written as n = ω_d r^d, they prove the inradius is at least r − O(log r) and the outradius at most r + O(r^α) for every α > 1 − 1/d, which in the plane is r + O(r^α) for every α > 1/2. The two sides of that sandwich are not the same strength, and the plate does not pretend they are: the inner bound is logarithmic and proved, the outer bound proved here is a power, and the status line reports what this lattice actually measures rather than what the tighter of the two would suggest. There is no probability anywhere in the statement. The rotor-router walk and the aggregation model are James Propp's; they are studied in Ander Holroyd and James Propp, 'Rotor walks and Markov chains', Contemporary Mathematics 520 (2010), and in Joshua Cooper and Joel Spencer, 'Simulating a random walk with constant error', Combinatorics, Probability and Computing 15 (2006). Internal diffusion limited aggregation, the random counterpart drawn beside it, is Gregory Lawler, Maury Bramson and David Griffeath, 'Internal diffusion limited aggregation', Annals of Probability 20, 2117 (1992), who proved its limit shape is a disk; David Jerison, Lionel Levine and Scott Sheffield, Journal of the American Mathematical Society 25, 271 (2012), showed its fluctuations are logarithmic as well, so the gap the plate measures between the two is one of constants and of certainty, not of orders. That a finished aggregate does not depend on the order the particles were routed in is the abelian property of Persi Diaconis and William Fulton, Rendiconti del Seminario Matematico dell'Università e del Politecnico di Torino (1991); it is the same argument Deepak Dhar, Physical Review Letters 64, 1613 (1990), made for the abelian sandpile of Per Bak, Chao Tang and Kurt Wiesenfeld, Physical Review Letters 59, 381 (1987).",
-    blurb: 'Give every site of the square lattice a little arrow and one rule: when a particle arrives, turn the arrow a quarter turn and send the particle the way it now points. Release particles one at a time from the origin, each walking until it reaches a site nobody has claimed, and let it stop there. Nothing in that is random, and yet twenty thousand particles settle into a disk that is round to within about a cell and a half. The theorem behind that is one sided in a way worth knowing: Levine and Peres prove the aggregate contains a disk of radius √(n/π) − O(log n), and that it sits inside one of radius √(n/π) + O(n^β) for every β > 1/4, which is a far weaker statement than the inner one. The status line measures the inradius, the outradius and √(n/π) off the plate rather than asserting any of them, and it carries an error bar on every measurement that has one and says plainly which measurements are exact. Beside it is internal diffusion limited aggregation, the identical growth with a coin flip in place of the arrow at the identical particle count, and the comparison is the point: the random blob is round too, but its rim is frayed several times as wide. The status line makes that a measurement instead of an impression. It grows a small ladder of aggregates of both kinds, at 1,000, 2,000, 4,000 and 8,000 particles, several independent random ones at each rung, and reports the ratio of the two rim widths with the error bar the ensemble gives it, together with how each rim width grows with n. Two things about how that is read are worth knowing. The outradius is not supposed to equal √(n/π): the theorem asks for an offset that grows no faster than a logarithm, so zero is the wrong thing to compare against and the offset is quoted as a fraction of log n instead. And the rim width is fitted as a power of n rather than against log n directly, because a power is the thing there is an alternative to: over this ladder a width proportional to log n is itself a small power, the status line says which, and a rim that grew like √n, the way a genuinely rough interface does, would sit at 0.5 instead. The random rim lands on the logarithm. The rotor rim does not grow measurably at all across this decade, which the theorem allows, since its logarithm is an upper bound and nothing in it says the bound is reached. The odometer counts how many particles passed through each site and bands the count into contours, so the deterministic level sets come out as clean circles and the random ones shred at the edge. The rotor view draws the arrows themselves, and it is the strangest picture here, a quilt of patches with no randomness anywhere in it. The seed changes only the coin flips of the random aggregate, the optional scatter of the starting arrows, and the paper grain.',
+    blurb: 'Give every site of the square lattice a little arrow and one rule: when a particle arrives, turn the arrow a quarter turn and send the particle the way it now points. Release particles one at a time from the origin, each walking until it reaches a site nobody has claimed, and let it stop there. Nothing in that is random, and yet twenty thousand particles settle into a disk that is round to within about a cell and a half. The theorem behind that is one sided in a way worth knowing: Levine and Peres prove the aggregate contains a disk of radius √(n/π) − O(log n), and that it sits inside one of radius √(n/π) + O(n^β) for every β > 1/4, which is a far weaker statement than the inner one. The status line measures the inradius, the outradius and √(n/π) off the plate rather than asserting any of them, and it carries an error bar on every measurement that has one and says plainly which measurements are exact. Beside it is internal diffusion limited aggregation, the identical growth with a coin flip in place of the arrow at the identical particle count, and the comparison is the point: the random blob is round too, but its rim is frayed several times as wide. The status line makes that a measurement instead of an impression. It grows a small ladder of aggregates of both kinds, at 1,000, 2,000, 4,000 and 8,000 particles, several independent random ones at each rung, and reports the ratio of the two rim widths with the error bar the ensemble gives it, together with how each rim width grows with n. Two things about how that is read are worth knowing. The outradius is not supposed to equal √(n/π): the theorem asks for an offset that grows no faster than a logarithm, so zero is the wrong thing to compare against and the offset is quoted as a fraction of log n instead. And the rim width is fitted as a power of n rather than against log n directly, because a power is the thing there is an alternative to: over this ladder a width proportional to log n is itself a small power, the status line says which, and a rim that grew like √n, the way a genuinely rough interface does, would sit at 0.5 instead. The random rim lands on the logarithm. The rotor rim does not grow measurably at all across this decade, which the theorem allows, since its logarithm is an upper bound and nothing in it says the bound is reached. The picture you land on colors each site by when it was claimed and bands that order into growth rings, which is the sharpest of the four views on paper: an arrival ring is one cell wide, so the deterministic rings stay circles and the random ones break up into a mottle. The odometer counts how many particles passed through each site instead and bands the count into contours, a smoother picture of the same thing, and there the deterministic level sets come out as clean circles and the random ones shred at the edge. The rotor view draws the arrows themselves, and it is the strangest picture here, a quilt of patches with no randomness anywhere in it. The seed changes only the coin flips of the random aggregate, the optional scatter of the starting arrows, and the paper grain.',
     schema: [
       { group: 'Aggregate', key: 'mode', label: 'Growth', type: 'seg', kind: GEOM, wrap: true,
         options: [['rotor', 'Rotor-router'], ['idla', 'Internal DLA'], ['both', 'Side by side']],
@@ -423,15 +434,22 @@
     ],
     defaults: {
       mode: 'both', n: 20000, rot0: 'east',
-      view: 'odometer', cycles: 6, tone: 0.4, rings: false, grain: 0.03,
+      // Arrival time at eleven bands rather than the odometer at six, because the odometer is a smooth
+      // function of radius and six contour rings are too few to put any detail on paper: measured through
+      // the real export path at 8 in and 300 ppi, the odometer default read edge acutance 0.19 and pixel
+      // scale acuity 0.064, which is a verdict of SOFT, and raising the band count does not rescue it
+      // (0.41 at twelve, 0.50 at fourteen, still SOFT). Arrival time at eleven bands reads 1.90 and 0.087,
+      // which is sharp, because the level sets of the arrival order are one cell wide and there are
+      // eleven of them. The odometer at six bands is still a preset; it is a picture, not the default.
+      view: 'arrival', cycles: 11, tone: 0.4, rings: false, grain: 0.03,
       seed: 'propp-machine',
     },
     presets: {
       quilt: pre('The rotor quilt', { mode: 'rotor', n: 20000, rot0: 'east', view: 'rotors', rings: false, grain: 0 }, Pal.risograph),
       odometer: pre('Rotor odometer', { mode: 'rotor', n: 40000, rot0: 'east', view: 'odometer', cycles: 8, tone: 0.4, rings: false, grain: 0.03 }, Pal.ember),
-      shells: pre('Growth rings', { mode: 'rotor', n: 20000, rot0: 'east', view: 'arrival', cycles: 11, rings: false, grain: 0.02 }, Pal.thermal),
+      shells: pre('Growth rings', { mode: 'rotor', n: 20000, rot0: 'east', view: 'arrival', cycles: 14, rings: false, grain: 0.02 }, Pal.thermal),
       idla: pre('Internal DLA, the random twin', { mode: 'idla', n: 20000, view: 'arrival', cycles: 1, rings: true, grain: 0.04 }, Pal.glacier),
-      versus: pre('Deterministic against random', { mode: 'both', n: 20000, rot0: 'east', view: 'odometer', cycles: 6, tone: 0.4, rings: false, grain: 0.03 }, Pal.nightshade),
+      versus: pre('The odometer, side by side', { mode: 'both', n: 20000, rot0: 'east', view: 'odometer', cycles: 6, tone: 0.4, rings: false, grain: 0.03 }, Pal.nightshade),
       rims: pre('Two rims at one scale', { mode: 'both', n: 12000, rot0: 'east', view: 'disk', rings: true, grain: 0.03 }, Pal.tram),
       stripes: pre('Started on the diagonal', { mode: 'rotor', n: 20000, rot0: 'checker', view: 'rotors', rings: false, grain: 0 }, Pal.verdigris),
     },
@@ -679,10 +697,11 @@
                     : '+' + pm(c.rOutOff, c.rOutOffSe, 2) + ' \u2212' + pm(c.rInOff, c.rInOffSe, 2) + '</b>') + '</span>';
         // The fitted exponent, with the standard error of the fit coefficient rather than a guess at it.
         const rDev = devTxt(c.fr.a, c.fr.se, c.pLog, c.fr.df);
-        const iDev = sigTxt(sigmas(c.fi.a, c.bootSe, c.pLog));
-        const iRough = sigTxt(sigmas(c.fi.a, c.bootSe, 0.5));
+        const iDev = devTxt(c.fi.a, c.bootSe, c.pLog, c.bootDf);
+        const iRough = devTxt(c.fi.a, c.bootSe, 0.5, c.bootDf);
         a += '<span>rim \u221d n^p: rotor <b>' + pm(c.fr.a, c.fr.se, 3) + '</b> on ' + c.fr.df +
-          ' d.f., random <b>' + pm(c.fi.a, c.bootSe, 3) + '</b> bootstrapped, against <b>' + f3(c.pLog) +
+          ' d.f., random <b>' + pm(c.fi.a, c.bootSe, 3) + '</b> ' +
+          (c.bootDf ? 'on ' + c.bootDf + ' d.f.' : 'bootstrapped') + ', against <b>' + f3(c.pLog) +
           '</b> for growth \u221d log n: <b>' + rDev + '</b> and <b>' + iDev + '</b> \u00b7 \u221an, p = 0.5, is <b>' +
           iRough + '</b></span>';
         if (c.bad) a += '<span><b>' + c.bad + ' ladder runs discarded for not holding exactly n cells</b></span>';
