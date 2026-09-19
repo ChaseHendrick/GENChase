@@ -11,6 +11,7 @@
 - [ ] `node tools/export.js <id> 8 300` (if it prints)
 - [ ] `node tools/index.js` (if a tab was added or renamed)
 - [ ] no `Math.random` in a sim; credit the paper; familiarity bucket if new
+- [ ] git author is Chaos `<326338179+SharpMeow@users.noreply.github.com>`; no `sharpie@` trailer
 
 ## Notes for review
 
