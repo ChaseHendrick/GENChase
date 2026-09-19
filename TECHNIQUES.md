@@ -1,6 +1,6 @@
 # Techniques
 
-108 pattern-forming systems, one file. Generated from `studio.html` by `node tools/index.js`; do not edit by hand.
+109 pattern-forming systems, one file. Generated from `studio.html` by `node tools/index.js`; do not edit by hand.
 
 Open `studio.html` and append the hash to reconstruct a plate exactly. `#snowflake/gravner-2008` is a complete recipe: the technique, and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 
@@ -116,6 +116,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json).
 | **Track**<br><sub>a breather that paves the index it runs on, drawn as its worldline</sub> | `#track` | φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1) | raster |
 | **Knotted Light**<br><sub>a trefoil of darkness, an open book, a bark with no tangent · 2001 / this plate</sub> | `#knotlight` | ψ = (x+iy)³ − (z−ia)²,   zeros ≃ (2,3) torus knot;   pages = arg ψ;   bark = Σ α^n cos(β^n s) | raster |
 | **Caustic Sea**<br><sub>a sea that focuses its own light, and the light that writes the sea</sub> | `#causticsea` | ∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/\|det(I + s Hess h)\| | raster |
+| **Soliton Web**<br><sub>resonant line-soliton webs of the Kadomtsev–Petviashvili equation</sub> | `#kp` | (−4 u_t + u_xxx + 6 u u_x)_x + 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = Σ_I det(A_I) Δ(k_I) e^{Σ θ} | raster |
 
 ## Credits
 
@@ -336,4 +337,6 @@ None of the science is original to this project. Each technique names the people
 **Knotted Light**. The polynomial whose zeros are a trefoil in R³ is M. V. Berry and M. R. Dennis, Proc. R. Soc. A 457, 2251 (2001); J. Leach, M. R. Dennis, J. Courtial and M. J. Padgett flew a knotted optical vortex in Nature 432, 165 (2004). The open-book fibration of the trefoil singularity is J. Milnor, Singular Points of Complex Hypersurfaces, 1968. The bark is Weierstrass, 1872. No paper draws the three on one seed. That arrangement, and this print, are the artifact; the science is not a claim.
 
 **Caustic Sea**. The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). This plate is that family with the caustic in the loop, and it reports corr(h, I) against the open-loop control. It is not a new equation and it is not named as one.
+
+**Soliton Web**. The KP equation is Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). The tau function as a Wronskian of exponentials is Sato and Hirota. Resonant Y-junctions are Miles, J. Fluid Mech. 79, 171 (1977). The classification of the webs by totally nonnegative Grassmannians is Biondini and Chakravarty, J. Math. Phys. 47, 033514 (2006), and Kodama. Asymptotic webs expand and keep their morphology: Horowitz and Zarmi, Physica D 300, 1 (2015). This plate evaluates the exact tau function. It is not a new equation.
 

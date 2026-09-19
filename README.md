@@ -4,7 +4,7 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded, resolution-independent, and exports in inches at giclée resolution.
 
-One HTML file. One hundred eight pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
+One HTML file. One hundred nine pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
@@ -43,7 +43,7 @@ The usual options fall down in different places:
 - **An image model.** It will draw a snowflake that never froze and a quasicrystal that is a hexagon with extra steps. There is no seed that reprints, and no way to show that anything was solved.
 - **A recorded loop.** It looks alive until you touch it.
 
-GENChase is the other object: one hundred eight sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
+GENChase is the other object: one hundred nine sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
 
 | | On disk | What you get | How you reprint |
 |---|---|---|---|
@@ -89,7 +89,7 @@ This is the part that is hard to copy, and the reason to trust the pictures. Mos
 | Drainage Networks | drainage area, P(A > a) ~ a^−β | near 0.45 in real basins | **0.53** |
 | Vortex Lattice | vortices, by phase winding | quantized circulation | **counted, not guessed** |
 | Track | v_meas / v of a strain-written sine-Gordon breather | 1 if η = 0 | **1.20 paving, E_out/E bound** |
-| Caustic Sea | corr(h, I) with the photothermal loop closed | > 0 (open loop ~ 0) | **0.281, fold lock** |
+| Soliton Web | Hirota bilinear residual of the exact tau function | 0 | **~10⁻¹⁵** |
 
 When a measurement disagrees with theory the tab says so rather than rounding toward it. Ballistic deposition fits **under** 1/3 because its crossover to KPZ is slow at plate size, and the hint says exactly that instead of quietly presenting 0.33. A neural field outside its patterning window prints "h is outside it, the sheet will go flat" rather than leaving a blank plate to be read as a subtle one.
 
@@ -124,6 +124,7 @@ Worth being precise about, because the credits matter.
 - **Vortex Lattice.** Rotating Gross–Pitaevskii relaxed in imaginary time, with vortices located by walking the winding number around every plaquette, filtered by whether the field also has a density minimum there, and exported as a vector point set with its bond-orientational order measured. A browser rotating-GPE vortex lattice is not new: George Stagg's WebGL solver has had a "Trapped & Rotating" preset since 2019. It injects vortices on a click rather than finding them, and it runs damped real time rather than imaginary-time relaxation. Plaquette winding detection with a point-set export is routine in research codes such as GPUE, which is CUDA. Putting the relaxation, the detection, the density filter and the vector export together in a page you can open is the part I did not find.
 - **Cortical Planforms.** A Wilson–Cowan field taken through the retinocortical map, interactive and seeded, with the patterning window computed in closed form so the tab can say when the drive is outside it. The science is Ermentrout and Cowan 1979 and Bressloff and colleagues 2001. I looked for an interactive browser version and did not find one, and this is the weakest negative result on the page: a sketch doing exactly this could sit on Observable or Shadertoy under a name I did not think to search, and neither site could be opened from here.
 - **Drainage Networks.** Stream-power landscape evolution on the Braun–Willett donor stack with priority-flood depression filling, with the channel network exported as vectors. The research codes are FastScape, fastscapelib and LandLab, which are Python, C++ and Fortran driven from notebooks; fastscapelib's own roadmap lists no browser or WebAssembly target. Browser erosion demos are common, but they are droplet-based hydraulic erosion out of computer graphics, which is a different model and does not give you a drainage network.
+- **Soliton Web.** Resonant line-soliton webs of the Kadomtsev–Petviashvili II equation, evaluated from Sato’s Wronskian tau function rather than integrated. Miles’ Y-junction, Kodama and Biondini’s O-type and spiders, Horowitz–Zarmi expansion. The status line prints the Hirota bilinear residual against 0; this build reads **~10⁻¹⁵**. Matplotlib and Mathematica notebooks of KP webs exist in the papers. I did not find a seeded, paletted, print-ready browser plate of the exact tau function.
 
 **Two closed loops, both with prior art.** Each piece is published. So is the family the loop belongs to. The plates are pictures of those families with an open-loop control sitting next to the closed one. A published equation plus a feedback term is not an invention, and it does not get a private name.
 

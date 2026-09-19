@@ -2,7 +2,7 @@
   "project": "GENChase",
   "repository": "https://github.com/SharpMeow/GENChase",
   "file": "studio.html",
-  "count": 108,
+  "count": 109,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "techniques": [
     {
@@ -2102,6 +2102,26 @@
         "rolls",
         "tight",
         "over"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "kp",
+      "name": "Soliton Web",
+      "subtitle": "resonant line-soliton webs of the Kadomtsev–Petviashvili equation",
+      "equation": "(−4 u_t + u_xxx + 6 u u_x)_x + 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = Σ_I det(A_I) Δ(k_I) e^{Σ θ}",
+      "credit": "The KP equation is Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). The tau function as a Wronskian of exponentials is Sato and Hirota. Resonant Y-junctions are Miles, J. Fluid Mech. 79, 171 (1977). The classification of the webs by totally nonnegative Grassmannians is Biondini and Chakravarty, J. Math. Phys. 47, 033514 (2006), and Kodama. Asymptotic webs expand and keep their morphology: Horowitz and Zarmi, Physica D 300, 1 (2015). This plate evaluates the exact tau function. It is not a new equation.",
+      "blurb": "A one-dimensional soliton is a ridge. In two dimensions the Kadomtsev–Petviashvili equation lets those ridges meet. Miles found they can meet in a Y: two incoming lines become one, amplitudes adding as (k_j − k_i)²/2. Sato’s tau function, a Wronskian of plane waves, makes the whole web exact — O-type boxes, spiders, the hexagonal net — with no integrator. The status line reports the Hirota bilinear residual against 0, and the peak height against the largest line-soliton amplitude in the combinatorial type. If the Wronskian were wrong, both would fail.",
+      "order": 109,
+      "seed": "",
+      "presets": [
+        "y",
+        "o",
+        "spider",
+        "web",
+        "late",
+        "line",
+        "relief"
       ],
       "vectors": false
     }
