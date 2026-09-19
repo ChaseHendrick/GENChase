@@ -1,6 +1,6 @@
 # Techniques
 
-109 pattern-forming systems, one file. Generated from `studio.html` by `node tools/index.js`; do not edit by hand.
+113 pattern-forming systems, one file. Generated from `studio.html` by `node tools/index.js`; do not edit by hand.
 
 Open `studio.html` and append the hash to reconstruct a plate exactly. `#snowflake/gravner-2008` is a complete recipe: the technique, and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 
@@ -117,6 +117,10 @@ The same data in machine-readable form is [`techniques.json`](techniques.json).
 | **Knotted Light**<br><sub>a trefoil of darkness, an open book, a bark with no tangent · 2001 / this plate</sub> | `#knotlight` | ψ = (x+iy)³ − (z−ia)²,   zeros ≃ (2,3) torus knot;   pages = arg ψ;   bark = Σ α^n cos(β^n s) | raster |
 | **Caustic Sea**<br><sub>a sea that focuses its own light, and the light that writes the sea</sub> | `#causticsea` | ∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/\|det(I + s Hess h)\| | raster |
 | **Soliton Web**<br><sub>resonant line-soliton webs of the Kadomtsev–Petviashvili equation</sub> | `#kp` | (−4 u_t + u_xxx + 6 u u_x)_x + 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = Σ_I det(A_I) Δ(k_I) e^{Σ θ} | raster |
+| **Gerstner**<br><sub>trochoidal waves, the exact Euler deep-water solution · 1802</sub> | `#gerstner` | X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1 | SVG |
+| **Figure Eight**<br><sub>three equal masses chasing on a planar figure-eight · 1993 / 2000</sub> | `#eight` | r̈_i = −Σ_{j≠i} (r_i−r_j)/\|r_i−r_j\|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0 | SVG |
+| **Peakon**<br><sub>Camassa–Holm peaked traveling waves · 1993</sub> | `#peakon` | u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−\|x−x_i\|},   m = u − u_xx | raster |
+| **Photon Sphere**<br><sub>Schwarzschild photon sphere · 1916</sub> | `#photon` | d²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M | raster |
 
 ## Credits
 
@@ -339,4 +343,12 @@ None of the science is original to this project. Each technique names the people
 **Caustic Sea**. The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). This plate is that family with the caustic in the loop, and it reports corr(h, I) against the open-loop control. It is not a new equation and it is not named as one.
 
 **Soliton Web**. The KP equation is Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). The tau function as a Wronskian of exponentials is Sato and Hirota. Resonant Y-junctions are Miles, J. Fluid Mech. 79, 171 (1977). The classification of the webs by totally nonnegative Grassmannians is Biondini and Chakravarty, J. Math. Phys. 47, 033514 (2006), and Kodama. Asymptotic webs expand and keep their morphology: Horowitz and Zarmi, Physica D 300, 1 (2015). This plate evaluates the exact tau function. It is not a new equation.
+
+**Gerstner**. Gerstner, Theorie der Wellen, Abh. Bohm. Ges. Wiss. (1802), found the unique exact periodic deep-water gravity wave of finite amplitude: every particle traces a circle, the free surface is an inverted trochoid, and the pressure is constant along it. Rankine, On the exact form of waves near the surface of deep water, Phil. Trans. Roy. Soc. 153, 127 (1863), rediscovered the same motion. Superposing two Gerstners (the Two trains control) is graphics practice, Tessendorf, Simulating Ocean Water, SIGGRAPH course notes (2001), and is not an Euler solution. This plate is a seeded print of the exact Lagrangian map. It is not a new equation.
+
+**Figure Eight**. Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.
+
+**Peakon**. The Camassa–Holm equation and the peakon u = c exp(−\|x − c t\|) are R. Camassa and D. D. Holm, Phys. Rev. Lett. 71, 1661 (1993). Multi-peakon collisions, including the Stieltjes / Hankel closed form used here, are R. Beals, D. H. Sattinger and J. Szmigielski, Inverse Problems 15, L1 (1999) and Adv. Math. 154, 229 (2000). This plate evaluates that exact N-peakon formula. It is not a new soliton.
+
+**Photon Sphere**. K. Schwarzschild, Sitzungsber. Preuss. Akad. Wiss. (1916). The unstable circular photon orbit at r = 3M is a textbook consequence of that metric. C. Darwin, Proc. R. Soc. Lond. A 249, 180 (1959) and J. L. Synge, Mon. Not. R. Astron. Soc. 131, 463 (1966) integrated the null geodesics and the capture cross-section. The plate is a seeded print of those equatorial (or slightly inclined) rays. It is not a new black hole.
 

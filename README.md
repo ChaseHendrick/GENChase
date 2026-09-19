@@ -4,7 +4,7 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded, resolution-independent, and exports in inches at giclée resolution.
 
-One HTML file. One hundred nine pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
+One HTML file. One hundred thirteen pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
@@ -43,7 +43,7 @@ The usual options fall down in different places:
 - **An image model.** It will draw a snowflake that never froze and a quasicrystal that is a hexagon with extra steps. There is no seed that reprints, and no way to show that anything was solved.
 - **A recorded loop.** It looks alive until you touch it.
 
-GENChase is the other object: one hundred nine sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
+GENChase is the other object: one hundred thirteen sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
 
 | | On disk | What you get | How you reprint |
 |---|---|---|---|
@@ -90,6 +90,10 @@ This is the part that is hard to copy, and the reason to trust the pictures. Mos
 | Vortex Lattice | vortices, by phase winding | quantized circulation | **counted, not guessed** |
 | Track | v_meas / v of a strain-written sine-Gordon breather | 1 if η = 0 | **1.20 paving, E_out/E bound** |
 | Soliton Web | Hirota bilinear residual of the exact tau function | 0 | **~10⁻¹⁵** |
+| Gerstner | orbit RMS / r ; r / A e^{kb} | 0 ; 1 | **~10⁻¹⁶** ; **1.000** |
+| Figure Eight | \|L\| ; ΔE/E ; \|q(T)−q(0)\| | 0 | **~10⁻¹⁴** ; **~10⁻¹⁴** ; **~10⁻⁷** |
+| Peakon | v_meas / c ; corner \|u_x\|/c | 1 ; 1 | **1.000** ; **1.00** |
+| Photon Sphere | b_c / (3√3 M) ; r_ph / 3M | 1 ; 1 | **1.000** ; **1.000** |
 
 When a measurement disagrees with theory the tab says so rather than rounding toward it. Ballistic deposition fits **under** 1/3 because its crossover to KPZ is slow at plate size, and the hint says exactly that instead of quietly presenting 0.33. A neural field outside its patterning window prints "h is outside it, the sheet will go flat" rather than leaving a blank plate to be read as a subtle one.
 
@@ -125,6 +129,10 @@ Worth being precise about, because the credits matter.
 - **Cortical Planforms.** A Wilson–Cowan field taken through the retinocortical map, interactive and seeded, with the patterning window computed in closed form so the tab can say when the drive is outside it. The science is Ermentrout and Cowan 1979 and Bressloff and colleagues 2001. I looked for an interactive browser version and did not find one, and this is the weakest negative result on the page: a sketch doing exactly this could sit on Observable or Shadertoy under a name I did not think to search, and neither site could be opened from here.
 - **Drainage Networks.** Stream-power landscape evolution on the Braun–Willett donor stack with priority-flood depression filling, with the channel network exported as vectors. The research codes are FastScape, fastscapelib and LandLab, which are Python, C++ and Fortran driven from notebooks; fastscapelib's own roadmap lists no browser or WebAssembly target. Browser erosion demos are common, but they are droplet-based hydraulic erosion out of computer graphics, which is a different model and does not give you a drainage network.
 - **Soliton Web.** Resonant line-soliton webs of the Kadomtsev–Petviashvili II equation, evaluated from Sato’s Wronskian tau function rather than integrated. Miles’ Y-junction, Kodama and Biondini’s O-type and spiders, Horowitz–Zarmi expansion. The status line prints the Hirota bilinear residual against 0; this build reads **~10⁻¹⁵**. Matplotlib and Mathematica notebooks of KP webs exist in the papers. I did not find a seeded, paletted, print-ready browser plate of the exact tau function.
+- **Gerstner.** The unique exact periodic deep-water gravity wave of finite amplitude (Gerstner 1802, Rankine 1863). Every particle traces a circle; the free surface is an inverted trochoid; pressure is constant along it. The plate prints the Lagrangian map and reports orbit RMS/r against 0 and r / A e^{kb} against 1. Two trains is Tessendorf superposition, labelled as graphics, and the circles fail on purpose.
+- **Figure Eight.** Moore 1993, Chenciner–Montgomery 2000, Simó’s 16-digit IC. Three equal masses chase each other around a figure-eight with L = 0. The plate reports |L| against 0, energy drift against 0, and return distance at the period against 0. Broken nearby is the control that does not close.
+- **Peakon.** Camassa–Holm peaked solitons (1993); multi-peakon collisions of Beals–Sattinger–Szmigielski. Speed equals amplitude. The plate samples v_meas / c against 1 and the corner |u_x|/c against ±1 from the field, not from the formula by construction.
+- **Photon Sphere.** Schwarzschild 1916, Darwin 1959, Synge 1966. Null geodesics, unstable photon orbit at r = 3M, capture at b = 3√3 M. The plate reports b_meas / (3√3 M) and r_ph / 3M against 1. If the integrator is wrong, the ring sits in the wrong place.
 
 **Two closed loops, both with prior art.** Each piece is published. So is the family the loop belongs to. The plates are pictures of those families with an open-loop control sitting next to the closed one. A published equation plus a feedback term is not an invention, and it does not get a private name.
 

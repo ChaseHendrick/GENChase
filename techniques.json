@@ -2,7 +2,7 @@
   "project": "GENChase",
   "repository": "https://github.com/SharpMeow/GENChase",
   "file": "studio.html",
-  "count": 109,
+  "count": 113,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "techniques": [
     {
@@ -2122,6 +2122,86 @@
         "late",
         "line",
         "relief"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "gerstner",
+      "name": "Gerstner",
+      "subtitle": "trochoidal waves, the exact Euler deep-water solution · 1802",
+      "equation": "X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1",
+      "credit": "Gerstner, Theorie der Wellen, Abh. Bohm. Ges. Wiss. (1802), found the unique exact periodic deep-water gravity wave of finite amplitude: every particle traces a circle, the free surface is an inverted trochoid, and the pressure is constant along it. Rankine, On the exact form of waves near the surface of deep water, Phil. Trans. Roy. Soc. 153, 127 (1863), rediscovered the same motion. Superposing two Gerstners (the Two trains control) is graphics practice, Tessendorf, Simulating Ocean Water, SIGGRAPH course notes (2001), and is not an Euler solution. This plate is a seeded print of the exact Lagrangian map. It is not a new equation.",
+      "blurb": "In deep water a periodic gravity wave of finite height has an exact Euler solution, and only one: Gerstner (1802), rediscovered by Rankine. Each particle labeled (a, b) goes in a circle of radius A e^{k b}, so the orbits shrink exponentially with depth, and the free surface is an inverted trochoid, pointed at the crests, round in the troughs. At steepness σ = k A → 1 the crests cusp and the curve is a cycloid. The status line reports the RMS radial deviation from a circle, against 0, and the surface radius against A. If the map were a stacked sine, both would fail. Two trains superposes a second Gerstner; that is a rendering trick, not a solution, and the orbits stop being circles.",
+      "order": 110,
+      "seed": "",
+      "presets": [
+        "swell",
+        "steep",
+        "cross",
+        "deep",
+        "trails",
+        "cycloid",
+        "woodcut"
+      ],
+      "vectors": true
+    },
+    {
+      "id": "eight",
+      "name": "Figure Eight",
+      "subtitle": "three equal masses chasing on a planar figure-eight · 1993 / 2000",
+      "equation": "r̈_i = −Σ_{j≠i} (r_i−r_j)/|r_i−r_j|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0",
+      "credit": "Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.",
+      "blurb": "Three equal masses chase each other around a single figure-eight. Moore found the orbit; Chenciner and Montgomery proved it. The plate is that choreography as worldlines: a three-metal ribbon on a dark sheet, time as fade, or wrapped as a wreath with angle for time. Shape space kills rotation and scale, and the curve is still an eight. Braid is x against t. Broken is a nearby Euler initial condition that does not close, kept so the status line can fail. The check is |L| against 0, energy drift against 0, and the return to the initial configuration at t = T against 0.",
+      "order": 111,
+      "seed": "",
+      "presets": [
+        "eight",
+        "long",
+        "braid",
+        "shape",
+        "broken",
+        "three",
+        "tight"
+      ],
+      "vectors": true
+    },
+    {
+      "id": "peakon",
+      "name": "Peakon",
+      "subtitle": "Camassa–Holm peaked traveling waves · 1993",
+      "equation": "u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−|x−x_i|},   m = u − u_xx",
+      "credit": "The Camassa–Holm equation and the peakon u = c exp(−|x − c t|) are R. Camassa and D. D. Holm, Phys. Rev. Lett. 71, 1661 (1993). Multi-peakon collisions, including the Stieltjes / Hankel closed form used here, are R. Beals, D. H. Sattinger and J. Szmigielski, Inverse Problems 15, L1 (1999) and Adv. Math. 154, 229 (2000). This plate evaluates that exact N-peakon formula. It is not a new soliton.",
+      "blurb": "A KdV soliton is smooth. The Camassa–Holm peakon is a traveling corner: u = c exp(−|x − c t|), and the speed is the height. Two of them collide exactly. They pass through each other and pick up a phase shift; the peak stays a corner, never rounding. The plate is the Beals–Sattinger–Szmigielski formula, not an integrator. The status line is the measured peak speed over c, which theory says is 1, and the left and right slopes at the crest, which theory says are +c and −c. If this were the wrong PDE, or the wrong exponential, both would fail.",
+      "order": 112,
+      "seed": "",
+      "presets": [
+        "one",
+        "collide",
+        "three",
+        "spacetime",
+        "rest",
+        "overtake",
+        "train"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "photon",
+      "name": "Photon Sphere",
+      "subtitle": "Schwarzschild photon sphere · 1916",
+      "equation": "d²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M",
+      "credit": "K. Schwarzschild, Sitzungsber. Preuss. Akad. Wiss. (1916). The unstable circular photon orbit at r = 3M is a textbook consequence of that metric. C. Darwin, Proc. R. Soc. Lond. A 249, 180 (1959) and J. L. Synge, Mon. Not. R. Astron. Soc. 131, 463 (1966) integrated the null geodesics and the capture cross-section. The plate is a seeded print of those equatorial (or slightly inclined) rays. It is not a new black hole.",
+      "blurb": "Light that aims too close at a Schwarzschild hole never comes out. The last ray that still can is the photon sphere, an unstable circle at r = 3M, and on the sky of a distant observer it sits at impact parameter b = 3√3 M. Inside that, a dark disk. Just outside, a razor of light that wound once or more around the hole. The plate integrates the equatorial null geodesic, not a painted ring: the status line is the measured capture boundary over 3√3 M, and the radius the circular orbit actually holds, over 3M. If the integrator is wrong, the ring is in the wrong place.",
+      "order": 113,
+      "seed": "",
+      "presets": [
+        "ring",
+        "spray",
+        "einstein",
+        "weak",
+        "capture",
+        "polar",
+        "impact"
       ],
       "vectors": false
     }

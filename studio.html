@@ -23,11 +23,11 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GENChase — generative art from real simulations">
-<meta property="og:description" content="One hundred nine pattern-forming systems from physics, chemistry and biology, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution with its own governing equation printed alongside.">
+<meta property="og:description" content="One hundred thirteen pattern-forming systems from physics, chemistry and biology, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution with its own governing equation printed alongside.">
 <meta property="og:site_name" content="GENChase">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GENChase — generative art from real simulations">
-<meta name="twitter:description" content="One hundred nine pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<meta name="twitter:description" content="One hundred thirteen pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "A generative art studio built from real scientific simulations. One hundred nine techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution.",
+  "description": "A generative art studio built from real scientific simulations. One hundred thirteen techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution.",
   "featureList": [
     "Flow fields with collision-avoiding strokes",
     "Gray-Scott reaction-diffusion",
@@ -842,7 +842,7 @@
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>None of these algorithms are new. What is unusual is the assembly. One hundred nine unrelated sciences share one control surface,
+      <p>None of these algorithms are new. What is unusual is the assembly. One hundred thirteen unrelated sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -39548,6 +39548,2317 @@ void main(){
           g.fillStyle = s.bg || '#111'; g.fillRect(0, 0, w, ht);
           g.drawImage(buf, 0, 0);
           W = builtW; H = builtH; field = builtF; buf = builtB; img = builtI;
+          paint();
+          return U.toBlob(c);
+        },
+      };
+    },
+  });
+})();
+</script>
+<script>
+/* modules/gerstner.js */
+/* GENChase: Gerstner trochoidal waves. Exact Euler. Circular particle orbits. */
+(function () {
+  'use strict';
+  const U = Studio.util;
+  const TAU = U.TAU;
+  const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
+  const GRAV = 9.81;
+  const f2 = v => v.toFixed(2);
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
+    Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const Pal = Studio.PALETTES;
+  const pre = (label, p, pal) => ({ label, p, palette: pal });
+  const two = s => s.trains === '2' || s.trains === 2;
+
+  const SCHEMA = [
+    RANGE('Wave', 'steep', 'Steepness σ', GEOM, 0.08, 0.99, 0.01, f2, { hint: 'σ = k A. At 1 the crests cusp and the surface is a cycloid.' }),
+    RANGE('Wave', 'waves', 'Wavelengths', GEOM, 1.5, 6, 0.1, f2),
+    { group: 'Wave', key: 'trains', label: 'Trains', type: 'seg', kind: GEOM, options: [['1', 'One'], ['2', 'Two']], hint: 'Two is a superposition of Gerstners. Graphics, not Euler.' },
+    RANGE('Wave', 'mix', 'Second A', GEOM, 0.2, 0.95, 0.05, f2, { dimUnless: s => two(s), hint: 'Amplitude of the second train as a fraction of the first.' }),
+    RANGE('Wave', 'kRatio', 'Second k', GEOM, 0.55, 1.45, 0.05, f2, { dimUnless: s => two(s) }),
+    RANGE('Wave', 't', 'Time t', LIVE, 0, 8, 0.02, f2),
+    { group: 'Wave', key: 'running', label: 'Run', type: 'toggle', kind: LIVE },
+    { group: 'Slice', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
+    RANGE('Slice', 'depth', 'Depth (λ)', GEOM, 0.28, 0.9, 0.02, f2, { hint: 'View depth in wavelengths. Orbits die in a fraction of a wavelength (e-folding  λ/2π).' }),
+    RANGE('Slice', 'rows', 'Orbit rows', GEOM, 4, 16, 1, v => Math.round(v) + ''),
+    RANGE('Slice', 'nAlong', 'Along-wave', GEOM, 6, 22, 1, v => Math.round(v) + ''),
+    { group: 'Slice', key: 'columns', label: 'Material columns', type: 'toggle', kind: PAINT },
+    { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['slice', 'Slice'], ['trails', 'Trails'], ['woodcut', 'Woodcut']] },
+    RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.5, 1.8, 0.05, f2),
+    RANGE('Picture', 'grain', 'Grain', PAINT, 0, 0.25, 0.01, f2),
+  ];
+  const DEFAULTS = {
+    steep: 0.54, waves: 2.2, trains: '1', mix: 0.55, kRatio: 0.72, t: 0, running: false,
+    aspect: '16:9', depth: 0.5, rows: 8, nAlong: 12, columns: true,
+    view: 'slice', exposure: 1.08, grain: 0.04,
+  };
+  const PRESETS = {
+    swell: pre('Gentle swell', { steep: 0.22, waves: 2.8, trains: '1', depth: 0.46, rows: 7, nAlong: 11, view: 'slice', columns: true, t: 0.2, aspect: '16:9' }, Pal.glacier),
+    steep: pre('Near-cusp', { steep: 0.86, waves: 2.0, trains: '1', depth: 0.44, rows: 8, nAlong: 13, view: 'slice', columns: true, t: 0, aspect: '16:9' }, Pal.ember),
+    cross: pre('Two trains', { steep: 0.46, waves: 2.6, trains: '2', mix: 0.58, kRatio: 0.74, depth: 0.48, rows: 7, nAlong: 11, view: 'trails', columns: false, t: 0.4, aspect: '16:9' }, Pal.nightshade),
+    deep: pre('Deep view', { steep: 0.42, waves: 1.8, trains: '1', depth: 0.82, rows: 14, nAlong: 10, view: 'slice', columns: true, t: 0.15, aspect: '4:5' }, Pal.bioluminescent),
+    trails: pre('Particle trails', { steep: 0.64, waves: 2.4, trains: '1', depth: 0.4, rows: 6, nAlong: 15, view: 'trails', columns: false, t: 0.6, aspect: '16:9' }, Pal.thermal),
+    cycloid: pre('Cycloid limit', { steep: 0.97, waves: 1.9, trains: '1', depth: 0.38, rows: 7, nAlong: 14, view: 'slice', columns: true, t: 0, aspect: '5:4' }, Pal.kiln),
+    woodcut: pre('Woodcut', { steep: 0.72, waves: 1.7, trains: '1', depth: 0.55, rows: 10, nAlong: 12, view: 'woodcut', columns: true, t: 0.1, grain: 0.07, aspect: '4:5' }, Pal.graphite),
+  };
+
+  function surprise(rng) {
+    return {
+      steep: rng.range(0.18, 0.93),
+      waves: rng.range(2.0, 4.2),
+      trains: rng() < 0.2 ? '2' : '1',
+      mix: rng.range(0.35, 0.75),
+      kRatio: rng.range(0.62, 1.2),
+      t: rng.range(0, 2.4),
+      depth: rng.range(0.34, 0.72),
+      rows: rng.int(6, 13),
+      nAlong: rng.int(8, 16),
+      columns: rng() < 0.7,
+      view: rng.pick(['slice', 'slice', 'trails', 'woodcut']),
+      exposure: rng.range(0.9, 1.25),
+      grain: rng.pick([0, 0.04, 0.05, 0.1]),
+      aspect: rng.pick(['1:1', '4:5', '4:5', '5:4']),
+    };
+  }
+  function sanitize(s) {
+    s.steep = U.clamp(Number(s.steep) || 0.52, 0.04, 0.99);
+    s.waves = U.clamp(Number(s.waves) || 2.6, 1.2, 7);
+    if (s.trains !== '1' && s.trains !== '2') s.trains = '1';
+    s.rows = Math.round(U.clamp(Number(s.rows) || 8, 3, 18));
+    s.nAlong = Math.round(U.clamp(Number(s.nAlong) || 11, 4, 28));
+    if (s.view !== 'slice' && s.view !== 'trails' && s.view !== 'woodcut') s.view = 'slice';
+  }
+
+  function specFrom(s) {
+    const lambda = 1;
+    const k = TAU / lambda;
+    const sigma = U.clamp(s.steep, 0.04, 0.99);
+    const A = sigma / k;
+    const omega = Math.sqrt(GRAV * k);
+    const trains = two(s) ? 2 : 1;
+    const k2 = k * U.clamp(s.kRatio, 0.4, 1.8);
+    const A2 = A * U.clamp(s.mix, 0.05, 1);
+    const omega2 = Math.sqrt(GRAV * k2);
+    const Aeff = trains === 2 ? A + A2 : A;
+    return {
+      lambda, k, A, sigma, omega, period: TAU / omega, g: GRAV,
+      trains, k2, A2, omega2, period2: TAU / omega2, phi2: 0.85,
+      t: Number(s.t) || 0, Aeff,
+      waves: s.waves, depth: s.depth, rows: s.rows | 0, nAlong: s.nAlong | 0,
+    };
+  }
+
+  // One Gerstner train: θ = k a − ω t (dir = +1), or k a + ω t (dir = −1).
+  function addTrain(out, a, b, t, k, A, omega, dir, phi) {
+    const r = A * Math.exp(k * b);
+    const th = k * a - dir * omega * t + phi;
+    const c = Math.cos(th), sn = Math.sin(th);
+    const kr = k * r;
+    const tht = -dir * omega;
+    out.x += r * sn;
+    out.z -= r * c;
+    out.r += r;
+    out.Xa += r * c * k;
+    out.Za += r * sn * k;
+    out.Xb += kr * sn;
+    out.Zb -= kr * c;
+    out.Xt += r * c * tht;
+    out.Zt += r * sn * tht;
+    out.Xtt += r * (-sn) * tht * tht;
+    out.Ztt += r * c * tht * tht;
+    return r;
+  }
+  function stateAt(a, b, t, spec) {
+    const out = { x: a, z: b, r: 0, Xa: 1, Za: 0, Xb: 0, Zb: 1, Xt: 0, Zt: 0, Xtt: 0, Ztt: 0 };
+    addTrain(out, a, b, t, spec.k, spec.A, spec.omega, 1, 0);
+    if (spec.trains === 2) addTrain(out, a, b, t, spec.k2, spec.A2, spec.omega2, -1, spec.phi2);
+    return out;
+  }
+  function pos(a, b, t, spec) {
+    return stateAt(a, b, t, spec);
+  }
+  function rTheory(b, spec) {
+    return spec.A * Math.exp(spec.k * b);
+  }
+
+  // Orbit circularity, radius law, and Gerstner's constant-pressure free surface.
+  // One train: orbit RMS/r and r / A e^{kb} must sit at numerical zero against 1.
+  // Two trains is graphics, not Euler: the orbits stop being circles.
+  function measure(spec) {
+    const Nth = 48;
+    const bs = [0, -0.25 / spec.k, -0.6 / spec.k, -1.1 / spec.k];
+    const as = [0, 0.27 * spec.lambda, 0.61 * spec.lambda];
+    let oSq = 0, nO = 0, radSq = 0, nR = 0, pSq = 0, nP = 0;
+    let rSurf = 0, nSurf = 0, ratioSum = 0;
+    for (let bi = 0; bi < bs.length; bi++) {
+      const b = bs[bi];
+      const rTh = rTheory(b, spec);
+      if (!(rTh > 1e-14)) continue;
+      for (let ai = 0; ai < as.length; ai++) {
+        const a = as[ai];
+        let rSum = 0;
+        for (let i = 0; i < Nth; i++) {
+          const t = (i / Nth) * spec.period;
+          const p = stateAt(a, b, t, spec);
+          const rr = Math.hypot(p.x - a, p.z - b);
+          const rel = (rr - rTh) / rTh;
+          oSq += rel * rel; nO++;
+          rSum += rr;
+          if (b === 0) {
+            const dp = (p.Xtt * p.Xa + (p.Ztt + spec.g) * p.Za) / spec.g;
+            pSq += dp * dp; nP++;
+            rSurf += rr; nSurf++;
+          }
+        }
+        const rAvg = rSum / Nth;
+        const ratio = rAvg / rTh - 1;
+        radSq += ratio * ratio; nR++;
+        ratioSum += rAvg / rTh;
+      }
+    }
+    return {
+      orbit: nO ? Math.sqrt(oSq / nO) : 0,
+      radLaw: nR ? Math.sqrt(radSq / nR) : 0,
+      rMean: nR ? ratioSum / nR : 0,
+      pressure: nP ? Math.sqrt(pSq / nP) : 0,
+      rSurfOverA: nSurf && spec.A > 0 ? (rSurf / nSurf) / spec.A : 0,
+    };
+  }
+
+  function rgba(hex, a) {
+    const c = U.hexToRgb(hex);
+    return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')';
+  }
+  function cssRgb(c) { return 'rgb(' + Math.round(c[0]) + ',' + Math.round(c[1]) + ',' + Math.round(c[2]) + ')'; }
+
+  function worldOf(W, H, spec) {
+    const pad = 0.042 * Math.min(W, H);
+    const innerW = W - 2 * pad, innerH = H - 2 * pad;
+    const x0 = 0, x1 = spec.waves * spec.lambda;
+    const worldW = x1 - x0;
+    let zTop = Math.max(2.2 * spec.Aeff, 0.14 * spec.lambda);
+    let zBot = -spec.depth * spec.lambda;
+    let worldH = zTop - zBot;
+    const canvasAspect = innerH / Math.max(1e-9, innerW);
+    const natural = worldH / worldW;
+    if (natural < canvasAspect) {
+      const need = canvasAspect * worldW;
+      const extra = need - worldH;
+      const maxDeep = Math.max(0.68, spec.depth + 0.12) * spec.lambda;
+      const deepRoom = Math.max(0, maxDeep + zBot);
+      const extraDeep = Math.min(extra * 0.22, deepRoom);
+      zBot -= extraDeep;
+      zTop += extra - extraDeep;
+      worldH = zTop - zBot;
+    }
+    const scale = Math.min(innerW / worldW, innerH / worldH);
+    const usedW = worldW * scale, usedH = worldH * scale;
+    const left = pad + (innerW - usedW) / 2;
+    const top = pad + (innerH - usedH) / 2;
+    return {
+      pad, x0, x1, zTop, zBot,
+      left, right: left + usedW, top, bottom: top + usedH,
+      sx: scale, sz: scale,
+    };
+  }
+  function scr(x, z, w) {
+    return [w.left + (x - w.x0) * w.sx, w.top + (w.zTop - z) * w.sz];
+  }
+
+  function sampleB(b, spec, w, nPts) {
+    nPts = nPts || Math.max(180, Math.round(spec.waves * 140));
+    const a0 = w.x0 - 0.35 * spec.lambda, a1 = w.x1 + 0.35 * spec.lambda;
+    const pts = [];
+    for (let i = 0; i <= nPts; i++) {
+      const a = a0 + (a1 - a0) * (i / nPts);
+      const p = pos(a, b, spec.t, spec);
+      pts.push(scr(p.x, p.z, w));
+    }
+    return pts;
+  }
+  function strokePts(g, pts, close) {
+    if (!pts.length) return;
+    g.beginPath();
+    g.moveTo(pts[0][0], pts[0][1]);
+    for (let i = 1; i < pts.length; i++) g.lineTo(pts[i][0], pts[i][1]);
+    if (close) g.closePath();
+  }
+
+  function grainPut(g, w, h, amt, seed) {
+    if (!(amt > 0)) return;
+    const rng = U.makeRng(String(seed == null ? 'grain' : seed) + '/gerstner/' + w + 'x' + h);
+    const img = g.getImageData(0, 0, w, h), d = img.data, a = amt * 22;
+    for (let i = 0; i < d.length; i += 4) {
+      const n = (rng() - 0.5) * a;
+      d[i] += n; d[i + 1] += n; d[i + 2] += n;
+    }
+    g.putImageData(img, 0, 0);
+  }
+
+  function labels(spec, wld) {
+    const rows = [];
+    const bMin = -0.9 * spec.depth * spec.lambda;
+    const nR = Math.max(2, spec.rows);
+    for (let j = 0; j < nR; j++) rows.push(nR === 1 ? 0 : bMin * (j / (nR - 1)));
+    const cols = [];
+    const nA = Math.max(4, Math.round(spec.nAlong * spec.waves));
+    const a0 = -0.45 * spec.lambda / spec.nAlong;
+    const a1 = spec.waves * spec.lambda - a0;
+    for (let i = 0; i <= nA; i++) cols.push(a0 + (a1 - a0) * (i / nA));
+    return { rows, cols, bMin, waterBot: wld.zBot * 0.94 };
+  }
+
+  function paintTo(g, W, H, s) {
+    const spec = specFrom(s);
+    const w = worldOf(W, H, spec);
+    const pal = Array.isArray(s.palette) && s.palette.length ? s.palette : ['#1a1a1a', '#eee'];
+    const bg = s.bg || '#111';
+    const light = U.isLight(bg);
+    const ramp = U.makeRamp(pal, bg);
+    const ink = U.inkFor(bg);
+    const crest = pal[pal.length - 1];
+    const deepC = pal[0];
+    const exp = isFinite(s.exposure) && s.exposure > 0 ? s.exposure : 1;
+    const view = s.view;
+    const wood = view === 'woodcut';
+    const trails = view === 'trails';
+    const S = Math.min(W, H);
+    const lab = labels(spec, w);
+
+    g.fillStyle = bg;
+    g.fillRect(0, 0, W, H);
+    g.save();
+    g.beginPath();
+    g.rect(w.left, w.top, w.right - w.left, w.bottom - w.top);
+    g.clip();
+    g.lineCap = 'round';
+    g.lineJoin = 'round';
+
+    const surf = sampleB(0, spec, w, Math.max(220, Math.round(spec.waves * 180)));
+
+    // Night/paper air above the still-water line.
+    if (!light) {
+      const air = g.createLinearGradient(0, w.top, 0, scr(0, 0, w)[1]);
+      air.addColorStop(0, bg);
+      air.addColorStop(1, rgba(U.mixHex(bg, crest, 0.12), 0.55));
+      g.fillStyle = air;
+      g.fillRect(w.left, w.top, w.right - w.left, Math.max(0, scr(0, 0, w)[1] - w.top));
+    }
+
+    // Water body.
+    if (!wood) {
+      g.beginPath();
+      g.moveTo(surf[0][0], surf[0][1]);
+      for (let i = 1; i < surf.length; i++) g.lineTo(surf[i][0], surf[i][1]);
+      g.lineTo(w.right + 4, w.bottom + 4);
+      g.lineTo(w.left - 4, w.bottom + 4);
+      g.closePath();
+      let grd;
+      if (light) {
+        grd = g.createLinearGradient(0, w.top, 0, w.bottom);
+        grd.addColorStop(0, rgba(deepC, 0.07 * exp));
+        grd.addColorStop(1, rgba(deepC, 0.2 * exp));
+      } else {
+        const z0y = scr(0, 0, w)[1];
+        grd = g.createLinearGradient(0, z0y, 0, w.bottom);
+        grd.addColorStop(0, rgba(U.mixHex(deepC, crest, 0.18), U.clamp(0.42 * exp, 0.22, 0.7)));
+        grd.addColorStop(0.35, rgba(deepC, U.clamp(0.55 * exp, 0.28, 0.8)));
+        grd.addColorStop(1, rgba(U.mixHex(deepC, bg, 0.5), U.clamp(0.9 * exp, 0.5, 0.98)));
+      }
+      g.fillStyle = grd;
+      g.fill();
+    } else if (light) {
+      // Paper wash under the waterline, faint.
+      g.beginPath();
+      g.moveTo(surf[0][0], surf[0][1]);
+      for (let i = 1; i < surf.length; i++) g.lineTo(surf[i][0], surf[i][1]);
+      g.lineTo(w.right + 4, w.bottom + 4);
+      g.lineTo(w.left - 4, w.bottom + 4);
+      g.closePath();
+      g.fillStyle = rgba(deepC, 0.06);
+      g.fill();
+    }
+
+    // Still-water z = 0.
+    const z0 = scr(w.x0, 0, w), z1 = scr(w.x1, 0, w);
+    g.save();
+    g.setLineDash([S * 0.008, S * 0.007]);
+    g.strokeStyle = rgba(ink, light ? 0.32 : 0.18);
+    g.lineWidth = Math.max(1, S * 0.0012);
+    g.beginPath(); g.moveTo(z0[0], z0[1]); g.lineTo(z1[0], z1[1]); g.stroke();
+    g.restore();
+
+    // Lagrangian columns (constant a).
+    if (s.columns) {
+      const nColDraw = Math.max(6, Math.round(lab.cols.length / 2));
+      const step = Math.max(1, Math.round(lab.cols.length / nColDraw));
+      g.strokeStyle = rgba(ink, light ? 0.28 : 0.12);
+      g.lineWidth = Math.max(0.8, S * 0.00115);
+      const nB = 28;
+      for (let i = 0; i < lab.cols.length; i += step) {
+        const a = lab.cols[i];
+        g.beginPath();
+        for (let j = 0; j <= nB; j++) {
+          const b = lab.bMin * (j / nB);
+          const p = pos(a, b, spec.t, spec);
+          const q = scr(p.x, p.z, w);
+          if (j === 0) g.moveTo(q[0], q[1]); else g.lineTo(q[0], q[1]);
+        }
+        g.stroke();
+      }
+    }
+
+    // Nested material surfaces: inverted trochoids of decaying amplitude.
+    const nestBot = lab.waterBot;
+    const nNest = wood ? Math.max(22, spec.rows + 10) : Math.max(spec.rows + 4, 12);
+    for (let j = nNest - 1; j >= 1; j--) {
+      const b = nestBot * (j / (nNest - 1));
+      const tDepth = U.clamp(j / (nNest - 1), 0, 1);
+      const col = ramp(light
+        ? U.clamp(0.16 + 0.48 * tDepth, 0.12, 0.68)
+        : U.clamp((1 - tDepth) * 0.62 + 0.18, 0, 1));
+      const alpha = wood
+        ? (light ? 0.78 : 0.48) * (0.35 + 0.65 * (1 - tDepth))
+        : (light ? 0.58 : 0.44) * (0.35 + 0.65 * (1 - tDepth)) * exp;
+      g.strokeStyle = 'rgba(' + Math.round(col[0]) + ',' + Math.round(col[1]) + ',' + Math.round(col[2]) + ',' + U.clamp(alpha, 0.08, 0.88) + ')';
+      g.lineWidth = Math.max(0.7, S * (wood ? 0.0024 : 0.0017) * (0.65 + 0.55 * (1 - tDepth)));
+      strokePts(g, sampleB(b, spec, w, 160));
+      g.stroke();
+    }
+
+    // Particle orbits. Circles for one Gerstner; sampled loops for two trains.
+    const orbitW = Math.max(1.0, S * (wood ? 0.0028 : 0.0024));
+    function depthTone(b) {
+      const tDepth = spec.depth * spec.lambda > 1e-9 ? U.clamp(-b / (spec.depth * spec.lambda), 0, 1) : 0;
+      const t = light
+        ? U.clamp(0.18 + 0.5 * tDepth, 0.14, 0.7)
+        : U.clamp(0.28 + 0.68 * (1 - tDepth), 0, 1);
+      const col = ramp(t);
+      const a = (wood ? (light ? 0.92 : 0.78) : (light ? 0.78 : 0.62)) * (0.45 + 0.55 * (1 - tDepth)) * exp;
+      return { col, a: U.clamp(a, light ? 0.28 : 0.16, 0.96), tDepth };
+    }
+    function drawCircle(cx, cz, r, tone) {
+      const c = scr(cx, cz, w);
+      const rx = r * w.sx, ry = r * w.sz;
+      if (rx < 0.55 && ry < 0.55) return false;
+      g.beginPath();
+      g.ellipse(c[0], c[1], Math.max(0.5, rx), Math.max(0.5, ry), 0, 0, TAU);
+      g.stroke();
+      return true;
+    }
+    function drawLoop(a, b, tone) {
+      const n = spec.trains === 2 ? 96 : 64;
+      const T = spec.trains === 2 ? spec.period * 2.2 : spec.period;
+      g.beginPath();
+      for (let i = 0; i <= n; i++) {
+        const p = pos(a, b, spec.t + (i / n) * T, spec);
+        const q = scr(p.x, p.z, w);
+        if (i === 0) g.moveTo(q[0], q[1]); else g.lineTo(q[0], q[1]);
+      }
+      g.stroke();
+    }
+    function drawTrail(a, b, tone) {
+      const n = 36;
+      const behind = 0.72 * spec.period;
+      let prev = null;
+      for (let i = 0; i < n; i++) {
+        const u = i / (n - 1);
+        const p = pos(a, b, spec.t - (1 - u) * behind, spec);
+        const q = scr(p.x, p.z, w);
+        if (prev) {
+          g.globalAlpha = (0.08 + 0.92 * u) * tone.a;
+          g.lineWidth = orbitW * (0.25 + 0.9 * u);
+          g.beginPath();
+          g.moveTo(prev[0], prev[1]);
+          g.lineTo(q[0], q[1]);
+          g.stroke();
+        }
+        prev = q;
+      }
+      g.globalAlpha = 1;
+    }
+
+    if (!trails) {
+      for (let j = 0; j < lab.rows.length; j++) {
+        const b = lab.rows[j];
+        const tone = depthTone(b);
+        g.strokeStyle = 'rgba(' + Math.round(tone.col[0]) + ',' + Math.round(tone.col[1]) + ',' + Math.round(tone.col[2]) + ',' + tone.a + ')';
+        g.lineWidth = orbitW * (0.75 + 0.45 * (1 - tone.tDepth));
+        for (let i = 0; i < lab.cols.length; i++) {
+          const a = lab.cols[i];
+          if (spec.trains === 2) drawLoop(a, b, tone);
+          else {
+            const r = rTheory(b, spec);
+            drawCircle(a, b, r, tone);
+          }
+        }
+      }
+    } else {
+      for (let j = 0; j < lab.rows.length; j++) {
+        const b = lab.rows[j];
+        const tone = depthTone(b);
+        g.strokeStyle = cssRgb(tone.col);
+        for (let i = 0; i < lab.cols.length; i++) drawTrail(lab.cols[i], b, tone);
+      }
+    }
+
+    // Free-surface trochoid: the picture's ridge.
+    const surfCol = (wood || light) ? ink : crest;
+    g.strokeStyle = rgba(light ? ink : U.mixHex(deepC, surfCol, 0.35), 0.55);
+    g.lineWidth = Math.max(2.2, S * (wood ? 0.011 : 0.01));
+    strokePts(g, surf);
+    g.stroke();
+    g.strokeStyle = rgba(surfCol, U.clamp(0.7 * exp + 0.28, 0.7, 1));
+    g.lineWidth = Math.max(1.5, S * (wood ? 0.0065 : 0.0052));
+    strokePts(g, surf);
+    g.stroke();
+    if (!wood && !light) {
+      g.strokeStyle = rgba(crest, 0.92);
+      g.lineWidth = Math.max(0.8, S * 0.002);
+      strokePts(g, surf);
+      g.stroke();
+    }
+
+    // Particles at the current phase.
+    for (let j = 0; j < lab.rows.length; j++) {
+      const b = lab.rows[j];
+      const tDepth = spec.depth * spec.lambda > 1e-9 ? U.clamp(-b / (spec.depth * spec.lambda), 0, 1) : 0;
+      const col = (b === 0)
+        ? U.hexToRgb(light ? ink : crest)
+        : ramp(light ? U.clamp(0.2 + 0.45 * tDepth, 0.15, 0.65) : U.clamp(0.45 + 0.55 * (1 - tDepth), 0, 1));
+      const pr = Math.max(1.25, S * (b === 0 ? 0.007 : 0.0048) * (1.05 - 0.4 * tDepth) * Math.sqrt(exp));
+      g.fillStyle = 'rgba(' + Math.round(col[0]) + ',' + Math.round(col[1]) + ',' + Math.round(col[2]) + ',' + (wood ? 1 : 0.95) + ')';
+      for (let i = 0; i < lab.cols.length; i++) {
+        const p = pos(lab.cols[i], b, spec.t, spec);
+        const q = scr(p.x, p.z, w);
+        g.beginPath();
+        g.arc(q[0], q[1], pr, 0, TAU);
+        g.fill();
+      }
+    }
+
+    g.restore();
+
+    // Plate margin line, like a copper-plate mark.
+    g.strokeStyle = rgba(ink, light ? 0.22 : 0.14);
+    g.lineWidth = Math.max(1, S * 0.0014);
+    g.strokeRect(w.left, w.top, w.right - w.left, w.bottom - w.top);
+
+    grainPut(g, W, H, s.grain || 0, s.seed);
+  }
+
+  function svgOf(s, W, H) {
+    const spec = specFrom(s);
+    const w = worldOf(W, H, spec);
+    const pal = Array.isArray(s.palette) && s.palette.length ? s.palette : ['#111', '#eee'];
+    const bg = s.bg || '#111';
+    const light = U.isLight(bg);
+    const ink = U.inkFor(bg);
+    const crest = pal[pal.length - 1];
+    const lab = labels(spec, w);
+    const f = n => n.toFixed(2);
+    let body = '';
+    const surf = sampleB(0, spec, w, 240);
+    let d = 'M ' + f(surf[0][0]) + ' ' + f(surf[0][1]);
+    for (let i = 1; i < surf.length; i++) d += ' L ' + f(surf[i][0]) + ' ' + f(surf[i][1]);
+    body += '<path d="' + d + ' L ' + f(w.right) + ' ' + f(w.bottom) + ' L ' + f(w.left) + ' ' + f(w.bottom) + ' Z" fill="' + (light ? rgba(pal[0], 0.08) : rgba(pal[0], 0.4)) + '"/>';
+    for (let j = 0; j < lab.rows.length; j++) {
+      const b = lab.rows[j];
+      const r = rTheory(b, spec);
+      const stroke = U.mixHex(pal[0], crest, U.clamp(1 + b / (spec.depth * spec.lambda + 1e-9), 0, 1));
+      for (let i = 0; i < lab.cols.length; i++) {
+        const a = lab.cols[i];
+        if (spec.trains === 2) {
+          let pd = '';
+          const n = 64, T = spec.period * 2;
+          for (let k = 0; k <= n; k++) {
+            const p = pos(a, b, spec.t + (k / n) * T, spec);
+            const q = scr(p.x, p.z, w);
+            pd += (k ? ' L ' : 'M ') + f(q[0]) + ' ' + f(q[1]);
+          }
+          body += '<path d="' + pd + '" fill="none" stroke="' + stroke + '" stroke-width="0.8" opacity="0.55"/>';
+        } else {
+          const c = scr(a, b, w);
+          body += '<ellipse cx="' + f(c[0]) + '" cy="' + f(c[1]) + '" rx="' + f(r * w.sx) + '" ry="' + f(r * w.sz) + '" fill="none" stroke="' + stroke + '" stroke-width="0.9" opacity="0.55"/>';
+        }
+      }
+    }
+    body += '<path d="' + d + '" fill="none" stroke="' + (light ? ink : crest) + '" stroke-width="' + (Math.max(2, Math.min(W, H) * 0.006)).toFixed(2) + '" stroke-linecap="round" stroke-linejoin="round"/>';
+    for (let j = 0; j < lab.rows.length; j++) {
+      const b = lab.rows[j];
+      for (let i = 0; i < lab.cols.length; i++) {
+        const p = pos(lab.cols[i], b, spec.t, spec);
+        const q = scr(p.x, p.z, w);
+        const rr = b === 0 ? 2.4 : 1.7;
+        body += '<circle cx="' + f(q[0]) + '" cy="' + f(q[1]) + '" r="' + rr + '" fill="' + (b === 0 ? crest : ink) + '"/>';
+      }
+    }
+    return U.svgDoc(W, H, bg, body);
+  }
+
+  Studio.register({
+    id: 'gerstner', name: 'Gerstner', tab: 'Gerstner',
+    subtitle: 'trochoidal waves, the exact Euler deep-water solution · 1802',
+    order: 110,
+    equation: 'X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1',
+    credit: 'Gerstner, Theorie der Wellen, Abh. Bohm. Ges. Wiss. (1802), found the unique exact periodic deep-water gravity wave of finite amplitude: every particle traces a circle, the free surface is an inverted trochoid, and the pressure is constant along it. Rankine, On the exact form of waves near the surface of deep water, Phil. Trans. Roy. Soc. 153, 127 (1863), rediscovered the same motion. Superposing two Gerstners (the Two trains control) is graphics practice, Tessendorf, Simulating Ocean Water, SIGGRAPH course notes (2001), and is not an Euler solution. This plate is a seeded print of the exact Lagrangian map. It is not a new equation.',
+    blurb: 'In deep water a periodic gravity wave of finite height has an exact Euler solution, and only one: Gerstner (1802), rediscovered by Rankine. Each particle labeled (a, b) goes in a circle of radius A e^{k b}, so the orbits shrink exponentially with depth, and the free surface is an inverted trochoid, pointed at the crests, round in the troughs. At steepness σ = k A → 1 the crests cusp and the curve is a cycloid. The status line reports the RMS radial deviation from a circle, against 0, and the surface radius against A. If the map were a stacked sine, both would fail. Two trains superposes a second Gerstner; that is a rendering trick, not a solution, and the orbits stop being circles.',
+    schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
+    hints: {
+      Wave: 'σ = k A is the steepness. At σ → 1 the crests cusp and the surface is a cycloid. Two trains superposes two Gerstners; that is graphics, not Euler, and the orbits are no longer circles.',
+      Slice: 'Depth is in wavelengths. Orbits die in a fraction of a wavelength because the radius is A e^{k b} with k = 2π/λ. Rows are Lagrangian material surfaces. The particle paths are the picture.',
+      Picture: 'Slice is the textbook plate: circular orbits and the free-surface trochoid. Trails mark a fraction of a period. Woodcut is the same geometry as ink on paper.',
+    },
+    palette: true, defaultPalette: 'ember', paletteLabel: 'Water (deep → crest)',
+    headline: 'steep', headlineLabel: 'σ',
+    surprise, sanitize,
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
+      let metric = { orbit: 0, radLaw: 0, rMean: 1, pressure: 0, rSurfOverA: 1 }, raf = 0, last = 0, trainsN = 1;
+
+      function paint() {
+        const s = host.getState();
+        ctx.fillStyle = s.bg || '#111';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        paintTo(ctx, canvas.width, canvas.height, s);
+      }
+      function status() {
+        const s = host.getState();
+        const m = metric;
+        const ok = trainsN === 1 && m.orbit < 1e-8 && Math.abs(m.rSurfOverA - 1) < 1e-6;
+        const twoTr = trainsN === 2;
+        const tag = twoTr ? 'two trains, graphics' : (ok ? 'Gerstner' : 'map failed');
+        host.setStatus(
+          '<span>orbit RMS/r <b>' + m.orbit.toExponential(1) + '</b> · exact 0</span>' +
+          '<span>r / A e^{kb} <b>' + m.rMean.toFixed(6) + '</b> · 1</span>' +
+          '<span>surface p <b>' + m.pressure.toExponential(1) + '</b> · const</span>' +
+          '<span>σ <b>' + f2(s.steep) + '</b> · ' + tag + '</span>'
+        );
+      }
+      function compute() {
+        const s = host.getState();
+        const spec = specFrom(s);
+        trainsN = spec.trains;
+        metric = measure(spec);
+      }
+      function tick(now) {
+        raf = 0;
+        if (!host.isActive()) return;
+        const s = host.getState();
+        if (!s.running || host.reducedMotion()) return;
+        const dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
+        last = now;
+        const spec = specFrom(s);
+        s.t = (s.t + dt * spec.period * 0.18) % Math.max(spec.period * 4, 1);
+        compute(); paint(); status();
+        raf = requestAnimationFrame(tick);
+      }
+      return {
+        aspect(st) { return ASPECTS[st.aspect] || 1; },
+        fieldCells() { return null; },
+        regenerate() { compute(); paint(); status(); },
+        repaint() { paint(); status(); },
+        live(key) {
+          if (key === 't' || key === 'running') {
+            if (host.getState().running) {
+              if (!raf) { last = 0; raf = requestAnimationFrame(tick); }
+            } else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+            if (key === 't') { compute(); paint(); status(); }
+          }
+        },
+        resize() { paint(); },
+        pause() { if (raf) { cancelAnimationFrame(raf); raf = 0; } },
+        resume() {
+          const s = host.getState();
+          if (s.running && !host.reducedMotion() && !raf) { last = 0; raf = requestAnimationFrame(tick); }
+          else paint();
+        },
+        async exportPNG(pw, ph) {
+          const s = host.getState();
+          const c = document.createElement('canvas'); c.width = pw; c.height = ph;
+          const g = c.getContext('2d', { alpha: false });
+          paintTo(g, pw, ph, s);
+          return U.toBlob(c);
+        },
+        exportSVG(pw, ph) { return svgOf(host.getState(), pw, ph); },
+      };
+    },
+  });
+})();
+</script>
+<script>
+/* modules/eight.js */
+/* GENChase: Moore–Chenciner–Montgomery figure-eight three-body choreography. */
+(function () {
+  'use strict';
+  const U = Studio.util;
+  const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
+  const f2 = v => v.toFixed(2);
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
+    Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const Pal = Studio.PALETTES;
+  const pre = (label, p, pal) => ({ label, p, palette: pal });
+
+  // C. Simó's 16-digit Euler IC, as tabulated after Simó, Contemp. Math. 292, 209 (2002).
+  // Equal masses m = 1, G = 1. Body 3 sits at the origin. Linear and angular momentum vanish.
+  const X1 = 0.970004356883304;
+  const Y1 = -0.243087537752473;
+  const VX1 = 0.466203685572010;
+  const VY1 = 0.432365731646229;
+  const PERIOD = 6.325913982926396;
+  const N_STEP = 9600;
+  const N_DRAW = 2400;
+  const VIEWS = ['world', 'space', 'braid', 'shape', 'beads', 'polar'];
+  const METAL_FALLBACK = ['#D4B05A', '#C06E3A', '#8A96A3'];
+
+  const SCHEMA = [
+    { group: 'Sheet', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
+    { group: 'Orbit', key: 'kind', label: 'Orbit', type: 'seg', kind: GEOM, options: [['eight', 'Eight'], ['broken', 'Broken']], hint: 'Eight is Simó’s choreography. Broken is a nearby Euler IC that does not close: |L| stays 0, the return does not.' },
+    RANGE('Orbit', 'periods', 'Periods', GEOM, 1, 4, 1, v => (v | 0) + ''),
+    { group: 'Orbit', key: 'running', label: 'Run', type: 'toggle', kind: LIVE, hint: 'Advance the three beads along the computed eight. The trails stay; only the beads move.' },
+    RANGE('Orbit', 'speed', 'Pace', LIVE, 0.2, 2.4, 0.05, f2, { dimUnless: s => s.running }),
+    { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['world', 'World'], ['space', 'Spacetime'], ['braid', 'Braid'], ['shape', 'Shape'], ['beads', 'Beads'], ['polar', 'Wreath']] },
+    RANGE('Picture', 'zoom', 'View', PAINT, 0.45, 2.8, 0.05, f2),
+    RANGE('Picture', 'lift', 'Ribbon', PAINT, 0, 0.14, 0.005, f2, { hint: 'Separate the three worldlines along the local normal so the eight reads as a three-metal ribbon.' }),
+    RANGE('Picture', 'fade', 'Fade', PAINT, 0, 1, 0.05, f2, { hint: 'Time as stroke fade. 0 keeps the whole trail; 1 keeps only the recent chase.' }),
+    RANGE('Picture', 'weight', 'Weight', PAINT, 0.4, 2.2, 0.05, f2),
+    RANGE('Picture', 'panX', 'Pan X', PAINT, -0.6, 0.6, 0.02, f2),
+    RANGE('Picture', 'panY', 'Pan Y', PAINT, -0.6, 0.6, 0.02, f2),
+  ];
+  const DEFAULTS = {
+    aspect: '1:1', kind: 'eight', periods: 1, running: false, speed: 0.85,
+    view: 'world', zoom: 1.12, lift: 0.048, fade: 0.38, weight: 1.08, panX: 0, panY: 0,
+  };
+  const PRESETS = {
+    eight: pre('Figure eight', { kind: 'eight', periods: 1, view: 'world', zoom: 1.12, lift: 0.048, fade: 0.38, weight: 1.08, panX: 0, panY: 0 }, Pal.ember),
+    long: pre('Long trail', { kind: 'eight', periods: 2, view: 'world', zoom: 0.95, lift: 0.04, fade: 0.12, weight: 0.95, panX: 0, panY: 0 }, Pal.nightshade),
+    braid: pre('Braid', { kind: 'eight', periods: 1, view: 'braid', zoom: 1.0, lift: 0.02, fade: 0.08, weight: 1.15, panX: 0, panY: 0 }, Pal.graphite),
+    shape: pre('Shape space', { kind: 'eight', periods: 1, view: 'shape', zoom: 1.05, lift: 0, fade: 0.2, weight: 1.2, panX: 0, panY: 0 }, Pal.glacier),
+    broken: pre('Broken nearby', { kind: 'broken', periods: 1, view: 'world', zoom: 0.58, lift: 0.04, fade: 0.15, weight: 0.95, panX: 0, panY: 0 }, Pal.thermal),
+    three: pre('Three periods', { kind: 'eight', periods: 3, view: 'polar', zoom: 0.95, lift: 0.03, fade: 0.12, weight: 0.85, panX: 0, panY: 0 }, Pal.kiln),
+    tight: pre('Tight crop', { kind: 'eight', periods: 1, view: 'world', zoom: 2.35, lift: 0.055, fade: 0.35, weight: 1.35, panX: 0.22, panY: 0.04 }, Pal.harbor),
+  };
+
+  function surprise(rng) {
+    const kind = rng() < 0.12 ? 'broken' : 'eight';
+    return {
+      kind,
+      periods: rng.pick([1, 1, 1, 2, 3]),
+      view: rng.pick(['world', 'world', 'world', 'space', 'braid', 'shape', 'beads', 'polar']),
+      zoom: rng.range(0.8, 1.4),
+      lift: rng.range(0.02, 0.08),
+      fade: rng.range(0.1, 0.6),
+      weight: rng.range(0.8, 1.4),
+      panX: 0, panY: 0,
+    };
+  }
+  function sanitize(s) {
+    s.periods = Math.max(1, Math.min(4, Math.round(Number(s.periods) || 1)));
+    if (s.kind !== 'broken') s.kind = 'eight';
+    if (VIEWS.indexOf(s.view) < 0) s.view = 'world';
+    s.zoom = U.clamp(Number(s.zoom) || 1, 0.45, 2.8);
+    s.lift = U.clamp(Number(s.lift) || 0, 0, 0.14);
+    s.fade = U.clamp(Number(s.fade) || 0, 0, 1);
+    s.weight = U.clamp(Number(s.weight) || 1, 0.4, 2.2);
+    s.speed = U.clamp(Number(s.speed) || 0.85, 0.2, 2.4);
+    s.panX = U.clamp(Number(s.panX) || 0, -0.6, 0.6);
+    s.panY = U.clamp(Number(s.panY) || 0, -0.6, 0.6);
+    s.running = !!s.running;
+  }
+
+  function initial(kind) {
+    const kick = kind === 'broken' ? 1.08 : 1;
+    const vx1 = VX1 * kick, vy1 = VY1 * kick;
+    return {
+      x: [X1, -X1, 0],
+      y: [Y1, -Y1, 0],
+      vx: [vx1, vx1, -2 * vx1],
+      vy: [vy1, vy1, -2 * vy1],
+    };
+  }
+
+  function accel(x, y, ax, ay) {
+    ax[0] = ax[1] = ax[2] = 0;
+    ay[0] = ay[1] = ay[2] = 0;
+    for (let i = 0; i < 3; i++) {
+      for (let j = i + 1; j < 3; j++) {
+        const dx = x[j] - x[i], dy = y[j] - y[i];
+        const r2 = dx * dx + dy * dy + 1e-18;
+        const inv = 1 / (r2 * Math.sqrt(r2));
+        ax[i] += dx * inv; ay[i] += dy * inv;
+        ax[j] -= dx * inv; ay[j] -= dy * inv;
+      }
+    }
+  }
+  function leapfrog(s, dt, ax, ay) {
+    for (let i = 0; i < 3; i++) {
+      s.vx[i] += ax[i] * (dt * 0.5);
+      s.vy[i] += ay[i] * (dt * 0.5);
+      s.x[i] += s.vx[i] * dt;
+      s.y[i] += s.vy[i] * dt;
+    }
+    accel(s.x, s.y, ax, ay);
+    for (let i = 0; i < 3; i++) {
+      s.vx[i] += ax[i] * (dt * 0.5);
+      s.vy[i] += ay[i] * (dt * 0.5);
+    }
+  }
+  const CBRT2 = Math.cbrt(2);
+  const W1 = 1 / (2 - CBRT2);
+  const W0 = -CBRT2 / (2 - CBRT2);
+  function yoshida4(s, dt, ax, ay) {
+    leapfrog(s, W1 * dt, ax, ay);
+    leapfrog(s, W0 * dt, ax, ay);
+    leapfrog(s, W1 * dt, ax, ay);
+  }
+  function energyOf(s) {
+    let K = 0, V = 0;
+    for (let i = 0; i < 3; i++) K += 0.5 * (s.vx[i] * s.vx[i] + s.vy[i] * s.vy[i]);
+    for (let i = 0; i < 3; i++) for (let j = i + 1; j < 3; j++) {
+      V -= 1 / Math.hypot(s.x[j] - s.x[i], s.y[j] - s.y[i]);
+    }
+    return K + V;
+  }
+  function angMom(s) {
+    let L = 0;
+    for (let i = 0; i < 3; i++) L += s.x[i] * s.vy[i] - s.y[i] * s.vx[i];
+    return L;
+  }
+
+  function integrate(kind, periods) {
+    const s = initial(kind);
+    const ax = [0, 0, 0], ay = [0, 0, 0];
+    accel(s.x, s.y, ax, ay);
+    const E0 = energyOf(s);
+    const L0 = angMom(s);
+    const x0 = s.x.slice(), y0 = s.y.slice();
+    const nPer = periods | 0;
+    const nInt = N_STEP * nPer;
+    const dt = PERIOD / N_STEP;
+    const stride = Math.max(1, (N_STEP / N_DRAW) | 0);
+    const nSamp = Math.floor(nInt / stride) + 1;
+    const px = [new Float64Array(nSamp), new Float64Array(nSamp), new Float64Array(nSamp)];
+    const py = [new Float64Array(nSamp), new Float64Array(nSamp), new Float64Array(nSamp)];
+    const vx = [new Float64Array(nSamp), new Float64Array(nSamp), new Float64Array(nSamp)];
+    const vy = [new Float64Array(nSamp), new Float64Array(nSamp), new Float64Array(nSamp)];
+    const tt = new Float64Array(nSamp);
+    let k = 0, eMax = 0, dead = false;
+    function rec(step) {
+      if (k >= nSamp) return;
+      for (let b = 0; b < 3; b++) {
+        px[b][k] = s.x[b]; py[b][k] = s.y[b];
+        vx[b][k] = s.vx[b]; vy[b][k] = s.vy[b];
+      }
+      tt[k] = step * dt;
+      k++;
+    }
+    rec(0);
+    for (let step = 1; step <= nInt; step++) {
+      yoshida4(s, dt, ax, ay);
+      if (!isFinite(s.x[0]) || !isFinite(s.y[1])) { dead = true; break; }
+      if ((step & 31) === 0) {
+        const dE = Math.abs(energyOf(s) - E0) / Math.max(1e-15, Math.abs(E0));
+        if (dE > eMax) eMax = dE;
+      }
+      if (step % stride === 0) rec(step);
+    }
+    if (k < nSamp) rec(Math.min(nInt, k * stride));
+    const E1 = energyOf(s);
+    const L1 = angMom(s);
+    let dq = 0;
+    for (let i = 0; i < 3; i++) dq += (s.x[i] - x0[i]) * (s.x[i] - x0[i]) + (s.y[i] - y0[i]) * (s.y[i] - y0[i]);
+    return {
+      n: k, px, py, vx, vy, tt, periods: nPer,
+      E0, dE: Math.abs(E1 - E0) / Math.max(1e-15, Math.abs(E0)), eMax,
+      L0, L: L1, dq: Math.sqrt(dq), dead,
+    };
+  }
+
+  function shapeAt(px, py, k) {
+    const x1 = px[0][k], y1 = py[0][k], x2 = px[1][k], y2 = py[1][k], x3 = px[2][k], y3 = py[2][k];
+    const rx = (x2 - x1) * Math.SQRT1_2, ry = (y2 - y1) * Math.SQRT1_2;
+    const lx = Math.sqrt(1.5) * x3, ly = Math.sqrt(1.5) * y3;
+    const r2 = rx * rx + ry * ry, l2 = lx * lx + ly * ly;
+    const R2 = r2 + l2;
+    if (R2 < 1e-18) return [0, 0];
+    const n1 = (r2 - l2) / R2;
+    const n2 = 2 * (rx * lx + ry * ly) / R2;
+    return [n1, n2];
+  }
+
+  function metalsOf(s) {
+    const pal = Array.isArray(s.palette) ? s.palette : [];
+    const bg = s.bg || '#0D0C0B';
+    const lb = U.luminance(bg);
+    const ranked = pal.filter(c => c && Math.abs(U.luminance(c) - lb) > 22);
+    const out = [];
+    if (ranked.length >= 3) {
+      out.push(ranked[ranked.length - 1], ranked[(ranked.length >> 1)], ranked[0]);
+    } else {
+      for (let i = 0; i < ranked.length; i++) out.push(ranked[i]);
+      for (let i = 0; out.length < 3; i++) out.push(METAL_FALLBACK[i % 3]);
+    }
+    return out.slice(0, 3);
+  }
+  function rgba(hex, a) {
+    const c = U.hexToRgb(hex);
+    return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')';
+  }
+  function sci(v) {
+    const a = Math.abs(v);
+    if (!isFinite(v)) return '∞';
+    if (a === 0) return '0';
+    if (a >= 0.01 && a < 100) return v.toFixed(3);
+    return v.toExponential(1);
+  }
+
+  function mapPoint(view, tr, b, k, lift) {
+    const x = tr.px[b][k], y = tr.py[b][k], t = tr.tt[k];
+    if (view === 'shape') return shapeAt(tr.px, tr.py, k);
+    if (view === 'braid') return [t / PERIOD, x];
+    if (view === 'space') {
+      const tn = t / PERIOD;
+      return [x + 1.15 * tn, y + 0.30 * tn];
+    }
+    if (view === 'polar') {
+      const th = U.TAU * (t / PERIOD);
+      const c = Math.cos(th), sn = Math.sin(th);
+      const R = 0.82;
+      return [(R + 0.52 * x) * c - 0.52 * y * sn, (R + 0.52 * x) * sn + 0.52 * y * c];
+    }
+    const vx = tr.vx[b][k], vy = tr.vy[b][k];
+    const sp = Math.hypot(vx, vy) || 1;
+    const off = lift * (b - 1);
+    return [x + off * (-vy / sp), y + off * (vx / sp)];
+  }
+
+  function collect(tr, view, lift) {
+    const bodies = view === 'shape' ? [0] : [0, 1, 2];
+    const pts = bodies.map(() => []);
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (let b = 0; b < bodies.length; b++) {
+      const body = bodies[b];
+      for (let k = 0; k < tr.n; k++) {
+        const p = mapPoint(view, tr, body, k, lift);
+        pts[b].push(p);
+        if (p[0] < x0) x0 = p[0]; if (p[0] > x1) x1 = p[0];
+        if (p[1] < y0) y0 = p[1]; if (p[1] > y1) y1 = p[1];
+      }
+    }
+    if (!(x1 > x0)) { x0 = -1; x1 = 1; }
+    if (!(y1 > y0)) { y0 = -1; y1 = 1; }
+    return { pts, bodies, x0, y0, x1, y1 };
+  }
+
+  function xformOf(b, w, h, zoom, panX, panY) {
+    const bw = Math.max(1e-6, b.x1 - b.x0);
+    const bh = Math.max(1e-6, b.y1 - b.y0);
+    const pad = 0.11;
+    const sc = Math.min(w * (1 - 2 * pad) / bw, h * (1 - 2 * pad) / bh) * zoom;
+    const cx = (b.x0 + b.x1) * 0.5 - panX * bw;
+    const cy = (b.y0 + b.y1) * 0.5 - panY * bh;
+    return function (x, y) {
+      return [w * 0.5 + (x - cx) * sc, h * 0.5 - (y - cy) * sc];
+    };
+  }
+
+  function strokeRibbon(g, mapped, color, width, fade, glow) {
+    const n = mapped.length;
+    if (n < 2) return;
+    g.lineCap = 'round';
+    g.lineJoin = 'round';
+    if (glow) {
+      g.beginPath();
+      g.moveTo(mapped[0][0], mapped[0][1]);
+      for (let i = 1; i < n; i++) g.lineTo(mapped[i][0], mapped[i][1]);
+      g.strokeStyle = rgba(color, 0.10);
+      g.lineWidth = width * 3.2;
+      g.stroke();
+    }
+    const chunk = Math.max(4, (n / 90) | 0);
+    for (let i = 0; i < n - 1; i += chunk) {
+      const j1 = Math.min(n - 1, i + chunk);
+      const t = i / Math.max(1, n - 1);
+      const a = fade <= 0 ? 0.92 : Math.pow(t, 0.35 + 1.4 * fade) * (0.38 + 0.62 * (1 - fade * 0.35));
+      if (a < 0.03) continue;
+      g.beginPath();
+      g.moveTo(mapped[i][0], mapped[i][1]);
+      for (let j = i + 1; j <= j1; j++) g.lineTo(mapped[j][0], mapped[j][1]);
+      g.strokeStyle = rgba(color, a);
+      g.lineWidth = width * (0.78 + 0.32 * t);
+      g.stroke();
+    }
+  }
+
+  function drawBead(g, x, y, r, color, bg) {
+    const hi = U.mixHex(color, '#FFFFFF', 0.45);
+    const lo = U.mixHex(color, bg, 0.35);
+    const grd = g.createRadialGradient(x - r * 0.32, y - r * 0.32, r * 0.1, x, y, r);
+    grd.addColorStop(0, hi);
+    grd.addColorStop(0.45, color);
+    grd.addColorStop(1, lo);
+    g.beginPath();
+    g.arc(x, y, r, 0, Math.PI * 2);
+    g.fillStyle = grd;
+    g.fill();
+    g.beginPath();
+    g.arc(x, y, r, 0, Math.PI * 2);
+    g.strokeStyle = rgba(U.mixHex(color, '#000000', 0.25), 0.7);
+    g.lineWidth = Math.max(0.6, r * 0.12);
+    g.stroke();
+  }
+
+  function arrow(g, x, y, ux, uy, len, color) {
+    const x1 = x + ux * len, y1 = y + uy * len;
+    const hx = -ux * len * 0.28, hy = -uy * len * 0.28;
+    const px = -uy * len * 0.16, py = ux * len * 0.16;
+    g.beginPath();
+    g.moveTo(x, y);
+    g.lineTo(x1, y1);
+    g.strokeStyle = color;
+    g.lineWidth = Math.max(1.2, len * 0.06);
+    g.lineCap = 'round';
+    g.stroke();
+    g.beginPath();
+    g.moveTo(x1, y1);
+    g.lineTo(x1 + hx + px, y1 + hy + py);
+    g.lineTo(x1 + hx - px, y1 + hy - py);
+    g.closePath();
+    g.fillStyle = color;
+    g.fill();
+  }
+
+  function sampleAt(tr, b, phase) {
+    const nPer = Math.max(2, (tr.n / tr.periods) | 0);
+    const u = ((phase % 1) + 1) % 1;
+    const f = u * (nPer - 1);
+    const i = Math.min(nPer - 2, f | 0);
+    const t = f - i;
+    return {
+      x: tr.px[b][i] * (1 - t) + tr.px[b][i + 1] * t,
+      y: tr.py[b][i] * (1 - t) + tr.py[b][i + 1] * t,
+      vx: tr.vx[b][i] * (1 - t) + tr.vx[b][i + 1] * t,
+      vy: tr.vy[b][i] * (1 - t) + tr.vy[b][i + 1] * t,
+      k: i,
+    };
+  }
+
+  function paintTo(g, w, h, s, tr, phase) {
+    const bg = s.bg || '#0D0C0B';
+    g.fillStyle = bg;
+    g.fillRect(0, 0, w, h);
+    if (!tr || tr.n < 4) return;
+    const view = s.view;
+    const metals = metalsOf(s);
+    const packed = collect(tr, view, s.lift);
+    const xf = xformOf(packed, w, h, s.zoom, s.panX, s.panY);
+    const mapped = packed.pts.map(path => path.map(p => xf(p[0], p[1])));
+    const minS = Math.min(w, h);
+    const W0 = Math.max(1.1, 0.011 * minS * s.weight);
+
+    const vig = g.createRadialGradient(w * 0.5, h * 0.5, minS * 0.18, w * 0.5, h * 0.5, minS * 0.72);
+    vig.addColorStop(0, 'rgba(0,0,0,0)');
+    vig.addColorStop(1, U.isLight(bg) ? 'rgba(20,16,10,0.10)' : 'rgba(0,0,0,0.28)');
+    g.fillStyle = vig;
+    g.fillRect(0, 0, w, h);
+
+    if (view === 'shape') {
+      const c0 = xf(0, 0);
+      const rEq = Math.hypot(xf(1, 0)[0] - c0[0], xf(1, 0)[1] - c0[1]);
+      g.beginPath();
+      g.arc(c0[0], c0[1], rEq, 0, Math.PI * 2);
+      g.strokeStyle = U.inkRgba(bg, 0.28);
+      g.lineWidth = Math.max(0.8, minS * 0.0022);
+      g.stroke();
+      for (let i = 0; i < 3; i++) {
+        const ang = i * U.TAU / 3;
+        const p = xf(Math.cos(ang), Math.sin(ang));
+        g.beginPath();
+        g.arc(p[0], p[1], Math.max(2.2, minS * 0.007), 0, Math.PI * 2);
+        g.strokeStyle = U.inkRgba(bg, 0.55);
+        g.lineWidth = Math.max(1, minS * 0.0025);
+        g.stroke();
+      }
+    }
+
+    if (view !== 'shape' && view !== 'braid') {
+      const under = mapped[0].map((_, i) => {
+        const a = mapped[0][i], bpt = mapped[1][i], c = mapped[2][i];
+        return [(a[0] + bpt[0] + c[0]) / 3, (a[1] + bpt[1] + c[1]) / 3];
+      });
+      g.lineCap = 'round';
+      g.lineJoin = 'round';
+      g.beginPath();
+      g.moveTo(under[0][0], under[0][1]);
+      for (let i = 1; i < under.length; i++) g.lineTo(under[i][0], under[i][1]);
+      g.strokeStyle = rgba(U.mixHex(metals[0], bg, 0.55), 0.22);
+      g.lineWidth = W0 * 2.4;
+      g.stroke();
+    }
+
+    if (view === 'braid') {
+      const n = tr.n;
+      const chunk = Math.max(3, (n / 160) | 0);
+      g.lineCap = 'round';
+      g.lineJoin = 'round';
+      for (let i = 0; i < n - 1; i += chunk) {
+        const j1 = Math.min(n - 1, i + chunk);
+        const depth = [0, 1, 2].sort((a, b) => tr.py[a][i] - tr.py[b][i]);
+        const t = i / Math.max(1, n - 1);
+        const a = s.fade <= 0 ? 0.92 : Math.pow(t, 0.25 + s.fade) * (0.45 + 0.55 * (1 - s.fade * 0.3));
+        for (let q = 0; q < 3; q++) {
+          const b = depth[q];
+          g.beginPath();
+          g.moveTo(mapped[b][i][0], mapped[b][i][1]);
+          for (let j = i + 1; j <= j1; j++) g.lineTo(mapped[b][j][0], mapped[b][j][1]);
+          g.strokeStyle = rgba(metals[b], Math.max(0.08, a));
+          g.lineWidth = W0 * (1.05 + 0.25 * q);
+          g.stroke();
+        }
+      }
+    } else {
+      const order = view === 'shape' ? [0] : [0, 1, 2];
+      for (let q = 0; q < order.length; q++) {
+        strokeRibbon(g, mapped[q], metals[order[q] % 3], W0 * (view === 'shape' ? 1.25 : 1), s.fade, true);
+      }
+    }
+
+    const showBeads = view === 'beads' || view === 'world' || view === 'polar' || view === 'space' || s.running;
+    if (showBeads && view !== 'shape' && view !== 'braid' && mapped[0] && mapped[0].length) {
+      const beads = [0, 1, 2].map(b => sampleAt(tr, b, phase));
+      const xy = beads.map((p, b) => mapped[b][Math.min(mapped[b].length - 1, p.k)]);
+      if (view === 'beads') {
+        g.beginPath();
+        g.moveTo(xy[0][0], xy[0][1]);
+        g.lineTo(xy[1][0], xy[1][1]);
+        g.lineTo(xy[2][0], xy[2][1]);
+        g.closePath();
+        g.strokeStyle = U.inkRgba(bg, 0.4);
+        g.lineWidth = Math.max(0.9, minS * 0.0022);
+        g.stroke();
+        const kStep = Math.max(6, (tr.n / 70) | 0);
+        for (let b = 0; b < 3; b++) {
+          const k2 = Math.min(mapped[b].length - 1, beads[b].k + kStep);
+          const txy = mapped[b][k2];
+          const dx = txy[0] - xy[b][0], dy = txy[1] - xy[b][1];
+          const dl = Math.hypot(dx, dy) || 1;
+          const vlen = Math.hypot(beads[b].vx, beads[b].vy);
+          arrow(g, xy[b][0], xy[b][1], dx / dl, dy / dl, 0.06 * minS * (0.75 + 0.4 * Math.min(1.4, vlen)), rgba(metals[b], 0.92));
+          drawBead(g, xy[b][0], xy[b][1], Math.max(3.6, 0.015 * minS * s.weight), metals[b], bg);
+        }
+      } else {
+        for (let b = 0; b < 3; b++) {
+          drawBead(g, xy[b][0], xy[b][1], Math.max(3.2, 0.012 * minS * s.weight), metals[b], bg);
+        }
+      }
+    }
+
+    const rng = U.makeRng(String(s.seed || 'eight') + '/grain');
+    const nGrain = (w * h * 0.006) | 0;
+    const ink = U.inkFor(bg);
+    g.fillStyle = rgba(ink, U.isLight(bg) ? 0.035 : 0.045);
+    for (let i = 0; i < nGrain; i++) {
+      const gx = rng() * w, gy = rng() * h;
+      g.fillRect(gx, gy, 1, 1);
+    }
+  }
+
+  Studio.register({
+    id: 'eight', name: 'Figure Eight', tab: 'Eight',
+    subtitle: 'three equal masses chasing on a planar figure-eight · 1993 / 2000',
+    order: 111,
+    equation: 'r̈_i = −Σ_{j≠i} (r_i−r_j)/|r_i−r_j|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0',
+    credit: 'Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.',
+    blurb: 'Three equal masses chase each other around a single figure-eight. Moore found the orbit; Chenciner and Montgomery proved it. The plate is that choreography as worldlines: a three-metal ribbon on a dark sheet, time as fade, or wrapped as a wreath with angle for time. Shape space kills rotation and scale, and the curve is still an eight. Braid is x against t. Broken is a nearby Euler initial condition that does not close, kept so the status line can fail. The check is |L| against 0, energy drift against 0, and the return to the initial configuration at t = T against 0.',
+    schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
+    hints: {
+      Orbit: 'Eight is Simó’s choreography. Broken scales the same Euler velocities by 1.08: still zero angular momentum, not periodic. Run walks the beads along the stored trail.',
+      Picture: 'World is the shared curve as a three-metal ribbon. Spacetime uses time as a third coordinate. Braid is x against t. Shape space is the unit disk of the shape sphere, equator equal to collinear configurations. Beads is a snapshot with velocities. Wreath wraps time as angle.',
+    },
+    palette: true,
+    defaultPalette: { bg: '#0D0C0B', colors: ['#D4B05A', '#C06E3A', '#8A96A3', '#E8D5A3'] },
+    paletteLabel: 'Metals (three bodies)',
+    surprise, sanitize,
+    create(host) {
+      const canvas = host.canvas;
+      const ctx = canvas.getContext('2d', { alpha: false });
+      let traj = null, raf = 0, last = 0, phase = 0.14;
+
+      function status() {
+        if (!traj) return;
+        const s = host.getState();
+        const L = Math.abs(traj.L);
+        const closed = traj.dq < 1e-5 && !traj.dead;
+        const conserved = L < 1e-8 && traj.dE < 1e-8;
+        let tag;
+        if (traj.dead) tag = 'escaped';
+        else if (s.kind === 'broken') tag = closed ? 'closed, unexpectedly' : 'broken';
+        else tag = (closed && conserved) ? 'choreography' : 'drifting';
+        host.setStatus(
+          '<span>|L| <b>' + sci(L) + '</b> · 0</span>' +
+          '<span>|ΔE|/|E| <b>' + sci(traj.dE) + '</b> · 0</span>' +
+          '<span>|q(T)−q(0)| <b>' + sci(traj.dq) + '</b> · 0</span>' +
+          '<span>' + tag + '</span>'
+        );
+      }
+      function paint() {
+        const s = host.getState();
+        paintTo(ctx, canvas.width, canvas.height, s, traj, phase);
+      }
+      function compute() {
+        const s = host.getState();
+        traj = integrate(s.kind, s.periods);
+        phase = 0.14;
+      }
+      function tick(now) {
+        raf = 0;
+        if (!host.isActive()) return;
+        const s = host.getState();
+        if (!s.running || host.reducedMotion()) return;
+        const dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
+        last = now;
+        phase = (phase + dt * (s.speed || 0.85) * 0.22) % 1;
+        paint();
+        raf = requestAnimationFrame(tick);
+      }
+      function startLoop() {
+        if (raf) return;
+        last = 0;
+        raf = requestAnimationFrame(tick);
+      }
+      function stopLoop() {
+        if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      }
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        fieldCells() { return null; },
+        regenerate() { compute(); paint(); status(); },
+        repaint() { paint(); status(); },
+        live(key) {
+          const s = host.getState();
+          if (key === 'running' || key === 'speed') {
+            if (s.running && !host.reducedMotion()) startLoop();
+            else stopLoop();
+            if (!s.running) { paint(); status(); }
+          }
+        },
+        resize() { paint(); },
+        pause() { stopLoop(); },
+        resume() {
+          const s = host.getState();
+          paint();
+          if (s.running && !host.reducedMotion()) startLoop();
+        },
+        async exportPNG(w, h) {
+          if (!traj) throw new Error('nothing to export');
+          const s = host.getState();
+          const c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          const g = c.getContext('2d', { alpha: false });
+          paintTo(g, w, h, s, traj, phase);
+          return U.toBlob(c);
+        },
+        exportSVG(w, h) {
+          if (!traj) return '';
+          const s = host.getState();
+          const metals = metalsOf(s);
+          const packed = collect(traj, s.view, s.lift);
+          const xf = xformOf(packed, w, h, s.zoom, s.panX, s.panY);
+          const lw = Math.max(0.8, 0.011 * Math.min(w, h) * s.weight);
+          const parts = [];
+          packed.pts.forEach((path, q) => {
+            const d = path.map((p, i) => {
+              const xy = xf(p[0], p[1]);
+              return (i ? 'L' : 'M') + xy[0].toFixed(2) + ' ' + xy[1].toFixed(2);
+            }).join(' ');
+            parts.push('<path d="' + d + '" fill="none" stroke="' + U.svgEsc(metals[q % 3]) + '" stroke-width="' + lw.toFixed(2) + '" stroke-linecap="round" stroke-linejoin="round" opacity="0.92"/>');
+          });
+          return U.svgDoc(w, h, s.bg, parts.join(''));
+        },
+      };
+    },
+  });
+})();
+</script>
+<script>
+/* modules/peakon.js */
+/* GENChase: Camassa–Holm peakons. Speed equals amplitude. Exact collisions. */
+(function () {
+  'use strict';
+  const U = Studio.util;
+  const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
+  const f2 = v => v.toFixed(2);
+  const f3 = v => v.toFixed(3);
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
+    Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const Pal = Studio.PALETTES;
+  const pre = (label, p, pal) => ({ label, p, palette: pal });
+
+  // Spectral data: speeds c_k > 0. λ_k = 1/c_k. Lundmark (arXiv:1807.01910) form of
+  // Beals–Sattinger–Szmigielski, matching u = Σ m_i exp(−|x − x_i|) so that speed = amplitude.
+  const KINDS = {
+    one: { c: [1.45], label: 'one peakon' },
+    two: { c: [1.85, 0.95], label: 'two-peakon collision' },
+    three: { c: [2.15, 1.35, 0.72], label: 'three peakons' },
+    train: { c: [1.90, 1.42, 1.05, 0.68], label: 'peaked train' },
+    overtake: { c: [2.55, 0.58], label: 'overtaking' },
+    rest: { c: [0.28], label: 'rest' },
+  };
+
+  const SCHEMA = [
+    RANGE('Field', 'grid', 'Grid', GEOM, 128, 256, 16, v => v + ''),
+    { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
+    { group: 'Peakons', key: 'kind', label: 'Kind', type: 'seg', kind: GEOM, options: [['one', 'One'], ['two', 'Two'], ['three', 'Three'], ['train', 'Train'], ['overtake', 'Overtake'], ['rest', 'Rest']] },
+    { group: 'Peakons', key: 'slice', label: 'Slice', type: 'seg', kind: GEOM, options: [['space', 'Spacetime'], ['shot', 'Snapshot']] },
+    { group: 'Peakons', key: 'frame', label: 'Frame', type: 'seg', kind: GEOM, options: [['cm', 'CM'], ['lab', 'Lab']] },
+    RANGE('Peakons', 't', 'Time t', LIVE, -6, 6, 0.05, f2, { hint: 't = 0 is closest approach for equal spectral weights. Incoming train at t < 0, outgoing at t > 0.' }),
+    RANGE('Peakons', 'sep', 'Separation', GEOM, -2.4, 2.4, 0.05, f2, { hint: 'Log-ratio of the BSS weights. Zero bunches the collision at t = 0. Positive holds an incoming train.' }),
+    RANGE('Field', 'zoom', 'View', GEOM, 0.4, 2.2, 0.05, f2),
+    { group: 'Peakons', key: 'running', label: 'Run', type: 'toggle', kind: LIVE },
+    { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['field', 'Height'], ['log', 'Log'], ['shade', 'Relief'], ['profile', 'Profile']] },
+    RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.4, 2.2, 0.05, f2),
+  ];
+  const DEFAULTS = {
+    grid: 192, aspect: '1:1', kind: 'two', slice: 'space', frame: 'cm',
+    t: 0, sep: 0, running: false, zoom: 1.0, view: 'field', exposure: 1.05,
+  };
+  const PRESETS = {
+    one: pre('One peakon', { kind: 'one', slice: 'shot', frame: 'lab', t: 0, sep: 0, zoom: 1.55, view: 'profile' }, Pal.ember),
+    collide: pre('Two-peakon collision', { kind: 'two', slice: 'shot', frame: 'cm', t: -2.15, sep: 0, zoom: 1.35, view: 'profile' }, Pal.nightshade),
+    three: pre('Three', { kind: 'three', slice: 'shot', frame: 'cm', t: -2.4, sep: 0.35, zoom: 1.05, view: 'profile' }, Pal.thermal),
+    spacetime: pre('Spacetime', { kind: 'two', slice: 'space', frame: 'cm', t: 0, sep: 0, zoom: 0.9, view: 'field' }, Pal.ember),
+    rest: pre('Rest', { kind: 'rest', slice: 'space', frame: 'lab', t: 0, sep: 0, zoom: 1.05, view: 'field' }, Pal.glacier),
+    overtake: pre('Overtaking', { kind: 'overtake', slice: 'space', frame: 'cm', t: 0, sep: 0, zoom: 0.8, view: 'field' }, Pal.bioluminescent),
+    train: pre('Peaked train', { kind: 'train', slice: 'shot', frame: 'lab', t: -4.2, sep: 1.1, zoom: 0.95, view: 'profile' }, Pal.xray),
+  };
+
+  function surprise(rng) {
+    return {
+      kind: rng.pick(['one', 'two', 'two', 'three', 'train', 'overtake', 'rest']),
+      slice: rng.pick(['space', 'space', 'shot']),
+      frame: rng.pick(['cm', 'cm', 'lab']),
+      t: rng.range(-2.8, 2.2),
+      sep: rng.range(-0.4, 1.2),
+      zoom: rng.range(0.65, 1.25),
+      view: rng.pick(['field', 'field', 'shade', 'profile', 'log']),
+    };
+  }
+  function sanitize(s) {
+    s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16));
+    if (!KINDS[s.kind]) s.kind = 'two';
+    if (s.slice !== 'shot') s.slice = 'space';
+    if (s.frame !== 'lab') s.frame = 'cm';
+    if (s.view !== 'log' && s.view !== 'shade' && s.view !== 'profile') s.view = 'field';
+  }
+
+  function combos(n, k) {
+    const out = [];
+    (function rec(start, cur) {
+      if (cur.length === k) { out.push(cur.slice()); return; }
+      for (let i = start; i < n; i++) { cur.push(i); rec(i + 1, cur); cur.pop(); }
+    })(0, []);
+    return out;
+  }
+
+  // log Δ_k^a = log Σ_{|I|=k} Vand(λ_I)^2 Π_{i in I} λ_i^a b_i
+  function logDelta(k, a, lam, logb) {
+    const N = lam.length;
+    if (k === 0) return 0;
+    if (k < 0 || k > N) return -Infinity;
+    const cs = combos(N, k);
+    const logs = new Float64Array(cs.length);
+    let m = -Infinity;
+    for (let s = 0; s < cs.length; s++) {
+      const I = cs[s];
+      let logt = 0;
+      for (let r = 0; r < k; r++) {
+        const i = I[r];
+        if (a !== 0) logt += a * Math.log(Math.abs(lam[i]));
+        logt += logb[i];
+      }
+      for (let p = 0; p < k; p++) {
+        for (let q = p + 1; q < k; q++) {
+          const d = lam[I[q]] - lam[I[p]];
+          if (d === 0) { logt = -Infinity; break; }
+          logt += 2 * Math.log(Math.abs(d));
+        }
+      }
+      logs[s] = logt;
+      if (logt > m) m = logt;
+    }
+    if (!(m > -1e200)) return -Infinity;
+    let sum = 0;
+    for (let s = 0; s < logs.length; s++) sum += Math.exp(logs[s] - m);
+    return m + Math.log(sum);
+  }
+
+  function peakonsAt(speeds, t, sep) {
+    const N = speeds.length;
+    const lam = new Float64Array(N);
+    const logb = new Float64Array(N);
+    for (let k = 0; k < N; k++) {
+      const c = speeds[k];
+      lam[k] = 1 / c;
+      logb[k] = sep * k + c * t;
+    }
+    const x = new Float64Array(N);
+    const m = new Float64Array(N);
+    for (let k = 1; k <= N; k++) {
+      const l0 = logDelta(k, 0, lam, logb);
+      const l2 = logDelta(k - 1, 2, lam, logb);
+      const l1 = logDelta(k, 1, lam, logb);
+      const l1m = logDelta(k - 1, 1, lam, logb);
+      x[N - k] = l0 - l2;
+      m[N - k] = Math.exp(l0 + l2 - l1 - l1m);
+    }
+    return { x, m, c: speeds, N };
+  }
+
+  function uOf(pk, x) {
+    let s = 0;
+    for (let i = 0; i < pk.N; i++) s += pk.m[i] * Math.exp(-Math.abs(x - pk.x[i]));
+    return s;
+  }
+  // One-sided derivatives: at a peak the classical derivative jumps. sgn(0) = 0, so
+  // this is the average of the two sides (zero) exactly on a single peakon crest.
+  function uxOf(pk, x) {
+    let s = 0;
+    for (let i = 0; i < pk.N; i++) {
+      const d = x - pk.x[i];
+      const sgn = d > 0 ? 1 : d < 0 ? -1 : 0;
+      s += -pk.m[i] * sgn * Math.exp(-Math.abs(d));
+    }
+    return s;
+  }
+
+  function meanSpeed(speeds) {
+    let s = 0;
+    for (let i = 0; i < speeds.length; i++) s += speeds[i];
+    return s / speeds.length;
+  }
+
+  // Home offset so the t = 0 collision sits at x = 0. Fixed across time, so worldlines drift
+  // only by the frame choice (lab vs mean-speed).
+  function homeOffset(speeds, sep) {
+    const pk = peakonsAt(speeds, 0, sep);
+    return 0.5 * (pk.x[0] + pk.x[pk.N - 1]);
+  }
+
+  function placed(speeds, t, sep, frame, off, centerNow) {
+    const pk = peakonsAt(speeds, t, sep);
+    if (off == null) off = homeOffset(speeds, sep);
+    const V = frame === 'cm' ? meanSpeed(speeds) : 0;
+    for (let i = 0; i < pk.N; i++) pk.x[i] -= off + V * t;
+    if (centerNow && pk.N) {
+      const mid = 0.5 * (pk.x[0] + pk.x[pk.N - 1]);
+      for (let i = 0; i < pk.N; i++) pk.x[i] -= mid;
+    }
+    pk.V = V;
+    return pk;
+  }
+
+  function argmaxU(pk, lo, hi, n) {
+    n = n || 1600;
+    let bestX = lo, bestU = -Infinity;
+    const dx = (hi - lo) / n;
+    for (let i = 0; i <= n; i++) {
+      const x = lo + i * dx;
+      const u = uOf(pk, x);
+      if (u > bestU) { bestU = u; bestX = x; }
+    }
+    let h = dx;
+    for (let k = 0; k < 12; k++) {
+      const uL = uOf(pk, bestX - h), uR = uOf(pk, bestX + h);
+      if (uL > bestU) { bestX -= h; bestU = uL; }
+      else if (uR > bestU) { bestX += h; bestU = uR; }
+      h *= 0.5;
+    }
+    return { x: bestX, u: bestU, dx: h };
+  }
+
+  function fieldH1(pk, n) {
+    const mid = 0.5 * (pk.x[0] + pk.x[pk.N - 1]);
+    const lo = mid - 22, hi = mid + 22;
+    n = n || 1400;
+    const dx = (hi - lo) / n;
+    let acc = 0;
+    for (let i = 0; i < n; i++) {
+      const x = lo + (i + 0.5) * dx;
+      const u = uOf(pk, x);
+      const ux = uxOf(pk, x);
+      acc += u * u + ux * ux;
+    }
+    return acc * dx;
+  }
+
+  // Particle formula: for one peakon ∫(u² + u_x²) dx = 2 c², and Σ_{i,j} m_i m_j e^{-|xi-xj|} = c²,
+  // so the integral equals 2 Σ_{i,j} m_i m_j exp(−|x_i − x_j|).
+  function particleH1(pk) {
+    let s = 0;
+    for (let i = 0; i < pk.N; i++) for (let j = 0; j < pk.N; j++) s += pk.m[i] * pk.m[j] * Math.exp(-Math.abs(pk.x[i] - pk.x[j]));
+    return 2 * s;
+  }
+
+  function probe(speeds, sep) {
+    // Single-peakon speed from the sampled field, not from x_i(t) by construction.
+    const c = 1.25;
+    const one = [c];
+    const dt = 0.8;
+    const a = peakonsAt(one, 0, 0);
+    const b = peakonsAt(one, dt, 0);
+    const pa = argmaxU(a, -4, 8, 2400);
+    const pb = argmaxU(b, -4, 8, 2400);
+    const v = (pb.x - pa.x) / dt;
+    const vRatio = v / c;
+    const sigmaV = Math.hypot(pa.dx, pb.dx) / dt / c;
+
+    const q = pa.x;
+    const h = 0.008;
+    const u0 = uOf(a, q);
+    const dL = (u0 - uOf(a, q - h)) / h;
+    const dR = (uOf(a, q + h) - u0) / h;
+    const cL = dL / c, cR = dR / c;
+
+    // Two-time H1 of the plate's own peakons, sampled from u, against the particle formula.
+    const t0 = -2.4, t1 = 2.4;
+    const p0 = peakonsAt(speeds, t0, sep);
+    const p1 = peakonsAt(speeds, t1, sep);
+    const H0 = fieldH1(p0);
+    const H1t = fieldH1(p1);
+    const Hth = particleH1(p0);
+    const hRatio = Hth > 1e-12 ? H0 / Hth : 0;
+    const hCons = H0 > 1e-12 ? H1t / H0 : 0;
+    return { vRatio, sigmaV, cL, cR, hRatio, hCons, c, dL, dR };
+  }
+
+  Studio.register({
+    id: 'peakon', name: 'Peakon', tab: 'Peakon',
+    subtitle: 'Camassa–Holm peaked traveling waves · 1993',
+    order: 112,
+    equation: 'u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−|x−x_i|},   m = u − u_xx',
+    credit: 'The Camassa–Holm equation and the peakon u = c exp(−|x − c t|) are R. Camassa and D. D. Holm, Phys. Rev. Lett. 71, 1661 (1993). Multi-peakon collisions, including the Stieltjes / Hankel closed form used here, are R. Beals, D. H. Sattinger and J. Szmigielski, Inverse Problems 15, L1 (1999) and Adv. Math. 154, 229 (2000). This plate evaluates that exact N-peakon formula. It is not a new soliton.',
+    blurb: 'A KdV soliton is smooth. The Camassa–Holm peakon is a traveling corner: u = c exp(−|x − c t|), and the speed is the height. Two of them collide exactly. They pass through each other and pick up a phase shift; the peak stays a corner, never rounding. The plate is the Beals–Sattinger–Szmigielski formula, not an integrator. The status line is the measured peak speed over c, which theory says is 1, and the left and right slopes at the crest, which theory says are +c and −c. If this were the wrong PDE, or the wrong exponential, both would fail.',
+    schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
+    hints: {
+      Peakons: 'One is the traveling corner, speed = amplitude. Two and Three are exact collisions. Train is an incoming peaked rank. Overtake is a tall peakon catching a short one. Rest is a slow peakon, almost a standing crease. Spacetime (x across, t up) is the collision as worldlines.',
+    },
+    palette: true, defaultPalette: 'ember', surprise, sanitize,
+    headline: 't', headlineLabel: 't',
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
+      let W = 0, H = 0, field, metric = null, kindLabel = 'peakon', buf, img, raf = 0, last = 0;
+
+      function sizeFrom(s, wpx, hpx) {
+        const a = ASPECTS[s.aspect] || 1;
+        const g = s.grid | 0;
+        if (wpx && hpx) return { W: wpx, H: hpx };
+        return { W: g, H: Math.max(64, Math.round(g * a)) };
+      }
+      function specOf(s) {
+        const spec = KINDS[s.kind] || KINDS.two;
+        return spec;
+      }
+      function fill(s, WW, HH, out) {
+        const spec = specOf(s);
+        const speeds = spec.c;
+        const sep = s.sep;
+        const t0 = s.t;
+        const L = 14 / Math.max(0.25, s.zoom);
+        const T = 9 / Math.max(0.25, s.zoom);
+        const frame = s.frame;
+        const slice = s.slice;
+        const off = homeOffset(speeds, sep);
+        let umax = 0;
+        for (let y = 0; y < HH; y++) {
+          const t = slice === 'space' ? t0 + (0.5 - (y + 0.5) / HH) * 2 * T : t0;
+          const pk = placed(speeds, t, sep, frame, off, slice === 'shot');
+          for (let x = 0; x < WW; x++) {
+            const xx = ((x + 0.5) / WW - 0.5) * 2 * L;
+            const u = uOf(pk, xx);
+            out[y * WW + x] = u;
+            if (u > umax) umax = u;
+          }
+        }
+        metric = probe(speeds, sep);
+        kindLabel = spec.label;
+        return umax;
+      }
+      function compute() {
+        const s = host.getState();
+        const sz = sizeFrom(s); W = sz.W; H = sz.H;
+        field = new Float32Array(W * H);
+        fill(s, W, H, field);
+        buf = document.createElement('canvas'); buf.width = W; buf.height = H;
+        img = buf.getContext('2d').createImageData(W, H);
+      }
+      function paintBuf() {
+        if (!field || !img) return;
+        const s = host.getState();
+        const pal = Array.isArray(s.palette) && s.palette.length ? s.palette : ['#111', '#eee'];
+        const ramp = U.makeRamp(pal, s.bg || '#111');
+        const data = img.data;
+        const exp = isFinite(s.exposure) && s.exposure > 0 ? s.exposure : 1;
+        let lo = Infinity, hi = -Infinity;
+        for (let i = 0; i < field.length; i++) {
+          const v = field[i];
+          if (v < lo) lo = v;
+          if (v > hi) hi = v;
+        }
+        const spanv = (hi - lo) || 1;
+        const view = s.view;
+        const uMax = Math.max(hi, 1e-9);
+        for (let i = 0; i < field.length; i++) {
+          const x = i % W, y = (i / W) | 0;
+          let tv = (field[i] - lo) / spanv;
+          if (view === 'log') tv = Math.log(1.001 + 18 * Math.max(0, tv)) / Math.log(19);
+          if (view === 'shade') {
+            const xm = x > 0 ? field[i - 1] : field[i];
+            const xp = x + 1 < W ? field[i + 1] : field[i];
+            const ym = y > 0 ? field[i - W] : field[i];
+            const yp = y + 1 < H ? field[i + W] : field[i];
+            const nx = (xm - xp), ny = (ym - yp);
+            const sh = 0.5 + 0.5 * (nx * 0.55 + ny * 0.85) / (spanv * 2.4 + 1e-6);
+            // Modulate height by relief so the far field stays dark. Additive shade on a
+            // sparse peakon plate washed the ground to mid-gray and hid the corner.
+            tv = U.clamp(tv * (0.28 + 0.95 * sh), 0, 1);
+          }
+          if (view === 'profile') {
+            // Filled skyline of u(x) at this column. For spacetime this is a time-stack of profiles.
+            const yb = 1 - (y + 0.5) / H;
+            const hgt = 0.07 + 0.86 * (field[i] / uMax);
+            const edge = U.smoothstep(hgt - 2.2 / H, hgt + 0.8 / H, yb);
+            const fillv = yb <= hgt ? 0.55 + 0.45 * (yb / Math.max(hgt, 1e-6)) : 0;
+            const crest = Math.exp(-((yb - hgt) * H) * ((yb - hgt) * H) * 0.55);
+            tv = U.clamp(Math.max(fillv * (1 - 0.35 * edge), 0.9 * crest * (yb > hgt - 3 / H ? 1 : 0)), 0, 1);
+            if (yb < 0.03) tv = Math.max(tv, 0.18);
+          }
+          tv = U.clamp(tv * exp, 0, 1);
+          const c = ramp(isFinite(tv) ? tv : 0);
+          const o = i * 4; data[o] = c[0]; data[o + 1] = c[1]; data[o + 2] = c[2]; data[o + 3] = 255;
+        }
+        buf.getContext('2d').putImageData(img, 0, 0);
+      }
+      function paint() {
+        paintBuf();
+        if (!buf) return;
+        const s = host.getState();
+        ctx.imageSmoothingEnabled = true;
+        ctx.fillStyle = s.bg || '#111';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
+      }
+      function status() {
+        const m = metric || { vRatio: NaN, sigmaV: NaN, cL: NaN, cR: NaN, hCons: NaN };
+        const vFail = !(Math.abs(m.vRatio - 1) < 0.05);
+        const cornerOk = m.cL > 0.7 && m.cR < -0.7 && Math.abs(Math.abs(m.cL) - 1) < 0.12 && Math.abs(Math.abs(m.cR) - 1) < 0.12;
+        const hOk = Math.abs(m.hCons - 1) < 0.03;
+        host.setStatus(
+          '<span>v/c <b>' + (isFinite(m.vRatio) ? f3(m.vRatio) : '?') + '</b> ± ' +
+            (isFinite(m.sigmaV) ? m.sigmaV.toExponential(0) : '?') + ' against 1' + (vFail ? ' · failed' : '') + '</span>' +
+          '<span>|u_x|/c L/R <b>' + (isFinite(m.cL) ? (m.cL >= 0 ? '+' : '') + f2(m.cL) : '?') + ' / ' +
+            (isFinite(m.cR) ? (m.cR >= 0 ? '+' : '') + f2(m.cR) : '?') + '</b> · ±1' + (cornerOk ? '' : ' · not a corner') + '</span>' +
+          '<span>H1(t+)/H1(t-) <b>' + (isFinite(m.hCons) ? f3(m.hCons) : '?') + '</b>' + (hOk ? ' · conserved' : ' · drifted') + '</span>' +
+          '<span>' + kindLabel + '</span>'
+        );
+      }
+      function tick(now) {
+        raf = 0;
+        if (!host.isActive()) return;
+        const s = host.getState();
+        if (!s.running || host.reducedMotion()) return;
+        const dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
+        last = now;
+        s.t = ((s.t + dt * 0.42 + 6) % 12) - 6;
+        compute(); paint(); status();
+        raf = requestAnimationFrame(tick);
+      }
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        fieldCells() { return null; },
+        regenerate() { compute(); paint(); status(); },
+        repaint() { paint(); status(); },
+        live(key) {
+          if (key === 't' || key === 'running') {
+            if (host.getState().running) {
+              if (!raf) { last = 0; raf = requestAnimationFrame(tick); }
+            } else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+            if (key === 't') { compute(); paint(); status(); }
+          }
+        },
+        resize() { paint(); },
+        pause() { if (raf) { cancelAnimationFrame(raf); raf = 0; } },
+        resume() {
+          const s = host.getState();
+          if (s.running && !host.reducedMotion() && !raf) { last = 0; raf = requestAnimationFrame(tick); }
+          else paint();
+        },
+        async exportPNG(w, ht) {
+          const s = host.getState();
+          const c = document.createElement('canvas'); c.width = w; c.height = ht;
+          const g = c.getContext('2d', { alpha: false });
+          const tmp = new Float32Array(w * ht);
+          const builtW = W, builtH = H, builtF = field, builtB = buf, builtI = img;
+          W = w; H = ht; field = tmp;
+          buf = document.createElement('canvas'); buf.width = w; buf.height = ht;
+          img = buf.getContext('2d').createImageData(w, ht);
+          fill(s, w, ht, tmp);
+          paintBuf();
+          g.fillStyle = s.bg || '#111'; g.fillRect(0, 0, w, ht);
+          g.drawImage(buf, 0, 0);
+          W = builtW; H = builtH; field = builtF; buf = builtB; img = builtI;
+          paint();
+          return U.toBlob(c);
+        },
+      };
+    },
+  });
+})();
+</script>
+<script>
+/* modules/photon.js */
+/* GENChase: Schwarzschild photon sphere. Null geodesics. Critical b = 3√3 M. */
+(function () {
+  'use strict';
+  const U = Studio.util;
+  const GEOM = 'geom', PAINT = 'paint';
+  const f2 = v => v.toFixed(2);
+  const f3 = v => v.toFixed(3);
+  const f4 = v => v.toFixed(4);
+  const TAU = U.TAU;
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
+    Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const Pal = Studio.PALETTES;
+  const pre = (label, p, pal) => ({ label, p, palette: pal });
+
+  const M = 1;
+  const RS = 2 * M;
+  const BC_TH = 3 * Math.sqrt(3) * M;
+  const RPH_TH = 3 * M;
+
+  const SCHEMA = [
+    RANGE('Field', 'grid', 'Grid', GEOM, 128, 256, 16, v => v + ''),
+    { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
+    RANGE('Field', 'zoom', 'View', GEOM, 0.4, 2.2, 0.05, f2, { hint: 'Frame half-width is about 14 M / zoom. The shadow sits at b = 3√3 M.' }),
+    { group: 'Rays', key: 'view', label: 'View', type: 'seg', kind: GEOM, options: [['disk', 'Disk'], ['equatorial', 'Equator'], ['orbit', 'r, φ'], ['impact', 'Impact'], ['polar', 'Polar']] },
+    { group: 'Rays', key: 'scene', label: 'Scene', type: 'seg', kind: GEOM, options: [['stars', 'Stars'], ['belt', 'Belt'], ['einstein', 'Einstein'], ['spray', 'Spray']] },
+    RANGE('Rays', 'rays', 'Rays', GEOM, 48, 200, 8, v => v + '', { hint: 'Geodesics drawn in the equatorial, polar, r-φ and impact views.', dimUnless: s => s.view !== 'disk' }),
+    RANGE('Rays', 'incline', 'Incline', GEOM, 0, 72, 1, v => v + '°', { hint: 'Camera tilt from face-on. The shadow stays circular. The belt becomes an ellipse.', dimUnless: s => s.view === 'disk' || s.view === 'polar' }),
+    RANGE('Rays', 'beltR', 'Belt r/M', GEOM, 4, 16, 0.5, f2, { hint: 'Thin equatorial luminous ring, in units of M. 6 M is the ISCO of a Schwarzschild hole.' }),
+    { group: 'Picture', key: 'tone', label: 'Tone', type: 'seg', kind: PAINT, options: [['log', 'Log'], ['lin', 'Lin'], ['shade', 'Relief']] },
+    RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.4, 2.4, 0.05, f2),
+  ];
+  const DEFAULTS = {
+    grid: 224, aspect: '1:1', zoom: 1.15,
+    view: 'disk', scene: 'stars', rays: 120, incline: 14, beltR: 6,
+    tone: 'log', exposure: 1.08,
+  };
+  const PRESETS = {
+    ring: pre('Photon ring', { view: 'disk', scene: 'stars', zoom: 1.2, incline: 10, beltR: 6, tone: 'log' }, Pal.kiln),
+    spray: pre('Grazing spray', { view: 'equatorial', scene: 'spray', zoom: 0.95, rays: 160, tone: 'log' }, Pal.graphite),
+    einstein: pre('Einstein ring', { view: 'disk', scene: 'einstein', zoom: 0.72, incline: 0, beltR: 8, tone: 'log' }, Pal.harbor),
+    weak: pre('Weak field', { view: 'equatorial', scene: 'spray', zoom: 0.58, rays: 144, tone: 'lin', exposure: 1.2 }, Pal.glacier),
+    capture: pre('Capture', { view: 'equatorial', scene: 'spray', zoom: 1.45, rays: 140, tone: 'log' }, Pal.nightshade),
+    polar: pre('Polar', { view: 'polar', scene: 'belt', zoom: 1.05, incline: 56, beltR: 7, rays: 96, tone: 'log' }, Pal.ember),
+    impact: pre('Impact portrait', { view: 'impact', scene: 'spray', zoom: 1, rays: 160, tone: 'log' }, Pal.xray),
+  };
+
+  function surprise(rng) {
+    return {
+      view: rng.pick(['disk', 'disk', 'equatorial', 'polar', 'orbit', 'impact']),
+      scene: rng.pick(['stars', 'stars', 'belt', 'einstein', 'spray']),
+      zoom: rng.range(0.55, 1.6),
+      incline: rng.pick([0, 8, 18, 48, 62]),
+      beltR: rng.range(5, 12),
+      rays: rng.int(80, 176),
+      tone: rng.pick(['log', 'log', 'lin']),
+    };
+  }
+  function sanitize(s) {
+    s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16));
+    s.rays = Math.max(48, Math.min(200, Math.round(s.rays / 8) * 8));
+    s.incline = U.clamp(s.incline, 0, 72);
+    s.beltR = U.clamp(s.beltR, 4, 16);
+  }
+
+  function force(u) { return 3 * M * u * u - u; }
+
+  function integrate(b, opt) {
+    const r0 = (opt && opt.r0) || 280;
+    const h = (opt && opt.h) || 0.012;
+    const maxPhi = (opt && opt.maxPhi) || 36;
+    const wantPts = opt && opt.pts;
+    const onStep = opt && opt.onStep;
+    const srcX = (opt && opt.srcX) || -48;
+    const pts = wantPts ? [] : null;
+    const absB = Math.abs(b);
+    if (!(absB > 1e-8)) return { captured: true, phi: 0, rMin: 0, defl: 0, ySrc: 0, gotSrc: false, pts: pts || [] };
+    let u = 1 / r0;
+    const W0 = 2 * M * u * u * u - u * u + 1 / (absB * absB);
+    let v = W0 > 0 ? Math.sqrt(W0) : 0;
+    let phi = 0, rMin = r0, turned = false, ySrc = absB, gotSrc = false;
+    let xPrev = r0, yPrev = 0;
+    const uH = 1 / (RS + 0.015);
+    const nMax = (maxPhi / h) | 0;
+    for (let i = 0; i < nMax; i++) {
+      const k1u = v, k1v = force(u);
+      const k2u = v + 0.5 * h * k1v, k2v = force(u + 0.5 * h * k1u);
+      const k3u = v + 0.5 * h * k2v, k3v = force(u + 0.5 * h * k2u);
+      const k4u = v + h * k3v, k4v = force(u + h * k3u);
+      u += (h / 6) * (k1u + 2 * k2u + 2 * k3u + k4u);
+      v += (h / 6) * (k1v + 2 * k2v + 2 * k3v + k4v);
+      phi += h;
+      if (!(u > 1e-14) || !isFinite(u) || !isFinite(v)) break;
+      const r = 1 / u;
+      if (r < rMin) rMin = r;
+      const cp = Math.cos(phi), sp = Math.sin(phi);
+      const x = r * cp, y = r * sp;
+      if (onStep) onStep(r, phi, x, y);
+      if (pts) {
+        const jump = Math.hypot(x - xPrev, y - yPrev);
+        if (jump > 0.35) {
+          const n = Math.min(8, (jump / 0.25) | 0);
+          for (let k = 1; k <= n; k++) {
+            const t = k / (n + 1);
+            pts.push(xPrev + (x - xPrev) * t, yPrev + (y - yPrev) * t);
+          }
+        }
+        pts.push(x, y);
+      }
+      if (!gotSrc && xPrev > srcX && x <= srcX) {
+        const t = (srcX - xPrev) / ((x - xPrev) || 1e-9);
+        ySrc = yPrev + (y - yPrev) * t;
+        gotSrc = true;
+      }
+      xPrev = x; yPrev = y;
+      if (u > uH || r < RS + 0.02) return { captured: true, phi, rMin, defl: NaN, ySrc: 0, gotSrc: false, pts: pts || [] };
+      if (!turned && v < 0) turned = true;
+      if (turned && r > r0 * 0.92 && v < 0) {
+        const ain = Math.asin(Math.min(1, absB / r0));
+        const aout = Math.asin(Math.min(1, absB * u));
+        return { captured: false, phi, rMin, defl: phi - Math.PI + ain + aout, ySrc, gotSrc, pts: pts || [] };
+      }
+    }
+    const ain = Math.asin(Math.min(1, absB / r0));
+    const aout = Math.asin(Math.min(1, absB * Math.max(u, 1e-9)));
+    return { captured: !turned, phi, rMin, defl: phi - Math.PI + ain + aout, ySrc, gotSrc, pts: pts || [] };
+  }
+
+  function searchBc() {
+    let lo = 1.5 * M, hi = 9 * M;
+    for (let i = 0; i < 36; i++) {
+      const mid = 0.5 * (lo + hi);
+      if (integrate(mid, { r0: 220, h: 0.012, maxPhi: 28 }).captured) lo = mid;
+      else hi = mid;
+    }
+    return 0.5 * (lo + hi);
+  }
+
+  function searchRph() {
+    function drift(r) {
+      const h = 0.01, n = 64;
+      let u = 1 / r, v = 0;
+      for (let i = 0; i < n; i++) {
+        const k1u = v, k1v = force(u);
+        const k2u = v + 0.5 * h * k1v, k2v = force(u + 0.5 * h * k1u);
+        const k3u = v + 0.5 * h * k2v, k3v = force(u + 0.5 * h * k2u);
+        const k4u = v + h * k3v, k4v = force(u + h * k3u);
+        u += (h / 6) * (k1u + 2 * k2u + 2 * k3u + k4u);
+        v += (h / 6) * (k1v + 2 * k2v + 2 * k3v + k4v);
+      }
+      return 1 / u - r;
+    }
+    let lo = 2.15 * M, hi = 5.5 * M;
+    for (let i = 0; i < 32; i++) {
+      const mid = 0.5 * (lo + hi);
+      if (drift(mid) < 0) lo = mid; else hi = mid;
+    }
+    return 0.5 * (lo + hi);
+  }
+
+  function hash21(x, y, s0) {
+    const n = Math.sin(x * 127.1 + y * 311.7 + s0 * 74.71) * 43758.5453;
+    return n - Math.floor(n);
+  }
+
+  function darkest(pal, bg) {
+    let best = pal && pal[0] ? pal[0] : '#111', lu = 2;
+    const list = (pal || []).concat(bg || '#000');
+    for (let i = 0; i < list.length; i++) {
+      const L = U.luminance(list[i]);
+      if (L < lu) { lu = L; best = list[i]; }
+    }
+    return best;
+  }
+
+  Studio.register({
+    id: 'photon', name: 'Photon Sphere', tab: 'Photon',
+    subtitle: 'Schwarzschild photon sphere · 1916',
+    order: 113,
+    equation: 'd²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M',
+    credit: 'K. Schwarzschild, Sitzungsber. Preuss. Akad. Wiss. (1916). The unstable circular photon orbit at r = 3M is a textbook consequence of that metric. C. Darwin, Proc. R. Soc. Lond. A 249, 180 (1959) and J. L. Synge, Mon. Not. R. Astron. Soc. 131, 463 (1966) integrated the null geodesics and the capture cross-section. The plate is a seeded print of those equatorial (or slightly inclined) rays. It is not a new black hole.',
+    blurb: 'Light that aims too close at a Schwarzschild hole never comes out. The last ray that still can is the photon sphere, an unstable circle at r = 3M, and on the sky of a distant observer it sits at impact parameter b = 3√3 M. Inside that, a dark disk. Just outside, a razor of light that wound once or more around the hole. The plate integrates the equatorial null geodesic, not a painted ring: the status line is the measured capture boundary over 3√3 M, and the radius the circular orbit actually holds, over 3M. If the integrator is wrong, the ring is in the wrong place.',
+    schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
+    hints: {
+      Field: 'Zoom frames the hole in units of M. The shadow radius is 3√3 M regardless of zoom; pull back to see the Einstein ring of a distant source.',
+      Rays: 'Disk is the camera at infinity. Equator is the textbook pencil in the plane. r, φ is the orbit chart. Impact paints fate against b. Polar tilts the belt. Stars, belt, Einstein and spray choose what the geodesics light up.',
+    },
+    palette: true, defaultPalette: 'kiln', surprise, sanitize,
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
+      let W = 0, H = 0, field, mask, buf, img;
+      let bMeas = BC_TH, rPh = RPH_TH, deflRatio = 1, kindLabel = 'photon ring';
+
+      function sizeFrom(s, wpx, hpx) {
+        if (wpx && hpx) return { W: wpx, H: hpx };
+        const cw = canvas.width | 0, ch = canvas.height | 0;
+        if (cw >= 64 && ch >= 64) return { W: cw, H: ch };
+        const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
+        return { W: g, H: Math.max(64, Math.round(g * a)) };
+      }
+      function extentOf(s) { return 14 / Math.max(0.2, s.zoom); }
+
+      function lookup(tab, b) {
+        const n = tab.length;
+        if (b <= tab[0].b) return tab[0];
+        if (b >= tab[n - 1].b) return tab[n - 1];
+        let lo = 0, hi = n - 1;
+        while (hi - lo > 1) {
+          const m = (lo + hi) >> 1;
+          if (tab[m].b < b) lo = m; else hi = m;
+        }
+        const a = tab[lo], c = tab[hi], t = (b - a.b) / ((c.b - a.b) || 1e-9);
+        if (a.captured && c.captured) return a;
+        if (a.captured !== c.captured) return t < 0.5 ? a : c;
+        return {
+          b, captured: false,
+          phi: a.phi + (c.phi - a.phi) * t,
+          rMin: a.rMin + (c.rMin - a.rMin) * t,
+          defl: a.defl + (c.defl - a.defl) * t,
+          ySrc: a.ySrc + (c.ySrc - a.ySrc) * t,
+          gotSrc: a.gotSrc && c.gotSrc,
+        };
+      }
+
+      function buildTable(n, bMax) {
+        const samples = [];
+        const nU = Math.max(40, (n * 0.45) | 0);
+        const nC = n - nU;
+        for (let i = 0; i < nU; i++) samples.push((i + 0.5) / nU * bMax);
+        for (let i = 0; i < nC; i++) {
+          const t = (i + 0.5) / nC;
+          const g = (t - 0.5) * 6;
+          samples.push(bMeas * Math.exp(g * 0.12));
+        }
+        samples.sort((a, b) => a - b);
+        const tab = [];
+        let last = -1;
+        for (let i = 0; i < samples.length; i++) {
+          const b = samples[i];
+          if (b < 0.08 || b > bMax * 1.05) continue;
+          if (b - last < 1e-4) continue;
+          last = b;
+          const near = Math.abs(b / bMeas - 1) < 0.08;
+          const row = integrate(b, { r0: near ? 200 : 240, h: near ? 0.008 : 0.014, maxPhi: near ? 40 : 16, srcX: -40 });
+          tab.push({ b, captured: row.captured, phi: row.phi, rMin: row.rMin, defl: row.defl, ySrc: row.ySrc, gotSrc: row.gotSrc });
+        }
+        return tab;
+      }
+
+      function buildSky(s, rng) {
+        const sw = 384, sh = 192;
+        const sky = new Float32Array(sw * sh);
+        function splatS(u, v, w) {
+          const x = ((u % sw) + sw) % sw, y = ((v % sh) + sh) % sh;
+          const xi = x | 0, yi = y | 0, fx = x - xi, fy = y - yi;
+          const x2 = (xi + 1) % sw, y2 = Math.min(sh - 1, yi + 1);
+          sky[yi * sw + xi] += w * (1 - fx) * (1 - fy);
+          sky[yi * sw + x2] += w * fx * (1 - fy);
+          sky[y2 * sw + xi] += w * (1 - fx) * fy;
+          sky[y2 * sw + x2] += w * fx * fy;
+        }
+        const nStar = s.scene === 'stars' ? 280 : (s.scene === 'einstein' ? 70 : 120);
+        for (let i = 0; i < nStar; i++) {
+          const u = rng() * sw, v = rng() * sh;
+          const mag = Math.pow(rng(), 2.8) * (rng() < 0.06 ? 4.5 : 1.4);
+          const rad = rng.range(0.35, 1.25);
+          const rInt = Math.ceil(rad * 3);
+          for (let dy = -rInt; dy <= rInt; dy++) for (let dx = -rInt; dx <= rInt; dx++) {
+            const d2 = dx * dx + dy * dy;
+            splatS(u + dx, v + dy, mag * Math.exp(-d2 / (2 * rad * rad)));
+          }
+        }
+        for (let y = 0; y < sh; y++) {
+          const band = 0.035 * (0.55 + 0.45 * Math.cos((y / sh) * TAU * 2.0));
+          for (let x = 0; x < sw; x++) {
+            const milky = 0.028 * Math.pow(Math.max(0, Math.cos((x / sw - 0.35) * TAU)), 4);
+            sky[y * sw + x] += band + milky;
+          }
+        }
+        return { sky, sw, sh };
+      }
+
+      function skyAt(S, defl, psi) {
+        const u = ((psi / TAU) % 1 + 1) % 1 * S.sw;
+        const v = ((defl / TAU) % 1 + 1) % 1 * S.sh;
+        const xi = u | 0, yi = v | 0, fx = u - xi, fy = v - yi;
+        const x2 = (xi + 1) % S.sw, y2 = Math.min(S.sh - 1, yi + 1);
+        const a = S.sky[yi * S.sw + (xi % S.sw)];
+        const b = S.sky[yi * S.sw + x2];
+        const c = S.sky[y2 * S.sw + (xi % S.sw)];
+        const d = S.sky[y2 * S.sw + x2];
+        return (a * (1 - fx) + b * fx) * (1 - fy) + (c * (1 - fx) + d * fx) * fy;
+      }
+
+      function bForRing(tab, rWant) {
+        let bestB = BC_TH * 1.4, best = 1e9;
+        for (let i = 0; i < tab.length; i++) {
+          if (tab[i].captured) continue;
+          const d = Math.abs(tab[i].rMin - rWant);
+          if (d < best) { best = d; bestB = tab[i].b; }
+        }
+        return bestB;
+      }
+
+      function splat(out, WW, HH, px, py, w) {
+        if (px < 0 || py < 0 || px >= WW - 1 || py >= HH - 1) return;
+        const xi = px | 0, yi = py | 0, fx = px - xi, fy = py - yi;
+        const o = yi * WW + xi;
+        out[o] += w * (1 - fx) * (1 - fy);
+        out[o + 1] += w * fx * (1 - fy);
+        out[o + WW] += w * (1 - fx) * fy;
+        out[o + WW + 1] += w * fx * fy;
+      }
+
+      function xyMap(s, WW, HH, xM, yM) {
+        const L = extentOf(s);
+        const px = (xM / (2 * L) + 0.5) * WW;
+        const py = (0.5 - yM / (2 * L * (HH / WW))) * HH;
+        return [px, py];
+      }
+
+      function sampleDisk(s, tab, sky, X, Y, bBelt) {
+        const b = Math.hypot(X, Y);
+        if (b < bMeas) return { I: 0, cap: 1 };
+        const row = lookup(tab, b);
+        const psi = Math.atan2(Y, X);
+        const defl = isFinite(row.defl) ? row.defl : 0;
+        const wind = Math.max(0, row.phi - Math.PI);
+        let I = 0.018 + 0.10 * Math.log(1 + wind) + 0.62 * Math.min(4, wind * wind / 28);
+        if (s.scene === 'stars' || s.scene === 'einstein') I += 1.15 * skyAt(sky, defl, psi);
+        else if (s.scene === 'belt') I += 0.22 * skyAt(sky, defl, psi);
+        if (s.scene === 'einstein' && row.gotSrc) {
+          const yr = row.ySrc;
+          const sx = yr * Math.cos(psi), sy = yr * Math.sin(psi);
+          I += 5.4 * Math.exp(-(sx * sx + sy * sy) / (2 * 0.85 * 0.85));
+        }
+        if (s.scene === 'belt' || s.view === 'polar') {
+          const inc = (s.incline || 0) * Math.PI / 180;
+          const cy = Math.max(0.18, Math.cos(inc));
+          const be = Math.hypot(X, Y / cy);
+          const wBelt = 0.10 + 0.025 * (s.beltR || 6);
+          I += 1.2 * Math.exp(-Math.pow((be - bBelt) / wBelt, 2));
+        } else if (s.scene === 'stars') {
+          const inc = (s.incline || 0) * Math.PI / 180;
+          const cy = Math.max(0.18, Math.cos(inc));
+          const be = Math.hypot(X, Y / cy);
+          I += 0.18 * Math.exp(-Math.pow((be - bBelt) / 0.14, 2));
+        }
+        if (s.scene === 'spray') I += 0.05 + 0.32 * Math.log(1 + wind);
+        return { I, cap: 0 };
+      }
+
+      function fillDisk(s, WW, HH, out, msk, tab, sky, rng) {
+        const L = extentOf(s);
+        const bBelt = bForRing(tab, s.beltR);
+        const aa = WW < 480 ? 2 : 1;
+        const s0 = rng();
+        const dx = 2 * L / WW, dy = 2 * L / WW;
+        for (let y = 0; y < HH; y++) {
+          const yy = (0.5 - (y + 0.5) / HH) * 2 * L * (HH / WW);
+          for (let x = 0; x < WW; x++) {
+            const xx = ((x + 0.5) / WW - 0.5) * 2 * L;
+            let I = 0, cap = 0;
+            if (aa === 1) {
+              const sm = sampleDisk(s, tab, sky, xx, yy, bBelt);
+              I = sm.I; cap = sm.cap;
+            } else {
+              for (let sy = 0; sy < 2; sy++) for (let sx = 0; sx < 2; sx++) {
+                const sm = sampleDisk(s, tab, sky, xx + (sx - 0.5) * dx * 0.5, yy + (sy - 0.5) * dy * 0.5, bBelt);
+                I += sm.I; cap += sm.cap;
+              }
+              I *= 0.25; cap *= 0.25;
+            }
+            const g = 0.028 * (hash21(x, y, s0) - 0.5);
+            out[y * WW + x] = I + g;
+            msk[y * WW + x] = cap;
+          }
+        }
+      }
+
+      function fillPencil(s, WW, HH, out, msk, tab, polar) {
+        const L = extentOf(s);
+        const nR = s.rays | 0;
+        const inc = polar ? (s.incline || 0) * Math.PI / 180 : 0;
+        const ci = Math.cos(inc);
+        out.fill(0);
+        msk.fill(0);
+        const bMax = L * 1.15;
+        for (let k = 0; k < nR; k++) {
+          const t = (k + 0.5) / nR;
+          const bUnif = (t - 0.5) * 2 * bMax;
+          const warp = bMeas * Math.tanh((t - 0.5) * 8) / Math.tanh(4);
+          const b = 0.58 * bUnif + 0.42 * warp;
+          const absB = Math.abs(b);
+          const near = Math.abs(absB / bMeas - 1) < 0.12;
+          const row = integrate(b, {
+            r0: Math.max(L * 1.35, 40), h: near ? 0.008 : 0.013,
+            maxPhi: near ? (L > 20 ? 12 : 42) : 16, pts: true,
+          });
+          const w = (1.35 + (near ? 0.45 : 0.25) + (absB > bMeas * 1.6 ? 1.1 : 0)) * (320 / nR) / Math.max(1, Math.pow(row.phi || 1, 0.28));
+          const sgn = b < 0 ? -1 : 1;
+          const pts = row.pts;
+          let px0 = 0, py0 = 0, have = false;
+          for (let i = 0; i < pts.length; i += 2) {
+            const xM = pts[i], yM = sgn * pts[i + 1];
+            const yP = polar ? yM * ci : yM;
+            const p = xyMap(s, WW, HH, xM, yP);
+            if (have) {
+              const dist = Math.hypot(p[0] - px0, p[1] - py0);
+              const n = Math.max(1, Math.min(10, dist | 0));
+              for (let spt = 0; spt <= n; spt++) {
+                const tt = spt / n;
+                splat(out, WW, HH, px0 + (p[0] - px0) * tt, py0 + (p[1] - py0) * tt, w * (0.45 + 0.55 * tt) / (n + 1));
+              }
+            }
+            px0 = p[0]; py0 = p[1]; have = true;
+          }
+        }
+        const bBelt = bForRing(tab, s.beltR);
+        for (let y = 0; y < HH; y++) {
+          const yy = (0.5 - (y + 0.5) / HH) * 2 * L * (HH / WW);
+          for (let x = 0; x < WW; x++) {
+            const xx = ((x + 0.5) / WW - 0.5) * 2 * L;
+            const r = Math.hypot(xx, polar ? yy / Math.max(0.2, ci) : yy);
+            const rp = Math.hypot(xx, yy);
+            if (rp < RS) { msk[y * WW + x] = 1; out[y * WW + x] *= 0.08; }
+            if (s.scene === 'belt' && Math.abs(r - s.beltR) < 0.18) out[y * WW + x] += 0.9;
+            if (polar && s.scene === 'belt') {
+              const be = Math.hypot(xx, yy / Math.max(0.2, ci));
+              out[y * WW + x] += 0.55 * Math.exp(-Math.pow((be - bBelt) / 0.22, 2));
+            }
+          }
+        }
+      }
+
+      function fillOrbit(s, WW, HH, out, msk) {
+        out.fill(0); msk.fill(0);
+        const nR = s.rays | 0;
+        const phiMax = 8.2, rMax = extentOf(s) * 1.15;
+        for (let k = 0; k < nR; k++) {
+          const t = (k + 0.5) / nR;
+          const clustered = Math.tanh((t - 0.35) * 4) * 0.5 + 0.5;
+          const b = 0.45 + (0.55 * t + 0.45 * clustered) * 13.5;
+          const near = Math.abs(b / bMeas - 1) < 0.1;
+          const w = 1.15 + (near ? 2.4 : 0);
+          let px0 = 0, py0 = 0, have = false;
+          integrate(b, {
+            r0: 90, h: 0.01, maxPhi: near ? 42 : 14,
+            onStep(r, phi) {
+              const px = (phi / phiMax) * WW;
+              const py = (1 - r / rMax) * HH;
+              if (have) {
+                const dist = Math.hypot(px - px0, py - py0);
+                const n = Math.max(1, Math.min(8, dist | 0));
+                for (let spt = 0; spt <= n; spt++) {
+                  const tt = spt / n;
+                  splat(out, WW, HH, px0 + (px - px0) * tt, py0 + (py - py0) * tt, w / (n + 1));
+                }
+              }
+              px0 = px; py0 = py; have = true;
+            },
+          });
+        }
+        for (let y = 0; y < HH; y++) {
+          const r = (1 - (y + 0.5) / HH) * rMax;
+          if (r < RS) for (let x = 0; x < WW; x++) msk[y * WW + x] = 1;
+        }
+      }
+
+      function fillImpact(s, WW, HH, out, msk, tab) {
+        out.fill(0); msk.fill(0);
+        const bMax = 13.5;
+        const phiMax = 9.5;
+        for (let x = 0; x < WW; x++) {
+          const b = ((x + 0.5) / WW) * bMax;
+          const cap = b < bMeas;
+          const edge = Math.exp(-Math.abs(b - bMeas) * 22);
+          for (let y = 0; y < HH; y++) {
+            const i = y * WW + x;
+            if (cap) {
+              msk[i] = 0.78;
+              out[i] = 0.04 + 0.06 * (1 - (y + 0.5) / HH);
+            } else {
+              const row = lookup(tab, b);
+              const phi = ((y + 0.5) / HH) * phiMax;
+              const along = phi < row.phi ? 0.22 : 0.06;
+              out[i] = along + 1.65 * edge;
+            }
+          }
+        }
+        const nR = Math.min(s.rays | 0, 90);
+        for (let k = 0; k < nR; k++) {
+          const t = (k + 0.5) / nR;
+          const b = 0.35 + t * (bMax - 0.35);
+          const near = Math.abs(b / bMeas - 1) < 0.12;
+          const w = 1.1 + (near ? 1.8 : 0);
+          let py0 = 0, have = false;
+          integrate(b, {
+            r0: 80, h: 0.01, maxPhi: near ? 34 : 12,
+            onStep(r, phi) {
+              const px = (b / bMax) * WW;
+              const py = (phi / phiMax) * HH;
+              const ww = w * (0.5 + 0.5 * Math.exp(-Math.abs(r - RPH_TH) * 0.35));
+              if (have) {
+                const n = Math.max(1, Math.min(6, Math.abs(py - py0) | 0));
+                for (let spt = 0; spt <= n; spt++) splat(out, WW, HH, px, py0 + (py - py0) * spt / n, ww / (n + 1));
+              }
+              py0 = py; have = true;
+            },
+          });
+        }
+      }
+
+      function fill(s, WW, HH, out, msk) {
+        const rng = U.makeRng(String(s.seed) + '/ph');
+        const nB = Math.max(160, Math.min(520, (s.grid | 0) * 2));
+        const tab = buildTable(nB, Math.max(22, extentOf(s) * 1.6));
+        const sky = buildSky(s, rng);
+        const v = s.view;
+        if (v === 'equatorial') fillPencil(s, WW, HH, out, msk, tab, false);
+        else if (v === 'polar') {
+          fillDisk(s, WW, HH, out, msk, tab, sky, rng);
+          const tmp = new Float32Array(WW * HH);
+          const m2 = new Float32Array(WW * HH);
+          fillPencil(s, WW, HH, tmp, m2, tab, true);
+          for (let i = 0; i < out.length; i++) {
+            out[i] = out[i] * 0.82 + tmp[i] * 0.28;
+            if (m2[i] > 0.5) msk[i] = 1;
+          }
+        } else if (v === 'orbit') fillOrbit(s, WW, HH, out, msk);
+        else if (v === 'impact') fillImpact(s, WW, HH, out, msk, tab);
+        else fillDisk(s, WW, HH, out, msk, tab, sky, rng);
+        kindLabel = v === 'disk' ? (s.scene === 'einstein' ? 'Einstein ring' : 'photon ring')
+          : v === 'equatorial' ? 'equatorial' : v === 'polar' ? 'polar' : v === 'orbit' ? 'r, φ' : 'impact';
+      }
+
+      function compute() {
+        const s = host.getState();
+        const sz = sizeFrom(s); W = sz.W; H = sz.H;
+        bMeas = searchBc();
+        rPh = searchRph();
+        const weakB = 50;
+        const weak = integrate(weakB, { r0: 900, h: 0.005, maxPhi: 8 });
+        deflRatio = (weak.defl || 0) / (4 * M / weakB);
+        field = new Float32Array(W * H);
+        mask = new Float32Array(W * H);
+        fill(s, W, H, field, mask);
+        buf = document.createElement('canvas'); buf.width = W; buf.height = H;
+        img = buf.getContext('2d').createImageData(W, H);
+      }
+
+      function paintBuf() {
+        if (!field || !img) return;
+        const s = host.getState();
+        const pal = Array.isArray(s.palette) && s.palette.length ? s.palette : ['#1E1B18', '#C4472B', '#E8A33C', '#FFFBF2'];
+        const bg = s.bg || '#F1E8D8';
+        const ramp = U.makeRamp(pal, bg);
+        const ink = darkest(pal, bg);
+        const inkRgb = U.hexToRgb(ink);
+        const bgLum = U.luminance(bg);
+        const inkDeep = bgLum > 80 ? [Math.min(inkRgb[0], 28), Math.min(inkRgb[1], 24), Math.min(inkRgb[2], 22)] : inkRgb;
+        const data = img.data;
+        const exp = isFinite(s.exposure) && s.exposure > 0 ? s.exposure : 1;
+        const live = [];
+        for (let i = 0; i < field.length; i++) if (mask[i] < 0.6) live.push(field[i]);
+        live.sort((a, b) => a - b);
+        const q = p => live.length ? live[Math.max(0, Math.min(live.length - 1, (p * (live.length - 1)) | 0))] : 0;
+        let lo = q(0.08), hi = q(0.985);
+        if (!(hi > lo)) { lo = 0; hi = 1; }
+        const span = hi - lo, logv = s.tone === 'log', shade = s.tone === 'shade';
+        for (let i = 0; i < field.length; i++) {
+          const cap = mask[i];
+          let tv = (field[i] - lo) / span;
+          if (logv) tv = Math.log(1.002 + 14 * Math.max(0, tv)) / Math.log(16);
+          if (shade) {
+            const x = i % W, y = (i / W) | 0;
+            const xm = x > 0 ? field[i - 1] : field[i];
+            const xp = x + 1 < W ? field[i + 1] : field[i];
+            const ym = y > 0 ? field[i - W] : field[i];
+            const yp = y + 1 < H ? field[i + W] : field[i];
+            const sh = 0.5 + 0.5 * ((xm - xp) * 0.55 + (ym - yp) * 0.8) / (span * 2.4 + 1e-6);
+            tv = U.clamp(0.4 * tv + 0.6 * sh, 0, 1);
+          }
+          tv = U.clamp(tv * exp, 0, 1);
+          const c = ramp(isFinite(tv) ? tv : 0);
+          const k = U.clamp(cap, 0, 1);
+          const o = i * 4;
+          data[o] = (c[0] * (1 - k) + inkDeep[0] * k + 0.5) | 0;
+          data[o + 1] = (c[1] * (1 - k) + inkDeep[1] * k + 0.5) | 0;
+          data[o + 2] = (c[2] * (1 - k) + inkDeep[2] * k + 0.5) | 0;
+          data[o + 3] = 255;
+        }
+        buf.getContext('2d').putImageData(img, 0, 0);
+      }
+
+      function paint() {
+        paintBuf();
+        if (!buf) return;
+        const s = host.getState();
+        ctx.imageSmoothingEnabled = true;
+        ctx.fillStyle = s.bg || '#F1E8D8';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
+      }
+
+      function status() {
+        const br = bMeas / BC_TH, rr = rPh / RPH_TH;
+        const okB = Math.abs(br - 1) < 0.02, okR = Math.abs(rr - 1) < 0.02;
+        host.setStatus(
+          '<span>b_meas / (3√3 M) <b>' + f4(br) + '</b></span>' +
+          '<span>r_ph / 3M <b>' + f4(rr) + '</b></span>' +
+          '<span>δ(50M)/(4M/b) <b>' + f3(deflRatio) + '</b></span>' +
+          '<span>' + (okB && okR ? kindLabel : 'integrator missed') + '</span>'
+        );
+      }
+
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        fieldCells() { return null; },
+        regenerate() { compute(); paint(); status(); },
+        repaint() { paint(); status(); },
+        resize() { paint(); },
+        pause() {},
+        resume() { paint(); },
+        async exportPNG(w, ht) {
+          const s = host.getState();
+          const c = document.createElement('canvas'); c.width = w; c.height = ht;
+          const g = c.getContext('2d', { alpha: false });
+          const tmp = new Float32Array(w * ht), tmpM = new Float32Array(w * ht);
+          const builtW = W, builtH = H, builtF = field, builtM = mask, builtB = buf, builtI = img;
+          W = w; H = ht; field = tmp; mask = tmpM;
+          buf = document.createElement('canvas'); buf.width = w; buf.height = ht;
+          img = buf.getContext('2d').createImageData(w, ht);
+          fill(s, w, ht, tmp, tmpM);
+          paintBuf();
+          g.fillStyle = s.bg || '#F1E8D8'; g.fillRect(0, 0, w, ht);
+          g.drawImage(buf, 0, 0);
+          W = builtW; H = builtH; field = builtF; mask = builtM; buf = builtB; img = builtI;
           paint();
           return U.toBlob(c);
         },
