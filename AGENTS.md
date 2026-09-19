@@ -100,8 +100,16 @@ much of the average detail survives at the pixel scale. A plate is soft only whe
 edges nor fine texture. A Penrose tiling is mostly the flat insides of tiles, so any average-based
 measure calls it blurry while its edges are perfectly hard; this one does not.
 
-The audit at 8 in and 300 ppi read 34 sharp, 11 borderline and 15 soft over 62 tabs, and the soft ones
-were all field simulations at their default grids. That was arithmetic rather than a bug: a 192-cell
+An audit at 8 in and 300 ppi read 34 sharp, 11 borderline and 15 soft over 62 tabs, and the soft ones
+were all field simulations at their default grids.
+
+**Those counts are stale and optimistic, and the sweep needs redoing.** They were measured before
+`sharp.js` grew a floor on edge acutance. The verdict used to be an OR with no floor, so a plate with no
+hard edge anywhere still scored `ok` on the acuity term alone: the condensate tile that used to be in the
+README gallery measured edge 0.08 with acuity 0.129, was called `ok`, and read as obviously blurry to
+anyone looking at it. Every tab credited on acuity alone is suspect, so the real split is worse than the
+one above. Re-run `sh tools/sharpall.sh` and replace these numbers; it is roughly an hour on a software
+renderer, which is why it has not been done yet. That was arithmetic rather than a bug: a 192-cell
 field across 2,400 print pixels is twelve pixels per cell and there is no detail under that. Four things
 follow, and all four are in place.
 
