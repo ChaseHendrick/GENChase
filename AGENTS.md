@@ -1,6 +1,6 @@
 # AGENTS
 
-GENChase is a single-file generative art studio. The product is `studio.html`. There is no package to install and no app to wrap it in.
+GENChase is a single-file generative art studio. The product is `studio.html`. There is no package to install and no app to wrap it in. Humans opening a pull request follow `CONTRIBUTING.md`; this file is the contract for the change itself.
 
 Each tab is a scientific simulation with a seeded RNG, a hash recipe, and print export. Generated images belong to the human, always and at any company size. The source is PolyForm Small Business 1.0.0: free for individuals and small companies, paid above 100 people or 1,000,000 USD of revenue.
 

@@ -1,0 +1,25 @@
+name: Technique
+description: Propose a simulation that belongs in the studio.
+title: "[technique] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: Read [CONTRIBUTING.md](https://github.com/SharpMeow/GENChase/blob/main/CONTRIBUTING.md) first. A tab has to be a real simulation that reprints, with a paper to credit. Do not propose a restyle of a tab that already exists.
+  - type: textarea
+    id: system
+    attributes:
+      label: The system
+      description: The equation, the paper, the year. Why it is not already a tab.
+    validations:
+      required: true
+  - type: textarea
+    id: check
+    attributes:
+      label: What the plate would measure
+      description: A quantity theory predicts, from the field on screen, with an uncertainty. "It looks like the paper" is not a check.
+  - type: input
+    id: prior
+    attributes:
+      label: Closest existing tab
+      placeholder: kp, swift, tilings

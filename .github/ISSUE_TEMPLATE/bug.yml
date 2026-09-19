@@ -1,0 +1,31 @@
+name: Bug
+description: A plate, a print, or the shell is wrong.
+title: "[bug] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: A wrong plate is an issue. Script in someone else's origin is a [private advisory](https://github.com/SharpMeow/GENChase/security/advisories/new).
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens
+      placeholder: The print is a different picture than the plate. The hash does not reprint. The status line lies.
+    validations:
+      required: true
+  - type: input
+    id: hash
+    attributes:
+      label: Hash that shows it
+      placeholder: "#tilings/penrose-1974"
+  - type: textarea
+    id: expect
+    attributes:
+      label: What should happen
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      placeholder: Firefox 131, file://  or  Chrome, hosted
