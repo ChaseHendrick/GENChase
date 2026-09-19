@@ -89,6 +89,10 @@ function cases(src) {
       ['#' + c.id + '/recipe-check/' + b64({ v: c.ver }), c.now, 'v' + c.ver + ' recipe uses today\'s default'],
     ];
     for (const [hash, want, why] of trials) {
+      // A hash-only goto against the same file:// URL is a same-document navigation. After enough
+      // GPU tabs in one page the browser takes the contexts away, later trials throw inside
+      // switchTo, and this test then reads whoever's Grid is still on screen. Force a new document.
+      await p.goto('about:blank');
       await p.goto('file://' + studio + hash, { waitUntil: 'domcontentloaded', timeout: 90000 });
       await p.waitForTimeout(settle);
       const got = await read(label);
