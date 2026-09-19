@@ -4,126 +4,128 @@
 
 Open `studio.html` and append the hash to reconstruct a plate exactly. `#snowflake/gravner-2008` is a complete recipe: the technique, and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 
-The same data in machine-readable form is [`techniques.json`](techniques.json).
+The same data in machine-readable form is [`techniques.json`](techniques.json). A short file for language models is [`llms.txt`](llms.txt).
 
-| Technique | Hash | Rule | Vectors |
-|---|---|---|---|
-| **Artificial Life**<br><sub>Lenia, Flow Lenia and cellular automata · 2019-23</sub> | `#life` | A <- clamp(A + (1/T)·G(K*A)),   G(u) = 2·exp(-(u-mu)^2 / 2·sigma^2) - 1 | raster |
-| **Physarum 3D**<br><sub>slime mold agents building a filament network in a volume · 2020</sub> | `#physarum3d/physarum3d-0417` | sense 5 cones around h -> h ← normalize(h + t·(best − h)) -> p += h·SS -> deposit;   trail ← blur₃(trail)·(1−decay) | raster |
-| **Cortical Planforms**<br><sub>a neural field patterning, seen through the retinocortical map · 1979</sub> | `#cortex/kluver-1928` | ∂u/∂t = −u + ∫ w(\|x−x′\|) f(u(x′)) dx′ + h,   w = A₁ G_σ₁ − A₂ G_σ₂,   f(u) = 1/(1+e^{−β(u−θ)}) | raster |
-| **Vortex Lattice**<br><sub>Gross-Pitaevskii, rotating · 1961</sub> | `#bec/abrikosov-1957` | iℏ ∂ψ/∂t = [−½∇² + V(r) + g\|ψ\|² − Ω L_z] ψ,   circulation quantized in units of h/m | SVG |
-| **Physarum**<br><sub>slime mold agents building a transport network · 2010</sub> | `#physarum` | sense(L,F,R) -> turn ±RA -> step SS -> deposit D;   trail <- blur(trail)·(1-decay) | raster |
-| **Phyllotaxis**<br><sub>Douady–Couder inhibitory field · 1996</sub> | `#phyllotaxis/douady-1996` | new primordium at argmin_θ Σᵢ exp(−\|x(θ) − xᵢ\| / λ) on the meristem ring | SVG |
-| **Hastings–Levitov**<br><sub>conformal Laplacian growth · 1998</sub> | `#hl/hastings-1998` | Φₙ = Φₙ₋₁ ∘ f_{θₙ,cₙ},   cₙ ∝ \|Φ′(e^{iθ})\|^{−α} | SVG |
-| **Lichtenberg**<br><sub>dielectric breakdown · Niemeyer–Pietronero–Wiesmann 1984</sub> | `#lichtenberg/npw-1984` | ∇²φ = 0,   P(i) ∝ φᵢ^η  on the growth interface | SVG |
-| **Gravner–Griffeath**<br><sub>mesoscopic snow crystal · 2008</sub> | `#snowflake/gravner-2008` | diffusion of vapor on Aᶜ;  freeze κ;  attach by (n, b, α, β, θ);  melt μ, γ | SVG |
-| **Differential Growth**<br><sub>buckling curves, coral and cortex folding · 2010s</sub> | `#growth` | pi <- pi + a·(neighbors) - r·sum\|pj-pi\|<R (pj-pi);   split an edge when \|e\| > dmax | SVG |
-| **Cyclic Competition**<br><sub>rock, paper, scissors in space · 2007</sub> | `#cyclic/rps-2007` | ∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v) | raster |
-| **Drainage Networks**<br><sub>stream-power incision against uplift · 1994</sub> | `#landscape/howard-1994` | ∂z/∂t = U − K·A^m·S + D∇²z,   A from D8 routing, S the slope to the receiver | SVG |
-| **Rough Growth**<br><sub>ballistic deposition and the KPZ exponent · 1986</sub> | `#kpz/kardar-1986` | ∂h/∂t = ν∇²h + (λ/2)(∇h)² + η,   W(t) ~ t^β with β = 1/3 in 1+1 dimensions | SVG |
-| **Foam & Grains**<br><sub>the cellular Potts model, coarsening · 1992</sub> | `#potts/graner-1992` | H = Σ_⟨ij⟩ J(1 − δ_{σi σj}) + λ Σ_c (a_c − A)²;   accept a copy with min(1, e^{−ΔH/T}) | raster |
-| **Liesegang Rings**<br><sub>periodic precipitation in a gel · 1896</sub> | `#liesegang/liesegang-1896` | ∂a/∂t = Dₐ∇²a − kab,  ∂b/∂t = D_b∇²b − kab,  ∂c/∂t = D_c∇²c + kab − S,  ∂d/∂t = S | raster |
-| **Force Chains**<br><sub>a granular packing and the network that carries it · 1979</sub> | `#grains/cundall-1979` | F_n = k_n δ − γ_n v_n  for δ = r_i + r_j − \|x_ij\| > 0,   \|F_t\| ≤ μ F_n;   m ẍ = Σ F − m g ŷ;   Δt = T/35,  T = 2π√(m_eff/k_n) | SVG |
-| **Magnetic Skyrmions**<br><sub>chiral magnets · 1989</sub> | `#skyrmion` | dn/dt = -n x (n x H),   H = J sum_nn n_j + H_DMI + 2K n_z zhat + B zhat,   Q = (1/4pi) int n · (dx n x dy n) dA | raster |
-| **Flocking**<br><sub>Toner-Tu, a polar active fluid · 1995</sub> | `#tonertu/toner-1995` | ∂ρ/∂t + ∇·(ρv) = 0;   ∂v/∂t + λ(v·∇)v = (α(ρ) − β\|v\|²)v − σ∇ρ + ν∇²v + η | raster |
-| **Hyperbolic Turing**<br><sub>reaction-diffusion on a {p,q} tiling · Poincare disk</sub> | `#hyperbolic/poincare-1882` | ∂u/∂t = D_u Δ_G u − uv² + F(1−u),   ∂v/∂t = D_v Δ_G v + uv² − (F+k)v,   Δ_G u_i = Σ_{j∼i}(u_j − u_i) | SVG |
-| **Schramm-Loewner Evolution**<br><sub>the random curve of critical two-dimensional systems · 2000</sub> | `#sle/schramm-2000` | ∂g_t/∂t = 2 / (g_t(z) − √κ B_t),   γ(t) = g_t⁻¹(√κ B_t);   κ = 2 loop-erased walk, 8/3 self-avoiding walk, 4 level lines, 6 percolation, 8 Peano curve | SVG |
-| **Fractal Geometry**<br><sub>signed-distance raymarching of 3D fractals · 2009</sub> | `#fractal/fractal-0417` | march t <- t + DE(p) until DE(p) < eps;   normal n = grad DE(p) | raster |
-| **Gravitational Lens**<br><sub>thin-lens mapping · 1936</sub> | `#lens` | β = θ − α(θ),   α = ∇ψ,   ∇²ψ = 2κ,   θ_E² = 4GM D_ls / (c² D_l D_s) | raster |
-| **Rotor Routers**<br><sub>rotor-router aggregation and internal DLA · 2009</sub> | `#rotor/propp-machine` | at an occupied site turn the rotor a quarter turn and follow it; stop at the first unoccupied site.   inradius ≥ r − O(log r),  outradius ≤ r + O(r^α) for every α > 1 − 1/d,  r = √(n/π) in d = 2 | raster |
-| **Cosmic Web**<br><sub>Zel'dovich adhesion · 1970 / 1989</sub> | `#web` | x = q + D ∇Φ,   ∂t v + (v·∇)v = ν ∇²v,   ψ = exp(−Φ / 2ν),   ∂t ψ = ν ∇²ψ | raster |
-| **Faraday Waves**<br><sub>parametrically driven layer · 1831 / 1996</sub> | `#faraday` | ∂tt h + γ ∂t h + (g − Γ cos ωt) ∇²h + κ ∇⁴h + u h³ = 0 | raster |
-| **Thin Film**<br><sub>draining soap and oil · interference</sub> | `#film` | ∂t h = ∇·(h³ ∇∇²h) + G ∂y(h³),   I(λ) = sin²(2π n h cosθ / λ + φ) | raster |
-| **Time Crystal**<br><sub>Floquet Ising chain, period doubled · 2012 / 2016</sub> | `#timecrystal` | U(T) = exp(−i T H_Ising) · exp(−i π(1−ε) Σ X_i),   m₂ = ⟨(−1)^n m(nT)⟩ | raster |
-| **Growing Domain**<br><sub>Turing patterns on a domain that grows · 1999</sub> | `#growdomain/growdomain-1999` | ∂u/∂t = (D_u/L²)∂²u/∂ξ² + f(u,v) − d(L̇/L)u,  ∂v/∂t = (D_v/L²)∂²v/∂ξ² + g(u,v) − d(L̇/L)v | raster |
-| **Spin Ice**<br><sub>square ice, emergent monopoles · 1935 / 2008</sub> | `#spinice` | E = (J/2) Σ_v Q_v² − h Σ σ,   Q_v = n_in − 2,   ice: Q = 0 | raster |
-| **Vegetation Bands**<br><sub>tiger bush on a dry hillside · 1999</sub> | `#vegetation/klausmeier-1999` | ∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n | raster |
-| **Arctic Circle**<br><sub>random domino tilings of the Aztec diamond · 1992</sub> | `#aztec/propp-1992` | order n → n+1: delete colliding pairs, slide N↑ S↓ W← E→, fill each empty 2×2 block with a random pair | SVG |
-| **Skin Effect**<br><sub>non-Hermitian skin, Hatano–Nelson · 1996 / 2018</sub> | `#skin` | H_{j,j+1} = e^{g},   H_{j+1,j} = e^{−g},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1)) | raster |
-| **Random Matrices**<br><sub>beta-ensemble spectra and Dyson Brownian motion · 1962</sub> | `#rmt/dyson-1962` | p(λ) ∝ ∏_{i<j} \|λ_i − λ_j\|^β · e^{−Σλ_i²/2};   dλ_i = √(2/β) dB_i + Σ_{j≠i} dt/(λ_i − λ_j) | SVG |
-| **Stealthy Points**<br><sub>hyperuniform collective coordinates · 2004</sub> | `#stealth` | χ = (1 / dN) #{ k : 0 < \|k\| < k_C },   S(k) = 0  for \|k\| < k_C | raster |
-| **Lozenge Tilings**<br><sub>random lozenge tilings of a hexagon, exact by coupling from the past · 1996</sub> | `#lozenge/propp-wilson-1996` | h(x, y) ∈ [0, c] weakly decreasing;  heat bath h(x, y) ~ U{max(h(x+1,y), h(x,y+1)) … min(h(x−1,y), h(x,y−1))};  run −T → 0 from ⊥ and ⊤ on one fixed set of maps, doubling T until they agree, and read the common value at 0 | SVG |
-| **Arago Spot**<br><sub>Poisson bright spot behind a disk · 1818</sub> | `#arago` | U(0) = (e^{ikz}/iλz) ∫_{\|ρ\|>R} exp(ik\|ρ\|²/2z) dρ,   I(0) ≃ I_open | raster |
-| **Spanning Trees**<br><sub>uniform spanning trees by loop-erased random walk · 1996</sub> | `#ust/wilson-1996` | pick v ∉ T, walk at random from v erasing each loop as it closes, attach the surviving path;  P(T) = 1 / κ(G) for every one of the κ(G) spanning trees | SVG |
-| **Neural Patterns**<br><sub>compositional pattern-producing networks evaluated per pixel · 2007</sub> | `#cppn` | c(x,y) = sigma(Wn · phi( ... phi(W1 · [x, y, r, theta, z, 1]) ... )) | raster |
-| **Rogue Wave**<br><sub>Peregrine soliton, waves from nowhere · 1983</sub> | `#rogue` | i ψ_t + ψ_xx + 2\|ψ\|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   \|ψ\|²_max / \|ψ\|²_∞ = 9 | raster |
-| **Aharonov–Bohm**<br><sub>phase from a field the particle never enters · 1959</sub> | `#aharonov` | Δφ = (e/ℏ) ∮ A·dl = 2π Φ/Φ0,   I(x) = \|ψ_L + e^{iΔφ} ψ_R\|² | raster |
-| **Double pendulum flip time**<br><sub>first flip of a chaotic double pendulum · 1992</sub> | `#pendulum/pendulum-1992` | L = (m l² / 6)(ω₂² + 4ω₁² + 3ω₁ω₂ cos(θ₁ − θ₂)) + (m g l / 2)(3 cos θ₁ + cos θ₂);   plate = first t with \|θ₁\| > π or \|θ₂\| > π | raster |
-| **Anderson**<br><sub>waves that refuse to diffuse · 1958</sub> | `#anderson` | H = t Σ_<ij> \|i><j\| + Σ_i ε_i \|i><i\|,   ε ~ U[-W/2,W/2],   IPR = Σ \|ψ\|⁴ | raster |
-| **FPUT Recurrence**<br><sub>a chain that refuses to thermalise · 1955</sub> | `#fput` | ẍ_i = (q_{i+1}-2q_i+q_{i-1}) + α[(q_{i+1}-q_i)²-(q_i-q_{i-1})²],   E_1(t) returns | raster |
-| **Schrödinger**<br><sub>wave packet on a detector · 1926</sub> | `#schrodinger/visscher-1991` | i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps | raster |
-| **Excitable Media**<br><sub>spirals, targets and wave turbulence · 1991</sub> | `#excitable/barkley-1991` | Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b) | raster |
-| **KdV Soliton**<br><sub>a wave that will not disperse · 1834 / 1965</sub> | `#soliton` | u_t + 6 u u_x + u_xxx = 0,   u = (c/2) sech²[(√c/2)(x − c t)] | raster |
-| **Cyclic Automaton**<br><sub>cyclic and Greenberg-Hastings excitable automata · 1991</sub> | `#cyclicca/griffeath-1991` | cyclic: s → s+1 (mod k) if ≥ θ neighbors within range r are in state s+1;   GH: 0 → 1 if ≥ θ excited, 1 → 2 → … → k−1 → 0 | raster |
-| **Chimera States**<br><sub>identical oscillators that split into synchrony and chaos · 2004</sub> | `#chimera` | dθi/dt = ω − (1/N) Σj G(\|i−j\|) sin(θi − θj + α) | raster |
-| **SSH Edges**<br><sub>states in a gap that the bulk forbade · 1979</sub> | `#ssh` | H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open) | raster |
-| **Swarmalators**<br><sub>oscillators that sync and swarm · 2017</sub> | `#swarm/okeeffe-2017` | ẋᵢ = (1/N) Σⱼ [ (xⱼ−xᵢ)/rᵢⱼ · (1 + J cos Δθ) − (xⱼ−xᵢ)/rᵢⱼ² ],   θ̇ᵢ = (K/N) Σⱼ sin(Δθ)/rᵢⱼ | raster |
-| **Active Model B+**<br><sub>phase separation that never finishes · 2018</sub> | `#amb/tjhung-2018` | ∂φ/∂t = ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ\|∇φ\|² | raster |
-| **Aubry–André**<br><sub>localisation without disorder · 1980</sub> | `#aubry` | ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localised for λ>2 | raster |
-| **Cahn–Hilliard**<br><sub>spinodal decomposition · 1958</sub> | `#cahn/cahn-1958` | ∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c | raster |
-| **Ohta–Kawasaki**<br><sub>diblock copolymer · finite-size spots and lamellae · 1986</sub> | `#ohta/ohta-1986` | ∂u/∂t = Δ(u³ − u − ε²Δu) − σ(u − m) | raster |
-| **Hopf Fibration**<br><sub>every circle linked with every other · 1931</sub> | `#hopf` | η: S³ → S²,   η(z1,z2) = (2 z1 z2-bar, \|z1\|²-\|z2\|²),   fibres = circles,   lk = 1 | raster |
-| **Swift–Hohenberg**<br><sub>rolls, hexagons, localized states · 1977</sub> | `#swift/swift-1977` | ∂u/∂t = r u − (k₀² + ∇²)² u + g u² − u³ | raster |
-| **Phase-field crystal**<br><sub>Elder density-wave crystal · 2002</sub> | `#pfc/elder-2002` | ∂ψ/∂t = M ∇²(δF/δψ),   F = ∫ ½ ψ [r + (k₀²+∇²)²] ψ + ψ⁴/4 | raster |
-| **Lifshitz–Petrich**<br><sub>two-scale quasicrystal · 1997</sub> | `#lp/lifshitz-1997` | ∂tψ = εψ − (∇²+1)²(∇²+q²)²ψ + α ψ² − ψ³,   q = 2 cos(π/12) | raster |
-| **Pendry Cloak**<br><sub>a disk that light goes around · 2006</sub> | `#cloak` | r = R1 + r' (R2-R1)/R2,   n_r = (r-R1)/r · R2/(R2-R1),   n_θ = r / (r-R1) | raster |
-| **XY / Kosterlitz–Thouless**<br><sub>planar spins, bound vortices and the 1973 unbinding transition</sub> | `#xy/kt-1973` | H = −J Σ_<ij> cos(θ_i−θ_j);   dθ_i/dt = J Σ_j sin(θ_j−θ_i) + √(2T) η | SVG |
-| **Complex Ginzburg–Landau**<br><sub>spirals, defect chaos, frozen vortex glass</sub> | `#cgl/cgl-1970` | ∂A/∂t = A + (1 + iα) ∇²A − (1 + iβ) \|A\|² A | raster |
-| **Abrikosov**<br><sub>a superconductor that lets flux in as a lattice · 1957</sub> | `#vortex` | αψ + β\|ψ\|² ψ + (1/2m)(−i∇ − 2e A)² ψ = 0,   n_v = B Area / Φ0 | raster |
-| **Active Nematics**<br><sub>self-driven rods, ±½ defects and active turbulence · 2012</sub> | `#nematic/dogic-2012` | ∂tQ + u·∇Q − S(Ω,E,Q) = Γ H,   H = [α − β\|Q\|²]Q + K∇²Q,   γu = −∇P − ζ ∇·Q | raster |
-| **Dark Room**<br><sub>a polygonal room that a candle cannot fill · 1995</sub> | `#darkroom` | billiard in a polygon,   ∃ p,q: no reflected ray from p meets q | raster |
-| **Fluid**<br><sub>Navier-Stokes dye advected by a stable-fluids solver · 1999</sub> | `#fluid` | du/dt + (u·grad)u = -grad p + nu·lap u,   div u = 0   (advect -> project -> advect dye) | raster |
-| **Abelian Sandpile**<br><sub>self-organized criticality · 1987</sub> | `#sandpile/btw-1987` | if hᵢ ≥ 4: hᵢ −= 4, hⱼ += 1 for each neighbor j;   identity e = (2m − (2m)°)°, m = all 3 | raster |
-| **Kakeya**<br><sub>a needle rotated in arbitrarily small area · 1919</sub> | `#kakeya` | K_ε ⊃ a unit segment in every direction,   \|K_ε\| → 0 as ε → 0 | raster |
-| **Kuramoto–Sivashinsky**<br><sub>cellular flame chaos · 1977</sub> | `#ks/siva-1977` | ∂u/∂t = −ν ∇⁴u − ∇²u − (α/2)\|∇u\|² | raster |
-| **SG Breather**<br><sub>a lump that oscillates and never radiates · 1962</sub> | `#breather` | u_tt − u_xx + sin u = 0,   u = 4 arctan[ (β/α) sin(α t) sech(β x) ],   α²+β² = 1 | raster |
-| **Turing Patterns**<br><sub>spots, stripes and hexagons from two chemicals · 1952</sub> | `#turing/turing-1952` | Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v | raster |
-| **Holomorphic dynamics**<br><sub>escape-time and Newton basins in the complex plane · 1918</sub> | `#holomorphic/julia-1918` | z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (\|Re z\| + i\|Im z\|)² + c   (Burning Ship) | raster |
-| **Klein Tunnel**<br><sub>a barrier a Dirac electron does not notice · 1929 / 2006</sub> | `#klein` | H = v_F σ · p + V(x),   T(θ=0) = 1  (massless) | raster |
-| **Gyroid**<br><sub>a sponge of zero mean curvature · 1970</sub> | `#gyroid` | sin x cos y + sin y cos z + sin z cos x = 0,   H = 0 | raster |
-| **Dendritic Growth**<br><sub>phase-field solidification: snowflakes and metal dendrites · 1993</sub> | `#dendrite` | τ p_t = ∇·(ε(θ)²∇p) + ∂x(ε ε′ p_y) − ∂y(ε ε′ p_x) + p(1−p)(p − ½ + m);   T_t = ∇²T + K p_t | raster |
-| **Purcell Swimmer**<br><sub>a scallop cannot swim in molasses · 1977</sub> | `#purcell` | Re → 0,   scallop theorem: a reciprocal gait gives Δx = 0,   three-link square gait: Δx ≠ 0 | raster |
-| **Exceptional Point**<br><sub>two eigenvectors become one · 1998</sub> | `#exceptional` | H = [[iγ, κ],[κ, −iγ]],   λ = ±√(κ²−γ²),   EP at γ = κ | raster |
-| **Meissner**<br><sub>a field a perfect conductor would have frozen, expelled · 1933</sub> | `#meissner` | ∇²B = B/λ²,   B(r) = B0 I0(r/λ) / I0(R/λ)   (cylinder) | raster |
-| **Tennis Racket**<br><sub>the intermediate axis that will not spin · 1834 / 1991</sub> | `#tennis` | I1 ω1' = (I2−I3) ω2 ω3  (cyc.),   I1 < I2 < I3,   ω2 flips | raster |
-| **Flow Field**<br><sub>collision-avoiding strokes in a noise field · 1985</sub> | `#flow` | theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta) | raster |
-| **Chemotaxis**<br><sub>Keller-Segel aggregation · 1970</sub> | `#chemotaxis/keller-1970` | ∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²) | raster |
-| **Smectic focal conics**<br><sub>Dupin cyclides · Friedel 1910</sub> | `#smectic/friedel-1910` | layers: Dupin cyclides of a confocal ellipse–hyperbola pair | SVG |
-| **Reaction-Diffusion**<br><sub>Gray-Scott activator/inhibitor chemistry · 1983</sub> | `#reaction` | du/dt = Du·lap u - u·v^2 + F(1-u);   dv/dt = Dv·lap v + u·v^2 - (F+k)v | raster |
-| **Aperiodic Tilings**<br><sub>tiles that cover the plane but never repeat · 1974–2023</sub> | `#tilings/penrose-1974` | Penrose: thick half → 2 thick + 1 thin;   hat: 13-gon + mirror;   spectre: 14-gon, one handedness | SVG |
-| **Percolation**<br><sub>site and bond percolation on the square lattice · 1957</sub> | `#percolation/hammersley-1957` | site occupied iff rᵢ < p;   bond open iff rᵢⱼ < p;   p_c(site) ≈ 0.5927,   p_c(bond) = 1/2 | raster |
-| **Attractors**<br><sub>strange attractors and harmonographs as density maps · 1963</sub> | `#attractors` | x(n+1) = f(xn, yn; a,b,c,d) - iterate, accumulate density, tone-map | raster |
-| **Airy Beam**<br><sub>a wave packet that accelerates with no force · 1979</sub> | `#airy` | ψ(x,z) = Ai(x − z²/4 + i a) exp(a x − a z²/2 + i(x z/2 − z³/12)),   x_peak = z²/4 | raster |
-| **Chirikov map**<br><sub>standard map · KAM islands in a chaotic sea · 1969</sub> | `#chirikov/chirikov-1969` | pₙ₊₁ = pₙ + K sin θₙ,   θₙ₊₁ = θₙ + pₙ₊₁   (mod 2π) | raster |
-| **Hofstadter butterfly**<br><sub>almost-Mathieu spectrum · 1976</sub> | `#hofstadter/hofstadter-1976` | ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ | raster |
-| **Weierstrass**<br><sub>a curve with no tangent anywhere · 1872</sub> | `#weierstrass` | W(x) = Σ_{n=0}^∞ a^n cos(b^n π x),   0<a<1,   ab > 1 + 3π/2  ⇒  nowhere differentiable | raster |
-| **Helmholtz scars**<br><sub>stadium and cardioid eigenmodes · Heller 1984</sub> | `#scars/heller-1984` | ∇²ψ + k² ψ = 0  on Ω,   ψ = 0 on ∂Ω | raster |
-| **Kitaev Chain**<br><sub>a fermion that is its own antiparticle, stuck to the ends · 2001</sub> | `#kitaev` | H = −μ Σ c†c − t Σ (c†_i c_{i+1}+h.c.) + Δ Σ (c_i c_{i+1}+h.c.),   \|μ\|<2t ⇒ unpaired γ_L, γ_R | raster |
-| **Optical caustics**<br><sub>folds and cusps of a light field · Berry</sub> | `#caustics/berry-caustic` | X = x + s ∇h(x),   I(X) = Σ 1 / \|det(I + s Hess h)\| | raster |
-| **Veselago Lens**<br><sub>a slab that focuses because n is negative · 1968</sub> | `#veselago` | n₁ sin θ₁ = n₂ sin θ₂,   n₂ = −1  ⇒  θ₂ = −θ₁,   image at 2L − d | raster |
-| **Devil's Staircase**<br><sub>a staircase constant almost everywhere that still climbs · 1965</sub> | `#devil` | θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil's staircase) | raster |
-| **Talbot carpet**<br><sub>near-field self-imaging · 1836</sub> | `#talbot/talbot-1836` | I(x,z) = \|Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)\|²,   z_T = 2 d²/λ | raster |
-| **Hydrogen orbitals**<br><sub>hydrogen atom probability density \|ψₙₗₘ\|² · 1926</sub> | `#orbitals/schrodinger-1926` | ψₙₗₘ = Rₙₗ(r) Yₗₘ(θ, φ),   Rₙₗ ∝ ρˡ e^{−ρ/2} L²ˡ⁺¹ₙ₋ₗ₋₁(ρ),   ρ = 2r / n a₀ | raster |
-| **Loschmidt Echo**<br><sub>a gas that unmixes when you flip every arrow · 1876</sub> | `#loschmidt` | x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1 | raster |
-| **Boy's Surface**<br><sub>a projective plane sewn into R³ · 1901</sub> | `#boy` | Bryant–Kusner immersion RP² ↪ R³,   one triple point,   no boundary | raster |
-| **Indra's Pearls**<br><sub>Schottky limit set · Mumford–Series–Wright</sub> | `#pearls/indra-2002` | Γ = ⟨a, b⟩  Schottky,   Λ(Γ) = ∩ g∈Γ g(Ĉ \ Ω) | SVG |
-| **Ising Model**<br><sub>Metropolis Monte Carlo on the square lattice · 1925</sub> | `#ising/ising-1925` | E = −J Σ⟨ij⟩ sᵢsⱼ − h Σᵢ sᵢ,   P(flip) = min(1, e^{−ΔE/T}),   T_c = 2/ln(1+√2) ≈ 2.269 | raster |
-| **Thouless Pump**<br><sub>a clock that pumps a whole electron per turn · 1983</sub> | `#thouless` | P(φ) = (1/2π) ∮ A(k,φ) dk,   ΔP over a cycle = C₁ ∈ ℤ | raster |
-| **Rayleigh–Bénard**<br><sub>heated from below · 1900</sub> | `#convection/benard-1900` | ∂ω/∂t + u·∇ω = √(Pr/Ra) ∇²ω + ∂T/∂x,   ∂T/∂t + u·∇T = ∇²T/√(Ra Pr),   ∇²ψ = −ω,   u = ∂ψ/∂y, v = −∂ψ/∂x | raster |
-| **Reuleaux**<br><sub>a non-circle of constant width · 1875</sub> | `#reuleaux` | width(θ) = R  for all θ,   W ≠ a disk,   area = ½(π − √3) R² | raster |
-| **Apollonian**<br><sub>infinite circles, integer curvatures, zero leftover · 1643</sub> | `#apollonian` | k₄ = k₁+k₂+k₃ ± 2√(k₁k₂+k₁k₃+k₂k₃)   (Descartes),   k ∈ ℤ if the seeds are | raster |
-| **Chladni & Waves**<br><sub>standing waves, nodal lines and interference · 1787</sub> | `#chladni/chladni-0417` | u = sum Ak[cos(nk·pi·x)cos(mk·pi·y) - cos(mk·pi·x)cos(nk·pi·y)];   nodes where u = 0 | SVG |
-| **Track**<br><sub>a breather that paves the index it runs on, drawn as its worldline</sub> | `#track` | φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1) | raster |
-| **Knotted Light**<br><sub>a trefoil of darkness, an open book, a bark with no tangent · 2001 / this plate</sub> | `#knotlight` | ψ = (x+iy)³ − (z−ia)²,   zeros ≃ (2,3) torus knot;   pages = arg ψ;   bark = Σ α^n cos(β^n s) | raster |
-| **Caustic Sea**<br><sub>a sea that focuses its own light, and the light that writes the sea</sub> | `#causticsea` | ∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/\|det(I + s Hess h)\| | raster |
-| **Soliton Web**<br><sub>resonant line-soliton webs of the Kadomtsev–Petviashvili equation</sub> | `#kp` | (−4 u_t + u_xxx + 6 u u_x)_x + 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = Σ_I det(A_I) Δ(k_I) e^{Σ θ} | raster |
-| **Gerstner**<br><sub>trochoidal waves, the exact Euler deep-water solution · 1802</sub> | `#gerstner` | X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1 | SVG |
-| **Figure Eight**<br><sub>three equal masses chasing on a planar figure-eight · 1993 / 2000</sub> | `#eight` | r̈_i = −Σ_{j≠i} (r_i−r_j)/\|r_i−r_j\|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0 | SVG |
-| **Peakon**<br><sub>Camassa–Holm peaked traveling waves · 1993</sub> | `#peakon` | u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−\|x−x_i\|},   m = u − u_xx | raster |
-| **Photon Sphere**<br><sub>Schwarzschild photon sphere · 1916</sub> | `#photon` | d²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M | raster |
-| **Crapper**<br><sub>exact finite-amplitude pure-capillary waves · 1957</sub> | `#crapper` | X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4\|A\|/(π(1−A²)) | SVG |
-| **Hasimoto**<br><sub>a soliton on a vortex filament · 1972</sub> | `#hasimoto` | γ_t = γ_s × γ_ss,   ψ = κ exp(i ∫ τ ds),   κ = 2ν sech(ν(s−2τ₀ t)),   c = 2τ₀ | SVG |
-| **Lump**<br><sub>KP-I lumps · 1977</sub> | `#lump` | (u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b² | raster |
+**Seen elsewhere** is a curator's call, not a measurement. Nobody measured this. It is one person's estimate of how often you have seen the picture somewhere else, made in 2026. It is the only ordering in this studio that is not computed from the file. It is never the default sort.
+
+| Technique | Hash | Rule | Vectors | Live | Seen elsewhere |
+|---|---|---|---|---|---|
+| **Artificial Life**<br><sub>Lenia, Flow Lenia and cellular automata · 2019-23</sub> | `#life` | A <- clamp(A + (1/T)·G(K*A)),   G(u) = 2·exp(-(u-mu)^2 / 2·sigma^2) - 1 | raster | live | Ubiquitous |
+| **Physarum 3D**<br><sub>slime mold agents building a filament network in a volume · 2020</sub> | `#physarum3d/physarum3d-0417` | sense 5 cones around h -> h ← normalize(h + t·(best − h)) -> p += h·SS -> deposit;   trail ← blur₃(trail)·(1−decay) | raster | still | Occasional |
+| **Cortical Planforms**<br><sub>a neural field patterning, seen through the retinocortical map · 1979</sub> | `#cortex/kluver-1928` | ∂u/∂t = −u + ∫ w(\|x−x′\|) f(u(x′)) dx′ + h,   w = A₁ G_σ₁ − A₂ G_σ₂,   f(u) = 1/(1+e^{−β(u−θ)}) | raster | live | Rare |
+| **Vortex Lattice**<br><sub>Gross-Pitaevskii, rotating · 1961</sub> | `#bec/abrikosov-1957` | iℏ ∂ψ/∂t = [−½∇² + V(r) + g\|ψ\|² − Ω L_z] ψ,   circulation quantized in units of h/m | SVG | live | Occasional |
+| **Physarum**<br><sub>slime mold agents building a transport network · 2010</sub> | `#physarum` | sense(L,F,R) -> turn ±RA -> step SS -> deposit D;   trail <- blur(trail)·(1-decay) | raster | still | Occasional |
+| **Phyllotaxis**<br><sub>Douady–Couder inhibitory field · 1996</sub> | `#phyllotaxis/douady-1996` | new primordium at argmin_θ Σᵢ exp(−\|x(θ) − xᵢ\| / λ) on the meristem ring | SVG | can run | Common |
+| **Hastings–Levitov**<br><sub>conformal Laplacian growth · 1998</sub> | `#hl/hastings-1998` | Φₙ = Φₙ₋₁ ∘ f_{θₙ,cₙ},   cₙ ∝ \|Φ′(e^{iθ})\|^{−α} | SVG | still | Occasional |
+| **Lichtenberg**<br><sub>dielectric breakdown · Niemeyer–Pietronero–Wiesmann 1984</sub> | `#lichtenberg/npw-1984` | ∇²φ = 0,   P(i) ∝ φᵢ^η  on the growth interface | SVG | still | Common |
+| **Gravner–Griffeath**<br><sub>mesoscopic snow crystal · 2008</sub> | `#snowflake/gravner-2008` | diffusion of vapor on Aᶜ;  freeze κ;  attach by (n, b, α, β, θ);  melt μ, γ | SVG | live | Common |
+| **Differential Growth**<br><sub>buckling curves, coral and cortex folding · 2010s</sub> | `#growth` | pi <- pi + a·(neighbors) - r·sum\|pj-pi\|<R (pj-pi);   split an edge when \|e\| > dmax | SVG | still | Common |
+| **Cyclic Competition**<br><sub>rock, paper, scissors in space · 2007</sub> | `#cyclic/rps-2007` | ∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v) | raster | live | Occasional |
+| **Drainage Networks**<br><sub>stream-power incision against uplift · 1994</sub> | `#landscape/howard-1994` | ∂z/∂t = U − K·A^m·S + D∇²z,   A from D8 routing, S the slope to the receiver | SVG | still | Common |
+| **Rough Growth**<br><sub>ballistic deposition and the KPZ exponent · 1986</sub> | `#kpz/kardar-1986` | ∂h/∂t = ν∇²h + (λ/2)(∇h)² + η,   W(t) ~ t^β with β = 1/3 in 1+1 dimensions | SVG | still | Common |
+| **Foam & Grains**<br><sub>the cellular Potts model, coarsening · 1992</sub> | `#potts/graner-1992` | H = Σ_⟨ij⟩ J(1 − δ_{σi σj}) + λ Σ_c (a_c − A)²;   accept a copy with min(1, e^{−ΔH/T}) | raster | still | Occasional |
+| **Liesegang Rings**<br><sub>periodic precipitation in a gel · 1896</sub> | `#liesegang/liesegang-1896` | ∂a/∂t = Dₐ∇²a − kab,  ∂b/∂t = D_b∇²b − kab,  ∂c/∂t = D_c∇²c + kab − S,  ∂d/∂t = S | raster | live | Rare |
+| **Force Chains**<br><sub>a granular packing and the network that carries it · 1979</sub> | `#grains/cundall-1979` | F_n = k_n δ − γ_n v_n  for δ = r_i + r_j − \|x_ij\| > 0,   \|F_t\| ≤ μ F_n;   m ẍ = Σ F − m g ŷ;   Δt = T/35,  T = 2π√(m_eff/k_n) | SVG | still | Common |
+| **Magnetic Skyrmions**<br><sub>chiral magnets · 1989</sub> | `#skyrmion` | dn/dt = -n x (n x H),   H = J sum_nn n_j + H_DMI + 2K n_z zhat + B zhat,   Q = (1/4pi) int n · (dx n x dy n) dA | raster | live | Rare |
+| **Flocking**<br><sub>Toner-Tu, a polar active fluid · 1995</sub> | `#tonertu/toner-1995` | ∂ρ/∂t + ∇·(ρv) = 0;   ∂v/∂t + λ(v·∇)v = (α(ρ) − β\|v\|²)v − σ∇ρ + ν∇²v + η | raster | live | Rare |
+| **Hyperbolic Turing**<br><sub>reaction-diffusion on a {p,q} tiling · Poincare disk</sub> | `#hyperbolic/poincare-1882` | ∂u/∂t = D_u Δ_G u − uv² + F(1−u),   ∂v/∂t = D_v Δ_G v + uv² − (F+k)v,   Δ_G u_i = Σ_{j∼i}(u_j − u_i) | SVG | live | Almost unseen |
+| **Schramm-Loewner Evolution**<br><sub>the random curve of critical two-dimensional systems · 2000</sub> | `#sle/schramm-2000` | ∂g_t/∂t = 2 / (g_t(z) − √κ B_t),   γ(t) = g_t⁻¹(√κ B_t);   κ = 2 loop-erased walk, 8/3 self-avoiding walk, 4 level lines, 6 percolation, 8 Peano curve | SVG | still | Occasional |
+| **Fractal Geometry**<br><sub>signed-distance raymarching of 3D fractals · 2009</sub> | `#fractal/fractal-0417` | march t <- t + DE(p) until DE(p) < eps;   normal n = grad DE(p) | raster | still | Ubiquitous |
+| **Gravitational Lens**<br><sub>thin-lens mapping · 1936</sub> | `#lens` | β = θ − α(θ),   α = ∇ψ,   ∇²ψ = 2κ,   θ_E² = 4GM D_ls / (c² D_l D_s) | raster | still | Occasional |
+| **Rotor Routers**<br><sub>rotor-router aggregation and internal DLA · 2009</sub> | `#rotor/propp-machine` | at an occupied site turn the rotor a quarter turn and follow it; stop at the first unoccupied site.   inradius ≥ r − O(log r),  outradius ≤ r + O(r^α) for every α > 1 − 1/d,  r = √(n/π) in d = 2 | raster | still | Almost unseen |
+| **Cosmic Web**<br><sub>Zel'dovich adhesion · 1970 / 1989</sub> | `#web` | x = q + D ∇Φ,   ∂t v + (v·∇)v = ν ∇²v,   ψ = exp(−Φ / 2ν),   ∂t ψ = ν ∇²ψ | raster | still | Occasional |
+| **Faraday Waves**<br><sub>parametrically driven layer · 1831 / 1996</sub> | `#faraday` | ∂tt h + γ ∂t h + (g − Γ cos ωt) ∇²h + κ ∇⁴h + u h³ = 0 | raster | live | Occasional |
+| **Thin Film**<br><sub>draining soap and oil · interference</sub> | `#film` | ∂t h = ∇·(h³ ∇∇²h) + G ∂y(h³),   I(λ) = sin²(2π n h cosθ / λ + φ) | raster | live | Common |
+| **Time Crystal**<br><sub>Floquet Ising chain, period doubled · 2012 / 2016</sub> | `#timecrystal` | U(T) = exp(−i T H_Ising) · exp(−i π(1−ε) Σ X_i),   m₂ = ⟨(−1)^n m(nT)⟩ | raster | still | Rare |
+| **Growing Domain**<br><sub>Turing patterns on a domain that grows · 1999</sub> | `#growdomain/growdomain-1999` | ∂u/∂t = (D_u/L²)∂²u/∂ξ² + f(u,v) − d(L̇/L)u,  ∂v/∂t = (D_v/L²)∂²v/∂ξ² + g(u,v) − d(L̇/L)v | raster | still | Almost unseen |
+| **Spin Ice**<br><sub>square ice, emergent monopoles · 1935 / 2008</sub> | `#spinice` | E = (J/2) Σ_v Q_v² − h Σ σ,   Q_v = n_in − 2,   ice: Q = 0 | raster | live | Rare |
+| **Vegetation Bands**<br><sub>tiger bush on a dry hillside · 1999</sub> | `#vegetation/klausmeier-1999` | ∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n | raster | live | Common |
+| **Arctic Circle**<br><sub>random domino tilings of the Aztec diamond · 1992</sub> | `#aztec/propp-1992` | order n → n+1: delete colliding pairs, slide N↑ S↓ W← E→, fill each empty 2×2 block with a random pair | SVG | still | Occasional |
+| **Skin Effect**<br><sub>non-Hermitian skin, Hatano–Nelson · 1996 / 2018</sub> | `#skin` | H_{j,j+1} = e^{g},   H_{j+1,j} = e^{−g},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1)) | raster | still | Occasional |
+| **Random Matrices**<br><sub>beta-ensemble spectra and Dyson Brownian motion · 1962</sub> | `#rmt/dyson-1962` | p(λ) ∝ ∏_{i<j} \|λ_i − λ_j\|^β · e^{−Σλ_i²/2};   dλ_i = √(2/β) dB_i + Σ_{j≠i} dt/(λ_i − λ_j) | SVG | still | Almost unseen |
+| **Stealthy Points**<br><sub>hyperuniform collective coordinates · 2004</sub> | `#stealth` | χ = (1 / dN) #{ k : 0 < \|k\| < k_C },   S(k) = 0  for \|k\| < k_C | raster | still | Rare |
+| **Lozenge Tilings**<br><sub>random lozenge tilings of a hexagon, exact by coupling from the past · 1996</sub> | `#lozenge/propp-wilson-1996` | h(x, y) ∈ [0, c] weakly decreasing;  heat bath h(x, y) ~ U{max(h(x+1,y), h(x,y+1)) … min(h(x−1,y), h(x,y−1))};  run −T → 0 from ⊥ and ⊤ on one fixed set of maps, doubling T until they agree, and read the common value at 0 | SVG | still | Almost unseen |
+| **Arago Spot**<br><sub>Poisson bright spot behind a disk · 1818</sub> | `#arago` | U(0) = (e^{ikz}/iλz) ∫_{\|ρ\|>R} exp(ik\|ρ\|²/2z) dρ,   I(0) ≃ I_open | raster | still | Occasional |
+| **Spanning Trees**<br><sub>uniform spanning trees by loop-erased random walk · 1996</sub> | `#ust/wilson-1996` | pick v ∉ T, walk at random from v erasing each loop as it closes, attach the surviving path;  P(T) = 1 / κ(G) for every one of the κ(G) spanning trees | SVG | still | Rare |
+| **Neural Patterns**<br><sub>compositional pattern-producing networks evaluated per pixel · 2007</sub> | `#cppn` | c(x,y) = sigma(Wn · phi( ... phi(W1 · [x, y, r, theta, z, 1]) ... )) | raster | still | Common |
+| **Rogue Wave**<br><sub>Peregrine soliton, waves from nowhere · 1983</sub> | `#rogue` | i ψ_t + ψ_xx + 2\|ψ\|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   \|ψ\|²_max / \|ψ\|²_∞ = 9 | raster | still | Occasional |
+| **Aharonov–Bohm**<br><sub>phase from a field the particle never enters · 1959</sub> | `#aharonov` | Δφ = (e/ℏ) ∮ A·dl = 2π Φ/Φ0,   I(x) = \|ψ_L + e^{iΔφ} ψ_R\|² | raster | still | Occasional |
+| **Double pendulum flip time**<br><sub>first flip of a chaotic double pendulum · 1992</sub> | `#pendulum/pendulum-1992` | L = (m l² / 6)(ω₂² + 4ω₁² + 3ω₁ω₂ cos(θ₁ − θ₂)) + (m g l / 2)(3 cos θ₁ + cos θ₂);   plate = first t with \|θ₁\| > π or \|θ₂\| > π | raster | still | Ubiquitous |
+| **Anderson**<br><sub>waves that refuse to diffuse · 1958</sub> | `#anderson` | H = t Σ_<ij> \|i><j\| + Σ_i ε_i \|i><i\|,   ε ~ U[-W/2,W/2],   IPR = Σ \|ψ\|⁴ | raster | still | Occasional |
+| **FPUT Recurrence**<br><sub>a chain that refuses to thermalise · 1955</sub> | `#fput` | ẍ_i = (q_{i+1}-2q_i+q_{i-1}) + α[(q_{i+1}-q_i)²-(q_i-q_{i-1})²],   E_1(t) returns | raster | still | Occasional |
+| **Schrödinger**<br><sub>wave packet on a detector · 1926</sub> | `#schrodinger/visscher-1991` | i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps | raster | live | Common |
+| **Excitable Media**<br><sub>spirals, targets and wave turbulence · 1991</sub> | `#excitable/barkley-1991` | Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b) | raster | live | Common |
+| **KdV Soliton**<br><sub>a wave that will not disperse · 1834 / 1965</sub> | `#soliton` | u_t + 6 u u_x + u_xxx = 0,   u = (c/2) sech²[(√c/2)(x − c t)] | raster | still | Common |
+| **Cyclic Automaton**<br><sub>cyclic and Greenberg-Hastings excitable automata · 1991</sub> | `#cyclicca/griffeath-1991` | cyclic: s → s+1 (mod k) if ≥ θ neighbors within range r are in state s+1;   GH: 0 → 1 if ≥ θ excited, 1 → 2 → … → k−1 → 0 | raster | live | Common |
+| **Chimera States**<br><sub>identical oscillators that split into synchrony and chaos · 2004</sub> | `#chimera` | dθi/dt = ω − (1/N) Σj G(\|i−j\|) sin(θi − θj + α) | raster | still | Occasional |
+| **SSH Edges**<br><sub>states in a gap that the bulk forbade · 1979</sub> | `#ssh` | H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open) | raster | still | Rare |
+| **Swarmalators**<br><sub>oscillators that sync and swarm · 2017</sub> | `#swarm/okeeffe-2017` | ẋᵢ = (1/N) Σⱼ [ (xⱼ−xᵢ)/rᵢⱼ · (1 + J cos Δθ) − (xⱼ−xᵢ)/rᵢⱼ² ],   θ̇ᵢ = (K/N) Σⱼ sin(Δθ)/rᵢⱼ | raster | live | Occasional |
+| **Active Model B+**<br><sub>phase separation that never finishes · 2018</sub> | `#amb/tjhung-2018` | ∂φ/∂t = ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ\|∇φ\|² | raster | live | Rare |
+| **Aubry–André**<br><sub>localisation without disorder · 1980</sub> | `#aubry` | ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localised for λ>2 | raster | still | Almost unseen |
+| **Cahn–Hilliard**<br><sub>spinodal decomposition · 1958</sub> | `#cahn/cahn-1958` | ∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c | raster | live | Occasional |
+| **Ohta–Kawasaki**<br><sub>diblock copolymer · finite-size spots and lamellae · 1986</sub> | `#ohta/ohta-1986` | ∂u/∂t = Δ(u³ − u − ε²Δu) − σ(u − m) | raster | live | Rare |
+| **Hopf Fibration**<br><sub>every circle linked with every other · 1931</sub> | `#hopf` | η: S³ → S²,   η(z1,z2) = (2 z1 z2-bar, \|z1\|²-\|z2\|²),   fibres = circles,   lk = 1 | raster | still | Occasional |
+| **Swift–Hohenberg**<br><sub>rolls, hexagons, localized states · 1977</sub> | `#swift/swift-1977` | ∂u/∂t = r u − (k₀² + ∇²)² u + g u² − u³ | raster | live | Rare |
+| **Phase-field crystal**<br><sub>Elder density-wave crystal · 2002</sub> | `#pfc/elder-2002` | ∂ψ/∂t = M ∇²(δF/δψ),   F = ∫ ½ ψ [r + (k₀²+∇²)²] ψ + ψ⁴/4 | raster | live | Rare |
+| **Lifshitz–Petrich**<br><sub>two-scale quasicrystal · 1997</sub> | `#lp/lifshitz-1997` | ∂tψ = εψ − (∇²+1)²(∇²+q²)²ψ + α ψ² − ψ³,   q = 2 cos(π/12) | raster | live | Occasional |
+| **Pendry Cloak**<br><sub>a disk that light goes around · 2006</sub> | `#cloak` | r = R1 + r' (R2-R1)/R2,   n_r = (r-R1)/r · R2/(R2-R1),   n_θ = r / (r-R1) | raster | still | Occasional |
+| **XY / Kosterlitz–Thouless**<br><sub>planar spins, bound vortices and the 1973 unbinding transition</sub> | `#xy/kt-1973` | H = −J Σ_<ij> cos(θ_i−θ_j);   dθ_i/dt = J Σ_j sin(θ_j−θ_i) + √(2T) η | SVG | live | Common |
+| **Complex Ginzburg–Landau**<br><sub>spirals, defect chaos, frozen vortex glass</sub> | `#cgl/cgl-1970` | ∂A/∂t = A + (1 + iα) ∇²A − (1 + iβ) \|A\|² A | raster | live | Occasional |
+| **Abrikosov**<br><sub>a superconductor that lets flux in as a lattice · 1957</sub> | `#vortex` | αψ + β\|ψ\|² ψ + (1/2m)(−i∇ − 2e A)² ψ = 0,   n_v = B Area / Φ0 | raster | still | Occasional |
+| **Active Nematics**<br><sub>self-driven rods, ±½ defects and active turbulence · 2012</sub> | `#nematic/dogic-2012` | ∂tQ + u·∇Q − S(Ω,E,Q) = Γ H,   H = [α − β\|Q\|²]Q + K∇²Q,   γu = −∇P − ζ ∇·Q | raster | live | Occasional |
+| **Dark Room**<br><sub>a polygonal room that a candle cannot fill · 1995</sub> | `#darkroom` | billiard in a polygon,   ∃ p,q: no reflected ray from p meets q | raster | still | Occasional |
+| **Fluid**<br><sub>Navier-Stokes dye advected by a stable-fluids solver · 1999</sub> | `#fluid` | du/dt + (u·grad)u = -grad p + nu·lap u,   div u = 0   (advect -> project -> advect dye) | raster | live | Ubiquitous |
+| **Abelian Sandpile**<br><sub>self-organized criticality · 1987</sub> | `#sandpile/btw-1987` | if hᵢ ≥ 4: hᵢ −= 4, hⱼ += 1 for each neighbor j;   identity e = (2m − (2m)°)°, m = all 3 | raster | still | Common |
+| **Kakeya**<br><sub>a needle rotated in arbitrarily small area · 1919</sub> | `#kakeya` | K_ε ⊃ a unit segment in every direction,   \|K_ε\| → 0 as ε → 0 | raster | still | Rare |
+| **Kuramoto–Sivashinsky**<br><sub>cellular flame chaos · 1977</sub> | `#ks/siva-1977` | ∂u/∂t = −ν ∇⁴u − ∇²u − (α/2)\|∇u\|² | raster | live | Occasional |
+| **SG Breather**<br><sub>a lump that oscillates and never radiates · 1962</sub> | `#breather` | u_tt − u_xx + sin u = 0,   u = 4 arctan[ (β/α) sin(α t) sech(β x) ],   α²+β² = 1 | raster | still | Occasional |
+| **Turing Patterns**<br><sub>spots, stripes and hexagons from two chemicals · 1952</sub> | `#turing/turing-1952` | Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v | raster | live | Common |
+| **Holomorphic dynamics**<br><sub>escape-time and Newton basins in the complex plane · 1918</sub> | `#holomorphic/julia-1918` | z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (\|Re z\| + i\|Im z\|)² + c   (Burning Ship) | raster | still | Ubiquitous |
+| **Klein Tunnel**<br><sub>a barrier a Dirac electron does not notice · 1929 / 2006</sub> | `#klein` | H = v_F σ · p + V(x),   T(θ=0) = 1  (massless) | raster | still | Occasional |
+| **Gyroid**<br><sub>a sponge of zero mean curvature · 1970</sub> | `#gyroid` | sin x cos y + sin y cos z + sin z cos x = 0,   H = 0 | raster | still | Occasional |
+| **Dendritic Growth**<br><sub>phase-field solidification: snowflakes and metal dendrites · 1993</sub> | `#dendrite` | τ p_t = ∇·(ε(θ)²∇p) + ∂x(ε ε′ p_y) − ∂y(ε ε′ p_x) + p(1−p)(p − ½ + m);   T_t = ∇²T + K p_t | raster | live | Common |
+| **Purcell Swimmer**<br><sub>a scallop cannot swim in molasses · 1977</sub> | `#purcell` | Re → 0,   scallop theorem: a reciprocal gait gives Δx = 0,   three-link square gait: Δx ≠ 0 | raster | still | Rare |
+| **Exceptional Point**<br><sub>two eigenvectors become one · 1998</sub> | `#exceptional` | H = [[iγ, κ],[κ, −iγ]],   λ = ±√(κ²−γ²),   EP at γ = κ | raster | still | Almost unseen |
+| **Meissner**<br><sub>a field a perfect conductor would have frozen, expelled · 1933</sub> | `#meissner` | ∇²B = B/λ²,   B(r) = B0 I0(r/λ) / I0(R/λ)   (cylinder) | raster | still | Occasional |
+| **Tennis Racket**<br><sub>the intermediate axis that will not spin · 1834 / 1991</sub> | `#tennis` | I1 ω1' = (I2−I3) ω2 ω3  (cyc.),   I1 < I2 < I3,   ω2 flips | raster | still | Occasional |
+| **Flow Field**<br><sub>collision-avoiding strokes in a noise field · 1985</sub> | `#flow` | theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta) | raster | still | Ubiquitous |
+| **Chemotaxis**<br><sub>Keller-Segel aggregation · 1970</sub> | `#chemotaxis/keller-1970` | ∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²) | raster | live | Common |
+| **Smectic focal conics**<br><sub>Dupin cyclides · Friedel 1910</sub> | `#smectic/friedel-1910` | layers: Dupin cyclides of a confocal ellipse–hyperbola pair | SVG | still | Rare |
+| **Reaction-Diffusion**<br><sub>Gray-Scott activator/inhibitor chemistry · 1983</sub> | `#reaction` | du/dt = Du·lap u - u·v^2 + F(1-u);   dv/dt = Dv·lap v + u·v^2 - (F+k)v | raster | live | Common |
+| **Aperiodic Tilings**<br><sub>tiles that cover the plane but never repeat · 1974–2023</sub> | `#tilings/penrose-1974` | Penrose: thick half → 2 thick + 1 thin;   hat: 13-gon + mirror;   spectre: 14-gon, one handedness | SVG | still | Common |
+| **Percolation**<br><sub>site and bond percolation on the square lattice · 1957</sub> | `#percolation/hammersley-1957` | site occupied iff rᵢ < p;   bond open iff rᵢⱼ < p;   p_c(site) ≈ 0.5927,   p_c(bond) = 1/2 | raster | still | Ubiquitous |
+| **Attractors**<br><sub>strange attractors and harmonographs as density maps · 1963</sub> | `#attractors` | x(n+1) = f(xn, yn; a,b,c,d) - iterate, accumulate density, tone-map | raster | still | Ubiquitous |
+| **Airy Beam**<br><sub>a wave packet that accelerates with no force · 1979</sub> | `#airy` | ψ(x,z) = Ai(x − z²/4 + i a) exp(a x − a z²/2 + i(x z/2 − z³/12)),   x_peak = z²/4 | raster | still | Occasional |
+| **Chirikov map**<br><sub>standard map · KAM islands in a chaotic sea · 1969</sub> | `#chirikov/chirikov-1969` | pₙ₊₁ = pₙ + K sin θₙ,   θₙ₊₁ = θₙ + pₙ₊₁   (mod 2π) | raster | live | Occasional |
+| **Hofstadter butterfly**<br><sub>almost-Mathieu spectrum · 1976</sub> | `#hofstadter/hofstadter-1976` | ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ | raster | still | Occasional |
+| **Weierstrass**<br><sub>a curve with no tangent anywhere · 1872</sub> | `#weierstrass` | W(x) = Σ_{n=0}^∞ a^n cos(b^n π x),   0<a<1,   ab > 1 + 3π/2  ⇒  nowhere differentiable | raster | still | Occasional |
+| **Helmholtz scars**<br><sub>stadium and cardioid eigenmodes · Heller 1984</sub> | `#scars/heller-1984` | ∇²ψ + k² ψ = 0  on Ω,   ψ = 0 on ∂Ω | raster | can run | Occasional |
+| **Kitaev Chain**<br><sub>a fermion that is its own antiparticle, stuck to the ends · 2001</sub> | `#kitaev` | H = −μ Σ c†c − t Σ (c†_i c_{i+1}+h.c.) + Δ Σ (c_i c_{i+1}+h.c.),   \|μ\|<2t ⇒ unpaired γ_L, γ_R | raster | still | Rare |
+| **Optical caustics**<br><sub>folds and cusps of a light field · Berry</sub> | `#caustics/berry-caustic` | X = x + s ∇h(x),   I(X) = Σ 1 / \|det(I + s Hess h)\| | raster | still | Common |
+| **Veselago Lens**<br><sub>a slab that focuses because n is negative · 1968</sub> | `#veselago` | n₁ sin θ₁ = n₂ sin θ₂,   n₂ = −1  ⇒  θ₂ = −θ₁,   image at 2L − d | raster | still | Rare |
+| **Devil's Staircase**<br><sub>a staircase constant almost everywhere that still climbs · 1965</sub> | `#devil` | θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil's staircase) | raster | still | Rare |
+| **Talbot carpet**<br><sub>near-field self-imaging · 1836</sub> | `#talbot/talbot-1836` | I(x,z) = \|Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)\|²,   z_T = 2 d²/λ | raster | still | Occasional |
+| **Hydrogen orbitals**<br><sub>hydrogen atom probability density \|ψₙₗₘ\|² · 1926</sub> | `#orbitals/schrodinger-1926` | ψₙₗₘ = Rₙₗ(r) Yₗₘ(θ, φ),   Rₙₗ ∝ ρˡ e^{−ρ/2} L²ˡ⁺¹ₙ₋ₗ₋₁(ρ),   ρ = 2r / n a₀ | raster | still | Common |
+| **Loschmidt Echo**<br><sub>a gas that unmixes when you flip every arrow · 1876</sub> | `#loschmidt` | x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1 | raster | still | Rare |
+| **Boy's Surface**<br><sub>a projective plane sewn into R³ · 1901</sub> | `#boy` | Bryant–Kusner immersion RP² ↪ R³,   one triple point,   no boundary | raster | still | Occasional |
+| **Indra's Pearls**<br><sub>Schottky limit set · Mumford–Series–Wright</sub> | `#pearls/indra-2002` | Γ = ⟨a, b⟩  Schottky,   Λ(Γ) = ∩ g∈Γ g(Ĉ \ Ω) | SVG | still | Common |
+| **Ising Model**<br><sub>Metropolis Monte Carlo on the square lattice · 1925</sub> | `#ising/ising-1925` | E = −J Σ⟨ij⟩ sᵢsⱼ − h Σᵢ sᵢ,   P(flip) = min(1, e^{−ΔE/T}),   T_c = 2/ln(1+√2) ≈ 2.269 | raster | live | Ubiquitous |
+| **Thouless Pump**<br><sub>a clock that pumps a whole electron per turn · 1983</sub> | `#thouless` | P(φ) = (1/2π) ∮ A(k,φ) dk,   ΔP over a cycle = C₁ ∈ ℤ | raster | still | Rare |
+| **Rayleigh–Bénard**<br><sub>heated from below · 1900</sub> | `#convection/benard-1900` | ∂ω/∂t + u·∇ω = √(Pr/Ra) ∇²ω + ∂T/∂x,   ∂T/∂t + u·∇T = ∇²T/√(Ra Pr),   ∇²ψ = −ω,   u = ∂ψ/∂y, v = −∂ψ/∂x | raster | live | Common |
+| **Reuleaux**<br><sub>a non-circle of constant width · 1875</sub> | `#reuleaux` | width(θ) = R  for all θ,   W ≠ a disk,   area = ½(π − √3) R² | raster | still | Occasional |
+| **Apollonian**<br><sub>infinite circles, integer curvatures, zero leftover · 1643</sub> | `#apollonian` | k₄ = k₁+k₂+k₃ ± 2√(k₁k₂+k₁k₃+k₂k₃)   (Descartes),   k ∈ ℤ if the seeds are | raster | still | Occasional |
+| **Chladni & Waves**<br><sub>standing waves, nodal lines and interference · 1787</sub> | `#chladni/chladni-0417` | u = sum Ak[cos(nk·pi·x)cos(mk·pi·y) - cos(mk·pi·x)cos(nk·pi·y)];   nodes where u = 0 | SVG | still | Common |
+| **Track**<br><sub>a breather that paves the index it runs on, drawn as its worldline</sub> | `#track` | φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1) | raster | still | Almost unseen |
+| **Knotted Light**<br><sub>a trefoil of darkness, an open book, a bark with no tangent · 2001 / this plate</sub> | `#knotlight` | ψ = (x+iy)³ − (z−ia)²,   zeros ≃ (2,3) torus knot;   pages = arg ψ;   bark = Σ α^n cos(β^n s) | raster | still | Occasional |
+| **Caustic Sea**<br><sub>a sea that focuses its own light, and the light that writes the sea</sub> | `#causticsea` | ∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/\|det(I + s Hess h)\| | raster | live | Rare |
+| **Soliton Web**<br><sub>resonant line-soliton webs of the Kadomtsev–Petviashvili equation</sub> | `#kp` | (−4 u_t + u_xxx + 6 u u_x)_x + 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = Σ_I det(A_I) Δ(k_I) e^{Σ θ} | raster | can run | Occasional |
+| **Gerstner**<br><sub>trochoidal waves, the exact Euler deep-water solution · 1802</sub> | `#gerstner` | X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1 | SVG | can run | Occasional |
+| **Figure Eight**<br><sub>three equal masses chasing on a planar figure-eight · 1993 / 2000</sub> | `#eight` | r̈_i = −Σ_{j≠i} (r_i−r_j)/\|r_i−r_j\|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0 | SVG | can run | Occasional |
+| **Peakon**<br><sub>Camassa–Holm peaked traveling waves · 1993</sub> | `#peakon` | u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−\|x−x_i\|},   m = u − u_xx | raster | can run | Occasional |
+| **Photon Sphere**<br><sub>Schwarzschild photon sphere · 1916</sub> | `#photon` | d²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M | raster | still | Common |
+| **Crapper**<br><sub>exact finite-amplitude pure-capillary waves · 1957</sub> | `#crapper` | X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4\|A\|/(π(1−A²)) | SVG | can run | Occasional |
+| **Hasimoto**<br><sub>a soliton on a vortex filament · 1972</sub> | `#hasimoto` | γ_t = γ_s × γ_ss,   ψ = κ exp(i ∫ τ ds),   κ = 2ν sech(ν(s−2τ₀ t)),   c = 2τ₀ | SVG | can run | Occasional |
+| **Lump**<br><sub>KP-I lumps · 1977</sub> | `#lump` | (u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b² | raster | can run | Occasional |
 
 ## Credits
 

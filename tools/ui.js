@@ -148,6 +148,28 @@ const { chromium } = require('playwright');
   });
   t('Find Enter jumps to a match', found.id === 'tilings' && found.visible.indexOf('tilings') >= 0, found);
 
+  const seen = await p.evaluate(() => {
+    const find = document.querySelector('#find');
+    if (find) { find.value = ''; find.dispatchEvent(new Event('input', { bubbles: true })); }
+    const sel = document.querySelector('#seen');
+    if (!sel) return { missing: true };
+    sel.value = 'unseen';
+    sel.dispatchEvent(new Event('change', { bubbles: true }));
+    const visible = [...document.querySelectorAll('.tab[data-id]')].filter(b => !b.classList.contains('is-hidden')).map(b => b.dataset.id);
+    const hint = document.querySelector('#seen-hint');
+    return { n: visible.length, hasRotor: visible.indexOf('rotor') >= 0, hasLife: visible.indexOf('life') >= 0, hint: !!(hint && !hint.hidden), sample: visible.slice(0, 8) };
+  });
+  t('Seen elsewhere filters to the unseen bucket', !seen.missing && seen.n >= 4 && seen.n <= 20 && seen.hasRotor && !seen.hasLife && seen.hint, seen);
+  await p.evaluate(() => {
+    const sel = document.querySelector('#seen');
+    if (!sel) return;
+    sel.value = '';
+    sel.dispatchEvent(new Event('change', { bubbles: true }));
+    const find = document.querySelector('#find');
+    find.value = '';
+    find.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+
   const recHidden = await p.evaluate(() => {
     const b = document.querySelector('#btn-record');
     return !b || b.hidden;
