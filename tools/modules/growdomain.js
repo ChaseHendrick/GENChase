@@ -349,6 +349,35 @@
     if (!(isFinite(v) && isFinite(se) && se > 0)) return null;
     return (v - ref) / se;
   }
+  // A sigma from a fit with one or two degrees of freedom is not a sigma. The residual based standard
+  // error is itself a random variable with that many degrees of freedom, so the ratio follows Student's
+  // t, whose tail is far fatter than the normal one: t = 4.9 on 1 d.f. is a two sided probability of
+  // 0.13, which is 1.5 sigma and not 4.9. Reporting the raw ratio would put a five sigma badge on an
+  // exponent that agrees with one to half a per cent, which is the same class of dishonesty as an
+  // error bar left off altogether. The two small cases have closed form tails,
+  //
+  //   df = 1, which is Cauchy:  P(|T| > t) = 1 - (2/pi) atan(t)
+  //   df = 2:                   P(|T| > t) = 1 - t / sqrt(t^2 + 2)
+  //
+  // and from 3 d.f. up the gap is small enough that the ratio is reported as it stands. The
+  // probability is turned back into the equivalent normal deviate with the Hastings rational
+  // approximation, good to about 0.003 of a sigma, which is more than one decimal place needs.
+  function tToSigma(t, df) {
+    const a = Math.abs(t);
+    if (!(df >= 1) || df >= 3 || !isFinite(a)) return a;
+    const pr = df === 1 ? 1 - (2 / PI) * Math.atan(a) : 1 - a / Math.sqrt(a * a + 2);
+    const q = Math.max(1e-12, Math.min(0.5, pr / 2));
+    const u = Math.sqrt(-2 * Math.log(q));
+    return u - (2.30753 + 0.27061 * u) / (1 + 0.99229 * u + 0.04481 * u * u);
+  }
+  // The deviation as it is printed: a t on the sample's own degrees of freedom, expressed as the
+  // normal deviate that carries the same probability.
+  function devTxt(v, se, ref, df) {
+    const z = sigmas(v, se, ref);
+    if (z === null) return 'no uncertainty available';
+    return sigTxt(z < 0 ? -tToSigma(z, df) : tToSigma(z, df));
+  }
+
   function sigTxt(z) {
     if (z === null) return 'no uncertainty available';
     const m = Math.abs(z);
@@ -562,7 +591,7 @@
     hints: {
       Plate: 'Everything here rebuilds the run. The sheet is the picture that shows insertion; the plane is the same physics with both directions growing, so the dilution term carries a factor of two.',
       Kinetics: 'Two reaction schemes and the diffusion ratio between them. The four Turing conditions are checked against these numbers and the status line says whether the window is open.',
-      Growth: 'The domain length L(t) enters twice: as 1/L² on both diffusion coefficients, and as the dilution term that keeps the concentrations from simply riding along with the stretch. The growth rate is also the control the self-check responds to: the slower the growth, the closer the measured wavenumber sits to the peak of the dispersion relation. A fit over only three or four insertions has one or two degrees of freedom, and the status line says how many, because an error bar from one degree of freedom is itself uncertain by roughly a factor of two.',
+      Growth: 'The domain length L(t) enters twice: as 1/L² on both diffusion coefficients, and as the dilution term that keeps the concentrations from simply riding along with the stretch. The growth rate is also the control the self-check responds to: the slower the growth, the closer the measured wavenumber sits to the peak of the dispersion relation. A fit over only three or four insertions has one or two degrees of freedom, and the status line says how many. With that few, an error bar is itself so uncertain that the ratio to it follows Student\u2019s t rather than a normal, so the sigma printed is the normal deviate carrying the same probability as that t, not the raw ratio.',
       Picture: 'Activator maps u over the whole sheet at once. Per slice normalizes each time row against its own range, which brings the pattern up from the moment it leaves the uniform state. Two tone thresholds each row at its mean, which is the fish-skin picture.',
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (low → high activator)',
@@ -851,13 +880,15 @@
         let chk;
         if (expStat && isFinite(expStat.a) && isFinite(expStat.se) && expStat.se > 0) {
           chk = expVar + ' ∝ L^<b>' + pm(expStat.a, expStat.se) + '</b> over ' + expStat.n + ' '
-            + expSample + ', ' + expStat.df + ' d.f., <b>' + sigTxt(sigmas(expStat.a, expStat.se, 1)) + '</b> of 1';
+            + expSample + ', <b>' + devTxt(expStat.a, expStat.se, 1, expStat.df) + '</b> of 1 on '
+            + expStat.df + ' d.f.';
         } else {
           chk = expVar + ' ∝ L exponent not fitted: ' + (expStat ? expStat.n : 0) + ' '
             + (expSample || 'samples') + ', too few for an error bar';
         }
         if (kStat && isFinite(kStat.mean) && isFinite(kStat.se) && kStat.se > 0) {
-          const z = sigmas(kStat.mean, kStat.se, P.kSel);
+          const z0 = sigmas(kStat.mean, kStat.se, P.kSel);
+          const z = z0 === null ? 0 : (z0 < 0 ? -tToSigma(z0, kStat.n - 1) : tToSigma(z0, kStat.n - 1));
           chk += ' · k <b>' + pm(kStat.mean, kStat.se) + '</b> over ' + kStat.n + ' ' + kSample
             + ' against the peak ' + P.kSel.toFixed(2) + ', <b>' + sigTxt(z) + '</b>';
           // A large deviation is named, and the reason given where it is known. The peak of the
