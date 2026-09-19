@@ -862,11 +862,11 @@
         const D = P.D, L = P.plane ? (rowsDone ? Lrow[0] : P.L0) : (rowsDone ? Lrow[rowsDone - 1] : P.L0);
         const pred = P.kSel * L / PI;
         const win = D.ok
-          ? 'window <b>open</b>' + (D.dCrit > 0 ? ', d ' + P.Dv.toFixed(1) + ' over d_c ' + D.dCrit.toFixed(1) : '')
+          ? (D.dCrit > 0 ? 'd <b>' + P.Dv.toFixed(1) + '</b> over d_c ' + D.dCrit.toFixed(1) : 'window <b>open</b>')
           : '<b>outside the Turing window</b>: ' + failure(D);
         const tr = trace.length
-          ? trace.map(x => x.n).join(' → ')
-          : (P.plane && modeMN ? '(' + modeMN.m + ', ' + modeMN.n + ')' : 'not yet');
+          ? measLabel + ' ' + trace.slice(-4).map(x => x.n).join(' → ')
+          : (P.plane && modeMN ? measLabel + ' peak (' + modeMN.m + ', ' + modeMN.n + ')' : 'no pattern yet');
         // The plane's radius is a weighted centroid and carries an error bar of its own; the sheet's
         // count is an integer read straight off the field, so it is labelled exact rather than given
         // a fabricated one.
@@ -879,18 +879,18 @@
         // there are too few independent samples, that is said rather than papered over.
         let chk;
         if (expStat && isFinite(expStat.a) && isFinite(expStat.se) && expStat.se > 0) {
-          chk = expVar + ' ∝ L^<b>' + pm(expStat.a, expStat.se) + '</b> over ' + expStat.n + ' '
-            + expSample + ', <b>' + devTxt(expStat.a, expStat.se, 1, expStat.df) + '</b> of 1 on '
-            + expStat.df + ' d.f.';
+          chk = expVar + ' ∝ L^<b>' + pm(expStat.a, expStat.se) + '</b>, ' + expStat.n + ' '
+            + expSample + (expStat.df <= 2 ? ' (' + expStat.df + ' d.f.)' : '')
+            + ', <b>' + devTxt(expStat.a, expStat.se, 1, expStat.df) + '</b> of 1';
         } else {
-          chk = expVar + ' ∝ L exponent not fitted: ' + (expStat ? expStat.n : 0) + ' '
-            + (expSample || 'samples') + ', too few for an error bar';
+          chk = expVar + ' ∝ L not fitted, ' + (expStat ? expStat.n : 0) + ' '
+            + (expSample || 'samples') + ' is too few for an error bar';
         }
         if (kStat && isFinite(kStat.mean) && isFinite(kStat.se) && kStat.se > 0) {
           const z0 = sigmas(kStat.mean, kStat.se, P.kSel);
           const z = z0 === null ? 0 : (z0 < 0 ? -tToSigma(z0, kStat.n - 1) : tToSigma(z0, kStat.n - 1));
-          chk += ' · k <b>' + pm(kStat.mean, kStat.se) + '</b> over ' + kStat.n + ' ' + kSample
-            + ' vs peak ' + P.kSel.toFixed(2) + ', <b>' + sigTxt(z) + '</b>';
+          chk += ' · k <b>' + pm(kStat.mean, kStat.se) + '</b>, ' + kStat.n + ' ' + kSample
+            + ', vs peak ' + P.kSel.toFixed(2) + ', <b>' + sigTxt(z) + '</b>';
           // A large deviation is named, and the reason given where it is known. The peak of the
           // dispersion relation is the fastest growing mode of a FIXED domain; on a growing one the
           // pattern holds a count while k slides down the band and then splits, so the realized k
@@ -899,21 +899,26 @@
           // A large deviation is named and its cause given, in the few words the bar has room for.
           // The Growth hint carries the rest: the count is held while k slides down the band and
           // jumps back at each insertion, so a faster domain lags further behind the peak.
-          if (Math.abs(z) > 3) chk += ': the lag of growth this fast, slow it and k returns';
+          if (Math.abs(z) > 3) chk += ', growth lag';
         } else if (kStat && isFinite(kStat.mean)) {
-          chk += ' · k <b>' + kStat.mean.toFixed(2) + '</b> from a single ' + (kSample || 'sample')
+          chk += ' · k <b>' + kStat.mean.toFixed(2) + '</b>, one ' + (kSample || 'sample')
             + ', no uncertainty claimed';
         }
 
+        // Four spans, and short ones. The shell gives the bar about two lines before the text starts
+        // running over the bottom of the plate, so everything here is squeezed to fit that: the mode
+        // label is one word, the trace is the last four counts, and the reason for a large deviation
+        // is three words pointing at the Growth hint, which has room for the sentence.
         host.setStatus(
-          '<span>grid <b>' + P.N + '×' + (P.plane ? P.N : P.rows) + '</b> · ' + MODE_LABEL[s.mode] +
+          '<span>grid <b>' + P.N + '×' + (P.plane ? P.N : P.rows) + '</b> ' + MODE_LABEL[s.mode] +
             ' · dt ' + P.dt.toExponential(1) + ', ' + P.bind + ' binds · step <b>' +
             stepsDone.toLocaleString() + '</b></span>' +
-          '<span>' + KIN_LABEL[P.K.kind] + ', ' + LAW_LABEL[s.law] + ' growth · ' + win + '</span>' +
-          '<span>L <b>' + P.L0.toFixed(2) + ' → ' + L.toFixed(2) + '</b> · ' + (P.plane ? 'ρ' : 'n') +
-            ' predicted <b>' + pred.toFixed(1) + '</b>' +
-            (D.kLo > 0 ? ', band ' + (D.kLo * L / PI).toFixed(0) + ' to ' + (D.kHi * L / PI).toFixed(0) : '') +
-            ', measured ' + meas + ' · ' + measLabel + ' ' + tr + '</span>' +
+          '<span>' + KIN_LABEL[P.K.kind] + ', ' + LAW_LABEL[s.law] + ' · ' + win +
+            ' · L <b>' + P.L0.toFixed(2) + ' → ' + L.toFixed(2) + '</b>' +
+            (D.kLo > 0 ? ', band ' + (D.kLo * L / PI).toFixed(0) + '-' + (D.kHi * L / PI).toFixed(0) : '') +
+            '</span>' +
+          '<span>' + (P.plane ? 'ρ' : 'n') + ' predicted <b>' + pred.toFixed(1) + '</b>, measured ' +
+            meas + ' · ' + tr + '</span>' +
           '<span>' + chk + (P.clamped ? ' · run trimmed to fit' : '') + (extra ? ' · ' + extra : '') + '</span>'
         );
       }
