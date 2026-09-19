@@ -2,7 +2,7 @@
 
 GENChase is one HTML file. A contribution is a change to that file, or to the harness that keeps it honest. There is no package to install into, and no second architecture to propose.
 
-Read this, then `AGENTS.md` if you are writing a technique, then `tools/modules/CONTRACT.md` before you touch a simulation. `studio.html` wins when any of those disagree.
+Read this, then `AGENTS.md` if you are writing a technique, then `tools/modules/CONTRACT.md` before you touch a simulation. `studio.html` wins when any of those disagree. If the work is a prior-art search or a claim that something has not been done, read `RESEARCH.md` first and write the query down there the same day.
 
 ## What belongs here
 
@@ -50,7 +50,8 @@ Checklist, as it applies:
 - [ ] a new or changed tab: `node tools/check.js <id> 12000`
 - [ ] a tab that prints: `node tools/export.js <id> 8 300`
 - [ ] a new tab: `node tools/index.js` (writes `TECHNIQUES.md`, `techniques.json`, `llms.txt`)
-- [ ] a new tab: a `familiarity` bucket, a credit line, no `Math.random`
+- [ ] a new tab: a `familiarity` bucket, a credit line, no `Math.random`, a row in `RESEARCH.md`
+- [ ] a prior-art search or a "never been done" claim: the query and the conclusion in `RESEARCH.md`
 - [ ] a moved default: a `legacy:` declaration, and `node tools/recipe.js`
 - [ ] the print is the plate, or `exportSVG` returned nothing and the PNG is the sheet
 

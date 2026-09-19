@@ -18,7 +18,8 @@
     "skip": "studio.html",
     "contract": "tools/modules/CONTRACT.md",
     "agents": "AGENTS.md",
-    "addATab": "Write tools/modules/<id>.js, then node tools/inject.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js. Do not split studio.html. All noise through U.makeRng(seed). Credit the paper. Do not claim new science."
+    "research": "RESEARCH.md",
+    "addATab": "Write tools/modules/<id>.js, then node tools/inject.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js. Do not split studio.html. All noise through U.makeRng(seed). Credit the paper. Do not claim new science. Read RESEARCH.md before a prior-art search."
   },
   "techniques": [
     {

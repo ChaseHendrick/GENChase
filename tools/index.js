@@ -87,7 +87,8 @@ const { chromium } = require('playwright');
       skip: 'studio.html',
       contract: 'tools/modules/CONTRACT.md',
       agents: 'AGENTS.md',
-      addATab: 'Write tools/modules/<id>.js, then node tools/inject.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js. Do not split studio.html. All noise through U.makeRng(seed). Credit the paper. Do not claim new science.',
+      research: 'RESEARCH.md',
+      addATab: 'Write tools/modules/<id>.js, then node tools/inject.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js. Do not split studio.html. All noise through U.makeRng(seed). Credit the paper. Do not claim new science. Read RESEARCH.md before a prior-art search.',
     },
     techniques: mods,
   }, null, 2) + '\n');
@@ -138,6 +139,7 @@ One HTML file of seeded scientific simulations. Each tab reprints from a hash. G
 - AGENTS.md — product rules.
 - tools/modules/CONTRACT.md — how to add a tab.
 - README.md — what is new, and what is not.
+- RESEARCH.md — what was searched, what was not. Read before a prior-art search. Do not re-run a search marked skip.
 
 ## Recipe hash
 
