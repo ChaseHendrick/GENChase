@@ -62,6 +62,25 @@ for (const m of mods) {
   }
 }
 
+/* ---- 3c. every registered id has a familiarity bucket ---- */
+{
+  const block = /const FAMILIARITY = \{([\s\S]*?)\n  \};/.exec(src);
+  if (!block) fail('FAMILIARITY map is missing from the shell');
+  else {
+    const keys = [...block[1].matchAll(/^\s*([A-Za-z0-9_]+)\s*:/gm)].map(x => x[1]);
+    const have = new Set(keys);
+    const want = mods.map(m => m.id);
+    const missing = want.filter(id => !have.has(id));
+    const extra = keys.filter(id => !want.includes(id));
+    if (missing.length) fail('FAMILIARITY is missing ' + missing.join(', '));
+    if (extra.length) fail('FAMILIARITY still lists ' + extra.join(', ') + ', which studio.html does not register');
+    const dups = keys.filter((k, i) => keys.indexOf(k) !== i);
+    if (dups.length) fail('FAMILIARITY duplicates ' + [...new Set(dups)].join(', '));
+    const bad = [...block[1].matchAll(/:\s*'([^']+)'/g)].map(x => x[1]).filter(v => !/^(ubiquitous|common|occasional|rare|unseen)$/.test(v));
+    if (bad.length) fail('FAMILIARITY has unknown bucket(s): ' + [...new Set(bad)].join(', '));
+  }
+}
+
 /* ---- 4. every technique carries what the shell and the colophon need ---- */
 // The colophon prints the technique, its rule and its credit under the plate; a technique missing one
 // prints a gap on a sheet somebody paid to have framed.
