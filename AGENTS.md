@@ -44,6 +44,49 @@ Two failures worth knowing about because they both looked fine in a preview:
   `g = 0`, where the bifurcation is supercritical and nothing below onset survives. The physics has
   to permit what the preset asks for.
 
+## A measured number carries an error bar
+
+Most techniques measure a quantity theory predicts, from the field on screen, and print it beside the
+theoretical value. That is the thing about this project worth defending, and it is worth nothing at all
+without an uncertainty. "mean sides 6.11, Euler says 6" is not a check: a reader has no way to tell
+agreement from disagreement, and no way to tell a real confirmation from a number that had to come out
+near 6 however the model behaved. A self-check without an error bar is decoration.
+
+So every measured quantity printed against theory states an uncertainty, and the comparison is given in
+standard deviations: `0.307 +/- 0.012 against 1/3, 2.2 sigma low`.
+
+How to get the uncertainty honestly depends on what the number is.
+
+- **A mean over N samples.** Standard error `sd / sqrt(N)`, but check independence first. Cells in one
+  correlated field are not N independent samples, and the naive standard error is then too small. Estimate
+  the correlation length and use the effective count, or block the data.
+- **A fitted exponent from one trajectory.** This is the trap. Ordinary least squares standard errors
+  assume independent residuals, and a growth curve sampled along a single run is strongly autocorrelated,
+  so the OLS error is badly optimistic. Fit several independent seeds and report the spread of the fitted
+  values, or use a block bootstrap. `kpz` already records that a shorter fit window swung between 0.09 and
+  0.41 on runs of the same model, which is the run-to-run scatter telling you directly.
+- **A ratio or anything derived.** Propagate, or bootstrap with a seeded RNG. A bootstrap over correlated
+  data must block, or it will report a confidence interval far too narrow.
+- **A power-law tail exponent.** Least squares on a log-log histogram is biased and its quoted error is
+  wrong. Use maximum likelihood or the Hill estimator, with the tail cutoff chosen by a stated rule.
+- **An exact combinatorial count.** Say `exact, no sampling error` rather than inventing a bar. That is
+  informative in its own right, and a fabricated uncertainty is worse than none because it looks rigorous.
+
+Two further rules follow from the same principle.
+
+**Never round a measurement toward theory, and never hide a disagreement.** If a number sits away from the
+predicted value, print it and say why where you know: finite size, a boundary, a slow crossover. Ballistic
+deposition fits under 1/3 at plate size because its crossover is slow, and the hint says so instead of
+presenting 0.33.
+
+**A check that cannot fail is not a check.** Before adding one, ask whether the quantity is forced by
+construction rather than by the physics. The mean side count of a two-dimensional froth is exactly 6 by
+Euler for any planar subdivision with threefold vertices, so if that is what is being measured, it
+confirms the code built a planar subdivision and nothing about the coarsening. The von Neumann-Mullins
+law in the same tab is dynamical and does not have that problem. Where a quantity is true by construction,
+either say so plainly, keep it and label it a regression test, or drop it. Do not present a tautology as a
+verified prediction.
+
 ## Print sharpness
 
 `tools/sharp.js` drives the real export path and measures how much detail a sheet actually carries;

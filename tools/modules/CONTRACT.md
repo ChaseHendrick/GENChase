@@ -150,6 +150,16 @@ American spelling. No em dashes anywhere in new text; use commas, periods, colon
 
 Default seed lands a finished image in about three seconds on a laptop. Chunk long CPU work with `setTimeout(chunk, 0)` so the UI never blocks more than about 50 ms. Grids default to 192 or 256 and cap at 512. Measure exposure from the field (reduce pass or a CPU percentile), never from a formula.
 
+## Measured numbers
+
+If your technique prints a measured quantity beside a theoretical one, it must also print an uncertainty,
+and the comparison must be in sigmas. The full rule, including how to get the uncertainty for a mean, a
+fitted exponent, a ratio, a power-law tail and an exact count, is in `AGENTS.md` under "A measured number
+carries an error bar". Read it before you write the status line, not after.
+
+The two failure modes that matter most: an ordinary least squares error on a fit along one autocorrelated
+trajectory is far too small, and a check whose answer is forced by construction is not a check at all.
+
 ## Before you report done
 
 For every tab in the block: the default and every preset shoot non-flat with no new console errors, the same hash twice gives the same plate, export at 2x and at a non-screen aspect matches the screen, and exactly one canvas is visible after switching tabs away and back. `grep -n "Math.random" tools/modules/<block>.js` returns nothing. Every function in the block is called. No network, no libraries.
