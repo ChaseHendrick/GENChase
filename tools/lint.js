@@ -8,6 +8,7 @@
 // Exit status is 0 when clean, 1 when anything fails.
 const fs = require('fs');
 const path = require('path');
+const count = require('./count.js');
 
 const file = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..', 'studio.html');
 const root = path.dirname(file);
@@ -150,17 +151,7 @@ for (const m of mods) {
 }
 
 /* ---- 7. the prose agrees with the file ---- */
-const WORDS = { 49: 'Forty-nine', 50: 'Fifty', 51: 'Fifty-one', 52: 'Fifty-two', 53: 'Fifty-three', 54: 'Fifty-four',
-  55: 'Fifty-five', 56: 'Fifty-six', 57: 'Fifty-seven', 58: 'Fifty-eight', 59: 'Fifty-nine', 60: 'Sixty', 61: 'Sixty-one',
-  62: 'Sixty-two', 63: 'Sixty-three', 64: 'Sixty-four', 65: 'Sixty-five', 66: 'Sixty-six', 67: 'Sixty-seven',
-  68: 'Sixty-eight', 69: 'Sixty-nine', 70: 'Seventy',
-  108: 'One hundred eight', 109: 'One hundred nine',
-  110: 'One hundred ten', 111: 'One hundred eleven', 112: 'One hundred twelve', 113: 'One hundred thirteen',
-  114: 'One hundred fourteen', 115: 'One hundred fifteen', 116: 'One hundred sixteen',
-  117: 'One hundred seventeen', 118: 'One hundred eighteen', 119: 'One hundred nineteen', 120: 'One hundred twenty',
-  121: 'One hundred twenty-one', 122: 'One hundred twenty-two', 123: 'One hundred twenty-three',
-  124: 'One hundred twenty-four', 125: 'One hundred twenty-five' };
-const spelled = WORDS[mods.length];
+const spelled = count.spell(mods.length);
 const readme = fs.existsSync(path.join(root, 'README.md')) ? fs.readFileSync(path.join(root, 'README.md'), 'utf8') : '';
 const citation = fs.existsSync(path.join(root, 'CITATION.cff')) ? fs.readFileSync(path.join(root, 'CITATION.cff'), 'utf8') : '';
 const techniquesMd = fs.existsSync(path.join(root, 'TECHNIQUES.md')) ? fs.readFileSync(path.join(root, 'TECHNIQUES.md'), 'utf8') : '';
@@ -182,18 +173,41 @@ for (const [label, text] of [
   ['CONTRIBUTING.md', contributingMd],
 ]) {
   if (!text) continue;
-  // Only a spelled number that is actually counting techniques. Matching the word on its own
-  // flagged a code comment about sixty-three animation loops, which is not a claim about anything.
-  const claims = [...text.matchAll(/\b((?:One hundred (?:eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty(?:-one|-two|-three|-four|-five)?)?)|(?:Forty|Fifty|Sixty|Seventy)(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?)\b(?=(?:\s+\w+){0,2}\s+(?:pattern-forming systems|sciences|techniques|tabs)\b)/gi)]
-    .map(x => x[1]);
-  for (const c of new Set(claims)) {
-    if (spelled && c.toLowerCase() !== spelled.toLowerCase()) {
+  const claims = count.claimsIn(text);
+  for (const c of new Set(claims.spelled)) {
+    if (c.toLowerCase() !== spelled.toLowerCase()) {
       fail(label + ' says "' + c + '" but the file registers ' + mods.length + ' techniques (' + spelled + ')');
     }
   }
-  const digits = [...text.matchAll(/\b(\d{2,3})\s+(?:pattern-forming systems|sciences|techniques)\b/g)].map(x => +x[1]);
-  for (const d of new Set(digits)) {
+  for (const d of new Set(claims.digits)) {
     if (d !== mods.length) fail(label + ' says "' + d + '" techniques but the file registers ' + mods.length);
+  }
+  for (const d of new Set(claims.nowHas.concat(claims.thereAre))) {
+    if (d !== mods.length) fail(label + ' says the studio has ' + d + ' but the file registers ' + mods.length);
+  }
+  for (const live of new Set(claims.live)) {
+    if (live.toLowerCase() !== spelled.toLowerCase()) {
+      fail(label + ' live catalog says "' + live + '" but the file registers ' + spelled.toLowerCase());
+    }
+  }
+}
+
+{
+  const descPath = path.join(root, '.github', 'description.txt');
+  if (!fs.existsSync(descPath)) fail('.github/description.txt is missing; run node tools/index.js');
+  else {
+    const desc = fs.readFileSync(descPath, 'utf8');
+    if (!desc.toLowerCase().includes(spelled.toLowerCase())) {
+      fail('.github/description.txt does not contain "' + spelled + '"; run node tools/index.js');
+    }
+  }
+}
+
+if (researchMd) {
+  const have = new Set(count.researchIds(researchMd));
+  const missing = mods.map(m => m.id).filter(id => !have.has(id));
+  if (missing.length) {
+    fail('RESEARCH.md table is missing ' + missing.join(', ') + '; run node tools/index.js (it will append science-only rows)');
   }
 }
 

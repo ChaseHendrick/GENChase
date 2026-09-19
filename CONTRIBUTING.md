@@ -27,12 +27,16 @@ Do not push to `main`. Do not merge your own pull request unless you maintain th
 One subject line, sentence case, a period, what changed. A body only when the subject cannot carry the why.
 
 ```
-The eight exact plates check. The citation is one hundred seventeen.
+The plate checks. The catalog is generated.
 ```
 
 Not `fix`, not `WIP`, not a dump of files. Not Conventional Commits prefixes (`feat:`, `chore:`); the log is read as English.
 
-A commit that adds a tab also regenerates the catalog (`node tools/index.js`) in that same commit. A hand-edited `TECHNIQUES.md` is already wrong. If the count moved, `README.md`, `CITATION.cff` and `og.jpg` move with it. The social card carries the number in a JPEG COM comment; `node tools/lint.js` fails when that comment does not match the file.
+A commit that adds a tab also regenerates the catalog (`node tools/index.js`) in that same commit. That command writes `TECHNIQUES.md`, `techniques.json`, `llms.txt`, stamps the live count into README, CITATION.cff, RESEARCH.md, DESIGN-PLAN.md, the studio head, and `.github/description.txt`, and appends a `science only` row for any tab RESEARCH.md does not yet mention. Do not hand-edit those numbers. After a count change, update the GitHub About from `.github/description.txt`:
+
+    gh repo edit -d "$(cat .github/description.txt)"
+
+`og.jpg` is the social card. Its JPEG COM comment has to match the file; recaption the card when the count moves. `node tools/lint.js` fails a catalog, a spelled count, a RESEARCH row, a description file, or a COM comment that is behind the file.
 
 Author, committer, and any `Co-authored-by` trailer use only:
 

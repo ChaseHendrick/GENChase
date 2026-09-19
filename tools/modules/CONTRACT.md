@@ -1,6 +1,6 @@
 # Module contract for new GENChase blocks
 
-Read this before writing a block. It restates what the shell in `studio.html` actually does, so a block written against it drops into the file without surprises. When this file and `studio.html` disagree, `studio.html` wins. Line numbers below drifted as the file grew (they were written against a 27k-line studio; it is past 43k now). Search for the function or `id:` rather than trusting a number.
+Read this before writing a block. It restates what the shell in `studio.html` actually does, so a block written against it drops into the file without surprises. When this file and `studio.html` disagree, `studio.html` wins. Search for the function or `id:`. Do not cite line numbers; they drift.
 
 ## Files and workflow
 
@@ -22,12 +22,14 @@ Read this before writing a block. It restates what the shell in `studio.html` ac
 
 ## What to read in studio.html before writing
 
-- Shell: `register` (~1159), `sanitize` (~1204), instance and host creation (~1536-1560), `fitCanvas` (~1566), `switchTo` (~1727), sidebar field rendering (~1790-1830), witness (~1613-1690), export (~2250-2320).
-- `modules/pde.js` block, lines ~12487-13435, in full. It is the template for every GPU grid technique: `pdeCreate`, `toHalf`, `seedNoise`, `GRID`, `simFields`, `pictureFields`, `RANGE`, `pre`, the reduce pass used to measure the field, `burst` chunking, `disturb` via the shared splat shader.
-- Per-pixel resolution-independent template: the `fractal` module, block ~8882-9464 (`create` at ~9282, `exportPNG` at ~9435).
-- GPU cellular automata with state textures: the `life` block, ~7947-8529.
-- CPU lattice plates on a 2D canvas: the `snowflake` register at ~15532 and the other CPU modules in that block (~13918-15977).
-- Pressure or Poisson solves on the GPU: the `fluid` block, ~5024-5694.
+Line numbers drift. Search for the name.
+
+- Shell: `Studio.register`, `sanitize`, instance and host creation, `fitCanvas`, `switchTo`, sidebar field rendering, witness, export.
+- `modules/pde.js` in full. It is the template for every GPU grid technique: `pdeCreate`, `toHalf`, `seedNoise`, `GRID`, `simFields`, `pictureFields`, `RANGE`, `pre`, the reduce pass used to measure the field, `burst` chunking, `disturb` via the shared splat shader.
+- Per-pixel resolution-independent template: the `fractal` module (`create`, `exportPNG`).
+- GPU cellular automata with state textures: the `life` block.
+- CPU lattice plates on a 2D canvas: the `snowflake` register and the other CPU modules in that block.
+- Pressure or Poisson solves on the GPU: the `fluid` block.
 
 ## Studio.register fields
 
