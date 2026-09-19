@@ -383,7 +383,11 @@
      out near 4 at every size tried; on one plate it runs from the floor of 2 up to about 10. Counted
      over twenty-five seeds at each of the eight shapes the presets use, the effective count lands
      between 5.8 and 30.0 of the sixty, the ceiling being where the floor on tau binds, with a mean
-     near 16 on the regular hexagons and near 10 at 48, 48, 8. The status line prints which.
+     near 16 on the regular hexagons and near 10 at 48, 48, 8. A second, independent family of forty
+     to a hundred and twenty seeds per shape reached 5.0 at 48, 48, 8, where tau came out 12.1 on one
+     plate, so the status line can print five; call the range five to thirty rather than six to thirty.
+     The ceiling on tau, n/4, did not bind on any of the 460 plates of that family. The status line
+     prints which.
 
      Checked rather than asserted, by drawing many tilings at one size and comparing the scatter of the
      mean radius across seeds with this single-tiling estimate averaged over the same seeds:
@@ -432,8 +436,11 @@
     // its own correlation. Averaged over forty plates tau lands between 3.2 and 6.8 at every shape
     // these presets use, so the floor is not what sets the bar in the ordinary case; counted plate by
     // plate it binds on 4 of 40 at 11, 11, 11, 1 of 40 at 40, 40, 40 and at 24, 40, 46, and on none
-    // at 32, 32, 32 or 48, 48, 48. Where it binds the status line says about thirty independent
-    // sectors, which is the most this ever claims.
+    // at 32, 32, 32 or 48, 48, 48. A second family of seeds put it at 12 of 120 at 11, 11, 11, 2 of
+    // 60 at 40, 40, 40, 1 of 60 at 32, 32, 32, 1 of 40 at 48, 48, 48 and none at the other four
+    // shapes, so "none" above is that family and not a rule: the honest reading is a few plates in a
+    // hundred everywhere except 11, 11, 11, where it is nearer one in ten. Where it binds the status
+    // line says about thirty independent sectors, which is the most this ever claims.
     tau = Math.min(Math.max(tau, 2), n / 4);
     const sd = Math.sqrt(c0 * n / (n - 1));
     return { mean: m, sd, tau, neff: n / tau, se: sd * Math.sqrt(tau / n) };
@@ -597,7 +604,7 @@
     hints: {
       Hexagon: 'The seed fixes every random choice the sampler makes, so a seed and a, b, c reprint exactly the same tiling. MacMahon counted how many there are to choose from, and the status line reports it.',
       Sampler: 'Coupling from the past has no fixed running time. It doubles how far back it starts until the two extreme tilings, run forward on the same random choices, arrive at the same place. At the largest hexagons an unlucky seed can run past the work budget, and the plate then falls back to a plain forward run and says in the status line that it is no longer exact. The status line also tests the exactness claim instead of only making it: four thousand draws from the 2 by 2 by 2 box, which MacMahon says has exactly twenty tilings, against the uniform distribution over those twenty. It is a real statistical test with a real null distribution, so about one seed in twenty reads past two sigma and about one in a hundred and fifty past three; that is the test working, not the sampler failing. A reading that large on seed after seed would be something else.',
-      Arctic: 'The measured boundary is read off the plate itself: every tile is called frozen or free from its own neighborhood, the free ones are counted in sixty angular sectors around the center of the predicted ellipse, and the radius that would enclose them is compared with the ellipse. In the coordinates that comparison is made in, the prediction is a radius of exactly 1 at every angle. The sixty sectors are not sixty independent numbers, so the error bar on their mean is widened by the measured autocorrelation around the circle, which over the shapes these presets use leaves somewhere between six and thirty of them and the status line says how many; the error bar on the free area comes from a seeded bootstrap over the same sectors, since a binomial bar on that many tiles would be more than twice too small. Both estimates were checked against the scatter across many seeds, at the eight shapes these presets use, and neither is exact: the radius bar comes out between about 0.9 and 1.8 times that scatter and the free area bar between about 0.7 and 1.5 of it. Wide is the safe direction and most shapes sit there, but on a tall box like 20, 20, 40 the free area bar runs about thirty per cent narrow, because resampling one plate\'s own sectors cannot see the whole boundary breathing in or out together, and on such a box a reading of three sigma is nearer two. Read these bars as the right size rather than as an exact one. It is a limit statement, so the agreement improves as a, b and c grow together and is poor when one of them is small: averaged over many seeds the radius reads 1.023 at 11, 11, 11 and 0.954 at 48, 48, 8, against 1.000 wherever the limit has been reached.',
+      Arctic: 'The measured boundary is read off the plate itself: every tile is called frozen or free from its own neighborhood, the free ones are counted in sixty angular sectors around the center of the predicted ellipse, and the radius that would enclose them is compared with the ellipse. In the coordinates that comparison is made in, the prediction is a radius of exactly 1 at every angle. The sixty sectors are not sixty independent numbers, so the error bar on their mean is widened by the measured autocorrelation around the circle, which over the shapes these presets use leaves somewhere between five and thirty of them and the status line says how many; the error bar on the free area comes from a seeded bootstrap over the same sectors, since a binomial bar on that many tiles would be more than twice too small. Both estimates were checked against the scatter across many seeds, at the eight shapes these presets use, and neither is exact: the radius bar comes out between about 0.9 and 1.8 times that scatter and the free area bar between about 0.7 and 1.5 of it. Wide is the safe direction and most shapes sit there, but on a tall box like 20, 20, 40 the free area bar runs about thirty per cent narrow, because resampling one plate\'s own sectors cannot see the whole boundary breathing in or out together, and on such a box a reading of three sigma is nearer two. Read these bars as the right size rather than as an exact one. It is a limit statement, so the agreement improves as a, b and c grow together and is poor when one of them is small: averaged over many seeds the radius reads 1.023 at 11, 11, 11 and 0.954 at 48, 48, 8, against 1.000 wherever the limit has been reached.',
       Tiles: 'Cube faces shades the three orientations light, middle and dark so the pile reads as solid, as if the light came from over your left shoulder. Height colors every face by how far above the floor of the box it sits and keeps the same shading over it.',
     },
     palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (tops, right faces, left faces)',
