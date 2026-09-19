@@ -118,7 +118,18 @@ const NOISE = [/willReadFrequently/, /ERR_CERT_AUTHORITY_INVALID/, /ServiceWorke
   // one-pixel difference against the plate's own contrast. Crisp geometry comes out near or above one.
   const edge = res.sd > 0.5 ? res.edgeP99 / res.sd : 0;
   const acuity = res.mad.d16 > 0.01 ? res.mad.d1 / res.mad.d16 : 0;
-  const verdict = (edge >= 0.8 || acuity >= 0.15) ? 'sharp' : (edge >= 0.5 || acuity >= 0.10) ? 'ok' : 'SOFT';
+  // A floor on edge, because the OR alone let a genuinely blurry plate through. The condensate tile in
+  // the README gallery measured edge 0.08 with acuity 0.129 and was called 'ok' on the acuity term, while
+  // being obviously soft to anyone looking at it: edge 0.08 means the 99th percentile one-pixel difference
+  // is eight per cent of the plate's own contrast, so there is essentially no hard edge anywhere in it.
+  // Acuity exists for a plate with real fine texture and gentle edges, and 0.15 keeps that case: the
+  // differential growth plate passes on acuity at edge 0.27, and physarum sits at 0.40. Nothing in the
+  // current corpus between 0.15 and 0.27 is affected, so this is calibrated on one plate a human called
+  // blurry plus the tabs already measured. If a legitimately fine-textured plate ever lands under 0.15,
+  // that is the number to revisit, not the rule.
+  const noEdges = edge < 0.15;
+  const verdict = (!noEdges && (edge >= 0.8 || acuity >= 0.15)) ? 'sharp'
+    : (!noEdges && (edge >= 0.5 || acuity >= 0.10)) ? 'ok' : 'SOFT';
   console.log(JSON.stringify({
     id: id.split('/')[0], size: res.W + 'x' + res.H, contrast: res.sd,
     edge: +edge.toFixed(2), acuity: +acuity.toFixed(3), verdict, mad: res.mad,

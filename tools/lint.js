@@ -162,6 +162,27 @@ for (const name of ['MODULE_SPEC.md']) {
   }
 }
 
+// The studio must load nothing from the network. About says so and AGENTS.md says so, and for a while
+// neither was true: three <link> tags pulled Instrument Serif, Geist and Geist Mono from Google on every
+// load, so the one claim a reader can check by opening devtools was the one that was false. The fonts are
+// inlined now, and this keeps them that way. It looks for a URL in a position that would actually fetch
+// something, so prose, credits and comments that mention a URL are untouched.
+{
+  const fetchers = [
+    [/<link[^>]+href\s*=\s*["']https?:/gi, 'a <link> that loads from the network'],
+    [/<script[^>]+src\s*=\s*["']https?:/gi, 'a <script src> that loads from the network'],
+    [/<img[^>]+src\s*=\s*["']https?:/gi, 'an <img> that loads from the network'],
+    [/url\(\s*["']?https?:/gi, 'a CSS url() that loads from the network'],
+    [/\bimportScripts\s*\(\s*["']https?:/gi, 'importScripts from the network'],
+  ];
+  for (const [re, what] of fetchers) {
+    for (const h of src.matchAll(re)) {
+      fail('studio.html line ' + lineAt(h.index) + ' has ' + what + '. The file has to work with no network: ' +
+        'inline the resource instead, and if it genuinely cannot be inlined, change what About and AGENTS.md promise.');
+    }
+  }
+}
+
 notes.push(mods.length + ' techniques: ' + mods.map(m => m.id).join(' '));
 notes.push(blocks.length + ' script blocks parsed');
 

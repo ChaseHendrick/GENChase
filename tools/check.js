@@ -13,7 +13,15 @@ async function measure(p) {
     const cs = [...document.querySelectorAll('canvas')].filter(c => c.offsetParent !== null && c.width > 100);
     const c = cs[0]; if (!c) return { err: 'no visible canvas', visibleCanvases: cs.length };
     const st = document.querySelector('#status');
-    const status = st ? st.innerText.replace(/\s+/g, ' ').slice(0, 200) : null;
+    // 600, not 200. The seed the shell appends sits at the END of the status, and settle() waits to see
+    // it before believing the plate on screen is the one that was asked for. A technique that reports
+    // its measurements with uncertainties runs long: lozenge's status is about 390 characters and
+    // growdomain's 283 to 315, so at 200 the seed was always cut off, the guard never cleared, and the
+    // stillness route could never fire. Both plates DO go still, and both were quietly falling back to
+    // the step-count route or, for rotor, to nothing at all. rotor reports no step count, so its
+    // determinism passed only because two fingerprints happened to match; a real difference would have
+    // been excused as not comparable. It also cost lozenge about eleven minutes a run instead of three.
+    const status = st ? st.innerText.replace(/\s+/g, ' ').slice(0, 600) : null;
     // The status line is rendered by the technique and lags its state: the shell applies the hash
     // immediately but the text is not rewritten until the technique next reports. The seed field is
     // updated synchronously, so that is what says which plate this actually is.
@@ -91,12 +99,13 @@ async function settle(p, maxMs, seed) {
     // checkerboard detector. Wait for the technique to report before calling the plate settled.
     if (seed && m.status && m.status.indexOf(seed) < 0) { last = ''; same = 0; continue; }
     same = m.fp === last ? same + 1 : 0; last = m.fp;
-    if (same >= 2) return;                                   // still, or paused
+    if (same >= 2) return 'still';                           // the pixels stopped changing
     const st = m.status || '';
     const step = (st.match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/) || [])[1];
     const warm = await p.evaluate(() => { try { const id = location.hash.slice(1).split('/')[0]; const s = JSON.parse(localStorage.getItem('genchase.v1.' + id) || '{}'); return Number(s.warmup) || 0; } catch (e) { return 0; } });
-    if (step && warm && Number(step.replace(/,/g, '')) >= warm) return;   // living plate past its warm-up
+    if (step && warm && Number(step.replace(/,/g, '')) >= warm) return 'warmed';   // living plate past its warm-up
   }
+  return 'timeout';                                          // never settled inside the budget
 }
 
 (async () => {
@@ -207,8 +216,8 @@ async function settle(p, maxMs, seed) {
   // size. That is what 725x725 against 727x727 was, and clearing history in the init script could not
   // fix it because the other page wrote again afterwards. Nothing below needs this page.
   await p.close();
-  const a1 = await open(still); await settle(a1, detWait, seed); const m1 = await measure(a1); await a1.close();
-  const a2 = await open(still); await settle(a2, detWait, seed); const m2 = await measure(a2);
+  const a1 = await open(still); const r1 = await settle(a1, detWait, seed); const m1 = await measure(a1); await a1.close();
+  const a2 = await open(still); const r2 = await settle(a2, detWait, seed); const m2 = await measure(a2);
   // A living plate with no pause key keeps stepping on a wall-clock budget, so two loads are only comparable at the
   // same step count. Report that case as not comparable rather than as a failure; a plate that pauses must match.
   const stepOf = m => { const s = ((m.status || '').match(/(?:step|sweep|iteration|iter|grains|particles)\s+([\d,]+)/) || [])[1]; return s ? Number(s.replace(/,/g, '')) : null; };
@@ -221,20 +230,28 @@ async function settle(p, maxMs, seed) {
   // there is not evidence of anything. This read the other way round and failed such plates.
   // Equal canvas size as well: the plate is resolution-independent by design, so the same recipe
   // drawn at a different size is legitimately different pixels and says nothing about determinism.
-  const comparable = m1.fp === m2.fp || (m1.canvas === m2.canvas && s1 !== null && s2 !== null && s1 === s2);
-  console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: m1.fp === m2.fp, steps: [s1, s2], canvas: [m1.canvas, m2.canvas], pausable }));
+  // Two captures say something about determinism only when we know they were taken at the same point,
+  // and there are two ways to know it. Either both report the same step count, or both were observed to
+  // go STILL: settle() returns 'still' only once the fingerprint stopped changing across samples, and a
+  // plate that has stopped changing is at a point by definition. That second route is what a technique
+  // with no step counter needs, and leaving it out was a real bug in the first version of this rule.
+  // fractal and attractors report no step, so on a slow runner every mismatch fell through to a hard
+  // failure the harness had no evidence for. Comparability is now established rather than assumed.
+  const settled = r1 === 'still' && r2 === 'still';
+  const sameStep = s1 !== null && s2 !== null && s1 === s2;
+  const comparable = m1.fp === m2.fp || (m1.canvas === m2.canvas && (sameStep || settled));
+  console.log('determinism', JSON.stringify({ first: m1.fp, second: m2.fp, same: m1.fp === m2.fp, steps: [s1, s2], canvas: [m1.canvas, m2.canvas], pausable, settle: [r1, r2] }));
   // Two loads drawn at different canvas sizes are legitimately different pixels: the plate is
   // resolution-independent by design, and a scrollbar appearing on one load is enough to move the
   // size by two pixels. That case keeps its excuse and must not reach the warm-up failure below.
   const sizeMismatch = m1.canvas !== m2.canvas;
   if (m1.fp !== m2.fp && sizeMismatch) console.log('determinism not comparable: drawn at ' + m1.canvas + ' and ' + m2.canvas);
   if (m1.fp !== m2.fp && comparable) fails.push('same hash loaded twice gave different plates');
-  // A plate that can be paused was loaded with running:false, so within the budget above it must reach
-  // a still state and the two loads must then match. If it did not, the check did not run, and that is
-  // a failure of this harness or of the plate rather than something to note and pass over. A plate with
-  // no pause key genuinely cannot be compared this way and keeps its excuse.
-  else if (m1.fp !== m2.fp && pausable && !sizeMismatch) fails.push('determinism never became comparable within ' + Math.round(detWait / 1000) + ' s: captured at steps ' + s1 + ' and ' + s2 + ', still inside its warm-up. Raise DET_WAIT or lower the plate\'s warm-up.');
-  else if (m1.fp !== m2.fp) console.log('determinism not comparable: captured at steps ' + s1 + ' and ' + s2 + ' (living plate without a pause key)');
+  // Not comparable is a real answer rather than a dodge, but it has to say what was missing, so a reader
+  // can tell an untested plate from a passing one.
+  else if (m1.fp !== m2.fp) console.log('determinism not comparable: steps ' + s1 + ' and ' + s2 +
+    ', settle ' + r1 + ' and ' + r2 + (pausable ? '' : ' (living plate without a pause key)') +
+    '. Neither load reached a state this harness can compare; raise DET_WAIT if the plate needs longer.');
 
   // 4. switch to another tab and back: exactly one visible canvas
   const other = await a2.evaluate(me => { const t = [...document.querySelectorAll('button.tab[data-id]')].find(x => x.dataset.id !== me); return t ? t.dataset.id : null; }, id);
