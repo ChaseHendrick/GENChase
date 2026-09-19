@@ -4,7 +4,7 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded, resolution-independent, and exports in inches at giclée resolution.
 
-One HTML file. One hundred sixteen pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
+One HTML file. One hundred seventeen pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
@@ -43,7 +43,7 @@ The usual options fall down in different places:
 - **An image model.** It will draw a snowflake that never froze and a quasicrystal that is a hexagon with extra steps. There is no seed that reprints, and no way to show that anything was solved.
 - **A recorded loop.** It looks alive until you touch it.
 
-GENChase is the other object: one hundred sixteen sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
+GENChase is the other object: one hundred seventeen sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
 
 | | On disk | What you get | How you reprint |
 |---|---|---|---|
@@ -97,6 +97,7 @@ This is the part that is hard to copy, and the reason to trust the pictures. Mos
 | Crapper | s / (4\|A\|/(π(1−A²))) | 1 | **1.000** |
 | Hasimoto | κ_max/(2ν) ; c/(2τ₀) | 1 ; 1 | **1.000** ; **1.000** |
 | Lump | KP-I residual of the Manakov lump | 0 | **~3×10⁻⁴** (FD) |
+| Hendrick | ω t_c / √2 on Gröbli's L=0 family | 1 at the octant triangle | **1.000** |
 
 When a measurement disagrees with theory the tab says so rather than rounding toward it. Ballistic deposition fits **under** 1/3 because its crossover to KPZ is slow at plate size, and the hint says exactly that instead of quietly presenting 0.33. A neural field outside its patterning window prints "h is outside it, the sheet will go flat" rather than leaving a blank plate to be read as a subtle one.
 
@@ -139,10 +140,11 @@ Worth being precise about, because the credits matter.
 - **Crapper.** G. D. Crapper, J. Fluid Mech. 2, 532 (1957). The unique exact finite-amplitude pure-capillary wave. Steepness s = 4|A|/(π(1−A²)) identically; the trough pinches a bubble at s* ≈ 0.730. The same *profile* is a constant-vorticity Euler wave with g = σ = 0 (Hur and Vanden-Broeck 2020). The plate reports s_meas against that identity.
 - **Hasimoto.** A soliton on a vortex filament (Hasimoto, JFM 51, 477, 1972). Local induction maps to NLS; the sech is a traveling loop of helical motion. Speed along the filament equals twice the torsion. The plate reports κ_max/(2ν) and c/(2τ₀) from the polyline, not from the formula by construction.
 - **Lump.** KP-I lumps (Manakov et al. 1977), rational, 1/r² tails. Completely different from the studio’s KP-II line-soliton webs. The plate reports the KP-I residual (u_t + 6uu_x + u_xxx)_x − 3 u_yy against 0, by finite differences of the rational field, and the peak against 4b².
+- **Hendrick.** Three point vortices of circulations 1, 1, −1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae. Their dimensionless product on this family is ω t_c = (2 − cos²θ) / sin(2θ), which has a unique minimum of √2 at tan θ = 1/√2, the triangle with angles 22.5°, 45° and 112.5°. That identity is not in those papers. The plate reports ω t_c / √2 against 1, the similarity residual against 0, and signed L against 0. Off the circle, all three fail. `#track` is still Track.
 
 **Two closed loops, both with prior art.** Each piece is published. So is the family the loop belongs to. The plates are pictures of those families with an open-loop control sitting next to the closed one. A published equation plus a feedback term is not an invention, and it does not get a private name.
 
-- **Track.** A sine-Gordon breather that writes its own index from strain. That is a self-written waveguide (Monro, de Sterke, Poladian, J. Mod. Opt. 1998) and a photorefractive soliton (Segev) on a Josephson breather, not a private name. Open loop (η = 0) must recover the Lorentz speed; the plate reports v_meas / v against 1, and exterior energy against 0. Close the loop and the lump paves a faster track and stays bound. The plate measured **1.20** with E_out/E still ~0. The spiral view is the worldline: radius is space, angle is time, so a constant speed is an Archimedean spiral. `#hendrick` still opens it so old hashes don't die. The tab is Track.
+- **Track.** A sine-Gordon breather that writes its own index from strain. That is a self-written waveguide (Monro, de Sterke, Poladian, J. Mod. Opt. 1998) and a photorefractive soliton (Segev) on a Josephson breather, not a private name. Open loop (η = 0) must recover the Lorentz speed; the plate reports v_meas / v against 1, and exterior energy against 0. Close the loop and the lump paves a faster track and stays bound. The plate measured **1.20** with E_out/E still ~0. The spiral view is the worldline: radius is space, angle is time, so a constant speed is an Archimedean spiral. `#track` opens it. The tab is Track.
 - **Caustic Sea.** A Swift–Hohenberg height acting as its own phase screen, the caustic writing that height. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). Open loop corr(h, I) near 0. Closed, the plate measured **0.281**. The name is the picture, not an invention.
 
 **New as engineering, and small but general.** Four ideas here would transfer to other projects:

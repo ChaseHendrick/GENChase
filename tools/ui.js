@@ -193,7 +193,7 @@ const { chromium } = require('playwright');
     id: document.querySelector('.tab[aria-selected="true"]') && document.querySelector('.tab[aria-selected="true"]').dataset.id,
     seed: (document.querySelector('#seed') || {}).value,
   }));
-  t('#hendrick still opens Track', alias.id === 'track' && alias.seed === 'alias-check', alias);
+  t('#hendrick opens Hendrick', alias.id === 'hendrick' && alias.seed === 'alias-check', alias);
 
   console.log('pageerrors:', errs.length? errs.slice(0,3): 'none');
   await b.close();

@@ -23,7 +23,7 @@ One HTML file of seeded scientific simulations. Each tab reprints from a hash. G
 
 Copy link (L) transfers the seed and every slider that is not at the factory default. Print size, ppi, colophon, panel side and witness quiet stay on the viewer's machine.
 
-Aliases: #hendrick → track.
+Aliases: (none).
 
 ## Adding a tab
 
@@ -37,4 +37,4 @@ All randomness through U.makeRng(seed). Math.random in a sim is a bug. Discrete 
 
 ## Counts
 
-116 techniques in this build.
+117 techniques in this build.
