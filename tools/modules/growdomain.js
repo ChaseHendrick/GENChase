@@ -497,7 +497,7 @@
   }
 
   const MODE_LABEL = { sheet: 'sheet', plane: 'plane' };
-  const LAW_LABEL = { exp: 'exponential', lin: 'linear', log: 'logistic' };
+  const LAW_LABEL = { exp: 'exp growth', lin: 'linear', log: 'logistic' };
   const KIN_LABEL = { sch: 'Schnakenberg', gm: 'Gierer-Meinhardt' };
 
   /* ---------- Growing Domain ---------- */
@@ -862,10 +862,10 @@
         const D = P.D, L = P.plane ? (rowsDone ? Lrow[0] : P.L0) : (rowsDone ? Lrow[rowsDone - 1] : P.L0);
         const pred = P.kSel * L / PI;
         const win = D.ok
-          ? (D.dCrit > 0 ? 'd <b>' + P.Dv.toFixed(1) + '</b> over d_c ' + D.dCrit.toFixed(1) : 'window <b>open</b>')
+          ? (D.dCrit > 0 ? 'd <b>' + P.Dv.toFixed(1) + '</b> > d_c ' + D.dCrit.toFixed(1) : 'window <b>open</b>')
           : '<b>outside the Turing window</b>: ' + failure(D);
         const tr = trace.length
-          ? trace.slice(-4).map(x => x.n).join(' → ')
+          ? trace.slice(-3).map(x => x.n).join(' → ')
           : (P.plane && modeMN ? 'peak (' + modeMN.m + ', ' + modeMN.n + ')' : 'no pattern yet');
         // The plane's radius is a weighted centroid and carries an error bar of its own; the sheet's
         // count is an integer read straight off the field, so it is labelled exact rather than given
@@ -915,8 +915,8 @@
             stepsDone.toLocaleString() + '</b></span>' +
           '<span>' + KIN_LABEL[P.K.kind] + ', ' + LAW_LABEL[s.law] + ' · ' + win +
             ' · L <b>' + P.L0.toFixed(2) + ' → ' + L.toFixed(2) + '</b></span>' +
-          '<span>' + (P.plane ? 'ρ' : 'n') + ' ' + meas + ' of <b>' + pred.toFixed(1) +
-            '</b> predicted · ' + tr + '</span>' +
+          '<span>' + (P.plane ? 'ρ' : 'n') + ' ' + meas + ' of <b>' + pred.toFixed(1) + '</b> · ' +
+            tr + '</span>' +
           '<span>' + chk + (P.clamped ? ' · run trimmed to fit' : '') + (extra ? ' · ' + extra : '') + '</span>'
         );
       }
