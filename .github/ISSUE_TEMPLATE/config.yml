@@ -8,7 +8,7 @@ contact_links:
     about: Commits, pull requests, and what belongs in this file.
   - name: Catalog
     url: https://github.com/SharpMeow/GENChase/blob/main/TECHNIQUES.md
-    about: Every tab, with the hash that reprints it. Check here before proposing a technique.
+    about: Every tab, with the hash that reprints it. The count is the live catalog, not a social card. Check here before proposing a technique.
   - name: Prior-art ledger
     url: https://github.com/SharpMeow/GENChase/blob/main/RESEARCH.md
     about: What was searched, what was not. Read this before claiming something is new.

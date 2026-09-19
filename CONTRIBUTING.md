@@ -32,7 +32,7 @@ The eight exact plates check. The citation is one hundred seventeen.
 
 Not `fix`, not `WIP`, not a dump of files. Not Conventional Commits prefixes (`feat:`, `chore:`); the log is read as English.
 
-A commit that adds a tab also regenerates the catalog (`node tools/index.js`) in that same commit. A hand-edited `TECHNIQUES.md` is already wrong.
+A commit that adds a tab also regenerates the catalog (`node tools/index.js`) in that same commit. A hand-edited `TECHNIQUES.md` is already wrong. If the count moved, `README.md`, `CITATION.cff` and `og.jpg` move with it. The social card carries the number in a JPEG COM comment; `node tools/lint.js` fails when that comment does not match the file.
 
 Author, committer, and any `Co-authored-by` trailer use only:
 
