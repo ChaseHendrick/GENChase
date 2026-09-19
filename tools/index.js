@@ -11,6 +11,7 @@
 // plate exactly, which is the thing a reader, or a program reading on someone's behalf, actually needs.
 const path = require('path'), fs = require('fs');
 const { chromium } = require('playwright');
+const count = require('./count.js');
 
 (async () => {
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'studio.html');
@@ -161,8 +162,9 @@ All randomness through U.makeRng(seed). Math.random in a sim is a bug. Discrete 
 
 ## Counts
 
-${mods.length} techniques in this build.
+${mods.length} techniques in this build. README, CITATION.cff, RESEARCH.md, DESIGN-PLAN.md, the studio head, and .github/description.txt are stamped by this command. Do not hand-edit the number.
 `;
   fs.writeFileSync(path.join(root, 'llms.txt'), llms);
-  console.log('wrote TECHNIQUES.md, techniques.json, llms.txt:', mods.length, 'techniques');
+  const stamped = count.stampRepo(fs, path, root, mods.length, mods);
+  console.log('wrote TECHNIQUES.md, techniques.json, llms.txt, and stamped', stamped.n, 'into the prose');
 })();
