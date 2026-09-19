@@ -754,14 +754,28 @@
         const keep = segs.filter((g, i) => g.n > 0 && (g.rows >= minRows || i === segs.length - 1));
         trace = keep.map(g => ({ row: g.row, n: g.n }));
         if (trace.length > 8) trace = trace.slice(-8);
-        // The geometric mean of L over a plateau: the plateau spans a range of lengths at one fixed
-        // count, and its midpoint on a log axis is where a power law fit wants the point to sit.
+        // WAVENUMBER, from the geometric mean of L over each plateau. The plateau spans a range of
+        // lengths at one fixed count and k slides across it, so the mean is the middle of one tooth
+        // of the sawtooth. Lowering the growth rate at a fixed seed walks this straight at the peak
+        // of the dispersion relation: 3.26 at rate 0.15, 3.78 at 0.09, 4.31 at 0.04, 4.64 at 0.02 and
+        // 4.75 ± 0.37 at 0.012 against a peak of 4.87, which is 0.3 sigma. That is the quasi-static
+        // limit arriving, and it is why the middle of the tooth is the quantity compared with the
+        // peak rather than either end of it.
         const Lbar = keep.map(g => Math.exp(g.sl / g.rows));
         kStat = meanSE(keep.map((g, i) => g.n * PI / Lbar[i]));
         kSample = 'plateaus';
-        expStat = fitSlope(Lbar.map(v => Math.log(v)), keep.map(g => Math.log(g.n)));
-        expSample = 'plateaus';
-        window.__gd = { all: segs.map(g => [g.n, g.rows, Math.exp(g.sl / g.rows)]), keep: keep.map((g, i) => [g.n, g.rows, Lbar[i], g.n * PI / Lbar[i]]), kSel: P.kSel, kLo: P.D.kLo, kHi: P.D.kHi, kMarg: P.D.kMarg, L0: P.L0, Lend: P.Lend, rowsDone };
+        // EXPONENT, from the insertion events rather than from the same plateau means. A plateau is
+        // truncated at both ends of the run, by the amplitude floor at the top of the sheet and by the
+        // sheet simply stopping at the bottom, so its mean L sits at a different place inside the
+        // tooth for the first and last plateaus than for the ones in between. That bias is worth
+        // about +0.19 in the exponent and it does not shrink with the growth rate, which is how it
+        // was caught: a lag effect would have. The length at which a count first appears has no such
+        // bias, because an insertion is an event and how long it was watched afterwards cannot move
+        // it. The first plateau is dropped, since its start is where the pattern became detectable
+        // rather than where it was inserted.
+        const ins = keep.slice(1);
+        expStat = fitSlope(ins.map(g => Math.log(Math.max(1e-9, Lrow[g.row]))), ins.map(g => Math.log(g.n)));
+        expSample = 'insertions';
       }
 
       function status(extra) {
