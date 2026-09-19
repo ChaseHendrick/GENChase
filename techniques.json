@@ -2048,6 +2048,26 @@
       "vectors": true
     },
     {
+      "id": "hendrick",
+      "name": "Hendrick",
+      "subtitle": "a breather that paves the index it runs on, drawn as its worldline",
+      "equation": "φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1)",
+      "credit": "The sine-Gordon breather is exact; Seeger, Donth and Kochendorfer (1953), Faddeev and Takhtajan. A prescribed index n(x) is an inhomogeneous Josephson junction, which is a paper. Writing n from the breather's own strain, so the lump lays the track it runs on, is not. Open loop (η = 0) must recover the Lorentz speed; the plate reports v_meas / v against 1, and exterior energy against 0. No law is claimed. The coupling is the artifact. This file calls the locked, faster lump Hendrick.",
+      "blurb": "A sine-Gordon breather is a lump that rings and never radiates. Give the medium an index n that the lump writes from its own strain, and the exact solution is no longer exact: it paves a faster track and keeps its bound envelope, until you write too hard and it tears. The control is η = 0, where the measured speed has to match the Lorentz boost. Close the loop and the worldline is an Archimedean spiral, because radius is space and angle is time. Braid is three lumps at once. The status line prints v_meas / v against 1. If the open loop were wrong, the closed loop would not be a result.",
+      "order": 100,
+      "seed": "",
+      "presets": [
+        "pave",
+        "braid",
+        "open",
+        "road",
+        "strip",
+        "rest",
+        "torn"
+      ],
+      "vectors": false
+    },
+    {
       "id": "knotlight",
       "name": "Knotted Light",
       "subtitle": "a trefoil of darkness, an open book, a bark with no tangent · 2001 / this plate",
@@ -2067,11 +2087,11 @@
       "vectors": false
     },
     {
-      "id": "hendrick",
-      "name": "Hendrick",
+      "id": "causticsea",
+      "name": "Caustic Sea",
       "subtitle": "a sea that focuses its own light, and the light that writes the sea",
       "equation": "∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/|det(I + s Hess h)|",
-      "credit": "The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class of experiments. The closed loop — a Swift–Hohenberg height acting as its own phase screen, the caustic writing that height — is not a paper. It is named Hendrick in this file because it did not exist until the plate did. No law is claimed; the coupling is the artifact.",
+      "credit": "The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class of experiments. The closed loop — a Swift–Hohenberg height acting as its own phase screen, the caustic writing that height — is not a paper. This file calls the closed loop Caustic Sea. No law is claimed; the coupling is the artifact.",
       "blurb": "A patterned sea focuses light. The light heats the sea. The sea changes, and so does the focus. Each piece of that sentence is published. The sentence itself is not: Swift–Hohenberg never looked at its own caustic, and Berry’s map never wrote the height that made it. Close the loop and the folds lock to the crests. Open it (η = 0) and you have an ordinary pattern with an ordinary caustic sitting on top, uncorrelated. The status line reports corr(h, I), which the loop drives positive and the open system leaves near 0.",
       "order": 102,
       "seed": "",
@@ -2082,25 +2102,6 @@
         "rolls",
         "tight",
         "over"
-      ],
-      "vectors": false
-    },
-    {
-      "id": "track",
-      "name": "Track",
-      "subtitle": "a breather that paves the index it runs on",
-      "equation": "φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1)",
-      "credit": "The sine-Gordon breather is exact; Seeger–Donth–Kochendörfer (1953), Faddeev–Takhtajan. A prescribed index n(x) is an inhomogeneous Josephson junction, which is a paper. Writing n from the breather’s own strain, so the lump lays the track it runs on, is not. Open loop (η = 0) must recover the Lorentz speed; the plate reports v_meas / v against 1, and exterior energy against 0. No law is claimed. The coupling is the artifact.",
-      "blurb": "A sine-Gordon breather is a lump that rings and never radiates. Give the medium an index n that the lump writes from its own strain, and the same exact solution is no longer exact: it paves a faster track and keeps its bound envelope, until you write too hard and it tears. The control is η = 0, where the measured speed has to match the Lorentz boost. The status line prints both numbers. If the open loop were wrong, the closed loop would not be a result.",
-      "order": 103,
-      "seed": "",
-      "presets": [
-        "pave",
-        "open",
-        "rest",
-        "hard",
-        "tight",
-        "torn"
       ],
       "vectors": false
     }
