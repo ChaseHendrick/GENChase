@@ -168,6 +168,7 @@ const designPlan = fs.existsSync(path.join(root, 'DESIGN-PLAN.md')) ? fs.readFil
 const llmsTxt = fs.existsSync(path.join(root, 'llms.txt')) ? fs.readFileSync(path.join(root, 'llms.txt'), 'utf8') : '';
 const agentsMd = fs.existsSync(path.join(root, 'AGENTS.md')) ? fs.readFileSync(path.join(root, 'AGENTS.md'), 'utf8') : '';
 const researchMd = fs.existsSync(path.join(root, 'RESEARCH.md')) ? fs.readFileSync(path.join(root, 'RESEARCH.md'), 'utf8') : '';
+const contributingMd = fs.existsSync(path.join(root, 'CONTRIBUTING.md')) ? fs.readFileSync(path.join(root, 'CONTRIBUTING.md'), 'utf8') : '';
 if (!researchMd) fail('RESEARCH.md is missing');
 for (const [label, text] of [
   ['studio.html', src],
@@ -178,6 +179,7 @@ for (const [label, text] of [
   ['llms.txt', llmsTxt],
   ['AGENTS.md', agentsMd],
   ['RESEARCH.md', researchMd],
+  ['CONTRIBUTING.md', contributingMd],
 ]) {
   if (!text) continue;
   // Only a spelled number that is actually counting techniques. Matching the word on its own
@@ -192,6 +194,32 @@ for (const [label, text] of [
   const digits = [...text.matchAll(/\b(\d{2,3})\s+(?:pattern-forming systems|sciences|techniques)\b/g)].map(x => +x[1]);
   for (const d of new Set(digits)) {
     if (d !== mods.length) fail(label + ' says "' + d + '" techniques but the file registers ' + mods.length);
+  }
+}
+
+/* ---- 7c. the social card caption is the catalog, not a leftover sixty-six ---- */
+// og.jpg is what GitHub and the Open Graph tags show. The number lives in a JPEG COM
+// comment so this check does not need OCR. Rewrite the card and the comment together.
+{
+  const ogPath = path.join(root, 'og.jpg');
+  if (!fs.existsSync(ogPath)) fail('og.jpg is missing');
+  else {
+    const buf = fs.readFileSync(ogPath);
+    let comment = '';
+    for (let i = 2; i < buf.length - 4 && buf[i] === 0xFF; ) {
+      const marker = buf[i + 1];
+      if (marker === 0xD8 || marker === 0xD9) { i += 2; continue; }
+      if (marker === 0xDA) break;
+      const len = (buf[i + 2] << 8) | buf[i + 3];
+      if (len < 2) break;
+      if (marker === 0xFE) comment += buf.slice(i + 4, i + 2 + len).toString('utf8');
+      i += 2 + len;
+    }
+    const want = String(mods.length);
+    if (!comment.includes(want)) {
+      fail('og.jpg JPEG comment is "' + comment.trim() + '" but the file registers ' + mods.length +
+        ' techniques; recaption the card and write the count into the COM comment');
+    }
   }
 }
 

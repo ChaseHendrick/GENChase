@@ -22,7 +22,7 @@
 
 Working file: `/home/user/GENChase/studio.html` (27,369 lines when this survey ran; 43,926 now). Harness: `/home/user/GENChase/tools/`.
 
-**This survey ran against a catalog of 63.** The studio now has 117. Figures of 63 below are the survey's, not the present catalog. Do not cite them as current. Pixel measurements, tab-strip widths and "14 of 63 tabs" are what the surveyors measured that day.
+**This survey ran against a catalog of 63.** The studio now has 117. Figures of 63 below are the survey's, not the present catalog. Do not cite them as current. Pixel measurements, tab-strip widths and "14 of 63 tabs" are what the surveyors measured that day. Archived `promptPreview` blocks still say 116 because that was the catalog the week the survey ran. Do not copy those prompts into a new survey without updating the count.
 
 Two corrections to the survey before anything else, because they change what you should trust in it.
 
@@ -470,7 +470,7 @@ Structure it as:
 
 Working file: `/home/user/GENChase/studio.html` (27,369 lines when this survey ran; 43,926 now). Harness: `/home/user/GENChase/tools/`.
 
-**This survey ran against a catalog of 63.** The studio now has 117. Figures of 63 below are the survey's, not the present catalog. Do not cite them as current. Pixel measurements, tab-strip widths and "14 of 63 tabs" are what the surveyors measured that day.
+**This survey ran against a catalog of 63.** The studio now has 117. Figures of 63 below are the survey's, not the present catalog. Do not cite them as current. Pixel measurements, tab-strip widths and "14 of 63 tabs" are what the surveyors measured that day. Archived `promptPreview` blocks still say 116 because that was the catalog the week the survey ran. Do not copy those prompts into a new survey without updating the count.
 
 Two corrections to the survey before anything else, because they change what you should trust in it.
 
