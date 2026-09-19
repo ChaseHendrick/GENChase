@@ -2,11 +2,9 @@
   "project": "GENChase",
   "repository": "https://github.com/SharpMeow/GENChase",
   "file": "studio.html",
-  "count": 116,
+  "count": 117,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
-  "aliases": {
-    "hendrick": "track"
-  },
+  "aliases": {},
   "familiarityBuckets": [
     "ubiquitous",
     "common",
@@ -2825,9 +2823,7 @@
       "runningDefault": false,
       "headline": "",
       "hash": "#track",
-      "aliases": [
-        "hendrick"
-      ]
+      "aliases": []
     },
     {
       "id": "knotlight",
@@ -3095,6 +3091,33 @@
       "runningDefault": false,
       "headline": "",
       "hash": "#lump",
+      "aliases": []
+    },
+    {
+      "id": "hendrick",
+      "name": "Hendrick",
+      "tab": "Hendrick",
+      "subtitle": "min ω t_c = √2 on Gröbli's collapsing triangle · 1877 / 2010",
+      "equation": "ω t_c = (2 − cos²θ) / sin(2θ)  on  Γ = (1, 1, −1/2), L = 0;   min = √2  at  tan θ = 1/√2",
+      "credit": "Three point vortices can collapse self-similarly in finite time. W. Gröbli, Spezielle Probleme über die Bewegung geradliniger paralleler Wirbelfäden (1877); Synge, Can. J. Math. 1, 257 (1949); Novikov, Sov. Phys. JETP 41, 937 (1975); Aref, Phys. Fluids 22, 057104 (2010), who gave closed formulae for the collapse rate and the angular frequency separately. This plate is that motion. The lock it checks is not in those papers: on the family Γ = (1, 1, −1/2) the dimensionless product is ω t_c = (2 − cos²θ) / sin(2θ), and that function has a unique minimum of √2 on the collapsing arc, at tan θ = 1/√2, the triangle with angles π/8, π/4, 5π/8. At construction θ = 45° the same product is 3/2. If the vortices sit on a different similar triangle, or if the Biot-Savart kernel is wrong, the ratio against √2 fails.",
+      "blurb": "Three point vortices of circulations 1, 1, and −1/2, placed so their signed angular impulse vanishes, collapse in a finite time while staying similar to themselves. Each path is a logarithmic spiral into the center of vorticity. Gröbli found the motion in 1877; Aref wrote the rate and the spin as separate formulae. Their product on this family is (2 − cos²θ) / sin(2θ), which bottoms at √2 only at the triangle whose angles are 22.5°, 45°, and 112.5°. The status line is that ratio against 1, the similarity residual against 0, and signed L against 0. Family walks the L=0 circle; at 90° the triangle is equilateral and only rotates. Broken steps off the circle so the lock can fail.",
+      "order": 117,
+      "seed": "octant-root-two",
+      "presets": [
+        "octant",
+        "threehalves",
+        "equal",
+        "tight",
+        "overlay",
+        "polar",
+        "broken"
+      ],
+      "vectors": true,
+      "familiarity": "unseen",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "t",
+      "hash": "#hendrick/octant-root-two",
       "aliases": []
     }
   ]

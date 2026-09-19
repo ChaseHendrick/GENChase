@@ -1,6 +1,6 @@
 # Techniques
 
-116 pattern-forming systems, one file. Generated from `studio.html` by `node tools/index.js`; do not edit by hand.
+117 pattern-forming systems, one file. Generated from `studio.html` by `node tools/index.js`; do not edit by hand.
 
 Open `studio.html` and append the hash to reconstruct a plate exactly. `#snowflake/gravner-2008` is a complete recipe: the technique, and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 
@@ -126,6 +126,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Crapper**<br><sub>exact finite-amplitude pure-capillary waves · 1957</sub> | `#crapper` | X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4\|A\|/(π(1−A²)) | SVG | can run | Occasional |
 | **Hasimoto**<br><sub>a soliton on a vortex filament · 1972</sub> | `#hasimoto` | γ_t = γ_s × γ_ss,   ψ = κ exp(i ∫ τ ds),   κ = 2ν sech(ν(s−2τ₀ t)),   c = 2τ₀ | SVG | can run | Occasional |
 | **Lump**<br><sub>KP-I lumps · 1977</sub> | `#lump` | (u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b² | raster | can run | Occasional |
+| **Hendrick**<br><sub>min ω t_c = √2 on Gröbli's collapsing triangle · 1877 / 2010</sub> | `#hendrick/octant-root-two` | ω t_c = (2 − cos²θ) / sin(2θ)  on  Γ = (1, 1, −1/2), L = 0;   min = √2  at  tan θ = 1/√2 | SVG | can run | Almost unseen |
 
 ## Credits
 
@@ -362,4 +363,6 @@ None of the science is original to this project. Each technique names the people
 **Hasimoto**. H. Hasimoto, J. Fluid Mech. 51, 477 (1972), mapped the local-induction approximation for a thin vortex filament to the cubic nonlinear Schrödinger equation and found the sech soliton: a loop of helical motion that travels along a line vortex at speed equal to twice the torsion. The explicit traveling-wave curve sampled here is the solitary-wave member of S. Kida, J. Fluid Mech. 112, 397 (1981). This plate is a print of that curve. It is not a new law of vortex motion.
 
 **Lump**. Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Multi-lumps: Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). They pass through each other with no phase shift. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.
+
+**Hendrick**. Three point vortices can collapse self-similarly in finite time. W. Gröbli, Spezielle Probleme über die Bewegung geradliniger paralleler Wirbelfäden (1877); Synge, Can. J. Math. 1, 257 (1949); Novikov, Sov. Phys. JETP 41, 937 (1975); Aref, Phys. Fluids 22, 057104 (2010), who gave closed formulae for the collapse rate and the angular frequency separately. This plate is that motion. The lock it checks is not in those papers: on the family Γ = (1, 1, −1/2) the dimensionless product is ω t_c = (2 − cos²θ) / sin(2θ), and that function has a unique minimum of √2 on the collapsing arc, at tan θ = 1/√2, the triangle with angles π/8, π/4, 5π/8. At construction θ = 45° the same product is 3/2. If the vortices sit on a different similar triangle, or if the Biot-Savart kernel is wrong, the ratio against √2 fails.
 

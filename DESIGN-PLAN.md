@@ -22,7 +22,7 @@
 
 Working file: `/home/user/GENChase/studio.html` (27,369 lines when this survey ran; 43,926 now). Harness: `/home/user/GENChase/tools/`.
 
-**This survey ran against a catalog of 63.** The studio now has 116. Figures of 63 below are the survey's, not the present catalog. Do not cite them as current. Pixel measurements, tab-strip widths and "14 of 63 tabs" are what the surveyors measured that day.
+**This survey ran against a catalog of 63.** The studio now has 117. Figures of 63 below are the survey's, not the present catalog. Do not cite them as current. Pixel measurements, tab-strip widths and "14 of 63 tabs" are what the surveyors measured that day.
 
 Two corrections to the survey before anything else, because they change what you should trust in it.
 
@@ -141,11 +141,11 @@ The phone top bar fails in two directions at once. Horizontally, `.bar` is 1,531
 
 ## 3. The navigation problem
 
-At 1440x900 the strip is 5,982 px wide showing 14 of 63 tabs (the survey's count; there are 116 now), with `scrollbar-width: none` and `.tabs::-webkit-scrollbar { display: none }`, so there is nothing to drag, and a plain vertical wheel over it moves neither the strip nor the page. Registration order is arbitrary to a viewer: Physarum 3D at position 1 and Physarum at 4; Turing Patterns at 43 and Reaction-Diffusion at 49; 12-fold at 36 and Aperiodic Tilings at 50. Two mitigations do exist and should survive: the end fade is live, and the active tab auto-scrolls into view on load.
+At 1440x900 the strip is 5,982 px wide showing 14 of 63 tabs (the survey's count; there are 117 now), with `scrollbar-width: none` and `.tabs::-webkit-scrollbar { display: none }`, so there is nothing to drag, and a plain vertical wheel over it moves neither the strip nor the page. Registration order is arbitrary to a viewer: Physarum 3D at position 1 and Physarum at 4; Turing Patterns at 43 and Reaction-Diffusion at 49; 12-fold at 36 and Aperiodic Tilings at 50. Two mitigations do exist and should survive: the end fade is live, and the active tab auto-scrolls into view on load.
 
 **The strip stays. It stops being the only route.** Three pieces, in this order:
 
-**Piece one, now: a filter input pinned at the left of the strip**, outside the scroller so it never scrolls away. It matches against `name`, `subtitle`, `credit`, `equation` and `blurb`, filters the strip in place, jumps to the first match on Enter, clears on Escape. One input and a substring match. That input has shipped. At 116 techniques it is no longer enough on its own — the Seen elsewhere filter sits next to it for the same reason.
+**Piece one, now: a filter input pinned at the left of the strip**, outside the scroller so it never scrolls away. It matches against `name`, `subtitle`, `credit`, `equation` and `blurb`, filters the strip in place, jumps to the first match on Enter, clears on Escape. One input and a substring match. That input has shipped. At 117 techniques it is no longer enough on its own — the Seen elsewhere filter sits next to it for the same reason.
 
 **Piece two, now: translate vertical wheel deltas over `#tabs` into `scrollLeft`**, so an ordinary mouse works. Five lines.
 
@@ -470,7 +470,7 @@ Structure it as:
 
 Working file: `/home/user/GENChase/studio.html` (27,369 lines when this survey ran; 43,926 now). Harness: `/home/user/GENChase/tools/`.
 
-**This survey ran against a catalog of 63.** The studio now has 116. Figures of 63 below are the survey's, not the present catalog. Do not cite them as current. Pixel measurements, tab-strip widths and "14 of 63 tabs" are what the surveyors measured that day.
+**This survey ran against a catalog of 63.** The studio now has 117. Figures of 63 below are the survey's, not the present catalog. Do not cite them as current. Pixel measurements, tab-strip widths and "14 of 63 tabs" are what the surveyors measured that day.
 
 Two corrections to the survey before anything else, because they change what you should trust in it.
 

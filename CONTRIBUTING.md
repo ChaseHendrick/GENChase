@@ -27,7 +27,7 @@ Do not push to `main`. Do not merge your own pull request unless you maintain th
 One subject line, sentence case, a period, what changed. A body only when the subject cannot carry the why.
 
 ```
-The eight exact plates check. The citation is one hundred sixteen.
+The eight exact plates check. The citation is one hundred seventeen.
 ```
 
 Not `fix`, not `WIP`, not a dump of files. Not Conventional Commits prefixes (`feat:`, `chore:`); the log is read as English.
