@@ -134,15 +134,22 @@
   // Exponential and linear stop when the domain has reached its target. Logistic never reaches it, so
   // it stops at nine tenths of the way, which leaves the bottom of the sheet visibly static: that flat
   // ending is the whole point of the logistic preset.
+  //
+  // Nine tenths of the way means L = L0 (1 + 0.9 (Gf - 1)). Put that into the logistic form and the
+  // exponential cancels to e^{-r t} = 1 / (9 Gf + 1), so the stopping time is log(9 Gf + 1) / r. The
+  // earlier log(9 (Gf - 1)) / r is a different time entirely: it lands at 0.70 of the way for a growth
+  // factor of 1.5 and 0.89 for a factor of 10, so the logistic sheet stopped at a different point on
+  // the curve for every setting of the slider and the flat tail the preset is about was sometimes
+  // missing. Checked against a direct evaluation of L(t) at both times for Gf in {1.5, 2, 5, 8, 10}.
   function endTime(law, Gf, r) {
     const g = Math.max(1.02, Gf);
     if (law === 'lin') return (g - 1) / r;
-    if (law === 'log') return Math.log(9 * (g - 1)) / r;
+    if (law === 'log') return Math.log(9 * g + 1) / r;
     return Math.log(g) / r;
   }
   function growFor(law, r, tMax) {              // inverse of endTime, used by the budget clamp
     if (law === 'lin') return 1 + r * tMax;
-    if (law === 'log') return 1 + Math.exp(r * tMax) / 9;
+    if (law === 'log') return (Math.exp(r * tMax) - 1) / 9;
     return Math.exp(r * tMax);
   }
 
@@ -198,7 +205,17 @@
     const cdim = plane ? 8 : 4;
     const diffRate = cdim * Math.max(Du, Dv) * N * N / (L0 * L0);
     const reactRate = Math.max(Math.abs(K.fu) + Math.abs(K.fv), Math.abs(K.gu) + Math.abs(K.gv));
-    const dtMax = 1.6 / (diffRate + reactRate + dims * r);
+    // The dilation rate is largest at t = 0 for every law here: r for exponential, r for linear,
+    // r (Gf - 1) / Gf for logistic. Taking r bounds all three.
+    const diluRate = dims * r;
+    const dtMax = 1.6 / (diffRate + reactRate + diluRate);
+    // Which of the three actually sets the step. On every recipe this tab can reach it is the
+    // diffusive one, by three or four orders of magnitude, and it is evaluated at L0 because D/L(t)^2
+    // is largest when the domain is smallest. The status line says so rather than leaving a reader to
+    // assume it, because the whole hazard of a growing domain is taking that bound at the wrong end.
+    const rates = [[diffRate, 'diffusion at L₀'], [reactRate, 'reaction'], [diluRate, 'dilution']];
+    rates.sort((a, b) => b[0] - a[0]);
+    const bind = rates[0][1], bindShare = rates[0][0] / (diffRate + reactRate + diluRate);
     const perStep = plane ? N * N : N;
     const budgetSteps = (plane ? BUDGET_2D : BUDGET_1D) / perStep;
     const tMax = budgetSteps * dtMax;
@@ -210,7 +227,11 @@
     const rMax = 0.2 * lamRef;
     if (r > rMax) { r = rMax; tEnd = endTime(s.law, Gf, r); }
     if (tEnd > tMax * 1.01) { Gf = Math.max(1.2, growFor(s.law, r, tMax)); tEnd = endTime(s.law, Gf, r); clamped = true; }
-    const rows = plane ? 0 : U.clamp(Math.round(N * (ASPECTS[s.aspect] || 1.25)), 96, 720);
+    // Time rows. More rows is very nearly free, because spr falls as rows rises and the product,
+    // which is the total number of Euler steps, is fixed by tEnd / dt. What it buys is the vertical
+    // resolution of the sheet, which is the axis print quality is limited by. Two and a half rows per
+    // cell of width is where the row bands stop being visible at eight inches.
+    const rows = plane ? 0 : U.clamp(Math.round(N * (ASPECTS[s.aspect] || 1.25) * 2.5), 160, 720);
     let steps, spr, dt;
     if (plane) {
       steps = Math.max(1, Math.ceil(tEnd / dtMax)); spr = steps; dt = tEnd / steps;
@@ -223,8 +244,11 @@
     // and never arrives; taking the target there would leave the sheet permanently a tenth narrower
     // than the plate and put fewer than one pixel on each cell.
     const Lend = lengthAt(s.law, L0, Gf, r, tEnd);
+    // Belt and braces: steps was chosen so that dt <= dtMax, but the bound is the one thing in this
+    // file that a later edit must not be able to break quietly, so it is enforced rather than assumed.
+    if (dt > dtMax) { steps = Math.max(steps, Math.ceil(tEnd / dtMax)); dt = tEnd / steps; if (!plane) spr = Math.ceil(steps / rows); }
     return { K, D, Du, Dv, kSel, lam, plane, dims, N, rows, L0, Lend, Gf, r, tEnd,
-      dtMax, dt, spr, steps, clamped, rateOut: r / lamRef };
+      dtMax, dt, spr, steps, clamped, bind, bindShare, rateOut: r / lamRef };
   }
 
   /* ---- measurement helpers ---- */
@@ -245,16 +269,86 @@
     return c;
   }
 
+  /* ================================================================
+     Uncertainty
+
+     Every number this tab prints next to a theoretical value carries an error bar and the comparison
+     is quoted in standard deviations, because "measured 6.11 against exactly 6" is not a check. The
+     three cases the house rule names all appear here:
+
+       a MEAN over N samples        -> sd / sqrt(N), with N stated,
+       a FITTED EXPONENT            -> the least squares standard error of the slope,
+       a DERIVED quantity           -> propagated from the quantity it came from,
+
+     and the fourth case, an exact combinatorial count, is stated as exact rather than given an
+     invented uncertainty. The stripe count is exactly that: the number of sign changes of u minus its
+     row mean is an integer read off the field, with no sampling in it at all.
+  ================================================================ */
+
+  function meanSE(a) {
+    const n = a.length;
+    if (!n) return { mean: NaN, se: NaN, n: 0 };
+    let m = 0;
+    for (let i = 0; i < n; i++) m += a[i];
+    m /= n;
+    if (n < 2) return { mean: m, se: NaN, n: 1 };
+    let ss = 0;
+    for (let i = 0; i < n; i++) { const d = a[i] - m; ss += d * d; }
+    return { mean: m, se: Math.sqrt(ss / (n - 1) / n), n };
+  }
+
+  // Ordinary least squares slope with the textbook standard error, se(b)^2 = s^2 / Sxx with
+  // s^2 = sum(residual^2) / (n - 2). Computed from the residuals and the spread of the independent
+  // variable, which is the only way it means anything; nothing here is guessed from the scatter of
+  // the points by eye. Three points is the fewest that leaves a degree of freedom, so below that the
+  // caller is told there is no fit rather than handed a slope with no error bar.
+  function fitSlope(xs, ys) {
+    const n = xs.length;
+    if (n < 3) return { a: NaN, se: NaN, n };
+    let mx = 0, my = 0;
+    for (let i = 0; i < n; i++) { mx += xs[i]; my += ys[i]; }
+    mx /= n; my /= n;
+    let sxx = 0, sxy = 0;
+    for (let i = 0; i < n; i++) { const dx = xs[i] - mx; sxx += dx * dx; sxy += dx * (ys[i] - my); }
+    if (!(sxx > 1e-12)) return { a: NaN, se: NaN, n };
+    const a = sxy / sxx, c = my - a * mx;
+    let ss = 0;
+    for (let i = 0; i < n; i++) { const r = ys[i] - (a * xs[i] + c); ss += r * r; }
+    return { a, se: Math.sqrt(ss / (n - 2) / sxx), n };
+  }
+
+  // "1.4σ high", or "0.3σ from it" when the two agree. A deviation is never rounded toward the
+  // theory and never dropped when it is large; measured() below says plainly when it is.
+  function sigmas(v, se, ref) {
+    if (!(isFinite(v) && isFinite(se) && se > 0)) return null;
+    return (v - ref) / se;
+  }
+  function sigTxt(z) {
+    if (z === null) return 'no uncertainty available';
+    const m = Math.abs(z);
+    return m.toFixed(1) + 'σ ' + (m < 0.05 ? 'from it' : (z > 0 ? 'high' : 'low'));
+  }
+  const pm = (v, se, d) => v.toFixed(d) + ' ± ' + (isFinite(se) ? se.toFixed(d) : '?');
+
   // The plane has no single row to count, so the mode index is read off the cosine transform instead.
   // Zero flux walls make cos(m pi xi) cos(n pi eta) the natural basis, so the amplitudes are a plain
   // separable DCT-II, and a pair (m, n) carries |k| = pi sqrt(m^2 + n^2) / L. sqrt(m^2 + n^2) is then
   // the same number a stripe count would be, and is compared with k L / pi in the same breath.
   //
-  // The reported number is the peak of the power binned by that radius, not the single loudest pair.
-  // A spot lattice spreads its energy over every pair on one ring, so which pair happens to come out
-  // largest is close to arbitrary and jumps between seeds while the ring itself does not move.
-  function dominantMode(u, N) {
-    const M = Math.min(N >> 1, 64);
+  // The reported radius is not the single loudest pair. A spot lattice or a labyrinth spreads its
+  // energy over every pair on one ring, so which pair comes out largest is close to arbitrary and
+  // jumps between seeds while the ring itself does not move. The ring is found first, as the peak of
+  // the power binned by integer radius, and the radius is then the power weighted centroid inside a
+  // window of two bins either side of it.
+  //
+  // THE UNCERTAINTY comes from splitting the quadrant into six angular sectors of fifteen degrees and
+  // taking that centroid inside each one. Six independent estimates of the same ring radius, so the
+  // standard error is sd / sqrt(6) and the spread is a real measurement of how round the ring is: an
+  // anisotropic pattern, which is what a stripe field looks like in this basis, widens the error bar
+  // instead of being reported at a precision it does not have.
+  const SECTORS = 6;
+  function ringStat(u, N) {
+    const M = Math.min(N >> 1, 48);
     const cosT = new Float32Array(M * N);
     for (let m = 0; m < M; m++) for (let x = 0; x < N; x++) cosT[m * N + x] = Math.cos(PI * m * (x + 0.5) / N);
     const half = new Float32Array(M * N);            // half[m][y] = sum_x u(x,y) cos(m pi (x+.5)/N)
@@ -267,6 +361,7 @@
         half[m * N + y] = acc;
       }
     }
+    const pw = new Float64Array(M * M);
     const ring = new Float64Array(2 * M + 2);
     let best = 0, bm = 0, bn = 0;
     for (let m = 0; m < M; m++) {
@@ -276,14 +371,33 @@
         let acc = 0;
         const cn = n * N;
         for (let y = 0; y < N; y++) acc += half[hm + y] * cosT[cn + y];
-        const p = acc * acc;
-        ring[Math.round(Math.sqrt(m * m + n * n))] += p;
-        if (p > best) { best = p; bm = m; bn = n; }
+        const p2 = acc * acc;
+        pw[m * M + n] = p2;
+        const rr = Math.sqrt(m * m + n * n);
+        if (rr < M) ring[Math.round(rr)] += p2;
+        if (p2 > best) { best = p2; bm = m; bn = n; }
       }
     }
-    let rb = 0, rp = 0;
-    for (let i = 1; i < ring.length; i++) if (ring[i] > rp) { rp = ring[i]; rb = i; }
-    return { m: bm, n: bn, mode: rb };
+    let peak = 0, rp = 0;
+    for (let i = 1; i < M; i++) if (ring[i] > rp) { rp = ring[i]; peak = i; }
+    const rLo = peak - 2.5, rHi = peak + 2.5;
+    const sec = [];
+    for (let sIdx = 0; sIdx < SECTORS; sIdx++) {
+      const a0 = sIdx * (PI / 2) / SECTORS, a1 = (sIdx + 1) * (PI / 2) / SECTORS;
+      let wsum = 0, rsum = 0;
+      for (let m = 0; m < M; m++) for (let n = 0; n < M; n++) {
+        const p2 = pw[m * M + n];
+        if (!(p2 > 0)) continue;
+        const rr = Math.sqrt(m * m + n * n);
+        if (rr < rLo || rr > rHi) continue;
+        const th = Math.atan2(n, m);
+        if (th < a0 || th >= (sIdx === SECTORS - 1 ? a1 + 1e-6 : a1)) continue;
+        wsum += p2; rsum += p2 * rr;
+      }
+      if (wsum > 0) sec.push(rsum / wsum);
+    }
+    const st = meanSE(sec);
+    return { m: bm, n: bn, peak, rho: isFinite(st.mean) ? st.mean : peak, se: st.se, sectors: st.n };
   }
 
   function pctile(arr, q) {
@@ -384,23 +498,23 @@
     defaults: {
       mode: 'sheet', aspect: '4:5', cells: 192, grid: 80,
       kinetics: 'sch', ka: 0.1, kb: 0.9, gam: 100, dratio: 20,
-      law: 'exp', waves0: 2, grow: 8, rate: 0.033, amp: 0.02,
+      law: 'exp', waves0: 2, grow: 8, rate: 0.04, amp: 0.02,
       view: 'field', rings: true,
       lo: 0.02, hi: 1, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.04,
       seed: 'growdomain-1999',
     },
     presets: {
       insertion: pre('Stripe insertion', { mode: 'sheet', law: 'exp', kinetics: 'sch', ka: 0.1, kb: 0.9, gam: 100,
-        dratio: 20, cells: 192, aspect: '4:5', waves0: 2, grow: 8, rate: 0.033, amp: 0.02,
+        dratio: 20, cells: 192, aspect: '4:5', waves0: 2, grow: 8, rate: 0.04, amp: 0.02,
         view: 'field', lo: 0.02, hi: 1, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.04 }, Pal.graphite),
       angelfish: pre('Angelfish', { mode: 'sheet', law: 'exp', kinetics: 'sch', ka: 0.1, kb: 0.9, gam: 100,
         dratio: 20, cells: 192, aspect: '4:5', waves0: 2.5, grow: 7, rate: 0.038, amp: 0.02,
         view: 'stripes', lo: 0, hi: 1, exposure: 1, gamma: 0.95, contrast: 1.1, grain: 0.08 }, Pal.risograph),
       linear: pre('Linear growth', { mode: 'sheet', law: 'lin', kinetics: 'sch', ka: 0.1, kb: 0.9, gam: 100,
-        dratio: 20, cells: 160, aspect: '4:5', waves0: 2, grow: 4.5, rate: 0.033, amp: 0.02,
+        dratio: 20, cells: 160, aspect: '4:5', waves0: 2, grow: 4.5, rate: 0.038, amp: 0.02,
         view: 'row', lo: 0.02, hi: 1, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.04 }, Pal.kiln),
       saturating: pre('Growth that stops', { mode: 'sheet', law: 'log', kinetics: 'sch', ka: 0.1, kb: 0.9, gam: 100,
-        dratio: 20, cells: 160, aspect: '4:5', waves0: 2, grow: 5, rate: 0.038, amp: 0.02,
+        dratio: 20, cells: 160, aspect: '4:5', waves0: 2, grow: 5, rate: 0.042, amp: 0.02,
         view: 'field', lo: 0.02, hi: 1, exposure: 1, gamma: 0.95, contrast: 1.05, grain: 0.04 }, Pal.verdigris),
       doubling: pre('Mode doubling', { mode: 'sheet', law: 'exp', kinetics: 'sch', ka: 0.1, kb: 0.9, gam: 100,
         dratio: 20, cells: 192, aspect: '4:5', waves0: 2, grow: 8, rate: 0.09, amp: 0.02,
@@ -409,7 +523,7 @@
         dratio: 20, cells: 192, aspect: '4:5', waves0: 2, grow: 6, rate: 0.038, amp: 0.02,
         view: 'row', lo: 0.02, hi: 1, exposure: 1, gamma: 0.9, contrast: 1.1, grain: 0.04 }, Pal.ember),
       plane: pre('Growing plane', { mode: 'plane', law: 'exp', kinetics: 'sch', ka: 0.1, kb: 0.9, gam: 100,
-        dratio: 20, grid: 80, aspect: '1:1', waves0: 4, grow: 2.2, rate: 0.033, amp: 0.02,
+        dratio: 20, grid: 80, aspect: '1:1', waves0: 4, grow: 2.2, rate: 0.048, amp: 0.02,
         view: 'field', rings: true, lo: 0.02, hi: 1, exposure: 1, gamma: 0.95, contrast: 1.05, grain: 0.04 }, Pal.bioluminescent),
     },
     closedGroups: ['Kinetics'],
@@ -431,10 +545,18 @@
       s.waves0 = U.clamp(Number(s.waves0) || 2, 1.5, 8);
       if (s.kinetics === 'gm') s.kb = U.clamp(Number(s.kb) || 1, 0.3, 1.6);
       const p = plan(s);
-      // Rounded up, not to nearest: a rate rounded down is a run slightly longer than the budget, and
-      // plan() would then trim it again on every rebuild and say so in the status for no reason.
-      s.rate = U.clamp(Math.ceil(p.rateOut * 500) / 500, 0.01, 0.2);
-      s.grow = U.clamp(Math.round(p.Gf * 10) / 10, 1.5, 10);
+      // Write the trimmed run back onto the sliders only when plan() actually trimmed it. Rounding an
+      // untouched rate onto the slider's step moves a recipe that was already inside the budget, and a
+      // default that is not a fixed point of its own sanitize appears in every hash as a difference
+      // from itself: the shell records the diff against the defaults, so a default that sanitizes to
+      // something else is carried in every link this tab ever makes.
+      //
+      // The direction of each rounding matters too. The rate is rounded up, because a rate rounded
+      // down is a run slightly longer than the budget and plan() would trim it again on the next
+      // rebuild. The growth factor is rounded down for the same reason from the other side.
+      const rate0 = Number(s.rate) || 0.04, grow0 = Number(s.grow) || 8;
+      if (p.rateOut > rate0 * 1.0005) s.rate = U.clamp(Math.ceil(p.rateOut * 500) / 500, 0.01, 0.2);
+      if (p.Gf < grow0 - 1e-6) s.grow = U.clamp(Math.floor(p.Gf * 10) / 10, 1.5, 10);
     },
     surprise(rng) {
       const plane = rng() < 0.22;
@@ -457,7 +579,7 @@
         law,
         waves0: plane ? rng.range(3, 5.5) : rng.range(1.8, 3),
         grow: plane ? rng.range(1.8, 2.6) : (law === 'exp' ? rng.range(5, 9) : rng.range(3.5, 5.5)),
-        rate: rng.pick([0.028, 0.033, 0.04, 0.05, 0.08]),
+        rate: rng.pick([0.04, 0.042, 0.05, 0.06, 0.09]),
         amp: rng.range(0.01, 0.04),
         view: plane ? 'field' : rng.pick(['field', 'field', 'row', 'stripes']),
         rings: true,
@@ -470,9 +592,6 @@
     create(host) {
       const canvas = host.canvas;
       const ctx = canvas.getContext('2d');
-      const buf = document.createElement('canvas');      // the plate at one pixel per cell
-      const bctx = buf.getContext('2d');
-
       let P = null;                 // the current plan
       let U1 = null, V1 = null;     // working fields
       let UN = null, VN = null;     // scratch for the out-of-place update
@@ -482,6 +601,7 @@
       let rowsDone = 0, stepsDone = 0, timer = 0, building = false, pending = null;
       let lo = 0, hi = 1;           // measured black and white points of the field
       let trace = [], measN = 0, measLabel = 'stripes', modeMN = null;
+      let kStat = null, kSample = '', expStat = null, expSample = '', expVar = 'n', snaps = [];
 
       function stop() { clearTimeout(timer); timer = 0; }
 
@@ -562,18 +682,46 @@
         if (!(hi > lo)) { hi = lo + 1e-3; }
       }
 
-      /* ---- the measurement the tab exists for ---- */
+      /* ---- the measurement the tab exists for, and its error bars ---- */
       // Always on the activator, whatever the picture is showing: the prediction is a statement about
       // u, and switching the view must not change the number the plate reports.
+      //
+      // Two checks, against two numbers that are fixed before the run starts.
+      //
+      //   MODE DOUBLING. The wavelength is fixed in physical space, so a domain of length L carries
+      //   a stripe count proportional to L: n ∝ L^1, with the exponent exactly one. That is the whole
+      //   content of the angelfish observation, and a fitted exponent is the honest way to test it,
+      //   because it does not care where in the band the pattern happens to sit.
+      //
+      //   WAVENUMBER. k = n pi / L against the peak of the dispersion relation. This one is not
+      //   obliged to agree and usually does not, for a reason worth printing rather than hiding: at
+      //   a fixed stripe count k falls as the domain grows, until the pattern splits and k jumps
+      //   back up, so the realized k saws back and forth inside the unstable band. The scatter quoted
+      //   on it is that sawtooth. It is physical, not instrumental.
+      //
+      //   The sample is the plateaus, not the rows. Six hundred rows holding eight distinct counts
+      //   are eight measurements written down seventy five times each, and averaging over rows would
+      //   divide the error bar by a factor of nine for nothing.
       function measure() {
         trace = []; measN = 0; modeMN = null;
+        kStat = null; expStat = null; kSample = ''; expSample = '';
         if (P.plane) {
           if (!rowsDone) return;
-          modeMN = dominantMode(SU, P.N);
-          measN = modeMN.mode;
-          measLabel = 'dominant mode';
+          expVar = 'ρ';
+          measLabel = 'ring';
+          modeMN = ringStat(SU, P.N);
+          measN = modeMN.rho;
+          const L = Lrow[0];
+          // k = pi rho / L, and L is analytic rather than measured, so the uncertainty propagates
+          // straight through a constant factor: se(k) = pi se(rho) / L.
+          kStat = { mean: PI * modeMN.rho / L, se: PI * modeMN.se / L, n: modeMN.sectors };
+          kSample = 'sectors of the ring';
+          const pts = snaps.filter(v => v.L > 0 && v.rho > 0);
+          expStat = fitSlope(pts.map(v => Math.log(v.L)), pts.map(v => Math.log(v.rho)));
+          expSample = 'snapshots';
           return;
         }
+        expVar = 'n';
         measLabel = 'stripes';
         // A count at every recorded row would be noise at the top, where the field is still the
         // uniform state plus a perturbation. Counting only once the pattern has an amplitude worth
@@ -587,31 +735,38 @@
           if (mx - mn > amp0) amp0 = mx - mn;
         }
         const floorAmp = 0.15 * amp0;
-        let last = -1;
+        const segs = [];
+        let cur = null;
         for (let j = 0; j < rowsDone; j++) {
           const off = j * N;
           let mn = 1e30, mx = -1e30;
           for (let i = 0; i < N; i++) { const v = SU[off + i]; if (v < mn) mn = v; if (v > mx) mx = v; }
           if (mx - mn < floorAmp) continue;
           const c = crossings(SU, off, N);
-          if (c !== last) { trace.push({ row: j, n: c }); last = c; }
+          if (!cur || c !== cur.n) { cur = { n: c, rows: 0, sl: 0, row: j }; segs.push(cur); }
+          cur.rows++; cur.sl += Math.log(Math.max(1e-9, Lrow[j]));
           measN = c;
         }
-        // Keep the trace short enough to read: the plateaus are what matters, so drop the transients
-        // that last only a row or two.
-        if (trace.length > 8) {
-          const keep = [];
-          for (let i = 0; i < trace.length; i++) {
-            const span = (i + 1 < trace.length ? trace[i + 1].row : rowsDone) - trace[i].row;
-            if (span >= Math.max(4, rowsDone / 40) || i === trace.length - 1) keep.push(trace[i]);
-          }
-          trace = keep.slice(-8);
-        }
+        // A plateau lasting a row or two is the field crossing between two counts, not a state the
+        // pattern held. It is dropped from the sample and from the trace, except for the last one,
+        // which is kept however short because it is the state the plate actually ends in.
+        const minRows = Math.max(3, rowsDone / 60);
+        const keep = segs.filter((g, i) => g.n > 0 && (g.rows >= minRows || i === segs.length - 1));
+        trace = keep.map(g => ({ row: g.row, n: g.n }));
+        if (trace.length > 8) trace = trace.slice(-8);
+        // The geometric mean of L over a plateau: the plateau spans a range of lengths at one fixed
+        // count, and its midpoint on a log axis is where a power law fit wants the point to sit.
+        const Lbar = keep.map(g => Math.exp(g.sl / g.rows));
+        kStat = meanSE(keep.map((g, i) => g.n * PI / Lbar[i]));
+        kSample = 'plateaus';
+        expStat = fitSlope(Lbar.map(v => Math.log(v)), keep.map(g => Math.log(g.n)));
+        expSample = 'plateaus';
+        window.__gd = { all: segs.map(g => [g.n, g.rows, Math.exp(g.sl / g.rows)]), keep: keep.map((g, i) => [g.n, g.rows, Lbar[i], g.n * PI / Lbar[i]]), kSel: P.kSel, kLo: P.D.kLo, kHi: P.D.kHi, kMarg: P.D.kMarg, L0: P.L0, Lend: P.Lend, rowsDone };
       }
 
       function status(extra) {
         const s = host.getState();
-        const D = P.D, L = P.plane ? (rowsDone ? Lrow[0] : P.Lend) : (rowsDone ? Lrow[rowsDone - 1] : P.L0);
+        const D = P.D, L = P.plane ? (rowsDone ? Lrow[0] : P.L0) : (rowsDone ? Lrow[rowsDone - 1] : P.L0);
         const pred = P.kSel * L / PI;
         const win = D.ok
           ? 'window <b>open</b>' + (D.dCrit > 0 ? ', d ' + P.Dv.toFixed(1) + ' over d_c ' + D.dCrit.toFixed(1) : '')
@@ -619,32 +774,103 @@
         const tr = trace.length
           ? trace.map(x => x.n).join(' → ')
           : (P.plane && modeMN ? '(' + modeMN.m + ', ' + modeMN.n + ')' : 'not yet');
+        // The plane's radius is a weighted centroid and carries an error bar of its own; the sheet's
+        // count is an integer read straight off the field, so it is labelled exact rather than given
+        // a fabricated one.
+        const meas = !measN ? 'none yet'
+          : (P.plane ? '<b>' + pm(measN, modeMN ? modeMN.se : NaN, 2) + '</b>'
+                     : '<b>' + measN + '</b>, an exact count');
+
+        // The self-check. Every measured quantity beside a theoretical one carries an uncertainty and
+        // every comparison is in standard deviations; where no uncertainty can be formed, because
+        // there are too few independent samples, that is said rather than papered over.
+        let chk;
+        if (expStat && isFinite(expStat.a) && isFinite(expStat.se) && expStat.se > 0) {
+          chk = expVar + ' ∝ L^<b>' + pm(expStat.a, expStat.se, 2) + '</b> over ' + expStat.n + ' '
+            + expSample + ', <b>' + sigTxt(sigmas(expStat.a, expStat.se, 1)) + '</b> of 1';
+        } else {
+          chk = expVar + ' ∝ L exponent not fitted: ' + (expStat ? expStat.n : 0) + ' '
+            + (expSample || 'samples') + ', too few for an error bar';
+        }
+        if (kStat && isFinite(kStat.mean) && isFinite(kStat.se) && kStat.se > 0) {
+          const z = sigmas(kStat.mean, kStat.se, P.kSel);
+          chk += ' · k <b>' + pm(kStat.mean, kStat.se, 2) + '</b> over ' + kStat.n + ' ' + kSample
+            + ' against the peak ' + P.kSel.toFixed(2) + ', <b>' + sigTxt(z) + '</b>';
+          // A large deviation is named, and the reason given where it is known. The peak of the
+          // dispersion relation is the fastest growing mode of a FIXED domain; on a growing one the
+          // pattern holds a count while k slides down the band and then splits, so the realized k
+          // sweeps the band instead of sitting at its peak. That is finite size in the literal sense:
+          // only integer numbers of half wavelengths fit.
+          if (Math.abs(z) > 3) chk += ' — the count is held while k slides down the band and jumps at each'
+            + ' insertion, so k sweeps the band rather than sitting at its peak';
+        } else if (kStat && isFinite(kStat.mean)) {
+          chk += ' · k <b>' + kStat.mean.toFixed(2) + '</b> from a single ' + (kSample || 'sample')
+            + ', no uncertainty claimed';
+        }
+
         host.setStatus(
           '<span>grid <b>' + P.N + '×' + (P.plane ? P.N : P.rows) + '</b> · ' + MODE_LABEL[s.mode] +
-            ' · dt ' + P.dt.toExponential(1) + '</span>' +
+            ' · dt ' + P.dt.toExponential(1) + ', ' + P.bind + ' binds · step <b>' +
+            stepsDone.toLocaleString() + '</b></span>' +
           '<span>' + KIN_LABEL[P.K.kind] + ', ' + LAW_LABEL[s.law] + ' growth · ' + win + '</span>' +
-          '<span>L <b>' + P.L0.toFixed(2) + ' → ' + L.toFixed(2) + '</b> · n predicted <b>' + pred.toFixed(1) +
-            '</b>' + (D.kLo > 0 ? ', band ' + (D.kLo * L / PI).toFixed(0) + ' to ' + (D.kHi * L / PI).toFixed(0) : '') +
-            ', measured <b>' + (measN ? measN.toFixed(measN % 1 ? 1 : 0) : 'none yet') + '</b></span>' +
-          '<span>' + measLabel + ' <b>' + tr + '</b> · step <b>' + stepsDone.toLocaleString() + '</b>' +
-            (P.clamped ? ' · run trimmed to fit' : '') + (extra ? ' · ' + extra : '') + '</span>'
+          '<span>L <b>' + P.L0.toFixed(2) + ' → ' + L.toFixed(2) + '</b> · ' + (P.plane ? 'ρ' : 'n') +
+            ' predicted <b>' + pred.toFixed(1) + '</b>' +
+            (D.kLo > 0 ? ', band ' + (D.kLo * L / PI).toFixed(0) + ' to ' + (D.kHi * L / PI).toFixed(0) : '') +
+            ', measured ' + meas + ' · ' + measLabel + ' ' + tr + '</span>' +
+          '<span>' + chk + (P.clamped ? ' · run trimmed to fit' : '') + (extra ? ' · ' + extra : '') + '</span>'
         );
       }
 
       /* ================= painting ================= */
 
-      // The sheet. One buffer pixel per Lagrangian cell on the widest row, which is the last one; every
-      // earlier row holds the same N cells inside the fewer pixels its physical length occupies, which
-      // is what makes the sheet widen as it goes down. The compression is a box average over the cells
-      // that fall in each pixel, not a nearest pick: the pixel count changes by a fraction of a cell
-      // from one row to the next, so a nearest pick lands on a different cell in each row and the
-      // stripes come out as staircases of dots. Nothing is smoothed on the way to the canvas, so a
-      // buffer pixel is still a block of whole canvas pixels and the plate prints sharp.
+      // Resample one Lagrangian row of N cells into wid output pixels.
+      //
+      // Compressing, which is every row above the bottom of the sheet, is an area average with
+      // fractional ends. An integer box, counting whole cells only, takes one cell in some pixels and
+      // two in the next as the row width creeps up by a fraction of a cell, and that alternation
+      // beats against the stripes into a herringbone that is not in the field. Weighting the end
+      // cells by how much of them the pixel covers removes it.
+      //
+      // Magnifying, which is the bottom of the sheet on a print sheet, is Catmull-Rom. It is
+      // interpolating, so a tap at a cell centre returns that cell exactly and the picture still
+      // agrees with the numbers measured off the field; nearest would give a mosaic and bilinear
+      // leaves a lattice crease down every stripe.
+      function resampleRow(src, off, N, wid, out) {
+        if (wid <= N) {
+          for (let x = 0; x < wid; x++) {
+            const xs = x * N / wid, xe = (x + 1) * N / wid;
+            let v = 0, ws = 0;
+            for (let c = Math.max(0, xs | 0); c < Math.min(N, Math.ceil(xe)); c++) {
+              const ov = Math.min(xe, c + 1) - Math.max(xs, c);
+              if (ov <= 0) continue;
+              v += src[off + c] * ov; ws += ov;
+            }
+            out[x] = ws > 0 ? v / ws : src[off + U.clamp(xs | 0, 0, N - 1)];
+          }
+          return;
+        }
+        for (let x = 0; x < wid; x++) {
+          const fx = (x + 0.5) * N / wid - 0.5;
+          const i0 = Math.floor(fx), f = fx - i0, f2 = f * f, f3 = f2 * f;
+          const w0 = -0.5 * f3 + f2 - 0.5 * f, w1 = 1.5 * f3 - 2.5 * f2 + 1;
+          const w2 = -1.5 * f3 + 2 * f2 + 0.5 * f, w3 = 0.5 * f3 - 0.5 * f2;
+          out[x] = src[off + U.clamp(i0 - 1, 0, N - 1)] * w0 + src[off + U.clamp(i0, 0, N - 1)] * w1
+            + src[off + U.clamp(i0 + 1, 0, N - 1)] * w2 + src[off + U.clamp(i0 + 2, 0, N - 1)] * w3;
+        }
+      }
+
+      // The sheet. Every row holds the same N Lagrangian cells, drawn across the fraction of the
+      // plate its physical length occupies, which is what makes the sheet widen as it goes down.
+      //
+      // It is composed straight at the output size rather than into an N wide buffer that is then
+      // blown up with nearest sampling. The row width changes by a fraction of a cell from one row to
+      // the next, so at cell resolution every stripe edge lands in a different cell in each row and
+      // the plate comes out as a staircase of blocks; resampling per output pixel puts the edge where
+      // the field puts it. The time axis is left at one plate row per computed row, because that is a
+      // real resolution limit rather than an artifact, and fieldCells() declares it.
       function paintSheet(g, w, h) {
         const s = host.getState();
         const N = P.N, rows = P.rows;
-        buf.width = N; buf.height = rows;
-        const img = bctx.createImageData(N, rows), d = img.data;
         const lut = toneLUT(s);
         // Two tone has to be two tones. Mapping the threshold onto the ends of the ramp is not enough,
         // because several palettes end on a color close to their own background and the plate comes out
@@ -661,10 +887,11 @@
         const bgRgb = U.hexToRgb(s.bg || '#000000');
         const src = s.view === 'inhibitor' ? SV : SU;
         const span = Math.max(1e-6, hi - lo);
-        // Per-slice view needs a floor under the row range, or the rows above the bifurcation, where
+        const perRow = s.view === 'row' || s.view === 'stripes';
+        // Per-slice views need a floor under the row range, or the rows above the bifurcation, where
         // the field is still the seeded perturbation, are stretched into a field of static.
         let gmax = 0;
-        if (s.view === 'row' || s.view === 'stripes') {
+        if (perRow) {
           for (let j = 0; j < rowsDone; j++) {
             const off = j * N; let mn = 1e30, mx = -1e30;
             for (let i = 0; i < N; i++) { const v = src[off + i]; if (v < mn) mn = v; if (v > mx) mx = v; }
@@ -672,40 +899,27 @@
           }
         }
         const rowFloor = 0.16 * gmax;
-        for (let j = 0; j < rows; j++) {
-          const o = j * N * 4;
+        const line = new Float32Array(w), rgb = new Uint8Array(w * 3);
+
+        const buildRow = j => {
           if (j >= rowsDone) {
-            for (let x = 0; x < N; x++) {
-              const p = o + x * 4;
-              d[p] = bgRgb[0]; d[p + 1] = bgRgb[1]; d[p + 2] = bgRgb[2]; d[p + 3] = 255;
-            }
-            continue;
+            for (let q = 0; q < w * 3; q += 3) { rgb[q] = bgRgb[0]; rgb[q + 1] = bgRgb[1]; rgb[q + 2] = bgRgb[2]; }
+            return;
           }
           const off = j * N;
-          const wid = Math.max(1, Math.round(N * Lrow[j] / P.Lend));
-          const x0 = (N - wid) >> 1;
+          const wid = U.clamp(Math.round(w * Lrow[j] / P.Lend), 1, w);
+          const x0 = (w - wid) >> 1;
           let mean = 0, mn = 1e30, mx = -1e30;
-          if (s.view === 'row' || s.view === 'stripes') {
+          if (perRow) {
             for (let i = 0; i < N; i++) { const v = src[off + i]; mean += v; if (v < mn) mn = v; if (v > mx) mx = v; }
             mean /= N;
           }
           const half = Math.max(1e-6, Math.max(mx - mn, rowFloor) * 0.5);
-          for (let x = 0; x < N; x++) {
-            const p = o + x * 4;
-            d[p + 3] = 255;
-            if (x < x0 || x >= x0 + wid) { d[p] = bgRgb[0]; d[p + 1] = bgRgb[1]; d[p + 2] = bgRgb[2]; continue; }
-            // Area average with fractional ends. An integer box, counting whole cells only, takes one
-            // cell in some pixels and two in the next as the row width creeps up by a fraction of a
-            // cell, and that alternation beats against the stripes into a herringbone that is not in
-            // the field. Weighting the end cells by how much of them the pixel covers removes it.
-            const xs = (x - x0) * N / wid, xe = (x - x0 + 1) * N / wid;
-            let v = 0, wsum = 0;
-            for (let c = Math.max(0, xs | 0); c < Math.min(N, Math.ceil(xe)); c++) {
-              const ov = Math.min(xe, c + 1) - Math.max(xs, c);
-              if (ov <= 0) continue;
-              v += src[off + c] * ov; wsum += ov;
-            }
-            v = wsum > 0 ? v / wsum : src[off + Math.min(N - 1, xs | 0)];
+          resampleRow(src, off, N, wid, line);
+          for (let x = 0; x < w; x++) {
+            const q = x * 3;
+            if (x < x0 || x >= x0 + wid) { rgb[q] = bgRgb[0]; rgb[q + 1] = bgRgb[1]; rgb[q + 2] = bgRgb[2]; continue; }
+            const v = line[x - x0];
             let li;
             if (s.view === 'stripes') li = (v > mean ? iLight : iDark) * 3;
             else {
@@ -714,13 +928,21 @@
                 : U.clamp((v - lo) / span, 0, 1);
               li = (t * 255 | 0) * 3;
             }
-            d[p] = lut[li]; d[p + 1] = lut[li + 1]; d[p + 2] = lut[li + 2];
+            rgb[q] = lut[li]; rgb[q + 1] = lut[li + 1]; rgb[q + 2] = lut[li + 2];
+          }
+        };
+
+        const img = g.createImageData(w, h), d = img.data;
+        let jPrev = -1;
+        for (let y = 0; y < h; y++) {
+          const j = Math.min(rows - 1, Math.floor(y * rows / h));
+          if (j !== jPrev) { buildRow(j); jPrev = j; }
+          let p = y * w * 4;
+          for (let x = 0, q = 0; x < w; x++, p += 4, q += 3) {
+            d[p] = rgb[q]; d[p + 1] = rgb[q + 1]; d[p + 2] = rgb[q + 2]; d[p + 3] = 255;
           }
         }
-        bctx.putImageData(img, 0, 0);
-        g.imageSmoothingEnabled = false;
-        g.fillStyle = s.bg; g.fillRect(0, 0, w, h);
-        g.drawImage(buf, 0, 0, w, h);
+        g.putImageData(img, 0, 0);
         if (!building) grainOut(g, w, h, s.grain, s.seed);
       }
 
@@ -840,12 +1062,27 @@
         pending = chunk; chunk();
       }
 
+      // One point of the plane's own mode-doubling sample: the ring radius of the field as it stands,
+      // paired with the domain length at that moment. The plane is a single picture rather than a
+      // space-time sheet, so without these the exponent would have one point and no error bar.
+      //
+      // Before the bifurcation the field is the uniform state plus the seeded perturbation and its
+      // spectrum is the spectrum of that noise, so a radius read off it would be a number about the
+      // random number generator. Only a snapshot that carries a pattern joins the sample, and the
+      // status line says how many did.
+      function snapshot(t) {
+        let mn = 1e30, mx = -1e30;
+        for (let i = 0; i < U1.length; i++) { const v = U1[i]; if (v < mn) mn = v; if (v > mx) mx = v; }
+        if (!(mx - mn > 0.25 * P.K.u0)) return;
+        snaps.push({ L: lengthAt(host.getState().law, P.L0, P.Gf, P.r, t), rho: ringStat(U1, P.N).rho });
+      }
+
       function buildPlane() {
         const N = P.N;
         SU = new Float32Array(N * N); SV = new Float32Array(N * N);
         Lrow = new Float32Array(1); Lrow[0] = P.L0;
         ringL = new Float32Array(4);
-        rowsDone = 0; stepsDone = 0;
+        rowsDone = 0; stepsDone = 0; snaps = [];
         let t = 0, tick = 0;
         const marks = [0.25, 0.45, 0.65, 0.85].map(f => Math.floor(P.steps * f));
         const law = host.getState().law;
@@ -858,13 +1095,16 @@
             const n = Math.min(24, P.steps - stepsDone);
             t = step2D(n, t);
             stepsDone += n;
-            for (let i = 0; i < 4; i++) if (!ringL[i] && stepsDone >= marks[i]) ringL[i] = lengthAt(law, P.L0, P.Gf, P.r, t);
+            for (let i = 0; i < 4; i++) if (!ringL[i] && stepsDone >= marks[i]) {
+              ringL[i] = lengthAt(law, P.L0, P.Gf, P.r, t);
+              snapshot(t);
+            }
           }
           SU.set(U1); SV.set(V1);
           Lrow[0] = lengthAt(law, P.L0, P.Gf, P.r, t);
           rowsDone = 1;
           const done = stepsDone >= P.steps;
-          if (done) building = false;
+          if (done) { building = false; snapshot(t); }
           if ((!quiet && tick % 3 === 0) || done) { expose(); if (done) measure(); draw(); status(done ? '' : 'building'); }
           tick++;
           if (!done) timer = setTimeout(chunk, 0);
