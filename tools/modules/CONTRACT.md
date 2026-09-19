@@ -152,10 +152,11 @@ Default seed lands a finished image in about three seconds on a laptop. Chunk lo
 
 ## Measured numbers
 
-If your technique prints a measured quantity beside a theoretical one, it must also print an uncertainty,
-and the comparison must be in sigmas. The full rule, including how to get the uncertainty for a mean, a
-fitted exponent, a ratio, a power-law tail and an exact count, is in `AGENTS.md` under "A measured number
-carries an error bar". Read it before you write the status line, not after.
+If your technique prints a measured quantity beside a theoretical one, an uncertainty beside it is worth
+having, and a comparison in sigmas says more than two bare numbers. `AGENTS.md`, under "A measured number
+carries an error bar", covers how to get one honestly for a mean, a fitted exponent, a ratio, a power-law
+tail and an exact count. Worth reading before you write the status line rather than after. It is guidance,
+not a gate: nothing checks it.
 
 The two failure modes that matter most: an ordinary least squares error on a fit along one autocorrelated
 trajectory is far too small, and a check whose answer is forced by construction is not a check at all.

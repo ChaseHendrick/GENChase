@@ -52,10 +52,14 @@ without an uncertainty. "mean sides 6.11, Euler says 6" is not a check: a reader
 agreement from disagreement, and no way to tell a real confirmation from a number that had to come out
 near 6 however the model behaved. A self-check without an error bar is decoration.
 
-So every measured quantity printed against theory states an uncertainty, and the comparison is given in
-standard deviations: `0.307 +/- 0.012 against 1/3, 2.2 sigma low`.
+So where a measured quantity is printed against theory, it is worth an uncertainty, and a comparison
+reads better in standard deviations: `0.307 +/- 0.012 against 1/3, 2.2 sigma low`.
 
-How to get the uncertainty honestly depends on what the number is.
+This is guidance rather than a gate. Nothing enforces it, `lint.js` cannot check it, and a tab that would
+rather show a number than a confidence interval is still a tab. What follows is here because the wrong
+method is easy, looks fine, and is hard to spot later.
+
+How to get an uncertainty honestly depends on what the number is.
 
 - **A mean over N samples.** Standard error `sd / sqrt(N)`, but check independence first. Cells in one
   correlated field are not N independent samples, and the naive standard error is then too small. Estimate
@@ -72,7 +76,7 @@ How to get the uncertainty honestly depends on what the number is.
 - **An exact combinatorial count.** Say `exact, no sampling error` rather than inventing a bar. That is
   informative in its own right, and a fabricated uncertainty is worse than none because it looks rigorous.
 
-Two further rules follow from the same principle.
+Two things follow from the same principle and are worth more than the arithmetic.
 
 **Never round a measurement toward theory, and never hide a disagreement.** If a number sits away from the
 predicted value, print it and say why where you know: finite size, a boundary, a slow crossover. Ballistic
