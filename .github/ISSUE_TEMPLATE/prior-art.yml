@@ -1,0 +1,57 @@
+name: Prior art
+description: A search, a nearest neighbor, or a claim that something has not been done.
+title: "[prior-art] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read [RESEARCH.md](https://github.com/SharpMeow/GENChase/blob/main/RESEARCH.md) first. If the row is already marked skip, do not re-run the search unless you have a newly named source or a site that was previously unreachable.
+
+        The conclusion of this issue should land in RESEARCH.md. A search that is not written down will be done again.
+  - type: input
+    id: about
+    attributes:
+      label: Tab or topic
+      placeholder: hendrick, cortex, self-checking gen-art
+    validations:
+      required: true
+  - type: input
+    id: query
+    attributes:
+      label: Exact query
+      description: The string you typed. Approximate reconstructions are how the last ledger started empty.
+    validations:
+      required: true
+  - type: textarea
+    id: opened
+    attributes:
+      label: What loaded
+      description: URLs that actually opened. Snippets are weaker than source you read.
+    validations:
+      required: true
+  - type: textarea
+    id: blocked
+    attributes:
+      label: What did not load
+      description: Hosts that timed out or refused. arxiv.org, Observable, Shadertoy, and most journals often do not.
+      placeholder: arxiv.org, shadertoy.com, doi.org
+  - type: textarea
+    id: conclusion
+    attributes:
+      label: Conclusion
+      description: One sentence. Name the nearest existing thing. A missing browser demo is not new science.
+    validations:
+      required: true
+  - type: dropdown
+    id: research
+    attributes:
+      label: Re-search
+      options:
+        - skip unless a newly named source
+        - reopen if a blocked host loads
+        - never searched before this issue
+        - do not claim invention
+        - do not re-derive
+    validations:
+      required: true
