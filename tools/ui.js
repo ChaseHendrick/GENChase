@@ -164,6 +164,15 @@ const { chromium } = require('playwright');
   await p.keyboard.press('Escape');
   await p.waitForTimeout(200);
 
+  await p.goto('about:blank');
+  await p.goto('file://' + studio + '#hendrick/alias-check', { waitUntil: 'domcontentloaded' });
+  await p.waitForTimeout(2500);
+  const alias = await p.evaluate(() => ({
+    id: document.querySelector('.tab[aria-selected="true"]') && document.querySelector('.tab[aria-selected="true"]').dataset.id,
+    seed: (document.querySelector('#seed') || {}).value,
+  }));
+  t('#hendrick still opens Track', alias.id === 'track' && alias.seed === 'alias-check', alias);
+
   console.log('pageerrors:', errs.length? errs.slice(0,3): 'none');
   await b.close();
   console.log(fail? 'UI CHECK FAILED: '+fail : 'UI CHECK OK');

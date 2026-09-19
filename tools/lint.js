@@ -1,7 +1,7 @@
 // node tools/lint.js [studio.html]
 // Structural checks on the studio file. No browser, no GPU, under a second.
 //
-// The browser harness is the real verification, but it takes hours across 52 techniques, so nothing
+// The browser harness is the real verification, but it takes hours across the whole file, so nothing
 // ran it on every change. This is the part that can run on every push: it enforces the invariants
 // AGENTS.md states in prose, mechanically, and catches the documentation drifting away from the file.
 //
@@ -47,6 +47,19 @@ const seen = new Map();
 for (const m of mods) {
   if (seen.has(m.id)) fail('duplicate technique id "' + m.id + '" at lines ' + seen.get(m.id) + ' and ' + m.line);
   else seen.set(m.id, m.line);
+}
+
+/* ---- 3b. hash aliases resolve ---- */
+{
+  const block = /const ALIAS = \{([^}]*)\}/.exec(src);
+  if (block) {
+    const pairs = [...block[1].matchAll(/([A-Za-z0-9_]+)\s*:\s*'([^']+)'/g)];
+    if (!pairs.length) fail('ALIAS map is present but empty');
+    for (const [, from, to] of pairs) {
+      if (!seen.has(to)) fail('hash alias "' + from + '" points at "' + to + '", which is not a registered technique');
+      if (seen.has(from)) fail('hash alias "' + from + '" collides with a registered id');
+    }
+  }
 }
 
 /* ---- 4. every technique carries what the shell and the colophon need ---- */
