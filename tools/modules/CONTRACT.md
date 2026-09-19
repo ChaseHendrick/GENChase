@@ -9,6 +9,13 @@ Read this before writing a block. It restates what the shell in `studio.html` ac
 - Build a test copy: `node tools/inject.js tools/modules/<block>.js tools/dist/<block>.html`. Rebuild after every edit.
 - Shoot a tab: `STUDIO=tools/dist/<block>.html NODE_PATH=/opt/node22/lib/node_modules node tools/shot.js <id> 9000 <id>`. It writes `tools/shots/<id>.png` (whole page) and `tools/shots/<id>-canvas.png` (the plate). Open both with the Read tool and look at them. It prints luminance percentiles p01..p99 of the plate and console errors.
 - Full check for a tab: `STUDIO=tools/dist/<block>.html NODE_PATH=/opt/node22/lib/node_modules node tools/check.js <id> 8000`. It measures the default, every preset, loads the same hash twice and compares the plate, and switches to another tab and back to count visible canvases. Every preset must show a non-flat plate, the two loads must match, and there must be exactly one visible canvas at the end.
+- Throwaway probes go in `tools/_<name>.js` or `tools/_<dir>/`. While building a module you will write
+  one-off scripts to time something, dump a statistic or crop a screenshot. Anything under `tools/_` is
+  gitignored, so it stays out of the repository without anyone having to remember to delete it. A probe
+  that turns out to be worth keeping gets renamed without the underscore and given a real header
+  comment, the way `tools/zoom.js` and `tools/ui.js` were. The rule runs one way only: never rename an
+  already-tracked tool INTO `tools/_`. Something already committed there was kept on purpose, and moving
+  it under the ignored prefix deletes it from the repository without anybody deciding to.
 - Baseline noise you can ignore: the `willReadFrequently` warning, `ERR_CERT_AUTHORITY_INVALID`, and the `ServiceWorkerRegistration` pageerror. Anything else is yours.
 - A flat plate (p01 close to p99) or a black plate means the simulation died or the exposure is wrong. Sweep parameters until the default measures alive. Do not ship a preset you have not looked at.
 - Hash format for testing a recipe: `#<id>/<seed>/<base64url of JSON diff>`; `#<id>/<seed>` alone is enough for most checks. The JSON diff is an object of state keys that differ from defaults.
@@ -142,6 +149,17 @@ American spelling. No em dashes anywhere in new text; use commas, periods, colon
 ## Performance
 
 Default seed lands a finished image in about three seconds on a laptop. Chunk long CPU work with `setTimeout(chunk, 0)` so the UI never blocks more than about 50 ms. Grids default to 192 or 256 and cap at 512. Measure exposure from the field (reduce pass or a CPU percentile), never from a formula.
+
+## Measured numbers
+
+If your technique prints a measured quantity beside a theoretical one, an uncertainty beside it is worth
+having, and a comparison in sigmas says more than two bare numbers. `AGENTS.md`, under "A measured number
+carries an error bar", covers how to get one honestly for a mean, a fitted exponent, a ratio, a power-law
+tail and an exact count. Worth reading before you write the status line rather than after. It is guidance,
+not a gate: nothing checks it.
+
+The two failure modes that matter most: an ordinary least squares error on a fit along one autocorrelated
+trajectory is far too small, and a check whose answer is forced by construction is not a check at all.
 
 ## Before you report done
 

@@ -2,7 +2,7 @@
   "project": "GENChase",
   "repository": "https://github.com/SharpMeow/GENChase",
   "file": "studio.html",
-  "count": 63,
+  "count": 66,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "techniques": [
     {
@@ -398,6 +398,46 @@
       "vectors": false
     },
     {
+      "id": "rotor",
+      "name": "Rotor Routers",
+      "subtitle": "rotor-router aggregation and internal DLA · 2009",
+      "equation": "at an occupied site turn the rotor a quarter turn and follow it; stop at the first unoccupied site.   inradius ≥ r − O(log r),  outradius ≤ r + O(r^α) for every α > 1 − 1/d,  r = √(n/π) in d = 2",
+      "credit": "Lionel Levine and Yuval Peres, 'Strong spherical asymptotics for rotor-router aggregation and the divisible sandpile', Potential Analysis 30, 1 (2009), is the theorem this plate measures. For an aggregate of n particles in d dimensions, written as n = ω_d r^d, they prove the inradius is at least r − O(log r) and the outradius at most r + O(r^α) for every α > 1 − 1/d, which in the plane is r + O(r^α) for every α > 1/2. The two sides of that sandwich are not the same strength, and the plate does not pretend they are: the inner bound is logarithmic and proved, the outer bound proved here is a power, and the status line reports what this lattice actually measures rather than what the tighter of the two would suggest. There is no probability anywhere in the statement. The rotor-router walk and the aggregation model are James Propp's; they are studied in Ander Holroyd and James Propp, 'Rotor walks and Markov chains', Contemporary Mathematics 520 (2010), and in Joshua Cooper and Joel Spencer, 'Simulating a random walk with constant error', Combinatorics, Probability and Computing 15 (2006). Internal diffusion limited aggregation, the random counterpart drawn beside it, is Gregory Lawler, Maury Bramson and David Griffeath, 'Internal diffusion limited aggregation', Annals of Probability 20, 2117 (1992), who proved its limit shape is a disk; David Jerison, Lionel Levine and Scott Sheffield, Journal of the American Mathematical Society 25, 271 (2012), showed its fluctuations are logarithmic as well, so the gap the plate measures between the two is one of constants and of certainty, not of orders. That a finished aggregate does not depend on the order the particles were routed in is the abelian property of Persi Diaconis and William Fulton, Rendiconti del Seminario Matematico dell'Università e del Politecnico di Torino (1991); it is the same argument Deepak Dhar, Physical Review Letters 64, 1613 (1990), made for the abelian sandpile of Per Bak, Chao Tang and Kurt Wiesenfeld, Physical Review Letters 59, 381 (1987).",
+      "blurb": "Give every site of the square lattice a little arrow and one rule: when a particle arrives, turn the arrow a quarter turn and send the particle the way it now points. Release particles one at a time from the origin, each walking until it reaches a site nobody has claimed, and let it stop there. Nothing in that is random, and yet twenty thousand particles settle into a disk that is round to within about a cell and a half. The theorem behind that is one sided in a way worth knowing: Levine and Peres prove the aggregate contains a disk of radius √(n/π) − O(log n), and that it sits inside one of radius √(n/π) + O(n^β) for every β > 1/4, which is a far weaker statement than the inner one. The status line measures the inradius, the outradius and √(n/π) off the plate rather than asserting any of them, and it carries an error bar on every measurement that has one and says plainly which measurements are exact. Beside it is internal diffusion limited aggregation, the identical growth with a coin flip in place of the arrow at the identical particle count, and the comparison is the point: the random blob is round too, but its rim is frayed several times as wide. The status line makes that a measurement instead of an impression. It grows a small ladder of aggregates of both kinds, at 1,000, 2,000, 4,000 and 8,000 particles, several independent random ones at each rung, and reports the ratio of the two rim widths with the error bar the ensemble gives it, together with how each rim width grows with n. Two things about how that is read are worth knowing. The outradius is not supposed to equal √(n/π): the theorem asks for an offset that grows no faster than a logarithm, so zero is the wrong thing to compare against and the offset is quoted as a fraction of log n instead. And the rim width is fitted as a power of n rather than against log n directly, because a power is the thing there is an alternative to: over this ladder a width proportional to log n is itself a small power, the status line says which, and a rim that grew like √n, the way a genuinely rough interface does, would sit at 0.5 instead. The random rim lands on the logarithm. The rotor rim does not grow measurably at all across this decade, which the theorem allows, since its logarithm is an upper bound and nothing in it says the bound is reached. The picture you land on colors each site by when it was claimed and bands that order into growth rings, which is the sharpest of the four views on paper: an arrival ring is one cell wide, so the deterministic rings stay circles and the random ones break up into a mottle. The odometer counts how many particles passed through each site instead and bands the count into contours, a smoother picture of the same thing, and there the deterministic level sets come out as clean circles and the random ones shred at the edge. The rotor view draws the arrows themselves, and it is the strangest picture here, a quilt of patches with no randomness anywhere in it. The seed changes only the coin flips of the random aggregate, the optional scatter of the starting arrows, and the paper grain.",
+      "order": 41,
+      "seed": "propp-machine",
+      "presets": [
+        "quilt",
+        "odometer",
+        "shells",
+        "idla",
+        "versus",
+        "rims",
+        "stripes"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "growdomain",
+      "name": "Growing Domain",
+      "subtitle": "Turing patterns on a domain that grows · 1999",
+      "equation": "∂u/∂t = (D_u/L²)∂²u/∂ξ² + f(u,v) − d(L̇/L)u,  ∂v/∂t = (D_v/L²)∂²v/∂ξ² + g(u,v) − d(L̇/L)v",
+      "credit": "Alan M. Turing, 'The chemical basis of morphogenesis', Philosophical Transactions of the Royal Society of London B 237, 37 (1952), showed that two substances which react and diffuse at different rates can break a uniform state into a pattern with a wavelength of its own. Edward J. Crampin, Eamonn A. Gaffney and Philip K. Maini, 'Reaction and diffusion on growing domains: scenarios for robust pattern formation', Bulletin of Mathematical Biology 61, 1093 (1999), wrote the same problem in fixed Lagrangian coordinates on a domain of changing length L(t); the diffusion coefficients pick up a factor 1/L², and a dilution term d(L̇/L) appears because growth carries material apart. That is the formulation integrated here. Shigeru Kondo and Rihito Asai, 'A reaction-diffusion wave on the skin of the marine angelfish Pomacanthus', Nature 376, 765 (1995), measured the consequence on a live animal: as the fish grows its stripes do not widen, new ones are inserted between the old, at the spacing the reaction-diffusion wavelength fixes. The kinetics are Schnakenberg's trimolecular scheme and the Gierer-Meinhardt activator-inhibitor pair.",
+      "blurb": "A Turing pattern has a wavelength of its own, set by the chemistry and the two diffusion rates, and that wavelength lives in real space: centimeters, not fractions of the animal. So what happens when the animal gets bigger? The space-time sheet answers it. Time runs down the page and the domain runs across it, drawn at its true physical width, so the sheet widens as the tissue grows. The stripes do not widen with it. Each time the domain has stretched far enough to hold another wavelength, the pattern splits and a new stripe appears between two old ones, which is exactly what Kondo and Asai filmed on the skin of a growing angelfish. Growth rate and growth law are the controls that matter, and the rate works the opposite way round from the way it sounds. Grow slowly and every gap splits at the same moment, so the count doubles in a single step, 5 to 10 to 20 on the default seed: that is the frequency doubling Crampin, Gaffney and Maini predicted for exponential growth, and it is what the default sheet does. Grow fast and the pattern falls behind the band instead, the splits come out of step with one another, and the count climbs through 7, 8, 10 and 12 on its way, while the wavenumber it carries sinks further below the one linear theory picks out: on the default seed it measures 4.20 at the default rate, 3.47 at 0.15 and 2.91 at the top of the slider, against a peak of 4.87, and three other seeds give the same ordering within about four tenths. Choose the logistic law and the splitting stops when the growth does. The status line counts the stripes on the sheet and prints them next to the number linear stability predicts, with an error bar on everything that can carry one. The count itself is exact, so it is labelled exact rather than given an invented uncertainty. The exponent in n proportional to L, which is the mode doubling claim, carries the standard error of its fit. The wavenumber carries the spread across the plateaus, and that spread is physical: the pattern holds a count while the domain stretches, so its wavenumber slides down and jumps back at each insertion rather than sitting still. Slow the growth down and that wavenumber walks back toward the value linear theory picks out, without quite reaching it: the slowest run the work budget allows still measures two to four standard deviations below the peak depending on the seed, and the plate says so rather than rounding it away.",
+      "order": 45.5,
+      "seed": "growdomain-1999",
+      "presets": [
+        "cascade",
+        "angelfish",
+        "linear",
+        "saturating",
+        "lagging",
+        "meinhardt",
+        "plane"
+      ],
+      "vectors": false
+    },
+    {
       "id": "vegetation",
       "name": "Vegetation Bands",
       "subtitle": "tiger bush on a dry hillside · 1999",
@@ -453,6 +493,26 @@
         "dyson",
         "braid",
         "semicircle"
+      ],
+      "vectors": true
+    },
+    {
+      "id": "lozenge",
+      "name": "Lozenge Tilings",
+      "subtitle": "random lozenge tilings of a hexagon, exact by coupling from the past · 1996",
+      "equation": "h(x, y) ∈ [0, c] weakly decreasing;  heat bath h(x, y) ~ U{max(h(x+1,y), h(x,y+1)) … min(h(x−1,y), h(x,y−1))};  run −T → 0 from ⊥ and ⊤ on one fixed set of maps, doubling T until they agree, and read the common value at 0",
+      "credit": "The sampler is James Propp and David Wilson, 'Exact sampling with coupled Markov chains and applications to statistical mechanics', Random Structures and Algorithms 9, 223 to 252 (1996); random tilings are one of their own worked examples. The limit shape measured on the plate is Henry Cohn, Michael Larsen and James Propp, 'The shape of a typical boxed plane partition', New York Journal of Mathematics 4, 137 to 165 (1998). The count of boxed plane partitions is Percy MacMahon, 'Memoir on the theory of the partitions of numbers, Part VI: partitions in two-dimensional space, to which is added an adumbration of the theory of partitions in three-dimensional space', Philosophical Transactions of the Royal Society A 211, 345 to 373 (1912). The height function that turns a tiling into a stack of cubes is William Thurston, 'Conway's tiling groups', American Mathematical Monthly 97, 757 to 773 (1990). How long this chain needs is David Wilson, 'Mixing times of lozenge tiling and card shuffling Markov chains', Annals of Applied Probability 14, 274 to 325 (2004).",
+      "blurb": "Cut a hexagon with sides a, b, c, a, b, c out of the triangular grid and cover it with the three rhombi that fit, every covering equally likely. What comes out is a stack of unit cubes in the corner of an a by b by c room, seen from the corner: the three rhombi are the three visible faces of the cubes, and the tiling is nothing but the shape of the pile. Near each of the six corners of the hexagon the rhombi lock into a single orientation and stay there, and in the middle all three mix. The boundary between the two is nowhere in the rule and is not a hexagon: as the box grows it becomes the ellipse inscribed in the hexagon and tangent to all six sides, a circle when a, b and c are equal. This plate measures that boundary from the tiling on screen and prints it beside the prediction. The sampler is exact rather than merely long. Coupling from the past runs the empty box and the full box forward from further and further back on one fixed set of random choices, and once the two have met, what the pair of them has become by the present moment is a perfectly uniform draw, with no burn-in to judge and no bias left over. The present moment is the point: reading the tiling off at the moment the two met instead would quietly favor the tilings that are easy to meet in, and the plate would look exactly the same. The status line says how far back it had to start and how long the two took to meet, which is a fact about this hexagon and this seed rather than a number anyone chose. Two numbers there carry error bars, because a measurement printed beside a prediction without one cannot be read: the arctic radius is a mean over sixty angular sectors and the free area is a ratio of two counts, and both are compared with the prediction in standard deviations. A third number, how many rhombi of each orientation the tiling holds, is a plain count fixed by the box, so it is labeled exact and given no error bar at all. The agreement is a limit statement, so it improves as a, b and c grow together; where it does not agree the status line says so and, when the reason is known, gives it.",
+      "order": 48.5,
+      "seed": "propp-wilson-1996",
+      "presets": [
+        "circle",
+        "ellipse",
+        "cubes",
+        "flat",
+        "fine",
+        "tower",
+        "proof"
       ],
       "vectors": true
     },

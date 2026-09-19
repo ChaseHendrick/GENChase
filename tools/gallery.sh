@@ -13,8 +13,12 @@ R() {
 }
 # grid 384 for the neural field, so the retinal warp is resampling a fine sheet rather than a coarse one
 R cortex.jpg      "cortex/kluver-1928/eyJncmlkIjozODR9"        40000 tunnel
-# grid 384, and the condensate is drawn from its own density rather than upscaled
-R vortex.jpg      "bec/abrikosov-1957/eyJncmlkIjozODR9"        60000 lattice
+# Force chains, not the vortex lattice that used to sit here. That plate measured edge acutance 0.08,
+# which is no hard edges at all, and it read as blurry on the README however it was encoded. The softness
+# is the physics rather than the grid: a condensate density profile IS smooth, and the only hard features
+# in it are the vortex cores, so raising the grid sharpens the dots and leaves the cloud exactly as soft.
+# A packing is disks and contacts drawn as marks, so it is hard edges everywhere: this one measures 1.39.
+R chains.jpg      "grains/cundall-1979"                        70000 photo
 # channels are line segments, so this one is geometry all the way down
 R drainage.jpg    "landscape/howard-1994"                      70000 network
 # the froth is a lattice of flat cells: crisp at any size

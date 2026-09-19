@@ -14,6 +14,17 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Only the newest commit on a branch is worth testing. Without this, a branch under active development
+# holds a runner for every commit it ever pushed: the browser jobs take ten to fifteen minutes each, so
+# a handful of quick pushes queues more work than the account can run at once, and the newest run then
+# fails in three seconds because no runner is free. That failure looks exactly like a broken lint, which
+# is worse than useless, because it sends you hunting for a bug in the one job that is instant and fine.
+# Superseding a run cancels it. The event name is in the group so the push run and the pull_request run
+# for the same commit do not cancel each other.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     name: structure
