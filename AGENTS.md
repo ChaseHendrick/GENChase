@@ -53,20 +53,41 @@ much of the average detail survives at the pixel scale. A plate is soft only whe
 edges nor fine texture. A Penrose tiling is mostly the flat insides of tiles, so any average-based
 measure calls it blurry while its edges are perfectly hard; this one does not.
 
-Standing result at 8 in and 300 ppi, over all 62 tabs: 34 sharp, 11 borderline, 15 soft. The soft ones
-are field simulations at their default grids. That is arithmetic, not a bug: a 192-cell field across
-2,400 print pixels is twelve pixels per cell and there is no detail under that. Three things follow,
-and all three are already in place.
+The audit at 8 in and 300 ppi read 34 sharp, 11 borderline and 15 soft over 62 tabs, and the soft ones
+were all field simulations at their default grids. That was arithmetic rather than a bug: a 192-cell
+field across 2,400 print pixels is twelve pixels per cell and there is no detail under that. Four things
+follow, and all four are in place.
 
-- The shell no longer supersamples a plate that a technique has declared grid-limited through
+- The shell does not supersample a plate that a technique has declared grid-limited through
   `fieldCells()`. Rendering at twice the print size and averaging down is right for a technique that
   recomputes per pixel and wrong for a magnified field, where it is a second low-pass for twice the
   memory. Worth about 11 per cent of the pixel-scale detail on Cahn-Hilliard.
 - The sheet states the field's own resolution rather than letting the paper take the blame.
-- The grid ceilings go to 1024 on the 2D GPU families. Cahn-Hilliard at 512 instead of 192 measures
-  edge 0.73 against 0.39. This is the real lever, and the defaults deliberately do not pull it: changing
-  a default grid changes every saved recipe that did not name one, and reprinting a seed years later is
-  the product. Raising a default is a `v` bump, done on purpose, not a quiet improvement.
+- The grid ceilings go to 1024 on the 2D GPU families.
+- **The defaults were raised at recipe v2.** The sixteen tabs that magnify a grid, which are the six
+  `pdeCreate` tabs, the six `rdxCreate` tabs, `nematic`, and `cortex`, `bec`, `tonertu` and `liesegang`,
+  now default to 512, or 384 on `liesegang`, whose ceiling is lower. Cahn-Hilliard at 512 rather than
+  192 measures edge acutance 0.88 against 0.41, which is the difference between a verdict of SOFT and
+  a verdict of sharp. 512 is the measured knee, not a round number: 384 reaches 0.74 and is still only
+  borderline.
+
+Raising a default is dangerous in a way that is easy to miss, so read this before you raise another.
+A hash carries only what differs from the defaults, so the day a default moves, every recipe that never
+named that key reprints at a value it was never made at, and reprinting a seed years later is the
+product. A module that changes a default therefore declares the old one:
+
+```
+legacy: { 2: { grid: 192 } },     // recipes older than v2 were made at 192
+```
+
+`legacyFill` in the shell hands that value back to any recipe whose `v` predates the change, and only
+for keys the recipe did not name itself. `node tools/recipe.js` derives its cases from the file, so
+every legacy declaration is checked automatically and the test cannot drift from the code.
+
+The same pass fixed a real bug in `applyHash`: a hash was being merged into whatever the viewer already
+had on screen, so any key the recipe did not name was inherited from the viewer's own last session and
+two people opening the same link could get different plates. A hash that names a seed is now built on
+the module's defaults. A bare `#id`, which names nothing, still means "this tab as I left it".
 
 If you add a technique that magnifies a grid, implement `fieldCells()` and splice `G.GLSL.bicubic` into
 the render shader. Nearest sampling gives a mosaic and bilinear leaves a lattice crease on every front.
