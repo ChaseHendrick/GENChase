@@ -396,8 +396,9 @@
   }
 
   /* The free area fraction is a ratio of two counts that are neither independent nor Poisson: frozen
-     and free are large connected regions, so a binomial bar on 5,583 free triangles out of 6,144 would
-     come out near 0.004 when the real seed to seed scatter is 0.009, more than twice too small.
+     and free are large connected regions, so a binomial bar on the roughly 5,570 free triangles out of
+     the 6,144 that a 32 by 32 by 32 plate carries comes out near 0.004, when the real seed to seed
+     scatter is 0.0093: more than twice too small.
      Propagating anything through that would be a guess. Resample instead, in the one direction the
      fluctuation lives in: a circular block bootstrap over the sixty sector counts, blocks of tau
      consecutive sectors drawn with replacement from any starting angle, four hundred resamples, every
