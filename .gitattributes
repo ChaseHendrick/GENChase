@@ -1,0 +1,4 @@
+# GitHub's Download ZIP is git archive. Keep the README tiles in the
+# repository so the page still shows them; leave them out of the zip so
+# the download is the studio, not six megabytes of JPEGs.
+gallery export-ignore

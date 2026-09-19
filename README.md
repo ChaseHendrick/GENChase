@@ -190,7 +190,7 @@ If you are an agent:
 
 There is nothing to install on any platform.
 
-**[Download GENChase](https://github.com/SharpMeow/GENChase/archive/refs/heads/main.zip)** (about 8 MB, most of it the gallery images). Unzip it, then double-click the launcher for your system:
+**[Download GENChase](https://github.com/SharpMeow/GENChase/archive/refs/heads/main.zip)** (about 3 MB; the README tiles stay on GitHub, not in the zip). Unzip it, then double-click the launcher for your system:
 
 | | Double-click |
 |---|---|
