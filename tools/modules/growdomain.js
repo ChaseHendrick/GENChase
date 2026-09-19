@@ -233,7 +233,7 @@
     // diffusive one, by three or four orders of magnitude, and it is evaluated at L0 because D/L(t)^2
     // is largest when the domain is smallest. The status line says so rather than leaving a reader to
     // assume it, because the whole hazard of a growing domain is taking that bound at the wrong end.
-    const rates = [[diffRate, 'diffusion at L₀'], [reactRate, 'reaction'], [diluRate, 'dilution']];
+    const rates = [[diffRate, 'L₀ diffusion'], [reactRate, 'reaction'], [diluRate, 'dilution']];
     rates.sort((a, b) => b[0] - a[0]);
     const bind = rates[0][1];
     const perStep = plane ? N * N : N;
@@ -496,7 +496,7 @@
     ctx.putImageData(img, 0, 0);
   }
 
-  const MODE_LABEL = { sheet: 'space-time sheet', plane: 'growing plane' };
+  const MODE_LABEL = { sheet: 'sheet', plane: 'plane' };
   const LAW_LABEL = { exp: 'exponential', lin: 'linear', log: 'logistic' };
   const KIN_LABEL = { sch: 'Schnakenberg', gm: 'Gierer-Meinhardt' };
 
@@ -865,14 +865,14 @@
           ? (D.dCrit > 0 ? 'd <b>' + P.Dv.toFixed(1) + '</b> over d_c ' + D.dCrit.toFixed(1) : 'window <b>open</b>')
           : '<b>outside the Turing window</b>: ' + failure(D);
         const tr = trace.length
-          ? measLabel + ' ' + trace.slice(-4).map(x => x.n).join(' → ')
-          : (P.plane && modeMN ? measLabel + ' peak (' + modeMN.m + ', ' + modeMN.n + ')' : 'no pattern yet');
+          ? trace.slice(-4).map(x => x.n).join(' → ')
+          : (P.plane && modeMN ? 'peak (' + modeMN.m + ', ' + modeMN.n + ')' : 'no pattern yet');
         // The plane's radius is a weighted centroid and carries an error bar of its own; the sheet's
         // count is an integer read straight off the field, so it is labelled exact rather than given
         // a fabricated one.
-        const meas = !measN ? 'none yet'
+        const meas = !measN ? 'not yet'
           : (P.plane ? '<b>' + pm(measN, modeMN ? modeMN.se : NaN) + '</b>'
-                     : '<b>' + measN + '</b>, exact');
+                     : '<b>' + measN + '</b> exact');
 
         // The self-check. Every measured quantity beside a theoretical one carries an uncertainty and
         // every comparison is in standard deviations; where no uncertainty can be formed, because
@@ -890,7 +890,7 @@
           const z0 = sigmas(kStat.mean, kStat.se, P.kSel);
           const z = z0 === null ? 0 : (z0 < 0 ? -tToSigma(z0, kStat.n - 1) : tToSigma(z0, kStat.n - 1));
           chk += ' · k <b>' + pm(kStat.mean, kStat.se) + '</b>, ' + kStat.n + ' ' + kSample
-            + ', vs peak ' + P.kSel.toFixed(2) + ', <b>' + sigTxt(z) + '</b>';
+            + ' vs ' + P.kSel.toFixed(2) + ', <b>' + sigTxt(z) + '</b>';
           // A large deviation is named, and the reason given where it is known. The peak of the
           // dispersion relation is the fastest growing mode of a FIXED domain; on a growing one the
           // pattern holds a count while k slides down the band and then splits, so the realized k
@@ -910,15 +910,13 @@
         // label is one word, the trace is the last four counts, and the reason for a large deviation
         // is three words pointing at the Growth hint, which has room for the sentence.
         host.setStatus(
-          '<span>grid <b>' + P.N + '×' + (P.plane ? P.N : P.rows) + '</b> ' + MODE_LABEL[s.mode] +
-            ' · dt ' + P.dt.toExponential(1) + ', ' + P.bind + ' binds · step <b>' +
+          '<span>' + MODE_LABEL[s.mode] + ' <b>' + P.N + '×' + (P.plane ? P.N : P.rows) +
+            '</b> · dt ' + P.dt.toExponential(1) + ', ' + P.bind + ' binds · step <b>' +
             stepsDone.toLocaleString() + '</b></span>' +
           '<span>' + KIN_LABEL[P.K.kind] + ', ' + LAW_LABEL[s.law] + ' · ' + win +
-            ' · L <b>' + P.L0.toFixed(2) + ' → ' + L.toFixed(2) + '</b>' +
-            (D.kLo > 0 ? ', band ' + (D.kLo * L / PI).toFixed(0) + '-' + (D.kHi * L / PI).toFixed(0) : '') +
-            '</span>' +
-          '<span>' + (P.plane ? 'ρ' : 'n') + ' predicted <b>' + pred.toFixed(1) + '</b>, measured ' +
-            meas + ' · ' + tr + '</span>' +
+            ' · L <b>' + P.L0.toFixed(2) + ' → ' + L.toFixed(2) + '</b></span>' +
+          '<span>' + (P.plane ? 'ρ' : 'n') + ' ' + meas + ' of <b>' + pred.toFixed(1) +
+            '</b> predicted · ' + tr + '</span>' +
           '<span>' + chk + (P.clamped ? ' · run trimmed to fit' : '') + (extra ? ' · ' + extra : '') + '</span>'
         );
       }
