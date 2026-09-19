@@ -1,5 +1,12 @@
 .DS_Store
+Thumbs.db
 *.log
+*~
+*.bak
+*.orig
+*.swp
+*.swo
+
 tools/dist/
 tools/shots/
 tools/modules/*.js
@@ -7,3 +14,9 @@ tools/modules/*.js
 # Agent scratch. The review and module workflows write throwaway probe scripts and screenshots
 # next to the harness; anything prefixed with an underscore is scratch and never ships.
 tools/_*
+
+# Local installs of the harness (Playwright) and its reports. The product is studio.html.
+node_modules/
+playwright-report/
+test-results/
+blob-report/
