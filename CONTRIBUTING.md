@@ -34,6 +34,12 @@ Not `fix`, not `WIP`, not a dump of files. Not Conventional Commits prefixes (`f
 
 A commit that adds a tab also regenerates the catalog (`node tools/index.js`) in that same commit. A hand-edited `TECHNIQUES.md` is already wrong.
 
+Author, committer, and any `Co-authored-by` trailer use only:
+
+    Chaos <326338179+SharpMeow@users.noreply.github.com>
+
+Never `sharpie@users.noreply.github.com`. That address is github.com/Sharpie, not this account. Leave `Co-authored-by` off unless a real second person wrote the change.
+
 ## Pull requests
 
 Against `main`. Title matches the squash subject. Body says what a reviewer should look at, and which harness you ran.
