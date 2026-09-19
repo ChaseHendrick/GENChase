@@ -2251,7 +2251,7 @@
       "subtitle": "KP-I lumps · 1977",
       "equation": "(u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b²",
       "credit": "Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Multi-lumps: Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). They pass through each other with no phase shift. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.",
-      "blurb": "KP-II makes Y-junctions of lines. KP-I, the other sign in front of u_yy, makes lumps: rational, decaying as 1/r², a 2D solitary wave that is exact. Two of them pass through each other and come out unshifted. The status line is the Hirota bilinear residual of KP-I against 0, and the peak against 4b². If the tau function is the wrong KP, both fail.",
+      "blurb": "KP-II makes Y-junctions of lines. KP-I, the other sign in front of u_yy, makes lumps: rational, decaying as 1/r², a 2D solitary wave that is exact. Two of them pass through each other and come out unshifted. The status line is the KP-I residual (u_t + 6 u u_x + u_xxx)_x − 3 u_yy against 0, by finite differences of the rational field, and the peak against 4b². If the tau function is the wrong KP, both fail.",
       "order": 116,
       "seed": "",
       "presets": [
