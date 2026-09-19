@@ -306,21 +306,6 @@
     return { fA, fB };
   }
 
-  /* The measurement. Map the plane by the inverse of the Cholesky factor of A, which carries the
-     predicted ellipse onto the unit circle and scales every area by one constant. Sort the disordered
-     triangles into NB angular sectors around the center. A sector of opening dtheta filled out to
-     radius r holds area r^2 dtheta / 2, and the triangles have a known constant density, so the count
-     in a sector gives the radius a boundary would need to enclose exactly them. That estimator uses
-     every disordered triangle in the sector rather than the single outermost one, so a stray flip far
-     out in a frozen corner moves it by one tile's worth instead of by its own distance. The predicted
-     radius is 1 in these coordinates, at every angle, by construction.
-
-     Each triangle is split between the two nearest sector centers by angle rather than dropped whole
-     into one sector. Hard sector edges alias badly against a triangular lattice: wherever an edge lies
-     along a lattice direction a whole row of centroids crosses at once, and a perfect disk measured
-     that way comes back with a six-fold ripple of three per cent, which is the size of the effect
-     being looked for. The same disk through the split weighting comes back flat to a few parts in a
-     thousand, so what is left in the number below is the tiling and not the bookkeeping. */
   /* ---------------- how large the error bar is ----------------
 
      The sixty sector radii are one measurement each, but they are not sixty independent numbers, and
@@ -364,7 +349,13 @@
       if (!(rho > 0)) break;
       tau += 2 * rho;
     }
-    tau = Math.min(Math.max(tau, 1), n / 4);
+    // Floored at 2 rather than 1. The split weighting hands every triangle to two adjacent sectors
+    // by construction, so consecutive sectors literally share data and tau cannot honestly be 1;
+    // on the small hexagons the estimator can return it anyway when the sample is too short to see
+    // its own correlation. At every size in the table above tau lands between 3.3 and 6.5, so the
+    // floor changes nothing there and only stops the degenerate case from claiming sixty
+    // independent sectors it does not have.
+    tau = Math.min(Math.max(tau, 2), n / 4);
     const sd = Math.sqrt(c0 * n / (n - 1));
     return { mean: m, sd, tau, neff: n / tau, se: sd * Math.sqrt(tau / n) };
   }
@@ -400,6 +391,21 @@
     return Math.sqrt(v) / tot;          // relative standard error of the total, hence of the fraction
   }
 
+  /* The measurement. Map the plane by the inverse of the Cholesky factor of A, which carries the
+     predicted ellipse onto the unit circle and scales every area by one constant. Sort the disordered
+     triangles into NB angular sectors around the center. A sector of opening dtheta filled out to
+     radius r holds area r^2 dtheta / 2, and the triangles have a known constant density, so the count
+     in a sector gives the radius a boundary would need to enclose exactly them. That estimator uses
+     every disordered triangle in the sector rather than the single outermost one, so a stray flip far
+     out in a frozen corner moves it by one tile's worth instead of by its own distance. The predicted
+     radius is 1 in these coordinates, at every angle, by construction.
+
+     Each triangle is split between the two nearest sector centers by angle rather than dropped whole
+     into one sector. Hard sector edges alias badly against a triangular lattice: wherever an edge lies
+     along a lattice direction a whole row of centroids crosses at once, and a perfect disk measured
+     that way comes back with a six-fold ripple of three per cent, which is the size of the effect
+     being looked for. The same disk through the split weighting comes back flat to a few parts in a
+     thousand, so what is left in the number below is the tiling and not the bookkeeping. */
   function measureArctic(T, a, b, c, ring, seed) {
     const TA = T.TA, TB = T.TB, U0 = T.U0, V0 = T.V0, UW = T.UW, VW = T.VW;
     const cl = classify(T, ring), fA = cl.fA, fB = cl.fB;
@@ -471,7 +477,7 @@
       RANGE('Tiles', 'inset', 'Gap inset (grout)', PAINT, 0, 0.3, 0.01, f2),
       RANGE('Tiles', 'strokeWidth', 'Stroke weight', PAINT, 0, 3, 0.1, f1),
       RANGE('Tiles', 'strokeColor', 'Stroke color index', PAINT, 0, 15, 1, String, { dimUnless: s => s.strokeWidth > 0 }),
-      RANGE('Arctic', 'ring', 'Frozen test radius', PAINT, 1, 4, 1, String, { hint: 'A tile counts as frozen when every tile within this many steps of it carries the same orientation. This is a systematic choice, not a statistical one, so it moves the answer rather than scattering it and it sits outside the error bar. Measured at 48, 48, 48: radius 1 reads 0.909, radius 2 reads 0.984, radius 3 reads 0.999 and radius 4 reads 1.008, so 3 is the setting at which the test stops arguing with the prediction.' }),
+      RANGE('Arctic', 'ring', 'Frozen test radius', PAINT, 1, 4, 1, String, { hint: 'A tile counts as frozen when every tile within this many steps of it carries the same orientation. This is a systematic choice, not a statistical one, so it moves the answer rather than scattering it and it sits outside the error bar. Measured at 48, 48, 48 over thirty seeds: radius 1 gives an arctic radius of 0.9090 ± 0.0008, radius 2 gives 0.9827 ± 0.0006, radius 3 gives 0.9976 ± 0.0007 and radius 4 gives 1.0067 ± 0.0007. Those bars are on the mean of thirty plates, about five times tighter than the bar a single plate carries, which is why the status line on one plate can call radius 3 perfect agreement while thirty plates together show it is three sigma high. None of the four settings agrees with 1 once enough plates are averaged, because none of them is the arctic boundary itself; 3 is simply the one that lands closest.' }),
       { group: 'Arctic', key: 'arctic', label: 'Draw the boundary', type: 'seg', kind: PAINT,
         options: [['off', 'Off'], ['pred', 'Predicted ellipse'], ['both', 'Predicted and measured']] },
       RANGE('Arctic', 'curveW', 'Curve weight', PAINT, 0.4, 5, 0.2, f1, { dimUnless: s => s.arctic !== 'off' }),
@@ -498,7 +504,7 @@
     hints: {
       Hexagon: 'The seed fixes every random choice the sampler makes, so a seed and a, b, c reprint exactly the same tiling. MacMahon counted how many there are to choose from, and the status line reports it.',
       Sampler: 'Coupling from the past has no fixed running time. It doubles how far back it starts until the two extreme tilings, run forward on the same random choices, arrive at the same place. At the largest hexagons an unlucky seed can run past the work budget, and the plate then falls back to a plain forward run and says in the status line that it is no longer exact.',
-      Arctic: 'The measured boundary is read off the plate itself: every tile is called frozen or free from its own neighborhood, the free ones are counted in sixty angular sectors around the center of the predicted ellipse, and the radius that would enclose them is compared with the ellipse. In the coordinates that comparison is made in, the prediction is a radius of exactly 1 at every angle. The sixty sectors are not sixty independent numbers, so the error bar on their mean is widened by the measured autocorrelation around the circle, which leaves about fifteen; the error bar on the free area comes from a seeded bootstrap over the same sectors, since a binomial bar on that many tiles would be more than twice too small. Both estimates were checked against the scatter across many seeds. It is a limit statement, so the agreement improves as a, b and c grow together and is poor when one of them is small: at 11, 11, 11 the radius reads about two per cent high, and at 48, 48, 8 about five per cent low.',
+      Arctic: 'The measured boundary is read off the plate itself: every tile is called frozen or free from its own neighborhood, the free ones are counted in sixty angular sectors around the center of the predicted ellipse, and the radius that would enclose them is compared with the ellipse. In the coordinates that comparison is made in, the prediction is a radius of exactly 1 at every angle. The sixty sectors are not sixty independent numbers, so the error bar on their mean is widened by the measured autocorrelation around the circle, which leaves about fifteen; the error bar on the free area comes from a seeded bootstrap over the same sectors, since a binomial bar on that many tiles would be more than twice too small. Both estimates were checked against the scatter across many seeds. It is a limit statement, so the agreement improves as a, b and c grow together and is poor when one of them is small: averaged over many seeds the radius reads 1.023 at 11, 11, 11 and 0.954 at 48, 48, 8, against 1.000 wherever the limit has been reached.',
       Tiles: 'Cube faces shades the three orientations light, middle and dark so the pile reads as solid, as if the light came from over your left shoulder. Height colors every face by how far above the floor of the box it sits and keeps the same shading over it.',
     },
     palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (tops, right faces, left faces)',

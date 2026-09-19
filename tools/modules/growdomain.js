@@ -723,12 +723,23 @@
           measLabel = 'ring';
           modeMN = ringStat(SU, P.N);
           measN = modeMN.rho;
-          const L = Lrow[0];
-          // k = pi rho / L, and L is analytic rather than measured, so the uncertainty propagates
-          // straight through a constant factor: se(k) = pi se(rho) / L.
-          kStat = { mean: PI * modeMN.rho / L, se: PI * modeMN.se / L, n: modeMN.sectors };
-          kSample = 'sectors of the ring';
           const pts = snaps.filter(v => v.L > 0 && v.rho > 0);
+          // k = pi rho / L, and L is analytic rather than measured, so within one snapshot the error
+          // propagates straight through a constant factor: se(k) = pi se(rho) / L.
+          //
+          // That is not the error bar to print, though, and finding out why is worth recording. The
+          // sectors of one ring are six views of ONE realization, so their scatter measures how round
+          // that ring is and nothing else. Three seeds of the same recipe gave k of 4.42, 4.51 and
+          // 4.94 while each run's sector standard error was about 0.04, so a sigma computed from the
+          // sectors would have called a ten percent seed-to-seed spread a ten sigma disagreement with
+          // theory. The run's own snapshots are the honest sample: each is a separate reading of the
+          // selected wavenumber as the domain grows, and their spread carries the same sawtooth the
+          // sheet's plateaus carry. The sector scatter is still what the printed ring radius carries,
+          // because that number really is about this one picture.
+          kStat = pts.length
+            ? meanSE(pts.map(v => PI * v.rho / v.L))
+            : { mean: PI * modeMN.rho / Lrow[0], se: NaN, n: 1 };
+          kSample = 'snapshots';
           expStat = fitSlope(pts.map(v => Math.log(v.L)), pts.map(v => Math.log(v.rho)));
           expSample = 'snapshots';
           return;
@@ -1105,7 +1116,8 @@
         let mn = 1e30, mx = -1e30;
         for (let i = 0; i < U1.length; i++) { const v = U1[i]; if (v < mn) mn = v; if (v > mx) mx = v; }
         if (!(mx - mn > 0.25 * P.K.u0)) return;
-        snaps.push({ L: lengthAt(host.getState().law, P.L0, P.Gf, P.r, t), rho: ringStat(U1, P.N).rho });
+        const rs = ringStat(U1, P.N);
+        snaps.push({ L: lengthAt(host.getState().law, P.L0, P.Gf, P.r, t), rho: rs.rho, se: rs.se });
       }
 
       function buildPlane() {
