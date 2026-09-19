@@ -4,7 +4,7 @@
 // export.js proves a sheet comes out and is not blank. It says nothing about whether the sheet is
 // sharp, and a plate can pass every check in this repository while being a few hundred simulation
 // cells smeared across two thousand pixels. At README scale that reads as blurry; on paper at
-// twenty-four inches it reads as a mistake. This is the check that catches it.
+// 24 inches it reads as a mistake. This is the check that catches it.
 //
 // Two numbers, because one is not enough. A plate is sharp if it has hard edges OR fine texture, and
 // soft only if it has neither:
@@ -18,7 +18,7 @@
 //           of a smooth ramp with nothing under it.
 //
 // Soft means edge below 0.8 AND acuity below 0.15. That is a field a few hundred cells across smeared
-// over two thousand pixels, and on paper at twenty-four inches it reads as a mistake.
+// over two thousand pixels, and on paper at 24 inches it reads as a mistake.
 const path = require('path');
 const { chromium } = require('playwright');
 

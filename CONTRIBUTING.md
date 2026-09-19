@@ -36,7 +36,7 @@ A commit that adds a tab also regenerates the catalog (`node tools/index.js`) in
 
     gh repo edit -d "$(cat .github/description.txt)"
 
-`og.jpg` is the social card. Its JPEG COM comment has to match the file; recaption the card when the count moves. `node tools/lint.js` fails a catalog, a spelled count, a RESEARCH row, a description file, or a COM comment that is behind the file.
+`og.jpg` is the social card. Its JPEG COM comment has to match the file; recaption the card when the count moves. `node tools/lint.js` fails a catalog, a spelled catalog count (digits after twelve, not words), a RESEARCH row, a description file, or a COM comment that is behind the file.
 
 Author, committer, and any `Co-authored-by` trailer use only:
 

@@ -128,7 +128,7 @@ follow, and all four are in place.
   memory. Worth about 11 per cent of the pixel-scale detail on Cahn-Hilliard.
 - The sheet states the field's own resolution rather than letting the paper take the blame.
 - The grid ceilings go to 1024 on the 2D GPU families.
-- **The defaults were raised at recipe v2.** The sixteen tabs that magnify a grid, which are the six
+- **The defaults were raised at recipe v2.** The 16 tabs that magnify a grid, which are the six
   `pdeCreate` tabs, the six `rdxCreate` tabs, `nematic`, and `cortex`, `bec`, `tonertu` and `liesegang`,
   now default to 512, or 384 on `liesegang`, whose ceiling is lower. Cahn-Hilliard at 512 rather than
   192 measures edge acutance 0.88 against 0.41, which is the difference between a verdict of SOFT and

@@ -34,7 +34,7 @@ Two corrections to the survey before anything else, because they change what you
 
 ## 1. What is actually broken, in fix order
 
-The 48 findings collapse to fourteen defects. Duplicates are merged; the finding numbers in brackets are the survey's.
+The 48 findings collapse to 14 defects. Duplicates are merged; the finding numbers in brackets are the survey's.
 
 ### Tier 1: destroys work or lies about what was made
 
@@ -61,7 +61,7 @@ Fix: make `exportSVG` take the same three decisions `render()` takes. Then add t
 
 Fix: have `exportSVG` return nothing for `filled` and `sand` so `doExport` falls through to the module's own `exportPNG`, which renders them correctly. For `nodal` and `contour`, derive the stroke from `s.threshold` and `s.softness` the way `computeToImageData` does, or emit the band as a filled region between two threshold contours, and scale `n` with the requested output.
 
-**5. Visiting about seventeen GPU tabs kills the earlier ones permanently and silently.** [7]
+**5. Visiting about 17 GPU tabs kills the earlier ones permanently and silently.** [7]
 30 tab visits produced 20 contexts, 4 lost, 0 restored, and the lost tabs stayed dead for the session: `gl.isContextLost()` true, a 48x48 readback all zeros, `#fault` hidden, no toast, and the status line still reporting `step 588`. Generate and Reset do not recover it. `showFault` is behind `if (currentId === mod.id)` at `studio.html:1895`, so a background eviction is never surfaced; `switchTo` at `studio.html:2220` never looks at `e.contextLost`; and `rebuildEntry` at `studio.html:2888` is reachable only from the fault panel's Try again button at `:3068`.
 
 Fix, two independent halves. Keep a bounded LRU of live instances and dispose the oldest in `switchTo`, removing its canvas, so contexts are released deliberately rather than taken. And have `switchTo` call `rebuildEntry` when it lands on an entry with `e.contextLost` set, since `webglcontextrestored` demonstrably never fires for an evicted context.
@@ -120,7 +120,7 @@ The phone top bar fails in two directions at once. Horizontally, `.bar` is 1,531
 
 **What stays at the top**: the brand, the seed box, Presets, and the tab strip. The seed is the identity of the plate and has to be readable and typable; it belongs next to the wordmark, not in an action dock. The tab strip stays at the top because it is navigation, not action, and because a second fixed row at the bottom would eat the plate.
 
-**Everything else goes behind one More button** in the top row, opening a sheet that lists Surprise, Link, Save, Gallery, Undo, Reset, Timeline, Focus, Ambient, About, JSON and Panel side with their shortcut letters. That is twelve controls removed from the row, which is what actually cures the overflow. Asking a person to swipe 1,100 px past sixteen buttons is not an affordance problem to be solved with a gradient.
+**Everything else goes behind one More button** in the top row, opening a sheet that lists Surprise, Link, Save, Gallery, Undo, Reset, Timeline, Focus, Ambient, About, JSON and Panel side with their shortcut letters. That is twelve controls removed from the row, which is what actually cures the overflow. Asking a person to swipe 1,100 px past 16 buttons is not an affordance problem to be solved with a gradient.
 
 **Safe area and browser chrome.** The dock is `position: fixed; left: 0; right: 0; bottom: 0` with `padding-bottom: max(10px, env(safe-area-inset-bottom))`, and `body` gets a matching bottom padding so the last panel control is not trapped under it. Use `fixed`, not `sticky`: iOS Safari's collapsing URL bar moves the layout viewport, and a sticky element anchored to a `100vh` ancestor drifts under the toolbar. For the same reason, change the sticky stage from `46vh` to `46dvh` at `studio.html:589`; the `.app` rule at `:155` already pairs `100vh` with `100dvh` and the stage should match.
 
@@ -217,7 +217,7 @@ Four rules make it honest, and all four are required:
 
 **Now: navigation pieces one and two.** The filter input and the wheel translation. One input and five lines, and they are the whole near-term answer to a strip that no longer fits on the screen.
 
-**Next: the WebGL LRU.** It is the only Tier 1 item that needs thought about lifecycle rather than a local edit, and it only bites a person who browses seventeen tabs in a session. Real, but not this week.
+**Next: the WebGL LRU.** It is the only Tier 1 item that needs thought about lifecycle rather than a local edit, and it only bites a person who browses 17 tabs in a session. Real, but not this week.
 
 **Can wait.** The technique browser with sort, filter and the familiarity axis; the keyboard poke across 24 modules; the touch-target sweep under `@media (pointer: coarse)` (138 elements under 44 px, all of them hittable today); `role=\"tabpanel\"` and `aria-controls`; the export progress note and cancel; the witness-hint pill; the export dialog header naming its technique and seed.
 
@@ -225,7 +225,7 @@ Four rules make it honest, and all four are required:
 
 - **The technique browser before the filter input ships.** The input may make it unnecessary for a year, and the browser is where the subjective axis lives, which is the part worth getting slowly right.
 - **Making familiarity the default sort, or giving it a number.** Both convert an opinion into a claim, in a project whose character is that it measures what it says.
-- **Splitting `studio.html` or adding a build step to solve the layout.** `AGENTS.md` forbids it and the layout problem is about forty lines of CSS.
+- **Splitting `studio.html` or adding a build step to solve the layout.** `AGENTS.md` forbids it and the layout problem is about 40 lines of CSS.
 - **Touching any module default while doing layout work.** Recipe v2 and the `legacy` declarations exist because a moved default silently reprints old recipes at a value they were never made at. That is a separate kind of change with its own test in `tools/recipe.js`, and it does not belong in a commit about flexbox.
 - **Threading an export abort flag through every module.** Do the yield interval and the host-side progress note first.
 - **Tuning any breakpoint to a number in this survey.** Fallback fonts.
