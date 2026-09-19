@@ -386,7 +386,7 @@
      near 16 on the regular hexagons and near 10 at 48, 48, 8. A second, independent family of forty
      to a hundred and twenty seeds per shape reached 5.0 at 48, 48, 8, where tau came out 12.1 on one
      plate, so the status line can print five; call the range five to thirty rather than six to thirty.
-     The ceiling on tau, n/4, did not bind on any of the 460 plates of that family. The status line
+     The ceiling on tau, n/4, did not bind on any of the 540 plates of that family. The status line
      prints which.
 
      Checked rather than asserted, by drawing many tilings at one size and comparing the scatter of the
@@ -776,9 +776,14 @@
           // limit shape is a statement about the uniform measure, so a forward run that has not
           // mixed disagrees with it for a reason that is already known, and saying "cause not
           // diagnosed" next to "not exact" would be claiming ignorance of something on the same
-          // line. It is not a corner case: the heat bath at the 200 sweeps the schema allows reads
-          // 6.0 sigma off on a 48, 48, 48 hexagon, 2.5 sigma at 4,000 and 1.7 sigma at 20,000, so a
-          // short forward run trips this every time.
+          // line. It is not a corner case. Measured over eight seeds on a 48, 48, 48 hexagon, the
+          // heat bath at the 200 sweeps the schema allows reads minus 4.4 to minus 5.4 sigma on the
+          // radius and minus 5.4 to minus 6.5 on the free area, and trips this on 8 seeds of 8: a
+          // short forward run is short in one direction, the plate is not yet spread out, and both
+          // numbers come in low together. By 1,000 sweeps it is minus 0.9 to minus 1.9 and trips on
+          // none, and by 4,000 it is scattered about zero, minus 2.2 to plus 0.9, which is a chain
+          // that has mixed. Those later readings are the ordinary scatter of one plate and not a
+          // signature of the sweep count, so no single value is quoted for them.
           const notExact = !info || !info.exact;
           if (worst > 3) {
             const w = notExact

@@ -539,7 +539,7 @@
     order: 45.5,
     equation: '∂u/∂t = (D_u/L²)∂²u/∂ξ² + f(u,v) − d(L̇/L)u,  ∂v/∂t = (D_v/L²)∂²v/∂ξ² + g(u,v) − d(L̇/L)v',
     credit: "Alan M. Turing, 'The chemical basis of morphogenesis', Philosophical Transactions of the Royal Society of London B 237, 37 (1952), showed that two substances which react and diffuse at different rates can break a uniform state into a pattern with a wavelength of its own. Edward J. Crampin, Eamonn A. Gaffney and Philip K. Maini, 'Reaction and diffusion on growing domains: scenarios for robust pattern formation', Bulletin of Mathematical Biology 61, 1093 (1999), wrote the same problem in fixed Lagrangian coordinates on a domain of changing length L(t); the diffusion coefficients pick up a factor 1/L², and a dilution term d(L̇/L) appears because growth carries material apart. That is the formulation integrated here. Shigeru Kondo and Rihito Asai, 'A reaction-diffusion wave on the skin of the marine angelfish Pomacanthus', Nature 376, 765 (1995), measured the consequence on a live animal: as the fish grows its stripes do not widen, new ones are inserted between the old, at the spacing the reaction-diffusion wavelength fixes. The kinetics are Schnakenberg's trimolecular scheme and the Gierer-Meinhardt activator-inhibitor pair.",
-    blurb: 'A Turing pattern has a wavelength of its own, set by the chemistry and the two diffusion rates, and that wavelength lives in real space: centimeters, not fractions of the animal. So what happens when the animal gets bigger? The space-time sheet answers it. Time runs down the page and the domain runs across it, drawn at its true physical width, so the sheet widens as the tissue grows. The stripes do not widen with it. Each time the domain has stretched far enough to hold another wavelength, the pattern splits and a new stripe appears between two old ones, which is exactly what Kondo and Asai filmed on the skin of a growing angelfish. Growth rate and growth law are the controls that matter: grow slowly and the stripes insert one at a time, grow fast and the pattern cannot keep up and doubles in jumps, choose the logistic law and the insertions stop when the growth does. The status line counts the stripes on the sheet and prints them next to the number linear stability predicts, with an error bar on everything that can carry one. The count itself is exact, so it is labelled exact rather than given an invented uncertainty. The exponent in n proportional to L, which is the mode doubling claim, carries the standard error of its fit. The wavenumber carries the spread across the plateaus, and that spread is physical: the pattern holds a count while the domain stretches, so its wavenumber slides down and jumps back at each insertion rather than sitting still. Slow the growth down and the measured wavenumber walks back up to the value linear theory picks out.',
+    blurb: 'A Turing pattern has a wavelength of its own, set by the chemistry and the two diffusion rates, and that wavelength lives in real space: centimeters, not fractions of the animal. So what happens when the animal gets bigger? The space-time sheet answers it. Time runs down the page and the domain runs across it, drawn at its true physical width, so the sheet widens as the tissue grows. The stripes do not widen with it. Each time the domain has stretched far enough to hold another wavelength, the pattern splits and a new stripe appears between two old ones, which is exactly what Kondo and Asai filmed on the skin of a growing angelfish. Growth rate and growth law are the controls that matter, and the rate works the opposite way round from the way it sounds. Grow slowly and every gap splits at the same moment, so the count steps 5, then 10, then 20: that is the frequency doubling Crampin, Gaffney and Maini predicted for exponential growth, and it is what the default sheet does. Grow fast and the pattern falls behind the band instead, the splits come out of step with one another, and the count climbs through 7, 8, 10 and 12 on its way, while the wavenumber it carries sinks further below the one linear theory picks out: 4.20 at the default rate, 3.47 at 0.15 and 2.91 at the top of the slider, against a peak of 4.87. Choose the logistic law and the splitting stops when the growth does. The status line counts the stripes on the sheet and prints them next to the number linear stability predicts, with an error bar on everything that can carry one. The count itself is exact, so it is labelled exact rather than given an invented uncertainty. The exponent in n proportional to L, which is the mode doubling claim, carries the standard error of its fit. The wavenumber carries the spread across the plateaus, and that spread is physical: the pattern holds a count while the domain stretches, so its wavenumber slides down and jumps back at each insertion rather than sitting still. Slow the growth down and that wavenumber walks back toward the value linear theory picks out, without quite reaching it: the slowest run the work budget allows still measures about two standard deviations below the peak, and the plate says so rather than rounding it away.',
     schema: [
       { group: 'Plate', key: 'mode', label: 'Plate', type: 'seg', kind: GEOM, wrap: true,
         options: [['sheet', 'Space-time sheet'], ['plane', 'Growing plane']],
@@ -571,7 +571,7 @@
       RANGE('Growth', 'grow', 'Grown by', GEOM, 1.5, 10, 0.1, v => '×' + v.toFixed(1), {
         hint: 'Final length over initial length. Each doubling should double the stripe count, so a factor of eight is three doublings.' }),
       RANGE('Growth', 'rate', 'Growth rate', GEOM, 0.01, 0.2, 0.002, f3, {
-        hint: 'In units of the pattern’s own linear growth rate. Small values keep the pattern quasi-static, so it tracks the predicted count and inserts one stripe at a time. Large values outrun it and the pattern jumps by whole doublings instead. A very slow rate is a very long run, so it is held up to fit the work budget.' }),
+        hint: 'In units of the pattern’s own linear growth rate. Small values keep the pattern quasi-static: it stays near the fastest growing mode and every gap splits at the same moment, so the count doubles in one step. Large values outrun it, the splits come out of step with one another, the count climbs through the odd numbers in between, and the measured wavenumber sits further below the peak of the dispersion relation: 4.20 at 0.04 against 2.91 at 0.20, with the peak at 4.87. A very slow rate is a very long run, so it is held up to fit the work budget.' }),
       RANGE('Growth', 'amp', 'Initial noise', GEOM, 0.002, 0.1, 0.002, f3, {
         hint: 'The uniform state is exactly steady, so something has to break it. This is the amplitude of the seeded perturbation, and it sets how far down the sheet the pattern first becomes visible.' }),
       { group: 'Growth', key: 'reseed', label: 'Reseed', type: 'action' },
@@ -888,18 +888,37 @@
         const held = segs.filter(g => g.n > 0 && g.rows >= minRows);
         const tail = segs.length && segs[segs.length - 1].n > 0 ? segs[segs.length - 1] : null;
         const ended = !!tail && held.indexOf(tail) < 0;   // the sheet stopped part way through a split
+        // The plateaus the run was seen to LEAVE. A count the sheet simply stopped inside has not
+        // been shown to be a state the pattern holds, and its geometric mean L is the start of its
+        // tooth rather than the middle, so its k comes out high. How high is not a rounding error:
+        // at growth ×4 and rate 0.026 the final split lands twelve rows from the bottom of the sheet
+        // and that plateau reads k = 6.16 against 4.13 and 4.48 from the two complete ones, which
+        // dragged the printed mean to 4.92 ± 0.63 and made a lagging pattern read as 0.1 sigma from
+        // the peak. Averaging k over a state requires the state; the insertion that started it is
+        // still an event, so it stays in the exponent's sample below.
+        const plat = held.filter(g => g !== tail);
         trace = held.map(g => ({ row: g.row, n: g.n }));
         if (ended) trace.push({ row: tail.row, n: tail.n });
         if (trace.length > 8) trace = trace.slice(-8);
         // WAVENUMBER, from the geometric mean of L over each plateau. The plateau spans a range of
         // lengths at one fixed count and k slides across it, so the mean is the middle of one tooth
-        // of the sawtooth. Lowering the growth rate at a fixed seed walks this straight at the peak
-        // of the dispersion relation: 3.26 at rate 0.15, 3.78 at 0.09, 4.31 at 0.04, 4.64 at 0.02 and
-        // 4.75 ± 0.37 at 0.012 against a peak of 4.87, which is 0.3 sigma. That is the quasi-static
-        // limit arriving, and it is why the middle of the tooth is the quantity compared with the
-        // peak rather than either end of it.
-        const Lbar = held.map(g => Math.exp(g.sl / g.rows));
-        kStat = meanSE(held.map((g, i) => g.n * PI / Lbar[i]));
+        // of the sawtooth. Lowering the growth rate at a fixed seed walks this toward the peak of the
+        // dispersion relation, measured on the default recipe at cells 192, growth ×8, seed
+        // growdomain-1999: k = 2.91 ± 0.15 at rate 0.20, 3.47 ± 0.13 at 0.15, 4.02 ± 0.21 at 0.09 and
+        // 4.20 ± 0.13 at 0.04, against a peak of 4.87. That is the quasi-static limit arriving, and it
+        // is why the middle of the tooth is the quantity compared with the peak rather than either end
+        // of it. The rate slider will not go below about 0.04 at this grid and growth, because a
+        // slower run is a longer one and the work budget holds it; the trend is what the plate shows,
+        // not the limit itself.
+        //
+        // ONE KNOWN BIAS, stated rather than hidden. The first plateau starts where the pattern's
+        // amplitude clears the detection floor, which is later than where that count was established,
+        // so its mean L is biased high and its k low. On the default that point is 3.94 against 4.32
+        // and 4.33 from the two plateaus whose starts were observed. It pulls the printed k away from
+        // the theoretical peak rather than toward it, so it is not flattering the comparison, and it
+        // is left in because dropping it would leave two samples out of three.
+        const Lbar = plat.map(g => Math.exp(g.sl / g.rows));
+        kStat = meanSE(plat.map((g, i) => g.n * PI / Lbar[i]));
         kSample = 'plateaus';
         // EXPONENT, from the insertion events rather than from the same plateau means. A plateau is
         // truncated at both ends of the run, by the amplitude floor at the top of the sheet and by the
@@ -941,8 +960,8 @@
         // disagreement from a number that cannot support the comparison. The sigma against theory is
         // quoted once, on the k term of the self-check, where the sample is the run's own snapshots.
         const meas = !measN ? 'not yet'
-          : (P.plane ? '<b>' + pm(measN, modeMN ? modeMN.se : NaN) + '</b> over '
-              + (modeMN ? modeMN.sectors : 0) + ' sectors'
+          : (P.plane ? '<b>' + pm(measN, modeMN ? modeMN.se : NaN) + '</b> ('
+              + (modeMN ? modeMN.sectors : 0) + ' sectors)'
                      : '<b>' + measN + '</b> exact');
 
         // The self-check. Every measured quantity beside a theoretical one carries an uncertainty and
