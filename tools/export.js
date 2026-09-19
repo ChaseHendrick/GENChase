@@ -128,6 +128,43 @@ const blank = m => !m.lum || ((m.lum.p99 - m.lum.p01) < 12 && !((m.lum.max - m.l
       const want = Math.round(inches * dpi);
       if (Math.max(res.w, res.h) < want * 0.5) fails.push(label + ': longest edge ' + Math.max(res.w, res.h) + ' px, far short of the ' + want + ' px asked for');
       if (blank(res)) fails.push(label + ' is blank at print size');
+
+      // Vector RIP of a different picture than the plate is the class of bug Penrose shipped:
+      // the canvas was a rhomb mosaic and the print was flat orange stars. Downsample both to
+      // 300² and compare. Grain (a raster overlay the SVG does not emit) moves a few levels;
+      // a different picture moves tens, and the dark-pixel fraction with it.
+      if (res.vector) {
+        const cmp = await p.evaluate(async () => {
+          const art = [...document.querySelectorAll('canvas.art')].find(c => !c.hidden);
+          const img = document.querySelector('#export-img');
+          if (!art || !img || !art.width || !img.naturalWidth) return null;
+          const N = 300;
+          const sample = (src, sw, sh) => {
+            const c = document.createElement('canvas'); c.width = N; c.height = N;
+            const g = c.getContext('2d', { willReadFrequently: true });
+            g.drawImage(src, 0, 0, sw, sh, 0, 0, N, N);
+            return g.getImageData(0, 0, N, N).data;
+          };
+          const a = sample(art, art.width, art.height);
+          const b = sample(img, img.naturalWidth, img.naturalHeight);
+          let mad = 0, n = 0, darkA = 0, darkB = 0;
+          for (let i = 0; i < a.length; i += 4) {
+            const la = 0.2126 * a[i] + 0.7152 * a[i + 1] + 0.0722 * a[i + 2];
+            const lb = 0.2126 * b[i] + 0.7152 * b[i + 1] + 0.0722 * b[i + 2];
+            mad += Math.abs(a[i] - b[i]) + Math.abs(a[i + 1] - b[i + 1]) + Math.abs(a[i + 2] - b[i + 2]);
+            n++;
+            if (la < 40) darkA++;
+            if (lb < 40) darkB++;
+          }
+          return { mad: mad / (3 * n), darkA: darkA / n, darkB: darkB / n };
+        }).catch(() => null);
+        if (cmp) {
+          const darkDiff = Math.abs(cmp.darkA - cmp.darkB);
+          console.log('plate-vs-print ' + label + ' ' + JSON.stringify({ mad: +cmp.mad.toFixed(2), darkDiff: +darkDiff.toFixed(4) }));
+          if (darkDiff > 0.14) fails.push(label + ': print ink coverage differs from the plate by ' + (darkDiff * 100).toFixed(1) + ' pp');
+          else if (cmp.mad > 38) fails.push(label + ': plate and print differ by MAD ' + cmp.mad.toFixed(1));
+        }
+      }
     }
     await p.evaluate(() => { document.querySelector('#export-close').click(); });
   }

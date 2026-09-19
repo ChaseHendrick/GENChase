@@ -107,7 +107,7 @@
   :root {
     --bg: #ECE9E2; --panel: #F7F5F0; --panel-2: #EFECE5;
     --line: #D8D3C9; --line-strong: #B9B2A5;
-    --ink: #1B1916; --ink-2: #3E3A34; --muted: #726C63;
+    --ink: #1B1916; --ink-2: #3E3A34; --muted: #635D54;
     --accent: #B3712A; --accent-ink: #FFFCF7; --accent-soft: rgba(179, 113, 42, 0.14);
     --stage: #E1DDD4;
     --shadow: 0 18px 50px rgba(40, 30, 15, 0.18), 0 2px 6px rgba(40, 30, 15, 0.10);
@@ -154,7 +154,7 @@
 
   .app {
     display: flex; flex-direction: column;
-    height: 100vh; height: 100dvh; min-height: 560px;
+    height: 100vh; height: 100dvh; min-height: 0;
   }
   .bar, .tabs, .history { flex: 0 0 auto; }
   .main { flex: 1 1 auto; min-height: 0; }
@@ -164,7 +164,8 @@
     display: flex; align-items: center; gap: 10px;
     padding-block: 10px; padding-inline: 16px;
     border-bottom: 1px solid var(--line); background: var(--panel);
-    flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin;
+    flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    position: relative;
   }
   .brand { display: flex; align-items: baseline; gap: 10px; margin-right: auto; }
   .brand h1 { font-family: "Instrument Serif", "Iowan Old Style", Georgia, serif; font-weight: 400; font-size: 26px; letter-spacing: -0.01em; margin: 0; line-height: 1; }
@@ -211,7 +212,7 @@
     display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
   }
   .btn:hover { border-color: var(--ink-2); }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--panel); }
   .btn.primary:hover { filter: brightness(1.06); }
   .btn.small { padding: 4px 8px; font-size: 12px; }
   .btn:disabled { opacity: .45; cursor: default; }
@@ -219,6 +220,55 @@
   .btn.rec { border-color: #c8392b; color: #c8392b; }
   .btn.rec::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #c8392b; animation: livepulse 1.2s ease-out infinite; }
   .bar select { border: 1px solid var(--line-strong); background: var(--panel-2); border-radius: 6px; padding: 7px 10px; max-width: 150px; }
+  .bar::-webkit-scrollbar { display: none; }
+  .bar.scrollable { mask-image: linear-gradient(to right, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%); }
+  .bar.scrollable.at-start { mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 22px), transparent 100%); }
+  .bar.scrollable.at-end { mask-image: linear-gradient(to right, transparent 0, #000 22px, #000 100%); }
+  .bar.scrollable.at-start.at-end { mask-image: none; }
+  .print-cluster { display: contents; }
+  #dock-dims { display: none; }
+  #btn-more { display: none; }
+  .brand { order: 0; }
+  .seedbox { order: 1; }
+  #headline { order: 2; }
+  #preset { order: 3; }
+  #btn-surprise { order: 4; }
+  #btn-generate { order: 5; }
+  #btn-copy-link { order: 10; }
+  #btn-save { order: 11; }
+  #btn-record { order: 12; }
+  #btn-gallery { order: 13; }
+  #btn-undo { order: 14; }
+  #btn-reset { order: 15; }
+  #btn-history { order: 16; }
+  #btn-focus { order: 17; }
+  #btn-ambient { order: 18; }
+  #btn-about { order: 19; }
+  #btn-settings { order: 20; }
+  #btn-side { order: 21; }
+  #btn-more { order: 22; }
+  .printbox { order: 30; }
+  #btn-export { order: 31; }
+  .printbox, #btn-export {
+    position: sticky; right: 0; z-index: 2;
+    background: var(--panel);
+  }
+  .printbox { padding-left: 8px; margin-left: 4px; border-left: 1px solid var(--line); border-radius: 0 6px 6px 0; }
+  @media (max-width: 1400px) {
+    #btn-more { display: inline-flex; }
+    #btn-surprise, #btn-copy-link, #btn-save, #btn-gallery, #btn-undo, #btn-reset,
+    #btn-history, #btn-focus, #btn-ambient, #btn-about, #btn-settings, #btn-side, #btn-record {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;
+    }
+  }
+  .more-list { display: flex; flex-direction: column; gap: 2px; }
+  .more-list button {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    width: 100%; border: 0; background: transparent; color: var(--ink);
+    padding: 10px 4px; font-size: 14px; text-align: left; border-radius: 6px;
+  }
+  .more-list button:hover { background: var(--accent-soft); }
+  .more-list kbd { font-family: "Geist Mono", ui-monospace, monospace; font-size: 11px; color: var(--muted); }
 
   /* ---------- tabs ---------- */
   .tabstrip {
@@ -260,7 +310,7 @@
   .side { border-right: 1px solid var(--line); background: var(--panel); overflow-y: auto; min-height: 0; scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
   .main.side-right .side { order: 2; border-right: 0; border-left: 1px solid var(--line); }
   @media (max-width: 1560px) { .brand .sub { display: none; } }
-  @media (max-width: 1800px) { .printbox .dims { display: none; } }
+  @media (max-width: 1100px) { .printbox .dims { display: none; } }
   @media (max-width: 1480px) {
     #btn-side-label { display: none; }
     .printbox label { display: none; }
@@ -583,14 +633,24 @@
     display: inline-block; font-family: "Geist Mono", ui-monospace, monospace; font-size: 10px;
     border: 1px solid var(--line-strong); border-radius: 3px; padding: 0 4px; color: var(--ink-2);
   }
+  .shortcuts { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0 0 14px; }
+  .shortcuts th, .shortcuts td { text-align: left; padding: 5px 8px 5px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .shortcuts th { font-family: "Geist Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  .shortcuts kbd { font-family: "Geist Mono", ui-monospace, monospace; font-size: 11px; border: 1px solid var(--line-strong); border-radius: 3px; padding: 0 5px; }
 
   /* the print readout is a long nowrap string: give it its own line before it can clip */
   @media (max-width: 980px) {
     .printbox { flex-wrap: wrap; }
     .printbox .dims {
+      display: flex;
       flex-basis: 100%; border-left: 0; border-top: 1px solid var(--line);
       white-space: normal; padding-block: 5px; line-height: 1.4;
     }
+  }
+  @media (max-height: 560px) {
+    .bar { padding-block: 6px; }
+    .tabstrip { min-height: 30px; }
+    .tab { padding-block: 6px 5px; }
   }
   @media (max-width: 600px) {
     .bar { gap: 7px; padding-inline: 12px; }
@@ -602,10 +662,29 @@
   }
 
   /* Narrow: the picture stays pinned at the top while the settings scroll beneath it */
-  @media (max-width: 760px) {
+  @media (max-width: 900px) {
     .app { display: block; height: auto; min-height: 100vh; min-height: 100dvh; }
     .main, .main.side-right { display: flex; flex-direction: column; }
-    .stage { order: -1; position: sticky; top: 0; z-index: 5; height: 46vh; min-height: 260px; padding-block: 14px; padding-inline: 16px; border-bottom: 1px solid var(--line); }
+    .stage { order: -1; position: sticky; top: 0; z-index: 5; height: 46dvh; height: 46vh; min-height: 260px; padding-block: 14px; padding-inline: 16px; border-bottom: 1px solid var(--line); }
+    .print-cluster {
+      display: flex; align-items: center; gap: 6px; flex-wrap: nowrap;
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+      padding: 8px 10px max(10px, env(safe-area-inset-bottom));
+      background: var(--panel); border-top: 1px solid var(--line);
+      box-shadow: 0 -8px 24px rgba(20,16,12,0.08);
+    }
+    .print-cluster > * { order: 0; position: static; margin: 0; padding-left: 0; border-left: 0; border-radius: 6px; background: var(--panel-2); }
+    #btn-generate { flex: 1 1 0; min-width: 5.2rem; justify-content: center; }
+    #btn-export { flex: 0 0 auto; }
+    .printbox { flex: 0 1 auto; min-width: 0; }
+    .printbox select { max-width: 4.8rem; padding-inline: 4px; }
+    #dock-dims {
+      display: block; flex: 1 1 100%; order: -1;
+      font-family: "Geist Mono", ui-monospace, monospace; font-size: 10.5px; color: var(--ink-2);
+      font-variant-numeric: tabular-nums;
+    }
+    .printbox .dims { display: none !important; }
+    body { padding-bottom: 72px; }
     .status { left: 12px; bottom: 6px; gap: 10px; font-size: 10px; }
     .witness { top: 8px; right: 8px; max-width: 42%; }
     .witness-strip img { width: 28px; height: 28px; }
@@ -621,7 +700,7 @@
     .history .hitem img { width: 56px; height: 42px; }
     .history .hitem span { display: none; }
   }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
 <body>
@@ -642,7 +721,6 @@
     <div class="seedbox" id="headline" hidden></div>
     <select id="preset" aria-label="Preset"><option value="">Presets…</option></select>
     <button class="btn" id="btn-surprise" type="button" title="Randomize every parameter and the palette (S)">Surprise</button>
-    <button class="btn primary" id="btn-generate" type="button" title="New seed (Space)">Generate</button>
     <button class="btn" id="btn-copy-link" type="button" title="Copy a shareable link to this exact plate (L)">Link</button>
     <button class="btn" id="btn-save" type="button" title="Save this plate to your gallery (B)">Save</button>
     <button class="btn" id="btn-record" type="button" hidden aria-pressed="false" title="Record a clip of this living plate, up to 60 s (V)">Record</button>
@@ -658,18 +736,23 @@
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="11" rx="1.5"/><path id="btn-side-divider" d="M6 2.5v11"/></svg>
       <span id="btn-side-label">Panel left</span>
     </button>
-    <div class="printbox">
-      <label for="export-inches">print</label>
-      <select id="export-inches" aria-label="Print size, long edge in inches"></select>
-      <select id="export-dpi" aria-label="Print resolution in pixels per inch"></select>
-      <button id="btn-colophon" class="ptog" type="button" role="switch" aria-checked="false"
-        title="Show a printed caption under the image: technique, governing equation, seed and every parameter">Colophon</button>
-      <span class="dims" id="export-dims" aria-live="polite"></span>
+    <button class="btn" id="btn-more" type="button" title="More actions" aria-expanded="false" aria-haspopup="dialog" aria-controls="modal-more">More</button>
+    <div class="print-cluster" id="print-cluster">
+      <span class="dock-dims" id="dock-dims" hidden></span>
+      <button class="btn primary" id="btn-generate" type="button" title="New seed (Space)">Generate</button>
+      <div class="printbox">
+        <label for="export-inches">print</label>
+        <select id="export-inches" aria-label="Print size, long edge in inches"></select>
+        <select id="export-dpi" aria-label="Print resolution in pixels per inch"></select>
+        <button id="btn-colophon" class="ptog" type="button" role="switch" aria-checked="false"
+          title="Show a printed caption under the image: technique, governing equation, seed and every parameter">Colophon</button>
+        <span class="dims" id="export-dims" aria-live="polite"></span>
+      </div>
+      <button class="btn" id="btn-export" type="button" title="Export a print (E)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 11v2a1 1 0 001 1h8a1 1 0 001-1v-2"/></svg>
+        Export PNG
+      </button>
     </div>
-    <button class="btn" id="btn-export" type="button" title="Export a print (E)">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 11v2a1 1 0 001 1h8a1 1 0 001-1v-2"/></svg>
-      Export PNG
-    </button>
   </header>
 
   <div class="tabstrip">
@@ -715,6 +798,27 @@
   </div>
 </div>
 
+<div class="modal" id="modal-more" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="more-title">
+    <div class="head"><h2 id="more-title">More</h2><button class="x" id="more-close" type="button" aria-label="Close">×</button></div>
+    <div class="content more-list">
+      <button type="button" data-for="btn-surprise">Surprise <kbd>S</kbd></button>
+      <button type="button" data-for="btn-copy-link">Copy link <kbd>L</kbd></button>
+      <button type="button" data-for="btn-save">Save to gallery <kbd>B</kbd></button>
+      <button type="button" data-for="btn-gallery">Gallery <kbd>G</kbd></button>
+      <button type="button" data-for="btn-undo">Undo <kbd>Z</kbd></button>
+      <button type="button" data-for="btn-reset">Reset <kbd>R</kbd></button>
+      <button type="button" data-for="btn-history">Timeline <kbd>H</kbd></button>
+      <button type="button" data-for="btn-focus">Focus <kbd>F</kbd></button>
+      <button type="button" data-for="btn-ambient">Ambient <kbd>A</kbd></button>
+      <button type="button" data-for="btn-about">About <kbd>?</kbd></button>
+      <button type="button" data-for="btn-settings">Settings JSON</button>
+      <button type="button" data-for="btn-side">Move panel</button>
+      <button type="button" data-for="btn-record">Record <kbd>V</kbd></button>
+    </div>
+  </div>
+</div>
+
 <div class="modal" id="modal-about" hidden>
   <div class="card" role="dialog" aria-modal="true" aria-labelledby="about-title">
     <div class="head"><h2 id="about-title">About GENChase</h2><button class="x" id="about-close" type="button" aria-label="Close">×</button></div>
@@ -736,6 +840,24 @@
         Turn on <b>Colophon</b> in the print bar (or in the export sheet) and the file becomes a mounted plate: the image inset in a paper margin, and beneath it the
         technique, its governing equation, the seed, the palette and every parameter. Scientific plates carried their own method
         for centuries and generative art almost never does. The piece on the wall states how it was made and could be remade.</p>
+
+      <h3>Shortcuts</h3>
+      <table class="shortcuts">
+        <thead><tr><th>Key</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>Space</kbd></td><td>Generate a new seed</td></tr>
+          <tr><td><kbd>S</kbd></td><td>Surprise — randomize parameters and palette</td></tr>
+          <tr><td><kbd>E</kbd></td><td>Export a print</td></tr>
+          <tr><td><kbd>C</kbd></td><td>Copy the plate at screen size</td></tr>
+          <tr><td><kbd>L</kbd></td><td>Copy a link to this exact plate</td></tr>
+          <tr><td><kbd>B</kbd> / <kbd>G</kbd></td><td>Save to gallery / open gallery</td></tr>
+          <tr><td><kbd>Z</kbd> / <kbd>R</kbd></td><td>Undo / reset this technique</td></tr>
+          <tr><td><kbd>H</kbd> / <kbd>F</kbd> / <kbd>A</kbd></td><td>Timeline / focus / ambient</td></tr>
+          <tr><td><kbd>/</kbd></td><td>Find a technique</td></tr>
+          <tr><td><kbd>P</kbd> / <kbd>V</kbd> / <kbd>W</kbd></td><td>Pause / record / witness</td></tr>
+          <tr><td><kbd>?</kbd></td><td>This list</td></tr>
+        </tbody>
+      </table>
 
       <h3>How to use it</h3>
       <p>Press <b>Generate</b> or the space bar for a new seed. <b>Surprise me</b> randomizes the whole parameter space within
@@ -2000,7 +2122,7 @@ void main(){
   }
 
   /* ---- modals: open and close through here so focus goes in and comes back ---- */
-  const MODALS = ['modal-export', 'modal-settings', 'modal-about', 'modal-gallery'];
+  const MODALS = ['modal-export', 'modal-settings', 'modal-about', 'modal-gallery', 'modal-more'];
   let returnFocusTo = null;
   function openModal(id) {
     const m = $(id);
@@ -2015,6 +2137,10 @@ void main(){
   function closeModal(id) {
     const m = $(id);
     if (m) m.hidden = true;
+    if (id === 'modal-more' || !id) {
+      const moreBtn = $('btn-more');
+      if (moreBtn) moreBtn.setAttribute('aria-expanded', 'false');
+    }
     if (returnFocusTo && document.contains(returnFocusTo)) { try { returnFocusTo.focus(); } catch (err) { /* gone */ } }
     returnFocusTo = null;
   }
@@ -2247,6 +2373,32 @@ void main(){
     scheduleHistory({ allowSameHash: true });
   }
 
+  const LIVE_CAP = 12;
+  const visitOrder = [];
+  function touchLive(id) {
+    const i = visitOrder.indexOf(id);
+    if (i >= 0) visitOrder.splice(i, 1);
+    visitOrder.push(id);
+  }
+  function disposeEntry(id) {
+    const old = instances[id];
+    if (!old || id === currentId) return;
+    try { persist(id); } catch (err) { /* keep going; the canvas has to go */ }
+    try { old.inst.pause && old.inst.pause(); } catch (err) { /* ignore */ }
+    try { old.inst.dispose && old.inst.dispose(); } catch (err) { /* ignore */ }
+    try { old.canvas.remove(); } catch (err) { /* ignore */ }
+    delete instances[id];
+    const i = visitOrder.indexOf(id);
+    if (i >= 0) visitOrder.splice(i, 1);
+  }
+  function trimLive() {
+    while (visitOrder.length > LIVE_CAP) {
+      const oldest = visitOrder.find(id => id !== currentId);
+      if (!oldest) break;
+      disposeEntry(oldest);
+    }
+  }
+
   function switchTo(id) {
     if (!byId[id]) id = modules[0].id;
     if (currentId === id) return;
@@ -2255,7 +2407,13 @@ void main(){
     if (prev) { prev.canvas.hidden = true; try { prev.inst.pause && prev.inst.pause(); } catch (e) { /* ignore */ } }
     currentId = id;
     if (faultFor && faultFor !== id) clearFault();
-    const e = ensureEntry(byId[id]);
+    let e = ensureEntry(byId[id]);
+    if (e.contextLost) {
+      rebuildEntry(id);
+      e = instances[id] || e;
+    }
+    touchLive(id);
+    trimLive();
     e.canvas.hidden = false;
     for (const b of document.querySelectorAll('.tab')) {
       const on = b.dataset.id === id;
@@ -2443,8 +2601,8 @@ void main(){
     ]));
     if (mod.blurb || mod.credit) {
       const about = h('details', { class: 'group about' }, [h('summary', { text: 'What this is' })]);
-      let openAbout = true;
-      try { openAbout = localStorage.getItem(STORE + 'about') !== '0'; } catch (err) { openAbout = true; }
+      let openAbout = false;
+      try { openAbout = localStorage.getItem(STORE + 'about') === '1'; } catch (err) { openAbout = false; }
       if (openAbout) about.setAttribute('open', '');
       about.addEventListener('toggle', () => {
         try { localStorage.setItem(STORE + 'about', about.open ? '1' : '0'); } catch (err) { /* ignore */ }
@@ -2458,19 +2616,28 @@ void main(){
     const groups = [];
     for (const f of mod.schema) if (!groups.includes(f.group)) groups.push(f.group);
     const closed = new Set(mod.closedGroups || []);
+    const palName = mod.paletteGroup || 'Color';
     let paletteDone = false;
+    let first = true;
     for (const g of groups) {
       const det = h('details', { class: 'group' }, [h('summary', { text: g })]);
       if (!closed.has(g)) det.setAttribute('open', '');
       const body = h('div', { class: 'body' });
       for (const f of mod.schema) if (f.group === g) { const row = buildField(e, f); if (row) body.appendChild(row); }
       if (mod.hints && mod.hints[g]) body.appendChild(h('p', { class: 'hint', text: mod.hints[g] }));
-      if (mod.palette && (g === (mod.paletteGroup || 'Color'))) { det.appendChild(buildPaletteEditor(e)); paletteDone = true; }
+      if (mod.palette && g === palName) { det.appendChild(buildPaletteEditor(e)); paletteDone = true; }
       det.appendChild(body);
       side.appendChild(det);
+      if (first && mod.palette && !paletteDone) {
+        const pal = h('details', { class: 'group', open: '' }, [h('summary', { text: palName })]);
+        pal.appendChild(buildPaletteEditor(e));
+        side.appendChild(pal);
+        paletteDone = true;
+      }
+      first = false;
     }
     if (mod.palette && !paletteDone) {
-      const det = h('details', { class: 'group', open: '' }, [h('summary', { text: mod.paletteGroup || 'Color' })]);
+      const det = h('details', { class: 'group', open: '' }, [h('summary', { text: palName })]);
       det.appendChild(buildPaletteEditor(e));
       side.appendChild(det);
     }
@@ -2546,6 +2713,12 @@ void main(){
   const PRINT_DPI = [[300, '300 ppi'], [360, '360 ppi'], [450, '450 ppi'], [600, '600 ppi']];
   const MAX_EDGE = 16000;          // browser canvas limit territory
   const MAX_AREA = 132e6;          // ~132 MP: the most a browser will reliably encode to PNG
+  let maxTexSize = 8192;
+  try {
+    const probe = document.createElement('canvas');
+    const g = probe.getContext('webgl2') || probe.getContext('webgl');
+    if (g) maxTexSize = g.getParameter(g.MAX_TEXTURE_SIZE) || maxTexSize;
+  } catch (err) { /* keep the conservative default */ }
   let printInches = 20, printDpi = 300;
 
   function currentAspect() {
@@ -2559,13 +2732,14 @@ void main(){
     let hIn = printInches, wIn = printInches;
     if (ar >= 1) wIn = printInches / ar; else hIn = printInches * ar;
     let pw = Math.round(wIn * printDpi), ph = Math.round(hIn * printDpi);
-    let clamp = 1;
-    if (Math.max(pw, ph) > MAX_EDGE) clamp = MAX_EDGE / Math.max(pw, ph);
-    if (pw * ph * clamp * clamp > MAX_AREA) clamp = Math.min(clamp, Math.sqrt(MAX_AREA / (pw * ph)));
+    let clamp = 1, clampWhy = '';
+    if (Math.max(pw, ph) > MAX_EDGE) { clamp = MAX_EDGE / Math.max(pw, ph); clampWhy = 'canvas'; }
+    if (Math.max(pw, ph) * clamp > maxTexSize) { clamp = Math.min(clamp, maxTexSize / Math.max(pw, ph)); clampWhy = 'texture'; }
+    if (pw * ph * clamp * clamp > MAX_AREA) { clamp = Math.min(clamp, Math.sqrt(MAX_AREA / (pw * ph))); clampWhy = 'encode'; }
     const clamped = clamp < 0.999;
     if (clamped) { pw = Math.round(pw * clamp); ph = Math.round(ph * clamp); }
     const effDpi = Math.round(pw / wIn);
-    return { ar, wIn, hIn, pw, ph, clamped, dpi: printDpi, effDpi, mp: (pw * ph) / 1e6 };
+    return { ar, wIn, hIn, pw, ph, clamped, clampWhy, dpi: printDpi, effDpi, mp: (pw * ph) / 1e6 };
   }
   const inTxt = v => (Math.round(v * 10) / 10).toFixed(1);
   const cmTxt = v => (Math.round(v * 2.54 * 10) / 10).toFixed(1);
@@ -2578,11 +2752,16 @@ void main(){
     const el = $('export-dims');
     if (!el || !instances[currentId]) return;
     const sp = printSpec();
-    el.textContent = printLabel(sp) + (sp.clamped ? ' · ' + sp.effDpi + ' ppi' : '') + (colophon ? ' · colophon' : '');
+    const line = printLabel(sp) + (sp.clamped ? ' · ' + sp.effDpi + ' ppi' : '') + (colophon ? ' · colophon' : '');
+    el.textContent = line;
+    const dock = $('dock-dims');
+    if (dock) { dock.textContent = line; dock.hidden = false; }
+    const why = sp.clampWhy === 'texture'
+      ? ' Clamped to this device\'s GPU texture limit (' + maxTexSize.toLocaleString() + ' px), so the file lands at ' + sp.effDpi + ' ppi for that paper size.'
+      : (sp.clamped ? ' Clamped to what a browser can encode, so the file lands at ' + sp.effDpi + ' ppi for that paper size.' : '');
     el.title = 'At ' + sp.dpi + ' ppi this piece prints ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' inches (' +
       cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) + ' cm) from a ' + sp.pw.toLocaleString() + ' × ' + sp.ph.toLocaleString() +
-      ' pixel file, ' + sp.mp.toFixed(0) + ' megapixels.' +
-      (sp.clamped ? ' Clamped to what a browser can encode, so the file lands at ' + sp.effDpi + ' ppi for that paper size.' : '') +
+      ' pixel file, ' + sp.mp.toFixed(0) + ' megapixels.' + why +
       (colophon ? ' Colophon on: caption prints under the image.' : ' Colophon off: image only.');
     updateColoPreview();
   }
@@ -2618,10 +2797,11 @@ void main(){
     if (title) title.textContent = 'GENChase · ' + e.mod.name;
     if (eq) { eq.textContent = e.mod.equation || ''; eq.hidden = !e.mod.equation; }
     const sp = printSpec();
+    const L = sheetLayout(sp);
     if (meta) {
-      meta.textContent = 'seed ' + e.state.seed + '   ·   ' +
-        inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in / ' +
-        cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) + ' cm   ·   ' + sp.effDpi + ' ppi';
+      meta.textContent = 'seed ' + e.state.seed + '   ·   image ' +
+        inTxt(L.artWIn) + ' × ' + inTxt(L.artHIn) + ' in on a ' +
+        inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in sheet   ·   ' + sp.effDpi + ' ppi';
     }
     if (params) params.textContent = paramText(e);
   }
@@ -2679,17 +2859,28 @@ void main(){
     });
   }
   // Sheet layout: image inset in a paper margin, caption band beneath.
+  // Type is sized in points against physical inches, then converted at the file's ppi, so 8 in / 300 ppi
+  // does not print a 3 pt caption. Art size is the image window, not the sheet.
   function sheetLayout(sp) {
     const sheetW = sp.pw, sheetH = sp.ph;
     const small = Math.min(sheetW, sheetH);
     const pad = Math.round(small * 0.055);
+    const dpi = sp.dpi || printDpi;
+    const pt = (minPt, inchFrac) => Math.max(minPt, inchFrac * sp.wIn) / 72 * dpi;
     const fs = {
-      title: Math.max(11, sheetW * 0.0165),
-      eq: Math.max(8, sheetW * 0.0105),
-      meta: Math.max(7, sheetW * 0.0085),
-      p: Math.max(6, sheetW * 0.0072),
+      title: pt(11, 0.16),
+      eq: pt(8, 0.10),
+      meta: pt(8, 0.085),
+      p: pt(7, 0.072),
     };
-    return { sheetW, sheetH, pad, fs };
+    const bandH = Math.round(fs.title * 1.25 + fs.eq * 2.0 + fs.meta * 1.9 + 6 * fs.p * 1.55 + pad * 0.9);
+    const innerW = sheetW - pad * 2, innerH = sheetH - pad * 2 - bandH;
+    let artW = innerW, artH = Math.round(innerW * sp.ar);
+    if (artH > innerH) { artH = innerH; artW = Math.round(innerH / sp.ar); }
+    return {
+      sheetW, sheetH, pad, fs, artW, artH,
+      artWIn: artW / dpi, artHIn: artH / dpi,
+    };
   }
   async function composeSheet(artBlob, e, sp) {
     const L = sheetLayout(sp);
@@ -2703,6 +2894,7 @@ void main(){
     let artW = innerW, artH = Math.round(innerW * sp.ar);
     if (artH > innerH) { artH = innerH; artW = Math.round(innerH / sp.ar); }
     const artX = Math.round((sheetW - artW) / 2), artY = pad;
+    L.artW = artW; L.artH = artH; L.artWIn = artW / (sp.dpi || printDpi); L.artHIn = artH / (sp.dpi || printDpi);
 
     // the module rendered at sheet size; draw it into the image window
     const url = URL.createObjectURL(artBlob);
@@ -2754,8 +2946,8 @@ void main(){
     y += fs.meta * 1.85;
     cx.fillStyle = ink;
     cx.font = fs.meta + 'px "Geist Mono", ui-monospace, monospace';
-    cx.fillText('seed ' + e.state.seed + '   ·   ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in / ' +
-      cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) + ' cm   ·   ' + sp.effDpi + ' ppi   ·   ' +
+    cx.fillText('seed ' + e.state.seed + '   ·   image ' + inTxt(L.artWIn) + ' × ' + inTxt(L.artHIn) +
+      ' in on a ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in sheet   ·   ' + sp.effDpi + ' ppi   ·   ' +
       new Date().toISOString().slice(0, 10), pad, y);
 
     cx.fillStyle = faintInk;
@@ -2782,8 +2974,15 @@ void main(){
       (sp.mp > 45 ? ' A file this size takes a while and a lot of memory.' : '');
     note.classList.remove('err');
     pnote.hidden = false;
-    pnote.textContent = 'Prints ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in (' + cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) +
-      ' cm) at ' + sp.effDpi + ' ppi.' + (colophon ? ' The image sits in a paper margin with the technique, its rule, the seed and every parameter captioned beneath.' : '') + (sp.clamped ? ' Requested ' + sp.dpi + ' ppi was clamped to the largest file a browser can encode.' : '');
+    const lay = colophon ? sheetLayout(sp) : null;
+    pnote.textContent = (colophon
+      ? ('Image ' + inTxt(lay.artWIn) + ' × ' + inTxt(lay.artHIn) + ' in on a ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in sheet (' +
+         cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) + ' cm) at ' + sp.effDpi + ' ppi. The image sits in a paper margin with the technique, its rule, the seed and every parameter captioned beneath.')
+      : ('Prints ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in (' + cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) +
+         ' cm) at ' + sp.effDpi + ' ppi.')) +
+      (sp.clamped ? (sp.clampWhy === 'texture'
+        ? ' Requested ' + sp.dpi + ' ppi was clamped to this device\'s GPU texture limit (' + maxTexSize.toLocaleString() + ' px).'
+        : ' Requested ' + sp.dpi + ' ppi was clamped to the largest file a browser can encode.') : '');
     openModal('modal-export');
     await new Promise(r => setTimeout(r, 30));
     if (colophon && document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (err) { /* metrics fall back */ } }
@@ -2839,6 +3038,7 @@ void main(){
           blob = await e.inst.exportPNG(pw, ph);
         }
         if (!blob) throw new Error('empty export');
+        if (e.inst.exportNote) fieldNote += e.inst.exportNote;
         if (ss > 1) {
           const url = URL.createObjectURL(blob);
           try {
@@ -3136,6 +3336,37 @@ void main(){
       copyText(e.state.seed, 'Seed copied', 'Copy the seed field');
     });
     $('btn-side').addEventListener('click', () => { panelSide = panelSide === 'right' ? 'left' : 'right'; applyPanelSide(); persist(currentId); });
+    const moreBtn = $('btn-more');
+    const moreClose = $('more-close');
+    if (moreBtn) moreBtn.addEventListener('click', () => {
+      moreBtn.setAttribute('aria-expanded', 'true');
+      openModal('modal-more');
+    });
+    if (moreClose) moreClose.addEventListener('click', () => closeModal('modal-more'));
+    const moreModal = $('modal-more');
+    if (moreModal) {
+      moreModal.addEventListener('click', ev => { if (ev.target === moreModal) closeModal('modal-more'); });
+      moreModal.addEventListener('click', ev => {
+        const btn = ev.target.closest('[data-for]');
+        if (!btn) return;
+        const target = $(btn.getAttribute('data-for'));
+        closeModal('modal-more');
+        if (moreBtn) moreBtn.setAttribute('aria-expanded', 'false');
+        if (target) target.click();
+      });
+    }
+    const bar = document.querySelector('header.bar');
+    if (bar) {
+      const markBar = () => {
+        const more = bar.scrollWidth - bar.clientWidth;
+        bar.classList.toggle('scrollable', more > 2);
+        bar.classList.toggle('at-start', bar.scrollLeft <= 2);
+        bar.classList.toggle('at-end', bar.scrollLeft >= more - 2);
+      };
+      bar.addEventListener('scroll', markBar, { passive: true });
+      window.addEventListener('resize', markBar);
+      setTimeout(markBar, 0);
+    }
     $('fault-retry').addEventListener('click', () => {
       const id = faultFor || currentId;
       clearFault();
@@ -7012,7 +7243,12 @@ void main(){
             const k = Math.min(1, EXPORT_MAX_RES / Math.max(w, h));
             const W = Math.max(1, Math.round(w * k)), H = Math.max(1, Math.round(h * k));
             const E = buildAcc(s, W, H);
-            const target = Math.min(EXPORT_CAP, Math.max(s.points, A ? A.count : 0));
+            const screenArea = A ? (A.W * A.H) : (W * H);
+            const want = s.points * (W * H) / Math.max(1, screenArea);
+            const target = Math.min(EXPORT_CAP, Math.max(1, want));
+            inst.exportNote = want > EXPORT_CAP
+              ? ' Point budget capped at ' + EXPORT_CAP.toLocaleString() + ' for this sheet (asked for ' + Math.round(want).toLocaleString() + ').'
+              : '';
             while (E.count < target) {
               accumulate(E, Math.min(1e6, target - E.count));
               await new Promise(r => setTimeout(r, 0));
@@ -7021,7 +7257,7 @@ void main(){
             out.width = W; out.height = H;
             const octx = out.getContext('2d');
             const id = octx.createImageData(W, H);
-            toneMap(E, s, id.data, W / A.W, makeScratch(W * H));
+            toneMap(E, s, id.data, A ? (W / A.W) : 1, makeScratch(W * H));
             octx.putImageData(id, 0, 0);
             return U.toBlob(k < 1 ? U.upscale(out, w, h, true) : out);
           } finally {
@@ -7955,21 +8191,95 @@ void main(){
           const s = host.getState();
           if (!model) model = buildModel(s);
           const W = w || 1000, H = h || Math.round(W * (ASPECTS[s.aspect] || 1));
-          const scv = Math.max(W / (2 * model.hx), H / (2 * model.hy));
+          const sc = Math.max(W / (2 * model.hx), H / (2 * model.hy));
           const ox = W / 2, oy = H / 2;
           const tiles = model.tiles, xy = tiles.xy, pal = s.palette, np = pal.length;
-          const sw = (s.strokeWidth || 1) * Math.min(W, H) / 1000;
+          const ink = pal[Math.min(np - 1, s.strokeColor)] || pal[0] || '#000';
+          const lwBase = Math.max(0.35 * H / 900, s.strokeWidth * sc * 0.035);
+          const hex = jitterRamp(pal, s.jitter * 0.85);
+          const inset = s.inset, doInset = inset > 0.0005;
+          const px = new Float64Array(16), py = new Float64Array(16), ins = new Float64Array(32);
+          const ptsOf = (n, arr) => {
+            const pts = [];
+            for (let k = 0; k < n; k++) pts.push(arr[2 * k].toFixed(2) + ',' + arr[2 * k + 1].toFixed(2));
+            return pts.join(' ');
+          };
+          const polyPts = (i) => {
+            const o = tiles.off[i], m = tiles.nv[i];
+            for (let k = 0; k < m; k++) { px[k] = ox + xy[o + 2 * k] * sc; py[k] = oy - xy[o + 2 * k + 1] * sc; }
+            if (doInset && insetPoly(px, py, m, inset * sc, ins)) return { n: m, pts: ptsOf(m, ins) };
+            const raw = new Float64Array(2 * m);
+            for (let k = 0; k < m; k++) { raw[2 * k] = px[k]; raw[2 * k + 1] = py[k]; }
+            return { n: m, pts: ptsOf(m, raw) };
+          };
           let body = '';
-          for (let i = 0; i < tiles.n; i++) {
-            let ci = s.fill === 'type' ? tiles.type[i] : (s.fill === 'orient' ? tiles.cls[i] : i);
-            ci = ((ci + (s.shift || 0)) % np + np) % np;
-            const col = pal[ci] || pal[0] || '#000';
-            const o = tiles.off[i], m = tiles.nv[i], pts = [];
-            for (let k = 0; k < m; k++) pts.push((ox + xy[o + 2 * k] * scv).toFixed(2) + ',' + (oy - xy[o + 2 * k + 1] * scv).toFixed(2));
-            if (s.fill === 'none' || s.linework) {
-              body += '<polygon fill="none" stroke="' + U.svgEsc(col) + '" stroke-width="' + sw.toFixed(2) + '" points="' + pts.join(' ') + '"/>\n';
+          if (s.fill !== 'none') {
+            for (let i = 0; i < tiles.n; i++) {
+              let ci;
+              if (s.fill === 'type') ci = tiles.type[i];
+              else if (s.fill === 'orient') ci = tiles.cls[i];
+              else ci = mix32(tiles.anc[i] + 7) & 1023;
+              ci = ((ci + s.shift) % np + np) % np;
+              const ji = s.jitter > 0 ? mix32(i * 2654435761 + 11) % JIT : (JIT >> 1);
+              const col = hex[ci * JIT + ji] || pal[ci] || pal[0];
+              const P = polyPts(i);
+              body += '<polygon fill="' + U.svgEsc(col) + '" stroke="none" points="' + P.pts + '"/>\n';
+            }
+          }
+          if (s.strokeWidth > 0.001) {
+            if (s.linework && !doInset) {
+              if (!model.edges) model.edges = tileEdges(tiles, model.rect);
+              const e = model.edges;
+              let d = '';
+              for (let i = 0; i < e.length; i += 4) {
+                d += 'M' + (ox + e[i] * sc).toFixed(2) + ' ' + (oy - e[i + 1] * sc).toFixed(2) +
+                     'L' + (ox + e[i + 2] * sc).toFixed(2) + ' ' + (oy - e[i + 3] * sc).toFixed(2);
+              }
+              body += '<path d="' + d + '" fill="none" stroke="' + U.svgEsc(ink) + '" stroke-width="' + lwBase.toFixed(3) +
+                      '" stroke-linejoin="round" stroke-linecap="round"/>\n';
             } else {
-              body += '<polygon fill="' + U.svgEsc(col) + '" stroke="' + U.svgEsc(s.bg) + '" stroke-width="0.4" points="' + pts.join(' ') + '"/>\n';
+              for (let i = 0; i < tiles.n; i++) {
+                const P = polyPts(i);
+                body += '<polygon fill="none" stroke="' + U.svgEsc(ink) + '" stroke-width="' + lwBase.toFixed(3) +
+                        '" stroke-linejoin="round" points="' + P.pts + '"/>\n';
+              }
+            }
+          }
+          if (s.levels > 0 && model.levelSegs.length) {
+            const nl = Math.min(s.levels, model.levelSegs.length);
+            for (let k = nl - 1; k >= 0; k--) {
+              const e = model.levelSegs[k];
+              let d = '';
+              for (let i = 0; i < e.length; i += 4) {
+                d += 'M' + (ox + e[i] * sc).toFixed(2) + ' ' + (oy - e[i + 1] * sc).toFixed(2) +
+                     'L' + (ox + e[i + 2] * sc).toFixed(2) + ' ' + (oy - e[i + 3] * sc).toFixed(2);
+              }
+              const lw = Math.max(lwBase, 0.35 * H / 900) * Math.pow(s.levelWeight, k + 1);
+              body += '<path d="' + d + '" fill="none" stroke="' + U.svgEsc(ink) + '" stroke-width="' + lw.toFixed(3) +
+                      '" stroke-linejoin="round" stroke-linecap="round"/>\n';
+            }
+          }
+          const arcSpec = ARCS[model.mode];
+          if (s.arcs && arcSpec) {
+            const ds = ['', ''];
+            for (let i = 0; i < tiles.n; i++) {
+              const spec = arcSpec[tiles.type[i]], o = tiles.off[i], fl = tiles.flip[i];
+              for (let k = 0; k < 4; k++) { px[k] = ox + xy[o + 2 * k] * sc; py[k] = oy - xy[o + 2 * k + 1] * sc; }
+              for (let a = 0; a < 2; a++) {
+                const idx = spec.c[a], r = spec.r[fl ? 1 - a : a] * sc;
+                const prev = (idx + 3) & 3, next = (idx + 1) & 3;
+                const aOut = Math.atan2(py[next] - py[idx], px[next] - px[idx]);
+                const aIn = Math.atan2(py[prev] - py[idx], px[prev] - px[idx]);
+                const x0 = px[idx] + r * Math.cos(aOut), y0 = py[idx] + r * Math.sin(aOut);
+                const x1 = px[idx] + r * Math.cos(aIn), y1 = py[idx] + r * Math.sin(aIn);
+                ds[spec.f[fl ? 1 - a : a]] += 'M' + x0.toFixed(2) + ' ' + y0.toFixed(2) +
+                  'A' + r.toFixed(2) + ' ' + r.toFixed(2) + ' 0 0 0 ' + x1.toFixed(2) + ' ' + y1.toFixed(2);
+              }
+            }
+            const alw = Math.max(0.4 * H / 900, s.arcWidth * sc * 0.035);
+            for (let a = 0; a < 2; a++) if (ds[a]) {
+              body += '<path d="' + ds[a] + '" fill="none" stroke="' + U.svgEsc(pal[(s.arcColor + a) % np]) +
+                      '" stroke-width="' + alw.toFixed(3) + '" stroke-linecap="butt"/>\n';
             }
           }
           return U.svgBlob(W, H, s.bg, body);
@@ -11944,13 +12254,16 @@ void main(){
         },
         exportSVG(w, h) {
           const s = host.getState();
+          if (s.style === 'filled' || s.style === 'sand') return null;
           const W = w || 1000, H = h || Math.round(W * aspectRatio(s));
           const field = makeField(s, phase);
           const ar = aspectRatio(s);
-          const n = 200;
+          const n = Math.max(120, Math.min(480, Math.round(Math.min(W, H) / 6)));
           const pal = s.palette || ['#111'];
           const ink = pal[Math.min(pal.length - 1, s.lineColor | 0)] || pal[0];
-          const lw = Math.max(0.4, Math.min(W, H) / 900).toFixed(2);
+          const lw = (s.style === 'nodal'
+            ? Math.max(0.6, (s.threshold + s.softness) * Math.min(W, H) * 0.55)
+            : Math.max(0.4, Math.min(W, H) / 900)).toFixed(2);
           function F(i, j) { return field((i / n) * 2 - 1, ((j / n) * 2 - 1) * ar); }
           function pt(i, j) { return [(i / n) * W, (j / n) * H]; }
           function mid(ia, ja, ib, jb, ua, ub) {
