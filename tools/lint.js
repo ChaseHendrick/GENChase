@@ -124,24 +124,74 @@ const WORDS = { 49: 'Forty-nine', 50: 'Fifty', 51: 'Fifty-one', 52: 'Fifty-two',
   68: 'Sixty-eight', 69: 'Sixty-nine', 70: 'Seventy',
   108: 'One hundred eight', 109: 'One hundred nine',
   110: 'One hundred ten', 111: 'One hundred eleven', 112: 'One hundred twelve', 113: 'One hundred thirteen',
-  114: 'One hundred fourteen', 115: 'One hundred fifteen', 116: 'One hundred sixteen' };
+  114: 'One hundred fourteen', 115: 'One hundred fifteen', 116: 'One hundred sixteen',
+  117: 'One hundred seventeen', 118: 'One hundred eighteen', 119: 'One hundred nineteen', 120: 'One hundred twenty',
+  121: 'One hundred twenty-one', 122: 'One hundred twenty-two', 123: 'One hundred twenty-three',
+  124: 'One hundred twenty-four', 125: 'One hundred twenty-five' };
 const spelled = WORDS[mods.length];
 const readme = fs.existsSync(path.join(root, 'README.md')) ? fs.readFileSync(path.join(root, 'README.md'), 'utf8') : '';
 const citation = fs.existsSync(path.join(root, 'CITATION.cff')) ? fs.readFileSync(path.join(root, 'CITATION.cff'), 'utf8') : '';
-for (const [label, text] of [['studio.html', src], ['README.md', readme], ['CITATION.cff', citation]]) {
+const techniquesMd = fs.existsSync(path.join(root, 'TECHNIQUES.md')) ? fs.readFileSync(path.join(root, 'TECHNIQUES.md'), 'utf8') : '';
+for (const [label, text] of [['studio.html', src], ['README.md', readme], ['CITATION.cff', citation], ['TECHNIQUES.md', techniquesMd]]) {
   if (!text) continue;
   // Only a spelled number that is actually counting techniques. Matching the word on its own
   // flagged a code comment about sixty-three animation loops, which is not a claim about anything.
-  const claims = [...text.matchAll(/\b((?:One hundred (?:eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen))|(?:Forty|Fifty|Sixty|Seventy)(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?)\b(?=(?:\s+\w+){0,2}\s+(?:pattern-forming systems|sciences|techniques|tabs)\b)/gi)]
+  const claims = [...text.matchAll(/\b((?:One hundred (?:eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty(?:-one|-two|-three|-four|-five)?)?)|(?:Forty|Fifty|Sixty|Seventy)(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?)\b(?=(?:\s+\w+){0,2}\s+(?:pattern-forming systems|sciences|techniques|tabs)\b)/gi)]
     .map(x => x[1]);
   for (const c of new Set(claims)) {
     if (spelled && c.toLowerCase() !== spelled.toLowerCase()) {
       fail(label + ' says "' + c + '" but the file registers ' + mods.length + ' techniques (' + spelled + ')');
     }
   }
-  const digits = [...text.matchAll(/\b(\d{2})\s+(?:pattern-forming systems|sciences|techniques)\b/g)].map(x => +x[1]);
+  const digits = [...text.matchAll(/\b(\d{2,3})\s+(?:pattern-forming systems|sciences|techniques)\b/g)].map(x => +x[1]);
   for (const d of new Set(digits)) {
     if (d !== mods.length) fail(label + ' says "' + d + '" techniques but the file registers ' + mods.length);
+  }
+}
+
+/* ---- 7b. the generated catalog is the file, not a parallel list ---- */
+// TECHNIQUES.md and techniques.json are written by tools/index.js from the live registry.
+// Adding a tab and forgetting that command used to leave the catalog a plate behind, and
+// CITATION.cff sat at one hundred eight while the file already had sixteen more. The
+// count check above catches spelled drift; this catches a catalog that is simply old.
+{
+  const techPath = path.join(root, 'techniques.json');
+  if (!fs.existsSync(techPath)) fail('techniques.json is missing; run node tools/index.js after adding a technique');
+  else {
+    let data = null;
+    try { data = JSON.parse(fs.readFileSync(techPath, 'utf8')); }
+    catch (e) { fail('techniques.json does not parse: ' + e.message); }
+    if (data) {
+      const listed = (data.techniques || []).map(t => t.id);
+      if (data.count !== mods.length) {
+        fail('techniques.json count is ' + data.count + ' but studio.html registers ' + mods.length +
+          '; run node tools/index.js');
+      }
+      const have = new Set(listed);
+      const want = mods.map(m => m.id);
+      const missing = want.filter(id => !have.has(id));
+      const extra = listed.filter(id => !want.includes(id));
+      if (missing.length) fail('techniques.json is missing ' + missing.join(', ') + '; run node tools/index.js');
+      if (extra.length) fail('techniques.json still lists ' + extra.join(', ') + ', which studio.html does not register; run node tools/index.js');
+      const byId = new Map((data.techniques || []).map(t => [t.id, t]));
+      for (const m of mods) {
+        const row = byId.get(m.id);
+        if (!row) continue;
+        const nm = /(?:^|[,\s])name:\s*'((?:\\'|[^'])*)'/.exec(m.body);
+        if (nm && row.name !== nm[1].replace(/\\'/g, "'")) {
+          fail('techniques.json name for ' + m.id + ' is "' + row.name + '" but studio.html says "' + nm[1] +
+            '"; run node tools/index.js');
+        }
+      }
+    }
+  }
+  if (!techniquesMd) fail('TECHNIQUES.md is missing; run node tools/index.js after adding a technique');
+  else {
+    for (const m of mods) {
+      if (!new RegExp('#' + m.id + '(?:/|`)').test(techniquesMd)) {
+        fail('TECHNIQUES.md has no hash for ' + m.id + '; run node tools/index.js');
+      }
+    }
   }
 }
 
