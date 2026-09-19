@@ -20,7 +20,9 @@
     },
     "plan": "# GENChase: design and repair plan
 
-Working file: `/home/user/GENChase/studio.html` (27,369 lines). Harness: `/home/user/GENChase/tools/`.
+Working file: `/home/user/GENChase/studio.html` (27,369 lines when this survey ran; 43,926 now). Harness: `/home/user/GENChase/tools/`.
+
+**This survey ran against a catalog of 63.** The studio now has 116. Figures of 63 below are the survey's, not the present catalog. Do not cite them as current. Pixel measurements, tab-strip widths and "14 of 63 tabs" are what the surveyors measured that day.
 
 Two corrections to the survey before anything else, because they change what you should trust in it.
 
@@ -86,10 +88,10 @@ In the same function, the caption type is sized from sheet pixels: `fs.meta = ma
 `studio.html:6930` sets `target = Math.min(EXPORT_CAP, Math.max(s.points, A.count))`, so the same 4M points land on 11.1x the pixels: 2.8 hits per pixel on screen, 0.25 in the print. Measured mean luminance 20.0 against 10.2, and the bright veins break into speckle. Fix: `target = min(EXPORT_CAP, s.points * (W*H)/(A.W*A.H))`, and when the cap bites, say so in the export note the way `fieldNote` already does for grid-limited tabs.
 
 **11. Every tab opens on a screen of prose.** [14]
-Across all 63 tabs at 1440x900, 48 show zero controls on the opening screen; median first control at 999 px; the Color group starts below one panel height on 63 of 63, median 2,329 px. The fix is half-built: the \"What this is\" block at `studio.html:2400-2412` is a `<details>` whose open state is already persisted under `STORE + 'about'`. Flip the default at `:2402` to `localStorage.getItem(STORE + 'about') === '1'`. Measured payoff on Liesegang: first control 1,561 to 611 px, visible controls 0 to 3. Then move the Color group directly under the first parameter group instead of last.
+Across all 63 tabs (the survey's count) at 1440x900, 48 show zero controls on the opening screen; median first control at 999 px; the Color group starts below one panel height on 63 of 63, median 2,329 px. The fix is half-built: the \"What this is\" block at `studio.html:2400-2412` is a `<details>` whose open state is already persisted under `STORE + 'about'`. Flip the default at `:2402` to `localStorage.getItem(STORE + 'about') === '1'`. Measured payoff on Liesegang: first control 1,561 to 611 px, visible controls 0 to 3. Then move the Color group directly under the first parameter group instead of last.
 
 **12. A long export freezes the page for minutes with a frozen note and no cancel.** [29]
-Pendulum at the smallest offered size ran 253-411 s with 8-second windows where no JS ran at all, so the modal's close button cannot answer a click. `#export-note` is written once at `studio.html:2746` and never rewritten. Fix in order of value: shorten the yield interval so the page never goes 8 s without running JS; rewrite the note from host-side progress (tile k of n, points of target); then a Cancel button backed by an abort flag, checked at each yield. Do not thread the abort flag through 63 modules; add it to the tiled GL export path only.
+Pendulum at the smallest offered size ran 253-411 s with 8-second windows where no JS ran at all, so the modal's close button cannot answer a click. `#export-note` is written once at `studio.html:2746` and never rewritten. Fix in order of value: shorten the yield interval so the page never goes 8 s without running JS; rewrite the note from host-side progress (tile k of n, points of target); then a Cancel button backed by an abort flag, checked at each yield. Do not thread the abort flag through every module; add it to the tiled GL export path only.
 
 ### Tier 3: correctness of the small stuff
 
@@ -137,17 +139,17 @@ The phone top bar fails in two directions at once. Horizontally, `.bar` is 1,531
 
 ---
 
-## 3. The 63-technique navigation problem
+## 3. The navigation problem
 
-At 1440x900 the strip is 5,982 px wide showing 14 of 63 tabs, with `scrollbar-width: none` and `.tabs::-webkit-scrollbar { display: none }`, so there is nothing to drag, and a plain vertical wheel over it moves neither the strip nor the page. Registration order is arbitrary to a viewer: Physarum 3D at position 1 and Physarum at 4; Turing Patterns at 43 and Reaction-Diffusion at 49; 12-fold at 36 and Aperiodic Tilings at 50. Two mitigations do exist and should survive: the end fade is live, and the active tab auto-scrolls into view on load.
+At 1440x900 the strip is 5,982 px wide showing 14 of 63 tabs (the survey's count; there are 116 now), with `scrollbar-width: none` and `.tabs::-webkit-scrollbar { display: none }`, so there is nothing to drag, and a plain vertical wheel over it moves neither the strip nor the page. Registration order is arbitrary to a viewer: Physarum 3D at position 1 and Physarum at 4; Turing Patterns at 43 and Reaction-Diffusion at 49; 12-fold at 36 and Aperiodic Tilings at 50. Two mitigations do exist and should survive: the end fade is live, and the active tab auto-scrolls into view on load.
 
 **The strip stays. It stops being the only route.** Three pieces, in this order:
 
-**Piece one, now: a filter input pinned at the left of the strip**, outside the scroller so it never scrolls away. It matches against `name`, `subtitle`, `credit`, `equation` and `blurb`, filters the strip in place, jumps to the first match on Enter, clears on Escape. One input and a substring match. At 63 techniques this is probably sufficient for another year, and it is the cheapest thing in this document with the highest return.
+**Piece one, now: a filter input pinned at the left of the strip**, outside the scroller so it never scrolls away. It matches against `name`, `subtitle`, `credit`, `equation` and `blurb`, filters the strip in place, jumps to the first match on Enter, clears on Escape. One input and a substring match. That input has shipped. At 116 techniques it is no longer enough on its own — the Seen elsewhere filter sits next to it for the same reason.
 
 **Piece two, now: translate vertical wheel deltas over `#tabs` into `scrollLeft`**, so an ordinary mouse works. Five lines.
 
-**Piece three, later: a full technique browser**, opened from an All button at the right end of the strip and from a key. A grid of 63 cards carrying the gallery thumbnail, the name, the subtitle and the credit year, with sort and filter controls above it. This is where sorting lives. Do not put sort controls on the strip; a horizontal scroller that reorders under you is worse than one that does not.
+**Piece three, later: a full technique browser**, opened from an All button at the right end of the strip and from a key. A grid of cards, one per technique, carrying the gallery thumbnail, the name, the subtitle and the credit year, with sort and filter controls above it. This is where sorting lives. Do not put sort controls on the strip; a horizontal scroller that reorders under you is worse than one that does not.
 
 **The sort axes, and their provenance.** Five of the six are computed or cited. One is not, and that asymmetry is the design:
 
@@ -185,7 +187,7 @@ Four rules make it honest, and all four are required:
 
 **The fonts.** Fixed at `e1eb72c`, with exactly the lint rule the finding asked for. Do not redo it. Do carry its consequence forward: every width in this survey is a fallback-font width.
 
-**The roving tabindex.** Exactly 1 of 63 tabs has `tabIndex 0`. That is correct ARIA tablist behaviour and must survive the navigation work. The missing `role=\"tabpanel\"` and `aria-controls` are real but they are polish; do not let a correctness complaint about the ARIA drag the working part with it.
+**The roving tabindex.** Exactly 1 of the tabs has `tabIndex 0` (the survey counted 63; the rule is independent of the count). That is correct ARIA tablist behaviour and must survive the navigation work. The missing `role=\"tabpanel\"` and `aria-controls` are real but they are polish; do not let a correctness complaint about the ARIA drag the working part with it.
 
 **The canvas already has an accessible name.** `aria-label=\"<technique> artwork\"` is present. Half of finding 17 was wrong.
 
@@ -213,7 +215,7 @@ Four rules make it honest, and all four are required:
 
 **Now, batch 3: layout, as one commit.** Seedbox `flex: 0 0 auto`, sticky-right print group, the `.bar` mask fade, the More sheet, the bottom dock below 900, `min-height: 0`, the short-viewport rule, the `dims` display rules, `46dvh`. These interact: fixing the seedbox alone adds 178 px to a bar that already overflows, so shipping it first makes the overflow worse. Re-measure everything with the inlined Geist faces before choosing breakpoint numbers.
 
-**Now: navigation pieces one and two.** The filter input and the wheel translation. One input and five lines, and they are the whole near-term answer to 63 techniques.
+**Now: navigation pieces one and two.** The filter input and the wheel translation. One input and five lines, and they are the whole near-term answer to a strip that no longer fits on the screen.
 
 **Next: the WebGL LRU.** It is the only Tier 1 item that needs thought about lifecycle rather than a local edit, and it only bites a person who browses seventeen tabs in a session. Real, but not this week.
 
@@ -225,7 +227,7 @@ Four rules make it honest, and all four are required:
 - **Making familiarity the default sort, or giving it a number.** Both convert an opinion into a claim, in a project whose character is that it measures what it says.
 - **Splitting `studio.html` or adding a build step to solve the layout.** `AGENTS.md` forbids it and the layout problem is about forty lines of CSS.
 - **Touching any module default while doing layout work.** Recipe v2 and the `legacy` declarations exist because a moved default silently reprints old recipes at a value they were never made at. That is a separate kind of change with its own test in `tools/recipe.js`, and it does not belong in a commit about flexbox.
-- **Threading an export abort flag through all 63 modules.** Do the yield interval and the host-side progress note first.
+- **Threading an export abort flag through every module.** Do the yield interval and the host-side progress note first.
 - **Tuning any breakpoint to a number in this survey.** Fallback fonts.
 
 **One standing item that outlasts all of it.** Not one of these 48 findings would have survived a harness that checked for it, and the harness is the thing this project already believes in. Add to `/home/user/GENChase/tools/ui.js`: `.seedbox` width greater than 150 at 390 and 1440; `#btn-export` right edge inside `innerWidth` at 390, 768 and 1440; no single-letter shortcut fires while a modal is open; the hash matches the plate after a roll and after a tab switch. Add the plate-versus-print comparison to `tools/export.js`. That is the durable output of this survey. The fixes are a week; the assertions are what keeps the week from being spent again."
@@ -259,7 +261,7 @@ Four rules make it honest, and all four are required:
       "lastProgressAt": 1789815795915,
       "cached": true,
       "resultPreview": "{\"findings\":[{\"title\":\"The seed field is collapsed to a 2 px sliver at every viewport width, phone through 2000 px desktop\",\"severity\":\"broken\",\"where\":\"/home/user/GENChase/studio.html:150-155 (.bar), :160-170 (.seedbox), markup :606-614 and :615 (#headline)\",\"repro\":\"Load file:///home/user/GENChase/studio.html#snowflake/gravner-2008 at any width and read the geometry of .seedbox. Measured at 360,…",
-      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 63 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
+      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 116 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
 
 HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existing harness does:
   const …"
@@ -277,7 +279,7 @@ HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existin
       "lastProgressAt": 1789815795915,
       "cached": true,
       "resultPreview": "{\"findings\":[{\"title\":\"The seed field and dice button are invisible and unclickable at every desktop width below 2560 px\",\"severity\":\"broken\",\"where\":\"header.bar > .seedbox (studio.html:160, `.seedbox { ... overflow: hidden; }`) — the only flex child of .bar without `flex: 0 0 auto`\",\"repro\":\"Open file:///home/user/GENChase/studio.html#snowflake/gravner-2008 at 1440x900, wait 3.5 s, and look at th…",
-      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 63 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
+      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 116 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
 
 HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existing harness does:
   const …"
@@ -295,7 +297,7 @@ HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existin
       "lastProgressAt": 1789815795916,
       "cached": true,
       "resultPreview": "{\"findings\":[{\"title\":\"The space bar activates no button anywhere in the studio; it generates a new plate instead\",\"severity\":\"broken\",\"where\":\"studio.html, the global keydown handler (the `if (typing) return;` guard followed by `if (ev.key === ' ') { ev.preventDefault(); roll(); }`). Affects every `<button>` in the page: the 13 header buttons, the 76 panel controls, the tab strip, and the buttons…",
-      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 63 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
+      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 116 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
 
 HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existing harness does:
   const …"
@@ -313,7 +315,7 @@ HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existin
       "lastProgressAt": 1789815795916,
       "cached": true,
       "resultPreview": "{\"findings\":[{\"title\":\"The vector print is a different picture from the plate on Aperiodic Tilings\",\"severity\":\"broken\",\"where\":\"studio.html:7857 exportSVG in the tilings module, compared with render() at studio.html:7574\",\"repro\":\"node with playwright, chromium at 1100x850, load file:///home/user/GENChase/studio.html#tilings/penrose-1974, wait 6 s, set export-inches to 8 and export-dpi to 300, pr…",
-      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 63 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
+      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 116 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
 
 HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existing harness does:
   const …"
@@ -331,7 +333,7 @@ HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existin
       "lastProgressAt": 1789815795917,
       "cached": true,
       "resultPreview": "{\"findings\":[{\"title\":\"Export PNG and the whole print box scroll off the toolbar at 1440 px and on every phone\",\"severity\":\"broken\",\"where\":\"header.bar (studio.html ~line 600-643); .printbox and #btn-export are the last children of a bar with overflow-x:auto\",\"repro\":\"Chromium, file:///home/user/GENChase/studio.html#snowflake/gravner-2008, wait 6 s. Viewport 1440x900: bar.scrollWidth 1619 vs clien…",
-      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 63 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
+      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 116 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
 
 HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existing harness does:
   const …"
@@ -349,7 +351,7 @@ HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existin
       "lastProgressAt": 1789815795917,
       "cached": true,
       "resultPreview": "{\"results\":[{\"title\":\"The seed field is collapsed to a 2 px sliver at every realistic viewport width\",\"verdict\":\"confirmed\",\"severity\":\"broken\",\"evidence\":\"I measured .seedbox with getBoundingClientRect at 320, 360, 390, 414, 768, 1024, 1180, 1280, 1366, 1440, 1560, 1600, 1700, 1800, 1920, 2000, 2100 and 2200 CSS px: width is exactly 2 at every one of them, while #seed itself computes to 96-130 px…",
-      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 63 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
+      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 116 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
 
 HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existing harness does:
   const …"
@@ -367,7 +369,7 @@ HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existin
       "lastProgressAt": 1789815795918,
       "cached": true,
       "resultPreview": "{\"results\":[{\"title\":\"The seed field and dice button are clipped to a 2 px sliver at every desktop width below 2560 px, and cannot be reached by mouse or keyboard\",\"verdict\":\"confirmed\",\"severity\":\"broken\",\"evidence\":\"Reproduced and made worse than described. At 1440x900 on #snowflake/gravner-2008 (3.5 s boot), getBoundingClientRect on .seedbox returns width 2 while #seed still lays out at 96 px a…",
-      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 63 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
+      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 116 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
 
 HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existing harness does:
   const …"
@@ -385,7 +387,7 @@ HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existin
       "lastProgressAt": 1789815795918,
       "cached": true,
       "resultPreview": "{\"results\":[{\"title\":\"Space bar activates no button anywhere; it rerolls the seed instead\",\"verdict\":\"confirmed\",\"severity\":\"broken\",\"evidence\":\"1400x900, file:///home/user/GENChase/studio.html#tilings/penrose-1974, 3.5 s boot. Focused each header button by script and pressed Space. All 13 printed seedChanged=true, modals=[], app=\\\"app\\\": btn-surprise, btn-copy-link, btn-save, btn-gallery, btn-und…",
-      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 63 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
+      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 116 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
 
 HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existing harness does:
   const …"
@@ -403,7 +405,7 @@ HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existin
       "queuedAt": 1789815795919,
       "attempt": 1,
       "lastToolName": "StructuredOutput",
-      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 63 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
+      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 116 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
 
 HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existing harness does:
   const …",
@@ -427,7 +429,7 @@ HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existin
       "queuedAt": 1789815795919,
       "attempt": 1,
       "lastToolName": "StructuredOutput",
-      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 63 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
+      "promptPreview": "THE PRODUCT. /home/user/GENChase/studio.html is a single HTML file containing 116 scientific simulations, each with a seeded RNG, a URL-hash recipe and a print export. It is a studio for making plates that get printed and hung, not a web app. Open it and use it before you say anything about it.
 
 HOW TO ACTUALLY LOOK AT IT. Use playwright with chromium, exactly as the existing harness does:
   const …",
@@ -466,7 +468,9 @@ Structure it as:
       "durationMs": 292015,
       "resultPreview": "# GENChase: design and repair plan
 
-Working file: `/home/user/GENChase/studio.html` (27,369 lines). Harness: `/home/user/GENChase/tools/`.
+Working file: `/home/user/GENChase/studio.html` (27,369 lines when this survey ran; 43,926 now). Harness: `/home/user/GENChase/tools/`.
+
+**This survey ran against a catalog of 63.** The studio now has 116. Figures of 63 below are the survey's, not the present catalog. Do not cite them as current. Pixel measurements, tab-strip widths and "14 of 63 tabs" are what the surveyors measured that day.
 
 Two corrections to the survey before anything else, because they change what you should trust in it.
 

@@ -164,7 +164,18 @@ const spelled = WORDS[mods.length];
 const readme = fs.existsSync(path.join(root, 'README.md')) ? fs.readFileSync(path.join(root, 'README.md'), 'utf8') : '';
 const citation = fs.existsSync(path.join(root, 'CITATION.cff')) ? fs.readFileSync(path.join(root, 'CITATION.cff'), 'utf8') : '';
 const techniquesMd = fs.existsSync(path.join(root, 'TECHNIQUES.md')) ? fs.readFileSync(path.join(root, 'TECHNIQUES.md'), 'utf8') : '';
-for (const [label, text] of [['studio.html', src], ['README.md', readme], ['CITATION.cff', citation], ['TECHNIQUES.md', techniquesMd]]) {
+const designPlan = fs.existsSync(path.join(root, 'DESIGN-PLAN.md')) ? fs.readFileSync(path.join(root, 'DESIGN-PLAN.md'), 'utf8') : '';
+const llmsTxt = fs.existsSync(path.join(root, 'llms.txt')) ? fs.readFileSync(path.join(root, 'llms.txt'), 'utf8') : '';
+const agentsMd = fs.existsSync(path.join(root, 'AGENTS.md')) ? fs.readFileSync(path.join(root, 'AGENTS.md'), 'utf8') : '';
+for (const [label, text] of [
+  ['studio.html', src],
+  ['README.md', readme],
+  ['CITATION.cff', citation],
+  ['TECHNIQUES.md', techniquesMd],
+  ['DESIGN-PLAN.md', designPlan],
+  ['llms.txt', llmsTxt],
+  ['AGENTS.md', agentsMd],
+]) {
   if (!text) continue;
   // Only a spelled number that is actually counting techniques. Matching the word on its own
   // flagged a code comment about sixty-three animation loops, which is not a claim about anything.
