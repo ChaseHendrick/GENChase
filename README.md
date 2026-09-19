@@ -8,7 +8,7 @@ One HTML file. Sixty-three pattern-forming systems. A seed that reprints. A hash
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
-  <img src="gallery/vortex.jpg" width="32%" alt="Abrikosov vortex lattice in a rotating condensate" />
+  <img src="gallery/chains.jpg" width="32%" alt="Granular force chains: the contact network carrying load down through a packing" />
   <img src="gallery/froth.jpg" width="32%" alt="Cellular Potts froth colored by side count" />
 </p>
 <p align="center">
