@@ -872,7 +872,7 @@
         // a fabricated one.
         const meas = !measN ? 'none yet'
           : (P.plane ? '<b>' + pm(measN, modeMN ? modeMN.se : NaN) + '</b>'
-                     : '<b>' + measN + '</b>, an exact count');
+                     : '<b>' + measN + '</b>, exact');
 
         // The self-check. Every measured quantity beside a theoretical one carries an uncertainty and
         // every comparison is in standard deviations; where no uncertainty can be formed, because
@@ -890,15 +890,16 @@
           const z0 = sigmas(kStat.mean, kStat.se, P.kSel);
           const z = z0 === null ? 0 : (z0 < 0 ? -tToSigma(z0, kStat.n - 1) : tToSigma(z0, kStat.n - 1));
           chk += ' · k <b>' + pm(kStat.mean, kStat.se) + '</b> over ' + kStat.n + ' ' + kSample
-            + ' against the peak ' + P.kSel.toFixed(2) + ', <b>' + sigTxt(z) + '</b>';
+            + ' vs peak ' + P.kSel.toFixed(2) + ', <b>' + sigTxt(z) + '</b>';
           // A large deviation is named, and the reason given where it is known. The peak of the
           // dispersion relation is the fastest growing mode of a FIXED domain; on a growing one the
           // pattern holds a count while k slides down the band and then splits, so the realized k
           // sweeps the band instead of sitting at its peak. That is finite size in the literal sense:
           // only integer numbers of half wavelengths fit.
-          if (Math.abs(z) > 3) chk += ', because the pattern lags a domain growing this fast: the count'
-            + ' is held while k slides down the band and jumps back at each insertion. Lowering the'
-            + ' growth rate walks the measured k back up to the peak';
+          // A large deviation is named and its cause given, in the few words the bar has room for.
+          // The Growth hint carries the rest: the count is held while k slides down the band and
+          // jumps back at each insertion, so a faster domain lags further behind the peak.
+          if (Math.abs(z) > 3) chk += ': the lag of growth this fast, slow it and k returns';
         } else if (kStat && isFinite(kStat.mean)) {
           chk += ' · k <b>' + kStat.mean.toFixed(2) + '</b> from a single ' + (kSample || 'sample')
             + ', no uncertainty claimed';
