@@ -277,7 +277,7 @@
 
   /* ---------- tabs ---------- */
   .tabstrip {
-    display: flex; align-items: stretch; background: var(--panel);
+    display: flex; align-items: stretch; flex-wrap: wrap; background: var(--panel);
     border-bottom: 1px solid var(--line); flex: 0 0 auto; min-height: 37px;
   }
   .find {
@@ -289,6 +289,15 @@
   .find-n {
     flex: 0 0 auto; align-self: center; color: var(--muted); font-size: 11px;
     padding-right: 6px; min-width: 2.2em;
+  }
+  .seen {
+    flex: 0 0 auto; align-self: center; margin: 5px 8px 5px 0;
+    border: 1px solid var(--line-strong); background: var(--panel-2); color: var(--ink);
+    border-radius: 6px; padding: 4px 6px; font: inherit; font-size: 11px; max-width: 12.5rem;
+  }
+  .seen:focus { outline: 1px solid var(--accent); border-color: var(--accent); }
+  .seen-hint {
+    flex: 1 0 100%; padding: 0 12px 7px; font-size: 11px; color: var(--muted); line-height: 1.35;
   }
   .tabs {
     display: flex; gap: 2px; padding-inline: 4px 12px; overflow-x: auto; scrollbar-width: none;
@@ -775,7 +784,16 @@
   <div class="tabstrip">
     <input class="find" id="find" type="search" placeholder="Find…" autocomplete="off" spellcheck="false" aria-label="Find a technique. Slash focuses this." />
     <span class="find-n" id="find-n" hidden></span>
+    <select class="seen" id="seen" aria-label="How often you see it elsewhere (a curator's call)">
+      <option value="">Seen elsewhere…</option>
+      <option value="ubiquitous">Ubiquitous</option>
+      <option value="common">Common</option>
+      <option value="occasional">Occasional</option>
+      <option value="rare">Rare</option>
+      <option value="unseen">Almost unseen</option>
+    </select>
     <nav class="tabs" id="tabs" role="tablist" aria-label="Techniques"></nav>
+    <p class="seen-hint" id="seen-hint" hidden>Nobody measured this. It is one person's estimate of how often you have seen the picture somewhere else, made in 2026. It is the only filter in this studio that is not computed from the file.</p>
   </div>
   <div class="history" id="history" hidden aria-label="Session history"></div>
 
@@ -1486,7 +1504,141 @@ void main(){
   ================================================================ */
   const modules = [];          // registration order = tab order
   const byId = {};
-  const S = window.Studio = { util, gl: glh, PALETTES, generatePalette, register, boot, modules: byId, exportJob: null };
+  // How often you see the picture elsewhere. A curator's call, not a measurement. Five named
+  // buckets, never a number. register() copies the value onto the module so the catalog can
+  // read it; a missing id fails tools/index.js and tools/lint.js rather than defaulting to the middle.
+  const FAMILIARITY_BUCKETS = ['ubiquitous', 'common', 'occasional', 'rare', 'unseen'];
+  const FAMILIARITY_LABEL = {
+    ubiquitous: 'Ubiquitous',
+    common: 'Common',
+    occasional: 'Occasional',
+    rare: 'Rare',
+    unseen: 'Almost unseen',
+  };
+  const FAMILIARITY = {
+    // ubiquitous
+    life: 'ubiquitous',
+    fractal: 'ubiquitous',
+    pendulum: 'ubiquitous',
+    fluid: 'ubiquitous',
+    holomorphic: 'ubiquitous',
+    flow: 'ubiquitous',
+    percolation: 'ubiquitous',
+    attractors: 'ubiquitous',
+    ising: 'ubiquitous',
+    // common
+    phyllotaxis: 'common',
+    lichtenberg: 'common',
+    snowflake: 'common',
+    growth: 'common',
+    landscape: 'common',
+    kpz: 'common',
+    grains: 'common',
+    film: 'common',
+    vegetation: 'common',
+    cppn: 'common',
+    schrodinger: 'common',
+    excitable: 'common',
+    soliton: 'common',
+    cyclicca: 'common',
+    xy: 'common',
+    sandpile: 'common',
+    turing: 'common',
+    dendrite: 'common',
+    chemotaxis: 'common',
+    reaction: 'common',
+    tilings: 'common',
+    caustics: 'common',
+    orbitals: 'common',
+    pearls: 'common',
+    convection: 'common',
+    chladni: 'common',
+    photon: 'common',
+    // occasional
+    physarum3d: 'occasional',
+    bec: 'occasional',
+    physarum: 'occasional',
+    hl: 'occasional',
+    cyclic: 'occasional',
+    potts: 'occasional',
+    sle: 'occasional',
+    lens: 'occasional',
+    web: 'occasional',
+    faraday: 'occasional',
+    aztec: 'occasional',
+    skin: 'occasional',
+    arago: 'occasional',
+    rogue: 'occasional',
+    aharonov: 'occasional',
+    anderson: 'occasional',
+    fput: 'occasional',
+    chimera: 'occasional',
+    swarm: 'occasional',
+    cahn: 'occasional',
+    hopf: 'occasional',
+    lp: 'occasional',
+    cloak: 'occasional',
+    cgl: 'occasional',
+    vortex: 'occasional',
+    nematic: 'occasional',
+    darkroom: 'occasional',
+    ks: 'occasional',
+    breather: 'occasional',
+    klein: 'occasional',
+    gyroid: 'occasional',
+    meissner: 'occasional',
+    tennis: 'occasional',
+    airy: 'occasional',
+    chirikov: 'occasional',
+    hofstadter: 'occasional',
+    weierstrass: 'occasional',
+    scars: 'occasional',
+    talbot: 'occasional',
+    boy: 'occasional',
+    reuleaux: 'occasional',
+    apollonian: 'occasional',
+    knotlight: 'occasional',
+    kp: 'occasional',
+    gerstner: 'occasional',
+    eight: 'occasional',
+    peakon: 'occasional',
+    crapper: 'occasional',
+    hasimoto: 'occasional',
+    lump: 'occasional',
+    // rare
+    cortex: 'rare',
+    liesegang: 'rare',
+    skyrmion: 'rare',
+    tonertu: 'rare',
+    timecrystal: 'rare',
+    spinice: 'rare',
+    stealth: 'rare',
+    ust: 'rare',
+    ssh: 'rare',
+    amb: 'rare',
+    ohta: 'rare',
+    swift: 'rare',
+    pfc: 'rare',
+    kakeya: 'rare',
+    purcell: 'rare',
+    smectic: 'rare',
+    kitaev: 'rare',
+    veselago: 'rare',
+    devil: 'rare',
+    loschmidt: 'rare',
+    thouless: 'rare',
+    causticsea: 'rare',
+    // unseen
+    hyperbolic: 'unseen',
+    rotor: 'unseen',
+    growdomain: 'unseen',
+    rmt: 'unseen',
+    lozenge: 'unseen',
+    aubry: 'unseen',
+    exceptional: 'unseen',
+    track: 'unseen',
+  };
+  const S = window.Studio = { util, gl: glh, PALETTES, generatePalette, register, boot, modules: byId, exportJob: null, familiarity: FAMILIARITY };
 
   function register(mod) {
     if (!mod || !mod.id) throw new Error('Studio.register: module needs an id');
@@ -1495,6 +1647,7 @@ void main(){
     mod.presets = mod.presets || {};
     mod.palette = mod.palette !== false;
     mod.order = mod.order == null ? 100 : mod.order;
+    if (!mod.familiarity) mod.familiarity = FAMILIARITY[mod.id];
     modules.push(mod); byId[mod.id] = mod;
   }
 
@@ -2071,6 +2224,8 @@ void main(){
     };
     e.host = host;
     e.inst = mod.create(host);
+    e.usesGL = false;
+    try { e.usesGL = !!(e.canvas.getContext('webgl2') || e.canvas.getContext('webgl')); } catch (err) { e.usesGL = false; }
     instances[mod.id] = e;
 
     // A browser may take the GL context away at any time: a phone backgrounding the tab, a driver
@@ -2493,7 +2648,8 @@ void main(){
     if (hint) hint.textContent = 'Arrows move the poke. Enter applies. Shift+arrow drags.';
   }
 
-  const LIVE_CAP = 12;
+  const LIVE_CAP = 16;
+  const GL_CAP = 8;
   const visitOrder = [];
   function touchLive(id) {
     const i = visitOrder.indexOf(id);
@@ -2505,6 +2661,13 @@ void main(){
     if (!old || id === currentId) return;
     try { persist(id); } catch (err) { /* keep going; the canvas has to go */ }
     try { old.inst.pause && old.inst.pause(); } catch (err) { /* ignore */ }
+    if (old.usesGL) {
+      try {
+        const gl = old.canvas.getContext('webgl2') || old.canvas.getContext('webgl');
+        const lose = gl && gl.getExtension && gl.getExtension('WEBGL_lose_context');
+        if (lose) lose.loseContext();
+      } catch (err) { /* already gone */ }
+    }
     try { old.inst.dispose && old.inst.dispose(); } catch (err) { /* ignore */ }
     try { old.canvas.remove(); } catch (err) { /* ignore */ }
     delete instances[id];
@@ -2512,6 +2675,13 @@ void main(){
     if (i >= 0) visitOrder.splice(i, 1);
   }
   function trimLive() {
+    const glIds = visitOrder.filter(id => instances[id] && instances[id].usesGL);
+    while (glIds.length > GL_CAP) {
+      const oldest = glIds.find(id => id !== currentId);
+      if (!oldest) break;
+      disposeEntry(oldest);
+      glIds.splice(glIds.indexOf(oldest), 1);
+    }
     while (visitOrder.length > LIVE_CAP) {
       const oldest = visitOrder.find(id => id !== currentId);
       if (!oldest) break;
@@ -3369,25 +3539,30 @@ void main(){
     for (const m of modules) {
       // Roving tabindex: the strip is one tab stop and the arrow keys move within it. A long
       // sequential tab strip is what a tablist without this costs a keyboard user.
-      const hay = [m.id, m.name, m.tab, m.subtitle, m.equation, m.credit, m.blurb].join(' ').toLowerCase();
-      tabs.appendChild(h('button', { class: 'tab', role: 'tab', type: 'button', 'data-id': m.id, 'data-hay': hay, 'aria-selected': 'false', tabindex: '-1', title: m.subtitle || m.name, onclick: () => switchTo(m.id) }, [
+      const seen = m.familiarity ? (FAMILIARITY_LABEL[m.familiarity] || m.familiarity) : '';
+      const hay = [m.id, m.name, m.tab, m.subtitle, m.equation, m.credit, m.blurb, m.familiarity, seen].join(' ').toLowerCase();
+      tabs.appendChild(h('button', { class: 'tab', role: 'tab', type: 'button', 'data-id': m.id, 'data-hay': hay, 'data-seen': m.familiarity || '', 'aria-selected': 'false', tabindex: '-1', title: m.subtitle || m.name, onclick: () => switchTo(m.id) }, [
         h('span', { class: 'tab-name', text: m.tab || m.name }),
       ]));
     }
-    const find = $('find'), findN = $('find-n');
+    const find = $('find'), findN = $('find-n'), seenSel = $('seen'), seenHint = $('seen-hint');
     const applyFind = () => {
       const q = (find && find.value || '').trim().toLowerCase();
       const bits = q ? q.split(/\s+/).filter(Boolean) : [];
+      const bucket = seenSel && seenSel.value || '';
       let n = 0, first = null;
       for (const b of tabs.querySelectorAll('.tab[data-id]')) {
-        const ok = !bits.length || bits.every(bit => (b.dataset.hay || '').indexOf(bit) >= 0);
+        const okBits = !bits.length || bits.every(bit => (b.dataset.hay || '').indexOf(bit) >= 0);
+        const okSeen = !bucket || b.dataset.seen === bucket;
+        const ok = okBits && okSeen;
         b.classList.toggle('is-hidden', !ok);
         if (ok) { n++; if (!first) first = b; }
       }
       if (findN) {
-        findN.hidden = !bits.length;
-        findN.textContent = bits.length ? String(n) : '';
+        findN.hidden = !(bits.length || bucket);
+        findN.textContent = (bits.length || bucket) ? String(n) : '';
       }
+      if (seenHint) seenHint.hidden = !bucket;
       markScroll();
       return first;
     };
@@ -3406,6 +3581,7 @@ void main(){
         }
       });
     }
+    if (seenSel) seenSel.addEventListener('change', applyFind);
     tabs.addEventListener('wheel', ev => {
       if (!ev.deltaY || Math.abs(ev.deltaY) < Math.abs(ev.deltaX)) return;
       if (tabs.scrollWidth <= tabs.clientWidth + 2) return;
@@ -12473,7 +12649,7 @@ void main(){
         },
         exportSVG(w, h) {
           const s = host.getState();
-          if (s.style === 'filled' || s.style === 'sand') return null;
+          if (s.style !== 'contour') return null;
           const W = w || 1000, H = h || Math.round(W * aspectRatio(s));
           const field = makeField(s, phase);
           const ar = aspectRatio(s);
@@ -13085,8 +13261,9 @@ void main(){
           return U.toBlob(c);
         },
         exportSVG(ow, oh) {
-          if (!pp) throw new Error('nothing to export');
           const s = host.getState();
+          if (s.view !== 'lic') return null;
+          if (!pp) throw new Error('nothing to export');
           const W = gw, H = gh;
           const buf = texType === 'rgba32f' ? new Float32Array(W * H * 4) : null;
           if (!buf) throw new Error('SVG export needs float textures');
@@ -40333,7 +40510,11 @@ void main(){
           paintTo(g, pw, ph, s);
           return U.toBlob(c);
         },
-        exportSVG(pw, ph) { return svgOf(host.getState(), pw, ph); },
+        exportSVG(pw, ph) {
+          const s = host.getState();
+          if (s.view && s.view !== 'woodcut') return null;
+          return svgOf(s, pw, ph);
+        },
       };
     },
   });
@@ -42666,7 +42847,11 @@ void main(){
           paintTo(g, pw, ph, st);
           return U.toBlob(c);
         },
-        exportSVG(pw, ph) { return svgOf(host.getState(), pw, ph); },
+        exportSVG(pw, ph) {
+          const st = host.getState();
+          if (st.view && st.view !== 'woodcut') return null;
+          return svgOf(st, pw, ph);
+        },
       };
     },
   });

@@ -4,10 +4,29 @@
   "file": "studio.html",
   "count": 116,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
+  "aliases": {
+    "hendrick": "track"
+  },
+  "familiarityBuckets": [
+    "ubiquitous",
+    "common",
+    "occasional",
+    "rare",
+    "unseen"
+  ],
+  "familiarityNote": "Nobody measured this. It is one person's estimate of how often you have seen the picture somewhere else, made in 2026. It is the only ordering in this studio that is not computed from the file.",
+  "forAI": {
+    "read": "techniques.json",
+    "skip": "studio.html",
+    "contract": "tools/modules/CONTRACT.md",
+    "agents": "AGENTS.md",
+    "addATab": "Write tools/modules/<id>.js, then node tools/inject.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js. Do not split studio.html. All noise through U.makeRng(seed). Credit the paper. Do not claim new science."
+  },
   "techniques": [
     {
       "id": "life",
       "name": "Artificial Life",
+      "tab": "",
       "subtitle": "Lenia, Flow Lenia and cellular automata · 2019-23",
       "equation": "A <- clamp(A + (1/T)·G(K*A)),   G(u) = 2·exp(-(u-mu)^2 / 2·sigma^2) - 1",
       "credit": "Lenia: Bert Wang-Chak Chan, 2018-19. The discrete rules go back to John Conway's Game of Life, 1970, and Stanislaw Ulam and John von Neumann's cellular automata in the 1940s.",
@@ -25,11 +44,18 @@
         "ltl",
         "seeds"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "ubiquitous",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "steps",
+      "hash": "#life",
+      "aliases": []
     },
     {
       "id": "physarum3d",
       "name": "Physarum 3D",
+      "tab": "",
       "subtitle": "slime mold agents building a filament network in a volume · 2020",
       "equation": "sense 5 cones around h -> h ← normalize(h + t·(best − h)) -> p += h·SS -> deposit;   trail ← blur₃(trail)·(1−decay)",
       "credit": "The 3D Physarum model is Jeff Jones' 2010 agent rule lifted into a volume. Oskar Elek, Joseph N. Burchett, J. Xavier Prochaska and Angus G. Forbes used exactly this construction — slime mold agents released around seed points that deposit constantly — to reconstruct the cosmic web from galaxy positions: Burchett, Elek et al., 'Revealing the Dark Threads of the Cosmic Web', Astrophysical Journal Letters 891, L35 (2020).",
@@ -44,11 +70,18 @@
         "roots",
         "capillaries"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "agents",
+      "hash": "#physarum3d/physarum3d-0417",
+      "aliases": []
     },
     {
       "id": "cortex",
       "name": "Cortical Planforms",
+      "tab": "Cortex",
       "subtitle": "a neural field patterning, seen through the retinocortical map · 1979",
       "equation": "∂u/∂t = −u + ∫ w(|x−x′|) f(u(x′)) dx′ + h,   w = A₁ G_σ₁ − A₂ G_σ₂,   f(u) = 1/(1+e^{−β(u−θ)})",
       "credit": "Neural field with lateral inhibition: Hugh R. Wilson and Jack D. Cowan, Biophysical Journal 12, 1 (1972) and Kybernetik 13, 55 (1973); Shun-ichi Amari, Biological Cybernetics 27, 77 (1977). The claim that a Turing bifurcation in such a sheet, pushed through the retinocortical map, produces the visual hallucinations catalogued by Heinrich Klüver (Mescal, 1928; Mescal and Mechanisms of Hallucinations, 1966) is G. Bard Ermentrout and Jack D. Cowan, 'A mathematical theory of visual hallucination patterns', Biological Cybernetics 34, 137 (1979). The complex-logarithm form of the map follows Eric Schwartz, Biological Cybernetics 25, 181 (1977). Paul Bressloff, Jack Cowan, Martin Golubitsky, Peter Thomas and Matthew Wiener, Philosophical Transactions of the Royal Society B 356, 299 (2001), extended the account to contoured planforms by adding orientation preference as a third coordinate; that extension is not what this tab computes.",
@@ -64,11 +97,18 @@
         "lattice",
         "contour"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "h",
+      "hash": "#cortex/kluver-1928",
+      "aliases": []
     },
     {
       "id": "bec",
       "name": "Vortex Lattice",
+      "tab": "Condensate",
       "subtitle": "Gross-Pitaevskii, rotating · 1961",
       "equation": "iℏ ∂ψ/∂t = [−½∇² + V(r) + g|ψ|² − Ω L_z] ψ,   circulation quantized in units of h/m",
       "credit": "The mean-field equation is Eugene Gross, Il Nuovo Cimento 20, 454 (1961), and Lev Pitaevskii, Soviet Physics JETP 13, 451 (1961). That a rotating superfluid answers with a triangular array of singly quantized vortices rather than rigid rotation is Alexei Abrikosov's 1957 result for type-II superconductors, Soviet Physics JETP 5, 1174, carried over to condensates; it was seen in the laboratory by Kirk Madison, Frédéric Chevy, Wendel Wohlleben and Jean Dalibard, Phys. Rev. Lett. 84, 806 (2000), and resolved into a lattice of well over a hundred vortices by Jamil Abo-Shaeer, Chandra Raman, Johnny Vogels and Wolfgang Ketterle, Science 292, 476 (2001). The staggered explicit scheme used in real time follows P. B. Visscher, Computers in Physics 5, 596 (1991). The quantization of circulation is Lars Onsager (1949) and Richard Feynman (1955).",
@@ -84,11 +124,18 @@
         "quiet",
         "tangle"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "omega",
+      "hash": "#bec/abrikosov-1957",
+      "aliases": []
     },
     {
       "id": "physarum",
       "name": "Physarum",
+      "tab": "",
       "subtitle": "slime mold agents building a transport network · 2010",
       "equation": "sense(L,F,R) -> turn ±RA -> step SS -> deposit D;   trail <- blur(trail)·(1-decay)",
       "credit": "Agent model: Jeff Jones, 2010, 'Characteristics of pattern formation and evolution in approximations of Physarum transport networks'. The biology follows Toshiyuki Nakagaki's maze-solving slime mold experiments, Nature 2000.",
@@ -105,11 +152,18 @@
         "storm",
         "filigree"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "agents",
+      "hash": "#physarum",
+      "aliases": []
     },
     {
       "id": "phyllotaxis",
       "name": "Phyllotaxis",
+      "tab": "",
       "subtitle": "Douady–Couder inhibitory field · 1996",
       "equation": "new primordium at argmin_θ Σᵢ exp(−|x(θ) − xᵢ| / λ) on the meristem ring",
       "credit": "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). Primordia appear on a growing disc at the minimum of an inhibitory field left by the previous ones, then ride outward. The divergence angle converges on the golden angle 137.5° for a wide interval of the control parameter, which is how sunflowers count Fibonacci without counting.",
@@ -122,11 +176,18 @@
         "para",
         "tight"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "lam",
+      "hash": "#phyllotaxis/douady-1996",
+      "aliases": []
     },
     {
       "id": "hl",
       "name": "Hastings–Levitov",
+      "tab": "HL growth",
       "subtitle": "conformal Laplacian growth · 1998",
       "equation": "Φₙ = Φₙ₋₁ ∘ f_{θₙ,cₙ},   cₙ ∝ |Φ′(e^{iθ})|^{−α}",
       "credit": "M. B. Hastings and L. S. Levitov, Physica D 116, 244 (1998). Laplacian growth (viscous fingering, DLA in a limit) as iterated conformal maps of the exterior disk. α=0 grows a disk; α=2 is DLA-like; the transition at α=1 is sharp. Each particle is a slit map of capacity c composed onto the cluster.",
@@ -139,11 +200,18 @@
         "disk",
         "fine"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "alpha",
+      "hash": "#hl/hastings-1998",
+      "aliases": []
     },
     {
       "id": "lichtenberg",
       "name": "Lichtenberg",
+      "tab": "Lichtenberg",
       "subtitle": "dielectric breakdown · Niemeyer–Pietronero–Wiesmann 1984",
       "equation": "∇²φ = 0,   P(i) ∝ φᵢ^η  on the growth interface",
       "credit": "L. Niemeyer, L. Pietronero and H. J. Wiesmann, Phys. Rev. Lett. 52, 1033 (1984). The dielectric breakdown model grows a cluster where the harmonic potential of the Laplace equation, raised to η, is the attachment probability. η=1 is DLA; η→∞ is a ballistic needle; lightning lives in between.",
@@ -156,11 +224,18 @@
         "needle",
         "fern"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "eta",
+      "hash": "#lichtenberg/npw-1984",
+      "aliases": []
     },
     {
       "id": "snowflake",
       "name": "Gravner–Griffeath",
+      "tab": "Snowflake",
       "subtitle": "mesoscopic snow crystal · 2008",
       "equation": "diffusion of vapor on Aᶜ;  freeze κ;  attach by (n, b, α, β, θ);  melt μ, γ",
       "credit": "Janko Gravner and David Griffeath, Physica D 237, 385 (2008); Phys. Rev. E 79, 011601 (2009). A hexagonal lattice map with three masses — vapor, quasi-liquid, ice — that combines diffusion-limited aggregation with anisotropic attachment and a quasi-liquid layer. It is the first local model to grow plates, sectored plates, stellar dendrites and ferns that look like Nakaya’s atlas, not like a cartoon star.",
@@ -174,11 +249,18 @@
         "sectored",
         "stellar"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "rho",
+      "hash": "#snowflake/gravner-2008",
+      "aliases": []
     },
     {
       "id": "growth",
       "name": "Differential Growth",
+      "tab": "",
       "subtitle": "buckling curves, coral and cortex folding · 2010s",
       "equation": "pi <- pi + a·(neighbors) - r·sum|pj-pi|<R (pj-pi);   split an edge when |e| > dmax",
       "credit": "Differential line growth as a digital technique, documented by Anders Hoff (inconvergent) and indexed in Jason Webb's morphogenesis resources. The underlying idea is D'Arcy Wentworth Thompson, On Growth and Form, 1917.",
@@ -195,11 +277,18 @@
         "filament",
         "ink"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "maxNodes",
+      "hash": "#growth",
+      "aliases": []
     },
     {
       "id": "cyclic",
       "name": "Cyclic Competition",
+      "tab": "",
       "subtitle": "rock, paper, scissors in space · 2007",
       "equation": "∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v)",
       "credit": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a < 1 < b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
@@ -214,11 +303,18 @@
         "single",
         "relief"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "D",
+      "hash": "#cyclic/rps-2007",
+      "aliases": []
     },
     {
       "id": "landscape",
       "name": "Drainage Networks",
+      "tab": "Drainage",
       "subtitle": "stream-power incision against uplift · 1994",
       "equation": "∂z/∂t = U − K·A^m·S + D∇²z,   A from D8 routing, S the slope to the receiver",
       "credit": "Detachment-limited stream power: Alan Howard, 'A detachment-limited model of drainage basin evolution', Water Resources Research 30, 2261 (1994); the hillslope term is the linear diffusion of G. K. Gilbert's creep, formalised by W. E. H. Culling, Journal of Geology 68, 336 (1960). The O(n) implicit solver and the donor-stack ordering are Jean Braun and Sean Willett, 'A very efficient O(n), implicit and parallel method to solve the stream power equation', Geomorphology 180-181, 170 (2013). Depressions are removed by the priority-flood of Richard Barnes, Clarence Lehman and David Mulla, Computers and Geosciences 62, 117 (2014). The statistics of the resulting networks are the subject of Ignacio Rodríguez-Iturbe and Andrea Rinaldo, Fractal River Basins (1997); the competition between the two terms that sets valley spacing is Taylor Perron, James Kirchner and William Dietrich, Nature 460, 502 (2009).",
@@ -234,11 +330,18 @@
         "area",
         "smooth"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "D",
+      "hash": "#landscape/howard-1994",
+      "aliases": []
     },
     {
       "id": "kpz",
       "name": "Rough Growth",
+      "tab": "Roughness",
       "subtitle": "ballistic deposition and the KPZ exponent · 1986",
       "equation": "∂h/∂t = ν∇²h + (λ/2)(∇h)² + η,   W(t) ~ t^β with β = 1/3 in 1+1 dimensions",
       "credit": "Mehran Kardar, Giorgio Parisi and Yi-Cheng Zhang, 'Dynamic scaling of growing interfaces', Physical Review Letters 56, 889 (1986). The scaling form W(L, t) = L^α f(t/L^z) is Fereydoon Family and Tamás Vicsek, J. Phys. A 18, L75 (1985). Ballistic deposition is Murray Vold (1959) and Michael Sutherland (1966); the restricted solid-on-solid model is Jin Min Kim and Joel Kosterlitz, Phys. Rev. Lett. 62, 2289 (1989); surface relaxation is Family, J. Phys. A 19, L441 (1986); the cluster model is Murray Eden, in the Berkeley Symposium proceedings (1961). That the edge fluctuations follow the Tracy-Widom distributions is Michael Prähofer and Herbert Spohn, Phys. Rev. Lett. 84, 4882 (2000), and Kazumasa Takeuchi and Masaki Sano measured it in turbulent liquid crystal, Phys. Rev. Lett. 104, 230601 (2010).",
@@ -254,11 +357,18 @@
         "rings",
         "wide"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "cols",
+      "hash": "#kpz/kardar-1986",
+      "aliases": []
     },
     {
       "id": "potts",
       "name": "Foam & Grains",
+      "tab": "Froth",
       "subtitle": "the cellular Potts model, coarsening · 1992",
       "equation": "H = Σ_⟨ij⟩ J(1 − δ_{σi σj}) + λ Σ_c (a_c − A)²;   accept a copy with min(1, e^{−ΔH/T})",
       "credit": "The extended, area-constrained Potts model is François Graner and James Glazier, 'Simulation of biological cell sorting using a two-dimensional extended Potts model', Physical Review Letters 69, 2013 (1992), building on Malcolm Anderson, David Srolovitz, Gary Grest and Paul Sahni, Acta Metallurgica 32, 783 (1984), who used the plain q-state Potts model for grain growth. The law the plate measures is John von Neumann's, in Metal Interfaces (1952), as extended by William Mullins, J. Appl. Phys. 27, 900 (1956): a two-dimensional cell with n sides changes area at a rate proportional to n − 6. The average side count being exactly six is Euler's formula, not a fit. Differential adhesion as the explanation for cell sorting is Malcolm Steinberg, Science 141, 401 (1963).",
@@ -274,11 +384,18 @@
         "hot",
         "area"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "sweeps",
+      "hash": "#potts/graner-1992",
+      "aliases": []
     },
     {
       "id": "liesegang",
       "name": "Liesegang Rings",
+      "tab": "Liesegang",
       "subtitle": "periodic precipitation in a gel · 1896",
       "equation": "∂a/∂t = Dₐ∇²a − kab,  ∂b/∂t = D_b∇²b − kab,  ∂c/∂t = D_c∇²c + kab − S,  ∂d/∂t = S",
       "credit": "Raphael E. Liesegang, 'Ueber einige Eigenschaften von Gallerten', Naturwissenschaftliche Wochenschrift 11 (30), 353 (1896), reported the rings that silver nitrate leaves when it diffuses into a gel loaded with potassium dichromate. Wilhelm Ostwald, in his note on those lines in Zeitschrift für physikalische Chemie 23, 365 (1897), explained them by supersaturation: the solution ahead of the front passes a nucleation threshold, a band nucleates, and the band then drains the solution around it back below saturation, so the next band has to wait for the front to move on. That supersaturation cycle is what this tab integrates. The geometric spacing is Karol Jablczynski, 'La formation rythmique des précipités: les anneaux de Liesegang', Bulletin de la Société Chimique de France 33, 1592 (1923). Tibor Antal, Michel Droz, Jacques Magnin and Zoltán Rácz, 'Formation of Liesegang patterns: a spinodal decomposition scenario', Physical Review Letters 83, 2880 (1999), derive x_n ~ Q(1+p)^n and the Matalon-Packter form of p from a moving particle source driving a spinodal quench, which is a different mechanism from the one computed here; the spacing law is common to both.",
@@ -294,11 +411,18 @@
         "front",
         "crystallites"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "cnuc",
+      "hash": "#liesegang/liesegang-1896",
+      "aliases": []
     },
     {
       "id": "grains",
       "name": "Force Chains",
+      "tab": "Chains",
       "subtitle": "a granular packing and the network that carries it · 1979",
       "equation": "F_n = k_n δ − γ_n v_n  for δ = r_i + r_j − |x_ij| > 0,   |F_t| ≤ μ F_n;   m ẍ = Σ F − m g ŷ;   Δt = T/35,  T = 2π√(m_eff/k_n)",
       "credit": "Peter Cundall and Otto Strack, 'A discrete numerical model for granular assemblies', Geotechnique 29, 47 (1979), gave the distinct element method used here: rigid disks, a linear normal spring with a dashpot, a tangential spring capped by Coulomb friction, and an explicit step bounded by the contact period. Trushant Majmudar and Robert Behringer, Nature 435, 1079 (2005), measured the grain-scale normal and tangential forces inside a two-dimensional photoelastic packing and showed the filamentary chains directly. Farhang Radjai, Michel Jean, Jean-Jacques Moreau and Stephane Roux, Physical Review Letters 77, 274 (1996), found that the contact force distribution decays exponentially above the mean and as a power law below it; Radjai, Dietrich Wolf, Jean and Moreau, Physical Review Letters 80, 61 (1998), split the packing into a strong network above the mean force, which carries the deviatoric stress, and a weak network below it, which does not.",
@@ -314,11 +438,18 @@
         "disks",
         "column"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "n",
+      "hash": "#grains/cundall-1979",
+      "aliases": []
     },
     {
       "id": "skyrmion",
       "name": "Magnetic Skyrmions",
+      "tab": "Skyrmions",
       "subtitle": "chiral magnets · 1989",
       "equation": "dn/dt = -n x (n x H),   H = J sum_nn n_j + H_DMI + 2K n_z zhat + B zhat,   Q = (1/4pi) int n · (dx n x dy n) dA",
       "credit": "A. N. Bogdanov and D. A. Yablonskii, Sov. Phys. JETP 68, 101 (1989), predicted localized chiral solitons in magnets with Dzyaloshinskii-Moriya coupling. S. Muhlbauer, B. Binz, F. Jonietz, C. Pfleiderer, A. Rosch, A. Neubauer, R. Georgii and P. Boni, Science 323, 915 (2009), observed the skyrmion lattice in MnSi. The topological charge on the plate is the Berg-Luscher lattice invariant, Berg and Luscher, Nucl. Phys. B 190, 412 (1981).",
@@ -333,11 +464,18 @@
         "helix",
         "quench"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "",
+      "hash": "#skyrmion",
+      "aliases": []
     },
     {
       "id": "tonertu",
       "name": "Flocking",
+      "tab": "Flock",
       "subtitle": "Toner-Tu, a polar active fluid · 1995",
       "equation": "∂ρ/∂t + ∇·(ρv) = 0;   ∂v/∂t + λ(v·∇)v = (α(ρ) − β|v|²)v − σ∇ρ + ν∇²v + η",
       "credit": "John Toner and Yuhai Tu, 'Long-range order in a two-dimensional dynamical XY model: how birds fly together', Physical Review Letters 75, 4326 (1995), and Phys. Rev. E 58, 4828 (1998). The particle model it coarse-grains is Tamás Vicsek, András Czirók, Eshel Ben-Jacob, Inon Cohen and Ofer Shochet, Phys. Rev. Lett. 75, 1226 (1995). That the ordered state phase separates into traveling bands rather than ordering uniformly is Guillaume Grégoire and Hugues Chaté, Phys. Rev. Lett. 92, 025702 (2004), and Chaté, Francesco Ginelli, Grégoire and Franck Raynaud, Phys. Rev. E 77, 046113 (2008). Giant number fluctuations in active matter are Sriram Ramaswamy, R. Aditi Simha and John Toner, Europhysics Letters 62, 196 (2003).",
@@ -353,11 +491,18 @@
         "wide",
         "heading"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "a1",
+      "hash": "#tonertu/toner-1995",
+      "aliases": []
     },
     {
       "id": "hyperbolic",
       "name": "Hyperbolic Turing",
+      "tab": "Curved",
       "subtitle": "reaction-diffusion on a {p,q} tiling · Poincare disk",
       "equation": "∂u/∂t = D_u Δ_G u − uv² + F(1−u),   ∂v/∂t = D_v Δ_G v + uv² − (F+k)v,   Δ_G u_i = Σ_{j∼i}(u_j − u_i)",
       "credit": "The chemistry is the Gray-Scott model, Peter Gray and Stephen Scott, Chemical Engineering Science 38, 29 (1983) and 39, 1087 (1984), on Alan Turing's mechanism, 'The chemical basis of morphogenesis', Phil. Trans. R. Soc. B 237, 37 (1952). The substrate is the regular hyperbolic tessellation {p,q}, in the disk model Henri Poincare introduced in 1882; the construction by reflection in the sides of a fundamental polygon is standard, and the drawing convention of geodesics as circular arcs orthogonal to the boundary is what makes the model conformal. The Laplacian used is the degree-normalized graph Laplacian, which on a tiling of equal-area cells is the natural discretisation and, unlike the combinatorial one, means the same thing whatever p is.",
@@ -373,11 +518,18 @@
         "rings",
         "tiling"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "unseen",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "k",
+      "hash": "#hyperbolic/poincare-1882",
+      "aliases": []
     },
     {
       "id": "sle",
       "name": "Schramm-Loewner Evolution",
+      "tab": "SLE",
       "subtitle": "the random curve of critical two-dimensional systems · 2000",
       "equation": "∂g_t/∂t = 2 / (g_t(z) − √κ B_t),   γ(t) = g_t⁻¹(√κ B_t);   κ = 2 loop-erased walk, 8/3 self-avoiding walk, 4 level lines, 6 percolation, 8 Peano curve",
       "credit": "Oded Schramm, Israel Journal of Mathematics 118, 221 (2000), 'Scaling limits of loop-erased random walks and uniform spanning trees'. Charles Loewner's 1923 equation grows a curve into the upper half plane from a real driving function; Schramm showed that the only conformally invariant random curves with the domain Markov property come from driving it with Brownian motion of variance κ, and identified κ with the critical models whose interfaces they describe. Gregory Lawler, Schramm and Wendelin Werner computed the exponents; Stanislav Smirnov proved the percolation case. The curve is computed here as a composition of vertical slit maps, after Tom Kennedy, Journal of Statistical Physics 137, 839 (2009).",
@@ -393,11 +545,18 @@
         "sweep",
         "bundle"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "kappa",
+      "hash": "#sle/schramm-2000",
+      "aliases": []
     },
     {
       "id": "fractal",
       "name": "Fractal Geometry",
+      "tab": "",
       "subtitle": "signed-distance raymarching of 3D fractals · 2009",
       "equation": "march t <- t + DE(p) until DE(p) < eps;   normal n = grad DE(p)",
       "credit": "Ray tracing of deterministic 3D fractals: Hart, Sandin and Kauffman, 1989; sphere tracing formalized by John C. Hart, 1996. The Mandelbulb was found by Daniel White and Paul Nylander in 2009, the Mandelbox by Tom Lowe in 2010, and the Apollonian formulation is Inigo Quilez's.",
@@ -414,11 +573,18 @@
         "julia",
         "section"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "ubiquitous",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "iters",
+      "hash": "#fractal/fractal-0417",
+      "aliases": []
     },
     {
       "id": "lens",
       "name": "Gravitational Lens",
+      "tab": "Lens",
       "subtitle": "thin-lens mapping · 1936",
       "equation": "β = θ − α(θ),   α = ∇ψ,   ∇²ψ = 2κ,   θ_E² = 4GM D_ls / (c² D_l D_s)",
       "credit": "A. Einstein, Science 84, 506 (1936), computed the deflection of starlight by the sun and noted the ring that appears when source and lens align. The plate is the thin-lens equation as in Schneider, Ehlers and Falco, Gravitational Lenses (1992). The potential is solved by Jacobi iteration on the Poisson equation for the seeded convergence.",
@@ -434,11 +600,18 @@
         "grid",
         "mag"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#lens",
+      "aliases": []
     },
     {
       "id": "rotor",
       "name": "Rotor Routers",
+      "tab": "Rotor",
       "subtitle": "rotor-router aggregation and internal DLA · 2009",
       "equation": "at an occupied site turn the rotor a quarter turn and follow it; stop at the first unoccupied site.   inradius ≥ r − O(log r),  outradius ≤ r + O(r^α) for every α > 1 − 1/d,  r = √(n/π) in d = 2",
       "credit": "Lionel Levine and Yuval Peres, 'Strong spherical asymptotics for rotor-router aggregation and the divisible sandpile', Potential Analysis 30, 1 (2009), is the theorem this plate measures. For an aggregate of n particles in d dimensions, written as n = ω_d r^d, they prove the inradius is at least r − O(log r) and the outradius at most r + O(r^α) for every α > 1 − 1/d, which in the plane is r + O(r^α) for every α > 1/2. The two sides of that sandwich are not the same strength, and the plate does not pretend they are: the inner bound is logarithmic and proved, the outer bound proved here is a power, and the status line reports what this lattice actually measures rather than what the tighter of the two would suggest. There is no probability anywhere in the statement. The rotor-router walk and the aggregation model are James Propp's; they are studied in Ander Holroyd and James Propp, 'Rotor walks and Markov chains', Contemporary Mathematics 520 (2010), and in Joshua Cooper and Joel Spencer, 'Simulating a random walk with constant error', Combinatorics, Probability and Computing 15 (2006). Internal diffusion limited aggregation, the random counterpart drawn beside it, is Gregory Lawler, Maury Bramson and David Griffeath, 'Internal diffusion limited aggregation', Annals of Probability 20, 2117 (1992), who proved its limit shape is a disk; David Jerison, Lionel Levine and Scott Sheffield, Journal of the American Mathematical Society 25, 271 (2012), showed its fluctuations are logarithmic as well, so the gap the plate measures between the two is one of constants and of certainty, not of orders. That a finished aggregate does not depend on the order the particles were routed in is the abelian property of Persi Diaconis and William Fulton, Rendiconti del Seminario Matematico dell'Università e del Politecnico di Torino (1991); it is the same argument Deepak Dhar, Physical Review Letters 64, 1613 (1990), made for the abelian sandpile of Per Bak, Chao Tang and Kurt Wiesenfeld, Physical Review Letters 59, 381 (1987).",
@@ -454,11 +627,18 @@
         "rims",
         "stripes"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "unseen",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "n",
+      "hash": "#rotor/propp-machine",
+      "aliases": []
     },
     {
       "id": "web",
       "name": "Cosmic Web",
+      "tab": "Web",
       "subtitle": "Zel'dovich adhesion · 1970 / 1989",
       "equation": "x = q + D ∇Φ,   ∂t v + (v·∇)v = ν ∇²v,   ψ = exp(−Φ / 2ν),   ∂t ψ = ν ∇²ψ",
       "credit": "Ya. B. Zel'dovich, Astron. Astrophys. 5, 84 (1970). The adhesion model is Gurbatov, Saichev and Shandarin, Mon. Not. R. Astron. Soc. 236, 385 (1989), which is Burgers' equation written for the displacement potential and solved by the Hopf-Cole substitution.",
@@ -474,11 +654,18 @@
         "voidy",
         "potential"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#web",
+      "aliases": []
     },
     {
       "id": "faraday",
       "name": "Faraday Waves",
+      "tab": "Faraday",
       "subtitle": "parametrically driven layer · 1831 / 1996",
       "equation": "∂tt h + γ ∂t h + (g − Γ cos ωt) ∇²h + κ ∇⁴h + u h³ = 0",
       "credit": "M. Faraday, Philos. Trans. R. Soc. 121, 299 (1831), saw crisp standing waves on a shaken plate of liquid. P. Umbanhowar, F. Melo and H. L. Swinney, Nature 382, 793 (1996), found oscillons: localized, subharmonic bouncing spots on a granular layer. The sheet here is a damped, parametrically driven conservation law with a cubic saturation, not a box of brass beads.",
@@ -494,11 +681,18 @@
         "wild",
         "fine"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "",
+      "hash": "#faraday",
+      "aliases": []
     },
     {
       "id": "film",
       "name": "Thin Film",
+      "tab": "Film",
       "subtitle": "draining soap and oil · interference",
       "equation": "∂t h = ∇·(h³ ∇∇²h) + G ∂y(h³),   I(λ) = sin²(2π n h cosθ / λ + φ)",
       "credit": "O. Reynolds, Philos. Trans. R. Soc. 177, 157 (1886), is the lubrication statement that makes thickness a conserved field. The colors are thin-film interference as in Born and Wolf, Principles of Optics. A soap film in air carries a π phase shift at the first surface, which is why the thinnest film goes black rather than white. Oil on water does not.",
@@ -514,11 +708,18 @@
         "map",
         "order"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "",
+      "hash": "#film",
+      "aliases": []
     },
     {
       "id": "timecrystal",
       "name": "Time Crystal",
+      "tab": "Time crystal",
       "subtitle": "Floquet Ising chain, period doubled · 2012 / 2016",
       "equation": "U(T) = exp(−i T H_Ising) · exp(−i π(1−ε) Σ X_i),   m₂ = ⟨(−1)^n m(nT)⟩",
       "credit": "Frank Wilczek, Phys. Rev. Lett. 109, 160401 (2012), named the time crystal. Watanabe and Oshikawa, Phys. Rev. Lett. 114, 251603 (2015), proved an equilibrium one cannot exist. Else, Bauer and Nayak, Phys. Rev. Lett. 117, 090402 (2016), and Khemani, Lazarides, Moessner and Sondhi, Phys. Rev. Lett. 116, 250401 (2016), showed a periodically driven, many-body-localised spin chain can still lock at twice the drive period. Zhang et al., Nature 543, 217 (2017), saw it in trapped ions. This plate is the classical Floquet-Ising analog of that chain, not a quantum register.",
@@ -534,11 +735,18 @@
         "order",
         "clean"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#timecrystal",
+      "aliases": []
     },
     {
       "id": "growdomain",
       "name": "Growing Domain",
+      "tab": "",
       "subtitle": "Turing patterns on a domain that grows · 1999",
       "equation": "∂u/∂t = (D_u/L²)∂²u/∂ξ² + f(u,v) − d(L̇/L)u,  ∂v/∂t = (D_v/L²)∂²v/∂ξ² + g(u,v) − d(L̇/L)v",
       "credit": "Alan M. Turing, 'The chemical basis of morphogenesis', Philosophical Transactions of the Royal Society of London B 237, 37 (1952), showed that two substances which react and diffuse at different rates can break a uniform state into a pattern with a wavelength of its own. Edward J. Crampin, Eamonn A. Gaffney and Philip K. Maini, 'Reaction and diffusion on growing domains: scenarios for robust pattern formation', Bulletin of Mathematical Biology 61, 1093 (1999), wrote the same problem in fixed Lagrangian coordinates on a domain of changing length L(t); the diffusion coefficients pick up a factor 1/L², and a dilution term d(L̇/L) appears because growth carries material apart. That is the formulation integrated here. Shigeru Kondo and Rihito Asai, 'A reaction-diffusion wave on the skin of the marine angelfish Pomacanthus', Nature 376, 765 (1995), measured the consequence on a live animal: as the fish grows its stripes do not widen, new ones are inserted between the old, at the spacing the reaction-diffusion wavelength fixes. The kinetics are Schnakenberg's trimolecular scheme and the Gierer-Meinhardt activator-inhibitor pair.",
@@ -554,11 +762,18 @@
         "meinhardt",
         "plane"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "unseen",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "grow",
+      "hash": "#growdomain/growdomain-1999",
+      "aliases": []
     },
     {
       "id": "spinice",
       "name": "Spin Ice",
+      "tab": "Spin ice",
       "subtitle": "square ice, emergent monopoles · 1935 / 2008",
       "equation": "E = (J/2) Σ_v Q_v² − h Σ σ,   Q_v = n_in − 2,   ice: Q = 0",
       "credit": "Linus Pauling, J. Am. Chem. Soc. 57, 2680 (1935), counted the residual entropy of ice. Castelnovo, Moessner and Sondhi, Nature 451, 42 (2008), showed that the same two-in/two-out rule on a pyrochlore magnet fractionalises a dipole into a pair of magnetic monopoles. The plate is square ice, the 2-D vertex model, not a 3-D crystal of Dy₂Ti₂O₇.",
@@ -574,11 +789,18 @@
         "quench",
         "stripes"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "",
+      "hash": "#spinice",
+      "aliases": []
     },
     {
       "id": "vegetation",
       "name": "Vegetation Bands",
+      "tab": "",
       "subtitle": "tiger bush on a dry hillside · 1999",
       "equation": "∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n",
       "credit": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n², because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
@@ -594,11 +816,18 @@
         "water",
         "relief"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "a",
+      "hash": "#vegetation/klausmeier-1999",
+      "aliases": []
     },
     {
       "id": "aztec",
       "name": "Arctic Circle",
+      "tab": "",
       "subtitle": "random domino tilings of the Aztec diamond · 1992",
       "equation": "order n → n+1: delete colliding pairs, slide N↑ S↓ W← E→, fill each empty 2×2 block with a random pair",
       "credit": "Noam Elkies, Greg Kuperberg, Michael Larsen and James Propp, Journal of Algebraic Combinatorics 1, 111 and 219 (1992), counted the domino tilings of the Aztec diamond of order n (there are 2^{n(n+1)/2}) and gave the shuffling algorithm that samples one uniformly. William Jockusch, James Propp and Peter Shor, 'Random domino tilings and the arctic circle theorem' (1998), proved that a uniformly random tiling is frozen outside the inscribed circle and disordered inside it. James Propp, Theoretical Computer Science 303, 267 (2003), on generalized domino shuffling.",
@@ -613,11 +842,18 @@
         "proof",
         "brick"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "n",
+      "hash": "#aztec/propp-1992",
+      "aliases": []
     },
     {
       "id": "skin",
       "name": "Skin Effect",
+      "tab": "Skin",
       "subtitle": "non-Hermitian skin, Hatano–Nelson · 1996 / 2018",
       "equation": "H_{j,j+1} = e^{g},   H_{j+1,j} = e^{−g},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1))",
       "credit": "N. Hatano and D. R. Nelson, Phys. Rev. Lett. 77, 570 (1996), wrote a directed-hopping chain whose bulk spectrum is that of Hermitian tight-binding while every eigenvector piles onto a boundary. Yao and Wang, Phys. Rev. Lett. 121, 086803 (2018), named this the non-Hermitian skin effect and showed it breaks the usual bulk-boundary correspondence. Hermitian quantum mechanics cannot do it: a similarity transform that is not unitary has no counterpart when H = H†.",
@@ -633,11 +869,18 @@
         "weak",
         "anderson"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#skin",
+      "aliases": []
     },
     {
       "id": "rmt",
       "name": "Random Matrices",
+      "tab": "Matrices",
       "subtitle": "beta-ensemble spectra and Dyson Brownian motion · 1962",
       "equation": "p(λ) ∝ ∏_{i<j} |λ_i − λ_j|^β · e^{−Σλ_i²/2};   dλ_i = √(2/β) dB_i + Σ_{j≠i} dt/(λ_i − λ_j)",
       "credit": "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The spacing forms quoted in the status line are Wigner's surmise; the exact answers are the Gaudin-Mehta determinantal formulae, Michel Mehta, Random Matrices. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
@@ -653,11 +896,18 @@
         "braid",
         "semicircle"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "unseen",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "beta",
+      "hash": "#rmt/dyson-1962",
+      "aliases": []
     },
     {
       "id": "stealth",
       "name": "Stealthy Points",
+      "tab": "Stealth",
       "subtitle": "hyperuniform collective coordinates · 2004",
       "equation": "χ = (1 / dN) #{ k : 0 < |k| < k_C },   S(k) = 0  for |k| < k_C",
       "credit": "Uche, Stillinger and Torquato, Phys. Rev. E 70, 046122 (2004), and Torquato, Stillinger, Phys. Rev. E 68, 041113 (2003). A stealthy hyperuniform point process is disordered in real space and yet has a crystal's forbidden disk in Fourier space: S(k) = 0 in a finite neighbourhood of the origin. No Bragg peaks, no Poisson small-k catastrophe. The construction is collective-coordinate descent on a torus, which is what this plate runs.",
@@ -673,11 +923,18 @@
         "sparse",
         "tight"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#stealth",
+      "aliases": []
     },
     {
       "id": "lozenge",
       "name": "Lozenge Tilings",
+      "tab": "Lozenge",
       "subtitle": "random lozenge tilings of a hexagon, exact by coupling from the past · 1996",
       "equation": "h(x, y) ∈ [0, c] weakly decreasing;  heat bath h(x, y) ~ U{max(h(x+1,y), h(x,y+1)) … min(h(x−1,y), h(x,y−1))};  run −T → 0 from ⊥ and ⊤ on one fixed set of maps, doubling T until they agree, and read the common value at 0",
       "credit": "The sampler is James Propp and David Wilson, 'Exact sampling with coupled Markov chains and applications to statistical mechanics', Random Structures and Algorithms 9, 223 to 252 (1996); random tilings are one of their own worked examples. The limit shape measured on the plate is Henry Cohn, Michael Larsen and James Propp, 'The shape of a typical boxed plane partition', New York Journal of Mathematics 4, 137 to 165 (1998). The count of boxed plane partitions is Percy MacMahon, 'Memoir on the theory of the partitions of numbers, Part VI: partitions in two-dimensional space, to which is added an adumbration of the theory of partitions in three-dimensional space', Philosophical Transactions of the Royal Society A 211, 345 to 373 (1912). The height function that turns a tiling into a stack of cubes is William Thurston, 'Conway's tiling groups', American Mathematical Monthly 97, 757 to 773 (1990). How long this chain needs is David Wilson, 'Mixing times of lozenge tiling and card shuffling Markov chains', Annals of Applied Probability 14, 274 to 325 (2004).",
@@ -693,11 +950,18 @@
         "tower",
         "proof"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "unseen",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "a",
+      "hash": "#lozenge/propp-wilson-1996",
+      "aliases": []
     },
     {
       "id": "arago",
       "name": "Arago Spot",
+      "tab": "Arago",
       "subtitle": "Poisson bright spot behind a disk · 1818",
       "equation": "U(0) = (e^{ikz}/iλz) ∫_{|ρ|>R} exp(ik|ρ|²/2z) dρ,   I(0) ≃ I_open",
       "credit": "S. D. Poisson argued in 1818 that Fresnel's wave theory implied a bright spot on axis in the shadow of an opaque disk, which he took as a reductio. D. F. J. Arago performed the experiment and found the spot. The plate is a Fresnel propagator through a circular stop.",
@@ -712,11 +976,18 @@
         "wide",
         "hard"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#arago",
+      "aliases": []
     },
     {
       "id": "ust",
       "name": "Spanning Trees",
+      "tab": "Trees",
       "subtitle": "uniform spanning trees by loop-erased random walk · 1996",
       "equation": "pick v ∉ T, walk at random from v erasing each loop as it closes, attach the surviving path;  P(T) = 1 / κ(G) for every one of the κ(G) spanning trees",
       "credit": "David Bruce Wilson, 'Generating random spanning trees more quickly than the cover time', Proceedings of the 28th ACM Symposium on Theory of Computing, 296 (1996), is the algorithm drawn here: cycle popping by loop-erased random walk, exact rather than approximate, and finishing in the mean hitting time rather than the cover time the earlier samplers need. Those are Andrei Broder, 'Generating random spanning trees', 30th Symposium on Foundations of Computer Science, 442 (1989), and David Aldous, SIAM Journal on Discrete Mathematics 3, 450 (1990). The loop-erased walk itself is Gregory Lawler, Duke Mathematical Journal 47, 655 (1980). Lawler, Oded Schramm and Wendelin Werner, Annals of Probability 32, 939 (2004), proved that the loop-erased walk scales to SLE with κ = 2 and the tree's Peano curve to SLE with κ = 8. That every spanning tree of a graph can be counted at all is Gustav Kirchhoff, Annalen der Physik 148, 497 (1847).",
@@ -732,11 +1003,18 @@
         "fine",
         "corner"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "grid",
+      "hash": "#ust/wilson-1996",
+      "aliases": []
     },
     {
       "id": "cppn",
       "name": "Neural Patterns",
+      "tab": "",
       "subtitle": "compositional pattern-producing networks evaluated per pixel · 2007",
       "equation": "c(x,y) = sigma(Wn · phi( ... phi(W1 · [x, y, r, theta, z, 1]) ... ))",
       "credit": "CPPNs: Kenneth O. Stanley, 2007, 'Compositional pattern producing networks: a novel abstraction of development'. The lineage of evolved images starts with Karl Sims, 'Artificial evolution for computer graphics', 1991.",
@@ -753,11 +1031,18 @@
         "circuit",
         "aurora"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "layers",
+      "hash": "#cppn",
+      "aliases": []
     },
     {
       "id": "rogue",
       "name": "Rogue Wave",
+      "tab": "Rogue",
       "subtitle": "Peregrine soliton, waves from nowhere · 1983",
       "equation": "i ψ_t + ψ_xx + 2|ψ|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   |ψ|²_max / |ψ|²_∞ = 9",
       "credit": "D. H. Peregrine, J. Austral. Math. Soc. Ser. B 25, 16 (1983). Akhmediev, Eleonskii and Kulagin (1987); Kuznetsov (1977) and Ma (1979). Draupner measured a rogue wave in 1995. The plate is the exact rational / breather solution.",
@@ -772,11 +1057,18 @@
         "wide",
         "peak"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#rogue",
+      "aliases": []
     },
     {
       "id": "aharonov",
       "name": "Aharonov–Bohm",
+      "tab": "Aharonov",
       "subtitle": "phase from a field the particle never enters · 1959",
       "equation": "Δφ = (e/ℏ) ∮ A·dl = 2π Φ/Φ0,   I(x) = |ψ_L + e^{iΔφ} ψ_R|²",
       "credit": "Y. Aharonov and D. Bohm, Phys. Rev. 115, 485 (1959). Ehrenberg and Siday had the same phase in 1949. Chambers (1960) and Tonomura et al. (1986) saw the fringes shift around a shielded magnet. The plate is two Huygens slits plus a pure gauge phase, not a solenoid in a TEM.",
@@ -791,11 +1083,18 @@
         "wide",
         "half"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#aharonov",
+      "aliases": []
     },
     {
       "id": "pendulum",
       "name": "Double pendulum flip time",
+      "tab": "Pendulum",
       "subtitle": "first flip of a chaotic double pendulum · 1992",
       "equation": "L = (m l² / 6)(ω₂² + 4ω₁² + 3ω₁ω₂ cos(θ₁ − θ₂)) + (m g l / 2)(3 cos θ₁ + cos θ₂);   plate = first t with |θ₁| > π or |θ₂| > π",
       "credit": "Troy Shinbrot, Celso Grebogi, Jack Wisdom and James A. Yorke, Chaos in a double pendulum, American Journal of Physics 60, 491 (1992), measured the exponential divergence of nearby trajectories on a real double pendulum. The flip-time plot itself is a widely reproduced numerical experiment rather than a paper: every pixel is an initial pair of angles released from rest, colored by the time until either arm first passes over the top.",
@@ -810,11 +1109,18 @@
         "long",
         "wide"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "ubiquitous",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "horizon",
+      "hash": "#pendulum/pendulum-1992",
+      "aliases": []
     },
     {
       "id": "anderson",
       "name": "Anderson",
+      "tab": "Anderson",
       "subtitle": "waves that refuse to diffuse · 1958",
       "equation": "H = t Σ_<ij> |i><j| + Σ_i ε_i |i><i|,   ε ~ U[-W/2,W/2],   IPR = Σ |ψ|⁴",
       "credit": "P. W. Anderson, Phys. Rev. 109, 1492 (1958). A random potential can trap a wave that classical intuition says must spread. Abrahams, Anderson, Licciardello and Ramakrishnan (1979) argued that in two dimensions all states localise. The plate is imaginary-time relaxation to the ground state of a tight-binding square, not a wave-packet detector (that lives on Schrödinger).",
@@ -829,11 +1135,18 @@
         "mid",
         "tight"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#anderson",
+      "aliases": []
     },
     {
       "id": "fput",
       "name": "FPUT Recurrence",
+      "tab": "FPUT",
       "subtitle": "a chain that refuses to thermalise · 1955",
       "equation": "ẍ_i = (q_{i+1}-2q_i+q_{i-1}) + α[(q_{i+1}-q_i)²-(q_i-q_{i-1})²],   E_1(t) returns",
       "credit": "Fermi, Pasta, Ulam and Tsingou, Los Alamos report LA-1940 (1955). A weakly nonlinear string, started in one Fourier mode, was expected to thermalise. It did not: the energy came back. Zabusky and Kruskal (1965) met the soliton in the continuum limit. The plate is spacetime of the displacements, with the first-mode energy measured against its start.",
@@ -848,11 +1161,18 @@
         "fine",
         "thermal"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#fput",
+      "aliases": []
     },
     {
       "id": "schrodinger",
       "name": "Schrödinger",
+      "tab": "Schrödinger",
       "subtitle": "wave packet on a detector · 1926",
       "equation": "i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps",
       "credit": "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): the real part is advanced on whole steps and the imaginary part on half steps, so the discrete norm Re² + Im₋ Im₊ is conserved exactly and no complex arithmetic is needed. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979.",
@@ -869,11 +1189,18 @@
         "lattice",
         "anderson"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "k",
+      "hash": "#schrodinger/visscher-1991",
+      "aliases": []
     },
     {
       "id": "excitable",
       "name": "Excitable Media",
+      "tab": "",
       "subtitle": "spirals, targets and wave turbulence · 1991",
       "equation": "Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b)",
       "credit": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
@@ -889,11 +1216,18 @@
         "labyrinth",
         "relief"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "eps",
+      "hash": "#excitable/barkley-1991",
+      "aliases": []
     },
     {
       "id": "soliton",
       "name": "KdV Soliton",
+      "tab": "Soliton",
       "subtitle": "a wave that will not disperse · 1834 / 1965",
       "equation": "u_t + 6 u u_x + u_xxx = 0,   u = (c/2) sech²[(√c/2)(x − c t)]",
       "credit": "J. S. Russell, Report of the 14th Meeting of the British Association (1844), chased a heap of water that would not spread. Korteweg and de Vries (1895) wrote the equation. Zabusky and Kruskal, Phys. Rev. Lett. 15, 240 (1965), collided two and named them solitons. The plate is spacetime of two exact sech² profiles, not a canal in Scotland.",
@@ -908,11 +1242,18 @@
         "train",
         "crisp"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#soliton",
+      "aliases": []
     },
     {
       "id": "cyclicca",
       "name": "Cyclic Automaton",
+      "tab": "Cyclic CA",
       "subtitle": "cyclic and Greenberg-Hastings excitable automata · 1991",
       "equation": "cyclic: s → s+1 (mod k) if ≥ θ neighbors within range r are in state s+1;   GH: 0 → 1 if ≥ θ excited, 1 → 2 → … → k−1 → 0",
       "credit": "Robert Fisch, Janko Gravner and David Griffeath, Statistics and Computing 1, 23 (1991), on threshold-range scaling of excitable automata; David Griffeath, Notices of the AMS, 1988, for the cyclic cellular automaton; James M. Greenberg and Stuart P. Hastings, SIAM J. Appl. Math. 34, 515 (1978), for the excitable rest-excited-refractory rule. In the cyclic automaton every state eats the one below it, so k colors chase each other around the cycle and a random soup organizes into spirals. Greenberg-Hastings is the same cycle with one excitable state: waves propagate, refractory tails follow, and broken fronts curl into spiral pairs.",
@@ -928,11 +1269,18 @@
         "ghwide",
         "ghdense"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "k",
+      "hash": "#cyclicca/griffeath-1991",
+      "aliases": []
     },
     {
       "id": "chimera",
       "name": "Chimera States",
+      "tab": "",
       "subtitle": "identical oscillators that split into synchrony and chaos · 2004",
       "equation": "dθi/dt = ω − (1/N) Σj G(|i−j|) sin(θi − θj + α)",
       "credit": "Yoshiki Kuramoto and Dorjsuren Battogtokh found a ring of identical, identically coupled oscillators splitting into a coherent and an incoherent domain in 2002 — a state everyone had assumed impossible. Daniel Abrams and Steven Strogatz named it the chimera state in 2004, after the Greek beast assembled from mismatched animals.",
@@ -949,11 +1297,18 @@
         "polar",
         "coherent"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "N",
+      "hash": "#chimera",
+      "aliases": []
     },
     {
       "id": "ssh",
       "name": "SSH Edges",
+      "tab": "SSH",
       "subtitle": "states in a gap that the bulk forbade · 1979",
       "equation": "H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open)",
       "credit": "W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)| of every eigenmode, stacked.",
@@ -968,11 +1323,18 @@
         "crit",
         "log"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#ssh",
+      "aliases": []
     },
     {
       "id": "swarm",
       "name": "Swarmalators",
+      "tab": "",
       "subtitle": "oscillators that sync and swarm · 2017",
       "equation": "ẋᵢ = (1/N) Σⱼ [ (xⱼ−xᵢ)/rᵢⱼ · (1 + J cos Δθ) − (xⱼ−xᵢ)/rᵢⱼ² ],   θ̇ᵢ = (K/N) Σⱼ sin(Δθ)/rᵢⱼ",
       "credit": "Kevin P. O’Keeffe, Hyunsuk Hong and Steven H. Strogatz, Nature Communications 8, 1504 (2017), 'Oscillators that sync and swarm'. Identical agents with a phase and a position: spatial attraction depends on phase agreement, and phase coupling falls with distance. Five collective states live in the (J, K) plane, including a static rainbow ring and an active phase wave.",
@@ -986,11 +1348,18 @@
         "splinter",
         "active"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "K",
+      "hash": "#swarm/okeeffe-2017",
+      "aliases": []
     },
     {
       "id": "amb",
       "name": "Active Model B+",
+      "tab": "Active B+",
       "subtitle": "phase separation that never finishes · 2018",
       "equation": "∂φ/∂t = ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ|∇φ|²",
       "credit": "Elsen Tjhung, Cesare Nardini and Michael E. Cates, Physical Review X 8, 031080 (2018). Cahn-Hilliard describes a passive mixture relaxing toward equilibrium. Two extra gradient terms, λ|∇φ|² in the chemical potential and a current ζ(∇²φ)∇φ that cannot come from any free energy, are the leading ways an active system (motile bacteria, self-propelled colloids) can break time-reversal symmetry while still conserving φ. They give the two phases different interfacial tensions, and when the tension felt by the minority phase turns negative the Ostwald process runs backward: large droplets shed material to small ones and coarsening stops.",
@@ -1005,11 +1374,18 @@
         "drops",
         "relief"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "zeta",
+      "hash": "#amb/tjhung-2018",
+      "aliases": []
     },
     {
       "id": "aubry",
       "name": "Aubry–André",
+      "tab": "Aubry",
       "subtitle": "localisation without disorder · 1980",
       "equation": "ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localised for λ>2",
       "credit": "S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 2 every eigenstate localises. The model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 2. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.",
@@ -1024,11 +1400,18 @@
         "sweep",
         "clean"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "unseen",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#aubry",
+      "aliases": []
     },
     {
       "id": "cahn",
       "name": "Cahn–Hilliard",
+      "tab": "",
       "subtitle": "spinodal decomposition · 1958",
       "equation": "∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c",
       "credit": "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ 1−c² shuts diffusion off in the bulk, so only the interfaces move.",
@@ -1042,11 +1425,18 @@
         "relief",
         "bands"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "c0",
+      "hash": "#cahn/cahn-1958",
+      "aliases": []
     },
     {
       "id": "ohta",
       "name": "Ohta–Kawasaki",
+      "tab": "Ohta–Kawasaki",
       "subtitle": "diblock copolymer · finite-size spots and lamellae · 1986",
       "equation": "∂u/∂t = Δ(u³ − u − ε²Δu) − σ(u − m)",
       "credit": "Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). Coarsening stops. The equilibrium is spots, stripes or bicontinuous networks whose period is set by σ, not by waiting.",
@@ -1060,11 +1450,18 @@
         "relief",
         "coarse"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "sigma",
+      "hash": "#ohta/ohta-1986",
+      "aliases": []
     },
     {
       "id": "hopf",
       "name": "Hopf Fibration",
+      "tab": "Hopf",
       "subtitle": "every circle linked with every other · 1931",
       "equation": "η: S³ → S²,   η(z1,z2) = (2 z1 z2-bar, |z1|²-|z2|²),   fibres = circles,   lk = 1",
       "credit": "H. Hopf, Math. Ann. 104, 637 (1931). The third homotopy group of the 2-sphere is not zero: π₃(S²) = ℤ, generated by this map. Stereographic projection from S³ turns the fibres into a nesting of linked circles in R³, then onto the plate. No two fibres are unlinked.",
@@ -1079,11 +1476,18 @@
         "base",
         "sparse"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#hopf",
+      "aliases": []
     },
     {
       "id": "swift",
       "name": "Swift–Hohenberg",
+      "tab": "",
       "subtitle": "rolls, hexagons, localized states · 1977",
       "equation": "∂u/∂t = r u − (k₀² + ∇²)² u + g u² − u³",
       "credit": "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is the universal envelope of Rayleigh–Bénard convection just above onset: a real scalar field with a preferred wavenumber k₀. The quadratic term g selects hexagons over rolls; at slightly negative r a localized pulse can sit in a stable zero background (snaking).",
@@ -1097,11 +1501,18 @@
         "target",
         "relief"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "r",
+      "hash": "#swift/swift-1977",
+      "aliases": []
     },
     {
       "id": "pfc",
       "name": "Phase-field crystal",
+      "tab": "PFC",
       "subtitle": "Elder density-wave crystal · 2002",
       "equation": "∂ψ/∂t = M ∇²(δF/δψ),   F = ∫ ½ ψ [r + (k₀²+∇²)²] ψ + ψ⁴/4",
       "credit": "K. R. Elder, M. Katakowski, M. Haataja and M. Grant, Phys. Rev. Lett. 88, 245701 (2002); Elder and Grant, Phys. Rev. E 70, 051605 (2004). The phase-field crystal model is Swift–Hohenberg’s free energy evolved with conserved (Cahn–Hilliard) dynamics. Density peaks are atoms. A quench from a uniform liquid freezes into a triangular lattice; grains rotate, vacancies hop, and the solid–liquid front is a real melting line, all on diffusive time.",
@@ -1116,11 +1527,18 @@
         "melt",
         "relief"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "r",
+      "hash": "#pfc/elder-2002",
+      "aliases": []
     },
     {
       "id": "lp",
       "name": "Lifshitz–Petrich",
+      "tab": "12-fold",
       "subtitle": "two-scale quasicrystal · 1997",
       "equation": "∂tψ = εψ − (∇²+1)²(∇²+q²)²ψ + α ψ² − ψ³,   q = 2 cos(π/12)",
       "credit": "Ron Lifshitz and Dean M. Petrich, Phys. Rev. Lett. 79, 1261 (1997). Faraday waves with two frequencies impose two length scales. The free energy with operator (∇²+1)²(∇²+q²)² and a quadratic term is enough to stabilize a dodecagonal quasicrystal when q = 2 cos(π/12) ≈ 1.932. Hexagons and stripes are the other ground states. This plate is a semi-implicit spectral integration of that PDE.",
@@ -1134,11 +1552,18 @@
         "hex",
         "stripes"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "eps",
+      "hash": "#lp/lifshitz-1997",
+      "aliases": []
     },
     {
       "id": "cloak",
       "name": "Pendry Cloak",
+      "tab": "Cloak",
       "subtitle": "a disk that light goes around · 2006",
       "equation": "r = R1 + r' (R2-R1)/R2,   n_r = (r-R1)/r · R2/(R2-R1),   n_θ = r / (r-R1)",
       "credit": "J. B. Pendry, D. Schurig and D. R. Smith, Science 312, 1780 (2006). A coordinate transformation that blows a point into a disk pulls every ray around the hole. In the virtual plane the rays are straight; in the physical plane they miss the core. The plate traces that map, not a fabricated metamaterial.",
@@ -1153,11 +1578,18 @@
         "many",
         "core"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#cloak",
+      "aliases": []
     },
     {
       "id": "xy",
       "name": "XY / Kosterlitz–Thouless",
+      "tab": "XY / KT",
       "subtitle": "planar spins, bound vortices and the 1973 unbinding transition",
       "equation": "H = −J Σ_<ij> cos(θ_i−θ_j);   dθ_i/dt = J Σ_j sin(θ_j−θ_i) + √(2T) η",
       "credit": "J. M. Kosterlitz and D. J. Thouless, 'Ordering, metastability and phase transitions in two-dimensional systems', J. Phys. C 6, 1181 (1973). V. L. Berezinskii reached the same unbinding picture in 1971. Nobel Prize in Physics, 2016. The lattice XY Hamiltonian is the classical planar rotor; overdamped Langevin dynamics (model A) is used here so the plate can be watched as it thermalizes.",
@@ -1174,11 +1606,18 @@
         "twist",
         "gas"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "T",
+      "hash": "#xy/kt-1973",
+      "aliases": []
     },
     {
       "id": "cgl",
       "name": "Complex Ginzburg–Landau",
+      "tab": "CGL",
       "subtitle": "spirals, defect chaos, frozen vortex glass",
       "equation": "∂A/∂t = A + (1 + iα) ∇²A − (1 + iβ) |A|² A",
       "credit": "The complex Ginzburg–Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969–71). The (α, β) plane was mapped by Aranson and Kramer: Benjamin–Feir when 1+αβ<0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.",
@@ -1192,11 +1631,18 @@
         "amp",
         "defects"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "alpha",
+      "hash": "#cgl/cgl-1970",
+      "aliases": []
     },
     {
       "id": "vortex",
       "name": "Abrikosov",
+      "tab": "Vortex",
       "subtitle": "a superconductor that lets flux in as a lattice · 1957",
       "equation": "αψ + β|ψ|² ψ + (1/2m)(−i∇ − 2e A)² ψ = 0,   n_v = B Area / Φ0",
       "credit": "A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. The plate is imaginary-time Ginzburg-Landau in a uniform B, Landau gauge.",
@@ -1211,11 +1657,18 @@
         "log",
         "quiet"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#vortex",
+      "aliases": []
     },
     {
       "id": "nematic",
       "name": "Active Nematics",
+      "tab": "Nematics",
       "subtitle": "self-driven rods, ±½ defects and active turbulence · 2012",
       "equation": "∂tQ + u·∇Q − S(Ω,E,Q) = Γ H,   H = [α − β|Q|²]Q + K∇²Q,   γu = −∇P − ζ ∇·Q",
       "credit": "Continuum active nematohydrodynamics: Aditi Simha and Ramaswamy (2002); Beris–Edwards Q-tensor hydrodynamics. The experimental archetype is the microtubule–kinesin active gel of Sanchez, Chen, DeCamp, Heymann and Dogic, Nature 2012. Defect statistics and active turbulence: Giomi, PRL / Phys. Rev. X 2015; Doostmohammadi, Ignés-Mullol, Yeomans and Sagués, Nat. Commun. 2018. Flow here is the frictional (substrate) Stokes limit, incompressible: γ u = −∇P − ζ ∇·Q.",
@@ -1232,11 +1685,18 @@
         "quiescent",
         "turbulentLIC"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "zeta",
+      "hash": "#nematic/dogic-2012",
+      "aliases": []
     },
     {
       "id": "darkroom",
       "name": "Dark Room",
+      "tab": "Dark room",
       "subtitle": "a polygonal room that a candle cannot fill · 1995",
       "equation": "billiard in a polygon,   ∃ p,q: no reflected ray from p meets q",
       "credit": "G. W. Tokarsky, Amer. Math. Monthly 102, 867 (1995), built a polygonal room with two points that do not illuminate each other via mirrored walls. Penrose (1958) had a smooth unilluminable room with elliptical pockets. The plate traces billiard rays from a source; a marked vertex stays dark in the Tokarsky geometry and lights up in a rectangle.",
@@ -1251,11 +1711,18 @@
         "short",
         "log"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#darkroom",
+      "aliases": []
     },
     {
       "id": "fluid",
       "name": "Fluid",
+      "tab": "",
       "subtitle": "Navier-Stokes dye advected by a stable-fluids solver · 1999",
       "equation": "du/dt + (u·grad)u = -grad p + nu·lap u,   div u = 0   (advect -> project -> advect dye)",
       "credit": "Stable fluids: Jos Stam, SIGGRAPH 1999. Vorticity confinement comes from Steinhoff and Underhill, 1994, brought into graphics by Fedkiw, Stam and Jensen, 2001.",
@@ -1272,11 +1739,18 @@
         "tidal",
         "stir"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "ubiquitous",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "speed",
+      "hash": "#fluid",
+      "aliases": []
     },
     {
       "id": "sandpile",
       "name": "Abelian Sandpile",
+      "tab": "Sandpile",
       "subtitle": "self-organized criticality · 1987",
       "equation": "if hᵢ ≥ 4: hᵢ −= 4, hⱼ += 1 for each neighbor j;   identity e = (2m − (2m)°)°, m = all 3",
       "credit": "Per Bak, Chao Tang and Kurt Wiesenfeld, Phys. Rev. Lett. 59, 381 (1987); Deepak Dhar, Phys. Rev. Lett. 64, 1613 (1990). Bak, Tang and Wiesenfeld dropped grains one at a time on a lattice with a toppling threshold and found avalanches of every size, a power law with no tuning: self-organized criticality. Dhar showed the toppling operators commute, so the final stable state does not depend on the order of toppling, and the recurrent configurations form an Abelian group. The identity of that group, computed on a square, is the fractal plate in the second mode.",
@@ -1292,11 +1766,18 @@
         "patches",
         "small"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "drops",
+      "hash": "#sandpile/btw-1987",
+      "aliases": []
     },
     {
       "id": "kakeya",
       "name": "Kakeya",
+      "tab": "Kakeya",
       "subtitle": "a needle rotated in arbitrarily small area · 1919",
       "equation": "K_ε ⊃ a unit segment in every direction,   |K_ε| → 0 as ε → 0",
       "credit": "S. Kakeya asked in 1917 for the smallest set in which a unit needle can be rotated. Besicovitch (1919/1928) showed the infimum of the area is zero: a Perron tree of overlapping triangles contains a unit segment in a dense set of directions and can be made as thin as one likes. The plate is a finite Perron-like union, not the infinite construction.",
@@ -1311,11 +1792,18 @@
         "log",
         "fine"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#kakeya",
+      "aliases": []
     },
     {
       "id": "ks",
       "name": "Kuramoto–Sivashinsky",
+      "tab": "KS chaos",
       "subtitle": "cellular flame chaos · 1977",
       "equation": "∂u/∂t = −ν ∇⁴u − ∇²u − (α/2)|∇u|²",
       "credit": "Yoshiki Kuramoto and Toshio Tsuzuki, Prog. Theor. Phys. 55, 356 (1976); G. I. Sivashinsky, Acta Astronautica 4, 1177 (1977). Independently derived for reaction-diffusion phase turbulence and for laminar flame fronts. It is the simplest PDE that produces extensive spatiotemporal chaos: a band of unstable modes, a stabilizing biharmonic, and a Burgers-like nonlinearity. In two dimensions the cells of a flame.",
@@ -1329,11 +1817,18 @@
         "storm",
         "ink"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "nu",
+      "hash": "#ks/siva-1977",
+      "aliases": []
     },
     {
       "id": "breather",
       "name": "SG Breather",
+      "tab": "Breather",
       "subtitle": "a lump that oscillates and never radiates · 1962",
       "equation": "u_tt − u_xx + sin u = 0,   u = 4 arctan[ (β/α) sin(α t) sech(β x) ],   α²+β² = 1",
       "credit": "The sine-Gordon breather is an exact, time-periodic, spatially localised solution; see Seeger, Donth and Kochendörfer (1953) and the inverse-scattering account of Faddeev and Takhtajan. Linear waves radiate. This one does not: the envelope sech(β x) holds a bound oscillation forever. The plate is spacetime of u.",
@@ -1348,11 +1843,18 @@
         "log",
         "peak"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#breather",
+      "aliases": []
     },
     {
       "id": "turing",
       "name": "Turing Patterns",
+      "tab": "",
       "subtitle": "spots, stripes and hexagons from two chemicals · 1952",
       "equation": "Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v",
       "credit": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry.",
@@ -1368,11 +1870,18 @@
         "cima",
         "relief"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "D",
+      "hash": "#turing/turing-1952",
+      "aliases": []
     },
     {
       "id": "holomorphic",
       "name": "Holomorphic dynamics",
+      "tab": "Holomorphic",
       "subtitle": "escape-time and Newton basins in the complex plane · 1918",
       "equation": "z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (|Re z| + i|Im z|)² + c   (Burning Ship)",
       "credit": "Gaston Julia, J. Math. Pures Appl. (1918) and Pierre Fatou, Bull. Soc. Math. France (1919) on the iteration of rational maps; Benoit Mandelbrot, Ann. N.Y. Acad. Sci. (1980) for the set of parameters c with connected Julia set; Adrien Douady and John H. Hubbard, C. R. Acad. Sci. Paris (1982) for the connectedness of the Mandelbrot set and the rabbit; Michael Michelitsch and Otto E. Rössler, Computers & Graphics (1992) for the Burning Ship. The distance estimate follows John Milnor's formula d = |z| ln|z| / |dz/dc|.",
@@ -1388,11 +1897,18 @@
         "newton",
         "ship"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "ubiquitous",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "iters",
+      "hash": "#holomorphic/julia-1918",
+      "aliases": []
     },
     {
       "id": "klein",
       "name": "Klein Tunnel",
+      "tab": "Klein",
       "subtitle": "a barrier a Dirac electron does not notice · 1929 / 2006",
       "equation": "H = v_F σ · p + V(x),   T(θ=0) = 1  (massless)",
       "credit": "O. Klein, Z. Phys. 53, 157 (1929), found that a relativistic electron can pass a tall barrier as if it were not there. Katsnelson, Novoselov and Geim, Nature Phys. 2, 620 (2006), showed the same for graphene at normal incidence: chirality forbids backscattering. The plate is |ψ|² of a 2-component Dirac wave on a line, stacked in time, not a carbon lattice.",
@@ -1407,11 +1923,18 @@
         "weak",
         "log"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#klein",
+      "aliases": []
     },
     {
       "id": "gyroid",
       "name": "Gyroid",
+      "tab": "Gyroid",
       "subtitle": "a sponge of zero mean curvature · 1970",
       "equation": "sin x cos y + sin y cos z + sin z cos x = 0,   H = 0",
       "credit": "A. H. Schoen, NASA Technical Note D-5541 (1970), found the gyroid, a triply periodic minimal surface of genus 3 in the cubic cell, with no embedded straight lines. Its mean curvature vanishes. Butterfly-wing scales and block-copolymer melts later grew it for free. The plate is a 2-D slice of the level set, not a 3-D print.",
@@ -1426,11 +1949,18 @@
         "shift",
         "iso"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#gyroid",
+      "aliases": []
     },
     {
       "id": "dendrite",
       "name": "Dendritic Growth",
+      "tab": "",
       "subtitle": "phase-field solidification: snowflakes and metal dendrites · 1993",
       "equation": "τ p_t = ∇·(ε(θ)²∇p) + ∂x(ε ε′ p_y) − ∂y(ε ε′ p_x) + p(1−p)(p − ½ + m);   T_t = ∇²T + K p_t",
       "credit": "Ryo Kobayashi, 'Modeling and numerical simulations of dendritic crystal growth', Physica D 63 (1993) 410–423.",
@@ -1447,11 +1977,18 @@
         "slow",
         "forest"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "steps",
+      "hash": "#dendrite",
+      "aliases": []
     },
     {
       "id": "purcell",
       "name": "Purcell Swimmer",
+      "tab": "Purcell",
       "subtitle": "a scallop cannot swim in molasses · 1977",
       "equation": "Re → 0,   scallop theorem: a reciprocal gait gives Δx = 0,   three-link square gait: Δx ≠ 0",
       "credit": "E. M. Purcell, Am. J. Phys. 45, 3 (1977), \"Life at low Reynolds number.\" Time-reversible stroking (a scallop) produces no net motion in Stokes flow. A three-link swimmer that traces a loop in shape space does. The plate is the trail of that gait, not a bacterium.",
@@ -1466,11 +2003,18 @@
         "tiny",
         "log"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#purcell",
+      "aliases": []
     },
     {
       "id": "exceptional",
       "name": "Exceptional Point",
+      "tab": "Exceptional",
       "subtitle": "two eigenvectors become one · 1998",
       "equation": "H = [[iγ, κ],[κ, −iγ]],   λ = ±√(κ²−γ²),   EP at γ = κ",
       "credit": "C. M. Bender and S. Boettcher, Phys. Rev. Lett. 80, 5243 (1998), on PT-symmetric spectra; Heiss (2004) and many others on exceptional points, where both eigenvalues and eigenvectors coalesce. Hermitian matrices cannot do this. The plate is Re λ (and the gap) over the (κ, γ) plane, or the two modes of one dimer.",
@@ -1485,11 +2029,18 @@
         "near",
         "far"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "unseen",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#exceptional",
+      "aliases": []
     },
     {
       "id": "meissner",
       "name": "Meissner",
+      "tab": "Meissner",
       "subtitle": "a field a perfect conductor would have frozen, expelled · 1933",
       "equation": "∇²B = B/λ²,   B(r) = B0 I0(r/λ) / I0(R/λ)   (cylinder)",
       "credit": "W. Meissner and R. Ochsenfeld, Naturwissenschaften 21, 787 (1933). A perfect conductor would freeze the flux it was born with. A superconductor expels it. The London brothers (1935) wrote ∇²B = B/λ². The plate is a Jacobi relax of that Helmholtz problem on a disk.",
@@ -1504,11 +2055,18 @@
         "small",
         "tight"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#meissner",
+      "aliases": []
     },
     {
       "id": "tennis",
       "name": "Tennis Racket",
+      "tab": "Tennis",
       "subtitle": "the intermediate axis that will not spin · 1834 / 1991",
       "equation": "I1 ω1' = (I2−I3) ω2 ω3  (cyc.),   I1 < I2 < I3,   ω2 flips",
       "credit": "L. Poinsot (1834) drew the polhode. The tennis-racket (or intermediate-axis) theorem says a rotation about the middle principal axis is unstable. V. Dzhanibekov saw a wingnut flip in free fall in 1985; video from 1991 made it famous. The plate is spacetime of the body-frame ω, with the middle component across the page.",
@@ -1523,11 +2081,18 @@
         "log",
         "racket"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#tennis",
+      "aliases": []
     },
     {
       "id": "flow",
       "name": "Flow Field",
+      "tab": "",
       "subtitle": "collision-avoiding strokes in a noise field · 1985",
       "equation": "theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta)",
       "credit": "Gradient noise: Ken Perlin, 'An image synthesizer', 1985. The collision-avoiding stroke treatment follows the flow-field approach Tyler Hobbs describes in his published essay; this is an independent implementation, not his code.",
@@ -1545,11 +2110,18 @@
         "overprint",
         "relief"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "ubiquitous",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "strokes",
+      "hash": "#flow",
+      "aliases": []
     },
     {
       "id": "chemotaxis",
       "name": "Chemotaxis",
+      "tab": "",
       "subtitle": "Keller-Segel aggregation · 1970",
       "equation": "∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²)",
       "credit": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) < c/2 − D − a.",
@@ -1564,11 +2136,18 @@
         "scatter",
         "relief"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "chi",
+      "hash": "#chemotaxis/keller-1970",
+      "aliases": []
     },
     {
       "id": "smectic",
       "name": "Smectic focal conics",
+      "tab": "Focal conics",
       "subtitle": "Dupin cyclides · Friedel 1910",
       "equation": "layers: Dupin cyclides of a confocal ellipse–hyperbola pair",
       "credit": "G. Friedel, Annales de Physique 18, 273 (1910). Smectic-A layers prefer equal spacing and may bend; the surfaces of constant spacing whose centers of curvature lie on an ellipse and a confocal hyperbola are Dupin cyclides. Packed in the plane they are toroidal focal conic domains — an Apollonian foam of nested rings.",
@@ -1581,11 +2160,18 @@
         "fine",
         "defects"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "n",
+      "hash": "#smectic/friedel-1910",
+      "aliases": []
     },
     {
       "id": "reaction",
       "name": "Reaction-Diffusion",
+      "tab": "",
       "subtitle": "Gray-Scott activator/inhibitor chemistry · 1983",
       "equation": "du/dt = Du·lap u - u·v^2 + F(1-u);   dv/dt = Dv·lap v + u·v^2 - (F+k)v",
       "credit": "Gray-Scott model: Peter Gray and Stephen Scott, 1983-84. The idea that two diffusing chemicals can break symmetry into pattern is Alan Turing, 'The chemical basis of morphogenesis', 1952.",
@@ -1603,11 +2189,18 @@
         "solitons",
         "map"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "steps",
+      "hash": "#reaction",
+      "aliases": []
     },
     {
       "id": "tilings",
       "name": "Aperiodic Tilings",
+      "tab": "",
       "subtitle": "tiles that cover the plane but never repeat · 1974–2023",
       "equation": "Penrose: thick half → 2 thick + 1 thin;   hat: 13-gon + mirror;   spectre: 14-gon, one handedness",
       "credit": "Roger Penrose, Pentaplexity, 1974, and Martin Gardner's Mathematical Games, January 1977. Robinson triangles carry the deflation; N. G. de Bruijn's dual multigrid (1981) gives the octagonal Ammann–Beenker and dodecagonal cases. The hat — a single 13-sided polykite that tiles the plane only aperiodically, and only with its reflection — is Smith, Myers, Kaplan and Goodman-Strauss, arXiv:2303.10798 (March 2023). The spectre is the chiral 14-gon from the same authors, arXiv:2305.17743: one handedness, no mirrors.",
@@ -1627,11 +2220,18 @@
         "hatline",
         "kilnfloor"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "depth",
+      "hash": "#tilings/penrose-1974",
+      "aliases": []
     },
     {
       "id": "percolation",
       "name": "Percolation",
+      "tab": "Percolation",
       "subtitle": "site and bond percolation on the square lattice · 1957",
       "equation": "site occupied iff rᵢ < p;   bond open iff rᵢⱼ < p;   p_c(site) ≈ 0.5927,   p_c(bond) = 1/2",
       "credit": "S. R. Broadbent and J. M. Hammersley, Proc. Cambridge Philos. Soc. 53, 629 (1957); J. Hoshen and R. Kopelman, Phys. Rev. B 14, 3438 (1976); Harry Kesten, Comm. Math. Phys. 74, 41 (1980). Broadbent and Hammersley asked how a fluid spreads through a random porous medium and found a sharp threshold: below p_c every cluster is finite, above it one cluster spans the lattice. Kesten proved the bond threshold on the square lattice is exactly 1/2. The site threshold, about 0.592746, is known only numerically. Hoshen and Kopelman gave the one-pass labeling that finds the clusters.",
@@ -1647,11 +2247,18 @@
         "ink",
         "fine"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "ubiquitous",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "p",
+      "hash": "#percolation/hammersley-1957",
+      "aliases": []
     },
     {
       "id": "attractors",
       "name": "Attractors",
+      "tab": "",
       "subtitle": "strange attractors and harmonographs as density maps · 1963",
       "equation": "x(n+1) = f(xn, yn; a,b,c,d) - iterate, accumulate density, tone-map",
       "credit": "Lorenz system: Edward Lorenz, 'Deterministic nonperiodic flow', 1963. Rossler followed in 1976, Thomas in 1999; the 2D maps were popularized by Clifford Pickover and Peter de Jong. Harmonographs are Victorian drawing machines from the 1840s.",
@@ -1670,11 +2277,18 @@
         "gumowski",
         "ikeda"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "ubiquitous",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "points",
+      "hash": "#attractors",
+      "aliases": []
     },
     {
       "id": "airy",
       "name": "Airy Beam",
+      "tab": "Airy",
       "subtitle": "a wave packet that accelerates with no force · 1979",
       "equation": "ψ(x,z) = Ai(x − z²/4 + i a) exp(a x − a z²/2 + i(x z/2 − z³/12)),   x_peak = z²/4",
       "credit": "M. V. Berry and N. L. Balazs, Am. J. Phys. 47, 264 (1979). A free Schrödinger (or paraxial Helmholtz) packet is not supposed to accelerate: there is no force. The Airy packet does, its intensity maximum riding the parabola x = z²/4, a consequence of the linear potential in the Airy ODE rather than of a force in the wave equation. Siviloglou, Broky, Dogariu and Christodoulides, Phys. Rev. Lett. 99, 213901 (2007), flew one in the lab. The plate is the exact finite-energy Airy beam, not a cannonball.",
@@ -1689,11 +2303,18 @@
         "phase",
         "log"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#airy",
+      "aliases": []
     },
     {
       "id": "chirikov",
       "name": "Chirikov map",
+      "tab": "",
       "subtitle": "standard map · KAM islands in a chaotic sea · 1969",
       "equation": "pₙ₊₁ = pₙ + K sin θₙ,   θₙ₊₁ = θₙ + pₙ₊₁   (mod 2π)",
       "credit": "Boris V. Chirikov, Physics Reports 52, 263 (1979); the map itself in 1969. The Chirikov–Taylor standard map is the Poincaré section of a kicked rotor, and the textbook picture of Kolmogorov–Arnold–Moser theory: as K grows, invariant curves break, islands shrink, and a chaotic sea floods the torus. The last golden KAM curve dies at K ≈ 0.971635.",
@@ -1707,11 +2328,18 @@
         "lyap",
         "chaos"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "K",
+      "hash": "#chirikov/chirikov-1969",
+      "aliases": []
     },
     {
       "id": "hofstadter",
       "name": "Hofstadter butterfly",
+      "tab": "Hofstadter",
       "subtitle": "almost-Mathieu spectrum · 1976",
       "equation": "ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ",
       "credit": "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron colored them. At rational α=p/q the Harper matrix is q×q.",
@@ -1724,11 +2352,18 @@
         "fine",
         "ink"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "Q",
+      "hash": "#hofstadter/hofstadter-1976",
+      "aliases": []
     },
     {
       "id": "weierstrass",
       "name": "Weierstrass",
+      "tab": "Weierstrass",
       "subtitle": "a curve with no tangent anywhere · 1872",
       "equation": "W(x) = Σ_{n=0}^∞ a^n cos(b^n π x),   0<a<1,   ab > 1 + 3π/2  ⇒  nowhere differentiable",
       "credit": "K. Weierstrass, presented to the Prussian Academy in 1872 (published 1875). Analysts had assumed a continuous function was differentiable except at isolated points; Weierstrass wrote a Fourier series that is continuous everywhere and differentiable nowhere. Hardy (1916) weakened the condition to ab ≥ 1. The plate is a finite truncation of that series, in one and two dimensions.",
@@ -1743,11 +2378,18 @@
         "wild",
         "log"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#weierstrass",
+      "aliases": []
     },
     {
       "id": "scars",
       "name": "Helmholtz scars",
+      "tab": "Scars",
       "subtitle": "stadium and cardioid eigenmodes · Heller 1984",
       "equation": "∇²ψ + k² ψ = 0  on Ω,   ψ = 0 on ∂Ω",
       "credit": "Eric J. Heller, Phys. Rev. Lett. 53, 1515 (1984). In a classically chaotic billiard the high eigenfunctions of the Dirichlet Laplacian are usually ergodic — and yet some sit, as scars, along unstable periodic orbits. The Bunimovich stadium and the cardioid are the textbook domains. Inverse iteration of the discrete Laplacian with a Weyl shift yields a mode near index n.",
@@ -1761,11 +2403,18 @@
         "sinai",
         "bounce"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "n",
+      "hash": "#scars/heller-1984",
+      "aliases": []
     },
     {
       "id": "kitaev",
       "name": "Kitaev Chain",
+      "tab": "Kitaev",
       "subtitle": "a fermion that is its own antiparticle, stuck to the ends · 2001",
       "equation": "H = −μ Σ c†c − t Σ (c†_i c_{i+1}+h.c.) + Δ Σ (c_i c_{i+1}+h.c.),   |μ|<2t ⇒ unpaired γ_L, γ_R",
       "credit": "A. Yu. Kitaev, Phys.-Usp. 44, 131 (2001). A 1D p-wave superconductor hosts two Majorana operators, one at each end, that together make a single nonlocal fermion. They sit at zero energy, inside the gap, and are their own antiparticles. The plate is the near-zero BdG mode of a finite chain, obtained by imaginary-time relaxation of the Nambu Hamiltonian.",
@@ -1780,11 +2429,18 @@
         "log",
         "weak"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#kitaev",
+      "aliases": []
     },
     {
       "id": "caustics",
       "name": "Optical caustics",
+      "tab": "Caustics",
       "subtitle": "folds and cusps of a light field · Berry",
       "equation": "X = x + s ∇h(x),   I(X) = Σ 1 / |det(I + s Hess h)|",
       "credit": "Michael V. Berry’s catastrophe optics: the brightness of a light field after a smooth phase screen is the density of the gradient map of the height. Folds (A2) and cusps (A3) are the generic caustics in the plane. The swimming-pool network is this map, not a Voronoi diagram.",
@@ -1797,11 +2453,18 @@
         "cusp",
         "fine"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "s",
+      "hash": "#caustics/berry-caustic",
+      "aliases": []
     },
     {
       "id": "veselago",
       "name": "Veselago Lens",
+      "tab": "Veselago",
       "subtitle": "a slab that focuses because n is negative · 1968",
       "equation": "n₁ sin θ₁ = n₂ sin θ₂,   n₂ = −1  ⇒  θ₂ = −θ₁,   image at 2L − d",
       "credit": "V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968), asked what optics would do if ε and μ were both negative: a left-handed medium, a reversed Doppler shift, and a slab that acts as a lens. Pendry, Phys. Rev. Lett. 85, 3966 (2000), showed the same slab can amplify evanescent waves and beat the diffraction limit. The plate traces geometric rays through n < 0, not a fabricated metamaterial.",
@@ -1816,11 +2479,18 @@
         "many",
         "log"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#veselago",
+      "aliases": []
     },
     {
       "id": "devil",
       "name": "Devil's Staircase",
+      "tab": "Devil",
       "subtitle": "a staircase constant almost everywhere that still climbs · 1965",
       "equation": "θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil's staircase)",
       "credit": "V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), on the tongues of a driven oscillator; the circle map is the standard example. At K = 1 the rotation number as a function of Ω is a devil's staircase: constant on a fat Cantor set of locked intervals (the Farey sequence of p/q), yet strictly increasing. B. B. Mandelbrot named the staircase. The plate is ρ(Ω, K) or ρ(Ω) itself.",
@@ -1835,11 +2505,18 @@
         "orbit",
         "golden"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#devil",
+      "aliases": []
     },
     {
       "id": "talbot",
       "name": "Talbot carpet",
+      "tab": "Talbot",
       "subtitle": "near-field self-imaging · 1836",
       "equation": "I(x,z) = |Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)|²,   z_T = 2 d²/λ",
       "credit": "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T and as a half-period image at z_T/2. Between, the near field is a carpet of fractional revivals — a plot of I(x,z) is one of the most intricate figures in wave optics.",
@@ -1852,11 +2529,18 @@
         "binary",
         "deep"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "slits",
+      "hash": "#talbot/talbot-1836",
+      "aliases": []
     },
     {
       "id": "orbitals",
       "name": "Hydrogen orbitals",
+      "tab": "Orbitals",
       "subtitle": "hydrogen atom probability density |ψₙₗₘ|² · 1926",
       "equation": "ψₙₗₘ = Rₙₗ(r) Yₗₘ(θ, φ),   Rₙₗ ∝ ρˡ e^{−ρ/2} L²ˡ⁺¹ₙ₋ₗ₋₁(ρ),   ρ = 2r / n a₀",
       "credit": "Erwin Schrödinger, Quantisierung als Eigenwertproblem, Annalen der Physik 79, 361 (1926), solved the hydrogen atom as a wave equation; the radial functions are associated Laguerre polynomials and the angular parts spherical harmonics. The plate evaluates |ψ|² exactly from those polynomials and either integrates it along view rays or cuts a plane through it.",
@@ -1872,11 +2556,18 @@
         "s6",
         "dxz"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "n",
+      "hash": "#orbitals/schrodinger-1926",
+      "aliases": []
     },
     {
       "id": "loschmidt",
       "name": "Loschmidt Echo",
+      "tab": "Loschmidt",
       "subtitle": "a gas that unmixes when you flip every arrow · 1876",
       "equation": "x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1",
       "credit": "J. Loschmidt, Sitzungsber. Kais. Akad. Wiss. Wien 73, 128 (1876), objected to Boltzmann: reverse every velocity and the entropy decrease is as lawful as the increase. The objection is correct for a finite isolated system; the catch is the exponential sensitivity that makes the reversal unprepareable. The plate is non-interacting tracers on a ring, reversed on cue, so the echo is exact and visible.",
@@ -1891,11 +2582,18 @@
         "mix",
         "log"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#loschmidt",
+      "aliases": []
     },
     {
       "id": "boy",
       "name": "Boy's Surface",
+      "tab": "Boy",
       "subtitle": "a projective plane sewn into R³ · 1901",
       "equation": "Bryant–Kusner immersion RP² ↪ R³,   one triple point,   no boundary",
       "credit": "W. Boy, Math. Ann. 57, 151 (1903), constructed an immersion of the real projective plane in three-space at Hilbert's request; RP² is non-orientable and was not supposed to sit in R³ without a boundary. R. Bryant and R. Kusner (1980s) gave the smooth parametrisation used here. The plate is a z-buffer density of that immersion, not a glass model.",
@@ -1910,11 +2608,18 @@
         "side",
         "log"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#boy",
+      "aliases": []
     },
     {
       "id": "pearls",
       "name": "Indra's Pearls",
+      "tab": "Pearls",
       "subtitle": "Schottky limit set · Mumford–Series–Wright",
       "equation": "Γ = ⟨a, b⟩  Schottky,   Λ(Γ) = ∩ g∈Γ g(Ĉ \\ Ω)",
       "credit": "David Mumford, Caroline Series and David Wright, Indra's Pearls: The Vision of Felix Klein (Cambridge, 2002). A Schottky group is generated by pairing disjoint circles; the limit set is the dust (or curve) left when every complementary disk has been eaten. Nested inversions draw the group without matrices.",
@@ -1927,11 +2632,18 @@
         "dust",
         "six"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "gap",
+      "hash": "#pearls/indra-2002",
+      "aliases": []
     },
     {
       "id": "ising",
       "name": "Ising Model",
+      "tab": "Ising",
       "subtitle": "Metropolis Monte Carlo on the square lattice · 1925",
       "equation": "E = −J Σ⟨ij⟩ sᵢsⱼ − h Σᵢ sᵢ,   P(flip) = min(1, e^{−ΔE/T}),   T_c = 2/ln(1+√2) ≈ 2.269",
       "credit": "Ernst Ising, Z. Phys. 31, 253 (1925); Lars Onsager, Phys. Rev. 65, 117 (1944); Nicholas Metropolis, Arianna W. Rosenbluth, Marshall N. Rosenbluth, Augusta H. Teller and Edward Teller, J. Chem. Phys. 21, 1087 (1953). Ising solved the chain and found no transition. Onsager solved the square lattice exactly and found one at T_c = 2/ln(1+√2). The Metropolis algorithm samples the Boltzmann distribution by proposing single flips and accepting them with probability min(1, exp(−ΔE/T)). Here the lattice is updated as a checkerboard: two half-sweeps per step, each parity with its neighbors held fixed, so the GPU can flip every site of one color at once.",
@@ -1947,11 +2659,18 @@
         "gradient",
         "energy"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "ubiquitous",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "T",
+      "hash": "#ising/ising-1925",
+      "aliases": []
     },
     {
       "id": "thouless",
       "name": "Thouless Pump",
+      "tab": "Thouless",
       "subtitle": "a clock that pumps a whole electron per turn · 1983",
       "equation": "P(φ) = (1/2π) ∮ A(k,φ) dk,   ΔP over a cycle = C₁ ∈ ℤ",
       "credit": "D. J. Thouless, Phys. Rev. B 27, 6083 (1983). An adiabatic cycle of a 1D insulator pumps a quantized charge equal to the Chern number of the (k, t) torus. Rice and Mele (1982) wrote the two-band lattice that makes the winding visible. The plate is the occupied-band density versus cycle angle; the centre of mass walks one cell when the loop in (u, v, δ) encloses the origin, and stands still when it does not.",
@@ -1966,11 +2685,18 @@
         "log",
         "mid"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#thouless",
+      "aliases": []
     },
     {
       "id": "convection",
       "name": "Rayleigh–Bénard",
+      "tab": "Convection",
       "subtitle": "heated from below · 1900",
       "equation": "∂ω/∂t + u·∇ω = √(Pr/Ra) ∇²ω + ∂T/∂x,   ∂T/∂t + u·∇T = ∇²T/√(Ra Pr),   ∇²ψ = −ω,   u = ∂ψ/∂y, v = −∂ψ/∂x",
       "credit": "Henri Bénard, Revue générale des Sciences pures et appliquées 11, 1261 (1900), saw the cells in a thin layer of spermaceti heated from below. Lord Rayleigh, Philosophical Magazine 32, 529 (1916), showed with the Boussinesq equations that the layer turns over only once the number now named for him passes a threshold: 657.5 for free surfaces, 1708 for rigid plates (Jeffreys 1928; Pellew and Southwell 1940). This is the two-dimensional Boussinesq system in vorticity-streamfunction form, scaled by the free-fall time, with a red-black SOR Poisson solve for ψ, semi-Lagrangian advection and Thom's wall vorticity.",
@@ -1986,11 +2712,18 @@
         "vorticity",
         "oneplume"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "logRa",
+      "hash": "#convection/benard-1900",
+      "aliases": []
     },
     {
       "id": "reuleaux",
       "name": "Reuleaux",
+      "tab": "Reuleaux",
       "subtitle": "a non-circle of constant width · 1875",
       "equation": "width(θ) = R  for all θ,   W ≠ a disk,   area = ½(π − √3) R²",
       "credit": "F. Reuleaux, The Kinematics of Machinery (1875), described the curved triangle of constant width now named for him. Euler had already noted constant-width bodies; a wheel does not have to be a circle to keep its axle at constant height. The same shape, rotated in a square, drills a hole that is almost square. The plate is the rolling body and the width rose, which theory says is a circle.",
@@ -2005,11 +2738,18 @@
         "many",
         "log"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#reuleaux",
+      "aliases": []
     },
     {
       "id": "apollonian",
       "name": "Apollonian",
+      "tab": "Apollonian",
       "subtitle": "infinite circles, integer curvatures, zero leftover · 1643",
       "equation": "k₄ = k₁+k₂+k₃ ± 2√(k₁k₂+k₁k₃+k₂k₃)   (Descartes),   k ∈ ℤ if the seeds are",
       "credit": "Descartes' circle theorem (1643, in a letter to Princess Elisabeth of the Palatinate) gives the fourth curvature from three mutually tangent circles. The Apollonian gasket iterates that packing to infinity. Soddy (1936) wrote the poem; Graham, Lagarias, Mallows, Wilks and Yan (2003) proved the integer curvatures are a well-defined subset of the integers. The plate is a finite generation of the packing inside a disk of curvature −1.",
@@ -2024,11 +2764,18 @@
         "fill",
         "log"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#apollonian",
+      "aliases": []
     },
     {
       "id": "chladni",
       "name": "Chladni & Waves",
+      "tab": "",
       "subtitle": "standing waves, nodal lines and interference · 1787",
       "equation": "u = sum Ak[cos(nk·pi·x)cos(mk·pi·y) - cos(mk·pi·x)cos(nk·pi·y)];   nodes where u = 0",
       "credit": "Ernst Chladni, Entdeckungen uber die Theorie des Klanges, 1787. The governing plate equation was solved by Sophie Germain, whose 1816 work won the Paris Academy prize; Lord Rayleigh's Theory of Sound, 1877, put it on modern footing.",
@@ -2045,11 +2792,18 @@
         "topo",
         "ink"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "particles",
+      "hash": "#chladni/chladni-0417",
+      "aliases": []
     },
     {
       "id": "track",
       "name": "Track",
+      "tab": "Track",
       "subtitle": "a breather that paves the index it runs on, drawn as its worldline",
       "equation": "φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1)",
       "credit": "The sine-Gordon breather is exact; Seeger, Donth and Kochendörfer (1953), Faddeev and Takhtajan. A prescribed index n(x) is an inhomogeneous Josephson junction. A beam that writes the index it travels in is a self-written waveguide: Monro, de Sterke and Poladian, J. Mod. Opt. 45, 1998, and the photorefractive soliton of Segev. This plate puts that idea on a sine-Gordon breather, writes n from strain, and checks the open loop against the Lorentz speed. It is not a new law and it is not named as one.",
@@ -2065,11 +2819,20 @@
         "rest",
         "torn"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "unseen",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#track",
+      "aliases": [
+        "hendrick"
+      ]
     },
     {
       "id": "knotlight",
       "name": "Knotted Light",
+      "tab": "Knot",
       "subtitle": "a trefoil of darkness, an open book, a bark with no tangent · 2001 / this plate",
       "equation": "ψ = (x+iy)³ − (z−ia)²,   zeros ≃ (2,3) torus knot;   pages = arg ψ;   bark = Σ α^n cos(β^n s)",
       "credit": "The polynomial whose zeros are a trefoil in R³ is M. V. Berry and M. R. Dennis, Proc. R. Soc. A 457, 2251 (2001); J. Leach, M. R. Dennis, J. Courtial and M. J. Padgett flew a knotted optical vortex in Nature 432, 165 (2004). The open-book fibration of the trefoil singularity is J. Milnor, Singular Points of Complex Hypersurfaces, 1968. The bark is Weierstrass, 1872. No paper draws the three on one seed. That arrangement, and this print, are the artifact; the science is not a claim.",
@@ -2084,11 +2847,18 @@
         "tight",
         "smooth"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#knotlight",
+      "aliases": []
     },
     {
       "id": "causticsea",
       "name": "Caustic Sea",
+      "tab": "Sea",
       "subtitle": "a sea that focuses its own light, and the light that writes the sea",
       "equation": "∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/|det(I + s Hess h)|",
       "credit": "The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). This plate is that family with the caustic in the loop, and it reports corr(h, I) against the open-loop control. It is not a new equation and it is not named as one.",
@@ -2103,11 +2873,18 @@
         "tight",
         "over"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "",
+      "hash": "#causticsea",
+      "aliases": []
     },
     {
       "id": "kp",
       "name": "Soliton Web",
+      "tab": "KP",
       "subtitle": "resonant line-soliton webs of the Kadomtsev–Petviashvili equation",
       "equation": "(−4 u_t + u_xxx + 6 u u_x)_x + 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = Σ_I det(A_I) Δ(k_I) e^{Σ θ}",
       "credit": "The KP equation is Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). The tau function as a Wronskian of exponentials is Sato and Hirota. Resonant Y-junctions are Miles, J. Fluid Mech. 79, 171 (1977). The classification of the webs by totally nonnegative Grassmannians is Biondini and Chakravarty, J. Math. Phys. 47, 033514 (2006), and Kodama. Asymptotic webs expand and keep their morphology: Horowitz and Zarmi, Physica D 300, 1 (2015). This plate evaluates the exact tau function. It is not a new equation.",
@@ -2123,11 +2900,18 @@
         "line",
         "relief"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#kp",
+      "aliases": []
     },
     {
       "id": "gerstner",
       "name": "Gerstner",
+      "tab": "Gerstner",
       "subtitle": "trochoidal waves, the exact Euler deep-water solution · 1802",
       "equation": "X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1",
       "credit": "Gerstner, Theorie der Wellen, Abh. Bohm. Ges. Wiss. (1802), found the unique exact periodic deep-water gravity wave of finite amplitude: every particle traces a circle, the free surface is an inverted trochoid, and the pressure is constant along it. Rankine, On the exact form of waves near the surface of deep water, Phil. Trans. Roy. Soc. 153, 127 (1863), rediscovered the same motion. Superposing two Gerstners (the Two trains control) is graphics practice, Tessendorf, Simulating Ocean Water, SIGGRAPH course notes (2001), and is not an Euler solution. This plate is a seeded print of the exact Lagrangian map. It is not a new equation.",
@@ -2143,11 +2927,18 @@
         "cycloid",
         "woodcut"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "steep",
+      "hash": "#gerstner",
+      "aliases": []
     },
     {
       "id": "eight",
       "name": "Figure Eight",
+      "tab": "Eight",
       "subtitle": "three equal masses chasing on a planar figure-eight · 1993 / 2000",
       "equation": "r̈_i = −Σ_{j≠i} (r_i−r_j)/|r_i−r_j|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0",
       "credit": "Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.",
@@ -2163,11 +2954,18 @@
         "three",
         "tight"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#eight",
+      "aliases": []
     },
     {
       "id": "peakon",
       "name": "Peakon",
+      "tab": "Peakon",
       "subtitle": "Camassa–Holm peaked traveling waves · 1993",
       "equation": "u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−|x−x_i|},   m = u − u_xx",
       "credit": "The Camassa–Holm equation and the peakon u = c exp(−|x − c t|) are R. Camassa and D. D. Holm, Phys. Rev. Lett. 71, 1661 (1993). Multi-peakon collisions, including the Stieltjes / Hankel closed form used here, are R. Beals, D. H. Sattinger and J. Szmigielski, Inverse Problems 15, L1 (1999) and Adv. Math. 154, 229 (2000). This plate evaluates that exact N-peakon formula. It is not a new soliton.",
@@ -2183,11 +2981,18 @@
         "overtake",
         "train"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "t",
+      "hash": "#peakon",
+      "aliases": []
     },
     {
       "id": "photon",
       "name": "Photon Sphere",
+      "tab": "Photon",
       "subtitle": "Schwarzschild photon sphere · 1916",
       "equation": "d²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M",
       "credit": "K. Schwarzschild, Sitzungsber. Preuss. Akad. Wiss. (1916). The unstable circular photon orbit at r = 3M is a textbook consequence of that metric. C. Darwin, Proc. R. Soc. Lond. A 249, 180 (1959) and J. L. Synge, Mon. Not. R. Astron. Soc. 131, 463 (1966) integrated the null geodesics and the capture cross-section. The plate is a seeded print of those equatorial (or slightly inclined) rays. It is not a new black hole.",
@@ -2203,11 +3008,18 @@
         "polar",
         "impact"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#photon",
+      "aliases": []
     },
     {
       "id": "crapper",
       "name": "Crapper",
+      "tab": "Crapper",
       "subtitle": "exact finite-amplitude pure-capillary waves · 1957",
       "equation": "X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4|A|/(π(1−A²))",
       "credit": "Crapper, An exact solution for progressive capillary waves of arbitrary amplitude, J. Fluid Mech. 2, 532 (1957), found the unique closed-form finite-amplitude pure-capillary wave on deep water: crests flatten, troughs sharpen, and at s* ≈ 0.730 the trough pinches a bubble of air. Hur and Vanden-Broeck, Eur. J. Mech. B/Fluids 83, 190 (2020), arXiv:2003.00950, showed that the same profile is a periodic traveling wave of a constant-vorticity Euler flow with g=0 and σ=0. The flows underneath differ. Constantin and Martín, On Crapper's wave, J. Nonlinear Math. Phys. (2011), proved the interior map is a diffeomorphism only for |A| ≤ 3−2√2 ≈ 0.172, a smaller range than the bubble. This plate is a seeded print of the exact map. It is not a new equation.",
@@ -2223,11 +3035,18 @@
         "deep",
         "woodcut"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "amp",
+      "hash": "#crapper",
+      "aliases": []
     },
     {
       "id": "hasimoto",
       "name": "Hasimoto",
+      "tab": "Hasimoto",
       "subtitle": "a soliton on a vortex filament · 1972",
       "equation": "γ_t = γ_s × γ_ss,   ψ = κ exp(i ∫ τ ds),   κ = 2ν sech(ν(s−2τ₀ t)),   c = 2τ₀",
       "credit": "H. Hasimoto, J. Fluid Mech. 51, 477 (1972), mapped the local-induction approximation for a thin vortex filament to the cubic nonlinear Schrödinger equation and found the sech soliton: a loop of helical motion that travels along a line vortex at speed equal to twice the torsion. The explicit traveling-wave curve sampled here is the solitary-wave member of S. Kida, J. Fluid Mech. 112, 397 (1981). This plate is a print of that curve. It is not a new law of vortex motion.",
@@ -2243,11 +3062,18 @@
         "overlay",
         "head"
       ],
-      "vectors": true
+      "vectors": true,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "t",
+      "hash": "#hasimoto",
+      "aliases": []
     },
     {
       "id": "lump",
       "name": "Lump",
+      "tab": "Lump",
       "subtitle": "KP-I lumps · 1977",
       "equation": "(u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b²",
       "credit": "Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Multi-lumps: Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). They pass through each other with no phase shift. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.",
@@ -2263,7 +3089,13 @@
         "oblique",
         "tight"
       ],
-      "vectors": false
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#lump",
+      "aliases": []
     }
   ]
 }

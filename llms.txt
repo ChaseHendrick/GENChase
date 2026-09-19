@@ -1,0 +1,40 @@
+# GENChase
+
+One HTML file of seeded scientific simulations. Each tab reprints from a hash. Generated images belong to the human. The source is PolyForm Small Business 1.0.0.
+
+## Do not
+
+- Parse or scrape studio.html. It is 2.6 MB of implementation.
+- Invent a bundler, a framework tree, or a second architecture.
+- Claim new science. Credit the paper. Do not relicense as MIT.
+- Treat "familiarity" / "seen elsewhere" as a measurement. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
+
+## Read instead
+
+- techniques.json — every tab: id, name, subtitle, equation, credit, blurb, hash, presets, vectors, liveCapable, runningDefault, familiarity, aliases.
+- TECHNIQUES.md — the same catalog as a table.
+- AGENTS.md — product rules.
+- tools/modules/CONTRACT.md — how to add a tab.
+- README.md — what is new, and what is not.
+
+## Recipe hash
+
+`#<id>/<seed>` or `#<id>/<seed>/<base64url JSON diff from defaults>`.
+
+Copy link (L) transfers the seed and every slider that is not at the factory default. Print size, ppi, colophon, panel side and witness quiet stay on the viewer's machine.
+
+Aliases: #hendrick → track.
+
+## Adding a tab
+
+Write tools/modules/<id>.js (first lines as CONTRACT.md requires). Inject, check, export, then the maintainer inlines into studio.html. Then:
+
+    node tools/index.js
+    node tools/lint.js
+    node tools/check.js <id> 12000
+
+All randomness through U.makeRng(seed). Math.random in a sim is a bug. Discrete marks export as SVG; accumulated density does not.
+
+## Counts
+
+116 techniques in this build.
