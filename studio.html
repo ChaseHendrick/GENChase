@@ -1696,7 +1696,7 @@ void main(){
     const raw = (location.hash || '').replace(/^#/, '');
     if (!raw) return null;
     const parts = raw.split('/');
-    const ALIAS = { track: 'hendrick' };
+    const ALIAS = { hendrick: 'track' };
     const id = ALIAS[parts[0]] || parts[0];
     if (!id) return null;
     if (!byId[id]) return { id, unknown: true };
@@ -38666,8 +38666,8 @@ void main(){
     subtitle: 'a sea that focuses its own light, and the light that writes the sea',
     order: 102,
     equation: '∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/|det(I + s Hess h)|',
-    credit: 'The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class of experiments. The closed loop — a Swift–Hohenberg height acting as its own phase screen, the caustic writing that height — is not a paper. This file calls the closed loop Caustic Sea. No law is claimed; the coupling is the artifact.',
-    blurb: 'A patterned sea focuses light. The light heats the sea. The sea changes, and so does the focus. Each piece of that sentence is published. The sentence itself is not: Swift–Hohenberg never looked at its own caustic, and Berry’s map never wrote the height that made it. Close the loop and the folds lock to the crests. Open it (η = 0) and you have an ordinary pattern with an ordinary caustic sitting on top, uncorrelated. The status line reports corr(h, I), which the loop drives positive and the open system leaves near 0.',
+    credit: 'The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). This plate is that family with the caustic in the loop, and it reports corr(h, I) against the open-loop control. It is not a new equation and it is not named as one.',
+    blurb: 'A patterned sea focuses light. The light heats the sea. The sea changes, and so does the focus. That loop is the photothermal / LIPSS family, not a private invention: Rudenko et al. already run Swift–Hohenberg on laser-written surfaces. What the plate adds is the open-loop control on the same sea, so corr(h, I) can be watched going from near 0 to locked when η is raised. The status line is that number.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Seed'],
     hints: {
       Sea: 'r is how hard the pattern is driven. Wavelength is the Swift–Hohenberg k₀ in cells.',
@@ -38917,8 +38917,8 @@ void main(){
 })();
 </script>
 <script>
-/* modules/hendrick.js */
-/* GENChase: a sine-Gordon breather that writes the index it runs on. Open loop matches Lorentz; the closed loop is faster and still bound. Polar paint turns the worldline into an Archimedean spiral. */
+/* modules/track.js */
+/* GENChase: Track. A sine-Gordon breather that writes the index it runs on. That is a self-written waveguide on sine-Gordon, not a private name. Open loop matches Lorentz. Polar paint is the worldline. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -38967,12 +38967,12 @@ void main(){
   function sanitize(s) { s.grid = Math.max(96, Math.min(224, Math.round(s.grid / 16) * 16)); }
 
   Studio.register({
-    id: 'hendrick', name: 'Hendrick', tab: 'Hendrick',
+    id: 'track', name: 'Track', tab: 'Track',
     subtitle: 'a breather that paves the index it runs on, drawn as its worldline',
     order: 100,
     equation: 'φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1)',
-    credit: 'The sine-Gordon breather is exact; Seeger, Donth and Kochendorfer (1953), Faddeev and Takhtajan. A prescribed index n(x) is an inhomogeneous Josephson junction, which is a paper. Writing n from the breather\'s own strain, so the lump lays the track it runs on, is not. Open loop (η = 0) must recover the Lorentz speed; the plate reports v_meas / v against 1, and exterior energy against 0. No law is claimed. The coupling is the artifact. This file calls the locked, faster lump Hendrick.',
-    blurb: 'A sine-Gordon breather is a lump that rings and never radiates. Give the medium an index n that the lump writes from its own strain, and the exact solution is no longer exact: it paves a faster track and keeps its bound envelope, until you write too hard and it tears. The control is η = 0, where the measured speed has to match the Lorentz boost. Close the loop and the worldline is an Archimedean spiral, because radius is space and angle is time. Braid is three lumps at once. The status line prints v_meas / v against 1. If the open loop were wrong, the closed loop would not be a result.',
+    credit: 'The sine-Gordon breather is exact; Seeger, Donth and Kochendörfer (1953), Faddeev and Takhtajan. A prescribed index n(x) is an inhomogeneous Josephson junction. A beam that writes the index it travels in is a self-written waveguide: Monro, de Sterke and Poladian, J. Mod. Opt. 45, 1998, and the photorefractive soliton of Segev. This plate puts that idea on a sine-Gordon breather, writes n from strain, and checks the open loop against the Lorentz speed. It is not a new law and it is not named as one.',
+    blurb: 'A sine-Gordon breather is a lump that rings and never radiates. Give the medium an index n written from the lump\'s own strain and you have the self-written waveguide, which is a 1990s optics literature, running on a Josephson breather. Open loop (η = 0) has to match the Lorentz boost; that is the check. Close it and the worldline is an Archimedean spiral, because radius is space and angle is time. Braid is three lumps at once. Torn is the failure, kept as a preset. The status line prints v_meas / v against 1.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: {
       Loop: 'Open loop is the control. Paving (η ≈ 0.5) speeds the breather without tearing it. Torn is the failure, kept as a preset so the breaking is visible. Braid runs three boosts on one sheet.',
@@ -39204,7 +39204,7 @@ void main(){
         host.setStatus(
           '<span>v_meas / v <b>' + f2(extra) + '</b> · Lorentz 1</span>' +
           '<span>E_out / E <b>' + f3(metric) + '</b> · bound 0</span>' +
-          '<span>' + (torn ? 'torn' : (pave ? 'Hendrick' : (openOk ? 'open, Lorentz' : 'running'))) + '</span>'
+          '<span>' + (torn ? 'torn' : (pave ? 'paving' : (openOk ? 'open, Lorentz' : 'running'))) + '</span>'
         );
       }
       return {

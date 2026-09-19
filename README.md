@@ -88,7 +88,7 @@ This is the part that is hard to copy, and the reason to trust the pictures. Mos
 | Hyperbolic Turing | cells meeting at a vertex of {p, q} | exactly q | **100%** |
 | Drainage Networks | drainage area, P(A > a) ~ a^−β | near 0.45 in real basins | **0.53** |
 | Vortex Lattice | vortices, by phase winding | quantized circulation | **counted, not guessed** |
-| Hendrick | v_meas / v of a strain-written sine-Gordon breather | 1 if η = 0 | **1.20 paving, E_out/E bound** |
+| Track | v_meas / v of a strain-written sine-Gordon breather | 1 if η = 0 | **1.20 paving, E_out/E bound** |
 | Caustic Sea | corr(h, I) with the photothermal loop closed | > 0 (open loop ~ 0) | **0.281, fold lock** |
 
 When a measurement disagrees with theory the tab says so rather than rounding toward it. Ballistic deposition fits **under** 1/3 because its crossover to KPZ is slow at plate size, and the hint says exactly that instead of quietly presenting 0.33. A neural field outside its patterning window prints "h is outside it, the sheet will go flat" rather than leaving a blank plate to be read as a subtle one.
@@ -125,10 +125,10 @@ Worth being precise about, because the credits matter.
 - **Cortical Planforms.** A Wilson–Cowan field taken through the retinocortical map, interactive and seeded, with the patterning window computed in closed form so the tab can say when the drive is outside it. The science is Ermentrout and Cowan 1979 and Bressloff and colleagues 2001. I looked for an interactive browser version and did not find one, and this is the weakest negative result on the page: a sketch doing exactly this could sit on Observable or Shadertoy under a name I did not think to search, and neither site could be opened from here.
 - **Drainage Networks.** Stream-power landscape evolution on the Braun–Willett donor stack with priority-flood depression filling, with the channel network exported as vectors. The research codes are FastScape, fastscapelib and LandLab, which are Python, C++ and Fortran driven from notebooks; fastscapelib's own roadmap lists no browser or WebAssembly target. Browser erosion demos are common, but they are droplet-based hydraulic erosion out of computer graphics, which is a different model and does not give you a drainage network.
 
-**Two closed loops that are not papers.** Each piece is published. The sentence that joins them is not.
+**Two closed loops, both with prior art.** Each piece is published. So is the family the loop belongs to. The plates are pictures of those families with an open-loop control sitting next to the closed one. A published equation plus a feedback term is not an invention, and it does not get a private name.
 
-- **Hendrick.** A sine-Gordon breather that writes its own index from strain. Open loop (η = 0) must recover the Lorentz speed; the plate reports v_meas / v against 1, and exterior energy against 0. Close the loop and the lump paves a faster track and stays bound. The plate measured **1.20** with E_out/E still ~0. The spiral view is the worldline: radius is space, angle is time, so a constant speed is an Archimedean spiral. `#track` still opens it. No law is claimed. The coupling is the artifact.
-- **Caustic Sea.** A Swift–Hohenberg height acting as its own phase screen, the caustic writing that height. Open loop corr(h, I) near 0. Closed, the plate measured **0.281**. The sea, the caustic, and photothermal writing are all papers. The closed loop is not.
+- **Track.** A sine-Gordon breather that writes its own index from strain. That is a self-written waveguide (Monro, de Sterke, Poladian, J. Mod. Opt. 1998) and a photorefractive soliton (Segev) on a Josephson breather, not a private name. Open loop (η = 0) must recover the Lorentz speed; the plate reports v_meas / v against 1, and exterior energy against 0. Close the loop and the lump paves a faster track and stays bound. The plate measured **1.20** with E_out/E still ~0. The spiral view is the worldline: radius is space, angle is time, so a constant speed is an Archimedean spiral. `#hendrick` still opens it so old hashes don't die. The tab is Track.
+- **Caustic Sea.** A Swift–Hohenberg height acting as its own phase screen, the caustic writing that height. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). Open loop corr(h, I) near 0. Closed, the plate measured **0.281**. The name is the picture, not an invention.
 
 **New as engineering, and small but general.** Four ideas here would transfer to other projects:
 
