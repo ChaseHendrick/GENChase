@@ -158,7 +158,7 @@ Worth being precise about, because the credits matter.
 
 ## For people (and agents) adding to it
 
-GENChase is a studio file, not a package. You do not install it into another app. You open `studio.html`, or you add a technique to it.
+GENChase is a studio file, not a package. You do not install it into another app. You open `studio.html`, or you add a technique to it. How to commit and open a pull request is in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 **Use it when** the work has to be a real simulation that reprints: a PDE, a lattice growth, a tiling, a living field someone can disturb. When the plate should state how it was made. When the next tab is a rare equation and the shell is already finished.
 

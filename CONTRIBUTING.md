@@ -1,0 +1,61 @@
+# Contributing
+
+GENChase is one HTML file. A contribution is a change to that file, or to the harness that keeps it honest. There is no package to install into, and no second architecture to propose.
+
+Read this, then `AGENTS.md` if you are writing a technique, then `tools/modules/CONTRACT.md` before you touch a simulation. `studio.html` wins when any of those disagree.
+
+## What belongs here
+
+A real simulation that reprints from a seed: a PDE, a lattice, a growth, a tiling, a dynamical system. It shares the seed, the palette, the print pipeline and the witness. It credits the paper. It does not claim the science.
+
+Leave it when you need a game, a network, a model-weights file, a bundler, or a folder of unrelated sketches. Do not split `studio.html`. Do not relicense. The source is PolyForm Small Business 1.0.0; images a person generates are theirs.
+
+A vulnerability is not a pull request. Use [SECURITY.md](SECURITY.md).
+
+## How to work
+
+1. Fork, or a branch off `main`. One change per branch.
+2. For a new tab, write `tools/modules/<id>.js` and inject; do not edit `studio.html` until the plate checks. For a shell fix, edit `studio.html` directly.
+3. Run the harness that matches the change (below).
+4. Open a pull request against `main`. CI has to be green.
+5. The maintainer squash-merges. The branch is deleted.
+
+Do not push to `main`. Do not merge your own pull request unless you maintain the repository.
+
+## Commits
+
+One subject line, sentence case, a period, what changed. A body only when the subject cannot carry the why.
+
+```
+The eight exact plates check. The citation is one hundred sixteen.
+```
+
+Not `fix`, not `WIP`, not a dump of files. Not Conventional Commits prefixes (`feat:`, `chore:`); the log is read as English.
+
+A commit that adds a tab also regenerates the catalog (`node tools/index.js`) in that same commit. A hand-edited `TECHNIQUES.md` is already wrong.
+
+## Pull requests
+
+Against `main`. Title matches the squash subject. Body says what a reviewer should look at, and which harness you ran.
+
+Checklist, as it applies:
+
+- [ ] `node tools/lint.js` is clean
+- [ ] a new or changed tab: `node tools/check.js <id> 12000`
+- [ ] a tab that prints: `node tools/export.js <id> 8 300`
+- [ ] a new tab: `node tools/index.js` (writes `TECHNIQUES.md`, `techniques.json`, `llms.txt`)
+- [ ] a new tab: a `familiarity` bucket, a credit line, no `Math.random`
+- [ ] a moved default: a `legacy:` declaration, and `node tools/recipe.js`
+- [ ] the print is the plate, or `exportSVG` returned nothing and the PNG is the sheet
+
+CI runs lint, the chrome shell, recipe compatibility, and one plate from each architecture family. It does not replace a local check of the tab you touched.
+
+## Merging
+
+Squash only. The squash subject is the pull-request title, with `(#N)` added. Merge commits and rebase-merges are off so the log stays one line per change.
+
+`main` is the product. A green check is necessary, not sufficient: a thumbnail has shipped a bug this project then had to take back.
+
+## Naming
+
+Do not put a person's name on a plate unless the thing is new, uses real physics, and a check in the file fails if the claim is wrong. Existing equations keep their own names. A failed lock is not renamed into a success.
