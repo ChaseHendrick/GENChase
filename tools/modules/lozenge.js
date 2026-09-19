@@ -186,9 +186,14 @@
      three, which is a standard normal to the accuracy three hundred seeds can measure one. A reading
      of 2.5 sigma on one plate is therefore ordinary; a reading that large on plate after plate is not.
 
-     It is cheap. The 2 by 2 box coalesces after a handful of sweeps, so four thousand exact draws cost
-     about 10 ms under node, well inside one chunk of the plate's own sampler, and build() spends them
-     in a chunk of their own rather than on the front of the first sampler chunk.
+     It is cheap, but the number depends on where it is timed and the two differ by more than a factor
+     of two, so both are given. The 2 by 2 box coalesces after a handful of sweeps, and four thousand
+     exact draws cost 7.7 to 9.2 ms under node once the call is warm, against 31 to 108 ms on the very
+     first call in a process, which is the JIT rather than the work. Timed inside the tab where it
+     actually runs, in a headless Chromium on a software renderer, it is 35 ms on the first plate of a
+     session and 16 to 28 ms on every later one. That is inside one chunk of the plate's own sampler
+     either way, and build() spends it in a chunk of its own rather than on the front of the first
+     sampler chunk.
 
      What a regenerate actually blocks the page for, measured in a headless Chromium on a software
      renderer by timing every chunk callback the module schedules: each sampler chunk is the 32 ms it
@@ -615,7 +620,9 @@
         status('sampling');
         (function chunk() {
           // The self-test gets a slice of its own rather than riding along with the first sampler
-          // chunk, so neither slice is longer than one ordinary chunk. It costs about 10 ms.
+          // chunk, so neither slice is longer than one ordinary chunk. Timed in the tab in a headless
+          // Chromium on a software renderer, it is 35 ms on the first plate of a session and 16 to
+          // 28 ms afterwards, against the 7.7 to 9.2 ms the same call costs warm under node.
           if (!self) { self = samplerSelfTest(selfKey, 4000); status('sampling'); timer = setTimeout(chunk, 0); return; }
           runJob(job, 32);
           if (!job.done) {
@@ -735,8 +742,21 @@
             ' · free area <b>' + pm(meas.disFrac, meas.disSe, 3) + '</b> of n = ' + meas.nTot.toLocaleString() +
             ' triangles, against <b>' + f3(meas.predDisFrac) + '</b>: <b>' + sigTxt(zf) + '</b>';
           const worst = Math.max(zr === null ? 0 : Math.abs(zr), zf === null ? 0 : Math.abs(zf));
-          if (worst > 3) { const w = whyOff(s); sp += w ? ' · ' + w : ' · a real disagreement, cause not diagnosed'; }
-          if (!info || !info.exact) sp += ' · from a sample that is not exact';
+          // When the draw is not uniform, that is the diagnosis, and it has to be given as one. The
+          // limit shape is a statement about the uniform measure, so a forward run that has not
+          // mixed disagrees with it for a reason that is already known, and saying "cause not
+          // diagnosed" next to "not exact" would be claiming ignorance of something on the same
+          // line. It is not a corner case: the heat bath at the 200 sweeps the schema allows reads
+          // 6.0 sigma off on a 48, 48, 48 hexagon, 2.5 sigma at 4,000 and 1.7 sigma at 20,000, so a
+          // short forward run trips this every time.
+          const notExact = !info || !info.exact;
+          if (worst > 3) {
+            const w = notExact
+              ? 'the draw is not uniform, which is cause enough: the limit shape describes the uniform measure and a forward run that has not mixed is not from it'
+              : whyOff(s);
+            sp += w ? ' · ' + w : ' · a real disagreement, cause not diagnosed';
+          }
+          if (notExact) sp += ' · from a sample that is not exact';
           out += sp + '</span>';
         }
         if (extra) out += '<span>' + extra + '</span>';
