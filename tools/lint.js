@@ -127,7 +127,8 @@ const WORDS = { 49: 'Forty-nine', 50: 'Fifty', 51: 'Fifty-one', 52: 'Fifty-two',
   114: 'One hundred fourteen', 115: 'One hundred fifteen', 116: 'One hundred sixteen' };
 const spelled = WORDS[mods.length];
 const readme = fs.existsSync(path.join(root, 'README.md')) ? fs.readFileSync(path.join(root, 'README.md'), 'utf8') : '';
-for (const [label, text] of [['studio.html', src], ['README.md', readme]]) {
+const citation = fs.existsSync(path.join(root, 'CITATION.cff')) ? fs.readFileSync(path.join(root, 'CITATION.cff'), 'utf8') : '';
+for (const [label, text] of [['studio.html', src], ['README.md', readme], ['CITATION.cff', citation]]) {
   if (!text) continue;
   // Only a spelled number that is actually counting techniques. Matching the word on its own
   // flagged a code comment about sixty-three animation loops, which is not a claim about anything.

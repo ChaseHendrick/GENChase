@@ -43177,13 +43177,16 @@ void main(){
       function status() {
         if (!meas) return;
         const m = meas;
+        const planar = m.tag === 'planar';
         const kFail = Math.abs(m.kRatio - 1) > 0.04;
-        const cFail = Math.abs(m.cRatio - 1) > 0.04;
+        const cFail = planar ? false : Math.abs(m.cRatio - 1) > 0.04;
         const liaFail = m.liaMean > 0.02;
         const ok = !kFail && !cFail && !liaFail;
         host.setStatus(
           '<span>κ_max/(2ν) <b>' + f3(m.kRatio) + '</b> ± ' + sci(m.kSigma) + ' · 1' + (kFail ? ' · failed' : '') + '</span>' +
-          '<span>c/(2τ₀) <b>' + f3(m.cRatio) + '</b> ± ' + sci(m.cSigma) + ' · 1' + (cFail ? ' · failed' : '') + '</span>' +
+          (planar
+            ? '<span>c · 0 · planar (τ₀ ≈ 0)</span>'
+            : '<span>c/(2τ₀) <b>' + f3(m.cRatio) + '</b> ± ' + sci(m.cSigma) + ' · 1' + (cFail ? ' · failed' : '') + '</span>') +
           '<span>LIA <b>' + sci(m.liaMean) + '</b> · 0' + (liaFail ? ' · failed' : '') + '</span>' +
           '<span>' + m.tag + (ok ? '' : ' · drifting') + '</span>'
         );
@@ -43296,7 +43299,7 @@ void main(){
 </script>
 <script>
 /* modules/lump.js */
-/* GENChase: KP-I lumps. Rational. Manakov 1977. Hirota residual of KP-I. */
+/* GENChase: KP-I lumps. Rational. Manakov 1977. PDE residual of KP-I. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -43412,33 +43415,8 @@ void main(){
     return tau;
   }
 
-  // Exact Hirota for a single 1-lump via finite differences on τ.
-  // KP-I bilinear: (D_x^4 − 4 D_x D_t − 3 D_y²) τ·τ = 0
-  // D_x^n f·g = (∂x − ∂x')^n f(x) g(x') |_{x'=x}
-  // For f=g=τ: D_x^2 τ·τ = 2(τ τ_xx − τ_x²), etc.
-  function hirotaKPI(kind, x, y, t) {
-    const spec = KINDS[kind] || KINDS.one;
-    const h = 1e-3;
-    const T = (xx, yy, tt) => spec.lumps.length === 1 ? tau1(spec.lumps[0], xx, yy, tt) : prodTau(spec, xx, yy, tt);
-    const t0 = T(x, y, t);
-    const txp = T(x + h, y, t), txm = T(x - h, y, t);
-    const typ = T(x, y + h, t), tym = T(x, y - h, t);
-    const ttp = T(x, y, t + h), ttm = T(x, y, t - h);
-    const txpp = T(x + 2 * h, y, t), txmm = T(x - 2 * h, y, t);
-    const tx = (txp - txm) / (2 * h);
-    const ty = (typ - tym) / (2 * h);
-    const tt = (ttp - ttm) / (2 * h);
-    const txx = (txp - 2 * t0 + txm) / (h * h);
-    const tyy = (typ - 2 * t0 + tym) / (h * h);
-    const txxxx = (txpp - 4 * txp + 6 * t0 - 4 * txm + txmm) / (h * h * h * h);
-    const txt = (T(x + h, y, t + h) - T(x - h, y, t + h) - T(x + h, y, t - h) + T(x - h, y, t - h)) / (4 * h * h);
-    // (D_x^4 − 4 D_x D_t − 3 D_y²) τ·τ
-    // D_x^4 τ·τ = 2 τ txxxx − 8 tx txxx + 6 txx²  (and txxx from 5-pt)
-    const txxx = (txpp - 2 * txp + 2 * txm - txmm) / (2 * h * h * h);
-    const Dx4 = 2 * t0 * txxxx - 8 * tx * txxx + 6 * txx * txx;
-    const DxDt = 2 * t0 * txt - 2 * tx * tt;
-    const Dy2 = 2 * t0 * tyy - 2 * ty * ty;
-    return Dx4 - 4 * DxDt - 3 * Dy2;
+  function lumpCenter(L, t) {
+    return { x: L.x0 + 3 * (L.a * L.a + L.b * L.b) * t, y: L.y0 - 6 * L.a * t };
   }
 
   Studio.register({
@@ -43447,7 +43425,7 @@ void main(){
     order: 116,
     equation: '(u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b²',
     credit: 'Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Multi-lumps: Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). They pass through each other with no phase shift. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.',
-    blurb: 'KP-II makes Y-junctions of lines. KP-I, the other sign in front of u_yy, makes lumps: rational, decaying as 1/r², a 2D solitary wave that is exact. Two of them pass through each other and come out unshifted. The status line is the Hirota bilinear residual of KP-I against 0, and the peak against 4b². If the tau function is the wrong KP, both fail.',
+    blurb: 'KP-II makes Y-junctions of lines. KP-I, the other sign in front of u_yy, makes lumps: rational, decaying as 1/r², a 2D solitary wave that is exact. Two of them pass through each other and come out unshifted. The status line is the KP-I residual (u_t + 6 u u_x + u_xxx)_x − 3 u_yy against 0, by finite differences of the rational field, and the peak against 4b². If the tau function is the wrong KP, both fail.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: {
       Lumps: 'One is Manakov’s lump. Two and Three are products of 1-lump tau functions. Collide aims two lumps through each other; Late is after the crossing. Oblique is a drifting lump (a ≠ 0).',
@@ -43479,10 +43457,13 @@ void main(){
         }
         const pts = [[0, 0], [0.8, 0.4], [-0.6, -0.35]];
         const ref = spec.lumps[0];
+        const ctr = lumpCenter(ref, t);
+        umax = Math.max(umax, u1(ref, ctr.x, ctr.y, t));
         let hMax = 0, nrm = 0;
-        for (let i = 0; i < pts.length; i++) {
-          const P = pdeResidual(ref, pts[i][0], pts[i][1], t);
-          const uu = Math.abs(u1(ref, pts[i][0], pts[i][1], t));
+        const rPts = pts.concat([[ctr.x, ctr.y]]);
+        for (let i = 0; i < rPts.length; i++) {
+          const P = pdeResidual(ref, rPts[i][0], rPts[i][1], t);
+          const uu = Math.abs(u1(ref, rPts[i][0], rPts[i][1], t));
           hMax = Math.max(hMax, Math.abs(P));
           nrm = Math.max(nrm, uu * uu + 1);
         }
@@ -43544,7 +43525,7 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
       function status() {
-        const ok = metric < 5e-2;
+        const ok = metric < 5e-3 && extra > 0.97 && extra < 1.08;
         host.setStatus(
           '<span>KP-I residual <b>' + metric.toExponential(1) + '</b> · 0</span>' +
           '<span>peak / 4b² <b>' + f2(extra) + '</b></span>' +
