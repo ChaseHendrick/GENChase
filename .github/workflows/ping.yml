@@ -1,0 +1,23 @@
+# A deliberately trivial workflow, added to isolate a failure that nothing else explains.
+#
+# Every `structure` job in check.yml has been failing in two to three seconds with no steps recorded, no
+# logs and empty output, while `node tools/lint.js` passes locally and on a clean clone of the same
+# commit. Repository contents are ruled out by bisect, and runner contention is ruled out by a dispatched
+# run against a completely idle account. This runs one shell command and nothing else. If it passes, the
+# problem is specific to check.yml. If it fails too, the problem is the runner or the account and no
+# amount of editing check.yml will help.
+#
+# Delete this once the question is answered.
+name: ping
+
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say something
+        run: echo "the runner started and executed a step"
