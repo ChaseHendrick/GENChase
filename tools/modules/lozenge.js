@@ -466,19 +466,14 @@
     const rho = 4 * Math.sqrt(el.det) / Math.sqrt(3);   // triangles per unit area after the map
     const dth = 2 * Math.PI / NB;
     const rs = new Float64Array(NB);
-    let sq = 0;
-    for (let k = 0; k < NB; k++) {
-      rs[k] = Math.sqrt(2 * bins[k] / (rho * dth));
-      sq += (rs[k] - 1) * (rs[k] - 1);
-    }
+    for (let k = 0; k < NB; k++) rs[k] = Math.sqrt(2 * bins[k] / (rho * dth));
     const st = acTime(rs);
     const disFrac = nDis / Math.max(1, nTot);
     const relSe = blockBoot(bins, st.tau, U.makeRng(String(seed) + '/arctic-boot'), 400);
     const hexArea = (a * b + b * c + c * a) * S3;
     return {
       ring, el, fA, fB, rs,
-      rMean: st.mean, rSd: st.sd, rSe: st.se, tau: st.tau, neff: st.neff, nSect: NB,
-      rms: Math.sqrt(sq / NB),
+      rMean: st.mean, rSe: st.se, tau: st.tau, neff: st.neff, nSect: NB,
       nTot, nDis, disFrac, disSe: disFrac * relSe,
       predDisFrac: Math.PI * Math.sqrt(el.det) / hexArea,
     };
@@ -660,7 +655,8 @@
           let sp = '<span>arctic radius <b>' + pm(meas.rMean, meas.rSe, 3) + '</b> over ' + meas.nSect +
             ' sectors, τ ' + meas.tau.toFixed(1) + ' so ~' + Math.round(meas.neff) +
             ' independent, against exactly 1: <b>' + sigTxt(zr) + '</b>' +
-            ' · free area <b>' + pm(meas.disFrac, meas.disSe, 3) + '</b> against <b>' +
+            ' · free area <b>' + pm(meas.disFrac, meas.disSe, 3) + '</b>, ' +
+            meas.nDis.toLocaleString() + ' free of ' + meas.nTot.toLocaleString() + ' triangles, against <b>' +
             f3(meas.predDisFrac) + '</b> inside the ellipse: <b>' + sigTxt(zf) + '</b>';
           const worst = Math.max(zr === null ? 0 : Math.abs(zr), zf === null ? 0 : Math.abs(zf));
           if (worst > 3) { const w = whyOff(s); sp += w ? ' · ' + w : ' · a real disagreement, cause not diagnosed'; }
