@@ -202,12 +202,22 @@
       const w = job.bot[0] * 27 + job.bot[1] * 9 + job.bot[2] * 3 + job.bot[3];
       seen.set(w, (seen.get(w) || 0) + 1);
     }
-    const k = seen.size, exp = draws / Math.max(1, k);
+    // The cells are the twenty tilings MacMahon counts, not the ones that happened to turn up. A
+    // sampler that could never reach one of them would show as a cell with zero in it, and dividing
+    // the draws over the observed support instead would quietly drop that cell, shrink the degrees of
+    // freedom and leave the chi-square looking healthy. Taking the larger of the two also keeps the
+    // arithmetic right in the other direction, if the encoding ever let in a state that is not a
+    // tiling at all. With 4,000 draws and 200 expected per cell, k is 20 on every seed tried, so this
+    // changes nothing that is printed; it is what lets the test fail the way it says it can.
+    const k = seen.size;
+    const want = Math.round(Math.pow(10, macmahonLog10(2, 2, 2)));
+    const cells = Math.max(k, want), exp = draws / cells;
     let chi = 0;
     seen.forEach(n => { chi += (n - exp) * (n - exp) / exp; });
-    const df = k - 1;
+    chi += (cells - k) * exp;                          // cells never drawn: (0 - exp)^2 / exp each
+    const df = cells - 1;
     const z = df > 0 ? (Math.pow(chi / df, 1 / 3) - (1 - 2 / (9 * df))) / Math.sqrt(2 / (9 * df)) : NaN;
-    return { draws, k, want: Math.round(Math.pow(10, macmahonLog10(2, 2, 2))), chi, df, z };
+    return { draws, k, want, chi, df, z };
   }
 
   /* ---------------- the picture ----------------
@@ -355,8 +365,10 @@
      whose excursions run over a finite angle rather than jumping from sector to sector. The effective
      count is 60/tau with tau the integrated autocorrelation around the circle, the usual
      1 + 2 sum rho_l with the window closed at the first non-positive rho. Averaged over seeds tau comes
-     out near 4 at every size tried; on one plate it runs from the floor of 2 up to about 8, so between
-     eight and twenty-five of the sixty sectors are independent, and the status line prints which.
+     out near 4 at every size tried; on one plate it runs from the floor of 2 up to about 10. Counted
+     over twenty-five seeds at each of the eight shapes the presets use, the effective count lands
+     between 5.8 and 30.0 of the sixty, the ceiling being where the floor on tau binds, with a mean
+     near 16 on the regular hexagons and near 10 at 48, 48, 8. The status line prints which.
 
      Checked rather than asserted, by drawing many tilings at one size and comparing the scatter of the
      mean radius across seeds with this single-tiling estimate averaged over the same seeds:
@@ -394,9 +406,11 @@
     // Floored at 2 rather than 1. The split weighting hands every triangle to two adjacent sectors
     // by construction, so consecutive sectors literally share data and tau cannot honestly be 1;
     // on the small hexagons the estimator can return it anyway when the sample is too short to see
-    // its own correlation. At every size in the table above tau lands between 3.3 and 6.5, so the
-    // floor changes nothing there and only stops the degenerate case from claiming sixty
-    // independent sectors it does not have.
+    // its own correlation. Averaged over forty plates tau lands between 3.2 and 6.8 at every shape
+    // these presets use, so the floor is not what sets the bar in the ordinary case; counted plate by
+    // plate it binds on 4 of 40 at 11, 11, 11, 1 of 40 at 40, 40, 40 and at 24, 40, 46, and on none
+    // at 32, 32, 32 or 48, 48, 48. Where it binds the status line says about thirty independent
+    // sectors, which is the most this ever claims.
     tau = Math.min(Math.max(tau, 2), n / 4);
     const sd = Math.sqrt(c0 * n / (n - 1));
     return { mean: m, sd, tau, neff: n / tau, se: sd * Math.sqrt(tau / n) };
@@ -495,7 +509,7 @@
     subtitle: 'random lozenge tilings of a hexagon, exact by coupling from the past · 1996',
     order: 48.5,
     equation: 'h(x, y) ∈ [0, c] weakly decreasing;  heat bath h(x, y) ~ U{max(h(x+1,y), h(x,y+1)) … min(h(x−1,y), h(x,y−1))};  run −T → 0 from ⊥ and ⊤ on one fixed set of maps, doubling T until they agree, and read the common value at 0',
-    credit: "The sampler is James Propp and David Wilson, 'Exact sampling with coupled Markov chains and applications to statistical mechanics', Random Structures and Algorithms 9, 223 to 252 (1996); random tilings are one of their own worked examples. The limit shape measured on the plate is Henry Cohn, Michael Larsen and James Propp, 'The shape of a typical boxed plane partition', New York Journal of Mathematics 4, 137 to 165 (1998). The count of boxed plane partitions is Percy MacMahon, 'Memoir on the theory of the partitions of numbers, Part VI', Philosophical Transactions of the Royal Society A 211 (1911). The height function that turns a tiling into a stack of cubes is William Thurston, 'Conway's tiling groups', American Mathematical Monthly 97, 757 (1990). How long this chain needs is David Wilson, 'Mixing times of lozenge tiling and card shuffling Markov chains', Annals of Applied Probability 14, 274 to 325 (2004).",
+    credit: "The sampler is James Propp and David Wilson, 'Exact sampling with coupled Markov chains and applications to statistical mechanics', Random Structures and Algorithms 9, 223 to 252 (1996); random tilings are one of their own worked examples. The limit shape measured on the plate is Henry Cohn, Michael Larsen and James Propp, 'The shape of a typical boxed plane partition', New York Journal of Mathematics 4, 137 to 165 (1998). The count of boxed plane partitions is Percy MacMahon, 'Memoir on the theory of the partitions of numbers, Part VI: partitions in two-dimensional space, to which is added an adumbration of the theory of partitions in three-dimensional space', Philosophical Transactions of the Royal Society A 211, 345 to 373 (1912). The height function that turns a tiling into a stack of cubes is William Thurston, 'Conway's tiling groups', American Mathematical Monthly 97, 757 to 773 (1990). How long this chain needs is David Wilson, 'Mixing times of lozenge tiling and card shuffling Markov chains', Annals of Applied Probability 14, 274 to 325 (2004).",
     blurb: 'Cut a hexagon with sides a, b, c, a, b, c out of the triangular grid and cover it with the three rhombi that fit, every covering equally likely. What comes out is a stack of unit cubes in the corner of an a by b by c room, seen from the corner: the three rhombi are the three visible faces of the cubes, and the tiling is nothing but the shape of the pile. Near each of the six corners of the hexagon the rhombi lock into a single orientation and stay there, and in the middle all three mix. The boundary between the two is nowhere in the rule and is not a hexagon: as the box grows it becomes the ellipse inscribed in the hexagon and tangent to all six sides, a circle when a, b and c are equal. This plate measures that boundary from the tiling on screen and prints it beside the prediction. The sampler is exact rather than merely long. Coupling from the past runs the empty box and the full box forward from further and further back on one fixed set of random choices, and once the two have met, what the pair of them has become by the present moment is a perfectly uniform draw, with no burn-in to judge and no bias left over. The present moment is the point: reading the tiling off at the moment the two met instead would quietly favor the tilings that are easy to meet in, and the plate would look exactly the same. The status line says how far back it had to start and how long the two took to meet, which is a fact about this hexagon and this seed rather than a number anyone chose. Two numbers there carry error bars, because a measurement printed beside a prediction without one cannot be read: the arctic radius is a mean over sixty angular sectors and the free area is a ratio of two counts, and both are compared with the prediction in standard deviations. A third number, how many rhombi of each orientation the tiling holds, is a plain count fixed by the box, so it is labeled exact and given no error bar at all. The agreement is a limit statement, so it improves as a, b and c grow together; where it does not agree the status line says so and, when the reason is known, gives it.',
     schema: [
       RANGE('Hexagon', 'a', 'Side a', GEOM, 3, SIDE, 1, String, { hint: 'The three sides of the box. The hexagon reads a, c, b, a, c, b around its rim and the tiling holds ab + bc + ca rhombi however the pieces fall.' }),
@@ -515,7 +529,7 @@
       RANGE('Tiles', 'inset', 'Gap inset (grout)', PAINT, 0, 0.3, 0.01, f2),
       RANGE('Tiles', 'strokeWidth', 'Stroke weight', PAINT, 0, 3, 0.1, f1),
       RANGE('Tiles', 'strokeColor', 'Stroke color index', PAINT, 0, 15, 1, String, { dimUnless: s => s.strokeWidth > 0 }),
-      RANGE('Arctic', 'ring', 'Frozen test radius', PAINT, 1, 4, 1, String, { hint: 'A tile counts as frozen when every tile within this many steps of it carries the same orientation. This is a systematic choice, not a statistical one, so it moves the answer rather than scattering it and it sits outside the error bar. Measured at 48, 48, 48 over thirty seeds: radius 1 gives an arctic radius of 0.9090 ± 0.0008, radius 2 gives 0.9827 ± 0.0006, radius 3 gives 0.9976 ± 0.0007 and radius 4 gives 1.0067 ± 0.0007. Those bars are on the mean of thirty plates, about five times tighter than the bar a single plate carries, which is why the status line on one plate can call radius 3 perfect agreement while thirty plates together show it is three sigma high. None of the four settings agrees with 1 once enough plates are averaged, because none of them is the arctic boundary itself; 3 is simply the one that lands closest.' }),
+      RANGE('Arctic', 'ring', 'Frozen test radius', PAINT, 1, 4, 1, String, { hint: 'A tile counts as frozen when every tile within this many steps of it carries the same orientation. This is a systematic choice, not a statistical one, so it moves the answer rather than scattering it and it sits outside the error bar. Measured at 48, 48, 48 over thirty seeds, the arctic radius against 1 and then the free area against the predicted 0.9069: radius 1 gives 0.9104 ± 0.0007 and 0.7521 ± 0.0012, radius 2 gives 0.9835 ± 0.0006 and 0.8775 ± 0.0011, radius 3 gives 0.9984 ± 0.0007 and 0.9042 ± 0.0013, radius 4 gives 1.0073 ± 0.0007 and 0.9205 ± 0.0014. Both printed numbers move together, so this setting shifts the whole measurement rather than one half of it. Those bars are on the mean of thirty plates, about five times tighter than the bar a single plate carries, which is why the status line on one plate can call radius 3 perfect agreement while thirty plates together show it is two sigma low. None of the four settings agrees once enough plates are averaged, because none of them is the arctic boundary itself; 3 is simply the one that lands closest, and where it lands depends on the size: over forty seeds at 32, 32, 32 it reads 1.0026 ± 0.0009, three sigma high, against two sigma low at 48, 48, 48, so it crosses somewhere between the two.' }),
       { group: 'Arctic', key: 'arctic', label: 'Draw the boundary', type: 'seg', kind: PAINT,
         options: [['off', 'Off'], ['pred', 'Predicted ellipse'], ['both', 'Predicted and measured']] },
       RANGE('Arctic', 'curveW', 'Curve weight', PAINT, 0.4, 5, 0.2, f1, { dimUnless: s => s.arctic !== 'off' }),
@@ -531,7 +545,10 @@
       seed: 'propp-wilson-1996',
     },
     presets: {
-      circle: pre('Arctic circle, a = b = c = 40', { a: 40, b: 40, c: 40, aspect: 'fit', sampler: 'cftp', fill: 'shade', shift: 0, inset: 0.04, strokeWidth: 0, ring: 3, arctic: 'off', margin: 0.06, grain: 0.04 }, Pal.kiln),
+      // No grout and a cool palette, so this is not the default plate at a larger side. Closing the
+      // gap between the rhombi makes the frozen corners read as three flat sheets of one color and
+      // the circle between them as the only place anything happens, which is the point of the preset.
+      circle: pre('Arctic circle, a = b = c = 40', { a: 40, b: 40, c: 40, aspect: 'fit', sampler: 'cftp', fill: 'shade', shift: 0, inset: 0, strokeWidth: 0, ring: 3, arctic: 'off', margin: 0.06, grain: 0.03 }, Pal.harbor),
       ellipse: pre('Skewed hexagon, the ellipse', { a: 24, b: 40, c: 46, aspect: 'fit', sampler: 'cftp', fill: 'shade', shift: 1, inset: 0.03, strokeWidth: 0, ring: 3, arctic: 'both', curveW: 1.8, margin: 0.06, grain: 0.03 }, Pal.verdigris),
       cubes: pre('Stack of cubes, a = b = c = 11', { a: 11, b: 11, c: 11, aspect: 'fit', sampler: 'cftp', fill: 'shade', shift: 0, inset: 0.05, strokeWidth: 1.2, strokeColor: 3, ring: 3, arctic: 'off', margin: 0.07, grain: 0 }, Pal.tram),
       flat: pre('Flattened box, wide frozen wedges', { a: 48, b: 48, c: 8, aspect: 'fit', sampler: 'cftp', fill: 'frozen', shift: 0, inset: 0.02, strokeWidth: 0, ring: 3, arctic: 'pred', curveW: 1.6, margin: 0.05, grain: 0.04 }, Pal.ember),
@@ -542,7 +559,7 @@
     hints: {
       Hexagon: 'The seed fixes every random choice the sampler makes, so a seed and a, b, c reprint exactly the same tiling. MacMahon counted how many there are to choose from, and the status line reports it.',
       Sampler: 'Coupling from the past has no fixed running time. It doubles how far back it starts until the two extreme tilings, run forward on the same random choices, arrive at the same place. At the largest hexagons an unlucky seed can run past the work budget, and the plate then falls back to a plain forward run and says in the status line that it is no longer exact. The status line also tests the exactness claim instead of only making it: four thousand draws from the 2 by 2 by 2 box, which MacMahon says has exactly twenty tilings, against the uniform distribution over those twenty. It is a real statistical test with a real null distribution, so about one seed in twenty reads past two sigma and about one in a hundred and fifty past three; that is the test working, not the sampler failing. A reading that large on seed after seed would be something else.',
-      Arctic: 'The measured boundary is read off the plate itself: every tile is called frozen or free from its own neighborhood, the free ones are counted in sixty angular sectors around the center of the predicted ellipse, and the radius that would enclose them is compared with the ellipse. In the coordinates that comparison is made in, the prediction is a radius of exactly 1 at every angle. The sixty sectors are not sixty independent numbers, so the error bar on their mean is widened by the measured autocorrelation around the circle, which usually leaves somewhere between eight and twenty-five of them and the status line says how many; the error bar on the free area comes from a seeded bootstrap over the same sectors, since a binomial bar on that many tiles would be more than twice too small. Both estimates were checked against the scatter across many seeds. It is a limit statement, so the agreement improves as a, b and c grow together and is poor when one of them is small: averaged over many seeds the radius reads 1.023 at 11, 11, 11 and 0.954 at 48, 48, 8, against 1.000 wherever the limit has been reached.',
+      Arctic: 'The measured boundary is read off the plate itself: every tile is called frozen or free from its own neighborhood, the free ones are counted in sixty angular sectors around the center of the predicted ellipse, and the radius that would enclose them is compared with the ellipse. In the coordinates that comparison is made in, the prediction is a radius of exactly 1 at every angle. The sixty sectors are not sixty independent numbers, so the error bar on their mean is widened by the measured autocorrelation around the circle, which over the shapes these presets use leaves somewhere between six and thirty of them and the status line says how many; the error bar on the free area comes from a seeded bootstrap over the same sectors, since a binomial bar on that many tiles would be more than twice too small. Both estimates were checked against the scatter across many seeds. It is a limit statement, so the agreement improves as a, b and c grow together and is poor when one of them is small: averaged over many seeds the radius reads 1.023 at 11, 11, 11 and 0.954 at 48, 48, 8, against 1.000 wherever the limit has been reached.',
       Tiles: 'Cube faces shades the three orientations light, middle and dark so the pile reads as solid, as if the light came from over your left shoulder. Height colors every face by how far above the floor of the box it sits and keeps the same shading over it.',
     },
     palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (tops, right faces, left faces)',
@@ -619,10 +636,33 @@
       // shift the number rather than scatter it, so none of them belongs inside the error bar, and
       // where the cause is not known this says nothing rather than inventing one.
       function whyOff(s) {
-        if (s.ring <= 1) return 'radius 1 is too weak a frozen test, and calls much of the disordered middle frozen: it reads near 0.91 at every size, not just this one';
+        // Measured at radius 1, twelve seeds each: 0.902 at 11, 11, 11, 0.912 at 24, 24, 24, 0.908 at
+        // 48, 48, 48, 0.896 at 20, 20, 40 and 0.777 at 48, 48, 8. So the offset is a property of the
+        // test rather than of this hexagon, but it is not one number everywhere, and a lopsided box
+        // takes it further down. Saying "near 0.91 at every size" would have been false on the flat
+        // preset, which is the one place a viewer is most likely to try radius 1.
+        if (s.ring <= 1) return 'radius 1 is too weak a frozen test, and calls much of the disordered middle frozen: it reads near 0.91 on hexagons whose three sides are comparable, whatever their size, and lower still on a lopsided one';
         if (s.ring >= 4) return 'radius 4 is strict enough to call a rare flip deep in a frozen corner disordered, which pushes the boundary out';
         const mn = Math.min(s.a, s.b, s.c), mx = Math.max(s.a, s.b, s.c);
-        if (mn * 3 <= mx) return 'the box is lopsided, shortest side ' + mn + ' against longest ' + mx + ': the limit shape needs all three to grow together, and that short a side leaves flat patches well inside the arctic region that a local test calls frozen. Every lopsided case measured reads low, 0.954 for the radius and 0.647 against 0.708 for the free area at 48, 48, 8';
+        // A lopsided box does not have one direction of error, and saying it did was wrong. Fifteen
+        // seeds at each of six shapes, radius against 1 and free area against the ellipse:
+        //   48,48, 8   0.955   0.649 against 0.708      one short side, reads low
+        //    8,48,48   0.955   0.650 against 0.708      one short side, reads low
+        //   48,48,16   0.989   0.815 against 0.831      one short side, reads low
+        //   16,16,48   1.002   0.874 against 0.869      two short sides, reads high
+        //   48,16,16   1.004   0.878 against 0.869      two short sides, reads high
+        //    6, 6,48   1.012   0.851 against 0.826      two short sides, reads high
+        // The split is whether one side is short against two long ones or two are short against one
+        // long one, which is what the ratio test below asks. Why the second family goes the other way
+        // is not something this has diagnosed, so it does not pretend to have.
+        if (mn * 3 <= mx) {
+          const q = [s.a, s.b, s.c].sort((x, y) => x - y);
+          return q[1] / q[0] >= q[2] / q[1]
+            ? 'the box is lopsided, one short side ' + q[0] + ' against two long ones, ' + q[1] + ' and ' + q[2] +
+              ': the limit shape needs all three to grow together, and one short side leaves wide flat wedges well inside the arctic region that a local test counts as frozen, so the plate reads low. Measured over fifteen seeds, 0.955 for the radius and 0.649 against 0.708 for the free area at 48, 48, 8'
+            : 'the box is lopsided, two short sides ' + q[0] + ' and ' + q[1] + ' against one long one, ' + q[2] +
+              ': the limit shape needs all three to grow together. Measured over fifteen seeds this family reads a little high rather than low, 1.002 for the radius at 16, 16, 48 and 1.012 at 6, 6, 48, with the free area high with it. Why it leans the opposite way from a box with one short side is not diagnosed';
+        }
         if (mx <= 16) return 'the ellipse is a limit shape and this hexagon is small: the boundary is a few tiles wide, so the ring test finds disagreeing neighborhoods some way into the corners and the free region reads large';
         return null;
       }
@@ -639,15 +679,26 @@
             (tile.sound ? ', an exact count' : ', WHICH IS WRONG: ' + tile.want.map(v => v.toLocaleString()).join(' + ') +
               ' expected, ' + tile.bad + ' misplaced');
         }
-        if (mac > 0) out += ' · MacMahon <b>10^' + Math.round(mac).toLocaleString() + '</b> tilings';
+        // MacMahon's count is an integer with hundreds of digits and this is its base ten logarithm
+        // rounded, so it says the size and not the number: "about" rather than a false exactness.
+        if (mac > 0) out += ' · MacMahon about <b>10^' + Math.round(mac).toLocaleString() + '</b> tilings';
         out += '</span>';
         // How this draw was made, and then the exactness claim tested rather than merely made.
+        //
+        // The count is named "sweep" on purpose. tools/check.js establishes that two loads of one
+        // recipe are comparable either by seeing both go still or by reading the same step or sweep
+        // count out of the status, and it can do neither here by accident: the status is longer than
+        // the 200 characters the harness keeps, so the seed the shell appends is cut off and the
+        // stillness route never fires. With no count either, two different plates would have been
+        // reported as "not comparable" rather than as a failure, which is a determinism check that
+        // silently does not run. This number is a deterministic function of the recipe, so the two
+        // loads agree on it whenever the plate is right, and the check has something to hold.
         let sp2 = '';
         if (info) {
           sp2 += info.exact
-            ? 'CFTP <b>exact</b>, from <b>' + info.T.toLocaleString() + '</b> back, met after <b>' +
+            ? 'CFTP <b>exact</b>, from <b>' + info.T.toLocaleString() + '</b> back, met after sweep <b>' +
               info.coal.toLocaleString() + '</b>'
-            : 'forward run of <b>' + info.total.toLocaleString() + '</b> sweeps, <b>not exact</b>' +
+            : 'forward run to sweep <b>' + info.total.toLocaleString() + '</b>, <b>not exact</b>' +
               (info.fell ? ', CFTP over budget' : '');
         }
         if (self) {

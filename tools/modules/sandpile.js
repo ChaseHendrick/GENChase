@@ -4,20 +4,91 @@
   'use strict';
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
-  const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2);
+  const f2 = v => v.toFixed(2), f3 = v => v.toFixed(3);
   const pct = v => Math.round(v * 100) + '%';
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
+  const PI = Math.PI;
+
+  /* ---------- uncertainty ---------- */
+  // A measured number printed beside a theoretical one without an error bar says nothing at all:
+  // there is no way to tell agreement from disagreement. Every measurement this tab prints carries
+  // one, or says in so many words that it is exact and carries no sampling error. Nothing is rounded
+  // toward the theory and a large deviation is named rather than buried.
+  function sigmas(v, se, ref) {
+    if (!(isFinite(v) && isFinite(se) && se > 0)) return null;
+    return (v - ref) / se;
+  }
+  function sigTxt(z) {
+    if (z === null) return 'no uncertainty available';
+    const m = Math.abs(z);
+    return m.toFixed(1) + '\u03c3 ' + (m < 0.05 ? 'from it' : (z > 0 ? 'high' : 'low'));
+  }
+  // A sigma from a fit with one or two degrees of freedom is not a sigma. The residual based standard
+  // error is itself a random variable with that many degrees of freedom, so the ratio follows Student's
+  // t, whose tail is far fatter than the normal one. The two small cases have closed form tails,
+  //
+  //   df = 1, which is Cauchy:  P(|T| > t) = 1 - (2/pi) atan(t)
+  //   df = 2:                   P(|T| > t) = 1 - t / sqrt(t^2 + 2)
+  //
+  // and from 3 d.f. up the gap is small enough that the ratio is reported as it stands. The
+  // probability is turned back into the equivalent normal deviate with the Hastings rational
+  // approximation. The rotor ladder below has four rungs and so two degrees of freedom, which is
+  // exactly the case this matters for: a raw ratio there would print half a sigma too large.
+  function tToSigma(t, df) {
+    const a = Math.abs(t);
+    if (!(df >= 1) || df >= 3 || !isFinite(a)) return a;
+    const pr = df === 1 ? 1 - (2 / PI) * Math.atan(a) : 1 - a / Math.sqrt(a * a + 2);
+    const q = Math.max(1e-12, Math.min(0.5, pr / 2));
+    const u = Math.sqrt(-2 * Math.log(q));
+    return u - (2.30753 + 0.27061 * u) / (1 + 0.99229 * u + 0.04481 * u * u);
+  }
+  function devTxt(v, se, ref, df) {
+    const z = sigmas(v, se, ref);
+    if (z === null) return 'no uncertainty available';
+    return sigTxt(z < 0 ? -tToSigma(z, df) : tToSigma(z, df));
+  }
+  const pm = (v, se, d) => v.toFixed(d) + ' \u00b1 ' + (isFinite(se) && se > 0 ? se.toFixed(d) : '?');
+  // Mean, sample standard deviation and the standard error of the mean, sd / sqrt(N), with N kept so
+  // the status line can say how many samples are behind the bar. One sample has no spread to report.
+  function meanSe(a) {
+    const n = a.length;
+    let m = 0; for (let i = 0; i < n; i++) m += a[i]; m /= n;
+    if (n < 2) return { m, sd: NaN, se: NaN, n };
+    let s = 0; for (let i = 0; i < n; i++) { const d = a[i] - m; s += d * d; }
+    const sd = Math.sqrt(s / (n - 1));
+    return { m, sd, se: sd / Math.sqrt(n), n };
+  }
+  // Ordinary least squares slope with the textbook standard error, se(b)^2 = s^2 / Sxx and
+  // s^2 = sum(residual^2) / (k - 2): computed from the residuals and from the spread of the
+  // independent variable, which is the only way it means anything. Three points is the fewest that
+  // leaves a degree of freedom; below that the caller is handed no fit rather than a bare slope.
+  function fitSlope(xs, ys) {
+    const k = xs.length;
+    if (k < 3) return { a: NaN, c: NaN, se: NaN, df: 0 };
+    let mx = 0, my = 0;
+    for (let i = 0; i < k; i++) { mx += xs[i]; my += ys[i]; }
+    mx /= k; my /= k;
+    let sxx = 0, sxy = 0;
+    for (let i = 0; i < k; i++) { const d = xs[i] - mx; sxx += d * d; sxy += d * (ys[i] - my); }
+    if (!(sxx > 1e-12)) return { a: NaN, c: NaN, se: NaN, df: k - 2 };
+    const a = sxy / sxx, c = my - a * mx;
+    let ss = 0;
+    for (let i = 0; i < k; i++) { const r = ys[i] - (a * xs[i] + c); ss += r * r; }
+    return { a, c, se: Math.sqrt(ss / (k - 2) / sxx), df: k - 2 };
+  }
 
   // Directions in screen order with y running down the buffer: 0 east, 1 south, 2 west, 3 north.
   // A rotor advances 0 -> 1 -> 2 -> 3 -> 0, which is a quarter turn clockwise on the plate.
 
   // Lattice half-width. The aggregate of n particles has radius about sqrt(n / pi); a particle only ever
   // moves while it is standing on an occupied site, so it can never get outside the aggregate, and the
-  // margin below has never been approached in testing up to n = 100,000. The simulations still check
-  // whether a particle has come to rest on the border ring and stop if one ever does.
+  // margin below was not approached anywhere in the runs behind this tab, which go to n = 50,000, the
+  // largest the slider offers. That is a measurement on the sizes actually offered and not a proof, so
+  // every loop here checks whether a particle has come to rest on the border ring, stops if one ever
+  // does, and says so in the status line rather than quietly drawing a clipped aggregate.
   const latticeR = n => Math.ceil(Math.sqrt(n / Math.PI)) + 12 + Math.ceil(2.5 * Math.log(Math.max(2, n)));
   // Half-width of the plate itself, fixed in advance from n so the picture does not jump size while it builds.
   const plateR = n => Math.ceil(Math.sqrt(n / Math.PI)) + 6;
@@ -100,32 +171,51 @@
   }
 
   // The same rotor-router aggregate built in a completely different order. Instead of routing one particle
-  // to rest before the next one starts, all n particles are released at once and advanced in lockstep, one
-  // legal move each per round: a particle standing on an occupied site turns that rotor and steps, a particle
-  // standing on an unoccupied site claims it and drops out. Every interleaving of legal moves is allowed, and
-  // the abelian property says they all end in the same place. That is what the plate checks, cell by cell.
+  // to rest before the next one starts, all n particles are released at once and advanced in a rotation: on
+  // each pass a particle standing on an occupied site turns that rotor and follows it, and a particle
+  // standing on an unoccupied site claims it and drops out. Every interleaving of legal moves is allowed and
+  // the abelian property says they all end in the same place; that is what the plate checks, cell by cell,
+  // on the occupied set, on the final rotor at every site and on the odometer.
+  //
+  // BATCH is how many moves a particle is given before the rotation passes on. One move each is the most
+  // thoroughly interleaved order there is and it is what this started as, but writing every particle's
+  // position back on every single move costs about as much as the move does: measured at n = 20,000, one
+  // move per pass took 1,390 ms against 826 at eight, 629 at thirty-two and 583 at a hundred and twenty
+  // eight, where routing the same aggregate one particle at a time took 466. Thirty-two still has all
+  // twenty thousand particles in flight at once against the one the sequential order has, which is the
+  // whole substance of the claim. All four of those settings were compared against the sequential
+  // aggregate cell by cell while this was chosen, and all four agreed in every cell.
+  const BATCH = 32;
   function newRoundRobin(W, c, n, rot0) {
     const N = W * W;
     const occ = new Uint8Array(N), rot = new Uint8Array(N), od = new Int32Array(N);
     rot.set(rot0);
     const pos = new Int32Array(n);
     for (let i = 0; i < n; i++) pos[i] = c;
-    let m = n;
+    let m = n, escaped = false;
+    // The same border guard the one at a time loop carries. Without it a particle that reached the
+    // edge ring would step off the buffer, and a typed array would swallow the write instead of
+    // throwing: the comparison would then report a difference with no way to say where it came from.
+    const edge = p => p < W || p >= N - W || (p % W) === 0 || (p % W) === W - 1;
     return {
       occ, rot, od,
-      left: () => m,
+      left: () => m, escaped: () => escaped,
       step(ms) {
         const t0 = performance.now();
         while (m > 0) {
           let w = 0;
           for (let i = 0; i < m; i++) {
-            let p = pos[i];
-            if (occ[p] === 0) { occ[p] = 1; continue; }
-            const d = (rot[p] + 1) & 3; rot[p] = d; od[p]++;
-            p += d === 0 ? 1 : d === 1 ? W : d === 2 ? -1 : -W;
+            let p = pos[i], moved = 0;
+            while (moved < BATCH && occ[p]) {
+              const d = (rot[p] + 1) & 3; rot[p] = d; od[p]++;
+              p += d === 0 ? 1 : d === 1 ? W : d === 2 ? -1 : -W;
+              moved++;
+            }
+            if (occ[p] === 0) { occ[p] = 1; if (edge(p)) escaped = true; continue; }
             pos[w++] = p;
           }
           m = w;
+          if (escaped) { m = 0; break; }
           if (performance.now() - t0 > ms) break;
         }
         return m === 0;
@@ -150,6 +240,147 @@
 
   function maxOf(a) { let m = 0; for (let i = 0; i < a.length; i++) if (a[i] > m) m = a[i]; return m; }
 
+  /* ---------- the self-check ladder ---------- */
+  // The plate itself is one aggregate of each kind, and one aggregate carries no error bar: there is
+  // nothing to take a standard deviation over. So the tab grows a small ladder of its own, in the
+  // background, once the plate is up, and that ladder is where every sigma on the status line comes
+  // from. Four rungs, because a fit needs at least three to have a degree of freedom and the top rung
+  // costs three quarters of the whole ladder: both models spend about n^2 / 2*pi steps in total, so
+  // 8,000 is where a longer lever arm in log n stops paying for the second it adds.
+  const LADDER = [1000, 2000, 4000, 8000];
+  // Independent random aggregates per rung. Six is not many, and the status line says it is six rather
+  // than hiding it; the standard error of a mean of six is itself uncertain by about a third, which is
+  // why the deviations below are quoted to one decimal and not two.
+  const REPS = 6;
+  // Resamples behind the bootstrapped slope. Four hundred settles the standard deviation of the slope
+  // to about four per cent of itself, which is finer than the slope is known.
+  const BOOT = 400;
+  // Computed once per (seed, starting arrows) and kept, so that moving the particle slider or switching
+  // between the two growths does not pay for it again.
+  const CHECKS = new Map();
+
+  // The ladder, run in slices so the page never blocks. Each job is one whole aggregate; a job is
+  // stepped for whatever is left of the slice and picked up again on the next one.
+  function newLadder(seed, rot0) {
+    const jobs = [];
+    // With every rotor pointing the same way, or laid out in stripes, the rotor aggregate at a given n
+    // is a single object: one run is the whole population and there is nothing to average. Scattered
+    // rotors are drawn from the seed, so that case does get an ensemble.
+    const rotReps = rot0 === 'random' ? REPS : 1;
+    for (let i = 0; i < LADDER.length; i++) {
+      const n = LADDER[i];
+      for (let j = 0; j < rotReps; j++) jobs.push({ kind: 'rotor', i, n, seed: seed + '/chk/rot/' + n + '/' + j });
+      for (let j = 0; j < REPS; j++) jobs.push({ kind: 'idla', i, n, seed: seed + '/chk/idla/' + n + '/' + j });
+    }
+    const rot = LADDER.map(() => []), idla = LADDER.map(() => []);
+    let q = 0, sim = null, cur = null, R = 0, W = 0, bad = 0;
+    return {
+      done: () => q, total: jobs.length, result: null,
+      step(ms) {
+        const t0 = performance.now();
+        while (q < jobs.length) {
+          if (performance.now() - t0 >= ms) return false;
+          if (!sim) {
+            cur = jobs[q];
+            R = latticeR(cur.n); W = 2 * R + 1;
+            const c = R * W + R;
+            sim = cur.kind === 'rotor'
+              ? newRotorSim(W, c, cur.n, initRotors(rot0, W, W * W, U.makeRng(cur.seed)))
+              : newIdlaSim(W, c, cur.n, U.makeRng(cur.seed));
+          }
+          if (!sim.step(Math.max(1, ms - (performance.now() - t0)))) return false;
+          const st = radii(sim.occ, W, R, R);
+          // Every particle occupies exactly one site, so an aggregate that does not hold exactly n of
+          // them, or that reached the border ring, is not the object the theorem is about. Such a run
+          // is counted and named rather than averaged in.
+          if (sim.escaped() || st.cells !== cur.n) bad++;
+          else (cur.kind === 'rotor' ? rot : idla)[cur.i].push(st);
+          sim = null; q++;
+        }
+        // A rung the runs all fell out of has no mean and no bar. NaN is not an error bar, so the
+        // ladder says it could not be measured rather than printing one.
+        const thin = idla.some(a => a.length < 2) || rot.some(a => a.length < 1);
+        this.result = thin ? { broken: true, bad } : summarizeLadder(rot, idla, seed, rot0, bad);
+        return true;
+      },
+    };
+  }
+
+  // Everything the status line says in sigmas is computed here, once.
+  function summarizeLadder(rot, idla, seed, rot0, bad) {
+    const spread = a => a.map(o => o.out - o.inr);
+    const rs = rot.map(a => meanSe(spread(a)));
+    const is = idla.map(a => meanSe(spread(a)));
+    const iIn = idla.map(a => meanSe(a.map(o => o.inr)));
+    const iOut = idla.map(a => meanSe(a.map(o => o.out)));
+    const rIn = rot.map(a => meanSe(a.map(o => o.inr)));
+    const rOut = rot.map(a => meanSe(a.map(o => o.out)));
+    const xs = LADDER.map(n => Math.log(n));
+    const T = LADDER.length - 1, nT = LADDER[T], rootT = Math.sqrt(nT / PI), lnT = Math.log(nT);
+
+    // The rim width is fitted as a power of n rather than against log n directly, because a power is
+    // the thing there is an alternative hypothesis for. Over this ladder a width exactly proportional
+    // to log n is itself a small power, and this is what that power is; it is derived from the ladder
+    // rather than written down, so the two cannot drift apart if the rungs ever move. A rim that grew
+    // like the square root of n, as a genuinely rough interface would, sits at 0.5 instead.
+    const pLog = fitSlope(xs, xs.map(x => Math.log(x))).a;
+    const fr = fitSlope(xs, rs.map(o => Math.log(o.m)));
+    const fi = fitSlope(xs, is.map(o => Math.log(o.m)));
+
+    // The rotor ladder with a fixed starting arrangement has no ensemble to resample: each rung is one
+    // number with no sampling error in it at all, and the only scatter in that fit is how far four
+    // exact points miss a straight line. Its slope therefore carries the residual standard error on two
+    // degrees of freedom, read as a Student's t. The random ladder does have an ensemble, so its slope
+    // is bootstrapped over the replicas with the seeded generator instead: propagating a standard error
+    // through a log and a least squares fit by hand is exactly the case the house rules say to
+    // bootstrap, and the resample also carries the rung to rung correlation that propagation would miss.
+    const brng = U.makeRng(seed + '/boot');
+    const sl = [];
+    for (let b = 0; b < BOOT; b++) {
+      const ys = idla.map(a => {
+        let t = 0;
+        for (let j = 0; j < a.length; j++) { const o = a[(brng() * a.length) | 0]; t += o.out - o.inr; }
+        return Math.log(t / a.length);
+      });
+      const f = fitSlope(xs, ys);
+      if (isFinite(f.a)) sl.push(f.a);
+    }
+    // Two standard errors are available for that slope and they answer different questions. The
+    // bootstrap says how much the slope moves when the six aggregates at each rung are redrawn, and it
+    // is blind to the line being the wrong shape. The residual standard error says how far the four
+    // rung means miss a straight line, and it is blind to how well each mean is known. Reporting the
+    // smaller of the two would claim a precision neither of them supports, so the larger is used and
+    // both were looked at: on the default seed they are 0.029 and 0.018, the bootstrap winning.
+    const bootSd = sl.length > 1 ? meanSe(sl).sd : NaN;
+    const bootSe = isFinite(bootSd) && isFinite(fi.se) ? Math.max(bootSd, fi.se) : (isFinite(bootSd) ? bootSd : fi.se);
+
+    // The ratio of the two rim widths at the top rung. When the rotor side is a single exact number the
+    // whole relative error is the random side's; when the starting rotors are scattered both sides have
+    // one and they add in quadrature.
+    const rExact = rs[T].n < 2;
+    const ratio = is[T].m / rs[T].m;
+    const relI = is[T].se / is[T].m;
+    const relR = rExact ? 0 : rs[T].se / rs[T].m;
+    const ratioSe = ratio * Math.sqrt(relI * relI + relR * relR);
+
+    return {
+      rot0, bad, reps: REPS, nTop: nT, rootTop: rootT, lnTop: lnT,
+      rSpread: rs[T], iSpread: is[T], rExact,
+      rOut: rOut[T], rIn: rIn[T], iOut: iOut[T], iIn: iIn[T],
+      ratio, ratioSe, ratioZ: sigmas(ratio, ratioSe, 1),
+      pLog, fr, fi, bootSe,
+      // out - sqrt(n/pi) and sqrt(n/pi) - in at the top rung. The theorem does not say either of these
+      // is zero. It bounds the second by O(log r) and the first only by O(r^alpha) for alpha above a
+      // half, so zero is the wrong reference to take a sigma against on either side, and the status
+      // line quotes each offset as a fraction of log n, which is the scale the inner bound is written
+      // in and, from what this ladder measures, the scale the outer one behaves on as well.
+      iOutOff: iOut[T].m - rootT, iOutOffSe: iOut[T].se,
+      iInOff: rootT - iIn[T].m, iInOffSe: iIn[T].se,
+      rOutOff: rOut[T].m - rootT, rOutOffSe: rExact ? NaN : rOut[T].se,
+      rInOff: rootT - rIn[T].m, rInOffSe: rExact ? NaN : rIn[T].se,
+    };
+  }
+
   const band = (t, cyc) => {
     t = U.clamp(t, 0, 1);
     if (cyc <= 1) return t;
@@ -164,9 +395,9 @@
     tab: 'Rotor',
     subtitle: 'rotor-router aggregation and internal DLA · 2009',
     order: 41,
-    equation: 'at an occupied site turn the rotor a quarter turn and follow it; stop at the first unoccupied site.   B(r − c log r) ⊆ A(n) ⊆ B(r + c log r),  r = √(n/π)',
-    credit: "Lionel Levine and Yuval Peres, 'Strong spherical asymptotics for rotor-router aggregation and the divisible sandpile', Potential Analysis 30, 1 (2009), is the theorem this plate measures: the rotor-router aggregate of n particles contains a disk of radius √(n/π) − O(log n) and sits inside one of radius √(n/π) + O(log n), with no probability anywhere in the statement. The rotor-router walk and the aggregation model are James Propp's; they are studied in Ander Holroyd and James Propp, 'Rotor walks and Markov chains', Contemporary Mathematics 520 (2010), and in Joshua Cooper and Joel Spencer, 'Simulating a random walk with constant error', Combinatorics, Probability and Computing 15 (2006). Internal diffusion limited aggregation, the random counterpart drawn beside it, is Gregory Lawler, Maury Bramson and David Griffeath, 'Internal diffusion limited aggregation', Annals of Probability 20, 2117 (1992), who proved its limit shape is a disk; David Jerison, Lionel Levine and Scott Sheffield, Journal of the American Mathematical Society 25, 271 (2012), showed its fluctuations are logarithmic as well, so the gap the plate measures between the two is one of constants and of certainty, not of orders. That a finished aggregate does not depend on the order the particles were routed in is the abelian property of Persi Diaconis and William Fulton, Rendiconti del Seminario Matematico dell'Università e del Politecnico di Torino (1991); it is the same argument Deepak Dhar, Physical Review Letters 64, 1613 (1990), made for the abelian sandpile of Per Bak, Chao Tang and Kurt Wiesenfeld, Physical Review Letters 59, 381 (1987).",
-    blurb: 'Give every site of the square lattice a little arrow and one rule: when a particle arrives, turn the arrow a quarter turn and send the particle the way it now points. Release particles one at a time from the origin, each walking until it reaches a site nobody has claimed, and let it stop there. Nothing in that is random, and yet twenty thousand particles settle into a disk that is round to within about a cell and a half. That is the theorem: the inradius and the outradius both sit within a constant times log n of the radius √(n/π) a disk of that area would have, and the status line measures all three off the plate rather than asserting them. Beside it is internal diffusion limited aggregation, the identical growth with a coin flip in place of the arrow at the identical particle count, and the comparison is the point: the random blob is round too, but its rim is frayed several times as wide. The odometer counts how many particles passed through each site and bands the count into contours, so the deterministic level sets come out as clean circles and the random ones shred at the edge. The rotor view draws the arrows themselves, and it is the strangest picture here, a quilt of patches with no randomness anywhere in it. The seed changes only the coin flips of the random aggregate, the optional scatter of the starting arrows, and the paper grain.',
+    equation: 'at an occupied site turn the rotor a quarter turn and follow it; stop at the first unoccupied site.   inradius ≥ r − O(log r),  outradius ≤ r + O(r^α) for every α > 1 − 1/d,  r = √(n/π) in d = 2',
+    credit: "Lionel Levine and Yuval Peres, 'Strong spherical asymptotics for rotor-router aggregation and the divisible sandpile', Potential Analysis 30, 1 (2009), is the theorem this plate measures. For an aggregate of n particles in d dimensions, written as n = ω_d r^d, they prove the inradius is at least r − O(log r) and the outradius at most r + O(r^α) for every α > 1 − 1/d, which in the plane is r + O(r^α) for every α > 1/2. The two sides of that sandwich are not the same strength, and the plate does not pretend they are: the inner bound is logarithmic and proved, the outer bound proved here is a power, and the status line reports what this lattice actually measures rather than what the tighter of the two would suggest. There is no probability anywhere in the statement. The rotor-router walk and the aggregation model are James Propp's; they are studied in Ander Holroyd and James Propp, 'Rotor walks and Markov chains', Contemporary Mathematics 520 (2010), and in Joshua Cooper and Joel Spencer, 'Simulating a random walk with constant error', Combinatorics, Probability and Computing 15 (2006). Internal diffusion limited aggregation, the random counterpart drawn beside it, is Gregory Lawler, Maury Bramson and David Griffeath, 'Internal diffusion limited aggregation', Annals of Probability 20, 2117 (1992), who proved its limit shape is a disk; David Jerison, Lionel Levine and Scott Sheffield, Journal of the American Mathematical Society 25, 271 (2012), showed its fluctuations are logarithmic as well, so the gap the plate measures between the two is one of constants and of certainty, not of orders. That a finished aggregate does not depend on the order the particles were routed in is the abelian property of Persi Diaconis and William Fulton, Rendiconti del Seminario Matematico dell'Università e del Politecnico di Torino (1991); it is the same argument Deepak Dhar, Physical Review Letters 64, 1613 (1990), made for the abelian sandpile of Per Bak, Chao Tang and Kurt Wiesenfeld, Physical Review Letters 59, 381 (1987).",
+    blurb: 'Give every site of the square lattice a little arrow and one rule: when a particle arrives, turn the arrow a quarter turn and send the particle the way it now points. Release particles one at a time from the origin, each walking until it reaches a site nobody has claimed, and let it stop there. Nothing in that is random, and yet twenty thousand particles settle into a disk that is round to within about a cell and a half. The theorem behind that is one sided in a way worth knowing: Levine and Peres prove the aggregate contains a disk of radius √(n/π) − O(log n), and that it sits inside one of radius √(n/π) + O(n^β) for every β > 1/4, which is a far weaker statement than the inner one. The status line measures the inradius, the outradius and √(n/π) off the plate rather than asserting any of them, and it carries an error bar on every measurement that has one and says plainly which measurements are exact. Beside it is internal diffusion limited aggregation, the identical growth with a coin flip in place of the arrow at the identical particle count, and the comparison is the point: the random blob is round too, but its rim is frayed several times as wide. The status line makes that a measurement instead of an impression. It grows a small ladder of aggregates of both kinds, at 1,000, 2,000, 4,000 and 8,000 particles, several independent random ones at each rung, and reports the ratio of the two rim widths with the error bar the ensemble gives it, together with how each rim width grows with n. Two things about how that is read are worth knowing. The outradius is not supposed to equal √(n/π): the theorem asks for an offset that grows no faster than a logarithm, so zero is the wrong thing to compare against and the offset is quoted as a fraction of log n instead. And the rim width is fitted as a power of n rather than against log n directly, because a power is the thing there is an alternative to: over this ladder a width proportional to log n is itself a small power, the status line says which, and a rim that grew like √n, the way a genuinely rough interface does, would sit at 0.5 instead. The random rim lands on the logarithm. The rotor rim does not grow measurably at all across this decade, which the theorem allows, since its logarithm is an upper bound and nothing in it says the bound is reached. The odometer counts how many particles passed through each site and bands the count into contours, so the deterministic level sets come out as clean circles and the random ones shred at the edge. The rotor view draws the arrows themselves, and it is the strangest picture here, a quilt of patches with no randomness anywhere in it. The seed changes only the coin flips of the random aggregate, the optional scatter of the starting arrows, and the paper grain.',
     schema: [
       { group: 'Aggregate', key: 'mode', label: 'Growth', type: 'seg', kind: GEOM, wrap: true,
         options: [['rotor', 'Rotor-router'], ['idla', 'Internal DLA'], ['both', 'Side by side']],
@@ -205,7 +436,7 @@
       stripes: pre('Started on the diagonal', { mode: 'rotor', n: 20000, rot0: 'checker', view: 'rotors', rings: false, grain: 0 }, Pal.verdigris),
     },
     hints: {
-      Aggregate: 'The rotor-router aggregate is fully determined by the starting arrows: no seed, no coin, the same picture every time. The seed moves only the random walk of the internal DLA aggregate, the scattered starting arrows if you choose them, and the grain.',
+      Aggregate: 'The rotor-router aggregate is fully determined by the starting arrows: no seed, no coin, the same picture every time. The seed moves only the random walk of the internal DLA aggregate, the scattered starting arrows if you choose them, and the grain. That is also why half the numbers in the status line carry an error bar and half of them say "exact": a quantity with nothing random in it has no sampling error to report, and inventing a bar for it would be worse than saying so. The rotor rim at a given n and a given starting arrangement, the cell counts, and the cell by cell comparison of the two firing orders are all in that class. The random rim is not, so it is measured over an ensemble.',
       Picture: 'One pixel per lattice site, scaled up with nearest sampling. The picture is exact integers on a lattice, so nothing here is ever interpolated, on screen or in print.',
       Finish: 'Grain is added per lattice cell, so it scales up with the cells rather than sitting on top of the print as a separate texture.',
     },
@@ -241,20 +472,58 @@
       let N = 0, R = 0, CR = 0, S = 0;
       let statRotor = null, statIdla = null, sharedMax = 1;
       let abelian = null, warn = '';
+      // The self-check ladder runs on its own timer rather than as another item in the plate's task
+      // list, so that moving the particle slider does not throw away a ladder halfway through: the
+      // ladder depends on the seed and the starting arrows, and on nothing else the sliders touch.
+      let chk = null, chkTimer = 0, chkKey = '', chkRes = null;
+      // Repainting a half built plate on every work slice costs more than the work does. The whole
+      // picture is rebuilt from scratch each time, one lattice site per pixel, and in a software
+      // renderer that was running four times the arithmetic the simulation itself was. Four frames a
+      // second is still a plate you watch grow, and it cut the time to the finished picture by more
+      // than half. The finished plate is painted unconditionally, so nothing depends on the throttle.
+      const PROGRESS_MS = 240;
+      let lastTick = 0;
+      function tickView(txt, repaintToo) {
+        const now = performance.now();
+        if (now - lastTick < PROGRESS_MS) return;
+        lastTick = now;
+        if (repaintToo) paint();
+        status(txt);
+      }
 
       function stopTimer() { if (timer) { clearTimeout(timer); timer = 0; } }
       function pump() {
         timer = 0;
         if (paused || !tasks) return;
         const t = tasks[ti];
-        if (!t) { tasks = null; return; }
+        if (!t) { tasks = null; startCheck(); return; }
         const fin = t.step(28);
         if (fin) { if (t.after) t.after(); ti++; }
         else if (t.tick) t.tick();
         if (tasks && ti < tasks.length) timer = setTimeout(pump, 0);
-        else tasks = null;
+        else { tasks = null; startCheck(); }
       }
       function start(list) { stopTimer(); tasks = list; ti = 0; timer = setTimeout(pump, 0); }
+
+      /* ---- the self-check ladder ---- */
+      const checkKeyOf = s => s.seed + '|' + (s.rot0 || 'east');
+      function stopCheck() { if (chkTimer) { clearTimeout(chkTimer); chkTimer = 0; } chk = null; }
+      // Started only once the plate is finished, so the picture never waits on the arithmetic behind it.
+      function startCheck() {
+        const s = host.getState(), ck = checkKeyOf(s);
+        if (chkKey === ck && (chkRes || chk)) { if (chkRes) status(); return; }
+        stopCheck(); chkKey = ck; chkRes = null;
+        if (CHECKS.has(ck)) { chkRes = CHECKS.get(ck); status(); return; }
+        chk = newLadder(s.seed, s.rot0 || 'east');
+        chkTimer = setTimeout(pumpCheck, 0);
+      }
+      function pumpCheck() {
+        chkTimer = 0;
+        if (paused || !chk) return;
+        if (chk.step(24)) { chkRes = chk.result; CHECKS.set(chkKey, chkRes); chk = null; status(); return; }
+        tickView(undefined, false);
+        chkTimer = setTimeout(pumpCheck, 0);
+      }
 
       /* ---- picture ---- */
       let lut = null, lutKey = '';
@@ -366,8 +635,15 @@
       }
 
       /* ---- status ---- */
-      function line(st) {
-        return 'in <b>' + f1(st.inr) + '</b> out <b>' + f1(st.out) + '</b> · spread <b>' + f2(st.out - st.inr) + '</b>';
+      // "exact" on this tab is not a compliment, it is a statement that the quantity has no sampling
+      // error of any kind because there is nothing random in it to sample: the rotor aggregate at a given
+      // n and a given starting arrangement is one object, and a cell count is a count. Saying so is more
+      // informative than inventing a bar for it, and it is why the rotor numbers below carry no plus or
+      // minus while the random ones do. The status line has a plate to sit under, so it says "exact" and
+      // leaves the sentence explaining what that means to the panel on the left.
+      function line(st, exact) {
+        return 'in <b>' + f2(st.inr) + '</b> out <b>' + f2(st.out) + '</b> rim <b>' + f2(st.out - st.inr) +
+          '</b> ' + (exact ? 'exact' : 'one draw');
       }
       // Total moves made by all the particles put together. It is the cost of the plate and it grows like
       // n², because the last particle has to cross an aggregate of radius √(n/π) before it can stop.
@@ -375,27 +651,62 @@
         const v = (rotorSim ? rotorSim.steps() : 0) + (idlaSim ? idlaSim.steps() : 0);
         return v >= 1e6 ? (v / 1e6).toFixed(1) + 'M' : v.toLocaleString();
       }
+
+      // The ladder, said out loud. Every sigma printed anywhere on this tab is printed here, and every
+      // measured number printed beside a theoretical one is printed with its bar. It is written tight
+      // because it has a plate to sit under; the panel on the left carries the sentences.
+      function checkSpans() {
+        if (!chkRes) {
+          return chk ? '<span>ladder <b>' + chk.done() + '/' + chk.total + '</b> grown\u2026</span>' : '';
+        }
+        const c = chkRes;
+        if (c.broken) return '<span><b>the self-check ladder could not be measured: ' + c.bad +
+          ' of its aggregates did not hold exactly n cells</b></span>';
+        const nT = c.nTop.toLocaleString(), L = c.lnTop;
+        const rimR = c.rExact ? f2(c.rSpread.m) + '</b> exact' : pm(c.rSpread.m, c.rSpread.se, 2) + '</b>';
+        // The theorem does not say either radius sits at exactly sqrt(n/pi); it says the two offsets are
+        // bounded. So zero is not treated as the prediction: each offset is quoted in units of log n,
+        // which is the scale the theorem talks in, with its bar carried through a division by an exact
+        // constant. The rotor side carries a bar only when the starting arrows are scattered, which is the
+        // one setting that gives it an ensemble; otherwise it is one object and says so.
+        let a = '<span>ladder n = ' + nT + ', ' + c.reps + ' random: rim <b>' + pm(c.iSpread.m, c.iSpread.se, 2) +
+          '</b> against rotor <b>' + rimR + ', rounder <b>\u00d7' + pm(c.ratio, c.ratioSe, 2) + '</b>, <b>' +
+          sigTxt(c.ratioZ) + '</b> from 1 \u00b7 \u221a(n/\u03c0) <b>' + f2(c.rootTop) + '</b>: random out <b>+' +
+          pm(c.iOutOff, c.iOutOffSe, 2) + '</b> in <b>\u2212' + pm(c.iInOff, c.iInOffSe, 2) + '</b>, that is <b>' +
+          pm(c.iOutOff / L, c.iOutOffSe / L, 3) + '</b> and <b>' + pm(c.iInOff / L, c.iInOffSe / L, 3) +
+          '</b> of log n ' + f2(L) + '; rotor <b>' +
+          (c.rExact ? '+' + f2(c.rOutOff) + ' \u2212' + f2(c.rInOff) + '</b> exact'
+                    : '+' + pm(c.rOutOff, c.rOutOffSe, 2) + ' \u2212' + pm(c.rInOff, c.rInOffSe, 2) + '</b>') + '</span>';
+        // The fitted exponent, with the standard error of the fit coefficient rather than a guess at it.
+        const rDev = devTxt(c.fr.a, c.fr.se, c.pLog, c.fr.df);
+        const iDev = sigTxt(sigmas(c.fi.a, c.bootSe, c.pLog));
+        const iRough = sigTxt(sigmas(c.fi.a, c.bootSe, 0.5));
+        a += '<span>rim \u221d n^p: rotor <b>' + pm(c.fr.a, c.fr.se, 3) + '</b> on ' + c.fr.df +
+          ' d.f., random <b>' + pm(c.fi.a, c.bootSe, 3) + '</b> bootstrapped, against <b>' + f3(c.pLog) +
+          '</b> for growth \u221d log n: <b>' + rDev + '</b> and <b>' + iDev + '</b> \u00b7 \u221an, p = 0.5, is <b>' +
+          iRough + '</b></span>';
+        if (c.bad) a += '<span><b>' + c.bad + ' ladder runs discarded for not holding exactly n cells</b></span>';
+        return a;
+      }
+
       function status(extra) {
         const s = host.getState(), n = s.n;
-        const root = Math.sqrt(n / Math.PI), ln = Math.log(n);
+        const root = Math.sqrt(n / Math.PI);
         const spans = [];
-        if (s.mode === 'both') {
-          spans.push('<span>n <b>' + n.toLocaleString() + '</b> · √(n/π) <b>' + f1(root) + '</b> · plate <b>' + bw + '×' + bh + '</b> cells · <b>' + walked() + '</b> steps</span>');
-          if (statRotor) spans.push('<span>rotor ' + line(statRotor) + '</span>');
-          if (statIdla) spans.push('<span>IDLA ' + line(statIdla) + '</span>');
-        } else if (s.mode === 'idla') {
-          spans.push('<span>internal DLA · n <b>' + n.toLocaleString() + '</b> · plate <b>' + bw + '×' + bh + '</b> cells · <b>' + walked() + '</b> steps</span>');
-          if (statIdla) spans.push('<span>inradius <b>' + f1(statIdla.inr) + '</b> · outradius <b>' + f1(statIdla.out) + '</b> · √(n/π) <b>' + f1(root) + '</b></span>');
-          if (statIdla) spans.push('<span>spread <b>' + f2(statIdla.out - statIdla.inr) + '</b> · log n <b>' + f2(ln) + '</b></span>');
-        } else {
-          spans.push('<span>rotor-router · n <b>' + n.toLocaleString() + '</b> · plate <b>' + bw + '×' + bh + '</b> cells · <b>' + walked() + '</b> steps</span>');
-          if (statRotor) spans.push('<span>inradius <b>' + f1(statRotor.inr) + '</b> · outradius <b>' + f1(statRotor.out) + '</b> · √(n/π) <b>' + f1(root) + '</b></span>');
-          if (statRotor) spans.push('<span>spread <b>' + f2(statRotor.out - statRotor.inr) + '</b> · log n <b>' + f2(ln) + '</b></span>');
-        }
+        const head = s.mode === 'both' ? '' : s.mode === 'idla' ? 'internal DLA · ' : 'rotor-router · ';
+        spans.push('<span>' + head + 'n <b>' + n.toLocaleString() + '</b> · √(n/π) <b>' + f2(root) +
+          '</b> · <b>' + bw + '×' + bh + '</b> cells · <b>' + walked() + '</b> steps</span>');
+        const pieces = [];
+        if (s.mode !== 'idla' && statRotor) pieces.push('rotor ' + line(statRotor, s.rot0 !== 'random'));
+        if (s.mode !== 'rotor' && statIdla) pieces.push('IDLA ' + line(statIdla, false));
+        const cells = (statRotor || statIdla || {}).cells;
+        if (pieces.length) spans.push('<span>plate ' + pieces.join(' · ') + ' · cells <b>' +
+          (cells || 0).toLocaleString() + '</b> = n, exact' + (abelian ? ' · abelian ' + abelian : '') + '</span>');
+
         let tail = extra ? '<span>' + extra + '</span>' : '';
         if (!extra) {
           if (warn) tail = '<span><b>' + warn + '</b></span>';
-          else if (abelian) tail = '<span>abelian: ' + abelian + (s.mode === 'both' ? ' · log n <b>' + f2(ln) + '</b>' : '') + '</span>';
+          else tail = checkSpans();
         }
         host.setStatus(spans.join('') + tail);
       }
@@ -420,7 +731,7 @@
           rotorSim = newRotorSim(W, c, n, rot0);
           list.push({
             step: ms => rotorSim.step(ms),
-            tick: () => { if (!quiet) paint(); status('routing <b>' + rotorSim.placed().toLocaleString() + '</b> of ' + n.toLocaleString() + '…'); },
+            tick: () => tickView('routing <b>' + rotorSim.placed().toLocaleString() + '</b> of ' + n.toLocaleString() + '…', !quiet),
             after: () => {
               statRotor = radii(rotorSim.occ, W, R, R); statRotor.n = n;
               // every particle occupies exactly one site, so the aggregate has to hold n of them
@@ -434,7 +745,7 @@
           idlaSim = newIdlaSim(W, c, n, rng);
           list.push({
             step: ms => idlaSim.step(ms),
-            tick: () => { if (!quiet) paint(); status('walking <b>' + idlaSim.placed().toLocaleString() + '</b> of ' + n.toLocaleString() + '…'); },
+            tick: () => tickView('walking <b>' + idlaSim.placed().toLocaleString() + '</b> of ' + n.toLocaleString() + '…', !quiet),
             after: () => {
               statIdla = radii(idlaSim.occ, W, R, R); statIdla.n = n;
               if (idlaSim.escaped()) warn = 'the random aggregate reached the edge of the lattice';
@@ -449,15 +760,22 @@
           verify = newRoundRobin(W, c, n, rot0);
           list.push({
             step: ms => verify.step(ms),
-            tick: () => status('checking the abelian property, <b>' + verify.left().toLocaleString() + '</b> particles still moving…'),
+            tick: () => tickView('checking the abelian property, <b>' + verify.left().toLocaleString() + '</b> particles still moving…', false),
             after: () => {
               let diff = 0;
               for (let i = 0; i < N; i++) {
                 if (verify.occ[i] !== rotorSim.occ[i] || verify.rot[i] !== rotorSim.rot[i] || verify.od[i] !== rotorSim.od[i]) diff++;
               }
-              abelian = diff === 0
-                ? '<b>identical</b>, ' + N.toLocaleString() + ' cells compared'
-                : '<b>' + diff.toLocaleString() + ' of ' + N.toLocaleString() + ' cells differ</b>';
+              // A cell by cell comparison of two finite arrays is a count, not an estimate. There is
+              // nothing to average and no bar to put on it: either every cell agrees or some named
+              // number of them does not, and the occupied set, the final rotor at each site and the
+              // number of particles that left each site are all compared, not just the silhouette.
+              abelian = verify.escaped()
+                ? '<b>the second order reached the edge of the lattice; not a valid comparison</b>'
+                : diff === 0
+                  ? '<b>identical</b> over ' + N.toLocaleString() +
+                    ' cells under two firing orders, exact'
+                  : '<b>' + diff.toLocaleString() + ' of ' + N.toLocaleString() + ' cells differ</b>, exact';
               verify = null;
               status();
             },
@@ -473,18 +791,19 @@
         regenerate() {
           const s = host.getState();
           const k = [s.mode, s.n, s.rot0, s.seed].join('|');
-          if (k === key && !tasks && (rotorSim || idlaSim)) { paint(); status(); return; }
+          if (k === key && !tasks && (rotorSim || idlaSim)) { paint(); startCheck(); status(); return; }
           key = k;
           status('building…');
           compute();
         },
         repaint() { paint(); status(); },
         resize() { blit(ctx, canvas.width, canvas.height, host.getState().bg); },
-        pause() { paused = true; stopTimer(); },
+        pause() { paused = true; stopTimer(); if (chkTimer) { clearTimeout(chkTimer); chkTimer = 0; } },
         resume() {
           if (!paused) { paint(); return; }
           paused = false;
           if (tasks && !timer) timer = setTimeout(pump, 0); else paint();
+          if (chk && !chkTimer) chkTimer = setTimeout(pumpCheck, 0);
         },
         async exportPNG(w, h) {
           if (!bw || !bh) throw new Error('nothing to export');
