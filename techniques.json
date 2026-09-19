@@ -2,7 +2,7 @@
   "project": "GENChase",
   "repository": "https://github.com/SharpMeow/GENChase",
   "file": "studio.html",
-  "count": 113,
+  "count": 116,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "techniques": [
     {
@@ -2202,6 +2202,66 @@
         "capture",
         "polar",
         "impact"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "crapper",
+      "name": "Crapper",
+      "subtitle": "exact finite-amplitude pure-capillary waves · 1957",
+      "equation": "X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4|A|/(π(1−A²))",
+      "credit": "Crapper, An exact solution for progressive capillary waves of arbitrary amplitude, J. Fluid Mech. 2, 532 (1957), found the unique closed-form finite-amplitude pure-capillary wave on deep water: crests flatten, troughs sharpen, and at s* ≈ 0.730 the trough pinches a bubble of air. Hur and Vanden-Broeck, Eur. J. Mech. B/Fluids 83, 190 (2020), arXiv:2003.00950, showed that the same profile is a periodic traveling wave of a constant-vorticity Euler flow with g=0 and σ=0. The flows underneath differ. Constantin and Martín, On Crapper's wave, J. Nonlinear Math. Phys. (2011), proved the interior map is a diffeomorphism only for |A| ≤ 3−2√2 ≈ 0.172, a smaller range than the bubble. This plate is a seeded print of the exact map. It is not a new equation.",
+      "blurb": "A pure capillary wave on deep water has an exact Euler solution, and only one: Crapper (1957). The free surface is an inverted cousin of Gerstner's trochoid, rounded at the crests and needle-sharp in the troughs. Steepness s = crest-to-trough over a period is 4|A|/(π(1−A²)) identically. At A* ≈ 0.455, s* ≈ 0.730, the trough pinches a bubble of air. The interior map is a diffeomorphism only out to |A| ≤ 3−2√2 ≈ 0.172 (Constantin-Martín); do not treat those two limits as the same. The Dual Euler reading keeps the profile and replaces irrotational Crapper streamlines by a constant-vorticity shear (Hur and Vanden-Broeck 2020, g=0 and σ=0). The status line reports measured s against 4|A|/(π(1−A²)). If the map were a stacked sine, that ratio would fail.",
+      "order": 114,
+      "seed": "",
+      "presets": [
+        "ripple",
+        "moderate",
+        "steep",
+        "bubble",
+        "dual",
+        "deep",
+        "woodcut"
+      ],
+      "vectors": true
+    },
+    {
+      "id": "hasimoto",
+      "name": "Hasimoto",
+      "subtitle": "a soliton on a vortex filament · 1972",
+      "equation": "γ_t = γ_s × γ_ss,   ψ = κ exp(i ∫ τ ds),   κ = 2ν sech(ν(s−2τ₀ t)),   c = 2τ₀",
+      "credit": "H. Hasimoto, J. Fluid Mech. 51, 477 (1972), mapped the local-induction approximation for a thin vortex filament to the cubic nonlinear Schrödinger equation and found the sech soliton: a loop of helical motion that travels along a line vortex at speed equal to twice the torsion. The explicit traveling-wave curve sampled here is the solitary-wave member of S. Kida, J. Fluid Mech. 112, 397 (1981). This plate is a print of that curve. It is not a new law of vortex motion.",
+      "blurb": "Local induction sends a thin vortex along its binormal, γ_t = γ_s × γ_ss. Hasimoto packed curvature and torsion into a complex field that obeys NLS. The sech soliton of NLS is a loop of helical motion riding a line vortex. Speed along the filament equals twice the torsion. The plate is Kida’s traveling-wave curve, gold on dark: the loop itself, head-on so the helix reads as a winding, a print of measured curvature and torsion, spacetime of the sech bump, or two snapshots overlay. The status line is peak curvature over 2ν, envelope speed over 2τ₀, and the LIA residual, all from finite differences of the polyline. If speed is not twice the torsion, the curve is wrong.",
+      "order": 115,
+      "seed": "",
+      "presets": [
+        "loop",
+        "tight",
+        "helix",
+        "planar",
+        "space",
+        "overlay",
+        "head"
+      ],
+      "vectors": true
+    },
+    {
+      "id": "lump",
+      "name": "Lump",
+      "subtitle": "KP-I lumps · 1977",
+      "equation": "(u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b²",
+      "credit": "Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Multi-lumps: Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). They pass through each other with no phase shift. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.",
+      "blurb": "KP-II makes Y-junctions of lines. KP-I, the other sign in front of u_yy, makes lumps: rational, decaying as 1/r², a 2D solitary wave that is exact. Two of them pass through each other and come out unshifted. The status line is the Hirota bilinear residual of KP-I against 0, and the peak against 4b². If the tau function is the wrong KP, both fail.",
+      "order": 116,
+      "seed": "",
+      "presets": [
+        "one",
+        "two",
+        "three",
+        "collide",
+        "spacetime",
+        "oblique",
+        "tight"
       ],
       "vectors": false
     }
