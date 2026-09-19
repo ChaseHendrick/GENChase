@@ -740,7 +740,7 @@
     <button class="btn" id="btn-surprise" type="button" title="Randomize every parameter and the palette (S)">Surprise</button>
     <button class="btn" id="btn-copy-link" type="button" title="Copy a shareable link to this exact plate (L)">Link</button>
     <button class="btn" id="btn-save" type="button" title="Save this plate to your gallery (B)">Save</button>
-    <button class="btn" id="btn-record" type="button" hidden aria-pressed="false" title="Record a clip of this living plate, up to 60 s (V)">Record</button>
+    <button class="btn" id="btn-record" type="button" hidden aria-pressed="false" title="Record a clip of this plate, up to 60 s (V). Starts it running if it is paused.">Record</button>
     <button class="btn" id="btn-gallery" type="button" title="Open saved plates (G)">Gallery</button>
     <button class="btn" id="btn-undo" type="button" title="Undo last generate, surprise, or recipe (Z)">Undo</button>
     <button class="btn" id="btn-reset" type="button" title="Restore this technique to its factory defaults (R)">Reset</button>
@@ -857,7 +857,8 @@
       <p>The print control reads in inches and centimeters as well as pixels, because the output is meant for paper. Fine-art
         giclée printers accept 300 to 360 ppi natively, which is the real ceiling of visible quality, so those are the defaults.
         Turn on <b>Colophon</b> in the print bar (or in the export sheet) and the file becomes a mounted plate: the image inset in a paper margin, and beneath it the
-        technique, its governing equation, the seed, the palette and every parameter. Scientific plates carried their own method
+        technique, its governing equation, the seed, the palette and every parameter. The sheet offers PNG (the archival file), JPEG and WebP of the same pixels, and SVG where the plate is vectors.
+        A living plate, or a still one that can run, also offers an 8-second clip of the canvas (WebM, or MP4 where that is all the browser encodes). That is the plate in time, not a print. Scientific plates carried their own method
         for centuries and generative art almost never does. The piece on the wall states how it was made and could be remade.</p>
 
       <h3>Shortcuts</h3>
@@ -873,7 +874,7 @@
           <tr><td><kbd>Z</kbd> / <kbd>R</kbd></td><td>Undo / reset this technique</td></tr>
           <tr><td><kbd>H</kbd> / <kbd>F</kbd> / <kbd>A</kbd></td><td>Timeline / focus / ambient. In focus, Exit or Esc restores the chrome</td></tr>
           <tr><td><kbd>/</kbd></td><td>Find a technique</td></tr>
-          <tr><td><kbd>P</kbd> / <kbd>V</kbd> / <kbd>W</kbd></td><td>Pause / record a Live plate / witness</td></tr>
+          <tr><td><kbd>P</kbd> / <kbd>V</kbd> / <kbd>W</kbd></td><td>Pause / record a clip (starts a paused plate) / witness</td></tr>
           <tr><td>Arrows / <kbd>Enter</kbd></td><td>On a pokeable plate: move a crosshair, Enter disturbs. Shift+arrow drags</td></tr>
           <tr><td><kbd>?</kbd></td><td>This list</td></tr>
         </tbody>
@@ -886,7 +887,7 @@
         <b>Settings JSON</b> is the verbose fallback (schema <b>v: 1</b>). Session history under the tabs holds the last plates;
         <b>Timeline</b> hides that strip (H). <b>Clear</b> on the left of it empties it. <b>Reset</b> restores the current technique to its factory plate.
         <b>Focus</b> (F) hides the chrome so the plate fills the window; Esc brings it back. Click the seed label to copy it. P pauses a running plate.
-        <b>Record</b> (V) appears while a plate is Live and saves a clip of up to 60 seconds as WebM, or MP4 where the browser only encodes that.
+        <b>Record</b> (V) films a clip of up to 60 seconds as WebM, or MP4 where the browser only encodes that. It appears on a living plate, and on a still plate that can run — pressing it starts the field. The export sheet also offers an 8-second clip, plus JPEG and WebP of the print.
         <b>Ambient</b> (A) enters focus and walks the techniques every 30 seconds with a fresh seed, for a second monitor or a wall; Esc stops it.
         Click and drag to disturb the field. The <b>LIVE</b> badge means the simulation is still computing; <b>Still</b> means this frame is finished. Click the badge, or press <b>W</b>, to cycle it down to a bare dot and then out of the way; it stays where you left it.
         <b>Save</b> (B) keeps a plate in the gallery; <b>Gallery</b> (G) opens it.
@@ -1016,7 +1017,10 @@
       <div class="actions">
         <a class="btn primary" id="export-download" download hidden>Download PNG</a>
         <button class="btn primary" id="export-save" type="button" hidden>Save PNG</button>
+        <a class="btn" id="export-jpg" href="#" hidden>JPEG</a>
+        <a class="btn" id="export-webp" href="#" hidden>WebP</a>
         <a class="btn primary" id="export-svg" download hidden>Download SVG</a>
+        <button class="btn" id="export-clip" type="button" hidden>8 s clip</button>
         <button class="btn" id="export-cancel" type="button" hidden>Cancel</button>
       </div>
     </div>
@@ -1205,8 +1209,12 @@
     for (let i = 0; i < size; i++) { const c = ramp(i / (size - 1)); lut[i * 3] = c[0]; lut[i * 3 + 1] = c[1]; lut[i * 3 + 2] = c[2]; }
     return lut;
   }
-  function toBlob(canvas, type) {
-    return new Promise((resolve, reject) => canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), type || 'image/png'));
+  function toBlob(canvas, type, quality) {
+    return new Promise((resolve, reject) => canvas.toBlob(
+      b => b ? resolve(b) : reject(new Error('toBlob failed')),
+      type || 'image/png',
+      quality
+    ));
   }
   function svgEsc(s) {
     return String(s).replace(/&/g, '&').replace(/</g, '<').replace(/"/g, '"');
@@ -2275,10 +2283,11 @@ void main(){
     if (!poke) hidePokeAim();
   }
 
-  /* ---- video capture: a clip of a living plate ---- */
-  // The Record button only appears while the witness says Live, so a still plate never offers a video of nothing.
-  // WebM is preferred; MP4 is the fallback where the browser only encodes that.
-  let recorder = null, recTimer = 0, recStart = 0;
+  /* ---- video capture: a clip of a plate that moves ---- */
+  // Record is offered on a living plate, and on a still one whose state has `running` so V can
+  // start it rather than film a still. WebM is preferred; MP4 is the fallback where the browser
+  // only encodes that. A timed clip from the export sheet uses the same encoder and caps at 8 s.
+  let recorder = null, recTimer = 0, recStart = 0, recCapMs = 0;
   const REC_MAX_MS = 60000;
   function pickRecMime() {
     const M = window.MediaRecorder;
@@ -2287,27 +2296,44 @@ void main(){
     for (const t of types) { try { if (M.isTypeSupported(t)) return t; } catch (err) { /* keep looking */ } }
     return '';
   }
+  function canFilm() {
+    if (liveNow) return true;
+    const e = instances[currentId];
+    return !!(e && e.state && Object.prototype.hasOwnProperty.call(e.state, 'running'));
+  }
+  function wakeForRecord() {
+    const e = instances[currentId]; if (!e) return;
+    if (Object.prototype.hasOwnProperty.call(e.state, 'running') && !e.state.running) {
+      setParam(e, 'running', true, 'live');
+    }
+    if (e.paused) {
+      e.paused = false;
+      try { e.inst.resume && e.inst.resume(); } catch (err) { /* already moving */ }
+    }
+  }
   function updateRecordUI() {
     const btn = $('btn-record'); if (!btn) return;
     const on = !!recorder;
-    btn.hidden = !(on || liveNow);
+    btn.hidden = !(on || liveNow || canFilm());
     btn.classList.toggle('rec', on);
     btn.setAttribute('aria-pressed', String(on));
     if (!on) { btn.textContent = 'Record'; return; }
     const ms = Date.now() - recStart;
+    const cap = recCapMs > 0 ? recCapMs : REC_MAX_MS;
     btn.textContent = 'Stop ' + Math.floor(ms / 1000) + 's';
-    if (ms >= REC_MAX_MS) stopRecord();
+    if (ms >= cap) stopRecord();
   }
   function toggleRecord() {
     if (recorder) stopRecord();
-    else if (liveNow) startRecord();
-    else toast('Nothing to record — this plate is still');
+    else startRecord(0);
   }
-  function startRecord() {
+  function startRecord(capMs) {
     const e = instances[currentId]; if (!e || !e.canvas) return;
+    if (!canFilm()) { toast('Nothing to record — this plate is still'); return; }
     if (!window.MediaRecorder || typeof e.canvas.captureStream !== 'function') { toast('This browser cannot record a canvas'); return; }
     const mime = pickRecMime();
     if (!mime) { toast('No video format is available for recording'); return; }
+    wakeForRecord();
     let stream, rec;
     try {
       stream = e.canvas.captureStream(30);
@@ -2320,6 +2346,7 @@ void main(){
     rec.onstop = () => {
       for (const t of stream.getTracks()) t.stop();
       if (recorder === rec) recorder = null;
+      recCapMs = 0;
       clearInterval(recTimer); recTimer = 0;
       updateRecordUI();
       if (!chunks.length) { toast('Nothing was recorded'); return; }
@@ -2330,11 +2357,11 @@ void main(){
       setTimeout(() => URL.revokeObjectURL(url), 10000);
       toast('Saved ' + name + ' (' + (blob.size / 1048576).toFixed(1) + ' MB)');
     };
-    recorder = rec; recStart = Date.now();
+    recorder = rec; recStart = Date.now(); recCapMs = capMs > 0 ? capMs : 0;
     rec.start(250);
     recTimer = setInterval(updateRecordUI, 250);
     updateRecordUI();
-    toast('Recording. Press V or Stop to finish; clips cap at 60 s.');
+    toast(recCapMs ? ('Recording ' + Math.round(recCapMs / 1000) + ' s clip…') : 'Recording. Press V or Stop to finish; clips cap at 60 s.');
   }
   function stopRecord() {
     if (!recorder) return;
@@ -3061,10 +3088,16 @@ void main(){
     const modal = $('modal-export'), img = $('export-img'), note = $('export-note'), dl = $('export-download'), save = $('export-save');
     const pnote = $('export-print');
     const svgBtn = $('export-svg');
+    const jpgBtn = $('export-jpg');
+    const webpBtn = $('export-webp');
+    const clipBtn = $('export-clip');
     const cancel = $('export-cancel');
     const title = $('export-title');
     if (title) title.textContent = (e.mod.name || e.mod.id) + ' · ' + (e.state.seed || '');
     if (svgBtn) svgBtn.hidden = true;
+    if (jpgBtn) jpgBtn.hidden = true;
+    if (webpBtn) webpBtn.hidden = true;
+    if (clipBtn) clipBtn.hidden = true;
     img.hidden = true; dl.hidden = true; save.hidden = true;
     if (cancel) cancel.hidden = false;
     const job = {
@@ -3185,6 +3218,12 @@ void main(){
         svgBtn.download = lastName.replace(/\.png$/i, '.svg');
         svgBtn.hidden = false;
       }
+      if (jpgBtn) { jpgBtn.hidden = false; jpgBtn.removeAttribute('href'); }
+      if (webpBtn) { webpBtn.hidden = false; webpBtn.removeAttribute('href'); }
+      if (clipBtn) {
+        clipBtn.hidden = !canFilm();
+        clipBtn.textContent = '8 s clip';
+      }
     } catch (err) {
       const cancelled = (job && job.abort) || /cancell/i.test(String(err && err.message || err));
       if (cancelled) {
@@ -3218,6 +3257,41 @@ void main(){
         toast('Saving is unavailable here; right-click the image to save it.');
       } else toast('Could not save the file' + (err && err.message ? ': ' + err.message : '.'));
     } finally { save.disabled = false; }
+  }
+  function downloadBlob(blob, name) {
+    const url = URL.createObjectURL(blob);
+    const a = h('a', { href: url, download: name });
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 12000);
+  }
+  async function transcodeExport(type, ext, quality, label) {
+    if (!lastUrl) return;
+    const btn = $('export-' + (ext === 'jpg' ? 'jpg' : ext));
+    if (btn) btn.setAttribute('aria-busy', 'true');
+    try {
+      const im = await loadImage(lastUrl);
+      const c = document.createElement('canvas');
+      c.width = im.naturalWidth; c.height = im.naturalHeight;
+      if (c.width * c.height > 48e6) throw new Error('this print is too large to recode; use PNG');
+      const cx = c.getContext('2d', { alpha: false });
+      cx.fillStyle = '#fff';
+      cx.fillRect(0, 0, c.width, c.height);
+      cx.drawImage(im, 0, 0);
+      const blob = await new Promise((res, rej) => c.toBlob(
+        b => b ? res(b) : rej(new Error('this browser cannot encode ' + label)),
+        type, quality
+      ));
+      const name = lastName.replace(/\.png$/i, '.' + ext);
+      downloadBlob(blob, name);
+      toast('Saved ' + name + ' (' + (blob.size / 1048576).toFixed(1) + ' MB)');
+    } catch (err) {
+      toast('Could not make ' + label + (err && err.message ? ': ' + err.message : ''));
+      if (btn && /cannot encode/i.test(String(err && err.message))) btn.hidden = true;
+    } finally { if (btn) btn.removeAttribute('aria-busy'); }
+  }
+  function clipFromExport() {
+    closeModal('modal-export');
+    startRecord(8000);
   }
 
   /* ---- surprise ---- */
@@ -3392,6 +3466,12 @@ void main(){
     }
     $('btn-export').addEventListener('click', doExport);
     $('export-save').addEventListener('click', saveViaCapability);
+    const exportJpg = $('export-jpg');
+    if (exportJpg) exportJpg.addEventListener('click', ev => { ev.preventDefault(); transcodeExport('image/jpeg', 'jpg', 0.92, 'JPEG'); });
+    const exportWebp = $('export-webp');
+    if (exportWebp) exportWebp.addEventListener('click', ev => { ev.preventDefault(); transcodeExport('image/webp', 'webp', 0.88, 'WebP'); });
+    const exportClip = $('export-clip');
+    if (exportClip) exportClip.addEventListener('click', clipFromExport);
     const exportCancel = $('export-cancel');
     if (exportCancel) exportCancel.addEventListener('click', abortExportIfBusy);
     $('export-close').addEventListener('click', () => { closeModal('modal-export'); });
