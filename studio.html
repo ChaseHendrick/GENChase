@@ -396,6 +396,18 @@
     margin: 0; font-size: 10.5px; line-height: 1.3; color: var(--muted); text-align: right;
     text-shadow: 0 1px 8px var(--stage);
   }
+  /* The witness has three volumes, because it is evidence on a plate people hang on a wall.
+     Full says it in words. Quiet keeps the pulsing dot, which is the whole signal, and drops the
+     lettering, the fingerprint and the frame strip. Off leaves the plate alone: the badge stays in
+     the corner at zero opacity, still hit-testable, so a pointer finds it and W always brings it
+     back. Opacity does not affect hit testing, which is what makes that work. */
+  .witness.w-quiet #live-label, .witness.w-quiet .live-fp,
+  .witness.w-quiet .witness-strip, .witness.w-quiet .witness-hint { display: none; }
+  .witness.w-quiet .live-badge { padding: 5px; gap: 0; }
+  .witness.w-off #live-label, .witness.w-off .live-fp,
+  .witness.w-off .witness-strip, .witness.w-off .witness-hint { display: none; }
+  .witness.w-off .live-badge { padding: 5px; gap: 0; opacity: 0; transition: opacity 120ms ease; }
+  .witness.w-off .live-badge:hover, .witness.w-off .live-badge:focus-visible { opacity: 0.55; }
 
   .sheet {
     display: grid; grid-template-rows: 1fr auto; place-items: center;
@@ -658,7 +670,7 @@
       </div>
       <div class="status" id="status" role="status" aria-live="polite"></div>
       <div class="witness" id="witness">
-        <button class="live-badge" id="live-badge" type="button" title="LIVE when the field is still computing">
+        <button class="live-badge" id="live-badge" type="button" title="LIVE when the field is still computing. Click, or press W, to quieten it">
           <span class="dot" aria-hidden="true"></span>
           <span id="live-label">Still</span>
           <span class="live-fp" id="live-fp">——</span>
@@ -701,10 +713,10 @@
         <b>Focus</b> (F) hides the chrome so the plate fills the window; Esc brings it back. Click the seed label to copy it. P pauses a running plate.
         <b>Record</b> (V) appears while a plate is Live and saves a clip of up to 60 seconds as WebM, or MP4 where the browser only encodes that.
         <b>Ambient</b> (A) enters focus and walks the techniques every 30 seconds with a fresh seed, for a second monitor or a wall; Esc stops it.
-        Click and drag to disturb the field. The <b>LIVE</b> badge means the simulation is still computing; <b>Still</b> means this frame is finished.
+        Click and drag to disturb the field. The <b>LIVE</b> badge means the simulation is still computing; <b>Still</b> means this frame is finished. Click the badge, or press <b>W</b>, to cycle it down to a bare dot and then out of the way; it stays where you left it.
         <b>Save</b> (B) keeps a plate in the gallery; <b>Gallery</b> (G) opens it.
         <b>,</b> and <b>.</b> walk the preset list without opening the menu. <b>C</b> copies the plate to the clipboard at screen size, for pasting into a message; E is still the route to a file at print resolution.
-        Shortcuts: space generate, S surprise, E export, C copy image, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, P pause, V record, A ambient, , . presets, 1–9 tabs, [ ] history, ? this list.</p>
+        Shortcuts: space generate, S surprise, E export, C copy image, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, P pause, V record, A ambient, W witness, , . presets, 1–9 tabs, [ ] history, ? this list.</p>
 
       <h3>License</h3>
       <p>The studio <b>code</b> is licensed under the <b>PolyForm Small Business License 1.0.0</b>. Run it, study it,
@@ -1998,6 +2010,27 @@ void main(){
   const probe = document.createElement('canvas');
   probe.width = probe.height = 24;
   let lastFp = '', stillMs = 0, stripAt = 0, witnessClock = 0, liveNow = false, liveStreak = 0;
+  // How loudly the witness announces itself. A viewing preference, not part of the plate: it is kept
+  // in localStorage rather than in the recipe, because a hash has to describe the picture and nothing
+  // else. Two people opening the same link must get the same plate whatever either of them prefers
+  // to see in the corner.
+  const WITNESS_MODES = ['full', 'quiet', 'off'];
+  let witnessMode = 'full';
+  function applyWitnessMode() {
+    const w = $('witness'); if (!w) return;
+    w.classList.toggle('w-quiet', witnessMode === 'quiet');
+    w.classList.toggle('w-off', witnessMode === 'off');
+  }
+  function setWitnessMode(mode, announce) {
+    witnessMode = WITNESS_MODES.indexOf(mode) < 0 ? 'full' : mode;
+    applyWitnessMode();
+    try { localStorage.setItem(STORE + 'witness', witnessMode); } catch (err) { /* private window */ }
+    if (announce) toast(witnessMode === 'full' ? 'Witness: full'
+      : witnessMode === 'quiet' ? 'Witness: dot only' : 'Witness: hidden (W brings it back)');
+  }
+  function cycleWitness() {
+    setWitnessMode(WITNESS_MODES[(WITNESS_MODES.indexOf(witnessMode) + 1) % WITNESS_MODES.length], true);
+  }
   function fingerprint(canvas) {
     if (!canvas || !canvas.width) return '';
     try {
@@ -3102,6 +3135,7 @@ void main(){
       else if (ev.key === 'p' || ev.key === 'P') { ev.preventDefault(); togglePause(); }
       else if (ev.key === 'v' || ev.key === 'V') { ev.preventDefault(); toggleRecord(); }
       else if (ev.key === 'a' || ev.key === 'A') { ev.preventDefault(); setAmbient(!ambientOn); }
+      else if (ev.key === 'w' || ev.key === 'W') { ev.preventDefault(); cycleWitness(); }
       else if (ev.key === 'c' || ev.key === 'C') { if (!ev.metaKey && !ev.ctrlKey) { ev.preventDefault(); copyPlate(); } }
       else if (ev.key === ',' || ev.key === '<') { ev.preventDefault(); stepPreset(-1); }
       else if (ev.key === '.' || ev.key === '>') { ev.preventDefault(); stepPreset(1); }
@@ -3132,6 +3166,8 @@ void main(){
       try { if (window.claude && typeof window.claude.use === 'function') downloads = await window.claude.use('downloads'); } catch (err) { downloads = null; }
     })();
     try { panelSide = localStorage.getItem(STORE + 'panel') === 'right' ? 'right' : 'left'; } catch (err) { panelSide = 'left'; }
+    try { setWitnessMode(localStorage.getItem(STORE + 'witness') || 'full', false); } catch (err) { setWitnessMode('full', false); }
+    const lb = $('live-badge'); if (lb) lb.addEventListener('click', cycleWitness);
     applyPanelSide();
     renderHistory();
     witnessClock = setInterval(() => { if (!document.hidden) tickWitness(); }, 400);

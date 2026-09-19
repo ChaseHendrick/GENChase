@@ -14,10 +14,14 @@
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
   // How much arithmetic one plate is allowed, counted in cell updates (one species pair, one step, one
-  // cell). Measured rather than guessed: the inner loops below run at roughly 1e8 cell updates a second
-  // on a laptop, so this is about a second and a half of work, which is what the shell budgets for a
-  // default plate. sanitize() holds every recipe under it by raising the growth rate and then, if that
-  // is not enough, lowering the growth factor; nothing here ever buys speed by enlarging the time step.
+  // cell). Measured rather than guessed, and quoted with the machine it was measured on rather than
+  // with an imaginary laptop: headless Chromium in a container runs the line loop at about 5.3e7 cell
+  // updates a second and the square loop at about 3.2e7, the difference being the extra index
+  // arithmetic. The default sheet is 105 million updates and builds in 2.0 seconds, the plane preset
+  // 97 million in 3.0 seconds, both timed from the first status that says building to the last. A
+  // faster machine finishes sooner; the point of the ceiling is that no recipe can ask for much more.
+  // sanitize() holds every recipe under it by raising the growth rate and then, if that is not enough,
+  // lowering the growth factor; nothing here ever buys speed by enlarging the time step.
   const BUDGET_1D = 1.1e8, BUDGET_2D = 1.0e8;
 
   /* ================================================================
@@ -162,10 +166,26 @@
        dv/dt = (Dv / L(t)^2) v_xixi + g(u,v) - d (Ldot/L) v
 
      with d the number of growing spatial dimensions. The last term is dilution: the domain carries
-     material apart, so a fixed amount of substance thins out. It is not optional decoration. Without
-     it a growing pattern just stretches, and the sheet shows wider and wider stripes; with it the
-     concentrations are held down, the wavelength stays fixed in physical space, and the pattern has
-     to insert new stripes to fill the extra length. That is the result this plate is about.
+     material apart, so a fixed amount of substance thins out. It belongs to the transformation and
+     is not optional, because without it these equations stop conserving what the physical problem
+     conserves under dilation.
+
+     It is worth being exact about what it does, because it is easy to credit it with the whole
+     phenomenon and that is not what the numbers say. The stripes insert because of the 1/L(t)^2 on
+     the two diffusion coefficients: as the domain lengthens the effective diffusion in xi falls, the
+     pattern's wavelength in xi shrinks with it, and the wavelength in PHYSICAL space therefore stays
+     put while the domain grows past it. Dilution is a correction on top of that, and its size is the
+     ratio of Ldot/L to the reaction rate, which is exactly what the growth rate slider sets: at most
+     about two per cent anywhere on it, since the slider tops out at 0.2 of the pattern's own linear
+     growth rate and the reaction Jacobian's row sum is an order of magnitude larger again.
+
+     Measured by ablation rather than argued. Setting the dilution term to zero and rerunning the
+     default recipe left the final stripe count at 32 on one seed and 28 on another, both unchanged,
+     and moved the fitted exponent from 1.04 +/- 0.06 to 1.035 +/- 0.042 and from 0.98 +/- 0.10 to
+     0.93 +/- 0.06: inside the error bars, which is what a two per cent correction should do. At the
+     top of the growth rate slider it does show, the same seed ending on 20 stripes with the term and
+     28 without. So it stays, and it is scaled by d, but nothing here claims it is what inserts the
+     stripes.
 
      STABILITY. The step is explicit Euler, so the bound is set by the stiffest linear mode. The
      3-point Laplacian on the line has symbol on [-4, 0] / dxi^2, the 5-point Laplacian on the square
@@ -736,6 +756,9 @@
           // selected wavenumber as the domain grows, and their spread carries the same sawtooth the
           // sheet's plateaus carry. The sector scatter is still what the printed ring radius carries,
           // because that number really is about this one picture.
+          // The plane lags in the same way the sheet does and responds to the same control: at grid
+          // 64 on one seed the measured k ran 3.60 +/- 0.16 at rate 0.1, 4.28 +/- 0.08 at 0.048 and
+          // 4.648 +/- 0.040 at 0.02, against a peak of 4.87.
           kStat = pts.length
             ? meanSE(pts.map(v => PI * v.rho / v.L))
             : { mean: PI * modeMN.rho / Lrow[0], se: NaN, n: 1 };

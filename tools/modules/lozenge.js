@@ -169,6 +169,41 @@
     }
   }
 
+  /* ---------------- does the sampler do what it claims ----------------
+
+     The tab says the draw is exact, and that is not something a viewer should have to take on faith,
+     so the plate tests it rather than asserting it. MacMahon's formula says the 2 by 2 by 2 box has
+     exactly twenty lozenge tilings, and the same makeJob and runJob that draw the plate draw from that
+     box a few thousand times, off this seed. Under the exactness claim the twenty counts are
+     multinomial with equal probabilities, so chi-square on 19 degrees of freedom is the test, and
+     Wilson-Hilferty, (chi2/df)^(1/3) being near normal with mean 1 - 2/(9 df) and variance 2/(9 df),
+     turns it into the same standard deviations everything else here is quoted in. Any number of
+     distinct tilings other than twenty fails outright, whatever the chi-square says.
+
+     No verdict is printed, only the number. A test with a real null distribution overshoots sometimes
+     and that is what makes it a test: over three hundred plate seeds the statistic came out with mean
+     0.06 and standard deviation 1.03, 4.7 per cent of seeds past two sigma and 0.7 per cent past
+     three, which is a standard normal to the accuracy three hundred seeds can measure one. A reading
+     of 2.5 sigma on one plate is therefore ordinary; a reading that large on plate after plate is not.
+
+     It is cheap. The 2 by 2 box coalesces after a handful of sweeps, so four thousand exact draws cost
+     about 23 ms, less than one chunk of the plate's own sampler. */
+  function samplerSelfTest(key, draws) {
+    const seen = new Map();
+    for (let i = 0; i < draws; i++) {
+      const job = makeJob(2, 2, 2, (key + Math.imul(i, 2654435761)) | 0, 'cftp', 0);
+      runJob(job, 1e9);
+      const w = job.bot[0] * 27 + job.bot[1] * 9 + job.bot[2] * 3 + job.bot[3];
+      seen.set(w, (seen.get(w) || 0) + 1);
+    }
+    const k = seen.size, exp = draws / Math.max(1, k);
+    let chi = 0;
+    seen.forEach(n => { chi += (n - exp) * (n - exp) / exp; });
+    const df = k - 1;
+    const z = df > 0 ? (Math.pow(chi / df, 1 / 3) - (1 - 2 / (9 * df))) / Math.sqrt(2 / (9 * df)) : NaN;
+    return { draws, k, want: 20, chi, df, z };
+  }
+
   /* ---------------- the picture ----------------
 
      Project a cube corner (i, j, k) along (1, 1, 1). In the plane the three cube axes land on three
@@ -503,7 +538,7 @@
     },
     hints: {
       Hexagon: 'The seed fixes every random choice the sampler makes, so a seed and a, b, c reprint exactly the same tiling. MacMahon counted how many there are to choose from, and the status line reports it.',
-      Sampler: 'Coupling from the past has no fixed running time. It doubles how far back it starts until the two extreme tilings, run forward on the same random choices, arrive at the same place. At the largest hexagons an unlucky seed can run past the work budget, and the plate then falls back to a plain forward run and says in the status line that it is no longer exact.',
+      Sampler: 'Coupling from the past has no fixed running time. It doubles how far back it starts until the two extreme tilings, run forward on the same random choices, arrive at the same place. At the largest hexagons an unlucky seed can run past the work budget, and the plate then falls back to a plain forward run and says in the status line that it is no longer exact. The status line also tests the exactness claim instead of only making it: four thousand draws from the 2 by 2 by 2 box, which MacMahon says has exactly twenty tilings, against the uniform distribution over those twenty. It is a real statistical test with a real null distribution, so about one seed in twenty reads past two sigma and about one in a hundred and fifty past three; that is the test working, not the sampler failing. A reading that large on seed after seed would be something else.',
       Arctic: 'The measured boundary is read off the plate itself: every tile is called frozen or free from its own neighborhood, the free ones are counted in sixty angular sectors around the center of the predicted ellipse, and the radius that would enclose them is compared with the ellipse. In the coordinates that comparison is made in, the prediction is a radius of exactly 1 at every angle. The sixty sectors are not sixty independent numbers, so the error bar on their mean is widened by the measured autocorrelation around the circle, which leaves about fifteen; the error bar on the free area comes from a seeded bootstrap over the same sectors, since a binomial bar on that many tiles would be more than twice too small. Both estimates were checked against the scatter across many seeds. It is a limit statement, so the agreement improves as a, b and c grow together and is poor when one of them is small: averaged over many seeds the radius reads 1.023 at 11, 11, 11 and 0.954 at 48, 48, 8, against 1.000 wherever the limit has been reached.',
       Tiles: 'Cube faces shades the three orientations light, middle and dark so the pile reads as solid, as if the light came from over your left shoulder. Height colors every face by how far above the floor of the box it sits and keeps the same shading over it.',
     },
@@ -537,13 +572,14 @@
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d');
       let tile = null, meas = null, timer = 0, building = false;
-      let sig = '', mac = 0, info = null;
+      let sig = '', mac = 0, info = null, self = null;
 
       const sigOf = s => [s.a, s.b, s.c, s.sampler, s.sweeps, s.seed].join('/');
 
       function build(s, done) {
-        clearTimeout(timer); building = true; tile = null; meas = null; info = null;
+        clearTimeout(timer); building = true; tile = null; meas = null; info = null; self = null;
         const key = (U.makeRng(s.seed + '/lozenge')() * 4294967296) >>> 0;
+        self = samplerSelfTest((U.makeRng(s.seed + '/selftest')() * 4294967296) | 0, 4000);
         const job = makeJob(s.a, s.b, s.c, key, s.sampler, s.sweeps);
         mac = macmahonLog10(s.a, s.b, s.c);
         status('sampling');
@@ -608,17 +644,24 @@
           }
           out += '</span>';
         }
+        // The exactness claim, tested on the one box small enough for the answer to be known exactly.
+        if (self) {
+          out += '<span>CFTP self-test <b>' + self.draws.toLocaleString() + '</b> draws on the 2·2·2 box: <b>' +
+            self.k + ' of ' + self.want + '</b> tilings' + (self.k === self.want ? '' : ', WHICH IS WRONG') +
+            ', χ² <b>' + self.chi.toFixed(1) + '</b> on ' + self.df + ' df, <b>' +
+            sigTxt(isFinite(self.z) ? self.z : null) + '</b> against uniform</span>';
+        }
         if (meas) {
           // A mean over NB sectors: the standard error and the number of samples, with the sectors
           // counted as the autocorrelation says they should be rather than as sixty independent ones.
           const zr = sigmas(meas.rMean, meas.rSe, 1);
-          out += '<span>arctic radius <b>' + pm(meas.rMean, meas.rSe, 3) + '</b> over ' + meas.nSect +
-            ' sectors, τ ' + meas.tau.toFixed(1) + ' so ~' + Math.round(meas.neff) +
-            ' independent, against exactly 1: <b>' + sigTxt(zr) + '</b></span>';
           // A ratio of two counts, bootstrapped rather than propagated.
           const zf = sigmas(meas.disFrac, meas.disSe, meas.predDisFrac);
-          let sp = '<span>free area <b>' + pm(meas.disFrac, meas.disSe, 3) + '</b> of the hexagon' +
-            ' against <b>' + f3(meas.predDisFrac) + '</b> inside the ellipse: <b>' + sigTxt(zf) + '</b>';
+          let sp = '<span>arctic radius <b>' + pm(meas.rMean, meas.rSe, 3) + '</b> over ' + meas.nSect +
+            ' sectors, τ ' + meas.tau.toFixed(1) + ' so ~' + Math.round(meas.neff) +
+            ' independent, against exactly 1: <b>' + sigTxt(zr) + '</b>' +
+            ' · free area <b>' + pm(meas.disFrac, meas.disSe, 3) + '</b> against <b>' +
+            f3(meas.predDisFrac) + '</b> inside the ellipse: <b>' + sigTxt(zf) + '</b>';
           const worst = Math.max(zr === null ? 0 : Math.abs(zr), zf === null ? 0 : Math.abs(zf));
           if (worst > 3) { const w = whyOff(s); sp += w ? ' · ' + w : ' · a real disagreement, cause not diagnosed'; }
           if (!info || !info.exact) sp += ' · from a sample that is not exact';
