@@ -349,24 +349,55 @@
     if (!(isFinite(v) && isFinite(se) && se > 0)) return null;
     return (v - ref) / se;
   }
-  // A sigma from a fit with one or two degrees of freedom is not a sigma. The residual based standard
-  // error is itself a random variable with that many degrees of freedom, so the ratio follows Student's
-  // t, whose tail is far fatter than the normal one: t = 4.9 on 1 d.f. is a two sided probability of
-  // 0.13, which is 1.5 sigma and not 4.9. Reporting the raw ratio would put a five sigma badge on an
-  // exponent that agrees with one to half a per cent, which is the same class of dishonesty as an
-  // error bar left off altogether. The two small cases have closed form tails,
+  // A sigma from a fit with a handful of degrees of freedom is not a sigma. The residual based
+  // standard error is itself a random variable with that many degrees of freedom, so the ratio
+  // follows Student's t, whose tail is fatter than the normal one: t = 4.9 on 1 d.f. is a two sided
+  // probability of 0.13, which is 1.5 sigma and not 4.9. Reporting the raw ratio would put a five
+  // sigma badge on an exponent that agrees with one to half a per cent, which is the same class of
+  // dishonesty as an error bar left off altogether.
   //
-  //   df = 1, which is Cauchy:  P(|T| > t) = 1 - (2/pi) atan(t)
-  //   df = 2:                   P(|T| > t) = 1 - t / sqrt(t^2 + 2)
+  // The fix has to cover every d.f. this tab can produce, not just the two smallest. An earlier
+  // version handled 1 and 2 in closed form and passed the raw ratio through from 3 up, on the
+  // assumption that the gap was small there. It is not: on 3 d.f. a ratio of 3 carries a two sided
+  // probability of 0.058, which is 1.9 sigma, and on the 9 d.f. a ten plateau wavenumber sample has,
+  // a ratio of 3.3 is 2.6 sigma rather than 3.3. Worse, the cutoff was a discontinuity in the number
+  // printed: one extra insertion took a t of 5 from 2.1 sigma to 5.0 sigma with no new physics in it.
+  // Both errors ran the same way, toward overstating a disagreement, which this file has no more
+  // right to do than to understate one.
   //
-  // and from 3 d.f. up the gap is small enough that the ratio is reported as it stands. The
-  // probability is turned back into the equivalent normal deviate with the Hastings rational
-  // approximation, good to about 0.003 of a sigma, which is more than one decimal place needs.
+  // So the tail is the exact one, for integer d.f., from the standard finite expansions
+  // (Abramowitz and Stegun 26.7.3 and 26.7.4). With x = t / sqrt(df) and theta = atan(x),
+  //
+  //   df odd:   P(|T| <= t) = (2/pi) [ theta + sin(theta) (cos + (2/3) cos^3 + (2·4)/(3·5) cos^5 + ...) ]
+  //   df even:  P(|T| <= t) = sin(theta) [ 1 + (1/2) cos^2 + (1·3)/(2·4) cos^4 + ... ]
+  //
+  // both series running to cos^(df-2). They reduce to the two closed forms that were here before,
+  // Cauchy at df = 1 and t / sqrt(t^2 + 2) at df = 2, and agree with the regularized incomplete beta
+  // I_{df/(df+t^2)}(df/2, 1/2) to better than 1e-6 over df 1 to 60 and t 0 to 8. The series costs
+  // df/2 terms, and the samples here are plateaus and insertions, so df is a handful; the cutoff at
+  // 1000 is only a bound on the loop for a sample size this tab cannot produce, and at 1000 d.f. the
+  // t and the normal differ by under 0.03 of a sigma, which the one decimal printed cannot show.
+  //
+  // The probability is turned back into the equivalent normal deviate with the Hastings rational
+  // approximation, good to about 0.003 of a sigma, which is more than one decimal place needs. One
+  // limit worth stating rather than discovering: the probability is floored at 1e-12, so the printed
+  // figure saturates near 7 sigma. Nothing in this tab has come close, and a disagreement that large
+  // would be a bug to find rather than a number to read, but it is a ceiling and not a measurement.
   function tToSigma(t, df) {
     const a = Math.abs(t);
-    if (!(df >= 1) || df >= 3 || !isFinite(a)) return a;
-    const pr = df === 1 ? 1 - (2 / PI) * Math.atan(a) : 1 - a / Math.sqrt(a * a + 2);
-    const q = Math.max(1e-12, Math.min(0.5, pr / 2));
+    if (!(df >= 1) || df > 1000 || !isFinite(a)) return a;
+    const th = Math.atan(a / Math.sqrt(df)), sn = Math.sin(th), cs = Math.cos(th), c2 = cs * cs;
+    let inside;
+    if (df % 2 === 1) {
+      let sum = 0, p = cs;
+      for (let j = 1; j <= df - 2; j += 2) { sum += p; p *= c2 * (j + 1) / (j + 2); }
+      inside = (2 / PI) * (th + sn * sum);
+    } else {
+      let sum = 0, p = 1;
+      for (let j = 0; j <= df - 2; j += 2) { sum += p; p *= c2 * (j + 1) / (j + 2); }
+      inside = sn * sum;
+    }
+    const q = Math.max(1e-12, Math.min(0.5, (1 - inside) / 2));
     const u = Math.sqrt(-2 * Math.log(q));
     return u - (2.30753 + 0.27061 * u) / (1 + 0.99229 * u + 0.04481 * u * u);
   }
@@ -591,7 +622,7 @@
     hints: {
       Plate: 'Everything here rebuilds the run. The sheet is the picture that shows insertion; the plane is the same physics with both directions growing, so the dilution term carries a factor of two.',
       Kinetics: 'Two reaction schemes and the diffusion ratio between them. The four Turing conditions are checked against these numbers and the status line says whether the window is open.',
-      Growth: 'The domain length L(t) enters twice: as 1/L² on both diffusion coefficients, and as the dilution term that keeps the concentrations from simply riding along with the stretch. The growth rate is also the control the self-check responds to: the slower the growth, the closer the measured wavenumber sits to the peak of the dispersion relation. A fit over only three or four insertions has one or two degrees of freedom, and the status line says how many. With that few, an error bar is itself so uncertain that the ratio to it follows Student\u2019s t rather than a normal, so the sigma printed is the normal deviate carrying the same probability as that t, not the raw ratio.',
+      Growth: 'The domain length L(t) enters twice: as 1/L² on both diffusion coefficients, and as the dilution term that keeps the concentrations from simply riding along with the stretch. The growth rate is also the control the self-check responds to: the slower the growth, the closer the measured wavenumber sits to the peak of the dispersion relation. A fit over only three or four insertions has one or two degrees of freedom, and the status line says how many. However many there are, an error bar built from that few residuals is itself uncertain, so the ratio to it follows Student\u2019s t rather than a normal, and the sigma printed is the normal deviate carrying the same probability as that t rather than the raw ratio. On nine degrees of freedom that turns a ratio of 3.3 into 2.6 sigma, so it is not a correction only the smallest samples feel.',
       Picture: 'Activator maps u over the whole sheet at once. Per slice normalizes each time row against its own range, which brings the pattern up from the moment it leaves the uniform state. Two tone thresholds each row at its mean, which is the fish-skin picture.',
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (low → high activator)',

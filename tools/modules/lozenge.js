@@ -187,9 +187,19 @@
      of 2.5 sigma on one plate is therefore ordinary; a reading that large on plate after plate is not.
 
      It is cheap. The 2 by 2 box coalesces after a handful of sweeps, so four thousand exact draws cost
-     about 23 ms under node, near enough one chunk of the plate's own sampler, and build() spends them
-     in a chunk of their own: the synchronous slice of a regenerate then measures 21 to 32 ms in a
-     headless Chromium on a software renderer, against 55 when the two shared a slice.
+     about 10 ms under node, well inside one chunk of the plate's own sampler, and build() spends them
+     in a chunk of their own rather than on the front of the first sampler chunk.
+
+     What a regenerate actually blocks the page for, measured in a headless Chromium on a software
+     renderer by timing every chunk callback the module schedules: each sampler chunk is the 32 ms it
+     asks runJob for, and the finishing chunk, which measures the boundary and paints, is 30 to 60 ms
+     once warm. Whichever plate is painted first in a session pays far more than that once, 0.26 s at
+     32, 32, 32 and 1.4 to 1.8 s at 48, 48, 48 across two runs, and it is the canvas path being
+     compiled rather than work this code repeats: every later plate in the same page finishes in
+     under 75 ms, and the seventh repaint of the 48, 48, 48 plate is 61 ms. Nothing here chunks the paint itself, and it should not. The shell fingerprints
+     the canvas every 400 ms and calls a plate Live after two consecutive changes, so a paint spread
+     over several hundred milliseconds would announce a still plate as living, which is worse than a
+     slow first frame.
 
      Twenty is not written down here either. It is Math.round of MacMahon's formula at 2, 2, 2, the
      same macmahonLog10 the status line quotes, so the number the test is held to comes from the
@@ -605,8 +615,7 @@
         status('sampling');
         (function chunk() {
           // The self-test gets a slice of its own rather than riding along with the first sampler
-          // chunk. Together they measured 55 ms of blocked page on a software renderer, over the 50 ms
-          // the shell asks for; apart, neither slice is longer than one ordinary chunk.
+          // chunk, so neither slice is longer than one ordinary chunk. It costs about 10 ms.
           if (!self) { self = samplerSelfTest(selfKey, 4000); status('sampling'); timer = setTimeout(chunk, 0); return; }
           runJob(job, 32);
           if (!job.done) {
@@ -618,8 +627,15 @@
             tile = buildTiling(job.bot, s.a, s.b, s.c);
             info = { T: job.T, coal: job.coal, exact: job.exact, total: job.total, fell: job.mode === 'heat' && s.sampler === 'cftp' };
             sig = sigOf(s);
-            building = false;
-            done();
+            status('measuring');
+            // The finish gets a slice of its own too, for the same reason the self-test does: it
+            // measures the arctic boundary and paints every rhombus, and riding on the tail of a
+            // 32 ms sampler chunk put both on top of that. Warm, on a software renderer at 630 by 727,
+            // the measurement is about 2 ms and the paint 32 ms at 32, 32, 32 and 61 ms at 48, 48, 48,
+            // of which the grain is 33 and 17; separating them takes the worst slice of a regenerate
+            // from roughly 93 ms to roughly 61. `building` stays true until this runs, so repaint,
+            // resize and resume still see a build in progress and keep off the canvas.
+            timer = setTimeout(function () { building = false; done(); }, 0);
           }
         })();
       }
