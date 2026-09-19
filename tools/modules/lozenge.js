@@ -399,8 +399,16 @@
        20,20,40     60       0.0085          0.0079        0.92
        48,48, 8     60       0.0152          0.0226        1.49
 
-     It runs a little wide except at 20,20,40, which is the safe direction for an error bar, and it is
-     quoted as it comes out rather than scaled to make the table read better. */
+     It runs a little wide except at 20,20,40, and wide is the safe direction for an error bar. It is
+     quoted as it comes out rather than scaled to make the table read better.
+
+     Rebuilt from scratch on a second, independent family of seeds, forty to a hundred and twenty per
+     shape, the ratio came out 1.27 at 32,32,32, 1.54 at 40,40,40, 1.05 at 24,40,46, 1.11 at 11,11,11,
+     1.82 at 48,48,8, 1.07 at 48,48,48, 0.86 at 20,20,40 and 1.10 at 36,36,36. Sixty seeds only pin an
+     sd to about nine per cent of itself, so a single ratio moves by that much between seed families,
+     and what survives both is the shape of the answer: wide nearly everywhere, and narrow at 20,20,40
+     on both families. The floor on tau bound on 1 run in 60 at 32,32,32 and 48,48,48, 2 in 60 at
+     40,40,40, 12 in 120 at 11,11,11 and on none of the rest; the ceiling at n/4 never bound at all. */
   function acTime(x) {
     const n = x.length;
     let m = 0;
@@ -441,7 +449,19 @@
      draw off U.makeRng so the error bar reprints with the plate. Against the scatter across seeds, as
      above: 11,11,11 0.0151 measured and 0.0141 estimated; 24,24,24 0.0098 and 0.0105; 32,32,32 0.0093
      and 0.0092; 40,40,40 0.0079 and 0.0075; 48,48,48 0.0070 and 0.0064; 24,40,46 0.0102 and 0.0101;
-     20,20,40 0.0150 and 0.0112; 48,48,8 0.0192 and 0.0230. */
+     20,20,40 0.0150 and 0.0112; 48,48,8 0.0192 and 0.0230.
+
+     On a second, independent family of seeds the same ratios read 1.04 at 32,32,32, 1.24 at 40,40,40,
+     0.85 at 24,40,46, 0.91 at 11,11,11, 1.50 at 48,48,8, 0.87 at 48,48,48, 0.71 at 20,20,40 and 0.90
+     at 36,36,36. Both families put 20,20,40 near 0.7, which is too far below one to be seed noise: an
+     sd over sixty seeds carries about nine per cent of itself, and 0.71 sits three of those below.
+     That shortfall is not a windowing choice that could be tuned away. A tall box's boundary has a
+     mode in which the whole ring moves in or out together, and a shared offset changes the spread of
+     the sixty sector counts not at all, so no resampling of one plate's own sectors can see it. The
+     bar is left as it comes out and the Arctic hint says where it runs narrow; inflating it by a
+     factor picked to make the table read better would be inventing the part that is missing. Counted
+     over sixty seeds at 20,20,40 the free area reads past three sigma on 5 of them and the radius on
+     3, against a mean deviation of only +0.7 and +0.5 sigma, which is what a bar that size does. */
   function blockBoot(bins, tau, rng, B) {
     const n = bins.length;
     const Lb = Math.max(2, Math.min(Math.round(tau), Math.floor(n / 3)));
@@ -527,7 +547,7 @@
     credit: "The sampler is James Propp and David Wilson, 'Exact sampling with coupled Markov chains and applications to statistical mechanics', Random Structures and Algorithms 9, 223 to 252 (1996); random tilings are one of their own worked examples. The limit shape measured on the plate is Henry Cohn, Michael Larsen and James Propp, 'The shape of a typical boxed plane partition', New York Journal of Mathematics 4, 137 to 165 (1998). The count of boxed plane partitions is Percy MacMahon, 'Memoir on the theory of the partitions of numbers, Part VI: partitions in two-dimensional space, to which is added an adumbration of the theory of partitions in three-dimensional space', Philosophical Transactions of the Royal Society A 211, 345 to 373 (1912). The height function that turns a tiling into a stack of cubes is William Thurston, 'Conway's tiling groups', American Mathematical Monthly 97, 757 to 773 (1990). How long this chain needs is David Wilson, 'Mixing times of lozenge tiling and card shuffling Markov chains', Annals of Applied Probability 14, 274 to 325 (2004).",
     blurb: 'Cut a hexagon with sides a, b, c, a, b, c out of the triangular grid and cover it with the three rhombi that fit, every covering equally likely. What comes out is a stack of unit cubes in the corner of an a by b by c room, seen from the corner: the three rhombi are the three visible faces of the cubes, and the tiling is nothing but the shape of the pile. Near each of the six corners of the hexagon the rhombi lock into a single orientation and stay there, and in the middle all three mix. The boundary between the two is nowhere in the rule and is not a hexagon: as the box grows it becomes the ellipse inscribed in the hexagon and tangent to all six sides, a circle when a, b and c are equal. This plate measures that boundary from the tiling on screen and prints it beside the prediction. The sampler is exact rather than merely long. Coupling from the past runs the empty box and the full box forward from further and further back on one fixed set of random choices, and once the two have met, what the pair of them has become by the present moment is a perfectly uniform draw, with no burn-in to judge and no bias left over. The present moment is the point: reading the tiling off at the moment the two met instead would quietly favor the tilings that are easy to meet in, and the plate would look exactly the same. The status line says how far back it had to start and how long the two took to meet, which is a fact about this hexagon and this seed rather than a number anyone chose. Two numbers there carry error bars, because a measurement printed beside a prediction without one cannot be read: the arctic radius is a mean over sixty angular sectors and the free area is a ratio of two counts, and both are compared with the prediction in standard deviations. A third number, how many rhombi of each orientation the tiling holds, is a plain count fixed by the box, so it is labeled exact and given no error bar at all. The agreement is a limit statement, so it improves as a, b and c grow together; where it does not agree the status line says so and, when the reason is known, gives it.',
     schema: [
-      RANGE('Hexagon', 'a', 'Side a', GEOM, 3, SIDE, 1, String, { hint: 'The three sides of the box. The hexagon reads a, c, b, a, c, b around its rim and the tiling holds ab + bc + ca rhombi however the pieces fall.' }),
+      RANGE('Hexagon', 'a', 'Side a', GEOM, 3, SIDE, 1, String, { hint: 'The three sides of the box. The hexagon reads a, b, c, a, b, c around its rim and the tiling holds ab + bc + ca rhombi however the pieces fall.' }),
       RANGE('Hexagon', 'b', 'Side b', GEOM, 3, SIDE, 1, String),
       RANGE('Hexagon', 'c', 'Side c', GEOM, 3, SIDE, 1, String),
       { group: 'Hexagon', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, wrap: true,
@@ -561,8 +581,11 @@
     },
     presets: {
       // No grout and a cool palette, so this is not the default plate at a larger side. Closing the
-      // gap between the rhombi makes the frozen corners read as three flat sheets of one color and
-      // the circle between them as the only place anything happens, which is the point of the preset.
+      // gap between the rhombi drops the frozen corners back to three sheets of one color, so the
+      // circle between them is the only place anything happens, which is the point of the preset.
+      // The sheets are not quite flat: with inset at zero the hairline below narrows the seam between
+      // abutting rhombi without closing it, so a faint lattice of the paper still shows through the
+      // corners. On this plate it reads as the weave of a tiled surface rather than as a fault.
       circle: pre('Arctic circle, a = b = c = 40', { a: 40, b: 40, c: 40, aspect: 'fit', sampler: 'cftp', fill: 'shade', shift: 0, inset: 0, strokeWidth: 0, ring: 3, arctic: 'off', margin: 0.06, grain: 0.03 }, Pal.harbor),
       ellipse: pre('Skewed hexagon, the ellipse', { a: 24, b: 40, c: 46, aspect: 'fit', sampler: 'cftp', fill: 'shade', shift: 1, inset: 0.03, strokeWidth: 0, ring: 3, arctic: 'both', curveW: 1.8, margin: 0.06, grain: 0.03 }, Pal.verdigris),
       cubes: pre('Stack of cubes, a = b = c = 11', { a: 11, b: 11, c: 11, aspect: 'fit', sampler: 'cftp', fill: 'shade', shift: 0, inset: 0.05, strokeWidth: 1.2, strokeColor: 3, ring: 3, arctic: 'off', margin: 0.07, grain: 0 }, Pal.tram),
@@ -574,7 +597,7 @@
     hints: {
       Hexagon: 'The seed fixes every random choice the sampler makes, so a seed and a, b, c reprint exactly the same tiling. MacMahon counted how many there are to choose from, and the status line reports it.',
       Sampler: 'Coupling from the past has no fixed running time. It doubles how far back it starts until the two extreme tilings, run forward on the same random choices, arrive at the same place. At the largest hexagons an unlucky seed can run past the work budget, and the plate then falls back to a plain forward run and says in the status line that it is no longer exact. The status line also tests the exactness claim instead of only making it: four thousand draws from the 2 by 2 by 2 box, which MacMahon says has exactly twenty tilings, against the uniform distribution over those twenty. It is a real statistical test with a real null distribution, so about one seed in twenty reads past two sigma and about one in a hundred and fifty past three; that is the test working, not the sampler failing. A reading that large on seed after seed would be something else.',
-      Arctic: 'The measured boundary is read off the plate itself: every tile is called frozen or free from its own neighborhood, the free ones are counted in sixty angular sectors around the center of the predicted ellipse, and the radius that would enclose them is compared with the ellipse. In the coordinates that comparison is made in, the prediction is a radius of exactly 1 at every angle. The sixty sectors are not sixty independent numbers, so the error bar on their mean is widened by the measured autocorrelation around the circle, which over the shapes these presets use leaves somewhere between six and thirty of them and the status line says how many; the error bar on the free area comes from a seeded bootstrap over the same sectors, since a binomial bar on that many tiles would be more than twice too small. Both estimates were checked against the scatter across many seeds. It is a limit statement, so the agreement improves as a, b and c grow together and is poor when one of them is small: averaged over many seeds the radius reads 1.023 at 11, 11, 11 and 0.954 at 48, 48, 8, against 1.000 wherever the limit has been reached.',
+      Arctic: 'The measured boundary is read off the plate itself: every tile is called frozen or free from its own neighborhood, the free ones are counted in sixty angular sectors around the center of the predicted ellipse, and the radius that would enclose them is compared with the ellipse. In the coordinates that comparison is made in, the prediction is a radius of exactly 1 at every angle. The sixty sectors are not sixty independent numbers, so the error bar on their mean is widened by the measured autocorrelation around the circle, which over the shapes these presets use leaves somewhere between six and thirty of them and the status line says how many; the error bar on the free area comes from a seeded bootstrap over the same sectors, since a binomial bar on that many tiles would be more than twice too small. Both estimates were checked against the scatter across many seeds, at the eight shapes these presets use, and neither is exact: the radius bar comes out between about 0.9 and 1.8 times that scatter and the free area bar between about 0.7 and 1.5 of it. Wide is the safe direction and most shapes sit there, but on a tall box like 20, 20, 40 the free area bar runs about thirty per cent narrow, because resampling one plate\'s own sectors cannot see the whole boundary breathing in or out together, and on such a box a reading of three sigma is nearer two. Read these bars as the right size rather than as an exact one. It is a limit statement, so the agreement improves as a, b and c grow together and is poor when one of them is small: averaged over many seeds the radius reads 1.023 at 11, 11, 11 and 0.954 at 48, 48, 8, against 1.000 wherever the limit has been reached.',
       Tiles: 'Cube faces shades the three orientations light, middle and dark so the pile reads as solid, as if the light came from over your left shoulder. Height colors every face by how far above the floor of the box it sits and keeps the same shading over it.',
     },
     palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (tops, right faces, left faces)',
@@ -809,8 +832,16 @@
         const strokeOn = s.strokeWidth > 0;
         const Pr = rot(s.palette, s.shift);
         const sc = Pr[s.strokeColor % Pr.length] || U.inkFor(s.bg);
-        // With no grout and no stroke asked for, a hairline in the fill color closes the seam that
-        // antialiasing leaves between two abutting polygons.
+        // With no grout and no stroke asked for, a hairline in the fill color narrows the seam that
+        // antialiasing leaves between two abutting polygons. It does not close it. Two fills that
+        // share an edge each cover part of the boundary pixel and composite over the paper in turn,
+        // which leaves up to a quarter of the background showing along every edge, and the seam is
+        // one pixel wide whatever the tile size, so a stroke that scales with the tile cannot track
+        // it: at forty a side it is 0.35 px on screen and 0.6 px at print, enough to dim the seam and
+        // not enough to remove it. A flat pixel of stroke would remove it, at the cost of growing
+        // every rhombus by half a pixel into its neighbor and moving the color boundaries with it.
+        // Measured on the circle preset, the visible result is a faint lattice over the frozen
+        // corners; the preset note above says so rather than claiming three flat sheets.
         const sw = strokeOn ? Math.max(0.3, s.strokeWidth * k * 0.09) : (s.inset > 0.004 ? 0 : Math.max(0.35, k * 0.02));
         for (let n = 0; n < tile.M; n++) {
           const o = tile.ro[n], au = tile.ru[n], av = tile.rv[n];

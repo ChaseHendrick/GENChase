@@ -596,9 +596,13 @@
       seed: 'growdomain-1999',
     },
     presets: {
-      insertion: pre('Stripe insertion', { mode: 'sheet', law: 'exp', kinetics: 'sch', ka: 0.1, kb: 0.9, gam: 100,
-        dratio: 20, cells: 192, aspect: '4:5', waves0: 2, grow: 8, rate: 0.04, amp: 0.02,
-        view: 'field', lo: 0.02, hi: 1, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.04 }, Pal.graphite),
+      // Three of the sliders are the same as the default's on purpose: this is the default's physics
+      // at half the growth rate and half the growth, shown on the inhibitor instead of the activator,
+      // so the branch tree is legible rather than crowded. It used to be the default recipe exactly,
+      // down to the palette, which made it a preset that changed nothing when it was chosen.
+      cascade: pre('Doubling cascade', { mode: 'sheet', law: 'exp', kinetics: 'sch', ka: 0.1, kb: 0.9, gam: 100,
+        dratio: 20, cells: 192, aspect: '4:5', waves0: 2, grow: 4, rate: 0.026, amp: 0.02,
+        view: 'inhibitor', lo: 0.02, hi: 1, exposure: 1, gamma: 1, contrast: 1.05, grain: 0.04 }, Pal.glacier),
       angelfish: pre('Angelfish', { mode: 'sheet', law: 'exp', kinetics: 'sch', ka: 0.1, kb: 0.9, gam: 100,
         dratio: 20, cells: 192, aspect: '4:5', waves0: 2.5, grow: 7, rate: 0.038, amp: 0.02,
         view: 'stripes', lo: 0, hi: 1, exposure: 1, gamma: 0.95, contrast: 1.1, grain: 0.08 }, Pal.risograph),
@@ -608,8 +612,14 @@
       saturating: pre('Growth that stops', { mode: 'sheet', law: 'log', kinetics: 'sch', ka: 0.1, kb: 0.9, gam: 100,
         dratio: 20, cells: 160, aspect: '4:5', waves0: 2, grow: 5, rate: 0.042, amp: 0.02,
         view: 'field', lo: 0.02, hi: 1, exposure: 1, gamma: 0.95, contrast: 1.05, grain: 0.04 }, Pal.verdigris),
-      doubling: pre('Mode doubling', { mode: 'sheet', law: 'exp', kinetics: 'sch', ka: 0.1, kb: 0.9, gam: 100,
-        dratio: 20, cells: 192, aspect: '4:5', waves0: 2, grow: 8, rate: 0.09, amp: 0.02,
+      // The fast end of the rate slider, which is where the clean doubling breaks down. This preset
+      // was labelled "Mode doubling" and set at rate 0.09, which had it exactly backwards: the clean
+      // doubling is what the SLOW recipes do, and 0.09 is already fast enough that the splits come
+      // out of step. At 0.15 the sheet holds counts of 7, 8, 10, 12 and 14 for twelve rows or more
+      // each on the default seed, instead of stepping 5, 10, 20, and the measured wavenumber sits
+      // further below the peak of the dispersion relation than on any other preset here.
+      lagging: pre('Growth outruns it', { mode: 'sheet', law: 'exp', kinetics: 'sch', ka: 0.1, kb: 0.9, gam: 100,
+        dratio: 20, cells: 192, aspect: '4:5', waves0: 2, grow: 8, rate: 0.15, amp: 0.02,
         view: 'row', lo: 0, hi: 1, exposure: 1, gamma: 0.9, contrast: 1.1, grain: 0 }, Pal.nightshade),
       meinhardt: pre('Gierer-Meinhardt', { mode: 'sheet', law: 'exp', kinetics: 'gm', ka: 0.1, kb: 1, gam: 60,
         dratio: 20, cells: 192, aspect: '4:5', waves0: 2, grow: 6, rate: 0.038, amp: 0.02,
@@ -854,11 +864,32 @@
           measN = c;
         }
         // A plateau lasting a row or two is the field crossing between two counts, not a state the
-        // pattern held. It is dropped from the sample and from the trace, except for the last one,
-        // which is kept however short because it is the state the plate actually ends in.
+        // pattern held, so it is not a plateau for the purpose of averaging anything over it.
+        //
+        // The state the sheet ends in is a separate matter, and conflating the two was a real error
+        // here. The last segment used to be kept whatever its length, on the argument that it is the
+        // state the plate actually ends in, and it went into both statistics. On the default recipe
+        // that segment is one row out of six hundred, caught in the middle of a splitting cascade,
+        // and its k of 5.17 sat against 3.94, 4.32 and 4.33 from the three real plateaus. Carrying it
+        // moved the printed wavenumber from 4.19 +/- 0.13 to 4.44 +/- 0.26: it pulled the mean toward
+        // the theoretical peak AND doubled the error bar, turning a genuine growth lag of about two
+        // sigma into an agreement at one. An error bar inflated by a transient is the exact failure
+        // the house rule is about, so the two uses are now separated by what each one needs.
+        //
+        //   kStat AVERAGES k over a state, so it needs states the pattern held: held.
+        //   expStat FITS n against the L at which each count first appeared, and an insertion is an
+        //   event rather than a state, so how long it was watched afterwards cannot bias it. A final
+        //   count that appeared one row before the sheet stopped is still a genuine (L, n) event, so
+        //   it joins that sample and only that one.
+        //
+        // The headline count is unaffected either way: measN is read off the last row above the
+        // amplitude floor, not out of either sample, so the plate still reports the count it ends on.
         const minRows = Math.max(3, rowsDone / 60);
-        const keep = segs.filter((g, i) => g.n > 0 && (g.rows >= minRows || i === segs.length - 1));
-        trace = keep.map(g => ({ row: g.row, n: g.n }));
+        const held = segs.filter(g => g.n > 0 && g.rows >= minRows);
+        const tail = segs.length && segs[segs.length - 1].n > 0 ? segs[segs.length - 1] : null;
+        const ended = !!tail && held.indexOf(tail) < 0;   // the sheet stopped part way through a split
+        trace = held.map(g => ({ row: g.row, n: g.n }));
+        if (ended) trace.push({ row: tail.row, n: tail.n });
         if (trace.length > 8) trace = trace.slice(-8);
         // WAVENUMBER, from the geometric mean of L over each plateau. The plateau spans a range of
         // lengths at one fixed count and k slides across it, so the mean is the middle of one tooth
@@ -867,8 +898,8 @@
         // 4.75 ± 0.37 at 0.012 against a peak of 4.87, which is 0.3 sigma. That is the quasi-static
         // limit arriving, and it is why the middle of the tooth is the quantity compared with the
         // peak rather than either end of it.
-        const Lbar = keep.map(g => Math.exp(g.sl / g.rows));
-        kStat = meanSE(keep.map((g, i) => g.n * PI / Lbar[i]));
+        const Lbar = held.map(g => Math.exp(g.sl / g.rows));
+        kStat = meanSE(held.map((g, i) => g.n * PI / Lbar[i]));
         kSample = 'plateaus';
         // EXPONENT, from the insertion events rather than from the same plateau means. A plateau is
         // truncated at both ends of the run, by the amplitude floor at the top of the sheet and by the
@@ -879,7 +910,7 @@
         // bias, because an insertion is an event and how long it was watched afterwards cannot move
         // it. The first plateau is dropped, since its start is where the pattern became detectable
         // rather than where it was inserted.
-        const ins = keep.slice(1);
+        const ins = held.slice(1).concat(ended ? [tail] : []);
         // An insertion is located to the recorded row it first appears on, so log L carries one row
         // of quantization. The standard deviation of a uniform error one row wide is that row's own
         // step in log L over sqrt(12), and that is what is propagated into the slope.
@@ -901,8 +932,17 @@
         // The plane's radius is a weighted centroid and carries an error bar of its own; the sheet's
         // count is an integer read straight off the field, so it is labelled exact rather than given
         // a fabricated one.
+        //
+        // The plane's error bar is labelled with the sample it came from, and that label is load
+        // bearing rather than decoration. It is the spread of the centroid across six angular sectors
+        // of ONE picture, so it says how round this ring is and nothing about how far the selected
+        // wavenumber is from theory. Printed bare next to the prediction it invites the reader to
+        // divide one by the other, which on the plane preset would read as a twenty sigma
+        // disagreement from a number that cannot support the comparison. The sigma against theory is
+        // quoted once, on the k term of the self-check, where the sample is the run's own snapshots.
         const meas = !measN ? 'not yet'
-          : (P.plane ? '<b>' + pm(measN, modeMN ? modeMN.se : NaN) + '</b>'
+          : (P.plane ? '<b>' + pm(measN, modeMN ? modeMN.se : NaN) + '</b> over '
+              + (modeMN ? modeMN.sectors : 0) + ' sectors'
                      : '<b>' + measN + '</b> exact');
 
         // The self-check. Every measured quantity beside a theoretical one carries an uncertainty and
