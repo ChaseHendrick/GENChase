@@ -130,7 +130,7 @@
       a, b, c, key, mode, N, maxT,
       T: 1, t: mode === 'cftp' ? -1 : 0,
       bot: new Int16Array(N), top: new Int16Array(N),
-      total: heatSweeps, coal: -1, exact: mode === 'cftp', done: false, swept: 0,
+      total: heatSweeps, coal: -1, exact: mode === 'cftp', done: false,
     };
     if (mode === 'cftp') job.top.fill(c);
     return job;
@@ -142,11 +142,11 @@
     while (!job.done) {
       if (job.mode === 'heat') {
         sweep(job.bot, a, b, c, job.t, key);
-        job.t++; job.swept++;
+        job.t++;
         if (job.t >= job.total) job.done = true;
       } else if (job.coal >= 0) {                      // met already: carry the one state on to time 0
         sweep(job.bot, a, b, c, job.t, key);
-        job.t++; job.swept++;
+        job.t++;
         if (job.t >= 0) job.done = true;
       } else {
         if (job.t >= 0) {                              // the round reached time 0 without coalescing
@@ -160,7 +160,7 @@
         }
         sweep(job.bot, a, b, c, job.t, key);
         sweep(job.top, a, b, c, job.t, key);
-        job.t++; job.swept += 2;
+        job.t++;
         let eq = true;
         for (let k = 0; k < N; k++) if (job.bot[k] !== job.top[k]) { eq = false; break; }
         if (eq) { job.coal = job.t + job.T; if (job.t >= 0) job.done = true; }
@@ -187,7 +187,13 @@
      of 2.5 sigma on one plate is therefore ordinary; a reading that large on plate after plate is not.
 
      It is cheap. The 2 by 2 box coalesces after a handful of sweeps, so four thousand exact draws cost
-     about 23 ms, less than one chunk of the plate's own sampler. */
+     about 23 ms under node, near enough one chunk of the plate's own sampler, and build() spends them
+     in a chunk of their own: the synchronous slice of a regenerate then measures 21 to 32 ms in a
+     headless Chromium on a software renderer, against 55 when the two shared a slice.
+
+     Twenty is not written down here either. It is Math.round of MacMahon's formula at 2, 2, 2, the
+     same macmahonLog10 the status line quotes, so the number the test is held to comes from the
+     closed form rather than from a constant somebody typed. */
   function samplerSelfTest(key, draws) {
     const seen = new Map();
     for (let i = 0; i < draws; i++) {
@@ -201,7 +207,7 @@
     seen.forEach(n => { chi += (n - exp) * (n - exp) / exp; });
     const df = k - 1;
     const z = df > 0 ? (Math.pow(chi / df, 1 / 3) - (1 - 2 / (9 * df))) / Math.sqrt(2 / (9 * df)) : NaN;
-    return { draws, k, want: 20, chi, df, z };
+    return { draws, k, want: Math.round(Math.pow(10, macmahonLog10(2, 2, 2))), chi, df, z };
   }
 
   /* ---------------- the picture ----------------
@@ -348,8 +354,9 @@
      every triangle to the two nearest sectors on purpose, and the arctic boundary is a smooth curve
      whose excursions run over a finite angle rather than jumping from sector to sector. The effective
      count is 60/tau with tau the integrated autocorrelation around the circle, the usual
-     1 + 2 sum rho_l with the window closed at the first non-positive rho. tau comes out near 4 at every
-     size tried, so roughly fifteen of the sixty sectors are independent and the status line says so.
+     1 + 2 sum rho_l with the window closed at the first non-positive rho. Averaged over seeds tau comes
+     out near 4 at every size tried; on one plate it runs from about 2.5 to 6.5, so between nine and
+     twenty-three of the sixty sectors are independent, and the status line prints which.
 
      Checked rather than asserted, by drawing many tilings at one size and comparing the scatter of the
      mean radius across seeds with this single-tiling estimate averaged over the same seeds:
@@ -535,7 +542,7 @@
     hints: {
       Hexagon: 'The seed fixes every random choice the sampler makes, so a seed and a, b, c reprint exactly the same tiling. MacMahon counted how many there are to choose from, and the status line reports it.',
       Sampler: 'Coupling from the past has no fixed running time. It doubles how far back it starts until the two extreme tilings, run forward on the same random choices, arrive at the same place. At the largest hexagons an unlucky seed can run past the work budget, and the plate then falls back to a plain forward run and says in the status line that it is no longer exact. The status line also tests the exactness claim instead of only making it: four thousand draws from the 2 by 2 by 2 box, which MacMahon says has exactly twenty tilings, against the uniform distribution over those twenty. It is a real statistical test with a real null distribution, so about one seed in twenty reads past two sigma and about one in a hundred and fifty past three; that is the test working, not the sampler failing. A reading that large on seed after seed would be something else.',
-      Arctic: 'The measured boundary is read off the plate itself: every tile is called frozen or free from its own neighborhood, the free ones are counted in sixty angular sectors around the center of the predicted ellipse, and the radius that would enclose them is compared with the ellipse. In the coordinates that comparison is made in, the prediction is a radius of exactly 1 at every angle. The sixty sectors are not sixty independent numbers, so the error bar on their mean is widened by the measured autocorrelation around the circle, which leaves about fifteen; the error bar on the free area comes from a seeded bootstrap over the same sectors, since a binomial bar on that many tiles would be more than twice too small. Both estimates were checked against the scatter across many seeds. It is a limit statement, so the agreement improves as a, b and c grow together and is poor when one of them is small: averaged over many seeds the radius reads 1.023 at 11, 11, 11 and 0.954 at 48, 48, 8, against 1.000 wherever the limit has been reached.',
+      Arctic: 'The measured boundary is read off the plate itself: every tile is called frozen or free from its own neighborhood, the free ones are counted in sixty angular sectors around the center of the predicted ellipse, and the radius that would enclose them is compared with the ellipse. In the coordinates that comparison is made in, the prediction is a radius of exactly 1 at every angle. The sixty sectors are not sixty independent numbers, so the error bar on their mean is widened by the measured autocorrelation around the circle, which usually leaves somewhere between ten and twenty of them and the status line says how many; the error bar on the free area comes from a seeded bootstrap over the same sectors, since a binomial bar on that many tiles would be more than twice too small. Both estimates were checked against the scatter across many seeds. It is a limit statement, so the agreement improves as a, b and c grow together and is poor when one of them is small: averaged over many seeds the radius reads 1.023 at 11, 11, 11 and 0.954 at 48, 48, 8, against 1.000 wherever the limit has been reached.',
       Tiles: 'Cube faces shades the three orientations light, middle and dark so the pile reads as solid, as if the light came from over your left shoulder. Height colors every face by how far above the floor of the box it sits and keeps the same shading over it.',
     },
     palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (tops, right faces, left faces)',
@@ -575,11 +582,15 @@
       function build(s, done) {
         clearTimeout(timer); building = true; tile = null; meas = null; info = null; self = null;
         const key = (U.makeRng(s.seed + '/lozenge')() * 4294967296) >>> 0;
-        self = samplerSelfTest((U.makeRng(s.seed + '/selftest')() * 4294967296) | 0, 4000);
+        const selfKey = (U.makeRng(s.seed + '/selftest')() * 4294967296) | 0;
         const job = makeJob(s.a, s.b, s.c, key, s.sampler, s.sweeps);
         mac = macmahonLog10(s.a, s.b, s.c);
         status('sampling');
         (function chunk() {
+          // The self-test gets a slice of its own rather than riding along with the first sampler
+          // chunk. Together they measured 55 ms of blocked page on a software renderer, over the 50 ms
+          // the shell asks for; apart, neither slice is longer than one ordinary chunk.
+          if (!self) { self = samplerSelfTest(selfKey, 4000); status('sampling'); timer = setTimeout(chunk, 0); return; }
           runJob(job, 32);
           if (!job.done) {
             status(job.mode === 'cftp'
@@ -588,7 +599,7 @@
             timer = setTimeout(chunk, 0);
           } else {
             tile = buildTiling(job.bot, s.a, s.b, s.c);
-            info = { T: job.T, coal: job.coal, exact: job.exact, total: job.total, swept: job.swept, fell: job.mode === 'heat' && s.sampler === 'cftp' };
+            info = { T: job.T, coal: job.coal, exact: job.exact, total: job.total, fell: job.mode === 'heat' && s.sampler === 'cftp' };
             sig = sigOf(s);
             building = false;
             done();
@@ -619,46 +630,43 @@
       function status(extra) {
         const s = host.getState();
         const nRh = s.a * s.b + s.b * s.c + s.c * s.a;
-        // An exact combinatorial count. ab tops, bc of one side face and ca of the other, whatever the
-        // pile does, so there is no sampling error to report and none is invented.
+        // An exact combinatorial count: ab tops, bc of one side face and ca of the other, whatever the
+        // pile does. There is no sampling error in it, so none is invented for it.
         let out = '<span>hexagon <b>' + s.a + '·' + s.b + '·' + s.c + '</b> · <b>' + nRh.toLocaleString() +
           '</b> rhombi';
         if (tile) {
           out += ' = ' + tile.cnt.map(v => v.toLocaleString()).join(' + ') +
             (tile.sound ? ', an exact count' : ', WHICH IS WRONG: ' + tile.want.map(v => v.toLocaleString()).join(' + ') +
-              ' expected, ' + tile.bad + ' faces did not place');
+              ' expected, ' + tile.bad + ' misplaced');
         }
+        if (mac > 0) out += ' · MacMahon <b>10^' + Math.round(mac).toLocaleString() + '</b> tilings';
         out += '</span>';
-        if (mac > 0) {
-          out += '<span>MacMahon <b>10^' + Math.round(mac).toLocaleString() + '</b> tilings';
-          if (info) {
-            out += info.exact
-              ? ' · CFTP <b>exact</b>, from <b>' + info.T.toLocaleString() + '</b> back, met after <b>' +
-                info.coal.toLocaleString() + '</b>, <b>' + info.swept.toLocaleString() + '</b> sweeps of work'
-              : ' · forward run of <b>' + info.total.toLocaleString() + '</b> sweeps, <b>not exact</b>' +
-                (info.fell ? ', CFTP over budget' : '');
-          }
-          out += '</span>';
+        // How this draw was made, and then the exactness claim tested rather than merely made.
+        let sp2 = '';
+        if (info) {
+          sp2 += info.exact
+            ? 'CFTP <b>exact</b>, from <b>' + info.T.toLocaleString() + '</b> back, met after <b>' +
+              info.coal.toLocaleString() + '</b>'
+            : 'forward run of <b>' + info.total.toLocaleString() + '</b> sweeps, <b>not exact</b>' +
+              (info.fell ? ', CFTP over budget' : '');
         }
-        // The exactness claim, tested on the one box small enough for the answer to be known exactly.
         if (self) {
-          out += '<span>CFTP self-test <b>' + self.draws.toLocaleString() + '</b> draws on the 2·2·2 box: <b>' +
-            self.k + ' of ' + self.want + '</b> tilings' + (self.k === self.want ? '' : ', WHICH IS WRONG') +
-            ', χ² <b>' + self.chi.toFixed(1) + '</b> on ' + self.df + ' df, <b>' +
-            sigTxt(isFinite(self.z) ? self.z : null) + '</b> against uniform</span>';
+          sp2 += (sp2 ? ' · ' : '') + 'self-test <b>' + self.draws.toLocaleString() + '</b> draws on 2·2·2: <b>' +
+            self.k + ' of ' + self.want + '</b>' + (self.k === self.want ? '' : ' WHICH IS WRONG') +
+            ', χ² <b>' + self.chi.toFixed(1) + '</b>/' + self.df + ' df, <b>' +
+            sigTxt(isFinite(self.z) ? self.z : null) + '</b>';
         }
+        if (sp2) out += '<span>' + sp2 + '</span>';
         if (meas) {
-          // A mean over NB sectors: the standard error and the number of samples, with the sectors
-          // counted as the autocorrelation says they should be rather than as sixty independent ones.
+          // A mean over NB sectors, with its standard error and the number of samples behind it, the
+          // sectors counted as the autocorrelation says they should be rather than as sixty
+          // independent ones; then a ratio of two counts, bootstrapped rather than propagated.
           const zr = sigmas(meas.rMean, meas.rSe, 1);
-          // A ratio of two counts, bootstrapped rather than propagated.
           const zf = sigmas(meas.disFrac, meas.disSe, meas.predDisFrac);
           let sp = '<span>arctic radius <b>' + pm(meas.rMean, meas.rSe, 3) + '</b> over ' + meas.nSect +
-            ' sectors, τ ' + meas.tau.toFixed(1) + ' so ~' + Math.round(meas.neff) +
-            ' independent, against exactly 1: <b>' + sigTxt(zr) + '</b>' +
-            ' · free area <b>' + pm(meas.disFrac, meas.disSe, 3) + '</b>, ' +
-            meas.nDis.toLocaleString() + ' free of ' + meas.nTot.toLocaleString() + ' triangles, against <b>' +
-            f3(meas.predDisFrac) + '</b> inside the ellipse: <b>' + sigTxt(zf) + '</b>';
+            ' sectors, ~' + Math.round(meas.neff) + ' independent, against 1: <b>' + sigTxt(zr) + '</b>' +
+            ' · free area <b>' + pm(meas.disFrac, meas.disSe, 3) + '</b> of n = ' + meas.nTot.toLocaleString() +
+            ' triangles, against <b>' + f3(meas.predDisFrac) + '</b>: <b>' + sigTxt(zf) + '</b>';
           const worst = Math.max(zr === null ? 0 : Math.abs(zr), zf === null ? 0 : Math.abs(zf));
           if (worst > 3) { const w = whyOff(s); sp += w ? ' · ' + w : ' · a real disagreement, cause not diagnosed'; }
           if (!info || !info.exact) sp += ' · from a sample that is not exact';

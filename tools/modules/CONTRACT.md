@@ -13,7 +13,9 @@ Read this before writing a block. It restates what the shell in `studio.html` ac
   one-off scripts to time something, dump a statistic or crop a screenshot. Anything under `tools/_` is
   gitignored, so it stays out of the repository without anyone having to remember to delete it. A probe
   that turns out to be worth keeping gets renamed without the underscore and given a real header
-  comment, the way `tools/zoom.js` and `tools/ui.js` were.
+  comment, the way `tools/zoom.js` and `tools/ui.js` were. The rule runs one way only: never rename an
+  already-tracked tool INTO `tools/_`. Something already committed there was kept on purpose, and moving
+  it under the ignored prefix deletes it from the repository without anybody deciding to.
 - Baseline noise you can ignore: the `willReadFrequently` warning, `ERR_CERT_AUTHORITY_INVALID`, and the `ServiceWorkerRegistration` pageerror. Anything else is yours.
 - A flat plate (p01 close to p99) or a black plate means the simulation died or the exposure is wrong. Sweep parameters until the default measures alive. Do not ship a preset you have not looked at.
 - Hash format for testing a recipe: `#<id>/<seed>/<base64url of JSON diff>`; `#<id>/<seed>` alone is enough for most checks. The JSON diff is an object of state keys that differ from defaults.

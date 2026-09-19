@@ -7,4 +7,3 @@ tools/modules/*.js
 # Agent scratch. The review and module workflows write throwaway probe scripts and screenshots
 # next to the harness; anything prefixed with an underscore is scratch and never ships.
 tools/_*
-tools/timeself.js
