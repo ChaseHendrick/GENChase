@@ -1,6 +1,6 @@
 name: check
 
-# The browser harness is the real verification, but a full sweep of 52 techniques takes hours on a
+# The browser harness is the real verification, but a full sweep of the file takes hours on a
 # software renderer, so running all of it on every push would mean nobody waits for it. Split it:
 # the structural lint is instant and gates every push, and the browser jobs cover one technique from
 # each architecture family, which is what catches a change to a shared factory.
@@ -83,8 +83,8 @@ jobs:
       matrix:
         # One per architecture family: the shared GPU pde factory, the multi-species reaction
         # factory, the waves block, a CPU lattice, vector line work, a CPU density map, a raymarch,
-        # and a continuous cellular automaton.
-        id: [cahn, turing, schrodinger, ising, tilings, attractors, fractal, life]
+        # a continuous cellular automaton, and an exact closed-form field (no integrator).
+        id: [cahn, turing, schrodinger, ising, tilings, attractors, fractal, life, kp]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

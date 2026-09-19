@@ -17,7 +17,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:image" content="/og.jpg">
 <meta name="twitter:image" content="/og.jpg">
-<meta name="description" content="GENChase is a generative art studio built from real scientific simulations: flow fields, reaction-diffusion, slime mold, Lenia, fluids, Cahn–Hilliard, Ohta–Kawasaki copolymers, Swift–Hohenberg, phase-field crystal, Kuramoto–Sivashinsky, complex Ginzburg–Landau, swarmalators, Chirikov and Hofstadter, Helmholtz scars, optical caustics, smectic focal conics, Hastings–Levitov growth, Douady–Couder phyllotaxis, strange attractors, fractal raymarching, Penrose tilings, dendritic growth, chimera states, XY vortices, active nematics, Chladni figures, excitable media, Turing patterns, the Ising model, Abelian sandpiles, percolation, Mandelbrot and Julia sets, the double pendulum, hydrogen orbitals, Schrödinger wave packets and Rayleigh–Bénard convection. Every piece is seeded, reproducible and exports at museum print resolution.">
+<meta name="description" content="GENChase is a generative art studio built from real scientific simulations: flow fields, reaction-diffusion, slime mold, Lenia, fluids, Cahn–Hilliard, Ohta–Kawasaki copolymers, Swift–Hohenberg, phase-field crystal, Kuramoto–Sivashinsky, complex Ginzburg–Landau, swarmalators, Chirikov and Hofstadter, Helmholtz scars, optical caustics, smectic focal conics, Hastings–Levitov growth, Douady–Couder phyllotaxis, strange attractors, fractal raymarching, Penrose tilings, dendritic growth, chimera states, XY vortices, active nematics, Chladni figures, excitable media, Turing patterns, the Ising model, Abelian sandpiles, percolation, Mandelbrot and Julia sets, the double pendulum, hydrogen orbitals, Schrödinger wave packets and Rayleigh–Bénard convection, plus exact closed-form plates: KP soliton webs, Gerstner waves, the figure-eight choreography, Camassa–Holm peakons, the photon sphere, Crapper capillary waves, Hasimoto filaments and KP-I lumps. Every piece is seeded, reproducible and exports at museum print resolution.">
 <meta name="keywords" content="generative art, Turing patterns, Barkley excitable media, Ising model, Abelian sandpile, percolation, Mandelbrot, Julia set, Newton fractal, double pendulum, hydrogen orbitals, Schrodinger, Rayleigh-Benard, Keller-Segel, Klausmeier, Indra pearls, Schottky, Lichtenberg, dielectric breakdown, Talbot carpet, Ohta-Kawasaki, Hofstadter butterfly, Helmholtz quantum scars, optical caustics, smectic focal conics, Hastings-Levitov, Douady-Couder phyllotaxis, complex Ginzburg-Landau, Cahn-Hilliard, Swift-Hohenberg, phase-field crystal, Kuramoto-Sivashinsky, swarmalators, Chirikov, chimera, XY model, active nematics, print quality generative art">
 <meta name="author" content="Chaos">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -81,6 +81,11 @@
     "Active Model B+ bubbly phase separation",
     "Random domino tilings of the Aztec diamond (arctic circle)",
     "Schramm-Loewner evolution curves",
+    "Exact KP-II soliton webs and KP-I lumps",
+    "Gerstner waves, Crapper capillary waves, Camassa-Holm peakons",
+    "Figure-eight three-body choreography",
+    "Schwarzschild photon sphere",
+    "Hasimoto vortex filament soliton",
     "Video capture of living plates",
     "Seeded reproducibility and parameter export",
     "Museum-quality print export at 300 to 600 ppi with a printed colophon"
@@ -3288,8 +3293,8 @@ void main(){
     window.addEventListener('resize', markScroll);
     setTimeout(markScroll, 0);
     for (const m of modules) {
-      // Roving tabindex: the strip is one tab stop and the arrow keys move within it. Fifty-two
-      // sequential tab stops is what a tablist without this costs a keyboard user.
+      // Roving tabindex: the strip is one tab stop and the arrow keys move within it. A long
+      // sequential tab strip is what a tablist without this costs a keyboard user.
       const hay = [m.id, m.name, m.tab, m.subtitle, m.equation, m.credit, m.blurb].join(' ').toLowerCase();
       tabs.appendChild(h('button', { class: 'tab', role: 'tab', type: 'button', 'data-id': m.id, 'data-hay': hay, 'aria-selected': 'false', tabindex: '-1', title: m.subtitle || m.name, onclick: () => switchTo(m.id) }, [
         h('span', { class: 'tab-name', text: m.tab || m.name }),
@@ -40058,44 +40063,109 @@ void main(){
     const light = U.isLight(bg);
     const ink = U.inkFor(bg);
     const crest = pal[pal.length - 1];
+    const deepC = pal[0];
     const lab = labels(spec, w);
     const f = n => n.toFixed(2);
+    const S = Math.min(W, H);
+    const wood = s.view === 'woodcut';
+    const trails = s.view === 'trails';
+    const exp = isFinite(s.exposure) && s.exposure > 0 ? s.exposure : 1;
+    const clipId = 'gclip' + Math.abs((W * 13 + H) | 0);
     let body = '';
-    const surf = sampleB(0, spec, w, 240);
+    body += '<defs><clipPath id="' + clipId + '"><rect x="' + f(w.left) + '" y="' + f(w.top) + '" width="' + f(w.right - w.left) + '" height="' + f(w.bottom - w.top) + '"/></clipPath></defs>';
+    body += '<g clip-path="url(#' + clipId + ')">';
+    const surf = sampleB(0, spec, w, Math.max(220, Math.round(spec.waves * 180)));
     let d = 'M ' + f(surf[0][0]) + ' ' + f(surf[0][1]);
     for (let i = 1; i < surf.length; i++) d += ' L ' + f(surf[i][0]) + ' ' + f(surf[i][1]);
-    body += '<path d="' + d + ' L ' + f(w.right) + ' ' + f(w.bottom) + ' L ' + f(w.left) + ' ' + f(w.bottom) + ' Z" fill="' + (light ? rgba(pal[0], 0.08) : rgba(pal[0], 0.4)) + '"/>';
-    for (let j = 0; j < lab.rows.length; j++) {
-      const b = lab.rows[j];
-      const r = rTheory(b, spec);
-      const stroke = U.mixHex(pal[0], crest, U.clamp(1 + b / (spec.depth * spec.lambda + 1e-9), 0, 1));
-      for (let i = 0; i < lab.cols.length; i++) {
-        const a = lab.cols[i];
-        if (spec.trains === 2) {
+    const waterFill = light ? rgba(deepC, 0.14 * exp) : rgba(U.mixHex(deepC, bg, 0.45), U.clamp(0.52 * exp, 0.32, 0.7));
+    body += '<path d="' + d + ' L ' + f(w.right + 4) + ' ' + f(w.bottom + 4) + ' L ' + f(w.left - 4) + ' ' + f(w.bottom + 4) + ' Z" fill="' + waterFill + '"/>';
+    const nestBot = lab.waterBot;
+    const nNest = wood ? Math.max(22, spec.rows + 10) : Math.max(spec.rows + 4, 12);
+    const ramp = U.makeRamp(pal, bg);
+    for (let j = nNest - 1; j >= 1; j--) {
+      const b = nestBot * (j / (nNest - 1));
+      const tDepth = U.clamp(j / (nNest - 1), 0, 1);
+      const col = ramp(light
+        ? U.clamp(0.16 + 0.48 * tDepth, 0.12, 0.68)
+        : U.clamp((1 - tDepth) * 0.62 + 0.18, 0, 1));
+      const alpha = wood
+        ? (light ? 0.78 : 0.48) * (0.35 + 0.65 * (1 - tDepth))
+        : (light ? 0.58 : 0.44) * (0.35 + 0.65 * (1 - tDepth)) * exp;
+      const pts = sampleB(b, spec, w, 160);
+      let nd = 'M ' + f(pts[0][0]) + ' ' + f(pts[0][1]);
+      for (let i = 1; i < pts.length; i++) nd += ' L ' + f(pts[i][0]) + ' ' + f(pts[i][1]);
+      const hex = '#' + [col[0], col[1], col[2]].map(v => ('0' + Math.round(v).toString(16)).slice(-2)).join('');
+      const lw = Math.max(0.7, S * (wood ? 0.0024 : 0.0017) * (0.65 + 0.55 * (1 - tDepth)));
+      body += '<path d="' + nd + '" fill="none" stroke="' + hex + '" stroke-width="' + lw.toFixed(2) + '" opacity="' + U.clamp(alpha, 0.08, 0.88).toFixed(3) + '"/>';
+    }
+    if (!trails) {
+      for (let j = 0; j < lab.rows.length; j++) {
+        const b = lab.rows[j];
+        const tDepth = spec.depth * spec.lambda > 1e-9 ? U.clamp(-b / (spec.depth * spec.lambda), 0, 1) : 0;
+        const t = light
+          ? U.clamp(0.18 + 0.5 * tDepth, 0.14, 0.7)
+          : U.clamp(0.28 + 0.68 * (1 - tDepth), 0, 1);
+        const col = ramp(t);
+        const hex = '#' + [col[0], col[1], col[2]].map(v => ('0' + Math.round(v).toString(16)).slice(-2)).join('');
+        const a = (wood ? (light ? 0.92 : 0.78) : (light ? 0.78 : 0.62)) * (0.45 + 0.55 * (1 - tDepth)) * exp;
+        const op = U.clamp(a, light ? 0.28 : 0.16, 0.96);
+        const lw = Math.max(1.0, S * (wood ? 0.0028 : 0.0024) * (0.75 + 0.45 * (1 - tDepth)));
+        for (let i = 0; i < lab.cols.length; i++) {
+          const aa = lab.cols[i];
+          if (spec.trains === 2) {
+            let pd = '';
+            const n = 96, T = spec.period * 2.2;
+            for (let k = 0; k <= n; k++) {
+              const p = pos(aa, b, spec.t + (k / n) * T, spec);
+              const q = scr(p.x, p.z, w);
+              pd += (k ? ' L ' : 'M ') + f(q[0]) + ' ' + f(q[1]);
+            }
+            body += '<path d="' + pd + '" fill="none" stroke="' + hex + '" stroke-width="' + lw.toFixed(2) + '" opacity="' + op.toFixed(3) + '"/>';
+          } else {
+            const r = rTheory(b, spec);
+            const c = scr(aa, b, w);
+            body += '<ellipse cx="' + f(c[0]) + '" cy="' + f(c[1]) + '" rx="' + f(Math.max(0.5, r * w.sx)) + '" ry="' + f(Math.max(0.5, r * w.sz)) + '" fill="none" stroke="' + hex + '" stroke-width="' + lw.toFixed(2) + '" opacity="' + op.toFixed(3) + '"/>';
+          }
+        }
+      }
+    } else {
+      const behind = 0.72 * spec.period;
+      const nTr = 36;
+      for (let j = 0; j < lab.rows.length; j++) {
+        const b = lab.rows[j];
+        const tDepth = spec.depth * spec.lambda > 1e-9 ? U.clamp(-b / (spec.depth * spec.lambda), 0, 1) : 0;
+        const t = light
+          ? U.clamp(0.18 + 0.5 * tDepth, 0.14, 0.7)
+          : U.clamp(0.28 + 0.68 * (1 - tDepth), 0, 1);
+        const col = ramp(t);
+        const hex = '#' + [col[0], col[1], col[2]].map(v => ('0' + Math.round(v).toString(16)).slice(-2)).join('');
+        const a = (light ? 0.78 : 0.62) * (0.45 + 0.55 * (1 - tDepth)) * exp;
+        const op = U.clamp(a, light ? 0.28 : 0.16, 0.96);
+        const lw = Math.max(1.0, S * 0.0024);
+        for (let i = 0; i < lab.cols.length; i++) {
           let pd = '';
-          const n = 64, T = spec.period * 2;
-          for (let k = 0; k <= n; k++) {
-            const p = pos(a, b, spec.t + (k / n) * T, spec);
+          for (let k = 0; k < nTr; k++) {
+            const u = k / (nTr - 1);
+            const p = pos(lab.cols[i], b, spec.t - (1 - u) * behind, spec);
             const q = scr(p.x, p.z, w);
             pd += (k ? ' L ' : 'M ') + f(q[0]) + ' ' + f(q[1]);
           }
-          body += '<path d="' + pd + '" fill="none" stroke="' + stroke + '" stroke-width="0.8" opacity="0.55"/>';
-        } else {
-          const c = scr(a, b, w);
-          body += '<ellipse cx="' + f(c[0]) + '" cy="' + f(c[1]) + '" rx="' + f(r * w.sx) + '" ry="' + f(r * w.sz) + '" fill="none" stroke="' + stroke + '" stroke-width="0.9" opacity="0.55"/>';
+          body += '<path d="' + pd + '" fill="none" stroke="' + hex + '" stroke-width="' + lw.toFixed(2) + '" opacity="' + op.toFixed(3) + '" stroke-linecap="round"/>';
         }
       }
     }
-    body += '<path d="' + d + '" fill="none" stroke="' + (light ? ink : crest) + '" stroke-width="' + (Math.max(2, Math.min(W, H) * 0.006)).toFixed(2) + '" stroke-linecap="round" stroke-linejoin="round"/>';
+    body += '<path d="' + d + '" fill="none" stroke="' + (light ? ink : crest) + '" stroke-width="' + (Math.max(2, S * 0.006)).toFixed(2) + '" stroke-linecap="round" stroke-linejoin="round"/>';
     for (let j = 0; j < lab.rows.length; j++) {
       const b = lab.rows[j];
       for (let i = 0; i < lab.cols.length; i++) {
         const p = pos(lab.cols[i], b, spec.t, spec);
         const q = scr(p.x, p.z, w);
-        const rr = b === 0 ? 2.4 : 1.7;
-        body += '<circle cx="' + f(q[0]) + '" cy="' + f(q[1]) + '" r="' + rr + '" fill="' + (b === 0 ? crest : ink) + '"/>';
+        const rr = b === 0 ? Math.max(2.4, S * 0.004) : Math.max(1.7, S * 0.003);
+        body += '<circle cx="' + f(q[0]) + '" cy="' + f(q[1]) + '" r="' + f(rr) + '" fill="' + (b === 0 ? crest : ink) + '"/>';
       }
     }
+    body += '</g>';
+    body += '<rect x="' + f(w.left) + '" y="' + f(w.top) + '" width="' + f(w.right - w.left) + '" height="' + f(w.bottom - w.top) + '" fill="none" stroke="' + rgba(ink, light ? 0.22 : 0.14) + '" stroke-width="' + Math.max(1, S * 0.0014).toFixed(2) + '"/>';
     return U.svgDoc(W, H, bg, body);
   }
 
