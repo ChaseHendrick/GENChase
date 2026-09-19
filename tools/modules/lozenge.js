@@ -12,6 +12,20 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // "1.4σ high", or "0.3σ from it" when the two agree. A measured number printed beside a theoretical
+  // one without an error bar says nothing at all: there is no way to tell agreement from disagreement.
+  // Nothing here is ever rounded toward the theory, and a large deviation is named rather than buried.
+  function sigmas(v, se, ref) {
+    if (!(isFinite(v) && isFinite(se) && se > 0)) return null;
+    return (v - ref) / se;
+  }
+  function sigTxt(z) {
+    if (z === null) return 'no uncertainty available';
+    const m = Math.abs(z);
+    return m.toFixed(1) + 'σ ' + (m < 0.05 ? 'from it' : (z > 0 ? 'high' : 'low'));
+  }
+  const pm = (v, se, d) => v.toFixed(d) + ' ± ' + (isFinite(se) && se > 0 ? se.toFixed(d) : '?');
+
   const S3 = Math.sqrt(3) / 2;
   const SIDE = 48;   // largest side the sampler is asked for; see MAXSITE
   // Angular sectors the arctic boundary is measured in. Fixed rather than scaled with the hexagon, so
@@ -91,10 +105,24 @@
   // only one state to carry, so the second chain is dropped and the survivor is run on to time 0; what
   // must not happen is stopping at the meeting and printing the state found there. The meeting time is
   // decided by the very maps being applied, so the state at the meeting is drawn from a tilted measure:
-  // tilings that are easy to arrive at from both extremes at once are over-represented. On the two by
-  // two by two box, which has twenty tilings, stopping at the meeting gives counts running from 116 to
-  // 678 where 400 is expected; running the extra sweeps to time 0 gives a flat histogram. It is the
-  // difference between exact and plausible, and it is invisible on a plate.
+  // tilings that are easy to arrive at from both extremes at once are over-represented. Measured, on
+  // the two by two by two box, which has twenty tilings, 8,000 draws with 400 expected in each:
+  // reading at the meeting gives counts from 116 to 679 and chi-square 1,789 on 19 degrees of freedom,
+  // reading at time 0 gives 349 to 440 and chi-square 33. It is the difference between exact and
+  // plausible, and it is invisible on a plate.
+  //
+  // The exactness claim is the whole reason for doing it this way rather than running one long chain,
+  // so it was tested rather than argued. Against complete enumeration of every tiling, comparing the
+  // empirical distribution with the uniform one: 2·2·2 (20 tilings, 200,000 draws) chi-square 22.5 on
+  // 19 degrees of freedom; 3·2·2 (50 tilings) 35.8 on 49; 2·3·4 and 4·3·2 (490 tilings) 462.3 and
+  // 455.0 on 489; 3·3·3 (980 tilings) 976.6 on 979. Against the exact distribution of the volume,
+  // which MacMahon's count confirms is over all of them: 4·4·4 (232,848 tilings) chi-square 79.0 on
+  // 61, mean volume 31.992 ± 0.013 against exactly 32, 0.7σ low; 5·5·5 (267,227,532 tilings) 103.6 on
+  // 96, mean volume 62.5006 ± 0.0228 against exactly 62.5, 0.0σ from it. Separately, the sandwich
+  // itself was checked step by step: over 4,968,000 site comparisons the bottom chain never rose above
+  // a third chain started elsewhere, that chain never rose above the top chain, and no chain ever left
+  // the set of legal plane partitions. A run chunked against the clock reproduces the un-chunked run
+  // exactly, state, T and meeting time alike.
   function makeJob(a, b, c, key, mode, heatSweeps) {
     const N = a * b;
     const maxT = Math.max(64, Math.pow(2, Math.floor(Math.log2(MAXSITE / (4 * N)))));
@@ -161,6 +189,7 @@
     const TA = new Int8Array(UW * VW).fill(-1), TB = new Int8Array(UW * VW).fill(-1);
     const M = a * b + b * c + c * a;
     const ro = new Int8Array(M), ru = new Int16Array(M), rv = new Int16Array(M), rz = new Int16Array(M);
+    const cnt = [0, 0, 0];
     let n = 0, bad = 0;
     const put = (arr, u, v, o) => {
       const uu = u - U0, vv = v - V0;
@@ -171,21 +200,30 @@
     for (let j = 0; j < b; j++) for (let i = 0; i < a; i++) {
       const z = h[j * a + i], u = i - z, v = j - z;
       put(TA, u, v, 0); put(TB, u, v, 0);
-      ro[n] = 0; ru[n] = u; rv[n] = v; rz[n] = 2 * z; n++;
+      ro[n] = 0; ru[n] = u; rv[n] = v; rz[n] = 2 * z; n++; cnt[0]++;
     }
     for (let k = 0; k < c; k++) for (let j = 0; j < b; j++) {
       let m = 0; while (m < a && h[j * a + m] > k) m++;
       const u = m - k - 1, v = j - k - 1;
       put(TB, u, v, 1); put(TA, u, v + 1, 1);
-      ro[n] = 1; ru[n] = u; rv[n] = v; rz[n] = 2 * k + 1; n++;
+      ro[n] = 1; ru[n] = u; rv[n] = v; rz[n] = 2 * k + 1; n++; cnt[1]++;
     }
     for (let k = 0; k < c; k++) for (let i = 0; i < a; i++) {
       let q = 0; while (q < b && h[q * a + i] > k) q++;
       const u = i - k - 1, v = q - k - 1;
       put(TA, u, v, 2); put(TB, u + 1, v, 2);
-      ro[n] = 2; ru[n] = u; rv[n] = v; rz[n] = 2 * k + 1; n++;
+      ro[n] = 2; ru[n] = u; rv[n] = v; rz[n] = 2 * k + 1; n++; cnt[2]++;
     }
-    return { TA, TB, U0, V0, UW, VW, ro, ru, rv, rz, M: n, bad };
+    // Every triangle of the hexagon written exactly once, and ab, bc, ca faces of the three
+    // orientations: both are counts fixed by the box, not estimates, so they carry no sampling error
+    // and none is invented for them. cov is what the two triangle arrays actually hold, and it is the
+    // one number that can catch a face laid in the wrong place at all.
+    let cov = 0;
+    for (let q = 0; q < TA.length; q++) { if (TA[q] >= 0) cov++; if (TB[q] >= 0) cov++; }
+    const want = [a * b, b * c, c * a];
+    const sound = bad === 0 && n === M && cov === 2 * M &&
+      cnt[0] === want[0] && cnt[1] === want[1] && cnt[2] === want[2];
+    return { TA, TB, U0, V0, UW, VW, ro, ru, rv, rz, M: n, bad, cnt, want, cov, sound };
   }
 
   // The four corners of a rhombus in lattice coordinates, written into out as u0, v0, u1, v1, ...
@@ -283,7 +321,86 @@
      that way comes back with a six-fold ripple of three per cent, which is the size of the effect
      being looked for. The same disk through the split weighting comes back flat to a few parts in a
      thousand, so what is left in the number below is the tiling and not the bookkeeping. */
-  function measureArctic(T, a, b, c, ring) {
+  /* ---------------- how large the error bar is ----------------
+
+     The sixty sector radii are one measurement each, but they are not sixty independent numbers, and
+     sd/sqrt(60) would be a flattering lie. Two things tie neighbors together: the split weighting hands
+     every triangle to the two nearest sectors on purpose, and the arctic boundary is a smooth curve
+     whose excursions run over a finite angle rather than jumping from sector to sector. The effective
+     count is 60/tau with tau the integrated autocorrelation around the circle, the usual
+     1 + 2 sum rho_l with the window closed at the first non-positive rho. tau comes out near 4 at every
+     size tried, so roughly fifteen of the sixty sectors are independent and the status line says so.
+
+     Checked rather than asserted, by drawing many tilings at one size and comparing the scatter of the
+     mean radius across seeds with this single-tiling estimate averaged over the same seeds:
+
+       a,b,c      seeds   sd over seeds   this estimate   ratio
+       11,11,11    120       0.0084          0.0094        1.12
+       12,12,12    120       0.0084          0.0092        1.10
+       24,24,24    120       0.0054          0.0071        1.31
+       32,32,32     80       0.0051          0.0062        1.20
+       40,40,40     60       0.0044          0.0051        1.17
+       48,48,48     60       0.0039          0.0044        1.13
+       24,40,46     60       0.0059          0.0071        1.21
+       20,20,40     60       0.0085          0.0079        0.92
+       48,48, 8     60       0.0152          0.0226        1.49
+
+     It runs a little wide except at 20,20,40, which is the safe direction for an error bar, and it is
+     quoted as it comes out rather than scaled to make the table read better. */
+  function acTime(x) {
+    const n = x.length;
+    let m = 0;
+    for (let i = 0; i < n; i++) m += x[i];
+    m /= n;
+    let c0 = 0;
+    for (let i = 0; i < n; i++) c0 += (x[i] - m) * (x[i] - m);
+    c0 /= n;
+    if (!(c0 > 0)) return { mean: m, sd: 0, tau: 1, neff: n, se: 0 };
+    let tau = 1;
+    for (let l = 1; l <= Math.floor(n / 4); l++) {
+      let c = 0;
+      for (let k = 0; k < n; k++) c += (x[k] - m) * (x[(k + l) % n] - m);
+      const rho = c / n / c0;
+      if (!(rho > 0)) break;
+      tau += 2 * rho;
+    }
+    tau = Math.min(Math.max(tau, 1), n / 4);
+    const sd = Math.sqrt(c0 * n / (n - 1));
+    return { mean: m, sd, tau, neff: n / tau, se: sd * Math.sqrt(tau / n) };
+  }
+
+  /* The free area fraction is a ratio of two counts that are neither independent nor Poisson: frozen
+     and free are large connected regions, so a binomial bar on 5,583 free triangles out of 6,144 would
+     come out near 0.004 when the real seed to seed scatter is 0.009, more than twice too small.
+     Propagating anything through that would be a guess. Resample instead, in the one direction the
+     fluctuation lives in: a circular block bootstrap over the sixty sector counts, blocks of tau
+     consecutive sectors drawn with replacement from any starting angle, four hundred resamples, every
+     draw off U.makeRng so the error bar reprints with the plate. Against the scatter across seeds, as
+     above: 11,11,11 0.0151 measured and 0.0141 estimated; 24,24,24 0.0098 and 0.0105; 32,32,32 0.0093
+     and 0.0092; 40,40,40 0.0079 and 0.0075; 48,48,48 0.0070 and 0.0064; 24,40,46 0.0102 and 0.0101;
+     20,20,40 0.0150 and 0.0112; 48,48,8 0.0192 and 0.0230. */
+  function blockBoot(bins, tau, rng, B) {
+    const n = bins.length;
+    const Lb = Math.max(2, Math.min(Math.round(tau), Math.floor(n / 3)));
+    const nb = Math.max(1, Math.round(n / Lb));
+    let tot = 0;
+    for (let i = 0; i < n; i++) tot += bins[i];
+    if (!(tot > 0)) return 0;
+    const scale = n / (nb * Lb);
+    let s1 = 0, s2 = 0;
+    for (let b = 0; b < B; b++) {
+      let s = 0;
+      for (let q = 0; q < nb; q++) {
+        const st = Math.min(n - 1, Math.floor(rng() * n));
+        for (let l = 0; l < Lb; l++) s += bins[(st + l) % n];
+      }
+      s *= scale; s1 += s; s2 += s * s;
+    }
+    const m = s1 / B, v = Math.max(0, (s2 / B - m * m)) * B / (B - 1);
+    return Math.sqrt(v) / tot;          // relative standard error of the total, hence of the fraction
+  }
+
+  function measureArctic(T, a, b, c, ring, seed) {
     const TA = T.TA, TB = T.TB, U0 = T.U0, V0 = T.V0, UW = T.UW, VW = T.VW;
     const cl = classify(T, ring), fA = cl.fA, fB = cl.fB;
     const el = ellipseOf(a, b, c);
@@ -308,15 +425,21 @@
     const rho = 4 * Math.sqrt(el.det) / Math.sqrt(3);   // triangles per unit area after the map
     const dth = 2 * Math.PI / NB;
     const rs = new Float64Array(NB);
-    let sum = 0, sq = 0;
+    let sq = 0;
     for (let k = 0; k < NB; k++) {
       rs[k] = Math.sqrt(2 * bins[k] / (rho * dth));
-      sum += rs[k]; sq += (rs[k] - 1) * (rs[k] - 1);
+      sq += (rs[k] - 1) * (rs[k] - 1);
     }
+    const st = acTime(rs);
+    const disFrac = nDis / Math.max(1, nTot);
+    const relSe = blockBoot(bins, st.tau, U.makeRng(String(seed) + '/arctic-boot'), 400);
     const hexArea = (a * b + b * c + c * a) * S3;
     return {
-      ring, el, fA, fB, rs, rMean: sum / NB, rms: Math.sqrt(sq / NB),
-      disFrac: nDis / Math.max(1, nTot), predDisFrac: Math.PI * Math.sqrt(el.det) / hexArea,
+      ring, el, fA, fB, rs,
+      rMean: st.mean, rSd: st.sd, rSe: st.se, tau: st.tau, neff: st.neff, nSect: NB,
+      rms: Math.sqrt(sq / NB),
+      nTot, nDis, disFrac, disSe: disFrac * relSe,
+      predDisFrac: Math.PI * Math.sqrt(el.det) / hexArea,
     };
   }
 
@@ -427,7 +550,7 @@
             timer = setTimeout(chunk, 0);
           } else {
             tile = buildTiling(job.bot, s.a, s.b, s.c);
-            info = { T: job.T, coal: job.coal, exact: job.exact, total: job.total, fell: job.mode === 'heat' && s.sampler === 'cftp' };
+            info = { T: job.T, coal: job.coal, exact: job.exact, total: job.total, swept: job.swept, fell: job.mode === 'heat' && s.sampler === 'cftp' };
             sig = sigOf(s);
             building = false;
             done();
@@ -437,22 +560,64 @@
 
       function ensureMeas(s) {
         if (!tile) return null;
-        if (!meas || meas.ring !== s.ring) meas = measureArctic(tile, s.a, s.b, s.c, s.ring);
+        if (!meas || meas.ring !== s.ring) meas = measureArctic(tile, s.a, s.b, s.c, s.ring, s.seed);
         return meas;
+      }
+
+      // Three per cent out on a limit shape can be flawless agreement or a plain disagreement, and
+      // only the error bar tells them apart, so a deviation past three sigma is named out loud and,
+      // where the cause is known, the cause is given. All three causes below are systematic: they
+      // shift the number rather than scatter it, so none of them belongs inside the error bar, and
+      // where the cause is not known this says nothing rather than inventing one.
+      function whyOff(s) {
+        if (s.ring <= 1) return 'radius 1 is too weak a frozen test, and calls much of the disordered middle frozen: it reads near 0.91 at every size, not just this one';
+        if (s.ring >= 4) return 'radius 4 is strict enough to call a rare flip deep in a frozen corner disordered, which pushes the boundary out';
+        const mn = Math.min(s.a, s.b, s.c), mx = Math.max(s.a, s.b, s.c);
+        if (mn * 3 <= mx) return 'the box is flat: with only ' + mn + ' levels along its short side the surface holds plateaus well inside the arctic region, and a local test calls a plateau frozen, which pulls both numbers low';
+        if (mx <= 16) return 'the ellipse is a limit shape and this hexagon is small: the boundary is a few tiles wide, so the ring test finds disagreeing neighborhoods some way into the corners and the free region reads large';
+        return null;
       }
 
       function status(extra) {
         const s = host.getState();
-        let out = '<span>hexagon <b>' + s.a + '·' + s.b + '·' + s.c + '</b> · <b>' +
-          (s.a * s.b + s.b * s.c + s.c * s.a).toLocaleString() + '</b> rhombi</span>';
-        if (mac > 0) out += '<span>MacMahon <b>10^' + Math.round(mac).toLocaleString() + '</b> tilings</span>';
-        if (info) {
-          out += info.exact
-            ? '<span>CFTP <b>exact</b> · from <b>' + info.T.toLocaleString() + '</b> sweeps back · met after <b>' + info.coal.toLocaleString() + '</b></span>'
-            : '<span>forward run, <b>' + info.total.toLocaleString() + '</b> sweeps · <b>not exact</b>' + (info.fell ? ', CFTP over budget' : '') + '</span>';
+        const nRh = s.a * s.b + s.b * s.c + s.c * s.a;
+        // An exact combinatorial count. ab tops, bc of one side face and ca of the other, whatever the
+        // pile does, so there is no sampling error to report and none is invented.
+        let out = '<span>hexagon <b>' + s.a + '·' + s.b + '·' + s.c + '</b> · <b>' + nRh.toLocaleString() +
+          '</b> rhombi';
+        if (tile) {
+          out += ' = ' + tile.cnt.map(v => v.toLocaleString()).join(' + ') +
+            (tile.sound ? ', an exact count' : ', WHICH IS WRONG: ' + tile.want.map(v => v.toLocaleString()).join(' + ') +
+              ' expected, ' + tile.bad + ' faces did not place');
         }
-        if (meas) out += '<span>arctic radius <b>' + f3(meas.rMean) + '</b> vs <b>1.000</b> · rms <b>' + (100 * meas.rms).toFixed(1) + '%</b></span>';
-        if (tile && tile.bad) out += '<span><b>' + tile.bad + '</b> faces did not tile</span>';
+        out += '</span>';
+        if (mac > 0) {
+          out += '<span>MacMahon <b>10^' + Math.round(mac).toLocaleString() + '</b> tilings';
+          if (info) {
+            out += info.exact
+              ? ' · CFTP <b>exact</b>, from <b>' + info.T.toLocaleString() + '</b> back, met after <b>' +
+                info.coal.toLocaleString() + '</b>, <b>' + info.swept.toLocaleString() + '</b> sweeps of work'
+              : ' · forward run of <b>' + info.total.toLocaleString() + '</b> sweeps, <b>not exact</b>' +
+                (info.fell ? ', CFTP over budget' : '');
+          }
+          out += '</span>';
+        }
+        if (meas) {
+          // A mean over NB sectors: the standard error and the number of samples, with the sectors
+          // counted as the autocorrelation says they should be rather than as sixty independent ones.
+          const zr = sigmas(meas.rMean, meas.rSe, 1);
+          out += '<span>arctic radius <b>' + pm(meas.rMean, meas.rSe, 3) + '</b> over ' + meas.nSect +
+            ' sectors, τ ' + meas.tau.toFixed(1) + ' so ~' + Math.round(meas.neff) +
+            ' independent, against exactly 1: <b>' + sigTxt(zr) + '</b></span>';
+          // A ratio of two counts, bootstrapped rather than propagated.
+          const zf = sigmas(meas.disFrac, meas.disSe, meas.predDisFrac);
+          let sp = '<span>free area <b>' + pm(meas.disFrac, meas.disSe, 3) + '</b> of the hexagon' +
+            ' against <b>' + f3(meas.predDisFrac) + '</b> inside the ellipse: <b>' + sigTxt(zf) + '</b>';
+          const worst = Math.max(zr === null ? 0 : Math.abs(zr), zf === null ? 0 : Math.abs(zf));
+          if (worst > 3) { const w = whyOff(s); sp += w ? ' · ' + w : ' · a real disagreement, cause not diagnosed'; }
+          if (!info || !info.exact) sp += ' · from a sample that is not exact';
+          out += sp + '</span>';
+        }
         if (extra) out += '<span>' + extra + '</span>';
         host.setStatus(out);
       }

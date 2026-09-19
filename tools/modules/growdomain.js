@@ -215,7 +215,7 @@
     // assume it, because the whole hazard of a growing domain is taking that bound at the wrong end.
     const rates = [[diffRate, 'diffusion at L₀'], [reactRate, 'reaction'], [diluRate, 'dilution']];
     rates.sort((a, b) => b[0] - a[0]);
-    const bind = rates[0][1], bindShare = rates[0][0] / (diffRate + reactRate + diluRate);
+    const bind = rates[0][1];
     const perStep = plane ? N * N : N;
     const budgetSteps = (plane ? BUDGET_2D : BUDGET_1D) / perStep;
     const tMax = budgetSteps * dtMax;
@@ -248,7 +248,7 @@
     // file that a later edit must not be able to break quietly, so it is enforced rather than assumed.
     if (dt > dtMax) { steps = Math.max(steps, Math.ceil(tEnd / dtMax)); dt = tEnd / steps; if (!plane) spr = Math.ceil(steps / rows); }
     return { K, D, Du, Dv, kSel, lam, plane, dims, N, rows, L0, Lend, Gf, r, tEnd,
-      dtMax, dt, spr, steps, clamped, bind, bindShare, rateOut: r / lamRef };
+      dtMax, dt, spr, steps, clamped, bind, rateOut: r / lamRef };
   }
 
   /* ---- measurement helpers ---- */
@@ -302,19 +302,25 @@
   // variable, which is the only way it means anything; nothing here is guessed from the scatter of
   // the points by eye. Three points is the fewest that leaves a degree of freedom, so below that the
   // caller is told there is no fit rather than handed a slope with no error bar.
-  function fitSlope(xs, ys) {
+  function fitSlope(xs, ys, dx) {
     const n = xs.length;
-    if (n < 3) return { a: NaN, se: NaN, n };
+    if (n < 3) return { a: NaN, se: NaN, n, df: 0 };
     let mx = 0, my = 0;
     for (let i = 0; i < n; i++) { mx += xs[i]; my += ys[i]; }
     mx /= n; my /= n;
     let sxx = 0, sxy = 0;
-    for (let i = 0; i < n; i++) { const dx = xs[i] - mx; sxx += dx * dx; sxy += dx * (ys[i] - my); }
-    if (!(sxx > 1e-12)) return { a: NaN, se: NaN, n };
+    for (let i = 0; i < n; i++) { const d = xs[i] - mx; sxx += d * d; sxy += d * (ys[i] - my); }
+    if (!(sxx > 1e-12)) return { a: NaN, se: NaN, n, df: n - 2 };
     const a = sxy / sxx, c = my - a * mx;
     let ss = 0;
     for (let i = 0; i < n; i++) { const r = ys[i] - (a * xs[i] + c); ss += r * r; }
-    return { a, se: Math.sqrt(ss / (n - 2) / sxx), n };
+    let se = Math.sqrt(ss / (n - 2) / sxx);
+    // The independent variable is read off a recorded row, so it carries that row's own resolution.
+    // To first order an independent error dx on each x moves the slope by |a| dx / sqrt(Sxx), which
+    // is added in quadrature here. Without it a fit through three points that happen to lie almost
+    // exactly on a line claims a precision finer than the grid the points were located on.
+    if (dx > 0) se = Math.sqrt(se * se + a * a * dx * dx / sxx);
+    return { a, se, n, df: n - 2 };
   }
 
   // "1.4σ high", or "0.3σ from it" when the two agree. A deviation is never rounded toward the
@@ -328,7 +334,13 @@
     const m = Math.abs(z);
     return m.toFixed(1) + 'σ ' + (m < 0.05 ? 'from it' : (z > 0 ? 'high' : 'low'));
   }
-  const pm = (v, se, d) => v.toFixed(d) + ' ± ' + (isFinite(se) ? se.toFixed(d) : '?');
+  // Enough decimals to show the error bar. A value printed to two places beside an uncertainty of
+  // four thousandths reads as "± 0.00", which is exactly the sort of decoration this tab is trying
+  // not to print.
+  const pm = (v, se) => {
+    const d = !isFinite(se) || se >= 0.05 ? 2 : (se >= 0.005 ? 3 : 4);
+    return v.toFixed(d) + ' ± ' + (isFinite(se) ? se.toFixed(d) : '?');
+  };
 
   // The plane has no single row to count, so the mode index is read off the cosine transform instead.
   // Zero flux walls make cos(m pi xi) cos(n pi eta) the natural basis, so the amplitudes are a plain
@@ -447,7 +459,7 @@
     order: 45.5,
     equation: '∂u/∂t = (D_u/L²)∂²u/∂ξ² + f(u,v) − d(L̇/L)u,  ∂v/∂t = (D_v/L²)∂²v/∂ξ² + g(u,v) − d(L̇/L)v',
     credit: "Alan M. Turing, 'The chemical basis of morphogenesis', Philosophical Transactions of the Royal Society of London B 237, 37 (1952), showed that two substances which react and diffuse at different rates can break a uniform state into a pattern with a wavelength of its own. Edward J. Crampin, Eamonn A. Gaffney and Philip K. Maini, 'Reaction and diffusion on growing domains: scenarios for robust pattern formation', Bulletin of Mathematical Biology 61, 1093 (1999), wrote the same problem in fixed Lagrangian coordinates on a domain of changing length L(t); the diffusion coefficients pick up a factor 1/L², and a dilution term d(L̇/L) appears because growth carries material apart. That is the formulation integrated here. Shigeru Kondo and Rihito Asai, 'A reaction-diffusion wave on the skin of the marine angelfish Pomacanthus', Nature 376, 765 (1995), measured the consequence on a live animal: as the fish grows its stripes do not widen, new ones are inserted between the old, at the spacing the reaction-diffusion wavelength fixes. The kinetics are Schnakenberg's trimolecular scheme and the Gierer-Meinhardt activator-inhibitor pair.",
-    blurb: 'A Turing pattern has a wavelength of its own, set by the chemistry and the two diffusion rates, and that wavelength lives in real space: centimeters, not fractions of the animal. So what happens when the animal gets bigger? The space-time sheet answers it. Time runs down the page and the domain runs across it, drawn at its true physical width, so the sheet widens as the tissue grows. The stripes do not widen with it. Each time the domain has stretched far enough to hold another wavelength, the pattern splits and a new stripe appears between two old ones, which is exactly what Kondo and Asai filmed on the skin of a growing angelfish. Growth rate and growth law are the controls that matter: grow slowly and the stripes insert one at a time, grow fast and the pattern cannot keep up and doubles in jumps, choose the logistic law and the insertions stop when the growth does. The status line counts the stripes on the sheet and prints them next to the number linear stability predicts.',
+    blurb: 'A Turing pattern has a wavelength of its own, set by the chemistry and the two diffusion rates, and that wavelength lives in real space: centimeters, not fractions of the animal. So what happens when the animal gets bigger? The space-time sheet answers it. Time runs down the page and the domain runs across it, drawn at its true physical width, so the sheet widens as the tissue grows. The stripes do not widen with it. Each time the domain has stretched far enough to hold another wavelength, the pattern splits and a new stripe appears between two old ones, which is exactly what Kondo and Asai filmed on the skin of a growing angelfish. Growth rate and growth law are the controls that matter: grow slowly and the stripes insert one at a time, grow fast and the pattern cannot keep up and doubles in jumps, choose the logistic law and the insertions stop when the growth does. The status line counts the stripes on the sheet and prints them next to the number linear stability predicts, with an error bar on everything that can carry one. The count itself is exact, so it is labelled exact rather than given an invented uncertainty. The exponent in n proportional to L, which is the mode doubling claim, carries the standard error of its fit. The wavenumber carries the spread across the plateaus, and that spread is physical: the pattern holds a count while the domain stretches, so its wavenumber slides down and jumps back at each insertion rather than sitting still. Slow the growth down and the measured wavenumber walks back up to the value linear theory picks out.',
     schema: [
       { group: 'Plate', key: 'mode', label: 'Plate', type: 'seg', kind: GEOM, wrap: true,
         options: [['sheet', 'Space-time sheet'], ['plane', 'Growing plane']],
@@ -530,7 +542,7 @@
     hints: {
       Plate: 'Everything here rebuilds the run. The sheet is the picture that shows insertion; the plane is the same physics with both directions growing, so the dilution term carries a factor of two.',
       Kinetics: 'Two reaction schemes and the diffusion ratio between them. The four Turing conditions are checked against these numbers and the status line says whether the window is open.',
-      Growth: 'The domain length L(t) enters twice: as 1/L² on both diffusion coefficients, and as the dilution term that keeps the concentrations from simply riding along with the stretch.',
+      Growth: 'The domain length L(t) enters twice: as 1/L² on both diffusion coefficients, and as the dilution term that keeps the concentrations from simply riding along with the stretch. The growth rate is also the control the self-check responds to: the slower the growth, the closer the measured wavenumber sits to the peak of the dispersion relation. A fit over only three or four insertions has one or two degrees of freedom, and the status line says how many, because an error bar from one degree of freedom is itself uncertain by roughly a factor of two.',
       Picture: 'Activator maps u over the whole sheet at once. Per slice normalizes each time row against its own range, which brings the pattern up from the moment it leaves the uniform state. Two tone thresholds each row at its mean, which is the fish-skin picture.',
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (low → high activator)',
@@ -774,7 +786,11 @@
         // it. The first plateau is dropped, since its start is where the pattern became detectable
         // rather than where it was inserted.
         const ins = keep.slice(1);
-        expStat = fitSlope(ins.map(g => Math.log(Math.max(1e-9, Lrow[g.row]))), ins.map(g => Math.log(g.n)));
+        // An insertion is located to the recorded row it first appears on, so log L carries one row
+        // of quantization. The standard deviation of a uniform error one row wide is that row's own
+        // step in log L over sqrt(12), and that is what is propagated into the slope.
+        const dLogL = Math.log(P.Lend / P.L0) / Math.max(1, P.rows) / Math.sqrt(12);
+        expStat = fitSlope(ins.map(g => Math.log(Math.max(1e-9, Lrow[g.row]))), ins.map(g => Math.log(g.n)), dLogL);
         expSample = 'insertions';
       }
 
@@ -792,7 +808,7 @@
         // count is an integer read straight off the field, so it is labelled exact rather than given
         // a fabricated one.
         const meas = !measN ? 'none yet'
-          : (P.plane ? '<b>' + pm(measN, modeMN ? modeMN.se : NaN, 2) + '</b>'
+          : (P.plane ? '<b>' + pm(measN, modeMN ? modeMN.se : NaN) + '</b>'
                      : '<b>' + measN + '</b>, an exact count');
 
         // The self-check. Every measured quantity beside a theoretical one carries an uncertainty and
@@ -800,23 +816,24 @@
         // there are too few independent samples, that is said rather than papered over.
         let chk;
         if (expStat && isFinite(expStat.a) && isFinite(expStat.se) && expStat.se > 0) {
-          chk = expVar + ' ∝ L^<b>' + pm(expStat.a, expStat.se, 2) + '</b> over ' + expStat.n + ' '
-            + expSample + ', <b>' + sigTxt(sigmas(expStat.a, expStat.se, 1)) + '</b> of 1';
+          chk = expVar + ' ∝ L^<b>' + pm(expStat.a, expStat.se) + '</b> over ' + expStat.n + ' '
+            + expSample + ', ' + expStat.df + ' d.f., <b>' + sigTxt(sigmas(expStat.a, expStat.se, 1)) + '</b> of 1';
         } else {
           chk = expVar + ' ∝ L exponent not fitted: ' + (expStat ? expStat.n : 0) + ' '
             + (expSample || 'samples') + ', too few for an error bar';
         }
         if (kStat && isFinite(kStat.mean) && isFinite(kStat.se) && kStat.se > 0) {
           const z = sigmas(kStat.mean, kStat.se, P.kSel);
-          chk += ' · k <b>' + pm(kStat.mean, kStat.se, 2) + '</b> over ' + kStat.n + ' ' + kSample
+          chk += ' · k <b>' + pm(kStat.mean, kStat.se) + '</b> over ' + kStat.n + ' ' + kSample
             + ' against the peak ' + P.kSel.toFixed(2) + ', <b>' + sigTxt(z) + '</b>';
           // A large deviation is named, and the reason given where it is known. The peak of the
           // dispersion relation is the fastest growing mode of a FIXED domain; on a growing one the
           // pattern holds a count while k slides down the band and then splits, so the realized k
           // sweeps the band instead of sitting at its peak. That is finite size in the literal sense:
           // only integer numbers of half wavelengths fit.
-          if (Math.abs(z) > 3) chk += ' — the count is held while k slides down the band and jumps at each'
-            + ' insertion, so k sweeps the band rather than sitting at its peak';
+          if (Math.abs(z) > 3) chk += ', because the pattern lags a domain growing this fast: the count'
+            + ' is held while k slides down the band and jumps back at each insertion. Lowering the'
+            + ' growth rate walks the measured k back up to the peak';
         } else if (kStat && isFinite(kStat.mean)) {
           chk += ' · k <b>' + kStat.mean.toFixed(2) + '</b> from a single ' + (kSample || 'sample')
             + ', no uncertainty claimed';
@@ -1135,7 +1152,7 @@
         fieldCells() { return P ? [P.N, P.plane ? P.N : P.rows] : null; },
         aspect(s) { return ASPECTS[s.aspect] || 1.25; },
         regenerate() {
-          stop(); pending = null; building = false;
+          stop(); pending = null; building = false; snaps = [];
           P = plan(host.getState());
           seedFields();
           if (P.plane) buildPlane(); else buildSheet();
