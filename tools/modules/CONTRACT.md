@@ -1,6 +1,6 @@
 # Module contract for new GENChase blocks
 
-Read this before writing a block. It restates what the shell in `studio.html` actually does, so a block written against it drops into the file without surprises. When this file and `studio.html` disagree, `studio.html` wins; read the referenced lines.
+Read this before writing a block. It restates what the shell in `studio.html` actually does, so a block written against it drops into the file without surprises. When this file and `studio.html` disagree, `studio.html` wins. Line numbers below drifted as the file grew (they were written against a 27k-line studio; it is past 43k now). Search for the function or `id:` rather than trusting a number.
 
 ## Files and workflow
 
