@@ -150,6 +150,7 @@
   button, input, select, textarea { font: inherit; color: inherit; }
   button { cursor: pointer; }
   :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  [hidden] { display: none !important; }
 
   .app {
     display: flex; flex-direction: column;
@@ -169,7 +170,7 @@
   .brand h1 { font-family: "Instrument Serif", "Iowan Old Style", Georgia, serif; font-weight: 400; font-size: 26px; letter-spacing: -0.01em; margin: 0; line-height: 1; }
   .brand h1 em { font-style: italic; color: var(--accent); }
   .brand .sub { font-family: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
-  .seedbox { display: flex; align-items: center; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--panel-2); overflow: hidden; }
+  .seedbox { display: flex; align-items: center; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--panel-2); overflow: hidden; flex: 0 0 auto; min-width: 11.5rem; }
   .seedbox label {
     font-family: "Geist Mono", ui-monospace, monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
     padding-inline: 10px; border-right: 1px solid var(--line); align-self: stretch; display: flex; align-items: center; white-space: nowrap;
@@ -220,12 +221,27 @@
   .bar select { border: 1px solid var(--line-strong); background: var(--panel-2); border-radius: 6px; padding: 7px 10px; max-width: 150px; }
 
   /* ---------- tabs ---------- */
+  .tabstrip {
+    display: flex; align-items: stretch; background: var(--panel);
+    border-bottom: 1px solid var(--line); flex: 0 0 auto; min-height: 37px;
+  }
+  .find {
+    flex: 0 0 9.25rem; margin: 5px 2px 5px 10px; border: 1px solid var(--line-strong);
+    background: var(--panel-2); color: var(--ink); border-radius: 6px; padding: 4px 8px;
+    font: inherit; font-size: 12px; min-width: 0;
+  }
+  .find:focus { outline: 1px solid var(--accent); border-color: var(--accent); }
+  .find-n {
+    flex: 0 0 auto; align-self: center; color: var(--muted); font-size: 11px;
+    padding-right: 6px; min-width: 2.2em;
+  }
   .tabs {
-    display: flex; gap: 2px; padding-inline: 12px; background: var(--panel);
-    border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none;
-    flex: 0 0 auto; min-height: 37px; align-items: stretch;
+    display: flex; gap: 2px; padding-inline: 4px 12px; overflow-x: auto; scrollbar-width: none;
+    flex: 1 1 auto; min-width: 0; align-items: stretch;
   }
   .tabs::-webkit-scrollbar { display: none; }
+  .tab.is-hidden { display: none; }
+  @media (max-width: 520px) { .find { flex-basis: 6.4rem; } }
   /* fade the ends only while there is more strip to reach */
   .tabs.scrollable { mask-image: linear-gradient(to right, transparent 0, #000 26px, #000 calc(100% - 26px), transparent 100%); }
   .tabs.scrollable.at-start { mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 26px), transparent 100%); }
@@ -466,7 +482,7 @@
   .export-colo .switch { margin-top: 1px; }
 
   @media print {
-    .bar, .tabs, .side, .status, .modal, .toast, .history, .witness { display: none !important; }
+    .bar, .tabstrip, .tabs, .side, .status, .modal, .toast, .history, .witness { display: none !important; }
     .app { display: block; height: auto; min-height: 0; }
     .main, .main.side-right { display: block; }
     .stage {
@@ -557,6 +573,7 @@
   .btn[aria-checked="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
   .btn[aria-checked="true"]:hover { filter: brightness(1.08); }
   .app.focus .bar,
+  .app.focus .tabstrip,
   .app.focus .tabs,
   .app.focus .history,
   .app.focus .side { display: none !important; }
@@ -625,7 +642,7 @@
     <div class="seedbox" id="headline" hidden></div>
     <select id="preset" aria-label="Preset"><option value="">Presets…</option></select>
     <button class="btn" id="btn-surprise" type="button" title="Randomize every parameter and the palette (S)">Surprise</button>
-    <button class="btn primary" id="btn-generate" type="button">Generate</button>
+    <button class="btn primary" id="btn-generate" type="button" title="New seed (Space)">Generate</button>
     <button class="btn" id="btn-copy-link" type="button" title="Copy a shareable link to this exact plate (L)">Link</button>
     <button class="btn" id="btn-save" type="button" title="Save this plate to your gallery (B)">Save</button>
     <button class="btn" id="btn-record" type="button" hidden aria-pressed="false" title="Record a clip of this living plate, up to 60 s (V)">Record</button>
@@ -635,7 +652,7 @@
     <button class="btn" id="btn-history" type="button" role="switch" aria-checked="true" title="Show or hide the session timeline (H)">Timeline</button>
     <button class="btn" id="btn-focus" type="button" aria-pressed="false" title="Hide the chrome and look at the plate (F)">Focus</button>
     <button class="btn" id="btn-ambient" type="button" aria-pressed="false" title="Walk the techniques on a 30 s timer with fresh seeds (A)">Ambient</button>
-    <button class="btn" id="btn-about" type="button">About</button>
+    <button class="btn" id="btn-about" type="button" title="About this studio (?)">About</button>
     <button class="btn" id="btn-settings" type="button" title="Settings JSON — verbose recipe fallback">JSON</button>
     <button class="btn" id="btn-side" type="button" title="Move the settings panel to the other side">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="11" rx="1.5"/><path id="btn-side-divider" d="M6 2.5v11"/></svg>
@@ -649,13 +666,17 @@
         title="Show a printed caption under the image: technique, governing equation, seed and every parameter">Colophon</button>
       <span class="dims" id="export-dims" aria-live="polite"></span>
     </div>
-    <button class="btn" id="btn-export" type="button">
+    <button class="btn" id="btn-export" type="button" title="Export a print (E)">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 11v2a1 1 0 001 1h8a1 1 0 001-1v-2"/></svg>
       Export PNG
     </button>
   </header>
 
-  <nav class="tabs" id="tabs" role="tablist" aria-label="Techniques"></nav>
+  <div class="tabstrip">
+    <input class="find" id="find" type="search" placeholder="Find…" autocomplete="off" spellcheck="false" aria-label="Find a technique. Slash focuses this." />
+    <span class="find-n" id="find-n" hidden></span>
+    <nav class="tabs" id="tabs" role="tablist" aria-label="Techniques"></nav>
+  </div>
   <div class="history" id="history" hidden aria-label="Session history"></div>
 
   <div class="main" id="main">
@@ -728,7 +749,7 @@
         Click and drag to disturb the field. The <b>LIVE</b> badge means the simulation is still computing; <b>Still</b> means this frame is finished. Click the badge, or press <b>W</b>, to cycle it down to a bare dot and then out of the way; it stays where you left it.
         <b>Save</b> (B) keeps a plate in the gallery; <b>Gallery</b> (G) opens it.
         <b>,</b> and <b>.</b> walk the preset list without opening the menu. <b>C</b> copies the plate to the clipboard at screen size, for pasting into a message; E is still the route to a file at print resolution.
-        Shortcuts: space generate, S surprise, E export, C copy image, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, P pause, V record, A ambient, W witness, , . presets, 1–9 tabs, [ ] history, ? this list.</p>
+        Shortcuts: space generate, S surprise, E export, C copy image, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, / find a technique, P pause, V record, A ambient, W witness, , . presets, 1–9 tabs, [ ] history, ? this list.</p>
 
       <h3>License</h3>
       <p>The studio <b>code</b> is licensed under the <b>PolyForm Small Business License 1.0.0</b>. Run it, study it,
@@ -1538,9 +1559,13 @@ void main(){
     if (!raw) return null;
     const parts = raw.split('/');
     const id = parts[0];
-    if (!id || !byId[id]) return null;
+    if (!id) return null;
+    if (!byId[id]) return { id, unknown: true };
     const out = { id };
-    if (parts[1]) out.seed = decodeURIComponent(parts[1]);
+    if (parts[1]) {
+      try { out.seed = decodeURIComponent(parts[1]); }
+      catch (err) { /* a broken seed encoding is still a named technique */ }
+    }
     if (parts[2]) {
       try {
         let b64 = parts[2].replace(/-/g, '+').replace(/_/g, '/');
@@ -1959,6 +1984,7 @@ void main(){
     persist(currentId);
     if (!(opts && opts.skipHistory)) scheduleHistory();
     resetWitness();
+    scheduleHash();
   }
   function repaint() {
     const e = instances[currentId]; if (!e) return;
@@ -2095,7 +2121,11 @@ void main(){
     btn.textContent = 'Stop ' + Math.floor(ms / 1000) + 's';
     if (ms >= REC_MAX_MS) stopRecord();
   }
-  function toggleRecord() { if (recorder) stopRecord(); else startRecord(); }
+  function toggleRecord() {
+    if (recorder) stopRecord();
+    else if (liveNow) startRecord();
+    else toast('Nothing to record — this plate is still');
+  }
   function startRecord() {
     const e = instances[currentId]; if (!e || !e.canvas) return;
     if (!window.MediaRecorder || typeof e.canvas.captureStream !== 'function') { toast('This browser cannot record a canvas'); return; }
@@ -2249,6 +2279,7 @@ void main(){
     document.title = 'GENChase · ' + byId[id].name;
     resetWitness();
     markPokeable();
+    scheduleHash();
   }
 
   /* ---- sidebar ---- */
@@ -2276,6 +2307,7 @@ void main(){
       persist(e.mod.id);
       if (commit) scheduleHistory();
     } else persist(e.mod.id);
+    if (commit) scheduleHash();
   }
 
   function bindRange(input, apply) {
@@ -2939,10 +2971,49 @@ void main(){
     for (const m of modules) {
       // Roving tabindex: the strip is one tab stop and the arrow keys move within it. Fifty-two
       // sequential tab stops is what a tablist without this costs a keyboard user.
-      tabs.appendChild(h('button', { class: 'tab', role: 'tab', type: 'button', 'data-id': m.id, 'aria-selected': 'false', tabindex: '-1', title: m.subtitle || m.name, onclick: () => switchTo(m.id) }, [
+      const hay = [m.id, m.name, m.tab, m.subtitle, m.equation, m.credit, m.blurb].join(' ').toLowerCase();
+      tabs.appendChild(h('button', { class: 'tab', role: 'tab', type: 'button', 'data-id': m.id, 'data-hay': hay, 'aria-selected': 'false', tabindex: '-1', title: m.subtitle || m.name, onclick: () => switchTo(m.id) }, [
         h('span', { class: 'tab-name', text: m.tab || m.name }),
       ]));
     }
+    const find = $('find'), findN = $('find-n');
+    const applyFind = () => {
+      const q = (find && find.value || '').trim().toLowerCase();
+      const bits = q ? q.split(/\s+/).filter(Boolean) : [];
+      let n = 0, first = null;
+      for (const b of tabs.querySelectorAll('.tab[data-id]')) {
+        const ok = !bits.length || bits.every(bit => (b.dataset.hay || '').indexOf(bit) >= 0);
+        b.classList.toggle('is-hidden', !ok);
+        if (ok) { n++; if (!first) first = b; }
+      }
+      if (findN) {
+        findN.hidden = !bits.length;
+        findN.textContent = bits.length ? String(n) : '';
+      }
+      markScroll();
+      return first;
+    };
+    if (find) {
+      find.addEventListener('input', applyFind);
+      find.addEventListener('keydown', ev => {
+        if (ev.key === 'Enter') {
+          ev.preventDefault();
+          const first = applyFind();
+          if (first) switchTo(first.dataset.id);
+        }
+        if (ev.key === 'Escape') {
+          ev.preventDefault();
+          if (find.value) { find.value = ''; applyFind(); }
+          else find.blur();
+        }
+      });
+    }
+    tabs.addEventListener('wheel', ev => {
+      if (!ev.deltaY || Math.abs(ev.deltaY) < Math.abs(ev.deltaX)) return;
+      if (tabs.scrollWidth <= tabs.clientWidth + 2) return;
+      tabs.scrollLeft += ev.deltaY;
+      ev.preventDefault();
+    }, { passive: false });
     // top bar wiring
     const seed = $('seed');
     seed.addEventListener('change', () => { const e = instances[currentId]; if (!e) return; e.state.seed = seed.value.trim().slice(0, 64) || randomSeed(); seed.value = e.state.seed; regenerate(); });
@@ -3125,13 +3196,24 @@ void main(){
     document.addEventListener('keydown', ev => {
       const tag = (ev.target && ev.target.tagName) || '';
       const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || ev.target.isContentEditable;
+      const modalOpen = MODALS.map($).some(m => m && !m.hidden);
       if (ev.key === 'Escape') {
+        if (find && find.value) { find.value = ''; find.dispatchEvent(new Event('input')); return; }
+        if (modalOpen) { closeAllModals(); return; }
         if (focusMode) { setFocus(false); return; }
-        closeAllModals();
         return;
       }
-      if (typing) return;
-      if (ev.key === ' ' ) { ev.preventDefault(); roll(); }
+      if (ev.key === '/' && !ev.metaKey && !ev.ctrlKey && !ev.altKey && !typing) {
+        ev.preventDefault();
+        if (find) { find.focus(); find.select(); }
+        return;
+      }
+      if (modalOpen || typing) return;
+      const role = (ev.target && ev.target.getAttribute && ev.target.getAttribute('role')) || '';
+      if (ev.key === ' ') {
+        if (tag === 'BUTTON' || role === 'button' || role === 'tab' || role === 'switch' || tag === 'A' || tag === 'SUMMARY') return;
+        ev.preventDefault(); roll();
+      }
       else if (ev.key === 's' || ev.key === 'S') { ev.preventDefault(); surprise(); }
       else if (ev.key === 'e' || ev.key === 'E') { ev.preventDefault(); doExport(); }
       else if (ev.key === 'l' || ev.key === 'L') { ev.preventDefault(); $('btn-copy-link').click(); }
@@ -3185,11 +3267,14 @@ void main(){
     witnessClock = setInterval(() => { if (!document.hidden) tickWitness(); }, 400);
     window.addEventListener('hashchange', () => { if (!hashSilent) applyHash(); });
     const framed = window.self !== window.top;
-    const shared = !framed && parseHash();
+    const rec = !framed && parseHash();
     if (framed) {
       try { history.replaceState(null, '', location.pathname + location.search); } catch (err) { /* ignore */ }
     }
-    if (shared) applyHash();
+    if (rec && rec.unknown) {
+      toast('No technique called "' + rec.id + '" in this build');
+      switchTo(modules[0].id);
+    } else if (rec) applyHash();
     else {
       switchTo(modules[Math.floor(Math.random() * modules.length)].id);
       surprise();
@@ -3197,14 +3282,14 @@ void main(){
     window.addEventListener('pageshow', ev => {
       if (!ev.persisted) return;
       const e = instances[currentId]; if (!e) return;
-      e.state.seed = randomSeed();
-      if ($('seed')) $('seed').value = e.state.seed;
-      regenerate({ skipSnap: true, skipHistory: true });
+      if (e.inst && e.inst.resume && !e.paused) {
+        try { e.inst.resume(); } catch (err) { /* ignore */ }
+      }
     });
     try {
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(rs => { for (const r of rs) r.unregister(); });
-        if (window.caches) caches.keys().then(keys => { for (const k of keys) caches.delete(k); });
+      if (location.protocol !== 'file:' && 'serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(rs => { for (const r of rs) r.unregister(); }).catch(() => {});
+        if (window.caches) caches.keys().then(keys => { for (const k of keys) caches.delete(k); }).catch(() => {});
       }
     } catch (err) { /* optional */ }
   }
