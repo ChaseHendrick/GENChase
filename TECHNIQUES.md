@@ -1,6 +1,6 @@
 # Techniques
 
-108 pattern-forming systems, one file. Generated from `studio.html` by `node tools/index.js`; do not edit by hand.
+116 pattern-forming systems, one file. Generated from `studio.html` by `node tools/index.js`; do not edit by hand.
 
 Open `studio.html` and append the hash to reconstruct a plate exactly. `#snowflake/gravner-2008` is a complete recipe: the technique, and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 
@@ -113,9 +113,17 @@ The same data in machine-readable form is [`techniques.json`](techniques.json).
 | **Reuleaux**<br><sub>a non-circle of constant width · 1875</sub> | `#reuleaux` | width(θ) = R  for all θ,   W ≠ a disk,   area = ½(π − √3) R² | raster |
 | **Apollonian**<br><sub>infinite circles, integer curvatures, zero leftover · 1643</sub> | `#apollonian` | k₄ = k₁+k₂+k₃ ± 2√(k₁k₂+k₁k₃+k₂k₃)   (Descartes),   k ∈ ℤ if the seeds are | raster |
 | **Chladni & Waves**<br><sub>standing waves, nodal lines and interference · 1787</sub> | `#chladni/chladni-0417` | u = sum Ak[cos(nk·pi·x)cos(mk·pi·y) - cos(mk·pi·x)cos(nk·pi·y)];   nodes where u = 0 | SVG |
+| **Track**<br><sub>a breather that paves the index it runs on, drawn as its worldline</sub> | `#track` | φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1) | raster |
 | **Knotted Light**<br><sub>a trefoil of darkness, an open book, a bark with no tangent · 2001 / this plate</sub> | `#knotlight` | ψ = (x+iy)³ − (z−ia)²,   zeros ≃ (2,3) torus knot;   pages = arg ψ;   bark = Σ α^n cos(β^n s) | raster |
-| **Hendrick**<br><sub>a sea that focuses its own light, and the light that writes the sea</sub> | `#hendrick` | ∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/\|det(I + s Hess h)\| | raster |
-| **Track**<br><sub>a breather that paves the index it runs on</sub> | `#track` | φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1) | raster |
+| **Caustic Sea**<br><sub>a sea that focuses its own light, and the light that writes the sea</sub> | `#causticsea` | ∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/\|det(I + s Hess h)\| | raster |
+| **Soliton Web**<br><sub>resonant line-soliton webs of the Kadomtsev–Petviashvili equation</sub> | `#kp` | (−4 u_t + u_xxx + 6 u u_x)_x + 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = Σ_I det(A_I) Δ(k_I) e^{Σ θ} | raster |
+| **Gerstner**<br><sub>trochoidal waves, the exact Euler deep-water solution · 1802</sub> | `#gerstner` | X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1 | SVG |
+| **Figure Eight**<br><sub>three equal masses chasing on a planar figure-eight · 1993 / 2000</sub> | `#eight` | r̈_i = −Σ_{j≠i} (r_i−r_j)/\|r_i−r_j\|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0 | SVG |
+| **Peakon**<br><sub>Camassa–Holm peaked traveling waves · 1993</sub> | `#peakon` | u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−\|x−x_i\|},   m = u − u_xx | raster |
+| **Photon Sphere**<br><sub>Schwarzschild photon sphere · 1916</sub> | `#photon` | d²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M | raster |
+| **Crapper**<br><sub>exact finite-amplitude pure-capillary waves · 1957</sub> | `#crapper` | X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4\|A\|/(π(1−A²)) | SVG |
+| **Hasimoto**<br><sub>a soliton on a vortex filament · 1972</sub> | `#hasimoto` | γ_t = γ_s × γ_ss,   ψ = κ exp(i ∫ τ ds),   κ = 2ν sech(ν(s−2τ₀ t)),   c = 2τ₀ | SVG |
+| **Lump**<br><sub>KP-I lumps · 1977</sub> | `#lump` | (u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b² | raster |
 
 ## Credits
 
@@ -331,9 +339,25 @@ None of the science is original to this project. Each technique names the people
 
 **Chladni & Waves**. Ernst Chladni, Entdeckungen uber die Theorie des Klanges, 1787. The governing plate equation was solved by Sophie Germain, whose 1816 work won the Paris Academy prize; Lord Rayleigh's Theory of Sound, 1877, put it on modern footing.
 
+**Track**. The sine-Gordon breather is exact; Seeger, Donth and Kochendörfer (1953), Faddeev and Takhtajan. A prescribed index n(x) is an inhomogeneous Josephson junction. A beam that writes the index it travels in is a self-written waveguide: Monro, de Sterke and Poladian, J. Mod. Opt. 45, 1998, and the photorefractive soliton of Segev. This plate puts that idea on a sine-Gordon breather, writes n from strain, and checks the open loop against the Lorentz speed. It is not a new law and it is not named as one.
+
 **Knotted Light**. The polynomial whose zeros are a trefoil in R³ is M. V. Berry and M. R. Dennis, Proc. R. Soc. A 457, 2251 (2001); J. Leach, M. R. Dennis, J. Courtial and M. J. Padgett flew a knotted optical vortex in Nature 432, 165 (2004). The open-book fibration of the trefoil singularity is J. Milnor, Singular Points of Complex Hypersurfaces, 1968. The bark is Weierstrass, 1872. No paper draws the three on one seed. That arrangement, and this print, are the artifact; the science is not a claim.
 
-**Hendrick**. The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class of experiments. The closed loop — a Swift–Hohenberg height acting as its own phase screen, the caustic writing that height — is not a paper. It is named Hendrick in this file because it did not exist until the plate did. No law is claimed; the coupling is the artifact.
+**Caustic Sea**. The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). This plate is that family with the caustic in the loop, and it reports corr(h, I) against the open-loop control. It is not a new equation and it is not named as one.
 
-**Track**. The sine-Gordon breather is exact; Seeger–Donth–Kochendörfer (1953), Faddeev–Takhtajan. A prescribed index n(x) is an inhomogeneous Josephson junction, which is a paper. Writing n from the breather’s own strain, so the lump lays the track it runs on, is not. Open loop (η = 0) must recover the Lorentz speed; the plate reports v_meas / v against 1, and exterior energy against 0. No law is claimed. The coupling is the artifact.
+**Soliton Web**. The KP equation is Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). The tau function as a Wronskian of exponentials is Sato and Hirota. Resonant Y-junctions are Miles, J. Fluid Mech. 79, 171 (1977). The classification of the webs by totally nonnegative Grassmannians is Biondini and Chakravarty, J. Math. Phys. 47, 033514 (2006), and Kodama. Asymptotic webs expand and keep their morphology: Horowitz and Zarmi, Physica D 300, 1 (2015). This plate evaluates the exact tau function. It is not a new equation.
+
+**Gerstner**. Gerstner, Theorie der Wellen, Abh. Bohm. Ges. Wiss. (1802), found the unique exact periodic deep-water gravity wave of finite amplitude: every particle traces a circle, the free surface is an inverted trochoid, and the pressure is constant along it. Rankine, On the exact form of waves near the surface of deep water, Phil. Trans. Roy. Soc. 153, 127 (1863), rediscovered the same motion. Superposing two Gerstners (the Two trains control) is graphics practice, Tessendorf, Simulating Ocean Water, SIGGRAPH course notes (2001), and is not an Euler solution. This plate is a seeded print of the exact Lagrangian map. It is not a new equation.
+
+**Figure Eight**. Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.
+
+**Peakon**. The Camassa–Holm equation and the peakon u = c exp(−\|x − c t\|) are R. Camassa and D. D. Holm, Phys. Rev. Lett. 71, 1661 (1993). Multi-peakon collisions, including the Stieltjes / Hankel closed form used here, are R. Beals, D. H. Sattinger and J. Szmigielski, Inverse Problems 15, L1 (1999) and Adv. Math. 154, 229 (2000). This plate evaluates that exact N-peakon formula. It is not a new soliton.
+
+**Photon Sphere**. K. Schwarzschild, Sitzungsber. Preuss. Akad. Wiss. (1916). The unstable circular photon orbit at r = 3M is a textbook consequence of that metric. C. Darwin, Proc. R. Soc. Lond. A 249, 180 (1959) and J. L. Synge, Mon. Not. R. Astron. Soc. 131, 463 (1966) integrated the null geodesics and the capture cross-section. The plate is a seeded print of those equatorial (or slightly inclined) rays. It is not a new black hole.
+
+**Crapper**. Crapper, An exact solution for progressive capillary waves of arbitrary amplitude, J. Fluid Mech. 2, 532 (1957), found the unique closed-form finite-amplitude pure-capillary wave on deep water: crests flatten, troughs sharpen, and at s* ≈ 0.730 the trough pinches a bubble of air. Hur and Vanden-Broeck, Eur. J. Mech. B/Fluids 83, 190 (2020), arXiv:2003.00950, showed that the same profile is a periodic traveling wave of a constant-vorticity Euler flow with g=0 and σ=0. The flows underneath differ. Constantin and Martín, On Crapper's wave, J. Nonlinear Math. Phys. (2011), proved the interior map is a diffeomorphism only for \|A\| ≤ 3−2√2 ≈ 0.172, a smaller range than the bubble. This plate is a seeded print of the exact map. It is not a new equation.
+
+**Hasimoto**. H. Hasimoto, J. Fluid Mech. 51, 477 (1972), mapped the local-induction approximation for a thin vortex filament to the cubic nonlinear Schrödinger equation and found the sech soliton: a loop of helical motion that travels along a line vortex at speed equal to twice the torsion. The explicit traveling-wave curve sampled here is the solitary-wave member of S. Kida, J. Fluid Mech. 112, 397 (1981). This plate is a print of that curve. It is not a new law of vortex motion.
+
+**Lump**. Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Multi-lumps: Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). They pass through each other with no phase shift. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.
 

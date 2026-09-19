@@ -4,7 +4,7 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded, resolution-independent, and exports in inches at giclée resolution.
 
-One HTML file. One hundred eight pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
+One HTML file. One hundred sixteen pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
@@ -43,7 +43,7 @@ The usual options fall down in different places:
 - **An image model.** It will draw a snowflake that never froze and a quasicrystal that is a hexagon with extra steps. There is no seed that reprints, and no way to show that anything was solved.
 - **A recorded loop.** It looks alive until you touch it.
 
-GENChase is the other object: one hundred eight sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
+GENChase is the other object: one hundred sixteen sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
 
 | | On disk | What you get | How you reprint |
 |---|---|---|---|
@@ -88,6 +88,15 @@ This is the part that is hard to copy, and the reason to trust the pictures. Mos
 | Hyperbolic Turing | cells meeting at a vertex of {p, q} | exactly q | **100%** |
 | Drainage Networks | drainage area, P(A > a) ~ a^−β | near 0.45 in real basins | **0.53** |
 | Vortex Lattice | vortices, by phase winding | quantized circulation | **counted, not guessed** |
+| Track | v_meas / v of a strain-written sine-Gordon breather | 1 if η = 0 | **1.20 paving, E_out/E bound** |
+| Soliton Web | Hirota bilinear residual of the exact tau function | 0 | **~10⁻¹⁵** |
+| Gerstner | orbit RMS / r ; r / A e^{kb} | 0 ; 1 | **~10⁻¹⁶** ; **1.000** |
+| Figure Eight | \|L\| ; ΔE/E ; \|q(T)−q(0)\| | 0 | **~10⁻¹⁴** ; **~10⁻¹⁴** ; **~10⁻⁷** |
+| Peakon | v_meas / c ; corner \|u_x\|/c | 1 ; 1 | **1.000** ; **1.00** |
+| Photon Sphere | b_c / (3√3 M) ; r_ph / 3M | 1 ; 1 | **1.000** ; **1.000** |
+| Crapper | s / (4\|A\|/(π(1−A²))) | 1 | **1.000** |
+| Hasimoto | κ_max/(2ν) ; c/(2τ₀) | 1 ; 1 | **1.000** ; **1.000** |
+| Lump | KP-I residual of the Manakov lump | 0 | **~10⁻³** (FD) |
 
 When a measurement disagrees with theory the tab says so rather than rounding toward it. Ballistic deposition fits **under** 1/3 because its crossover to KPZ is slow at plate size, and the hint says exactly that instead of quietly presenting 0.33. A neural field outside its patterning window prints "h is outside it, the sheet will go flat" rather than leaving a blank plate to be read as a subtle one.
 
@@ -122,6 +131,19 @@ Worth being precise about, because the credits matter.
 - **Vortex Lattice.** Rotating Gross–Pitaevskii relaxed in imaginary time, with vortices located by walking the winding number around every plaquette, filtered by whether the field also has a density minimum there, and exported as a vector point set with its bond-orientational order measured. A browser rotating-GPE vortex lattice is not new: George Stagg's WebGL solver has had a "Trapped & Rotating" preset since 2019. It injects vortices on a click rather than finding them, and it runs damped real time rather than imaginary-time relaxation. Plaquette winding detection with a point-set export is routine in research codes such as GPUE, which is CUDA. Putting the relaxation, the detection, the density filter and the vector export together in a page you can open is the part I did not find.
 - **Cortical Planforms.** A Wilson–Cowan field taken through the retinocortical map, interactive and seeded, with the patterning window computed in closed form so the tab can say when the drive is outside it. The science is Ermentrout and Cowan 1979 and Bressloff and colleagues 2001. I looked for an interactive browser version and did not find one, and this is the weakest negative result on the page: a sketch doing exactly this could sit on Observable or Shadertoy under a name I did not think to search, and neither site could be opened from here.
 - **Drainage Networks.** Stream-power landscape evolution on the Braun–Willett donor stack with priority-flood depression filling, with the channel network exported as vectors. The research codes are FastScape, fastscapelib and LandLab, which are Python, C++ and Fortran driven from notebooks; fastscapelib's own roadmap lists no browser or WebAssembly target. Browser erosion demos are common, but they are droplet-based hydraulic erosion out of computer graphics, which is a different model and does not give you a drainage network.
+- **Soliton Web.** Resonant line-soliton webs of the Kadomtsev–Petviashvili II equation, evaluated from Sato’s Wronskian tau function rather than integrated. Miles’ Y-junction, Kodama and Biondini’s O-type and spiders, Horowitz–Zarmi expansion. The status line prints the Hirota bilinear residual against 0; this build reads **~10⁻¹⁵**. Matplotlib and Mathematica notebooks of KP webs exist in the papers. I did not find a seeded, paletted, print-ready browser plate of the exact tau function.
+- **Gerstner.** The unique exact periodic deep-water gravity wave of finite amplitude (Gerstner 1802, Rankine 1863). Every particle traces a circle; the free surface is an inverted trochoid; pressure is constant along it. The plate prints the Lagrangian map and reports orbit RMS/r against 0 and r / A e^{kb} against 1. Two trains is Tessendorf superposition, labelled as graphics, and the circles fail on purpose.
+- **Figure Eight.** Moore 1993, Chenciner–Montgomery 2000, Simó’s 16-digit IC. Three equal masses chase each other around a figure-eight with L = 0. The plate reports |L| against 0, energy drift against 0, and return distance at the period against 0. Broken nearby is the control that does not close.
+- **Peakon.** Camassa–Holm peaked solitons (1993); multi-peakon collisions of Beals–Sattinger–Szmigielski. Speed equals amplitude. The plate samples v_meas / c against 1 and the corner |u_x|/c against ±1 from the field, not from the formula by construction.
+- **Photon Sphere.** Schwarzschild 1916, Darwin 1959, Synge 1966. Null geodesics, unstable photon orbit at r = 3M, capture at b = 3√3 M. The plate reports b_meas / (3√3 M) and r_ph / 3M against 1. If the integrator is wrong, the ring sits in the wrong place.
+- **Crapper.** G. D. Crapper, J. Fluid Mech. 2, 532 (1957). The unique exact finite-amplitude pure-capillary wave. Steepness s = 4|A|/(π(1−A²)) identically; the trough pinches a bubble at s* ≈ 0.730. The same *profile* is a constant-vorticity Euler wave with g = σ = 0 (Hur and Vanden-Broeck 2020). The plate reports s_meas against that identity.
+- **Hasimoto.** A soliton on a vortex filament (Hasimoto, JFM 51, 477, 1972). Local induction maps to NLS; the sech is a traveling loop of helical motion. Speed along the filament equals twice the torsion. The plate reports κ_max/(2ν) and c/(2τ₀) from the polyline, not from the formula by construction.
+- **Lump.** KP-I lumps (Manakov et al. 1977), rational, 1/r² tails. Completely different from the studio’s KP-II line-soliton webs. The plate reports the KP-I residual (u_t + 6uu_x + u_xxx)_x − 3 u_yy against 0.
+
+**Two closed loops, both with prior art.** Each piece is published. So is the family the loop belongs to. The plates are pictures of those families with an open-loop control sitting next to the closed one. A published equation plus a feedback term is not an invention, and it does not get a private name.
+
+- **Track.** A sine-Gordon breather that writes its own index from strain. That is a self-written waveguide (Monro, de Sterke, Poladian, J. Mod. Opt. 1998) and a photorefractive soliton (Segev) on a Josephson breather, not a private name. Open loop (η = 0) must recover the Lorentz speed; the plate reports v_meas / v against 1, and exterior energy against 0. Close the loop and the lump paves a faster track and stays bound. The plate measured **1.20** with E_out/E still ~0. The spiral view is the worldline: radius is space, angle is time, so a constant speed is an Archimedean spiral. `#hendrick` still opens it so old hashes don't die. The tab is Track.
+- **Caustic Sea.** A Swift–Hohenberg height acting as its own phase screen, the caustic writing that height. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). Open loop corr(h, I) near 0. Closed, the plate measured **0.281**. The name is the picture, not an invention.
 
 **New as engineering, and small but general.** Four ideas here would transfer to other projects:
 
@@ -131,8 +153,6 @@ Worth being precise about, because the credits matter.
 - **Linting controls that lie.** A size control that offers an option its own validator clamps away is a button that moves while nothing happens. That is mechanically checkable, and now it is checked.
 
 **A recipe that survives its own defaults moving.** A shared hash carries only what differs from the defaults, so the day a default changes, every recipe that never named that key would quietly reprint at a value it was never made at. Modules that change a default declare the old one, and a recipe written before the change gets it back. The same pass found that a hash was being applied on top of whatever the viewer already had on screen, so two people opening the same link could get two different plates; a recipe is now built on the defaults instead. `node tools/recipe.js` derives its cases from the file and proves both.
-
-**A larger single-file studio already exists.** [Simunauts](https://simunauts.vercel.app/) is a board of 84 generative simulations in one self-contained HTML file, with no framework and no library, seeded so the same seed reproduces the same result, with live sliders, picture and video export, and share links that reopen the exact moment. That is the same shape as this project and a bigger one, so GENChase does not claim to be the first of its kind or the largest. What it claims is narrower and sits in the bullets above: the self-checking, a print path built for paper rather than for a screenshot, and a handful of systems I could not find running in a browser anywhere else. I could not open that site from the machine that did this checking, so the description comes from its own published summary rather than from using it.
 
 **How far the checking goes.** The bullets above were checked against web search in September 2026 rather than written from memory, which is a change from the first version of this section. The limits are worth stating plainly. Outbound access from the machine that did the checking reached GitHub and search results but little else, so arxiv.org, visualpde.com, observablehq.com, shadertoy.com, openprocessing.org, fxhash.xyz, artblocks.io, Wikipedia and most journal and lab pages could not be opened. Claims that rest on source I read directly on GitHub are the firm ones. Claims that rest on search snippets alone are weaker. A negative result is weakest of all where the likeliest home for the thing I was looking for is a site that could not be opened, and where that applies the bullet says so.
 
