@@ -167,6 +167,8 @@ const techniquesMd = fs.existsSync(path.join(root, 'TECHNIQUES.md')) ? fs.readFi
 const designPlan = fs.existsSync(path.join(root, 'DESIGN-PLAN.md')) ? fs.readFileSync(path.join(root, 'DESIGN-PLAN.md'), 'utf8') : '';
 const llmsTxt = fs.existsSync(path.join(root, 'llms.txt')) ? fs.readFileSync(path.join(root, 'llms.txt'), 'utf8') : '';
 const agentsMd = fs.existsSync(path.join(root, 'AGENTS.md')) ? fs.readFileSync(path.join(root, 'AGENTS.md'), 'utf8') : '';
+const researchMd = fs.existsSync(path.join(root, 'RESEARCH.md')) ? fs.readFileSync(path.join(root, 'RESEARCH.md'), 'utf8') : '';
+if (!researchMd) fail('RESEARCH.md is missing');
 for (const [label, text] of [
   ['studio.html', src],
   ['README.md', readme],
@@ -175,6 +177,7 @@ for (const [label, text] of [
   ['DESIGN-PLAN.md', designPlan],
   ['llms.txt', llmsTxt],
   ['AGENTS.md', agentsMd],
+  ['RESEARCH.md', researchMd],
 ]) {
   if (!text) continue;
   // Only a spelled number that is actually counting techniques. Matching the word on its own
