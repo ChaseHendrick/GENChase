@@ -87,7 +87,7 @@ jobs:
         # One per architecture family: the shared GPU pde factory, the multi-species reaction
         # factory, the waves block, a CPU lattice, vector line work, a CPU density map, a raymarch,
         # a continuous cellular automaton, an exact closed-form field (no integrator), and the
-        # lock plate whose check must fail off Gröbli's L=0 circle.
+        # identity plate whose check must fail off Gröbli's L=0 circle.
         id: [cahn, turing, schrodinger, ising, tilings, attractors, fractal, life, kp, hendrick]
     steps:
       - uses: actions/checkout@v4
@@ -113,7 +113,7 @@ jobs:
       matrix:
         # Export recomputes the field at print pixels rather than upscaling the screen, so it is a
         # different code path from the plate check. One raster technique, one vector technique, and
-        # the lock plate (SVG of the spirals).
+        # the identity plate (SVG of the spirals).
         id: [cahn, tilings, hendrick]
     steps:
       - uses: actions/checkout@v4

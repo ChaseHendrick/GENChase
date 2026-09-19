@@ -215,13 +215,13 @@ Familiarity is listed so you do not confuse it with prior-art status.
 | `crapper` | Crapper | occasional | software search | skip unless new source |
 | `hasimoto` | Hasimoto | occasional | software search | skip unless new source |
 | `lump` | Lump | occasional | software search | skip unless new source |
-| `hendrick` | Hendrick's Lock | unseen | identity | do not re-derive |
+| `hendrick` | Hendrick's Identity | unseen | identity | do not re-derive |
 
 ## Notes on the rows that are not `science only`
 
 ### Derived identity (the only physics claim that is not in the cited papers)
 
-**`hendrick` (Hendrick's Lock).** Derived lock: on Gamma=(1,1,-1/2), L=0, omega t_c = (2-cos^2 theta)/sin(2 theta), unique min sqrt(2) at tan theta=1/sqrt(2) (angles 22.5, 45, 112.5 deg). Collapse rate and spin are in Aref 2010 separately; the dimensionless product and its min are not in Gröbli 1877 or Aref 2010. Do not re-derive. Do not search the tab name as if it were a published law. Off the L=0 circle the lock fails on purpose. Re-search: YES do not re-derive, do not re-search under this name.
+**`hendrick` (Hendrick's Identity).** Derived identity, not a new dynamical law. The motion is Gröbli 1877. Aref 2010 eqs. 25a and 25d give Omega and tau separately. Aref eq. 29c already writes the product Omega tau as the pitch of the logarithmic spiral, and the stability section treats that product as invariant under a similarity perturbation. Kudela 2014 and Reinaud-Dritschel 2022 minimize collapse time, not the product. Krishnamurthy-Stremler 2018 give dimensionless tau-tilde as a function of angles, no min sqrt(2). What is not in those papers: on Gamma=(1,1,-1/2), L=0, omega t_c = (2-cos^2 theta)/sin(2 theta), unique min sqrt(2) at tan theta=1/sqrt(2) (angles 22.5, 45, 112.5 deg). Do not re-derive. Do not search the tab name as if it were a published law. Do not put the name on Gröbli's motion or on Aref's product. Off the L=0 circle the check fails on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum.
 
 ### Published family plus a feedback term (not inventions)
 
@@ -283,7 +283,7 @@ Write the query next time. These are the families that were already run, reconst
 | `landscape` | browser stream-power / Braun-Willett / FastScape | Research codes are Python/C++/Fortran. Browser erosion is droplet CG. |
 | `kp` | browser KP-II resonant soliton webs from the exact tau function | Notebooks in the papers. No seeded print plate found. |
 | `gerstner` `eight` `peakon` `photon` `crapper` `hasimoto` `lump` | seeded print-ready browser plate of the exact solution, with the self-check | Papers and some demos. Combined studio object not found in the search that was run. |
-| `hendrick` | the product omega t_c and its min sqrt(2) on Gamma=(1,1,-1/2) | Not in Gröbli 1877 or Aref 2010. Rate and spin are there separately. |
+| `hendrick` | the closed form of omega t_c on Gamma=(1,1,-1/2) and its min sqrt(2) | Product as spiral pitch: Aref 2010 eq. 29c. Closed form and min: not in Gröbli 1877, Aref 2010, Krishnamurthy-Stremler 2018, Kudela 2014. |
 | `track` `causticsea` | is a published PDE plus a feedback term an invention | No. Named prior art in both cases. |
 | self-checking gen-art | a generative art tool that measures an observable against theory | Not found on art platforms (seed + traits). Physics teaching tools do this routinely. |
 
@@ -294,7 +294,7 @@ Do these only if you need the answer. Do not do them to look busy.
 1. **Reopen `cortex`** if Observable, Shadertoy, or OpenProcessing actually load. That negative is explicitly weak.
 2. **The five editorial-unseen tabs** (`rotor`, `growdomain`, `lozenge`, `aubry`, `exceptional`) have never had a dedicated implementation search. Familiarity is not that search.
 3. **Every `science only` row** has no logged "browser plate?" search. Run one only when you are about to write a README bullet claiming software novelty for that tab.
-4. **arXiv / journals.** If those hosts are reachable, Hendrick's Lock and the KP / Crapper / Hasimoto exact-solution plates are the first things to check against the PDF, not against a snippet.
+4. **arXiv / journals.** If those hosts are reachable, Hendrick's identity (the closed form and the min, not Aref's product) and the KP / Crapper / Hasimoto exact-solution plates are the first things to check against the PDF, not against a snippet.
 5. **`tools/sharpall.sh`** is a measurement, not prior art, and it is stale. Redo before quoting sharpness counts.
 6. **fxhash / Art Blocks / OpenProcessing** as homes for lookalikes of the self-checking-plates claim. Unreachable in September 2026.
 
@@ -330,7 +330,17 @@ Opened: this repository
 
 Blocked: none
 
-Conclusion: display name is Hendrick's Lock. Hash `#hendrick` is unchanged.
+Conclusion: display name is Hendrick's Identity. Hash `#hendrick` is unchanged.
 
 Re-search: n/a
+
+### 2026-09-19  hendrick uniqueness  query: point vortex collapse dimensionless product omega t_c minimum sqrt(2) octant triangle; Aref 2010 three vortex collapse rate angular frequency product; Gröbli collapsing triangle tan theta 1/sqrt(2) 22.5 45 112.5; "self-similar collapse" vortices sqrt(2) omega t_c
+
+Opened: Aref, Phys. Fluids 22, 057104 (2010), full PDF via VTechWorks bitstream 2b7fd3cf-09d3-4fe7-8558-a9948a899f1d. Krishnamurthy and Stremler 2018 postprint at people.iith.ac.in. Gröbli 1877 English translation arXiv:2404.01305 HTML. Search snippets for Kudela 2014, Reinaud and Dritschel 2022 Physica D 434 133226.
+
+Blocked: AIP HTML paywall (PDF was used instead). Most journals.
+
+Conclusion: the motion is Gröbli. Omega and tau separately are Aref 25a and 25d. The product as log-spiral pitch is Aref 29c. Collapse-time minima exist in Kudela 2014 and Reinaud 2022, of tau, not of omega tau. The closed form (2-cos^2 theta)/sin(2 theta) on Gamma=(1,1,-1/2) and unique min sqrt(2) at tan theta=1/sqrt(2) were not in those sources. That is Hendrick's identity, not a new dynamical law, and not Aref's product under a private name.
+
+Re-search: do not re-derive. Reopen only if a newly named paper states this closed form or this minimum.
 
