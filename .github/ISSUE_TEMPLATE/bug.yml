@@ -5,7 +5,10 @@ labels: []
 body:
   - type: markdown
     attributes:
-      value: A wrong plate is an issue. Script in someone else's origin is a [private advisory](https://github.com/SharpMeow/GENChase/security/advisories/new).
+      value: |
+        A wrong plate is an issue. Script in someone else's origin is a [private advisory](https://github.com/SharpMeow/GENChase/security/advisories/new).
+
+        A measurement that disagrees with theory is also an issue if the tab rounded toward it, hid it, or cannot fail.
   - type: textarea
     id: what
     attributes:
@@ -18,6 +21,7 @@ body:
     attributes:
       label: Hash that shows it
       placeholder: "#tilings/penrose-1974"
+      description: Copy link (L) from the studio. Seed and sliders travel with it.
   - type: textarea
     id: expect
     attributes:

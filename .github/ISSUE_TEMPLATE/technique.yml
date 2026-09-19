@@ -5,7 +5,10 @@ labels: []
 body:
   - type: markdown
     attributes:
-      value: Read [CONTRIBUTING.md](https://github.com/SharpMeow/GENChase/blob/main/CONTRIBUTING.md) first. A tab has to be a real simulation that reprints, with a paper to credit. Do not propose a restyle of a tab that already exists.
+      value: |
+        Read [CONTRIBUTING.md](https://github.com/SharpMeow/GENChase/blob/main/CONTRIBUTING.md) first, then [RESEARCH.md](https://github.com/SharpMeow/GENChase/blob/main/RESEARCH.md) and [TECHNIQUES.md](https://github.com/SharpMeow/GENChase/blob/main/TECHNIQUES.md).
+
+        A tab has to be a real simulation that reprints, with a paper to credit. Do not propose a restyle of a tab that already exists. Existing equations keep their own names. A person's name on a plate needs new physics and a check that fails if the claim is wrong.
   - type: textarea
     id: system
     attributes:
@@ -17,9 +20,30 @@ body:
     id: check
     attributes:
       label: What the plate would measure
-      description: A quantity theory predicts, from the field on screen, with an uncertainty. "It looks like the paper" is not a check.
+      description: A quantity theory predicts, from the field on screen, with an uncertainty. "It looks like the paper" is not a check. A check that cannot fail is not a check.
   - type: input
     id: prior
     attributes:
       label: Closest existing tab
       placeholder: kp, swift, tilings
+  - type: textarea
+    id: search
+    attributes:
+      label: What you searched
+      description: Query, date, what loaded, what did not. Paste the RESEARCH.md log shape if you have it. A search that is not written down will be done again.
+      placeholder: |
+        query: "..."
+        Opened:
+        Blocked:
+        Conclusion:
+  - type: dropdown
+    id: familiarity
+    attributes:
+      label: Familiarity bucket (a curator's call, not a measurement)
+      options:
+        - ubiquitous
+        - common
+        - occasional
+        - rare
+        - unseen
+      default: 2

@@ -14,6 +14,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 # Only the newest commit on a branch is worth testing. Without this, a branch under active development
 # holds a runner for every commit it ever pushed: the browser jobs take ten to fifteen minutes each, so
 # a handful of quick pushes queues more work than the account can run at once, and the newest run then
@@ -83,8 +86,9 @@ jobs:
       matrix:
         # One per architecture family: the shared GPU pde factory, the multi-species reaction
         # factory, the waves block, a CPU lattice, vector line work, a CPU density map, a raymarch,
-        # a continuous cellular automaton, and an exact closed-form field (no integrator).
-        id: [cahn, turing, schrodinger, ising, tilings, attractors, fractal, life, kp]
+        # a continuous cellular automaton, an exact closed-form field (no integrator), and the
+        # lock plate whose check must fail off Gröbli's L=0 circle.
+        id: [cahn, turing, schrodinger, ising, tilings, attractors, fractal, life, kp, hendrick]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -108,8 +112,9 @@ jobs:
       fail-fast: false
       matrix:
         # Export recomputes the field at print pixels rather than upscaling the screen, so it is a
-        # different code path from the plate check. One raster technique and one vector technique.
-        id: [cahn, tilings]
+        # different code path from the plate check. One raster technique, one vector technique, and
+        # the lock plate (SVG of the spirals).
+        id: [cahn, tilings, hendrick]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
