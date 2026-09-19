@@ -2,7 +2,7 @@
   "project": "GENChase",
   "repository": "https://github.com/SharpMeow/GENChase",
   "file": "studio.html",
-  "count": 66,
+  "count": 108,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "techniques": [
     {
@@ -317,6 +317,25 @@
       "vectors": true
     },
     {
+      "id": "skyrmion",
+      "name": "Magnetic Skyrmions",
+      "subtitle": "chiral magnets · 1989",
+      "equation": "dn/dt = -n x (n x H),   H = J sum_nn n_j + H_DMI + 2K n_z zhat + B zhat,   Q = (1/4pi) int n · (dx n x dy n) dA",
+      "credit": "A. N. Bogdanov and D. A. Yablonskii, Sov. Phys. JETP 68, 101 (1989), predicted localized chiral solitons in magnets with Dzyaloshinskii-Moriya coupling. S. Muhlbauer, B. Binz, F. Jonietz, C. Pfleiderer, A. Rosch, A. Neubauer, R. Georgii and P. Boni, Science 323, 915 (2009), observed the skyrmion lattice in MnSi. The topological charge on the plate is the Berg-Luscher lattice invariant, Berg and Luscher, Nucl. Phys. B 190, 412 (1981).",
+      "blurb": "A skyrmion is a knot in a magnetization field that cannot be combed out. Neighboring spins want to agree (exchange), a chiral interaction twists them (Dzyaloshinskii-Moriya), easy-axis anisotropy and a field pick a background direction, and the compromise is a small core of reversed magnetization wrapped by a swirling wall. The wrapping has a topological charge Q that the plate measures from the spins themselves, not from a label. Q stays near an integer while the core lives, and drops toward zero if the field pulls the knot apart. Click the plate to shove a neighborhood of spins and watch whether a new core nucleates or an old one dies.",
+      "order": 36.2,
+      "seed": "",
+      "presets": [
+        "neel",
+        "bloch",
+        "crystal",
+        "bimeron",
+        "helix",
+        "quench"
+      ],
+      "vectors": false
+    },
+    {
       "id": "tonertu",
       "name": "Flocking",
       "subtitle": "Toner-Tu, a polar active fluid · 1995",
@@ -398,6 +417,26 @@
       "vectors": false
     },
     {
+      "id": "lens",
+      "name": "Gravitational Lens",
+      "subtitle": "thin-lens mapping · 1936",
+      "equation": "β = θ − α(θ),   α = ∇ψ,   ∇²ψ = 2κ,   θ_E² = 4GM D_ls / (c² D_l D_s)",
+      "credit": "A. Einstein, Science 84, 506 (1936), computed the deflection of starlight by the sun and noted the ring that appears when source and lens align. The plate is the thin-lens equation as in Schneider, Ehlers and Falco, Gravitational Lenses (1992). The potential is solved by Jacobi iteration on the Poisson equation for the seeded convergence.",
+      "blurb": "Mass on this sheet bends the paths that light would have taken. A single centered mass and an aligned source draw an Einstein ring whose radius the plate measures and checks against the point-mass formula. Offset the source and the ring breaks into arcs or a quad. A cluster of clumps makes the long thin arcs that show up in deep images. The magnification view is the inverse Jacobian of the lens map, so the critical curve is the place the images go bright.",
+      "order": 41,
+      "seed": "",
+      "presets": [
+        "einstein",
+        "quad",
+        "cluster",
+        "mass",
+        "stars",
+        "grid",
+        "mag"
+      ],
+      "vectors": false
+    },
+    {
       "id": "rotor",
       "name": "Rotor Routers",
       "subtitle": "rotor-router aggregation and internal DLA · 2009",
@@ -418,6 +457,86 @@
       "vectors": false
     },
     {
+      "id": "web",
+      "name": "Cosmic Web",
+      "subtitle": "Zel'dovich adhesion · 1970 / 1989",
+      "equation": "x = q + D ∇Φ,   ∂t v + (v·∇)v = ν ∇²v,   ψ = exp(−Φ / 2ν),   ∂t ψ = ν ∇²ψ",
+      "credit": "Ya. B. Zel'dovich, Astron. Astrophys. 5, 84 (1970). The adhesion model is Gurbatov, Saichev and Shandarin, Mon. Not. R. Astron. Soc. 236, 385 (1989), which is Burgers' equation written for the displacement potential and solved by the Hopf-Cole substitution.",
+      "blurb": "A Gaussian random potential is the early universe on this sheet. Zel'dovich moves every particle in a straight line along the gradient. Where streams cross, adhesion makes them stick, which is Burgers' equation with a small viscosity, solved here by Hopf-Cole heat flow. What remains is the two-dimensional cosmic web: voids that empty, filaments that catch the mass, nodes where filaments meet. The plate is the density of tracers after that mapping, or the number of collapsed axes of the deformation tensor. Same seed, same web, at any print size.",
+      "order": 42,
+      "seed": "",
+      "presets": [
+        "local",
+        "young",
+        "knife",
+        "nodes",
+        "collapse",
+        "voidy",
+        "potential"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "faraday",
+      "name": "Faraday Waves",
+      "subtitle": "parametrically driven layer · 1831 / 1996",
+      "equation": "∂tt h + γ ∂t h + (g − Γ cos ωt) ∇²h + κ ∇⁴h + u h³ = 0",
+      "credit": "M. Faraday, Philos. Trans. R. Soc. 121, 299 (1831), saw crisp standing waves on a shaken plate of liquid. P. Umbanhowar, F. Melo and H. L. Swinney, Nature 382, 793 (1996), found oscillons: localized, subharmonic bouncing spots on a granular layer. The sheet here is a damped, parametrically driven conservation law with a cubic saturation, not a box of brass beads.",
+      "blurb": "Shake a layer and the effective gravity ticks. Above a threshold the flat surface is unstable and a standing lattice grows at half the drive frequency. In a quieter window a single bump can live as an oscillon, a spot that bounces in place instead of spreading into a crystal. The plate integrates that oscillator on a grid. The status line reports the measured crest spacing against the linear Faraday estimate 2π sqrt(κ / ω). Click to drop another bump.",
+      "order": 43,
+      "seed": "",
+      "presets": [
+        "oscillon",
+        "square",
+        "stripe",
+        "pair",
+        "quiet",
+        "wild",
+        "fine"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "film",
+      "name": "Thin Film",
+      "subtitle": "draining soap and oil · interference",
+      "equation": "∂t h = ∇·(h³ ∇∇²h) + G ∂y(h³),   I(λ) = sin²(2π n h cosθ / λ + φ)",
+      "credit": "O. Reynolds, Philos. Trans. R. Soc. 177, 157 (1886), is the lubrication statement that makes thickness a conserved field. The colors are thin-film interference as in Born and Wolf, Principles of Optics. A soap film in air carries a π phase shift at the first surface, which is why the thinnest film goes black rather than white. Oil on water does not.",
+      "blurb": "The plate is a thickness field, not a painted rainbow. Gravity drains mass toward the bottom. Capillary smoothing is a biharmonic flux weighted by h³, the lubrication scale. What you see is white light interfering with itself after the two faces of the film. Raise drain and a black film opens at the top, which is the real warning that a bubble is about to vanish. Oil-on-water drops the extra phase shift and the thin end stays bright. Click to pin a little extra thickness.",
+      "order": 44,
+      "seed": "",
+      "presets": [
+        "drain",
+        "black",
+        "oil",
+        "bands",
+        "puddles",
+        "map",
+        "order"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "timecrystal",
+      "name": "Time Crystal",
+      "subtitle": "Floquet Ising chain, period doubled · 2012 / 2016",
+      "equation": "U(T) = exp(−i T H_Ising) · exp(−i π(1−ε) Σ X_i),   m₂ = ⟨(−1)^n m(nT)⟩",
+      "credit": "Frank Wilczek, Phys. Rev. Lett. 109, 160401 (2012), named the time crystal. Watanabe and Oshikawa, Phys. Rev. Lett. 114, 251603 (2015), proved an equilibrium one cannot exist. Else, Bauer and Nayak, Phys. Rev. Lett. 117, 090402 (2016), and Khemani, Lazarides, Moessner and Sondhi, Phys. Rev. Lett. 116, 250401 (2016), showed a periodically driven, many-body-localised spin chain can still lock at twice the drive period. Zhang et al., Nature 543, 217 (2017), saw it in trapped ions. This plate is the classical Floquet-Ising analog of that chain, not a quantum register.",
+      "blurb": "A theorem says a clock cannot spontaneously tick in thermal equilibrium: time-translation symmetry does not break the way a crystal breaks space. Drive the chain instead. Each period a near-π pulse tries to flip every spin, then a disordered Ising glass tries to freeze them. The rigid glass remembers the extra minus sign, so the magnetisation comes back only every two drives. The plate is that spacetime. The status line reports the subharmonic order m₂ against 1 for a perfect period-doubled crystal and 0 for a melted one.",
+      "order": 45,
+      "seed": "",
+      "presets": [
+        "rigid",
+        "melt",
+        "neel",
+        "domain",
+        "prethermal",
+        "order",
+        "clean"
+      ],
+      "vectors": false
+    },
+    {
       "id": "growdomain",
       "name": "Growing Domain",
       "subtitle": "Turing patterns on a domain that grows · 1999",
@@ -434,6 +553,26 @@
         "lagging",
         "meinhardt",
         "plane"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "spinice",
+      "name": "Spin Ice",
+      "subtitle": "square ice, emergent monopoles · 1935 / 2008",
+      "equation": "E = (J/2) Σ_v Q_v² − h Σ σ,   Q_v = n_in − 2,   ice: Q = 0",
+      "credit": "Linus Pauling, J. Am. Chem. Soc. 57, 2680 (1935), counted the residual entropy of ice. Castelnovo, Moessner and Sondhi, Nature 451, 42 (2008), showed that the same two-in/two-out rule on a pyrochlore magnet fractionalises a dipole into a pair of magnetic monopoles. The plate is square ice, the 2-D vertex model, not a 3-D crystal of Dy₂Ti₂O₇.",
+      "blurb": "Dirac argued an isolated magnetic charge has never been seen. Spin ice does not wait for one. Four arrows meet at a vertex; the ice rule asks two in and two out, which is Q = 0. Flip one arrow and you create a Q = +1 and a Q = −1 that can walk apart. They interact like Coulomb charges on the lattice. The plate is that vertex field. The status line reports how many vertices still obey the ice rule, and the monopole density against e^{−2J/T} at low temperature.",
+      "order": 46,
+      "seed": "",
+      "presets": [
+        "cold",
+        "plasma",
+        "pair",
+        "ice",
+        "flow",
+        "quench",
+        "stripes"
       ],
       "vectors": false
     },
@@ -477,6 +616,26 @@
       "vectors": true
     },
     {
+      "id": "skin",
+      "name": "Skin Effect",
+      "subtitle": "non-Hermitian skin, Hatano–Nelson · 1996 / 2018",
+      "equation": "H_{j,j+1} = e^{g},   H_{j+1,j} = e^{−g},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1))",
+      "credit": "N. Hatano and D. R. Nelson, Phys. Rev. Lett. 77, 570 (1996), wrote a directed-hopping chain whose bulk spectrum is that of Hermitian tight-binding while every eigenvector piles onto a boundary. Yao and Wang, Phys. Rev. Lett. 121, 086803 (2018), named this the non-Hermitian skin effect and showed it breaks the usual bulk-boundary correspondence. Hermitian quantum mechanics cannot do it: a similarity transform that is not unitary has no counterpart when H = H†.",
+      "blurb": "Hermitian eigenmodes of a chain spread, or they Anderson-localise at a random site. They do not all move to the same end. Give the hop a direction — right hop e^g, left hop e^{−g} — and a similarity transform maps the whole spectrum onto ordinary cosine bands while every right eigenvector is multiplied by e^{g j}. Open the ends and the pile-up is visible: the plate is |ψ_n(x)|, mode index down the page. The status line reports the weight on the last tenth of the chain. Periodic boundaries secretly restore Hermiticity-up-to-a-gauge and the skin vanishes, which the plate will say.",
+      "order": 47,
+      "seed": "",
+      "presets": [
+        "skin",
+        "hermite",
+        "dirty",
+        "ring",
+        "wall",
+        "weak",
+        "anderson"
+      ],
+      "vectors": false
+    },
+    {
       "id": "rmt",
       "name": "Random Matrices",
       "subtitle": "beta-ensemble spectra and Dyson Brownian motion · 1962",
@@ -497,6 +656,26 @@
       "vectors": true
     },
     {
+      "id": "stealth",
+      "name": "Stealthy Points",
+      "subtitle": "hyperuniform collective coordinates · 2004",
+      "equation": "χ = (1 / dN) #{ k : 0 < |k| < k_C },   S(k) = 0  for |k| < k_C",
+      "credit": "Uche, Stillinger and Torquato, Phys. Rev. E 70, 046122 (2004), and Torquato, Stillinger, Phys. Rev. E 68, 041113 (2003). A stealthy hyperuniform point process is disordered in real space and yet has a crystal's forbidden disk in Fourier space: S(k) = 0 in a finite neighbourhood of the origin. No Bragg peaks, no Poisson small-k catastrophe. The construction is collective-coordinate descent on a torus, which is what this plate runs.",
+      "blurb": "A Poisson gas has S(0) = 1. A crystal has Bragg peaks and S = 0 in between. Stealthy hyperuniform points look like a gas and measure like a crystal at long wavelength: the structure factor is forced to zero inside a disk around k = 0, using a fraction χ of the degrees of freedom. The eye cannot see the constraint. The Fourier view can. The status line reports mean S(k) inside the disk against 0, and S(0) itself.",
+      "order": 48,
+      "seed": "",
+      "presets": [
+        "stealth",
+        "gas",
+        "crystalish",
+        "fourier",
+        "density",
+        "sparse",
+        "tight"
+      ],
+      "vectors": false
+    },
+    {
       "id": "lozenge",
       "name": "Lozenge Tilings",
       "subtitle": "random lozenge tilings of a hexagon, exact by coupling from the past · 1996",
@@ -515,6 +694,25 @@
         "proof"
       ],
       "vectors": true
+    },
+    {
+      "id": "arago",
+      "name": "Arago Spot",
+      "subtitle": "Poisson bright spot behind a disk · 1818",
+      "equation": "U(0) = (e^{ikz}/iλz) ∫_{|ρ|>R} exp(ik|ρ|²/2z) dρ,   I(0) ≃ I_open",
+      "credit": "S. D. Poisson argued in 1818 that Fresnel's wave theory implied a bright spot on axis in the shadow of an opaque disk, which he took as a reductio. D. F. J. Arago performed the experiment and found the spot. The plate is a Fresnel propagator through a circular stop.",
+      "blurb": "Poisson said: if light is a wave, the centre of a disk's shadow must glow, which is absurd. Arago looked. It glows. Huygens wavelets from the unobstructed plane meet in phase on axis, so the measured centre intensity sits near the open beam. A geometric shadow would be black there. The status line reports I(0) against a ring just outside the disk.",
+      "order": 49,
+      "seed": "",
+      "presets": [
+        "spot",
+        "tight",
+        "far",
+        "bright",
+        "wide",
+        "hard"
+      ],
+      "vectors": false
     },
     {
       "id": "ust",
@@ -558,6 +756,44 @@
       "vectors": false
     },
     {
+      "id": "rogue",
+      "name": "Rogue Wave",
+      "subtitle": "Peregrine soliton, waves from nowhere · 1983",
+      "equation": "i ψ_t + ψ_xx + 2|ψ|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   |ψ|²_max / |ψ|²_∞ = 9",
+      "credit": "D. H. Peregrine, J. Austral. Math. Soc. Ser. B 25, 16 (1983). Akhmediev, Eleonskii and Kulagin (1987); Kuznetsov (1977) and Ma (1979). Draupner measured a rogue wave in 1995. The plate is the exact rational / breather solution.",
+      "blurb": "A wave that should not exist: it grows out of a finite background, peaks at nine times the intensity, and is gone. Sailors were not believed. The plate is spacetime of the focusing NLSE. The status line reports peak over background against 9 for Peregrine.",
+      "order": 50,
+      "seed": "",
+      "presets": [
+        "peregrine",
+        "nowhere",
+        "akh",
+        "km",
+        "wide",
+        "peak"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "aharonov",
+      "name": "Aharonov–Bohm",
+      "subtitle": "phase from a field the particle never enters · 1959",
+      "equation": "Δφ = (e/ℏ) ∮ A·dl = 2π Φ/Φ0,   I(x) = |ψ_L + e^{iΔφ} ψ_R|²",
+      "credit": "Y. Aharonov and D. Bohm, Phys. Rev. 115, 485 (1959). Ehrenberg and Siday had the same phase in 1949. Chambers (1960) and Tonomura et al. (1986) saw the fringes shift around a shielded magnet. The plate is two Huygens slits plus a pure gauge phase, not a solenoid in a TEM.",
+      "blurb": "A particle that never enters a magnetic field still feels it. The vector potential around a shielded flux shifts the two-slit fringes by 2π Φ/Φ0. Classical Lorentz force is zero on both paths. The status line reports the measured fringe shift in flux quanta against the dialled Φ/Φ0.",
+      "order": 51,
+      "seed": "",
+      "presets": [
+        "shift",
+        "zero",
+        "quantum",
+        "tight",
+        "wide",
+        "half"
+      ],
+      "vectors": false
+    },
+    {
       "id": "pendulum",
       "name": "Double pendulum flip time",
       "subtitle": "first flip of a chaotic double pendulum · 1992",
@@ -573,6 +809,44 @@
         "edge",
         "long",
         "wide"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "anderson",
+      "name": "Anderson",
+      "subtitle": "waves that refuse to diffuse · 1958",
+      "equation": "H = t Σ_<ij> |i><j| + Σ_i ε_i |i><i|,   ε ~ U[-W/2,W/2],   IPR = Σ |ψ|⁴",
+      "credit": "P. W. Anderson, Phys. Rev. 109, 1492 (1958). A random potential can trap a wave that classical intuition says must spread. Abrahams, Anderson, Licciardello and Ramakrishnan (1979) argued that in two dimensions all states localise. The plate is imaginary-time relaxation to the ground state of a tight-binding square, not a wave-packet detector (that lives on Schrödinger).",
+      "blurb": "A wave in a random landscape does not diffuse. It finds a well and sits. Anderson showed that enough disorder turns extended Bloch waves into exponentially localised eigenstates; in 2D the scaling theory says this happens at any disorder, though the length can exceed the plate. The status line reports the inverse participation ratio against 1/N (extended) and O(1) (a few sites).",
+      "order": 52,
+      "seed": "",
+      "presets": [
+        "loc",
+        "ext",
+        "crit",
+        "clean",
+        "mid",
+        "tight"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "fput",
+      "name": "FPUT Recurrence",
+      "subtitle": "a chain that refuses to thermalise · 1955",
+      "equation": "ẍ_i = (q_{i+1}-2q_i+q_{i-1}) + α[(q_{i+1}-q_i)²-(q_i-q_{i-1})²],   E_1(t) returns",
+      "credit": "Fermi, Pasta, Ulam and Tsingou, Los Alamos report LA-1940 (1955). A weakly nonlinear string, started in one Fourier mode, was expected to thermalise. It did not: the energy came back. Zabusky and Kruskal (1965) met the soliton in the continuum limit. The plate is spacetime of the displacements, with the first-mode energy measured against its start.",
+      "blurb": "Put all the energy in one mode of a weakly nonlinear string. Equipartition says it should leak into every mode and stay there. On the first computers it came back instead. The plate is that recurrence. The status line reports how close E1 returns to its start, against 1 for a perfect revival and 1/N for a thermal soup.",
+      "order": 53,
+      "seed": "",
+      "presets": [
+        "recur",
+        "linear",
+        "strong",
+        "long",
+        "fine",
+        "thermal"
       ],
       "vectors": false
     },
@@ -618,6 +892,25 @@
       "vectors": false
     },
     {
+      "id": "soliton",
+      "name": "KdV Soliton",
+      "subtitle": "a wave that will not disperse · 1834 / 1965",
+      "equation": "u_t + 6 u u_x + u_xxx = 0,   u = (c/2) sech²[(√c/2)(x − c t)]",
+      "credit": "J. S. Russell, Report of the 14th Meeting of the British Association (1844), chased a heap of water that would not spread. Korteweg and de Vries (1895) wrote the equation. Zabusky and Kruskal, Phys. Rev. Lett. 15, 240 (1965), collided two and named them solitons. The plate is spacetime of two exact sech² profiles, not a canal in Scotland.",
+      "blurb": "A heap of water that should flatten instead travels at a speed set by its height, and two of them pass through each other and keep their names. The plate is that spacetime. The status line reports the post-collision peak speeds against the sech² law c = 2 A.",
+      "order": 54,
+      "seed": "",
+      "presets": [
+        "collide",
+        "equal",
+        "fast",
+        "soft",
+        "train",
+        "crisp"
+      ],
+      "vectors": false
+    },
+    {
       "id": "cyclicca",
       "name": "Cyclic Automaton",
       "subtitle": "cyclic and Greenberg-Hastings excitable automata · 1991",
@@ -659,6 +952,25 @@
       "vectors": false
     },
     {
+      "id": "ssh",
+      "name": "SSH Edges",
+      "subtitle": "states in a gap that the bulk forbade · 1979",
+      "equation": "H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open)",
+      "credit": "W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)| of every eigenmode, stacked.",
+      "blurb": "A gapped chain is not supposed to have states in the gap. Dimerise it the right way, open the ends, and two zero modes sit on the edges, exponentially bound, because the bulk winding has nowhere else to go. Close the chain into a ring and they vanish. The status line reports the weight of the mid-gap pair on the last tenth of the sites.",
+      "order": 55,
+      "seed": "",
+      "presets": [
+        "topo",
+        "triv",
+        "ring",
+        "edge",
+        "crit",
+        "log"
+      ],
+      "vectors": false
+    },
+    {
       "id": "swarm",
       "name": "Swarmalators",
       "subtitle": "oscillators that sync and swarm · 2017",
@@ -696,6 +1008,25 @@
       "vectors": false
     },
     {
+      "id": "aubry",
+      "name": "Aubry–André",
+      "subtitle": "localisation without disorder · 1980",
+      "equation": "ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localised for λ>2",
+      "credit": "S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 2 every eigenstate localises. The model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 2. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.",
+      "blurb": "Anderson needed randomness. Aubry and André did not: a cosine at an irrational period is enough, and the transition is sharp. Below λ = 2 the ground state is extended; above, it sits in a well. The status line reports the inverse participation ratio against 1/N, and whether λ sits past the dual point 2.",
+      "order": 56,
+      "seed": "",
+      "presets": [
+        "loc",
+        "ext",
+        "crit",
+        "deep",
+        "sweep",
+        "clean"
+      ],
+      "vectors": false
+    },
+    {
       "id": "cahn",
       "name": "Cahn–Hilliard",
       "subtitle": "spinodal decomposition · 1958",
@@ -728,6 +1059,25 @@
         "fingerprint",
         "relief",
         "coarse"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "hopf",
+      "name": "Hopf Fibration",
+      "subtitle": "every circle linked with every other · 1931",
+      "equation": "η: S³ → S²,   η(z1,z2) = (2 z1 z2-bar, |z1|²-|z2|²),   fibres = circles,   lk = 1",
+      "credit": "H. Hopf, Math. Ann. 104, 637 (1931). The third homotopy group of the 2-sphere is not zero: π₃(S²) = ℤ, generated by this map. Stereographic projection from S³ turns the fibres into a nesting of linked circles in R³, then onto the plate. No two fibres are unlinked.",
+      "blurb": "A 3-sphere worth of circles, each the preimage of a point of S², and every pair is linked exactly once. There is no unlink hiding in the stack. The plate is a stereographic view of those fibres, coloured by the base. The status line reports the Gauss linking number of two sample fibres, which is 1 by Hopf.",
+      "order": 57,
+      "seed": "",
+      "presets": [
+        "linked",
+        "tori",
+        "poles",
+        "dense",
+        "base",
+        "sparse"
       ],
       "vectors": false
     },
@@ -787,6 +1137,25 @@
       "vectors": false
     },
     {
+      "id": "cloak",
+      "name": "Pendry Cloak",
+      "subtitle": "a disk that light goes around · 2006",
+      "equation": "r = R1 + r' (R2-R1)/R2,   n_r = (r-R1)/r · R2/(R2-R1),   n_θ = r / (r-R1)",
+      "credit": "J. B. Pendry, D. Schurig and D. R. Smith, Science 312, 1780 (2006). A coordinate transformation that blows a point into a disk pulls every ray around the hole. In the virtual plane the rays are straight; in the physical plane they miss the core. The plate traces that map, not a fabricated metamaterial.",
+      "blurb": "Invisibility, of a kind: a coordinate change that opens a hole in space and tells light to go around it. Inside the core, no ray. Switch the cloak off and the same rays hit the disk. The status line reports the fraction of sample points that land in the core, against 0 for a working cloak.",
+      "order": 58,
+      "seed": "",
+      "presets": [
+        "cloaked",
+        "bare",
+        "tight",
+        "fat",
+        "many",
+        "core"
+      ],
+      "vectors": false
+    },
+    {
       "id": "xy",
       "name": "XY / Kosterlitz–Thouless",
       "subtitle": "planar spins, bound vortices and the 1973 unbinding transition",
@@ -826,6 +1195,25 @@
       "vectors": false
     },
     {
+      "id": "vortex",
+      "name": "Abrikosov",
+      "subtitle": "a superconductor that lets flux in as a lattice · 1957",
+      "equation": "αψ + β|ψ|² ψ + (1/2m)(−i∇ − 2e A)² ψ = 0,   n_v = B Area / Φ0",
+      "credit": "A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. The plate is imaginary-time Ginzburg-Landau in a uniform B, Landau gauge.",
+      "blurb": "A superconductor that cannot stand a magnetic field was the story. Type II lets the field in as a hexagonal lattice of tubes, each a quantum of flux, and still superconducts around them. The plate is |ψ|. The status line reports the number of zeros against B Area / Φ0.",
+      "order": 59,
+      "seed": "",
+      "presets": [
+        "hex",
+        "few",
+        "dense",
+        "type1",
+        "log",
+        "quiet"
+      ],
+      "vectors": false
+    },
+    {
       "id": "nematic",
       "name": "Active Nematics",
       "subtitle": "self-driven rods, ±½ defects and active turbulence · 2012",
@@ -843,6 +1231,25 @@
         "mix",
         "quiescent",
         "turbulentLIC"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "darkroom",
+      "name": "Dark Room",
+      "subtitle": "a polygonal room that a candle cannot fill · 1995",
+      "equation": "billiard in a polygon,   ∃ p,q: no reflected ray from p meets q",
+      "credit": "G. W. Tokarsky, Amer. Math. Monthly 102, 867 (1995), built a polygonal room with two points that do not illuminate each other via mirrored walls. Penrose (1958) had a smooth unilluminable room with elliptical pockets. The plate traces billiard rays from a source; a marked vertex stays dark in the Tokarsky geometry and lights up in a rectangle.",
+      "blurb": "Every corner of a mirrored room should catch the candle, said the folklore. Tokarsky drew a polygon where two points never see each other, no matter how many bounces. The plate is the illumination density. The status line reports hits in a window around the dark vertex against 0 for Tokarsky and many for a rectangle.",
+      "order": 60,
+      "seed": "",
+      "presets": [
+        "dark",
+        "L",
+        "rect",
+        "many",
+        "short",
+        "log"
       ],
       "vectors": false
     },
@@ -888,6 +1295,25 @@
       "vectors": false
     },
     {
+      "id": "kakeya",
+      "name": "Kakeya",
+      "subtitle": "a needle rotated in arbitrarily small area · 1919",
+      "equation": "K_ε ⊃ a unit segment in every direction,   |K_ε| → 0 as ε → 0",
+      "credit": "S. Kakeya asked in 1917 for the smallest set in which a unit needle can be rotated. Besicovitch (1919/1928) showed the infimum of the area is zero: a Perron tree of overlapping triangles contains a unit segment in a dense set of directions and can be made as thin as one likes. The plate is a finite Perron-like union, not the infinite construction.",
+      "blurb": "To turn a needle through every angle you would think you need a disk of area π/4. Besicovitch built a set of area as small as you please that still contains a unit segment in every direction. The plate is a finite sprouting of those needles, packed so they share area. The status line reports occupied fraction against π/4 for a spinning disk.",
+      "order": 61,
+      "seed": "",
+      "presets": [
+        "tree",
+        "sparse",
+        "packed",
+        "fat",
+        "log",
+        "fine"
+      ],
+      "vectors": false
+    },
+    {
       "id": "ks",
       "name": "Kuramoto–Sivashinsky",
       "subtitle": "cellular flame chaos · 1977",
@@ -902,6 +1328,25 @@
         "quiet",
         "storm",
         "ink"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "breather",
+      "name": "SG Breather",
+      "subtitle": "a lump that oscillates and never radiates · 1962",
+      "equation": "u_tt − u_xx + sin u = 0,   u = 4 arctan[ (β/α) sin(α t) sech(β x) ],   α²+β² = 1",
+      "credit": "The sine-Gordon breather is an exact, time-periodic, spatially localised solution; see Seeger, Donth and Kochendörfer (1953) and the inverse-scattering account of Faddeev and Takhtajan. Linear waves radiate. This one does not: the envelope sech(β x) holds a bound oscillation forever. The plate is spacetime of u.",
+      "blurb": "A lump of field that rings in place and never sheds a wave. Linear PDEs cannot do this; sine-Gordon can, because the oscillation sits below the phonon band. The plate is that spacetime. The status line reports energy outside a window of width 6/β against the total, which should stay near 0.",
+      "order": 62,
+      "seed": "",
+      "presets": [
+        "live",
+        "tight",
+        "wide",
+        "late",
+        "log",
+        "peak"
       ],
       "vectors": false
     },
@@ -946,6 +1391,44 @@
       "vectors": false
     },
     {
+      "id": "klein",
+      "name": "Klein Tunnel",
+      "subtitle": "a barrier a Dirac electron does not notice · 1929 / 2006",
+      "equation": "H = v_F σ · p + V(x),   T(θ=0) = 1  (massless)",
+      "credit": "O. Klein, Z. Phys. 53, 157 (1929), found that a relativistic electron can pass a tall barrier as if it were not there. Katsnelson, Novoselov and Geim, Nature Phys. 2, 620 (2006), showed the same for graphene at normal incidence: chirality forbids backscattering. The plate is |ψ|² of a 2-component Dirac wave on a line, stacked in time, not a carbon lattice.",
+      "blurb": "A wall that a Schrödinger particle would bounce from, a massless Dirac particle walks through. At head-on incidence the transmission is 1 for any height and any width; only an angle can reflect it. The plate is spacetime of |ψ|² with the barrier marked. The status line reports transmitted over incident against 1 at θ = 0.",
+      "order": 63,
+      "seed": "",
+      "presets": [
+        "normal",
+        "angle",
+        "thick",
+        "grazing",
+        "weak",
+        "log"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "gyroid",
+      "name": "Gyroid",
+      "subtitle": "a sponge of zero mean curvature · 1970",
+      "equation": "sin x cos y + sin y cos z + sin z cos x = 0,   H = 0",
+      "credit": "A. H. Schoen, NASA Technical Note D-5541 (1970), found the gyroid, a triply periodic minimal surface of genus 3 in the cubic cell, with no embedded straight lines. Its mean curvature vanishes. Butterfly-wing scales and block-copolymer melts later grew it for free. The plate is a 2-D slice of the level set, not a 3-D print.",
+      "blurb": "A surface that divides space into two congruent labyrinths and has mean curvature zero everywhere: a minimal sponge. It should not exist in a cubic lattice without straight lines, and then Schoen wrote it down. The plate is one slice. The status line reports mean |H| on the level set against 0.",
+      "order": 64,
+      "seed": "",
+      "presets": [
+        "slice",
+        "field",
+        "dense",
+        "abs",
+        "shift",
+        "iso"
+      ],
+      "vectors": false
+    },
+    {
       "id": "dendrite",
       "name": "Dendritic Growth",
       "subtitle": "phase-field solidification: snowflakes and metal dendrites · 1993",
@@ -963,6 +1446,82 @@
         "halo",
         "slow",
         "forest"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "purcell",
+      "name": "Purcell Swimmer",
+      "subtitle": "a scallop cannot swim in molasses · 1977",
+      "equation": "Re → 0,   scallop theorem: a reciprocal gait gives Δx = 0,   three-link square gait: Δx ≠ 0",
+      "credit": "E. M. Purcell, Am. J. Phys. 45, 3 (1977), \"Life at low Reynolds number.\" Time-reversible stroking (a scallop) produces no net motion in Stokes flow. A three-link swimmer that traces a loop in shape space does. The plate is the trail of that gait, not a bacterium.",
+      "blurb": "In molasses, inertia is gone and a scallop opening and closing gets nowhere: the movie played backwards is a valid swimming stroke, so the net displacement must vanish. Add a third link, trace a square in joint space, and the animal crawls. The status line reports |Δx| per cycle against 0 for the scallop.",
+      "order": 65,
+      "seed": "",
+      "presets": [
+        "swim",
+        "scallop",
+        "big",
+        "many",
+        "tiny",
+        "log"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "exceptional",
+      "name": "Exceptional Point",
+      "subtitle": "two eigenvectors become one · 1998",
+      "equation": "H = [[iγ, κ],[κ, −iγ]],   λ = ±√(κ²−γ²),   EP at γ = κ",
+      "credit": "C. M. Bender and S. Boettcher, Phys. Rev. Lett. 80, 5243 (1998), on PT-symmetric spectra; Heiss (2004) and many others on exceptional points, where both eigenvalues and eigenvectors coalesce. Hermitian matrices cannot do this. The plate is Re λ (and the gap) over the (κ, γ) plane, or the two modes of one dimer.",
+      "blurb": "Hermitian levels may cross, but their eigenvectors stay independent. At an exceptional point the matrix is not diagonalisable: the two eigenvalues meet and the two eigenvectors become one. Past it the spectrum goes complex and PT is broken. The status line reports |λ+ − λ−| against 0 at γ = κ.",
+      "order": 66,
+      "seed": "",
+      "presets": [
+        "ep",
+        "broken",
+        "exact",
+        "gap",
+        "near",
+        "far"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "meissner",
+      "name": "Meissner",
+      "subtitle": "a field a perfect conductor would have frozen, expelled · 1933",
+      "equation": "∇²B = B/λ²,   B(r) = B0 I0(r/λ) / I0(R/λ)   (cylinder)",
+      "credit": "W. Meissner and R. Ochsenfeld, Naturwissenschaften 21, 787 (1933). A perfect conductor would freeze the flux it was born with. A superconductor expels it. The London brothers (1935) wrote ∇²B = B/λ². The plate is a Jacobi relax of that Helmholtz problem on a disk.",
+      "blurb": "Cool a metal in a field and a perfect conductor would trap that field forever. A superconductor kicks it out. That is the Meissner effect, and it is why superconductivity is not just infinite conductivity. The plate is B. The status line reports B at the centre against 1/I0(R/λ).",
+      "order": 67,
+      "seed": "",
+      "presets": [
+        "expel",
+        "thin",
+        "deep",
+        "log",
+        "small",
+        "tight"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "tennis",
+      "name": "Tennis Racket",
+      "subtitle": "the intermediate axis that will not spin · 1834 / 1991",
+      "equation": "I1 ω1' = (I2−I3) ω2 ω3  (cyc.),   I1 < I2 < I3,   ω2 flips",
+      "credit": "L. Poinsot (1834) drew the polhode. The tennis-racket (or intermediate-axis) theorem says a rotation about the middle principal axis is unstable. V. Dzhanibekov saw a wingnut flip in free fall in 1985; video from 1991 made it famous. The plate is spacetime of the body-frame ω, with the middle component across the page.",
+      "blurb": "Spin a racket about the handle, or about the face: it holds. Spin it about the remaining axis and it flips, over and over, for no dissipation at all. The plate is that polhode as spacetime. The status line reports how many times ω2 changed sign, against 0 for a stable axis.",
+      "order": 68,
+      "seed": "",
+      "presets": [
+        "flip",
+        "stable1",
+        "wild",
+        "slow",
+        "log",
+        "racket"
       ],
       "vectors": false
     },
@@ -1114,6 +1673,25 @@
       "vectors": false
     },
     {
+      "id": "airy",
+      "name": "Airy Beam",
+      "subtitle": "a wave packet that accelerates with no force · 1979",
+      "equation": "ψ(x,z) = Ai(x − z²/4 + i a) exp(a x − a z²/2 + i(x z/2 − z³/12)),   x_peak = z²/4",
+      "credit": "M. V. Berry and N. L. Balazs, Am. J. Phys. 47, 264 (1979). A free Schrödinger (or paraxial Helmholtz) packet is not supposed to accelerate: there is no force. The Airy packet does, its intensity maximum riding the parabola x = z²/4, a consequence of the linear potential in the Airy ODE rather than of a force in the wave equation. Siviloglou, Broky, Dogariu and Christodoulides, Phys. Rev. Lett. 99, 213901 (2007), flew one in the lab. The plate is the exact finite-energy Airy beam, not a cannonball.",
+      "blurb": "A wave in empty space that turns a corner. Nothing pushes it. The intensity maximum of an Airy packet rides a parabola, the same curve a thrown stone would, because Airy's equation secretly contains a linear potential. Finite energy (a > 0) keeps it square-integrable; the bend remains. The status line reports the tracked peak against z²/4.",
+      "order": 91,
+      "seed": "",
+      "presets": [
+        "fly",
+        "caustic",
+        "tight",
+        "wide",
+        "phase",
+        "log"
+      ],
+      "vectors": false
+    },
+    {
       "id": "chirikov",
       "name": "Chirikov map",
       "subtitle": "standard map · KAM islands in a chaotic sea · 1969",
@@ -1149,6 +1727,25 @@
       "vectors": false
     },
     {
+      "id": "weierstrass",
+      "name": "Weierstrass",
+      "subtitle": "a curve with no tangent anywhere · 1872",
+      "equation": "W(x) = Σ_{n=0}^∞ a^n cos(b^n π x),   0<a<1,   ab > 1 + 3π/2  ⇒  nowhere differentiable",
+      "credit": "K. Weierstrass, presented to the Prussian Academy in 1872 (published 1875). Analysts had assumed a continuous function was differentiable except at isolated points; Weierstrass wrote a Fourier series that is continuous everywhere and differentiable nowhere. Hardy (1916) weakened the condition to ab ≥ 1. The plate is a finite truncation of that series, in one and two dimensions.",
+      "blurb": "A curve you can draw without lifting the pen, that has no tangent at any point. Nineteenth-century analysis said that could not happen. Weierstrass wrote the series anyway. Zoom in: the wiggles never stop, they just change scale. The status line reports the increment ratio |ΔW|/|Δx| at one pixel against ten, which refuses to settle.",
+      "order": 92,
+      "seed": "",
+      "presets": [
+        "classic",
+        "graph",
+        "rough",
+        "mild",
+        "wild",
+        "log"
+      ],
+      "vectors": false
+    },
+    {
       "id": "scars",
       "name": "Helmholtz scars",
       "subtitle": "stadium and cardioid eigenmodes · Heller 1984",
@@ -1167,6 +1764,25 @@
       "vectors": false
     },
     {
+      "id": "kitaev",
+      "name": "Kitaev Chain",
+      "subtitle": "a fermion that is its own antiparticle, stuck to the ends · 2001",
+      "equation": "H = −μ Σ c†c − t Σ (c†_i c_{i+1}+h.c.) + Δ Σ (c_i c_{i+1}+h.c.),   |μ|<2t ⇒ unpaired γ_L, γ_R",
+      "credit": "A. Yu. Kitaev, Phys.-Usp. 44, 131 (2001). A 1D p-wave superconductor hosts two Majorana operators, one at each end, that together make a single nonlocal fermion. They sit at zero energy, inside the gap, and are their own antiparticles. The plate is the near-zero BdG mode of a finite chain, obtained by imaginary-time relaxation of the Nambu Hamiltonian.",
+      "blurb": "A particle that is its own antiparticle was a curiosity of Dirac's algebra until Kitaev put two of them on the ends of a wire, where they cannot pair up. They are Majorana zero modes: half a fermion each, nonlocal, and the reason a topological qubit might exist. Close the chemical potential past 2t and they dissolve into the bulk. The status line reports the weight of the mid-gap mode on the last tenth of the sites.",
+      "order": 93,
+      "seed": "",
+      "presets": [
+        "majorana",
+        "triv",
+        "deep",
+        "crit",
+        "log",
+        "weak"
+      ],
+      "vectors": false
+    },
+    {
       "id": "caustics",
       "name": "Optical caustics",
       "subtitle": "folds and cusps of a light field · Berry",
@@ -1180,6 +1796,44 @@
         "silk",
         "cusp",
         "fine"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "veselago",
+      "name": "Veselago Lens",
+      "subtitle": "a slab that focuses because n is negative · 1968",
+      "equation": "n₁ sin θ₁ = n₂ sin θ₂,   n₂ = −1  ⇒  θ₂ = −θ₁,   image at 2L − d",
+      "credit": "V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968), asked what optics would do if ε and μ were both negative: a left-handed medium, a reversed Doppler shift, and a slab that acts as a lens. Pendry, Phys. Rev. Lett. 85, 3966 (2000), showed the same slab can amplify evanescent waves and beat the diffraction limit. The plate traces geometric rays through n < 0, not a fabricated metamaterial.",
+      "blurb": "Light is not supposed to bend the wrong way at an interface. Give the slab a negative index and Snell's law says it must. A source in front of n = −1 focuses inside the slab and again behind it, as if the slab were a lens with no curved surface. The status line reports the brightest point behind the slab against 2L − d.",
+      "order": 94,
+      "seed": "",
+      "presets": [
+        "perfect",
+        "shallow",
+        "deep",
+        "n12",
+        "many",
+        "log"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "devil",
+      "name": "Devil's Staircase",
+      "subtitle": "a staircase constant almost everywhere that still climbs · 1965",
+      "equation": "θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil's staircase)",
+      "credit": "V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), on the tongues of a driven oscillator; the circle map is the standard example. At K = 1 the rotation number as a function of Ω is a devil's staircase: constant on a fat Cantor set of locked intervals (the Farey sequence of p/q), yet strictly increasing. B. B. Mandelbrot named the staircase. The plate is ρ(Ω, K) or ρ(Ω) itself.",
+      "blurb": "A function that is locally constant on a set of positive measure, and still manages to climb from 0 to 1. The locked plateaux are the p/q resonances, the steps between them are chaotic or quasiperiodic according to K. Poincaré said a generic driven oscillator should lock; Arnold drew the tongues. The status line reports the width of the 1/2 tongue against the Bessel formula at small K.",
+      "order": 95,
+      "seed": "",
+      "presets": [
+        "tongues",
+        "stair",
+        "sub",
+        "super",
+        "orbit",
+        "golden"
       ],
       "vectors": false
     },
@@ -1221,6 +1875,44 @@
       "vectors": false
     },
     {
+      "id": "loschmidt",
+      "name": "Loschmidt Echo",
+      "subtitle": "a gas that unmixes when you flip every arrow · 1876",
+      "equation": "x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1",
+      "credit": "J. Loschmidt, Sitzungsber. Kais. Akad. Wiss. Wien 73, 128 (1876), objected to Boltzmann: reverse every velocity and the entropy decrease is as lawful as the increase. The objection is correct for a finite isolated system; the catch is the exponential sensitivity that makes the reversal unprepareable. The plate is non-interacting tracers on a ring, reversed on cue, so the echo is exact and visible.",
+      "blurb": "Mix a gas, then flip every velocity. The movie of mixing, played backwards, is a valid trajectory of Newton's laws, so the gas unmixes. Boltzmann's H-theorem looks violated; it is not, because the reversed state is one of measure zero. The plate is that movie as spacetime. The status line reports overlap with the initial condition at the end of the echo, against 1.",
+      "order": 96,
+      "seed": "",
+      "presets": [
+        "echo",
+        "late",
+        "early",
+        "many",
+        "mix",
+        "log"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "boy",
+      "name": "Boy's Surface",
+      "subtitle": "a projective plane sewn into R³ · 1901",
+      "equation": "Bryant–Kusner immersion RP² ↪ R³,   one triple point,   no boundary",
+      "credit": "W. Boy, Math. Ann. 57, 151 (1903), constructed an immersion of the real projective plane in three-space at Hilbert's request; RP² is non-orientable and was not supposed to sit in R³ without a boundary. R. Bryant and R. Kusner (1980s) gave the smooth parametrisation used here. The plate is a z-buffer density of that immersion, not a glass model.",
+      "blurb": "A closed surface with only one side and no edge, sitting in ordinary space. Hilbert asked his student to prove it could not be done; Boy did it instead. The surface crosses itself in a triple point and three loops. The plate is that immersion, seen from one angle. The status line reports how many pixels the projection covers against a sphere of the same radius.",
+      "order": 97,
+      "seed": "",
+      "presets": [
+        "boy",
+        "height",
+        "dense",
+        "param",
+        "side",
+        "log"
+      ],
+      "vectors": false
+    },
+    {
       "id": "pearls",
       "name": "Indra's Pearls",
       "subtitle": "Schottky limit set · Mumford–Series–Wright",
@@ -1258,6 +1950,25 @@
       "vectors": false
     },
     {
+      "id": "thouless",
+      "name": "Thouless Pump",
+      "subtitle": "a clock that pumps a whole electron per turn · 1983",
+      "equation": "P(φ) = (1/2π) ∮ A(k,φ) dk,   ΔP over a cycle = C₁ ∈ ℤ",
+      "credit": "D. J. Thouless, Phys. Rev. B 27, 6083 (1983). An adiabatic cycle of a 1D insulator pumps a quantized charge equal to the Chern number of the (k, t) torus. Rice and Mele (1982) wrote the two-band lattice that makes the winding visible. The plate is the occupied-band density versus cycle angle; the centre of mass walks one cell when the loop in (u, v, δ) encloses the origin, and stands still when it does not.",
+      "blurb": "A closed cycle in parameter space that returns every hopping to itself, and yet a whole electron has moved by one cell. The amount is an integer, a Chern number, so disorder cannot change it by a little. Run the same cycle the other way around the degeneracy and nothing moves. The status line reports ΔP against 1 for the topological loop and 0 for the trivial one.",
+      "order": 98,
+      "seed": "",
+      "presets": [
+        "pump",
+        "triv",
+        "fat",
+        "thin",
+        "log",
+        "mid"
+      ],
+      "vectors": false
+    },
+    {
       "id": "convection",
       "name": "Rayleigh–Bénard",
       "subtitle": "heated from below · 1900",
@@ -1274,6 +1985,44 @@
         "schlieren",
         "vorticity",
         "oneplume"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "reuleaux",
+      "name": "Reuleaux",
+      "subtitle": "a non-circle of constant width · 1875",
+      "equation": "width(θ) = R  for all θ,   W ≠ a disk,   area = ½(π − √3) R²",
+      "credit": "F. Reuleaux, The Kinematics of Machinery (1875), described the curved triangle of constant width now named for him. Euler had already noted constant-width bodies; a wheel does not have to be a circle to keep its axle at constant height. The same shape, rotated in a square, drills a hole that is almost square. The plate is the rolling body and the width rose, which theory says is a circle.",
+      "blurb": "A wheel does not have to be round. A Reuleaux triangle has the same width in every direction, so it rolls between two rails at constant height, and yet it is not a disk. Watts used it; Harry Watts (no relation) used it to drill square holes. The status line reports the standard deviation of the support width against 0.",
+      "order": 99,
+      "seed": "",
+      "presets": [
+        "roll",
+        "shape",
+        "rose",
+        "fat",
+        "many",
+        "log"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "apollonian",
+      "name": "Apollonian",
+      "subtitle": "infinite circles, integer curvatures, zero leftover · 1643",
+      "equation": "k₄ = k₁+k₂+k₃ ± 2√(k₁k₂+k₁k₃+k₂k₃)   (Descartes),   k ∈ ℤ if the seeds are",
+      "credit": "Descartes' circle theorem (1643, in a letter to Princess Elisabeth of the Palatinate) gives the fourth curvature from three mutually tangent circles. The Apollonian gasket iterates that packing to infinity. Soddy (1936) wrote the poem; Graham, Lagarias, Mallows, Wilks and Yan (2003) proved the integer curvatures are a well-defined subset of the integers. The plate is a finite generation of the packing inside a disk of curvature −1.",
+      "blurb": "Four mutually tangent circles determine a fifth, and a sixth, without end. Start with integer curvatures and every new circle has an integer curvature too. The leftover area goes to zero; the gasket has Hausdorff dimension about 1.306. The status line reports the residual unfilled fraction against 0, and whether every curvature on the plate is an integer.",
+      "order": 100,
+      "seed": "",
+      "presets": [
+        "gasket",
+        "k",
+        "deep",
+        "coarse",
+        "fill",
+        "log"
       ],
       "vectors": false
     },
@@ -1297,6 +2046,63 @@
         "ink"
       ],
       "vectors": true
+    },
+    {
+      "id": "knotlight",
+      "name": "Knotted Light",
+      "subtitle": "a trefoil of darkness, an open book, a bark with no tangent · 2001 / this plate",
+      "equation": "ψ = (x+iy)³ − (z−ia)²,   zeros ≃ (2,3) torus knot;   pages = arg ψ;   bark = Σ α^n cos(β^n s)",
+      "credit": "The polynomial whose zeros are a trefoil in R³ is M. V. Berry and M. R. Dennis, Proc. R. Soc. A 457, 2251 (2001); J. Leach, M. R. Dennis, J. Courtial and M. J. Padgett flew a knotted optical vortex in Nature 432, 165 (2004). The open-book fibration of the trefoil singularity is J. Milnor, Singular Points of Complex Hypersurfaces, 1968. The bark is Weierstrass, 1872. No paper draws the three on one seed. That arrangement, and this print, are the artifact; the science is not a claim.",
+      "blurb": "A wave is not supposed to go dark along a knot. Berry and Dennis wrote a polynomial whose zeros are a trefoil; Padgett's group hung that darkness in the lab. Around it the argument of the same polynomial is Milnor's open book: pages that close on the binding. The bark of the filament is a Weierstrass series, a curve with no tangent, which no paper put on this knot. The plate is the three together. The status line reports |ψ| on the algebraic trefoil against the bulk, which theory says is 0.",
+      "order": 101,
+      "seed": "",
+      "presets": [
+        "weave",
+        "filament",
+        "pages",
+        "phase",
+        "tight",
+        "smooth"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "hendrick",
+      "name": "Hendrick",
+      "subtitle": "a sea that focuses its own light, and the light that writes the sea",
+      "equation": "∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/|det(I + s Hess h)|",
+      "credit": "The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class of experiments. The closed loop — a Swift–Hohenberg height acting as its own phase screen, the caustic writing that height — is not a paper. It is named Hendrick in this file because it did not exist until the plate did. No law is claimed; the coupling is the artifact.",
+      "blurb": "A patterned sea focuses light. The light heats the sea. The sea changes, and so does the focus. Each piece of that sentence is published. The sentence itself is not: Swift–Hohenberg never looked at its own caustic, and Berry’s map never wrote the height that made it. Close the loop and the folds lock to the crests. Open it (η = 0) and you have an ordinary pattern with an ordinary caustic sitting on top, uncorrelated. The status line reports corr(h, I), which the loop drives positive and the open system leaves near 0.",
+      "order": 102,
+      "seed": "",
+      "presets": [
+        "lock",
+        "open",
+        "silk",
+        "rolls",
+        "tight",
+        "over"
+      ],
+      "vectors": false
+    },
+    {
+      "id": "track",
+      "name": "Track",
+      "subtitle": "a breather that paves the index it runs on",
+      "equation": "φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1)",
+      "credit": "The sine-Gordon breather is exact; Seeger–Donth–Kochendörfer (1953), Faddeev–Takhtajan. A prescribed index n(x) is an inhomogeneous Josephson junction, which is a paper. Writing n from the breather’s own strain, so the lump lays the track it runs on, is not. Open loop (η = 0) must recover the Lorentz speed; the plate reports v_meas / v against 1, and exterior energy against 0. No law is claimed. The coupling is the artifact.",
+      "blurb": "A sine-Gordon breather is a lump that rings and never radiates. Give the medium an index n that the lump writes from its own strain, and the same exact solution is no longer exact: it paves a faster track and keeps its bound envelope, until you write too hard and it tears. The control is η = 0, where the measured speed has to match the Lorentz boost. The status line prints both numbers. If the open loop were wrong, the closed loop would not be a result.",
+      "order": 103,
+      "seed": "",
+      "presets": [
+        "pave",
+        "open",
+        "rest",
+        "hard",
+        "tight",
+        "torn"
+      ],
+      "vectors": false
     }
   ]
 }

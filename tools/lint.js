@@ -121,14 +121,15 @@ for (const m of mods) {
 const WORDS = { 49: 'Forty-nine', 50: 'Fifty', 51: 'Fifty-one', 52: 'Fifty-two', 53: 'Fifty-three', 54: 'Fifty-four',
   55: 'Fifty-five', 56: 'Fifty-six', 57: 'Fifty-seven', 58: 'Fifty-eight', 59: 'Fifty-nine', 60: 'Sixty', 61: 'Sixty-one',
   62: 'Sixty-two', 63: 'Sixty-three', 64: 'Sixty-four', 65: 'Sixty-five', 66: 'Sixty-six', 67: 'Sixty-seven',
-  68: 'Sixty-eight', 69: 'Sixty-nine', 70: 'Seventy' };
+  68: 'Sixty-eight', 69: 'Sixty-nine', 70: 'Seventy',
+  108: 'One hundred eight' };
 const spelled = WORDS[mods.length];
 const readme = fs.existsSync(path.join(root, 'README.md')) ? fs.readFileSync(path.join(root, 'README.md'), 'utf8') : '';
 for (const [label, text] of [['studio.html', src], ['README.md', readme]]) {
   if (!text) continue;
   // Only a spelled number that is actually counting techniques. Matching the word on its own
   // flagged a code comment about sixty-three animation loops, which is not a claim about anything.
-  const claims = [...text.matchAll(/\b((?:Forty|Fifty|Sixty|Seventy)(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?)\b(?=(?:\s+\w+){0,2}\s+(?:pattern-forming systems|sciences|techniques|tabs)\b)/gi)]
+  const claims = [...text.matchAll(/\b((?:One hundred eight)|(?:Forty|Fifty|Sixty|Seventy)(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?)\b(?=(?:\s+\w+){0,2}\s+(?:pattern-forming systems|sciences|techniques|tabs)\b)/gi)]
     .map(x => x[1]);
   for (const c of new Set(claims)) {
     if (spelled && c.toLowerCase() !== spelled.toLowerCase()) {

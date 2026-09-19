@@ -9,7 +9,7 @@ repository-code: "https://github.com/SharpMeow/GENChase"
 url: "https://github.com/SharpMeow/GENChase"
 license-url: "https://github.com/SharpMeow/GENChase/blob/main/LICENSE"
 abstract: >-
-  GENChase is one HTML file containing sixty-six pattern-forming systems from
+  GENChase is one HTML file containing one hundred eight pattern-forming systems from
   physics, chemistry, biology and mathematics, each implemented as a real
   simulation rather than as a style applied to noise. Every plate is
   deterministic from a seed, reconstructible from a URL hash, and exportable at
