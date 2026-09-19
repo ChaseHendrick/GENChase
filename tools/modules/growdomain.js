@@ -556,7 +556,7 @@
         hint: 'The plane costs the square of this and the time step falls as its square as well, so it is deliberately small.' },
       { group: 'Kinetics', key: 'kinetics', label: 'Kinetics', type: 'seg', kind: GEOM, wrap: true,
         options: [['sch', 'Schnakenberg'], ['gm', 'Gierer-Meinhardt']],
-        hint: 'Schnakenberg is the trimolecular scheme, nearly sinusoidal near onset and the one linear theory describes best. Gierer-Meinhardt is the activator-inhibitor pair, whose peaks sharpen into spikes and select a longer wavelength than linear theory predicts.' },
+        hint: 'Schnakenberg is the trimolecular scheme, nearly sinusoidal near onset and the one linear theory describes best. Gierer-Meinhardt is the activator-inhibitor pair, whose peaks sharpen into spikes and select a longer wavelength than linear theory predicts. Its spikes do not split either: they hold their positions while the gaps widen, and then a burst of new ones nucleates between them. The self-check prints the L interval its insertions cover for exactly that reason, because a fit through one burst is a statement about the burst and not about the run.' },
       RANGE('Kinetics', 'ka', 'Source a', GEOM, 0.01, 0.4, 0.005, f3),
       RANGE('Kinetics', 'kb', 'Source b', GEOM, 0.3, 1.6, 0.01, f2),
       RANGE('Kinetics', 'gam', 'Reaction strength γ', GEOM, 20, 200, 5, String, {
@@ -702,8 +702,9 @@
       let ringL = null;             // domain length at four earlier times, for the plane
       let rowsDone = 0, stepsDone = 0, timer = 0, building = false, pending = null;
       let lo = 0, hi = 1;           // measured black and white points of the field
-      let trace = [], measN = 0, measLabel = 'stripes', modeMN = null;
+      let trace = [], measN = 0, modeMN = null;
       let kStat = null, kSample = '', expStat = null, expSample = '', expVar = 'n', snaps = [];
+      let expRange = null;   // the L interval the exponent's points actually cover
 
       function stop() { clearTimeout(timer); timer = 0; }
 
@@ -807,10 +808,10 @@
       function measure() {
         trace = []; measN = 0; modeMN = null;
         kStat = null; expStat = null; kSample = ''; expSample = '';
+        expRange = null;
         if (P.plane) {
           if (!rowsDone) return;
           expVar = 'ρ';
-          measLabel = 'ring';
           modeMN = ringStat(SU, P.N);
           measN = modeMN.rho;
           const pts = snaps.filter(v => v.L > 0 && v.rho > 0);
@@ -835,10 +836,10 @@
           kSample = 'snapshots';
           expStat = fitSlope(pts.map(v => Math.log(v.L)), pts.map(v => Math.log(v.rho)));
           expSample = 'snapshots';
+          if (pts.length) expRange = [Math.min.apply(null, pts.map(v => v.L)), Math.max.apply(null, pts.map(v => v.L))];
           return;
         }
         expVar = 'n';
-        measLabel = 'stripes';
         // A count at every recorded row would be noise at the top, where the field is still the
         // uniform state plus a perturbation. Counting only once the pattern has an amplitude worth
         // the name keeps the trace honest about when the stripes actually exist.
@@ -936,6 +937,7 @@
         const dLogL = Math.log(P.Lend / P.L0) / Math.max(1, P.rows) / Math.sqrt(12);
         expStat = fitSlope(ins.map(g => Math.log(Math.max(1e-9, Lrow[g.row]))), ins.map(g => Math.log(g.n)), dLogL);
         expSample = 'insertions';
+        if (ins.length) expRange = [Lrow[ins[0].row], Lrow[ins[ins.length - 1].row]];
       }
 
       function status(extra) {
@@ -968,9 +970,23 @@
         // every comparison is in standard deviations; where no uncertainty can be formed, because
         // there are too few independent samples, that is said rather than papered over.
         let chk;
+        // The interval the fit's own points cover, printed beside the exponent because without it the
+        // number can be read as a statement about the whole run when it is not one. Gierer-Meinhardt
+        // is the case that forced this: its peaks do not split, they nucleate in a burst, so on the
+        // preset the three insertions land at L 10.3, 11.1 and 11.7 while the sheet runs from 3.3 to
+        // 20.0. The slope through them is 3.01 ± 0.10, which is the steepness of that one burst and
+        // not the rate at which the count tracks the domain over the run, and the residual standard
+        // error is small precisely because three points inside a burst lie almost on a line. The
+        // error bar is real and the sigma is the right one for it; what was missing was the leverage.
+        // Printing the interval next to the L 3.33 → 19.97 in the span above says in two numbers
+        // whether a fit spans the sheet or one event in it, and costs no judgement call about when to
+        // warn. Schnakenberg's default reads "over L 5.3-20.7" against a run of 2.58 to 20.66, which
+        // is the other answer to the same question.
+        const span = expRange && isFinite(expRange[0]) && isFinite(expRange[1])
+          ? ' over L ' + expRange[0].toFixed(1) + '-' + expRange[1].toFixed(1) : '';
         if (expStat && isFinite(expStat.a) && isFinite(expStat.se) && expStat.se > 0) {
           chk = expVar + ' ∝ L^<b>' + pm(expStat.a, expStat.se) + '</b>, ' + expStat.n + ' '
-            + expSample + (expStat.df <= 2 ? ' (' + expStat.df + ' d.f.)' : '')
+            + expSample + span + (expStat.df <= 2 ? ' (' + expStat.df + ' d.f.)' : '')
             + ', <b>' + devTxt(expStat.a, expStat.se, 1, expStat.df) + '</b> of 1';
         } else {
           chk = expVar + ' ∝ L not fitted, ' + (expStat ? expStat.n : 0) + ' '
