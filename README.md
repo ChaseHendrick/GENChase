@@ -180,6 +180,7 @@ If you are an agent:
 6. Discrete marks export as vectors. Accumulated density does not, and should not pretend to.
 7. Credit the paper. Do not claim the science. Do not relicense the source as MIT.
 8. The human’s images are theirs. The source is not.
+9. After the tab lands, `node tools/index.js` then `node tools/lint.js`. The catalog is generated; a hand-edited TECHNIQUES.md is a catalog that is already wrong. If the plate measures something, add a row to the self-check table rather than leaving it only in the generated list.
 
 ---
 
