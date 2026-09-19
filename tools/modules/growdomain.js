@@ -910,8 +910,12 @@
         // label is one word, the trace is the last four counts, and the reason for a large deviation
         // is three words pointing at the Growth hint, which has room for the sentence.
         host.setStatus(
-          '<span>' + MODE_LABEL[s.mode] + ' <b>' + P.N + '×' + (P.plane ? P.N : P.rows) +
-            '</b> · dt ' + P.dt.toExponential(1) + ', ' + P.bind + ' binds · step <b>' +
+          // "grid <w>×<h>" is load bearing, not decoration: tools/check.js reads the field size out of
+          // this text and samples the canvas at those cell centres to compute the neighbour
+          // correlation that catches an unstable integrator. Rename it and the detector silently
+          // stops running while the check still reports PASS.
+          '<span>grid <b>' + P.N + '×' + (P.plane ? P.N : P.rows) + '</b> ' + MODE_LABEL[s.mode] +
+            ' · dt ' + P.dt.toExponential(1) + ', ' + P.bind + ' binds · step <b>' +
             stepsDone.toLocaleString() + '</b></span>' +
           '<span>' + KIN_LABEL[P.K.kind] + ', ' + LAW_LABEL[s.law] + ' · ' + win +
             ' · L <b>' + P.L0.toFixed(2) + ' → ' + L.toFixed(2) + '</b></span>' +
