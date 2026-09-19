@@ -93,6 +93,77 @@ const { chromium } = require('playwright');
   t('Generate is on screen at 390', mobile.genTop >= 0 && mobile.genTop < mobile.innerH, mobile);
   t('More is available at 390', mobile.moreShown, mobile);
 
+  // leftover DESIGN-PLAN: gallery overlay, focus Exit, Find, export names the plate.
+  await p.setViewportSize({ width: 1400, height: 900 });
+  await p.waitForTimeout(300);
+
+  await p.evaluate(() => document.querySelector('#btn-gallery').click());
+  await p.waitForTimeout(200);
+  const galOpen = await p.evaluate(() => { const m = document.querySelector('#modal-gallery'); return m && !m.hidden; });
+  t('gallery opens', galOpen, galOpen);
+  await p.evaluate(() => document.querySelector('#modal-gallery').click());
+  await p.waitForTimeout(200);
+  const galClosed = await p.evaluate(() => { const m = document.querySelector('#modal-gallery'); return m && m.hidden; });
+  t('gallery overlay click closes', galClosed, galClosed);
+
+  await p.evaluate(() => document.querySelector('#btn-focus').click());
+  await p.waitForTimeout(200);
+  const focus = await p.evaluate(() => {
+    const app = document.querySelector('.app');
+    const exit = document.querySelector('#btn-exit-focus');
+    const stage = document.querySelector('#stage');
+    const er = exit && exit.getBoundingClientRect();
+    return {
+      on: app.classList.contains('focus'),
+      exitShown: !!(exit && !exit.hidden && getComputedStyle(exit).display !== 'none'),
+      exitOnScreen: !!(er && er.width > 0 && er.top >= 0 && er.right <= innerWidth + 1),
+      stageActive: document.activeElement === stage,
+    };
+  });
+  t('focus shows Exit on the plate', focus.on && focus.exitShown && focus.exitOnScreen, focus);
+  t('focus lands on the stage', focus.stageActive, focus);
+  await p.evaluate(() => document.querySelector('#btn-exit-focus').click());
+  await p.waitForTimeout(200);
+  const unfocus = await p.evaluate(() => ({
+    on: document.querySelector('.app').classList.contains('focus'),
+    back: document.activeElement && document.activeElement.id === 'btn-focus',
+  }));
+  t('Exit returns focus to the Focus button', !unfocus.on && unfocus.back, unfocus);
+
+  await p.evaluate(() => document.querySelector('#stage').click());
+  await p.waitForTimeout(80);
+  await p.keyboard.press('/');
+  await p.waitForTimeout(80);
+  const slashFind = await p.evaluate(() => document.activeElement && document.activeElement.id === 'find');
+  t('slash focuses Find', slashFind, slashFind);
+  const found = await p.evaluate(() => {
+    const find = document.querySelector('#find');
+    find.focus();
+    find.value = 'pentaplexity';
+    find.dispatchEvent(new Event('input', { bubbles: true }));
+    find.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    const tab = document.querySelector('.tab[aria-selected="true"]');
+    const visible = [...document.querySelectorAll('.tab[data-id]')].filter(b => !b.classList.contains('is-hidden')).map(b => b.dataset.id);
+    return { id: tab && tab.dataset.id, visible: visible.slice(0, 6), n: visible.length };
+  });
+  t('Find Enter jumps to a match', found.id === 'tilings' && found.visible.indexOf('tilings') >= 0, found);
+
+  const recHidden = await p.evaluate(() => {
+    const b = document.querySelector('#btn-record');
+    return !b || b.hidden;
+  });
+  t('Record stays hidden on a still plate', recHidden, recHidden);
+
+  const exp = await p.evaluate(() => {
+    document.querySelector('#btn-export').click();
+    const title = document.querySelector('#export-title').textContent;
+    return { title, hasDot: title.indexOf('·') >= 0, cancel: !!document.querySelector('#export-cancel') };
+  });
+  t('export names the technique and seed', exp.hasDot && exp.title.length > 3, exp);
+  t('export sheet has a Cancel button', exp.cancel, exp);
+  await p.keyboard.press('Escape');
+  await p.waitForTimeout(200);
+
   console.log('pageerrors:', errs.length? errs.slice(0,3): 'none');
   await b.close();
   console.log(fail? 'UI CHECK FAILED: '+fail : 'UI CHECK OK');

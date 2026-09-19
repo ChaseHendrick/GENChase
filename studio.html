@@ -416,6 +416,18 @@
   .stage { position: relative; background: var(--stage); display: grid; place-items: center; padding-block: 28px; padding-inline: 28px; min-height: 0; overflow: hidden; }
   .stage canvas.art { display: block; max-width: 100%; max-height: 100%; box-shadow: var(--shadow); grid-area: 1 / 1; }
   .stage canvas.art.pokeable { cursor: crosshair; touch-action: none; user-select: none; }
+  .stage canvas.art.pokeable:focus { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .poke-aim {
+    position: absolute; width: 18px; height: 18px; margin: -9px 0 0 -9px;
+    pointer-events: none; z-index: 3; display: none;
+    border: 1.5px solid var(--accent); border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--panel);
+  }
+  .poke-aim.on { display: block; }
+  #btn-exit-focus { display: none; }
+  .app.focus #btn-exit-focus {
+    display: inline-flex; position: absolute; top: 14px; right: 14px; z-index: 6;
+  }
   .status {
     position: absolute; left: 16px; bottom: 12px; font-family: "Geist Mono", ui-monospace, monospace; font-size: 11px; color: var(--muted);
     letter-spacing: 0.02em; display: flex; gap: 16px; font-variant-numeric: tabular-nums; flex-wrap: wrap;
@@ -764,7 +776,9 @@
 
   <div class="main" id="main">
     <aside class="side" id="side"></aside>
-    <section class="stage" id="stage">
+    <section class="stage" id="stage" tabindex="-1">
+      <button class="btn" id="btn-exit-focus" type="button" hidden title="Leave focus mode (Esc or F)">Exit</button>
+      <div class="poke-aim" id="poke-aim" hidden aria-hidden="true"></div>
       <figure class="sheet" id="sheet">
         <figcaption class="colo-preview" id="colo-preview" hidden>
           <div class="colo-kicker">Printed colophon · included on the PNG and on File → Print</div>
@@ -852,9 +866,10 @@
           <tr><td><kbd>L</kbd></td><td>Copy a link to this exact plate</td></tr>
           <tr><td><kbd>B</kbd> / <kbd>G</kbd></td><td>Save to gallery / open gallery</td></tr>
           <tr><td><kbd>Z</kbd> / <kbd>R</kbd></td><td>Undo / reset this technique</td></tr>
-          <tr><td><kbd>H</kbd> / <kbd>F</kbd> / <kbd>A</kbd></td><td>Timeline / focus / ambient</td></tr>
+          <tr><td><kbd>H</kbd> / <kbd>F</kbd> / <kbd>A</kbd></td><td>Timeline / focus / ambient. In focus, Exit or Esc restores the chrome</td></tr>
           <tr><td><kbd>/</kbd></td><td>Find a technique</td></tr>
-          <tr><td><kbd>P</kbd> / <kbd>V</kbd> / <kbd>W</kbd></td><td>Pause / record / witness</td></tr>
+          <tr><td><kbd>P</kbd> / <kbd>V</kbd> / <kbd>W</kbd></td><td>Pause / record a Live plate / witness</td></tr>
+          <tr><td>Arrows / <kbd>Enter</kbd></td><td>On a pokeable plate: move a crosshair, Enter disturbs. Shift+arrow drags</td></tr>
           <tr><td><kbd>?</kbd></td><td>This list</td></tr>
         </tbody>
       </table>
@@ -997,6 +1012,7 @@
         <a class="btn primary" id="export-download" download hidden>Download PNG</a>
         <button class="btn primary" id="export-save" type="button" hidden>Save PNG</button>
         <a class="btn primary" id="export-svg" download hidden>Download SVG</a>
+        <button class="btn" id="export-cancel" type="button" hidden>Cancel</button>
       </div>
     </div>
   </div>
@@ -1457,7 +1473,7 @@ void main(){
   ================================================================ */
   const modules = [];          // registration order = tab order
   const byId = {};
-  const S = window.Studio = { util, gl: glh, PALETTES, generatePalette, register, boot, modules: byId };
+  const S = window.Studio = { util, gl: glh, PALETTES, generatePalette, register, boot, modules: byId, exportJob: null };
 
   function register(mod) {
     if (!mod || !mod.id) throw new Error('Studio.register: module needs an id');
@@ -1914,8 +1930,16 @@ void main(){
     if (app) app.classList.toggle('focus', focusMode);
     const btn = $('btn-focus');
     if (btn) btn.setAttribute('aria-pressed', String(focusMode));
+    const exit = $('btn-exit-focus');
+    if (exit) exit.hidden = !focusMode;
     if (!focusMode && ambientOn) setAmbient(false);
     refit();
+    const stage = $('stage');
+    if (focusMode) {
+      if (stage) { try { stage.focus(); } catch (err) { /* ignore */ } }
+    } else if (btn) {
+      try { btn.focus(); } catch (err) { /* ignore */ }
+    }
   }
 
   /* ---- ambient mode: walk the tabs on a timer, a fresh seed each time ---- */
@@ -2055,6 +2079,14 @@ void main(){
     e.canvas.addEventListener('pointermove', onPokeMove);
     e.canvas.addEventListener('pointerup', onPokeUp);
     e.canvas.addEventListener('pointercancel', onPokeUp);
+    e.canvas.addEventListener('keydown', ev => onPokeKey(e, ev));
+    e.canvas.addEventListener('focus', () => {
+      pokeCursor = { x: 0.5, y: 0.5 };
+      if (e.inst && e.inst.disturb) placePokeAim(e.canvas, pokeCursor);
+      tickWitness(true);
+    });
+    e.canvas.addEventListener('blur', hidePokeAim);
+    e.canvas.tabIndex = -1;
     return e;
   }
 
@@ -2134,7 +2166,16 @@ void main(){
       .find(el => !el.hidden && !el.disabled && el.offsetParent !== null);
     if (first) { try { first.focus(); } catch (err) { /* nothing focusable yet */ } }
   }
+  function abortExportIfBusy() {
+    if (!exportBusy) return;
+    if (S.exportJob) S.exportJob.abort = true;
+    const cancel = $('export-cancel');
+    if (cancel) cancel.hidden = true;
+    const note = $('export-note');
+    if (note) note.textContent = 'Cancelling…';
+  }
   function closeModal(id) {
+    if (id === 'modal-export' || !id) abortExportIfBusy();
     const m = $(id);
     if (m) m.hidden = true;
     if (id === 'modal-more' || !id) {
@@ -2221,7 +2262,11 @@ void main(){
   }
   function markPokeable() {
     const e = instances[currentId];
-    if (e && e.canvas) e.canvas.classList.toggle('pokeable', !!(e.inst && e.inst.disturb));
+    if (!e || !e.canvas) return;
+    const poke = !!(e.inst && e.inst.disturb);
+    e.canvas.classList.toggle('pokeable', poke);
+    e.canvas.tabIndex = poke ? 0 : -1;
+    if (!poke) hidePokeAim();
   }
 
   /* ---- video capture: a clip of a living plate ---- */
@@ -2292,6 +2337,7 @@ void main(){
   function tickWitness(force) {
     const e = instances[currentId], badge = $('live-badge'), fpEl = $('live-fp'), hint = $('witness-hint');
     if (!e || !badge) return;
+    if (e.paused && !force) return;
     const fp = fingerprint(e.canvas);
     let changed = false;
     if (!lastFp) {
@@ -2312,7 +2358,12 @@ void main(){
     if (fpEl && fp) fpEl.textContent = fp.slice(-4);
     const poke = !!(e.inst && e.inst.disturb);
     // "Drag" is a mouse word; on a touch screen the gesture has a different name.
-    if (hint) hint.textContent = (liveNow && poke) ? (coarsePointer() ? 'Touch and drag to disturb' : 'Drag to disturb') : '';
+    const canvasFocused = !!(e.canvas && document.activeElement === e.canvas);
+    if (hint) {
+      hint.textContent = canvasFocused && poke
+        ? 'Arrows move the poke. Enter applies. Shift+arrow drags.'
+        : (liveNow && poke) ? (coarsePointer() ? 'Touch and drag to disturb' : 'Drag to disturb') : '';
+    }
     if (force) {
       pushWitnessFrame(e.canvas);
       stripAt = Date.now();
@@ -2371,6 +2422,42 @@ void main(){
     if (!dirty) return;
     snapshot('poke');
     scheduleHistory({ allowSameHash: true });
+  }
+  let pokeCursor = { x: 0.5, y: 0.5 };
+  function hidePokeAim() {
+    const aim = $('poke-aim');
+    if (aim) { aim.classList.remove('on'); aim.hidden = true; }
+  }
+  function placePokeAim(canvas, uv) {
+    const aim = $('poke-aim'); if (!aim || !canvas) return;
+    const stage = $('stage'); if (!stage) return;
+    const cr = canvas.getBoundingClientRect();
+    const sr = stage.getBoundingClientRect();
+    aim.hidden = false;
+    aim.classList.add('on');
+    aim.style.left = (cr.left - sr.left + uv.x * cr.width) + 'px';
+    aim.style.top = (cr.top - sr.top + uv.y * cr.height) + 'px';
+  }
+  function onPokeKey(e, ev) {
+    if (!e.inst || !e.inst.disturb) return;
+    const keys = { ArrowLeft: 1, ArrowRight: 1, ArrowUp: 1, ArrowDown: 1, Enter: 1 };
+    if (!keys[ev.key]) return;
+    ev.preventDefault();
+    const step = ev.shiftKey ? 0.02 : 0.05;
+    const prev = { x: pokeCursor.x, y: pokeCursor.y, yGL: 1 - pokeCursor.y };
+    if (ev.key === 'ArrowLeft') pokeCursor.x = util.clamp(pokeCursor.x - step, 0, 1);
+    else if (ev.key === 'ArrowRight') pokeCursor.x = util.clamp(pokeCursor.x + step, 0, 1);
+    else if (ev.key === 'ArrowUp') pokeCursor.y = util.clamp(pokeCursor.y - step, 0, 1);
+    else if (ev.key === 'ArrowDown') pokeCursor.y = util.clamp(pokeCursor.y + step, 0, 1);
+    const uv = { x: pokeCursor.x, y: pokeCursor.y, yGL: 1 - pokeCursor.y };
+    placePokeAim(e.canvas, uv);
+    if (ev.key === 'Enter' || ev.shiftKey) {
+      try { applyPoke(e, uv, ev.shiftKey && ev.key !== 'Enter' ? prev : null); } catch (err) { showError(err); }
+      snapshot('poke');
+      scheduleHistory({ allowSameHash: true });
+    }
+    const hint = $('witness-hint');
+    if (hint) hint.textContent = 'Arrows move the poke. Enter applies. Shift+arrow drags.';
   }
 
   const LIVE_CAP = 12;
@@ -2968,10 +3055,20 @@ void main(){
     const modal = $('modal-export'), img = $('export-img'), note = $('export-note'), dl = $('export-download'), save = $('export-save');
     const pnote = $('export-print');
     const svgBtn = $('export-svg');
+    const cancel = $('export-cancel');
+    const title = $('export-title');
+    if (title) title.textContent = (e.mod.name || e.mod.id) + ' · ' + (e.state.seed || '');
     if (svgBtn) svgBtn.hidden = true;
     img.hidden = true; dl.hidden = true; save.hidden = true;
+    if (cancel) cancel.hidden = false;
+    const job = {
+      abort: false,
+      started: Date.now(),
+      progress(msg) { if (!this.abort && note) note.textContent = msg; },
+    };
+    S.exportJob = job;
     note.textContent = 'Rendering ' + pw.toLocaleString() + ' × ' + ph.toLocaleString() + ' px (' + sp.mp.toFixed(0) + ' MP) at print resolution (not an upscale of the screen)…' +
-      (sp.mp > 45 ? ' A file this size takes a while and a lot of memory.' : '');
+      (sp.mp > 45 ? ' A file this size takes a while and a lot of memory. Cancel stops it.' : ' Cancel stops it.');
     note.classList.remove('err');
     pnote.hidden = false;
     const lay = colophon ? sheetLayout(sp) : null;
@@ -2984,9 +3081,18 @@ void main(){
         ? ' Requested ' + sp.dpi + ' ppi was clamped to this device\'s GPU texture limit (' + maxTexSize.toLocaleString() + ' px).'
         : ' Requested ' + sp.dpi + ' ppi was clamped to the largest file a browser can encode.') : '');
     openModal('modal-export');
-    await new Promise(r => setTimeout(r, 30));
-    if (colophon && document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (err) { /* metrics fall back */ } }
+    const tick = setInterval(() => {
+      if (!exportBusy || job.abort) return;
+      if (note && note.textContent.indexOf('Tile ') !== 0) {
+        const s = Math.round((Date.now() - job.started) / 1000);
+        if (s >= 2) job.progress('Rendering… ' + s + ' s. Cancel stops it.');
+      }
+    }, 400);
     try {
+      await new Promise(r => setTimeout(r, 30));
+      if (job.abort) throw new Error('cancelled');
+      if (colophon && document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (err) { /* metrics fall back */ } }
+      if (job.abort) throw new Error('cancelled');
       let ss = 1, blob = null, usedVector = false, svgBlob = null, fieldNote = '';
       if (e.inst.exportSVG) {
         try {
@@ -3054,7 +3160,9 @@ void main(){
           } finally { URL.revokeObjectURL(url); }
         }
       }
+      if (job.abort) throw new Error('cancelled');
       if (colophon) blob = await composeSheet(blob, e, sp);
+      if (job.abort) throw new Error('cancelled');
       if (lastUrl) URL.revokeObjectURL(lastUrl);
       lastBlob = blob; lastUrl = URL.createObjectURL(blob);
       lastName = 'genchase-' + e.mod.id + '-' + e.state.seed.replace(/[^a-z0-9_-]+/gi, '_') + '-' +
@@ -3072,11 +3180,21 @@ void main(){
         svgBtn.hidden = false;
       }
     } catch (err) {
-      console.error(err);
-      note.textContent = 'Export failed at this size (' + (err && err.message ? err.message.split('\n')[0] : err) + '). Try a smaller paper size or a lower ppi.';
-      note.classList.add('err');
+      const cancelled = (job && job.abort) || /cancell/i.test(String(err && err.message || err));
+      if (cancelled) {
+        note.textContent = 'Cancelled.';
+        note.classList.remove('err');
+        img.hidden = true;
+      } else {
+        console.error(err);
+        note.textContent = 'Export failed at this size (' + (err && err.message ? err.message.split('\n')[0] : err) + '). Try a smaller paper size or a lower ppi.';
+        note.classList.add('err');
+      }
     } finally {
+      clearInterval(tick);
       exportBusy = false;
+      if (S.exportJob === job) S.exportJob = null;
+      if (cancel) cancel.hidden = true;
     }
   }
   async function saveViaCapability() {
@@ -3268,8 +3386,12 @@ void main(){
     }
     $('btn-export').addEventListener('click', doExport);
     $('export-save').addEventListener('click', saveViaCapability);
+    const exportCancel = $('export-cancel');
+    if (exportCancel) exportCancel.addEventListener('click', abortExportIfBusy);
     $('export-close').addEventListener('click', () => { closeModal('modal-export'); });
     $('modal-export').addEventListener('click', ev => { if (ev.target === $('modal-export')) closeModal('modal-export'); });
+    const exitFocus = $('btn-exit-focus');
+    if (exitFocus) exitFocus.addEventListener('click', () => setFocus(false));
     // settings JSON
     $('btn-about').addEventListener('click', () => { openModal('modal-about'); });
     $('about-close').addEventListener('click', () => { closeModal('modal-about'); });
@@ -3302,6 +3424,7 @@ void main(){
     $('btn-gallery').addEventListener('click', openGallery);
     const galClose = $('gallery-close');
     if (galClose) galClose.addEventListener('click', () => { closeModal('modal-gallery'); });
+    $('modal-gallery').addEventListener('click', ev => { if (ev.target === $('modal-gallery')) closeModal('modal-gallery'); });
     $('btn-copy-link').addEventListener('click', async () => {
       writeHash();
       const url = location.href;
@@ -3495,7 +3618,17 @@ void main(){
     const lb = $('live-badge'); if (lb) lb.addEventListener('click', cycleWitness);
     applyPanelSide();
     renderHistory();
-    witnessClock = setInterval(() => { if (!document.hidden) tickWitness(); }, 400);
+    (function witnessLoop() {
+      const e = instances[currentId];
+      const delay = (e && e.paused) ? 2500 : ((!liveNow && stillMs >= 1600) ? 2500 : 400);
+      witnessClock = setTimeout(() => {
+        if (!document.hidden) {
+          const cur = instances[currentId];
+          if (!(cur && cur.paused)) tickWitness();
+        }
+        witnessLoop();
+      }, delay);
+    })();
     window.addEventListener('hashchange', () => { if (!hashSilent) applyHash(); });
     const framed = window.self !== window.top;
     const rec = !framed && parseHash();
@@ -19393,11 +19526,19 @@ void main(){
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
   const ASPECT_FIELD = { group: 'Frame', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] };
-  const TILE = 2048;             // largest tile side used for print exports
+  const TILE = 1024;             // largest tile side used for print exports; small enough that JS can run between tiles
   const MAX_SHEET = 268e6;       // largest pixel count a browser canvas will encode
 
   function hex01(hex) { const rgb = U.hexToRgb(hex || '#000000'); return [rgb[0] / 255, rgb[1] / 255, rgb[2] / 255]; }
   const yieldNow = () => new Promise(r => setTimeout(r, 0));
+  function exportAborted() {
+    const job = window.Studio && window.Studio.exportJob;
+    return !!(job && job.abort);
+  }
+  function exportProgress(msg) {
+    const job = window.Studio && window.Studio.exportJob;
+    if (job && typeof job.progress === 'function') job.progress(msg);
+  }
 
   // Shared GL start: context, float texture type and a dead stub when WebGL2 is missing.
   function glStart(host) {
@@ -19458,12 +19599,19 @@ void main(){
     const sheet = document.createElement('canvas');
     sheet.width = w; sheet.height = h;
     const ctx = sheet.getContext('2d');
+    const tilesX = Math.ceil(w / side), tilesY = Math.ceil(h / side);
+    const tiles = tilesX * tilesY;
+    let k = 0;
     for (let oy = 0; oy < h; oy += side) {
       for (let ox = 0; ox < w; ox += side) {
+        if (exportAborted()) throw new Error('cancelled');
+        k += 1;
+        exportProgress('Tile ' + k + ' of ' + tiles + ' (' + w.toLocaleString() + ' × ' + h.toLocaleString() + ' px). Cancel stops it.');
         const tw = Math.min(side, w - ox), th = Math.min(side, h - oy);
         const target = new G.Target(gl, tw, th, { type: 'rgba8', filter: 'nearest' });
         try {
           await drawTile(target, ox, oy);
+          if (exportAborted()) throw new Error('cancelled');
           const px = await readAsync(gl, target);
           const img = ctx.createImageData(tw, th);
           for (let y = 0; y < th; y++) img.data.set(px.subarray((th - 1 - y) * tw * 4, (th - y) * tw * 4), y * tw * 4);
@@ -20140,6 +20288,7 @@ void main(){
               pp.swap();
               let at = 0;
               for (let k = 0; k < n; k += 12) {
+                if (exportAborted()) throw new Error('cancelled');
                 at = integrate(pp, s, Math.min(12, n - k), at);
                 gl.finish();
                 await yieldNow();

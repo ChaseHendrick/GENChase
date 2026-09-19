@@ -19,7 +19,10 @@ const { chromium } = require('playwright');
 const NOISE = [/willReadFrequently/, /ERR_CERT_AUTHORITY_INVALID/, /ServiceWorkerRegistration/, /GL Driver Message.*Performance/];
 
 // Same standard the plate harness uses: alive as a broad tonal field, or as marks on a ground.
-const blank = m => !m.lum || ((m.lum.p99 - m.lum.p01) < 12 && !((m.lum.max - m.lum.min) >= 40 && m.lum.ink >= 0.004));
+// Downsampling a 2400 px line drawing to 400 px can collapse p99-p01 below 12 while the strokes
+// are still there (linedrawing: p99-p01 = 11, ink = 0.012). Ink fraction is the marks-on-a-ground
+// test and does not need a 40-level range after that downsample.
+const blank = m => !m.lum || ((m.lum.p99 - m.lum.p01) < 12 && m.lum.ink < 0.004);
 
 (async () => {
   const id = process.argv[2];
