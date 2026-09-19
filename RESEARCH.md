@@ -215,13 +215,13 @@ Familiarity is listed so you do not confuse it with prior-art status.
 | `crapper` | Crapper | occasional | software search | skip unless new source |
 | `hasimoto` | Hasimoto | occasional | software search | skip unless new source |
 | `lump` | Lump | occasional | software search | skip unless new source |
-| `hendrick` | Hendrick | unseen | identity | do not re-derive |
+| `hendrick` | Hendrick's Lock | unseen | identity | do not re-derive |
 
 ## Notes on the rows that are not `science only`
 
 ### Derived identity (the only physics claim that is not in the cited papers)
 
-**`hendrick` (Hendrick).** Derived lock: on Gamma=(1,1,-1/2), L=0, omega t_c = (2-cos^2 theta)/sin(2 theta), unique min sqrt(2) at tan theta=1/sqrt(2) (angles 22.5, 45, 112.5 deg). Collapse rate and spin are in Aref 2010 separately; the dimensionless product and its min are not in Gröbli 1877 or Aref 2010. Do not re-derive. Do not search "Hendrick vortex" as a published law. Off the L=0 circle the lock fails on purpose. Re-search: YES do not re-derive, do not re-search under this name.
+**`hendrick` (Hendrick's Lock).** Derived lock: on Gamma=(1,1,-1/2), L=0, omega t_c = (2-cos^2 theta)/sin(2 theta), unique min sqrt(2) at tan theta=1/sqrt(2) (angles 22.5, 45, 112.5 deg). Collapse rate and spin are in Aref 2010 separately; the dimensionless product and its min are not in Gröbli 1877 or Aref 2010. Do not re-derive. Do not search the tab name as if it were a published law. Off the L=0 circle the lock fails on purpose. Re-search: YES do not re-derive, do not re-search under this name.
 
 ### Published family plus a feedback term (not inventions)
 
@@ -294,7 +294,7 @@ Do these only if you need the answer. Do not do them to look busy.
 1. **Reopen `cortex`** if Observable, Shadertoy, or OpenProcessing actually load. That negative is explicitly weak.
 2. **The five editorial-unseen tabs** (`rotor`, `growdomain`, `lozenge`, `aubry`, `exceptional`) have never had a dedicated implementation search. Familiarity is not that search.
 3. **Every `science only` row** has no logged "browser plate?" search. Run one only when you are about to write a README bullet claiming software novelty for that tab.
-4. **arXiv / journals.** If those hosts are reachable, the Hendrick identity and the KP / Crapper / Hasimoto exact-solution plates are the first things to check against the PDF, not against a snippet.
+4. **arXiv / journals.** If those hosts are reachable, Hendrick's Lock and the KP / Crapper / Hasimoto exact-solution plates are the first things to check against the PDF, not against a snippet.
 5. **`tools/sharpall.sh`** is a measurement, not prior art, and it is stale. Redo before quoting sharpness counts.
 6. **fxhash / Art Blocks / OpenProcessing** as homes for lookalikes of the self-checking-plates claim. Unreachable in September 2026.
 
@@ -321,6 +321,16 @@ Opened: this repository (`README.md`, `techniques.json`, `AGENTS.md`)
 Blocked: none for this pass
 
 Conclusion: first ledger, so future agents do not re-run the September 2026 searches. No new search was performed this day.
+
+Re-search: n/a
+
+### 2026-09-19  `hendrick` renamed  query: (none)
+
+Opened: this repository
+
+Blocked: none
+
+Conclusion: display name is Hendrick's Lock. Hash `#hendrick` is unchanged.
 
 Re-search: n/a
 
