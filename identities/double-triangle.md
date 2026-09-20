@@ -1,5 +1,7 @@
 # Double-triangle spin–collapse bound
 
+See the [audit of all five candidates](NOVELTY-AUDIT.md): historical priority is unconfirmed for the earlier three results as well. The general polygon bound includes the parallelogram and double-triangle cases.
+
 **A proved formula and sharp bound; candidate fourth GENChase identity, with historical priority under investigation.** Derived in this project with AI assistance on 2026-09-20. The underlying two-ring collapse is classical (Aref 1982; Koiller et al. 1985), and is not claimed as new.
 
 Open `studio.html#double-triangle-bound/double-triangle`. The plate integrates all six point-vortex equations, compares the result with the formula, and offers a deliberately displaced-vortex control. The geometry name is a descriptive project label, not an established attribution.

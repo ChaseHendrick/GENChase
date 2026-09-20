@@ -6,6 +6,10 @@ Agents: read this file **before** a web search for "has this been done", "is thi
 
 The catalog of what the file actually contains is [`techniques.json`](techniques.json). Derived identities live in [`IDENTITIES.md`](IDENTITIES.md). This file is only about what was looked up, what was derived, and what was not.
 
+## Current novelty status
+
+The [2026-09-20 audit of all five candidates](identities/NOVELTY-AUDIT.md) supersedes earlier unqualified first-discovery or uniqueness assertions in this chronological ledger. All five have unconfirmed historical priority. Their families and the spin–collapse product are classical; the exact minima were not located in the sources inspected. The fifth contains the second and fourth. Old skip decisions and rejected-family claims below are historical search notes, not current novelty certifications.
+
 ## Do this, do not do that
 
 **Do**
@@ -936,3 +940,40 @@ Derived: x_n=(n+√(2n−1))/(n−1), K_n=(n−1)sinh((n+2)log(x_n)/2), and ω�
 Checks: 11,381 initial configurations across n=2..20, maximum relative product discrepancy 6.6e−13. Twelve integrated trajectories at displayed orders n=2..5, through 0.9t_c, maximum normalized error 1.8e−6. Square-minimum trajectory error 8.4e−11. Geometry/kernel controls miss. An exploratory n=6 near-endpoint trajectory exceeded tolerance, so interactive orders stop at 5; the theorem is not restricted by that numerical limit.
 
 Conclusion: a proved fifth candidate in the form of a generalization, with two squares as its next specialization. Do not count each polygon order as a separate discovery. No claim that the classical family or a new physical law was discovered. Next priority check remains full-text review for an equivalent optimized spiral-pitch bound.
+
+## 2026-09-20 audit of all five candidates
+
+Reopened at the user's explicit request to verify all five against the internet. This request supersedes historical skip instructions. Full findings and formula-by-formula verdicts: [identities/NOVELTY-AUDIT.md](identities/NOVELTY-AUDIT.md).
+
+Queries (literal representative strings; radical variants included):
+
+- `"Self-similar motion of three point vortices" Aref 2010 pdf`
+- `"Self-similar motions and related relative equilibria" Gotoda pdf`
+- `"Novikov" "Sedov" "Vortex collapse" pdf`
+- `"On Aref's vortex motions with a symmetry center" pdf`
+- `"On Aref's vortex motions" "11." "collapse"`
+- `"On Aref's vortex motions with a symmetry center" "60"`
+- `"On Aref's vortex motions with a symmetry center" "11.5"`
+- `"On Aref's vortex motions with a symmetry center" "minimum"`
+- `"Koiller" "Carvalho" "1985" "pdf" "vortex" -site:researchgate.net -site:citeseerx.ist.psu.edu`
+- `"Finite-time collapse of three point vortices in the plane" pdf Krishnamurthy Stremler`
+- `"Point vortex motions with a center of symmetry" Aref pdf`
+- `"vortex collapse" "minimum" "pitch"`
+- `"point vortices" "spiral pitch"`
+- `"vortex collapse" "angular velocity" "minimum"`
+- `"vortex collapse" "rotation rate" "ratio"`
+- `"vortex collapse" "winding" minimum`
+- `"vortex collapse" "sqrt(2)"`
+- `"vortex collapse" "22.5" OR "112.5"`
+- `"vortex" "collapse" "3√33" OR "sqrt{33}" OR "sqrt(33)"`
+- `"vortex" "collapse" "3√5" OR "sqrt{29}" OR "sqrt{322}"`
+- `"vortex" "collapse" "cos" "55" "9"`
+- `"vortex collapse" "3/16" "7"`
+- `"two rings" vortex collapse "minimum" pitch`
+- `"vortex collapse" "spin" "bound"`
+
+Access and comparison: downloaded full Novikov–Sedov 1979 journal PDF (5 pages), Aref 2010 Virginia Tech manuscript (12 pages), Gotoda arXiv:2002.09624 (22 pages), and Krishnamurthy–Stremler 2018 author postprint (21 pages). Read the relevant collapse, angular-phase and path-length sections; inspected Novikov–Sedov rendered pp. 298 and 301. Also opened Gotoda's 2025 JFM enstrophy paper and Chen–Walsh–Wheeler's 2026 Mathematische Annalen article, including their explicit point-vortex examples. Koiller 1985 remained limited to publisher metadata and indexed excerpts; CiteSeer timed out and both Academia copies linked from the author's profile failed. O'Neil 2007 remained abstract/introduction only. These inaccessible bodies were not treated as read. Primary URLs and exact equation locations are in the audit.
+
+Findings: Novikov–Sedov already used the spin–time product in the logarithmic-spiral relation in 1979. Aref's rates and Gotoda's eq. (3.13) give candidates 1–3 by specialization. All five minima follow from the same elementary perfect-square inequality. Candidate 5 includes 2 and 4; these are not five independent discoveries. Krishnamurthy–Stremler's normalized circumcenter path length is an equivalent quantity: s(1)=sqrt(1+4P²), so candidate 1 corresponds to s(1)>=3 on its specified circulation slice; their numerical >2 observation on a broader family is not that sharp bound.
+
+Conclusion: no earlier explicit statement of these exact minima was located in the sources inspected. This is limited negative evidence, not verified novelty. All five now have historical priority explicitly unconfirmed. Live README, catalog credits, identity descriptions and citation metadata have been corrected. Frozen PDF/Typst/statement hashes remain archival records, accompanied by the audit correction. Do not describe the work as five verified novel identities or infer that a later independent derivation copied this repository.

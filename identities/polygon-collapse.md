@@ -1,5 +1,7 @@
 # Polygon collapse: a sharp bound for every order
 
+See the [audit of all five candidates](NOVELTY-AUDIT.md): historical priority is unconfirmed for the earlier three results as well. The general polygon bound includes the parallelogram and double-triangle cases.
+
 **Candidate fifth result, derived with AI assistance on 2026-09-20. The formula and its minimum are proved; historical novelty is unconfirmed.** This generalizes the [double-triangle result](double-triangle.md). The underlying two-ring collapse for arbitrary polygon order was already established by Koiller et al. (1985), §11. The prospective contribution is the simplified product and its explicit sharp minimum, not a new collapse family.
 
 The eight-vortex square case is
