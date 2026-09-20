@@ -55,6 +55,17 @@ The triangles have radius ratio $\varphi=(1+\sqrt5)/2$, with circulation $-1$ at
 
 **Mathematics proved; priority under investigation.** The two-ring collapse is classical (Koiller et al. 1985, §11). The explicit product and minimum are a candidate contribution, not a verified first-discovery claim. The initial search reached indexed excerpts of the primary paper, not its full PDF. This candidate is separate from the three-entry priority record and the frozen note below. Read the [full derivation, checks, and source limitations](identities/double-triangle.md). Open `#double-triangle-bound` for the integrated plate and Broken control.
 
+## Candidate fifth result: the general polygon bound
+
+For two regular $n$-gons with outer circulation $-1$, inner circulation $x_n=(n+\sqrt{2n-1})/(n-1)$ and radius ratio $\sqrt{x_n}$, define $K_n=(n-1)\sinh[(n+2)\log(x_n)/2]$. Then
+
+$$
+\omega_0t_c=\frac{K_n-\sqrt{2n-1}\cos(n\theta)}{2n\sin(n\theta)}
+\ge\frac{\sqrt{K_n^2-(2n-1)}}{2n}.
+$$
+
+The next case after the triangles is two squares: $\omega_0t_c\ge\sqrt{322}/9$, uniquely attained at $\cos(4\theta)=9/55$, or $\theta\approx20.145493^\circ$. This is one generalization, not a separate discovery for every polygon order. **Proved mathematics; historical priority remains unresolved.** The two-ring family for arbitrary $n$ is classical. Read the [full theorem, square formula, proof, and tests](identities/polygon-collapse.md). The existing `#double-triangle-bound` tab now includes **Square minimum** and a vertex-count control; its original triangle default remains.
+
 ## First public appearance
 
 These three statements were first published here, by Chaos, in this repository. GitHub's commit timestamps are the public record. The motion on each family is classical. The closed form of ω₀ t_c and the unique algebraic floor are this project's.

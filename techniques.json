@@ -3181,12 +3181,12 @@
     },
     {
       "id": "double-triangle-bound",
-      "name": "Double-triangle bound",
-      "tab": "Double triangle",
-      "subtitle": "Six vortices · ω₀ t_c ≥ √29/3 · priority under investigation",
-      "equation": "ω₀ t_c = (11 − √5 cos 3θ)/(6 sin 3θ) ≥ √29/3; equality at cos 3θ = √5/11",
-      "credit": "Classical two-ring collapse: Aref, Physics of Fluids 25, 2183 (1982); Koiller, Pinto de Carvalho, Rodrigues da Silva and Gonçalves de Oliveira, Physica D 16, 27–61 (1985), §11. Two equilateral triangles with radius ratio φ and circulations −1 on the outer triangle and φ² on the inner triangle. GENChase derives the displayed product and sharp minimum, with a direct proof in identities/double-triangle.md. Candidate fourth identity; historical priority is not established. The earlier research-ledger rejection tested circulation ratios that do not satisfy the collapse condition. The two-ring motion itself is not new.",
-      "blurb": "Six whirlpools keep two equilateral triangles as they shrink and turn. Their radii have the golden ratio. The spin × collapse-time score has a sharp floor √29/3, attained at θ ≈ 26.09°. The trajectories are integrated from pairwise vortex velocities, and checked against the exact motion and a finer time step. Broken moves one vortex off the family. A correct bound has been derived; whether this is its first publication is still under investigation.",
+      "name": "Polygon collapse bounds",
+      "tab": "Polygon bounds",
+      "subtitle": "Two regular polygons · sharp spin–time floor · priority open",
+      "equation": "ω₀t_c = (K_n − √(2n−1) cos nθ)/(2n sin nθ) ≥ F_n; F₃ = √29/3, F₄ = √322/9",
+      "credit": "Classical two-ring collapse: Aref, Physics of Fluids 25, 2183 (1982); Koiller, Pinto de Carvalho, Rodrigues da Silva and Gonçalves de Oliveira, Physica D 16, 27–61 (1985), §11. Two regular n-gons with outer circulation −1, inner circulation x = (n + √(2n−1))/(n−1), and squared radius ratio x. GENChase derives the product and its sharp minimum in identities/polygon-collapse.md. The n = 4 value √322/9 illustrates the general theorem. Historical priority of these explicit bounds is unconfirmed; the collapse family is classical.",
+      "blurb": "Two rings of whirlpools keep their polygon shapes while shrinking and turning. The spin × collapse-time score has a sharp floor. Three vortices per ring give √29/3; four give √322/9 at a relative angle of about 20.1455°. Change the vertex count to explore the general bound. Trajectories come from all pairwise vortex velocities. Broken moves one vortex off the family. The mathematics is proved; historical novelty is still being checked.",
       "order": 120,
       "seed": "double-triangle",
       "presets": [
@@ -3195,6 +3195,7 @@
         "winding",
         "triangles",
         "bound",
+        "square",
         "broken"
       ],
       "vectors": true,

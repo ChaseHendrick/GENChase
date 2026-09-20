@@ -39,8 +39,10 @@ jobs:
           node-version: '22'
       - name: Structural checks
         run: node tools/lint.js
-      - name: Double-triangle bound and numerical controls
-        run: node tools/double-triangle-check.js
+      - name: Polygon bounds and numerical controls
+        run: |
+          node tools/double-triangle-check.js
+          node tools/polygon-collapse-check.js
 
   chrome:
     name: shell chrome

@@ -460,7 +460,7 @@ Familiarity is listed so you do not confuse it with prior-art status.
 | `hendricks-identity` | Hendrick's Identity | unseen | identity | do not re-derive |
 | `parallelogram-lock` | Parallelogram lock | unseen | identity | do not re-derive |
 | `quincunx-lock` | Quincunx lock | unseen | identity | do not re-derive |
-| `double-triangle-bound` | Double-triangle bound | rare | proved candidate; priority unresolved | 2026-09-20 partial primary-source review; full-text check pending |
+| `double-triangle-bound` | Polygon collapse bounds | rare | proved candidate; priority unresolved | 2026-09-20 partial primary-source review; full-text check pending |
 
 ## Notes on the rows that are not `science only`
 
@@ -922,3 +922,17 @@ Derived and verified: with outer radius φ, outer circulation −1, inner radius
 Conclusion: the previous statement that this geometry cannot collapse was false. A mathematically proved candidate fourth bound has been obtained. The collapse family is classical. The explicit simplified bound's historical priority remains unresolved, and it stays outside the existing three-entry priority record pending full-text review. No renaming of Aref or Koiller's motion, and no use of Hendrick's name on this candidate.
 
 Next check: obtain and read the full 1985 paper, Aref 1982, and subsequent work on optimized two-ring spiral pitch. Reopen if a dated source states this product, its minimum, or an equivalent general bound. Do not repeat the arbitrary-ratio scan as evidence against the family.
+
+### 2026-09-20 fifth-candidate search: sharp polygon collapse bounds
+
+Scope: extend the newly derived triangle bound to arbitrary two-ring polygon order, with the square case as the next concrete formula. This follows the already-open Koiller family, not a repeat of the rejected arbitrary-ratio scan.
+
+Queries: `"vortex collapse" "two squares"`; `"vortex" "collapse" "sqrt" "322"`; `"self-similar" "vortices" "two polygons" minimum`; `"Koiller" "collapse" polygons minimum pitch`; `vortices "collapse" "55" "9"`; `vortex "sqrt{322}" OR "√322" OR "sqrt(322)"`; `"vortex" "two rings" "minimum" collapse`; `"vortex" collapse "sinh" polygons`; `"On Aref" "11.5" "60"`; `"eight vortices" "collapse"`; `"self-similar" "vortex" "polygon" "pitch"`; `"On Aref's vortex motions" "b(" "60"`; `"vortices" "55" "cos" "collapse"`; `"polygonal" "collapse" "angular velocity" minimum`; `"vortex collapse" "sinh" "minimum"`; `"vortex" "spiral pitch" "polygon"`; `"vortex" "322" "collapse" "square"`; `"two-ring" "collapse" "bound" vortex`.
+
+Relevant primary text inspected: indexed Koiller et al. 1985 §11 explicitly treats n vortices on each ring and establishes collapse. The DOI open for O'Neil 2007 failed, but its publisher page at https://www.sciencedirect.com/science/article/abs/pii/S0167278907002588 returned the abstract/introduction, which credits known two-ring collapses and addresses three rings. Other query hits were unrelated optical, three-dimensional-ring, or equilibrium systems. No earlier explicit square floor or general minimum was located. Full 1985 and 2007 bodies were not read; priority remains unresolved.
+
+Derived: x_n=(n+√(2n−1))/(n−1), K_n=(n−1)sinh((n+2)log(x_n)/2), and ω₀t_c=(K_n−√(2n−1)cos(nθ))/(2n sin(nθ)), with sharp floor F_n=√(K_n²−(2n−1))/(2n). A perfect-square identity proves the unique minimum. At n=4, F₄=√322/9, cos(4θ*)=9/55. The theorem recovers the n=2 parallelogram and n=3 triangles. Also F_n ~ exp(√(n/2))/4. Full derivation: identities/polygon-collapse.md.
+
+Checks: 11,381 initial configurations across n=2..20, maximum relative product discrepancy 6.6e−13. Twelve integrated trajectories at displayed orders n=2..5, through 0.9t_c, maximum normalized error 1.8e−6. Square-minimum trajectory error 8.4e−11. Geometry/kernel controls miss. An exploratory n=6 near-endpoint trajectory exceeded tolerance, so interactive orders stop at 5; the theorem is not restricted by that numerical limit.
+
+Conclusion: a proved fifth candidate in the form of a generalization, with two squares as its next specialization. Do not count each polygon order as a separate discovery. No claim that the classical family or a new physical law was discovered. Next priority check remains full-text review for an equivalent optimized spiral-pitch bound.
