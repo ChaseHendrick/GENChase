@@ -187,8 +187,16 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Schubart orbit | Collinear 3-body, two binaries per period (Schubart 1956). Existence variational. Numerical period. Figure-eight already logged. |
 | Batchelor q-vortex / Sullivan | Exact NS. Batchelor 1964 trailing vortex; Sullivan 1959 two-cell. Burgers already logged. Isolated exact. |
 | Prandtl–Batchelor | Closed-streamline vorticity is constant as Re → ∞ (Prandtl 1904; Batchelor 1956). A theorem, not a product min. |
+| Rayleigh–Bénard | Free-free Ra_c = 27π⁴/4 at k d = π/√2 (Rayleigh 1916). Isolated published. Rigid-rigid Ra_c ≈ 1707.76 numerical. Not a 1-param product min. Do not claim. |
+| Taylor–Couette | Thin-gap Ta_c ≈ 1708 (Taylor 1923). Same number as rigid-rigid Ra. Isolated published threshold. |
+| Landau damping / two-stream | Collisionless Vlasov. Two-stream growth from a cold-beam cubic. Landau γ from the Landau contour. Published kinetic theory, not an algebraic interior min of two rates. |
+| Rossby / Eady | L_d = N H / f. Eady max growth k c_i / σ_E ≈ 0.31 at μ ≈ 1.61 (Eady 1949). Numerical max. Isolated published length. |
+| Onsager negative T | Bounded phase space → T < 0 (Onsager 1949). Joyce–Montgomery mean-field. Critical β* < 0. Statistical, not a collapse product. |
+| Hill lunar | Variational orbit is a Fourier/power series in m (Hill 1878). Not a finite formula. Sitnikov / Euler collinear already logged. |
+| Feynman–Onsager | Superfluid circulation κ = h/m (Onsager 1949; Feynman 1955). Isolated published quantum. |
+| Alfvén | v_A = B / √(μ₀ ρ). Isolated published speed. Magnetosonic √(v_A² + c_s²) at θ = π/2. Not a 1-param product min. |
 
-Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, or on Toomre's Q = 1.
+Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, or on Rayleigh's 27π⁴/4.
 
 **Rejected as inventions.**
 
@@ -686,6 +694,17 @@ Blocked: most journal HTML. Chandrasekhar 1935 MNRAS body. Schubart 1956 AN body
 Conclusion: no fourth identity of Hendrick's bar. Toomre Q = 1, Chandrasekhar mass, Roche L1, Noh jump, Carrier–Greenspan 2, Prandtl–Batchelor constant vorticity are isolated published locks or theorems, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on Toomre's Q = 1.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
+### 2026-09-20  hunt Rayleigh-Bénard, Taylor-Couette, Landau/two-stream, Rossby/Eady, Onsager negative T, Hill lunar, Feynman-Onsager, Alfvén  query: Rayleigh-Benard critical Rayleigh number 27 pi^4 / 4; Taylor-Couette critical Taylor number 1708; Landau damping two-stream growth rate; Rossby deformation radius Eady growth 0.31; Onsager negative temperature point vortices; Hill lunar variational orbit series; Feynman-Onsager circulation h/m; Alfven wave speed
+
+Opened: Rayleigh 1916 free-free: Ra_c = 27π⁴/4 at k d = π/√2. Isolated published algebraic lock. Rigid-rigid Ra_c ≈ 1707.76 numerical (Chandrasekhar). Rigid-free ≈ 1100.65. Kloosterziel / Drazin–Reid. Taylor 1923 thin-gap Ta_c ≈ 1708, same number as rigid-rigid Ra. Isolated published threshold. Landau 1946 damping from the Landau contour; two-stream cold-beam cubic (Buneman; Jackson). Published kinetic theory. Rossby L_d = N H / f (or √(g H)/f barotropic). Eady 1949: max growth k c_i / σ_E ≈ 0.31 at μ ≈ 1.61, short-wave cutoff μ_c ≈ 2.399. Numerical max. Isolated published length. Onsager 1949 negative temperature of point vortices; Joyce–Montgomery 1973 mean-field; Yatsuyanagi numerical. Statistical, not a collapse product. Hill 1878 variational orbit is a Fourier/power series in m = n'/(n−n'); not a finite formula (Schmidt 1979; Ligon 2025). Sitnikov / Euler collinear already logged. Feynman 1955 / Onsager 1949: superfluid κ = h/m. Isolated published quantum. Alfvén 1942: v_A = B/√(μ₀ ρ). Magnetosonic √(v_A²+c_s²) at perpendicular propagation. Isolated published speed.
+
+Blocked: most journal HTML. Onsager 1949 Nuovo Cimento footnote body.
+
+Conclusion: no fourth identity of Hendrick's bar. Rayleigh 27π⁴/4, Taylor 1708, Rossby L_d, Feynman–Onsager h/m, Alfvén v_A are isolated published locks, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Eady 0.31 and Hill's variational orbit are numerical or series. Onsager negative T is statistical. Do not claim these. Do not put Hendrick's name on Rayleigh's 27π⁴/4.
+
+Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
 
 
 
