@@ -401,6 +401,8 @@ Checked 2026-09-20 hydrodynamic instabilities, plasma, geophysical waves, remain
 
 Checked 2026-09-20 whether any unused Novikov–Sedov / Gotoda family still has closed $A(\theta)$, $B(\theta)$. Gotoda arXiv:2002.09624 gives closed coefficients only for three-vortex, parallelogram four, and five-vortex. $N\ge 6$ is numerical $H$-$A$. Novikov–Sedov 1979 stop at five. Extra-$\mu$ five-vortex slices share the quincunx functional form and are already skipped. Rott 1994 integrable four has a winding number (ratio of two periods); path patterns are numerical. Eckhardt 1989 reduces to one degree of freedom with elliptic periods (Love-class). Jeffery–Hamel $\alpha_c$ is a complete elliptic integral. Do not claim these. There is no unused closed $A$, $B$ family left in that catalogue.
 
+Checked 2026-09-20 rigid-body, MHD sheets, β-plane dipoles, minimal surfaces. Routh rolling disk: two rates (precession and spin) vs lean; critical lean is an isolated published arctan of a nested radical. Double pendulum $\omega_\pm=\sqrt{2\pm\sqrt{2}}\,\sqrt{g/l}$, product $\sqrt{2}\,g/l$ is the textbook pair, not a 1-param unpublished floor. Fadeev sheet is Stuart's MHD cousin. Larichev–Reznik modon is Lamb–Chaplygin on the β-plane. Critical catenoid is $w=\mathrm{coth}\,w$. Clebsch / Kovalevskaya / Chaplygin sleigh are elliptic or nonholonomic. Do not claim these. Do not put Hendrick's name on the double-pendulum $\sqrt{2}$.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 
