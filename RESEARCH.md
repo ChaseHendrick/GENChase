@@ -199,8 +199,14 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Rott 1994 doubly periodic four | Vanishing mass, moments, polar inertia. Integrable. Two periods (configuration plane and absolute). Winding number = their ratio. Abstract: "simple closed-form results"; path patterns still numerical. Not a unique unpublished algebraic interior min of a 1-param product. Leapfrog already logged. |
 | Eckhardt 1989 integrable four | Vanishing total circulation and impulse. Reduced 1DOF. Periods elliptic (Love-class). Not a floor like √2. |
 | Jeffery–Hamel | Exact NS in a wedge. Critical α_c = K(k²)/m², complete elliptic (Rosenhead; Fraenkel). tan 2β = 2β has β* ≈ 2.247. Not algebraic. |
+| Rolling disk (Routh) | Steady lean α, precession Ω, spin ω. Routh 1905; O'Reilly. Critical lean arctan of a nested radical ≈ 71.4° (uniform disk). Isolated published stability threshold, not a 1-param product min. |
+| Double pendulum | Small-oscillation ω±. Equal mass/length: √(2±√2) √(g/l), product √2 g/l. Textbook. Vs length ratio λ, product ω+ω− = √((1+M)/λ) monotonic. Isolated published. Do not claim. Do not put Hendrick's name on this √2. |
+| Fadeev sheet | Exact MHD 1-param islands (Fadeev 1965). Harris f=0 end. Like Stuart for MHD. Isolated published family, no unpublished product min. |
+| Larichev–Reznik modon | β-plane dipole. Interior Bessel, exterior K. Lamb–Chaplygin already logged. Isolated published. |
+| Critical catenoid | w = coth w. Transcendental, Kapitza-class. Volume (π/2)R²h at threshold is a corollary of the same root. Isolated. |
+| Chaplygin sleigh / Clebsch | Nonholonomic or rigid-body-in-fluid. Integrable cases (Kirchhoff, Clebsch, Kovalevskaya, Goryachev–Chaplygin). Periods elliptic/hyperelliptic. Lagrange top already logged. |
 
-Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, or on Rayleigh's 27π⁴/4.
+Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
 
 **Rejected as inventions.**
 
@@ -718,6 +724,17 @@ Blocked: Rott 1994 body (AIP). Eckhardt 1989 body.
 Conclusion: the set of Novikov–Sedov / Gotoda families with closed A(θ), B(θ) is exactly the three claimed rows plus the already-skipped μ ≠ 1 three-vortex (cubic crit) and extra-μ five-vortex (same functional form). No unused closed family. Rott's winding number and Eckhardt's integrable four are elliptic or illustrated, not a fourth floor. Jeffery–Hamel is elliptic. Not a fourth row. Hendrick / parallelogram / quincunx stand.
 
 Re-search: do not reopen Gotoda for a sixth vortex unless a newly named paper gives closed A(θ), B(θ). Skip Rott / Eckhardt / Jeffery–Hamel unless a newly named source states a unique unpublished algebraic interior min of a product of two rates.
+
+### 2026-09-20  hunt rolling disk, double pendulum, Fadeev, modon, catenoid, Chaplygin, Clebsch  query: Routh rolling disk precession spin product lean; double pendulum frequencies length ratio product omega+ omega-; Fadeev current sheet; Larichev-Reznik modon; critical catenoid coth; Chaplygin sleigh Clebsch Kirchhoff Kovalevskaya
+
+Opened: Rolling disk (Routh 1905; O'Reilly arXiv physics/0008227): steady lean, precession Ω, spin ω. Critical lean arctan of a nested radical ≈ 71.4° (k=1/4). Isolated published stability threshold. Double pendulum: textbook ω± = √(2±√2) √(g/l) at equal mass/length; product √2 g/l is immediate from the published pair. Vs λ, product ω+ω− monotonic (√((1+M)/λ) from the biquadratic). Do not put Hendrick's name on this √2. Fadeev 1965: exact MHD islands, 1-param, Harris end-member. Like Stuart. Isolated published family. Larichev–Reznik 1976 modon: β-plane dipole, Bessel/K. Lamb–Chaplygin already logged. Critical catenoid: w = coth w, transcendental (Goldschmidt). Volume (π/2)R²h at threshold is a corollary of the same root (Yun 2026). Chaplygin sleigh: nonholonomic, limit cycles under torque (Mathieu roll). Clebsch / Kirchhoff rigid-body-in-fluid and Kovalevskaya / Goryachev–Chaplygin tops: integrable, periods elliptic or hyperelliptic. Lagrange top already logged.
+
+Blocked: Routh 1905 treatise body. Fadeev 1965 Soviet body. Larichev–Reznik 1976 Doklady body.
+
+Conclusion: no fourth identity of Hendrick's bar. Rolling-disk critical lean, double-pendulum √2, Fadeev, modon, and catenoid coth are isolated published locks or transcendental, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on the double-pendulum √2.
+
+Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
 
 
 
