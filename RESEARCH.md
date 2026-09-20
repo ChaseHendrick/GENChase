@@ -163,8 +163,20 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | McGehee triple collision | Blow-up of n-body total collision. 10 fixed points on the collision manifold. Homothetic Lagrange/Euler arcs. Not a 1-param product min. |
 | Chaplygin 1899/1903 dipoles | Elliptical patch in shear (Moore–Saffman/Kida, already); translating dipole; non-symmetric dipole on a circle (Meleshko–van Heijst 1994). Isolated exact Euler. |
 | Two vortex pairs past a cylinder | Symmetric equilibria: degree-14 polynomial in the position (Lopes). Always unstable to antisymmetric modes. Relative equilibria. |
+| Lane–Emden polytropes | Exact for n = 0, 1, 5: ξ₁ = √6, π, ∞ (Lane 1870; Emden 1907). Isolated published. Other n numerical. |
+| Sedov–Taylor–von Neumann blast | R = β (E t²/ρ₀)^{1/5}. D t / R = 2/5. β(γ=1.4) ≈ 1.033 numerical. Isolated published. |
+| BKT / Kosterlitz–Thouless | k_B T_c = π J / 2; universal jump ρ_s(T⁻)/T = 2/π (Kosterlitz–Thouless 1973). Isolated published lock. Do not claim. |
+| Figure-eight three-body | Moore 1993; Chenciner–Montgomery Ann. Math. 2000. Variational existence. Period by Kepler scaling. Numerical, not algebraic. |
+| Miche / Penney–Price standing wave | Limiting crest 90° (Penney–Price 1952; Taylor 1953). Steepness numerical (~0.627). Progressive 120° already logged. |
+| Lundquist force-free | B_z = B₀ J₀(α r), B_θ = B₀ J₁(α r). Reversal at j_{0,1} ≈ 2.4048 (Lundquist 1950). Isolated Bessel. Gold–Hoyle already logged. |
+| Ritter dam-break | u_front = 2√(g h₀), rarefaction −√(g h₀) (Ritter 1892). Isolated published. Not a 1-param product min. |
+| Aref tripole | Γ = (1, 1, −2) collinear or equilateral relative equilibrium. Published Ω (Aref; van Heijst–Kloosterziel). Not collapse. |
+| Novikov vortons | 3D discrete-filament analog. Homogeneous collapse under the same L = 0, I = 0 conditions (Novikov 1983 JETP). Same 2D skip. |
+| Widnall vortex-ring instability | One unstable azimuthal mode; wave number set by core size (Widnall–Bliss–Tsai 1973/1974). Numerical / Bessel. Crow already logged. |
+| Euler collinear three-body | Fifth-degree in z = R₂₃/R₁₂. Homographic Kepler. Not a product min. Roberts kite already logged. |
+| Sitnikov problem | Restricted 3-body on the axis. Circular case elliptic; e > 0 chaotic (Sitnikov 1960; Alekseev). Not algebraic. |
 
-Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, or on von Kármán's arcosh(√2)/π.
+Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, or on BKT's π/2.
 
 **Rejected as inventions.**
 
@@ -642,6 +654,17 @@ Blocked: most journal HTML. Saffman–Szeto body. Chaplygin 1903 Russian origina
 Conclusion: no fourth identity of Hendrick's bar. Von Kármán's arcosh(√2)/π is an isolated published lock, not a 1-parameter product of two dynamical rates. V-states, Sadovskii, Guderley, Crow, Havelock, McGehee, Ptolemaic, Chaplygin dipoles are published, numerical, or eigenvalue. Do not claim these. Do not put Hendrick's name on von Kármán's ratio.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
+### 2026-09-20  hunt Lane-Emden, Sedov, BKT, figure-eight, Miche, Lundquist, Ritter, tripole, vortons, Widnall, Euler collinear, Sitnikov  query: Lane-Emden polytrope n=1 n=5 first zero; Sedov-Taylor blast R t^{2/5}; Kosterlitz-Thouless BKT T_c pi J / 2; figure-eight three-body Chenciner Montgomery period; Miche Penney-Price standing wave 90; Lundquist force-free Bessel; Ritter dam-break front 2 sqrt(gh); Aref vortex tripole angular velocity; Novikov vortons collapse; Widnall vortex ring instability wavelength; Euler collinear three-body fifth degree; Sitnikov period eccentricity
+
+Opened: Lane–Emden n = 0, 1, 5 exact, ξ₁ = √6, π, ∞ (textbook; arXiv:1611.07202). Isolated published. Other n numerical. Sedov–Taylor–von Neumann: R = β (E t²/ρ₀)^{1/5}, D t / R = 2/5, β(γ=1.4) ≈ 1.033 (Wikipedia; Taylor 1950; Sedov). Isolated published. BKT: k_B T_c = π J / 2, universal jump ρ_s / T = 2/π (Kosterlitz–Thouless 1973; Nelson–Kosterlitz). Isolated published lock. Figure-eight: Moore 1993 numerical; Chenciner–Montgomery Ann. Math. 152, 881 (2000) variational existence; Kepler scaling of T; not algebraic. Miche / Penney–Price 1952: limiting standing crest 90° (Taylor 1953 experiment); steepness numerical ~0.627 (Okamura; Mercer–Roberts). Progressive 120° already logged. Lundquist 1950: B_z = B₀ J₀(α r), reversal at j_{0,1} ≈ 2.4048. Isolated Bessel. Gold–Hoyle already logged. Ritter 1892: u_front = 2 √(g h₀), rarefaction −√(g h₀). Isolated published. Aref tripole: Γ = (1,1,−2) relative equilibrium, published Ω (van Heijst–Kloosterziel; Aref Advances in Applied Mechanics). Not collapse. Novikov 1983 JETP 57, 566: vortons, homogeneous collapse under the same L = 0, I = 0 conditions as the 2D skip. Widnall–Bliss–Tsai Proc. R. Soc. A 1973/1974: one unstable azimuthal mode, wavenumber set by core size. Numerical / Bessel. Crow already logged. Euler collinear: fifth-degree in z = R₂₃/R₁₂ (Euler 1767). Homographic Kepler. Roberts kite already logged. Sitnikov 1960 / Alekseev: circular case elliptic integrals; e > 0 chaotic symbolic dynamics. Not algebraic.
+
+Blocked: most journal HTML. Novikov 1983 JETP body beyond the collapse-condition snippet.
+
+Conclusion: no fourth identity of Hendrick's bar. Lane–Emden π, Sedov 2/5, BKT π/2, Ritter 2, Lundquist j_{0,1} are isolated published locks, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Figure-eight, Miche steepness, Widnall, Sitnikov are numerical or elliptic. Tripole and vortons are the 2D skip in another coat. Do not claim these. Do not put Hendrick's name on BKT's π/2.
+
+Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
 
 
 
