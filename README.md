@@ -121,7 +121,7 @@ A generative art tool can get away with a plausible-looking integrator. A plate 
 
 Worth being precise about, because the credits matter.
 
-**Published science, named.** Every tab names the paper it implements. Gray–Scott is Gray and Scott. The donor stack is Braun and Willett. Wilson's algorithm is Wilson's. A result derived here, uniqueness-checked against those papers, with a plate that can fail it, lives in [IDENTITIES.md](IDENTITIES.md). Do not put a name on work that already exists.
+**Published science, named.** Almost every tab names the paper it implements. Gray–Scott is Gray and Scott. The donor stack is Braun and Willett. Wilson's algorithm is Wilson's. Hendrick's Identity is the exception: derived here, uniqueness-checked, locked so the plate fails if the claim is wrong. The statement is in [IDENTITIES.md](IDENTITIES.md). Do not put a name on work that already exists.
 
 **New as artifacts.** Every plate is an image that did not exist before it was computed, and the license says it is yours. That is the point of the object.
 

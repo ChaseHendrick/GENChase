@@ -69,4 +69,4 @@ Squash only. The squash subject is the pull-request title, with `(#N)` added. Me
 
 ## Naming
 
-Do not put a person's name on a plate unless the thing is new, uses real physics, and a check in the file fails if the claim is wrong. Existing equations keep their own names. A failed lock is not renamed into a success.
+Do not put a person's name on a plate unless the thing is new, uses real physics, and a check in the file fails if the claim is wrong. Existing equations keep their own names. A derived identity belongs in [`IDENTITIES.md`](IDENTITIES.md). Hendrick's Identity is that case. A failed lock is not renamed into a success.

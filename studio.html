@@ -14,8 +14,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GENChase — Generative Art from Real Simulations</title>
 <meta name="theme-color" content="#B3712A">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23ECE9E2'/%3E%3Ccircle cx='16' cy='16.6' r='9.1' fill='none' stroke='%23B3712A' stroke-width='1.7'/%3E%3Ccircle cx='16' cy='16.6' r='1.05' fill='%23B3712A'/%3E%3Ccircle cx='10.3' cy='20.4' r='2.4' fill='%23C06E3A'/%3E%3Ccircle cx='21.7' cy='20.4' r='2.4' fill='%23D4B05A'/%3E%3Ccircle cx='16' cy='9.3' r='1.8' fill='%238A96A3'/%3E%3C/svg%3E">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23ECE9E2'/%3E%3Ccircle cx='16' cy='16.6' r='9.1' fill='none' stroke='%23B3712A' stroke-width='1.7'/%3E%3Ccircle cx='16' cy='16.6' r='1.05' fill='%23B3712A'/%3E%3Ccircle cx='10.3' cy='20.4' r='2.4' fill='%23C06E3A'/%3E%3Ccircle cx='21.7' cy='20.4' r='2.4' fill='%23D4B05A'/%3E%3Ccircle cx='16' cy='9.3' r='1.8' fill='%238A96A3'/%3E%3C/svg%3E">
 <meta property="og:image" content="/og.jpg">
 <meta name="twitter:image" content="/og.jpg">
 <meta name="description" content="GENChase is a generative art studio built from real scientific simulations: flow fields, reaction-diffusion, slime mold, Lenia, fluids, Cahn–Hilliard, Ohta–Kawasaki copolymers, Swift–Hohenberg, phase-field crystal, Kuramoto–Sivashinsky, complex Ginzburg–Landau, swarmalators, Chirikov and Hofstadter, Helmholtz scars, optical caustics, smectic focal conics, Hastings–Levitov growth, Douady–Couder phyllotaxis, strange attractors, fractal raymarching, Penrose tilings, dendritic growth, chimera states, XY vortices, active nematics, Chladni figures, excitable media, Turing patterns, the Ising model, Abelian sandpiles, percolation, Mandelbrot and Julia sets, the double pendulum, hydrogen orbitals, Schrödinger wave packets and Rayleigh–Bénard convection, plus exact closed-form plates: KP soliton webs, Gerstner waves, the figure-eight choreography, Camassa–Holm peakons, the photon sphere, Crapper capillary waves, Hasimoto filaments, KP-I lumps and Hendrick's Identity. Every piece is seeded, reproducible and exports at museum print resolution.">
@@ -44508,6 +44508,15 @@ void main(){
     return { pts, minX, maxX, minY, maxY };
   }
 
+  let packTraj = null, packView = '', packVal = null;
+  function packedOf(traj, view) {
+    if (packTraj === traj && packView === view) return packVal;
+    packVal = collect(traj, view);
+    packTraj = traj;
+    packView = view;
+    return packVal;
+  }
+
   function xformOf(packed, w, h, zoom, panX, panY) {
     const dx = packed.maxX - packed.minX || 1;
     const dy = packed.maxY - packed.minY || 1;
@@ -44526,7 +44535,7 @@ void main(){
     if (!traj) return;
     const metals = metalsOf(s);
     const view = s.view;
-    const packed = collect(traj, view);
+    const packed = packedOf(traj, view);
     const xf = xformOf(packed, w, h, s.zoom, s.panX, s.panY);
     const lw = Math.max(0.8, 0.011 * Math.min(w, h) * s.weight);
     const fade = s.fade;
@@ -44627,7 +44636,7 @@ void main(){
     const view = s.view;
     if (view !== 'spiral' && view !== 'overlay' && view !== 'beads' && view !== 'polar') return null;
     const metals = metalsOf(s);
-    const packed = collect(traj, view);
+    const packed = packedOf(traj, view);
     const xf = xformOf(packed, w, h, s.zoom, s.panX, s.panY);
     const lw = Math.max(0.8, 0.011 * Math.min(w, h) * s.weight);
     const n = traj.n;
