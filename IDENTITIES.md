@@ -50,7 +50,7 @@ These three statements were first published here, by Chaos, in this repository. 
 
 Anyone may use the mathematics. Claiming first discovery of these closed forms or these floors, after those dates, without citing this file, is claiming this project's work. Do not rename them. Do not put Hendrick's name on the other two. The family (Gröbli, Novikov–Sedov, Aref, Gotoda) stays credited to those papers.
 
-A later paper that restates one of these formulae is a restatement. Cite this file as the first public appearance unless an earlier dated source is produced. Tacchi Appendix B is still unread; if that appendix already states a row, that row will be withdrawn. Until then, this table is the priority record.
+A later paper that restates one of these formulae is a restatement. Cite this file as the first public appearance unless an earlier dated source is produced. The named Tacchi thesis is not in the public record (2026-09-20). Kimura 1988 Fluid Dyn. Res. 3, 98 is a two-page complex-time note, not a coefficient table, and does not state these closed forms or these floors. Until an earlier dated source is produced, this table is the priority record.
 
 The frozen note is [`identities/note.pdf`](identities/note.pdf) (Typst source [`identities/note.typ`](identities/note.typ)). Canonical byte-exact lines are [`identities/STATEMENTS.txt`](identities/STATEMENTS.txt). SHA-256 fingerprints (UTF-8, LF, no BOM):
 
@@ -181,9 +181,9 @@ GitHub's "Cite this repository" button uses the same record via [`CITATION.cff`]
 - H. Aref, Self-similar motion of three point vortices, Physics of Fluids 22, 057104 (2010).
 - W. Gröbli, Spezielle Probleme über die Bewegung geradliniger paralleler Wirbelfäden (1877).
 - X. Leoncini, L. Kuznetsov and G. M. Zaslavsky, Motion of three vortices near collapse, Physics of Fluids 12, 1911 (2000).
-- M. Tacchi, Dynamique des tourbillons dans les fluides bidimensionnels, Appendix B, documenting related explicit coefficients in an example attributed to Kimura (1988).
+- Y. Kimura, Chaos and collapse of a system of point vortices, Fluid Dyn. Res. 3, 98 (1988). Two-page conference note on complex-time singularities. Not a coefficient table and not these closed forms.
 
-Prior-art searches against Aref, Gröbli, Krishnamurthy and Stremler, Kudela, Reinaud and Dritschel, and Leoncini, Kuznetsov and Zaslavsky are logged in [`RESEARCH.md`](RESEARCH.md). Tacchi's appendix was named in this writeup and has not yet been opened from the machines that keep that ledger.
+Prior-art searches against Aref, Gröbli, Krishnamurthy and Stremler, Kudela, Reinaud and Dritschel, Leoncini, Kuznetsov and Zaslavsky, and Kimura 1987–1990 are logged in [`RESEARCH.md`](RESEARCH.md). The named Tacchi thesis is not in theses.fr, HAL, or arXiv.
 
 ---
 
@@ -381,7 +381,7 @@ Checked again 2026-09-20, still not a fourth row. Distinguished five-vortex diag
 
 Checked 2026-09-20 outside planar point-vortex collapse. Love's leapfrog period is complete elliptic integrals, not an algebraic floor; existence $\alpha=3-2\sqrt{2}$ and stability $\alpha=\varphi^{-2}$ are already published. Three-vortex collapse on a sphere has a distinct angular velocity at each vortex (Kidambi–Newton). SQG / generalized-Euler collapse times are numerical. Moore–Saffman and Kida give published strain bounds, not a product min. Stuart / Mallier–Maslowe, Peregrine $|u|_{\max}=3$, Thomson's centered $N$-gon, hetons, and Calogero's goldfish are published families. The search is in [`RESEARCH.md`](RESEARCH.md). Do not claim these. Do not put Hendrick's name on them.
 
-Checked again 2026-09-20: Crowdy H-states give an explicit relative-equilibrium $\Omega(a,N)$, not a collapse product. Baker–Saffman–Sheffield and Stremler–Aref are integrable or energy families, not self-similar collapse. Sakajo proved four-vortex self-similar collapse on a sphere is impossible. Kaden's spiral and Borisov–Kilin–Mamaev three-ring leapfrogging are published. Tacchi Appendix B is still unread. Do not claim these.
+Checked again 2026-09-20: Crowdy H-states give an explicit relative-equilibrium $\Omega(a,N)$, not a collapse product. Baker–Saffman–Sheffield and Stremler–Aref are integrable or energy families, not self-similar collapse. Sakajo proved four-vortex self-similar collapse on a sphere is impossible. Kaden's spiral and Borisov–Kilin–Mamaev three-ring leapfrogging are published. The named Tacchi thesis is not in the public record; Kimura 1988 FDR 3, 98 is the two-page complex-time note already logged. Do not claim these.
 
 Checked again 2026-09-20: Kimura 1987 is the general similarity solution (the collinear three-vortex condition is a cubic, already the $\mu\neq 1$ skip). Norbury–Fraenkel, Pocklington, Lamb–Chaplygin, Komineas magnetic Gröbli, hyperbolic-plane relative equilibria, Crowdy wedge layers, and Kudela's numerical $n$-vortex collapses are published or not an algebraic product min. Do not claim these. Do not put Hendrick's name on them.
 
