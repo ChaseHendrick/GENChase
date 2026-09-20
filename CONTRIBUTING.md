@@ -69,4 +69,5 @@ Squash only. The squash subject is the pull-request title, with `(#N)` added. Me
 
 ## Naming
 
-Do not put a person's name on a plate unless the thing is new, uses real physics, and a check in the file marks miss if the claim is wrong. Search the literature for the closed form and the extremum first. Existing equations keep their own names. A derived identity belongs in [`IDENTITIES.md`](IDENTITIES.md). Hendrick's Identity is that case. A missed lock is not renamed into a success.
+Do not put a person's name on a plate unless the thing is new, uses real physics, and a check in the file marks miss if the claim is wrong. Search the literature for the closed form and the extremum first. Existing equations keep their own names. A derived identity belongs in [`IDENTITIES.md`](IDENTITIES.md) and is named for the person who found it. Hendrick's Identity is Hendrick's: that is the finder's name. That name does not travel. If you meet the identity bar, the row is named for you, or for the geometry if you prefer a lock name. Do not put Hendrick's name on a second result, a published equation, or someone else's find. A missed lock is not renamed into a success.
+

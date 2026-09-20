@@ -30,6 +30,9 @@ A check that cannot miss is not a check. The Broken preset exists so you can wat
 
 To add a row: search the literature first. Web-search the closed form and the extremum, and open the papers the family sits on, before you spend time deriving. If a paper already states either, stop and log the search in `RESEARCH.md`. Only then derive, uniqueness-check, put a check on the plate that marks miss when the identity is false, write the identity here, and write the search the same day.
 
+A row that meets the bar is named for the person who found it. Hendrick's Identity is named Hendrick because that is the finder's name. The parallelogram lock and the quincunx lock are named for their geometries. A later contributor who finds a fourth row names it for themselves, or for the geometry, in the same pull request. Do not put Hendrick's name on that row.
+
+
 ## Catalog
 
 | Name | Tab | Statement | Check misses when |
