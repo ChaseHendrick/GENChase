@@ -83,7 +83,22 @@ which has a unique minimum of 3√33/16 at cos 2θ = 4/7. Direct Biot-Savart on 
 
 Do not re-derive these unless the check is missing the lock. Do not search the name of a tab as if it were a published law. Do not put Hendrick's name on a different system.
 
+**Checked 2026-09-20, not a fourth row.** Web search plus Gotoda arXiv:2002.09624 (opened), Novikov and Sedov 1979 (opened), O'Neil 1987 snippets, Hampton-Roberts-Santoprete arXiv:1208.4204 snippets, Kudela 2014 snippets, and the JTAM existence-criterion paper snippets. Direct Biot-Savart on the remaining exact families. Queries: `Gotoda A(theta) B(theta) omega collapse time product minimum five vortex`, `Novikov Sedov five vortex diagonal ratio closed form omega t_c`, `O'Neil 1987 four vortex collapse explicit kite`, `self-similar four vortex collapse kite trapezoid exact`.
+
+| Candidate | What it actually is |
+|---|---|
+| Five-vortex NS, ρ = d₁²/d₂² = 2 | Reciprocal of the quincunx. Same product. Already in IDENTITIES.md. |
+| Five-vortex NS, ρ = 3 | Recovers Hendrick identically. Already not claimed. |
+| Five-vortex NS, ρ = 4 | ω t_c = 5(35 − 8 cos 2θ)/(96 sin 2θ) ≥ 5√1161 / 96. A nested radical, not a floor like √2. Not claimed. |
+| Three-vortex L = 0, Γ = (1, μ, −μ/(1+μ)), μ ≠ 1 | Gotoda (3.3)-(3.5) is a closed product. For μ = 1/2 it is (56 cos²θ − 10√7 cosθ − 133) / [8(14 cosθ + √7) sinθ]; the critical point solves a cubic in cos θ. Aref already has Ω and τ separately for general circulations. Not claimed. |
+| Kite, non-parallelogram isosceles trapezoid, equilateral plus interior | Biot-Savart scan: no self-similar L = 0 collapsing family (similarity residual never jointly small with I = 0 and finite positive τ). |
+| Seven-vortex Gotoda (4.4), Γ = (1,1,−2,−2,−2,−2,3/2) | Numerical H-A curves. O'Neil 1987 and Kudela 2014: existence and numerical positions, not A(θ), B(θ). |
+| Trapezoidal / kite four-vortex papers | Relative equilibria (central configurations), not self-similar collapse. |
+
+Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product.
+
 **Rejected as inventions.**
+
 
 - `track` is a self-written waveguide (Monro, de Sterke, Poladian, J. Mod. Opt. 1998) and a photorefractive soliton (Segev) on a sine-Gordon breather. Open loop (eta = 0) recovers the Lorentz speed.
 - `causticsea` is Swift-Hohenberg as its own phase screen. Laser-induced surface patterns are already modelled with Swift-Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023).

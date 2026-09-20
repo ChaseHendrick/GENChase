@@ -315,5 +315,10 @@ References:
 
 ---
 
-There are three rows. Leapfrogging, Kirchhoff, the photon-sphere Lyapunov, Crapper energy, Gerstner $T=V$, spherical three-vortex collapse, and the three-vortex $t_c$ minimum remain published and are not claimed. The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day. Do not put Hendrick's name on a second result.
+There are three rows. Leapfrogging, Kirchhoff, the photon-sphere Lyapunov, Crapper energy, Gerstner $T=V$, spherical three-vortex collapse, and the three-vortex $t_c$ minimum remain published and are not claimed.
+
+Checked 2026-09-20 and not a fourth row: the remaining exact Novikov-Sedov five-vortex slices (the quincunx with the diagonals swapped, Hendrick on five vortices at diagonal ratio 3, and slices whose minimum is a nested radical), three-vortex $L=0$ with $\Gamma_1\neq\Gamma_2$ (Gotoda's $\theta$ gives a closed product; the critical point is a cubic in $\cos\theta$, not a floor like $\sqrt{2}$), and kite, non-parallelogram trapezoid, and equilateral-plus-interior four-vortex scans, which had no self-similar $L=0$ family. Seven-vortex Gotoda (4.4) is numerical $H$-$A$ curves. The search is in [`RESEARCH.md`](RESEARCH.md). Do not re-derive these. Do not put Hendrick's name on a second result.
+
+The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
+
 
