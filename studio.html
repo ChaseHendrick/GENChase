@@ -515,6 +515,34 @@
   .witness.w-off .live-badge { padding: 5px; gap: 0; opacity: 0; transition: opacity 120ms ease; width: 18px; height: 18px; min-width: 0; overflow: hidden; }
   .witness.w-off .live-badge:hover, .witness.w-off .live-badge:focus-visible { opacity: 0.55; }
 
+  /* View: pan and zoom the plate in the stage. Inspect only; the print is still 1:1. */
+  .viewpad {
+    position: absolute; bottom: 12px; right: 14px; z-index: 4;
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    pointer-events: none;
+  }
+  .viewpad .vrow {
+    pointer-events: auto; display: inline-flex; align-items: stretch; gap: 0;
+    border: 1px solid var(--line-strong); background: color-mix(in srgb, var(--panel) 88%, transparent);
+    backdrop-filter: blur(8px); border-radius: 8px; overflow: hidden;
+  }
+  .viewpad button {
+    border: 0; border-right: 1px solid var(--line); background: transparent;
+    color: var(--ink-2); width: 30px; height: 30px; padding: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: "Geist Mono", ui-monospace, monospace; font-size: 13px; line-height: 1;
+  }
+  .viewpad button:last-child { border-right: 0; }
+  .viewpad button:hover { color: var(--ink); background: var(--accent-soft); }
+  .viewpad button:disabled { opacity: 0.35; cursor: default; }
+  .viewpad button:disabled:hover { background: transparent; color: var(--ink-2); }
+  .viewpad .vfit { width: auto; padding: 0 9px; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .viewpad svg { display: block; }
+  @media (pointer: coarse) {
+    .viewpad button { width: 44px; height: 44px; }
+    .viewpad .vfit { width: auto; padding: 0 12px; }
+  }
+
   .sheet {
     display: grid; grid-template-rows: 1fr auto; place-items: center;
     min-height: 0; max-width: 100%; max-height: 100%;
@@ -560,7 +588,8 @@
   .export-colo .switch { margin-top: 1px; }
 
   @media print {
-    .bar, .tabstrip, .tabs, .side, .status, .modal, .toast, .history, .witness { display: none !important; }
+    .bar, .tabstrip, .tabs, .side, .status, .modal, .toast, .history, .witness, .viewpad { display: none !important; }
+    .stage canvas.art { transform: none !important; }
     .app { display: block; height: auto; min-height: 0; }
     .main, .main.side-right { display: block; }
     .stage {
@@ -834,6 +863,27 @@
         <div class="witness-strip" id="witness-strip" aria-hidden="true"></div>
         <p class="witness-hint" id="witness-hint"></p>
       </div>
+      <div class="viewpad" id="viewpad" role="toolbar" aria-label="Move around the plate">
+        <div class="vrow" role="group" aria-label="Pan">
+          <button type="button" data-pan="1,0" title="Pan left" aria-label="Pan left">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3L5 8l5 5"/></svg>
+          </button>
+          <button type="button" data-pan="0,1" title="Pan up" aria-label="Pan up">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10l5-5 5 5"/></svg>
+          </button>
+          <button type="button" data-pan="0,-1" title="Pan down" aria-label="Pan down">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6l5 5 5-5"/></svg>
+          </button>
+          <button type="button" data-pan="-1,0" title="Pan right" aria-label="Pan right">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3l5 5-5 5"/></svg>
+          </button>
+        </div>
+        <div class="vrow" role="group" aria-label="Zoom">
+          <button type="button" id="view-minus" title="Zoom out (−)" aria-label="Zoom out">−</button>
+          <button type="button" id="view-plus" title="Zoom in (+)" aria-label="Zoom in">+</button>
+          <button type="button" class="vfit" id="view-fit" title="Fit the plate in the stage (0)" aria-label="Fit the plate">Fit</button>
+        </div>
+      </div>
     </section>
   </div>
 </div>
@@ -850,6 +900,7 @@
       <button type="button" data-for="btn-reset">Reset <kbd>R</kbd></button>
       <button type="button" data-for="btn-history">Timeline <kbd>H</kbd></button>
       <button type="button" data-for="btn-focus">Focus <kbd>F</kbd></button>
+      <button type="button" id="more-fit">Fit view <kbd>0</kbd></button>
       <button type="button" data-for="btn-ambient">Ambient <kbd>A</kbd></button>
       <button type="button" data-for="btn-about">About <kbd>?</kbd></button>
       <button type="button" data-for="btn-settings">Settings JSON</button>
@@ -897,6 +948,7 @@
           <tr><td><kbd>/</kbd></td><td>Find a technique</td></tr>
           <tr><td><kbd>P</kbd> / <kbd>V</kbd> / <kbd>W</kbd></td><td>Pause / record a clip (starts a paused plate) / witness</td></tr>
           <tr><td>Arrows / <kbd>Enter</kbd></td><td>On a pokeable plate: move a crosshair, Enter disturbs. Shift+arrow drags</td></tr>
+          <tr><td><kbd>+</kbd> / <kbd>−</kbd> / <kbd>0</kbd></td><td>Zoom the plate in, out, or fit. Alt-drag or middle-drag to pan; the wheel zooms toward the pointer. Left-drag still disturbs</td></tr>
           <tr><td><kbd>?</kbd></td><td>This list</td></tr>
         </tbody>
       </table>
@@ -911,6 +963,7 @@
         <b>Record</b> (V) films a clip of up to 60 seconds as WebM, or MP4 where the browser only encodes that. It appears on a living plate, and on a still plate that can run — pressing it starts the field. The export sheet also offers an 8-second clip, plus JPEG and WebP of the print.
         <b>Ambient</b> (A) enters focus and walks the techniques every 30 seconds with a fresh seed, for a second monitor or a wall; Esc stops it.
         Click or drag to disturb the field. The <b>LIVE</b> badge means the simulation is still computing; <b>Still</b> means this frame is finished. Click the badge, or press <b>W</b>, to cycle it down to a bare dot and then out of the way; it stays where you left it.
+        The arrows at the lower right move around the plate, still or live; <b>+</b> and <b>−</b> zoom, <b>Fit</b> or <b>0</b> puts it back. Alt-drag or the middle button pans; the wheel zooms toward the pointer. This is a look, not a recipe: the print is always the full plate.
         <b>Save</b> (B) keeps a plate in the gallery; <b>Gallery</b> (G) opens it.
         <b>,</b> and <b>.</b> walk the preset list without opening the menu. <b>C</b> copies the plate to the clipboard at screen size, for pasting into a message; E is still the route to a file at print resolution.
         Shortcuts: space generate, S surprise, E export, C copy image, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, / find a technique, P pause, V record, A ambient, W witness, , . presets, 1–9 tabs, [ ] history, ? this list.</p>
@@ -2249,6 +2302,7 @@ void main(){
     });
 
     e.canvas.addEventListener('pointerdown', ev => onPokeDown(e, ev));
+    e.canvas.addEventListener('auxclick', ev => { if (ev.button === 1) ev.preventDefault(); });
     e.canvas.addEventListener('keydown', ev => onPokeKey(e, ev));
     e.canvas.addEventListener('focus', () => {
       pokeCursor = { x: 0.5, y: 0.5 };
@@ -2575,7 +2629,52 @@ void main(){
     } catch (err) { /* tainted or lost context */ }
   }
   let pokeStroke = null;
+  let panStroke = null;
   let pokeWindowBound = false;
+  let viewX = 0, viewY = 0, viewS = 1;
+  const VIEW_MIN = 1, VIEW_MAX = 8;
+  function viewIdle() { return viewS === 1 && viewX === 0 && viewY === 0; }
+  function applyView() {
+    const e = instances[currentId];
+    const c = e && e.canvas;
+    for (const other of document.querySelectorAll('.stage canvas.art')) {
+      if (other !== c) other.style.transform = '';
+    }
+    if (c) {
+      c.style.transformOrigin = 'center center';
+      c.style.transform = viewIdle() ? '' : ('translate(' + viewX + 'px,' + viewY + 'px) scale(' + viewS + ')');
+    }
+    const fit = $('view-fit');
+    if (fit) fit.disabled = viewIdle();
+  }
+  function resetView() {
+    viewX = 0; viewY = 0; viewS = 1;
+    applyView();
+  }
+  function panBy(dx, dy) {
+    viewX += dx; viewY += dy;
+    applyView();
+  }
+  function zoomAt(clientX, clientY, factor) {
+    const e = instances[currentId]; if (!e || !e.canvas) return;
+    const next = util.clamp(viewS * factor, VIEW_MIN, VIEW_MAX);
+    if (Math.abs(next - viewS) < 1e-6) return;
+    const r = e.canvas.getBoundingClientRect();
+    const fx = (clientX - r.left) / Math.max(1, r.width);
+    const fy = (clientY - r.top) / Math.max(1, r.height);
+    viewS = next;
+    applyView();
+    const r2 = e.canvas.getBoundingClientRect();
+    viewX += clientX - (r2.left + fx * r2.width);
+    viewY += clientY - (r2.top + fy * r2.height);
+    if (viewS === 1) { viewX = 0; viewY = 0; }
+    applyView();
+  }
+  function zoomCenter(factor) {
+    const e = instances[currentId]; if (!e || !e.canvas) return;
+    const r = e.canvas.getBoundingClientRect();
+    zoomAt(r.left + r.width / 2, r.top + r.height / 2, factor);
+  }
   function bindPokeWindow() {
     if (pokeWindowBound) return;
     pokeWindowBound = true;
@@ -2598,7 +2697,21 @@ void main(){
       try { e.inst.resume && e.inst.resume(); } catch (err) { /* already moving */ }
     }
   }
+  function wantsPan(e, ev) {
+    if (ev.altKey || ev.button === 1 || ev.buttons === 4) return true;
+    if (!e.inst || !e.inst.disturb) return ev.button === 0 || !ev.button;
+    return false;
+  }
   function onPokeDown(e, ev) {
+    if (ev.target && ev.target.closest && ev.target.closest('.viewpad')) return;
+    if (wantsPan(e, ev)) {
+      ev.preventDefault();
+      bindPokeWindow();
+      panStroke = { x: ev.clientX, y: ev.clientY, vx: viewX, vy: viewY, pointerId: ev.pointerId };
+      try { e.canvas.setPointerCapture(ev.pointerId); } catch (err) { /* iframe / WebGL capture */ }
+      e.canvas.style.cursor = 'grabbing';
+      return;
+    }
     if (ev.button && ev.button !== 0) return;
     if (!e.inst || !e.inst.disturb) return;
     ev.preventDefault();
@@ -2609,6 +2722,12 @@ void main(){
     try { applyPoke(e, uv, null); } catch (err) { showError(err); }
   }
   function onPokeMove(ev) {
+    if (panStroke && panStroke.pointerId === ev.pointerId) {
+      viewX = panStroke.vx + (ev.clientX - panStroke.x);
+      viewY = panStroke.vy + (ev.clientY - panStroke.y);
+      applyView();
+      return;
+    }
     if (!pokeStroke || pokeStroke.pointerId !== ev.pointerId) return;
     const e = pokeStroke.e;
     if (!e.inst || !e.inst.disturb) return;
@@ -2619,6 +2738,12 @@ void main(){
     pokeStroke.dirty = true;
   }
   function onPokeUp(ev) {
+    if (panStroke && (ev.pointerId == null || panStroke.pointerId === ev.pointerId)) {
+      const cur = instances[currentId];
+      if (cur && cur.canvas) cur.canvas.style.cursor = '';
+      panStroke = null;
+      return;
+    }
     if (!pokeStroke || (ev.pointerId != null && pokeStroke.pointerId !== ev.pointerId)) return;
     const e = pokeStroke.e;
     try { if (e && e.canvas && e.canvas.releasePointerCapture) e.canvas.releasePointerCapture(ev.pointerId); } catch (err) { /* already released */ }
@@ -2722,6 +2847,7 @@ void main(){
     touchLive(id);
     trimLive();
     e.canvas.hidden = false;
+    resetView();
     for (const b of document.querySelectorAll('.tab')) {
       const on = b.dataset.id === id;
       b.setAttribute('aria-selected', String(on));
@@ -3516,6 +3642,7 @@ void main(){
 
     const next = ensureEntry(byId[id], keep);
     next.canvas.hidden = wasCurrent ? false : wasHidden;
+    if (wasCurrent) applyView();
     if (!wasCurrent) return true;
     clearFault();
     buildSidebar(next);
@@ -3580,6 +3707,49 @@ void main(){
       ev.stopPropagation();
       el.dataset.suppressClick = '';
     }, true);
+  }
+
+  function bindViewControls() {
+    const stage = $('stage'), pad = $('viewpad');
+    if (stage) {
+      stage.addEventListener('wheel', ev => {
+        if (ev.target.closest && (ev.target.closest('.tabstrip') || ev.target.closest('.side'))) return;
+        ev.preventDefault();
+        if (ev.target.closest && ev.target.closest('.viewpad')) {
+          zoomCenter(ev.deltaY < 0 ? 1.12 : 1 / 1.12);
+          return;
+        }
+        if (!ev.ctrlKey && Math.abs(ev.deltaX) > Math.abs(ev.deltaY) + 0.5) {
+          panBy(-ev.deltaX, -ev.deltaY);
+          return;
+        }
+        zoomAt(ev.clientX, ev.clientY, Math.exp(-ev.deltaY * 0.0018));
+      }, { passive: false });
+    }
+    if (pad) {
+      pad.addEventListener('pointerdown', ev => {
+        const btn = ev.target.closest('[data-pan]');
+        if (!btn) return;
+        ev.preventDefault();
+        const parts = btn.getAttribute('data-pan').split(',');
+        const dx = +parts[0], dy = +parts[1];
+        const step = () => panBy(dx * 36, dy * 36);
+        step();
+        const t = setInterval(step, 40);
+        const stop = () => { clearInterval(t); window.removeEventListener('pointerup', stop, true); };
+        window.addEventListener('pointerup', stop, true);
+      });
+      const minus = $('view-minus'), plus = $('view-plus'), fit = $('view-fit');
+      if (minus) minus.addEventListener('click', () => zoomCenter(1 / 1.25));
+      if (plus) plus.addEventListener('click', () => zoomCenter(1.25));
+      if (fit) fit.addEventListener('click', resetView);
+    }
+    const moreFit = $('more-fit');
+    if (moreFit) moreFit.addEventListener('click', () => {
+      closeModal('modal-more');
+      resetView();
+    });
+    applyView();
   }
 
   /* ---- boot ---- */
@@ -3651,6 +3821,7 @@ void main(){
     }, { passive: false });
     bindDragScroll(tabs);
     bindDragScroll($('history'));
+    bindViewControls();
     // top bar wiring
     const seed = $('seed');
     seed.addEventListener('change', () => { const e = instances[currentId]; if (!e) return; e.state.seed = seed.value.trim().slice(0, 64) || randomSeed(); seed.value = e.state.seed; regenerate(); });
@@ -3909,6 +4080,17 @@ void main(){
       else if (ev.key === 'v' || ev.key === 'V') { ev.preventDefault(); toggleRecord(); }
       else if (ev.key === 'a' || ev.key === 'A') { ev.preventDefault(); setAmbient(!ambientOn); }
       else if (ev.key === 'w' || ev.key === 'W') { ev.preventDefault(); cycleWitness(); }
+      else if (ev.key === '+' || ev.key === '=') { ev.preventDefault(); zoomCenter(1.25); }
+      else if (ev.key === '-' || ev.key === '_') { ev.preventDefault(); zoomCenter(1 / 1.25); }
+      else if (ev.key === '0') { ev.preventDefault(); resetView(); }
+      else if ((ev.key === 'ArrowLeft' || ev.key === 'ArrowRight' || ev.key === 'ArrowUp' || ev.key === 'ArrowDown') && ev.target === $('stage')) {
+        ev.preventDefault();
+        const step = ev.shiftKey ? 72 : 36;
+        if (ev.key === 'ArrowLeft') panBy(step, 0);
+        else if (ev.key === 'ArrowRight') panBy(-step, 0);
+        else if (ev.key === 'ArrowUp') panBy(0, step);
+        else panBy(0, -step);
+      }
       else if (ev.key === 'c' || ev.key === 'C') { if (!ev.metaKey && !ev.ctrlKey) { ev.preventDefault(); copyPlate(); } }
       else if (ev.key === ',' || ev.key === '<') { ev.preventDefault(); stepPreset(-1); }
       else if (ev.key === '.' || ev.key === '>') { ev.preventDefault(); stepPreset(1); }
