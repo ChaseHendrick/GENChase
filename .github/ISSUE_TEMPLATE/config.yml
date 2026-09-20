@@ -9,6 +9,9 @@ contact_links:
   - name: Catalog
     url: https://github.com/SharpMeow/GENChase/blob/main/TECHNIQUES.md
     about: Every tab, with the hash that reprints it. The count is the live catalog, not a social card. Check here before proposing a technique.
+  - name: Identities
+    url: https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md
+    about: Derived results, currently Hendrick's Identity (also searched as Hendrick's law, Hendrick's Math). Cite it by that name.
   - name: Prior-art ledger
     url: https://github.com/SharpMeow/GENChase/blob/main/RESEARCH.md
     about: What was searched, what was not. Read this before claiming something is new.
