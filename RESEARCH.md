@@ -217,6 +217,11 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Grotto–Pappalettera 2025 gSQG | arXiv:2505.19782. Self-similar Z(t) = ((4−α)a(t−t0))^{1/(4−α)} exp(i(θ0+b/((4−α)a) log)). a, b not closed in shape. α=2 is 2D Euler (Hendrick). α=1 SQG: numerical example. Existence, not a floor. |
 | White–McDonald 2025 sheets | Proc. R. Soc. A 481, 20250362. Exact vortex-sheet equilibria by conformal mapping. 1-param γ; properties from a numerical algebraic equation. Not a closed two-rate min. |
 | PRFluids 2025 four-vortex RE | Phys. Rev. Fluids 10, 084708. Continua of relative equilibria, not collapse. |
+| Nested two-triangle 6-vortex | Positions r e^{2πik/3} (+1) and ρ e^{i(2πik/3+θ)} (−μ), I=0 ⇒ r=√μ ρ. Biot–Savart: A+iB on the + triangle disagrees with A+iB on the − triangle for every θ scanned (μ=1, 1/2, 2). Not a self-similar family. Matches Chen–Walsh–Wheeler: collapsing configs do not display reflection symmetries. n-body analog is Bhusal 2020 CCs, not vortices. Do not re-derive. |
+| BEC two-vortex trap | ω(b) of a rigidly rotating pair has a published global min (Navarro; Pelinovsky Proc. A). One rate vs separation, not a product of two. Tkachenko already logged. |
+| Hicks doughnut | Hollow ring with swirl. Thin-core series (Hicks 1884; Saffman 1970). Norbury–Fraenkel already logged. |
+| Fukumoto–Miyazaki | Filament + axial flow. Permanent form = elastica (already logged). Hasimoto already in the studio. |
+| Coaxial leapfrog rings | Helmholtz 1858. 3D Euler existence: CPAM 2024; García–Hassainia–Hmidi arXiv:2603.21644 (Mar 2026). KAM/Nash–Moser, not an algebraic floor. Love leapfrog already logged. |
 
 Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
 
@@ -766,6 +771,17 @@ Blocked: White–McDonald full PDF body (Royal Society). PRFluids 2025 body.
 Conclusion: 2025 cutting-edge papers realize or existentially extend the three locks; they do not give a new closed 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Cite Chen–Walsh–Wheeler as the hollow-Euler desingularization of Hendrick / parallelogram / quincunx. Do not claim a fourth row from these papers.
 
 Re-search: skip these four papers unless a follow-up states a closed dimensionless product and its unique algebraic interior min.
+
+### 2026-09-20  hunt missed areas: nested 6-vortex triangles, BEC trap pair, Hicks doughnut, Fukumoto-Miyazaki, coaxial leapfrog rings  query: six point vortices two equilateral triangles self-similar collapse; two point vortices harmonic trap omega min; Hicks doughnut swirl; Fukumoto Miyazaki filament axial flow; coaxial vortex rings leapfrog 2026 Euler
+
+Opened: Nested two-triangle 6-vortex (I=0, 3-fold). Direct Biot–Savart: velocity/position on the + triangle is not the same complex constant as on the − triangle for μ=1, 1/2, 2 and θ∈(0,π). Not a self-similar family. Chen–Walsh–Wheeler arXiv:2506.04093 already note collapsing configs lack reflection symmetries. Planar 6-body two-triangle CCs (Bhusal J. Geom. Phys. 2020) are n-body, not vortices. BEC two same-sign vortices in a harmonic trap: ω(b) has a published global min (Navarro PRL 2013; Pelinovsky Proc. A). One rate, not a two-rate product. Hicks 1884 doughnut / Saffman 1970 thin-core: series. Norbury already logged. Fukumoto–Miyazaki 1991: vortex-jet filament, permanent form = elastica (already logged); Hasimoto already in the studio. Coaxial leapfrog rings: Helmholtz 1858; smooth 3D Euler existence CPAM 2024; time-periodic arXiv:2603.21644 (23 Mar 2026) via degenerate KAM. Not an algebraic floor. Love leapfrog already logged.
+
+Blocked: Hicks 1884 Phil Trans body. Fukumoto–Miyazaki JFM 222 body. arXiv:2603.21644 full KAM section.
+
+Conclusion: the missed 6-vortex 3-fold candidate is not self-similar. Trap-pair min, Hicks doughnut, Fukumoto–Miyazaki, and 2026 leapfrogging rings are published one-rate mins, series, elastica, or existence theorems. Not a fourth row. Hendrick / parallelogram / quincunx stand.
+
+Re-search: do not re-scan nested two-triangle 6-vortex Biot–Savart unless a newly named paper gives closed A, B. Skip Hicks / Fukumoto / trap-pair / coaxial rings unless a newly named source states a unique unpublished algebraic interior min of a product of two rates.
+
 
 
 
