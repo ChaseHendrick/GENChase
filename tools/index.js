@@ -57,7 +57,7 @@ const count = require('./count.js');
   const aliasBlock = /const ALIAS = \{([^}]*)\}/.exec(src);
   const aliases = {};
   if (aliasBlock) {
-    for (const m of aliasBlock[1].matchAll(/([A-Za-z0-9_]+)\s*:\s*'([^']+)'/g)) aliases[m[1]] = m[2];
+    for (const m of aliasBlock[1].matchAll(/([A-Za-z0-9_-]+)\s*:\s*'([^']+)'/g)) aliases[m[1]] = m[2];
   }
   for (const m of mods) {
     const sp = spans.find(x => x.id === m.id);
@@ -89,7 +89,7 @@ const count = require('./count.js');
       contract: 'tools/modules/CONTRACT.md',
       agents: 'AGENTS.md',
       research: 'RESEARCH.md',
-      addATab: 'Write tools/modules/<id>.js, then node tools/inject.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js. Do not split studio.html. All noise through U.makeRng(seed). Credit the paper. Do not claim new science. Read RESEARCH.md before a prior-art search.',
+      addATab: 'Write tools/modules/<id>.js, then node tools/inject.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js. Do not split studio.html. All noise through U.makeRng(seed). Credit the paper. Do not claim a new dynamical law. A derived identity with a failing plate is the exception in RESEARCH.md. Read RESEARCH.md before a prior-art search.',
     },
     techniques: mods,
   }, null, 2) + '\n');
@@ -130,7 +130,7 @@ One HTML file of seeded scientific simulations. Each tab reprints from a hash. G
 
 - Parse or scrape studio.html. It is 2.6 MB of implementation.
 - Invent a bundler, a framework tree, or a second architecture.
-- Claim new science. Credit the paper. Do not relicense as MIT.
+- Claim a new dynamical law. Credit the paper. A derived identity with a failing plate is the exception in RESEARCH.md. Do not relicense as MIT.
 - Treat "familiarity" / "seen elsewhere" as a measurement. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
 
 ## Read instead

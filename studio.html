@@ -1694,8 +1694,9 @@ void main(){
     aubry: 'unseen',
     exceptional: 'unseen',
     track: 'unseen',
-    hendrick: 'unseen',
+    'hendricks-identity': 'unseen',
   };
+  const ALIAS = { hendrick: 'hendricks-identity' };
   const S = window.Studio = { util, gl: glh, PALETTES, generatePalette, register, boot, modules: byId, exportJob: null, familiarity: FAMILIARITY };
 
   function register(mod) {
@@ -1920,8 +1921,9 @@ void main(){
     const raw = (location.hash || '').replace(/^#/, '');
     if (!raw) return null;
     const parts = raw.split('/');
-    const id = parts[0];
+    let id = parts[0];
     if (!id) return null;
+    if (ALIAS[id] && byId[ALIAS[id]]) id = ALIAS[id];
     if (!byId[id]) return { id, unknown: true };
     const out = { id };
     if (parts[1]) {
@@ -3908,6 +3910,7 @@ void main(){
         const obj = own(JSON.parse($('settings-text').value));
         if (!Object.keys(obj).length) throw new Error('Not an object');
         delete obj.v;
+        if (obj.id && ALIAS[obj.id]) obj.id = ALIAS[obj.id];
         if (obj.id && byId[obj.id] && obj.id !== currentId) switchTo(obj.id);
         const e2 = instances[currentId];
         e2.state = sanitize(e2.mod, Object.assign(own(e2.state), obj));
@@ -44166,7 +44169,7 @@ void main(){
 })();
 </script>
 <script>
-/* modules/hendrick.js */
+/* modules/hendricks-identity.js */
 /* GENChase: Hendrick's identity. Closed form ω t_c = (2-cos²θ)/sin(2θ); min √2 at tan θ = 1/√2. Motion is Gröbli; product as spiral pitch is Aref 29c. */
 (function () {
   'use strict';
@@ -44642,7 +44645,7 @@ void main(){
 
   /* ---------- Hendrick's Identity ---------- */
   Studio.register({
-    id: 'hendrick', name: 'Hendrick\'s Identity', tab: 'Hendrick\'s Identity',
+    id: 'hendricks-identity', name: 'Hendrick\'s Identity', tab: 'Hendrick\'s Identity',
     subtitle: 'min ω t_c = √2 on Gröbli\'s collapsing triangle · 1877 / 2010',
     order: 117,
     equation: 'ω t_c = (2 − cos²θ) / sin(2θ)  on  Γ = (1, 1, −1/2), L = 0;   min = √2  at  tan θ = 1/√2',

@@ -187,13 +187,21 @@ const { chromium } = require('playwright');
   await p.waitForTimeout(200);
 
   await p.goto('about:blank');
-  await p.goto('file://' + studio + '#hendrick/alias-check', { waitUntil: 'domcontentloaded' });
+  await p.goto('file://' + studio + '#hendricks-identity/alias-check', { waitUntil: 'domcontentloaded' });
   await p.waitForTimeout(2500);
   const alias = await p.evaluate(() => ({
     id: document.querySelector('.tab[aria-selected="true"]') && document.querySelector('.tab[aria-selected="true"]').dataset.id,
     seed: (document.querySelector('#seed') || {}).value,
   }));
-  t('#hendrick opens Hendrick\'s Identity', alias.id === 'hendrick' && alias.seed === 'alias-check', alias);
+  t('#hendricks-identity opens Hendrick\'s Identity', alias.id === 'hendricks-identity' && alias.seed === 'alias-check', alias);
+
+  await p.goto('file://' + studio + '#hendrick/old-hash', { waitUntil: 'domcontentloaded' });
+  await p.waitForTimeout(2000);
+  const oldHash = await p.evaluate(() => ({
+    id: document.querySelector('.tab[aria-selected="true"]') && document.querySelector('.tab[aria-selected="true"]').dataset.id,
+    seed: (document.querySelector('#seed') || {}).value,
+  }));
+  t('#hendrick still opens Hendrick\'s Identity', oldHash.id === 'hendricks-identity' && oldHash.seed === 'old-hash', oldHash);
 
   const pe = await p.evaluate(() => getComputedStyle(document.querySelector('#status')).pointerEvents);
   t('status does not eat plate clicks', pe === 'none', pe);
