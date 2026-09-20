@@ -130,7 +130,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 
 ## Credits
 
-None of the science is original to this project. Each technique names the people whose work it implements.
+Each technique names the people whose work it implements. Hendrick's Identity is the exception: derived here, uniqueness-checked, locked so the plate fails if the claim is wrong. The statement is in IDENTITIES.md.
 
 **Artificial Life**. Lenia: Bert Wang-Chak Chan, 2018-19. The discrete rules go back to John Conway's Game of Life, 1970, and Stanislaw Ulam and John von Neumann's cellular automata in the 1940s.
 

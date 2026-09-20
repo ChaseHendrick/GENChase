@@ -58,7 +58,7 @@ Copied from the README, restated so an agent does not have to infer it.
 
 ## Physics
 
-**Published, implemented, not claimed.** Every tab names a paper in `credit`. Gray-Scott is Gray and Scott. Wilson's algorithm is Wilson's. The self-check numbers in the README are measurements from the plate against those papers, not new predictions.
+**Published, implemented, not claimed, with one exception.** Almost every tab names a paper in `credit`. Gray-Scott is Gray and Scott. Wilson's algorithm is Wilson's. The self-check numbers in the README are measurements from the plate against those papers, not new predictions. Hendrick's Identity is the exception: derived here, uniqueness-checked, locked to the plate.
 
 **The one derived lock.** The statement, the minimum, what it is not, and how the plate fails it live in [`IDENTITIES.md`](IDENTITIES.md). Three point vortices of circulations 1, 1, -1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae. On this family their dimensionless product is
 
