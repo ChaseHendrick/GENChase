@@ -116,9 +116,16 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Sakajo four-vortex on a sphere | Self-similar four-vortex collapse is impossible (Phys. Fluids 19, 017109, 2007). Partial non-self-similar triple collapse is numerical examples (PRE 78, 016312, 2008). |
 | Kaden / Pullin vortex-sheet spirals | r ∝ θ^{-μ} (Kaden 1931; Pullin). Published self-similar sheet, not a point-vortex product min. |
 | Borisov–Kilin–Mamaev three vortex rings | Existence of threefold leapfrogging via Poincaré maps (RCD 2013; FDR 46, 031415, 2014). No closed period-speed product min. |
-| Tacchi Appendix B / Kimura 1988 | Still unread. Wrong HAL/theses.fr hits (Rodrigues, Poupardin, Margerit, Soulière). Reopen when the thesis PDF can be opened. |
+| Tacchi Appendix B / Kimura 1987–1990 | Kimura JPSJ 56, 2024 (1987) is the general similarity solution (A, B; collinear 3-vortex is a cubic). Kimura Physica D 46, 439 (1990) is complex-time singularities. Tavantzis–Ting 1988 is the 3-vortex revisit. Tacchi thesis PDF still unread (wrong HAL hits). Do not re-derive Kimura's cubic. |
+| Norbury–Fraenkel vortex rings | Numerical 1-parameter family α ∈ [0, √2]. Thin-core Kelvin–Dyson log speed; Hill's spherical vortex at the fat end. Lowest dimensionless energy is Hill's. Not an algebraic collapse product. |
+| Pocklington hollow vortex pair | Translating 1-parameter family. Crowdy–Llewellyn Smith–Freilich 2013: U monotonic decreasing with area. Compressible first-order speed min is Krishnamurthy–Llewellyn Smith 2023. |
+| Lamb–Chaplygin dipole | Isolated exact Euler dipole. kR = j_{1,1} ≈ 3.8317; U_max/U_0 ≈ 2.49 (Flor 1994). Not a 1-parameter collapse family. |
+| Komineas–Papanicolaou magnetic 3-vortex | Gröbli analog, completely integrated (JMP 51, 042705, 2010). Published. |
+| Point vortices on the hyperbolic plane | Nava-Gaxiola–Montaldi JMP 55, 102702 (2014): relative equilibria, not a collapse product. |
+| Crowdy vortex layers on a wedge | Exact uniform-vorticity corners (EJAM 2004). Not a point-vortex collapse product. |
+| Kudela n-vortex collapse | Numerical configurations (J. Nonlinear Sci. 2014; FDR 2014). Same class as Kallyadan–Shukla. |
 
-Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, or on Kaden's spiral.
+Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, or on Hill's energy min.
 
 **Rejected as inventions.**
 
@@ -148,8 +155,13 @@ Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex pr
 | Crowdy H-states Ω(a,N) | JFM 913, R5 (2021) eq. (3.11). Relative equilibrium. |
 | Kaden algebraic spiral | r ∝ (t/θ)^{2/3} (Kaden 1931). |
 | Sakajo: no self-similar 4-vortex collapse on a sphere | Phys. Fluids 19, 017109 (2007). |
+| Kimura similarity A, B; collinear 3-vortex cubic | JPSJ 56, 2024 (1987). Already the machinery of the three locks; the cubic is the μ ≠ 1 skip. |
+| Lamb–Chaplygin dipole | kR = first zero of J_1; U_max/U_0 ≈ 2.49 (Lamb; Flor 1994). |
+| Norbury–Fraenkel / Hill | Lowest dimensionless ring energy is Hill's spherical vortex. |
+| Pocklington translating hollow pair | U decreases monotonically with area (Crowdy et al. 2013). |
+| Komineas–Papanicolaou magnetic Gröbli | JMP 51, 042705 (2010). Complete 3-vortex integration. |
 
-Hendrick's closed form and min √2 were not in those sources. Tacchi Appendix B / Kimura 1988 coefficients remain unread.
+Hendrick's closed form and min √2 were not in those sources. Tacchi Appendix B remains unread. Kimura 1987 is the general similarity theory, not a fourth product min.
 
 ## Engineering that was checked (not science)
 
@@ -518,6 +530,18 @@ Blocked: Tacchi thesis PDF. Most journal HTML.
 Conclusion: no fourth identity of Hendrick's bar. H-state Ω is Kirchhoff-class. Sphere four-vortex self-similar collapse is proved impossible. Kaden, three-ring leapfrog, and parallelogram three-vortex motion are published. Do not claim these. Do not put Hendrick's name on them.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min. Reopen Tacchi Appendix B when the file can be opened.
+
+### 2026-09-20  hunt Kimura, Norbury, Pocklington, Lamb–Chaplygin, magnetic Gröbli  query: Kimura 1987 similarity solution two-dimensional point vortices coefficients A B; Kimura 1988 1990 complex-time collapse; point vortices in a wedge corner self-similar collapse Crowdy Tchieu; Norbury Fraenkel vortex ring speed core radius closed form minimum; Pocklington hollow vortex pair translation speed; Lamb Chaplygin dipole energy impulse; Komineas magnetic vortex three Gröbli collapse; Camassa-Holm periodic peakon train; point vortices hyperbolic plane collapse; Tacchi thèse tourbillons pdf
+
+Opened: Kimura JPSJ 56, 2024 (1987) abstract: general similarity; regular triangle always exists; collinear is a cubic. Aref 2010 cites Kimura 1990 Physica D (complex-time) and Tavantzis–Ting 1988. Norbury 1973 / Fraenkel 1972 family is numerical; Hill has the lowest dimensionless energy. Crowdy–Llewellyn Smith–Freilich Eur. J. Mech. B 37 (2013): Pocklington U monotonic in area. Flor 1994 / Wikipedia: Lamb–Chaplygin kR = j_{1,1}, U_max/U_0 ≈ 2.49. Komineas–Papanicolaou JMP 51, 042705 (2010): magnetic three-vortex Gröbli analog, completely integrated. Nava-Gaxiola–Montaldi 2014: hyperbolic-plane relative equilibria. Crowdy EJAM 2004: vortex layers on wedges. Kudela 2014: numerical n-vortex. Camassa–Holm peakon c = amplitude is already `#peakon`. Tacchi: still no thesis PDF.
+
+Blocked: Tacchi thesis PDF. Kimura 1987 body (JPSJ paywall). Most journal HTML.
+
+Conclusion: no fourth identity of Hendrick's bar. Kimura 1987 is the similarity machinery already used for the three locks, not a new min. Norbury, Pocklington, Lamb–Chaplygin, magnetic Gröbli, and hyperbolic relative equilibria are published. Do not claim these. Do not put Hendrick's name on them.
+
+Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min. Reopen Tacchi Appendix B and the Kimura 1987 body when the files can be opened.
+
+
 
 
 

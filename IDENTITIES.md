@@ -325,6 +325,8 @@ Checked 2026-09-20 outside planar point-vortex collapse. Love's leapfrog period 
 
 Checked again 2026-09-20: Crowdy H-states give an explicit relative-equilibrium $\Omega(a,N)$, not a collapse product. Baker–Saffman–Sheffield and Stremler–Aref are integrable or energy families, not self-similar collapse. Sakajo proved four-vortex self-similar collapse on a sphere is impossible. Kaden's spiral and Borisov–Kilin–Mamaev three-ring leapfrogging are published. Tacchi Appendix B is still unread. Do not claim these.
 
+Checked again 2026-09-20: Kimura 1987 is the general similarity solution (the collinear three-vortex condition is a cubic, already the $\mu\neq 1$ skip). Norbury–Fraenkel, Pocklington, Lamb–Chaplygin, Komineas magnetic Gröbli, hyperbolic-plane relative equilibria, Crowdy wedge layers, and Kudela's numerical $n$-vortex collapses are published or not an algebraic product min. Do not claim these. Do not put Hendrick's name on them.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 
