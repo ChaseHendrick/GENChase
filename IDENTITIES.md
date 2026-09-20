@@ -399,6 +399,8 @@ Checked 2026-09-20 stellar structure, remaining gas dynamics, remaining waves, r
 
 Checked 2026-09-20 hydrodynamic instabilities, plasma, geophysical waves, remaining n-body. Rayleigh free-free $\mathrm{Ra}_c=27\pi^4/4$ at $kd=\pi/\sqrt{2}$ is an isolated published lock. Rigid-rigid $\mathrm{Ra}_c\approx 1708$ and Taylor $\mathrm{Ta}_c\approx 1708$ are the same numerical threshold. Landau damping and two-stream growth are published kinetic theory. Rossby $L_d=NH/f$; Eady max growth $\approx 0.31$ is numerical. Onsager negative temperature of point vortices is statistical. Hill's lunar variational orbit is a power series in $m$. Feynman–Onsager $\kappa=h/m$ and Alfvén $v_A=B/\sqrt{\mu_0\rho}$ are isolated published. Do not claim these. Do not put Hendrick's name on Rayleigh's $27\pi^4/4$.
 
+Checked 2026-09-20 whether any unused Novikov–Sedov / Gotoda family still has closed $A(\theta)$, $B(\theta)$. Gotoda arXiv:2002.09624 gives closed coefficients only for three-vortex, parallelogram four, and five-vortex. $N\ge 6$ is numerical $H$-$A$. Novikov–Sedov 1979 stop at five. Extra-$\mu$ five-vortex slices share the quincunx functional form and are already skipped. Rott 1994 integrable four has a winding number (ratio of two periods); path patterns are numerical. Eckhardt 1989 reduces to one degree of freedom with elliptic periods (Love-class). Jeffery–Hamel $\alpha_c$ is a complete elliptic integral. Do not claim these. There is no unused closed $A$, $B$ family left in that catalogue.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 
