@@ -51,6 +51,7 @@ Against `main`. Title matches the squash subject. Body says what a reviewer shou
 Checklist, as it applies:
 
 - [ ] `node tools/lint.js` is clean
+- [ ] chrome: `node tools/ui.js` (More, Export, and Generate stay on screen at 390)
 - [ ] a new or changed tab: `node tools/check.js <id> 12000`
 - [ ] a tab that prints: `node tools/export.js <id> 8 300`
 - [ ] a new tab: `node tools/index.js` (writes `TECHNIQUES.md`, `techniques.json`, `llms.txt`)
