@@ -94,8 +94,15 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Kite, non-parallelogram isosceles trapezoid, equilateral plus interior | Biot-Savart scan: no self-similar L = 0 collapsing family (similarity residual never jointly small with I = 0 and finite positive τ). |
 | Seven-vortex Gotoda (4.4), Γ = (1,1,−2,−2,−2,−2,3/2) | Numerical H-A curves. O'Neil 1987 and Kudela 2014: existence and numerical positions, not A(θ), B(θ). |
 | Trapezoidal / kite four-vortex papers | Relative equilibria (central configurations), not self-similar collapse. |
+| Five-vortex NS, μ = φ, √2, 3/2, and other distinguished ratios | Product still C(a − b cos 2θ)/sin 2θ. Min is a messy radical. Reciprocal pairs share the product. Not claimed. |
+| Five-vortex NS, μ = 2+√3 | Center circulation vanishes. Recovers the parallelogram lock identically. Already in IDENTITIES.md. |
+| Four-vortex (1,1,1,−1) isosceles + axis; kite; isosceles trapezoid (1,1,−1,−1) | Gotoda 4.1 is numerical H-A. Direct Biot-Savart (2π kernel): similarity residual never jointly small with I = 0 and finite positive τ. |
+| O'Neil 1987 explicit quadruple; hollow-vortices arXiv:2506.04093 triples/quadruples | Single published configurations, not a 1-parameter family with a unique interior min. |
+| Kallyadan–Shukla, Phys. Rev. Fluids 7, 114701 (2022) | Numerical 1-parameter families along closed curves. No closed A(θ), B(θ). |
+| Wall / image / disk; periodic strip (Aref 1996) | Same-sign boundary collapse is impossible (Donati–Godard-Cadillac–Iftimie 2024). Mixed-sign and periodic-strip: no closed product min found. |
+| Gotoda 2025 θ_Z / θ_L / θ_c | Numerical grid bracket only (θ_137 < θ_Z < θ_138). No closed form. |
 
-Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product.
+Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, or on a numerical family.
 
 **Rejected as inventions.**
 
@@ -457,6 +464,16 @@ Blocked: most journal HTML. Tacchi appendix still unread.
 Conclusion: a third identity of Hendrick's bar. Gotoda states A(θ) and B(θ) separately and does not form the product or its unique interior min. Novikov-Sedov state the motion, t_*, and ω separately. Do not claim those. Do not put Hendrick's name on this plate.
 
 Re-search: do not re-derive. Reopen only if a newly named paper states ω t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) or min 3√33/16 at cos 2θ = 4/7.
+
+### 2026-09-20  hunt outside Novikov-Sedov  query: self-similar four vortex collapse isosceles (1,1,1,-1) closed form omega t_c; Novikov Sedov five vortex golden ratio diagonal mu phi product minimum; Kallyadan Shukla 2022 self-similar vortex configurations closed A(theta); O'Neil 1987 explicit four vortex collapse family; hollow vortices arXiv:2506.04093 collapsing quadruple omega kappa product; point vortices half-plane wall image self-similar collapse exact; three point vortices periodic strip collapse; Gotoda 2410.14973 theta_Z closed form; three vortex collapse product min circulation ratio mu sqrt(17/15)
+
+Opened: Gotoda arXiv 2002.09624 HTML (ar5iv) eqs. (3.3)–(3.8), (3.13), §4.1 uniform-strength family. Gotoda arXiv 2410.14973 HTML: θ_Z is a 200-point grid bracket. Hollow-vortices arXiv:2506.04093 HTML examples 4.2 (triple) and 4.3 (O'Neil quadruple): single configs, published Ω and 1/κ. Kallyadan–Shukla Phys. Rev. Fluids 7, 114701 (2022) abstract: numerical families. Donati–Godard-Cadillac–Iftimie arXiv:2403.17900: same-sign boundary collapse impossible. Aref 1996 periodic-strip abstract: integrable motion, not a collapse product. Direct Biot-Savart (2π kernel, same as the identity plates) on the remaining exact families and on (1,1,1,−1) isosceles, kite, trapezoid, and equilateral-plus-interior.
+
+Blocked: most journal HTML. Tacchi appendix still unread. Kallyadan–Shukla body behind APS lock.
+
+Conclusion: no fourth identity of Hendrick's bar. Distinguished five-vortex μ other than 1/2, 2, 3, 2±√3 have messy minima; μ = 2+√3 recovers the parallelogram lock (γ3 = 0). Three-vortex μ ≠ 1 is a cubic critical point (already logged). (1,1,1,−1) and the other four-vortex symmetric scans had no self-similar L = 0 family. O'Neil / hollow-vortex examples are single published configs. Numerical families and grid-bracketed angles are not closed forms. Do not claim these. Do not put Hendrick's name on them.
+
+Re-search: skip the rows in the table above unless a newly named paper states a closed ω t_c and its unique interior min on one of those families. Reopen Tacchi Appendix B / Kimura 1988 coefficients when the files can be opened.
 
 
 
