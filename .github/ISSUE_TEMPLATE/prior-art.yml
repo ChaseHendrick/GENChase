@@ -6,9 +6,9 @@ body:
   - type: markdown
     attributes:
       value: |
-        Read [RESEARCH.md](https://github.com/SharpMeow/GENChase/blob/main/RESEARCH.md) first. If the row is already marked skip, do not re-run the search unless you have a newly named source or a site that was previously unreachable.
+        Read [RESEARCH.md](https://github.com/SharpMeow/GENChase/blob/main/RESEARCH.md) first. If the row is already marked skip, do not re-run the search unless you have a newly named source or a site that was previously unreachable. A derived identity belongs in [IDENTITIES.md](https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md) as well.
 
-        The conclusion of this issue should land in RESEARCH.md. A search that is not written down will be done again.
+        The conclusion of this issue should land in RESEARCH.md, and in IDENTITIES.md if it is an identity. A search that is not written down will be done again.
   - type: input
     id: about
     attributes:

@@ -4,7 +4,7 @@ Ledger of prior-art searches and physics claims for GENChase. Handwritten, not g
 
 Agents: read this file **before** a web search for "has this been done", "is this a new law", or "never been theorized". Humans: the same, if you are about to spend an afternoon proving a negative.
 
-The catalog of what the file actually contains is [`techniques.json`](techniques.json). This file is only about what was looked up, what was derived, and what was not.
+The catalog of what the file actually contains is [`techniques.json`](techniques.json). Derived identities live in [`IDENTITIES.md`](IDENTITIES.md). This file is only about what was looked up, what was derived, and what was not.
 
 ## Do this, do not do that
 
@@ -17,7 +17,7 @@ The catalog of what the file actually contains is [`techniques.json`](techniques
 **Do not**
 
 - Re-run a search this file marks skip, unless you have a newly named repository, paper, or site that was previously unreachable.
-- Claim a new dynamical law, or put a private name on a published equation. A derived identity is allowed when you actually derived it, checked it against the papers, and put a check on the plate that fails if the identity is wrong. Hendrick's identity is that case. It is not Gröbli's motion and it is not Aref's product under a new name.
+- Claim a new dynamical law, or put a private name on a published equation. A derived identity is allowed when you actually derived it, checked it against the papers, and put a check on the plate that fails if the identity is wrong. Write it in [`IDENTITIES.md`](IDENTITIES.md) the same day. Hendrick's identity is that case. It is not Gröbli's motion and it is not Aref's product under a new name.
 - Private-name a published equation plus a feedback term. `track` and `causticsea` already made that mistake in draft and were renamed.
 - Treat **familiarity** / "seen elsewhere" as a measurement or a prior-art result. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
 - Parse `studio.html` to answer "what is in the catalog". Read `techniques.json`.
@@ -52,7 +52,7 @@ Copied from the README, restated so an agent does not have to infer it.
 | New science (an uncredited equation, a private law) | No | nowhere |
 | New as an artifact (this seed, this plate) | Yes, always | the export |
 | New as working software (a seeded, paletted, print-ready browser plate of a published system) | Yes, with a named nearest neighbor | README bullets, this file |
-| A derived dimensionless lock on a published family, checked against the papers, with a failing plate | Yes | `hendricks-identity` |
+| A derived dimensionless lock on a published family, checked against the papers, with a failing plate | Yes | [`IDENTITIES.md`](IDENTITIES.md), `hendricks-identity` |
 | A published equation plus a feedback term | Not an invention | `track`, `causticsea` |
 | Familiarity bucket `unseen` | Editorial, not a result | `techniques.json` |
 
@@ -60,7 +60,7 @@ Copied from the README, restated so an agent does not have to infer it.
 
 **Published, implemented, not claimed.** Every tab names a paper in `credit`. Gray-Scott is Gray and Scott. Wilson's algorithm is Wilson's. The self-check numbers in the README are measurements from the plate against those papers, not new predictions.
 
-**The one derived lock.** Three point vortices of circulations 1, 1, -1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae. On this family their dimensionless product is
+**The one derived lock.** The statement, the minimum, what it is not, and how the plate fails it live in [`IDENTITIES.md`](IDENTITIES.md). Three point vortices of circulations 1, 1, -1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae. On this family their dimensionless product is
 
     omega t_c = (2 - cos^2 theta) / sin(2 theta)
 
@@ -221,7 +221,9 @@ Familiarity is listed so you do not confuse it with prior-art status.
 
 ### Derived identity (the only physics claim that is not in the cited papers)
 
-**`hendricks-identity` (Hendrick's Identity).** `#hendrick` still opens it. Derived identity, proved on this plate, not a new dynamical law. The motion is Gröbli 1877. Aref 2010 eqs. 25a and 25d give Omega and tau separately. Aref eq. 29c already writes the product Omega tau as the pitch of the logarithmic spiral, and the stability section treats that product as invariant under a similarity perturbation. Kudela 2014 and Reinaud-Dritschel 2022 minimize collapse time, not the product. Krishnamurthy-Stremler 2018 give dimensionless tau-tilde as a function of angles, no min sqrt(2). What is not in those papers, and what this plate proves: on Gamma=(1,1,-1/2), L=0, omega t_c = (2-cos^2 theta)/sin(2 theta), unique min sqrt(2) at tan theta=1/sqrt(2) (angles 22.5, 45, 112.5 deg). Do not re-derive. Do not search the tab name as if it were a published law. Do not put the name on Gröbli's motion or on Aref's product. Off the L=0 circle the check fails on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum.
+The statement is in [`IDENTITIES.md`](IDENTITIES.md). Do not duplicate it here.
+
+**`hendricks-identity` (Hendrick's Identity).** `#hendrick` still opens it. Derived identity, proved on this plate, not a new dynamical law. Search notes: Aref 2010 eqs. 25a and 25d give Omega and tau separately. Aref eq. 29c already writes the product as the pitch of the logarithmic spiral. Kudela 2014 and Reinaud-Dritschel 2022 minimize collapse time, not the product. Krishnamurthy-Stremler 2018 give dimensionless tau-tilde as a function of angles, no min sqrt(2). Closed form and min: not in those papers. Off the L=0 circle the check fails on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum.
 
 ### Published family plus a feedback term (not inventions)
 

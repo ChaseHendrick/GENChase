@@ -207,6 +207,14 @@ if (researchMd) {
   if (missing.length) {
     fail('RESEARCH.md table is missing ' + missing.join(', ') + '; run node tools/index.js (it will append science-only rows)');
   }
+  const identPath = path.join(root, 'IDENTITIES.md');
+  if (!fs.existsSync(identPath)) fail('IDENTITIES.md is missing');
+  else {
+    const ident = fs.readFileSync(identPath, 'utf8');
+    const ids = [...researchMd.matchAll(/^\| `([^`]+)` \|[^|\n]+\|[^|\n]+\| identity \|/gm)].map(m => m[1]);
+    const gap = ids.filter(id => ident.indexOf('`' + id + '`') < 0);
+    if (gap.length) fail('IDENTITIES.md does not mention ' + gap.join(', '));
+  }
 }
 
 /* ---- 7c. the social card caption is the catalog, not a leftover sixty-six ---- */
