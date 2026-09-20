@@ -116,7 +116,7 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Sakajo four-vortex on a sphere | Self-similar four-vortex collapse is impossible (Phys. Fluids 19, 017109, 2007). Partial non-self-similar triple collapse is numerical examples (PRE 78, 016312, 2008). |
 | Kaden / Pullin vortex-sheet spirals | r ∝ θ^{-μ} (Kaden 1931; Pullin). Published self-similar sheet, not a point-vortex product min. |
 | Borisov–Kilin–Mamaev three vortex rings | Existence of threefold leapfrogging via Poincaré maps (RCD 2013; FDR 46, 031415, 2014). No closed period-speed product min. |
-| Tacchi Appendix B / Kimura 1987–1990 | Kimura JPSJ 56, 2024 (1987) is the general similarity solution (A, B; collinear 3-vortex is a cubic). Kimura Physica D 46, 439 (1990) is complex-time singularities. Tavantzis–Ting 1988 is the 3-vortex revisit. Tacchi thesis PDF still unread (wrong HAL hits). Do not re-derive Kimura's cubic. |
+| Tacchi Appendix B / Kimura 1987–1990 | Named thesis "M. Tacchi, Dynamique des tourbillons dans les fluides bidimensionnels" is not in theses.fr, HAL, arXiv, or Google Scholar (checked 2026-09-20). The living M. Tacchi is Matteo Tacchi-Bénard (control theory / SOS, INSA Toulouse 2021); not vortex dynamics. Kimura JPSJ 56, 2024 (1987) is the general similarity solution (A, B; collinear 3-vortex is a cubic). Kimura Fluid Dyn. Res. 3, 98 (1988) is a two-page complex-time note, not a coefficient table. Kimura Physica D 46, 439 (1990) is complex-time singularities. Tavantzis–Ting 1988 is the 3-vortex revisit. Do not re-derive Kimura's cubic. Do not reopen Tacchi. |
 | Norbury–Fraenkel vortex rings | Numerical 1-parameter family α ∈ [0, √2]. Thin-core Kelvin–Dyson log speed; Hill's spherical vortex at the fat end. Lowest dimensionless energy is Hill's. Not an algebraic collapse product. |
 | Pocklington hollow vortex pair | Translating 1-parameter family. Crowdy–Llewellyn Smith–Freilich 2013: U monotonic decreasing with area. Compressible first-order speed min is Krishnamurthy–Llewellyn Smith 2023. |
 | Lamb–Chaplygin dipole | Isolated exact Euler dipole. kR = j_{1,1} ≈ 3.8317; U_max/U_0 ≈ 2.49 (Flor 1994). Not a 1-parameter collapse family. |
@@ -606,11 +606,22 @@ Re-search: skip the new rows unless a newly named paper states a closed dimensio
 
 Opened: Roberts arXiv:2411.07867 / Nonlinearity 2025: unique convex kite CC; linear-stability infimum m₁/(Σothers) = (25+3√69)/2 ≈ 24.96, recovered from Routh's restricted 3-body ρ_r = (1−√69/9)/2 in a limiting kite. Waldvogel: rhombus φ(μ) is a degree-12 polynomial, unique in a π/4-neighbourhood. Homographic solutions reduce to Kepler in the scale (Scholarpedia; classical). Hele-Shaw polynomial maps: closed cusp time t₀ = A − 3/4 (2B)^{2/3}; Saffman–Taylor λ = 1/2 (Combescot 1986; Mineev-Weinstein 1998 exact without surface tension). Kapitza/Stephenson: (a/l)(ω/ω₀) > √2. Jeffery 1922: T γ̇ = 2π(r+1/r), min 4π at r=1 by AM-GM. Rayleigh–Plateau slender λ = 2π√2 R; exact inviscid max is a Bessel root kR ≈ 0.697. Cotes 1722 inverse-cube spirals, finite-time fall for μ > h². Crowdy 2005 Kirchhoff–Routh in multiply connected domains. Gold–Hoyle energy vs twist numerical. No cone-vortex A,B closed product.
 
-Blocked: Tacchi thesis PDF.
+Blocked: Kimura 1987 JPSJ body (403). Kimura 1988 FDR body (IOP 403).
 
 Conclusion: no fourth identity of Hendrick's bar. Nearby named numbers — Kapitza √2, Jeffery 4π, Routh (25+3√69)/2, Saffman–Taylor 1/2, Rayleigh–Plateau 2π√2 — are published and are not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on them.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
+### 2026-09-20  Tacchi Appendix B catalogs  query: "M. Tacchi" "Dynamique des tourbillons dans les fluides bidimensionnels" Appendix B; Matteo Tacchi thèse tourbillons; theses.fr Tacchi; HAL Tacchi tourbillons; Kimura 1988 Fluid Dyn. Res. 3, 98; Kimura JPSJ 56, 2024 1987
+
+Opened: theses.fr has no author Tacchi in fluids. HAL / theses.hal.science: no thesis of that title. Google Scholar / arXiv author Tacchi: Matteo Tacchi-Bénard only (moment-SOS, power-system stability, INSA Toulouse 2021; master's math Paris VI / Ponts / ENS Lyon). Kimura 1988 FDR 3, 98 abstract: two-page IUTAM note, collapse as singularities in the complex time plane; already logged as not a coefficient table. Kimura 1987 JPSJ 56, 2024 abstract: general similarity; rigid rotation vs collapse; regular triangle always exists; collinear from a cubic. Body paywalled (JPSJ 403). Gotoda JFM 2025 cites Kimura 1987 for z_m(t) = k_m √(2At+1) exp[i (B/2A) log(2At+1)] and t_c = −1/(2A); that product is Aref's pitch, not Hendrick's specialized min. RIMS kokyuroku 574 paper 06 (kurims 0574-06.pdf) is a Japanese soliton/Toda paper occupying pages 71–85, not Kimura's English title despite the CiNii page range.
+
+Blocked: Kimura 1987 JPSJ body. Kimura 1988 FDR body.
+
+Conclusion: there is no public Tacchi Appendix B to read. The citation named in IDENTITIES.md does not correspond to a deposited thesis. The document it was said to document (Kimura 1988) is the two-page complex-time note already skipped. Not a fourth row. Hendrick / parallelogram / quincunx stand. Do not cite the ghost thesis.
+
+Re-search: do not reopen Tacchi. Reopen Kimura 1987 body only if a newly named source states Hendrick's closed form or min √2.
+
 
 
 
