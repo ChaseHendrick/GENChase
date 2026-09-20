@@ -221,6 +221,41 @@ const { chromium } = require('playwright');
   const afterClick = await p.evaluate(() => document.querySelector('.tab[aria-selected="true"]').dataset.id);
   t('click after a drag still switches', afterClick === 'life', afterClick);
 
+  const viewpad = await p.evaluate(() => {
+    const pad = document.querySelector('#viewpad');
+    const r = pad && pad.getBoundingClientRect();
+    const fit = document.querySelector('#view-fit');
+    return {
+      shown: !!(pad && r && r.width > 0 && r.height > 0),
+      fitDisabled: !!(fit && fit.disabled),
+      bottom: r && r.bottom,
+      right: r && r.right,
+      innerH: innerHeight,
+      innerW: innerWidth,
+    };
+  });
+  t('view pad is on the stage', viewpad.shown && viewpad.fitDisabled && viewpad.bottom < viewpad.innerH + 1 && viewpad.right < viewpad.innerW + 1, viewpad);
+
+  await p.keyboard.press('+');
+  await p.waitForTimeout(80);
+  const zoomed = await p.evaluate(() => {
+    const c = document.querySelector('canvas.art:not([hidden])');
+    return { t: c && c.style.transform, fitOn: document.querySelector('#view-fit') && !document.querySelector('#view-fit').disabled };
+  });
+  t('+ zooms the plate', !!(zoomed.t && /scale/.test(zoomed.t)) && zoomed.fitOn, zoomed);
+
+  await p.evaluate(() => document.querySelector('#view-fit').click());
+  await p.waitForTimeout(80);
+  const fitted = await p.evaluate(() => {
+    const c = document.querySelector('canvas.art:not([hidden])');
+    return { t: (c && c.style.transform) || '', fitOff: document.querySelector('#view-fit') && document.querySelector('#view-fit').disabled };
+  });
+  t('Fit clears the view', fitted.t === '' && fitted.fitOff, fitted);
+
+  await p.keyboard.press('0');
+  const hashStill = await p.evaluate(() => location.hash);
+  t('view is not written into the hash', !/view|scale|pan/.test(hashStill), { hash: hashStill.slice(0, 80) });
+
   console.log('pageerrors:', errs.length? errs.slice(0,3): 'none');
   await b.close();
   console.log(fail? 'UI CHECK FAILED: '+fail : 'UI CHECK OK');
