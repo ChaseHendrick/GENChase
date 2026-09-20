@@ -225,6 +225,10 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | 3-vortex μ≠1 cubic | Gotoda A,B closed for Γ_H=0. μ=1 recovers Hendrick √2. Reciprocal pairs share the product (μ ↔ 1/μ): μ=1/2 and 2 give min |B/2A|≈1.741 (cubic crit, not a floor like √2). Same 3-vortex family as Hendrick, not a new row. Do not claim. Computed 2026-09-20 from Gotoda (3.3) plus M=0. |
 | Gallay–Sverak 2026 | arXiv:2609.10847 (9 Sep 2026). Hopf/ζ reduction, new energy inequalities H(ζ_A)>H(ζ_B), near-collision regularization. Not a two-rate product min. Cite; do not claim. |
 | Rott 1994 body | Still AIP-blocked. Abstract: winding number = ratio of two periods; "beyond a certain level of the analysis, still the more practical method of solution" is step-by-step integration. No unpublished algebraic interior min extracted. Leapfrog already logged. |
+| Möbius / Klein vortices | Balabanova–Montaldi Physica D 488, 135084 (Apr 2026); arXiv:2202.06160v3. One/two vortex motion, N-ring RE with coth/tanh angular velocities. Two-vortex fixed equilibria: nested-radical y. No collapse product. Catenoid coth already logged. |
+| Four bugs / mice | Square: isolated T=L/v. Parallelograms stay parallelograms then converge to a square (Chapman–Trefethen Proc. A 2011; Golich et al.). Not a self-similar 1-param with two-rate floor. |
+| C-metric | Photon surface algebraic in acceleration α. Isolated published radii. Extreme Kerr already logged. |
+| Three-heton | Two-layer analog of 3-vortex. No closed unused A, B found. gSQG already logged. |
 
 Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
 
@@ -794,6 +798,17 @@ Blocked: Rott 1994 body (AIP). Eckhardt 1989 body.
 Conclusion: the cubic skip is closed by computation, not by difficulty. μ≠1 is the same family as Hendrick with a cubic crit; reciprocal pairs share the product. Gallay–Sverak is 2026 three-vortex geometry, not a fourth floor. Rott remains unread at the formula level; the abstract already says the winding-number patterns are illustrated numerically. Not a fourth row.
 
 Re-search: do not re-minimize |B/2A| on 3-vortex μ≠1 unless a newly named paper states a simple unpublished algebraic floor (not a cubic root). Skip Gallay–Sverak unless a follow-up extracts a two-rate product min. Skip Rott unless the body is actually read and states a unique unpublished algebraic interior min.
+
+### 2026-09-20  hunt Möbius/Klein, four bugs, C-metric, heton  query: Balabanova Montaldi Möbius Klein point vortices; four bugs parallelogram collapse; C-metric photon ISCO; three heton collapse closed form
+
+Opened: Balabanova–Montaldi Physica D 488, 135084 (Apr 2026) / arXiv:2202.06160v3: Möbius and Klein vortices. N-ring RE ξ ~ coth, tanh. Two-vortex fixed equilibria nested radical in y. No collapse product. Chapman–Trefethen Proc. R. Soc. A 467, 881 (2011): four bugs on a rectangle; parallelograms remain parallelograms, perimeter shrinks at a constant rate, then freeze toward a line; convex parallelograms converge to a square. Square bugs T=L/v is isolated. C-metric photon surface algebraic in α, isolated published. Three-heton: no unused closed A, B; two-layer analog of 3-vortex / gSQG already logged.
+
+Blocked: Chapman–Trefethen full PDF body (Royal Society). Three-heton dedicated paper not found.
+
+Conclusion: non-orientable vortices, cyclic pursuit, and C-metric are published RE/coth, shape-changing pursuit, or isolated photon radii. Not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on Möbius coth or the four-bug square.
+
+Re-search: skip Möbius/Klein, four-bug parallelogram, and C-metric unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
 
 
 
