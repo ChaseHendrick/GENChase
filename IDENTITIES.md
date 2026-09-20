@@ -411,6 +411,8 @@ Checked 2026-09-20 missed geometries. Nested two-triangle six-vortex with $I=0$ 
 
 Checked 2026-09-20 difficulty skips. Three-vortex $\mu\neq 1$: Gotoda $A,B$ are closed; $\mu=1$ is Hendrick $\sqrt{2}$; reciprocal pairs share the product; other $\mu$ have a cubic critical point, not a floor like $\sqrt{2}$. Same family, not a new row. Gallay–Sverak (arXiv:2609.10847, 9 Sep 2026) give a new $\zeta$-reduction and energy inequalities for near-collisions, not a two-rate product min. Rott 1994 winding number remains AIP-blocked; the abstract already says path patterns are numerical. Do not claim these.
 
+Checked 2026-09-20 non-orientable vortices, pursuit, C-metric. Balabanova–Montaldi (Physica D 2026) Möbius/Klein: N-ring $\mathrm{coth}$ angular velocities and nested-radical two-vortex equilibria; no collapse product. Four bugs: parallelograms converge to a square (Chapman–Trefethen 2011); square $T=L/v$ is isolated. C-metric photon vs $\alpha$ is an isolated published radius. Three-heton has no unused closed $A,B$. Do not claim these. Do not put Hendrick's name on Möbius $\mathrm{coth}$ or the four-bug square.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 
