@@ -250,6 +250,12 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Kallyadan–Shukla 2022 | Phys. Rev. Fluids 7, 114701. Linear system for similarity; 1-param families numerical, vortices on closed curves. No unused closed A, B. |
 | Geostrophic 3-vortex 2025 | JPSJ 94, 094402. Collapse is non-self-similar. No single ω t_c. |
 | Pentagon + centre | I = 5 Γ R² ≠ 0. Cannot collapse. |
+| Periodic strip / parallelogram 3-vortex | Aref–Stremler 1996/1999. Zero net circulation, integrable, mapped to advection. Rational Γ: all motions periodic. Not a plane-style collapse product. |
+| Jackiw–Pi / Chern–Simons | Static Liouville vortices. Scale-free BPS. Not a two-rate collapse floor. |
+| Optical vortex annihilation | Core-size hydrodynamics, numerical/experiment. Fibich PRL 2006 is Kerr self-focusing. |
+| Novikov peakon collision | Finite-time collision / ill-posedness below s=3/2. Not a 1-param two-rate algebraic min. |
+| Abelian Higgs 3-vortex | Moduli geodesics; 2025 reconnection of filaments, not a point-collapse product. |
+| Massive vortices on an annulus | Radial oscillation + precession; critical mass is an isolated published threshold. |
 
 Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
 
@@ -859,6 +865,17 @@ Blocked: Kallyadan–Shukla full PDF (APS). JPSJ body behind paywall; abstract s
 Conclusion: extra-μ five-vortex is the quincunx formula with other coefficients, not a new family. Numerical N≥6 families and non-self-similar geostrophic collapse are not a two-rate algebraic floor. Not a fourth row. Do not claim these. Do not put Hendrick's name on a nested-radical extra-μ slice.
 
 Re-search: skip extra-μ five-vortex Gotoda 3.13, Kallyadan–Shukla 2022, JPSJ 94 094402, and pentagon+centre unless a newly named paper states a closed dimensionless product of two dynamical rates and its unique unpublished algebraic interior min on a family that is not the three rows.
+
+### 2026-09-20  hunt torus, disk, Chern–Simons, optical, Novikov peakon, abelian Higgs  query: three point vortices torus collapse; unit disk Kirchhoff-Routh collapse; Jackiw-Pi vortex collapse; optical vortex triplet annihilation; Novikov peakon collision two rates; abelian Higgs three-vortex moduli geodesic collapse; Aref Stremler periodic strip 1996
+
+Opened: Aref–Stremler JFM 314, 1 (1996) and 392, 101 (1999): three vortices, zero net circulation, periodic strip or parallelogram. Integrable; mapped to advection by fixed vortices. Rational Γ: all motions periodic. Not a self-similar plane collapse. Jackiw–Pi: Liouville, static, scale-free. Optical vortex pair annihilation: hydrodynamics of core size (JOSA A 2023); Fibich PRL 96, 133901 is Kerr collapse of a ring, azimuthal instability. Novikov 2-peakon: collision and ill-posedness (arXiv:1708.05759). Abelian Higgs: moduli geodesics; Geevechi–Jerrard arXiv:2512.12525 is filament reconnection. Massive vortices on an annulus: SciPost, critical mass. Kirchhoff–Routh Crowdy 2005 is the Hamiltonian, not a product min (already logged).
+
+Blocked: Aref–Stremler JFM bodies (Cambridge). Crowdy Proc. A path-function PDF.
+
+Conclusion: periodic-strip three-vortex is integrable and periodic, not a two-rate algebraic floor. Chern–Simons, optical annihilation, Novikov peakons, and Higgs moduli are static, numerical, or ill-posedness. Not a fourth row. Do not claim these. Do not put Hendrick's name on Jackiw–Pi or a Novikov collision time.
+
+Re-search: skip Aref–Stremler periodic strip/parallelogram, Jackiw–Pi, optical vortex annihilation, Novikov peakon collision, abelian Higgs moduli, and massive annular vortices unless a newly named paper states a closed dimensionless product of two dynamical rates and its unique unpublished algebraic interior min.
+
 
 
 
