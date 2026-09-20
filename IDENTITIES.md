@@ -420,6 +420,8 @@ Checked 2026-09-20 other areas. Brizard XMHD X-point collapse (arXiv:2504.07311)
 
 Checked 2026-09-20 outside math and physics. SIR peak and final size are published (Lambert $W$, Padé). Keller–Segel $8\pi$ and type-II $\lambda(t)$ are published. Lotka–Volterra periods are elliptic. Kingman waiting times, hawk–dove $p^*=V/C$, Nicholson–Bailey, Little's $L=\lambda W$, Kelly's $f^*$, and Kleiber's $3/4$ are isolated published or empirical. The identity bar does not pick up a fourth row in epidemiology, ecology, genetics, games, queues, or allometry. Do not claim these. Do not put Hendrick's name on Little, Kelly, or Kleiber.
 
+Checked 2026-09-20 extra-μ five-vortex and remaining 2022/2025 collapse papers. Gotoda (3.13) at diagonal ratio 3 recovers Hendrick $\sqrt{2}$ on five vortices (already skipped). Other rational $\mu$ keep the quincunx shape $(a-b\cos 2\theta)/\sin 2\theta$ with a nested-radical floor: same formula, other coefficients, not a new family. Kallyadan–Shukla (Phys. Rev. Fluids 7, 114701) families are numerical. Geostrophic triple collapse (JPSJ 94, 094402, 2025) is non-self-similar. A regular pentagon plus centre has $I\neq 0$. Do not claim these. Do not put Hendrick's name on a nested-radical extra-μ slice.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 

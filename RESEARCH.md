@@ -246,6 +246,10 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Little's law | L = λW always. Identity, not a min. 1961. |
 | Kelly criterion | f* = p − q. Isolated published. |
 | Kleiber / WBE | 3/4 scaling. Empirical / published theory. |
+| Extra-μ five-vortex (Gotoda 3.13) | Same (a−b cos 2θ)/sin 2θ. ρ=−3 recovers Hendrick √2 (diagonal ratio 3, already skipped). Other ρ: nested-radical floors, same formula as the quincunx. Not a new family. |
+| Kallyadan–Shukla 2022 | Phys. Rev. Fluids 7, 114701. Linear system for similarity; 1-param families numerical, vortices on closed curves. No unused closed A, B. |
+| Geostrophic 3-vortex 2025 | JPSJ 94, 094402. Collapse is non-self-similar. No single ω t_c. |
+| Pentagon + centre | I = 5 Γ R² ≠ 0. Cannot collapse. |
 
 Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
 
@@ -845,6 +849,17 @@ Blocked: none at the formula level.
 Conclusion: the identity bar is a 1-parameter product of two dynamical rates with a unique unpublished algebraic interior min. Outside math and physics the analogous catalogues are isolated published thresholds, Lambert-W times, elliptic periods, type-II parabolic blowup, or empirical scalings. Not a fourth row. Do not claim these. Do not put Hendrick's name on Little's L=λW, Kelly's f*, Kleiber's 3/4, or the SIR peak.
 
 Re-search: skip SIR, Keller-Segel, Lotka–Volterra, Kingman, hawk–dove, Nicholson–Bailey, Little, Kelly, and Kleiber unless a newly named paper states a closed dimensionless product of two dynamical rates and its unique algebraic interior min.
+
+### 2026-09-20  hunt extra-μ five-vortex, Kallyadan–Shukla, geostrophic 2025  query: extra μ five-vortex Gotoda 3.13 closed product min; Kallyadan Shukla PRFluids 7 114701; JPSJ 94 094402 geostrophic non-self-similar collapse; pentagon plus center I=0
+
+Opened: Gotoda (3.13) on Γ_H=0 five-vortex parallelogram+centre. μ=1 recovers parallelogram 3√5/4 and quincunx 3√33/16. ρ=γ2/γ1=−3 (diagonal ratio 3) recovers Hendrick √2 on five vortices (already skipped). Other rational ρ: min is a nested radical of the same (a−b cos 2θ)/sin 2θ shape. Kallyadan–Shukla Phys. Rev. Fluids 7, 114701 (2022): similarity as a linear system; families numerical. JPSJ 94, 094402 (2025): geostrophic triple collapse is non-self-similar. Regular pentagon + centre has I=5ΓR²≠0.
+
+Blocked: Kallyadan–Shukla full PDF (APS). JPSJ body behind paywall; abstract sufficient.
+
+Conclusion: extra-μ five-vortex is the quincunx formula with other coefficients, not a new family. Numerical N≥6 families and non-self-similar geostrophic collapse are not a two-rate algebraic floor. Not a fourth row. Do not claim these. Do not put Hendrick's name on a nested-radical extra-μ slice.
+
+Re-search: skip extra-μ five-vortex Gotoda 3.13, Kallyadan–Shukla 2022, JPSJ 94 094402, and pentagon+centre unless a newly named paper states a closed dimensionless product of two dynamical rates and its unique unpublished algebraic interior min on a family that is not the three rows.
+
 
 
 
