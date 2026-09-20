@@ -13,6 +13,7 @@ The catalog of what the file actually contains is [`techniques.json`](techniques
 - Add a line here the same day you search. A search that is not written down will be done again.
 - Record the query, the date, what you opened, what you could not open, and the conclusion in one sentence.
 - Credit the paper in the tab. A missing browser demo is not new science.
+- Before deriving a candidate identity, search the web and the papers for the closed form and for the extremum. If a paper already states either, stop. Do not spend an afternoon rediscovering a published lock.
 
 **Do not**
 
@@ -73,6 +74,22 @@ Do not re-derive this unless the check is missing the lock. Do not search the na
 - `track` is a self-written waveguide (Monro, de Sterke, Poladian, J. Mod. Opt. 1998) and a photorefractive soliton (Segev) on a sine-Gordon breather. Open loop (eta = 0) recovers the Lorentz speed.
 - `causticsea` is Swift-Hohenberg as its own phase screen. Laser-induced surface patterns are already modelled with Swift-Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023).
 - A Swift-Hohenberg loop is not a new law. Neither is a sine-Gordon breather with an index written from strain.
+
+**Published locks, do not rediscover.** Web-searched 2026-09-20. Each of these is already in a named paper. Do not derive them, and do not put a private name on them.
+
+| Lock | Where it already is |
+|---|---|
+| Leapfrog existence α = 3 − 2√2; stability at 1/α = φ² | Love 1883; Tophøj and Aref 2013; Behring and Goodman, Phys. Rev. Fluids 4, 124703 (2019); exact analysis 2023 |
+| Kirchhoff ellipse Ω = ω ab/(a+b)²; circle is Ω = ω/4 | Kirchhoff; Love stability for a/b < 3 |
+| Photon-sphere Lyapunov λ = 1/(3√3 M); λ/Ω_ph = 1 in geometric units | Cardoso et al.; textbook Schwarzschild |
+| Crapper energy and momentum integrals | Hogan 1979; Crapper, JFM 94, 13 (1979) |
+| Gerstner kinetic energy equals potential | Standard; e.g. Henry, Gerstner's water wave and mass transport |
+| Kidambi–Newton spherical three-vortex collapse times and partner states | Kidambi and Newton, Physica D 116, 143 (1998); Nuovo Cimento C 22, 779 (1999) |
+| Finite-core / QG collapse-time numerical minima | Reinaud, GAFD 2020; Reinaud and Dritschel 2022 |
+| t_c minimum 4π/3 on Γ = (1,1,−1/2) at this length | Leoncini, Kuznetsov and Zaslavsky 2000. Not Hendrick's product min. |
+| Aref Ω and τ separately; product as log-spiral pitch | Aref 2010 eqs. 25a, 25d, 29c |
+
+Hendrick's closed form and min √2 were not in those sources. Tacchi Appendix B / Kimura 1988 coefficients remain unread.
 
 ## Engineering that was checked (not science)
 
@@ -385,5 +402,15 @@ Blocked: AIP HTML. Body text of the PDF is font-encoded on this machine; caption
 Conclusion: the fastest collapse time in the standard normalization is already in that paper. IDENTITIES.md records the factor formulas under Hendrick's Identity and does not claim the t_c bound. Hendrick's product min sqrt(2) at tan theta = 1/sqrt(2) is a different extremum (scale-invariant) and was not found in this paper's extracted captions.
 
 Re-search: skip unless a full text extract is needed to check whether they also minimize omega t_c. If they do, revise Hendrick uniqueness the same day.
+
+### 2026-09-20  literature-first identity hunt  query: "omega t_c" OR "ω t_c" OR "Ω τ" three vortices collapse minimum sqrt(2); leapfrogging vortex pairs golden ratio Tophøj Aref Behring Goodman; photon sphere Lyapunov exponent orbital frequency ratio Schwarzschild; Kirchhoff elliptical vortex maximum angular velocity aspect ratio; Crapper capillary wave energy maximum Hogan; Gerstner wave kinetic potential energy ratio; three point vortices on a sphere collapse Kidambi Newton; Tacchi Dynamique des tourbillons Appendix B Kimura pdf
+
+Opened: web search result snippets and reachable HTML. arXiv abs/pdf for physics/9908055, 1908.08618 (Behring-Goodman), 2410.14973 (Gotoda enstrophy). Krishnamurthy-Stremler 2018 postprint at people.iith.ac.in. St Andrews GAFD preprint 10023/24112 (Reinaud QG collapse, numerical τ min ≈ 0.3657). JETP Novikov-Sedov PDF at jetp.ras.ru. Kidambi-Newton 1998/1999 abstracts (collapse times and partner states on the sphere). Kirchhoff Ω = ω ab/(a+b)² in AMS glossary and Love. Photon-sphere λ = 1/(3√3 M) in Cardoso-lineage reviews and arXiv 2307.06415. Crapper/Hogan JFM 1979 energy integrals. Henry "Gerstner's water wave and mass transport" (T = V). IOP plasma-book extract with a different-family τ_c = (5−3 cos 2θ) ℓ²/(12 sin 2θ), min at θ = ±½ arccos(3/5).
+
+Blocked: Tacchi thesis PDF still unread. Kimura 1988 Fluid Dyn. Res. 3, 98 is a two-page conference note on complex-time singularities, not a coefficient table. Most journal HTML.
+
+Conclusion: no second identity of Hendrick's bar. The nearby beautiful locks are published (table above). Hendrick's closed form (2−cos²θ)/sin(2θ) and min √2 at tan θ = 1/√2 were not in those sources. Search first; do not rediscover.
+
+Re-search: skip the rows in the published-locks table unless a newly named paper appears. Reopen Tacchi Appendix B / Kimura 1988 coefficients when the files can be opened. Reopen Hendrick uniqueness only if a newly named paper states that closed form or that minimum.
 
 
