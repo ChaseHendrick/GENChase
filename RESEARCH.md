@@ -175,8 +175,20 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Widnall vortex-ring instability | One unstable azimuthal mode; wave number set by core size (Widnall–Bliss–Tsai 1973/1974). Numerical / Bessel. Crow already logged. |
 | Euler collinear three-body | Fifth-degree in z = R₂₃/R₁₂. Homographic Kepler. Not a product min. Roberts kite already logged. |
 | Sitnikov problem | Restricted 3-body on the axis. Circular case elliptic; e > 0 chaotic (Sitnikov 1960; Alekseev). Not algebraic. |
+| Roche lobe / Hill sphere | Shape vs q numerical. Eggleton r₁/A = 0.49 q^{2/3}/(0.6 q^{2/3}+ln(1+q^{1/3})) is a fit, not a product min. L1 is a published saddle. |
+| Chandrasekhar mass | Ultra-relativistic n=3 Lane–Emden (already logged). M_Ch ≈ 1.4 M_⊙ numerical. Isolated published. |
+| Jeans / Toomre Q | λ_J = c_s √(π/Gρ). Q = c_s κ /(π G Σ) ≥ 1 (Toomre 1964). Isolated published stability threshold, not a 1-param product min. Do not claim. |
+| Noh implosion | Uniform inflow, accretion shock at constant D. Density jump ((γ+1)/(γ−1))^n. Isolated published. Guderley already logged. |
+| Barenblatt dipole / PME | Self-similar first-kind (Barenblatt–Zel'dovich 1957). Second-kind anomalous exponent when capillary retention. Not a vortex-collapse product. |
+| Carrier–Greenspan | Hodograph linearizes NSWE on a slope. Runup R = 2 η_max for one family; Bessel J₀ standing wave. Isolated published / elliptic. Ritter already logged. |
+| Nekrasov wave | Nonlinear integral equation for Φ(θ). Highest progressive 120° already logged (Stokes). Steepness numerical. |
+| Davey–Stewartson lumps / dromions | Exact 2+1 lumps (Davey–Stewartson 1974). KP lump already `#lump`. Phase shifts published. |
+| Tkachenko waves | Vortex-lattice displacement waves. ω ∝ k (slow) or k² (quantum Hall). Baym 2003; Andereck–Glaberson 1982. Published dispersion. |
+| Schubart orbit | Collinear 3-body, two binaries per period (Schubart 1956). Existence variational. Numerical period. Figure-eight already logged. |
+| Batchelor q-vortex / Sullivan | Exact NS. Batchelor 1964 trailing vortex; Sullivan 1959 two-cell. Burgers already logged. Isolated exact. |
+| Prandtl–Batchelor | Closed-streamline vorticity is constant as Re → ∞ (Prandtl 1904; Batchelor 1956). A theorem, not a product min. |
 
-Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, or on BKT's π/2.
+Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, or on Toomre's Q = 1.
 
 **Rejected as inventions.**
 
@@ -664,6 +676,17 @@ Blocked: most journal HTML. Novikov 1983 JETP body beyond the collapse-condition
 Conclusion: no fourth identity of Hendrick's bar. Lane–Emden π, Sedov 2/5, BKT π/2, Ritter 2, Lundquist j_{0,1} are isolated published locks, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Figure-eight, Miche steepness, Widnall, Sitnikov are numerical or elliptic. Tripole and vortons are the 2D skip in another coat. Do not claim these. Do not put Hendrick's name on BKT's π/2.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
+### 2026-09-20  hunt Roche, Chandrasekhar, Jeans, Toomre, Noh, Barenblatt, Carrier-Greenspan, Nekrasov, Davey-Stewartson, Tkachenko, Schubart, Batchelor, Sullivan, Prandtl-Batchelor  query: Roche lobe Eggleton formula Hill sphere; Chandrasekhar white dwarf limiting mass; Jeans length Toomre Q criterion; Noh problem implosion similarity; Barenblatt porous medium dipole; Carrier-Greenspan runup; Nekrasov integral equation highest wave; Davey-Stewartson lump dromion; Tkachenko waves vortex lattice; Schubart orbit collinear three-body; Batchelor q-vortex Sullivan two-cell; Prandtl-Batchelor theorem closed streamline vorticity
+
+Opened: Roche lobe vs q is numerical; Eggleton 1983 r₁/A fit to 1%. Hill sphere / L1 published saddle. Chandrasekhar 1931/1935: ultra-relativistic limit is Lane–Emden n=3 (already logged), M_Ch ≈ 1.4 M_⊙ numerical. Jeans length λ_J = c_s √(π/Gρ). Toomre 1964 Q = c_s κ /(π G Σ) ≥ 1; stellar 3.36. Isolated published stability threshold, not a 1-param product min. Noh 1987: uniform inflow, accretion shock at constant D, density jump ((γ+1)/(γ−1))^n. Isolated published. Guderley already logged. Velikovich 2018 generalized Noh, semi-analytic. Barenblatt 1952 / Barenblatt–Zel'dovich 1957 dipole self-similar first kind; second kind anomalous exponent with capillary retention. Carrier–Greenspan 1958 hodograph; runup R = 2 η_max for one standing family; Bessel J₀. Ritter already logged. Nekrasov 1921/1951 nonlinear integral equation; highest progressive 120° already Stokes. Davey–Stewartson 1974 lumps and dromions (Boiti–Leon–Pempinelli–Strampiglia; Fokas–Santini). KP lump already `#lump`. Tkachenko 1966 vortex-lattice waves; Baym PRL 2003 ω ∝ k or k²; Andereck–Glaberson 1982. Schubart 1956 collinear 3-body, two binaries per period; variational existence (Venturelli; Chen). Numerical period. Figure-eight already logged. Batchelor 1964 q-vortex; Sullivan 1959 two-cell exact NS (g(∞) ≈ 6.7088). Burgers already logged. Prandtl 1904 / Batchelor 1956: closed-streamline vorticity constant as Re → ∞. A theorem.
+
+Blocked: most journal HTML. Chandrasekhar 1935 MNRAS body. Schubart 1956 AN body.
+
+Conclusion: no fourth identity of Hendrick's bar. Toomre Q = 1, Chandrasekhar mass, Roche L1, Noh jump, Carrier–Greenspan 2, Prandtl–Batchelor constant vorticity are isolated published locks or theorems, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on Toomre's Q = 1.
+
+Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
 
 
 
