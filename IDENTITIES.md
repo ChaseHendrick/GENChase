@@ -426,6 +426,8 @@ Checked 2026-09-20 periodic domains, Chern–Simons, optics, peakons. Aref–Str
 
 Checked 2026-09-20 Akhmediev and spherical collapse. The Akhmediev breather has two closed rates $\beta=\sqrt{8a(1-2a)}$ and $\omega=2\sqrt{1-2a}$; their product has a unique max $8\sqrt{3}/9$ at $a=1/6$. Both factors are 1986, and the published lock is max gain at $a=1/4$. That is Jeffery-class calculus on published formulae, not a fourth row. Kidambi–Newton (1999) give two partner collapse times on the sphere; each vortex has a distinct angular velocity, so there is no single $\omega t_c$. Sakajo (2008) four-vortex sphere collapse is partial and numerical. Do not claim these. Do not put Hendrick's name on Akhmediev.
 
+Checked 2026-09-20 catalogues that had never been named. Wilberforce bounce/twist is a textbook avoided crossing (1894). Elliptic-billiard rotation number is a quotient of elliptic integrals; the 3-periodic caustic is Poncelet/Cayley. Ostrovsky–Hunter highest wave is the explicit parabola at $c=\pi^2/9$. Matsuno's Yanai wave is an isolated published dispersion. FitzHugh–Nagumo canards are a numerical locus. Point vortices on a cone have no closed $A,B$. Do not claim these. Do not put Hendrick's name on Wilberforce, Poncelet, Ostrovsky's $\pi^2/9$, or Matsuno.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 

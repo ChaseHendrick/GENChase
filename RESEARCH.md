@@ -258,6 +258,12 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Massive vortices on an annulus | Radial oscillation + precession; critical mass is an isolated published threshold. |
 | Akhmediev breather β ω | β=√(8a(1−2a)), ω=2√(1−2a), a∈(0,1/2). Product βω has unique max 8√3/9 at a=1/6. Both factors are Akhmediev 1986; max MI gain is the published a=1/4, not this product. Same class as Jeffery AM-GM and Kirchhoff λ/(1+λ)². Do not claim. |
 | Kidambi–Newton sphere | Collapse times t₁≠t₂ (partner states) are in the 1999 paper. Each vortex has a distinct angular velocity. No single ω t_c. |
+| Wilberforce pendulum | Two normal modes, avoided crossing, textbook 1894. Product of uncoupled frequencies is the tuning condition, published. |
+| Elliptic billiard / Poncelet | Rotation number is a quotient of elliptic integrals. 3-periodic caustic λ* published. Cayley conditions. |
+| Ostrovsky–Hunter highest | Isolated published c=π²/9, peaked parabola explicit. |
+| Matsuno Yanai / MRG | Isolated published dispersion ω=√((k/2)²+1)−k/2. |
+| FitzHugh–Nagumo canards | Numerical canard locus. Two timescales, not an unpublished algebraic product min. |
+| Vortices on a cone | No closed A, B found. Ellipsoid/bean already skipped. |
 
 Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
 
@@ -887,6 +893,17 @@ Blocked: none for these PDFs.
 Conclusion: the closest two-rate algebraic extremum outside the vortex-collapse catalogue is calculus on Akhmediev's 1986 factors. That is not the bar. Sphere collapse has no single ω. Not a fourth row. Do not claim these. Do not put Hendrick's name on Akhmediev or Kidambi–Newton.
 
 Re-search: skip Akhmediev βω, Kidambi–Newton spherical collapse, and Sakajo four-vortex sphere unless a newly named paper states a closed dimensionless product of two dynamical rates with a unique unpublished algebraic interior min that is not calculus on already-published factors.
+
+### 2026-09-20  hunt still-unopened catalogues: Wilberforce, elliptic billiard, Ostrovsky, Matsuno, FHN canards, cone vortices  query: Wilberforce pendulum two frequencies product min; elliptic billiard rotation number bounce period; Hunter-Saxton Ostrovsky highest wave; Matsuno Yanai mixed Rossby-gravity; FitzHugh-Nagumo canard two timescales product; point vortices cone collapse
+
+Opened: Wilberforce 1894: avoided crossing of bounce and twist; tuning ω_z=ω_θ is textbook; normal-mode product is the characteristic quadratic. Elliptic billiard: ρ(λ) quotient of elliptic integrals; 3-periodic caustic λ*=3ab/(a+b+2√(a²−ab+b²)) published (Poncelet/Cayley). Reduced Ostrovsky highest wave φ=(2π²−x²)/18 at c=π²/9, explicit Lipschitz peak (Hunter 1990; Liu–Pelinovsky–Sakovich). Matsuno 1966 Yanai ω=√((k/2)²+1)−k/2, isolated published. FitzHugh–Nagumo canards: numerical locus (arXiv:2411.11209, 2503.12596). Point vortices on a cone: no closed collapse product; ellipsoid/bean already skipped. J. Phys. A 2025 non-self-similar gSQG collapse already in the α-Euler skip.
+
+Blocked: none at the formula level.
+
+Conclusion: these unopened catalogues are textbook two-mode tuning, elliptic Poncelet, isolated published highest-wave speed, Matsuno dispersion, or numerical canards. Not a 1-parameter unpublished algebraic product min. Not a fourth row. Do not claim these. Do not put Hendrick's name on Wilberforce, Poncelet, Ostrovsky's π²/9, or Matsuno's Yanai wave.
+
+Re-search: skip Wilberforce, elliptic-billiard Poncelet, Ostrovsky–Hunter highest, Matsuno Yanai, FitzHugh–Nagumo canards, and cone vortices unless a newly named paper states a closed dimensionless product of two dynamical rates and its unique unpublished algebraic interior min.
+
 
 
 
