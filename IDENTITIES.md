@@ -327,6 +327,8 @@ Checked again 2026-09-20: Crowdy H-states give an explicit relative-equilibrium 
 
 Checked again 2026-09-20: Kimura 1987 is the general similarity solution (the collinear three-vortex condition is a cubic, already the $\mu\neq 1$ skip). Norbury–Fraenkel, Pocklington, Lamb–Chaplygin, Komineas magnetic Gröbli, hyperbolic-plane relative equilibria, Crowdy wedge layers, and Kudela's numerical $n$-vortex collapses are published or not an algebraic product min. Do not claim these. Do not put Hendrick's name on them.
 
+Checked again 2026-09-20: Moffatt–Kimura 2019 give $s\kappa=2\sin\alpha$ (equals $\sqrt{2}$ at $\alpha=\pi/4$) for a filament pair; that $\sqrt{2}$ is theirs, not Hendrick. Burgers dissipation, Föppl's cylinder locus, Benjamin–Ono $\|c\|\Delta=1$, Degasperis–Procesi / Novikov peakons, and Platonic vortex crystals are published. Do not claim these.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 
