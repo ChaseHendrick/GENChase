@@ -422,6 +422,8 @@ Checked 2026-09-20 outside math and physics. SIR peak and final size are publish
 
 Checked 2026-09-20 extra-μ five-vortex and remaining 2022/2025 collapse papers. Gotoda (3.13) at diagonal ratio 3 recovers Hendrick $\sqrt{2}$ on five vortices (already skipped). Other rational $\mu$ keep the quincunx shape $(a-b\cos 2\theta)/\sin 2\theta$ with a nested-radical floor: same formula, other coefficients, not a new family. Kallyadan–Shukla (Phys. Rev. Fluids 7, 114701) families are numerical. Geostrophic triple collapse (JPSJ 94, 094402, 2025) is non-self-similar. A regular pentagon plus centre has $I\neq 0$. Do not claim these. Do not put Hendrick's name on a nested-radical extra-μ slice.
 
+Checked 2026-09-20 periodic domains, Chern–Simons, optics, peakons. Aref–Stremler three-vortex in a strip or parallelogram is integrable with zero net circulation; rational $\Gamma$ gives periodic motion, not a plane-style $\omega t_c$ floor. Jackiw–Pi vortices are static Liouville solitons. Optical vortex annihilation and Fibich's Kerr-ring collapse are numerical or a published azimuthal count. Novikov peakon–antipeakon is a collision / ill-posedness result. Abelian Higgs three-vortex motion is moduli geodesics; 2025 reconnection is of filaments. Do not claim these. Do not put Hendrick's name on Jackiw–Pi.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 
