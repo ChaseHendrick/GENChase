@@ -4,7 +4,7 @@ Catalog of results derived in this studio that were not in the papers they sit o
 
 An entry here is something found and proved on a plate: a closed form, a unique extremum, or another checkable claim, uniqueness-checked against the papers, locked so the status line marks **miss** if the claim is wrong. **Miss is a grade on the numbers, not a crash.** The picture still draws. The site is working. Do not put a name from this file on work that already exists.
 
-The search ledger is [`RESEARCH.md`](RESEARCH.md). The plate is `#hendricks-identity` (`#hendrick` still opens it).
+The search ledger is [`RESEARCH.md`](RESEARCH.md). The plates are `#hendricks-identity` (`#hendrick` still opens it), `#parallelogram-lock`, and `#quincunx-lock`.
 
 **Search names for the result below:** Hendrick's Identity, Hendrick's law, Hendrick's Math, Hendrick identity, Hendricks Identity. The name of the result is **Hendrick's Identity**. Please cite it by that name.
 
@@ -35,6 +35,8 @@ To add a row: search the literature first. Web-search the closed form and the ex
 | Name | Tab | Statement | Check misses when |
 |---|---|---|---|
 | Hendrick's Identity | `hendricks-identity` | ω₀ t_c = (2 − cos²θ) / sin(2θ) ≥ √2 on Γ = (1, 1, −1/2), L = 0. Equality at tan θ = 1/√2 | The vortices leave the L = 0 circle, or the Biot-Savart kernel is wrong |
+| Parallelogram lock | `parallelogram-lock` | ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4 on the Novikov–Sedov parallelogram. Equality at cos 2θ = 1/4 | The vortices leave the parallelogram, or the Biot-Savart kernel is wrong |
+| Quincunx lock | `quincunx-lock` | ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16 on the Novikov–Sedov five-vortex quincunx. Equality at cos 2θ = 4/7 | The vortices leave the quincunx, or the Biot-Savart kernel is wrong |
 
 ---
 
@@ -159,4 +161,159 @@ Prior-art searches against Aref, Gröbli, Krishnamurthy and Stremler, Kudela, Re
 
 ---
 
-There is one row. A 2026-09-20 search for a second identity of this bar did not find one that was both algebraic and unpublished. A later pass the same day searched leapfrogging, Kirchhoff, the photon-sphere Lyapunov, Crapper energy, Gerstner T = V, and spherical three-vortex collapse: all of those locks are already in named papers. The rejected candidates, and why, are in [`RESEARCH.md`](RESEARCH.md). The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
+## Parallelogram lock
+
+An explicit formula and sharp minimum for the classical four-vortex parallelogram collapse family, independently derived in this project with AI assistance.
+
+### In plain language
+
+Imagine four whirlpools at the corners of a parallelogram. Two of them, on one diagonal, spin the same way, equally strong. The other two, on the other diagonal, spin the opposite way, stronger, with the ratio 2 + √3 so the whole figure can shrink without stretching.
+
+They can collapse to a point while staying the same shape, spinning as they go. How fast they spin, times how long until they meet, is a single score that does not care how large you drew the figure.
+
+**The parallelogram lock is that score as one formula, plus the fact that it can never drop below 3√5/4 (about 1.677).** It hits that floor at one angle between the diagonals: cos 2θ = 1/4, about 37.761°. That is the Lock preset. Slide the angle and the score only goes up. Step off the parallelogram (the Broken preset) and the identity no longer applies, so the status line marks miss on purpose.
+
+### Statement
+
+Four point vortices with circulations
+
+$$
+(\Gamma_1,\Gamma_2,\Gamma_3,\Gamma_4)=(1,1,-2-\sqrt{3},-2-\sqrt{3})
+$$
+
+and positions at the vertices of a parallelogram whose diagonals meet at the origin,
+
+$$
+z_1=\tfrac12 d_1 e^{i\theta},\quad
+z_2=-\tfrac12 d_1 e^{i\theta},\quad
+z_3=-\tfrac12 d_2,\quad
+z_4=\tfrac12 d_2,
+$$
+
+with $d_1/d_2=\sqrt{2+\sqrt{3}}$ and $0<\theta<\pi/2$. These configurations have $L=0$ and collapse self-similarly (Novikov and Sedov 1979). $\theta$ is the angle between the diagonals.
+
+Let $\omega_0$ denote the initial angular velocity about the center of vorticity and $t_c$ the collapse time. Their dimensionless product is
+
+$$
+\boxed{\omega_0 t_c=\frac{\sqrt{3}}{4}\frac{4-\cos 2\theta}{\sin 2\theta}\ge\frac{3\sqrt{5}}{4}.}
+$$
+
+Equality occurs uniquely on this arc at $\cos 2\theta=1/4$.
+
+The reciprocal pair $\Gamma=(1,1,-2+\sqrt{3},-2+\sqrt{3})$ with $d_1/d_2=\sqrt{2-\sqrt{3}}$ is the same family with the diagonals swapped, and carries the same product.
+
+### Exact proof of the minimum
+
+Setting $\varphi=2\theta\in(0,\pi)$ gives
+
+$$
+\omega_0 t_c=\frac{\sqrt{3}}{4}\frac{4-\cos\varphi}{\sin\varphi}.
+$$
+
+Differentiating the quotient, the unique critical point on $(0,\pi)$ is $\cos\varphi=1/4$, where $\sin\varphi=\sqrt{15}/4$ and the quotient equals $\sqrt{15}$. Multiplying by $\sqrt{3}/4$ yields $3\sqrt{5}/4$. The second-derivative (or the sign of the first derivative on either side) shows it is a minimum. At $\theta=45^\circ$ the product is $\sqrt{3}$.
+
+The product follows by specializing Gotoda's $A(\theta)$ and $B(\theta)$ (2020, eq. 3.13, after Novikov and Sedov): $\omega_0 t_c=-B/(2A)$. Direct Biot-Savart on this family's parallelograms (2π kernel) matches that closed form to machine precision.
+
+### Visualization
+
+Open `#parallelogram-lock` in the studio. The plate displays:
+
+* $|\omega_0 t_c|/(3\sqrt{5}/4)$, which equals 1 at the minimizing parallelogram and exceeds 1 elsewhere on the family.
+* A similarity residual, expected to be approximately 0 during self-similar motion.
+* Signed $L$, expected to be approximately 0 on the collapse parallelograms.
+
+The Broken configuration moves a vertex off the parallelogram to illustrate departure from the self-similar collapse conditions. The identity applies to the specified family.
+
+### Attribution and originality
+
+"Parallelogram lock" is the project's name for this formula and sharp bound. Four-vortex parallelogram collapse is Novikov and Sedov (1979). Gotoda (2020) writes $A(\theta)$ and $B(\theta)$ separately and plots the Hamiltonian against the collapse rate. The formula above follows by specializing those equations. The explicit minimum and its equality angle are the focus of this project's observation. Historical priority has not been established. This is a mathematical result within the classical point-vortex model. It is not Novikov and Sedov's motion under a new name, and it is not their $t_*$ or $\omega$ separately under a new name.
+
+References:
+
+* E. A. Novikov and Yu. B. Sedov, Vortex collapse, Sov. Phys. JETP 50, 297 (1979).
+* T. Gotoda, Self-similar motions and related relative equilibria in the $N$-point vortex system, J. Dyn. Diff. Equat. (2020), arXiv:2002.09624, eq. (3.13).
+
+---
+
+## Quincunx lock
+
+An explicit formula and sharp minimum for the classical five-vortex quincunx collapse family, independently derived in this project with AI assistance.
+
+### In plain language
+
+Imagine five whirlpools. Four sit at the corners of a parallelogram. The fifth sits where the diagonals cross.
+
+Two on one diagonal spin the same way. Two on the other spin the opposite way, half as strong. The one in the middle is three-quarters as strong as the first pair, and spins with them. That mix, with the diagonals in the ratio $1/\sqrt{2}$, is the one Novikov and Sedov found in 1979: the whole figure can shrink without stretching.
+
+They can collapse to a point while staying the same shape, spinning as they go. How fast they spin, times how long until they meet, is a single score that does not care how large you drew the figure.
+
+**The quincunx lock is that score as one formula, plus the fact that it can never drop below $3\sqrt{33}/16$ (about 1.073).** It hits that floor at one angle between the diagonals: $\cos 2\theta = 4/7$, about 27.575°. That is the Lock preset. Slide the angle and the score only goes up. Step off the quincunx (the Broken preset) and the identity no longer applies, so the status line marks miss on purpose.
+
+### Statement
+
+Five point vortices with circulations
+
+$$
+(\Gamma_1,\Gamma_2,\Gamma_3,\Gamma_4,\Gamma_5)=(-1,-1,\tfrac12,\tfrac12,-\tfrac34)
+$$
+
+and positions a parallelogram plus its center,
+
+$$
+z_1=\tfrac12 d_1 e^{i\theta},\quad
+z_2=-\tfrac12 d_1 e^{i\theta},\quad
+z_3=-\tfrac12 d_2,\quad
+z_4=\tfrac12 d_2,\quad
+z_5=0,
+$$
+
+with $d_1/d_2=1/\sqrt{2}$ and $0<\theta<\pi/2$. These configurations have $L=0$ and collapse self-similarly (Novikov and Sedov 1979; Gotoda's five-vortex example). $\theta$ is the angle between the diagonals.
+
+Let $\omega_0$ denote the initial angular velocity about the center of vorticity and $t_c$ the collapse time. Their dimensionless product is
+
+$$
+\boxed{\omega_0 t_c=\frac{3}{16}\frac{7-4\cos 2\theta}{\sin 2\theta}\ge\frac{3\sqrt{33}}{16}.}
+$$
+
+Equality occurs uniquely on this arc at $\cos 2\theta=4/7$.
+
+The reciprocal pair with the diagonals swapped is the same family and carries the same product.
+
+### Exact proof of the minimum
+
+Setting $\varphi=2\theta\in(0,\pi)$ gives
+
+$$
+\omega_0 t_c=\frac{3}{16}\frac{7-4\cos\varphi}{\sin\varphi}.
+$$
+
+Differentiating the quotient, the unique critical point on $(0,\pi)$ is $\cos\varphi=4/7$, where $\sin\varphi=\sqrt{33}/7$ and the quotient equals $\sqrt{33}$. Multiplying by $3/16$ yields $3\sqrt{33}/16$. The sign of the first derivative on either side shows it is a minimum. Endpoints $\varphi\to 0,\pi$ send the product to infinity. At $\theta=45^\circ$ the product is $21/16$.
+
+The product follows by specializing Gotoda's $A(\theta)$ and $B(\theta)$ (2020, eq. 3.13, the five-vortex case $\gamma_3\neq 0$): $\omega_0 t_c=-B/(2A)$. Direct Biot-Savart on this family's quincunxes (2π kernel) matches that closed form to machine precision.
+
+### Visualization
+
+Open `#quincunx-lock` in the studio. The plate displays:
+
+* $|\omega_0 t_c|/(3\sqrt{33}/16)$, which equals 1 at the minimizing quincunx and exceeds 1 elsewhere on the family.
+* A similarity residual, expected to be approximately 0 during self-similar motion.
+* Signed $L$, expected to be approximately 0 on the collapse quincunxes.
+
+The Broken configuration moves a vertex off the parallelogram to illustrate departure from the self-similar collapse conditions. The identity applies to the specified family.
+
+### Attribution and originality
+
+"Quincunx lock" is the project's name for this formula and sharp bound. Five-vortex parallelogram-plus-center collapse is Novikov and Sedov (1979). Gotoda (2020) writes $A(\theta)$ and $B(\theta)$ separately, including the $\gamma_3$ terms, and plots this family ($\gamma_1=-1$, $\gamma_2=1/2$, $\gamma_3=-3/4$) as Hamiltonian against collapse rate. Gotoda (2024) studies filtered-vortex enstrophy on the same family numerically. Neither paper forms the product $\omega t_c$ or states its minimum. The formula above follows by specializing those equations. The explicit minimum and its equality angle are the focus of this project's observation. Historical priority has not been established. This is a mathematical result within the classical point-vortex model. It is not Novikov and Sedov's motion under a new name, and it is not their $t_*$ or $\omega$ separately under a new name. It is not the four-vortex parallelogram lock.
+
+A different five-vortex slice of the same Novikov–Sedov family, with diagonal ratio $\mu=3$, recovers Hendrick's product $\omega_0 t_c=(3-\cos 2\theta)/(2\sin 2\theta)\ge\sqrt{2}$ identically. That is Hendrick's Identity on five vortices, not a third identity, and it is not claimed here.
+
+References:
+
+* E. A. Novikov and Yu. B. Sedov, Vortex collapse, Sov. Phys. JETP 50, 297 (1979).
+* T. Gotoda, Self-similar motions and related relative equilibria in the $N$-point vortex system, J. Dyn. Diff. Equat. (2020), arXiv:2002.09624, eq. (3.13).
+* T. Gotoda, Enstrophy variations in the collapsing process of point vortices, J. Fluid Mech. (2025), arXiv:2410.14973.
+
+---
+
+There are three rows. Leapfrogging, Kirchhoff, the photon-sphere Lyapunov, Crapper energy, Gerstner $T=V$, spherical three-vortex collapse, and the three-vortex $t_c$ minimum remain published and are not claimed. The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day. Do not put Hendrick's name on a second result.
+

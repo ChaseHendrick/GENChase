@@ -4,7 +4,7 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded, resolution-independent, and exports in inches at giclée resolution.
 
-One HTML file. 117 pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
+One HTML file. 119 pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
@@ -43,7 +43,7 @@ The usual options fall down in different places:
 - **An image model.** It will draw a snowflake that never froze and a quasicrystal that is a hexagon with extra steps. There is no seed that reprints, and no way to show that anything was solved.
 - **A recorded loop.** It looks alive until you touch it.
 
-GENChase is the other object: 117 sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
+GENChase is the other object: 119 sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
 
 | | On disk | What you get | How you reprint |
 |---|---|---|---|
@@ -57,7 +57,7 @@ GENChase is the other object: 117 sciences on one control surface, deterministic
 
 ## What is actually different
 
-**The assembly.** Almost every tab is the paper it names. Hendrick's Identity is the exception: a closed form and a sharp minimum derived here, uniqueness-checked, locked so the status line marks miss if the claim is wrong. Miss is a grade on the numbers, not a crash; the picture still draws. What is unusual about the rest is that chemistry, acoustics, liquid crystals, and aperiodic tiles share one seed field, one palette, and one export. Switching from Cahn–Hilliard to Chladni costs you nothing.
+**The assembly.** Almost every tab is the paper it names. Hendrick's Identity, the parallelogram lock, and the quincunx lock are the exceptions: closed forms and sharp minima derived here, uniqueness-checked, locked so the status line marks miss if the claim is wrong. Miss is a grade on the numbers, not a crash; the picture still draws. What is unusual about the rest is that chemistry, acoustics, liquid crystals, and aperiodic tiles share one seed field, one palette, and one export. Switching from Cahn–Hilliard to Chladni costs you nothing.
 
 **Determinism as the product.** Every random draw comes from a seeded generator. Geometry is resolution-independent. Keep the seed, get the same plate at 36 inches. Change it, get another world.
 
@@ -100,6 +100,8 @@ The word **miss** on a status line is not the site breaking. The picture is stil
 | Hasimoto | κ_max/(2ν) ; c/(2τ₀) | 1 ; 1 | **1.000** ; **1.000** |
 | Lump | KP-I residual of the Manakov lump | 0 | **~3×10⁻⁴** (FD) |
 | Hendrick's Identity | ω t_c / √2 on Gröbli's L=0 family | 1 at the octant triangle | **1.000** |
+| Parallelogram lock | ω t_c / (3√5/4) on Novikov-Sedov's parallelograms | 1 at cos 2θ = 1/4 | **1.000** |
+| Quincunx lock | ω t_c / (3√33/16) on Novikov-Sedov's five-vortex quincunx | 1 at cos 2θ = 4/7 | **1.000** |
 
 When a measurement disagrees with theory the tab says so rather than rounding toward it. Ballistic deposition fits **under** 1/3 because its crossover to KPZ is slow at plate size, and the hint says exactly that instead of quietly presenting 0.33. A neural field outside its patterning window prints "h is outside it, the sheet will go flat" rather than leaving a blank plate to be read as a subtle one.
 
@@ -123,7 +125,7 @@ A generative art tool can get away with a plausible-looking integrator. A plate 
 
 Worth being precise about, because the credits matter.
 
-**Published science, named.** Almost every tab names the paper it implements. Gray–Scott is Gray and Scott. The donor stack is Braun and Willett. Wilson's algorithm is Wilson's. Hendrick's Identity is the exception: derived here, uniqueness-checked, locked so the status line marks miss if the claim is wrong. Miss is a grade, not a crash. The statement is in [IDENTITIES.md](IDENTITIES.md). Do not put a name on work that already exists.
+**Published science, named.** Almost every tab names the paper it implements. Gray–Scott is Gray and Scott. The donor stack is Braun and Willett. Wilson's algorithm is Wilson's. Hendrick's Identity, the parallelogram lock, and the quincunx lock are the exceptions: derived here, uniqueness-checked, locked so the status line marks miss if the claim is wrong. Miss is a grade, not a crash. The statements are in [IDENTITIES.md](IDENTITIES.md). Do not put a name on work that already exists. Do not put Hendrick's name on a second result.
 
 **New as artifacts.** Every plate is an image that did not exist before it was computed, and the license says it is yours. That is the point of the object.
 
@@ -143,6 +145,8 @@ Worth being precise about, because the credits matter.
 - **Hasimoto.** A soliton on a vortex filament (Hasimoto, JFM 51, 477, 1972). Local induction maps to NLS; the sech is a traveling loop of helical motion. Speed along the filament equals twice the torsion. The plate reports κ_max/(2ν) and c/(2τ₀) from the polyline, not from the formula by construction.
 - **Lump.** KP-I lumps (Manakov et al. 1977), rational, 1/r² tails. Completely different from the studio’s KP-II line-soliton webs. The plate reports the KP-I residual (u_t + 6uu_x + u_xxx)_x − 3 u_yy against 0, by finite differences of the rational field, and the peak against 4b².
 - **Hendrick's Identity.** Three point vortices of circulations 1, 1, −1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae (his eqs. 25a, 25d) and wrote their product as the pitch of the logarithmic spiral (eq. 29c). The closed form of that product on this family is ω₀ t_c = (2 − cos²θ) / sin(2θ) ≥ √2, with equality uniquely at tan θ = 1/√2, the triangle with interior angles 22.5°, 45° and 112.5°. θ is the third vortex's place on the L = 0 circle, not an interior angle. With u = tan θ the product is u + 1/(2u). That identity is the project's observation; historical priority has not been established. The plate reports ω₀ t_c / √2 against 1, the similarity residual against 0, and signed L against 0. Off the circle, all three numbers miss on purpose. `#hendricks-identity` opens it; `#hendrick` still does. The statement, the proof, and the citation are in [IDENTITIES.md](IDENTITIES.md). Also searched as Hendrick's law, Hendrick's Math. `#track` is still Track.
+- **Parallelogram lock.** Four point vortices of circulations (1, 1, −2−√3, −2−√3) at the vertices of a parallelogram with diagonal ratio √(2+√3) collapse self-similarly (Novikov and Sedov, Sov. Phys. JETP 50, 297, 1979). Gotoda (2020, eq. 3.13) wrote the collapse rate A(θ) and the spin B(θ) separately and plotted Hamiltonian against collapse rate. The closed form of their product on this family is ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4, with equality uniquely at cos 2θ = 1/4. That identity is the project's observation; historical priority has not been established. The plate reports |ω₀ t_c| / (3√5/4) against 1, the similarity residual against 0, and signed L against 0. Off the parallelogram, all three numbers miss on purpose. `#parallelogram-lock` opens it. The statement and the proof are in [IDENTITIES.md](IDENTITIES.md). This is not Novikov and Sedov's t_* or ω separately under a new name.
+- **Quincunx lock.** Five point vortices of circulations (−1, −1, 1/2, 1/2, −3/4), four at the corners of a parallelogram and one at the crossing of the diagonals, diagonals in ratio 1/√2, collapse self-similarly (Novikov and Sedov 1979; Gotoda's five-vortex example). Gotoda (2020, eq. 3.13, γ3 ≠ 0) wrote A(θ) and B(θ) separately and plotted this family as Hamiltonian against collapse rate. The closed form of their product on this family is ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16, with equality uniquely at cos 2θ = 4/7. That identity is the project's observation; historical priority has not been established. The plate reports |ω₀ t_c| / (3√33/16) against 1, the similarity residual against 0, and signed L against 0. Off the quincunx, all three numbers miss on purpose. `#quincunx-lock` opens it. The statement and the proof are in [IDENTITIES.md](IDENTITIES.md). A different five-vortex slice with μ = 3 recovers Hendrick's product identically and is not claimed. This is not Novikov and Sedov's t_* or ω separately under a new name, and it is not named Hendrick.
 
 **Two closed loops, both with prior art.** Each piece is published. So is the family the loop belongs to. The plates are pictures of those families with an open-loop control sitting next to the closed one. A published equation plus a feedback term is not an invention, and it does not get a private name.
 
@@ -241,7 +245,7 @@ Click the seed label to copy it. Presets are starting points. The URL is the pie
 The full list, with the hash that reconstructs each plate and the papers each one implements, is in **[TECHNIQUES.md](TECHNIQUES.md)**. The same data in machine-readable form is [`techniques.json`](techniques.json). A short file for language models is [`llms.txt`](llms.txt). All three are generated from `studio.html` by `node tools/index.js`, so neither the catalog nor the AI index can drift away from what the file actually contains. Derived identities, when there are any, live in **[IDENTITIES.md](IDENTITIES.md)**. The query-by-query prior-art ledger is [RESEARCH.md](RESEARCH.md).
 
 
-Artificial Life (Lenia), Physarum, Physarum 3D, Phyllotaxis, Hastings–Levitov, Lichtenberg, Gravner–Griffeath snowflakes, differential growth, fractals, CPPNs, chimera states, swarmalators, Cahn–Hilliard, Ohta–Kawasaki, Swift–Hohenberg, phase-field crystal, XY / Kosterlitz–Thouless, complex Ginzburg–Landau, Lifshitz–Petrich 12-fold, active nematics, fluids, Kuramoto–Sivashinsky, dendritic growth, flow fields, smectic focal conics, Gray–Scott, Penrose / hat / spectre tilings, attractors, Chirikov, Hofstadter, Helmholtz scars, optical caustics, Talbot, Indra’s pearls, Chladni, cortical planforms, random matrices, drainage networks, rough growth, foam and grain coarsening, condensate vortex lattices, Toner-Tu flocking, hyperbolic Turing patterns, uniform spanning trees, granular force chains, Liesegang rings, Track, Caustic Sea, KP-II soliton webs, Gerstner waves, the figure-eight choreography, Camassa–Holm peakons, the Schwarzschild photon sphere, Crapper capillary waves, Hasimoto vortex filaments, KP-I lumps, Hendrick's Identity.
+Artificial Life (Lenia), Physarum, Physarum 3D, Phyllotaxis, Hastings–Levitov, Lichtenberg, Gravner–Griffeath snowflakes, differential growth, fractals, CPPNs, chimera states, swarmalators, Cahn–Hilliard, Ohta–Kawasaki, Swift–Hohenberg, phase-field crystal, XY / Kosterlitz–Thouless, complex Ginzburg–Landau, Lifshitz–Petrich 12-fold, active nematics, fluids, Kuramoto–Sivashinsky, dendritic growth, flow fields, smectic focal conics, Gray–Scott, Penrose / hat / spectre tilings, attractors, Chirikov, Hofstadter, Helmholtz scars, optical caustics, Talbot, Indra’s pearls, Chladni, cortical planforms, random matrices, drainage networks, rough growth, foam and grain coarsening, condensate vortex lattices, Toner-Tu flocking, hyperbolic Turing patterns, uniform spanning trees, granular force chains, Liesegang rings, Track, Caustic Sea, KP-II soliton webs, Gerstner waves, the figure-eight choreography, Camassa–Holm peakons, the Schwarzschild photon sphere, Crapper capillary waves, Hasimoto vortex filaments, KP-I lumps, Hendrick's Identity, the parallelogram lock, the quincunx lock.
 
 Each tab names the researchers. The implementations are original.
 

@@ -59,15 +59,29 @@ Copied from the README, restated so an agent does not have to infer it.
 
 ## Physics
 
-**Published, implemented, not claimed, with one exception.** Almost every tab names a paper in `credit`. Gray-Scott is Gray and Scott. Wilson's algorithm is Wilson's. The self-check numbers in the README are measurements from the plate against those papers, not new predictions. Hendrick's Identity is the exception: derived here, uniqueness-checked, locked to the plate.
+**Published, implemented, not claimed, with three exceptions.** Almost every tab names a paper in `credit`. Gray-Scott is Gray and Scott. Wilson's algorithm is Wilson's. The self-check numbers in the README are measurements from the plate against those papers, not new predictions. Hendrick's Identity, the parallelogram lock, and the quincunx lock are the exceptions: derived here, uniqueness-checked, locked to the plate.
 
-**The one derived lock.** The statement, the minimum, what it is not, and how the check misses live in [`IDENTITIES.md`](IDENTITIES.md). Three point vortices of circulations 1, 1, -1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae. On this family their dimensionless product is
+**The derived locks.** The statements, the minima, what they are not, and how the checks miss live in [`IDENTITIES.md`](IDENTITIES.md). Three point vortices of circulations 1, 1, -1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae. On this family their dimensionless product is
 
     omega t_c = (2 - cos^2 theta) / sin(2 theta)
 
 which has a unique minimum of sqrt(2) at tan theta = 1/sqrt(2), the triangle with angles 22.5, 45, and 112.5 degrees. At construction theta = 45 degrees the same product is 3/2. That identity is not in those papers. The factors at this length are t_c = (pi/3)(4u + 1/u) and 2 pi omega = 3(2u^2+1)/(4u^2+1); the t_c minimum 4pi/3 at u = 1/2 is Leoncini, Kuznetsov and Zaslavsky (2000) and is not claimed. The plate reports omega t_c / sqrt(2) against 1, the similarity residual against 0, and signed L against 0. Off the L = 0 circle, all three numbers miss on purpose. Miss is a grade, not a crash.
 
 Do not re-derive this unless the check is missing the lock. Do not search the name of the tab as if it were a published law. Do not put that name on a different system.
+
+**The parallelogram lock.** Four point vortices of circulations (1, 1, −2−√3, −2−√3) at the vertices of a parallelogram with diagonal ratio √(2+√3) collapse self-similarly (Novikov and Sedov, Sov. Phys. JETP 50, 297, 1979). Gotoda (2020) eq. (3.13) gives A(θ) and B(θ) separately. Their product is
+
+    omega t_c = (√3/4) (4 − cos 2θ) / sin(2θ)
+
+which has a unique minimum of 3√5/4 at cos 2θ = 1/4. Direct Biot-Savart on this family (2π kernel) matches that closed form. The plate is `#parallelogram-lock`. Off the parallelogram, the numbers miss on purpose. Miss is a grade, not a crash. Do not claim Novikov-Sedov's t_* or ω separately, and do not put a private name on their motion.
+
+**The quincunx lock.** Five point vortices of circulations (−1, −1, 1/2, 1/2, −3/4), four at the vertices of a parallelogram and one at the crossing of the diagonals, with diagonal ratio 1/√2, collapse self-similarly (Novikov and Sedov 1979; Gotoda's five-vortex example). Gotoda (2020) eq. (3.13) with γ3 ≠ 0 gives A(θ) and B(θ) separately. Their product is
+
+    omega t_c = (3/16) (7 − 4 cos 2θ) / sin(2θ)
+
+which has a unique minimum of 3√33/16 at cos 2θ = 4/7. Direct Biot-Savart on this family (2π kernel) matches that closed form. The plate is `#quincunx-lock`. Off the quincunx, the numbers miss on purpose. Miss is a grade, not a crash. Do not claim Novikov-Sedov's t_* or ω separately, and do not put a private name on their motion. A different five-vortex slice with diagonal ratio μ = 3 recovers Hendrick's product identically; that is not a third identity and is not claimed.
+
+Do not re-derive these unless the check is missing the lock. Do not search the name of a tab as if it were a published law. Do not put Hendrick's name on a different system.
 
 **Rejected as inventions.**
 
@@ -110,7 +124,7 @@ These are software claims. They transfer. They are not physics.
 
 ## Per-tab status
 
-117 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
+119 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
 
 Familiarity is listed so you do not confuse it with prior-art status.
 
@@ -233,14 +247,20 @@ Familiarity is listed so you do not confuse it with prior-art status.
 | `hasimoto` | Hasimoto | occasional | software search | skip unless new source |
 | `lump` | Lump | occasional | software search | skip unless new source |
 | `hendricks-identity` | Hendrick's Identity | unseen | identity | do not re-derive |
+| `parallelogram-lock` | Parallelogram lock | unseen | identity | do not re-derive |
+| `quincunx-lock` | Quincunx lock | unseen | identity | do not re-derive |
 
 ## Notes on the rows that are not `science only`
 
-### Derived identity (the only physics claim that is not in the cited papers)
+### Derived identities (the physics claims that are not in the cited papers)
 
-The statement is in [`IDENTITIES.md`](IDENTITIES.md). Do not duplicate it here.
+The statements are in [`IDENTITIES.md`](IDENTITIES.md). Do not duplicate them here.
 
 **`hendricks-identity` (Hendrick's Identity).** `#hendrick` still opens it. Derived here, uniqueness-checked, locked to the plate. Search notes: Aref 2010 eqs. 25a and 25d give Omega and tau separately. Aref eq. 29c already writes the product as the pitch of the logarithmic spiral. Kudela 2014 and Reinaud-Dritschel 2022 minimize collapse time, not the product. Krishnamurthy-Stremler 2018 give dimensionless tau-tilde as a function of angles, no min sqrt(2). Closed form and min: not in those papers. Off the L=0 circle the check marks miss on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum.
+
+**`parallelogram-lock` (Parallelogram lock).** Derived here, uniqueness-checked, locked to the plate. Search notes: Novikov-Sedov 1979 give t_* and ω separately for the parallelogram family. Gotoda 2020 eq. (3.13) writes A(θ) and B(θ) separately and plots Hamiltonian against collapse rate. Neither forms the product ω t_c or states min 3√5/4 at cos 2θ = 1/4. Off the parallelogram the check marks miss on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum. Do not claim Novikov-Sedov's t_* or ω separately.
+
+**`quincunx-lock` (Quincunx lock).** Derived here, uniqueness-checked, locked to the plate. Search notes: Novikov-Sedov 1979 give the five-vortex parallelogram-plus-center motion. Gotoda 2020 eq. (3.13) with γ3 ≠ 0 writes A(θ) and B(θ) separately and plots this family (γ1 = −1, γ2 = 1/2, γ3 = −3/4) as Hamiltonian against collapse rate. Gotoda 2024/2025 (arXiv:2410.14973) studies filtered-vortex enstrophy on the same family numerically. Full-text extract of Gotoda 2020 contains no 4/7, no √33, no ω t_c product, no −B/(2A) minimum. Web search for 3√33/16 and cos 2θ = 4/7 as a vortex product returned no hits. Direct Biot-Savart (2π kernel) matches (3/16)(7 − 4 cos 2θ)/sin(2θ). Off the quincunx the check marks miss on purpose. A five-vortex slice with μ = 3 recovers Hendrick's product identically and is not claimed. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum. Do not claim Novikov-Sedov's t_* or ω separately, and do not put Hendrick's name on this plate.
 
 ### Published family plus a feedback term (not inventions)
 
@@ -412,5 +432,16 @@ Blocked: Tacchi thesis PDF still unread. Kimura 1988 Fluid Dyn. Res. 3, 98 is a 
 Conclusion: no second identity of Hendrick's bar. The nearby beautiful locks are published (table above). Hendrick's closed form (2−cos²θ)/sin(2θ) and min √2 at tan θ = 1/√2 were not in those sources. Search first; do not rediscover.
 
 Re-search: skip the rows in the published-locks table unless a newly named paper appears. Reopen Tacchi Appendix B / Kimura 1988 coefficients when the files can be opened. Reopen Hendrick uniqueness only if a newly named paper states that closed form or that minimum.
+
+### 2026-09-20  five-vortex quincunx product  query: Gotoda 2002.09624 eq 3.13 five vortex A(theta) B(theta) gamma_3; Novikov-Sedov JETP 50 297 five vortex parallelogram plus center t_* omega; "3 sqrt(33)/16" OR 3√33/16 vortex collapse; "cos 2θ" "4/7" vortex collapse minimum; Gotoda 2410.14973 enstrophy five vortex Hamiltonian against collapse rate; mu=3 five vortex recovers (3-cos 2θ)/(2 sin 2θ)
+
+Opened: Gotoda arXiv 2002.09624 HTML (ar5iv) section 3.2 / eq. (3.13) for A(θ), B(θ) on the parallelogram, including γ3; conditions (3.11)–(3.12) I = 0, Γ_H = 0. Gotoda arXiv 2410.14973 HTML: numerical enstrophy on the four- and five-vortex Novikov-Sedov families, plots of H vs A, no product min. Novikov-Sedov JETP PDF extract: t_* and ω separately. Full-text extract /tmp/gotoda.txt: no 4/7, no √33, no ω t_c, no −B/(2A) as a minimized product. Web search for 3√33/16 and cos 2θ = 4/7 as a vortex lock: no hits. Direct Biot-Savart algebra on Γ = (−1, −1, 1/2, 1/2, −3/4), d1/d2 = 1/√2 (2π kernel) matches ω t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ). Critical point of (7 − 4 cos φ)/sin φ is cos φ = 4/7, min √33, hence 3√33/16. Plate `#quincunx-lock` lock 1.000, broken misses. The μ = 3 five-vortex slice recovers Hendrick's (3 − cos 2θ)/(2 sin 2θ) ≥ √2 identically; logged and not claimed.
+
+Blocked: most journal HTML. Tacchi appendix still unread.
+
+Conclusion: a third identity of Hendrick's bar. Gotoda states A(θ) and B(θ) separately and does not form the product or its unique interior min. Novikov-Sedov state the motion, t_*, and ω separately. Do not claim those. Do not put Hendrick's name on this plate.
+
+Re-search: do not re-derive. Reopen only if a newly named paper states ω t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) or min 3√33/16 at cos 2θ = 4/7.
+
 
 

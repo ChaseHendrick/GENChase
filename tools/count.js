@@ -57,6 +57,7 @@ function ensureResearchRows(text, mods) {
 
 function stampStudio(src, n) {
   const num = String(n);
+  src = stampText(src, n);
   src = src.replace(new RegExp('\\b' + SPELLED_ANY + ' pattern-forming systems', 'gi'), num + ' pattern-forming systems');
   src = src.replace(new RegExp('\\b' + SPELLED_ANY + ' techniques spanning', 'gi'), num + ' techniques spanning');
   src = src.replace(new RegExp('\\b' + SPELLED_ANY + ' unrelated sciences', 'gi'), num + ' unrelated sciences');

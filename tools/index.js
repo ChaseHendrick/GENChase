@@ -116,7 +116,7 @@ The same data in machine-readable form is [\`techniques.json\`](techniques.json)
   md += `
 ## Credits
 
-Each technique names the people whose work it implements. Hendrick's Identity is the exception: derived here, uniqueness-checked, locked so the status line marks miss if the claim is wrong. Miss is a grade on the numbers, not a crash. The statement is in IDENTITIES.md.
+Each technique names the people whose work it implements. Hendrick's Identity, the parallelogram lock, and the quincunx lock are the exceptions: derived here, uniqueness-checked, locked so the status line marks miss if the claim is wrong. Miss is a grade on the numbers, not a crash. The statements are in IDENTITIES.md.
 
 `;
   for (const m of mods) md += `**${esc(m.name)}**. ${esc(m.credit)}\n\n`;
@@ -140,7 +140,7 @@ One HTML file of seeded scientific simulations. Each tab reprints from a hash. G
 - AGENTS.md — product rules.
 - tools/modules/CONTRACT.md — how to add a tab.
 - README.md — what is new, and what is not.
-- IDENTITIES.md — Hendrick's Identity (also searched as Hendrick's law, Hendrick's Math). Cite it by that name. Read before claiming another.
+- IDENTITIES.md — derived identities. Cite Hendrick's Identity by that name (also Hendrick's law, Hendrick's Math). Do not put that name on a second result. Read before claiming another.
 - RESEARCH.md — what was searched, what was not. Read before a prior-art search. Do not re-run a search marked skip.
 
 ## Recipe hash
