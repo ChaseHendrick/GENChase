@@ -18,7 +18,7 @@ The catalog of what the file actually contains is [`techniques.json`](techniques
 **Do not**
 
 - Re-run a search this file marks skip, unless you have a newly named repository, paper, or site that was previously unreachable.
-- Put a name on a published equation or on someone else's result. If you derived something, checked it against the papers, and put a check on the plate that marks miss when it is wrong, claim it: write [`IDENTITIES.md`](IDENTITIES.md) the same day. Hendrick's identity is that case. It is not Gröbli's motion and it is not Aref's product under a new name.
+- Put a name on a published equation or on someone else's result. If you derived something, checked it against the papers, and put a check on the plate that marks miss when it is wrong, claim it: write [`IDENTITIES.md`](IDENTITIES.md) the same day, named for you (or a lock name you choose). Hendrick's Identity is Hendrick's. That name does not travel. It is not Gröbli's motion and it is not Aref's product under a new name.
 - Private-name a published equation plus a feedback term. `track` and `causticsea` already made that mistake in draft and were renamed.
 - Treat **familiarity** / "seen elsewhere" as a measurement or a prior-art result. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
 - Parse `studio.html` to answer "what is in the catalog". Read `techniques.json`.
