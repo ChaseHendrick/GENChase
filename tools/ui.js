@@ -195,6 +195,32 @@ const { chromium } = require('playwright');
   }));
   t('#hendrick opens Hendrick\'s Identity', alias.id === 'hendrick' && alias.seed === 'alias-check', alias);
 
+  const pe = await p.evaluate(() => getComputedStyle(document.querySelector('#status')).pointerEvents);
+  t('status does not eat plate clicks', pe === 'none', pe);
+
+  const dragStart = await p.evaluate(() => {
+    const tabs = document.querySelector('#tabs');
+    const tab = tabs.querySelector('.tab[aria-selected="true"]') || tabs.querySelector('.tab[data-id]');
+    const r = tab.getBoundingClientRect();
+    return { x: r.x + 12, y: r.y + r.height / 2, sl: tabs.scrollLeft, startId: tab.dataset.id };
+  });
+  await p.mouse.move(dragStart.x, dragStart.y);
+  await p.mouse.down();
+  await p.mouse.move(dragStart.x + 180, dragStart.y, { steps: 12 });
+  await p.mouse.up();
+  await p.waitForTimeout(100);
+  const dragged = await p.evaluate(start => {
+    const tabs = document.querySelector('#tabs');
+    return { sl: tabs.scrollLeft, id: document.querySelector('.tab[aria-selected="true"]').dataset.id, startId: start.startId, startSl: start.sl };
+  }, dragStart);
+  t('tab strip pans on a mouse drag', Math.abs(dragged.sl - dragged.startSl) > 20, dragged);
+  t('dragging a tab does not switch', dragged.id === dragged.startId, dragged);
+
+  await p.evaluate(() => document.querySelector('.tab[data-id="life"]').click());
+  await p.waitForTimeout(400);
+  const afterClick = await p.evaluate(() => document.querySelector('.tab[aria-selected="true"]').dataset.id);
+  t('click after a drag still switches', afterClick === 'life', afterClick);
+
   console.log('pageerrors:', errs.length? errs.slice(0,3): 'none');
   await b.close();
   console.log(fail? 'UI CHECK FAILED: '+fail : 'UI CHECK OK');

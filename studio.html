@@ -301,8 +301,9 @@
   }
   .tabs {
     display: flex; gap: 2px; padding-inline: 4px 12px; overflow-x: auto; scrollbar-width: none;
-    flex: 1 1 auto; min-width: 0; align-items: stretch;
+    flex: 1 1 auto; min-width: 0; align-items: stretch; cursor: grab;
   }
+  .tabs.dragging { cursor: grabbing; }
   .tabs::-webkit-scrollbar { display: none; }
   .tab.is-hidden { display: none; }
   @media (max-width: 520px) { .find { flex-basis: 6.4rem; } }
@@ -445,6 +446,7 @@
   .status {
     position: absolute; left: 16px; bottom: 12px; font-family: "Geist Mono", ui-monospace, monospace; font-size: 11px; color: var(--muted);
     letter-spacing: 0.02em; display: flex; gap: 16px; font-variant-numeric: tabular-nums; flex-wrap: wrap;
+    pointer-events: none;
   }
   .status b { color: var(--ink-2); font-weight: 500; }
 
@@ -510,7 +512,7 @@
   .witness.w-quiet .live-badge { padding: 5px; gap: 0; }
   .witness.w-off #live-label, .witness.w-off .live-fp,
   .witness.w-off .witness-strip, .witness.w-off .witness-hint { display: none; }
-  .witness.w-off .live-badge { padding: 5px; gap: 0; opacity: 0; transition: opacity 120ms ease; }
+  .witness.w-off .live-badge { padding: 5px; gap: 0; opacity: 0; transition: opacity 120ms ease; width: 18px; height: 18px; min-width: 0; overflow: hidden; }
   .witness.w-off .live-badge:hover, .witness.w-off .live-badge:focus-visible { opacity: 0.55; }
 
   .sheet {
@@ -603,8 +605,9 @@
     display: flex; gap: 8px; align-items: stretch;
     flex: 0 0 auto;
     padding: 8px 12px; background: var(--panel); border-bottom: 1px solid var(--line);
-    overflow-x: auto; scrollbar-width: thin; min-height: 78px;
+    overflow-x: auto; scrollbar-width: thin; min-height: 78px; cursor: grab;
   }
+  .history.dragging { cursor: grabbing; }
   .history[hidden] { display: none !important; }
   .history .hitem {
     flex: none; width: 76px; min-height: 74px; border: 1px solid var(--line-strong); border-radius: 6px;
@@ -907,7 +910,7 @@
         <b>Focus</b> (F) hides the chrome so the plate fills the window; Esc brings it back. Click the seed label to copy it. P pauses a running plate.
         <b>Record</b> (V) films a clip of up to 60 seconds as WebM, or MP4 where the browser only encodes that. It appears on a living plate, and on a still plate that can run — pressing it starts the field. The export sheet also offers an 8-second clip, plus JPEG and WebP of the print.
         <b>Ambient</b> (A) enters focus and walks the techniques every 30 seconds with a fresh seed, for a second monitor or a wall; Esc stops it.
-        Click and drag to disturb the field. The <b>LIVE</b> badge means the simulation is still computing; <b>Still</b> means this frame is finished. Click the badge, or press <b>W</b>, to cycle it down to a bare dot and then out of the way; it stays where you left it.
+        Click or drag to disturb the field. The <b>LIVE</b> badge means the simulation is still computing; <b>Still</b> means this frame is finished. Click the badge, or press <b>W</b>, to cycle it down to a bare dot and then out of the way; it stays where you left it.
         <b>Save</b> (B) keeps a plate in the gallery; <b>Gallery</b> (G) opens it.
         <b>,</b> and <b>.</b> walk the preset list without opening the menu. <b>C</b> copies the plate to the clipboard at screen size, for pasting into a message; E is still the route to a file at print resolution.
         Shortcuts: space generate, S surprise, E export, C copy image, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, / find a technique, P pause, V record, A ambient, W witness, , . presets, 1–9 tabs, [ ] history, ? this list.</p>
@@ -2246,9 +2249,6 @@ void main(){
     });
 
     e.canvas.addEventListener('pointerdown', ev => onPokeDown(e, ev));
-    e.canvas.addEventListener('pointermove', onPokeMove);
-    e.canvas.addEventListener('pointerup', onPokeUp);
-    e.canvas.addEventListener('pointercancel', onPokeUp);
     e.canvas.addEventListener('keydown', ev => onPokeKey(e, ev));
     e.canvas.addEventListener('focus', () => {
       pokeCursor = { x: 0.5, y: 0.5 };
@@ -2551,7 +2551,7 @@ void main(){
     if (hint) {
       hint.textContent = canvasFocused && poke
         ? 'Arrows move the poke. Enter applies. Shift+arrow drags.'
-        : (liveNow && poke) ? (coarsePointer() ? 'Touch and drag to disturb' : 'Drag to disturb') : '';
+        : poke ? (coarsePointer() ? 'Touch or drag to disturb' : 'Click or drag to disturb') : '';
     }
     if (force) {
       pushWitnessFrame(e.canvas);
@@ -2575,6 +2575,14 @@ void main(){
     } catch (err) { /* tainted or lost context */ }
   }
   let pokeStroke = null;
+  let pokeWindowBound = false;
+  function bindPokeWindow() {
+    if (pokeWindowBound) return;
+    pokeWindowBound = true;
+    window.addEventListener('pointermove', onPokeMove);
+    window.addEventListener('pointerup', onPokeUp, true);
+    window.addEventListener('pointercancel', onPokeUp, true);
+  }
   function pokeUV(canvas, ev) {
     const r = canvas.getBoundingClientRect();
     const x = util.clamp((ev.clientX - r.left) / Math.max(1, r.width), 0, 1);
@@ -2585,12 +2593,17 @@ void main(){
     const dx = prev ? uv.x - prev.x : 0;
     const dy = prev ? uv.yGL - prev.yGL : 0;
     e.inst.disturb({ x: uv.x, y: uv.y, yGL: uv.yGL, dx, dy });
+    if (e.paused) {
+      e.paused = false;
+      try { e.inst.resume && e.inst.resume(); } catch (err) { /* already moving */ }
+    }
   }
   function onPokeDown(e, ev) {
     if (ev.button && ev.button !== 0) return;
     if (!e.inst || !e.inst.disturb) return;
     ev.preventDefault();
-    try { e.canvas.setPointerCapture(ev.pointerId); } catch (err) { /* ignore */ }
+    bindPokeWindow();
+    try { e.canvas.setPointerCapture(ev.pointerId); } catch (err) { /* iframe and some GPUs refuse capture on a WebGL canvas */ }
     const uv = pokeUV(e.canvas, ev);
     pokeStroke = { e, last: uv, dirty: true, pointerId: ev.pointerId };
     try { applyPoke(e, uv, null); } catch (err) { showError(err); }
@@ -2598,14 +2611,17 @@ void main(){
   function onPokeMove(ev) {
     if (!pokeStroke || pokeStroke.pointerId !== ev.pointerId) return;
     const e = pokeStroke.e;
+    if (!e.inst || !e.inst.disturb) return;
     const uv = pokeUV(e.canvas, ev);
-    if (Math.hypot(uv.x - pokeStroke.last.x, uv.y - pokeStroke.last.y) < 0.012) return;
+    if (Math.hypot(uv.x - pokeStroke.last.x, uv.y - pokeStroke.last.y) < 0.004) return;
     try { applyPoke(e, uv, pokeStroke.last); } catch (err) { showError(err); }
     pokeStroke.last = uv;
     pokeStroke.dirty = true;
   }
   function onPokeUp(ev) {
     if (!pokeStroke || (ev.pointerId != null && pokeStroke.pointerId !== ev.pointerId)) return;
+    const e = pokeStroke.e;
+    try { if (e && e.canvas && e.canvas.releasePointerCapture) e.canvas.releasePointerCapture(ev.pointerId); } catch (err) { /* already released */ }
     const dirty = pokeStroke.dirty;
     pokeStroke = null;
     if (!dirty) return;
@@ -3522,6 +3538,50 @@ void main(){
     toast('Reset ' + e.mod.name);
   }
 
+  /* Drag-scroll a horizontal strip of tiles. A mouse drag on a button used to
+     neither pan the strip nor fire the click, which is the "I dragged then
+     clicked and nothing happened" failure. Touch keeps native overflow pan. */
+  function bindDragScroll(el) {
+    if (!el || el.dataset.dragScroll === '1') return;
+    el.dataset.dragScroll = '1';
+    let pid = null, x0 = 0, sl0 = 0, dragged = false;
+    el.addEventListener('pointerdown', ev => {
+      if (ev.pointerType === 'touch' || ev.pointerType === 'pen') return;
+      if (ev.button && ev.button !== 0) return;
+      pid = ev.pointerId;
+      x0 = ev.clientX;
+      sl0 = el.scrollLeft;
+      dragged = false;
+    });
+    el.addEventListener('pointermove', ev => {
+      if (ev.pointerId !== pid) return;
+      const dx = ev.clientX - x0;
+      if (!dragged) {
+        if (Math.abs(dx) < 8) return;
+        dragged = true;
+        el.classList.add('dragging');
+        try { el.setPointerCapture(ev.pointerId); } catch (err) { /* ignore */ }
+      }
+      el.scrollLeft = sl0 - dx;
+      ev.preventDefault();
+    });
+    const end = ev => {
+      if (ev.pointerId !== pid) return;
+      pid = null;
+      el.classList.remove('dragging');
+      if (dragged) el.dataset.suppressClick = '1';
+      dragged = false;
+    };
+    el.addEventListener('pointerup', end);
+    el.addEventListener('pointercancel', end);
+    el.addEventListener('click', ev => {
+      if (el.dataset.suppressClick !== '1') return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      el.dataset.suppressClick = '';
+    }, true);
+  }
+
   /* ---- boot ---- */
   function boot() {
     modules.sort((a, b) => a.order - b.order || 0);
@@ -3589,6 +3649,8 @@ void main(){
       tabs.scrollLeft += ev.deltaY;
       ev.preventDefault();
     }, { passive: false });
+    bindDragScroll(tabs);
+    bindDragScroll($('history'));
     // top bar wiring
     const seed = $('seed');
     seed.addEventListener('change', () => { const e = instances[currentId]; if (!e) return; e.state.seed = seed.value.trim().slice(0, 64) || randomSeed(); seed.value = e.state.seed; regenerate(); });
