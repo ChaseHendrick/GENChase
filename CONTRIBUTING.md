@@ -6,7 +6,7 @@ Read this, then `AGENTS.md` if you are writing a technique, then `tools/modules/
 
 ## What belongs here
 
-A real simulation that reprints from a seed: a PDE, a lattice, a growth, a tiling, a dynamical system. It shares the seed, the palette, the print pipeline and the witness. It credits the paper. It does not put a name on work that already exists. A result derived here, uniqueness-checked, with a check the plate can fail, is allowed; write it in [`IDENTITIES.md`](IDENTITIES.md) and log the search in `RESEARCH.md` the same day.
+A real simulation that reprints from a seed: a PDE, a lattice, a growth, a tiling, a dynamical system. It shares the seed, the palette, the print pipeline and the witness. It credits the paper. It does not put a name on work that already exists. A result derived here, uniqueness-checked, with a check the plate can miss, is allowed; write it in [`IDENTITIES.md`](IDENTITIES.md) and log the search in `RESEARCH.md` the same day.
 
 Leave it when you need a game, a network, a model-weights file, a bundler, or a folder of unrelated sketches. Do not split `studio.html`. Do not relicense. The source is PolyForm Small Business 1.0.0; images a person generates are theirs.
 
@@ -69,4 +69,4 @@ Squash only. The squash subject is the pull-request title, with `(#N)` added. Me
 
 ## Naming
 
-Do not put a person's name on a plate unless the thing is new, uses real physics, and a check in the file fails if the claim is wrong. Existing equations keep their own names. A derived identity belongs in [`IDENTITIES.md`](IDENTITIES.md). Hendrick's Identity is that case. A failed lock is not renamed into a success.
+Do not put a person's name on a plate unless the thing is new, uses real physics, and a check in the file marks miss if the claim is wrong. Existing equations keep their own names. A derived identity belongs in [`IDENTITIES.md`](IDENTITIES.md). Hendrick's Identity is that case. A missed lock is not renamed into a success.

@@ -15,9 +15,9 @@
 - [ ] a new tab: a row in `RESEARCH.md`, even if the status is `science only`
 - [ ] a prior-art search or a "never been done" claim: the query and the conclusion in `RESEARCH.md`
 - [ ] the print is the plate, or `exportSVG` returned nothing and the PNG is the sheet
-- [ ] a derived identity: a row in `IDENTITIES.md`, a failing plate, and the search in `RESEARCH.md`
+- [ ] a derived identity: a row in `IDENTITIES.md`, a plate whose check can miss, and the search in `RESEARCH.md`
 - [ ] git author is Chaos `<326338179+SharpMeow@users.noreply.github.com>`; no `sharpie@` trailer
 
 ## Notes for review
 
-<!-- What to look at. A hash that reprints the plate helps. Existing equations keep their own names. A derived identity belongs in IDENTITIES.md, uniqueness-checked, with a plate that can fail. Hendrick's Identity is that case. -->
+<!-- What to look at. A hash that reprints the plate helps. Existing equations keep their own names. A derived identity belongs in IDENTITIES.md, uniqueness-checked, with a plate whose check can miss. Hendrick's Identity is that case. Miss on the status line is a grade, not a crash. -->

@@ -1,6 +1,6 @@
 # RESEARCH
 
-Ledger of prior-art searches and physics claims for GENChase. Handwritten, not generated. Last updated 2026-09-19.
+Ledger of prior-art searches and physics claims for GENChase. Handwritten, not generated. Last updated 2026-09-20.
 
 Agents: read this file **before** a web search for "has this been done", "is this a new law", or "never been theorized". Humans: the same, if you are about to spend an afternoon proving a negative.
 
@@ -17,7 +17,7 @@ The catalog of what the file actually contains is [`techniques.json`](techniques
 **Do not**
 
 - Re-run a search this file marks skip, unless you have a newly named repository, paper, or site that was previously unreachable.
-- Put a name on a published equation or on someone else's result. If you derived something, checked it against the papers, and put a check on the plate that fails when it is wrong, claim it: write [`IDENTITIES.md`](IDENTITIES.md) the same day. Hendrick's identity is that case. It is not Gröbli's motion and it is not Aref's product under a new name.
+- Put a name on a published equation or on someone else's result. If you derived something, checked it against the papers, and put a check on the plate that marks miss when it is wrong, claim it: write [`IDENTITIES.md`](IDENTITIES.md) the same day. Hendrick's identity is that case. It is not Gröbli's motion and it is not Aref's product under a new name.
 - Private-name a published equation plus a feedback term. `track` and `causticsea` already made that mistake in draft and were renamed.
 - Treat **familiarity** / "seen elsewhere" as a measurement or a prior-art result. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
 - Parse `studio.html` to answer "what is in the catalog". Read `techniques.json`.
@@ -52,7 +52,7 @@ Copied from the README, restated so an agent does not have to infer it.
 | A published result under a new name | No | nowhere |
 | New as an artifact (this seed, this plate) | Yes, always | the export |
 | New as working software (a seeded, paletted, print-ready browser plate of a published system) | Yes, with a named nearest neighbor | README bullets, this file |
-| A result derived here, uniqueness-checked against the papers, with a failing plate | Yes | [`IDENTITIES.md`](IDENTITIES.md) |
+| A result derived here, uniqueness-checked against the papers, with a plate whose check can miss | Yes | [`IDENTITIES.md`](IDENTITIES.md) |
 | A published equation plus a feedback term | Not an invention | `track`, `causticsea` |
 | Familiarity bucket `unseen` | Editorial, not a result | `techniques.json` |
 
@@ -60,13 +60,13 @@ Copied from the README, restated so an agent does not have to infer it.
 
 **Published, implemented, not claimed, with one exception.** Almost every tab names a paper in `credit`. Gray-Scott is Gray and Scott. Wilson's algorithm is Wilson's. The self-check numbers in the README are measurements from the plate against those papers, not new predictions. Hendrick's Identity is the exception: derived here, uniqueness-checked, locked to the plate.
 
-**The one derived lock.** The statement, the minimum, what it is not, and how the plate fails it live in [`IDENTITIES.md`](IDENTITIES.md). Three point vortices of circulations 1, 1, -1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae. On this family their dimensionless product is
+**The one derived lock.** The statement, the minimum, what it is not, and how the check misses live in [`IDENTITIES.md`](IDENTITIES.md). Three point vortices of circulations 1, 1, -1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae. On this family their dimensionless product is
 
     omega t_c = (2 - cos^2 theta) / sin(2 theta)
 
-which has a unique minimum of sqrt(2) at tan theta = 1/sqrt(2), the triangle with angles 22.5, 45, and 112.5 degrees. At construction theta = 45 degrees the same product is 3/2. That identity is not in those papers. The plate reports omega t_c / sqrt(2) against 1, the similarity residual against 0, and signed L against 0. Off the L = 0 circle, all three fail.
+which has a unique minimum of sqrt(2) at tan theta = 1/sqrt(2), the triangle with angles 22.5, 45, and 112.5 degrees. At construction theta = 45 degrees the same product is 3/2. That identity is not in those papers. The factors at this length are t_c = (pi/3)(4u + 1/u) and 2 pi omega = 3(2u^2+1)/(4u^2+1); the t_c minimum 4pi/3 at u = 1/2 is Leoncini, Kuznetsov and Zaslavsky (2000) and is not claimed. The plate reports omega t_c / sqrt(2) against 1, the similarity residual against 0, and signed L against 0. Off the L = 0 circle, all three numbers miss on purpose. Miss is a grade, not a crash.
 
-Do not re-derive this unless the plate is failing the lock. Do not search the name of the tab as if it were a published law. Do not put that name on a different system.
+Do not re-derive this unless the check is missing the lock. Do not search the name of the tab as if it were a published law. Do not put that name on a different system.
 
 **Rejected as inventions.**
 
@@ -223,7 +223,7 @@ Familiarity is listed so you do not confuse it with prior-art status.
 
 The statement is in [`IDENTITIES.md`](IDENTITIES.md). Do not duplicate it here.
 
-**`hendricks-identity` (Hendrick's Identity).** `#hendrick` still opens it. Derived here, uniqueness-checked, locked to the plate. Search notes: Aref 2010 eqs. 25a and 25d give Omega and tau separately. Aref eq. 29c already writes the product as the pitch of the logarithmic spiral. Kudela 2014 and Reinaud-Dritschel 2022 minimize collapse time, not the product. Krishnamurthy-Stremler 2018 give dimensionless tau-tilde as a function of angles, no min sqrt(2). Closed form and min: not in those papers. Off the L=0 circle the check fails on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum.
+**`hendricks-identity` (Hendrick's Identity).** `#hendrick` still opens it. Derived here, uniqueness-checked, locked to the plate. Search notes: Aref 2010 eqs. 25a and 25d give Omega and tau separately. Aref eq. 29c already writes the product as the pitch of the logarithmic spiral. Kudela 2014 and Reinaud-Dritschel 2022 minimize collapse time, not the product. Krishnamurthy-Stremler 2018 give dimensionless tau-tilde as a function of angles, no min sqrt(2). Closed form and min: not in those papers. Off the L=0 circle the check marks miss on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum.
 
 ### Published family plus a feedback term (not inventions)
 
@@ -332,7 +332,7 @@ Opened: this repository
 
 Blocked: none
 
-Conclusion: the plate is Hendrick's Identity, so the hash is `#hendricks-identity`. `#hendrick` remains an alias. The identity stands: it was derived here, the plate fails off the L=0 circle, and the closed form and min are not in the papers. A later agent may claim another result the same way (derive, check the papers, failing plate, write IDENTITIES.md). It may not put a name on a published equation or on someone else's result.
+Conclusion: the plate is Hendrick's Identity, so the hash is `#hendricks-identity`. `#hendrick` remains an alias. The identity stands: it was derived here, the check misses off the L=0 circle, and the closed form and min are not in the papers. A later agent may claim another result the same way (derive, check the papers, a plate whose check can miss, write IDENTITIES.md). It may not put a name on a published equation or on someone else's result.
 
 Re-search: n/a
 
@@ -365,5 +365,25 @@ Blocked: the thesis PDF itself.
 Conclusion: named, not read. Reopen when the appendix can be opened. Do not treat a snippet as a reading of the coefficients. If that appendix already states omega_0 t_c = (2-cos^2 theta)/sin(2 theta) and the min sqrt(2) at tan theta = 1/sqrt(2), the uniqueness claim has to be revised the same day.
 
 Re-search: reopen when Tacchi Appendix B or Kimura 1988 is in hand.
+
+### 2026-09-20  second identity search  query: three vortex collapse omega t_c minimum circulation ratio (1, mu, -mu/(1+mu)); Leoncini Kuznetsov Zaslavsky fastest collapse 4pi/3; leapfrogging period translation speed product Love Tophøj Aref; Novikov-Sedov parallelogram four vortex collapse omega tau; Hasimoto kappa r_max torsion; Kida ellipse strain collapse; Kidambi Newton sphere collapse time angular velocity product; Crapper capillary steepness maximum energy; Kudela 2014 Reinaud Dritschel 2022 collapse time minimum
+
+Opened: Aref 2010 PDF via VTechWorks (bitstream 2b7fd3cf-09d3-4fe7-8558-a9948a899f1d). Krishnamurthy and Stremler 2018 postprint at people.iith.ac.in (dimensionless tau-tilde = -sin B sin(A+B)/sin(A+2B), and hat-tau at fixed separation, plotted, not closed-form minimized in u = tan theta). Leoncini, Kuznetsov and Zaslavsky, arXiv physics/9908055 / Phys. Fluids 12, 1911 (2000): figure caption states a fastest collapse with tau = 4pi/3. Search snippets and HTML for Tophøj-Aref 2013, Behring-Goodman 2019/2022, Novikov-Sedov JETP 50, 297 (1979), Gotoda 2020, Hasimoto JFM 1972, Kida JPSJ 1981, Kidambi-Newton Physica D 1998, Crapper JFM 1957, Kudela Fluid Dyn. Res. 46, 031414 (2014), Reinaud-Dritschel-Scott Physica D 434, 133226 (2022). Direct Biot-Savart algebra on the L = 0 circle in this repo (2pi kernel).
+
+Blocked: most journal HTML. Tacchi appendix still unread. Leoncini body text was font-encoded; the 4pi/3 statement is from the arXiv figure caption, not from a full re-typeset of every equation.
+
+Conclusion: no second identity of Hendrick's bar shipped. On Gamma = (1,1,-1/2) the product splits as t_c = (pi/3)(4u + 1/u) and 2 pi omega = 3(2u^2+1)/(4u^2+1) with u = tan theta and |z1-z2| = 1. Those are Aref 25a/25d in this angle; they belong under Hendrick's Identity as factors, not as a new name.
+
+Re-search: do not re-derive Hendrick. Do not claim the t_c minimum, the general-mu sextic, leapfrog silver/golden, Novikov-Sedov, Hasimoto 4, Kirchhoff 1/4, or Kidambi-Newton. Reopen only if a newly named paper states Hendrick's closed form or min, or if Tacchi Appendix B is in hand. A later algebraic, unpublished product with a unique interior extremum and a plate whose check can miss may still be claimed the same way Hendrick was.
+
+### 2026-09-20  Leoncini 2000 fastest collapse  query: Leoncini Kuznetsov Zaslavsky "Motion of three vortices near collapse" tau 4pi/3 Lambda sqrt(3)/2 fastest
+
+Opened: arXiv physics/9908055 PDF (saved). Search snippets of Phys. Fluids 12, 1911 (2000).
+
+Blocked: AIP HTML. Body text of the PDF is font-encoded on this machine; caption text was readable via the arXiv HTML extract: "fastest collapse value Lambda = sqrt(3)/2" and "tau = 4pi/3".
+
+Conclusion: the fastest collapse time in the standard normalization is already in that paper. IDENTITIES.md records the factor formulas under Hendrick's Identity and does not claim the t_c bound. Hendrick's product min sqrt(2) at tan theta = 1/sqrt(2) is a different extremum (scale-invariant) and was not found in this paper's extracted captions.
+
+Re-search: skip unless a full text extract is needed to check whether they also minimize omega t_c. If they do, revise Hendrick uniqueness the same day.
 
 

@@ -89,7 +89,7 @@ const count = require('./count.js');
       contract: 'tools/modules/CONTRACT.md',
       agents: 'AGENTS.md',
       research: 'RESEARCH.md',
-      addATab: 'Write tools/modules/<id>.js, then node tools/inject.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js. Do not split studio.html. All noise through U.makeRng(seed). Credit the paper. Do not put a name on work that already exists. A result derived here, uniqueness-checked, with a failing plate, belongs in IDENTITIES.md. Read RESEARCH.md before a prior-art search.',
+      addATab: 'Write tools/modules/<id>.js, then node tools/inject.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js. Do not split studio.html. All noise through U.makeRng(seed). Credit the paper. Do not put a name on work that already exists. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Read RESEARCH.md before a prior-art search.',
     },
     techniques: mods,
   }, null, 2) + '\n');
@@ -116,7 +116,7 @@ The same data in machine-readable form is [\`techniques.json\`](techniques.json)
   md += `
 ## Credits
 
-Each technique names the people whose work it implements. Hendrick's Identity is the exception: derived here, uniqueness-checked, locked so the plate fails if the claim is wrong. The statement is in IDENTITIES.md.
+Each technique names the people whose work it implements. Hendrick's Identity is the exception: derived here, uniqueness-checked, locked so the status line marks miss if the claim is wrong. Miss is a grade on the numbers, not a crash. The statement is in IDENTITIES.md.
 
 `;
   for (const m of mods) md += `**${esc(m.name)}**. ${esc(m.credit)}\n\n`;
@@ -130,7 +130,7 @@ One HTML file of seeded scientific simulations. Each tab reprints from a hash. G
 
 - Parse or scrape studio.html. It is 2.6 MB of implementation.
 - Invent a bundler, a framework tree, or a second architecture.
-- Do not put a name on a published equation. Credit the paper. A result derived here, uniqueness-checked, with a failing plate, belongs in IDENTITIES.md. Do not relicense as MIT.
+- Do not put a name on a published equation. Credit the paper. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Do not relicense as MIT.
 - Treat "familiarity" / "seen elsewhere" as a measurement. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
 
 ## Read instead
