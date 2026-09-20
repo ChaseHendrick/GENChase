@@ -407,6 +407,8 @@ Checked 2026-09-20 underresearched catalogues. gSQG / α-Euler three-vortex coll
 
 Checked 2026-09-20 cutting-edge 2025. Chen–Walsh–Wheeler (arXiv:2506.04093) construct the first self-similar hollow-vortex implosion and desingularize any non-degenerate point-vortex collapse — including the three rows above — to a real-analytic family of 2D Euler hollow imploders. Circular $U_c(\gamma,\Omega,\kappa)$ is explicit; $\Omega$ and $\kappa$ are independent, not a shape-parameter floor. Grotto–Pappalettera (arXiv:2505.19782) prove gSQG burst/collapse existence; $a,b$ are not closed in shape; $\alpha=2$ is 2D Euler. White–McDonald (Proc. R. Soc. A 2025) and PRFluids 10, 084708 (2025) are equilibria, not collapse products. Cite Chen–Walsh–Wheeler as the Euler realization of the three locks. Do not claim a fourth row from these papers.
 
+Checked 2026-09-20 missed geometries. Nested two-triangle six-vortex with $I=0$ is not self-similar: $A+iB$ on the $+$ triangle disagrees with $A+iB$ on the $-$ triangle (Biot–Savart scan at $\mu=1,1/2,2$). Collapsing configs lack that reflection symmetry. Two vortices in a BEC trap have a published min of one frequency vs separation. Hicks doughnut is thin-core series (Norbury already). Fukumoto–Miyazaki is the elastica analog of a filament with axial flow (Hasimoto already in the studio). Coaxial leapfrog rings now have a 2026 Euler existence proof (arXiv:2603.21644); that is KAM, not an algebraic floor. Do not claim these.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 
