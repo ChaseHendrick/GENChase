@@ -237,6 +237,15 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Riemann ellipsoids | Two frequencies ω_l, ω_r vs axes. Riemann 1860. Sequences numerical or elliptic. Maclaurin–Jacobi already logged. |
 | Chiral / active vortices | Self-reverting vortices: simulation. No closed collapse product. |
 | Relativistic point vortices | No unused closed collapse product found. GR Larson–Penston D ≈ 1.439 is numerical. |
+| SIR / Kermack–McKendrick | Peak at R0 S = 1. Final size implicit / Lambert W. Time-to-peak Padé (2023). Isolated published. Doubling × r = ln 2 is textbook. |
+| Keller–Segel | Mass threshold 8π. Type-II λ(t) ~ √(T−t) exp(−√\|ln(T−t)\|), published. Not a two-rate algebraic floor. |
+| Lotka–Volterra | Small-amp ω = √(αδ). Finite amplitude complete elliptic. Volterra averages published. |
+| Kingman coalescent | E[Tk] = 4N / (k(k−1)). Isolated published waiting times. Discrete k, not a 1-param product min. |
+| Hawk–dove ESS | p* = V/C. Isolated published. Replicator converges, no oscillation floor. |
+| Nicholson–Bailey | Unstable fixed point, expanding cycles. Isolated published. |
+| Little's law | L = λW always. Identity, not a min. 1961. |
+| Kelly criterion | f* = p − q. Isolated published. |
+| Kleiber / WBE | 3/4 scaling. Empirical / published theory. |
 
 Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
 
@@ -826,6 +835,17 @@ Blocked: none at the formula level for these.
 Conclusion: the other-area catalogues that still had a 1-param look are elliptic (XMHD, Kozai), isolated published angles (Taylor, Kozai i_*), topological integers (Hopf), 19th-century two-frequency ellipsoids, or simulations. Not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on Kozai's arccos √(3/5), Taylor's 49.3°, or Brizard's elliptic T_∞.
 
 Re-search: skip XMHD X-point, Kozai–Lidov, Taylor cone, spiral vortex+source, hopfion, Riemann ellipsoids, chiral active, and relativistic point vortices unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
+### 2026-09-20  hunt outside math/physics: SIR, Keller-Segel, Lotka-Volterra, coalescent, hawk-dove, Nicholson-Bailey, Little, Kelly, Kleiber  query: SIR time to peak growth rate product min R0; Keller-Segel blowup self-similar collapse rotation; Lotka-Volterra period two rates algebraic min; Kingman coalescent waiting times product; hawk dove replicator period; Nicholson-Bailey two rates min; Little's law; Kelly criterion; Kleiber 3/4
+
+Opened: SIR peak at R0 S=1, I* closed, t_peak Lambert W / Padé 2023. Keller-Segel 8π and type-II λ(t) (Collot–Ghoul–Masmoudi–Nguyen 2019). Lotka–Volterra ω=√(αδ) small; finite amplitude elliptic; Volterra principle published. Kingman E[Tk]=4N/(k(k−1)). Hawk–dove p*=V/C. Nicholson–Bailey unstable expanding cycles. Little L=λW (1961). Kelly f*=p−q. Kleiber 3/4.
+
+Blocked: none at the formula level.
+
+Conclusion: the identity bar is a 1-parameter product of two dynamical rates with a unique unpublished algebraic interior min. Outside math and physics the analogous catalogues are isolated published thresholds, Lambert-W times, elliptic periods, type-II parabolic blowup, or empirical scalings. Not a fourth row. Do not claim these. Do not put Hendrick's name on Little's L=λW, Kelly's f*, Kleiber's 3/4, or the SIR peak.
+
+Re-search: skip SIR, Keller-Segel, Lotka–Volterra, Kingman, hawk–dove, Nicholson–Bailey, Little, Kelly, and Kleiber unless a newly named paper states a closed dimensionless product of two dynamical rates and its unique algebraic interior min.
+
 
 
 

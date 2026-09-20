@@ -418,6 +418,8 @@ Checked 2026-09-20 non-orientable vortices, pursuit, C-metric. Balabanova–Mont
 
 Checked 2026-09-20 other areas. Brizard XMHD X-point collapse (arXiv:2504.07311) is Jacobi elliptic. Kozai–Lidov $i_*=\arccos\sqrt{3/5}$ and Taylor's $49.3^\circ$ are isolated published locks. A spiral vortex's pitch $\Gamma/Q$ is textbook. Hopf $H=nm$ is two integers, not two rates. Riemann ellipsoids are 1860 two-frequency sequences. Chiral active vortices are simulations. Relativistic point-vortex collapse has no unused closed product. Do not claim these. Do not put Hendrick's name on Kozai's $\arccos\sqrt{3/5}$ or Taylor's $49.3^\circ$.
 
+Checked 2026-09-20 outside math and physics. SIR peak and final size are published (Lambert $W$, Padé). Keller–Segel $8\pi$ and type-II $\lambda(t)$ are published. Lotka–Volterra periods are elliptic. Kingman waiting times, hawk–dove $p^*=V/C$, Nicholson–Bailey, Little's $L=\lambda W$, Kelly's $f^*$, and Kleiber's $3/4$ are isolated published or empirical. The identity bar does not pick up a fourth row in epidemiology, ecology, genetics, games, queues, or allometry. Do not claim these. Do not put Hendrick's name on Little, Kelly, or Kleiber.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 
