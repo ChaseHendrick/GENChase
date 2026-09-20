@@ -403,6 +403,8 @@ Checked 2026-09-20 whether any unused Novikov–Sedov / Gotoda family still has 
 
 Checked 2026-09-20 rigid-body, MHD sheets, β-plane dipoles, minimal surfaces. Routh rolling disk: two rates (precession and spin) vs lean; critical lean is an isolated published arctan of a nested radical. Double pendulum $\omega_\pm=\sqrt{2\pm\sqrt{2}}\,\sqrt{g/l}$, product $\sqrt{2}\,g/l$ is the textbook pair, not a 1-param unpublished floor. Fadeev sheet is Stuart's MHD cousin. Larichev–Reznik modon is Lamb–Chaplygin on the β-plane. Critical catenoid is $w=\mathrm{coth}\,w$. Clebsch / Kovalevskaya / Chaplygin sleigh are elliptic or nonholonomic. Do not claim these. Do not put Hendrick's name on the double-pendulum $\sqrt{2}$.
 
+Checked 2026-09-20 underresearched catalogues. gSQG / α-Euler three-vortex collapse is numerical in α (2D Euler slice is Hendrick). Massive point vortices forbid collapse. Hollow-vortex implosion desingularizes existing rows. Vortices on ellipsoid/bean have no closed collapse product; conical NS is a 2-param exact family with numerical existence. Zipoy–Voorhees photon and ISCO are isolated published radii vs γ. Prandtl punch $2+\pi$ is 1920. Kasner is two constraints on three exponents. Camassa–Holm two-peakon phase shift is published 1993. Do not claim these. Do not put Hendrick's name on Prandtl's $2+\pi$.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 

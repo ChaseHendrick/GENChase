@@ -205,6 +205,14 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Larichev–Reznik modon | β-plane dipole. Interior Bessel, exterior K. Lamb–Chaplygin already logged. Isolated published. |
 | Critical catenoid | w = coth w. Transcendental, Kapitza-class. Volume (π/2)R²h at threshold is a corollary of the same root. Isolated. |
 | Chaplygin sleigh / Clebsch | Nonholonomic or rigid-body-in-fluid. Integrable cases (Kirchhoff, Clebsch, Kovalevskaya, Goryachev–Chaplygin). Periods elliptic/hyperelliptic. Lagrange top already logged. |
+| gSQG / α-Euler | Badin–Barry 2018; Reinaud Physica D 2022. Three-vortex collapse exists; SQG can be non-self-similar. Tables of t_c numerical. 2D Euler slice is Hendrick. Not a new algebraic floor. |
+| Massive point vortices | Zbarsky arXiv:2402.07316: collapse impossible under mass conditions. Opposite of a fourth row. |
+| Hollow-vortex implosion | arXiv:2506.04093 desingularizes existing point-vortex collapses. No new closed A, B. |
+| Vortices on surfaces | Sphere already Kidambi. Ellipsoid / bean (Proc. A 2015): Green's functions not closed. No unused collapse product. Cone NS (Phys. Fluids 25, 2147, 1982) is a 2-param exact family, existence numerical. Wedge already logged. |
+| Zipoy–Voorhees | Photon r = (2+1/γ)M, ISCO (3+1/γ ± √(5−1/γ²))M. Isolated published radii vs deformation. Extreme Kerr already logged. Not a 1-param product of two rates. |
+| Prandtl punch | q = 2k(1+π/2). Isolated published 1920. |
+| Kasner | Lifshitz–Khalatnikov u. Two constraints, three exponents. Published parametrization. Product of three expansion rates is not a two-rate identity. Do not claim. |
+| Camassa–Holm 2-peakon | Phase shift 2 ln\|1−λ1/λ2\| (Camassa–Holm 1993). KdV 2-soliton already logged. Peakon already in the studio. |
 
 Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
 
@@ -734,6 +742,17 @@ Blocked: Routh 1905 treatise body. Fadeev 1965 Soviet body. Larichev–Reznik 19
 Conclusion: no fourth identity of Hendrick's bar. Rolling-disk critical lean, double-pendulum √2, Fadeev, modon, and catenoid coth are isolated published locks or transcendental, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on the double-pendulum √2.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
+### 2026-09-20  hunt underresearched: gSQG, massive vortices, hollow implosion, surfaces, Zipoy-Voorhees, Prandtl punch, Kasner, CH 2-peakon  query: generalized SQG three vortex collapse closed form; massive point vortices collapse; hollow vortex implosion; point vortices ellipsoid cone; Zipoy-Voorhees ISCO photon; Prandtl punch 2+pi; Kasner exponents product; Camassa-Holm two peakon phase shift
+
+Opened: Badin–Barry arXiv:1805.10127 and Reinaud Physica D 2022: gSQG / α-Euler three-vortex collapse exists; SQG may be non-self-similar; t_c in tables is numerical. 2D Euler slice is Hendrick. Zbarsky arXiv:2402.07316: massive point vortices, collapse impossible under mass conditions. arXiv:2506.04093: hollow-vortex implosion is a desingularization of existing point-vortex collapses, no new closed A, B. Point vortices on closed surfaces (Proc. A 2015): ellipsoid/bean Green's functions not closed for collapse; sphere already Kidambi. Conical NS vortices Phys. Fluids 25, 2147 (1982): 2-param exact, existence numerical. Zipoy–Voorhees: r_ph = (2+1/γ)M, r_ISCO = (3+1/γ ± √(5−1/γ²))M published. Prandtl punch q = 2k(1+π/2) isolated 1920. Kasner: Lifshitz–Khalatnikov u, two constraints, three exponents; product of three expansion rates is not a two-rate identity. Camassa–Holm 1993 two-peakon phase shift 2 ln|1−λ1/λ2|; KdV 2-soliton and studio peakon already logged.
+
+Blocked: Reinaud Physica D 2022 full HTML. Prandtl 1920 German body.
+
+Conclusion: no fourth identity of Hendrick's bar. Underresearched catalogues (gSQG, massive vortices, hollow implosion, vortices on surfaces, Zipoy–Voorhees, plasticity, Kasner, CH peakon phase) are numerical, isolated published locks, desingularizations of existing rows, or constraint identities, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on Prandtl's 2+π.
+
+Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
 
 
 
