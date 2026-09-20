@@ -256,6 +256,8 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Novikov peakon collision | Finite-time collision / ill-posedness below s=3/2. Not a 1-param two-rate algebraic min. |
 | Abelian Higgs 3-vortex | Moduli geodesics; 2025 reconnection of filaments, not a point-collapse product. |
 | Massive vortices on an annulus | Radial oscillation + precession; critical mass is an isolated published threshold. |
+| Akhmediev breather β ω | β=√(8a(1−2a)), ω=2√(1−2a), a∈(0,1/2). Product βω has unique max 8√3/9 at a=1/6. Both factors are Akhmediev 1986; max MI gain is the published a=1/4, not this product. Same class as Jeffery AM-GM and Kirchhoff λ/(1+λ)². Do not claim. |
+| Kidambi–Newton sphere | Collapse times t₁≠t₂ (partner states) are in the 1999 paper. Each vortex has a distinct angular velocity. No single ω t_c. |
 
 Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
 
@@ -875,6 +877,17 @@ Blocked: Aref–Stremler JFM bodies (Cambridge). Crowdy Proc. A path-function PD
 Conclusion: periodic-strip three-vortex is integrable and periodic, not a two-rate algebraic floor. Chern–Simons, optical annihilation, Novikov peakons, and Higgs moduli are static, numerical, or ill-posedness. Not a fourth row. Do not claim these. Do not put Hendrick's name on Jackiw–Pi or a Novikov collision time.
 
 Re-search: skip Aref–Stremler periodic strip/parallelogram, Jackiw–Pi, optical vortex annihilation, Novikov peakon collision, abelian Higgs moduli, and massive annular vortices unless a newly named paper states a closed dimensionless product of two dynamical rates and its unique unpublished algebraic interior min.
+
+### 2026-09-20  hunt Akhmediev product, Kidambi–Newton sphere  query: Akhmediev breather growth rate period product minimum; Kidambi Newton sphere collapse ω t_c; Sakajo four-vortex sphere partial collapse
+
+Opened: Akhmediev 1986 / Dudley Opt. Express 17, 21497 (2009): β=√(8a(1−2a)), ω=2√(1−2a). Calculus: βω max 8√3/9 at a=1/6. The published lock is max gain at a=1/4. Product of two published rates is Jeffery-class, not a new identity. Kidambi–Newton Nuovo Cimento C 22, 779 (1999) PDF: partner collapse times t₁≠t₂ published; each vortex has a distinct angular velocity; no ω t_c product min. Sakajo PRE 78, 016312 (2008): four-vortex on a sphere is partial, non-self-similar, numerical t_c(θ).
+
+Blocked: none for these PDFs.
+
+Conclusion: the closest two-rate algebraic extremum outside the vortex-collapse catalogue is calculus on Akhmediev's 1986 factors. That is not the bar. Sphere collapse has no single ω. Not a fourth row. Do not claim these. Do not put Hendrick's name on Akhmediev or Kidambi–Newton.
+
+Re-search: skip Akhmediev βω, Kidambi–Newton spherical collapse, and Sakajo four-vortex sphere unless a newly named paper states a closed dimensionless product of two dynamical rates with a unique unpublished algebraic interior min that is not calculus on already-published factors.
+
 
 
 

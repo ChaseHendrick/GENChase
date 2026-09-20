@@ -424,6 +424,8 @@ Checked 2026-09-20 extra-μ five-vortex and remaining 2022/2025 collapse papers.
 
 Checked 2026-09-20 periodic domains, Chern–Simons, optics, peakons. Aref–Stremler three-vortex in a strip or parallelogram is integrable with zero net circulation; rational $\Gamma$ gives periodic motion, not a plane-style $\omega t_c$ floor. Jackiw–Pi vortices are static Liouville solitons. Optical vortex annihilation and Fibich's Kerr-ring collapse are numerical or a published azimuthal count. Novikov peakon–antipeakon is a collision / ill-posedness result. Abelian Higgs three-vortex motion is moduli geodesics; 2025 reconnection is of filaments. Do not claim these. Do not put Hendrick's name on Jackiw–Pi.
 
+Checked 2026-09-20 Akhmediev and spherical collapse. The Akhmediev breather has two closed rates $\beta=\sqrt{8a(1-2a)}$ and $\omega=2\sqrt{1-2a}$; their product has a unique max $8\sqrt{3}/9$ at $a=1/6$. Both factors are 1986, and the published lock is max gain at $a=1/4$. That is Jeffery-class calculus on published formulae, not a fourth row. Kidambi–Newton (1999) give two partner collapse times on the sphere; each vortex has a distinct angular velocity, so there is no single $\omega t_c$. Sakajo (2008) four-vortex sphere collapse is partial and numerical. Do not claim these. Do not put Hendrick's name on Akhmediev.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 
