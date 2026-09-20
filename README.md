@@ -140,7 +140,7 @@ Worth being precise about, because the credits matter.
 - **Crapper.** G. D. Crapper, J. Fluid Mech. 2, 532 (1957). The unique exact finite-amplitude pure-capillary wave. Steepness s = 4|A|/(π(1−A²)) identically; the trough pinches a bubble at s* ≈ 0.730. The same *profile* is a constant-vorticity Euler wave with g = σ = 0 (Hur and Vanden-Broeck 2020). The plate reports s_meas against that identity.
 - **Hasimoto.** A soliton on a vortex filament (Hasimoto, JFM 51, 477, 1972). Local induction maps to NLS; the sech is a traveling loop of helical motion. Speed along the filament equals twice the torsion. The plate reports κ_max/(2ν) and c/(2τ₀) from the polyline, not from the formula by construction.
 - **Lump.** KP-I lumps (Manakov et al. 1977), rational, 1/r² tails. Completely different from the studio’s KP-II line-soliton webs. The plate reports the KP-I residual (u_t + 6uu_x + u_xxx)_x − 3 u_yy against 0, by finite differences of the rational field, and the peak against 4b².
-- **Hendrick's Identity.** Three point vortices of circulations 1, 1, −1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae (his eqs. 25a, 25d) and wrote their product as the pitch of the logarithmic spiral (eq. 29c). The closed form of that product on this family is ω t_c = (2 − cos²θ) / sin(2θ), which has a unique minimum of √2 at tan θ = 1/√2, the triangle with angles 22.5°, 45° and 112.5°. That identity is not in those papers. The plate reports ω t_c / √2 against 1, the similarity residual against 0, and signed L against 0. Off the circle, all three fail. `#hendricks-identity` opens it; `#hendrick` still does. The statement is in [IDENTITIES.md](IDENTITIES.md). `#track` is still Track.
+- **Hendrick's Identity.** Three point vortices of circulations 1, 1, −1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae (his eqs. 25a, 25d) and wrote their product as the pitch of the logarithmic spiral (eq. 29c). The closed form of that product on this family is ω₀ t_c = (2 − cos²θ) / sin(2θ) ≥ √2, with equality uniquely at tan θ = 1/√2, the triangle with interior angles 22.5°, 45° and 112.5°. θ is the third vortex's place on the L = 0 circle, not an interior angle. With u = tan θ the product is u + 1/(2u). That identity is the project's observation; historical priority has not been established. The plate reports ω₀ t_c / √2 against 1, the similarity residual against 0, and signed L against 0. Off the circle, all three fail. `#hendricks-identity` opens it; `#hendrick` still does. The statement, the proof, and the citation are in [IDENTITIES.md](IDENTITIES.md). Also searched as Hendrick's law, Hendrick's Math. `#track` is still Track.
 
 **Two closed loops, both with prior art.** Each piece is published. So is the family the loop belongs to. The plates are pictures of those families with an open-loop control sitting next to the closed one. A published equation plus a feedback term is not an invention, and it does not get a private name.
 
@@ -254,5 +254,27 @@ Each tab names the researchers. The implementations are original.
 **Paid** above that threshold. If your company is larger than that and GENChase is useful to you, buy a license: [open an issue](https://github.com/SharpMeow/GENChase/issues). That is the whole arrangement, and it exists so that the people who can afford to pay are the ones who do.
 
 **The artwork is always yours.** The images, animations and vector files you produce by running GENChase are not the software and are not licensed by these terms. Sell them, exhibit them, license them, at any company size, whether or not you hold a license for the code. The LICENSE file grants this explicitly rather than leaving it to be argued about.
+
+---
+
+## Cite Hendrick's Identity
+
+The name of the result is Hendrick's Identity (also searched as Hendrick's law, Hendrick's Math). Please cite it by that name. Please do not republish the statement without attribution, and do not rename it.
+
+Chaos. (2026). *Hendrick's Identity*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md
+
+```bibtex
+@misc{hendricks-identity-2026,
+  author       = {Chaos},
+  title        = {Hendrick's Identity: an explicit formula and sharp minimum
+                  for a classical three-vortex collapse family},
+  year         = {2026},
+  howpublished = {GENChase},
+  url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
+  note         = {Also referred to as Hendrick's law, Hendrick's Math}
+}
+```
+
+The boxed formula, the proof that the minimum is √2, and the plate that can fail it are in [IDENTITIES.md](IDENTITIES.md). GitHub's "Cite this repository" button emits the same record.
 
 Built by Chaos.

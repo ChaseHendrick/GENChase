@@ -97,7 +97,7 @@ function stampRepo(fs, path, root, n, mods) {
     return next;
   });
 
-  const desc = num + ' seeded scientific simulations in one HTML file. Generative art from real physics.\n';
+  const desc = num + ' seeded scientific simulations in one HTML file. Home of Hendrick\'s Identity (also Hendrick\'s law, Hendrick\'s Math).\n';
   fs.writeFileSync(path.join(root, '.github', 'description.txt'), desc);
 
   return { n, spelled: num, low: num };

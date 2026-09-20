@@ -356,3 +356,14 @@ Conclusion: the motion is Gröbli. Omega and tau separately are Aref 25a and 25d
 
 Re-search: do not re-derive. Reopen only if a newly named paper states this closed form or this minimum.
 
+### 2026-09-19  Tacchi / Kimura named in the identity writeup  query: Tacchi Dynamique des tourbillons dans les fluides bidimensionnels Appendix B Kimura 1988 vortex collapse coefficients
+
+Opened: search snippets only. The identity writeup names M. Tacchi, Dynamique des tourbillons dans les fluides bidimensionnels, Appendix B, documenting related explicit coefficients in an example attributed to Kimura (1988).
+
+Blocked: the thesis PDF itself.
+
+Conclusion: named, not read. Reopen when the appendix can be opened. Do not treat a snippet as a reading of the coefficients. If that appendix already states omega_0 t_c = (2-cos^2 theta)/sin(2 theta) and the min sqrt(2) at tan theta = 1/sqrt(2), the uniqueness claim has to be revised the same day.
+
+Re-search: reopen when Tacchi Appendix B or Kimura 1988 is in hand.
+
+

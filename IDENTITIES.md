@@ -4,7 +4,9 @@ Catalog of results derived in this studio that were not in the papers they sit o
 
 An entry here is something found and proved on a plate: a closed form, a unique extremum, or another checkable claim, uniqueness-checked against the papers, locked so the plate fails if the claim is wrong. Do not put a name from this file on work that already exists.
 
-The search ledger is [`RESEARCH.md`](RESEARCH.md). The plate is `#hendricks-identity`.
+The search ledger is [`RESEARCH.md`](RESEARCH.md). The plate is `#hendricks-identity` (`#hendrick` still opens it).
+
+**Search names for the result below:** Hendrick's Identity, Hendrick's law, Hendrick's Math, Hendrick identity, Hendricks Identity. The name of the result is **Hendrick's Identity**. Please cite it by that name.
 
 ## What belongs here
 
@@ -20,29 +22,102 @@ To add a row: derive it, read the papers it sits on, put a check on the plate th
 
 | Name | Tab | Statement | Plate fails when |
 |---|---|---|---|
-| Hendrick's Identity | `hendricks-identity` | On Γ = (1, 1, −1/2), L = 0: ω t_c = (2 − cos²θ) / sin(2θ), unique min √2 at tan θ = 1/√2 | The vortices leave Gröbli's circle, or the Biot-Savart kernel is wrong |
-
-`#hendrick` still opens the plate.
+| Hendrick's Identity | `hendricks-identity` | ω₀ t_c = (2 − cos²θ) / sin(2θ) ≥ √2 on Γ = (1, 1, −1/2), L = 0. Equality at tan θ = 1/√2 | The vortices leave the L = 0 circle, or the Biot-Savart kernel is wrong |
 
 ---
 
 ## Hendrick's Identity
 
-**Statement.** Three point vortices of circulations Γ = (1, 1, −1/2), placed so their signed angular impulse vanishes (L = 0), collapse or expand self-similarly. Parameterize that family by the angle θ of the third vortex on the circle of radius √3/2 about the midpoint of the first two. Let ω be the common angular velocity about the center of vorticity, and t_c the collapse (or expansion) time from the geometric radius R² / |dR²/dt|. Then
+Also searched as Hendrick's law, Hendrick's Math.
 
-    ω t_c = (2 − cos² θ) / sin(2θ)
+An explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance.
 
-on (0, π/2) ∪ (π/2, π), taking the absolute value on the expanding arc. The product is independent of whether the Biot-Savart kernel is written with 2π or without it.
+Consider three point vortices with circulations
 
-**Minimum.** On the collapsing arc (0, π/2) the unique critical point is tan θ = 1/√2, where ω t_c = √2. The triangle there has angles π/8, π/4, 5π/8 (22.5°, 45°, 112.5°). At construction θ = 45° the same product is 3/2. At θ = 90° the triangle is equilateral, L = 0 still, ω t_c diverges, and the motion is a relative equilibrium.
+$$
+(\Gamma_1,\Gamma_2,\Gamma_3)=(1,1,-\tfrac12)
+$$
 
-Check of the critical value: tan² θ = 1/2 gives cos² θ = 2/3 and sin(2θ) = 2√2 / 3, so (2 − 2/3) / (2√2 / 3) = √2.
+and normalized initial positions
 
-**What this is not.** The motion is Gröbli, 1877. Aref, Phys. Fluids 22, 057104 (2010), eqs. 25a and 25d, gives the angular frequency and the collapse time separately. His eq. 29c writes their product as the pitch of the logarithmic spiral, and the stability section treats that product as invariant under a similarity perturbation. Collapse-time minima of τ, not of ω τ, appear in Kudela 2014 and Reinaud and Dritschel 2022. Krishnamurthy and Stremler 2018 give a dimensionless τ as a function of angles, with no min √2. The closed form of the product on this one-parameter family, and the unique minimum √2 at the octant triangle, are not in those papers. That is the identity. It is not a new vortex law.
+$$
+z_1=0,\qquad z_2=1,\qquad
+z_3=\tfrac12+\tfrac{\sqrt{3}}{2}\,e^{i\theta},
+\qquad 0<\theta<\tfrac{\pi}{2}.
+$$
 
-**How the plate locks it.** The tab `#hendricks-identity` (seed `octant-root-two`) reports ω t_c / √2 against 1 at the octant triangle, the similarity residual of the side-length ratios against 0, and signed L against 0. Family walks the L = 0 circle. Broken steps off the circle, L ≠ 0, and all three fail on purpose. If the vortices sit on a different similar triangle, or the kernel is wrong, the ratio against √2 fails.
+These configurations lie on the L = 0 circle and collapse self-similarly. Here θ parameterizes the third vortex's position on that circle; it is not an interior angle of the triangle.
 
-**Uniqueness search.** 2026-09-19, logged in [`RESEARCH.md`](RESEARCH.md). Reopen only if a newly named paper states this closed form or this minimum.
+Let ω₀ denote the initial angular velocity about the center of vorticity and t_c the collapse time. Their dimensionless product is
+
+$$
+\boxed{\displaystyle \omega_0 t_c=\frac{2-\cos^2\theta}{\sin(2\theta)}\ge\sqrt{2}.}
+$$
+
+Equality occurs uniquely on this arc at
+
+$$
+\tan\theta=\frac{1}{\sqrt{2}},
+$$
+
+giving a triangle with interior angles 22.5°, 45°, and 112.5°.
+
+### Exact proof of the minimum
+
+Setting u = tan θ > 0 gives
+
+$$
+\omega_0 t_c = u + \frac{1}{2u},
+\qquad
+\omega_0 t_c - \sqrt{2}
+= \frac{(\sqrt{2}\,u-1)^2}{2u}\ge 0.
+$$
+
+The equality condition follows immediately. At θ = 45° the product is 3/2.
+
+### Visualization
+
+Open `#hendricks-identity` (or `#hendrick`) in the studio. The plate displays:
+
+- ω₀ t_c / √2, which equals 1 at the minimizing triangle and exceeds 1 elsewhere on the collapsing arc
+- a similarity residual, expected to be approximately 0 during self-similar motion
+- signed L, expected to be approximately 0 on the collapse circle
+
+The Broken configuration moves off the circle to illustrate departure from the self-similar collapse conditions. The identity applies to this collapse family.
+
+### Attribution and originality
+
+Hendrick's Identity is the project's name for this formula and sharp bound. Three-vortex collapse is classical, dating to Gröbli (1877). Aref (2010) gives formulas for rotation and collapse and expresses their product in the logarithmic-spiral trajectory. The formula above follows by specializing established equations.
+
+The explicit minimum and its equality triangle are the focus of this project's observation. Historical priority has not been established. This is a mathematical result within the classical point-vortex model.
+
+Please cite it as Hendrick's Identity. Please do not republish this statement without attribution, and do not rename it. Anyone may use the mathematics; the name and this writeup are how this project asks to be credited.
+
+### Cite
+
+Chaos. (2026). *Hendrick's Identity*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md
+
+```bibtex
+@misc{hendricks-identity-2026,
+  author       = {Chaos},
+  title        = {Hendrick's Identity: an explicit formula and sharp minimum
+                  for a classical three-vortex collapse family},
+  year         = {2026},
+  howpublished = {GENChase},
+  url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
+  note         = {Also referred to as Hendrick's law, Hendrick's Math}
+}
+```
+
+GitHub's "Cite this repository" button uses the same record via [`CITATION.cff`](CITATION.cff).
+
+### References
+
+- H. Aref, Self-similar motion of three point vortices, Physics of Fluids 22, 057104 (2010).
+- W. Gröbli, Spezielle Probleme über die Bewegung geradliniger paralleler Wirbelfäden (1877).
+- M. Tacchi, Dynamique des tourbillons dans les fluides bidimensionnels, Appendix B, documenting related explicit coefficients in an example attributed to Kimura (1988).
+
+Prior-art searches against Aref, Gröbli, Krishnamurthy and Stremler, Kudela, and Reinaud and Dritschel are logged in [`RESEARCH.md`](RESEARCH.md). Tacchi's appendix was named in this writeup and has not yet been opened from the machines that keep that ledger.
 
 ---
 
