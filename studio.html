@@ -18,7 +18,7 @@
 <meta property="og:image" content="/og.jpg">
 <meta name="twitter:image" content="/og.jpg">
 <meta name="description" content="GENChase is a generative art studio built from real scientific simulations: flow fields, reaction-diffusion, slime mold, Lenia, fluids, Cahn–Hilliard, Ohta–Kawasaki copolymers, Swift–Hohenberg, phase-field crystal, Kuramoto–Sivashinsky, complex Ginzburg–Landau, swarmalators, Chirikov and Hofstadter, Helmholtz scars, optical caustics, smectic focal conics, Hastings–Levitov growth, Douady–Couder phyllotaxis, strange attractors, fractal raymarching, Penrose tilings, dendritic growth, chimera states, XY vortices, active nematics, Chladni figures, excitable media, Turing patterns, the Ising model, Abelian sandpiles, percolation, Mandelbrot and Julia sets, the double pendulum, hydrogen orbitals, Schrödinger wave packets and Rayleigh–Bénard convection, plus exact closed-form plates: KP soliton webs, Gerstner waves, the figure-eight choreography, Camassa–Holm peakons, the photon sphere, Crapper capillary waves, Hasimoto filaments, KP-I lumps and Hendrick's Identity. Every piece is seeded, reproducible and exports at museum print resolution.">
-<meta name="keywords" content="generative art, Turing patterns, Barkley excitable media, Ising model, Abelian sandpile, percolation, Mandelbrot, Julia set, Newton fractal, double pendulum, hydrogen orbitals, Schrodinger, Rayleigh-Benard, Keller-Segel, Klausmeier, Indra pearls, Schottky, Lichtenberg, dielectric breakdown, Talbot carpet, Ohta-Kawasaki, Hofstadter butterfly, Helmholtz quantum scars, optical caustics, smectic focal conics, Hastings-Levitov, Douady-Couder phyllotaxis, complex Ginzburg-Landau, Cahn-Hilliard, Swift-Hohenberg, phase-field crystal, Kuramoto-Sivashinsky, swarmalators, Chirikov, chimera, XY model, active nematics, print quality generative art">
+<meta name="keywords" content="generative art, Turing patterns, Barkley excitable media, Ising model, Abelian sandpile, percolation, Mandelbrot, Julia set, Newton fractal, double pendulum, hydrogen orbitals, Schrodinger, Rayleigh-Benard, Keller-Segel, Klausmeier, Indra pearls, Schottky, Lichtenberg, dielectric breakdown, Talbot carpet, Ohta-Kawasaki, Hofstadter butterfly, Helmholtz quantum scars, optical caustics, smectic focal conics, Hastings-Levitov, Douady-Couder phyllotaxis, complex Ginzburg-Landau, Cahn-Hilliard, Swift-Hohenberg, phase-field crystal, Kuramoto-Sivashinsky, swarmalators, Chirikov, chimera, XY model, active nematics, print quality generative art, Hendrick's Identity, Hendrick's law, Hendrick's Math, Hendrick identity, three-vortex collapse, point vortex, Gröbli, Aref">
 <meta name="author" content="Chaos">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
@@ -85,11 +85,27 @@
     "Gerstner waves, Crapper capillary waves, Camassa-Holm peakons",
     "Figure-eight three-body choreography",
     "Schwarzschild photon sphere",
+    "Hendrick's Identity: omega_0 t_c >= sqrt(2) on a three-vortex collapse family",
     "Hasimoto vortex filament soliton",
     "Video capture of living plates",
     "Seeded reproducibility and parameter export",
     "Museum-quality print export at 300 to 600 ppi with a printed colophon"
   ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "name": "Hendrick's Identity",
+  "alternateName": ["Hendrick's law", "Hendrick's Math", "Hendrick identity", "Hendricks Identity"],
+  "headline": "An explicit formula and sharp minimum for a classical three-vortex collapse family",
+  "author": { "@type": "Person", "name": "Chaos", "url": "https://github.com/SharpMeow" },
+  "datePublished": "2026-09-19",
+  "url": "https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md",
+  "isPartOf": { "@type": "SoftwareApplication", "name": "GENChase", "url": "https://github.com/SharpMeow/GENChase" },
+  "citation": "Chaos. (2026). Hendrick's Identity. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md",
+  "description": "Three point vortices with circulations (1, 1, -1/2) on the L=0 circle collapse self-similarly. Their dimensionless product of initial angular velocity and collapse time is omega_0 t_c = (2 - cos^2 theta) / sin(2 theta) >= sqrt(2), with equality uniquely at tan theta = 1/sqrt(2), a triangle of interior angles 22.5, 45, and 112.5 degrees. Independently derived in GENChase with AI assistance. Cite as Hendrick's Identity. Also searched as Hendrick's law, Hendrick's Math."
 }
 </script>
 <!-- Typefaces, inlined. These were three <link> tags to fonts.googleapis.com, which meant the studio
@@ -44646,11 +44662,11 @@ void main(){
   /* ---------- Hendrick's Identity ---------- */
   Studio.register({
     id: 'hendricks-identity', name: 'Hendrick\'s Identity', tab: 'Hendrick\'s Identity',
-    subtitle: 'min ω t_c = √2 on Gröbli\'s collapsing triangle · 1877 / 2010',
+    subtitle: 'ω₀ t_c ≥ √2 on Gröbli\'s collapsing triangle · Hendrick\'s Identity',
     order: 117,
-    equation: 'ω t_c = (2 − cos²θ) / sin(2θ)  on  Γ = (1, 1, −1/2), L = 0;   min = √2  at  tan θ = 1/√2',
-    credit: 'Three point vortices can collapse self-similarly in finite time. W. Gröbli, Spezielle Probleme über die Bewegung geradliniger paralleler Wirbelfäden (1877); Synge, Can. J. Math. 1, 257 (1949); Novikov, Sov. Phys. JETP 41, 937 (1975); Aref, Phys. Fluids 22, 057104 (2010). Aref\'s eqs. 25a and 25d give the angular frequency and the collapse time separately. His eq. 29c writes their product as the pitch of the logarithmic spiral, and the stability section notes that product is invariant under a similarity perturbation. This plate is that motion. What is not in those papers is Hendrick\'s identity: on the family Γ = (1, 1, −1/2) the product is ω t_c = (2 − cos²θ) / sin(2θ), with a unique minimum of √2 on the collapsing arc at tan θ = 1/√2, the triangle with angles π/8, π/4, 5π/8. At construction θ = 45° the same product is 3/2. If the vortices sit on a different similar triangle, or if the Biot-Savart kernel is wrong, the ratio against √2 fails.',
-    blurb: 'Three point vortices of circulations 1, 1, and −1/2, placed so their signed angular impulse vanishes, collapse in a finite time while staying similar to themselves. Each path is a logarithmic spiral into the center of vorticity. Gröbli found the motion in 1877. Aref wrote the rate and the spin as separate formulae and the product as the pitch of the log spiral. Hendrick\'s identity is the closed form of that product on this family, (2 − cos²θ) / sin(2θ), which bottoms at √2 only at the triangle whose angles are 22.5°, 45°, and 112.5°. The status line is that ratio against 1, the similarity residual against 0, and signed L against 0. Family walks the L=0 circle; at 90° the triangle is equilateral and only rotates. Broken steps off the circle so the lock can fail.',
+    equation: 'ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2  on  Γ = (1, 1, −1/2), L = 0;  equality at tan θ = 1/√2',
+    credit: 'Hendrick\'s Identity: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 < θ < π/2. θ is the third vortex\'s place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula follows by specializing those equations. The explicit minimum and equality triangle are this project\'s observation. Historical priority has not been established. M. Tacchi, Dynamique des tourbillons dans les fluides bidimensionnels, Appendix B, notes related coefficients attributed to Kimura (1988). Cite as Hendrick\'s Identity. Also searched as Hendrick\'s law, Hendrick\'s Math. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 fails.',
+    blurb: 'Hendrick\'s Identity. Three point vortices of circulations 1, 1, and −1/2, on the L = 0 circle, collapse self-similarly. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality at tan θ = 1/√2, a triangle of 22.5°, 45°, and 112.5°. θ places the third vortex on the circle; it is not an interior angle. The status line is that ratio against 1, the similarity residual against 0, and signed L against 0. Broken steps off the circle so the lock can fail. Cite as Hendrick\'s Identity; also searched as Hendrick\'s law and Hendrick\'s Math.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: {
       Collapse: 'Octant is the lock. Family is the rest of Gröbli\'s circle: collapse, then the equilateral relative equilibrium, then expansion. Broken is the control with L ≠ 0. Time is a fraction of t_c.',
