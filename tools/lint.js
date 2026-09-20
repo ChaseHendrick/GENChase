@@ -175,9 +175,7 @@ for (const [label, text] of [
   if (!text) continue;
   const claims = count.claimsIn(text);
   for (const c of new Set(claims.spelled)) {
-    if (c.toLowerCase() !== spelled.toLowerCase()) {
-      fail(label + ' says "' + c + '" but the file registers ' + mods.length + ' techniques (' + spelled + ')');
-    }
+    fail(label + ' spells the catalog as "' + c + '"; write ' + mods.length + ' in digits');
   }
   for (const d of new Set(claims.digits)) {
     if (d !== mods.length) fail(label + ' says "' + d + '" techniques but the file registers ' + mods.length);
@@ -186,8 +184,8 @@ for (const [label, text] of [
     if (d !== mods.length) fail(label + ' says the studio has ' + d + ' but the file registers ' + mods.length);
   }
   for (const live of new Set(claims.live)) {
-    if (live.toLowerCase() !== spelled.toLowerCase()) {
-      fail(label + ' live catalog says "' + live + '" but the file registers ' + spelled.toLowerCase());
+    if (live !== spelled) {
+      fail(label + ' live catalog says "' + live + '" but the file registers ' + spelled);
     }
   }
 }
@@ -197,7 +195,7 @@ for (const [label, text] of [
   if (!fs.existsSync(descPath)) fail('.github/description.txt is missing; run node tools/index.js');
   else {
     const desc = fs.readFileSync(descPath, 'utf8');
-    if (!desc.toLowerCase().includes(spelled.toLowerCase())) {
+    if (!desc.includes(spelled)) {
       fail('.github/description.txt does not contain "' + spelled + '"; run node tools/index.js');
     }
   }
@@ -240,7 +238,7 @@ if (researchMd) {
 /* ---- 7b. the generated catalog is the file, not a parallel list ---- */
 // TECHNIQUES.md and techniques.json are written by tools/index.js from the live registry.
 // Adding a tab and forgetting that command used to leave the catalog a plate behind, and
-// CITATION.cff sat at one hundred eight while the file already had sixteen more. The
+// CITATION.cff sat at 108 while the file already had 16 more. The
 // count check above catches spelled drift; this catches a catalog that is simply old.
 {
   const techPath = path.join(root, 'techniques.json');

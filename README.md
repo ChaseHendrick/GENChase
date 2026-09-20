@@ -4,7 +4,7 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded, resolution-independent, and exports in inches at giclée resolution.
 
-One HTML file. One hundred seventeen pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
+One HTML file. 117 pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
@@ -43,7 +43,7 @@ The usual options fall down in different places:
 - **An image model.** It will draw a snowflake that never froze and a quasicrystal that is a hexagon with extra steps. There is no seed that reprints, and no way to show that anything was solved.
 - **A recorded loop.** It looks alive until you touch it.
 
-GENChase is the other object: one hundred seventeen sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
+GENChase is the other object: 117 sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
 
 | | On disk | What you get | How you reprint |
 |---|---|---|---|
@@ -113,7 +113,7 @@ A generative art tool can get away with a plausible-looking integrator. A plate 
 
 **Algorithms are the ones the field actually uses.** Landscapes are solved on the Braun–Willett donor stack, one linear pass up the drainage tree and one back down, with priority-flood depression filling. Vortices are found by walking the winding number around every plaquette, then filtered by whether the plate also has a density minimum there, because a winding alone counts grid-scale phase noise and a density minimum alone misses the cores. Hyperbolic tilings are built by reflection in the sides of a fundamental polygon and then verify themselves by counting the cells around each vertex.
 
-**Print is not an afterthought.** Where the picture is discrete marks the export is real vectors, rasterized at the printer's resolution rather than at whatever the canvas happened to be. Where it is a field, the sheet states the field's own resolution rather than pretending the paper is the limit, and the sixteen tabs that magnify a grid now default to 512 cells rather than 192, which is the measured knee: Cahn-Hilliard at 512 scores 0.88 on edge acutance against 0.41 at 192, and 384 only reaches 0.74. The same sheet offers JPEG and WebP of those pixels, and an 8-second clip of a plate that moves (WebM, or MP4 where that is all the browser encodes) — the plate in time, not a print. `tools/sharp.js` measures how much detail a sheet really carries, `tools/lint.js` fails a size control that offers an option its own sanitizer clamps away, and `tools/recipe.js` proves that moving those defaults did not change what an older recipe reprints.
+**Print is not an afterthought.** Where the picture is discrete marks the export is real vectors, rasterized at the printer's resolution rather than at whatever the canvas happened to be. Where it is a field, the sheet states the field's own resolution rather than pretending the paper is the limit, and the 16 tabs that magnify a grid now default to 512 cells rather than 192, which is the measured knee: Cahn-Hilliard at 512 scores 0.88 on edge acutance against 0.41 at 192, and 384 only reaches 0.74. The same sheet offers JPEG and WebP of those pixels, and an 8-second clip of a plate that moves (WebM, or MP4 where that is all the browser encodes) — the plate in time, not a print. `tools/sharp.js` measures how much detail a sheet really carries, `tools/lint.js` fails a size control that offers an option its own sanitizer clamps away, and `tools/recipe.js` proves that moving those defaults did not change what an older recipe reprints.
 
 ---
 
