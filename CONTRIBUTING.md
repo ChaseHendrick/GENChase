@@ -6,7 +6,7 @@ Read this, then `AGENTS.md` if you are writing a technique, then `tools/modules/
 
 ## What belongs here
 
-A real simulation that reprints from a seed: a PDE, a lattice, a growth, a tiling, a dynamical system. It shares the seed, the palette, the print pipeline and the witness. It credits the paper. It does not claim a new dynamical law. A derived identity with a check the plate can fail is allowed; write it in [`IDENTITIES.md`](IDENTITIES.md) and log the search in `RESEARCH.md` the same day.
+A real simulation that reprints from a seed: a PDE, a lattice, a growth, a tiling, a dynamical system. It shares the seed, the palette, the print pipeline and the witness. It credits the paper. It does not put a name on work that already exists. A result derived here, uniqueness-checked, with a check the plate can fail, is allowed; write it in [`IDENTITIES.md`](IDENTITIES.md) and log the search in `RESEARCH.md` the same day.
 
 Leave it when you need a game, a network, a model-weights file, a bundler, or a folder of unrelated sketches. Do not split `studio.html`. Do not relicense. The source is PolyForm Small Business 1.0.0; images a person generates are theirs.
 

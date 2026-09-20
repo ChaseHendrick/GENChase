@@ -1,19 +1,18 @@
 # Identities
 
-Catalog of derived identities found in this studio. Handwritten, not generated. Last updated 2026-09-19.
+Catalog of results derived in this studio that were not in the papers they sit on. Handwritten, not generated. Last updated 2026-09-19.
 
-This is not a list of new dynamical laws. Every tab still runs a published equation. An identity here is a closed form, or a unique extremum of a closed form, derived on a published family, checked against the papers, and locked to a plate that fails if the identity is wrong.
+An entry here is something found and proved on a plate: a closed form, a unique extremum, or another checkable claim, uniqueness-checked against the papers, locked so the plate fails if the claim is wrong. Do not put a name from this file on work that already exists.
 
-The search ledger is [`RESEARCH.md`](RESEARCH.md). The plate is `#hendricks-identity`. Do not put a name from this file on a different system.
+The search ledger is [`RESEARCH.md`](RESEARCH.md). The plate is `#hendricks-identity`.
 
 ## What belongs here
 
 | Kind | Here? |
 |---|---|
-| A new equation of motion | No |
-| A published equation under a private name | No |
+| A result derived here, uniqueness-checked, with a plate that can fail it | Yes |
+| A published equation under a new name | No |
 | A published equation plus a feedback term | No (`track`, `causticsea`) |
-| A closed form, or a unique min or max of one, on a published family, with a plate that can fail it | Yes |
 
 To add a row: derive it, read the papers it sits on, put a check on the plate that goes red when the identity is false, write the identity here, and write the search in `RESEARCH.md` the same day.
 
