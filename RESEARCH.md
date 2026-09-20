@@ -222,6 +222,9 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Hicks doughnut | Hollow ring with swirl. Thin-core series (Hicks 1884; Saffman 1970). Norbury–Fraenkel already logged. |
 | Fukumoto–Miyazaki | Filament + axial flow. Permanent form = elastica (already logged). Hasimoto already in the studio. |
 | Coaxial leapfrog rings | Helmholtz 1858. 3D Euler existence: CPAM 2024; García–Hassainia–Hmidi arXiv:2603.21644 (Mar 2026). KAM/Nash–Moser, not an algebraic floor. Love leapfrog already logged. |
+| 3-vortex μ≠1 cubic | Gotoda A,B closed for Γ_H=0. μ=1 recovers Hendrick √2. Reciprocal pairs share the product (μ ↔ 1/μ): μ=1/2 and 2 give min |B/2A|≈1.741 (cubic crit, not a floor like √2). Same 3-vortex family as Hendrick, not a new row. Do not claim. Computed 2026-09-20 from Gotoda (3.3) plus M=0. |
+| Gallay–Sverak 2026 | arXiv:2609.10847 (9 Sep 2026). Hopf/ζ reduction, new energy inequalities H(ζ_A)>H(ζ_B), near-collision regularization. Not a two-rate product min. Cite; do not claim. |
+| Rott 1994 body | Still AIP-blocked. Abstract: winding number = ratio of two periods; "beyond a certain level of the analysis, still the more practical method of solution" is step-by-step integration. No unpublished algebraic interior min extracted. Leapfrog already logged. |
 
 Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
 
@@ -781,6 +784,17 @@ Blocked: Hicks 1884 Phil Trans body. Fukumoto–Miyazaki JFM 222 body. arXiv:260
 Conclusion: the missed 6-vortex 3-fold candidate is not self-similar. Trap-pair min, Hicks doughnut, Fukumoto–Miyazaki, and 2026 leapfrogging rings are published one-rate mins, series, elastica, or existence theorems. Not a fourth row. Hendrick / parallelogram / quincunx stand.
 
 Re-search: do not re-scan nested two-triangle 6-vortex Biot–Savart unless a newly named paper gives closed A, B. Skip Hicks / Fukumoto / trap-pair / coaxial rings unless a newly named source states a unique unpublished algebraic interior min of a product of two rates.
+
+### 2026-09-20  hunt difficulty skips: μ≠1 three-vortex cubic, Gallay-Sverak, Rott winding  query: Gotoda 3-vortex A B mu not 1 min of B/2A; arXiv:2609.10847 Gallay Sverak three-vortex; Rott 1994 winding number PDF
+
+Opened: Gotoda (3.3)–(3.5) plus M=0. Direct evaluation of |B/(2A)| along the 1-param family. μ=1 recovers Hendrick √2 to 4 digits. Reciprocal pairs share the min (μ=1/2 ↔ 2 ≈1.741; μ=1/4 ↔ 4 ≈2.802). Other μ: critical point is a cubic, not a floor like √2. Same 3-vortex family as Hendrick, not a new row. Gallay–Sverak arXiv:2609.10847 (9 Sep 2026): new ζ=(z2−z1)/(z3−z1), Hopf reduction, energy inequalities, near-collision regularization. Not a two-rate product min. Rott Phys. Fluids 6, 760 (1994) body still AIP-blocked. Abstract already logged: winding number is the ratio of two periods; path patterns still numerical.
+
+Blocked: Rott 1994 body (AIP). Eckhardt 1989 body.
+
+Conclusion: the cubic skip is closed by computation, not by difficulty. μ≠1 is the same family as Hendrick with a cubic crit; reciprocal pairs share the product. Gallay–Sverak is 2026 three-vortex geometry, not a fourth floor. Rott remains unread at the formula level; the abstract already says the winding-number patterns are illustrated numerically. Not a fourth row.
+
+Re-search: do not re-minimize |B/2A| on 3-vortex μ≠1 unless a newly named paper states a simple unpublished algebraic floor (not a cubic root). Skip Gallay–Sverak unless a follow-up extracts a two-rate product min. Skip Rott unless the body is actually read and states a unique unpublished algebraic interior min.
+
 
 
 
