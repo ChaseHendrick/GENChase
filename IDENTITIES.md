@@ -52,6 +52,18 @@ Anyone may use the mathematics. Claiming first discovery of these closed forms o
 
 A later paper that restates one of these formulae is a restatement. Cite this file as the first public appearance unless an earlier dated source is produced. Tacchi Appendix B is still unread; if that appendix already states a row, that row will be withdrawn. Until then, this table is the priority record.
 
+The frozen note is [`identities/note.pdf`](identities/note.pdf) (Typst source [`identities/note.typ`](identities/note.typ)). Canonical byte-exact lines are [`identities/STATEMENTS.txt`](identities/STATEMENTS.txt). SHA-256 fingerprints (UTF-8, LF, no BOM):
+
+| Artifact | SHA-256 |
+|---|---|
+| `identities/STATEMENTS.txt` | `fa51c2a28dfd93c2217c80746fe8b9a50c8e35a1edfa7172cfe6d19a8cd741ad` |
+| Hendrick's Identity block | `feec9106d080aa2575665ac2ec4439f3caee99e756b293878dcb7cd5ce2ccb10` |
+| Parallelogram lock block | `c5feb77708a1163c2275e0e2467a9007d97fae88e21ac3771444d8617f4d7c6e` |
+| Quincunx lock block | `ab967c2c842b0532c679f767d53d780102b508a53107b00d07972df840ad850d` |
+| `identities/note.pdf` | `42f47dbe13dda800d660a3f642e5131e830ca525dfafa0609c8ce33c002d955b` |
+
+A GitHub release tag `identities-2026-09-20` attaches the PDF and the statements. How to mint a Zenodo DOI and how to upload the note to arXiv: [`identities/ARXIV.md`](identities/ARXIV.md).
+
 ---
 
 ## Hendrick's Identity

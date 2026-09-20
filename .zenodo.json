@@ -1,0 +1,31 @@
+{
+  "title": "GENChase identities: Hendrick's Identity, the parallelogram lock, and the quincunx lock",
+  "description": "First public statements of three closed forms and unique algebraic minima of the scale-invariant product ω₀ t_c on classical point-vortex collapse families. Hendrick's Identity (2026-09-19): ω₀ t_c ≥ √2 on Gröbli's Γ = (1, 1, −1/2) family. Parallelogram lock (2026-09-20): ω₀ t_c ≥ 3√5/4 on the Novikov–Sedov four-vortex parallelogram. Quincunx lock (2026-09-20): ω₀ t_c ≥ 3√33/16 on the Novikov–Sedov five-vortex quincunx. The motion is classical. The closed product and the floor are this project's. Cite them by those names. Do not rename them. Do not put Hendrick's name on the other two.",
+  "creators": [
+    {
+      "name": "Chaos",
+      "affiliation": "GENChase"
+    }
+  ],
+  "keywords": [
+    "Hendrick's Identity",
+    "parallelogram lock",
+    "quincunx lock",
+    "point vortices",
+    "self-similar collapse",
+    "Gröbli",
+    "Novikov-Sedov"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/SharpMeow/GENChase",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ],
+  "upload_type": "publication",
+  "publication_type": "article",
+  "access_right": "open",
+  "communities": []
+}

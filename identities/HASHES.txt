@@ -1,0 +1,12 @@
+# SHA-256 fingerprints of identities/STATEMENTS.txt and identities/note.pdf
+# Algorithm: SHA-256, hex, lowercase. Encoding of STATEMENTS.txt: UTF-8, LF, no BOM.
+# Whole-file hash is over the bytes of STATEMENTS.txt as committed.
+# Block hash is over the bytes of that Name: ... First public: ...\n block, no surrounding blank line.
+
+STATEMENTS.txt       fa51c2a28dfd93c2217c80746fe8b9a50c8e35a1edfa7172cfe6d19a8cd741ad
+note.typ             9c79c20ad82e0fe98be42a8875b4042ad0cc86f4a520509a4d1271b51cc6bd75
+note.pdf             42f47dbe13dda800d660a3f642e5131e830ca525dfafa0609c8ce33c002d955b
+
+Hendrick's Identity  feec9106d080aa2575665ac2ec4439f3caee99e756b293878dcb7cd5ce2ccb10
+Parallelogram lock   c5feb77708a1163c2275e0e2467a9007d97fae88e21ac3771444d8617f4d7c6e
+Quincunx lock        ab967c2c842b0532c679f767d53d780102b508a53107b00d07972df840ad850d
