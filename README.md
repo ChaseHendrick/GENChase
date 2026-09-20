@@ -125,7 +125,7 @@ A generative art tool can get away with a plausible-looking integrator. A plate 
 
 Worth being precise about, because the credits matter.
 
-**Published science, named.** Almost every tab names the paper it implements. Gray–Scott is Gray and Scott. The donor stack is Braun and Willett. Wilson's algorithm is Wilson's. Hendrick's Identity, the parallelogram lock, and the quincunx lock are the exceptions: derived here, uniqueness-checked, locked so the status line marks miss if the claim is wrong. Miss is a grade, not a crash. The statements are in [IDENTITIES.md](IDENTITIES.md). Do not put a name on work that already exists. Do not put Hendrick's name on a second result.
+**Published science, named.** Almost every tab names the paper it implements. Gray–Scott is Gray and Scott. The donor stack is Braun and Willett. Wilson's algorithm is Wilson's. Hendrick's Identity, the parallelogram lock, and the quincunx lock are the exceptions: derived here, uniqueness-checked, locked so the status line marks miss if the claim is wrong. Miss is a grade, not a crash. The statements are in [IDENTITIES.md](IDENTITIES.md). Do not put a name on work that already exists. Hendrick's Identity is named for Hendrick. A later identity is named for the person who found it. Do not put Hendrick's name on a second result.
 
 **New as artifacts.** Every plate is an image that did not exist before it was computed, and the license says it is yours. That is the point of the object.
 
@@ -265,7 +265,7 @@ Each tab names the researchers. The implementations are original.
 
 ## Cite these identities
 
-The three rows in [IDENTITIES.md](IDENTITIES.md) were first published in this repository. Please cite them by the names below. Please do not republish the statements without attribution, and do not rename them. Do not put Hendrick's name on the parallelogram lock or the quincunx lock.
+The three rows in [IDENTITIES.md](IDENTITIES.md) were first published in this repository. Please cite them by the names below. Please do not republish the statements without attribution, and do not rename them. Hendrick's Identity is named for Hendrick. The other two are named for their geometries. A later identity found here is named for the person who found it, not Hendrick.
 
 Chaos. (2026). *Hendrick's Identity*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md — first public 2026-09-19.
 
