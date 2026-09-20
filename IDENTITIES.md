@@ -409,6 +409,8 @@ Checked 2026-09-20 cutting-edge 2025. Chen–Walsh–Wheeler (arXiv:2506.04093) 
 
 Checked 2026-09-20 missed geometries. Nested two-triangle six-vortex with $I=0$ is not self-similar: $A+iB$ on the $+$ triangle disagrees with $A+iB$ on the $-$ triangle (Biot–Savart scan at $\mu=1,1/2,2$). Collapsing configs lack that reflection symmetry. Two vortices in a BEC trap have a published min of one frequency vs separation. Hicks doughnut is thin-core series (Norbury already). Fukumoto–Miyazaki is the elastica analog of a filament with axial flow (Hasimoto already in the studio). Coaxial leapfrog rings now have a 2026 Euler existence proof (arXiv:2603.21644); that is KAM, not an algebraic floor. Do not claim these.
 
+Checked 2026-09-20 difficulty skips. Three-vortex $\mu\neq 1$: Gotoda $A,B$ are closed; $\mu=1$ is Hendrick $\sqrt{2}$; reciprocal pairs share the product; other $\mu$ have a cubic critical point, not a floor like $\sqrt{2}$. Same family, not a new row. Gallay–Sverak (arXiv:2609.10847, 9 Sep 2026) give a new $\zeta$-reduction and energy inequalities for near-collisions, not a two-rate product min. Rott 1994 winding number remains AIP-blocked; the abstract already says path patterns are numerical. Do not claim these.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 
