@@ -110,8 +110,15 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Stuart cat's eyes; Mallier–Maslowe | Exact Euler families. Circulation independent of the concentration parameter. No unpublished product min. |
 | Thomson N-gon + center | Unique N+1 equilibrium with N on a circle (Aref–van Buren). Relative equilibrium, not collapse. |
 | Peregrine / Akhmediev / Kuznetsov–Ma | \|u\|_max / \|u\|_∞ = 3 is Peregrine; Akhmediev AF = 1+2√(1−2a). Published. |
+| Crowdy H-states Ω(a,N) | Explicit relative-equilibrium rotation (JFM 913, R5, 2021, eq. 3.11). Kirchhoff-class, not collapse. Do not claim a min of Ω. |
+| Baker–Saffman–Sheffield hollow row | 1-parameter R = U∞/q₀. Perimeter non-monotonic (BSS 1976 fig. 3); energetics in Baker 1980. Not a collapse product. |
+| Stremler–Aref periodic parallelogram | Integrable three-vortex motion (JFM 392, 101, 1999). Not self-similar collapse. Periodic strip already logged. |
+| Sakajo four-vortex on a sphere | Self-similar four-vortex collapse is impossible (Phys. Fluids 19, 017109, 2007). Partial non-self-similar triple collapse is numerical examples (PRE 78, 016312, 2008). |
+| Kaden / Pullin vortex-sheet spirals | r ∝ θ^{-μ} (Kaden 1931; Pullin). Published self-similar sheet, not a point-vortex product min. |
+| Borisov–Kilin–Mamaev three vortex rings | Existence of threefold leapfrogging via Poincaré maps (RCD 2013; FDR 46, 031415, 2014). No closed period-speed product min. |
+| Tacchi Appendix B / Kimura 1988 | Still unread. Wrong HAL/theses.fr hits (Rodrigues, Poupardin, Margerit, Soulière). Reopen when the thesis PDF can be opened. |
 
-Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, or on Moore–Saffman's 0.15.
+Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, or on Kaden's spiral.
 
 **Rejected as inventions.**
 
@@ -138,6 +145,9 @@ Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex pr
 | Peregrine rogue-wave amplitude | \|u\|_max / \|u\|_∞ = 3; Akhmediev AF = 1+2√(1−2a) |
 | Thomson centered regular N-gon | Unique N+1 equilibrium with N identical vortices on a circle (Aref and van Buren 2005) |
 | Hasimoto filament soliton | c = 2τ; κ_max from the sech profile. Already the `#hasimoto` check. |
+| Crowdy H-states Ω(a,N) | JFM 913, R5 (2021) eq. (3.11). Relative equilibrium. |
+| Kaden algebraic spiral | r ∝ (t/θ)^{2/3} (Kaden 1931). |
+| Sakajo: no self-similar 4-vortex collapse on a sphere | Phys. Fluids 19, 017109 (2007). |
 
 Hendrick's closed form and min √2 were not in those sources. Tacchi Appendix B / Kimura 1988 coefficients remain unread.
 
@@ -498,6 +508,18 @@ Blocked: Tacchi thesis PDF still unread. Most journal HTML. Kallyadan–Shukla b
 Conclusion: no fourth identity of Hendrick's bar. The nearby 1-parameter exact families either have a published extremum, a numerical min, or a period in elliptic integrals rather than a simple radical. Do not claim Love's T(α), Kidambi–Newton's t_c, Peregrine's 3, Moore–Saffman's 0.15, or Thomson's uniqueness. Do not put Hendrick's name on them.
 
 Re-search: skip the new rows in the candidate table and the published-locks table unless a newly named paper states a closed dimensionless product and its unique algebraic interior min on one of those families. Reopen Tacchi Appendix B / Kimura 1988 coefficients when the files can be opened. A later algebraic, unpublished product with a unique interior extremum and a plate whose check can miss may still be claimed the same way Hendrick was.
+
+### 2026-09-20  hunt H-states, sphere four-vortex, Kaden, three rings  query: Crowdy H-states rotating hollow vortex angular velocity deformation closed form minimum; Baker Saffman Sheffield hollow vortex row perimeter length maximum; Aref Stremler point vortices periodic parallelogram self-similar collapse; Sakajo four point vortices on a sphere collapse; Kaden spiral vortex sheet self-similar; Borisov Mamaev Kilin three vortex rings leapfrogging period closed form; Tacchi Dynamique des tourbillons dans les fluides bidimensionnels Appendix B pdf
+
+Opened: Crowdy–Nelson–Krishnamurthy JFM 913 R5 (2021) postprint at people.iith.ac.in: Ω(a,N) is eq. (3.11), relative equilibrium. BSS 1976 / Baker 1980 snippets: hollow-row energetics and non-monotonic perimeter. Stremler–Aref JFM 392, 101 (1999) abstract: integrable three-vortex motion in a parallelogram, not collapse. Sakajo Phys. Fluids 19, 017109 (2007) PDF (eprints.lib.hokudai.ac.jp): four-vortex self-similar collapse on a sphere is impossible; PRE 78, 016312 (2008): partial non-self-similar triple collapse, numerical. Kaden 1931 / Pullin algebraic spirals: r ∝ θ^{-μ}. Borisov–Kilin–Mamaev RCD 2013 / FDR 2014: threefold ring leapfrogging exists on Poincaré maps. Tacchi: still no thesis PDF; HAL/theses.fr hits were Rodrigues, Poupardin, Margerit, Soulière.
+
+Blocked: Tacchi thesis PDF. Most journal HTML.
+
+Conclusion: no fourth identity of Hendrick's bar. H-state Ω is Kirchhoff-class. Sphere four-vortex self-similar collapse is proved impossible. Kaden, three-ring leapfrog, and parallelogram three-vortex motion are published. Do not claim these. Do not put Hendrick's name on them.
+
+Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min. Reopen Tacchi Appendix B when the file can be opened.
+
+
 
 
 

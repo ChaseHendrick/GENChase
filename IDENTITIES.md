@@ -323,6 +323,8 @@ Checked again 2026-09-20, still not a fourth row. Distinguished five-vortex diag
 
 Checked 2026-09-20 outside planar point-vortex collapse. Love's leapfrog period is complete elliptic integrals, not an algebraic floor; existence $\alpha=3-2\sqrt{2}$ and stability $\alpha=\varphi^{-2}$ are already published. Three-vortex collapse on a sphere has a distinct angular velocity at each vortex (Kidambi–Newton). SQG / generalized-Euler collapse times are numerical. Moore–Saffman and Kida give published strain bounds, not a product min. Stuart / Mallier–Maslowe, Peregrine $|u|_{\max}=3$, Thomson's centered $N$-gon, hetons, and Calogero's goldfish are published families. The search is in [`RESEARCH.md`](RESEARCH.md). Do not claim these. Do not put Hendrick's name on them.
 
+Checked again 2026-09-20: Crowdy H-states give an explicit relative-equilibrium $\Omega(a,N)$, not a collapse product. Baker–Saffman–Sheffield and Stremler–Aref are integrable or energy families, not self-similar collapse. Sakajo proved four-vortex self-similar collapse on a sphere is impossible. Kaden's spiral and Borisov–Kilin–Mamaev three-ring leapfrogging are published. Tacchi Appendix B is still unread. Do not claim these.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 
