@@ -195,6 +195,10 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Hill lunar | Variational orbit is a Fourier/power series in m (Hill 1878). Not a finite formula. Sitnikov / Euler collinear already logged. |
 | Feynman–Onsager | Superfluid circulation κ = h/m (Onsager 1949; Feynman 1955). Isolated published quantum. |
 | Alfvén | v_A = B / √(μ₀ ρ). Isolated published speed. Magnetosonic √(v_A² + c_s²) at θ = π/2. Not a 1-param product min. |
+| Gotoda unused NS | Closed A(θ), B(θ) exist only for 3-vortex, parallelogram 4, and five-vortex (arXiv:2002.09624 §§3.1–3.2). N≥6 and (1,1,1,−1) are numerical H-A curves. Novikov–Sedov 1979: exact 3, 4, 5 only. No unused closed family. |
+| Rott 1994 doubly periodic four | Vanishing mass, moments, polar inertia. Integrable. Two periods (configuration plane and absolute). Winding number = their ratio. Abstract: "simple closed-form results"; path patterns still numerical. Not a unique unpublished algebraic interior min of a 1-param product. Leapfrog already logged. |
+| Eckhardt 1989 integrable four | Vanishing total circulation and impulse. Reduced 1DOF. Periods elliptic (Love-class). Not a floor like √2. |
+| Jeffery–Hamel | Exact NS in a wedge. Critical α_c = K(k²)/m², complete elliptic (Rosenhead; Fraenkel). tan 2β = 2β has β* ≈ 2.247. Not algebraic. |
 
 Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, or on Rayleigh's 27π⁴/4.
 
@@ -704,6 +708,17 @@ Blocked: most journal HTML. Onsager 1949 Nuovo Cimento footnote body.
 Conclusion: no fourth identity of Hendrick's bar. Rayleigh 27π⁴/4, Taylor 1708, Rossby L_d, Feynman–Onsager h/m, Alfvén v_A are isolated published locks, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Eady 0.31 and Hill's variational orbit are numerical or series. Onsager negative T is statistical. Do not claim these. Do not put Hendrick's name on Rayleigh's 27π⁴/4.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
+### 2026-09-20  hunt unused NS closed A,B; Rott winding; Eckhardt integrable four; Jeffery-Hamel  query: six vortex self-similar collapse closed form A B Novikov Sedov; Gotoda 2020 six vortex; Rott four vortices doubly periodic paths winding number; Eckhardt 1989 integrable four vortex period; Jeffery-Hamel critical opening angle elliptic
+
+Opened: Gotoda arXiv:2002.09624 body: explicit A, B only for 3-vortex (3.3)–(3.8), parallelogram 4 (3.9)–(3.14), and five-vortex with a center (3.11)–(3.14). Abstract and §4: N≥6 and non-uniform 7 are numerical H-A. Novikov–Sedov JETP 50, 297 (1979): "exact solutions for three, four, and five vortices" only. Kallyadan–Shukla 2022 already logged as numerical closed curves. Rott Phys. Fluids 6, 760 (1994): vanishing ΣΓ, impulse, polar inertia; integrable four; two periods; winding number = ratio; "simple closed-form results" then "beyond a certain level of the analysis, still the more practical method of solution" is step-by-step integration. Path patterns for different winding numbers illustrated, not a unique unpublished algebraic interior min. Eckhardt Phys. Fluids 31, 2796 (1989): integrable when ΣΓ = 0 and impulse = 0; reduced 1DOF; periods of Love class (elliptic). Leapfrog existence α = 3−2√2 and stability φ^{-2} already in the published-locks table. Jeffery–Hamel: α_c from complete elliptic K (Wikipedia; Rosenhead 1940; Fraenkel 1962). tan 2β = 2β, β* ≈ 2.247. Not algebraic.
+
+Blocked: Rott 1994 body (AIP). Eckhardt 1989 body.
+
+Conclusion: the set of Novikov–Sedov / Gotoda families with closed A(θ), B(θ) is exactly the three claimed rows plus the already-skipped μ ≠ 1 three-vortex (cubic crit) and extra-μ five-vortex (same functional form). No unused closed family. Rott's winding number and Eckhardt's integrable four are elliptic or illustrated, not a fourth floor. Jeffery–Hamel is elliptic. Not a fourth row. Hendrick / parallelogram / quincunx stand.
+
+Re-search: do not reopen Gotoda for a sixth vortex unless a newly named paper gives closed A(θ), B(θ). Skip Rott / Eckhardt / Jeffery–Hamel unless a newly named source states a unique unpublished algebraic interior min of a product of two rates.
+
 
 
 
