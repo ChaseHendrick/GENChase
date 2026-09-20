@@ -331,6 +331,8 @@ Checked again 2026-09-20: Moffatt–Kimura 2019 give $s\kappa=2\sin\alpha$ (equa
 
 Checked 2026-09-20 outside vortex dynamics. Euler elastica, Delaunay unduloids, the catenoid–helicoid Bonnet family, Maclaurin–Jacobi ellipsoids, Calogero–Moser frequencies, KdV two-soliton phase shifts, Kerr ISCO, ABC flows, Stokes's 120° wave, Wilton ripples, the Toda lattice, the Lagrange top, and Ginzburg–Landau $\kappa=1/\sqrt{2}$ are published or elliptic/numerical. Do not claim these. Do not put Hendrick's name on Ginzburg–Landau's $1/\sqrt{2}$.
 
+Checked 2026-09-20 n-body, Laplacian growth, and classical mechanics. Four-body kite/rhombus central configurations (degree-12 $\varphi(\mu)$; Roberts infimum $(25+3\sqrt{69})/2$ is Routh's restricted three-body mass). Homographic motion is Keplerian in the scale. Hele-Shaw/Laplacian-growth cusps have closed $t_c$ for polynomial maps, Saffman–Taylor selects $\lambda=1/2$. Kapitza inverted pendulum $(a/l)(\omega/\omega_0)>\sqrt{2}$ is a published threshold. Jeffery orbits $T\dot\gamma=2\pi(r+1/r)$ min $4\pi$ by AM-GM (1922). Rayleigh–Plateau slender $\lambda=2\pi\sqrt{2}\,R$. Cotes inverse-cube spirals. Gold–Hoyle twist. Kirchhoff–Routh in a bounded domain. Do not claim these. Do not put Hendrick's name on Kapitza's $\sqrt{2}$, Jeffery's $4\pi$, Routh's $(25+3\sqrt{69})/2$, or Saffman–Taylor's $1/2$.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 

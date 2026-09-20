@@ -144,8 +144,16 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Toda 3-particle | Completely integrable; periods elliptic. Numerical orbit families. |
 | Lagrange sleeping top | Stability λ² > 4 m g l I₁ / I₂³. Elliptic in the large. |
 | Ginzburg–Landau κ = 1/√2 | Type I / II surface-energy zero. Abrikosov 1957. Isolated published lock. Do not claim. |
+| 4-body kite / rhombus CC | Unique convex kite for given masses (Leandro; Roberts 2025). Rhombus φ(μ) is a degree-12 polynomial. Homographic motion is Keplerian. Roberts infimum m₁/(m₂+m₃+m₄) = (25+3√69)/2 is Routh's restricted 3-body mass in a limiting kite. Isolated, published. |
+| Laplacian growth / Hele-Shaw | Polynomial maps form a cusp at closed t₀. Saffman–Taylor selects λ = 1/2 (Combescot; Mineev-Weinstein). Isolated. |
+| Kapitza inverted pendulum | (a/l)(ω/ω₀) > √2 (Stephenson 1908; Kapitza). Published threshold, not a 1-param product min of two dynamical rates. Do not claim Hendrick's √2. |
+| Jeffery orbits | T γ̇ = 2π(r + 1/r). Unique min 4π at r = 1 by AM-GM (Jeffery 1922). Published. |
+| Rayleigh–Plateau slender | Most-unstable λ = 2π√2 R (inviscid slender). Exact max is a Bessel root kR ≈ 0.697. Published. |
+| Cotes inverse-cube spirals | Finite-time fall when μ > h² (Cotes 1722). Trajectories closed. Not a product min. |
+| Gold–Hoyle flux tube | Uniform twist. Energy vs twist: numerical. |
+| Kirchhoff–Routh in a domain | Equilibria of N vortices in a bounded domain (Crowdy 2005; Kuhl). Existence, not a collapse product. |
 
-Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, or on Ginzburg–Landau's 1/√2.
+Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, or on Saffman–Taylor's 1/2.
 
 **Rejected as inventions.**
 
@@ -188,6 +196,11 @@ Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex pr
 | Maclaurin spheroid Ω max | Ω²/(πGρ) ≈ 0.449331 at e ≈ 0.92996 (1742). Numerical, not algebraic. |
 | Stokes 120° crest | Highest gravity wave. H/λ ≈ 0.141 numerical (Michell; Toland). |
 | Kerr ISCO | Bardeen–Press–Teukolsky cube-root formula. Photon-sphere λ/Ω already logged. |
+| Routh / kite CC mass | (25+3√69)/2 (Roberts 2025, from Routh 1875). Isolated. |
+| Kapitza product | (a/l)(ω/ω₀) > √2. Threshold, not Hendrick. |
+| Jeffery T γ̇ | min 4π at a sphere (1922). |
+| Saffman–Taylor | λ = 1/2. Isolated. |
+| Rayleigh–Plateau slender | λ = 2π√2 R. |
 
 Hendrick's closed form and min √2 were not in those sources. Tacchi Appendix B remains unread. Kimura 1987 is the general similarity theory, not a fourth product min.
 
@@ -588,6 +601,18 @@ Blocked: Tacchi thesis PDF.
 Conclusion: no fourth identity of Hendrick's bar. Other areas (elastica, CMC, gravity, integrable N-body, GR, superconductivity, water waves, rigid body) yield published numbers or elliptic/numerical extrema. Do not claim Ginzburg–Landau's 1/√2. Do not put Hendrick's name on any of this.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
+### 2026-09-20  hunt n-body, Laplacian growth, Kapitza, Jeffery  query: rhombus kite four-body central configuration angular velocity closed form minimum; Laplacian growth Hele-Shaw cardioid cusp formation time; point vortices on a cone collapse; Kapitza pendulum inverted stability sqrt(2); homographic n-body collapse time angular velocity; Jeffery orbit period shear 2π(r+1/r); Rayleigh-Plateau 2π√2; Kirchhoff-Routh equilateral triangle; Cotes inverse cube; Saffman-Taylor finger 1/2; Gold-Hoyle energy twist
+
+Opened: Roberts arXiv:2411.07867 / Nonlinearity 2025: unique convex kite CC; linear-stability infimum m₁/(Σothers) = (25+3√69)/2 ≈ 24.96, recovered from Routh's restricted 3-body ρ_r = (1−√69/9)/2 in a limiting kite. Waldvogel: rhombus φ(μ) is a degree-12 polynomial, unique in a π/4-neighbourhood. Homographic solutions reduce to Kepler in the scale (Scholarpedia; classical). Hele-Shaw polynomial maps: closed cusp time t₀ = A − 3/4 (2B)^{2/3}; Saffman–Taylor λ = 1/2 (Combescot 1986; Mineev-Weinstein 1998 exact without surface tension). Kapitza/Stephenson: (a/l)(ω/ω₀) > √2. Jeffery 1922: T γ̇ = 2π(r+1/r), min 4π at r=1 by AM-GM. Rayleigh–Plateau slender λ = 2π√2 R; exact inviscid max is a Bessel root kR ≈ 0.697. Cotes 1722 inverse-cube spirals, finite-time fall for μ > h². Crowdy 2005 Kirchhoff–Routh in multiply connected domains. Gold–Hoyle energy vs twist numerical. No cone-vortex A,B closed product.
+
+Blocked: Tacchi thesis PDF.
+
+Conclusion: no fourth identity of Hendrick's bar. Nearby named numbers — Kapitza √2, Jeffery 4π, Routh (25+3√69)/2, Saffman–Taylor 1/2, Rayleigh–Plateau 2π√2 — are published and are not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on them.
+
+Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
+
 
 
 
