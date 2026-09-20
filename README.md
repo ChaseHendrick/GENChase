@@ -144,9 +144,9 @@ Worth being precise about, because the credits matter.
 - **Crapper.** G. D. Crapper, J. Fluid Mech. 2, 532 (1957). The unique exact finite-amplitude pure-capillary wave. Steepness s = 4|A|/(π(1−A²)) identically; the trough pinches a bubble at s* ≈ 0.730. The same *profile* is a constant-vorticity Euler wave with g = σ = 0 (Hur and Vanden-Broeck 2020). The plate reports s_meas against that identity.
 - **Hasimoto.** A soliton on a vortex filament (Hasimoto, JFM 51, 477, 1972). Local induction maps to NLS; the sech is a traveling loop of helical motion. Speed along the filament equals twice the torsion. The plate reports κ_max/(2ν) and c/(2τ₀) from the polyline, not from the formula by construction.
 - **Lump.** KP-I lumps (Manakov et al. 1977), rational, 1/r² tails. Completely different from the studio’s KP-II line-soliton webs. The plate reports the KP-I residual (u_t + 6uu_x + u_xxx)_x − 3 u_yy against 0, by finite differences of the rational field, and the peak against 4b².
-- **Hendrick's Identity.** Three point vortices of circulations 1, 1, −1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae (his eqs. 25a, 25d) and wrote their product as the pitch of the logarithmic spiral (eq. 29c). The closed form of that product on this family is ω₀ t_c = (2 − cos²θ) / sin(2θ) ≥ √2, with equality uniquely at tan θ = 1/√2, the triangle with interior angles 22.5°, 45° and 112.5°. θ is the third vortex's place on the L = 0 circle, not an interior angle. With u = tan θ the product is u + 1/(2u). That identity is the project's observation; historical priority has not been established. The plate reports ω₀ t_c / √2 against 1, the similarity residual against 0, and signed L against 0. Off the circle, all three numbers miss on purpose. `#hendricks-identity` opens it; `#hendrick` still does. The statement, the proof, and the citation are in [IDENTITIES.md](IDENTITIES.md). Also searched as Hendrick's law, Hendrick's Math. `#track` is still Track.
-- **Parallelogram lock.** Four point vortices of circulations (1, 1, −2−√3, −2−√3) at the vertices of a parallelogram with diagonal ratio √(2+√3) collapse self-similarly (Novikov and Sedov, Sov. Phys. JETP 50, 297, 1979). Gotoda (2020, eq. 3.13) wrote the collapse rate A(θ) and the spin B(θ) separately and plotted Hamiltonian against collapse rate. The closed form of their product on this family is ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4, with equality uniquely at cos 2θ = 1/4. That identity is the project's observation; historical priority has not been established. The plate reports |ω₀ t_c| / (3√5/4) against 1, the similarity residual against 0, and signed L against 0. Off the parallelogram, all three numbers miss on purpose. `#parallelogram-lock` opens it. The statement and the proof are in [IDENTITIES.md](IDENTITIES.md). This is not Novikov and Sedov's t_* or ω separately under a new name.
-- **Quincunx lock.** Five point vortices of circulations (−1, −1, 1/2, 1/2, −3/4), four at the corners of a parallelogram and one at the crossing of the diagonals, diagonals in ratio 1/√2, collapse self-similarly (Novikov and Sedov 1979; Gotoda's five-vortex example). Gotoda (2020, eq. 3.13, γ3 ≠ 0) wrote A(θ) and B(θ) separately and plotted this family as Hamiltonian against collapse rate. The closed form of their product on this family is ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16, with equality uniquely at cos 2θ = 4/7. That identity is the project's observation; historical priority has not been established. The plate reports |ω₀ t_c| / (3√33/16) against 1, the similarity residual against 0, and signed L against 0. Off the quincunx, all three numbers miss on purpose. `#quincunx-lock` opens it. The statement and the proof are in [IDENTITIES.md](IDENTITIES.md). A different five-vortex slice with μ = 3 recovers Hendrick's product identically and is not claimed. This is not Novikov and Sedov's t_* or ω separately under a new name, and it is not named Hendrick.
+- **Hendrick's Identity.** Three point vortices of circulations 1, 1, −1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae (his eqs. 25a, 25d) and wrote their product as the pitch of the logarithmic spiral (eq. 29c). The closed form of that product on this family is ω₀ t_c = (2 − cos²θ) / sin(2θ) ≥ √2, with equality uniquely at tan θ = 1/√2, the triangle with interior angles 22.5°, 45° and 112.5°. θ is the third vortex's place on the L = 0 circle, not an interior angle. With u = tan θ the product is u + 1/(2u). That identity is the project's observation, first published here on 2026-09-19. The plate reports ω₀ t_c / √2 against 1, the similarity residual against 0, and signed L against 0. Off the circle, all three numbers miss on purpose. `#hendricks-identity` opens it; `#hendrick` still does. The statement, the proof, and the citation are in [IDENTITIES.md](IDENTITIES.md). Also searched as Hendrick's law, Hendrick's Math. `#track` is still Track.
+- **Parallelogram lock.** Four point vortices of circulations (1, 1, −2−√3, −2−√3) at the vertices of a parallelogram with diagonal ratio √(2+√3) collapse self-similarly (Novikov and Sedov, Sov. Phys. JETP 50, 297, 1979). Gotoda (2020, eq. 3.13) wrote the collapse rate A(θ) and the spin B(θ) separately and plotted Hamiltonian against collapse rate. The closed form of their product on this family is ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4, with equality uniquely at cos 2θ = 1/4. That identity is the project's observation, first published here on 2026-09-20. The plate reports |ω₀ t_c| / (3√5/4) against 1, the similarity residual against 0, and signed L against 0. Off the parallelogram, all three numbers miss on purpose. `#parallelogram-lock` opens it. The statement and the proof are in [IDENTITIES.md](IDENTITIES.md). This is not Novikov and Sedov's t_* or ω separately under a new name.
+- **Quincunx lock.** Five point vortices of circulations (−1, −1, 1/2, 1/2, −3/4), four at the corners of a parallelogram and one at the crossing of the diagonals, diagonals in ratio 1/√2, collapse self-similarly (Novikov and Sedov 1979; Gotoda's five-vortex example). Gotoda (2020, eq. 3.13, γ3 ≠ 0) wrote A(θ) and B(θ) separately and plotted this family as Hamiltonian against collapse rate. The closed form of their product on this family is ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16, with equality uniquely at cos 2θ = 4/7. That identity is the project's observation, first published here on 2026-09-20. The plate reports |ω₀ t_c| / (3√33/16) against 1, the similarity residual against 0, and signed L against 0. Off the quincunx, all three numbers miss on purpose. `#quincunx-lock` opens it. The statement and the proof are in [IDENTITIES.md](IDENTITIES.md). A different five-vortex slice with μ = 3 recovers Hendrick's product identically and is not claimed. This is not Novikov and Sedov's t_* or ω separately under a new name, and it is not named Hendrick.
 
 **Two closed loops, both with prior art.** Each piece is published. So is the family the loop belongs to. The plates are pictures of those families with an open-loop control sitting next to the closed one. A published equation plus a feedback term is not an invention, and it does not get a private name.
 
@@ -263,11 +263,15 @@ Each tab names the researchers. The implementations are original.
 
 ---
 
-## Cite Hendrick's Identity
+## Cite these identities
 
-The name of the result is Hendrick's Identity (also searched as Hendrick's law, Hendrick's Math). Please cite it by that name. Please do not republish the statement without attribution, and do not rename it.
+The three rows in [IDENTITIES.md](IDENTITIES.md) were first published in this repository. Please cite them by the names below. Please do not republish the statements without attribution, and do not rename them. Do not put Hendrick's name on the parallelogram lock or the quincunx lock.
 
-Chaos. (2026). *Hendrick's Identity*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md
+Chaos. (2026). *Hendrick's Identity*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md — first public 2026-09-19.
+
+Chaos. (2026). *Parallelogram lock*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md — first public 2026-09-20.
+
+Chaos. (2026). *Quincunx lock*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md — first public 2026-09-20.
 
 ```bibtex
 @misc{hendricks-identity-2026,
@@ -277,10 +281,28 @@ Chaos. (2026). *Hendrick's Identity*. GENChase. https://github.com/SharpMeow/GEN
   year         = {2026},
   howpublished = {GENChase},
   url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
-  note         = {Also referred to as Hendrick's law, Hendrick's Math}
+  note         = {First public 2026-09-19. Also Hendrick's law, Hendrick's Math}
+}
+@misc{parallelogram-lock-2026,
+  author       = {Chaos},
+  title        = {Parallelogram lock: an explicit formula and sharp minimum
+                  for the Novikov--Sedov four-vortex parallelogram collapse},
+  year         = {2026},
+  howpublished = {GENChase},
+  url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
+  note         = {First public 2026-09-20. $\omega_0 t_c \ge 3\sqrt{5}/4$}
+}
+@misc{quincunx-lock-2026,
+  author       = {Chaos},
+  title        = {Quincunx lock: an explicit formula and sharp minimum
+                  for the Novikov--Sedov five-vortex quincunx collapse},
+  year         = {2026},
+  howpublished = {GENChase},
+  url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
+  note         = {First public 2026-09-20. $\omega_0 t_c \ge 3\sqrt{33}/16$}
 }
 ```
 
-The boxed formula, the proof that the minimum is √2, a plain-language writeup, and the plate whose check can miss are in [IDENTITIES.md](IDENTITIES.md). GitHub's "Cite this repository" button emits the same record.
+The boxed formulae, the proofs, and the plates whose checks can miss are in [IDENTITIES.md](IDENTITIES.md). GitHub's "Cite this repository" button emits the Hendrick record via [`CITATION.cff`](CITATION.cff). Claiming first discovery of these closed forms after those dates, without citing this repository, is claiming this project's work.
 
 Built by Chaos.

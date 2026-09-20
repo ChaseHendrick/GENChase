@@ -38,6 +38,20 @@ To add a row: search the literature first. Web-search the closed form and the ex
 | Parallelogram lock | `parallelogram-lock` | ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4 on the Novikov–Sedov parallelogram. Equality at cos 2θ = 1/4 | The vortices leave the parallelogram, or the Biot-Savart kernel is wrong |
 | Quincunx lock | `quincunx-lock` | ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16 on the Novikov–Sedov five-vortex quincunx. Equality at cos 2θ = 4/7 | The vortices leave the quincunx, or the Biot-Savart kernel is wrong |
 
+## First public appearance
+
+These three statements were first published here, by Chaos, in this repository. GitHub's commit timestamps are the public record. The motion on each family is classical. The closed form of ω₀ t_c and the unique algebraic floor are this project's.
+
+| Statement | First public | Record |
+|---|---|---|
+| Hendrick's Identity, ω₀ t_c ≥ √2 | 2026-09-19 | [SharpMeow/GENChase#24](https://github.com/SharpMeow/GENChase/pull/24), [IDENTITIES.md](https://github.com/SharpMeow/GENChase/commit/6632e64) |
+| Parallelogram lock, ω₀ t_c ≥ 3√5/4 | 2026-09-20 | [SharpMeow/GENChase#44](https://github.com/SharpMeow/GENChase/pull/44) |
+| Quincunx lock, ω₀ t_c ≥ 3√33/16 | 2026-09-20 | [SharpMeow/GENChase#44](https://github.com/SharpMeow/GENChase/pull/44) |
+
+Anyone may use the mathematics. Claiming first discovery of these closed forms or these floors, after those dates, without citing this file, is claiming this project's work. Do not rename them. Do not put Hendrick's name on the other two. The family (Gröbli, Novikov–Sedov, Aref, Gotoda) stays credited to those papers.
+
+A later paper that restates one of these formulae is a restatement. Cite this file as the first public appearance unless an earlier dated source is produced. Tacchi Appendix B is still unread; if that appendix already states a row, that row will be withdrawn. Until then, this table is the priority record.
+
 ---
 
 ## Hendrick's Identity
@@ -128,7 +142,7 @@ Octant should read 1, 0, and 0. The Broken configuration moves off the circle, s
 
 Hendrick's Identity is the project's name for this formula and sharp bound. Three-vortex collapse is classical, dating to Gröbli (1877). Aref (2010) gives formulas for rotation and collapse and expresses their product in the logarithmic-spiral trajectory. The formula above follows by specializing established equations.
 
-The explicit minimum of the product and its equality triangle are the focus of this project's observation. Historical priority has not been established. This is a mathematical result within the classical point-vortex model.
+The explicit minimum of the product and its equality triangle are this project's observation. First public statement: this repository, 2026-09-19. This is a mathematical result within the classical point-vortex model.
 
 Please cite it as Hendrick's Identity. Please do not republish this statement without attribution, and do not rename it. Anyone may use the mathematics; the name and this writeup are how this project asks to be credited.
 
@@ -144,7 +158,7 @@ Chaos. (2026). *Hendrick's Identity*. GENChase. https://github.com/SharpMeow/GEN
   year         = {2026},
   howpublished = {GENChase},
   url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
-  note         = {Also referred to as Hendrick's law, Hendrick's Math}
+  note         = {First public 2026-09-19. Also Hendrick's law, Hendrick's Math}
 }
 ```
 
@@ -226,7 +240,23 @@ The Broken configuration moves a vertex off the parallelogram to illustrate depa
 
 ### Attribution and originality
 
-"Parallelogram lock" is the project's name for this formula and sharp bound. Four-vortex parallelogram collapse is Novikov and Sedov (1979). Gotoda (2020) writes $A(\theta)$ and $B(\theta)$ separately and plots the Hamiltonian against the collapse rate. The formula above follows by specializing those equations. The explicit minimum and its equality angle are the focus of this project's observation. Historical priority has not been established. This is a mathematical result within the classical point-vortex model. It is not Novikov and Sedov's motion under a new name, and it is not their $t_*$ or $\omega$ separately under a new name.
+"Parallelogram lock" is the project's name for this formula and sharp bound. Four-vortex parallelogram collapse is Novikov and Sedov (1979). Gotoda (2020) writes $A(\theta)$ and $B(\theta)$ separately and plots the Hamiltonian against the collapse rate. The formula above follows by specializing those equations. The explicit minimum and its equality angle are this project's observation. First public statement: this repository, 2026-09-20. This is a mathematical result within the classical point-vortex model. It is not Novikov and Sedov's motion under a new name, and it is not their $t_*$ or $\omega$ separately under a new name.
+
+### Cite
+
+Chaos. (2026). *Parallelogram lock*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md
+
+```bibtex
+@misc{parallelogram-lock-2026,
+  author       = {Chaos},
+  title        = {Parallelogram lock: an explicit formula and sharp minimum
+                  for the Novikov--Sedov four-vortex parallelogram collapse},
+  year         = {2026},
+  howpublished = {GENChase},
+  url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
+  note         = {First public statement 2026-09-20. $\omega_0 t_c \ge 3\sqrt{5}/4$}
+}
+```
 
 References:
 
@@ -303,7 +333,23 @@ The Broken configuration moves a vertex off the parallelogram to illustrate depa
 
 ### Attribution and originality
 
-"Quincunx lock" is the project's name for this formula and sharp bound. Five-vortex parallelogram-plus-center collapse is Novikov and Sedov (1979). Gotoda (2020) writes $A(\theta)$ and $B(\theta)$ separately, including the $\gamma_3$ terms, and plots this family ($\gamma_1=-1$, $\gamma_2=1/2$, $\gamma_3=-3/4$) as Hamiltonian against collapse rate. Gotoda (2024) studies filtered-vortex enstrophy on the same family numerically. Neither paper forms the product $\omega t_c$ or states its minimum. The formula above follows by specializing those equations. The explicit minimum and its equality angle are the focus of this project's observation. Historical priority has not been established. This is a mathematical result within the classical point-vortex model. It is not Novikov and Sedov's motion under a new name, and it is not their $t_*$ or $\omega$ separately under a new name. It is not the four-vortex parallelogram lock.
+"Quincunx lock" is the project's name for this formula and sharp bound. Five-vortex parallelogram-plus-center collapse is Novikov and Sedov (1979). Gotoda (2020) writes $A(\theta)$ and $B(\theta)$ separately, including the $\gamma_3$ terms, and plots this family ($\gamma_1=-1$, $\gamma_2=1/2$, $\gamma_3=-3/4$) as Hamiltonian against collapse rate. Gotoda (2024) studies filtered-vortex enstrophy on the same family numerically. Neither paper forms the product $\omega t_c$ or states its minimum. The formula above follows by specializing those equations. The explicit minimum and its equality angle are this project's observation. First public statement: this repository, 2026-09-20. This is a mathematical result within the classical point-vortex model. It is not Novikov and Sedov's motion under a new name, and it is not their $t_*$ or $\omega$ separately under a new name. It is not the four-vortex parallelogram lock.
+
+### Cite
+
+Chaos. (2026). *Quincunx lock*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md
+
+```bibtex
+@misc{quincunx-lock-2026,
+  author       = {Chaos},
+  title        = {Quincunx lock: an explicit formula and sharp minimum
+                  for the Novikov--Sedov five-vortex quincunx collapse},
+  year         = {2026},
+  howpublished = {GENChase},
+  url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
+  note         = {First public statement 2026-09-20. $\omega_0 t_c \ge 3\sqrt{33}/16$}
+}
+```
 
 A different five-vortex slice of the same Novikov–Sedov family, with diagonal ratio $\mu=3$, recovers Hendrick's product $\omega_0 t_c=(3-\cos 2\theta)/(2\sin 2\theta)\ge\sqrt{2}$ identically. That is Hendrick's Identity on five vortices, not a third identity, and it is not claimed here.
 

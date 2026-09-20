@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 title: "GENChase: a single-file studio of seeded scientific simulations, built for print"
-message: "If you use Hendrick's Identity, cite the preferred-citation below. If you use GENChase or a plate made with it, cite this software and also cite the researchers named in the technique's own credit line."
+message: "If you use Hendrick's Identity, the parallelogram lock, or the quincunx lock, cite IDENTITIES.md. If you use GENChase or a plate made with it, cite this software and also cite the researchers named in the technique's own credit line."
 type: software
 authors:
   - name: "Chaos"
@@ -16,9 +16,12 @@ abstract: >-
   print resolution in inches, as vectors where the picture is discrete marks.
   Most techniques measure a quantity that theory predicts, from the field
   currently on screen, and print it alongside the value theory gives. This
-  repository is also the home of Hendrick's Identity (also searched as
-  Hendrick's law, Hendrick's Math): an explicit formula and sharp minimum
-  for a classical three-vortex collapse family, stated in IDENTITIES.md.
+  repository is also the home of three derived identities stated in
+  IDENTITIES.md: Hendrick's Identity (first public 2026-09-19; also
+  Hendrick's law, Hendrick's Math), the parallelogram lock, and the
+  quincunx lock (first public 2026-09-20). Cite them by those names.
+  Do not republish the closed forms or the floors as a new discovery
+  without attribution.
 keywords:
   - generative art
   - scientific visualization
@@ -39,6 +42,8 @@ keywords:
   - Hendrick's Identity
   - Hendrick's law
   - Hendrick's Math
+  - parallelogram lock
+  - quincunx lock
   - point vortex collapse
 preferred-citation:
   type: generic
@@ -56,8 +61,9 @@ preferred-citation:
     velocity and collapse time is omega_0 t_c = (2 - cos^2 theta) / sin(2 theta)
     >= sqrt(2), with equality uniquely at tan theta = 1/sqrt(2), a triangle
     of interior angles 22.5, 45, and 112.5 degrees. Independently derived
-    in GENChase with AI assistance. Also referred to as Hendrick's law and
-    Hendrick's Math. Cite as Hendrick's Identity.
+    in GENChase with AI assistance. First public statement 2026-09-19.
+    Also referred to as Hendrick's law and Hendrick's Math. Cite as
+    Hendrick's Identity.
   keywords:
     - Hendrick's Identity
     - Hendrick's law
@@ -66,3 +72,22 @@ preferred-citation:
     - self-similar collapse
     - Gröbli
     - Aref
+references:
+  - type: generic
+    title: "Parallelogram lock: an explicit formula and sharp minimum for the Novikov–Sedov four-vortex parallelogram collapse"
+    authors:
+      - name: "Chaos"
+        website: "https://github.com/SharpMeow"
+    year: 2026
+    month: 9
+    url: "https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md"
+    notes: "First public 2026-09-20. omega_0 t_c >= 3 sqrt(5)/4 at cos 2theta = 1/4."
+  - type: generic
+    title: "Quincunx lock: an explicit formula and sharp minimum for the Novikov–Sedov five-vortex quincunx collapse"
+    authors:
+      - name: "Chaos"
+        website: "https://github.com/SharpMeow"
+    year: 2026
+    month: 9
+    url: "https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md"
+    notes: "First public 2026-09-20. omega_0 t_c >= 3 sqrt(33)/16 at cos 2theta = 4/7."
