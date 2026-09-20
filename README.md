@@ -57,7 +57,7 @@ GENChase is the other object: 117 sciences on one control surface, deterministic
 
 ## What is actually different
 
-**The assembly.** Almost every tab is the paper it names. Hendrick's Identity is the exception: a closed form and a sharp minimum derived here, uniqueness-checked, locked so the plate fails if the claim is wrong. What is unusual about the rest is that chemistry, acoustics, liquid crystals, and aperiodic tiles share one seed field, one palette, and one export. Switching from Cahn–Hilliard to Chladni costs you nothing.
+**The assembly.** Almost every tab is the paper it names. Hendrick's Identity is the exception: a closed form and a sharp minimum derived here, uniqueness-checked, locked so the status line marks miss if the claim is wrong. Miss is a grade on the numbers, not a crash; the picture still draws. What is unusual about the rest is that chemistry, acoustics, liquid crystals, and aperiodic tiles share one seed field, one palette, and one export. Switching from Cahn–Hilliard to Chladni costs you nothing.
 
 **Determinism as the product.** Every random draw comes from a seeded generator. Geometry is resolution-independent. Keep the seed, get the same plate at 36 inches. Change it, get another world.
 
@@ -74,6 +74,8 @@ GENChase is the other object: 117 sciences on one control surface, deterministic
 ## The plates check themselves
 
 This is the part that is hard to copy, and the reason to trust the pictures. Most tabs measure a quantity that theory predicts, **from the plate in front of you**, and print it in the status line and on the colophon. Not quoted from a paper: computed from the field that is currently on screen.
+
+The word **miss** on a status line is not the site breaking. The picture is still a plate. The numbers under it did not match what the equation predicted. Broken presets do this on purpose, so you can see the check is real.
 
 | Tab | What it measures | What theory says | What the plate measured |
 |---|---|---|---|
@@ -121,7 +123,7 @@ A generative art tool can get away with a plausible-looking integrator. A plate 
 
 Worth being precise about, because the credits matter.
 
-**Published science, named.** Almost every tab names the paper it implements. Gray–Scott is Gray and Scott. The donor stack is Braun and Willett. Wilson's algorithm is Wilson's. Hendrick's Identity is the exception: derived here, uniqueness-checked, locked so the plate fails if the claim is wrong. The statement is in [IDENTITIES.md](IDENTITIES.md). Do not put a name on work that already exists.
+**Published science, named.** Almost every tab names the paper it implements. Gray–Scott is Gray and Scott. The donor stack is Braun and Willett. Wilson's algorithm is Wilson's. Hendrick's Identity is the exception: derived here, uniqueness-checked, locked so the status line marks miss if the claim is wrong. Miss is a grade, not a crash. The statement is in [IDENTITIES.md](IDENTITIES.md). Do not put a name on work that already exists.
 
 **New as artifacts.** Every plate is an image that did not exist before it was computed, and the license says it is yours. That is the point of the object.
 
@@ -133,14 +135,14 @@ Worth being precise about, because the credits matter.
 - **Cortical Planforms.** A Wilson–Cowan field taken through the retinocortical map, interactive and seeded, with the patterning window computed in closed form so the tab can say when the drive is outside it. The science is Ermentrout and Cowan 1979 and Bressloff and colleagues 2001. I looked for an interactive browser version and did not find one, and this is the weakest negative result on the page: a sketch doing exactly this could sit on Observable or Shadertoy under a name I did not think to search, and neither site could be opened from here.
 - **Drainage Networks.** Stream-power landscape evolution on the Braun–Willett donor stack with priority-flood depression filling, with the channel network exported as vectors. The research codes are FastScape, fastscapelib and LandLab, which are Python, C++ and Fortran driven from notebooks; fastscapelib's own roadmap lists no browser or WebAssembly target. Browser erosion demos are common, but they are droplet-based hydraulic erosion out of computer graphics, which is a different model and does not give you a drainage network.
 - **Soliton Web.** Resonant line-soliton webs of the Kadomtsev–Petviashvili II equation, evaluated from Sato’s Wronskian tau function rather than integrated. Miles’ Y-junction, Kodama and Biondini’s O-type and spiders, Horowitz–Zarmi expansion. The status line prints the Hirota bilinear residual against 0; this build reads **~10⁻¹⁵**. Matplotlib and Mathematica notebooks of KP webs exist in the papers. I did not find a seeded, paletted, print-ready browser plate of the exact tau function.
-- **Gerstner.** The unique exact periodic deep-water gravity wave of finite amplitude (Gerstner 1802, Rankine 1863). Every particle traces a circle; the free surface is an inverted trochoid; pressure is constant along it. The plate prints the Lagrangian map and reports orbit RMS/r against 0 and r / A e^{kb} against 1. Two trains is Tessendorf superposition, labelled as graphics, and the circles fail on purpose.
+- **Gerstner.** The unique exact periodic deep-water gravity wave of finite amplitude (Gerstner 1802, Rankine 1863). Every particle traces a circle; the free surface is an inverted trochoid; pressure is constant along it. The plate prints the Lagrangian map and reports orbit RMS/r against 0 and r / A e^{kb} against 1. Two trains is Tessendorf superposition, labelled as graphics, and the circles miss on purpose.
 - **Figure Eight.** Moore 1993, Chenciner–Montgomery 2000, Simó’s 16-digit IC. Three equal masses chase each other around a figure-eight with L = 0. The plate reports |L| against 0, energy drift against 0, and return distance at the period against 0. Broken nearby is the control that does not close.
 - **Peakon.** Camassa–Holm peaked solitons (1993); multi-peakon collisions of Beals–Sattinger–Szmigielski. Speed equals amplitude. The plate samples v_meas / c against 1 and the corner |u_x|/c against ±1 from the field, not from the formula by construction.
 - **Photon Sphere.** Schwarzschild 1916, Darwin 1959, Synge 1966. Null geodesics, unstable photon orbit at r = 3M, capture at b = 3√3 M. The plate reports b_meas / (3√3 M) and r_ph / 3M against 1. If the integrator is wrong, the ring sits in the wrong place.
 - **Crapper.** G. D. Crapper, J. Fluid Mech. 2, 532 (1957). The unique exact finite-amplitude pure-capillary wave. Steepness s = 4|A|/(π(1−A²)) identically; the trough pinches a bubble at s* ≈ 0.730. The same *profile* is a constant-vorticity Euler wave with g = σ = 0 (Hur and Vanden-Broeck 2020). The plate reports s_meas against that identity.
 - **Hasimoto.** A soliton on a vortex filament (Hasimoto, JFM 51, 477, 1972). Local induction maps to NLS; the sech is a traveling loop of helical motion. Speed along the filament equals twice the torsion. The plate reports κ_max/(2ν) and c/(2τ₀) from the polyline, not from the formula by construction.
 - **Lump.** KP-I lumps (Manakov et al. 1977), rational, 1/r² tails. Completely different from the studio’s KP-II line-soliton webs. The plate reports the KP-I residual (u_t + 6uu_x + u_xxx)_x − 3 u_yy against 0, by finite differences of the rational field, and the peak against 4b².
-- **Hendrick's Identity.** Three point vortices of circulations 1, 1, −1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae (his eqs. 25a, 25d) and wrote their product as the pitch of the logarithmic spiral (eq. 29c). The closed form of that product on this family is ω₀ t_c = (2 − cos²θ) / sin(2θ) ≥ √2, with equality uniquely at tan θ = 1/√2, the triangle with interior angles 22.5°, 45° and 112.5°. θ is the third vortex's place on the L = 0 circle, not an interior angle. With u = tan θ the product is u + 1/(2u). That identity is the project's observation; historical priority has not been established. The plate reports ω₀ t_c / √2 against 1, the similarity residual against 0, and signed L against 0. Off the circle, all three fail. `#hendricks-identity` opens it; `#hendrick` still does. The statement, the proof, and the citation are in [IDENTITIES.md](IDENTITIES.md). Also searched as Hendrick's law, Hendrick's Math. `#track` is still Track.
+- **Hendrick's Identity.** Three point vortices of circulations 1, 1, −1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae (his eqs. 25a, 25d) and wrote their product as the pitch of the logarithmic spiral (eq. 29c). The closed form of that product on this family is ω₀ t_c = (2 − cos²θ) / sin(2θ) ≥ √2, with equality uniquely at tan θ = 1/√2, the triangle with interior angles 22.5°, 45° and 112.5°. θ is the third vortex's place on the L = 0 circle, not an interior angle. With u = tan θ the product is u + 1/(2u). That identity is the project's observation; historical priority has not been established. The plate reports ω₀ t_c / √2 against 1, the similarity residual against 0, and signed L against 0. Off the circle, all three numbers miss on purpose. `#hendricks-identity` opens it; `#hendrick` still does. The statement, the proof, and the citation are in [IDENTITIES.md](IDENTITIES.md). Also searched as Hendrick's law, Hendrick's Math. `#track` is still Track.
 
 **Two closed loops, both with prior art.** Each piece is published. So is the family the loop belongs to. The plates are pictures of those families with an open-loop control sitting next to the closed one. A published equation plus a feedback term is not an invention, and it does not get a private name.
 
@@ -275,6 +277,6 @@ Chaos. (2026). *Hendrick's Identity*. GENChase. https://github.com/SharpMeow/GEN
 }
 ```
 
-The boxed formula, the proof that the minimum is √2, and the plate that can fail it are in [IDENTITIES.md](IDENTITIES.md). GitHub's "Cite this repository" button emits the same record.
+The boxed formula, the proof that the minimum is √2, a plain-language writeup, and the plate whose check can miss are in [IDENTITIES.md](IDENTITIES.md). GitHub's "Cite this repository" button emits the same record.
 
 Built by Chaos.

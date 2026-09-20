@@ -92,7 +92,7 @@ predicted value, print it and say why where you know: finite size, a boundary, a
 deposition fits under 1/3 at plate size because its crossover is slow, and the hint says so instead of
 presenting 0.33.
 
-**A check that cannot fail is not a check.** Before adding one, ask whether the quantity is forced by
+**A check that cannot miss is not a check.** Before adding one, ask whether the quantity is forced by
 construction rather than by the physics. The mean side count of a two-dimensional froth is exactly 6 by
 Euler for any planar subdivision with threefold vertices, so if that is what is being measured, it
 confirms the code built a planar subdivision and nothing about the coarsening. The von Neumann-Mullins

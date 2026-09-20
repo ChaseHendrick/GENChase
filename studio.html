@@ -936,7 +936,7 @@
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>Almost every tab is the paper it names. Hendrick's Identity is the exception: a closed form and a sharp minimum derived here, uniqueness-checked, locked so the plate fails if the claim is wrong. What is unusual about the rest is the assembly. 117 sciences share one control surface,
+      <p>Almost every tab is the paper it names. Hendrick's Identity is the exception: a closed form and a sharp minimum derived here, uniqueness-checked, locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 117 sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -41269,7 +41269,7 @@ void main(){
     order: 111,
     equation: 'r̈_i = −Σ_{j≠i} (r_i−r_j)/|r_i−r_j|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0',
     credit: 'Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.',
-    blurb: 'Three equal masses chase each other around a single figure-eight. Moore found the orbit; Chenciner and Montgomery proved it. The plate is that choreography as worldlines: a three-metal ribbon on a dark sheet, time as fade, or wrapped as a wreath with angle for time. Shape space kills rotation and scale, and the curve is still an eight. Braid is x against t. Broken is a nearby Euler initial condition that does not close, kept so the status line can fail. The check is |L| against 0, energy drift against 0, and the return to the initial configuration at t = T against 0.',
+    blurb: 'Three equal masses chase each other around a single figure-eight. Moore found the orbit; Chenciner and Montgomery proved it. The plate is that choreography as worldlines: a three-metal ribbon on a dark sheet, time as fade, or wrapped as a wreath with angle for time. Shape space kills rotation and scale, and the curve is still an eight. Braid is x against t. Broken is a nearby Euler initial condition that does not close, kept so the status line can miss. The check is |L| against 0, energy drift against 0, and the return to the initial configuration at t = T against 0.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: {
       Orbit: 'Eight is Simó’s choreography. Broken scales the same Euler velocities by 1.08: still zero angular momentum, not periodic. Run walks the beads along the stored trail.',
@@ -41755,7 +41755,7 @@ void main(){
         const hOk = Math.abs(m.hCons - 1) < 0.03;
         host.setStatus(
           '<span>v/c <b>' + (isFinite(m.vRatio) ? f3(m.vRatio) : '?') + '</b> ± ' +
-            (isFinite(m.sigmaV) ? m.sigmaV.toExponential(0) : '?') + ' against 1' + (vFail ? ' · failed' : '') + '</span>' +
+            (isFinite(m.sigmaV) ? m.sigmaV.toExponential(0) : '?') + ' against 1' + (vFail ? ' · miss' : '') + '</span>' +
           '<span>|u_x|/c L/R <b>' + (isFinite(m.cL) ? (m.cL >= 0 ? '+' : '') + f2(m.cL) : '?') + ' / ' +
             (isFinite(m.cR) ? (m.cR >= 0 ? '+' : '') + f2(m.cR) : '?') + '</b> · ±1' + (cornerOk ? '' : ' · not a corner') + '</span>' +
           '<span>H1(t+)/H1(t-) <b>' + (isFinite(m.hCons) ? f3(m.hCons) : '?') + '</b>' + (hOk ? ' · conserved' : ' · drifted') + '</span>' +
@@ -43783,11 +43783,11 @@ void main(){
         const liaFail = m.liaMean > 0.02;
         const ok = !kFail && !cFail && !liaFail;
         host.setStatus(
-          '<span>κ_max/(2ν) <b>' + f3(m.kRatio) + '</b> ± ' + sci(m.kSigma) + ' · 1' + (kFail ? ' · failed' : '') + '</span>' +
+          '<span>κ_max/(2ν) <b>' + f3(m.kRatio) + '</b> ± ' + sci(m.kSigma) + ' · 1' + (kFail ? ' · miss' : '') + '</span>' +
           (planar
             ? '<span>c · 0 · planar (τ₀ ≈ 0)</span>'
-            : '<span>c/(2τ₀) <b>' + f3(m.cRatio) + '</b> ± ' + sci(m.cSigma) + ' · 1' + (cFail ? ' · failed' : '') + '</span>') +
-          '<span>LIA <b>' + sci(m.liaMean) + '</b> · 0' + (liaFail ? ' · failed' : '') + '</span>' +
+            : '<span>c/(2τ₀) <b>' + f3(m.cRatio) + '</b> ± ' + sci(m.cSigma) + ' · 1' + (cFail ? ' · miss' : '') + '</span>') +
+          '<span>LIA <b>' + sci(m.liaMean) + '</b> · 0' + (liaFail ? ' · miss' : '') + '</span>' +
           '<span>' + m.tag + (ok ? '' : ' · drifting') + '</span>'
         );
       }
@@ -44223,7 +44223,7 @@ void main(){
 
   const SCHEMA = [
     { group: 'Sheet', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
-    { group: 'Collapse', key: 'kind', label: 'Kind', type: 'seg', kind: GEOM, options: [['octant', 'Octant'], ['family', 'Family'], ['broken', 'Broken']], hint: 'Octant is the π/8, π/4, 5π/8 triangle, the unique minimizer of ω t_c on this family. Family walks the L=0 circle with the Angle slider. Broken pushes vortex 3 off the circle, so L ≠ 0 and the lock fails.' },
+    { group: 'Collapse', key: 'kind', label: 'Kind', type: 'seg', kind: GEOM, options: [['octant', 'Octant'], ['family', 'Family'], ['broken', 'Broken']], hint: 'Octant is the π/8, π/4, 5π/8 triangle, the unique minimizer of ω t_c on this family. Family walks the L=0 circle with the Angle slider. Broken pushes vortex 3 off the circle, so L ≠ 0 and the lock does not hold. The status line then marks miss; the picture still draws.' },
     RANGE('Collapse', 'theta', 'Angle', GEOM, 8, 172, 0.5, v => Number(v).toFixed(1) + '°', { dimUnless: s => s.kind === 'family', hint: 'Position of vortex 3 on the L=0 circle. Collapse for θ < 90°, rigid rotation at 90°, expansion for θ > 90°. Octant is 35.264°.' }),
     RANGE('Collapse', 't', 'Time t', LIVE, 0, 0.92, 0.01, f2, { hint: 'Fraction of the collapse time. 0 is the initial triangle. The plate stops short of the singularity.' }),
     { group: 'Collapse', key: 'running', label: 'Run', type: 'toggle', kind: LIVE, hint: 'Walk t toward collapse and loop. Reduced motion leaves the still plate.' },
@@ -44675,8 +44675,8 @@ void main(){
     subtitle: 'ω₀ t_c ≥ √2 on Gröbli\'s collapsing triangle · Hendrick\'s Identity',
     order: 117,
     equation: 'ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2  on  Γ = (1, 1, −1/2), L = 0;  equality at tan θ = 1/√2',
-    credit: 'Hendrick\'s Identity: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 < θ < π/2. θ is the third vortex\'s place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula follows by specializing those equations. The explicit minimum and equality triangle are this project\'s observation. Historical priority has not been established. M. Tacchi, Dynamique des tourbillons dans les fluides bidimensionnels, Appendix B, notes related coefficients attributed to Kimura (1988). Cite as Hendrick\'s Identity. Also searched as Hendrick\'s law, Hendrick\'s Math. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 fails.',
-    blurb: 'Hendrick\'s Identity. Three point vortices of circulations 1, 1, and −1/2, on the L = 0 circle, collapse self-similarly. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality at tan θ = 1/√2, a triangle of 22.5°, 45°, and 112.5°. θ places the third vortex on the circle; it is not an interior angle. The status line is that ratio against 1, the similarity residual against 0, and signed L against 0. Broken steps off the circle so the lock can fail. Cite as Hendrick\'s Identity; also searched as Hendrick\'s law and Hendrick\'s Math.',
+    credit: 'Hendrick\'s Identity: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 < θ < π/2. θ is the third vortex\'s place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula follows by specializing those equations. The explicit minimum and equality triangle are this project\'s observation. Historical priority has not been established. M. Tacchi, Dynamique des tourbillons dans les fluides bidimensionnels, Appendix B, notes related coefficients attributed to Kimura (1988). Cite as Hendrick\'s Identity. Also searched as Hendrick\'s law, Hendrick\'s Math. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 misses and the status line marks miss. The picture still draws.',
+    blurb: 'Hendrick\'s Identity. Three point vortices of circulations 1, 1, and −1/2, on the L = 0 circle, collapse self-similarly. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality at tan θ = 1/√2, a triangle of 22.5°, 45°, and 112.5°. θ places the third vortex on the circle; it is not an interior angle. The status line is that ratio against 1, the similarity residual against 0, and signed L against 0. Broken steps off the circle so the lock does not hold and the status line marks miss. That is the check working, not the studio breaking. Cite as Hendrick\'s Identity; also searched as Hendrick\'s law and Hendrick\'s Math.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: {
       Collapse: 'Octant is the lock. Family is the rest of Gröbli\'s circle: collapse, then the equilateral relative equilibrium, then expansion. Broken is the control with L ≠ 0. Time is a fraction of t_c.',
@@ -44715,9 +44715,9 @@ void main(){
         const lockStr = isFinite(lock) ? f3(lock) : 'inf';
         const wtcStr = isFinite(m.wtc) ? f3(m.wtc) : 'inf';
         host.setStatus(
-          '<span>ω t_c / √2 <b>' + lockStr + '</b> ± ' + sig + ' · 1' + (onOctant && lockFail ? ' · failed' : '') + '</span>' +
-          '<span>similar <b>' + sci(traj.simMax) + '</b> · 0' + (simFail ? ' · failed' : '') + '</span>' +
-          '<span>L <b>' + sci(m.I) + '</b> · 0' + (IFail ? ' · failed' : '') + '</span>' +
+          '<span>ω t_c / √2 <b>' + lockStr + '</b> ± ' + sig + ' · 1' + (onOctant && lockFail ? ' · miss' : '') + '</span>' +
+          '<span>similar <b>' + sci(traj.simMax) + '</b> · 0' + (simFail ? ' · miss' : '') + '</span>' +
+          '<span>L <b>' + sci(m.I) + '</b> · 0' + (IFail ? ' · miss' : '') + '</span>' +
           '<span>' + tag + (odeFail ? ' · ODE off' : '') + ' · ω t_c ' + wtcStr + '</span>'
         );
       }
