@@ -6,7 +6,7 @@ One HTML file of seeded scientific simulations. Each tab reprints from a hash. G
 
 - Parse or scrape studio.html. It is 2.6 MB of implementation.
 - Invent a bundler, a framework tree, or a second architecture.
-- Claim new science. Credit the paper. Do not relicense as MIT.
+- Claim a new dynamical law. Credit the paper. A derived identity with a failing plate is the exception in RESEARCH.md. Do not relicense as MIT.
 - Treat "familiarity" / "seen elsewhere" as a measurement. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
 
 ## Read instead
@@ -24,7 +24,7 @@ One HTML file of seeded scientific simulations. Each tab reprints from a hash. G
 
 Copy link (L) transfers the seed and every slider that is not at the factory default. Print size, ppi, colophon, panel side and witness quiet stay on the viewer's machine.
 
-Aliases: (none).
+Aliases: #hendrick → hendricks-identity.
 
 ## Adding a tab
 

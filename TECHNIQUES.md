@@ -126,7 +126,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Crapper**<br><sub>exact finite-amplitude pure-capillary waves · 1957</sub> | `#crapper` | X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4\|A\|/(π(1−A²)) | SVG | can run | Occasional |
 | **Hasimoto**<br><sub>a soliton on a vortex filament · 1972</sub> | `#hasimoto` | γ_t = γ_s × γ_ss,   ψ = κ exp(i ∫ τ ds),   κ = 2ν sech(ν(s−2τ₀ t)),   c = 2τ₀ | SVG | can run | Occasional |
 | **Lump**<br><sub>KP-I lumps · 1977</sub> | `#lump` | (u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b² | raster | can run | Occasional |
-| **Hendrick's Identity**<br><sub>min ω t_c = √2 on Gröbli's collapsing triangle · 1877 / 2010</sub> | `#hendrick/octant-root-two` | ω t_c = (2 − cos²θ) / sin(2θ)  on  Γ = (1, 1, −1/2), L = 0;   min = √2  at  tan θ = 1/√2 | SVG | can run | Almost unseen |
+| **Hendrick's Identity**<br><sub>min ω t_c = √2 on Gröbli's collapsing triangle · 1877 / 2010</sub> | `#hendricks-identity/octant-root-two` | ω t_c = (2 − cos²θ) / sin(2θ)  on  Γ = (1, 1, −1/2), L = 0;   min = √2  at  tan θ = 1/√2 | SVG | can run | Almost unseen |
 
 ## Credits
 

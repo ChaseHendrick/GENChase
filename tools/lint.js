@@ -54,7 +54,7 @@ for (const m of mods) {
 {
   const block = /const ALIAS = \{([^}]*)\}/.exec(src);
   if (block) {
-    const pairs = [...block[1].matchAll(/([A-Za-z0-9_]+)\s*:\s*'([^']+)'/g)];
+    const pairs = [...block[1].matchAll(/([A-Za-z0-9_-]+)\s*:\s*'([^']+)'/g)];
     if (!pairs.length) fail('ALIAS map is present but empty');
     for (const [, from, to] of pairs) {
       if (!seen.has(to)) fail('hash alias "' + from + '" points at "' + to + '", which is not a registered technique');
@@ -68,7 +68,7 @@ for (const m of mods) {
   const block = /const FAMILIARITY = \{([\s\S]*?)\n  \};/.exec(src);
   if (!block) fail('FAMILIARITY map is missing from the shell');
   else {
-    const keys = [...block[1].matchAll(/^\s*([A-Za-z0-9_]+)\s*:/gm)].map(x => x[1]);
+    const keys = [...block[1].matchAll(/^\s*'?([A-Za-z0-9_-]+)'?\s*:/gm)].map(x => x[1]);
     const have = new Set(keys);
     const want = mods.map(m => m.id);
     const missing = want.filter(id => !have.has(id));

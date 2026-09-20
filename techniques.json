@@ -4,7 +4,9 @@
   "file": "studio.html",
   "count": 117,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
-  "aliases": {},
+  "aliases": {
+    "hendrick": "hendricks-identity"
+  },
   "familiarityBuckets": [
     "ubiquitous",
     "common",
@@ -19,7 +21,7 @@
     "contract": "tools/modules/CONTRACT.md",
     "agents": "AGENTS.md",
     "research": "RESEARCH.md",
-    "addATab": "Write tools/modules/<id>.js, then node tools/inject.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js. Do not split studio.html. All noise through U.makeRng(seed). Credit the paper. Do not claim new science. Read RESEARCH.md before a prior-art search."
+    "addATab": "Write tools/modules/<id>.js, then node tools/inject.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js. Do not split studio.html. All noise through U.makeRng(seed). Credit the paper. Do not claim a new dynamical law. A derived identity with a failing plate is the exception in RESEARCH.md. Read RESEARCH.md before a prior-art search."
   },
   "techniques": [
     {
@@ -3095,7 +3097,7 @@
       "aliases": []
     },
     {
-      "id": "hendrick",
+      "id": "hendricks-identity",
       "name": "Hendrick's Identity",
       "tab": "Hendrick's Identity",
       "subtitle": "min ω t_c = √2 on Gröbli's collapsing triangle · 1877 / 2010",
@@ -3118,8 +3120,10 @@
       "liveCapable": true,
       "runningDefault": false,
       "headline": "t",
-      "hash": "#hendrick/octant-root-two",
-      "aliases": []
+      "hash": "#hendricks-identity/octant-root-two",
+      "aliases": [
+        "hendrick"
+      ]
     }
   ]
 }
