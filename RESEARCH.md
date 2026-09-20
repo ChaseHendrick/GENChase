@@ -152,8 +152,19 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Cotes inverse-cube spirals | Finite-time fall when μ > h² (Cotes 1722). Trajectories closed. Not a product min. |
 | Gold–Hoyle flux tube | Uniform twist. Energy vs twist: numerical. |
 | Kirchhoff–Routh in a domain | Equilibria of N vortices in a bounded domain (Crowdy 2005; Kuhl). Existence, not a collapse product. |
+| Von Kármán street | Isolated published lock: b/l = arcosh(√2)/π ≈ 0.2806; U = Γ/(l√8) at that ratio (von Kármán 1911). Crowdy–Green 2011 hollow streets: special aspect ~0.34–0.36 is numerical. Do not claim. |
+| Saffman–Szeto / Pierrehumbert pairs | 1-parameter corotating and translating patches. Endpoint is touching (Sadovskii). Numerical. Ω ∈ (0, γ/2) (global bifurcation, Hassainia–Wheeler). Not algebraic. |
+| Deem–Zabusky V-states | m-fold rotating patches. Bifurcation Ω_m = (m−1)/(2m) from Rankine (Kelvin). Limiting shapes numerical. Hassainia–Hmidi SQG V-states exist, explicit Ω at bifurcation. Relative equilibria. |
+| Sadovskii vortex pair | Touching translating pair. Existence 2025 (Choi–Sim–Jeong, Annals of PDE; arXiv:2507.00910). Speed W_p variational, not a closed algebraic min of two rates. |
+| Ptolemaic / Abrashkin–Yakubovich | Exact Euler: z = f(s)e^{iω₁t} + g(s̄)e^{iω₂t}. Contains Gerstner and Kirchhoff as cases (already logged). Two free frequencies, not a unique interior product min. |
+| Guderley converging shock | Similarity exponent λ is an ODE eigenvalue (Guderley 1942). γ=1.4 sphere λ ≈ 1.3944 (numerical). Self-similarity of the second kind. Not algebraic. |
+| Crow instability | Most-unstable λ/b ∈ [6,10] depending on a/b (Crow 1970; Leweke–Le Dizès–Williamson). Bessel cut-off. Numerical max. |
+| Havelock n-gon | Point-vortex n-gon stable for N<7, N=7 marginal, N>7 unstable (Thomson; Havelock 1931). Finite-core: N≥7 unstable (Saffman). Ω = (n−1)κ/(4π a²) published. Relative equilibrium. |
+| McGehee triple collision | Blow-up of n-body total collision. 10 fixed points on the collision manifold. Homothetic Lagrange/Euler arcs. Not a 1-param product min. |
+| Chaplygin 1899/1903 dipoles | Elliptical patch in shear (Moore–Saffman/Kida, already); translating dipole; non-symmetric dipole on a circle (Meleshko–van Heijst 1994). Isolated exact Euler. |
+| Two vortex pairs past a cylinder | Symmetric equilibria: degree-14 polynomial in the position (Lopes). Always unstable to antisymmetric modes. Relative equilibria. |
 
-Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, or on Saffman–Taylor's 1/2.
+Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, or on von Kármán's arcosh(√2)/π.
 
 **Rejected as inventions.**
 
@@ -621,6 +632,17 @@ Blocked: Kimura 1987 JPSJ body. Kimura 1988 FDR body.
 Conclusion: there is no public Tacchi Appendix B to read. The citation named in IDENTITIES.md does not correspond to a deposited thesis. The document it was said to document (Kimura 1988) is the two-page complex-time note already skipped. Not a fourth row. Hendrick / parallelogram / quincunx stand. Do not cite the ghost thesis.
 
 Re-search: do not reopen Tacchi. Reopen Kimura 1987 body only if a newly named source states Hendrick's closed form or min √2.
+
+### 2026-09-20  hunt streets, V-states, Sadovskii, Ptolemaic, Guderley, Crow, Havelock, McGehee  query: von Karman vortex street spacing ratio arcosh sqrt(2); Saffman Szeto corotating vortex patches angular velocity minimum; Sadovskii vortex pair translation speed closed form; Ptolemaic vortices Abrashkin Yakubovich omega1 omega2; Guderley converging shock similarity exponent algebraic; Crow instability wavelength spacing; Havelock polygonal point vortices circle; McGehee isosceles triple collision blowup rate; Chaplygin oscillating vortex pair period; Deem Zabusky V-states limiting Omega; two vortex pairs circular cylinder collapse
+
+Opened: von Kármán 1911 / encyclopediaofmath: b/l = arcosh(√2)/π ≈ 0.2806, U_vortex = Γ/(l√8) at that ratio. Isolated published lock. Crowdy–Green Phys. Fluids 23, 126602 (2011): hollow staggered streets, special aspect ~0.34–0.36 matching Saffman–Schatzman patch streets, numerical. Saffman–Szeto Phys. Fluids 23, 2339 (1980) and Pierrehumbert JFM 99, 129 (1980): 1-parameter pairs, patches deform until they touch. Hassainia–Wheeler PMC: global curve, Ω ∈ (0, γ/2), ends at vanishing angular velocity or self-intersection. Deem–Zabusky 1978 V-states: Kelvin Ω_m = (m−1)/(2m) at Rankine; limiting shapes numerical. Hassainia–Hmidi CMP 2015: SQG V-states exist, explicit Ω at bifurcation. Sadovskii 1971 / Saffman–Tanveer 1982: touching translating pair. Choi–Sim–Jeong arXiv:2507.00910 / Annals of PDE 2025: existence of Sadovskii patches, variational speed W_p, not a closed algebraic product min. Abrashkin–Yakubovich 1984 / Guimbard–Leblanc 2006: Ptolemaic z = f(s)e^{iω₁t}+g(s̄)e^{iω₂t}; contains Gerstner and Kirchhoff (already logged); two free frequencies. Guderley 1942: converging-shock exponent is an ODE eigenvalue (self-similarity of the second kind); Lazarus 1981 / Ramsey: γ=1.4 sphere λ ≈ 1.3944, not algebraic. Jang–Liu–Schrecker arXiv:2310.18483: existence of λ for γ∈(1,3]. Crow 1970 / Leweke–Le Dizès–Williamson ARFM: most-unstable λ/b ∈ [6,10] vs a/b, Bessel cut-off, numerical max. Havelock Phil. Mag. 1931: n-gon Ω = (n−1)κ/(4πa²), stable N<7. Saffman JFM 1992 finite-core: N≥7 unstable. Kurakin: n-gon in a disk, p = R₀²/R², critical p*_n. McGehee blow-up: 10 fixed points on the collision manifold; homothetic Lagrange/Euler arcs; isosceles subproblem. Not a product min. Meleshko–van Heijst JFM 272, 157 (1994): Chaplygin 1899/1903 elliptical patch in shear, translating dipole, non-symmetric dipole on a circle. Isolated exact Euler. Lopes: two pairs past a cylinder, degree-14 polynomial equilibria, unstable to antisymmetric modes. Kallyadan–Shukla 2022 (already logged): numerical self-similar families along closed curves.
+
+Blocked: most journal HTML. Saffman–Szeto body. Chaplygin 1903 Russian original.
+
+Conclusion: no fourth identity of Hendrick's bar. Von Kármán's arcosh(√2)/π is an isolated published lock, not a 1-parameter product of two dynamical rates. V-states, Sadovskii, Guderley, Crow, Havelock, McGehee, Ptolemaic, Chaplygin dipoles are published, numerical, or eigenvalue. Do not claim these. Do not put Hendrick's name on von Kármán's ratio.
+
+Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
 
 
 
