@@ -17,7 +17,7 @@ The catalog of what the file actually contains is [`techniques.json`](techniques
 **Do not**
 
 - Re-run a search this file marks skip, unless you have a newly named repository, paper, or site that was previously unreachable.
-- Claim a new dynamical law, or put a private name on a published equation. A derived identity is allowed when you actually derived it, checked it against the papers, and put a check on the plate that fails if the identity is wrong. Write it in [`IDENTITIES.md`](IDENTITIES.md) the same day. Hendrick's identity is that case. It is not Gröbli's motion and it is not Aref's product under a new name.
+- Put a name on a published equation or on someone else's result. If you derived something, checked it against the papers, and put a check on the plate that fails when it is wrong, claim it: write [`IDENTITIES.md`](IDENTITIES.md) the same day. Hendrick's identity is that case. It is not Gröbli's motion and it is not Aref's product under a new name.
 - Private-name a published equation plus a feedback term. `track` and `causticsea` already made that mistake in draft and were renamed.
 - Treat **familiarity** / "seen elsewhere" as a measurement or a prior-art result. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
 - Parse `studio.html` to answer "what is in the catalog". Read `techniques.json`.
@@ -49,10 +49,10 @@ Copied from the README, restated so an agent does not have to infer it.
 
 | Kind | Allowed? | Where it lives |
 |---|---|---|
-| New science (an uncredited equation, a private law) | No | nowhere |
+| A published result under a new name | No | nowhere |
 | New as an artifact (this seed, this plate) | Yes, always | the export |
 | New as working software (a seeded, paletted, print-ready browser plate of a published system) | Yes, with a named nearest neighbor | README bullets, this file |
-| A derived dimensionless lock on a published family, checked against the papers, with a failing plate | Yes | [`IDENTITIES.md`](IDENTITIES.md), `hendricks-identity` |
+| A result derived here, uniqueness-checked against the papers, with a failing plate | Yes | [`IDENTITIES.md`](IDENTITIES.md) |
 | A published equation plus a feedback term | Not an invention | `track`, `causticsea` |
 | Familiarity bucket `unseen` | Editorial, not a result | `techniques.json` |
 
@@ -223,7 +223,7 @@ Familiarity is listed so you do not confuse it with prior-art status.
 
 The statement is in [`IDENTITIES.md`](IDENTITIES.md). Do not duplicate it here.
 
-**`hendricks-identity` (Hendrick's Identity).** `#hendrick` still opens it. Derived identity, proved on this plate, not a new dynamical law. Search notes: Aref 2010 eqs. 25a and 25d give Omega and tau separately. Aref eq. 29c already writes the product as the pitch of the logarithmic spiral. Kudela 2014 and Reinaud-Dritschel 2022 minimize collapse time, not the product. Krishnamurthy-Stremler 2018 give dimensionless tau-tilde as a function of angles, no min sqrt(2). Closed form and min: not in those papers. Off the L=0 circle the check fails on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum.
+**`hendricks-identity` (Hendrick's Identity).** `#hendrick` still opens it. Derived here, uniqueness-checked, locked to the plate. Search notes: Aref 2010 eqs. 25a and 25d give Omega and tau separately. Aref eq. 29c already writes the product as the pitch of the logarithmic spiral. Kudela 2014 and Reinaud-Dritschel 2022 minimize collapse time, not the product. Krishnamurthy-Stremler 2018 give dimensionless tau-tilde as a function of angles, no min sqrt(2). Closed form and min: not in those papers. Off the L=0 circle the check fails on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum.
 
 ### Published family plus a feedback term (not inventions)
 
@@ -332,7 +332,7 @@ Opened: this repository
 
 Blocked: none
 
-Conclusion: the plate is Hendrick's Identity, so the hash is `#hendricks-identity`. `#hendrick` remains an alias. The identity stands: it was derived here, the plate fails off the L=0 circle, and the closed form and min are not in the papers. A later agent may claim another derived identity the same way (derive, check the papers, failing plate, write it here). It may not claim a new dynamical law or private-name a published equation.
+Conclusion: the plate is Hendrick's Identity, so the hash is `#hendricks-identity`. `#hendrick` remains an alias. The identity stands: it was derived here, the plate fails off the L=0 circle, and the closed form and min are not in the papers. A later agent may claim another result the same way (derive, check the papers, failing plate, write IDENTITIES.md). It may not put a name on a published equation or on someone else's result.
 
 Re-search: n/a
 
@@ -352,7 +352,7 @@ Opened: Aref, Phys. Fluids 22, 057104 (2010), full PDF via VTechWorks bitstream 
 
 Blocked: AIP HTML paywall (PDF was used instead). Most journals.
 
-Conclusion: the motion is Gröbli. Omega and tau separately are Aref 25a and 25d. The product as log-spiral pitch is Aref 29c. Collapse-time minima exist in Kudela 2014 and Reinaud 2022, of tau, not of omega tau. The closed form (2-cos^2 theta)/sin(2 theta) on Gamma=(1,1,-1/2) and unique min sqrt(2) at tan theta=1/sqrt(2) were not in those sources. That is Hendrick's identity, not a new dynamical law, and not Aref's product under a private name.
+Conclusion: the motion is Gröbli. Omega and tau separately are Aref 25a and 25d. The product as log-spiral pitch is Aref 29c. Collapse-time minima exist in Kudela 2014 and Reinaud 2022, of tau, not of omega tau. The closed form (2-cos^2 theta)/sin(2 theta) on Gamma=(1,1,-1/2) and unique min sqrt(2) at tan theta=1/sqrt(2) were not in those sources. That is Hendrick's identity: not Gröbli's motion under a new name, and not Aref's product under a new name.
 
 Re-search: do not re-derive. Reopen only if a newly named paper states this closed form or this minimum.
 
