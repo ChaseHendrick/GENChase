@@ -28,7 +28,7 @@ A check that cannot miss is not a check. The Broken preset exists so you can wat
 | A published equation under a new name | No |
 | A published equation plus a feedback term | No (`track`, `causticsea`) |
 
-To add a row: derive it, read the papers it sits on, put a check on the plate that marks miss when the identity is false, write the identity here, and write the search in `RESEARCH.md` the same day.
+To add a row: search the literature first. Web-search the closed form and the extremum, and open the papers the family sits on, before you spend time deriving. If a paper already states either, stop and log the search in `RESEARCH.md`. Only then derive, uniqueness-check, put a check on the plate that marks miss when the identity is false, write the identity here, and write the search the same day.
 
 ## Catalog
 
@@ -159,4 +159,4 @@ Prior-art searches against Aref, Gröbli, Krishnamurthy and Stremler, Kudela, Re
 
 ---
 
-There is one row. A 2026-09-20 search for a second identity of this bar did not find one that was both algebraic and unpublished. The rejected candidates, and why, are in [`RESEARCH.md`](RESEARCH.md). The next row has the same bar: a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
+There is one row. A 2026-09-20 search for a second identity of this bar did not find one that was both algebraic and unpublished. A later pass the same day searched leapfrogging, Kirchhoff, the photon-sphere Lyapunov, Crapper energy, Gerstner T = V, and spherical three-vortex collapse: all of those locks are already in named papers. The rejected candidates, and why, are in [`RESEARCH.md`](RESEARCH.md). The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
