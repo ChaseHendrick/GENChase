@@ -41,6 +41,20 @@ A row that meets the bar is named for the person who found it. Hendrick's Identi
 | Parallelogram lock | `parallelogram-lock` | ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4 on the Novikov–Sedov parallelogram. Equality at cos 2θ = 1/4 | The vortices leave the parallelogram, or the Biot-Savart kernel is wrong |
 | Quincunx lock | `quincunx-lock` | ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16 on the Novikov–Sedov five-vortex quincunx. Equality at cos 2θ = 4/7 | The vortices leave the quincunx, or the Biot-Savart kernel is wrong |
 
+## Candidate fourth result: double-triangle bound
+
+The six-vortex two-ring family has the proved formula
+
+$$
+\omega_0t_c=\frac{11-\sqrt5\cos(3\theta)}{6\sin(3\theta)}
+\ge\frac{\sqrt{29}}3,
+\qquad 0<\theta<\pi/3.
+$$
+
+The triangles have radius ratio $\varphi=(1+\sqrt5)/2$, with circulation $-1$ at each outer vertex and $\varphi^2$ at each inner vertex. Equality is unique at $\cos(3\theta)=\sqrt5/11$.
+
+**Mathematics proved; priority under investigation.** The two-ring collapse is classical (Koiller et al. 1985, §11). The explicit product and minimum are a candidate contribution, not a verified first-discovery claim. The initial search reached indexed excerpts of the primary paper, not its full PDF. This candidate is separate from the three-entry priority record and the frozen note below. Read the [full derivation, checks, and source limitations](identities/double-triangle.md). Open `#double-triangle-bound` for the integrated plate and Broken control.
+
 ## First public appearance
 
 These three statements were first published here, by Chaos, in this repository. GitHub's commit timestamps are the public record. The motion on each family is classical. The closed form of ω₀ t_c and the unique algebraic floor are this project's.
@@ -410,7 +424,7 @@ Checked 2026-09-20 underresearched catalogues. gSQG / α-Euler three-vortex coll
 
 Checked 2026-09-20 cutting-edge 2025. Chen–Walsh–Wheeler (arXiv:2506.04093) construct the first self-similar hollow-vortex implosion and desingularize any non-degenerate point-vortex collapse — including the three rows above — to a real-analytic family of 2D Euler hollow imploders. Circular $U_c(\gamma,\Omega,\kappa)$ is explicit; $\Omega$ and $\kappa$ are independent, not a shape-parameter floor. Grotto–Pappalettera (arXiv:2505.19782) prove gSQG burst/collapse existence; $a,b$ are not closed in shape; $\alpha=2$ is 2D Euler. White–McDonald (Proc. R. Soc. A 2025) and PRFluids 10, 084708 (2025) are equilibria, not collapse products. Cite Chen–Walsh–Wheeler as the Euler realization of the three locks. Do not claim a fourth row from these papers.
 
-Checked 2026-09-20 missed geometries. Nested two-triangle six-vortex with $I=0$ is not self-similar: $A+iB$ on the $+$ triangle disagrees with $A+iB$ on the $-$ triangle (Biot–Savart scan at $\mu=1,1/2,2$). Collapsing configs lack that reflection symmetry. Two vortices in a BEC trap have a published min of one frequency vs separation. Hicks doughnut is thin-core series (Norbury already). Fukumoto–Miyazaki is the elastica analog of a filament with axial flow (Hasimoto already in the studio). Coaxial leapfrog rings now have a 2026 Euler existence proof (arXiv:2603.21644); that is KAM, not an algebraic floor. Do not claim these.
+**Superseded in part by the double-triangle correction above.** The earlier 2026-09-20 missed-geometries entry said: nested two-triangle six-vortex with $I=0$ is not self-similar: $A+iB$ on the $+$ triangle disagrees with $A+iB$ on the $-$ triangle (Biot–Savart scan at $\mu=1,1/2,2$). That six-vortex inference was false: the scan omitted $\mu=(3\pm\sqrt5)/2$, and generic relatively rotated triangles have no common reflection symmetry. The remaining exclusions in this paragraph are unchanged. Two vortices in a BEC trap have a published min of one frequency vs separation. Hicks doughnut is thin-core series (Norbury already). Fukumoto–Miyazaki is the elastica analog of a filament with axial flow (Hasimoto already in the studio). Coaxial leapfrog rings now have a 2026 Euler existence proof (arXiv:2603.21644); that is KAM, not an algebraic floor. Do not claim these.
 
 Checked 2026-09-20 difficulty skips. Three-vortex $\mu\neq 1$: Gotoda $A,B$ are closed; $\mu=1$ is Hendrick $\sqrt{2}$; reciprocal pairs share the product; other $\mu$ have a cubic critical point, not a floor like $\sqrt{2}$. Same family, not a new row. Gallay–Sverak (arXiv:2609.10847, 9 Sep 2026) give a new $\zeta$-reduction and energy inequalities for near-collisions, not a two-rate product min. Rott 1994 winding number remains AIP-blocked; the abstract already says path patterns are numerical. Do not claim these.
 

@@ -39,6 +39,8 @@ jobs:
           node-version: '22'
       - name: Structural checks
         run: node tools/lint.js
+      - name: Double-triangle bound and numerical controls
+        run: node tools/double-triangle-check.js
 
   chrome:
     name: shell chrome

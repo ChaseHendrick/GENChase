@@ -217,7 +217,7 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Grotto–Pappalettera 2025 gSQG | arXiv:2505.19782. Self-similar Z(t) = ((4−α)a(t−t0))^{1/(4−α)} exp(i(θ0+b/((4−α)a) log)). a, b not closed in shape. α=2 is 2D Euler (Hendrick). α=1 SQG: numerical example. Existence, not a floor. |
 | White–McDonald 2025 sheets | Proc. R. Soc. A 481, 20250362. Exact vortex-sheet equilibria by conformal mapping. 1-param γ; properties from a numerical algebraic equation. Not a closed two-rate min. |
 | PRFluids 2025 four-vortex RE | Phys. Rev. Fluids 10, 084708. Continua of relative equilibria, not collapse. |
-| Nested two-triangle 6-vortex | Positions r e^{2πik/3} (+1) and ρ e^{i(2πik/3+θ)} (−μ), I=0 ⇒ r=√μ ρ. Biot–Savart: A+iB on the + triangle disagrees with A+iB on the − triangle for every θ scanned (μ=1, 1/2, 2). Not a self-similar family. Matches Chen–Walsh–Wheeler: collapsing configs do not display reflection symmetries. n-body analog is Bhusal 2020 CCs, not vortices. Do not re-derive. |
+| Nested two-triangle 6-vortex | **Earlier rejection corrected 2026-09-20.** Ratios 1, 1/2, 2 miss the necessary virial-zero ratios (3±√5)/2. Koiller et al. 1985 §11 is a newly identified primary source for the two-ring collapse. A direct derivation gives (11−√5 cos 3θ)/(6 sin 3θ) ≥ √29/3. Proved candidate; priority unresolved. See identities/double-triangle.md and the correction below. |
 | BEC two-vortex trap | ω(b) of a rigidly rotating pair has a published global min (Navarro; Pelinovsky Proc. A). One rate vs separation, not a product of two. Tkachenko already logged. |
 | Hicks doughnut | Hollow ring with swirl. Thin-core series (Hicks 1884; Saffman 1970). Norbury–Fraenkel already logged. |
 | Fukumoto–Miyazaki | Filament + axial flow. Permanent form = elastica (already logged). Hasimoto already in the studio. |
@@ -335,7 +335,7 @@ These are software claims. They transfer. They are not physics.
 
 ## Per-tab status
 
-119 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
+120 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
 
 Familiarity is listed so you do not confuse it with prior-art status.
 
@@ -460,6 +460,7 @@ Familiarity is listed so you do not confuse it with prior-art status.
 | `hendricks-identity` | Hendrick's Identity | unseen | identity | do not re-derive |
 | `parallelogram-lock` | Parallelogram lock | unseen | identity | do not re-derive |
 | `quincunx-lock` | Quincunx lock | unseen | identity | do not re-derive |
+| `double-triangle-bound` | Double-triangle bound | rare | proved candidate; priority unresolved | 2026-09-20 partial primary-source review; full-text check pending |
 
 ## Notes on the rows that are not `science only`
 
@@ -816,6 +817,8 @@ Re-search: skip these four papers unless a follow-up states a closed dimensionle
 
 ### 2026-09-20  hunt missed areas: nested 6-vortex triangles, BEC trap pair, Hicks doughnut, Fukumoto-Miyazaki, coaxial leapfrog rings  query: six point vortices two equilateral triangles self-similar collapse; two point vortices harmonic trap omega min; Hicks doughnut swirl; Fukumoto Miyazaki filament axial flow; coaxial vortex rings leapfrog 2026 Euler
 
+**Correction added 2026-09-20:** the six-vortex exclusion and its re-search restriction below are superseded by the newly identified Koiller et al. (1985), §11. The original scan used ratios outside the virial-zero set and cannot rule out the family. Its rotational symmetry was also incorrectly treated as a reflection symmetry. The historical entry follows for traceability; see the double-triangle correction at the end.
+
 Opened: Nested two-triangle 6-vortex (I=0, 3-fold). Direct Biot–Savart: velocity/position on the + triangle is not the same complex constant as on the − triangle for μ=1, 1/2, 2 and θ∈(0,π). Not a self-similar family. Chen–Walsh–Wheeler arXiv:2506.04093 already note collapsing configs lack reflection symmetries. Planar 6-body two-triangle CCs (Bhusal J. Geom. Phys. 2020) are n-body, not vortices. BEC two same-sign vortices in a harmonic trap: ω(b) has a published global min (Navarro PRL 2013; Pelinovsky Proc. A). One rate, not a two-rate product. Hicks 1884 doughnut / Saffman 1970 thin-core: series. Norbury already logged. Fukumoto–Miyazaki 1991: vortex-jet filament, permanent form = elastica (already logged); Hasimoto already in the studio. Coaxial leapfrog rings: Helmholtz 1858; smooth 3D Euler existence CPAM 2024; time-periodic arXiv:2603.21644 (23 Mar 2026) via degenerate KAM. Not an algebraic floor. Love leapfrog already logged.
 
 Blocked: Hicks 1884 Phil Trans body. Fukumoto–Miyazaki JFM 222 body. arXiv:2603.21644 full KAM section.
@@ -904,35 +907,18 @@ Conclusion: these unopened catalogues are textbook two-mode tuning, elliptic Pon
 
 Re-search: skip Wilberforce, elliptic-billiard Poncelet, Ostrovsky–Hunter highest, Matsuno Yanai, FitzHugh–Nagumo canards, and cone vortices unless a newly named paper states a closed dimensionless product of two dynamical rates and its unique unpublished algebraic interior min.
 
+### 2026-09-20  correction: two-ring six-vortex collapse and a sharp product bound
 
+New primary source reopening the former skip: Koiller, Pinto de Carvalho, Rodrigues da Silva and Gonçalves de Oliveira, *On Aref's vortex motions with a symmetry center*, Physica D 16, 27–61 (1985), DOI https://doi.org/10.1016/0167-2789(85)90084-3. Located through Banica–Miot's author-hosted 2012 survey (full PDF opened, §3/ref. 41) and O'Neil's 2007 triple-ring introduction. The restriction against repeating a rejected scan does not apply to this new source and the corrected virial condition.
 
+Queries (including unsuccessful searches): `six point vortex collapse two equilateral triangles golden ratio self similar`; `self similar collapsing vortices two regular polygons central vortex explicit solution`; `vortex collapse nested triangles minimum spiral pitch golden ratio`; `"vortex collapse" "polygons"`; `"six" "vortices" "golden"`; `"self-similar" "vortices" "two" "triangles"`; `"vortex" "collapse" "regular polygons"`; `"collapsing" "vortices" "polygons"`; `"collapse" "vortices" "concentric"`; `"self-similar" "vortices" "2n"`; `"vortex" "collapse" "golden ratio"`; `O Neil vortex double rings collapse configurations 2006`; `"collapse" "vortex" "double rings" minimum`; `"vortex" "triangles" "collapse" O’Neil`; `vortex collapse "sqrt" "29"`; `vortex collapse "11" "golden"`; `Kimura 1987 collapsing two vortex rings`; `"On Aref" "symmetry center" pdf`; `Koiller Carvalho Silva Oliveira 1985 vortex collapse minimum`; `"vortex" "sqrt{29}"`; `"vortex" "√29"`; `"On Aref’s vortex motions with a symmetry center"`; `"Koiller" "27-61" vortex`; `"vortex collapse" "minimum" "rings"`; `"On Aref's vortex motions" "collapse"`; `"On Aref's vortex motions" "minimum"`; `"On Aref's vortex motions" "spiral"`; `"Point vortex motions with a center of symmetry" pdf`; `"On Aref" "11.5"`; `"On Aref" "11.6"`; `"On Aref" "60" "spirals"`; `"On Aref" "minim"`; `"Koiller" "60" "Collapse motions"`; `"Koiller" "logarithmic" "spirals"`; `"Koiller" "vortex" "a(" "b(" collapse`; `"Koiller" "vortex" "60" "11.4"`; `"six vortices" "spin" "collapse"`; `"two rings" "vortices" "pitch"`; `"vortex" "collapse" "sqrt(29)"`; `"vortices" "11" "sqrt(5)"`. Targeted CiteSeer queries for the paper's pages 59–60 and equations 11.4–11.5 also returned the indexed passage or unrelated results.
 
+Read: the 1985 primary paper's search-indexed page 27 (ring reduction) and pages 59–60 (§11, Proposition 12, equations 11.1–11.5). These already establish the two-ring collapse and logarithmic spirals. O'Neil, Physica D 236, 123–130 (2007), DOI https://doi.org/10.1016/j.physd.2007.07.015, abstract/introduction: cites known two-ring collapses and studies three rings. Aref 1982's abstract describes the symmetry reduction; it does not establish a new result for us.
 
+Access limits: direct CiteSeer PDF open and download timed out; Academia author listing opened but linked copies could not be opened (download HTTP 403). ScienceDirect access was abstract/introductory text, not full body. The source comparison is partial, and no worldwide-priority claim follows from a search with no exact match.
 
+Derived and verified: with outer radius φ, outer circulation −1, inner radius 1 and inner circulation φ², all six initial velocity/position ratios coincide. The product is (11−√5 cos 3θ)/(6 sin 3θ), sharp minimum √29/3 at cos 3θ=√5/11, θ≈26.090411°. Proof and named-source comparison: identities/double-triangle.md. node tools/double-triangle-check.js checks 1,199 angles, the dimensional A,B coefficients, similarity invariance, full numerical trajectories to 90% of collapse, step-halving, an off-family control, and an anisotropic-kernel mutation. Worst relative product discrepancy 3.3e−13; Broken similarity residual 0.173. No sampling uncertainty; numerical error is reported separately.
 
+Conclusion: the previous statement that this geometry cannot collapse was false. A mathematically proved candidate fourth bound has been obtained. The collapse family is classical. The explicit simplified bound's historical priority remains unresolved, and it stays outside the existing three-entry priority record pending full-text review. No renaming of Aref or Koiller's motion, and no use of Hendrick's name on this candidate.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Next check: obtain and read the full 1985 paper, Aref 1982, and subsequent work on optimized two-ring spiral pitch. Reopen if a dated source states this product, its minimum, or an equivalent general bound. Do not repeat the arbitrary-ratio scan as evidence against the family.

@@ -14,7 +14,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>GENChase — Generative Art from Real Simulations</title>
 <meta name="theme-color" content="#B3712A">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23ECE9E2'/%3E%3Ccircle cx='16' cy='16.6' r='9.1' fill='none' stroke='%23B3712A' stroke-width='1.7'/%3E%3Ccircle cx='16' cy='16.6' r='1.05' fill='%23B3712A'/%3E%3Ccircle cx='10.3' cy='20.4' r='2.4' fill='%23C06E3A'/%3E%3Ccircle cx='21.7' cy='20.4' r='2.4' fill='%23D4B05A'/%3E%3Ccircle cx='16' cy='9.3' r='1.8' fill='%238A96A3'/%3E%3C/svg%3E">
 <meta property="og:image" content="/og.jpg">
 <meta name="twitter:image" content="/og.jpg">
@@ -24,11 +23,11 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GENChase — generative art from real simulations">
-<meta property="og:description" content="119 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution with its own governing equation printed alongside.">
+<meta property="og:description" content="120 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution with its own governing equation printed alongside.">
 <meta property="og:site_name" content="GENChase">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GENChase — generative art from real simulations">
-<meta name="twitter:description" content="119 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<meta name="twitter:description" content="120 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -37,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "A generative art studio built from real scientific simulations. 119 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution.",
+  "description": "A generative art studio built from real scientific simulations. 120 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution.",
   "featureList": [
     "Flow fields with collision-avoiding strokes",
     "Gray-Scott reaction-diffusion",
@@ -980,7 +979,7 @@
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>Almost every tab is the paper it names. Hendrick's Identity, the parallelogram lock, and the quincunx lock are the exceptions: closed forms and sharp minima derived here, uniqueness-checked, locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 119 sciences share one control surface,
+      <p>Almost every tab is the paper it names. Hendrick's Identity, the parallelogram lock, and the quincunx lock are the exceptions: closed forms and sharp minima derived here, uniqueness-checked, locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 120 sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -1123,7 +1122,7 @@
           in bands, with a spacing that grows geometrically. Liesegang, 1896.</li>
       </ul>
 
-      <p class="colo" id="catalog-count">The live catalog is 119 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
+      <p class="colo" id="catalog-count">The live catalog is 120 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
       <h3>How it is built</h3>
       <p>One HTML file and a set of plain scripts. No frameworks, no build step, no server, no network calls, no analytics and
         no tracking of any kind. It runs offline, from a thumb drive, and will still run when every CDN-dependent tool from this
@@ -1758,6 +1757,7 @@ void main(){
     'hendricks-identity': 'unseen',
     'parallelogram-lock': 'unseen',
     'quincunx-lock': 'unseen',
+    'double-triangle-bound': 'rare',
   };
   const ALIAS = { hendrick: 'hendricks-identity' };
   const S = window.Studio = { util, gl: glh, PALETTES, generatePalette, register, boot, modules: byId, exportJob: null, familiarity: FAMILIARITY };
@@ -46021,6 +46021,254 @@ void main(){
           const s = host.getState();
           return svgOf(s, w, h, traj, s.t);
         },
+      };
+    },
+  });
+})();
+</script>
+<script>
+/* modules/double-triangle-bound.js */
+/* Two concentric vortex triangles: classical two-ring collapse, with a derived sharp spin-time bound; priority under investigation. */
+(function () {
+  'use strict';
+  const U = Studio.util, Pal = Studio.PALETTES;
+  const PI = Math.PI, TAU = 2 * PI, PHI = (1 + Math.sqrt(5)) / 2;
+  const X = PHI * PHI, FLOOR = Math.sqrt(29) / 3;
+  const OPT = Math.acos(Math.sqrt(5) / 11) / 3 * 180 / PI;
+  const G = [-1, -1, -1, X, X, X];
+  const vortexPalette = { bg: '#121110', colors: ['#F25C05', '#FFF3D6'] };
+  const QMAX = -Math.log(0.1), SAMPLES = 600;
+  const range = (group, key, label, kind, min, max, step, hint) =>
+    ({ group, key, label, type: 'range', kind, min, max, step, fmt: v => Number(v).toFixed(2), hint });
+  const sci = v => Number.isFinite(v) ? (Math.abs(v) < 1e-3 && v !== 0 ? v.toExponential(1) : v.toFixed(3)) : '—';
+  const schema = [
+    { group: 'Sheet', key: 'aspect', label: 'Sheet', type: 'seg', kind: 'geom', options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
+    { group: 'Collapse', key: 'kind', label: 'Shape', type: 'seg', kind: 'geom', options: [['minimum', 'Minimum'], ['family', 'Family'], ['broken', 'Broken']], hint: 'Minimum selects cos(3θ) = √5/11. Family changes the angle between triangles. Broken displaces one vortex, so the self-similar formula no longer applies.' },
+    range('Collapse', 'theta', 'Angle θ (degrees)', 'geom', 4, 56, 0.25, 'Relative rotation of the outer triangle. The collapsing arc is 0 < θ < 60°. The bound holds across the whole arc.'),
+    range('Collapse', 'time', 'Time / t_c', 'live', 0, 0.9, 0.01, 'Stop before the singularity. For Broken, the time scale is only the initial contraction estimate, not a predicted collision time.'),
+    { group: 'Collapse', key: 'running', label: 'Run', type: 'toggle', kind: 'live' },
+    { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: 'paint', options: [['spiral', 'Spirals'], ['triangles', 'Triangles'], ['bound', 'Bound curve']] },
+    range('Picture', 'weight', 'Weight', 'paint', 0.4, 2, 0.05, 'Line weight at screen and print resolution.'),
+    range('Picture', 'rotation', 'Turn (degrees)', 'geom', -180, 180, 1, 'Rotate the complete configuration; the measured product is unchanged.'),
+  ];
+  const defaults = { seed: 'double-triangle', aspect: '1:1', kind: 'minimum', theta: OPT, time: 0.78, running: false, view: 'spiral', weight: 1, rotation: 0 };
+  const pre = (label, p, palette) => ({ label, p, palette });
+  const presets = {
+    minimum: pre('Minimum', { kind: 'minimum', view: 'spiral', time: 0.78, rotation: 0 }, vortexPalette),
+    thirty: pre('Thirty degrees', { kind: 'family', theta: 30, view: 'spiral', time: 0.78, rotation: 30 }, Pal.harbor),
+    winding: pre('More winding', { kind: 'family', theta: 9, view: 'spiral', time: 0.83, rotation: 0 }, Pal.nightshade),
+    triangles: pre('Nested triangles', { kind: 'minimum', view: 'triangles', time: 0.8, rotation: 15 }, Pal.glacier),
+    bound: pre('The sharp bound', { kind: 'minimum', view: 'bound', time: 0.78, rotation: 0 }, { bg: '#E9E7E2', colors: ['#1A1A1A', '#E63B2E'] }),
+    broken: pre('Off the family', { kind: 'broken', theta: OPT, view: 'spiral', time: 0.78, rotation: 0 }, Pal.thermal),
+  };
+  function sanitize(s) {
+    if (!['minimum', 'family', 'broken'].includes(s.kind)) s.kind = 'minimum';
+    s.theta = s.kind === 'minimum' ? OPT : U.clamp(Number(s.theta) || OPT, 4, 56);
+    s.time = U.clamp(Number(s.time) || 0, 0, 0.9);
+    s.weight = U.clamp(Number(s.weight) || 1, 0.4, 2);
+    s.rotation = U.clamp(Number(s.rotation) || 0, -180, 180);
+    s.running = !!s.running;
+  }
+  function place(theta, broken, rotation = 0) {
+    const z = [];
+    for (let ring = 0; ring < 2; ring++) for (let k = 0; k < 3; k++) {
+      const a = TAU * k / 3 + (rotation + (ring === 0 ? theta : 0)) * PI / 180;
+      const r = ring === 0 ? PHI : 1;
+      z.push([r * Math.cos(a), r * Math.sin(a)]);
+    }
+    if (broken) { z[0][0] += 0.22; z[0][1] += 0.15; }
+    return z;
+  }
+  // Direct all-pairs Biot–Savart. The closed formula is never used in the velocity or integrator.
+  function velocity(z) {
+    return z.map((p, i) => {
+      let vx = 0, vy = 0;
+      for (let j = 0; j < z.length; j++) if (i !== j) {
+        const dx = p[0] - z[j][0], dy = p[1] - z[j][1];
+        const f = G[j] / (TAU * (dx * dx + dy * dy));
+        vx -= f * dy; vy += f * dx;
+      }
+      return [vx, vy];
+    });
+  }
+  function measure(z) {
+    const total = G.reduce((a, b) => a + b, 0);
+    const c = [0, 0];
+    z.forEach((p, i) => { c[0] += G[i] * p[0] / total; c[1] += G[i] * p[1] / total; });
+    const v = velocity(z), r = z.map(p => [p[0] - c[0], p[1] - c[1]]);
+    let norm = 0, dot = 0, cross = 0, inertia = 0, inorm = 0, vnorm = 0;
+    r.forEach((p, i) => {
+      const rr = p[0] ** 2 + p[1] ** 2;
+      norm += rr; inertia += G[i] * rr; inorm += Math.abs(G[i]) * rr;
+      dot += p[0] * v[i][0] + p[1] * v[i][1];
+      cross += p[0] * v[i][1] - p[1] * v[i][0];
+      vnorm += v[i][0] ** 2 + v[i][1] ** 2;
+    });
+    const A = dot / norm, B = cross / norm, tc = -1 / (2 * A);
+    let residual = 0;
+    r.forEach((p, i) => { residual += (v[i][0] - A * p[0] + B * p[1]) ** 2 + (v[i][1] - A * p[1] - B * p[0]) ** 2; });
+    return { A, B, tc, product: B * tc, c, norm, inertia: inertia / inorm, residual: Math.sqrt(residual / vnorm) };
+  }
+  function closed(theta) {
+    const a = 3 * theta * PI / 180;
+    return (11 - Math.sqrt(5) * Math.cos(a)) / (6 * Math.sin(a));
+  }
+  function distances(z) {
+    const d = [];
+    for (let i = 0; i < z.length; i++) for (let j = i + 1; j < z.length; j++) d.push(Math.hypot(z[i][0] - z[j][0], z[i][1] - z[j][1]));
+    const norm = Math.hypot(...d);
+    return d.map(x => x / norm);
+  }
+  // q = -log(1-t/T) resolves the shrinking scale; physical equations are unchanged.
+  function step(z, q, h, T) {
+    const rhs = (p, u) => velocity(p).map(v => v.map(x => x * T * Math.exp(-u)));
+    const add = (k, f) => z.map((p, i) => p.map((x, j) => x + f * k[i][j]));
+    const k1 = rhs(z, q), k2 = rhs(add(k1, h / 2), q + h / 2);
+    const k3 = rhs(add(k2, h / 2), q + h / 2), k4 = rhs(add(k3, h), q + h);
+    return z.map((p, i) => p.map((x, j) => x + h * (k1[i][j] + 2 * k2[i][j] + 2 * k3[i][j] + k4[i][j]) / 6));
+  }
+  function trajectory(z0, T, substeps) {
+    let z = z0.map(p => p.slice()), q = 0;
+    const out = [z], h = QMAX / (SAMPLES * substeps);
+    for (let k = 1; k <= SAMPLES; k++) {
+      for (let j = 0; j < substeps; j++) { z = step(z, q, h, T); q += h; }
+      out.push(z);
+    }
+    return out;
+  }
+  function compute(s) {
+    const theta = s.kind === 'minimum' ? OPT : s.theta;
+    const z0 = place(theta, s.kind === 'broken', s.rotation), m = measure(z0);
+    const T = m.tc > 0 && Number.isFinite(m.tc) ? m.tc : 4;
+    const coarse = trajectory(z0, T, 1), path = trajectory(z0, T, 2);
+    const d0 = distances(z0), radius = Math.sqrt(m.norm / 6);
+    let odeError = 0, shapeError = 0, exactError = 0;
+    path.forEach((z, k) => {
+      const q = QMAX * k / SAMPLES, scale = Math.exp(-q / 2), angle = m.product * q;
+      const cs = Math.cos(angle), sn = Math.sin(angle);
+      const ds = distances(z);
+      shapeError = Math.max(shapeError, Math.hypot(...ds.map((x, i) => x - d0[i])));
+      z.forEach((p, i) => {
+        odeError = Math.max(odeError, Math.hypot(p[0] - coarse[k][i][0], p[1] - coarse[k][i][1]) / (15 * radius));
+        if (s.kind !== 'broken') {
+          const rx = z0[i][0] - m.c[0], ry = z0[i][1] - m.c[1];
+          exactError = Math.max(exactError, Math.hypot(p[0] - m.c[0] - scale * (cs * rx - sn * ry), p[1] - m.c[1] - scale * (sn * rx + cs * ry)) / radius);
+        }
+      });
+    });
+    return { theta, m, path, odeError, shapeError, exactError, formulaError: Math.abs(m.product / closed(theta) - 1), broken: s.kind === 'broken' };
+  }
+  function currentIndex(t) { return Math.round(-Math.log(1 - t) / QMAX * SAMPLES); }
+
+  // One drawing list drives canvas and SVG so the print has exactly the same marks.
+  function drawing(w, h, s, data, time) {
+    const marks = [], pal = s.palette && s.palette.length ? s.palette : ['#dcad59', '#65bac3'];
+    const color = i => pal[i % pal.length], size = Math.min(w, h), lw = size * 0.0032 * s.weight;
+    const line = (points, stroke, width = lw, opacity = 1, close = false) => marks.push({ type: 'line', points, stroke, width, opacity, close });
+    const dot = (x, y, r, fill) => marks.push({ type: 'dot', x, y, r, fill });
+    const text = (x, y, value, fill, fs = size * 0.025) => marks.push({ type: 'text', x, y, value, fill, fs });
+    const ink = U.inkFor(s.bg), kNow = currentIndex(time);
+    if (s.view === 'bound') {
+      const x = a => w * (0.12 + 0.76 * a / 60), y = p => h * (0.84 - 0.61 * (p - 1.5) / 12.5);
+      line([[x(0), y(1.5)], [x(60), y(1.5)]], ink, lw * 0.6, 0.45);
+      line([[x(0), y(1.5)], [x(0), y(14)]], ink, lw * 0.6, 0.45);
+      for (const value of [2, 4, 8, 12]) {
+        line([[x(0) - size * 0.01, y(value)], [x(0), y(value)]], ink, lw * 0.6, 0.45);
+        text(x(0) - size * 0.055, y(value) + size * 0.007, String(value), ink, size * 0.021);
+      }
+      line([[x(0), y(FLOOR)], [x(60), y(FLOOR)]], color(1), lw, 0.6);
+      const curve = [];
+      for (let a = 4; a <= 56; a += 0.2) curve.push([x(a), y(closed(a))]);
+      line(curve, color(0), lw * 1.8);
+      dot(x(OPT), y(FLOOR), lw * 2.5, color(1));
+      // Dots come from direct Biot–Savart measurements, not from closed().
+      for (let a = 6; a <= 54; a += 6) dot(x(a), y(measure(place(a, false)).product), lw * 1.6, ink);
+      text(x(0), h * 0.1, 'Spin × collapse time', ink, size * 0.038);
+      text(x(0), h * 0.16, 'Curve: formula · dots: vortex velocities', ink, size * 0.021);
+      text(x(35), y(FLOOR) - size * 0.025, '√29 / 3 = 1.795055…', color(1));
+      text(x(17), y(FLOOR) - size * 0.075, 'θ* ≈ 26.09°', ink, size * 0.022);
+      text(x(0), h * 0.92, '0°', ink); text(x(54), h * 0.92, '60°', ink);
+      text(x(20), h * 0.92, 'Triangle angle θ', ink);
+      if (s.kind !== 'broken') dot(x(data.theta), y(data.m.product), lw * 3, color(0));
+    } else {
+      const scale = size * 0.245, cx = w / 2, cy = h / 2;
+      const map = p => [cx + scale * (p[0] - data.m.c[0]), cy - scale * (p[1] - data.m.c[1])];
+      if (s.view === 'triangles') {
+        for (let k = 0; k <= kNow; k += 32) for (let ring = 0; ring < 2; ring++) {
+          line(data.path[k].slice(3 * ring, 3 * ring + 3).map(map), color(ring), lw * 0.75, 0.18 + 0.7 * k / Math.max(kNow, 1), true);
+        }
+      } else for (let i = 0; i < 6; i++) {
+        line(data.path.slice(0, kNow + 1).map(z => map(z[i])), color(i < 3 ? 0 : 1), lw * 1.5, 0.9);
+        const p = map(data.path[0][i]); dot(p[0], p[1], lw * 1.2, ink);
+      }
+      for (let ring = 0; ring < 2; ring++) line(data.path[kNow].slice(ring * 3, ring * 3 + 3).map(map), color(ring), lw * 0.75, 0.65, true);
+      data.path[kNow].forEach((p, i) => { const xy = map(p); dot(xy[0], xy[1], lw * (i < 3 ? 2.5 : 3.6), color(i < 3 ? 0 : 1)); });
+      line([[cx - lw * 2, cy], [cx + lw * 2, cy]], ink, lw * 0.5, 0.45);
+      line([[cx, cy - lw * 2], [cx, cy + lw * 2]], ink, lw * 0.5, 0.45);
+    }
+    return marks;
+  }
+  function paint(ctx, w, h, s, data, time) {
+    ctx.fillStyle = s.bg; ctx.fillRect(0, 0, w, h);
+    for (const m of drawing(w, h, s, data, time)) {
+      if (m.type === 'line') {
+        ctx.beginPath(); m.points.forEach((p, i) => i ? ctx.lineTo(...p) : ctx.moveTo(...p));
+        if (m.close) ctx.closePath();
+        ctx.strokeStyle = m.stroke; ctx.lineWidth = m.width; ctx.globalAlpha = m.opacity;
+        ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke(); ctx.globalAlpha = 1;
+      } else if (m.type === 'dot') {
+        ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, TAU); ctx.fillStyle = m.fill; ctx.fill();
+      } else { ctx.font = m.fs + 'px Georgia, serif'; ctx.fillStyle = m.fill; ctx.fillText(m.value, m.x, m.y); }
+    }
+  }
+  function svg(w, h, s, data, time) {
+    const esc = U.svgEsc, parts = drawing(w, h, s, data, time).map(m => {
+      if (m.type === 'line') return '<path d="' + m.points.map((p, i) => (i ? 'L' : 'M') + p.join(' ')).join(' ') + (m.close ? ' Z' : '') + '" fill="none" stroke="' + esc(m.stroke) + '" stroke-width="' + m.width + '" opacity="' + m.opacity + '" stroke-linecap="round" stroke-linejoin="round"/>';
+      if (m.type === 'dot') return '<circle cx="' + m.x + '" cy="' + m.y + '" r="' + m.r + '" fill="' + esc(m.fill) + '"/>';
+      return '<text x="' + m.x + '" y="' + m.y + '" fill="' + esc(m.fill) + '" font-family="Georgia, serif" font-size="' + m.fs + '">' + esc(m.value) + '</text>';
+    });
+    return U.svgDoc(w, h, s.bg, parts.join(''));
+  }
+  Studio.register({
+    id: 'double-triangle-bound', name: 'Double-triangle bound', tab: 'Double triangle',
+    subtitle: 'Six vortices · ω₀ t_c ≥ √29/3 · priority under investigation', order: 120, familiarity: 'rare',
+    equation: 'ω₀ t_c = (11 − √5 cos 3θ)/(6 sin 3θ) ≥ √29/3; equality at cos 3θ = √5/11',
+    credit: 'Classical two-ring collapse: Aref, Physics of Fluids 25, 2183 (1982); Koiller, Pinto de Carvalho, Rodrigues da Silva and Gonçalves de Oliveira, Physica D 16, 27–61 (1985), §11. Two equilateral triangles with radius ratio φ and circulations −1 on the outer triangle and φ² on the inner triangle. GENChase derives the displayed product and sharp minimum, with a direct proof in identities/double-triangle.md. Candidate fourth identity; historical priority is not established. The earlier research-ledger rejection tested circulation ratios that do not satisfy the collapse condition. The two-ring motion itself is not new.',
+    blurb: 'Six whirlpools keep two equilateral triangles as they shrink and turn. Their radii have the golden ratio. The spin × collapse-time score has a sharp floor √29/3, attained at θ ≈ 26.09°. The trajectories are integrated from pairwise vortex velocities, and checked against the exact motion and a finer time step. Broken moves one vortex off the family. A correct bound has been derived; whether this is its first publication is still under investigation.',
+    schema, defaults, presets, sanitize, palette: true, defaultPalette: vortexPalette, paletteLabel: 'Outer / inner triangle',
+    headline: 'time', headlineLabel: 't / t_c', closedGroups: ['Picture'],
+    hints: { Collapse: 'Minimum is one shape; every valid Family shape obeys the bound. Broken is a control. The two-ring collapse is classical; priority of this explicit bound remains open.', Picture: 'Spirals and triangles use numerical trajectories. Bound curve compares the formula with independent velocity measurements. Exports preserve these vector marks.' },
+    surprise(rng) { return { kind: rng() < 0.5 ? 'minimum' : 'family', theta: rng.range(8, 52), rotation: rng.range(-180, 180), time: rng.range(0.55, 0.88), view: rng.pick(['spiral', 'spiral', 'triangles']) }; },
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
+      let data, raf = 0, last = 0, time = 0;
+      function report() {
+        const m = data.m, valid = !data.broken && m.tc > 0 && m.residual < 1e-9;
+        const miss = !valid || data.formulaError > 1e-8 || data.shapeError > 1e-5 || data.exactError > 1e-5;
+        const score = valid ? (m.product / FLOOR).toFixed(6) : 'n/a';
+        host.setStatus('<span>ω₀t_c / (√29/3) <b>' + score + '</b> · ≥ 1</span>' +
+          '<span>formula <b>' + (valid ? sci(data.formulaError) : 'off family') + '</b></span>' +
+          '<span>shape <b>' + sci(data.shapeError) + '</b> · 0</span>' +
+          '<span>ODE Δ/15 <b>' + sci(data.odeError) + '</b></span>' +
+          '<span>' + (miss ? 'miss · off family or numerical disagreement' : 'bound held · no sampling error') + ' · priority open</span>');
+      }
+      function draw() { if (data) paint(ctx, canvas.width, canvas.height, host.getState(), data, time); }
+      function stop() { if (raf) cancelAnimationFrame(raf); raf = 0; last = 0; }
+      function tick(now) {
+        raf = 0; const s = host.getState();
+        if (!s.running || !host.isActive() || host.reducedMotion()) { last = 0; return; }
+        time = (time + (last ? Math.min(0.05, (now - last) / 1000) : 0) * 0.13) % 0.9;
+        last = now; draw(); raf = requestAnimationFrame(tick);
+      }
+      function start() { if (!raf && host.getState().running && !host.reducedMotion()) raf = requestAnimationFrame(tick); }
+      return {
+        aspect(s) { return ({ '1:1': 1, '4:5': 1.25, '5:4': 0.8, '16:9': 9 / 16 })[s.aspect] || 1; },
+        regenerate() { stop(); const s = host.getState(); time = s.time; data = compute(s); draw(); report(); start(); },
+        repaint() { draw(); report(); }, resize() { draw(); }, pause: stop,
+        resume() { draw(); start(); },
+        live(key) { if (key === 'time') time = host.getState().time; if (!host.getState().running) stop(); else start(); draw(); },
+        async exportPNG(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; paint(c.getContext('2d'), w, h, host.getState(), data, time); return U.toBlob(c); },
+        exportSVG(w, h) { return svg(w, h, host.getState(), data, time); },
       };
     },
   });
