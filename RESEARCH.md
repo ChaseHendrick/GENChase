@@ -131,8 +131,21 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Degasperis–Procesi / Novikov peakons | Explicit elementary N-peakon formulas (Lundmark–Szmigielski; Hone–Lundmark–Szmigielski). Camassa–Holm peakons are already `#peakon`. |
 | Platonic vortex crystals on a sphere | Tetrahedron, octahedron, cube, icosahedron, dodecahedron are equilibria (Tokieda; Newton). 1-parameter periodic families from them (J. Nonlinear Sci. 2022). Relative equilibria, not a collapse product min. |
 | Two vortices + circular cylinder | Föppl; integrable when total impulse and circulation vanish (Borisov et al. 2021). |
+| Euler elastica | Elliptic integrals (Euler 1744; nine shapes). Not an algebraic product min of two rates. |
+| Delaunay unduloid / nodoid | H = 1/(a+c); neck and bulge explicit (Delaunay 1841). Elliptic generating roulette. |
+| Catenoid–helicoid Bonnet family | Isometric 1-parameter associate family. Textbook. |
+| Maclaurin spheroid | Ω²/(πGρ) has a numerical max 0.449331 at e ≈ 0.92996 (Maclaurin 1742). Jacobi bifurcation e = 0.812670. Not an algebraic floor. |
+| Calogero–Moser equilibrium frequencies | ω_s² = 2s(n−s) (Calogero). Integer. Goldfish already logged. |
+| KdV two-soliton phase shift | δ = (2/k) log\|(k₂+k₁)/(k₂−k₁)\|. Published. No interior algebraic min in μ = k₂/k₁. |
+| Kerr ISCO | Closed cube-root formula (Bardeen–Press–Teukolsky). Photon-sphere λ/Ω_ph = 1 already logged. |
+| ABC flow | Beltrami: H = k_u U²/2. Energy–enstrophy–helicity locked. |
+| Stokes 120° / Michell highest wave | Crest angle 120° (Stokes 1880). H/λ ≈ 0.141 numerical. Speed–amplitude turning points numerical. |
+| Wilton ripples | 1:2 gravity-capillary resonance. Existence published. |
+| Toda 3-particle | Completely integrable; periods elliptic. Numerical orbit families. |
+| Lagrange sleeping top | Stability λ² > 4 m g l I₁ / I₂³. Elliptic in the large. |
+| Ginzburg–Landau κ = 1/√2 | Type I / II surface-energy zero. Abrikosov 1957. Isolated published lock. Do not claim. |
 
-Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, or on Föppl's locus.
+Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, or on Ginzburg–Landau's 1/√2.
 
 **Rejected as inventions.**
 
@@ -171,6 +184,10 @@ Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex pr
 | Burgers vortex dissipation | Φ = Γ²γ/8π independent of ν (1948). |
 | Föppl cylinder pair | Locus r² − 1 = 2ry (1913). |
 | Benjamin–Ono soliton | \|c\|Δ = 1. |
+| Ginzburg–Landau type I / II | κ = λ/ξ = 1/√2 (Ginzburg–Landau 1950; Abrikosov 1957). Isolated. Not Hendrick. |
+| Maclaurin spheroid Ω max | Ω²/(πGρ) ≈ 0.449331 at e ≈ 0.92996 (1742). Numerical, not algebraic. |
+| Stokes 120° crest | Highest gravity wave. H/λ ≈ 0.141 numerical (Michell; Toland). |
+| Kerr ISCO | Bardeen–Press–Teukolsky cube-root formula. Photon-sphere λ/Ω already logged. |
 
 Hendrick's closed form and min √2 were not in those sources. Tacchi Appendix B remains unread. Kimura 1987 is the general similarity theory, not a fourth product min.
 
@@ -561,6 +578,18 @@ Blocked: Tacchi thesis PDF. Most journal HTML.
 Conclusion: no fourth identity of Hendrick's bar. Moffatt–Kimura's √2 is a published filament-pair relation at a chosen α, not Hendrick's planar three-vortex product. Burgers, Föppl, BO, DP/Novikov, and Platonic crystals are published. Do not claim these. Do not put Hendrick's name on them.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min. Reopen Tacchi Appendix B when the file can be opened.
+
+### 2026-09-20  hunt outside vortex dynamics  query: Euler elastica closed form product tension curvature; Delaunay unduloid nodoid 1-parameter mean curvature neck; catenoid helicoid Bonnet associate family pitch radius product; Calogero-Moser frequencies product; Maclaurin Jacobi ellipsoid angular velocity eccentricity maximum; KdV two-soliton phase shift 1-parameter; Kerr ISCO photon sphere Lyapunov; ABC flow helicity energy; Wilton ripples Stokes 120 highest wave; Toda lattice three particle period; Lagrange top sleeping; Ginzburg-Landau kappa 1/sqrt(2)
+
+Opened: Euler 1744 elastica (elliptic; nine shapes). Delaunay 1841: H = 1/(a+c), neck/bulge explicit. Catenoid–helicoid isometric associate family (textbook). Maclaurin 1742: Ω²/(πGρ) max 0.449331 at e ≈ 0.92996, Jacobi bifurcation e = 0.812670 — numerical, not algebraic. Calogero: ω_s² = 2s(n−s) at equilibrium. KdV 2-soliton δ = (2/k) log|(k₂+k₁)/(k₂−k₁)|, no interior min in μ. Kerr ISCO: Bardeen–Press–Teukolsky cube roots; photon-sphere λ/Ω_ph = 1 already a published lock. ABC: Beltrami H = k_u U²/2. Stokes 120° (1880); H/λ ≈ 0.141 Michell/Toland numerical; speed–amplitude turning points numerical. Wilton 1:2 resonance existence published. Toda 3-particle integrable, elliptic. Lagrange sleeping-top stability λ² > 4mgl I₁/I₂³. Ginzburg–Landau κ = λ/ξ = 1/√2 is the type I/II criterion (Abrikosov 1957).
+
+Blocked: Tacchi thesis PDF.
+
+Conclusion: no fourth identity of Hendrick's bar. Other areas (elastica, CMC, gravity, integrable N-body, GR, superconductivity, water waves, rigid body) yield published numbers or elliptic/numerical extrema. Do not claim Ginzburg–Landau's 1/√2. Do not put Hendrick's name on any of this.
+
+Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
+
 
 
 

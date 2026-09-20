@@ -329,6 +329,8 @@ Checked again 2026-09-20: Kimura 1987 is the general similarity solution (the co
 
 Checked again 2026-09-20: Moffatt–Kimura 2019 give $s\kappa=2\sin\alpha$ (equals $\sqrt{2}$ at $\alpha=\pi/4$) for a filament pair; that $\sqrt{2}$ is theirs, not Hendrick. Burgers dissipation, Föppl's cylinder locus, Benjamin–Ono $\|c\|\Delta=1$, Degasperis–Procesi / Novikov peakons, and Platonic vortex crystals are published. Do not claim these.
 
+Checked 2026-09-20 outside vortex dynamics. Euler elastica, Delaunay unduloids, the catenoid–helicoid Bonnet family, Maclaurin–Jacobi ellipsoids, Calogero–Moser frequencies, KdV two-soliton phase shifts, Kerr ISCO, ABC flows, Stokes's 120° wave, Wilton ripples, the Toda lattice, the Lagrange top, and Ginzburg–Landau $\kappa=1/\sqrt{2}$ are published or elliptic/numerical. Do not claim these. Do not put Hendrick's name on Ginzburg–Landau's $1/\sqrt{2}$.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 
