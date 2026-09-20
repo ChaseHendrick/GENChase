@@ -213,6 +213,10 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Prandtl punch | q = 2k(1+π/2). Isolated published 1920. |
 | Kasner | Lifshitz–Khalatnikov u. Two constraints, three exponents. Published parametrization. Product of three expansion rates is not a two-rate identity. Do not claim. |
 | Camassa–Holm 2-peakon | Phase shift 2 ln\|1−λ1/λ2\| (Camassa–Holm 1993). KdV 2-soliton already logged. Peakon already in the studio. |
+| Chen–Walsh–Wheeler 2025 hollow implosion | arXiv:2506.04093. First rigorous self-similar collapsing hollow vortices. Single circular: U_c(γ, Ω, κ) explicit; Ω and κ independent, no shape-parameter product min. Multiple: generic desingularization of existing point-vortex collapses (the three locks). Not a fourth row. Cite as the Euler realization of Hendrick / parallelogram / quincunx. |
+| Grotto–Pappalettera 2025 gSQG | arXiv:2505.19782. Self-similar Z(t) = ((4−α)a(t−t0))^{1/(4−α)} exp(i(θ0+b/((4−α)a) log)). a, b not closed in shape. α=2 is 2D Euler (Hendrick). α=1 SQG: numerical example. Existence, not a floor. |
+| White–McDonald 2025 sheets | Proc. R. Soc. A 481, 20250362. Exact vortex-sheet equilibria by conformal mapping. 1-param γ; properties from a numerical algebraic equation. Not a closed two-rate min. |
+| PRFluids 2025 four-vortex RE | Phys. Rev. Fluids 10, 084708. Continua of relative equilibria, not collapse. |
 
 Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
 
@@ -752,6 +756,17 @@ Blocked: Reinaud Physica D 2022 full HTML. Prandtl 1920 German body.
 Conclusion: no fourth identity of Hendrick's bar. Underresearched catalogues (gSQG, massive vortices, hollow implosion, vortices on surfaces, Zipoy–Voorhees, plasticity, Kasner, CH peakon phase) are numerical, isolated published locks, desingularizations of existing rows, or constraint identities, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on Prandtl's 2+π.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
+### 2026-09-20  hunt cutting-edge 2025: hollow implosion, gSQG burst, vortex-sheet equilibria, four-vortex RE  query: arXiv:2506.04093 Chen Walsh Wheeler hollow vortices; arXiv:2505.19782 Grotto Pappalettera gSQG; White McDonald 2025 Proc A vortex sheet; PRFluids 2025 four vortex relative equilibria
+
+Opened: Chen–Walsh–Wheeler arXiv:2506.04093 (4 Jun 2025): explicit circular U_c(γ, Ω, κ), Ω and κ independent; rigidity of the circular imploder; Theorem 1.3 desingularizes any non-degenerate collapsing point-vortex configuration to a real-analytic family of hollow imploders. That is the 2D Euler realization of the three locks, not a fourth floor. Grotto–Pappalettera arXiv:2505.19782 (26 May 2025): gSQG self-similar form (2.3); a, b implicit in (2.2); α=2 is 2D Euler; α=1 numerical. White–McDonald Proc. R. Soc. A 481, 20250362 (Sep 2025): exact sheet equilibria, 1-param γ, nonlinear algebraic equation solved numerically. Phys. Rev. Fluids 10, 084708 (28 Aug 2025): four-vortex relative-equilibrium continua, not collapse.
+
+Blocked: White–McDonald full PDF body (Royal Society). PRFluids 2025 body.
+
+Conclusion: 2025 cutting-edge papers realize or existentially extend the three locks; they do not give a new closed 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Cite Chen–Walsh–Wheeler as the hollow-Euler desingularization of Hendrick / parallelogram / quincunx. Do not claim a fourth row from these papers.
+
+Re-search: skip these four papers unless a follow-up states a closed dimensionless product and its unique algebraic interior min.
+
 
 
 
