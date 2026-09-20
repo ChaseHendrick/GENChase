@@ -101,8 +101,17 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Kallyadan–Shukla, Phys. Rev. Fluids 7, 114701 (2022) | Numerical 1-parameter families along closed curves. No closed A(θ), B(θ). |
 | Wall / image / disk; periodic strip (Aref 1996) | Same-sign boundary collapse is impossible (Donati–Godard-Cadillac–Iftimie 2024). Mixed-sign and periodic-strip: no closed product min found. |
 | Gotoda 2025 θ_Z / θ_L / θ_c | Numerical grid bracket only (θ_137 < θ_Z < θ_138). No closed form. |
+| Love leapfrog T(α), T·U | Period is complete elliptic K, E in α (Tophøj–Aref eq. 11). Not a floor like √2. Existence α = 3−2√2 and stability α = φ^{-2} are already in the published-locks table. |
+| Three-vortex collapse on a sphere | Kidambi–Newton 1998/1999: collapse times and partner states. Each vortex has a distinct azimuthal velocity; a single ω t_c is not defined the way it is in the plane. |
+| SQG / generalized Euler three-vortex | Badin–Barry 2018; Reinaud GAFD 2020 / Physica D 2022. Collapse time has a numerical min (τ ≈ 0.3657 on one slice). No closed A(θ), B(θ). |
+| Moore–Saffman ellipse in strain; Kida | Two axis ratios iff e/ω₀ < 0.15 (irrotational strain); breakup above. Kida 1981 solves the time-dependent ellipse. Published bounds, not a product min. |
+| Heton / two-layer point vortices | Hogg–Stommel; Helfrich–Send contour dynamics. Finite-core, no closed A(θ), B(θ). |
+| Calogero goldfish | Isochrony and matrix-eigenvalue solution are published. Not a vortex-collapse product. |
+| Stuart cat's eyes; Mallier–Maslowe | Exact Euler families. Circulation independent of the concentration parameter. No unpublished product min. |
+| Thomson N-gon + center | Unique N+1 equilibrium with N on a circle (Aref–van Buren). Relative equilibrium, not collapse. |
+| Peregrine / Akhmediev / Kuznetsov–Ma | \|u\|_max / \|u\|_∞ = 3 is Peregrine; Akhmediev AF = 1+2√(1−2a). Published. |
 
-Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, or on a numerical family.
+Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, or on Moore–Saffman's 0.15.
 
 **Rejected as inventions.**
 
@@ -124,6 +133,11 @@ Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex pr
 | Finite-core / QG collapse-time numerical minima | Reinaud, GAFD 2020; Reinaud and Dritschel 2022 |
 | t_c minimum 4π/3 on Γ = (1,1,−1/2) at this length | Leoncini, Kuznetsov and Zaslavsky 2000. Not Hendrick's product min. |
 | Aref Ω and τ separately; product as log-spiral pitch | Aref 2010 eqs. 25a, 25d, 29c |
+| Love leapfrog period T(α) | Complete elliptic integrals K, E (Love 1893; Tophøj and Aref 2013 eq. 11). Not an algebraic floor. |
+| Moore–Saffman ellipse in irrotational strain | Two axis ratios iff e/ω₀ < 0.15; breakup above (1971) |
+| Peregrine rogue-wave amplitude | \|u\|_max / \|u\|_∞ = 3; Akhmediev AF = 1+2√(1−2a) |
+| Thomson centered regular N-gon | Unique N+1 equilibrium with N identical vortices on a circle (Aref and van Buren 2005) |
+| Hasimoto filament soliton | c = 2τ; κ_max from the sech profile. Already the `#hasimoto` check. |
 
 Hendrick's closed form and min √2 were not in those sources. Tacchi Appendix B / Kimura 1988 coefficients remain unread.
 
@@ -474,6 +488,18 @@ Blocked: most journal HTML. Tacchi appendix still unread. Kallyadan–Shukla bod
 Conclusion: no fourth identity of Hendrick's bar. Distinguished five-vortex μ other than 1/2, 2, 3, 2±√3 have messy minima; μ = 2+√3 recovers the parallelogram lock (γ3 = 0). Three-vortex μ ≠ 1 is a cubic critical point (already logged). (1,1,1,−1) and the other four-vortex symmetric scans had no self-similar L = 0 family. O'Neil / hollow-vortex examples are single published configs. Numerical families and grid-bracketed angles are not closed forms. Do not claim these. Do not put Hendrick's name on them.
 
 Re-search: skip the rows in the table above unless a newly named paper states a closed ω t_c and its unique interior min on one of those families. Reopen Tacchi Appendix B / Kimura 1988 coefficients when the files can be opened.
+
+### 2026-09-20  hunt outside planar point-vortex collapse  query: Kidambi Newton spherical three vortex collapse angular velocity product omega t_c; Love 1894 leapfrogging period elliptic integral translation speed product; Tophøj Aref leapfrogging period translation; SQG point vortex collapse self-similar closed form; Moore Saffman elliptical vortex strain aspect ratio e/omega; Hasimoto vortex filament kappa max torsion speed; Peregrine rogue wave max amplitude 3; Stuart vortices Mallier-Maslowe energy circulation; Calogero goldfish point vortices identity; heton collapse two-layer point vortices closed form; Thomson vortex N-gon plus center; Tacchi Dynamique des tourbillons Appendix B
+
+Opened: Kidambi–Newton Nuovo Cimento C 22, 779 (1999) PDF (eprints.bice.rm.cnr.it/13666/1/ncc8137.pdf): partner-state collapse times; each vortex has a distinct azimuthal velocity. Tophøj–Aref Phys. Fluids 25, 014107 (2013) extract: Love period T_lf in complete elliptic K, E; existence α = 3−2√2; stability α = φ^{-2}. Behring–Goodman arXiv 1908.08618 / 2210.16464: same published locks. Badin–Barry PRE 2018 and Reinaud GAFD 2020 / Physica D 2022 snippets: SQG collapse, numerical τ min. Moore–Saffman 1971 snippets: e/ω₀ < 0.15. Hasimoto JFM 1972: c = 2τ. Peregrine / Akhmediev reviews: |u|_max = 3. Mallier–Maslowe / Stuart: Γ independent of concentration. Aref–van Buren 2005: unique centered N-gon. Calogero goldfish papers: isochrony. Hollow-vortices arXiv:2506.04093 already logged.
+
+Blocked: Tacchi thesis PDF still unread. Most journal HTML. Kallyadan–Shukla body still behind APS lock.
+
+Conclusion: no fourth identity of Hendrick's bar. The nearby 1-parameter exact families either have a published extremum, a numerical min, or a period in elliptic integrals rather than a simple radical. Do not claim Love's T(α), Kidambi–Newton's t_c, Peregrine's 3, Moore–Saffman's 0.15, or Thomson's uniqueness. Do not put Hendrick's name on them.
+
+Re-search: skip the new rows in the candidate table and the published-locks table unless a newly named paper states a closed dimensionless product and its unique algebraic interior min on one of those families. Reopen Tacchi Appendix B / Kimura 1988 coefficients when the files can be opened. A later algebraic, unpublished product with a unique interior extremum and a plate whose check can miss may still be claimed the same way Hendrick was.
+
+
 
 
 
