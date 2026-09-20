@@ -116,7 +116,7 @@ The same data in machine-readable form is [\`techniques.json\`](techniques.json)
   md += `
 ## Credits
 
-None of the science is original to this project. Each technique names the people whose work it implements.
+Each technique names the people whose work it implements. Hendrick's Identity is the exception: derived here, uniqueness-checked, locked so the plate fails if the claim is wrong. The statement is in IDENTITIES.md.
 
 `;
   for (const m of mods) md += `**${esc(m.name)}**. ${esc(m.credit)}\n\n`;

@@ -57,7 +57,7 @@ GENChase is the other object: 117 sciences on one control surface, deterministic
 
 ## What is actually different
 
-**The assembly.** None of the algorithms are new. What is unusual is that chemistry, acoustics, liquid crystals, and aperiodic tiles share one seed field, one palette, and one export. Switching from Cahn–Hilliard to Chladni costs you nothing.
+**The assembly.** Almost every tab is the paper it names. Hendrick's Identity is the exception: a closed form and a sharp minimum derived here, uniqueness-checked, locked so the plate fails if the claim is wrong. What is unusual about the rest is that chemistry, acoustics, liquid crystals, and aperiodic tiles share one seed field, one palette, and one export. Switching from Cahn–Hilliard to Chladni costs you nothing.
 
 **Determinism as the product.** Every random draw comes from a seeded generator. Geometry is resolution-independent. Keep the seed, get the same plate at 36 inches. Change it, get another world.
 
