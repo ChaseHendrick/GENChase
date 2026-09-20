@@ -416,6 +416,8 @@ Checked 2026-09-20 difficulty skips. Three-vortex $\mu\neq 1$: Gotoda $A,B$ are 
 
 Checked 2026-09-20 non-orientable vortices, pursuit, C-metric. Balabanova–Montaldi (Physica D 2026) Möbius/Klein: N-ring $\mathrm{coth}$ angular velocities and nested-radical two-vortex equilibria; no collapse product. Four bugs: parallelograms converge to a square (Chapman–Trefethen 2011); square $T=L/v$ is isolated. C-metric photon vs $\alpha$ is an isolated published radius. Three-heton has no unused closed $A,B$. Do not claim these. Do not put Hendrick's name on Möbius $\mathrm{coth}$ or the four-bug square.
 
+Checked 2026-09-20 other areas. Brizard XMHD X-point collapse (arXiv:2504.07311) is Jacobi elliptic. Kozai–Lidov $i_*=\arccos\sqrt{3/5}$ and Taylor's $49.3^\circ$ are isolated published locks. A spiral vortex's pitch $\Gamma/Q$ is textbook. Hopf $H=nm$ is two integers, not two rates. Riemann ellipsoids are 1860 two-frequency sequences. Chiral active vortices are simulations. Relativistic point-vortex collapse has no unused closed product. Do not claim these. Do not put Hendrick's name on Kozai's $\arccos\sqrt{3/5}$ or Taylor's $49.3^\circ$.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 

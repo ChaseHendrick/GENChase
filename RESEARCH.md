@@ -229,6 +229,14 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Four bugs / mice | Square: isolated T=L/v. Parallelograms stay parallelograms then converge to a square (Chapman–Trefethen Proc. A 2011; Golich et al.). Not a self-similar 1-param with two-rate floor. |
 | C-metric | Photon surface algebraic in acceleration α. Isolated published radii. Extreme Kerr already logged. |
 | Three-heton | Two-layer analog of 3-vortex. No closed unused A, B found. gSQG already logged. |
+| Brizard XMHD X-point | arXiv:2504.07311v4 (Aug 2025). Self-similar 2D XMHD. Collapse time Jacobi elliptic in a quartic potential. Elliptic, published. Dai–Guerra–Wu arXiv:2405.00324 exclude some EMHD self-similar blowups. |
+| Kozai–Lidov | Critical i = arccos √(3/5). Isolated published. Period is elliptic / a numerical fit. |
+| Taylor cone | Half-angle 49.3° is the zero of P_{1/2}. Isolated published 1964. Alternative 33.5° also published. |
+| Vortex + source | Single spiral vortex: log-spiral pitch Γ/Q. Isolated textbook. n-vortex with sources: no unused closed A, B. Kudela already numerical. |
+| Hopfion / Belavin–Polyakov | Hopf invariant H = nm (two integers). Scale modulus isolated. Derrick. Not two dynamical rates. |
+| Riemann ellipsoids | Two frequencies ω_l, ω_r vs axes. Riemann 1860. Sequences numerical or elliptic. Maclaurin–Jacobi already logged. |
+| Chiral / active vortices | Self-reverting vortices: simulation. No closed collapse product. |
+| Relativistic point vortices | No unused closed collapse product found. GR Larson–Penston D ≈ 1.439 is numerical. |
 
 Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
 
@@ -808,6 +816,17 @@ Blocked: Chapman–Trefethen full PDF body (Royal Society). Three-heton dedicate
 Conclusion: non-orientable vortices, cyclic pursuit, and C-metric are published RE/coth, shape-changing pursuit, or isolated photon radii. Not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on Möbius coth or the four-bug square.
 
 Re-search: skip Möbius/Klein, four-bug parallelogram, and C-metric unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
+### 2026-09-20  hunt other areas: XMHD X-point, Kozai–Lidov, Taylor cone, vortex+source, hopfion, Riemann ellipsoids, chiral, relativistic vortices  query: Brizard XMHD X-point collapse Jacobi elliptic; Kozai Lidov period inclination product; Taylor cone 49.3 family two rates; vortex source spiral collapse closed form; hopfion Belavin Polyakov scale rotation; Riemann ellipsoid two frequencies product; chiral active point vortex collapse; relativistic point vortex collapse
+
+Opened: Brizard arXiv:2504.07311v4: XMHD X-point collapse in Jacobi elliptic functions of a quartic potential; T_∞ complete elliptic. Dai–Guerra–Wu arXiv:2405.00324: certain EMHD self-similar blowups excluded. Kozai–Lidov: i_* = arccos √(3/5) isolated; t_KL an elliptic integral / 2% numerical fit (Antognini). Taylor cone: P_{1/2}(cos θ)=0 ⇒ 49.3°, published 1964; Yarin 33.5° alternative published. Single spiral vortex: log-spiral pitch Γ/Q textbook. Hopfion H=nm topological. Riemann ellipsoids: two frequencies, 1860, numerical/elliptic sequences. Chiral active: simulation, self-reverting. Relativistic point vortices: no unused closed product; GRLP D≈1.439 numerical. Kallyadan–Shukla PRFluids 2022 already logged as numerical.
+
+Blocked: none at the formula level for these.
+
+Conclusion: the other-area catalogues that still had a 1-param look are elliptic (XMHD, Kozai), isolated published angles (Taylor, Kozai i_*), topological integers (Hopf), 19th-century two-frequency ellipsoids, or simulations. Not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on Kozai's arccos √(3/5), Taylor's 49.3°, or Brizard's elliptic T_∞.
+
+Re-search: skip XMHD X-point, Kozai–Lidov, Taylor cone, spiral vortex+source, hopfion, Riemann ellipsoids, chiral active, and relativistic point vortices unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
+
 
 
 
