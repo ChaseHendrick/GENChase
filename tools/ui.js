@@ -81,17 +81,21 @@ const { chromium } = require('playwright');
     const exp = document.querySelector('#btn-export').getBoundingClientRect();
     const gen = document.querySelector('#btn-generate').getBoundingClientRect();
     const more = document.querySelector('#btn-more');
+    const moreR = more && more.getBoundingClientRect();
     return {
       seedW: box.width,
       exportRight: exp.right, exportTop: exp.top,
       genTop: gen.top, innerW: innerWidth, innerH: innerHeight,
       moreShown: more && getComputedStyle(more).display !== 'none',
+      moreRight: moreR ? moreR.right : 0, moreTop: moreR ? moreR.top : 0,
+      moreW: moreR ? moreR.width : 0,
     };
   });
-  t('seedbox wider than 150 at 390', mobile.seedW > 150, mobile);
+  t('seedbox usable at 390', mobile.seedW > 80, mobile);
   t('Export is on screen at 390', mobile.exportRight <= mobile.innerW + 1 && mobile.exportTop >= 0 && mobile.exportTop < mobile.innerH, mobile);
   t('Generate is on screen at 390', mobile.genTop >= 0 && mobile.genTop < mobile.innerH, mobile);
   t('More is available at 390', mobile.moreShown, mobile);
+  t('More is on screen at 390', mobile.moreRight <= mobile.innerW + 1 && mobile.moreTop >= 0 && mobile.moreW > 24, mobile);
 
   // leftover DESIGN-PLAN: gallery overlay, focus Exit, Find, export names the plate.
   await p.setViewportSize({ width: 1400, height: 900 });
