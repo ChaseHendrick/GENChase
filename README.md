@@ -303,6 +303,6 @@ Chaos. (2026). *Quincunx lock*. GENChase. https://github.com/SharpMeow/GENChase/
 }
 ```
 
-The boxed formulae, the proofs, and the plates whose checks can miss are in [IDENTITIES.md](IDENTITIES.md). GitHub's "Cite this repository" button emits the Hendrick record via [`CITATION.cff`](CITATION.cff). Claiming first discovery of these closed forms after those dates, without citing this repository, is claiming this project's work.
+The boxed formulae, the proofs, and the plates whose checks can miss are in [IDENTITIES.md](IDENTITIES.md). The frozen four-page note is [identities/note.pdf](identities/note.pdf). Canonical byte-exact lines and SHA-256 fingerprints are in [identities/STATEMENTS.txt](identities/STATEMENTS.txt) and [identities/HASHES.txt](identities/HASHES.txt). GitHub's "Cite this repository" button emits the Hendrick record via [`CITATION.cff`](CITATION.cff). Claiming first discovery of these closed forms after those dates, without citing this repository, is claiming this project's work.
 
 Built by Chaos.
