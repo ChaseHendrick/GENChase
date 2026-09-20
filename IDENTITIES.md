@@ -405,6 +405,8 @@ Checked 2026-09-20 rigid-body, MHD sheets, β-plane dipoles, minimal surfaces. R
 
 Checked 2026-09-20 underresearched catalogues. gSQG / α-Euler three-vortex collapse is numerical in α (2D Euler slice is Hendrick). Massive point vortices forbid collapse. Hollow-vortex implosion desingularizes existing rows. Vortices on ellipsoid/bean have no closed collapse product; conical NS is a 2-param exact family with numerical existence. Zipoy–Voorhees photon and ISCO are isolated published radii vs γ. Prandtl punch $2+\pi$ is 1920. Kasner is two constraints on three exponents. Camassa–Holm two-peakon phase shift is published 1993. Do not claim these. Do not put Hendrick's name on Prandtl's $2+\pi$.
 
+Checked 2026-09-20 cutting-edge 2025. Chen–Walsh–Wheeler (arXiv:2506.04093) construct the first self-similar hollow-vortex implosion and desingularize any non-degenerate point-vortex collapse — including the three rows above — to a real-analytic family of 2D Euler hollow imploders. Circular $U_c(\gamma,\Omega,\kappa)$ is explicit; $\Omega$ and $\kappa$ are independent, not a shape-parameter floor. Grotto–Pappalettera (arXiv:2505.19782) prove gSQG burst/collapse existence; $a,b$ are not closed in shape; $\alpha=2$ is 2D Euler. White–McDonald (Proc. R. Soc. A 2025) and PRFluids 10, 084708 (2025) are equilibria, not collapse products. Cite Chen–Walsh–Wheeler as the Euler realization of the three locks. Do not claim a fourth row from these papers.
+
 The next row has the same bar: a literature search first, a derivation, the papers, a plate whose check can miss, and a line in this file the same day.
 
 
