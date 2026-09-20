@@ -124,8 +124,15 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Point vortices on the hyperbolic plane | Nava-Gaxiola–Montaldi JMP 55, 102702 (2014): relative equilibria, not a collapse product. |
 | Crowdy vortex layers on a wedge | Exact uniform-vorticity corners (EJAM 2004). Not a point-vortex collapse product. |
 | Kudela n-vortex collapse | Numerical configurations (J. Nonlinear Sci. 2014; FDR 2014). Same class as Kallyadan–Shukla. |
+| Moffatt–Kimura filament pair | JFM 2019: similarity s ∼ (τc−τ)^{1/2}, κ ∼ (τc−τ)^{-1/2}. The product sκ = 2 sin α; at α = π/4 this is √2. Published. Do not claim Hendrick's √2 here. |
+| Burgers stretched vortex | Gaussian core; dissipation per unit length Φ = Γ²γ/8π independent of ν (Burgers 1948). |
+| Föppl vortex pair behind a cylinder | Locus r² − 1 = 2 r y; κ = (r²+1)(r²−1)²/r⁵. Published 1-parameter equilibrium, not collapse. |
+| Benjamin–Ono algebraic soliton | c = A/4, Δ = 4/A, so \|c\|Δ = 1. Textbook. ILW interpolates to KdV. |
+| Degasperis–Procesi / Novikov peakons | Explicit elementary N-peakon formulas (Lundmark–Szmigielski; Hone–Lundmark–Szmigielski). Camassa–Holm peakons are already `#peakon`. |
+| Platonic vortex crystals on a sphere | Tetrahedron, octahedron, cube, icosahedron, dodecahedron are equilibria (Tokieda; Newton). 1-parameter periodic families from them (J. Nonlinear Sci. 2022). Relative equilibria, not a collapse product min. |
+| Two vortices + circular cylinder | Föppl; integrable when total impulse and circulation vanish (Borisov et al. 2021). |
 
-Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, or on Hill's energy min.
+Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, or on Föppl's locus.
 
 **Rejected as inventions.**
 
@@ -160,6 +167,10 @@ Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex pr
 | Norbury–Fraenkel / Hill | Lowest dimensionless ring energy is Hill's spherical vortex. |
 | Pocklington translating hollow pair | U decreases monotonically with area (Crowdy et al. 2013). |
 | Komineas–Papanicolaou magnetic Gröbli | JMP 51, 042705 (2010). Complete 3-vortex integration. |
+| Moffatt–Kimura filament-pair similarity | sκ = 2 sin α; at α = π/4 this is √2 (JFM 2019 eq. 10.5). Not Hendrick. |
+| Burgers vortex dissipation | Φ = Γ²γ/8π independent of ν (1948). |
+| Föppl cylinder pair | Locus r² − 1 = 2ry (1913). |
+| Benjamin–Ono soliton | \|c\|Δ = 1. |
 
 Hendrick's closed form and min √2 were not in those sources. Tacchi Appendix B remains unread. Kimura 1987 is the general similarity theory, not a fourth product min.
 
@@ -540,6 +551,18 @@ Blocked: Tacchi thesis PDF. Kimura 1987 body (JPSJ paywall). Most journal HTML.
 Conclusion: no fourth identity of Hendrick's bar. Kimura 1987 is the similarity machinery already used for the three locks, not a new min. Norbury, Pocklington, Lamb–Chaplygin, magnetic Gröbli, and hyperbolic relative equilibria are published. Do not claim these. Do not put Hendrick's name on them.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min. Reopen Tacchi Appendix B and the Kimura 1987 body when the files can be opened.
+
+### 2026-09-20  hunt BO, Platonic, Moffatt–Kimura, Burgers, Föppl  query: inverse-square algebraic 1/r kernel point vortices collapse; Degasperis-Procesi Novikov peakon speed amplitude; Benjamin-Ono algebraic soliton speed width; platonic vortex crystals sphere; two point vortices circular cylinder Föppl; Moffatt Kimura vortex filament collapse s kappa √2; Burgers vortex dissipation independent viscosity; Tacchi tourbillons thesis
+
+Opened: Moffatt–Kimura arXiv:1811.03304 / JFM 2019: similarity of a filament pair, sκ = 2 sin α, equals √2 at α = π/4 (eq. 10.5); δ/s → 0.943. Burgers 1948: Φ = Γ²γ/8π independent of ν. Föppl 1913 locus r²−1 = 2ry. Benjamin–Ono: c = A/4, Δ = 4/A. DP/Novikov N-peakon formulas (Lundmark–Szmigielski). Platonic solids as spherical vortex equilibria (Tokieda; Jamalodeen–Newton 2006; J. Nonlinear Sci. 2022 periodic families). Two vortices + cylinder: Föppl / Borisov et al. 2021. Kudela n≥6 numerical already logged. Tacchi: still no thesis PDF.
+
+Blocked: Tacchi thesis PDF. Most journal HTML.
+
+Conclusion: no fourth identity of Hendrick's bar. Moffatt–Kimura's √2 is a published filament-pair relation at a chosen α, not Hendrick's planar three-vortex product. Burgers, Föppl, BO, DP/Novikov, and Platonic crystals are published. Do not claim these. Do not put Hendrick's name on them.
+
+Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min. Reopen Tacchi Appendix B when the file can be opened.
+
+
 
 
 
