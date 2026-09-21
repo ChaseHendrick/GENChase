@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-21",
+  "passed": true,
+  "source": "src/modules/surfaces.js",
+  "sourceSha256": "133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e",
+  "softwareCanvas": false,
+  "criteria": {
+    "svgCoordinateErrorPixels": 0.000051,
+    "rasterVectorMeanAbsoluteChannelError": {
+      "preview800": 2,
+      "print": 1
+    },
+    "minInkFraction": 0.005,
+    "exactDimensions": true,
+    "deterministicReplay": true,
+    "recipeAndVisiblePlatePreserved": true,
+    "seedChangesView": true
+  },
+  "rows": [
+    {
+      "preset": "enneper",
+      "width": 800,
+      "height": 800,
+      "paths": 50,
+      "verticesPerPath": 97,
+      "coordinateError": 0.000049999743851003586,
+      "rasterVectorMeanAbsoluteChannelError": 0.7771473958333334,
+      "inkFraction": 0.0618484375,
+      "pngFingerprint": "fc2ebde0"
+    },
+    {
+      "preset": "enneper",
+      "width": 1600,
+      "height": 2000,
+      "paths": 50,
+      "verticesPerPath": 97,
+      "coordinateError": 0.00004997564292352763,
+      "rasterVectorMeanAbsoluteChannelError": 0.3111494791666667,
+      "inkFraction": 0.041100625,
+      "pngFingerprint": "4a7a3bf"
+    },
+    {
+      "preset": "enneper",
+      "width": 2400,
+      "height": 2400,
+      "paths": 50,
+      "verticesPerPath": 97,
+      "coordinateError": 0.00004999923157811281,
+      "rasterVectorMeanAbsoluteChannelError": 0.26079375,
+      "inkFraction": 0.0477203125,
+      "pngFingerprint": "b3103ca5"
+    },
+    {
+      "preset": "folded",
+      "width": 800,
+      "height": 800,
+      "paths": 98,
+      "verticesPerPath": 97,
+      "coordinateError": 0.00004999558302642981,
+      "rasterVectorMeanAbsoluteChannelError": 1.2938692708333333,
+      "inkFraction": 0.082825,
+      "pngFingerprint": "586ccd1a"
+    },
+    {
+      "preset": "folded",
+      "width": 1600,
+      "height": 2000,
+      "paths": 98,
+      "verticesPerPath": 97,
+      "coordinateError": 0.00004999547491024714,
+      "rasterVectorMeanAbsoluteChannelError": 0.5195159375,
+      "inkFraction": 0.0561553125,
+      "pngFingerprint": "8358d694"
+    },
+    {
+      "preset": "folded",
+      "width": 2400,
+      "height": 2400,
+      "paths": 98,
+      "verticesPerPath": 97,
+      "coordinateError": 0.00004999391615001514,
+      "rasterVectorMeanAbsoluteChannelError": 0.43654149305555556,
+      "inkFraction": 0.0656467013888889,
+      "pngFingerprint": "9f6795e0"
+    },
+    {
+      "preset": "dini",
+      "width": 800,
+      "height": 800,
+      "paths": 50,
+      "verticesPerPath": 97,
+      "coordinateError": 0.000049988353168828326,
+      "rasterVectorMeanAbsoluteChannelError": 0.9888041666666667,
+      "inkFraction": 0.0743921875,
+      "pngFingerprint": "e367fe17"
+    },
+    {
+      "preset": "dini",
+      "width": 1600,
+      "height": 2000,
+      "paths": 50,
+      "verticesPerPath": 97,
+      "coordinateError": 0.000049987480906565906,
+      "rasterVectorMeanAbsoluteChannelError": 0.5190255208333333,
+      "inkFraction": 0.064755,
+      "pngFingerprint": "a5c328c5"
+    },
+    {
+      "preset": "dini",
+      "width": 2400,
+      "height": 2400,
+      "paths": 50,
+      "verticesPerPath": 97,
+      "coordinateError": 0.000049992689810096635,
+      "rasterVectorMeanAbsoluteChannelError": 0.32779293981481483,
+      "inkFraction": 0.05816440972222222,
+      "pngFingerprint": "7e8d932d"
+    },
+    {
+      "preset": "catenoid",
+      "width": 800,
+      "height": 800,
+      "paths": 49,
+      "verticesPerPath": 97,
+      "coordinateError": 0.00004995121173578809,
+      "rasterVectorMeanAbsoluteChannelError": 1.134121875,
+      "inkFraction": 0.0934046875,
+      "pngFingerprint": "b5953033"
+    },
+    {
+      "preset": "catenoid",
+      "width": 1600,
+      "height": 2000,
+      "paths": 49,
+      "verticesPerPath": 97,
+      "coordinateError": 0.00004999052544008009,
+      "rasterVectorMeanAbsoluteChannelError": 0.45987083333333334,
+      "inkFraction": 0.06235875,
+      "pngFingerprint": "6ccb19b4"
+    },
+    {
+      "preset": "catenoid",
+      "width": 2400,
+      "height": 2400,
+      "paths": 49,
+      "verticesPerPath": 97,
+      "coordinateError": 0.000049996356892734184,
+      "rasterVectorMeanAbsoluteChannelError": 0.3798196759259259,
+      "inkFraction": 0.07074461805555556,
+      "pngFingerprint": "c77694b6"
+    },
+    {
+      "preset": "helicoid",
+      "width": 800,
+      "height": 800,
+      "paths": 50,
+      "verticesPerPath": 97,
+      "coordinateError": 0.00004999818349915586,
+      "rasterVectorMeanAbsoluteChannelError": 0.41788020833333334,
+      "inkFraction": 0.0609421875,
+      "pngFingerprint": "4b1af06b"
+    },
+    {
+      "preset": "helicoid",
+      "width": 1600,
+      "height": 2000,
+      "paths": 50,
+      "verticesPerPath": 97,
+      "coordinateError": 0.0000499826569466677,
+      "rasterVectorMeanAbsoluteChannelError": 0.21684625,
+      "inkFraction": 0.0520696875,
+      "pngFingerprint": "fc09656a"
+    },
+    {
+      "preset": "helicoid",
+      "width": 2400,
+      "height": 2400,
+      "paths": 50,
+      "verticesPerPath": 97,
+      "coordinateError": 0.00004999800557925482,
+      "rasterVectorMeanAbsoluteChannelError": 0.14080422453703703,
+      "inkFraction": 0.047365104166666665,
+      "pngFingerprint": "d5f8ae1a"
+    },
+    {
+      "preset": "associate",
+      "width": 800,
+      "height": 800,
+      "paths": 50,
+      "verticesPerPath": 97,
+      "coordinateError": 0.00004999044460873847,
+      "rasterVectorMeanAbsoluteChannelError": 1.6119598958333334,
+      "inkFraction": 0.0898796875,
+      "pngFingerprint": "fa5c344b"
+    },
+    {
+      "preset": "associate",
+      "width": 1600,
+      "height": 2000,
+      "paths": 50,
+      "verticesPerPath": 97,
+      "coordinateError": 0.000049999719522020314,
+      "rasterVectorMeanAbsoluteChannelError": 0.6499511458333334,
+      "inkFraction": 0.0593134375,
+      "pngFingerprint": "3a0b4670"
+    },
+    {
+      "preset": "associate",
+      "width": 2400,
+      "height": 2400,
+      "paths": 50,
+      "verticesPerPath": 97,
+      "coordinateError": 0.00004997133419237798,
+      "rasterVectorMeanAbsoluteChannelError": 0.5403474537037037,
+      "inkFraction": 0.06875746527777778,
+      "pngFingerprint": "382271bb"
+    }
+  ],
+  "failures": [],
+  "wrongScaleControlErrorPixels": 34.602399394628264,
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+  "limitations": [
+    "Print checks preserve the finite wire mesh, not an exact smooth surface.",
+    "All wires remain visible; this is not hidden-surface rendering or a solid manufacturing model.",
+    "Raster/vector agreement depends on subpixel stroke rasterization. --software-canvas isolates the accelerated Canvas2D difference.",
+    "This Chromium run does not certify all printer or SVG implementations.",
+    "Independent differential geometry is tested separately in surfaces-science.js."
+  ]
+}

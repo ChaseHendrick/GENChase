@@ -70,3 +70,11 @@ of every long trajectory. Read [Maxwell's limits](validation/MAXWELL.md) and
 ## Python research analysis
 
 `python3 tools/cahn-scaling.py` reproduces the fit, whole-seed uncertainty and held-out checks from committed GPU measurements using only the standard library. `--controls` exercises known synthetic laws, held-out corruption and correlated-frame uncertainty. This complements the Python launcher in `run/`; it does not replace the browser solvers. See [experiment outcomes](experiments/README.md).
+
+
+### Additional model checks
+
+`node tools/verify.js --print surfaces plasma shallow nonreciprocal` runs independent
+geometry, particle/field, exact shallow-water wave and nonlinear-mixture benchmarks,
+then their actual export-state checks. These support the bounded claims recorded in
+`validation/`; they do not establish every model or parameter choice as accurate.

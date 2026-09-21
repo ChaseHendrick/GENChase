@@ -31,16 +31,39 @@
     peak: pre('Peak', { span: 6, t0: 0, exposure: 0.75, kind: 'peregrine' }, Pal.xray),
   };
   function surprise(rng) { return { kind: rng.pick(['peregrine', 'peregrine', 'akhmediev', 'km']), span: rng.range(7, 14), view: rng.pick(['int', 'log']) }; }
-  function sanitize(s) { s.grid = Math.max(96, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(96, Math.min(256, Math.round(s.grid / 16) * 16)); s.a = U.clamp(Number.isFinite(s.a) ? s.a : .25, .05, .49); s.span = U.clamp(Number.isFinite(s.span) ? s.span : 10, 5, 18); s.t0 = U.clamp(Number.isFinite(s.t0) ? s.t0 : 0, -3, 3); if (!['peregrine','akhmediev','km'].includes(s.kind)) s.kind = 'peregrine'; }
+  // Haragus–Pelinovsky (2021), Eqs1.1–1.4. Return the full complex field.
+  // a maps to lambda=sqrt(2a) for AB and sqrt(1+2a) for KM.
+  function waveValue(kind, a, x, t) {
+    let re, im;
+    if (kind === 'akhmediev') {
+      const lam = Math.sqrt(2 * a), k = 2 * Math.sqrt(1 - lam * lam);
+      const z = lam * k * t, den = Math.cosh(z) - lam * Math.cos(k * x);
+      re = -1 + 2 * (1 - lam * lam) * Math.cosh(z) / den;
+      im = lam * k * Math.sinh(z) / den;
+    } else if (kind === 'km') {
+      const lam = Math.sqrt(1 + 2 * a), beta = 2 * Math.sqrt(lam * lam - 1);
+      const z = lam * beta * t, den = lam * Math.cosh(beta * x) - Math.cos(z);
+      re = -1 + 2 * (lam * lam - 1) * Math.cos(z) / den;
+      im = lam * beta * Math.sin(z) / den;
+    } else {
+      const den = 1 + 4 * (x * x + t * t);
+      re = -1 + 4 / den; im = 8 * t / den;
+    }
+    return [re * Math.cos(t) - im * Math.sin(t), re * Math.sin(t) + im * Math.cos(t)];
+  }
+  function peakReference(kind, a) {
+    return kind === 'peregrine' ? 9 : (1 + 2 * Math.sqrt(kind === 'km' ? 1 + 2 * a : 2 * a)) ** 2;
+  }
   Studio.register({
     id: 'rogue', name: 'Rogue Wave', tab: 'Rogue',
     subtitle: 'Peregrine soliton, waves from nowhere · 1983',
     order: 50,
-    equation: 'i ψ_t + ψ_xx + 2|ψ|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   |ψ|²_max / |ψ|²_∞ = 9',
-    credit: 'D. H. Peregrine, J. Austral. Math. Soc. Ser. B 25, 16 (1983). Akhmediev, Eleonskii and Kulagin (1987); Kuznetsov (1977) and Ma (1979). Draupner measured a rogue wave in 1995. The plate is the exact rational / breather solution.',
-    blurb: 'A wave that should not exist: it grows out of a finite background, peaks at nine times the intensity, and is gone. Sailors were not believed. The plate is spacetime of the focusing NLSE. The status line reports peak over background against 9 for Peregrine.',
+    equation: 'i ψ_t + ½ ψ_xx + |ψ|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   |ψ|²_max / |ψ|²_∞ = 9',
+    credit: 'D. H. Peregrine, J. Austral. Math. Soc. Ser. B 25, 16 (1983). Akhmediev, Eleonskii and Kulagin (1987); Kuznetsov (1977) and Ma (1979). Draupner measured a rogue wave in 1995. Formula conventions: Haragus and Pelinovsky, arXiv:2112.14426, Eqs1.1–1.4. The plate samples these established analytic solutions.',
+    blurb: 'Spacetime intensity of three exact solutions of the dimensionless focusing NLSE. The sampled maximum is compared with the analytic global maximum on a unit-intensity background. A finite window or coarse grid can miss that peak; this is a formula sampling check, not an ocean forecast or a dynamical discovery.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Wave: 'Peregrine is localised in space and time. Akhmediev breathes in space, Kuznetsov–Ma in time.' },
+    hints: { Wave: 'Peregrine is localized in space and time; Akhmediev is periodic in space and localized in time; Kuznetsov–Ma is periodic in time and localized in space. For the a control, λ=√(2a) in Akhmediev and λ=√(1+2a) in Kuznetsov–Ma.' },
     palette: true, defaultPalette: 'thermal', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
@@ -50,34 +73,17 @@
         const s = host.getState(); const sz = sizeFrom(s); W = sz.W; H = sz.H;
         field = new Float32Array(W * H);
         const L = s.span, t0 = s.t0, a = U.clamp(s.a, 0.05, 0.49);
-        let peak = 0, bg = 0, nbg = 0;
+        let peak = 0;
         for (let y = 0; y < H; y++) {
           const t = t0 + L * (y / Math.max(1, H - 1) - 0.5);
           for (let x = 0; x < W; x++) {
             const xx = L * (x / Math.max(1, W - 1) - 0.5);
-            let amp2 = 1;
-            if (s.kind === 'akhmediev') {
-              const b = Math.sqrt(Math.max(0, 8 * a * (1 - 2 * a)));
-              const om = 2 * Math.sqrt(Math.max(0, 1 - 2 * a));
-              const den = Math.cosh(b * t) - Math.sqrt(2 * a) * Math.cos(om * xx);
-              const re = ((1 - 4 * a) * Math.cosh(b * t) + Math.sqrt(2 * a) * Math.cos(om * xx)) / Math.max(1e-6, den);
-              const im = (b * Math.sinh(b * t)) / Math.max(1e-6, den);
-              amp2 = re * re + im * im;
-            } else if (s.kind === 'km') {
-              const mag = 1 + 2 * (2 * a) / Math.max(0.25, Math.cosh(2 * Math.sqrt(2 * a) * xx) + 2 * a * Math.cos(2 * t * Math.sqrt(1 + 2 * a)));
-              amp2 = mag * mag;
-            } else {
-              const D = 1 + 4 * xx * xx + 4 * t * t;
-              const re = 1 - 4 / D, im = -8 * t / D;
-              amp2 = re * re + im * im;
-            }
-            if (!isFinite(amp2) || amp2 < 0) amp2 = 0;
+            const z = waveValue(s.kind, a, xx, t), amp2 = z[0] * z[0] + z[1] * z[1];
             field[y * W + x] = amp2;
             if (amp2 > peak) peak = amp2;
-            if (y < 3 || y > H - 4) { bg += amp2; nbg++; }
           }
         }
-        metric = peak / Math.max(1e-9, bg / Math.max(1, nbg)); extra = peak;
+        metric = peakReference(s.kind, a); extra = peak;
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
       }
@@ -103,7 +109,7 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
       function status() {
-        host.setStatus('<span>peak |ψ|² <b>' + f2(extra) + '</b></span><span>peak / bg <b>' + f2(metric) + '</b> · Peregrine 9</span><span>' + (metric > 4.5 ? 'rogue' : 'background') + '</span>');
+        host.setStatus('<span>sampled max |ψ|² <b>' + f2(extra) + '</b></span><span>analytic global max <b>' + f2(metric) + '</b></span><span>unit background · finite grid/window</span>');
       }
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

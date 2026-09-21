@@ -1,0 +1,178 @@
+{
+  "scope": "Float64 first-order 2D wet flat-bed Saint-Venant, g=1. Exact wet dam break, linearized small-amplitude oblique wave, positive wet states, periodic and reflected boundaries. No bathymetry/dry-bed/continuum universal validation.",
+  "sourceSHA256": "0b967d37d97262202418768b0d99cb0a397fbb0d83078908fef013934efa0bd2",
+  "exact": {
+    "hl": 2,
+    "hr": 1,
+    "hs": 1.453840892374573,
+    "us": 0.4169206309754827,
+    "head": -1.4142135623730951,
+    "tail": -0.7888326159098711,
+    "shock": 1.33556995936474,
+    "rhMassError": 0,
+    "rhMomentumError": 2.220446049250313e-16
+  },
+  "damBreak": [
+    {
+      "grid": 64,
+      "steps": 34,
+      "time": 0.08,
+      "depthL1": 0.02385146606046353,
+      "momentumL1": 0.029292424558519558,
+      "massDrift": 6.3652786745175644e-15,
+      "minDepth": 1
+    },
+    {
+      "grid": 128,
+      "steps": 69,
+      "time": 0.08,
+      "depthL1": 0.015555445327774135,
+      "momentumL1": 0.01881833279143574,
+      "massDrift": 8.881784197001252e-16,
+      "minDepth": 1,
+      "depthErrorRatio": 1.5333193976695034
+    },
+    {
+      "grid": 256,
+      "steps": 138,
+      "time": 0.08,
+      "depthL1": 0.01020727639595911,
+      "momentumL1": 0.012029409551249124,
+      "massDrift": -1.4654943925052066e-14,
+      "minDepth": 1,
+      "depthErrorRatio": 1.5239565114482718
+    }
+  ],
+  "smooth": [
+    {
+      "grid": 32,
+      "relativeRMS": 0.0645288563549631,
+      "massDrift": -3.1086244689504383e-15,
+      "momentumError": 1.3471874744279686e-18
+    },
+    {
+      "grid": 64,
+      "relativeRMS": 0.03306928340541786,
+      "massDrift": -4.6629367034256575e-15,
+      "momentumError": 5.9933288049372654e-18,
+      "order": 0.9644526734232461
+    },
+    {
+      "grid": 128,
+      "relativeRMS": 0.016707347172856674,
+      "massDrift": 2.398081733190338e-14,
+      "momentumError": 1.4072317522004563e-18,
+      "order": 0.9850091059178704
+    }
+  ],
+  "rotationError": 0,
+  "pressureOmittedControl": {
+    "grid": 128,
+    "steps": 65,
+    "time": 0.08,
+    "depthL1": 0.0748700070754936,
+    "momentumL1": 0.11999999999999669,
+    "massDrift": -6.3652786745175644e-15,
+    "minDepth": 1
+  },
+  "stress": [
+    {
+      "boundary": "periodic",
+      "minDepth": 1.0571327737791134,
+      "massDrift": 2.042386304779613e-15,
+      "energyRatio": 0.33280072068809896,
+      "momentumError": 2.8609792490763984e-17
+    },
+    {
+      "boundary": "walls",
+      "minDepth": 1.0402406657526573,
+      "massDrift": 2.951112011408428e-16,
+      "energyRatio": 0.3268002718120858,
+      "momentumError": 0.0395198537452935
+    }
+  ],
+  "restMaximumChange": 0,
+  "stops": {
+    "oversizedCFL": "CFL fraction must be greater than zero and no more than 0.8",
+    "dryInput": "Positive finite depth required; this model does not support dry beds"
+  },
+  "presets": [
+    {
+      "name": "default",
+      "grid": 128,
+      "steps": 180,
+      "time": 0.2277887369757832,
+      "minDepth": 0.9486746551386811,
+      "maxDepth": 1.3627656854196861,
+      "massDrift": 9.580893153780297e-16,
+      "milliseconds": 148.720458
+    },
+    {
+      "name": "drops",
+      "grid": 128,
+      "steps": 160,
+      "time": 0.21280586369968865,
+      "minDepth": 0.925845760057131,
+      "maxDepth": 1.298718878854597,
+      "massDrift": -2.633602975542744e-15,
+      "milliseconds": 127.80266700000004
+    },
+    {
+      "name": "pool",
+      "grid": 128,
+      "steps": 300,
+      "time": 0.37694955986003803,
+      "minDepth": 0.8906627918715074,
+      "maxDepth": 1.6311353321810933,
+      "massDrift": -9.018325924189319e-15,
+      "milliseconds": 243.87966699999993
+    },
+    {
+      "name": "ring",
+      "grid": 128,
+      "steps": 160,
+      "time": 0.16515780117203258,
+      "minDepth": 1.000000033332487,
+      "maxDepth": 2.1112713300775634,
+      "massDrift": 1.3808324207429152e-14,
+      "milliseconds": 126.09554099999991
+    },
+    {
+      "name": "dam",
+      "grid": 128,
+      "steps": 120,
+      "time": 0.119771073680601,
+      "minDepth": 1,
+      "maxDepth": 2.5,
+      "massDrift": -1.7763568394002505e-15,
+      "milliseconds": 92.95583299999998
+    },
+    {
+      "name": "wave",
+      "grid": 128,
+      "steps": 100,
+      "time": 0.13547082915259512,
+      "minDepth": 0.7690683655599053,
+      "maxDepth": 1.507638716283008,
+      "massDrift": 6.8833827526759706e-15,
+      "milliseconds": 80.20012499999984
+    },
+    {
+      "name": "drop",
+      "grid": 128,
+      "steps": 140,
+      "time": 0.19425626674175586,
+      "minDepth": 0.9411389589685951,
+      "maxDepth": 1.1311211384053237,
+      "massDrift": 2.5273425718364493e-15,
+      "milliseconds": 111.65333299999998
+    }
+  ],
+  "heavy": {
+    "grid": 512,
+    "cells": 262144,
+    "steps": 5,
+    "meanStepMilliseconds": 12.858133400000042,
+    "maxStepMilliseconds": 13.190708000000086
+  }
+}

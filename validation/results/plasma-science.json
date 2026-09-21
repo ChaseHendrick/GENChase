@@ -1,0 +1,323 @@
+{
+  "sourceSha256": "237cfe67009ed638ec3b021c6f872dd1190e13e0ea0fd85ac49f6ea9c62dbdd4",
+  "rngSha256": "3a139b7b42c4f70e42ef0664643d62d9c8d769fca1c97220aaf9460071690ab5",
+  "harnessSha256": "7e670d0471ae97d3ff83e6cc55be02ef742b1558ce35858df20cd5e186468a19",
+  "command": "node tools/plasma-science.js > validation/results/plasma-science.json",
+  "scope": "Periodic normalized 1D1V CIC: independent all-pairs deposition and dense finite-difference Poisson; cold-sheet continuum oscillation; same-domain/time spatial and temporal refinement; independent-seed deposition noise; shipped presets; four-step largest setting.",
+  "poisson": {
+    "particles": 47,
+    "cells": 16,
+    "depositionMaxError": 7.771561172376096e-16,
+    "edgeMaxError": 6.38378239159465e-16,
+    "centeredFieldMaxError": 3.885780586188048e-16,
+    "netCharge": 1.743934249004316e-16,
+    "totalParticleForce": 2.42861286636753e-16
+  },
+  "oscillation": {
+    "cells": 128,
+    "particles": 8192,
+    "dt": 0.01,
+    "time": 12.999999999999767,
+    "omega": 0.9997030072257922,
+    "theoreticalOmega": 1,
+    "relativeFrequencyError": 0.0002969927742078049,
+    "crossingTimes": [
+      1.5712631847216834,
+      4.713789467045808,
+      7.856315452441039,
+      10.998841068000678
+    ],
+    "maxPhaseSpaceRmsError": 0.0000558421943145625,
+    "maximumEnergyRelativeDrift": 0.00042693956065231243,
+    "maximumMomentum": 3.5620713888373144e-16,
+    "samples": [
+      {
+        "time": 1.0000000000000007,
+        "normalizedDisplacement": 0.540552300116833,
+        "continuumReference": 0.5403023058681391
+      },
+      {
+        "time": 2.0000000000000013,
+        "normalizedDisplacement": -0.415606436515968,
+        "continuumReference": -0.4161468365471436
+      },
+      {
+        "time": 2.99999999999998,
+        "normalizedDisplacement": -0.9898662985269777,
+        "continuumReference": -0.9899924966004426
+      },
+      {
+        "time": 3.9999999999999587,
+        "normalizedDisplacement": -0.6545425464755399,
+        "continuumReference": -0.6536436208636431
+      },
+      {
+        "time": 4.999999999999938,
+        "normalizedDisplacement": 0.28223737883551453,
+        "continuumReference": 0.2836621854631666
+      },
+      {
+        "time": 5.9999999999999165,
+        "normalizedDisplacement": 0.9596705913258116,
+        "continuumReference": 0.9601702866503427
+      },
+      {
+        "time": 6.999999999999895,
+        "normalizedDisplacement": 0.755266748597906,
+        "continuumReference": 0.7539022543433734
+      },
+      {
+        "time": 7.999999999999874,
+        "normalizedDisplacement": -0.14314839708888685,
+        "continuumReference": -0.14550003380848875
+      },
+      {
+        "time": 8.999999999999853,
+        "normalizedDisplacement": -0.9100250306667677,
+        "continuumReference": -0.9111302618846162
+      },
+      {
+        "time": 9.999999999999831,
+        "normalizedDisplacement": -0.8406835112360378,
+        "continuumReference": -0.8390715290765443
+      },
+      {
+        "time": 10.99999999999981,
+        "normalizedDisplacement": 0.00115857430829045,
+        "continuumReference": 0.004425697987860718
+      },
+      {
+        "time": 11.999999999999789,
+        "normalizedDisplacement": 0.8419359648980533,
+        "continuumReference": 0.8438539587323787
+      },
+      {
+        "time": 12.999999999999767,
+        "normalizedDisplacement": 0.9090616794246899,
+        "continuumReference": 0.907446781450294
+      }
+    ]
+  },
+  "spatialRefinement": [
+    {
+      "cells": 32,
+      "particles": 16384,
+      "dt": 0.001,
+      "time": 1.0000000000000007,
+      "rmsError": 0.00007904463457762928
+    },
+    {
+      "cells": 64,
+      "particles": 16384,
+      "dt": 0.001,
+      "time": 1.0000000000000007,
+      "rmsError": 0.00001979076538245121,
+      "errorReduction": 3.9940160499158575
+    },
+    {
+      "cells": 128,
+      "particles": 16384,
+      "dt": 0.001,
+      "time": 1.0000000000000007,
+      "rmsError": 0.000004945483884683168,
+      "errorReduction": 4.001785435747932
+    }
+  ],
+  "temporalRefinement": [
+    {
+      "dt": 0.08,
+      "physicalTime": 1.2,
+      "rmsDifferenceFromSmallStep": 0.000006932553408066035
+    },
+    {
+      "dt": 0.04,
+      "physicalTime": 1.2000000000000004,
+      "rmsDifferenceFromSmallStep": 0.0000017273879129719084,
+      "errorReduction": 4.013315918217135
+    },
+    {
+      "dt": 0.02,
+      "physicalTime": 1.2000000000000006,
+      "rmsDifferenceFromSmallStep": 4.266700521213622e-7,
+      "errorReduction": 4.048533297294954
+    }
+  ],
+  "particleNumberNoise": [
+    {
+      "particles": 2048,
+      "cells": 64,
+      "independentSeeds": 24,
+      "estimates": [
+        0.026253720537778327,
+        0.022063461890593876,
+        0.018978085254957353,
+        0.018447585141067275,
+        0.01573534629187576,
+        0.014418732957847112,
+        0.02227476731962555,
+        0.01672395155667723,
+        0.018463059707343358,
+        0.018187483736003648,
+        0.016433435881611513,
+        0.020967193408907257,
+        0.01592707098691728,
+        0.01732371820535794,
+        0.03767909093923737,
+        0.021929196046446612,
+        0.01996344618882521,
+        0.01934087465112432,
+        0.017724824249652674,
+        0.016397378540741636,
+        0.024752298746146227,
+        0.02031043326284058,
+        0.024518653938272683,
+        0.020440022312885563
+      ],
+      "mean": 0.020218909656364015,
+      "standardErrorAcrossSeeds": 0.000981833302010183,
+      "expectedVariance": 0.020345052083333332,
+      "sigmaDifference": -0.12847641927713763
+    },
+    {
+      "particles": 8192,
+      "cells": 64,
+      "independentSeeds": 24,
+      "estimates": [
+        0.005509831662236165,
+        0.005087588601709359,
+        0.005216840169503213,
+        0.005750310456217191,
+        0.004428820078939566,
+        0.006974655307148084,
+        0.003471768189487332,
+        0.0059616327775925985,
+        0.005068188723064303,
+        0.0050414941924074915,
+        0.00405246972080736,
+        0.006432230275546895,
+        0.007861744524743086,
+        0.006373114435333319,
+        0.003959963727103558,
+        0.005460559649015558,
+        0.004439959371655485,
+        0.005047386221056403,
+        0.0035813305150891707,
+        0.004757910801768116,
+        0.005565252670091513,
+        0.0044236118164424545,
+        0.004022603665163894,
+        0.005006329356731383
+      ],
+      "mean": 0.00514564987120223,
+      "standardErrorAcrossSeeds": 0.00021774817399634506,
+      "expectedVariance": 0.005086263020833333,
+      "sigmaDifference": 0.2727317950776178
+    }
+  ],
+  "presetRuns": [
+    {
+      "name": "default",
+      "particles": 16384,
+      "cells": 256,
+      "steps": 500,
+      "time": 12.50000000000011,
+      "energyRelativeDrift": 0.00004573133276490931,
+      "maximumEnergyRelativeDrift": 0.00004573133276490931,
+      "netCharge": 3.487868498008632e-16,
+      "gaussResidual": 7.605027718682322e-15,
+      "momentum": 2.6746569707629667e-16
+    },
+    {
+      "name": "streams",
+      "particles": 16384,
+      "cells": 256,
+      "steps": 500,
+      "time": 12.50000000000011,
+      "energyRelativeDrift": 0.00004573133276490931,
+      "maximumEnergyRelativeDrift": 0.00004573133276490931,
+      "netCharge": 3.487868498008632e-16,
+      "gaussResidual": 7.605027718682322e-15,
+      "momentum": 2.6746569707629667e-16
+    },
+    {
+      "name": "oscillation",
+      "particles": 16384,
+      "cells": 256,
+      "steps": 60,
+      "time": 1.4999999999999987,
+      "energyRelativeDrift": -0.00025704559582280756,
+      "maximumEnergyRelativeDrift": 0.00025704559582280756,
+      "netCharge": 0,
+      "gaussResidual": 1.0234868508263162e-16,
+      "momentum": -2.7881500062244446e-16
+    },
+    {
+      "name": "warm",
+      "particles": 16384,
+      "cells": 256,
+      "steps": 200,
+      "time": 5.0000000000000036,
+      "energyRelativeDrift": 0.00000395843304043091,
+      "maximumEnergyRelativeDrift": 0.000008161298927251593,
+      "netCharge": 7.834079634199076e-17,
+      "gaussResidual": 4.315992008230296e-15,
+      "momentum": 1.842711774826826e-16
+    },
+    {
+      "name": "twins",
+      "particles": 16384,
+      "cells": 256,
+      "steps": 640,
+      "time": 16.00000000000016,
+      "energyRelativeDrift": 0.00004997304585115112,
+      "maximumEnergyRelativeDrift": 0.000257075639877974,
+      "netCharge": 1.8869913553679512e-16,
+      "gaussResidual": 1.609823385706477e-14,
+      "momentum": 4.0447693763527836e-18
+    },
+    {
+      "name": "broad",
+      "particles": 16384,
+      "cells": 256,
+      "steps": 320,
+      "time": 8.000000000000046,
+      "energyRelativeDrift": -0.000005249855453207439,
+      "maximumEnergyRelativeDrift": 0.000008140240902559882,
+      "netCharge": 7.49346747619042e-17,
+      "gaussResidual": 2.914335439641036e-15,
+      "momentum": 8.17023456279629e-17
+    },
+    {
+      "name": "dense",
+      "particles": 65536,
+      "cells": 512,
+      "steps": 500,
+      "time": 12.50000000000011,
+      "energyRelativeDrift": 0.0000065482064827998065,
+      "maximumEnergyRelativeDrift": 0.0000065482064827998065,
+      "netCharge": 1.0899589056276974e-16,
+      "gaussResidual": 1.326716514427062e-14,
+      "momentum": 4.0552006236917986e-16
+    }
+  ],
+  "highLoad": {
+    "particles": 262144,
+    "cells": 1024,
+    "steps": 4,
+    "initializationMs": 24.359541999999692,
+    "fourStepsMs": 14.694916999999805,
+    "energyRelativeDrift": 4.2295998109536955e-9,
+    "gaussResidual": 7.86176679312689e-15,
+    "arraysBytes": 8413184
+  },
+  "failureControls": {
+    "wrongForceSignStopped": "Energy drift exceeded 10%",
+    "rollback": {
+      "rejectedTrialRestoredArraysAndDiagnostics": true,
+      "lastAcceptedStep": 11
+    },
+    "nonneutralChargeDetected": 0.007853981633974653
+  },
+  "seconds": 2.1543612079999996,
+  "limitations": "Momentum-conserving CIC is not exactly energy conserving. Gauss/charge diagnostics are algebraic solver checks, not independent physical discoveries. No measured Landau damping rate, general two-stream growth-rate accuracy, arbitrary cold-drifting stability, long-time thermodynamics, higher-dimensional or physical-experiment validation. Noise result tests deposition only; high load covers four steps."
+}

@@ -17,14 +17,14 @@
     RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Body', 'R', 'Side R', GEOM, 24, 80, 1, v => v + ''),
-    RANGE('Body', 'frames', 'Roll frames', GEOM, 8, 48, 2, v => v + ''),
-    { group: 'Body', key: 'kind', label: 'Draw', type: 'seg', kind: GEOM, options: [['roll', 'Rolling'], ['shape', 'Shape'], ['width', 'Width rose']] },
+    RANGE('Body', 'frames', 'Rotation frames', GEOM, 8, 48, 2, v => v + ''),
+    { group: 'Body', key: 'kind', label: 'Draw', type: 'seg', kind: GEOM, options: [['roll', 'Rotations'], ['shape', 'Shape'], ['width', 'Width rose']] },
     { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['int', 'Field'], ['log', 'Log']] },
     RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.4, 2.2, 0.05, f2),
   ];
   const DEFAULTS = { grid: 192, aspect: '1:1', R: 44, frames: 24, kind: 'roll', view: 'int', exposure: 1 };
   const PRESETS = {
-    roll: pre('Square drill', { kind: 'roll', R: 44, frames: 28 }, Pal.kiln),
+    roll: pre('Rotated overlays', { kind: 'roll', R: 44, frames: 28 }, Pal.kiln),
     shape: pre('Triangle', { kind: 'shape', R: 52 }, Pal.harbor),
     rose: pre('Width rose', { kind: 'width', R: 48 }, Pal.ember),
     fat: pre('Fat', { R: 64, kind: 'shape' }, Pal.nightshade),
@@ -34,15 +34,30 @@
 
   function surprise(rng) { return { R: rng.int(32, 64), frames: rng.int(14, 36), kind: rng.pick(['roll','shape','width']) }; }
   function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function reuleauxBoundary(R, subdivisions) {
+    const vertices = [[0,-R/Math.sqrt(3)],[R/2,R/(2*Math.sqrt(3))],[-R/2,R/(2*Math.sqrt(3))]], points=[];
+    for(let i=0;i<3;i++) {
+      const c=vertices[i], a=vertices[(i+1)%3], b=vertices[(i+2)%3];
+      const start=Math.atan2(a[1]-c[1],a[0]-c[0]);
+      let turn=Math.atan2(b[1]-c[1],b[0]-c[0])-start;
+      turn=Math.atan2(Math.sin(turn),Math.cos(turn));
+      for(let j=0;j<=subdivisions;j++){const t=start+turn*j/subdivisions;points.push([c[0]+R*Math.cos(t),c[1]+R*Math.sin(t)]);}
+    }
+    return points;
+  }
+  function supportWidth(points, angle) {
+    const c=Math.cos(angle),s=Math.sin(angle);let lo=Infinity,hi=-Infinity;
+    for(const p of points){const z=c*p[0]+s*p[1];lo=Math.min(lo,z);hi=Math.max(hi,z);}return hi-lo;
+  }
   Studio.register({
     id: 'reuleaux', name: 'Reuleaux', tab: 'Reuleaux',
     subtitle: 'a non-circle of constant width · 1875',
     order: 99,
     equation: 'width(θ) = R  for all θ,   W ≠ a disk,   area = ½(π − √3) R²',
-    credit: 'F. Reuleaux, The Kinematics of Machinery (1875), described the curved triangle of constant width now named for him. Euler had already noted constant-width bodies; a wheel does not have to be a circle to keep its axle at constant height. The same shape, rotated in a square, drills a hole that is almost square. The plate is the rolling body and the width rose, which theory says is a circle.',
-    blurb: 'A wheel does not have to be round. A Reuleaux triangle has the same width in every direction, so it rolls between two rails at constant height, and yet it is not a disk. Watts used it; Harry Watts (no relation) used it to drill square holes. The status line reports the standard deviation of the support width against 0.',
+    credit: 'F. Reuleaux, The Kinematics of Machinery (1875), described the curved triangle of constant width now named for him. The intersection of three radius-R disks centered at an equilateral triangle has constant support width R. The plate shows this body, rotated overlays or a sampled support-width rose.',
+    blurb: 'A Reuleaux triangle has constant width despite being noncircular. Width is measured from sampled circular boundary arcs, not from the underlying straight triangle. The displayed variation is a finite-sampling error, bounded by the angular chord spacing. Rotated overlays are geometric poses, not a no-slip rolling or square-drilling mechanism.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Body: 'Rolling is the square-hole movie stacked as density. Width rose should be a perfect circle of radius R.' },
+    hints: { Body: 'Rotations stack copies of the same body. The width rose uses 720 samples on each curved arc; its finite sampling differs slightly from the exact width R.' },
     palette: true, defaultPalette: 'kiln', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
@@ -73,56 +88,23 @@
           const d0 = Math.hypot(p[0] - verts[0][0], p[1] - verts[0][1]);
           const d1 = Math.hypot(p[0] - verts[1][0], p[1] - verts[1][1]);
           const d2 = Math.hypot(p[0] - verts[2][0], p[1] - verts[2][1]);
-          return d0 <= R + 0.6 && d1 <= R + 0.6 && d2 <= R + 0.6;
+          return d0 <= R && d1 <= R && d2 <= R;
         }
-        const widths = [];
-        if (kind === 'width') {
-          for (let a = 0; a < 180; a++) {
-            const ang = a * Math.PI / 180;
-            const dir = [Math.cos(ang), Math.sin(ang)];
-            let mn = 1e9, mx = -1e9;
-            const verts = [v0, v1, v2];
-            for (let k = 0; k < 3; k++) {
-              const pr = verts[k][0] * dir[0] + verts[k][1] * dir[1];
-              if (pr < mn) mn = pr; if (pr > mx) mx = pr;
-            }
-            for (let k = 0; k < 3; k++) {
-              const A = verts[k], B = verts[(k + 1) % 3];
-              for (let t = 0; t <= 12; t++) {
-                const px = A[0] + (B[0] - A[0]) * (t / 12), py = A[1] + (B[1] - A[1]) * (t / 12);
-                const pr = px * dir[0] + py * dir[1];
-                if (pr < mn) mn = pr; if (pr > mx) mx = pr;
-              }
-            }
-            widths.push(mx - mn);
-            const rr = 0.35 * Math.min(W, H) * ((mx - mn) / R);
-            splat(cx + rr * dir[0], cy + rr * dir[1], 2);
-            splat(cx - rr * dir[0], cy - rr * dir[1], 2);
+        const boundary = reuleauxBoundary(R, 720), widths = [];
+        for (let a = 0; a < 180; a++) {
+          const ang = (a + .137) * Math.PI / 180, width = supportWidth(boundary, ang); widths.push(width);
+          if (kind === 'width') {
+            const rr = .35 * Math.min(W,H) * width / R;
+            splat(cx+rr*Math.cos(ang),cy+rr*Math.sin(ang),2);
+            splat(cx-rr*Math.cos(ang),cy-rr*Math.sin(ang),2);
           }
-        } else {
+        }
+        if (kind !== 'width') {
           const frames = kind === 'shape' ? 1 : nF;
           for (let f = 0; f < frames; f++) {
-            const ang = (f / Math.max(1, frames)) * Math.PI * 2 / 3;
-            const verts = [rot(v0, ang), rot(v1, ang), rot(v2, ang)];
-            const ox = kind === 'roll' ? (f / Math.max(1, frames - 1) - 0.5) * W * 0.15 : 0;
-            for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
-              const p = [x + 0.5 - cx - ox, y + 0.5 - cy];
-              if (inReuleaux(p, verts)) field[y * W + x] += kind === 'shape' ? 1 : 0.35;
-            }
-          }
-          for (let a = 0; a < 72; a++) {
-            const ang = a * Math.PI / 36;
-            const dir = [Math.cos(ang), Math.sin(ang)];
-            let mn = 1e9, mx = -1e9;
-            for (let k = 0; k < 3; k++) {
-              const pr = v0[0]; // dummy
-            }
-            const verts = [v0, v1, v2];
-            for (let k = 0; k < 3; k++) {
-              const pr = verts[k][0] * dir[0] + verts[k][1] * dir[1];
-              if (pr < mn) mn = pr; if (pr > mx) mx = pr;
-            }
-            widths.push(mx - mn);
+            const ang = f / frames * Math.PI * 2 / 3;
+            const verts = [rot(v0,ang),rot(v1,ang),rot(v2,ang)];
+            for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(inReuleaux([x+.5-cx,y+.5-cy],verts)) field[y*W+x] += kind==='shape'?1:.35;
           }
         }
         let mean = 0; for (let i = 0; i < widths.length; i++) mean += widths[i];
@@ -160,7 +142,7 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>mean width <b>' + f2(extra) + '</b> · R ' + (host.getState().R | 0) + '</span><span>σ/mean <b>' + f3(metric) + '</b> · theory 0</span><span>constant width</span>'); }
+      function status() { const R=host.getState().R, bound=2*R*(1-Math.cos(Math.PI/(6*720))); host.setStatus('<span>sampled mean width <b>'+f3(extra)+'</b> · exact '+f3(R)+'</span><span>relative spread <b>'+metric.toExponential(2)+'</b></span><span>width sampling bound '+bound.toExponential(2)+'</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

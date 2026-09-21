@@ -444,6 +444,12 @@ void main(){
     unseen: 'Almost unseen',
   };
   const FAMILIARITY = {
+    surfaces: 'common',
+    plasma: 'occasional',
+    shallow: 'occasional',
+    nonreciprocal: 'rare',
+    'hodgkin-huxley': 'occasional',
+    'neural-mass': 'occasional',
     maxwell: 'occasional',
     molecular: 'occasional',
     // ubiquitous

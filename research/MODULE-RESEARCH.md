@@ -36,8 +36,7 @@ deduplication. Many are implicit or parametric surface examples; the count is no
 independently validated time-dependent solvers.
 
 The repository includes GPL license text, and its SourceForge license metadata differs. No MathMod
-code or collection is bundled here. Its mathematical examples can guide individual, credited
-implementations after source and license review. Bulk importing a gallery would not supply the
+code or collection is bundled here. The new Parametric Surfaces module independently implements Enneper, Dini and the catenoid–helicoid associate family, with six presets, camera controls, and vector export. Its [geometry and print checks](../validation/SURFACES.md) test the published maps and finite mesh. These are established formulas, not discoveries. Bulk importing a gallery would not supply the
 scientific checks each GENChase technique needs.
 
 ## Research record

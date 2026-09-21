@@ -1,0 +1,1190 @@
+{
+  "schema": 1,
+  "date": "2026-09-21",
+  "source": {
+    "path": "src/modules/pde.js",
+    "sha256": "dfc9bb5ca44a7ce17a1fdb17f43a68d910c7fa4383fe4c74d79ebe55d23b3ffd"
+  },
+  "harness": {
+    "path": "tools/pde-family-state.js",
+    "sha256": "02a673ea6c976a132773cf97c4e8cecba4172395b427a7f2c362a1a220273a80"
+  },
+  "backend": "153.0.8010.48",
+  "scope": "Actual 512-cell default/preset preparations at sanitized dt, noise retained; exact all-buffer/recipe/counter export preservation. Guards injected at 96 cells. Preparation completion is a regression check, not proof of continuum phases.",
+  "rows": [
+    {
+      "id": "cahn",
+      "preset": "default",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 2000,
+      "completedSteps": 2000,
+      "dt": 0.011527377521613832,
+      "guard": "",
+      "range": [
+        -0.919877290725708,
+        0.9121108055114746
+      ],
+      "mean": -0.0005802034066573862,
+      "initializedMean": -0.00012147591454291472,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 2400,
+          "height": 2400,
+          "bytes": 10832819,
+          "exactState": true
+        },
+        {
+          "width": 1200,
+          "height": 900,
+          "bytes": 2515395,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "cahn",
+      "preset": "labyrinth",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 500,
+      "completedSteps": 500,
+      "dt": 0.011527377521613832,
+      "guard": "",
+      "range": [
+        -0.1851721704006195,
+        0.1928938925266266
+      ],
+      "mean": -0.00013828909932485107,
+      "initializedMean": -0.00012147591454291472,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 672876,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "cahn",
+      "preset": "droplets",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 600,
+      "completedSteps": 600,
+      "dt": 0.011527377521613832,
+      "guard": "",
+      "range": [
+        -0.4704887866973877,
+        -0.1768621802330017
+      ],
+      "mean": -0.3502014689107682,
+      "initializedMean": -0.35018221388202164,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1139725,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "cahn",
+      "preset": "sharp",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 400,
+      "completedSteps": 400,
+      "dt": 0.014,
+      "guard": "",
+      "range": [
+        -0.39545127749443054,
+        0.3820268213748932
+      ],
+      "mean": -0.00014027858877846758,
+      "initializedMean": -0.00012147591454291472,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1362975,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "cahn",
+      "preset": "relief",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 500,
+      "completedSteps": 500,
+      "dt": 0.011527377521613832,
+      "guard": "",
+      "range": [
+        -0.13877831399440765,
+        0.23332983255386353
+      ],
+      "mean": 0.04986171103274821,
+      "initializedMean": 0.04987852409029636,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1432144,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "cahn",
+      "preset": "bands",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 200,
+      "completedSteps": 200,
+      "dt": 0.009438414346389807,
+      "guard": "",
+      "range": [
+        -0.9617058634757996,
+        0.9614075422286987
+      ],
+      "mean": -0.000045853970846110315,
+      "initializedMean": -0.00003644280536718725,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1060245,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "ohta",
+      "preset": "default",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 2200,
+      "completedSteps": 2200,
+      "dt": 0.012123048946810122,
+      "guard": "",
+      "range": [
+        -0.8017007112503052,
+        0.793613076210022
+      ],
+      "mean": 0.00014651548229437095,
+      "initializedMean": -0.00018878074381246924,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 2400,
+          "height": 2400,
+          "bytes": 9817446,
+          "exactState": true
+        },
+        {
+          "width": 1200,
+          "height": 900,
+          "bytes": 2292796,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "ohta",
+      "preset": "lamellae",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 800,
+      "completedSteps": 800,
+      "dt": 0.012123967568386752,
+      "guard": "",
+      "range": [
+        -0.3074391782283783,
+        0.2910330295562744
+      ],
+      "mean": -0.0001340589988540735,
+      "initializedMean": -0.00018878074381246924,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 720984,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "ohta",
+      "preset": "spots",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 900,
+      "completedSteps": 900,
+      "dt": 0.01212029391712749,
+      "guard": "",
+      "range": [
+        -0.4028925895690918,
+        -0.18830780684947968
+      ],
+      "mean": -0.3202390970203055,
+      "initializedMean": -0.3202696867620034,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1086826,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "ohta",
+      "preset": "fingerprint",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 750,
+      "completedSteps": 750,
+      "dt": 0.014119308153900459,
+      "guard": "",
+      "range": [
+        -0.3238424062728882,
+        0.38942450284957886
+      ],
+      "mean": 0.079852225350002,
+      "initializedMean": 0.0798112192538607,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1200630,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "ohta",
+      "preset": "relief",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 700,
+      "completedSteps": 700,
+      "dt": 0.012123967568386752,
+      "guard": "",
+      "range": [
+        -0.26185673475265503,
+        0.2506273686885834
+      ],
+      "mean": -0.00012722872526905018,
+      "initializedMean": -0.00018878074381246924,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1522561,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "ohta",
+      "preset": "coarse",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 600,
+      "completedSteps": 600,
+      "dt": 0.012127183840527533,
+      "guard": "",
+      "range": [
+        -0.2788308560848236,
+        0.27116531133651733
+      ],
+      "mean": -0.00011494399059094537,
+      "initializedMean": -0.00018878074381246924,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1267550,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "amb",
+      "preset": "default",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 1800,
+      "completedSteps": 1800,
+      "dt": 0.011527377521613832,
+      "guard": "",
+      "range": [
+        -0.505010724067688,
+        0.11286516487598419
+      ],
+      "mean": -0.39984868508912097,
+      "initializedMean": -0.3998215630690538,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 2400,
+          "height": 2400,
+          "bytes": 8738667,
+          "exactState": true
+        },
+        {
+          "width": 1200,
+          "height": 900,
+          "bytes": 1902090,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "amb",
+      "preset": "bubbly",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 600,
+      "completedSteps": 600,
+      "dt": 0.011527377521613832,
+      "guard": "",
+      "range": [
+        -0.4752671718597412,
+        -0.2806564271450043
+      ],
+      "mean": -0.3997938185310659,
+      "initializedMean": -0.3998215630690538,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1097861,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "amb",
+      "preset": "foam",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 800,
+      "completedSteps": 800,
+      "dt": 0.01276324186343331,
+      "guard": "",
+      "range": [
+        -0.5204607844352722,
+        -0.3123980760574341
+      ],
+      "mean": -0.4498118476366244,
+      "initializedMean": -0.4498215631443827,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1117607,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "amb",
+      "preset": "passive",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 600,
+      "completedSteps": 600,
+      "dt": 0.011527377521613832,
+      "guard": "",
+      "range": [
+        -0.4781290292739868,
+        -0.2896469235420227
+      ],
+      "mean": -0.39979381954196924,
+      "initializedMean": -0.3998215630690538,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 636986,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "amb",
+      "preset": "labyrinth",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 500,
+      "completedSteps": 500,
+      "dt": 0.011527377521613832,
+      "guard": "",
+      "range": [
+        -0.20245584845542908,
+        0.23930779099464417
+      ],
+      "mean": 0.0002123449988918804,
+      "initializedMean": 0.00017843688760597605,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1367558,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "amb",
+      "preset": "drops",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 400,
+      "completedSteps": 400,
+      "dt": 0.011527377521613832,
+      "guard": "",
+      "range": [
+        -0.5403690338134766,
+        1.3129887580871582
+      ],
+      "mean": -0.4245098529846598,
+      "initializedMean": -0.4245471060377213,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1096440,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "amb",
+      "preset": "relief",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 600,
+      "completedSteps": 600,
+      "dt": 0.011527377521613832,
+      "guard": "",
+      "range": [
+        -0.4752671718597412,
+        -0.2806564271450043
+      ],
+      "mean": -0.3997938185310659,
+      "initializedMean": -0.3998215630690538,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1238917,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "swift",
+      "preset": "default",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 500,
+      "completedSteps": 500,
+      "dt": 0.01514472249106587,
+      "guard": "",
+      "range": [
+        -0.589726984500885,
+        0.5777820348739624
+      ],
+      "mean": -0.0010936948037622678,
+      "initializedMean": -0.0001039097929669767,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 2400,
+          "height": 2400,
+          "bytes": 11061660,
+          "exactState": true
+        },
+        {
+          "width": 1200,
+          "height": 900,
+          "bytes": 2562946,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "swift",
+      "preset": "rolls",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 550,
+      "completedSteps": 550,
+      "dt": 0.015137558299827018,
+      "guard": "",
+      "range": [
+        -0.5313796401023865,
+        0.5208178162574768
+      ],
+      "mean": -0.0010162159881609324,
+      "initializedMean": -0.0001039097929669767,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1514563,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "swift",
+      "preset": "hex",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 700,
+      "completedSteps": 700,
+      "dt": 0.014275420055983888,
+      "guard": "",
+      "range": [
+        -0.36791378259658813,
+        1.0150766372680664
+      ],
+      "mean": 0.06945939982952415,
+      "initializedMean": -0.0001039097929669767,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1452781,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "swift",
+      "preset": "localized",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 900,
+      "completedSteps": 900,
+      "dt": 0.014022774739023016,
+      "guard": "",
+      "range": [
+        -0.2874599099159241,
+        1.11982262134552
+      ],
+      "mean": 0.003068460923483494,
+      "initializedMean": 3.770013437550995e-12,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1023712,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "swift",
+      "preset": "target",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 450,
+      "completedSteps": 450,
+      "dt": 0.015151893466746119,
+      "guard": "",
+      "range": [
+        -0.7208808660507202,
+        0.8500542044639587
+      ],
+      "mean": 0.0002902136640860198,
+      "initializedMean": 0.00011228799646118004,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1957079,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "swift",
+      "preset": "relief",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 500,
+      "completedSteps": 500,
+      "dt": 0.015159071236509572,
+      "guard": "",
+      "range": [
+        -0.7772502899169922,
+        0.7594040632247925
+      ],
+      "mean": -0.001542997022538066,
+      "initializedMean": -0.0001039097929669767,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1552277,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "ks",
+      "preset": "default",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 350,
+      "completedSteps": 350,
+      "dt": 0.018,
+      "guard": "",
+      "range": [
+        -0.71651291847229,
+        0.6168380975723267
+      ],
+      "mean": -0.01166046165360874,
+      "initializedMean": 0.00030149778990828935,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 2400,
+          "height": 2400,
+          "bytes": 9640915,
+          "exactState": true
+        },
+        {
+          "width": 1200,
+          "height": 900,
+          "bytes": 2739096,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "ks",
+      "preset": "flame",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 400,
+      "completedSteps": 400,
+      "dt": 0.018,
+      "guard": "",
+      "range": [
+        -0.8944804072380066,
+        0.7187626957893372
+      ],
+      "mean": -0.016674962208129706,
+      "initializedMean": 0.00030149778990828935,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1733924,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "ks",
+      "preset": "cellular",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 450,
+      "completedSteps": 450,
+      "dt": 0.018,
+      "guard": "",
+      "range": [
+        -0.46409085392951965,
+        0.48321443796157837
+      ],
+      "mean": -0.006207690258158613,
+      "initializedMean": 0.00030149778990828935,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1590645,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "ks",
+      "preset": "quiet",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 300,
+      "completedSteps": 300,
+      "dt": 0.013333333333333334,
+      "guard": "",
+      "range": [
+        -0.19322986900806427,
+        0.1977522373199463
+      ],
+      "mean": -0.0007195476650362219,
+      "initializedMean": 0.00030149778990828935,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1170424,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "ks",
+      "preset": "storm",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 500,
+      "completedSteps": 500,
+      "dt": 0.014,
+      "guard": "",
+      "range": [
+        -2.985414505004883,
+        1.378696084022522
+      ],
+      "mean": -0.1620299120090411,
+      "initializedMean": 0.00030149778990828935,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1654912,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "ks",
+      "preset": "ink",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 350,
+      "completedSteps": 350,
+      "dt": 0.018,
+      "guard": "",
+      "range": [
+        -0.5787413716316223,
+        0.5246403813362122
+      ],
+      "mean": -0.008524570372579268,
+      "initializedMean": 0.00030149778990828935,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1231054,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "pfc",
+      "preset": "default",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 800,
+      "completedSteps": 800,
+      "dt": 0.005,
+      "guard": "",
+      "range": [
+        -0.5114900469779968,
+        0.9644517302513123
+      ],
+      "mean": 0.27991806744819225,
+      "initializedMean": 0.27999183453214865,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 2400,
+          "height": 2400,
+          "bytes": 5710334,
+          "exactState": true
+        },
+        {
+          "width": 1200,
+          "height": 900,
+          "bytes": 1374188,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "pfc",
+      "preset": "nucleus",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 700,
+      "completedSteps": 700,
+      "dt": 0.005,
+      "guard": "",
+      "range": [
+        -0.533011257648468,
+        0.9901847243309021
+      ],
+      "mean": 0.2799250984190981,
+      "initializedMean": 0.27999183453214865,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 856415,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "pfc",
+      "preset": "poly",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 900,
+      "completedSteps": 900,
+      "dt": 0.005,
+      "guard": "",
+      "range": [
+        -0.6921258568763733,
+        1.0049195289611816
+      ],
+      "mean": 0.3004141134976442,
+      "initializedMean": 0.3004936787131092,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1660460,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "pfc",
+      "preset": "grain",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 800,
+      "completedSteps": 800,
+      "dt": 0.005,
+      "guard": "",
+      "range": [
+        -0.6143137216567993,
+        0.978204607963562
+      ],
+      "mean": 0.28698395155962175,
+      "initializedMean": 0.2870577172523282,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1831905,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "pfc",
+      "preset": "stripes",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 500,
+      "completedSteps": 500,
+      "dt": 0.005,
+      "guard": "",
+      "range": [
+        -0.557202160358429,
+        0.5821760892868042
+      ],
+      "mean": 0.02174699423371429,
+      "initializedMean": 0.021795498927986046,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1011097,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "pfc",
+      "preset": "melt",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 400,
+      "completedSteps": 400,
+      "dt": 0.005,
+      "guard": "",
+      "range": [
+        -0.5854400396347046,
+        1.0754282474517822
+      ],
+      "mean": 0.21947931500517465,
+      "initializedMean": 0.21951750466007838,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1801408,
+          "exactState": true
+        }
+      ]
+    },
+    {
+      "id": "pfc",
+      "preset": "relief",
+      "grid": [
+        512,
+        512
+      ],
+      "requestedPreparation": 750,
+      "completedSteps": 750,
+      "dt": 0.005,
+      "guard": "",
+      "range": [
+        -0.5285952687263489,
+        0.9899401664733887
+      ],
+      "mean": 0.299921359463066,
+      "initializedMean": 0.29999184148393043,
+      "nonfinite": 0,
+      "prints": [
+        {
+          "width": 800,
+          "height": 800,
+          "bytes": 1155793,
+          "exactState": true
+        }
+      ]
+    }
+  ],
+  "guards": [
+    {
+      "id": "cahn",
+      "mode": "corrected",
+      "accepted": false,
+      "unchanged": true,
+      "steps": 0,
+      "guard": "numerical guard: last valid batch retained; lower time step or activity, then reseed",
+      "visible": true
+    },
+    {
+      "id": "ohta",
+      "mode": "corrected",
+      "accepted": false,
+      "unchanged": true,
+      "steps": 0,
+      "guard": "numerical guard: last valid batch retained; lower time step or activity, then reseed",
+      "visible": true
+    },
+    {
+      "id": "amb",
+      "mode": "corrected",
+      "accepted": false,
+      "unchanged": true,
+      "steps": 0,
+      "guard": "numerical guard: last valid batch retained; lower time step or activity, then reseed",
+      "visible": true
+    },
+    {
+      "id": "swift",
+      "mode": "corrected",
+      "accepted": false,
+      "unchanged": true,
+      "steps": 0,
+      "guard": "numerical guard: last valid batch retained; lower time step or activity, then reseed",
+      "visible": true
+    },
+    {
+      "id": "ks",
+      "mode": "corrected",
+      "accepted": false,
+      "unchanged": true,
+      "steps": 0,
+      "guard": "numerical guard: last valid batch retained; lower time step or activity, then reseed",
+      "visible": true
+    },
+    {
+      "id": "pfc",
+      "mode": "corrected",
+      "accepted": false,
+      "unchanged": true,
+      "steps": 0,
+      "guard": "numerical guard: last valid batch retained; lower time step or activity, then reseed",
+      "visible": true
+    },
+    {
+      "id": "cahn",
+      "mode": "disabled-guard-control",
+      "accepted": true,
+      "unchanged": false,
+      "steps": 3,
+      "guard": "",
+      "visible": false
+    },
+    {
+      "id": "ohta",
+      "mode": "disabled-guard-control",
+      "accepted": true,
+      "unchanged": false,
+      "steps": 3,
+      "guard": "",
+      "visible": false
+    },
+    {
+      "id": "amb",
+      "mode": "disabled-guard-control",
+      "accepted": true,
+      "unchanged": false,
+      "steps": 3,
+      "guard": "",
+      "visible": false
+    },
+    {
+      "id": "swift",
+      "mode": "disabled-guard-control",
+      "accepted": true,
+      "unchanged": false,
+      "steps": 3,
+      "guard": "",
+      "visible": false
+    },
+    {
+      "id": "ks",
+      "mode": "disabled-guard-control",
+      "accepted": true,
+      "unchanged": false,
+      "steps": 6,
+      "guard": "",
+      "visible": false
+    },
+    {
+      "id": "pfc",
+      "mode": "disabled-guard-control",
+      "accepted": true,
+      "unchanged": false,
+      "steps": 3,
+      "guard": "",
+      "visible": false
+    }
+  ],
+  "blockers": [],
+  "passed": true
+}

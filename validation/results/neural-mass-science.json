@@ -1,0 +1,272 @@
+{
+  "scope": "MPR Eq.12 Float64 RK4: nine uncoupled equilibria, exact uncoupled Riccati trajectories, a coupled sinusoidal trajectory against independent Dormand-Prince 5, actual stored pulse trajectory, six presets, seeded reproducibility and transactional guards. Finite examples, not a proof over all controls or a finite-neuron/clinical validation.",
+  "sourceSHA256": "9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1",
+  "stationary": [
+    {
+      "eta": -3,
+      "delta": 0.1,
+      "q": [
+        0.009187539319381995,
+        -1.7322912867010454
+      ],
+      "error": 3.677613769070831e-16
+    },
+    {
+      "eta": -3,
+      "delta": 0.5,
+      "q": [
+        0.04578645414052702,
+        -1.738013415533538
+      ],
+      "error": 0
+    },
+    {
+      "eta": -3,
+      "delta": 2,
+      "q": [
+        0.1751501812533158,
+        -1.8173540210239707
+      ],
+      "error": 0
+    },
+    {
+      "eta": 0,
+      "delta": 0.1,
+      "q": [
+        0.0711762543417177,
+        -0.22360679774997896
+      ],
+      "error": 0
+    },
+    {
+      "eta": 0,
+      "delta": 0.5,
+      "q": [
+        0.15915494309189535,
+        -0.5
+      ],
+      "error": 0
+    },
+    {
+      "eta": 0,
+      "delta": 2,
+      "q": [
+        0.3183098861837907,
+        -1
+      ],
+      "error": 0
+    },
+    {
+      "eta": 2,
+      "delta": 0.1,
+      "q": [
+        0.450298722745075,
+        -0.03534430258244361
+      ],
+      "error": 0
+    },
+    {
+      "eta": 2,
+      "delta": 0.5,
+      "q": [
+        0.4536084977266503,
+        -0.17543205637629386
+      ],
+      "error": 0
+    },
+    {
+      "eta": 2,
+      "delta": 2,
+      "q": [
+        0.49458161682883733,
+        -0.6435942529055827
+      ],
+      "error": 0
+    }
+  ],
+  "analytic": [
+    {
+      "eta": 1.5,
+      "delta": 0.3,
+      "initial": [
+        0.28,
+        0.6
+      ],
+      "finalTime": 2,
+      "reference": [
+        0.2461682198803269,
+        -0.08377641163376351
+      ],
+      "rows": [
+        {
+          "dt": 0.008,
+          "error": 2.5567818630604086e-9
+        },
+        {
+          "dt": 0.004,
+          "error": 1.5897547204571398e-10
+        },
+        {
+          "dt": 0.002,
+          "error": 9.91106348257791e-12
+        }
+      ],
+      "ratios": [
+        16.08287008152551,
+        16.040203185578203
+      ]
+    },
+    {
+      "eta": -1.3,
+      "delta": 1,
+      "initial": [
+        0.28,
+        0.6
+      ],
+      "finalTime": 2,
+      "reference": [
+        0.1348665611362152,
+        -1.2364497513787795
+      ],
+      "rows": [
+        {
+          "dt": 0.008,
+          "error": 1.3971860920447923e-10
+        },
+        {
+          "dt": 0.004,
+          "error": 8.661746756562315e-12
+        },
+        {
+          "dt": 0.002,
+          "error": 5.405281484298837e-13
+        }
+      ],
+      "ratios": [
+        16.13053499845462,
+        16.024598870054778
+      ]
+    }
+  ],
+  "coupled": {
+    "initial": [
+      0.16,
+      -0.2
+    ],
+    "parameters": {
+      "populations": 1,
+      "eta": -2,
+      "delta": 0.5,
+      "J": 8,
+      "drive": "sine",
+      "amplitude": 2.5,
+      "frequency": 0.4,
+      "duration": 30,
+      "dt": 0.002,
+      "spread": 0.8,
+      "view": "phase",
+      "weight": 0.8,
+      "opacity": 0.65,
+      "seed": "neural-science"
+    },
+    "finalTime": 2,
+    "reference": [
+      0.30787505708590085,
+      -1.748545213701297
+    ],
+    "finerReference": [
+      0.3078750570859008,
+      -1.7485452137013013
+    ],
+    "referenceUncertainty": 4.441239029644354e-15,
+    "rows": [
+      {
+        "dt": 0.008,
+        "error": 6.717070169778002e-9
+      },
+      {
+        "dt": 0.004,
+        "error": 4.255370599132736e-10
+      },
+      {
+        "dt": 0.002,
+        "error": 2.678906267372966e-11
+      }
+    ],
+    "ratios": [
+      15.784924046678734,
+      15.884731209000863
+    ]
+  },
+  "pulse": {
+    "maxError": 9.896322506488211e-9,
+    "steps": 2400,
+    "samples": 1201,
+    "finalTime": 12,
+    "positive": true
+  },
+  "failureControls": {
+    "wrongQuadraticSignError": 0.15232525798151045,
+    "wrongEndpointMaxError": 0.0014442985508532477
+  },
+  "guard": {
+    "message": "Time step is too large for the current population response; lower the time step",
+    "rollback": true,
+    "negativeRateMessage": "The firing rate must stay positive and finite"
+  },
+  "presets": [
+    {
+      "key": "driven",
+      "populations": 32,
+      "steps": 15600,
+      "minSampledRate": 0.03166099757602349,
+      "maxSampledRate": 1.1872697689798204,
+      "finalTime": 30
+    },
+    {
+      "key": "relaxation",
+      "populations": 32,
+      "steps": 6000,
+      "minSampledRate": 0.02146015865461853,
+      "maxSampledRate": 1.6840097799000577,
+      "finalTime": 12
+    },
+    {
+      "key": "pulse",
+      "populations": 32,
+      "steps": 15600,
+      "minSampledRate": 0.03166099757602349,
+      "maxSampledRate": 2.801590947129353,
+      "finalTime": 30
+    },
+    {
+      "key": "inhibitory",
+      "populations": 32,
+      "steps": 10800,
+      "minSampledRate": 0.03166099757602349,
+      "maxSampledRate": 1.9650831632660954,
+      "finalTime": 20
+    },
+    {
+      "key": "slow",
+      "populations": 32,
+      "steps": 30000,
+      "minSampledRate": 0.03166099757602349,
+      "maxSampledRate": 1.7690128173866406,
+      "finalTime": 60
+    },
+    {
+      "key": "broad",
+      "populations": 32,
+      "steps": 15600,
+      "minSampledRate": 0.03166099757602349,
+      "maxSampledRate": 1.4654953727913909,
+      "finalTime": 30
+    }
+  ],
+  "reproducibility": {
+    "sameSeedExact": true,
+    "differentSeedDiffers": true
+  },
+  "elapsedSeconds": 0.6298625
+}

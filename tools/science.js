@@ -31,7 +31,7 @@ const validDate = s => {
 const nonNumericalTests = new Set([
   'build', 'check', 'export', 'index', 'lint', 'maintenance-check', 'pde-print-state',
   'plate', 'preset', 'recipe', 'science', 'sharp', 'shot', 'ui', 'zoom', 'verify', 'verify-check', 'wave-print-state',
-  'maxwell-print-state', 'molecular-print', 'maxwell-search', 'maxwell-search-check', 'maxwell-boundary', 'molecular-memory', 'maxwell-robust', 'schrodinger-disorder', 'cahn-scaling'
+  'surfaces-print', 'plasma-print', 'shallow-print', 'nonreciprocal-print', 'maxwell-print-state', 'molecular-print', 'maxwell-search', 'maxwell-search-check', 'maxwell-boundary', 'molecular-memory', 'maxwell-robust', 'schrodinger-disorder', 'cahn-scaling'
 ].map(name => fs.existsSync(path.join(root, 'tools', name + '.js')) ? fs.realpathSync(path.join(root, 'tools', name + '.js')) : path.join(root, 'tools', name + '.js')));
 try {
   assert(Array.isArray(records), 'Expected validation record array');
@@ -42,7 +42,7 @@ try {
     assert(m, 'Unknown technique: ' + r.id);
     assert(statuses.includes(r.status), 'Invalid status: ' + r.id);
     assert(validFile(r.source), 'Missing source: ' + r.id);
-    assert(read(r.source).includes("id: '" + r.id + "'"), 'Source/id mismatch: ' + r.id);
+    assert([...read(r.source).matchAll(/\bid\s*:\s*['"]([^'"]+)['"]/g)].some(match => match[1] === r.id), 'Source/id mismatch: ' + r.id);
     assert(crypto.createHash('sha256').update(read(r.source)).digest('hex') === r.sourceSha256, 'Source changed; review validation record: ' + r.id);
     assert(r.reference === m.credit && r.equation === m.equation, 'Catalog reference drift: ' + r.id);
     for (const key of ['limitations', 'remaining']) assert(Array.isArray(r[key]) && r[key].length && r[key].every(hasText), 'Missing ' + key + ': ' + r.id);

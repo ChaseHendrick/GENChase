@@ -1,0 +1,309 @@
+{
+  "sourceSha256": "237cfe67009ed638ec3b021c6f872dd1190e13e0ea0fd85ac49f6ea9c62dbdd4",
+  "commands": [
+    "node tools/check.js plasma 8000",
+    "node tools/export.js plasma 8 300 5000"
+  ],
+  "onScreen": [
+    {
+      "label": "default",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "17b3398",
+      "nyq": null,
+      "seedField": "check-plasma",
+      "lum": {
+        "p01": 8,
+        "p10": 8,
+        "p50": 8,
+        "p90": 46,
+        "p99": 112,
+        "min": 8,
+        "max": 231,
+        "ink": 0.184
+      },
+      "status": "step 658 · t 16.45 particles 16,384 · grid 256 ΔE/E₀ 1.24e-5 · full velocity window dt 0.025 seed check-plasma",
+      "annotation": ""
+    },
+    {
+      "label": "preset streams",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "49461281",
+      "nyq": null,
+      "seedField": "check-plasma",
+      "lum": {
+        "p01": 8,
+        "p10": 8,
+        "p50": 8,
+        "p90": 46,
+        "p99": 112,
+        "min": 8,
+        "max": 219,
+        "ink": 0.1843
+      },
+      "status": "step 702 · t 17.55 particles 16,384 · grid 256 ΔE/E₀ 1.30e-5 · full velocity window dt 0.025 seed check-plasma",
+      "annotation": ""
+    },
+    {
+      "label": "preset oscillation",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "40f6dacc",
+      "nyq": null,
+      "seedField": "check-plasma",
+      "lum": {
+        "p01": 26,
+        "p10": 26,
+        "p50": 26,
+        "p90": 26,
+        "p99": 47,
+        "min": 26,
+        "max": 173,
+        "ink": 0.0128
+      },
+      "status": "step 206 · t 5.15 particles 16,384 · grid 256 ΔE/E₀ -2.12e-4 · full velocity window dt 0.025 seed check-plasma",
+      "annotation": "judged early: step 206 of 500"
+    },
+    {
+      "label": "preset warm",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "958c5a1",
+      "nyq": null,
+      "seedField": "check-plasma",
+      "lum": {
+        "p01": 149,
+        "p10": 187,
+        "p50": 233,
+        "p90": 233,
+        "p99": 233,
+        "min": 88,
+        "max": 237,
+        "ink": 0.3673
+      },
+      "status": "step 352 · t 8.80 particles 16,384 · grid 256 ΔE/E₀ -2.36e-7 · 0.0% outside view dt 0.025 seed check-plasma",
+      "annotation": ""
+    },
+    {
+      "label": "preset twins",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "f0820036",
+      "nyq": null,
+      "seedField": "check-plasma",
+      "lum": {
+        "p01": 10,
+        "p10": 10,
+        "p50": 10,
+        "p90": 50,
+        "p99": 115,
+        "min": 10,
+        "max": 166,
+        "ink": 0.1773
+      },
+      "status": "step 810 · t 20.25 particles 16,384 · grid 256 ΔE/E₀ 1.78e-4 · full velocity window dt 0.025 seed check-plasma",
+      "annotation": ""
+    },
+    {
+      "label": "preset broad",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "e19292a8",
+      "nyq": null,
+      "seedField": "check-plasma",
+      "lum": {
+        "p01": 180,
+        "p10": 208,
+        "p50": 241,
+        "p90": 243,
+        "p99": 243,
+        "min": 139,
+        "max": 243,
+        "ink": 0.3426
+      },
+      "status": "step 390 · t 9.75 particles 16,384 · grid 256 ΔE/E₀ -2.36e-6 · full velocity window dt 0.025 seed check-plasma",
+      "annotation": ""
+    },
+    {
+      "label": "preset dense",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "47dbcff7",
+      "nyq": null,
+      "seedField": "check-plasma",
+      "lum": {
+        "p01": 17,
+        "p10": 17,
+        "p50": 17,
+        "p90": 31,
+        "p99": 78,
+        "min": 17,
+        "max": 106,
+        "ink": 0.1146
+      },
+      "status": "step 600 · t 15.00 particles 65,536 · grid 512 ΔE/E₀ 7.20e-7 · full velocity window dt 0.025 seed check-plasma",
+      "annotation": ""
+    },
+    {
+      "label": "determinism",
+      "first": "dc74df48",
+      "second": "dc74df48",
+      "same": true,
+      "steps": [
+        500,
+        500
+      ],
+      "canvas": [
+        "687x687",
+        "687x687"
+      ],
+      "pausable": true,
+      "settle": [
+        "warmed",
+        "warmed"
+      ],
+      "annotation": ""
+    },
+    {
+      "label": "tabswitch",
+      "via": "life",
+      "visibleCanvases": 1,
+      "lum": {
+        "p01": 8,
+        "p10": 8,
+        "p50": 8,
+        "p90": 46,
+        "p99": 111,
+        "min": 8,
+        "max": 227,
+        "ink": 0.1826
+      },
+      "annotation": ""
+    },
+    "PASS plasma"
+  ],
+  "exports": [
+    {
+      "label": "export (default)",
+      "w": 2400,
+      "h": 2400,
+      "mb": 2.92,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 2.9 MB. Recomputed at print pixels. The field is 256 × 256 cells, so one",
+      "lum": {
+        "p01": 8,
+        "p50": 8,
+        "p99": 110,
+        "min": 8,
+        "max": 217,
+        "ink": 0.1914
+      },
+      "annotation": ""
+    },
+    {
+      "label": "export streams",
+      "w": 2400,
+      "h": 2400,
+      "mb": 2.9,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 2.9 MB. Recomputed at print pixels. The field is 256 × 256 cells, so one",
+      "lum": {
+        "p01": 8,
+        "p50": 8,
+        "p99": 110,
+        "min": 8,
+        "max": 221,
+        "ink": 0.189
+      },
+      "annotation": ""
+    },
+    {
+      "label": "export oscillation",
+      "w": 2400,
+      "h": 2400,
+      "mb": 0.3,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 0.3 MB. Recomputed at print pixels. The field is 256 × 256 cells, so one",
+      "lum": {
+        "p01": 26,
+        "p50": 26,
+        "p99": 46,
+        "min": 26,
+        "max": 160,
+        "ink": 0.0126
+      },
+      "annotation": ""
+    },
+    {
+      "label": "export warm",
+      "w": 2400,
+      "h": 2400,
+      "mb": 3.99,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 4.0 MB. Recomputed at print pixels. The field is 256 × 256 cells, so one",
+      "lum": {
+        "p01": 149,
+        "p50": 231,
+        "p99": 233,
+        "min": 89,
+        "max": 233,
+        "ink": 0.3707
+      },
+      "annotation": ""
+    },
+    {
+      "label": "export twins",
+      "w": 2400,
+      "h": 2400,
+      "mb": 1.99,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 2.0 MB. Recomputed at print pixels. The field is 256 × 256 cells, so one",
+      "lum": {
+        "p01": 10,
+        "p50": 10,
+        "p99": 115,
+        "min": 10,
+        "max": 201,
+        "ink": 0.1866
+      },
+      "annotation": ""
+    },
+    {
+      "label": "export broad",
+      "w": 2400,
+      "h": 2400,
+      "mb": 4.3,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 4.3 MB. Recomputed at print pixels. The field is 256 × 256 cells, so one",
+      "lum": {
+        "p01": 180,
+        "p50": 239,
+        "p99": 243,
+        "min": 130,
+        "max": 243,
+        "ink": 0.3441
+      },
+      "annotation": ""
+    },
+    {
+      "label": "export dense",
+      "w": 2400,
+      "h": 2400,
+      "mb": 1.25,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 1.2 MB. Recomputed at print pixels. The field is 512 × 256 cells, so one",
+      "lum": {
+        "p01": 17,
+        "p50": 17,
+        "p99": 76,
+        "min": 17,
+        "max": 105,
+        "ink": 0.1115
+      },
+      "annotation": ""
+    },
+    "PASS plasma (7 sheets at 8 in, 300 ppi)"
+  ],
+  "scope": "Visual regression, deterministic fixed-step recipe, tab switching and real print UI only; no numerical scientific validation."
+}

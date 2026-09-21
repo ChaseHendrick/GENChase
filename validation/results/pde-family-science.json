@@ -1,0 +1,588 @@
+{
+  "schema": 1,
+  "date": "2026-09-21",
+  "source": {
+    "path": "src/modules/pde.js",
+    "sha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f"
+  },
+  "harness": {
+    "path": "tools/pde-family-science.js",
+    "sha256": "0e044155d58fc1aba5b87eebe2b4552a476ce31ba8f7c5ac68984028451f675e"
+  },
+  "backend": "153.0.8010.48",
+  "scope": "Noise-free, unit-cell finite lattice. Independent Euler stencil, RK4 fixed-grid time refinement and analytic Fourier modes; no continuum convergence, phase diagram, thermal noise or global stability validation.",
+  "criteria": {
+    "stencilMax": 0.000003,
+    "conservedMean": 1e-7,
+    "signControlMin": 0.00001,
+    "eulerOrder": [
+      0.85,
+      1.2
+    ],
+    "referenceSensitivityMax": 1e-10,
+    "analyticModeMax": 5e-9
+  },
+  "rows": [
+    {
+      "id": "pfc",
+      "boundary": "periodic",
+      "degenerate": false,
+      "grid": [
+        16,
+        12
+      ],
+      "dt": 0.003,
+      "steps": 24,
+      "error": {
+        "max": 7.652470429553304e-8,
+        "rms": 2.0425534470375194e-8
+      },
+      "massDrift": 2.6187383928011343e-9,
+      "signControlError": 0.0016714370640536491
+    },
+    {
+      "id": "pfc",
+      "boundary": "noflux",
+      "degenerate": false,
+      "grid": [
+        16,
+        12
+      ],
+      "dt": 0.003,
+      "steps": 24,
+      "error": {
+        "max": 5.487452631181e-8,
+        "rms": 1.7294254575323026e-8
+      },
+      "massDrift": -2.9946629065413788e-9,
+      "signControlError": 0.0040560593985797255
+    },
+    {
+      "id": "swift",
+      "boundary": "periodic",
+      "degenerate": false,
+      "grid": [
+        16,
+        12
+      ],
+      "dt": 0.003,
+      "steps": 24,
+      "error": {
+        "max": 5.64538778502488e-8,
+        "rms": 1.7078278408538924e-8
+      },
+      "massDrift": 0.00132491858494177,
+      "signControlError": 0.0014419666954458288
+    },
+    {
+      "id": "swift",
+      "boundary": "noflux",
+      "degenerate": false,
+      "grid": [
+        16,
+        12
+      ],
+      "dt": 0.003,
+      "steps": 24,
+      "error": {
+        "max": 7.687411990309201e-8,
+        "rms": 1.9974549862272543e-8
+      },
+      "massDrift": 0.0013236871376041681,
+      "signControlError": 0.0026131007480750534
+    },
+    {
+      "id": "ks",
+      "boundary": "periodic",
+      "degenerate": false,
+      "grid": [
+        16,
+        12
+      ],
+      "dt": 0.003,
+      "steps": 24,
+      "error": {
+        "max": 7.118365380476277e-8,
+        "rms": 2.115622604544983e-8
+      },
+      "massDrift": -0.00037684978663796165,
+      "signControlError": 0.001415279423817986
+    },
+    {
+      "id": "ks",
+      "boundary": "noflux",
+      "degenerate": false,
+      "grid": [
+        16,
+        12
+      ],
+      "dt": 0.003,
+      "steps": 24,
+      "error": {
+        "max": 7.476097596548215e-8,
+        "rms": 2.0300077969654087e-8
+      },
+      "massDrift": -0.00033803754740802106,
+      "signControlError": 0.002844180607879998
+    },
+    {
+      "id": "ohta",
+      "boundary": "periodic",
+      "degenerate": false,
+      "grid": [
+        16,
+        12
+      ],
+      "dt": 0.003,
+      "steps": 24,
+      "error": {
+        "max": 5.363607163966222e-8,
+        "rms": 1.849736969794795e-8
+      },
+      "massDrift": -6.445285971601322e-10,
+      "signControlError": 0.0018223551188374376
+    },
+    {
+      "id": "ohta",
+      "boundary": "periodic",
+      "degenerate": true,
+      "grid": [
+        16,
+        12
+      ],
+      "dt": 0.003,
+      "steps": 24,
+      "error": {
+        "max": 6.415436126783192e-8,
+        "rms": 2.0651046151035347e-8
+      },
+      "massDrift": -5.526089807972312e-9,
+      "signControlError": 0.0015753562226012985
+    },
+    {
+      "id": "ohta",
+      "boundary": "noflux",
+      "degenerate": false,
+      "grid": [
+        16,
+        12
+      ],
+      "dt": 0.003,
+      "steps": 24,
+      "error": {
+        "max": 6.877808989003142e-8,
+        "rms": 2.173651500531138e-8
+      },
+      "massDrift": -2.516875013958142e-9,
+      "signControlError": 0.002458638895743548
+    },
+    {
+      "id": "ohta",
+      "boundary": "noflux",
+      "degenerate": true,
+      "grid": [
+        16,
+        12
+      ],
+      "dt": 0.003,
+      "steps": 24,
+      "error": {
+        "max": 8.243660015727627e-8,
+        "rms": 2.3000202432159603e-8
+      },
+      "massDrift": -3.490943839556948e-9,
+      "signControlError": 0.002355750997275058
+    },
+    {
+      "id": "amb",
+      "boundary": "periodic",
+      "degenerate": false,
+      "grid": [
+        16,
+        12
+      ],
+      "dt": 0.003,
+      "steps": 24,
+      "error": {
+        "max": 8.665366563187504e-8,
+        "rms": 2.1193128080846033e-8
+      },
+      "massDrift": 1.9651148763788484e-9,
+      "signControlError": 0.001777555656794983
+    },
+    {
+      "id": "amb",
+      "boundary": "noflux",
+      "degenerate": false,
+      "grid": [
+        16,
+        12
+      ],
+      "dt": 0.003,
+      "steps": 24,
+      "error": {
+        "max": 1.0373779413264117e-7,
+        "rms": 2.3321031592552603e-8
+      },
+      "massDrift": 1.3915268937125802e-9,
+      "signControlError": 0.0024758233469561186
+    }
+  ],
+  "temporal": [
+    {
+      "id": "pfc",
+      "grid": [
+        16,
+        12
+      ],
+      "elapsed": 0.24,
+      "reference": "independent float64 RK4 at dt=0.000125",
+      "referenceSensitivity": {
+        "max": 9.43689570931383e-16,
+        "rms": 3.210197708434336e-16
+      },
+      "levels": [
+        {
+          "dt": 0.012,
+          "steps": 20,
+          "error": {
+            "max": 0.0005438482782180176,
+            "rms": 0.00034949577468902844
+          }
+        },
+        {
+          "dt": 0.006,
+          "steps": 40,
+          "error": {
+            "max": 0.00026954770296166997,
+            "rms": 0.0001731253214804549
+          }
+        },
+        {
+          "dt": 0.003,
+          "steps": 80,
+          "error": {
+            "max": 0.00013418555467675786,
+            "rms": 0.00008616368558270665
+          }
+        }
+      ],
+      "orders": [
+        1.0134582637683218,
+        1.0066648836978531
+      ]
+    },
+    {
+      "id": "swift",
+      "grid": [
+        16,
+        12
+      ],
+      "elapsed": 0.24,
+      "reference": "independent float64 RK4 at dt=0.000125",
+      "referenceSensitivity": {
+        "max": 8.326672684688674e-16,
+        "rms": 2.9476073479071367e-16
+      },
+      "levels": [
+        {
+          "dt": 0.012,
+          "steps": 20,
+          "error": {
+            "max": 0.00042557177290103443,
+            "rms": 0.0002812032771437961
+          }
+        },
+        {
+          "dt": 0.006,
+          "steps": 40,
+          "error": {
+            "max": 0.00021099505170962818,
+            "rms": 0.00013942851306623377
+          }
+        },
+        {
+          "dt": 0.003,
+          "steps": 80,
+          "error": {
+            "max": 0.00010501799329898365,
+            "rms": 0.00006942027712150923
+          }
+        }
+      ],
+      "orders": [
+        1.0120877858367867,
+        1.0060965924025245
+      ]
+    },
+    {
+      "id": "ks",
+      "grid": [
+        16,
+        12
+      ],
+      "elapsed": 0.24,
+      "reference": "independent float64 RK4 at dt=0.000125",
+      "referenceSensitivity": {
+        "max": 1.2212453270876722e-15,
+        "rms": 3.210080286149668e-16
+      },
+      "levels": [
+        {
+          "dt": 0.012,
+          "steps": 20,
+          "error": {
+            "max": 0.0005119409365646199,
+            "rms": 0.00035280759000615706
+          }
+        },
+        {
+          "dt": 0.006,
+          "steps": 40,
+          "error": {
+            "max": 0.0002535697026244954,
+            "rms": 0.000174753351812236
+          }
+        },
+        {
+          "dt": 0.003,
+          "steps": 80,
+          "error": {
+            "max": 0.00012616477441709795,
+            "rms": 0.00008696943595601893
+          }
+        }
+      ],
+      "orders": [
+        1.0135614710470997,
+        1.0067397445082233
+      ]
+    },
+    {
+      "id": "ohta",
+      "grid": [
+        16,
+        12
+      ],
+      "elapsed": 0.24,
+      "reference": "independent float64 RK4 at dt=0.000125",
+      "referenceSensitivity": {
+        "max": 1.1102230246251565e-15,
+        "rms": 3.40055858982379e-16
+      },
+      "levels": [
+        {
+          "dt": 0.012,
+          "steps": 20,
+          "error": {
+            "max": 0.0005551905288954662,
+            "rms": 0.0003241257565910141
+          }
+        },
+        {
+          "dt": 0.006,
+          "steps": 40,
+          "error": {
+            "max": 0.0002750785007735179,
+            "rms": 0.00016060745036224194
+          }
+        },
+        {
+          "dt": 0.003,
+          "steps": 80,
+          "error": {
+            "max": 0.00013688513186177476,
+            "rms": 0.00007994067106540046
+          }
+        }
+      ],
+      "orders": [
+        1.013014849617654,
+        1.0065372303904414
+      ]
+    },
+    {
+      "id": "amb",
+      "grid": [
+        16,
+        12
+      ],
+      "elapsed": 0.24,
+      "reference": "independent float64 RK4 at dt=0.000125",
+      "referenceSensitivity": {
+        "max": 1.1102230246251565e-15,
+        "rms": 3.4667588962444994e-16
+      },
+      "levels": [
+        {
+          "dt": 0.012,
+          "steps": 20,
+          "error": {
+            "max": 0.0005049399180680793,
+            "rms": 0.0003083504552531609
+          }
+        },
+        {
+          "dt": 0.006,
+          "steps": 40,
+          "error": {
+            "max": 0.00025027907326522283,
+            "rms": 0.00015282033405243124
+          }
+        },
+        {
+          "dt": 0.003,
+          "steps": 80,
+          "error": {
+            "max": 0.0001246026797563117,
+            "rms": 0.00007606766781512293
+          }
+        }
+      ],
+      "orders": [
+        1.0127344572740538,
+        1.0064812403048886
+      ]
+    }
+  ],
+  "modes": [
+    {
+      "id": "pfc",
+      "grid": [
+        32,
+        24
+      ],
+      "wave": [
+        7,
+        5
+      ],
+      "q": 2.694458783273163,
+      "rate": -8.694336712035945,
+      "dt": 0.001,
+      "steps": 80,
+      "error": 2.40638343195561e-11
+    },
+    {
+      "id": "swift",
+      "grid": [
+        32,
+        24
+      ],
+      "wave": [
+        7,
+        5
+      ],
+      "q": 3.0921812657627017,
+      "rate": -6.4713473398863774,
+      "dt": 0.001,
+      "steps": 80,
+      "error": 2.0660206008558772e-11
+    },
+    {
+      "id": "ks",
+      "grid": [
+        32,
+        24
+      ],
+      "wave": [
+        7,
+        5
+      ],
+      "q": 3.0921812657627017,
+      "rate": -7.425562212604505,
+      "dt": 0.001,
+      "steps": 80,
+      "error": 2.3555932828068615e-10
+    },
+    {
+      "id": "ohta",
+      "grid": [
+        32,
+        24
+      ],
+      "wave": [
+        7,
+        5
+      ],
+      "q": 3.0921812657627017,
+      "rate": -6.0541355923088584,
+      "dt": 0.001,
+      "steps": 80,
+      "error": 2.6387596453606235e-11
+    },
+    {
+      "id": "amb",
+      "grid": [
+        32,
+        24
+      ],
+      "wave": [
+        7,
+        5
+      ],
+      "q": 3.0921812657627017,
+      "rate": -5.934135592308858,
+      "dt": 0.001,
+      "steps": 80,
+      "error": 3.919023355077218e-11
+    }
+  ],
+  "controls": [
+    {
+      "name": "PFC historical mixed stencil",
+      "correctError": 1.5493314353687282e-8,
+      "wrongError": 0.0036404936989927472
+    },
+    {
+      "name": "KS constant height -9 is stationary",
+      "correctError": 0,
+      "oldClippingError": 1
+    },
+    {
+      "name": "Ohta uniform zero-mode relaxation",
+      "exactEulerTarget": 0.39062126872902936,
+      "correctError": 5.980672179717317e-9,
+      "wrongTargetError": 0.009378784874735535
+    }
+  ],
+  "ceilings": {
+    "pfcHigh": 0.0029972754350007596,
+    "pfcHalfMobility": 0.005994550870001519,
+    "shHigh": 0.009520692276312357,
+    "ch": 0.001488372093023256,
+    "ks": 0.01098901098901099
+  },
+  "pfcStability": [
+    {
+      "M": 0.2,
+      "dt": 0.02997275435000759,
+      "steps": 16,
+      "initialAmplitude": 0.009999990463256836,
+      "finalAmplitude": 7.152557373046875e-7,
+      "historicalDt": 0.08,
+      "historicalAmplitude": 0.03129744529724121,
+      "historicalFlagged": false
+    },
+    {
+      "M": 1,
+      "dt": 0.005994550870001519,
+      "steps": 16,
+      "initialAmplitude": 0.009999990463256836,
+      "finalAmplitude": 7.152557373046875e-7,
+      "historicalDt": 0.08,
+      "historicalAmplitude": 0.1964876651763916,
+      "historicalFlagged": true
+    },
+    {
+      "M": 2,
+      "dt": 0.0029972754350007596,
+      "steps": 16,
+      "initialAmplitude": 0.009999990463256836,
+      "finalAmplitude": 7.152557373046875e-7,
+      "historicalDt": 0.08,
+      "historicalAmplitude": 0.40297532081604004,
+      "historicalFlagged": true
+    }
+  ],
+  "passed": true
+}

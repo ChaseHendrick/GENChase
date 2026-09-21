@@ -1,0 +1,404 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-21",
+  "passed": true,
+  "source": "src/modules/nonreciprocal.js",
+  "sourceSha256": "0f5427d1446138675dd4be67d1c3df9896ec06ffa1103d9dbc94060332a7c1b0",
+  "criteria": {
+    "bitwisePreservationOfAllSixNumericalTargets": true,
+    "recipeAndCountersPreserved": true,
+    "exactDimensions": true,
+    "nonblankPercentileSpread": 12,
+    "meanDrift": 0.000002,
+    "rejectedBatchFieldAndStepRollback": true
+  },
+  "rows": [
+    {
+      "preset": "default",
+      "state": {
+        "steps": 128,
+        "pending": 0,
+        "dt": 0.000702576112412178,
+        "stopped": "",
+        "drift": 0,
+        "grid": [
+          256,
+          256
+        ],
+        "mean": [
+          0,
+          0
+        ]
+      },
+      "tests": [
+        {
+          "requested": [
+            1200,
+            1200
+          ],
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "bytes": 905311,
+          "luminance": {
+            "p01": 17.5704,
+            "p50": 79.1482,
+            "p99": 214.6506
+          }
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "dimensions": [
+            2400,
+            1800
+          ],
+          "bytes": 2129793,
+          "luminance": {
+            "p01": 17.5704,
+            "p50": 79.3608,
+            "p99": 214.6506
+          }
+        }
+      ],
+      "everyBufferAndRecipeUnchanged": true
+    },
+    {
+      "preset": "waves",
+      "state": {
+        "steps": 128,
+        "pending": 0,
+        "dt": 0.0024390243902439024,
+        "stopped": "",
+        "drift": 0,
+        "grid": [
+          256,
+          256
+        ],
+        "mean": [
+          0,
+          0
+        ]
+      },
+      "tests": [
+        {
+          "requested": [
+            1200,
+            1200
+          ],
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "bytes": 36806,
+          "luminance": {
+            "p01": 62.29339999999999,
+            "p50": 168.2258,
+            "p99": 206.17079999999999
+          }
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "dimensions": [
+            2400,
+            1800
+          ],
+          "bytes": 98175,
+          "luminance": {
+            "p01": 60.211999999999996,
+            "p50": 168.843,
+            "p99": 208.7456
+          }
+        }
+      ],
+      "everyBufferAndRecipeUnchanged": true
+    },
+    {
+      "preset": "active",
+      "state": {
+        "steps": 128,
+        "pending": 0,
+        "dt": 0.000702576112412178,
+        "stopped": "",
+        "drift": 0,
+        "grid": [
+          256,
+          256
+        ],
+        "mean": [
+          0,
+          0
+        ]
+      },
+      "tests": [
+        {
+          "requested": [
+            1200,
+            1200
+          ],
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "bytes": 905311,
+          "luminance": {
+            "p01": 17.5704,
+            "p50": 79.1482,
+            "p99": 214.6506
+          }
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "dimensions": [
+            2400,
+            1800
+          ],
+          "bytes": 2129793,
+          "luminance": {
+            "p01": 17.5704,
+            "p50": 79.3608,
+            "p99": 214.6506
+          }
+        }
+      ],
+      "everyBufferAndRecipeUnchanged": true
+    },
+    {
+      "preset": "noise",
+      "state": {
+        "steps": 512,
+        "pending": 0,
+        "dt": 0.0006448839208942391,
+        "stopped": "",
+        "drift": 1.88410051449317e-10,
+        "grid": [
+          256,
+          256
+        ],
+        "mean": [
+          3.7108524586493274e-11,
+          4.6312159276799825e-9
+        ]
+      },
+      "tests": [
+        {
+          "requested": [
+            1200,
+            1200
+          ],
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "bytes": 3009809,
+          "luminance": {
+            "p01": 19.3244,
+            "p50": 166.01179999999997,
+            "p99": 250.17839999999998
+          }
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "dimensions": [
+            2400,
+            1800
+          ],
+          "bytes": 7615554,
+          "luminance": {
+            "p01": 17.6774,
+            "p50": 167.727,
+            "p99": 250.6036
+          }
+        }
+      ],
+      "everyBufferAndRecipeUnchanged": true
+    },
+    {
+      "preset": "oblique",
+      "state": {
+        "steps": 128,
+        "pending": 0,
+        "dt": 0.0015789473684210526,
+        "stopped": "",
+        "drift": 0,
+        "grid": [
+          256,
+          256
+        ],
+        "mean": [
+          0,
+          0
+        ]
+      },
+      "tests": [
+        {
+          "requested": [
+            1200,
+            1200
+          ],
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "bytes": 994471,
+          "luminance": {
+            "p01": 42.421200000000006,
+            "p50": 94.95419999999999,
+            "p99": 213.9662
+          }
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "dimensions": [
+            2400,
+            1800
+          ],
+          "bytes": 3799109,
+          "luminance": {
+            "p01": 42.421200000000006,
+            "p50": 94.95419999999999,
+            "p99": 213.9662
+          }
+        }
+      ],
+      "everyBufferAndRecipeUnchanged": true
+    },
+    {
+      "preset": "passive",
+      "state": {
+        "steps": 512,
+        "pending": 0,
+        "dt": 0.0027027027027027024,
+        "stopped": "",
+        "drift": 2.589940514656497e-10,
+        "grid": [
+          256,
+          256
+        ],
+        "mean": [
+          3.7108524586493274e-11,
+          4.6312159276799825e-9
+        ]
+      },
+      "tests": [
+        {
+          "requested": [
+            1200,
+            1200
+          ],
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "bytes": 1510339,
+          "luminance": {
+            "p01": 48.99999999999999,
+            "p50": 113,
+            "p99": 176.2046
+          }
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "dimensions": [
+            2400,
+            1800
+          ],
+          "bytes": 3539303,
+          "luminance": {
+            "p01": 48.99999999999999,
+            "p50": 113,
+            "p99": 176.2046
+          }
+        }
+      ],
+      "everyBufferAndRecipeUnchanged": true
+    },
+    {
+      "preset": "coupling",
+      "state": {
+        "steps": 128,
+        "pending": 0,
+        "dt": 0.000597609561752988,
+        "stopped": "",
+        "drift": 0,
+        "grid": [
+          256,
+          256
+        ],
+        "mean": [
+          0,
+          0
+        ]
+      },
+      "tests": [
+        {
+          "requested": [
+            1200,
+            1200
+          ],
+          "dimensions": [
+            1200,
+            1200
+          ],
+          "bytes": 1209948,
+          "luminance": {
+            "p01": 97.25439999999999,
+            "p50": 140.5352,
+            "p99": 151.2412
+          }
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "dimensions": [
+            2400,
+            1800
+          ],
+          "bytes": 3456288,
+          "luminance": {
+            "p01": 97.25439999999999,
+            "p50": 140.5352,
+            "p99": 151.2412
+          }
+        }
+      ],
+      "everyBufferAndRecipeUnchanged": true
+    }
+  ],
+  "shell": {
+    "width": 2400,
+    "height": 2400,
+    "note": "2,400 × 2,400 px, 3.9 MB. Recomputed at print pixels. The field is 256 × 256 cells, so one cell is about 9.4 px here and the detail is set by the simulation, not by the paper: raise the grid for a finer plate. If the download button does nothing, right-click the image and save it.",
+    "everyBufferAndRecipeUnchanged": true
+  },
+  "guard": {
+    "restored": true,
+    "stepsUnchanged": true,
+    "stopped": "Amplitude guard reached. Lower the step fraction or change the initial field."
+  },
+  "limitations": [
+    "Preserving a numerical field at print size does not add spatial resolution or establish paper accuracy.",
+    "The unsafe-step guard fixture demonstrates rollback after one rejected batch, not global nonlinear stability.",
+    "Actual app presets are prepared states; their appearance is not evidence of spontaneously selected phases."
+  ]
+}

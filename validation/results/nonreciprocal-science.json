@@ -1,0 +1,602 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-21",
+  "passed": true,
+  "source": "src/modules/nonreciprocal.js",
+  "sourceSha256": "0f5427d1446138675dd4be67d1c3df9896ec06ffa1103d9dbc94060332a7c1b0",
+  "equation": "Saha and Golestanian 2025 Eq5 with mobility1; independent implementation",
+  "referenceSensitivity": {
+    "max": 1.887379141862766e-15,
+    "rms": 4.539955390902153e-16
+  },
+  "halfStepErrorChange": 3.125402923496984e-7,
+  "criteria": {
+    "fieldErrors": "Per-fixture tolerance in rows",
+    "conservedMeanAbsolute": 0.000002,
+    "observedOrder": [
+      1.7,
+      2.3
+    ],
+    "referenceRefinementMax": 1e-9
+  },
+  "rows": [
+    {
+      "name": "nonlinear-rhs",
+      "grid": [
+        16,
+        12
+      ],
+      "parameters": {
+        "W": 16,
+        "H": 12,
+        "dx": 0.75,
+        "K": 0.7,
+        "a0": 1.3,
+        "a1": -0.8
+      },
+      "dt": 0.0005,
+      "steps": 0,
+      "error": {
+        "max": 0.0000013756009609178221,
+        "rms": 3.907198934490607e-7
+      },
+      "mean": [
+        8.278827104326453e-9,
+        7.838631677992494e-9
+      ],
+      "meanDrift": [
+        -0.17999999231324176,
+        0.1200000083869478
+      ],
+      "tolerance": 0.00005
+    },
+    {
+      "name": "nonlinear-heun-step",
+      "grid": [
+        16,
+        12
+      ],
+      "parameters": {
+        "W": 16,
+        "H": 12,
+        "dx": 0.75,
+        "K": 0.7,
+        "a0": 1.3,
+        "a1": -0.8
+      },
+      "dt": 0.0005,
+      "steps": 1,
+      "error": {
+        "max": 2.8437224242061632e-8,
+        "rms": 6.469132361077039e-9
+      },
+      "mean": [
+        0.17999999980626558,
+        -0.12000000091211412
+      ],
+      "meanDrift": [
+        -7.858034223289513e-10,
+        -3.637978807110771e-10
+      ],
+      "tolerance": 2e-7
+    },
+    {
+      "name": "temporal-0.02",
+      "grid": [
+        16,
+        16
+      ],
+      "parameters": {
+        "W": 16,
+        "H": 16,
+        "dx": 1,
+        "K": 0.5,
+        "a0": 0.7,
+        "a1": 0.4
+      },
+      "dt": 0.02,
+      "steps": 10,
+      "time": 0.2,
+      "error": {
+        "max": 0.00002584246210834973,
+        "rms": 0.00000808744676370905
+      },
+      "mean": [
+        0.1800000019466097,
+        -0.12000000079206075
+      ],
+      "meanDrift": [
+        2.1082087187096477e-9,
+        -1.1095835361629725e-9
+      ],
+      "tolerance": 0.001
+    },
+    {
+      "name": "temporal-0.01",
+      "grid": [
+        16,
+        16
+      ],
+      "parameters": {
+        "W": 16,
+        "H": 16,
+        "dx": 1,
+        "K": 0.5,
+        "a0": 0.7,
+        "a1": 0.4
+      },
+      "dt": 0.01,
+      "steps": 20,
+      "time": 0.2,
+      "error": {
+        "max": 0.00000601955958490219,
+        "rms": 0.0000019157131727156053
+      },
+      "mean": [
+        0.17999999704261427,
+        -0.11999999908675818
+      ],
+      "meanDrift": [
+        -2.7957867132499814e-9,
+        5.95719029661268e-10
+      ],
+      "tolerance": 0.001,
+      "observedOrder": 2.0778027385866373
+    },
+    {
+      "name": "temporal-0.005",
+      "grid": [
+        16,
+        16
+      ],
+      "parameters": {
+        "W": 16,
+        "H": 16,
+        "dx": 1,
+        "K": 0.5,
+        "a0": 0.7,
+        "a1": 0.4
+      },
+      "dt": 0.005,
+      "steps": 40,
+      "time": 0.2,
+      "error": {
+        "max": 0.000001549211226747893,
+        "rms": 4.67186474234589e-7
+      },
+      "mean": [
+        0.18000000298889063,
+        -0.11999999731460775
+      ],
+      "meanDrift": [
+        3.1504896469414234e-9,
+        2.3678694560658187e-9
+      ],
+      "tolerance": 0.001,
+      "observedOrder": 2.035811160189995
+    },
+    {
+      "name": "discrete-mode-0",
+      "grid": [
+        32,
+        24
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 24,
+        "dx": 1,
+        "K": 1,
+        "a0": 3,
+        "a1": 1
+      },
+      "dt": 0.001,
+      "steps": 500,
+      "time": 0.5,
+      "mode": [
+        2,
+        1
+      ],
+      "amplitude": 0.8829556713678837,
+      "omega": 0.4893500005950536,
+      "error": {
+        "max": 2.460394979975078e-7,
+        "rms": 7.818303952740533e-8
+      },
+      "mean": [
+        -1.0842021724855044e-19,
+        -6.505213034913027e-19
+      ],
+      "meanDrift": [
+        2.710505431213761e-19,
+        5.421010862427522e-20
+      ],
+      "tolerance": 0.000008
+    },
+    {
+      "name": "discrete-mode-1",
+      "grid": [
+        32,
+        32
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 32,
+        "dx": 1,
+        "K": 0.5,
+        "a0": -1,
+        "a1": 0.7
+      },
+      "dt": 0.001,
+      "steps": 500,
+      "time": 0.5,
+      "mode": [
+        3,
+        2
+      ],
+      "amplitude": 0.8691082468909337,
+      "omega": -0.7480172503123184,
+      "error": {
+        "max": 4.3074717914759475e-7,
+        "rms": 1.382228096152333e-7
+      },
+      "mean": [
+        0,
+        0
+      ],
+      "meanDrift": [
+        0,
+        0
+      ],
+      "tolerance": 0.000008
+    },
+    {
+      "name": "discrete-mode-2",
+      "grid": [
+        64,
+        32
+      ],
+      "parameters": {
+        "W": 64,
+        "H": 32,
+        "dx": 0.75,
+        "K": 1.5,
+        "a0": 1,
+        "a1": -1
+      },
+      "dt": 0.001,
+      "steps": 500,
+      "time": 0.5,
+      "mode": [
+        2,
+        1
+      ],
+      "amplitude": 0.891651832818052,
+      "omega": 0.24527109500865885,
+      "error": {
+        "max": 9.805632581461055e-7,
+        "rms": 5.406921759132711e-7
+      },
+      "mean": [
+        0,
+        0
+      ],
+      "meanDrift": [
+        0,
+        0
+      ],
+      "tolerance": 0.000008
+    },
+    {
+      "name": "spatial-16",
+      "grid": [
+        16,
+        16
+      ],
+      "parameters": {
+        "W": 16,
+        "H": 16,
+        "dx": 2,
+        "K": 1,
+        "a0": 2,
+        "a1": 0.5
+      },
+      "dt": 0.0002,
+      "steps": 1000,
+      "time": 0.2,
+      "physicalDomain": [
+        32,
+        32
+      ],
+      "error": {
+        "max": 0.002365551457950199,
+        "rms": 0.0016887893209644917
+      },
+      "mean": [
+        0,
+        0
+      ],
+      "meanDrift": [
+        0,
+        0
+      ],
+      "tolerance": 0.01
+    },
+    {
+      "name": "spatial-32",
+      "grid": [
+        32,
+        32
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 32,
+        "dx": 1,
+        "K": 1,
+        "a0": 2,
+        "a1": 0.5
+      },
+      "dt": 0.0002,
+      "steps": 1000,
+      "time": 0.2,
+      "physicalDomain": [
+        32,
+        32
+      ],
+      "error": {
+        "max": 0.0006049468219088139,
+        "rms": 0.00042858660122626485
+      },
+      "mean": [
+        0,
+        0
+      ],
+      "meanDrift": [
+        0,
+        0
+      ],
+      "tolerance": 0.01,
+      "observedOrder": 1.9783307076728875
+    },
+    {
+      "name": "spatial-64",
+      "grid": [
+        64,
+        64
+      ],
+      "parameters": {
+        "W": 64,
+        "H": 64,
+        "dx": 0.5,
+        "K": 1,
+        "a0": 2,
+        "a1": 0.5
+      },
+      "dt": 0.0002,
+      "steps": 1000,
+      "time": 0.2,
+      "physicalDomain": [
+        32,
+        32
+      ],
+      "error": {
+        "max": 0.00015125861761755566,
+        "rms": 0.00010717451379967658
+      },
+      "mean": [
+        0,
+        0
+      ],
+      "meanDrift": [
+        0,
+        0
+      ],
+      "tolerance": 0.01,
+      "observedOrder": 1.9996248758378457
+    },
+    {
+      "name": "spatial-64-half-step",
+      "grid": [
+        64,
+        64
+      ],
+      "parameters": {
+        "W": 64,
+        "H": 64,
+        "dx": 0.5,
+        "K": 1,
+        "a0": 2,
+        "a1": 0.5
+      },
+      "dt": 0.0001,
+      "steps": 2000,
+      "time": 0.2,
+      "physicalDomain": [
+        32,
+        32
+      ],
+      "error": {
+        "max": 0.00015049793370363468,
+        "rms": 0.00010686197350732688
+      },
+      "mean": [
+        0,
+        0
+      ],
+      "meanDrift": [
+        0,
+        0
+      ],
+      "tolerance": 0.01
+    },
+    {
+      "name": "uniform-stationary",
+      "grid": [
+        16,
+        16
+      ],
+      "parameters": {
+        "W": 16,
+        "H": 16,
+        "dx": 1,
+        "K": 0.5,
+        "a0": 0.7,
+        "a1": 0.4
+      },
+      "dt": 0.001,
+      "steps": 100,
+      "error": {
+        "max": 0,
+        "rms": 0
+      },
+      "mean": [
+        0.30000001192092896,
+        -0.20000000298023224
+      ],
+      "meanDrift": [
+        0,
+        0
+      ],
+      "tolerance": 1e-7
+    }
+  ],
+  "controls": {
+    "wrongCouplingSign": {
+      "name": "discrete-mode-0",
+      "grid": [
+        32,
+        24
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 24,
+        "dx": 1,
+        "K": 1,
+        "a0": 3,
+        "a1": 1
+      },
+      "dt": 0.001,
+      "steps": 500,
+      "time": 0.5,
+      "mode": [
+        2,
+        1
+      ],
+      "amplitude": 0.8829556713678837,
+      "omega": 0.4893500005950536,
+      "error": {
+        "max": 0.427279369388603,
+        "rms": 0.3024833982971566
+      },
+      "mean": [
+        0,
+        1.0842021724855044e-19
+      ],
+      "meanDrift": [
+        -4.0657581468206416e-20,
+        -5.421010862427522e-20
+      ],
+      "tolerance": 0.000008
+    },
+    "missingNonlinearity": {
+      "name": "nonlinear-rhs",
+      "grid": [
+        16,
+        12
+      ],
+      "parameters": {
+        "W": 16,
+        "H": 12,
+        "dx": 0.75,
+        "K": 0.7,
+        "a0": 1.3,
+        "a1": -0.8
+      },
+      "dt": 0.0005,
+      "steps": 0,
+      "error": {
+        "max": 1.0607582713337198,
+        "rms": 0.2018145598763932
+      },
+      "mean": [
+        8.692344029238505e-9,
+        -2.522331970893077e-9
+      ],
+      "meanDrift": [
+        -0.17999999189972482,
+        0.11999999802598417
+      ],
+      "tolerance": 0.00005
+    },
+    "wrongBiharmonicSign": {
+      "name": "nonlinear-rhs",
+      "grid": [
+        16,
+        12
+      ],
+      "parameters": {
+        "W": 16,
+        "H": 12,
+        "dx": 0.75,
+        "K": 0.7,
+        "a0": 1.3,
+        "a1": -0.8
+      },
+      "dt": 0.0005,
+      "steps": 0,
+      "error": {
+        "max": 2.735106525963621,
+        "rms": 1.343066168523425
+      },
+      "mean": [
+        -7.089208041780037e-9,
+        1.1403850889860415e-8
+      ],
+      "meanDrift": [
+        -0.18000000768127694,
+        0.120000011952167
+      ],
+      "tolerance": 0.00005
+    },
+    "massLeak": {
+      "name": "uniform-stationary",
+      "grid": [
+        16,
+        16
+      ],
+      "parameters": {
+        "W": 16,
+        "H": 16,
+        "dx": 1,
+        "K": 0.5,
+        "a0": 0.7,
+        "a1": 0.4
+      },
+      "dt": 0.001,
+      "steps": 100,
+      "error": {
+        "max": 0.0019997358322143555,
+        "rms": 0.001581401484024012
+      },
+      "mean": [
+        0.3010013699531555,
+        -0.2019997388124466
+      ],
+      "meanDrift": [
+        0.0010013580322265625,
+        -0.0019997358322143555
+      ],
+      "tolerance": 1e-7
+    }
+  },
+  "backend": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+  },
+  "limitations": [
+    "Finite-mode and bounded nonlinear fixtures do not reproduce the paper phase diagram or establish chaos.",
+    "The paper uses a spectral method; this is a periodic five-point finite-difference and Heun implementation.",
+    "Fixed-domain spatial refinement is one smooth wave at domain32x32 and time0.2, not all-parameter convergence.",
+    "The application timestep scale is conditional on the amplitude bound and is not a nonlinear stability proof.",
+    "Print and actual-instance rollback tests are separate."
+  ]
+}

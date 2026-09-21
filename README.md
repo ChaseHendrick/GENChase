@@ -4,7 +4,7 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
-One portable HTML file, maintained as modular source. 122 pattern-forming systems with saved recipes and print exports.
+One portable HTML file, maintained as modular source. 128 pattern-forming systems with saved recipes and print exports.
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
@@ -74,10 +74,16 @@ are opportunities to investigate; they do not by themselves establish new mathem
 
 ## What the checks establish
 
-Two additions offer larger optional workloads:
+Recent additions include classical geometry, field dynamics and larger optional workloads:
 
 | Technique | Explore | Larger setting | Scientific scope |
 |---|---|---|---|
+| **Parametric Surfaces** | Enneper, Dini and the catenoid–helicoid family, selected with MathMod as inspiration | Six presets with finite wire meshes and SVG export | Independent implementation of classical maps; [geometry and print evidence](validation/SURFACES.md) |
+| **Kinetic Plasma** | Electron phase space and self-consistent electrostatic fields | Up to 262,144 particles on the CPU | Periodic one-dimensional cloud-in-cell model; [cold-sheet, field and print checks](validation/PLASMA.md) |
+| **Shallow Water** | Interacting ripples, wet dam breaks and reflecting walls | Up to 512 × 512 finite-volume cells on the CPU | Wet, flat-bottom Saint-Venant equations; [exact-wave and print checks](validation/SHALLOW.md) |
+| **Nonlinear Active Mixture** | Two conserved fields with nonreciprocal interactions | Up to 1024 × 1024 GPU cells | Independent implementation of a 2025 published model; [equation, convergence and print checks](validation/NONRECIPROCAL.md) |
+| **Hodgkin–Huxley Membranes** | Seeded squid-membrane voltage and gate traces | 256 independent membranes | Classical 1952 single-compartment ODE; [bounded numerical and print evidence](validation/HODGKIN-HUXLEY.md) |
+| **Neural Populations** | Montbrió–Pazó–Roxin rate/voltage traces | 128 independent preparations | Established QIF mean-field equations; [Riccati, convergence and print evidence](validation/NEURAL-MASS.md) |
 | **Maxwell FDTD** | Electric and magnetic waves scattering through dielectric patterns | Up to 2048 × 2048 cells for a square GPU field | Lossless, periodic, two-dimensional model; [numerical and print evidence](validation/MAXWELL.md) |
 | **Molecular Dynamics** | Attractive and repulsive particles in a periodic box | Up to 16,384 particles on the CPU | Two-dimensional force-shifted Lennard–Jones model; [trajectory and print evidence](validation/MOLECULAR.md) |
 
@@ -101,6 +107,9 @@ The following results have executable tests and recorded scope. They report disc
 | [Cahn–Hilliard composition conservation](validation/results/cahn-mobility.json) | Mean drift below 5 × 10⁻⁸ | 3.43 × 10⁻⁹ maximum | Same bounded test; excludes forcing and clipping |
 | [Cahn–Hilliard time-step refinement](validation/CAHN-HILLIARD.md#time-step-refinement) | Error decreases at first order as time step halves | Observed order 1.039–1.095 | Fixed grid and elapsed time; four boundary/mobility cases; does not test spatial convergence |
 | [PDE print-state preservation](validation/results/pde-print-state.json) | No changed field components; 2400 × 2400 output | Zero changes in six tested modules | Paused 512 × 512 initial fields; checks state and dimensions, not full rendering accuracy |
+| [PDE family stencil and guard audit](validation/PDE-FAMILY.md) | Independent Float64 stencil error < 3 × 10⁻⁶; explicit invalid-batch rollback | Recorded for PFC, Swift, KS, Ohta, AMB and Cahn fixtures | Finite-grid evidence; no continuum or global-stability claim |
+| [Hodgkin–Huxley ODE and print audit](validation/HODGKIN-HUXLEY.md) | Independent rates, DOPRI5 reference and fixed-time refinement | Two crossings; fourth-order refinement; exact export-state preservation | Classical squid parameters and bounded recordings only |
+| [MPR neural-population audit](validation/NEURAL-MASS.md) | Closed-form Riccati and independent DOPRI5 agreement | Equilibria ≤ 3.68 × 10⁻¹⁶; driven trajectory ≤ 2.68 × 10⁻¹¹ | Mean-field model; no finite-neuron or clinical claim |
 | [Schrödinger time/space refinement](validation/SCHRODINGER.md) | Error decreases at second order under refinement | Time orders 2.005/2.001; space orders 1.980/1.992 | Declared periodic wave modes at fixed physical domain/time; excludes absorbers and general scattering |
 | [Convection diffusion refinement](validation/CONVECTION.md) | Error decreases against exact continuum diffusion | 3.77 × 10⁻⁶ → 1.06 × 10⁻⁶ → 2.73 × 10⁻⁷ | One isolated component; does not validate the complete turbulent flow |
 | [Wave/convection print-state preservation](validation/results/wave-print-state.json) | No changed field or history components | Zero changes across 28 exports | Two grids, initial/evolved paused fields and every view; not full rendering accuracy |

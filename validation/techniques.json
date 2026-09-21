@@ -724,20 +724,30 @@
   {
     "id": "rogue",
     "source": "src/modules/rogue.js",
-    "sourceSha256": "9f4322bc9b009033185f97390b722f8d810d81a89895aaf81566d94ff119b52c",
-    "reference": "D. H. Peregrine, J. Austral. Math. Soc. Ser. B 25, 16 (1983). Akhmediev, Eleonskii and Kulagin (1987); Kuznetsov (1977) and Ma (1979). Draupner measured a rogue wave in 1995. The plate is the exact rational / breather solution.",
-    "equation": "i ψ_t + ψ_xx + 2|ψ|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   |ψ|²_max / |ψ|²_∞ = 9",
-    "status": "unvalidated",
+    "sourceSha256": "63a5c263919c63e7d5bd224cde99e16a17ace1f61e6ffb88030d8fc1f8b42834",
+    "reference": "D. H. Peregrine, J. Austral. Math. Soc. Ser. B 25, 16 (1983). Akhmediev, Eleonskii and Kulagin (1987); Kuznetsov (1977) and Ma (1979). Draupner measured a rogue wave in 1995. Formula conventions: Haragus and Pelinovsky, arXiv:2112.14426, Eqs1.1–1.4. The plate samples these established analytic solutions.",
+    "equation": "i ψ_t + ½ ψ_xx + |ψ|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   |ψ|²_max / |ψ|²_∞ = 9",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The independent audit samples the exact analytic fields and checks the stated normalized NLS residual, peaks and periods; it does not integrate the browser solver or establish physical ocean accuracy.",
+      "The finite plate samples a bounded window and does not prove the solution for every parameter or export resolution."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add an independent browser print-state check for all views and representative windows.",
+      "Review the rendered field and parameter limits against the primary sources before considering a stronger status."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/analytic-wave-science.js",
+        "scope": "Independent centered finite-difference residuals for Peregrine, Akhmediev and Kuznetsov–Ma fields at three step sizes and nine parameter cases, plus peak, period and normalization controls.",
+        "criteria": "Residual decreases at second order, the stated analytic peak and period agree, and wrong NLS dispersion and additive independent pulses fail the controls.",
+        "limitations": "Analytic sampling is not an independent time integration, physical experiment, global proof or print-state check.",
+        "benchmark": "Normalized focusing NLS residual iψ_t + 1/2ψ_xx + |ψ|²ψ = 0, peak intensities and periodic intensities from the cited exact solutions.",
+        "failureControl": "Use the old dispersion coefficient and additive KdV-style pulses; both produce residual failures.",
+        "command": "node tools/analytic-wave-science.js --write",
+        "results": "validation/results/analytic-wave-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -887,20 +897,30 @@
   {
     "id": "soliton",
     "source": "src/modules/soliton.js",
-    "sourceSha256": "562c306dfd645898266b19d5a22006ea3cfad4fe38d0baa76d6af16c9f1b54eb",
-    "reference": "J. S. Russell, Report of the 14th Meeting of the British Association (1844), chased a heap of water that would not spread. Korteweg and de Vries (1895) wrote the equation. Zabusky and Kruskal, Phys. Rev. Lett. 15, 240 (1965), collided two and named them solitons. The plate is spacetime of two exact sech² profiles, not a canal in Scotland.",
-    "equation": "u_t + 6 u u_x + u_xxx = 0,   u = (c/2) sech²[(√c/2)(x − c t)]",
-    "status": "unvalidated",
+    "sourceSha256": "37cf9cfbd76b979fdaa91eaf9dc6b98b4c3d130304076f7abfc3242597cddb1e",
+    "reference": "J. S. Russell, Report of the 14th Meeting of the British Association (1844), chased a heap of water that would not spread. Korteweg and de Vries (1895) wrote the equation. Zabusky and Kruskal, Phys. Rev. Lett. 15, 240 (1965), collided two and named them solitons. The plate evaluates the established Hirota two-soliton tau function, including its interaction term; Benes, Kasman and Young, On Decompositions of the KdV 2-Soliton (2006), provide a reference.",
+    "equation": "u_t + 6 u u_x + ν² u_xxx = 0; u = 2ν² ∂xx log τ, τ = 1+e^η1+e^η2+A12 e^(η1+η2)",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The independent audit checks the exact Hirota two-soliton map against the KdV residual, mass and phase shift; it does not integrate the browser solver or establish physical shallow-water accuracy.",
+      "The finite plate samples a bounded window and does not prove the solution for every parameter or export resolution."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add an independent browser print-state check for all views and representative windows.",
+      "Review the rendered field and parameter limits against the primary sources before considering a stronger status."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/analytic-wave-science.js",
+        "scope": "Independent centered finite-difference residuals, conserved mass and fast-soliton phase shift for four unequal-speed exact KdV two-soliton cases, with an equal-speed and additive-pulse control.",
+        "criteria": "Residual decreases at second order, mass and phase shift agree with the Hirota formula, and additive independent pulses fail the KdV residual control.",
+        "limitations": "Analytic sampling is not an independent time integration, physical experiment, global proof or print-state check.",
+        "benchmark": "KdV residual u_t + 6u u_x + ν²u_xxx = 0, exact mass 2ν(√c₁+√c₂), and the published two-soliton phase shift.",
+        "failureControl": "Replace the tau-function interaction with a sum of two independent sech² pulses; the residual must fail.",
+        "command": "node tools/analytic-wave-science.js --write",
+        "results": "validation/results/analytic-wave-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -982,10 +1002,10 @@
   {
     "id": "amb",
     "source": "src/modules/pde.js",
-    "sourceSha256": "d8500ac1280c817f34bd0e16a663cb12d20905c95ecaaf0cccf4cfdfa02ee57c",
+    "sourceSha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f",
     "reference": "Elsen Tjhung, Cesare Nardini and Michael E. Cates, Physical Review X 8, 031080 (2018). Cahn-Hilliard describes a passive mixture relaxing toward equilibrium. Two extra gradient terms, λ|∇φ|² in the chemical potential and a current ζ(∇²φ)∇φ that cannot come from any free energy, are the leading ways an active system (motile bacteria, self-propelled colloids) can break time-reversal symmetry while still conserving φ. They give the two phases different interfacial tensions, and when the tension felt by the minority phase turns negative the Ostwald process runs backward: large droplets shed material to small ones and coarsening stops.",
-    "equation": "∂φ/∂t = ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ|∇φ|²",
-    "status": "unvalidated",
+    "equation": "∂φ/∂t = M ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ|∇φ|²",
+    "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
@@ -995,7 +1015,18 @@
       "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/pde-family-science.js",
+        "scope": "Actual Active Model B+ shader against an independent Float64 finite-difference reference for periodic constant-mobility fixtures, activity current, temporal refinement and sign controls.",
+        "criteria": "Stencil error below 3e-6, conserved mean drift below 1e-7 in noise-free fixtures, temporal order in the declared interval and reversed-update/activity controls fail.",
+        "limitations": "Finite-grid agreement only; additive site forcing is not conserved fluctuation–dissipation noise, and no phase-selection, reverse-ripening or global nonlinear claim is made.",
+        "benchmark": "Independent Float64 chemical-potential, active-current and conservative flux reference compared with the actual float32 shader update.",
+        "failureControl": "Reverse the update sign and disable or reverse the active current; disagreement must exceed the reference tolerance.",
+        "command": "node tools/pde-family-science.js --write",
+        "results": "validation/results/pde-family-science.json"
+      }
+    ],
     "print": [
       {
         "test": "tools/pde-print-state.js",
@@ -1027,7 +1058,7 @@
   {
     "id": "cahn",
     "source": "src/modules/pde.js",
-    "sourceSha256": "d8500ac1280c817f34bd0e16a663cb12d20905c95ecaaf0cccf4cfdfa02ee57c",
+    "sourceSha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f",
     "reference": "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ max(1−c²,0) suppresses mobility near pure phases; it does not imply pure surface diffusion for this polynomial free energy (Lee, Munch and Suli, 2015).",
     "equation": "∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c",
     "status": "partially validated",
@@ -1071,6 +1102,16 @@
         "failureControl": "Restore the retired amplitude-1.2 timestep ceiling, and separately restore both the old additive click behavior and ceiling. Both controls must exhibit clipping and nonconservative evolution.",
         "command": "node tools/pde-stability.js",
         "results": "validation/results/cahn-stability.json"
+      },
+      {
+        "test": "tools/pde-family-science.js",
+        "scope": "Actual maintained PDE shader family against an independent Float64 finite-grid stencil, temporal refinement, discrete Fourier mode, conservation and sign controls for Cahn-compatible operators.",
+        "criteria": "Stencil maximum error below 3e-6, conserved means below 1e-7, temporal order 0.85–1.2, reference sensitivity below 1e-10 and reversed-sign controls fail.",
+        "limitations": "Finite-grid agreement only; no fixed-physical-domain spatial convergence, global nonlinear stability, stochastic forcing or full parameter-domain claim.",
+        "benchmark": "Independent Float64 five/nine-point Laplacian, chemical potential and explicit Euler/RK4 references compared with the actual float32 shader updates.",
+        "failureControl": "Reverse each update sign, restore the mixed PFC stencil, use a wrong Ohta mean and restore the historical timestep; each must fail its criterion.",
+        "command": "node tools/pde-family-science.js --write",
+        "results": "validation/results/pde-family-science.json"
       }
     ],
     "print": [
@@ -1085,10 +1126,10 @@
   {
     "id": "ohta",
     "source": "src/modules/pde.js",
-    "sourceSha256": "d8500ac1280c817f34bd0e16a663cb12d20905c95ecaaf0cccf4cfdfa02ee57c",
-    "reference": "Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). Coarsening stops. The equilibrium is spots, stripes or bicontinuous networks whose period is set by σ, not by waiting.",
-    "equation": "∂u/∂t = Δ(u³ − u − ε²Δu) − σ(u − m)",
-    "status": "unvalidated",
+    "sourceSha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f",
+    "reference": "Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). The long-range penalty can frustrate ordinary coarsening and favor microstructured states. Pattern selection depends on composition and parameters; a finite preview does not prove equilibrium.",
+    "equation": "∂u/∂t = ∇·[M(u)∇μ] − σ(u−m),   μ = u³ − u − ε²Δu",
+    "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
@@ -1098,7 +1139,18 @@
       "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/pde-family-science.js",
+        "scope": "Actual Ohta–Kawasaki shader against an independent Float64 stencil for periodic constant and degenerate mobility fixtures, temporal refinement and mean-reference controls.",
+        "criteria": "Stencil error below 3e-6, noise-free mean drift below 1e-7, first-order temporal refinement in the declared interval and wrong reaction mean/sign controls fail.",
+        "limitations": "Finite-grid agreement only; this implementation uses a local finite-difference reaction approximation and does not validate the full nonlocal variable-mobility continuum model or every parameter.",
+        "benchmark": "Independent Float64 Laplacian, chemical potential, local face-flux and Ohta reaction reference compared with the actual float32 shader.",
+        "failureControl": "Use a wrong mean target and reverse the update sign; both must fail their reference criteria.",
+        "command": "node tools/pde-family-science.js --write",
+        "results": "validation/results/pde-family-science.json"
+      }
+    ],
     "print": [
       {
         "test": "tools/pde-print-state.js",
@@ -1111,29 +1163,39 @@
   {
     "id": "hopf",
     "source": "src/modules/hopf.js",
-    "sourceSha256": "62d66a42791cad012c202bed5b6ab05827b3e2d22f412ac53da0d4b50aedd3bb",
+    "sourceSha256": "62a4457707adf41bb37623379ec36e93e3bc455d11e87cf95aaea2880b86b85a",
     "reference": "H. Hopf, Math. Ann. 104, 637 (1931). The third homotopy group of the 2-sphere is not zero: π₃(S²) = ℤ, generated by this map. Stereographic projection from S³ turns the fibres into a nesting of linked circles in R³, then onto the plate. No two fibres are unlinked.",
     "equation": "η: S³ → S²,   η(z1,z2) = (2 z1 z2-bar, |z1|²-|z2|²),   fibres = circles,   lk = 1",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The independent audit checks inverse stereographic projection, sampled Gauss linking and orientation controls; it does not prove a continuous embedding for every parameter or validate the plate renderer.",
+      "Numerical linking estimates are finite polygon quadratures and have no physical-unit interpretation."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add an independent browser print-state check for the projected fibres and views.",
+      "Review projection clipping and fibre parameter limits against the cited topology references."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/geometry-science.js",
+        "scope": "Independent inverse-projection residuals on five base points and sampled fibre parameters, three Gauss-link quadrature refinements, orientation reversal and an unlinked control.",
+        "criteria": "Inverse projection error remains below 2e−13; linked fibres converge to |lk|=1 at second order; reversing orientation changes the sign and the unlinked control tends to zero.",
+        "limitations": "Finite sampled curves and quadrature do not establish a continuous global theorem, renderer accuracy or physical embedding.",
+        "benchmark": "Hopf map η:S³→S² with stereographic projection and the Gauss linking integral for distinct fibres.",
+        "failureControl": "Reverse one fibre and replace it with a translated planar circle; sign and near-zero controls must change as expected.",
+        "command": "node tools/geometry-science.js --write",
+        "results": "validation/results/geometry-science.json"
+      }
+    ],
     "print": []
   },
   {
     "id": "swift",
     "source": "src/modules/pde.js",
-    "sourceSha256": "d8500ac1280c817f34bd0e16a663cb12d20905c95ecaaf0cccf4cfdfa02ee57c",
-    "reference": "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is the universal envelope of Rayleigh–Bénard convection just above onset: a real scalar field with a preferred wavenumber k₀. The quadratic term g selects hexagons over rolls; at slightly negative r a localized pulse can sit in a stable zero background (snaking).",
-    "equation": "∂u/∂t = r u − (k₀² + ∇²)² u + g u² − u³",
-    "status": "unvalidated",
+    "sourceSha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f",
+    "reference": "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is a phenomenological pattern-forming model motivated by convection near onset: a real scalar field with a preferred wavenumber k₀. Quadratic and cubic nonlinearities affect the available branches. Localized patterns can exist in suitable subcritical regimes; this display does not establish branch stability.",
+    "equation": "∂u/∂t = r u − (k₀² + ∇²)² u + g u² − b u³",
+    "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
@@ -1143,7 +1205,18 @@
       "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/pde-family-science.js",
+        "scope": "Actual Swift–Hohenberg shader against an independent Float64 finite-difference reference at periodic and no-flux boundaries, with temporal refinement and sign controls.",
+        "criteria": "Stencil error below 3e-6, temporal refinement order in the declared interval, and reversed-update controls fail.",
+        "limitations": "Finite-grid agreement only; no continuum phase diagram, nonlinear global stability, localized-state or all-parameter claim.",
+        "benchmark": "Independent Float64 linear, quadratic and cubic Swift–Hohenberg stencil compared with the actual float32 shader update.",
+        "failureControl": "Reverse the update sign and restore the historical timestep ceiling; each must fail its criterion.",
+        "command": "node tools/pde-family-science.js --write",
+        "results": "validation/results/pde-family-science.json"
+      }
+    ],
     "print": [
       {
         "test": "tools/pde-print-state.js",
@@ -1156,10 +1229,10 @@
   {
     "id": "pfc",
     "source": "src/modules/pde.js",
-    "sourceSha256": "d8500ac1280c817f34bd0e16a663cb12d20905c95ecaaf0cccf4cfdfa02ee57c",
-    "reference": "K. R. Elder, M. Katakowski, M. Haataja and M. Grant, Phys. Rev. Lett. 88, 245701 (2002); Elder and Grant, Phys. Rev. E 70, 051605 (2004). The phase-field crystal model is Swift–Hohenberg’s free energy evolved with conserved (Cahn–Hilliard) dynamics. Density peaks are atoms. A quench from a uniform liquid freezes into a triangular lattice; grains rotate, vacancies hop, and the solid–liquid front is a real melting line, all on diffusive time.",
+    "sourceSha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f",
+    "reference": "K. R. Elder, M. Katakowski, M. Haataja and M. Grant, Phys. Rev. Lett. 88, 245701 (2002); Elder and Grant, Phys. Rev. E 70, 051605 (2004). The phase-field crystal model is Swift–Hohenberg’s free energy evolved with conserved (Cahn–Hilliard) dynamics. The field represents time-averaged atomic-scale density, not individual particle trajectories. The model supports crystalline order and defects on diffusive time scales; this finite-grid display does not locate a material melting line.",
     "equation": "∂ψ/∂t = M ∇²(δF/δψ),   F = ∫ ½ ψ [r + (k₀²+∇²)²] ψ + ψ⁴/4",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
@@ -1169,7 +1242,18 @@
       "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/pde-family-science.js",
+        "scope": "Actual phase-field-crystal shader with the corrected nine-point operator against an independent Float64 stencil, conservation, temporal refinement and discrete Fourier damping fixtures.",
+        "criteria": "Stencil error below 3e-6, mean drift below 1e-7, temporal order in the declared interval, Fourier amplification within 5e-9 and high-amplitude checkerboard damping passes.",
+        "limitations": "Finite-grid agreement only; no fixed-physical-domain convergence, atomistic parameter calibration, phase diagram or global nonlinear stability claim.",
+        "benchmark": "Independent nine-point chemical-potential and conserved Euler reference using the same stated unit-cell symbol, with a discrete analytic Fourier mode.",
+        "failureControl": "Restore the mixed five/nine-point stencil, reverse the update sign and use the historical excessive timestep; each must fail.",
+        "command": "node tools/pde-family-science.js --write",
+        "results": "validation/results/pde-family-science.json"
+      }
+    ],
     "print": [
       {
         "test": "tools/pde-print-state.js",
@@ -1372,10 +1456,10 @@
   {
     "id": "ks",
     "source": "src/modules/pde.js",
-    "sourceSha256": "d8500ac1280c817f34bd0e16a663cb12d20905c95ecaaf0cccf4cfdfa02ee57c",
+    "sourceSha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f",
     "reference": "Yoshiki Kuramoto and Toshio Tsuzuki, Prog. Theor. Phys. 55, 356 (1976); G. I. Sivashinsky, Acta Astronautica 4, 1177 (1977). Independently derived for reaction-diffusion phase turbulence and for laminar flame fronts. It is the simplest PDE that produces extensive spatiotemporal chaos: a band of unstable modes, a stabilizing biharmonic, and a Burgers-like nonlinearity. In two dimensions the cells of a flame.",
     "equation": "∂u/∂t = −ν ∇⁴u − ∇²u − (α/2)|∇u|²",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
@@ -1385,7 +1469,18 @@
       "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/pde-family-science.js",
+        "scope": "Actual Kuramoto–Sivashinsky shader against an independent Float64 finite-difference reference with periodic and no-flux fixtures, temporal refinement and unbounded-height controls.",
+        "criteria": "Stencil error below 3e-6, first-order temporal refinement in the declared interval, and reversed-update/clipping controls fail without hiding mean drift.",
+        "limitations": "Finite-grid agreement only; KS mean drift and long-time chaos are not certified, and no continuum attractor or flame-front claim is made.",
+        "benchmark": "Independent Float64 fourth-order finite-difference and gradient-nonlinearity reference compared with the actual float32 shader update.",
+        "failureControl": "Restore field clipping and reverse the update sign; both must be detected by the independent state and residual checks.",
+        "command": "node tools/pde-family-science.js --write",
+        "results": "validation/results/pde-family-science.json"
+      }
+    ],
     "print": [
       {
         "test": "tools/pde-print-state.js",
@@ -2064,39 +2159,59 @@
   {
     "id": "reuleaux",
     "source": "src/modules/reuleaux.js",
-    "sourceSha256": "50df9a92cf6d756e140327bb04b35111bee76426f658444274400f4545ddf70a",
-    "reference": "F. Reuleaux, The Kinematics of Machinery (1875), described the curved triangle of constant width now named for him. Euler had already noted constant-width bodies; a wheel does not have to be a circle to keep its axle at constant height. The same shape, rotated in a square, drills a hole that is almost square. The plate is the rolling body and the width rose, which theory says is a circle.",
+    "sourceSha256": "279629ef500e0ebf8f48d7c7fd1802cb493c4cc487462ccb2971b99156e8cfbc",
+    "reference": "F. Reuleaux, The Kinematics of Machinery (1875), described the curved triangle of constant width now named for him. The intersection of three radius-R disks centered at an equilateral triangle has constant support width R. The plate shows this body, rotated overlays or a sampled support-width rose.",
     "equation": "width(θ) = R  for all θ,   W ≠ a disk,   area = ½(π − √3) R²",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The independent audit samples the actual circular-arc construction and checks constant-width convergence and area; it does not validate rolling dynamics or the browser print path.",
+      "Support widths are sampled at finite angular resolution and the area check is polygonal."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add an independent browser print-state check for the arc mesh and width rose.",
+      "Review the rolling and near-corner limits against a primary kinematics source."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/geometry-science.js",
+        "scope": "Independent support-function samples for five arc resolutions, analytic area comparison and a straight-triangle failure control.",
+        "criteria": "Width deficit decreases at second order under arc refinement, remains below the chord bound, and polygon area converges to (π−√3)/2; the straight-triangle control fails constant width.",
+        "limitations": "Finite sampled supports and polygon areas do not establish exact constant width for the continuous curve or print accuracy.",
+        "benchmark": "Reuleaux three-arc construction of unit width and area ½(π−√3).",
+        "failureControl": "Use the three triangle vertices as a boundary; its sampled support width must deviate by more than 0.1.",
+        "command": "node tools/geometry-science.js --write",
+        "results": "validation/results/geometry-science.json"
+      }
+    ],
     "print": []
   },
   {
     "id": "apollonian",
     "source": "src/modules/apollonian.js",
-    "sourceSha256": "e7661806436035bef33d67be307668bb2932badf353f875f521c8aa572a4d0db",
+    "sourceSha256": "78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34",
     "reference": "Descartes' circle theorem (1643, in a letter to Princess Elisabeth of the Palatinate) gives the fourth curvature from three mutually tangent circles. The Apollonian gasket iterates that packing to infinity. Soddy (1936) wrote the poem; Graham, Lagarias, Mallows, Wilks and Yan (2003) proved the integer curvatures are a well-defined subset of the integers. The plate is a finite generation of the packing inside a disk of curvature −1.",
     "equation": "k₄ = k₁+k₂+k₃ ± 2√(k₁k₂+k₁k₃+k₂k₃)   (Descartes),   k ∈ ℤ if the seeds are",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The independent audit checks the integer Descartes reflection construction, tangency and finite-generation area; it does not prove the infinite gasket limit or validate the browser renderer.",
+      "The displayed packing is bounded by generation and curvature/circle limits, so a finite nonzero gap is expected."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add an independent browser print-state check for representative generations and color modes.",
+      "Review the finite truncation and area display against the infinite-packing literature before considering a stronger status."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/geometry-science.js",
+        "scope": "Independent Descartes-reflection audits for four finite generations, checking circle overlaps, tangent-neighbor counts, integer curvature centers and decreasing unfilled area.",
+        "criteria": "No positive-circle overlap, every generated circle has at least three tangent neighbors, curvature-center coordinates remain integral, and the finite gap decreases with depth.",
+        "limitations": "Finite construction checks do not prove convergence to the infinite Apollonian gasket, Hausdorff dimension or print-state accuracy.",
+        "benchmark": "Unit outer circle seed (−1,2,2,3) with the Descartes reflection kᵢ′=2Σⱼ≠ᵢkⱼ−kᵢ and matching integer curvature centers.",
+        "failureControl": "Perturb one historical seed circle away from tangency; the tangent-neighbor check must fail.",
+        "command": "node tools/geometry-science.js --write",
+        "results": "validation/results/geometry-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -2501,6 +2616,234 @@
         "scope": "Paused evolved 1024-particle states with/without links and a completed 4096-particle warmup; 2400-square and 2400x1800 raster/SVG exports, real shell print, live/pause and visible halt.",
         "criteria": "Exact positions/velocities/forces/energy/counters preserved, each requested raster and decoded SVG dimension correct, matched-format reduced-image RGB mean absolute difference <1.5/255; visible halt and live/pause behavior checked.",
         "limitations": "Declared seeds, states and backend only. Marks represent particle geometry, not chemical bonds or calibrated physical appearance. Intermediate warmups can legitimately differ from later screens."
+      }
+    ]
+  },
+  {
+    "id": "surfaces",
+    "source": "src/modules/surfaces.js",
+    "sourceSha256": "133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e",
+    "reference": "Classical surfaces of Enneper and Dini, and the catenoid–helicoid associate family. Parameter maps: 3D-XplorMath / UCI, Enneper Surface; Thomas Banchoff, Brown University, Differential Geometry §7.3; Oliver Knill, Harvard Math 21a, Dini surface. MathMod inspired the selection; this is an independent implementation, not imported MathMod code or collection data.",
+    "equation": "Enneper and catenoid–helicoid: H = 0; Dini (a = 1): K = −1/(1 + b²)",
+    "status": "partially validated",
+    "limitations": [
+      "Established parametric surfaces with finite transparent wire meshes, not physical soap-film simulations or new mathematics.",
+      "Independent differential geometry and mesh checks cover declared samples; no global topology, complete immersion, self-intersection or all-parameter certification.",
+      "Printed coordinates agree across raster/SVG, while antialiasing varies by backend; arbitrary devices remain untested."
+    ],
+    "remaining": [
+      "Broaden parameter-domain and independent implementation coverage.",
+      "Assess mesh approximation and visual accuracy across more resolutions and devices.",
+      "Keep global mathematical and physical claims separate from local curvature benchmarks."
+    ],
+    "numerical": [
+      {
+        "test": "tools/surfaces-science.js",
+        "command": "node tools/surfaces-science.js",
+        "results": "validation/results/surfaces-science.json",
+        "scope": "225 derivative/metric/curvature samples in Enneper, five associate values and three Dini pitches; endpoints, camera invariance and tessellation refinement.",
+        "criteria": "Fine-step metric/Gaussian/mean errors below 0.001 with curvature orders 1.8 to 2.2; endpoints/rigid distances within 1e-12; mesh chord errors refine at second order and finish below 0.001 of the bounding-box diagonal.",
+        "benchmark": "Centered finite differences of maintained coordinate maps compared with separately derived metric, Gaussian and mean curvature references; analytic midpoint/chord and rigid-distance checks.",
+        "failureControl": "Wrong Enneper vertical scale, omitted Dini logarithm and wrong conjugate-map sign must fail.",
+        "limitations": "Deterministic approximation errors in finite patches; not statistical uncertainty, topology proof or physical stability evidence."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/surfaces-print.js",
+        "command": "node tools/surfaces-print.js",
+        "results": "validation/results/surfaces-print.json",
+        "scope": "All six presets at 800-square, 1600x2000 and 2400-square with true SVG paths, exact requested dimensions, preserved state and repeated seeded geometry.",
+        "criteria": "Geometry within 0.000051 px, nonblank output, exact state preservation; mean RGB difference below 2/255 at preview and 1/255 at print; a 2% horizontal SVG distortion must fail.",
+        "limitations": "Accelerated antialiasing differs from SVG; separate software-canvas control is recorded. SVG is a finite mesh, not an exact smooth surface."
+      }
+    ]
+  },
+  {
+    "id": "plasma",
+    "source": "src/modules/plasma.js",
+    "sourceSha256": "237cfe67009ed638ec3b021c6f872dd1190e13e0ea0fd85ac49f6ea9c62dbdd4",
+    "reference": "Standard cloud-in-cell electrostatic plasma model. C. K. Birdsall and A. B. Langdon, Plasma Physics via Computer Simulation (1985). CIC field centering and conservation limitations: J. U. Brackbill, arXiv:1510.08741 (2015), sections 3.1–3.5. Original implementation; not the GEMPIC geometric scheme.",
+    "equation": "∂f/∂t + v ∂f/∂x − E ∂f/∂v = 0; ∂E/∂x = 1 − ∫f dv; x ∈ [0, 2π), periodic",
+    "status": "partially validated",
+    "limitations": [
+      "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. No validated Landau damping, nonlinear instability threshold, collisions or magnetic physics.",
+      "Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device."
+    ],
+    "remaining": [
+      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
+      "Broaden print interpretation and hardware coverage; retain stated model assumptions."
+    ],
+    "numerical": [
+      {
+        "test": "tools/plasma-science.js",
+        "command": "node tools/plasma-science.js",
+        "results": "validation/results/plasma-science.json",
+        "scope": "Actual Float64 periodic CIC deposit, field solve, KDK particles, cold-sheet trajectories, 24-seed deposition noise and completed presets.",
+        "criteria": "Poisson fields within 1e-12; cold frequency relative error below .002; trajectory RMS below .00015; spatial/temporal error reductions3.5–4.5 and3.5–4.6; noise mean within4 seed standard errors; exact failed-trial rollback.",
+        "benchmark": "Independent dense periodic Poisson solve, all-pairs triangular deposition weights, analytic noncrossing cold-sheet oscillation, same-domain refinement and exact expected CIC sampling variance.",
+        "failureControl": "Reversed force sign and nonneutral deposited charge must be detected; rejected dynamics restore accepted arrays and counters.",
+        "limitations": "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. No validated Landau damping, nonlinear instability threshold, collisions or magnetic physics."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/plasma-print.js",
+        "command": "node tools/plasma-print.js",
+        "results": "validation/results/plasma-print.json",
+        "scope": "Eight initial/evolved phase-space exports at2400-square and2400x3000 plus actual shell fixtures and interrupted warmup.",
+        "criteria": "Exact numerical arrays, CPU/GPU histograms, diagnostics, counters and recipes preserved; output dimensions exact; resumed warmup matches direct fixed-step trajectory.",
+        "limitations": "Selected states and rendering backend; more output pixels do not improve numerical resolution or establish physical accuracy."
+      }
+    ]
+  },
+  {
+    "id": "shallow",
+    "source": "src/modules/shallow.js",
+    "sourceSha256": "0b967d37d97262202418768b0d99cb0a397fbb0d83078908fef013934efa0bd2",
+    "reference": "A. J. C. de Saint-Venant (1871), shallow-water equations. Rusanov/local Lax–Friedrichs conservative finite-volume flux. Exact wave benchmarks follow D. I. Ketcheson, R. J. LeVeque and M. J. del Razo, Riemann Problems and Jupyter Solutions (2020). Original implementation of established equations; no Clawpack code is included.",
+    "equation": "h_t + ∇·(h u) = 0; (h u)_t + ∇·(h u⊗u + ½h² I) = 0, g = 1",
+    "status": "partially validated",
+    "limitations": [
+      "First-order wet flat-bottom two-dimensional Saint-Venant finite volumes. No dry-bed flooding, relief, physical viscosity, dispersion or real-world flood forecast. Numerical diffusion broadens shocks.",
+      "Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device."
+    ],
+    "remaining": [
+      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
+      "Broaden print interpretation and hardware coverage; retain stated model assumptions."
+    ],
+    "numerical": [
+      {
+        "test": "tools/shallow-science.js",
+        "command": "node tools/shallow-science.js",
+        "results": "validation/results/shallow-science.json",
+        "scope": "Float64 conservative Rusanov solver: exact wet dam-break cell averages, smooth oblique wave, wet positivity, conservation, reflected walls and completed presets.",
+        "criteria": "Finest dam depth/momentum L1 below .018/.025 with refinement ratios1.25–2.4; smooth-wave orders.8–1.2 and fine RMS below.05; volume/momentum within1e-12 where conserved; invalid steps leave state unchanged.",
+        "benchmark": "Independent rarefaction/shock Riemann solution integrated over cells and analytic linearized oblique shallow-water wave at fixed domain/time.",
+        "failureControl": "Omitting pressure must fail exact-wave benchmark; oversized CFL and injected dry state must stop before accepting a step.",
+        "limitations": "First-order wet flat-bottom two-dimensional Saint-Venant finite volumes. No dry-bed flooding, relief, physical viscosity, dispersion or real-world flood forecast. Numerical diffusion broadens shocks."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/shallow-print.js",
+        "command": "node tools/shallow-print.js",
+        "results": "validation/results/shallow-print.json",
+        "scope": "Actual depth/speed fields at128-square,128x160 and512-square, six square/tall2400-pixel exports, shell/live/pause/guard checks.",
+        "criteria": "Exact Float64 physical state and counters preserved; float32 display rounding exact; reduced RGB mean error below2/255; requested dimensions exact.",
+        "limitations": "Selected states and rendering backend; more output pixels do not improve numerical resolution or establish physical accuracy."
+      }
+    ]
+  },
+  {
+    "id": "nonreciprocal",
+    "source": "src/modules/nonreciprocal.js",
+    "sourceSha256": "0f5427d1446138675dd4be67d1c3df9896ec06ffa1103d9dbc94060332a7c1b0",
+    "reference": "S. Saha and R. Golestanian, Effervescence in a binary mixture with nonlinear non-reciprocal interactions, Nature Communications 16, 7310 (2025), doi:10.1038/s41467-025-61728-8, equation 5. Original finite-difference implementation; the paper uses a different spectral solver.",
+    "equation": "∂t ψ = ∇²[(-1+iα₀)ψ + (1−iα₁)|ψ|²ψ − K∇²ψ]",
+    "status": "partially validated",
+    "limitations": [
+      "Periodic finite-difference Heun implementation of Saha–Golestanian2025 Eq5, not the paper spectral solver or a reproduced phase diagram. Conditional timestep scale is not a nonlinear stability proof. Prepared waves are imposed.",
+      "Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device."
+    ],
+    "remaining": [
+      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
+      "Broaden print interpretation and hardware coverage; retain stated model assumptions."
+    ],
+    "numerical": [
+      {
+        "test": "tools/nonreciprocal-science.js",
+        "command": "node tools/nonreciprocal-science.js",
+        "results": "validation/results/nonreciprocal-science.json",
+        "scope": "Actual float32 GPU nonlinear derivatives and Heun updates, discrete plane waves, fixed-time RK4 reference, fixed-domain spatial refinement, mass and rollback controls.",
+        "criteria": "Derivative max error below5e-5; update error below2e-7; conserved means within2e-6; modal error below8e-6; temporal orders1.7–2.3 and approximately second-order spatial refinement.",
+        "benchmark": "Independent Float64 complete-chemical-potential Laplacian, refined RK4 and continuum/discrete complex plane-wave solutions obtained by substitution into Eq5.",
+        "failureControl": "Reverse rotation or biharmonic sign, omit nonlinearity, or inject mass source; all must fail. Unsafe internal step must halt and restore accepted state.",
+        "limitations": "Periodic finite-difference Heun implementation of Saha–Golestanian2025 Eq5, not the paper spectral solver or a reproduced phase diagram. Conditional timestep scale is not a nonlinear stability proof. Prepared waves are imposed."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/nonreciprocal-print.js",
+        "command": "node tools/nonreciprocal-print.js",
+        "results": "validation/results/nonreciprocal-print.json",
+        "scope": "Default/all6 presets at1200-square and2400x1800, actual2400-square shell output, all6 numerical targets/readback arrays and recipes.",
+        "criteria": "Exact scientific state preserved, output dimensions exact, luminance spread above12/255; rejected batch restores accepted field and step count.",
+        "limitations": "Selected states and rendering backend; more output pixels do not improve numerical resolution or establish physical accuracy."
+      }
+    ]
+  },
+  {
+    "id": "hodgkin-huxley",
+    "source": "src/modules/hodgkin-huxley.js",
+    "sourceSha256": "ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8",
+    "reference": "A. L. Hodgkin and A. F. Huxley, A quantitative description of membrane current and its application to conduction and excitation in nerve, J. Physiol. 117, 500–544 (1952), doi:10.1113/jphysiol.1952.sp004764. Classical squid membrane at 6.3°C, modern −65 mV resting-voltage convention. Original implementation of established equations.",
+    "equation": "C dV/dt = I − gNa m³h(V − ENa) − gK n⁴(V − EK) − gL(V − EL); dx/dt = αx(V)(1 − x) − βx(V)x",
+    "status": "partially validated",
+    "limitations": [
+      "The independent audit covers the stated squid parameters, selected currents and finite recording durations; it does not validate every control, temperature, biological preparation or human application.",
+      "Print checks preserve numerical state and dimensions but do not calibrate colors or establish experimental accuracy."
+    ],
+    "remaining": [
+      "Extend parameter-domain and long-duration convergence checks, including a spatial axon or propagation model if one is added.",
+      "Broaden browser and hardware print checks without presenting them as biological experiments."
+    ],
+    "numerical": [
+      {
+        "test": "tools/hodgkin-huxley-science.js",
+        "scope": "Actual Float64 Hodgkin–Huxley solver against independently expressed rates, analytic voltage-clamp gates and passive leak, adaptive Dormand–Prince trajectory references, fixed-time RK4 refinement, all presets and rollback controls.",
+        "criteria": "Rate and singular-limit errors below 2e-13, passive leak error below 1e-9 mV, driven refinement decreases at fourth order and wrong channel/singular/invalid-trial controls fail.",
+        "limitations": "Bounded deterministic ODE evidence only; no spatial conduction, synapses, stochastic channels, temperature sweep or experimental validation.",
+        "benchmark": "Independent modern-voltage HH rates and RHS with analytic gate/leak limits plus a separately implemented DOPRI5 trajectory.",
+        "failureControl": "Replace sodium m³ with m², remove the removable singular series and inject an excessive trial; each must be detected.",
+        "command": "node tools/hodgkin-huxley-science.js > validation/results/hodgkin-huxley-science.json",
+        "results": "validation/results/hodgkin-huxley-science.json"
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/hodgkin-huxley-print.js",
+        "scope": "Actual paused PNG exports at 2400×1600 and 2400×2400 for 16 and 64 membranes, all three views and intermediate/completed recordings.",
+        "criteria": "Exact CPU/GPU history, state, counters, events and settings preservation; exact output dimensions; deliberate mutating export and wrong dimensions rejected.",
+        "limitations": "State and scheduler evidence only; no calibrated-color, biological or all-hardware guarantee.",
+        "results": "validation/results/hodgkin-huxley-print.json"
+      }
+    ]
+  },
+  {
+    "id": "neural-mass",
+    "source": "src/modules/neural-mass.js",
+    "sourceSha256": "9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1",
+    "reference": "E. Montbrió, D. Pazó and A. Roxin, Macroscopic Description for Networks of Spiking Neurons, Physical Review X 5, 021028 (2015), doi:10.1103/PhysRevX.5.021028, Eq. (12). Original implementation of the established macroscopic equations.",
+    "equation": "dr/dt = Δ/π + 2rv; dv/dt = v² + η̄ + Jr + I(t) − π²r²",
+    "status": "partially validated",
+    "limitations": [
+      "The evidence covers selected analytic, driven and preset trajectories of the infinite all-to-all MPR reduction; it does not validate every control, finite-neuron network or experimental brain recording.",
+      "Print checks preserve traces and dimensions but do not create temporal resolution beyond the stored samples."
+    ],
+    "remaining": [
+      "Extend independent parameter, long-duration and spatial/network comparisons before quantitative generalization.",
+      "Broaden browser and hardware print checks while retaining the principal-value population interpretation."
+    ],
+    "numerical": [
+      {
+        "test": "tools/neural-mass-science.js",
+        "scope": "Actual MPR Float64 RK4 solver against closed-form uncoupled Riccati flows, independent DOPRI5 coupled references, stored pulse trajectories, six presets, reproducibility and transactional guard controls.",
+        "criteria": "Equilibrium errors below 1e-12, finest uncoupled and coupled trajectory errors below 1e-8/1e-7, fourth-order refinement and positive-rate/rollback controls pass.",
+        "limitations": "Deterministic macroscopic finite-fixture evidence only; no finite-neuron sampling, synaptic delay, spatial cortex or clinical inference.",
+        "benchmark": "Independent complex Riccati solution for J=0 and separately implemented Dormand–Prince 5 reference for coupled trajectories.",
+        "failureControl": "Reverse the quadratic rate term and use unsplit pulse endpoints; both produce measurable reference disagreement.",
+        "command": "node tools/neural-mass-science.js --write",
+        "results": "validation/results/neural-mass-science.json"
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/neural-mass-print.js",
+        "scope": "Actual phase/rate/voltage PNG and SVG exports at 2400×2400 and 2400×1800 for 32 and 128 preparations, including shell print routing.",
+        "criteria": "Exact numerical state and settings preservation, exact dimensions, SVG path/sample counts and bounded PNG/SVG raster differences; incomplete traces refuse export.",
+        "limitations": "Selected renderer and states only; no full parameter-domain, unrecorded-transient or cross-hardware guarantee.",
+        "results": "validation/results/neural-mass-print.json"
       }
     ]
   }

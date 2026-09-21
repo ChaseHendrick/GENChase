@@ -1,0 +1,279 @@
+{
+  "sourceSha256": "ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8",
+  "harnessSha256": "d8ec2829f4f258b73164decf9cfc338a816cb2730ba33e1bf3e3c92b13b5df98",
+  "command": "node tools/hodgkin-huxley-print.js > validation/results/hodgkin-huxley-print.json",
+  "scope": "12 actual PNG exports at 2400x1600 and padded 2400x2400, all three views, 15ms intermediate and complete recordings. Exact preservation of Float64 voltages/gates/currents/work arrays, Float32 CPU/GPU histories, counters, spike events and settings. Interrupted cooperative recordings agree exactly with fixed-step evolution.",
+  "rows": [
+    {
+      "membranes": 16,
+      "recordingCells": [
+        301,
+        16
+      ],
+      "exports": [
+        {
+          "view": "voltage",
+          "step": 1500,
+          "timeMs": 15,
+          "spikes": 16,
+          "width": 2400,
+          "height": 1600,
+          "bytes": 336993,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 155504,
+            "physicalChanged": false,
+            "eventsChanged": false,
+            "settingsChanged": false,
+            "displayChanged": false
+          }
+        },
+        {
+          "view": "sodium",
+          "step": 1500,
+          "timeMs": 15,
+          "spikes": 16,
+          "width": 2400,
+          "height": 1600,
+          "bytes": 322003,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 155504,
+            "physicalChanged": false,
+            "eventsChanged": false,
+            "settingsChanged": false,
+            "displayChanged": false
+          }
+        },
+        {
+          "view": "potassium",
+          "step": 1500,
+          "timeMs": 15,
+          "spikes": 16,
+          "width": 2400,
+          "height": 1600,
+          "bytes": 257228,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 155504,
+            "physicalChanged": false,
+            "eventsChanged": false,
+            "settingsChanged": false,
+            "displayChanged": false
+          }
+        },
+        {
+          "view": "voltage",
+          "step": 3000,
+          "timeMs": 30,
+          "spikes": 32,
+          "width": 2400,
+          "height": 1600,
+          "bytes": 769713,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 155504,
+            "physicalChanged": false,
+            "eventsChanged": false,
+            "settingsChanged": false,
+            "displayChanged": false
+          }
+        },
+        {
+          "view": "sodium",
+          "step": 3000,
+          "timeMs": 30,
+          "spikes": 32,
+          "width": 2400,
+          "height": 1600,
+          "bytes": 739050,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 155504,
+            "physicalChanged": false,
+            "eventsChanged": false,
+            "settingsChanged": false,
+            "displayChanged": false
+          }
+        },
+        {
+          "view": "potassium",
+          "step": 3000,
+          "timeMs": 30,
+          "spikes": 32,
+          "width": 2400,
+          "height": 1600,
+          "bytes": 627437,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 155504,
+            "physicalChanged": false,
+            "eventsChanged": false,
+            "settingsChanged": false,
+            "displayChanged": false
+          }
+        }
+      ],
+      "scheduling": {
+        "steps": 10000,
+        "pausedAtStep": 4420,
+        "comparison": {
+          "changedBytes": 0,
+          "nonfinite": 0,
+          "bytes": 257648,
+          "physicalChanged": false,
+          "eventsChanged": false,
+          "settingsChanged": false,
+          "displayChanged": false
+        }
+      },
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedBytes": 980
+      }
+    },
+    {
+      "membranes": 64,
+      "recordingCells": [
+        1001,
+        64
+      ],
+      "exports": [
+        {
+          "view": "voltage",
+          "step": 1500,
+          "timeMs": 15,
+          "spikes": 64,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 240989,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 2055088,
+            "physicalChanged": false,
+            "eventsChanged": false,
+            "settingsChanged": false,
+            "displayChanged": false
+          }
+        },
+        {
+          "view": "sodium",
+          "step": 1500,
+          "timeMs": 15,
+          "spikes": 64,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 234855,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 2055088,
+            "physicalChanged": false,
+            "eventsChanged": false,
+            "settingsChanged": false,
+            "displayChanged": false
+          }
+        },
+        {
+          "view": "potassium",
+          "step": 1500,
+          "timeMs": 15,
+          "spikes": 64,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 200618,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 2055088,
+            "physicalChanged": false,
+            "eventsChanged": false,
+            "settingsChanged": false,
+            "displayChanged": false
+          }
+        },
+        {
+          "view": "voltage",
+          "step": 10000,
+          "timeMs": 100,
+          "spikes": 385,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 1452109,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 2055088,
+            "physicalChanged": false,
+            "eventsChanged": false,
+            "settingsChanged": false,
+            "displayChanged": false
+          }
+        },
+        {
+          "view": "sodium",
+          "step": 10000,
+          "timeMs": 100,
+          "spikes": 385,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 1425165,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 2055088,
+            "physicalChanged": false,
+            "eventsChanged": false,
+            "settingsChanged": false,
+            "displayChanged": false
+          }
+        },
+        {
+          "view": "potassium",
+          "step": 10000,
+          "timeMs": 100,
+          "spikes": 385,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 1342413,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 2055088,
+            "physicalChanged": false,
+            "eventsChanged": false,
+            "settingsChanged": false,
+            "displayChanged": false
+          }
+        }
+      ],
+      "scheduling": {
+        "steps": 10000,
+        "pausedAtStep": 1174,
+        "comparison": {
+          "changedBytes": 0,
+          "nonfinite": 0,
+          "bytes": 1030064,
+          "physicalChanged": false,
+          "eventsChanged": false,
+          "settingsChanged": false,
+          "displayChanged": false
+        }
+      },
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedBytes": 3428
+      }
+    }
+  ],
+  "limitations": "State/dimension and scheduler checks are not calibrated-color, physical-experiment or general parameter validation. Two counts, one renderer and paused exports only; high-count browser performance is not certified."
+}
