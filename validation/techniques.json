@@ -1496,17 +1496,27 @@
     "sourceSha256": "8d955572de4bd69b44164c0edd3e7ae4184c8d226caa72a2e0d825e3356b4578",
     "reference": "The sine-Gordon breather is an exact, time-periodic, spatially localised solution; see Seeger, Donth and Kochendörfer (1953) and the inverse-scattering account of Faddeev and Takhtajan. Linear waves radiate. This one does not: the envelope sech(β x) holds a bound oscillation forever. The plate is spacetime of u.",
     "equation": "u_tt − u_xx + sin u = 0,   u = 4 arctan[ (β/α) sin(α t) sech(β x) ],   α²+β² = 1",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The maintained field expression passes bounded residual, period and total-energy checks; the browser grid and print path are not audited.",
+      "The existing on-screen E_out/E diagnostic sums u squared, not sine-Gordon energy density. Its label and theory-zero comparison remain a known issue."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Audit the actual renderer and print path at declared dimensions.",
+      "Correct the squared-amplitude diagnostic and account for nonzero finite-window tails."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/breather-science.js",
+        "scope": "Maintained scalar expression at beta 0.2, 0.45 and 0.75, four residual points, three difference steps, period and finite-window total energy.",
+        "criteria": "Residual order above 1.85, finest RMS below 3e-5, period error below 2e-12, total-energy relative error below 1e-7.",
+        "limitations": "Bounded numerical evidence; no print accuracy, physical experiment or novelty claim.",
+        "benchmark": "Independent sine-Gordon PDE residual and energy integral 16 beta.",
+        "failureControl": "Perturb the internal frequency while retaining the envelope; residual must exceed the correct residual by at least 20 times.",
+        "command": "node tools/breather-science.js --write",
+        "results": "validation/results/breather-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -2353,17 +2363,27 @@
     "sourceSha256": "7d53e8eee70dfc0bac8b7d9f26967e27e61a9431877f83aa4212a3a7ead9f229",
     "reference": "The Camassa–Holm equation and the peakon u = c exp(−|x − c t|) are R. Camassa and D. D. Holm, Phys. Rev. Lett. 71, 1661 (1993). Multi-peakon collisions, including the Stieltjes / Hankel closed form used here, are R. Beals, D. H. Sattinger and J. Szmigielski, Inverse Problems 15, L1 (1999) and Adv. Math. 154, 229 (2000). This plate evaluates that exact N-peakon formula. It is not a new soliton.",
     "equation": "u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−|x−x_i|},   m = u − u_xx",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The maintained BSS functions pass the positive one-to-four-peakon particle ODE and invariant checks at sampled times and separations.",
+      "No weak-solution proof, mixed-sign collision audit, extreme-time conditioning study or print-state audit is claimed."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Audit the actual renderer and print path at declared dimensions.",
+      "Extend time and separation coverage and compare full trajectories against an independent integrator."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/peakon-science.js",
+        "scope": "Maintained peakonsAt and uOf for six kinds, three separations and four times, with three centered time differences.",
+        "criteria": "Finest ODE residual below 2e-4; multi-peakon residual reduction between 12 and 20 under fourfold refinement; mass error below 1e-10 and Hamiltonian drift below 1e-9.",
+        "limitations": "Bounded numerical evidence; no print accuracy, physical experiment or novelty claim.",
+        "benchmark": "Independent distributional peakon ODE, conserved sum of masses and quadratic Hamiltonian; elementary single traveling peak.",
+        "failureControl": "Mutate the maintained spectral time weights to 1.17 times their speed; the particle ODE residual must exceed 0.1.",
+        "command": "node tools/peakon-science.js --write",
+        "results": "validation/results/peakon-science.json"
+      }
+    ],
     "print": []
   },
   {

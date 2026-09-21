@@ -48,6 +48,8 @@ jobs:
           python3 tools/cahn-scaling.py --controls
           node tools/build.js --check
           node tools/science.js
+          node tools/breather-science.js
+          node tools/peakon-science.js
       - name: Structural checks
         run: node tools/lint.js
       - name: Polygon bounds and numerical controls

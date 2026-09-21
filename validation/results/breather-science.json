@@ -1,0 +1,57 @@
+{
+  "sourceSha256": "8d955572de4bd69b44164c0edd3e7ae4184c8d226caa72a2e0d825e3356b4578",
+  "model": "sine-Gordon breather",
+  "equation": "u_tt - u_xx + sin(u) = 0",
+  "cases": [
+    {
+      "beta": 0.2,
+      "errors": [
+        0.000017850514152724445,
+        0.000004462718480653189,
+        0.0000011156862543952381
+      ],
+      "observedOrder": 1.999981172300355,
+      "wrongFrequencyResidual": 0.0030313259649378975,
+      "period": 6.41274915080932,
+      "periodicError": 4.996003610813204e-16,
+      "totalEnergy": 3.199999999641067,
+      "energyRelativeError": 1.121666093339968e-10,
+      "outsideEnergyFraction": 0.000012417151950391991
+    },
+    {
+      "beta": 0.45,
+      "errors": [
+        0.00005138883146659923,
+        0.000012848029050587214,
+        0.0000032120641057869163
+      ],
+      "observedOrder": 1.999941127848739,
+      "wrongFrequencyResidual": 0.024915976635243583,
+      "period": 7.035816796875419,
+      "periodicError": 1.5543122344752192e-15,
+      "totalEnergy": 7.199999999236422,
+      "energyRelativeError": 1.0605261113738607e-10,
+      "outsideEnergyFraction": 0.00001294523839863956
+    },
+    {
+      "beta": 0.75,
+      "errors": [
+        0.00010606620359756914,
+        0.000026519288508183267,
+        0.000006629988417117859
+      ],
+      "observedOrder": 1.9999074381292183,
+      "wrongFrequencyResidual": 0.0717908931709128,
+      "period": 9.499283293789807,
+      "periodicError": 2.6645352591003757e-15,
+      "totalEnergy": 11.999999998851957,
+      "energyRelativeError": 9.567024950030145e-11,
+      "outsideEnergyFraction": 0.000014143406100558224
+    }
+  ],
+  "pass": true,
+  "limitations": [
+    "Checks the exact analytic field and a bounded spatial integral, not a browser time integrator.",
+    "The localization threshold and finite integration window do not establish every beta or infinite-domain energy."
+  ]
+}
