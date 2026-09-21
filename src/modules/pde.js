@@ -26,6 +26,9 @@
   const HEAD = `#version 300 es
 precision highp float;
 in vec2 v_uv; out vec4 outColor;
+float crossed(float value, float limit){
+  return isnan(value) || isinf(value) || abs(value) > limit ? 1.0 : 0.0;
+}
 float lap(sampler2D t, vec2 uv, vec2 px){
   return texture(t, uv + vec2(px.x, 0.0)).r + texture(t, uv - vec2(px.x, 0.0)).r
        + texture(t, uv + vec2(0.0, px.y)).r + texture(t, uv - vec2(0.0, px.y)).r
@@ -71,7 +74,7 @@ void main(){
   float n = 0.0;
   if (u_noise > 0.0) n = (hash21(v_uv * u_res + vec2(u_nOff, u_step)) - 0.5) * 2.0 * u_noise;
   c += u_dt * (diffusion + n);
-  outColor = vec4(clamp(c, -1.7, 1.7), 0.0, 0.0, 1.0);
+  outColor = vec4(c, max(texture(u_c, v_uv).g, crossed(c, 1.7)), 0.0, 1.0);
 }`;
 
   const STEP_OK = HEAD + `
@@ -87,7 +90,7 @@ void main(){
   float n = 0.0;
   if (u_noise > 0.0) n = (hash21(v_uv * u_res + vec2(u_nOff, u_step)) - 0.5) * 2.0 * u_noise;
   c += u_dt * (diffusion - u_sigma * (c - u_m) + n);
-  outColor = vec4(clamp(c, -1.7, 1.7), 0.0, 0.0, 1.0);
+  outColor = vec4(c, max(texture(u_c, v_uv).g, crossed(c, 1.7)), 0.0, 1.0);
 }`;
 
   // Active Model B+: mu gains lambda |grad phi|^2, and the Laplacian of phi rides along in .g for the zeta current
@@ -120,7 +123,7 @@ void main(){
   float n = 0.0;
   if (u_noise > 0.0) n = (hash21(v_uv * u_res + vec2(u_nOff, u_step)) - 0.5) * 2.0 * u_noise;
   c += u_dt * (u_M * lap(u_mu, v_uv, px) - u_zeta * div + n);
-  outColor = vec4(clamp(c, -1.7, 1.7), 0.0, 0.0, 1.0);
+  outColor = vec4(c, max(texture(u_c, v_uv).g, crossed(c, 1.7)), 0.0, 1.0);
 }`;
 
   const MU_SH = HEAD + `
@@ -145,7 +148,7 @@ void main(){
   float n = 0.0;
   if (u_noise > 0.0) n = (hash21(v_uv * u_res + vec2(u_nOff, u_step)) - 0.5) * 2.0 * u_noise;
   u += u_dt * (lin + N + n);
-  outColor = vec4(clamp(u, -4.0, 4.0), 0.0, 0.0, 1.0);
+  outColor = vec4(u, max(texture(u_c, v_uv).g, crossed(u, 4.0)), 0.0, 1.0);
 }`;
 
   const MU_KS = HEAD + `
@@ -170,13 +173,10 @@ void main(){
   float n = 0.0;
   if (u_noise > 0.0) n = (hash21(v_uv * u_res + vec2(u_nOff, u_step)) - 0.5) * 2.0 * u_noise;
   u += u_dt * (-u_nu * w - v - nl + n);
-  outColor = vec4(clamp(u, -8.0, 8.0), 0.0, 0.0, 1.0);
+  outColor = vec4(u, max(texture(u_c, v_uv).g, crossed(u, 10000.0)), 0.0, 1.0);
 }`;
 
-  const MID_PFC = HEAD + `
-uniform sampler2D u_c, u_v; uniform vec2 u_res;
-uniform float u_r, u_k0;
-float lap9(sampler2D t, vec2 uv, vec2 px){
+  const LAP9 = `float lap9(sampler2D t, vec2 uv, vec2 px){
   float c = texture(t, uv).r;
   float n = texture(t, uv + vec2(0.0, px.y)).r, s = texture(t, uv - vec2(0.0, px.y)).r;
   float e = texture(t, uv + vec2(px.x, 0.0)).r, w = texture(t, uv - vec2(px.x, 0.0)).r;
@@ -184,6 +184,16 @@ float lap9(sampler2D t, vec2 uv, vec2 px){
   float se = texture(t, uv + vec2(px.x, -px.y)).r, sw = texture(t, uv - px).r;
   return (4.0 * (n + s + e + w) + (ne + nw + se + sw) - 20.0 * c) / 6.0;
 }
+`;
+
+  const MU_PFC = HEAD + LAP9 + `
+uniform sampler2D u_c; uniform vec2 u_res;
+void main(){ outColor = vec4(lap9(u_c, v_uv, 1.0 / u_res), 0.0, 0.0, 1.0); }`;
+
+  const MID_PFC = HEAD + LAP9 + `
+uniform sampler2D u_c, u_v; uniform vec2 u_res;
+uniform float u_r, u_k0;
+
 void main(){
   vec2 px = 1.0 / u_res;
   float psi = texture(u_c, v_uv).r;
@@ -194,18 +204,11 @@ void main(){
   outColor = vec4(mu, 0.0, 0.0, 1.0);
 }`;
 
-  const STEP_PFC = HEAD + `
+  const STEP_PFC = HEAD + LAP9 + `
 uniform sampler2D u_c, u_mu; uniform vec2 u_res;
 uniform float u_dt, u_M, u_damp, u_noise, u_step, u_nOff;
 ${G.GLSL.hash}
-float lap9(sampler2D t, vec2 uv, vec2 px){
-  float c = texture(t, uv).r;
-  float n = texture(t, uv + vec2(0.0, px.y)).r, s = texture(t, uv - vec2(0.0, px.y)).r;
-  float e = texture(t, uv + vec2(px.x, 0.0)).r, w = texture(t, uv - vec2(px.x, 0.0)).r;
-  float ne = texture(t, uv + px).r, nw = texture(t, uv + vec2(-px.x, px.y)).r;
-  float se = texture(t, uv + vec2(px.x, -px.y)).r, sw = texture(t, uv - px).r;
-  return (4.0 * (n + s + e + w) + (ne + nw + se + sw) - 20.0 * c) / 6.0;
-}
+
 void main(){
   vec2 px = 1.0 / u_res;
   float psi = texture(u_c, v_uv).r;
@@ -213,7 +216,7 @@ void main(){
   float n = 0.0;
   if (u_noise > 0.0) n = (hash21(v_uv * u_res + vec2(u_nOff, u_step)) - 0.5) * 2.0 * u_noise;
   psi += u_dt * u_M * lmu + u_dt * n;
-  outColor = vec4(clamp(psi, -2.8, 2.8), 0.0, 0.0, 1.0);
+  outColor = vec4(psi, max(texture(u_c, v_uv).g, crossed(psi, 2.8)), 0.0, 1.0);
 }`;
 
   const RENDER_FS = HEAD + `
@@ -270,6 +273,25 @@ void main(){
   outColor = vec4(0.5 + 0.5 * clamp(sm / 64.0, -1.0, 1.0), clamp(sa / 64.0, 0.0, 4.0) / 4.0, 0.0, 1.0);
 }`;
 
+  // Every cell participates, including at non-square edges. Reducing sticky flags
+  // once per batch avoids a synchronous full-field float readback on every step.
+  const GUARD_FS = HEAD + `
+uniform sampler2D u_c; uniform ivec2 u_size; uniform float u_limit;
+void main(){
+  ivec2 base = ivec2(gl_FragCoord.xy) * 8;
+  float bad = 0.0;
+  for(int y=0;y<8;y++) for(int x=0;x<8;x++) {
+    ivec2 p = base + ivec2(x,y);
+    if(p.x<u_size.x && p.y<u_size.y) {
+      vec2 v = texelFetch(u_c,p,0).rg;
+      bad = max(bad, max(v.g, crossed(v.r, u_limit)));
+    }
+  }
+  outColor=vec4(bad,0.0,0.0,1.0);
+}`;
+  const COPY_FS = HEAD + `uniform sampler2D u_c;
+void main(){ outColor=texture(u_c,v_uv); }`;
+
   function hexToRgb01(hex) {
     const rgb = U.hexToRgb(hex || '#000000');
     return [rgb[0] / 255, rgb[1] / 255, rgb[2] / 255];
@@ -287,8 +309,10 @@ void main(){
       if (!gl) return dead('WebGL2 is not available in this browser');
       const texType = gl.floatExt ? 'rgba32f' : 'rgba16f';
       if (!gl.floatExt) gl.getExtension('EXT_color_buffer_half_float');
-      let muPass, stepPass, renderPass, reducePass, splatPass, midPass = null;
+      let muPass, stepPass, renderPass, reducePass, splatPass, guardPass, copyPass, midPass = null;
       try {
+        guardPass = new G.Pass(gl, GUARD_FS);
+        copyPass = new G.Pass(gl, COPY_FS);
         muPass = new G.Pass(gl, spec.muFS);
         stepPass = new G.Pass(gl, spec.stepFS);
         renderPass = new G.Pass(gl, RENDER_FS);
@@ -297,6 +321,7 @@ void main(){
         if (spec.midFS) midPass = new G.Pass(gl, spec.midFS);
       } catch (err) { console.error(err); return dead('Shader compilation failed on this GPU'); }
 
+      let backupT = null, guardT = null, guardBuf = null, guardMessage = '', reactionMean = 0;
       let C = null, muT = null, midT = null, gw = 0, gh = 0, gbc = '', ramp = null, rampKey = '';
       const redBuf = new Uint8Array(RED * RED * 4);
       let reduceT = null, raf = 0, chunkTimer = 0, stepCount = 0, nOff = 0, meanV = 0, absV = 0;
@@ -312,9 +337,12 @@ void main(){
         // clamp-to-edge sampling makes every finite difference see its own value past the wall: a zero-gradient (no-flux) boundary
         const wrap = s.bc === 'noflux' ? 'clamp' : 'repeat';
         if (C && gw === W && gh === H && gbc === wrap) return;
-        if (C) { C.dispose(); muT.dispose(); if (midT) midT.dispose(); }
+        if (C) { C.dispose(); muT.dispose(); backupT.dispose(); guardT.dispose(); if (midT) midT.dispose(); }
         C = new G.PingPong(gl, W, H, { type: texType, filter: 'nearest', wrap });
         muT = new G.Target(gl, W, H, { type: texType, filter: 'nearest', wrap });
+        backupT = new G.Target(gl, W, H, { type: texType, filter: 'nearest', wrap });
+        guardT = new G.Target(gl, Math.ceil(W / 8), Math.ceil(H / 8), { type: 'rgba8' });
+        guardBuf = new Uint8Array(guardT.w * guardT.h * 4);
         midT = midPass ? new G.Target(gl, W, H, { type: texType, filter: 'nearest', wrap }) : null;
         gw = W; gh = H; gbc = wrap;
         if (reduceT) reduceT.dispose();
@@ -331,8 +359,23 @@ void main(){
         if (ramp) ramp.dispose();
         ramp = G.rampTexture(gl, s.palette, s.bg); rampKey = key;
       }
+      function refreshChem(s) {
+        muPass.draw(muT, Object.assign({ u_c: C.read, u_res: [gw, gh] }, spec.muUniforms(s)));
+        if (midPass) midPass.draw(midT, Object.assign({ u_c: C.read, u_v: muT, u_res: [gw, gh] }, spec.midUniforms(s)));
+      }
+      function crossedGuard() {
+        guardPass.draw(guardT, { u_c: C.read, u_size: { ivec: [gw, gh] }, u_limit: spec.id === 'ks' ? 10000 : spec.id === 'swift' ? 4 : spec.id === 'pfc' ? 2.8 : 1.7 });
+        gl.bindFramebuffer(gl.FRAMEBUFFER, guardT.fbo);
+        gl.readPixels(0, 0, guardT.w, guardT.h, gl.RGBA, gl.UNSIGNED_BYTE, guardBuf);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        if (gl.getError() !== gl.NO_ERROR) return true;
+        for (let i = 0; i < guardBuf.length; i += 4) if (guardBuf[i]) return true;
+        return false;
+      }
       function step(n) {
+        if (guardMessage || n <= 0) return false;
         const s = host.getState();
+        copyPass.draw(backupT, { u_c: C.read });
         for (let i = 0; i < n; i++) {
           muPass.draw(muT, Object.assign({ u_c: C.read, u_res: [gw, gh] }, spec.muUniforms(s)));
           const chem = midPass ? midT : muT;
@@ -340,10 +383,19 @@ void main(){
           stepPass.draw(C.write, Object.assign({
             u_c: C.read, u_mu: chem, u_res: [gw, gh],
             u_dt: s.dt, u_noise: s.noise, u_step: (stepCount + i) * 1.17, u_nOff: nOff,
-          }, spec.stepUniforms(s)));
+          }, spec.stepUniforms(s), spec.id === 'ohta' ? { u_m: reactionMean } : {}));
           C.swap();
         }
+        if (crossedGuard()) {
+          copyPass.draw(C.read, { u_c: backupT });
+          refreshChem(s);
+          guardMessage = 'numerical guard: last valid batch retained; lower time step or activity, then reseed';
+          stop(); measure(); status();
+          return false;
+        }
         stepCount += n;
+        refreshChem(s);
+        return true;
       }
       function render(target) {
         const s = host.getState();
@@ -375,22 +427,23 @@ void main(){
           '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
           spec.status(host.getState(), meanV, absV, stepCount) +
           '<span>step <b>' + stepCount.toLocaleString() + '</b></span>' +
-          (extra ? '<span>' + extra + '</span>' : '')
+          (guardMessage ? '<span><b>' + guardMessage + '</b></span>' : extra ? '<span>' + extra + '</span>' : '')
         );
       }
       function stop() { cancelAnimationFrame(raf); raf = 0; clearTimeout(chunkTimer); chunkTimer = 0; }
       function frame() {
         raf = 0;
         const s = host.getState();
-        step(s.steps);
+        const advanced = step(s.steps);
         render();
+        if (!advanced) return;
         if (stepCount % 16 < s.steps) { measure(); status(); }
         raf = requestAnimationFrame(frame);
       }
       function startLoop() {
         stop();
         const s = host.getState();
-        if (s.running && !host.reducedMotion()) raf = requestAnimationFrame(frame);
+        if (!guardMessage && s.running && !host.reducedMotion()) raf = requestAnimationFrame(frame);
         else { measure(); status(!s.running ? 'paused' : ''); render(); }
       }
       function burst(total) {
@@ -398,7 +451,8 @@ void main(){
         let left = total;
         (function chunk() {
           const n = Math.min(24, left); left -= n;
-          step(n); render();
+          const advanced = step(n); render();
+          if (!advanced) return;
           if (left > 0) chunkTimer = setTimeout(chunk, 0);
           else { measure(); status(); startLoop(); }
         })();
@@ -412,13 +466,18 @@ void main(){
         fieldCells() { return gw && gh ? [gw, gh] : null; },
         aspect(s) { return ASPECTS[s.aspect] || 1; },
         regenerate() {
-          stop(); stepCount = 0;
+          stop(); stepCount = 0; guardMessage = '';
           const s = host.getState();
           const rng = U.makeRng(s.seed + '/' + spec.id + '/off');
           nOff = rng.range(0, 900);
           ensureGrid(s);
-          upload(C.read, spec.seed(s, gw, gh));
-          muT.clear(0, 0, 0, 1);
+          const initial = spec.seed(s, gw, gh);
+          reactionMean = 0;
+          for (let i = 0; i < initial.length; i += 4) reactionMean += initial[i];
+          reactionMean /= gw * gh;
+          upload(C.read, initial);
+          refreshChem(s);
+          if (crossedGuard()) { guardMessage = 'initial field exceeds the monitored range; reduce seed amplitude'; render(); measure(); status(); return; }
           const warm = host.reducedMotion() ? Math.min(s.warmup, 80) : s.warmup;
           if (warm > 0) burst(warm);
           else { render(); measure(); status(); startLoop(); }
@@ -433,12 +492,21 @@ void main(){
           else if (key === 'burst') burst(400);
         },
         disturb(p) {
-          if (!C || !splatPass) return;
+          if (!C || !splatPass || guardMessage) return;
+          copyPass.draw(backupT, { u_c: C.read });
           splatPass.draw(C.write, {
             u_src: C.read, u_pos: [p.x, p.yGL],
             u_add: spec.pokeAdd, u_rad: spec.pokeRad, u_amt: 1, u_mode: { int: spec.pokeMode ?? 1 },
           });
-          C.swap(); render(); startLoop();
+          C.swap();
+          if (crossedGuard()) {
+            copyPass.draw(C.read, { u_c: backupT });
+            guardMessage = 'brush exceeded the monitored range; previous field retained; reseed to resume';
+            stop(); refreshChem(host.getState()); render(); measure(); status(); return;
+          }
+          // A brush is an external material addition. Keep the original Ohta mean
+          // reference: the reaction subsequently relaxes the added zero mode.
+          refreshChem(host.getState()); render(); startLoop();
         },
         async exportPNG(w, h) {
           if (!C) throw new Error('nothing to export');
@@ -463,9 +531,9 @@ void main(){
 
   // Constant-mobility linearization about a uniform c has decay rate
   // M q (3c^2 - 1 + eps^2 q), with q in [0, 8] for the unit-cell 5-point stencil.
-  // Use the solver's full stored concentration envelope, |c| <= 1.7, instead of 1.2:
+  // Use the solver's monitored concentration envelope, |c| <= 1.7, instead of 1.2:
   // a disturbance can reach larger amplitudes and the old ceiling amplified grid-scale modes.
-  // The 0.8 margin is a linear estimate, not a nonlinear/variable-mobility stability proof.
+  // The 0.8 margin is a conditional linear estimate, not a nonlinear/variable-mobility stability proof.
   // The optional reaction rate covers Ohta-Kawasaki's additional -sigma(c-m) term.
   // States outside the stored envelope are not covered by this estimate.
   function chMaxDt(M, eps, reactionRate = 0) {
@@ -484,11 +552,19 @@ void main(){
   function ksMaxDt(nu) {
     return 1.6 / Math.max(1e-6, 64 * (Number(nu) || 1) - 8);
   }
-  // Swift-Hohenberg is lambda(L) = r - (L + k0^2)^2, again worst at L = -8. This is a ceiling on the dt
-  // control only: every shipped preset sits well inside it, so no existing plate moves.
-  function shMaxDt(r, k0) {
-    const g = 8 - (Number(k0) || 0.62) ** 2;
-    return 2 / Math.max(1e-6, g * g - (Number(r) || 0));
+  // SH's local derivative is r + 2g u - 3 cub u². Bound its negative
+  // part on |u|<=4, together with the full lattice symbol, with a 0.8 margin.
+  function shMaxDt(r, k0, g, cub) {
+    const k2 = Number(k0) ** 2, A = 4;
+    const stiff = Math.max(k2 * k2, (8 - k2) ** 2);
+    return 1.6 / Math.max(1e-6, stiff - Number(r) + 2 * Math.abs(Number(g)) * A + 3 * Number(cub) * A * A);
+  }
+  // Δ9 has q=-symbol in [0,16/3]. Linearizing PFC about uniform psi
+  // gives decay M q [r+(k0²-q)²+3psi²]. Bound it on |psi|<=2.8.
+  // This is a conditional frozen-state estimate, not global nonlinear stability.
+  function pfcMaxDt(M, r, k0) {
+    const Q = 16 / 3, k2 = Number(k0) ** 2, A = 2.8;
+    return 1.6 / Math.max(1e-6, Number(M) * Q * (Math.max(0, Number(r)) + Math.max(k2 * k2, (Q - k2) ** 2) + 3 * A * A));
   }
 
   function seedNoise(s, W, H, amp, mean) {
@@ -511,7 +587,7 @@ void main(){
     return [
       { group: 'Simulation', key: 'running', label: 'Running', type: 'toggle', kind: LIVE },
       RANGE('Simulation', 'steps', 'Steps per frame', LIVE, 1, 8, 1, String),
-      RANGE('Simulation', 'dt', 'Time step', LIVE, 0.002, 0.12, 0.001, f3),
+      RANGE('Simulation', 'dt', 'Time step', LIVE, 0.0001, 0.12, 0.0001, v => v.toFixed(4), { hint: 'Explicit Euler. A parameter-dependent ceiling limits the step; it is not a nonlinear stability proof. A numerical guard stops and retains the last valid batch instead of clipping the field.' }),
       RANGE('Simulation', 'warmup', 'Warm-up steps', GEOM, 0, 2000, 50, String),
       { group: 'Simulation', key: 'burst', label: 'Run 400 steps', type: 'action' },
       { group: 'Simulation', key: 'reseed', label: 'Reseed', type: 'action' },
@@ -599,9 +675,8 @@ void main(){
       pokeAdd: [1, 0, 0, 1], pokeRad: 0.06, pokeMode: 0,
       muUniforms: s => ({ u_eps2: s.eps * s.eps }),
       stepUniforms: s => ({ u_M: s.M, u_deg: s.deg ? 1 : 0 }),
-      status: (s, mean, abs, step) => {
-        const kind = Math.abs(s.c0) < 0.18 ? 'spinodal' : 'off-critical';
-        return '<span>⟨c⟩ <b>' + mean.toFixed(2) + '</b> · ' + kind + '</span>';
+      status: (s, mean) => {
+        return '<span>⟨c⟩ ≈ <b>' + mean.toFixed(2) + '</b></span>';
       },
       seed(s, W, H) {
         const rng = U.makeRng(s.seed + '/cahn');
@@ -641,19 +716,19 @@ void main(){
     tab: 'Ohta–Kawasaki',
     subtitle: 'diblock copolymer · finite-size spots and lamellae · 1986',
     order: 56.5,
-    equation: '∂u/∂t = Δ(u³ − u − ε²Δu) − σ(u − m)',
-    credit: "Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). Coarsening stops. The equilibrium is spots, stripes or bicontinuous networks whose period is set by σ, not by waiting.",
-    blurb: 'Cahn–Hilliard coarsens forever: two blobs, then one. A diblock cannot. The two chemistries are chained, so a domain that grows too large pays a stretching penalty, written as a Coulomb term. The extra −σ(u−m) in the dynamics is that penalty after the mathematics has done its work. Turn σ up and the labyrinth of a critical quench freezes into a fingerprint. Off-critical, into a lattice of spots. That is why copolymer films look like they do, and why this plate stops changing.',
+    equation: '∂u/∂t = ∇·[M(u)∇μ] − σ(u−m),   μ = u³ − u − ε²Δu',
+    credit: "Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). The long-range penalty can frustrate ordinary coarsening and favor microstructured states. Pattern selection depends on composition and parameters; a finite preview does not prove equilibrium.",
+    blurb: 'A diblock links two chemistries into one chain. The long-range penalty opposes macroscopic segregation and can favor a finite pattern scale. Here the constant-mobility model adds −σ(u−m) to Cahn–Hilliard, with m fixed to the actual initialized mean. Added site noise and a brush can change the mean; after a brush the reaction relaxes it toward m. The optional variable mobility is a local-flux variant, not the full variable-mobility nonlocal Ohta–Kawasaki equation.',
     schema: GRID.concat([
       RANGE('Copolymer', 'c0', 'Mean m', GEOM, -0.5, 0.5, 0.01, f2, {
-        hint: 'm = 0: lamellae. |m| ≳ 0.2: spots of the minority block. The mean is conserved.' }),
+        hint: 'Baseline composition for the seed. With noise off and no brush, the actual initialized mean is conserved. Composition affects morphology but is not a phase diagnosis.' }),
       RANGE('Copolymer', 'eps', 'Interface width ε', LIVE, 0.7, 2.2, 0.05, f2),
       RANGE('Copolymer', 'sigma', 'Long-range σ', LIVE, 0, 0.24, 0.002, f3, {
-        hint: 'σ=0 is plain Cahn–Hilliard (coarsens forever). σ>0 sets the domain size: larger σ, finer pattern. The melt is only unstable while σ < 1/(4ε²), about 0.23 at the default ε, so past that the film stays uniform.' }),
+        hint: 'For constant mobility and homogeneous mean m, a lattice mode q grows at M q(1−3m²−ε²q)−σ. The familiar σ < M/(4ε²) estimate applies only at m=0 in the continuum. It is not a universal phase boundary.' }),
       RANGE('Copolymer', 'M', 'Mobility M', LIVE, 0.2, 2.5, 0.05, f2),
       { group: 'Copolymer', key: 'deg', label: 'Degenerate mobility', type: 'toggle', kind: LIVE },
       RANGE('Copolymer', 'amp', 'Quench amplitude', GEOM, 0.02, 0.5, 0.01, f2),
-      RANGE('Copolymer', 'noise', 'Noise', LIVE, 0, 0.06, 0.002, f3),
+      RANGE('Copolymer', 'noise', 'Added noise', LIVE, 0, 0.06, 0.002, f3, { hint: 'Additive site forcing, not conserved thermal noise. Turn off for the deterministic model.' }),
       { group: 'Seeding', key: 'init', label: 'Seeding', type: 'seg', kind: GEOM, wrap: true,
         options: [['quench', 'Quench'], ['drops', 'Drops'], ['bands', 'Bands']] },
     ]).concat(simFields()).concat(pictureFields([
@@ -676,7 +751,7 @@ void main(){
     },
     closedGroups: ['Seeding'],
     hints: {
-      Copolymer: 'σ is the whole difference from Cahn–Hilliard. At σ=0 the plate coarsens to two blobs. At σ≈8 you get the fingerprint of a symmetric diblock. Mean m picks spots versus stripes.',
+      Copolymer: 'σ penalizes deviations from the initialized mean. Composition, mobility, interface width and domain size jointly affect the pattern. The preview does not establish an equilibrium phase.',
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (A → B)',
     headline: 'sigma', headlineLabel: 'σ',
@@ -699,11 +774,8 @@ void main(){
       pokeAdd: [1, 0, 0, 1], pokeRad: 0.07, pokeMode: 0,
       muUniforms: s => ({ u_eps2: s.eps * s.eps }),
       stepUniforms: s => ({ u_M: s.M, u_deg: s.deg ? 1 : 0, u_sigma: s.sigma, u_m: s.c0 }),
-      status: (s, mean, abs) => {
-        const kind = Math.abs(s.c0) < 0.18 ? (s.sigma < 0.02 ? 'coarsening' : 'lamellar') : 'spots';
-        // the melt only patterns while sigma is below 1/(4 eps^2); past that it relaxes to uniform
-        const uniform = s.sigma >= 1 / (4 * s.eps * s.eps);
-        return '<span>⟨u⟩ <b>' + mean.toFixed(2) + '</b> · ' + (uniform ? 'uniform (σ past 1/4ε²)' : kind) + '</span><span>σ <b>' + s.sigma.toFixed(3) + '</b></span>';
+      status: (s, mean) => {
+        return '<span>⟨u⟩ ≈ <b>' + mean.toFixed(2) + '</b></span><span>σ <b>' + s.sigma.toFixed(3) + '</b></span>';
       },
       seed(s, W, H) {
         const rng = U.makeRng(s.seed + '/ohta');
@@ -740,22 +812,22 @@ void main(){
     id: 'amb',
     name: 'Active Model B+',
     tab: 'Active B+',
-    subtitle: 'phase separation that never finishes · 2018',
+    subtitle: 'active conserved phase field · 2018',
     order: 55.7,
-    equation: '∂φ/∂t = ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ|∇φ|²',
+    equation: '∂φ/∂t = M ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ|∇φ|²',
     credit: "Elsen Tjhung, Cesare Nardini and Michael E. Cates, Physical Review X 8, 031080 (2018). Cahn-Hilliard describes a passive mixture relaxing toward equilibrium. Two extra gradient terms, λ|∇φ|² in the chemical potential and a current ζ(∇²φ)∇φ that cannot come from any free energy, are the leading ways an active system (motile bacteria, self-propelled colloids) can break time-reversal symmetry while still conserving φ. They give the two phases different interfacial tensions, and when the tension felt by the minority phase turns negative the Ostwald process runs backward: large droplets shed material to small ones and coarsening stops.",
-    blurb: 'Quench a passive mixture and the droplets eat each other forever: the big ones grow, the small ones vanish, and the plate slowly empties out. Make the mixture active and it can refuse. With ζ and λ set so the minority phase has negative effective tension, big droplets lose material to small ones, the size distribution locks, and you get a bubbly foam that stays a foam. ζ = λ = 0 is plain Cahn-Hilliard, for comparison. The interesting corner is ζ well below zero with the minority phase in bubbles.',
+    blurb: 'A passive mixture can coarsen by transferring material between droplets. Active Model B+ adds two gradient terms that can change this exchange and, in suitable regimes, reverse Ostwald ripening. Both coefficients and the surrounding phase matter. The tab integrates a finite-grid version with a cubic local potential; a bubbly picture alone does not establish reverse ripening or a steady microphase. Turn added noise off for the deterministic conserved model.',
     schema: GRID.concat([
       RANGE('Activity', 'zeta', 'Current ζ', LIVE, -8, 8, 0.1, f1, {
-        hint: 'The non-equilibrium current ζ(∇²φ)∇φ. Negative and large, the minority phase stops coarsening: reverse Ostwald ripening.' }),
+        hint: 'The non-equilibrium current ζ(∇²φ)∇φ. Together with λ and composition, it can permit reverse Ostwald regimes. Its sign alone does not establish that behavior.' }),
       RANGE('Activity', 'lambda', 'Potential λ', LIVE, -4, 4, 0.1, f1, {
-        hint: 'λ|∇φ|² in μ: an active correction that can be written as a free-energy term only when ζ = 0.' }),
+        hint: 'λ|∇φ|² in μ is a nonvariational active term even when ζ=0. Both λ and ζ must vanish to recover this passive model.' }),
       RANGE('Mixture', 'c0', 'Mean composition φ₀', GEOM, -0.6, 0.6, 0.01, f2, {
         hint: 'Off-critical means droplets of the minority phase, which is where reverse Ostwald shows. φ₀ near 0 gives a bicontinuous labyrinth.' }),
       RANGE('Mixture', 'eps', 'Interface width ε', LIVE, 0.6, 2.4, 0.05, f2),
       RANGE('Mixture', 'M', 'Mobility M', LIVE, 0.2, 2.5, 0.05, f2),
       RANGE('Mixture', 'amp', 'Quench amplitude', GEOM, 0.02, 0.5, 0.01, f2),
-      RANGE('Mixture', 'noise', 'Thermal noise', LIVE, 0, 0.08, 0.002, f3),
+      RANGE('Mixture', 'noise', 'Added noise', LIVE, 0, 0.08, 0.002, f3, { hint: 'Illustrative additive site forcing, not conserved thermal noise. Set zero for noise-free conservation checks.' }),
       { group: 'Seeding', key: 'init', label: 'Seeding', type: 'seg', kind: GEOM, wrap: true,
         options: [['quench', 'Quench'], ['drops', 'Drops']] },
     ]).concat(simFields()).concat(pictureFields([
@@ -779,7 +851,7 @@ void main(){
     },
     closedGroups: ['Seeding'],
     hints: {
-      Activity: 'ζ and λ are the two leading-order ways activity enters a conserved scalar field. ζ = λ = 0 recovers Cahn-Hilliard. The reverse-Ostwald regime is ζ negative with the minority phase in droplets.',
+      Activity: 'ζ and λ are the two leading-order ways activity enters a conserved scalar field. ζ = λ = 0 recovers Cahn-Hilliard. Reverse Ostwald regimes depend jointly on activity, composition and interfaces; a negative ζ alone is not a diagnosis.',
       Picture: 'Composition is φ itself through the palette. Interfaces is |∇φ|. Relief treats φ as height.',
     },
     palette: true, defaultPalette: 'petri', paletteLabel: 'Colors (A → B)',
@@ -809,7 +881,7 @@ void main(){
       muUniforms: s => ({ u_eps2: s.eps * s.eps, u_lambda: s.lambda }),
       stepUniforms: s => ({ u_M: s.M, u_zeta: s.zeta }),
       status: (s, mean, abs, step) => {
-        const regime = s.zeta === 0 && s.lambda === 0 ? 'passive' : (s.zeta < -1 ? 'reverse Ostwald' : 'active');
+        const regime = s.zeta === 0 && s.lambda === 0 ? 'passive terms' : 'active terms';
         return '<span>⟨φ⟩ <b>' + mean.toFixed(2) + '</b> · ' + regime + '</span>';
       },
       seed(s, W, H) {
@@ -836,12 +908,12 @@ void main(){
     name: 'Swift–Hohenberg',
     subtitle: 'rolls, hexagons, localized states · 1977',
     order: 57,
-    equation: '∂u/∂t = r u − (k₀² + ∇²)² u + g u² − u³',
-    credit: "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is the universal envelope of Rayleigh–Bénard convection just above onset: a real scalar field with a preferred wavenumber k₀. The quadratic term g selects hexagons over rolls; at slightly negative r a localized pulse can sit in a stable zero background (snaking).",
-    blurb: 'A fluid heated from below does not boil at once. Near onset it organizes into stripes or hexagons whose wavelength is set by the depth of the layer. Swift–Hohenberg is that fact written as a PDE: a band of wavenumbers around k₀ is unstable when r>0, everything else is damped, and the cubic term stops the growth. Set g=0 and you get rolls. Give g a sign and the stripes break into a hexagonal lattice. The quadratic term does something else as well: past about g=0.85 the bifurcation turns subcritical, pattern and quiet background become bistable, and a bump dropped at r just below zero neither dies nor spreads. It settles into a convecton, a patch of rolls with a sharp edge sitting in a flat field.',
+    equation: '∂u/∂t = r u − (k₀² + ∇²)² u + g u² − b u³',
+    credit: "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is a phenomenological pattern-forming model motivated by convection near onset: a real scalar field with a preferred wavenumber k₀. Quadratic and cubic nonlinearities affect the available branches. Localized patterns can exist in suitable subcritical regimes; this display does not establish branch stability.",
+    blurb: 'Near convection onset, patterns can prefer a band of wavelengths. This scalar model captures that competition: k₀ chooses a preferred wavelength, r changes linear growth, and quadratic and cubic terms limit or redirect it. Rolls, hexagons and localized structures are possible, depending on parameters and initial conditions. For continuum one-dimensional stripes near onset, the subcritical threshold is g² > 27 b k₀⁴/38. That condition alone does not establish a stable localized state on this two-dimensional grid.',
     schema: GRID.concat([
       RANGE('Onset', 'r', 'Control r', LIVE, -0.4, 1.2, 0.01, f2, {
-        hint: 'r is the reduced Rayleigh number. r>0: patterns grow. r just below 0: a bump survives as a localized patch, but only once g is past about 0.85 and the bifurcation is subcritical. At g=0 anything below onset decays. r≪0: decay regardless.' }),
+        hint: 'r controls linear growth. Near onset the one-dimensional continuum stripe threshold depends on all three coefficients: g² > 27 b k₀⁴/38. Negative r and a seeded bump do not guarantee a stable localized pattern.' }),
       RANGE('Onset', 'k0', 'Wavenumber k₀', LIVE, 0.35, 1.2, 0.01, f2, {
         hint: 'Preferred spatial frequency, in 1/cells. λ ≈ 2π/k₀. Smaller k₀, fatter rolls.' }),
       RANGE('Onset', 'g', 'Quadratic g', LIVE, -1.2, 1.2, 0.02, f2, {
@@ -875,11 +947,11 @@ void main(){
     },
     palette: true, defaultPalette: 'harbor', paletteLabel: 'Colors',
     headline: 'r', headlineLabel: 'control r',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.025, 0.005, Math.min(0.12, shMaxDt(s.r, s.k0))); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.025, 0.005, Math.min(0.12, shMaxDt(s.r, s.k0, s.g, s.cub))); },
     surprise(rng) {
       const r = rng.pick([0.2, 0.3, 0.4, 0.55, -0.1]);
-      // Below onset only the subcritical branch has anything to show, and that needs g past about 0.85
-      // (the weakly nonlinear condition is g^2 > 27/38). Drawing g=0 with r<0 gives a plate that decays to nothing.
+      // These negative-r choices exceed the continuum stripe threshold over the
+      // sampled k0 range. This does not certify a 2D localized branch.
       const g = r < 0 ? rng.pick([1.2, 1.0, -1.1]) : rng.pick([0, 0, 0, 0.6, -0.5]);
       return {
         grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5']),
@@ -900,7 +972,7 @@ void main(){
       muUniforms: () => ({}),
       stepUniforms: s => ({ u_r: s.r, u_k0: s.k0, u_g: s.g, u_cub: s.cub }),
       status: (s, mean, abs) => {
-        const kind = s.r < 0 ? 'subcritical' : (Math.abs(s.g) > 0.2 ? 'hexagons' : 'rolls');
+        const kind = s.r < 0 ? 'below linear onset' : 'above linear onset';
         return '<span>r <b>' + s.r.toFixed(2) + '</b> · ' + kind + '</span><span>|u|̄ <b>' + abs.toFixed(2) + '</b></span>';
       },
       seed(s, W, H) {
@@ -934,7 +1006,7 @@ void main(){
     order: 61,
     equation: '∂u/∂t = −ν ∇⁴u − ∇²u − (α/2)|∇u|²',
     credit: "Yoshiki Kuramoto and Toshio Tsuzuki, Prog. Theor. Phys. 55, 356 (1976); G. I. Sivashinsky, Acta Astronautica 4, 1177 (1977). Independently derived for reaction-diffusion phase turbulence and for laminar flame fronts. It is the simplest PDE that produces extensive spatiotemporal chaos: a band of unstable modes, a stabilizing biharmonic, and a Burgers-like nonlinearity. In two dimensions the cells of a flame.",
-    blurb: 'A flame front wants to wrinkle. Long waves grow (the −∇² term), short waves are damped (the −∇⁴ term), and the slope of the front feeds itself ((1/2)|∇u|²). Nothing else is required. The result is a field that never settles: cells appear, pinch, and are eaten, endlessly, with a correlation length set by ν. That is why this equation is the standard example of extensive chaos — the same statistics in a larger pan, not a single oscillator in costume.',
+    blurb: 'A flame front wants to wrinkle. Long waves grow (the −∇² term), short waves are damped (the −∇⁴ term), and the slope of the front feeds itself ((1/2)|∇u|²). Nothing else is required. In suitable parameter and domain ranges, cells can appear, merge and disappear in irregular spatiotemporal motion. Steady or simple solutions also exist. This visual evolution is not a measurement of chaos. The spatial mean of height can drift; it is not a conserved field.',
     schema: GRID.concat([
       RANGE('Flame', 'nu', 'Viscosity ν', LIVE, 0.4, 2.4, 0.05, f2, {
         hint: 'Coefficient of the stabilizing ∇⁴. Larger ν, fatter cells, slower chaos. The most unstable wavelength is ∼2π√(2ν).' }),
@@ -963,7 +1035,7 @@ void main(){
     },
     closedGroups: ['Seeding'],
     hints: {
-      Flame: 'ν is the cell size. α is how violently the front steepens. Together they set the Lyapunov chaos of the plate. There is no parameter that “settles” 2D KS — if it looks still, you paused it.',
+      Flame: 'ν controls short-wave damping and α controls slope coupling. Domain size and initial state also affect the behavior. A stationary uniform field is an exact solution; this tab does not measure a Lyapunov exponent.',
       Picture: 'Relief is the honest flame-front picture: u as height, lit. Slope is |∇u|. Cells colors the local facet orientation.',
     },
     palette: true, defaultPalette: 'thermal', paletteLabel: 'Colors',
@@ -987,7 +1059,7 @@ void main(){
       pokeAdd: [2.2, 0, 0, 1], pokeRad: 0.07, pokeMode: 1,
       muUniforms: () => ({}),
       stepUniforms: s => ({ u_nu: s.nu, u_alpha: s.alpha }),
-      status: (s, mean, abs) => '<span>ν <b>' + s.nu.toFixed(2) + '</b></span><span>rms <b>' + abs.toFixed(2) + '</b></span>',
+      status: s => '<span>ν <b>' + s.nu.toFixed(2) + '</b></span><span>α <b>' + s.alpha.toFixed(2) + '</b></span>',
       seed(s, W, H) {
         const rng = U.makeRng(s.seed + '/ks');
         const data = new Float32Array(W * H * 4);
@@ -1021,13 +1093,13 @@ void main(){
     subtitle: 'Elder density-wave crystal · 2002',
     order: 57.5,
     equation: '∂ψ/∂t = M ∇²(δF/δψ),   F = ∫ ½ ψ [r + (k₀²+∇²)²] ψ + ψ⁴/4',
-    credit: "K. R. Elder, M. Katakowski, M. Haataja and M. Grant, Phys. Rev. Lett. 88, 245701 (2002); Elder and Grant, Phys. Rev. E 70, 051605 (2004). The phase-field crystal model is Swift–Hohenberg’s free energy evolved with conserved (Cahn–Hilliard) dynamics. Density peaks are atoms. A quench from a uniform liquid freezes into a triangular lattice; grains rotate, vacancies hop, and the solid–liquid front is a real melting line, all on diffusive time.",
-    blurb: 'A crystal is a density wave. Elder’s free energy is the same one Swift–Hohenberg used for convection, but the dynamics conserve the mean: peaks cannot appear from nowhere, they have to be fed by the liquid around them. That one change is the difference between a roll pattern and a lattice of atoms. r is how far you are below the melting line. ψ₀ is the mean density — too low and you get stripes (a smectic), in the window you get a triangular crystal, too high or too low and it stays liquid. Two seeds with different orientations grow until they meet, and the seam is a grain boundary with dislocations you can count.',
+    credit: "K. R. Elder, M. Katakowski, M. Haataja and M. Grant, Phys. Rev. Lett. 88, 245701 (2002); Elder and Grant, Phys. Rev. E 70, 051605 (2004). The phase-field crystal model is Swift–Hohenberg’s free energy evolved with conserved (Cahn–Hilliard) dynamics. The field represents time-averaged atomic-scale density, not individual particle trajectories. The model supports crystalline order and defects on diffusive time scales; this finite-grid display does not locate a material melting line.",
+    blurb: 'The phase-field crystal model favors spatially periodic density. Its conserved dynamics redistribute the field through a chemical potential. Undercooling, mean density and wavelength affect which structures can develop. Seeds with different orientations can produce grain boundaries, while other settings can relax toward a uniform field or stripes. The simulation uses a consistent nine-point Laplacian throughout. Preset names describe intended illustrations, not measured phases or a calibrated material.',
     schema: GRID.concat([
       RANGE('Crystal', 'r', 'Quench r', LIVE, -0.8, 0.2, 0.01, f2, {
         hint: 'r is the undercooling. More negative, deeper quench, stronger lattice. r ≳ 0 melts everything back to liquid.' }),
       RANGE('Crystal', 'psi0', 'Mean density ψ₀', GEOM, -0.4, 0.55, 0.01, f2, {
-        hint: 'Conserved mean. Near 0: stripes. Around 0.25–0.35: triangular crystal. Outside the solid window: liquid.' }),
+        hint: 'Requested baseline density; a finite seeded pattern can shift its actual mean. With noise off that actual mean is conserved. Near 0: stripes. Around 0.25–0.35: triangular crystal. Outside the solid window: liquid.' }),
       RANGE('Crystal', 'k0', 'Lattice k₀', LIVE, 0.45, 1.1, 0.01, f2, {
         hint: 'Preferred reciprocal-lattice spacing. λ ≈ 2π/k₀. Smaller k₀, fatter atoms.' }),
       RANGE('Crystal', 'M', 'Mobility M', LIVE, 0.15, 1.5, 0.05, f2),
@@ -1035,7 +1107,7 @@ void main(){
       RANGE('Crystal', 'misori', 'Misorientation', GEOM, 0, 30, 1, v => v + '°', {
         dimUnless: s => s.init === 'bicrystal' || s.init === 'poly',
         hint: 'Angle between grains, in degrees. Small angle: a wall of discrete dislocations. Large: a disordered boundary.' }),
-      RANGE('Crystal', 'noise', 'Noise', LIVE, 0, 0.04, 0.001, f3),
+      RANGE('Crystal', 'noise', 'Added noise', LIVE, 0, 0.04, 0.001, f3, { hint: 'Additive site forcing changes mean density. It does not implement the conserved thermal noise of the paper.' }),
       { group: 'Seeding', key: 'init', label: 'Seeding', type: 'seg', kind: GEOM, wrap: true,
         options: [['seed', 'Nucleus'], ['poly', 'Polycrystal'], ['bicrystal', 'Bicrystal'], ['stripe', 'Stripes'], ['liquid', 'Liquid'], ['vacancy', 'Vacancy']] },
     ]).concat(simFields()).concat(pictureFields([
@@ -1066,8 +1138,8 @@ void main(){
     headline: 'r', headlineLabel: 'quench r',
     sanitize(s) {
       s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024);
-      s.dt = U.clamp(Number(s.dt) || 0.01, 0.002, 0.08);
       s.M = U.clamp(Number(s.M) || 0.45, 0.05, 2);
+      s.dt = Math.min(Math.max(Number(s.dt) || 0.005, 0.00001), pfcMaxDt(s.M, s.r, s.k0));
     },
     surprise(rng) {
       const init = rng.pick(['seed', 'seed', 'poly', 'bicrystal', 'stripe', 'liquid']);
@@ -1086,17 +1158,14 @@ void main(){
       };
     },
     create: pdeCreate({
-      id: 'pfc', muFS: MU_SH, midFS: MID_PFC, stepFS: STEP_PFC,
+      id: 'pfc', muFS: MU_PFC, midFS: MID_PFC, stepFS: STEP_PFC,
       views: { field: 0, abs: 1, grad: 2, shade: 3, mu: 4, orient: 5 },
       pokeAdd: [0.7, 0, 0, 1], pokeRad: 0.09, pokeMode: 1,
       muUniforms: () => ({}),
       midUniforms: s => ({ u_r: s.r, u_k0: s.k0 }),
       stepUniforms: s => ({ u_M: s.M, u_damp: 0.0 }),
       status: (s, mean, abs) => {
-        let kind = 'liquid';
-        if (abs > 0.35) kind = Math.abs(s.psi0) < 0.12 ? 'stripes' : 'crystal';
-        else if (abs > 0.18) kind = 'freezing';
-        return '<span>⟨ψ⟩ <b>' + mean.toFixed(2) + '</b> · ' + kind + '</span><span>r <b>' + s.r.toFixed(2) + '</b></span>';
+        return '<span>⟨ψ⟩ ≈ <b>' + mean.toFixed(2) + '</b></span><span>r <b>' + s.r.toFixed(2) + '</b></span>';
       },
       seed(s, W, H) {
         const rng = U.makeRng(s.seed + '/pfc');

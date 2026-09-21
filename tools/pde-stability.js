@@ -28,7 +28,11 @@ ${marker}`);
         await page.goto('file://' + path.join(root, 'studio.html') + '#three-vortex-bound/stability');
         // The click failure control restores both historical defects. The uniform-mode
         // failure control changes only dt, isolating the amplitude-envelope error.
-        const tested = fixture === 'real-click' && legacy ? source.replace('spec.pokeMode ?? 1', 'spec.pokeMode || 1') : source;
+        let tested = fixture === 'real-click' && legacy ? source.replace('spec.pokeMode ?? 1', 'spec.pokeMode || 1') : source;
+        // Reproduce the old failure faithfully: it clipped concentration and had
+        // no batch/brush rejection. The maintained solver now rejects such states.
+        if (legacy) tested = tested.replaceAll('if (crossedGuard())', 'if (false && crossedGuard())')
+          .replaceAll('vec4(c, max(texture(u_c, v_uv).g, crossed(c, 1.7)), 0.0, 1.0)', 'vec4(clamp(c, -1.7, 1.7), 0.0, 0.0, 1.0)');
         await page.evaluate(tested);
         rows.push(await page.evaluate(({ legacy, fixture }) => {
           const mod = Studio.modules.cahn, palette = Studio.PALETTES[mod.defaultPalette];
