@@ -29,6 +29,11 @@ One subject line, sentence case, a period, what changed. A body only when the su
 
 ```
 The plate checks. The catalog is generated.
+
+For registered scientific evidence, `node tools/verify.js --print <id> ...` checks consistency and runs
+the selected numerical and print tests, deduplicating shared tests. Use `--list` to preview the plan;
+missing evidence remains visible. See [tools/VERIFY.md](tools/VERIFY.md). This complements the plate
+and export checks below; it does not certify an entire technique.
 ```
 
 Not `fix`, not `WIP`, not a dump of files. Not Conventional Commits prefixes (`feat:`, `chore:`); the log is read as English.

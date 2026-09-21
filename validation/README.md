@@ -58,6 +58,8 @@ clamps, finite lattices, noise and boundary choices need explicit review.
 
 The mobility correction and temporal refinement are documented in [CAHN-HILLIARD.md](CAHN-HILLIARD.md).
 The subsequent click/timestep correction and its historical failure controls are in [CAHN-STABILITY.md](CAHN-STABILITY.md).
+Wave evolution, time levels and bounded convergence are covered in [SCHRODINGER.md](SCHRODINGER.md).
+The convection component audit and instantaneous-transport limits are in [CONVECTION.md](CONVECTION.md).
 
 Priority: the remaining Cahn-Hilliard/PDE convergence and precision checks, wave/transport solvers, then stochastic measurements and
 the remaining families. The double-triangle/polygon vortex module already has independent numerical tests; its print

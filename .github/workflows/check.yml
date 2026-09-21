@@ -40,6 +40,7 @@ jobs:
       - name: Generated build and scientific coverage
         run: |
           node tools/maintenance-check.js
+          node tools/verify-check.js
           node tools/build.js --check
           node tools/science.js
       - name: Structural checks
@@ -72,6 +73,23 @@ jobs:
         run: node tools/pde-print-state.js
       - name: Seed box, hash, shortcuts, dock
         run: node tools/ui.js
+
+  wave-science:
+    name: wave science
+    runs-on: ubuntu-latest
+    needs: lint
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright@1.49.1
+          npx playwright install --with-deps --only-shell chromium
+      - name: Numerical benchmarks and shared print-state checks
+        run: node tools/verify.js --print schrodinger convection
 
   recipes:
     name: recipe compatibility

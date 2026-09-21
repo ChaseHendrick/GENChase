@@ -1,0 +1,708 @@
+{
+  "scope": "Actual module exportPNG to 2400x2400 pixels (8 inches at 300 ppi), on initial and 16-step evolved paused square fields at 128 and 192 cells per side, for every current view. Compares exact float32 words in both ping-pong textures and all other solver textures, plus settings, solver time, counters and measurement scalars; includes nonzero Schrodinger detector history and a state-mutating export failure control.",
+  "limitations": "Preservation and dimensions only, not numerical PDE accuracy, print color fidelity, pixel-level renderer correctness or added physical resolution. Fixed default physical parameters and seeds, square aspect, float32 SwiftShader; no running exports, float16 fallback, other devices, longer trajectories, other parameters or aspect ratios.",
+  "rows": [
+    {
+      "id": "schrodinger",
+      "requestedGrid": 128,
+      "cells": [
+        128,
+        128
+      ],
+      "precision": "rgba32f",
+      "dt": 0.2,
+      "seed": "visscher-1991",
+      "fields": [
+        "wave",
+        "wavePrevious",
+        "potential"
+      ],
+      "metadataFields": [
+        "nOff",
+        "norm0",
+        "normNow",
+        "expWhite",
+        "densWhite",
+        "simTime",
+        "staggerDt",
+        "stepCount",
+        "raf",
+        "chunkTimer"
+      ],
+      "detectorDose": 2727.0211279175837,
+      "exports": [
+        {
+          "steps": 0,
+          "view": "detector",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 3903209,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 196608,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "density",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 5147415,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 196608,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "phase",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 5221511,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 196608,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "detector",
+          "time": 3.2,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 4728332,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 196608,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "density",
+          "time": 3.2,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 5088870,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 196608,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "phase",
+          "time": 3.2,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 5166511,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 196608,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Export wrapper advances the actual solver one step after producing the PNG",
+        "rejected": true,
+        "comparison": {
+          "changedWords": 131072,
+          "nonfinite": 0,
+          "checkedWords": 196608,
+          "changedFields": [
+            "wave",
+            "wavePrevious"
+          ],
+          "metadataChanged": true,
+          "metadataNonfinite": 0,
+          "cellsChanged": false,
+          "settingsChanged": false
+        }
+      }
+    },
+    {
+      "id": "schrodinger",
+      "requestedGrid": 192,
+      "cells": [
+        192,
+        192
+      ],
+      "precision": "rgba32f",
+      "dt": 0.2,
+      "seed": "visscher-1991",
+      "fields": [
+        "wave",
+        "wavePrevious",
+        "potential"
+      ],
+      "metadataFields": [
+        "nOff",
+        "norm0",
+        "normNow",
+        "expWhite",
+        "densWhite",
+        "simTime",
+        "staggerDt",
+        "stepCount",
+        "raf",
+        "chunkTimer"
+      ],
+      "detectorDose": 2866.6668539438315,
+      "exports": [
+        {
+          "steps": 0,
+          "view": "detector",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 3871785,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 442368,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "density",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 4582985,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 442368,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "phase",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 4616499,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 442368,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "detector",
+          "time": 3.2,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 4316942,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 442368,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "density",
+          "time": 3.2,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 4545006,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 442368,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "phase",
+          "time": 3.2,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 4571033,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 442368,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Export wrapper advances the actual solver one step after producing the PNG",
+        "rejected": true,
+        "comparison": {
+          "changedWords": 294912,
+          "nonfinite": 0,
+          "checkedWords": 442368,
+          "changedFields": [
+            "wave",
+            "wavePrevious"
+          ],
+          "metadataChanged": true,
+          "metadataNonfinite": 0,
+          "cellsChanged": false,
+          "settingsChanged": false
+        }
+      }
+    },
+    {
+      "id": "convection",
+      "requestedGrid": 128,
+      "cells": [
+        128,
+        128
+      ],
+      "precision": "rgba32f",
+      "dt": 0.007823886719327832,
+      "seed": "benard-1900",
+      "fields": [
+        "fluid",
+        "fluidPrevious",
+        "streamfunction",
+        "streamfunctionPrevious",
+        "velocity"
+      ],
+      "metadataFields": [
+        "dx",
+        "wMax",
+        "gMax",
+        "nusselt",
+        "simTime",
+        "stepCount",
+        "raf",
+        "chunkTimer"
+      ],
+      "detectorDose": null,
+      "exports": [
+        {
+          "steps": 0,
+          "view": "temp",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 9779324,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 327680,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "vort",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 6569243,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 327680,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "schlieren",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 10501540,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 327680,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "etched",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 9675840,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 327680,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "temp",
+          "time": 0.1251821875092453,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 7331881,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 327680,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "vort",
+          "time": 0.1251821875092453,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 6700449,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 327680,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "schlieren",
+          "time": 0.1251821875092453,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 8716273,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 327680,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "etched",
+          "time": 0.1251821875092453,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 7507831,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 327680,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Export wrapper advances the actual solver one step after producing the PNG",
+        "rejected": true,
+        "comparison": {
+          "changedWords": 145663,
+          "nonfinite": 0,
+          "checkedWords": 327680,
+          "changedFields": [
+            "fluid",
+            "fluidPrevious",
+            "streamfunction",
+            "streamfunctionPrevious",
+            "velocity"
+          ],
+          "metadataChanged": true,
+          "metadataNonfinite": 0,
+          "cellsChanged": false,
+          "settingsChanged": false
+        }
+      }
+    },
+    {
+      "id": "convection",
+      "requestedGrid": 192,
+      "cells": [
+        192,
+        192
+      ],
+      "precision": "rgba32f",
+      "dt": 0.003459101145693337,
+      "seed": "benard-1900",
+      "fields": [
+        "fluid",
+        "fluidPrevious",
+        "streamfunction",
+        "streamfunctionPrevious",
+        "velocity"
+      ],
+      "metadataFields": [
+        "dx",
+        "wMax",
+        "gMax",
+        "nusselt",
+        "simTime",
+        "stepCount",
+        "raf",
+        "chunkTimer"
+      ],
+      "detectorDose": null,
+      "exports": [
+        {
+          "steps": 0,
+          "view": "temp",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 10514969,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 737280,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "vort",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 6569243,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 737280,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "schlieren",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 9987989,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 737280,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "etched",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 10198790,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 737280,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "temp",
+          "time": 0.055345618331093395,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 7344583,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 737280,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "vort",
+          "time": 0.055345618331093395,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 6690802,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 737280,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "schlieren",
+          "time": 0.055345618331093395,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 9697736,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 737280,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 16,
+          "view": "etched",
+          "time": 0.055345618331093395,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 7734620,
+          "comparison": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "checkedWords": 737280,
+            "changedFields": [],
+            "metadataChanged": false,
+            "metadataNonfinite": 0,
+            "cellsChanged": false,
+            "settingsChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Export wrapper advances the actual solver one step after producing the PNG",
+        "rejected": true,
+        "comparison": {
+          "changedWords": 329085,
+          "nonfinite": 0,
+          "checkedWords": 737280,
+          "changedFields": [
+            "fluid",
+            "fluidPrevious",
+            "streamfunction",
+            "streamfunctionPrevious",
+            "velocity"
+          ],
+          "metadataChanged": true,
+          "metadataNonfinite": 0,
+          "cellsChanged": false,
+          "settingsChanged": false
+        }
+      }
+    }
+  ]
+}

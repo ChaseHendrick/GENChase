@@ -1,0 +1,205 @@
+{
+  "scope": "Float32 actual Schrödinger instances; static real potentials, no absorption; one harmonic packet, periodic Fourier time-step edit and hard-wall packet injection. Bounded regression, not all controls/hardware.",
+  "rows": [
+    {
+      "fixture": "well-corrected",
+      "grid": [
+        128,
+        72
+      ],
+      "dt": 0.05565217391304348,
+      "correctedDt": 0.056135791439941525,
+      "oldDt": 0.16,
+      "initial": {
+        "max": 1.116788625717163,
+        "norm": 228.97376246230138,
+        "potentialMax": 24.50231170654297,
+        "nonfinite": 0,
+        "wallMax": 0,
+        "time": 0,
+        "steps": 0
+      },
+      "baseline": {
+        "max": 1.1142628192901611,
+        "norm": 229.5024171276649,
+        "potentialMax": 24.50231170654297,
+        "nonfinite": 0,
+        "wallMax": 0,
+        "time": 0,
+        "steps": 0
+      },
+      "final": {
+        "max": 1.104149341583252,
+        "norm": 229.50241429671786,
+        "potentialMax": 24.50231170654297,
+        "nonfinite": 0,
+        "wallMax": 0,
+        "time": 6.4,
+        "steps": 115
+      },
+      "normRelativeDrift": 1.233515134480001e-8,
+      "growth": 0.9886824741559356
+    },
+    {
+      "fixture": "well-retired-bound",
+      "grid": [
+        128,
+        72
+      ],
+      "dt": 0.16,
+      "correctedDt": 0.056135791439941525,
+      "oldDt": 0.16,
+      "initial": {
+        "max": 1.8286089897155762,
+        "norm": 9.456883800357959,
+        "potentialMax": 24.50231170654297,
+        "nonfinite": 0,
+        "wallMax": 0,
+        "time": 0,
+        "steps": 0
+      },
+      "baseline": {
+        "max": 1.8286089897155762,
+        "norm": 9.456882716852482,
+        "potentialMax": 24.50231170654297,
+        "nonfinite": 0,
+        "wallMax": 0,
+        "time": 0,
+        "steps": 0
+      },
+      "final": {
+        "max": null,
+        "norm": null,
+        "potentialMax": 24.50231170654297,
+        "nonfinite": 778,
+        "wallMax": 0,
+        "time": 6.4,
+        "steps": 40
+      },
+      "normRelativeDrift": null,
+      "growth": null
+    },
+    {
+      "fixture": "dt-edit",
+      "error": 1.4901161138336505e-9,
+      "detectorChanges": 0,
+      "time": 0,
+      "steps": 0,
+      "staggerDt": 0.05,
+      "omittedRestaggerError": 0.30000000000000004
+    },
+    {
+      "fixture": "hard-wall",
+      "initial": {
+        "max": 0.9557770490646362,
+        "norm": 265.25996558295196,
+        "potentialMax": 0,
+        "nonfinite": 0,
+        "wallMax": 0,
+        "time": 0,
+        "steps": 0
+      },
+      "after": {
+        "max": 1.3739558458328247,
+        "norm": 389.75480919256455,
+        "potentialMax": 0,
+        "nonfinite": 0,
+        "wallMax": 0,
+        "time": 0,
+        "steps": 0
+      },
+      "kickError": 0.00008136654964130408,
+      "kickTolerance": 0.0002,
+      "rawKickWallAmplitude": 0.49528724777799077,
+      "worst": {
+        "x": 60,
+        "y": 18,
+        "real": 0.5259039402008057,
+        "expectedReal": 0.5259136475893245,
+        "imaginary": -1.2908976078033447,
+        "expectedImaginary": -1.290978974352986,
+        "ph": -1.3774178741398704
+      },
+      "precision": {
+        "test": "tools/schrodinger-state.js",
+        "scope": "Measured native GPU transcendental error for the declared packet; one backend, not a hardware-wide bound.",
+        "backend": {
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)"
+        },
+        "grid": [
+          128,
+          128
+        ],
+        "position": [
+          0.5,
+          0.15
+        ],
+        "momentum": [
+          0.35777087639996635,
+          0.17888543819998318
+        ],
+        "radius": 4.8,
+        "amplitude": 0.5,
+        "maxError": {
+          "gaussian": 1.8169499571563108e-7,
+          "phase": 0.000004671431533154191,
+          "nativeCos": 0.0001893738752172247,
+          "nativeSin": 0.00018934800583647604
+        },
+        "worstAllowedCell": {
+          "x": 60,
+          "y": 18,
+          "real": 0.5259039402008057,
+          "expectedReal": 0.5259136475893245,
+          "imaginary": -1.2908976078033447,
+          "expectedImaginary": -1.290978974352986,
+          "ph": -1.3774178741398704,
+          "gpuPhase": -1.377418041229248,
+          "gaussian": 0.8708915114402771,
+          "gpuCos": 0.19215315580368042,
+          "cpuCosAtGpuPhase": 0.19217530169445435,
+          "gpuSin": -0.9811736941337585,
+          "cpuSinAtGpuPhase": -0.9813606133418262
+        },
+        "movingPacketTolerance": 0.0002,
+        "stationaryPacketTolerance": 0.000002
+      }
+    },
+    {
+      "fixture": "hard-wall-stationary",
+      "initial": {
+        "max": 0.9557770490646362,
+        "norm": 265.25996558295196,
+        "potentialMax": 0,
+        "nonfinite": 0,
+        "wallMax": 0,
+        "time": 0,
+        "steps": 0
+      },
+      "after": {
+        "max": 1.1846048831939697,
+        "norm": 249.40346795170677,
+        "potentialMax": 0,
+        "nonfinite": 0,
+        "wallMax": 0,
+        "time": 0,
+        "steps": 0
+      },
+      "kickError": 1.148123633942788e-7,
+      "kickTolerance": 0.000002,
+      "rawKickWallAmplitude": 0.4981587803797208,
+      "worst": {
+        "x": 59,
+        "y": 25,
+        "real": 0.9664645195007324,
+        "expectedReal": 0.966464404688369,
+        "imaginary": -0.38705164194107056,
+        "expectedImaginary": -0.38705164194107056,
+        "ph": 0
+      }
+    }
+  ]
+}

@@ -91,6 +91,10 @@ Another purpose is mathematical discovery: explore simulations, spot relationshi
 
 ## What the checks establish
 
+Contributors can run a technique's recorded science and print checks with
+`node tools/verify.js --print schrodinger convection`. The [verification runner](tools/VERIFY.md)
+runs shared tests once and reports missing evidence; `--list --all` previews coverage.
+
 A displayed ratio of `1.000` is the same rounded value as a theoretical `1`. Extra decimal places do not establish accuracy or independence. The old table mixed sampled formulas, structural properties and numerical experiments, and omitted the recipes and uncertainties needed to assess its example values. Those unsupported snapshot numbers have been removed.
 
 The following results have executable tests and recorded scope. They report discrepancies or explicit limits, rather than matching rounded reference values. They do not certify all simulations or every control setting.
@@ -101,6 +105,9 @@ The following results have executable tests and recorded scope. They report disc
 | [Cahn–Hilliard composition conservation](validation/results/cahn-mobility.json) | Mean drift below 5 × 10⁻⁸ | 3.43 × 10⁻⁹ maximum | Same bounded test; excludes forcing and clipping |
 | [Cahn–Hilliard time-step refinement](validation/CAHN-HILLIARD.md#time-step-refinement) | Error decreases at first order as time step halves | Observed order 1.039–1.095 | Fixed grid and elapsed time; four boundary/mobility cases; does not test spatial convergence |
 | [PDE print-state preservation](validation/results/pde-print-state.json) | No changed field components; 2400 × 2400 output | Zero changes in six tested modules | Paused 512 × 512 initial fields; checks state and dimensions, not full rendering accuracy |
+| [Schrödinger time/space refinement](validation/SCHRODINGER.md) | Error decreases at second order under refinement | Time orders 2.005/2.001; space orders 1.980/1.992 | Declared periodic wave modes at fixed physical domain/time; excludes absorbers and general scattering |
+| [Convection diffusion refinement](validation/CONVECTION.md) | Error decreases against exact continuum diffusion | 3.77 × 10⁻⁶ → 1.06 × 10⁻⁶ → 2.73 × 10⁻⁷ | One isolated component; does not validate the complete turbulent flow |
+| [Wave/convection print-state preservation](validation/results/wave-print-state.json) | No changed field or history components | Zero changes across 28 exports | Two grids, initial/evolved paused fields and every view; not full rendering accuracy |
 
 Other tabs still expose useful diagnostics, but their meaning differs:
 

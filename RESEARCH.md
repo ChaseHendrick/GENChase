@@ -1,6 +1,6 @@
 # RESEARCH
 
-Ledger of prior-art searches and physics claims for GENChase. Handwritten, not generated. Last updated 2026-09-20.
+Ledger of prior-art searches and physics claims for GENChase. Handwritten, not generated. Last updated 2026-09-21.
 
 Agents: read this file **before** a web search for "has this been done", "is this a new law", or "never been theorized". Humans: the same, if you are about to spend an afternoon proving a negative.
 
@@ -24,7 +24,7 @@ The [2026-09-20 audit of all five candidates](identities/NOVELTY-AUDIT.md) super
 **Do not**
 
 - Re-run a search this file marks skip, unless you have a newly named repository, paper, or site that was previously unreachable.
-- Put a name on a published equation or on someone else's result. If you derived something, checked it against the papers, and put a check on the plate that marks miss when it is wrong, claim it: write [`IDENTITIES.md`](IDENTITIES.md) the same day, named for you (or a lock name you choose). Hendrick's Identity is Hendrick's. That name does not travel. It is not Gröbli's motion and it is not Aref's product under a new name.
+- Put a personal name on existing mathematics or claim originality from a numerical check or unsuccessful literature search. Use descriptive names, credit the primary sources, and retain unresolved priority as unconfirmed.
 - Private-name a published equation plus a feedback term. `track` and `causticsea` already made that mistake in draft and were renamed.
 - Treat **familiarity** / "seen elsewhere" as a measurement or a prior-art result. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
 - Parse `studio.html` to answer "what is in the catalog". Read `techniques.json`.
@@ -1003,3 +1003,11 @@ The personal name of candidate 1 is retired at the author’s request. The live 
 Queries: `site.arxiv.org Cahn Hilliard degenerate mobility polynomial free energy surface diffusion Lee Munch Suslina`; `site.nist.gov Cahn Hilliard variable mobility divergence equation`.
 
 Opened NIST PFHub Benchmark 1, https://pages.nist.gov/pfhub/benchmarks/benchmark1.ipynb/, especially the free-energy/dynamics and boundary-condition sections, and Lee, Munch and Suli, https://arxiv.org/pdf/1507.02410. The conservative equation places mobility inside the divergence. The existing optional degenerate update uses M(c) times a chemical-potential Laplacian and omits the mobility-gradient contribution. A conservative face-flux discretization is the correction target. The paper also cautions against identifying quadratic degenerate mobility with pure surface diffusion for polynomial free energies. The proposed stencil tests are not a reproduction of PFHub's full benchmark or proof of continuum convergence. No novelty claim is involved.
+
+### 2026-09-21  wave and convection numerical audit
+
+Queries: `Visscher 1991 A fast explicit algorithm for the time-dependent Schrodinger equation PDF norm staggered`; `site.edu Visscher algorithm Schrodinger staggered probability norm 1991`; `"Visscher" "A fast explicit" filetype:pdf -site:researchgate.net -site:scirp.org -site:citeseerx.ist.psu.edu -site:scispace.com`; `site.edu "Visscher" "probability" Schrödinger algorithm`; `site.dedalus-project.readthedocs.io Rayleigh Benard convection buoyancy free slip Nusselt`; `Rayleigh Benard Nusselt 1 sqrt Ra Pr volume average w T free fall units paper`.
+
+Read: [Visscher's author-uploaded paper](https://www.researchgate.net/publication/253168396_A_fast_explicit_algorithm_for_the_time-dependent_Schrodinger_equation), original Computers in Physics 5, 596–598 (1991), equations 7–8 and stability appendix; [official Dedalus Rayleigh–Bénard example](https://github.com/DedalusProject/dedalus/blob/master/examples/ivp_2d_rayleigh_benard/rayleigh_benard.py); [Pandey, Scheel and Schumacher (2018)](https://www.nature.com/articles/s41467-018-04478-0), Methods equations 10–14; [Whitehead and Doering (2011)](https://arxiv.org/pdf/1104.2278), page 2 and Figure 1. Visscher's DOI page did not open. A [TU Wien thesis landing page](https://repositum.tuwien.at/handle/20.500.12708/160075) supplied a summary only and was not used as equation evidence.
+
+Conclusion: fixed-step undamped Visscher evolution preserves a cross-time modified norm, not the old mixed-time display density. Its conditional stability must include the actual potential envelope. The two-dimensional matrix bound and Fourier benchmarks are derivations for this implementation. Convection's free-fall coefficients and buoyancy sign agree with the sources; stress-free tangential velocity and the instantaneous heat diagnostic required corrections. Numerical controls reproduce the old failures. Neither audit establishes novelty or reproduces complete experimental/turbulent results; bounded evidence and remaining gaps are in validation/SCHRODINGER.md and validation/CONVECTION.md. Earlier access limitations in this chronological ledger describe those earlier sessions, not this successful source retrieval.
