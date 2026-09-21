@@ -813,17 +813,27 @@
     "sourceSha256": "93b8bf74f41fe23eed1260a1ee783bab2a08dc2d582fce39324094ca2839bc7e",
     "reference": "Fermi, Pasta, Ulam and Tsingou, Los Alamos report LA-1940 (1955). A weakly nonlinear string, started in one Fourier mode, was expected to thermalise. It did not: the energy came back. Zabusky and Kruskal (1965) met the soliton in the continuum limit. The plate is spacetime of the displacements, with the first-mode energy measured against its start.",
     "equation": "ẍ_i = (q_{i+1}-2q_i+q_{i-1}) + α[(q_{i+1}-q_i)²-(q_i-q_{i-1})²],   E_1(t) returns",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Finite-time state evolution only; finest refinement step is below the UI minimum.",
+      "The displayed E1 value is displacement amplitude, not energy. Periods kept is unused. Recurrence, equipartition and print accuracy are not validated."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Correct the mode-energy diagnostic and the unused periods control.",
+      "Establish physical time calibration and nonlinear recurrence benchmarks; audit print exports."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/chain-science.js",
+        "scope": "Maintained displacement and velocity arrays for 48, 96 and 128 sites, alpha 0, 0.22 and 0.42, steps 0.07, 0.035 and 0.0175 at fixed time for each grid.",
+        "criteria": "Finest state error below 0.001; first-order error ratio between 3.5 and 4.5 over fourfold refinement. Reference refinement below 1e-9.",
+        "benchmark": "Exact fixed-end harmonic first mode and separately assembled bond-tension RK4 reference at 2000 and 4000 steps.",
+        "failureControl": "Increasing the linear force by 10% must cause state error above 0.02.",
+        "limitations": "Finite-time state evolution only; finest refinement step is below the UI minimum. The displayed E1 value is displacement amplitude, not energy. Periods kept is unused. Recurrence, equipartition and print accuracy are not validated.",
+        "command": "node tools/chain-science.js --write",
+        "results": "validation/results/chain-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -1622,13 +1632,12 @@
     "equation": "Re → 0,   scallop theorem: a reciprocal gait gives Δx = 0,   three-link square gait: Δx ≠ 0",
     "status": "unvalidated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Motion is prescribed by a per-step displacement proportional to amplitude squared, without solving Stokes force and torque balance.",
+      "Scallop zero displacement is imposed, not an independent scientific check. No hydrodynamic validation is registered."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Replace prescribed motion with a documented low-Reynolds-number force/torque model before claiming quantitative swimming physics.",
+      "Add independent reciprocal-gait, gait-reversal and hydrodynamic benchmarks plus print coverage."
     ],
     "numerical": [],
     "print": []
@@ -1674,20 +1683,30 @@
   {
     "id": "tennis",
     "source": "src/modules/tennis.js",
-    "sourceSha256": "cb1c41afa71361e9cf00cd56d47a184080b1929dfaa4cd1e48faefb63ce717ce",
+    "sourceSha256": "9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d",
     "reference": "L. Poinsot (1834) drew the polhode. The tennis-racket (or intermediate-axis) theorem says a rotation about the middle principal axis is unstable. V. Dzhanibekov saw a wingnut flip in free fall in 1985; video from 1991 made it famous. The plate is spacetime of the body-frame ω, with the middle component across the page.",
     "equation": "I1 ω1' = (I2−I3) ω2 ω3  (cyc.),   I1 < I2 < I3,   ω2 flips",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Finite parameter/time fixtures only; no exact flip-time, all-control or print accuracy claim.",
+      "RK4 is not exactly symplectic and does not establish indefinite energy preservation. Corrected trajectories change prior recipe images."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Broaden inertia, tilt, duration and sampling coverage and test flip-count resolution.",
+      "Audit the actual print path and numerical resolution separately."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/rigid-body-audit.js",
+        "scope": "RK4 torque-free rotation at I2 1.05, 1.4 and 1.7; nine conservation fixtures to time 120 and three refined trajectories to time 20.",
+        "criteria": "Energy and squared angular momentum relative drift below 1e-7; finest state error below 1e-7 and fourth-order convergence.",
+        "benchmark": "Independent angular-momentum-vector evolution L prime = L cross inverse(I)L, refined reference and torque-free conserved quantities.",
+        "failureControl": "Reinstating forward Euler must produce more than 4% energy drift on the default fixture.",
+        "limitations": "Finite parameter/time fixtures only; no exact flip-time, all-control or print accuracy claim. RK4 is not exactly symplectic and does not establish indefinite energy preservation. Corrected trajectories change prior recipe images.",
+        "command": "node tools/rigid-body-audit.js --write",
+        "results": "validation/results/rigid-body-audit.json"
+      }
+    ],
     "print": []
   },
   {
@@ -2230,17 +2249,27 @@
     "sourceSha256": "fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509",
     "reference": "Ernst Chladni, Entdeckungen uber die Theorie des Klanges, 1787. The governing plate equation was solved by Sophie Germain, whose 1816 work won the Paris Academy prize; Lord Rayleigh's Theory of Sound, 1877, put it on modern footing.",
     "equation": "u = sum Ak[cos(nk·pi·x)cos(mk·pi·y) - cos(mk·pi·x)cos(nk·pi·y)];   nodes where u = 0",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Square membrane-style cosine modes only, not elastic-plate mechanics. Circular mode radii use approximate rather than true Bessel zeros and are excluded. Sand, interference, mixed modes and print accuracy remain unvalidated.",
+      "No novel finding, physical experimental agreement or general parameter-domain certification is claimed."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend parameter and boundary-condition comparisons with primary sources.",
+      "Validate rendered fields and exports independently at print resolution."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/material-wave-science.js",
+        "scope": "Square cosine modes (1,2), (3,2), (4,5), unit frequency and zoom, zero rotation, sampled interior points and boundary normals.",
+        "benchmark": "Independent Helmholtz eigenvalue pi^2(n^2+m^2) and zero normal derivative at the square boundary.",
+        "failureControl": "Perturb the eigenvalue by 20 percent; normalized residual must exceed 0.05.",
+        "criteria": "Second-order difference refinement: error ratio between 12 and 20 for fourfold step reduction. Hasimoto finest errors below 0.002; Gerstner and Chladni below 0.0001; Chladni boundary derivative below 1e-10.",
+        "limitations": "Square membrane-style cosine modes only, not elastic-plate mechanics. Circular mode radii use approximate rather than true Bessel zeros and are excluded. Sand, interference, mixed modes and print accuracy remain unvalidated.",
+        "command": "node tools/material-wave-science.js --write",
+        "results": "validation/results/material-wave-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -2325,17 +2354,27 @@
     "sourceSha256": "18fa85720739ce503e313b5d928da01f65e3f9f163136050d276a9fc3e970a7a",
     "reference": "Gerstner, Theorie der Wellen, Abh. Bohm. Ges. Wiss. (1802), found the unique exact periodic deep-water gravity wave of finite amplitude: every particle traces a circle, the free surface is an inverted trochoid, and the pressure is constant along it. Rankine, On the exact form of waves near the surface of deep water, Phil. Trans. Roy. Soc. 153, 127 (1863), rediscovered the same motion. Superposing two Gerstners (the Two trains control) is graphics practice, Tessendorf, Simulating Ocean Water, SIGGRAPH course notes (2001), and is not an Euler solution. This plate is a seeded print of the exact Lagrangian map. It is not a new equation.",
     "equation": "X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "One train only. Two-train graphical superposition is excluded. Full Euler pressure-field reconstruction and print accuracy remain unvalidated.",
+      "No novel finding, physical experimental agreement or general parameter-domain certification is claimed."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend parameter and boundary-condition comparisons with primary sources.",
+      "Validate rendered fields and exports independently at print resolution."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/material-wave-science.js",
+        "scope": "Single train, steepness 0.22, 0.54 and 0.86, three material horizontal positions, depths and times, differences 0.004, 0.002 and 0.001.",
+        "benchmark": "Finite-difference Jacobian 1-k^2 A^2 exp(2kb), positive orientation, and zero tangential surface pressure gradient from acceleration plus gravity.",
+        "failureControl": "Increase frequency by 20 percent; normalized surface-pressure residual must exceed 0.1.",
+        "criteria": "Second-order difference refinement: error ratio between 12 and 20 for fourfold step reduction. Hasimoto finest errors below 0.002; Gerstner and Chladni below 0.0001; Chladni boundary derivative below 1e-10.",
+        "limitations": "One train only. Two-train graphical superposition is excluded. Full Euler pressure-field reconstruction and print accuracy remain unvalidated.",
+        "command": "node tools/material-wave-science.js --write",
+        "results": "validation/results/material-wave-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -2344,17 +2383,27 @@
     "sourceSha256": "00e15b29caba92c9cf360487ddce8471e0f351e54168633c80d650e75a1c01b3",
     "reference": "Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.",
     "equation": "r̈_i = −Σ_{j≠i} (r_i−r_j)/|r_i−r_j|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Finite deterministic fixtures only; no all-parameter or print accuracy claim.",
+      "Figure-eight comparison covers time 1.5 and one-period return only; no chaotic long-time guarantee."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Broaden independent reference trajectories and parameter coverage.",
+      "Audit actual print exports and displayed diagnostics."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/orbit-science.js",
+        "scope": "Actual Yoshida solver at 100, 200 and 400 steps to time 1.5, and 9600 steps for one-period return.",
+        "criteria": "Finest state error below 1e-7 and fourth-order refinement; one-period return below 1e-6.",
+        "benchmark": "Separately expressed Newtonian forces with RK4 at 12000 and 24000 steps; published figure-eight return period.",
+        "failureControl": "Increase maintained Newtonian force by one percent; state mismatch must exceed 0.001.",
+        "limitations": "Figure-eight comparison covers time 1.5 and one-period return only; no chaotic long-time guarantee.",
+        "command": "node tools/orbit-science.js --write",
+        "results": "validation/results/orbit-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -2392,17 +2441,27 @@
     "sourceSha256": "3636ca8433248c1afb594d76a13d78734592778668cb54dc37ca693af775fb84",
     "reference": "K. Schwarzschild, Sitzungsber. Preuss. Akad. Wiss. (1916). The unstable circular photon orbit at r = 3M is a textbook consequence of that metric. C. Darwin, Proc. R. Soc. Lond. A 249, 180 (1959) and J. L. Synge, Mon. Not. R. Astron. Soc. 131, 463 (1966) integrated the null geodesics and the capture cross-section. The plate is a seeded print of those equatorial (or slightly inclined) rays. It is not a new black hole.",
     "equation": "d²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Finite deterministic fixtures only; no all-parameter or print accuracy claim.",
+      "Finite launch radius and integration cutoffs; deflection is recorded but not validated by the turning-radius benchmark."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Broaden independent reference trajectories and parameter coverage.",
+      "Audit actual print exports and displayed diagnostics."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/orbit-science.js",
+        "scope": "Actual null-geodesic solver at five impact parameters and three angular steps; critical impact and circular radius searches.",
+        "criteria": "Critical impact error below 1e-6, radius error below 1e-8, turning-radius error below 2e-4 and correct capture/escape classifications.",
+        "benchmark": "Schwarzschild critical impact 3 sqrt(3), radius 3 and outer cubic turning root for M=1.",
+        "failureControl": "Change quadratic force coefficient from 3 to 3.3; critical impact mismatch must exceed 0.1.",
+        "limitations": "Finite launch radius and integration cutoffs; deflection is recorded but not validated by the turning-radius benchmark.",
+        "command": "node tools/orbit-science.js --write",
+        "results": "validation/results/orbit-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -2430,17 +2489,27 @@
     "sourceSha256": "88499871add56cf578919868f1ac033824f0594629abb241d77e41f5bb459765",
     "reference": "H. Hasimoto, J. Fluid Mech. 51, 477 (1972), mapped the local-induction approximation for a thin vortex filament to the cubic nonlinear Schrödinger equation and found the sech soliton: a loop of helical motion that travels along a line vortex at speed equal to twice the torsion. The explicit traveling-wave curve sampled here is the solitary-wave member of S. Kida, J. Fluid Mech. 112, 397 (1981). This plate is a print of that curve. It is not a new law of vortex motion.",
     "equation": "γ_t = γ_s × γ_ss,   ψ = κ exp(i ∫ τ ds),   κ = 2ν sech(ν(s−2τ₀ t)),   c = 2τ₀",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Only sampled local-induction soliton geometry. Full Biot-Savart dynamics, all controls and the print path remain unvalidated.",
+      "No novel finding, physical experimental agreement or general parameter-domain certification is claimed."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend parameter and boundary-condition comparisons with primary sources.",
+      "Validate rendered fields and exports independently at print resolution."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/material-wave-science.js",
+        "scope": "Four width/torsion pairs, three arclength locations and two times; centered differences at 0.02, 0.01 and 0.005.",
+        "benchmark": "Unit-speed parametrization, independent Frenet curvature and binormal evolution r_t = r_s cross r_ss.",
+        "failureControl": "Alter the maintained temporal phase by 20 percent; binormal residual must exceed 0.05.",
+        "criteria": "Second-order difference refinement: error ratio between 12 and 20 for fourfold step reduction. Hasimoto finest errors below 0.002; Gerstner and Chladni below 0.0001; Chladni boundary derivative below 1e-10.",
+        "limitations": "Only sampled local-induction soliton geometry. Full Biot-Savart dynamics, all controls and the print path remain unvalidated.",
+        "command": "node tools/material-wave-science.js --write",
+        "results": "validation/results/material-wave-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -2449,17 +2518,27 @@
     "sourceSha256": "886024bfdf6db93fb90dcbf43625d02aacb7d7bf7adbce3dc6316d352274ba9c",
     "reference": "Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Multi-lumps: Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). They pass through each other with no phase shift. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.",
     "equation": "(u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b²",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Only three single-lump presets; sampled residuals are evidence, not proof.",
+      "Multi-lump superpositions, interactions, displayed diagnostics and print accuracy are excluded."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Correct unsupported exact interaction claims for the product-tau multi-lump modes.",
+      "Broaden the domain and audit displayed residuals, peaks and actual print exports."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/lump-science.js",
+        "scope": "Actual one, oblique and tight single-lump fields at twelve spacetime points and three difference steps.",
+        "criteria": "Normalized RMS KP-I residual below 0.01 at step 0.01; fourfold step refinement reduces errors by factors 12 to 20.",
+        "benchmark": "Independent differences test u_xt + 6(u_x^2 + u u_xx) + u_xxxx - 3u_yy = 0 without using the displayed residual.",
+        "failureControl": "A 10% longitudinal time-coefficient error must produce normalized RMS residual above 0.02.",
+        "limitations": "Only three single-lump presets; sampled residuals are evidence, not proof. Multi-lump superpositions, interactions, displayed diagnostics and print accuracy are excluded.",
+        "command": "node tools/lump-science.js --write",
+        "results": "validation/results/lump-science.json"
+      }
+    ],
     "print": []
   },
   {

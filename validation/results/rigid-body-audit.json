@@ -1,0 +1,143 @@
+{
+  "sourceSha256": "9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d",
+  "cases": [
+    {
+      "I2": 1.05,
+      "T": 20,
+      "finite": true,
+      "energyRelativeDrift": 1.8984813721090177e-14,
+      "momentumRelativeDrift": 1.9095836023552692e-14,
+      "withinTolerance": true
+    },
+    {
+      "I2": 1.05,
+      "T": 60,
+      "finite": true,
+      "energyRelativeDrift": 2.0861090632706691e-13,
+      "momentumRelativeDrift": 2.0827783941967937e-13,
+      "withinTolerance": true
+    },
+    {
+      "I2": 1.05,
+      "T": 120,
+      "finite": true,
+      "energyRelativeDrift": 1.3706369372812333e-11,
+      "momentumRelativeDrift": 1.3701595413806444e-11,
+      "withinTolerance": true
+    },
+    {
+      "I2": 1.4,
+      "T": 20,
+      "finite": true,
+      "energyRelativeDrift": 1.379674152701682e-12,
+      "momentumRelativeDrift": 1.3803402865164571e-12,
+      "withinTolerance": true
+    },
+    {
+      "I2": 1.4,
+      "T": 60,
+      "finite": true,
+      "energyRelativeDrift": 2.757361006189285e-11,
+      "momentumRelativeDrift": 2.75784950432012e-11,
+      "withinTolerance": true
+    },
+    {
+      "I2": 1.4,
+      "T": 120,
+      "finite": true,
+      "energyRelativeDrift": 2.2609486505231757e-9,
+      "momentumRelativeDrift": 2.261272058490249e-9,
+      "withinTolerance": true
+    },
+    {
+      "I2": 1.7,
+      "T": 20,
+      "finite": true,
+      "energyRelativeDrift": 1.3634648965421547e-12,
+      "momentumRelativeDrift": 1.3640200080544673e-12,
+      "withinTolerance": true
+    },
+    {
+      "I2": 1.7,
+      "T": 60,
+      "finite": true,
+      "energyRelativeDrift": 1.8175017046928588e-11,
+      "momentumRelativeDrift": 1.818079020665664e-11,
+      "withinTolerance": true
+    },
+    {
+      "I2": 1.7,
+      "T": 120,
+      "finite": true,
+      "energyRelativeDrift": 1.1722953718873441e-9,
+      "momentumRelativeDrift": 1.1726817294999137e-9,
+      "withinTolerance": true
+    }
+  ],
+  "trajectories": [
+    {
+      "I2": 1.05,
+      "referenceChange": 4.551914400963142e-15,
+      "rows": [
+        {
+          "n": 100,
+          "error": 6.361254634157376e-9
+        },
+        {
+          "n": 200,
+          "error": 4.026722844052699e-10
+        },
+        {
+          "n": 400,
+          "error": 2.5327129282715077e-11
+        }
+      ],
+      "ratio": 251.16366577315657
+    },
+    {
+      "I2": 1.4,
+      "referenceChange": 3.9335201762469296e-13,
+      "rows": [
+        {
+          "n": 100,
+          "error": 0.0000010813870562342842
+        },
+        {
+          "n": 200,
+          "error": 6.815232567181084e-8
+        },
+        {
+          "n": 400,
+          "error": 4.2768192320963294e-9
+        }
+      ],
+      "ratio": 252.84843654807233
+    },
+    {
+      "I2": 1.7,
+      "referenceChange": 1.4777068457760834e-13,
+      "rows": [
+        {
+          "n": 100,
+          "error": 4.1956630514317084e-7
+        },
+        {
+          "n": 200,
+          "error": 2.5868004627227492e-8
+        },
+        {
+          "n": 400,
+          "error": 1.6053078866207215e-9
+        }
+      ],
+      "ratio": 261.3618911611937
+    }
+  ],
+  "historicalEnergyDrift": 0.05403035502320175,
+  "sciencePass": true,
+  "criteria": "Nine fixtures conserve energy and squared angular momentum within 1e-7; three trajectories converge at fourth order with finest error below 1e-7.",
+  "limitations": [
+    "Finite parameter fixtures and durations only; no all-control, exact flip-time or print accuracy claim.",
+    "RK4 is not exactly symplectic. Finite-time conservation does not establish indefinite energy preservation."
+  ]
+}

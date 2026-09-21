@@ -1,0 +1,233 @@
+{
+  "sourceSha256": "93b8bf74f41fe23eed1260a1ee783bab2a08dc2d582fce39324094ca2839bc7e",
+  "cases": [
+    {
+      "grid": 48,
+      "alpha": 0,
+      "time": 16.799999999999997,
+      "rows": [
+        {
+          "dt": 0.07,
+          "steps": 240,
+          "error": 0.0021079178783721675
+        },
+        {
+          "dt": 0.035,
+          "steps": 480,
+          "error": 0.0010537258349068157
+        },
+        {
+          "dt": 0.0175,
+          "steps": 960,
+          "error": 0.0005268049603721625
+        }
+      ],
+      "ratio": 4.0013250385551125,
+      "referenceDifference": 0
+    },
+    {
+      "grid": 48,
+      "alpha": 0.22,
+      "time": 16.799999999999997,
+      "rows": [
+        {
+          "dt": 0.07,
+          "steps": 240,
+          "error": 0.002108210227776519
+        },
+        {
+          "dt": 0.035,
+          "steps": 480,
+          "error": 0.0010538713373675068
+        },
+        {
+          "dt": 0.0175,
+          "steps": 960,
+          "error": 0.0005268775437952677
+        }
+      ],
+      "ratio": 4.001328681785155,
+      "referenceDifference": 6.890321646579878e-15
+    },
+    {
+      "grid": 48,
+      "alpha": 0.42,
+      "time": 16.799999999999997,
+      "rows": [
+        {
+          "dt": 0.07,
+          "steps": 240,
+          "error": 0.0021085084809412957
+        },
+        {
+          "dt": 0.035,
+          "steps": 480,
+          "error": 0.0010540196304398841
+        },
+        {
+          "dt": 0.0175,
+          "steps": 960,
+          "error": 0.0005269514825532173
+        }
+      ],
+      "ratio": 4.001333236079008,
+      "referenceDifference": 4.3576253716537394e-15
+    },
+    {
+      "grid": 96,
+      "alpha": 0,
+      "time": 33.599999999999994,
+      "rows": [
+        {
+          "dt": 0.07,
+          "steps": 480,
+          "error": 0.0010372973566372123
+        },
+        {
+          "dt": 0.035,
+          "steps": 960,
+          "error": 0.0005185928027719999
+        },
+        {
+          "dt": 0.0175,
+          "steps": 1920,
+          "error": 0.0002592824710417885
+        }
+      ],
+      "ratio": 4.000645907412813,
+      "referenceDifference": 0
+    },
+    {
+      "grid": 96,
+      "alpha": 0.22,
+      "time": 33.599999999999994,
+      "rows": [
+        {
+          "dt": 0.07,
+          "steps": 480,
+          "error": 0.0010373364996419387
+        },
+        {
+          "dt": 0.035,
+          "steps": 960,
+          "error": 0.0005186123337945769
+        },
+        {
+          "dt": 0.0175,
+          "steps": 1920,
+          "error": 0.000259292226440333
+        }
+      ],
+      "ratio": 4.000646351350009,
+      "referenceDifference": 5.3464177529605195e-15
+    },
+    {
+      "grid": 96,
+      "alpha": 0.42,
+      "time": 33.599999999999994,
+      "rows": [
+        {
+          "dt": 0.07,
+          "steps": 480,
+          "error": 0.001037376990589145
+        },
+        {
+          "dt": 0.035,
+          "steps": 960,
+          "error": 0.0005186325293227156
+        },
+        {
+          "dt": 0.0175,
+          "steps": 1920,
+          "error": 0.0002593023117381521
+        }
+      ],
+      "ratio": 4.000646903744946,
+      "referenceDifference": 5.797445856714489e-15
+    },
+    {
+      "grid": 128,
+      "alpha": 0,
+      "time": 44.8,
+      "rows": [
+        {
+          "dt": 0.07,
+          "steps": 640,
+          "error": 0.0007748358755643725
+        },
+        {
+          "dt": 0.035,
+          "steps": 1280,
+          "error": 0.0003873868385496082
+        },
+        {
+          "dt": 0.0175,
+          "steps": 2560,
+          "error": 0.00019368566058819425
+        }
+      ],
+      "ratio": 4.000481363521246,
+      "referenceDifference": 0
+    },
+    {
+      "grid": 128,
+      "alpha": 0.22,
+      "time": 44.8,
+      "rows": [
+        {
+          "dt": 0.07,
+          "steps": 640,
+          "error": 0.0007748526448080884
+        },
+        {
+          "dt": 0.035,
+          "steps": 1280,
+          "error": 0.0003873952104886391
+        },
+        {
+          "dt": 0.0175,
+          "steps": 2560,
+          "error": 0.00019368984338852258
+        }
+      ],
+      "ratio": 4.000481549534897,
+      "referenceDifference": 6.102757188486407e-15
+    },
+    {
+      "grid": 128,
+      "alpha": 0.42,
+      "time": 44.8,
+      "rows": [
+        {
+          "dt": 0.07,
+          "steps": 640,
+          "error": 0.000774870035139541
+        },
+        {
+          "dt": 0.035,
+          "steps": 1280,
+          "error": 0.0003874038900250065
+        },
+        {
+          "dt": 0.0175,
+          "steps": 2560,
+          "error": 0.0001936941792547442
+        }
+      ],
+      "ratio": 4.000481780717021,
+      "referenceDifference": 4.433953204596719e-15
+    }
+  ],
+  "failureError": 0.050554538932256254,
+  "diagnostic": {
+    "periodsChangesState": false,
+    "periodsStateDifference": 0,
+    "note": "The recorded metric is absolute first-mode displacement amplitude. It is not first-mode energy, which also needs the projected velocity."
+  },
+  "pass": true,
+  "limitations": [
+    "Only fixed-end displacement and velocity evolution at the stated finite times is supported.",
+    "The smallest refinement step 0.0175 is injected through the test state, below the UI slider minimum 0.02.",
+    "No nonlinear recurrence, energy diagnostic, periods control, equipartition, long-time or print claim."
+  ]
+}

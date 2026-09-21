@@ -38012,7 +38012,7 @@ void main(){
   const DEFAULTS = { grid: 160, aspect: '4:5', I2: 1.4, eps: 0.02, T: 60, view: 'int', exposure: 1 };
   const PRESETS = {
     flip: pre('Flip', { I2: 1.4, eps: 0.02, T: 70 }, Pal.ember),
-    stable1: pre('Stable I1', { I2: 1.05, eps: 0.01, T: 50 }, Pal.harbor),
+    stable1: pre('Nearly equal I1 and I2', { I2: 1.05, eps: 0.01, T: 50 }, Pal.harbor),
     wild: pre('Wild', { I2: 1.55, eps: 0.05, T: 90 }, Pal.thermal),
     slow: pre('Slow seed', { I2: 1.35, eps: 0.006, T: 100 }, Pal.nightshade),
     log: pre('Log |ω2|', { view: 'log', I2: 1.45 }, Pal.glacier),
@@ -38021,6 +38021,17 @@ void main(){
 
   function surprise(rng) { return { I2: rng.range(1.15, 1.75), eps: rng.range(0.008, 0.05), T: rng.int(40, 100) }; }
   function sanitize(s) { s.grid = Math.max(96, Math.min(224, Math.round(s.grid / 16) * 16)); }
+  // Fourth-order time stepping avoids the artificial energy growth of forward
+  // Euler. Every preset starts near the intermediate axis; no flip during a
+  // finite observation window does not establish stability.
+  function tennisStep(w, dt, I2) {
+    const rate = z => [(I2 - 2) * z[1] * z[2], z[2] * z[0] / I2, (1 - I2) * z[0] * z[1] / 2];
+    const a = rate(w);
+    const b = rate(w.map((v, i) => v + dt * a[i] / 2));
+    const c = rate(w.map((v, i) => v + dt * b[i] / 2));
+    const d = rate(w.map((v, i) => v + dt * c[i]));
+    return w.map((v, i) => v + dt * (a[i] + 2 * b[i] + 2 * c[i] + d[i]) / 6);
+  }
   Studio.register({
     id: 'tennis', name: 'Tennis Racket', tab: 'Tennis',
     subtitle: 'the intermediate axis that will not spin · 1834 / 1991',
@@ -38050,10 +38061,7 @@ void main(){
         let flips = 0, prev = w2;
         for (let y = 0; y < H; y++) {
           for (let k = 0; k < 8; k++) {
-            const a1 = ((I2 - I3) / I1) * w2 * w3;
-            const a2 = ((I3 - I1) / I2) * w3 * w1;
-            const a3 = ((I1 - I2) / I3) * w1 * w2;
-            w1 += dt * a1; w2 += dt * a2; w3 += dt * a3;
+            [w1, w2, w3] = tennisStep([w1, w2, w3], dt, I2);
           }
           if (prev * w2 < 0) flips++;
           prev = w2;
@@ -38094,7 +38102,7 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>I2 <b>' + f2(extra) + '</b> in (1, 2)</span><span>ω2 flips <b>' + (metric | 0) + '</b></span><span>' + (metric > 0 ? 'unstable axis' : 'stable') + '</span>'); }
+      function status() { host.setStatus('<span>I2 <b>' + f2(extra) + '</b> in (1, 2)</span><span>ω2 flips <b>' + (metric | 0) + '</b></span><span>' + (metric > 0 ? 'flip observed' : 'no flip in this time window') + '</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

@@ -50,6 +50,11 @@ jobs:
           node tools/science.js
           node tools/breather-science.js
           node tools/peakon-science.js
+          node tools/material-wave-science.js
+          node tools/orbit-science.js
+          node tools/lump-science.js
+          node tools/chain-science.js
+          node tools/rigid-body-audit.js
       - name: Structural checks
         run: node tools/lint.js
       - name: Polygon bounds and numerical controls
@@ -146,7 +151,7 @@ jobs:
         # factory, the waves block, a CPU lattice, vector line work, a CPU density map, a raymarch,
         # a continuous cellular automaton, an exact closed-form field (no integrator), and the
         # identity plate whose check must fail off Gröbli's L=0 circle.
-        id: [cahn, turing, schrodinger, ising, tilings, attractors, fractal, life, kp, three-vortex-bound, maxwell, molecular]
+        id: [cahn, turing, schrodinger, ising, tilings, attractors, fractal, life, kp, three-vortex-bound, maxwell, molecular, tennis]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -172,7 +177,7 @@ jobs:
         # Exercise each actual print path. Grid fields retain their numerical resolution;
         # vector and analytic techniques can render at the requested output resolution.
         # One raster technique, one vector technique, and the identity plate (SVG spirals).
-        id: [cahn, tilings, three-vortex-bound, maxwell, molecular]
+        id: [cahn, tilings, three-vortex-bound, maxwell, molecular, tennis]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
