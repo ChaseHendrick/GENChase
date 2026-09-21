@@ -1,1 +1,1 @@
-122 seeded scientific simulations in one HTML file. Explore, derive, and test mathematical formulas against classical sources.
+126 seeded scientific simulations in one HTML file. Explore, derive, and test mathematical formulas against classical sources.

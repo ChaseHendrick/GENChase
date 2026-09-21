@@ -67,3 +67,7 @@ The convection component audit and instantaneous-transport limits are in [CONVEC
 Priority: the remaining Cahn-Hilliard/PDE convergence and precision checks, wave/transport solvers, then stochastic measurements and
 the remaining families. The double-triangle/polygon vortex module already has independent numerical tests; its print
 paths and complete parameter coverage remain unvalidated. The inventory deliberately exposes gaps.
+
+[Parametric surface geometry and print evidence](SURFACES.md) checks three classical families, with independent curvature and finite-mesh controls.
+
+Further bounded audits: [PLASMA.md](PLASMA.md), [SHALLOW.md](SHALLOW.md), and [NONRECIPROCAL.md](NONRECIPROCAL.md).

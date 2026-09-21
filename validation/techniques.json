@@ -2503,5 +2503,159 @@
         "limitations": "Declared seeds, states and backend only. Marks represent particle geometry, not chemical bonds or calibrated physical appearance. Intermediate warmups can legitimately differ from later screens."
       }
     ]
+  },
+  {
+    "id": "surfaces",
+    "source": "src/modules/surfaces.js",
+    "sourceSha256": "133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e",
+    "reference": "Classical surfaces of Enneper and Dini, and the catenoid–helicoid associate family. Parameter maps: 3D-XplorMath / UCI, Enneper Surface; Thomas Banchoff, Brown University, Differential Geometry §7.3; Oliver Knill, Harvard Math 21a, Dini surface. MathMod inspired the selection; this is an independent implementation, not imported MathMod code or collection data.",
+    "equation": "Enneper and catenoid–helicoid: H = 0; Dini (a = 1): K = −1/(1 + b²)",
+    "status": "partially validated",
+    "limitations": [
+      "Established parametric surfaces with finite transparent wire meshes, not physical soap-film simulations or new mathematics.",
+      "Independent differential geometry and mesh checks cover declared samples; no global topology, complete immersion, self-intersection or all-parameter certification.",
+      "Printed coordinates agree across raster/SVG, while antialiasing varies by backend; arbitrary devices remain untested."
+    ],
+    "remaining": [
+      "Broaden parameter-domain and independent implementation coverage.",
+      "Assess mesh approximation and visual accuracy across more resolutions and devices.",
+      "Keep global mathematical and physical claims separate from local curvature benchmarks."
+    ],
+    "numerical": [
+      {
+        "test": "tools/surfaces-science.js",
+        "command": "node tools/surfaces-science.js",
+        "results": "validation/results/surfaces-science.json",
+        "scope": "225 derivative/metric/curvature samples in Enneper, five associate values and three Dini pitches; endpoints, camera invariance and tessellation refinement.",
+        "criteria": "Fine-step metric/Gaussian/mean errors below 0.001 with curvature orders 1.8 to 2.2; endpoints/rigid distances within 1e-12; mesh chord errors refine at second order and finish below 0.001 of the bounding-box diagonal.",
+        "benchmark": "Centered finite differences of maintained coordinate maps compared with separately derived metric, Gaussian and mean curvature references; analytic midpoint/chord and rigid-distance checks.",
+        "failureControl": "Wrong Enneper vertical scale, omitted Dini logarithm and wrong conjugate-map sign must fail.",
+        "limitations": "Deterministic approximation errors in finite patches; not statistical uncertainty, topology proof or physical stability evidence."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/surfaces-print.js",
+        "command": "node tools/surfaces-print.js",
+        "results": "validation/results/surfaces-print.json",
+        "scope": "All six presets at 800-square, 1600x2000 and 2400-square with true SVG paths, exact requested dimensions, preserved state and repeated seeded geometry.",
+        "criteria": "Geometry within 0.000051 px, nonblank output, exact state preservation; mean RGB difference below 2/255 at preview and 1/255 at print; a 2% horizontal SVG distortion must fail.",
+        "limitations": "Accelerated antialiasing differs from SVG; separate software-canvas control is recorded. SVG is a finite mesh, not an exact smooth surface."
+      }
+    ]
+  },
+  {
+    "id": "plasma",
+    "source": "src/modules/plasma.js",
+    "sourceSha256": "237cfe67009ed638ec3b021c6f872dd1190e13e0ea0fd85ac49f6ea9c62dbdd4",
+    "reference": "Standard cloud-in-cell electrostatic plasma model. C. K. Birdsall and A. B. Langdon, Plasma Physics via Computer Simulation (1985). CIC field centering and conservation limitations: J. U. Brackbill, arXiv:1510.08741 (2015), sections 3.1–3.5. Original implementation; not the GEMPIC geometric scheme.",
+    "equation": "∂f/∂t + v ∂f/∂x − E ∂f/∂v = 0; ∂E/∂x = 1 − ∫f dv; x ∈ [0, 2π), periodic",
+    "status": "partially validated",
+    "limitations": [
+      "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. No validated Landau damping, nonlinear instability threshold, collisions or magnetic physics.",
+      "Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device."
+    ],
+    "remaining": [
+      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
+      "Broaden print interpretation and hardware coverage; retain stated model assumptions."
+    ],
+    "numerical": [
+      {
+        "test": "tools/plasma-science.js",
+        "command": "node tools/plasma-science.js",
+        "results": "validation/results/plasma-science.json",
+        "scope": "Actual Float64 periodic CIC deposit, field solve, KDK particles, cold-sheet trajectories, 24-seed deposition noise and completed presets.",
+        "criteria": "Poisson fields within 1e-12; cold frequency relative error below .002; trajectory RMS below .00015; spatial/temporal error reductions3.5–4.5 and3.5–4.6; noise mean within4 seed standard errors; exact failed-trial rollback.",
+        "benchmark": "Independent dense periodic Poisson solve, all-pairs triangular deposition weights, analytic noncrossing cold-sheet oscillation, same-domain refinement and exact expected CIC sampling variance.",
+        "failureControl": "Reversed force sign and nonneutral deposited charge must be detected; rejected dynamics restore accepted arrays and counters.",
+        "limitations": "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. No validated Landau damping, nonlinear instability threshold, collisions or magnetic physics."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/plasma-print.js",
+        "command": "node tools/plasma-print.js",
+        "results": "validation/results/plasma-print.json",
+        "scope": "Eight initial/evolved phase-space exports at2400-square and2400x3000 plus actual shell fixtures and interrupted warmup.",
+        "criteria": "Exact numerical arrays, CPU/GPU histograms, diagnostics, counters and recipes preserved; output dimensions exact; resumed warmup matches direct fixed-step trajectory.",
+        "limitations": "Selected states and rendering backend; more output pixels do not improve numerical resolution or establish physical accuracy."
+      }
+    ]
+  },
+  {
+    "id": "shallow",
+    "source": "src/modules/shallow.js",
+    "sourceSha256": "0b967d37d97262202418768b0d99cb0a397fbb0d83078908fef013934efa0bd2",
+    "reference": "A. J. C. de Saint-Venant (1871), shallow-water equations. Rusanov/local Lax–Friedrichs conservative finite-volume flux. Exact wave benchmarks follow D. I. Ketcheson, R. J. LeVeque and M. J. del Razo, Riemann Problems and Jupyter Solutions (2020). Original implementation of established equations; no Clawpack code is included.",
+    "equation": "h_t + ∇·(h u) = 0; (h u)_t + ∇·(h u⊗u + ½h² I) = 0, g = 1",
+    "status": "partially validated",
+    "limitations": [
+      "First-order wet flat-bottom two-dimensional Saint-Venant finite volumes. No dry-bed flooding, relief, physical viscosity, dispersion or real-world flood forecast. Numerical diffusion broadens shocks.",
+      "Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device."
+    ],
+    "remaining": [
+      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
+      "Broaden print interpretation and hardware coverage; retain stated model assumptions."
+    ],
+    "numerical": [
+      {
+        "test": "tools/shallow-science.js",
+        "command": "node tools/shallow-science.js",
+        "results": "validation/results/shallow-science.json",
+        "scope": "Float64 conservative Rusanov solver: exact wet dam-break cell averages, smooth oblique wave, wet positivity, conservation, reflected walls and completed presets.",
+        "criteria": "Finest dam depth/momentum L1 below .018/.025 with refinement ratios1.25–2.4; smooth-wave orders.8–1.2 and fine RMS below.05; volume/momentum within1e-12 where conserved; invalid steps leave state unchanged.",
+        "benchmark": "Independent rarefaction/shock Riemann solution integrated over cells and analytic linearized oblique shallow-water wave at fixed domain/time.",
+        "failureControl": "Omitting pressure must fail exact-wave benchmark; oversized CFL and injected dry state must stop before accepting a step.",
+        "limitations": "First-order wet flat-bottom two-dimensional Saint-Venant finite volumes. No dry-bed flooding, relief, physical viscosity, dispersion or real-world flood forecast. Numerical diffusion broadens shocks."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/shallow-print.js",
+        "command": "node tools/shallow-print.js",
+        "results": "validation/results/shallow-print.json",
+        "scope": "Actual depth/speed fields at128-square,128x160 and512-square, six square/tall2400-pixel exports, shell/live/pause/guard checks.",
+        "criteria": "Exact Float64 physical state and counters preserved; float32 display rounding exact; reduced RGB mean error below2/255; requested dimensions exact.",
+        "limitations": "Selected states and rendering backend; more output pixels do not improve numerical resolution or establish physical accuracy."
+      }
+    ]
+  },
+  {
+    "id": "nonreciprocal",
+    "source": "src/modules/nonreciprocal.js",
+    "sourceSha256": "0f5427d1446138675dd4be67d1c3df9896ec06ffa1103d9dbc94060332a7c1b0",
+    "reference": "S. Saha and R. Golestanian, Effervescence in a binary mixture with nonlinear non-reciprocal interactions, Nature Communications 16, 7310 (2025), doi:10.1038/s41467-025-61728-8, equation 5. Original finite-difference implementation; the paper uses a different spectral solver.",
+    "equation": "∂t ψ = ∇²[(-1+iα₀)ψ + (1−iα₁)|ψ|²ψ − K∇²ψ]",
+    "status": "partially validated",
+    "limitations": [
+      "Periodic finite-difference Heun implementation of Saha–Golestanian2025 Eq5, not the paper spectral solver or a reproduced phase diagram. Conditional timestep scale is not a nonlinear stability proof. Prepared waves are imposed.",
+      "Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device."
+    ],
+    "remaining": [
+      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
+      "Broaden print interpretation and hardware coverage; retain stated model assumptions."
+    ],
+    "numerical": [
+      {
+        "test": "tools/nonreciprocal-science.js",
+        "command": "node tools/nonreciprocal-science.js",
+        "results": "validation/results/nonreciprocal-science.json",
+        "scope": "Actual float32 GPU nonlinear derivatives and Heun updates, discrete plane waves, fixed-time RK4 reference, fixed-domain spatial refinement, mass and rollback controls.",
+        "criteria": "Derivative max error below5e-5; update error below2e-7; conserved means within2e-6; modal error below8e-6; temporal orders1.7–2.3 and approximately second-order spatial refinement.",
+        "benchmark": "Independent Float64 complete-chemical-potential Laplacian, refined RK4 and continuum/discrete complex plane-wave solutions obtained by substitution into Eq5.",
+        "failureControl": "Reverse rotation or biharmonic sign, omit nonlinearity, or inject mass source; all must fail. Unsafe internal step must halt and restore accepted state.",
+        "limitations": "Periodic finite-difference Heun implementation of Saha–Golestanian2025 Eq5, not the paper spectral solver or a reproduced phase diagram. Conditional timestep scale is not a nonlinear stability proof. Prepared waves are imposed."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/nonreciprocal-print.js",
+        "command": "node tools/nonreciprocal-print.js",
+        "results": "validation/results/nonreciprocal-print.json",
+        "scope": "Default/all6 presets at1200-square and2400x1800, actual2400-square shell output, all6 numerical targets/readback arrays and recipes.",
+        "criteria": "Exact scientific state preserved, output dimensions exact, luminance spread above12/255; rejected batch restores accepted field and step count.",
+        "limitations": "Selected states and rendering backend; more output pixels do not improve numerical resolution or establish physical accuracy."
+      }
+    ]
   }
 ]

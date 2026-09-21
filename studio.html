@@ -23,11 +23,11 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GENChase — generative art from real simulations">
-<meta property="og:description" content="122 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
+<meta property="og:description" content="126 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
 <meta property="og:site_name" content="GENChase">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GENChase — generative art from real simulations">
-<meta name="twitter:description" content="122 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<meta name="twitter:description" content="126 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "A generative art studio built from real scientific simulations. 122 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
+  "description": "A generative art studio built from real scientific simulations. 126 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
   "featureList": [
     "Flow fields with collision-avoiding strokes",
     "Gray-Scott reaction-diffusion",
@@ -1504,7 +1504,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>Almost every tab is the paper it names. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 122 sciences share one control surface,
+      <p>Almost every tab is the paper it names. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 126 sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -1646,7 +1646,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           in bands, with a spacing that grows geometrically. Liesegang, 1896.</li>
       </ul>
 
-      <p class="colo" id="catalog-count">The live catalog is 122 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
+      <p class="colo" id="catalog-count">The live catalog is 126 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
       <h3>How it is built</h3>
       <p>Modular source is assembled into one portable HTML file. No installation or build step is needed to use the download. No frameworks, server, network calls, analytics or
         no tracking of any kind. It runs offline, from a thumb drive, and will still run when every CDN-dependent tool from this
@@ -2159,6 +2159,10 @@ void main(){
     unseen: 'Almost unseen',
   };
   const FAMILIARITY = {
+    surfaces: 'common',
+    plasma: 'occasional',
+    shallow: 'occasional',
+    nonreciprocal: 'rare',
     maxwell: 'occasional',
     molecular: 'occasional',
     // ubiquitous
@@ -46956,6 +46960,776 @@ void main(){
         exportSVG(w, h) { return svg(w, h, host.getState(), data, time); },
       };
     },
+  });
+})();
+</script>
+<script>/* modules/surfaces.js */
+/* Classical parametric surfaces, independently implemented from published mathematics. */
+(function () {
+  'use strict';
+  const U = Studio.util, Pal = Studio.PALETTES;
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
+    Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const f2 = x => x.toFixed(2), degrees = x => Math.round(x) + '°';
+  const defaults = { family: 'enneper', extent: 1.35, associate: 0, pitch: 0.2, turns: 2,
+    detail: 96, wires: 24, yaw: 25, tilt: 30, roll: 0, aspect: '1:1', weight: 1.1, color: 'parameter' };
+
+  // These are Cartesian coordinates, before the camera and sheet fitting. No mesh relaxation,
+  // curvature correction or artist deformation is applied to the published parameter maps.
+  function point(s, u, v) {
+    if (s.family === 'enneper') return [u - u * u * u / 3 + u * v * v,
+      v - v * v * v / 3 + v * u * u, u * u - v * v];
+    if (s.family === 'dini') return [Math.cos(u) * Math.sin(v), Math.sin(u) * Math.sin(v),
+      Math.cos(v) + Math.log(Math.tan(v / 2)) + s.pitch * u];
+    const t = s.associate * Math.PI / 2, c = Math.cos(t), a = Math.sin(t);
+    // Isometric associate family cos(t) C + sin(t) H, with the conjugate helicoid coordinates.
+    return [c * Math.cosh(v) * Math.cos(u) + a * Math.sinh(v) * Math.sin(u),
+      c * Math.cosh(v) * Math.sin(u) - a * Math.sinh(v) * Math.cos(u), c * v + a * u];
+  }
+  function domain(s) {
+    if (s.family === 'enneper') return [-s.extent, s.extent, -s.extent, s.extent];
+    // Stay strictly below v = pi/2, where this Dini parameter map loses rank.
+    if (s.family === 'dini') return [-Math.PI * s.turns, Math.PI * s.turns, 0.15, 1.4];
+    return [-Math.PI, Math.PI, -s.extent, s.extent];
+  }
+  function mesh(s) {
+    const n = s.detail, d = domain(s), vertices = new Float64Array(3 * (n + 1) * (n + 1));
+    for (let j = 0; j <= n; j++) for (let i = 0; i <= n; i++) {
+      const p = point(s, d[0] + (d[1] - d[0]) * i / n, d[2] + (d[3] - d[2]) * j / n);
+      vertices.set(p, 3 * (j * (n + 1) + i));
+    }
+    return { n, vertices, domain: d };
+  }
+  function camera(s) {
+    const rng = U.makeRng(String(s.seed) + '/surfaces-view');
+    return { yaw: (s.yaw + rng.range(-25, 25)) * Math.PI / 180,
+      tilt: (s.tilt + rng.range(-7, 7)) * Math.PI / 180,
+      roll: s.roll * Math.PI / 180, offset: rng() };
+  }
+  function rotate(p, c) {
+    const x = Math.cos(c.yaw) * p[0] - Math.sin(c.yaw) * p[1];
+    const y = Math.sin(c.yaw) * p[0] + Math.cos(c.yaw) * p[1];
+    const up = Math.cos(c.tilt) * p[2] - Math.sin(c.tilt) * y;
+    const depth = Math.sin(c.tilt) * p[2] + Math.cos(c.tilt) * y;
+    return [Math.cos(c.roll) * x - Math.sin(c.roll) * up,
+      Math.sin(c.roll) * x + Math.cos(c.roll) * up, depth];
+  }
+  function project(m, s, w, h) {
+    const c = camera(s), projected = new Float64Array(m.vertices.length);
+    let xmin = Infinity, xmax = -Infinity, ymin = Infinity, ymax = -Infinity;
+    for (let k = 0; k < m.vertices.length; k += 3) {
+      const p = rotate(m.vertices.subarray(k, k + 3), c);
+      projected.set(p, k);
+      xmin = Math.min(xmin, p[0]); xmax = Math.max(xmax, p[0]);
+      ymin = Math.min(ymin, p[1]); ymax = Math.max(ymax, p[1]);
+    }
+    const scale = 0.84 * Math.min(w / (xmax - xmin), h / (ymax - ymin));
+    for (let k = 0; k < projected.length; k += 3) {
+      projected[k] = w / 2 + scale * (projected[k] - (xmin + xmax) / 2);
+      projected[k + 1] = h / 2 - scale * (projected[k + 1] - (ymin + ymax) / 2);
+    }
+    return { vertices: projected, scale, offset: c.offset };
+  }
+  function drawing(m, s, w, h) {
+    const p = project(m, s, w, h), n = m.n, lines = [];
+    const ramp = U.makeRamp(s.palette, s.bg);
+    for (let axis = 0; axis < 2; axis++) for (let line = 0; line <= s.wires; line++) {
+      // At the catenoid endpoint the angular seam is the same curve, so draw it only once.
+      if (axis === 0 && line === s.wires && s.family === 'associate' && s.associate === 0) continue;
+      const fixed = Math.round(line * n / s.wires), coords = [];
+      let z = 0;
+      for (let step = 0; step <= n; step++) {
+        const i = axis === 0 ? fixed : step, j = axis === 0 ? step : fixed;
+        const k = 3 * (j * (n + 1) + i);
+        coords.push([p.vertices[k], p.vertices[k + 1]]);
+        z += m.vertices[k + 2];
+      }
+      // Color is a display choice, not a curvature or energy measurement.
+      const t = s.color === 'parameter' ? (0.13 + line / s.wires * 0.65 + axis * 0.17 + p.offset * 0.12) % 1 :
+        0.5 + 0.38 * Math.tanh(z / (n + 1));
+      const rgb = ramp(0.18 + 0.82 * t);
+      lines.push({ coords, color: 'rgb(' + rgb.map(x => Math.round(x)).join(',') + ')' });
+    }
+    return { lines, weight: s.weight * Math.min(w, h) / 800 };
+  }
+  function svg(m, s, w, h) {
+    const d = drawing(m, s, w, h);
+    const body = d.lines.map(l => '<path d="' + l.coords.map((p, i) =>
+      (i ? 'L' : 'M') + p[0].toFixed(4) + ',' + p[1].toFixed(4)).join('') + '" fill="none" stroke="' +
+      l.color + '" stroke-width="' + d.weight.toFixed(4) + '" stroke-linecap="round" stroke-linejoin="round"/>').join('');
+    return U.svgDoc(w, h, s.bg, body);
+  }
+  const name = s => s.family === 'enneper' ? 'Enneper' : s.family === 'dini' ? 'Dini' :
+    s.associate === 0 ? 'Catenoid' : s.associate === 1 ? 'Helicoid' : 'Catenoid–helicoid';
+  const pre = (label, p, palette) => ({ label, p, palette });
+  Studio.register({
+    id: 'surfaces', name: 'Parametric Surfaces', tab: 'Surfaces', order: 99.4,
+    subtitle: 'Enneper, Dini and the catenoid–helicoid family · classical geometry',
+    equation: 'Enneper and catenoid–helicoid: H = 0; Dini (a = 1): K = −1/(1 + b²)',
+    credit: 'Classical surfaces of Enneper and Dini, and the catenoid–helicoid associate family. Parameter maps: 3D-XplorMath / UCI, Enneper Surface; Thomas Banchoff, Brown University, Differential Geometry §7.3; Oliver Knill, Harvard Math 21a, Dini surface. MathMod inspired the selection; this is an independent implementation, not imported MathMod code or collection data.',
+    blurb: 'A curved sheet built from its mathematical coordinates. Enneper folds a saddle through itself, Dini winds a negatively curved trumpet, and the associate slider bends a catenoid into a helicoid while preserving its local metric. The plate is a transparent wire mesh: all parameter lines remain visible through one another. These are established formulas. The seed changes the camera and color placement; it does not change the surface law.',
+    schema: [
+      { group: 'Surface', key: 'family', label: 'Family', type: 'seg', kind: 'geom', wrap: true,
+        options: [['enneper', 'Enneper'], ['dini', 'Dini'], ['associate', 'Catenoid–helicoid']] },
+      RANGE('Surface', 'extent', 'Patch extent', 'geom', 0.5, 2, 0.05, f2, { dimUnless: s => s.family !== 'dini' }),
+      RANGE('Surface', 'associate', 'Catenoid ↔ helicoid', 'geom', 0, 1, 0.02, f2, { dimUnless: s => s.family === 'associate' }),
+      RANGE('Surface', 'pitch', 'Dini pitch b', 'geom', 0.1, 0.6, 0.02, f2, { dimUnless: s => s.family === 'dini' }),
+      RANGE('Surface', 'turns', 'Dini turns', 'geom', 1, 3, 0.25, f2, { dimUnless: s => s.family === 'dini' }),
+      RANGE('Mesh', 'detail', 'Curve samples', 'geom', 48, 192, 48, String),
+      { group: 'Mesh', key: 'wires', label: 'Mesh lines', type: 'seg', kind: 'paint', options: [[12, '12'], [24, '24'], [48, '48']] },
+      RANGE('View', 'yaw', 'Turn', 'paint', 0, 360, 1, degrees),
+      RANGE('View', 'tilt', 'Tilt', 'paint', -80, 80, 1, degrees),
+      RANGE('View', 'roll', 'Roll', 'paint', -180, 180, 1, degrees),
+      { group: 'View', key: 'aspect', label: 'Sheet', type: 'seg', kind: 'geom', options: Object.keys(ASPECTS).map(k => [k, k]) },
+      RANGE('Picture', 'weight', 'Line weight', 'paint', 0.5, 3, 0.1, x => x.toFixed(1)),
+      { group: 'Picture', key: 'color', label: 'Color by', type: 'seg', kind: 'paint', options: [['parameter', 'Mesh direction'], ['height', 'Height']] }
+    ], defaults,
+    presets: {
+      enneper: pre('Enneper saddle', { family: 'enneper', extent: 1.35, yaw: 25, tilt: 30, roll: 0 }, Pal.kiln),
+      folded: pre('Enneper folds', { family: 'enneper', extent: 2, yaw: 80, tilt: 50, roll: -20, wires: 48 }, Pal.glacier),
+      dini: pre('Dini trumpet', { family: 'dini', pitch: 0.2, turns: 2, yaw: 40, tilt: 25, roll: 0 }, Pal.verdigris),
+      catenoid: pre('Catenoid neck', { family: 'associate', associate: 0, extent: 1.3, yaw: 20, tilt: 25, roll: 0 }, Pal.ember),
+      helicoid: pre('Helicoid ribbon', { family: 'associate', associate: 1, extent: 1.5, yaw: 30, tilt: 20, roll: -20 }, Pal.harbor),
+      associate: pre('Between neck and ribbon', { family: 'associate', associate: 0.45, extent: 1.35, yaw: 30, tilt: 30, roll: 10 }, Pal.nightshade)
+    },
+    palette: true, defaultPalette: 'kiln', closedGroups: ['Mesh', 'Picture'],
+    hints: {
+      Surface: 'Finite patches of established parameter maps. Dini is cropped away from its singular rim. These surfaces can intersect themselves; no material dynamics is simulated.',
+      Mesh: 'More samples make each curved line smoother. Lines choose how many parameter curves are drawn. SVG preserves these polylines as actual vectors.',
+      View: 'An orthographic camera preserves shape on every sheet aspect. The seed adds a small repeatable camera offset.',
+      Picture: 'Color describes parameter direction or average line height, not a measured physical quantity.'
+    },
+    sanitize(s) {
+      s.detail = U.clamp(Math.round(s.detail / 48) * 48, 48, 192);
+      s.wires = [12, 24, 48].includes(+s.wires) ? +s.wires : 24;
+    },
+    surprise(rng) { return { family: rng.pick(['enneper', 'dini', 'associate']), extent: rng.range(0.9, 1.8),
+      associate: rng.pick([0, 0.35, 0.65, 1]), pitch: rng.range(0.15, 0.45), turns: rng.pick([1, 2, 3]),
+      yaw: rng.range(0, 360), tilt: rng.range(15, 55), roll: rng.range(-30, 30), wires: rng.pick([12, 24, 48]) }; },
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
+      let geometry;
+      function paint(g, w, h) {
+        const s = host.getState();
+        g.fillStyle = s.bg; g.fillRect(0, 0, w, h);
+        if (!geometry) return;
+        const d = drawing(geometry, s, w, h);
+        g.lineWidth = d.weight; g.lineCap = 'round'; g.lineJoin = 'round';
+        for (const l of d.lines) {
+          g.strokeStyle = l.color; g.beginPath();
+          l.coords.forEach((p, i) => { if (i) g.lineTo(p[0], p[1]); else g.moveTo(p[0], p[1]); });
+          g.stroke();
+        }
+      }
+      function status() {
+        host.setStatus('<span><b>' + name(host.getState()) + '</b> · classical geometry</span><span>mesh <b>' +
+          geometry.n + '×' + geometry.n + '</b> cells</span><span>transparent wires · vector export</span>');
+      }
+      return {
+        aspect(s) { return ASPECTS[s.aspect] || 1; },
+        regenerate() { geometry = mesh(host.getState()); paint(ctx, canvas.width, canvas.height); status(); },
+        repaint() { paint(ctx, canvas.width, canvas.height); if (geometry) status(); },
+        resize() { paint(ctx, canvas.width, canvas.height); }, pause() {}, resume() {},
+        async exportPNG(w, h) {
+          const c = document.createElement('canvas'); c.width = w; c.height = h;
+          paint(c.getContext('2d', { alpha: false }), w, h);
+          return U.toBlob(c);
+        },
+        exportSVG(w, h) { if (!geometry) throw new Error('Surface is not ready'); return svg(geometry, host.getState(), w, h); }
+      };
+    }
+  });
+})();
+</script>
+<script>/* modules/plasma.js */
+/* Original standard electrostatic CIC implementation, not a GEMPIC discretization. */
+(function () {
+  'use strict';
+  const U = Studio.util, G = Studio.gl, Pal = Studio.PALETTES, L = 2 * Math.PI;
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) => Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const pre = (label, p, palette) => ({ label, p, palette });
+  const DEFAULTS = { n: 16384, grid: 256, thermal: .08, beam: .65, amplitude: .06, mode: 1, dt: .025, warmup: 500, speed: 2, running: true, vspan: 1.6, exposure: 1.2, view: 'density', seed: 'electron-clouds' };
+
+  // Charge lives at (j+1/2)dx. A macroparticle has charge -L/n; ions have density +1.
+  function deposit(x, grid, rho) {
+    const factor = grid / x.length; rho.fill(1);
+    for (let i = 0; i < x.length; i++) {
+      const u = x[i] * grid / L - .5, base = Math.floor(u), fraction = u - base;
+      const j = (base + grid) % grid;
+      rho[j] -= factor * (1 - fraction); rho[(j + 1) % grid] -= factor * fraction;
+    }
+  }
+  // Equivalent to periodic finite-difference Poisson, fixed by zero mean electric field.
+  // It solves (edge[j+1]-edge[j])/dx = rho[j]-mean(rho) without an iterative tolerance.
+  function solveField(rho, edge, center) {
+    const grid = rho.length, dx = L / grid;
+    let meanRho = 0; for (let j = 0; j < grid; j++) meanRho += rho[j]; meanRho /= grid;
+    edge[0] = 0; let sum = 0;
+    for (let j = 1; j < grid; j++) { edge[j] = edge[j - 1] + dx * (rho[j - 1] - meanRho); sum += edge[j]; }
+    const meanE = sum / grid;
+    for (let j = 0; j < grid; j++) edge[j] -= meanE;
+    for (let j = 0; j < grid; j++) center[j] = .5 * (edge[j] + edge[(j + 1) % grid]);
+    return meanRho * L;
+  }
+  // Same linear weights as deposition. Center averaging gives standard momentum-conserving CIC.
+  function gather(x, center) {
+    const grid = center.length, u = x * grid / L - .5, base = Math.floor(u), fraction = u - base;
+    const j = (base + grid) % grid;
+    return center[j] * (1 - fraction) + center[(j + 1) % grid] * fraction;
+  }
+  function makeSim(s) {
+    const n = s.n, grid = s.grid, dx = L / grid;
+    const x = new Float64Array(n), v = new Float64Array(n), oldX = new Float64Array(n), oldV = new Float64Array(n);
+    const rho = new Float64Array(grid), edge = new Float64Array(grid), field = new Float64Array(grid);
+    const sim = { n, grid, L, dx, dt: s.dt, x, v, rho, edge, field, step: 0, time: 0, halted: '', charge: 0, gauss: 0, kinetic: 0, electric: 0, momentum: 0, energy0: 0, drift: 0, peakDrift: 0 };
+    function solve() { deposit(x, grid, rho); sim.charge = solveField(rho, edge, field); }
+    function measure() {
+      let kinetic = 0, momentum = 0, electric = 0, gauss = 0;
+      for (let i = 0; i < n; i++) { kinetic += .5 * v[i] * v[i]; momentum += v[i]; }
+      for (let j = 0; j < grid; j++) {
+        electric += .5 * edge[j] * edge[j] * dx;
+        gauss = Math.max(gauss, Math.abs((edge[(j + 1) % grid] - edge[j]) / dx - (rho[j] - sim.charge / L)));
+      }
+      sim.kinetic = kinetic * L / n; sim.electric = electric; sim.momentum = momentum * L / n; sim.gauss = gauss;
+      sim.drift = (sim.kinetic + sim.electric - sim.energy0) / Math.max(sim.energy0, 1e-10 * L);
+      return Number.isFinite(sim.kinetic + sim.electric + sim.momentum + sim.gauss + sim.charge);
+    }
+    function reference() {
+      solve(); measure(); sim.energy0 = sim.kinetic + sim.electric;
+      sim.drift = 0; sim.peakDrift = 0; sim.step = 0; sim.time = 0; sim.halted = '';
+    }
+    function advance(count) {
+      let accepted = 0;
+      for (let k = 0; k < count && !sim.halted; k++) {
+        oldX.set(x); oldV.set(v); const dt = sim.dt;
+        // Integer-time velocity form of leapfrog (kick, drift, recompute, kick).
+        for (let i = 0; i < n; i++) {
+          v[i] -= .5 * dt * gather(x[i], field);
+          const next = x[i] + dt * v[i]; x[i] = next - L * Math.floor(next / L);
+        }
+        solve();
+        for (let i = 0; i < n; i++) v[i] -= .5 * dt * gather(x[i], field);
+        const finite = measure();
+        if (!finite || Math.abs(sim.charge) > 1e-8 || Math.abs(sim.drift) > .1) {
+          const reason = !finite ? 'Nonfinite state' : Math.abs(sim.charge) > 1e-8 ? 'Charge balance failed' : 'Energy drift exceeded 10%';
+          x.set(oldX); v.set(oldV); solve(); measure(); sim.halted = reason; break;
+        }
+        sim.step++; sim.time += dt; accepted++; sim.peakDrift = Math.max(sim.peakDrift, Math.abs(sim.drift));
+      }
+      return accepted;
+    }
+    const rng = U.makeRng(s.seed + '/plasma'), phase = rng.range(-Math.PI, Math.PI);
+    let meanV = 0;
+    for (let i = 0; i < n; i++) {
+      const base = (i + .5) * L / n, displaced = base + s.amplitude / s.mode * Math.sin(s.mode * base + phase);
+      x[i] = displaced - L * Math.floor(displaced / L);
+      v[i] = (i % 2 ? s.beam : -s.beam) + s.thermal * rng.gauss(); meanV += v[i];
+    }
+    meanV /= n; for (let i = 0; i < n; i++) v[i] -= meanV;
+    Object.assign(sim, { solve, measure, reference, advance }); reference(); return sim;
+  }
+
+  const RENDER_FS = `#version 300 es
+precision highp float;
+in vec2 v_uv; out vec4 outColor;
+uniform sampler2D u_hist; uniform vec2 u_res, u_output;
+uniform float u_scale, u_exposure; uniform int u_view;
+uniform vec3 u_bg;
+${G.GLSL.bicubic}
+${G.GLSL.ramp}
+void main(){
+  float side=min(u_output.x,u_output.y); vec2 uv=(v_uv*u_output-0.5*(u_output-vec2(side)))/side;
+  if(any(lessThan(uv,vec2(0.0)))||any(greaterThan(uv,vec2(1.0)))){outColor=vec4(u_bg,1.0);return;}
+  float q=max(0.0,texCR(u_hist,uv,u_res));
+  float z=clamp(log(1.0+u_exposure*q/max(u_scale,1e-9))/log(4.0),0.0,1.0);
+  vec3 color=u_view==1?mix(u_bg,ramp(uv.y),z):mix(u_bg,ramp(z),smoothstep(0.0,0.12,z));
+  outColor=vec4(color,1.0);
+}`;
+  function create(host) {
+    const gl = G.createGL(host.canvas);
+    if (!gl || !gl.floatExt) {
+      const noop = () => {}; host.fault('Plasma phase-space rendering needs WebGL2 float buffers.');
+      return { regenerate: noop, resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(Error('WebGL2 float rendering unavailable')) };
+    }
+    const display = new G.Pass(gl, RENDER_FS), binsY = 256;
+    let sim = null, hist = null, density = null, pixels = null, scale = 1, clipped = 0, ramp = null, rampKey = '';
+    let paused = false, remaining = 0, pendingLive = 0, timer = 0, raf = 0;
+    function stop() { cancelAnimationFrame(raf); clearTimeout(timer); raf = timer = 0; }
+    function histogram() {
+      const s = host.getState(), W = sim.grid, H = binsY;
+      density.fill(0); clipped = 0;
+      for (let i = 0; i < sim.n; i++) {
+        const u = sim.x[i] / L * W - .5, a = Math.floor(u), fx = u - a;
+        const vy = (sim.v[i] / s.vspan + 1) * .5 * (H - 1);
+        if (vy < 0 || vy > H - 1) { clipped++; continue; }
+        const b = Math.floor(vy), fy = vy - b;
+        for (let oy = 0; oy <= 1; oy++) for (let ox = 0; ox <= 1; ox++) {
+          const y = Math.min(H - 1, b + oy), x = (a + ox + W) % W;
+          density[y * W + x] += (ox ? fx : 1 - fx) * (oy ? fy : 1 - fy);
+        }
+      }
+      const positive = [];
+      for (let i = 0; i < density.length; i++) { pixels[i * 4] = density[i]; if (density[i] > 0) positive.push(density[i]); }
+      positive.sort((a, b) => a - b); scale = positive.length ? positive[Math.floor(positive.length * .9)] : 1;
+      hist.upload(pixels);
+    }
+    function render(target) {
+      const s = host.getState(), key = s.palette.join(',') + s.bg;
+      if (key !== rampKey) { if (ramp) ramp.dispose(); ramp = G.rampTexture(gl, s.palette, s.bg); rampKey = key; }
+      const W = target ? target.w : host.canvas.width, H = target ? target.h : host.canvas.height;
+      display.draw(target || null, { u_hist: hist, u_res: [sim.grid, binsY], u_output: [W, H], u_scale: scale, u_exposure: s.exposure, u_view: { int: s.view === 'velocity' ? 1 : 0 }, u_bg: U.hexToRgb(s.bg).map(v => v / 255), u_ramp: ramp });
+    }
+    function status() {
+      const s = host.getState(), debye = s.thermal / sim.dx;
+      host.setStatus('<span>step <b>' + sim.step.toLocaleString() + '</b> · t <b>' + sim.time.toFixed(2) + '</b>' + (remaining ? ' · preparing' : '') + '</span>' +
+        '<span>particles <b>' + sim.n.toLocaleString() + '</b> · grid <b>' + sim.grid + '</b></span>' +
+        '<span>ΔE/E₀ <b>' + sim.drift.toExponential(2) + '</b> · ' + (clipped ? (100 * clipped / sim.n).toFixed(1) + '% outside view' : 'full velocity window') + '</span>' +
+        (s.thermal > 0 && debye < 1 ? '<span>Debye length <b>under one cell</b></span>' : '') +
+        (sim.halted ? '<span>Stopped: <b>' + U.escapeHtml(sim.halted) + '</b></span>' : ''));
+    }
+    function draw() { if (sim) { histogram(); render(); status(); } }
+    function warm() {
+      timer = 0; if (paused || !sim || sim.halted) return;
+      const end = performance.now() + 20;
+      do { const count = sim.advance(1); remaining -= count; } while (remaining > 0 && !sim.halted && performance.now() < end);
+      draw(); start();
+    }
+    function liveChunk() {
+      timer = 0; if (paused || !sim || sim.halted || !host.isActive()) return;
+      const end = performance.now() + 20;
+      do { pendingLive -= sim.advance(1); } while (pendingLive > 0 && !sim.halted && performance.now() < end);
+      draw(); start();
+    }
+    function frame() { raf = 0; pendingLive = host.getState().speed; liveChunk(); }
+    function start() {
+      stop(); if (paused || !sim || sim.halted) return;
+      if (remaining > 0) timer = setTimeout(warm, 0);
+      else if (host.getState().running && !host.reducedMotion() && host.isActive()) {
+        if (pendingLive > 0) timer = setTimeout(liveChunk, 0); else raf = requestAnimationFrame(frame);
+      }
+    }
+    return {
+      aspect() { return 1; }, fieldCells() { return sim ? [sim.grid, binsY] : null; },
+      regenerate() {
+        stop(); paused = false; pendingLive = 0; const s = host.getState(); sim = makeSim(s); remaining = s.warmup;
+        if (hist) hist.dispose(); hist = new G.Target(gl, sim.grid, binsY, { type: 'rgba32f', filter: 'nearest', wrap: 'clamp' });
+        density = new Float32Array(sim.grid * binsY); pixels = new Float32Array(sim.grid * binsY * 4); draw(); start();
+      },
+      repaint() { draw(); }, resize() { if (sim) render(); }, live() { start(); },
+      pause() { paused = true; stop(); }, resume() { paused = false; start(); },
+      async exportPNG(w, h) {
+        if (!sim) throw Error('No plasma state');
+        if (Math.max(w, h) > gl.getParameter(gl.MAX_TEXTURE_SIZE)) throw Error('Print exceeds GPU texture limit');
+        const target = new G.Target(gl, w, h, { type: 'rgba8' }), rgba = new Uint8Array(w * h * 4);
+        try { render(target); gl.bindFramebuffer(gl.FRAMEBUFFER, target.fbo); gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, rgba); }
+        finally { gl.bindFramebuffer(gl.FRAMEBUFFER, null); target.dispose(); }
+        const out = document.createElement('canvas'); out.width = w; out.height = h;
+        const cx = out.getContext('2d'), image = cx.createImageData(w, h);
+        for (let y = 0; y < h; y++) image.data.set(rgba.subarray((h - 1 - y) * w * 4, (h - y) * w * 4), y * w * 4);
+        cx.putImageData(image, 0, 0); return U.toBlob(out);
+      },
+    };
+  }
+
+  Studio.register({
+    id: 'plasma', name: 'Kinetic Plasma', tab: 'Plasma', subtitle: 'electrons in phase space · 1960s', order: 53.7,
+    equation: '∂f/∂t + v ∂f/∂x − E ∂f/∂v = 0; ∂E/∂x = 1 − ∫f dv; x ∈ [0, 2π), periodic',
+    credit: 'Standard cloud-in-cell electrostatic plasma model. C. K. Birdsall and A. B. Langdon, Plasma Physics via Computer Simulation (1985). CIC field centering and conservation limitations: J. U. Brackbill, arXiv:1510.08741 (2015), sections 3.1–3.5. Original implementation; not the GEMPIC geometric scheme.',
+    blurb: 'Each moving cloud represents electrons in a one-dimensional periodic plasma with a fixed positive background. Position runs horizontally and velocity vertically. Color shows the density of particles in this phase-space window. Two counter-moving populations can fold into islands as their electric field traps particles. The same deposited charge creates the force that moves the particles. This is collisionless electrostatic motion, with no magnetic field or ion motion. A finite particle sample adds noise, and a finite grid can heat the plasma numerically. Printing enlarges the measured histogram; it does not add particles or resolve more physics.',
+    palette: true, defaultPalette: 'thermal', headline: 'n', headlineLabel: 'particles', defaults: { ...DEFAULTS },
+    schema: [
+      { group: 'Plasma', key: 'n', label: 'Particles', type: 'seg', kind: 'geom', options: [[4096, '4,096'], [16384, '16,384'], [65536, '65,536'], [262144, '262,144 · heavy']] },
+      { group: 'Plasma', key: 'grid', label: 'Spatial cells', type: 'seg', kind: 'geom', options: [[64, '64'], [128, '128'], [256, '256'], [512, '512'], [1024, '1,024']] },
+      RANGE('Plasma', 'thermal', 'Velocity spread', 'geom', 0, .8, .01, v => v.toFixed(2)),
+      RANGE('Plasma', 'beam', 'Opposite beam speeds', 'geom', 0, 2, .05, v => v.toFixed(2)),
+      RANGE('Plasma', 'amplitude', 'Position perturbation', 'geom', .001, .4, .001, v => v.toFixed(3)),
+      RANGE('Plasma', 'mode', 'Spatial mode', 'geom', 1, 8, 1, String),
+      RANGE('Evolution', 'dt', 'Time step', 'geom', .005, .08, .005, v => v.toFixed(3)),
+      RANGE('Evolution', 'warmup', 'Initial steps', 'geom', 0, 2000, 20, String),
+      RANGE('Evolution', 'speed', 'Steps per frame', 'live', 1, 8, 1, String),
+      { group: 'Evolution', key: 'running', label: 'Keep evolving', type: 'toggle', kind: 'live' },
+      RANGE('Picture', 'vspan', 'Velocity half-window', 'paint', .2, 4, .05, v => v.toFixed(2)),
+      RANGE('Picture', 'exposure', 'Exposure', 'paint', .2, 4, .1, v => v.toFixed(1)),
+      { group: 'Picture', key: 'view', label: 'Color', type: 'seg', kind: 'paint', options: [['density', 'Density'], ['velocity', 'Velocity']] },
+    ],
+    presets: {
+      streams: pre('Two moving populations', { beam: .65, thermal: .08, amplitude: .06, warmup: 500, vspan: 1.6 }, Pal.thermal),
+      oscillation: pre('Cold plasma oscillation', { beam: 0, thermal: 0, amplitude: .15, warmup: 60, vspan: .25, view: 'velocity' }, Pal.glacier),
+      warm: pre('Warm velocity mixing', { beam: 0, thermal: .4, amplitude: .12, warmup: 200, vspan: 1.7 }, Pal.kiln),
+      twins: pre('Two spatial islands', { beam: .35, thermal: .04, mode: 2, amplitude: .1, warmup: 640, vspan: 1, view: 'velocity' }, Pal.bioluminescent),
+      broad: pre('Broad overlapping beams', { beam: .8, thermal: .35, amplitude: .2, warmup: 320, vspan: 2.5 }, Pal.meadow),
+      dense: pre('More particles, less sampling noise', { n: 65536, grid: 512, beam: .65, thermal: .08, amplitude: .06, warmup: 500 }, Pal.ember),
+    },
+    hints: {
+      Plasma: 'Normalized electron mass, charge magnitude, background density and permittivity equal 1, so the cold plasma frequency is 1. Equal linear charge/force weights conserve momentum to roundoff; energy is approximate. The 262,144-particle setting uses 16 times the default particle work and can prepare slowly.',
+      Evolution: 'The step is far below the cold-oscillator leapfrog bound Δt < 2, but this alone does not exclude grid instability. Resolve the thermal Debye length with the spatial grid, refine the step and increase particles when measuring an effect. A 10% energy error stops visibly at the last accepted state.',
+      Picture: 'A 256-row velocity histogram is smoothed for display. The velocity window only crops the picture, and the status reports excluded particles. Density and velocity colors are render choices; no measured Landau damping rate or universal instability threshold is claimed.',
+    },
+    closedGroups: ['Evolution', 'Picture'],
+    surprise(rng) { return { beam: rng.range(.35, .85), thermal: rng.range(.04, .15), amplitude: rng.range(.02, .15), mode: rng.pick([1, 2]), warmup: 500, vspan: 1.7, n: 16384, grid: 256 }; },
+    sanitize(s) {
+      const number = (v, fallback, lo, hi) => U.clamp(Number.isFinite(Number(v)) ? Number(v) : fallback, lo, hi);
+      s.n = [4096, 16384, 65536, 262144].includes(Number(s.n)) ? Number(s.n) : DEFAULTS.n;
+      s.grid = [64, 128, 256, 512, 1024].includes(Number(s.grid)) ? Number(s.grid) : DEFAULTS.grid;
+      s.thermal = number(s.thermal, .08, 0, .8); s.beam = number(s.beam, .65, 0, 2); s.amplitude = number(s.amplitude, .06, .001, .4);
+      s.mode = Math.round(number(s.mode, 1, 1, 8)); s.dt = number(s.dt, .025, .005, .08);
+      s.warmup = Math.round(number(s.warmup, 500, 0, 2000)); s.speed = Math.round(number(s.speed, 2, 1, 8));
+      s.vspan = number(s.vspan, 1.6, .2, 4); s.exposure = number(s.exposure, 1.2, .2, 4);
+    }, create,
+  });
+})();
+</script>
+<script>/* modules/shallow.js */
+/* Original implementation of established wet, flat-bed shallow-water dynamics. */
+(function () {
+  'use strict';
+  const U = Studio.util, G = Studio.gl, Pal = Studio.PALETTES;
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': .8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  const DEFAULTS = { grid: 128, aspect: '1:1', boundary: 'periodic', pattern: 'splashes', amplitude: .8,
+    width: .09, courant: .45, warmup: 180, steps: 2, running: false, view: 'depth', exposure: 1 };
+  const range = (group, key, label, kind, min, max, step, fmt) => ({ group, key, label, type: 'range', kind, min, max, step, fmt });
+  const pre = (label, p, palette) => ({ label, p: { ...DEFAULTS, ...p }, palette });
+
+  // Conservative Rusanov flux, g=1. axis=0 uses x-normal momentum;
+  // axis=1 uses y-normal momentum. No wet/dry state replacement or clipping.
+  function flux(out, axis, hl, xl, yl, hr, xr, yr) {
+    const ml = axis ? yl : xl, mr = axis ? yr : xr;
+    const ul = ml / hl, ur = mr / hr;
+    const a = Math.max(Math.abs(ul) + Math.sqrt(hl), Math.abs(ur) + Math.sqrt(hr));
+    out[0] = .5 * (ml + mr - a * (hr - hl));
+    out[1] = .5 * (xl * ul + xr * ur + (axis ? 0 : .5 * (hl * hl + hr * hr)) - a * (xr - xl));
+    out[2] = .5 * (yl * ul + yr * ur + (axis ? .5 * (hl * hl + hr * hr) : 0) - a * (yr - yl));
+  }
+
+  function makeSim(s) {
+    const nx = s.grid, ny = Math.max(4, Math.round(nx * (ASPECTS[s.aspect] || 1))), dx = 1 / nx, size = nx * ny;
+    const h = new Float64Array(size), mx = new Float64Array(size), my = new Float64Array(size);
+    const nh = new Float64Array(size), nmx = new Float64Array(size), nmy = new Float64Array(size), f = new Float64Array(3);
+    const sim = { nx, ny, dx, h, mx, my, time: 0, step: 0, lastDt: 0, halted: '', mass: 0, mass0: 0,
+      momentumX: 0, momentumY: 0, energy: 0, minDepth: 0, maxDepth: 0, massDrift: 0, maxRateX: 0, maxRateY: 0 };
+    function measure() {
+      let volume = 0, px = 0, py = 0, energy = 0, lo = Infinity, hi = -Infinity, ax = 0, ay = 0;
+      for (let i = 0; i < size; i++) {
+        const c = h[i];
+        if (!(c > 1e-8) || !Number.isFinite(c + mx[i] + my[i])) throw Error('Positive finite depth required; this model does not support dry beds');
+        volume += c; px += mx[i]; py += my[i]; lo = Math.min(lo, c); hi = Math.max(hi, c);
+        energy += .5 * ((mx[i] ** 2 + my[i] ** 2) / c + c * c);
+        ax = Math.max(ax, Math.abs(mx[i] / c) + Math.sqrt(c)); ay = Math.max(ay, Math.abs(my[i] / c) + Math.sqrt(c));
+      }
+      sim.mass = volume * dx * dx; sim.momentumX = px * dx * dx; sim.momentumY = py * dx * dx;
+      sim.energy = energy * dx * dx; sim.minDepth = lo; sim.maxDepth = hi; sim.maxRateX = ax; sim.maxRateY = ay;
+      sim.massDrift = sim.mass0 ? (sim.mass - sim.mass0) / sim.mass0 : 0;
+    }
+    function reference() { measure(); sim.mass0 = sim.mass; sim.massDrift = 0; }
+    function step(finalTime = Infinity) {
+      if (sim.halted || finalTime <= sim.time) return;
+      try {
+        measure();
+        if (!(s.courant > 0 && s.courant <= .8)) throw Error('CFL fraction must be greater than zero and no more than 0.8');
+        // The coefficient of h_i in the 2D first-order update is nonnegative
+        // when dt*(max ax/dx + max ay/dx)<=1. Neighbor coefficients are
+        // nonnegative because every face speed bounds both normal velocities.
+        const dt = Math.min(s.courant * dx / (sim.maxRateX + sim.maxRateY), finalTime - sim.time), factor = dt / dx;
+        nh.set(h); nmx.set(mx); nmy.set(my);
+        function face(i, j, axis) {
+          flux(f, axis, h[i], mx[i], my[i], h[j], mx[j], my[j]);
+          const dh = factor * f[0], px = factor * f[1], py = factor * f[2];
+          nh[i] -= dh; nh[j] += dh; nmx[i] -= px; nmx[j] += px; nmy[i] -= py; nmy[j] += py;
+        }
+        for (let y = 0; y < ny; y++) for (let x = 0; x < nx - 1; x++) face(y * nx + x, y * nx + x + 1, 0);
+        for (let y = 0; y < ny - 1; y++) for (let x = 0; x < nx; x++) face(y * nx + x, (y + 1) * nx + x, 1);
+        if (s.boundary === 'periodic') {
+          for (let y = 0; y < ny; y++) face(y * nx + nx - 1, y * nx, 0);
+          for (let x = 0; x < nx; x++) face((ny - 1) * nx + x, x, 1);
+        } else if (s.boundary === 'walls') {
+          function wall(i, axis, right) {
+            const gx = axis ? mx[i] : -mx[i], gy = axis ? -my[i] : my[i];
+            if (right) flux(f, axis, h[i], mx[i], my[i], h[i], gx, gy);
+            else flux(f, axis, h[i], gx, gy, h[i], mx[i], my[i]);
+            const sign = right ? -1 : 1;
+            nh[i] += sign * factor * f[0]; nmx[i] += sign * factor * f[1]; nmy[i] += sign * factor * f[2];
+          }
+          for (let y = 0; y < ny; y++) { wall(y * nx, 0, false); wall(y * nx + nx - 1, 0, true); }
+          for (let x = 0; x < nx; x++) { wall(x, 1, false); wall((ny - 1) * nx + x, 1, true); }
+        } else throw Error('Unsupported boundary');
+        // Validate the full proposed step before touching the accepted state.
+        for (let i = 0; i < size; i++) if (!(nh[i] > 1e-8) || !Number.isFinite(nh[i] + nmx[i] + nmy[i]))
+          throw Error('Step approached a dry or nonfinite state; reduce the initial disturbance');
+        h.set(nh); mx.set(nmx); my.set(nmy); sim.time += dt; sim.lastDt = dt; sim.step++; measure();
+      } catch (error) { sim.halted = error.message; }
+    }
+    function advance(count, finalTime = Infinity) { for (let i = 0; i < count && !sim.halted && sim.time < finalTime; i++) step(finalTime); }
+    const rng = U.makeRng(s.seed + '/shallow'), phase = rng.range(0, U.TAU), height = ny / nx;
+    const centers = Array.from({ length: 6 }, () => [rng.range(.15, .85), rng.range(.15, .85) * height]);
+    const delta = (v, L) => s.boundary === 'periodic' ? v - L * Math.round(v / L) : v;
+    for (let y = 0; y < ny; y++) for (let x = 0; x < nx; x++) {
+      const i = y * nx + x, xx = (x + .5) * dx, yy = (y + .5) * dx;
+      const rx = delta(xx - .5, 1), ry = delta(yy - height / 2, height), r = Math.hypot(rx, ry);
+      let shape = 0;
+      if (s.pattern === 'drop') shape = Math.exp(-r * r / (2 * s.width ** 2));
+      else if (s.pattern === 'ring') shape = Math.exp(-(((r - .23 * Math.min(1, height)) / s.width) ** 2) / 2);
+      else if (s.pattern === 'dam') shape = xx < .5 + .035 * Math.sin(4 * Math.PI * yy / height + phase) ? 1 : 0;
+      else if (s.pattern === 'standing') shape = .45 * Math.cos(4 * Math.PI * xx + phase) * Math.cos(4 * Math.PI * yy / height);
+      else for (const c of centers) {
+        const a = delta(xx - c[0], 1), b = delta(yy - c[1], height); shape += .65 * Math.exp(-(a * a + b * b) / (2 * s.width ** 2));
+      }
+      h[i] = 1 + s.amplitude * shape;
+    }
+    Object.assign(sim, { advance, measure, reference }); reference(); return sim;
+  }
+
+  const DISPLAY = `#version 300 es
+precision highp float;
+in vec2 v_uv; out vec4 outColor;
+uniform sampler2D u_field; uniform vec2 u_res; uniform float u_low,u_high,u_exposure;
+${G.GLSL.bicubic}
+${G.GLSL.ramp}
+void main(){
+  float value=texCR(u_field,v_uv,u_res);
+  float t=clamp((value-u_low)/max(1e-8,u_high-u_low),0.0,1.0);
+  outColor=vec4(ramp(clamp(0.5+(t-0.5)*u_exposure,0.0,1.0)),1.0);
+}`;
+  function create(host) {
+    let gl, display;
+    try {
+      gl = G.createGL(host.canvas); if (!gl || !gl.floatExt) throw Error('This field view needs WebGL2 with float textures');
+      display = new G.Pass(gl, DISPLAY);
+    } catch (error) {
+      host.fault(error.message); return { aspect: s => ASPECTS[s.aspect] || 1, regenerate() {}, repaint() {}, resize() {}, pause() {}, resume() {} };
+    }
+    let sim, texture, ramp, rampKey = '', low = 0, high = 1, remaining = 0, timer = 0, raf = 0, paused = false, liveRemaining = 0;
+    function stop() { if (timer) clearTimeout(timer); if (raf) cancelAnimationFrame(raf); timer = raf = 0; }
+    function upload() {
+      const s = host.getState(), data = new Float32Array(sim.h.length * 4), values = new Float64Array(sim.h.length);
+      for (let i = 0; i < sim.h.length; i++) values[i] = s.view === 'speed' ? Math.hypot(sim.mx[i], sim.my[i]) / sim.h[i] : sim.h[i];
+      for (let i = 0; i < values.length; i++) { data[4 * i] = values[i]; data[4 * i + 3] = 1; }
+      values.sort(); low = values[Math.floor(values.length * .02)]; high = values[Math.floor(values.length * .98)];
+      if (high - low < 1e-7) { low -= 1e-7; high += 1e-7; }
+      texture.upload(data);
+    }
+    function render(target) {
+      const s = host.getState(), key = s.bg + '|' + s.palette.join(',');
+      if (!ramp || key !== rampKey) { if (ramp) ramp.dispose(); ramp = G.rampTexture(gl, s.palette, s.bg); rampKey = key; }
+      display.draw(target || null, { u_field: texture, u_res: [sim.nx, sim.ny], u_ramp: ramp, u_low: low, u_high: high, u_exposure: s.exposure });
+    }
+    function status() {
+      const halted = sim.halted ? '<span>Stopped: <b>' + U.escapeHtml(sim.halted) + '</b></span>' : '';
+      host.setStatus('<span>grid <b>' + sim.nx + '×' + sim.ny + '</b> · step <b>' + sim.step.toLocaleString() + '</b>' +
+        (remaining && !sim.halted ? ' · preparing' : '') + '</span><span>time <b>' + sim.time.toFixed(4) + '</b></span><span>depth <b>' +
+        sim.minDepth.toFixed(3) + '–' + sim.maxDepth.toFixed(3) + '</b></span><span>volume drift <b>' + sim.massDrift.toExponential(1) + '</b></span>' + halted);
+    }
+    function draw() { if (!sim) return; upload(); render(); status(); }
+    function chunk() {
+      timer = 0; if (paused || !sim || sim.halted) return;
+      const end = performance.now() + 18;
+      do {
+        sim.advance(1); if (remaining > 0) remaining--; else liveRemaining--;
+      } while (!sim.halted && (remaining > 0 || liveRemaining > 0) && performance.now() < end);
+      draw(); start();
+    }
+    function start() {
+      stop(); if (paused || !sim || sim.halted) return;
+      if (remaining > 0 || liveRemaining > 0) timer = setTimeout(chunk, 0);
+      else if (host.getState().running && !host.reducedMotion() && host.isActive())
+        raf = requestAnimationFrame(() => { raf = 0; liveRemaining = host.getState().steps; chunk(); });
+    }
+    return {
+      aspect(s) { return ASPECTS[s.aspect] || 1; },
+      regenerate() {
+        stop(); paused = false; liveRemaining = 0;
+        try {
+          sim = makeSim(host.getState()); if (texture) texture.dispose();
+          texture = new G.Target(gl, sim.nx, sim.ny, { type: 'rgba32f', filter: 'nearest', wrap: host.getState().boundary === 'periodic' ? 'repeat' : 'clamp' });
+          remaining = host.getState().warmup; draw(); start();
+        } catch (error) { host.fault(error.message); }
+      },
+      fieldCells() { return sim ? [sim.nx, sim.ny] : null; },
+      repaint() { draw(); }, resize() { if (sim) render(); }, live() { start(); },
+      pause() { paused = true; stop(); }, resume() { paused = false; start(); },
+      action(key) { if (key === 'reseed') this.regenerate(); else if (key === 'burst' && sim) { remaining += 64; start(); } },
+      async exportPNG(w, h) {
+        if (!sim) throw Error('No shallow-water field to export');
+        const max = gl.getParameter(gl.MAX_TEXTURE_SIZE); if (w > max || h > max) throw Error('Print exceeds this GPU limit of ' + max + ' pixels');
+        const target = new G.Target(gl, w, h, { type: 'rgba8' }), pixels = new Uint8Array(w * h * 4);
+        try {
+          render(target); gl.bindFramebuffer(gl.FRAMEBUFFER, target.fbo); gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+          if (gl.getError() !== gl.NO_ERROR) throw Error('Print readback failed');
+        } finally { gl.bindFramebuffer(gl.FRAMEBUFFER, null); target.dispose(); }
+        const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
+        const context = canvas.getContext('2d'), image = context.createImageData(w, h);
+        for (let y = 0; y < h; y++) image.data.set(pixels.subarray((h - y - 1) * w * 4, (h - y) * w * 4), y * w * 4);
+        context.putImageData(image, 0, 0); return U.toBlob(canvas);
+      },
+    };
+  }
+  Studio.register({
+    id: 'shallow', name: 'Shallow Water', subtitle: 'depth, flow and shock waves · 1871', order: 89.4, familiarity: 'occasional',
+    equation: 'h_t + ∇·(h u) = 0; (h u)_t + ∇·(h u⊗u + ½h² I) = 0, g = 1',
+    credit: 'A. J. C. de Saint-Venant (1871), shallow-water equations. Rusanov/local Lax–Friedrichs conservative finite-volume flux. Exact wave benchmarks follow D. I. Ketcheson, R. J. LeVeque and M. J. del Razo, Riemann Problems and Jupyter Solutions (2020). Original implementation of established equations; no Clawpack code is included.',
+    blurb: 'Raised patches of water spread, collide and form moving fronts. Depth and horizontal momentum evolve together, so stronger waves can steepen into shocks. Opposite edges can connect, or solid walls can reflect the flow. This is a wet, flat-bottom sheet in normalized units: no coastline, dry ground, bottom relief or breaking-wave spray. The first-order method spreads sharp fronts across several cells. Finer grids reduce that numerical smearing; a larger print keeps the same physical grid.',
+    defaults: { ...DEFAULTS }, palette: true, defaultPalette: 'harbor', headline: 'grid', headlineLabel: 'cells across',
+    schema: [
+      { group: 'Water', key: 'pattern', label: 'Initial water', type: 'seg', kind: 'geom', options: [['splashes', 'Several drops'], ['drop', 'Single drop'], ['ring', 'Ring'], ['dam', 'Raised half'], ['standing', 'Standing wave']] },
+      range('Water', 'amplitude', 'Height contrast', 'geom', .05, 1.5, .05, v => v.toFixed(2)),
+      range('Water', 'width', 'Drop width', 'geom', .03, .2, .005, v => v.toFixed(3)),
+      { group: 'Grid', key: 'grid', label: 'Cells across', type: 'seg', kind: 'geom', options: [[64, '64'], [128, '128'], [256, '256 · heavy'], [512, '512 · very heavy']] },
+      { group: 'Grid', key: 'aspect', label: 'Aspect', type: 'seg', kind: 'geom', options: Object.keys(ASPECTS).map(v => [v, v]) },
+      { group: 'Grid', key: 'boundary', label: 'Edges', type: 'seg', kind: 'geom', options: [['periodic', 'Connected'], ['walls', 'Reflecting walls']] },
+      range('Evolution', 'courant', 'CFL fraction', 'geom', .1, .8, .05, v => v.toFixed(2)),
+      range('Evolution', 'warmup', 'Warm-up steps', 'geom', 0, 800, 10, String),
+      range('Evolution', 'steps', 'Steps per frame', 'live', 1, 6, 1, String),
+      { group: 'Evolution', key: 'running', label: 'Running', type: 'toggle', kind: 'live' },
+      { group: 'Evolution', key: 'burst', label: 'Run 64 steps', type: 'action' },
+      { group: 'Evolution', key: 'reseed', label: 'Reseed', type: 'action' },
+      { group: 'Picture', key: 'view', label: 'Color shows', type: 'seg', kind: 'paint', options: [['depth', 'Water depth'], ['speed', 'Flow speed']] },
+      range('Picture', 'exposure', 'Contrast', 'paint', .4, 2, .05, v => v.toFixed(2)),
+    ],
+    presets: {
+      drops: pre('Colliding drops', { pattern: 'splashes', amplitude: .8, width: .07, warmup: 160 }, Pal.harbor),
+      pool: pre('Wall reflections', { pattern: 'splashes', boundary: 'walls', warmup: 300, view: 'speed' }, Pal.thermal),
+      ring: pre('Expanding ring', { pattern: 'ring', width: .04, amplitude: 1.2, warmup: 160 }, Pal.glacier),
+      dam: pre('Corrugated dam break', { pattern: 'dam', amplitude: 1.5, boundary: 'walls', warmup: 120 }, Pal.ember),
+      wave: pre('Crossing standing waves', { pattern: 'standing', amplitude: 1.2, warmup: 100 }, Pal.bioluminescent),
+      drop: pre('Single ripple', { pattern: 'drop', width: .12, amplitude: .6, warmup: 140, view: 'speed' }, Pal.verdigris),
+    },
+    hints: {
+      Water: 'Depth starts positive everywhere. Height contrast sets the initial disturbance; changing it regenerates the water.',
+      Grid: 'The CPU evolves three Float64 fields. At the same physical time, doubling both dimensions needs roughly eight times as much work. A print adds pixels without adding cells.',
+      Evolution: 'The deterministic time step follows the fastest current wave speed. Warm-up is counted in steps, so different grids reach different physical times. Volume drift checks conservation; it does not certify wave accuracy.',
+      Picture: 'Colors use the current field’s 2nd and 98th percentiles. Contrast is a display choice, not a change to depth or momentum.',
+    },
+    closedGroups: ['Grid', 'Evolution'],
+    surprise(rng) { return { pattern: rng.pick(['splashes', 'ring', 'dam', 'standing']), amplitude: rng.range(.4, 1.4), width: rng.range(.04, .13), boundary: rng.pick(['periodic', 'walls']), view: rng.pick(['depth', 'speed']) }; },
+    sanitize(s) { s.grid = [64, 128, 256, 512].includes(s.grid) ? s.grid : 128; s.courant = U.clamp(Number(s.courant) || .45, .1, .8); },
+    create,
+  });
+})();
+</script>
+<script>/* modules/nonreciprocal.js: original finite-difference implementation of a published 2025 model. */
+(function () {
+  'use strict';
+  const U = Studio.util, G = Studio.gl;
+  const ASPECTS = {'1:1':1,'4:5':1.25,'5:4':0.8,'3:2':2/3,'16:9':9/16};
+  const HEAD = `#version 300 es
+precision highp float; precision highp int;
+in vec2 v_uv; out vec4 outColor;`;
+  // The local nonlinear chemical potential is evaluated BEFORE taking its Laplacian.
+  const RHS_FS = HEAD + `
+uniform sampler2D u_state; uniform ivec2 u_size;
+uniform float u_dx, u_K, u_a0, u_a1;
+vec2 cell(ivec2 p){return texelFetch(u_state,(p+2*u_size)%u_size,0).rg;}
+vec2 localMu(vec2 z){float r2=dot(z,z); return (r2-1.0)*z+(u_a0-u_a1*r2)*vec2(-z.y,z.x);}
+vec2 lap(ivec2 p){return (cell(p+ivec2(1,0))+cell(p-ivec2(1,0))+cell(p+ivec2(0,1))+cell(p-ivec2(0,1))-4.0*cell(p))/(u_dx*u_dx);}
+void main(){ivec2 p=ivec2(gl_FragCoord.xy);
+ vec2 chemical=localMu(cell(p+ivec2(1,0)))+localMu(cell(p-ivec2(1,0)))+localMu(cell(p+ivec2(0,1)))+localMu(cell(p-ivec2(0,1)))-4.0*localMu(cell(p));
+ vec2 biharm=lap(p+ivec2(1,0))+lap(p-ivec2(1,0))+lap(p+ivec2(0,1))+lap(p-ivec2(0,1))-4.0*lap(p);
+ outColor=vec4((chemical-u_K*biharm)/(u_dx*u_dx),0.0,1.0);
+}`;
+  const MIX_FS = HEAD + `
+uniform sampler2D u_base,u_k1,u_k2; uniform float u_dt; uniform int u_correct;
+void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec2 b=texelFetch(u_base,p,0).rg,k=texelFetch(u_k1,p,0).rg;
+ if(u_correct==1) k=0.5*(k+texelFetch(u_k2,p,0).rg);
+ outColor=vec4(b+u_dt*k,0.0,1.0);}`;
+  const COPY_FS = HEAD + `uniform sampler2D u_state; void main(){outColor=texelFetch(u_state,ivec2(gl_FragCoord.xy),0);}`;
+  const RENDER_FS = HEAD + `
+uniform sampler2D u_state; uniform vec2 u_res; uniform int u_view; uniform float u_a0,u_a1,u_gain;
+${G.GLSL.bicubic}
+${G.GLSL.ramp}
+void main(){vec2 z=texCR4(u_state,v_uv,u_res).rg; float a=length(z),v=0.5+0.45*tanh(z.x*u_gain);
+ if(u_view==1)v=0.5+0.45*tanh(z.y*u_gain);
+ if(u_view==2)v=clamp(a*u_gain/1.6,0.0,1.0);
+ if(u_view==3)v=atan(z.y,z.x)/6.28318530718+0.5;
+ if(u_view==4)v=0.5+0.45*tanh((u_a0-u_a1*a*a)*u_gain/4.0);
+ outColor=vec4(ramp(v),1.0);}`;
+  const LIMIT = 2.5;
+  function timeStep(s) {
+    // Conservative scale estimate for Heun: q <= 8/dx² and the nonlinear Jacobian
+    // norm <= 1+3R²+|a0|+3|a1|R². Not a nonlinear stability proof.
+    const q=8/(s.spacing*s.spacing), j=1+3*LIMIT*LIMIT+Math.abs(s.alpha0)+3*Math.abs(s.alpha1)*LIMIT*LIMIT;
+    return s.safety/(q*(j+s.stiffness*q));
+  }
+  function initial(s,w,h){
+    const rng=U.makeRng(s.seed+'/nonreciprocal'), data=new Float32Array(w*h*4), phases=Array.from({length:8},()=>rng()*U.TAU);
+    const mode=Math.max(1,Math.round(w/24)), rho=Math.sqrt(Math.max(0.02,1-s.stiffness*4*Math.sin(Math.PI*mode/w)**2/(s.spacing*s.spacing)));
+    let mx=0,my=0;
+    for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+      const p=4*(y*w+x), angle=U.TAU*(mode*x/w+(s.pattern==='diagonal'?2*y/h:0))+phases[0];
+      let a,b;
+      if(s.pattern==='noise'){a=rng.range(-0.35,0.35);b=rng.range(-0.35,0.35);}
+      else {a=rho*Math.cos(angle);b=rho*Math.sin(angle);if(s.pattern==='perturbed'){a+=0.12*Math.sin(U.TAU*(3*x/w+4*y/h)+phases[1]);b+=0.12*Math.cos(U.TAU*(5*x/w-2*y/h)+phases[2]);}}
+      data[p]=a;data[p+1]=b;data[p+3]=1;mx+=data[p];my+=data[p+1];
+    }
+    mx/=w*h;my/=w*h;
+    for(let p=0;p<data.length;p+=4){data[p]-=mx;data[p+1]-=my;}
+    return data;
+  }
+  function create(host){
+    const gl=G.createGL(host.canvas), noop=()=>{};
+    const dead=message=>{host.fault(message);return {aspect:s=>ASPECTS[s.aspect]||1,regenerate:noop,repaint:noop,resize:noop,pause:noop,resume:noop,exportPNG:()=>Promise.reject(Error(message))};};
+    if(!gl||!gl.floatExt)return dead('Active mixture requires WebGL2 float32 color buffers.');
+    let rhs,mix,copy,display;
+    try{rhs=new G.Pass(gl,RHS_FS);mix=new G.Pass(gl,MIX_FS);copy=new G.Pass(gl,COPY_FS);display=new G.Pass(gl,RENDER_FS);}catch(error){return dead('Active-mixture shaders could not compile.');}
+    let field,k1,k2,stage,backup,ramp,rampKey='',readback,gw=0,gh=0,steps=0,pending=0,dt=0,raf=0,timer=0,stopped='',drift=0,initialMean=[0,0];
+    const stop=()=>{cancelAnimationFrame(raf);clearTimeout(timer);raf=timer=0;};
+    function read(){gl.bindFramebuffer(gl.FRAMEBUFFER,field.read.fbo);gl.readPixels(0,0,gw,gh,gl.RGBA,gl.FLOAT,readback);gl.bindFramebuffer(gl.FRAMEBUFFER,null);let mx=0,my=0,max=0;for(let p=0;p<readback.length;p+=4){mx+=readback[p];my+=readback[p+1];max=Math.max(max,Math.hypot(readback[p],readback[p+1]));}return {mean:[mx/(gw*gh),my/(gw*gh)],max};}
+    function allocate(s){const w=s.grid,h=Math.max(32,Math.round(w*(ASPECTS[s.aspect]||1)));if(w>gl.getParameter(gl.MAX_TEXTURE_SIZE)||h>gl.getParameter(gl.MAX_TEXTURE_SIZE))throw Error('Selected grid exceeds the device limit.');if(w===gw&&h===gh&&field)return;for(const t of [field,k1,k2,stage,backup])if(t)t.dispose();const options={type:'rgba32f',filter:'nearest',wrap:'repeat'};field=new G.PingPong(gl,w,h,options);k1=new G.Target(gl,w,h,options);k2=new G.Target(gl,w,h,options);stage=new G.Target(gl,w,h,options);backup=new G.Target(gl,w,h,options);gw=w;gh=h;readback=new Float32Array(w*h*4);}
+    function advance(n){
+      if(stopped)return;const s=host.getState();copy.draw(backup,{u_state:field.read});
+      const u={u_size:{ivec:[gw,gh]},u_dx:s.spacing,u_K:s.stiffness,u_a0:s.alpha0,u_a1:s.alpha1};
+      for(let i=0;i<n;i++){
+        rhs.draw(k1,Object.assign({u_state:field.read},u));
+        mix.draw(stage,{u_base:field.read,u_k1:k1,u_k2:k1,u_dt:dt,u_correct:{int:0}});
+        rhs.draw(k2,Object.assign({u_state:stage},u));
+        mix.draw(field.write,{u_base:field.read,u_k1:k1,u_k2:k2,u_dt:dt,u_correct:{int:1}});field.swap();
+      }
+      const m=read();
+      if(!Number.isFinite(m.max)||m.max>LIMIT||!m.mean.every(Number.isFinite)){
+        copy.draw(field.read,{u_state:backup});stopped='Amplitude guard reached. Lower the step fraction or change the initial field.';pending=0;stop();return;
+      }
+      steps+=n;drift=Math.max(Math.abs(m.mean[0]-initialMean[0]),Math.abs(m.mean[1]-initialMean[1]));
+    }
+    function status(){host.setStatus('<span>step <b>'+steps.toLocaleString()+'</b>'+(pending?' · warming up':'')+'</span><span>grid <b>'+gw+'×'+gh+'</b> · t '+(steps*dt).toFixed(3)+'</span><span>dt <b>'+dt.toExponential(2)+'</b> · mean drift '+drift.toExponential(1)+'</span>'+(stopped?'<span>Stopped: '+stopped+'</span>':''));}
+    function render(target){if(!field)return;const s=host.getState(),key=s.bg+'|'+s.palette.join(',');if(!ramp||key!==rampKey){if(ramp)ramp.dispose();ramp=G.rampTexture(gl,s.palette,s.bg);rampKey=key;}display.draw(target||null,{u_state:field.read,u_res:[gw,gh],u_ramp:ramp,u_view:{int:{first:0,second:1,amplitude:2,phase:3,coupling:4}[s.view]||0},u_a0:s.alpha0,u_a1:s.alpha1,u_gain:s.exposure});}
+    function animate(){const s=host.getState();if(stopped||!s.running||host.reducedMotion()||!host.isActive())return;raf=requestAnimationFrame(()=>{raf=0;advance(s.steps);render();status();animate();});}
+    function warm(){stop();if(stopped)return;const n=Math.min(16,pending);pending-=n;if(n)advance(n);render();status();if(pending)timer=setTimeout(warm,0);else animate();}
+    return {
+      aspect:s=>ASPECTS[s.aspect]||1,
+      regenerate(){stop();const s=host.getState();try{allocate(s);}catch(error){host.fault(error.message);return;}steps=0;pending=s.warmup;dt=timeStep(s);stopped='';drift=0;field.read.upload(initial(s,gw,gh));initialMean=read().mean;warm();},
+      fieldCells:()=>field?[gw,gh]:null,repaint:()=>render(),resize:()=>render(),pause:stop,resume(){if(field)warm();},live(){if(field)warm();},
+      action(key){if(key==='burst'&&field&&!stopped){pending+=1024;warm();}},
+      async exportPNG(w,h){if(!field)throw Error('No field to export.');const max=gl.getParameter(gl.MAX_TEXTURE_SIZE);if(w>max||h>max)throw Error('Print exceeds this GPU texture limit.');const t=new G.Target(gl,w,h,{type:'rgba8'}),pixels=new Uint8Array(w*h*4);try{render(t);gl.bindFramebuffer(gl.FRAMEBUFFER,t.fbo);gl.readPixels(0,0,w,h,gl.RGBA,gl.UNSIGNED_BYTE,pixels);}finally{gl.bindFramebuffer(gl.FRAMEBUFFER,null);t.dispose();}const c=document.createElement('canvas');c.width=w;c.height=h;const cx=c.getContext('2d'),im=cx.createImageData(w,h);for(let y=0;y<h;y++)im.data.set(pixels.subarray((h-y-1)*w*4,(h-y)*w*4),y*w*4);cx.putImageData(im,0,0);return U.toBlob(c);},
+    };
+  }
+  const range=(group,key,label,kind,min,max,step)=>({group,key,label,type:'range',kind,min,max,step,fmt:v=>Number.isInteger(v)?String(v):v.toFixed(2)});
+  const pre=(label,p,palette)=>({label,p,palette});
+  Studio.register({
+    id:'nonreciprocal',name:'Nonlinear Active Mixture',tab:'Active mixture',subtitle:'nonlinear nonreciprocal fields · 2025',order:10.5,
+    equation:'∂t ψ = ∇²[(-1+iα₀)ψ + (1−iα₁)|ψ|²ψ − K∇²ψ]',
+    credit:'S. Saha and R. Golestanian, Effervescence in a binary mixture with nonlinear non-reciprocal interactions, Nature Communications 16, 7310 (2025), doi:10.1038/s41467-025-61728-8, equation 5. Original finite-difference implementation; the paper uses a different spectral solver.',
+    blurb:'Two conserved fields influence one another with a coupling that changes with their combined amplitude. Explore an active-mixture equation published in 2025, with periodic boundaries and mobility set to one. Initial waves and perturbed waves are prepared patterns; their presence alone is not evidence of spontaneous ordering. The paper reports traveling patterns and transient droplets, but this finite-grid viewer does not certify its phase diagram or chaos. Colors show either field, amplitude, phase, or the local coupling. Printing preserves the chosen numerical grid.',
+    schema:[
+      range('Mixture','alpha0','Linear coupling α₀','geom',-5,5,0.1),range('Mixture','alpha1','Nonlinear coupling α₁','geom',-5,5,0.1),range('Mixture','stiffness','Interface K','geom',0.5,2,0.1),
+      {group:'Initial field',key:'pattern',label:'Preparation',type:'seg',kind:'geom',options:[['wave','Plane wave'],['perturbed','Perturbed wave'],['diagonal','Oblique wave'],['noise','Random mixture']]},
+      {group:'Grid',key:'grid',label:'Cells across',type:'seg',kind:'geom',options:[[128,'128'],[256,'256'],[512,'512'],[1024,'1024 · heavy']]},
+      {group:'Grid',key:'aspect',label:'Aspect',type:'seg',kind:'geom',options:Object.keys(ASPECTS).map(k=>[k,k])},range('Grid','spacing','Cell spacing','geom',0.5,2,0.1),
+      range('Simulation','safety','Step fraction','geom',0.1,0.8,0.05),range('Simulation','warmup','Warm-up steps','geom',0,4096,64),range('Simulation','steps','Steps per frame','live',1,32,1),
+      {group:'Simulation',key:'running',label:'Running',type:'toggle',kind:'live'},{group:'Simulation',key:'burst',label:'Run 1024 steps',type:'action'},
+      {group:'Picture',key:'view',label:'View',type:'seg',kind:'paint',options:[['first','Field 1'],['second','Field 2'],['amplitude','Amplitude'],['phase','Phase'],['coupling','Local coupling']]},range('Picture','exposure','Exposure','paint',0.2,4,0.1),
+    ],
+    defaults:{seed:'active-mixture-2025',alpha0:4,alpha1:4,stiffness:1,pattern:'perturbed',grid:256,aspect:'1:1',spacing:1,safety:0.6,warmup:128,steps:8,running:true,view:'first',exposure:1.5},
+    presets:{
+      waves:pre('Constant coupling',{alpha0:3,alpha1:0,pattern:'wave',view:'first'},Studio.PALETTES.harbor),
+      active:pre('Nonlinear mixture',{alpha0:4,alpha1:4,pattern:'perturbed',view:'first'},Studio.PALETTES.thermal),
+      noise:pre('Random preparation',{alpha0:2.3,alpha1:4.6,pattern:'noise',warmup:512,view:'phase'},Studio.PALETTES.bioluminescent),
+      oblique:pre('Oblique wave',{alpha0:1,alpha1:-1,pattern:'diagonal',view:'second'},Studio.PALETTES.ember),
+      passive:pre('Reciprocal limit',{alpha0:0,alpha1:0,pattern:'noise',warmup:512,view:'first',exposure:3},Studio.PALETTES.graphite),
+      coupling:pre('Coupling reversals',{alpha0:4,alpha1:5,pattern:'perturbed',view:'coupling'},Studio.PALETTES.verdigris),
+    },
+    hints:{Mixture:'A recently published model, not a new GENChase discovery. Local coupling is α₀−α₁|ψ|². No forcing or stochastic noise is applied after preparation.', 'Initial field':'All fields have near-zero sample means. Wave preparations are imposed initial conditions, not discoveries of a pattern.',Grid:'Cell spacing and cell count together set the physical box. More cells at fixed spacing enlarge the box; reduce spacing and increase count together to refine a fixed box.',Simulation:'Explicit Heun stepping uses a conservative local scale estimate, with no clipping. An amplitude guard stops and restores the last accepted batch. This is not a global stability proof. Long-time phases need separate convergence tests.',Picture:'Display colors are nonlinear. The phase near zero amplitude is not a reliable physical orientation.'},
+    closedGroups:['Initial field','Grid','Simulation'],palette:true,defaultPalette:'thermal',
+    sanitize(s){if(![128,256,512,1024].includes(Number(s.grid)))s.grid=256;s.grid=Number(s.grid);s.steps=Math.round(U.clamp(s.steps,1,32));s.warmup=Math.round(U.clamp(s.warmup,0,4096));},
+    surprise:rng=>({alpha0:rng.range(1,5),alpha1:rng.range(1,5),pattern:rng.pick(['perturbed','diagonal','noise']),view:rng.pick(['first','second','phase'])}),create,
   });
 })();
 </script>

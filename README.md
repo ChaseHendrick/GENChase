@@ -4,7 +4,7 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
-One portable HTML file, maintained as modular source. 122 pattern-forming systems with saved recipes and print exports.
+One portable HTML file, maintained as modular source. 126 pattern-forming systems with saved recipes and print exports.
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
@@ -74,10 +74,14 @@ are opportunities to investigate; they do not by themselves establish new mathem
 
 ## What the checks establish
 
-Two additions offer larger optional workloads:
+Recent additions include classical geometry, field dynamics and larger optional workloads:
 
 | Technique | Explore | Larger setting | Scientific scope |
 |---|---|---|---|
+| **Parametric Surfaces** | Enneper, Dini and the catenoid–helicoid family, selected with MathMod as inspiration | Six presets with finite wire meshes and SVG export | Independent implementation of classical maps; [geometry and print evidence](validation/SURFACES.md) |
+| **Kinetic Plasma** | Electron phase space and self-consistent electrostatic fields | Up to 262,144 particles on the CPU | Periodic one-dimensional cloud-in-cell model; [cold-sheet, field and print checks](validation/PLASMA.md) |
+| **Shallow Water** | Interacting ripples, wet dam breaks and reflecting walls | Up to 512 × 512 finite-volume cells on the CPU | Wet, flat-bottom Saint-Venant equations; [exact-wave and print checks](validation/SHALLOW.md) |
+| **Nonlinear Active Mixture** | Two conserved fields with nonreciprocal interactions | Up to 1024 × 1024 GPU cells | Independent implementation of a 2025 published model; [equation, convergence and print checks](validation/NONRECIPROCAL.md) |
 | **Maxwell FDTD** | Electric and magnetic waves scattering through dielectric patterns | Up to 2048 × 2048 cells for a square GPU field | Lossless, periodic, two-dimensional model; [numerical and print evidence](validation/MAXWELL.md) |
 | **Molecular Dynamics** | Attractive and repulsive particles in a periodic box | Up to 16,384 particles on the CPU | Two-dimensional force-shifted Lennard–Jones model; [trajectory and print evidence](validation/MOLECULAR.md) |
 

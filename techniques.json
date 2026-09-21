@@ -2,7 +2,7 @@
   "project": "GENChase",
   "repository": "https://github.com/SharpMeow/GENChase",
   "file": "studio.html",
-  "count": 122,
+  "count": 126,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "aliases": {},
   "familiarityBuckets": [
@@ -102,6 +102,32 @@
       "runningDefault": true,
       "headline": "h",
       "hash": "#cortex/kluver-1928",
+      "aliases": []
+    },
+    {
+      "id": "nonreciprocal",
+      "name": "Nonlinear Active Mixture",
+      "tab": "Active mixture",
+      "subtitle": "nonlinear nonreciprocal fields · 2025",
+      "equation": "∂t ψ = ∇²[(-1+iα₀)ψ + (1−iα₁)|ψ|²ψ − K∇²ψ]",
+      "credit": "S. Saha and R. Golestanian, Effervescence in a binary mixture with nonlinear non-reciprocal interactions, Nature Communications 16, 7310 (2025), doi:10.1038/s41467-025-61728-8, equation 5. Original finite-difference implementation; the paper uses a different spectral solver.",
+      "blurb": "Two conserved fields influence one another with a coupling that changes with their combined amplitude. Explore an active-mixture equation published in 2025, with periodic boundaries and mobility set to one. Initial waves and perturbed waves are prepared patterns; their presence alone is not evidence of spontaneous ordering. The paper reports traveling patterns and transient droplets, but this finite-grid viewer does not certify its phase diagram or chaos. Colors show either field, amplitude, phase, or the local coupling. Printing preserves the chosen numerical grid.",
+      "order": 10.5,
+      "seed": "active-mixture-2025",
+      "presets": [
+        "waves",
+        "active",
+        "noise",
+        "oblique",
+        "passive",
+        "coupling"
+      ],
+      "vectors": false,
+      "familiarity": "rare",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "",
+      "hash": "#nonreciprocal/active-mixture-2025",
       "aliases": []
     },
     {
@@ -1223,6 +1249,32 @@
       "aliases": []
     },
     {
+      "id": "plasma",
+      "name": "Kinetic Plasma",
+      "tab": "Plasma",
+      "subtitle": "electrons in phase space · 1960s",
+      "equation": "∂f/∂t + v ∂f/∂x − E ∂f/∂v = 0; ∂E/∂x = 1 − ∫f dv; x ∈ [0, 2π), periodic",
+      "credit": "Standard cloud-in-cell electrostatic plasma model. C. K. Birdsall and A. B. Langdon, Plasma Physics via Computer Simulation (1985). CIC field centering and conservation limitations: J. U. Brackbill, arXiv:1510.08741 (2015), sections 3.1–3.5. Original implementation; not the GEMPIC geometric scheme.",
+      "blurb": "Each moving cloud represents electrons in a one-dimensional periodic plasma with a fixed positive background. Position runs horizontally and velocity vertically. Color shows the density of particles in this phase-space window. Two counter-moving populations can fold into islands as their electric field traps particles. The same deposited charge creates the force that moves the particles. This is collisionless electrostatic motion, with no magnetic field or ion motion. A finite particle sample adds noise, and a finite grid can heat the plasma numerically. Printing enlarges the measured histogram; it does not add particles or resolve more physics.",
+      "order": 53.7,
+      "seed": "electron-clouds",
+      "presets": [
+        "streams",
+        "oscillation",
+        "warm",
+        "twins",
+        "broad",
+        "dense"
+      ],
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "n",
+      "hash": "#plasma/electron-clouds",
+      "aliases": []
+    },
+    {
       "id": "excitable",
       "name": "Excitable Media",
       "tab": "",
@@ -2307,6 +2359,32 @@
       "aliases": []
     },
     {
+      "id": "shallow",
+      "name": "Shallow Water",
+      "tab": "",
+      "subtitle": "depth, flow and shock waves · 1871",
+      "equation": "h_t + ∇·(h u) = 0; (h u)_t + ∇·(h u⊗u + ½h² I) = 0, g = 1",
+      "credit": "A. J. C. de Saint-Venant (1871), shallow-water equations. Rusanov/local Lax–Friedrichs conservative finite-volume flux. Exact wave benchmarks follow D. I. Ketcheson, R. J. LeVeque and M. J. del Razo, Riemann Problems and Jupyter Solutions (2020). Original implementation of established equations; no Clawpack code is included.",
+      "blurb": "Raised patches of water spread, collide and form moving fronts. Depth and horizontal momentum evolve together, so stronger waves can steepen into shocks. Opposite edges can connect, or solid walls can reflect the flow. This is a wet, flat-bottom sheet in normalized units: no coastline, dry ground, bottom relief or breaking-wave spray. The first-order method spreads sharp fronts across several cells. Finer grids reduce that numerical smearing; a larger print keeps the same physical grid.",
+      "order": 89.4,
+      "seed": "",
+      "presets": [
+        "drops",
+        "pool",
+        "ring",
+        "dam",
+        "wave",
+        "drop"
+      ],
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "grid",
+      "hash": "#shallow",
+      "aliases": []
+    },
+    {
       "id": "attractors",
       "name": "Attractors",
       "tab": "",
@@ -2795,6 +2873,32 @@
       "runningDefault": false,
       "headline": "",
       "hash": "#reuleaux",
+      "aliases": []
+    },
+    {
+      "id": "surfaces",
+      "name": "Parametric Surfaces",
+      "tab": "Surfaces",
+      "subtitle": "Enneper, Dini and the catenoid–helicoid family · classical geometry",
+      "equation": "Enneper and catenoid–helicoid: H = 0; Dini (a = 1): K = −1/(1 + b²)",
+      "credit": "Classical surfaces of Enneper and Dini, and the catenoid–helicoid associate family. Parameter maps: 3D-XplorMath / UCI, Enneper Surface; Thomas Banchoff, Brown University, Differential Geometry §7.3; Oliver Knill, Harvard Math 21a, Dini surface. MathMod inspired the selection; this is an independent implementation, not imported MathMod code or collection data.",
+      "blurb": "A curved sheet built from its mathematical coordinates. Enneper folds a saddle through itself, Dini winds a negatively curved trumpet, and the associate slider bends a catenoid into a helicoid while preserving its local metric. The plate is a transparent wire mesh: all parameter lines remain visible through one another. These are established formulas. The seed changes the camera and color placement; it does not change the surface law.",
+      "order": 99.4,
+      "seed": "",
+      "presets": [
+        "enneper",
+        "folded",
+        "dini",
+        "catenoid",
+        "helicoid",
+        "associate"
+      ],
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": false,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#surfaces",
       "aliases": []
     },
     {

@@ -343,7 +343,7 @@ These are software claims. They transfer. They are not physics.
 
 ## Per-tab status
 
-122 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
+126 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
 
 Familiarity is listed so you do not confuse it with prior-art status.
 
@@ -471,6 +471,10 @@ Familiarity is listed so you do not confuse it with prior-art status.
 | `double-triangle-bound` | Polygon collapse bounds | rare | proved candidate; priority unresolved | 2026-09-20 partial primary-source review; full-text check pending |
 | `maxwell` | Maxwell FDTD | occasional | science only | never searched |
 | `molecular` | Molecular Dynamics | occasional | science only | never searched |
+| `surfaces` | Parametric Surfaces | familiar | science only | never searched |
+| `nonreciprocal` | Nonlinear Active Mixture | obscure | science only | never searched |
+| `plasma` | Kinetic Plasma | occasional | science only | never searched |
+| `shallow` | Shallow Water | occasional | science only | never searched |
 
 ## Notes on the rows that are not `science only`
 
@@ -1267,3 +1271,70 @@ Additional exact search queries: none. These sources suffice to reject novelty o
 Before production trajectories, a zero homogeneous timing fixture and a sinusoidal timing/readback fixture were run to estimate affordable GPU workload. No random coarsening trajectories or fit data were inspected when choosing the protocol.
 
 Result: 22 GPU trajectories and a Python standard-library fit/whole-seed bootstrap/held-out analysis. Candidate A=5.3290, p=0.18172 has 3.41% pooled held-out relative RMSE versus 9.44% for the fitted one-third baseline, but p changes from 0.14727 to 0.22050 between frozen windows (difference 0.07323 > 0.05). The frozen acceptance rule REJECTS the calibration. Narrow within-window bootstrap interval does not cover systematic window dependence. Selected dt-halving/larger-domain/conservation/independent-mode controls pass. No new formula or growth-law claim; no post-result retuning. Full exact protocol and results live in experiments/CAHN-SCALING.md, experiments/results/cahn-scaling.json, and experiments/results/cahn-scaling-analysis.json; reproducible producers are tools/cahn-scaling.js and tools/cahn-scaling.py.
+
+## 2026-09-21 — Classical surface module
+
+
+Read the repository research ledger before querying. Exact searches:
+
+1. `site:math.* Dini surface Enneper parametrization curvature university`
+2. `Enneper catenoid Dini surface site:edu parametrization Gaussian curvature`
+3. `"Dini" "surface" site:math.uci.edu`
+4. `"Dini" "surface" site:edu "curvature" parametrization`
+
+Read the complete short UCI Enneper and Brown §7.3 pages cited above. Read the
+Enneper curvature section in the [ETSU course PDF](https://math.etsu.edu/multicalc/prealpha/Chap3/Chap3-8/printversion.pdf).
+Read the indexed Harvard Dini formula and URI exercise text. Direct page/PDF
+fetches of those last two sources failed (Harvard cache/403, URI certificate/502),
+so no claim of reading their full source documents is made. A search preview of
+the [UCI Dini-family note](https://www.math.uci.edu/~vmm/docs/DiniKuenBreather.pdf)
+uses a different parameterization; the full fetch timed out and that form is
+not implemented. The Dini metric and curvature used by the benchmark were
+independently derived from the explicit map above.
+
+Opened the official [MathMod collection](https://raw.githubusercontent.com/parisolab/mathmod/master/mathmodcollection.js)
+and found the four exact collection names above. This confirms selection
+provenance, not numerical equivalence with MathMod. Existing Boy, Klein and gyroid
+catalog entries were excluded from this selection. No historical novelty search
+is needed for a module explicitly presenting these classical examples.
+
+
+## Electrostatic kinetic-plasma module references — 2026-09-21
+
+Read AGENTS.md, module contract, VALIDATION.md, validation/README.md, the plasma entries in RESEARCH.md, and github-module-research.md before implementation. The ledger already establishes Landau damping and two-stream physics as classical; no novelty search or personal naming is appropriate.
+
+Primary algorithm source inspected: [J. U. Brackbill, On Energy and Momentum Conservation in Particle-in-Cell Plasma Simulation (2015 preprint)](https://arxiv.org/html/1510.08741), especially §§3.1–3.5, equations19–21,30–32,37–41, and stated finite-grid/energy limitations. Our original implementation will use standard CIC charge deposition at cell centers, periodic finite-difference Poisson/Gauss solve on edges, averaged center electric field and matching linear gather, with leapfrog. The paper explicitly distinguishes its momentum behavior from exact energy conservation; the module must preserve that distinction. No paper code is copied.
+
+Also opened [GEMPIC, Kraus et al.](https://arxiv.org/abs/1609.03053) as a distinction: this module does not implement its geometric method and may not claim those properties. Opened the practitioner-authored [ES-PIC method explanation](https://www.particleincell.com/2010/es-pic-method/) for normalization and deposition context; no code copied. The prior discovery ledger already inspected permissive GEMPIC repository licensing and rejected copying GPL pic-python source.
+
+Exact queries:
+
+- `site.particleincell.com electrostatic particle in cell plasma oscillations cloud in cell Poisson momentum conserving`
+- `electrostatic particle in cell finite difference Poisson cloud in cell leapfrog plasma oscillations Birdsall Langdon notes`
+
+Planned evidence: independent dense periodic Poisson solution; cold-mode oscillation against omega_p=1; fixed-time temporal/spatial refinement; charge/Gauss/momentum diagnostics explicitly labeled numerical identities; particle-number deposition-noise ensemble with known expectation; finite/high-load and print preservation checks. No quantitative Landau-damping or arbitrary two-stream growth-rate claim without a separate benchmark. The original source is Apache-2.0 under GENChase's existing license.
+
+
+## Shallow-water module research — 2026-09-21
+
+Read AGENTS.md, tools/modules/CONTRACT.md, validation/README.md, current RESEARCH.md and the existing GitHub shortlist before work. Nonlinear depth/momentum shocks are absent from the current catalog and differ from incompressible fluid, buoyant convection and analytic water-wave modules.
+
+Primary pages freshly opened:
+
+- https://www.clawpack.org/riemann_book/html/Shallow_water.html — equations, eigenvalues u±sqrt(gh), shock curves, rarefaction invariants, and the wet dam-break solution; dry-state caveats. Read the exact-solution derivation. Reference: Ketcheson, LeVeque and del Razo, *Riemann Problems and Jupyter Solutions* (2020).
+- https://www.clawpack.org/riemann_book/html/Approximate_solvers.html — conservative finite-volume flux differences, CFL interpretation, numerical diffusion of first-order methods and approximate Riemann-solver scope. Read.
+- https://www.clawpack.org/riemann_book/html/Shallow_water_approximate.html — requested primary approximate-solver chapter; no relied-on text beyond the other two verified chapters.
+- https://github.com/clawpack/riemann/blob/master/LICENSE and https://raw.githubusercontent.com/clawpack/riemann/master/LICENSE — actual BSD-3-Clause license freshly read, copyright 1994–2018 Clawpack Developers. No code copied or translated; original implementation of the standard equations/flux, so no imported dependency or third-party code notice is introduced.
+
+Exact additional query: `site.clawpack.org Rusanov shallow water positivity Lax Friedrichs CFL`. Search returned Clawpack docs plus unrelated third-party material. No secondary snippets used for scientific claims. The positivity condition below is derived directly for the actual first-order update rather than attributed to an unread paper.
+
+Chosen scope: 2D wet, flat-bottom nondimensional Saint-Venant equations, g=1; conserved state (h, hu, hv), local Lax–Friedrichs/Rusanov flux; forward Euler with dt=CFL*dx/(max(|u|+sqrt(h))+max(|v|+sqrt(h))) and 0<CFL<=0.8. Positive-depth coefficients give a sufficient positivity condition; no clipping and no dry-bed/bathymetry/rotation claims. Periodic edges or reflecting wall ghost states are explicit. First-order shock smearing is a limitation, not concealed as physical viscosity. Independent exact wet dam-break reference comes from the primary rarefaction/shock relations, not the production flux.
+
+
+## Nonlinear active mixture research, 2026-09-21
+
+Read the ledger and searched the existing catalog for nonreciprocity before selecting a recent distinct model. Exact searches: `2025 nonreciprocal Cahn Hilliard model pattern formation traveling waves chaos`; `2024 2025 odd elasticity continuum simulation nonreciprocal pattern formation`.
+
+Opened and read the primary full article https://www.nature.com/articles/s41467-025-61728-8 , Saha and Golestanian, published 7 August 2025. Read equations 1–5, travelling-wave section equations 8–11, and numerical methods. Implement equation 5 independently, with finite differences and Heun; the paper uses spectral methods. Readback guards and bounded comparisons do not reproduce the paper's long-time phase diagram. The plane-wave convention used for checks is exp(i(qx−omega*t)), as in equation 11; substitution in equation 5 fixes the sign. Equation 8 uses the opposite phase convention and must not be copied without checking that sign.
+
+This is recent published research, not original GENChase mathematics. No paper text, figures, solver code or data copied. Search results for 2024 odd viscoelasticity and 2025 other nonreciprocal models were not selected or claimed implemented.
