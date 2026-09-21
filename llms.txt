@@ -29,7 +29,7 @@ One HTML file of seeded scientific simulations. Each tab reprints from a hash. G
 
 Copy link (L) transfers the seed and every slider that is not at the factory default. Print size, ppi, colophon, panel side and witness quiet stay on the viewer's machine.
 
-Aliases: #hendrick → three-vortex-bound, #hendricks-identity → three-vortex-bound.
+Aliases: (none).
 
 ## Adding a tab
 

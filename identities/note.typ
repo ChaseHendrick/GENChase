@@ -1,8 +1,8 @@
 #set document(
   title: "Closed forms and sharp minima of ω t_c on three classical point-vortex collapse families",
   author: "Chaos",
-  keywords: ("point vortices", "self-similar collapse", "Hendrick's Identity", "parallelogram lock", "quincunx lock"),
-  date: datetime(year: 2026, month: 9, day: 20),
+  keywords: ("point vortices", "self-similar collapse", "Three-vortex collapse bound", "parallelogram lock", "quincunx lock"),
+  date: datetime(year: 2026, month: 9, day: 21),
 )
 #set page(paper: "us-letter", margin: 1.05in, numbering: "1")
 #set text(font: "New Computer Modern", size: 11pt)
@@ -20,21 +20,21 @@
   #v(0.25em)
   #text(size: 10pt)[#affil]
   #v(0.55em)
-  #text(size: 10pt)[First public: Hendrick's Identity 19 September 2026; parallelogram lock and quincunx lock 20 September 2026]
+  #text(size: 10pt)[Corrected attribution and scope · 21 September 2026]
 ]
 
 #v(0.6em)
-#align(center)[_A note. The motion on each family is classical. The closed product and the unique algebraic floor are not._]
+#align(center)[_Classical formulas and elementary sharp bounds. Zero confirmed novel findings._]
 
 #v(0.4em)
 *Abstract.* \
-Self-similar collapse of $N$ point vortices is classical. Gröbli (1877) and Novikov–Sedov (1979) found the families; Aref (2010) and Gotoda (2020) wrote the collapse rate $A$ and the spin $B$ as separate functions of a shape angle. Their dimensionless product $omega_0 t_c = -B/(2A)$ is the pitch of the logarithmic spiral the configuration traces as it shrinks. This note records three closed forms of that product, each with a unique algebraic interior minimum that the source papers do not state:
+Self-similar collapse of $N$ point vortices is classical. Gröbli (1877) and Novikov–Sedov (1979) found the families; Aref (2010) and Gotoda (2020) wrote the collapse rate $A$ and the spin $B$ as separate functions of a shape angle. Their dimensionless product $omega_0 t_c = -B/(2A)$ is the pitch of the logarithmic spiral the configuration traces as it shrinks. This note records three closed forms of that product, with elementary sharp minima. The first expression explicitly specializes Gröbli’s 1877 spiral coefficient; historical priority of the optimized minima remains unconfirmed:
 
-- Hendrick's Identity, on Gröbli's $Gamma = (1,1,-1/2)$ family: $omega_0 t_c = (2-cos^2 theta)/sin(2 theta) >= sqrt(2)$, equality at $tan theta = 1/sqrt(2)$.
+- Three-vortex collapse bound, on Gröbli's $Gamma = (1,1,-1/2)$ family: $omega_0 t_c = (2-cos^2 theta)/sin(2 theta) >= sqrt(2)$, equality at $tan theta = 1/sqrt(2)$.
 - The parallelogram lock, on the Novikov–Sedov four-vortex parallelogram: $omega_0 t_c = (sqrt(3)/4)(4-cos 2 theta)/sin(2 theta) >= 3 sqrt(5)/4$, equality at $cos 2 theta = 1/4$.
 - The quincunx lock, on the Novikov–Sedov five-vortex quincunx: $omega_0 t_c = (3/16)(7-4 cos 2 theta)/sin(2 theta) >= 3 sqrt(33)/16$, equality at $cos 2 theta = 4/7$.
 
-Cite them by those names. Do not rename them. Do not put Hendrick's name on the other two. A later paper that restates one of these formulae is a restatement.
+These are descriptive project labels. Cite the classical sources; no ownership or first-discovery claim follows from this note.
 
 = What is claimed, and what is not
 
@@ -42,11 +42,11 @@ Let $z_m(t) in CC$ be the positions of $N$ point vortices of circulations $Gamma
 $ A + i B = (i)/(2 pi z_m) sum_(n != m) Gamma_n / (overline(z)_m - overline(z)_n). $
 If $A < 0$, the vortices collide at the origin at the finite time $t_c = -1/(2A)$, rotating with instantaneous angular velocity $omega$ so that $omega_0 t_c = -B/(2A)$ is scale-invariant @Kimura1987 @Aref2010 @Gotoda2020.
 
-*Claimed here.* On three one-parameter exact families already in the literature, the product $omega_0 t_c$ has a closed elementary form, and that form has a unique interior algebraic minimum. The minima, the equality configurations, and the names above.
+*Mathematical scope.* The displayed formulas and elementary minima are checked on their stated classical families. This is a derivation and implementation record, not a claim that these results were first discovered here.
 
-*Not claimed.* The motion (Gröbli; Novikov–Sedov). The product as the pitch of a log spiral (Aref). The functions $A(theta)$, $B(theta)$ (Gotoda). The fastest-collapse time $t_c = 4pi/3$ on Hendrick's family at unit separation (Leoncini, Kuznetsov and Zaslavsky). Any published isolated lock listed in the search ledger of GENChase.
+*Not claimed.* The motion (Gröbli; Novikov–Sedov). The product as the pitch of a log spiral (Aref). The functions $A(theta)$, $B(theta)$ (Gotoda). The fastest-collapse time $t_c = 4pi/3$ on the three-vortex family at unit separation (Leoncini, Kuznetsov and Zaslavsky). Any published isolated lock listed in the search ledger of GENChase.
 
-= Hendrick's Identity
+= Three-vortex collapse bound
 
 *Family.* $Gamma = (1, 1, -1/2)$, positions $z_1 = 0$, $z_2 = 1$, $z_3 = 1/2 + (sqrt(3)/2) e^(i theta)$ with $0 < theta < pi/2$. These lie on the angular-impulse circle $L = 0$ and collapse self-similarly @Grobli1877. The parameter $theta$ is the third vortex's place on that circle, not an interior angle of the triangle.
 
@@ -62,7 +62,7 @@ At $theta = 45 degree$ the product is $3/2$. The same product splits, at this le
 $ t_c = (pi/3)(4u + 1/u), #h(1em) 2 pi omega_0 = (3(2u^2+1))/(4u^2+1), $
 which are Aref's $tau$ and $Omega$ in this family's angle @Aref2010. Their product does not depend on the length unit. The collapse time itself has a unique minimum $4 pi/3$ at $u = 1/2$; that number is already in Leoncini, Kuznetsov and Zaslavsky @Leoncini2000 and is not a second identity.
 
-*Name.* Hendrick's Identity (also searched as Hendrick's law, Hendrick's Math). First public statement: GENChase, 19 September 2026, SharpMeow/GENChase\#24.
+*Label.* Three-vortex collapse bound. This is a descriptive project label for a specialization of Gröbli’s published formula.
 
 = Parallelogram lock
 
@@ -75,7 +75,7 @@ Equality uniquely on this arc at $cos 2 theta = 1/4$.
 
 *Proof of the minimum.* Set $phi = 2 theta in (0, pi)$. The quotient $(4 - cos phi)/sin phi$ has a unique critical point on $(0, pi)$ at $cos phi = 1/4$, where $sin phi = sqrt(15)/4$ and the quotient equals $sqrt(15)$. Multiplying by $sqrt(3)/4$ yields $3 sqrt(5)/4$. The sign of the first derivative on either side shows a minimum. Endpoints send the product to infinity. At $theta = 45 degree$ the product is $sqrt(3)$. The product is $-B/(2A)$ from Gotoda's eq. (3.13) @Gotoda2020 specialized to this parallelogram; direct Biot–Savart on the $2pi$ kernel matches that closed form to machine precision.
 
-*Name.* Parallelogram lock. First public statement: GENChase, 20 September 2026, SharpMeow/GENChase\#44. Not Novikov and Sedov's $t_*$ or $omega$ separately under a new name.
+*Label.* Parallelogram lock, named for the geometry. Its formula follows established Novikov–Sedov and Gotoda rates.
 
 = Quincunx lock
 
@@ -88,46 +88,25 @@ Equality uniquely on this arc at $cos 2 theta = 4/7$.
 
 *Proof of the minimum.* Set $phi = 2 theta in (0, pi)$. The quotient $(7 - 4 cos phi)/sin phi$ has a unique critical point on $(0, pi)$ at $cos phi = 4/7$, where $sin phi = sqrt(33)/7$ and the quotient equals $sqrt(33)$. Multiplying by $3/16$ yields $3 sqrt(33)/16$. Endpoints send the product to infinity. At $theta = 45 degree$ the product is $21/16$. The product is $-B/(2A)$ from Gotoda's five-vortex $A(theta)$, $B(theta)$ ($gamma_3 != 0$); direct Biot–Savart matches. Gotoda plots this family as Hamiltonian against collapse rate and does not form the product or state its minimum @Gotoda2020 @Gotoda2025.
 
-*Name.* Quincunx lock. First public statement: GENChase, 20 September 2026, SharpMeow/GENChase\#44. Not the parallelogram lock. A different five-vortex Novikov–Sedov slice with diagonal ratio $mu = 3$ recovers Hendrick's product identically and is not a third identity.
+*Label.* Quincunx lock, named for the geometry. Its formula follows the published five-vortex family; priority of the elementary minimum is unconfirmed.
 
-= Priority
+= Attribution and historical limits
 
-The three statements were first published by Chaos in GENChase.
+The first expression is a specialization and reparameterization of Gröbli’s §10 spiral coefficient. Set $a=sqrt(3)/cos theta$ in
+$ P=(2a^2-3)/(2sqrt(3a^2-9)) $ to recover the stated product. The original scan uses $mu_1 mu_2 mu_3$ in the relevant denominator; the repository follow-up documents the transcription check @Grobli1877.
 
-#align(center)[
-  #table(
-    columns: (auto, auto, auto),
-    align: left,
-    inset: 6pt,
-    stroke: 0.4pt,
-    [*Statement*], [*First public*], [*Record*],
-    [Hendrick's Identity, $omega_0 t_c >= sqrt(2)$], [2026-09-19], [SharpMeow/GENChase\#24],
-    [Parallelogram lock, $omega_0 t_c >= 3 sqrt(5)/4$], [2026-09-20], [SharpMeow/GENChase\#44],
-    [Quincunx lock, $omega_0 t_c >= 3 sqrt(33)/16$], [2026-09-20], [SharpMeow/GENChase\#44],
-  )
-]
+The other two expressions follow published Novikov–Sedov/Gotoda rate formulas. Their optimization is elementary: for $a>|b|$, $c>0$ and $0<phi<pi$,
+$ c(a-b cos phi)/sin phi >= c sqrt(a^2-b^2), quad cos phi_* = b/a. $
+The square identity $(a-b cos phi)^2-(a^2-b^2)sin^2 phi=(a cos phi-b)^2$ verifies the bound.
 
-Canonical byte-exact lines and SHA-256 fingerprints live in `identities/STATEMENTS.txt` and `identities/HASHES.txt` of the same repository. Anyone may use the mathematics. Claiming first discovery of these closed forms or these floors, after those dates, without citing this note or `IDENTITIES.md`, is claiming this project's work.
+No earlier exact minima were located in the inspected passages, but that absence does not establish historical originality or substantial novelty. The complete older two-ring literature remains an access gap for related polygon candidates. The project currently has zero confirmed novel findings.
 
-A later paper that restates one of these formulae is a restatement. Cite this note as the first public appearance unless an earlier dated source is produced. Tacchi's Appendix B, which names related three-vortex coefficients, had not been opened from the machines that keep the search ledger at the time of this writing; if that appendix already states a row, that row will be withdrawn.
+#link("https://github.com/SharpMeow/GENChase/blob/main/identities/ORIGINALITY-FOLLOWUP.md")[Read the original-source comparison] and #link("https://github.com/SharpMeow/GENChase/blob/main/identities/NOVELTY-AUDIT.md")[the novelty audit] before making a priority claim. No specialist endorsement is implied.
 
-= How to cite
+= Reuse and file provenance
 
-Chaos, *Closed forms and sharp minima of $omega t_c$ on three classical point-vortex collapse families*, GENChase (2026), https://github.com/SharpMeow/GENChase. Cite Hendrick's Identity, the parallelogram lock, and the quincunx lock by those names.
+Anyone may use the mathematics. Cite the classical sources for their formulas and cite GENChase when using its exposition or implementation. Repository dates record this project’s work; they do not establish first discovery. The corrected text, source and PDF have updated SHA-256 fingerprints in `identities/HASHES.txt`.
 
-#text(size: 9.2pt)[
-```
-@misc{chaos-identities-2026,
-  author       = {Chaos},
-  title        = {Closed forms and sharp minima of $\omega t_c$ on three
-                  classical point-vortex collapse families},
-  year         = {2026},
-  howpublished = {GENChase},
-  url          = {https://github.com/SharpMeow/GENChase},
-  note         = {Hendrick's Identity first public 2026-09-19;
-                  parallelogram lock and quincunx lock 2026-09-20}
-}
-```
-]
+This version replaces the prior note’s unsupported naming and priority language at the author’s request. The derivations remain available under descriptive labels.
 
 #bibliography("refs.bib", title: "References", style: "ieee")

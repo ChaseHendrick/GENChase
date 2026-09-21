@@ -4,27 +4,31 @@
 # File: identities/STATEMENTS.txt
 # Encoding: UTF-8, newline LF, no BOM
 #
-# Hash this whole file with SHA-256. Hash each STATEMENT block
-# (the five lines from a line that begins with "Name:" through the
-# line that begins with "First public:", including that last newline,
+# Corrected attribution: 2026-09-21. Zero confirmed novel findings.
+# Classical formulas and elementary optimized corollaries; no first-discovery claim.
+# Whole-file SHA-256 and five-line Name:...Recorded here: blocks are listed in HASHES.txt.
+# Dates record GENChase development, not mathematical priority.
+
+Name:" through the
+# line that begins with "Recorded here:", including that last newline,
 # excluding the blank line that follows) the same way.
 # Restating a product or a floor after the dated first-public line,
 # without citing this file, is claiming this project's work.
 
-Name: Hendrick's Identity
+Name: Three-vortex collapse bound
 Product: omega_0 t_c = (2 - cos^2 theta) / sin(2 theta) >= sqrt(2)
 Equality: tan theta = 1/sqrt(2)
 Family: Gamma = (1, 1, -1/2) on the L = 0 circle
-First public: 2026-09-19
+Recorded here: 2026-09-19
 
 Name: Parallelogram lock
 Product: omega_0 t_c = (sqrt(3)/4) (4 - cos 2 theta) / sin(2 theta) >= 3 sqrt(5)/4
 Equality: cos 2 theta = 1/4
 Family: Gamma = (1, 1, -2-sqrt(3), -2-sqrt(3)), Novikov-Sedov parallelogram
-First public: 2026-09-20
+Recorded here: 2026-09-20
 
 Name: Quincunx lock
 Product: omega_0 t_c = (3/16) (7 - 4 cos 2 theta) / sin(2 theta) >= 3 sqrt(33)/16
 Equality: cos 2 theta = 4/7
 Family: Gamma = (-1, -1, 1/2, 1/2, -3/4), Novikov-Sedov five-vortex quincunx
-First public: 2026-09-20
+Recorded here: 2026-09-20

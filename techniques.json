@@ -4,10 +4,7 @@
   "file": "studio.html",
   "count": 122,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
-  "aliases": {
-    "hendrick": "three-vortex-bound",
-    "hendricks-identity": "three-vortex-bound"
-  },
+  "aliases": {},
   "familiarityBuckets": [
     "ubiquitous",
     "common",
@@ -3174,10 +3171,7 @@
       "runningDefault": false,
       "headline": "t",
       "hash": "#three-vortex-bound/octant-root-two",
-      "aliases": [
-        "hendrick",
-        "hendricks-identity"
-      ]
+      "aliases": []
     },
     {
       "id": "parallelogram-lock",
