@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-21",
+  "passed": true,
+  "source": "src/modules/surfaces.js",
+  "sourceSha256": "133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e",
+  "benchmark": "Independent centered finite differences of maintained point coordinates versus analytic first fundamental form and H/K",
+  "sampleCount": 225,
+  "states": [
+    {
+      "family": "enneper",
+      "associate": 0,
+      "pitch": 0.2
+    },
+    {
+      "family": "associate",
+      "associate": 0,
+      "pitch": 0.2
+    },
+    {
+      "family": "associate",
+      "associate": 0.25,
+      "pitch": 0.2
+    },
+    {
+      "family": "associate",
+      "associate": 0.5,
+      "pitch": 0.2
+    },
+    {
+      "family": "associate",
+      "associate": 0.75,
+      "pitch": 0.2
+    },
+    {
+      "family": "associate",
+      "associate": 1,
+      "pitch": 0.2
+    },
+    {
+      "family": "dini",
+      "associate": 0,
+      "pitch": 0.1
+    },
+    {
+      "family": "dini",
+      "associate": 0,
+      "pitch": 0.2
+    },
+    {
+      "family": "dini",
+      "associate": 0,
+      "pitch": 0.6
+    }
+  ],
+  "criteria": {
+    "maxMetricRelativeError": 0.001,
+    "maxGaussianRelativeError": 0.001,
+    "maxMeanScaledError": 0.001,
+    "curvatureRefinementOrder": [
+      1.8,
+      2.2
+    ],
+    "meshEndpointTolerance": 1e-12,
+    "rotationSquaredDistanceTolerance": 1e-12
+  },
+  "refinements": [
+    {
+      "h": 0.02,
+      "metricRelative": 0.0029303171799558462,
+      "gaussianRelative": 0.0020732471933813112,
+      "meanScaled": 0.0023069928437725496,
+      "minArea": 0.26883559059592355
+    },
+    {
+      "h": 0.01,
+      "metricRelative": 0.0007306696337810297,
+      "gaussianRelative": 0.0005178400326049104,
+      "meanScaled": 0.0005767442664560807,
+      "minArea": 0.2688336374086644
+    },
+    {
+      "h": 0.005,
+      "metricRelative": 0.00018254846548188471,
+      "gaussianRelative": 0.00012943057997205631,
+      "meanScaled": 0.00014418580207732122,
+      "minArea": 0.26883315565159516
+    }
+  ],
+  "observedOrders": [
+    2.0013137343791954,
+    2.000327983250712
+  ],
+  "controls": [
+    {
+      "label": "Enneper wrong vertical scale",
+      "rejected": true,
+      "errors": {
+        "h": 0.005,
+        "metricRelative": 4.161503666666643,
+        "gaussianRelative": 0.5169451957566036,
+        "meanScaled": 0.1985404198037005,
+        "minArea": 0.9999833334027779
+      }
+    },
+    {
+      "label": "Dini missing logarithm",
+      "rejected": true,
+      "errors": {
+        "h": 0.005,
+        "metricRelative": 1.2514965871977641,
+        "gaussianRelative": 2.284823372726029,
+        "meanScaled": 1.688129301342855,
+        "minArea": 0.31057581850279475
+      }
+    },
+    {
+      "label": "Associate wrong conjugate sign",
+      "rejected": true,
+      "errors": {
+        "h": 0.005,
+        "metricRelative": 7.999368329287014,
+        "gaussianRelative": 57600363580.21267,
+        "meanScaled": 40729692540.53225,
+        "minArea": 0.00000416666666652743
+      }
+    }
+  ],
+  "meshEndpointError": 1.7763568394002505e-15,
+  "rotationDistanceError": 3.552713678800501e-15,
+  "tessellation": [
+    {
+      "state": {
+        "family": "enneper",
+        "extent": 2
+      },
+      "levels": [
+        {
+          "detail": 48,
+          "maxRelativeChordMidpointError": 0.00023212470549045124
+        },
+        {
+          "detail": 96,
+          "maxRelativeChordMidpointError": 0.00005829995588128179
+        },
+        {
+          "detail": 192,
+          "maxRelativeChordMidpointError": 0.000014608735924770289
+        }
+      ],
+      "observedOrders": [
+        1.9933333829605235,
+        1.9966634426752774
+      ]
+    },
+    {
+      "state": {
+        "family": "dini",
+        "turns": 3,
+        "pitch": 0.2
+      },
+      "levels": [
+        {
+          "detail": 48,
+          "maxRelativeChordMidpointError": 0.0031306154959229995
+        },
+        {
+          "detail": 96,
+          "maxRelativeChordMidpointError": 0.0007845427679131998
+        },
+        {
+          "detail": 192,
+          "maxRelativeChordMidpointError": 0.00019625389018113434
+        }
+      ],
+      "observedOrders": [
+        1.9965223263554492,
+        1.9991308435596564
+      ]
+    },
+    {
+      "state": {
+        "family": "associate",
+        "associate": 0.45,
+        "extent": 2
+      },
+      "levels": [
+        {
+          "detail": 48,
+          "maxRelativeChordMidpointError": 0.000626364647114281
+        },
+        {
+          "detail": 96,
+          "maxRelativeChordMidpointError": 0.00015662188322234294
+        },
+        {
+          "detail": 192,
+          "maxRelativeChordMidpointError": 0.00003914515074131432
+        }
+      ],
+      "observedOrders": [
+        1.9997169870448928,
+        2.000380295975641
+      ]
+    }
+  ],
+  "limitations": [
+    "Established differential geometry, not a novelty claim.",
+    "225 sampled parameter/shape points and finite mesh sanity checks, not exhaustive domain certification.",
+    "Finite differences refine the benchmark derivative; a separate three-patch chord test checks displayed tessellation.",
+    "Self-intersections, global embedding, topology and physical soap-film stability are not validated.",
+    "Dini is a regular cropped patch with v between 0.15 and 1.4; its singular rim is excluded.",
+    "Print evidence is separate in surfaces-print.json."
+  ]
+}
