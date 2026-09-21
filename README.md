@@ -62,7 +62,7 @@ Another purpose is mathematical discovery: explore simulations, spot relationshi
 
 ## What is actually different
 
-**The assembly.** Almost every tab implements the paper it names. Chemistry, acoustics, liquid crystals, and aperiodic tiles share one seed field, one palette, and one export. Switching from Cahn–Hilliard to Chladni costs you nothing.
+**The assembly.** The tabs implement models drawn from the papers they name, with validation coverage recorded separately. Chemistry, acoustics, liquid crystals, and aperiodic tiles share one seed field, one palette, and one export. Switching from Cahn–Hilliard to Chladni costs you nothing.
 
 **Determinism as the product.** Every random draw comes from a seeded generator. Vector geometry can scale to print dimensions. Grid simulations retain their numerical resolution when exported; increasing print size does not refine the solution.
 
