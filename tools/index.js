@@ -18,7 +18,8 @@ const count = require('./count.js');
   const root = path.resolve(__dirname, '..');
   const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   const p = await b.newPage({ viewport: { width: 1200, height: 800 } });
-  await p.goto('file://' + studio, { waitUntil: 'domcontentloaded', timeout: 90000 });
+  // A fixed, inexpensive vector plate avoids booting a random GPU simulation just to read metadata.
+  await p.goto('file://' + studio + '#three-vortex-bound/catalog-index', { waitUntil: 'domcontentloaded', timeout: 90000 });
   await p.waitForFunction(() => window.Studio && window.Studio.modules, null, { timeout: 30000 });
 
   const mods = await p.evaluate(() => {

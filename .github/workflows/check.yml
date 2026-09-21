@@ -10,7 +10,7 @@ name: check
 
 on:
   push:
-    branches: ['**']
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -22,8 +22,8 @@ permissions:
 # a handful of quick pushes queues more work than the account can run at once, and the newest run then
 # fails in three seconds because no runner is free. That failure looks exactly like a broken lint, which
 # is worse than useless, because it sends you hunting for a bug in the one job that is instant and fine.
-# Superseding a run cancels it. The event name is in the group so the push run and the pull_request run
-# for the same commit do not cancel each other.
+# Pull requests validate feature branches; push validates main after merge. This avoids running the
+# same feature commit twice. Superseding a run cancels it; manual runs remain available.
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
@@ -57,7 +57,7 @@ jobs:
       - name: Install Chromium
         run: |
           npm install --no-save playwright@1.49.1
-          npx playwright install --with-deps chromium
+          npx playwright install --with-deps --only-shell chromium
       - name: Seed box, hash, shortcuts, dock
         run: node tools/ui.js
 
@@ -74,8 +74,8 @@ jobs:
       - name: Install Chromium
         run: |
           npm install --no-save playwright@1.49.1
-          npx playwright install --with-deps chromium
-      # Every `legacy:` declaration in studio.html becomes four assertions, so a default that moves
+          npx playwright install --with-deps --only-shell chromium
+      # Every `legacy:` declaration in studio.html becomes five assertions, so a default that moves
       # without declaring what it used to be fails here rather than silently rewriting old plates.
       - name: Older recipes still reprint
         run: node tools/recipe.js
@@ -101,7 +101,7 @@ jobs:
       - name: Install Chromium
         run: |
           npm install --no-save playwright@1.49.1
-          npx playwright install --with-deps chromium
+          npx playwright install --with-deps --only-shell chromium
       - name: Plate check
         # 25 s rather than 12: the default grids are 512 on the field families now, and on a software
         # renderer a 12 s budget judged every preset at about a quarter of its warm-up.
@@ -127,6 +127,6 @@ jobs:
       - name: Install Chromium
         run: |
           npm install --no-save playwright@1.49.1
-          npx playwright install --with-deps chromium
+          npx playwright install --with-deps --only-shell chromium
       - name: Export at 8 in, 300 ppi
         run: node tools/export.js ${{ matrix.id }} 8 300 8000 240000
