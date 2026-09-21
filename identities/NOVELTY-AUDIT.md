@@ -1,6 +1,7 @@
 # Novelty audit of the five candidate bounds
 
-**Confirmed novel findings among the five candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five entries are not independent findings.
+> [!IMPORTANT]
+> **Confirmed novel findings among the five candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five entries are not independent findings.
 
 Audit date: 2026-09-20. This is a literature assessment, not a certificate of originality. It supersedes the repository's earlier unqualified claims of being the first public source of these formulas.
 
@@ -12,7 +13,7 @@ Audit date: 2026-09-20. This is a literature assessment, not a certificate of or
 
 Write $P=\omega_0t_c$ for the positive spin–collapse product on the stated collapsing branch. The domains, circulations and proofs are in [IDENTITIES.md](../IDENTITIES.md) and the linked derivations.
 
-| Candidate | Precise bound being assessed | Earlier foundation | Audit conclusion |
+| Candidate | Precise bound being assessed | 🔵 Established sources | 🟠 Originality unresolved |
 |---|---|---|---|
 | 1. Three-vortex collapse bound | $P=(2-\cos^2\theta)/\sin2\theta\ge\sqrt2$, equality at $\tan\theta=1/\sqrt2$ | Gröbli 1877, §10, eqs. (8), (9), (11), (12); also Aref 2010 | Formula explicitly reproduces Gröbli’s spiral coefficient after specialization and reparameterization; see [the comparison](ORIGINALITY-FOLLOWUP.md). No earlier explicit statement of this exact sharp minimum was located. Priority unconfirmed. The name is a project label. |
 | 2. Parallelogram lock | $P=(\sqrt3/4)(4-\cos2\theta)/\sin2\theta\ge3\sqrt5/4$, equality at $\cos2\theta=1/4$ | Novikov–Sedov 1979, §4; Gotoda 2020 preprint, eq. (3.13) | Elementary corollary of published rates for an already published family. No earlier explicit minimum located; priority unconfirmed. Also the $n=2$ case of candidate 5. |

@@ -1,6 +1,7 @@
 # Originality follow-up after the five-bound audit
 
-**Confirmed novel findings among the five candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five entries are not independent findings.
+> [!IMPORTANT]
+> **Confirmed novel findings among the five candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five entries are not independent findings.
 
 2026-09-20 (local date). Follow-up to [the audit](NOVELTY-AUDIT.md), after PR #76 merged.
 
@@ -42,7 +43,7 @@ Equality holds at $u=9/2$, equivalent to $\tan\theta=1/\sqrt2$. This establishes
 
 ## What changes for the five candidates
 
-| Candidate | Supported classification after this follow-up |
+| Candidate | 🟠 Originality unresolved — supported classification |
 |---|---|
 | 1. Three-vortex collapse bound | Explicit specialization and reparameterization of Gröbli's published spiral coefficient. Priority of the optimized minimum remains unconfirmed. |
 | 2. Parallelogram lock | An elementary optimized corollary of published four-vortex rates. No earlier exact minimum was located in the inspected material; this is not proof of originality. |
@@ -59,6 +60,6 @@ Equality holds at $u=9/2$, equivalent to $\tan\theta=1/\sqrt2$. This establishes
 
 ## Remaining priority question
 
-The precise literature question is whether earlier work optimized $|\operatorname{Im}\lambda|/(2|\operatorname{Re}\lambda|)$, or an equivalent spiral-pitch or normalized-path-length quantity, over these fixed-circulation collapse families. The first candidate already has an explicit general predecessor; candidates 2 and 3 follow published rates; candidates 4 and 5 require comparison with the complete two-ring literature.
+The precise literature question is whether earlier work optimized `|Im(λ)| / (2|Re(λ)|)` (the magnitude of the imaginary part divided by twice the magnitude of the real part), or an equivalent spiral-pitch or normalized-path-length quantity, over these fixed-circulation collapse families. The first candidate already has an explicit general predecessor; candidates 2 and 3 follow published rates; candidates 4 and 5 require comparison with the complete two-ring literature.
 
 Full access to Koiller's §11 and a specialist's comparison of the exact statements are the next useful steps. No specialist was contacted and no endorsement was obtained. The evidence supports independently derived formulas and elementary sharp corollaries on classical families, **not five established original discoveries**.
