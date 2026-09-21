@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..');
 function assemble() {
   const seen = new Set();
   const template = fs.readFileSync(path.join(root, 'src/studio.html'), 'utf8');
-  const licensed = template.replace('{{licenses}}', () => ['LICENSE', 'NOTICE', 'OUTPUT-RIGHTS.md', 'licenses/Geist-OFL.txt', 'licenses/GeistMono-OFL.txt', 'licenses/InstrumentSerif-OFL.txt'].map(file => file + '\n' + fs.readFileSync(path.join(root, file), 'utf8')).join('\n\n'));
+  const licensed = template.replace('{{licenses}}', () => ['LICENSE', 'NOTICE', 'OUTPUT-RIGHTS.md', 'licenses/Geist-OFL.txt', 'licenses/GeistMono-OFL.txt', 'licenses/InstrumentSerif-OFL.txt'].map(file => file + '\n' + fs.readFileSync(path.join(root, file), 'utf8').replace(/[ \t]+$/gm, '')).join('\n\n'));
   const result = licensed.replace(/\{\{include:([^}]+)\}\}/g, (_, name) => {
     if (!/^(modules|shared|styles)\/[a-z0-9-]+\.(js|css)$/.test(name)) throw Error('Invalid source path: ' + name);
     if (seen.has(name)) throw Error('Duplicate source: ' + name);
