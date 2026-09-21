@@ -8,7 +8,7 @@ The catalog of what the file actually contains is [`techniques.json`](techniques
 
 ## Current novelty status
 
-The [2026-09-20 audit of all five candidates](identities/NOVELTY-AUDIT.md) supersedes earlier unqualified first-discovery or uniqueness assertions in this chronological ledger. All five have unconfirmed historical priority. Their families and the spin–collapse product are classical; the exact minima were not located in the sources inspected. The fifth contains the second and fourth. Old skip decisions and rejected-family claims below are historical search notes, not current novelty certifications.
+The [2026-09-20 audit of all five candidates](identities/NOVELTY-AUDIT.md) supersedes earlier unqualified first-discovery or uniqueness assertions in this chronological ledger. The first formula explicitly specializes Gröbli’s 1877 spiral coefficient; priority of the optimized minima remains unconfirmed. The [follow-up comparison](identities/ORIGINALITY-FOLLOWUP.md) supplies the substitution. The personal name has been retired in favor of Three-vortex collapse bound. Their families and the spin–collapse product are classical; the exact minima were not located in the sources inspected. The fifth contains the second and fourth. Old skip decisions and rejected-family claims below are historical search notes, not current novelty certifications.
 
 ## Do this, do not do that
 
@@ -461,7 +461,7 @@ Familiarity is listed so you do not confuse it with prior-art status.
 | `crapper` | Crapper | occasional | software search | skip unless new source |
 | `hasimoto` | Hasimoto | occasional | software search | skip unless new source |
 | `lump` | Lump | occasional | software search | skip unless new source |
-| `hendricks-identity` | Hendrick's Identity | unseen | identity | do not re-derive |
+| `three-vortex-bound` | Three-vortex collapse bound | unseen | identity | do not re-derive |
 | `parallelogram-lock` | Parallelogram lock | unseen | identity | do not re-derive |
 | `quincunx-lock` | Quincunx lock | unseen | identity | do not re-derive |
 | `double-triangle-bound` | Polygon collapse bounds | rare | proved candidate; priority unresolved | 2026-09-20 partial primary-source review; full-text check pending |
@@ -991,3 +991,7 @@ Also inspected: Synge 1949 §4 and the singular-configuration discussion; Lewkow
 Access audit: OpenAlex's DOI record and Semantic Scholar paper 24c593dc74f13a7dfe59a19b4fc31f0a81d1bdfb list Koiller 1985 as closed and supply no open PDF location. CiteSeer's indexed PDF again timed out. The 1985 body remains unread; this is not negative evidence about its mathematical content. Web retrieval of the BSB viewer failed, but its public IIIF API succeeded and the original page images were read directly. No author was contacted.
 
 Conclusion: candidate 1's functional formula is an explicit specialization and reparameterization of an 1877 formula. Historical priority of the additional sharp optimization remains unconfirmed. Candidates 2–5 retain the earlier audit classifications and dependencies. Originality of all five has not been established, and cannot honestly be certified from this search. Next useful work is full access to Koiller §11 and a specialist's comparison of the exact optimized statements, not another search of the project names.
+
+### 2026-09-20 descriptive-name correction
+
+The personal name of candidate 1 is retired at the author’s request. The live title is **Three-vortex collapse bound**, canonical tab `three-vortex-bound`, with Gröbli (1877) credited explicitly. Earlier search queries and the frozen snapshot retain their historical wording, superseded by this correction and ORIGINALITY-FOLLOWUP.md. Old URL hashes remain compatibility aliases, not current titles.

@@ -26,7 +26,7 @@ $$
 P=\frac{2-\cos^2\theta}{\sin2\theta},
 $$
 
-the formula called Hendrick's Identity in this project. This equivalence is our calculation from the published equations, not a claim that Gröbli used this name or parameterization.
+the formula called Three-vortex collapse bound in this project. This equivalence is our calculation from the published equations, not a claim that Gröbli used this name or parameterization.
 
 The extra optimization is transparent. For $u=a^2>3$,
 
@@ -42,7 +42,7 @@ Equality holds at $u=9/2$, equivalent to $\tan\theta=1/\sqrt2$. This establishes
 
 | Candidate | Supported classification after this follow-up |
 |---|---|
-| 1. Hendrick's Identity | Explicit specialization and reparameterization of Gröbli's published spiral coefficient. Priority of the optimized minimum remains unconfirmed. |
+| 1. Three-vortex collapse bound | Explicit specialization and reparameterization of Gröbli's published spiral coefficient. Priority of the optimized minimum remains unconfirmed. |
 | 2. Parallelogram lock | An elementary optimized corollary of published four-vortex rates. No earlier exact minimum was located in the inspected material; this is not proof of originality. |
 | 3. Quincunx lock | An elementary optimized corollary of published five-vortex rates. The same limitation applies. |
 | 4. Double-triangle bound | A specialization of candidate 5 on a classical two-ring family. The important 1985 full-text gap remains. |

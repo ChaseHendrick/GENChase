@@ -1,6 +1,8 @@
 # Frozen identities
 
-This folder is the citable snapshot of the three rows in [`../IDENTITIES.md`](../IDENTITIES.md).
+**The archived note is superseded. Its former personal name is retired; use Three-vortex collapse bound and credit Gröbli (1877).** Cite the corrected live derivation and audit instead of treating the old note as a current priority claim.
+
+This folder preserves the historical snapshot of the three rows in [`../IDENTITIES.md`](../IDENTITIES.md).
 
 | File | What it is |
 |---|---|
@@ -12,5 +14,5 @@ This folder is the citable snapshot of the three rows in [`../IDENTITIES.md`](..
 
 **Audit correction (2026-09-20): the first formula specializes Gröbli’s 1877 spiral coefficient; priority of the optimized minima remains unconfirmed.** Read [NOVELTY-AUDIT.md](NOVELTY-AUDIT.md) and the [explicit historical comparison](ORIGINALITY-FOLLOWUP.md). The frozen PDF, Typst source, statements and hashes preserve the original snapshot; their priority language is superseded by that audit. Git dates and hashes establish provenance, not originality. Anyone may use the mathematics; cite this writeup and the classical sources when using them.
 
-Hendrick's Identity is named for Hendrick. The parallelogram lock and the quincunx lock are named for their geometries. These are project labels, not evidence of first discovery.
+The three-vortex bound uses a descriptive name and credits Gröbli’s formula. The parallelogram lock and the quincunx lock are named for their geometries. These are project labels, not evidence of first discovery.
 
