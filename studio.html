@@ -19868,25 +19868,25 @@ vec3 tone(vec3 col, float con, float grain){
     subtitle: 'wave packet on a detector · 1926',
     order: 53,
     equation: 'i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps',
-    credit: "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): the real part is advanced on whole steps and the imaginary part on half steps, so the discrete norm Re² + Im₋ Im₊ is conserved exactly and no complex arithmetic is needed. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979.",
+    credit: "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979.",
     blurb: 'A Gaussian wave packet is launched with a momentum and left to meet a potential: a wall with one or two slits, a barrier it can only tunnel through, a bowl, a stadium of hard walls, a lattice, or a random landscape that pins it in place (Anderson localization). The plate is not one frame of the wave. It is the detector: |ψ|² integrated over the whole run, the way a photographic plate behind the slits records where the particle was likely to be. Density and Phase show the live wave; the phase view colors the complex argument through the palette. An absorbing layer at the edge swallows whatever leaves the frame, so what you print is the part of the history that happened in front of the camera. Drag to add a packet moving along your stroke.',
     schema: GRID.concat([
       { group: 'Potential', key: 'kind', label: 'Potential', type: 'seg', kind: GEOM, wrap: true,
         options: [['double', 'Double slit'], ['single', 'Single slit'], ['barrier', 'Barrier'], ['well', 'Harmonic well'], ['stadium', 'Stadium'], ['lattice', 'Lattice'], ['disorder', 'Disorder'], ['free', 'Free']] },
       RANGE('Potential', 'V0', 'Strength V₀', GEOM, 0, 6, 0.02, f2, { dimUnless: usesV0,
-        hint: 'Barrier height, well depth at the frame edge, lattice bump height, or disorder width. The packet energy is k²/2.' }),
+        hint: 'Barrier height, harmonic-well scale, lattice bump height, or disorder width. Harmonic corners exceed V₀. The continuum packet-energy estimate is k²/2; the grid has numerical dispersion.' }),
       RANGE('Potential', 'wallX', 'Wall position', GEOM, 0.2, 0.8, 0.01, f2, { dimUnless: usesWallX }),
       RANGE('Potential', 'thick', 'Wall thickness', GEOM, 2, 16, 1, v => v + ' px', { dimUnless: usesWallX }),
       RANGE('Potential', 'slitW', 'Slit width', GEOM, 2, 24, 1, v => v + ' px', { dimUnless: usesSlit }),
       RANGE('Potential', 'slitSep', 'Slit separation', GEOM, 6, 80, 1, v => v + ' px', { dimUnless: s => s.kind === 'double' }),
       { group: 'Potential', key: 'wallMode', label: 'Wall', type: 'seg', kind: GEOM, options: [['hard', 'Hard'], ['absorbing', 'Absorbing']], dimUnless: usesSlit,
-        hint: 'A hard wall reflects the packet back over the source, an absorbing one only lets the slits through.' },
+        hint: 'A hard wall projects the wave to zero inside it. An absorbing wall attenuates amplitude but can still transmit and reflect some of the packet.' },
       RANGE('Potential', 'period', 'Lattice period', GEOM, 6, 48, 1, v => v + ' px', { dimUnless: s => s.kind === 'lattice' }),
       RANGE('Potential', 'corr', 'Disorder grain', GEOM, 1, 12, 1, v => v + ' px', { dimUnless: s => s.kind === 'disorder' }),
       RANGE('Packet', 'px', 'Packet x', GEOM, 0.05, 0.95, 0.01, f2),
       RANGE('Packet', 'py', 'Packet y', GEOM, 0.05, 0.95, 0.01, f2),
       RANGE('Packet', 'sigma', 'Width σ', GEOM, 3, 30, 0.5, v => v + ' px'),
-      RANGE('Packet', 'k', 'Momentum k', GEOM, 0, 1.6, 0.02, f2, { hint: 'In 1/cell. Wavelength 2π/k; speed k cells per unit time. Above about 1.5 the grid cannot carry the wave.' }),
+      RANGE('Packet', 'k', 'Momentum k', GEOM, 0, 1.6, 0.02, f2, { hint: 'In 1/cell. Wavelength 2π/k. Speed k is the long-wavelength limit; the continuous-time lattice group velocity is (sin kₓ, sin kᵧ). Finite time steps add further phase error.' }),
       RANGE('Packet', 'ang', 'Direction', GEOM, 0, 359, 1, deg),
     ]).concat(simFields(0.02, 0.3, 0.005, f3)).concat([
       RANGE('Simulation', 'absorb', 'Absorber width', LIVE, 0, 0.2, 0.01, pct, { hint: 'Fraction of the frame, on every side, where the wave is damped. Off inside the stadium.' }),
@@ -19915,10 +19915,10 @@ vec3 tone(vec3 col, float con, float grain){
     },
     closedGroups: ['Packet'],
     hints: {
-      Potential: 'The slits, barrier and well are what the packet meets. V₀ against k²/2 decides whether it passes, tunnels, or is turned back.',
+      Potential: 'The slits, barrier and well shape the packet. k²/2 is a continuum energy estimate, not an exact threshold on this grid. With the edge absorber off, outer boundaries are periodic.',
       Packet: 'Where the packet starts, how wide it is, and which way it moves. Narrow packets spread faster (uncertainty). The seed jitters position and aim slightly.',
-      Simulation: 'The time step is clamped against the Visscher bound dt < 2/(4 + V₀) so the leapfrog stays unitary. The absorber is an imaginary potential over the frame edge.',
-      Picture: 'Detector is the print: |ψ|² summed over the run and shown with a film-like response. Density and Phase are the live wave.',
+      Simulation: 'The step limit uses the largest potential on this grid, including harmonic-well corners. Changing the step recenters and restaggers the imaginary field. The edge absorber deliberately removes wave amplitude; conservation is not claimed with it enabled.',
+      Picture: 'Detector integrates the centered numerical density over time. Density and Phase center the two imaginary half steps at the real field’s time. The displayed packet percentage is a sampled estimate, not a conserved-norm check.',
     },
     palette: true, defaultPalette: 'xray', paletteLabel: 'Colors (dark → bright)',
     headline: 'k', headlineLabel: 'momentum k',
@@ -19926,8 +19926,11 @@ vec3 tone(vec3 col, float con, float grain){
       s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024);
       s.V0 = U.clamp(Number(s.V0) || 0, 0, 8);
       s.k = U.clamp(Number(s.k) || 0, 0, 1.6);
-      // Visscher: |E| dt < 2 with E up to 4/dx^2 + V0 on the 5-point Laplacian (dx = 1); stay well inside it
-      const dtMax = Math.min(0.25, 1.6 / (4 + Math.abs(s.V0)));
+      // |E| dt < 2; the kinetic spectrum is [0,4] on the unit-cell 5-point grid.
+      // A harmonic corner can exceed V0, especially on a rectangular grid.
+      const [W, H] = sizeOf(s), minWH = Math.min(W, H);
+      const vBound = s.kind === 'well' ? s.V0 * (((W - 1) / minWH) ** 2 + ((H - 1) / minWH) ** 2) : Math.abs(s.V0);
+      const dtMax = Math.min(0.25, 1.6 / (4 + vBound));
       s.dt = U.clamp(Number(s.dt) || 0.2, 0.01, dtMax);
       s.sigma = U.clamp(Number(s.sigma) || 12, 2, 40);
       s.absorb = U.clamp(Number(s.absorb) || 0, 0, 0.25);
@@ -19954,7 +19957,7 @@ vec3 tone(vec3 col, float con, float grain){
   function usesSlit(s) { return s.kind === 'single' || s.kind === 'double'; }
   function usesWallX(s) { return usesSlit(s) || s.kind === 'barrier'; }
 
-  // State texture: r = Re psi (integer steps), g = Im psi (half steps), b = time-integrated |psi|^2 (the detector).
+  // State: r = R(t), g = I(t+dt/2), a = I(t-dt/2), b = integrated centered numerical density.
   // Potential texture: r = V, g = hard wall (1 inside), b = absorber weight 0..1.
   const SCH_POT_FS = HEAD + `
 uniform vec2 u_res;
@@ -20017,23 +20020,30 @@ void main(){
   vec4 pot = texture(u_pot, v_uv);
   float V = pot.r, keep = 1.0 - pot.g;
   float damp = exp(-u_dt * u_damp * pot.b);
-  if (u_phase == 0) {
+  if (u_phase == 2) {
+    // Center the two imaginary half levels and project both components onto the allowed domain.
+    float I = 0.5 * (c.g + c.a) * keep;
+    outColor = vec4(c.r * keep, I, c.b, I);
+  } else if (u_phase == 0) {
     // Re(t + dt) = Re(t) + dt * H Im(t + dt/2)
     float HI = -0.5 * lapc(v_uv, px, 1) + V * c.g;
     float R = (c.r + u_dt * HI) * keep * damp;
-    outColor = vec4(R, c.g, c.b, 1.0);
+    outColor = vec4(R, c.g, c.b, c.a);
   } else {
-    // Im(t + 3dt/2) = Im(t + dt/2) - dt * H Re(t + dt); density at t + dt is Re^2 + Im_old * Im_new (Visscher)
+    // Advance the imaginary level, retaining its predecessor for centered density/phase.
     float HR = -0.5 * lapc(v_uv, px, 0) + V * c.r;
     float I = (c.g - u_dt * HR) * keep * damp;
-    float dens = max(c.r * c.r + c.g * I, 0.0);
-    outColor = vec4(c.r, I, c.b + u_dtE * dens, 1.0);
+    // Phase 3 initializes/restaggers a symmetric pair about the supplied integer-time I.
+    float previous = u_phase == 3 ? (2.0 * c.g - I) * keep : c.g;
+    float centered = 0.5 * (previous + I);
+    float dens = c.r * c.r + centered * centered;
+    outColor = vec4(c.r, I, c.b + u_dtE * dens, previous);
   }
 }`;
 
   // Adds a Gaussian packet at the pointer, moving along the drag direction (or at rest).
   const SCH_KICK_FS = HEAD + `
-uniform sampler2D u_p;
+uniform sampler2D u_p, u_pot;
 uniform vec2 u_res, u_pos, u_kv;
 uniform float u_rad, u_amp;
 void main(){
@@ -20041,7 +20051,10 @@ void main(){
   vec2 d = (v_uv - u_pos) * u_res;
   float g = exp(-dot(d, d) / (4.0 * u_rad * u_rad));
   float ph = dot(u_kv, d);
-  outColor = vec4(c.r + u_amp * g * cos(ph), c.g + u_amp * g * sin(ph), c.b, 1.0);
+  float keep = 1.0 - texture(u_pot, v_uv).g;
+  float R = (c.r + u_amp * g * cos(ph)) * keep;
+  float I = (c.g + u_amp * g * sin(ph)) * keep;
+  outColor = vec4(R, I, c.b, I);
 }`;
 
   const SCH_RENDER_FS = HEAD + `
@@ -20058,7 +20071,8 @@ void main(){
   vec2 p = v_uv * u_res;
   vec4 c = bicubic(u_p, p, u_res);
   vec4 pot = bicubic(u_pot, p, u_res);
-  float dens = c.r * c.r + c.g * c.g;
+  float imaginary = 0.5 * (c.g + c.a);
+  float dens = c.r * c.r + imaginary * imaginary;
   vec3 col;
   float K = 12.0 * u_exposure;
   if (u_view == 0) {
@@ -20068,7 +20082,7 @@ void main(){
     float x = clamp(dens * u_densScale, 0.0, 1.0);
     col = ramp(pow(log(1.0 + K * x) / log(1.0 + K), u_gamma));
   } else {
-    float ph = atan(c.g, c.r) / 6.28318530718 + 0.5;
+    float ph = atan(imaginary, c.r) / 6.28318530718 + 0.5;
     float m = pow(clamp(sqrt(dens * u_densScale) * u_exposure, 0.0, 1.0), u_gamma);
     vec3 hue = texture(u_ramp2, vec2(1.0 - abs(2.0 * ph - 1.0), 0.5)).rgb;
     col = mix(u_bg, hue, m);
@@ -20081,7 +20095,7 @@ void main(){
   outColor = vec4(tone(col, u_contrast, u_grain), 1.0);
 }`;
 
-  // Per block: rg = 16-bit mean density (for the norm), b = log mean exposure, a = log max density.
+  // Per block: rg = quantized sampled centered density, b = log mean exposure, a = log max density.
   const SCH_REDUCE_FS = HEAD + `
 uniform sampler2D u_p; uniform vec2 u_res, u_block;
 void main(){
@@ -20090,7 +20104,8 @@ void main(){
   for (int y = 0; y < 8; y++) for (int x = 0; x < 8; x++) {
     vec2 uv = (o + (vec2(x, y) + 0.5) * u_block * 0.125) / u_res;
     vec4 c = texture(u_p, uv);
-    float d = c.r * c.r + c.g * c.g;
+    float imaginary = 0.5 * (c.g + c.a);
+    float d = c.r * c.r + imaginary * imaginary;
     sd += d; se += c.b; md = max(md, d);
   }
   float m = clamp(sd / 64.0 / 4.0, 0.0, 1.0) * 255.0;
@@ -20106,7 +20121,7 @@ void main(){
     if (rig.dead) return rig.dead;
     const gl = rig.gl, P = rig.P;
     let S = null, potT = null, gw = 0, gh = 0;
-    let nOff = 0, norm0 = 0, normNow = 0, expWhite = 0, densWhite = 0, simTime = 0;
+    let nOff = 0, norm0 = 0, normNow = 0, expWhite = 0, densWhite = 0, simTime = 0, staggerDt = 0;
 
     function ensureGrid(s) {
       const [W, H] = sizeOf(s);
@@ -20136,7 +20151,7 @@ void main(){
         const g = Math.exp(-(dx * dx + dy * dy) / sig2);
         const ph = kx * dx + ky * dy;
         const i = (y * gw + x) * 4;
-        data[i] = g * Math.cos(ph); data[i + 1] = g * Math.sin(ph); data[i + 2] = 0; data[i + 3] = 1;
+        data[i] = g * Math.cos(ph); data[i + 1] = g * Math.sin(ph); data[i + 2] = 0; data[i + 3] = data[i + 1];
         norm0 += g * g;
       }
       return data;
@@ -20147,8 +20162,14 @@ void main(){
     }
     function step(n) {
       const s = host.getState();
+      if (s.dt !== staggerDt) restagger(s);
       for (let i = 0; i < n; i++) { halfStep(s, s.dt, 0, 0); halfStep(s, s.dt, s.dt, 1); }
       rig.stepCount += n; simTime += n * s.dt;
+    }
+    function restagger(s) {
+      halfStep(s, 0, 0, 2);
+      halfStep(s, 0.5 * s.dt, 0, 3);
+      staggerDt = s.dt;
     }
     function measure(extra) {
       rig.reduce({ u_p: S.read, u_res: [gw, gh], u_block: [gw / RED, gh / RED] }, b => applyMeasure(b, extra));
@@ -20176,8 +20197,8 @@ void main(){
         '<span>' + SCH_LABEL[s.kind] + ' · k <b>' + s.k.toFixed(2) + '</b></span>' +
         // the exposure view integrates the packet over its whole flight, so what matters there is the dose, not what is left in the box
         (s.view === 'density' || s.view === 'phase'
-          ? '<span>norm <b>' + Math.round(100 * normNow / Math.max(norm0, 1e-9)) + '%</b> · t <b>' + simTime.toFixed(0) + '</b></span>'
-          : '<span>exposure to t <b>' + simTime.toFixed(0) + '</b> · packet left <b>' + Math.round(100 * normNow / Math.max(norm0, 1e-9)) + '%</b></span>') +
+          ? '<span>density weight ≈ <b>' + Math.round(100 * normNow / Math.max(norm0, 1e-9)) + '%</b> · t <b>' + simTime.toFixed(0) + '</b></span>'
+          : '<span>exposure to t <b>' + simTime.toFixed(0) + '</b> · packet left ≈ <b>' + Math.round(100 * normNow / Math.max(norm0, 1e-9)) + '%</b></span>') +
         '<span>step <b>' + rig.stepCount.toLocaleString() + '</b></span>' +
         (extra ? '<span>' + extra + '</span>' : '')
       );
@@ -20200,6 +20221,7 @@ void main(){
 
     return {
       aspect(s) { return ASPECTS[s.aspect] || 1; },
+      fieldCells() { return [gw, gh]; },
       regenerate() {
         rig.stop(); rig.stepCount = 0; simTime = 0; norm0 = 0; normNow = 0; expWhite = 0; densWhite = 0;
         const s = host.getState();
@@ -20207,8 +20229,8 @@ void main(){
         ensureGrid(s);
         buildPotential(s);
         rig.upload(S.read, packet(s));
-        // Im lives on half steps: move it to t = dt/2 before the leapfrog starts
-        halfStep(s, 0.5 * s.dt, 0, 1);
+        // Mask the initial wave before evaluating H, then retain symmetric imaginary half levels.
+        restagger(s);
         normNow = norm0;
         expWhite = 2 * s.sigma / Math.max(s.k, 0.1); densWhite = 1;
         if (s.warmup > 0) burst(s.warmup); else { measure(''); render(); loop(); }
@@ -20216,6 +20238,7 @@ void main(){
       repaint() { if (S) render(); },
       live(key) {
         if (!S) return;
+        if (key === 'dt') restagger(host.getState());
         if (key === 'absorb') buildPotential(host.getState());
         if (key === 'running') loop(); else if (!rig.raf) loop();
       },
@@ -20231,8 +20254,10 @@ void main(){
         const s = host.getState();
         const L = Math.hypot(p.dx, p.dy);
         const kv = L > 1e-4 ? [p.dx / L * s.k, p.dy / L * s.k] : [0, 0];
-        P.kick.draw(S.write, { u_p: S.read, u_res: [gw, gh], u_pos: [p.x, p.yGL], u_kv: kv, u_rad: Math.max(3, s.sigma * 0.6), u_amp: 0.5 });
+        halfStep(s, 0, 0, 2);
+        P.kick.draw(S.write, { u_p: S.read, u_pot: potT, u_res: [gw, gh], u_pos: [p.x, p.yGL], u_kv: kv, u_rad: Math.max(3, s.sigma * 0.6), u_amp: 0.5 });
         S.swap();
+        restagger(s);
         render();
         if (!rig.raf) loop();
       },
@@ -20249,10 +20274,10 @@ void main(){
     order: 99,
     equation: '∂ω/∂t + u·∇ω = √(Pr/Ra) ∇²ω + ∂T/∂x,   ∂T/∂t + u·∇T = ∇²T/√(Ra Pr),   ∇²ψ = −ω,   u = ∂ψ/∂y, v = −∂ψ/∂x',
     credit: "Henri Bénard, Revue générale des Sciences pures et appliquées 11, 1261 (1900), saw the cells in a thin layer of spermaceti heated from below. Lord Rayleigh, Philosophical Magazine 32, 529 (1916), showed with the Boussinesq equations that the layer turns over only once the number now named for him passes a threshold: 657.5 for free surfaces, 1708 for rigid plates (Jeffreys 1928; Pellew and Southwell 1940). This is the two-dimensional Boussinesq system in vorticity-streamfunction form, scaled by the free-fall time, with a red-black SOR Poisson solve for ψ, semi-Lagrangian advection and Thom's wall vorticity.",
-    blurb: 'A pan of fluid, hot floor and cold lid. Below Ra ≈ 1708 heat simply conducts and nothing moves. Above it the layer rolls over in cells whose width is about the depth of the pan. Push Ra to a hundred thousand and the rolls give way to plumes: thin thermal boundary layers grow on the plates until a blob of hot fluid tears free and rises as a mushroom, its cold twin falling from the lid. Push further and the plumes fight each other in a turbulent soup. The plate shows temperature, or the vorticity that drives it, or a schlieren view of the temperature gradient, the way a shadowgraph shows convection in a lab. Drag to drop a warm blob into the flow.',
+    blurb: 'A pan of fluid, hot floor and cold lid. Ideal no-slip plates have an onset threshold near Ra ≈ 1708; free-slip plates have a lower threshold near 658. The finite box and numerical resolution also affect the onset seen here. Above onset the layer can roll over in cells. Push Ra to a hundred thousand and the rolls give way to plumes: thin thermal boundary layers grow on the plates until a blob of hot fluid tears free and rises as a mushroom, its cold twin falling from the lid. Push further and the plumes fight each other in a turbulent soup. The plate shows temperature, or the vorticity that drives it, or a schlieren view of the temperature gradient, the way a shadowgraph shows convection in a lab. Drag to drop a warm blob into the flow.',
     schema: GRID.concat([
       RANGE('Convection', 'logRa', 'Rayleigh number', LIVE, 3, 7, 0.05, fmtRa, {
-        hint: 'Buoyancy against viscosity and diffusion. Onset at 1708 (rigid plates). 10⁴ to 10⁵: steady cells. 10⁵ to 10⁶: plumes. Higher: turbulent (under-resolved at these grids).' }),
+        hint: 'Buoyancy against viscosity and diffusion. Ideal onset is near 1708 for no-slip plates and 658 for free-slip plates. Higher Ra needs finer resolution; Ra alone does not verify that a simulated flow is turbulent.' }),
       RANGE('Convection', 'Pr', 'Prandtl number', LIVE, 0.1, 10, 0.1, f1, { hint: 'Viscosity over thermal diffusivity. 0.7 is air, 7 is water. Low Pr: swirling, inertial. High Pr: sluggish, viscous.' }),
       { group: 'Convection', key: 'wall', label: 'Plates', type: 'seg', kind: LIVE, options: [['noslip', 'No-slip'], ['free', 'Free-slip']] },
       { group: 'Seeding', key: 'init', label: 'Perturbation', type: 'seg', kind: GEOM, options: [['noise', 'Noise'], ['rolls', 'Rolls'], ['blobs', 'Blobs'], ['plume', 'One plume']] },
@@ -20282,7 +20307,7 @@ void main(){
     },
     closedGroups: ['Seeding'],
     hints: {
-      Convection: 'Ra is the whole story: conduction, cells, plumes, turbulence, in that order. Pr decides whether the plumes are wispy (low) or blobby (high). Time is in free-fall units, so a plume crosses the layer in about one.',
+      Convection: 'Ra controls thermal driving and Pr the viscosity-to-diffusivity ratio. Ideal onset is about 1708 for no-slip plates and 658 for free-slip plates; the finite box and numerical resolution also matter. Nu now is sampled instantaneous heat transport, not a time average or a certified accuracy check.',
       Simulation: 'The time step is clamped to the explicit diffusion bound for this Ra, Pr and grid, so low Ra runs slowly. More SOR sweeps track the streamfunction more tightly.',
       Picture: 'Temperature is T through the palette, floor at the bottom. Etched darkens the edges of the plumes. Schlieren is |∇T|, the shadowgraph of the lab.',
     },
@@ -20293,7 +20318,8 @@ void main(){
       s.logRa = U.clamp(Number(s.logRa) || 5, 3, 7);
       s.Pr = U.clamp(Number(s.Pr) || 1, 0.1, 10);
       s.iters = U.clamp(Math.round(Number(s.iters) || 4), 1, 12);
-      s.dt = U.clamp(Math.min(Number(s.dt) || 0.008, convDtMax(s)), 0.00005, 0.03);
+      // Apply the diffusion ceiling last: fine grids may need dt below the slider minimum.
+      s.dt = Math.min(U.clamp(Number(s.dt) || 0.008, 0.00005, 0.03), convDtMax(s));
     },
     surprise(rng) {
       const logRa = rng.pick([4.5, 5, 5.3, 5.6, 6, 6.4]);
@@ -20406,7 +20432,14 @@ void main(){
   float u = (Ps(ij + vec2(0.0, 1.0)) - Ps(ij - vec2(0.0, 1.0))) / (2.0 * u_dx);
   float v = -(Ps(ij + vec2(1.0, 0.0)) - Ps(ij - vec2(1.0, 0.0))) / (2.0 * u_dx);
   bool wall = ij.y < 0.5 || ij.y > u_res.y - 1.5;
-  if (wall) { v = 0.0; if (u_wall == 0) u = 0.0; }
+  if (wall) {
+    v = 0.0;
+    if (u_wall == 0) u = 0.0;
+    // Free slip has an odd streamfunction extension through its zero-valued wall.
+    // Clamping the outside sample instead halves the tangential velocity.
+    else u = ij.y < 0.5 ? (Ps(ij + vec2(0.0, 1.0)) - p) / u_dx
+                       : (p - Ps(ij - vec2(0.0, 1.0))) / u_dx;
+  }
   outColor = vec4(p, u, v, 1.0);
 }`;
 
@@ -20441,7 +20474,9 @@ void main(){
   outColor = vec4(tone(col, u_contrast, u_grain), 1.0);
 }`;
 
-  // Per block: rg = 16-bit (0.5 + mean v T) for the Nusselt estimate, b = log max |omega|, a = log max |grad T|.
+  // Per block: rg = signed 16-bit mean v T with an exact zero code,
+  // b = log max |omega|, a = log max |grad T|. Encoding error <= 0.5/65534.
+  // This is sampled instantaneous transport, not a converged time average.
   const CONV_REDUCE_FS = HEAD + `
 uniform sampler2D u_f, u_vel; uniform vec2 u_res, u_block; uniform float u_dx;
 void main(){
@@ -20458,8 +20493,8 @@ void main(){
     float gy = (texture(u_f, uv + vec2(0.0, px.y)).r - texture(u_f, uv - vec2(0.0, px.y)).r) / (2.0 * u_dx);
     mg = max(mg, length(vec2(gx, gy)));
   }
-  float m = clamp(0.5 + svt / 64.0, 0.0, 1.0) * 255.0;
-  float hi = floor(m) / 255.0, lo = fract(m);
+  float encoded = floor(clamp(svt / 64.0, -0.5, 0.5) * 65534.0 + 32768.5);
+  float hi = floor(encoded / 256.0) / 255.0, lo = mod(encoded, 256.0) / 255.0;
   outColor = vec4(hi, lo, clamp(log2(1.0 + mw) / 32.0, 0.0, 1.0), clamp(log2(1.0 + mg) / 32.0, 0.0, 1.0));
 }`;
 
@@ -20540,14 +20575,16 @@ void main(){
     function applyMeasure(b, extra) {
       const s = host.getState();
       // white points come from the interior blocks (the wall rows carry Thom's vorticity and the wall gradient)
-      let svt = 0;
+      let svt = 0, transportClipped = false;
       const ws = [], gs = [];
       for (let i = 0; i < RED * RED; i++) {
-        svt += (b[i * 4] + b[i * 4 + 1] / 255) / 255 - 0.5;
+        const packed = b[i * 4] * 256 + b[i * 4 + 1];
+        svt += (packed - 32768) / 65534;
+        if (packed <= 1 || packed >= 65535) transportClipped = true;
         const row = Math.floor(i / RED);
         if (row >= 2 && row < RED - 2) { ws.push(b[i * 4 + 2]); gs.push(b[i * 4 + 3]); }
       }
-      nusselt = 1 + Math.sqrt(raOf(s) * s.Pr) * (svt / (RED * RED));
+      nusselt = transportClipped ? NaN : 1 + Math.sqrt(raOf(s) * s.Pr) * (svt / (RED * RED));
       ws.sort((x, y) => x - y); gs.sort((x, y) => x - y);
       const q = Math.floor(0.97 * (ws.length - 1));
       const tw = Math.max(decLog(ws[q]), 1e-3), tg = Math.max(decLog(gs[q]), 1e-3);
@@ -20560,11 +20597,12 @@ void main(){
     function status(extra) {
       const s = host.getState();
       const Ra = raOf(s);
-      const regime = Ra < 1708 ? 'conductive' : Ra < 2e4 ? 'rolls' : Ra < 5e5 ? 'plumes' : 'turbulent';
+      const threshold = s.wall === 'free' ? 27 * Math.PI ** 4 / 4 : 1707.76;
+      const regime = Ra < threshold ? 'below ideal onset' : 'above ideal onset';
       host.setStatus(
         '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
         '<span>Ra <b>' + fmtRa(s.logRa) + '</b> · Pr <b>' + s.Pr.toFixed(1) + '</b> · ' + regime + '</span>' +
-        '<span>Nu ≈ <b>' + Math.max(1, nusselt).toFixed(1) + '</b> · t <b>' + simTime.toFixed(1) + '</b></span>' +
+        '<span>Nu now ≈ <b>' + (Number.isFinite(nusselt) ? nusselt.toFixed(1) : 'out of range') + '</b> · t <b>' + simTime.toFixed(1) + '</b></span>' +
         '<span>step <b>' + rig.stepCount.toLocaleString() + '</b></span>' +
         (extra ? '<span>' + extra + '</span>' : '')
       );
@@ -20584,6 +20622,7 @@ void main(){
 
     return {
       aspect(s) { return ASPECTS[s.aspect] || 1; },
+      fieldCells() { return [gw, gh]; },
       regenerate() {
         rig.stop(); rig.stepCount = 0; simTime = 0; wMax = 30; gMax = 3; nusselt = 1;
         const s = host.getState();

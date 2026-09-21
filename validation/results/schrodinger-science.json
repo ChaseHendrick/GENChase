@@ -1,0 +1,326 @@
+{
+  "scope": "Actual float32 step shader, periodic square grids, static uniform real potentials and declared Fourier modes. Numerical recurrence, centered detector quadrature and fixed-step modified invariant; bounded temporal and free-wave spatial refinement. No absorber, hard-wall, interaction, float16, arbitrary-potential or display/export certification.",
+  "modal": [
+    {
+      "label": "constant-positive-potential",
+      "grid": 32,
+      "potential": 0.7,
+      "dt": 0.2,
+      "steps": 64,
+      "elapsed": 12.8,
+      "modes": [
+        {
+          "x": 0,
+          "y": 0,
+          "amplitude": 0.4,
+          "discreteEnergy": 0.7
+        }
+      ],
+      "recurrenceError": 1.0387666860012246e-7,
+      "detectorError": 4.383365226345859e-7,
+      "detectorMeanDensityError": 3.424504083082702e-8,
+      "exactDiscreteError": 0.0025380905352990757,
+      "maxRelativeInvariantDrift": 4.303520331356404e-7,
+      "initialInvariant": 163.10728830760047,
+      "minimumInitialLocalInvariant": 0.1592844612378952,
+      "relativeInitialClippingBias": 0
+    },
+    {
+      "label": "traveling-mode",
+      "grid": 32,
+      "potential": 0.4,
+      "dt": 0.2,
+      "steps": 64,
+      "elapsed": 12.8,
+      "modes": [
+        {
+          "x": 3,
+          "y": 2,
+          "amplitude": 0.4,
+          "discreteEnergy": 0.6446508551861679
+        }
+      ],
+      "recurrenceError": 2.440652195623283e-7,
+      "detectorError": 4.763518606232253e-7,
+      "detectorMeanDensityError": 3.721498911118948e-8,
+      "exactDiscreteError": 0.002674982689436084,
+      "maxRelativeInvariantDrift": 6.182756217387551e-8,
+      "initialInvariant": 163.49956039796822,
+      "minimumInitialLocalInvariant": 0.1593350847953383,
+      "relativeInitialClippingBias": 0
+    },
+    {
+      "label": "negative-energy",
+      "grid": 32,
+      "potential": -0.5,
+      "dt": 0.2,
+      "steps": 64,
+      "elapsed": 12.8,
+      "modes": [
+        {
+          "x": 2,
+          "y": 4,
+          "amplitude": 0.4,
+          "discreteEnergy": -0.1309863136978343
+        }
+      ],
+      "recurrenceError": 1.4279858479016028e-7,
+      "detectorError": 4.3037833119541347e-7,
+      "detectorMeanDensityError": 3.362330712464168e-8,
+      "exactDiscreteError": 0.00004074545973381527,
+      "maxRelativeInvariantDrift": 6.971367980585789e-8,
+      "initialInvariant": 163.8259472370933,
+      "minimumInitialLocalInvariant": 0.15997255290376494,
+      "relativeInitialClippingBias": 0
+    },
+    {
+      "label": "nyquist-mode",
+      "grid": 32,
+      "potential": 0,
+      "dt": 0.2,
+      "steps": 64,
+      "elapsed": 12.8,
+      "modes": [
+        {
+          "x": 16,
+          "y": 16,
+          "amplitude": 0.4,
+          "discreteEnergy": 4
+        }
+      ],
+      "recurrenceError": 3.010846676421153e-7,
+      "detectorError": 2.6368465344539516e-7,
+      "detectorMeanDensityError": 2.0600363550421497e-8,
+      "exactDiscreteError": 0.5349728227785786,
+      "maxRelativeInvariantDrift": 3.519990019300931e-7,
+      "initialInvariant": 137.62560117187596,
+      "minimumInitialLocalInvariant": 0.1344000011444091,
+      "relativeInitialClippingBias": 0
+    },
+    {
+      "label": "interference-negative-local-invariant",
+      "grid": 32,
+      "potential": 0,
+      "dt": 0.2,
+      "steps": 64,
+      "elapsed": 12.8,
+      "modes": [
+        {
+          "x": 0,
+          "y": 0,
+          "amplitude": 0.3,
+          "discreteEnergy": 0
+        },
+        {
+          "x": 8,
+          "y": 0,
+          "amplitude": 0.3,
+          "discreteEnergy": 1
+        }
+      ],
+      "recurrenceError": 1.9517934785051594e-7,
+      "detectorError": 0.0000013494407702374644,
+      "detectorMeanDensityError": 1.0542506017480191e-7,
+      "exactDiscreteError": 0.00661939963369268,
+      "maxRelativeInvariantDrift": 5.643741628080393e-7,
+      "initialInvariant": 183.8592146118149,
+      "minimumInitialLocalInvariant": -0.0009000000715255752,
+      "relativeInitialClippingBias": 0.0012531328320782031
+    }
+  ],
+  "temporal": [
+    {
+      "label": "temporal-refinement",
+      "grid": 32,
+      "potential": 0.2,
+      "dt": 0.2,
+      "steps": 8,
+      "elapsed": 1.6,
+      "modes": [
+        {
+          "x": 8,
+          "y": 4,
+          "amplitude": 0.4,
+          "discreteEnergy": 1.4928932188134525
+        }
+      ],
+      "recurrenceError": 6.882784109318862e-8,
+      "detectorError": 3.9902409598724375e-8,
+      "detectorMeanDensityError": 2.4939005999202735e-8,
+      "exactDiscreteError": 0.005729334453650342,
+      "maxRelativeInvariantDrift": 9.190848432554324e-8,
+      "initialInvariant": 162.01423325467468,
+      "minimumInitialLocalInvariant": 0.1564340364536717,
+      "relativeInitialClippingBias": 0
+    },
+    {
+      "label": "temporal-refinement",
+      "grid": 32,
+      "potential": 0.2,
+      "dt": 0.1,
+      "steps": 16,
+      "elapsed": 1.6,
+      "modes": [
+        {
+          "x": 8,
+          "y": 4,
+          "amplitude": 0.4,
+          "discreteEnergy": 1.4928932188134525
+        }
+      ],
+      "recurrenceError": 7.10732083186727e-8,
+      "detectorError": 1.926809867214274e-8,
+      "detectorMeanDensityError": 1.2042561670089214e-8,
+      "exactDiscreteError": 0.0014273375520189868,
+      "maxRelativeInvariantDrift": 1.0223870243240748e-7,
+      "initialInvariant": 163.38356579808385,
+      "minimumInitialLocalInvariant": 0.15910851268969664,
+      "relativeInitialClippingBias": 0
+    },
+    {
+      "label": "temporal-refinement",
+      "grid": 32,
+      "potential": 0.2,
+      "dt": 0.05,
+      "steps": 32,
+      "elapsed": 1.6,
+      "modes": [
+        {
+          "x": 8,
+          "y": 4,
+          "amplitude": 0.4,
+          "discreteEnergy": 1.4928932188134525
+        }
+      ],
+      "recurrenceError": 7.826266812394067e-8,
+      "detectorError": 7.49782676501276e-8,
+      "detectorMeanDensityError": 4.6861417281329754e-8,
+      "exactDiscreteError": 0.0003565196195324527,
+      "maxRelativeInvariantDrift": 1.4090884035272745e-7,
+      "initialInvariant": 163.72589910715766,
+      "minimumInitialLocalInvariant": 0.15977713174870287,
+      "relativeInitialClippingBias": 0
+    }
+  ],
+  "temporalOrders": [
+    2.005040999410735,
+    2.0012731825676484
+  ],
+  "spatial": [
+    {
+      "label": "spatial-refinement",
+      "grid": 16,
+      "potential": 0,
+      "dt": 0.20264236728467555,
+      "steps": 16,
+      "elapsed": 3.242277876554809,
+      "modes": [
+        {
+          "x": 1,
+          "y": 2,
+          "amplitude": 0.4,
+          "discreteEnergy": 0.3690136863021657
+        }
+      ],
+      "recurrenceError": 7.430387516382808e-8,
+      "detectorError": 7.207658359043023e-8,
+      "detectorMeanDensityError": 2.2230230206862352e-8,
+      "exactDiscreteError": 0.0003181028974530986,
+      "maxRelativeInvariantDrift": 2.308144022204323e-8,
+      "initialInvariant": 40.9313710560513,
+      "minimumInitialLocalInvariant": 0.15977633594535867,
+      "relativeInitialClippingBias": 0,
+      "physicalLength": 6.283185307179586,
+      "physicalTime": 0.5,
+      "spacing": 0.39269908169872414,
+      "physicalDt": 0.03125,
+      "continuumError": 0.021385792585286112
+    },
+    {
+      "label": "spatial-refinement",
+      "grid": 32,
+      "potential": 0,
+      "dt": 0.20264236728467555,
+      "steps": 64,
+      "elapsed": 12.969111506219235,
+      "modes": [
+        {
+          "x": 1,
+          "y": 2,
+          "amplitude": 0.4,
+          "discreteEnergy": 0.09533518708548283
+        }
+      ],
+      "recurrenceError": 9.366872827376582e-8,
+      "detectorError": 5.586193960738228e-7,
+      "detectorMeanDensityError": 4.307306601581313e-8,
+      "exactDiscreteError": 0.000021365104138415525,
+      "maxRelativeInvariantDrift": 8.50301043141751e-8,
+      "initialInvariant": 163.83235559106512,
+      "minimumInitialLocalInvariant": 0.1599850758802535,
+      "relativeInitialClippingBias": 0,
+      "physicalLength": 6.283185307179586,
+      "physicalTime": 0.5,
+      "spacing": 0.19634954084936207,
+      "physicalDt": 0.0078125,
+      "continuumError": 0.005422442162605734
+    },
+    {
+      "label": "spatial-refinement",
+      "grid": 64,
+      "potential": 0,
+      "dt": 0.20264236728467555,
+      "steps": 256,
+      "elapsed": 51.87644602487694,
+      "modes": [
+        {
+          "x": 1,
+          "y": 2,
+          "amplitude": 0.4,
+          "discreteEnergy": 0.02402999292457264
+        }
+      ],
+      "recurrenceError": 2.840042990781555e-7,
+      "detectorError": 0.000021534471304818226,
+      "detectorMeanDensityError": 4.1511076711946573e-7,
+      "exactDiscreteError": 0.0000014343193683874489,
+      "maxRelativeInvariantDrift": 1.1076486086404686e-7,
+      "initialInvariant": 655.3580640166699,
+      "minimumInitialLocalInvariant": 0.15999905353597432,
+      "relativeInitialClippingBias": 0,
+      "physicalLength": 6.283185307179586,
+      "physicalTime": 0.5,
+      "spacing": 0.09817477042468103,
+      "physicalDt": 0.001953125,
+      "continuumError": 0.001363078366148407
+    }
+  ],
+  "spatialOrders": [
+    1.979638011485265,
+    1.9920742517611307
+  ],
+  "failureControl": {
+    "label": "wrong-imaginary-update-sign",
+    "grid": 32,
+    "potential": 0.2,
+    "dt": 0.1,
+    "steps": 16,
+    "elapsed": 1.6,
+    "modes": [
+      {
+        "x": 8,
+        "y": 4,
+        "amplitude": 0.4,
+        "discreteEnergy": 1.4928932188134525
+      }
+    ],
+    "recurrenceError": 3.479225110555325,
+    "detectorError": 7.017653418143539,
+    "detectorMeanDensityError": 4.386033386339712,
+    "exactDiscreteError": 3.4797932362060173,
+    "maxRelativeInvariantDrift": 58.132017694695,
+    "initialInvariant": 163.38356579808385,
+    "minimumInitialLocalInvariant": 0.15910851268969664,
+    "relativeInitialClippingBias": 0
+  }
+}

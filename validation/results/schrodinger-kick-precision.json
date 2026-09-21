@@ -1,0 +1,49 @@
+{
+  "test": "tools/schrodinger-state.js",
+  "scope": "Measured native GPU transcendental error for the declared packet; one backend, not a hardware-wide bound.",
+  "backend": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)"
+  },
+  "grid": [
+    128,
+    128
+  ],
+  "position": [
+    0.5,
+    0.15
+  ],
+  "momentum": [
+    0.35777087639996635,
+    0.17888543819998318
+  ],
+  "radius": 4.8,
+  "amplitude": 0.5,
+  "maxError": {
+    "gaussian": 1.8169499571563108e-7,
+    "phase": 0.000004671431533154191,
+    "nativeCos": 0.0001893738752172247,
+    "nativeSin": 0.00018934800583647604
+  },
+  "worstAllowedCell": {
+    "x": 60,
+    "y": 18,
+    "real": 0.5259039402008057,
+    "expectedReal": 0.5259136475893245,
+    "imaginary": -1.2908976078033447,
+    "expectedImaginary": -1.290978974352986,
+    "ph": -1.3774178741398704,
+    "gpuPhase": -1.377418041229248,
+    "gaussian": 0.8708915114402771,
+    "gpuCos": 0.19215315580368042,
+    "cpuCosAtGpuPhase": 0.19217530169445435,
+    "gpuSin": -0.9811736941337585,
+    "cpuSinAtGpuPhase": -0.9813606133418262
+  },
+  "movingPacketTolerance": 0.0002,
+  "stationaryPacketTolerance": 0.000002,
+  "measuredMovingPacketError": 0.00008136654964130408,
+  "measuredStationaryPacketError": 1.148123633942788e-7
+}

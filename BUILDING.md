@@ -16,6 +16,19 @@ node tools/science.js
 The catalog generator needs Playwright as before. Install the development harness with
 `npm install --no-save playwright@1.49.1` and `npx playwright install chromium`.
 These dependencies are for contributors, not users of the portable download. The builder and coverage checker need only Node.
+
+Run the scientific evidence registered for specific techniques with one command:
+
+```sh
+node tools/verify.js --print schrodinger convection
+node tools/verify.js --list --print --all
+```
+
+The first command checks build and inventory consistency, runs each shared test once, and reports
+missing evidence. The second previews the full plan without running it. A passing run covers only
+the recorded benchmarks and does not change scientific status. See [the verification runner](tools/VERIFY.md)
+for options, setup and exit codes.
+
 Commit both sources and generated artifacts. CI rejects a stale build, omitted module, duplicate
 include, missing validation record or stale validation report. Catalog count stamping updates the
 source template and rebuilds, so the next assembly cannot undo metadata updates.

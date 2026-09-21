@@ -1,0 +1,186 @@
+{
+  "scope": "Float32 GPU operator benchmarks and signed diagnostic encoding. Fixed-domain scalar diffusion refinement; not full nonlinear Boussinesq convergence, onset, turbulence or print validation.",
+  "results": {
+    "diffusionCeiling": [
+      {
+        "grid": 128,
+        "cap": 0.00012400024800049599,
+        "measurements": [
+          {
+            "mode": "corrected",
+            "dt": 0.00012400024800049599,
+            "expectedFactor": -0.6000000000000001,
+            "measuredFactor": -0.6
+          },
+          {
+            "mode": "old-floor-control",
+            "dt": 0.00012400024800049599,
+            "expectedFactor": -0.6000000000000001,
+            "measuredFactor": -0.6
+          }
+        ]
+      },
+      {
+        "grid": 512,
+        "cap": 0.000007659284393059157,
+        "measurements": [
+          {
+            "mode": "corrected",
+            "dt": 0.000007659284393059157,
+            "expectedFactor": -0.6000000000000005,
+            "measuredFactor": -0.6000001164153163
+          },
+          {
+            "mode": "old-floor-control",
+            "dt": 0.00005,
+            "expectedFactor": -9.444840000000003,
+            "measuredFactor": -9.444840735116156
+          }
+        ]
+      }
+    ],
+    "conduction": [
+      {
+        "grid": 64,
+        "boundary": "no-slip",
+        "steps": 16,
+        "dt": 0.0005039052658100277,
+        "maxTemperatureError": 0,
+        "maxVorticity": 0
+      },
+      {
+        "grid": 64,
+        "boundary": "free-slip",
+        "steps": 16,
+        "dt": 0.0005039052658100277,
+        "maxTemperatureError": 0,
+        "maxVorticity": 0
+      },
+      {
+        "grid": 128,
+        "boundary": "no-slip",
+        "steps": 16,
+        "dt": 0.00012400024800049599,
+        "maxTemperatureError": 0,
+        "maxVorticity": 0
+      },
+      {
+        "grid": 128,
+        "boundary": "free-slip",
+        "steps": 16,
+        "dt": 0.00012400024800049599,
+        "maxTemperatureError": 0,
+        "maxVorticity": 0
+      }
+    ],
+    "diffusionRefinement": [
+      {
+        "cellsPerHeight": 32,
+        "width": 64,
+        "height": 33,
+        "dt": 0.0018181818181818182,
+        "steps": 11,
+        "finalTime": 0.02,
+        "discreteError": 8.91906558331268e-9,
+        "continuumError": 0.00000376680578526023
+      },
+      {
+        "cellsPerHeight": 64,
+        "width": 128,
+        "height": 65,
+        "dt": 0.0004878048780487805,
+        "steps": 41,
+        "finalTime": 0.02,
+        "discreteError": 1.719720402193481e-8,
+        "continuumError": 0.0000010608535686712495
+      },
+      {
+        "cellsPerHeight": 128,
+        "width": 256,
+        "height": 129,
+        "dt": 0.00012195121951219512,
+        "steps": 164,
+        "finalTime": 0.02,
+        "discreteError": 5.97873678204186e-8,
+        "continuumError": 2.724834853029545e-7
+      }
+    ],
+    "wallVelocity": [
+      {
+        "grid": 64,
+        "bottom": 3.1402904987335205,
+        "top": -3.1402904987335205,
+        "maxError": 0.0013021548562726082,
+        "historicalHalfDerivativeError": 1.5714474042230329
+      },
+      {
+        "grid": 128,
+        "bottom": 3.1412723064422607,
+        "top": -3.1412723064422607,
+        "maxError": 0.0003203471475323738,
+        "historicalHalfDerivativeError": 1.5709565003686627
+      },
+      {
+        "grid": 256,
+        "bottom": 3.1415131092071533,
+        "top": -3.1415131092071533,
+        "maxError": 0.00007954438263979569,
+        "historicalHalfDerivativeError": 1.5708360989862165
+      }
+    ],
+    "transport": [
+      {
+        "sign": 0,
+        "expectedFlux": 0,
+        "measuredFlux": 0,
+        "error": 0,
+        "instantaneousNuAtRa10000Pr1": 1,
+        "conductionNuAtMaxRaPr": 1
+      },
+      {
+        "sign": 1,
+        "expectedFlux": 0.004980468754480916,
+        "measuredFlux": 0.004980269068346204,
+        "error": 1.9968613471175317e-7,
+        "instantaneousNuAtRa10000Pr1": 1.4980269068346204,
+        "conductionNuAtMaxRaPr": 50.802690683462046
+      },
+      {
+        "sign": -1,
+        "expectedFlux": -0.004980468754480916,
+        "measuredFlux": -0.004980224363498339,
+        "error": 2.4439098257698216e-7,
+        "instantaneousNuAtRa10000Pr1": 0.5019775636501661,
+        "conductionNuAtMaxRaPr": -48.80224363498339
+      }
+    ],
+    "poisson": {
+      "width": 64,
+      "height": 33,
+      "sweeps": 300,
+      "maxError": 3.0547380447387695e-7,
+      "note": "Converged manufactured solve; not a certificate for the default four sweeps."
+    },
+    "buoyancy": {
+      "maxError": 9.509173096839373e-10,
+      "reversedSignError": 0.00031365488468684463
+    },
+    "diagnosticStatus": [
+      {
+        "code": 32768,
+        "value": 1,
+        "status": "<span>grid <b>96×96</b></span><span>Ra <b>1.0×10⁴</b> · Pr <b>1.0</b> · above ideal onset</span><span>Nu now ≈ <b>1.0</b> · t <b>0.0</b></span><span>step <b>0</b></span><span>benchmark</span>"
+      },
+      {
+        "code": 32440,
+        "value": 0.4994964445936534,
+        "status": "<span>grid <b>96×96</b></span><span>Ra <b>1.0×10⁴</b> · Pr <b>1.0</b> · above ideal onset</span><span>Nu now ≈ <b>0.5</b> · t <b>0.0</b></span><span>step <b>0</b></span><span>benchmark</span>"
+      },
+      {
+        "code": 65535,
+        "value": null,
+        "status": "<span>grid <b>96×96</b></span><span>Ra <b>1.0×10⁴</b> · Pr <b>1.0</b> · above ideal onset</span><span>Nu now ≈ <b>out of range</b> · t <b>0.0</b></span><span>step <b>0</b></span><span>benchmark</span>"
+      }
+    ]
+  }
+}
