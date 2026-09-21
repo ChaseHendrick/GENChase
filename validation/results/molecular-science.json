@@ -1,0 +1,191 @@
+{
+  "scope": "Actual double-precision 2D force-shifted LJ module. Independent finite-difference energy gradient, analytic pair signs, all-pairs reference, periodic seams and two-cell neighbor deduplication, fixed-time RK4 reference and timestep refinement. No EOS or all-state stability claim.",
+  "forceGradient": [
+    {
+      "r": 0.9,
+      "actual": 138.6986234717295,
+      "reference": 138.6986234828136,
+      "error": 1.1084097195634968e-8
+    },
+    {
+      "r": 1,
+      "actual": 24.0389994774528,
+      "reference": 24.038999478143143,
+      "error": 6.903420057824405e-10
+    },
+    {
+      "r": 1.1,
+      "actual": 1.6270948672768566,
+      "reference": 1.627094867451273,
+      "error": 1.7441648125782194e-10
+    },
+    {
+      "r": 1.4,
+      "actual": -1.632997422087172,
+      "reference": -1.6329974219242427,
+      "error": 1.6292922566663037e-10
+    },
+    {
+      "r": 2,
+      "actual": -0.1426411475472,
+      "reference": -0.1426411475515671,
+      "error": 4.367090022938669e-12
+    },
+    {
+      "r": 2.49,
+      "actual": -0.0011016054871623873,
+      "reference": -0.0011016054873315938,
+      "error": 1.6920644572981924e-13
+    }
+  ],
+  "linked": [
+    {
+      "n": 36,
+      "density": 0.8,
+      "cellsAcross": 2,
+      "forceError": 3.019806626980426e-14,
+      "energyError": 0,
+      "candidates": 630,
+      "allPairs": 630
+    },
+    {
+      "n": 64,
+      "density": 0.55,
+      "cellsAcross": 4,
+      "forceError": 3.941291737419306e-15,
+      "energyError": 1.4210854715202004e-14,
+      "candidates": 1120,
+      "allPairs": 2016
+    },
+    {
+      "n": 256,
+      "density": 0.1,
+      "cellsAcross": 20,
+      "forceError": 0,
+      "energyError": 0,
+      "candidates": 672,
+      "allPairs": 32640
+    }
+  ],
+  "periodicEdge": {
+    "forceOnFirst": 24.0389994774528,
+    "expected": 24.0389994774528,
+    "unwrappedNegativeControl": 0
+  },
+  "refinement": [
+    {
+      "dt": 0.004,
+      "steps": 125,
+      "time": 0.5,
+      "rmsStateError": 0.00006926731770050107,
+      "peakRelativeEnergyError": 0.0001982537023751251,
+      "totalMomentum": 3.797547027170515e-15
+    },
+    {
+      "dt": 0.002,
+      "steps": 250,
+      "time": 0.5,
+      "rmsStateError": 0.000017323566753841883,
+      "peakRelativeEnergyError": 0.000049536245574639855,
+      "totalMomentum": 3.3130729741504598e-15,
+      "errorRatio": 3.998444355296493
+    },
+    {
+      "dt": 0.001,
+      "steps": 500,
+      "time": 0.5,
+      "rmsStateError": 0.000004332853462396396,
+      "peakRelativeEnergyError": 0.000012386741383652006,
+      "totalMomentum": 2.3025838842273744e-15,
+      "errorRatio": 3.998188931194696
+    }
+  ],
+  "referenceRefinementError": 5.529267122209e-11,
+  "negativeControls": {
+    "reversedForceError": 48.077998955595945,
+    "missingForceShiftError": 0.03899947753266564,
+    "singleKickIntegratorError": 0.003873128534342932,
+    "oversizedStepStopped": "Timestep too large for current forces. Lower the timestep and regenerate.",
+    "closeApproachStopped": "Unresolved close approach. Lower the timestep and regenerate.",
+    "rollbackExact": true
+  },
+  "presets": [
+    {
+      "name": "default",
+      "n": 1024,
+      "steps": 1000,
+      "milliseconds": 585.3791249999999,
+      "temperature": 0.896125243087025,
+      "energyPerParticle": -0.3757085914781122,
+      "relativeEnergyError": -0.000025590884119661712,
+      "totalMomentum": 9.823435011312952e-14
+    },
+    {
+      "name": "warm",
+      "n": 1024,
+      "steps": 1000,
+      "milliseconds": 644.628166,
+      "temperature": 0.896125243087025,
+      "energyPerParticle": -0.3757085914781122,
+      "relativeEnergyError": -0.000025590884119661712,
+      "totalMomentum": 9.823435011312952e-14
+    },
+    {
+      "name": "cool",
+      "n": 1024,
+      "steps": 1600,
+      "milliseconds": 1199.322333,
+      "temperature": 0.20426416348719184,
+      "energyPerParticle": -2.112717875012428,
+      "relativeEnergyError": -4.908168253346994e-7,
+      "totalMomentum": 1.6348365369376928e-13
+    },
+    {
+      "name": "dilute",
+      "n": 1024,
+      "steps": 1200,
+      "milliseconds": 198.5021670000001,
+      "temperature": 1.6732807419972349,
+      "energyPerParticle": 1.4985249718409084,
+      "relativeEnergyError": -0.000006796243016261133,
+      "totalMomentum": 1.785757756895005e-13
+    },
+    {
+      "name": "clusters",
+      "n": 1024,
+      "steps": 2600,
+      "milliseconds": 957.9654169999999,
+      "temperature": 0.7201860270262676,
+      "energyPerParticle": -0.015769417681858355,
+      "relativeEnergyError": -0.000016438011081698622,
+      "totalMomentum": 1.8918910504157075e-13
+    },
+    {
+      "name": "dense",
+      "n": 1024,
+      "steps": 1800,
+      "milliseconds": 1303.1607499999996,
+      "temperature": 0.8511259893056371,
+      "energyPerParticle": -1.0137821155301485,
+      "relativeEnergyError": 0.0000025922159461004005,
+      "totalMomentum": 7.315493631308135e-14
+    },
+    {
+      "name": "large",
+      "n": 4096,
+      "steps": 1000,
+      "milliseconds": 2195.754084,
+      "temperature": 0.8603054122510201,
+      "energyPerParticle": -0.37532924075891205,
+      "relativeEnergyError": -0.000018818865230777313,
+      "totalMomentum": 1.6214194616469532e-13
+    }
+  ],
+  "heavy": {
+    "n": 16384,
+    "candidates": 249569,
+    "allPairs": 134209536,
+    "meanStepMs": 6.302429100000063,
+    "maxStepMs": 6.4904169999999795
+  }
+}
