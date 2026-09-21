@@ -2,20 +2,20 @@
 
 GENChase is one HTML file. A contribution is a change to that file, or to the harness that keeps it honest. There is no package to install into, and no second architecture to propose.
 
-Read this, then `AGENTS.md` if you are writing a technique, then `tools/modules/CONTRACT.md` before you touch a simulation. `studio.html` wins when any of those disagree. If the work is a prior-art search or a claim that something has not been done, read `RESEARCH.md` first and write the query down there the same day.
+Read this, then `AGENTS.md` if you are writing a technique, then `tools/modules/CONTRACT.md` before you touch a simulation. The maintained `src/` implementation is authoritative; `studio.html` is generated. If the work is a prior-art search or a claim that something has not been done, read `RESEARCH.md` first and write the query down there the same day.
 
 ## What belongs here
 
 A real simulation that reprints from a seed: a PDE, a lattice, a growth, a tiling, a dynamical system. It shares the seed, the palette, the print pipeline and the witness. It credits the paper. It does not put a name on work that already exists. A result derived here, uniqueness-checked, with a check the plate can miss, is allowed; search the literature for the closed form and the extremum first, then write it in [`IDENTITIES.md`](IDENTITIES.md) and log the search in `RESEARCH.md` the same day.
 
-Leave it when you need a game, a network, a model-weights file, a bundler, or a folder of unrelated sketches. Do not split `studio.html`. Do not relicense. The source is PolyForm Small Business 1.0.0; images a person generates are theirs.
+Leave it when you need a game, a network, a model-weights file, a bundler, or a folder of unrelated sketches. Edit modular source in `src/`; the generated `studio.html` remains portable. Source is Apache-2.0; images a person generates are theirs.
 
 A vulnerability is not a pull request. Use [SECURITY.md](SECURITY.md).
 
 ## How to work
 
 1. Fork, or a branch off `main`. One change per branch.
-2. For a new tab, write `tools/modules/<id>.js` and inject; do not edit `studio.html` until the plate checks. For a shell fix, edit `studio.html` directly.
+2. For a new tab, write `src/modules/<id>.js` and add its include to `src/studio.html` before boot. For a shell fix, edit `src/shared/studio.js`. Run `node tools/build.js`; never edit the generated HTML. See BUILDING.md.
 3. Run the harness that matches the change (below).
 4. Open a pull request against `main`. CI has to be green.
 5. The maintainer squash-merges. The branch is deleted.
@@ -50,6 +50,8 @@ Against `main`. Title matches the squash subject. Body says what a reviewer shou
 
 Checklist, as it applies:
 
+- [ ] `node tools/build.js --check` and `node tools/science.js` pass
+- [ ] Numerical changes include benchmark evidence and updated validation limitations
 - [ ] `node tools/lint.js` is clean
 - [ ] chrome: `node tools/ui.js` (More, Export, and Generate stay on screen at 390)
 - [ ] a new or changed tab: `node tools/check.js <id> 12000`

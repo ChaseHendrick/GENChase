@@ -14,6 +14,7 @@ const { chromium } = require('playwright');
 const count = require('./count.js');
 
 (async () => {
+  if (!process.env.STUDIO) require('./build.js').build(true);
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'studio.html');
   const root = path.resolve(__dirname, '..');
   const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
@@ -90,7 +91,7 @@ const count = require('./count.js');
       contract: 'tools/modules/CONTRACT.md',
       agents: 'AGENTS.md',
       research: 'RESEARCH.md',
-      addATab: 'Write tools/modules/<id>.js, then node tools/inject.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js. Do not split studio.html. All noise through U.makeRng(seed). Credit the paper. Do not put a name on work that already exists. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Read RESEARCH.md before a prior-art search.',
+      addATab: 'Write src/modules/<id>.js, add its template include, then node tools/build.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js and node tools/science.js. All noise through U.makeRng(seed). Credit the paper. Do not put a name on work that already exists. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Read RESEARCH.md before a prior-art search.',
     },
     techniques: mods,
   }, null, 2) + '\n');
@@ -125,13 +126,13 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
   const llms = `# GENChase
 
-One HTML file of seeded scientific simulations. Each tab reprints from a hash. Generated images belong to the human. The source is PolyForm Small Business 1.0.0.
+One HTML file of seeded scientific simulations. Each tab reprints from a hash. Generated images belong to the human. The source is Apache-2.0. Maintained sources are in src/; studio.html is generated.
 
 ## Do not
 
 - Parse or scrape studio.html. It is 2.6 MB of implementation.
 - Invent a bundler, a framework tree, or a second architecture.
-- Do not put a name on a published equation. Credit the paper. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Do not relicense as MIT.
+- Do not put a name on a published equation. Credit the paper. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Preserve license notices.
 - Treat "familiarity" / "seen elsewhere" as a measurement. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
 
 ## Read instead
@@ -156,7 +157,7 @@ Aliases: ${Object.keys(aliases).map(k => '#' + k + ' → ' + aliases[k]).join(',
 
 ## Adding a tab
 
-Write tools/modules/<id>.js (first lines as CONTRACT.md requires). Inject, check, export, then the maintainer inlines into studio.html. Then:
+Write src/modules/<id>.js and add its include to src/studio.html before boot. Build, check, export and record validation evidence. Then:
 
     node tools/index.js
     node tools/lint.js

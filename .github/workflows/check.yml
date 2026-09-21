@@ -37,6 +37,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Generated build and scientific coverage
+        run: |
+          node tools/maintenance-check.js
+          node tools/build.js --check
+          node tools/science.js
       - name: Structural checks
         run: node tools/lint.js
       - name: Polygon bounds and numerical controls
@@ -58,6 +63,8 @@ jobs:
         run: |
           npm install --no-save playwright@1.49.1
           npx playwright install --with-deps --only-shell chromium
+      - name: Cahn-Hilliard GPU numerical benchmark
+        run: node tools/pde-science.js
       - name: Seed box, hash, shortcuts, dock
         run: node tools/ui.js
 

@@ -1,0 +1,33 @@
+{
+  "scope": "Periodic constant-mobility, noise-free float32 Cahn-Hilliard stencil; no clipping in this fixture",
+  "rows": [
+    {
+      "grid": 64,
+      "steps": 32,
+      "maxError": 6.051810239049438e-8,
+      "massDrift": 9.19681042432785e-9,
+      "mutantError": 0.000038747131336169804
+    },
+    {
+      "grid": 128,
+      "steps": 32,
+      "maxError": 6.051810239049438e-8,
+      "massDrift": 9.19681042432785e-9,
+      "mutantError": 0.000038747131336169804
+    },
+    {
+      "grid": 256,
+      "steps": 32,
+      "maxError": 6.051810239049438e-8,
+      "massDrift": 9.19681042432785e-9,
+      "mutantError": 0.000038747131336169804
+    },
+    {
+      "grid": 512,
+      "steps": 32,
+      "maxError": 6.051810239049438e-8,
+      "massDrift": 9.19681042432785e-9,
+      "mutantError": 0.000038747131336169804
+    }
+  ]
+}

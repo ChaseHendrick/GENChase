@@ -44,4 +44,4 @@ Out of scope: GitHub, a copy someone else hosted, browsers, WebGL drivers.
 
 We will answer. A report that reproduces gets a fix in `studio.html` and a note in the advisory. There is no bounty.
 
-The license is PolyForm Small Business 1.0.0. A commercial-license request is not a security report; [open an issue](https://github.com/SharpMeow/GENChase/issues) for those.
+The source is Apache-2.0. General licensing questions belong in repository issues, not private security reports.
