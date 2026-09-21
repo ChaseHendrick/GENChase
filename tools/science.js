@@ -42,7 +42,7 @@ try {
     assert(m, 'Unknown technique: ' + r.id);
     assert(statuses.includes(r.status), 'Invalid status: ' + r.id);
     assert(validFile(r.source), 'Missing source: ' + r.id);
-    assert(read(r.source).includes("id: '" + r.id + "'"), 'Source/id mismatch: ' + r.id);
+    assert([...read(r.source).matchAll(/\bid\s*:\s*['"]([^'"]+)['"]/g)].some(match => match[1] === r.id), 'Source/id mismatch: ' + r.id);
     assert(crypto.createHash('sha256').update(read(r.source)).digest('hex') === r.sourceSha256, 'Source changed; review validation record: ' + r.id);
     assert(r.reference === m.credit && r.equation === m.equation, 'Catalog reference drift: ' + r.id);
     for (const key of ['limitations', 'remaining']) assert(Array.isArray(r[key]) && r[key].length && r[key].every(hasText), 'Missing ' + key + ': ' + r.id);
