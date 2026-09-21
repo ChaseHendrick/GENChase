@@ -11,7 +11,11 @@ for(const I2 of [1.05,1.4,1.7])for(const T of [20,60,120]){
   const finite=final.every(Number.isFinite);
   const energyRelativeDrift=finite?Math.abs(energy(final)/energy(initial)-1):null;
   const momentumRelativeDrift=finite?Math.abs(angularMomentumSquared(final)/angularMomentumSquared(initial)-1):null;
-  cases.push({I2,T,finite,energyRelativeDrift,momentumRelativeDrift,
+  const ref=reference(I2,T,16000),coarse=reference(I2,T,8000);
+  const referenceChange=Math.max(...ref.map((v,i)=>Math.abs(v-coarse[i])));
+  const productionStateError=Math.max(...final.map((v,i)=>Math.abs(v-ref[i])));
+  assert(referenceChange<1e-9);assert(productionStateError<1e-6);
+  cases.push({I2,T,finite,energyRelativeDrift,momentumRelativeDrift,referenceChange,productionStateError,
     withinTolerance:finite&&energyRelativeDrift<1e-7&&momentumRelativeDrift<1e-7});
 }
 assert.equal(cases.length,9);
@@ -53,7 +57,7 @@ const historicalEnergyDrift=Math.abs((old.w1**2+1.4*old.w2**2+2*old.w3**2)/(.02*
 assert(historicalEnergyDrift>.04);
 const result={sourceSha256:moduleUnderTest.sourceSha256,cases,
   trajectories,historicalEnergyDrift,sciencePass:true,
-  criteria:'Nine fixtures conserve energy and squared angular momentum within 1e-7; three trajectories converge at fourth order with finest error below 1e-7.',
+  criteria:'Nine production fixtures conserve energy and squared angular momentum within 1e-7 and match reference states within 1e-6; three helper trajectories converge at fourth order with finest error below 1e-7.',
   limitations:['Finite parameter fixtures and durations only; no all-control, exact flip-time or print accuracy claim.',
     'RK4 is not exactly symplectic. Finite-time conservation does not establish indefinite energy preservation.']};
 if(process.argv.includes('--write'))fs.writeFileSync(path.join(root,'validation/results/rigid-body-audit.json'),JSON.stringify(result,null,2)+'\n');

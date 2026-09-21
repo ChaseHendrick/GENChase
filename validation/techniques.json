@@ -1699,7 +1699,7 @@
       {
         "test": "tools/rigid-body-audit.js",
         "scope": "RK4 torque-free rotation at I2 1.05, 1.4 and 1.7; nine conservation fixtures to time 120 and three refined trajectories to time 20.",
-        "criteria": "Energy and squared angular momentum relative drift below 1e-7; finest state error below 1e-7 and fourth-order convergence.",
+        "criteria": "Energy and squared angular momentum relative drift below 1e-7; production final-state error below 1e-6. Helper finest state error below 1e-7 and fourth-order convergence.",
         "benchmark": "Independent angular-momentum-vector evolution L prime = L cross inverse(I)L, refined reference and torque-free conserved quantities.",
         "failureControl": "Reinstating forward Euler must produce more than 4% energy drift on the default fixture.",
         "limitations": "Finite parameter/time fixtures only; no exact flip-time, all-control or print accuracy claim. RK4 is not exactly symplectic and does not establish indefinite energy preservation. Corrected trajectories change prior recipe images.",

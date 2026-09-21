@@ -7,6 +7,8 @@
       "finite": true,
       "energyRelativeDrift": 1.8984813721090177e-14,
       "momentumRelativeDrift": 1.9095836023552692e-14,
+      "referenceChange": 4.440892098500626e-15,
+      "productionStateError": 1.0341727474383333e-13,
       "withinTolerance": true
     },
     {
@@ -15,6 +17,8 @@
       "finite": true,
       "energyRelativeDrift": 2.0861090632706691e-13,
       "momentumRelativeDrift": 2.0827783941967937e-13,
+      "referenceChange": 2.6189120316821857e-14,
+      "productionStateError": 3.624050712303095e-12,
       "withinTolerance": true
     },
     {
@@ -23,6 +27,8 @@
       "finite": true,
       "energyRelativeDrift": 1.3706369372812333e-11,
       "momentumRelativeDrift": 1.3701595413806444e-11,
+      "referenceChange": 3.779337953702111e-13,
+      "productionStateError": 1.1465583777542365e-10,
       "withinTolerance": true
     },
     {
@@ -31,6 +37,8 @@
       "finite": true,
       "energyRelativeDrift": 1.379674152701682e-12,
       "momentumRelativeDrift": 1.3803402865164571e-12,
+      "referenceChange": 2.4091839634365897e-14,
+      "productionStateError": 1.67500457948222e-11,
       "withinTolerance": true
     },
     {
@@ -39,6 +47,8 @@
       "finite": true,
       "energyRelativeDrift": 2.757361006189285e-11,
       "momentumRelativeDrift": 2.75784950432012e-11,
+      "referenceChange": 1.5706880240884402e-13,
+      "productionStateError": 2.9718476290963025e-10,
       "withinTolerance": true
     },
     {
@@ -47,6 +57,8 @@
       "finite": true,
       "energyRelativeDrift": 2.2609486505231757e-9,
       "momentumRelativeDrift": 2.261272058490249e-9,
+      "referenceChange": 4.351652371781256e-11,
+      "productionStateError": 3.6110434753489074e-8,
       "withinTolerance": true
     },
     {
@@ -55,6 +67,8 @@
       "finite": true,
       "energyRelativeDrift": 1.3634648965421547e-12,
       "momentumRelativeDrift": 1.3640200080544673e-12,
+      "referenceChange": 1.3322676295501878e-14,
+      "productionStateError": 6.239342376090917e-12,
       "withinTolerance": true
     },
     {
@@ -63,6 +77,8 @@
       "finite": true,
       "energyRelativeDrift": 1.8175017046928588e-11,
       "momentumRelativeDrift": 1.818079020665664e-11,
+      "referenceChange": 3.4904371060129336e-13,
+      "productionStateError": 1.0789756588192034e-10,
       "withinTolerance": true
     },
     {
@@ -71,6 +87,8 @@
       "finite": true,
       "energyRelativeDrift": 1.1722953718873441e-9,
       "momentumRelativeDrift": 1.1726817294999137e-9,
+      "referenceChange": 9.692233127189809e-12,
+      "productionStateError": 6.448307769690853e-9,
       "withinTolerance": true
     }
   ],
@@ -135,7 +153,7 @@
   ],
   "historicalEnergyDrift": 0.05403035502320175,
   "sciencePass": true,
-  "criteria": "Nine fixtures conserve energy and squared angular momentum within 1e-7; three trajectories converge at fourth order with finest error below 1e-7.",
+  "criteria": "Nine production fixtures conserve energy and squared angular momentum within 1e-7 and match reference states within 1e-6; three helper trajectories converge at fourth order with finest error below 1e-7.",
   "limitations": [
     "Finite parameter fixtures and durations only; no all-control, exact flip-time or print accuracy claim.",
     "RK4 is not exactly symplectic. Finite-time conservation does not establish indefinite energy preservation."

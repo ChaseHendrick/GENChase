@@ -18,6 +18,9 @@ Run `node tools/rigid-body-audit.js --write` for the
 [results](results/rigid-body-audit.json). At I2 = 1.05, 1.4 and 1.7, durations 20,
 60 and 120, seed tilt 0.02, and a 160 by 200 field, relative energy and squared
 angular-momentum drift are below 2.3e-9. The acceptance limit is 1e-7.
+Each actual production final state is also compared with the independent
+angular-momentum reference, with a state-error tolerance of 1e-6. Reference
+refinement from 8,000 to 16,000 steps must change the result by less than 1e-9.
 
 A separate calculation evolves body angular momentum using `L' = L cross I^-1 L`.
 It agrees with production angular velocities to below 4.3e-9 at time 20 on the
