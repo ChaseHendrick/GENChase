@@ -1,22 +1,23 @@
 # Module contract for new GENChase blocks
 
-Read this before writing a block. It restates what the shell in `studio.html` actually does, so a block written against it drops into the file without surprises. When this file and the maintained `src/` implementation disagree, inspect the implementation and correct the contract. Search for the function or `id:`. Do not cite line numbers; they drift.
+Read this before writing a block. It restates what the engine in `src/shared/engine.js` actually does, so a block written against it drops into the file without surprises. When this file and the maintained `src/` implementation disagree, inspect the implementation and correct the contract. Search for the function or `id:`. Do not cite line numbers; they drift.
 
 ## Files and workflow
 
-- Canonical source is `src/modules/<block>.js`. Edit existing source there, not the generated HTML.
-- Shared shell and GPU helpers live in `src/shared/studio.js`; styles in `src/styles/`.
+- Canonical source is `src/modules/<block>.js`, with one family per file. Copy `_template.js` as an unregistered starting point. Edit source, not generated HTML.
+- `index.html` loads the shared engine and selected family through the generated `src/module-manifest.json`. Tab IDs need not equal filenames; never invent a second loader in a module.
+- Shared shell and GPU helpers live in `src/shared/engine.js`; styles in `src/styles/`.
 - Add new module includes to `src/studio.html` before the boot include. Preserve script order.
 - Run `node tools/build.js`, then `node tools/index.js`, `node tools/lint.js`, and `node tools/science.js`.
 - Run the browser plate and print checks below on every changed technique. Record scientific evidence and limitations in `validation/techniques.json`; see `validation/README.md`.
 - Use `tools/_*` for ignored scratch. `tools/inject.js` remains available for isolated test copies; it replaces matching blocks.
-- Saved recipes and seeds must retain their meanings. See BUILDING.md.
+- Keep seed, recipe, palette and print behavior in the shared engine. Preserve recipe version information and describe solver changes that affect results. Exact pixels may depend on hardware, solver version and simulation resolution. See BUILDING.md.
 
 ## What to read in src/ before writing
 
-Line numbers drift. Search for the name.
+For a routine edit, read the catalog, the relevant file and one suitable neighbor. Do not load all modules or generated HTML. Builds and verification may inspect all sources. Line numbers drift; search for the name.
 
-- Shell (`src/shared/studio.js`): `Studio.register`, `sanitize`, instance and host creation, `fitCanvas`, `switchTo`, sidebar field rendering, witness, export.
+- Shell (`src/shared/engine.js`): `Studio.register`, `sanitize`, instance and host creation, `fitCanvas`, `switchTo`, sidebar field rendering, witness, export.
 - `src/modules/pde.js` in full. It is the template for every GPU grid technique: `pdeCreate`, `toHalf`, `seedNoise`, `GRID`, `simFields`, `pictureFields`, `RANGE`, `pre`, the reduce pass used to measure the field, `burst` chunking, `disturb` via the shared splat shader.
 - Per-pixel resolution-independent template: the `fractal` module (`create`, `exportPNG`).
 - GPU cellular automata with state textures: the `life` block.
@@ -157,6 +158,6 @@ trajectory is far too small, and a check whose answer is forced by construction 
 
 ## Before you report done
 
-For every tab in the block: the default and every preset shoot non-flat with no new console errors, the same hash twice gives the same plate, export at 2x and at a non-screen aspect matches the screen, and exactly one canvas is visible after switching tabs away and back. `grep -n "Math.random" tools/modules/<block>.js` returns nothing. Every function in the block is called. No network, no libraries.
+For every tab in the block: the default and every preset shoot non-flat with no new console errors, the same hash twice gives the same plate, export at 2x and at a non-screen aspect matches the screen, and exactly one canvas is visible after switching tabs away and back. `rg -n "Math.random" src/modules/<block>.js` returns nothing. Every function in the block is called. No network, no libraries.
 
 Report per tab: id, order, default luminance percentiles, each preset's percentiles, and anything you could not verify.

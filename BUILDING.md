@@ -1,41 +1,91 @@
 # Maintained source and portable builds
 
 Edit `src/studio.html` (markup and ordered includes), `src/styles/*.css`,
-`src/shared/studio.js` (shell, utilities and GPU helpers), or `src/modules/*.js`
-(simulation families). Shared family helpers stay with their callers to preserve scope.
-There is no runtime loader, network dependency, framework or package installation for users.
+`src/shared/engine.js` (shared engine, utilities and GPU helpers), or one
+`src/modules/*.js` family. Shared family helpers stay with their callers. For an ordinary
+edit, use `techniques.json` to find a tab, then read its source and one relevant neighbor.
+Do not inspect the generated HTML or load every module to change one technique.
 
 ```sh
 node tools/build.js
 node tools/index.js
+npm test
 node tools/build.js --check
 node tools/lint.js
 node tools/science.js
 ```
 
-The catalog generator needs Playwright as before. Install the development harness with
-`npm install --no-save playwright@1.49.1` and `npx playwright install chromium`.
-These dependencies are for contributors, not users of the portable download. The builder and coverage checker need only Node.
+The build produces three committed artifacts from the maintained source:
 
-Run the scientific evidence registered for specific techniques with one command:
+| Output | Purpose |
+|---|---|
+| `index.html` | Thin folder entry, served over local HTTP |
+| `src/module-manifest.json` | Maps each tab ID to its family and loading metadata |
+| `dist/studio.html` | Self-contained portable copy with embedded license notices |
+
+The folder loads local engine, styles and selected family files. A family may register
+several tab IDs; the generated manifest resolves that mapping. No CDN, framework or
+runtime package is required. Never edit these generated artifacts by hand.
+
+Launch the folder with `python3 run/genchase.py`, or serve it yourself:
+
+```sh
+python3 -m http.server 8080 --bind 127.0.0.1
+# Open http://127.0.0.1:8080/index.html
+```
+
+The folder entry needs HTTP for module loading. `dist/studio.html` can be opened directly,
+subject to browser restrictions on clipboard and local storage. End users do not need Node,
+`npm install` or a build. The private `package.json` contains development shortcuts only.
+
+## Development shortcuts and scientific checks
+
+| Command | What it does |
+|---|---|
+| `npm run build` / `npm run build:check` | Generate artifacts / check freshness |
+| `npm run index` | Regenerate catalogs and count stamps |
+| `npm run lint` / `npm run science` | Structure / validation inventory consistency |
+| `npm test` | Fast build, runner and folder checks, then list all evidence and gaps |
+| `npm run test:solvers` | Run all registered numerical evidence |
+| `npm run test:print` | Run all registered numerical and print evidence |
+| `npm run test:all` | Fast checks, build, lint and inventory checks, then all registered evidence |
+
+`npm test` needs only Node and does not execute scientific benchmarks or browser tests.
+The full scientific CI remains in place. Tests using Chromium need the development harness:
+
+```sh
+npm install --no-save --package-lock=false playwright@1.49.1
+npx playwright install chromium
+```
+
+Those optional contributor tools are not runtime dependencies and are not recorded in
+`package.json`. The builder and catalog generator need only Node; `node tools/index.js`
+reads the maintained registrations without starting a browser.
+
+To target specific techniques or preview the full evidence plan:
 
 ```sh
 node tools/verify.js --print schrodinger convection
 node tools/verify.js --list --print --all
 ```
 
-The first command checks build and inventory consistency, runs each shared test once, and reports
-missing evidence. The second previews the full plan without running it. A passing run covers only
-the recorded benchmarks and does not change scientific status. See [the verification runner](tools/VERIFY.md)
-for options, setup and exit codes.
+The runner checks build and inventory consistency, deduplicates shared tests and reports
+missing evidence. Broad execution commands can finish with exit code **2** because evidence
+is missing, even if registered tests passed. The list command only shows a plan; it does not
+run benchmarks or check inventory freshness. A passing run supports only its recorded cases
+and never promotes scientific status automatically. See [tools/VERIFY.md](tools/VERIFY.md).
 
-Commit both sources and generated artifacts. CI rejects a stale build, omitted module, duplicate
-include, missing validation record or stale validation report. Catalog count stamping updates the
-source template and rebuilds, so the next assembly cannot undo metadata updates.
+Commit sources and generated artifacts together. CI rejects stale builds, omitted modules,
+duplicate includes, missing validation records and stale reports. Catalog count stamping
+updates the source template and rebuilds. Scientific changes require relevant numerical and
+print checks, not only build parity or runtime success.
 
-`studio.html` is still the downloadable, offline-capable product. Launchers keep working.
-GitHub collapses its generated diff by default; review the maintained files. Scientific changes
-must include the relevant benchmark and print checks, not only build parity.
+## Reproduction limits
+
+Keep the studio revision, seed, settings, simulation resolution and environment with a research
+result. A seeded generator preserves inputs; it does not guarantee identical pixels across
+solver corrections, browser or GPU changes, or arbitrary output dimensions. Increasing print
+resolution does not refine a grid simulation. Document intentional changes to numerical results.
 
 ## Migration evidence
 

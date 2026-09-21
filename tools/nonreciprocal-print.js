@@ -21,7 +21,7 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
       }field.read.upload(z);const before=JSON.stringify(auditPixels(field.read)),beforeSteps=steps;dt=.5;advance(1);render();status();
         return {restored:before===JSON.stringify(auditPixels(field.read)),stepsUnchanged:steps===beforeSteps,stopped};},
       aspect:s=>ASPECTS`);
-  const built = fs.readFileSync(path.join(root, 'studio.html'), 'utf8'); assert(built.includes(source), 'build the maintained module first');
+  const built = fs.readFileSync(path.join(root, 'dist/studio.html'), 'utf8'); assert(built.includes(source), 'build the maintained module first');
   fs.writeFileSync(temp, built.replace(source, instrumented));
   let browser;
   try {

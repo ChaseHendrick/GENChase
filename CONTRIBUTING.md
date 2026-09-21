@@ -1,23 +1,23 @@
 # Contributing
 
-GENChase has maintained source in `src/` and ships as one generated HTML file. A contribution changes that source or the harness that checks it. There is no package to install into, and no second architecture to propose.
+Fork the repository, edit the engine or one module, run the build and catalog update, run `npm test`, then open a pull request. Start with `src/shared/engine.js` for shared behavior or a file in `src/modules/` for a technique. [Draft contributor tasks](docs/CONTRIBUTOR-TASKS.md) offer small starting points.
 
-Read this, then `AGENTS.md` if you are writing a technique, then `tools/modules/CONTRACT.md` before you touch a simulation. The maintained `src/` implementation is authoritative; `studio.html` is generated. If the work is a prior-art search or a claim that something has not been done, read `RESEARCH.md` first and write the query down there the same day.
+Read this, then `AGENTS.md` if you are writing a technique, then `tools/modules/CONTRACT.md` before you touch a simulation. The maintained `src/` implementation is authoritative; `index.html`, `src/module-manifest.json` and `dist/studio.html` are generated. If the work is a prior-art search or a claim that something has not been done, read `RESEARCH.md` first and write the query down there the same day.
 
 ## What belongs here
 
 A real simulation that reprints from a seed: a PDE, a lattice, a growth, a tiling, a dynamical system. It shares the seed, the palette, the print pipeline and the witness. It credits the paper. It does not put a name on work that already exists. A result derived here, uniqueness-checked, with a check the plate can miss, is allowed; search the literature for the closed form and the extremum first, then write it in [`IDENTITIES.md`](IDENTITIES.md) and log the search in `RESEARCH.md` the same day.
 
-Leave it when you need a game, a network, a model-weights file, a bundler, or a folder of unrelated sketches. Edit modular source in `src/`; the generated `studio.html` remains portable. Source is Apache-2.0; images a person generates are theirs.
+Leave it when you need a game, a network, a model-weights file, a bundler, or a folder of unrelated sketches. Edit modular source in `src/`; the generated `dist/studio.html` remains portable. Source is Apache-2.0; images a person generates are theirs.
 
 A vulnerability is not a pull request. Use [SECURITY.md](SECURITY.md).
 
 ## How to work
 
 1. Fork, or a branch off `main`. One change per branch.
-2. For a new tab, write `src/modules/<id>.js` and add its include to `src/studio.html` before boot. For a shell fix, edit `src/shared/studio.js`. Run `node tools/build.js`; never edit the generated HTML. See BUILDING.md.
+2. Read the catalog and one suitable neighbor, then edit a module or the engine. For a new family, copy `src/modules/_template.js` to a named file, implement and register it, and add its include to `src/studio.html` before boot. Multiple tab IDs may share one family file. Run `node tools/build.js` and `node tools/index.js`; never hand-edit generated files. See [BUILDING.md](BUILDING.md).
 3. Add or update the validation record. New formulas begin as **unvalidated**; follow [Submitting a formula](validation/FORMULA-SUBMISSIONS.md) and the [scientific validation contract](validation/README.md).
-4. Run the harness that matches the change (below). Scientific claims need independent benchmark evidence, a deliberate failure control and reproducible measured results.
+4. Run `npm test` for fast, dependency-free checks, then the harness that matches the change (below). Scientific claims need independent benchmark evidence, a deliberate failure control and reproducible measured results.
 5. Open a pull request against `main`. CI has to be green.
 6. The maintainer squash-merges. The branch is deleted.
 
@@ -29,12 +29,12 @@ One subject line, sentence case, a period, what changed. A body only when the su
 
 ```
 The plate checks. The catalog is generated.
+```
 
 For registered scientific evidence, `node tools/verify.js --print <id> ...` checks consistency and runs
-the selected numerical and print tests, deduplicating shared tests. Use `--list` to preview the plan;
+the selected numerical and print tests, deduplicating shared tests. Use `--list <id>` or `--list --all` to preview the plan;
 missing evidence remains visible. See [tools/VERIFY.md](tools/VERIFY.md). This complements the plate
 and export checks below; it does not certify an entire technique.
-```
 
 Not `fix`, not `WIP`, not a dump of files. Not Conventional Commits prefixes (`feat:`, `chore:`); the log is read as English.
 
@@ -70,7 +70,7 @@ Checklist, as it applies:
 - [ ] a moved default: a `legacy:` declaration, and `node tools/recipe.js`
 - [ ] the print is the plate, or `exportSVG` returned nothing and the PNG is the sheet
 
-CI runs once per pull-request revision and again on main after merge. It installs only Chromium’s headless shell. It runs lint, the chrome shell, recipe compatibility, and one plate from each architecture family. It does not replace a local check of the tab you touched.
+CI runs on pull requests and main. It retains the numerical evidence, browser, recipe, plate and print checks alongside the fast development checks. `npm test` does not replace those scientific jobs or a local check of the tab you touched. Browser jobs use Chromium’s headless shell.
 
 ## Merging
 

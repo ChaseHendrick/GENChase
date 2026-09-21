@@ -1,12 +1,12 @@
 # Techniques
 
-128 pattern-forming systems, one file. Generated from `studio.html` by `node tools/index.js`; do not edit by hand.
+128 pattern-forming systems in a shared studio. Generated from maintained module registrations by `node tools/index.js`; do not edit by hand.
 
-Open `studio.html` and append the hash to restore its seed and settings. Preserve the studio version for historical reproduction; numerical precision and hardware can affect results. `#snowflake/gravner-2008` is a complete recipe: the technique, and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
+Serve the folder and open `index.html`, or open the portable `dist/studio.html`, and append the hash to restore its seed and settings. Preserve the studio version, settings and seed for historical reproduction; numerical precision, browser, hardware and output dimensions can affect results. `#snowflake/gravner-2008` names the technique and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 
 The same data in machine-readable form is [`techniques.json`](techniques.json). A short file for language models is [`llms.txt`](llms.txt).
 
-**Seen elsewhere** is a curator's call, not a measurement. Nobody measured this. It is one person's estimate of how often you have seen the picture somewhere else, made in 2026. It is the only ordering in this studio that is not computed from the file. It is never the default sort.
+**Seen elsewhere** is a curator's call, not a measurement. Nobody measured this. It is one person's estimate of how often you have seen the picture somewhere else, made in 2026. It is the only ordering in this studio that is not computed from maintained registrations. It is never the default sort.
 
 | Technique | Hash | Rule | Vectors | Live | Seen elsewhere |
 |---|---|---|---|---|---|
@@ -28,7 +28,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Liesegang Rings**<br><sub>periodic precipitation in a gel · 1896</sub> | `#liesegang/liesegang-1896` | ∂a/∂t = Dₐ∇²a − kab,  ∂b/∂t = D_b∇²b − kab,  ∂c/∂t = D_c∇²c + kab − S,  ∂d/∂t = S | raster | live | Rare |
 | **Force Chains**<br><sub>a granular packing and the network that carries it · 1979</sub> | `#grains/cundall-1979` | F_n = k_n δ − γ_n v_n  for δ = r_i + r_j − \|x_ij\| > 0,   \|F_t\| ≤ μ F_n;   m ẍ = Σ F − m g ŷ;   Δt = T/35,  T = 2π√(m_eff/k_n) | SVG | still | Common |
 | **Magnetic Skyrmions**<br><sub>chiral magnets · 1989</sub> | `#skyrmion` | dn/dt = -n x (n x H),   H = J sum_nn n_j + H_DMI + 2K n_z zhat + B zhat,   Q = (1/4pi) int n · (dx n x dy n) dA | raster | live | Rare |
-| **Neural Populations**<br><sub>exact QIF mean-field model · 2015</sub> | `#neural-mass` | dr/dt = Δ/π + 2rv; dv/dt = v² + η̄ + Jr + I(t) − π²r² | raster | still | Occasional |
+| **Neural Populations**<br><sub>exact QIF mean-field model · 2015</sub> | `#neural-mass` | dr/dt = Δ/π + 2rv; dv/dt = v² + η̄ + Jr + I(t) − π²r² | SVG | still | Occasional |
 | **Flocking**<br><sub>Toner-Tu, a polar active fluid · 1995</sub> | `#tonertu/toner-1995` | ∂ρ/∂t + ∇·(ρv) = 0;   ∂v/∂t + λ(v·∇)v = (α(ρ) − β\|v\|²)v − σ∇ρ + ν∇²v + η | raster | live | Rare |
 | **Hyperbolic Turing**<br><sub>reaction-diffusion on a {p,q} tiling · Poincare disk</sub> | `#hyperbolic/poincare-1882` | ∂u/∂t = D_u Δ_G u − uv² + F(1−u),   ∂v/∂t = D_v Δ_G v + uv² − (F+k)v,   Δ_G u_i = Σ_{j∼i}(u_j − u_i) | SVG | live | Almost unseen |
 | **Schramm-Loewner Evolution**<br><sub>the random curve of critical two-dimensional systems · 2000</sub> | `#sle/schramm-2000` | ∂g_t/∂t = 2 / (g_t(z) − √κ B_t),   γ(t) = g_t⁻¹(√κ B_t);   κ = 2 loop-erased walk, 8/3 self-avoiding walk, 4 level lines, 6 percolation, 8 Peano curve | SVG | still | Occasional |
@@ -51,7 +51,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Spanning Trees**<br><sub>uniform spanning trees by loop-erased random walk · 1996</sub> | `#ust/wilson-1996` | pick v ∉ T, walk at random from v erasing each loop as it closes, attach the surviving path;  P(T) = 1 / κ(G) for every one of the κ(G) spanning trees | SVG | still | Rare |
 | **Neural Patterns**<br><sub>compositional pattern-producing networks evaluated per pixel · 2007</sub> | `#cppn` | c(x,y) = sigma(Wn · phi( ... phi(W1 · [x, y, r, theta, z, 1]) ... )) | raster | still | Common |
 | **Rogue Wave**<br><sub>Peregrine soliton, waves from nowhere · 1983</sub> | `#rogue` | i ψ_t + ½ ψ_xx + \|ψ\|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   \|ψ\|²_max / \|ψ\|²_∞ = 9 | raster | still | Occasional |
-| **Hodgkin-Huxley Membranes**<br><sub>sodium and potassium gates · 1952</sub> | `#hodgkin-huxley/membrane-gates` | C dV/dt = I − gNa m³h(V − ENa) − gK n⁴(V − EK) − gL(V − EL); dx/dt = αx(V)(1 − x) − βx(V)x | SVG | still | Occasional |
+| **Hodgkin-Huxley Membranes**<br><sub>sodium and potassium gates · 1952</sub> | `#hodgkin-huxley/membrane-gates` | C dV/dt = I − gNa m³h(V − ENa) − gK n⁴(V − EK) − gL(V − EL); dx/dt = αx(V)(1 − x) − βx(V)x | raster | still | Occasional |
 | **Aharonov–Bohm**<br><sub>phase from a field the particle never enters · 1959</sub> | `#aharonov` | Δφ = (e/ℏ) ∮ A·dl = 2π Φ/Φ0,   I(x) = \|ψ_L + e^{iΔφ} ψ_R\|² | raster | still | Occasional |
 | **Double pendulum flip time**<br><sub>first flip of a chaotic double pendulum · 1992</sub> | `#pendulum/pendulum-1992` | L = (m l² / 6)(ω₂² + 4ω₁² + 3ω₁ω₂ cos(θ₁ − θ₂)) + (m g l / 2)(3 cos θ₁ + cos θ₂);   plate = first t with \|θ₁\| > π or \|θ₂\| > π | raster | still | Ubiquitous |
 | **Anderson**<br><sub>waves that refuse to diffuse · 1958</sub> | `#anderson` | H = t Σ_<ij> \|i><j\| + Σ_i ε_i \|i><i\|,   ε ~ U[-W/2,W/2],   IPR = Σ \|ψ\|⁴ | raster | still | Occasional |
@@ -93,7 +93,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Exceptional Point**<br><sub>two eigenvectors become one · 1998</sub> | `#exceptional` | H = [[iγ, κ],[κ, −iγ]],   λ = ±√(κ²−γ²),   EP at γ = κ | raster | still | Almost unseen |
 | **Meissner**<br><sub>a field a perfect conductor would have frozen, expelled · 1933</sub> | `#meissner` | ∇²B = B/λ²,   B(r) = B0 I0(r/λ) / I0(R/λ)   (cylinder) | raster | still | Occasional |
 | **Tennis Racket**<br><sub>the intermediate axis that will not spin · 1834 / 1991</sub> | `#tennis` | I1 ω1' = (I2−I3) ω2 ω3  (cyc.),   I1 < I2 < I3,   ω2 flips | raster | still | Occasional |
-| **Flow Field**<br><sub>collision-avoiding strokes in a noise field · 1985</sub> | `#flow` | theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta) | raster | still | Ubiquitous |
+| **Flow Field**<br><sub>collision-avoiding strokes in a noise field · 1985</sub> | `#flow` | theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta) | SVG | still | Ubiquitous |
 | **Chemotaxis**<br><sub>Keller-Segel aggregation · 1970</sub> | `#chemotaxis/keller-1970` | ∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²) | raster | live | Common |
 | **Smectic focal conics**<br><sub>Dupin cyclides · Friedel 1910</sub> | `#smectic/friedel-1910` | layers: Dupin cyclides of a confocal ellipse–hyperbola pair | SVG | still | Rare |
 | **Reaction-Diffusion**<br><sub>Gray-Scott activator/inhibitor chemistry · 1983</sub> | `#reaction` | du/dt = Du·lap u - u·v^2 + F(1-u);   dv/dt = Dv·lap v + u·v^2 - (F+k)v | raster | live | Common |

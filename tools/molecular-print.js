@@ -16,7 +16,7 @@ const { chromium } = require('playwright');
           return { before, after: JSON.stringify(this.audit()), message: sim.halted };
         },
         aspect()`);
-  const built = fs.readFileSync(path.join(root, 'studio.html'), 'utf8'); assert(built.includes(source));
+  const built = fs.readFileSync(path.join(root, 'dist/studio.html'), 'utf8'); assert(built.includes(source));
   fs.writeFileSync(temp, built.replace(source, instrumented));
   let browser;
   try {

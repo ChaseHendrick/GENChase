@@ -1,0 +1,15 @@
+{
+  "name": "genchase-development",
+  "private": true,
+  "scripts": {
+    "build": "node tools/build.js",
+    "build:check": "node tools/build.js --check",
+    "index": "node tools/index.js",
+    "lint": "node tools/lint.js",
+    "science": "node tools/science.js",
+    "test": "node tools/maintenance-check.js && node tools/verify-check.js && node tools/folder-check.js && node tools/verify.js --list --all",
+    "test:solvers": "node tools/verify.js --all",
+    "test:print": "node tools/verify.js --print --all",
+    "test:all": "npm test && npm run build:check && npm run lint && npm run science && node tools/verify.js --print --all"
+  }
+}

@@ -10,8 +10,8 @@ const fs = require('fs');
 const path = require('path');
 const count = require('./count.js');
 
-const file = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..', 'studio.html');
-const root = path.dirname(file);
+const file = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..', 'dist', 'studio.html');
+const root = path.resolve(__dirname, '..');
 const src = fs.readFileSync(file, 'utf8');
 
 const fails = [];
@@ -292,13 +292,14 @@ if (researchMd) {
 /* ---- 8. referenced files exist ---- */
 for (const [label, text] of [['README.md', readme], ['studio.html', src]]) {
   if (!text) continue;
+  const linkRoot = label === 'studio.html' ? path.dirname(file) : root;
   for (const m of text.matchAll(/(?:src|href)="(?!https?:|data:|#|mailto:)([^"]+)"/g)) {
     const rel = m[1].split('?')[0];
     if (!rel || rel.startsWith('//')) continue;
-    if (!fs.existsSync(path.join(root, rel))) fail(label + ' references ' + rel + ', which is not in the repository');
+    if (!fs.existsSync(path.resolve(linkRoot, rel))) fail(label + ' references ' + rel + ', which is not in the repository');
   }
   for (const m of text.matchAll(/!\[[^\]]*\]\((?!https?:)([^)\s]+)\)/g)) {
-    if (!fs.existsSync(path.join(root, m[1]))) fail(label + ' links ' + m[1] + ', which is not in the repository');
+    if (!fs.existsSync(path.resolve(linkRoot, m[1]))) fail(label + ' links ' + m[1] + ', which is not in the repository');
   }
 }
 
@@ -306,7 +307,7 @@ for (const [label, text] of [['README.md', readme], ['studio.html', src]]) {
 for (const name of ['MODULE_SPEC.md']) {
   const hits = [...src.matchAll(new RegExp(name, 'g'))];
   for (const h of hits) {
-    if (!fs.existsSync(path.join(root, name))) fail('studio.html line ' + lineAt(h.index) + ' points at ' + name + ', which does not exist');
+    if (!fs.existsSync(path.resolve(path.dirname(file), name))) fail('studio.html line ' + lineAt(h.index) + ' points at ' + name + ', which does not exist');
   }
 }
 

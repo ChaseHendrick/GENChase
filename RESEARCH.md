@@ -1357,3 +1357,17 @@ Exact implementation-review searches: `site.math.brown.edu Reuleaux triangle con
 The PDE family review corrected the phase-field-crystal stencil mismatch, parameter-dependent timestep ceilings, hidden value clipping, Ohta reference-mean handling and batch rollback. Independent shader-versus-Float64 checks cover PFC, Swift–Hohenberg, Kuramoto–Sivashinsky, Ohta–Kawasaki, Active Model B+ and Cahn–Hilliard fixtures. The resulting status is partial: finite-grid agreement and guard behavior are recorded, while fixed-physical-domain convergence, phase selection, long-time behavior, stochastic forcing and global nonlinear stability remain open. Full details and source comparisons are in `validation/PDE-FAMILY.md`.
 
 The Hodgkin–Huxley and Montbrió–Pazó–Roxin modules implement established equations, with independent analytic/reference ODE checks and actual print-state preservation tests. They make no novelty, clinical, finite-neuron or experimental claim. Their bounded assumptions and remaining parameter-domain gaps are recorded in `validation/HODGKIN-HUXLEY.md` and `validation/NEURAL-MASS.md`.
+
+## 2026-09-21: contributor proposal references
+
+Reference verification only, not an originality search or new simulation. Queries included
+`Hopf 1950 The partial differential equation u_t u u_x mu u_xx Wiley DOI`,
+`site.arxiv.org 1910.09175 Kovacs Rogolino heat transport`, and
+`Fisher 1937 wave of advance advantageous genes doi 10.1111`.
+Primary records confirm [Hopf (1950)](https://doi.org/10.1002/cpa.3160030302),
+[Kovacs and Rogolino](https://arxiv.org/abs/1910.09175), and
+[Fisher (1937)](https://doi.org/10.1111/j.1469-1809.1937.tb02153.x).
+Catalog inspection found existing Schnakenberg kinetics and a Hopf-Cole cosmic-web model.
+The two draft contributor proposals therefore cover a scalar Fisher-KPP front and
+finite-relaxation heat transport. They are proposed implementations of published science,
+not discoveries. See `docs/CONTRIBUTOR-TASKS.md`.

@@ -14,7 +14,7 @@ const { chromium } = require('playwright');
   let result;
   try {
     const page = await browser.newPage();
-    await page.goto('file://' + path.join(root, 'studio.html') + '#three-vortex-bound/schrodinger-science');
+    await page.goto('file://' + path.join(root, 'dist/studio.html') + '#three-vortex-bound/schrodinger-science');
     await page.evaluate(expose);
     result = await page.evaluate(() => {
       const G = Studio.gl, gl = G.createGL(document.createElement('canvas'));

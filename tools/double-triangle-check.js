@@ -2,7 +2,7 @@
 // Exercise the actual studio module, independently check its velocities and full trajectories,
 // and deliberately damage the geometry/kernel to prove that its checks can miss.
 const assert = require('node:assert/strict'), fs = require('node:fs'), vm = require('node:vm');
-const src = fs.readFileSync(require('node:path').join(__dirname, '..', 'studio.html'), 'utf8');
+const src = fs.readFileSync(require('node:path').join(__dirname, '..', 'dist', 'studio.html'), 'utf8');
 const marker = '/* modules/double-triangle-bound.js */';
 let body = src.slice(src.indexOf(marker));
 assert(src.includes(marker), 'double-triangle module is in studio.html');

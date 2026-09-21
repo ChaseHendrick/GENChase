@@ -1558,7 +1558,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         including commercially, under the terms in LICENSE. <b>Images you generate are yours.</b>
         The additional output grant is in OUTPUT-RIGHTS.md. Credit the original researchers when
         publishing scientific methods. A simulation's source citation is not a certification of accuracy.</p>
-      <p>Scientific validation coverage and limitations are recorded in <a href="VALIDATION.md">VALIDATION.md</a>.
+      <p>Scientific validation coverage and limitations are recorded in <a href="../VALIDATION.md">VALIDATION.md</a>.
         Print pixel dimensions can exceed the underlying simulation grid. Export sharpness does not establish numerical accuracy.</p>
 
       <h3>The techniques</h3>
@@ -1648,13 +1648,15 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
       <p class="colo" id="catalog-count">The live catalog is 128 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
       <h3>How it is built</h3>
-      <p>Modular source is assembled into one portable HTML file. No installation or build step is needed to use the download. No frameworks, server, network calls, analytics or
-        no tracking of any kind. It runs offline, from a thumb drive, and will still run when every CDN-dependent tool from this
-        era has rotted. Simulations run on the GPU through WebGL2 where the technique calls for it and on the CPU where that is
-        faster, and nothing leaves your machine.</p>
+      <p>The folder studio uses one shared engine and loads technique files as you open their tabs.
+        Start a launcher in run/ to serve the folder on your own computer. No package installation,
+        framework, external CDN, analytics or tracking is required. The optional dist/studio.html
+        bundles the same studio into one portable file. Simulations use JavaScript and WebGL2.
+        Preserve the studio version with a recipe: changes to solvers, numerical precision, hardware
+        and output resolution can change a plate.</p>
 
       <p class="colo">Built by Chaos with Claude. Each technique credits the researchers who worked it out; the
-        implementations are original.</p>
+        validation coverage and remaining limitations are recorded in VALIDATION.md.</p>
     </div>
   </div>
 </div>
@@ -1714,7 +1716,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-/* shared/studio.js */
+/* shared/engine.js */
 /* GENChase — shared shell. Modules call Studio.register({...}); see tools/modules/CONTRACT.md. */
 (function () {
   'use strict';
@@ -2146,7 +2148,10 @@ void main(){
      Shell
   ================================================================ */
   const modules = [];          // registration order = tab order
-  const byId = {};
+  const byId = Object.create(null);
+  const moduleLoads = new Map();
+  const moduleAttempts = new Map();
+  let navigation = 0, loadingId = null;
   // How often you see the picture elsewhere. A curator's call, not a measurement. Five named
   // buckets, never a number. register() copies the value onto the module so the catalog can
   // read it; a missing id fails tools/index.js and tools/lint.js rather than defaulting to the middle.
@@ -2293,7 +2298,7 @@ void main(){
     'quincunx-lock': 'unseen',
     'double-triangle-bound': 'rare',
   };
-  const S = window.Studio = { util, gl: glh, PALETTES, generatePalette, register, boot, modules: byId, exportJob: null, familiarity: FAMILIARITY };
+  const S = window.Studio = { util, gl: glh, PALETTES, generatePalette, register, boot, loadModule, modules: byId, exportJob: null, familiarity: FAMILIARITY, ready: null };
 
   function register(mod) {
     if (!mod || !mod.id) throw new Error('Studio.register: module needs an id');
@@ -2303,7 +2308,47 @@ void main(){
     mod.palette = mod.palette !== false;
     mod.order = mod.order == null ? 100 : mod.order;
     if (!mod.familiarity) mod.familiarity = FAMILIARITY[mod.id];
-    modules.push(mod); byId[mod.id] = mod;
+    const previous = byId[mod.id];
+    if (previous) {
+      mod.source = previous.source;
+      modules[modules.indexOf(previous)] = mod;
+    } else modules.push(mod);
+    byId[mod.id] = mod;
+  }
+
+  // Metadata makes all tabs searchable before any simulation is downloaded.
+  // A family file may register several tabs and is imported only once.
+  async function loadModule(id) {
+    const mod = byId[id];
+    if (!mod) throw new Error('Unknown technique: ' + id);
+    if (typeof mod.create === 'function' && !moduleLoads.has(mod.source)) return mod;
+    const source = mod.source;
+    if (!/^src\/modules\/[a-z0-9-]+\.js$/.test(source || '')) throw new Error('Invalid technique source');
+    if (!moduleLoads.has(source)) {
+      const originals = modules.filter(m => m.source === source);
+      const attempt = moduleAttempts.get(source) || 0;
+      moduleAttempts.set(source, attempt + 1);
+      const url = new URL('./' + source, document.baseURI);
+      if (attempt) url.searchParams.set('retry', String(attempt));
+      const pending = import(url.href).then(() => {
+        for (const entry of modules.filter(m => m.source === source)) {
+          if (typeof entry.create !== 'function') throw new Error('Technique did not register: ' + entry.id);
+        }
+      }).catch(err => {
+        // A script can register siblings before failing. Restore metadata so
+        // retry never mistakes that partial evaluation for a complete family.
+        for (const original of originals) {
+          const at = modules.indexOf(byId[original.id]);
+          modules[at] = original;
+          byId[original.id] = original;
+        }
+        moduleLoads.delete(source);
+        throw err;
+      });
+      moduleLoads.set(source, pending);
+    }
+    await moduleLoads.get(source);
+    return byId[id];
   }
 
   /* ---- hold the simulation rate steady whatever the monitor does ----
@@ -2535,6 +2580,7 @@ void main(){
     return out;
   }
   function writeHash() {
+    if (loadingId) return;
     const e = instances[currentId]; if (!e) return;
     const next = encodeRecipe(e);
     if (location.hash === next) return;
@@ -2567,7 +2613,9 @@ void main(){
       undoLock = false;
       toast('Undid ' + snap.label);
     };
-    if (snap.id !== currentId) { switchTo(snap.id, { skipHash: false }); setTimeout(go, 30); }
+    if (snap.id !== currentId) {
+      switchTo(snap.id).then(ok => { if (ok && currentId === snap.id) go(); else undoLock = false; });
+    }
     else go();
   }
 
@@ -2766,12 +2814,11 @@ void main(){
   /* ---- ambient mode: walk the tabs on a timer, a fresh seed each time ---- */
   let ambientOn = false, ambientTimer = 0;
   const AMBIENT_MS = 30000;
-  function ambientStep() {
+  async function ambientStep() {
     const ids = [...document.querySelectorAll('button.tab[data-id]')].map(b => b.dataset.id);
     if (!ids.length) return;
     const next = ids[(ids.indexOf(currentId) + 1) % ids.length];
-    switchTo(next);
-    $('btn-generate').click();   // a fresh seed through the same path as the Generate button
+    if (await switchTo(next)) $('btn-generate').click();
   }
   function setAmbient(on) {
     ambientOn = !!on;
@@ -2829,13 +2876,14 @@ void main(){
     hashSilent = false;
     applyHash({ skipSnap: true });
   }
-  function applyHash(opts) {
+  async function applyHash(opts) {
     const rec = parseHash();
     if (!rec || !rec.id || !byId[rec.id]) return false;
     const { id } = rec;
     const rest = own(rec);
     delete rest.id;
-    if (currentId !== id) switchTo(id);
+    if (!await switchTo(id, { recipe: rest, deferRender: true })) return false;
+    if (currentId !== id) return false;
     const e = instances[id]; if (!e) return false;
     // A hash that names a seed is a complete recipe, so it is built on the module's defaults rather
     // than on whatever the viewer happened to have on screen. Merging it into the current state
@@ -3429,15 +3477,33 @@ void main(){
     }
   }
 
-  function switchTo(id) {
+  async function switchTo(id, opts = {}) {
     if (!byId[id]) id = modules[0].id;
-    if (currentId === id) return;
+    const ticket = ++navigation;
+    clearTimeout(hashTimer);
+    loadingId = id;
+    $('stage').setAttribute('aria-busy', 'true');
+    try {
+      if (typeof byId[id].create !== 'function') await loadModule(id);
+    } catch (err) {
+      if (ticket !== navigation) return false;
+      loadingId = null;
+      $('stage').removeAttribute('aria-busy');
+      showFault(id, 'Could not load ' + byId[id].name + '. Check that the local server is running, then retry.', { retry: true, title: 'Technique could not load' });
+      return false;
+    }
+    if (ticket !== navigation) return false;
+    loadingId = null;
+    $('stage').removeAttribute('aria-busy');
+    if (faultFor) clearFault();
+    if (currentId === id) return true;
     const prev = instances[currentId];
     if (recorder) stopRecord();
     if (prev) { prev.canvas.hidden = true; try { prev.inst.pause && prev.inst.pause(); } catch (e) { /* ignore */ } }
     currentId = id;
     if (faultFor && faultFor !== id) clearFault();
-    let e = ensureEntry(byId[id]);
+    const initial = opts.recipe && opts.recipe.seed != null ? sanitize(byId[id], opts.recipe) : undefined;
+    let e = ensureEntry(byId[id], initial);
     if (e.contextLost) {
       rebuildEntry(id);
       e = instances[id] || e;
@@ -3456,8 +3522,10 @@ void main(){
     buildTopControls(e);
     renderStatus();
     const changed = fitCanvas(e);
-    if (!e.started) { e.started = true; regenerate({ skipHistory: true, skipSnap: true }); }
-    else {
+    if (!e.started) {
+      e.started = true;
+      if (!opts.deferRender) regenerate({ skipHistory: true, skipSnap: true });
+    } else if (!opts.deferRender) {
       if (changed && e.inst.resize) { try { e.inst.resize(); } catch (err) { showError(err); } }
       if (!e.paused) { try { e.inst.resume && e.inst.resume(); } catch (err) { showError(err); } }
     }
@@ -3470,6 +3538,7 @@ void main(){
     resetWitness();
     markPokeable();
     scheduleHash();
+    return true;
   }
 
   /* ---- sidebar ---- */
@@ -4411,7 +4480,27 @@ void main(){
   }
 
   /* ---- boot ---- */
-  function boot() {
+  function boot(options) {
+    if (S.ready) return S.ready;
+    S.ready = startStudio(options || {}).catch(err => {
+      $('side').replaceChildren(h('p', { role: 'alert', text: 'The studio could not load. Start the local launcher and try again.' }),
+        h('button', { type: 'button', text: 'Retry', onclick: () => location.reload() }));
+      console.error(err);
+      return false;
+    });
+    return S.ready;
+  }
+  async function startStudio(options) {
+    if (options.manifest) {
+      const response = await fetch(options.manifest);
+      if (!response.ok) throw new Error('Could not load the technique catalog');
+      const manifest = await response.json();
+      if (!Array.isArray(manifest.techniques) || !manifest.techniques.length) throw new Error('Empty technique catalog');
+      for (const mod of manifest.techniques) {
+        if (!/^[a-z0-9-]+$/.test(mod.id || '') || byId[mod.id] || !/^src\/modules\/[a-z0-9-]+\.js$/.test(mod.source || '')) throw new Error('Invalid technique catalog');
+        register(mod);
+      }
+    }
     modules.sort((a, b) => a.order - b.order || 0);
     if (!modules.length) { $('side').textContent = 'No modules loaded.'; return; }
     // tabs
@@ -4577,6 +4666,7 @@ void main(){
     $('modal-about').addEventListener('click', ev => { if (ev.target === $('modal-about')) closeModal('modal-about'); });
     $('btn-settings').addEventListener('click', () => {
       const e = instances[currentId];
+      if (!e) return;
       const payload = Object.assign({ v: RECIPE_V, id: e.mod.id }, e.state);
       $('settings-text').value = JSON.stringify(payload, null, 2);
       $('settings-err').hidden = true;
@@ -4585,13 +4675,13 @@ void main(){
     $('settings-close').addEventListener('click', () => { closeModal('modal-settings'); });
     $('modal-settings').addEventListener('click', ev => { if (ev.target === $('modal-settings')) closeModal('modal-settings'); });
     $('settings-copy').addEventListener('click', async () => { try { await navigator.clipboard.writeText($('settings-text').value); toast('Settings copied'); } catch (err) { $('settings-text').select(); toast('Select the text and copy it manually'); } });
-    $('settings-apply').addEventListener('click', () => {
+    $('settings-apply').addEventListener('click', async () => {
       const e = instances[currentId];
       try {
         const obj = own(JSON.parse($('settings-text').value));
         if (!Object.keys(obj).length) throw new Error('Not an object');
         delete obj.v;
-        if (obj.id && byId[obj.id] && obj.id !== currentId) switchTo(obj.id);
+        if (obj.id && byId[obj.id] && !await switchTo(obj.id)) return;
         const e2 = instances[currentId];
         e2.state = sanitize(e2.mod, Object.assign(own(e2.state), obj));
         e2.host.getState = () => e2.state;
@@ -4669,9 +4759,13 @@ void main(){
       window.addEventListener('resize', markBar);
       setTimeout(markBar, 0);
     }
-    $('fault-retry').addEventListener('click', () => {
+    $('fault-retry').addEventListener('click', async () => {
       const id = faultFor || currentId;
       clearFault();
+      if (byId[id] && typeof byId[id].create !== 'function') {
+        if (parseHash()?.id === id) await applyHash(); else await switchTo(id);
+        return;
+      }
       if (!rebuildEntry(id)) toast('That technique still will not start on this device');
     });
     $('fault-other').addEventListener('click', () => {
@@ -4683,19 +4777,19 @@ void main(){
 
     // The tablist's keyboard contract: arrows move, Home and End jump. Declaring role="tablist"
     // without this tells a screen reader the arrows work when they do not.
-    $('tabs').addEventListener('keydown', ev => {
+    $('tabs').addEventListener('keydown', async ev => {
       const keys = ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Home', 'End'];
       if (keys.indexOf(ev.key) < 0) return;
       const list = [...document.querySelectorAll('.tab[data-id]')];
       if (!list.length) return;
-      const at = Math.max(0, list.findIndex(b => b.dataset.id === currentId));
+      const at = Math.max(0, list.findIndex(b => b.dataset.id === (loadingId || currentId)));
       let to = at;
       if (ev.key === 'Home') to = 0;
       else if (ev.key === 'End') to = list.length - 1;
       else if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown') to = (at + 1) % list.length;
       else to = (at - 1 + list.length) % list.length;
       ev.preventDefault();
-      switchTo(list[to].dataset.id);
+      if (!await switchTo(list[to].dataset.id)) return;
       const now = document.querySelector('.tab[aria-selected="true"]');
       if (now) now.focus();
     });
@@ -4827,11 +4921,10 @@ void main(){
     }
     if (rec && rec.unknown) {
       toast('No technique called "' + rec.id + '" in this build');
-      switchTo(modules[0].id);
-    } else if (rec) applyHash();
+      await switchTo(modules[0].id);
+    } else if (rec) await applyHash();
     else {
-      switchTo(modules[Math.floor(Math.random() * modules.length)].id);
-      surprise();
+      if (await switchTo(modules[Math.floor(Math.random() * modules.length)].id)) surprise();
     }
     window.addEventListener('pageshow', ev => {
       if (!ev.persisted) return;

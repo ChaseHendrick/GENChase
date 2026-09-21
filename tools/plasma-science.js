@@ -2,7 +2,7 @@
 // Node only: node tools/plasma-science.js > validation/results/plasma-science.json
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict'), crypto = require('node:crypto'), { performance } = require('node:perf_hooks');
 const root = path.resolve(__dirname, '..'), source = fs.readFileSync(path.join(root, 'src/modules/plasma.js'), 'utf8');
-const shared = fs.readFileSync(path.join(root, 'src/shared/studio.js'), 'utf8');
+const shared = fs.readFileSync(path.join(root, 'src/shared/engine.js'), 'utf8');
 const rngSource = shared.slice(shared.indexOf('  function makeRng('), shared.indexOf('  function makeNoise('));
 const makeRng = new Function('const TAU=2*Math.PI;' + rngSource + 'return makeRng;')();
 function load(text) {

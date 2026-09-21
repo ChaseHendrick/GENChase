@@ -63,7 +63,7 @@ async function main() {
   const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   try {
     const page = await browser.newPage();
-    await page.goto('file://' + path.join(ROOT, 'studio.html') + '#three-vortex-bound/maxwell-offline-search');
+    await page.goto('file://' + path.join(ROOT, 'dist/studio.html') + '#three-vortex-bound/maxwell-offline-search');
     await page.evaluate(instrumented);
     const result = await page.evaluate(({ settings: s, criteria, designs, replay, options }) => {
       const G = Studio.gl, shaders = window.maxwellSearchShaders, gl = G.createGL(document.createElement('canvas'));

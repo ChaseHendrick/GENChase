@@ -1,5 +1,5 @@
 // Shared catalog-count helpers for tools/index.js (writer) and tools/lint.js (cop).
-// The number of techniques is whatever studio.html registers. After twelve, the
+// The number of techniques comes from maintained module registrations. After twelve, the
 // docs and the studio write it as digits (13, 117, 118). Spelled catalog counts
 // are a bug. index.js rewrites the claims; lint.js fails them.
 
@@ -99,7 +99,7 @@ function stampRepo(fs, path, root, n, mods) {
     return next;
   });
 
-  const desc = num + ' seeded scientific simulations in one HTML file. Explore, derive, and test mathematical formulas against classical sources.\n';
+  const desc = num + ' seeded scientific simulations in a modular studio with a portable HTML build. Explore, derive, and test mathematical formulas against classical sources.\n';
   fs.writeFileSync(path.join(root, '.github', 'description.txt'), desc);
 
   return { n, spelled: num, low: num };

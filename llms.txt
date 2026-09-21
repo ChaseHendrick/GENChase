@@ -1,27 +1,27 @@
 # GENChase
 
-One HTML file of seeded scientific simulations. Each tab reprints from a hash. Generated images belong to the human. The source is Apache-2.0. Maintained sources are in src/; studio.html is generated.
+A folder-based studio of seeded scientific simulations. The shared engine loads a technique source when needed. index.html is the default entry point; dist/studio.html is a portable all-inline build. Both are generated from maintained sources in src/. Recipes preserve settings and seed, but historical reproduction also depends on the studio version, precision, browser, hardware and output dimensions. Generated images belong to the human. The source is Apache-2.0.
 
 ## Do not
 
-- Parse the generated studio.html to discover metadata; use the catalog. Edit maintained code in src/.
+- Parse the generated dist/studio.html to discover metadata; use the catalog. Edit maintained code in src/.
 - Invent a bundler, a framework tree, or a second architecture.
 - Do not put a name on a published equation. Credit the paper. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Preserve license notices.
 - Treat "familiarity" / "seen elsewhere" as a measurement. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
 
 ## Read instead
 
-- techniques.json — every tab: id, name, subtitle, equation, credit, blurb, hash, presets, vectors, liveCapable, runningDefault, familiarity, aliases.
-- TECHNIQUES.md — the same catalog as a table.
-- AGENTS.md — product rules.
-- tools/modules/CONTRACT.md — how to add a tab.
-- README.md — usage, scope and evidence limits.
-- BUILDING.md — maintained source and reproducible assembly.
-- VALIDATION.md — scientific coverage and outstanding gaps.
-- IDENTITIES.md — derived formulas and bounds, with classical sources and originality limits. Use descriptive titles and credit the original mathematics.
-- identities/ORIGINALITY-FOLLOWUP.md — the first formula’s equivalence to Gröbli (1877); minimum priority remains unconfirmed.
-- identities/NOVELTY-AUDIT.md — evidence and limits for all five candidates.
-- RESEARCH.md — what was searched, what was not. Read before a prior-art search. Do not re-run a search marked skip.
+- techniques.json: every tab: id, name, subtitle, equation, credit, blurb, hash, presets, vectors, liveCapable, runningDefault, familiarity, aliases.
+- TECHNIQUES.md: the same catalog as a table.
+- AGENTS.md: product rules.
+- tools/modules/CONTRACT.md: how to add a tab.
+- README.md: usage, scope and evidence limits.
+- BUILDING.md: maintained source and reproducible assembly.
+- VALIDATION.md: scientific coverage and outstanding gaps.
+- IDENTITIES.md: derived formulas and bounds, with classical sources and originality limits. Use descriptive titles and credit the original mathematics.
+- identities/ORIGINALITY-FOLLOWUP.md: the first formula’s equivalence to Gröbli (1877); minimum priority remains unconfirmed.
+- identities/NOVELTY-AUDIT.md: evidence and limits for all five candidates.
+- RESEARCH.md: what was searched, what was not. Read before a prior-art search. Do not re-run a search marked skip.
 
 ## Recipe hash
 

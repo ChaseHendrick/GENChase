@@ -5,7 +5,7 @@ const { chromium } = require('playwright');
 (async () => {
   const id = process.argv[2], key = process.argv[3], wait = +(process.argv[4] || 12000), out = process.argv[5] || (id + '-' + key);
   if (!id || !key) { console.error('usage: node tools/preset.js <id> <presetKey> [waitMs] [outName]'); process.exit(1); }
-  const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'studio.html');
+  const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
   const dir = path.join(__dirname, 'shots'); fs.mkdirSync(dir, { recursive: true });
   const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const p = await b.newPage({ viewport: { width: 1400, height: 900 } });

@@ -43,7 +43,7 @@ async function main() {
   const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   try {
     const page = await browser.newPage();
-    await page.goto('file://' + path.join(ROOT, 'studio.html') + '#three-vortex-bound/maxwell-boundary');
+    await page.goto('file://' + path.join(ROOT, 'dist/studio.html') + '#three-vortex-bound/maxwell-boundary');
     await page.evaluate(instrumented);
     const result = await page.evaluate(({ s, plan, designs }) => {
       const G = Studio.gl, shaders = window.maxwellBoundaryShaders;

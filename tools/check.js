@@ -111,7 +111,7 @@ async function settle(p, maxMs, seed) {
 (async () => {
   const id = process.argv[2], wait = +(process.argv[3] || 8000);
   if (!id) { console.error('usage: node tools/check.js <id> [waitMs]'); process.exit(1); }
-  const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'studio.html');
+  const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
   const url = 'file://' + studio;
   const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const fails = [];

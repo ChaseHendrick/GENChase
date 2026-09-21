@@ -1,27 +1,4 @@
 {
-  "project": "GENChase",
-  "repository": "https://github.com/SharpMeow/GENChase",
-  "file": "index.html",
-  "portableFile": "dist/studio.html",
-  "count": 128,
-  "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
-  "aliases": {},
-  "familiarityBuckets": [
-    "ubiquitous",
-    "common",
-    "occasional",
-    "rare",
-    "unseen"
-  ],
-  "familiarityNote": "Nobody measured this. It is one person's estimate of how often you have seen the picture somewhere else, made in 2026. It is the only ordering in this studio that is not computed from maintained registrations.",
-  "forAI": {
-    "read": "techniques.json",
-    "skip": "dist/studio.html",
-    "contract": "tools/modules/CONTRACT.md",
-    "agents": "AGENTS.md",
-    "research": "RESEARCH.md",
-    "addATab": "Write src/modules/<id>.js, add its template include, then node tools/build.js, node tools/check.js <id>, node tools/index.js, node tools/lint.js and node tools/science.js. All noise through U.makeRng(seed). Credit the paper. Do not put a name on work that already exists. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Read RESEARCH.md before a prior-art search."
-  },
   "techniques": [
     {
       "id": "life",
@@ -49,9 +26,7 @@
       "familiarity": "ubiquitous",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "steps",
-      "hash": "#life",
-      "aliases": []
+      "headline": "steps"
     },
     {
       "id": "physarum3d",
@@ -76,9 +51,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "agents",
-      "hash": "#physarum3d/physarum3d-0417",
-      "aliases": []
+      "headline": "agents"
     },
     {
       "id": "cortex",
@@ -104,9 +77,7 @@
       "familiarity": "rare",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "h",
-      "hash": "#cortex/kluver-1928",
-      "aliases": []
+      "headline": "h"
     },
     {
       "id": "nonreciprocal",
@@ -131,9 +102,7 @@
       "familiarity": "rare",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "",
-      "hash": "#nonreciprocal/active-mixture-2025",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "bec",
@@ -159,9 +128,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "omega",
-      "hash": "#bec/abrikosov-1957",
-      "aliases": []
+      "headline": "omega"
     },
     {
       "id": "physarum",
@@ -188,9 +155,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "agents",
-      "hash": "#physarum",
-      "aliases": []
+      "headline": "agents"
     },
     {
       "id": "phyllotaxis",
@@ -213,9 +178,7 @@
       "familiarity": "common",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "lam",
-      "hash": "#phyllotaxis/douady-1996",
-      "aliases": []
+      "headline": "lam"
     },
     {
       "id": "hl",
@@ -238,9 +201,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "alpha",
-      "hash": "#hl/hastings-1998",
-      "aliases": []
+      "headline": "alpha"
     },
     {
       "id": "lichtenberg",
@@ -263,9 +224,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "eta",
-      "hash": "#lichtenberg/npw-1984",
-      "aliases": []
+      "headline": "eta"
     },
     {
       "id": "snowflake",
@@ -289,9 +248,7 @@
       "familiarity": "common",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "rho",
-      "hash": "#snowflake/gravner-2008",
-      "aliases": []
+      "headline": "rho"
     },
     {
       "id": "growth",
@@ -318,9 +275,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "maxNodes",
-      "hash": "#growth",
-      "aliases": []
+      "headline": "maxNodes"
     },
     {
       "id": "cyclic",
@@ -345,9 +300,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "D",
-      "hash": "#cyclic/rps-2007",
-      "aliases": []
+      "headline": "D"
     },
     {
       "id": "landscape",
@@ -373,9 +326,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "D",
-      "hash": "#landscape/howard-1994",
-      "aliases": []
+      "headline": "D"
     },
     {
       "id": "kpz",
@@ -401,9 +352,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "cols",
-      "hash": "#kpz/kardar-1986",
-      "aliases": []
+      "headline": "cols"
     },
     {
       "id": "potts",
@@ -429,9 +378,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "sweeps",
-      "hash": "#potts/graner-1992",
-      "aliases": []
+      "headline": "sweeps"
     },
     {
       "id": "liesegang",
@@ -457,9 +404,7 @@
       "familiarity": "rare",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "cnuc",
-      "hash": "#liesegang/liesegang-1896",
-      "aliases": []
+      "headline": "cnuc"
     },
     {
       "id": "grains",
@@ -485,9 +430,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "n",
-      "hash": "#grains/cundall-1979",
-      "aliases": []
+      "headline": "n"
     },
     {
       "id": "skyrmion",
@@ -512,9 +455,7 @@
       "familiarity": "rare",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "",
-      "hash": "#skyrmion",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "neural-mass",
@@ -539,9 +480,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "populations",
-      "hash": "#neural-mass",
-      "aliases": []
+      "headline": "populations"
     },
     {
       "id": "tonertu",
@@ -567,9 +506,7 @@
       "familiarity": "rare",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "a1",
-      "hash": "#tonertu/toner-1995",
-      "aliases": []
+      "headline": "a1"
     },
     {
       "id": "hyperbolic",
@@ -595,9 +532,7 @@
       "familiarity": "unseen",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "k",
-      "hash": "#hyperbolic/poincare-1882",
-      "aliases": []
+      "headline": "k"
     },
     {
       "id": "sle",
@@ -623,9 +558,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "kappa",
-      "hash": "#sle/schramm-2000",
-      "aliases": []
+      "headline": "kappa"
     },
     {
       "id": "fractal",
@@ -652,9 +585,7 @@
       "familiarity": "ubiquitous",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "iters",
-      "hash": "#fractal/fractal-0417",
-      "aliases": []
+      "headline": "iters"
     },
     {
       "id": "lens",
@@ -680,9 +611,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#lens",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "rotor",
@@ -708,9 +637,7 @@
       "familiarity": "unseen",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "n",
-      "hash": "#rotor/propp-machine",
-      "aliases": []
+      "headline": "n"
     },
     {
       "id": "web",
@@ -736,9 +663,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#web",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "faraday",
@@ -764,9 +689,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "",
-      "hash": "#faraday",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "film",
@@ -792,9 +715,7 @@
       "familiarity": "common",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "",
-      "hash": "#film",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "timecrystal",
@@ -820,9 +741,7 @@
       "familiarity": "rare",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#timecrystal",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "growdomain",
@@ -848,9 +767,7 @@
       "familiarity": "unseen",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "grow",
-      "hash": "#growdomain/growdomain-1999",
-      "aliases": []
+      "headline": "grow"
     },
     {
       "id": "spinice",
@@ -876,9 +793,7 @@
       "familiarity": "rare",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "",
-      "hash": "#spinice",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "vegetation",
@@ -904,9 +819,7 @@
       "familiarity": "common",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "a",
-      "hash": "#vegetation/klausmeier-1999",
-      "aliases": []
+      "headline": "a"
     },
     {
       "id": "aztec",
@@ -931,9 +844,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "n",
-      "hash": "#aztec/propp-1992",
-      "aliases": []
+      "headline": "n"
     },
     {
       "id": "skin",
@@ -959,9 +870,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#skin",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "rmt",
@@ -987,9 +896,7 @@
       "familiarity": "unseen",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "beta",
-      "hash": "#rmt/dyson-1962",
-      "aliases": []
+      "headline": "beta"
     },
     {
       "id": "stealth",
@@ -1015,9 +922,7 @@
       "familiarity": "rare",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#stealth",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "lozenge",
@@ -1043,9 +948,7 @@
       "familiarity": "unseen",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "a",
-      "hash": "#lozenge/propp-wilson-1996",
-      "aliases": []
+      "headline": "a"
     },
     {
       "id": "arago",
@@ -1070,9 +973,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#arago",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "ust",
@@ -1098,9 +999,7 @@
       "familiarity": "rare",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "grid",
-      "hash": "#ust/wilson-1996",
-      "aliases": []
+      "headline": "grid"
     },
     {
       "id": "cppn",
@@ -1127,9 +1026,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "layers",
-      "hash": "#cppn",
-      "aliases": []
+      "headline": "layers"
     },
     {
       "id": "rogue",
@@ -1154,9 +1051,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#rogue",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "hodgkin-huxley",
@@ -1181,9 +1076,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "n",
-      "hash": "#hodgkin-huxley/membrane-gates",
-      "aliases": []
+      "headline": "n"
     },
     {
       "id": "aharonov",
@@ -1208,9 +1101,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#aharonov",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "pendulum",
@@ -1235,9 +1126,7 @@
       "familiarity": "ubiquitous",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "horizon",
-      "hash": "#pendulum/pendulum-1992",
-      "aliases": []
+      "headline": "horizon"
     },
     {
       "id": "anderson",
@@ -1262,9 +1151,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#anderson",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "fput",
@@ -1289,9 +1176,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#fput",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "schrodinger",
@@ -1318,9 +1203,7 @@
       "familiarity": "common",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "k",
-      "hash": "#schrodinger/visscher-1991",
-      "aliases": []
+      "headline": "k"
     },
     {
       "id": "maxwell",
@@ -1345,9 +1228,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "",
-      "hash": "#maxwell/yee-1966",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "plasma",
@@ -1372,9 +1253,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "n",
-      "hash": "#plasma/electron-clouds",
-      "aliases": []
+      "headline": "n"
     },
     {
       "id": "excitable",
@@ -1400,9 +1279,7 @@
       "familiarity": "common",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "eps",
-      "hash": "#excitable/barkley-1991",
-      "aliases": []
+      "headline": "eps"
     },
     {
       "id": "soliton",
@@ -1427,9 +1304,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#soliton",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "cyclicca",
@@ -1455,9 +1330,7 @@
       "familiarity": "common",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "k",
-      "hash": "#cyclicca/griffeath-1991",
-      "aliases": []
+      "headline": "k"
     },
     {
       "id": "chimera",
@@ -1484,9 +1357,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "N",
-      "hash": "#chimera",
-      "aliases": []
+      "headline": "N"
     },
     {
       "id": "ssh",
@@ -1511,9 +1382,7 @@
       "familiarity": "rare",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#ssh",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "swarm",
@@ -1537,9 +1406,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "K",
-      "hash": "#swarm/okeeffe-2017",
-      "aliases": []
+      "headline": "K"
     },
     {
       "id": "amb",
@@ -1564,9 +1431,7 @@
       "familiarity": "rare",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "zeta",
-      "hash": "#amb/tjhung-2018",
-      "aliases": []
+      "headline": "zeta"
     },
     {
       "id": "aubry",
@@ -1591,9 +1456,7 @@
       "familiarity": "unseen",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#aubry",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "cahn",
@@ -1617,9 +1480,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "c0",
-      "hash": "#cahn/cahn-1958",
-      "aliases": []
+      "headline": "c0"
     },
     {
       "id": "ohta",
@@ -1643,9 +1504,7 @@
       "familiarity": "rare",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "sigma",
-      "hash": "#ohta/ohta-1986",
-      "aliases": []
+      "headline": "sigma"
     },
     {
       "id": "hopf",
@@ -1670,9 +1529,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#hopf",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "swift",
@@ -1696,9 +1553,7 @@
       "familiarity": "rare",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "r",
-      "hash": "#swift/swift-1977",
-      "aliases": []
+      "headline": "r"
     },
     {
       "id": "pfc",
@@ -1723,9 +1578,7 @@
       "familiarity": "rare",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "r",
-      "hash": "#pfc/elder-2002",
-      "aliases": []
+      "headline": "r"
     },
     {
       "id": "lp",
@@ -1749,9 +1602,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "eps",
-      "hash": "#lp/lifshitz-1997",
-      "aliases": []
+      "headline": "eps"
     },
     {
       "id": "cloak",
@@ -1776,9 +1627,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#cloak",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "xy",
@@ -1805,9 +1654,7 @@
       "familiarity": "common",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "T",
-      "hash": "#xy/kt-1973",
-      "aliases": []
+      "headline": "T"
     },
     {
       "id": "cgl",
@@ -1831,9 +1678,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "alpha",
-      "hash": "#cgl/cgl-1970",
-      "aliases": []
+      "headline": "alpha"
     },
     {
       "id": "vortex",
@@ -1858,9 +1703,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#vortex",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "nematic",
@@ -1887,9 +1730,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "zeta",
-      "hash": "#nematic/dogic-2012",
-      "aliases": []
+      "headline": "zeta"
     },
     {
       "id": "darkroom",
@@ -1914,9 +1755,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#darkroom",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "fluid",
@@ -1943,9 +1782,7 @@
       "familiarity": "ubiquitous",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "speed",
-      "hash": "#fluid",
-      "aliases": []
+      "headline": "speed"
     },
     {
       "id": "sandpile",
@@ -1971,9 +1808,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "drops",
-      "hash": "#sandpile/btw-1987",
-      "aliases": []
+      "headline": "drops"
     },
     {
       "id": "kakeya",
@@ -1998,9 +1833,7 @@
       "familiarity": "rare",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#kakeya",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "ks",
@@ -2024,9 +1857,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "nu",
-      "hash": "#ks/siva-1977",
-      "aliases": []
+      "headline": "nu"
     },
     {
       "id": "breather",
@@ -2051,9 +1882,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#breather",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "turing",
@@ -2079,9 +1908,7 @@
       "familiarity": "common",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "D",
-      "hash": "#turing/turing-1952",
-      "aliases": []
+      "headline": "D"
     },
     {
       "id": "holomorphic",
@@ -2107,9 +1934,7 @@
       "familiarity": "ubiquitous",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "iters",
-      "hash": "#holomorphic/julia-1918",
-      "aliases": []
+      "headline": "iters"
     },
     {
       "id": "klein",
@@ -2134,9 +1959,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#klein",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "gyroid",
@@ -2161,9 +1984,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#gyroid",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "dendrite",
@@ -2190,9 +2011,7 @@
       "familiarity": "common",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "steps",
-      "hash": "#dendrite",
-      "aliases": []
+      "headline": "steps"
     },
     {
       "id": "purcell",
@@ -2217,9 +2036,7 @@
       "familiarity": "rare",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#purcell",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "exceptional",
@@ -2244,9 +2061,7 @@
       "familiarity": "unseen",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#exceptional",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "meissner",
@@ -2271,9 +2086,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#meissner",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "tennis",
@@ -2298,9 +2111,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#tennis",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "flow",
@@ -2328,9 +2139,7 @@
       "familiarity": "ubiquitous",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "strokes",
-      "hash": "#flow",
-      "aliases": []
+      "headline": "strokes"
     },
     {
       "id": "chemotaxis",
@@ -2355,9 +2164,7 @@
       "familiarity": "common",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "chi",
-      "hash": "#chemotaxis/keller-1970",
-      "aliases": []
+      "headline": "chi"
     },
     {
       "id": "smectic",
@@ -2380,9 +2187,7 @@
       "familiarity": "rare",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "n",
-      "hash": "#smectic/friedel-1910",
-      "aliases": []
+      "headline": "n"
     },
     {
       "id": "reaction",
@@ -2410,9 +2215,7 @@
       "familiarity": "common",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "steps",
-      "hash": "#reaction",
-      "aliases": []
+      "headline": "steps"
     },
     {
       "id": "molecular",
@@ -2437,9 +2240,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "n",
-      "hash": "#molecular",
-      "aliases": []
+      "headline": "n"
     },
     {
       "id": "tilings",
@@ -2469,9 +2270,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "depth",
-      "hash": "#tilings/penrose-1974",
-      "aliases": []
+      "headline": "depth"
     },
     {
       "id": "percolation",
@@ -2497,9 +2296,7 @@
       "familiarity": "ubiquitous",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "p",
-      "hash": "#percolation/hammersley-1957",
-      "aliases": []
+      "headline": "p"
     },
     {
       "id": "shallow",
@@ -2524,9 +2321,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "grid",
-      "hash": "#shallow",
-      "aliases": []
+      "headline": "grid"
     },
     {
       "id": "attractors",
@@ -2555,9 +2350,7 @@
       "familiarity": "ubiquitous",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "points",
-      "hash": "#attractors",
-      "aliases": []
+      "headline": "points"
     },
     {
       "id": "airy",
@@ -2582,9 +2375,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#airy",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "chirikov",
@@ -2608,9 +2399,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "K",
-      "hash": "#chirikov/chirikov-1969",
-      "aliases": []
+      "headline": "K"
     },
     {
       "id": "hofstadter",
@@ -2633,9 +2422,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "Q",
-      "hash": "#hofstadter/hofstadter-1976",
-      "aliases": []
+      "headline": "Q"
     },
     {
       "id": "weierstrass",
@@ -2660,9 +2447,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#weierstrass",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "scars",
@@ -2686,9 +2471,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "n",
-      "hash": "#scars/heller-1984",
-      "aliases": []
+      "headline": "n"
     },
     {
       "id": "kitaev",
@@ -2713,9 +2496,7 @@
       "familiarity": "rare",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#kitaev",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "caustics",
@@ -2738,9 +2519,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "s",
-      "hash": "#caustics/berry-caustic",
-      "aliases": []
+      "headline": "s"
     },
     {
       "id": "veselago",
@@ -2765,9 +2544,7 @@
       "familiarity": "rare",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#veselago",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "devil",
@@ -2792,9 +2569,7 @@
       "familiarity": "rare",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#devil",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "talbot",
@@ -2817,9 +2592,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "slits",
-      "hash": "#talbot/talbot-1836",
-      "aliases": []
+      "headline": "slits"
     },
     {
       "id": "orbitals",
@@ -2845,9 +2618,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "n",
-      "hash": "#orbitals/schrodinger-1926",
-      "aliases": []
+      "headline": "n"
     },
     {
       "id": "loschmidt",
@@ -2872,9 +2643,7 @@
       "familiarity": "rare",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#loschmidt",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "boy",
@@ -2899,9 +2668,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#boy",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "pearls",
@@ -2924,9 +2691,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "gap",
-      "hash": "#pearls/indra-2002",
-      "aliases": []
+      "headline": "gap"
     },
     {
       "id": "ising",
@@ -2952,9 +2717,7 @@
       "familiarity": "ubiquitous",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "T",
-      "hash": "#ising/ising-1925",
-      "aliases": []
+      "headline": "T"
     },
     {
       "id": "thouless",
@@ -2979,9 +2742,7 @@
       "familiarity": "rare",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#thouless",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "convection",
@@ -3007,9 +2768,7 @@
       "familiarity": "common",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "logRa",
-      "hash": "#convection/benard-1900",
-      "aliases": []
+      "headline": "logRa"
     },
     {
       "id": "reuleaux",
@@ -3034,9 +2793,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#reuleaux",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "surfaces",
@@ -3061,9 +2818,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#surfaces",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "apollonian",
@@ -3088,9 +2843,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#apollonian",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "chladni",
@@ -3117,9 +2870,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "particles",
-      "hash": "#chladni/chladni-0417",
-      "aliases": []
+      "headline": "particles"
     },
     {
       "id": "track",
@@ -3145,9 +2896,7 @@
       "familiarity": "unseen",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#track",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "knotlight",
@@ -3172,9 +2921,7 @@
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#knotlight",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "causticsea",
@@ -3199,9 +2946,7 @@
       "familiarity": "rare",
       "liveCapable": true,
       "runningDefault": true,
-      "headline": "",
-      "hash": "#causticsea",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "kp",
@@ -3227,9 +2972,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#kp",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "gerstner",
@@ -3255,9 +2998,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "steep",
-      "hash": "#gerstner",
-      "aliases": []
+      "headline": "steep"
     },
     {
       "id": "eight",
@@ -3283,9 +3024,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#eight",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "peakon",
@@ -3311,9 +3050,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "t",
-      "hash": "#peakon",
-      "aliases": []
+      "headline": "t"
     },
     {
       "id": "photon",
@@ -3339,9 +3076,7 @@
       "familiarity": "common",
       "liveCapable": false,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#photon",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "crapper",
@@ -3367,9 +3102,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "amp",
-      "hash": "#crapper",
-      "aliases": []
+      "headline": "amp"
     },
     {
       "id": "hasimoto",
@@ -3395,9 +3128,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "t",
-      "hash": "#hasimoto",
-      "aliases": []
+      "headline": "t"
     },
     {
       "id": "lump",
@@ -3423,9 +3154,7 @@
       "familiarity": "occasional",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "",
-      "hash": "#lump",
-      "aliases": []
+      "headline": ""
     },
     {
       "id": "three-vortex-bound",
@@ -3451,9 +3180,7 @@
       "familiarity": "unseen",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "t",
-      "hash": "#three-vortex-bound/octant-root-two",
-      "aliases": []
+      "headline": "t"
     },
     {
       "id": "parallelogram-lock",
@@ -3479,9 +3206,7 @@
       "familiarity": "unseen",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "t",
-      "hash": "#parallelogram-lock/cos-quarter",
-      "aliases": []
+      "headline": "t"
     },
     {
       "id": "quincunx-lock",
@@ -3507,9 +3232,7 @@
       "familiarity": "unseen",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "t",
-      "hash": "#quincunx-lock/cos-four-sevenths",
-      "aliases": []
+      "headline": "t"
     },
     {
       "id": "double-triangle-bound",
@@ -3535,9 +3258,7 @@
       "familiarity": "rare",
       "liveCapable": true,
       "runningDefault": false,
-      "headline": "time",
-      "hash": "#double-triangle-bound/double-triangle",
-      "aliases": []
+      "headline": "time"
     }
   ]
 }

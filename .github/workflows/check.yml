@@ -6,7 +6,7 @@ name: check
 # each architecture family, which is what catches a change to a shared factory.
 #
 # Before merging anything that touches a simulation, run the full sweep locally:
-#   sh tools/checkall.sh studio.html /tmp/all.log <every id printed by tools/lint.js>
+#   sh tools/checkall.sh dist/studio.html /tmp/all.log <every id printed by tools/lint.js>
 
 on:
   push:
@@ -55,6 +55,7 @@ jobs:
           node tools/lump-science.js
           node tools/chain-science.js
           node tools/rigid-body-audit.js
+          npm test
       - name: Structural checks
         run: node tools/lint.js
       - name: Polygon bounds and numerical controls
@@ -85,6 +86,8 @@ jobs:
         run: node tools/pde-print-state.js
       - name: Seed box, hash, shortcuts, dock
         run: node tools/ui.js
+      - name: Folder loading, recipes, witness and recovery
+        run: node tools/folder-browser.js
 
   wave-science:
     name: wave science

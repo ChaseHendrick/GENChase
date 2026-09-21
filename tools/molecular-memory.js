@@ -15,7 +15,7 @@ const protocol = {
   largerN: 1024, largerWaves: 2, largerSeeds: [0, 1],
   maximumEnergyDrift: .0005, maximumMomentumPerParticle: 1e-10,
 };
-const shared = fs.readFileSync(path.join(root, 'src/shared/studio.js'), 'utf8');
+const shared = fs.readFileSync(path.join(root, 'src/shared/engine.js'), 'utf8');
 const rngSource = shared.slice(shared.indexOf('  function makeRng('), shared.indexOf('  function makeNoise('));
 const source = fs.readFileSync(path.join(root, 'src/modules/molecular.js'), 'utf8');
 const makeRng = new Function('const TAU=2*Math.PI;' + rngSource + 'return makeRng;')();

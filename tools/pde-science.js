@@ -9,7 +9,7 @@ const { chromium } = require('playwright');
   const browser = await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
   try {
     const page = await browser.newPage();
-    await page.goto('file://' + path.join(root, 'studio.html') + '#three-vortex-bound/science');
+    await page.goto('file://' + path.join(root, 'dist/studio.html') + '#three-vortex-bound/science');
     await page.evaluate(expose);
     const rows = await page.evaluate(() => {
       const G = Studio.gl, shaders = window.scienceShaders;

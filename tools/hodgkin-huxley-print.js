@@ -18,7 +18,7 @@ ${marker}`);
     for(const spec of [{n:16,duration:30,start:5,pulse:20,width:2400,height:1600},{n:64,duration:100,start:10,pulse:80,width:2400,height:2400}]){
       const page=await browser.newPage();
       try{
-        await page.goto('file://'+path.join(root,'studio.html')+'#three-vortex-bound/hh-print');await page.evaluate(source);
+        await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/hh-print');await page.evaluate(source);
         rows.push(await page.evaluate(async spec=>{
           const mod=Studio.modules['hodgkin-huxley'],pal=Studio.PALETTES[mod.defaultPalette],state={...mod.defaults,...spec,palette:pal.colors,bg:pal.bg};mod.sanitize(state);
           const make=settings=>{const canvas=document.createElement('canvas');canvas.width=600;canvas.height=400;return mod.create({canvas,getState:()=>settings,setStatus(){},isActive:()=>false,reducedMotion:()=>true,requestRepaint(){},fault(message){throw Error(message);}});};

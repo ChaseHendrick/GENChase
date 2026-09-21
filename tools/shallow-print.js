@@ -4,7 +4,7 @@ const fs = require('node:fs'), path = require('node:path'), assert = require('no
 const { chromium } = require('playwright');
 (async () => {
   const root = path.resolve(__dirname, '..'), temp = path.join(root, '.shallow-print-test.html');
-  const source = fs.readFileSync(path.join(root, 'src/modules/shallow.js'), 'utf8'), built = fs.readFileSync(path.join(root, 'studio.html'), 'utf8');
+  const source = fs.readFileSync(path.join(root, 'src/modules/shallow.js'), 'utf8'), built = fs.readFileSync(path.join(root, 'dist/studio.html'), 'utf8');
   const marker = '    return {\n      aspect(s)'; assert(source.includes(marker) && built.includes(source));
   const instrumented = source.replace(marker, `    return globalThis.shallowAudit = {
       audit() { return { nx:sim.nx, ny:sim.ny, step:sim.step, time:sim.time, lastDt:sim.lastDt, remaining, halted:sim.halted, h:[...sim.h], mx:[...sim.mx], my:[...sim.my], mass:sim.mass, energy:sim.energy }; },

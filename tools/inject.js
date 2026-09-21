@@ -6,7 +6,7 @@ const path = require('path'), fs = require('fs');
 const args = process.argv.slice(2);
 if (args.length < 2) { console.error('usage: node tools/inject.js <block.js> [...] <out.html>'); process.exit(1); }
 const out = args.pop();
-let src = fs.readFileSync(path.resolve(__dirname, '..', 'studio.html'), 'utf8');
+let src = fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'studio.html'), 'utf8');
 const marker = '<script>Studio.boot();</script>';
 for (const f of args) {
   const body = fs.readFileSync(path.resolve(f), 'utf8');
