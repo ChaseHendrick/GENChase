@@ -6,6 +6,27 @@ Generative art from real scientific simulations, built to leave the screen. Ever
 
 One portable HTML file, maintained as modular source. 120 pattern-forming systems with saved recipes and print exports. [See the project flowchart](PROJECT-FLOW.md).
 
+```mermaid
+flowchart TD
+    A["Edit source modules"] --> B["Build one HTML file"]
+    B --> C["Test and review"]
+    S["Papers and independent benchmarks"] --> C
+    C -->|Fixes needed| A
+    C -->|Checks pass, review complete| D["Merge and publish studio"]
+    D --> E["Choose a technique, seed and settings"]
+    E --> F["Run and explore the simulation"]
+    F --> G["Save a recipe or export artwork"]
+
+    classDef development fill:#e8f1ff,stroke:#2458a6,color:#102c54
+    classDef science fill:#fff1d6,stroke:#9a6500,color:#553800
+    classDef use fill:#e5f5ed,stroke:#24734b,color:#143e2a
+    class A,B,D development
+    class C,S science
+    class E,F,G use
+```
+
+Blue: development · Amber: review and evidence · Green: using the studio. Passing checks covers their stated cases, not all scientific claims; see [validation coverage](VALIDATION.md).
+
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
   <img src="gallery/chains.jpg" width="32%" alt="Granular force chains: the contact network carrying load down through a packing" />
