@@ -2,7 +2,7 @@
   "project": "GENChase",
   "repository": "https://github.com/SharpMeow/GENChase",
   "file": "studio.html",
-  "count": 119,
+  "count": 120,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "aliases": {
     "hendrick": "hendricks-identity"
@@ -3102,7 +3102,7 @@
       "tab": "Hendrick's Identity",
       "subtitle": "ω₀ t_c ≥ √2 on Gröbli's collapsing triangle · Hendrick's Identity",
       "equation": "ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2  on  Γ = (1, 1, −1/2), L = 0;  equality at tan θ = 1/√2",
-      "credit": "Hendrick's Identity: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 < θ < π/2. θ is the third vortex's place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula follows by specializing those equations. The explicit minimum and equality triangle are this project's observation. First public statement of this closed form and minimum: GENChase, 2026-09-19. Cite IDENTITIES.md. Do not republish as a new discovery without attribution. The named Tacchi thesis is not in theses.fr, HAL, or arXiv. Kimura 1988 Fluid Dyn. Res. 3, 98 is a two-page complex-time note, not a coefficient table. Cite as Hendrick's Identity. Also searched as Hendrick's law, Hendrick's Math. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 misses and the status line marks miss. The picture still draws.",
+      "credit": "Hendrick's Identity: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 < θ < π/2. θ is the third vortex's place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula follows by specializing those equations. The formula and minimum were derived here and recorded on 2026-09-19. Historical priority is unconfirmed; see identities/NOVELTY-AUDIT.md and IDENTITIES.md. Cite as Hendrick's Identity. Also searched as Hendrick's law, Hendrick's Math. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 misses and the status line marks miss. The picture still draws.",
       "blurb": "Hendrick's Identity. Three point vortices of circulations 1, 1, and −1/2, on the L = 0 circle, collapse self-similarly. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality at tan θ = 1/√2, a triangle of 22.5°, 45°, and 112.5°. θ places the third vortex on the circle; it is not an interior angle. The status line is that ratio against 1, the similarity residual against 0, and signed L against 0. Broken steps off the circle so the lock does not hold and the status line marks miss. That is the check working, not the studio breaking. Cite as Hendrick's Identity; also searched as Hendrick's law and Hendrick's Math.",
       "order": 117,
       "seed": "octant-root-two",
@@ -3131,7 +3131,7 @@
       "tab": "Parallelogram",
       "subtitle": "ω₀ t_c ≥ 3√5/4 on Novikov-Sedov's parallelogram",
       "equation": "ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4  on the Novikov–Sedov parallelogram;  equality at cos 2θ = 1/4",
-      "credit": "A closed form and sharp minimum for the scale-invariant product on the classical four-vortex parallelogram collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −2 − √3, −2 − √3), diagonals in ratio √(2 + √3), angle θ between the diagonals, 0 < θ < π/2. ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4, equality uniquely at cos 2θ = 1/4. With φ = 2θ the quotient is (4 − cos φ)/sin φ, and the critical point is cos φ = 1/4. Four-vortex parallelogram collapse is Novikov and Sedov, Sov. Phys. JETP 50, 297 (1979). Gotoda, J. Dyn. Diff. Equat. (2020), eq. (3.13), gives the collapse rate A(θ) and the spin B(θ) separately after those authors. The product −B/(2A) simplifies to the formula above. The explicit minimum is this project's observation. First public statement of this closed form and minimum: GENChase, 2026-09-20. Cite IDENTITIES.md. Do not republish as a new discovery without attribution. The reciprocal pair Γ = (1, 1, −2 + √3, −2 + √3) is the same family with the diagonals swapped. If the vortices leave the parallelogram, or the kernel is wrong, the ratio against 3√5/4 misses and the status line marks miss. The picture still draws.",
+      "credit": "A closed form and sharp minimum for the scale-invariant product on the classical four-vortex parallelogram collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −2 − √3, −2 − √3), diagonals in ratio √(2 + √3), angle θ between the diagonals, 0 < θ < π/2. ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4, equality uniquely at cos 2θ = 1/4. With φ = 2θ the quotient is (4 − cos φ)/sin φ, and the critical point is cos φ = 1/4. Four-vortex parallelogram collapse is Novikov and Sedov, Sov. Phys. JETP 50, 297 (1979). Gotoda, arXiv:2002.09624 (2020 preprint), eq. (3.13), gives the collapse rate A(θ) and the spin B(θ) separately after those authors. The product −B/(2A) simplifies to the formula above. The formula and minimum were derived here and recorded on 2026-09-20. Historical priority is unconfirmed; see identities/NOVELTY-AUDIT.md and IDENTITIES.md. The reciprocal pair Γ = (1, 1, −2 + √3, −2 + √3) is the same family with the diagonals swapped. If the vortices leave the parallelogram, or the kernel is wrong, the ratio against 3√5/4 misses and the status line marks miss. The picture still draws.",
       "blurb": "Four point vortices at the vertices of a parallelogram, Novikov and Sedov 1979. Two equal, two equal and opposite, diagonals locked by 2 ± √3 so that L = 0. They collapse self-similarly. ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4, equality at cos 2θ = 1/4. The status line is that ratio against 1, the similarity residual against 0, and signed L against 0. Broken steps off the parallelogram so the lock does not hold and the status line marks miss. That is the check working, not the studio breaking. The motion is classical; the closed form of the product and the sharp minimum are the observation.",
       "order": 118,
       "seed": "cos-quarter",
@@ -3158,7 +3158,7 @@
       "tab": "Quincunx",
       "subtitle": "ω₀ t_c ≥ 3√33/16 on Novikov-Sedov's five-vortex quincunx",
       "equation": "ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16  on the Novikov–Sedov five-vortex quincunx;  equality at cos 2θ = 4/7",
-      "credit": "A closed form and sharp minimum for the scale-invariant product on a classical five-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (−1, −1, 1/2, 1/2, −3/4), four vortices at the vertices of a parallelogram whose diagonals meet at the fifth, diagonals in ratio 1/√2, angle θ between the diagonals, 0 < θ < π/2. ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16, equality uniquely at cos 2θ = 4/7. With φ = 2θ the quotient is (7 − 4 cos φ)/sin φ, and the critical point is cos φ = 4/7. Five-vortex parallelogram-plus-center collapse is Novikov and Sedov, Sov. Phys. JETP 50, 297 (1979). Gotoda, J. Dyn. Diff. Equat. (2020), eq. (3.13), gives the collapse rate A(θ) and the spin B(θ) separately after those authors, and plots this family (γ1 = −1, γ2 = 1/2, γ3 = −3/4) as Hamiltonian against collapse rate. The product −B/(2A) on that slice simplifies to the formula above. The explicit minimum is this project's observation. First public statement of this closed form and minimum: GENChase, 2026-09-20. Cite IDENTITIES.md. Do not republish as a new discovery without attribution. The reciprocal pair with the diagonals swapped is the same family. If the vortices leave the quincunx, or the kernel is wrong, the ratio against 3√33/16 misses and the status line marks miss. The picture still draws. This is not Novikov and Sedov's t_* or ω separately under a new name, and it is not the four-vortex parallelogram lock.",
+      "credit": "A closed form and sharp minimum for the scale-invariant product on a classical five-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (−1, −1, 1/2, 1/2, −3/4), four vortices at the vertices of a parallelogram whose diagonals meet at the fifth, diagonals in ratio 1/√2, angle θ between the diagonals, 0 < θ < π/2. ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16, equality uniquely at cos 2θ = 4/7. With φ = 2θ the quotient is (7 − 4 cos φ)/sin φ, and the critical point is cos φ = 4/7. Five-vortex parallelogram-plus-center collapse is Novikov and Sedov, Sov. Phys. JETP 50, 297 (1979). Gotoda, arXiv:2002.09624 (2020 preprint), eq. (3.13), gives the collapse rate A(θ) and the spin B(θ) separately after those authors, and plots this family (γ1 = −1, γ2 = 1/2, γ3 = −3/4) as Hamiltonian against collapse rate. The product −B/(2A) on that slice simplifies to the formula above. The formula and minimum were derived here and recorded on 2026-09-20. Historical priority is unconfirmed; see identities/NOVELTY-AUDIT.md and IDENTITIES.md. The reciprocal pair with the diagonals swapped is the same family. If the vortices leave the quincunx, or the kernel is wrong, the ratio against 3√33/16 misses and the status line marks miss. The picture still draws. This is not Novikov and Sedov's t_* or ω separately under a new name, and it is not the four-vortex parallelogram lock.",
       "blurb": "Five point vortices: four at the corners of a parallelogram and one at the crossing of the diagonals, Novikov and Sedov 1979. Circulations (−1, −1, 1/2, 1/2, −3/4), diagonals in ratio 1/√2 so that L = 0. They collapse self-similarly. ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16, equality at cos 2θ = 4/7. The status line is that ratio against 1, the similarity residual against 0, and signed L against 0. Broken steps off the quincunx so the lock does not hold and the status line marks miss. That is the check working, not the studio breaking. The motion is classical; the closed form of the product and the sharp minimum are the observation.",
       "order": 119,
       "seed": "cos-four-sevenths",
@@ -3177,6 +3177,33 @@
       "runningDefault": false,
       "headline": "t",
       "hash": "#quincunx-lock/cos-four-sevenths",
+      "aliases": []
+    },
+    {
+      "id": "double-triangle-bound",
+      "name": "Polygon collapse bounds",
+      "tab": "Polygon bounds",
+      "subtitle": "Two regular polygons · sharp spin–time floor · priority open",
+      "equation": "ω₀t_c = (K_n − √(2n−1) cos nθ)/(2n sin nθ) ≥ F_n; F₃ = √29/3, F₄ = √322/9",
+      "credit": "Classical two-ring collapse: Aref, Physics of Fluids 25, 2183 (1982); Koiller, Pinto de Carvalho, Rodrigues da Silva and Gonçalves de Oliveira, Physica D 16, 27–61 (1985), §11. Two regular n-gons with outer circulation −1, inner circulation x = (n + √(2n−1))/(n−1), and squared radius ratio x. GENChase derives the product and its sharp minimum in identities/polygon-collapse.md. The n = 4 value √322/9 illustrates the general theorem. Historical priority of these explicit bounds is unconfirmed; the collapse family is classical.",
+      "blurb": "Two rings of whirlpools keep their polygon shapes while shrinking and turning. The spin × collapse-time score has a sharp floor. Three vortices per ring give √29/3; four give √322/9 at a relative angle of about 20.1455°. Change the vertex count to explore the general bound. Trajectories come from all pairwise vortex velocities. Broken moves one vortex off the family. The mathematics is proved; historical novelty is still being checked.",
+      "order": 120,
+      "seed": "double-triangle",
+      "presets": [
+        "minimum",
+        "thirty",
+        "winding",
+        "triangles",
+        "bound",
+        "square",
+        "broken"
+      ],
+      "vectors": true,
+      "familiarity": "rare",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "time",
+      "hash": "#double-triangle-bound/double-triangle",
       "aliases": []
     }
   ]

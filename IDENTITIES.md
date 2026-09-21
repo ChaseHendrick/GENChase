@@ -1,8 +1,10 @@
 # Identities
 
-Catalog of results derived in this studio that were not in the papers they sit on. Handwritten, not generated. Last updated 2026-09-20.
+Catalog of formulas and sharp bounds derived in this studio from classical vortex dynamics. Historical priority is unconfirmed for all five candidates. Handwritten, not generated. Last updated 2026-09-20.
 
-An entry here is something found and proved on a plate: a closed form, a unique extremum, or another checkable claim, uniqueness-checked against the papers, locked so the status line marks **miss** if the claim is wrong. **Miss is a grade on the numbers, not a crash.** The picture still draws. The site is working. Do not put a name from this file on work that already exists.
+An entry here is something found and proved on a plate: a closed form, a unique extremum, or another checkable claim, with a documented literature search, locked so the status line marks **miss** if the claim is wrong. **Miss is a grade on the numbers, not a crash.** The picture still draws. The site is working. Do not put a name from this file on work that already exists.
+
+**Novelty audit:** [All five candidates reviewed](identities/NOVELTY-AUDIT.md). The fifth includes the parallelogram and double-triangle bounds as special cases. A proof or passing numerical check does not establish novelty.
 
 The search ledger is [`RESEARCH.md`](RESEARCH.md). The plates are `#hendricks-identity` (`#hendrick` still opens it), `#parallelogram-lock`, and `#quincunx-lock`.
 
@@ -24,11 +26,11 @@ A check that cannot miss is not a check. The Broken preset exists so you can wat
 
 | Kind | Here? |
 |---|---|
-| A result derived here, uniqueness-checked, with a plate whose check can miss | Yes |
+| A result derived here, with documented sources and uncertainty about priority, and a plate whose check can miss | Yes |
 | A published equation under a new name | No |
 | A published equation plus a feedback term | No (`track`, `causticsea`) |
 
-To add a row: search the literature first. Web-search the closed form and the extremum, and open the papers the family sits on, before you spend time deriving. If a paper already states either, stop and log the search in `RESEARCH.md`. Only then derive, uniqueness-check, put a check on the plate that marks miss when the identity is false, write the identity here, and write the search the same day.
+To add a row: search the literature first. Web-search the closed form and the extremum, and open the papers the family sits on, before you spend time deriving. If a paper already states either, stop and log the search in `RESEARCH.md`. Only then derive, assess equivalent prior results, put a check on the plate that marks miss when the identity is false, write the identity here, and write the search the same day.
 
 A row that meets the bar is named for the person who found it. Hendrick's Identity is named Hendrick because that is the finder's name. The parallelogram lock and the quincunx lock are named for their geometries. A later contributor who finds a fourth row names it for themselves, or for the geometry, in the same pull request. Do not put Hendrick's name on that row.
 
@@ -41,21 +43,46 @@ A row that meets the bar is named for the person who found it. Hendrick's Identi
 | Parallelogram lock | `parallelogram-lock` | ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4 on the Novikov–Sedov parallelogram. Equality at cos 2θ = 1/4 | The vortices leave the parallelogram, or the Biot-Savart kernel is wrong |
 | Quincunx lock | `quincunx-lock` | ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16 on the Novikov–Sedov five-vortex quincunx. Equality at cos 2θ = 4/7 | The vortices leave the quincunx, or the Biot-Savart kernel is wrong |
 
-## First public appearance
+## Candidate fourth result: double-triangle bound
 
-These three statements were first published here, by Chaos, in this repository. GitHub's commit timestamps are the public record. The motion on each family is classical. The closed form of ω₀ t_c and the unique algebraic floor are this project's.
+The six-vortex two-ring family has the proved formula
 
-| Statement | First public | Record |
+$$
+\omega_0t_c=\frac{11-\sqrt5\cos(3\theta)}{6\sin(3\theta)}
+\ge\frac{\sqrt{29}}3,
+\qquad 0<\theta<\pi/3.
+$$
+
+The triangles have radius ratio $\varphi=(1+\sqrt5)/2$, with circulation $-1$ at each outer vertex and $\varphi^2$ at each inner vertex. Equality is unique at $\cos(3\theta)=\sqrt5/11$.
+
+**Mathematics proved; priority under investigation.** The two-ring collapse is classical (Koiller et al. 1985, §11). The explicit product and minimum are a candidate contribution, not a verified first-discovery claim. The initial search reached indexed excerpts of the primary paper, not its full PDF. The earlier three candidates also have unconfirmed priority; the frozen note below is an archival project record. Read the [full derivation, checks, and source limitations](identities/double-triangle.md). Open `#double-triangle-bound` for the integrated plate and Broken control.
+
+## Candidate fifth result: the general polygon bound
+
+For two regular $n$-gons with outer circulation $-1$, inner circulation $x_n=(n+\sqrt{2n-1})/(n-1)$ and radius ratio $\sqrt{x_n}$, define $K_n=(n-1)\sinh[(n+2)\log(x_n)/2]$. Then
+
+$$
+\omega_0t_c=\frac{K_n-\sqrt{2n-1}\cos(n\theta)}{2n\sin(n\theta)}
+\ge\frac{\sqrt{K_n^2-(2n-1)}}{2n}.
+$$
+
+The next case after the triangles is two squares: $\omega_0t_c\ge\sqrt{322}/9$, uniquely attained at $\cos(4\theta)=9/55$, or $\theta\approx20.145493^\circ$. This is one generalization, not a separate discovery for every polygon order. **Proved mathematics; historical priority remains unresolved.** The two-ring family for arbitrary $n$ is classical. Read the [full theorem, square formula, proof, and tests](identities/polygon-collapse.md). The existing `#double-triangle-bound` tab now includes **Square minimum** and a vertex-count control; its original triangle default remains.
+
+## Dates recorded in GENChase
+
+These dates record this repository's statements by Chaos. They do not establish worldwide priority. All five candidates use classical motion; the formulas are derived from established dynamics. See the [2026-09-20 audit](identities/NOVELTY-AUDIT.md) for sources, equivalent forms, and access gaps.
+
+| Statement | Recorded here | Record |
 |---|---|---|
 | Hendrick's Identity, ω₀ t_c ≥ √2 | 2026-09-19 | [SharpMeow/GENChase#24](https://github.com/SharpMeow/GENChase/pull/24), [IDENTITIES.md](https://github.com/SharpMeow/GENChase/commit/6632e64) |
 | Parallelogram lock, ω₀ t_c ≥ 3√5/4 | 2026-09-20 | [SharpMeow/GENChase#44](https://github.com/SharpMeow/GENChase/pull/44) |
 | Quincunx lock, ω₀ t_c ≥ 3√33/16 | 2026-09-20 | [SharpMeow/GENChase#44](https://github.com/SharpMeow/GENChase/pull/44) |
 
-Anyone may use the mathematics. Claiming first discovery of these closed forms or these floors, after those dates, without citing this file, is claiming this project's work. Do not rename them. Do not put Hendrick's name on the other two. The family (Gröbli, Novikov–Sedov, Aref, Gotoda) stays credited to those papers.
+Anyone may use the mathematics. Cite this writeup when using it, and credit the underlying work of Gröbli, Novikov–Sedov, Aref, Gotoda and Koiller et al. Project names and timestamps are provenance, not proof of originality. Do not put Hendrick's name on another result.
 
-A later paper that restates one of these formulae is a restatement. Cite this file as the first public appearance unless an earlier dated source is produced. The named Tacchi thesis is not in the public record (2026-09-20). Kimura 1988 Fluid Dyn. Res. 3, 98 is a two-page complex-time note, not a coefficient table, and does not state these closed forms or these floors. Until an earlier dated source is produced, this table is the priority record.
+No earlier explicit statement of the listed sharp minima was located in the sources inspected. That limited negative evidence does not establish first discovery or justify attributing every later derivation to this project. Earlier unqualified priority assertions are superseded by the audit.
 
-The frozen note is [`identities/note.pdf`](identities/note.pdf) (Typst source [`identities/note.typ`](identities/note.typ)). Canonical byte-exact lines are [`identities/STATEMENTS.txt`](identities/STATEMENTS.txt). SHA-256 fingerprints (UTF-8, LF, no BOM):
+The frozen note and its source retain their original bytes as an archival snapshot; any priority claims in them must be read with the audit correction. The frozen note is [`identities/note.pdf`](identities/note.pdf) (Typst source [`identities/note.typ`](identities/note.typ)). Canonical byte-exact lines are [`identities/STATEMENTS.txt`](identities/STATEMENTS.txt). SHA-256 fingerprints (UTF-8, LF, no BOM):
 
 | Artifact | SHA-256 |
 |---|---|
@@ -85,7 +112,7 @@ Aref, in 2010, wrote two separate formulas: how fast the triangle is spinning (c
 
 **Hendrick's Identity is the score for this family, written as one formula, plus the fact that the score can never drop below √2 (about 1.414).** It hits that floor at one special triangle: corners of 22.5°, 45°, and 112.5°. That triangle is the Octant preset. Slide the third whirlpool around the allowed circle and the score only goes up. Step off the circle (the Broken preset) and the identity no longer applies, so the status line marks miss on purpose.
 
-What is not being claimed: the motion itself (Gröbli), or the idea of multiplying spin by collapse time (Aref already wrote that product as the pitch of the spiral). What is being claimed: the closed formula on this family, and the unique floor of √2 at that triangle.
+The statement proved here is the formula and its unique floor on this family. The motion and the product as a spiral parameter are classical: Novikov–Sedov already used the product in 1979, and Aref did so in 2010. Historical priority of this particular sharp bound remains unconfirmed.
 
 ### Statement
 
@@ -157,7 +184,7 @@ Octant should read 1, 0, and 0. The Broken configuration moves off the circle, s
 
 Hendrick's Identity is the project's name for this formula and sharp bound. Three-vortex collapse is classical, dating to Gröbli (1877). Aref (2010) gives formulas for rotation and collapse and expresses their product in the logarithmic-spiral trajectory. The formula above follows by specializing established equations.
 
-The explicit minimum of the product and its equality triangle are this project's observation. First public statement: this repository, 2026-09-19. This is a mathematical result within the classical point-vortex model.
+The explicit minimum and equality triangle were derived here and recorded on 2026-09-19. No earlier exact minimum was located in the inspected sources; priority remains unconfirmed. This is a mathematical result within the classical point-vortex model.
 
 Please cite it as Hendrick's Identity. Please do not republish this statement without attribution, and do not rename it. Anyone may use the mathematics; the name and this writeup are how this project asks to be credited.
 
@@ -173,7 +200,7 @@ Chaos. (2026). *Hendrick's Identity*. GENChase. https://github.com/SharpMeow/GEN
   year         = {2026},
   howpublished = {GENChase},
   url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
-  note         = {First public 2026-09-19. Also Hendrick's law, Hendrick's Math}
+  note         = {Recorded in GENChase 2026-09-19. Also Hendrick's law, Hendrick's Math}
 }
 ```
 
@@ -255,7 +282,7 @@ The Broken configuration moves a vertex off the parallelogram to illustrate depa
 
 ### Attribution and originality
 
-"Parallelogram lock" is the project's name for this formula and sharp bound. Four-vortex parallelogram collapse is Novikov and Sedov (1979). Gotoda (2020) writes $A(\theta)$ and $B(\theta)$ separately and plots the Hamiltonian against the collapse rate. The formula above follows by specializing those equations. The explicit minimum and its equality angle are this project's observation. First public statement: this repository, 2026-09-20. This is a mathematical result within the classical point-vortex model. It is not Novikov and Sedov's motion under a new name, and it is not their $t_*$ or $\omega$ separately under a new name.
+"Parallelogram lock" is the project's name for this formula and sharp bound. Four-vortex parallelogram collapse is Novikov and Sedov (1979). Gotoda (2020) writes $A(\theta)$ and $B(\theta)$ separately and plots the Hamiltonian against the collapse rate. The formula above follows by specializing those equations. The explicit minimum and equality angle were derived here and recorded on 2026-09-20. No earlier exact minimum was located in the inspected sources; priority remains unconfirmed. This is a mathematical result within the classical point-vortex model. It is not Novikov and Sedov's motion under a new name, and it is not their $t_*$ or $\omega$ separately under a new name.
 
 ### Cite
 
@@ -269,14 +296,14 @@ Chaos. (2026). *Parallelogram lock*. GENChase. https://github.com/SharpMeow/GENC
   year         = {2026},
   howpublished = {GENChase},
   url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
-  note         = {First public statement 2026-09-20. $\omega_0 t_c \ge 3\sqrt{5}/4$}
+  note         = {Recorded in GENChase 2026-09-20. $\omega_0 t_c \ge 3\sqrt{5}/4$}
 }
 ```
 
 References:
 
 * E. A. Novikov and Yu. B. Sedov, Vortex collapse, Sov. Phys. JETP 50, 297 (1979).
-* T. Gotoda, Self-similar motions and related relative equilibria in the $N$-point vortex system, J. Dyn. Diff. Equat. (2020), arXiv:2002.09624, eq. (3.13).
+* T. Gotoda, Self-similar motions and related relative equilibria in the $N$-point vortex system, 2020 preprint, arXiv:2002.09624, eq. (3.13).
 
 ---
 
@@ -348,7 +375,7 @@ The Broken configuration moves a vertex off the parallelogram to illustrate depa
 
 ### Attribution and originality
 
-"Quincunx lock" is the project's name for this formula and sharp bound. Five-vortex parallelogram-plus-center collapse is Novikov and Sedov (1979). Gotoda (2020) writes $A(\theta)$ and $B(\theta)$ separately, including the $\gamma_3$ terms, and plots this family ($\gamma_1=-1$, $\gamma_2=1/2$, $\gamma_3=-3/4$) as Hamiltonian against collapse rate. Gotoda (2024) studies filtered-vortex enstrophy on the same family numerically. Neither paper forms the product $\omega t_c$ or states its minimum. The formula above follows by specializing those equations. The explicit minimum and its equality angle are this project's observation. First public statement: this repository, 2026-09-20. This is a mathematical result within the classical point-vortex model. It is not Novikov and Sedov's motion under a new name, and it is not their $t_*$ or $\omega$ separately under a new name. It is not the four-vortex parallelogram lock.
+"Quincunx lock" is the project's name for this formula and sharp bound. Five-vortex parallelogram-plus-center collapse is Novikov and Sedov (1979). Gotoda (2020) writes $A(\theta)$ and $B(\theta)$ separately, including the $\gamma_3$ terms, and plots this family ($\gamma_1=-1$, $\gamma_2=1/2$, $\gamma_3=-3/4$) as Hamiltonian against collapse rate. Gotoda (2025; 2024 preprint) studies filtered-vortex enstrophy on the same family numerically. The passages inspected did not state this optimized product; the audit records the scope of that comparison. The formula above follows by specializing those equations. The explicit minimum and equality angle were derived here and recorded on 2026-09-20. No earlier exact minimum was located in the inspected sources; priority remains unconfirmed. This is a mathematical result within the classical point-vortex model. It is not Novikov and Sedov's motion under a new name, and it is not their $t_*$ or $\omega$ separately under a new name. It is not the four-vortex parallelogram lock.
 
 ### Cite
 
@@ -362,7 +389,7 @@ Chaos. (2026). *Quincunx lock*. GENChase. https://github.com/SharpMeow/GENChase/
   year         = {2026},
   howpublished = {GENChase},
   url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
-  note         = {First public statement 2026-09-20. $\omega_0 t_c \ge 3\sqrt{33}/16$}
+  note         = {Recorded in GENChase 2026-09-20. $\omega_0 t_c \ge 3\sqrt{33}/16$}
 }
 ```
 
@@ -371,12 +398,12 @@ A different five-vortex slice of the same Novikov–Sedov family, with diagonal 
 References:
 
 * E. A. Novikov and Yu. B. Sedov, Vortex collapse, Sov. Phys. JETP 50, 297 (1979).
-* T. Gotoda, Self-similar motions and related relative equilibria in the $N$-point vortex system, J. Dyn. Diff. Equat. (2020), arXiv:2002.09624, eq. (3.13).
+* T. Gotoda, Self-similar motions and related relative equilibria in the $N$-point vortex system, 2020 preprint, arXiv:2002.09624, eq. (3.13).
 * T. Gotoda, Enstrophy variations in the collapsing process of point vortices, J. Fluid Mech. (2025), arXiv:2410.14973.
 
 ---
 
-There are three rows. Leapfrogging, Kirchhoff, the photon-sphere Lyapunov, Crapper energy, Gerstner $T=V$, spherical three-vortex collapse, the three-vortex $t_c$ minimum, Peregrine's amplitude 3, and Moore–Saffman's strain bound remain published and are not claimed.
+The historical catalog began with three rows; the two later candidates are above. All five have unconfirmed priority. Leapfrogging, Kirchhoff, the photon-sphere Lyapunov, Crapper energy, Gerstner $T=V$, spherical three-vortex collapse, the three-vortex $t_c$ minimum, Peregrine's amplitude 3, and Moore–Saffman's strain bound remain published and are not claimed.
 
 Checked 2026-09-20 and not a fourth row: the remaining exact Novikov-Sedov five-vortex slices (the quincunx with the diagonals swapped, Hendrick on five vortices at diagonal ratio 3, and slices whose minimum is a nested radical), three-vortex $L=0$ with $\Gamma_1\neq\Gamma_2$ (Gotoda's $\theta$ gives a closed product; the critical point is a cubic in $\cos\theta$, not a floor like $\sqrt{2}$), and kite, non-parallelogram trapezoid, and equilateral-plus-interior four-vortex scans, which had no self-similar $L=0$ family. Seven-vortex Gotoda (4.4) is numerical $H$-$A$ curves. The search is in [`RESEARCH.md`](RESEARCH.md). Do not re-derive these. Do not put Hendrick's name on a second result.
 
@@ -410,7 +437,7 @@ Checked 2026-09-20 underresearched catalogues. gSQG / α-Euler three-vortex coll
 
 Checked 2026-09-20 cutting-edge 2025. Chen–Walsh–Wheeler (arXiv:2506.04093) construct the first self-similar hollow-vortex implosion and desingularize any non-degenerate point-vortex collapse — including the three rows above — to a real-analytic family of 2D Euler hollow imploders. Circular $U_c(\gamma,\Omega,\kappa)$ is explicit; $\Omega$ and $\kappa$ are independent, not a shape-parameter floor. Grotto–Pappalettera (arXiv:2505.19782) prove gSQG burst/collapse existence; $a,b$ are not closed in shape; $\alpha=2$ is 2D Euler. White–McDonald (Proc. R. Soc. A 2025) and PRFluids 10, 084708 (2025) are equilibria, not collapse products. Cite Chen–Walsh–Wheeler as the Euler realization of the three locks. Do not claim a fourth row from these papers.
 
-Checked 2026-09-20 missed geometries. Nested two-triangle six-vortex with $I=0$ is not self-similar: $A+iB$ on the $+$ triangle disagrees with $A+iB$ on the $-$ triangle (Biot–Savart scan at $\mu=1,1/2,2$). Collapsing configs lack that reflection symmetry. Two vortices in a BEC trap have a published min of one frequency vs separation. Hicks doughnut is thin-core series (Norbury already). Fukumoto–Miyazaki is the elastica analog of a filament with axial flow (Hasimoto already in the studio). Coaxial leapfrog rings now have a 2026 Euler existence proof (arXiv:2603.21644); that is KAM, not an algebraic floor. Do not claim these.
+**Superseded in part by the double-triangle correction above.** The earlier 2026-09-20 missed-geometries entry said: nested two-triangle six-vortex with $I=0$ is not self-similar: $A+iB$ on the $+$ triangle disagrees with $A+iB$ on the $-$ triangle (Biot–Savart scan at $\mu=1,1/2,2$). That six-vortex inference was false: the scan omitted $\mu=(3\pm\sqrt5)/2$, and generic relatively rotated triangles have no common reflection symmetry. The remaining exclusions in this paragraph are unchanged. Two vortices in a BEC trap have a published min of one frequency vs separation. Hicks doughnut is thin-core series (Norbury already). Fukumoto–Miyazaki is the elastica analog of a filament with axial flow (Hasimoto already in the studio). Coaxial leapfrog rings now have a 2026 Euler existence proof (arXiv:2603.21644); that is KAM, not an algebraic floor. Do not claim these.
 
 Checked 2026-09-20 difficulty skips. Three-vortex $\mu\neq 1$: Gotoda $A,B$ are closed; $\mu=1$ is Hendrick $\sqrt{2}$; reciprocal pairs share the product; other $\mu$ have a cubic critical point, not a floor like $\sqrt{2}$. Same family, not a new row. Gallay–Sverak (arXiv:2609.10847, 9 Sep 2026) give a new $\zeta$-reduction and energy inequalities for near-collisions, not a two-rate product min. Rott 1994 winding number remains AIP-blocked; the abstract already says path patterns are numerical. Do not claim these.
 

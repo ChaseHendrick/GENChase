@@ -116,7 +116,7 @@ The same data in machine-readable form is [\`techniques.json\`](techniques.json)
   md += `
 ## Credits
 
-Each technique names the people whose work it implements. Hendrick's Identity, the parallelogram lock, and the quincunx lock are the exceptions: derived here, uniqueness-checked, locked so the status line marks miss if the claim is wrong. Miss is a grade on the numbers, not a crash. The statements are in IDENTITIES.md.
+Each technique names the people whose work it implements. The vortex-collapse formulas are derived here from classical dynamics, with historical priority unconfirmed for all five candidates. See identities/NOVELTY-AUDIT.md. Their plates mark miss if the measured claim is wrong. Miss is a grade on the numbers, not a crash. The statements are in IDENTITIES.md.
 
 `;
   for (const m of mods) md += `**${esc(m.name)}**. ${esc(m.credit)}\n\n`;
