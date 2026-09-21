@@ -1,4 +1,4 @@
-// node tools/recipe.js [settleMs=2600]
+// node tools/recipe.js [extraSettleMs=0] [workers=2]
 // Proves that raising a default did not break an older recipe.
 //
 // A hash carries only what differs from the defaults, so the day a default moves, every recipe that
@@ -7,7 +7,7 @@
 // and the shell's legacyFill hands it back to any recipe written before version <v>.
 //
 // The cases are derived from studio.html itself rather than listed here, so this cannot drift from
-// the file it checks: every legacy declaration in the source becomes four assertions.
+// the file it checks: every legacy declaration in the source becomes five assertions.
 const path = require('path'), fs = require('fs');
 const { chromium } = require('playwright');
 const b64 = o => Buffer.from(JSON.stringify(o)).toString('base64url');
@@ -52,26 +52,18 @@ function cases(src) {
 }
 
 (async () => {
-  const settle = +(process.argv[2] || 2600);
+  const settle = Number(process.argv[2] || 0);
+  const workers = Number(process.argv[3] || 2);
+  if (!Number.isFinite(settle) || settle < 0 || !Number.isInteger(workers) || workers < 1 || workers > 4) {
+    throw new Error('Usage: node tools/recipe.js [extraSettleMs >= 0] [workers: 1..4]');
+  }
+  const started = Date.now();
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'studio.html');
   const src = fs.readFileSync(studio, 'utf8');
   const cs = cases(src);
   if (!cs.length) { console.log('no legacy declarations to check'); return; }
   const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
-  const p = await b.newPage({ viewport: { width: 1400, height: 900 } });
-  p.on('console', () => {});
-  let fail = 0, n = 0;
-
-  // Read the control back off the sidebar: a seg shows which option is pressed, a range its number.
-  const read = (label) => p.evaluate(l => {
-    const seg = [...document.querySelectorAll('.seg[aria-label="' + l + '"]')].pop();
-    if (seg) {
-      const on = [...seg.querySelectorAll('button')].find(x => x.getAttribute('aria-pressed') === 'true');
-      return on ? on.textContent.trim() : 'NONE';
-    }
-    return 'NO CONTROL';
-  }, label);
-
+  const jobs = [];
   const LABEL = { grid: 'Grid' };
   for (const c of cs) {
     const label = LABEL[c.key] || c.key;
@@ -88,21 +80,56 @@ function cases(src) {
       ['#' + c.id + '/recipe-check/' + b64({ v: c.ver, [c.key]: String(c.old) }), c.old, 'a hand-edited recipe storing it as a string still works'],
       ['#' + c.id + '/recipe-check/' + b64({ v: c.ver }), c.now, 'v' + c.ver + ' recipe uses today\'s default'],
     ];
-    for (const [hash, want, why] of trials) {
-      // A hash-only goto against the same file:// URL is a same-document navigation. After enough
-      // GPU tabs in one page the browser takes the contexts away, later trials throw inside
-      // switchTo, and this test then reads whoever's Grid is still on screen. Force a new document.
-      await p.goto('about:blank');
-      await p.goto('file://' + studio + hash, { waitUntil: 'domcontentloaded', timeout: 90000 });
-      await p.waitForTimeout(settle);
-      const got = await read(label);
-      const ok = String(got) === String(want);
-      n++; if (!ok) fail++;
-      console.log((ok ? '  ok   ' : '  FAIL ') + (c.id + '.' + c.key + '            ').slice(0, 20) +
-        'want ' + String(want).padStart(5) + '  got ' + String(got).padStart(5) + '   ' + why);
+    for (const [hash, want, why] of trials) jobs.push({ ...c, label, hash, want, why });
+  }
+  const results = new Array(jobs.length);
+  let next = 0;
+  async function worker() {
+    while (next < jobs.length) {
+      const i = next++, c = jobs[i];
+      // browser.newPage creates an isolated context. Closing it after each trial releases its
+      // GPU resources and storage, so no recipe can inherit another trial's state.
+      const p = await b.newPage({ viewport: { width: 1400, height: 900 } });
+      const errors = [];
+      p.on('pageerror', e => errors.push(e.message));
+      try {
+        await p.goto('file://' + studio + c.hash, { waitUntil: 'domcontentloaded', timeout: 90000 });
+        // Wait for the requested recipe's sidebar, never for the expected value: a wrong value
+        // must fail immediately rather than turning into a misleading readiness timeout.
+        await p.waitForFunction(({ id, label }) => {
+          const tab = document.querySelector('.tab[aria-selected="true"]');
+          const seed = document.querySelector('#seed');
+          const seg = [...document.querySelectorAll('.seg')].filter(x => x.getAttribute('aria-label') === label).pop();
+          return tab && tab.dataset.id === id && seed && seed.value === 'recipe-check' &&
+            seg && seg.querySelector('button[aria-pressed="true"]');
+        }, { id: c.id, label: c.label }, { timeout: 90000 });
+        if (settle) await p.waitForTimeout(settle);
+        const got = await p.evaluate(label => {
+          const seg = [...document.querySelectorAll('.seg')].filter(x => x.getAttribute('aria-label') === label).pop();
+          return seg.querySelector('button[aria-pressed="true"]').textContent.trim();
+        }, c.label);
+        results[i] = { ...c, got, ok: String(got) === String(c.want) && !errors.length, errors };
+      } catch (error) {
+        results[i] = { ...c, got: 'ERROR', ok: false, errors: [...errors, error.message] };
+      } finally {
+        await p.close();
+      }
     }
   }
-  await b.close();
-  console.log(fail ? 'RECIPE COMPATIBILITY FAILED: ' + fail + ' of ' + n : 'RECIPE COMPATIBILITY OK: ' + n + ' assertions');
-  process.exit(fail ? 1 : 0);
-})();
+  try {
+    await Promise.all(Array.from({ length: Math.min(workers, jobs.length) }, worker));
+  } finally {
+    await b.close();
+  }
+  let fail = 0;
+  for (const r of results) {
+    if (!r.ok) fail++;
+    console.log((r.ok ? '  ok   ' : '  FAIL ') + (r.id + '.' + r.key + '            ').slice(0, 20) +
+      'want ' + String(r.want).padStart(5) + '  got ' + String(r.got).padStart(5) + '   ' + r.why +
+      (r.errors.length ? '   ' + r.errors.join('; ') : ''));
+  }
+  console.log(fail ? 'RECIPE COMPATIBILITY FAILED: ' + fail + ' of ' + results.length :
+    'RECIPE COMPATIBILITY OK: ' + results.length + ' assertions');
+  console.log('Elapsed: ' + ((Date.now() - started) / 1000).toFixed(1) + 's; workers: ' + workers);
+  process.exitCode = fail ? 1 : 0;
+})().catch(error => { console.error(error); process.exitCode = 1; });

@@ -60,7 +60,7 @@ Checklist, as it applies:
 - [ ] a moved default: a `legacy:` declaration, and `node tools/recipe.js`
 - [ ] the print is the plate, or `exportSVG` returned nothing and the PNG is the sheet
 
-CI runs lint, the chrome shell, recipe compatibility, and one plate from each architecture family. It does not replace a local check of the tab you touched.
+CI runs once per pull-request revision and again on main after merge. It installs only Chromium’s headless shell. It runs lint, the chrome shell, recipe compatibility, and one plate from each architecture family. It does not replace a local check of the tab you touched.
 
 ## Merging
 
@@ -71,3 +71,7 @@ Squash only. The squash subject is the pull-request title, with `(#N)` added. Me
 ## Naming
 
 Use descriptive names for derived bounds. Search the literature for the closed form, equivalent formulations, and extremum first, and credit published equations to their original sources. The three-vortex collapse bound specializes Gröbli’s 1877 formula; its former personal name is retired. A proof, numerical check, or unsuccessful search does not establish originality. Record derivations and their limitations in [`IDENTITIES.md`](IDENTITIES.md).
+
+## Recipe-check runtime
+
+`node tools/recipe.js` checks every declared legacy default with five assertions, using two isolated browser pages at a time. Each trial starts with fresh storage and waits for its own sidebar to be ready; it never waits for the expected value. Optional arguments are an extra settle delay in milliseconds and a worker count from 1 to 4, for example `node tools/recipe.js 0 1` for a sequential diagnostic run. Plate and export checks still exercise rendering separately.
