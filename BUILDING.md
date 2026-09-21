@@ -13,7 +13,9 @@ node tools/lint.js
 node tools/science.js
 ```
 
-The catalog generator needs Playwright as before. The builder and coverage checker need only Node.
+The catalog generator needs Playwright as before. Install the development harness with
+`npm install --no-save playwright@1.49.1` and `npx playwright install chromium`.
+These dependencies are for contributors, not users of the portable download. The builder and coverage checker need only Node.
 Commit both sources and generated artifacts. CI rejects a stale build, omitted module, duplicate
 include, missing validation record or stale validation report. Catalog count stamping updates the
 source template and rebuilds, so the next assembly cannot undo metadata updates.

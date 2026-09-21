@@ -952,7 +952,7 @@
   {
     "id": "amb",
     "source": "src/modules/pde.js",
-    "sourceSha256": "7fff0952330927aefad34f086af3354cc1d95e539e044ab9d5262c1f26c19ee6",
+    "sourceSha256": "9460ec9dd4a5c0725baf2ca53e63968c718b53d862cfa5cad558d0de185ba349",
     "reference": "Elsen Tjhung, Cesare Nardini and Michael E. Cates, Physical Review X 8, 031080 (2018). Cahn-Hilliard describes a passive mixture relaxing toward equilibrium. Two extra gradient terms, λ|∇φ|² in the chemical potential and a current ζ(∇²φ)∇φ that cannot come from any free energy, are the leading ways an active system (motile bacteria, self-propelled colloids) can break time-reversal symmetry while still conserving φ. They give the two phases different interfacial tensions, and when the tension felt by the minority phase turns negative the Ostwald process runs backward: large droplets shed material to small ones and coarsening stops.",
     "equation": "∂φ/∂t = ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ|∇φ|²",
     "status": "unvalidated",
@@ -966,7 +966,14 @@
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
     ],
     "numerical": [],
-    "print": []
+    "print": [
+      {
+        "test": "tools/pde-print-state.js",
+        "scope": "Real module exportPNG on paused 512x512 float32 initial fields at 2400x2400 pixels (8 inches, 300 ppi).",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 512x512 numerical grid.",
+        "limitations": "State preservation and dimensions only. Does not establish full scientific rendering accuracy, evolved states, all views, hardware or precision modes."
+      }
+    ]
   },
   {
     "id": "aubry",
@@ -990,34 +997,41 @@
   {
     "id": "cahn",
     "source": "src/modules/pde.js",
-    "sourceSha256": "7fff0952330927aefad34f086af3354cc1d95e539e044ab9d5262c1f26c19ee6",
-    "reference": "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ 1−c² shuts diffusion off in the bulk, so only the interfaces move.",
+    "sourceSha256": "9460ec9dd4a5c0725baf2ca53e63968c718b53d862cfa5cad558d0de185ba349",
+    "reference": "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ max(1−c²,0) suppresses mobility near pure phases; it does not imply pure surface diffusion for this polynomial free energy (Lee, Munch and Suli, 2015).",
     "equation": "∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c",
     "status": "partially validated",
     "limitations": [
-      "Constant-mobility, periodic, noise-free float32 benchmark only; no continuum convergence claim.",
-      "The degenerate-mobility option multiplies a Laplacian by a spatially varying mobility instead of discretizing its flux divergence; this requires a separate scientific correction.",
-      "Additive noise and clipping may change mass. Float16 fallback and print-state fidelity remain unaudited."
+      "The deterministic constant/variable-mobility stencil is checked at declared grids and both boundary settings. No continuum convergence claim.",
+      "Additive forcing and clipping may change mass. Float16 fallback, long-time coarsening and all-parameter accuracy remain unaudited.",
+      "Numerical correction changes historical degenerate-mobility pictures; no default, seed or stored parameter is changed."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Establish spatial and temporal convergence at fixed physical domain/time.",
+      "Audit clipping, float16, additive forcing and long-time coarsening with stated tolerances.",
+      "Extend print checks beyond state preservation and dimensions to scientific rendering accuracy."
     ],
     "numerical": [
       {
         "test": "tools/pde-science.js",
-        "scope": "Actual float32 GPU chemical-potential and update shaders versus independent double-precision periodic stencil at 64, 128, 256 and 512 cells; constant mobility and zero noise.",
-        "criteria": "32 steps: maximum absolute field error <2e-7; mean drift <2e-8; reversed-update failure control error >1e-6.",
-        "limitations": "Discrete implementation agreement only. Fixed cell spacing, not continuum convergence. No float16, clipping, degenerate mobility, noise or print-state certification."
+        "scope": "Actual float32 GPU chemical-potential and update shaders versus independent double-precision conservative stencil; constant and variable mobility, periodic and no-flux boundaries, grids 64, 128, 256 and 512.",
+        "criteria": "32 steps: maximum absolute field error <5e-7; mean drift <5e-8; reversed-update failure control error >1e-6.",
+        "limitations": "Discrete implementation agreement only. Fixed cell spacing, not continuum convergence. No float16, clipping or stochastic forcing certification."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/pde-print-state.js",
+        "scope": "Real module exportPNG on paused 512x512 float32 initial fields at 2400x2400 pixels (8 inches, 300 ppi).",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 512x512 numerical grid.",
+        "limitations": "State preservation and dimensions only. Does not establish full scientific rendering accuracy, evolved states, all views, hardware or precision modes."
+      }
+    ]
   },
   {
     "id": "ohta",
     "source": "src/modules/pde.js",
-    "sourceSha256": "7fff0952330927aefad34f086af3354cc1d95e539e044ab9d5262c1f26c19ee6",
+    "sourceSha256": "9460ec9dd4a5c0725baf2ca53e63968c718b53d862cfa5cad558d0de185ba349",
     "reference": "Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). Coarsening stops. The equilibrium is spots, stripes or bicontinuous networks whose period is set by σ, not by waiting.",
     "equation": "∂u/∂t = Δ(u³ − u − ε²Δu) − σ(u − m)",
     "status": "unvalidated",
@@ -1031,7 +1045,14 @@
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
     ],
     "numerical": [],
-    "print": []
+    "print": [
+      {
+        "test": "tools/pde-print-state.js",
+        "scope": "Real module exportPNG on paused 512x512 float32 initial fields at 2400x2400 pixels (8 inches, 300 ppi).",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 512x512 numerical grid.",
+        "limitations": "State preservation and dimensions only. Does not establish full scientific rendering accuracy, evolved states, all views, hardware or precision modes."
+      }
+    ]
   },
   {
     "id": "hopf",
@@ -1055,7 +1076,7 @@
   {
     "id": "swift",
     "source": "src/modules/pde.js",
-    "sourceSha256": "7fff0952330927aefad34f086af3354cc1d95e539e044ab9d5262c1f26c19ee6",
+    "sourceSha256": "9460ec9dd4a5c0725baf2ca53e63968c718b53d862cfa5cad558d0de185ba349",
     "reference": "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is the universal envelope of Rayleigh–Bénard convection just above onset: a real scalar field with a preferred wavenumber k₀. The quadratic term g selects hexagons over rolls; at slightly negative r a localized pulse can sit in a stable zero background (snaking).",
     "equation": "∂u/∂t = r u − (k₀² + ∇²)² u + g u² − u³",
     "status": "unvalidated",
@@ -1069,12 +1090,19 @@
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
     ],
     "numerical": [],
-    "print": []
+    "print": [
+      {
+        "test": "tools/pde-print-state.js",
+        "scope": "Real module exportPNG on paused 512x512 float32 initial fields at 2400x2400 pixels (8 inches, 300 ppi).",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 512x512 numerical grid.",
+        "limitations": "State preservation and dimensions only. Does not establish full scientific rendering accuracy, evolved states, all views, hardware or precision modes."
+      }
+    ]
   },
   {
     "id": "pfc",
     "source": "src/modules/pde.js",
-    "sourceSha256": "7fff0952330927aefad34f086af3354cc1d95e539e044ab9d5262c1f26c19ee6",
+    "sourceSha256": "9460ec9dd4a5c0725baf2ca53e63968c718b53d862cfa5cad558d0de185ba349",
     "reference": "K. R. Elder, M. Katakowski, M. Haataja and M. Grant, Phys. Rev. Lett. 88, 245701 (2002); Elder and Grant, Phys. Rev. E 70, 051605 (2004). The phase-field crystal model is Swift–Hohenberg’s free energy evolved with conserved (Cahn–Hilliard) dynamics. Density peaks are atoms. A quench from a uniform liquid freezes into a triangular lattice; grains rotate, vacancies hop, and the solid–liquid front is a real melting line, all on diffusive time.",
     "equation": "∂ψ/∂t = M ∇²(δF/δψ),   F = ∫ ½ ψ [r + (k₀²+∇²)²] ψ + ψ⁴/4",
     "status": "unvalidated",
@@ -1088,7 +1116,14 @@
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
     ],
     "numerical": [],
-    "print": []
+    "print": [
+      {
+        "test": "tools/pde-print-state.js",
+        "scope": "Real module exportPNG on paused 512x512 float32 initial fields at 2400x2400 pixels (8 inches, 300 ppi).",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 512x512 numerical grid.",
+        "limitations": "State preservation and dimensions only. Does not establish full scientific rendering accuracy, evolved states, all views, hardware or precision modes."
+      }
+    ]
   },
   {
     "id": "lp",
@@ -1283,7 +1318,7 @@
   {
     "id": "ks",
     "source": "src/modules/pde.js",
-    "sourceSha256": "7fff0952330927aefad34f086af3354cc1d95e539e044ab9d5262c1f26c19ee6",
+    "sourceSha256": "9460ec9dd4a5c0725baf2ca53e63968c718b53d862cfa5cad558d0de185ba349",
     "reference": "Yoshiki Kuramoto and Toshio Tsuzuki, Prog. Theor. Phys. 55, 356 (1976); G. I. Sivashinsky, Acta Astronautica 4, 1177 (1977). Independently derived for reaction-diffusion phase turbulence and for laminar flame fronts. It is the simplest PDE that produces extensive spatiotemporal chaos: a band of unstable modes, a stabilizing biharmonic, and a Burgers-like nonlinearity. In two dimensions the cells of a flame.",
     "equation": "∂u/∂t = −ν ∇⁴u − ∇²u − (α/2)|∇u|²",
     "status": "unvalidated",
@@ -1297,7 +1332,14 @@
       "Record resolution/precision or statistical uncertainty and validate the actual print path."
     ],
     "numerical": [],
-    "print": []
+    "print": [
+      {
+        "test": "tools/pde-print-state.js",
+        "scope": "Real module exportPNG on paused 512x512 float32 initial fields at 2400x2400 pixels (8 inches, 300 ppi).",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 512x512 numerical grid.",
+        "limitations": "State preservation and dimensions only. Does not establish full scientific rendering accuracy, evolved states, all views, hardware or precision modes."
+      }
+    ]
   },
   {
     "id": "breather",

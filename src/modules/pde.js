@@ -42,18 +42,35 @@ void main(){
   outColor = vec4(mu, 0.0, 0.0, 1.0);
 }`;
 
+  // Symmetric face mobility gives equal and opposite fluxes to neighboring cells.
+  // This discretizes div(M(c) grad(mu)); M(c) lap(mu) alone is not conservative.
+  const MOBILITY_FLUX = `
+float mobility(float c) { return max(1.0 - c*c, 0.0); }
+float mobilityFlux(sampler2D field, sampler2D chem, vec2 uv, vec2 px) {
+  float c = texture(field, uv).r, mu = texture(chem, uv).r;
+  float m = mobility(c);
+  vec2 e = vec2(px.x, 0.0), n = vec2(0.0, px.y);
+  float ce = texture(field, uv+e).r, cw = texture(field, uv-e).r;
+  float cn = texture(field, uv+n).r, cs = texture(field, uv-n).r;
+  return 0.5*(m+mobility(ce))*(texture(chem,uv+e).r-mu)
+       + 0.5*(m+mobility(cw))*(texture(chem,uv-e).r-mu)
+       + 0.5*(m+mobility(cn))*(texture(chem,uv+n).r-mu)
+       + 0.5*(m+mobility(cs))*(texture(chem,uv-n).r-mu);
+}`;
+
   const STEP_CH = HEAD + `
 uniform sampler2D u_c, u_mu; uniform vec2 u_res;
 uniform float u_dt, u_M, u_deg, u_noise, u_step, u_nOff;
 ${G.GLSL.hash}
+${MOBILITY_FLUX}
 void main(){
   vec2 px = 1.0 / u_res;
   float c = texture(u_c, v_uv).r;
-  float M = u_M;
-  if (u_deg > 0.5) M *= max(1.0 - c * c, 0.0);
+  float diffusion = u_M * lap(u_mu, v_uv, px);
+  if (u_deg > 0.5) diffusion = u_M * mobilityFlux(u_c, u_mu, v_uv, px);
   float n = 0.0;
   if (u_noise > 0.0) n = (hash21(v_uv * u_res + vec2(u_nOff, u_step)) - 0.5) * 2.0 * u_noise;
-  c += u_dt * (M * lap(u_mu, v_uv, px) + n);
+  c += u_dt * (diffusion + n);
   outColor = vec4(clamp(c, -1.7, 1.7), 0.0, 0.0, 1.0);
 }`;
 
@@ -61,14 +78,15 @@ void main(){
 uniform sampler2D u_c, u_mu; uniform vec2 u_res;
 uniform float u_dt, u_M, u_deg, u_noise, u_step, u_nOff, u_sigma, u_m;
 ${G.GLSL.hash}
+${MOBILITY_FLUX}
 void main(){
   vec2 px = 1.0 / u_res;
   float c = texture(u_c, v_uv).r;
-  float M = u_M;
-  if (u_deg > 0.5) M *= max(1.0 - c * c, 0.0);
+  float diffusion = u_M * lap(u_mu, v_uv, px);
+  if (u_deg > 0.5) diffusion = u_M * mobilityFlux(u_c, u_mu, v_uv, px);
   float n = 0.0;
   if (u_noise > 0.0) n = (hash21(v_uv * u_res + vec2(u_nOff, u_step)) - 0.5) * 2.0 * u_noise;
-  c += u_dt * (M * lap(u_mu, v_uv, px) - u_sigma * (c - u_m) + n);
+  c += u_dt * (diffusion - u_sigma * (c - u_m) + n);
   outColor = vec4(clamp(c, -1.7, 1.7), 0.0, 0.0, 1.0);
 }`;
 
@@ -519,7 +537,7 @@ void main(){
     subtitle: 'spinodal decomposition · 1958',
     order: 56,
     equation: '∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c',
-    credit: "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ 1−c² shuts diffusion off in the bulk, so only the interfaces move.",
+    credit: "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ max(1−c²,0) suppresses mobility near pure phases; it does not imply pure surface diffusion for this polynomial free energy (Lee, Munch and Suli, 2015).",
     blurb: 'A uniform mixture, cooled through the spinodal, does not wait for a nucleus. Every wavelength inside a band is unstable, the field breaks into A and B, and then the interfaces move so that the small domains feed the large ones. That coarsening is why the plate changes as you watch: the pattern is the same kind of thing at a larger scale. Mean composition c₀ is the fork in the road. Near zero you get a bicontinuous labyrinth. Off-critical, droplets of the minority phase in a sea of the majority.',
     schema: GRID.concat([
       RANGE('Mixture', 'c0', 'Mean composition c₀', GEOM, -0.6, 0.6, 0.01, f2, {
@@ -528,9 +546,9 @@ void main(){
         hint: 'ε sets how thick the A/B wall is, in cells. Smaller ε, sharper interfaces, more (and slower) coarsening.' }),
       RANGE('Mixture', 'M', 'Mobility M', LIVE, 0.2, 2.5, 0.05, f2),
       { group: 'Mixture', key: 'deg', label: 'Degenerate mobility', type: 'toggle', kind: LIVE,
-        hint: 'M(c) = M(1−c²). Diffusion dies in the bulk; only the interfaces remain. Closer to a sharp-interface Allen–Cahn/Cahn–Hilliard hybrid.' },
+        hint: 'M(c) = M max(1−c²,0), applied as conservative face fluxes. Mobility is reduced near pure phases; this is not a pure surface-diffusion model.' },
       RANGE('Mixture', 'amp', 'Quench amplitude', GEOM, 0.02, 0.5, 0.01, f2),
-      RANGE('Mixture', 'noise', 'Thermal noise', LIVE, 0, 0.08, 0.002, f3),
+      RANGE('Mixture', 'noise', 'Additive forcing', LIVE, 0, 0.08, 0.002, f3, { hint: 'Independent cell forcing changes total composition. Set to zero for the deterministic conservative model; this is not conserved thermal noise.' }),
       { group: 'Seeding', key: 'init', label: 'Seeding', type: 'seg', kind: GEOM, wrap: true,
         options: [['quench', 'Quench'], ['drops', 'Drops'], ['bands', 'Bands']] },
     ]).concat(simFields()).concat(pictureFields([

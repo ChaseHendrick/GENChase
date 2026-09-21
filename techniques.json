@@ -1416,7 +1416,7 @@
       "tab": "",
       "subtitle": "spinodal decomposition · 1958",
       "equation": "∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c",
-      "credit": "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ 1−c² shuts diffusion off in the bulk, so only the interfaces move.",
+      "credit": "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ max(1−c²,0) suppresses mobility near pure phases; it does not imply pure surface diffusion for this polynomial free energy (Lee, Munch and Suli, 2015).",
       "blurb": "A uniform mixture, cooled through the spinodal, does not wait for a nucleus. Every wavelength inside a band is unstable, the field breaks into A and B, and then the interfaces move so that the small domains feed the large ones. That coarsening is why the plate changes as you watch: the pattern is the same kind of thing at a larger scale. Mean composition c₀ is the fork in the road. Near zero you get a bicontinuous labyrinth. Off-critical, droplets of the minority phase in a sea of the majority.",
       "order": 56,
       "seed": "cahn-1958",

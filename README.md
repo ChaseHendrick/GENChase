@@ -4,7 +4,28 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
-One HTML file. 120 pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
+One portable HTML file, maintained as modular source. 120 pattern-forming systems with saved recipes and print exports. [See the project flowchart](PROJECT-FLOW.md).
+
+```mermaid
+flowchart TD
+    A["Edit source modules"] --> B["Build one HTML file"]
+    B --> C["Test and review"]
+    S["Papers and independent benchmarks"] --> C
+    C -->|Fixes needed| A
+    C -->|Checks pass, review complete| D["Merge and publish studio"]
+    D --> E["Choose a technique, seed and settings"]
+    E --> F["Run and explore the simulation"]
+    F --> G["Save a recipe or export artwork"]
+
+    classDef development fill:#e8f1ff,stroke:#2458a6,color:#102c54
+    classDef science fill:#fff1d6,stroke:#9a6500,color:#553800
+    classDef use fill:#e5f5ed,stroke:#24734b,color:#143e2a
+    class A,B,D development
+    class C,S science
+    class E,F,G use
+```
+
+Blue: development · Amber: review and evidence · Green: using the studio. Passing checks covers their stated cases, not all scientific claims; see [validation coverage](VALIDATION.md).
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
@@ -21,7 +42,7 @@ One HTML file. 120 pattern-forming systems. A seed that reprints. A hash you can
   <img src="gallery/snowflake.jpg" width="32%" alt="Gravner-Griffeath snow crystal" />
   <img src="gallery/tilings.jpg" width="32%" alt="Penrose tiling" />
 </p>
-<p align="center"><sub>Howard stream power · Gross-Pitaevskii · Graner-Glazier · Ermentrout-Cowan · Gray-Scott on {7,3} · Dumitriu-Edelman · Eden · Gravner-Griffeath · Penrose. Frames from the live studio, at print resolution.</sub></p>
+<p align="center"><sub>Howard stream power · Cundall-Strack · Graner-Glazier · Ermentrout-Cowan · Gray-Scott on {7,3} · Dumitriu-Edelman · Eden · Gravner-Griffeath · Penrose. Frames from the live studio, at print resolution.</sub></p>
 
 
 Every tab is a system that already exists in a paper: Gray–Scott chemistry, Physarum transport, Lenia, Navier–Stokes, Cahn–Hilliard spinodal, Swift–Hohenberg convection, Lifshitz–Petrich 12-fold quasicrystals, Gravner–Griffeath snow crystals, hat and spectre monotiles, Helmholtz scars, optical caustics, Barkley excitable media, the Ising model, Bak–Tang–Wiesenfeld sandpiles, Schrödinger wave packets, Rayleigh–Bénard convection, the arctic circle of random domino tilings, Schramm–Loewner curves, and the rest. The governing equations are the medium. Nothing here is a style filter sitting on noise.
@@ -34,29 +55,21 @@ Images you generate are yours, whoever you are. Sell them. The source is [Apache
 
 ## Why this exists
 
-Most generative tools give you a look. GENChase gives you a computation you can keep.
+GENChase brings many scientific models into one workspace for exploring patterns and making prints. A shared interface provides seeds, saved settings, palettes and export controls, so each simulation does not need its own application.
 
-The usual options fall down in different places:
-
-- **One shader, one URL.** Beautiful kernels. No shared palette, no print pipeline, no second science. You screenshot it and move on.
-- **A sketch per piece.** Processing and p5 are excellent notebooks. They are not a studio. `random()` is not a recipe, and the export is whatever the canvas was that afternoon.
-- **An image model.** It will draw a snowflake that never froze and a quasicrystal that is a hexagon with extra steps. There is no seed that reprints, and no way to show that anything was solved.
-- **A recorded loop.** It looks alive until you touch it.
-
-GENChase is the other object: 120 sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
+The download runs locally. A saved recipe records the inputs needed to reconstruct a piece; its exact pixels can still depend on software version, numerical precision and hardware.
 
 > [!IMPORTANT]
 > **Current research status: zero confirmed novel findings thus far.**
 
 Another purpose is mathematical discovery: explore simulations, spot relationships, and develop new identities, formulas, and sharp bounds. The aim is to discover and invent new mathematics, then test the results, prove what we can, and check the literature before claiming originality. The [research notes](IDENTITIES.md) record derivations, and the [literature audit](identities/NOVELTY-AUDIT.md) documents the source checks.
 
-| | On disk | What you get | How you reprint |
-|---|---|---|---|
-| 🔵 **GENChase** | `studio.html` | a seeded simulation | the hash |
-| Shadertoy | a kernel | a frame | you don't |
-| p5 / Processing | a project | a canvas | if you saved the sketch |
-| Image model | a prompt | a still | you don't |
-| Video | a file | a loop | you don't |
+| Workflow | What you keep | What is needed to reproduce it |
+|---|---|---|
+| 🔵 **GENChase** | Portable studio and a saved recipe | Studio version, seed, settings and a compatible browser |
+| Custom code project | Source and chosen dependencies | Code, inputs, random seed and environment |
+| Image-generation workflow | Output and any saved generation settings | The model/version and available reproducibility controls |
+| Rendered video | Finished frames | The file reproduces playback; the underlying simulation requires its source and inputs |
 
 ---
 
@@ -66,46 +79,40 @@ Another purpose is mathematical discovery: explore simulations, spot relationshi
 
 **Determinism as the product.** Every random draw comes from a seeded generator. Vector geometry can scale to print dimensions. Grid simulations retain their numerical resolution when exported; increasing print size does not refine the solution.
 
-**The hash is the recipe.** `#snowflake/gravner-2008` and `#lp/lifshitz-1997` are enough to reconstruct a plate. Settings JSON exists (`v: 1`) for the verbose case. It is the fallback, not the way you send someone work.
+**The hash is the recipe.** `#snowflake/gravner-2008` and `#lp/lifshitz-1997` are enough to reconstruct a plate. Settings JSON is another way to save inputs. Current recipes use version 2; older recipe versions are handled by declared compatibility defaults.
 
-**Print first.** The size control speaks inches and centimetres as well as pixels. 300–360 ppi, because that is what giclée printers actually take. Colophon on: a mounted sheet. Colophon off: the image alone. Where the medium is lines, export can be SVG, not a photograph of pixels.
+**Print first.** The size control speaks inches and centimetres as well as pixels. Choose pixel density to suit the printer and intended viewing size. Colophon on: a mounted sheet. Colophon off: the image alone. Where the medium is lines, export can be SVG, not a photograph of pixels.
 
-**A witness, not a trailer.** Click a living plate. Drag a stroke. The field has to answer. The LIVE badge is a fingerprint of the pixels on the canvas: a video would loop, a still never changes, a simulation has to keep moving. Still plates start Still and stay Still. They do not get to flash Live as a greeting.
+**An activity indicator.** The LIVE badge detects changes in canvas pixels. It helps show whether a plate is changing or still; it does not prove that a simulation is numerically correct or distinguish simulation frames from every other kind of animation.
 
-**Nothing to phone home.** No build, no framework, no account, no analytics, no CDN. WebGL2 where the method needs a GPU, CPU where that is faster. It runs from a folder.
+**Nothing to phone home.** No installation or build is needed to use the download. No account, analytics or CDN is required. WebGL2 where the method needs a GPU, CPU where that is faster. It runs from a folder.
 
 ---
 
-## The plates check themselves
+## What the checks establish
 
-Many tabs measure a quantity from the current field and compare it with theory. These diagnostics are useful checks, but do not establish full agreement with a paper. [Validation coverage](VALIDATION.md) separates numerical evidence, limitations and print quality. Unreviewed schemes remain explicitly unvalidated.
+A displayed ratio of `1.000` is the same rounded value as a theoretical `1`. Extra decimal places do not establish accuracy or independence. The old table mixed sampled formulas, structural properties and numerical experiments, and omitted the recipes and uncertainties needed to assess its example values. Those unsupported snapshot numbers have been removed.
 
-The word **miss** on a status line is not the site breaking. The picture is still a plate. The numbers under it did not match what the equation predicted. Broken presets do this on purpose, so you can see the check is real.
+The following results have executable tests and recorded scope. They report discrepancies or explicit limits, rather than matching rounded reference values. They do not certify all simulations or every control setting.
 
-| Tab | What it measures | 🔵 Theoretical reference | 🟣 Measured on the plate |
+| Check | 🔵 Acceptance criterion | 🟣 Recorded result | Scope |
 |---|---|---|---|
-| Foam & Grains | mean number of sides in the froth | exactly 6, forced by Euler | **6.11** |
-| Foam & Grains | von Neumann–Mullins law | dA/dt ∝ (n − 6) | **dA/dt = 0.34 (n − 6)**, r = 0.60 |
-| Random Matrices | unfolded level spacing, β = 1 | Wigner surmise 0.523 | **0.540** |
-| Random Matrices | unfolded level spacing, β = 2 | Wigner surmise 0.422 | **0.419** |
-| Rough Growth | roughening exponent, random deposition | 1/2 | **0.498** |
-| Rough Growth | roughening exponent, surface relaxation | 1/4 (Edwards–Wilkinson) | **0.217** |
-| Rough Growth | roughening exponent, RSOS | 1/3 (KPZ) | **0.307** |
-| Flocking | number fluctuations, ΔN ~ N^a | above 1/2 out of equilibrium | **0.74** |
-| Hyperbolic Turing | cells meeting at a vertex of {p, q} | exactly q | **100%** |
-| Drainage Networks | drainage area, P(A > a) ~ a^−β | near 0.45 in real basins | **0.53** |
-| Vortex Lattice | vortices, by phase winding | quantized circulation | **counted, not guessed** |
-| Track | v_meas / v of a strain-written sine-Gordon breather | 1 if η = 0 | **1.20 paving, E_out/E bound** |
-| Soliton Web | Hirota bilinear residual of the exact tau function | 0 | **~10⁻¹⁵** |
-| Gerstner | orbit RMS / r ; r / A e^{kb} | 0 ; 1 | **~10⁻¹⁶** ; **1.000** |
-| Figure Eight | \|L\| ; ΔE/E ; \|q(T)−q(0)\| | 0 | **~10⁻¹⁴** ; **~10⁻¹⁴** ; **~10⁻⁷** |
-| Peakon | v_meas / c ; corner \|u_x\|/c | 1 ; 1 | **1.000** ; **1.00** |
-| Photon Sphere | b_c / (3√3 M) ; r_ph / 3M | 1 ; 1 | **1.000** ; **1.000** |
-| Crapper | s / (4\|A\|/(π(1−A²))) | 1 | **1.000** |
-| Hasimoto | κ_max/(2ν) ; c/(2τ₀) | 1 ; 1 | **1.000** ; **1.000** |
-| Lump | KP-I residual of the Manakov lump | 0 | **~3×10⁻⁴** (FD) |
+| [Cahn–Hilliard GPU vs independent CPU stencil](validation/CAHN-HILLIARD.md) | Maximum field error below 5 × 10⁻⁷ | 9.99 × 10⁻⁸ | 16 noise-free float32 cases; constant/variable mobility and periodic/no-flux boundaries |
+| [Cahn–Hilliard composition conservation](validation/results/cahn-mobility.json) | Mean drift below 5 × 10⁻⁸ | 3.43 × 10⁻⁹ maximum | Same bounded test; excludes forcing and clipping |
+| [PDE print-state preservation](validation/results/pde-print-state.json) | No changed field components; 2400 × 2400 output | Zero changes in six tested modules | Paused 512 × 512 initial fields; checks state and dimensions, not full rendering accuracy |
 
-When a measurement disagrees with theory the tab says so rather than rounding toward it. Ballistic deposition fits **under** 1/3 because its crossover to KPZ is slow at plate size, and the hint says exactly that instead of quietly presenting 0.33. A neural field outside its patterning window prints "h is outside it, the sheet will go flat" rather than leaving a blank plate to be read as a subtle one.
+Other tabs still expose useful diagnostics, but their meaning differs:
+
+| Diagnostic family | What is being checked | What it does **not** establish |
+|---|---|---|
+| Foam topology, hyperbolic tiling vertex counts | Structural consistency of constructed geometry | Independent evidence for the dynamics or physical model |
+| Foam growth, random-matrix spacings, roughness, flocking, drainage | Statistics or fitted trends from finite simulations | Quantitative agreement without a recorded recipe, sample size and uncertainty |
+| Gerstner, Crapper, Peakon | Sampled geometric or finite-difference properties of an evaluated formula | Independent numerical evolution of the governing PDE |
+| Hasimoto, KP soliton web, KP-I lump | Curve derivatives or equation residuals at sampled points | An all-parameter proof or validation of every rendered/exported pixel |
+| Figure Eight, Photon Sphere, Track | Trajectory/invariant or propagation diagnostics | Convergence and independent error bounds without a dedicated benchmark |
+| Vortex Lattice | Phase-winding counts, filtered by density | Complete validation of the condensate solver |
+
+The [diagnostic review](validation/DIAGNOSTICS.md) records the source inspection behind these distinctions. The [validation inventory](VALIDATION.md) tracks evidence and remaining gaps for every simulation. A passing consistency check or a visually sharp print must not be described as verified physics.
 
 ---
 
@@ -113,55 +120,25 @@ When a measurement disagrees with theory the tab says so rather than rounding to
 
 A generative art tool can get away with a plausible-looking integrator. A plate that claims to be a solved equation cannot, and most of the engineering here is in that gap.
 
-**Step bounds are derived, not guessed.** The 5-point Laplacian has symbol on [−8, 0], so every explicit scheme in the file computes its own stability limit and clamps to it, and the status line prints which term is binding. Kuramoto–Sivashinsky gives 64ν − 8. Swift–Hohenberg gives (8 − k₀²)² − r. A rotating condensate has two bounds at once, one kinetic and one from the rotation term, which is first order in space with an imaginary coefficient and unstable on its own. A flock has three, and the tightest is the cubic saturation, which the linear estimates do not see. Past any of these bounds a field fills with the grid-scale checkerboard, which a thumbnail averages into a perfectly plausible plate; `tools/check.js` measures the neighbor correlation and fails it.
+**Timestep safeguards.** Several explicit solvers limit the step using their discretized linear operator. These estimates help prevent instability, but do not certify nonlinear behavior at every setting. The visual harness also looks for grid-scale checkerboards where it can measure them; a clean image is not a convergence test.
 
-**Samplers are exact where an exact sampler exists.** Uniform spanning trees by Wilson's algorithm, not by a randomised Prim that only looks uniform. Random domino tilings by Elkies–Kuperberg–Larsen–Propp shuffling. β-ensembles by the Dumitriu–Edelman tridiagonal models, which give any β > 0 in O(n²) rather than the three classical cases. Dyson Brownian motion by diagonalising a genuine matrix Ornstein–Uhlenbeck process, so the eigenvalues never cross because the matrix process says so, not because a denominator was softened.
+**Named algorithms.** Examples include Wilson's spanning-tree sampler, Dumitriu–Edelman random-matrix models and Braun–Willett landscape evolution. Their mathematical properties depend on implementing their assumptions correctly. Source credits identify what to compare during the scientific audit; they are not a substitute for that audit.
 
-**Algorithms are the ones the field actually uses.** Landscapes are solved on the Braun–Willett donor stack, one linear pass up the drainage tree and one back down, with priority-flood depression filling. Vortices are found by walking the winding number around every plaquette, then filtered by whether the plate also has a density minimum there, because a winding alone counts grid-scale phase noise and a density minimum alone misses the cores. Hyperbolic tilings are built by reflection in the sides of a fundamental polygon and then verify themselves by counting the cells around each vertex.
+**Print pixels and simulation cells.** Some techniques export vector geometry; others render a finite numerical grid into a larger image. A 2400-pixel print of a 512-cell field still contains 512 cells across. The sheet can report that underlying resolution. `tools/sharp.js` measures image detail, `tools/export.js` exercises the export path, and the dedicated print-state test checks that the tested PDE exports preserve their fields. Each check has a different purpose.
 
-**Print is not an afterthought.** Where the picture is discrete marks the export is real vectors, rasterized at the printer's resolution rather than at whatever the canvas happened to be. Where it is a field, the sheet states the field's own resolution rather than pretending the paper is the limit, and the 16 tabs that magnify a grid now default to 512 cells rather than 192, which is the measured knee: Cahn-Hilliard at 512 scores 0.88 on edge acutance against 0.41 at 192, and 384 only reaches 0.74. The same sheet offers JPEG and WebP of those pixels, and an 8-second clip of a plate that moves (WebM, or MP4 where that is all the browser encodes) — the plate in time, not a print. `tools/sharp.js` measures how much detail a sheet really carries, `tools/lint.js` fails a size control that offers an option its own sanitizer clamps away, and `tools/recipe.js` proves that moving those defaults did not change what an older recipe reprints.
+**Saved recipes.** Compatibility tests verify declared older defaults and explicit settings. Numerical bug fixes can intentionally change an old result, as documented for [variable mobility](validation/CAHN-HILLIARD.md). Keep the studio version with a recipe when historical reproduction matters.
 
 ---
 
-## What is actually new here, and what is not
+## What the project contributes
 
-Worth being precise about, because the credits matter.
+GENChase combines published models with shared controls, saved recipes, palettes and print exports. That integration is software work; it does not establish a new mathematical result or a first implementation of any technique.
 
-**Published science, named.** Each simulation credits the work it implements. Gray–Scott is Gray and Scott. The donor stack is Braun and Willett. Wilson's algorithm is Wilson's. The [technique catalog](TECHNIQUES.md) links the scientific sources.
+The [catalog](TECHNIQUES.md) identifies models and scientific sources. The [research ledger](RESEARCH.md) preserves dated literature searches and their limits. **Zero confirmed novel findings thus far.** Neither an unsuccessful search nor a passing numerical check establishes originality.
 
-**New as artifacts.** Every plate is an image that did not exist before it was computed, and the license says it is yours. That is the point of the object.
+Generated artwork may be sold and reused under the [output grant](OUTPUT-RIGHTS.md). Reusing the same seed can reproduce the same image; generation does not guarantee that an image is unique.
 
-**New as working software, checked against a search rather than from memory.** These are not new ideas, and several have close relatives. What I did not find was another browser implementation you can open, seed and print. Each bullet says what the nearest existing thing is, so you can judge the gap yourself.
-
-- **Hyperbolic Turing.** Gray–Scott on a {p, q} tiling of the hyperbolic plane, built by reflecting one polygon in its own sides, drawn as geodesic arcs in the Poincaré disk, exported as vectors, and self-checking: it counts the cells meeting at each interior vertex and reports the fraction that is exactly q. Browser Gray–Scott is everywhere and browser hyperbolic tilings are common, hyperplay and EscherSketch and hyperbolic-canvas among them. The nearest thing to the combination is Dmitry Shintyakov's Hyperbolic CA Simulator, which runs discrete cellular automata on arbitrary regular tilings in a browser rather than a continuous-state PDE. One warning if you go looking: VisualPDE has a page on "hyperbolic reaction–diffusion" that means hyperbolic in the PDE-classification sense, a second-order time derivative, and has nothing to do with hyperbolic geometry.
-- **Random Matrices.** β-ensemble spectra with β swept continuously down one sheet, from independence to a near-crystal. The mathematics that makes it cheap is Dumitriu and Edelman, 2002. Continuous β is standard practice and general-β samplers with plotting tools exist, DPPy among them. Drawing the whole continuum as a single image, with β as a spatial axis instead of a few overlaid curves, is a presentation choice rather than a result, and I did not find it done elsewhere, though a figure like it could sit in a paper I have not read.
-- **Vortex Lattice.** Rotating Gross–Pitaevskii relaxed in imaginary time, with vortices located by walking the winding number around every plaquette, filtered by whether the field also has a density minimum there, and exported as a vector point set with its bond-orientational order measured. A browser rotating-GPE vortex lattice is not new: George Stagg's WebGL solver has had a "Trapped & Rotating" preset since 2019. It injects vortices on a click rather than finding them, and it runs damped real time rather than imaginary-time relaxation. Plaquette winding detection with a point-set export is routine in research codes such as GPUE, which is CUDA. Putting the relaxation, the detection, the density filter and the vector export together in a page you can open is the part I did not find.
-- **Cortical Planforms.** A Wilson–Cowan field taken through the retinocortical map, interactive and seeded, with the patterning window computed in closed form so the tab can say when the drive is outside it. The science is Ermentrout and Cowan 1979 and Bressloff and colleagues 2001. I looked for an interactive browser version and did not find one, and this is the weakest negative result on the page: a sketch doing exactly this could sit on Observable or Shadertoy under a name I did not think to search, and neither site could be opened from here.
-- **Drainage Networks.** Stream-power landscape evolution on the Braun–Willett donor stack with priority-flood depression filling, with the channel network exported as vectors. The research codes are FastScape, fastscapelib and LandLab, which are Python, C++ and Fortran driven from notebooks; fastscapelib's own roadmap lists no browser or WebAssembly target. Browser erosion demos are common, but they are droplet-based hydraulic erosion out of computer graphics, which is a different model and does not give you a drainage network.
-- **Soliton Web.** Resonant line-soliton webs of the Kadomtsev–Petviashvili II equation, evaluated from Sato’s Wronskian tau function rather than integrated. Miles’ Y-junction, Kodama and Biondini’s O-type and spiders, Horowitz–Zarmi expansion. The status line prints the Hirota bilinear residual against 0; this build reads **~10⁻¹⁵**. Matplotlib and Mathematica notebooks of KP webs exist in the papers. I did not find a seeded, paletted, print-ready browser plate of the exact tau function.
-- **Gerstner.** The unique exact periodic deep-water gravity wave of finite amplitude (Gerstner 1802, Rankine 1863). Every particle traces a circle; the free surface is an inverted trochoid; pressure is constant along it. The plate prints the Lagrangian map and reports orbit RMS/r against 0 and r / A e^{kb} against 1. Two trains is Tessendorf superposition, labelled as graphics, and the circles miss on purpose.
-- **Figure Eight.** Moore 1993, Chenciner–Montgomery 2000, Simó’s 16-digit IC. Three equal masses chase each other around a figure-eight with L = 0. The plate reports |L| against 0, energy drift against 0, and return distance at the period against 0. Broken nearby is the control that does not close.
-- **Peakon.** Camassa–Holm peaked solitons (1993); multi-peakon collisions of Beals–Sattinger–Szmigielski. Speed equals amplitude. The plate samples v_meas / c against 1 and the corner |u_x|/c against ±1 from the field, not from the formula by construction.
-- **Photon Sphere.** Schwarzschild 1916, Darwin 1959, Synge 1966. Null geodesics, unstable photon orbit at r = 3M, capture at b = 3√3 M. The plate reports b_meas / (3√3 M) and r_ph / 3M against 1. If the integrator is wrong, the ring sits in the wrong place.
-- **Crapper.** G. D. Crapper, J. Fluid Mech. 2, 532 (1957). The unique exact finite-amplitude pure-capillary wave. Steepness s = 4|A|/(π(1−A²)) identically; the trough pinches a bubble at s* ≈ 0.730. The same *profile* is a constant-vorticity Euler wave with g = σ = 0 (Hur and Vanden-Broeck 2020). The plate reports s_meas against that identity.
-- **Hasimoto.** A soliton on a vortex filament (Hasimoto, JFM 51, 477, 1972). Local induction maps to NLS; the sech is a traveling loop of helical motion. Speed along the filament equals twice the torsion. The plate reports κ_max/(2ν) and c/(2τ₀) from the polyline, not from the formula by construction.
-- **Lump.** KP-I lumps (Manakov et al. 1977), rational, 1/r² tails. Completely different from the studio’s KP-II line-soliton webs. The plate reports the KP-I residual (u_t + 6uu_x + u_xxx)_x − 3 u_yy against 0, by finite differences of the rational field, and the peak against 4b².
-
-**Two closed loops, both with prior art.** Each piece is published. So is the family the loop belongs to. The plates are pictures of those families with an open-loop control sitting next to the closed one. A published equation plus a feedback term is not an invention, and it does not get a private name.
-
-- **Track.** A sine-Gordon breather that writes its own index from strain. That is a self-written waveguide (Monro, de Sterke, Poladian, J. Mod. Opt. 1998) and a photorefractive soliton (Segev) on a Josephson breather, not a private name. Open loop (η = 0) must recover the Lorentz speed; the plate reports v_meas / v against 1, and exterior energy against 0. Close the loop and the lump paves a faster track and stays bound. The plate measured **1.20** with E_out/E still ~0. The spiral view is the worldline: radius is space, angle is time, so a constant speed is an Archimedean spiral. `#track` opens it. The tab is Track.
-- **Caustic Sea.** A Swift–Hohenberg height acting as its own phase screen, the caustic writing that height. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). Open loop corr(h, I) near 0. Closed, the plate measured **0.281**. The name is the picture, not an invention.
-
-**New as engineering, and small but general.** Four ideas here would transfer to other projects:
-
-- **Plates that check themselves.** Each technique measures a quantity theory predicts, from the field on screen, and prints it next to the theoretical value. This is ordinary practice in computational physics and in physics teaching software: browser percolation simulators print a box-counting estimate of the fractal dimension against 91/48, and browser Ising simulators check themselves against Onsager. What I could not find was a generative art tool that does it. The art platforms expose a seed and a list of rarity traits, not an observable measured from the output and compared against what theory says it should be. Carrying the physics habit into a tool whose output is a print is the part I would defend hardest: it converts "trust me, it is a simulation" into a number a reader can argue with.
-- **A renderer declaring when it is band-limited.** `fieldCells()` lets a technique tell the pipeline that its output is already limited by a simulation grid, so the pipeline stops spending memory adding resolution that cannot exist. That applies to any simulation-to-print path.
-- **A sharpness measure with two numbers rather than one.** Average detail alone cannot tell a blurred field from a picture that is mostly flat areas with hard edges, and calls a Penrose tiling blurry. Edge acutance and multi-scale acuity together can.
-- **Linting controls that lie.** A size control that offers an option its own validator clamps away is a button that moves while nothing happens. That is mechanically checkable, and now it is checked.
-
-**A recipe that survives its own defaults moving.** A shared hash carries only what differs from the defaults, so the day a default changes, every recipe that never named that key would quietly reprint at a value it was never made at. Modules that change a default declare the old one, and a recipe written before the change gets it back. The same pass found that a hash was being applied on top of whatever the viewer already had on screen, so two people opening the same link could get two different plates; a recipe is now built on the defaults instead. `node tools/recipe.js` derives its cases from the file and proves both.
-
-**How far the checking goes.** The bullets above were checked against web search in September 2026 rather than written from memory, which is a change from the first version of this section. The limits are worth stating plainly. Outbound access from the machine that did the checking reached GitHub and search results but little else, so arxiv.org, visualpde.com, observablehq.com, shadertoy.com, openprocessing.org, fxhash.xyz, artblocks.io, Wikipedia and most journal and lab pages could not be opened. Claims that rest on source I read directly on GitHub are the firm ones. Claims that rest on search snippets alone are weaker. A negative result is weakest of all where the likeliest home for the thing I was looking for is a site that could not be opened, and where that applies the bullet says so. The query-by-query ledger, including which tabs have never been searched, is [RESEARCH.md](RESEARCH.md). Read it before searching again.
+---
 
 ## For people (and agents) adding to it
 
@@ -175,7 +152,7 @@ GENChase is a studio file, not a package. You do not install it into another app
 
 The expensive part is already done. Seed, hash, palette, history, gallery, print, colophon, witness. A new technique is a `Studio.register`: a schema, defaults, and a `create` that paints. Copy a neighbor. Do not invent a second architecture.
 
-That is useful because the interesting sims are the ones almost nobody has put in a browser: phase-field crystal, Ohta–Kawasaki, Hofstadter, Hastings–Levitov, Gravner–Griffeath, Lifshitz–Petrich. The studio is the reason those can share a print pipeline on the same afternoon they land.
+Simulation families share the same controls and print pipeline. New modules can reuse that infrastructure while their scientific assumptions and tests are reviewed separately.
 
 If you are an agent:
 
@@ -187,13 +164,13 @@ If you are an agent:
 6. Discrete marks export as vectors. Accumulated density does not, and should not pretend to.
 7. Credit the paper. Do not claim the science. Preserve source attribution and license notices.
 8. Generated images belong to their creator. Source reuse follows Apache-2.0.
-9. After source edits, `node tools/build.js`, `node tools/index.js`, then `node tools/lint.js` and `node tools/science.js`. The catalog is generated; a hand-edited TECHNIQUES.md is a catalog that is already wrong. If the plate measures something, add a row to the self-check table rather than leaving it only in the generated list.
+9. After source edits, `node tools/build.js`, `node tools/index.js`, then `node tools/lint.js` and `node tools/science.js`. The catalog is generated; a hand-edited TECHNIQUES.md is a catalog that is already wrong. If the plate measures something, record its method, uncertainty and evidence in the validation inventory.
 
 ---
 
 ## Run it
 
-There is nothing to install on any platform.
+To use the download, open it in a compatible desktop browser. GPU simulations require WebGL2 and suitable graphics support. You do not need Node or a source build.
 
 **[Download GENChase](https://github.com/SharpMeow/GENChase/archive/refs/heads/main.zip)** (includes maintained source and the portable HTML; the README tiles stay on GitHub). Unzip it, then double-click the launcher for your system:
 
@@ -203,21 +180,21 @@ There is nothing to install on any platform.
 | Windows | `run/GENChase (Windows).bat` |
 | Linux | `run/genchase.sh` |
 
-On macOS the first launch of a downloaded script is refused by Gatekeeper. Right-click the file and choose Open, and it will run from then on.
+macOS may block a downloaded launcher. You can open `studio.html` directly instead; launcher permissions depend on your system settings.
 
-Each one starts Python's own web server on a free loopback port, opens `studio.html`, and stops when you close the window. Nothing is installed, nothing is bundled, and the port is not reachable from the network. If Python is missing the launcher opens the file directly instead and says so.
+Each one starts Python's own web server on a free loopback port, opens `studio.html`, and stops when you close its terminal window or press Ctrl+C there. Closing only the browser tab does not stop the server. Nothing is installed, nothing is bundled, and the port is not reachable from the network. If Python is missing the launcher opens the file directly instead and says so.
 
 Or do it by hand:
 
 ```bash
 git clone https://github.com/SharpMeow/GENChase.git
 cd GENChase
-python3 -m http.server 8080
+python3 -m http.server 8080 --bind 127.0.0.1
 ```
 
 Then [http://127.0.0.1:8080/studio.html](http://127.0.0.1:8080/studio.html).
 
-Double-clicking `studio.html` works too, and every technique runs that way. The launchers exist so nobody has to open a terminal, and because browsers put `file://` pages under restrictions that vary by vendor and version. Served from a real origin there is nothing to vary.
+You can also open `studio.html` directly. Browsers impose different restrictions on local files, including clipboard and storage behavior. The local server avoids some of those restrictions; browser and GPU differences still apply.
 
 | Key | |
 |---|---|
@@ -241,12 +218,12 @@ Click the seed label to copy it. Presets are starting points. The URL is the pie
 
 ## Techniques
 
-The full list, with the hash that reconstructs each plate and the papers each one implements, is in **[TECHNIQUES.md](TECHNIQUES.md)**. The same data in machine-readable form is [`techniques.json`](techniques.json). A short file for language models is [`llms.txt`](llms.txt). All three are generated from `studio.html` by `node tools/index.js`, so neither the catalog nor the AI index can drift away from what the file actually contains. Derivations and proofs live in **[IDENTITIES.md](IDENTITIES.md)**. The query-by-query prior-art ledger is [RESEARCH.md](RESEARCH.md).
+The full list, with the hash that reconstructs each plate and the papers each one implements, is in **[TECHNIQUES.md](TECHNIQUES.md)**. The same data in machine-readable form is [`techniques.json`](techniques.json). A short file for language models is [`llms.txt`](llms.txt). All three are generated from `studio.html` by `node tools/index.js`, and must be regenerated after changes; CI checks for catalog drift. Derivations and proofs live in **[IDENTITIES.md](IDENTITIES.md)**. The query-by-query prior-art ledger is [RESEARCH.md](RESEARCH.md).
 
 
 Artificial Life (Lenia), Physarum, Physarum 3D, Phyllotaxis, Hastings–Levitov, Lichtenberg, Gravner–Griffeath snowflakes, differential growth, fractals, CPPNs, chimera states, swarmalators, Cahn–Hilliard, Ohta–Kawasaki, Swift–Hohenberg, phase-field crystal, XY / Kosterlitz–Thouless, complex Ginzburg–Landau, Lifshitz–Petrich 12-fold, active nematics, fluids, Kuramoto–Sivashinsky, dendritic growth, flow fields, smectic focal conics, Gray–Scott, Penrose / hat / spectre tilings, attractors, Chirikov, Hofstadter, Helmholtz scars, optical caustics, Talbot, Indra’s pearls, Chladni, cortical planforms, random matrices, drainage networks, rough growth, foam and grain coarsening, condensate vortex lattices, Toner-Tu flocking, hyperbolic Turing patterns, uniform spanning trees, granular force chains, Liesegang rings, Track, Caustic Sea, KP-II soliton webs, Gerstner waves, the figure-eight choreography, Camassa–Holm peakons, the Schwarzschild photon sphere, Crapper capillary waves, Hasimoto vortex filaments, KP-I lumps, classical point-vortex collapse.
 
-Each tab names the researchers. The implementations are original.
+Each tab names its scientific sources. The validation inventory records which implementation claims have supporting tests.
 
 ---
 

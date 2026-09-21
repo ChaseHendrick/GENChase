@@ -12,12 +12,12 @@ Read this before writing a block. It restates what the shell in `studio.html` ac
 - Use `tools/_*` for ignored scratch. `tools/inject.js` remains available for isolated test copies; it replaces matching blocks.
 - Saved recipes and seeds must retain their meanings. See BUILDING.md.
 
-## What to read in studio.html before writing
+## What to read in src/ before writing
 
 Line numbers drift. Search for the name.
 
-- Shell: `Studio.register`, `sanitize`, instance and host creation, `fitCanvas`, `switchTo`, sidebar field rendering, witness, export.
-- `modules/pde.js` in full. It is the template for every GPU grid technique: `pdeCreate`, `toHalf`, `seedNoise`, `GRID`, `simFields`, `pictureFields`, `RANGE`, `pre`, the reduce pass used to measure the field, `burst` chunking, `disturb` via the shared splat shader.
+- Shell (`src/shared/studio.js`): `Studio.register`, `sanitize`, instance and host creation, `fitCanvas`, `switchTo`, sidebar field rendering, witness, export.
+- `src/modules/pde.js` in full. It is the template for every GPU grid technique: `pdeCreate`, `toHalf`, `seedNoise`, `GRID`, `simFields`, `pictureFields`, `RANGE`, `pre`, the reduce pass used to measure the field, `burst` chunking, `disturb` via the shared splat shader.
 - Per-pixel resolution-independent template: the `fractal` module (`create`, `exportPNG`).
 - GPU cellular automata with state textures: the `life` block.
 - CPU lattice plates on a 2D canvas: the `snowflake` register and the other CPU modules in that block.
@@ -142,7 +142,7 @@ American spelling. No em dashes anywhere in new text; use commas, periods, colon
 
 ## Performance
 
-Default seed lands a finished image in about three seconds on a laptop. Chunk long CPU work with `setTimeout(chunk, 0)` so the UI never blocks more than about 50 ms. Grids default to 192 or 256 and cap at 512. Measure exposure from the field (reduce pass or a CPU percentile), never from a formula.
+Default seed lands a finished image in about three seconds on a laptop. Chunk long CPU work with `setTimeout(chunk, 0)` so the UI never blocks more than about 50 ms. Grid defaults and limits vary by module. Read its current schema, sanitizer and compatibility declarations. Measure exposure from the field (reduce pass or a CPU percentile), never from a formula.
 
 ## Measured numbers
 

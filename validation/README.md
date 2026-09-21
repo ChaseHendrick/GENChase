@@ -36,6 +36,8 @@ Existing `check.js` tests are visual/runtime regression checks. `export.js` exer
 `sharp.js` measures image detail. None alone certifies paper accuracy. Current float16 fallbacks,
 clamps, finite lattices, noise and boundary choices need explicit review.
 
-Priority: the Cahn-Hilliard/PDE family, wave/transport solvers, then stochastic measurements and
+The first correction and its limits are documented in [CAHN-HILLIARD.md](CAHN-HILLIARD.md).
+
+Priority: the remaining Cahn-Hilliard/PDE convergence and precision checks, wave/transport solvers, then stochastic measurements and
 the remaining families. The double-triangle/polygon vortex module already has independent numerical tests; its print
 paths and complete parameter coverage remain unvalidated. The inventory deliberately exposes gaps.
