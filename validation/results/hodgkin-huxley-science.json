@@ -1,0 +1,273 @@
+{
+  "sourceSha256": "ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8",
+  "rngSha256": "3a139b7b42c4f70e42ef0664643d62d9c8d769fca1c97220aaf9460071690ab5",
+  "harnessSha256": "d42dfeca609dd8484736ef186fd06bba17de68d0da652f2f00023a4528c1545c",
+  "command": "node tools/hodgkin-huxley-science.js > validation/results/hodgkin-huxley-science.json",
+  "scope": "Classical squid HH at 6.3 C: exact rates/singular limits, analytic voltage-clamp gates and passive leak, independent adaptive DOPRI5 driven trajectory, fixed-time RK4 convergence, all preset recordings, short largest-count fixture.",
+  "rateRows": [
+    {
+      "voltageMv": -100,
+      "actual": [
+        0.014909469941067514,
+        27.958990332266936,
+        0.40282218732040115,
+        0.0015011822567369917,
+        0.005055206716118497,
+        0.19360378732926664
+      ],
+      "maximumError": 0
+    },
+    {
+      "voltageMv": -65,
+      "actual": [
+        0.22356372458463003,
+        4,
+        0.07,
+        0.04742587317756678,
+        0.05819767068693265,
+        0.125
+      ],
+      "maximumError": 0
+    },
+    {
+      "voltageMv": -55,
+      "actual": [
+        0.43082537518330233,
+        2.295013682949731,
+        0.042457146179884345,
+        0.11920292202211755,
+        0.1,
+        0.11031211282307443
+      ],
+      "maximumError": 5.551115123125783e-17
+    },
+    {
+      "voltageMv": -40,
+      "actual": [
+        1,
+        0.9974088351091849,
+        0.020055335780213308,
+        0.3775406687981454,
+        0.19308253751833024,
+        0.09145195361833022
+      ],
+      "maximumError": 0
+    },
+    {
+      "voltageMv": 0,
+      "actual": [
+        4.074629441455096,
+        0.10808722380483625,
+        0.002714194548220541,
+        0.9706877692486436,
+        0.5522569479214587,
+        0.055468413760134984
+      ],
+      "maximumError": 0
+    },
+    {
+      "voltageMv": 40,
+      "actual": [
+        8.00268460160673,
+        0.011713198779272755,
+        0.0003673262879426969,
+        0.9994472213630764,
+        0.9500711145614483,
+        0.03364329359114798
+      ],
+      "maximumError": 0
+    }
+  ],
+  "gateClamps": [
+    {
+      "voltageMv": -65,
+      "timeMs": 2,
+      "dtMs": 0.005,
+      "maximumGateError": 4.1616515789044684e-11
+    },
+    {
+      "voltageMv": -55,
+      "timeMs": 2,
+      "dtMs": 0.005,
+      "maximumGateError": 4.0710768089979865e-12
+    },
+    {
+      "voltageMv": -40,
+      "timeMs": 2,
+      "dtMs": 0.005,
+      "maximumGateError": 1.1705969527042726e-11
+    },
+    {
+      "voltageMv": 20,
+      "timeMs": 2,
+      "dtMs": 0.005,
+      "maximumGateError": 2.3019159911541465e-9
+    }
+  ],
+  "passiveLeak": {
+    "timeMs": 20,
+    "currentDensity": 1.5,
+    "equilibriumMv": -49.387,
+    "maximumVoltageErrorMv": 6.401990049198503e-12
+  },
+  "reference": {
+    "method": "Independently expressed modern-voltage RHS and Dormand-Prince 5(4)",
+    "tolerances": [
+      1e-11,
+      2e-12
+    ],
+    "acceptedSteps": [
+      2777,
+      3745
+    ],
+    "rejectedSteps": [
+      7,
+      7
+    ],
+    "maxDifferenceBetweenReferences": 1.0286043683471746e-9
+  },
+  "refinement": [
+    {
+      "dtMs": 0.02,
+      "timeMs": 30,
+      "maxVoltageErrorMv": 0.00212376679593973,
+      "maxGateError": 0.0000015334085375906525,
+      "normalizedRmsError": 7.827714226772424e-7,
+      "spikes": [
+        6.900770432669084,
+        21.822242308391914
+      ],
+      "minimumVoltageMv": -75.74554872244897,
+      "maximumVoltageMv": 40.261710034341604
+    },
+    {
+      "dtMs": 0.01,
+      "timeMs": 30,
+      "maxVoltageErrorMv": 0.00010928868967141625,
+      "maxGateError": 9.83226421391592e-8,
+      "normalizedRmsError": 4.2246207156102306e-8,
+      "spikes": [
+        6.900779338597694,
+        21.82224842793721
+      ],
+      "minimumVoltageMv": -75.74565210737977,
+      "maximumVoltageMv": 40.26307002974527,
+      "errorReduction": 18.528797621638656
+    },
+    {
+      "dtMs": 0.005,
+      "timeMs": 30,
+      "maxVoltageErrorMv": 0.000006193639435991827,
+      "maxGateError": 6.229626370313213e-9,
+      "normalizedRmsError": 2.4611913577935827e-9,
+      "spikes": [
+        6.900784907518025,
+        21.82225391389519
+      ],
+      "minimumVoltageMv": -75.74565209592845,
+      "maximumVoltageMv": 40.26313749146105,
+      "errorReduction": 17.164942101038147
+    }
+  ],
+  "zeroCurrent": {
+    "timeMs": 40,
+    "spikes": 0,
+    "finalVoltageMv": -64.99637709817489
+  },
+  "presets": [
+    {
+      "name": "default",
+      "neurons": 64,
+      "steps": 10000,
+      "timeMs": 100,
+      "spikes": 385,
+      "minVoltageMv": -76.10513650995894,
+      "maxVoltageMv": 40.88726120330899,
+      "minStepCurrent": 7.039905812591314,
+      "maxStepCurrent": 14.807747492566705
+    },
+    {
+      "name": "repeated",
+      "neurons": 64,
+      "steps": 10000,
+      "timeMs": 100,
+      "spikes": 385,
+      "minVoltageMv": -76.10513650995894,
+      "maxVoltageMv": 40.88726120330899,
+      "minStepCurrent": 7.039905812591314,
+      "maxStepCurrent": 14.807747492566705
+    },
+    {
+      "name": "brief",
+      "neurons": 64,
+      "steps": 3000,
+      "timeMs": 30,
+      "spikes": 64,
+      "minVoltageMv": -76.18834477580569,
+      "maxVoltageMv": 40.85886407811508,
+      "minStepCurrent": 8.079811625182629,
+      "maxStepCurrent": 23.61549498513341
+    },
+    {
+      "name": "recruitment",
+      "neurons": 64,
+      "steps": 10000,
+      "timeMs": 100,
+      "spikes": 180,
+      "minVoltageMv": -76.10480720370725,
+      "maxVoltageMv": 40.41881638293436,
+      "minStepCurrent": 1.049882265739143,
+      "maxStepCurrent": 10.759684365708381
+    },
+    {
+      "name": "sodium",
+      "neurons": 64,
+      "steps": 10000,
+      "timeMs": 100,
+      "spikes": 419,
+      "minVoltageMv": -76.10562647539376,
+      "maxVoltageMv": 41.240559504591246,
+      "minStepCurrent": 9.049882265739143,
+      "maxStepCurrent": 18.75968436570838
+    },
+    {
+      "name": "potassium",
+      "neurons": 64,
+      "steps": 10000,
+      "timeMs": 100,
+      "spikes": 456,
+      "minVoltageMv": -76.0862855425329,
+      "maxVoltageMv": 41.66939761217867,
+      "minStepCurrent": 11.0698351720348,
+      "maxStepCurrent": 24.663558111991733
+    },
+    {
+      "name": "rebound",
+      "neurons": 64,
+      "steps": 8000,
+      "timeMs": 80,
+      "spikes": 45,
+      "minVoltageMv": -76.23396267868908,
+      "maxVoltageMv": 44.736709631351445,
+      "minStepCurrent": -5.980047093704343,
+      "maxStepCurrent": -2.0961262537166476
+    }
+  ],
+  "highLoad": {
+    "neurons": 256,
+    "columns": 2401,
+    "dtMs": 0.0025,
+    "steps": 100,
+    "timeMs": 0.25,
+    "elapsedMs": 11.17883299999994,
+    "historyBytes": 9834496
+  },
+  "failureControls": {
+    "wrongSodiumExponentDerivativeError": 401.3099999999999,
+    "missingSingularLimitRejected": true,
+    "invalidTrialReason": "Voltage left the supported range",
+    "lastAcceptedPhysicalStateRestored": true
+  },
+  "seconds": 1.767338875,
+  "limitations": "Independent ODE agreement is not experimental validation. No human, network, stochastic channel, propagation or arbitrary parameter claim. Original parameter convention differs from later cortical HH variants. No general global stability proof; high-count case covers 100 steps only."
+}
