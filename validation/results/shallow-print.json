@@ -1,0 +1,144 @@
+{
+  "scope": "Actual paused evolved module, depth/speed display texture equals rounded Float64 solver state, square and non-square 2400px raster exports preserve complete physical state, actual shell print/live/pause/visible-stop controls. Interpolation does not add physical resolution.",
+  "sourceSHA256": "0b967d37d97262202418768b0d99cb0a397fbb0d83078908fef013934efa0bd2",
+  "rows": [
+    {
+      "fixture": {
+        "grid": 128,
+        "aspect": "1:1",
+        "view": "depth",
+        "warmup": 180
+      },
+      "time": 0.23648194429118394,
+      "texture": {
+        "maxError": 0,
+        "displayCells": [
+          128,
+          128
+        ]
+      },
+      "tests": [
+        {
+          "requested": [
+            2400,
+            2400
+          ],
+          "width": 2400,
+          "height": 2400,
+          "bytes": 3592468,
+          "displayPrintMAD": 0.24352083333333333
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "width": 2400,
+          "height": 1800,
+          "bytes": 2900401,
+          "displayPrintMAD": 0.2591777777777778
+        }
+      ],
+      "unchanged": true,
+      "halted": ""
+    },
+    {
+      "fixture": {
+        "grid": 128,
+        "aspect": "4:5",
+        "view": "speed",
+        "boundary": "walls",
+        "warmup": 180
+      },
+      "time": 0.23928753128456812,
+      "texture": {
+        "maxError": 0,
+        "displayCells": [
+          128,
+          160
+        ]
+      },
+      "tests": [
+        {
+          "requested": [
+            2400,
+            2400
+          ],
+          "width": 2400,
+          "height": 2400,
+          "bytes": 4217774,
+          "displayPrintMAD": 0.2791458333333333
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "width": 2400,
+          "height": 1800,
+          "bytes": 3390484,
+          "displayPrintMAD": 0.29056666666666664
+        }
+      ],
+      "unchanged": true,
+      "halted": ""
+    },
+    {
+      "fixture": {
+        "grid": 512,
+        "aspect": "1:1",
+        "view": "depth",
+        "warmup": 60
+      },
+      "time": 0.02035702741184998,
+      "texture": {
+        "maxError": 0,
+        "displayCells": [
+          512,
+          512
+        ]
+      },
+      "tests": [
+        {
+          "requested": [
+            2400,
+            2400
+          ],
+          "width": 2400,
+          "height": 2400,
+          "bytes": 3218472,
+          "displayPrintMAD": 0.22266458333333333
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "width": 2400,
+          "height": 1800,
+          "bytes": 2577426,
+          "displayPrintMAD": 0.23173611111111111
+        }
+      ],
+      "unchanged": true,
+      "halted": ""
+    }
+  ],
+  "shell": {
+    "width": 2400,
+    "height": 2400,
+    "note": "2,400 × 2,400 px, 3.1 MB. Recomputed at print pixels. The field is 512 × 512 cells, so one cell is about 4.7 px here and the detail is set by the simulation, not by the paper: raise the grid for a finer plate. If the download button does nothing, right-click the image and save it.",
+    "unchanged": true
+  },
+  "live": {
+    "before": 60,
+    "pausedAt": 66,
+    "pausedAfter": 66
+  },
+  "stop": {
+    "unchanged": true,
+    "message": "Positive finite depth required; this model does not support dry beds",
+    "status": "grid 512×512 · step 66time 0.0224depth 1.000–1.629volume drift -9.0e-15Stopped: Positive finite depth required; this model does not support dry bedsseed shallow-print"
+  },
+  "errors": []
+}
