@@ -19,11 +19,11 @@ Every plate in GENChase is a picture. Under many of them, a status line prints a
 
 | You see | What it means | What it is not |
 |---|---|---|
-| The picture draws, numbers sit on the prediction | The identity holds on this plate | A pass/fail of the website |
+| The picture draws, numbers sit on the prediction | The displayed values agree to the reported precision | A pass/fail of the website |
 | The picture draws, status says **miss** | Those numbers did not match the prediction | A crash, a 404, or the repo being down |
 | The Broken preset | A control: the vortices are placed where the identity does not apply, on purpose | A bug |
 
-A check that cannot miss is not a check. The Broken preset exists so you can watch the numbers leave 1, 0, and 0 while the picture keeps drawing. That is how you know the test is real and not a painted-on 1.000.
+A check that cannot miss is not a check. The Broken preset exists so you can watch the numbers leave 1, 0, and 0 while the picture keeps drawing. This is evidence that the diagnostic responds to an off-family control, not proof that every formula, parameter or rendering path is correct.
 
 ## What belongs here
 

@@ -102,7 +102,7 @@ const count = require('./count.js');
 
 ${mods.length} pattern-forming systems, one file. Generated from \`studio.html\` by \`node tools/index.js\`; do not edit by hand.
 
-Open \`studio.html\` and append the hash to reconstruct a plate exactly. \`#snowflake/gravner-2008\` is a complete recipe: the technique, and the seed that every random draw in it comes from. The longer form, \`#<id>/<seed>/<base64url JSON>\`, carries any settings that differ from the defaults. A hash written as \`#id\` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
+Open \`studio.html\` and append the hash to restore its seed and settings. Preserve the studio version for historical reproduction; numerical precision and hardware can affect results. \`#snowflake/gravner-2008\` is a complete recipe: the technique, and the seed that every random draw in it comes from. The longer form, \`#<id>/<seed>/<base64url JSON>\`, carries any settings that differ from the defaults. A hash written as \`#id\` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 
 The same data in machine-readable form is [\`techniques.json\`](techniques.json). A short file for language models is [\`llms.txt\`](llms.txt).
 
@@ -130,7 +130,7 @@ One HTML file of seeded scientific simulations. Each tab reprints from a hash. G
 
 ## Do not
 
-- Parse or scrape studio.html. It is 2.6 MB of implementation.
+- Parse the generated studio.html to discover metadata; use the catalog. Edit maintained code in src/.
 - Invent a bundler, a framework tree, or a second architecture.
 - Do not put a name on a published equation. Credit the paper. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Preserve license notices.
 - Treat "familiarity" / "seen elsewhere" as a measurement. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
@@ -141,7 +141,9 @@ One HTML file of seeded scientific simulations. Each tab reprints from a hash. G
 - TECHNIQUES.md — the same catalog as a table.
 - AGENTS.md — product rules.
 - tools/modules/CONTRACT.md — how to add a tab.
-- README.md — what is new, and what is not.
+- README.md — usage, scope and evidence limits.
+- BUILDING.md — maintained source and reproducible assembly.
+- VALIDATION.md — scientific coverage and outstanding gaps.
 - IDENTITIES.md — derived formulas and bounds, with classical sources and originality limits. Use descriptive titles and credit the original mathematics.
 - identities/ORIGINALITY-FOLLOWUP.md — the first formula’s equivalence to Gröbli (1877); minimum priority remains unconfirmed.
 - identities/NOVELTY-AUDIT.md — evidence and limits for all five candidates.
@@ -159,8 +161,10 @@ Aliases: ${Object.keys(aliases).map(k => '#' + k + ' → ' + aliases[k]).join(',
 
 Write src/modules/<id>.js and add its include to src/studio.html before boot. Build, check, export and record validation evidence. Then:
 
+    node tools/build.js
     node tools/index.js
     node tools/lint.js
+    node tools/science.js
     node tools/check.js <id> 12000
 
 All randomness through U.makeRng(seed). Math.random in a sim is a bug. Discrete marks export as SVG; accumulated density does not.

@@ -1,10 +1,9 @@
 // node tools/export.js <id> [inches=8] [dpi=300] [settleMs=7000] [exportMs=180000]
 // Drives the studio's own export path and checks what comes out.
 //
-// check.js only ever looks at the on-screen canvas. Export is a different code path: every technique
-// recomputes its field at the target pixel size rather than upscaling the screen, which is the whole
-// point of the product and also where a technique is most likely to throw, exhaust memory, or hand
-// back something the wrong size. Nothing tested it.
+// check.js primarily inspects the on-screen canvas. Export is a separate rendering path:
+// some techniques evaluate geometry at print dimensions, while grid simulations render their
+// existing finite-resolution state into more pixels. This checks the artifact, not paper accuracy.
 //
 // This presses the export button for the default plate and for every preset, waits for the sheet,
 // then decodes the resulting blob and fails on: an export the studio reported as failed, a blob that

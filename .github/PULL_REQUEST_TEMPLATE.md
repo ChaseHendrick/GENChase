@@ -6,6 +6,8 @@
 
 ## How I checked
 
+- [ ] `node tools/build.js --check` and `node tools/science.js`
+- [ ] Numerical changes update validation evidence, limits and source fingerprints
 - [ ] `node tools/lint.js`
 - [ ] `node tools/check.js <id> 12000` (if a tab moved)
 - [ ] `node tools/export.js <id> 8 300` (if it prints)
@@ -20,4 +22,4 @@
 
 ## Notes for review
 
-<!-- What to look at. A hash that reprints the plate helps. Existing equations keep their own names. A derived identity belongs in IDENTITIES.md, uniqueness-checked, with a plate whose check can miss. Hendrick's Identity is that case. Miss on the status line is a grade, not a crash. -->
+<!-- What to look at. A hash that reprints the plate helps. Existing equations keep their own names. A derived identity belongs in IDENTITIES.md, uniqueness-checked, with a plate whose check can miss. The three-vortex formula specializes Gröbli (1877); its former personal name is retired. Miss on the status line is a grade, not a crash. -->
