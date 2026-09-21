@@ -1,6 +1,6 @@
 # Contributing
 
-GENChase is one HTML file. A contribution is a change to that file, or to the harness that keeps it honest. There is no package to install into, and no second architecture to propose.
+GENChase has maintained source in `src/` and ships as one generated HTML file. A contribution changes that source or the harness that checks it. There is no package to install into, and no second architecture to propose.
 
 Read this, then `AGENTS.md` if you are writing a technique, then `tools/modules/CONTRACT.md` before you touch a simulation. The maintained `src/` implementation is authoritative; `studio.html` is generated. If the work is a prior-art search or a claim that something has not been done, read `RESEARCH.md` first and write the query down there the same day.
 
@@ -16,9 +16,10 @@ A vulnerability is not a pull request. Use [SECURITY.md](SECURITY.md).
 
 1. Fork, or a branch off `main`. One change per branch.
 2. For a new tab, write `src/modules/<id>.js` and add its include to `src/studio.html` before boot. For a shell fix, edit `src/shared/studio.js`. Run `node tools/build.js`; never edit the generated HTML. See BUILDING.md.
-3. Run the harness that matches the change (below).
-4. Open a pull request against `main`. CI has to be green.
-5. The maintainer squash-merges. The branch is deleted.
+3. Add or update the validation record. New formulas begin as **unvalidated**; follow [Submitting a formula](validation/FORMULA-SUBMISSIONS.md) and the [scientific validation contract](validation/README.md).
+4. Run the harness that matches the change (below). Scientific claims need independent benchmark evidence, a deliberate failure control and reproducible measured results.
+5. Open a pull request against `main`. CI has to be green.
+6. The maintainer squash-merges. The branch is deleted.
 
 Do not push to `main`. Do not merge your own pull request unless you maintain the repository.
 
@@ -52,6 +53,8 @@ Checklist, as it applies:
 
 - [ ] `node tools/build.js --check` and `node tools/science.js` pass
 - [ ] Numerical changes include benchmark evidence and updated validation limitations
+- [ ] Each numerical claim records its independent reference, failure control, reproducible command and JSON results; syntax, runtime and export checks do not promote scientific status
+- [ ] A reviewer has inspected and reproduced the evidence for any validation-status promotion, including its stated domain and remaining gaps
 - [ ] `node tools/lint.js` is clean
 - [ ] chrome: `node tools/ui.js` (More, Export, and Generate stay on screen at 390)
 - [ ] a new or changed tab: `node tools/check.js <id> 12000`

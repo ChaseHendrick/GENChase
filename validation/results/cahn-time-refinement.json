@@ -1,0 +1,135 @@
+{
+  "scope": "Fixed 32x32 grid, unit cell spacing, M=1, epsilon=1, zero forcing, float32 GPU; temporal convergence only",
+  "finalTime": 0.08,
+  "timesteps": [
+    0.02,
+    0.01,
+    0.005
+  ],
+  "referenceSteps": [
+    160,
+    320
+  ],
+  "rows": [
+    {
+      "boundary": "periodic",
+      "degenerate": false,
+      "referenceDifference": 7.321365735890595e-13,
+      "refinements": [
+        {
+          "dt": 0.02,
+          "steps": 4,
+          "maxError": 0.006575879203998047,
+          "maxAmplitude": 0.41999998688697815
+        },
+        {
+          "dt": 0.01,
+          "steps": 8,
+          "maxError": 0.003096130239688355,
+          "maxAmplitude": 0.41999998688697815
+        },
+        {
+          "dt": 0.005,
+          "steps": 16,
+          "maxError": 0.001505312072955567,
+          "maxAmplitude": 0.41999998688697815
+        }
+      ],
+      "observedOrders": [
+        1.0867176374135494,
+        1.0404035506457718
+      ],
+      "wrongClockError": 0.02968172956173365
+    },
+    {
+      "boundary": "periodic",
+      "degenerate": true,
+      "referenceDifference": 4.5335957210568267e-13,
+      "refinements": [
+        {
+          "dt": 0.02,
+          "steps": 4,
+          "maxError": 0.005843864319880265,
+          "maxAmplitude": 0.41999998688697815
+        },
+        {
+          "dt": 0.01,
+          "steps": 8,
+          "maxError": 0.0027602776270702067,
+          "maxAmplitude": 0.41999998688697815
+        },
+        {
+          "dt": 0.005,
+          "steps": 16,
+          "maxError": 0.0013436540346934978,
+          "maxAmplitude": 0.41999998688697815
+        }
+      ],
+      "observedOrders": [
+        1.0821093030045739,
+        1.0386516602510512
+      ],
+      "wrongClockError": 0.030623077712271796
+    },
+    {
+      "boundary": "noflux",
+      "degenerate": false,
+      "referenceDifference": 2.869593451748642e-12,
+      "refinements": [
+        {
+          "dt": 0.02,
+          "steps": 4,
+          "maxError": 0.006611763311014596,
+          "maxAmplitude": 0.41999998688697815
+        },
+        {
+          "dt": 0.01,
+          "steps": 8,
+          "maxError": 0.0030968955221257755,
+          "maxAmplitude": 0.41999998688697815
+        },
+        {
+          "dt": 0.005,
+          "steps": 16,
+          "maxError": 0.0015053154368102617,
+          "maxAmplitude": 0.41999998688697815
+        }
+      ],
+      "observedOrders": [
+        1.0942123671167732,
+        1.0407568791492205
+      ],
+      "wrongClockError": 0.030970323581897607
+    },
+    {
+      "boundary": "noflux",
+      "degenerate": true,
+      "referenceDifference": 1.983802011551461e-12,
+      "refinements": [
+        {
+          "dt": 0.02,
+          "steps": 4,
+          "maxError": 0.005886037092370122,
+          "maxAmplitude": 0.41999998688697815
+        },
+        {
+          "dt": 0.01,
+          "steps": 8,
+          "maxError": 0.0027778738882565657,
+          "maxAmplitude": 0.41999998688697815
+        },
+        {
+          "dt": 0.005,
+          "steps": 16,
+          "maxError": 0.0013515645411038557,
+          "maxAmplitude": 0.41999998688697815
+        }
+      ],
+      "observedOrders": [
+        1.0833155294303412,
+        1.0393506980233236
+      ],
+      "wrongClockError": 0.03193105410268976
+    }
+  ]
+}

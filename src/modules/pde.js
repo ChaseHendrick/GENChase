@@ -436,7 +436,7 @@ void main(){
           if (!C || !splatPass) return;
           splatPass.draw(C.write, {
             u_src: C.read, u_pos: [p.x, p.yGL],
-            u_add: spec.pokeAdd, u_rad: spec.pokeRad, u_amt: 1, u_mode: { int: spec.pokeMode || 1 },
+            u_add: spec.pokeAdd, u_rad: spec.pokeRad, u_amt: 1, u_mode: { int: spec.pokeMode ?? 1 },
           });
           C.swap(); render(); startLoop();
         },
@@ -461,13 +461,16 @@ void main(){
     };
   }
 
-  // Largest explicit-Euler step for a Cahn-Hilliard-type flow dc/dt = M lap(c^3 - c - eps^2 lap c).
-  // On the 5-point stencil with dx = 1 the operator -lap has eigenvalues in [0, 8], so the stiffest mode
-  // decays at M(eps^2 L^2 - L) with L = 8; the cubic term adds up to 3c^2 L on top. Stability needs
-  // dt below 2 / that rate, and we keep a margin because the bound is linear and the flow is not.
-  function chMaxDt(M, eps, cMax) {
-    const L = 8, cubic = 3 * (cMax || 1.2) * (cMax || 1.2);
-    const rate = Math.max(1e-6, (M || 1) * (eps * eps * L * L + cubic * L - L));
+  // Constant-mobility linearization about a uniform c has decay rate
+  // M q (3c^2 - 1 + eps^2 q), with q in [0, 8] for the unit-cell 5-point stencil.
+  // Use the solver's full stored concentration envelope, |c| <= 1.7, instead of 1.2:
+  // a disturbance can reach larger amplitudes and the old ceiling amplified grid-scale modes.
+  // The 0.8 margin is a linear estimate, not a nonlinear/variable-mobility stability proof.
+  // The optional reaction rate covers Ohta-Kawasaki's additional -sigma(c-m) term.
+  // States outside the stored envelope are not covered by this estimate.
+  function chMaxDt(M, eps, reactionRate = 0) {
+    const L = 8, cMax = 1.7, cubic = 3 * cMax * cMax;
+    const rate = Math.max(1e-6, (M || 1) * (eps * eps * L * L + cubic * L - L) + reactionRate);
     return 1.6 / rate;
   }
 
@@ -677,7 +680,7 @@ void main(){
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (A → B)',
     headline: 'sigma', headlineLabel: 'σ',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.015, 0.002, chMaxDt(s.M, s.eps)); s.sigma = U.clamp(Number(s.sigma) || 0, 0, 0.3); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.sigma = U.clamp(Number(s.sigma) || 0, 0, 0.3); s.dt = U.clamp(Number(s.dt) || 0.015, 0.002, chMaxDt(s.M, s.eps, s.sigma)); },
     surprise(rng) {
       const c0 = rng.pick([0, 0, 0.05, -0.3, 0.32]);
       return {
@@ -783,7 +786,8 @@ void main(){
     headline: 'zeta', headlineLabel: 'ζ',
     sanitize(s) {
       s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024);
-      // the zeta current acts like a diffusion of either sign; keep the explicit step inside its stability band
+      // Combine the passive linear ceiling with a heuristic activity restriction.
+      // This is not a stability guarantee for the nonlinear active-current terms.
       s.dt = U.clamp(Number(s.dt) || 0.013, 0.002, Math.min(chMaxDt(s.M, s.eps), 0.24 / (1 + Math.abs(Number(s.zeta) || 0))));
     },
     surprise(rng) {

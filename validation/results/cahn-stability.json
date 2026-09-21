@@ -1,0 +1,332 @@
+{
+  "scope": "Noise-free periodic constant-mobility float32 Cahn-Hilliard: real click and injected homogeneous-mode fixtures at 512 cells, fixed elapsed times, historical negative controls. Separate three-module mixing checks at 128 cells. Not a global nonlinear, variable-mobility or active-model stability proof.",
+  "rows": [
+    {
+      "fixture": "real-click",
+      "mode": "corrected",
+      "grid": 512,
+      "boundary": "periodic",
+      "degenerate": false,
+      "M": 2.5,
+      "eps": 0.6,
+      "requestedDt": 0.12,
+      "dt": 0.007582938388625593,
+      "correctedDt": 0.007582938388625593,
+      "seeded": {
+        "min": 0.5800000429153442,
+        "max": 0.6199997663497925,
+        "mean": 0.6000261368938027,
+        "clipped": 0,
+        "nonfinite": 0,
+        "modeAmplitude": 0.000019066385675614583
+      },
+      "initial": {
+        "min": 0.5800000429153442,
+        "max": 0.9997961521148682,
+        "mean": 0.6045503053358061,
+        "clipped": 0,
+        "nonfinite": 0,
+        "modeAmplitude": 0.00001820474085434398
+      },
+      "samples": [
+        {
+          "elapsed": 0.12903225806451613,
+          "steps": 18,
+          "min": 0.5826098918914795,
+          "max": 0.9987138509750366,
+          "mean": 0.6045503052841923,
+          "clipped": 0,
+          "nonfinite": 0,
+          "modeAmplitude": 3.09819370158948e-9,
+          "massDrift": 5.161382432561368e-11
+        },
+        {
+          "elapsed": 0.25806451612903225,
+          "steps": 36,
+          "min": 0.5849916934967041,
+          "max": 0.9976404309272766,
+          "mean": 0.6045503053778702,
+          "clipped": 0,
+          "nonfinite": 0,
+          "modeAmplitude": 5.5933924159035087e-11,
+          "massDrift": 4.206412995699793e-11
+        },
+        {
+          "elapsed": 0.5161290322580645,
+          "steps": 71,
+          "min": 0.5870531797409058,
+          "max": 0.9955427646636963,
+          "mean": 0.6045503055102017,
+          "clipped": 0,
+          "nonfinite": 0,
+          "modeAmplitude": -6.275513442233205e-11,
+          "massDrift": 1.74395609064959e-10
+        },
+        {
+          "elapsed": 1.032258064516129,
+          "steps": 140,
+          "min": 0.5893239974975586,
+          "max": 0.9915316104888916,
+          "mean": 0.604550305002931,
+          "clipped": 0,
+          "nonfinite": 0,
+          "modeAmplitude": 6.252776074688882e-11,
+          "massDrift": 3.3287506084889174e-10
+        }
+      ],
+      "highParameterDt": 0.001488372093023256,
+      "ohtaDt": 0.006895362868470953
+    },
+    {
+      "fixture": "real-click",
+      "mode": "historical-negative-control",
+      "grid": 512,
+      "boundary": "periodic",
+      "degenerate": false,
+      "M": 2.5,
+      "eps": 0.6,
+      "requestedDt": 0.12,
+      "dt": 0.012903225806451613,
+      "correctedDt": 0.007582938388625593,
+      "seeded": {
+        "min": 0.5800000429153442,
+        "max": 0.6199997663497925,
+        "mean": 0.6000261368938027,
+        "clipped": 0,
+        "nonfinite": 0,
+        "modeAmplitude": 0.000019066385675614583
+      },
+      "initial": {
+        "min": 0.5800000429153442,
+        "max": 1.6167747974395752,
+        "mean": 0.6113358709251315,
+        "clipped": 0,
+        "nonfinite": 0,
+        "modeAmplitude": 0.0000190663947705616
+      },
+      "samples": [
+        {
+          "elapsed": 0.12903225806451613,
+          "steps": 10,
+          "min": 0.582544207572937,
+          "max": 1.6209297180175781,
+          "mean": 0.6113358709042132,
+          "clipped": 0,
+          "nonfinite": 0,
+          "modeAmplitude": 0.0000022399151475838153,
+          "massDrift": 2.091837814077735e-11
+        },
+        {
+          "elapsed": 0.25806451612903225,
+          "steps": 20,
+          "min": 0.5849916338920593,
+          "max": 1.7000000476837158,
+          "mean": 0.611319570929254,
+          "clipped": 47,
+          "nonfinite": 0,
+          "modeAmplitude": 0.0000429363387866033,
+          "massDrift": 0.000016299995877488982
+        },
+        {
+          "elapsed": 0.5161290322580642,
+          "steps": 40,
+          "min": 0.5870609283447266,
+          "max": 1.7000000476837158,
+          "mean": 0.6112105825475282,
+          "clipped": 122,
+          "nonfinite": 0,
+          "modeAmplitude": 0.00016793515101198864,
+          "massDrift": 0.00012528837760328315
+        },
+        {
+          "elapsed": 1.032258064516129,
+          "steps": 80,
+          "min": 0.5893319249153137,
+          "max": 1.7000000476837158,
+          "mean": 0.6111886656051411,
+          "clipped": 19,
+          "nonfinite": 0,
+          "modeAmplitude": 0.0003773391551931127,
+          "massDrift": 0.00014720531999046216
+        }
+      ],
+      "highParameterDt": 0.001488372093023256,
+      "ohtaDt": 0.006895362868470953
+    },
+    {
+      "fixture": "uniform-mode",
+      "mode": "corrected",
+      "grid": 512,
+      "boundary": "periodic",
+      "degenerate": false,
+      "M": 2.5,
+      "eps": 0.6,
+      "requestedDt": 0.12,
+      "dt": 0.007582938388625593,
+      "correctedDt": 0.007582938388625593,
+      "seeded": {
+        "min": 0.5800000429153442,
+        "max": 0.6199997663497925,
+        "mean": 0.6000261368938027,
+        "clipped": 0,
+        "nonfinite": 0,
+        "modeAmplitude": 0.000019066385675614583
+      },
+      "initial": {
+        "min": 1.5989999771118164,
+        "max": 1.6009999513626099,
+        "mean": 1.5999999642372131,
+        "clipped": 0,
+        "nonfinite": 0,
+        "modeAmplitude": 0.0009999871253967285
+      },
+      "samples": [
+        {
+          "elapsed": 0.12903225806451613,
+          "steps": 18,
+          "min": 1.5999999046325684,
+          "max": 1.600000023841858,
+          "mean": 1.5999999642372131,
+          "clipped": 0,
+          "nonfinite": 0,
+          "modeAmplitude": -5.960464477539063e-8,
+          "massDrift": 0
+        },
+        {
+          "elapsed": 0.25806451612903225,
+          "steps": 36,
+          "min": 1.5999999046325684,
+          "max": 1.600000023841858,
+          "mean": 1.5999999642372131,
+          "clipped": 0,
+          "nonfinite": 0,
+          "modeAmplitude": 5.960464477539063e-8,
+          "massDrift": 0
+        },
+        {
+          "elapsed": 0.5161290322580645,
+          "steps": 71,
+          "min": 1.5999999046325684,
+          "max": 1.600000023841858,
+          "mean": 1.5999999642372131,
+          "clipped": 0,
+          "nonfinite": 0,
+          "modeAmplitude": 5.960464477539063e-8,
+          "massDrift": 0
+        },
+        {
+          "elapsed": 1.032258064516129,
+          "steps": 140,
+          "min": 1.5999999046325684,
+          "max": 1.600000023841858,
+          "mean": 1.5999999642372131,
+          "clipped": 0,
+          "nonfinite": 0,
+          "modeAmplitude": 5.960464477539063e-8,
+          "massDrift": 0
+        }
+      ],
+      "highParameterDt": 0.001488372093023256,
+      "ohtaDt": 0.006895362868470953
+    },
+    {
+      "fixture": "uniform-mode",
+      "mode": "historical-negative-control",
+      "grid": 512,
+      "boundary": "periodic",
+      "degenerate": false,
+      "M": 2.5,
+      "eps": 0.6,
+      "requestedDt": 0.12,
+      "dt": 0.012903225806451613,
+      "correctedDt": 0.007582938388625593,
+      "seeded": {
+        "min": 0.5800000429153442,
+        "max": 0.6199997663497925,
+        "mean": 0.6000261368938027,
+        "clipped": 0,
+        "nonfinite": 0,
+        "modeAmplitude": 0.000019066385675614583
+      },
+      "initial": {
+        "min": 1.5989999771118164,
+        "max": 1.6009999513626099,
+        "mean": 1.5999999642372131,
+        "clipped": 0,
+        "nonfinite": 0,
+        "modeAmplitude": 0.0009999871253967285
+      },
+      "samples": [
+        {
+          "elapsed": 0.12903225806451613,
+          "steps": 10,
+          "min": 1.553794264793396,
+          "max": 1.6462056636810303,
+          "mean": 1.5999999642372131,
+          "clipped": 0,
+          "nonfinite": 0,
+          "modeAmplitude": 0.04620569944381714,
+          "massDrift": 0
+        },
+        {
+          "elapsed": 0.25806451612903225,
+          "steps": 20,
+          "min": 1.1486656665802002,
+          "max": 1.7000000476837158,
+          "mean": 1.424332857131958,
+          "clipped": 131072,
+          "nonfinite": 0,
+          "modeAmplitude": 0.2756671905517578,
+          "massDrift": 0.17566710710525513
+        },
+        {
+          "elapsed": 0.5161290322580642,
+          "steps": 40,
+          "min": 1.0742390155792236,
+          "max": 1.7000000476837158,
+          "mean": 1.3871195316314697,
+          "clipped": 131072,
+          "nonfinite": 0,
+          "modeAmplitude": 0.3128805160522461,
+          "massDrift": 0.2128804326057434
+        },
+        {
+          "elapsed": 1.032258064516129,
+          "steps": 80,
+          "min": 1.0741887092590332,
+          "max": 1.7000000476837158,
+          "mean": 1.3870943784713745,
+          "clipped": 131072,
+          "nonfinite": 0,
+          "modeAmplitude": 0.3129056692123413,
+          "massDrift": 0.21290558576583862
+        }
+      ],
+      "highParameterDt": 0.001488372093023256,
+      "ohtaDt": 0.006895362868470953
+    }
+  ],
+  "mixing": [
+    {
+      "id": "cahn",
+      "grid": 128,
+      "radius": 0.06,
+      "maxError": 1.3159309220078796e-7,
+      "maxConcentration": 0.9941921830177307
+    },
+    {
+      "id": "ohta",
+      "grid": 128,
+      "radius": 0.07,
+      "maxError": 1.339562510915826e-7,
+      "maxConcentration": 0.9956583976745605
+    },
+    {
+      "id": "amb",
+      "grid": 128,
+      "radius": 0.06,
+      "maxError": 1.2695377227256444e-7,
+      "maxConcentration": 0.9942457675933838
+    }
+  ]
+}

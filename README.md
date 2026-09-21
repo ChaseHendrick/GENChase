@@ -99,6 +99,7 @@ The following results have executable tests and recorded scope. They report disc
 |---|---|---|---|
 | [Cahn–Hilliard GPU vs independent CPU stencil](validation/CAHN-HILLIARD.md) | Maximum field error below 5 × 10⁻⁷ | 9.99 × 10⁻⁸ | 16 noise-free float32 cases; constant/variable mobility and periodic/no-flux boundaries |
 | [Cahn–Hilliard composition conservation](validation/results/cahn-mobility.json) | Mean drift below 5 × 10⁻⁸ | 3.43 × 10⁻⁹ maximum | Same bounded test; excludes forcing and clipping |
+| [Cahn–Hilliard time-step refinement](validation/CAHN-HILLIARD.md#time-step-refinement) | Error decreases at first order as time step halves | Observed order 1.039–1.095 | Fixed grid and elapsed time; four boundary/mobility cases; does not test spatial convergence |
 | [PDE print-state preservation](validation/results/pde-print-state.json) | No changed field components; 2400 × 2400 output | Zero changes in six tested modules | Paused 512 × 512 initial fields; checks state and dimensions, not full rendering accuracy |
 
 Other tabs still expose useful diagnostics, but their meaning differs:
@@ -141,6 +142,12 @@ Generated artwork may be sold and reused under the [output grant](OUTPUT-RIGHTS.
 ---
 
 ## For people (and agents) adding to it
+
+**Adding your own formula:** contribute a source module; the studio currently has no general
+formula-entry box. The [formula submission guide](validation/FORMULA-SUBMISSIONS.md) explains
+how to state assumptions, supply an independent benchmark and record measured errors and
+failure controls. New submissions start unvalidated. Passing syntax, image or runtime checks
+does not establish mathematical correctness or originality.
 
 GENChase is a studio file, not a package. You do not install it into another app. You open `studio.html`, or you add a technique to it. How to commit and open a pull request is in [CONTRIBUTING.md](CONTRIBUTING.md).
 

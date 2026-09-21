@@ -32,6 +32,25 @@ This establishes a bounded discrete-stencil check. The cell spacing is fixed: th
 are not a continuum convergence study. Noise, clipping and half precision are excluded. There
 is no claim of validated long-time coarsening, all controls, or agreement with experiments.
 
+## Time-step refinement
+
+`node tools/pde-convergence.js` holds the 32x32 grid, unit cell spacing and elapsed time 0.08
+fixed while halving the GPU time step from 0.02 to 0.01 to 0.005. It tests both boundaries and
+both mobility options at M=1 and epsilon=1, without forcing or clipping. The initial field is
+`0.3 + 0.12 cos(pi x/2) cos(pi y/2)`, rounded once to float32 before both integrations.
+An independently written CPU RK4 integrator supplies the reference; halving its step from
+0.0005 to 0.00025 changes the answer by at most 2.87e-12.
+
+The measured temporal orders are 1.039 to 1.095, consistent with the implemented first-order
+Euler update. Maximum errors at the finest GPU time step are 0.00134 to 0.00151. These are
+time-discretization errors against the reference, unlike the much smaller same-stencil
+float32/float64 differences above. A deliberate control that advances twice the claimed
+elapsed time produces errors of 0.0297 to 0.0319 and fails the accuracy comparison.
+Raw results are in `results/cahn-time-refinement.json`.
+
+This supports temporal convergence for one bounded fixture. It does not establish spatial
+convergence to the continuum PDE, stability across all controls, or long-time accuracy.
+
 ## Reproducibility impact
 
 Existing parameters and seeds still load. Historical images using degenerate mobility will
