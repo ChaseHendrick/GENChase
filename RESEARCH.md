@@ -343,7 +343,7 @@ These are software claims. They transfer. They are not physics.
 
 ## Per-tab status
 
-126 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
+128 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
 
 Familiarity is listed so you do not confuse it with prior-art status.
 
@@ -475,6 +475,8 @@ Familiarity is listed so you do not confuse it with prior-art status.
 | `nonreciprocal` | Nonlinear Active Mixture | obscure | science only | never searched |
 | `plasma` | Kinetic Plasma | occasional | science only | never searched |
 | `shallow` | Shallow Water | occasional | science only | never searched |
+| `neural-mass` | Neural Populations | occasional | science only | never searched |
+| `hodgkin-huxley` | Hodgkin-Huxley Membranes | occasional | science only | never searched |
 
 ## Notes on the rows that are not `science only`
 
@@ -1348,3 +1350,10 @@ This revisits implementation accuracy, not the originality searches already mark
 ## 2026-09-21 — geometric construction audit
 
 Exact implementation-review searches: `site.math.brown.edu Reuleaux triangle constant width support`; `site.arxiv.org Apollonian circle packing Descartes reflection b1 new 2 sum`; `site.nilesjohnson.net Hopf fibration stereographic linking`. Opened primary author references Graham–Lagarias–Mallows–Wilks–Yan, arXiv:math/0010298; Niles Johnson, https://nilesjohnson.net/hopf.html and the linked David Lyons elementary introduction; Andrejs Treibergs, https://www2.math.utah.edu/~treiberg/M4531hw.pdf. Reviewed the coordinate/reflection formulas and constant-width construction, not novelty. Existing Hopf status hard-coded a theoretical linking number; Reuleaux width used the triangle vertices rather than curved arcs; the Apollonian seed did not form a tangent Descartes quadruple. These require implementation and observable corrections.
+
+
+## 2026-09-21 — PDE family and neuroscience implementation audit
+
+The PDE family review corrected the phase-field-crystal stencil mismatch, parameter-dependent timestep ceilings, hidden value clipping, Ohta reference-mean handling and batch rollback. Independent shader-versus-Float64 checks cover PFC, Swift–Hohenberg, Kuramoto–Sivashinsky, Ohta–Kawasaki, Active Model B+ and Cahn–Hilliard fixtures. The resulting status is partial: finite-grid agreement and guard behavior are recorded, while fixed-physical-domain convergence, phase selection, long-time behavior, stochastic forcing and global nonlinear stability remain open. Full details and source comparisons are in `validation/PDE-FAMILY.md`.
+
+The Hodgkin–Huxley and Montbrió–Pazó–Roxin modules implement established equations, with independent analytic/reference ODE checks and actual print-state preservation tests. They make no novelty, clinical, finite-neuron or experimental claim. Their bounded assumptions and remaining parameter-domain gaps are recorded in `validation/HODGKIN-HUXLEY.md` and `validation/NEURAL-MASS.md`.

@@ -45,4 +45,4 @@ All randomness through U.makeRng(seed). Math.random in a sim is a bug. Discrete 
 
 ## Counts
 
-126 techniques in this build. README, CITATION.cff, RESEARCH.md, DESIGN-PLAN.md, the studio head, and .github/description.txt are stamped by this command. Do not hand-edit the number.
+128 techniques in this build. README, CITATION.cff, RESEARCH.md, DESIGN-PLAN.md, the studio head, and .github/description.txt are stamped by this command. Do not hand-edit the number.

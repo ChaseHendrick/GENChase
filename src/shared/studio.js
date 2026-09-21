@@ -448,6 +448,8 @@ void main(){
     plasma: 'occasional',
     shallow: 'occasional',
     nonreciprocal: 'rare',
+    'hodgkin-huxley': 'occasional',
+    'neural-mass': 'occasional',
     maxwell: 'occasional',
     molecular: 'occasional',
     // ubiquitous

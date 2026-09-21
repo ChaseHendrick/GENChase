@@ -9,47 +9,69 @@
 //
 // It exists because the recipe is the product. Every row carries the URL hash that reconstructs that
 // plate exactly, which is the thing a reader, or a program reading on someone's behalf, actually needs.
-const path = require('path'), fs = require('fs');
+const path = require('path'), fs = require('fs'), vm = require('vm');
 const { chromium } = require('playwright');
 const count = require('./count.js');
+
+// A browser is still the authoritative path. This fallback only reads registration metadata,
+// which lets contributors regenerate the catalog on machines where a local headless browser
+// cannot start. It evaluates every maintained module with inert rendering stubs, then uses the
+// same fields and sort order as the browser path.
+function staticMetadata(root) {
+  const modules = [], noop = () => {};
+  const glsl = new Proxy({}, { get: () => '' });
+  const gl = new Proxy({ GLSL: glsl }, { get: (obj, key) => obj[key] || noop });
+  const util = new Proxy({ clamp: (x, a, b) => Math.max(a, Math.min(b, x)), hexToRgb: () => [0, 0, 0], makeRng: () => ({}) }, { get: (obj, key) => obj[key] || noop });
+  const palettes = new Proxy({}, { get: () => ({ colors: ['#000000'], bg: '#000000' }) });
+  const shell = fs.readFileSync(path.join(root, 'src/shared/studio.js'), 'utf8');
+  const fam = {};
+  const familyBlock = /const FAMILIARITY = \{([\s\S]*?)\n  \};/.exec(shell);
+  if (familyBlock) for (const m of familyBlock[1].matchAll(/^\s*'?([A-Za-z0-9_-]+)'?\s*:\s*'([^']+)'/gm)) fam[m[1]] = m[2];
+  for (const file of fs.readdirSync(path.join(root, 'src/modules')).filter(f => f.endsWith('.js')).sort()) {
+    const source = fs.readFileSync(path.join(root, 'src/modules', file), 'utf8');
+    const Studio = { util, gl, PALETTES: palettes, register: mod => modules.push(mod) };
+    const context = { Studio, console, Math, Number, JSON, Date, Intl, performance: { now: () => 0 },
+      Float32Array, Float64Array, Uint8Array, Uint8ClampedArray, Uint16Array, Uint32Array, ArrayBuffer,
+      setTimeout: noop, clearTimeout: noop, requestAnimationFrame: noop, document: {}, window: {} };
+    new vm.Script(source, { filename: file }).runInNewContext(context);
+  }
+  return modules.map(m => {
+    const d = m.defaults || {};
+    return {
+      id: m.id, name: m.name || m.id, tab: m.tab || '', subtitle: m.subtitle || '', equation: m.equation || '',
+      credit: m.credit || '', blurb: m.blurb || '', order: typeof m.order === 'number' ? m.order : 999,
+      seed: d.seed || '', presets: Object.keys(m.presets || {}), vectors: false,
+      familiarity: m.familiarity || fam[m.id] || '', liveCapable: Object.prototype.hasOwnProperty.call(d, 'running'),
+      runningDefault: !!d.running, headline: m.headline || '',
+    };
+  });
+}
 
 (async () => {
   if (!process.env.STUDIO) require('./build.js').build(true);
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'studio.html');
   const root = path.resolve(__dirname, '..');
-  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
-  const p = await b.newPage({ viewport: { width: 1200, height: 800 } });
-  // A fixed, inexpensive vector plate avoids booting a random GPU simulation just to read metadata.
-  await p.goto('file://' + studio + '#three-vortex-bound/catalog-index', { waitUntil: 'domcontentloaded', timeout: 90000 });
-  await p.waitForFunction(() => window.Studio && window.Studio.modules, null, { timeout: 30000 });
-
-  const mods = await p.evaluate(() => {
-    const out = [];
-    const fam = window.Studio.familiarity || {};
-    for (const id of Object.keys(window.Studio.modules)) {
-      const m = window.Studio.modules[id];
-      const d = m.defaults || {};
-      out.push({
-        id,
-        name: m.name || id,
-        tab: m.tab || '',
-        subtitle: m.subtitle || '',
-        equation: m.equation || '',
-        credit: m.credit || '',
-        blurb: m.blurb || '',
-        order: typeof m.order === 'number' ? m.order : 999,
-        seed: (d && d.seed) || '',
-        presets: Object.keys(m.presets || {}),
-        vectors: false,
-        familiarity: m.familiarity || fam[id] || '',
-        liveCapable: Object.prototype.hasOwnProperty.call(d, 'running'),
-        runningDefault: !!d.running,
-        headline: m.headline || '',
-      });
-    }
-    return out;
-  });
-  await b.close();
+  let mods;
+  if (process.env.GENCHASE_STATIC_INDEX) {
+    mods = staticMetadata(root);
+  } else {
+    const launchOptions = { args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] };
+    if (process.env.GENCHASE_CHROME_PATH) launchOptions.executablePath = process.env.GENCHASE_CHROME_PATH;
+    const b = await chromium.launch(launchOptions);
+    const p = await b.newPage({ viewport: { width: 1200, height: 800 } });
+    // A fixed, inexpensive vector plate avoids booting a random GPU simulation just to read metadata.
+    await p.goto('file://' + studio + '#three-vortex-bound/catalog-index', { waitUntil: 'domcontentloaded', timeout: 90000 });
+    await p.waitForFunction(() => window.Studio && window.Studio.modules, null, { timeout: 30000 });
+    mods = await p.evaluate(() => {
+      const out = [], fam = window.Studio.familiarity || {};
+      for (const id of Object.keys(window.Studio.modules)) {
+        const m = window.Studio.modules[id], d = m.defaults || {};
+        out.push({ id, name: m.name || id, tab: m.tab || '', subtitle: m.subtitle || '', equation: m.equation || '', credit: m.credit || '', blurb: m.blurb || '', order: typeof m.order === 'number' ? m.order : 999, seed: (d && d.seed) || '', presets: Object.keys(m.presets || {}), vectors: false, familiarity: m.familiarity || fam[id] || '', liveCapable: Object.prototype.hasOwnProperty.call(d, 'running'), runningDefault: !!d.running, headline: m.headline || '' });
+      }
+      return out;
+    });
+    await b.close();
+  }
 
   mods.sort((a, b2) => (a.order - b2.order) || a.name.localeCompare(b2.name));
 
