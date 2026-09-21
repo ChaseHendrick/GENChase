@@ -1,0 +1,613 @@
+<!doctype html>
+<!--
+  GENChase — generative art from real simulations
+  Copyright (c) 2026 Chaos
+  Licensed under the Apache License, Version 2.0. See LICENSE.
+  Generated from src/ by node tools/build.js. Edit the sources, not this file.
+  Generated images are yours; this license covers the source, not the plates.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GENChase — Generative Art from Real Simulations</title>
+<meta name="theme-color" content="#B3712A">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23ECE9E2'/%3E%3Ccircle cx='16' cy='16.6' r='9.1' fill='none' stroke='%23B3712A' stroke-width='1.7'/%3E%3Ccircle cx='16' cy='16.6' r='1.05' fill='%23B3712A'/%3E%3Ccircle cx='10.3' cy='20.4' r='2.4' fill='%23C06E3A'/%3E%3Ccircle cx='21.7' cy='20.4' r='2.4' fill='%23D4B05A'/%3E%3Ccircle cx='16' cy='9.3' r='1.8' fill='%238A96A3'/%3E%3C/svg%3E">
+<meta property="og:image" content="/og.jpg">
+<meta name="twitter:image" content="/og.jpg">
+<meta name="description" content="GENChase is a generative art studio built from real scientific simulations: flow fields, reaction-diffusion, slime mold, Lenia, fluids, Cahn–Hilliard, Ohta–Kawasaki copolymers, Swift–Hohenberg, phase-field crystal, Kuramoto–Sivashinsky, complex Ginzburg–Landau, swarmalators, Chirikov and Hofstadter, Helmholtz scars, optical caustics, smectic focal conics, Hastings–Levitov growth, Douady–Couder phyllotaxis, strange attractors, fractal raymarching, Penrose tilings, dendritic growth, chimera states, XY vortices, active nematics, Chladni figures, excitable media, Turing patterns, the Ising model, Abelian sandpiles, percolation, Mandelbrot and Julia sets, the double pendulum, hydrogen orbitals, Schrödinger wave packets and Rayleigh–Bénard convection, plus exact closed-form plates: KP soliton webs, Gerstner waves, the figure-eight choreography, Camassa–Holm peakons, the photon sphere, Crapper capillary waves, Hasimoto filaments, KP-I lumps and Three-vortex collapse bound. Every piece is seeded, reproducible and exports at museum print resolution.">
+<meta name="keywords" content="generative art, Turing patterns, Barkley excitable media, Ising model, Abelian sandpile, percolation, Mandelbrot, Julia set, Newton fractal, double pendulum, hydrogen orbitals, Schrodinger, Rayleigh-Benard, Keller-Segel, Klausmeier, Indra pearls, Schottky, Lichtenberg, dielectric breakdown, Talbot carpet, Ohta-Kawasaki, Hofstadter butterfly, Helmholtz quantum scars, optical caustics, smectic focal conics, Hastings-Levitov, Douady-Couder phyllotaxis, complex Ginzburg-Landau, Cahn-Hilliard, Swift-Hohenberg, phase-field crystal, Kuramoto-Sivashinsky, swarmalators, Chirikov, chimera, XY model, active nematics, print quality generative art, Three-vortex collapse bound, three-vortex collapse, point vortex, Gröbli, Aref, parallelogram lock, quincunx lock, Novikov-Sedov, five-vortex collapse">
+<meta name="author" content="Chaos">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:title" content="GENChase — generative art from real simulations">
+<meta property="og:description" content="120 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution with its own governing equation printed alongside.">
+<meta property="og:site_name" content="GENChase">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GENChase — generative art from real simulations">
+<meta name="twitter:description" content="120 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GENChase",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Any browser",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "A generative art studio built from real scientific simulations. 120 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, seeded for exact reproducibility, and exportable at museum print resolution.",
+  "featureList": [
+    "Flow fields with collision-avoiding strokes",
+    "Gray-Scott reaction-diffusion",
+    "Physarum slime mold transport networks in 2D and 3D",
+    "Lenia and Flow Lenia artificial life",
+    "Stable-fluids Navier-Stokes with FTLE coherent structures",
+    "Strange attractors and harmonographs",
+    "Signed-distance fractal raymarching",
+    "Compositional pattern-producing networks",
+    "Penrose and Ammann-Beenker aperiodic tilings",
+    "Kobayashi phase-field dendritic crystal growth",
+    "Chimera states in coupled oscillators",
+    "Swarmalators (O'Keeffe 2017)",
+    "Chirikov standard map density plate",
+    "Chladni figures and wave interference",
+    "Cahn-Hilliard spinodal decomposition",
+    "Ohta-Kawasaki block copolymers",
+    "Swift-Hohenberg convection patterns",
+    "Phase-field crystal (Elder)",
+    "Kuramoto-Sivashinsky spatiotemporal chaos",
+    "Complex Ginzburg-Landau spirals",
+    "Hofstadter butterfly",
+    "Helmholtz quantum scars",
+    "Optical caustics (Berry)",
+    "Smectic focal conics",
+    "Hastings-Levitov conformal growth",
+    "Douady-Couder phyllotaxis",
+    "Barkley and FitzHugh-Nagumo excitable media",
+    "Turing patterns: Schnakenberg, Brusselator, Gierer-Meinhardt, Lengyel-Epstein",
+    "May-Leonard cyclic competition spirals",
+    "Keller-Segel chemotaxis",
+    "Klausmeier vegetation bands",
+    "Ising model with Metropolis Monte Carlo",
+    "Abelian sandpile and self-organized criticality",
+    "Cyclic and Greenberg-Hastings cellular automata",
+    "Site and bond percolation",
+    "Mandelbrot, Julia, Newton and Burning Ship sets",
+    "Double pendulum flip-time fractal",
+    "Hydrogen orbital densities",
+    "Schrodinger wave packets on a detector",
+    "Rayleigh-Benard convection",
+    "Active Model B+ bubbly phase separation",
+    "Random domino tilings of the Aztec diamond (arctic circle)",
+    "Schramm-Loewner evolution curves",
+    "Exact KP-II soliton webs and KP-I lumps",
+    "Gerstner waves, Crapper capillary waves, Camassa-Holm peakons",
+    "Figure-eight three-body choreography",
+    "Schwarzschild photon sphere",
+    "Three-vortex collapse bound: omega_0 t_c >= sqrt(2) on a three-vortex collapse family",
+    "Parallelogram lock: omega_0 t_c >= 3 sqrt(5)/4 on Novikov-Sedov's four-vortex parallelograms",
+    "Quincunx lock: omega_0 t_c >= 3 sqrt(33)/16 on Novikov-Sedov's five-vortex quincunx",
+    "Hasimoto vortex filament soliton",
+    "Video capture of living plates",
+    "Seeded reproducibility and parameter export",
+    "Museum-quality print export at 300 to 600 ppi with a printed colophon"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "name": "Three-vortex collapse bound",
+  "headline": "An explicit formula and sharp minimum for a classical three-vortex collapse family",
+  "author": { "@type": "Person", "name": "Chaos", "url": "https://github.com/SharpMeow" },
+  "datePublished": "2026-09-19",
+  "url": "https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md",
+  "isPartOf": { "@type": "SoftwareApplication", "name": "GENChase", "url": "https://github.com/SharpMeow/GENChase" },
+  "citation": "Chaos. (2026). Three-vortex collapse bound. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md",
+  "description": "Three point vortices with circulations (1, 1, -1/2) on the L=0 circle collapse self-similarly. Their dimensionless product of initial angular velocity and collapse time is omega_0 t_c = (2 - cos^2 theta) / sin(2 theta) >= sqrt(2), with equality uniquely at tan theta = 1/sqrt(2), a triangle of interior angles 22.5, 45, and 112.5 degrees. The formula specializes Gröbli’s 1877 spiral coefficient. Priority of the optimized minimum remains unconfirmed. See identities/ORIGINALITY-FOLLOWUP.md."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "name": "Parallelogram lock",
+  "headline": "An explicit formula and sharp minimum for the classical four-vortex parallelogram collapse family",
+  "author": { "@type": "Person", "name": "Chaos", "url": "https://github.com/SharpMeow" },
+  "datePublished": "2026-09-20",
+  "url": "https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md",
+  "isPartOf": { "@type": "SoftwareApplication", "name": "GENChase", "url": "https://github.com/SharpMeow/GENChase" },
+  "description": "Four point vortices with circulations (1, 1, -2-sqrt(3), -2-sqrt(3)) at the vertices of a Novikov-Sedov parallelogram with diagonal ratio sqrt(2+sqrt(3)) collapse self-similarly. The dimensionless product is omega_0 t_c = (sqrt(3)/4)(4 - cos 2 theta)/sin(2 theta) >= 3 sqrt(5)/4, equality uniquely at cos 2 theta = 1/4. Independently derived in GENChase with AI assistance. This is not Novikov and Sedov's t_* or omega separately under a new name."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "name": "Quincunx lock",
+  "headline": "An explicit formula and sharp minimum for the classical five-vortex quincunx collapse family",
+  "author": { "@type": "Person", "name": "Chaos", "url": "https://github.com/SharpMeow" },
+  "datePublished": "2026-09-20",
+  "url": "https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md",
+  "isPartOf": { "@type": "SoftwareApplication", "name": "GENChase", "url": "https://github.com/SharpMeow/GENChase" },
+  "description": "Five point vortices with circulations (-1, -1, 1/2, 1/2, -3/4), four at the vertices of a parallelogram and one at the crossing of the diagonals, diagonals in ratio 1/sqrt(2), collapse self-similarly. The dimensionless product is omega_0 t_c = (3/16)(7 - 4 cos 2 theta)/sin(2 theta) >= 3 sqrt(33)/16, equality uniquely at cos 2 theta = 4/7. Independently derived in GENChase with AI assistance. This is not Novikov and Sedov's t_* or omega separately under a new name, and it is not the four-vortex parallelogram lock."
+}
+</script>
+<!-- Typefaces, inlined. These were three <link> tags to fonts.googleapis.com, which meant the studio
+     made a network request on every load while About and AGENTS.md both promised it made none. The
+     promise is the correct one, so the fonts moved rather than the words: Instrument Serif, Geist and
+     Geist Mono, Latin subsets only, as base64 woff2. Seven faces, 173 KB of woff2 and 232 KB encoded,
+     which is about 15 per cent of the file and the price of a single HTML file that really is
+     single. It also means the studio works with no network at all, which is the point of an object you
+     are meant to keep. tools/lint.js fails on any external URL that would load a resource. -->
+<style>{{include:styles/fonts.css}}</style>
+<style>{{include:styles/studio.css}}</style>
+<script type="text/plain" id="license-notices">{{licenses}}</script>
+</head>
+<body>
+
+<div class="app">
+  <header class="bar">
+    <div class="brand">
+      <h1>GEN<em>Chase</em></h1>
+      <span class="sub">pattern from process</span>
+    </div>
+    <div class="seedbox">
+      <label for="seed" id="seed-copy" title="Copy this seed">seed</label>
+      <input id="seed" type="text" spellcheck="false" autocomplete="off" aria-label="Seed">
+      <button id="btn-dice" type="button" title="Random seed" aria-label="Random seed">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="12" height="12" rx="2.5"/><circle cx="5.5" cy="5.5" r=".9" fill="currentColor"/><circle cx="10.5" cy="10.5" r=".9" fill="currentColor"/><circle cx="10.5" cy="5.5" r=".9" fill="currentColor"/><circle cx="5.5" cy="10.5" r=".9" fill="currentColor"/><circle cx="8" cy="8" r=".9" fill="currentColor"/></svg>
+      </button>
+    </div>
+    <div class="seedbox" id="headline" hidden></div>
+    <select id="preset" aria-label="Preset"><option value="">Presets…</option></select>
+    <button class="btn" id="btn-surprise" type="button" title="Randomize every parameter and the palette (S)">Surprise</button>
+    <button class="btn" id="btn-copy-link" type="button" title="Copy a shareable link to this exact plate (L)">Link</button>
+    <button class="btn" id="btn-save" type="button" title="Save this plate to your gallery (B)">Save</button>
+    <button class="btn" id="btn-record" type="button" hidden aria-pressed="false" title="Record a clip of this plate, up to 60 s (V). Starts it running if it is paused.">Record</button>
+    <button class="btn" id="btn-gallery" type="button" title="Open saved plates (G)">Gallery</button>
+    <button class="btn" id="btn-undo" type="button" title="Undo last generate, surprise, or recipe (Z)">Undo</button>
+    <button class="btn" id="btn-reset" type="button" title="Restore this technique to its factory defaults (R)">Reset</button>
+    <button class="btn" id="btn-history" type="button" role="switch" aria-checked="true" title="Show or hide the session timeline (H)">Timeline</button>
+    <button class="btn" id="btn-focus" type="button" aria-pressed="false" title="Hide the chrome and look at the plate (F)">Focus</button>
+    <button class="btn" id="btn-ambient" type="button" aria-pressed="false" title="Walk the techniques on a 30 s timer with fresh seeds (A)">Ambient</button>
+    <button class="btn" id="btn-about" type="button" title="About this studio (?)">About</button>
+    <button class="btn" id="btn-settings" type="button" title="Settings JSON — verbose recipe fallback">JSON</button>
+    <button class="btn" id="btn-side" type="button" title="Move the settings panel to the other side">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="11" rx="1.5"/><path id="btn-side-divider" d="M6 2.5v11"/></svg>
+      <span id="btn-side-label">Panel left</span>
+    </button>
+    <button class="btn" id="btn-more" type="button" title="More actions" aria-expanded="false" aria-haspopup="dialog" aria-controls="modal-more">More</button>
+    <div class="print-cluster" id="print-cluster">
+      <span class="dock-dims" id="dock-dims" hidden></span>
+      <button class="btn primary" id="btn-generate" type="button" title="New seed (Space)">Generate</button>
+      <div class="printbox">
+        <label for="export-inches">print</label>
+        <select id="export-inches" aria-label="Print size, long edge in inches"></select>
+        <select id="export-dpi" aria-label="Print resolution in pixels per inch"></select>
+        <button id="btn-colophon" class="ptog" type="button" role="switch" aria-checked="false"
+          title="Show a printed caption under the image: technique, governing equation, seed and every parameter">Colophon</button>
+        <span class="dims" id="export-dims" aria-live="polite"></span>
+      </div>
+      <button class="btn" id="btn-export" type="button" title="Export a print (E)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 11v2a1 1 0 001 1h8a1 1 0 001-1v-2"/></svg>
+        Export PNG
+      </button>
+    </div>
+  </header>
+
+  <div class="tabstrip">
+    <input class="find" id="find" type="search" placeholder="Find…" autocomplete="off" spellcheck="false" aria-label="Find a technique. Slash focuses this." />
+    <span class="find-n" id="find-n" hidden></span>
+    <select class="seen" id="seen" aria-label="How often you see it elsewhere (a curator's call)">
+      <option value="">Seen elsewhere…</option>
+      <option value="ubiquitous">Ubiquitous</option>
+      <option value="common">Common</option>
+      <option value="occasional">Occasional</option>
+      <option value="rare">Rare</option>
+      <option value="unseen">Almost unseen</option>
+    </select>
+    <nav class="tabs" id="tabs" role="tablist" aria-label="Techniques"></nav>
+    <p class="seen-hint" id="seen-hint" hidden>Nobody measured this. It is one person's estimate of how often you have seen the picture somewhere else, made in 2026. It is the only filter in this studio that is not computed from the file.</p>
+  </div>
+  <div class="history" id="history" hidden aria-label="Session history"></div>
+
+  <div class="main" id="main">
+    <aside class="side" id="side"></aside>
+    <section class="stage" id="stage" tabindex="-1">
+      <button class="btn" id="btn-exit-focus" type="button" hidden title="Leave focus mode (Esc or F)">Exit</button>
+      <div class="poke-aim" id="poke-aim" hidden aria-hidden="true"></div>
+      <figure class="sheet" id="sheet">
+        <figcaption class="colo-preview" id="colo-preview" hidden>
+          <div class="colo-kicker">Printed colophon · included on the PNG and on File → Print</div>
+          <div class="colo-title" id="colo-title"></div>
+          <div class="colo-eq" id="colo-eq"></div>
+          <div class="colo-meta" id="colo-meta"></div>
+          <div class="colo-params" id="colo-params"></div>
+        </figcaption>
+      </figure>
+      <div class="fault" id="fault" hidden role="alert">
+        <div class="fault-card">
+          <h3 id="fault-title">This technique cannot run here</h3>
+          <p id="fault-msg"></p>
+          <div class="fault-acts">
+            <button type="button" id="fault-retry">Try again</button>
+            <button type="button" id="fault-other">Pick another technique</button>
+          </div>
+        </div>
+      </div>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+      <div class="witness" id="witness">
+        <button class="live-badge" id="live-badge" type="button" title="LIVE when the field is still computing. Click, or press W, to quieten it">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="live-label">Still</span>
+          <span class="live-fp" id="live-fp">——</span>
+        </button>
+        <div class="witness-strip" id="witness-strip" aria-hidden="true"></div>
+        <p class="witness-hint" id="witness-hint"></p>
+      </div>
+      <div class="viewpad" id="viewpad" role="toolbar" aria-label="Move around the plate">
+        <div class="vrow" role="group" aria-label="Pan">
+          <button type="button" data-pan="1,0" title="Pan left" aria-label="Pan left">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3L5 8l5 5"/></svg>
+          </button>
+          <button type="button" data-pan="0,1" title="Pan up" aria-label="Pan up">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10l5-5 5 5"/></svg>
+          </button>
+          <button type="button" data-pan="0,-1" title="Pan down" aria-label="Pan down">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6l5 5 5-5"/></svg>
+          </button>
+          <button type="button" data-pan="-1,0" title="Pan right" aria-label="Pan right">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3l5 5-5 5"/></svg>
+          </button>
+        </div>
+        <div class="vrow" role="group" aria-label="Zoom">
+          <button type="button" id="view-minus" title="Zoom out (−)" aria-label="Zoom out">−</button>
+          <button type="button" id="view-plus" title="Zoom in (+)" aria-label="Zoom in">+</button>
+          <button type="button" class="vfit" id="view-fit" title="Fit the plate in the stage (0)" aria-label="Fit the plate">Fit</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="modal" id="modal-more" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="more-title">
+    <div class="head"><h2 id="more-title">More</h2><button class="x" id="more-close" type="button" aria-label="Close">×</button></div>
+    <div class="content more-list">
+      <button type="button" data-for="btn-surprise">Surprise <kbd>S</kbd></button>
+      <button type="button" data-for="btn-copy-link">Copy link <kbd>L</kbd></button>
+      <button type="button" data-for="btn-save">Save to gallery <kbd>B</kbd></button>
+      <button type="button" data-for="btn-gallery">Gallery <kbd>G</kbd></button>
+      <button type="button" data-for="btn-undo">Undo <kbd>Z</kbd></button>
+      <button type="button" data-for="btn-reset">Reset <kbd>R</kbd></button>
+      <button type="button" data-for="btn-history">Timeline <kbd>H</kbd></button>
+      <button type="button" data-for="btn-focus">Focus <kbd>F</kbd></button>
+      <button type="button" id="more-fit">Fit view <kbd>0</kbd></button>
+      <button type="button" data-for="btn-ambient">Ambient <kbd>A</kbd></button>
+      <button type="button" data-for="btn-about">About <kbd>?</kbd></button>
+      <button type="button" data-for="btn-settings">Settings JSON</button>
+      <button type="button" data-for="btn-side">Move panel</button>
+      <button type="button" data-for="btn-record">Record <kbd>V</kbd></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-about" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="about-title">
+    <div class="head"><h2 id="about-title">About GENChase</h2><button class="x" id="about-close" type="button" aria-label="Close">×</button></div>
+    <div class="content about-doc">
+      <p class="lede">GENChase is a generative art studio built from real scientific simulations. Every tab is a pattern-forming
+        system that physicists, chemists, biologists and mathematicians actually study, implemented from its governing equations
+        rather than imitated, and opened up so you can compose with it.</p>
+
+      <h3>What makes it different</h3>
+      <p>Almost every tab is the paper it names. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 120 sciences share one control surface,
+        one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
+        Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
+        one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
+        with seeded random draws. Vector geometry scales; numerical grids retain finite resolution and may differ across precision or hardware.</p>
+
+      <h3>Made to be printed</h3>
+      <p>The print control reads in inches and centimeters as well as pixels, because the output is meant for paper. Fine-art
+        giclée printers accept 300 to 360 ppi natively, which is the real ceiling of visible quality, so those are the defaults.
+        Turn on <b>Colophon</b> in the print bar (or in the export sheet) and the file becomes a mounted plate: the image inset in a paper margin, and beneath it the
+        technique, its governing equation, the seed, the palette and every parameter. The sheet offers PNG (the archival file), JPEG and WebP of the same pixels, and SVG where the plate is vectors.
+        A living plate, or a still one that can run, also offers an 8-second clip of the canvas (WebM, or MP4 where that is all the browser encodes). That is the plate in time, not a print. Scientific plates carried their own method
+        for centuries and generative art almost never does. The piece on the wall states how it was made and could be remade.</p>
+
+      <h3>Shortcuts</h3>
+      <table class="shortcuts">
+        <thead><tr><th>Key</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>Space</kbd></td><td>Generate a new seed</td></tr>
+          <tr><td><kbd>S</kbd></td><td>Surprise — randomize parameters and palette</td></tr>
+          <tr><td><kbd>E</kbd></td><td>Export a print</td></tr>
+          <tr><td><kbd>C</kbd></td><td>Copy the plate at screen size</td></tr>
+          <tr><td><kbd>L</kbd></td><td>Copy a link to this exact plate</td></tr>
+          <tr><td><kbd>B</kbd> / <kbd>G</kbd></td><td>Save to gallery / open gallery</td></tr>
+          <tr><td><kbd>Z</kbd> / <kbd>R</kbd></td><td>Undo / reset this technique</td></tr>
+          <tr><td><kbd>H</kbd> / <kbd>F</kbd> / <kbd>A</kbd></td><td>Timeline / focus / ambient. In focus, Exit or Esc restores the chrome</td></tr>
+          <tr><td><kbd>/</kbd></td><td>Find a technique</td></tr>
+          <tr><td><kbd>P</kbd> / <kbd>V</kbd> / <kbd>W</kbd></td><td>Pause / record a clip (starts a paused plate) / witness</td></tr>
+          <tr><td>Arrows / <kbd>Enter</kbd></td><td>On a pokeable plate: move a crosshair, Enter disturbs. Shift+arrow drags</td></tr>
+          <tr><td><kbd>+</kbd> / <kbd>−</kbd> / <kbd>0</kbd></td><td>Zoom the plate in, out, or fit. Alt-drag or middle-drag to pan; the wheel zooms toward the pointer. Left-drag still disturbs</td></tr>
+          <tr><td><kbd>?</kbd></td><td>This list</td></tr>
+        </tbody>
+      </table>
+
+      <h3>How to use it</h3>
+      <p>Press <b>Generate</b> or the space bar for a new seed. <b>Surprise me</b> randomizes the whole parameter space within
+        ranges that usually land somewhere good. Presets are starting points, not endpoints. The URL hash is the recipe:
+        technique, seed and parameters, so you can send someone a plate. <b>Copy link</b> puts that URL on the clipboard.
+        <b>Settings JSON</b> is the verbose fallback (schema <b>v: 1</b>). Session history under the tabs holds the last plates;
+        <b>Timeline</b> hides that strip (H). <b>Clear</b> on the left of it empties it. <b>Reset</b> restores the current technique to its factory plate.
+        <b>Focus</b> (F) hides the chrome so the plate fills the window; Esc brings it back. Click the seed label to copy it. P pauses a running plate.
+        <b>Record</b> (V) films a clip of up to 60 seconds as WebM, or MP4 where the browser only encodes that. It appears on a living plate, and on a still plate that can run — pressing it starts the field. The export sheet also offers an 8-second clip, plus JPEG and WebP of the print.
+        <b>Ambient</b> (A) enters focus and walks the techniques every 30 seconds with a fresh seed, for a second monitor or a wall; Esc stops it.
+        Click or drag to disturb the field. The <b>LIVE</b> badge means the simulation is still computing; <b>Still</b> means this frame is finished. Click the badge, or press <b>W</b>, to cycle it down to a bare dot and then out of the way; it stays where you left it.
+        The arrows at the lower right move around the plate, still or live; <b>+</b> and <b>−</b> zoom, <b>Fit</b> or <b>0</b> puts it back. Alt-drag or the middle button pans; the wheel zooms toward the pointer. This is a look, not a recipe: the print is always the full plate.
+        <b>Save</b> (B) keeps a plate in the gallery; <b>Gallery</b> (G) opens it.
+        <b>,</b> and <b>.</b> walk the preset list without opening the menu. <b>C</b> copies the plate to the clipboard at screen size, for pasting into a message; E is still the route to a file at print resolution.
+        Shortcuts: space generate, S surprise, E export, C copy image, L copy link, B save, G gallery, Z undo, R reset, H timeline, F focus, / find a technique, P pause, V record, A ambient, W witness, , . presets, 1–9 tabs, [ ] history, ? this list.</p>
+
+      <h3>License</h3>
+      <p>The studio code is licensed under <b>Apache-2.0</b>. Run, study, modify and redistribute it,
+        including commercially, under the terms in LICENSE. <b>Images you generate are yours.</b>
+        The additional output grant is in OUTPUT-RIGHTS.md. Credit the original researchers when
+        publishing scientific methods. A simulation's source citation is not a certification of accuracy.</p>
+      <p>Scientific validation coverage and limitations are recorded in <a href="VALIDATION.md">VALIDATION.md</a>.
+        Print pixel dimensions can exceed the underlying simulation grid. Export sharpness does not establish numerical accuracy.</p>
+
+      <h3>The techniques</h3>
+      <ul class="techlist">
+        <li><b>Artificial Life</b> — Lenia and Flow Lenia, continuous cellular automata whose creatures self-organize; the flow
+          variant conserves mass exactly, so they compete for a fixed budget of substance. Chan, 2019–23.</li>
+        <li><b>Physarum 3D</b> — slime mold agents building a filament network through a volume, raymarched. The same algorithm
+          astronomers used in 2020 to map the cosmic web.</li>
+        <li><b>Physarum</b> — the two-dimensional transport network. Jones, 2010.</li>
+        <li><b>Differential Growth</b> — curves that buckle because they grow faster than the space holding them, the way coral
+          and cortex fold.</li>
+        <li><b>Fractal Geometry</b> — signed-distance raymarching of the Mandelbulb, Mandelbox, Menger sponge and Apollonian
+          gasket.</li>
+        <li><b>Neural Patterns</b> — compositional pattern-producing networks evaluated per pixel. Stanley, 2007.</li>
+        <li><b>Chimera States</b> — identical oscillators that split into a synchronized domain beside a chaotic one, thought
+          impossible until 2002.</li>
+        <li><b>Swarmalators</b> — oscillators that swarm in space and sync in phase at once. Five states from a rainbow ring
+          to an active phase wave. O’Keeffe, Hong and Strogatz, 2017.</li>
+        <li><b>Chirikov map</b> — the standard map as a density plate: KAM islands in a chaotic sea. Chirikov, 1969.</li>
+        <li><b>Cahn–Hilliard</b> — spinodal decomposition: a mixture inside the spinodal unmixes itself, then coarsens.
+          Cahn and Hilliard, 1958.</li>
+        <li><b>Ohta–Kawasaki</b> — Cahn–Hilliard plus a long-range Coulomb term: diblock spots and lamellae of finite size.
+          Ohta and Kawasaki, 1986.</li>
+        <li><b>Swift–Hohenberg</b> — the universal envelope of Rayleigh–Bénard convection near onset: rolls, hexagons, localized
+          states. Swift and Hohenberg, 1977.</li>
+        <li><b>Lifshitz–Petrich</b> — two length scales in one free energy; 12-fold quasicrystal from Faraday waves.
+          Lifshitz and Petrich, 1997.</li>
+        <li><b>Phase-field crystal</b> — the same free energy as Swift–Hohenberg, but conserved: atoms as density peaks, grains,
+          vacancies, freezing. Elder, Katakowski, Haataja and Grant, 2002.</li>
+        <li><b>Kuramoto–Sivashinsky</b> — the simplest PDE that produces extensive chaos; cellular flame fronts.
+          Kuramoto and Tsuzuki 1976, Sivashinsky 1977.</li>
+        <li><b>Complex Ginzburg–Landau</b> — the envelope of an oscillatory instability: spirals, defect chaos, frozen vortex
+          glass. Newell, Whitehead, Segel; Aranson and Kramer’s atlas.</li>
+        <li><b>XY / Kosterlitz–Thouless</b> — planar spins on a lattice whose vortices bind or unbind with temperature.
+          Kosterlitz and Thouless, 1973.</li>
+        <li><b>Active Nematics</b> — self-driven rods whose +½ and −½ defects dance and unbind into active turbulence.
+          Microtubule–kinesin films; Beris–Edwards plus active stress.</li>
+        <li><b>Fluid</b> — a stable-fluids Navier-Stokes solver, with the option to show the finite-time Lyapunov ridges that
+          organize the mixing.</li>
+        <li><b>Dendritic Growth</b> — Kobayashi's phase-field model of solidification: snowflakes and metal dendrites from
+          two coupled fields.</li>
+        <li><b>Gravner–Griffeath snowflake</b> — mesoscopic lattice snow crystal: vapor, quasi-liquid, ice. Plates, dendrites, ferns.
+          Gravner and Griffeath, 2008.</li>
+        <li><b>Flow Field</b> — collision-avoiding strokes grown along a noise field, with widths, spacing and palettes under
+          full control.</li>
+        <li><b>Reaction-Diffusion</b> — the Gray-Scott activator and inhibitor, the chemistry behind Turing's 1952 answer to how
+          a uniform embryo breaks symmetry.</li>
+        <li><b>Aperiodic Tilings</b> — Penrose rhombs, kites and darts, Ammann–Beenker, and the 2023 hat and spectre monotiles: a 13-gon (with its mirror) and a chiral 14-gon that each tile the plane without ever repeating.</li>
+        <li><b>Attractors</b> — Lorenz, Rössler, Clifford and de Jong rendered as density maps of millions of iterations.</li>
+                <li><b>Hofstadter butterfly</b> — Bloch electron in a magnetic field: the almost-Mathieu spectrum, fractal in flux.
+          Hofstadter, 1976.</li>
+        <li><b>Helmholtz scars</b> — high eigenmodes of a stadium or cardioid, some sitting on unstable periodic orbits.
+          Heller, 1984.</li>
+        <li><b>Optical caustics</b> — folds and cusps of a light field through a smooth height. Berry.</li>
+        <li><b>Smectic focal conics</b> — Dupin cyclides packed as confocal ellipse-hyperbola pairs. Friedel, 1910.</li>
+        <li><b>Hastings–Levitov</b> — Laplacian growth by composing conformal slit maps. Hastings and Levitov, 1998.</li>
+        <li><b>Lichtenberg</b> — dielectric breakdown, the η-model. Niemeyer, Pietronero, Wiesmann, 1984.</li>
+        <li><b>Phyllotaxis</b> — primordia on a growing disc, each sited at the inhibitory minimum. Fibonacci from physics.
+          Douady and Couder, 1996.</li>
+        <li><b>Indra’s Pearls</b> — Schottky limit sets by iterated inversion. Mumford, Series, Wright, 2002.</li>
+        <li><b>Talbot carpet</b> — near-field self-imaging of a periodic grating. Talbot, 1836.</li>
+<li><b>Chladni &amp; Waves</b> — standing waves on a plate, their nodal lines, and the sand that settles along them.
+          Chladni, 1787.</li>
+        <li><b>Cortical Planforms</b> — a Wilson–Cowan neural field patterning under lateral inhibition, pushed through the
+          retinocortical map: Klüver's form constants out of a Turing bifurcation. Ermentrout and Cowan, 1979.</li>
+        <li><b>Random Matrices</b> — β-ensemble spectra from the Dumitriu–Edelman tridiagonal models, and Dyson Brownian
+          motion of GOE eigenvalues. Level repulsion as a continuous slider. Dyson, 1962.</li>
+        <li><b>Drainage Networks</b> — stream-power incision against uplift and soil creep, solved on the donor stack:
+          dendritic river networks and the watersheds they divide. Howard, 1994; Braun and Willett, 2013.</li>
+        <li><b>Rough Growth</b> — ballistic deposition, RSOS, surface relaxation and Eden clusters: three roughening
+          universality classes, with the exponent fitted from the deposit on the plate. Kardar, Parisi and Zhang, 1986.</li>
+        <li><b>Foam &amp; Grains</b> — the cellular Potts model coarsening into a froth, with the von Neumann–Mullins
+          n−6 law measured on the plate. Graner and Glazier, 1992.</li>
+        <li><b>Vortex Lattice</b> — a rotating condensate answering with quantized vortices in an Abrikosov lattice,
+          found from the phase winding rather than from the density. Gross and Pitaevskii, 1961.</li>
+        <li><b>Flocking</b> — Toner–Tu hydrodynamics of a polar active fluid: clustering, active turbulence, and
+          number fluctuations measured against the equilibrium square root. Toner and Tu, 1995.</li>
+        <li><b>Hyperbolic Turing</b> — Gray–Scott chemistry on a {p,q} tiling of the hyperbolic plane, drawn in the
+          Poincaré disk, where the area at distance r grows like e^r and a pattern cannot simply repeat.</li>
+        <li><b>Spanning Trees</b> — a uniform spanning tree of the grid, sampled exactly by Wilson's algorithm, and the
+          loop-erased random walk inside it whose scaling limit is SLE at κ = 2. Wilson, 1996.</li>
+        <li><b>Force Chains</b> — a soft-sphere granular packing settled under gravity, drawn as the network of contacts
+          that carries the load. Cundall and Strack, 1979; Majmudar and Behringer, 2005.</li>
+        <li><b>Liesegang Rings</b> — periodic precipitation in a gel: a reaction front that does not deposit smoothly but
+          in bands, with a spacing that grows geometrically. Liesegang, 1896.</li>
+      </ul>
+
+      <p class="colo" id="catalog-count">The live catalog is 120 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
+      <h3>How it is built</h3>
+      <p>One HTML file and a set of plain scripts. No frameworks, no build step, no server, no network calls, no analytics and
+        no tracking of any kind. It runs offline, from a thumb drive, and will still run when every CDN-dependent tool from this
+        era has rotted. Simulations run on the GPU through WebGL2 where the technique calls for it and on the CPU where that is
+        faster, and nothing leaves your machine.</p>
+
+      <p class="colo">Built by Chaos with Claude. Each technique credits the researchers who worked it out; the
+        implementations are original.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-export" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="export-title">
+    <div class="head"><h2 id="export-title">Export</h2><button class="x" id="export-close" type="button" aria-label="Close">×</button></div>
+    <div class="content">
+      <p class="note" id="export-note">Rendering…</p>
+      <p class="note" id="export-print" hidden></p>
+      <div class="export-colo" id="export-colo">
+        <button type="button" class="switch" id="export-colo-tog" role="switch" aria-checked="false" aria-label="Include colophon on the printed PNG"></button>
+        <div class="colo-copy">
+          <div class="lbl">Colophon on this print</div>
+          <p class="hint">On: mounted sheet with technique, equation, seed and parameters under the image. Off: the image alone, no caption.</p>
+        </div>
+      </div>
+      <img id="export-img" alt="Exported artwork" hidden>
+      <div class="actions">
+        <a class="btn primary" id="export-download" download hidden>Download PNG</a>
+        <button class="btn primary" id="export-save" type="button" hidden>Save PNG</button>
+        <a class="btn" id="export-jpg" href="#" hidden>JPEG</a>
+        <a class="btn" id="export-webp" href="#" hidden>WebP</a>
+        <a class="btn primary" id="export-svg" download hidden>Download SVG</a>
+        <button class="btn" id="export-clip" type="button" hidden>8 s clip</button>
+        <button class="btn" id="export-cancel" type="button" hidden>Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-settings" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <div class="head"><h2 id="settings-title">Settings</h2><button class="x" id="settings-close" type="button" aria-label="Close">×</button></div>
+    <div class="content">
+      <p class="note">Every knob for this technique, including the seed and palette, lives in this JSON. Copy it to save a piece exactly, or paste one in and apply.</p>
+      <textarea id="settings-text" spellcheck="false" aria-label="Settings JSON"></textarea>
+      <p class="note err" id="settings-err" hidden></p>
+      <div class="actions">
+        <button class="btn" id="settings-copy" type="button">Copy</button>
+        <button class="btn primary" id="settings-apply" type="button">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-gallery" hidden>
+  <div class="card wide" role="dialog" aria-modal="true" aria-labelledby="gallery-title">
+    <div class="head"><h2 id="gallery-title">Gallery</h2><button class="x" id="gallery-close" type="button" aria-label="Close">×</button></div>
+    <div class="content">
+      <p class="note">Plates you save stay on this machine. Each one is a recipe — seed, technique, every knob — so it rebuilds, it is not a screenshot. Click to open. Save on the bar (B) adds the current plate.</p>
+      <div class="ggrid" id="gallery-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>{{include:shared/studio.js}}</script>
+<script>{{include:modules/flow.js}}</script>
+<script>{{include:modules/physarum.js}}</script>
+<script>{{include:modules/reaction.js}}</script>
+<script>{{include:modules/growth.js}}</script>
+<script>{{include:modules/fluid.js}}</script>
+<script>{{include:modules/attractors.js}}</script>
+<script>{{include:modules/tilings.js}}</script>
+<script>{{include:modules/physarum3d.js}}</script>
+<script>{{include:modules/life.js}}</script>
+<script>{{include:modules/cppn.js}}</script>
+<script>{{include:modules/fractal.js}}</script>
+<script>{{include:modules/chimera.js}}</script>
+<script>{{include:modules/dendrite.js}}</script>
+<script>{{include:modules/chladni.js}}</script>
+<script>{{include:modules/xy.js}}</script>
+<script>{{include:modules/nematic.js}}</script>
+<script>{{include:modules/pde.js}}</script>
+<script>{{include:modules/swarm.js}}</script>
+<script>{{include:modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js}}</script>
+<script>{{include:modules/lattice.js}}</script>
+<script>{{include:modules/wavesflow.js}}</script>
+<script>{{include:modules/dynamics.js}}</script>
+<script>{{include:modules/rdx.js}}</script>
+<script>{{include:modules/aztec.js}}</script>
+<script>{{include:modules/sle.js}}</script>
+<script>{{include:modules/cortex.js}}</script>
+<script>{{include:modules/rmt.js}}</script>
+<script>{{include:modules/landscape.js}}</script>
+<script>{{include:modules/kpz.js}}</script>
+<script>{{include:modules/bec.js}}</script>
+<script>{{include:modules/potts.js}}</script>
+<script>{{include:modules/tonertu.js}}</script>
+<script>{{include:modules/hyperbolic.js}}</script>
+<script>{{include:modules/ust.js}}</script>
+<script>{{include:modules/grains.js}}</script>
+<script>{{include:modules/liesegang.js}}</script>
+<script>{{include:modules/lozenge.js}}</script>
+<script>{{include:modules/growdomain.js}}</script>
+<script>{{include:modules/sandpile.js}}</script>
+<script>{{include:modules/skyrmion.js}}</script>
+<script>{{include:modules/web.js}}</script>
+<script>{{include:modules/film.js}}</script>
+<script>{{include:modules/faraday.js}}</script>
+<script>{{include:modules/lens.js}}</script>
+<script>{{include:modules/timecrystal.js}}</script>
+<script>{{include:modules/spinice.js}}</script>
+<script>{{include:modules/skin.js}}</script>
+<script>{{include:modules/stealth.js}}</script>
+<script>{{include:modules/arago.js}}</script>
+<script>{{include:modules/rogue.js}}</script>
+<script>{{include:modules/aharonov.js}}</script>
+<script>{{include:modules/anderson.js}}</script>
+<script>{{include:modules/fput.js}}</script>
+<script>{{include:modules/soliton.js}}</script>
+<script>{{include:modules/ssh.js}}</script>
+<script>{{include:modules/aubry.js}}</script>
+<script>{{include:modules/hopf.js}}</script>
+<script>{{include:modules/cloak.js}}</script>
+<script>{{include:modules/vortex.js}}</script>
+<script>{{include:modules/darkroom.js}}</script>
+<script>{{include:modules/kakeya.js}}</script>
+<script>{{include:modules/breather.js}}</script>
+<script>{{include:modules/klein.js}}</script>
+<script>{{include:modules/gyroid.js}}</script>
+<script>{{include:modules/purcell.js}}</script>
+<script>{{include:modules/exceptional.js}}</script>
+<script>{{include:modules/meissner.js}}</script>
+<script>{{include:modules/tennis.js}}</script>
+<script>{{include:modules/airy.js}}</script>
+<script>{{include:modules/weierstrass.js}}</script>
+<script>{{include:modules/kitaev.js}}</script>
+<script>{{include:modules/veselago.js}}</script>
+<script>{{include:modules/devil.js}}</script>
+<script>{{include:modules/loschmidt.js}}</script>
+<script>{{include:modules/boy.js}}</script>
+<script>{{include:modules/thouless.js}}</script>
+<script>{{include:modules/reuleaux.js}}</script>
+<script>{{include:modules/apollonian.js}}</script>
+<script>{{include:modules/knotlight.js}}</script>
+<script>{{include:modules/causticsea.js}}</script>
+<script>{{include:modules/track.js}}</script>
+<script>{{include:modules/kp.js}}</script>
+<script>{{include:modules/gerstner.js}}</script>
+<script>{{include:modules/eight.js}}</script>
+<script>{{include:modules/peakon.js}}</script>
+<script>{{include:modules/photon.js}}</script>
+<script>{{include:modules/crapper.js}}</script>
+<script>{{include:modules/hasimoto.js}}</script>
+<script>{{include:modules/lump.js}}</script>
+<script>{{include:modules/three-vortex-bound.js}}</script>
+<script>{{include:modules/parallelogram-lock.js}}</script>
+<script>{{include:modules/quincunx-lock.js}}</script>
+<script>{{include:modules/double-triangle-bound.js}}</script>
+<script>{{include:shared/boot.js}}</script>
+
+</body>
+</html>

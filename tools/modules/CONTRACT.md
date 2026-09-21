@@ -1,24 +1,16 @@
 # Module contract for new GENChase blocks
 
-Read this before writing a block. It restates what the shell in `studio.html` actually does, so a block written against it drops into the file without surprises. When this file and `studio.html` disagree, `studio.html` wins. Search for the function or `id:`. Do not cite line numbers; they drift.
+Read this before writing a block. It restates what the shell in `studio.html` actually does, so a block written against it drops into the file without surprises. When this file and the maintained `src/` implementation disagree, inspect the implementation and correct the contract. Search for the function or `id:`. Do not cite line numbers; they drift.
 
 ## Files and workflow
 
-- Write your block to `tools/modules/<block>.js`. Never edit `studio.html` while working in a block; the maintainer inlines blocks serially.
-- First line of the file: `/* modules/<block>.js */`, second line a one-sentence comment naming the systems in the block. Then `(function () { 'use strict'; const U = Studio.util, G = Studio.gl; ... })();` exactly like the existing blocks.
-- Build a test copy: `node tools/inject.js tools/modules/<block>.js tools/dist/<block>.html`. Rebuild after every edit.
-- Shoot a tab: `STUDIO=tools/dist/<block>.html NODE_PATH=/opt/node22/lib/node_modules node tools/shot.js <id> 9000 <id>`. It writes `tools/shots/<id>.png` (whole page) and `tools/shots/<id>-canvas.png` (the plate). Open both with the Read tool and look at them. It prints luminance percentiles p01..p99 of the plate and console errors.
-- Full check for a tab: `STUDIO=tools/dist/<block>.html NODE_PATH=/opt/node22/lib/node_modules node tools/check.js <id> 8000`. It measures the default, every preset, loads the same hash twice and compares the plate, and switches to another tab and back to count visible canvases. Every preset must show a non-flat plate, the two loads must match, and there must be exactly one visible canvas at the end.
-- Throwaway probes go in `tools/_<name>.js` or `tools/_<dir>/`. While building a module you will write
-  one-off scripts to time something, dump a statistic or crop a screenshot. Anything under `tools/_` is
-  gitignored, so it stays out of the repository without anyone having to remember to delete it. A probe
-  that turns out to be worth keeping gets renamed without the underscore and given a real header
-  comment, the way `tools/zoom.js` and `tools/ui.js` were. The rule runs one way only: never rename an
-  already-tracked tool INTO `tools/_`. Something already committed there was kept on purpose, and moving
-  it under the ignored prefix deletes it from the repository without anybody deciding to.
-- Baseline noise you can ignore: the `willReadFrequently` warning, `ERR_CERT_AUTHORITY_INVALID`, and the `ServiceWorkerRegistration` pageerror. Anything else is yours.
-- A flat plate (p01 close to p99) or a black plate means the simulation died or the exposure is wrong. Sweep parameters until the default measures alive. Do not ship a preset you have not looked at.
-- Hash format for testing a recipe: `#<id>/<seed>/<base64url of JSON diff>`; `#<id>/<seed>` alone is enough for most checks. The JSON diff is an object of state keys that differ from defaults.
+- Canonical source is `src/modules/<block>.js`. Edit existing source there, not the generated HTML.
+- Shared shell and GPU helpers live in `src/shared/studio.js`; styles in `src/styles/`.
+- Add new module includes to `src/studio.html` before the boot include. Preserve script order.
+- Run `node tools/build.js`, then `node tools/index.js`, `node tools/lint.js`, and `node tools/science.js`.
+- Run the browser plate and print checks below on every changed technique. Record scientific evidence and limitations in `validation/techniques.json`; see `validation/README.md`.
+- Use `tools/_*` for ignored scratch. `tools/inject.js` remains available for isolated test copies; it replaces matching blocks.
+- Saved recipes and seeds must retain their meanings. See BUILDING.md.
 
 ## What to read in studio.html before writing
 

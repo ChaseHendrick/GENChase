@@ -2,7 +2,7 @@
 
 **Gen art, print ready.**
 
-Generative art from real scientific simulations, built to leave the screen. Every plate is seeded, resolution-independent, and exports in inches at giclée resolution.
+Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
 One HTML file. 120 pattern-forming systems. A seed that reprints. A hash you can send. A plate you can hang.
 
@@ -26,9 +26,9 @@ One HTML file. 120 pattern-forming systems. A seed that reprints. A hash you can
 
 Every tab is a system that already exists in a paper: Gray–Scott chemistry, Physarum transport, Lenia, Navier–Stokes, Cahn–Hilliard spinodal, Swift–Hohenberg convection, Lifshitz–Petrich 12-fold quasicrystals, Gravner–Griffeath snow crystals, hat and spectre monotiles, Helmholtz scars, optical caustics, Barkley excitable media, the Ising model, Bak–Tang–Wiesenfeld sandpiles, Schrödinger wave packets, Rayleigh–Bénard convection, the arctic circle of random domino tilings, Schramm–Loewner curves, and the rest. The governing equations are the medium. Nothing here is a style filter sitting on noise.
 
-A seed plus its parameters is the piece. Same seed, same world, at any size, years later. The URL hash carries the recipe. Export is sized in inches at print resolution, with an optional colophon printed under the image, carrying the technique, the equation, the seed and every parameter, the way a scientific plate used to carry its method.
+A seed plus its parameters is the piece. Saved recipes preserve seeds and parameters; numerical results can still depend on precision, platform and simulation resolution. The URL hash carries the recipe. Export is sized in inches at print resolution, with an optional colophon printed under the image, carrying the technique, the equation, the seed and every parameter, the way a scientific plate used to carry its method.
 
-Images you generate are yours, whoever you are. Sell them. The source is [PolyForm Small Business 1.0.0](LICENSE): free for individuals and for companies under 100 people and 1,000,000 USD of revenue, paid above that. A real vulnerability: [SECURITY.md](SECURITY.md), privately, not as a public issue.
+Images you generate are yours, whoever you are. Sell them. The source is [Apache-2.0](LICENSE), open to forks, modifications, redistribution and commercial use. See the separate [output grant](OUTPUT-RIGHTS.md). A real vulnerability: [SECURITY.md](SECURITY.md), privately, not as a public issue.
 
 ---
 
@@ -64,7 +64,7 @@ Another purpose is mathematical discovery: explore simulations, spot relationshi
 
 **The assembly.** Almost every tab implements the paper it names. Chemistry, acoustics, liquid crystals, and aperiodic tiles share one seed field, one palette, and one export. Switching from Cahn–Hilliard to Chladni costs you nothing.
 
-**Determinism as the product.** Every random draw comes from a seeded generator. Geometry is resolution-independent. Keep the seed, get the same plate at 36 inches. Change it, get another world.
+**Determinism as the product.** Every random draw comes from a seeded generator. Vector geometry can scale to print dimensions. Grid simulations retain their numerical resolution when exported; increasing print size does not refine the solution.
 
 **The hash is the recipe.** `#snowflake/gravner-2008` and `#lp/lifshitz-1997` are enough to reconstruct a plate. Settings JSON exists (`v: 1`) for the verbose case. It is the fallback, not the way you send someone work.
 
@@ -78,7 +78,7 @@ Another purpose is mathematical discovery: explore simulations, spot relationshi
 
 ## The plates check themselves
 
-This is the part that is hard to copy, and the reason to trust the pictures. Most tabs measure a quantity that theory predicts, **from the plate in front of you**, and print it in the status line and on the colophon. Not quoted from a paper: computed from the field that is currently on screen.
+Many tabs measure a quantity from the current field and compare it with theory. These diagnostics are useful checks, but do not establish full agreement with a paper. [Validation coverage](VALIDATION.md) separates numerical evidence, limitations and print quality. Unreviewed schemes remain explicitly unvalidated.
 
 The word **miss** on a status line is not the site breaking. The picture is still a plate. The numbers under it did not match what the equation predicted. Broken presets do this on purpose, so you can see the check is real.
 
@@ -169,7 +169,7 @@ GENChase is a studio file, not a package. You do not install it into another app
 
 **Use it when** the work has to be a real simulation that reprints: a PDE, a lattice growth, a tiling, a living field someone can disturb. When the plate should state how it was made. When the next tab is a rare equation and the shell is already finished.
 
-**Leave it when** you need a game, a network, a model weights file, or a folder of unrelated sketches. This file will not become those things by growing a `src/` directory.
+**Leave it when** you need a game, a network, a model weights file, or a folder of unrelated sketches. The shared studio remains focused on reproducible simulation art.
 
 ### Why an agent should work here
 
@@ -180,14 +180,14 @@ That is useful because the interesting sims are the ones almost nobody has put i
 If you are an agent:
 
 1. Read `AGENTS.md`, then look at an existing module before writing a new one.
-2. Stay in `studio.html`. No bundler, no React, no “quick Vite wrap.”
+2. Edit `src/`: modules, shared shell, styles and HTML template. Run `node tools/build.js` to generate the portable `studio.html`. See [BUILDING.md](BUILDING.md).
 3. All noise through `U.makeRng(seed)`. `Math.random` in a sim is a bug.
 4. Share via the hash. Bump `v` only when a default change would break old recipes.
 5. Still is Still. Live has to move. Snapshot the timeline on pointer up, and only if the recipe changed.
 6. Discrete marks export as vectors. Accumulated density does not, and should not pretend to.
-7. Credit the paper. Do not claim the science. Do not relicense the source as MIT.
-8. The human’s images are theirs. The source is not.
-9. After the tab lands, `node tools/index.js` then `node tools/lint.js`. The catalog is generated; a hand-edited TECHNIQUES.md is a catalog that is already wrong. If the plate measures something, add a row to the self-check table rather than leaving it only in the generated list.
+7. Credit the paper. Do not claim the science. Preserve source attribution and license notices.
+8. Generated images belong to their creator. Source reuse follows Apache-2.0.
+9. After source edits, `node tools/build.js`, `node tools/index.js`, then `node tools/lint.js` and `node tools/science.js`. The catalog is generated; a hand-edited TECHNIQUES.md is a catalog that is already wrong. If the plate measures something, add a row to the self-check table rather than leaving it only in the generated list.
 
 ---
 
@@ -195,7 +195,7 @@ If you are an agent:
 
 There is nothing to install on any platform.
 
-**[Download GENChase](https://github.com/SharpMeow/GENChase/archive/refs/heads/main.zip)** (about 3 MB; the README tiles stay on GitHub, not in the zip). Unzip it, then double-click the launcher for your system:
+**[Download GENChase](https://github.com/SharpMeow/GENChase/archive/refs/heads/main.zip)** (includes maintained source and the portable HTML; the README tiles stay on GitHub). Unzip it, then double-click the launcher for your system:
 
 | | Double-click |
 |---|---|
@@ -252,15 +252,11 @@ Each tab names the researchers. The implementations are original.
 
 ## License
 
-[PolyForm Small Business 1.0.0](LICENSE).
+[Apache License 2.0](LICENSE). Fork, modify and redistribute the software, including commercially, under its standard terms. Preserve the required notices. There is no company-size or revenue restriction. Bundled fonts retain their [SIL OFL licenses](licenses/).
 
-**Free** for individuals, students, researchers, and for any company with fewer than 100 people and less than 1,000,000 USD of revenue in its prior tax year. Use it, change it, redistribute it, build on it.
+**The artwork is yours.** The licensor's separate [output grant](OUTPUT-RIGHTS.md) preserves your freedom to sell and license generated images, animations and vector files.
 
-**Paid** above that threshold. If your company is larger than that and GENChase is useful to you, buy a license: [open an issue](https://github.com/SharpMeow/GENChase/issues). That is the whole arrangement, and it exists so that the people who can afford to pay are the ones who do.
-
-**The artwork is always yours.** The images, animations and vector files you produce by running GENChase are not the software and are not licensed by these terms. Sell them, exhibit them, license them, at any company size, whether or not you hold a license for the code. The LICENSE file grants this explicitly rather than leaving it to be argued about.
-
----
+The source migration and license provenance review are recorded in [BUILDING.md](BUILDING.md).
 
 ## Sources and research
 

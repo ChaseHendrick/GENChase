@@ -1,12 +1,12 @@
 # GENChase
 
-One HTML file of seeded scientific simulations. Each tab reprints from a hash. Generated images belong to the human. The source is PolyForm Small Business 1.0.0.
+One HTML file of seeded scientific simulations. Each tab reprints from a hash. Generated images belong to the human. The source is Apache-2.0. Maintained sources are in src/; studio.html is generated.
 
 ## Do not
 
 - Parse or scrape studio.html. It is 2.6 MB of implementation.
 - Invent a bundler, a framework tree, or a second architecture.
-- Do not put a name on a published equation. Credit the paper. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Do not relicense as MIT.
+- Do not put a name on a published equation. Credit the paper. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Preserve license notices.
 - Treat "familiarity" / "seen elsewhere" as a measurement. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
 
 ## Read instead
@@ -31,7 +31,7 @@ Aliases: #hendrick → three-vortex-bound, #hendricks-identity → three-vortex-
 
 ## Adding a tab
 
-Write tools/modules/<id>.js (first lines as CONTRACT.md requires). Inject, check, export, then the maintainer inlines into studio.html. Then:
+Write src/modules/<id>.js and add its include to src/studio.html before boot. Build, check, export and record validation evidence. Then:
 
     node tools/index.js
     node tools/lint.js

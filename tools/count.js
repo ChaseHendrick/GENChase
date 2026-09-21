@@ -89,7 +89,8 @@ function stampRepo(fs, path, root, n, mods) {
   write('CONTRIBUTING.md', t => stampText(t, n));
   write('DESIGN-PLAN.md', t => stampText(t, n));
   write('AGENTS.md', t => stampText(t, n));
-  write('studio.html', t => stampStudio(t, n));
+  write('src/studio.html', t => stampStudio(t, n));
+  require('./build.js').build();
   write('RESEARCH.md', t => {
     let next = stampText(t, n);
     next = next.replace(/^Last updated \d{4}-\d{2}-\d{2}\./m,
