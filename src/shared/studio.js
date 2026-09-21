@@ -2058,15 +2058,15 @@ void main(){
     if (Math.max(pw, ph) > MAX_EDGE) { clamp = MAX_EDGE / Math.max(pw, ph); clampWhy = 'canvas'; }
     if (Math.max(pw, ph) * clamp > maxTexSize) { clamp = Math.min(clamp, maxTexSize / Math.max(pw, ph)); clampWhy = 'texture'; }
     if (pw * ph * clamp * clamp > MAX_AREA) { clamp = Math.min(clamp, Math.sqrt(MAX_AREA / (pw * ph))); clampWhy = 'encode'; }
-    const clamped = clamp < 0.999;
-    if (clamped) { pw = Math.max(1, Math.round(pw * clamp)); ph = Math.max(1, Math.round(ph * clamp)); }
+    const clamped = clamp < 1;
+    if (clamped) { pw = Math.max(1, Math.floor(pw * clamp)); ph = Math.max(1, Math.floor(ph * clamp)); }
     let rw = pw, rh = ph;
     if (customPrint) {
       if (ph / pw > ar) rh = Math.max(1, Math.round(pw * ar));
       else rw = Math.max(1, Math.round(ph / ar));
     }
     const effDpi = Math.round(pw / wIn);
-    return { ar, wIn, hIn, pw, ph, rw, rh, clamped, clampWhy, dpi: printDpi, effDpi, mp: (pw * ph) / 1e6 };
+    return { ar, wIn, hIn, pw, ph, rw, rh, custom: customPrint, clamped, clampWhy, dpi: printDpi, effDpi, mp: (pw * ph) / 1e6 };
   }
   const inTxt = v => Number.isInteger(v) ? v.toFixed(1) : String(Number(v.toFixed(4)));
   const cmTxt = v => (Math.round(v * 2.54 * 10) / 10).toFixed(1);
@@ -2210,7 +2210,7 @@ void main(){
     };
     // Very short custom sheets need smaller type so the caption cannot consume the image.
     const typeHeight = fs.title * 1.25 + fs.eq * 2 + fs.meta * 1.9 + 12 * fs.p * 1.55;
-    const typeScale = Math.min(1, ((sheetH - 2 * pad) * 0.55 - pad * 0.9) / typeHeight);
+    const typeScale = sp.custom ? Math.min(1, ((sheetH - 2 * pad) * 0.55 - pad * 0.9) / typeHeight) : 1;
     for (const key of Object.keys(fs)) fs[key] *= typeScale;
     const bandH = Math.round(fs.title * 1.25 + fs.eq * 2.0 + fs.meta * 1.9 + 6 * fs.p * 1.55 + pad * 0.9);
     const innerW = sheetW - pad * 2, innerH = sheetH - pad * 2 - bandH;

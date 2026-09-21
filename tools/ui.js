@@ -332,6 +332,18 @@ const { chromium } = require('playwright');
   t('zero custom width blocks export', await p.$eval('#btn-export', el => el.disabled), 0);
   await size(1001, 2.25);
   t('out-of-range custom width blocks export', await p.$eval('#btn-export', el => el.disabled), 1001);
+  const deviceCap = await p.evaluate(() => {
+    const gl = document.createElement('canvas').getContext('webgl2');
+    return Math.min(16000, gl.getParameter(gl.MAX_TEXTURE_SIZE));
+  });
+  await size((deviceCap + 1) / 300, 1);
+  const nearCap = await p.$eval('#export-dims', el => el.textContent);
+  t('one pixel over device cap is reduced and disclosed', nearCap.includes(deviceCap.toLocaleString('en-US') + ' ×') && /ppi/.test(nearCap), nearCap);
+  await size(3.5, 1);
+  await p.evaluate(() => document.querySelector('#btn-colophon').click());
+  const captioned = await exportSheet();
+  t('short custom sheet with caption exports exact dimensions', captioned.w === 1050 && captioned.h === 300, captioned);
+  await p.evaluate(() => document.querySelector('#btn-colophon').click());
   await size(100, 100);
   const limitLabel = await p.$eval('#export-dims', el => el.textContent);
   t('oversized custom sheets disclose effective ppi', /ppi/.test(limitLabel), limitLabel);
