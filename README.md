@@ -85,7 +85,7 @@ The larger settings are optional and may be slow. More computation does not auto
 more accurate science. Maxwell prints interpolate its chosen numerical grid; molecular prints
 preserve the current particle geometry, including vector export.
 
-The first [reproducible layout search](experiments/MAXWELL-SEARCH.md) failed its improvement threshold. A [boundary follow-up](experiments/MAXWELL-BOUNDARY.md) reversed the ranking when the domain was enlarged. The [robust-layout comparison](experiments/MAXWELL-ROBUST.md) selected the same layout under both objectives, and the [molecular preparation experiment](experiments/MOLECULAR-MEMORY.md) did not establish a structural-memory effect. Failed hypotheses and numerical limitations remain published.
+The [experiment reports](experiments/README.md) retain failed hypotheses and numerical limitations alongside a boundary-effect diagnosis and a preliminary disorder-spreading signal. None establishes a novel finding. A Python analysis tool fits and tests held-out coarsening data; the browser simulations remain JavaScript/WebGL.
 
 Contributors can run a technique's recorded science and print checks with
 `node tools/verify.js --print schrodinger convection`. The [verification runner](tools/VERIFY.md)

@@ -1225,3 +1225,43 @@ No exact match for the planned twelve-of-twenty-four-site, compact-source, raw-r
 11. `"Robust optimization" "asymmetric light transmission" -site:researchgate.net -site:scribd.com`
 
 Other results about topological protection, sensors, band gaps and unrelated structure optimization were not used to substantiate this experiment. A negative exact-string search is not a novelty certificate.
+
+## 2026-09-21 — Schrödinger correlation experiment
+
+# Correlated-disorder experiment research, 2026-09-21
+
+Read GENChase AGENTS.md and RESEARCH.md before searching. This is a new bounded model experiment, not a reopening of the vortex identity searches. **Changing quantum transport with disorder correlations is established physics, not a novelty candidate.** No historical-priority claim is made for the small protocol below.
+
+Exact queries:
+
+1. `correlated disorder two dimensional wavepacket spreading Anderson localization Gaussian correlations quantum particles`
+2. `site:arxiv.org two dimensional correlated disorder quantum wave packet expansion localization speckle`
+
+Primary sources opened:
+
+- https://arxiv.org/pdf/0807.3698 — Miniatura, Kuhn, Delande and Mueller, *Quantum Diffusion of Matter Waves in 2D Speckle Potentials* (2008 preprint). Read introduction, section 2 on zero-mean potentials, correlation functions and variance, plus section 6 on finite-size limitations. This directly establishes prior study of correlated 2D disorder and expanding matter waves. Our finite lattice/filtered-noise experiment does not reproduce their continuum optical-speckle calculation.
+- https://www.cpht.polytechnique.fr/cpht/uquantmat/publications/papers/piraud2013njp15_075007.pdf — Piraud, Pezze and Sanchez-Palencia, *Quantum transport of atomic matter waves in anisotropic two-dimensional and three-dimensional disorder*, NJP 15, 075007 (2013). Read abstract and opening context only; no claim to have audited the 47-page derivation. Disorder statistics affecting transport are explicitly prior art.
+- https://www.nature.com/articles/s41467-020-18652-w — *Observation of two-dimensional Anderson localisation of ultracold atoms* (2020), publisher full text. Read introduction and the section distinguishing classical trapping from interference-induced localization. Finite-time reduced spread alone is insufficient to identify Anderson localization.
+
+In-page queries: `Abstract` in the Piraud PDF; `trapping` in the 2020 article; `Finite system size` in Miniatura. No inaccessible source was used as if read.
+
+Frozen useful question: for eight independent seeds of a fixed, unit-spacing 64x64 finite discrete Hamiltonian, does a binomial-smoothed potential change the packet's spatial variance at time 24 by more than ordinary seed variation, compared with a permutation of the **exact same potential values**? The permutation matches the complete one-point histogram as well as mean/RMS. No fitting or optimization is performed, so no fitted model has an independent-holdout requirement. Eight seeds are a small sample, with paired bootstrap uncertainty reported.
+
+Use a single compact Gaussian-like complex initial packet in all pairs; actual audited Visscher shader, no absorber, correct half-time initialization, positive centered density for spread and unclipped cross-time invariant for numerical integrity. Fixed time step 0.1, then 0.05 for every pair. Enlarge the periodic lattice to 128x128 at spacing 1 by repeating the exact 64x64 material tile and keeping the packet unchanged. This isolates sensitivity to the wavefunction boundary while preserving local disorder; it is not a thermodynamic limit or continuum grid refinement. Explicitly report boundary-strip density, local initial potential-energy expectation and finite-time/finite-seed limitations. A smaller spread can include classical trapping and is never labeled proved localization.
+
+## 2026-09-21 — Cahn calibration and Python analysis
+
+# Cahn coarsening calibration research — 2026-09-21
+
+Read current RESEARCH.md in GENChase-science and the existing Cahn validation/code before this study. Root had already searched phase ordering and supplied these primary sources; no duplicate search queries were issued. Opened the supplied primary pages directly:
+
+- https://arxiv.org/abs/cond-mat/9501089 — A. J. Bray, *Theory of Phase Ordering Kinetics*, Advances in Physics 43, 357 (1994). Abstract read. Established long-time coarsening/scaling framework.
+- https://arxiv.org/abs/cond-mat/9303011 — A. J. Bray and A. D. Rutenberg, *Growth Laws for Phase Ordering*, PRE 49, R27 (1994). Abstract read. Growth laws from energy-dissipation arguments for conserved and nonconserved fields. Do not call such laws novel.
+- https://journals.aps.org/pre/abstract/10.1103/PhysRevE.47.3025 — Chakrabarti, Toral and Gunton, *Late-stage coarsening for off-critical quenches: Scaling functions and the growth law*, PRE 47, 3025 (1993). Abstract read, full text gated. Established 2D Cahn–Hilliard structure-factor length measures and modified Lifshitz–Slyozov growth with asymptotic exponent 1/3.
+- https://arxiv.org/html/cond-mat/9501089v3 — failed cache-miss open; not used. The actual abstract lists v1; no full-text content was obtained from this attempted URL.
+
+Additional exact search queries: none. These sources suffice to reject novelty of a general Cahn coarsening power law. The bounded experiment asks whether a simple finite-time calibration predicts unseen seeds, epsilon and later times on GENChase's actual finite lattice, not whether it discovers an exponent or continuum law. An empirical fit that fails any frozen acceptance guard will be rejected rather than retuned.
+
+Before production trajectories, a zero homogeneous timing fixture and a sinusoidal timing/readback fixture were run to estimate affordable GPU workload. No random coarsening trajectories or fit data were inspected when choosing the protocol.
+
+Result: 22 GPU trajectories and a Python standard-library fit/whole-seed bootstrap/held-out analysis. Candidate A=5.3290, p=0.18172 has 3.41% pooled held-out relative RMSE versus 9.44% for the fitted one-third baseline, but p changes from 0.14727 to 0.22050 between frozen windows (difference 0.07323 > 0.05). The frozen acceptance rule REJECTS the calibration. Narrow within-window bootstrap interval does not cover systematic window dependence. Selected dt-halving/larger-domain/conservation/independent-mode controls pass. No new formula or growth-law claim; no post-result retuning. Full exact protocol and results live in experiments/CAHN-SCALING.md, experiments/results/cahn-scaling.json, and experiments/results/cahn-scaling-analysis.json; reproducible producers are tools/cahn-scaling.js and tools/cahn-scaling.py.

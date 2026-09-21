@@ -42,6 +42,10 @@ jobs:
           node tools/maintenance-check.js
           node tools/verify-check.js
           node tools/maxwell-search-check.js
+          node tools/maxwell-robust.js --check
+          node tools/molecular-memory.js --controls
+          node tools/cahn-scaling.js --controls
+          python3 tools/cahn-scaling.py --controls
           node tools/build.js --check
           node tools/science.js
       - name: Structural checks
