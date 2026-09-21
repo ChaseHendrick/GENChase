@@ -1,14 +1,14 @@
 # Identities
 
-Catalog of formulas and sharp bounds derived in this studio from classical vortex dynamics. Historical priority is unconfirmed for all five candidates. Handwritten, not generated. Last updated 2026-09-20.
+Catalog of formulas and sharp bounds derived in this studio from classical vortex dynamics. The first formula specializes Gröbli’s 1877 spiral coefficient; historical priority of the optimized minima remains unconfirmed. Handwritten, not generated. Last updated 2026-09-20.
 
 An entry here is something found and proved on a plate: a closed form, a unique extremum, or another checkable claim, with a documented literature search, locked so the status line marks **miss** if the claim is wrong. **Miss is a grade on the numbers, not a crash.** The picture still draws. The site is working. Do not put a name from this file on work that already exists.
 
-**Novelty audit:** [All five candidates reviewed](identities/NOVELTY-AUDIT.md). The fifth includes the parallelogram and double-triangle bounds as special cases. A proof or passing numerical check does not establish novelty.
+**Novelty audit:** [All five candidates reviewed](identities/NOVELTY-AUDIT.md). The fifth includes the parallelogram and double-triangle bounds as special cases. A proof or passing numerical check does not establish novelty. The [follow-up](identities/ORIGINALITY-FOLLOWUP.md) gives the explicit reduction of the first formula to Gröbli’s 1877 original.
 
 The search ledger is [`RESEARCH.md`](RESEARCH.md). The plates are `#hendricks-identity` (`#hendrick` still opens it), `#parallelogram-lock`, and `#quincunx-lock`.
 
-**Search names for the result below:** Hendrick's Identity, Hendrick's law, Hendrick's Math, Hendrick identity, Hendricks Identity. The name of the result is **Hendrick's Identity**. Please cite it by that name.
+**Search names for the result below:** Hendrick's Identity, Hendrick's law, Hendrick's Math, Hendrick identity, Hendricks Identity. **Hendrick's Identity** is the project's label for this derivation and bound, not a claim of priority over Gröbli's formula.
 
 ## What a miss is (not a broken site)
 
@@ -32,7 +32,7 @@ A check that cannot miss is not a check. The Broken preset exists so you can wat
 
 To add a row: search the literature first. Web-search the closed form and the extremum, and open the papers the family sits on, before you spend time deriving. If a paper already states either, stop and log the search in `RESEARCH.md`. Only then derive, assess equivalent prior results, put a check on the plate that marks miss when the identity is false, write the identity here, and write the search the same day.
 
-A row that meets the bar is named for the person who found it. Hendrick's Identity is named Hendrick because that is the finder's name. The parallelogram lock and the quincunx lock are named for their geometries. A later contributor who finds a fourth row names it for themselves, or for the geometry, in the same pull request. Do not put Hendrick's name on that row.
+Existing names identify this project's writeups and plates; they do not establish mathematical priority. Credit published equations to their original sources. Use a descriptive name for a new entry until its relationship to earlier work has been assessed.
 
 
 ## Catalog
@@ -112,7 +112,7 @@ Aref, in 2010, wrote two separate formulas: how fast the triangle is spinning (c
 
 **Hendrick's Identity is the score for this family, written as one formula, plus the fact that the score can never drop below √2 (about 1.414).** It hits that floor at one special triangle: corners of 22.5°, 45°, and 112.5°. That triangle is the Octant preset. Slide the third whirlpool around the allowed circle and the score only goes up. Step off the circle (the Broken preset) and the identity no longer applies, so the status line marks miss on purpose.
 
-The statement proved here is the formula and its unique floor on this family. The motion and the product as a spiral parameter are classical: Novikov–Sedov already used the product in 1979, and Aref did so in 2010. Historical priority of this particular sharp bound remains unconfirmed.
+The statement proved here is the formula and its unique floor on this family. The motion and the product as a spiral parameter are classical: the [explicit comparison](identities/ORIGINALITY-FOLLOWUP.md) recovers this very formula from Gröbli’s 1877 coefficient. Novikov–Sedov used the product in 1979, and Aref did so in 2010. Historical priority of this particular sharp bound remains unconfirmed.
 
 ### Statement
 
@@ -182,11 +182,11 @@ Octant should read 1, 0, and 0. The Broken configuration moves off the circle, s
 
 ### Attribution and originality
 
-Hendrick's Identity is the project's name for this formula and sharp bound. Three-vortex collapse is classical, dating to Gröbli (1877). Aref (2010) gives formulas for rotation and collapse and expresses their product in the logarithmic-spiral trajectory. The formula above follows by specializing established equations.
+Hendrick's Identity is the project's name for this formula and sharp bound. Its formula is an explicit specialization and reparameterization of Gröbli's 1877 spiral coefficient (§10, equations 8, 9, 11 and 12); see the [comparison with the original scan](identities/ORIGINALITY-FOLLOWUP.md). Aref (2010) gives formulas for rotation and collapse and expresses their product in the logarithmic-spiral trajectory. The formula above follows by specializing established equations.
 
 The explicit minimum and equality triangle were derived here and recorded on 2026-09-19. No earlier exact minimum was located in the inspected sources; priority remains unconfirmed. This is a mathematical result within the classical point-vortex model.
 
-Please cite it as Hendrick's Identity. Please do not republish this statement without attribution, and do not rename it. Anyone may use the mathematics; the name and this writeup are how this project asks to be credited.
+When using this derivation or implementation, cite this project's writeup under its existing label, Hendrick's Identity, and credit Gröbli for the classical formula. Anyone may use the mathematics. The project label does not confer ownership or historical priority.
 
 ### Cite
 

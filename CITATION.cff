@@ -20,7 +20,9 @@ abstract: >-
   IDENTITIES.md: Hendrick's Identity (recorded in GENChase 2026-09-19; also
   Hendrick's law, Hendrick's Math), the parallelogram lock, and the
   quincunx lock (recorded in GENChase 2026-09-20). Cite them by those names.
-  All historical-priority claims remain unconfirmed. The audit of all five
+  The first formula specializes and reparameterizes Gröbli’s 1877 spiral
+  coefficient; priority of the optimized minima remains unconfirmed. See
+  identities/ORIGINALITY-FOLLOWUP.md for the explicit comparison. The audit of all five
   candidates, including the polygon generalization, is in
   identities/NOVELTY-AUDIT.md.
 keywords:
@@ -62,8 +64,9 @@ preferred-citation:
     velocity and collapse time is omega_0 t_c = (2 - cos^2 theta) / sin(2 theta)
     >= sqrt(2), with equality uniquely at tan theta = 1/sqrt(2), a triangle
     of interior angles 22.5, 45, and 112.5 degrees. Independently derived
-    in GENChase with AI assistance. Recorded here 2026-09-19; historical
-    priority unconfirmed.
+    in GENChase with AI assistance and recorded here 2026-09-19. The formula
+    specializes Gröbli’s 1877 spiral coefficient; priority of the optimized
+    minimum remains unconfirmed. See identities/ORIGINALITY-FOLLOWUP.md.
     Also referred to as Hendrick's law and Hendrick's Math. Cite as
     Hendrick's Identity.
   keywords:

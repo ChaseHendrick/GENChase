@@ -10,7 +10,7 @@ This folder is the citable snapshot of the three rows in [`../IDENTITIES.md`](..
 | [`HASHES.txt`](HASHES.txt) | SHA-256 of the file, of each statement block, and of the PDF. |
 | [`ARXIV.md`](ARXIV.md) | How to mint a Zenodo DOI and how to upload to arXiv. |
 
-**Audit correction (2026-09-20): historical priority is unconfirmed for all five candidates.** Read [NOVELTY-AUDIT.md](NOVELTY-AUDIT.md). The frozen PDF, Typst source, statements and hashes preserve the original snapshot; their priority language is superseded by that audit. Git dates and hashes establish provenance, not originality. Anyone may use the mathematics; cite this writeup and the classical sources when using them.
+**Audit correction (2026-09-20): the first formula specializes Gröbli’s 1877 spiral coefficient; priority of the optimized minima remains unconfirmed.** Read [NOVELTY-AUDIT.md](NOVELTY-AUDIT.md) and the [explicit historical comparison](ORIGINALITY-FOLLOWUP.md). The frozen PDF, Typst source, statements and hashes preserve the original snapshot; their priority language is superseded by that audit. Git dates and hashes establish provenance, not originality. Anyone may use the mathematics; cite this writeup and the classical sources when using them.
 
-Hendrick's Identity is named for Hendrick. The parallelogram lock and the quincunx lock are named for their geometries. A later identity is named for the person who found it.
+Hendrick's Identity is named for Hendrick. The parallelogram lock and the quincunx lock are named for their geometries. These are project labels, not evidence of first discovery.
 

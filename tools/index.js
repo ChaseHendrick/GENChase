@@ -116,7 +116,7 @@ The same data in machine-readable form is [\`techniques.json\`](techniques.json)
   md += `
 ## Credits
 
-Each technique names the people whose work it implements. The vortex-collapse formulas are derived here from classical dynamics, with historical priority unconfirmed for all five candidates. See identities/NOVELTY-AUDIT.md. Their plates mark miss if the measured claim is wrong. Miss is a grade on the numbers, not a crash. The statements are in IDENTITIES.md.
+Each technique names the people whose work it implements. The vortex-collapse formulas are derived here from classical dynamics. The first specializes Gröbli’s 1877 spiral coefficient; priority of the optimized minima remains unconfirmed. See identities/NOVELTY-AUDIT.md and identities/ORIGINALITY-FOLLOWUP.md. Their plates mark miss if the measured claim is wrong. Miss is a grade on the numbers, not a crash. The statements are in IDENTITIES.md.
 
 `;
   for (const m of mods) md += `**${esc(m.name)}**. ${esc(m.credit)}\n\n`;
@@ -141,6 +141,8 @@ One HTML file of seeded scientific simulations. Each tab reprints from a hash. G
 - tools/modules/CONTRACT.md — how to add a tab.
 - README.md — what is new, and what is not.
 - IDENTITIES.md — derived identities. Cite Hendrick's Identity by that name (also Hendrick's law, Hendrick's Math). Do not put that name on a second result. Read before claiming another.
+- identities/ORIGINALITY-FOLLOWUP.md — the first formula’s equivalence to Gröbli (1877); minimum priority remains unconfirmed.
+- identities/NOVELTY-AUDIT.md — evidence and limits for all five candidates.
 - RESEARCH.md — what was searched, what was not. Read before a prior-art search. Do not re-run a search marked skip.
 
 ## Recipe hash

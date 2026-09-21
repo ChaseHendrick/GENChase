@@ -2,7 +2,7 @@
 
 The compiled note is [`note.pdf`](note.pdf). Typst source is [`note.typ`](note.typ). Canonical byte-exact statements are [`STATEMENTS.txt`](STATEMENTS.txt). SHA-256 fingerprints are [`HASHES.txt`](HASHES.txt).
 
-**Audit correction (2026-09-20):** the frozen note contains priority claims not established by the literature review. Prepare a corrected version incorporating [NOVELTY-AUDIT.md](NOVELTY-AUDIT.md) before a new submission; preserve the archived original and its hashes. Dates below refer to GENChase records, not proven first discovery.
+**Audit correction (2026-09-20):** the frozen note contains priority claims not established by the literature review. Prepare a corrected version incorporating [NOVELTY-AUDIT.md](NOVELTY-AUDIT.md) and the [explicit Gröbli comparison](ORIGINALITY-FOLLOWUP.md) before a new submission; preserve the archived original and its hashes. Dates below refer to GENChase records, not proven first discovery.
 
 ## GitHub release
 
