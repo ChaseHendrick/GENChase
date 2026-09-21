@@ -4,28 +4,7 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
-One portable HTML file, maintained as modular source. 120 pattern-forming systems with saved recipes and print exports. [See the project flowchart](PROJECT-FLOW.md).
-
-```mermaid
-flowchart TD
-    A["Edit source modules"] --> B["Build one HTML file"]
-    B --> C["Test and review"]
-    S["Papers and independent benchmarks"] --> C
-    C -->|Fixes needed| A
-    C -->|Checks pass, review complete| D["Merge and publish studio"]
-    D --> E["Choose a technique, seed and settings"]
-    E --> F["Run and explore the simulation"]
-    F --> G["Save a recipe or export artwork"]
-
-    classDef development fill:#e8f1ff,stroke:#2458a6,color:#102c54
-    classDef science fill:#fff1d6,stroke:#9a6500,color:#553800
-    classDef use fill:#e5f5ed,stroke:#24734b,color:#143e2a
-    class A,B,D development
-    class C,S science
-    class E,F,G use
-```
-
-Blue: development · Amber: review and evidence · Green: using the studio. Passing checks covers their stated cases, not all scientific claims; see [validation coverage](VALIDATION.md).
+One portable HTML file, maintained as modular source. 122 pattern-forming systems with saved recipes and print exports.
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
@@ -64,6 +43,10 @@ The download runs locally. A saved recipe records the inputs needed to reconstru
 
 Another purpose is mathematical discovery: explore simulations, spot relationships, and develop new identities, formulas, and sharp bounds. The aim is to discover and invent new mathematics, then test the results, prove what we can, and check the literature before claiming originality. The [research notes](IDENTITIES.md) record derivations, and the [literature audit](identities/NOVELTY-AUDIT.md) documents the source checks.
 
+The [module research notes](research/MODULE-RESEARCH.md) compare useful additions from scientific
+software and explain the possible MathMod connection. New visual designs and larger simulations
+are opportunities to investigate; they do not by themselves establish new mathematics.
+
 | Workflow | What you keep | What is needed to reproduce it |
 |---|---|---|
 | 🔵 **GENChase** | Portable studio and a saved recipe | Studio version, seed, settings and a compatible browser |
@@ -81,7 +64,7 @@ Another purpose is mathematical discovery: explore simulations, spot relationshi
 
 **The hash is the recipe.** `#snowflake/gravner-2008` and `#lp/lifshitz-1997` are enough to reconstruct a plate. Settings JSON is another way to save inputs. Current recipes use version 2; older recipe versions are handled by declared compatibility defaults.
 
-**Print first.** The size control speaks inches and centimetres as well as pixels. Choose pixel density to suit the printer and intended viewing size. Colophon on: a mounted sheet. Colophon off: the image alone. Where the medium is lines, export can be SVG, not a photograph of pixels.
+**Print first.** The size control speaks inches and centimetres as well as pixels. Choose a preset or enter a custom width and height in inches, then choose pixel density to suit the printer and intended viewing size. Custom sheets fit the complete artwork with background margins, preserving its proportions. Colophon on: a mounted sheet. Colophon off: the image alone. Where the medium is lines, export can be SVG, not a photograph of pixels.
 
 **An activity indicator.** The LIVE badge detects changes in canvas pixels. It helps show whether a plate is changing or still; it does not prove that a simulation is numerically correct or distinguish simulation frames from every other kind of animation.
 
@@ -90,6 +73,19 @@ Another purpose is mathematical discovery: explore simulations, spot relationshi
 ---
 
 ## What the checks establish
+
+Two additions offer larger optional workloads:
+
+| Technique | Explore | Larger setting | Scientific scope |
+|---|---|---|---|
+| **Maxwell FDTD** | Electric and magnetic waves scattering through dielectric patterns | Up to 2048 × 2048 cells for a square GPU field | Lossless, periodic, two-dimensional model; [numerical and print evidence](validation/MAXWELL.md) |
+| **Molecular Dynamics** | Attractive and repulsive particles in a periodic box | Up to 16,384 particles on the CPU | Two-dimensional force-shifted Lennard–Jones model; [trajectory and print evidence](validation/MOLECULAR.md) |
+
+The larger settings are optional and may be slow. More computation does not automatically establish
+more accurate science. Maxwell prints interpolate its chosen numerical grid; molecular prints
+preserve the current particle geometry, including vector export.
+
+The [experiment reports](experiments/README.md) retain failed hypotheses and numerical limitations alongside a boundary-effect diagnosis and a preliminary disorder-spreading signal. None establishes a novel finding. A Python analysis tool fits and tests held-out coarsening data; the browser simulations remain JavaScript/WebGL.
 
 Contributors can run a technique's recorded science and print checks with
 `node tools/verify.js --print schrodinger convection`. The [verification runner](tools/VERIFY.md)

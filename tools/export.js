@@ -64,6 +64,21 @@ const blank = m => !m.lum || ((m.lum.p99 - m.lum.p01) < 12 && m.lum.ink < 0.004)
     }
     await p.waitForTimeout(settle);
 
+    // A fixed delay is not completion: large particle presets can still be preparing
+    // on CI. Comparing their evolving canvas with an earlier export is meaningless.
+    try {
+      await p.waitForFunction(() => !/preparing|warming up/i.test(document.querySelector('#status').textContent), null, {timeout: exportMs});
+    } catch {
+      fails.push(label + ': preparation did not finish before the export deadline');
+      continue;
+    }
+    const ready = await p.evaluate(id => {
+      const running = document.getElementById('p-' + id + '-running');
+      if (running && (running.checked || running.getAttribute('aria-checked') === 'true')) running.click();
+      return document.querySelector('#status').textContent;
+    }, id);
+    console.log('ready ' + label + ' ' + JSON.stringify(ready));
+
     await p.evaluate(() => {
       const img = document.querySelector('#export-img');
       if (img) { img.removeAttribute('src'); img.hidden = true; }

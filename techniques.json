@@ -2,7 +2,7 @@
   "project": "GENChase",
   "repository": "https://github.com/SharpMeow/GENChase",
   "file": "studio.html",
-  "count": 120,
+  "count": 122,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "aliases": {
     "hendrick": "three-vortex-bound",
@@ -1200,6 +1200,32 @@
       "aliases": []
     },
     {
+      "id": "maxwell",
+      "name": "Maxwell FDTD",
+      "tab": "Maxwell",
+      "subtitle": "electric and magnetic waves · 1966",
+      "equation": "ε ∂Ez/∂t = ∂Hy/∂x − ∂Hx/∂y; μ ∂Hx/∂t = −∂Ez/∂y; μ ∂Hy/∂t = ∂Ez/∂x",
+      "credit": "K. S. Yee, Numerical solution of initial boundary value problems involving Maxwell’s equations in isotropic media, IEEE Transactions on Antennas and Propagation 14, 302–307 (1966), doi:10.1109/TAP.1966.1138693. TMz Yee differences and staggering follow the equations described in John B. Schneider, Understanding the FDTD Method, chapter 8. This is an original implementation of the classical method, not new physics.",
+      "blurb": "An electric pattern starts with zero magnetic field, then splits into waves as electric and magnetic fields exchange energy. Dielectric disks, strips and rods slow and scatter the wave. Opposite edges connect: any wave leaving one edge returns through the other. This is a lossless periodic sheet in normalized units, with no absorbing layer. Electric colors the signed out-of-plane field; Intensity shows Ez squared, not total electromagnetic energy; Material shows the sampled permittivity. Fine grids reveal smaller features but cost more work. The numerical fields stay at the chosen cell count when printed.",
+      "order": 53.6,
+      "seed": "yee-1966",
+      "presets": [
+        "disk",
+        "rings",
+        "slab",
+        "rods",
+        "strip",
+        "plane"
+      ],
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "",
+      "hash": "#maxwell/yee-1966",
+      "aliases": []
+    },
+    {
       "id": "excitable",
       "name": "Excitable Media",
       "tab": "",
@@ -2197,6 +2223,32 @@
       "runningDefault": true,
       "headline": "steps",
       "hash": "#reaction",
+      "aliases": []
+    },
+    {
+      "id": "molecular",
+      "name": "Molecular Dynamics",
+      "tab": "",
+      "subtitle": "Lennard-Jones particles · 1924 / 1967",
+      "equation": "V(r) = 4(r^-12 - r^-6) - V_LJ(rc) + (r-rc)F_LJ(rc), r < rc = 2.5;  m r̈ = -∇V",
+      "credit": "J. E. Lennard-Jones, Proceedings of the Royal Society A (1924). L. Verlet, Physical Review (1967). Force shifting and molecular dynamics: M. P. Allen and D. J. Tildesley, Computer Simulation of Liquids, second edition (2017).",
+      "blurb": "Atoms repel strongly when close and attract at a modest distance. Here thousands of particles move in a periodic two-dimensional box. Warm the initial velocities or change the density and watch collisions rearrange the material. The force and potential both taper to zero at 2.5 particle diameters. There is no thermostat: temperature can change as kinetic and potential energy trade places. Colors show particle speed or identity, and optional links mark nearby pairs, not chemical bonds. This is an established idealized model, not a simulation of a specific substance.",
+      "order": 82.4,
+      "seed": "",
+      "presets": [
+        "warm",
+        "cool",
+        "dilute",
+        "clusters",
+        "dense",
+        "large"
+      ],
+      "vectors": true,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "n",
+      "hash": "#molecular",
       "aliases": []
     },
     {

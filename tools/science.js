@@ -30,7 +30,8 @@ const validDate = s => {
 // These harnesses check construction, runtime, images or state preservation, not a numerical claim.
 const nonNumericalTests = new Set([
   'build', 'check', 'export', 'index', 'lint', 'maintenance-check', 'pde-print-state',
-  'plate', 'preset', 'recipe', 'science', 'sharp', 'shot', 'ui', 'zoom', 'verify', 'verify-check', 'wave-print-state'
+  'plate', 'preset', 'recipe', 'science', 'sharp', 'shot', 'ui', 'zoom', 'verify', 'verify-check', 'wave-print-state',
+  'maxwell-print-state', 'molecular-print', 'maxwell-search', 'maxwell-search-check', 'maxwell-boundary', 'molecular-memory', 'maxwell-robust', 'schrodinger-disorder', 'cahn-scaling'
 ].map(name => fs.existsSync(path.join(root, 'tools', name + '.js')) ? fs.realpathSync(path.join(root, 'tools', name + '.js')) : path.join(root, 'tools', name + '.js')));
 try {
   assert(Array.isArray(records), 'Expected validation record array');

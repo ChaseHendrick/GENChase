@@ -1,0 +1,127 @@
+{
+  "scope": "Paused actual browser module at a seeded evolved state. Raster and vector 2400px square/non-square exports, actual 8-inch 300-ppi shell print, exact position/velocity/force/energy/step preservation. Real running control advances and pauses. Injected collision fixture checks visible failure and rollback. No claim about physical experimental agreement.",
+  "rows": [
+    {
+      "links": false,
+      "n": 1024,
+      "steps": 1000,
+      "tests": [
+        {
+          "requested": [
+            2400,
+            2400
+          ],
+          "width": 2400,
+          "height": 2400,
+          "svgWidth": 2400,
+          "svgHeight": 2400,
+          "pngBytes": 1018027,
+          "svgBytes": 98819,
+          "rasterVectorMAD": 0.01970625
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "width": 2400,
+          "height": 1800,
+          "svgWidth": 2400,
+          "svgHeight": 1800,
+          "pngBytes": 757473,
+          "svgBytes": 99809,
+          "rasterVectorMAD": 0.01926111111111111
+        }
+      ],
+      "unchanged": true,
+      "halted": ""
+    },
+    {
+      "links": true,
+      "n": 1024,
+      "steps": 300,
+      "tests": [
+        {
+          "requested": [
+            2400,
+            2400
+          ],
+          "width": 2400,
+          "height": 2400,
+          "svgWidth": 2400,
+          "svgHeight": 2400,
+          "pngBytes": 1561063,
+          "svgBytes": 400794,
+          "rasterVectorMAD": 0.032410416666666664
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "width": 2400,
+          "height": 1800,
+          "svgWidth": 2400,
+          "svgHeight": 1800,
+          "pngBytes": 1125196,
+          "svgBytes": 401624,
+          "rasterVectorMAD": 0.03063611111111111
+        }
+      ],
+      "unchanged": true,
+      "halted": ""
+    },
+    {
+      "links": false,
+      "n": 4096,
+      "steps": 1000,
+      "tests": [
+        {
+          "requested": [
+            2400,
+            2400
+          ],
+          "width": 2400,
+          "height": 2400,
+          "svgWidth": 2400,
+          "svgHeight": 2400,
+          "pngBytes": 1840860,
+          "svgBytes": 383062,
+          "rasterVectorMAD": 0.0381125
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "width": 2400,
+          "height": 1800,
+          "svgWidth": 2400,
+          "svgHeight": 1800,
+          "pngBytes": 1378349,
+          "svgBytes": 386952,
+          "rasterVectorMAD": 0.03846666666666667
+        }
+      ],
+      "unchanged": true,
+      "halted": ""
+    }
+  ],
+  "shell": {
+    "width": 2400,
+    "height": 2400,
+    "note": "2,400 × 2,400 px, 1.6 MB. Rasterized from SVG at print pixels (vector RIP). If the download button does nothing, right-click the image and save it.",
+    "unchanged": true
+  },
+  "live": {
+    "before": 1000,
+    "pausedAt": 1008,
+    "pausedAfter": 1008
+  },
+  "stop": {
+    "message": "Unresolved close approach. Lower the timestep and regenerate.",
+    "status": "step 0 · particles 4T 20833.3333 · E/N 15625.01870ΔE/scale 0.00e+0Stopped: Unresolved close approach. Lower the timestep and regenerate.dt 0.002seed molecular-print",
+    "rolledBack": true
+  },
+  "errors": []
+}

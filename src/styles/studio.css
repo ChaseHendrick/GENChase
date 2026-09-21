@@ -88,6 +88,13 @@
   }
   .printbox select { border: 0; background: transparent; border-radius: 0; padding: 7px 6px 7px 8px; max-width: none; }
   .printbox select + select { border-left: 1px solid var(--line); }
+  .printbox .custom-size { display: flex; align-items: center; gap: 3px; padding-right: 6px; }
+  .printbox .custom-size[hidden] { display: none; }
+  .printbox .custom-size label { display: inline; padding: 0 3px; border: 0; align-self: auto; }
+  .printbox .custom-size input { width: 4.4rem; min-width: 0; padding: 6px 3px; font-variant-numeric: tabular-nums; }
+  .printbox .custom-size input:invalid { border-color: var(--accent); }
+  .printbox .custom-size span { font-size: 11px; }
+
   .printbox .ptog {
     border: 0; border-left: 1px solid var(--line); background: transparent; color: var(--ink);
     padding: 7px 10px; align-self: stretch;
@@ -641,6 +648,9 @@
     .printbox { flex: 0 1 auto; min-width: 0; flex-wrap: nowrap; }
     .printbox select { max-width: 4.8rem; padding-inline: 4px; }
     .printbox .ptog { display: none; }
+    .print-cluster:has(.custom-size:not([hidden])) { flex-wrap: wrap; }
+    .print-cluster:has(.custom-size:not([hidden])) .printbox { order: -1; flex: 1 0 100%; justify-content: center; }
+    .printbox .custom-size input { width: 4rem; }
     #dock-dims { display: none !important; }
     .printbox .dims { display: none !important; }
     .status {

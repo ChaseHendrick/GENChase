@@ -58,3 +58,15 @@ LICENSE contains the standard Apache-2.0 text from the Apache Software Foundatio
 NOTICE records attribution; OUTPUT-RIGHTS.md preserves the separate output grant.
 This changes the current release, not historical commits. Frozen research snapshot files remain
 byte-for-byte unchanged. Old commercial restrictions no longer describe this release.
+
+## Larger field and particle experiments
+
+`node tools/verify.js --print maxwell molecular` runs the registered operator, trajectory and
+print-state benchmarks for the new electromagnetic and molecular modules. Their largest optional
+settings need more memory or CPU time; smoke tests at a large size are not scientific validation
+of every long trajectory. Read [Maxwell's limits](validation/MAXWELL.md) and
+[the molecular model](validation/MOLECULAR.md) before interpreting their diagnostics.
+
+## Python research analysis
+
+`python3 tools/cahn-scaling.py` reproduces the fit, whole-seed uncertainty and held-out checks from committed GPU measurements using only the standard library. `--controls` exercises known synthetic laws, held-out corruption and correlated-frame uncertainty. This complements the Python launcher in `run/`; it does not replace the browser solvers. See [experiment outcomes](experiments/README.md).
