@@ -1,22 +1,18 @@
-# Frozen identities
+# Classical vortex bounds
 
 > [!IMPORTANT]
-> **Confirmed novel findings among the five candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five entries are not independent findings.
+> **Zero confirmed novel findings.** The three-vortex formula specializes Gröbli’s 1877 spiral coefficient. The remaining entries are bounds on classical families; their historical originality is unconfirmed.
 
-> [!WARNING]
-> **The archived note is superseded. Its former personal name is retired; use Three-vortex collapse bound and credit Gröbli (1877).** Cite the corrected live derivation and audit instead of treating the old note as a current priority claim.
+The note and statement files were corrected on 2026-09-21 to remove personal naming and unsupported priority claims. The mathematics remains under descriptive labels with classical attribution.
 
-This folder preserves the historical snapshot of the three rows in [`../IDENTITIES.md`](../IDENTITIES.md).
-
-| File | Status | What it is |
+| File | Status | Contents |
 |---|---|---|
-| [`note.pdf`](note.pdf) | 🟠 Archived | The original four-page note; read with the audit correction before citing or submitting. |
-| [`note.typ`](note.typ) | 🟠 Archived | Typst source of the note. |
-| [`STATEMENTS.txt`](STATEMENTS.txt) | 🟠 Archived | Byte-exact statements, UTF-8 LF, no BOM. Hash this. |
-| [`HASHES.txt`](HASHES.txt) | 🟠 Archived | SHA-256 of the file, of each statement block, and of the PDF. |
-| [`ARXIV.md`](ARXIV.md) | 🔵 Guidance | How to mint a Zenodo DOI and how to upload to arXiv. |
+| [note.pdf](note.pdf) | 🔵 Corrected note | Three classical collapse-family formulas, elementary bounds and attribution limits |
+| [note.typ](note.typ) | 🔵 Maintained source | Rebuildable Typst source for the corrected PDF |
+| [STATEMENTS.txt](STATEMENTS.txt) | 🔵 Corrected statements | Plain-text formulas; project dates are not first-discovery dates |
+| [HASHES.txt](HASHES.txt) | 🔵 File fingerprints | SHA-256 of the corrected files and statement blocks |
+| [NOVELTY-AUDIT.md](NOVELTY-AUDIT.md) | 🟠 Originality unconfirmed | Evidence, overlaps and remaining literature gaps |
+| [ORIGINALITY-FOLLOWUP.md](ORIGINALITY-FOLLOWUP.md) | 🔵 Source comparison | Explicit reduction to Gröbli’s original formula |
+| [ARXIV.md](ARXIV.md) | 🔵 Publication guidance | Attribution requirements and limits on priority claims |
 
-**Audit correction (2026-09-20): the first formula specializes Gröbli’s 1877 spiral coefficient; priority of the optimized minima remains unconfirmed.** Read [NOVELTY-AUDIT.md](NOVELTY-AUDIT.md) and the [explicit historical comparison](ORIGINALITY-FOLLOWUP.md). The frozen PDF, Typst source, statements and hashes preserve the original snapshot; their priority language is superseded by that audit. Git dates and hashes establish provenance, not originality. Anyone may use the mathematics; cite this writeup and the classical sources when using them.
-
-The three-vortex bound uses a descriptive name and credits Gröbli’s formula. The parallelogram lock and the quincunx lock are named for their geometries. These are project labels, not evidence of first discovery.
-
+The live derivations are in [IDENTITIES.md](../IDENTITIES.md). Anyone may use the mathematics. Cite the classical sources and this project when using its exposition or implementation. File hashes and repository timestamps establish provenance, not novelty.

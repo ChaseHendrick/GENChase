@@ -1,12 +1,11 @@
-# SHA-256 fingerprints of identities/STATEMENTS.txt and identities/note.pdf
-# Algorithm: SHA-256, hex, lowercase. Encoding of STATEMENTS.txt: UTF-8, LF, no BOM.
-# Whole-file hash is over the bytes of STATEMENTS.txt as committed.
-# Block hash is over the bytes of that Name: ... First public: ...\n block, no surrounding blank line.
+# SHA-256 of corrected files and statement blocks, 2026-09-21.
+# Dates and fingerprints establish file provenance, not mathematical priority.
+# UTF-8 LF. Block bytes: Name: through Recorded here:, including final newline.
 
-STATEMENTS.txt       fa51c2a28dfd93c2217c80746fe8b9a50c8e35a1edfa7172cfe6d19a8cd741ad
-note.typ             9c79c20ad82e0fe98be42a8875b4042ad0cc86f4a520509a4d1271b51cc6bd75
-note.pdf             42f47dbe13dda800d660a3f642e5131e830ca525dfafa0609c8ce33c002d955b
+STATEMENTS.txt  d84bfcc71c223d8765bdaaa7381d7cfa4aace1e8783eafd4f41c7532f35e6704
+note.typ  bd3150e1094de82d7614ebacd22b2ce9d614b040a6811573c37ee2b9fda85381
+note.pdf  5931036579af0c8800b5d108d81d74a548e77b596ec876d502868a892cb42436
 
-Hendrick's Identity  feec9106d080aa2575665ac2ec4439f3caee99e756b293878dcb7cd5ce2ccb10
-Parallelogram lock   c5feb77708a1163c2275e0e2467a9007d97fae88e21ac3771444d8617f4d7c6e
-Quincunx lock        ab967c2c842b0532c679f767d53d780102b508a53107b00d07972df840ad850d
+Three-vortex collapse bound  2cc88a7367826744af6ec683c2c2f40e682f5eda6896fe0ce3e813c672e75ee1
+Parallelogram lock  8071f9d9ca1ed3315af0d5be219d1b2cf0158d316a3748a2f922761d45beed2f
+Quincunx lock  022e3b90dc753d56a7c665ad640f63010ab26000614401020931b786ebad561b

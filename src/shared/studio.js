@@ -572,7 +572,6 @@ void main(){
     'quincunx-lock': 'unseen',
     'double-triangle-bound': 'rare',
   };
-  const ALIAS = { hendrick: 'three-vortex-bound', 'hendricks-identity': 'three-vortex-bound' };
   const S = window.Studio = { util, gl: glh, PALETTES, generatePalette, register, boot, modules: byId, exportJob: null, familiarity: FAMILIARITY };
 
   function register(mod) {
@@ -799,7 +798,6 @@ void main(){
     const parts = raw.split('/');
     let id = parts[0];
     if (!id) return null;
-    if (ALIAS[id] && byId[ALIAS[id]]) id = ALIAS[id];
     if (!byId[id]) return { id, unknown: true };
     const out = { id };
     if (parts[1]) {
@@ -2872,7 +2870,6 @@ void main(){
         const obj = own(JSON.parse($('settings-text').value));
         if (!Object.keys(obj).length) throw new Error('Not an object');
         delete obj.v;
-        if (obj.id && ALIAS[obj.id]) obj.id = ALIAS[obj.id];
         if (obj.id && byId[obj.id] && obj.id !== currentId) switchTo(obj.id);
         const e2 = instances[currentId];
         e2.state = sanitize(e2.mod, Object.assign(own(e2.state), obj));

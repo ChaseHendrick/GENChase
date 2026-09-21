@@ -63,15 +63,17 @@ Copied from the README, restated so an agent does not have to infer it.
 | A published equation plus a feedback term | Not an invention | `track`, `causticsea` |
 | Familiarity bucket `unseen` | Editorial, not a result | `techniques.json` |
 
+> Editorial correction, 2026-09-21: personal labels have been removed throughout this ledger. Dated entries retain historical search context; superseded statements of originality or first discovery are not current conclusions. See identities/ORIGINALITY-FOLLOWUP.md.
+
 ## Physics
 
-**Published, implemented, not claimed, with three exceptions.** Almost every tab names a paper in `credit`. Gray-Scott is Gray and Scott. Wilson's algorithm is Wilson's. The self-check numbers in the README are measurements from the plate against those papers, not new predictions. Hendrick's Identity, the parallelogram lock, and the quincunx lock are the exceptions: derived here, uniqueness-checked, locked to the plate.
+**Classical models and unconfirmed candidate bounds.** The catalog cites its source models; implementation accuracy is tracked separately in VALIDATION.md. Zero novel findings are confirmed. The three-vortex expression specializes Gröbli’s 1877 spiral coefficient. The parallelogram and quincunx bounds are elementary corollaries of published rates. Historical absence claims below are superseded by the explicit originality follow-up.
 
 **The derived locks.** The statements, the minima, what they are not, and how the checks miss live in [`IDENTITIES.md`](IDENTITIES.md). Three point vortices of circulations 1, 1, -1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae. On this family their dimensionless product is
 
     omega t_c = (2 - cos^2 theta) / sin(2 theta)
 
-which has a unique minimum of sqrt(2) at tan theta = 1/sqrt(2), the triangle with angles 22.5, 45, and 112.5 degrees. At construction theta = 45 degrees the same product is 3/2. That identity is not in those papers. The factors at this length are t_c = (pi/3)(4u + 1/u) and 2 pi omega = 3(2u^2+1)/(4u^2+1); the t_c minimum 4pi/3 at u = 1/2 is Leoncini, Kuznetsov and Zaslavsky (2000) and is not claimed. The plate reports omega t_c / sqrt(2) against 1, the similarity residual against 0, and signed L against 0. Off the L = 0 circle, all three numbers miss on purpose. Miss is a grade, not a crash.
+which has a unique minimum of sqrt(2) at tan theta = 1/sqrt(2), the triangle with angles 22.5, 45, and 112.5 degrees. At construction theta = 45 degrees the same product is 3/2. The formula is a specialization of Gröbli’s published coefficient; priority of the elementary optimization remains unconfirmed. The factors at this length are t_c = (pi/3)(4u + 1/u) and 2 pi omega = 3(2u^2+1)/(4u^2+1); the t_c minimum 4pi/3 at u = 1/2 is Leoncini, Kuznetsov and Zaslavsky (2000) and is not claimed. The plate reports omega t_c / sqrt(2) against 1, the similarity residual against 0, and signed L against 0. Off the L = 0 circle, all three numbers miss on purpose. Miss is a grade, not a crash.
 
 Do not re-derive this unless the check is missing the lock. Do not search the name of the tab as if it were a published law. Do not put that name on a different system.
 
@@ -85,16 +87,16 @@ which has a unique minimum of 3√5/4 at cos 2θ = 1/4. Direct Biot-Savart on th
 
     omega t_c = (3/16) (7 − 4 cos 2θ) / sin(2θ)
 
-which has a unique minimum of 3√33/16 at cos 2θ = 4/7. Direct Biot-Savart on this family (2π kernel) matches that closed form. The plate is `#quincunx-lock`. Off the quincunx, the numbers miss on purpose. Miss is a grade, not a crash. Do not claim Novikov-Sedov's t_* or ω separately, and do not put a private name on their motion. A different five-vortex slice with diagonal ratio μ = 3 recovers Hendrick's product identically; that is not a third identity and is not claimed.
+which has a unique minimum of 3√33/16 at cos 2θ = 4/7. Direct Biot-Savart on this family (2π kernel) matches that closed form. The plate is `#quincunx-lock`. Off the quincunx, the numbers miss on purpose. Miss is a grade, not a crash. Do not claim Novikov-Sedov's t_* or ω separately, and do not put a private name on their motion. A different five-vortex slice with diagonal ratio μ = 3 recovers the three-vortex bound’s product identically; that is not a third identity and is not claimed.
 
-Do not re-derive these unless the check is missing the lock. Do not search the name of a tab as if it were a published law. Do not put Hendrick's name on a different system.
+Do not re-derive these unless the check is missing the lock. Do not search the name of a tab as if it were a published law. Do not put a personal name on a different system.
 
 **Checked 2026-09-20, not a fourth row.** Web search plus Gotoda arXiv:2002.09624 (opened), Novikov and Sedov 1979 (opened), O'Neil 1987 snippets, Hampton-Roberts-Santoprete arXiv:1208.4204 snippets, Kudela 2014 snippets, and the JTAM existence-criterion paper snippets. Direct Biot-Savart on the remaining exact families. Queries: `Gotoda A(theta) B(theta) omega collapse time product minimum five vortex`, `Novikov Sedov five vortex diagonal ratio closed form omega t_c`, `O'Neil 1987 four vortex collapse explicit kite`, `self-similar four vortex collapse kite trapezoid exact`.
 
 | Candidate | What it actually is |
 |---|---|
 | Five-vortex NS, ρ = d₁²/d₂² = 2 | Reciprocal of the quincunx. Same product. Already in IDENTITIES.md. |
-| Five-vortex NS, ρ = 3 | Recovers Hendrick identically. Already not claimed. |
+| Five-vortex NS, ρ = 3 | Recovers the three-vortex bound identically. Already not claimed. |
 | Five-vortex NS, ρ = 4 | ω t_c = 5(35 − 8 cos 2θ)/(96 sin 2θ) ≥ 5√1161 / 96. A nested radical, not a floor like √2. Not claimed. |
 | Three-vortex L = 0, Γ = (1, μ, −μ/(1+μ)), μ ≠ 1 | Gotoda (3.3)-(3.5) is a closed product. For μ = 1/2 it is (56 cos²θ − 10√7 cosθ − 133) / [8(14 cosθ + √7) sinθ]; the critical point solves a cubic in cos θ. Aref already has Ω and τ separately for general circulations. Not claimed. |
 | Kite, non-parallelogram isosceles trapezoid, equilateral plus interior | Biot-Savart scan: no self-similar L = 0 collapsing family (similarity residual never jointly small with I = 0 and finite positive τ). |
@@ -130,7 +132,7 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Point vortices on the hyperbolic plane | Nava-Gaxiola–Montaldi JMP 55, 102702 (2014): relative equilibria, not a collapse product. |
 | Crowdy vortex layers on a wedge | Exact uniform-vorticity corners (EJAM 2004). Not a point-vortex collapse product. |
 | Kudela n-vortex collapse | Numerical configurations (J. Nonlinear Sci. 2014; FDR 2014). Same class as Kallyadan–Shukla. |
-| Moffatt–Kimura filament pair | JFM 2019: similarity s ∼ (τc−τ)^{1/2}, κ ∼ (τc−τ)^{-1/2}. The product sκ = 2 sin α; at α = π/4 this is √2. Published. Do not claim Hendrick's √2 here. |
+| Moffatt–Kimura filament pair | JFM 2019: similarity s ∼ (τc−τ)^{1/2}, κ ∼ (τc−τ)^{-1/2}. The product sκ = 2 sin α; at α = π/4 this is √2. Published. Do not claim the three-vortex bound’s √2 here. |
 | Burgers stretched vortex | Gaussian core; dissipation per unit length Φ = Γ²γ/8π independent of ν (Burgers 1948). |
 | Föppl vortex pair behind a cylinder | Locus r² − 1 = 2 r y; κ = (r²+1)(r²−1)²/r⁵. Published 1-parameter equilibrium, not collapse. |
 | Benjamin–Ono algebraic soliton | c = A/4, Δ = 4/A, so \|c\|Δ = 1. Textbook. ILW interpolates to KdV. |
@@ -152,7 +154,7 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Ginzburg–Landau κ = 1/√2 | Type I / II surface-energy zero. Abrikosov 1957. Isolated published lock. Do not claim. |
 | 4-body kite / rhombus CC | Unique convex kite for given masses (Leandro; Roberts 2025). Rhombus φ(μ) is a degree-12 polynomial. Homographic motion is Keplerian. Roberts infimum m₁/(m₂+m₃+m₄) = (25+3√69)/2 is Routh's restricted 3-body mass in a limiting kite. Isolated, published. |
 | Laplacian growth / Hele-Shaw | Polynomial maps form a cusp at closed t₀. Saffman–Taylor selects λ = 1/2 (Combescot; Mineev-Weinstein). Isolated. |
-| Kapitza inverted pendulum | (a/l)(ω/ω₀) > √2 (Stephenson 1908; Kapitza). Published threshold, not a 1-param product min of two dynamical rates. Do not claim Hendrick's √2. |
+| Kapitza inverted pendulum | (a/l)(ω/ω₀) > √2 (Stephenson 1908; Kapitza). Published threshold, not a 1-param product min of two dynamical rates. Do not claim the three-vortex bound’s √2. |
 | Jeffery orbits | T γ̇ = 2π(r + 1/r). Unique min 4π at r = 1 by AM-GM (Jeffery 1922). Published. |
 | Rayleigh–Plateau slender | Most-unstable λ = 2π√2 R (inviscid slender). Exact max is a Bessel root kR ≈ 0.697. Published. |
 | Cotes inverse-cube spirals | Finite-time fall when μ > h² (Cotes 1722). Trajectories closed. Not a product min. |
@@ -206,12 +208,12 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Eckhardt 1989 integrable four | Vanishing total circulation and impulse. Reduced 1DOF. Periods elliptic (Love-class). Not a floor like √2. |
 | Jeffery–Hamel | Exact NS in a wedge. Critical α_c = K(k²)/m², complete elliptic (Rosenhead; Fraenkel). tan 2β = 2β has β* ≈ 2.247. Not algebraic. |
 | Rolling disk (Routh) | Steady lean α, precession Ω, spin ω. Routh 1905; O'Reilly. Critical lean arctan of a nested radical ≈ 71.4° (uniform disk). Isolated published stability threshold, not a 1-param product min. |
-| Double pendulum | Small-oscillation ω±. Equal mass/length: √(2±√2) √(g/l), product √2 g/l. Textbook. Vs length ratio λ, product ω+ω− = √((1+M)/λ) monotonic. Isolated published. Do not claim. Do not put Hendrick's name on this √2. |
+| Double pendulum | Small-oscillation ω±. Equal mass/length: √(2±√2) √(g/l), product √2 g/l. Textbook. Vs length ratio λ, product ω+ω− = √((1+M)/λ) monotonic. Isolated published. Do not claim. Do not put a personal name on this √2. |
 | Fadeev sheet | Exact MHD 1-param islands (Fadeev 1965). Harris f=0 end. Like Stuart for MHD. Isolated published family, no unpublished product min. |
 | Larichev–Reznik modon | β-plane dipole. Interior Bessel, exterior K. Lamb–Chaplygin already logged. Isolated published. |
 | Critical catenoid | w = coth w. Transcendental, Kapitza-class. Volume (π/2)R²h at threshold is a corollary of the same root. Isolated. |
 | Chaplygin sleigh / Clebsch | Nonholonomic or rigid-body-in-fluid. Integrable cases (Kirchhoff, Clebsch, Kovalevskaya, Goryachev–Chaplygin). Periods elliptic/hyperelliptic. Lagrange top already logged. |
-| gSQG / α-Euler | Badin–Barry 2018; Reinaud Physica D 2022. Three-vortex collapse exists; SQG can be non-self-similar. Tables of t_c numerical. 2D Euler slice is Hendrick. Not a new algebraic floor. |
+| gSQG / α-Euler | Badin–Barry 2018; Reinaud Physica D 2022. Three-vortex collapse exists; SQG can be non-self-similar. Tables of t_c numerical. 2D Euler slice is the three-vortex bound. Not a new algebraic floor. |
 | Massive point vortices | Zbarsky arXiv:2402.07316: collapse impossible under mass conditions. Opposite of a fourth row. |
 | Hollow-vortex implosion | arXiv:2506.04093 desingularizes existing point-vortex collapses. No new closed A, B. |
 | Vortices on surfaces | Sphere already Kidambi. Ellipsoid / bean (Proc. A 2015): Green's functions not closed. No unused collapse product. Cone NS (Phys. Fluids 25, 2147, 1982) is a 2-param exact family, existence numerical. Wedge already logged. |
@@ -219,8 +221,8 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Prandtl punch | q = 2k(1+π/2). Isolated published 1920. |
 | Kasner | Lifshitz–Khalatnikov u. Two constraints, three exponents. Published parametrization. Product of three expansion rates is not a two-rate identity. Do not claim. |
 | Camassa–Holm 2-peakon | Phase shift 2 ln\|1−λ1/λ2\| (Camassa–Holm 1993). KdV 2-soliton already logged. Peakon already in the studio. |
-| Chen–Walsh–Wheeler 2025 hollow implosion | arXiv:2506.04093. First rigorous self-similar collapsing hollow vortices. Single circular: U_c(γ, Ω, κ) explicit; Ω and κ independent, no shape-parameter product min. Multiple: generic desingularization of existing point-vortex collapses (the three locks). Not a fourth row. Cite as the Euler realization of Hendrick / parallelogram / quincunx. |
-| Grotto–Pappalettera 2025 gSQG | arXiv:2505.19782. Self-similar Z(t) = ((4−α)a(t−t0))^{1/(4−α)} exp(i(θ0+b/((4−α)a) log)). a, b not closed in shape. α=2 is 2D Euler (Hendrick). α=1 SQG: numerical example. Existence, not a floor. |
+| Chen–Walsh–Wheeler 2025 hollow implosion | arXiv:2506.04093. First rigorous self-similar collapsing hollow vortices. Single circular: U_c(γ, Ω, κ) explicit; Ω and κ independent, no shape-parameter product min. Multiple: generic desingularization of existing point-vortex collapses (the three locks). Not a fourth row. Cite as the Euler realization of the three-vortex bound / parallelogram / quincunx. |
+| Grotto–Pappalettera 2025 gSQG | arXiv:2505.19782. Self-similar Z(t) = ((4−α)a(t−t0))^{1/(4−α)} exp(i(θ0+b/((4−α)a) log)). a, b not closed in shape. α=2 is 2D Euler (the three-vortex bound). α=1 SQG: numerical example. Existence, not a floor. |
 | White–McDonald 2025 sheets | Proc. R. Soc. A 481, 20250362. Exact vortex-sheet equilibria by conformal mapping. 1-param γ; properties from a numerical algebraic equation. Not a closed two-rate min. |
 | PRFluids 2025 four-vortex RE | Phys. Rev. Fluids 10, 084708. Continua of relative equilibria, not collapse. |
 | Nested two-triangle 6-vortex | **Earlier rejection corrected 2026-09-20.** Ratios 1, 1/2, 2 miss the necessary virial-zero ratios (3±√5)/2. Koiller et al. 1985 §11 is a newly identified primary source for the two-ring collapse. A direct derivation gives (11−√5 cos 3θ)/(6 sin 3θ) ≥ √29/3. Proved candidate; priority unresolved. See identities/double-triangle.md and the correction below. |
@@ -228,7 +230,7 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Hicks doughnut | Hollow ring with swirl. Thin-core series (Hicks 1884; Saffman 1970). Norbury–Fraenkel already logged. |
 | Fukumoto–Miyazaki | Filament + axial flow. Permanent form = elastica (already logged). Hasimoto already in the studio. |
 | Coaxial leapfrog rings | Helmholtz 1858. 3D Euler existence: CPAM 2024; García–Hassainia–Hmidi arXiv:2603.21644 (Mar 2026). KAM/Nash–Moser, not an algebraic floor. Love leapfrog already logged. |
-| 3-vortex μ≠1 cubic | Gotoda A,B closed for Γ_H=0. μ=1 recovers Hendrick √2. Reciprocal pairs share the product (μ ↔ 1/μ): μ=1/2 and 2 give min |B/2A|≈1.741 (cubic crit, not a floor like √2). Same 3-vortex family as Hendrick, not a new row. Do not claim. Computed 2026-09-20 from Gotoda (3.3) plus M=0. |
+| 3-vortex μ≠1 cubic | Gotoda A,B closed for Γ_H=0. μ=1 recovers the three-vortex bound √2. Reciprocal pairs share the product (μ ↔ 1/μ): μ=1/2 and 2 give min |B/2A|≈1.741 (cubic crit, not a floor like √2). Same 3-vortex family as the three-vortex bound, not a new row. Do not claim. Computed 2026-09-20 from Gotoda (3.3) plus M=0. |
 | Gallay–Sverak 2026 | arXiv:2609.10847 (9 Sep 2026). Hopf/ζ reduction, new energy inequalities H(ζ_A)>H(ζ_B), near-collision regularization. Not a two-rate product min. Cite; do not claim. |
 | Rott 1994 body | Still AIP-blocked. Abstract: winding number = ratio of two periods; "beyond a certain level of the analysis, still the more practical method of solution" is step-by-step integration. No unpublished algebraic interior min extracted. Leapfrog already logged. |
 | Möbius / Klein vortices | Balabanova–Montaldi Physica D 488, 135084 (Apr 2026); arXiv:2202.06160v3. One/two vortex motion, N-ring RE with coth/tanh angular velocities. Two-vortex fixed equilibria: nested-radical y. No collapse product. Catenoid coth already logged. |
@@ -252,7 +254,7 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Little's law | L = λW always. Identity, not a min. 1961. |
 | Kelly criterion | f* = p − q. Isolated published. |
 | Kleiber / WBE | 3/4 scaling. Empirical / published theory. |
-| Extra-μ five-vortex (Gotoda 3.13) | Same (a−b cos 2θ)/sin 2θ. ρ=−3 recovers Hendrick √2 (diagonal ratio 3, already skipped). Other ρ: nested-radical floors, same formula as the quincunx. Not a new family. |
+| Extra-μ five-vortex (Gotoda 3.13) | Same (a−b cos 2θ)/sin 2θ. ρ=−3 recovers the three-vortex bound √2 (diagonal ratio 3, already skipped). Other ρ: nested-radical floors, same formula as the quincunx. Not a new family. |
 | Kallyadan–Shukla 2022 | Phys. Rev. Fluids 7, 114701. Linear system for similarity; 1-param families numerical, vortices on closed curves. No unused closed A, B. |
 | Geostrophic 3-vortex 2025 | JPSJ 94, 094402. Collapse is non-self-similar. No single ω t_c. |
 | Pentagon + centre | I = 5 Γ R² ≠ 0. Cannot collapse. |
@@ -271,7 +273,7 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | FitzHugh–Nagumo canards | Numerical canard locus. Two timescales, not an unpublished algebraic product min. |
 | Vortices on a cone | No closed A, B found. Ellipsoid/bean already skipped. |
 
-Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex product. Do not put Hendrick's name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
+Do not re-derive these. Do not put a personal name on a μ ≠ 1 three-vortex product. Do not put a personal name on a distinguished-μ five-vortex slice, on O'Neil's quadruple, on a numerical family, on Love's elliptic period, on Kidambi–Newton's spherical t_c, on Peregrine's 3, on Moore–Saffman's 0.15, on Crowdy's H-state Ω, on Kaden's spiral, on Kimura's cubic, on Lamb–Chaplygin's j_{1,1}, on Hill's energy min, on Moffatt–Kimura's sκ = √2, on Burgers' Φ, on Föppl's locus, on Maclaurin's Ω max, on Ginzburg–Landau's 1/√2, on Kapitza's √2, on Jeffery's 4π, on Routh's (25+3√69)/2, on Saffman–Taylor's 1/2, on von Kármán's arcosh(√2)/π, on BKT's π/2, on Toomre's Q = 1, on Rayleigh's 27π⁴/4, or on the double-pendulum √2.
 
 **Rejected as inventions.**
 
@@ -291,7 +293,7 @@ Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex pr
 | Gerstner kinetic energy equals potential | Standard; e.g. Henry, Gerstner's water wave and mass transport |
 | Kidambi–Newton spherical three-vortex collapse times and partner states | Kidambi and Newton, Physica D 116, 143 (1998); Nuovo Cimento C 22, 779 (1999) |
 | Finite-core / QG collapse-time numerical minima | Reinaud, GAFD 2020; Reinaud and Dritschel 2022 |
-| t_c minimum 4π/3 on Γ = (1,1,−1/2) at this length | Leoncini, Kuznetsov and Zaslavsky 2000. Not Hendrick's product min. |
+| t_c minimum 4π/3 on Γ = (1,1,−1/2) at this length | Leoncini, Kuznetsov and Zaslavsky 2000. Not the three-vortex bound’s product min. |
 | Aref Ω and τ separately; product as log-spiral pitch | Aref 2010 eqs. 25a, 25d, 29c |
 | Love leapfrog period T(α) | Complete elliptic integrals K, E (Love 1893; Tophøj and Aref 2013 eq. 11). Not an algebraic floor. |
 | Moore–Saffman ellipse in irrotational strain | Two axis ratios iff e/ω₀ < 0.15; breakup above (1971) |
@@ -306,21 +308,21 @@ Do not re-derive these. Do not put Hendrick's name on a μ ≠ 1 three-vortex pr
 | Norbury–Fraenkel / Hill | Lowest dimensionless ring energy is Hill's spherical vortex. |
 | Pocklington translating hollow pair | U decreases monotonically with area (Crowdy et al. 2013). |
 | Komineas–Papanicolaou magnetic Gröbli | JMP 51, 042705 (2010). Complete 3-vortex integration. |
-| Moffatt–Kimura filament-pair similarity | sκ = 2 sin α; at α = π/4 this is √2 (JFM 2019 eq. 10.5). Not Hendrick. |
+| Moffatt–Kimura filament-pair similarity | sκ = 2 sin α; at α = π/4 this is √2 (JFM 2019 eq. 10.5). Not the three-vortex bound. |
 | Burgers vortex dissipation | Φ = Γ²γ/8π independent of ν (1948). |
 | Föppl cylinder pair | Locus r² − 1 = 2ry (1913). |
 | Benjamin–Ono soliton | \|c\|Δ = 1. |
-| Ginzburg–Landau type I / II | κ = λ/ξ = 1/√2 (Ginzburg–Landau 1950; Abrikosov 1957). Isolated. Not Hendrick. |
+| Ginzburg–Landau type I / II | κ = λ/ξ = 1/√2 (Ginzburg–Landau 1950; Abrikosov 1957). Isolated. Not the three-vortex bound. |
 | Maclaurin spheroid Ω max | Ω²/(πGρ) ≈ 0.449331 at e ≈ 0.92996 (1742). Numerical, not algebraic. |
 | Stokes 120° crest | Highest gravity wave. H/λ ≈ 0.141 numerical (Michell; Toland). |
 | Kerr ISCO | Bardeen–Press–Teukolsky cube-root formula. Photon-sphere λ/Ω already logged. |
 | Routh / kite CC mass | (25+3√69)/2 (Roberts 2025, from Routh 1875). Isolated. |
-| Kapitza product | (a/l)(ω/ω₀) > √2. Threshold, not Hendrick. |
+| Kapitza product | (a/l)(ω/ω₀) > √2. Threshold, not the three-vortex bound. |
 | Jeffery T γ̇ | min 4π at a sphere (1922). |
 | Saffman–Taylor | λ = 1/2. Isolated. |
 | Rayleigh–Plateau slender | λ = 2π√2 R. |
 
-Hendrick's closed form and min √2 were not in those sources. Tacchi Appendix B remains unread. Kimura 1987 is the general similarity theory, not a fourth product min.
+the three-vortex bound’s closed form and min √2 were not in those sources. Tacchi Appendix B remains unread. Kimura 1987 is the general similarity theory, not a fourth product min.
 
 ## Engineering that was checked (not science)
 
@@ -476,11 +478,11 @@ Familiarity is listed so you do not confuse it with prior-art status.
 
 The statements are in [`IDENTITIES.md`](IDENTITIES.md). Do not duplicate them here.
 
-**`hendricks-identity` (Hendrick's Identity).** `#hendrick` still opens it. Derived here, uniqueness-checked, locked to the plate. Search notes: Aref 2010 eqs. 25a and 25d give Omega and tau separately. Aref eq. 29c already writes the product as the pitch of the logarithmic spiral. Kudela 2014 and Reinaud-Dritschel 2022 minimize collapse time, not the product. Krishnamurthy-Stremler 2018 give dimensionless tau-tilde as a function of angles, no min sqrt(2). Closed form and min: not in those papers. Off the L=0 circle the check marks miss on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum.
+**`three-vortex-bound` (Three-vortex collapse bound).** `#three-vortex-bound` still opens it. Classical specialization implemented here; historical originality unconfirmed. Search notes: Aref 2010 eqs. 25a and 25d give Omega and tau separately. Aref eq. 29c already writes the product as the pitch of the logarithmic spiral. Kudela 2014 and Reinaud-Dritschel 2022 minimize collapse time, not the product. Krishnamurthy-Stremler 2018 give dimensionless tau-tilde as a function of angles, no min sqrt(2). Closed form and min: not in those papers. Off the L=0 circle the check marks miss on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum.
 
-**`parallelogram-lock` (Parallelogram lock).** Derived here, uniqueness-checked, locked to the plate. Search notes: Novikov-Sedov 1979 give t_* and ω separately for the parallelogram family. Gotoda 2020 eq. (3.13) writes A(θ) and B(θ) separately and plots Hamiltonian against collapse rate. Neither forms the product ω t_c or states min 3√5/4 at cos 2θ = 1/4. Off the parallelogram the check marks miss on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum. Do not claim Novikov-Sedov's t_* or ω separately.
+**`parallelogram-lock` (Parallelogram lock).** Classical specialization implemented here; historical originality unconfirmed. Search notes: Novikov-Sedov 1979 give t_* and ω separately for the parallelogram family. Gotoda 2020 eq. (3.13) writes A(θ) and B(θ) separately and plots Hamiltonian against collapse rate. Neither forms the product ω t_c or states min 3√5/4 at cos 2θ = 1/4. Off the parallelogram the check marks miss on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum. Do not claim Novikov-Sedov's t_* or ω separately.
 
-**`quincunx-lock` (Quincunx lock).** Derived here, uniqueness-checked, locked to the plate. Search notes: Novikov-Sedov 1979 give the five-vortex parallelogram-plus-center motion. Gotoda 2020 eq. (3.13) with γ3 ≠ 0 writes A(θ) and B(θ) separately and plots this family (γ1 = −1, γ2 = 1/2, γ3 = −3/4) as Hamiltonian against collapse rate. Gotoda 2024/2025 (arXiv:2410.14973) studies filtered-vortex enstrophy on the same family numerically. Full-text extract of Gotoda 2020 contains no 4/7, no √33, no ω t_c product, no −B/(2A) minimum. Web search for 3√33/16 and cos 2θ = 4/7 as a vortex product returned no hits. Direct Biot-Savart (2π kernel) matches (3/16)(7 − 4 cos 2θ)/sin(2θ). Off the quincunx the check marks miss on purpose. A five-vortex slice with μ = 3 recovers Hendrick's product identically and is not claimed. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum. Do not claim Novikov-Sedov's t_* or ω separately, and do not put Hendrick's name on this plate.
+**`quincunx-lock` (Quincunx lock).** Classical specialization implemented here; historical originality unconfirmed. Search notes: Novikov-Sedov 1979 give the five-vortex parallelogram-plus-center motion. Gotoda 2020 eq. (3.13) with γ3 ≠ 0 writes A(θ) and B(θ) separately and plots this family (γ1 = −1, γ2 = 1/2, γ3 = −3/4) as Hamiltonian against collapse rate. Gotoda 2024/2025 (arXiv:2410.14973) studies filtered-vortex enstrophy on the same family numerically. Full-text extract of Gotoda 2020 contains no 4/7, no √33, no ω t_c product, no −B/(2A) minimum. Web search for 3√33/16 and cos 2θ = 4/7 as a vortex product returned no hits. Direct Biot-Savart (2π kernel) matches (3/16)(7 − 4 cos 2θ)/sin(2θ). Off the quincunx the check marks miss on purpose. A five-vortex slice with μ = 3 recovers the three-vortex bound’s product identically and is not claimed. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum. Do not claim Novikov-Sedov's t_* or ω separately, and do not put a personal name on this plate.
 
 ### Published family plus a feedback term (not inventions)
 
@@ -542,7 +544,7 @@ Write the query next time. These are the families that were already run, reconst
 | `landscape` | browser stream-power / Braun-Willett / FastScape | Research codes are Python/C++/Fortran. Browser erosion is droplet CG. |
 | `kp` | browser KP-II resonant soliton webs from the exact tau function | Notebooks in the papers. No seeded print plate found. |
 | `gerstner` `eight` `peakon` `photon` `crapper` `hasimoto` `lump` | seeded print-ready browser plate of the exact solution, with the self-check | Papers and some demos. Combined studio object not found in the search that was run. |
-| `hendricks-identity` | the closed form of omega t_c on Gamma=(1,1,-1/2) and its min sqrt(2) | Product as spiral pitch: Aref 2010 eq. 29c. Closed form and min: not in Gröbli 1877, Aref 2010, Krishnamurthy-Stremler 2018, Kudela 2014. |
+| `three-vortex-bound` | the closed form of omega t_c on Gamma=(1,1,-1/2) and its min sqrt(2) | Product as spiral pitch: Aref 2010 eq. 29c. Closed form and min: not in Gröbli 1877, Aref 2010, Krishnamurthy-Stremler 2018, Kudela 2014. |
 | `track` `causticsea` | is a published PDE plus a feedback term an invention | No. Named prior art in both cases. |
 | self-checking gen-art | a generative art tool that measures an observable against theory | Not found on art platforms (seed + traits). Physics teaching tools do this routinely. |
 
@@ -553,7 +555,7 @@ Do these only if you need the answer. Do not do them to look busy.
 1. **Reopen `cortex`** if Observable, Shadertoy, or OpenProcessing actually load. That negative is explicitly weak.
 2. **The five editorial-unseen tabs** (`rotor`, `growdomain`, `lozenge`, `aubry`, `exceptional`) have never had a dedicated implementation search. Familiarity is not that search.
 3. **Every `science only` row** has no logged "browser plate?" search. Run one only when you are about to write a README bullet claiming software novelty for that tab.
-4. **arXiv / journals.** If those hosts are reachable, Hendrick's identity (the closed form and the min, not Aref's product) and the KP / Crapper / Hasimoto exact-solution plates are the first things to check against the PDF, not against a snippet.
+4. **arXiv / journals.** If those hosts are reachable, Three-vortex collapse bound (the closed form and the min, not Aref's product) and the KP / Crapper / Hasimoto exact-solution plates are the first things to check against the PDF, not against a snippet.
 5. **`tools/sharpall.sh`** is a measurement, not prior art, and it is stale. Redo before quoting sharpness counts.
 6. **fxhash / Art Blocks / OpenProcessing** as homes for lookalikes of the self-checking-plates claim. Unreachable in September 2026.
 
@@ -583,33 +585,33 @@ Conclusion: first ledger, so future agents do not re-run the September 2026 sear
 
 Re-search: n/a
 
-### 2026-09-19  hash renamed to `#hendricks-identity`  query: (none)
+### 2026-09-19  hash renamed to `#three-vortex-bound`  query: (none)
 
 Opened: this repository
 
 Blocked: none
 
-Conclusion: the plate is Hendrick's Identity, so the hash is `#hendricks-identity`. `#hendrick` remains an alias. The identity stands: it was derived here, the check misses off the L=0 circle, and the closed form and min are not in the papers. A later agent may claim another result the same way (derive, check the papers, a plate whose check can miss, write IDENTITIES.md). It may not put a name on a published equation or on someone else's result.
+Conclusion: the plate is Three-vortex collapse bound, so the canonical hash is `#three-vortex-bound`. The identity is a historical candidate with unconfirmed priority: the check misses off the L=0 circle, and the closed form and min require a complete literature review. A later agent may claim another result the same way (derive, check the papers, a plate whose check can miss, write IDENTITIES.md). It may not put a name on a published equation or on someone else's result.
 
 Re-search: n/a
 
-### 2026-09-19  `hendrick` renamed  query: (none)
+### 2026-09-19  `three-vortex-bound` renamed  query: (none)
 
 Opened: this repository
 
 Blocked: none
 
-Conclusion: display name is Hendrick's Identity. Hash `#hendrick` is unchanged.
+Conclusion: display name is Three-vortex collapse bound. Hash `#three-vortex-bound` is unchanged.
 
 Re-search: n/a
 
-### 2026-09-19  hendrick uniqueness  query: point vortex collapse dimensionless product omega t_c minimum sqrt(2) octant triangle; Aref 2010 three vortex collapse rate angular frequency product; Gröbli collapsing triangle tan theta 1/sqrt(2) 22.5 45 112.5; "self-similar collapse" vortices sqrt(2) omega t_c
+### 2026-09-19  the three-vortex bound uniqueness  query: point vortex collapse dimensionless product omega t_c minimum sqrt(2) octant triangle; Aref 2010 three vortex collapse rate angular frequency product; Gröbli collapsing triangle tan theta 1/sqrt(2) 22.5 45 112.5; "self-similar collapse" vortices sqrt(2) omega t_c
 
 Opened: Aref, Phys. Fluids 22, 057104 (2010), full PDF via VTechWorks bitstream 2b7fd3cf-09d3-4fe7-8558-a9948a899f1d. Krishnamurthy and Stremler 2018 postprint at people.iith.ac.in. Gröbli 1877 English translation arXiv:2404.01305 HTML. Search snippets for Kudela 2014, Reinaud and Dritschel 2022 Physica D 434 133226.
 
 Blocked: AIP HTML paywall (PDF was used instead). Most journals.
 
-Conclusion: the motion is Gröbli. Omega and tau separately are Aref 25a and 25d. The product as log-spiral pitch is Aref 29c. Collapse-time minima exist in Kudela 2014 and Reinaud 2022, of tau, not of omega tau. The closed form (2-cos^2 theta)/sin(2 theta) on Gamma=(1,1,-1/2) and unique min sqrt(2) at tan theta=1/sqrt(2) were not in those sources. That is Hendrick's identity: not Gröbli's motion under a new name, and not Aref's product under a new name.
+Conclusion: the motion is Gröbli. Omega and tau separately are Aref 25a and 25d. The product as log-spiral pitch is Aref 29c. Collapse-time minima exist in Kudela 2014 and Reinaud 2022, of tau, not of omega tau. The closed form (2-cos^2 theta)/sin(2 theta) on Gamma=(1,1,-1/2) and unique min sqrt(2) at tan theta=1/sqrt(2) were not in those sources. That is Three-vortex collapse bound: not Gröbli's motion under a new name, and not Aref's product under a new name.
 
 Re-search: do not re-derive. Reopen only if a newly named paper states this closed form or this minimum.
 
@@ -629,9 +631,9 @@ Opened: Aref 2010 PDF via VTechWorks (bitstream 2b7fd3cf-09d3-4fe7-8558-a9948a89
 
 Blocked: most journal HTML. Tacchi appendix still unread. Leoncini body text was font-encoded; the 4pi/3 statement is from the arXiv figure caption, not from a full re-typeset of every equation.
 
-Conclusion: no second identity of Hendrick's bar shipped. On Gamma = (1,1,-1/2) the product splits as t_c = (pi/3)(4u + 1/u) and 2 pi omega = 3(2u^2+1)/(4u^2+1) with u = tan theta and |z1-z2| = 1. Those are Aref 25a/25d in this angle; they belong under Hendrick's Identity as factors, not as a new name.
+Conclusion: no second identity of the historical candidate-selection criterion shipped. On Gamma = (1,1,-1/2) the product splits as t_c = (pi/3)(4u + 1/u) and 2 pi omega = 3(2u^2+1)/(4u^2+1) with u = tan theta and |z1-z2| = 1. Those are Aref 25a/25d in this angle; they belong under Three-vortex collapse bound as factors, not as a new name.
 
-Re-search: do not re-derive Hendrick. Do not claim the t_c minimum, the general-mu sextic, leapfrog silver/golden, Novikov-Sedov, Hasimoto 4, Kirchhoff 1/4, or Kidambi-Newton. Reopen only if a newly named paper states Hendrick's closed form or min, or if Tacchi Appendix B is in hand. A later algebraic, unpublished product with a unique interior extremum and a plate whose check can miss may still be claimed the same way Hendrick was.
+Re-search: do not re-derive the three-vortex bound. Do not claim the t_c minimum, the general-mu sextic, leapfrog silver/golden, Novikov-Sedov, Hasimoto 4, Kirchhoff 1/4, or Kidambi-Newton. Reopen only if a newly named paper states the three-vortex bound’s closed form or min, or if Tacchi Appendix B is in hand. A later algebraic, unpublished product with a unique interior extremum and a plate whose check can miss may still be claimed the same way the three-vortex bound was.
 
 ### 2026-09-20  Leoncini 2000 fastest collapse  query: Leoncini Kuznetsov Zaslavsky "Motion of three vortices near collapse" tau 4pi/3 Lambda sqrt(3)/2 fastest
 
@@ -639,9 +641,9 @@ Opened: arXiv physics/9908055 PDF (saved). Search snippets of Phys. Fluids 12, 1
 
 Blocked: AIP HTML. Body text of the PDF is font-encoded on this machine; caption text was readable via the arXiv HTML extract: "fastest collapse value Lambda = sqrt(3)/2" and "tau = 4pi/3".
 
-Conclusion: the fastest collapse time in the standard normalization is already in that paper. IDENTITIES.md records the factor formulas under Hendrick's Identity and does not claim the t_c bound. Hendrick's product min sqrt(2) at tan theta = 1/sqrt(2) is a different extremum (scale-invariant) and was not found in this paper's extracted captions.
+Conclusion: the fastest collapse time in the standard normalization is already in that paper. IDENTITIES.md records the factor formulas under Three-vortex collapse bound and does not claim the t_c bound. the three-vortex bound’s product min sqrt(2) at tan theta = 1/sqrt(2) is a different extremum (scale-invariant) and was not found in this paper's extracted captions.
 
-Re-search: skip unless a full text extract is needed to check whether they also minimize omega t_c. If they do, revise Hendrick uniqueness the same day.
+Re-search: skip unless a full text extract is needed to check whether they also minimize omega t_c. If they do, revise the three-vortex bound uniqueness the same day.
 
 ### 2026-09-20  literature-first identity hunt  query: "omega t_c" OR "ω t_c" OR "Ω τ" three vortices collapse minimum sqrt(2); leapfrogging vortex pairs golden ratio Tophøj Aref Behring Goodman; photon sphere Lyapunov exponent orbital frequency ratio Schwarzschild; Kirchhoff elliptical vortex maximum angular velocity aspect ratio; Crapper capillary wave energy maximum Hogan; Gerstner wave kinetic potential energy ratio; three point vortices on a sphere collapse Kidambi Newton; Tacchi Dynamique des tourbillons Appendix B Kimura pdf
 
@@ -649,17 +651,17 @@ Opened: web search result snippets and reachable HTML. arXiv abs/pdf for physics
 
 Blocked: Tacchi thesis PDF still unread. Kimura 1988 Fluid Dyn. Res. 3, 98 is a two-page conference note on complex-time singularities, not a coefficient table. Most journal HTML.
 
-Conclusion: no second identity of Hendrick's bar. The nearby beautiful locks are published (table above). Hendrick's closed form (2−cos²θ)/sin(2θ) and min √2 at tan θ = 1/√2 were not in those sources. Search first; do not rediscover.
+Conclusion: no second identity of the historical candidate-selection criterion. The nearby beautiful locks are published (table above). the three-vortex bound’s closed form (2−cos²θ)/sin(2θ) and min √2 at tan θ = 1/√2 were not in those sources. Search first; do not rediscover.
 
-Re-search: skip the rows in the published-locks table unless a newly named paper appears. Reopen Tacchi Appendix B / Kimura 1988 coefficients when the files can be opened. Reopen Hendrick uniqueness only if a newly named paper states that closed form or that minimum.
+Re-search: skip the rows in the published-locks table unless a newly named paper appears. Reopen Tacchi Appendix B / Kimura 1988 coefficients when the files can be opened. Reopen the three-vortex bound uniqueness only if a newly named paper states that closed form or that minimum.
 
 ### 2026-09-20  five-vortex quincunx product  query: Gotoda 2002.09624 eq 3.13 five vortex A(theta) B(theta) gamma_3; Novikov-Sedov JETP 50 297 five vortex parallelogram plus center t_* omega; "3 sqrt(33)/16" OR 3√33/16 vortex collapse; "cos 2θ" "4/7" vortex collapse minimum; Gotoda 2410.14973 enstrophy five vortex Hamiltonian against collapse rate; mu=3 five vortex recovers (3-cos 2θ)/(2 sin 2θ)
 
-Opened: Gotoda arXiv 2002.09624 HTML (ar5iv) section 3.2 / eq. (3.13) for A(θ), B(θ) on the parallelogram, including γ3; conditions (3.11)–(3.12) I = 0, Γ_H = 0. Gotoda arXiv 2410.14973 HTML: numerical enstrophy on the four- and five-vortex Novikov-Sedov families, plots of H vs A, no product min. Novikov-Sedov JETP PDF extract: t_* and ω separately. Full-text extract /tmp/gotoda.txt: no 4/7, no √33, no ω t_c, no −B/(2A) as a minimized product. Web search for 3√33/16 and cos 2θ = 4/7 as a vortex lock: no hits. Direct Biot-Savart algebra on Γ = (−1, −1, 1/2, 1/2, −3/4), d1/d2 = 1/√2 (2π kernel) matches ω t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ). Critical point of (7 − 4 cos φ)/sin φ is cos φ = 4/7, min √33, hence 3√33/16. Plate `#quincunx-lock` lock 1.000, broken misses. The μ = 3 five-vortex slice recovers Hendrick's (3 − cos 2θ)/(2 sin 2θ) ≥ √2 identically; logged and not claimed.
+Opened: Gotoda arXiv 2002.09624 HTML (ar5iv) section 3.2 / eq. (3.13) for A(θ), B(θ) on the parallelogram, including γ3; conditions (3.11)–(3.12) I = 0, Γ_H = 0. Gotoda arXiv 2410.14973 HTML: numerical enstrophy on the four- and five-vortex Novikov-Sedov families, plots of H vs A, no product min. Novikov-Sedov JETP PDF extract: t_* and ω separately. Full-text extract /tmp/gotoda.txt: no 4/7, no √33, no ω t_c, no −B/(2A) as a minimized product. Web search for 3√33/16 and cos 2θ = 4/7 as a vortex lock: no hits. Direct Biot-Savart algebra on Γ = (−1, −1, 1/2, 1/2, −3/4), d1/d2 = 1/√2 (2π kernel) matches ω t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ). Critical point of (7 − 4 cos φ)/sin φ is cos φ = 4/7, min √33, hence 3√33/16. Plate `#quincunx-lock` lock 1.000, broken misses. The μ = 3 five-vortex slice recovers the three-vortex bound’s (3 − cos 2θ)/(2 sin 2θ) ≥ √2 identically; logged and not claimed.
 
 Blocked: most journal HTML. Tacchi appendix still unread.
 
-Conclusion: a third identity of Hendrick's bar. Gotoda states A(θ) and B(θ) separately and does not form the product or its unique interior min. Novikov-Sedov state the motion, t_*, and ω separately. Do not claim those. Do not put Hendrick's name on this plate.
+Conclusion: a third identity of the historical candidate-selection criterion. Gotoda states A(θ) and B(θ) separately and does not form the product or its unique interior min. Novikov-Sedov state the motion, t_*, and ω separately. Do not claim those. Do not put a personal name on this plate.
 
 Re-search: do not re-derive. Reopen only if a newly named paper states ω t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) or min 3√33/16 at cos 2θ = 4/7.
 
@@ -669,7 +671,7 @@ Opened: Gotoda arXiv 2002.09624 HTML (ar5iv) eqs. (3.3)–(3.8), (3.13), §4.1 u
 
 Blocked: most journal HTML. Tacchi appendix still unread. Kallyadan–Shukla body behind APS lock.
 
-Conclusion: no fourth identity of Hendrick's bar. Distinguished five-vortex μ other than 1/2, 2, 3, 2±√3 have messy minima; μ = 2+√3 recovers the parallelogram lock (γ3 = 0). Three-vortex μ ≠ 1 is a cubic critical point (already logged). (1,1,1,−1) and the other four-vortex symmetric scans had no self-similar L = 0 family. O'Neil / hollow-vortex examples are single published configs. Numerical families and grid-bracketed angles are not closed forms. Do not claim these. Do not put Hendrick's name on them.
+Conclusion: no fourth identity of the historical candidate-selection criterion. Distinguished five-vortex μ other than 1/2, 2, 3, 2±√3 have messy minima; μ = 2+√3 recovers the parallelogram lock (γ3 = 0). Three-vortex μ ≠ 1 is a cubic critical point (already logged). (1,1,1,−1) and the other four-vortex symmetric scans had no self-similar L = 0 family. O'Neil / hollow-vortex examples are single published configs. Numerical families and grid-bracketed angles are not closed forms. Do not claim these. Do not put a personal name on them.
 
 Re-search: skip the rows in the table above unless a newly named paper states a closed ω t_c and its unique interior min on one of those families. Reopen Tacchi Appendix B / Kimura 1988 coefficients when the files can be opened.
 
@@ -679,9 +681,9 @@ Opened: Kidambi–Newton Nuovo Cimento C 22, 779 (1999) PDF (eprints.bice.rm.cnr
 
 Blocked: Tacchi thesis PDF still unread. Most journal HTML. Kallyadan–Shukla body still behind APS lock.
 
-Conclusion: no fourth identity of Hendrick's bar. The nearby 1-parameter exact families either have a published extremum, a numerical min, or a period in elliptic integrals rather than a simple radical. Do not claim Love's T(α), Kidambi–Newton's t_c, Peregrine's 3, Moore–Saffman's 0.15, or Thomson's uniqueness. Do not put Hendrick's name on them.
+Conclusion: no fourth identity of the historical candidate-selection criterion. The nearby 1-parameter exact families either have a published extremum, a numerical min, or a period in elliptic integrals rather than a simple radical. Do not claim Love's T(α), Kidambi–Newton's t_c, Peregrine's 3, Moore–Saffman's 0.15, or Thomson's uniqueness. Do not put a personal name on them.
 
-Re-search: skip the new rows in the candidate table and the published-locks table unless a newly named paper states a closed dimensionless product and its unique algebraic interior min on one of those families. Reopen Tacchi Appendix B / Kimura 1988 coefficients when the files can be opened. A later algebraic, unpublished product with a unique interior extremum and a plate whose check can miss may still be claimed the same way Hendrick was.
+Re-search: skip the new rows in the candidate table and the published-locks table unless a newly named paper states a closed dimensionless product and its unique algebraic interior min on one of those families. Reopen Tacchi Appendix B / Kimura 1988 coefficients when the files can be opened. A later algebraic, unpublished product with a unique interior extremum and a plate whose check can miss may still be claimed the same way the three-vortex bound was.
 
 ### 2026-09-20  hunt H-states, sphere four-vortex, Kaden, three rings  query: Crowdy H-states rotating hollow vortex angular velocity deformation closed form minimum; Baker Saffman Sheffield hollow vortex row perimeter length maximum; Aref Stremler point vortices periodic parallelogram self-similar collapse; Sakajo four point vortices on a sphere collapse; Kaden spiral vortex sheet self-similar; Borisov Mamaev Kilin three vortex rings leapfrogging period closed form; Tacchi Dynamique des tourbillons dans les fluides bidimensionnels Appendix B pdf
 
@@ -689,7 +691,7 @@ Opened: Crowdy–Nelson–Krishnamurthy JFM 913 R5 (2021) postprint at people.ii
 
 Blocked: Tacchi thesis PDF. Most journal HTML.
 
-Conclusion: no fourth identity of Hendrick's bar. H-state Ω is Kirchhoff-class. Sphere four-vortex self-similar collapse is proved impossible. Kaden, three-ring leapfrog, and parallelogram three-vortex motion are published. Do not claim these. Do not put Hendrick's name on them.
+Conclusion: no fourth identity of the historical candidate-selection criterion. H-state Ω is Kirchhoff-class. Sphere four-vortex self-similar collapse is proved impossible. Kaden, three-ring leapfrog, and parallelogram three-vortex motion are published. Do not claim these. Do not put a personal name on them.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min. Reopen Tacchi Appendix B when the file can be opened.
 
@@ -699,7 +701,7 @@ Opened: Kimura JPSJ 56, 2024 (1987) abstract: general similarity; regular triang
 
 Blocked: Tacchi thesis PDF. Kimura 1987 body (JPSJ paywall). Most journal HTML.
 
-Conclusion: no fourth identity of Hendrick's bar. Kimura 1987 is the similarity machinery already used for the three locks, not a new min. Norbury, Pocklington, Lamb–Chaplygin, magnetic Gröbli, and hyperbolic relative equilibria are published. Do not claim these. Do not put Hendrick's name on them.
+Conclusion: no fourth identity of the historical candidate-selection criterion. Kimura 1987 is the similarity machinery already used for the three locks, not a new min. Norbury, Pocklington, Lamb–Chaplygin, magnetic Gröbli, and hyperbolic relative equilibria are published. Do not claim these. Do not put a personal name on them.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min. Reopen Tacchi Appendix B and the Kimura 1987 body when the files can be opened.
 
@@ -709,7 +711,7 @@ Opened: Moffatt–Kimura arXiv:1811.03304 / JFM 2019: similarity of a filament p
 
 Blocked: Tacchi thesis PDF. Most journal HTML.
 
-Conclusion: no fourth identity of Hendrick's bar. Moffatt–Kimura's √2 is a published filament-pair relation at a chosen α, not Hendrick's planar three-vortex product. Burgers, Föppl, BO, DP/Novikov, and Platonic crystals are published. Do not claim these. Do not put Hendrick's name on them.
+Conclusion: no fourth identity of the historical candidate-selection criterion. Moffatt–Kimura's √2 is a published filament-pair relation at a chosen α, not the three-vortex bound’s planar three-vortex product. Burgers, Föppl, BO, DP/Novikov, and Platonic crystals are published. Do not claim these. Do not put a personal name on them.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min. Reopen Tacchi Appendix B when the file can be opened.
 
@@ -719,7 +721,7 @@ Opened: Euler 1744 elastica (elliptic; nine shapes). Delaunay 1841: H = 1/(a+c),
 
 Blocked: Tacchi thesis PDF.
 
-Conclusion: no fourth identity of Hendrick's bar. Other areas (elastica, CMC, gravity, integrable N-body, GR, superconductivity, water waves, rigid body) yield published numbers or elliptic/numerical extrema. Do not claim Ginzburg–Landau's 1/√2. Do not put Hendrick's name on any of this.
+Conclusion: no fourth identity of the historical candidate-selection criterion. Other areas (elastica, CMC, gravity, integrable N-body, GR, superconductivity, water waves, rigid body) yield published numbers or elliptic/numerical extrema. Do not claim Ginzburg–Landau's 1/√2. Do not put a personal name on any of this.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
 
@@ -729,19 +731,19 @@ Opened: Roberts arXiv:2411.07867 / Nonlinearity 2025: unique convex kite CC; lin
 
 Blocked: Kimura 1987 JPSJ body (403). Kimura 1988 FDR body (IOP 403).
 
-Conclusion: no fourth identity of Hendrick's bar. Nearby named numbers — Kapitza √2, Jeffery 4π, Routh (25+3√69)/2, Saffman–Taylor 1/2, Rayleigh–Plateau 2π√2 — are published and are not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on them.
+Conclusion: no fourth identity of the historical candidate-selection criterion. Nearby named numbers — Kapitza √2, Jeffery 4π, Routh (25+3√69)/2, Saffman–Taylor 1/2, Rayleigh–Plateau 2π√2 — are published and are not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put a personal name on them.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
 
 ### 2026-09-20  Tacchi Appendix B catalogs  query: "M. Tacchi" "Dynamique des tourbillons dans les fluides bidimensionnels" Appendix B; Matteo Tacchi thèse tourbillons; theses.fr Tacchi; HAL Tacchi tourbillons; Kimura 1988 Fluid Dyn. Res. 3, 98; Kimura JPSJ 56, 2024 1987
 
-Opened: theses.fr has no author Tacchi in fluids. HAL / theses.hal.science: no thesis of that title. Google Scholar / arXiv author Tacchi: Matteo Tacchi-Bénard only (moment-SOS, power-system stability, INSA Toulouse 2021; master's math Paris VI / Ponts / ENS Lyon). Kimura 1988 FDR 3, 98 abstract: two-page IUTAM note, collapse as singularities in the complex time plane; already logged as not a coefficient table. Kimura 1987 JPSJ 56, 2024 abstract: general similarity; rigid rotation vs collapse; regular triangle always exists; collinear from a cubic. Body paywalled (JPSJ 403). Gotoda JFM 2025 cites Kimura 1987 for z_m(t) = k_m √(2At+1) exp[i (B/2A) log(2At+1)] and t_c = −1/(2A); that product is Aref's pitch, not Hendrick's specialized min. RIMS kokyuroku 574 paper 06 (kurims 0574-06.pdf) is a Japanese soliton/Toda paper occupying pages 71–85, not Kimura's English title despite the CiNii page range.
+Opened: theses.fr has no author Tacchi in fluids. HAL / theses.hal.science: no thesis of that title. Google Scholar / arXiv author Tacchi: Matteo Tacchi-Bénard only (moment-SOS, power-system stability, INSA Toulouse 2021; master's math Paris VI / Ponts / ENS Lyon). Kimura 1988 FDR 3, 98 abstract: two-page IUTAM note, collapse as singularities in the complex time plane; already logged as not a coefficient table. Kimura 1987 JPSJ 56, 2024 abstract: general similarity; rigid rotation vs collapse; regular triangle always exists; collinear from a cubic. Body paywalled (JPSJ 403). Gotoda JFM 2025 cites Kimura 1987 for z_m(t) = k_m √(2At+1) exp[i (B/2A) log(2At+1)] and t_c = −1/(2A); that product is Aref's pitch, not the three-vortex bound’s specialized min. RIMS kokyuroku 574 paper 06 (kurims 0574-06.pdf) is a Japanese soliton/Toda paper occupying pages 71–85, not Kimura's English title despite the CiNii page range.
 
 Blocked: Kimura 1987 JPSJ body. Kimura 1988 FDR body.
 
-Conclusion: there is no public Tacchi Appendix B to read. The citation named in IDENTITIES.md does not correspond to a deposited thesis. The document it was said to document (Kimura 1988) is the two-page complex-time note already skipped. Not a fourth row. Hendrick / parallelogram / quincunx stand. Do not cite the ghost thesis.
+Conclusion: there is no public Tacchi Appendix B to read. The citation named in IDENTITIES.md does not correspond to a deposited thesis. The document it was said to document (Kimura 1988) is the two-page complex-time note already skipped. Not a fourth row. the three-vortex bound / parallelogram / quincunx stand. Do not cite the ghost thesis.
 
-Re-search: do not reopen Tacchi. Reopen Kimura 1987 body only if a newly named source states Hendrick's closed form or min √2.
+Re-search: do not reopen Tacchi. Reopen Kimura 1987 body only if a newly named source states the three-vortex bound’s closed form or min √2.
 
 ### 2026-09-20  hunt streets, V-states, Sadovskii, Ptolemaic, Guderley, Crow, Havelock, McGehee  query: von Karman vortex street spacing ratio arcosh sqrt(2); Saffman Szeto corotating vortex patches angular velocity minimum; Sadovskii vortex pair translation speed closed form; Ptolemaic vortices Abrashkin Yakubovich omega1 omega2; Guderley converging shock similarity exponent algebraic; Crow instability wavelength spacing; Havelock polygonal point vortices circle; McGehee isosceles triple collision blowup rate; Chaplygin oscillating vortex pair period; Deem Zabusky V-states limiting Omega; two vortex pairs circular cylinder collapse
 
@@ -749,7 +751,7 @@ Opened: von Kármán 1911 / encyclopediaofmath: b/l = arcosh(√2)/π ≈ 0.2806
 
 Blocked: most journal HTML. Saffman–Szeto body. Chaplygin 1903 Russian original.
 
-Conclusion: no fourth identity of Hendrick's bar. Von Kármán's arcosh(√2)/π is an isolated published lock, not a 1-parameter product of two dynamical rates. V-states, Sadovskii, Guderley, Crow, Havelock, McGehee, Ptolemaic, Chaplygin dipoles are published, numerical, or eigenvalue. Do not claim these. Do not put Hendrick's name on von Kármán's ratio.
+Conclusion: no fourth identity of the historical candidate-selection criterion. Von Kármán's arcosh(√2)/π is an isolated published lock, not a 1-parameter product of two dynamical rates. V-states, Sadovskii, Guderley, Crow, Havelock, McGehee, Ptolemaic, Chaplygin dipoles are published, numerical, or eigenvalue. Do not claim these. Do not put a personal name on von Kármán's ratio.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
 
@@ -759,7 +761,7 @@ Opened: Lane–Emden n = 0, 1, 5 exact, ξ₁ = √6, π, ∞ (textbook; arXiv:1
 
 Blocked: most journal HTML. Novikov 1983 JETP body beyond the collapse-condition snippet.
 
-Conclusion: no fourth identity of Hendrick's bar. Lane–Emden π, Sedov 2/5, BKT π/2, Ritter 2, Lundquist j_{0,1} are isolated published locks, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Figure-eight, Miche steepness, Widnall, Sitnikov are numerical or elliptic. Tripole and vortons are the 2D skip in another coat. Do not claim these. Do not put Hendrick's name on BKT's π/2.
+Conclusion: no fourth identity of the historical candidate-selection criterion. Lane–Emden π, Sedov 2/5, BKT π/2, Ritter 2, Lundquist j_{0,1} are isolated published locks, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Figure-eight, Miche steepness, Widnall, Sitnikov are numerical or elliptic. Tripole and vortons are the 2D skip in another coat. Do not claim these. Do not put a personal name on BKT's π/2.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
 
@@ -769,7 +771,7 @@ Opened: Roche lobe vs q is numerical; Eggleton 1983 r₁/A fit to 1%. Hill spher
 
 Blocked: most journal HTML. Chandrasekhar 1935 MNRAS body. Schubart 1956 AN body.
 
-Conclusion: no fourth identity of Hendrick's bar. Toomre Q = 1, Chandrasekhar mass, Roche L1, Noh jump, Carrier–Greenspan 2, Prandtl–Batchelor constant vorticity are isolated published locks or theorems, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on Toomre's Q = 1.
+Conclusion: no fourth identity of the historical candidate-selection criterion. Toomre Q = 1, Chandrasekhar mass, Roche L1, Noh jump, Carrier–Greenspan 2, Prandtl–Batchelor constant vorticity are isolated published locks or theorems, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put a personal name on Toomre's Q = 1.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
 
@@ -779,7 +781,7 @@ Opened: Rayleigh 1916 free-free: Ra_c = 27π⁴/4 at k d = π/√2. Isolated pub
 
 Blocked: most journal HTML. Onsager 1949 Nuovo Cimento footnote body.
 
-Conclusion: no fourth identity of Hendrick's bar. Rayleigh 27π⁴/4, Taylor 1708, Rossby L_d, Feynman–Onsager h/m, Alfvén v_A are isolated published locks, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Eady 0.31 and Hill's variational orbit are numerical or series. Onsager negative T is statistical. Do not claim these. Do not put Hendrick's name on Rayleigh's 27π⁴/4.
+Conclusion: no fourth identity of the historical candidate-selection criterion. Rayleigh 27π⁴/4, Taylor 1708, Rossby L_d, Feynman–Onsager h/m, Alfvén v_A are isolated published locks, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Eady 0.31 and Hill's variational orbit are numerical or series. Onsager negative T is statistical. Do not claim these. Do not put a personal name on Rayleigh's 27π⁴/4.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
 
@@ -789,27 +791,27 @@ Opened: Gotoda arXiv:2002.09624 body: explicit A, B only for 3-vortex (3.3)–(3
 
 Blocked: Rott 1994 body (AIP). Eckhardt 1989 body.
 
-Conclusion: the set of Novikov–Sedov / Gotoda families with closed A(θ), B(θ) is exactly the three claimed rows plus the already-skipped μ ≠ 1 three-vortex (cubic crit) and extra-μ five-vortex (same functional form). No unused closed family. Rott's winding number and Eckhardt's integrable four are elliptic or illustrated, not a fourth floor. Jeffery–Hamel is elliptic. Not a fourth row. Hendrick / parallelogram / quincunx stand.
+Conclusion: the set of Novikov–Sedov / Gotoda families with closed A(θ), B(θ) is exactly the three claimed rows plus the already-skipped μ ≠ 1 three-vortex (cubic crit) and extra-μ five-vortex (same functional form). No unused closed family. Rott's winding number and Eckhardt's integrable four are elliptic or illustrated, not a fourth floor. Jeffery–Hamel is elliptic. Not a fourth row. the three-vortex bound / parallelogram / quincunx stand.
 
 Re-search: do not reopen Gotoda for a sixth vortex unless a newly named paper gives closed A(θ), B(θ). Skip Rott / Eckhardt / Jeffery–Hamel unless a newly named source states a unique unpublished algebraic interior min of a product of two rates.
 
 ### 2026-09-20  hunt rolling disk, double pendulum, Fadeev, modon, catenoid, Chaplygin, Clebsch  query: Routh rolling disk precession spin product lean; double pendulum frequencies length ratio product omega+ omega-; Fadeev current sheet; Larichev-Reznik modon; critical catenoid coth; Chaplygin sleigh Clebsch Kirchhoff Kovalevskaya
 
-Opened: Rolling disk (Routh 1905; O'Reilly arXiv physics/0008227): steady lean, precession Ω, spin ω. Critical lean arctan of a nested radical ≈ 71.4° (k=1/4). Isolated published stability threshold. Double pendulum: textbook ω± = √(2±√2) √(g/l) at equal mass/length; product √2 g/l is immediate from the published pair. Vs λ, product ω+ω− monotonic (√((1+M)/λ) from the biquadratic). Do not put Hendrick's name on this √2. Fadeev 1965: exact MHD islands, 1-param, Harris end-member. Like Stuart. Isolated published family. Larichev–Reznik 1976 modon: β-plane dipole, Bessel/K. Lamb–Chaplygin already logged. Critical catenoid: w = coth w, transcendental (Goldschmidt). Volume (π/2)R²h at threshold is a corollary of the same root (Yun 2026). Chaplygin sleigh: nonholonomic, limit cycles under torque (Mathieu roll). Clebsch / Kirchhoff rigid-body-in-fluid and Kovalevskaya / Goryachev–Chaplygin tops: integrable, periods elliptic or hyperelliptic. Lagrange top already logged.
+Opened: Rolling disk (Routh 1905; O'Reilly arXiv physics/0008227): steady lean, precession Ω, spin ω. Critical lean arctan of a nested radical ≈ 71.4° (k=1/4). Isolated published stability threshold. Double pendulum: textbook ω± = √(2±√2) √(g/l) at equal mass/length; product √2 g/l is immediate from the published pair. Vs λ, product ω+ω− monotonic (√((1+M)/λ) from the biquadratic). Do not put a personal name on this √2. Fadeev 1965: exact MHD islands, 1-param, Harris end-member. Like Stuart. Isolated published family. Larichev–Reznik 1976 modon: β-plane dipole, Bessel/K. Lamb–Chaplygin already logged. Critical catenoid: w = coth w, transcendental (Goldschmidt). Volume (π/2)R²h at threshold is a corollary of the same root (Yun 2026). Chaplygin sleigh: nonholonomic, limit cycles under torque (Mathieu roll). Clebsch / Kirchhoff rigid-body-in-fluid and Kovalevskaya / Goryachev–Chaplygin tops: integrable, periods elliptic or hyperelliptic. Lagrange top already logged.
 
 Blocked: Routh 1905 treatise body. Fadeev 1965 Soviet body. Larichev–Reznik 1976 Doklady body.
 
-Conclusion: no fourth identity of Hendrick's bar. Rolling-disk critical lean, double-pendulum √2, Fadeev, modon, and catenoid coth are isolated published locks or transcendental, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on the double-pendulum √2.
+Conclusion: no fourth identity of the historical candidate-selection criterion. Rolling-disk critical lean, double-pendulum √2, Fadeev, modon, and catenoid coth are isolated published locks or transcendental, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put a personal name on the double-pendulum √2.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
 
 ### 2026-09-20  hunt underresearched: gSQG, massive vortices, hollow implosion, surfaces, Zipoy-Voorhees, Prandtl punch, Kasner, CH 2-peakon  query: generalized SQG three vortex collapse closed form; massive point vortices collapse; hollow vortex implosion; point vortices ellipsoid cone; Zipoy-Voorhees ISCO photon; Prandtl punch 2+pi; Kasner exponents product; Camassa-Holm two peakon phase shift
 
-Opened: Badin–Barry arXiv:1805.10127 and Reinaud Physica D 2022: gSQG / α-Euler three-vortex collapse exists; SQG may be non-self-similar; t_c in tables is numerical. 2D Euler slice is Hendrick. Zbarsky arXiv:2402.07316: massive point vortices, collapse impossible under mass conditions. arXiv:2506.04093: hollow-vortex implosion is a desingularization of existing point-vortex collapses, no new closed A, B. Point vortices on closed surfaces (Proc. A 2015): ellipsoid/bean Green's functions not closed for collapse; sphere already Kidambi. Conical NS vortices Phys. Fluids 25, 2147 (1982): 2-param exact, existence numerical. Zipoy–Voorhees: r_ph = (2+1/γ)M, r_ISCO = (3+1/γ ± √(5−1/γ²))M published. Prandtl punch q = 2k(1+π/2) isolated 1920. Kasner: Lifshitz–Khalatnikov u, two constraints, three exponents; product of three expansion rates is not a two-rate identity. Camassa–Holm 1993 two-peakon phase shift 2 ln|1−λ1/λ2|; KdV 2-soliton and studio peakon already logged.
+Opened: Badin–Barry arXiv:1805.10127 and Reinaud Physica D 2022: gSQG / α-Euler three-vortex collapse exists; SQG may be non-self-similar; t_c in tables is numerical. 2D Euler slice is the three-vortex bound. Zbarsky arXiv:2402.07316: massive point vortices, collapse impossible under mass conditions. arXiv:2506.04093: hollow-vortex implosion is a desingularization of existing point-vortex collapses, no new closed A, B. Point vortices on closed surfaces (Proc. A 2015): ellipsoid/bean Green's functions not closed for collapse; sphere already Kidambi. Conical NS vortices Phys. Fluids 25, 2147 (1982): 2-param exact, existence numerical. Zipoy–Voorhees: r_ph = (2+1/γ)M, r_ISCO = (3+1/γ ± √(5−1/γ²))M published. Prandtl punch q = 2k(1+π/2) isolated 1920. Kasner: Lifshitz–Khalatnikov u, two constraints, three exponents; product of three expansion rates is not a two-rate identity. Camassa–Holm 1993 two-peakon phase shift 2 ln|1−λ1/λ2|; KdV 2-soliton and studio peakon already logged.
 
 Blocked: Reinaud Physica D 2022 full HTML. Prandtl 1920 German body.
 
-Conclusion: no fourth identity of Hendrick's bar. Underresearched catalogues (gSQG, massive vortices, hollow implosion, vortices on surfaces, Zipoy–Voorhees, plasticity, Kasner, CH peakon phase) are numerical, isolated published locks, desingularizations of existing rows, or constraint identities, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on Prandtl's 2+π.
+Conclusion: no fourth identity of the historical candidate-selection criterion. Underresearched catalogues (gSQG, massive vortices, hollow implosion, vortices on surfaces, Zipoy–Voorhees, plasticity, Kasner, CH peakon phase) are numerical, isolated published locks, desingularizations of existing rows, or constraint identities, not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put a personal name on Prandtl's 2+π.
 
 Re-search: skip the new rows unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
 
@@ -819,7 +821,7 @@ Opened: Chen–Walsh–Wheeler arXiv:2506.04093 (4 Jun 2025): explicit circular 
 
 Blocked: White–McDonald full PDF body (Royal Society). PRFluids 2025 body.
 
-Conclusion: 2025 cutting-edge papers realize or existentially extend the three locks; they do not give a new closed 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Cite Chen–Walsh–Wheeler as the hollow-Euler desingularization of Hendrick / parallelogram / quincunx. Do not claim a fourth row from these papers.
+Conclusion: 2025 cutting-edge papers realize or existentially extend the three locks; they do not give a new closed 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Cite Chen–Walsh–Wheeler as the hollow-Euler desingularization of the three-vortex bound / parallelogram / quincunx. Do not claim a fourth row from these papers.
 
 Re-search: skip these four papers unless a follow-up states a closed dimensionless product and its unique algebraic interior min.
 
@@ -831,17 +833,17 @@ Opened: Nested two-triangle 6-vortex (I=0, 3-fold). Direct Biot–Savart: veloci
 
 Blocked: Hicks 1884 Phil Trans body. Fukumoto–Miyazaki JFM 222 body. arXiv:2603.21644 full KAM section.
 
-Conclusion: the missed 6-vortex 3-fold candidate is not self-similar. Trap-pair min, Hicks doughnut, Fukumoto–Miyazaki, and 2026 leapfrogging rings are published one-rate mins, series, elastica, or existence theorems. Not a fourth row. Hendrick / parallelogram / quincunx stand.
+Conclusion: the missed 6-vortex 3-fold candidate is not self-similar. Trap-pair min, Hicks doughnut, Fukumoto–Miyazaki, and 2026 leapfrogging rings are published one-rate mins, series, elastica, or existence theorems. Not a fourth row. the three-vortex bound / parallelogram / quincunx stand.
 
 Re-search: do not re-scan nested two-triangle 6-vortex Biot–Savart unless a newly named paper gives closed A, B. Skip Hicks / Fukumoto / trap-pair / coaxial rings unless a newly named source states a unique unpublished algebraic interior min of a product of two rates.
 
 ### 2026-09-20  hunt difficulty skips: μ≠1 three-vortex cubic, Gallay-Sverak, Rott winding  query: Gotoda 3-vortex A B mu not 1 min of B/2A; arXiv:2609.10847 Gallay Sverak three-vortex; Rott 1994 winding number PDF
 
-Opened: Gotoda (3.3)–(3.5) plus M=0. Direct evaluation of |B/(2A)| along the 1-param family. μ=1 recovers Hendrick √2 to 4 digits. Reciprocal pairs share the min (μ=1/2 ↔ 2 ≈1.741; μ=1/4 ↔ 4 ≈2.802). Other μ: critical point is a cubic, not a floor like √2. Same 3-vortex family as Hendrick, not a new row. Gallay–Sverak arXiv:2609.10847 (9 Sep 2026): new ζ=(z2−z1)/(z3−z1), Hopf reduction, energy inequalities, near-collision regularization. Not a two-rate product min. Rott Phys. Fluids 6, 760 (1994) body still AIP-blocked. Abstract already logged: winding number is the ratio of two periods; path patterns still numerical.
+Opened: Gotoda (3.3)–(3.5) plus M=0. Direct evaluation of |B/(2A)| along the 1-param family. μ=1 recovers the three-vortex bound √2 to 4 digits. Reciprocal pairs share the min (μ=1/2 ↔ 2 ≈1.741; μ=1/4 ↔ 4 ≈2.802). Other μ: critical point is a cubic, not a floor like √2. Same 3-vortex family as the three-vortex bound, not a new row. Gallay–Sverak arXiv:2609.10847 (9 Sep 2026): new ζ=(z2−z1)/(z3−z1), Hopf reduction, energy inequalities, near-collision regularization. Not a two-rate product min. Rott Phys. Fluids 6, 760 (1994) body still AIP-blocked. Abstract already logged: winding number is the ratio of two periods; path patterns still numerical.
 
 Blocked: Rott 1994 body (AIP). Eckhardt 1989 body.
 
-Conclusion: the cubic skip is closed by computation, not by difficulty. μ≠1 is the same family as Hendrick with a cubic crit; reciprocal pairs share the product. Gallay–Sverak is 2026 three-vortex geometry, not a fourth floor. Rott remains unread at the formula level; the abstract already says the winding-number patterns are illustrated numerically. Not a fourth row.
+Conclusion: the cubic skip is closed by computation, not by difficulty. μ≠1 is the same family as the three-vortex bound with a cubic crit; reciprocal pairs share the product. Gallay–Sverak is 2026 three-vortex geometry, not a fourth floor. Rott remains unread at the formula level; the abstract already says the winding-number patterns are illustrated numerically. Not a fourth row.
 
 Re-search: do not re-minimize |B/2A| on 3-vortex μ≠1 unless a newly named paper states a simple unpublished algebraic floor (not a cubic root). Skip Gallay–Sverak unless a follow-up extracts a two-rate product min. Skip Rott unless the body is actually read and states a unique unpublished algebraic interior min.
 
@@ -851,7 +853,7 @@ Opened: Balabanova–Montaldi Physica D 488, 135084 (Apr 2026) / arXiv:2202.0616
 
 Blocked: Chapman–Trefethen full PDF body (Royal Society). Three-heton dedicated paper not found.
 
-Conclusion: non-orientable vortices, cyclic pursuit, and C-metric are published RE/coth, shape-changing pursuit, or isolated photon radii. Not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on Möbius coth or the four-bug square.
+Conclusion: non-orientable vortices, cyclic pursuit, and C-metric are published RE/coth, shape-changing pursuit, or isolated photon radii. Not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put a personal name on Möbius coth or the four-bug square.
 
 Re-search: skip Möbius/Klein, four-bug parallelogram, and C-metric unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
 
@@ -861,7 +863,7 @@ Opened: Brizard arXiv:2504.07311v4: XMHD X-point collapse in Jacobi elliptic fun
 
 Blocked: none at the formula level for these.
 
-Conclusion: the other-area catalogues that still had a 1-param look are elliptic (XMHD, Kozai), isolated published angles (Taylor, Kozai i_*), topological integers (Hopf), 19th-century two-frequency ellipsoids, or simulations. Not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put Hendrick's name on Kozai's arccos √(3/5), Taylor's 49.3°, or Brizard's elliptic T_∞.
+Conclusion: the other-area catalogues that still had a 1-param look are elliptic (XMHD, Kozai), isolated published angles (Taylor, Kozai i_*), topological integers (Hopf), 19th-century two-frequency ellipsoids, or simulations. Not a 1-parameter product of two dynamical rates with unique unpublished algebraic interior min. Do not claim these. Do not put a personal name on Kozai's arccos √(3/5), Taylor's 49.3°, or Brizard's elliptic T_∞.
 
 Re-search: skip XMHD X-point, Kozai–Lidov, Taylor cone, spiral vortex+source, hopfion, Riemann ellipsoids, chiral active, and relativistic point vortices unless a newly named paper states a closed dimensionless product and its unique algebraic interior min.
 
@@ -871,17 +873,17 @@ Opened: SIR peak at R0 S=1, I* closed, t_peak Lambert W / Padé 2023. Keller-Seg
 
 Blocked: none at the formula level.
 
-Conclusion: the identity bar is a 1-parameter product of two dynamical rates with a unique unpublished algebraic interior min. Outside math and physics the analogous catalogues are isolated published thresholds, Lambert-W times, elliptic periods, type-II parabolic blowup, or empirical scalings. Not a fourth row. Do not claim these. Do not put Hendrick's name on Little's L=λW, Kelly's f*, Kleiber's 3/4, or the SIR peak.
+Conclusion: the identity bar is a 1-parameter product of two dynamical rates with a unique unpublished algebraic interior min. Outside math and physics the analogous catalogues are isolated published thresholds, Lambert-W times, elliptic periods, type-II parabolic blowup, or empirical scalings. Not a fourth row. Do not claim these. Do not put a personal name on Little's L=λW, Kelly's f*, Kleiber's 3/4, or the SIR peak.
 
 Re-search: skip SIR, Keller-Segel, Lotka–Volterra, Kingman, hawk–dove, Nicholson–Bailey, Little, Kelly, and Kleiber unless a newly named paper states a closed dimensionless product of two dynamical rates and its unique algebraic interior min.
 
 ### 2026-09-20  hunt extra-μ five-vortex, Kallyadan–Shukla, geostrophic 2025  query: extra μ five-vortex Gotoda 3.13 closed product min; Kallyadan Shukla PRFluids 7 114701; JPSJ 94 094402 geostrophic non-self-similar collapse; pentagon plus center I=0
 
-Opened: Gotoda (3.13) on Γ_H=0 five-vortex parallelogram+centre. μ=1 recovers parallelogram 3√5/4 and quincunx 3√33/16. ρ=γ2/γ1=−3 (diagonal ratio 3) recovers Hendrick √2 on five vortices (already skipped). Other rational ρ: min is a nested radical of the same (a−b cos 2θ)/sin 2θ shape. Kallyadan–Shukla Phys. Rev. Fluids 7, 114701 (2022): similarity as a linear system; families numerical. JPSJ 94, 094402 (2025): geostrophic triple collapse is non-self-similar. Regular pentagon + centre has I=5ΓR²≠0.
+Opened: Gotoda (3.13) on Γ_H=0 five-vortex parallelogram+centre. μ=1 recovers parallelogram 3√5/4 and quincunx 3√33/16. ρ=γ2/γ1=−3 (diagonal ratio 3) recovers the three-vortex bound √2 on five vortices (already skipped). Other rational ρ: min is a nested radical of the same (a−b cos 2θ)/sin 2θ shape. Kallyadan–Shukla Phys. Rev. Fluids 7, 114701 (2022): similarity as a linear system; families numerical. JPSJ 94, 094402 (2025): geostrophic triple collapse is non-self-similar. Regular pentagon + centre has I=5ΓR²≠0.
 
 Blocked: Kallyadan–Shukla full PDF (APS). JPSJ body behind paywall; abstract sufficient.
 
-Conclusion: extra-μ five-vortex is the quincunx formula with other coefficients, not a new family. Numerical N≥6 families and non-self-similar geostrophic collapse are not a two-rate algebraic floor. Not a fourth row. Do not claim these. Do not put Hendrick's name on a nested-radical extra-μ slice.
+Conclusion: extra-μ five-vortex is the quincunx formula with other coefficients, not a new family. Numerical N≥6 families and non-self-similar geostrophic collapse are not a two-rate algebraic floor. Not a fourth row. Do not claim these. Do not put a personal name on a nested-radical extra-μ slice.
 
 Re-search: skip extra-μ five-vortex Gotoda 3.13, Kallyadan–Shukla 2022, JPSJ 94 094402, and pentagon+centre unless a newly named paper states a closed dimensionless product of two dynamical rates and its unique unpublished algebraic interior min on a family that is not the three rows.
 
@@ -891,7 +893,7 @@ Opened: Aref–Stremler JFM 314, 1 (1996) and 392, 101 (1999): three vortices, z
 
 Blocked: Aref–Stremler JFM bodies (Cambridge). Crowdy Proc. A path-function PDF.
 
-Conclusion: periodic-strip three-vortex is integrable and periodic, not a two-rate algebraic floor. Chern–Simons, optical annihilation, Novikov peakons, and Higgs moduli are static, numerical, or ill-posedness. Not a fourth row. Do not claim these. Do not put Hendrick's name on Jackiw–Pi or a Novikov collision time.
+Conclusion: periodic-strip three-vortex is integrable and periodic, not a two-rate algebraic floor. Chern–Simons, optical annihilation, Novikov peakons, and Higgs moduli are static, numerical, or ill-posedness. Not a fourth row. Do not claim these. Do not put a personal name on Jackiw–Pi or a Novikov collision time.
 
 Re-search: skip Aref–Stremler periodic strip/parallelogram, Jackiw–Pi, optical vortex annihilation, Novikov peakon collision, abelian Higgs moduli, and massive annular vortices unless a newly named paper states a closed dimensionless product of two dynamical rates and its unique unpublished algebraic interior min.
 
@@ -901,7 +903,7 @@ Opened: Akhmediev 1986 / Dudley Opt. Express 17, 21497 (2009): β=√(8a(1−2a)
 
 Blocked: none for these PDFs.
 
-Conclusion: the closest two-rate algebraic extremum outside the vortex-collapse catalogue is calculus on Akhmediev's 1986 factors. That is not the bar. Sphere collapse has no single ω. Not a fourth row. Do not claim these. Do not put Hendrick's name on Akhmediev or Kidambi–Newton.
+Conclusion: the closest two-rate algebraic extremum outside the vortex-collapse catalogue is calculus on Akhmediev's 1986 factors. That is not the bar. Sphere collapse has no single ω. Not a fourth row. Do not claim these. Do not put a personal name on Akhmediev or Kidambi–Newton.
 
 Re-search: skip Akhmediev βω, Kidambi–Newton spherical collapse, and Sakajo four-vortex sphere unless a newly named paper states a closed dimensionless product of two dynamical rates with a unique unpublished algebraic interior min that is not calculus on already-published factors.
 
@@ -911,7 +913,7 @@ Opened: Wilberforce 1894: avoided crossing of bounce and twist; tuning ω_z=ω_�
 
 Blocked: none at the formula level.
 
-Conclusion: these unopened catalogues are textbook two-mode tuning, elliptic Poncelet, isolated published highest-wave speed, Matsuno dispersion, or numerical canards. Not a 1-parameter unpublished algebraic product min. Not a fourth row. Do not claim these. Do not put Hendrick's name on Wilberforce, Poncelet, Ostrovsky's π²/9, or Matsuno's Yanai wave.
+Conclusion: these unopened catalogues are textbook two-mode tuning, elliptic Poncelet, isolated published highest-wave speed, Matsuno dispersion, or numerical canards. Not a 1-parameter unpublished algebraic product min. Not a fourth row. Do not claim these. Do not put a personal name on Wilberforce, Poncelet, Ostrovsky's π²/9, or Matsuno's Yanai wave.
 
 Re-search: skip Wilberforce, elliptic-billiard Poncelet, Ostrovsky–Hunter highest, Matsuno Yanai, FitzHugh–Nagumo canards, and cone vortices unless a newly named paper states a closed dimensionless product of two dynamical rates and its unique unpublished algebraic interior min.
 
@@ -927,7 +929,7 @@ Access limits: direct CiteSeer PDF open and download timed out; Academia author 
 
 Derived and verified: with outer radius φ, outer circulation −1, inner radius 1 and inner circulation φ², all six initial velocity/position ratios coincide. The product is (11−√5 cos 3θ)/(6 sin 3θ), sharp minimum √29/3 at cos 3θ=√5/11, θ≈26.090411°. Proof and named-source comparison: identities/double-triangle.md. node tools/double-triangle-check.js checks 1,199 angles, the dimensional A,B coefficients, similarity invariance, full numerical trajectories to 90% of collapse, step-halving, an off-family control, and an anisotropic-kernel mutation. Worst relative product discrepancy 3.3e−13; Broken similarity residual 0.173. No sampling uncertainty; numerical error is reported separately.
 
-Conclusion: the previous statement that this geometry cannot collapse was false. A mathematically proved candidate fourth bound has been obtained. The collapse family is classical. The explicit simplified bound's historical priority remains unresolved, and it stays outside the existing three-entry priority record pending full-text review. No renaming of Aref or Koiller's motion, and no use of Hendrick's name on this candidate.
+Conclusion: the previous statement that this geometry cannot collapse was false. A mathematically proved candidate fourth bound has been obtained. The collapse family is classical. The explicit simplified bound's historical priority remains unresolved, and it stays outside the existing three-entry priority record pending full-text review. No renaming of Aref or Koiller's motion, and no use of a personal name on this candidate.
 
 Next check: obtain and read the full 1985 paper, Aref 1982, and subsequent work on optimized two-ring spiral pitch. Reopen if a dated source states this product, its minimum, or an equivalent general bound. Do not repeat the arbitrary-ratio scan as evidence against the family.
 
@@ -998,7 +1000,7 @@ Conclusion: candidate 1's functional formula is an explicit specialization and r
 
 ### 2026-09-20 descriptive-name correction
 
-The personal name of candidate 1 is retired at the author’s request. The live title is **Three-vortex collapse bound**, canonical tab `three-vortex-bound`, with Gröbli (1877) credited explicitly. Earlier search queries and the frozen snapshot retain their historical wording, superseded by this correction and ORIGINALITY-FOLLOWUP.md. Old URL hashes remain compatibility aliases, not current titles.
+The personal name of candidate 1 is retired at the author’s request. The live title is **Three-vortex collapse bound**, canonical tab `three-vortex-bound`, with Gröbli (1877) credited explicitly. Earlier search queries and the frozen snapshot retain their historical wording, superseded by this correction and ORIGINALITY-FOLLOWUP.md. Old personal-name routes are no longer maintained.
 
 ## 2026-09-21 — Scientific validation: Cahn-Hilliard mobility
 
