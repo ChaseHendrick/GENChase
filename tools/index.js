@@ -140,7 +140,7 @@ One HTML file of seeded scientific simulations. Each tab reprints from a hash. G
 - AGENTS.md — product rules.
 - tools/modules/CONTRACT.md — how to add a tab.
 - README.md — what is new, and what is not.
-- IDENTITIES.md — derived identities. Cite Three-vortex collapse bound by that name. Do not put that name on a second result. Read before claiming another.
+- IDENTITIES.md — derived formulas and bounds, with classical sources and originality limits. Use descriptive titles and credit the original mathematics.
 - identities/ORIGINALITY-FOLLOWUP.md — the first formula’s equivalence to Gröbli (1877); minimum priority remains unconfirmed.
 - identities/NOVELTY-AUDIT.md — evidence and limits for all five candidates.
 - RESEARCH.md — what was searched, what was not. Read before a prior-art search. Do not re-run a search marked skip.
