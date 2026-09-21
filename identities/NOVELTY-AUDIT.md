@@ -2,6 +2,8 @@
 
 Audit date: 2026-09-20. This is a literature assessment, not a certificate of originality. It supersedes the repository's earlier unqualified claims of being the first public source of these formulas.
 
+**Post-merge follow-up:** [a direct comparison with Gröbli's 1877 original](ORIGINALITY-FOLLOWUP.md) reproduces candidate 1 by substitution and a change of variables, and checks a denominator against the original scan. Priority of the optimized minimum remains unconfirmed.
+
 **The evidence does not establish five novel discoveries.** All five concern classical point-vortex collapse. The exact minima below were not located in the sources inspected, but the first three are elementary specializations and optimizations of published rate formulas. The fifth generalizes the second and fourth. Mathematical correctness, independent derivation, historical priority, and a substantial research contribution are separate questions.
 
 ## Result by result
