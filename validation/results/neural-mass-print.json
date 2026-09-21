@@ -1,0 +1,158 @@
+{
+  "scope": "Actual browser module: three trace views, 32/128 preparations, completed real seeded trajectories; 2400px square/non-square real vectors and raster exports; physical-to-SVG coordinates and exact numerical-state preservation; actual shell vector print; pause/resume and finite completion; visible rejected-step guard and refused incomplete export.",
+  "sourceSHA256": "9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1",
+  "rows": [
+    {
+      "fixture": {
+        "view": "phase",
+        "populations": 32
+      },
+      "steps": 15600,
+      "complete": true,
+      "halted": "",
+      "tests": [
+        {
+          "requested": [
+            2400,
+            2400
+          ],
+          "width": 2400,
+          "height": 2400,
+          "svgWidth": 2400,
+          "svgHeight": 2400,
+          "pngBytes": 942022,
+          "svgBytes": 1458392,
+          "tracePaths": 32,
+          "pointsPerPath": 1201,
+          "physicalCoordinateErrorPixels": 2.3437142008433856e-13,
+          "rasterVectorMAD": 0.45050416666666665
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "width": 2400,
+          "height": 1800,
+          "svgWidth": 2400,
+          "svgHeight": 1800,
+          "pngBytes": 774726,
+          "svgBytes": 1454844,
+          "tracePaths": 32,
+          "pointsPerPath": 1201,
+          "physicalCoordinateErrorPixels": 2.2737367544323206e-13,
+          "rasterVectorMAD": 0.3272305555555556
+        }
+      ],
+      "unchanged": true
+    },
+    {
+      "fixture": {
+        "view": "rate",
+        "populations": 128,
+        "drive": "pulse"
+      },
+      "steps": 15600,
+      "complete": true,
+      "halted": "",
+      "tests": [
+        {
+          "requested": [
+            2400,
+            2400
+          ],
+          "width": 2400,
+          "height": 2400,
+          "svgWidth": 2400,
+          "svgHeight": 2400,
+          "pngBytes": 455657,
+          "svgBytes": 4676651,
+          "tracePaths": 128,
+          "pointsPerPath": 1201,
+          "physicalCoordinateErrorPixels": 2.2737367544323206e-13,
+          "rasterVectorMAD": 0.455425
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "width": 2400,
+          "height": 1800,
+          "svgWidth": 2400,
+          "svgHeight": 1800,
+          "pngBytes": 357872,
+          "svgBytes": 4649043,
+          "tracePaths": 128,
+          "pointsPerPath": 1201,
+          "physicalCoordinateErrorPixels": 2.2737367544323206e-13,
+          "rasterVectorMAD": 0.3287027777777778
+        }
+      ],
+      "unchanged": true
+    },
+    {
+      "fixture": {
+        "view": "voltage",
+        "populations": 32,
+        "J": -6
+      },
+      "steps": 15600,
+      "complete": true,
+      "halted": "",
+      "tests": [
+        {
+          "requested": [
+            2400,
+            2400
+          ],
+          "width": 2400,
+          "height": 2400,
+          "svgWidth": 2400,
+          "svgHeight": 2400,
+          "pngBytes": 319395,
+          "svgBytes": 1167156,
+          "tracePaths": 32,
+          "pointsPerPath": 1201,
+          "physicalCoordinateErrorPixels": 2.2737367544323206e-13,
+          "rasterVectorMAD": 0.42025625
+        },
+        {
+          "requested": [
+            2400,
+            1800
+          ],
+          "width": 2400,
+          "height": 1800,
+          "svgWidth": 2400,
+          "svgHeight": 1800,
+          "pngBytes": 250776,
+          "svgBytes": 1156313,
+          "tracePaths": 32,
+          "pointsPerPath": 1201,
+          "physicalCoordinateErrorPixels": 1.1368683772161603e-13,
+          "rasterVectorMAD": 0.3244444444444444
+        }
+      ],
+      "unchanged": true
+    }
+  ],
+  "shell": {
+    "width": 2400,
+    "height": 2400,
+    "note": "2,400 × 2,400 px, 0.3 MB. Rasterized from SVG at print pixels (vector RIP). If the download button does nothing, right-click the image and save it.",
+    "unchanged": true
+  },
+  "computation": {
+    "pauseStops": true,
+    "resumeCompletes": true,
+    "finishedStateStaysStill": true
+  },
+  "stop": {
+    "message": "Time step is too large for the current population response; lower the time step",
+    "status": "populations 32step 0time 0.000sampled rate 0.032–0.631Stopped: Time step is too large for the current population response; lower the time stepdt 0.002seed neural-print",
+    "rolledBack": true,
+    "exportMessage": "Time step is too large for the current population response; lower the time step"
+  },
+  "errors": []
+}
