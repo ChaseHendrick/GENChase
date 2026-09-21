@@ -1,0 +1,77 @@
+{
+  "scope": "Paused initial 512x512 float32 fields exported through each real module exportPNG to 2400x2400. Checks state preservation and dimensions, not full scientific rendering accuracy.",
+  "rows": [
+    {
+      "id": "cahn",
+      "cells": [
+        512,
+        512
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 5987729,
+      "changes": 0,
+      "nonfinite": 0
+    },
+    {
+      "id": "ohta",
+      "cells": [
+        512,
+        512
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 6012088,
+      "changes": 0,
+      "nonfinite": 0
+    },
+    {
+      "id": "amb",
+      "cells": [
+        512,
+        512
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 11146995,
+      "changes": 0,
+      "nonfinite": 0
+    },
+    {
+      "id": "swift",
+      "cells": [
+        512,
+        512
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 11661460,
+      "changes": 0,
+      "nonfinite": 0
+    },
+    {
+      "id": "ks",
+      "cells": [
+        512,
+        512
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 10271634,
+      "changes": 0,
+      "nonfinite": 0
+    },
+    {
+      "id": "pfc",
+      "cells": [
+        512,
+        512
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 5831007,
+      "changes": 0,
+      "nonfinite": 0
+    }
+  ]
+}

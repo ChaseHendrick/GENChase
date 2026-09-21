@@ -1,0 +1,149 @@
+{
+  "scope": "Periodic/no-flux constant/variable-mobility, noise-free float32 Cahn-Hilliard stencil; no clipping in this fixture",
+  "rows": [
+    {
+      "boundary": "periodic",
+      "degenerate": false,
+      "grid": 64,
+      "steps": 32,
+      "maxError": 7.87854965711432e-8,
+      "massDrift": 2.444721758365631e-9,
+      "mutantError": 0.0008348907896090635
+    },
+    {
+      "boundary": "periodic",
+      "degenerate": false,
+      "grid": 128,
+      "steps": 32,
+      "maxError": 7.87854965711432e-8,
+      "massDrift": 2.444721758365631e-9,
+      "mutantError": 0.0008348907896090635
+    },
+    {
+      "boundary": "periodic",
+      "degenerate": false,
+      "grid": 256,
+      "steps": 32,
+      "maxError": 7.87854965711432e-8,
+      "massDrift": 2.444721758365631e-9,
+      "mutantError": 0.0008348907896090635
+    },
+    {
+      "boundary": "periodic",
+      "degenerate": false,
+      "grid": 512,
+      "steps": 32,
+      "maxError": 7.87854965711432e-8,
+      "massDrift": 2.444721758365631e-9,
+      "mutantError": 0.0008348907896090635
+    },
+    {
+      "boundary": "periodic",
+      "degenerate": true,
+      "grid": 64,
+      "steps": 32,
+      "maxError": 8.271837448337038e-8,
+      "massDrift": 3.434251993894577e-9,
+      "mutantError": 0.0008320728768010793
+    },
+    {
+      "boundary": "periodic",
+      "degenerate": true,
+      "grid": 128,
+      "steps": 32,
+      "maxError": 8.271837448337038e-8,
+      "massDrift": 3.434251993894577e-9,
+      "mutantError": 0.0008320728768010793
+    },
+    {
+      "boundary": "periodic",
+      "degenerate": true,
+      "grid": 256,
+      "steps": 32,
+      "maxError": 8.271837448337038e-8,
+      "massDrift": 3.434251993894577e-9,
+      "mutantError": 0.0008320728768010793
+    },
+    {
+      "boundary": "periodic",
+      "degenerate": true,
+      "grid": 512,
+      "steps": 32,
+      "maxError": 8.271837448337038e-8,
+      "massDrift": 3.434251993894577e-9,
+      "mutantError": 0.0008320728768010793
+    },
+    {
+      "boundary": "noflux",
+      "degenerate": false,
+      "grid": 64,
+      "steps": 32,
+      "maxError": 9.159514546830394e-8,
+      "massDrift": 1.0240910341963172e-9,
+      "mutantError": 0.0009770075133598635
+    },
+    {
+      "boundary": "noflux",
+      "degenerate": false,
+      "grid": 128,
+      "steps": 32,
+      "maxError": 9.159514546830394e-8,
+      "massDrift": 1.6966623661573976e-9,
+      "mutantError": 0.0009770075133598635
+    },
+    {
+      "boundary": "noflux",
+      "degenerate": false,
+      "grid": 256,
+      "steps": 32,
+      "maxError": 9.159514546830394e-8,
+      "massDrift": 2.0612560547306202e-9,
+      "mutantError": 0.0009770075133598635
+    },
+    {
+      "boundary": "noflux",
+      "degenerate": false,
+      "grid": 512,
+      "steps": 32,
+      "maxError": 9.159514546830394e-8,
+      "massDrift": 2.250629904665402e-9,
+      "mutantError": 0.0009770075133598635
+    },
+    {
+      "boundary": "noflux",
+      "degenerate": true,
+      "grid": 64,
+      "steps": 32,
+      "maxError": 9.990477484178584e-8,
+      "massDrift": 4.0108716348186135e-10,
+      "mutantError": 0.000973707491336212
+    },
+    {
+      "boundary": "noflux",
+      "degenerate": true,
+      "grid": 128,
+      "steps": 32,
+      "maxError": 9.990477484178584e-8,
+      "massDrift": 1.8001173884840682e-9,
+      "mutantError": 0.000973707491336212
+    },
+    {
+      "boundary": "noflux",
+      "degenerate": true,
+      "grid": 256,
+      "steps": 32,
+      "maxError": 9.990477484178584e-8,
+      "massDrift": 2.587796643638285e-9,
+      "mutantError": 0.000973707491336212
+    },
+    {
+      "boundary": "noflux",
+      "degenerate": true,
+      "grid": 512,
+      "steps": 32,
+      "maxError": 9.990477484178584e-8,
+      "massDrift": 3.0036773068786715e-9,
+      "mutantError": 0.000973707491336212
+    }
+  ]
+}

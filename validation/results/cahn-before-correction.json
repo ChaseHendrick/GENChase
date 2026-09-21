@@ -1,0 +1,68 @@
+{
+  "rows": [
+    {
+      "degenerate": false,
+      "grid": 64,
+      "steps": 32,
+      "maxError": 7.878549662665435e-8,
+      "massDrift": 2.444721758365631e-9,
+      "mutantError": 0.0008348907896090635
+    },
+    {
+      "degenerate": false,
+      "grid": 128,
+      "steps": 32,
+      "maxError": 7.878549662665435e-8,
+      "massDrift": 2.444721758365631e-9,
+      "mutantError": 0.0008348907896090635
+    },
+    {
+      "degenerate": false,
+      "grid": 256,
+      "steps": 32,
+      "maxError": 7.878549662665435e-8,
+      "massDrift": 2.444721758365631e-9,
+      "mutantError": 0.0008348907896090635
+    },
+    {
+      "degenerate": false,
+      "grid": 512,
+      "steps": 32,
+      "maxError": 7.878549662665435e-8,
+      "massDrift": 2.444721758365631e-9,
+      "mutantError": 0.0008348907896090635
+    },
+    {
+      "degenerate": true,
+      "grid": 64,
+      "steps": 32,
+      "maxError": 0.000460750770159557,
+      "massDrift": 0.00022483771317638457,
+      "mutantError": 0.0008324379552503286
+    },
+    {
+      "degenerate": true,
+      "grid": 128,
+      "steps": 32,
+      "maxError": 0.000460750770159557,
+      "massDrift": 0.00022483771317638457,
+      "mutantError": 0.0008324379552503286
+    },
+    {
+      "degenerate": true,
+      "grid": 256,
+      "steps": 32,
+      "maxError": 0.000460750770159557,
+      "massDrift": 0.00022483771317638457,
+      "mutantError": 0.0008324379552503286
+    },
+    {
+      "degenerate": true,
+      "grid": 512,
+      "steps": 32,
+      "maxError": 0.000460750770159557,
+      "massDrift": 0.00022483771317638457,
+      "mutantError": 0.0008324379552503286
+    }
+  ]
+}

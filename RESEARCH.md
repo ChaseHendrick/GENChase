@@ -997,3 +997,9 @@ Conclusion: candidate 1's functional formula is an explicit specialization and r
 ### 2026-09-20 descriptive-name correction
 
 The personal name of candidate 1 is retired at the author’s request. The live title is **Three-vortex collapse bound**, canonical tab `three-vortex-bound`, with Gröbli (1877) credited explicitly. Earlier search queries and the frozen snapshot retain their historical wording, superseded by this correction and ORIGINALITY-FOLLOWUP.md. Old URL hashes remain compatibility aliases, not current titles.
+
+## 2026-09-21 — Scientific validation: Cahn-Hilliard mobility
+
+Queries: `site.arxiv.org Cahn Hilliard degenerate mobility polynomial free energy surface diffusion Lee Munch Suslina`; `site.nist.gov Cahn Hilliard variable mobility divergence equation`.
+
+Opened NIST PFHub Benchmark 1, https://pages.nist.gov/pfhub/benchmarks/benchmark1.ipynb/, especially the free-energy/dynamics and boundary-condition sections, and Lee, Munch and Suli, https://arxiv.org/pdf/1507.02410. The conservative equation places mobility inside the divergence. The existing optional degenerate update uses M(c) times a chemical-potential Laplacian and omits the mobility-gradient contribution. A conservative face-flux discretization is the correction target. The paper also cautions against identifying quadratic degenerate mobility with pure surface diffusion for polynomial free energies. The proposed stencil tests are not a reproduction of PFHub's full benchmark or proof of continuum convergence. No novelty claim is involved.

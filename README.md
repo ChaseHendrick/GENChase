@@ -76,36 +76,30 @@ Another purpose is mathematical discovery: explore simulations, spot relationshi
 
 ---
 
-## The plates check themselves
+## What the checks establish
 
-Many tabs measure a quantity from the current field and compare it with theory. These diagnostics are useful checks, but do not establish full agreement with a paper. [Validation coverage](VALIDATION.md) separates numerical evidence, limitations and print quality. Unreviewed schemes remain explicitly unvalidated.
+A displayed ratio of `1.000` is the same rounded value as a theoretical `1`. Extra decimal places do not establish accuracy or independence. The old table mixed sampled formulas, structural properties and numerical experiments, and omitted the recipes and uncertainties needed to assess its example values. Those unsupported snapshot numbers have been removed.
 
-The word **miss** on a status line is not the site breaking. The picture is still a plate. The numbers under it did not match what the equation predicted. Broken presets do this on purpose, so you can see the check is real.
+The following results have executable tests and recorded scope. They report discrepancies or explicit limits, rather than matching rounded reference values. They do not certify all simulations or every control setting.
 
-| Tab | What it measures | 🔵 Theoretical reference | 🟣 Measured on the plate |
+| Check | 🔵 Acceptance criterion | 🟣 Recorded result | Scope |
 |---|---|---|---|
-| Foam & Grains | mean number of sides in the froth | exactly 6, forced by Euler | **6.11** |
-| Foam & Grains | von Neumann–Mullins law | dA/dt ∝ (n − 6) | **dA/dt = 0.34 (n − 6)**, r = 0.60 |
-| Random Matrices | unfolded level spacing, β = 1 | Wigner surmise 0.523 | **0.540** |
-| Random Matrices | unfolded level spacing, β = 2 | Wigner surmise 0.422 | **0.419** |
-| Rough Growth | roughening exponent, random deposition | 1/2 | **0.498** |
-| Rough Growth | roughening exponent, surface relaxation | 1/4 (Edwards–Wilkinson) | **0.217** |
-| Rough Growth | roughening exponent, RSOS | 1/3 (KPZ) | **0.307** |
-| Flocking | number fluctuations, ΔN ~ N^a | above 1/2 out of equilibrium | **0.74** |
-| Hyperbolic Turing | cells meeting at a vertex of {p, q} | exactly q | **100%** |
-| Drainage Networks | drainage area, P(A > a) ~ a^−β | near 0.45 in real basins | **0.53** |
-| Vortex Lattice | vortices, by phase winding | quantized circulation | **counted, not guessed** |
-| Track | v_meas / v of a strain-written sine-Gordon breather | 1 if η = 0 | **1.20 paving, E_out/E bound** |
-| Soliton Web | Hirota bilinear residual of the exact tau function | 0 | **~10⁻¹⁵** |
-| Gerstner | orbit RMS / r ; r / A e^{kb} | 0 ; 1 | **~10⁻¹⁶** ; **1.000** |
-| Figure Eight | \|L\| ; ΔE/E ; \|q(T)−q(0)\| | 0 | **~10⁻¹⁴** ; **~10⁻¹⁴** ; **~10⁻⁷** |
-| Peakon | v_meas / c ; corner \|u_x\|/c | 1 ; 1 | **1.000** ; **1.00** |
-| Photon Sphere | b_c / (3√3 M) ; r_ph / 3M | 1 ; 1 | **1.000** ; **1.000** |
-| Crapper | s / (4\|A\|/(π(1−A²))) | 1 | **1.000** |
-| Hasimoto | κ_max/(2ν) ; c/(2τ₀) | 1 ; 1 | **1.000** ; **1.000** |
-| Lump | KP-I residual of the Manakov lump | 0 | **~3×10⁻⁴** (FD) |
+| [Cahn–Hilliard GPU vs independent CPU stencil](validation/CAHN-HILLIARD.md) | Maximum field error below 5 × 10⁻⁷ | 9.99 × 10⁻⁸ | 16 noise-free float32 cases; constant/variable mobility and periodic/no-flux boundaries |
+| [Cahn–Hilliard composition conservation](validation/results/cahn-mobility.json) | Mean drift below 5 × 10⁻⁸ | 3.43 × 10⁻⁹ maximum | Same bounded test; excludes forcing and clipping |
+| [PDE print-state preservation](validation/results/pde-print-state.json) | No changed field components; 2400 × 2400 output | Zero changes in six tested modules | Paused 512 × 512 initial fields; checks state and dimensions, not full rendering accuracy |
 
-When a measurement disagrees with theory the tab says so rather than rounding toward it. Ballistic deposition fits **under** 1/3 because its crossover to KPZ is slow at plate size, and the hint says exactly that instead of quietly presenting 0.33. A neural field outside its patterning window prints "h is outside it, the sheet will go flat" rather than leaving a blank plate to be read as a subtle one.
+Other tabs still expose useful diagnostics, but their meaning differs:
+
+| Diagnostic family | What is being checked | What it does **not** establish |
+|---|---|---|
+| Foam topology, hyperbolic tiling vertex counts | Structural consistency of constructed geometry | Independent evidence for the dynamics or physical model |
+| Foam growth, random-matrix spacings, roughness, flocking, drainage | Statistics or fitted trends from finite simulations | Quantitative agreement without a recorded recipe, sample size and uncertainty |
+| Gerstner, Crapper, Peakon | Sampled geometric or finite-difference properties of an evaluated formula | Independent numerical evolution of the governing PDE |
+| Hasimoto, KP soliton web, KP-I lump | Curve derivatives or equation residuals at sampled points | An all-parameter proof or validation of every rendered/exported pixel |
+| Figure Eight, Photon Sphere, Track | Trajectory/invariant or propagation diagnostics | Convergence and independent error bounds without a dedicated benchmark |
+| Vortex Lattice | Phase-winding counts, filtered by density | Complete validation of the condensate solver |
+
+The [diagnostic review](validation/DIAGNOSTICS.md) records the source inspection behind these distinctions. The [validation inventory](VALIDATION.md) tracks evidence and remaining gaps for every simulation. A passing consistency check or a visually sharp print must not be described as verified physics.
 
 ---
 
@@ -113,7 +107,7 @@ When a measurement disagrees with theory the tab says so rather than rounding to
 
 A generative art tool can get away with a plausible-looking integrator. A plate that claims to be a solved equation cannot, and most of the engineering here is in that gap.
 
-**Step bounds are derived, not guessed.** The 5-point Laplacian has symbol on [−8, 0], so every explicit scheme in the file computes its own stability limit and clamps to it, and the status line prints which term is binding. Kuramoto–Sivashinsky gives 64ν − 8. Swift–Hohenberg gives (8 − k₀²)² − r. A rotating condensate has two bounds at once, one kinetic and one from the rotation term, which is first order in space with an imaginary coefficient and unstable on its own. A flock has three, and the tightest is the cubic saturation, which the linear estimates do not see. Past any of these bounds a field fills with the grid-scale checkerboard, which a thumbnail averages into a perfectly plausible plate; `tools/check.js` measures the neighbor correlation and fails it.
+**Step bounds are derived, not guessed.** The 5-point Laplacian has symbol on [−8, 0], and several schemes derive timestep limits from this spectrum. Those limits are implementation safeguards, not a completed stability audit of every nonlinear scheme. Kuramoto–Sivashinsky gives 64ν − 8. Swift–Hohenberg gives (8 − k₀²)² − r. A rotating condensate has two bounds at once, one kinetic and one from the rotation term, which is first order in space with an imaginary coefficient and unstable on its own. A flock has three, and the tightest is the cubic saturation, which the linear estimates do not see. Past any of these bounds a field fills with the grid-scale checkerboard, which a thumbnail averages into a perfectly plausible plate; `tools/check.js` measures the neighbor correlation and fails it.
 
 **Samplers are exact where an exact sampler exists.** Uniform spanning trees by Wilson's algorithm, not by a randomised Prim that only looks uniform. Random domino tilings by Elkies–Kuperberg–Larsen–Propp shuffling. β-ensembles by the Dumitriu–Edelman tridiagonal models, which give any β > 0 in O(n²) rather than the three classical cases. Dyson Brownian motion by diagonalising a genuine matrix Ornstein–Uhlenbeck process, so the eigenvalues never cross because the matrix process says so, not because a denominator was softened.
 

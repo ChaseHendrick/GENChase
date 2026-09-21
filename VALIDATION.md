@@ -64,13 +64,13 @@ registered numerical-and-print validation.
 | [chimera](src/modules/chimera.js) | unvalidated | None registered | Not scientifically validated |
 | [ssh](src/modules/ssh.js) | unvalidated | None registered | Not scientifically validated |
 | [swarm](src/modules/swarm.js) | unvalidated | None registered | Not scientifically validated |
-| [amb](src/modules/pde.js) | unvalidated | None registered | Not scientifically validated |
+| [amb](src/modules/pde.js) | unvalidated | None registered | Limited evidence recorded |
 | [aubry](src/modules/aubry.js) | unvalidated | None registered | Not scientifically validated |
-| [cahn](src/modules/pde.js) | partially validated | [pde-science.js](tools/pde-science.js) | Not scientifically validated |
-| [ohta](src/modules/pde.js) | unvalidated | None registered | Not scientifically validated |
+| [cahn](src/modules/pde.js) | partially validated | [pde-science.js](tools/pde-science.js) | Limited evidence recorded |
+| [ohta](src/modules/pde.js) | unvalidated | None registered | Limited evidence recorded |
 | [hopf](src/modules/hopf.js) | unvalidated | None registered | Not scientifically validated |
-| [swift](src/modules/pde.js) | unvalidated | None registered | Not scientifically validated |
-| [pfc](src/modules/pde.js) | unvalidated | None registered | Not scientifically validated |
+| [swift](src/modules/pde.js) | unvalidated | None registered | Limited evidence recorded |
+| [pfc](src/modules/pde.js) | unvalidated | None registered | Limited evidence recorded |
 | [lp](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
 | [cloak](src/modules/cloak.js) | unvalidated | None registered | Not scientifically validated |
 | [xy](src/modules/xy.js) | unvalidated | None registered | Not scientifically validated |
@@ -81,7 +81,7 @@ registered numerical-and-print validation.
 | [fluid](src/modules/fluid.js) | unvalidated | None registered | Not scientifically validated |
 | [sandpile](src/modules/lattice.js) | unvalidated | None registered | Not scientifically validated |
 | [kakeya](src/modules/kakeya.js) | unvalidated | None registered | Not scientifically validated |
-| [ks](src/modules/pde.js) | unvalidated | None registered | Not scientifically validated |
+| [ks](src/modules/pde.js) | unvalidated | None registered | Limited evidence recorded |
 | [breather](src/modules/breather.js) | unvalidated | None registered | Not scientifically validated |
 | [turing](src/modules/rdx.js) | unvalidated | None registered | Not scientifically validated |
 | [holomorphic](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated |
@@ -139,9 +139,9 @@ registered numerical-and-print validation.
 
 ### cahn
 
-- Constant-mobility, periodic, noise-free float32 benchmark only; no continuum convergence claim.
-- The degenerate-mobility option multiplies a Laplacian by a spatially varying mobility instead of discretizing its flux divergence; this requires a separate scientific correction.
-- Additive noise and clipping may change mass. Float16 fallback and print-state fidelity remain unaudited.
+- The deterministic constant/variable-mobility stencil is checked at declared grids and both boundary settings. No continuum convergence claim.
+- Additive forcing and clipping may change mass. Float16 fallback, long-time coarsening and all-parameter accuracy remain unaudited.
+- Numerical correction changes historical degenerate-mobility pictures; no default, seed or stored parameter is changed.
 
 ### double-triangle-bound
 

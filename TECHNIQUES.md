@@ -239,7 +239,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Aubry–André**. S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 2 every eigenstate localises. The model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 2. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.
 
-**Cahn–Hilliard**. John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ 1−c² shuts diffusion off in the bulk, so only the interfaces move.
+**Cahn–Hilliard**. John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ max(1−c²,0) suppresses mobility near pure phases; it does not imply pure surface diffusion for this polynomial free energy (Lee, Munch and Suli, 2015).
 
 **Ohta–Kawasaki**. Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). Coarsening stops. The equilibrium is spots, stripes or bicontinuous networks whose period is set by σ, not by waiting.
 
