@@ -1385,9 +1385,11 @@
   in vec2 a_pos; out vec2 v_uv;
   void main(){ v_uv = a_pos * 0.5 + 0.5; gl_Position = vec4(a_pos, 0.0, 1.0); }`;
 
+  const glContexts = new WeakMap();
   function createGL(canvas, opts) {
     const gl = canvas.getContext('webgl2', Object.assign({ antialias: false, preserveDrawingBuffer: true, premultipliedAlpha: false }, opts || {}));
     if (!gl) return null;
+    glContexts.set(canvas, gl);
     gl.floatExt = gl.getExtension('EXT_color_buffer_float');
     gl.getExtension('OES_texture_float_linear');
     // shared fullscreen quad
@@ -2346,8 +2348,9 @@ void main(){
     };
     e.host = host;
     e.inst = mod.create(host);
-    e.usesGL = false;
-    try { e.usesGL = !!(e.canvas.getContext('webgl2') || e.canvas.getContext('webgl')); } catch (err) { e.usesGL = false; }
+    // A getContext probe would create a lazy renderer's context with default attributes,
+    // disabling preserveDrawingBuffer before the module can request it. Observe creation.
+    Object.defineProperty(e, 'usesGL', { get: () => glContexts.has(canvas) });
     instances[mod.id] = e;
 
     // A browser may take the GL context away at any time: a phone backgrounding the tab, a driver
@@ -2870,7 +2873,7 @@ void main(){
     try { old.inst.pause && old.inst.pause(); } catch (err) { /* ignore */ }
     if (old.usesGL) {
       try {
-        const gl = old.canvas.getContext('webgl2') || old.canvas.getContext('webgl');
+        const gl = glContexts.get(old.canvas);
         const lose = gl && gl.getExtension && gl.getExtension('WEBGL_lose_context');
         if (lose) lose.loseContext();
       } catch (err) { /* already gone */ }
@@ -2910,7 +2913,6 @@ void main(){
       e = instances[id] || e;
     }
     touchLive(id);
-    trimLive();
     e.canvas.hidden = false;
     resetView();
     for (const b of document.querySelectorAll('.tab')) {
@@ -2929,6 +2931,8 @@ void main(){
       if (changed && e.inst.resize) { try { e.inst.resize(); } catch (err) { showError(err); } }
       if (!e.paused) { try { e.inst.resume && e.inst.resume(); } catch (err) { showError(err); } }
     }
+    // Lazy renderers have now created their contexts, so include them in the cap.
+    trimLive();
     persist(id);
     updateDims();
     updateColoPreview();

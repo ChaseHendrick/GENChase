@@ -45,13 +45,15 @@ The usual options fall down in different places:
 
 GENChase is the other object: 120 sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
 
+Another purpose is mathematical discovery: explore simulations, spot relationships, and develop new identities, formulas, and sharp bounds. The aim is to discover and invent new mathematics, then test the results, prove what we can, and check the literature before claiming originality. The [identity catalog](IDENTITIES.md) records the results, and the [novelty audit](identities/NOVELTY-AUDIT.md) separates established mathematics from candidates whose originality remains unconfirmed.
+
 | | On disk | What you get | How you reprint |
 |---|---|---|---|
+| **GENChase** | `studio.html` | a seeded simulation | the hash |
 | Shadertoy | a kernel | a frame | you don't |
 | p5 / Processing | a project | a canvas | if you saved the sketch |
 | Image model | a prompt | a still | you don't |
 | Video | a file | a loop | you don't |
-| **GENChase** | `studio.html` | a seeded simulation | the hash |
 
 ---
 
