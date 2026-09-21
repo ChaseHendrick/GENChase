@@ -724,20 +724,30 @@
   {
     "id": "rogue",
     "source": "src/modules/rogue.js",
-    "sourceSha256": "9f4322bc9b009033185f97390b722f8d810d81a89895aaf81566d94ff119b52c",
+    "sourceSha256": "63a5c263919c63e7d5bd224cde99e16a17ace1f61e6ffb88030d8fc1f8b42834",
     "reference": "D. H. Peregrine, J. Austral. Math. Soc. Ser. B 25, 16 (1983). Akhmediev, Eleonskii and Kulagin (1987); Kuznetsov (1977) and Ma (1979). Draupner measured a rogue wave in 1995. The plate is the exact rational / breather solution.",
     "equation": "i ψ_t + ψ_xx + 2|ψ|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   |ψ|²_max / |ψ|²_∞ = 9",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The independent audit samples the exact analytic fields and checks the stated normalized NLS residual, peaks and periods; it does not integrate the browser solver or establish physical ocean accuracy.",
+      "The finite plate samples a bounded window and does not prove the solution for every parameter or export resolution."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add an independent browser print-state check for all views and representative windows.",
+      "Review the rendered field and parameter limits against the primary sources before considering a stronger status."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/analytic-wave-science.js",
+        "scope": "Independent centered finite-difference residuals for Peregrine, Akhmediev and Kuznetsov–Ma fields at three step sizes and nine parameter cases, plus peak, period and normalization controls.",
+        "criteria": "Residual decreases at second order, the stated analytic peak and period agree, and wrong NLS dispersion and additive independent pulses fail the controls.",
+        "limitations": "Analytic sampling is not an independent time integration, physical experiment, global proof or print-state check.",
+        "benchmark": "Normalized focusing NLS residual iψ_t + 1/2ψ_xx + |ψ|²ψ = 0, peak intensities and periodic intensities from the cited exact solutions.",
+        "failureControl": "Use the old dispersion coefficient and additive KdV-style pulses; both produce residual failures.",
+        "command": "node tools/analytic-wave-science.js --write",
+        "results": "validation/results/analytic-wave-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -887,20 +897,30 @@
   {
     "id": "soliton",
     "source": "src/modules/soliton.js",
-    "sourceSha256": "562c306dfd645898266b19d5a22006ea3cfad4fe38d0baa76d6af16c9f1b54eb",
+    "sourceSha256": "37cf9cfbd76b979fdaa91eaf9dc6b98b4c3d130304076f7abfc3242597cddb1e",
     "reference": "J. S. Russell, Report of the 14th Meeting of the British Association (1844), chased a heap of water that would not spread. Korteweg and de Vries (1895) wrote the equation. Zabusky and Kruskal, Phys. Rev. Lett. 15, 240 (1965), collided two and named them solitons. The plate is spacetime of two exact sech² profiles, not a canal in Scotland.",
     "equation": "u_t + 6 u u_x + u_xxx = 0,   u = (c/2) sech²[(√c/2)(x − c t)]",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The independent audit checks the exact Hirota two-soliton map against the KdV residual, mass and phase shift; it does not integrate the browser solver or establish physical shallow-water accuracy.",
+      "The finite plate samples a bounded window and does not prove the solution for every parameter or export resolution."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add an independent browser print-state check for all views and representative windows.",
+      "Review the rendered field and parameter limits against the primary sources before considering a stronger status."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/analytic-wave-science.js",
+        "scope": "Independent centered finite-difference residuals, conserved mass and fast-soliton phase shift for four unequal-speed exact KdV two-soliton cases, with an equal-speed and additive-pulse control.",
+        "criteria": "Residual decreases at second order, mass and phase shift agree with the Hirota formula, and additive independent pulses fail the KdV residual control.",
+        "limitations": "Analytic sampling is not an independent time integration, physical experiment, global proof or print-state check.",
+        "benchmark": "KdV residual u_t + 6u u_x + ν²u_xxx = 0, exact mass 2ν(√c₁+√c₂), and the published two-soliton phase shift.",
+        "failureControl": "Replace the tau-function interaction with a sum of two independent sech² pulses; the residual must fail.",
+        "command": "node tools/analytic-wave-science.js --write",
+        "results": "validation/results/analytic-wave-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -1111,20 +1131,30 @@
   {
     "id": "hopf",
     "source": "src/modules/hopf.js",
-    "sourceSha256": "62d66a42791cad012c202bed5b6ab05827b3e2d22f412ac53da0d4b50aedd3bb",
+    "sourceSha256": "62a4457707adf41bb37623379ec36e93e3bc455d11e87cf95aaea2880b86b85a",
     "reference": "H. Hopf, Math. Ann. 104, 637 (1931). The third homotopy group of the 2-sphere is not zero: π₃(S²) = ℤ, generated by this map. Stereographic projection from S³ turns the fibres into a nesting of linked circles in R³, then onto the plate. No two fibres are unlinked.",
     "equation": "η: S³ → S²,   η(z1,z2) = (2 z1 z2-bar, |z1|²-|z2|²),   fibres = circles,   lk = 1",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The independent audit checks inverse stereographic projection, sampled Gauss linking and orientation controls; it does not prove a continuous embedding for every parameter or validate the plate renderer.",
+      "Numerical linking estimates are finite polygon quadratures and have no physical-unit interpretation."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add an independent browser print-state check for the projected fibres and views.",
+      "Review projection clipping and fibre parameter limits against the cited topology references."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/geometry-science.js",
+        "scope": "Independent inverse-projection residuals on five base points and sampled fibre parameters, three Gauss-link quadrature refinements, orientation reversal and an unlinked control.",
+        "criteria": "Inverse projection error remains below 2e−13; linked fibres converge to |lk|=1 at second order; reversing orientation changes the sign and the unlinked control tends to zero.",
+        "limitations": "Finite sampled curves and quadrature do not establish a continuous global theorem, renderer accuracy or physical embedding.",
+        "benchmark": "Hopf map η:S³→S² with stereographic projection and the Gauss linking integral for distinct fibres.",
+        "failureControl": "Reverse one fibre and replace it with a translated planar circle; sign and near-zero controls must change as expected.",
+        "command": "node tools/geometry-science.js --write",
+        "results": "validation/results/geometry-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -2064,39 +2094,59 @@
   {
     "id": "reuleaux",
     "source": "src/modules/reuleaux.js",
-    "sourceSha256": "50df9a92cf6d756e140327bb04b35111bee76426f658444274400f4545ddf70a",
+    "sourceSha256": "279629ef500e0ebf8f48d7c7fd1802cb493c4cc487462ccb2971b99156e8cfbc",
     "reference": "F. Reuleaux, The Kinematics of Machinery (1875), described the curved triangle of constant width now named for him. Euler had already noted constant-width bodies; a wheel does not have to be a circle to keep its axle at constant height. The same shape, rotated in a square, drills a hole that is almost square. The plate is the rolling body and the width rose, which theory says is a circle.",
     "equation": "width(θ) = R  for all θ,   W ≠ a disk,   area = ½(π − √3) R²",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The independent audit samples the actual circular-arc construction and checks constant-width convergence and area; it does not validate rolling dynamics or the browser print path.",
+      "Support widths are sampled at finite angular resolution and the area check is polygonal."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add an independent browser print-state check for the arc mesh and width rose.",
+      "Review the rolling and near-corner limits against a primary kinematics source."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/geometry-science.js",
+        "scope": "Independent support-function samples for five arc resolutions, analytic area comparison and a straight-triangle failure control.",
+        "criteria": "Width deficit decreases at second order under arc refinement, remains below the chord bound, and polygon area converges to (π−√3)/2; the straight-triangle control fails constant width.",
+        "limitations": "Finite sampled supports and polygon areas do not establish exact constant width for the continuous curve or print accuracy.",
+        "benchmark": "Reuleaux three-arc construction of unit width and area ½(π−√3).",
+        "failureControl": "Use the three triangle vertices as a boundary; its sampled support width must deviate by more than 0.1.",
+        "command": "node tools/geometry-science.js --write",
+        "results": "validation/results/geometry-science.json"
+      }
+    ],
     "print": []
   },
   {
     "id": "apollonian",
     "source": "src/modules/apollonian.js",
-    "sourceSha256": "e7661806436035bef33d67be307668bb2932badf353f875f521c8aa572a4d0db",
+    "sourceSha256": "78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34",
     "reference": "Descartes' circle theorem (1643, in a letter to Princess Elisabeth of the Palatinate) gives the fourth curvature from three mutually tangent circles. The Apollonian gasket iterates that packing to infinity. Soddy (1936) wrote the poem; Graham, Lagarias, Mallows, Wilks and Yan (2003) proved the integer curvatures are a well-defined subset of the integers. The plate is a finite generation of the packing inside a disk of curvature −1.",
     "equation": "k₄ = k₁+k₂+k₃ ± 2√(k₁k₂+k₁k₃+k₂k₃)   (Descartes),   k ∈ ℤ if the seeds are",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The independent audit checks the integer Descartes reflection construction, tangency and finite-generation area; it does not prove the infinite gasket limit or validate the browser renderer.",
+      "The displayed packing is bounded by generation and curvature/circle limits, so a finite nonzero gap is expected."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add an independent browser print-state check for representative generations and color modes.",
+      "Review the finite truncation and area display against the infinite-packing literature before considering a stronger status."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/geometry-science.js",
+        "scope": "Independent Descartes-reflection audits for four finite generations, checking circle overlaps, tangent-neighbor counts, integer curvature centers and decreasing unfilled area.",
+        "criteria": "No positive-circle overlap, every generated circle has at least three tangent neighbors, curvature-center coordinates remain integral, and the finite gap decreases with depth.",
+        "limitations": "Finite construction checks do not prove convergence to the infinite Apollonian gasket, Hausdorff dimension or print-state accuracy.",
+        "benchmark": "Unit outer circle seed (−1,2,2,3) with the Descartes reflection kᵢ′=2Σⱼ≠ᵢkⱼ−kᵢ and matching integer curvature centers.",
+        "failureControl": "Perturb one historical seed circle away from tangency; the tangent-neighbor check must fail.",
+        "command": "node tools/geometry-science.js --write",
+        "results": "validation/results/geometry-science.json"
+      }
+    ],
     "print": []
   },
   {

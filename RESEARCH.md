@@ -1338,3 +1338,13 @@ Read the ledger and searched the existing catalog for nonreciprocity before sele
 Opened and read the primary full article https://www.nature.com/articles/s41467-025-61728-8 , Saha and Golestanian, published 7 August 2025. Read equations 1–5, travelling-wave section equations 8–11, and numerical methods. Implement equation 5 independently, with finite differences and Heun; the paper uses spectral methods. Readback guards and bounded comparisons do not reproduce the paper's long-time phase diagram. The plane-wave convention used for checks is exp(i(qx−omega*t)), as in equation 11; substitution in equation 5 fixes the sign. Equation 8 uses the opposite phase convention and must not be copied without checking that sign.
 
 This is recent published research, not original GENChase mathematics. No paper text, figures, solver code or data copied. Search results for 2024 odd viscoelasticity and 2025 other nonreciprocal models were not selected or claimed implemented.
+
+
+## 2026-09-21 — analytic-wave implementation audit
+
+This revisits implementation accuracy, not the originality searches already marked skip. Exact queries: `site.arxiv.org Akhmediev Kuznetsov Ma breather formula a 1/2 nonlinear Schrodinger`; `KdV two soliton tau function 1 exp eta interaction coefficient university`. Primary references selected for direct equation comparison: Haragus–Pelinovsky, arXiv:2112.14426; Benes–Kasman–Young, *On Decompositions of the KdV 2-Soliton*, author PDF https://kasmana.people.charleston.edu/solitons.pdf. Source review found a mismatched NLSE normalization, an unsupported Kuznetsov–Ma expression, and additive independent KdV pulses presented as a collision. None is novel mathematics. Corrections and equation-residual controls will be recorded separately.
+
+
+## 2026-09-21 — geometric construction audit
+
+Exact implementation-review searches: `site.math.brown.edu Reuleaux triangle constant width support`; `site.arxiv.org Apollonian circle packing Descartes reflection b1 new 2 sum`; `site.nilesjohnson.net Hopf fibration stereographic linking`. Opened primary author references Graham–Lagarias–Mallows–Wilks–Yan, arXiv:math/0010298; Niles Johnson, https://nilesjohnson.net/hopf.html and the linked David Lyons elementary introduction; Andrejs Treibergs, https://www2.math.utah.edu/~treiberg/M4531hw.pdf. Reviewed the coordinate/reflection formulas and constant-width construction, not novelty. Existing Hopf status hard-coded a theoretical linking number; Reuleaux width used the triangle vertices rather than curved arcs; the Apollonian seed did not form a tangent Descartes quadruple. These require implementation and observable corrections.

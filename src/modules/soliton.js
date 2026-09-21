@@ -1,6 +1,6 @@
 
 /* modules/soliton.js */
-/* GENChase: KdV two-soliton collision. Speeds after the meeting are measured against speeds before. Waves that pass through each other. */
+/* GENChase: exact Hirota KdV two-soliton field, sampled in a moving frame. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -33,16 +33,37 @@
   };
 
   function surprise(rng) { return { c1: rng.range(1.1, 2.1), c2: rng.range(0.4, 0.9), nu: rng.range(0.12, 0.35) }; }
-  function sanitize(s) { s.grid = Math.max(96, Math.min(224, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(96, Math.min(224, Math.round(s.grid / 16) * 16)); s.c1 = U.clamp(Number.isFinite(s.c1) ? s.c1 : 1.6, .4, 2.4); s.c2 = U.clamp(Number.isFinite(s.c2) ? s.c2 : .7, .2, 1.8); s.nu = U.clamp(Number.isFinite(s.nu) ? s.nu : .22, .08, .6); }
+  // Hirota two-soliton tau function for u_t+6u*u_x+nu^2*u_xxx=0.
+  // Log-sum-exp weights avoid overflow; pairwise variance avoids cancellation.
+  function kdvValue(c1, c2, nu, x, t) {
+    const k1 = Math.sqrt(c1) / nu, k2 = Math.sqrt(c2) / nu;
+    if (Math.abs(c1 - c2) < 1e-10) {
+      const z = .5 * k1 * (x - c1 * t);
+      const e = Math.exp(-Math.abs(z)); return 2 * c1 * e * e / (1 + e * e) ** 2;
+    }
+    const interaction = ((k1 - k2) / (k1 + k2)) ** 2;
+    const eta1 = k1 * (x - c1 * t), eta2 = k2 * (x - c2 * t);
+    const logs = [0, eta1, eta2, eta1 + eta2 + Math.log(interaction)];
+    const slopes = [0, k1, k2, k1 + k2], shift = Math.max(...logs);
+    const weights = logs.map(v => Math.exp(v - shift)), sum = weights.reduce((a, b) => a + b, 0);
+    let variance = 0;
+    for (let i = 0; i < 4; i++) for (let j = i + 1; j < 4; j++) variance += weights[i] * weights[j] * (slopes[i] - slopes[j]) ** 2;
+    return 2 * nu * nu * variance / (sum * sum);
+  }
+  function kdvWindow(s) {
+    const slow = Math.min(s.c1, s.c2), fast = Math.max(s.c1, s.c2), equal = fast - slow < 1e-10;
+    return { halfSpan: 18 * s.nu / Math.sqrt(slow), halfTime: equal ? 8 * s.nu / slow ** 1.5 : 14 * s.nu / (Math.sqrt(slow) * (fast - slow)), speed: .5 * (fast + slow), equal };
+  }
   Studio.register({
     id: 'soliton', name: 'KdV Soliton', tab: 'Soliton',
     subtitle: 'a wave that will not disperse · 1834 / 1965',
     order: 54,
-    equation: 'u_t + 6 u u_x + u_xxx = 0,   u = (c/2) sech²[(√c/2)(x − c t)]',
-    credit: 'J. S. Russell, Report of the 14th Meeting of the British Association (1844), chased a heap of water that would not spread. Korteweg and de Vries (1895) wrote the equation. Zabusky and Kruskal, Phys. Rev. Lett. 15, 240 (1965), collided two and named them solitons. The plate is spacetime of two exact sech² profiles, not a canal in Scotland.',
-    blurb: 'A heap of water that should flatten instead travels at a speed set by its height, and two of them pass through each other and keep their names. The plate is that spacetime. The status line reports the post-collision peak speeds against the sech² law c = 2 A.',
+    equation: 'u_t + 6 u u_x + ν² u_xxx = 0; u = 2ν² ∂xx log τ, τ = 1+e^η1+e^η2+A12 e^(η1+η2)',
+    credit: 'J. S. Russell, Report of the 14th Meeting of the British Association (1844), chased a heap of water that would not spread. Korteweg and de Vries (1895) wrote the equation. Zabusky and Kruskal, Phys. Rev. Lett. 15, 240 (1965), collided two and named them solitons. The plate evaluates the established Hirota two-soliton tau function, including its interaction term; Benes, Kasman and Young, On Decompositions of the KdV 2-Soliton (2006), provide a reference.',
+    blurb: 'Two exact KdV solitons interact and separate with phase shifts. The plate samples their tau-function solution in a frame moving at the mean input speed. The status compares numerical quadrature on the middle row with the analytic whole-line mass; finite-window and sampling errors remain. Equal speeds display the one-soliton limit. This is analytic evaluation, not an independent time integration.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Wave: 'The taller soliton is faster. After the meeting the shapes are the same; only a phase shift remains.' },
+    hints: { Wave: 'Speeds are exact solution inputs. ν² is the dispersion coefficient. A moving frame keeps the collision visible; increasing the grid refines the same physical window. Equal speeds select one soliton.' },
     palette: true, defaultPalette: 'glacier', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
@@ -55,31 +76,19 @@
         const s = host.getState();
         const sz = sizeFrom(s); W = sz.W; H = sz.H;
         field = new Float32Array(W * H);
-        const rng = U.makeRng(String(s.seed) + '/x');
-
-        const c1 = Math.max(s.c1, s.c2 + 0.15), c2 = Math.min(s.c1, s.c2);
-        const L = W, nu = s.nu;
-        function sech2(z) { const e = Math.exp(Math.max(-20, Math.min(20, z))); const s = 2 / (e + 1 / e); return s * s; }
-        function u(x, t) {
-          const k1 = Math.sqrt(c1) / (2 * Math.max(0.08, nu)), k2 = Math.sqrt(c2) / (2 * Math.max(0.08, nu));
-          const a1 = c1 / 2, a2 = c2 / 2;
-          return a1 * sech2(k1 * (x - 0.28 * L - c1 * t)) + a2 * sech2(k2 * (x - 0.12 * L - c2 * t));
-        }
-        const tmax = 0.55 * L / Math.max(0.4, c1);
-        let p1 = 0, p2 = 0;
+        const window = kdvWindow(s), dx = 2 * window.halfSpan / (W - 1);
+        let mass = 0;
         for (let y = 0; y < H; y++) {
-          const t = tmax * y / Math.max(1, H - 1);
-          let m1 = 0, m2 = 0, x1 = 0, x2 = 0;
+          const t = window.halfTime * (2 * y / (H - 1) - 1);
           for (let x = 0; x < W; x++) {
-            const v = u(x, t);
+            const physicalX = -window.halfSpan + x * dx + window.speed * t;
+            const v = kdvValue(s.c1, s.c2, s.nu, physicalX, t);
             field[y * W + x] = v;
-            if (v > m1) { m2 = m1; x2 = x1; m1 = v; x1 = x; }
-            else if (v > m2) { m2 = v; x2 = x; }
+            if (y === (H >> 1)) mass += v * dx * (x === 0 || x === W - 1 ? .5 : 1);
           }
-          if (y === H - 1) { p1 = m1; p2 = m2; }
         }
-        extra = p1 * 2;
-        metric = extra / c1;
+        extra = mass;
+        metric = 2 * s.nu * (Math.sqrt(s.c1) + (window.equal ? 0 : Math.sqrt(s.c2)));
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
@@ -110,7 +119,7 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>c1 dialled <b>' + f2(host.getState().c1) + '</b></span><span>2 A_tall <b>' + f2(extra) + '</b> · ratio ' + f2(metric) + '</span><span>solitons</span>'); }
+      function status() { host.setStatus('<span>sampled middle-row mass <b>' + f3(extra) + '</b></span><span>whole-line formula <b>' + f3(metric) + '</b></span><span>finite quadrature · moving frame</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
