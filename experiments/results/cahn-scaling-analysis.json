@@ -1,0 +1,2926 @@
+{
+  "experiment": "cahn-finite-lattice-calibration-analysis",
+  "controls": {
+    "knownLaw": {
+      "expectedA": 2,
+      "expectedP": 0.27,
+      "fit": {
+        "A": 2.000000000000001,
+        "p": 0.26999999999999985,
+        "rows": 32,
+        "logRMSE": 1.4686870114880517e-16
+      }
+    },
+    "correctHeldoutRelativeRMSE": 2.220446049250313e-16,
+    "corruptedHeldoutRelativeRMSE": 0.20000000000000018,
+    "seedBootstrapAWidth": 0.5512896315013334,
+    "sevenfoldDuplicatedFrameAWidth": 0.5512896315013294,
+    "heldoutExcludedFromFit": true,
+    "actualPartitionCorruptionDetected": true,
+    "passed": true
+  },
+  "provenance": {
+    "rawDataSHA256": "8c4c778a1b8f0989eba1b3cd7759fe555e9ee7e35f4be1d4fcfda82d15c7afd6",
+    "pythonSHA256": "f1c1320fb5f7cf00655721b173ad3ce90bf8b04f10673e1f39167f13f4e7861e",
+    "protocolSHA256": "596ceada0f5591a5ed59ebb5a1a940d8aeac80b22ca5a5531be84d5047705161",
+    "uncertaintyUnit": "whole training seed, not individual frame"
+  },
+  "model": {
+    "A": 5.3290287720171765,
+    "p": 0.18172427917772974,
+    "rows": 32,
+    "logRMSE": 0.012956029668808208
+  },
+  "fixedOneThirdBaseline": {
+    "A": 3.2205097797383386,
+    "p": 0.3333333333333333,
+    "rows": 32,
+    "logRMSE": 0.06223669160901773
+  },
+  "trainingRows": 32,
+  "heldoutRows": 76,
+  "seedBootstrap": {
+    "unit": "whole seed, including both epsilons and every training time",
+    "resamples": 256,
+    "percentile95": {
+      "A": [
+        5.274794251796008,
+        5.364654060111194
+      ],
+      "p": [
+        0.17998547609579607,
+        0.18452783297529388
+      ]
+    },
+    "exponentIntervalWidth": 0.004542356879497805
+  },
+  "splitWindows": {
+    "early": {
+      "A": 5.915108433364636,
+      "p": 0.1472702684095512,
+      "rows": 24,
+      "logRMSE": 0.008123538388876722
+    },
+    "late": {
+      "A": 4.631887628753607,
+      "p": 0.22050429208303585,
+      "rows": 24,
+      "logRMSE": 0.004297036530089751
+    },
+    "exponentDifference": 0.07323402367348464
+  },
+  "heldout": {
+    "newSeeds": {
+      "candidate": {
+        "relativeRMSE": 0.026146037476935502,
+        "maximumAbsoluteRelativeError": 0.06389307055721882,
+        "worstSeedRMSE": 0.03022590148252667,
+        "perSeed": [
+          {
+            "seed": "cahn-scaling-4",
+            "rows": 12,
+            "relativeRMSE": 0.02129848424323251
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "rows": 12,
+            "relativeRMSE": 0.03022590148252667
+          }
+        ],
+        "details": [
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 0.8,
+            "tau": 16,
+            "observed": 7.149021695985855,
+            "predicted": 7.055956390009696,
+            "relativeError": -0.013017907894784408
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 0.8,
+            "tau": 24,
+            "observed": 7.52704087559079,
+            "predicted": 7.595492601745865,
+            "relativeError": 0.009094108466589423
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 0.8,
+            "tau": 32,
+            "observed": 7.954128675058057,
+            "predicted": 8.003138761199498,
+            "relativeError": 0.006161590809452555
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 0.8,
+            "tau": 48,
+            "observed": 8.620323663943095,
+            "predicted": 8.615101609401078,
+            "relativeError": -0.0006057840454251062
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 0.8,
+            "tau": 64,
+            "observed": 9.190887672241654,
+            "predicted": 9.077469656941265,
+            "relativeError": -0.012340267811447148
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 0.8,
+            "tau": 96,
+            "observed": 10.162046849366334,
+            "predicted": 9.771581598703051,
+            "relativeError": -0.0384238782256382
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 0.8,
+            "tau": 16,
+            "observed": 7.114550121734329,
+            "predicted": 7.055956390009696,
+            "relativeError": -0.008235760620426857
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 0.8,
+            "tau": 24,
+            "observed": 7.5032149770236085,
+            "predicted": 7.595492601745865,
+            "relativeError": 0.012298411414950694
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 0.8,
+            "tau": 32,
+            "observed": 7.949798930942597,
+            "predicted": 8.003138761199498,
+            "relativeError": 0.006709582307709461
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 0.8,
+            "tau": 48,
+            "observed": 8.706105076765935,
+            "predicted": 8.615101609401078,
+            "relativeError": -0.010452833564772668
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 0.8,
+            "tau": 64,
+            "observed": 9.347042543875794,
+            "predicted": 9.077469656941265,
+            "relativeError": -0.028840447196975094
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 0.8,
+            "tau": 96,
+            "observed": 10.421111822267822,
+            "predicted": 9.771581598703051,
+            "relativeError": -0.062328303797379414
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1.2,
+            "tau": 16,
+            "observed": 10.76211095999587,
+            "predicted": 10.583934585014543,
+            "relativeError": -0.0165558946236134
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1.2,
+            "tau": 24,
+            "observed": 11.235995848576799,
+            "predicted": 11.393238902618796,
+            "relativeError": 0.013994581002084727
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1.2,
+            "tau": 32,
+            "observed": 11.880498039845028,
+            "predicted": 12.004708141799247,
+            "relativeError": 0.010454957488957195
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1.2,
+            "tau": 48,
+            "observed": 12.95182663482285,
+            "predicted": 12.922652414101616,
+            "relativeError": -0.0022525178527942336
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1.2,
+            "tau": 64,
+            "observed": 13.894111897141206,
+            "predicted": 13.616204485411895,
+            "relativeError": -0.020001811831275917
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1.2,
+            "tau": 96,
+            "observed": 15.435274917534795,
+            "predicted": 14.657372398054575,
+            "relativeError": -0.050397710674819685
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1.2,
+            "tau": 16,
+            "observed": 10.812365706444705,
+            "predicted": 10.583934585014543,
+            "relativeError": -0.02112684010438215
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1.2,
+            "tau": 24,
+            "observed": 11.28668686442297,
+            "predicted": 11.393238902618796,
+            "relativeError": 0.00944050627750559
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1.2,
+            "tau": 32,
+            "observed": 11.950956936973876,
+            "predicted": 12.004708141799247,
+            "relativeError": 0.004497648607457938
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1.2,
+            "tau": 48,
+            "observed": 13.102300647067333,
+            "predicted": 12.922652414101616,
+            "relativeError": -0.01371119758314554
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1.2,
+            "tau": 64,
+            "observed": 14.071588779011881,
+            "predicted": 13.616204485411895,
+            "relativeError": -0.03236196713474193
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1.2,
+            "tau": 96,
+            "observed": 15.65779713518347,
+            "predicted": 14.657372398054575,
+            "relativeError": -0.06389307055721882
+          }
+        ]
+      },
+      "baseline": {
+        "relativeRMSE": 0.08982446148913922,
+        "maximumAbsoluteRelativeError": 0.16088846045929017,
+        "worstSeedRMSE": 0.09524433477500768,
+        "perSeed": [
+          {
+            "seed": "cahn-scaling-4",
+            "rows": 12,
+            "relativeRMSE": 0.09524433477500768
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "rows": 12,
+            "relativeRMSE": 0.08405584130144657
+          }
+        ],
+        "details": [
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 0.8,
+            "tau": 16,
+            "observed": 7.149021695985855,
+            "predicted": 6.492140900615415,
+            "relativeError": -0.09188401200954188
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 0.8,
+            "tau": 24,
+            "observed": 7.52704087559079,
+            "predicted": 7.43164615359748,
+            "relativeError": -0.012673602225631853
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 0.8,
+            "tau": 32,
+            "observed": 7.954128675058057,
+            "predicted": 8.179584979568821,
+            "relativeError": 0.028344563398594813
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 0.8,
+            "tau": 48,
+            "observed": 8.620323663943095,
+            "predicted": 9.363287424287732,
+            "relativeError": 0.08618745528689242
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 0.8,
+            "tau": 64,
+            "observed": 9.190887672241654,
+            "predicted": 10.305631295162682,
+            "relativeError": 0.12128791719300192
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 0.8,
+            "tau": 96,
+            "observed": 10.162046849366334,
+            "predicted": 11.797002922076064,
+            "relativeError": 0.16088846045929017
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 0.8,
+            "tau": 16,
+            "observed": 7.114550121734329,
+            "predicted": 6.492140900615415,
+            "relativeError": -0.08748398851214889
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 0.8,
+            "tau": 24,
+            "observed": 7.5032149770236085,
+            "predicted": 7.43164615359748,
+            "relativeError": -0.00953842101622926
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 0.8,
+            "tau": 32,
+            "observed": 7.949798930942597,
+            "predicted": 8.179584979568821,
+            "relativeError": 0.028904636535125316
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 0.8,
+            "tau": 48,
+            "observed": 8.706105076765935,
+            "predicted": 9.363287424287732,
+            "relativeError": 0.07548523039029531
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 0.8,
+            "tau": 64,
+            "observed": 9.347042543875794,
+            "predicted": 10.305631295162682,
+            "relativeError": 0.10255529990231582
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 0.8,
+            "tau": 96,
+            "observed": 10.421111822267822,
+            "predicted": 11.797002922076064,
+            "relativeError": 0.1320292041074005
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1.2,
+            "tau": 16,
+            "observed": 10.76211095999587,
+            "predicted": 9.738211350923123,
+            "relativeError": -0.09513929124859521
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1.2,
+            "tau": 24,
+            "observed": 11.235995848576799,
+            "predicted": 11.14746923039622,
+            "relativeError": -0.007878840413757526
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1.2,
+            "tau": 32,
+            "observed": 11.880498039845028,
+            "predicted": 12.26937746935323,
+            "relativeError": 0.03273258647945321
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1.2,
+            "tau": 48,
+            "observed": 12.95182663482285,
+            "predicted": 14.044931136431599,
+            "relativeError": 0.08439770948367853
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1.2,
+            "tau": 64,
+            "observed": 13.894111897141206,
+            "predicted": 15.458446942744024,
+            "relativeError": 0.11258978315301227
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1.2,
+            "tau": 96,
+            "observed": 15.435274917534795,
+            "predicted": 17.695504383114095,
+            "relativeError": 0.14643273136726798
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1.2,
+            "tau": 16,
+            "observed": 10.812365706444705,
+            "predicted": 9.738211350923123,
+            "relativeError": -0.09934498930990954
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1.2,
+            "tau": 24,
+            "observed": 11.28668686442297,
+            "predicted": 11.14746923039622,
+            "relativeError": -0.012334676747840057
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1.2,
+            "tau": 32,
+            "observed": 11.950956936973876,
+            "predicted": 12.26937746935323,
+            "relativeError": 0.02664393605119808
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1.2,
+            "tau": 48,
+            "observed": 13.102300647067333,
+            "predicted": 14.044931136431599,
+            "relativeError": 0.07194389098186771
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1.2,
+            "tau": 64,
+            "observed": 14.071588779011881,
+            "predicted": 15.458446942744024,
+            "relativeError": 0.09855732607825174
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1.2,
+            "tau": 96,
+            "observed": 15.65779713518347,
+            "predicted": 17.695504383114095,
+            "relativeError": 0.13014009763556356
+          }
+        ]
+      }
+    },
+    "newEpsilon": {
+      "candidate": {
+        "relativeRMSE": 0.030519838613182308,
+        "maximumAbsoluteRelativeError": 0.07229828548238382,
+        "worstSeedRMSE": 0.034616307296431705,
+        "perSeed": [
+          {
+            "seed": "cahn-scaling-0",
+            "rows": 6,
+            "relativeRMSE": 0.03254504668216545
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "rows": 6,
+            "relativeRMSE": 0.034616307296431705
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "rows": 6,
+            "relativeRMSE": 0.028327196997323653
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "rows": 6,
+            "relativeRMSE": 0.028403994791705352
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "rows": 6,
+            "relativeRMSE": 0.030271343030304418
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "rows": 6,
+            "relativeRMSE": 0.02838526520489242
+          }
+        ],
+        "details": [
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1,
+            "tau": 16,
+            "observed": 9.014042869256613,
+            "predicted": 8.819945487512118,
+            "relativeError": -0.02153277775131124
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1,
+            "tau": 24,
+            "observed": 9.405236219772647,
+            "predicted": 9.49436575218233,
+            "relativeError": 0.009476586268222231
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1,
+            "tau": 32,
+            "observed": 9.95486901794425,
+            "predicted": 10.003923451499373,
+            "relativeError": 0.004927682470427408
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1,
+            "tau": 48,
+            "observed": 10.950410026228324,
+            "predicted": 10.768877011751348,
+            "relativeError": -0.016577736727864
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1,
+            "tau": 64,
+            "observed": 11.72945970017669,
+            "predicted": 11.34683707117658,
+            "relativeError": -0.03262065250919843
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1,
+            "tau": 96,
+            "observed": 13.08630420388662,
+            "predicted": 12.214476998378814,
+            "relativeError": -0.06662134640343098
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1,
+            "tau": 16,
+            "observed": 8.916726491099595,
+            "predicted": 8.819945487512118,
+            "relativeError": -0.010853871505880686
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1,
+            "tau": 24,
+            "observed": 9.339445574375805,
+            "predicted": 9.49436575218233,
+            "relativeError": 0.016587727459066004
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1,
+            "tau": 32,
+            "observed": 9.882482397809412,
+            "predicted": 10.003923451499373,
+            "relativeError": 0.012288517075110583
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1,
+            "tau": 48,
+            "observed": 10.9026509119338,
+            "predicted": 10.768877011751348,
+            "relativeError": -0.012269850815458727
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1,
+            "tau": 64,
+            "observed": 11.7658353312636,
+            "predicted": 11.34683707117658,
+            "relativeError": -0.035611433297360495
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1,
+            "tau": 96,
+            "observed": 13.166383986613697,
+            "predicted": 12.214476998378814,
+            "relativeError": -0.07229828548238382
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1,
+            "tau": 16,
+            "observed": 8.969295157499353,
+            "predicted": 8.819945487512118,
+            "relativeError": -0.016651215883152326
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1,
+            "tau": 24,
+            "observed": 9.411185375928186,
+            "predicted": 9.49436575218233,
+            "relativeError": 0.008838459017808997
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1,
+            "tau": 32,
+            "observed": 9.950644926322031,
+            "predicted": 10.003923451499373,
+            "relativeError": 0.005354278599209783
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1,
+            "tau": 48,
+            "observed": 10.876077128702567,
+            "predicted": 10.768877011751348,
+            "relativeError": -0.009856505767903423
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1,
+            "tau": 64,
+            "observed": 11.675367951795929,
+            "predicted": 11.34683707117658,
+            "relativeError": -0.028138803160273285
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1,
+            "tau": 96,
+            "observed": 12.987371615404832,
+            "predicted": 12.214476998378814,
+            "relativeError": -0.059511242144581256
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1,
+            "tau": 16,
+            "observed": 8.904755170333045,
+            "predicted": 8.819945487512118,
+            "relativeError": -0.009524089230827815
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1,
+            "tau": 24,
+            "observed": 9.349978401955005,
+            "predicted": 9.49436575218233,
+            "relativeError": 0.015442533022016036
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1,
+            "tau": 32,
+            "observed": 9.909357293026488,
+            "predicted": 10.003923451499373,
+            "relativeError": 0.00954311724529644
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1,
+            "tau": 48,
+            "observed": 10.853180833361952,
+            "predicted": 10.768877011751348,
+            "relativeError": -0.007767660274438537
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1,
+            "tau": 64,
+            "observed": 11.658949293836432,
+            "predicted": 11.34683707117658,
+            "relativeError": -0.02677018441317458
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1,
+            "tau": 96,
+            "observed": 12.999121343362802,
+            "predicted": 12.214476998378814,
+            "relativeError": -0.06036133706718716
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1,
+            "tau": 16,
+            "observed": 8.938409954492872,
+            "predicted": 8.819945487512118,
+            "relativeError": -0.013253416165053822
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1,
+            "tau": 24,
+            "observed": 9.350900840312551,
+            "predicted": 9.49436575218233,
+            "relativeError": 0.015342362657861708
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1,
+            "tau": 32,
+            "observed": 9.887395888506928,
+            "predicted": 10.003923451499373,
+            "relativeError": 0.011785465486205071
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1,
+            "tau": 48,
+            "observed": 10.842177628158518,
+            "predicted": 10.768877011751348,
+            "relativeError": -0.006760691340898073
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1,
+            "tau": 64,
+            "observed": 11.65436899851512,
+            "predicted": 11.34683707117658,
+            "relativeError": -0.026387694381199145
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1,
+            "tau": 96,
+            "observed": 13.061586011887414,
+            "predicted": 12.214476998378814,
+            "relativeError": -0.06485498872324091
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1,
+            "tau": 16,
+            "observed": 8.949160804723917,
+            "predicted": 8.819945487512118,
+            "relativeError": -0.014438819463786001
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1,
+            "tau": 24,
+            "observed": 9.355211018724168,
+            "predicted": 9.49436575218233,
+            "relativeError": 0.01487456917643537
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1,
+            "tau": 32,
+            "observed": 9.890507598576896,
+            "predicted": 10.003923451499373,
+            "relativeError": 0.01146714178135766
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1,
+            "tau": 48,
+            "observed": 10.793323724510024,
+            "predicted": 10.768877011751348,
+            "relativeError": -0.0022649846685466324
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1,
+            "tau": 64,
+            "observed": 11.581259062674308,
+            "predicted": 11.34683707117658,
+            "relativeError": -0.02024149448942525
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1,
+            "tau": 96,
+            "observed": 13.023426121053726,
+            "predicted": 12.214476998378814,
+            "relativeError": -0.06211492391907236
+          }
+        ]
+      },
+      "baseline": {
+        "relativeRMSE": 0.08485510173858704,
+        "maximumAbsoluteRelativeError": 0.13543017704244087,
+        "worstSeedRMSE": 0.08860948674096669,
+        "perSeed": [
+          {
+            "seed": "cahn-scaling-0",
+            "rows": 6,
+            "relativeRMSE": 0.08297755215703696
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "rows": 6,
+            "relativeRMSE": 0.07969617512903679
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "rows": 6,
+            "relativeRMSE": 0.0864212100928818
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "rows": 6,
+            "relativeRMSE": 0.08576326187670241
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "rows": 6,
+            "relativeRMSE": 0.08538132976287287
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "rows": 6,
+            "relativeRMSE": 0.08860948674096669
+          }
+        ],
+        "details": [
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1,
+            "tau": 16,
+            "observed": 9.014042869256613,
+            "predicted": 8.115176125769269,
+            "relativeError": -0.09971848997446286
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1,
+            "tau": 24,
+            "observed": 9.405236219772647,
+            "predicted": 9.28955769199685,
+            "relativeError": -0.012299375057970963
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1,
+            "tau": 32,
+            "observed": 9.95486901794425,
+            "predicted": 10.224481224461025,
+            "relativeError": 0.02708345092545006
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1,
+            "tau": 48,
+            "observed": 10.950410026228324,
+            "predicted": 11.704109280359665,
+            "relativeError": 0.0688284048109693
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1,
+            "tau": 64,
+            "observed": 11.72945970017669,
+            "predicted": 12.882039118953353,
+            "relativeError": 0.09826364114276287
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1,
+            "tau": 96,
+            "observed": 13.08630420388662,
+            "predicted": 14.74625365259508,
+            "relativeError": 0.126846313737339
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1,
+            "tau": 16,
+            "observed": 8.916726491099595,
+            "predicted": 8.115176125769269,
+            "relativeError": -0.08989289579874515
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1,
+            "tau": 24,
+            "observed": 9.339445574375805,
+            "predicted": 9.28955769199685,
+            "relativeError": -0.005341632110992811
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1,
+            "tau": 32,
+            "observed": 9.882482397809412,
+            "predicted": 10.224481224461025,
+            "relativeError": 0.03460657078705465
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1,
+            "tau": 48,
+            "observed": 10.9026509119338,
+            "predicted": 11.704109280359665,
+            "relativeError": 0.07351041273353132
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1,
+            "tau": 64,
+            "observed": 11.7658353312636,
+            "predicted": 12.882039118953353,
+            "relativeError": 0.09486821430551817
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1,
+            "tau": 96,
+            "observed": 13.166383986613697,
+            "predicted": 14.74625365259508,
+            "relativeError": 0.11999267738109731
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1,
+            "tau": 16,
+            "observed": 8.969295157499353,
+            "predicted": 8.115176125769269,
+            "relativeError": -0.09522699573733429
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1,
+            "tau": 24,
+            "observed": 9.411185375928186,
+            "predicted": 9.28955769199685,
+            "relativeError": -0.012923736922920925
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1,
+            "tau": 32,
+            "observed": 9.950644926322031,
+            "predicted": 10.224481224461025,
+            "relativeError": 0.027519452273352174
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1,
+            "tau": 48,
+            "observed": 10.876077128702567,
+            "predicted": 11.704109280359665,
+            "relativeError": 0.07613334678106276
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1,
+            "tau": 64,
+            "observed": 11.675367951795929,
+            "predicted": 12.882039118953353,
+            "relativeError": 0.10335187483078956
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1,
+            "tau": 96,
+            "observed": 12.987371615404832,
+            "predicted": 14.74625365259508,
+            "relativeError": 0.13543017704244087
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1,
+            "tau": 16,
+            "observed": 8.904755170333045,
+            "predicted": 8.115176125769269,
+            "relativeError": -0.08866937152795917
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1,
+            "tau": 24,
+            "observed": 9.349978401955005,
+            "predicted": 9.28955769199685,
+            "relativeError": -0.006462122944104531
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1,
+            "tau": 32,
+            "observed": 9.909357293026488,
+            "predicted": 10.224481224461025,
+            "relativeError": 0.0318006427779427
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1,
+            "tau": 48,
+            "observed": 10.853180833361952,
+            "predicted": 11.704109280359665,
+            "relativeError": 0.07840359983517597
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1,
+            "tau": 64,
+            "observed": 11.658949293836432,
+            "predicted": 12.882039118953353,
+            "relativeError": 0.10490566467799245
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1,
+            "tau": 96,
+            "observed": 12.999121343362802,
+            "predicted": 14.74625365259508,
+            "relativeError": 0.13440387723777514
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1,
+            "tau": 16,
+            "observed": 8.938409954492872,
+            "predicted": 8.115176125769269,
+            "relativeError": -0.09210070168126572
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1,
+            "tau": 24,
+            "observed": 9.350900840312551,
+            "predicted": 9.28955769199685,
+            "relativeError": -0.006560132479562442
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1,
+            "tau": 32,
+            "observed": 9.887395888506928,
+            "predicted": 10.224481224461025,
+            "relativeError": 0.034092428355773974
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1,
+            "tau": 48,
+            "observed": 10.842177628158518,
+            "predicted": 11.704109280359665,
+            "relativeError": 0.07949801984082971
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1,
+            "tau": 64,
+            "observed": 11.65436899851512,
+            "predicted": 12.882039118953353,
+            "relativeError": 0.1053399047683019
+          },
+          {
+            "seed": "cahn-scaling-4",
+            "epsilon": 1,
+            "tau": 96,
+            "observed": 13.061586011887414,
+            "predicted": 14.74625365259508,
+            "relativeError": 0.12897879623304864
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1,
+            "tau": 16,
+            "observed": 8.949160804723917,
+            "predicted": 8.115176125769269,
+            "relativeError": -0.09319138376800873
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1,
+            "tau": 24,
+            "observed": 9.355211018724168,
+            "predicted": 9.28955769199685,
+            "relativeError": -0.007017834936690948
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1,
+            "tau": 32,
+            "observed": 9.890507598576896,
+            "predicted": 10.224481224461025,
+            "relativeError": 0.03376708652771088
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1,
+            "tau": 48,
+            "observed": 10.793323724510024,
+            "predicted": 11.704109280359665,
+            "relativeError": 0.08438415997672544
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1,
+            "tau": 64,
+            "observed": 11.581259062674308,
+            "predicted": 12.882039118953353,
+            "relativeError": 0.11231767195946585
+          },
+          {
+            "seed": "cahn-scaling-5",
+            "epsilon": 1,
+            "tau": 96,
+            "observed": 13.023426121053726,
+            "predicted": 14.74625365259508,
+            "relativeError": 0.13228681266569509
+          }
+        ]
+      }
+    },
+    "laterTimes": {
+      "candidate": {
+        "relativeRMSE": 0.048858126267345564,
+        "maximumAbsoluteRelativeError": 0.07531706139061489,
+        "worstSeedRMSE": 0.05132317739727854,
+        "perSeed": [
+          {
+            "seed": "cahn-scaling-0",
+            "rows": 4,
+            "relativeRMSE": 0.050833600328807814
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "rows": 4,
+            "relativeRMSE": 0.043958131597190475
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "rows": 4,
+            "relativeRMSE": 0.04896963564665477
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "rows": 4,
+            "relativeRMSE": 0.05132317739727854
+          }
+        ],
+        "details": [
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 0.8,
+            "tau": 64,
+            "observed": 9.317694385476518,
+            "predicted": 9.077469656941265,
+            "relativeError": -0.025781563399384644
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 0.8,
+            "tau": 96,
+            "observed": 10.292049277092323,
+            "predicted": 9.771581598703051,
+            "relativeError": -0.050569878201779495
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 0.8,
+            "tau": 64,
+            "observed": 9.299066891548556,
+            "predicted": 9.077469656941265,
+            "relativeError": -0.023830050605259
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 0.8,
+            "tau": 96,
+            "observed": 10.31365274790989,
+            "predicted": 9.771581598703051,
+            "relativeError": -0.052558599989387056
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 0.8,
+            "tau": 64,
+            "observed": 9.363927739994079,
+            "predicted": 9.077469656941265,
+            "relativeError": -0.030591658864402516
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 0.8,
+            "tau": 96,
+            "observed": 10.368340385853086,
+            "predicted": 9.771581598703051,
+            "relativeError": -0.0575558638067355
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 0.8,
+            "tau": 64,
+            "observed": 9.31886491770452,
+            "predicted": 9.077469656941265,
+            "relativeError": -0.025903933890557673
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 0.8,
+            "tau": 96,
+            "observed": 10.32345065589155,
+            "predicted": 9.771581598703051,
+            "relativeError": -0.05345780936857092
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1.2,
+            "tau": 64,
+            "observed": 14.15358584520418,
+            "predicted": 13.616204485411895,
+            "relativeError": -0.03796785957068061
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1.2,
+            "tau": 96,
+            "observed": 15.851241313154913,
+            "predicted": 14.657372398054575,
+            "relativeError": -0.07531706139061489
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1.2,
+            "tau": 64,
+            "observed": 14.00856932246794,
+            "predicted": 13.616204485411895,
+            "relativeError": -0.028008915687538605
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1.2,
+            "tau": 96,
+            "observed": 15.594950943328302,
+            "predicted": 14.657372398054575,
+            "relativeError": -0.06012064729673505
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1.2,
+            "tau": 64,
+            "observed": 14.088418246523464,
+            "predicted": 13.616204485411895,
+            "relativeError": -0.033517869277347345
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1.2,
+            "tau": 96,
+            "observed": 15.675705390636589,
+            "predicted": 14.657372398054575,
+            "relativeError": -0.06496249879704197
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1.2,
+            "tau": 64,
+            "observed": 14.16783524433913,
+            "predicted": 13.616204485411895,
+            "relativeError": -0.03893543010726663
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1.2,
+            "tau": 96,
+            "observed": 15.830491417016006,
+            "predicted": 14.657372398054575,
+            "relativeError": -0.07410502858429646
+          }
+        ]
+      },
+      "baseline": {
+        "relativeRMSE": 0.11854324883553743,
+        "maximumAbsoluteRelativeError": 0.1462248775210797,
+        "worstSeedRMSE": 0.12375046469328323,
+        "perSeed": [
+          {
+            "seed": "cahn-scaling-0",
+            "rows": 4,
+            "relativeRMSE": 0.11689750133374395
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "rows": 4,
+            "relativeRMSE": 0.12375046469328323
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "rows": 4,
+            "relativeRMSE": 0.1174294841929183
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "rows": 4,
+            "relativeRMSE": 0.11593584557955118
+          }
+        ],
+        "details": [
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 0.8,
+            "tau": 64,
+            "observed": 9.317694385476518,
+            "predicted": 10.305631295162682,
+            "relativeError": 0.10602804393606857
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 0.8,
+            "tau": 96,
+            "observed": 10.292049277092323,
+            "predicted": 11.797002922076064,
+            "relativeError": 0.1462248775210797
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 0.8,
+            "tau": 64,
+            "observed": 9.299066891548556,
+            "predicted": 10.305631295162682,
+            "relativeError": 0.10824359211018697
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 0.8,
+            "tau": 96,
+            "observed": 10.31365274790989,
+            "predicted": 11.797002922076064,
+            "relativeError": 0.1438239400164778
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 0.8,
+            "tau": 64,
+            "observed": 9.363927739994079,
+            "predicted": 10.305631295162682,
+            "relativeError": 0.10056715315588272
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 0.8,
+            "tau": 96,
+            "observed": 10.368340385853086,
+            "predicted": 11.797002922076064,
+            "relativeError": 0.13779085977658423
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 0.8,
+            "tau": 64,
+            "observed": 9.31886491770452,
+            "predicted": 10.305631295162682,
+            "relativeError": 0.10588911698713921
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 0.8,
+            "tau": 96,
+            "observed": 10.32345065589155,
+            "predicted": 11.797002922076064,
+            "relativeError": 0.14273834547206987
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1.2,
+            "tau": 64,
+            "observed": 14.15358584520418,
+            "predicted": 15.458446942744024,
+            "relativeError": 0.09219296875088268
+          },
+          {
+            "seed": "cahn-scaling-0",
+            "epsilon": 1.2,
+            "tau": 96,
+            "observed": 15.851241313154913,
+            "predicted": 17.695504383114095,
+            "relativeError": 0.11634817952261134
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1.2,
+            "tau": 64,
+            "observed": 14.00856932246794,
+            "predicted": 15.458446942744024,
+            "relativeError": 0.10349933579231863
+          },
+          {
+            "seed": "cahn-scaling-1",
+            "epsilon": 1.2,
+            "tau": 96,
+            "observed": 15.594950943328302,
+            "predicted": 17.695504383114095,
+            "relativeError": 0.13469445639291577
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1.2,
+            "tau": 64,
+            "observed": 14.088418246523464,
+            "predicted": 15.458446942744024,
+            "relativeError": 0.09724503292331166
+          },
+          {
+            "seed": "cahn-scaling-2",
+            "epsilon": 1.2,
+            "tau": 96,
+            "observed": 15.675705390636589,
+            "predicted": 17.695504383114095,
+            "relativeError": 0.12884900182443926
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1.2,
+            "tau": 64,
+            "observed": 14.16783524433913,
+            "predicted": 15.458446942744024,
+            "relativeError": 0.09109448805318143
+          },
+          {
+            "seed": "cahn-scaling-3",
+            "epsilon": 1.2,
+            "tau": 96,
+            "observed": 15.830491417016006,
+            "predicted": 17.695504383114095,
+            "relativeError": 0.11781143850616083
+          }
+        ]
+      }
+    }
+  },
+  "pooled": {
+    "candidate": {
+      "relativeRMSE": 0.0340535975413586,
+      "maximumAbsoluteRelativeError": 0.07531706139061489,
+      "worstSeedRMSE": 0.04085498754230853,
+      "perSeed": [
+        {
+          "seed": "cahn-scaling-0",
+          "rows": 10,
+          "relativeRMSE": 0.04085498754230853
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "rows": 10,
+          "relativeRMSE": 0.0386251235844102
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "rows": 10,
+          "relativeRMSE": 0.037956134418319756
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "rows": 10,
+          "relativeRMSE": 0.039213512560561874
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "rows": 18,
+          "relativeRMSE": 0.024654986452891613
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "rows": 18,
+          "relativeRMSE": 0.02962506552237419
+        }
+      ],
+      "details": [
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 0.8,
+          "tau": 16,
+          "observed": 7.149021695985855,
+          "predicted": 7.055956390009696,
+          "relativeError": -0.013017907894784408
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 0.8,
+          "tau": 24,
+          "observed": 7.52704087559079,
+          "predicted": 7.595492601745865,
+          "relativeError": 0.009094108466589423
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 0.8,
+          "tau": 32,
+          "observed": 7.954128675058057,
+          "predicted": 8.003138761199498,
+          "relativeError": 0.006161590809452555
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 0.8,
+          "tau": 48,
+          "observed": 8.620323663943095,
+          "predicted": 8.615101609401078,
+          "relativeError": -0.0006057840454251062
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 0.8,
+          "tau": 64,
+          "observed": 9.190887672241654,
+          "predicted": 9.077469656941265,
+          "relativeError": -0.012340267811447148
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 0.8,
+          "tau": 96,
+          "observed": 10.162046849366334,
+          "predicted": 9.771581598703051,
+          "relativeError": -0.0384238782256382
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 0.8,
+          "tau": 16,
+          "observed": 7.114550121734329,
+          "predicted": 7.055956390009696,
+          "relativeError": -0.008235760620426857
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 0.8,
+          "tau": 24,
+          "observed": 7.5032149770236085,
+          "predicted": 7.595492601745865,
+          "relativeError": 0.012298411414950694
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 0.8,
+          "tau": 32,
+          "observed": 7.949798930942597,
+          "predicted": 8.003138761199498,
+          "relativeError": 0.006709582307709461
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 0.8,
+          "tau": 48,
+          "observed": 8.706105076765935,
+          "predicted": 8.615101609401078,
+          "relativeError": -0.010452833564772668
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 0.8,
+          "tau": 64,
+          "observed": 9.347042543875794,
+          "predicted": 9.077469656941265,
+          "relativeError": -0.028840447196975094
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 0.8,
+          "tau": 96,
+          "observed": 10.421111822267822,
+          "predicted": 9.771581598703051,
+          "relativeError": -0.062328303797379414
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1.2,
+          "tau": 16,
+          "observed": 10.76211095999587,
+          "predicted": 10.583934585014543,
+          "relativeError": -0.0165558946236134
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1.2,
+          "tau": 24,
+          "observed": 11.235995848576799,
+          "predicted": 11.393238902618796,
+          "relativeError": 0.013994581002084727
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1.2,
+          "tau": 32,
+          "observed": 11.880498039845028,
+          "predicted": 12.004708141799247,
+          "relativeError": 0.010454957488957195
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1.2,
+          "tau": 48,
+          "observed": 12.95182663482285,
+          "predicted": 12.922652414101616,
+          "relativeError": -0.0022525178527942336
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1.2,
+          "tau": 64,
+          "observed": 13.894111897141206,
+          "predicted": 13.616204485411895,
+          "relativeError": -0.020001811831275917
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1.2,
+          "tau": 96,
+          "observed": 15.435274917534795,
+          "predicted": 14.657372398054575,
+          "relativeError": -0.050397710674819685
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1.2,
+          "tau": 16,
+          "observed": 10.812365706444705,
+          "predicted": 10.583934585014543,
+          "relativeError": -0.02112684010438215
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1.2,
+          "tau": 24,
+          "observed": 11.28668686442297,
+          "predicted": 11.393238902618796,
+          "relativeError": 0.00944050627750559
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1.2,
+          "tau": 32,
+          "observed": 11.950956936973876,
+          "predicted": 12.004708141799247,
+          "relativeError": 0.004497648607457938
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1.2,
+          "tau": 48,
+          "observed": 13.102300647067333,
+          "predicted": 12.922652414101616,
+          "relativeError": -0.01371119758314554
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1.2,
+          "tau": 64,
+          "observed": 14.071588779011881,
+          "predicted": 13.616204485411895,
+          "relativeError": -0.03236196713474193
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1.2,
+          "tau": 96,
+          "observed": 15.65779713518347,
+          "predicted": 14.657372398054575,
+          "relativeError": -0.06389307055721882
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1,
+          "tau": 16,
+          "observed": 9.014042869256613,
+          "predicted": 8.819945487512118,
+          "relativeError": -0.02153277775131124
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1,
+          "tau": 24,
+          "observed": 9.405236219772647,
+          "predicted": 9.49436575218233,
+          "relativeError": 0.009476586268222231
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1,
+          "tau": 32,
+          "observed": 9.95486901794425,
+          "predicted": 10.003923451499373,
+          "relativeError": 0.004927682470427408
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1,
+          "tau": 48,
+          "observed": 10.950410026228324,
+          "predicted": 10.768877011751348,
+          "relativeError": -0.016577736727864
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1,
+          "tau": 64,
+          "observed": 11.72945970017669,
+          "predicted": 11.34683707117658,
+          "relativeError": -0.03262065250919843
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1,
+          "tau": 96,
+          "observed": 13.08630420388662,
+          "predicted": 12.214476998378814,
+          "relativeError": -0.06662134640343098
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1,
+          "tau": 16,
+          "observed": 8.916726491099595,
+          "predicted": 8.819945487512118,
+          "relativeError": -0.010853871505880686
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1,
+          "tau": 24,
+          "observed": 9.339445574375805,
+          "predicted": 9.49436575218233,
+          "relativeError": 0.016587727459066004
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1,
+          "tau": 32,
+          "observed": 9.882482397809412,
+          "predicted": 10.003923451499373,
+          "relativeError": 0.012288517075110583
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1,
+          "tau": 48,
+          "observed": 10.9026509119338,
+          "predicted": 10.768877011751348,
+          "relativeError": -0.012269850815458727
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1,
+          "tau": 64,
+          "observed": 11.7658353312636,
+          "predicted": 11.34683707117658,
+          "relativeError": -0.035611433297360495
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1,
+          "tau": 96,
+          "observed": 13.166383986613697,
+          "predicted": 12.214476998378814,
+          "relativeError": -0.07229828548238382
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1,
+          "tau": 16,
+          "observed": 8.969295157499353,
+          "predicted": 8.819945487512118,
+          "relativeError": -0.016651215883152326
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1,
+          "tau": 24,
+          "observed": 9.411185375928186,
+          "predicted": 9.49436575218233,
+          "relativeError": 0.008838459017808997
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1,
+          "tau": 32,
+          "observed": 9.950644926322031,
+          "predicted": 10.003923451499373,
+          "relativeError": 0.005354278599209783
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1,
+          "tau": 48,
+          "observed": 10.876077128702567,
+          "predicted": 10.768877011751348,
+          "relativeError": -0.009856505767903423
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1,
+          "tau": 64,
+          "observed": 11.675367951795929,
+          "predicted": 11.34683707117658,
+          "relativeError": -0.028138803160273285
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1,
+          "tau": 96,
+          "observed": 12.987371615404832,
+          "predicted": 12.214476998378814,
+          "relativeError": -0.059511242144581256
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1,
+          "tau": 16,
+          "observed": 8.904755170333045,
+          "predicted": 8.819945487512118,
+          "relativeError": -0.009524089230827815
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1,
+          "tau": 24,
+          "observed": 9.349978401955005,
+          "predicted": 9.49436575218233,
+          "relativeError": 0.015442533022016036
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1,
+          "tau": 32,
+          "observed": 9.909357293026488,
+          "predicted": 10.003923451499373,
+          "relativeError": 0.00954311724529644
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1,
+          "tau": 48,
+          "observed": 10.853180833361952,
+          "predicted": 10.768877011751348,
+          "relativeError": -0.007767660274438537
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1,
+          "tau": 64,
+          "observed": 11.658949293836432,
+          "predicted": 11.34683707117658,
+          "relativeError": -0.02677018441317458
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1,
+          "tau": 96,
+          "observed": 12.999121343362802,
+          "predicted": 12.214476998378814,
+          "relativeError": -0.06036133706718716
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1,
+          "tau": 16,
+          "observed": 8.938409954492872,
+          "predicted": 8.819945487512118,
+          "relativeError": -0.013253416165053822
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1,
+          "tau": 24,
+          "observed": 9.350900840312551,
+          "predicted": 9.49436575218233,
+          "relativeError": 0.015342362657861708
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1,
+          "tau": 32,
+          "observed": 9.887395888506928,
+          "predicted": 10.003923451499373,
+          "relativeError": 0.011785465486205071
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1,
+          "tau": 48,
+          "observed": 10.842177628158518,
+          "predicted": 10.768877011751348,
+          "relativeError": -0.006760691340898073
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1,
+          "tau": 64,
+          "observed": 11.65436899851512,
+          "predicted": 11.34683707117658,
+          "relativeError": -0.026387694381199145
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1,
+          "tau": 96,
+          "observed": 13.061586011887414,
+          "predicted": 12.214476998378814,
+          "relativeError": -0.06485498872324091
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1,
+          "tau": 16,
+          "observed": 8.949160804723917,
+          "predicted": 8.819945487512118,
+          "relativeError": -0.014438819463786001
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1,
+          "tau": 24,
+          "observed": 9.355211018724168,
+          "predicted": 9.49436575218233,
+          "relativeError": 0.01487456917643537
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1,
+          "tau": 32,
+          "observed": 9.890507598576896,
+          "predicted": 10.003923451499373,
+          "relativeError": 0.01146714178135766
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1,
+          "tau": 48,
+          "observed": 10.793323724510024,
+          "predicted": 10.768877011751348,
+          "relativeError": -0.0022649846685466324
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1,
+          "tau": 64,
+          "observed": 11.581259062674308,
+          "predicted": 11.34683707117658,
+          "relativeError": -0.02024149448942525
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1,
+          "tau": 96,
+          "observed": 13.023426121053726,
+          "predicted": 12.214476998378814,
+          "relativeError": -0.06211492391907236
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 0.8,
+          "tau": 64,
+          "observed": 9.317694385476518,
+          "predicted": 9.077469656941265,
+          "relativeError": -0.025781563399384644
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 0.8,
+          "tau": 96,
+          "observed": 10.292049277092323,
+          "predicted": 9.771581598703051,
+          "relativeError": -0.050569878201779495
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 0.8,
+          "tau": 64,
+          "observed": 9.299066891548556,
+          "predicted": 9.077469656941265,
+          "relativeError": -0.023830050605259
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 0.8,
+          "tau": 96,
+          "observed": 10.31365274790989,
+          "predicted": 9.771581598703051,
+          "relativeError": -0.052558599989387056
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 0.8,
+          "tau": 64,
+          "observed": 9.363927739994079,
+          "predicted": 9.077469656941265,
+          "relativeError": -0.030591658864402516
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 0.8,
+          "tau": 96,
+          "observed": 10.368340385853086,
+          "predicted": 9.771581598703051,
+          "relativeError": -0.0575558638067355
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 0.8,
+          "tau": 64,
+          "observed": 9.31886491770452,
+          "predicted": 9.077469656941265,
+          "relativeError": -0.025903933890557673
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 0.8,
+          "tau": 96,
+          "observed": 10.32345065589155,
+          "predicted": 9.771581598703051,
+          "relativeError": -0.05345780936857092
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1.2,
+          "tau": 64,
+          "observed": 14.15358584520418,
+          "predicted": 13.616204485411895,
+          "relativeError": -0.03796785957068061
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1.2,
+          "tau": 96,
+          "observed": 15.851241313154913,
+          "predicted": 14.657372398054575,
+          "relativeError": -0.07531706139061489
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1.2,
+          "tau": 64,
+          "observed": 14.00856932246794,
+          "predicted": 13.616204485411895,
+          "relativeError": -0.028008915687538605
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1.2,
+          "tau": 96,
+          "observed": 15.594950943328302,
+          "predicted": 14.657372398054575,
+          "relativeError": -0.06012064729673505
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1.2,
+          "tau": 64,
+          "observed": 14.088418246523464,
+          "predicted": 13.616204485411895,
+          "relativeError": -0.033517869277347345
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1.2,
+          "tau": 96,
+          "observed": 15.675705390636589,
+          "predicted": 14.657372398054575,
+          "relativeError": -0.06496249879704197
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1.2,
+          "tau": 64,
+          "observed": 14.16783524433913,
+          "predicted": 13.616204485411895,
+          "relativeError": -0.03893543010726663
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1.2,
+          "tau": 96,
+          "observed": 15.830491417016006,
+          "predicted": 14.657372398054575,
+          "relativeError": -0.07410502858429646
+        }
+      ]
+    },
+    "baseline": {
+      "relativeRMSE": 0.09443017617835088,
+      "maximumAbsoluteRelativeError": 0.16088846045929017,
+      "worstSeedRMSE": 0.09998524308855157,
+      "perSeed": [
+        {
+          "seed": "cahn-scaling-0",
+          "rows": 10,
+          "relativeRMSE": 0.09796517148667347
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "rows": 10,
+          "relativeRMSE": 0.0996822913201752
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "rows": 10,
+          "relativeRMSE": 0.09998524308855157
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "rows": 10,
+          "relativeRMSE": 0.0989426620257274
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "rows": 18,
+          "relativeRMSE": 0.09207413333023906
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "rows": 18,
+          "relativeRMSE": 0.08560064262664834
+        }
+      ],
+      "details": [
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 0.8,
+          "tau": 16,
+          "observed": 7.149021695985855,
+          "predicted": 6.492140900615415,
+          "relativeError": -0.09188401200954188
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 0.8,
+          "tau": 24,
+          "observed": 7.52704087559079,
+          "predicted": 7.43164615359748,
+          "relativeError": -0.012673602225631853
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 0.8,
+          "tau": 32,
+          "observed": 7.954128675058057,
+          "predicted": 8.179584979568821,
+          "relativeError": 0.028344563398594813
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 0.8,
+          "tau": 48,
+          "observed": 8.620323663943095,
+          "predicted": 9.363287424287732,
+          "relativeError": 0.08618745528689242
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 0.8,
+          "tau": 64,
+          "observed": 9.190887672241654,
+          "predicted": 10.305631295162682,
+          "relativeError": 0.12128791719300192
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 0.8,
+          "tau": 96,
+          "observed": 10.162046849366334,
+          "predicted": 11.797002922076064,
+          "relativeError": 0.16088846045929017
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 0.8,
+          "tau": 16,
+          "observed": 7.114550121734329,
+          "predicted": 6.492140900615415,
+          "relativeError": -0.08748398851214889
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 0.8,
+          "tau": 24,
+          "observed": 7.5032149770236085,
+          "predicted": 7.43164615359748,
+          "relativeError": -0.00953842101622926
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 0.8,
+          "tau": 32,
+          "observed": 7.949798930942597,
+          "predicted": 8.179584979568821,
+          "relativeError": 0.028904636535125316
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 0.8,
+          "tau": 48,
+          "observed": 8.706105076765935,
+          "predicted": 9.363287424287732,
+          "relativeError": 0.07548523039029531
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 0.8,
+          "tau": 64,
+          "observed": 9.347042543875794,
+          "predicted": 10.305631295162682,
+          "relativeError": 0.10255529990231582
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 0.8,
+          "tau": 96,
+          "observed": 10.421111822267822,
+          "predicted": 11.797002922076064,
+          "relativeError": 0.1320292041074005
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1.2,
+          "tau": 16,
+          "observed": 10.76211095999587,
+          "predicted": 9.738211350923123,
+          "relativeError": -0.09513929124859521
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1.2,
+          "tau": 24,
+          "observed": 11.235995848576799,
+          "predicted": 11.14746923039622,
+          "relativeError": -0.007878840413757526
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1.2,
+          "tau": 32,
+          "observed": 11.880498039845028,
+          "predicted": 12.26937746935323,
+          "relativeError": 0.03273258647945321
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1.2,
+          "tau": 48,
+          "observed": 12.95182663482285,
+          "predicted": 14.044931136431599,
+          "relativeError": 0.08439770948367853
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1.2,
+          "tau": 64,
+          "observed": 13.894111897141206,
+          "predicted": 15.458446942744024,
+          "relativeError": 0.11258978315301227
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1.2,
+          "tau": 96,
+          "observed": 15.435274917534795,
+          "predicted": 17.695504383114095,
+          "relativeError": 0.14643273136726798
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1.2,
+          "tau": 16,
+          "observed": 10.812365706444705,
+          "predicted": 9.738211350923123,
+          "relativeError": -0.09934498930990954
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1.2,
+          "tau": 24,
+          "observed": 11.28668686442297,
+          "predicted": 11.14746923039622,
+          "relativeError": -0.012334676747840057
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1.2,
+          "tau": 32,
+          "observed": 11.950956936973876,
+          "predicted": 12.26937746935323,
+          "relativeError": 0.02664393605119808
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1.2,
+          "tau": 48,
+          "observed": 13.102300647067333,
+          "predicted": 14.044931136431599,
+          "relativeError": 0.07194389098186771
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1.2,
+          "tau": 64,
+          "observed": 14.071588779011881,
+          "predicted": 15.458446942744024,
+          "relativeError": 0.09855732607825174
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1.2,
+          "tau": 96,
+          "observed": 15.65779713518347,
+          "predicted": 17.695504383114095,
+          "relativeError": 0.13014009763556356
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1,
+          "tau": 16,
+          "observed": 9.014042869256613,
+          "predicted": 8.115176125769269,
+          "relativeError": -0.09971848997446286
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1,
+          "tau": 24,
+          "observed": 9.405236219772647,
+          "predicted": 9.28955769199685,
+          "relativeError": -0.012299375057970963
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1,
+          "tau": 32,
+          "observed": 9.95486901794425,
+          "predicted": 10.224481224461025,
+          "relativeError": 0.02708345092545006
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1,
+          "tau": 48,
+          "observed": 10.950410026228324,
+          "predicted": 11.704109280359665,
+          "relativeError": 0.0688284048109693
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1,
+          "tau": 64,
+          "observed": 11.72945970017669,
+          "predicted": 12.882039118953353,
+          "relativeError": 0.09826364114276287
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1,
+          "tau": 96,
+          "observed": 13.08630420388662,
+          "predicted": 14.74625365259508,
+          "relativeError": 0.126846313737339
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1,
+          "tau": 16,
+          "observed": 8.916726491099595,
+          "predicted": 8.115176125769269,
+          "relativeError": -0.08989289579874515
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1,
+          "tau": 24,
+          "observed": 9.339445574375805,
+          "predicted": 9.28955769199685,
+          "relativeError": -0.005341632110992811
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1,
+          "tau": 32,
+          "observed": 9.882482397809412,
+          "predicted": 10.224481224461025,
+          "relativeError": 0.03460657078705465
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1,
+          "tau": 48,
+          "observed": 10.9026509119338,
+          "predicted": 11.704109280359665,
+          "relativeError": 0.07351041273353132
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1,
+          "tau": 64,
+          "observed": 11.7658353312636,
+          "predicted": 12.882039118953353,
+          "relativeError": 0.09486821430551817
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1,
+          "tau": 96,
+          "observed": 13.166383986613697,
+          "predicted": 14.74625365259508,
+          "relativeError": 0.11999267738109731
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1,
+          "tau": 16,
+          "observed": 8.969295157499353,
+          "predicted": 8.115176125769269,
+          "relativeError": -0.09522699573733429
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1,
+          "tau": 24,
+          "observed": 9.411185375928186,
+          "predicted": 9.28955769199685,
+          "relativeError": -0.012923736922920925
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1,
+          "tau": 32,
+          "observed": 9.950644926322031,
+          "predicted": 10.224481224461025,
+          "relativeError": 0.027519452273352174
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1,
+          "tau": 48,
+          "observed": 10.876077128702567,
+          "predicted": 11.704109280359665,
+          "relativeError": 0.07613334678106276
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1,
+          "tau": 64,
+          "observed": 11.675367951795929,
+          "predicted": 12.882039118953353,
+          "relativeError": 0.10335187483078956
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1,
+          "tau": 96,
+          "observed": 12.987371615404832,
+          "predicted": 14.74625365259508,
+          "relativeError": 0.13543017704244087
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1,
+          "tau": 16,
+          "observed": 8.904755170333045,
+          "predicted": 8.115176125769269,
+          "relativeError": -0.08866937152795917
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1,
+          "tau": 24,
+          "observed": 9.349978401955005,
+          "predicted": 9.28955769199685,
+          "relativeError": -0.006462122944104531
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1,
+          "tau": 32,
+          "observed": 9.909357293026488,
+          "predicted": 10.224481224461025,
+          "relativeError": 0.0318006427779427
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1,
+          "tau": 48,
+          "observed": 10.853180833361952,
+          "predicted": 11.704109280359665,
+          "relativeError": 0.07840359983517597
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1,
+          "tau": 64,
+          "observed": 11.658949293836432,
+          "predicted": 12.882039118953353,
+          "relativeError": 0.10490566467799245
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1,
+          "tau": 96,
+          "observed": 12.999121343362802,
+          "predicted": 14.74625365259508,
+          "relativeError": 0.13440387723777514
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1,
+          "tau": 16,
+          "observed": 8.938409954492872,
+          "predicted": 8.115176125769269,
+          "relativeError": -0.09210070168126572
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1,
+          "tau": 24,
+          "observed": 9.350900840312551,
+          "predicted": 9.28955769199685,
+          "relativeError": -0.006560132479562442
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1,
+          "tau": 32,
+          "observed": 9.887395888506928,
+          "predicted": 10.224481224461025,
+          "relativeError": 0.034092428355773974
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1,
+          "tau": 48,
+          "observed": 10.842177628158518,
+          "predicted": 11.704109280359665,
+          "relativeError": 0.07949801984082971
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1,
+          "tau": 64,
+          "observed": 11.65436899851512,
+          "predicted": 12.882039118953353,
+          "relativeError": 0.1053399047683019
+        },
+        {
+          "seed": "cahn-scaling-4",
+          "epsilon": 1,
+          "tau": 96,
+          "observed": 13.061586011887414,
+          "predicted": 14.74625365259508,
+          "relativeError": 0.12897879623304864
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1,
+          "tau": 16,
+          "observed": 8.949160804723917,
+          "predicted": 8.115176125769269,
+          "relativeError": -0.09319138376800873
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1,
+          "tau": 24,
+          "observed": 9.355211018724168,
+          "predicted": 9.28955769199685,
+          "relativeError": -0.007017834936690948
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1,
+          "tau": 32,
+          "observed": 9.890507598576896,
+          "predicted": 10.224481224461025,
+          "relativeError": 0.03376708652771088
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1,
+          "tau": 48,
+          "observed": 10.793323724510024,
+          "predicted": 11.704109280359665,
+          "relativeError": 0.08438415997672544
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1,
+          "tau": 64,
+          "observed": 11.581259062674308,
+          "predicted": 12.882039118953353,
+          "relativeError": 0.11231767195946585
+        },
+        {
+          "seed": "cahn-scaling-5",
+          "epsilon": 1,
+          "tau": 96,
+          "observed": 13.023426121053726,
+          "predicted": 14.74625365259508,
+          "relativeError": 0.13228681266569509
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 0.8,
+          "tau": 64,
+          "observed": 9.317694385476518,
+          "predicted": 10.305631295162682,
+          "relativeError": 0.10602804393606857
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 0.8,
+          "tau": 96,
+          "observed": 10.292049277092323,
+          "predicted": 11.797002922076064,
+          "relativeError": 0.1462248775210797
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 0.8,
+          "tau": 64,
+          "observed": 9.299066891548556,
+          "predicted": 10.305631295162682,
+          "relativeError": 0.10824359211018697
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 0.8,
+          "tau": 96,
+          "observed": 10.31365274790989,
+          "predicted": 11.797002922076064,
+          "relativeError": 0.1438239400164778
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 0.8,
+          "tau": 64,
+          "observed": 9.363927739994079,
+          "predicted": 10.305631295162682,
+          "relativeError": 0.10056715315588272
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 0.8,
+          "tau": 96,
+          "observed": 10.368340385853086,
+          "predicted": 11.797002922076064,
+          "relativeError": 0.13779085977658423
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 0.8,
+          "tau": 64,
+          "observed": 9.31886491770452,
+          "predicted": 10.305631295162682,
+          "relativeError": 0.10588911698713921
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 0.8,
+          "tau": 96,
+          "observed": 10.32345065589155,
+          "predicted": 11.797002922076064,
+          "relativeError": 0.14273834547206987
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1.2,
+          "tau": 64,
+          "observed": 14.15358584520418,
+          "predicted": 15.458446942744024,
+          "relativeError": 0.09219296875088268
+        },
+        {
+          "seed": "cahn-scaling-0",
+          "epsilon": 1.2,
+          "tau": 96,
+          "observed": 15.851241313154913,
+          "predicted": 17.695504383114095,
+          "relativeError": 0.11634817952261134
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1.2,
+          "tau": 64,
+          "observed": 14.00856932246794,
+          "predicted": 15.458446942744024,
+          "relativeError": 0.10349933579231863
+        },
+        {
+          "seed": "cahn-scaling-1",
+          "epsilon": 1.2,
+          "tau": 96,
+          "observed": 15.594950943328302,
+          "predicted": 17.695504383114095,
+          "relativeError": 0.13469445639291577
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1.2,
+          "tau": 64,
+          "observed": 14.088418246523464,
+          "predicted": 15.458446942744024,
+          "relativeError": 0.09724503292331166
+        },
+        {
+          "seed": "cahn-scaling-2",
+          "epsilon": 1.2,
+          "tau": 96,
+          "observed": 15.675705390636589,
+          "predicted": 17.695504383114095,
+          "relativeError": 0.12884900182443926
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1.2,
+          "tau": 64,
+          "observed": 14.16783524433913,
+          "predicted": 15.458446942744024,
+          "relativeError": 0.09109448805318143
+        },
+        {
+          "seed": "cahn-scaling-3",
+          "epsilon": 1.2,
+          "tau": 96,
+          "observed": 15.830491417016006,
+          "predicted": 17.695504383114095,
+          "relativeError": 0.11781143850616083
+        }
+      ]
+    }
+  },
+  "heldoutErrorRatioToBaseline": 0.36062198461899886,
+  "refinement": [
+    {
+      "seed": "cahn-scaling-4",
+      "tau": 16,
+      "coarse": 8.938409954492872,
+      "fine": 8.938638422521269,
+      "relativeChange": 2.5560253955614343e-05,
+      "passed": true
+    },
+    {
+      "seed": "cahn-scaling-4",
+      "tau": 24,
+      "coarse": 9.350900840312551,
+      "fine": 9.351392567033162,
+      "relativeChange": 5.258602663094081e-05,
+      "passed": true
+    },
+    {
+      "seed": "cahn-scaling-4",
+      "tau": 32,
+      "coarse": 9.887395888506928,
+      "fine": 9.887764355746514,
+      "relativeChange": 3.726635847711712e-05,
+      "passed": true
+    },
+    {
+      "seed": "cahn-scaling-4",
+      "tau": 48,
+      "coarse": 10.842177628158518,
+      "fine": 10.842442786487652,
+      "relativeChange": 2.4456187514010352e-05,
+      "passed": true
+    },
+    {
+      "seed": "cahn-scaling-4",
+      "tau": 64,
+      "coarse": 11.65436899851512,
+      "fine": 11.65459166746846,
+      "relativeChange": 1.9106049702788397e-05,
+      "passed": true
+    },
+    {
+      "seed": "cahn-scaling-4",
+      "tau": 96,
+      "coarse": 13.061586011887414,
+      "fine": 13.061825202070738,
+      "relativeChange": 1.8312491538718945e-05,
+      "passed": true
+    },
+    {
+      "seed": "cahn-scaling-5",
+      "tau": 16,
+      "coarse": 8.949160804723917,
+      "fine": 8.949392817786093,
+      "relativeChange": 2.592567808745727e-05,
+      "passed": true
+    },
+    {
+      "seed": "cahn-scaling-5",
+      "tau": 24,
+      "coarse": 9.355211018724168,
+      "fine": 9.355709111951917,
+      "relativeChange": 5.3242329515867937e-05,
+      "passed": true
+    },
+    {
+      "seed": "cahn-scaling-5",
+      "tau": 32,
+      "coarse": 9.890507598576896,
+      "fine": 9.89087228372531,
+      "relativeChange": 3.687223782788962e-05,
+      "passed": true
+    },
+    {
+      "seed": "cahn-scaling-5",
+      "tau": 48,
+      "coarse": 10.793323724510024,
+      "fine": 10.793565298641111,
+      "relativeChange": 2.238181094660341e-05,
+      "passed": true
+    },
+    {
+      "seed": "cahn-scaling-5",
+      "tau": 64,
+      "coarse": 11.581259062674308,
+      "fine": 11.581491598053052,
+      "relativeChange": 2.007859227437514e-05,
+      "passed": true
+    },
+    {
+      "seed": "cahn-scaling-5",
+      "tau": 96,
+      "coarse": 13.023426121053726,
+      "fine": 13.023684405461468,
+      "relativeChange": 1.9832293387533895e-05,
+      "passed": true
+    }
+  ],
+  "largerDomain": [
+    {
+      "tau": 16,
+      "smallMean": 8.943785379608395,
+      "largeMean": 8.949119041813542,
+      "relativeChange": 0.0005963540021105551,
+      "passed": true
+    },
+    {
+      "tau": 24,
+      "smallMean": 9.353055929518359,
+      "largeMean": 9.390780017971245,
+      "relativeChange": 0.004033343619151086,
+      "passed": true
+    },
+    {
+      "tau": 32,
+      "smallMean": 9.888951743541913,
+      "largeMean": 9.95354637514528,
+      "relativeChange": 0.006531999880123873,
+      "passed": true
+    },
+    {
+      "tau": 48,
+      "smallMean": 10.81775067633427,
+      "largeMean": 10.890092765668742,
+      "relativeChange": 0.006687350402032388,
+      "passed": true
+    },
+    {
+      "tau": 64,
+      "smallMean": 11.617814030594714,
+      "largeMean": 11.676650848792235,
+      "relativeChange": 0.005064362197791938,
+      "passed": true
+    },
+    {
+      "tau": 96,
+      "smallMean": 13.042506066470569,
+      "largeMean": 13.015456123093069,
+      "relativeChange": -0.002073983576441618,
+      "passed": true
+    }
+  ],
+  "checks": {
+    "independentControls": true,
+    "numericalGuards": true,
+    "boxLengthGuard": true,
+    "categoryPrediction": true,
+    "worstSeedPrediction": true,
+    "baselineImprovement": true,
+    "bootstrapExponentWidth": true,
+    "windowExponentStability": false,
+    "timestepRefinement": true,
+    "largerDomain": true
+  },
+  "accepted": false,
+  "failedChecks": [
+    "windowExponentStability"
+  ],
+  "conclusion": "Reject this calibration: one or more frozen predictive, numerical or stability guards failed. No new law claimed."
+}
