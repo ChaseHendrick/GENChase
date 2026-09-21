@@ -45,7 +45,7 @@ The usual options fall down in different places:
 
 GENChase is the other object: 120 sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
 
-**Current research status: zero confirmed novel findings among the five vortex-bound candidates.** They are proved derivations on classical families, with unresolved priority questions; they are not five independent discoveries.
+**Current research status: zero confirmed novel findings thus far.**
 
 Another purpose is mathematical discovery: explore simulations, spot relationships, and develop new identities, formulas, and sharp bounds. The aim is to discover and invent new mathematics, then test the results, prove what we can, and check the literature before claiming originality. The [identity catalog](IDENTITIES.md) records the results, and the [novelty audit](identities/NOVELTY-AUDIT.md) separates established mathematics from candidates whose originality remains unconfirmed.
 
