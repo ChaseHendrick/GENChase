@@ -1,5 +1,7 @@
 # Originality follow-up after the five-bound audit
 
+**Confirmed novel findings among the five candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five entries are not independent findings.
+
 2026-09-20 (local date). Follow-up to [the audit](NOVELTY-AUDIT.md), after PR #76 merged.
 
 **Originality is still not established.** The strongest new evidence is an explicit reduction of candidate 1 to a formula printed in 1877. This identifies an older mathematical foundation more precisely; it does not establish who first stated the sharp minimum.

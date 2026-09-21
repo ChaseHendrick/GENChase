@@ -1,5 +1,7 @@
 # Frozen identities
 
+**Confirmed novel findings among the five candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five entries are not independent findings.
+
 **The archived note is superseded. Its former personal name is retired; use Three-vortex collapse bound and credit Gröbli (1877).** Cite the corrected live derivation and audit instead of treating the old note as a current priority claim.
 
 This folder preserves the historical snapshot of the three rows in [`../IDENTITIES.md`](../IDENTITIES.md).

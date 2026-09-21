@@ -8,6 +8,8 @@ The catalog of what the file actually contains is [`techniques.json`](techniques
 
 ## Current novelty status
 
+**Confirmed novel findings among the five candidates: 0.** Mathematical proofs and numerical checks establish validity, not historical originality. The fifth contains the second and fourth; there are not four confirmed discoveries remaining after correcting the first.
+
 The [2026-09-20 audit of all five candidates](identities/NOVELTY-AUDIT.md) supersedes earlier unqualified first-discovery or uniqueness assertions in this chronological ledger. The first formula explicitly specializes Gröbli’s 1877 spiral coefficient; priority of the optimized minima remains unconfirmed. The [follow-up comparison](identities/ORIGINALITY-FOLLOWUP.md) supplies the substitution. The personal name has been retired in favor of Three-vortex collapse bound. Their families and the spin–collapse product are classical; the exact minima were not located in the sources inspected. The fifth contains the second and fourth. Old skip decisions and rejected-family claims below are historical search notes, not current novelty certifications.
 
 ## Do this, do not do that

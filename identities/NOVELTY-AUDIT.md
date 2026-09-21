@@ -1,5 +1,7 @@
 # Novelty audit of the five candidate bounds
 
+**Confirmed novel findings among the five candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five entries are not independent findings.
+
 Audit date: 2026-09-20. This is a literature assessment, not a certificate of originality. It supersedes the repository's earlier unqualified claims of being the first public source of these formulas.
 
 **Post-merge follow-up:** [a direct comparison with Gröbli's 1877 original](ORIGINALITY-FOLLOWUP.md) reproduces candidate 1 by substitution and a change of variables, and checks a denominator against the original scan. Priority of the optimized minimum remains unconfirmed.
