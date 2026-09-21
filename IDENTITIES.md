@@ -1,6 +1,7 @@
 # Identities
 
-**Confirmed novel findings among the five candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five entries are not independent findings.
+> [!IMPORTANT]
+> **Confirmed novel findings among the five candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five entries are not independent findings.
 
 Catalog of formulas and sharp bounds derived in this studio from classical vortex dynamics. The first formula specializes Gröbli’s 1877 spiral coefficient; historical priority of the optimized minima remains unconfirmed. Handwritten, not generated. Last updated 2026-09-20.
 
@@ -39,7 +40,7 @@ Existing names identify this project's writeups and plates; they do not establis
 
 ## Catalog
 
-| Name | Tab | Statement | Check misses when |
+| Name | Tab | 🔵 Mathematical statement | 🟠 Conditions that invalidate the check |
 |---|---|---|---|
 | Three-vortex collapse bound | `three-vortex-bound` | ω₀ t_c = (2 − cos²θ) / sin(2θ) ≥ √2 on Γ = (1, 1, −1/2), L = 0. Equality at tan θ = 1/√2 | The vortices leave the L = 0 circle, or the Biot-Savart kernel is wrong |
 | Parallelogram lock | `parallelogram-lock` | ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4 on the Novikov–Sedov parallelogram. Equality at cos 2θ = 1/4 | The vortices leave the parallelogram, or the Biot-Savart kernel is wrong |

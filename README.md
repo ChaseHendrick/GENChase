@@ -45,13 +45,14 @@ The usual options fall down in different places:
 
 GENChase is the other object: 120 sciences on one control surface, deterministic from a seed, shareable as a hash, exportable as a print, and honest about whether the field is still computing.
 
-**Current research status: zero confirmed novel findings thus far.**
+> [!IMPORTANT]
+> **Current research status: zero confirmed novel findings thus far.**
 
-Another purpose is mathematical discovery: explore simulations, spot relationships, and develop new identities, formulas, and sharp bounds. The aim is to discover and invent new mathematics, then test the results, prove what we can, and check the literature before claiming originality. The [identity catalog](IDENTITIES.md) records the results, and the [novelty audit](identities/NOVELTY-AUDIT.md) separates established mathematics from candidates whose originality remains unconfirmed.
+Another purpose is mathematical discovery: explore simulations, spot relationships, and develop new identities, formulas, and sharp bounds. The aim is to discover and invent new mathematics, then test the results, prove what we can, and check the literature before claiming originality. The [research notes](IDENTITIES.md) record derivations, and the [literature audit](identities/NOVELTY-AUDIT.md) documents the source checks.
 
 | | On disk | What you get | How you reprint |
 |---|---|---|---|
-| **GENChase** | `studio.html` | a seeded simulation | the hash |
+| 🔵 **GENChase** | `studio.html` | a seeded simulation | the hash |
 | Shadertoy | a kernel | a frame | you don't |
 | p5 / Processing | a project | a canvas | if you saved the sketch |
 | Image model | a prompt | a still | you don't |
@@ -61,7 +62,7 @@ Another purpose is mathematical discovery: explore simulations, spot relationshi
 
 ## What is actually different
 
-**The assembly.** Almost every tab is the paper it names. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics: their closed forms and sharp minima are checked numerically. The first formula is a specialization and reparameterization of Gröbli’s 1877 spiral coefficient; priority of the optimized minima remains unconfirmed. Each is locked so the status line marks miss if the claim is wrong. Miss is a grade on the numbers, not a crash; the picture still draws. What is unusual about the rest is that chemistry, acoustics, liquid crystals, and aperiodic tiles share one seed field, one palette, and one export. Switching from Cahn–Hilliard to Chladni costs you nothing.
+**The assembly.** Almost every tab implements the paper it names. Chemistry, acoustics, liquid crystals, and aperiodic tiles share one seed field, one palette, and one export. Switching from Cahn–Hilliard to Chladni costs you nothing.
 
 **Determinism as the product.** Every random draw comes from a seeded generator. Geometry is resolution-independent. Keep the seed, get the same plate at 36 inches. Change it, get another world.
 
@@ -81,7 +82,7 @@ This is the part that is hard to copy, and the reason to trust the pictures. Mos
 
 The word **miss** on a status line is not the site breaking. The picture is still a plate. The numbers under it did not match what the equation predicted. Broken presets do this on purpose, so you can see the check is real.
 
-| Tab | What it measures | What theory says | What the plate measured |
+| Tab | What it measures | 🔵 Theoretical reference | 🟣 Measured on the plate |
 |---|---|---|---|
 | Foam & Grains | mean number of sides in the froth | exactly 6, forced by Euler | **6.11** |
 | Foam & Grains | von Neumann–Mullins law | dA/dt ∝ (n − 6) | **dA/dt = 0.34 (n − 6)**, r = 0.60 |
@@ -103,11 +104,6 @@ The word **miss** on a status line is not the site breaking. The picture is stil
 | Crapper | s / (4\|A\|/(π(1−A²))) | 1 | **1.000** |
 | Hasimoto | κ_max/(2ν) ; c/(2τ₀) | 1 ; 1 | **1.000** ; **1.000** |
 | Lump | KP-I residual of the Manakov lump | 0 | **~3×10⁻⁴** (FD) |
-| Three-vortex collapse bound | ω t_c / √2 on Gröbli's L=0 family | 1 at the octant triangle | **1.000** |
-| Parallelogram lock | ω t_c / (3√5/4) on Novikov-Sedov's parallelograms | 1 at cos 2θ = 1/4 | **1.000** |
-| Quincunx lock | ω t_c / (3√33/16) on Novikov-Sedov's five-vortex quincunx | 1 at cos 2θ = 4/7 | **1.000** |
-| Double-triangle bound (candidate) | ω₀t_c / (√29/3) for six vortices on two triangles | ≥ 1; equality at cos 3θ = √5/11 | **1.000000** at the minimum; full proof, priority open |
-| Polygon bound (fifth candidate) | ω₀t_c / F_n for two regular n-gons | ≥ 1; square value F₄ = √322/9 at cos 4θ = 9/55 | **1.000000** at the minimum; priority open |
 
 When a measurement disagrees with theory the tab says so rather than rounding toward it. Ballistic deposition fits **under** 1/3 because its crossover to KPZ is slow at plate size, and the hint says exactly that instead of quietly presenting 0.33. A neural field outside its patterning window prints "h is outside it, the sheet will go flat" rather than leaving a blank plate to be read as a subtle one.
 
@@ -131,7 +127,7 @@ A generative art tool can get away with a plausible-looking integrator. A plate 
 
 Worth being precise about, because the credits matter.
 
-**Published science, named.** Almost every tab names the paper it implements. Gray–Scott is Gray and Scott. The donor stack is Braun and Willett. Wilson's algorithm is Wilson's. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are formulas derived here from classical dynamics, with historical priority unconfirmed, and locked so the status line marks miss if the claim is wrong. Miss is a grade, not a crash. The statements are in [IDENTITIES.md](IDENTITIES.md). Do not put a name on work that already exists. The three-vortex bound uses a descriptive name and credits Gröbli’s formula. Use descriptive titles for further derived bounds. Credit published results to their original sources.
+**Published science, named.** Each simulation credits the work it implements. Gray–Scott is Gray and Scott. The donor stack is Braun and Willett. Wilson's algorithm is Wilson's. The [technique catalog](TECHNIQUES.md) links the scientific sources.
 
 **New as artifacts.** Every plate is an image that did not exist before it was computed, and the license says it is yours. That is the point of the object.
 
@@ -150,15 +146,6 @@ Worth being precise about, because the credits matter.
 - **Crapper.** G. D. Crapper, J. Fluid Mech. 2, 532 (1957). The unique exact finite-amplitude pure-capillary wave. Steepness s = 4|A|/(π(1−A²)) identically; the trough pinches a bubble at s* ≈ 0.730. The same *profile* is a constant-vorticity Euler wave with g = σ = 0 (Hur and Vanden-Broeck 2020). The plate reports s_meas against that identity.
 - **Hasimoto.** A soliton on a vortex filament (Hasimoto, JFM 51, 477, 1972). Local induction maps to NLS; the sech is a traveling loop of helical motion. Speed along the filament equals twice the torsion. The plate reports κ_max/(2ν) and c/(2τ₀) from the polyline, not from the formula by construction.
 - **Lump.** KP-I lumps (Manakov et al. 1977), rational, 1/r² tails. Completely different from the studio’s KP-II line-soliton webs. The plate reports the KP-I residual (u_t + 6uu_x + u_xxx)_x − 3 u_yy against 0, by finite differences of the rational field, and the peak against 4b².
-- **Three-vortex collapse bound.** Three point vortices of circulations 1, 1, −1/2 collapse self-similarly when L = 0 (Gröbli 1877; Aref, Phys. Fluids 22, 057104, 2010). Aref gave the collapse rate and the spin as separate formulae (his eqs. 25a, 25d) and wrote their product as the pitch of the logarithmic spiral (eq. 29c). The closed form of that product on this family is ω₀ t_c = (2 − cos²θ) / sin(2θ) ≥ √2, with equality uniquely at tan θ = 1/√2, the triangle with interior angles 22.5°, 45° and 112.5°. θ is the third vortex's place on the L = 0 circle, not an interior angle. With u = tan θ the product is u + 1/(2u). That formula was independently derived and recorded here on 2026-09-19, but is equivalent to Gröbli’s published 1877 spiral coefficient; see the [explicit comparison](identities/ORIGINALITY-FOLLOWUP.md). Priority of the minimum remains unconfirmed. The plate reports ω₀ t_c / √2 against 1, the similarity residual against 0, and signed L against 0. Off the circle, all three numbers miss on purpose. `#three-vortex-bound` opens it. The statement, the proof, and the citation are in [IDENTITIES.md](IDENTITIES.md). `#track` is still Track.
-- **Parallelogram lock.** Four point vortices of circulations (1, 1, −2−√3, −2−√3) at the vertices of a parallelogram with diagonal ratio √(2+√3) collapse self-similarly (Novikov and Sedov, Sov. Phys. JETP 50, 297, 1979). Gotoda (2020, eq. 3.13) wrote the collapse rate A(θ) and the spin B(θ) separately and plotted Hamiltonian against collapse rate. The closed form of their product on this family is ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4, with equality uniquely at cos 2θ = 1/4. That formula was derived and recorded here on 2026-09-20. The plate reports |ω₀ t_c| / (3√5/4) against 1, the similarity residual against 0, and signed L against 0. Off the parallelogram, all three numbers miss on purpose. `#parallelogram-lock` opens it. The statement and the proof are in [IDENTITIES.md](IDENTITIES.md). This is not Novikov and Sedov's t_* or ω separately under a new name.
-- **Quincunx lock.** Five point vortices of circulations (−1, −1, 1/2, 1/2, −3/4), four at the corners of a parallelogram and one at the crossing of the diagonals, diagonals in ratio 1/√2, collapse self-similarly (Novikov and Sedov 1979; Gotoda's five-vortex example). Gotoda (2020, eq. 3.13, γ3 ≠ 0) wrote A(θ) and B(θ) separately and plotted this family as Hamiltonian against collapse rate. The closed form of their product on this family is ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16, with equality uniquely at cos 2θ = 4/7. That formula was derived and recorded here on 2026-09-20. The plate reports |ω₀ t_c| / (3√33/16) against 1, the similarity residual against 0, and signed L against 0. Off the quincunx, all three numbers miss on purpose. `#quincunx-lock` opens it. The statement and the proof are in [IDENTITIES.md](IDENTITIES.md). A different five-vortex slice with μ = 3 recovers the three-vortex product identically and is not claimed. This is not Novikov and Sedov's t_* or ω separately under a new name, and it is a different circulation slice from the three-vortex bound.
-
-**Confirmed novel findings among these five candidates: 0.** The audit has not established historical originality for any candidate; this is not proof that every minimum was previously published. The [follow-up comparison](identities/ORIGINALITY-FOLLOWUP.md) identifies the first formula explicitly in Gröbli’s 1877 equations after specialization and a change of variables. These are proved bounds on classical families; no earlier exact minima were located in the inspected sources, and important full-text gaps remain. All five use the same elementary minimization, and the fifth contains the second and fourth. [Read the evidence and limitations](identities/NOVELTY-AUDIT.md).
-
-**A fourth candidate, with an exact proof.** Two equilateral vortex triangles with radius ratio φ = (1+√5)/2 have ω₀t_c = (11−√5 cos 3θ)/(6 sin 3θ) ≥ √29/3, uniquely minimized at θ ≈ 26.090411°. The underlying two-ring collapse is classical (Koiller et al. 1985, §11). The explicit product and sharp minimum are derived and numerically checked here; **historical priority remains under investigation** because the primary-source review is incomplete. This corrects an earlier ledger rejection that tested circulation ratios outside the collapse condition. Open `#double-triangle-bound`; read the [proof and verification](identities/double-triangle.md). The [audit of all five candidates](identities/NOVELTY-AUDIT.md) also corrects earlier priority claims for the first three.
-
-**A fifth candidate generalizes the second and fourth.** The [polygon theorem](identities/polygon-collapse.md) gives a closed sharp spin–collapse bound for every regular polygon order. For two squares it is ω₀t_c = √7(55−9 cos 4θ)/(72 sin 4θ) ≥ √322/9, uniquely minimized at θ ≈ 20.145493°. The integrated plate now includes **Square minimum** and a vertex-count control, while old triangle recipes retain their default. The general collapse family is classical; priority of the explicit bound is still unconfirmed.
 
 **Two closed loops, both with prior art.** Each piece is published. So is the family the loop belongs to. The plates are pictures of those families with an open-loop control sitting next to the closed one. A published equation plus a feedback term is not an invention, and it does not get a private name.
 
@@ -254,10 +241,10 @@ Click the seed label to copy it. Presets are starting points. The URL is the pie
 
 ## Techniques
 
-The full list, with the hash that reconstructs each plate and the papers each one implements, is in **[TECHNIQUES.md](TECHNIQUES.md)**. The same data in machine-readable form is [`techniques.json`](techniques.json). A short file for language models is [`llms.txt`](llms.txt). All three are generated from `studio.html` by `node tools/index.js`, so neither the catalog nor the AI index can drift away from what the file actually contains. Derived identities, when there are any, live in **[IDENTITIES.md](IDENTITIES.md)**. The query-by-query prior-art ledger is [RESEARCH.md](RESEARCH.md).
+The full list, with the hash that reconstructs each plate and the papers each one implements, is in **[TECHNIQUES.md](TECHNIQUES.md)**. The same data in machine-readable form is [`techniques.json`](techniques.json). A short file for language models is [`llms.txt`](llms.txt). All three are generated from `studio.html` by `node tools/index.js`, so neither the catalog nor the AI index can drift away from what the file actually contains. Derivations and proofs live in **[IDENTITIES.md](IDENTITIES.md)**. The query-by-query prior-art ledger is [RESEARCH.md](RESEARCH.md).
 
 
-Artificial Life (Lenia), Physarum, Physarum 3D, Phyllotaxis, Hastings–Levitov, Lichtenberg, Gravner–Griffeath snowflakes, differential growth, fractals, CPPNs, chimera states, swarmalators, Cahn–Hilliard, Ohta–Kawasaki, Swift–Hohenberg, phase-field crystal, XY / Kosterlitz–Thouless, complex Ginzburg–Landau, Lifshitz–Petrich 12-fold, active nematics, fluids, Kuramoto–Sivashinsky, dendritic growth, flow fields, smectic focal conics, Gray–Scott, Penrose / hat / spectre tilings, attractors, Chirikov, Hofstadter, Helmholtz scars, optical caustics, Talbot, Indra’s pearls, Chladni, cortical planforms, random matrices, drainage networks, rough growth, foam and grain coarsening, condensate vortex lattices, Toner-Tu flocking, hyperbolic Turing patterns, uniform spanning trees, granular force chains, Liesegang rings, Track, Caustic Sea, KP-II soliton webs, Gerstner waves, the figure-eight choreography, Camassa–Holm peakons, the Schwarzschild photon sphere, Crapper capillary waves, Hasimoto vortex filaments, KP-I lumps, Three-vortex collapse bound, the parallelogram lock, the quincunx lock.
+Artificial Life (Lenia), Physarum, Physarum 3D, Phyllotaxis, Hastings–Levitov, Lichtenberg, Gravner–Griffeath snowflakes, differential growth, fractals, CPPNs, chimera states, swarmalators, Cahn–Hilliard, Ohta–Kawasaki, Swift–Hohenberg, phase-field crystal, XY / Kosterlitz–Thouless, complex Ginzburg–Landau, Lifshitz–Petrich 12-fold, active nematics, fluids, Kuramoto–Sivashinsky, dendritic growth, flow fields, smectic focal conics, Gray–Scott, Penrose / hat / spectre tilings, attractors, Chirikov, Hofstadter, Helmholtz scars, optical caustics, Talbot, Indra’s pearls, Chladni, cortical planforms, random matrices, drainage networks, rough growth, foam and grain coarsening, condensate vortex lattices, Toner-Tu flocking, hyperbolic Turing patterns, uniform spanning trees, granular force chains, Liesegang rings, Track, Caustic Sea, KP-II soliton webs, Gerstner waves, the figure-eight choreography, Camassa–Holm peakons, the Schwarzschild photon sphere, Crapper capillary waves, Hasimoto vortex filaments, KP-I lumps, classical point-vortex collapse.
 
 Each tab names the researchers. The implementations are original.
 
@@ -275,46 +262,8 @@ Each tab names the researchers. The implementations are original.
 
 ---
 
-## Cite these identities
+## Sources and research
 
-The dates below record this project's writeups, not first discovery of the mathematics. Three-vortex collapse bound is a project label: its formula specializes Gröbli's 1877 spiral coefficient, as the [historical comparison](identities/ORIGINALITY-FOLLOWUP.md) shows. Priority of the optimized minima remains unconfirmed; see the [audit of all five candidates](identities/NOVELTY-AUDIT.md). Cite this writeup when using it and credit the classical sources for their mathematics.
-
-Chaos. (2026). *Three-vortex collapse bound*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md — recorded in GENChase 2026-09-19.
-
-Chaos. (2026). *Parallelogram lock*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md — recorded in GENChase 2026-09-20.
-
-Chaos. (2026). *Quincunx lock*. GENChase. https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md — recorded in GENChase 2026-09-20.
-
-```bibtex
-@misc{three-vortex-bound-2026,
-  author       = {Chaos},
-  title        = {Three-vortex collapse bound: an explicit formula and sharp minimum
-                  for a classical three-vortex collapse family},
-  year         = {2026},
-  howpublished = {GENChase},
-  url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
-  note         = {Recorded in GENChase 2026-09-19}
-}
-@misc{parallelogram-lock-2026,
-  author       = {Chaos},
-  title        = {Parallelogram lock: an explicit formula and sharp minimum
-                  for the Novikov--Sedov four-vortex parallelogram collapse},
-  year         = {2026},
-  howpublished = {GENChase},
-  url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
-  note         = {Recorded in GENChase 2026-09-20. $\omega_0 t_c \ge 3\sqrt{5}/4$}
-}
-@misc{quincunx-lock-2026,
-  author       = {Chaos},
-  title        = {Quincunx lock: an explicit formula and sharp minimum
-                  for the Novikov--Sedov five-vortex quincunx collapse},
-  year         = {2026},
-  howpublished = {GENChase},
-  url          = {https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md},
-  note         = {Recorded in GENChase 2026-09-20. $\omega_0 t_c \ge 3\sqrt{33}/16$}
-}
-```
-
-The boxed formulae, the proofs, and the plates whose checks can miss are in [IDENTITIES.md](IDENTITIES.md). The frozen four-page note is [identities/note.pdf](identities/note.pdf). Canonical byte-exact lines and SHA-256 fingerprints are in [identities/STATEMENTS.txt](identities/STATEMENTS.txt) and [identities/HASHES.txt](identities/HASHES.txt). GitHub's "Cite this repository" button emits the three-vortex bound record via [`CITATION.cff`](CITATION.cff). The frozen note preserves the original record; its priority language is superseded by the [audit](identities/NOVELTY-AUDIT.md) and [1877 comparison](identities/ORIGINALITY-FOLLOWUP.md). Dates and hashes establish provenance, not originality.
+The [technique catalog](TECHNIQUES.md) records the scientific sources behind each simulation. Derivations and proofs are in [IDENTITIES.md](IDENTITIES.md), and the [research ledger](RESEARCH.md) records literature checks and their limits. Credit the original scientific sources when using their mathematics.
 
 Built by Chaos.
