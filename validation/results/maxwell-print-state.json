@@ -1,0 +1,214 @@
+{
+  "scope": "Actual Maxwell exportPNG at 2400x2400 and 2400x3000, initial and 32-step paused states, all three views; exact float32 preservation of both field buffers including epsilon and all counters/settings.",
+  "rows": [
+    {
+      "cells": [
+        128,
+        128
+      ],
+      "precision": "rgba32f",
+      "exports": [
+        {
+          "steps": 0,
+          "view": "electric",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 3867161,
+          "state": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "words": 131072,
+            "metadataChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "intensity",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 3897886,
+          "state": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "words": 131072,
+            "metadataChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "material",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 120223,
+          "state": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "words": 131072,
+            "metadataChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 32,
+          "view": "electric",
+          "time": 0.1414213562373095,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 4153489,
+          "state": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "words": 131072,
+            "metadataChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 32,
+          "view": "intensity",
+          "time": 0.1414213562373095,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 3600675,
+          "state": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "words": 131072,
+            "metadataChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 32,
+          "view": "material",
+          "time": 0.1414213562373095,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 120223,
+          "state": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "words": 131072,
+            "metadataChanged": false,
+            "settingsChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Actual solver advances one step after export",
+        "rejected": true,
+        "changedWords": 98304
+      }
+    },
+    {
+      "cells": [
+        256,
+        320
+      ],
+      "precision": "rgba32f",
+      "exports": [
+        {
+          "steps": 0,
+          "view": "electric",
+          "time": 0,
+          "width": 2400,
+          "height": 3000,
+          "bytes": 4185883,
+          "state": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "words": 655360,
+            "metadataChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "intensity",
+          "time": 0,
+          "width": 2400,
+          "height": 3000,
+          "bytes": 4207229,
+          "state": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "words": 655360,
+            "metadataChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "material",
+          "time": 0,
+          "width": 2400,
+          "height": 3000,
+          "bytes": 150558,
+          "state": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "words": 655360,
+            "metadataChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 32,
+          "view": "electric",
+          "time": 0.07071067811865475,
+          "width": 2400,
+          "height": 3000,
+          "bytes": 4439686,
+          "state": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "words": 655360,
+            "metadataChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 32,
+          "view": "intensity",
+          "time": 0.07071067811865475,
+          "width": 2400,
+          "height": 3000,
+          "bytes": 4148114,
+          "state": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "words": 655360,
+            "metadataChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 32,
+          "view": "material",
+          "time": 0.07071067811865475,
+          "width": 2400,
+          "height": 3000,
+          "bytes": 150558,
+          "state": {
+            "changedWords": 0,
+            "nonfinite": 0,
+            "words": 655360,
+            "metadataChanged": false,
+            "settingsChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Actual solver advances one step after export",
+        "rejected": true,
+        "changedWords": 491520
+      }
+    }
+  ],
+  "limitations": "State preservation and dimensions only, not physical accuracy or calibrated color. Two grids and aspects, one seed/material parameter set, one float32 renderer; high-grid rendering and arbitrary running exports are not covered."
+}

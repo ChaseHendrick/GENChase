@@ -1,0 +1,197 @@
+{
+  "scope": "Periodic TMz Yee float32 shaders, lossless positive epsilon and uniform mu. Analytic discrete modes; one independent float64 slab fixture; fixed-domain/time second-order continuum refinement; deliberate curl/CFL failures; four-step high-grid checks.",
+  "modes": [
+    {
+      "cells": [
+        32,
+        32
+      ],
+      "epsilon": 1,
+      "mu": 1,
+      "mode": [
+        3,
+        2
+      ],
+      "steps": 80,
+      "dt": 0.015467960838455724,
+      "error": {
+        "max": 7.650083365118299e-7,
+        "rms": 3.500323882506123e-7
+      },
+      "modifiedEnergyRelativeDrift": 1.100404365406149e-7,
+      "magneticDivergenceMax": 0.000011444091796875
+    },
+    {
+      "cells": [
+        64,
+        48
+      ],
+      "epsilon": 0.25,
+      "mu": 0.5,
+      "mode": [
+        2,
+        3
+      ],
+      "steps": 80,
+      "dt": 0.002734375,
+      "error": {
+        "max": 5.868355870408681e-7,
+        "rms": 1.7489418210563526e-7
+      },
+      "modifiedEnergyRelativeDrift": 8.683214614002566e-8,
+      "magneticDivergenceMax": 0.0000133514404296875
+    },
+    {
+      "cells": [
+        128,
+        128
+      ],
+      "epsilon": 4,
+      "mu": 2,
+      "mode": [
+        5,
+        1
+      ],
+      "steps": 80,
+      "dt": 0.0109375,
+      "error": {
+        "max": 5.652037470271765e-7,
+        "rms": 1.592472380413562e-7
+      },
+      "modifiedEnergyRelativeDrift": 4.22025978608076e-8,
+      "magneticDivergenceMax": 0.0000820159912109375
+    },
+    {
+      "cells": [
+        32,
+        32
+      ],
+      "epsilon": 2.25,
+      "mu": 4,
+      "mode": [
+        9,
+        7
+      ],
+      "steps": 80,
+      "dt": 0.04640388251536717,
+      "error": {
+        "max": 0.0000028029540392049412,
+        "rms": 0.000001158160038614981
+      },
+      "modifiedEnergyRelativeDrift": 6.97661111104253e-8,
+      "magneticDivergenceMax": 0.000014796853065490723
+    }
+  ],
+  "heterogeneous": {
+    "cells": [
+      64,
+      48
+    ],
+    "epsilon": [
+      0.75,
+      3
+    ],
+    "mu": 1.7,
+    "dt": 0.00623778102448098,
+    "steps": 100,
+    "error": {
+      "max": 5.16976839060046e-7,
+      "rms": 1.1033081892018103e-7
+    },
+    "modifiedEnergyRelativeDrift": 1.6771722788355703e-8
+  },
+  "convergence": [
+    {
+      "cells": [
+        32,
+        32
+      ],
+      "physicalDomain": [
+        1,
+        1
+      ],
+      "time": 0.17,
+      "dt": 0.013076923076923078,
+      "steps": 13,
+      "electricRmsError": 0.004714997939371738
+    },
+    {
+      "cells": [
+        64,
+        64
+      ],
+      "physicalDomain": [
+        1,
+        1
+      ],
+      "time": 0.17,
+      "dt": 0.006538461538461539,
+      "steps": 26,
+      "electricRmsError": 0.0011729963450813894,
+      "refinementRatio": 4.019618611040586
+    },
+    {
+      "cells": [
+        128,
+        128
+      ],
+      "physicalDomain": [
+        1,
+        1
+      ],
+      "time": 0.17,
+      "dt": 0.0032692307692307695,
+      "steps": 52,
+      "electricRmsError": 0.00029287999469839793,
+      "refinementRatio": 4.0050408573973035
+    }
+  ],
+  "controls": {
+    "wrongCurlMaxError": 4.054557441968548,
+    "stableNyquistMax": 0.09633380174636841,
+    "aboveCflNyquistMax": 283304192
+  },
+  "heavy": [
+    {
+      "cells": [
+        512,
+        512
+      ],
+      "steps": 4,
+      "dt": 0.0011048543456039805,
+      "error": {
+        "max": 8.277327268046974e-8,
+        "rms": 2.1235325345281843e-8
+      },
+      "elapsedMs": 33
+    },
+    {
+      "cells": [
+        1024,
+        1024
+      ],
+      "steps": 4,
+      "dt": 0.0005524271728019902,
+      "error": {
+        "max": 9.494070674076482e-8,
+        "rms": 2.222503525532562e-8
+      },
+      "elapsedMs": 119
+    },
+    {
+      "cells": [
+        2048,
+        2048
+      ],
+      "steps": 4,
+      "dt": 0.0002762135864009951,
+      "error": {
+        "max": 1.0537434091961728e-7,
+        "rms": 2.212590676643411e-8
+      },
+      "elapsedMs": 431
+    }
+  ],
+  "sanitizerCflCases": 90,
+  "limitations": "No experimental, interface-scattering coefficient, discontinuous-material convergence, arbitrary parameter/long-time/device, or print-accuracy certification. Heavy-grid checks are only four steps."
+}

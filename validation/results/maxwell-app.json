@@ -1,0 +1,291 @@
+{
+  "scope": "Actual application defaults, presets, deterministic recipe, tab switch and seven exports through the print UI. Runtime/visual regression evidence, not numerical science.",
+  "commands": [
+    "node tools/check.js maxwell 12000",
+    "node tools/export.js maxwell 8 300 3000"
+  ],
+  "plate": [
+    {
+      "case": "default",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "c1592a16",
+      "nyq": null,
+      "seedField": "check-maxwell",
+      "lum": {
+        "p01": 13,
+        "p10": 42,
+        "p50": 79,
+        "p90": 155,
+        "p99": 230,
+        "min": 11,
+        "max": 235,
+        "ink": 0.4414
+      },
+      "status": "grid 512×512 · float32 periodic · t 0.245 dt 1.10e-3 step 222 seed check-maxwell"
+    },
+    {
+      "case": "preset disk",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "e82a630a",
+      "nyq": null,
+      "seedField": "check-maxwell",
+      "lum": {
+        "p01": 11,
+        "p10": 36,
+        "p50": 79,
+        "p90": 167,
+        "p99": 235,
+        "min": 9,
+        "max": 236,
+        "ink": 0.4446
+      },
+      "status": "grid 512×512 · float32 periodic · t 0.229 dt 1.10e-3 step 207 seed check-maxwell"
+    },
+    {
+      "case": "preset rings",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "549b3488",
+      "nyq": null,
+      "seedField": "check-maxwell",
+      "lum": {
+        "p01": 26,
+        "p10": 26,
+        "p50": 27,
+        "p90": 191,
+        "p99": 246,
+        "min": 26,
+        "max": 246,
+        "ink": 0.3946
+      },
+      "status": "grid 512×512 · float32 periodic · t 0.245 dt 1.10e-3 step 222 seed check-maxwell"
+    },
+    {
+      "case": "preset slab",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "c76eca8e",
+      "nyq": null,
+      "seedField": "check-maxwell",
+      "lum": {
+        "p01": 80,
+        "p10": 190,
+        "p50": 238,
+        "p90": 238,
+        "p99": 238,
+        "min": 56,
+        "max": 238,
+        "ink": 0.1957
+      },
+      "status": "grid 512×512 · float32 periodic · t 0.256 dt 1.10e-3 step 232 seed check-maxwell"
+    },
+    {
+      "case": "preset rods",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "da170d88",
+      "nyq": null,
+      "seedField": "check-maxwell",
+      "lum": {
+        "p01": 31,
+        "p10": 47,
+        "p50": 95,
+        "p90": 207,
+        "p99": 231,
+        "min": 29,
+        "max": 233,
+        "ink": 0.9319
+      },
+      "status": "grid 512×512 · float32 periodic · t 0.244 dt 1.10e-3 step 221 seed check-maxwell"
+    },
+    {
+      "case": "preset strip",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "be3f3c93",
+      "nyq": null,
+      "seedField": "check-maxwell",
+      "lum": {
+        "p01": 10,
+        "p10": 10,
+        "p50": 11,
+        "p90": 196,
+        "p99": 252,
+        "min": 10,
+        "max": 252,
+        "ink": 0.3147
+      },
+      "status": "grid 512×512 · float32 periodic · t 0.270 dt 1.10e-3 step 244 seed check-maxwell"
+    },
+    {
+      "case": "preset plane",
+      "canvas": "687x687",
+      "visibleCanvases": 1,
+      "fp": "45c0b71",
+      "nyq": null,
+      "seedField": "check-maxwell",
+      "lum": {
+        "p01": 45,
+        "p10": 111,
+        "p50": 155,
+        "p90": 224,
+        "p99": 224,
+        "min": 36,
+        "max": 224,
+        "ink": 0.955
+      },
+      "status": "grid 512×512 · float32 periodic · t 0.350 dt 1.66e-3 step 211 seed check-maxwell"
+    },
+    {
+      "case": "determinism",
+      "first": "d96e2dd7",
+      "second": "d96e2dd7",
+      "same": true,
+      "steps": [
+        96,
+        96
+      ],
+      "canvas": [
+        "687x687",
+        "687x687"
+      ],
+      "pausable": true,
+      "settle": [
+        "warmed",
+        "warmed"
+      ]
+    },
+    {
+      "case": "tabswitch",
+      "via": "life",
+      "visibleCanvases": 1,
+      "lum": {
+        "p01": 11,
+        "p10": 47,
+        "p50": 79,
+        "p90": 147,
+        "p99": 232,
+        "min": 10,
+        "max": 235,
+        "ink": 0.307
+      }
+    }
+  ],
+  "print": [
+    {
+      "case": "export (default)",
+      "w": 2400,
+      "h": 2400,
+      "mb": 3.72,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 3.7 MB. Recomputed at print pixels. The field is 512 × 512 cells, so one",
+      "lum": {
+        "p01": 12,
+        "p50": 79,
+        "p99": 231,
+        "min": 11,
+        "max": 236,
+        "ink": 0.5186
+      }
+    },
+    {
+      "case": "export disk",
+      "w": 2400,
+      "h": 2400,
+      "mb": 3.37,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 3.4 MB. Recomputed at print pixels. The field is 512 × 512 cells, so one",
+      "lum": {
+        "p01": 11,
+        "p50": 79,
+        "p99": 233,
+        "min": 10,
+        "max": 236,
+        "ink": 0.4667
+      }
+    },
+    {
+      "case": "export rings",
+      "w": 2400,
+      "h": 2400,
+      "mb": 3.81,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 3.8 MB. Recomputed at print pixels. The field is 512 × 512 cells, so one",
+      "lum": {
+        "p01": 26,
+        "p50": 27,
+        "p99": 246,
+        "min": 26,
+        "max": 246,
+        "ink": 0.3933
+      }
+    },
+    {
+      "case": "export slab",
+      "w": 2400,
+      "h": 2400,
+      "mb": 1.8,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 1.8 MB. Recomputed at print pixels. The field is 512 × 512 cells, so one",
+      "lum": {
+        "p01": 75,
+        "p50": 238,
+        "p99": 238,
+        "min": 55,
+        "max": 238,
+        "ink": 0.2391
+      }
+    },
+    {
+      "case": "export rods",
+      "w": 2400,
+      "h": 2400,
+      "mb": 4.16,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 4.2 MB. Recomputed at print pixels. The field is 512 × 512 cells, so one",
+      "lum": {
+        "p01": 30,
+        "p50": 94,
+        "p99": 231,
+        "min": 29,
+        "max": 233,
+        "ink": 0.9275
+      }
+    },
+    {
+      "case": "export strip",
+      "w": 2400,
+      "h": 2400,
+      "mb": 2.89,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 2.9 MB. Recomputed at print pixels. The field is 512 × 512 cells, so one",
+      "lum": {
+        "p01": 10,
+        "p50": 12,
+        "p99": 252,
+        "min": 10,
+        "max": 252,
+        "ink": 0.3252
+      }
+    },
+    {
+      "case": "export plane",
+      "w": 2400,
+      "h": 2400,
+      "mb": 3.09,
+      "vector": false,
+      "note": "2,400 × 2,400 px, 3.1 MB. Recomputed at print pixels. The field is 512 × 512 cells, so one",
+      "lum": {
+        "p01": 32,
+        "p50": 158,
+        "p99": 193,
+        "min": 30,
+        "max": 194,
+        "ink": 0.6613
+      }
+    }
+  ],
+  "passed": true
+}
