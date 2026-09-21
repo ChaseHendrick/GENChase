@@ -1,5 +1,7 @@
 # Nominal versus missing-rod selection after the boundary diagnosis
 
+**The primary hypothesis failed:** nominal and worst-deletion selection chose the same buffered-domain layout, so changing the selection objective added no advantage in this pool. The experiment also found that the robust winner changed when the domain was enlarged. All 370 physical simulations passed the independent numerical validity checks; two deliberate controls were rejected.
+
 This is a **new, frozen experiment**, specified on 2026-09-21 before its simulations. It follows the [periodic-boundary diagnosis](MAXWELL-BOUNDARY.md); it does not replace the earlier failed [configuration search](MAXWELL-SEARCH.md). No novel law, optimization method or physical device performance is claimed.
 
 ## Question and prior work
@@ -36,4 +38,24 @@ The plan command lists the complete pool and held-out error bank without running
 
 The source uses the classical lossless periodic Yee TMz model. Rasterized rod boundaries, a finite pool, eight sampled perturbations and seven-time quadrature limit the conclusion. No absorbing boundary, full continuous-time integration study, independent Meep replay, physical experiment, universal robustness or historical originality is established.
 
-**Results:** pending the first frozen-protocol run.
+## Recorded outcome
+
+Both buffered-domain objectives selected **random-37005**, occupying sites `0, 1, 2, 4, 6, 11, 13, 14, 15, 16, 18, 19`. Therefore the robust-versus-nominal gain is exactly zero, below the frozen 5% threshold, and the distinct-selection condition fails. The held-out difference and its bootstrap interval are also exactly zero because they compare the **same saved layout and runs**; that is an identity, not independent evidence of precision or generalization.
+
+The unit-domain robust winner was random-37007. On the buffered domain it became random-37005, while the nominal winner remained random-37005. Across all twelve layouts, the domain-to-domain Spearman rank correlations were **0.7762 for nominal score and 0.7692 for worst-case score**. This supports boundary-sensitive selection in this model and window. Both periodic dimensions were enlarged here; the preceding boundary experiment separately isolated horizontal extension.
+
+| Buffered-domain finalist, at 256 cells per unit | Intact score | Worst of intact + 12 deletions | Worst retention | Mean of 8 held-out cases | Held-out range |
+|---|---:|---:|---:|---:|---:|
+| random-37005, selected by both rules | 0.00945909 | 0.00704481 | 74.48% | 0.00938855 | 0.00842429–0.0104260 |
+| Simple two columns | 0.00879859 | 0.00281388 | 31.98% | 0.00864351 | 0.00778144–0.00969767 |
+
+The selected random layout performed better than this simple baseline in these recorded comparisons. This is a descriptive layout result, **not** evidence that worst-case selection outperformed nominal selection: the two rules returned the same candidate. The pool was selected on the 128 grid; only the two finalists were fully checked at 256, so no finest-grid optimum over the whole pool is established.
+
+The finest-grid and sensitivity checks were favorable within their limited scope:
+
+- For random-37005, intact and selected-worst scores changed by **0.81% and 0.47%** between 256 and 512 cells per unit. Half-step changes were **0.021% and 0.0063%**. Its selected worst deletion was site 19 at both 128 and 256.
+- For the simple pattern, corresponding 256-to-512 changes were **0.17% and 0.060%**; half-step changes were **0.055% and 0.134%**. Its selected worst deletion was site 12. That defect score had changed by **6.35% from 128 to 256**, so the coarser score should not be treated as high-precision evidence.
+- The `[2,2]` and `[3,3]` scores were identical at the recorded precision for the finalists' intact/selected-worst runs at 128. Uniform-reference scores also matched across these domains at 128 and 256. This is a measured domain-sensitivity check, not a proof of exact continuum causality or of all later times.
+- All 370 physical runs had finite fields and unchanged materials. The maximum independent cross-time energy drift was **4.21 × 10⁻⁸**, below `10⁻⁴`. Initial source norms were exactly equal across all layouts, defects and domains at each grid. Zero-source and wrong-curl controls were rejected. Saved source and harness hashes match the files that generated the artifact.
+
+The [full result](results/maxwell-robust.json) records **372 forward runs**: 312 selection cases, 54 finalist checks, four uniform references and two controls. The fixed hypothesis and thresholds were retained after the negative outcome. This finite study provides a reusable baseline and a demonstrated sensitivity to periodic-domain choice; it establishes zero new physical laws or confirmed novel scientific findings.
