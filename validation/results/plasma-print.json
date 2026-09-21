@@ -1,0 +1,191 @@
+{
+  "sourceSha256": "237cfe67009ed638ec3b021c6f872dd1190e13e0ea0fd85ac49f6ea9c62dbdd4",
+  "harnessSha256": "bb6a46ee011be77605d0ed7de28c877c421c2a8b3dc2e1784e6a498d93e4b90a",
+  "command": "node tools/plasma-print.js > validation/results/plasma-print.json",
+  "scope": "Eight actual 2400x2400/2400x3000 PNG exports, initial and evolved paused states, density and velocity views. Exact float64 particle/field/backup arrays, histogram CPU/GPU arrays, counters, diagnostics, settings. Cooperative warmup pause/resume agrees byte-for-byte with fixed-step evolution.",
+  "rows": [
+    {
+      "particles": 4096,
+      "physicalCells": 64,
+      "histogramCells": [
+        64,
+        256
+      ],
+      "exports": [
+        {
+          "steps": 0,
+          "view": "density",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 2175817,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 722432,
+            "physicalChanged": false,
+            "displayChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "velocity",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 1567791,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 722432,
+            "physicalChanged": false,
+            "displayChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 40,
+          "view": "density",
+          "time": 1.0000000000000004,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 2167386,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 722432,
+            "physicalChanged": false,
+            "displayChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 40,
+          "view": "velocity",
+          "time": 1.0000000000000004,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 1561739,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 722432,
+            "physicalChanged": false,
+            "displayChanged": false,
+            "settingsChanged": false
+          }
+        }
+      ],
+      "scheduling": {
+        "steps": 1600,
+        "pausedAtStep": 733,
+        "comparison": {
+          "changedBytes": 0,
+          "nonfinite": 0,
+          "bytes": 132608,
+          "physicalChanged": false,
+          "displayChanged": false,
+          "settingsChanged": false
+        }
+      },
+      "failureControls": {
+        "mutatingExportRejected": true,
+        "changedBytes": 136389,
+        "wrongDimensionsRejected": true
+      }
+    },
+    {
+      "particles": 16384,
+      "physicalCells": 256,
+      "histogramCells": [
+        256,
+        256
+      ],
+      "exports": [
+        {
+          "steps": 0,
+          "view": "density",
+          "time": 0,
+          "width": 2400,
+          "height": 3000,
+          "bytes": 2679092,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 2889728,
+            "physicalChanged": false,
+            "displayChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 0,
+          "view": "velocity",
+          "time": 0,
+          "width": 2400,
+          "height": 3000,
+          "bytes": 1942039,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 2889728,
+            "physicalChanged": false,
+            "displayChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 40,
+          "view": "density",
+          "time": 1.0000000000000004,
+          "width": 2400,
+          "height": 3000,
+          "bytes": 2672153,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 2889728,
+            "physicalChanged": false,
+            "displayChanged": false,
+            "settingsChanged": false
+          }
+        },
+        {
+          "steps": 40,
+          "view": "velocity",
+          "time": 1.0000000000000004,
+          "width": 2400,
+          "height": 3000,
+          "bytes": 1937936,
+          "state": {
+            "changedBytes": 0,
+            "nonfinite": 0,
+            "bytes": 2889728,
+            "physicalChanged": false,
+            "displayChanged": false,
+            "settingsChanged": false
+          }
+        }
+      ],
+      "scheduling": {
+        "steps": 1600,
+        "pausedAtStep": 177,
+        "comparison": {
+          "changedBytes": 0,
+          "nonfinite": 0,
+          "bytes": 530432,
+          "physicalChanged": false,
+          "displayChanged": false,
+          "settingsChanged": false
+        }
+      },
+      "failureControls": {
+        "mutatingExportRejected": true,
+        "changedBytes": 564354,
+        "wrongDimensionsRejected": true
+      }
+    }
+  ],
+  "limitations": "Preservation and dimensions only; no calibrated color, physical experiments, arbitrary settings, live export races, or high-particle browser performance certificate."
+}
