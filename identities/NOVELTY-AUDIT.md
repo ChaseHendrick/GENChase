@@ -1,6 +1,10 @@
 # Novelty audit of the five candidate bounds
 
+**Confirmed novel findings among the five candidates: 0.** None has established historical originality. This does not prove that every optimized minimum was published before; it means the evidence does not support counting any as a confirmed new discovery. Candidates 2 and 4 are special cases of candidate 5, so the five entries are not independent findings.
+
 Audit date: 2026-09-20. This is a literature assessment, not a certificate of originality. It supersedes the repository's earlier unqualified claims of being the first public source of these formulas.
+
+**Post-merge follow-up:** [a direct comparison with Gröbli's 1877 original](ORIGINALITY-FOLLOWUP.md) reproduces candidate 1 by substitution and a change of variables, and checks a denominator against the original scan. Priority of the optimized minimum remains unconfirmed.
 
 **The evidence does not establish five novel discoveries.** All five concern classical point-vortex collapse. The exact minima below were not located in the sources inspected, but the first three are elementary specializations and optimizations of published rate formulas. The fifth generalizes the second and fourth. Mathematical correctness, independent derivation, historical priority, and a substantial research contribution are separate questions.
 
@@ -10,7 +14,7 @@ Write $P=\omega_0t_c$ for the positive spin–collapse product on the stated col
 
 | Candidate | Precise bound being assessed | Earlier foundation | Audit conclusion |
 |---|---|---|---|
-| 1. Hendrick's Identity | $P=(2-\cos^2\theta)/\sin2\theta\ge\sqrt2$, equality at $\tan\theta=1/\sqrt2$ | Classical three-vortex collapse; Aref 2010, eqs. (25a), (25d), (29c) | Formula follows by substitution in published dynamics. No earlier explicit statement of this exact sharp minimum was located. Priority unconfirmed. The name is a project label. |
+| 1. Three-vortex collapse bound | $P=(2-\cos^2\theta)/\sin2\theta\ge\sqrt2$, equality at $\tan\theta=1/\sqrt2$ | Gröbli 1877, §10, eqs. (8), (9), (11), (12); also Aref 2010 | Formula explicitly reproduces Gröbli’s spiral coefficient after specialization and reparameterization; see [the comparison](ORIGINALITY-FOLLOWUP.md). No earlier explicit statement of this exact sharp minimum was located. Priority unconfirmed. The name is a project label. |
 | 2. Parallelogram lock | $P=(\sqrt3/4)(4-\cos2\theta)/\sin2\theta\ge3\sqrt5/4$, equality at $\cos2\theta=1/4$ | Novikov–Sedov 1979, §4; Gotoda 2020 preprint, eq. (3.13) | Elementary corollary of published rates for an already published family. No earlier explicit minimum located; priority unconfirmed. Also the $n=2$ case of candidate 5. |
 | 3. Quincunx lock | $P=(3/16)(7-4\cos2\theta)/\sin2\theta\ge3\sqrt{33}/16$, equality at $\cos2\theta=4/7$ | The same 1979 family with a central vortex; Gotoda eq. (3.13) and Fig. 3 | Elementary corollary on the exact parameter slice already illustrated by Gotoda. No earlier explicit minimum located; priority unconfirmed. |
 | 4. [Double-triangle bound](double-triangle.md) | $P=(11-\sqrt5\cos3\theta)/(6\sin3\theta)\ge\sqrt{29}/3$, equality at $\cos3\theta=\sqrt5/11$ | Classical two-ring collapse; Koiller et al. 1985, §11 | A proved specialization of the classical family; priority unconfirmed, with an important full-text gap. It is exactly $n=3$ in candidate 5. |
@@ -41,6 +45,8 @@ For the first result, $P=(3-\cos2\theta)/(2\sin2\theta)$. The other four already
 Equivalent prior results could use $B/(-2A)$, logarithmic-spiral pitch, a pitch angle, its reciprocal, or a normalized path length. Searching only for the project names or the printed radicals would miss those.
 
 ## Primary sources inspected
+
+The follow-up directly inspected **Gröbli’s 1877 original, §10, pp. 56–58**, including the [coefficient on printed p. 57](https://www.digitale-sammlungen.de/en/view/bsb11358655?page=61). The [comparison](ORIGINALITY-FOLLOWUP.md) supplies the substitution and distinguishes the known formula from the unresolved priority of its optimization.
 
 1. **Novikov and Sedov, “Vortex collapse,” 1979, pp. 297–301.** The [journal PDF](https://www.jetp.ras.ru/cgi-bin/dn/e_050_02_0297.pdf) was downloaded and read, including rendered pages 298 and 301. The discussion on p. 298 already places $2\omega_0t_*$ in the logarithmic-spiral relation between radius and angle. Section 4 gives collapse time and angular velocity for four and five vortices, including eqs. (4.3)–(4.4). The product as a geometric spiral parameter therefore predates this project and Aref 2010. These exact sharp minima were not found in the paper.
 

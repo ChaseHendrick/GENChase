@@ -197,7 +197,7 @@ const { chromium } = require('playwright');
     id: document.querySelector('.tab[aria-selected="true"]') && document.querySelector('.tab[aria-selected="true"]').dataset.id,
     seed: (document.querySelector('#seed') || {}).value,
   }));
-  t('#hendricks-identity opens Hendrick\'s Identity', alias.id === 'hendricks-identity' && alias.seed === 'alias-check', alias);
+  t('#hendricks-identity opens the three-vortex bound', alias.id === 'three-vortex-bound' && alias.seed === 'alias-check', alias);
 
   await p.goto('file://' + studio + '#hendrick/old-hash', { waitUntil: 'domcontentloaded' });
   await p.waitForTimeout(2000);
@@ -205,7 +205,7 @@ const { chromium } = require('playwright');
     id: document.querySelector('.tab[aria-selected="true"]') && document.querySelector('.tab[aria-selected="true"]').dataset.id,
     seed: (document.querySelector('#seed') || {}).value,
   }));
-  t('#hendrick still opens Hendrick\'s Identity', oldHash.id === 'hendricks-identity' && oldHash.seed === 'old-hash', oldHash);
+  t('#hendrick still opens the three-vortex bound', oldHash.id === 'three-vortex-bound' && oldHash.seed === 'old-hash', oldHash);
 
   const pe = await p.evaluate(() => getComputedStyle(document.querySelector('#status')).pointerEvents);
   t('status does not eat plate clicks', pe === 'none', pe);

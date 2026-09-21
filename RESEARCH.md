@@ -8,7 +8,9 @@ The catalog of what the file actually contains is [`techniques.json`](techniques
 
 ## Current novelty status
 
-The [2026-09-20 audit of all five candidates](identities/NOVELTY-AUDIT.md) supersedes earlier unqualified first-discovery or uniqueness assertions in this chronological ledger. All five have unconfirmed historical priority. Their families and the spin–collapse product are classical; the exact minima were not located in the sources inspected. The fifth contains the second and fourth. Old skip decisions and rejected-family claims below are historical search notes, not current novelty certifications.
+**Confirmed novel findings among the five candidates: 0.** Mathematical proofs and numerical checks establish validity, not historical originality. The fifth contains the second and fourth; there are not four confirmed discoveries remaining after correcting the first.
+
+The [2026-09-20 audit of all five candidates](identities/NOVELTY-AUDIT.md) supersedes earlier unqualified first-discovery or uniqueness assertions in this chronological ledger. The first formula explicitly specializes Gröbli’s 1877 spiral coefficient; priority of the optimized minima remains unconfirmed. The [follow-up comparison](identities/ORIGINALITY-FOLLOWUP.md) supplies the substitution. The personal name has been retired in favor of Three-vortex collapse bound. Their families and the spin–collapse product are classical; the exact minima were not located in the sources inspected. The fifth contains the second and fourth. Old skip decisions and rejected-family claims below are historical search notes, not current novelty certifications.
 
 ## Do this, do not do that
 
@@ -461,7 +463,7 @@ Familiarity is listed so you do not confuse it with prior-art status.
 | `crapper` | Crapper | occasional | software search | skip unless new source |
 | `hasimoto` | Hasimoto | occasional | software search | skip unless new source |
 | `lump` | Lump | occasional | software search | skip unless new source |
-| `hendricks-identity` | Hendrick's Identity | unseen | identity | do not re-derive |
+| `three-vortex-bound` | Three-vortex collapse bound | unseen | identity | do not re-derive |
 | `parallelogram-lock` | Parallelogram lock | unseen | identity | do not re-derive |
 | `quincunx-lock` | Quincunx lock | unseen | identity | do not re-derive |
 | `double-triangle-bound` | Polygon collapse bounds | rare | proved candidate; priority unresolved | 2026-09-20 partial primary-source review; full-text check pending |
@@ -977,3 +979,21 @@ Access and comparison: downloaded full Novikov–Sedov 1979 journal PDF (5 pages
 Findings: Novikov–Sedov already used the spin–time product in the logarithmic-spiral relation in 1979. Aref's rates and Gotoda's eq. (3.13) give candidates 1–3 by specialization. All five minima follow from the same elementary perfect-square inequality. Candidate 5 includes 2 and 4; these are not five independent discoveries. Krishnamurthy–Stremler's normalized circumcenter path length is an equivalent quantity: s(1)=sqrt(1+4P²), so candidate 1 corresponds to s(1)>=3 on its specified circulation slice; their numerical >2 observation on a broader family is not that sharp bound.
 
 Conclusion: no earlier explicit statement of these exact minima was located in the sources inspected. This is limited negative evidence, not verified novelty. All five now have historical priority explicitly unconfirmed. Live README, catalog credits, identity descriptions and citation metadata have been corrected. Frozen PDF/Typst/statement hashes remain archival records, accompanied by the audit correction. Do not describe the work as five verified novel identities or infer that a later independent derivation copied this repository.
+
+## 2026-09-20 — Post-merge originality follow-up
+
+Scope: after merging #76, try to resolve the remaining originality questions, especially equivalent spiral coefficients and the inaccessible Koiller text. This extends the previous audit; it does not reverse its caution about priority.
+
+Queries included: `"Koiller" "vortex motions" filetype:pdf`; `"0167278985900843" full text`; `"On Aref's vortex motions with a symmetry center" repository`; `"On Aref" "Collapse motions" "11."`; `"Koiller" "vortex" site:ufmg.br`; `"On Aref" "spirals"`; `"Koiller" "symmetry center" "59"`; `"On Aref" "symmetry center" filetype:pdf site:impa.br`; `"On Aref" "symmetry center" site:lncc.br`; `"vortex collapse" "minimum" "pitch" -site:github.com -site:genchase.com`; `"vortex" "collapse" "minimum winding"`; `"three vortices" "path length" "minimum"`; `"point vortices" "spiral" "pitch angle"`; `"vortex" "collapse" "angular velocity" "bound"`; `"vortex" "collapse" "sqrt{2}"`; `"vortex" "collapse" "3√5" OR "sqrt(5)/4" OR "sqrt{5}/4"`; `"vortex" "collapse" "sqrt{33}" OR "√33" OR "sqrt(33)"`; `"vortex" "collapse" "sinh" "minimum" -site:github.com`; `"On the structure of the set of self-similar quadruples" arxiv`; `Synge 1949 "On the motion of three vortices" pdf`; `Gröbli 1877 vortices English translation collapse`; `Gröbli "Specielle Probleme" 1877 digitized`; `"Gröbli" "Specielle" site:e-periodica.ch`; `"bsb11358655"`.
+
+New primary comparison: obtained Goodman's full 2024 translation of Gröbli's dissertation and inspected §10. Then obtained the Bayerische Staatsbibliothek IIIF manifest for bsb11358655 and inspected original printed pp. 56–58 (scan images 60–62). Original §10 equations (8), (9), (11), (12) reproduce candidate 1 under the circulation substitution (1,1,-1/2) and shape substitution a=sqrt(3)/cos(theta). The original (9) has denominator mu1*mu2*mu3, while the translation (10.9) repeats mu3. Use the original. The resulting squared-excess identity proves the minimum directly; 999 exact rational substitutions verify the algebraic comparison. The optimization is our calculation from the old formula, not something attributed to Gröbli. See [the full comparison](identities/ORIGINALITY-FOLLOWUP.md).
+
+Also inspected: Synge 1949 §4 and the singular-configuration discussion; Lewkowicz arXiv:1512.04668 Lemma 3.1 and §§5, 7–10; Ting–Knio–Blackmore arXiv:0807.0454 trilinear-coordinate discussion. No matching optimized product bound was located in those passages. These limited readings are not claims to have excluded every result in those works.
+
+Access audit: OpenAlex's DOI record and Semantic Scholar paper 24c593dc74f13a7dfe59a19b4fc31f0a81d1bdfb list Koiller 1985 as closed and supply no open PDF location. CiteSeer's indexed PDF again timed out. The 1985 body remains unread; this is not negative evidence about its mathematical content. Web retrieval of the BSB viewer failed, but its public IIIF API succeeded and the original page images were read directly. No author was contacted.
+
+Conclusion: candidate 1's functional formula is an explicit specialization and reparameterization of an 1877 formula. Historical priority of the additional sharp optimization remains unconfirmed. Candidates 2–5 retain the earlier audit classifications and dependencies. Originality of all five has not been established, and cannot honestly be certified from this search. Next useful work is full access to Koiller §11 and a specialist's comparison of the exact optimized statements, not another search of the project names.
+
+### 2026-09-20 descriptive-name correction
+
+The personal name of candidate 1 is retired at the author’s request. The live title is **Three-vortex collapse bound**, canonical tab `three-vortex-bound`, with Gröbli (1877) credited explicitly. Earlier search queries and the frozen snapshot retain their historical wording, superseded by this correction and ORIGINALITY-FOLLOWUP.md. Old URL hashes remain compatibility aliases, not current titles.
