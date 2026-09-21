@@ -23,11 +23,11 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GENChase — generative art from real simulations">
-<meta property="og:description" content="120 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
+<meta property="og:description" content="122 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
 <meta property="og:site_name" content="GENChase">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GENChase — generative art from real simulations">
-<meta name="twitter:description" content="120 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<meta name="twitter:description" content="122 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "A generative art studio built from real scientific simulations. 120 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
+  "description": "A generative art studio built from real scientific simulations. 122 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
   "featureList": [
     "Flow fields with collision-avoiding strokes",
     "Gray-Scott reaction-diffusion",
@@ -241,6 +241,13 @@
   }
   .printbox select { border: 0; background: transparent; border-radius: 0; padding: 7px 6px 7px 8px; max-width: none; }
   .printbox select + select { border-left: 1px solid var(--line); }
+  .printbox .custom-size { display: flex; align-items: center; gap: 3px; padding-right: 6px; }
+  .printbox .custom-size[hidden] { display: none; }
+  .printbox .custom-size label { display: inline; padding: 0 3px; border: 0; align-self: auto; }
+  .printbox .custom-size input { width: 4.4rem; min-width: 0; padding: 6px 3px; font-variant-numeric: tabular-nums; }
+  .printbox .custom-size input:invalid { border-color: var(--accent); }
+  .printbox .custom-size span { font-size: 11px; }
+
   .printbox .ptog {
     border: 0; border-left: 1px solid var(--line); background: transparent; color: var(--ink);
     padding: 7px 10px; align-self: stretch;
@@ -794,6 +801,9 @@
     .printbox { flex: 0 1 auto; min-width: 0; flex-wrap: nowrap; }
     .printbox select { max-width: 4.8rem; padding-inline: 4px; }
     .printbox .ptog { display: none; }
+    .print-cluster:has(.custom-size:not([hidden])) { flex-wrap: wrap; }
+    .print-cluster:has(.custom-size:not([hidden])) .printbox { order: -1; flex: 1 0 100%; justify-content: center; }
+    .printbox .custom-size input { width: 4rem; }
     #dock-dims { display: none !important; }
     .printbox .dims { display: none !important; }
     .status {
@@ -1369,7 +1379,13 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       <button class="btn primary" id="btn-generate" type="button" title="New seed (Space)">Generate</button>
       <div class="printbox">
         <label for="export-inches">print</label>
-        <select id="export-inches" aria-label="Print size, long edge in inches"></select>
+        <select id="export-inches" aria-label="Print size, long edge in inches or custom dimensions"></select>
+        <span id="export-custom" class="custom-size" hidden>
+          <label for="export-width">W</label><input id="export-width" type="number" min="1" max="1000" step="any" value="20" required aria-label="Print width in inches" title="Sheet width in inches, from 1 to 1000">
+          <span aria-hidden="true">×</span>
+          <label for="export-height">H</label><input id="export-height" type="number" min="1" max="1000" step="any" value="20" required aria-label="Print height in inches" title="Sheet height in inches, from 1 to 1000">
+          <span>in</span>
+        </span>
         <select id="export-dpi" aria-label="Print resolution in pixels per inch"></select>
         <button id="btn-colophon" class="ptog" type="button" role="switch" aria-checked="false"
           title="Show a printed caption under the image: technique, governing equation, seed and every parameter">Colophon</button>
@@ -1488,7 +1504,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>Almost every tab is the paper it names. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 120 sciences share one control surface,
+      <p>Almost every tab is the paper it names. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 122 sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -1630,7 +1646,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           in bands, with a spacing that grows geometrically. Liesegang, 1896.</li>
       </ul>
 
-      <p class="colo" id="catalog-count">The live catalog is 120 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
+      <p class="colo" id="catalog-count">The live catalog is 122 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
       <h3>How it is built</h3>
       <p>Modular source is assembled into one portable HTML file. No installation or build step is needed to use the download. No frameworks, server, network calls, analytics or
         no tracking of any kind. It runs offline, from a thumb drive, and will still run when every CDN-dependent tool from this
@@ -2143,6 +2159,8 @@ void main(){
     unseen: 'Almost unseen',
   };
   const FAMILIARITY = {
+    maxwell: 'occasional',
+    molecular: 'occasional',
     // ubiquitous
     life: 'ubiquitous',
     fractal: 'ubiquitous',
@@ -3730,6 +3748,14 @@ void main(){
     if (g) maxTexSize = g.getParameter(g.MAX_TEXTURE_SIZE) || maxTexSize;
   } catch (err) { /* keep the conservative default */ }
   let printInches = 20, printDpi = 300;
+  let customPrint = false, printWidth = 20, printHeight = 20;
+  const validInches = v => Number.isFinite(v) && v >= 1 && v <= 1000;
+  function validPrintInputs() {
+    return !customPrint || ['export-width', 'export-height'].every(id => {
+      const el = $(id);
+      return el && el.validity.valid && validInches(el.valueAsNumber);
+    });
+  }
 
   function currentAspect() {
     const e = instances[currentId];
@@ -3741,17 +3767,23 @@ void main(){
     const ar = currentAspect();
     let hIn = printInches, wIn = printInches;
     if (ar >= 1) wIn = printInches / ar; else hIn = printInches * ar;
+    if (customPrint) { wIn = printWidth; hIn = printHeight; }
     let pw = Math.round(wIn * printDpi), ph = Math.round(hIn * printDpi);
     let clamp = 1, clampWhy = '';
     if (Math.max(pw, ph) > MAX_EDGE) { clamp = MAX_EDGE / Math.max(pw, ph); clampWhy = 'canvas'; }
     if (Math.max(pw, ph) * clamp > maxTexSize) { clamp = Math.min(clamp, maxTexSize / Math.max(pw, ph)); clampWhy = 'texture'; }
     if (pw * ph * clamp * clamp > MAX_AREA) { clamp = Math.min(clamp, Math.sqrt(MAX_AREA / (pw * ph))); clampWhy = 'encode'; }
     const clamped = clamp < 0.999;
-    if (clamped) { pw = Math.round(pw * clamp); ph = Math.round(ph * clamp); }
+    if (clamped) { pw = Math.max(1, Math.round(pw * clamp)); ph = Math.max(1, Math.round(ph * clamp)); }
+    let rw = pw, rh = ph;
+    if (customPrint) {
+      if (ph / pw > ar) rh = Math.max(1, Math.round(pw * ar));
+      else rw = Math.max(1, Math.round(ph / ar));
+    }
     const effDpi = Math.round(pw / wIn);
-    return { ar, wIn, hIn, pw, ph, clamped, clampWhy, dpi: printDpi, effDpi, mp: (pw * ph) / 1e6 };
+    return { ar, wIn, hIn, pw, ph, rw, rh, clamped, clampWhy, dpi: printDpi, effDpi, mp: (pw * ph) / 1e6 };
   }
-  const inTxt = v => (Math.round(v * 10) / 10).toFixed(1);
+  const inTxt = v => Number.isInteger(v) ? v.toFixed(1) : String(Number(v.toFixed(4)));
   const cmTxt = v => (Math.round(v * 2.54 * 10) / 10).toFixed(1);
   function printLabel(sp) {
     return inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in · ' +
@@ -3761,8 +3793,16 @@ void main(){
   function updateDims() {
     const el = $('export-dims');
     if (!el || !instances[currentId]) return;
+    const valid = validPrintInputs();
+    $('btn-export').disabled = !valid;
+    if (!valid) {
+      el.textContent = 'Enter width and height from 1 to 1000 inches.';
+      el.title = el.textContent;
+      if ($('dock-dims')) $('dock-dims').textContent = el.textContent;
+      return;
+    }
     const sp = printSpec();
-    const line = printLabel(sp) + (sp.clamped ? ' · ' + sp.effDpi + ' ppi' : '') + (colophon ? ' · colophon' : '');
+    const line = printLabel(sp) + (sp.clamped ? ' · ' + sp.effDpi + ' ppi' : '') + (colophon ? ' · colophon' : '') + (customPrint ? ' · fit to sheet' : '');
     el.textContent = line;
     const dock = $('dock-dims');
     if (dock) { dock.textContent = line; dock.hidden = false; }
@@ -3883,6 +3923,10 @@ void main(){
       meta: pt(8, 0.085),
       p: pt(7, 0.072),
     };
+    // Very short custom sheets need smaller type so the caption cannot consume the image.
+    const typeHeight = fs.title * 1.25 + fs.eq * 2 + fs.meta * 1.9 + 12 * fs.p * 1.55;
+    const typeScale = Math.min(1, ((sheetH - 2 * pad) * 0.55 - pad * 0.9) / typeHeight);
+    for (const key of Object.keys(fs)) fs[key] *= typeScale;
     const bandH = Math.round(fs.title * 1.25 + fs.eq * 2.0 + fs.meta * 1.9 + 6 * fs.p * 1.55 + pad * 0.9);
     const innerW = sheetW - pad * 2, innerH = sheetH - pad * 2 - bandH;
     let artW = innerW, artH = Math.round(innerW * sp.ar);
@@ -3969,12 +4013,42 @@ void main(){
 
   /* ---- export ---- */
   let lastUrl = null, lastBlob = null, lastName = '';
+  async function fitPrintSheet(blob, sp, bg) {
+    if (sp.rw === sp.pw && sp.rh === sp.ph) return blob;
+    const url = URL.createObjectURL(blob);
+    try {
+      const im = await loadImage(url), c = document.createElement('canvas');
+      c.width = sp.pw; c.height = sp.ph;
+      const cx = c.getContext('2d');
+      cx.fillStyle = bg; cx.fillRect(0, 0, sp.pw, sp.ph);
+      cx.drawImage(im, Math.floor((sp.pw - sp.rw) / 2), Math.floor((sp.ph - sp.rh) / 2), sp.rw, sp.rh);
+      return await util.toBlob(c);
+    } finally { URL.revokeObjectURL(url); }
+  }
+  async function fitPrintSVG(blob, sp, bg) {
+    if (sp.rw === sp.pw && sp.rh === sp.ph) return blob;
+    const doc = new DOMParser().parseFromString(await blob.text(), 'image/svg+xml');
+    if (doc.querySelector('parsererror')) throw new Error('Invalid vector export');
+    const art = doc.documentElement;
+    if (!art.hasAttribute('viewBox')) art.setAttribute('viewBox', '0 0 ' + sp.rw + ' ' + sp.rh);
+    art.setAttribute('x', String(Math.floor((sp.pw - sp.rw) / 2)));
+    art.setAttribute('y', String(Math.floor((sp.ph - sp.rh) / 2)));
+    art.setAttribute('width', String(sp.rw)); art.setAttribute('height', String(sp.rh));
+    const body = new XMLSerializer().serializeToString(art);
+    return util.svgBlob(sp.pw, sp.ph, bg, body);
+  }
   async function doExport() {
     const e = instances[currentId]; if (!e) return;
     if (exportBusy) return;
+    if (!validPrintInputs()) {
+      updateDims();
+      for (const id of ['export-width', 'export-height']) if (!$(id).reportValidity()) break;
+      return;
+    }
     exportBusy = true;
     const sp = printSpec();
     const pw = sp.pw, ph = sp.ph;
+    const rw = sp.rw, rh = sp.rh;
     const modal = $('modal-export'), img = $('export-img'), note = $('export-note'), dl = $('export-download'), save = $('export-save');
     const pnote = $('export-print');
     const svgBtn = $('export-svg');
@@ -4006,6 +4080,7 @@ void main(){
          cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) + ' cm) at ' + sp.effDpi + ' ppi. The image sits in a paper margin with the technique, its rule, the seed and every parameter captioned beneath.')
       : ('Prints ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in (' + cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) +
          ' cm) at ' + sp.effDpi + ' ppi.')) +
+      (customPrint ? ' The full artwork fits the sheet without stretching; unused space uses the background color.' : '') +
       (sp.clamped ? (sp.clampWhy === 'texture'
         ? ' Requested ' + sp.dpi + ' ppi was clamped to this device\'s GPU texture limit (' + maxTexSize.toLocaleString() + ' px).'
         : ' Requested ' + sp.dpi + ' ppi was clamped to the largest file a browser can encode.') : '');
@@ -4029,7 +4104,7 @@ void main(){
           // module returning the document text threw inside createObjectURL, and because that throw
           // happened outside this guard it took the whole export with it: the Arctic Circle and
           // Schramm-Loewner tabs could not export at any size, in any format, vector or raster.
-          const svg = await Promise.resolve(e.inst.exportSVG(pw, ph));
+          const svg = await Promise.resolve(e.inst.exportSVG(rw, rh));
           svgBlob = typeof svg === 'string' ? new Blob([svg], { type: 'image/svg+xml' }) : svg;
         } catch (svgErr) { svgBlob = null; }
       }
@@ -4039,13 +4114,13 @@ void main(){
         try {
           const im = await loadImage(url);
           const c = document.createElement('canvas');
-          c.width = pw; c.height = ph;
+          c.width = rw; c.height = rh;
           const cx = c.getContext('2d', { alpha: false });
           cx.fillStyle = (e.state && e.state.bg) || '#fff';
-          cx.fillRect(0, 0, pw, ph);
+          cx.fillRect(0, 0, rw, rh);
           cx.imageSmoothingEnabled = true;
           cx.imageSmoothingQuality = 'high';
-          cx.drawImage(im, 0, 0, pw, ph);
+          cx.drawImage(im, 0, 0, rw, rh);
           blob = await util.toBlob(c);
         } catch (ripErr) {
           usedVector = false;
@@ -4061,16 +4136,16 @@ void main(){
         // grid says so through fieldCells(), and then the plate is rendered once, at size.
         let field = null;
         try { field = e.inst.fieldCells && e.inst.fieldCells(); } catch (fe) { field = null; }
-        const gridLimited = !!(field && field[0] > 0 && pw >= field[0] * 2);
-        ss = (!gridLimited && pw * ph * 4 < MAX_AREA) ? 2 : 1;
+        const gridLimited = !!(field && field[0] > 0 && rw >= field[0] * 2);
+        ss = (!gridLimited && rw * rh * 4 < MAX_AREA) ? 2 : 1;
         if (gridLimited) fieldNote = ' The field is ' + field[0] + ' × ' + field[1] + ' cells, so one cell is about ' +
-          (pw / field[0]).toFixed(1) + ' px here and the detail is set by the simulation, not by the paper: raise the grid for a finer plate.';
+          (rw / field[0]).toFixed(1) + ' px here and the detail is set by the simulation, not by the paper: raise the grid for a finer plate.';
         try {
-          blob = await e.inst.exportPNG(pw * ss, ph * ss);
+          blob = await e.inst.exportPNG(rw * ss, rh * ss);
         } catch (hiErr) {
           if (ss === 1) throw hiErr;
           ss = 1;
-          blob = await e.inst.exportPNG(pw, ph);
+          blob = await e.inst.exportPNG(rw, rh);
         }
         if (!blob) throw new Error('empty export');
         if (e.inst.exportNote) fieldNote += e.inst.exportNote;
@@ -4079,18 +4154,20 @@ void main(){
           try {
             const im = await loadImage(url);
             const c = document.createElement('canvas');
-            c.width = pw; c.height = ph;
+            c.width = rw; c.height = rh;
             const cx = c.getContext('2d');
             cx.imageSmoothingEnabled = true; cx.imageSmoothingQuality = 'high';
-            cx.drawImage(im, 0, 0, pw, ph);
+            cx.drawImage(im, 0, 0, rw, rh);
             blob = await util.toBlob(c);
           } catch (ssErr) {
-            try { blob = await e.inst.exportPNG(pw, ph); ss = 1; } catch (e2) { /* keep oversized blob */ }
+            blob = await e.inst.exportPNG(rw, rh); ss = 1;
           } finally { URL.revokeObjectURL(url); }
         }
       }
       if (job.abort) throw new Error('cancelled');
       if (colophon) blob = await composeSheet(blob, e, sp);
+      else blob = await fitPrintSheet(blob, sp, e.state.bg || '#fff');
+      if (svgBlob) svgBlob = await fitPrintSVG(svgBlob, sp, e.state.bg || '#fff');
       if (job.abort) throw new Error('cancelled');
       if (lastUrl) URL.revokeObjectURL(lastUrl);
       lastBlob = blob; lastUrl = URL.createObjectURL(blob);
@@ -4417,21 +4494,46 @@ void main(){
       applyPreset(key);
     });
     const inchSel = $('export-inches'), dpiSel = $('export-dpi');
+    const widthInput = $('export-width'), heightInput = $('export-height');
     try {
       const pi = Number(localStorage.getItem(STORE + 'printIn'));
       if (PRINT_INCHES.includes(pi)) printInches = pi;
       const pd = Number(localStorage.getItem(STORE + 'printDpi'));
       if (PRINT_DPI.some(d => d[0] === pd)) printDpi = pd;
+      const custom = JSON.parse(localStorage.getItem(STORE + 'printCustom'));
+      if (custom && validInches(custom.width) && validInches(custom.height)) {
+        printWidth = custom.width; printHeight = custom.height; customPrint = custom.on === true;
+      }
     } catch (err) { /* defaults */ }
     for (const v of PRINT_INCHES) inchSel.appendChild(h('option', { value: v, text: v + ' in' }));
+    inchSel.appendChild(h('option', { value: 'custom', text: 'Custom' }));
     for (const [v, label] of PRINT_DPI) dpiSel.appendChild(h('option', { value: v, text: label }));
-    inchSel.value = String(printInches);
+    inchSel.value = customPrint ? 'custom' : String(printInches);
     dpiSel.value = String(printDpi);
+    widthInput.value = String(printWidth); heightInput.value = String(printHeight);
+    $('export-custom').hidden = !customPrint;
+    const savePrintSize = () => {
+      try { localStorage.setItem(STORE + 'printCustom', JSON.stringify({ on: customPrint, width: printWidth, height: printHeight })); } catch (err) { /* ignore */ }
+    };
     inchSel.addEventListener('change', () => {
-      printInches = Number(inchSel.value);
+      customPrint = inchSel.value === 'custom';
+      $('export-custom').hidden = !customPrint;
+      if (!customPrint) printInches = Number(inchSel.value);
       try { localStorage.setItem(STORE + 'printIn', String(printInches)); } catch (err) { /* ignore */ }
+      savePrintSize();
       updateDims();
     });
+    const changePrintSize = () => {
+      if (validPrintInputs()) {
+        printWidth = widthInput.valueAsNumber; printHeight = heightInput.valueAsNumber;
+        savePrintSize();
+      }
+      updateDims();
+    };
+    for (const input of [widthInput, heightInput]) {
+      input.addEventListener('input', changePrintSize);
+      input.addEventListener('change', changePrintSize);
+    }
     dpiSel.addEventListener('change', () => {
       printDpi = Number(dpiSel.value);
       try { localStorage.setItem(STORE + 'printDpi', String(printDpi)); } catch (err) { /* ignore */ }
@@ -4743,7 +4845,6 @@ void main(){
     } catch (err) { /* optional */ }
   }
 })();
-
 </script>
 <script>
 /* modules/flow.js */
@@ -46856,6 +46957,519 @@ void main(){
         live(key) { if (key === 'time') time = host.getState().time; if (!host.getState().running) stop(); else start(); draw(); },
         async exportPNG(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; paint(c.getContext('2d'), w, h, host.getState(), data, time); return U.toBlob(c); },
         exportSVG(w, h) { return svg(w, h, host.getState(), data, time); },
+      };
+    },
+  });
+})();
+</script>
+<script>/* modules/maxwell.js */
+/* Lossless periodic TMz Maxwell fields on a spatially and temporally staggered Yee grid. */
+(function () {
+  'use strict';
+  const U = Studio.util, G = Studio.gl, TAU = U.TAU;
+  const GEOM = 'geom', LIVE = 'live', PAINT = 'paint';
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
+  const RANGE = (group, key, label, kind, min, max, step, fmt, extra) => Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
+  const f2 = value => value.toFixed(2), pre = (label, p, palette) => ({ label, p, palette });
+  const HEAD = `#version 300 es
+precision highp float;
+precision highp int;
+in vec2 v_uv; out vec4 outColor;`;
+  const PERIODIC = `uniform sampler2D u_state; uniform ivec2 u_size;
+vec4 cell(ivec2 p){ return texelFetch(u_state, (p + u_size) % u_size, 0); }`;
+
+  // A texel stores Ez(i,j,n), Hx(i,j+1/2,n-1/2), Hy(i+1/2,j,n-1/2), epsilon(i,j).
+  // The two passes keep the curl operators as negative adjoints under periodic boundaries.
+  const H_FS = HEAD + PERIODIC + `
+uniform float u_dt, u_dx, u_mu;
+void main(){
+  ivec2 p = ivec2(gl_FragCoord.xy); vec4 q = cell(p);
+  float ey = cell(p + ivec2(0,1)).r - q.r;
+  float ex = cell(p + ivec2(1,0)).r - q.r;
+  q.g -= u_dt * ey / (u_mu * u_dx);
+  q.b += u_dt * ex / (u_mu * u_dx);
+  outColor = q;
+}`;
+  const E_FS = HEAD + PERIODIC + `
+uniform float u_dt, u_dx;
+void main(){
+  ivec2 p = ivec2(gl_FragCoord.xy); vec4 q = cell(p);
+  float curlH = (q.b - cell(p - ivec2(1,0)).b) - (q.g - cell(p - ivec2(0,1)).g);
+  q.r += u_dt * curlH / (q.a * u_dx);
+  outColor = q;
+}`;
+  const SEED_FS = HEAD + `
+uniform vec2 u_size, u_center; uniform float u_eps, u_ratio, u_width, u_cycles, u_angle, u_phase;
+uniform int u_material, u_pattern;
+vec2 displacement(vec2 a, vec2 b){ vec2 d = a-b; d -= floor(d+0.5); return d * vec2(1.0,u_size.y/u_size.x); }
+float packet(vec2 center, float phase){
+  vec2 d = displacement(v_uv, center);
+  float c = cos(u_angle)*d.x + sin(u_angle)*d.y;
+  return exp(-dot(d,d)/(2.0*u_width*u_width)) * cos(6.28318530718*u_cycles*c+phase);
+}
+void main(){
+  float eps = u_eps, material = 0.0;
+  vec2 d = displacement(v_uv, vec2(0.56,0.5));
+  if(u_material == 1) material = length(d) < 0.18*min(1.0,u_size.y/u_size.x) ? 1.0 : 0.0;
+  else if(u_material == 2) material = v_uv.x > 0.43 && v_uv.x < 0.62 ? 1.0 : 0.0;
+  else if(u_material == 3){ vec2 p = fract(v_uv*vec2(7.0,5.0))-0.5; material = length(p) < 0.26 ? 1.0 : 0.0; }
+  else if(u_material == 4){ float center = 0.5+0.12*sin(6.28318530718*v_uv.x); material = abs(v_uv.y-center) < 0.065 ? 1.0 : 0.0; }
+  eps *= mix(1.0,u_ratio,material);
+  float e = packet(u_center,u_phase);
+  if(u_pattern == 1) e += packet(vec2(1.0-u_center.x,1.0-u_center.y),-u_phase);
+  else if(u_pattern == 2){ float r = length(displacement(v_uv,vec2(0.5))); e = exp(-pow((r-0.23)/u_width,2.0))*cos(6.28318530718*u_cycles*r+u_phase); }
+  else if(u_pattern == 3) e = cos(6.28318530718*(3.0*v_uv.x+2.0*v_uv.y)+u_phase);
+  outColor = vec4(e,0.0,0.0,eps);
+}`;
+  const REDUCE_FS = HEAD + `
+uniform sampler2D u_state; uniform vec2 u_res;
+${G.GLSL.bicubic}
+void main(){ float e = texCR(u_state,v_uv,u_res); outColor = vec4(e*e,0.0,0.0,1.0); }`;
+  const RENDER_FS = HEAD + `
+uniform sampler2D u_state; uniform vec2 u_res;
+uniform float u_scale, u_exposure, u_eps, u_ratio; uniform int u_view;
+${G.GLSL.bicubic}
+${G.GLSL.ramp}
+void main(){
+  vec4 q = texCR4(u_state,v_uv,u_res);
+  float z = q.r * u_exposure / max(u_scale,1e-6);
+  float value = 0.5 + 0.49*z/sqrt(1.0+z*z);
+  if(u_view == 1) value = clamp(log(1.0+z*z)/log(9.0),0.0,1.0);
+  // Material is displayed from nearest cells, so interpolation does not invent intermediate epsilon.
+  if(u_view == 2) value = (texture(u_state,v_uv).a/u_eps-1.0)/max(u_ratio-1.0,1e-6);
+  outColor = vec4(ramp(value),1.0);
+}`;
+
+  function sizeOf(s) { return [s.grid, Math.max(32, Math.round(s.grid * (ASPECTS[s.aspect] || 1)))]; }
+  function timeStep(s) {
+    // dx = dy = 1/grid. epsilon(x,y) >= s.epsilon, with constant positive permeability.
+    // dt <= sqrt(epsilon_min*mu)/(sqrt(dx^-2+dy^-2)); courant is a fraction of that bound.
+    return s.courant * Math.sqrt(s.epsilon * s.mu) / (Math.SQRT2 * s.grid);
+  }
+  function sanitize(s) {
+    const finite = (value, fallback, lo, hi) => U.clamp(Number.isFinite(Number(value)) ? Number(value) : fallback, lo, hi);
+    s.grid = [128,256,512,1024,2048].includes(Number(s.grid)) ? Number(s.grid) : 512;
+    s.epsilon = finite(s.epsilon,1,0.25,9); s.mu = finite(s.mu,1,0.25,4);
+    s.ratio = finite(s.ratio,4,1,9); s.courant = finite(s.courant,0.8,0.1,0.95);
+    s.width = finite(s.width,0.07,0.035,0.2); s.cycles = finite(s.cycles,12,2,20);
+    s.steps = Math.round(finite(s.steps,3,1,8)); s.warmup = Math.round(finite(s.warmup,96,0,1500));
+    s.exposure = finite(s.exposure,1,0.2,3);
+  }
+
+  function create(host) {
+    const gl = G.createGL(host.canvas), noop = () => {};
+    function dead(message) {
+      host.setStatus(message); host.fault(message);
+      return { aspect: s => ASPECTS[s.aspect] || 1, regenerate: noop, resize: noop, pause: noop, resume: noop, exportPNG: () => Promise.reject(new Error(message)) };
+    }
+    if (!gl || !gl.floatExt) return dead('Maxwell needs WebGL2 with float32 color buffers.');
+    let magnetic, electric, seed, display, reduction;
+    try {
+      magnetic = new G.Pass(gl,H_FS); electric = new G.Pass(gl,E_FS); seed = new G.Pass(gl,SEED_FS);
+      display = new G.Pass(gl,RENDER_FS); reduction = new G.Pass(gl,REDUCE_FS);
+    } catch (error) { return dead('Maxwell shaders could not compile on this GPU.'); }
+    let field = null, sample = null, gw = 0, gh = 0, dt = 0, stepCount = 0, simTime = 0;
+    let scale = 1, raf = 0, timer = 0, ramp = null, rampKey = '', pending = 0;
+    const reduced = new Float32Array(64*64*4);
+    function stop() { cancelAnimationFrame(raf); clearTimeout(timer); raf = 0; timer = 0; }
+    function ensureGrid(s) {
+      const [w,h] = sizeOf(s), max = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+      if (w > max || h > max) throw Error('Selected grid exceeds this GPU limit of '+max+' cells.');
+      if (field && w === gw && h === gh) return;
+      if (field) { field.dispose(); field = null; }
+      field = new G.PingPong(gl,w,h,{ type:'rgba32f',filter:'nearest',wrap:'repeat' });
+      if (!sample) sample = new G.Target(gl,64,64,{ type:'rgba32f',filter:'nearest' });
+      gw = w; gh = h;
+    }
+    function advanceH(amount) {
+      magnetic.draw(field.write,{u_state:field.read,u_size:{ivec:[gw,gh]},u_dt:amount,u_dx:1/gw,u_mu:host.getState().mu}); field.swap();
+    }
+    function step(n) {
+      for (let i=0;i<n;i++) {
+        advanceH(dt);
+        electric.draw(field.write,{u_state:field.read,u_size:{ivec:[gw,gh]},u_dt:dt,u_dx:1/gw}); field.swap();
+      }
+      stepCount += n; simTime += n*dt;
+    }
+    function measure() {
+      reduction.draw(sample,{u_state:field.read,u_res:[gw,gh]});
+      gl.bindFramebuffer(gl.FRAMEBUFFER,sample.fbo);
+      gl.readPixels(0,0,64,64,gl.RGBA,gl.FLOAT,reduced); gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+      let sum=0; for (let i=0;i<reduced.length;i+=4) sum+=reduced[i];
+      scale=Math.max(1e-5,Math.sqrt(sum/(64*64)));
+    }
+    function status() {
+      host.setStatus('<span>grid <b>'+gw+'×'+gh+'</b> · float32</span><span>periodic · t <b>'+simTime.toFixed(3)+'</b></span><span>dt <b>'+dt.toExponential(2)+'</b></span><span>step <b>'+stepCount.toLocaleString()+'</b>'+(pending?' · warming up':'')+'</span>');
+    }
+    function render(target) {
+      const s=host.getState(), key=s.bg+'|'+s.palette.join(',');
+      if (!ramp || key!==rampKey) { if(ramp)ramp.dispose(); ramp=G.rampTexture(gl,s.palette,s.bg); rampKey=key; }
+      display.draw(target||null,{u_state:field.read,u_res:[gw,gh],u_ramp:ramp,u_scale:scale,u_exposure:s.exposure,u_eps:s.epsilon,u_ratio:s.ratio,u_view:{int:{electric:0,intensity:1,material:2}[s.view]||0}});
+    }
+    function animate() {
+      const s=host.getState();
+      if (!s.running || host.reducedMotion() || !host.isActive()) return;
+      raf=requestAnimationFrame(()=>{raf=0;step(s.steps); if(stepCount%24<s.steps)measure();render();status();animate();});
+    }
+    function warm() {
+      stop();
+      if (!pending) { measure();render();status();animate();return; }
+      const count=Math.min(gw>=1024?2:8,pending);pending-=count;step(count);
+      measure();render();status();
+      if(pending)timer=setTimeout(()=>{timer=0;warm();},0);else animate();
+    }
+    return {
+      aspect(s) { return ASPECTS[s.aspect]||1; },
+      regenerate() {
+        stop(); const s=host.getState();
+        try { ensureGrid(s); } catch(error) { host.fault(error.message+' Try a smaller grid.'); return; }
+        dt=timeStep(s); stepCount=0;simTime=0;
+        const rng=U.makeRng(s.seed+'/maxwell');
+        seed.draw(field.read,{u_size:[gw,gh],u_center:[rng.range(0.23,0.29),rng.range(0.46,0.54)],u_eps:s.epsilon,u_ratio:s.ratio,u_width:s.width,u_cycles:s.cycles,u_angle:rng.range(-0.35,0.35),u_phase:rng.range(-Math.PI,Math.PI),u_material:{int:{uniform:0,disk:1,slab:2,rods:3,guide:4}[s.material]||0},u_pattern:{int:{packet:0,twins:1,ring:2,plane:3}[s.pattern]||0}});
+        // The user-facing initial field has H(t=0)=0. Back up H by dt/2 before leapfrog.
+        advanceH(-0.5*dt); pending=s.warmup;warm();
+      },
+      fieldCells() { return field?[gw,gh]:null; },
+      repaint() { if(field)render(); }, resize() { if(field)render(); },
+      pause() { stop(); }, resume() { if(field)warm(); },
+      live() { if(field){stop();warm();} },
+      action(key) { if(key==='reseed')this.regenerate();else if(key==='burst'&&field){stop();pending+=128;warm();} },
+      async exportPNG(w,h) {
+        if(!field)throw Error('No Maxwell field to export.');
+        const max=gl.getParameter(gl.MAX_TEXTURE_SIZE);
+        if(w>max||h>max)throw Error('Print dimensions exceed this GPU limit of '+max+' pixels.');
+        const target=new G.Target(gl,w,h,{type:'rgba8'}),pixels=new Uint8Array(w*h*4);
+        try { render(target);gl.bindFramebuffer(gl.FRAMEBUFFER,target.fbo);gl.readPixels(0,0,w,h,gl.RGBA,gl.UNSIGNED_BYTE,pixels); }
+        finally { gl.bindFramebuffer(gl.FRAMEBUFFER,null);target.dispose(); }
+        const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+        const ctx=canvas.getContext('2d'),image=ctx.createImageData(w,h);
+        for(let y=0;y<h;y++)image.data.set(pixels.subarray((h-1-y)*w*4,(h-y)*w*4),y*w*4);
+        ctx.putImageData(image,0,0);return U.toBlob(canvas);
+      },
+    };
+  }
+
+  Studio.register({
+    id: 'maxwell', name: 'Maxwell FDTD', tab: 'Maxwell', subtitle: 'electric and magnetic waves · 1966', order: 53.6,
+    equation: 'ε ∂Ez/∂t = ∂Hy/∂x − ∂Hx/∂y; μ ∂Hx/∂t = −∂Ez/∂y; μ ∂Hy/∂t = ∂Ez/∂x',
+    credit: 'K. S. Yee, Numerical solution of initial boundary value problems involving Maxwell’s equations in isotropic media, IEEE Transactions on Antennas and Propagation 14, 302–307 (1966), doi:10.1109/TAP.1966.1138693. TMz Yee differences and staggering follow the equations described in John B. Schneider, Understanding the FDTD Method, chapter 8. This is an original implementation of the classical method, not new physics.',
+    blurb: 'An electric pattern starts with zero magnetic field, then splits into waves as electric and magnetic fields exchange energy. Dielectric disks, strips and rods slow and scatter the wave. Opposite edges connect: any wave leaving one edge returns through the other. This is a lossless periodic sheet in normalized units, with no absorbing layer. Electric colors the signed out-of-plane field; Intensity shows Ez squared, not total electromagnetic energy; Material shows the sampled permittivity. Fine grids reveal smaller features but cost more work. The numerical fields stay at the chosen cell count when printed.',
+    schema: [
+      {group:'Medium',key:'material',label:'Dielectric',type:'seg',kind:GEOM,options:[['uniform','Uniform'],['disk','Disk'],['slab','Slab'],['rods','Rods'],['guide','Winding strip']]},
+      RANGE('Medium','epsilon','Background ε',GEOM,0.25,9,0.05,f2),
+      RANGE('Medium','ratio','Dielectric ratio',GEOM,1,9,0.1,f2),
+      RANGE('Medium','mu','Permeability μ',GEOM,0.25,4,0.05,f2),
+      {group:'Excitation',key:'pattern',label:'Initial electric field',type:'seg',kind:GEOM,options:[['packet','Packet'],['twins','Two packets'],['ring','Ring'],['plane','Standing plane wave']]},
+      RANGE('Excitation','width','Packet width',GEOM,0.035,0.2,0.005,f2),
+      RANGE('Excitation','cycles','Cycles per unit length',GEOM,2,20,0.5,f2),
+      {group:'Grid',key:'grid',label:'Cells across',type:'seg',kind:GEOM,options:[[128,'128'],[256,'256'],[512,'512'],[1024,'1024 · heavy'],[2048,'2048 · very heavy']]},
+      {group:'Grid',key:'aspect',label:'Aspect',type:'seg',kind:GEOM,options:[['1:1','1:1'],['4:5','4:5'],['5:4','5:4'],['3:2','3:2'],['16:9','16:9']]},
+      RANGE('Simulation','courant','CFL fraction',GEOM,0.1,0.95,0.01,f2),
+      RANGE('Simulation','warmup','Warm-up steps',GEOM,0,1500,16,String),
+      RANGE('Simulation','steps','Steps per frame',LIVE,1,8,1,String),
+      {group:'Simulation',key:'running',label:'Running',type:'toggle',kind:LIVE},
+      {group:'Simulation',key:'burst',label:'Run 128 steps',type:'action'},
+      {group:'Simulation',key:'reseed',label:'Reseed',type:'action'},
+      {group:'Picture',key:'view',label:'View',type:'seg',kind:PAINT,options:[['electric','Electric'],['intensity','Intensity'],['material','Material']]},
+      RANGE('Picture','exposure','Exposure',PAINT,0.2,3,0.05,f2),
+    ],
+    defaults: {grid:512,aspect:'1:1',material:'disk',epsilon:1,ratio:4,mu:1,pattern:'twins',width:0.07,cycles:12,courant:0.8,warmup:96,steps:3,running:true,view:'electric',exposure:1,seed:'yee-1966'},
+    presets: {
+      disk:pre('Dielectric disk',{material:'disk',pattern:'twins',ratio:4,width:0.07},Studio.PALETTES.thermal),
+      rings:pre('Vacuum ring',{material:'uniform',pattern:'ring',cycles:15,view:'intensity',width:0.06},Studio.PALETTES.glacier),
+      slab:pre('Glass slab',{material:'slab',pattern:'packet',ratio:2.25,cycles:10,warmup:160},Studio.PALETTES.harbor),
+      rods:pre('Dielectric rods',{material:'rods',pattern:'plane',ratio:6,view:'electric',warmup:128},Studio.PALETTES.ember),
+      strip:pre('Winding strip',{material:'guide',pattern:'twins',ratio:4,view:'intensity',cycles:8,width:0.1,warmup:160},Studio.PALETTES.bioluminescent),
+      plane:pre('Homogeneous plane wave',{material:'uniform',pattern:'plane',epsilon:2.25,mu:1,view:'electric',warmup:112},Studio.PALETTES.graphite),
+    },
+    hints: {
+      Medium:'Positive, lossless, nondispersive material. Opposite edges connect. Stair-stepped dielectric interfaces need their own refinement check.',
+      Excitation:'The initial magnetic field is zero, so these electric patterns launch waves in both directions. The standing plane pattern has fixed mode numbers (3, 2).',
+      Grid:'512 is the default. A square 2048 grid uses about 128 MiB for the two field textures alone and roughly 64 times the solver work per physical time as 512. Select heavy grids explicitly; they can be slow or exhaust GPU memory.',
+      Simulation:'The time step is derived from cell spacing and the fastest material wave speed. Changing the CFL fraction rebuilds the staggered state. There is no numerical damping or clipping.',
+      Picture:'Exposure uses a sampled field RMS. Intensity is Ez squared with a display curve, not calibrated energy or a physical detector. A larger print does not add resolved physics.',
+    },
+    closedGroups:['Excitation','Grid','Simulation'], palette:true,defaultPalette:'thermal',familiarity:'occasional',
+    surprise(rng) { return {material:rng.pick(['disk','slab','rods','guide']),pattern:rng.pick(['packet','twins','ring']),ratio:rng.range(1.5,7),cycles:rng.range(6,18),width:rng.range(0.045,0.12)}; },
+    sanitize, create,
+  });
+})();
+</script>
+<script>/* modules/molecular.js */
+/* Original implementation of established 2D Lennard-Jones molecular dynamics. */
+(function () {
+  'use strict';
+  const U = Studio.util, Pal = Studio.PALETTES;
+  const RC = 2.5, RC2 = RC * RC;
+  const UC = 4 * (RC ** -12 - RC ** -6);
+  const FC = 24 * (2 * RC ** -13 - RC ** -7);
+  const RANGE = (group, key, label, kind, min, max, step, fmt) =>
+    ({ group, key, label, type: 'range', kind, min, max, step, fmt });
+  const DEFAULTS = { n: 1024, density: .55, temperature: .7, dt: .002, warmup: 1000, running: false, speed: 4, view: 'speed', radius: .34, links: false };
+  const pre = (label, p, palette) => ({ label, p: { ...DEFAULTS, ...p }, palette });
+
+  // sigma = epsilon = mass = k_B = 1. The radial force is -dV/dr.
+  // Both V and force vanish continuously at rc; this changes the model from
+  // the full LJ potential and from merely subtracting the potential at rc.
+  function pair(r2) {
+    if (r2 >= RC2) return { energy: 0, coefficient: 0, stiffness: 0 };
+    if (!(r2 >= .36) || !Number.isFinite(r2)) throw Error('Unresolved close approach');
+    const r = Math.sqrt(r2), inv2 = 1 / r2, s6 = inv2 ** 3;
+    const coefficient = 24 * inv2 * s6 * (2 * s6 - 1) - FC / r;
+    return {
+      energy: 4 * s6 * (s6 - 1) - UC + (r - RC) * FC,
+      coefficient,
+      // Operator norm of the central-force pair Hessian in 2D.
+      stiffness: Math.max(Math.abs(24 * inv2 * s6 * (26 * s6 - 7)), Math.abs(coefficient)),
+    };
+  }
+  const image = (d, L) => d - L * Math.round(d / L);
+  const wrap = (x, L) => x - L * Math.floor(x / L);
+
+  function makeSim(s) {
+    const n = s.n, L = Math.sqrt(n / s.density), dt = s.dt;
+    if (L <= 2 * RC) throw Error('Periodic box must exceed twice the interaction cutoff');
+    const x = new Float64Array(n), y = new Float64Array(n);
+    const vx = new Float64Array(n), vy = new Float64Array(n);
+    const fx = new Float64Array(n), fy = new Float64Array(n), curvature = new Float64Array(n);
+    const bx = new Float64Array(n), by = new Float64Array(n), bvx = new Float64Array(n), bvy = new Float64Array(n);
+    const cells = Math.max(1, Math.floor(L / RC)), cellWidth = L / cells;
+    const head = new Int32Array(cells * cells), next = new Int32Array(n), cellOf = new Int32Array(n);
+    // Deduplicate wrapped cells: a two-cell-wide box must not count a pair twice.
+    const neighbors = Array.from({ length: cells * cells }, (_, c) => {
+      const list = new Set(), cx = c % cells, cy = Math.floor(c / cells);
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++)
+        list.add(((cy + dy + cells) % cells) * cells + (cx + dx + cells) % cells);
+      return [...list];
+    });
+    const sim = { n, L, dt, x, y, vx, vy, fx, fy, step: 0, halted: '', energy0: 0,
+      scale: 1, potential: 0, kinetic: 0, temperature: 0, px: 0, py: 0,
+      drift: 0, stiffnessBound: 0, candidates: 0, interactions: 0 };
+
+    function rebuild() {
+      head.fill(-1);
+      for (let i = 0; i < n; i++) {
+        const c = Math.min(cells - 1, Math.floor(x[i] / cellWidth)) +
+          cells * Math.min(cells - 1, Math.floor(y[i] / cellWidth));
+        cellOf[i] = c; next[i] = head[c]; head[c] = i;
+      }
+    }
+    function eachPair(visit) {
+      for (let i = 0; i < n; i++) for (const cell of neighbors[cellOf[i]])
+        for (let j = head[cell]; j !== -1; j = next[j]) {
+          if (j <= i) continue;
+          const dx = image(x[i] - x[j], L), dy = image(y[i] - y[j], L);
+          visit(i, j, dx, dy, dx * dx + dy * dy);
+        }
+    }
+    function forces() {
+      rebuild(); fx.fill(0); fy.fill(0); curvature.fill(0);
+      let potential = 0, candidates = 0, interactions = 0;
+      eachPair((i, j, dx, dy, r2) => {
+        candidates++;
+        if (r2 >= RC2) return;
+        const p = pair(r2), ax = p.coefficient * dx, ay = p.coefficient * dy;
+        fx[i] += ax; fy[i] += ay; fx[j] -= ax; fy[j] -= ay;
+        potential += p.energy; curvature[i] += p.stiffness; curvature[j] += p.stiffness;
+        interactions++;
+      });
+      let max = 0; for (const c of curvature) max = Math.max(max, c);
+      sim.stiffnessBound = 2 * max; sim.potential = potential;
+      sim.candidates = candidates; sim.interactions = interactions;
+    }
+    function measure() {
+      let kinetic = 0, px = 0, py = 0;
+      for (let i = 0; i < n; i++) { kinetic += .5 * (vx[i] ** 2 + vy[i] ** 2); px += vx[i]; py += vy[i]; }
+      sim.kinetic = kinetic; sim.px = px; sim.py = py;
+      // Removing center-of-mass velocity removes two degrees of freedom.
+      sim.temperature = kinetic / (n - 1);
+      sim.drift = (kinetic + sim.potential - sim.energy0) / sim.scale;
+    }
+    function guard() {
+      if (!Number.isFinite(sim.kinetic + sim.potential)) throw Error('Nonfinite molecular state');
+      // For a frozen Hessian velocity Verlet requires dt*sqrt(lambda)<2.
+      // 2*max_i sum_j ||H_ij|| bounds its spectral magnitude. The stricter
+      // 0.5 guard is local and conservative, NOT a global nonlinear proof.
+      if (dt * Math.sqrt(sim.stiffnessBound) > .5) throw Error('Timestep too large for current forces');
+      if (Math.abs(sim.drift) > .02) throw Error('Energy drift exceeded 2% of the initial energy scale');
+    }
+    function reference() {
+      forces(); measure(); sim.energy0 = sim.kinetic + sim.potential;
+      sim.scale = Math.max(n, sim.kinetic + Math.abs(sim.potential)); measure();
+    }
+    function advance(count) {
+      for (let k = 0; k < count && !sim.halted; k++) {
+        bx.set(x); by.set(y); bvx.set(vx); bvy.set(vy);
+        try {
+          guard();
+          for (let i = 0; i < n; i++) {
+            vx[i] += .5 * dt * fx[i]; vy[i] += .5 * dt * fy[i];
+            x[i] = wrap(x[i] + dt * vx[i], L); y[i] = wrap(y[i] + dt * vy[i], L);
+          }
+          forces();
+          for (let i = 0; i < n; i++) { vx[i] += .5 * dt * fx[i]; vy[i] += .5 * dt * fy[i]; }
+          measure(); guard(); sim.step++;
+        } catch (error) {
+          // Keep the last accepted physical state. Never clip force or velocity,
+          // silently reduce dt, or continue a failed trajectory as a valid plate.
+          x.set(bx); y.set(by); vx.set(bvx); vy.set(bvy); forces(); measure();
+          sim.halted = error.message + '. Lower the timestep and regenerate.';
+        }
+      }
+    }
+    const rng = U.makeRng(s.seed + '/molecular'), columns = Math.ceil(Math.sqrt(n)), spacing = L / columns;
+    let mx = 0, my = 0;
+    for (let i = 0; i < n; i++) {
+      x[i] = (i % columns + .5 + .025 * (2 * rng() - 1)) * spacing;
+      y[i] = (Math.floor(i / columns) + .5 + .025 * (2 * rng() - 1)) * spacing;
+      vx[i] = rng.gauss(); vy[i] = rng.gauss(); mx += vx[i]; my += vy[i];
+    }
+    mx /= n; my /= n;
+    let kinetic = 0;
+    for (let i = 0; i < n; i++) { vx[i] -= mx; vy[i] -= my; kinetic += .5 * (vx[i] ** 2 + vy[i] ** 2); }
+    const scale = Math.sqrt((n - 1) * s.temperature / kinetic);
+    for (let i = 0; i < n; i++) { vx[i] *= scale; vy[i] *= scale; }
+    Object.assign(sim, { advance, eachPair, forces, measure, reference }); reference();
+    return sim;
+  }
+
+  Studio.register({
+    id: 'molecular', name: 'Molecular Dynamics', subtitle: 'Lennard-Jones particles · 1924 / 1967', order: 82.4, familiarity: 'occasional',
+    equation: 'V(r) = 4(r^-12 - r^-6) - V_LJ(rc) + (r-rc)F_LJ(rc), r < rc = 2.5;  m r̈ = -∇V',
+    credit: 'J. E. Lennard-Jones, Proceedings of the Royal Society A (1924). L. Verlet, Physical Review (1967). Force shifting and molecular dynamics: M. P. Allen and D. J. Tildesley, Computer Simulation of Liquids, second edition (2017).',
+    blurb: 'Atoms repel strongly when close and attract at a modest distance. Here thousands of particles move in a periodic two-dimensional box. Warm the initial velocities or change the density and watch collisions rearrange the material. The force and potential both taper to zero at 2.5 particle diameters. There is no thermostat: temperature can change as kinetic and potential energy trade places. Colors show particle speed or identity, and optional links mark nearby pairs, not chemical bonds. This is an established idealized model, not a simulation of a specific substance.',
+    palette: true, defaultPalette: 'thermal', headline: 'n', headlineLabel: 'particles',
+    defaults: { ...DEFAULTS },
+    schema: [
+      { group: 'Material', key: 'n', label: 'Particles', type: 'seg', kind: 'geom', options: [[256, '256'], [1024, '1,024'], [4096, '4,096'], [16384, '16,384']] },
+      RANGE('Material', 'density', 'Number density', 'geom', .1, .85, .01, v => v.toFixed(2)),
+      RANGE('Material', 'temperature', 'Initial temperature', 'geom', .05, 2, .05, v => v.toFixed(2)),
+      RANGE('Evolution', 'dt', 'Time step', 'geom', .0005, .004, .0005, v => v.toFixed(4)),
+      RANGE('Evolution', 'warmup', 'Initial steps', 'geom', 0, 6000, 100, v => String(v)),
+      { group: 'Evolution', key: 'running', label: 'Keep evolving', type: 'toggle', kind: 'live' },
+      RANGE('Evolution', 'speed', 'Steps per frame', 'live', 1, 12, 1, v => String(v)),
+      { group: 'Picture', key: 'view', label: 'Color', type: 'seg', kind: 'paint', options: [['speed', 'Speed'], ['identity', 'Identity']] },
+      RANGE('Picture', 'radius', 'Drawn radius', 'paint', .15, .55, .01, v => v.toFixed(2)),
+      { group: 'Picture', key: 'links', label: 'Near-neighbor links', type: 'toggle', kind: 'paint' },
+    ],
+    presets: {
+      warm: pre('Warm material', { density: .55, temperature: .7, warmup: 1000 }, Pal.thermal),
+      cool: pre('Cool dense layer', { density: .8, temperature: .1, warmup: 1600, links: true }, Pal.glacier),
+      dilute: pre('Dilute gas', { density: .12, temperature: 1.5, warmup: 1200, radius: .5 }, Pal.kiln),
+      clusters: pre('Condensing clusters', { density: .32, temperature: .15, warmup: 2600, links: true }, Pal.meadow),
+      dense: pre('Dense collisions', { density: .8, temperature: 1.2, dt: .001, warmup: 1800 }, Pal.ember),
+      large: pre('Large particle field', { n: 4096, density: .55, temperature: .7, warmup: 1000, view: 'identity' }, Pal.bioluminescent),
+    },
+    hints: {
+      Material: 'Two-dimensional reduced units: particle mass, interaction diameter, energy scale and Boltzmann constant equal 1. The box grows with count at fixed density. This is not a three-dimensional equation of state.',
+      Evolution: 'The same seed and fixed step count reproduce the trajectory. Larger counts cost more CPU time. A failed trajectory stops visibly at its last accepted state. The local stiffness guard does not prove global stability.',
+      Picture: 'Circle size, palette and links only change the drawing. Links connect pairs closer than 1.6 diameters and do not represent chemical bonds. The periodic box repeats at every edge.',
+    },
+    closedGroups: ['Evolution', 'Picture'],
+    surprise(rng) { return { n: rng.pick([256, 1024, 4096]), density: rng.range(.25, .8), temperature: rng.range(.1, 1.3), warmup: 1600, links: rng() < .4 }; },
+    sanitize(s) {
+      if (![256, 1024, 4096, 16384].includes(s.n)) s.n = 1024;
+      s.density = U.clamp(Number(s.density) || .55, .1, .85);
+      s.temperature = U.clamp(Number(s.temperature) || .7, .05, 2);
+      s.dt = U.clamp(Number(s.dt) || .002, .0005, .004);
+      s.warmup = U.clamp(Math.round(Number(s.warmup) || 0), 0, 6000);
+      s.speed = U.clamp(Math.round(Number(s.speed) || 4), 1, 12);
+    },
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d');
+      let sim = null, raf = 0, timer = 0, paused = false, remaining = 0, pendingLive = 0;
+      function stop() { cancelAnimationFrame(raf); clearTimeout(timer); raf = timer = 0; }
+      function status() {
+        if (!sim) return;
+        const halt = sim.halted ? '<span>Stopped: <b>' + U.escapeHtml(sim.halted) + '</b></span>' : '';
+        host.setStatus('<span>step <b>' + sim.step.toLocaleString() + '</b> · particles <b>' + sim.n.toLocaleString() + '</b>' +
+          (remaining && !sim.halted ? ' · preparing' : '') + '</span><span>T <b>' + sim.temperature.toFixed(4) + '</b> · E/N <b>' +
+          ((sim.kinetic + sim.potential) / sim.n).toFixed(5) + '</b></span><span>ΔE/scale <b>' + sim.drift.toExponential(2) + '</b></span>' + halt);
+      }
+      // Render the current coordinates directly at the target resolution. A
+      // non-square export letterboxes the same physical square rather than
+      // stretching it or changing the simulation domain.
+      function marks(w, h, circle, line) {
+        const s = host.getState(), side = Math.min(w, h), scale = side / sim.L;
+        const ox = (w - side) / 2, oy = (h - side) / 2, radius = s.radius * scale;
+        const colors = s.palette, last = colors.length - 1;
+        if (s.links) sim.eachPair((i, j, dx, dy, r2) => {
+          if (r2 >= 2.56) return;
+          // Duplicate wrapped segments and clip them at the physical box edge.
+          for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) {
+            const x = sim.x[i] + a * sim.L, y = sim.y[i] + b * sim.L;
+            if (Math.max(x, x - dx) < 0 || Math.min(x, x - dx) > sim.L || Math.max(y, y - dy) < 0 || Math.min(y, y - dy) > sim.L) continue;
+            line(ox + x * scale, oy + y * scale, ox + (x - dx) * scale, oy + (y - dy) * scale, colors[0], .026 * scale);
+          }
+        });
+        for (let i = 0; i < sim.n; i++) {
+          const speed = Math.hypot(sim.vx[i], sim.vy[i]);
+          const t = s.view === 'identity' ? ((i * .618033988749895) % 1) : Math.min(1, speed / (3 * Math.sqrt(s.temperature)));
+          const color = colors[Math.min(last, Math.floor(t * colors.length))];
+          for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) {
+            const x = (sim.x[i] + a * sim.L) * scale, y = (sim.y[i] + b * sim.L) * scale;
+            if (x + radius < 0 || x - radius > side || y + radius < 0 || y - radius > side) continue;
+            circle(ox + x, oy + y, radius, color);
+          }
+        }
+      }
+      function paint(context, w, h) {
+        const s = host.getState(); context.fillStyle = s.bg; context.fillRect(0, 0, w, h);
+        if (!sim) return;
+        const side = Math.min(w, h); context.save(); context.beginPath();
+        context.rect((w - side) / 2, (h - side) / 2, side, side); context.clip();
+        marks(w, h, (x, y, r, color) => { context.fillStyle = color; context.beginPath(); context.arc(x, y, r, 0, U.TAU); context.fill(); },
+          (x, y, xx, yy, color, width) => { context.strokeStyle = color; context.lineWidth = width; context.globalAlpha = .35; context.beginPath(); context.moveTo(x, y); context.lineTo(xx, yy); context.stroke(); context.globalAlpha = 1; });
+        context.restore();
+      }
+      function draw() { paint(ctx, canvas.width, canvas.height); status(); }
+      function warm() {
+        timer = 0;
+        if (paused || !sim) return;
+        // Time limits only yield scheduling. They never change the number or
+        // size of physical steps in the requested warmup.
+        const end = performance.now() + 20;
+        do { sim.advance(1); remaining--; } while (remaining > 0 && !sim.halted && performance.now() < end);
+        draw();
+        if (remaining > 0 && !sim.halted) timer = setTimeout(warm, 0);
+        else start();
+      }
+      function frame() {
+        raf = 0;
+        if (paused || !sim || sim.halted || !host.isActive()) return;
+        pendingLive = host.getState().speed; liveChunk();
+      }
+      function liveChunk() {
+        timer = 0;
+        if (paused || !sim || sim.halted || !host.isActive()) return;
+        const end = performance.now() + 20;
+        do { sim.advance(1); pendingLive--; } while (pendingLive > 0 && !sim.halted && performance.now() < end);
+        draw(); start();
+      }
+      function start() {
+        stop(); if (paused || !sim || sim.halted) return;
+        if (remaining > 0) timer = setTimeout(warm, 0);
+        else if (host.getState().running && !host.reducedMotion() && host.isActive()) {
+          if (pendingLive > 0) timer = setTimeout(liveChunk, 0);
+          else raf = requestAnimationFrame(frame);
+        }
+      }
+      return {
+        aspect() { return 1; },
+        regenerate() { stop(); paused = false; pendingLive = 0; sim = makeSim(host.getState()); remaining = host.getState().warmup; draw(); start(); },
+        repaint() { draw(); }, resize() { draw(); }, live() { start(); },
+        pause() { paused = true; stop(); }, resume() { paused = false; start(); },
+        async exportPNG(w, h) {
+          const out = document.createElement('canvas'); out.width = w; out.height = h;
+          paint(out.getContext('2d'), w, h); return U.toBlob(out);
+        },
+        exportSVG(w, h) {
+          const s = host.getState(), side = Math.min(w, h), nodes = [];
+          marks(w, h, (x, y, r, color) => nodes.push('<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + U.svgEsc(color) + '"/>'),
+            (x, y, xx, yy, color, width) => nodes.push('<path d="M' + x + ',' + y + 'L' + xx + ',' + yy + '" stroke="' + U.svgEsc(color) + '" stroke-width="' + width + '" opacity=".35"/>'));
+          return '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '">' +
+            '<rect width="100%" height="100%" fill="' + U.svgEsc(s.bg) + '"/><defs><clipPath id="box"><rect x="' + (w - side) / 2 + '" y="' + (h - side) / 2 + '" width="' + side + '" height="' + side + '"/></clipPath></defs><g clip-path="url(#box)">' + nodes.join('') + '</g></svg>';
+        },
       };
     },
   });

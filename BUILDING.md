@@ -58,3 +58,11 @@ LICENSE contains the standard Apache-2.0 text from the Apache Software Foundatio
 NOTICE records attribution; OUTPUT-RIGHTS.md preserves the separate output grant.
 This changes the current release, not historical commits. Frozen research snapshot files remain
 byte-for-byte unchanged. Old commercial restrictions no longer describe this release.
+
+## Larger field and particle experiments
+
+`node tools/verify.js --print maxwell molecular` runs the registered operator, trajectory and
+print-state benchmarks for the new electromagnetic and molecular modules. Their largest optional
+settings need more memory or CPU time; smoke tests at a large size are not scientific validation
+of every long trajectory. Read [Maxwell's limits](validation/MAXWELL.md) and
+[the molecular model](validation/MOLECULAR.md) before interpreting their diagnostics.

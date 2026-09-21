@@ -1,0 +1,5144 @@
+{
+  "format": "genchase-maxwell-search-v1",
+  "sourceSha256": "17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c",
+  "harnessSha256": "5dbe227a796a8e8476fdfdfde15bd09d08164602bd8a751fb59fe3bb7de2c00a",
+  "command": "node tools/maxwell-search.js > experiments/results/maxwell-search.json",
+  "scope": "Offline periodic TMz dielectric configuration experiment using maintained Yee shaders. A trapezoidal average of seven raw regional Ez-squared samples divided by the fixed initial Ez-squared integral; not power, energy efficiency, a detector or a physical law.",
+  "method": "Twenty-two seeded random configurations and two fixed simple baselines; no AI model or learned optimizer runs. Source, target, sample times, material budget and decision thresholds were fixed before evaluation.",
+  "limitations": "No historical originality established. Experimental material masks are separate from app recipes. Held-out perturbations are a finite sample; one coarse-grid worst deletion alone is refined, so there is no finest-grid certificate across every deletion. Seven-time quadrature, staircase interfaces and periodic returns affect the score. No independent Meep replay, full time-quadrature study, external-device check or physical experiment. This is not a comparison of AI with other search methods.",
+  "periodicPathInference": "The target center x=0.75 is horizontally 0.4375 from the source x=0.1875 via the left periodic edge, versus 0.5625 directly to the right. With a bidirectional finite-width excitation, the chosen window may collect substantial wrapped propagation that bypasses the rods. Transverse distance, pulse width and scattering also matter; this is a geometric explanation to investigate, not a verified mechanism or a pre-return claim.",
+  "summary": {
+    "bestRandom": {
+      "id": "random-17014",
+      "score": 0.01740318314118676
+    },
+    "bestSimple": {
+      "id": "simple-two-columns",
+      "score": 0.017350545026031294
+    },
+    "uniformReference": {
+      "id": "uniform-no-rods",
+      "score": 0.01661740937060315,
+      "competing": false
+    },
+    "hypothesisSupported": false,
+    "scoreMeaning": "Seven-sample trapezoidal mean of target-region Ez² / initial whole-domain Ez², at 128 cells per side. Larger means more electric-field concentration in this region/window, not higher energy efficiency."
+  },
+  "settings": {
+    "domain": [
+      1,
+      1
+    ],
+    "boundary": "periodic",
+    "mu": 1,
+    "backgroundEpsilon": 1,
+    "rodEpsilon": 4,
+    "source": {
+      "center": [
+        0.1875,
+        0.5
+      ],
+      "radius": 0.14,
+      "cycles": 4,
+      "phase": 0.17,
+      "magneticAtZero": 0
+    },
+    "target": {
+      "x": [
+        0.6875,
+        0.8125
+      ],
+      "y": [
+        0.5625,
+        0.6875
+      ]
+    },
+    "sampleTimes": [
+      0.3,
+      0.325,
+      0.35,
+      0.375,
+      0.4,
+      0.425,
+      0.45
+    ],
+    "courantCeiling": 0.6,
+    "rodRadius": 0.03125,
+    "siteColumns": 4,
+    "siteRows": 6,
+    "siteOrigin": [
+      0.375,
+      0.265625
+    ],
+    "siteSpacing": 0.09375,
+    "occupiedCount": 12
+  },
+  "criteria": {
+    "gain": 0.05,
+    "scoreRefinementRelative": 0.05,
+    "halfStepRelative": 0.01,
+    "energyRelativeDrift": 0.0001
+  },
+  "candidate": {
+    "format": "genchase-maxwell-candidate-v1",
+    "sourceSha256": "17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c",
+    "settings": {
+      "domain": [
+        1,
+        1
+      ],
+      "boundary": "periodic",
+      "mu": 1,
+      "backgroundEpsilon": 1,
+      "rodEpsilon": 4,
+      "source": {
+        "center": [
+          0.1875,
+          0.5
+        ],
+        "radius": 0.14,
+        "cycles": 4,
+        "phase": 0.17,
+        "magneticAtZero": 0
+      },
+      "target": {
+        "x": [
+          0.6875,
+          0.8125
+        ],
+        "y": [
+          0.5625,
+          0.6875
+        ]
+      },
+      "sampleTimes": [
+        0.3,
+        0.325,
+        0.35,
+        0.375,
+        0.4,
+        0.425,
+        0.45
+      ],
+      "courantCeiling": 0.6,
+      "rodRadius": 0.03125,
+      "siteColumns": 4,
+      "siteRows": 6,
+      "siteOrigin": [
+        0.375,
+        0.265625
+      ],
+      "siteSpacing": 0.09375,
+      "occupiedCount": 12
+    },
+    "geometry": {
+      "id": "random-17014",
+      "kind": "seeded random",
+      "seed": 17014,
+      "sites": [
+        1,
+        2,
+        3,
+        8,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        21
+      ]
+    }
+  },
+  "backend": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "vendor": "Google Inc. (Google)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+  },
+  "controls": {
+    "blank": {
+      "geometryId": "simple-two-columns",
+      "cells": [
+        128,
+        128
+      ],
+      "physicalDomain": [
+        1,
+        1
+      ],
+      "perturbation": {
+        "id": "nominal"
+      },
+      "dt": 0.003125,
+      "stepScale": 1,
+      "steps": 144,
+      "initialElectricIntegral": 0,
+      "dielectricArea": 0.035888671875,
+      "initialModifiedEnergy": 0,
+      "maxModifiedEnergyRelativeDrift": 0,
+      "nonfiniteValues": 0,
+      "maxElectric": 0,
+      "samples": [
+        {
+          "time": 0.3,
+          "electricIntegral": 0,
+          "modifiedEnergy": 0
+        },
+        {
+          "time": 0.325,
+          "electricIntegral": 0,
+          "modifiedEnergy": 0
+        },
+        {
+          "time": 0.35,
+          "electricIntegral": 0,
+          "modifiedEnergy": 0
+        },
+        {
+          "time": 0.375,
+          "electricIntegral": 0,
+          "modifiedEnergy": 0
+        },
+        {
+          "time": 0.4,
+          "electricIntegral": 0,
+          "modifiedEnergy": 0
+        },
+        {
+          "time": 0.425,
+          "electricIntegral": 0,
+          "modifiedEnergy": 0
+        },
+        {
+          "time": 0.45,
+          "electricIntegral": 0,
+          "modifiedEnergy": 0
+        }
+      ],
+      "valid": false,
+      "rejectionReasons": [
+        "zero initial electric norm"
+      ],
+      "score": null
+    },
+    "wrongCurl": {
+      "geometryId": "simple-two-columns",
+      "cells": [
+        128,
+        128
+      ],
+      "physicalDomain": [
+        1,
+        1
+      ],
+      "perturbation": {
+        "id": "nominal"
+      },
+      "dt": 0.003125,
+      "stepScale": 1,
+      "steps": 96,
+      "initialElectricIntegral": 0.008508262594474361,
+      "dielectricArea": 0.035888671875,
+      "initialModifiedEnergy": 0.008488582755348546,
+      "maxModifiedEnergyRelativeDrift": 0,
+      "nonfiniteValues": 2966,
+      "maxElectric": 2.0044004076447468e+38,
+      "samples": [
+        {
+          "time": 0.3,
+          "electricIntegral": null,
+          "modifiedEnergy": null
+        }
+      ],
+      "valid": false,
+      "rejectionReasons": [
+        "nonfinite field"
+      ],
+      "score": null
+    }
+  },
+  "screening": [
+    {
+      "geometry": {
+        "id": "simple-two-columns",
+        "kind": "simple baseline",
+        "sites": [
+          0,
+          3,
+          4,
+          7,
+          8,
+          11,
+          12,
+          15,
+          16,
+          19,
+          20,
+          23
+        ]
+      },
+      "run": {
+        "geometryId": "simple-two-columns",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 2.280396349529923e-8,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.0000029240053670332913,
+            "modifiedEnergy": 0.008488582607227577
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660127946042,
+            "modifiedEnergy": 0.008488582601416033
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.000057547369269614544,
+            "modifiedEnergy": 0.008488582579134943
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.000168680217025712,
+            "modifiedEnergy": 0.008488582579733572
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.00024795835858202963,
+            "modifiedEnergy": 0.008488582576509971
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.000259952865238004,
+            "modifiedEnergy": 0.008488582568688527
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.00028378097301105673,
+            "modifiedEnergy": 0.008488582561775215
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017350545026031294
+      }
+    },
+    {
+      "geometry": {
+        "id": "simple-checkerboard",
+        "kind": "simple baseline",
+        "sites": [
+          0,
+          2,
+          5,
+          7,
+          8,
+          10,
+          13,
+          15,
+          16,
+          18,
+          21,
+          23
+        ]
+      },
+      "run": {
+        "geometryId": "simple-checkerboard",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 1.7306137189976312e-8,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000002924005367033292,
+            "modifiedEnergy": 0.008488582902253123
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660128052693,
+            "modifiedEnergy": 0.008488582868020076
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.000057547370029205705,
+            "modifiedEnergy": 0.008488582875719826
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016868097639083542,
+            "modifiedEnergy": 0.008488582895915921
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.0002480482554918088,
+            "modifiedEnergy": 0.00848858289028766
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.0002598073356576294,
+            "modifiedEnergy": 0.008488582858803818
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.0002746402040142515,
+            "modifiedEnergy": 0.008488582859221501
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017259941784127344
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17001",
+        "kind": "seeded random",
+        "seed": 17001,
+        "sites": [
+          0,
+          3,
+          4,
+          9,
+          10,
+          11,
+          13,
+          16,
+          17,
+          19,
+          21,
+          22
+        ]
+      },
+      "run": {
+        "geometryId": "random-17001",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 9.059702099634137e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.0000029240053670333227,
+            "modifiedEnergy": 0.008488582832252577
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660130150926,
+            "modifiedEnergy": 0.008488582831616449
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754738242458931,
+            "modifiedEnergy": 0.008488582809129579
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016868700169732522,
+            "modifiedEnergy": 0.008488582801538256
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.00024817983889389414,
+            "modifiedEnergy": 0.008488582782439809
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.00025781197669775847,
+            "modifiedEnergy": 0.00848858275168987
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.00027484224973612113,
+            "modifiedEnergy": 0.008488582724967973
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.01722552984292366
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17002",
+        "kind": "seeded random",
+        "seed": 17002,
+        "sites": [
+          0,
+          1,
+          4,
+          5,
+          7,
+          12,
+          13,
+          14,
+          15,
+          19,
+          20,
+          22
+        ]
+      },
+      "run": {
+        "geometryId": "random-17002",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 1.677192140725481e-8,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.0000029240053670332888,
+            "modifiedEnergy": 0.008488582892652597
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660127727433,
+            "modifiedEnergy": 0.00848858289635172
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754736731641608,
+            "modifiedEnergy": 0.008488582875184886
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016867886677518972,
+            "modifiedEnergy": 0.008488582872909703
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.0002479042742020504,
+            "modifiedEnergy": 0.008488582888403477
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.0002603545976040635,
+            "modifiedEnergy": 0.008488582880377803
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.00028548528074267605,
+            "modifiedEnergy": 0.008488582897718389
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.0173740212182355
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17003",
+        "kind": "seeded random",
+        "seed": 17003,
+        "sites": [
+          0,
+          2,
+          4,
+          5,
+          7,
+          8,
+          9,
+          13,
+          17,
+          18,
+          19,
+          20
+        ]
+      },
+      "run": {
+        "geometryId": "random-17003",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 6.2771081665857764e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.00000292400536703332,
+            "modifiedEnergy": 0.008488582808632298
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660129936749,
+            "modifiedEnergy": 0.008488582800807422
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754738048201838,
+            "modifiedEnergy": 0.008488582780236783
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.0001686856325995658,
+            "modifiedEnergy": 0.0084885827600885
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.0002481196192637624,
+            "modifiedEnergy": 0.008488582758563968
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.0002582048809597084,
+            "modifiedEnergy": 0.008488582745693392
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.0002769230589708355,
+            "modifiedEnergy": 0.008488582750237015
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.01725240015856095
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17004",
+        "kind": "seeded random",
+        "seed": 17004,
+        "sites": [
+          2,
+          3,
+          4,
+          5,
+          8,
+          11,
+          15,
+          16,
+          18,
+          20,
+          22,
+          23
+        ]
+      },
+      "run": {
+        "geometryId": "random-17004",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 8.388223560196195e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000002924005367033327,
+            "modifiedEnergy": 0.008488582792559228
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.0000082466601308173,
+            "modifiedEnergy": 0.008488582797271183
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.000057547388357186216,
+            "modifiedEnergy": 0.008488582778038045
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016869182148083643,
+            "modifiedEnergy": 0.008488582746820478
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.00024850014662191347,
+            "modifiedEnergy": 0.008488582704327185
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.0002576923260335933,
+            "modifiedEnergy": 0.00848858270077189
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.00026783012291225496,
+            "modifiedEnergy": 0.008488582684144416
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017160875424259935
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17005",
+        "kind": "seeded random",
+        "seed": 17005,
+        "sites": [
+          0,
+          1,
+          2,
+          3,
+          5,
+          7,
+          9,
+          10,
+          14,
+          15,
+          19,
+          20
+        ]
+      },
+      "run": {
+        "geometryId": "random-17005",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 3.6850849038927436e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.0000029240053670333015,
+            "modifiedEnergy": 0.008488582746830836
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660128638424,
+            "modifiedEnergy": 0.008488582740271509
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754737360516643,
+            "modifiedEnergy": 0.00848858273288935
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016868253821852131,
+            "modifiedEnergy": 0.008488582732536668
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.00024804483447315307,
+            "modifiedEnergy": 0.008488582734727017
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.0002595232200559223,
+            "modifiedEnergy": 0.008488582724067398
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.00027901120534037796,
+            "modifiedEnergy": 0.008488582731258281
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017297151289315988
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17006",
+        "kind": "seeded random",
+        "seed": 17006,
+        "sites": [
+          1,
+          2,
+          4,
+          5,
+          8,
+          11,
+          15,
+          17,
+          18,
+          19,
+          22,
+          23
+        ]
+      },
+      "run": {
+        "geometryId": "random-17006",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 6.931508700347422e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000002924005367033325,
+            "modifiedEnergy": 0.008488582814187231
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660130568419,
+            "modifiedEnergy": 0.008488582808808142
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754738491773974,
+            "modifiedEnergy": 0.008488582784737532
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016868794059610078,
+            "modifiedEnergy": 0.008488582789028044
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.0002481700063338968,
+            "modifiedEnergy": 0.008488582801643297
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.00025853690676947517,
+            "modifiedEnergy": 0.008488582786473608
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.0002815613475657005,
+            "modifiedEnergy": 0.008488582811660726
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.01730536572350833
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17007",
+        "kind": "seeded random",
+        "seed": 17007,
+        "sites": [
+          0,
+          4,
+          6,
+          8,
+          11,
+          12,
+          16,
+          17,
+          19,
+          20,
+          21,
+          23
+        ]
+      },
+      "run": {
+        "geometryId": "random-17007",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 1.2765651091761754e-8,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000002924005367033342,
+            "modifiedEnergy": 0.008488582662792623
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660131315691,
+            "modifiedEnergy": 0.008488582667782957
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754738673598294,
+            "modifiedEnergy": 0.008488582650765823
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016868819403925624,
+            "modifiedEnergy": 0.008488582653010546
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.0002481854867680701,
+            "modifiedEnergy": 0.008488582659242214
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.0002577147598621688,
+            "modifiedEnergy": 0.00848858264698626
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.0002745120945980797,
+            "modifiedEnergy": 0.008488582650254489
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017220525886022776
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17008",
+        "kind": "seeded random",
+        "seed": 17008,
+        "sites": [
+          0,
+          1,
+          3,
+          4,
+          6,
+          9,
+          11,
+          13,
+          14,
+          19,
+          21,
+          22
+        ]
+      },
+      "run": {
+        "geometryId": "random-17008",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 5.7238613848653586e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.0000029240053670333057,
+            "modifiedEnergy": 0.008488582776161107
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660128888186,
+            "modifiedEnergy": 0.008488582781621552
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.0000575473746322717,
+            "modifiedEnergy": 0.00848858275928747
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016868315728535362,
+            "modifiedEnergy": 0.008488582801155647
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.0002480774553637668,
+            "modifiedEnergy": 0.008488582803936016
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.00025867750478620477,
+            "modifiedEnergy": 0.008488582769713286
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.0002750172028277597,
+            "modifiedEnergy": 0.008488582757429957
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017242117030754
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17009",
+        "kind": "seeded random",
+        "seed": 17009,
+        "sites": [
+          0,
+          2,
+          3,
+          5,
+          8,
+          9,
+          10,
+          11,
+          12,
+          18,
+          20,
+          21
+        ]
+      },
+      "run": {
+        "geometryId": "random-17009",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 2.061099291239543e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000002924005367033342,
+            "modifiedEnergy": 0.008488582761670709
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660131269227,
+            "modifiedEnergy": 0.008488582772844358
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.000057547386645440446,
+            "modifiedEnergy": 0.008488582738004591
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016868851410259395,
+            "modifiedEnergy": 0.008488582754910387
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.00024826598494153963,
+            "modifiedEnergy": 0.00848858276230183
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.00025779116770176946,
+            "modifiedEnergy": 0.008488582751504471
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.0002656100455088311,
+            "modifiedEnergy": 0.008488582770351125
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017136415518578432
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17010",
+        "kind": "seeded random",
+        "seed": 17010,
+        "sites": [
+          0,
+          4,
+          5,
+          6,
+          8,
+          9,
+          11,
+          17,
+          18,
+          19,
+          21,
+          23
+        ]
+      },
+      "run": {
+        "geometryId": "random-17010",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 4.417221921571013e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000002924005367033619,
+            "modifiedEnergy": 0.00848858277354388
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.00000824666014642205,
+            "modifiedEnergy": 0.0084885827928445
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754745693505674,
+            "modifiedEnergy": 0.00848858278072901
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016871804812923724,
+            "modifiedEnergy": 0.008488582773615623
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.00024896583810520245,
+            "modifiedEnergy": 0.008488582758121756
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.00025329526794418583,
+            "modifiedEnergy": 0.008488582742989505
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.00027922630110776886,
+            "modifiedEnergy": 0.008488582726206713
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017195998492642098
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17011",
+        "kind": "seeded random",
+        "seed": 17011,
+        "sites": [
+          1,
+          2,
+          5,
+          6,
+          7,
+          8,
+          12,
+          16,
+          17,
+          18,
+          21,
+          23
+        ]
+      },
+      "run": {
+        "geometryId": "random-17011",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 1.3900404050026793e-8,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000002924005367033343,
+            "modifiedEnergy": 0.008488582680929632
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660131324467,
+            "modifiedEnergy": 0.008488582668176215
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754738701416005,
+            "modifiedEnergy": 0.008488582655353428
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016868877161334002,
+            "modifiedEnergy": 0.008488582657425947
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.0002482703394521102,
+            "modifiedEnergy": 0.008488582654554062
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.00025759662818066153,
+            "modifiedEnergy": 0.008488582637353815
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.00026602018941326334,
+            "modifiedEnergy": 0.0084885826479759
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.01713671218747394
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17012",
+        "kind": "seeded random",
+        "seed": 17012,
+        "sites": [
+          2,
+          3,
+          4,
+          6,
+          9,
+          10,
+          11,
+          13,
+          14,
+          17,
+          20,
+          22
+        ]
+      },
+      "run": {
+        "geometryId": "random-17012",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 6.136717245475154e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000002924005367033305,
+            "modifiedEnergy": 0.008488582740366497
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660128923735,
+            "modifiedEnergy": 0.008488582749213616
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754737513084167,
+            "modifiedEnergy": 0.008488582756268128
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.0001686837869119116,
+            "modifiedEnergy": 0.008488582747537997
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.000248150008037966,
+            "modifiedEnergy": 0.0084885827264401
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.000258711590407534,
+            "modifiedEnergy": 0.008488582703256514
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.00027034711063754935,
+            "modifiedEnergy": 0.008488582734757786
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.01719847753621019
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17013",
+        "kind": "seeded random",
+        "seed": 17013,
+        "sites": [
+          0,
+          5,
+          7,
+          8,
+          14,
+          15,
+          16,
+          18,
+          19,
+          21,
+          22,
+          23
+        ]
+      },
+      "run": {
+        "geometryId": "random-17013",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 9.277856927170092e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.0000029240053670333015,
+            "modifiedEnergy": 0.008488582799608374
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660128562248,
+            "modifiedEnergy": 0.008488582820135123
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754737256897687,
+            "modifiedEnergy": 0.008488582822751254
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016868146199587516,
+            "modifiedEnergy": 0.008488582834104402
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.0002479672518189685,
+            "modifiedEnergy": 0.00848858281639766
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.0002599016120730316,
+            "modifiedEnergy": 0.008488582809513276
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.0002851672968330908,
+            "modifiedEnergy": 0.008488582794375874
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.01736331790897664
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17014",
+        "kind": "seeded random",
+        "seed": 17014,
+        "sites": [
+          1,
+          2,
+          3,
+          8,
+          11,
+          12,
+          13,
+          14,
+          15,
+          17,
+          19,
+          21
+        ]
+      },
+      "run": {
+        "geometryId": "random-17014",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 2.745981664276087e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.0000029240053670332888,
+            "modifiedEnergy": 0.008488582747182023
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660127717587,
+            "modifiedEnergy": 0.008488582747557113
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754736717739286,
+            "modifiedEnergy": 0.008488582758884323
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.0001686787049458676,
+            "modifiedEnergy": 0.008488582778658039
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.00024789033484835197,
+            "modifiedEnergy": 0.008488582776066227
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.0002604659544981648,
+            "modifiedEnergy": 0.008488582746379286
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.00028826817717733037,
+            "modifiedEnergy": 0.008488582758881232
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.01740318314118676
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17015",
+        "kind": "seeded random",
+        "seed": 17015,
+        "sites": [
+          0,
+          2,
+          4,
+          6,
+          10,
+          11,
+          12,
+          13,
+          14,
+          20,
+          21,
+          23
+        ]
+      },
+      "run": {
+        "geometryId": "random-17015",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 1.6592239804325004e-8,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.0000029240053670333,
+            "modifiedEnergy": 0.008488582848043966
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660128539714,
+            "modifiedEnergy": 0.00848858288308203
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.000057547372453895555,
+            "modifiedEnergy": 0.008488582896193145
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016868224850910877,
+            "modifiedEnergy": 0.00848858288785108
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.0002481114990215691,
+            "modifiedEnergy": 0.008488582864903433
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.00025903357084364203,
+            "modifiedEnergy": 0.008488582854345422
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.00026723339118272333,
+            "modifiedEnergy": 0.008488582888371848
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.01717350319756627
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17016",
+        "kind": "seeded random",
+        "seed": 17016,
+        "sites": [
+          1,
+          4,
+          5,
+          8,
+          10,
+          11,
+          15,
+          16,
+          17,
+          19,
+          20,
+          21
+        ]
+      },
+      "run": {
+        "geometryId": "random-17016",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 1.0288462748420102e-8,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000002924005367033326,
+            "modifiedEnergy": 0.008488582784534692
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660130637221,
+            "modifiedEnergy": 0.008488582770718997
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754738574229922,
+            "modifiedEnergy": 0.008488582789789834
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016868872501226242,
+            "modifiedEnergy": 0.008488582808776821
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.00024821673455184366,
+            "modifiedEnergy": 0.008488582817952187
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.0002583179641452664,
+            "modifiedEnergy": 0.008488582819526223
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.0002799268916353422,
+            "modifiedEnergy": 0.008488582842683013
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.01728599911527166
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17017",
+        "kind": "seeded random",
+        "seed": 17017,
+        "sites": [
+          1,
+          2,
+          4,
+          8,
+          10,
+          12,
+          13,
+          15,
+          18,
+          19,
+          20,
+          23
+        ]
+      },
+      "run": {
+        "geometryId": "random-17017",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 1.3498661521893496e-8,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.0000029240053670332888,
+            "modifiedEnergy": 0.008488582848694786
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660127748371,
+            "modifiedEnergy": 0.008488582835634414
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.000057547367464957764,
+            "modifiedEnergy": 0.008488582862400038
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016867896355159893,
+            "modifiedEnergy": 0.00848858286993305
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.0002479056593679203,
+            "modifiedEnergy": 0.008488582840619019
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.00026034378462589514,
+            "modifiedEnergy": 0.00848858282853259
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.0002871109871280413,
+            "modifiedEnergy": 0.008488582856104787
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017389761257137565
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17018",
+        "kind": "seeded random",
+        "seed": 17018,
+        "sites": [
+          0,
+          3,
+          4,
+          7,
+          8,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          21
+        ]
+      },
+      "run": {
+        "geometryId": "random-17018",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 6.4929930321255824e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000002924005367033292,
+            "modifiedEnergy": 0.00848858277801958
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.00000824666012793744,
+            "modifiedEnergy": 0.008488582801581318
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.000057547368842345016,
+            "modifiedEnergy": 0.008488582810464855
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016867988731971947,
+            "modifiedEnergy": 0.008488582802189193
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.00024797111343802947,
+            "modifiedEnergy": 0.008488582801117226
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.0002601902637238697,
+            "modifiedEnergy": 0.008488582798980389
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.0002809896992078175,
+            "modifiedEnergy": 0.008488582799534936
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017328099909097373
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17019",
+        "kind": "seeded random",
+        "seed": 17019,
+        "sites": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          11,
+          13,
+          15,
+          19,
+          20,
+          23
+        ]
+      },
+      "run": {
+        "geometryId": "random-17019",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 2.3334111309836203e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000002924005367033293,
+            "modifiedEnergy": 0.008488582742919928
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660128049214,
+            "modifiedEnergy": 0.008488582748271946
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754736992856472,
+            "modifiedEnergy": 0.008488582743079315
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.0001686806717476552,
+            "modifiedEnergy": 0.008488582735541192
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.00024799177390640075,
+            "modifiedEnergy": 0.008488582752182451
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.00025979054111398156,
+            "modifiedEnergy": 0.008488582738075278
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.0002802542344980852,
+            "modifiedEnergy": 0.008488582755676372
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.01731348648726512
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17020",
+        "kind": "seeded random",
+        "seed": 17020,
+        "sites": [
+          3,
+          4,
+          8,
+          9,
+          10,
+          12,
+          14,
+          15,
+          16,
+          17,
+          18,
+          22
+        ]
+      },
+      "run": {
+        "geometryId": "random-17020",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 1.2387430747828887e-8,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.0000029240053670332888,
+            "modifiedEnergy": 0.008488582739658959
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.00000824666012774541,
+            "modifiedEnergy": 0.008488582746029294
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.000057547367588633526,
+            "modifiedEnergy": 0.008488582688127187
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016867927340821737,
+            "modifiedEnergy": 0.00848858268479342
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.0002479574469592281,
+            "modifiedEnergy": 0.008488582658749478
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.0002602846614658746,
+            "modifiedEnergy": 0.008488582650196815
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.0002814661949469286,
+            "modifiedEnergy": 0.00848858267832732
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017334336277643407
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17021",
+        "kind": "seeded random",
+        "seed": 17021,
+        "sites": [
+          0,
+          3,
+          6,
+          8,
+          9,
+          10,
+          12,
+          13,
+          15,
+          16,
+          17,
+          23
+        ]
+      },
+      "run": {
+        "geometryId": "random-17021",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 6.504138561069794e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.0000029240053670332888,
+            "modifiedEnergy": 0.008488582810559465
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.00000824666012776002,
+            "modifiedEnergy": 0.008488582797068127
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754736768982727,
+            "modifiedEnergy": 0.008488582774217901
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016867935829902167,
+            "modifiedEnergy": 0.00848858279562147
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.0002479632928412448,
+            "modifiedEnergy": 0.008488582777499564
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.00026026442297211644,
+            "modifiedEnergy": 0.008488582791718923
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.0002807874254464777,
+            "modifiedEnergy": 0.008488582806023904
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017327407868033204
+      }
+    },
+    {
+      "geometry": {
+        "id": "random-17022",
+        "kind": "seeded random",
+        "seed": 17022,
+        "sites": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          9,
+          10,
+          11,
+          17,
+          20,
+          21
+        ]
+      },
+      "run": {
+        "geometryId": "random-17022",
+        "cells": [
+          128,
+          128
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.003125,
+        "stepScale": 1,
+        "steps": 144,
+        "initialElectricIntegral": 0.008508262594474361,
+        "dielectricArea": 0.035888671875,
+        "initialModifiedEnergy": 0.008488582755348546,
+        "maxModifiedEnergyRelativeDrift": 2.5248674262456916e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.996535062789917,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000002924005367033625,
+            "modifiedEnergy": 0.008488582746391323
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000008246660147255022,
+            "modifiedEnergy": 0.008488582771488154
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00005754746664943925,
+            "modifiedEnergy": 0.008488582776781092
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00016872813199656736,
+            "modifiedEnergy": 0.008488582768623801
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.00024982302512338816,
+            "modifiedEnergy": 0.008488582771702717
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.00025260265820062556,
+            "modifiedEnergy": 0.008488582744379454
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.000248568474064505,
+            "modifiedEnergy": 0.00848858276135687
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.016899145041928933
+      }
+    }
+  ],
+  "selectedGeometry": {
+    "id": "random-17014",
+    "kind": "seeded random",
+    "seed": 17014,
+    "sites": [
+      1,
+      2,
+      3,
+      8,
+      11,
+      12,
+      13,
+      14,
+      15,
+      17,
+      19,
+      21
+    ]
+  },
+  "baselineGeometry": {
+    "id": "simple-two-columns",
+    "kind": "simple baseline",
+    "sites": [
+      0,
+      3,
+      4,
+      7,
+      8,
+      11,
+      12,
+      15,
+      16,
+      19,
+      20,
+      23
+    ]
+  },
+  "verification": [
+    {
+      "geometryId": "simple-two-columns",
+      "valid": true,
+      "deletions": [
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-0",
+            "deletedSite": 0
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.0536840006357693e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332913,
+              "modifiedEnergy": 0.008488582634665101
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127946042,
+              "modifiedEnergy": 0.008488582620594012
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.000057547369269614544,
+              "modifiedEnergy": 0.008488582590759235
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.000168680217025712,
+              "modifiedEnergy": 0.00848858258494939
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024795835858202963,
+              "modifiedEnergy": 0.008488582608787059
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.000259952865238004,
+              "modifiedEnergy": 0.008488582609162744
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028378097301105673,
+              "modifiedEnergy": 0.00848858258101988
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017350545026031294
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-3",
+            "deletedSite": 3
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.2442555480672866e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332913,
+              "modifiedEnergy": 0.008488582607227577
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127946042,
+              "modifiedEnergy": 0.008488582601416031
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.000057547369269614544,
+              "modifiedEnergy": 0.008488582579135179
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.000168680217025712,
+              "modifiedEnergy": 0.008488582579726544
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024795835858202963,
+              "modifiedEnergy": 0.008488582576059807
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.000259952865238004,
+              "modifiedEnergy": 0.008488582564843056
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028378097301105673,
+              "modifiedEnergy": 0.008488582565274202
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017350545026031294
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-4",
+            "deletedSite": 4
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 1.2740754784523745e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332913,
+              "modifiedEnergy": 0.008488582659609561
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127946042,
+              "modifiedEnergy": 0.008488582647197594
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.000057547369269614544,
+              "modifiedEnergy": 0.00848858265933769
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.000168680217025712,
+              "modifiedEnergy": 0.008488582651687645
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002479583585921059,
+              "modifiedEnergy": 0.00848858266400688
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.00025995286376653067,
+              "modifiedEnergy": 0.008488582648572846
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002837792714350244,
+              "modifiedEnergy": 0.008488582650024997
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017350528331486748
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-7",
+            "deletedSite": 7
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.2505379781989632e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332913,
+              "modifiedEnergy": 0.008488582607227952
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127946042,
+              "modifiedEnergy": 0.008488582601409715
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.000057547369269614544,
+              "modifiedEnergy": 0.008488582579139866
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.000168680217025712,
+              "modifiedEnergy": 0.008488582581045486
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024795835858202963,
+              "modifiedEnergy": 0.008488582577737486
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.000259952865238004,
+              "modifiedEnergy": 0.008488582564309767
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028378097301105673,
+              "modifiedEnergy": 0.008488582564361328
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017350545026031294
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-8",
+            "deletedSite": 8
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 4.0072936080548516e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332913,
+              "modifiedEnergy": 0.008488582768401687
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127959347,
+              "modifiedEnergy": 0.008488582760245009
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.000057547369529649904,
+              "modifiedEnergy": 0.008488582742922881
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016868058892866586,
+              "modifiedEnergy": 0.008488582745572338
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024799295049277834,
+              "modifiedEnergy": 0.008488582747487232
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002596558095228689,
+              "modifiedEnergy": 0.008488582725810491
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002798525454330228,
+              "modifiedEnergy": 0.008488582721332303
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.01730693437098313
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-11",
+            "deletedSite": 11
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.0632870634251788e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332913,
+              "modifiedEnergy": 0.00848858260720483
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127946042,
+              "modifiedEnergy": 0.008488582601366156
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736926971357,
+              "modifiedEnergy": 0.008488582581816862
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016868021764447492,
+              "modifiedEnergy": 0.008488582587333019
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024795838518543834,
+              "modifiedEnergy": 0.00848858258876624
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002599478669330278,
+              "modifiedEnergy": 0.008488582580204716
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002836646725927165,
+              "modifiedEnergy": 0.008488582586573288
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017349308555577328
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-12",
+            "deletedSite": 12
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 4.007295828500901e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.000002924005367033326,
+              "modifiedEnergy": 0.008488582768401727
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660130664137,
+              "modifiedEnergy": 0.00848858276024502
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754738613197861,
+              "modifiedEnergy": 0.00848858274292289
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016868918280265374,
+              "modifiedEnergy": 0.008488582745572277
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.000248254484422968,
+              "modifiedEnergy": 0.00848858274748731
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.000258140758778288,
+              "modifiedEnergy": 0.008488582725810503
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002767647398635496,
+              "modifiedEnergy": 0.008488582721332284
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017252304942841173
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-15",
+            "deletedSite": 15
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.0632872854697837e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.000002924005367033343,
+              "modifiedEnergy": 0.008488582607204833
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.0000082466601313265,
+              "modifiedEnergy": 0.00848858260136616
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754738690060805,
+              "modifiedEnergy": 0.008488582581816858
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.0001686883806041984,
+              "modifiedEnergy": 0.008488582587333027
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002482003473927552,
+              "modifiedEnergy": 0.008488582588766233
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.00025763957125065566,
+              "modifiedEnergy": 0.008488582580204697
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002731654530725094,
+              "modifiedEnergy": 0.008488582586573305
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.01720615824413955
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-16",
+            "deletedSite": 16
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 1.2740752564077695e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332913,
+              "modifiedEnergy": 0.008488582659609598
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.0000082466601279496,
+              "modifiedEnergy": 0.008488582647197613
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736933396951,
+              "modifiedEnergy": 0.008488582659337735
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016868031332946035,
+              "modifiedEnergy": 0.0084885826516877
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024796958960794446,
+              "modifiedEnergy": 0.008488582664006922
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002598933510700037,
+              "modifiedEnergy": 0.008488582648572848
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002821557103973117,
+              "modifiedEnergy": 0.008488582650024994
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017333682631559
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-19",
+            "deletedSite": 19
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.2505379115855817e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332913,
+              "modifiedEnergy": 0.008488582607227953
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.00000824666012797396,
+              "modifiedEnergy": 0.008488582601409719
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736984575177,
+              "modifiedEnergy": 0.008488582579139864
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016868121506348883,
+              "modifiedEnergy": 0.008488582581045496
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002480913018430828,
+              "modifiedEnergy": 0.008488582577737476
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.00025973846127976035,
+              "modifiedEnergy": 0.008488582564309772
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002707444117568922,
+              "modifiedEnergy": 0.008488582564361321
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017221283565244213
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-20",
+            "deletedSite": 20
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.0536834122175662e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332913,
+              "modifiedEnergy": 0.008488582634665152
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127946042,
+              "modifiedEnergy": 0.008488582620594024
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.000057547369269614544,
+              "modifiedEnergy": 0.00848858259075924
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016868021702571548,
+              "modifiedEnergy": 0.008488582584949394
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024795835860706115,
+              "modifiedEnergy": 0.008488582608787102
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.00025995287714279626,
+              "modifiedEnergy": 0.00848858260916276
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002837803429086577,
+              "modifiedEnergy": 0.00848858258101993
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017350539088246915
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-23",
+            "deletedSite": 23
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.2442552705115304e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332913,
+              "modifiedEnergy": 0.008488582607227577
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127946042,
+              "modifiedEnergy": 0.008488582601416033
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736926961501,
+              "modifiedEnergy": 0.008488582579135191
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016868021703982978,
+              "modifiedEnergy": 0.00848858257972655
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002479583934654374,
+              "modifiedEnergy": 0.008488582576059814
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.00025995600508588564,
+              "modifiedEnergy": 0.00848858256484308
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028369901352973706,
+              "modifiedEnergy": 0.008488582565274207
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017349804471485396
+        }
+      ],
+      "jitter": [
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "jitter-27001",
+            "seed": 27001,
+            "jitter": 0.003
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.0369873046875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 1.2069694466099179e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.000002924005367033293,
+              "modifiedEnergy": 0.00848858267265556
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660128094171,
+              "modifiedEnergy": 0.008488582667779385
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754737010405581,
+              "modifiedEnergy": 0.008488582672328781
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016868052197404297,
+              "modifiedEnergy": 0.008488582666638902
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002479530012113005,
+              "modifiedEnergy": 0.008488582667395505
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002599282241328142,
+              "modifiedEnergy": 0.008488582652893945
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028443108693937603,
+              "modifiedEnergy": 0.008488582658277071
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.01735633085809515
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "jitter-27002",
+            "seed": 27002,
+            "jitter": 0.006
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03704833984375,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 1.6379116285492046e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.000002924005367033298,
+              "modifiedEnergy": 0.008488582693244269
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660128270184,
+              "modifiedEnergy": 0.008488582694836704
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754737056449435,
+              "modifiedEnergy": 0.008488582659409459
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016868049340562809,
+              "modifiedEnergy": 0.008488582651368495
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002479559155663239,
+              "modifiedEnergy": 0.008488582653489438
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002598890247852927,
+              "modifiedEnergy": 0.008488582616313061
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002853395408996476,
+              "modifiedEnergy": 0.008488582626786183
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.01736451729011142
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "radius-plus-index-minus",
+            "seed": 27003,
+            "jitter": 0.003,
+            "radiusScale": 1.1,
+            "epsilonScale": 0.95
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.04559326171875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 5.576559880537957e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332583,
+              "modifiedEnergy": 0.008488582801139892
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660126597277,
+              "modifiedEnergy": 0.008488582794517115
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736207001668,
+              "modifiedEnergy": 0.008488582795154511
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016867635859939381,
+              "modifiedEnergy": 0.008488582788124217
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002477997996690574,
+              "modifiedEnergy": 0.008488582802685635
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.00026123003959976963,
+              "modifiedEnergy": 0.008488582761402588
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028704968836877186,
+              "modifiedEnergy": 0.008488582761718606
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017404396747027217
+        },
+        {
+          "geometryId": "simple-two-columns",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "radius-minus-index-plus",
+            "seed": 27004,
+            "jitter": 0.003,
+            "radiusScale": 0.9,
+            "epsilonScale": 1.05
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.0299072265625,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 6.161414267680243e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.000002924005367033303,
+              "modifiedEnergy": 0.008488582777070815
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660128698671,
+              "modifiedEnergy": 0.008488582804464174
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.000057547373684092685,
+              "modifiedEnergy": 0.008488582803042948
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016868254841965146,
+              "modifiedEnergy": 0.008488582801729294
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024804395764712483,
+              "modifiedEnergy": 0.00848858280765022
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.00025931489647302723,
+              "modifiedEnergy": 0.008488582773173768
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028216083649299834,
+              "modifiedEnergy": 0.008488582807583262
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.01732390225506526
+        }
+      ],
+      "worstDeletionAt128": {
+        "id": "delete-15",
+        "deletedSite": 15
+      },
+      "refinement": [
+        {
+          "nominal": {
+            "geometryId": "simple-two-columns",
+            "cells": [
+              256,
+              256
+            ],
+            "physicalDomain": [
+              1,
+              1
+            ],
+            "perturbation": {
+              "id": "nominal"
+            },
+            "dt": 0.0015625,
+            "stepScale": 1,
+            "steps": 288,
+            "initialElectricIntegral": 0.00850826228655529,
+            "dielectricArea": 0.03607177734375,
+            "initialModifiedEnergy": 0.008503310119320703,
+            "maxModifiedEnergyRelativeDrift": 8.625094860548188e-9,
+            "nonfiniteValues": 0,
+            "maxElectric": 0.9966448545455933,
+            "samples": [
+              {
+                "time": 0.3,
+                "electricIntegral": 0.000003973842157677286,
+                "modifiedEnergy": 0.008503310182541171
+              },
+              {
+                "time": 0.325,
+                "electricIntegral": 0.000009545111150837064,
+                "modifiedEnergy": 0.00850331018826867
+              },
+              {
+                "time": 0.35,
+                "electricIntegral": 0.00006109581808963347,
+                "modifiedEnergy": 0.00850331019266256
+              },
+              {
+                "time": 0.375,
+                "electricIntegral": 0.0001741162669053174,
+                "modifiedEnergy": 0.008503310186718209
+              },
+              {
+                "time": 0.4,
+                "electricIntegral": 0.00025191591181082456,
+                "modifiedEnergy": 0.00850331017076656
+              },
+              {
+                "time": 0.425,
+                "electricIntegral": 0.0002616305370144264,
+                "modifiedEnergy": 0.008503310168115882
+              },
+              {
+                "time": 0.45,
+                "electricIntegral": 0.00028792077457348504,
+                "modifiedEnergy": 0.008503310148363424
+              }
+            ],
+            "valid": true,
+            "rejectionReasons": [],
+            "score": 0.017713193028959476
+          },
+          "worstDeletion": {
+            "geometryId": "simple-two-columns",
+            "cells": [
+              256,
+              256
+            ],
+            "physicalDomain": [
+              1,
+              1
+            ],
+            "perturbation": {
+              "id": "delete-15",
+              "deletedSite": 15
+            },
+            "dt": 0.0015625,
+            "stepScale": 1,
+            "steps": 288,
+            "initialElectricIntegral": 0.00850826228655529,
+            "dielectricArea": 0.0330657958984375,
+            "initialModifiedEnergy": 0.008503310119320703,
+            "maxModifiedEnergyRelativeDrift": 8.625027358988291e-9,
+            "nonfiniteValues": 0,
+            "maxElectric": 0.9966448545455933,
+            "samples": [
+              {
+                "time": 0.3,
+                "electricIntegral": 0.000003973842157677286,
+                "modifiedEnergy": 0.008503310182539846
+              },
+              {
+                "time": 0.325,
+                "electricIntegral": 0.000009545111150837067,
+                "modifiedEnergy": 0.008503310188236673
+              },
+              {
+                "time": 0.35,
+                "electricIntegral": 0.00006109581811877536,
+                "modifiedEnergy": 0.008503310192661985
+              },
+              {
+                "time": 0.375,
+                "electricIntegral": 0.00017411771566148794,
+                "modifiedEnergy": 0.008503310189048032
+              },
+              {
+                "time": 0.4,
+                "electricIntegral": 0.0002522268899737038,
+                "modifiedEnergy": 0.008503310162015745
+              },
+              {
+                "time": 0.425,
+                "electricIntegral": 0.000259048845077423,
+                "modifiedEnergy": 0.008503310160729714
+              },
+              {
+                "time": 0.45,
+                "electricIntegral": 0.00027635675541306306,
+                "modifiedEnergy": 0.008503310140792565
+              }
+            ],
+            "valid": true,
+            "rejectionReasons": [],
+            "score": 0.01755547820428164
+          }
+        },
+        {
+          "nominal": {
+            "geometryId": "simple-two-columns",
+            "cells": [
+              512,
+              512
+            ],
+            "physicalDomain": [
+              1,
+              1
+            ],
+            "perturbation": {
+              "id": "nominal"
+            },
+            "dt": 0.0008064516129032258,
+            "stepScale": 1,
+            "steps": 558,
+            "initialElectricIntegral": 0.008508262283310692,
+            "dielectricArea": 0.0364837646484375,
+            "initialModifiedEnergy": 0.008506940900204011,
+            "maxModifiedEnergyRelativeDrift": 8.511977900305112e-9,
+            "nonfiniteValues": 0,
+            "maxElectric": 0.997988760471344,
+            "samples": [
+              {
+                "time": 0.3,
+                "electricIntegral": 0.000004226052832414709,
+                "modifiedEnergy": 0.008506940867375122
+              },
+              {
+                "time": 0.325,
+                "electricIntegral": 0.000009854673918475045,
+                "modifiedEnergy": 0.008506940856500361
+              },
+              {
+                "time": 0.35,
+                "electricIntegral": 0.00006198525902063327,
+                "modifiedEnergy": 0.00850694084716017
+              },
+              {
+                "time": 0.375,
+                "electricIntegral": 0.00017548159956447772,
+                "modifiedEnergy": 0.00850694084075795
+              },
+              {
+                "time": 0.4,
+                "electricIntegral": 0.0002528143649395179,
+                "modifiedEnergy": 0.008506940827793118
+              },
+              {
+                "time": 0.425,
+                "electricIntegral": 0.0002621309916649204,
+                "modifiedEnergy": 0.00850694083234902
+              },
+              {
+                "time": 0.45,
+                "electricIntegral": 0.0002891773726830821,
+                "modifiedEnergy": 0.008506940837566779
+              }
+            ],
+            "valid": true,
+            "rejectionReasons": [],
+            "score": 0.01780560611945309
+          },
+          "worstDeletion": {
+            "geometryId": "simple-two-columns",
+            "cells": [
+              512,
+              512
+            ],
+            "physicalDomain": [
+              1,
+              1
+            ],
+            "perturbation": {
+              "id": "delete-15",
+              "deletedSite": 15
+            },
+            "dt": 0.0008064516129032258,
+            "stepScale": 1,
+            "steps": 558,
+            "initialElectricIntegral": 0.008508262283310692,
+            "dielectricArea": 0.033443450927734375,
+            "initialModifiedEnergy": 0.008506940900204011,
+            "maxModifiedEnergyRelativeDrift": 8.869444623194056e-9,
+            "nonfiniteValues": 0,
+            "maxElectric": 0.997988760471344,
+            "samples": [
+              {
+                "time": 0.3,
+                "electricIntegral": 0.000004226052832414709,
+                "modifiedEnergy": 0.008506940867375187
+              },
+              {
+                "time": 0.325,
+                "electricIntegral": 0.000009854673918475045,
+                "modifiedEnergy": 0.008506940856501154
+              },
+              {
+                "time": 0.35,
+                "electricIntegral": 0.00006198525902063465,
+                "modifiedEnergy": 0.00850694084714338
+              },
+              {
+                "time": 0.375,
+                "electricIntegral": 0.00017548181455971846,
+                "modifiedEnergy": 0.008506940840963432
+              },
+              {
+                "time": 0.4,
+                "electricIntegral": 0.00025314496052950626,
+                "modifiedEnergy": 0.008506940827564544
+              },
+              {
+                "time": 0.425,
+                "electricIntegral": 0.00025946747228889006,
+                "modifiedEnergy": 0.008506940824953168
+              },
+              {
+                "time": 0.45,
+                "electricIntegral": 0.00027741112496475223,
+                "modifiedEnergy": 0.00850694082475217
+              }
+            ],
+            "valid": true,
+            "rejectionReasons": [],
+            "score": 0.017644667799022285
+          }
+        }
+      ],
+      "halfStep": {
+        "geometryId": "simple-two-columns",
+        "cells": [
+          256,
+          256
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.00078125,
+        "stepScale": 2,
+        "steps": 576,
+        "initialElectricIntegral": 0.00850826228655529,
+        "dielectricArea": 0.03607177734375,
+        "initialModifiedEnergy": 0.008507024244746622,
+        "maxModifiedEnergyRelativeDrift": 1.762587753528777e-8,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.9966448545455933,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000003921280638921079,
+            "modifiedEnergy": 0.008507024094802855
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000009465132495980372,
+            "modifiedEnergy": 0.008507024126502352
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.00006088098724113005,
+            "modifiedEnergy": 0.008507024130541779
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.00017383831929952527,
+            "modifiedEnergy": 0.008507024132353241
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.00025174133353045297,
+            "modifiedEnergy": 0.008507024139986018
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.0002615493403524127,
+            "modifiedEnergy": 0.008507024122802092
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.00028773434088478984,
+            "modifiedEnergy": 0.008507024110532871
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017694622263599604
+      },
+      "comparisons": {
+        "nominalRefinementRelative": 0.005190112028405024,
+        "deletionRefinementRelative": 0.005054761912014443,
+        "halfStepRelative": 0.001049514653843414,
+        "meanJitterScore": 0.017362286787574763,
+        "worstDeletionScore": 0.01720615824413955
+      }
+    },
+    {
+      "geometryId": "random-17014",
+      "valid": true,
+      "deletions": [
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-1",
+            "deletedSite": 1
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 7.776894905831e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332888,
+              "modifiedEnergy": 0.008488582747388729
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127717587,
+              "modifiedEnergy": 0.008488582740246008
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736717739286,
+              "modifiedEnergy": 0.008488582762163471
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.0001686787049458676,
+              "modifiedEnergy": 0.008488582797118336
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024789033484835197,
+              "modifiedEnergy": 0.008488582804592519
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002604659544981648,
+              "modifiedEnergy": 0.008488582775861274
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028826817717733037,
+              "modifiedEnergy": 0.00848858282136336
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.01740318314118676
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-2",
+            "deletedSite": 2
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 4.300721778704997e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332888,
+              "modifiedEnergy": 0.008488582746960875
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127717587,
+              "modifiedEnergy": 0.008488582748677921
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736717739286,
+              "modifiedEnergy": 0.008488582756833696
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.0001686787049458676,
+              "modifiedEnergy": 0.008488582786477598
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024789033484835197,
+              "modifiedEnergy": 0.008488582791855579
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002604659544981648,
+              "modifiedEnergy": 0.008488582763593938
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028826817717733037,
+              "modifiedEnergy": 0.008488582784081414
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.01740318314118676
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-3",
+            "deletedSite": 3
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.7475028918644284e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332888,
+              "modifiedEnergy": 0.008488582747182023
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127717587,
+              "modifiedEnergy": 0.008488582747557115
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736717739286,
+              "modifiedEnergy": 0.008488582758879962
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.0001686787049458676,
+              "modifiedEnergy": 0.008488582778670952
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024789033484835197,
+              "modifiedEnergy": 0.008488582775971105
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002604659544981648,
+              "modifiedEnergy": 0.008488582746867647
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028826817717733037,
+              "modifiedEnergy": 0.00848858276950233
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.01740318314118676
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-8",
+            "deletedSite": 8
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 1.2244492864077472e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332888,
+              "modifiedEnergy": 0.008488582735324605
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.00000824666012771794,
+              "modifiedEnergy": 0.008488582730074481
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736718363057,
+              "modifiedEnergy": 0.008488582719830887
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016867871307388695,
+              "modifiedEnergy": 0.00848858270872891
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024789120145256484,
+              "modifiedEnergy": 0.008488582689577995
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.00026043248386029347,
+              "modifiedEnergy": 0.008488582651410155
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002874032423490744,
+              "modifiedEnergy": 0.008488582687757014
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017394073108275315
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-11",
+            "deletedSite": 11
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 5.284870319144375e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332888,
+              "modifiedEnergy": 0.008488582747170606
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127717587,
+              "modifiedEnergy": 0.008488582747559079
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.000057547367177592906,
+              "modifiedEnergy": 0.008488582758029066
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016867870540333022,
+              "modifiedEnergy": 0.008488582783508355
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.000247890355723529,
+              "modifiedEnergy": 0.0084885827935208
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002604620273382973,
+              "modifiedEnergy": 0.008488582778377425
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002881822750571538,
+              "modifiedEnergy": 0.008488582800209605
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017402265270928374
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-12",
+            "deletedSite": 12
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.0627038743725734e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332913,
+              "modifiedEnergy": 0.008488582857791546
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127929105,
+              "modifiedEnergy": 0.008488582887982632
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736867344781,
+              "modifiedEnergy": 0.008488582885214304
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016867953956437227,
+              "modifiedEnergy": 0.00848858292467816
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002479173969638418,
+              "modifiedEnergy": 0.008488582927657784
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002602798383235868,
+              "modifiedEnergy": 0.008488582922782413
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002866290822192983,
+              "modifiedEnergy": 0.008488582930442872
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.01738402988844222
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-13",
+            "deletedSite": 13
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 4.939064712772279e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332888,
+              "modifiedEnergy": 0.008488582757810408
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127745261,
+              "modifiedEnergy": 0.008488582759204008
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736745380537,
+              "modifiedEnergy": 0.008488582714330976
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016867895219322386,
+              "modifiedEnergy": 0.008488582715068298
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024790461401324554,
+              "modifiedEnergy": 0.008488582718127366
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002603519694290545,
+              "modifiedEnergy": 0.008488582713422886
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002869395329500048,
+              "modifiedEnergy": 0.00848858271862958
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017388221596735077
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-14",
+            "deletedSite": 14
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 3.065452669481772e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332888,
+              "modifiedEnergy": 0.008488582756766807
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127748307,
+              "modifiedEnergy": 0.00848858276525117
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.000057547367455704905,
+              "modifiedEnergy": 0.008488582780862826
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016867894472294946,
+              "modifiedEnergy": 0.008488582755872215
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002479035195315857,
+              "modifiedEnergy": 0.00848858276626449
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.00026035329516920484,
+              "modifiedEnergy": 0.008488582732388724
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002870874799440154,
+              "modifiedEnergy": 0.008488582729327197
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017389675032660843
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-15",
+            "deletedSite": 15
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 3.740702636534365e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670333,
+              "modifiedEnergy": 0.00848858274718129
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660128461824,
+              "modifiedEnergy": 0.008488582747547178
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754737147271066,
+              "modifiedEnergy": 0.008488582759024995
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.0001686810109512917,
+              "modifiedEnergy": 0.008488582779240491
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002479716743390429,
+              "modifiedEnergy": 0.008488582782355973
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.00025935578392159887,
+              "modifiedEnergy": 0.008488582777527483
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.000282427060315079,
+              "modifiedEnergy": 0.008488582787101809
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017325864590117788
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-17",
+            "deletedSite": 17
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.593856462951294e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332888,
+              "modifiedEnergy": 0.00848858277736671
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.00000824666012772707,
+              "modifiedEnergy": 0.008488582769309907
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736731144162,
+              "modifiedEnergy": 0.00848858275413545
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016867885786609843,
+              "modifiedEnergy": 0.00848858275550908
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002479033709817254,
+              "modifiedEnergy": 0.008488582762211242
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002604038806246622,
+              "modifiedEnergy": 0.008488582751156687
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028655269085582446,
+              "modifiedEnergy": 0.008488582741891492
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017385423388308778
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-19",
+            "deletedSite": 19
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.793148379254262e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332888,
+              "modifiedEnergy": 0.008488582747182024
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.00000824666012773154,
+              "modifiedEnergy": 0.008488582747557658
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736744353153,
+              "modifiedEnergy": 0.008488582758890967
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016867916152643294,
+              "modifiedEnergy": 0.008488582779058416
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024795428263803455,
+              "modifiedEnergy": 0.008488582777140881
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.00026034153719554405,
+              "modifiedEnergy": 0.00848858275064068
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028090716750753584,
+              "modifiedEnergy": 0.008488582753641175
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017329910886528747
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "delete-21",
+            "deletedSite": 21
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03289794921875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 9.011242974032996e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332888,
+              "modifiedEnergy": 0.00848858274459194
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127717587,
+              "modifiedEnergy": 0.00848858275082763
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.000057547367177392884,
+              "modifiedEnergy": 0.008488582744570775
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016867870494666713,
+              "modifiedEnergy": 0.00848858274550202
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024789033851309994,
+              "modifiedEnergy": 0.008488582723969596
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.00026046674111073707,
+              "modifiedEnergy": 0.008488582678855864
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028824047142756055,
+              "modifiedEnergy": 0.008488582714340024
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017402927260572278
+        }
+      ],
+      "jitter": [
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "jitter-27001",
+            "seed": 27001,
+            "jitter": 0.003
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.03662109375,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.2349129213949936e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332888,
+              "modifiedEnergy": 0.008488582764203173
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660127718224,
+              "modifiedEnergy": 0.008488582762573657
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736715538455,
+              "modifiedEnergy": 0.008488582766266774
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016867863697334843,
+              "modifiedEnergy": 0.008488582770161122
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002478782492169749,
+              "modifiedEnergy": 0.008488582766443303
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002604909653325132,
+              "modifiedEnergy": 0.008488582736377303
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002887850694949159,
+              "modifiedEnergy": 0.008488582739925392
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017408497648980892
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "jitter-27002",
+            "seed": 27002,
+            "jitter": 0.006
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.036865234375,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.9790889755076932e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332964,
+              "modifiedEnergy": 0.00848858278063679
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660128111603,
+              "modifiedEnergy": 0.008488582777303107
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.000057547369175733545,
+              "modifiedEnergy": 0.008488582765003371
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016867958996674741,
+              "modifiedEnergy": 0.008488582772023693
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.00024792123307545213,
+              "modifiedEnergy": 0.008488582775564087
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.0002601616811390924,
+              "modifiedEnergy": 0.008488582750360345
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028867165472397057,
+              "modifiedEnergy": 0.00848858275764204
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017401797246431476
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "radius-plus-index-minus",
+            "seed": 27003,
+            "jitter": 0.003,
+            "radiusScale": 1.1,
+            "epsilonScale": 0.95
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.0457763671875,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 2.0214844465016313e-8,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.0000029240053670332574,
+              "modifiedEnergy": 0.008488582870897305
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660126507546,
+              "modifiedEnergy": 0.008488582878631216
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.000057547361332025224,
+              "modifiedEnergy": 0.008488582850562055
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.00016867582708434212,
+              "modifiedEnergy": 0.00848858286658923
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002477771475524121,
+              "modifiedEnergy": 0.00848858287628794
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.00026142744161426453,
+              "modifiedEnergy": 0.00848858291038068
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.00028950459992629153,
+              "modifiedEnergy": 0.008488582926943926
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.017431853849420576
+        },
+        {
+          "geometryId": "random-17014",
+          "cells": [
+            128,
+            128
+          ],
+          "physicalDomain": [
+            1,
+            1
+          ],
+          "perturbation": {
+            "id": "radius-minus-index-plus",
+            "seed": 27004,
+            "jitter": 0.003,
+            "radiusScale": 0.9,
+            "epsilonScale": 1.05
+          },
+          "dt": 0.003125,
+          "stepScale": 1,
+          "steps": 144,
+          "initialElectricIntegral": 0.008508262594474361,
+          "dielectricArea": 0.02972412109375,
+          "initialModifiedEnergy": 0.008488582755348546,
+          "maxModifiedEnergyRelativeDrift": 4.1660421778999535e-9,
+          "nonfiniteValues": 0,
+          "maxElectric": 0.996535062789917,
+          "samples": [
+            {
+              "time": 0.3,
+              "electricIntegral": 0.000002924005367033298,
+              "modifiedEnergy": 0.008488582746884181
+            },
+            {
+              "time": 0.325,
+              "electricIntegral": 0.000008246660128186985,
+              "modifiedEnergy": 0.008488582790712339
+            },
+            {
+              "time": 0.35,
+              "electricIntegral": 0.00005754736971378669,
+              "modifiedEnergy": 0.008488582756999565
+            },
+            {
+              "time": 0.375,
+              "electricIntegral": 0.0001686799038426166,
+              "modifiedEnergy": 0.00848858274641889
+            },
+            {
+              "time": 0.4,
+              "electricIntegral": 0.0002479328047784247,
+              "modifiedEnergy": 0.008488582741914974
+            },
+            {
+              "time": 0.425,
+              "electricIntegral": 0.000260099999271714,
+              "modifiedEnergy": 0.00848858272430757
+            },
+            {
+              "time": 0.45,
+              "electricIntegral": 0.0002875448353052141,
+              "modifiedEnergy": 0.00848858274142672
+            }
+          ],
+          "valid": true,
+          "rejectionReasons": [],
+          "score": 0.01738978528643029
+        }
+      ],
+      "worstDeletionAt128": {
+        "id": "delete-15",
+        "deletedSite": 15
+      },
+      "refinement": [
+        {
+          "nominal": {
+            "geometryId": "random-17014",
+            "cells": [
+              256,
+              256
+            ],
+            "physicalDomain": [
+              1,
+              1
+            ],
+            "perturbation": {
+              "id": "nominal"
+            },
+            "dt": 0.0015625,
+            "stepScale": 1,
+            "steps": 288,
+            "initialElectricIntegral": 0.00850826228655529,
+            "dielectricArea": 0.03607177734375,
+            "initialModifiedEnergy": 0.008503310119320703,
+            "maxModifiedEnergyRelativeDrift": 6.275868713601085e-9,
+            "nonfiniteValues": 0,
+            "maxElectric": 0.9966448545455933,
+            "samples": [
+              {
+                "time": 0.3,
+                "electricIntegral": 0.000003973842157677286,
+                "modifiedEnergy": 0.008503310155408022
+              },
+              {
+                "time": 0.325,
+                "electricIntegral": 0.000009545111150837064,
+                "modifiedEnergy": 0.008503310139100835
+              },
+              {
+                "time": 0.35,
+                "electricIntegral": 0.0000610958180882796,
+                "modifiedEnergy": 0.00850331017268636
+              },
+              {
+                "time": 0.375,
+                "electricIntegral": 0.0001741161072310959,
+                "modifiedEnergy": 0.008503310165819747
+              },
+              {
+                "time": 0.4,
+                "electricIntegral": 0.00025183917712957816,
+                "modifiedEnergy": 0.008503310165074674
+              },
+              {
+                "time": 0.425,
+                "electricIntegral": 0.00026215215069235766,
+                "modifiedEnergy": 0.008503310160186885
+              },
+              {
+                "time": 0.45,
+                "electricIntegral": 0.00029242042739468393,
+                "modifiedEnergy": 0.008503310159276068
+              }
+            ],
+            "valid": true,
+            "rejectionReasons": [],
+            "score": 0.017765975952212146
+          },
+          "worstDeletion": {
+            "geometryId": "random-17014",
+            "cells": [
+              256,
+              256
+            ],
+            "physicalDomain": [
+              1,
+              1
+            ],
+            "perturbation": {
+              "id": "delete-15",
+              "deletedSite": 15
+            },
+            "dt": 0.0015625,
+            "stepScale": 1,
+            "steps": 288,
+            "initialElectricIntegral": 0.00850826228655529,
+            "dielectricArea": 0.0330657958984375,
+            "initialModifiedEnergy": 0.008503310119320703,
+            "maxModifiedEnergyRelativeDrift": 6.626406534593343e-9,
+            "nonfiniteValues": 0,
+            "maxElectric": 0.9966448545455933,
+            "samples": [
+              {
+                "time": 0.3,
+                "electricIntegral": 0.000003973842157677286,
+                "modifiedEnergy": 0.008503310155408035
+              },
+              {
+                "time": 0.325,
+                "electricIntegral": 0.000009545111150837064,
+                "modifiedEnergy": 0.008503310139096793
+              },
+              {
+                "time": 0.35,
+                "electricIntegral": 0.00006109581809153722,
+                "modifiedEnergy": 0.008503310172677823
+              },
+              {
+                "time": 0.375,
+                "electricIntegral": 0.00017411635680208482,
+                "modifiedEnergy": 0.008503310166106557
+              },
+              {
+                "time": 0.4,
+                "electricIntegral": 0.00025192946084814233,
+                "modifiedEnergy": 0.008503310163357406
+              },
+              {
+                "time": 0.425,
+                "electricIntegral": 0.0002608964897464935,
+                "modifiedEnergy": 0.008503310174232179
+              },
+              {
+                "time": 0.45,
+                "electricIntegral": 0.00028604043669885177,
+                "modifiedEnergy": 0.008503310175667092
+              }
+            ],
+            "valid": true,
+            "rejectionReasons": [],
+            "score": 0.0176806643093586
+          }
+        },
+        {
+          "nominal": {
+            "geometryId": "random-17014",
+            "cells": [
+              512,
+              512
+            ],
+            "physicalDomain": [
+              1,
+              1
+            ],
+            "perturbation": {
+              "id": "nominal"
+            },
+            "dt": 0.0008064516129032258,
+            "stepScale": 1,
+            "steps": 558,
+            "initialElectricIntegral": 0.008508262283310692,
+            "dielectricArea": 0.0364837646484375,
+            "initialModifiedEnergy": 0.008506940900204011,
+            "maxModifiedEnergyRelativeDrift": 3.2262664761972815e-9,
+            "nonfiniteValues": 0,
+            "maxElectric": 0.997988760471344,
+            "samples": [
+              {
+                "time": 0.3,
+                "electricIntegral": 0.000004226052832414709,
+                "modifiedEnergy": 0.008506940872758353
+              },
+              {
+                "time": 0.325,
+                "electricIntegral": 0.000009854673918475045,
+                "modifiedEnergy": 0.00850694087641089
+              },
+              {
+                "time": 0.35,
+                "electricIntegral": 0.00006198525902063324,
+                "modifiedEnergy": 0.008506940880268031
+              },
+              {
+                "time": 0.375,
+                "electricIntegral": 0.00017548158942232096,
+                "modifiedEnergy": 0.008506940890830126
+              },
+              {
+                "time": 0.4,
+                "electricIntegral": 0.00025273549655936104,
+                "modifiedEnergy": 0.008506940887639687
+              },
+              {
+                "time": 0.425,
+                "electricIntegral": 0.0002626259633558501,
+                "modifiedEnergy": 0.008506940885775754
+              },
+              {
+                "time": 0.45,
+                "electricIntegral": 0.0002935779875263903,
+                "modifiedEnergy": 0.008506940886159898
+              }
+            ],
+            "valid": true,
+            "rejectionReasons": [],
+            "score": 0.017856858273009805
+          },
+          "worstDeletion": {
+            "geometryId": "random-17014",
+            "cells": [
+              512,
+              512
+            ],
+            "physicalDomain": [
+              1,
+              1
+            ],
+            "perturbation": {
+              "id": "delete-15",
+              "deletedSite": 15
+            },
+            "dt": 0.0008064516129032258,
+            "stepScale": 1,
+            "steps": 558,
+            "initialElectricIntegral": 0.008508262283310692,
+            "dielectricArea": 0.033443450927734375,
+            "initialModifiedEnergy": 0.008506940900204011,
+            "maxModifiedEnergyRelativeDrift": 3.2262664761972815e-9,
+            "nonfiniteValues": 0,
+            "maxElectric": 0.997988760471344,
+            "samples": [
+              {
+                "time": 0.3,
+                "electricIntegral": 0.000004226052832414709,
+                "modifiedEnergy": 0.008506940872758353
+              },
+              {
+                "time": 0.325,
+                "electricIntegral": 0.000009854673918475045,
+                "modifiedEnergy": 0.00850694087641077
+              },
+              {
+                "time": 0.35,
+                "electricIntegral": 0.00006198525902063332,
+                "modifiedEnergy": 0.00850694088027088
+              },
+              {
+                "time": 0.375,
+                "electricIntegral": 0.0001754816095889066,
+                "modifiedEnergy": 0.008506940890760512
+              },
+              {
+                "time": 0.4,
+                "electricIntegral": 0.00025282408640305823,
+                "modifiedEnergy": 0.008506940888765373
+              },
+              {
+                "time": 0.425,
+                "electricIntegral": 0.0002613045765931316,
+                "modifiedEnergy": 0.008506940891041176
+              },
+              {
+                "time": 0.45,
+                "electricIntegral": 0.00028710769030384614,
+                "modifiedEnergy": 0.00850694090013826
+              }
+            ],
+            "valid": true,
+            "rejectionReasons": [],
+            "score": 0.017769336966955887
+          }
+        }
+      ],
+      "halfStep": {
+        "geometryId": "random-17014",
+        "cells": [
+          256,
+          256
+        ],
+        "physicalDomain": [
+          1,
+          1
+        ],
+        "perturbation": {
+          "id": "nominal"
+        },
+        "dt": 0.00078125,
+        "stepScale": 2,
+        "steps": 576,
+        "initialElectricIntegral": 0.00850826228655529,
+        "dielectricArea": 0.03607177734375,
+        "initialModifiedEnergy": 0.008507024244746622,
+        "maxModifiedEnergyRelativeDrift": 8.079870661426014e-9,
+        "nonfiniteValues": 0,
+        "maxElectric": 0.9966448545455933,
+        "samples": [
+          {
+            "time": 0.3,
+            "electricIntegral": 0.000003921280638921079,
+            "modifiedEnergy": 0.008507024176010966
+          },
+          {
+            "time": 0.325,
+            "electricIntegral": 0.000009465132495980372,
+            "modifiedEnergy": 0.0085070242038956
+          },
+          {
+            "time": 0.35,
+            "electricIntegral": 0.0000608809872377906,
+            "modifiedEnergy": 0.008507024191740943
+          },
+          {
+            "time": 0.375,
+            "electricIntegral": 0.000173838112826594,
+            "modifiedEnergy": 0.008507024210930072
+          },
+          {
+            "time": 0.4,
+            "electricIntegral": 0.0002516661935291292,
+            "modifiedEnergy": 0.008507024201489896
+          },
+          {
+            "time": 0.425,
+            "electricIntegral": 0.0002620681317370707,
+            "modifiedEnergy": 0.008507024183574755
+          },
+          {
+            "time": 0.45,
+            "electricIntegral": 0.00029222430007174615,
+            "modifiedEnergy": 0.008507024181724313
+          }
+        ],
+        "valid": true,
+        "rejectionReasons": [],
+        "score": 0.017747285279265956
+      },
+      "comparisons": {
+        "nominalRefinementRelative": 0.00508949107441963,
+        "deletionRefinementRelative": 0.004990206317893799,
+        "halfStepRelative": 0.0010531567308509047,
+        "meanJitterScore": 0.01740798350781581,
+        "worstDeletionScore": 0.017325864590117788
+      }
+    }
+  ],
+  "hypothesis": {
+    "supportedWithinThisFiniteTest": false,
+    "observed": {
+      "nominalGainAt128": 0.0030338018244666642,
+      "nominalGainAt512": 0.002878427907080372,
+      "worstDeletionGainAt128": 0.006957180346694125,
+      "meanHeldOutPerturbationGainAt128": 0.0026319528527629643
+    },
+    "failedCriteria": [
+      "nominalGainAt128 below the frozen 5% threshold",
+      "nominalGainAt512 below the frozen 5% threshold",
+      "worstDeletionGainAt128 below the frozen 5% threshold",
+      "meanHeldOutPerturbationGainAt128 below the frozen 5% threshold"
+    ],
+    "statement": "The best of 22 seeded random layouts exceeds the better of two fixed simple layouts by at least 5% in the stated nominal and held-out scores, with the stated grid/step sensitivity limits. This is not a claim about all defects, all layouts or search-method superiority."
+  },
+  "vacuumCalibration": {
+    "geometryId": "uniform-no-rods",
+    "cells": [
+      128,
+      128
+    ],
+    "physicalDomain": [
+      1,
+      1
+    ],
+    "perturbation": {
+      "id": "nominal"
+    },
+    "dt": 0.003125,
+    "stepScale": 1,
+    "steps": 144,
+    "initialElectricIntegral": 0.008508262594474361,
+    "dielectricArea": 0,
+    "initialModifiedEnergy": 0.008488582755348546,
+    "maxModifiedEnergyRelativeDrift": 8.909948556734548e-9,
+    "nonfiniteValues": 0,
+    "maxElectric": 0.996535062789917,
+    "samples": [
+      {
+        "time": 0.3,
+        "electricIntegral": 0.000002924005367033626,
+        "modifiedEnergy": 0.008488582799696224
+      },
+      {
+        "time": 0.325,
+        "electricIntegral": 0.000008246660147471893,
+        "modifiedEnergy": 0.00848858281036234
+      },
+      {
+        "time": 0.35,
+        "electricIntegral": 0.00005754746978752588,
+        "modifiedEnergy": 0.008488582816889889
+      },
+      {
+        "time": 0.375,
+        "electricIntegral": 0.0001687322055384477,
+        "modifiedEnergy": 0.008488582812264
+      },
+      {
+        "time": 0.4,
+        "electricIntegral": 0.00025030220993027427,
+        "modifiedEnergy": 0.008488582811932212
+      },
+      {
+        "time": 0.425,
+        "electricIntegral": 0.0002541262933724111,
+        "modifiedEnergy": 0.00848858280931233
+      },
+      {
+        "time": 0.45,
+        "electricIntegral": 0.00021578970786035042,
+        "modifiedEnergy": 0.00848858283098138
+      }
+    ],
+    "valid": true,
+    "rejectionReasons": [],
+    "score": 0.01661740937060315
+  },
+  "forwardRuns": 69
+}

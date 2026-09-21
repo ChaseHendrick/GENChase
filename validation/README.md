@@ -42,6 +42,9 @@ and historical originality are separate claims.
 
 ## What a scientific review must establish
 
+The new field and particle additions have bounded audits in [MAXWELL.md](MAXWELL.md) and
+[MOLECULAR.md](MOLECULAR.md). Their heavy settings do not change the evidence rules below.
+
 1. Compare implemented equations, boundaries, units, forcing and discretization with the primary reference.
 2. Specify a benchmark independent of the implementation: exact solution, conserved quantity,
    independently computed reference or published quantitative result. Include a deliberate failure control.

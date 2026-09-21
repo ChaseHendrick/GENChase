@@ -341,7 +341,7 @@ These are software claims. They transfer. They are not physics.
 
 ## Per-tab status
 
-120 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
+122 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
 
 Familiarity is listed so you do not confuse it with prior-art status.
 
@@ -467,6 +467,8 @@ Familiarity is listed so you do not confuse it with prior-art status.
 | `parallelogram-lock` | Parallelogram lock | unseen | identity | do not re-derive |
 | `quincunx-lock` | Quincunx lock | unseen | identity | do not re-derive |
 | `double-triangle-bound` | Polygon collapse bounds | rare | proved candidate; priority unresolved | 2026-09-20 partial primary-source review; full-text check pending |
+| `maxwell` | Maxwell FDTD | occasional | science only | never searched |
+| `molecular` | Molecular Dynamics | occasional | science only | never searched |
 
 ## Notes on the rows that are not `science only`
 
@@ -1011,3 +1013,215 @@ Queries: `Visscher 1991 A fast explicit algorithm for the time-dependent Schrodi
 Read: [Visscher's author-uploaded paper](https://www.researchgate.net/publication/253168396_A_fast_explicit_algorithm_for_the_time-dependent_Schrodinger_equation), original Computers in Physics 5, 596–598 (1991), equations 7–8 and stability appendix; [official Dedalus Rayleigh–Bénard example](https://github.com/DedalusProject/dedalus/blob/master/examples/ivp_2d_rayleigh_benard/rayleigh_benard.py); [Pandey, Scheel and Schumacher (2018)](https://www.nature.com/articles/s41467-018-04478-0), Methods equations 10–14; [Whitehead and Doering (2011)](https://arxiv.org/pdf/1104.2278), page 2 and Figure 1. Visscher's DOI page did not open. A [TU Wien thesis landing page](https://repositum.tuwien.at/handle/20.500.12708/160075) supplied a summary only and was not used as equation evidence.
 
 Conclusion: fixed-step undamped Visscher evolution preserves a cross-time modified norm, not the old mixed-time display density. Its conditional stability must include the actual potential envelope. The two-dimensional matrix bound and Fourier benchmarks are derivations for this implementation. Convection's free-fall coefficients and buoyancy sign agree with the sources; stress-free tangential velocity and the instantaneous heat diagnostic required corrections. Numerical controls reproduce the old failures. Neither audit establishes novelty or reproduces complete experimental/turbulent results; bounded evidence and remaining gaps are in validation/SCHRODINGER.md and validation/CONVECTION.md. Earlier access limitations in this chronological ledger describe those earlier sessions, not this successful source retrieval.
+
+## 2026-09-21 — New simulation modules and compute-intensive experiments
+
+Read the current catalog before searching for missing models. The selected additions are classical Maxwell FDTD and Lennard–Jones molecular dynamics. Further candidates are kinetic plasma and nonlinear shallow water. These are established scientific models; neither GitHub availability nor a large example count establishes correctness or originality. The concise comparison is in [research/MODULE-RESEARCH.md](research/MODULE-RESEARCH.md).
+
+Inspected actual repository licenses and source: RobinKa/maxwell-simulation (MIT), Allen-Tildesley/examples (CC0), JuliaVlasov/GEMPIC.jl (MIT), and clawpack/riemann plus clawpack/pyclaw (BSD-3-Clause). Primary numerical references included the official Meep FDTD introduction, the Allen–Tildesley Python guide, Kraus et al. arXiv:1609.03053, and Clawpack's exact shallow-water Riemann treatment. These are references for original implementations; no external application runtime is bundled.
+
+A WebGPU molecular demo was excluded from scientific reuse because its single kick/drift update was labeled velocity Verlet and its force direction appeared reversed in inspected source. A linearized shallow-water demo was not treated as a nonlinear shock solver. pmocz/pic-python's actual license is GPL-3.0, so it was not copied into this Apache-licensed implementation. These are bounded source inspections, not measured upstream validation.
+
+Exact module-discovery queries:
+
+
+All on 2026-09-21. Multiquery outputs were noisy and sometimes dominated by one query, so several were narrowed/repeated within this discovery pass; none were old ledger skip searches.
+
+1. `site:github.com Maxwell FDTD WebGL license`
+2. `site:github.com Lennard Jones javascript molecular dynamics LICENSE`
+3. `site:github.com shallow water simulation WebGL MIT`
+4. `site:github.com elastic wave simulation javascript license`
+5. `site:github.com "Lennard-Jones" "JavaScript" "license"`
+6. `site:github.com "particle-in-cell" "MIT"`
+7. `site:github.com "material point method" "WebGL"`
+8. `site:github.com pmocz "particle-in-cell"`
+9. `site:github.com "Lennard-Jones" "JavaScript" "MIT" simulation`
+10. `site:github.com "molecular dynamics" javascript license verlet`
+11. `site:github.com/pmocz "particle-in-cell"`
+12. `site:github.com "Lennard-Jones" "JavaScript" "MIT"`
+13. `site:github.com "molecular dynamics" "JavaScript" "Verlet"`
+14. `site:github.com Allen Tildesley examples license Lennard Jones`
+15. `site:github.com mathmod "400"`
+16. `MathMod github 400 mathematical models Abderrahman`
+17. `site:clawpack.org shallow water Riemann book exact solver`
+
+
+Primary URLs and access record:
+
+
+Web open:
+- https://github.com/RobinKa/maxwell-simulation
+- https://github.com/timdrysdale/webgl-fdtd
+- https://github.com/Binamraaa/interactive-shallow-water-model
+- https://github.com/pmocz/pic-python
+- https://github.com/RobinKa/maxwell-simulation/blob/master/LICENSE
+- https://arxiv.org/abs/1609.03053
+- https://meep.readthedocs.io/en/latest/Introduction/
+- https://www.clawpack.org/riemann_book/html/Shallow_water.html
+- https://www.clawpack.org/v5.10.x/riemann/Shallow_water_Riemann_solvers.html
+- https://github.com/Allen-Tildesley/examples/blob/master/python_examples/GUIDE.md
+
+Web failed (license later read successfully through GitHub API):
+- https://github.com/Binamraaa/interactive-shallow-water-model/blob/main/LICENSE — cache miss.
+- https://github.com/scttfrdmn/webgpu-compute-exploration/blob/main/LICENSE — cache miss.
+- https://juliavlasov.github.io/GEMPIC.jl/stable/ — tool internal fetch error; raw documentation read instead.
+
+Direct raw source reads, all successful:
+- https://raw.githubusercontent.com/RobinKa/maxwell-simulation/master/src/em/kernels/simulation.ts
+- https://raw.githubusercontent.com/Binamraaa/interactive-shallow-water-model/main/shallow_water_model.py
+- https://raw.githubusercontent.com/scttfrdmn/webgpu-compute-exploration/main/js/examples/molecular-dynamics.js
+- https://raw.githubusercontent.com/JuliaVlasov/GEMPIC.jl/master/README.md
+- https://raw.githubusercontent.com/JuliaVlasov/GEMPIC.jl/master/docs/src/strong_landau_damping.md
+- https://raw.githubusercontent.com/Allen-Tildesley/examples/master/python_examples/md_nve_lj.py
+- https://raw.githubusercontent.com/Allen-Tildesley/examples/master/python_examples/md_lj_module.py
+
+Direct API reads: for each of RobinKa/maxwell-simulation, Binamraaa/interactive-shallow-water-model, scttfrdmn/webgpu-compute-exploration, JuliaVlasov/GEMPIC.jl, pmocz/pic-python, fetched `https://api.github.com/repos/{owner}/{repo}`, `/license`, and `/git/trees/{default_branch}?recursive=1`. License contents were base64-decoded and read, not inferred from badges. For Allen-Tildesley/examples fetched `/license` and `/commits/master`. For clawpack/riemann and clawpack/pyclaw fetched repository metadata, `/license`, and `/commits/master`.
+
+## 2026-09-21 — MathMod collection identification
+
+The user recalled a scientific program with roughly 400 examples and later said MathMod was probably the one. This is a plausible identification, not a confirmed quote from the original comment.
+
+Exact web queries: `"400" "simulations" "VisualPDE"`; `"MathMod" "400" models`; `"400" "models" "mathematical" software simulations`; `MathMod GitHub 400 mathematical models`; `MathMod official library 400 examples`.
+
+Opened primary pages: https://github.com/parisolab/mathmod ; https://github.com/parisolab/mathmod/releases ; https://sourceforge.net/projects/mathmod/ ; https://raw.githubusercontent.com/parisolab/mathmod/master/mathmodcollection.js . A secondary download page suggested 400 examples, but the counted primary files are the evidence below. The web-tool open of Licence.txt failed; direct HTTPS retrieval succeeded.
+
+Direct HTTPS/API reads: https://raw.githubusercontent.com/parisolab/mathmod/master/Licence.txt ; https://raw.githubusercontent.com/parisolab/mathmod/master/mathmodcollection.js ; https://raw.githubusercontent.com/parisolab/mathmod/master/advancedmodels.js ; https://api.github.com/repos/parisolab/mathmod/commits/master . Revision dcf4eb81039602899c46a93c4ce1ef3bf7c8a756. Python JSON parsing with strict=False (a literal control character prevents strict parsing of the main file) counted 399 MathModels in the main collection and 186 in the advanced collection. These are entry counts, not a deduplicated count of independent models. No downloaded executable or collection script was executed.
+
+MathMod describes a 3D implicit/parametric surface plotter, not 400 independently validated dynamical solvers. Its repository Licence.txt includes the GPL version 2 text, while SourceForge lists GPLv3/LGPLv3 metadata: provenance needs resolution before any bundled reuse. No MathMod code or collection has been copied into GENChase. Published mathematical equations can be considered individually for original implementations with scientific attribution and checks. Selected numerical simulation additions in this batch are Maxwell and Lennard–Jones, researched separately; they are established physics, not discoveries or MathMod ports.
+
+## 2026-09-21 — Maxwell implementation source audit
+
+
+Read AGENTS.md, the module contract, validation/README.md, and the research ledger before searching. No Maxwell/FDTD/Yee entry or skipped Maxwell search was present. This is an implementation of classical equations, not a novelty search or claim.
+
+Exact searches:
+- `Yee 1966 numerical solution initial boundary value problems Maxwell equations isotropic media DOI`
+- `site.eecs.wsu.edu schneidj ufdtd chapter 8 TMz Courant`
+
+Opened primary/author sources:
+- https://doi.org/10.1109/TAP.1966.1138693 redirects to the IEEE record for K. S. Yee (1966); accessible response had no paper body. Do not claim the original paper's full text was read.
+- https://eecs.wsu.edu/~schneidj/ufdtd/chap8.pdf, John B. Schneider's author-hosted notes: section 8.3, equations 8.3–8.12, spatial and temporal staggering, material coefficients; square-grid Courant limit example at 1/sqrt(2). Only equations and method descriptions used; no source-code copying.
+- https://eecs.wsu.edu/~schneidj/ufdtd/chap7.pdf, sections 7.2–7.4: physical wave speed, staggered harmonics and finite-grid dispersion. The implementation's two-dimensional Fourier-mode benchmark is derived independently from its declared discrete operators.
+
+Planned scope: periodic lossless TMz fields in normalized units, positive stationary dielectric coefficient, uniform positive permeability. No conducting wall, source injection, absorbing-boundary/PML, dispersive or nonlinear material claim. GPU code and CPU benchmark are new implementations from the equations; Yee/Schneider are credited. Numerical comparisons support bounded correctness and convergence, not originality.
+
+## 2026-09-21 — Molecular implementation source audit
+
+# Molecular module research, 2026-09-21
+
+Read project AGENTS.md, RESEARCH.md, catalog, module contract and validation contract. No new web query was needed after the GitHub-discovery pass; its exact query and URL log is in `github-module-research.md` in this directory.
+
+Fresh primary sources read in that pass:
+
+- https://github.com/Allen-Tildesley/examples (authors' 2017 book companion)
+- https://github.com/Allen-Tildesley/examples/blob/master/COPYING.txt (actual CC0-1.0 file via GitHub `/license` API)
+- https://github.com/Allen-Tildesley/examples/blob/master/python_examples/GUIDE.md
+- https://raw.githubusercontent.com/Allen-Tildesley/examples/master/python_examples/md_nve_lj.py
+- https://raw.githubusercontent.com/Allen-Tildesley/examples/master/python_examples/md_lj_module.py
+- https://api.github.com/repos/Allen-Tildesley/examples/license
+- https://api.github.com/repos/Allen-Tildesley/examples/commits/master
+
+Inspected commit: `4818bc821a5acbfb3ebfc54ef9117968bdb22ad1`. The code demonstrates real velocity Verlet, pair potentials, periodic boundaries and energy/temperature diagnostics. Its basic NVE LJ case is 3D and cut-and-shifted; our original 2D JavaScript uses explicitly **force-shifted** energy and force. Do not compare our thermodynamics to its 3D EOS, and do not claim bare-LJ equilibrium radius for the force-shifted pair potential.
+
+Implementation uses published equations, no copied solver code, no external runtime, no novelty claim. The development checks use independent finite-difference energy gradients, differently expressed all-pairs forces, an independently integrated RK4 trajectory with reference refinement, and actual browser exports. Original authors remain credited. The tempting MIT WebGPU showcase was rejected for its integration labeling and apparent force-sign defects; see the discovery notes.
+
+## 2026-09-21 — Useful experiment and prior-art screening
+
+
+
+1. [Bor, Turduev and Kurt, Scientific Reports 6, 30871 (2016)](https://www.nature.com/articles/srep30871). Full article text read, especially design approach and numerical/experimental results. It uses differential evolution with TMz FDTD to optimize dielectric-cylinder arrangements for focusing, and compares with microwave measurements. This directly rules out claiming dielectric-rod search or AI-independent algorithmic design as a new idea. The reported focusing is near-field; it is not evidence for arbitrary far-field superresolution.
+2. [Meep official adjoint tutorial on GitHub](https://github.com/NanoComp/meep/blob/master/doc/docs/Python_Tutorials/Adjoint_Solver.md). Read minimax broadband mode-converter section and implementation setup. Existing tools already handle multiple objectives, worst-case wavelength objectives and minimum feature constraints. This is a reference implementation and possible independent verifier, not a novelty certificate.
+3. [Tang et al., Time Reversal Differentiation of FDTD for Photonic Inverse Design (2023), author-hosted PDF](https://danlimsw.com/files/tang_et_al_2023_time_reversal_differentiation_of_fdtd_for_photonic_inverse_design.pdf). Read methods and the time-domain delay example on pp. 7–8. The authors optimize dielectric structure for a delayed field window and explicitly discuss residual resonances. Their [published code repository](https://github.com/jerrytang513/TimeReversalDirectDifferentiation) opened; code was not executed or audited. Direct time-window pulse design already exists.
+4. [Elbek et al., Tailoring robust photonic components using stochastic topology optimization (2026), DTU institutional record](https://orbit.dtu.dk/en/publications/tailoring-robust-photonic-components-using-stochastic-topology-op/). Read institutional abstract only. It describes Gaussian-field geometric errors, sampling and robustness across wavelengths/geometries. Fulltext link returned an internal retrieval error; do not treat the full paper as inspected. Its abstract alone defeats a broad novelty claim for stochastic photonic robustness.
+5. [Whitelam and Tamblyn, Physical Review E 101, 052604 (2020)](https://journals.aps.org/pre/abstract/10.1103/PhysRevE.101.052604). Read publisher abstract only; article body requires access. It establishes prior AI-controlled temperature/chemical-potential self-assembly protocols. It does not establish that our exact 2D LJ quench experiment was done. arXiv HTML/PDF retrieval failed; [NRC fulltext archive](https://publications-cnrc.canada.ca/eng/view/ft/?id=0f1b7155-a5cd-443b-ba24-76025345031a) timed out.
+6. [Hammond et al. photonic foundry constraints (2021), DOI 10.1364/OE.431188](https://doi.org/10.1364/OE.431188): search returned substantive publisher excerpts on erosion/dilation robustness; opening the DOI failed. Meep's read tutorial independently documents the related functionality. Do not cite this as a fully read article here.
+7. [Temperature protocols to guide selective self-assembly of competing structures, PNAS (2022)](https://doi.org/10.1073/pnas.2119315119): publisher search extract described repeated heating/cooling for selective assembly; opening the DOI failed. Not used for a quantitative claim or an exact comparison with monodisperse LJ.
+
+The search also surfaced [MAPS, official DATE 2025 framework](https://github.com/ScopeX-ASU/MAPS), [a MEEP-verified inverse-design benchmark repository](https://github.com/pberlizov/nanophotonics-inverse-design), and a [2025 PRX multiobjective self-assembly study](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.15.011075). These were search leads only, not opened or independently reviewed. They are not evidence that GENChase's proposed exact setup is new. Further searches should target the final frozen geometry/objective and named nearest papers rather than repeat this broad survey.
+
+### Exact searches run on 2026-09-21
+
+1. `robust inverse design dielectric photonic device worst case fabrication defects pulse FDTD topology optimization`
+2. `inverse design photonic broadband time domain pulse routing temporal response dielectric`
+3. `Lennard Jones two dimensional crystallization nonmonotonic cooling protocol optimization machine learning annealing`
+4. `"Lennard-Jones" "cooling" "reinforcement learning"`
+5. `"Lennard-Jones" "optimal" "annealing" crystallization protocol`
+6. `site:github.com photonic inverse design robust fdtd meep`
+7. `"crystallization" "nonmonotonic" "protocol" simulation`
+8. `machine learning optimal temperature protocol self assembly crystallization reinforcement learning molecular dynamics`
+9. `"Lennard-Jones" "temperature protocol"`
+10. `"crystallization" "thermal cycling" "two-dimensional" Lennard Jones`
+11. `"Learning to grow" "Whitelam" "Tamblyn" pdf`
+12. `"robust" "inverse design" "missing" "cylinders" photonic`
+13. `"photonic" "single defect" "inverse design"`
+
+Also opened unsuccessful arXiv variants `https://arxiv.org/html/1912.08333` and `https://arxiv.org/pdf/1912.08333`; the search-result abstract at `https://arxiv.org/abs/1912.08333` was available. Read source sections were found using in-page searches for `37.4` (Tang), `worst-case` (Meep) and `Fulltext` (DTU). No general search result was treated as proof that a proposal has never appeared before.
+
+
+The full pulse-router proposal motivated a smaller periodic field-concentration experiment, not an implementation of calibrated transmission or AI-versus-optimizer comparisons. See [experiments/MAXWELL-SEARCH.md](experiments/MAXWELL-SEARCH.md) for the frozen setup, complete 69-run result and failed improvement hypothesis. No novel scientific finding is established.
+
+## 2026-09-21 — Maxwell boundary follow-up
+
+No new literature query. Reused the declared Yee model and frozen search configuration. Fourteen forward solves compare equal cell spacing and physical geometry in unit and doubled-width periodic boxes at two resolutions, with zero-source and wrong-curl controls. The uniform-medium target score drops 98.48% and 98.13%; the two material finalists reverse rank. This supports a boundary contamination diagnosis for the original window. It is not a measurement of what fraction of energy followed one path, proof of hard discrete causality, or novel physics. Full records: [protocol and limits](experiments/MAXWELL-BOUNDARY.md), [results](experiments/results/maxwell-boundary.json).
+
+## 2026-09-21 — Molecular preparation sensitivity
+
+
+Read GENChase RESEARCH.md before these searches; no matching molecular preparation-memory entry or skip instruction was found. This literature scan preceded the experiment protocol and all experiment trajectories.
+
+Exact search queries, in order:
+
+1. `Lennard Jones initial velocity correlations structural order memory isolated fluid shear relaxation molecular dynamics`
+2. `two dimensional Lennard Jones fluid initial conditions bond orientational order nonequilibrium relaxation shear`
+3. `Widmer Cooper Harrowell Fynewever 2004 isoconfigurational ensemble initial velocities structural propensity`
+4. `Lennard Jones transient structure after shear cessation orientational order molecular dynamics`
+5. `Lennard Jones sinusoidal transverse velocity initial profile decay molecular dynamics structure`
+
+Primary pages opened and read:
+
+- https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.93.135701 — Widmer-Cooper, Harrowell and Fynewever, *How Reproducible Are Dynamic Heterogeneities in a Supercooled Liquid?* (2004). Abstract read; full text gated. Prior art for separating configuration-dependent dynamical propensity from random dynamical variation. This is background, not an assertion that their exact protocol matches ours.
+- https://pubs.rsc.org/en/content/articlelanding/1986/f2/f29868201365 — Heyes, *Shear thinning and thickening of the Lennard-Jones liquid. A molecular dynamics study* (1986). Abstract read. Shear-induced structural ordering and disorder are established; its driven liquid and regime differ from this finite isolated 2D relaxation experiment.
+- https://arxiv.org/abs/cond-mat/0208389 — Errington, Debenedetti and Torquato, *Quantification of Order in the Lennard-Jones System*. Abstract read. Established bond/translational order diagnostics in a shifted-force LJ model; equilibrium and nonequilibrium preparation. No equation-level reproduction claimed.
+- https://arxiv.org/abs/1103.5379 — Wierschem and Manousakis, *Simulation of melting of two dimensional Lennard-Jones solids* (2011), PRB 83, 214108. Abstract read. Established 2D bond-orientational diagnostics; their Monte Carlo, large-size correlations and phase tests are much broader than a local-order statistic from N=256 trajectories.
+
+Failed primary opens, not treated as verified evidence:
+
+- https://nagoya.repo.nii.ac.jp/record/26355/files/1_5026536.pdf — *Stress-structure coupling and nonlinear rheology of Lennard-Jones liquid*, HTTP 429.
+- https://journals.aps.org/pra/abstract/10.1103/PhysRevA.35.1786 — transverse-current autocorrelation article, cache-miss fetch failure.
+
+Search results seen but not opened/read: https://www.researchgate.net/publication/8195311_How_Reproducible_Are_Dynamic_Heterogeneities_in_a_Supercooled_Liquid ; https://arxiv.org/abs/2108.08164 ; https://research.ibm.com/publications/orientational-ordering-induced-by-shear-deformation-in-an-amorphous-lennard-jones-solid ; https://onlinelibrary.wiley.com/doi/10.5402/2012/342642 .
+
+Decision: the broad hypothesis is established science, not a candidate novel formula. A controlled reproduction can usefully measure the current module's sensitivity to finite warmup and initial velocity organization. No absence-of-search-result novelty claim; no priority or exhaustive literature claim. Distinguish finite-time preparation dependence with surviving flow from structural memory after flow decay. A null outcome is retained.
+
+Completed experiment: eight-seed N256 paired late C6 contrasts organized−Gaussian +0.00520 (95% t interval −0.02901 to +0.03941), organized−shuffled +0.00179 (−0.02191 to +0.02549). Frozen effect threshold not met. Selected half-step contrasts changed sign and failed the frozen refinement guard (absolute changes 0.062–0.106); retained explicitly. All trajectories, conservation guards, coordination guards and independent metric controls pass. Therefore no supported structural-memory claim, no equivalence/no-memory claim, and no novelty claim. Full protocol and results: experiments/MOLECULAR-MEMORY.md and experiments/results/molecular-memory.json; script tools/molecular-memory.js. The useful finding is limited interpretability of small-sample finite-warmup structural measurements, not a new law.
+
+## 2026-09-21 — Robust Maxwell selection
+
+# Maxwell robust-layout follow-up literature screen — 2026-09-21
+
+Read GENChase's AGENTS.md, module contract, validation documentation, RESEARCH.md, the original Maxwell reference note and ai-experiment-research.md before this follow-up. The earlier search's nominal/worst-perturbation hypothesis failed. The new boundary experiment finds >98% reduction in the uniform short-window score after doubling domain width. Neither result establishes novelty.
+
+## Sources and limits
+
+- [Blankrot and Heitzinger, “On the robust optimization of photonic structures for asymmetric light transmission,” thesis chapter 6, 2020](https://www.heitzinger.info/Papers/Blankrot2020thesis.pdf). The indexed author-hosted chapter abstract and introduction explicitly compare ordinary and worst-case optimization of a 53-dielectric-rod structure under radius errors. This is particularly close prior work for the nominal/robust tradeoff; it rules out claiming that tradeoff, dielectric-rod robustness or worst-case optimization as new. The direct PDF open/find failed, so this was an indexed excerpt, not a full-text inspection. [Blankrot's publication page](https://bblankrot.github.io/) confirms the title/authors and submitted-publication status; do not imply a verified journal publication from that page.
+- [Men, Freund, Nguyen, Saa-Seoane and Peraire, “Fabrication-Adaptive Optimization, with an Application to Photonic Crystal Design” (2014)](https://arxiv.org/abs/1307.5571). Read the arXiv abstract and bibliographic record, not the full paper. Robust/fabrication-aware photonic optimization predates this work.
+- [Official Meep adjoint tutorial](https://meep.readthedocs.io/en/latest/Python_Tutorials/Adjoint_Solver/). Read the minimax waveguide example and assumptions. Worst-case multiobjective photonic optimization is established. This is a methodological reference, not independent execution or validation of GENChase.
+- Existing ai-experiment-research.md already records Bor/Turduev/Kurt's 2016 dielectric-cylinder FDTD focusing optimization, Tang et al.'s 2023 time-window optimization and stochastic robust photonics. Do not repeat their broad novelty claims.
+
+No exact match for the planned twelve-of-twenty-four-site, compact-source, raw-regional-Ez², every-single-deletion, domain-ranking protocol surfaced in the queries below. That is a search outcome, not evidence of historical originality. The useful narrow contribution would be reproducible evidence of whether objective and periodic-domain choices change layout rankings and whether any selection advantage survives held-out defects. It would remain a bounded model result, not a novel physical law or optimization method.
+
+## Exact queries on 2026-09-21
+
+1. `robust photonic design missing dielectric rod defects worst case optimization periodic boundary finite difference time domain`
+2. `photonic crystal topology optimization robustness fabrication errors worst case objective boundary conditions`
+3. `"photonic" "missing rod" "optimization"`
+4. `"photonic" "boundary" "optimization" "spurious"`
+5. `"photonic" "nominal" "worst-case" "cylinders"`
+6. `"robust optimization" "photonic" "single" "deletion"`
+7. `"Robust optimization of photonic structures for asymmetric light transmission"`
+8. `"photonic" "single-rod" "robust" optimization`
+9. `"photonic" "periodic boundary" "ranking" optimization`
+10. `Blankrot Heitzinger robust photonic structures asymmetric light transmission 2020 2021 DOI`
+11. `"Robust optimization" "asymmetric light transmission" -site:researchgate.net -site:scribd.com`
+
+Other results about topological protection, sensors, band gaps and unrelated structure optimization were not used to substantiate this experiment. A negative exact-string search is not a novelty certificate.

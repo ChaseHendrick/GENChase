@@ -55,15 +55,7 @@ The 16,384-particle performance fixture tests 249,569 candidate pairs versus 134
 
 ## Print and application evidence
 
-`node tools/molecular-print.js --write` uses Playwright and an installed Chromium-compatible browser. In this workspace the test environment is:
-
-```sh
-NODE_PATH=/Users/chasehendrick/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules \
-NODE_OPTIONS=--require=/Users/chasehendrick/Documents/Codex/2026-09-20/co/work/browser-runtime/use-chrome.cjs \
-node tools/molecular-print.js --write
-```
-
-Other installations can use their own Playwright browser; neither environment path is an application dependency. Results are in [molecular-print.json](results/molecular-print.json).
+`node tools/molecular-print.js --write` uses Playwright and an installed Chromium-compatible browser. Use the development browser setup in [BUILDING.md](../BUILDING.md). Results are in [molecular-print.json](results/molecular-print.json).
 
 At paused evolved seeded states, the test exports raster and real SVG geometry at 2400×2400 and 2400×1800, with links both disabled and enabled at 1,024 particles, plus a completed 1,000-step 4,096-particle fixture. The non-square sheet letterboxes the same physical square. Coordinates, velocities, forces, step count and total energy remain bit-for-bit unchanged. After rasterizing both formats at the same print resolution, reduced-image mean absolute RGB differences must be below `1.5` levels out of 255. The test also operates the real 8-inch, 300-ppi print controls and checks unchanged state, checks the live control advances and pauses, and injects a collision fixture to verify the visible stop diagnostic.
 

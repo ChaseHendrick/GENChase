@@ -1,6 +1,6 @@
 # Techniques
 
-120 pattern-forming systems, one file. Generated from `studio.html` by `node tools/index.js`; do not edit by hand.
+122 pattern-forming systems, one file. Generated from `studio.html` by `node tools/index.js`; do not edit by hand.
 
 Open `studio.html` and append the hash to restore its seed and settings. Preserve the studio version for historical reproduction; numerical precision and hardware can affect results. `#snowflake/gravner-2008` is a complete recipe: the technique, and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 
@@ -54,6 +54,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Anderson**<br><sub>waves that refuse to diffuse · 1958</sub> | `#anderson` | H = t Σ_<ij> \|i><j\| + Σ_i ε_i \|i><i\|,   ε ~ U[-W/2,W/2],   IPR = Σ \|ψ\|⁴ | raster | still | Occasional |
 | **FPUT Recurrence**<br><sub>a chain that refuses to thermalise · 1955</sub> | `#fput` | ẍ_i = (q_{i+1}-2q_i+q_{i-1}) + α[(q_{i+1}-q_i)²-(q_i-q_{i-1})²],   E_1(t) returns | raster | still | Occasional |
 | **Schrödinger**<br><sub>wave packet on a detector · 1926</sub> | `#schrodinger/visscher-1991` | i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps | raster | live | Common |
+| **Maxwell FDTD**<br><sub>electric and magnetic waves · 1966</sub> | `#maxwell/yee-1966` | ε ∂Ez/∂t = ∂Hy/∂x − ∂Hx/∂y; μ ∂Hx/∂t = −∂Ez/∂y; μ ∂Hy/∂t = ∂Ez/∂x | raster | live | Occasional |
 | **Excitable Media**<br><sub>spirals, targets and wave turbulence · 1991</sub> | `#excitable/barkley-1991` | Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b) | raster | live | Common |
 | **KdV Soliton**<br><sub>a wave that will not disperse · 1834 / 1965</sub> | `#soliton` | u_t + 6 u u_x + u_xxx = 0,   u = (c/2) sech²[(√c/2)(x − c t)] | raster | still | Common |
 | **Cyclic Automaton**<br><sub>cyclic and Greenberg-Hastings excitable automata · 1991</sub> | `#cyclicca/griffeath-1991` | cyclic: s → s+1 (mod k) if ≥ θ neighbors within range r are in state s+1;   GH: 0 → 1 if ≥ θ excited, 1 → 2 → … → k−1 → 0 | raster | live | Common |
@@ -92,6 +93,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Chemotaxis**<br><sub>Keller-Segel aggregation · 1970</sub> | `#chemotaxis/keller-1970` | ∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²) | raster | live | Common |
 | **Smectic focal conics**<br><sub>Dupin cyclides · Friedel 1910</sub> | `#smectic/friedel-1910` | layers: Dupin cyclides of a confocal ellipse–hyperbola pair | SVG | still | Rare |
 | **Reaction-Diffusion**<br><sub>Gray-Scott activator/inhibitor chemistry · 1983</sub> | `#reaction` | du/dt = Du·lap u - u·v^2 + F(1-u);   dv/dt = Dv·lap v + u·v^2 - (F+k)v | raster | live | Common |
+| **Molecular Dynamics**<br><sub>Lennard-Jones particles · 1924 / 1967</sub> | `#molecular` | V(r) = 4(r^-12 - r^-6) - V_LJ(rc) + (r-rc)F_LJ(rc), r < rc = 2.5;  m r̈ = -∇V | SVG | can run | Occasional |
 | **Aperiodic Tilings**<br><sub>tiles that cover the plane but never repeat · 1974–2023</sub> | `#tilings/penrose-1974` | Penrose: thick half → 2 thick + 1 thin;   hat: 13-gon + mirror;   spectre: 14-gon, one handedness | SVG | still | Common |
 | **Percolation**<br><sub>site and bond percolation on the square lattice · 1957</sub> | `#percolation/hammersley-1957` | site occupied iff rᵢ < p;   bond open iff rᵢⱼ < p;   p_c(site) ≈ 0.5927,   p_c(bond) = 1/2 | raster | still | Ubiquitous |
 | **Attractors**<br><sub>strange attractors and harmonographs as density maps · 1963</sub> | `#attractors` | x(n+1) = f(xn, yn; a,b,c,d) - iterate, accumulate density, tone-map | raster | still | Ubiquitous |
@@ -223,6 +225,8 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Schrödinger**. Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979.
 
+**Maxwell FDTD**. K. S. Yee, Numerical solution of initial boundary value problems involving Maxwell’s equations in isotropic media, IEEE Transactions on Antennas and Propagation 14, 302–307 (1966), doi:10.1109/TAP.1966.1138693. TMz Yee differences and staggering follow the equations described in John B. Schneider, Understanding the FDTD Method, chapter 8. This is an original implementation of the classical method, not new physics.
+
 **Excitable Media**. Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.
 
 **KdV Soliton**. J. S. Russell, Report of the 14th Meeting of the British Association (1844), chased a heap of water that would not spread. Korteweg and de Vries (1895) wrote the equation. Zabusky and Kruskal, Phys. Rev. Lett. 15, 240 (1965), collided two and named them solitons. The plate is spacetime of two exact sech² profiles, not a canal in Scotland.
@@ -298,6 +302,8 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 **Smectic focal conics**. G. Friedel, Annales de Physique 18, 273 (1910). Smectic-A layers prefer equal spacing and may bend; the surfaces of constant spacing whose centers of curvature lie on an ellipse and a confocal hyperbola are Dupin cyclides. Packed in the plane they are toroidal focal conic domains — an Apollonian foam of nested rings.
 
 **Reaction-Diffusion**. Gray-Scott model: Peter Gray and Stephen Scott, 1983-84. The idea that two diffusing chemicals can break symmetry into pattern is Alan Turing, 'The chemical basis of morphogenesis', 1952.
+
+**Molecular Dynamics**. J. E. Lennard-Jones, Proceedings of the Royal Society A (1924). L. Verlet, Physical Review (1967). Force shifting and molecular dynamics: M. P. Allen and D. J. Tildesley, Computer Simulation of Liquids, second edition (2017).
 
 **Aperiodic Tilings**. Roger Penrose, Pentaplexity, 1974, and Martin Gardner's Mathematical Games, January 1977. Robinson triangles carry the deflation; N. G. de Bruijn's dual multigrid (1981) gives the octagonal Ammann–Beenker and dodecagonal cases. The hat — a single 13-sided polykite that tiles the plane only aperiodically, and only with its reflection — is Smith, Myers, Kaplan and Goodman-Strauss, arXiv:2303.10798 (March 2023). The spectre is the chiral 14-gon from the same authors, arXiv:2305.17743: one handedness, no mirrors.
 

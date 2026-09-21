@@ -2423,5 +2423,85 @@
       }
     ],
     "print": []
+  },
+  {
+    "id": "maxwell",
+    "source": "src/modules/maxwell.js",
+    "sourceSha256": "17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c",
+    "reference": "K. S. Yee, Numerical solution of initial boundary value problems involving Maxwell’s equations in isotropic media, IEEE Transactions on Antennas and Propagation 14, 302–307 (1966), doi:10.1109/TAP.1966.1138693. TMz Yee differences and staggering follow the equations described in John B. Schneider, Understanding the FDTD Method, chapter 8. This is an original implementation of the classical method, not new physics.",
+    "equation": "ε ∂Ez/∂t = ∂Hy/∂x − ∂Hx/∂y; μ ∂Hx/∂t = −∂Ez/∂y; μ ∂Hy/∂t = ∂Ez/∂x",
+    "status": "partially validated",
+    "limitations": [
+      "Periodic lossless TMz fields only, stationary positive epsilon and uniform mu; no absorption, PML, losses, dispersion or nonlinear materials.",
+      "Analytic modes and one float64 dielectric slab fixture support the recorded cases; discontinuous-interface scattering and geometry convergence remain unvalidated.",
+      "Float32 is required. High-grid evidence is four-step sanity only; long-time, hardware and complete parameter coverage remain open."
+    ],
+    "remaining": [
+      "Validate dielectric reflection/transmission and discontinuous-interface refinement against independent references.",
+      "Extend duration, parameter, aspect and hardware coverage including high-grid print paths.",
+      "Compare rendered pixels and color interpretation independently; state preservation alone is not full scientific print accuracy."
+    ],
+    "numerical": [
+      {
+        "test": "tools/maxwell-science.js",
+        "scope": "Actual Yee TMz shader passes: four discrete Fourier modes, one float64 heterogeneous slab comparison, fixed-domain/time continuum refinement at 32/64/128, and four-step 512/1024/2048 checks.",
+        "criteria": "Field max error < 2e-5; modified energy relative drift < 5e-6; divergence max < 5e-4; refinement ratios between 3.5 and 4.5; all 90 advertised grid/material CFL cases retained.",
+        "limitations": "No physical experiment, discontinuous-interface coefficient/convergence, arbitrary parameter, long-time or device certification. High grids have only four steps.",
+        "benchmark": "Independent float64 CPU update and energy diagnostic; closed Fourier solution of the declared Yee operators; exact continuum standing wave at fixed physical domain and final time.",
+        "failureControl": "Electric-curl sign reversal must produce error > 0.1; a Nyquist mode at 105% CFL must grow above 1e6 while the 95% case stays below 1.0001.",
+        "command": "node tools/maxwell-science.js",
+        "results": "validation/results/maxwell-science.json"
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/maxwell-print-state.js",
+        "scope": "Twelve actual exports at 2400x2400 and 2400x3000, 128 square and 256x320 fields, initial and 32-step paused states, all three views.",
+        "criteria": "Exact field-buffer bits, settings and metadata preserved; finite values, requested dimensions, >1000-byte PNGs; deliberate one-step state mutation rejected.",
+        "limitations": "Preservation and dimensions only. One renderer/seed/material set, two grids/aspects, no calibrated colors or high-grid/running exports.",
+        "command": "node tools/maxwell-print-state.js",
+        "results": "validation/results/maxwell-print-state.json"
+      }
+    ]
+  },
+  {
+    "id": "molecular",
+    "source": "src/modules/molecular.js",
+    "sourceSha256": "b0152563304cd2f85948d12def42b459c6f110f8730f0f55b86a45dd145f814a",
+    "reference": "J. E. Lennard-Jones, Proceedings of the Royal Society A (1924). L. Verlet, Physical Review (1967). Force shifting and molecular dynamics: M. P. Allen and D. J. Tildesley, Computer Simulation of Liquids, second edition (2017).",
+    "equation": "V(r) = 4(r^-12 - r^-6) - V_LJ(rc) + (r-rc)F_LJ(rc), r < rc = 2.5;  m r̈ = -∇V",
+    "status": "partially validated",
+    "limitations": [
+      "Two-dimensional periodic force-shifted Lennard-Jones model, with no thermostat or named material/EOS claim.",
+      "Force, linked-cell and bounded trajectory checks support stated fixtures only; the local stiffness/energy guard is not a global nonlinear stability proof.",
+      "Print checks preserve evolved particle state and compare raster/SVG output; broad devices, parameters and long-time thermodynamics remain unvalidated."
+    ],
+    "remaining": [
+      "Establish equilibrated observables and transport with independent seeds, correlation-aware uncertainty and finite-size checks before making thermodynamic claims.",
+      "Extend timestep, parameter, seed, high-count and long-duration coverage.",
+      "Assess broader hardware and full scientific interpretation of printed observables."
+    ],
+    "numerical": [
+      {
+        "test": "tools/molecular-science.js",
+        "command": "node tools/molecular-science.js",
+        "results": "validation/results/molecular-science.json",
+        "scope": "Actual float64 force-shifted LJ kernel, periodic linked cells, velocity Verlet, rollback, completed defaults/presets and 20-step 16384-particle performance fixture.",
+        "criteria": "Force-gradient error <2e-7 times max(1,abs(reference force)); linked-cell/all-pairs error <1e-9; timestep error ratios 3.2–5 against refined RK4; finest energy error <1e-4; momentum <1e-12; invalid steps roll back exactly.",
+        "limitations": "Short declared fixtures, not an EOS, equilibrium phase diagram, arbitrary trajectory or global-stability certification. High-count timing is machine-specific.",
+        "benchmark": "Independent scalar energy finite difference, radial force/cutoff signs, all-pairs minimum-image forces and energies, and fixed-time all-pairs RK4 with separately refined reference timestep.",
+        "failureControl": "Reverse pair force, omit force shift, ignore periodic separation, use one full kick/drift instead of Verlet, and provoke initial and post-drift failures with exact rollback checks."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/molecular-print.js",
+        "command": "node tools/molecular-print.js",
+        "results": "validation/results/molecular-print.json",
+        "scope": "Paused evolved 1024-particle states with/without links and a completed 4096-particle warmup; 2400-square and 2400x1800 raster/SVG exports, real shell print, live/pause and visible halt.",
+        "criteria": "Exact positions/velocities/forces/energy/counters preserved, each requested raster and decoded SVG dimension correct, matched-format reduced-image RGB mean absolute difference <1.5/255; visible halt and live/pause behavior checked.",
+        "limitations": "Declared seeds, states and backend only. Marks represent particle geometry, not chemical bonds or calibrated physical appearance. Intermediate warmups can legitimately differ from later screens."
+      }
+    ]
   }
 ]

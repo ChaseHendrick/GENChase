@@ -268,6 +268,88 @@ const { chromium } = require('playwright');
   const hashStill = await p.evaluate(() => location.hash);
   t('view is not written into the hash', !/view|scale|pan/.test(hashStill), { hash: hashStill.slice(0, 80) });
 
+
+  // User-entered sheet sizes must neither stretch a simulation nor silently export stale input.
+  const size = async (w, h) => p.evaluate(([w, h]) => {
+    const choose = document.querySelector('#export-inches');
+    choose.value = 'custom'; choose.dispatchEvent(new Event('change'));
+    for (const [id, value] of [['export-width', w], ['export-height', h]]) {
+      const input = document.querySelector('#' + id); input.value = String(value);
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    const dpi = document.querySelector('#export-dpi'); dpi.value = '300'; dpi.dispatchEvent(new Event('change'));
+  }, [w, h]);
+  const exportSheet = async (baseline = false) => {
+    await p.evaluate(() => document.querySelector('#btn-export').click());
+    await p.waitForFunction(() => !Studio.exportJob && (!document.querySelector('#export-img').hidden || document.querySelector('#export-note').classList.contains('err')), null, {timeout: 90000});
+    return p.evaluate(async baseline => {
+      const im = document.querySelector('#export-img');
+      if (im.hidden) return {error: document.querySelector('#export-note').textContent};
+      await im.decode();
+      const c = document.createElement('canvas'); c.width = im.naturalWidth; c.height = im.naturalHeight;
+      const cx = c.getContext('2d'); cx.drawImage(im, 0, 0);
+      const x = Math.floor((c.width - 675) / 2), y = Math.floor((c.height - 675) / 2);
+      const data = cx.getImageData(x, y, 675, 675).data;
+      let changed = 0;
+      if (baseline) window.__printBaseline = data;
+      else if (window.__printBaseline) for (let i = 0; i < data.length; i++) if (data[i] !== window.__printBaseline[i]) changed++;
+      const svg = document.querySelector('#export-svg');
+      let vector = null;
+      if (!svg.hidden) {
+        const xml = new DOMParser().parseFromString(await (await fetch(svg.href)).text(), 'image/svg+xml');
+        const root = xml.documentElement;
+        vector = {w: +root.getAttribute('width'), h: +root.getAttribute('height'), invalid: !!xml.querySelector('parsererror')};
+      }
+      document.querySelector('#export-close').click();
+      return {w: c.width, h: c.height, changed, vector};
+    }, baseline);
+  };
+  for (const id of ['tilings', 'maxwell']) {
+    await p.evaluate(id => {
+      const recipe = {v: 2, seed: 'custom-sheet', running: false, warmup: 0, grid: 128, aspect: '1:1'};
+      location.hash = id + '/custom-sheet/' + btoa(JSON.stringify(recipe)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }, id);
+    await p.waitForTimeout(1200);
+    await p.evaluate(() => { const toggle = document.querySelector('#btn-colophon'); if (toggle.getAttribute('aria-checked') === 'true') toggle.click(); });
+    await size(2.25, 2.25);
+    const base = await exportSheet(true);
+    t(id + ' custom square dimensions', base.w === 675 && base.h === 675, base);
+    const hashBefore = await p.evaluate(() => location.hash);
+    await size(3.5, 2.25);
+    const wide = await exportSheet();
+    t(id + ' custom width and height', wide.w === 1050 && wide.h === 675, wide);
+    t(id + ' custom sheet preserves artwork pixels', wide.changed === 0, wide.changed);
+    if (id === 'tilings') t('custom SVG sheet dimensions', wide.vector && wide.vector.w === 1050 && wide.vector.h === 675 && !wide.vector.invalid, wide.vector);
+    const hashAfter = await p.evaluate(() => location.hash);
+    t(id + ' print dimensions leave recipe alone', hashAfter === hashBefore, hashAfter.slice(0, 60));
+    await size(2.25, 3.5);
+    const tall = await exportSheet();
+    t(id + ' custom portrait preserves artwork', tall.w === 675 && tall.h === 1050 && tall.changed === 0, tall);
+  }
+  await size('', 2.25);
+  t('empty custom width blocks export', await p.$eval('#btn-export', el => el.disabled), 'empty');
+  await size(0, 2.25);
+  t('zero custom width blocks export', await p.$eval('#btn-export', el => el.disabled), 0);
+  await size(1001, 2.25);
+  t('out-of-range custom width blocks export', await p.$eval('#btn-export', el => el.disabled), 1001);
+  await size(100, 100);
+  const limitLabel = await p.$eval('#export-dims', el => el.textContent);
+  t('oversized custom sheets disclose effective ppi', /ppi/.test(limitLabel), limitLabel);
+  await size(3.5, 2.25);
+  await p.reload({waitUntil: 'domcontentloaded'});
+  await p.waitForTimeout(800);
+  const savedSize = await p.evaluate(() => ['export-inches', 'export-width', 'export-height'].map(id => document.querySelector('#' + id).value));
+  t('custom dimensions survive reload', savedSize.join(',') === 'custom,3.5,2.25', savedSize);
+  await p.setViewportSize({width: 390, height: 844});
+  await p.waitForTimeout(250);
+  const customMobile = await p.evaluate(() => ['export-width', 'export-height', 'btn-export'].map(id => {
+    const r = document.querySelector('#' + id).getBoundingClientRect();
+    return {id, shown: r.width > 0 && r.left >= 0 && r.right <= innerWidth && r.top >= 0 && r.bottom <= innerHeight};
+  }));
+  t('custom dimensions and export fit mobile', customMobile.every(c => c.shown), customMobile);
+  await p.selectOption('#export-inches', '8');
+  t('preset shortcut exits custom mode', await p.$eval('#export-custom', el => el.hidden), true);
+
   console.log('pageerrors:', errs.length? errs.slice(0,3): 'none');
   await b.close();
   console.log(fail? 'UI CHECK FAILED: '+fail : 'UI CHECK OK');

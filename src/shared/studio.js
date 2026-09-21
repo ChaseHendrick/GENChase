@@ -444,6 +444,8 @@ void main(){
     unseen: 'Almost unseen',
   };
   const FAMILIARITY = {
+    maxwell: 'occasional',
+    molecular: 'occasional',
     // ubiquitous
     life: 'ubiquitous',
     fractal: 'ubiquitous',
@@ -2031,6 +2033,14 @@ void main(){
     if (g) maxTexSize = g.getParameter(g.MAX_TEXTURE_SIZE) || maxTexSize;
   } catch (err) { /* keep the conservative default */ }
   let printInches = 20, printDpi = 300;
+  let customPrint = false, printWidth = 20, printHeight = 20;
+  const validInches = v => Number.isFinite(v) && v >= 1 && v <= 1000;
+  function validPrintInputs() {
+    return !customPrint || ['export-width', 'export-height'].every(id => {
+      const el = $(id);
+      return el && el.validity.valid && validInches(el.valueAsNumber);
+    });
+  }
 
   function currentAspect() {
     const e = instances[currentId];
@@ -2042,17 +2052,23 @@ void main(){
     const ar = currentAspect();
     let hIn = printInches, wIn = printInches;
     if (ar >= 1) wIn = printInches / ar; else hIn = printInches * ar;
+    if (customPrint) { wIn = printWidth; hIn = printHeight; }
     let pw = Math.round(wIn * printDpi), ph = Math.round(hIn * printDpi);
     let clamp = 1, clampWhy = '';
     if (Math.max(pw, ph) > MAX_EDGE) { clamp = MAX_EDGE / Math.max(pw, ph); clampWhy = 'canvas'; }
     if (Math.max(pw, ph) * clamp > maxTexSize) { clamp = Math.min(clamp, maxTexSize / Math.max(pw, ph)); clampWhy = 'texture'; }
     if (pw * ph * clamp * clamp > MAX_AREA) { clamp = Math.min(clamp, Math.sqrt(MAX_AREA / (pw * ph))); clampWhy = 'encode'; }
     const clamped = clamp < 0.999;
-    if (clamped) { pw = Math.round(pw * clamp); ph = Math.round(ph * clamp); }
+    if (clamped) { pw = Math.max(1, Math.round(pw * clamp)); ph = Math.max(1, Math.round(ph * clamp)); }
+    let rw = pw, rh = ph;
+    if (customPrint) {
+      if (ph / pw > ar) rh = Math.max(1, Math.round(pw * ar));
+      else rw = Math.max(1, Math.round(ph / ar));
+    }
     const effDpi = Math.round(pw / wIn);
-    return { ar, wIn, hIn, pw, ph, clamped, clampWhy, dpi: printDpi, effDpi, mp: (pw * ph) / 1e6 };
+    return { ar, wIn, hIn, pw, ph, rw, rh, clamped, clampWhy, dpi: printDpi, effDpi, mp: (pw * ph) / 1e6 };
   }
-  const inTxt = v => (Math.round(v * 10) / 10).toFixed(1);
+  const inTxt = v => Number.isInteger(v) ? v.toFixed(1) : String(Number(v.toFixed(4)));
   const cmTxt = v => (Math.round(v * 2.54 * 10) / 10).toFixed(1);
   function printLabel(sp) {
     return inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in · ' +
@@ -2062,8 +2078,16 @@ void main(){
   function updateDims() {
     const el = $('export-dims');
     if (!el || !instances[currentId]) return;
+    const valid = validPrintInputs();
+    $('btn-export').disabled = !valid;
+    if (!valid) {
+      el.textContent = 'Enter width and height from 1 to 1000 inches.';
+      el.title = el.textContent;
+      if ($('dock-dims')) $('dock-dims').textContent = el.textContent;
+      return;
+    }
     const sp = printSpec();
-    const line = printLabel(sp) + (sp.clamped ? ' · ' + sp.effDpi + ' ppi' : '') + (colophon ? ' · colophon' : '');
+    const line = printLabel(sp) + (sp.clamped ? ' · ' + sp.effDpi + ' ppi' : '') + (colophon ? ' · colophon' : '') + (customPrint ? ' · fit to sheet' : '');
     el.textContent = line;
     const dock = $('dock-dims');
     if (dock) { dock.textContent = line; dock.hidden = false; }
@@ -2184,6 +2208,10 @@ void main(){
       meta: pt(8, 0.085),
       p: pt(7, 0.072),
     };
+    // Very short custom sheets need smaller type so the caption cannot consume the image.
+    const typeHeight = fs.title * 1.25 + fs.eq * 2 + fs.meta * 1.9 + 12 * fs.p * 1.55;
+    const typeScale = Math.min(1, ((sheetH - 2 * pad) * 0.55 - pad * 0.9) / typeHeight);
+    for (const key of Object.keys(fs)) fs[key] *= typeScale;
     const bandH = Math.round(fs.title * 1.25 + fs.eq * 2.0 + fs.meta * 1.9 + 6 * fs.p * 1.55 + pad * 0.9);
     const innerW = sheetW - pad * 2, innerH = sheetH - pad * 2 - bandH;
     let artW = innerW, artH = Math.round(innerW * sp.ar);
@@ -2270,12 +2298,42 @@ void main(){
 
   /* ---- export ---- */
   let lastUrl = null, lastBlob = null, lastName = '';
+  async function fitPrintSheet(blob, sp, bg) {
+    if (sp.rw === sp.pw && sp.rh === sp.ph) return blob;
+    const url = URL.createObjectURL(blob);
+    try {
+      const im = await loadImage(url), c = document.createElement('canvas');
+      c.width = sp.pw; c.height = sp.ph;
+      const cx = c.getContext('2d');
+      cx.fillStyle = bg; cx.fillRect(0, 0, sp.pw, sp.ph);
+      cx.drawImage(im, Math.floor((sp.pw - sp.rw) / 2), Math.floor((sp.ph - sp.rh) / 2), sp.rw, sp.rh);
+      return await util.toBlob(c);
+    } finally { URL.revokeObjectURL(url); }
+  }
+  async function fitPrintSVG(blob, sp, bg) {
+    if (sp.rw === sp.pw && sp.rh === sp.ph) return blob;
+    const doc = new DOMParser().parseFromString(await blob.text(), 'image/svg+xml');
+    if (doc.querySelector('parsererror')) throw new Error('Invalid vector export');
+    const art = doc.documentElement;
+    if (!art.hasAttribute('viewBox')) art.setAttribute('viewBox', '0 0 ' + sp.rw + ' ' + sp.rh);
+    art.setAttribute('x', String(Math.floor((sp.pw - sp.rw) / 2)));
+    art.setAttribute('y', String(Math.floor((sp.ph - sp.rh) / 2)));
+    art.setAttribute('width', String(sp.rw)); art.setAttribute('height', String(sp.rh));
+    const body = new XMLSerializer().serializeToString(art);
+    return util.svgBlob(sp.pw, sp.ph, bg, body);
+  }
   async function doExport() {
     const e = instances[currentId]; if (!e) return;
     if (exportBusy) return;
+    if (!validPrintInputs()) {
+      updateDims();
+      for (const id of ['export-width', 'export-height']) if (!$(id).reportValidity()) break;
+      return;
+    }
     exportBusy = true;
     const sp = printSpec();
     const pw = sp.pw, ph = sp.ph;
+    const rw = sp.rw, rh = sp.rh;
     const modal = $('modal-export'), img = $('export-img'), note = $('export-note'), dl = $('export-download'), save = $('export-save');
     const pnote = $('export-print');
     const svgBtn = $('export-svg');
@@ -2307,6 +2365,7 @@ void main(){
          cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) + ' cm) at ' + sp.effDpi + ' ppi. The image sits in a paper margin with the technique, its rule, the seed and every parameter captioned beneath.')
       : ('Prints ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in (' + cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) +
          ' cm) at ' + sp.effDpi + ' ppi.')) +
+      (customPrint ? ' The full artwork fits the sheet without stretching; unused space uses the background color.' : '') +
       (sp.clamped ? (sp.clampWhy === 'texture'
         ? ' Requested ' + sp.dpi + ' ppi was clamped to this device\'s GPU texture limit (' + maxTexSize.toLocaleString() + ' px).'
         : ' Requested ' + sp.dpi + ' ppi was clamped to the largest file a browser can encode.') : '');
@@ -2330,7 +2389,7 @@ void main(){
           // module returning the document text threw inside createObjectURL, and because that throw
           // happened outside this guard it took the whole export with it: the Arctic Circle and
           // Schramm-Loewner tabs could not export at any size, in any format, vector or raster.
-          const svg = await Promise.resolve(e.inst.exportSVG(pw, ph));
+          const svg = await Promise.resolve(e.inst.exportSVG(rw, rh));
           svgBlob = typeof svg === 'string' ? new Blob([svg], { type: 'image/svg+xml' }) : svg;
         } catch (svgErr) { svgBlob = null; }
       }
@@ -2340,13 +2399,13 @@ void main(){
         try {
           const im = await loadImage(url);
           const c = document.createElement('canvas');
-          c.width = pw; c.height = ph;
+          c.width = rw; c.height = rh;
           const cx = c.getContext('2d', { alpha: false });
           cx.fillStyle = (e.state && e.state.bg) || '#fff';
-          cx.fillRect(0, 0, pw, ph);
+          cx.fillRect(0, 0, rw, rh);
           cx.imageSmoothingEnabled = true;
           cx.imageSmoothingQuality = 'high';
-          cx.drawImage(im, 0, 0, pw, ph);
+          cx.drawImage(im, 0, 0, rw, rh);
           blob = await util.toBlob(c);
         } catch (ripErr) {
           usedVector = false;
@@ -2362,16 +2421,16 @@ void main(){
         // grid says so through fieldCells(), and then the plate is rendered once, at size.
         let field = null;
         try { field = e.inst.fieldCells && e.inst.fieldCells(); } catch (fe) { field = null; }
-        const gridLimited = !!(field && field[0] > 0 && pw >= field[0] * 2);
-        ss = (!gridLimited && pw * ph * 4 < MAX_AREA) ? 2 : 1;
+        const gridLimited = !!(field && field[0] > 0 && rw >= field[0] * 2);
+        ss = (!gridLimited && rw * rh * 4 < MAX_AREA) ? 2 : 1;
         if (gridLimited) fieldNote = ' The field is ' + field[0] + ' × ' + field[1] + ' cells, so one cell is about ' +
-          (pw / field[0]).toFixed(1) + ' px here and the detail is set by the simulation, not by the paper: raise the grid for a finer plate.';
+          (rw / field[0]).toFixed(1) + ' px here and the detail is set by the simulation, not by the paper: raise the grid for a finer plate.';
         try {
-          blob = await e.inst.exportPNG(pw * ss, ph * ss);
+          blob = await e.inst.exportPNG(rw * ss, rh * ss);
         } catch (hiErr) {
           if (ss === 1) throw hiErr;
           ss = 1;
-          blob = await e.inst.exportPNG(pw, ph);
+          blob = await e.inst.exportPNG(rw, rh);
         }
         if (!blob) throw new Error('empty export');
         if (e.inst.exportNote) fieldNote += e.inst.exportNote;
@@ -2380,18 +2439,20 @@ void main(){
           try {
             const im = await loadImage(url);
             const c = document.createElement('canvas');
-            c.width = pw; c.height = ph;
+            c.width = rw; c.height = rh;
             const cx = c.getContext('2d');
             cx.imageSmoothingEnabled = true; cx.imageSmoothingQuality = 'high';
-            cx.drawImage(im, 0, 0, pw, ph);
+            cx.drawImage(im, 0, 0, rw, rh);
             blob = await util.toBlob(c);
           } catch (ssErr) {
-            try { blob = await e.inst.exportPNG(pw, ph); ss = 1; } catch (e2) { /* keep oversized blob */ }
+            blob = await e.inst.exportPNG(rw, rh); ss = 1;
           } finally { URL.revokeObjectURL(url); }
         }
       }
       if (job.abort) throw new Error('cancelled');
       if (colophon) blob = await composeSheet(blob, e, sp);
+      else blob = await fitPrintSheet(blob, sp, e.state.bg || '#fff');
+      if (svgBlob) svgBlob = await fitPrintSVG(svgBlob, sp, e.state.bg || '#fff');
       if (job.abort) throw new Error('cancelled');
       if (lastUrl) URL.revokeObjectURL(lastUrl);
       lastBlob = blob; lastUrl = URL.createObjectURL(blob);
@@ -2718,21 +2779,46 @@ void main(){
       applyPreset(key);
     });
     const inchSel = $('export-inches'), dpiSel = $('export-dpi');
+    const widthInput = $('export-width'), heightInput = $('export-height');
     try {
       const pi = Number(localStorage.getItem(STORE + 'printIn'));
       if (PRINT_INCHES.includes(pi)) printInches = pi;
       const pd = Number(localStorage.getItem(STORE + 'printDpi'));
       if (PRINT_DPI.some(d => d[0] === pd)) printDpi = pd;
+      const custom = JSON.parse(localStorage.getItem(STORE + 'printCustom'));
+      if (custom && validInches(custom.width) && validInches(custom.height)) {
+        printWidth = custom.width; printHeight = custom.height; customPrint = custom.on === true;
+      }
     } catch (err) { /* defaults */ }
     for (const v of PRINT_INCHES) inchSel.appendChild(h('option', { value: v, text: v + ' in' }));
+    inchSel.appendChild(h('option', { value: 'custom', text: 'Custom' }));
     for (const [v, label] of PRINT_DPI) dpiSel.appendChild(h('option', { value: v, text: label }));
-    inchSel.value = String(printInches);
+    inchSel.value = customPrint ? 'custom' : String(printInches);
     dpiSel.value = String(printDpi);
+    widthInput.value = String(printWidth); heightInput.value = String(printHeight);
+    $('export-custom').hidden = !customPrint;
+    const savePrintSize = () => {
+      try { localStorage.setItem(STORE + 'printCustom', JSON.stringify({ on: customPrint, width: printWidth, height: printHeight })); } catch (err) { /* ignore */ }
+    };
     inchSel.addEventListener('change', () => {
-      printInches = Number(inchSel.value);
+      customPrint = inchSel.value === 'custom';
+      $('export-custom').hidden = !customPrint;
+      if (!customPrint) printInches = Number(inchSel.value);
       try { localStorage.setItem(STORE + 'printIn', String(printInches)); } catch (err) { /* ignore */ }
+      savePrintSize();
       updateDims();
     });
+    const changePrintSize = () => {
+      if (validPrintInputs()) {
+        printWidth = widthInput.valueAsNumber; printHeight = heightInput.valueAsNumber;
+        savePrintSize();
+      }
+      updateDims();
+    };
+    for (const input of [widthInput, heightInput]) {
+      input.addEventListener('input', changePrintSize);
+      input.addEventListener('change', changePrintSize);
+    }
     dpiSel.addEventListener('change', () => {
       printDpi = Number(dpiSel.value);
       try { localStorage.setItem(STORE + 'printDpi', String(printDpi)); } catch (err) { /* ignore */ }
@@ -3044,4 +3130,3 @@ void main(){
     } catch (err) { /* optional */ }
   }
 })();
-
