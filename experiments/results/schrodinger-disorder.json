@@ -1,0 +1,5178 @@
+{
+  "format": "genchase-schrodinger-disorder-v1",
+  "command": "node tools/schrodinger-disorder.js > experiments/results/schrodinger-disorder.json",
+  "sourceSha256": "3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6",
+  "harnessSha256": "c7b762f9a18b282e985e46b2f19a52c57b9da9f54ec058c80e6a066bad25a333",
+  "settings": {
+    "model": "H psi = -0.5 times the unit-spacing five-point Laplacian plus V psi",
+    "baseSize": 64,
+    "spacing": 1,
+    "seeds": [
+      4101,
+      4102,
+      4103,
+      4104,
+      4105,
+      4106,
+      4107,
+      4108
+    ],
+    "disorderRms": 0.5,
+    "kernel": [
+      1,
+      4,
+      6,
+      4,
+      1
+    ],
+    "kernelDivisor": 16,
+    "packet": {
+      "sigma": 3,
+      "supportRadius": 12,
+      "momentum": [
+        0.7,
+        0
+      ]
+    },
+    "sampleTimes": [
+      0,
+      8,
+      16,
+      24
+    ],
+    "dt": 0.1,
+    "smallerDt": 0.05,
+    "largerSize": 128,
+    "boundaryStrip": 4,
+    "criteria": {
+      "relativeEffect": 0.1,
+      "invariantDrift": 0.00001,
+      "timeStepSensitivity": 0.005,
+      "domainSensitivity": 0.02,
+      "edgeProbability": 0.001
+    },
+    "bootstrap": {
+      "replicates": 10000,
+      "seed": 91001,
+      "interval": [
+        0.025,
+        0.975
+      ]
+    }
+  },
+  "claimScope": "Eight paired seeds of a finite discrete unit-spacing Hamiltonian; filtered versus histogram-identical shuffled disorder, RMS 0.5. Finite-time centered-density variance, not an Anderson-localization proof, continuum result, novel physical principle, or AI search.",
+  "largerDomainMeaning": "The 64x64 potential tile is repeated in a 128x128 wavefunction domain at unchanged spacing, initial packet and time. This preserves the local potential exactly and tests periodic-wavefunction sensitivity; it is not independent disorder outside the original region, a thermodynamic limit, or spatial refinement.",
+  "statistics": "Ten-thousand paired bootstrap resamples of eight independent seeds; percentile 95% interval. Small-sample uncertainty is approximate. Ordinary seed variation is the pooled within-arm sample SD. No fitting or outcome-based selection was performed; primary time was fixed at 24.",
+  "limitations": "Spatial arrangement and all higher spatial correlations change, not just one correlation length. Equal global histogram does not match each packet’s local potential-energy distribution. Smaller finite-time variance may reflect classical trapping or scattering. No asymptotic exponent, spectral localization, rare-tail guarantee, external solver/device validation or general parameter claim.",
+  "summary": {
+    "supportedWithinThisFiniteExperiment": true,
+    "interpretation": "Frozen finite-sample screening criterion only; no confirmed population effect or novelty",
+    "failures": [],
+    "primary": {
+      "n": 8,
+      "correlatedMean": 119.3518378422118,
+      "shuffledMean": 83.95111585501743,
+      "pairedDifferences": [
+        74.03923618856746,
+        -54.28779134822888,
+        92.6567114402211,
+        61.03261730189644,
+        0.8681571441277782,
+        77.92354835274406,
+        13.960203425103273,
+        17.013093393123683
+      ],
+      "meanDifference": 35.40072198719437,
+      "relativeDifference": 0.4216825664155673,
+      "pairedDifferenceSd": 49.67134285618563,
+      "pooledWithinArmSeedSd": 33.24323124976492,
+      "absoluteEffectOverSeedSd": 1.0649001512885337,
+      "pairedBootstrap95": [
+        1.1350722569593845,
+        65.82114249351582
+      ],
+      "effectCriteriaPass": true
+    },
+    "smallerStep": {
+      "n": 8,
+      "correlatedMean": 119.26850054284257,
+      "shuffledMean": 83.90863754131354,
+      "pairedDifferences": [
+        74.02241515731627,
+        -54.2941573699273,
+        92.57162270640558,
+        60.92626152552644,
+        0.8969185271043756,
+        77.83201429790368,
+        13.94320894073951,
+        16.98062022716374
+      ],
+      "meanDifference": 35.35986300152904,
+      "relativeDifference": 0.421409094911345,
+      "pairedDifferenceSd": 49.63798992086731,
+      "pooledWithinArmSeedSd": 33.21683088853883,
+      "absoluteEffectOverSeedSd": 1.0645164531252633,
+      "pairedBootstrap95": [
+        1.1321955367361198,
+        65.75637981009646
+      ],
+      "effectCriteriaPass": true
+    },
+    "largerDomain": {
+      "n": 8,
+      "correlatedMean": 119.34977865944374,
+      "shuffledMean": 83.95106468189427,
+      "pairedDifferences": [
+        74.03681061517518,
+        -54.28972063811637,
+        92.65744449866429,
+        61.030916081172194,
+        0.86774586211844,
+        77.92426347357159,
+        13.955869585218537,
+        17.006382342591976
+      ],
+      "meanDifference": 35.39871397754948,
+      "relativeDifference": 0.4216589046450047,
+      "pairedDifferenceSd": 49.67231677804505,
+      "pooledWithinArmSeedSd": 33.24385246332181,
+      "absoluteEffectOverSeedSd": 1.0648198495227092,
+      "pairedBootstrap95": [
+        1.1325587273543665,
+        65.82109242050558
+      ],
+      "effectCriteriaPass": true
+    },
+    "maximumTimeStepSensitivity": 0.0011548494847459002,
+    "maximumDomainSensitivity": 0.0000614709205597845,
+    "maximumBoundaryProbability": 0.0009868867131115463,
+    "allScientificRunsNumericallyValid": true
+  },
+  "inferenceSensitivity": {
+    "postHoc": true,
+    "method": "Paired Student 95% interval, seven degrees of freedom; normal pair-difference assumption",
+    "interval": [
+      -6.125559835609145,
+      76.9270038099979
+    ],
+    "interpretation": "The frozen percentile-bootstrap criterion is a screening rule. Eight seeds do not establish a robust population effect; interval choice changes whether zero is excluded."
+  },
+  "sensitivity": [
+    {
+      "seed": 4101,
+      "arm": "correlated",
+      "timeStepRelative": 0.0004231337964072683,
+      "domainRelative": 0.00001676616271956951,
+      "maxMainBoundaryProbability": 0.0002773650945494131
+    },
+    {
+      "seed": 4101,
+      "arm": "shuffled",
+      "timeStepRelative": 0.0006480455151894773,
+      "domainRelative": 0.0000015907039920531697,
+      "maxMainBoundaryProbability": 0.00007738773904592772
+    },
+    {
+      "seed": 4102,
+      "arm": "correlated",
+      "timeStepRelative": 0.0008571610023931964,
+      "domainRelative": 0.00004871142327630546,
+      "maxMainBoundaryProbability": 0.00039741517472361625
+    },
+    {
+      "seed": 4102,
+      "arm": "shuffled",
+      "timeStepRelative": 0.00031546451636554245,
+      "domainRelative": 0.0000018944494677644256,
+      "maxMainBoundaryProbability": 0.00005948277613627425
+    },
+    {
+      "seed": 4103,
+      "arm": "correlated",
+      "timeStepRelative": 0.0007340755146716437,
+      "domainRelative": 0.0000044339622620970775,
+      "maxMainBoundaryProbability": 0.0009490877162804638
+    },
+    {
+      "seed": 4103,
+      "arm": "shuffled",
+      "timeStepRelative": 0.0005338246720324999,
+      "domainRelative": 6.701316036376137e-7,
+      "maxMainBoundaryProbability": 0.00006267501978121838
+    },
+    {
+      "seed": 4104,
+      "arm": "correlated",
+      "timeStepRelative": 0.0011548494847459002,
+      "domainRelative": 0.000012793176581146709,
+      "maxMainBoundaryProbability": 0.00047322206282405214
+    },
+    {
+      "seed": 4104,
+      "arm": "shuffled",
+      "timeStepRelative": 0.000635408668355234,
+      "domainRelative": 4.811530444248923e-7,
+      "maxMainBoundaryProbability": 0.00003328576008201741
+    },
+    {
+      "seed": 4105,
+      "arm": "correlated",
+      "timeStepRelative": 0.0002717425645372056,
+      "domainRelative": 0.000006553348248479118,
+      "maxMainBoundaryProbability": 0.0001320327659916488
+    },
+    {
+      "seed": 4105,
+      "arm": "shuffled",
+      "timeStepRelative": 0.000662517390567575,
+      "domainRelative": 0.0000010925286175060027,
+      "maxMainBoundaryProbability": 0.00009742102130387731
+    },
+    {
+      "seed": 4106,
+      "arm": "correlated",
+      "timeStepRelative": 0.0008327496631120434,
+      "domainRelative": 0.000003542370601796993,
+      "maxMainBoundaryProbability": 0.0004738061013061264
+    },
+    {
+      "seed": 4106,
+      "arm": "shuffled",
+      "timeStepRelative": 0.0005390222750053623,
+      "domainRelative": 0.0000012818918649952888,
+      "maxMainBoundaryProbability": 0.00010434617007020138
+    },
+    {
+      "seed": 4107,
+      "arm": "correlated",
+      "timeStepRelative": 0.0005982763595277641,
+      "domainRelative": 0.000040585938044456556,
+      "maxMainBoundaryProbability": 0.00016785719880644412
+    },
+    {
+      "seed": 4107,
+      "arm": "shuffled",
+      "timeStepRelative": 0.0005067301897631914,
+      "domainRelative": 7.45949991582233e-7,
+      "maxMainBoundaryProbability": 0.00003109713593797697
+    },
+    {
+      "seed": 4108,
+      "arm": "correlated",
+      "timeStepRelative": 0.0005728554470110303,
+      "domainRelative": 0.0000614709205597845,
+      "maxMainBoundaryProbability": 0.0009868867131115463
+    },
+    {
+      "seed": 4108,
+      "arm": "shuffled",
+      "timeStepRelative": 0.00033232675362891175,
+      "domainRelative": 0.0000015782850263189838,
+      "maxMainBoundaryProbability": 0.00011372590626499743
+    }
+  ],
+  "nullSummary": {
+    "n": 8,
+    "correlatedMean": 119.3518378422118,
+    "shuffledMean": 119.3518378422118,
+    "pairedDifferences": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "meanDifference": 0,
+    "relativeDifference": 0,
+    "pairedDifferenceSd": 0,
+    "pooledWithinArmSeedSd": 45.22807324702745,
+    "absoluteEffectOverSeedSd": 0,
+    "pairedBootstrap95": [
+      0,
+      0
+    ],
+    "effectCriteriaPass": false
+  },
+  "backend": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+  },
+  "rows": [
+    {
+      "seed": 4101,
+      "potential": {
+        "correlated": {
+          "mean": -1.3989165381644852e-10,
+          "rms": 0.49999999986714183,
+          "minimum": -1.7574803829193115,
+          "maximum": 1.9914814233779907,
+          "neighborCorrelation": 0.803813656053832,
+          "lagFourCorrelation": -0.0034192426898373256,
+          "float32LittleEndianSha256": "2f5251f112613d3468214df9ef32a5193a8c547114f614ac23958ca943391950"
+        },
+        "shuffled": {
+          "mean": -1.3989165381644852e-10,
+          "rms": 0.49999999986714233,
+          "minimum": -1.7574803829193115,
+          "maximum": 1.9914814233779907,
+          "neighborCorrelation": -0.017616295817725832,
+          "lagFourCorrelation": -0.007814153034180022,
+          "float32LittleEndianSha256": "72528070bf337a432ff37ed9f49310fa700919ac761cfc3589d69caa3ec99c03"
+        },
+        "histogramIdentical": true
+      },
+      "trials": {
+        "correlated": {
+          "main": {
+            "label": "4101-correlated",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5991481423377991,
+            "initialPotentialEnergy": -0.013906850763388393,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.99999999624043,
+              "modifiedInvariant": 0.9997377734083049,
+              "centroid": [
+                -5.868015590517343e-11,
+                -5.874076887080172e-11
+              ],
+              "variance": 12.970200219568794,
+              "secondMomentAboutStart": 12.970200219568794,
+              "inverseParticipationRatio": 0.01192046474115713,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.99999999624043,
+                "modifiedInvariant": 0.9997377734083049,
+                "centroid": [
+                  -5.868015590517343e-11,
+                  -5.874076887080172e-11
+                ],
+                "variance": 12.970200219568794,
+                "secondMomentAboutStart": 12.970200219568794,
+                "inverseParticipationRatio": 0.01192046474115713,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000246647365172,
+                "modifiedInvariant": 0.9997377712820914,
+                "centroid": [
+                  2.743778118457187,
+                  -1.4134877506948476
+                ],
+                "variance": 43.024376186717696,
+                "secondMomentAboutStart": 52.55064217140654,
+                "inverseParticipationRatio": 0.01304864502010911,
+                "boundaryStripProbability": 2.571081435486942e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.000012902913029,
+                "modifiedInvariant": 0.9997377720157389,
+                "centroid": [
+                  3.7460873189890234,
+                  -2.05570354342011
+                ],
+                "variance": 106.1438342019029,
+                "secondMomentAboutStart": 124.40292146182327,
+                "inverseParticipationRatio": 0.007634265517548698,
+                "boundaryStripProbability": 1.612967852657711e-7,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000475680404664,
+                "modifiedInvariant": 0.9997377782545458,
+                "centroid": [
+                  4.014954552630442,
+                  -1.8403891048822483
+                ],
+                "variance": 138.5523316453051,
+                "secondMomentAboutStart": 158.05922376236228,
+                "inverseParticipationRatio": 0.004473992920005219,
+                "boundaryStripProbability": 0.0002773650945494131,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 4.8475119474034045e-9,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4101-correlated-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.29957407116889956,
+            "initialPotentialEnergy": -0.013906850763388393,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962262272,
+              "modifiedInvariant": 0.9999344404966962,
+              "centroid": [
+                1.2312506380871377e-11,
+                1.0136897843738249e-10
+              ],
+              "variance": 12.970200219270607,
+              "secondMomentAboutStart": 12.970200219270607,
+              "inverseParticipationRatio": 0.011920464741441972,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962262272,
+                "modifiedInvariant": 0.9999344404966962,
+                "centroid": [
+                  1.2312506380871377e-11,
+                  1.0136897843738249e-10
+                ],
+                "variance": 12.970200219270607,
+                "secondMomentAboutStart": 12.970200219270607,
+                "inverseParticipationRatio": 0.011920464741441972,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000059860845285,
+                "modifiedInvariant": 0.9999343470681655,
+                "centroid": [
+                  2.743165385817315,
+                  -1.4131621727721861
+                ],
+                "variance": 43.006378237823135,
+                "secondMomentAboutStart": 52.528361898323595,
+                "inverseParticipationRatio": 0.013041424693031685,
+                "boundaryStripProbability": 2.5583205945834974e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000030242615865,
+                "modifiedInvariant": 0.9999343675315213,
+                "centroid": [
+                  3.7454718929151305,
+                  -2.055870667867746
+                ],
+                "variance": 106.10963337804378,
+                "secondMomentAboutStart": 124.36479728166,
+                "inverseParticipationRatio": 0.007637231229167007,
+                "boundaryStripProbability": 1.5737181046826058e-7,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000117306521359,
+                "modifiedInvariant": 0.9999343349612193,
+                "centroid": [
+                  4.014129253933331,
+                  -1.8400676150478505
+                ],
+                "variance": 138.49373026743842,
+                "secondMomentAboutStart": 157.99281276266967,
+                "inverseParticipationRatio": 0.004473968979105235,
+                "boundaryStripProbability": 0.00027262387582233615,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.0554239626703321e-7,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4101-correlated-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5991481423377991,
+            "initialPotentialEnergy": -0.013906850763388393,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.99999999624043,
+              "modifiedInvariant": 0.9997377734083049,
+              "centroid": [
+                -5.868015590517343e-11,
+                -5.874076887080172e-11
+              ],
+              "variance": 12.970200219568794,
+              "secondMomentAboutStart": 12.970200219568794,
+              "inverseParticipationRatio": 0.01192046474115713,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.99999999624043,
+                "modifiedInvariant": 0.9997377734083049,
+                "centroid": [
+                  -5.868015590517343e-11,
+                  -5.874076887080172e-11
+                ],
+                "variance": 12.970200219568794,
+                "secondMomentAboutStart": 12.970200219568794,
+                "inverseParticipationRatio": 0.01192046474115713,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000246647365172,
+                "modifiedInvariant": 0.9997377712820914,
+                "centroid": [
+                  2.743778118457187,
+                  -1.4134877506948476
+                ],
+                "variance": 43.024376186717696,
+                "secondMomentAboutStart": 52.55064217140654,
+                "inverseParticipationRatio": 0.01304864502010911,
+                "boundaryStripProbability": 1.9296599780526034e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000129029158493,
+                "modifiedInvariant": 0.999737772018518,
+                "centroid": [
+                  3.746087325979702,
+                  -2.0557035421980103
+                ],
+                "variance": 106.14383416010659,
+                "secondMomentAboutStart": 124.40292146737781,
+                "inverseParticipationRatio": 0.00763426551750569,
+                "boundaryStripProbability": 5.890166093262893e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000475799639128,
+                "modifiedInvariant": 0.9997377856596029,
+                "centroid": [
+                  4.015423339034119,
+                  -1.8401971231624588
+                ],
+                "variance": 138.55000869331454,
+                "secondMomentAboutStart": 158.05995873706982,
+                "inverseParticipationRatio": 0.004473992773880058,
+                "boundaryStripProbability": 3.1307732569160926e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.2254511405629387e-8,
+            "valid": true
+          }
+        },
+        "shuffled": {
+          "main": {
+            "label": "4101-shuffled",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5991481423377991,
+            "initialPotentialEnergy": -0.08875894277214202,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.99999999625517,
+              "modifiedInvariant": 0.9995349482504742,
+              "centroid": [
+                -2.2960732026821654e-13,
+                -4.0437728327020243e-13
+              ],
+              "variance": 12.970200219852483,
+              "secondMomentAboutStart": 12.970200219852483,
+              "inverseParticipationRatio": 0.011920464740870784,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.99999999625517,
+                "modifiedInvariant": 0.9995349482504742,
+                "centroid": [
+                  -2.2960732026821654e-13,
+                  -4.0437728327020243e-13
+                ],
+                "variance": 12.970200219852483,
+                "secondMomentAboutStart": 12.970200219852483,
+                "inverseParticipationRatio": 0.011920464740870784,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.000042622891224,
+                "modifiedInvariant": 0.9995349168057752,
+                "centroid": [
+                  1.678554962593814,
+                  -0.32564552483559694
+                ],
+                "variance": 24.7352240289503,
+                "secondMomentAboutStart": 27.65881579924407,
+                "inverseParticipationRatio": 0.023800650909053495,
+                "boundaryStripProbability": 1.488799688557944e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999745090238765,
+                "modifiedInvariant": 0.9995347915040663,
+                "centroid": [
+                  0.6407341703326174,
+                  -0.03183681484403005
+                ],
+                "variance": 45.451705156463916,
+                "secondMomentAboutStart": 45.86325901627516,
+                "inverseParticipationRatio": 0.014419236883495851,
+                "boundaryStripProbability": 4.9261498741611306e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 0.9999501288707364,
+                "modifiedInvariant": 0.999534832152649,
+                "centroid": [
+                  0.3910146614433112,
+                  0.3417441108998992
+                ],
+                "variance": 64.51309545673763,
+                "secondMomentAboutStart": 64.78277695953602,
+                "inverseParticipationRatio": 0.013763910357176893,
+                "boundaryStripProbability": 0.00007738773904592772,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.5681933696054529e-7,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4101-shuffled-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.29957407116889956,
+            "initialPotentialEnergy": -0.08875894277214202,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962404382,
+              "modifiedInvariant": 0.9998837342062172,
+              "centroid": [
+                2.2274766779582643e-11,
+                -5.874020949806935e-11
+              ],
+              "variance": 12.970200219569525,
+              "secondMomentAboutStart": 12.970200219569525,
+              "inverseParticipationRatio": 0.011920464741156935,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962404382,
+                "modifiedInvariant": 0.9998837342062172,
+                "centroid": [
+                  2.2274766779582643e-11,
+                  -5.874020949806935e-11
+                ],
+                "variance": 12.970200219569525,
+                "secondMomentAboutStart": 12.970200219569525,
+                "inverseParticipationRatio": 0.011920464741156935,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000096508141507,
+                "modifiedInvariant": 0.9998837669405896,
+                "centroid": [
+                  1.6784590587601345,
+                  -0.3256576590601338
+                ],
+                "variance": 24.725857209325124,
+                "secondMomentAboutStart": 27.64913493216361,
+                "inverseParticipationRatio": 0.02379129587858461,
+                "boundaryStripProbability": 1.4904385071552396e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999968024631513,
+                "modifiedInvariant": 0.999883674317995,
+                "centroid": [
+                  0.640909696382143,
+                  -0.03217193228407154
+                ],
+                "variance": 45.429812475107596,
+                "secondMomentAboutStart": 45.84161274725114,
+                "inverseParticipationRatio": 0.014414173382850682,
+                "boundaryStripProbability": 4.8281214478939516e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 0.999988133080976,
+                "modifiedInvariant": 0.9998837988811181,
+                "centroid": [
+                  0.39118640056415577,
+                  0.3414915996664677
+                ],
+                "variance": 64.47131511012215,
+                "secondMomentAboutStart": 64.74095842275125,
+                "inverseParticipationRatio": 0.013755625730648214,
+                "boundaryStripProbability": 0.00007594752728658717,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 6.468242119694878e-8,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4101-shuffled-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5991481423377991,
+            "initialPotentialEnergy": -0.08875894277214202,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.99999999625517,
+              "modifiedInvariant": 0.9995349482504742,
+              "centroid": [
+                -2.2960732026821654e-13,
+                -4.0437728327020243e-13
+              ],
+              "variance": 12.970200219852483,
+              "secondMomentAboutStart": 12.970200219852483,
+              "inverseParticipationRatio": 0.011920464740870784,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.99999999625517,
+                "modifiedInvariant": 0.9995349482504742,
+                "centroid": [
+                  -2.2960732026821654e-13,
+                  -4.0437728327020243e-13
+                ],
+                "variance": 12.970200219852483,
+                "secondMomentAboutStart": 12.970200219852483,
+                "inverseParticipationRatio": 0.011920464740870784,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.000042622891224,
+                "modifiedInvariant": 0.9995349168057752,
+                "centroid": [
+                  1.678554962593814,
+                  -0.32564552483559694
+                ],
+                "variance": 24.7352240289503,
+                "secondMomentAboutStart": 27.65881579924407,
+                "inverseParticipationRatio": 0.023800650909053495,
+                "boundaryStripProbability": 1.7036873294575038e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999745090247195,
+                "modifiedInvariant": 0.9995347915049158,
+                "centroid": [
+                  0.6407341725768807,
+                  -0.03183681456624684
+                ],
+                "variance": 45.451705155252384,
+                "secondMomentAboutStart": 45.86325901792189,
+                "inverseParticipationRatio": 0.014419236883471461,
+                "boundaryStripProbability": 3.960349036758634e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 0.9999501297353608,
+                "modifiedInvariant": 0.9995348324490464,
+                "centroid": [
+                  0.39107703516526493,
+                  0.3417727228216857
+                ],
+                "variance": 64.51319807813935,
+                "secondMomentAboutStart": 64.78294791963796,
+                "inverseParticipationRatio": 0.013763910333950974,
+                "boundaryStripProbability": 1.6527723748963603e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.5681848708481994e-7,
+            "valid": true
+          }
+        }
+      }
+    },
+    {
+      "seed": 4102,
+      "potential": {
+        "correlated": {
+          "mean": -2.4650859131725156e-10,
+          "rms": 0.5000000004795735,
+          "minimum": -1.8388252258300781,
+          "maximum": 1.94746994972229,
+          "neighborCorrelation": 0.802350303075225,
+          "lagFourCorrelation": 0.03755712712414738,
+          "float32LittleEndianSha256": "ed19bc2b7d3c29dffa4897bded08bd95a39b13a5729f5235110f25c1280a4c3c"
+        },
+        "shuffled": {
+          "mean": -2.4650859131725156e-10,
+          "rms": 0.5000000004795735,
+          "minimum": -1.8388252258300781,
+          "maximum": 1.94746994972229,
+          "neighborCorrelation": 0.0039549950574798405,
+          "lagFourCorrelation": -0.001283039800698389,
+          "float32LittleEndianSha256": "e285aff95ee7289765f6ddfb3a31cddceecf4d1cbc1b3d3a698ce3b7d09399f5"
+        },
+        "histogramIdentical": true
+      },
+      "trials": {
+        "correlated": {
+          "main": {
+            "label": "4102-correlated",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.594746994972229,
+            "initialPotentialEnergy": -0.3141992393318057,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962987078,
+              "modifiedInvariant": 0.9996726348856523,
+              "centroid": [
+                -2.1683416819217773e-10,
+                -4.293602080406186e-11
+              ],
+              "variance": 12.970200221048865,
+              "secondMomentAboutStart": 12.970200221048865,
+              "inverseParticipationRatio": 0.011920464739969746,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962987078,
+                "modifiedInvariant": 0.9996726348856523,
+                "centroid": [
+                  -2.1683416819217773e-10,
+                  -4.293602080406186e-11
+                ],
+                "variance": 12.970200221048865,
+                "secondMomentAboutStart": 12.970200221048865,
+                "inverseParticipationRatio": 0.011920464739969746,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9998692156824082,
+                "modifiedInvariant": 0.9996726558852284,
+                "centroid": [
+                  2.073019164364341,
+                  -0.19465395695280563
+                ],
+                "variance": 21.31173980402857,
+                "secondMomentAboutStart": 25.647038422807785,
+                "inverseParticipationRatio": 0.02146703351636487,
+                "boundaryStripProbability": 2.5924455555256444e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999470224323975,
+                "modifiedInvariant": 0.9996725773304893,
+                "centroid": [
+                  2.7152443519858975,
+                  0.5547441087788667
+                ],
+                "variance": 32.686673486079016,
+                "secondMomentAboutStart": 40.366966403295194,
+                "inverseParticipationRatio": 0.014963339435368714,
+                "boundaryStripProbability": 2.3455154235908686e-7,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 0.9998256439094975,
+                "modifiedInvariant": 0.9996726292587309,
+                "centroid": [
+                  2.543096541274917,
+                  1.2194795114922967
+                ],
+                "variance": 43.40814544218712,
+                "secondMomentAboutStart": 51.362615739381056,
+                "inverseParticipationRatio": 0.013463054227143749,
+                "boundaryStripProbability": 0.00039741517472361625,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 5.757401067008061e-8,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4102-correlated-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.2973734974861145,
+            "initialPotentialEnergy": -0.3141992393318057,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962367921,
+              "modifiedInvariant": 0.9999181558775933,
+              "centroid": [
+                4.050930100002708e-11,
+                -4.0507174251896544e-11
+              ],
+              "variance": 12.97020021943449,
+              "secondMomentAboutStart": 12.97020021943449,
+              "inverseParticipationRatio": 0.01192046474124023,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962367921,
+                "modifiedInvariant": 0.9999181558775933,
+                "centroid": [
+                  4.050930100002708e-11,
+                  -4.0507174251896544e-11
+                ],
+                "variance": 12.97020021943449,
+                "secondMomentAboutStart": 12.97020021943449,
+                "inverseParticipationRatio": 0.01192046474124023,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999671804753487,
+                "modifiedInvariant": 0.9999180950633539,
+                "centroid": [
+                  2.0725763514420734,
+                  -0.19499494420301172
+                ],
+                "variance": 21.30424945717587,
+                "secondMomentAboutStart": 25.637845217997544,
+                "inverseParticipationRatio": 0.02146678344459423,
+                "boundaryStripProbability": 2.5938148829498904e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999866829851278,
+                "modifiedInvariant": 0.9999181296039782,
+                "centroid": [
+                  2.715574662708161,
+                  0.5543135604433204
+                ],
+                "variance": 32.66912932978789,
+                "secondMomentAboutStart": 40.35073860182179,
+                "inverseParticipationRatio": 0.014962410851730668,
+                "boundaryStripProbability": 2.2751015600688282e-7,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 0.9999563282895483,
+                "modifiedInvariant": 0.9999180801695645,
+                "centroid": [
+                  2.542778810991224,
+                  1.2192810586317002
+                ],
+                "variance": 43.37096953846277,
+                "secondMomentAboutStart": 51.32333992002675,
+                "inverseParticipationRatio": 0.013471505270266004,
+                "boundaryStripProbability": 0.0003933210349642988,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 7.571422544483397e-8,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4102-correlated-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.594746994972229,
+            "initialPotentialEnergy": -0.3141992393318057,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962987078,
+              "modifiedInvariant": 0.9996726348856523,
+              "centroid": [
+                -2.1683416819217773e-10,
+                -4.293602080406186e-11
+              ],
+              "variance": 12.970200221048865,
+              "secondMomentAboutStart": 12.970200221048865,
+              "inverseParticipationRatio": 0.011920464739969746,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962987078,
+                "modifiedInvariant": 0.9996726348856523,
+                "centroid": [
+                  -2.1683416819217773e-10,
+                  -4.293602080406186e-11
+                ],
+                "variance": 12.970200221048865,
+                "secondMomentAboutStart": 12.970200221048865,
+                "inverseParticipationRatio": 0.011920464739969746,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9998692156824082,
+                "modifiedInvariant": 0.9996726558852284,
+                "centroid": [
+                  2.073019164364341,
+                  -0.19465395695280563
+                ],
+                "variance": 21.31173980402857,
+                "secondMomentAboutStart": 25.647038422807785,
+                "inverseParticipationRatio": 0.02146703351636487,
+                "boundaryStripProbability": 1.9802502390254453e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999470224361791,
+                "modifiedInvariant": 0.9996725773342812,
+                "centroid": [
+                  2.715244358405058,
+                  0.5547441118115959
+                ],
+                "variance": 32.686673450932254,
+                "secondMomentAboutStart": 40.366966406372384,
+                "inverseParticipationRatio": 0.014963339435255749,
+                "boundaryStripProbability": 6.1182684820737225e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 0.9998256528668507,
+                "modifiedInvariant": 0.9996726342930726,
+                "centroid": [
+                  2.5435250945126238,
+                  1.219725802397232
+                ],
+                "variance": 43.406031072634796,
+                "secondMomentAboutStart": 51.363282012083815,
+                "inverseParticipationRatio": 0.013463054010547685,
+                "boundaryStripProbability": 4.2598733936536856e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 5.757021759311698e-8,
+            "valid": true
+          }
+        },
+        "shuffled": {
+          "main": {
+            "label": "4102-shuffled",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.594746994972229,
+            "initialPotentialEnergy": 0.04615126133565488,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962412975,
+              "modifiedInvariant": 0.9996245928294385,
+              "centroid": [
+                6.213813777338194e-11,
+                -5.274526475788633e-11
+              ],
+              "variance": 12.970200219614341,
+              "secondMomentAboutStart": 12.970200219614341,
+              "inverseParticipationRatio": 0.011920464741136656,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962412975,
+                "modifiedInvariant": 0.9996245928294385,
+                "centroid": [
+                  6.213813777338194e-11,
+                  -5.274526475788633e-11
+                ],
+                "variance": 12.970200219614341,
+                "secondMomentAboutStart": 12.970200219614341,
+                "inverseParticipationRatio": 0.011920464741136656,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.000055426718536,
+                "modifiedInvariant": 0.9996246608862729,
+                "centroid": [
+                  2.5907359937799996,
+                  0.4928242367757641
+                ],
+                "variance": 27.27925487301899,
+                "secondMomentAboutStart": 34.234043590839846,
+                "inverseParticipationRatio": 0.018215233133460105,
+                "boundaryStripProbability": 1.6987924121923497e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000258070538308,
+                "modifiedInvariant": 0.9996246287308519,
+                "centroid": [
+                  2.600492497607793,
+                  0.7871082288579843
+                ],
+                "variance": 61.549025029361026,
+                "secondMomentAboutStart": 68.93112562341139,
+                "inverseParticipationRatio": 0.0091851703958476,
+                "boundaryStripProbability": 7.501868461771612e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000499988511824,
+                "modifiedInvariant": 0.9996246871422455,
+                "centroid": [
+                  2.6712407777127303,
+                  0.9553514700939428
+                ],
+                "variance": 97.695936790416,
+                "secondMomentAboutStart": 105.74416051434196,
+                "inverseParticipationRatio": 0.006156501654401997,
+                "boundaryStripProbability": 0.00005948277613627425,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 9.434822589859948e-8,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4102-shuffled-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.2973734974861145,
+            "initialPotentialEnergy": 0.04615126133565488,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.999999996251477,
+              "modifiedInvariant": 0.9999061453808715,
+              "centroid": [
+                -1.82218413300099e-11,
+                1.8226199521940515e-11
+              ],
+              "variance": 12.970200219713984,
+              "secondMomentAboutStart": 12.970200219713984,
+              "inverseParticipationRatio": 0.011920464740955197,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.999999996251477,
+                "modifiedInvariant": 0.9999061453808715,
+                "centroid": [
+                  -1.82218413300099e-11,
+                  1.8226199521940515e-11
+                ],
+                "variance": 12.970200219713984,
+                "secondMomentAboutStart": 12.970200219713984,
+                "inverseParticipationRatio": 0.011920464740955197,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.000014917345582,
+                "modifiedInvariant": 0.9999061893549206,
+                "centroid": [
+                  2.590919899149957,
+                  0.49274973315727555
+                ],
+                "variance": 27.266982360774115,
+                "secondMomentAboutStart": 34.2226505841119,
+                "inverseParticipationRatio": 0.018261231823932238,
+                "boundaryStripProbability": 1.7052457402822429e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000039590270673,
+                "modifiedInvariant": 0.999906205982243,
+                "centroid": [
+                  2.600367727828323,
+                  0.7866525777715585
+                ],
+                "variance": 61.52890799310463,
+                "secondMomentAboutStart": 68.9096425911503,
+                "inverseParticipationRatio": 0.009176312353537285,
+                "boundaryStripProbability": 7.331813171498005e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000118938370948,
+                "modifiedInvariant": 0.9999061689377775,
+                "centroid": [
+                  2.6713546730792594,
+                  0.9554942210762449
+                ],
+                "variance": 97.66512690839006,
+                "secondMomentAboutStart": 105.71423190428256,
+                "inverseParticipationRatio": 0.00614696243913716,
+                "boundaryStripProbability": 0.00005844551235041974,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 6.060705981525416e-8,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4102-shuffled-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.594746994972229,
+            "initialPotentialEnergy": 0.04615126133565488,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962412975,
+              "modifiedInvariant": 0.9996245928294385,
+              "centroid": [
+                6.213813777338194e-11,
+                -5.274526475788633e-11
+              ],
+              "variance": 12.970200219614341,
+              "secondMomentAboutStart": 12.970200219614341,
+              "inverseParticipationRatio": 0.011920464741136656,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962412975,
+                "modifiedInvariant": 0.9996245928294385,
+                "centroid": [
+                  6.213813777338194e-11,
+                  -5.274526475788633e-11
+                ],
+                "variance": 12.970200219614341,
+                "secondMomentAboutStart": 12.970200219614341,
+                "inverseParticipationRatio": 0.011920464741136656,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.000055426718536,
+                "modifiedInvariant": 0.9996246608862729,
+                "centroid": [
+                  2.5907359937799996,
+                  0.4928242367757641
+                ],
+                "variance": 27.27925487301899,
+                "secondMomentAboutStart": 34.234043590839846,
+                "inverseParticipationRatio": 0.018215233133460105,
+                "boundaryStripProbability": 1.7379026778648713e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000258070614627,
+                "modifiedInvariant": 0.9996246287383775,
+                "centroid": [
+                  2.600492502128144,
+                  0.7871082292009466
+                ],
+                "variance": 61.54902500947562,
+                "secondMomentAboutStart": 68.93112562757617,
+                "inverseParticipationRatio": 0.009185170395707348,
+                "boundaryStripProbability": 4.5123923083981376e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000499902667959,
+                "modifiedInvariant": 0.9996246795291925,
+                "centroid": [
+                  2.6712962579081876,
+                  0.9553650532312241
+                ],
+                "variance": 97.69575171075117,
+                "secondMomentAboutStart": 105.74429779320096,
+                "inverseParticipationRatio": 0.0061565016584494816,
+                "boundaryStripProbability": 3.211048197932727e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 8.673231399747294e-8,
+            "valid": true
+          }
+        }
+      }
+    },
+    {
+      "seed": 4103,
+      "potential": {
+        "correlated": {
+          "mean": 1.1036149771825876e-10,
+          "rms": 0.5000000001826214,
+          "minimum": -1.6639565229415894,
+          "maximum": 1.920189619064331,
+          "neighborCorrelation": 0.7904785725929072,
+          "lagFourCorrelation": -0.0221202608185597,
+          "float32LittleEndianSha256": "df9f6321da0946ad6497beddb1440fc796aac4a1936b0ea116e155d95e6c98e5"
+        },
+        "shuffled": {
+          "mean": 1.1036149771825876e-10,
+          "rms": 0.5000000001826217,
+          "minimum": -1.6639565229415894,
+          "maximum": 1.920189619064331,
+          "neighborCorrelation": -0.012254005320775495,
+          "lagFourCorrelation": 0.006180480651454,
+          "float32LittleEndianSha256": "6bb3c1a97fff96eb9b5a5c7c1792510b3dfd774dd66c5ae442936bb3ee1e3873"
+        },
+        "histogramIdentical": true
+      },
+      "trials": {
+        "correlated": {
+          "main": {
+            "label": "4103-correlated",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5920189619064331,
+            "initialPotentialEnergy": 0.21173005691029373,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962440703,
+              "modifiedInvariant": 0.9995021165614513,
+              "centroid": [
+                7.69142034148004e-11,
+                -3.6024371010968283e-12
+              ],
+              "variance": 12.970200219703393,
+              "secondMomentAboutStart": 12.970200219703393,
+              "inverseParticipationRatio": 0.011920464741073973,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962440703,
+                "modifiedInvariant": 0.9995021165614513,
+                "centroid": [
+                  7.69142034148004e-11,
+                  -3.6024371010968283e-12
+                ],
+                "variance": 12.970200219703393,
+                "secondMomentAboutStart": 12.970200219703393,
+                "inverseParticipationRatio": 0.011920464741073973,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000620221341636,
+                "modifiedInvariant": 0.9995020910333016,
+                "centroid": [
+                  2.133043825540767,
+                  -0.206271773003174
+                ],
+                "variance": 37.600149011658566,
+                "secondMomentAboutStart": 42.19257301767403,
+                "inverseParticipationRatio": 0.011791247898546922,
+                "boundaryStripProbability": 2.0763307411119273e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.00004303782577,
+                "modifiedInvariant": 0.9995021156021374,
+                "centroid": [
+                  1.1507284364417476,
+                  -0.8501123895357182
+                ],
+                "variance": 102.25943429602205,
+                "secondMomentAboutStart": 104.30630130529985,
+                "inverseParticipationRatio": 0.0045650652606307055,
+                "boundaryStripProbability": 6.897668279057278e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000043761173751,
+                "modifiedInvariant": 0.9995021728649234,
+                "centroid": [
+                  0.059837689234046476,
+                  -1.2836568614704758
+                ],
+                "variance": 178.26593361011908,
+                "secondMomentAboutStart": 179.9172890971722,
+                "inverseParticipationRatio": 0.0038428190667640265,
+                "boundaryStripProbability": 0.0009490877162804638,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 5.633151856088148e-8,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4103-correlated-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.29600948095321655,
+            "initialPotentialEnergy": 0.21173005691029373,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962436998,
+              "modifiedInvariant": 0.9998755263148171,
+              "centroid": [
+                -8.584979319789986e-11,
+                -3.040673916671849e-11
+              ],
+              "variance": 12.970200219640484,
+              "secondMomentAboutStart": 12.970200219640484,
+              "inverseParticipationRatio": 0.011920464741093898,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962436998,
+                "modifiedInvariant": 0.9998755263148171,
+                "centroid": [
+                  -8.584979319789986e-11,
+                  -3.040673916671849e-11
+                ],
+                "variance": 12.970200219640484,
+                "secondMomentAboutStart": 12.970200219640484,
+                "inverseParticipationRatio": 0.011920464741093898,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.00001526909735,
+                "modifiedInvariant": 0.9998755285433714,
+                "centroid": [
+                  2.1324634985299458,
+                  -0.20583325197923885
+                ],
+                "variance": 37.56824436133136,
+                "secondMomentAboutStart": 42.15801226151428,
+                "inverseParticipationRatio": 0.01179951430258592,
+                "boundaryStripProbability": 2.0765537628968885e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000103994029035,
+                "modifiedInvariant": 0.9998755442986244,
+                "centroid": [
+                  1.1508152073351428,
+                  -0.8506271286271189
+                ],
+                "variance": 102.181133843121,
+                "secondMomentAboutStart": 104.22907599651126,
+                "inverseParticipationRatio": 0.004566262375153387,
+                "boundaryStripProbability": 6.772397679295733e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000008076189246,
+                "modifiedInvariant": 0.9998755465865248,
+                "centroid": [
+                  0.06025564444510253,
+                  -1.2841936921424717
+                ],
+                "variance": 178.13516894429517,
+                "secondMomentAboutStart": 179.7879531259212,
+                "inverseParticipationRatio": 0.0038492029845757078,
+                "boundaryStripProbability": 0.0009297497624015164,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 2.0274231182781932e-8,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4103-correlated-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5920189619064331,
+            "initialPotentialEnergy": 0.21173005691029373,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962440703,
+              "modifiedInvariant": 0.9995021165614513,
+              "centroid": [
+                7.69142034148004e-11,
+                -3.6024371010968283e-12
+              ],
+              "variance": 12.970200219703393,
+              "secondMomentAboutStart": 12.970200219703393,
+              "inverseParticipationRatio": 0.011920464741073973,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962440703,
+                "modifiedInvariant": 0.9995021165614513,
+                "centroid": [
+                  7.69142034148004e-11,
+                  -3.6024371010968283e-12
+                ],
+                "variance": 12.970200219703393,
+                "secondMomentAboutStart": 12.970200219703393,
+                "inverseParticipationRatio": 0.011920464741073973,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000620221341636,
+                "modifiedInvariant": 0.9995020910333016,
+                "centroid": [
+                  2.133043825540767,
+                  -0.206271773003174
+                ],
+                "variance": 37.600149011658566,
+                "secondMomentAboutStart": 42.19257301767403,
+                "inverseParticipationRatio": 0.011791247898546922,
+                "boundaryStripProbability": 1.8547308270629563e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000430379270469,
+                "modifiedInvariant": 0.9995021157021625,
+                "centroid": [
+                  1.1507284429547606,
+                  -0.8501123891228294
+                ],
+                "variance": 102.25943430910779,
+                "secondMomentAboutStart": 104.306301332673,
+                "inverseParticipationRatio": 0.004565065259777328,
+                "boundaryStripProbability": 5.553504282150848e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000043881115503,
+                "modifiedInvariant": 0.9995021840013234,
+                "centroid": [
+                  0.06033046741548368,
+                  -1.2835544633282931
+                ],
+                "variance": 178.26672403804605,
+                "secondMomentAboutStart": 179.9178758636746,
+                "inverseParticipationRatio": 0.0038428190302079485,
+                "boundaryStripProbability": 2.5360478493638303e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 6.747346614766059e-8,
+            "valid": true
+          }
+        },
+        "shuffled": {
+          "main": {
+            "label": "4103-shuffled",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5920189619064331,
+            "initialPotentialEnergy": 0.009927012062748675,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962553494,
+              "modifiedInvariant": 0.9995090074269971,
+              "centroid": [
+                4.558476110510299e-11,
+                -1.8218819480475607e-11
+              ],
+              "variance": 12.97020021980886,
+              "secondMomentAboutStart": 12.97020021980886,
+              "inverseParticipationRatio": 0.01192046474086923,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962553494,
+                "modifiedInvariant": 0.9995090074269971,
+                "centroid": [
+                  4.558476110510299e-11,
+                  -1.8218819480475607e-11
+                ],
+                "variance": 12.97020021980886,
+                "secondMomentAboutStart": 12.97020021980886,
+                "inverseParticipationRatio": 0.01192046474086923,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999877066419026,
+                "modifiedInvariant": 0.999509103861869,
+                "centroid": [
+                  1.560644195279448,
+                  -0.25201184544692595
+                ],
+                "variance": 27.380398013557983,
+                "secondMomentAboutStart": 29.879518288062982,
+                "inverseParticipationRatio": 0.0158475039833462,
+                "boundaryStripProbability": 1.5345652255839367e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000154166503266,
+                "modifiedInvariant": 0.999509098150249,
+                "centroid": [
+                  1.2017632495393533,
+                  -0.2901050109200176
+                ],
+                "variance": 56.20144331819843,
+                "secondMomentAboutStart": 57.729839143502716,
+                "inverseParticipationRatio": 0.012970346644161981,
+                "boundaryStripProbability": 4.685533678098123e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000216704566556,
+                "modifiedInvariant": 0.9995091178809165,
+                "centroid": [
+                  0.650472809734259,
+                  -0.3297273987423981
+                ],
+                "variance": 85.60922216989798,
+                "secondMomentAboutStart": 86.14105720358299,
+                "inverseParticipationRatio": 0.005985966931385741,
+                "boundaryStripProbability": 0.00006267501978121838,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.1050817794178158e-7,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4103-shuffled-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.29600948095321655,
+            "initialPotentialEnergy": 0.009927012062748675,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962734518,
+              "modifiedInvariant": 0.9998772490028839,
+              "centroid": [
+                -7.697323584414532e-11,
+                4.051019058840708e-11
+              ],
+              "variance": 12.970200220263337,
+              "secondMomentAboutStart": 12.970200220263337,
+              "inverseParticipationRatio": 0.011920464740503628,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962734518,
+                "modifiedInvariant": 0.9998772490028839,
+                "centroid": [
+                  -7.697323584414532e-11,
+                  4.051019058840708e-11
+                ],
+                "variance": 12.970200220263337,
+                "secondMomentAboutStart": 12.970200220263337,
+                "inverseParticipationRatio": 0.011920464740503628,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999984995881547,
+                "modifiedInvariant": 0.9998772081614477,
+                "centroid": [
+                  1.5605222312197673,
+                  -0.2518726724701114
+                ],
+                "variance": 27.362991360093357,
+                "secondMomentAboutStart": 29.861660837361715,
+                "inverseParticipationRatio": 0.015851511718640045,
+                "boundaryStripProbability": 1.5216547877866318e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000020298049213,
+                "modifiedInvariant": 0.999877127577714,
+                "centroid": [
+                  1.2019666389300212,
+                  -0.29037108909100473
+                ],
+                "variance": 56.168710653503936,
+                "secondMomentAboutStart": 57.69774982398456,
+                "inverseParticipationRatio": 0.012998154881468554,
+                "boundaryStripProbability": 4.549056798217262e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000068769674413,
+                "modifiedInvariant": 0.9998770015362137,
+                "centroid": [
+                  0.6504734971727163,
+                  -0.32952562566020505
+                ],
+                "variance": 85.5635462378896,
+                "secondMomentAboutStart": 86.09524914638045,
+                "inverseParticipationRatio": 0.005999823377234154,
+                "boundaryStripProbability": 0.00006108209022191213,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 2.4749705063165095e-7,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4103-shuffled-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5920189619064331,
+            "initialPotentialEnergy": 0.009927012062748675,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962553494,
+              "modifiedInvariant": 0.9995090074269971,
+              "centroid": [
+                4.558476110510299e-11,
+                -1.8218819480475607e-11
+              ],
+              "variance": 12.97020021980886,
+              "secondMomentAboutStart": 12.97020021980886,
+              "inverseParticipationRatio": 0.01192046474086923,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962553494,
+                "modifiedInvariant": 0.9995090074269971,
+                "centroid": [
+                  4.558476110510299e-11,
+                  -1.8218819480475607e-11
+                ],
+                "variance": 12.97020021980886,
+                "secondMomentAboutStart": 12.97020021980886,
+                "inverseParticipationRatio": 0.01192046474086923,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999877066419026,
+                "modifiedInvariant": 0.999509103861869,
+                "centroid": [
+                  1.560644195279448,
+                  -0.25201184544692595
+                ],
+                "variance": 27.380398013557983,
+                "secondMomentAboutStart": 29.879518288062982,
+                "inverseParticipationRatio": 0.0158475039833462,
+                "boundaryStripProbability": 1.8582844437282733e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000154166504307,
+                "modifiedInvariant": 0.9995090981501747,
+                "centroid": [
+                  1.201763252156098,
+                  -0.29010501064712046
+                ],
+                "variance": 56.20144331307332,
+                "secondMomentAboutStart": 57.72983914450869,
+                "inverseParticipationRatio": 0.012970346644159437,
+                "boundaryStripProbability": 5.365987869086614e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000216750637294,
+                "modifiedInvariant": 0.9995091231718147,
+                "centroid": [
+                  0.6505523467156189,
+                  -0.32971783204776867
+                ],
+                "variance": 85.60927953938176,
+                "secondMomentAboutStart": 86.14121174396924,
+                "inverseParticipationRatio": 0.005985966972751985,
+                "boundaryStripProbability": 2.7265693747545667e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.1580167535996111e-7,
+            "valid": true
+          }
+        }
+      }
+    },
+    {
+      "seed": 4104,
+      "potential": {
+        "correlated": {
+          "mean": -8.954259556048783e-11,
+          "rms": 0.4999999993725638,
+          "minimum": -1.9290961027145386,
+          "maximum": 1.6236426830291748,
+          "neighborCorrelation": 0.7935312608446252,
+          "lagFourCorrelation": 0.018180052127675466,
+          "float32LittleEndianSha256": "96d38e79d095163b6ae1a0744fe4d35d4ee0d696a134504befb3b444a4876dcb"
+        },
+        "shuffled": {
+          "mean": -8.954259556048783e-11,
+          "rms": 0.499999999372563,
+          "minimum": -1.9290961027145386,
+          "maximum": 1.6236426830291748,
+          "neighborCorrelation": 0.002913278181886835,
+          "lagFourCorrelation": -0.007659479230926929,
+          "float32LittleEndianSha256": "ceac128b902d83c271ab491fb1fda8d37df4fab24af680478112aa255ff52ad6"
+        },
+        "histogramIdentical": true
+      },
+      "trials": {
+        "correlated": {
+          "main": {
+            "label": "4104-correlated",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5929096102714538,
+            "initialPotentialEnergy": 0.09868060379402205,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962590119,
+              "modifiedInvariant": 0.9993525017780723,
+              "centroid": [
+                6.366338574301217e-11,
+                5.296439762851158e-16
+              ],
+              "variance": 12.970200219945333,
+              "secondMomentAboutStart": 12.970200219945333,
+              "inverseParticipationRatio": 0.011920464740785543,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962590119,
+                "modifiedInvariant": 0.9993525017780723,
+                "centroid": [
+                  6.366338574301217e-11,
+                  5.296439762851158e-16
+                ],
+                "variance": 12.970200219945333,
+                "secondMomentAboutStart": 12.970200219945333,
+                "inverseParticipationRatio": 0.011920464740785543,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999169823481348,
+                "modifiedInvariant": 0.9993524345343191,
+                "centroid": [
+                  2.7191137934406484,
+                  0.4872955403417889
+                ],
+                "variance": 36.008087371554936,
+                "secondMomentAboutStart": 43.63912413687113,
+                "inverseParticipationRatio": 0.014645268585647162,
+                "boundaryStripProbability": 1.8747936994239687e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999072091442096,
+                "modifiedInvariant": 0.999352426959299,
+                "centroid": [
+                  3.182842616012466,
+                  0.9611149530634737
+                ],
+                "variance": 75.7098132192558,
+                "secondMomentAboutStart": 86.7640422905631,
+                "inverseParticipationRatio": 0.006701676337445622,
+                "boundaryStripProbability": 9.462239566195621e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 0.9999729477329431,
+                "modifiedInvariant": 0.9993524453415509,
+                "centroid": [
+                  3.7588411818148337,
+                  1.0733962574947458
+                ],
+                "variance": 130.37254037124245,
+                "secondMomentAboutStart": 145.6536069269533,
+                "inverseParticipationRatio": 0.0060004975116002435,
+                "boundaryStripProbability": 0.00047322206282405214,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 7.486724973304604e-8,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4104-correlated-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.2964548051357269,
+            "initialPotentialEnergy": 0.09868060379402205,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962514765,
+              "modifiedInvariant": 0.999838122667745,
+              "centroid": [
+                -1.8222462016274225e-11,
+                -1.8229346295993963e-11
+              ],
+              "variance": 12.970200219713918,
+              "secondMomentAboutStart": 12.970200219713918,
+              "inverseParticipationRatio": 0.011920464740955209,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962514765,
+                "modifiedInvariant": 0.999838122667745,
+                "centroid": [
+                  -1.8222462016274225e-11,
+                  -1.8229346295993963e-11
+                ],
+                "variance": 12.970200219713918,
+                "secondMomentAboutStart": 12.970200219713918,
+                "inverseParticipationRatio": 0.011920464740955209,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999790484006873,
+                "modifiedInvariant": 0.9998381193240989,
+                "centroid": [
+                  2.7187413839676617,
+                  0.4868676854976331
+                ],
+                "variance": 35.97888277944746,
+                "secondMomentAboutStart": 43.60747763552768,
+                "inverseParticipationRatio": 0.014645808188698078,
+                "boundaryStripProbability": 1.8708439340726843e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999763193940291,
+                "modifiedInvariant": 0.9998380256489446,
+                "centroid": [
+                  3.182254163892948,
+                  0.9609164410639115
+                ],
+                "variance": 75.62060707076277,
+                "secondMomentAboutStart": 86.67070904108371,
+                "inverseParticipationRatio": 0.006707744509424983,
+                "boundaryStripProbability": 9.297489938607259e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 0.999992937996583,
+                "modifiedInvariant": 0.9998380091493292,
+                "centroid": [
+                  3.75816644789154,
+                  1.0739695205214048
+                ],
+                "variance": 130.22215338450386,
+                "secondMomentAboutStart": 145.49937896557054,
+                "inverseParticipationRatio": 0.0060045727067405555,
+                "boundaryStripProbability": 0.00046641096046837535,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.1353679485459622e-7,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4104-correlated-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5929096102714538,
+            "initialPotentialEnergy": 0.09868060379402205,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962590119,
+              "modifiedInvariant": 0.9993525017780723,
+              "centroid": [
+                6.366338574301217e-11,
+                5.296439762851158e-16
+              ],
+              "variance": 12.970200219945333,
+              "secondMomentAboutStart": 12.970200219945333,
+              "inverseParticipationRatio": 0.011920464740785543,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962590119,
+                "modifiedInvariant": 0.9993525017780723,
+                "centroid": [
+                  6.366338574301217e-11,
+                  5.296439762851158e-16
+                ],
+                "variance": 12.970200219945333,
+                "secondMomentAboutStart": 12.970200219945333,
+                "inverseParticipationRatio": 0.011920464740785543,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999169823481348,
+                "modifiedInvariant": 0.9993524345343191,
+                "centroid": [
+                  2.7191137934406484,
+                  0.4872955403417889
+                ],
+                "variance": 36.008087371554936,
+                "secondMomentAboutStart": 43.63912413687113,
+                "inverseParticipationRatio": 0.014645268585647162,
+                "boundaryStripProbability": 1.8766057798289717e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999072091448553,
+                "modifiedInvariant": 0.9993524269596806,
+                "centroid": [
+                  3.182842619780022,
+                  0.9611149541608722
+                ],
+                "variance": 75.70981319681614,
+                "secondMomentAboutStart": 86.76404229421595,
+                "inverseParticipationRatio": 0.006701676337436944,
+                "boundaryStripProbability": 4.972198650842491e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 0.9999729522991313,
+                "modifiedInvariant": 0.9993524470681951,
+                "centroid": [
+                  3.7591230915726555,
+                  1.073411235331128
+                ],
+                "variance": 130.37087251364935,
+                "secondMomentAboutStart": 145.65409061137922,
+                "inverseParticipationRatio": 0.00600049746454528,
+                "boundaryStripProbability": 2.4981579517387983e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 7.486686781632557e-8,
+            "valid": true
+          }
+        },
+        "shuffled": {
+          "main": {
+            "label": "4104-shuffled",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5929096102714538,
+            "initialPotentialEnergy": -0.006137892563695989,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962684205,
+              "modifiedInvariant": 0.9995866321936876,
+              "centroid": [
+                7.473202990206513e-11,
+                4.8214654772001105e-11
+              ],
+              "variance": 12.970200220099041,
+              "secondMomentAboutStart": 12.970200220099041,
+              "inverseParticipationRatio": 0.011920464740608438,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962684205,
+                "modifiedInvariant": 0.9995866321936876,
+                "centroid": [
+                  7.473202990206513e-11,
+                  4.8214654772001105e-11
+                ],
+                "variance": 12.970200220099041,
+                "secondMomentAboutStart": 12.970200220099041,
+                "inverseParticipationRatio": 0.011920464740608438,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.999977617206842,
+                "modifiedInvariant": 0.9995866806736327,
+                "centroid": [
+                  1.892644593703199,
+                  -0.049325615617400495
+                ],
+                "variance": 28.537203599926478,
+                "secondMomentAboutStart": 32.12174017435646,
+                "inverseParticipationRatio": 0.015237784910366705,
+                "boundaryStripProbability": 1.7774740291973803e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999687826671363,
+                "modifiedInvariant": 0.9995867608324913,
+                "centroid": [
+                  1.5219269830562467,
+                  -0.14994289899730864
+                ],
+                "variance": 51.949630210972366,
+                "secondMomentAboutStart": 54.28837482568677,
+                "inverseParticipationRatio": 0.009949529914779012,
+                "boundaryStripProbability": 4.548558945322084e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000141594133967,
+                "modifiedInvariant": 0.9995867899113144,
+                "centroid": [
+                  0.756081741096159,
+                  -0.09453999731259358
+                ],
+                "variance": 69.33992306934601,
+                "secondMomentAboutStart": 69.92052047965689,
+                "inverseParticipationRatio": 0.008320050104519153,
+                "boundaryStripProbability": 0.00003328576008201741,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.5778284923051444e-7,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4104-shuffled-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.2964548051357269,
+            "initialPotentialEnergy": -0.006137892563695989,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.999999996255984,
+              "modifiedInvariant": 0.9998966552667446,
+              "centroid": [
+                -3.459637508071617e-12,
+                -6.017494217152212e-12
+              ],
+              "variance": 12.970200219893947,
+              "secondMomentAboutStart": 12.970200219893947,
+              "inverseParticipationRatio": 0.011920464740851585,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.999999996255984,
+                "modifiedInvariant": 0.9998966552667446,
+                "centroid": [
+                  -3.459637508071617e-12,
+                  -6.017494217152212e-12
+                ],
+                "variance": 12.970200219893947,
+                "secondMomentAboutStart": 12.970200219893947,
+                "inverseParticipationRatio": 0.011920464740851585,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999941195655793,
+                "modifiedInvariant": 0.9998966038311112,
+                "centroid": [
+                  1.892892164165053,
+                  -0.04915241755801687
+                ],
+                "variance": 28.52295158642631,
+                "secondMomentAboutStart": 32.108408291735564,
+                "inverseParticipationRatio": 0.015244584525968517,
+                "boundaryStripProbability": 1.7713535511943697e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999930852958678,
+                "modifiedInvariant": 0.999896545574792,
+                "centroid": [
+                  1.5223637015143074,
+                  -0.1501296124557439
+                ],
+                "variance": 51.92176487275118,
+                "secondMomentAboutStart": 54.261895012975636,
+                "inverseParticipationRatio": 0.009944062481765782,
+                "boundaryStripProbability": 4.4270796872570145e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.000004832006484,
+                "modifiedInvariant": 0.9998965326612457,
+                "centroid": [
+                  0.7560372807153021,
+                  -0.09522761491463952
+                ],
+                "variance": 69.29589185897741,
+                "secondMomentAboutStart": 69.87655252745114,
+                "inverseParticipationRatio": 0.008323750109515993,
+                "boundaryStripProbability": 0.00003232399168958761,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.226181709501617e-7,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4104-shuffled-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5929096102714538,
+            "initialPotentialEnergy": -0.006137892563695989,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962684205,
+              "modifiedInvariant": 0.9995866321936876,
+              "centroid": [
+                7.473202990206513e-11,
+                4.8214654772001105e-11
+              ],
+              "variance": 12.970200220099041,
+              "secondMomentAboutStart": 12.970200220099041,
+              "inverseParticipationRatio": 0.011920464740608438,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962684205,
+                "modifiedInvariant": 0.9995866321936876,
+                "centroid": [
+                  7.473202990206513e-11,
+                  4.8214654772001105e-11
+                ],
+                "variance": 12.970200220099041,
+                "secondMomentAboutStart": 12.970200220099041,
+                "inverseParticipationRatio": 0.011920464740608438,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.999977617206842,
+                "modifiedInvariant": 0.9995866806736327,
+                "centroid": [
+                  1.892644593703199,
+                  -0.049325615617400495
+                ],
+                "variance": 28.537203599926478,
+                "secondMomentAboutStart": 32.12174017435646,
+                "inverseParticipationRatio": 0.015237784910366705,
+                "boundaryStripProbability": 1.8684881830494965e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999687826685034,
+                "modifiedInvariant": 0.9995867608338015,
+                "centroid": [
+                  1.5219269867389786,
+                  -0.14994289887262624
+                ],
+                "variance": 51.94963020165462,
+                "secondMomentAboutStart": 54.28837482754133,
+                "inverseParticipationRatio": 0.00994952991475181,
+                "boundaryStripProbability": 4.390972006964876e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000141596727257,
+                "modifiedInvariant": 0.9995867890416319,
+                "centroid": [
+                  0.756115465741068,
+                  -0.0945174543442027
+                ],
+                "variance": 69.33995643247715,
+                "secondMomentAboutStart": 69.92060057918569,
+                "inverseParticipationRatio": 0.008320050092421557,
+                "boundaryStripProbability": 1.858475672953328e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.5691280697005539e-7,
+            "valid": true
+          }
+        }
+      }
+    },
+    {
+      "seed": 4105,
+      "potential": {
+        "correlated": {
+          "mean": -1.1603162874962436e-10,
+          "rms": 0.4999999997463349,
+          "minimum": -1.7607176303863525,
+          "maximum": 1.8530163764953613,
+          "neighborCorrelation": 0.8051136535851826,
+          "lagFourCorrelation": 0.02707661208383199,
+          "float32LittleEndianSha256": "b04642879c6e3f21f089db9b3f64d97644747e6be2a089b11ee6b282b9c5c093"
+        },
+        "shuffled": {
+          "mean": -1.1603162874962436e-10,
+          "rms": 0.4999999997463349,
+          "minimum": -1.7607176303863525,
+          "maximum": 1.8530163764953613,
+          "neighborCorrelation": -0.0017734440772887163,
+          "lagFourCorrelation": -0.006364955095729856,
+          "float32LittleEndianSha256": "acdf2b86d0ad3ab7bc6415552503c793e9880e397295aa1a0a5ca1d0c2329c08"
+        },
+        "histogramIdentical": true
+      },
+      "trials": {
+        "correlated": {
+          "main": {
+            "label": "4105-correlated",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5853016376495361,
+            "initialPotentialEnergy": -0.3150214718325492,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962552262,
+              "modifiedInvariant": 0.9997541915614556,
+              "centroid": [
+                -5.233339834731797e-13,
+                5.696189816984357e-16
+              ],
+              "variance": 12.970200219856864,
+              "secondMomentAboutStart": 12.970200219856864,
+              "inverseParticipationRatio": 0.011920464740869444,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962552262,
+                "modifiedInvariant": 0.9997541915614556,
+                "centroid": [
+                  -5.233339834731797e-13,
+                  5.696189816984357e-16
+                ],
+                "variance": 12.970200219856864,
+                "secondMomentAboutStart": 12.970200219856864,
+                "inverseParticipationRatio": 0.011920464740869444,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999263941533213,
+                "modifiedInvariant": 0.9997541274905324,
+                "centroid": [
+                  2.6768207476761194,
+                  0.2550255648195915
+                ],
+                "variance": 28.89865481659672,
+                "secondMomentAboutStart": 36.12906217049761,
+                "inverseParticipationRatio": 0.01708911545022067,
+                "boundaryStripProbability": 2.087776779086598e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999146436807729,
+                "modifiedInvariant": 0.9997541889342426,
+                "centroid": [
+                  2.5670922293552216,
+                  1.3372673045787296
+                ],
+                "variance": 54.13714350068393,
+                "secondMomentAboutStart": 62.51538985859515,
+                "inverseParticipationRatio": 0.012851454299099877,
+                "boundaryStripProbability": 1.2087923885585643e-7,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000069464580381,
+                "modifiedInvariant": 0.9997542053386662,
+                "centroid": [
+                  2.0611649557614427,
+                  1.172199592452096
+                ],
+                "variance": 75.14195467750218,
+                "secondMomentAboutStart": 80.7644075369061,
+                "inverseParticipationRatio": 0.0077936223443151485,
+                "boundaryStripProbability": 0.0001320327659916488,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 6.408667629909104e-8,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4105-correlated-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.29265081882476807,
+            "initialPotentialEnergy": -0.3150214718325492,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962404368,
+              "modifiedInvariant": 0.9999385450764744,
+              "centroid": [
+                5.874146071362367e-11,
+                5.873919105789594e-11
+              ],
+              "variance": 12.97020021956943,
+              "secondMomentAboutStart": 12.97020021956943,
+              "inverseParticipationRatio": 0.01192046474115697,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962404368,
+                "modifiedInvariant": 0.9999385450764744,
+                "centroid": [
+                  5.874146071362367e-11,
+                  5.873919105789594e-11
+                ],
+                "variance": 12.97020021956943,
+                "secondMomentAboutStart": 12.97020021956943,
+                "inverseParticipationRatio": 0.01192046474115697,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999815186998183,
+                "modifiedInvariant": 0.9999384838091401,
+                "centroid": [
+                  2.676271354969004,
+                  0.2549536808826155
+                ],
+                "variance": 28.890779517076464,
+                "secondMomentAboutStart": 36.118209261899686,
+                "inverseParticipationRatio": 0.017090610313288578,
+                "boundaryStripProbability": 2.0977286532549807e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999784915661255,
+                "modifiedInvariant": 0.9999384543109292,
+                "centroid": [
+                  2.5670452690779557,
+                  1.3371332623185128
+                ],
+                "variance": 54.11519382128249,
+                "secondMomentAboutStart": 62.49284059597655,
+                "inverseParticipationRatio": 0.012850287651559772,
+                "boundaryStripProbability": 1.1881691392683597e-7,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000016575093686,
+                "modifiedInvariant": 0.9999384838097134,
+                "centroid": [
+                  2.0610248348084865,
+                  1.1717664021029506
+                ],
+                "variance": 75.12154095731046,
+                "secondMomentAboutStart": 80.74240082810509,
+                "inverseParticipationRatio": 0.007795281906831677,
+                "boundaryStripProbability": 0.00013030448137171517,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 9.077112350652783e-8,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4105-correlated-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5853016376495361,
+            "initialPotentialEnergy": -0.3150214718325492,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962552262,
+              "modifiedInvariant": 0.9997541915614556,
+              "centroid": [
+                -5.233339834731797e-13,
+                5.696189816984357e-16
+              ],
+              "variance": 12.970200219856864,
+              "secondMomentAboutStart": 12.970200219856864,
+              "inverseParticipationRatio": 0.011920464740869444,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962552262,
+                "modifiedInvariant": 0.9997541915614556,
+                "centroid": [
+                  -5.233339834731797e-13,
+                  5.696189816984357e-16
+                ],
+                "variance": 12.970200219856864,
+                "secondMomentAboutStart": 12.970200219856864,
+                "inverseParticipationRatio": 0.011920464740869444,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999263941533213,
+                "modifiedInvariant": 0.9997541274905324,
+                "centroid": [
+                  2.6768207476761194,
+                  0.2550255648195915
+                ],
+                "variance": 28.89865481659672,
+                "secondMomentAboutStart": 36.12906217049761,
+                "inverseParticipationRatio": 0.01708911545022067,
+                "boundaryStripProbability": 1.8880637743619573e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999146436818332,
+                "modifiedInvariant": 0.9997541889352495,
+                "centroid": [
+                  2.567092235209109,
+                  1.3372673051184063
+                ],
+                "variance": 54.13714347214995,
+                "secondMomentAboutStart": 62.5153898615595,
+                "inverseParticipationRatio": 0.012851454299072617,
+                "boundaryStripProbability": 6.129497021403171e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000069495807926,
+                "modifiedInvariant": 0.9997542035744867,
+                "centroid": [
+                  2.061362172734487,
+                  1.1722289083554183
+                ],
+                "variance": 75.14146224933216,
+                "secondMomentAboutStart": 80.76479687009694,
+                "inverseParticipationRatio": 0.007793622279311961,
+                "boundaryStripProbability": 3.876663230527915e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 6.408667629909104e-8,
+            "valid": true
+          }
+        },
+        "shuffled": {
+          "main": {
+            "label": "4105-shuffled",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5853016376495361,
+            "initialPotentialEnergy": 0.019970626251745005,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962404562,
+              "modifiedInvariant": 0.9995284254884679,
+              "centroid": [
+                -5.874891987800195e-11,
+                -5.88529845770056e-11
+              ],
+              "variance": 12.970200219571145,
+              "secondMomentAboutStart": 12.970200219571145,
+              "inverseParticipationRatio": 0.011920464741156506,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962404562,
+                "modifiedInvariant": 0.9995284254884679,
+                "centroid": [
+                  -5.874891987800195e-11,
+                  -5.88529845770056e-11
+                ],
+                "variance": 12.970200219571145,
+                "secondMomentAboutStart": 12.970200219571145,
+                "inverseParticipationRatio": 0.011920464741156506,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000641223592546,
+                "modifiedInvariant": 0.999528451095984,
+                "centroid": [
+                  2.3235497179435627,
+                  0.1994451676890003
+                ],
+                "variance": 26.92366229569347,
+                "secondMomentAboutStart": 32.362323962363575,
+                "inverseParticipationRatio": 0.01592942791428095,
+                "boundaryStripProbability": 1.5538251596905723e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000618324358703,
+                "modifiedInvariant": 0.9995284877823741,
+                "centroid": [
+                  2.2447357505265786,
+                  -0.23976649728094407
+                ],
+                "variance": 53.10328055769839,
+                "secondMomentAboutStart": 58.19960712060888,
+                "inverseParticipationRatio": 0.010333539237313848,
+                "boundaryStripProbability": 3.4773324141894047e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000314585852232,
+                "modifiedInvariant": 0.9995284404924871,
+                "centroid": [
+                  1.7067727861829802,
+                  -0.700132189991401
+                ],
+                "variance": 74.2737975333744,
+                "secondMomentAboutStart": 77.67705596049137,
+                "inverseParticipationRatio": 0.008747180937836236,
+                "boundaryStripProbability": 0.00009742102130387731,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 6.232329630151412e-8,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4105-shuffled-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.29265081882476807,
+            "initialPotentialEnergy": 0.019970626251745005,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962367915,
+              "modifiedInvariant": 0.9998821036492225,
+              "centroid": [
+                7.696909843957824e-11,
+                -4.050719408935095e-11
+              ],
+              "variance": 12.970200219434453,
+              "secondMomentAboutStart": 12.970200219434453,
+              "inverseParticipationRatio": 0.011920464741240245,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962367915,
+                "modifiedInvariant": 0.9998821036492225,
+                "centroid": [
+                  7.696909843957824e-11,
+                  -4.050719408935095e-11
+                ],
+                "variance": 12.970200219434453,
+                "secondMomentAboutStart": 12.970200219434453,
+                "inverseParticipationRatio": 0.011920464741240245,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000165869115296,
+                "modifiedInvariant": 0.9998820535426797,
+                "centroid": [
+                  2.323682691463666,
+                  0.1990080729239148
+                ],
+                "variance": 26.907064645620668,
+                "secondMomentAboutStart": 32.346170109317384,
+                "inverseParticipationRatio": 0.015912627037551086,
+                "boundaryStripProbability": 1.5486846656179917e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000176054070695,
+                "modifiedInvariant": 0.9998820605079071,
+                "centroid": [
+                  2.245016346176267,
+                  -0.23927392680466236
+                ],
+                "variance": 53.07165248124799,
+                "secondMomentAboutStart": 58.16900288789515,
+                "inverseParticipationRatio": 0.010339448790434446,
+                "boundaryStripProbability": 3.3675421481364126e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000080723048388,
+                "modifiedInvariant": 0.9998820501144683,
+                "centroid": [
+                  1.7072040525764969,
+                  -0.6998212119527557
+                ],
+                "variance": 74.22462243020608,
+                "secondMomentAboutStart": 77.62891783603872,
+                "inverseParticipationRatio": 0.008768118183370177,
+                "boundaryStripProbability": 0.0000960945222532682,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 5.354106646926482e-8,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4105-shuffled-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5853016376495361,
+            "initialPotentialEnergy": 0.019970626251745005,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962404562,
+              "modifiedInvariant": 0.9995284254884679,
+              "centroid": [
+                -5.874891987800195e-11,
+                -5.88529845770056e-11
+              ],
+              "variance": 12.970200219571145,
+              "secondMomentAboutStart": 12.970200219571145,
+              "inverseParticipationRatio": 0.011920464741156506,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962404562,
+                "modifiedInvariant": 0.9995284254884679,
+                "centroid": [
+                  -5.874891987800195e-11,
+                  -5.88529845770056e-11
+                ],
+                "variance": 12.970200219571145,
+                "secondMomentAboutStart": 12.970200219571145,
+                "inverseParticipationRatio": 0.011920464741156506,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000641223592546,
+                "modifiedInvariant": 0.999528451095984,
+                "centroid": [
+                  2.3235497179435627,
+                  0.1994451676890003
+                ],
+                "variance": 26.92366229569347,
+                "secondMomentAboutStart": 32.362323962363575,
+                "inverseParticipationRatio": 0.01592942791428095,
+                "boundaryStripProbability": 1.7440314535178998e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000618324371258,
+                "modifiedInvariant": 0.9995284877835555,
+                "centroid": [
+                  2.2447357530970473,
+                  -0.23976649690345864
+                ],
+                "variance": 53.10328054760113,
+                "secondMomentAboutStart": 58.19960712187065,
+                "inverseParticipationRatio": 0.010333539237287699,
+                "boundaryStripProbability": 4.242125101188958e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000314513126742,
+                "modifiedInvariant": 0.9995284330858445,
+                "centroid": [
+                  1.706833105516071,
+                  -0.700122305652722
+                ],
+                "variance": 74.27371638721372,
+                "secondMomentAboutStart": 77.67716688017184,
+                "inverseParticipationRatio": 0.008747180878239561,
+                "boundaryStripProbability": 2.2381137350066526e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 6.232447824494614e-8,
+            "valid": true
+          }
+        }
+      }
+    },
+    {
+      "seed": 4106,
+      "potential": {
+        "correlated": {
+          "mean": -2.986126901305397e-10,
+          "rms": 0.49999999996691263,
+          "minimum": -1.7399321794509888,
+          "maximum": 1.7571274042129517,
+          "neighborCorrelation": 0.7967379943396686,
+          "lagFourCorrelation": -0.04472727598233574,
+          "float32LittleEndianSha256": "6110c10ee5c6eb4f648a48ed002279104424f4db78e63f4e8364fb85c825a9bc"
+        },
+        "shuffled": {
+          "mean": -2.986126901305397e-10,
+          "rms": 0.4999999999669127,
+          "minimum": -1.7399321794509888,
+          "maximum": 1.7571274042129517,
+          "neighborCorrelation": -0.0042623152098050475,
+          "lagFourCorrelation": -0.004629976061157317,
+          "float32LittleEndianSha256": "bfe87ea79fa8a405bcf2fca3750c01733d506f883e62ff2ff576dc714c8077ea"
+        },
+        "histogramIdentical": true
+      },
+      "trials": {
+        "correlated": {
+          "main": {
+            "label": "4106-correlated",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5757127404212952,
+            "initialPotentialEnergy": 0.10282115938568076,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962339495,
+              "modifiedInvariant": 0.9994693820465984,
+              "centroid": [
+                -7.717528640528487e-11,
+                -3.455575857929241e-11
+              ],
+              "variance": 12.970200219475553,
+              "secondMomentAboutStart": 12.970200219475553,
+              "inverseParticipationRatio": 0.0119204647412736,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962339495,
+                "modifiedInvariant": 0.9994693820465984,
+                "centroid": [
+                  -7.717528640528487e-11,
+                  -3.455575857929241e-11
+                ],
+                "variance": 12.970200219475553,
+                "secondMomentAboutStart": 12.970200219475553,
+                "inverseParticipationRatio": 0.0119204647412736,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000084590516944,
+                "modifiedInvariant": 0.9994693647109083,
+                "centroid": [
+                  1.3194799628192186,
+                  -1.1350443109504866
+                ],
+                "variance": 46.31104422843409,
+                "secondMomentAboutStart": 49.34039718853656,
+                "inverseParticipationRatio": 0.013884706641628285,
+                "boundaryStripProbability": 1.2672803755453945e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000180743946085,
+                "modifiedInvariant": 0.9994694266082571,
+                "centroid": [
+                  0.5357762805268562,
+                  -1.0166910611615458
+                ],
+                "variance": 109.79943925217844,
+                "secondMomentAboutStart": 111.12015618879943,
+                "inverseParticipationRatio": 0.007407408869032515,
+                "boundaryStripProbability": 5.4891988403293e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.000035717318483,
+                "modifiedInvariant": 0.9994694018283214,
+                "centroid": [
+                  -0.6126338295308943,
+                  -1.0507895129310159
+                ],
+                "variance": 168.93948567108626,
+                "secondMomentAboutStart": 170.41896448065773,
+                "inverseParticipationRatio": 0.004685727372253503,
+                "boundaryStripProbability": 0.0004738061013061264,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 4.458531654982778e-8,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4106-correlated-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.2878563702106476,
+            "initialPotentialEnergy": 0.10282115938568076,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962514768,
+              "modifiedInvariant": 0.9998673426936107,
+              "centroid": [
+                1.8224934175002726e-11,
+                -1.8230419820905505e-11
+              ],
+              "variance": 12.970200219713965,
+              "secondMomentAboutStart": 12.970200219713965,
+              "inverseParticipationRatio": 0.011920464740955202,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962514768,
+                "modifiedInvariant": 0.9998673426936107,
+                "centroid": [
+                  1.8224934175002726e-11,
+                  -1.8230419820905505e-11
+                ],
+                "variance": 12.970200219713965,
+                "secondMomentAboutStart": 12.970200219713965,
+                "inverseParticipationRatio": 0.011920464740955202,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000017417496534,
+                "modifiedInvariant": 0.999867317534804,
+                "centroid": [
+                  1.3192318441888977,
+                  -1.1344637530639405
+                ],
+                "variance": 46.274252307237866,
+                "secondMomentAboutStart": 49.301632972975824,
+                "inverseParticipationRatio": 0.013901482610579668,
+                "boundaryStripProbability": 1.255440426643824e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000043100859204,
+                "modifiedInvariant": 0.9998672620706867,
+                "centroid": [
+                  0.5370569186733154,
+                  -1.0164643856241669
+                ],
+                "variance": 109.70739341583474,
+                "secondMomentAboutStart": 111.02902339697194,
+                "inverseParticipationRatio": 0.007411333436616895,
+                "boundaryStripProbability": 5.336511904746606e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000088503403803,
+                "modifiedInvariant": 0.9998673120329161,
+                "centroid": [
+                  -0.610321334590696,
+                  -1.0507553233212423
+                ],
+                "variance": 168.79891842863114,
+                "secondMomentAboutStart": 170.27549730957563,
+                "inverseParticipationRatio": 0.004687954185565059,
+                "boundaryStripProbability": 0.00046106466586390857,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 8.063362066934587e-8,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4106-correlated-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5757127404212952,
+            "initialPotentialEnergy": 0.10282115938568076,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962339495,
+              "modifiedInvariant": 0.9994693820465984,
+              "centroid": [
+                -7.717528640528487e-11,
+                -3.455575857929241e-11
+              ],
+              "variance": 12.970200219475553,
+              "secondMomentAboutStart": 12.970200219475553,
+              "inverseParticipationRatio": 0.0119204647412736,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962339495,
+                "modifiedInvariant": 0.9994693820465984,
+                "centroid": [
+                  -7.717528640528487e-11,
+                  -3.455575857929241e-11
+                ],
+                "variance": 12.970200219475553,
+                "secondMomentAboutStart": 12.970200219475553,
+                "inverseParticipationRatio": 0.0119204647412736,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000084590516944,
+                "modifiedInvariant": 0.9994693647109083,
+                "centroid": [
+                  1.3194799628192186,
+                  -1.1350443109504866
+                ],
+                "variance": 46.31104422843409,
+                "secondMomentAboutStart": 49.34039718853656,
+                "inverseParticipationRatio": 0.013884706641628285,
+                "boundaryStripProbability": 1.7907038467197452e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000180744007359,
+                "modifiedInvariant": 0.9994694266142573,
+                "centroid": [
+                  0.5357762817418747,
+                  -1.0166910606657489
+                ],
+                "variance": 109.7994392551216,
+                "secondMomentAboutStart": 111.12015619203639,
+                "inverseParticipationRatio": 0.007407408868941924,
+                "boundaryStripProbability": 4.312929064772719e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000357136183606,
+                "modifiedInvariant": 0.9994694005581658,
+                "centroid": [
+                  -0.6124617760447155,
+                  -1.0507254081734914
+                ],
+                "variance": 168.9400841194737,
+                "secondMomentAboutStart": 170.41921742997093,
+                "inverseParticipationRatio": 0.004685727428308634,
+                "boundaryStripProbability": 1.744441151155054e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 4.4591319747766534e-8,
+            "valid": true
+          }
+        },
+        "shuffled": {
+          "main": {
+            "label": "4106-shuffled",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5757127404212952,
+            "initialPotentialEnergy": 0.027119899655543223,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.999999996189091,
+              "modifiedInvariant": 0.9995095967768063,
+              "centroid": [
+                1.352222532621491e-10,
+                5.508778484006591e-11
+              ],
+              "variance": 12.970200219485765,
+              "secondMomentAboutStart": 12.970200219485765,
+              "inverseParticipationRatio": 0.01192046474159346,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.999999996189091,
+                "modifiedInvariant": 0.9995095967768063,
+                "centroid": [
+                  1.352222532621491e-10,
+                  5.508778484006591e-11
+                ],
+                "variance": 12.970200219485765,
+                "secondMomentAboutStart": 12.970200219485765,
+                "inverseParticipationRatio": 0.01192046474159346,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000325418405283,
+                "modifiedInvariant": 0.9995096187771245,
+                "centroid": [
+                  1.6909346605372384,
+                  -0.04395663285081127
+                ],
+                "variance": 31.337700175470328,
+                "secondMomentAboutStart": 34.198892387248094,
+                "inverseParticipationRatio": 0.015680678481389827,
+                "boundaryStripProbability": 1.6207852970081798e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.000060321250626,
+                "modifiedInvariant": 0.9995095797498045,
+                "centroid": [
+                  1.852698287794435,
+                  0.32656867454078126
+                ],
+                "variance": 59.44432200261507,
+                "secondMomentAboutStart": 62.983460047402815,
+                "inverseParticipationRatio": 0.009099198330876997,
+                "boundaryStripProbability": 4.072935682000822e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000075670380906,
+                "modifiedInvariant": 0.9995095362613454,
+                "centroid": [
+                  1.8170843435136537,
+                  0.7456365324297548
+                ],
+                "variance": 91.0159373183422,
+                "secondMomentAboutStart": 94.87370666827852,
+                "inverseParticipationRatio": 0.005888568131470595,
+                "boundaryStripProbability": 0.00010434617007020138,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 6.054515244713343e-8,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4106-shuffled-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.2878563702106476,
+            "initialPotentialEnergy": 0.027119899655543223,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962440831,
+              "modifiedInvariant": 0.9998773963263614,
+              "centroid": [
+                7.696513434631329e-11,
+                7.696735149801038e-11
+              ],
+              "variance": 12.970200219704479,
+              "secondMomentAboutStart": 12.970200219704479,
+              "inverseParticipationRatio": 0.011920464741073672,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962440831,
+                "modifiedInvariant": 0.9998773963263614,
+                "centroid": [
+                  7.696513434631329e-11,
+                  7.696735149801038e-11
+                ],
+                "variance": 12.970200219704479,
+                "secondMomentAboutStart": 12.970200219704479,
+                "inverseParticipationRatio": 0.011920464741073672,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.000009827743712,
+                "modifiedInvariant": 0.9998774966016232,
+                "centroid": [
+                  1.690704129339263,
+                  -0.04365560455324359
+                ],
+                "variance": 31.319766733373193,
+                "secondMomentAboutStart": 34.18015299814694,
+                "inverseParticipationRatio": 0.015710746050923444,
+                "boundaryStripProbability": 1.6197131759855228e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000113115569627,
+                "modifiedInvariant": 0.9998776310380492,
+                "centroid": [
+                  1.8529649831292572,
+                  0.32643854366156005
+                ],
+                "variance": 59.41438597513025,
+                "secondMomentAboutStart": 62.954427326621335,
+                "inverseParticipationRatio": 0.00909226353809497,
+                "boundaryStripProbability": 3.97964622403552e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 0.999996415440601,
+                "modifiedInvariant": 0.9998776504538205,
+                "centroid": [
+                  1.816950662154154,
+                  0.7448141634813378
+                ],
+                "variance": 90.96690413072746,
+                "secondMomentAboutStart": 94.82296197755228,
+                "inverseParticipationRatio": 0.005904640614360162,
+                "boundaryStripProbability": 0.00010267272576449769,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 2.541586199278356e-7,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4106-shuffled-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5757127404212952,
+            "initialPotentialEnergy": 0.027119899655543223,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.999999996189091,
+              "modifiedInvariant": 0.9995095967768063,
+              "centroid": [
+                1.352222532621491e-10,
+                5.508778484006591e-11
+              ],
+              "variance": 12.970200219485765,
+              "secondMomentAboutStart": 12.970200219485765,
+              "inverseParticipationRatio": 0.01192046474159346,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.999999996189091,
+                "modifiedInvariant": 0.9995095967768063,
+                "centroid": [
+                  1.352222532621491e-10,
+                  5.508778484006591e-11
+                ],
+                "variance": 12.970200219485765,
+                "secondMomentAboutStart": 12.970200219485765,
+                "inverseParticipationRatio": 0.01192046474159346,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000325418405283,
+                "modifiedInvariant": 0.9995096187771245,
+                "centroid": [
+                  1.6909346605372384,
+                  -0.04395663285081127
+                ],
+                "variance": 31.337700175470328,
+                "secondMomentAboutStart": 34.198892387248094,
+                "inverseParticipationRatio": 0.015680678481389827,
+                "boundaryStripProbability": 1.80351208592098e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000603212510477,
+                "modifiedInvariant": 0.99950957975023,
+                "centroid": [
+                  1.852698289773821,
+                  0.3265686750427348
+                ],
+                "variance": 59.44432199652181,
+                "secondMomentAboutStart": 62.983460048971814,
+                "inverseParticipationRatio": 0.009099198330869302,
+                "boundaryStripProbability": 4.549067472717375e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.000007571402381,
+                "modifiedInvariant": 0.9995095427476625,
+                "centroid": [
+                  1.817118194223576,
+                  0.7457349957125603
+                ],
+                "variance": 91.01582064590212,
+                "secondMomentAboutStart": 94.8738598615109,
+                "inverseParticipationRatio": 0.0058885681021994575,
+                "boundaryStripProbability": 2.2798945622991765e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 5.4055652842777135e-8,
+            "valid": true
+          }
+        }
+      }
+    },
+    {
+      "seed": 4107,
+      "potential": {
+        "correlated": {
+          "mean": -2.937250442869299e-10,
+          "rms": 0.5000000000208017,
+          "minimum": -1.7145494222640991,
+          "maximum": 1.7710200548171997,
+          "neighborCorrelation": 0.7943463774873071,
+          "lagFourCorrelation": -0.002993270905634768,
+          "float32LittleEndianSha256": "030ff7a6f96232c1726be5b9e74a8815284ddf548291c37c9f80d565efcb86ec"
+        },
+        "shuffled": {
+          "mean": -2.937250442869299e-10,
+          "rms": 0.500000000020801,
+          "minimum": -1.7145494222640991,
+          "maximum": 1.7710200548171997,
+          "neighborCorrelation": -0.011145170583211055,
+          "lagFourCorrelation": -0.008569740062004592,
+          "float32LittleEndianSha256": "c060a11c66f8ddede115278c01d031d7d7c974e2a0901f59e740016413d63024"
+        },
+        "histogramIdentical": true
+      },
+      "trials": {
+        "correlated": {
+          "main": {
+            "label": "4107-correlated",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.57710200548172,
+            "initialPotentialEnergy": -0.10627373631968663,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999961849395,
+              "modifiedInvariant": 0.9996810875959377,
+              "centroid": [
+                1.6687652982450112e-10,
+                -1.2880814441860334e-10
+              ],
+              "variance": 12.970200219225836,
+              "secondMomentAboutStart": 12.970200219225836,
+              "inverseParticipationRatio": 0.011920464741760124,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999961849395,
+                "modifiedInvariant": 0.9996810875959377,
+                "centroid": [
+                  1.6687652982450112e-10,
+                  -1.2880814441860334e-10
+                ],
+                "variance": 12.970200219225836,
+                "secondMomentAboutStart": 12.970200219225836,
+                "inverseParticipationRatio": 0.011920464741760124,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000803143553645,
+                "modifiedInvariant": 0.9996811437468578,
+                "centroid": [
+                  3.2119929993723573,
+                  0.8245561277210001
+                ],
+                "variance": 25.17866166279604,
+                "secondMomentAboutStart": 36.17545349857532,
+                "inverseParticipationRatio": 0.022094623917001188,
+                "boundaryStripProbability": 2.535457216319126e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000198813141432,
+                "modifiedInvariant": 0.999681121752937,
+                "centroid": [
+                  3.6874260445820863,
+                  2.0892533066116012
+                ],
+                "variance": 60.517716883917565,
+                "secondMomentAboutStart": 78.47980709736737,
+                "inverseParticipationRatio": 0.00876603788033366,
+                "boundaryStripProbability": 2.0989505477007622e-7,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000137125216255,
+                "modifiedInvariant": 0.9996811272848384,
+                "centroid": [
+                  4.108462630048932,
+                  2.7106158144971957
+                ],
+                "variance": 108.52425378845528,
+                "secondMomentAboutStart": 132.75115706476618,
+                "inverseParticipationRatio": 0.005691894735829204,
+                "boundaryStripProbability": 0.00016785719880644412,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 5.6168833140191055e-8,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4107-correlated-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.28855100274086,
+            "initialPotentialEnergy": -0.10627373631968663,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.999999996240436,
+              "modifiedInvariant": 0.9999202691036618,
+              "centroid": [
+                5.873221857768595e-11,
+                5.87375165539057e-11
+              ],
+              "variance": 12.970200219569373,
+              "secondMomentAboutStart": 12.970200219569373,
+              "inverseParticipationRatio": 0.011920464741156989,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.999999996240436,
+                "modifiedInvariant": 0.9999202691036618,
+                "centroid": [
+                  5.873221857768595e-11,
+                  5.87375165539057e-11
+                ],
+                "variance": 12.970200219569373,
+                "secondMomentAboutStart": 12.970200219569373,
+                "inverseParticipationRatio": 0.011920464741156989,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000200213054824,
+                "modifiedInvariant": 0.9999203380725862,
+                "centroid": [
+                  3.2115401488790507,
+                  0.8249805447826122
+                ],
+                "variance": 25.171864580395106,
+                "secondMomentAboutStart": 36.166447607527,
+                "inverseParticipationRatio": 0.0221068239042515,
+                "boundaryStripProbability": 2.4667811343017295e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000048305873532,
+                "modifiedInvariant": 0.9999203623500452,
+                "centroid": [
+                  3.6871565637669357,
+                  2.089047481168616
+                ],
+                "variance": 60.48169633329584,
+                "secondMomentAboutStart": 78.44093923760236,
+                "inverseParticipationRatio": 0.008765806122598259,
+                "boundaryStripProbability": 2.0273802745498226e-7,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000034931527262,
+                "modifiedInvariant": 0.9999203491309503,
+                "centroid": [
+                  4.10835966205595,
+                  2.7110331702588635
+                ],
+                "variance": 108.45936511433798,
+                "secondMomentAboutStart": 132.68768507739028,
+                "inverseParticipationRatio": 0.005697194684883996,
+                "boundaryStripProbability": 0.00016505805837346694,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 9.325381866709392e-8,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4107-correlated-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.57710200548172,
+            "initialPotentialEnergy": -0.10627373631968663,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999961849395,
+              "modifiedInvariant": 0.9996810875959377,
+              "centroid": [
+                1.6687652982450112e-10,
+                -1.2880814441860334e-10
+              ],
+              "variance": 12.970200219225836,
+              "secondMomentAboutStart": 12.970200219225836,
+              "inverseParticipationRatio": 0.011920464741760124,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999961849395,
+                "modifiedInvariant": 0.9996810875959377,
+                "centroid": [
+                  1.6687652982450112e-10,
+                  -1.2880814441860334e-10
+                ],
+                "variance": 12.970200219225836,
+                "secondMomentAboutStart": 12.970200219225836,
+                "inverseParticipationRatio": 0.011920464741760124,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000803143553645,
+                "modifiedInvariant": 0.9996811437468578,
+                "centroid": [
+                  3.2119929993723573,
+                  0.8245561277210001
+                ],
+                "variance": 25.17866166279604,
+                "secondMomentAboutStart": 36.17545349857532,
+                "inverseParticipationRatio": 0.022094623917001188,
+                "boundaryStripProbability": 2.1036784791818781e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000198813162398,
+                "modifiedInvariant": 0.9996811217549092,
+                "centroid": [
+                  3.687426054582956,
+                  2.0892533070820685
+                ],
+                "variance": 60.517716812616996,
+                "secondMomentAboutStart": 78.47980710178759,
+                "inverseParticipationRatio": 0.008766037880296928,
+                "boundaryStripProbability": 7.85159692617446e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000137248533565,
+                "modifiedInvariant": 0.9996811430638957,
+                "centroid": [
+                  4.109105313500776,
+                  2.7106165838410594
+                ],
+                "variance": 108.5198494085706,
+                "secondMomentAboutStart": 132.75203815060507,
+                "inverseParticipationRatio": 0.005691894758012107,
+                "boundaryStripProbability": 5.736893670342549e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 5.6168833140191055e-8,
+            "valid": true
+          }
+        },
+        "shuffled": {
+          "main": {
+            "label": "4107-shuffled",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.57710200548172,
+            "initialPotentialEnergy": 0.03337422973242717,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999963414906,
+              "modifiedInvariant": 0.9995841753788534,
+              "centroid": [
+                -3.2680583360019005e-10,
+                1.191661462653836e-10
+              ],
+              "variance": 12.970200220727778,
+              "secondMomentAboutStart": 12.970200220727778,
+              "inverseParticipationRatio": 0.011920464739734828,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999963414906,
+                "modifiedInvariant": 0.9995841753788534,
+                "centroid": [
+                  -3.2680583360019005e-10,
+                  1.191661462653836e-10
+                ],
+                "variance": 12.970200220727778,
+                "secondMomentAboutStart": 12.970200220727778,
+                "inverseParticipationRatio": 0.011920464739734828,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999514005399888,
+                "modifiedInvariant": 0.9995841551453714,
+                "centroid": [
+                  2.8093509052202195,
+                  0.33649889808541467
+                ],
+                "variance": 23.69869212337442,
+                "secondMomentAboutStart": 31.704376140448787,
+                "inverseParticipationRatio": 0.028547952393075553,
+                "boundaryStripProbability": 1.638892658398648e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999376643782382,
+                "modifiedInvariant": 0.9995841047793709,
+                "centroid": [
+                  3.1248573377101074,
+                  1.248957343083616
+                ],
+                "variance": 53.3071101081255,
+                "secondMomentAboutStart": 64.63173793400868,
+                "inverseParticipationRatio": 0.012512903042770173,
+                "boundaryStripProbability": 4.514504646115662e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 0.9999552777385567,
+                "modifiedInvariant": 0.9995840721105932,
+                "centroid": [
+                  2.5756525014224465,
+                  1.880509409787363
+                ],
+                "variance": 94.56405036335201,
+                "secondMomentAboutStart": 104.73435181173453,
+                "inverseParticipationRatio": 0.005132095854775372,
+                "boundaryStripProbability": 0.00003109713593797697,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.0331121946816069e-7,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4107-shuffled-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.28855100274086,
+            "initialPotentialEnergy": 0.03337422973242717,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962835417,
+              "modifiedInvariant": 0.9998960410480413,
+              "centroid": [
+                -5.967396362330762e-16,
+                -9.16375548708083e-17
+              ],
+              "variance": 12.970200220446575,
+              "secondMomentAboutStart": 12.970200220446575,
+              "inverseParticipationRatio": 0.01192046474030191,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962835417,
+                "modifiedInvariant": 0.9998960410480413,
+                "centroid": [
+                  -5.967396362330762e-16,
+                  -9.16375548708083e-17
+                ],
+                "variance": 12.970200220446575,
+                "secondMomentAboutStart": 12.970200220446575,
+                "inverseParticipationRatio": 0.01192046474030191,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999873344277037,
+                "modifiedInvariant": 0.9998959504862376,
+                "centroid": [
+                  2.809385294647585,
+                  0.3366399994851823
+                ],
+                "variance": 23.68606986035423,
+                "secondMomentAboutStart": 31.692042083389712,
+                "inverseParticipationRatio": 0.028551839174898022,
+                "boundaryStripProbability": 1.6357056408375873e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999832549185778,
+                "modifiedInvariant": 0.9998961216654538,
+                "centroid": [
+                  3.1251935025365087,
+                  1.2488263163105804
+                ],
+                "variance": 53.280864211657196,
+                "secondMomentAboutStart": 64.60726580826346,
+                "inverseParticipationRatio": 0.012538140676667543,
+                "boundaryStripProbability": 4.4139482342176605e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 0.9999881631711616,
+                "modifiedInvariant": 0.9998961497172765,
+                "centroid": [
+                  2.5762644040602356,
+                  1.8806036492795473
+                ],
+                "variance": 94.51615617359847,
+                "secondMomentAboutStart": 104.68996453890986,
+                "inverseParticipationRatio": 0.005130580268512915,
+                "boundaryStripProbability": 0.0000303724792388596,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.0868053346158035e-7,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4107-shuffled-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.57710200548172,
+            "initialPotentialEnergy": 0.03337422973242717,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999963414906,
+              "modifiedInvariant": 0.9995841753788534,
+              "centroid": [
+                -3.2680583360019005e-10,
+                1.191661462653836e-10
+              ],
+              "variance": 12.970200220727778,
+              "secondMomentAboutStart": 12.970200220727778,
+              "inverseParticipationRatio": 0.011920464739734828,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999963414906,
+                "modifiedInvariant": 0.9995841753788534,
+                "centroid": [
+                  -3.2680583360019005e-10,
+                  1.191661462653836e-10
+                ],
+                "variance": 12.970200220727778,
+                "secondMomentAboutStart": 12.970200220727778,
+                "inverseParticipationRatio": 0.011920464739734828,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999514005399888,
+                "modifiedInvariant": 0.9995841551453714,
+                "centroid": [
+                  2.8093509052202195,
+                  0.33649889808541467
+                ],
+                "variance": 23.69869212337442,
+                "secondMomentAboutStart": 31.704376140448787,
+                "inverseParticipationRatio": 0.028547952393075553,
+                "boundaryStripProbability": 1.797546660111965e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999376643857206,
+                "modifiedInvariant": 0.9995841047867542,
+                "centroid": [
+                  3.124857340321956,
+                  1.2489573431603938
+                ],
+                "variance": 53.307110096064726,
+                "secondMomentAboutStart": 64.631737938463,
+                "inverseParticipationRatio": 0.012512903042583113,
+                "boundaryStripProbability": 5.130770137400099e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 0.9999552682393555,
+                "modifiedInvariant": 0.9995840627977821,
+                "centroid": [
+                  2.5756807539175233,
+                  1.880511020710245
+                ],
+                "variance": 94.56397982335206,
+                "secondMomentAboutStart": 104.73443286846589,
+                "inverseParticipationRatio": 0.005132095887135042,
+                "boundaryStripProbability": 3.0194254555212542e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.126279046692602e-7,
+            "valid": true
+          }
+        }
+      }
+    },
+    {
+      "seed": 4108,
+      "potential": {
+        "correlated": {
+          "mean": 1.5702994460298214e-11,
+          "rms": 0.49999999993489513,
+          "minimum": -1.9968169927597046,
+          "maximum": 1.57969331741333,
+          "neighborCorrelation": 0.7904777771154265,
+          "lagFourCorrelation": -0.010982969398173299,
+          "float32LittleEndianSha256": "fd45bb1fc38f53f057fb3e1161a7c0cb35fe978d6f8498c18797646d14254766"
+        },
+        "shuffled": {
+          "mean": 1.5702994460298214e-11,
+          "rms": 0.49999999993489597,
+          "minimum": -1.9968169927597046,
+          "maximum": 1.57969331741333,
+          "neighborCorrelation": 0.00952629849222102,
+          "lagFourCorrelation": -0.021808052982695506,
+          "float32LittleEndianSha256": "e34b398caffd1cf870cd92fb2b24aa69536a9f3e131edf9fa090d9b07dfc019f"
+        },
+        "histogramIdentical": true
+      },
+      "trials": {
+        "correlated": {
+          "main": {
+            "label": "4108-correlated",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5996816992759705,
+            "initialPotentialEnergy": -0.08975789965642779,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962913101,
+              "modifiedInvariant": 0.999702671437179,
+              "centroid": [
+                1.2977055452047073e-10,
+                -2.0346257552844883e-11
+              ],
+              "variance": 12.970200220697333,
+              "secondMomentAboutStart": 12.970200220697333,
+              "inverseParticipationRatio": 0.01192046474013527,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962913101,
+                "modifiedInvariant": 0.999702671437179,
+                "centroid": [
+                  1.2977055452047073e-10,
+                  -2.0346257552844883e-11
+                ],
+                "variance": 12.970200220697333,
+                "secondMomentAboutStart": 12.970200220697333,
+                "inverseParticipationRatio": 0.01192046474013527,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000574565524842,
+                "modifiedInvariant": 0.9997026337243999,
+                "centroid": [
+                  2.921706497609531,
+                  0.5778967535315133
+                ],
+                "variance": 45.105156414765105,
+                "secondMomentAboutStart": 53.97548993068112,
+                "inverseParticipationRatio": 0.01443360029641137,
+                "boundaryStripProbability": 1.9060236614841732e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999984816045677,
+                "modifiedInvariant": 0.9997026290913119,
+                "centroid": [
+                  2.057982630099081,
+                  1.531491110746602
+                ],
+                "variance": 77.27523213307488,
+                "secondMomentAboutStart": 83.85598966116027,
+                "inverseParticipationRatio": 0.006948050494038272,
+                "boundaryStripProbability": 1.8039250867676679e-7,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000510592411704,
+                "modifiedInvariant": 0.9997026099876979,
+                "centroid": [
+                  2.4926116874147093,
+                  1.551218989753084
+                ],
+                "variance": 111.61005753179688,
+                "secondMomentAboutStart": 120.22945091020387,
+                "inverseParticipationRatio": 0.006298664804232795,
+                "boundaryStripProbability": 0.0009868867131115463,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 6.146775721749265e-8,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4108-correlated-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.29984084963798524,
+            "initialPotentialEnergy": -0.08975789965642779,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962840165,
+              "modifiedInvariant": 0.9999256650834188,
+              "centroid": [
+                1.2978827002550047e-10,
+                1.610666800296323e-11
+              ],
+              "variance": 12.970200220427191,
+              "secondMomentAboutStart": 12.970200220427191,
+              "inverseParticipationRatio": 0.011920464740301891,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962840165,
+                "modifiedInvariant": 0.9999256650834188,
+                "centroid": [
+                  1.2978827002550047e-10,
+                  1.610666800296323e-11
+                ],
+                "variance": 12.970200220427191,
+                "secondMomentAboutStart": 12.970200220427191,
+                "inverseParticipationRatio": 0.011920464740301891,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000142390507287,
+                "modifiedInvariant": 0.9999256642463317,
+                "centroid": [
+                  2.9215247795670862,
+                  0.5775764464447473
+                ],
+                "variance": 45.08826776731196,
+                "secondMomentAboutStart": 53.95716935642422,
+                "inverseParticipationRatio": 0.01444373499938228,
+                "boundaryStripProbability": 1.9086813832739124e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999995504365976,
+                "modifiedInvariant": 0.9999256251977678,
+                "centroid": [
+                  2.0576752046149815,
+                  1.531047092042811
+                ],
+                "variance": 77.23452396087954,
+                "secondMomentAboutStart": 83.8126564066196,
+                "inverseParticipationRatio": 0.006948026751942477,
+                "boundaryStripProbability": 1.7696561715328256e-7,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000126981084085,
+                "modifiedInvariant": 0.9999256299797749,
+                "centroid": [
+                  2.492354691483224,
+                  1.5515479842175697
+                ],
+                "variance": 111.54615770776084,
+                "secondMomentAboutStart": 120.16529076324889,
+                "inverseParticipationRatio": 0.006299657892441404,
+                "boundaryStripProbability": 0.0009742279427922024,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 3.988861607684413e-8,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4108-correlated-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5996816992759705,
+            "initialPotentialEnergy": -0.08975789965642779,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962913101,
+              "modifiedInvariant": 0.999702671437179,
+              "centroid": [
+                1.2977055452047073e-10,
+                -2.0346257552844883e-11
+              ],
+              "variance": 12.970200220697333,
+              "secondMomentAboutStart": 12.970200220697333,
+              "inverseParticipationRatio": 0.01192046474013527,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962913101,
+                "modifiedInvariant": 0.999702671437179,
+                "centroid": [
+                  1.2977055452047073e-10,
+                  -2.0346257552844883e-11
+                ],
+                "variance": 12.970200220697333,
+                "secondMomentAboutStart": 12.970200220697333,
+                "inverseParticipationRatio": 0.01192046474013527,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 1.0000574565524842,
+                "modifiedInvariant": 0.9997026337243999,
+                "centroid": [
+                  2.921706497609531,
+                  0.5778967535315133
+                ],
+                "variance": 45.105156414765105,
+                "secondMomentAboutStart": 53.97548993068112,
+                "inverseParticipationRatio": 0.01443360029641137,
+                "boundaryStripProbability": 1.8578807121263377e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 0.9999984816054824,
+                "modifiedInvariant": 0.9997026290922333,
+                "centroid": [
+                  2.057982636243879,
+                  1.531491111964422
+                ],
+                "variance": 77.27523210618307,
+                "secondMomentAboutStart": 83.85598966329039,
+                "inverseParticipationRatio": 0.006948050494025137,
+                "boundaryStripProbability": 5.328819380980813e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000510535794784,
+                "modifiedInvariant": 0.9997026022834182,
+                "centroid": [
+                  2.4941892146197615,
+                  1.551260650281127
+                ],
+                "variance": 111.60319718052878,
+                "secondMomentAboutStart": 120.23058662396495,
+                "inverseParticipationRatio": 0.006298664720488646,
+                "boundaryStripProbability": 3.59337615558101e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 6.917432826547554e-8,
+            "valid": true
+          }
+        },
+        "shuffled": {
+          "main": {
+            "label": "4108-shuffled",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5996816992759705,
+            "initialPotentialEnergy": 0.01893946108487188,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962913446,
+              "modifiedInvariant": 0.9996347122003247,
+              "centroid": [
+                -3.1521127382167825e-10,
+                -2.021655164355079e-10
+              ],
+              "variance": 12.970200220068731,
+              "secondMomentAboutStart": 12.970200220068731,
+              "inverseParticipationRatio": 0.011920464740612433,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962913446,
+                "modifiedInvariant": 0.9996347122003247,
+                "centroid": [
+                  -3.1521127382167825e-10,
+                  -2.021655164355079e-10
+                ],
+                "variance": 12.970200220068731,
+                "secondMomentAboutStart": 12.970200220068731,
+                "inverseParticipationRatio": 0.011920464740612433,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999956371476051,
+                "modifiedInvariant": 0.9996346312596023,
+                "centroid": [
+                  2.2565553173673814,
+                  0.27738150411879436
+                ],
+                "variance": 27.2518019895693,
+                "secondMomentAboutStart": 32.42078438873551,
+                "inverseParticipationRatio": 0.014956272983626426,
+                "boundaryStripProbability": 1.602395883520366e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000108129877026,
+                "modifiedInvariant": 0.9996345873092403,
+                "centroid": [
+                  1.6228627909430986,
+                  0.9035328058411756
+                ],
+                "variance": 59.685484789269594,
+                "secondMomentAboutStart": 63.135539958728444,
+                "inverseParticipationRatio": 0.011456719245521893,
+                "boundaryStripProbability": 5.0673817956022336e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000242711968306,
+                "modifiedInvariant": 0.9996345690458085,
+                "centroid": [
+                  1.080930220140891,
+                  1.4452464549547333
+                ],
+                "variance": 94.5969641386732,
+                "secondMomentAboutStart": 97.85411159504626,
+                "inverseParticipationRatio": 0.006241314934195888,
+                "boundaryStripProbability": 0.00011372590626499743,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.432068279516585e-7,
+            "valid": true
+          },
+          "smallerStep": {
+            "label": "4108-shuffled-half-step",
+            "lattice": [
+              64,
+              64
+            ],
+            "spacing": 1,
+            "dt": 0.05,
+            "steps": 480,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.29984084963798524,
+            "initialPotentialEnergy": 0.01893946108487188,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962367913,
+              "modifiedInvariant": 0.9999086752337248,
+              "centroid": [
+                4.0510018438231643e-11,
+                4.050784536555117e-11
+              ],
+              "variance": 12.970200219434432,
+              "secondMomentAboutStart": 12.970200219434432,
+              "inverseParticipationRatio": 0.011920464741240252,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962367913,
+                "modifiedInvariant": 0.9999086752337248,
+                "centroid": [
+                  4.0510018438231643e-11,
+                  4.050784536555117e-11
+                ],
+                "variance": 12.970200219434432,
+                "secondMomentAboutStart": 12.970200219434432,
+                "inverseParticipationRatio": 0.011920464741240252,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999981615954199,
+                "modifiedInvariant": 0.9999086482284449,
+                "centroid": [
+                  2.2564983095923745,
+                  0.27738227685186984
+                ],
+                "variance": 27.23777571246486,
+                "secondMomentAboutStart": 32.40650126116963,
+                "inverseParticipationRatio": 0.014974994244169891,
+                "boundaryStripProbability": 1.6032951833833197e-16,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000024497751498,
+                "modifiedInvariant": 0.9999087362569348,
+                "centroid": [
+                  1.6229278937819613,
+                  0.9034445308402116
+                ],
+                "variance": 59.65751101404398,
+                "secondMomentAboutStart": 63.10761798276462,
+                "inverseParticipationRatio": 0.011490969794402308,
+                "boundaryStripProbability": 4.9634486835092995e-8,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.0000067616659885,
+                "modifiedInvariant": 0.9999087774954868,
+                "centroid": [
+                  1.0808406874622238,
+                  1.4452079617140292
+                ],
+                "variance": 94.5655374805971,
+                "secondMomentAboutStart": 97.82238012487254,
+                "inverseParticipationRatio": 0.006239824259171481,
+                "boundaryStripProbability": 0.00011223115527993885,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.0227110180949239e-7,
+            "valid": true
+          },
+          "largerDomain": {
+            "label": "4108-shuffled-larger-domain",
+            "lattice": [
+              128,
+              128
+            ],
+            "spacing": 1,
+            "dt": 0.1,
+            "steps": 240,
+            "potentialTile": [
+              64,
+              64
+            ],
+            "spectralStabilityProductBound": 0.5996816992759705,
+            "initialPotentialEnergy": 0.01893946108487188,
+            "start": {
+              "time": 0,
+              "positiveNorm": 0.9999999962913446,
+              "modifiedInvariant": 0.9996347122003247,
+              "centroid": [
+                -3.1521127382167825e-10,
+                -2.021655164355079e-10
+              ],
+              "variance": 12.970200220068731,
+              "secondMomentAboutStart": 12.970200220068731,
+              "inverseParticipationRatio": 0.011920464740612433,
+              "boundaryStripProbability": 0,
+              "nonfiniteCells": 0
+            },
+            "samples": [
+              {
+                "time": 0,
+                "positiveNorm": 0.9999999962913446,
+                "modifiedInvariant": 0.9996347122003247,
+                "centroid": [
+                  -3.1521127382167825e-10,
+                  -2.021655164355079e-10
+                ],
+                "variance": 12.970200220068731,
+                "secondMomentAboutStart": 12.970200220068731,
+                "inverseParticipationRatio": 0.011920464740612433,
+                "boundaryStripProbability": 0,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 8,
+                "positiveNorm": 0.9999956371476051,
+                "modifiedInvariant": 0.9996346312596023,
+                "centroid": [
+                  2.2565553173673814,
+                  0.27738150411879436
+                ],
+                "variance": 27.2518019895693,
+                "secondMomentAboutStart": 32.42078438873551,
+                "inverseParticipationRatio": 0.014956272983626426,
+                "boundaryStripProbability": 1.8524354916366478e-75,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 16,
+                "positiveNorm": 1.0000108129900334,
+                "modifiedInvariant": 0.9996345873115574,
+                "centroid": [
+                  1.6228627932988917,
+                  0.9035328063058791
+                ],
+                "variance": 59.685484783068425,
+                "secondMomentAboutStart": 63.13553996101328,
+                "inverseParticipationRatio": 0.011456719245468521,
+                "boundaryStripProbability": 4.686309568246212e-46,
+                "nonfiniteCells": 0
+              },
+              {
+                "time": 24,
+                "positiveNorm": 1.000024274294549,
+                "modifiedInvariant": 0.9996345697484946,
+                "centroid": [
+                  1.0810426569437843,
+                  1.4452501202127463
+                ],
+                "variance": 94.5968148379368,
+                "secondMomentAboutStart": 97.85421597404384,
+                "inverseParticipationRatio": 0.006241314903329936,
+                "boundaryStripProbability": 1.9771944184540118e-30,
+                "nonfiniteCells": 0
+              }
+            ],
+            "maxSampledModifiedInvariantRelativeDrift": 1.4250388502556888e-7,
+            "valid": true
+          }
+        }
+      }
+    }
+  ],
+  "freeReference": {
+    "label": "free-reference",
+    "lattice": [
+      64,
+      64
+    ],
+    "spacing": 1,
+    "dt": 0.1,
+    "steps": 240,
+    "potentialTile": [
+      64,
+      64
+    ],
+    "spectralStabilityProductBound": 0.4,
+    "initialPotentialEnergy": 0,
+    "start": {
+      "time": 0,
+      "positiveNorm": 0.9999999962478254,
+      "modifiedInvariant": 0.9998885840790084,
+      "centroid": [
+        -3.640371771024061e-11,
+        -2.2451845504125474e-16
+      ],
+      "variance": 12.970200219578414,
+      "secondMomentAboutStart": 12.970200219578414,
+      "inverseParticipationRatio": 0.011920464741038621,
+      "boundaryStripProbability": 0,
+      "nonfiniteCells": 0
+    },
+    "samples": [
+      {
+        "time": 0,
+        "positiveNorm": 0.9999999962478254,
+        "modifiedInvariant": 0.9998885840790084,
+        "centroid": [
+          -3.640371771024061e-11,
+          -2.2451845504125474e-16
+        ],
+        "variance": 12.970200219578414,
+        "secondMomentAboutStart": 12.970200219578414,
+        "inverseParticipationRatio": 0.011920464741038621,
+        "boundaryStripProbability": 0,
+        "nonfiniteCells": 0
+      },
+      {
+        "time": 8,
+        "positiveNorm": 1.0000000286885113,
+        "modifiedInvariant": 0.9998885629313942,
+        "centroid": [
+          5.054844409186264,
+          -1.1843329004388792e-7
+        ],
+        "variance": 16.803663366408564,
+        "secondMomentAboutStart": 42.35511536749021,
+        "inverseParticipationRatio": 0.009658823814390129,
+        "boundaryStripProbability": 3.835113115852826e-16,
+        "nonfiniteCells": 0
+      },
+      {
+        "time": 16,
+        "positiveNorm": 0.9999999522954982,
+        "modifiedInvariant": 0.9998885183407051,
+        "centroid": [
+          10.109688580664796,
+          -2.3114990333590036e-7
+        ],
+        "variance": 28.304050911449583,
+        "secondMomentAboutStart": 130.50985410947382,
+        "inverseParticipationRatio": 0.005940518307302623,
+        "boundaryStripProbability": 6.27746947611288e-7,
+        "nonfiniteCells": 0
+      },
+      {
+        "time": 24,
+        "positiveNorm": 0.9999999477155498,
+        "modifiedInvariant": 0.9998885157767636,
+        "centroid": [
+          15.159939760893247,
+          -0.000033751888385990595
+        ],
+        "variance": 47.605203163879686,
+        "secondMomentAboutStart": 277.42897671893087,
+        "inverseParticipationRatio": 0.0035162545492441084,
+        "boundaryStripProbability": 0.0017991834099101384,
+        "nonfiniteCells": 0
+      }
+    ],
+    "maxSampledModifiedInvariantRelativeDrift": 6.830985554984181e-8,
+    "valid": true
+  },
+  "controls": {
+    "analytic": {
+      "label": "free-analytic-mode",
+      "lattice": [
+        32,
+        32
+      ],
+      "spacing": 1,
+      "dt": 0.05,
+      "steps": 40,
+      "potentialTile": [
+        64,
+        64
+      ],
+      "spectralStabilityProductBound": 0.2,
+      "initialPotentialEnergy": 0,
+      "start": {
+        "time": 0,
+        "positiveNorm": 0.9999999632890703,
+        "modifiedInvariant": 0.9999334284107875,
+        "centroid": [
+          -0.4999999999999952,
+          -0.5000000097983297
+        ],
+        "variance": 170.50000000998696,
+        "secondMomentAboutStart": 171.0000000197853,
+        "inverseParticipationRatio": 0.0009765624999999705,
+        "boundaryStripProbability": 0.43749999999999406,
+        "nonfiniteCells": 0,
+        "exactSemidiscreteL2Error": 2.39627178941894e-8
+      },
+      "samples": [
+        {
+          "time": 0,
+          "positiveNorm": 0.9999999632890703,
+          "modifiedInvariant": 0.9999334284107875,
+          "centroid": [
+            -0.4999999999999952,
+            -0.5000000097983297
+          ],
+          "variance": 170.50000000998696,
+          "secondMomentAboutStart": 171.0000000197853,
+          "inverseParticipationRatio": 0.0009765624999999705,
+          "boundaryStripProbability": 0.43749999999999406,
+          "nonfiniteCells": 0,
+          "exactSemidiscreteL2Error": 2.39627178941894e-8
+        },
+        {
+          "time": 2,
+          "positiveNorm": 0.9999999754186147,
+          "modifiedInvariant": 0.9999334348511324,
+          "centroid": [
+            -0.49999999999999933,
+            -0.5000000171741515
+          ],
+          "variance": 170.49999999964695,
+          "secondMomentAboutStart": 171.0000000168211,
+          "inverseParticipationRatio": 0.0009765625055077772,
+          "boundaryStripProbability": 0.43749999999999883,
+          "nonfiniteCells": 0,
+          "exactSemidiscreteL2Error": 0.00005687849313549192
+        }
+      ],
+      "maxSampledModifiedInvariantRelativeDrift": 6.440773692162338e-9,
+      "valid": true
+    },
+    "wrongSign": {
+      "label": "wrong-imaginary-sign",
+      "lattice": [
+        32,
+        32
+      ],
+      "spacing": 1,
+      "dt": 0.05,
+      "steps": 40,
+      "potentialTile": [
+        64,
+        64
+      ],
+      "spectralStabilityProductBound": 0.2,
+      "initialPotentialEnergy": 0,
+      "start": {
+        "time": 0,
+        "positiveNorm": 0.9999999632890703,
+        "modifiedInvariant": 0.9999334284107875,
+        "centroid": [
+          -0.4999999999999952,
+          -0.5000000097983297
+        ],
+        "variance": 170.50000000998696,
+        "secondMomentAboutStart": 171.0000000197853,
+        "inverseParticipationRatio": 0.0009765624999999705,
+        "boundaryStripProbability": 0.43749999999999406,
+        "nonfiniteCells": 0,
+        "exactSemidiscreteL2Error": 2.39627178941894e-8
+      },
+      "samples": [
+        {
+          "time": 0,
+          "positiveNorm": 0.9999999632890703,
+          "modifiedInvariant": 0.9999334284107875,
+          "centroid": [
+            -0.4999999999999952,
+            -0.5000000097983297
+          ],
+          "variance": 170.50000000998696,
+          "secondMomentAboutStart": 171.0000000197853,
+          "inverseParticipationRatio": 0.0009765624999999705,
+          "boundaryStripProbability": 0.43749999999999406,
+          "nonfiniteCells": 0,
+          "exactSemidiscreteL2Error": 2.39627178941894e-8
+        },
+        {
+          "time": 2,
+          "positiveNorm": 3.245079866398262,
+          "modifiedInvariant": 3.244863965002371,
+          "centroid": [
+            -0.5000000000000022,
+            -0.5000005552250398
+          ],
+          "variance": 170.4999995257899,
+          "secondMomentAboutStart": 171.00000008101523,
+          "inverseParticipationRatio": 0.0014184757105104955,
+          "boundaryStripProbability": 0.43750000000000167,
+          "nonfiniteCells": 0,
+          "exactSemidiscreteL2Error": 1.5768856525922657
+        }
+      ],
+      "maxSampledModifiedInvariantRelativeDrift": 2.245079995134769,
+      "valid": false
+    },
+    "identicalPotentialRepeat": {
+      "label": "identical-potential-null",
+      "lattice": [
+        64,
+        64
+      ],
+      "spacing": 1,
+      "dt": 0.1,
+      "steps": 240,
+      "potentialTile": [
+        64,
+        64
+      ],
+      "spectralStabilityProductBound": 0.5991481423377991,
+      "initialPotentialEnergy": -0.013906850763388393,
+      "start": {
+        "time": 0,
+        "positiveNorm": 0.99999999624043,
+        "modifiedInvariant": 0.9997377734083049,
+        "centroid": [
+          -5.868015590517343e-11,
+          -5.874076887080172e-11
+        ],
+        "variance": 12.970200219568794,
+        "secondMomentAboutStart": 12.970200219568794,
+        "inverseParticipationRatio": 0.01192046474115713,
+        "boundaryStripProbability": 0,
+        "nonfiniteCells": 0
+      },
+      "samples": [
+        {
+          "time": 0,
+          "positiveNorm": 0.99999999624043,
+          "modifiedInvariant": 0.9997377734083049,
+          "centroid": [
+            -5.868015590517343e-11,
+            -5.874076887080172e-11
+          ],
+          "variance": 12.970200219568794,
+          "secondMomentAboutStart": 12.970200219568794,
+          "inverseParticipationRatio": 0.01192046474115713,
+          "boundaryStripProbability": 0,
+          "nonfiniteCells": 0
+        },
+        {
+          "time": 8,
+          "positiveNorm": 1.0000246647365172,
+          "modifiedInvariant": 0.9997377712820914,
+          "centroid": [
+            2.743778118457187,
+            -1.4134877506948476
+          ],
+          "variance": 43.024376186717696,
+          "secondMomentAboutStart": 52.55064217140654,
+          "inverseParticipationRatio": 0.01304864502010911,
+          "boundaryStripProbability": 2.571081435486942e-16,
+          "nonfiniteCells": 0
+        },
+        {
+          "time": 16,
+          "positiveNorm": 1.000012902913029,
+          "modifiedInvariant": 0.9997377720157389,
+          "centroid": [
+            3.7460873189890234,
+            -2.05570354342011
+          ],
+          "variance": 106.1438342019029,
+          "secondMomentAboutStart": 124.40292146182327,
+          "inverseParticipationRatio": 0.007634265517548698,
+          "boundaryStripProbability": 1.612967852657711e-7,
+          "nonfiniteCells": 0
+        },
+        {
+          "time": 24,
+          "positiveNorm": 1.0000475680404664,
+          "modifiedInvariant": 0.9997377782545458,
+          "centroid": [
+            4.014954552630442,
+            -1.8403891048822483
+          ],
+          "variance": 138.5523316453051,
+          "secondMomentAboutStart": 158.05922376236228,
+          "inverseParticipationRatio": 0.004473992920005219,
+          "boundaryStripProbability": 0.0002773650945494131,
+          "nonfiniteCells": 0
+        }
+      ],
+      "maxSampledModifiedInvariantRelativeDrift": 4.8475119474034045e-9,
+      "valid": true
+    }
+  },
+  "forwardRuns": 52
+}
