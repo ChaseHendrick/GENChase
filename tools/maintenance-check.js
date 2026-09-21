@@ -30,6 +30,34 @@ try {
   records([]);assert.notEqual(science().status,0);
   records([record,record]);assert.notEqual(science().status,0);
   records([{...record,status:'validated within stated limits'}]);assert.notEqual(science().status,0);
+  // Metadata fixtures exercise the evidence gate. They are not scientific results.
+  fs.mkdirSync(path.join(tmp,'validation/results'));
+  put('tools/benchmark.js','throw Error("Fixture: the inventory must not execute this test");');
+  put('validation/results/fixture.json',JSON.stringify({fixture:true,error:1e-8}));
+  const evidence={test:'tools/benchmark.js',scope:'One deterministic fixture',criteria:'Absolute error < 1e-6',limitations:'Metadata fixture only',benchmark:'Independent analytic reference for this fixture',failureControl:'Wrong update sign exceeds the tolerance',command:'node tools/benchmark.js',results:'validation/results/fixture.json'};
+  const partial={...record,status:'partially validated',numerical:[evidence]};
+  const expect=(candidate,passes,reason)=>{
+    records([candidate]);const result=science();
+    assert.equal(result.status===0,passes,reason+': '+result.stderr);
+  };
+  expect(partial,true,'Complete partial-evidence metadata is accepted without running its command');
+  for(const key of ['benchmark','failureControl','command','results']){
+    expect({...partial,numerical:[{...evidence,[key]:undefined}]},false,'Missing '+key);
+    expect({...partial,numerical:[{...evidence,[key]:'  '}]},false,'Blank '+key);
+  }
+  for(const name of ['check','export','recipe','pde-print-state','lint']){
+    put('tools/'+name+'.js','// Runtime/export fixture');
+    expect({...partial,numerical:[{...evidence,test:'tools/'+name+'.js'}]},false,'Non-numerical harness '+name);
+  }
+  for(const test of ['tools','../escape.js','tools/../tools/benchmark.js'])expect({...partial,numerical:[{...evidence,test}]},false,'Non-file or noncanonical test path');
+  put('validation/results/empty.json','{}');put('validation/results/list.json','[]');put('validation/results/broken.json','{');
+  for(const results of ['validation/results','tools/benchmark.js','validation/results/missing.json','validation/results/empty.json','validation/results/list.json','validation/results/broken.json'])expect({...partial,numerical:[{...evidence,results}]},false,'Invalid result artifact '+results);
+  const full={...partial,status:'validated within stated limits',print:[{test:'tools/export.js',scope:'Declared print fixture',criteria:'Declared scientific rendering comparison',limitations:'Fixture domain only'}],domain:{parameters:'Amplitude 0.2, duration 1',conditions:'Periodic, unforced initial state',resolution:'64 and 128 cells at fixed physical length',precision:'IEEE float32'},reviewed:'2026-01-01',results:evidence.results};
+  expect(full,true,'Complete full-evidence metadata');
+  for(const domain of ['unspecified',{},[],{...full.domain,parameters:'TBD'},{...full.domain,precision:'  '}])expect({...full,domain},false,'Missing or placeholder reviewed domain');
+  for(const reviewed of ['2026-02-30','2026-13-01','9999-01-01','2026-1-1',''])expect({...full,reviewed},false,'Invalid or future review date');
+  expect({...full,results:'tools/benchmark.js'},false,'Unstructured full result artifact');
+  expect({...full,print:[]},false,'Full status without print evidence');
   records([record]);fs.appendFileSync(path.join(tmp,record.source),'\n// changed');assert.notEqual(science().status,0);
-  console.log('PASS: build parity and stale/duplicate/missing/path/orphan controls; missing/duplicate/unsupported/source-drift validation controls.');
+  console.log('PASS: build parity and stale/duplicate/missing/path/orphan controls; coverage/source drift, numerical evidence, smoke-test rejection, result artifacts and reviewed-domain/date controls.');
 } finally { fs.rmSync(tmp,{recursive:true,force:true}); }

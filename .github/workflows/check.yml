@@ -64,7 +64,10 @@ jobs:
           npm install --no-save playwright@1.49.1
           npx playwright install --with-deps --only-shell chromium
       - name: Cahn-Hilliard GPU numerical benchmark
-        run: node tools/pde-science.js
+        run: |
+          node tools/pde-science.js
+          node tools/pde-convergence.js
+          node tools/pde-stability.js
       - name: PDE print exports preserve numerical state
         run: node tools/pde-print-state.js
       - name: Seed box, hash, shortcuts, dock
@@ -124,9 +127,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Export recomputes the field at print pixels rather than upscaling the screen, so it is a
-        # different code path from the plate check. One raster technique, one vector technique, and
-        # the identity plate (SVG of the spirals).
+        # Exercise each actual print path. Grid fields retain their numerical resolution;
+        # vector and analytic techniques can render at the requested output resolution.
+        # One raster technique, one vector technique, and the identity plate (SVG spirals).
         id: [cahn, tilings, three-vortex-bound]
     steps:
       - uses: actions/checkout@v4

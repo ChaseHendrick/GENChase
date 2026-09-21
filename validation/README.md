@@ -17,8 +17,28 @@ Statuses:
   This does not mean all parameters, all hardware, or exact agreement with a physical experiment.
 
 Evidence entries specify a repository test path, scope, acceptance criteria and limitations.
-For a full validation, also record the reviewed domain, date and reproducible result artifact.
-Never upgrade a status merely because an export looks good or a source is cited.
+Every numerical entry also requires:
+
+- `benchmark`: the independent analytic, numerical or published reference and why it tests the claim.
+- `failureControl`: a deliberate wrong result or implementation change that the test detects.
+- `command`: the reproducible test command, with required setup documented alongside the test.
+- `results`: a nonempty JSON object saved under `validation/results/`, containing measured results.
+
+For full validation, `domain` is an object describing `parameters`, `conditions` (including initial
+and boundary conditions and physical time where relevant), `resolution` and `precision`. Also supply
+a real, nonfuture `reviewed` date in `YYYY-MM-DD` form and a `results` JSON artifact under
+`validation/results/` covering the reviewed numerical and print claims.
+
+The inventory rejects missing evidence fields, placeholder domains, invalid dates, non-file paths
+and known smoke/export/inventory scripts presented as numerical evidence. It checks the structure
+of result artifacts, not the truth or adequacy of their contents. It does not execute `command`.
+A reviewer must run the test, inspect the reference and failure control, and check that the reported
+limits match the results before promoting a status. Merely filling these fields cannot validate a
+formula. Never upgrade a status because an export looks good, syntax passes or a source is cited.
+
+New formulas use the contributor module workflow in [FORMULA-SUBMISSIONS.md](FORMULA-SUBMISSIONS.md).
+They begin as **unvalidated**. Finite numerical checks, mathematical proof, agreement with experiments
+and historical originality are separate claims.
 
 ## What a scientific review must establish
 
@@ -36,7 +56,8 @@ Existing `check.js` tests are visual/runtime regression checks. `export.js` exer
 `sharp.js` measures image detail. None alone certifies paper accuracy. Current float16 fallbacks,
 clamps, finite lattices, noise and boundary choices need explicit review.
 
-The first correction and its limits are documented in [CAHN-HILLIARD.md](CAHN-HILLIARD.md).
+The mobility correction and temporal refinement are documented in [CAHN-HILLIARD.md](CAHN-HILLIARD.md).
+The subsequent click/timestep correction and its historical failure controls are in [CAHN-STABILITY.md](CAHN-STABILITY.md).
 
 Priority: the remaining Cahn-Hilliard/PDE convergence and precision checks, wave/transport solvers, then stochastic measurements and
 the remaining families. The double-triangle/polygon vortex module already has independent numerical tests; its print

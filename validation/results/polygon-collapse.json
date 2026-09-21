@@ -1,0 +1,209 @@
+{
+  "angles": 11381,
+  "maxRelative": 6.582512313002553e-13,
+  "maxCoefficient": 3.1086244689504383e-15,
+  "rows": [
+    {
+      "n": 2,
+      "minimum": 1.6770509831248417,
+      "thetaDegrees": 37.76124390703504,
+      "largestResidual": 4.454402695409261e-16
+    },
+    {
+      "n": 3,
+      "minimum": 1.7950549357115013,
+      "thetaDegrees": 26.09041119133353,
+      "largestResidual": 5.7881749346642705e-16
+    },
+    {
+      "n": 4,
+      "minimum": 1.9938176049918177,
+      "thetaDegrees": 20.145493195011422,
+      "largestResidual": 5.075738098378413e-16
+    },
+    {
+      "n": 5,
+      "minimum": 2.224929774172659,
+      "thetaDegrees": 16.464159342462768,
+      "largestResidual": 5.566421940600227e-16
+    },
+    {
+      "n": 6,
+      "minimum": 2.478740630060174,
+      "thetaDegrees": 13.93961106300255,
+      "largestResidual": 6.299764187536503e-16
+    },
+    {
+      "n": 7,
+      "minimum": 2.7525388202496655,
+      "thetaDegrees": 12.093531726102926,
+      "largestResidual": 6.514573378136975e-16
+    },
+    {
+      "n": 8,
+      "minimum": 3.045653092898295,
+      "thetaDegrees": 10.68197700856447,
+      "largestResidual": 7.24317205515218e-16
+    },
+    {
+      "n": 9,
+      "minimum": 3.35819087575207,
+      "thetaDegrees": 9.56643469014479,
+      "largestResidual": 7.984885652767156e-16
+    },
+    {
+      "n": 10,
+      "minimum": 3.690614097102415,
+      "thetaDegrees": 8.662038899470751,
+      "largestResidual": 8.046765548034057e-16
+    },
+    {
+      "n": 11,
+      "minimum": 4.043570478762138,
+      "thetaDegrees": 7.9137358562830675,
+      "largestResidual": 8.513790623366642e-16
+    },
+    {
+      "n": 12,
+      "minimum": 4.417818267910036,
+      "thetaDegrees": 7.284180689722374,
+      "largestResidual": 8.873126086813033e-16
+    },
+    {
+      "n": 13,
+      "minimum": 4.814189804062457,
+      "thetaDegrees": 6.7471137080564585,
+      "largestResidual": 1.0754697046179497e-15
+    },
+    {
+      "n": 14,
+      "minimum": 5.233572844137677,
+      "thetaDegrees": 6.283514574217265,
+      "largestResidual": 1.1831052764094273e-15
+    },
+    {
+      "n": 15,
+      "minimum": 5.676900633756771,
+      "thetaDegrees": 5.879259451281041,
+      "largestResidual": 9.835955076407747e-16
+    },
+    {
+      "n": 16,
+      "minimum": 6.145146550699436,
+      "thetaDegrees": 5.523635645261289,
+      "largestResidual": 1.1734835185249195e-15
+    },
+    {
+      "n": 17,
+      "minimum": 6.639321258782902,
+      "thetaDegrees": 5.208367602058836,
+      "largestResidual": 1.2363568770708068e-15
+    },
+    {
+      "n": 18,
+      "minimum": 7.160471298641347,
+      "thetaDegrees": 4.926959488264595,
+      "largestResidual": 1.1557342631722294e-15
+    },
+    {
+      "n": 19,
+      "minimum": 7.7096785313193665,
+      "thetaDegrees": 4.674240188183292,
+      "largestResidual": 1.3313307147681275e-15
+    },
+    {
+      "n": 20,
+      "minimum": 8.288060104895877,
+      "thetaDegrees": 4.446041397166735,
+      "largestResidual": 1.3757784815708563e-15
+    }
+  ],
+  "trajectories": [
+    {
+      "n": 2,
+      "theta": 6,
+      "exactError": 2.6293197043447383e-8,
+      "stepEstimate": 2.6487137896905345e-8,
+      "shapeError": 1.5087166127003953e-11
+    },
+    {
+      "n": 2,
+      "theta": 37.76124390703504,
+      "exactError": 3.911008867731061e-11,
+      "stepEstimate": 3.918617371901402e-11,
+      "shapeError": 3.374329241674164e-15
+    },
+    {
+      "n": 2,
+      "theta": 84,
+      "exactError": 3.2077283124770566e-7,
+      "stepEstimate": 3.276630757719255e-7,
+      "shapeError": 3.224041595043731e-14
+    },
+    {
+      "n": 3,
+      "theta": 4,
+      "exactError": 4.5377990487881456e-8,
+      "stepEstimate": 4.5419926553753787e-8,
+      "shapeError": 9.197999852121465e-10
+    },
+    {
+      "n": 3,
+      "theta": 26.09041119133353,
+      "exactError": 5.1897078804574416e-11,
+      "stepEstimate": 5.199770516207288e-11,
+      "shapeError": 6.313905423575388e-15
+    },
+    {
+      "n": 3,
+      "theta": 56,
+      "exactError": 3.388042820000864e-7,
+      "stepEstimate": 3.463514235856446e-7,
+      "shapeError": 3.4712816654965514e-14
+    },
+    {
+      "n": 4,
+      "theta": 3,
+      "exactError": 1.0151401314170419e-7,
+      "stepEstimate": 9.433429675857819e-8,
+      "shapeError": 2.000995591317549e-8
+    },
+    {
+      "n": 4,
+      "theta": 20.145493195011422,
+      "exactError": 8.403834782606138e-11,
+      "stepEstimate": 8.41939293165207e-11,
+      "shapeError": 6.0085212140356545e-15
+    },
+    {
+      "n": 4,
+      "theta": 42,
+      "exactError": 4.5774732549838245e-7,
+      "stepEstimate": 4.692882421081747e-7,
+      "shapeError": 1.6661276949265678e-14
+    },
+    {
+      "n": 5,
+      "theta": 2.4,
+      "exactError": 0.0000017392016434822029,
+      "stepEstimate": 6.573165631680758e-7,
+      "shapeError": 0.0000017727081380210203
+    },
+    {
+      "n": 5,
+      "theta": 16.464159342462768,
+      "exactError": 1.4078283855278074e-10,
+      "stepEstimate": 1.4105134452929764e-10,
+      "shapeError": 1.68426652692321e-14
+    },
+    {
+      "n": 5,
+      "theta": 33.6,
+      "exactError": 6.723486707273446e-7,
+      "stepEstimate": 6.920882953054926e-7,
+      "shapeError": 1.9493066009706764e-14
+    }
+  ],
+  "controls": "displaced vortex, anisotropic kernel, expanding orientation",
+  "passed": true
+}

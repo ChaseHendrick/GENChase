@@ -1,0 +1,40 @@
+{
+  "angles": 1199,
+  "formulaMax": 3.2929214910382143e-13,
+  "velocityMax": 4.440892098500626e-16,
+  "similarityMax": 5.892046642437718e-16,
+  "minimum": 1.7950549357115013,
+  "thetaDegrees": 26.09041119133353,
+  "trajectories": [
+    {
+      "theta": 4,
+      "exactError": 4.5377990487881456e-8,
+      "stepEstimate": 4.5419926553753787e-8,
+      "shapeError": 9.197999852121465e-10
+    },
+    {
+      "theta": 26.09041119133353,
+      "exactError": 5.1897078804574416e-11,
+      "stepEstimate": 5.199770516207288e-11,
+      "shapeError": 6.313905423575388e-15
+    },
+    {
+      "theta": 30,
+      "exactError": 5.7431480918484935e-11,
+      "stepEstimate": 5.755046684642725e-11,
+      "shapeError": 5.2672923784292825e-15
+    },
+    {
+      "theta": 56,
+      "exactError": 3.388042820000864e-7,
+      "stepEstimate": 3.463514235856446e-7,
+      "shapeError": 3.4712816654965514e-14
+    }
+  ],
+  "broken": {
+    "velocityResidual": 0.17263318567612335,
+    "shapeError": 0.43779924636207723,
+    "formulaError": 0.14631317948133193
+  },
+  "mutationDetected": true
+}
