@@ -1,0 +1,487 @@
+{
+  "date": "2026-09-22",
+  "sourceSha256": "cfeadd37892269236b7c41a450f223568dc65f5304da461655cb01040d5cbc3d",
+  "scope": "Nine exact rational single-lump parameter families; seven finite fields, honest superposition diagnostics, all display modes and actual native PNG exports.",
+  "algebra": {
+    "arithmetic": "exact rational polynomial coefficients",
+    "denominator": "D^6 > 0 for real X,Y and nonzero real b",
+    "families": [
+      {
+        "a": "0",
+        "b": "1",
+        "residualNumeratorTerms": 0,
+        "wrongTimeNumeratorTerms": 15
+      },
+      {
+        "a": "0",
+        "b": "1.05",
+        "residualNumeratorTerms": 0,
+        "wrongTimeNumeratorTerms": 15
+      },
+      {
+        "a": "0",
+        "b": ".85",
+        "residualNumeratorTerms": 0,
+        "wrongTimeNumeratorTerms": 15
+      },
+      {
+        "a": ".15",
+        "b": ".9",
+        "residualNumeratorTerms": 0,
+        "wrongTimeNumeratorTerms": 25
+      },
+      {
+        "a": "-.1",
+        "b": "1.1",
+        "residualNumeratorTerms": 0,
+        "wrongTimeNumeratorTerms": 25
+      },
+      {
+        "a": ".35",
+        "b": "1",
+        "residualNumeratorTerms": 0,
+        "wrongTimeNumeratorTerms": 25
+      },
+      {
+        "a": "-.35",
+        "b": "1",
+        "residualNumeratorTerms": 0,
+        "wrongTimeNumeratorTerms": 25
+      },
+      {
+        "a": ".55",
+        "b": ".95",
+        "residualNumeratorTerms": 0,
+        "wrongTimeNumeratorTerms": 25
+      },
+      {
+        "a": "0",
+        "b": "1.65",
+        "residualNumeratorTerms": 0,
+        "wrongTimeNumeratorTerms": 15
+      }
+    ],
+    "passed": true
+  },
+  "kernel": {
+    "sourceSha256": "cfeadd37892269236b7c41a450f223568dc65f5304da461655cb01040d5cbc3d",
+    "cases": [
+      {
+        "kind": "one",
+        "rows": [
+          {
+            "h": 0.04,
+            "normalizedRms": 0.01369997250247188
+          },
+          {
+            "h": 0.02,
+            "normalizedRms": 0.0034936369601213466
+          },
+          {
+            "h": 0.01,
+            "normalizedRms": 0.0008779102385208776
+          }
+        ],
+        "ratio": 15.60520871194519
+      },
+      {
+        "kind": "oblique",
+        "rows": [
+          {
+            "h": 0.04,
+            "normalizedRms": 0.006147435237672225
+          },
+          {
+            "h": 0.02,
+            "normalizedRms": 0.0015501234840205372
+          },
+          {
+            "h": 0.01,
+            "normalizedRms": 0.0003883845977040113
+          }
+        ],
+        "ratio": 15.828215830425897
+      },
+      {
+        "kind": "tight",
+        "rows": [
+          {
+            "h": 0.04,
+            "normalizedRms": 0.11176844060213163
+          },
+          {
+            "h": 0.02,
+            "normalizedRms": 0.029465022161226595
+          },
+          {
+            "h": 0.01,
+            "normalizedRms": 0.007546854030427453
+          }
+        ],
+        "ratio": 14.809938041931504
+      }
+    ],
+    "failureResidual": 0.03712255330876759,
+    "pass": true,
+    "limitations": [
+      "Only three single-lump presets at twelve points each; finite differences are evidence, not proof.",
+      "Products of single-lump tau functions are excluded. They do not generally solve the nonlinear KP-I equation.",
+      "No print, displayed residual, peak-search or interaction accuracy claim."
+    ]
+  },
+  "cases": [
+    {
+      "seed": "lump-field-0",
+      "params": {
+        "kind": "one",
+        "t": 0,
+        "zoom": 1.05,
+        "view": "field",
+        "grid": 128,
+        "aspect": "1:1",
+        "exposure": 0.8,
+        "running": false
+      },
+      "fieldError": 0,
+      "displacedFieldError": 0.8489484786987305,
+      "diagnostic": {
+        "residual": 0.00065661701092402,
+        "stepSensitivity": 0.0019610196562234255,
+        "visiblePeak": 3.9128725880652815,
+        "label": "single exact formula"
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsCompared": 23040000,
+        "maxChannelError": 0,
+        "displacedChannelMismatches": 40456,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "kind": "one",
+          "t": 0,
+          "running": false,
+          "zoom": 1.05,
+          "view": "field",
+          "exposure": 0.8,
+          "seed": "lump-field-0",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "lump-field-1",
+      "params": {
+        "kind": "two",
+        "t": -0.4,
+        "zoom": 0.85,
+        "view": "log",
+        "grid": 192,
+        "aspect": "4:5",
+        "exposure": 1,
+        "running": false
+      },
+      "fieldError": 0,
+      "displacedFieldError": 0.8201284408569336,
+      "diagnostic": {
+        "residual": 0.1662985516449099,
+        "stepSensitivity": 0.00036886596420815376,
+        "visiblePeak": 4.264704176965173,
+        "label": "illustrative sum, not a KP-I solution"
+      },
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsCompared": 18432000,
+        "maxChannelError": 0,
+        "displacedChannelMismatches": 95907,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "kind": "two",
+          "t": -0.4,
+          "running": false,
+          "zoom": 0.85,
+          "view": "log",
+          "exposure": 1,
+          "seed": "lump-field-1",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "lump-field-2",
+      "params": {
+        "kind": "three",
+        "t": 0.1,
+        "zoom": 0.75,
+        "view": "shade",
+        "grid": 256,
+        "aspect": "16:9",
+        "exposure": 1.2,
+        "running": false
+      },
+      "fieldError": 0,
+      "displacedFieldError": 0.8114664554595947,
+      "diagnostic": {
+        "residual": 0.5815706885441682,
+        "stepSensitivity": 1.4399877645843162e-7,
+        "visiblePeak": 4.7104260370516045,
+        "label": "illustrative sum, not a KP-I solution"
+      },
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsCompared": 12960000,
+        "maxChannelError": 0,
+        "displacedChannelMismatches": 19308,
+        "params": {
+          "grid": 256,
+          "aspect": "16:9",
+          "kind": "three",
+          "t": 0.1,
+          "running": false,
+          "zoom": 0.75,
+          "view": "shade",
+          "exposure": 1.2,
+          "seed": "lump-field-2",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "lump-field-3",
+      "params": {
+        "kind": "collide",
+        "t": -1.6,
+        "zoom": 0.8,
+        "view": "field",
+        "grid": 128,
+        "aspect": "1:1",
+        "exposure": 0.8,
+        "running": false
+      },
+      "fieldError": 0,
+      "displacedFieldError": 1.110174298286438,
+      "diagnostic": {
+        "residual": 0.014891579124712406,
+        "stepSensitivity": 0.0006749795536925025,
+        "visiblePeak": 4.02225704331384,
+        "label": "illustrative sum, not a KP-I solution"
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsCompared": 23040000,
+        "maxChannelError": 0,
+        "displacedChannelMismatches": 68286,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "kind": "collide",
+          "t": -1.6,
+          "running": false,
+          "zoom": 0.8,
+          "view": "field",
+          "exposure": 0.8,
+          "seed": "lump-field-3",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "lump-field-4",
+      "params": {
+        "kind": "collide",
+        "t": 1.6,
+        "zoom": 0.8,
+        "view": "log",
+        "grid": 192,
+        "aspect": "4:5",
+        "exposure": 1,
+        "running": false
+      },
+      "fieldError": 0,
+      "displacedFieldError": 0.7520430088043213,
+      "diagnostic": {
+        "residual": 0.015729763189323672,
+        "stepSensitivity": 0.0005141508916581307,
+        "visiblePeak": 4.0223476238234035,
+        "label": "illustrative sum, not a KP-I solution"
+      },
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsCompared": 18432000,
+        "maxChannelError": 0,
+        "displacedChannelMismatches": 111276,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "kind": "collide",
+          "t": 1.6,
+          "running": false,
+          "zoom": 0.8,
+          "view": "log",
+          "exposure": 1,
+          "seed": "lump-field-4",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "lump-field-5",
+      "params": {
+        "kind": "oblique",
+        "t": 0.4,
+        "zoom": 1,
+        "view": "field",
+        "grid": 256,
+        "aspect": "16:9",
+        "exposure": 1.2,
+        "running": false
+      },
+      "fieldError": 0,
+      "displacedFieldError": 0.3888890743255615,
+      "diagnostic": {
+        "residual": 0.0006332742317369394,
+        "stepSensitivity": 0.0018957082421640857,
+        "visiblePeak": 3.60458713860993,
+        "label": "single exact formula"
+      },
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsCompared": 12960000,
+        "maxChannelError": 0,
+        "displacedChannelMismatches": 77511,
+        "params": {
+          "grid": 256,
+          "aspect": "16:9",
+          "kind": "oblique",
+          "t": 0.4,
+          "running": false,
+          "zoom": 1,
+          "view": "field",
+          "exposure": 1.2,
+          "seed": "lump-field-5",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "lump-field-6",
+      "params": {
+        "kind": "tight",
+        "t": 0,
+        "zoom": 1.35,
+        "view": "shade",
+        "grid": 128,
+        "aspect": "1:1",
+        "exposure": 0.8,
+        "running": false
+      },
+      "fieldError": 0,
+      "displacedFieldError": 2.850226402282715,
+      "diagnostic": {
+        "residual": 0.007308248112750665,
+        "stepSensitivity": 0.020445633009934003,
+        "visiblePeak": 10.346765508721111,
+        "label": "single exact formula"
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsCompared": 23040000,
+        "maxChannelError": 0,
+        "displacedChannelMismatches": 3603,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "kind": "tight",
+          "t": 0,
+          "running": false,
+          "zoom": 1.35,
+          "view": "shade",
+          "exposure": 0.8,
+          "seed": "lump-field-6",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    }
+  ],
+  "animation": {
+    "wrapped": -3.9946,
+    "next": -3.9746000000000006
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "chromium": "145.0.7632.6",
+    "platform": "darwin"
+  },
+  "passed": true
+}

@@ -7,6 +7,9 @@ and the distinction between continuous geometry and raster output.
 The [CPU dynamics follow-up](CPU-DYNAMICS.md) covers the rigid-body integrator
 correction, finite-time FPUT evolution, single KP-I lumps and unresolved claims.
 
+The [complete rational lump review](LUMP-FIELD-REVIEW.md) adds exact local algebra,
+whole fields, corrected sum diagnostics and actual print comparisons.
+
 The [orbit audit](ORBITS.md) tests finite figure-eight trajectories and selected
 Schwarzschild capture and turning-radius calculations.
 

@@ -5108,17 +5108,17 @@ shall not be misrepresented as the original profile.
   {
     "id": "lump",
     "source": "src/modules/lump.js",
-    "sourceSha256": "886024bfdf6db93fb90dcbf43625d02aacb7d7bf7adbce3dc6316d352274ba9c",
-    "reference": "Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Multi-lumps: Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). They pass through each other with no phase shift. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.",
+    "sourceSha256": "cfeadd37892269236b7c41a450f223568dc65f5304da461655cb01040d5cbc3d",
+    "reference": "Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Exact multi-lump solutions are studied by Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). This module implements single rational lumps; its multiple-lump modes are illustrative sums, not those interacting solutions. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.",
     "equation": "(u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b²",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Only three single-lump presets; sampled residuals are evidence, not proof.",
-      "Multi-lump superpositions, interactions, displayed diagnostics and print accuracy are excluded."
+      "Exact single-lump algebra for the nine rational parameter pairs and seven finite field/print recipes in validation/LUMP-FIELD-REVIEW.md.",
+      "Multiple-lump modes are accurately rendered illustrative sums, not interacting KP-I solutions.",
+      "No all-parameter, experimental, other-renderer or every-export-backend certification. Sampled residual step sensitivity is not a global error bound."
     ],
     "remaining": [
-      "Correct unsupported exact interaction claims for the product-tau multi-lump modes.",
-      "Broaden the domain and audit displayed residuals, peaks and actual print exports."
+      "Extend the enumerated recipe domain and print backends with independent evidence; an exact interacting multi-lump implementation would require separate review."
     ],
     "numerical": [
       {
@@ -5130,9 +5130,38 @@ shall not be misrepresented as the original profile.
         "limitations": "Only three single-lump presets; sampled residuals are evidence, not proof. Multi-lump superpositions, interactions, displayed diagnostics and print accuracy are excluded.",
         "command": "node tools/lump-science.js --write",
         "results": "validation/results/lump-science.json"
+      },
+      {
+        "test": "tools/lump-field-review.js",
+        "command": "node tools/lump-field-review.js --write",
+        "results": "validation/results/lump-field-review.json",
+        "scope": "Exact polynomial residuals for nine rational single-lump parameter pairs; seven full fields, all three views, selected-field diagnostics, animation wrap and actual PNG exports.",
+        "criteria": "Exact residual numerator zero with wrong-time rejection; field/peak errors\u003c1e-6, diagnostic errors\u003c2e-6, all PNG channels\u003c=1 byte, unchanged export state and correct time wrap.",
+        "benchmark": "Independent exact Fraction polynomial differentiation; separate logarithmic-tau derivative, full-resolution field and print transfer reference.",
+        "failureControl": "Wrong time derivatives leave nonzero exact polynomial coefficients; shifted fields and prints fail; multiple-lump sums must report nonzero PDE residuals.",
+        "limitations": "Only the conditions in validation/LUMP-FIELD-REVIEW.md; illustrative sums are not promoted to nonlinear PDE solutions."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/lump-field-review.js",
+        "command": "node tools/lump-field-review.js --write",
+        "results": "validation/results/lump-field-review.json",
+        "scope": "Exact polynomial residuals for nine rational single-lump parameter pairs; seven full fields, all three views, selected-field diagnostics, animation wrap and actual PNG exports.",
+        "criteria": "Exact residual numerator zero with wrong-time rejection; field/peak errors\u003c1e-6, diagnostic errors\u003c2e-6, all PNG channels\u003c=1 byte, unchanged export state and correct time wrap.",
+        "benchmark": "Independent exact Fraction polynomial differentiation; separate logarithmic-tau derivative, full-resolution field and print transfer reference.",
+        "failureControl": "Wrong time derivatives leave nonzero exact polynomial coefficients; shifted fields and prints fail; multiple-lump sums must report nonzero PDE residuals.",
+        "limitations": "Only the conditions in validation/LUMP-FIELD-REVIEW.md; illustrative sums are not promoted to nonlinear PDE solutions."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/lump-field-review.json",
+    "domain": {
+      "parameters": "The nine rational (a,b) pairs and seven complete recipes recorded in validation/results/lump-field-review.json.",
+      "conditions": "Single closed-form KP-I lumps and explicit noninteracting sums at times -1.6,-.4,0,.1,.4,1.6; all three display views, no PDE evolution grid.",
+      "resolution": "Preview grids 128,192,256 with square,4:5,16:9 aspects. Native prints 2400x2400,1920x2400,2400x1350. Residual differences at .04,.02,.01 and stated whole-field/print thresholds.",
+      "precision": "Exact Python Fraction polynomial coefficients; binary64 evaluation and finite differences; Float32 fields; RGBA8 prints. Browser and platform recorded."
+    }
   },
   {
     "id": "three-vortex-bound",
@@ -49414,7 +49443,7 @@ void main(){
   // X = x + a y + 3(a² − b²) t, Y = y + 6 a t.
   // Centered Manakov: a=0, b=1 → u = 4(−x² + y² + 1)/(x²+y²+1)², u(0,0)=4.
   // Scholarpedia form with 1/b²=3 is a rescaling. We use b as a control and
-  // report u_max against 4 b² (for a=0).
+  // report the visible sampled peak without substituting the analytic center.
   const KINDS = {
     one: { lumps: [{ a: 0, b: 1, x0: 0, y0: 0 }] },
     two: { lumps: [{ a: 0, b: 1.05, x0: -2.4, y0: 0 }, { a: 0, b: 0.85, x0: 2.4, y0: 0.4 }] },
@@ -49427,7 +49456,7 @@ void main(){
   const SCHEMA = [
     RANGE('Field', 'grid', 'Grid', GEOM, 128, 256, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
-    { group: 'Lumps', key: 'kind', label: 'Kind', type: 'seg', kind: GEOM, options: [['one', 'One'], ['two', 'Two'], ['three', 'Three'], ['collide', 'Collide'], ['oblique', 'Oblique'], ['tight', 'Tight']] },
+    { group: 'Lumps', key: 'kind', label: 'Kind', type: 'seg', kind: GEOM, options: [['one', 'One'], ['two', 'Two (sum)'], ['three', 'Three (sum)'], ['collide', 'Crossing (sum)'], ['oblique', 'Oblique'], ['tight', 'Tight']] },
     RANGE('Lumps', 't', 'Time t', LIVE, -4, 4, 0.05, f2),
     { group: 'Lumps', key: 'running', label: 'Run', type: 'toggle', kind: LIVE },
     RANGE('Field', 'zoom', 'View', GEOM, 0.4, 2.2, 0.05, f2),
@@ -49460,8 +49489,8 @@ void main(){
     if (!KINDS[s.kind]) s.kind = 'one';
   }
 
-  // Approximate multi-lump as a sum of exact 1-lumps (exact for well-separated;
-  // collide uses opposite a so they pass). One-lump is exact.
+  // The single rational lump solves KP-I. A sum is only an illustrative field;
+  // finite separation does not make a sum an exact nonlinear solution.
   function XY(L, x, y, t) {
     const X = (x - L.x0) + L.a * (y - L.y0) + 3 * (L.a * L.a - L.b * L.b) * t;
     const Y = (y - L.y0) + 6 * L.a * t;
@@ -49475,42 +49504,21 @@ void main(){
     const den = p.X * p.X + b2 * p.Y * p.Y + 1 / b2;
     return 4 * (-p.X * p.X + b2 * p.Y * p.Y + 1 / b2) / (den * den);
   }
-  function pdeResidual(L, x, y, t) {
-    const h = 1e-3;
-    const u = (xx, yy, tt) => u1(L, xx, yy, tt);
-    const ux = (u(x + h, y, t) - u(x - h, y, t)) / (2 * h);
-    const uxx = (u(x + h, y, t) - 2 * u(x, y, t) + u(x - h, y, t)) / (h * h);
-    const uxxx = (u(x + 2 * h, y, t) - 2 * u(x + h, y, t) + 2 * u(x - h, y, t) - u(x - 2 * h, y, t)) / (2 * h * h * h);
-    const uxxxx = (u(x + 2 * h, y, t) - 4 * u(x + h, y, t) + 6 * u(x, y, t) - 4 * u(x - h, y, t) + u(x - 2 * h, y, t)) / (h * h * h * h);
-    const uyy = (u(x, y + h, t) - 2 * u(x, y, t) + u(x, y - h, t)) / (h * h);
-    const utx = (u(x + h, y, t + h) - u(x - h, y, t + h) - u(x + h, y, t - h) + u(x - h, y, t - h)) / (4 * h * h);
-    const Fx = utx + 6 * (ux * ux + u(x, y, t) * uxx) + uxxxx;
-    return Fx - 3 * uyy;
-  }
-  function tau1(L, x, y, t) {
-    const p = XY(L, x, y, t);
-    const b2 = p.b * p.b;
-    return p.X * p.X + b2 * p.Y * p.Y + 1 / b2;
-  }
   function uAt(kind, x, y, t) {
     const spec = KINDS[kind] || KINDS.one;
-    if (spec.lumps.length === 1) return u1(spec.lumps[0], x, y, t);
-    // Product of τ's is the exact two-lump only for special polynomials;
-    // a sum of 1-lumps is the far-field and is exact at infinite separation.
-    // For the plate we use the product τ = Π τ_i, u = 2 (log τ)_xx, which is
-    // the Satsuma–Ablowitz superposition for well-separated lumps.
-    let tau = 1;
-    for (let i = 0; i < spec.lumps.length; i++) tau *= tau1(spec.lumps[i], x, y, t);
-    const h = 1e-4;
-    const tp = Math.log(prodTau(spec, x + h, y, t));
-    const t0 = Math.log(prodTau(spec, x, y, t));
-    const tm = Math.log(prodTau(spec, x - h, y, t));
-    return 2 * (tp - 2 * t0 + tm) / (h * h);
+    // Differentiate log(product tau) analytically as a sum. Finite differences
+    // here used to lose precision and did not create an interacting KP solution.
+    return spec.lumps.reduce((sum, L) => sum + u1(L, x, y, t), 0);
   }
-  function prodTau(spec, x, y, t) {
-    let tau = 1;
-    for (let i = 0; i < spec.lumps.length; i++) tau *= tau1(spec.lumps[i], x, y, t);
-    return tau;
+  function pdeResidual(kind, x, y, t, h) {
+    const u = (dx = 0, dy = 0, dt = 0) => uAt(kind, x + dx, y + dy, t + dt);
+    const c = u(), xp = u(h), xm = u(-h);
+    const ux = (xp - xm) / (2 * h), uxx = (xp - 2 * c + xm) / (h * h);
+    const uxxxx = (u(2*h) - 4*xp + 6*c - 4*xm + u(-2*h)) / h**4;
+    const uyy = (u(0,h) - 2*c + u(0,-h)) / (h*h);
+    const uxt = (u(h,0,h) - u(-h,0,h) - u(h,0,-h) + u(-h,0,-h)) / (4*h*h);
+    const terms = [uxt, 6*(ux*ux + c*uxx), uxxxx, -3*uyy];
+    return terms.reduce((a,b) => a+b, 0) / Math.max(1, ...terms.map(Math.abs));
   }
 
   function lumpCenter(L, t) {
@@ -49522,16 +49530,16 @@ void main(){
     subtitle: 'KP-I lumps · 1977',
     order: 116,
     equation: '(u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b²',
-    credit: 'Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Multi-lumps: Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). They pass through each other with no phase shift. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.',
-    blurb: 'KP-II makes Y-junctions of lines. KP-I, the other sign in front of u_yy, makes lumps: rational, decaying as 1/r², a 2D solitary wave that is exact. Two of them pass through each other and come out unshifted. The status line is the KP-I residual (u_t + 6 u u_x + u_xxx)_x − 3 u_yy against 0, by finite differences of the rational field, and the peak against 4b². If the tau function is the wrong KP, both fail.',
+    credit: 'Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Exact multi-lump solutions are studied by Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). This module implements single rational lumps; its multiple-lump modes are illustrative sums, not those interacting solutions. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.',
+    blurb: 'A single rational lump is an algebraically localized KP-I wave. One, Oblique and Tight evaluate that exact formula. Two, Three and Crossing add single-lump fields for illustration and generally fail the nonlinear KP-I equation. The displayed finite-difference residual tests the actual selected field at two spacings. Sampled peak height depends on the viewport and grid.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: {
-      Lumps: 'One is Manakov’s lump. Two and Three are products of 1-lump tau functions. Collide aims two lumps through each other; Late is after the crossing. Oblique is a drifting lump (a ≠ 0).',
+      Lumps: 'One, Oblique and Tight are single KP-I lumps. The other modes are sums without nonlinear interactions. Their equation residual need not approach zero. The peak is sampled on the visible grid.',
     },
     palette: true, defaultPalette: 'ember', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, field, metric = 0, extra = 0, kindLabel = 'one lump', buf, img, raf = 0, last = 0;
+      let W = 0, H = 0, field, metric = 0, extra = 0, residualChange = 0, kindLabel = 'one lump', buf, img, raf = 0, last = 0;
       function sizeFrom(s, wpx, hpx) {
         const a = ASPECTS[s.aspect] || 1;
         const g = s.grid | 0;
@@ -49543,7 +49551,7 @@ void main(){
         const spec = KINDS[kind] || KINDS.one;
         const L = 10 / Math.max(0.2, s.zoom);
         const t = s.t;
-        let umax = 0;
+        let umax = -Infinity;
         for (let y = 0; y < HH; y++) {
           const yy = (0.5 - (y + 0.5) / HH) * L * 2 * (HH / WW);
           for (let x = 0; x < WW; x++) {
@@ -49553,22 +49561,12 @@ void main(){
             if (u > umax) umax = u;
           }
         }
-        const pts = [[0, 0], [0.8, 0.4], [-0.6, -0.35]];
-        const ref = spec.lumps[0];
-        const ctr = lumpCenter(ref, t);
-        umax = Math.max(umax, u1(ref, ctr.x, ctr.y, t));
-        let hMax = 0, nrm = 0;
-        const rPts = pts.concat([[ctr.x, ctr.y]]);
-        for (let i = 0; i < rPts.length; i++) {
-          const P = pdeResidual(ref, rPts[i][0], rPts[i][1], t);
-          const uu = Math.abs(u1(ref, rPts[i][0], rPts[i][1], t));
-          hMax = Math.max(hMax, Math.abs(P));
-          nrm = Math.max(nrm, uu * uu + 1);
-        }
-        metric = hMax / nrm;
-        const b0 = spec.lumps[0].b;
-        extra = umax / (4 * b0 * b0);
-        kindLabel = kind === 'one' ? 'one lump' : kind === 'collide' ? 'pass-through' : (kind + ' lumps');
+        const points = [[0, 0], [0.8, 0.4], [-0.6, -0.35]].concat(spec.lumps.map(L => { const c = lumpCenter(L,t); return [c.x,c.y]; }));
+        const rms = h => Math.sqrt(points.reduce((sum, p) => sum + pdeResidual(kind,p[0],p[1],t,h)**2,0)/points.length);
+        metric = rms(0.01);
+        residualChange = Math.abs(rms(0.02) - metric);
+        extra = umax;
+        kindLabel = spec.lumps.length === 1 ? 'single exact formula' : 'illustrative sum, not a KP-I solution';
         return umax;
       }
       function compute() {
@@ -49623,11 +49621,11 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
       function status() {
-        const ok = metric < 5e-3 && extra > 0.97 && extra < 1.08;
         host.setStatus(
-          '<span>KP-I residual <b>' + metric.toExponential(1) + '</b> · 0</span>' +
-          '<span>peak / 4b² <b>' + f2(extra) + '</b></span>' +
-          '<span>' + (!ok ? 'tau failed' : kindLabel) + '</span>'
+          '<span>sampled KP-I residual <b>' + metric.toExponential(1) + '</b></span>' +
+          '<span>step sensitivity <b>' + residualChange.toExponential(1) + '</b></span>' +
+          '<span>visible grid peak <b>' + f2(extra) + '</b></span>' +
+          '<span>' + kindLabel + '</span>'
         );
       }
       function tick(now) {
@@ -49637,7 +49635,7 @@ void main(){
         if (!s.running || host.reducedMotion()) return;
         const dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
         last = now;
-        s.t = ((s.t + dt * 0.4) % 8) - 4;
+        s.t = ((s.t + 4 + dt * 0.4) % 8 + 8) % 8 - 4;
         compute(); paint(); status();
         raf = requestAnimationFrame(tick);
       }
@@ -49667,16 +49665,21 @@ void main(){
           const g = c.getContext('2d', { alpha: false });
           const tmp = new Float32Array(w * ht);
           const builtW = W, builtH = H, builtF = field, builtB = buf, builtI = img;
-          W = w; H = ht; field = tmp;
-          buf = document.createElement('canvas'); buf.width = w; buf.height = ht;
-          img = buf.getContext('2d').createImageData(w, ht);
-          fill(s, w, ht, tmp);
-          paintBuf();
-          g.fillStyle = s.bg || '#111'; g.fillRect(0, 0, w, ht);
-          g.drawImage(buf, 0, 0);
-          W = builtW; H = builtH; field = builtF; buf = builtB; img = builtI;
-          paint();
-          return U.toBlob(c);
+          const diagnostics = [metric, extra, residualChange, kindLabel];
+          try {
+            W = w; H = ht; field = tmp;
+            buf = document.createElement('canvas'); buf.width = w; buf.height = ht;
+            img = buf.getContext('2d').createImageData(w, ht);
+            fill(s, w, ht, tmp);
+            paintBuf();
+            g.fillStyle = s.bg || '#111'; g.fillRect(0, 0, w, ht);
+            g.drawImage(buf, 0, 0);
+            return await U.toBlob(c);
+          } finally {
+            W = builtW; H = builtH; field = builtF; buf = builtB; img = builtI;
+            [metric, extra, residualChange, kindLabel] = diagnostics;
+            paint();
+          }
         },
       };
     },
