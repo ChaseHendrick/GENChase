@@ -78,10 +78,12 @@ function stampRepo(fs, path, root, n, mods) {
   const num = String(n);
   const write = (rel, transform) => {
     const file = path.join(root, rel);
-    if (!fs.existsSync(file)) return;
+    if (!fs.existsSync(file)) return false;
     const before = fs.readFileSync(file, 'utf8');
     const after = transform(before);
-    if (after !== before) fs.writeFileSync(file, after);
+    if (after === before) return false;
+    fs.writeFileSync(file, after);
+    return true;
   };
 
   write('README.md', t => stampText(t, n));
@@ -89,8 +91,10 @@ function stampRepo(fs, path, root, n, mods) {
   write('CONTRIBUTING.md', t => stampText(t, n));
   write('DESIGN-PLAN.md', t => stampText(t, n));
   write('AGENTS.md', t => stampText(t, n));
-  write('src/studio.html', t => stampStudio(t, n));
-  require('./build.js').build();
+  const studioChanged = write('src/studio.html', t => stampStudio(t, n));
+  // index.js already verified the current build. Only a changed template needs another
+  // assembly; unchanged catalog refreshes need not evaluate every registration again.
+  if (studioChanged) require('./build.js').build();
   write('RESEARCH.md', t => {
     let next = stampText(t, n);
     next = next.replace(/^Last updated \d{4}-\d{2}-\d{2}\./m,

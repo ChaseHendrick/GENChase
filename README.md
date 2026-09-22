@@ -4,7 +4,7 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
-A folder-based studio with one shared engine and 128 pattern-forming systems. Techniques load when selected; a portable HTML export is also included.
+A folder-based studio with one shared engine and 130 pattern-forming systems. Techniques load when selected; a portable HTML export is also included.
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
@@ -160,6 +160,8 @@ formula-entry box. The [formula submission guide](validation/FORMULA-SUBMISSIONS
 how to state assumptions, supply an independent benchmark and record measured errors and
 failure controls. New submissions start unvalidated. Passing syntax, image or runtime checks
 does not establish mathematical correctness or originality.
+
+**Heavy computation:** [Direct Gravity](validation/DIRECT-GRAVITY.md) evaluates every body pair on the CPU; [Wave volume](validation/VOLUME-WAVE.md) evolves a three-dimensional GPU field. Explicit stress controls reach 16,384 bodies or 256³ cells. The [heavy-compute guide](docs/HEAVY-COMPUTE.md) covers workload limits, bounded evidence and an optional Python runner with NumPy or CuPy/CUDA. The browser engine has no application-wide FPS cap; display refresh and hardware still govern rendering.
 
 **The engine:** [`src/shared/engine.js`](src/shared/engine.js) holds shared controls, recipes, palettes and print behavior. Techniques live in [`src/modules/`](src/modules/).
 

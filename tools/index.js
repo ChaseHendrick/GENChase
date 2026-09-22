@@ -2,12 +2,10 @@
 // Generate the catalog from actual maintained registrations, without dependencies.
 const path = require('node:path'), fs = require('node:fs');
 const count = require('./count.js');
-const { metadata } = require('./registry.js');
 
 (() => {
   const root = path.resolve(__dirname, '..');
-  require('./build.js').build(true);
-  const { techniques: mods, aliases } = metadata(root);
+  const { techniques: mods, aliases } = require('./build.js').verify();
   for (const m of mods) {
     m.hash = m.seed ? '#' + m.id + '/' + m.seed : '#' + m.id;
     m.aliases = Object.keys(aliases).filter(k => aliases[k] === m.id);

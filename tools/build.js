@@ -3,7 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
-function outputs() {
+function generate() {
   const seen = new Set();
   const template = fs.readFileSync(path.join(root, 'src/studio.html'), 'utf8');
   const licensed = template.replace('{{licenses}}', () => ['LICENSE', 'NOTICE', 'OUTPUT-RIGHTS.md', 'licenses/Geist-OFL.txt', 'licenses/GeistMono-OFL.txt', 'licenses/InstrumentSerif-OFL.txt'].map(file => file + '\n' + fs.readFileSync(path.join(root, file), 'utf8').replace(/[ \t]+$/gm, '')).join('\n\n'));
@@ -33,13 +33,13 @@ function outputs() {
     throw Error('Unsupported folder include: ' + name);
   });
   if (folder.includes('{{include:')) throw Error('Unresolved folder include');
-  const manifest = require('./registry.js').metadata(root, [...seen].filter(name => name.startsWith('modules/')));
+  const manifest = require('./registry.js').metadata(root, [...seen].filter(name => name.startsWith('modules/')), bodies);
   const portable = result.replace('href="VALIDATION.md"', 'href="../VALIDATION.md"');
-  return { 'index.html': folder, 'dist/studio.html': portable, 'src/module-manifest.json': JSON.stringify({ techniques: manifest.techniques }, null, 2) + '\n' };
+  return { manifest, files: { 'index.html': folder, 'dist/studio.html': portable, 'src/module-manifest.json': JSON.stringify({ techniques: manifest.techniques }, null, 2) + '\n' } };
 }
+function outputs() { return generate().files; }
 function assemble() { return outputs()['dist/studio.html']; }
-function build(check = false) {
-  const generated = outputs();
+function publish(generated, check) {
   for (const [name, output] of Object.entries(generated)) {
     const file = path.join(root, name);
     if (check) {
@@ -51,8 +51,16 @@ function build(check = false) {
   }
   return generated['dist/studio.html'];
 }
+function build(check = false) { return publish(outputs(), check); }
+function verify() {
+  const { files, manifest } = generate();
+  publish(files, true);
+  // Catalog generation can consume the registrations we just checked instead of evaluating
+  // every simulation a second time. A later call still starts from fresh source reads.
+  return manifest;
+}
 if (require.main === module) {
   try { build(process.argv.includes('--check')); console.log('Studio assembly OK'); }
   catch (err) { console.error(err.message); process.exitCode = 1; }
 }
-module.exports = { assemble, build, outputs };
+module.exports = { assemble, build, outputs, verify };

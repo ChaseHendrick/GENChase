@@ -343,7 +343,7 @@ These are software claims. They transfer. They are not physics.
 
 ## Per-tab status
 
-128 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
+130 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
 
 Familiarity is listed so you do not confuse it with prior-art status.
 
@@ -477,6 +477,8 @@ Familiarity is listed so you do not confuse it with prior-art status.
 | `shallow` | Shallow Water | occasional | science only | never searched |
 | `neural-mass` | Neural Populations | occasional | science only | never searched |
 | `hodgkin-huxley` | Hodgkin-Huxley Membranes | occasional | science only | never searched |
+| `direct-gravity` | Direct Gravity | common | science only | never searched |
+| `volume-wave` | Wave volume | occasional | science only | never searched |
 
 ## Notes on the rows that are not `science only`
 
@@ -1371,3 +1373,26 @@ Catalog inspection found existing Schnakenberg kinetics and a Hopf-Cole cosmic-w
 The two draft contributor proposals therefore cover a scalar Fisher-KPP front and
 finite-relaxation heat transport. They are proposed implementations of published science,
 not discoveries. See `docs/CONTRIBUTOR-TASKS.md`.
+
+
+## 2026-09-21: heavy computation reference checks
+
+
+2026-09-21. Reference verification for a direct CPU gravity module, not an originality search.
+Queries: `site.aanda.org gravitational softening Plummer force potential N body Dehnen 2001`
+and `site.nvidia.com GPU Gems 3 fast N body simulation softening velocity verlet`.
+Opened the author chapter by Nyland, Harris and Prins:
+https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-31-fast-n-body-simulation-cuda
+and Dehnen's primary preprint https://arxiv.org/abs/astro-ph/0011568 .
+The implementation uses established all-pairs Plummer-softened Newtonian gravity and
+velocity Verlet, restricted to planar coordinates. It claims neither novelty nor a
+paper-reproduced galaxy state. Softening and finite-time limitations are in DIRECT-GRAVITY.md.
+
+
+
+Date: 2026-09-21.
+Query: `site.hplgit.github.io fdm book wave three dimensional stability Courant sqrt`.
+Read the author-hosted [multidimensional wave stability analysis](https://hplgit.github.io/fdm-book/doc/pub/wave/html/._wave-solarized004.html), equations 94 through 100, including the three-dimensional bound (99).
+The source gives the centered finite-difference dispersion relation and the constant-speed stability bound. The new implementation specializes it to an equal-spacing periodic unit cube and uses a strict 0.95 margin. The method is established numerical analysis. No historical-originality search or novelty claim is implied.
+
+Native backend installation was checked against https://docs.cupy.dev/en/stable/install.html using query `site.docs.cupy.dev stable install cupy CUDA requirements`. The optional backend requires compatible CUDA hardware; no CUDA run is claimed on the local Mac.

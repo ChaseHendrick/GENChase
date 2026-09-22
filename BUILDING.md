@@ -128,3 +128,7 @@ of every long trajectory. Read [Maxwell's limits](validation/MAXWELL.md) and
 geometry, particle/field, exact shallow-water wave and nonlinear-mixture benchmarks,
 then their actual export-state checks. These support the bounded claims recorded in
 `validation/`; they do not establish every model or parameter choice as accurate.
+
+## Optional native experiments
+
+[Heavy computation](docs/HEAVY-COMPUTE.md) documents the separate NumPy/CuPy runner. These optional dependencies do not change the dependency-free browser studio or fast Node checks. `python tools/heavy-runner-check.py` runs CPU reference and CLI checks after installing NumPy. CUDA needs separate hardware verification.

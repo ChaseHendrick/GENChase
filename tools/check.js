@@ -98,6 +98,11 @@ async function settle(p, maxMs, seed) {
     // A status the technique has not rewritten yet carries no grid, which silently disables the
     // checkerboard detector. Wait for the technique to report before calling the plate settled.
     if (seed && m.status && m.status.indexOf(seed) < 0) { last = ''; same = 0; continue; }
+    // A progressive solver may leave its preview unchanged while a work batch runs.
+    // That is not a completed still plate and cannot establish replay agreement.
+    if (/\b(?:relaxing|warming|computing|initial forces)\b|\b\d+\s+queued\b/i.test(m.status || '')) {
+      last = ''; same = 0; continue;
+    }
     same = m.fp === last ? same + 1 : 0; last = m.fp;
     if (same >= 2) return 'still';                           // the pixels stopped changing
     const st = m.status || '';

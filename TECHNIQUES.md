@@ -1,6 +1,6 @@
 # Techniques
 
-128 pattern-forming systems in a shared studio. Generated from maintained module registrations by `node tools/index.js`; do not edit by hand.
+130 pattern-forming systems in a shared studio. Generated from maintained module registrations by `node tools/index.js`; do not edit by hand.
 
 Serve the folder and open `index.html`, or open the portable `dist/studio.html`, and append the hash to restore its seed and settings. Preserve the studio version, settings and seed for historical reproduction; numerical precision, browser, hardware and output dimensions can affect results. `#snowflake/gravner-2008` names the technique and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 
@@ -91,6 +91,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Dendritic Growth**<br><sub>phase-field solidification: snowflakes and metal dendrites · 1993</sub> | `#dendrite` | τ p_t = ∇·(ε(θ)²∇p) + ∂x(ε ε′ p_y) − ∂y(ε ε′ p_x) + p(1−p)(p − ½ + m);   T_t = ∇²T + K p_t | raster | live | Common |
 | **Purcell Swimmer**<br><sub>a scallop cannot swim in molasses · 1977</sub> | `#purcell` | Re → 0,   scallop theorem: a reciprocal gait gives Δx = 0,   three-link square gait: Δx ≠ 0 | raster | still | Rare |
 | **Exceptional Point**<br><sub>two eigenvectors become one · 1998</sub> | `#exceptional` | H = [[iγ, κ],[κ, −iγ]],   λ = ±√(κ²−γ²),   EP at γ = κ | raster | still | Almost unseen |
+| **Direct Gravity**<br><sub>every pair attracts · Newton 1687 / Verlet 1967</sub> | `#direct-gravity` | a_i = Σ(j≠i) m_j (r_j−r_i) / (\|r_j−r_i\|²+ε²)^(3/2), G=1; velocity Verlet | SVG | live | Common |
 | **Meissner**<br><sub>a field a perfect conductor would have frozen, expelled · 1933</sub> | `#meissner` | ∇²B = B/λ²,   B(r) = B0 I0(r/λ) / I0(R/λ)   (cylinder) | raster | still | Occasional |
 | **Tennis Racket**<br><sub>the intermediate axis that will not spin · 1834 / 1991</sub> | `#tennis` | I1 ω1' = (I2−I3) ω2 ω3  (cyc.),   I1 < I2 < I3,   ω2 flips | raster | still | Occasional |
 | **Flow Field**<br><sub>collision-avoiding strokes in a noise field · 1985</sub> | `#flow` | theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta) | SVG | still | Ubiquitous |
@@ -114,6 +115,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Talbot carpet**<br><sub>near-field self-imaging · 1836</sub> | `#talbot/talbot-1836` | I(x,z) = \|Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)\|²,   z_T = 2 d²/λ | raster | still | Occasional |
 | **Hydrogen orbitals**<br><sub>hydrogen atom probability density \|ψₙₗₘ\|² · 1926</sub> | `#orbitals/schrodinger-1926` | ψₙₗₘ = Rₙₗ(r) Yₗₘ(θ, φ),   Rₙₗ ∝ ρˡ e^{−ρ/2} L²ˡ⁺¹ₙ₋ₗ₋₁(ρ),   ρ = 2r / n a₀ | raster | still | Common |
 | **Loschmidt Echo**<br><sub>a gas that unmixes when you flip every arrow · 1876</sub> | `#loschmidt` | x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1 | raster | still | Rare |
+| **Wave volume**<br><sub>three-dimensional wave equation · classical</sub> | `#volume-wave/wave-cube` | ∂²u/∂t² = c²(∂²u/∂x² + ∂²u/∂y² + ∂²u/∂z²) | raster | can run | Occasional |
 | **Boy's Surface**<br><sub>a projective plane sewn into R³ · 1901</sub> | `#boy` | Bryant–Kusner immersion RP² ↪ R³,   one triple point,   no boundary | raster | still | Occasional |
 | **Indra's Pearls**<br><sub>Schottky limit set · Mumford–Series–Wright</sub> | `#pearls/indra-2002` | Γ = ⟨a, b⟩  Schottky,   Λ(Γ) = ∩ g∈Γ g(Ĉ \ Ω) | SVG | still | Common |
 | **Ising Model**<br><sub>Metropolis Monte Carlo on the square lattice · 1925</sub> | `#ising/ising-1925` | E = −J Σ⟨ij⟩ sᵢsⱼ − h Σᵢ sᵢ,   P(flip) = min(1, e^{−ΔE/T}),   T_c = 2/ln(1+√2) ≈ 2.269 | raster | live | Ubiquitous |
@@ -305,6 +307,8 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Exceptional Point**. C. M. Bender and S. Boettcher, Phys. Rev. Lett. 80, 5243 (1998), on PT-symmetric spectra; Heiss (2004) and many others on exceptional points, where both eigenvalues and eigenvectors coalesce. Hermitian matrices cannot do this. The plate is Re λ (and the gap) over the (κ, γ) plane, or the two modes of one dimer.
 
+**Direct Gravity**. Newton, Principia (1687); Verlet, Physical Review 159 (1967), 98. Plummer softening and the direct all-pairs kernel: Nyland, Harris and Prins, GPU Gems 3, chapter 31 (2007). This implementation runs the pair kernel on the CPU.
+
 **Meissner**. W. Meissner and R. Ochsenfeld, Naturwissenschaften 21, 787 (1933). A perfect conductor would freeze the flux it was born with. A superconductor expels it. The London brothers (1935) wrote ∇²B = B/λ². The plate is a Jacobi relax of that Helmholtz problem on a disk.
 
 **Tennis Racket**. L. Poinsot (1834) drew the polhode. The tennis-racket (or intermediate-axis) theorem says a rotation about the middle principal axis is unstable. V. Dzhanibekov saw a wingnut flip in free fall in 1985; video from 1991 made it famous. The plate is spacetime of the body-frame ω, with the middle component across the page.
@@ -350,6 +354,8 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 **Hydrogen orbitals**. Erwin Schrödinger, Quantisierung als Eigenwertproblem, Annalen der Physik 79, 361 (1926), solved the hydrogen atom as a wave equation; the radial functions are associated Laguerre polynomials and the angular parts spherical harmonics. The plate evaluates \|ψ\|² exactly from those polynomials and either integrates it along view rays or cuts a plane through it.
 
 **Loschmidt Echo**. J. Loschmidt, Sitzungsber. Kais. Akad. Wiss. Wien 73, 128 (1876), objected to Boltzmann: reverse every velocity and the entropy decrease is as lawful as the increase. The objection is correct for a finite isolated system; the catch is the exponential sensitivity that makes the reversal unprepareable. The plate is non-interacting tracers on a ring, reversed on cue, so the echo is exact and visible.
+
+**Wave volume**. Classical scalar wave equation. Centered finite differences and the three-dimensional CFL bound follow H. P. Langtangen and S. Linge, Finite Difference Computing with PDEs (2017), wave equation chapter, https://hplgit.github.io/fdm-book/doc/pub/wave/html/._wave-solarized004.html. No novelty or full acoustic model is claimed.
 
 **Boy's Surface**. W. Boy, Math. Ann. 57, 151 (1903), constructed an immersion of the real projective plane in three-space at Hilbert's request; RP² is non-orientable and was not supposed to sit in R³ without a boundary. R. Bryant and R. Kusner (1980s) gave the smooth parametrisation used here. The plate is a z-buffer density of that immersion, not a glass model.
 

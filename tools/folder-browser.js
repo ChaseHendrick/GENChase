@@ -60,11 +60,15 @@ async function settledPlate(page) {
   try {
     browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
     const context = await browser.newContext({ viewport: { width: 1000, height: 720 }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
+    await context.addInitScript(() => {
+      window.__schedulerBefore = { request: window.requestAnimationFrame, cancel: window.cancelAnimationFrame };
+    });
     const page = await context.newPage(), requests = [], errors = [];
     page.on('request', request => requests.push(request.url()));
     page.on('pageerror', error => errors.push(error.message));
     await page.goto(origin + '/index.html' + initialHash);
     await page.evaluate(() => Studio.ready);
+    assert.ok(await page.evaluate(() => requestAnimationFrame === window.__schedulerBefore.request && cancelAnimationFrame === window.__schedulerBefore.cancel), 'Studio must preserve the native refresh-rate scheduler');
     await selected(page, initialId);
     const folderPlate = await settledPlate(page);
     const requestedSources = requests.filter(url => new URL(url).pathname.startsWith('/src/modules/')).map(url => new URL(url).pathname.slice(1));

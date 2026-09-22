@@ -3,7 +3,7 @@
   "repository": "https://github.com/SharpMeow/GENChase",
   "file": "index.html",
   "portableFile": "dist/studio.html",
-  "count": 128,
+  "count": 130,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "aliases": {},
   "familiarityBuckets": [
@@ -2249,6 +2249,33 @@
       "aliases": []
     },
     {
+      "id": "direct-gravity",
+      "source": "src/modules/direct-gravity.js",
+      "name": "Direct Gravity",
+      "tab": "Direct Gravity",
+      "subtitle": "every pair attracts · Newton 1687 / Verlet 1967",
+      "equation": "a_i = Σ(j≠i) m_j (r_j−r_i) / (|r_j−r_i|²+ε²)^(3/2), G=1; velocity Verlet",
+      "credit": "Newton, Principia (1687); Verlet, Physical Review 159 (1967), 98. Plummer softening and the direct all-pairs kernel: Nyland, Harris and Prins, GPU Gems 3, chapter 31 (2007). This implementation runs the pair kernel on the CPU.",
+      "blurb": "Every point attracts every other point, with no tree approximation or hidden particle cap. Positions lie in a plane but use the three-dimensional inverse-distance potential. Softening replaces singular encounters with a smooth force; it changes the model. Disk and ring seeds are prepared configurations, not claimed equilibrium galaxies. Heavy particle counts increase work quadratically. Each run stops at its step budget, and pause remains available while pairs are being computed.",
+      "order": 66.4,
+      "seed": "",
+      "presets": [
+        "disk",
+        "ring",
+        "collision",
+        "collapse",
+        "hot",
+        "extreme"
+      ],
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "",
+      "hash": "#direct-gravity",
+      "aliases": []
+    },
+    {
       "id": "meissner",
       "source": "src/modules/meissner.js",
       "name": "Meissner",
@@ -2874,6 +2901,32 @@
       "runningDefault": false,
       "headline": "",
       "hash": "#loschmidt",
+      "aliases": []
+    },
+    {
+      "id": "volume-wave",
+      "source": "src/modules/volume-wave.js",
+      "name": "Wave volume",
+      "tab": "Wave volume",
+      "subtitle": "three-dimensional wave equation · classical",
+      "equation": "∂²u/∂t² = c²(∂²u/∂x² + ∂²u/∂y² + ∂²u/∂z²)",
+      "credit": "Classical scalar wave equation. Centered finite differences and the three-dimensional CFL bound follow H. P. Langtangen and S. Linge, Finite Difference Computing with PDEs (2017), wave equation chapter, https://hplgit.github.io/fdm-book/doc/pub/wave/html/._wave-solarized004.html. No novelty or full acoustic model is claimed.",
+      "blurb": "A wave travels through a periodic cube, including the unseen layers behind this slice. Select XY, XZ or YZ to look inside the same evolving field. A pulse launches waves in every direction; standing and crossed Fourier modes reveal interference. This is a scalar, uniform-speed, lossless wave equation in normalized units, not a full electromagnetic or elastic material model. Every step updates the whole volume. Heavy grids are explicit choices, and a print preserves the current field rather than adding simulated cells.",
+      "order": 96.3,
+      "seed": "wave-cube",
+      "presets": [
+        "crossed",
+        "pulse",
+        "standing",
+        "transverse",
+        "side"
+      ],
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#volume-wave/wave-cube",
       "aliases": []
     },
     {

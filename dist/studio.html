@@ -23,11 +23,11 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GENChase — generative art from real simulations">
-<meta property="og:description" content="128 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
+<meta property="og:description" content="130 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
 <meta property="og:site_name" content="GENChase">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GENChase — generative art from real simulations">
-<meta name="twitter:description" content="128 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<meta name="twitter:description" content="130 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "A generative art studio built from real scientific simulations. 128 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
+  "description": "A generative art studio built from real scientific simulations. 130 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
   "featureList": [
     "Flow fields with collision-avoiding strokes",
     "Gray-Scott reaction-diffusion",
@@ -1504,7 +1504,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>Almost every tab is the paper it names. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 128 sciences share one control surface,
+      <p>Almost every tab is the paper it names. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 130 sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -1646,7 +1646,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           in bands, with a spacing that grows geometrically. Liesegang, 1896.</li>
       </ul>
 
-      <p class="colo" id="catalog-count">The live catalog is 128 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
+      <p class="colo" id="catalog-count">The live catalog is 130 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
       <h3>How it is built</h3>
       <p>The folder studio uses one shared engine and loads technique files as you open their tabs.
         Start a launcher in run/ to serve the folder on your own computer. No package installation,
@@ -2164,6 +2164,8 @@ void main(){
     unseen: 'Almost unseen',
   };
   const FAMILIARITY = {
+    'direct-gravity': 'common',
+    'volume-wave': 'common',
     surfaces: 'common',
     plasma: 'occasional',
     shallow: 'occasional',
@@ -2351,60 +2353,9 @@ void main(){
     return byId[id];
   }
 
-  /* ---- hold the simulation rate steady whatever the monitor does ----
-     Every technique drives its own requestAnimationFrame loop and does a fixed amount of simulation
-     per frame, so the display's refresh rate sets how fast a plate evolves in wall-clock time: twice
-     as fast on a 120 Hz laptop as on a 60 Hz desktop, four times on a 240 Hz monitor. The exported
-     plate is identical either way, because warm-ups are counted in steps rather than seconds, but a
-     living plate races on one machine and crawls on another, and the fast machine spends the extra
-     frames for no extra detail.
-
-     Sixty-odd loops call requestAnimationFrame directly, so the gate goes here rather than in each
-     of them. Whole frames are accepted or skipped, and every callback waiting on an accepted frame
-     runs on it. Gating each callback separately against a shared clock instead looks simpler and is
-     wrong: the first loop to run claims the frame, so a loop registered later never sees an interval
-     long enough and is starved forever. That version delivered exactly zero callbacks to a second
-     loop in twelve seconds while the first kept running.
-
-     Callbacks are deferred, never dropped, so the sequence of states is what it always was and only
-     the rate is bounded. cancelAnimationFrame keeps working because the id handed back is ours. */
-  (function holdFrameRate() {
-    const nativeRequest = window.requestAnimationFrame.bind(window);
-    const nativeCancel = window.cancelAnimationFrame.bind(window);
-    const MIN_FRAME_MS = 1000 / 60.5;   // just under 60 so a 60 Hz display never skips a frame
-    let queue = [];                     // callbacks waiting for an accepted frame
-    let driver = 0;                     // the one native request outstanding, if any
-    let lastRun = -1e9;
-    let nextId = 1;
-    const byId = new Map();
-
-    function pump(t) {
-      driver = 0;
-      if (t - lastRun < MIN_FRAME_MS) { driver = nativeRequest(pump); return; }
-      lastRun = t;
-      const batch = queue;
-      queue = [];
-      for (const e of batch) {
-        if (e.cancelled) continue;
-        byId.delete(e.id);
-        try { e.cb(t); } catch (err) { setTimeout(() => { throw err; }); }
-      }
-      if (queue.length && !driver) driver = nativeRequest(pump);
-    }
-
-    window.requestAnimationFrame = function (cb) {
-      const e = { cb, id: nextId++, cancelled: false };
-      queue.push(e);
-      byId.set(e.id, e);
-      if (!driver) driver = nativeRequest(pump);
-      return e.id;
-    };
-    window.cancelAnimationFrame = function (id) {
-      const e = byId.get(id);
-      if (e) { e.cancelled = true; byId.delete(id); }
-      else nativeCancel(id);            // an id from before this shim, or from another source
-    };
-  })();
+  // Use the browser's native animation scheduler without an application FPS cap.
+  // Refresh rate changes wall-clock playback speed for frame-driven simulations;
+  // numerical timesteps and finite warm-up step counts remain module settings.
 
   const STORE = 'genchase.v1.';
   // Recipe version. Bumped to 2 when the default grids were raised so that plates print sharp.
@@ -9723,7 +9674,6 @@ void main(){
   const PACK_N = 4096;           // entries in the float -> byte encoding table
   const TOP = 1.6;               // encoded ceiling, as a multiple of the measured reference level
   const REF_PCT = 0.99;          // percentile of occupied cells used as the reference level
-  const REF_FALL = 0.97;         // reference level rises at once, falls slowly (no flicker)
 
   const f1 = v => v.toFixed(1);
   const f2 = v => v.toFixed(2);
@@ -9929,7 +9879,7 @@ void main() {
       let gl = null, pass = null, rampTex = null, rampKey = '', volTex = null, volKey = '', failed = false;
       let raf = 0, timer = 0, orbitPhase = 0, frameMs = 0, uploadTick = 0;
       let lastGap = 16, lastSimMs = 0, lastFrameAt = 0;
-      let sim = null, refLevel = 0, dirty = true;
+      let sim = null, dirty = true;
 
       const packLUT = new Uint8Array(PACK_N);
       for (let i = 0; i < PACK_N; i++) packLUT[i] = Math.round(255 * Math.sqrt((i + 0.5) / PACK_N));
@@ -10051,7 +10001,7 @@ void main() {
         sim.nz = s.spawn === 'noise' ? U.makeNoise(sim.rng) : null;
         for (let i = 0; i < N; i++) placeAgent(s.spawn, i);
         if (s.food > 0) placeFood(sim.pts);
-        refLevel = 0; dirty = true;
+        dirty = true;
       }
 
       /* ---------------- one simulation step ---------------- */
@@ -10175,17 +10125,16 @@ void main() {
       /* ---------------- self-calibrating encode ---------------- */
       // The trail's absolute scale swings by orders of magnitude with agents, deposit and
       // decay, so the reference level is measured from the volume itself: a high percentile
-      // of the occupied cells. It rises at once and falls slowly, so the picture neither
-      // clips nor flickers while the network grows.
+      // of the occupied cells. The reference depends only on the current field, not
+      // how many preview frames happened to render before this simulation step.
       function measureRef() {
         const t = sim.trail, n = t.length, stride = Math.max(1, Math.floor(n / 9000));
         samplesBuf.length = 0;
         for (let i = 0; i < n; i += stride) { const v = t[i]; if (v > 1e-6) samplesBuf.push(v); }
-        if (!samplesBuf.length) return Math.max(refLevel, 1e-6);
+        if (!samplesBuf.length) return 1e-6;
         samplesBuf.sort((p, q) => p - q);
         const p = samplesBuf[Math.min(samplesBuf.length - 1, Math.floor(samplesBuf.length * REF_PCT))];
-        refLevel = refLevel > 0 ? Math.max(p, refLevel * REF_FALL) : p;
-        return Math.max(refLevel, 1e-6);
+        return Math.max(p, 1e-6);
       }
 
       // volume -> atlas bytes, encoded as sqrt(v / (ref*TOP)) so 8 bits keep the faint trail
@@ -25824,9 +25773,9 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
         imPass.draw(P.write, Object.assign({}, base, { u_psi: P.read, u_omega: 0, u_dt: 0, u_scale: k }));
         P.swap();
       }
-      function step(n) {
+      function step(n, fixedDt) {
         const s = host.getState();
-        const dt = dtOf(s), dx = dxOf(s);
+        const dt = fixedDt === undefined ? dtOf(s) : fixedDt, dx = dxOf(s);
         const base = { u_res: [gw, gh], u_dx: dx, u_half: s.half, u_g: s.g, u_trap: s.trap, u_dt: dt };
         for (let i = 0; i < n; i++) {
           if (s.mode === 'ground') {
@@ -26035,11 +25984,14 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
       }
       function burst(total) {
         stop();
-        let left = total;
+        let left = total, batchLeft = 0, batchDt = 0;
         (function chunk() {
-          const n = Math.min(400, left); left -= n;
-          step(n);
-          if (left > 0) { if (left % 2000 < 400) { measure(); status('relaxing'); } chunkTimer = setTimeout(chunk, 0); }
+          // Preserve the existing 400-step timestep cadence while yielding more often.
+          // Recomputing dt every yield would change the numerical trajectory.
+          if (!batchLeft) { batchLeft = Math.min(400, left); batchDt = dtOf(host.getState()); }
+          const n = Math.min(8, batchLeft); left -= n; batchLeft -= n;
+          step(n, batchDt);
+          if (left > 0) { if (left % 2000 < 8) { measure(); paintAll(); status('relaxing'); } chunkTimer = setTimeout(chunk, 0); }
           else { measure(); findVortices(); paintAll(); status(); startLoop(); }
         })();
       }
@@ -26058,8 +26010,9 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
           normV = 1; maxV = 1;
           upload(P.read, seedField(s));
           measure();
+          paintAll(); // Show the initialized field while the finite warm-up runs.
           const warm = host.reducedMotion() ? Math.min(s.warmup, 2000) : s.warmup;
-          if (warm > 0) burst(warm);
+          if (warm > 0) { status('relaxing'); burst(warm); }
           else { paintAll(); status(); startLoop(); }
         },
         repaint() { if (P) { if (host.getState().view === 'vortices') findVortices(); paintAll(); } },
@@ -48778,6 +48731,302 @@ void main(){
     surprise(rng) { return { eta: rng.range(-2, 2), J: rng.range(-4, 8), delta: rng.range(.3, 1.5), amplitude: rng.range(.5, 2.5), frequency: rng.range(.06, .5), view: rng.pick(['phase', 'rate', 'voltage']) }; },
     sanitize(s) { s.populations = [16, 32, 64, 128].includes(s.populations) ? s.populations : 32; s.dt = U.clamp(Number(s.dt) || .002, .0005, .008); s.delta = U.clamp(Number(s.delta) || .5, .1, 2); },
     create,
+  });
+})();
+</script>
+<script>/* modules/direct-gravity.js */
+/* Planar direct N-body gravity. Original implementation of published equations. */
+(function () {
+  'use strict';
+  const U = Studio.util, Pal = Studio.PALETTES;
+  const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '16:9': 9 / 16 };
+  const range = (group, key, label, kind, min, max, step, fmt = String) =>
+    ({ group, key, label, kind, type: 'range', min, max, step, fmt });
+  function allocate(n) {
+    const b = { n };
+    for (const key of ['x', 'y', 'vx', 'vy', 'ax', 'ay', 'mass']) b[key] = new Float64Array(n);
+    return b;
+  }
+  // Each unordered pair is evaluated once; opposite forces update both bodies.
+  // Yield within long rows, so even the largest N never requires an entire row per task.
+  function* forces(b, eps, batch = 2048) {
+    b.ax.fill(0); b.ay.fill(0);
+    let work = 0;
+    for (let i = 0; i < b.n; i++) for (let j = i + 1; j < b.n; j++) {
+      const dx = b.x[j] - b.x[i], dy = b.y[j] - b.y[i];
+      const r2 = dx * dx + dy * dy + eps * eps;
+      const inv = 1 / (r2 * Math.sqrt(r2));
+      const fx = dx * inv, fy = dy * inv;
+      b.ax[i] += b.mass[j] * fx; b.ay[i] += b.mass[j] * fy;
+      b.ax[j] -= b.mass[i] * fx; b.ay[j] -= b.mass[i] * fy;
+      if (++work === batch) { work = 0; yield; }
+    }
+  }
+  function* verlet(b, eps, dt, batch = 2048) {
+    for (let i = 0; i < b.n; i++) {
+      b.vx[i] += 0.5 * dt * b.ax[i]; b.vy[i] += 0.5 * dt * b.ay[i];
+      b.x[i] += dt * b.vx[i]; b.y[i] += dt * b.vy[i];
+    }
+    yield* forces(b, eps, batch);
+    for (let i = 0; i < b.n; i++) {
+      b.vx[i] += 0.5 * dt * b.ax[i]; b.vy[i] += 0.5 * dt * b.ay[i];
+    }
+  }
+  // The softened pair potential has Hessian norm <= 1/eps^3. For total mass M,
+  // sqrt(2 M/eps^3) bounds a conservative local relative-acceleration scale.
+  // The 0.15 margin resolves that scale; it is NOT a global nonlinear accuracy proof.
+  function timeStep(eps, totalMass, requested) {
+    return Math.min(requested, 0.15 * Math.sqrt(eps * eps * eps / (2 * totalMass)));
+  }
+  function initial(s, rng) {
+    const b = allocate(s.count), n = b.n;
+    for (let i = 0; i < n; i++) {
+      const a = rng() * 2 * Math.PI;
+      const r = s.layout === 'ring' ? 0.72 + 0.08 * rng() : 0.12 + 0.82 * Math.sqrt(rng());
+      const side = i < n / 2 ? -1 : 1;
+      const scale = s.layout === 'collision' ? 0.42 : 1;
+      b.x[i] = scale * r * Math.cos(a) + (s.layout === 'collision' ? side * 0.82 : 0);
+      b.y[i] = scale * r * Math.sin(a);
+      b.vx[i] = -s.spin * Math.sin(a) + s.heat * rng.gauss();
+      b.vy[i] = s.spin * Math.cos(a) + s.heat * rng.gauss();
+      if (s.layout === 'collision') { b.vx[i] -= 0.25 * side; b.vy[i] += 0.12 * side; }
+      b.mass[i] = 1 / n;
+    }
+    for (const key of ['x', 'y', 'vx', 'vy']) {
+      let mean = 0; for (let i = 0; i < n; i++) mean += b[key][i] / n;
+      for (let i = 0; i < n; i++) b[key][i] -= mean;
+    }
+    return b;
+  }
+  const preset = (label, p, palette) => ({ label, p, palette });
+  Studio.register({
+    id: 'direct-gravity', name: 'Direct Gravity', tab: 'Direct Gravity', order: 66.4,
+    subtitle: 'every pair attracts · Newton 1687 / Verlet 1967',
+    equation: 'a_i = Σ(j≠i) m_j (r_j−r_i) / (|r_j−r_i|²+ε²)^(3/2), G=1; velocity Verlet',
+    credit: 'Newton, Principia (1687); Verlet, Physical Review 159 (1967), 98. Plummer softening and the direct all-pairs kernel: Nyland, Harris and Prins, GPU Gems 3, chapter 31 (2007). This implementation runs the pair kernel on the CPU.',
+    blurb: 'Every point attracts every other point, with no tree approximation or hidden particle cap. Positions lie in a plane but use the three-dimensional inverse-distance potential. Softening replaces singular encounters with a smooth force; it changes the model. Disk and ring seeds are prepared configurations, not claimed equilibrium galaxies. Heavy particle counts increase work quadratically. Each run stops at its step budget, and pause remains available while pairs are being computed.',
+    schema: [
+      { group: 'Bodies', key: 'layout', label: 'Seed shape', type: 'seg', kind: 'geom', options: [['disk', 'Disk'], ['ring', 'Ring'], ['collision', 'Two clusters']] },
+      range('Bodies', 'count', 'Particles (CPU)', 'geom', 32, 16384, 32),
+      range('Bodies', 'spin', 'Initial rotation', 'geom', 0, 1.5, 0.05, v => v.toFixed(2)),
+      range('Bodies', 'heat', 'Velocity scatter', 'geom', 0, 0.6, 0.02, v => v.toFixed(2)),
+      range('Dynamics', 'softening', 'Softening length', 'geom', 0.03, 0.3, 0.01, v => v.toFixed(2)),
+      range('Dynamics', 'dt', 'Requested time step', 'geom', 0.0001, 0.01, 0.0001, v => v.toFixed(4)),
+      range('Dynamics', 'steps', 'Finite step budget', 'geom', 1, 20000, 1),
+      { group: 'Dynamics', key: 'running', label: 'Run / pause', type: 'toggle', kind: 'live' },
+      { group: 'Picture', key: 'aspect', label: 'Sheet', type: 'seg', kind: 'geom', options: Object.keys(ASPECTS).map(k => [k, k]) },
+      range('Picture', 'extent', 'View half-width', 'paint', 0.8, 6, 0.1, v => v.toFixed(1)),
+      range('Picture', 'radius', 'Point size', 'paint', 0.5, 5, 0.1, v => v.toFixed(1))
+    ],
+    defaults: { layout: 'disk', count: 256, spin: 0.62, heat: 0.08, softening: 0.12, dt: 0.004, steps: 160, running: true, aspect: '1:1', extent: 1.6, radius: 2.4 },
+    presets: {
+      disk: preset('Rotating disk', { layout: 'disk', count: 256, spin: 0.62, heat: 0.08, steps: 160 }, Pal.ember),
+      ring: preset('Thin ring', { layout: 'ring', count: 256, spin: 0.5, heat: 0.02, steps: 160 }, Pal.glacier),
+      collision: preset('Cluster encounter', { layout: 'collision', count: 384, spin: 0.24, heat: 0.04, steps: 220, extent: 2 }, Pal.kiln),
+      collapse: preset('Cold collapse', { layout: 'disk', count: 256, spin: 0, heat: 0.02, steps: 240 }, Pal.thermal),
+      hot: preset('Dispersing cloud', { layout: 'disk', count: 256, spin: 0.1, heat: 0.6, steps: 260, extent: 2 }, Pal.harbor),
+      extreme: preset('Extreme CPU: 16,384', { count: 16384, layout: 'collision', steps: 20, running: false, extent: 2, radius: 0.6 }, Pal.nightshade)
+    },
+    hints: { Bodies: '16,384 bodies means 134,209,536 unique pairs per force evaluation. Extreme preset starts paused. No particles are silently removed.', Dynamics: 'Actual dt is limited by the softened force curvature. This is a resolution margin, not a guarantee of accuracy for every encounter. A new run includes one initial force evaluation.', Picture: 'Points are the current completed step. View cropping does not remove particles from the calculation.' },
+    closedGroups: ['Picture'], palette: true, defaultPalette: 'ember',
+    surprise(rng) { return { count: 256, layout: rng.pick(['disk', 'ring', 'collision']), spin: rng.range(0.15, 0.8), heat: rng.range(0.02, 0.2), steps: 160, running: true }; },
+    sanitize(s) { s.count = Math.max(32, Math.min(16384, Math.round(s.count / 32) * 32)); },
+    create(host) {
+      let b, shownX, shownY, job, timer = null, active = true, done = 0, initialized = false, dt = 0, error = '', sliceMax = 0, statusAt = 0;
+      function copyPlate() { shownX.set(b.x); shownY.set(b.y); }
+      function status() {
+        const s = host.getState(), pairs = b.n * (b.n - 1) / 2;
+        const phase = error || (done >= s.steps ? 'finished' : (!active || !s.running ? 'paused' : initialized ? 'computing' : 'initial forces'));
+        host.setStatus('<span>CPU <b>' + b.n.toLocaleString('en-US') + ' bodies</b></span><span>step <b>' + done + '/' + s.steps + '</b> · ' + phase + '</span><span>pairs/force <b>' + pairs.toLocaleString('en-US') + '</b> · arrays ' + (9 * b.n * 8 / 1048576).toFixed(2) + ' MiB</span><span>dt <b>' + dt.toPrecision(3) + '</b> · T ' + (done * dt).toFixed(4) + '</span>');
+      }
+      function paint(canvas) {
+        const s = host.getState(), ctx = canvas.getContext('2d'), w = canvas.width, h = canvas.height;
+        ctx.fillStyle = s.bg; ctx.fillRect(0, 0, w, h);
+        if (!shownX) return;
+        const scale = w / (2 * s.extent), r = s.radius * Math.min(w, h) / 650;
+        for (let k = 0; k < s.palette.length; k++) {
+          ctx.fillStyle = s.palette[k]; ctx.beginPath();
+          let marks = 0;
+          for (let i = k; i < b.n; i += s.palette.length) {
+            const x = w / 2 + shownX[i] * scale, y = h / 2 - shownY[i] * scale;
+            if (x < -r || x > w + r || y < -r || y > h + r) continue;
+            ctx.moveTo(x + r, y); ctx.arc(x, y, r, 0, Math.PI * 2);
+            if (++marks === 128) { ctx.fill(); ctx.beginPath(); marks = 0; }
+          }
+          ctx.fill();
+        }
+      }
+      function stop() { if (timer !== null) clearTimeout(timer); timer = null; }
+      function schedule() {
+        const s = host.getState();
+        if (timer === null && active && host.isActive() && s.running && !error && done < s.steps) timer = setTimeout(chunk, 0);
+      }
+      function chunk() {
+        timer = null;
+        if (!active || !host.isActive() || !host.getState().running || error) return;
+        const start = performance.now(), s = host.getState();
+        let advanced = false;
+        try {
+          do {
+            if (!job) job = initialized ? verlet(b, s.softening, dt) : forces(b, s.softening);
+            if (job.next().done) {
+              job = null;
+              if (initialized) { done++; copyPlate(); advanced = true; } else initialized = true;
+              if (done >= s.steps) break;
+            }
+          } while (performance.now() - start < 8);
+          for (let i = 0; i < b.n; i++) if (!Number.isFinite(shownX[i]) || !Number.isFinite(shownY[i])) throw new Error('Non-finite state; reset with a smaller dt');
+        } catch (e) { error = 'Stopped: ' + U.escapeHtml(e.message); job = null; }
+        // Reduced-motion users receive the final plate without intermediate animation.
+        if ((advanced && (!host.reducedMotion() || done >= s.steps)) || error) paint(host.canvas);
+        if (performance.now() - statusAt > 100 || done >= s.steps || error) { status(); statusAt = performance.now(); }
+        sliceMax = Math.max(sliceMax, performance.now() - start); schedule();
+      }
+      function regenerate() {
+        stop(); job = null; done = 0; initialized = false; error = ''; sliceMax = 0;
+        const s = host.getState(); b = initial(s, U.makeRng(s.seed + '/direct-gravity'));
+        shownX = new Float64Array(b.n); shownY = new Float64Array(b.n); copyPlate();
+        dt = timeStep(s.softening, 1, s.dt); paint(host.canvas); status(); schedule();
+      }
+      return {
+        aspect: s => ASPECTS[s.aspect] || 1, regenerate,
+        repaint() { paint(host.canvas); }, resize() { paint(host.canvas); },
+        pause() { active = false; stop(); if (b) status(); },
+        resume() { active = true; if (b) { status(); schedule(); } },
+        live() { stop(); status(); schedule(); },
+        // Test observables expose a completed-step snapshot, never a half-computed step.
+        inspect() { return { step: done, dt, count: b.n, sliceMax, x: Array.from(shownX), y: Array.from(shownY) }; },
+        async exportPNG(w, h) {
+          const out = document.createElement('canvas'); out.width = w; out.height = h; paint(out); return U.toBlob(out);
+        },
+        exportSVG(w, h) {
+          const s = host.getState(), scale = w / (2 * s.extent), r = s.radius * Math.min(w, h) / 650;
+          let svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '"><rect width="100%" height="100%" fill="' + U.svgEsc(s.bg) + '"/>';
+          for (let i = 0; i < b.n; i++) svg += '<circle cx="' + (w / 2 + shownX[i] * scale) + '" cy="' + (h / 2 - shownY[i] * scale) + '" r="' + r + '" fill="' + U.svgEsc(s.palette[i % s.palette.length]) + '"/>';
+          return svg + '</svg>';
+        }
+      };
+    }
+  });
+})();
+</script>
+<script>/* modules/volume-wave.js */
+/* Periodic scalar wave volume. Float32 3D seven-point leapfrog on a 2D atlas. */
+(function () {
+  'use strict';
+  const U=Studio.util,G=Studio.gl;
+  const HEAD=`#version 300 es
+precision highp float; precision highp int;
+in vec2 v_uv; out vec4 outColor;
+uniform int u_n, u_tiles;
+ivec3 position(){ivec2 a=ivec2(gl_FragCoord.xy);return ivec3(a.x%u_n,a.y%u_n,(a.y/u_n)*u_tiles+a.x/u_n);}
+ivec2 atlas(ivec3 p){p=(p+u_n)%u_n;return ivec2((p.z%u_tiles)*u_n+p.x,(p.z/u_tiles)*u_n+p.y);}
+`;
+  const STEP_FS=HEAD+`
+uniform sampler2D u_state; uniform float u_r2; uniform bool u_first;
+float at(ivec3 p){return texelFetch(u_state,atlas(p),0).r;}
+void main(){ivec3 p=position();if(p.z>=u_n){outColor=vec4(0);return;}
+vec2 q=texelFetch(u_state,atlas(p),0).rg;
+float lap=at(p+ivec3(1,0,0))+at(p-ivec3(1,0,0))+at(p+ivec3(0,1,0))+at(p-ivec3(0,1,0))+at(p+ivec3(0,0,1))+at(p-ivec3(0,0,1))-6.0*q.r;
+float next=2.0*q.r-q.g+u_r2*lap;
+outColor=u_first?vec4(q.r,q.r+0.5*u_r2*lap,0,1):vec4(next,q.r,0,1);
+}`;
+  const SEED_FS=HEAD+`
+uniform vec3 u_center;uniform float u_phase,u_width;uniform int u_pattern;
+void main(){ivec3 p=position();if(p.z>=u_n){outColor=vec4(0);return;}
+vec3 x=vec3(p)/float(u_n),d=x-u_center;d-=floor(d+0.5);
+float q=cos(6.28318530718*dot(vec3(2,3,1),x)+u_phase);
+if(u_pattern==0)q=exp(-dot(d,d)/(2.0*u_width*u_width))*cos(6.28318530718*6.0*length(d));
+if(u_pattern==2)q=cos(6.28318530718*dot(vec3(2,3,1),x)+u_phase)+0.6*cos(6.28318530718*dot(vec3(5,-2,3),x)-u_phase);
+outColor=vec4(q,q,0,1);
+}`;
+  const DISPLAY_FS=HEAD+`
+uniform sampler2D u_state;uniform float u_slice,u_exposure;uniform int u_axis;
+${G.GLSL.bicubic}
+${G.GLSL.ramp}
+float sampleSlice(ivec2 p,int z){ivec3 a=u_axis==0?ivec3(p,z):u_axis==1?ivec3(p.x,z,p.y):ivec3(z,p);return texelFetch(u_state,atlas(a),0).r;}
+void main(){vec2 q=v_uv*float(u_n);ivec2 base=ivec2(floor(q));vec2 f=fract(q);int z=min(u_n-1,int(u_slice*float(u_n)));float v=0.0;
+for(int j=0;j<4;j++)for(int i=0;i<4;i++)v+=crW(float(i-1)-f.x)*crW(float(j-1)-f.y)*sampleSlice(base+ivec2(i-1,j-1),z);
+float a=v*u_exposure;outColor=vec4(ramp(0.5+0.49*a/sqrt(1.0+a*a)),1);}
+`;
+  function layout(n){const tiles=Math.ceil(Math.sqrt(n));return {tiles,w:n*tiles,h:n*Math.ceil(n/tiles)};}
+  function timeStep(s){return s.courant/(Math.sqrt(3)*s.speed*s.grid);}
+  function sanitize(s){
+    const clamp=(v,d,a,b)=>U.clamp(Number.isFinite(Number(v))?Number(v):d,a,b);
+    s.grid=[32,48,64,96,128,192,256].includes(Number(s.grid))?Number(s.grid):32;
+    s.courant=clamp(s.courant,0.8,0.05,0.95);s.speed=clamp(s.speed,1,0.1,5);
+    s.width=clamp(s.width,0.12,0.06,0.25);s.slice=clamp(s.slice,0.5,0,0.999);
+    s.exposure=clamp(s.exposure,2,0.1,8);s.warmup=Math.round(clamp(s.warmup,16,0,512));
+  }
+  function create(host){
+    const gl=G.createGL(host.canvas),noop=()=>{};
+    function dead(message){host.fault(message);return {aspect:()=>1,regenerate:noop,pause:noop,resume:noop,resize:noop,exportPNG:()=>Promise.reject(Error(message))};}
+    if(!gl||!gl.floatExt)return dead('Wave volume needs WebGL2 and float32 color buffers.');
+    let evolve,seed,display;
+    try{evolve=new G.Pass(gl,STEP_FS);seed=new G.Pass(gl,SEED_FS);display=new G.Pass(gl,DISPLAY_FS);}catch(error){return dead('Wave volume shader failed: '+error.message);}
+    let field=null,n=0,shape=null,dt=0,count=0,pending=0,raf=0,fence=null,ramp=null,rampKey='',failed=false;
+    function stop(){cancelAnimationFrame(raf);raf=0;}
+    function uniforms(){return {u_n:{int:n},u_tiles:{int:shape.tiles}};}
+    function step(first){evolve.draw(field.write,Object.assign(uniforms(),{u_state:field.read,u_r2:(host.getState().courant**2)/3,u_first:!!first}));field.swap();if(!first)count++;}
+    function status(){const bytes=shape.w*shape.h*32;host.setStatus('<span>grid <b>'+n+'³</b> · float32</span><span>textures <b>'+(bytes/1048576).toFixed(1)+' MiB</b></span><span>step <b>'+count+'</b> · t '+(count*dt).toFixed(3)+'</span><span>dt '+dt.toExponential(2)+(pending?' · '+pending+' queued':'')+'</span>');}
+    function render(target){const s=host.getState(),key=s.bg+'|'+s.palette.join(',');if(!ramp||key!==rampKey){if(ramp)ramp.dispose();ramp=G.rampTexture(gl,s.palette,s.bg);rampKey=key;}
+      display.draw(target||null,Object.assign(uniforms(),{u_state:field.read,u_ramp:ramp,u_slice:s.slice,u_exposure:s.exposure,u_axis:{int:{xy:0,xz:1,yz:2}[s.axis]||0}}));}
+    function schedule(){
+      if(raf||failed||!field||!host.isActive())return;
+      const s=host.getState();if(!pending&&(!s.running||host.reducedMotion()))return;
+      raf=requestAnimationFrame(()=>{raf=0;
+        if(fence){const ready=gl.clientWaitSync(fence,0,0);if(ready===gl.TIMEOUT_EXPIRED){schedule();return;}gl.deleteSync(fence);fence=null;if(ready===gl.WAIT_FAILED){failed=true;host.fault('GPU work failed. Select a smaller grid and regenerate.');return;}}
+        if(gl.isContextLost()){failed=true;host.fault('GPU context lost. Reload and select a smaller grid.');return;}
+        step(false);if(pending)pending--;render();status();fence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();schedule();
+      });
+    }
+    return {
+      aspect:()=>1,
+      regenerate(){stop();pending=0;failed=false;if(fence){gl.deleteSync(fence);fence=null;}const s=host.getState(),next=layout(s.grid),max=gl.getParameter(gl.MAX_TEXTURE_SIZE);
+        if(field){field.read.dispose();field.write.dispose();field=null;}
+        // Browsers expose texture limits, not free VRAM. Allocation can still fail below this explicit budget.
+        if(next.w>max||next.h>max||next.w*next.h*32>576*1048576){host.fault('Selected volume exceeds the texture or 576 MiB field budget. Select a smaller grid.');return;}
+        let a=null,b=null;try{a=new G.Target(gl,next.w,next.h,{type:'rgba32f',filter:'nearest'});b=new G.Target(gl,next.w,next.h,{type:'rgba32f',filter:'nearest'});if(gl.getError()!==gl.NO_ERROR)throw Error('GPU allocation failed');}catch(error){if(a)a.dispose();if(b)b.dispose();host.fault(error.message+'. Select a smaller grid.');return;}
+        field={read:a,write:b,swap(){const t=this.read;this.read=this.write;this.write=t;}};n=s.grid;shape=next;dt=timeStep(s);count=0;
+        const rng=U.makeRng(s.seed+'/volume-wave');seed.draw(field.read,Object.assign(uniforms(),{u_center:[rng.range(0.35,0.65),rng.range(0.35,0.65),rng.range(0.35,0.65)],u_phase:rng.range(-Math.PI,Math.PI),u_width:s.width,u_pattern:{int:{pulse:0,mode:1,crossed:2}[s.pattern]||0}}));
+        step(true);pending=s.warmup;render();status();schedule();
+      },
+      fieldCells(){return field?[n,n]:null;},
+      resize(){if(field)render();},repaint(){if(field)render();},pause:stop,resume:schedule,live(){stop();if(!host.getState().running)pending=0;schedule();},
+      action(key){if(key==='cancel'){stop();pending=0;status();}else if(key==='burst'&&field){pending+=128;schedule();}else if(key==='reseed')this.regenerate();},
+      async exportPNG(w,h){if(!field)throw Error('No wave volume to export.');if(w>gl.getParameter(gl.MAX_TEXTURE_SIZE)||h>gl.getParameter(gl.MAX_TEXTURE_SIZE))throw Error('Print exceeds the GPU texture limit.');
+        const target=new G.Target(gl,w,h,{type:'rgba8'}),pixels=new Uint8Array(w*h*4);
+        try{render(target);gl.bindFramebuffer(gl.FRAMEBUFFER,target.fbo);gl.readPixels(0,0,w,h,gl.RGBA,gl.UNSIGNED_BYTE,pixels);}finally{gl.bindFramebuffer(gl.FRAMEBUFFER,null);target.dispose();}
+        const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d'),image=ctx.createImageData(w,h);for(let y=0;y<h;y++)image.data.set(pixels.subarray((h-y-1)*w*4,(h-y)*w*4),y*w*4);ctx.putImageData(image,0,0);return U.toBlob(canvas);
+      },
+    };
+  }
+  const range=(group,key,label,kind,min,max,step)=>({group,key,label,kind,type:'range',min,max,step,fmt:v=>Number(v).toFixed(step<1?2:0)});
+  Studio.register({
+    id:'volume-wave',name:'Wave volume',tab:'Wave volume',subtitle:'three-dimensional wave equation · classical',order:96.3,
+    equation:'∂²u/∂t² = c²(∂²u/∂x² + ∂²u/∂y² + ∂²u/∂z²)',
+    credit:'Classical scalar wave equation. Centered finite differences and the three-dimensional CFL bound follow H. P. Langtangen and S. Linge, Finite Difference Computing with PDEs (2017), wave equation chapter, https://hplgit.github.io/fdm-book/doc/pub/wave/html/._wave-solarized004.html. No novelty or full acoustic model is claimed.',
+    blurb:'A wave travels through a periodic cube, including the unseen layers behind this slice. Select XY, XZ or YZ to look inside the same evolving field. A pulse launches waves in every direction; standing and crossed Fourier modes reveal interference. This is a scalar, uniform-speed, lossless wave equation in normalized units, not a full electromagnetic or elastic material model. Every step updates the whole volume. Heavy grids are explicit choices, and a print preserves the current field rather than adding simulated cells.',
+    schema:[
+      {group:'Field',key:'pattern',label:'Initial field',type:'seg',kind:'geom',options:[['pulse','Pulse'],['mode','Standing mode'],['crossed','Crossed modes']]},
+      range('Field','speed','Wave speed','geom',0.1,5,0.1),range('Field','width','Pulse width','geom',0.06,0.25,0.01),
+      {group:'Workload',key:'grid',label:'Cells per side',type:'seg',kind:'geom',options:[[32,'32³'],[48,'48³'],[64,'64³'],[96,'96³'],[128,'128³ · heavy'],[192,'192³ · extreme'],[256,'256³ · 512 MiB']]},
+      range('Workload','courant','CFL fraction','geom',0.05,0.95,0.01),range('Workload','warmup','Initial steps','geom',0,512,1),
+      {group:'Workload',key:'running',label:'Running',type:'toggle',kind:'live'},
+      {group:'Workload',key:'burst',label:'Run 128 steps',type:'action'},{group:'Workload',key:'cancel',label:'Stop queued work',type:'action'},
+      {group:'Slice',key:'axis',label:'Slice plane',type:'seg',kind:'paint',options:[['xy','XY'],['xz','XZ'],['yz','YZ']]},range('Slice','slice','Slice position','paint',0,0.999,0.001),range('Slice','exposure','Exposure','paint',0.1,8,0.1),
+    ],
+    defaults:{grid:32,courant:0.8,speed:1,width:0.12,pattern:'crossed',warmup:16,running:false,axis:'xy',slice:0.5,exposure:2,seed:'wave-cube'},
+    presets:{
+      crossed:{label:'Crossed waves',p:{pattern:'crossed',grid:32,warmup:16,axis:'xy'},palette:Studio.PALETTES.thermal},
+      pulse:{label:'Expanding pulse',p:{pattern:'pulse',grid:32,warmup:12,axis:'xy'},palette:Studio.PALETTES.glacier},
+      standing:{label:'Standing mode',p:{pattern:'mode',grid:32,warmup:20,axis:'xy'},palette:Studio.PALETTES.ember},
+      transverse:{label:'Transverse interference',p:{pattern:'crossed',grid:32,warmup:24,axis:'xz',slice:0.3},palette:Studio.PALETTES.bioluminescent},
+      side:{label:'Side view of a mode',p:{pattern:'mode',grid:32,warmup:8,axis:'yz',slice:0.7},palette:Studio.PALETTES.harbor}
+    },
+    hints:{Field:'The starting time derivative is zero. Opposite cube faces connect. Standing mode numbers are (2, 3, 1). Crossed adds 0.6 times (5, -2, 3).',Workload:'Each frame advances at most one full-volume step and waits for prior GPU work. 256³ has 16.8 million cells and two 256 MiB textures, plus driver overhead. Free GPU memory cannot be queried reliably. Stop queued work cancels future steps, but cannot cancel a GPU command already submitted. The CFL ceiling is enforced, not user-overridable.',Slice:'The plate is one cell-aligned slice with bicubic display interpolation. Its resolution is the selected grid. Colors and exposure are illustrative, not calibrated intensity.'},
+    closedGroups:['Workload'],palette:true,defaultPalette:'thermal',familiarity:'occasional',sanitize,create,
+    surprise(rng){return {pattern:rng.pick(['pulse','mode','crossed']),axis:rng.pick(['xy','xz','yz']),slice:rng.range(0.15,0.85)};},
   });
 })();
 </script>

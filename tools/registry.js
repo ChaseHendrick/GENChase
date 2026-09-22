@@ -2,13 +2,17 @@
 // Only registrations run: renderers are never constructed by this build helper.
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
 
-function metadata(root, files) {
+function metadata(root, files, sources) {
+  // The assembler already read these exact sources. Reuse its per-call snapshot, never a
+  // process-wide cache: the next invocation must observe edits and newly added files.
+  const readSource = file => sources && sources.has(file)
+    ? sources.get(file) : fs.readFileSync(path.join(root, 'src', file), 'utf8');
   const modules = [], ids = new Set(), noop = () => {};
   const glsl = new Proxy({}, { get: () => '' });
   const gl = new Proxy({ GLSL: glsl }, { get: (obj, key) => obj[key] || noop });
   const util = new Proxy({ clamp: (x, a, b) => Math.max(a, Math.min(b, x)), hexToRgb: () => [0, 0, 0], makeRng: () => ({}) }, { get: (obj, key) => obj[key] || noop });
   const palettes = new Proxy({}, { get: () => ({ colors: ['#000000'], bg: '#000000' }) });
-  const shell = fs.readFileSync(path.join(root, 'src/shared/engine.js'), 'utf8');
+  const shell = readSource('shared/engine.js');
   const familiarity = {}, aliases = {};
   const familyBlock = /const FAMILIARITY = \{([\s\S]*?)\n  \};/.exec(shell);
   if (familyBlock) for (const m of familyBlock[1].matchAll(/^\s*'?([A-Za-z0-9_-]+)'?\s*:\s*'([^']+)'/gm)) familiarity[m[1]] = m[2];
@@ -16,7 +20,7 @@ function metadata(root, files) {
   if (aliasBlock) for (const m of aliasBlock[1].matchAll(/['"]?([A-Za-z0-9_-]+)['"]?\s*:\s*'([^']+)'/g)) aliases[m[1]] = m[2];
   if (!files) files = [...fs.readFileSync(path.join(root, 'src/studio.html'), 'utf8').matchAll(/\{\{include:(modules\/[a-z0-9-]+\.js)\}\}/g)].map(m => m[1]);
   for (const file of files) {
-    const source = fs.readFileSync(path.join(root, 'src', file), 'utf8');
+    const source = readSource(file);
     const registered = [];
     const Studio = { util, gl, PALETTES: palettes, register: m => registered.push(m) };
     const context = { Studio, console, Math, Number, JSON, Date, Intl, performance: { now: () => 0 },

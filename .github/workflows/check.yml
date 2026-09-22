@@ -55,6 +55,8 @@ jobs:
           node tools/lump-science.js
           node tools/chain-science.js
           node tools/rigid-body-audit.js
+          node tools/direct-gravity-science.js
+          node tools/physarum3d-display-check.js
           npm test
       - name: Structural checks
         run: node tools/lint.js
@@ -87,7 +89,10 @@ jobs:
       - name: Seed box, hash, shortcuts, dock
         run: node tools/ui.js
       - name: Folder loading, recipes, witness and recovery
-        run: node tools/folder-browser.js
+        run: |
+          node tools/folder-browser.js
+          node tools/direct-gravity-browser.js
+          node tools/bec-preview-check.js
 
   wave-science:
     name: wave science
@@ -121,7 +126,9 @@ jobs:
           npm install --no-save playwright@1.49.1
           npx playwright install --with-deps --only-shell chromium
       - name: Independent benchmarks and print-state checks
-        run: node tools/verify.js --print maxwell molecular
+        run: |
+          node tools/verify.js --print maxwell molecular
+          node tools/volume-wave-science.js
 
   recipes:
     name: recipe compatibility
@@ -192,3 +199,16 @@ jobs:
           npx playwright install --with-deps --only-shell chromium
       - name: Export at 8 in, 300 ppi
         run: node tools/export.js ${{ matrix.id }} 8 300 8000 240000
+
+  native-science:
+    name: native CPU science
+    runs-on: ubuntu-latest
+    needs: lint
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy==2.3.5
+      - run: python tools/heavy-runner-check.py

@@ -16,7 +16,6 @@
   const PACK_N = 4096;           // entries in the float -> byte encoding table
   const TOP = 1.6;               // encoded ceiling, as a multiple of the measured reference level
   const REF_PCT = 0.99;          // percentile of occupied cells used as the reference level
-  const REF_FALL = 0.97;         // reference level rises at once, falls slowly (no flicker)
 
   const f1 = v => v.toFixed(1);
   const f2 = v => v.toFixed(2);
@@ -222,7 +221,7 @@ void main() {
       let gl = null, pass = null, rampTex = null, rampKey = '', volTex = null, volKey = '', failed = false;
       let raf = 0, timer = 0, orbitPhase = 0, frameMs = 0, uploadTick = 0;
       let lastGap = 16, lastSimMs = 0, lastFrameAt = 0;
-      let sim = null, refLevel = 0, dirty = true;
+      let sim = null, dirty = true;
 
       const packLUT = new Uint8Array(PACK_N);
       for (let i = 0; i < PACK_N; i++) packLUT[i] = Math.round(255 * Math.sqrt((i + 0.5) / PACK_N));
@@ -344,7 +343,7 @@ void main() {
         sim.nz = s.spawn === 'noise' ? U.makeNoise(sim.rng) : null;
         for (let i = 0; i < N; i++) placeAgent(s.spawn, i);
         if (s.food > 0) placeFood(sim.pts);
-        refLevel = 0; dirty = true;
+        dirty = true;
       }
 
       /* ---------------- one simulation step ---------------- */
@@ -468,17 +467,16 @@ void main() {
       /* ---------------- self-calibrating encode ---------------- */
       // The trail's absolute scale swings by orders of magnitude with agents, deposit and
       // decay, so the reference level is measured from the volume itself: a high percentile
-      // of the occupied cells. It rises at once and falls slowly, so the picture neither
-      // clips nor flickers while the network grows.
+      // of the occupied cells. The reference depends only on the current field, not
+      // how many preview frames happened to render before this simulation step.
       function measureRef() {
         const t = sim.trail, n = t.length, stride = Math.max(1, Math.floor(n / 9000));
         samplesBuf.length = 0;
         for (let i = 0; i < n; i += stride) { const v = t[i]; if (v > 1e-6) samplesBuf.push(v); }
-        if (!samplesBuf.length) return Math.max(refLevel, 1e-6);
+        if (!samplesBuf.length) return 1e-6;
         samplesBuf.sort((p, q) => p - q);
         const p = samplesBuf[Math.min(samplesBuf.length - 1, Math.floor(samplesBuf.length * REF_PCT))];
-        refLevel = refLevel > 0 ? Math.max(p, refLevel * REF_FALL) : p;
-        return Math.max(refLevel, 1e-6);
+        return Math.max(p, 1e-6);
       }
 
       // volume -> atlas bytes, encoded as sqrt(v / (ref*TOP)) so 8 bits keep the faint trail

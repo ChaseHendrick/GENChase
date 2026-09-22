@@ -365,9 +365,9 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
         imPass.draw(P.write, Object.assign({}, base, { u_psi: P.read, u_omega: 0, u_dt: 0, u_scale: k }));
         P.swap();
       }
-      function step(n) {
+      function step(n, fixedDt) {
         const s = host.getState();
-        const dt = dtOf(s), dx = dxOf(s);
+        const dt = fixedDt === undefined ? dtOf(s) : fixedDt, dx = dxOf(s);
         const base = { u_res: [gw, gh], u_dx: dx, u_half: s.half, u_g: s.g, u_trap: s.trap, u_dt: dt };
         for (let i = 0; i < n; i++) {
           if (s.mode === 'ground') {
@@ -576,11 +576,14 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
       }
       function burst(total) {
         stop();
-        let left = total;
+        let left = total, batchLeft = 0, batchDt = 0;
         (function chunk() {
-          const n = Math.min(400, left); left -= n;
-          step(n);
-          if (left > 0) { if (left % 2000 < 400) { measure(); status('relaxing'); } chunkTimer = setTimeout(chunk, 0); }
+          // Preserve the existing 400-step timestep cadence while yielding more often.
+          // Recomputing dt every yield would change the numerical trajectory.
+          if (!batchLeft) { batchLeft = Math.min(400, left); batchDt = dtOf(host.getState()); }
+          const n = Math.min(8, batchLeft); left -= n; batchLeft -= n;
+          step(n, batchDt);
+          if (left > 0) { if (left % 2000 < 8) { measure(); paintAll(); status('relaxing'); } chunkTimer = setTimeout(chunk, 0); }
           else { measure(); findVortices(); paintAll(); status(); startLoop(); }
         })();
       }
@@ -599,8 +602,9 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
           normV = 1; maxV = 1;
           upload(P.read, seedField(s));
           measure();
+          paintAll(); // Show the initialized field while the finite warm-up runs.
           const warm = host.reducedMotion() ? Math.min(s.warmup, 2000) : s.warmup;
-          if (warm > 0) burst(warm);
+          if (warm > 0) { status('relaxing'); burst(warm); }
           else { paintAll(); status(); startLoop(); }
         },
         repaint() { if (P) { if (host.getState().view === 'vortices') findVortices(); paintAll(); } },

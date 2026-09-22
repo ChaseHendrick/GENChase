@@ -447,6 +447,8 @@ void main(){
     unseen: 'Almost unseen',
   };
   const FAMILIARITY = {
+    'direct-gravity': 'common',
+    'volume-wave': 'common',
     surfaces: 'common',
     plasma: 'occasional',
     shallow: 'occasional',
@@ -634,60 +636,9 @@ void main(){
     return byId[id];
   }
 
-  /* ---- hold the simulation rate steady whatever the monitor does ----
-     Every technique drives its own requestAnimationFrame loop and does a fixed amount of simulation
-     per frame, so the display's refresh rate sets how fast a plate evolves in wall-clock time: twice
-     as fast on a 120 Hz laptop as on a 60 Hz desktop, four times on a 240 Hz monitor. The exported
-     plate is identical either way, because warm-ups are counted in steps rather than seconds, but a
-     living plate races on one machine and crawls on another, and the fast machine spends the extra
-     frames for no extra detail.
-
-     Sixty-odd loops call requestAnimationFrame directly, so the gate goes here rather than in each
-     of them. Whole frames are accepted or skipped, and every callback waiting on an accepted frame
-     runs on it. Gating each callback separately against a shared clock instead looks simpler and is
-     wrong: the first loop to run claims the frame, so a loop registered later never sees an interval
-     long enough and is starved forever. That version delivered exactly zero callbacks to a second
-     loop in twelve seconds while the first kept running.
-
-     Callbacks are deferred, never dropped, so the sequence of states is what it always was and only
-     the rate is bounded. cancelAnimationFrame keeps working because the id handed back is ours. */
-  (function holdFrameRate() {
-    const nativeRequest = window.requestAnimationFrame.bind(window);
-    const nativeCancel = window.cancelAnimationFrame.bind(window);
-    const MIN_FRAME_MS = 1000 / 60.5;   // just under 60 so a 60 Hz display never skips a frame
-    let queue = [];                     // callbacks waiting for an accepted frame
-    let driver = 0;                     // the one native request outstanding, if any
-    let lastRun = -1e9;
-    let nextId = 1;
-    const byId = new Map();
-
-    function pump(t) {
-      driver = 0;
-      if (t - lastRun < MIN_FRAME_MS) { driver = nativeRequest(pump); return; }
-      lastRun = t;
-      const batch = queue;
-      queue = [];
-      for (const e of batch) {
-        if (e.cancelled) continue;
-        byId.delete(e.id);
-        try { e.cb(t); } catch (err) { setTimeout(() => { throw err; }); }
-      }
-      if (queue.length && !driver) driver = nativeRequest(pump);
-    }
-
-    window.requestAnimationFrame = function (cb) {
-      const e = { cb, id: nextId++, cancelled: false };
-      queue.push(e);
-      byId.set(e.id, e);
-      if (!driver) driver = nativeRequest(pump);
-      return e.id;
-    };
-    window.cancelAnimationFrame = function (id) {
-      const e = byId.get(id);
-      if (e) { e.cancelled = true; byId.delete(id); }
-      else nativeCancel(id);            // an id from before this shim, or from another source
-    };
-  })();
+  // Use the browser's native animation scheduler without an application FPS cap.
+  // Refresh rate changes wall-clock playback speed for frame-driven simulations;
+  // numerical timesteps and finite warm-up step counts remain module settings.
 
   const STORE = 'genchase.v1.';
   // Recipe version. Bumped to 2 when the default grids were raised so that plates print sharp.

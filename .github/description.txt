@@ -1,1 +1,1 @@
-128 seeded scientific simulations in a modular studio with a portable HTML build. Explore, derive, and test mathematical formulas against classical sources.
+130 seeded scientific simulations in a modular studio with a portable HTML build. Explore, derive, and test mathematical formulas against classical sources.
