@@ -34,5 +34,12 @@ const assert=require('node:assert/strict'),path=require('node:path'),{chromium,w
    await page.emulateMedia({reducedMotion:'reduce'});await page.click('#browse-modules');assert.equal(await page.locator('#module-browser').evaluate(e=>getComputedStyle(e).animationName),'none');
    assert.deepEqual(errors,[]);await page.close();console.log('PASS',name,width,'navigation, layout, caption zoom, measurement separation and reduced motion');
   }
+  const detail=await browser.newPage({viewport:{width:1280,height:900},deviceScaleFactor:1});
+  await detail.goto('file://'+path.resolve(__dirname,'../dist/studio.html')+'#tilings/preview-sampling');await detail.evaluate(()=>Studio.ready);
+  const sampling=()=>detail.evaluate(()=>{const c=document.querySelector('canvas.art:not([hidden])');return {ratio:c.width/parseFloat(c.style.width),pixels:c.width*c.height,recipe:JSON.stringify(Studio.getRecipe())};});
+  const balanced=await sampling();assert(balanced.ratio>1.95&&balanced.ratio<2.05);assert(balanced.pixels<=8e6);
+  await detail.evaluate(()=>{const mode=document.getElementById('compute-mode');mode.value='light';mode.dispatchEvent(new Event('change'));});
+  const light=await sampling();assert(light.ratio>.95&&light.ratio<1.05);assert.equal(light.recipe,balanced.recipe);
+  await detail.close();console.log('PASS',name,'vector preview sampling respects Light mode and leaves recipe unchanged');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

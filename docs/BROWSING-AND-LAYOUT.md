@@ -8,7 +8,7 @@ The quick tab list wraps within a vertically scrolling area. The full catalog pr
 
 ## Artwork, caption and measurements
 
-Zoom and pan act on the complete preview sheet, including the colophon. Caption text therefore grows with the artwork. **Fit** returns the whole sheet to its fitted view. Zoom is a viewing preference; it does not change the recipe, numerical grid, solver timestep or requested print size.
+Zoom and pan act on the complete preview sheet, including the colophon. Caption text therefore grows with the artwork. **Fit** returns the whole sheet to its fitted view. Small vector previews use extra raster sampling within the selected workload budget; Light mode keeps its lower preview limit. Zoom is a viewing preference; it does not change the recipe, numerical grid, solver timestep or requested print size.
 
 Scientific status text and structured comparisons have their own panel below the artwork. They wrap within that panel instead of being overlaid on the image. Long diagnostics can scroll within the panel. The separate **Science report** still shows recorded evidence, limitations and downloadable report data. Neither a visible measurement nor an activity badge independently establishes validity.
 

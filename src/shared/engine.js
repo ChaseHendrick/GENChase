@@ -1293,7 +1293,10 @@ void main(){
     // print pixels rather than reading this canvas.
     const budget=COMPUTE_MODES[computeMode];
     const MAX_CANVAS_PX = budget.previewPixels;
-    let dpr = Math.min(budget.previewDpr, window.devicePixelRatio || 1);
+    // Small vector previews need extra sampling to retain thin marks and gaps.
+    // This changes raster presentation only; Light mode and the area cap still apply.
+    const vectorDpr = typeof e.inst.exportSVG === 'function' ? 2 : 1;
+    let dpr = Math.min(budget.previewDpr, Math.max(vectorDpr, window.devicePixelRatio || 1));
     if (cw * ch * dpr * dpr > MAX_CANVAS_PX) dpr = Math.sqrt(MAX_CANVAS_PX / Math.max(1, cw * ch));
     e.canvas.style.width = cw + 'px';
     e.canvas.style.height = ch + 'px';
