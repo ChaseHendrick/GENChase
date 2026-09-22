@@ -1,0 +1,63 @@
+# Browser studio and offline releases
+
+Use [Start here](https://sharpmeow.github.io/GENChase/start.html) to choose a pattern,
+make a first print, download an offline copy, or find a contribution path. The direct
+[studio link](https://sharpmeow.github.io/GENChase/) still opens the app immediately
+and existing recipe links remain valid.
+
+## For artists
+
+Download `GENChase-studio.zip` from the [latest release](https://github.com/SharpMeow/GENChase/releases/latest),
+extract it, and open `GENChase/START-HERE.html`. Keep the folder together. The bundle
+contains the self-contained studio, introductory examples, licenses, and recorded
+scientific evidence. It needs no server or development tools. Keep `VERSION.json`
+with saved recipes when the exact software version matters.
+
+The source archive is for people who want the local checker, source modules, or
+development tools. It includes the optional Python launchers. Making artwork in
+the browser or offline bundle does not require Python, Node.js, or a GitHub account.
+
+## For testing and contributions
+
+From a source checkout, install Node.js 22 or newer, then run:
+
+```sh
+npm run setup:checks
+npm run validator
+```
+
+The setup command explicitly installs the pinned optional Playwright/axe tools and
+Chromium. It does not run a scientific job, install a native experiment backend, or
+upload data. Linux may need the system browser libraries described in
+[BUILDING.md](../BUILDING.md). Fast development checks remain `npm test`, with no install.
+
+To share results, install GitHub CLI and run `gh auth login`. Choose files under
+**Share results**, or explicitly enable automatic sharing for one run. The
+[local checker guide](../apps/validate/README.md) describes platform support,
+privacy, recovery and the difference between completed execution and scientific coverage.
+
+## Maintainer release process
+
+GitHub Pages publishes `main` from the repository root. The start page and the
+studio therefore update together after a merge. Do not replace the studio root
+with the start page: that would break saved recipe links.
+
+The release workflow is manually dispatched with a version such as `v2026.09.22`.
+It checks the selected main commit, creates the deterministic offline ZIP and a
+SHA-256 checksum, tests the extracted bundle in Chromium, and publishes assets
+on a GitHub Release. It refuses an existing tag so older releases stay immutable.
+Release notes identify the exact commit and link its scientific evidence.
+
+Build a local preview without publishing:
+
+```sh
+python3 tools/package-release.py --version v2026.09.22
+node tools/distribution-check.js tools/dist/release/GENChase-studio.zip
+```
+
+The package uses an explicit file list and tracked validation evidence. Local run
+logs, credentials, node_modules, checkpoints, and volunteer submissions are not
+included. Its fixed timestamps and sorted entries make identical input reproducible.
+A dirty local preview records `workingTreeModified: true`; the publication workflow
+requires a clean tracked checkout. A release is a software distribution, not a claim
+that every technique is scientifically validated.

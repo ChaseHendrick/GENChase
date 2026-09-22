@@ -1,0 +1,25 @@
+name: Share art or an idea
+description: Show something you made, share a recipe, or suggest an improvement.
+title: "Studio: "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: "Share a screenshot by dragging it into a text field. Only share artwork and information you want to make public."
+  - type: textarea
+    id: story
+    attributes:
+      label: What did you make or what would you like to try?
+      placeholder: Tell us about the pattern, artwork, or idea.
+    validations:
+      required: true
+  - type: textarea
+    id: recipe
+    attributes:
+      label: Recipe link or settings
+      description: Use Link in the studio to copy the recipe. For an offline version, include the version from VERSION.json.
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: For example, Chrome on a Windows laptop
