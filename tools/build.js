@@ -6,7 +6,8 @@ const root = path.resolve(__dirname, '..');
 function generate() {
   const seen = new Set();
   const template = fs.readFileSync(path.join(root, 'src/studio.html'), 'utf8');
-  const licensed = template.replace('{{licenses}}', () => ['LICENSE', 'NOTICE', 'OUTPUT-RIGHTS.md', 'licenses/Geist-OFL.txt', 'licenses/GeistMono-OFL.txt', 'licenses/InstrumentSerif-OFL.txt'].map(file => file + '\n' + fs.readFileSync(path.join(root, file), 'utf8').replace(/[ \t]+$/gm, '')).join('\n\n'));
+  const licensed = template.replace('{{licenses}}', () => ['LICENSE', 'NOTICE', 'OUTPUT-RIGHTS.md', 'licenses/Geist-OFL.txt', 'licenses/GeistMono-OFL.txt', 'licenses/InstrumentSerif-OFL.txt', 'licenses/ICC-sRGB.txt'].map(file => file + '\n' + fs.readFileSync(path.join(root, file), 'utf8').replace(/[ \t]+$/gm, '')).join('\n\n'));
+  const science = fs.readFileSync(path.join(root, 'validation/techniques.json'), 'utf8').trim();
   const bodies = new Map();
   const result = licensed.replace(/\{\{include:([^}]+)\}\}/g, (_, name) => {
     if (!/^(modules|shared|styles)\/[a-z0-9-]+\.(js|css)$/.test(name)) throw Error('Invalid source path: ' + name);
@@ -34,8 +35,8 @@ function generate() {
   });
   if (folder.includes('{{include:')) throw Error('Unresolved folder include');
   const manifest = require('./registry.js').metadata(root, [...seen].filter(name => name.startsWith('modules/')), bodies);
-  const portable = result.replace('href="VALIDATION.md"', 'href="../VALIDATION.md"');
-  return { manifest, files: { 'index.html': folder, 'dist/studio.html': portable, 'src/module-manifest.json': JSON.stringify({ techniques: manifest.techniques }, null, 2) + '\n' } };
+  const portable = result.replace('{{science-reports}}', science.replace(/</g, '\\u003c')).replace('href="VALIDATION.md"', 'href="../VALIDATION.md"');
+  return { manifest, files: { 'index.html': folder.replace('{{science-reports}}', '[]'), 'src/science-reports.json': science + '\n', 'dist/studio.html': portable, 'src/module-manifest.json': JSON.stringify({ techniques: manifest.techniques }, null, 2) + '\n' } };
 }
 function outputs() { return generate().files; }
 function assemble() { return outputs()['dist/studio.html']; }

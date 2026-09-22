@@ -27,6 +27,8 @@ const {chromium}=require('playwright');
   location.hash='engine-api-fixture/api-fixture';
   for(let i=0;i<100&&!window.apiFixtureHost;i++)await new Promise(r=>setTimeout(r,20));
   const host=window.apiFixtureHost;check(!!host,'fixture loaded');
+  for(const mode of ['light','maximum','balanced']){const control=document.getElementById('compute-mode');control.value=mode;control.dispatchEvent(new Event('change'));check(host.computeBudget().mode===mode,'host workload propagation');}
+  const detachedBudget=host.computeBudget();detachedBudget.cpuSliceMs=999;check(host.computeBudget().cpuSliceMs===8,'detached workload budget');
   check(inches.value==='12'&&dpi.value==='300'&&document.getElementById('btn-colophon').getAttribute('aria-checked')==='true','shared print and colophon settings survive tab changes');
   check(!('dpi' in Studio.getRecipe())&&!('colophon' in Studio.getRecipe()),'print preferences stay outside model recipe');
   host.setWitness({label:'<img src=x onerror=alert(1)>',measured:1.02,expected:1,tol:.05,missWhen:'outside stated domain'});

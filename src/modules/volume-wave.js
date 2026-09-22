@@ -59,13 +59,16 @@ float a=v*u_exposure;outColor=vec4(ramp(0.5+0.49*a/sqrt(1.0+a*a)),1);}
     function status(){const bytes=shape.w*shape.h*32;host.setStatus('<span>grid <b>'+n+'³</b> · float32</span><span>textures <b>'+(bytes/1048576).toFixed(1)+' MiB</b></span><span>step <b>'+count+'</b> · t '+(count*dt).toFixed(3)+'</span><span>dt '+dt.toExponential(2)+(halted?' · stopped':pending?' · '+pending+' queued':'')+'</span>');}
     function render(target){const s=host.getState(),key=s.bg+'|'+s.palette.join(',');if(!ramp||key!==rampKey){if(ramp)ramp.dispose();ramp=G.rampTexture(gl,s.palette,s.bg);rampKey=key;}
       display.draw(target||null,Object.assign(uniforms(),{u_state:field.read,u_ramp:ramp,u_slice:s.slice,u_exposure:s.exposure,u_axis:{int:{xy:0,xz:1,yz:2}[s.axis]||0}}));}
+    let lastWorkAt=-Infinity;
     function schedule(){
       if(raf||failed||halted||!field||!host.isActive())return;
       const s=host.getState();if(!pending&&(!s.running||host.reducedMotion()))return;
-      raf=requestAnimationFrame(()=>{raf=0;
+      raf=requestAnimationFrame(now=>{raf=0;
+        const budget=host.computeBudget?host.computeBudget():{gpuSteps:1,gpuIntervalMs:0};
+        if(!pending&&now-lastWorkAt<budget.gpuIntervalMs){schedule();return;}
         if(fence){const ready=gl.clientWaitSync(fence,0,0);if(ready===gl.TIMEOUT_EXPIRED){schedule();return;}gl.deleteSync(fence);fence=null;if(ready===gl.WAIT_FAILED){failed=true;host.fault('GPU work failed. Select a smaller grid and regenerate.');return;}}
         if(gl.isContextLost()){failed=true;host.fault('GPU context lost. Reload and select a smaller grid.');return;}
-        step(false);if(pending)pending--;render();status();fence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();schedule();
+        const batch=pending?1:budget.gpuSteps;for(let i=0;i<batch;i++)step(false);lastWorkAt=now;if(pending)pending--;render();status();fence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();schedule();
       });
     }
     return {

@@ -143,3 +143,10 @@ then their actual export-state checks. These support the bounded claims recorded
 The [engine API contract](docs/ENGINE-API.md) documents the stable extension boundary.
 Run `node tools/engine-api-check.js` for witness, RNG, successive recipe migrations
 and shared print preferences, alongside the existing recipe and folder browser tests.
+
+`node tools/colophon-check.js` checks shared caption editing and PNG placement on desktop and narrow mobile screens.
+
+Print-container checks: `node tools/print-formats-check.js /tmp/genchase-print-check`,
+then `python tools/print-formats-check.py /tmp/genchase-print-check` with the optional
+`tools/requirements-prepress.txt` dependencies installed. CI also tests Ghostscript
+conversion with a test CMYK profile. See [the printing guide](docs/PRINTING.md).

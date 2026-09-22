@@ -667,7 +667,7 @@
     .witness-hint { display: none; }
     .side, .main.side-right .side { order: 1; border-right: 0; border-left: 0; overflow: visible; padding-bottom: 8px; }
     #btn-side { display: none; }
-    .colo-preview { display: none !important; }
+    .sheet.has-colo { flex: none; min-height: 0; }
     .history { min-height: 0; padding: 6px 10px; }
     .history .hitem { width: 56px; min-height: 48px; }
     .history .hitem img { width: 56px; height: 42px; }
@@ -675,3 +675,38 @@
     body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* The caption and artwork share measured paper coordinates on every screen size. */
+.sheet.has-colo { position: relative; display: block; padding: 0; overflow: hidden; }
+.sheet.has-colo .colo-preview { position: absolute; left: 0; top: 0; max-width: none; padding: 0; border: 0; transform-origin: top left; pointer-events: none; color: var(--ink); }
+.caption-edit { min-height: 44px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--ink); }
+.colo-editor label { display: flex; align-items: center; gap: 12px; min-height: 44px; }
+.colo-editor input[type=checkbox] { width: 22px; height: 22px; flex-shrink: 0; }
+.colo-editor select, .colo-editor button { min-height: 44px; width: 100%; }
+.colo-editor fieldset { min-width: 0; margin: 16px 0; border: 1px solid var(--line); border-radius: 8px; }
+#modal-colophon .card { max-height: calc(100dvh - 24px); width: min(520px, calc(100vw - 24px)); }
+#modal-colophon .content { overflow-y: auto; min-height: 0; overflow-wrap: anywhere; }
+#colo-close { min-width: 44px; min-height: 44px; }
+@media (max-width: 900px) {
+  .print-cluster { flex-wrap: wrap; }
+  .printbox { flex-wrap: wrap; }
+  .caption-edit { font-size: 11px; }
+}
+
+.print-production { min-width: 0; border: 1px solid var(--line); border-radius: 8px; }
+.print-production label { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.print-production input[type=number] { min-height: 44px; width: 100%; box-sizing: border-box; }
+.print-production input[type=checkbox] { width: 22px; height: 22px; }
+
+.printer-presets input { min-height: 44px; width: 100%; box-sizing: border-box; }
+.printer-presets button { margin-block: 4px; }
+.print-quality { border: 1px solid var(--line); border-left: 4px solid #388466; border-radius: 6px; padding: 12px; }
+.print-quality[data-level=review] { border-left-color: #b27919; }
+#science-content { overflow-wrap: anywhere; }
+.science-status { padding: 8px 12px; border-left: 4px solid #b27919; background: var(--panel-2); }
+.science-status[data-status="partially validated"] { border-left-color: #3877ab; }
+.science-evidence summary { min-height: 44px; cursor: pointer; }
+#science-close, #btn-science-report { min-height: 44px; }
+
+#btn-science-report { position: absolute; top: 8px; left: 12px; z-index: 6; font-size: 11px; background: var(--panel); }
+@media print { #btn-science-report { display: none !important; } }

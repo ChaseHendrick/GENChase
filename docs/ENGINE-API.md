@@ -95,3 +95,52 @@ polygon module and its broken control, successive recipe defaults, fixed RNG out
 invalid inputs, stale-data clearing, snapshot isolation, safe text rendering and
 shared print/colophon preferences across tabs. CI also retains saved-recipe, lazy-load,
 loading failure/retry, UI, print and all scientific checks.
+
+## Caption editing on desktop and mobile
+
+Use **Edit caption** beside the print controls, or in the export dialog. The shared
+editor places the colophon above, underneath, left or right of the artwork. Each
+part can be hidden and restored: title, equation, seed, parameters, palette,
+print dimensions/resolution and date. **Restore all parts** restores their visibility.
+The master switch controls whether the sheet includes a caption at all.
+
+Preferences persist on the current device across techniques. They are presentation
+settings, separate from the versioned scientific recipe. Hidden details are omitted
+from the caption; retain the recipe link or settings JSON when reproducibility matters.
+Parameter text preserves stored numeric precision. A caption is not a simulation-state
+checkpoint or a scientific validation certificate.
+
+The preview and PNG use the same measured paper coordinates. All four placements
+remain available on mobile, with touch-sized controls and a scrolling editor.
+Long tokens wrap and text shrinks to fit the reserved region on small sheets.
+Inspect the exported file for comfortable physical text size. No text is silently
+truncated to a fixed line count. Browser printing preserves the preview arrangement;
+use PNG export for the requested pixel dimensions. Caption editing is disabled while
+an export is running so one file cannot mix different caption choices.
+
+`node tools/colophon-check.js` checks placements through the real PNG path, aspect
+ratio, long text, visibility/restoration, saved preferences and mobile widths of
+320 and 390 pixels. These are presentation regressions, not numerical validation.
+
+## Workload preferences and science reports
+
+**Device workload** is a persistent engine preference. Balanced retains the existing
+preview and scheduling defaults. Lighter use caps previews at 2 million pixels and
+pixel ratio 1. Maximum throughput retains the 8 million pixel / ratio 2 preview limits.
+Direct gravity uses cooperative CPU slices of 2/8/12 ms with a 16 ms delay in lighter
+mode. Volume wave uses one step per update in lighter/balanced mode and up to four
+in maximum mode, with a 66 ms minimum work interval in lighter mode. Pending warm-up
+steps and GPU fences remain bounded. Other techniques retain their own scheduling.
+
+`Studio.getComputeBudget()` and `host.computeBudget()` return detached budget data.
+They are additive API version 1 methods. These are work preferences, not measured CPU
+or GPU utilization targets. They do not raise grids, alter numerical timesteps, remove
+memory limits or start paused simulations. Wall-clock playback speed and preview
+resolution can change; use finite-step tests to compare numerical results.
+
+The **Science report** button on the stage shows the selected technique's inventory
+status, source, numerical/print evidence, known limits, remaining work, current
+structured witness and source fingerprint. A JSON download captures the report and
+recipe. Folder builds load the inventory only when requested, with retry on failure;
+the portable build embeds it. Missing evidence and missing structured measurements
+are reported explicitly, without substituting Live/Still motion for validity.

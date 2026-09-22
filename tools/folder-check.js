@@ -34,3 +34,5 @@ assert.ok(!portable.includes('{{include:'), 'Portable studio contains an unexpan
 assert.ok(!/<script\b[^>]*\bsrc\s*=/i.test(portable), 'Portable studio must not require external scripts');
 assert.ok(Buffer.byteLength(index) < Buffer.byteLength(portable) / 4, 'Index should be substantially smaller than portable studio');
 console.log('FOLDER PACKAGING OK: ' + ids.length + ' techniques in ' + new Set(manifest.techniques.map(m => m.source)).size + ' local source files; thin index and portable studio');
+
+assert.deepEqual(JSON.parse(read('src/science-reports.json')),JSON.parse(read('validation/techniques.json')),'Science reports must match the validation inventory');

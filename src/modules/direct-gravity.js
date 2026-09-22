@@ -123,7 +123,7 @@
       function stop() { if (timer !== null) clearTimeout(timer); timer = null; }
       function schedule() {
         const s = host.getState();
-        if (timer === null && active && host.isActive() && s.running && !error && done < s.steps) timer = setTimeout(chunk, 0);
+        if (timer === null && active && host.isActive() && s.running && !error && done < s.steps) timer = setTimeout(chunk, host.computeBudget ? host.computeBudget().cpuDelayMs : 0);
       }
       function chunk() {
         timer = null;
@@ -138,7 +138,7 @@
               if (initialized) { done++; copyPlate(); advanced = true; } else initialized = true;
               if (done >= s.steps) break;
             }
-          } while (performance.now() - start < 8);
+          } while (performance.now() - start < (host.computeBudget ? host.computeBudget().cpuSliceMs : 8));
           for (let i = 0; i < b.n; i++) if (!Number.isFinite(shownX[i]) || !Number.isFinite(shownY[i])) throw new Error('Non-finite state; reset with a smaller dt');
         } catch (e) { error = 'Stopped: ' + U.escapeHtml(e.message); job = null; }
         // Reduced-motion users receive the final plate without intermediate animation.

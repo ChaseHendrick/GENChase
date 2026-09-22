@@ -194,7 +194,8 @@
         </span>
         <select id="export-dpi" aria-label="Print resolution in pixels per inch"></select>
         <button id="btn-colophon" class="ptog" type="button" role="switch" aria-checked="false"
-          title="Show a printed caption under the image: technique, governing equation, seed and every parameter">Colophon</button>
+          title="Include the selected caption parts on the printed sheet">Colophon</button>
+        <button id="btn-colophon-edit" class="caption-edit" type="button">Edit caption</button>
         <span class="dims" id="export-dims" aria-live="polite"></span>
       </div>
       <button class="btn" id="btn-export" type="button" title="Export a print (E)">
@@ -223,6 +224,7 @@
   <div class="main" id="main">
     <aside class="side" id="side"></aside>
     <section class="stage" id="stage" tabindex="-1">
+      <button class="btn" id="btn-science-report" type="button">Science report</button>
       <button class="btn" id="btn-exit-focus" type="button" hidden title="Leave focus mode (Esc or F)">Exit</button>
       <div class="poke-aim" id="poke-aim" hidden aria-hidden="true"></div>
       <figure class="sheet" id="sheet">
@@ -310,7 +312,7 @@
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>Almost every tab is the paper it names. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 130 sciences share one control surface,
+      <p>Each tab names its scientific sources; implementation accuracy and validation coverage vary. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 130 sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -467,6 +469,47 @@
   </div>
 </div>
 
+<div class="modal" id="modal-science" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="science-title">
+    <div class="head"><h2 id="science-title">Science report</h2><button class="x" id="science-close" type="button" aria-label="Close science report">×</button></div>
+    <div class="content" id="science-content" aria-live="polite"></div>
+  </div>
+</div>
+<div class="modal" id="modal-colophon" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="colo-editor-title">
+    <div class="head"><h2 id="colo-editor-title">Edit printed caption</h2><button class="x" id="colo-close" type="button" aria-label="Close caption editor">×</button></div>
+    <div class="content colo-editor">
+      <label for="compute-mode">Device workload</label>
+      <select id="compute-mode"><option value="light">Lighter use</option><option value="balanced">Balanced</option><option value="maximum">Maximum throughput</option></select>
+      <p class="hint">Lighter use reduces preview pixels. Direct gravity and volume wave also adjust work scheduling. Maximum throughput runs those heavy modules harder. Other modules keep their own controls. Exact CPU/GPU percentages are not available. Grid sizes, pause state, memory limits and numerical timesteps stay unchanged; elapsed playback speed can change.</p>
+      <label><input id="expert-print" type="checkbox"> Advanced print tools</label>
+      <p class="hint">Show finishing controls and downloadable print-job details in the export dialog. This choice stays selected on this device.</p>
+      <label><input id="colo-enabled" type="checkbox"> Include caption on the sheet</label>
+      <label for="colo-position">Position</label>
+      <select id="colo-position"><option value="bottom">Underneath</option><option value="top">Above</option><option value="left">Left</option><option value="right">Right</option></select>
+      <fieldset class="printer-presets"><legend>Saved printer presets</legend>
+        <label for="printer-preset-name">Preset name</label><input id="printer-preset-name" type="text" maxlength="60" placeholder="Printer, paper and size">
+        <button class="btn" id="printer-preset-save" type="button">Save current print settings</button>
+        <label for="printer-preset-list">Saved on this device</label><select id="printer-preset-list"></select>
+        <button class="btn" id="printer-preset-load" type="button">Apply preset</button><button class="btn" id="printer-preset-delete" type="button">Delete selected preset</button>
+        <p class="hint">Saves size, resolution, caption and PDF finishing settings. Does not save the artwork or a printer ICC profile.</p>
+        <p id="printer-preset-status" role="status"></p>
+      </fieldset>
+      <fieldset><legend>Caption parts</legend>
+        <label><input id="colo-part-title" type="checkbox"> Technique title</label>
+        <label><input id="colo-part-equation" type="checkbox"> Equation</label>
+        <label><input id="colo-part-seed" type="checkbox"> Seed</label>
+        <label><input id="colo-part-parameters" type="checkbox"> Parameters</label>
+        <label><input id="colo-part-palette" type="checkbox"> Palette and background</label>
+        <label><input id="colo-part-print" type="checkbox"> Print dimensions and resolution</label>
+        <label><input id="colo-part-date" type="checkbox"> Date</label>
+      </fieldset>
+      <button class="btn" id="colo-restore" type="button">Restore all parts</button>
+      <p class="hint">Saved on this device for every technique. Changes apply to the next export. Small sheets and long captions reduce text size. Keep the recipe link or settings JSON for reproducibility when hiding details.</p>
+    </div>
+  </div>
+</div>
+
 <div class="modal" id="modal-export" hidden>
   <div class="card" role="dialog" aria-modal="true" aria-labelledby="export-title">
     <div class="head"><h2 id="export-title">Export</h2><button class="x" id="export-close" type="button" aria-label="Close">×</button></div>
@@ -477,13 +520,25 @@
         <button type="button" class="switch" id="export-colo-tog" role="switch" aria-checked="false" aria-label="Include colophon on the printed PNG"></button>
         <div class="colo-copy">
           <div class="lbl">Colophon on this print</div>
-          <p class="hint">On: mounted sheet with technique, equation, seed and parameters under the image. Off: the image alone, no caption.</p>
+          <p class="hint">Choose the caption position and which parts to include. Off prints the image alone.</p>
         </div>
       </div>
+      <button class="btn" id="export-colo-edit" type="button">Edit caption</button>
+      <fieldset class="print-production" data-expert-print hidden><legend>PDF finishing</legend>
+        <label for="export-bleed">Extra artwork beyond the cut (bleed, mm)</label>
+        <input id="export-bleed" type="number" min="0" max="25" step="0.1" value="0">
+        <label><input id="export-crop" type="checkbox"> Add cutting marks</label>
+        <p class="hint">Use the bleed amount your printer requests. Bleed slightly enlarges the image and crops the trim view without stretching it. TIFF keeps the original sheet.</p>
+      </fieldset>
+      <p class="hint">Print PDF and TIFF include an sRGB profile and sheet size. PDF contains the rendered image; SVG is available separately for vector techniques.</p>
+      <div data-expert-print hidden><p class="hint">For CMYK TIFF or PDF/X-3, use the optional native prepress tool with your printer’s ICC profile. <a href="https://github.com/SharpMeow/GENChase/blob/main/docs/PRINTING.md">Prepress instructions</a></p><button class="btn" id="export-job-json" type="button">Download print-job JSON</button></div>
+      <section id="export-quality" class="print-quality" aria-live="polite" hidden></section>
       <img id="export-img" alt="Exported artwork" hidden>
       <div class="actions">
         <a class="btn primary" id="export-download" download hidden>Download PNG</a>
         <button class="btn primary" id="export-save" type="button" hidden>Save PNG</button>
+        <button class="btn" id="export-pdf" type="button" hidden>Print PDF</button>
+        <button class="btn" id="export-tiff" type="button" hidden>Print TIFF</button>
         <a class="btn" id="export-jpg" href="#" hidden>JPEG</a>
         <a class="btn" id="export-webp" href="#" hidden>WebP</a>
         <a class="btn primary" id="export-svg" download hidden>Download SVG</a>
@@ -521,6 +576,8 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script type="application/json" id="science-records">{{science-reports}}</script>
+<script>{{include:shared/print-formats.js}}</script>
 <script>{{include:shared/engine.js}}</script>
 <script>{{include:modules/flow.js}}</script>
 <script>{{include:modules/physarum.js}}</script>
