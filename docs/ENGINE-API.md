@@ -144,3 +144,9 @@ structured witness and source fingerprint. A JSON download captures the report a
 recipe. Folder builds load the inventory only when requested, with retry on failure;
 the portable build embeds it. Missing evidence and missing structured measurements
 are reported explicitly, without substituting Live/Still motion for validity.
+
+## Catalog navigation and preview layout
+
+The [module browser](BROWSING-AND-LAYOUT.md) uses catalog metadata for searching and sorting without instantiating every simulation. Reference-year ordering and editorial familiarity categories do not change module IDs or recipe interpretation. Favorites are a local presentation preference.
+
+Zoom/pan transform the complete preview sheet so caption text scales with the artwork. Status and scientific witness text occupy their own panel below the art viewport. These are shared presentation changes; they do not alter numerical parameters, the recipe version or the physical print dimensions. Catalog/layout changes require `tools/studio-navigation-check.js` in Chromium and WebKit in addition to affected engine, recipe and print regressions.

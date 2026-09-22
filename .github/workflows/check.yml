@@ -58,9 +58,11 @@ jobs:
           node tools/rigid-body-audit.js
           node tools/direct-gravity-science.js
           node tools/physarum3d-display-check.js
+          node tools/print-smoothing-check.js
           node tools/bec-neighbors-check.js
           node tools/vortex-kernel-check.js
           npm test
+          npm run test:validator
       - name: Structural checks
         run: node tools/lint.js
       - name: Polygon bounds and numerical controls
@@ -102,6 +104,37 @@ jobs:
           node tools/art-only-check.js
           node tools/direct-gravity-browser.js
           node tools/bec-preview-check.js
+
+  volunteer-ui:
+    name: volunteer and navigation (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    needs: lint
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser engine
+        run: |
+          npm install --no-save --package-lock=false playwright@1.58.2
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Navigation and local app lifecycle
+        env:
+          BROWSER: ${{ matrix.browser }}
+        run: |
+          node tools/studio-navigation-check.js
+          node tools/print-smoothing-browser.js
+          node tools/validator-ui-check.js
+      - name: Witness corpus and deliberate misses
+        if: matrix.browser == 'chromium'
+        run: |
+          node tools/harvest-browser-check.js
+          node tools/validator-process-check.js
 
   wave-science:
     name: wave science

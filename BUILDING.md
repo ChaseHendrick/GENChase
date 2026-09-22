@@ -49,6 +49,9 @@ subject to browser restrictions on clipboard and local storage. End users do not
 | `npm run test:solvers` | Run all registered numerical evidence |
 | `npm run test:print` | Run all registered numerical and print evidence |
 | `npm run test:all` | Fast checks, build, lint and inventory checks, then all registered evidence |
+| `npm run validator:headless -- --mode inventory --machine m1pro` | Run a recorded inventory job without the app UI |
+| `npm run validator` | Start the optional loopback validation/contribution app |
+| `npm run test:validator` | Test local job control, checkpoints, command restrictions and candidate safeguards |
 
 `npm test` needs only Node and does not execute scientific benchmarks or browser tests.
 The full scientific CI remains in place. Tests using Chromium need the development harness:
@@ -150,3 +153,11 @@ Print-container checks: `node tools/print-formats-check.js /tmp/genchase-print-c
 then `python tools/print-formats-check.py /tmp/genchase-print-check` with the optional
 `tools/requirements-prepress.txt` dependencies installed. CI also tests Ghostscript
 conversion with a test CMYK profile. See [the printing guide](docs/PRINTING.md).
+
+## Optional local compute app
+
+[`apps/validate/`](apps/validate/README.md) provides a separate local interface for official checks and bounded experiments. It uses Node and fixed commands, with no framework, model service or API token. Its default job is `node tools/verify.js --print --all`; existing scientific CI stays required. macOS and Linux support the process-group job runner. Apple Silicon macOS and Apple command-line developer tools are required for its native Metal backend and Apple power readings.
+
+Run `npm run validator`, then open `http://127.0.0.1:8787`. Job artifacts stay under Git-ignored `apps/validate/.runs/`; source candidate files are written under `identities/candidates/`. The [local app guide](apps/validate/README.md) documents stop/resume boundaries, portable bundles and offline behavior. The [Apple GPU report](apps/validate/APPLE-GPU.md) records the tested native scope separately from browser software-renderer CI.
+
+The shared module browser and sheet layout have a [navigation regression](docs/BROWSING-AND-LAYOUT.md#interface-motion-and-browser-scope). Run it in both Chromium and WebKit when changing catalog controls, top-bar layout or whole-sheet zoom.

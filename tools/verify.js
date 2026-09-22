@@ -107,7 +107,11 @@ function main(args = process.argv.slice(2), root = ROOT) {
     const code = execute(root, script, args);
     if (code) { console.error('Consistency check failed; no registered evidence tests ran.'); return code; }
   }
+  const resume = process.env.GENCHASE_VERIFY_CHECKPOINT && (!process.env.GENCHASE_CHECKPOINT_ROOT || path.resolve(root) === path.resolve(process.env.GENCHASE_CHECKPOINT_ROOT))
+    ? require('../apps/validate/checkpoint').checkpoint(root, { ids: options.ids, all: options.all, print: options.print })
+    : { has: () => false, mark() {} };
   for (const test of plan.tests) {
+    if (resume.has(test.path)) { console.log('Resumed ' + test.path + ' (previously passed in the same source/environment context)'); continue; }
     console.log('\nRunning ' + test.path);
     const code = execute(root, test.absolute);
     if (code) {
@@ -115,6 +119,7 @@ function main(args = process.argv.slice(2), root = ROOT) {
       console.error('For missing Playwright or Chromium, use the development setup in BUILDING.md: npm install --no-save playwright@1.49.1; npx playwright install chromium.');
       return code;
     }
+    resume.mark(test.path);
   }
   if (plan.gaps.length) {
     console.log('\nINCOMPLETE: ' + plan.tests.length + ' registered test(s) passed, but ' + plan.gaps.length + ' requested evidence list(s) are missing.');

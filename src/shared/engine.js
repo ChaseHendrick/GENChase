@@ -646,7 +646,7 @@ void main(){
     balanced:Object.freeze({cpuSliceMs:8,cpuDelayMs:0,gpuSteps:1,gpuIntervalMs:0,previewDpr:2,previewPixels:8e6}),
     maximum:Object.freeze({cpuSliceMs:12,cpuDelayMs:0,gpuSteps:4,gpuIntervalMs:0,previewDpr:2,previewPixels:8e6})
   });
-  let computeMode='balanced';
+  let computeMode='maximum';
   try { const saved=localStorage.getItem(STORE+'computeMode');if(Object.hasOwn(COMPUTE_MODES,saved))computeMode=saved; } catch(err) { /* default */ }
   S.getComputeBudget = () => ({mode:computeMode,...COMPUTE_MODES[computeMode]});
 
@@ -1265,7 +1265,7 @@ void main(){
 
   /* ---- canvas sizing ---- */
   function fitCanvas(e) {
-    const stage = $('stage');
+    const stage = $('art-viewport') || $('stage');
     const cs = getComputedStyle(stage);
     const availW = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     const availH = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 24;
@@ -1293,7 +1293,10 @@ void main(){
     // print pixels rather than reading this canvas.
     const budget=COMPUTE_MODES[computeMode];
     const MAX_CANVAS_PX = budget.previewPixels;
-    let dpr = Math.min(budget.previewDpr, window.devicePixelRatio || 1);
+    // Small vector previews need extra sampling to retain thin marks and gaps.
+    // This changes raster presentation only; Light mode and the area cap still apply.
+    const vectorDpr = typeof e.inst.exportSVG === 'function' ? 2 : 1;
+    let dpr = Math.min(budget.previewDpr, Math.max(vectorDpr, window.devicePixelRatio || 1));
     if (cw * ch * dpr * dpr > MAX_CANVAS_PX) dpr = Math.sqrt(MAX_CANVAS_PX / Math.max(1, cw * ch));
     e.canvas.style.width = cw + 'px';
     e.canvas.style.height = ch + 'px';
@@ -1308,7 +1311,10 @@ void main(){
     // every integrator with a time step shows it, so a preset that changes dt says so
     const dt = Number(e.state.dt);
     const dtHtml = isFinite(dt) && dt > 0 && !/\bdt\b/.test(e.statusHtml) ? '<span>dt <b>' + (dt >= 1 ? dt.toFixed(1) : dt.toFixed(3).replace(/0+$/, '').replace(/\.$/, '')) + '</b></span>' : '';
-    $('status').innerHTML = e.statusHtml + scienceWitnessHtml(e.scienceWitness) + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
+    const html = e.statusHtml + scienceWitnessHtml(e.scienceWitness) + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
+    const status = $('status');
+    // Preserve text selection and avoid rebuilding identical measurement rows.
+    if (status._renderedHtml !== html) { status.innerHTML = html; status._renderedHtml = html; }
   }
 
   /* ---- lifecycle ---- */
@@ -1600,14 +1606,13 @@ void main(){
   const VIEW_MIN = 1, VIEW_MAX = 8;
   function viewIdle() { return viewS === 1 && viewX === 0 && viewY === 0; }
   function applyView() {
-    const e = instances[currentId];
-    const c = e && e.canvas;
-    for (const other of document.querySelectorAll('.stage canvas.art')) {
-      if (other !== c) other.style.transform = '';
-    }
-    if (c) {
-      c.style.transformOrigin = 'center center';
-      c.style.transform = viewIdle() ? '' : ('translate(' + viewX + 'px,' + viewY + 'px) scale(' + viewS + ')');
+    // Transform the mounted sheet as one object, so the caption stays aligned
+    // and grows with the artwork. This never changes exported dimensions.
+    for (const canvas of document.querySelectorAll('.stage canvas.art')) canvas.style.transform = '';
+    const sheet = $('sheet');
+    if (sheet) {
+      sheet.style.transformOrigin = 'center center';
+      sheet.style.transform = viewIdle() ? '' : ('translate(' + viewX + 'px,' + viewY + 'px) scale(' + viewS + ')');
     }
     const fit = $('view-fit');
     if (fit) fit.disabled = viewIdle();
@@ -1624,12 +1629,12 @@ void main(){
     const e = instances[currentId]; if (!e || !e.canvas) return;
     const next = util.clamp(viewS * factor, VIEW_MIN, VIEW_MAX);
     if (Math.abs(next - viewS) < 1e-6) return;
-    const r = e.canvas.getBoundingClientRect();
+    const r = $('sheet').getBoundingClientRect();
     const fx = (clientX - r.left) / Math.max(1, r.width);
     const fy = (clientY - r.top) / Math.max(1, r.height);
     viewS = next;
     applyView();
-    const r2 = e.canvas.getBoundingClientRect();
+    const r2 = $('sheet').getBoundingClientRect();
     viewX += clientX - (r2.left + fx * r2.width);
     viewY += clientY - (r2.top + fy * r2.height);
     if (viewS === 1) { viewX = 0; viewY = 0; }
@@ -2268,6 +2273,12 @@ void main(){
   /* ---- colophon: the piece, then the recipe that made it ---- */
   let colophon = false;
   let exportBusy = false;
+  let printSmoothing = 'off';
+  function setPrintSmoothing(mode) {
+    printSmoothing = window.GenChasePrintSmoothing.modes.includes(mode) ? mode : 'off';
+    for (const id of ['print-smoothing', 'export-smoothing']) $(id).value = printSmoothing;
+    try { localStorage.setItem(STORE+'printSmoothing',printSmoothing); } catch (err) { /* session only */ }
+  }
   const COLO_PARTS = ['title', 'equation', 'seed', 'parameters', 'palette', 'print', 'date'];
   let coloPrefs = { position: 'bottom', parts: Object.fromEntries(COLO_PARTS.map(k => [k, true])) };
   function captionRows(e, sp) {
@@ -2291,7 +2302,8 @@ void main(){
       typeof p.custom === 'boolean' && validInches(p.width) && validInches(p.height) && PRINT_INCHES.includes(p.inches) &&
       PRINT_DPI.some(x=>x[0]===p.dpi) && typeof p.colophon === 'boolean' &&
       ['top','bottom','left','right'].includes(p.caption?.position) && COLO_PARTS.every(k=>typeof p.caption.parts?.[k]==='boolean') &&
-      Number.isFinite(p.bleedMm) && p.bleedMm >= 0 && p.bleedMm <= 25 && typeof p.cropMarks === 'boolean';
+      Number.isFinite(p.bleedMm) && p.bleedMm >= 0 && p.bleedMm <= 25 && typeof p.cropMarks === 'boolean' &&
+      (p.smoothing === undefined || window.GenChasePrintSmoothing.modes.includes(p.smoothing));
   }
   function storePrinterPresets() {
     try { localStorage.setItem(STORE+'printerPresets',JSON.stringify(printerPresets)); return true; }
@@ -2303,7 +2315,7 @@ void main(){
     if (!name) { $('printer-preset-status').textContent='Enter a preset name.'; return; }
     const paper=printSpec();
     const p = {v:1,name,custom:true,width:paper.wIn,height:paper.hIn,inches:printInches,dpi:printDpi,
-      colophon,caption:JSON.parse(JSON.stringify(coloPrefs)),bleedMm:Number($('export-bleed').value),cropMarks:$('export-crop').checked};
+      colophon,caption:JSON.parse(JSON.stringify(coloPrefs)),bleedMm:Number($('export-bleed').value),cropMarks:$('export-crop').checked,smoothing:printSmoothing};
     if (!validPrinterPreset(p)) { $('printer-preset-status').textContent='Choose a sheet with both dimensions from 1 to 1000 inches before saving.'; return; }
     if (printerPresets.some(x=>x.name===name)) { $('printer-preset-status').textContent='That name exists. Choose a new name or delete the old preset.'; return; }
     if (printerPresets.length>=20) { $('printer-preset-status').textContent='Twenty presets saved. Delete one before adding another.'; return; }
@@ -2320,6 +2332,7 @@ void main(){
     try { localStorage.setItem(STORE+'printCustom',JSON.stringify({on:customPrint,width:printWidth,height:printHeight})); } catch (err) { /* session only */ }
     coloPrefs=JSON.parse(JSON.stringify(p.caption));setColophon(p.colophon);saveColoPrefs();
     $('export-bleed').value=String(p.bleedMm);$('export-crop').checked=p.cropMarks;
+    setPrintSmoothing(p.smoothing);
     updateDims();$('printer-preset-status').textContent='Applied '+p.name+'. The next export uses these settings.';
   }
 
@@ -2509,7 +2522,7 @@ void main(){
     const body = new XMLSerializer().serializeToString(art);
     return util.svgBlob(sp.pw, sp.ph, bg, body);
   }
-  function printQualityReport(e, sp, layout, vector) {
+  function printQualityReport(e, sp, layout, vector, smoothing) {
     const ppi = Math.min(sp.pw/sp.wIn,sp.ph/sp.hIn), issues = [];
     const lines = ['File: '+sp.pw+' × '+sp.ph+' pixels at '+ppi.toFixed(1)+' pixels per inch.'];
     if (ppi<150) issues.push('Low file resolution for close viewing. Ask the printer about the intended viewing distance.');
@@ -2527,7 +2540,11 @@ void main(){
       lines.push('Smallest caption text: '+smallest.toFixed(1)+' pt.');
       if (smallest<6) issues.push('Some caption text is below 6 pt. Use a larger sheet, fewer parts or a different caption position.');
     }
-    const report = {schemaVersion:1,ppi,lines,issues,scientificValidation:false};
+    if (smoothing.applied) {
+      lines.push('Raster smoothing: '+smoothing.requested+', '+smoothing.radiusPixels+' px filter radius, applied before caption text.');
+      issues.push('Smoothing softens raster edges and can blur fine detail. It adds no simulation detail. Scientific measurements describe the source simulation, not the filtered print.');
+    } else if (smoothing.requested !== 'off') lines.push('Raster smoothing skipped: the artwork already uses vector rasterization.');
+    const report = {schemaVersion:1,ppi,lines,issues,smoothing,scientificValidation:false};
     const box=$('export-quality');box.hidden=false;box.dataset.level=issues.length?'review':'ready';box.replaceChildren();
     box.appendChild(h('h3',{text:issues.length?'Print check: review before downloading':'Print check: no basic layout/resolution warnings'}));
     box.appendChild(h('ul',{},[...lines,...issues].map(text=>h('li',{text}))));
@@ -2578,7 +2595,8 @@ void main(){
     const withColophon = colophon;
     const lay = withColophon ? sheetLayout(sp, e) : null;
     const captionBg = e.state.bg;
-    for (const id of ['btn-colophon', 'btn-colophon-edit', 'export-colo-tog', 'export-colo-edit']) $(id).disabled = true;
+    const smoothingMode = printSmoothing;
+    for (const id of ['btn-colophon', 'btn-colophon-edit', 'export-colo-tog', 'export-colo-edit', 'export-smoothing', 'print-smoothing']) $(id).disabled = true;
     pnote.textContent = (colophon
       ? ('Image ' + inTxt(lay.artWIn) + ' × ' + inTxt(lay.artHIn) + ' in on a ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in sheet (' +
          cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) + ' cm) at ' + sp.effDpi + ' ppi. The image sits in a paper margin with the selected caption parts at the ' + lay.position + '.')
@@ -2669,6 +2687,10 @@ void main(){
         }
       }
       if (job.abort) throw new Error('cancelled');
+      let smoothingField = null;
+      try { smoothingField = e.inst.fieldCells?.(); } catch (err) { /* unknown */ }
+      const smoothing = window.GenChasePrintSmoothing.settings(smoothingMode,rw,rh,smoothingField,usedVector);
+      blob = await window.GenChasePrintSmoothing.smooth(blob,smoothing,job);
       if (withColophon) blob = await composeSheet(blob, lay, captionBg);
       else blob = await fitPrintSheet(blob, sp, e.state.bg || '#fff');
       if (svgBlob) svgBlob = await fitPrintSVG(svgBlob, sp, e.state.bg || '#fff');
@@ -2677,9 +2699,9 @@ void main(){
       lastBlob = blob; lastUrl = URL.createObjectURL(blob); lastPrintSpec = {...sp};
       lastName = 'genchase-' + e.mod.id + '-' + e.state.seed.replace(/[^a-z0-9_-]+/gi, '_') + '-' +
         inTxt(sp.wIn).replace('.', '_') + 'x' + inTxt(sp.hIn).replace('.', '_') + 'in-' + sp.effDpi + 'ppi' +
-        (colophon ? '-with-code' : '') + '.png';
+        (colophon ? '-with-code' : '') + (smoothing.applied ? '-smooth-'+smoothing.requested : '') + '.png';
       img.src = lastUrl; img.hidden = false;
-      const quality=printQualityReport(e,sp,lay,usedVector);
+      const quality=printQualityReport(e,sp,lay,usedVector,smoothing);
       lastPrintJob={schemaVersion:1,capturedAt:new Date().toISOString(),engineApiVersion:S.apiVersion,recipe:S.getRecipe(e.mod.id),printSpec:{...sp},caption:withColophon?JSON.parse(JSON.stringify(coloPrefs)):null,quality,witness:S.getWitness(e.mod.id),note:'Recipe and reporting snapshot, not a simulation-state checkpoint. Finishing choices are recorded when this report is downloaded.'};
       $('export-pdf').hidden = false; $('export-tiff').hidden = false; $('export-job-json').disabled=false;
       const size = (blob.size / 1048576).toFixed(1) + ' MB';
@@ -2712,7 +2734,7 @@ void main(){
     } finally {
       clearInterval(tick);
       exportBusy = false;
-      for (const id of ['btn-colophon', 'btn-colophon-edit', 'export-colo-tog', 'export-colo-edit']) $(id).disabled = false;
+      for (const id of ['btn-colophon', 'btn-colophon-edit', 'export-colo-tog', 'export-colo-edit', 'export-smoothing', 'print-smoothing']) $(id).disabled = false;
       if (S.exportJob === job) S.exportJob = null;
       if (cancel) cancel.hidden = true;
     }
@@ -2746,7 +2768,7 @@ void main(){
     printFormatBusy = true;
     const source = lastUrl, name = lastName.replace(/\.png$/i, format === 'tiff' ? '.tif' : '.pdf');
     const sp = {...lastPrintSpec};
-    const buttons = ['export-pdf', 'export-tiff', 'export-colo-tog', 'export-colo-edit', 'btn-colophon', 'btn-colophon-edit'];
+    const buttons = ['export-pdf', 'export-tiff', 'export-colo-tog', 'export-colo-edit', 'btn-colophon', 'btn-colophon-edit', 'export-smoothing', 'print-smoothing'];
     for (const id of buttons) $(id).disabled = true;
     $( 'export-' + format).setAttribute('aria-busy', 'true');
     try {
@@ -3026,13 +3048,7 @@ void main(){
       });
     }
     if (seenSel) seenSel.addEventListener('change', applyFind);
-    tabs.addEventListener('wheel', ev => {
-      if (!ev.deltaY || Math.abs(ev.deltaY) < Math.abs(ev.deltaX)) return;
-      if (tabs.scrollWidth <= tabs.clientWidth + 2) return;
-      tabs.scrollLeft += ev.deltaY;
-      ev.preventDefault();
-    }, { passive: false });
-    bindDragScroll(tabs);
+    if (window.ModuleBrowser) ModuleBrowser.mount({ modules, onSelect: switchTo, loadRecords: loadScienceRecords });
     bindDragScroll($('history'));
     bindViewControls();
     // top bar wiring
@@ -3137,7 +3153,7 @@ void main(){
     }
     $('btn-export').addEventListener('click', doExport);
     $('export-save').addEventListener('click', saveViaCapability);
-    try { setExpertPrint(localStorage.getItem(STORE+'expertPrint')==='1'); } catch(err) { setExpertPrint(false); }
+    try { setExpertPrint(localStorage.getItem(STORE+'expertPrint')!=='0'); } catch(err) { setExpertPrint(true); }
     $('compute-mode').value=computeMode;
     $('compute-mode').addEventListener('change',ev=>{
       if(!Object.hasOwn(COMPUTE_MODES,ev.target.value))return;computeMode=ev.target.value;
@@ -3145,6 +3161,9 @@ void main(){
       const e=instances[currentId];if(e&&fitCanvas(e)&&e.inst.resize)e.inst.resize();
     });
     $('expert-print').addEventListener('change',ev=>setExpertPrint(ev.target.checked));
+    try { setPrintSmoothing(localStorage.getItem(STORE+'printSmoothing')); } catch (err) { setPrintSmoothing('off'); }
+    $('print-smoothing').addEventListener('change',ev=>setPrintSmoothing(ev.target.value));
+    $('export-smoothing').addEventListener('change',ev=>{setPrintSmoothing(ev.target.value);doExport();});
     $('export-job-json').addEventListener('click',()=>{if(lastPrintJob&&!exportBusy)downloadBlob(new Blob([JSON.stringify({...lastPrintJob,pdfFinishing:{bleedMm:Number($('export-bleed').value),cropMarks:$('export-crop').checked}},null,2)],{type:'application/json'}),lastName.replace(/\.png$/i,'-print-job.json'));});
     $('export-pdf').addEventListener('click', () => exportPrintFormat('pdf'));
     $('export-tiff').addEventListener('click', () => exportPrintFormat('tiff'));
@@ -3324,6 +3343,8 @@ void main(){
       toast('Something went wrong: ' + String((r && r.message) || r || 'a background task failed').split('\n')[0].slice(0, 120));
     });
     document.addEventListener('keydown', ev => {
+      // Native dialogs own their keys, including Escape and activation keys.
+      if (document.querySelector('dialog[open]')) return;
       const tag = (ev.target && ev.target.tagName) || '';
       const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || ev.target.isContentEditable;
       const modalOpen = MODALS.map($).some(m => m && !m.hidden);
@@ -3389,6 +3410,17 @@ void main(){
       }
     });
     let resizeTimer = null;
+    // Caption and status wrapping can resize the artwork without a window resize.
+    if (window.ResizeObserver && $('art-viewport')) {
+      let layoutFrame = 0;
+      new ResizeObserver(() => {
+        cancelAnimationFrame(layoutFrame);
+        layoutFrame = requestAnimationFrame(() => {
+          const e = instances[currentId];
+          if (e && fitCanvas(e) && e.inst.resize) { try { e.inst.resize(); } catch (err) { showError(err); } }
+        });
+      }).observe($('art-viewport'));
+    }
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => { const e = instances[currentId]; if (!e) return; if (fitCanvas(e) && e.inst.resize) { try { e.inst.resize(); } catch (err) { showError(err); } } }, 80);

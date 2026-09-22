@@ -25,3 +25,12 @@ blob-report/
 .venv-heavy/
 heavy-output/
 __pycache__/
+
+# Offline validator logs, checkpoints, native builds and result bundles.
+apps/validate/.runs/
+
+# Volunteer results remain local until explicitly selected for publication.
+run/validator/logs/
+run/validator/screenshots/
+run/validator/misses/
+validation/results/witnesses-*.json

@@ -732,15 +732,19 @@ shall not be misrepresented as the original profile.
   </header>
 
   <div class="tabstrip">
+    <button class="btn" id="browse-modules" type="button">Browse all modules</button>
     <input class="find" id="find" type="search" placeholder="Find…" autocomplete="off" spellcheck="false" aria-label="Find a technique. Slash focuses this." />
     <span class="find-n" id="find-n" hidden></span>
     <select class="seen" id="seen" aria-label="How often you see it elsewhere (a curator's call)">
-      <option value="">Seen elsewhere…</option>
+      <option value="">Any familiarity</option>
       <option value="ubiquitous">Ubiquitous</option>
       <option value="common">Common</option>
       <option value="occasional">Occasional</option>
       <option value="rare">Rare</option>
       <option value="unseen">Almost unseen</option>
+    </select>
+    <select class="seen" id="module-sort" aria-label="Sort modules">
+      <option value="name">Name A to Z</option><option value="oldest">Oldest research first</option><option value="newest">Newest research first</option><option value="common">Most common to rarest</option><option value="rare">Rarest to most common</option>
     </select>
     <nav class="tabs" id="tabs" role="tablist" aria-label="Techniques"></nav>
     <p class="seen-hint" id="seen-hint" hidden>Nobody measured this. It is one person's estimate of how often you have seen the picture somewhere else, made in 2026. It is the only filter in this studio that is not computed from the file.</p>
@@ -750,6 +754,7 @@ shall not be misrepresented as the original profile.
   <div class="main" id="main">
     <aside class="side" id="side"></aside>
     <section class="stage" id="stage" tabindex="-1">
+      <div class="art-viewport" id="art-viewport">
       <button class="btn" id="btn-art-only" type="button" title="Hide controls (F)">Art only</button>
       <button class="btn" id="btn-science-report" type="button">Science report</button>
       <button class="btn" id="btn-exit-focus" type="button" hidden title="Leave focus mode (Esc or F)">Show controls</button>
@@ -773,6 +778,8 @@ shall not be misrepresented as the original profile.
           </div>
         </div>
       </div>
+      </div>
+      <div class="stage-readout">
       <div class="status" id="status" role="status" aria-live="polite"></div>
       <div class="witness" id="witness">
         <button class="live-badge" id="live-badge" type="button" title="LIVE when the field is still computing. Click, or press W, to quieten it">
@@ -803,6 +810,7 @@ shall not be misrepresented as the original profile.
           <button type="button" id="view-plus" title="Zoom in (+)" aria-label="Zoom in">+</button>
           <button type="button" class="vfit" id="view-fit" title="Fit the plate in the stage (0)" aria-label="Fit the plate">Fit</button>
         </div>
+      </div>
       </div>
     </section>
   </div>
@@ -1007,10 +1015,13 @@ shall not be misrepresented as the original profile.
     <div class="head"><h2 id="colo-editor-title">Studio setup</h2><button class="x" id="colo-close" type="button" aria-label="Close caption editor">×</button></div>
     <div class="content colo-editor">
       <label for="compute-mode">Device workload</label>
-      <select id="compute-mode"><option value="light">Lighter use</option><option value="balanced">Balanced</option><option value="maximum">Maximum throughput</option></select>
+      <select id="compute-mode"><option value="light">Lighter use</option><option value="balanced">Balanced</option><option value="maximum" selected>Maximum throughput</option></select>
       <p class="hint">Lighter use reduces preview pixels. Direct gravity and volume wave also adjust work scheduling. Maximum throughput runs those heavy modules harder. Other modules keep their own controls. Exact CPU/GPU percentages are not available. Grid sizes, pause state, memory limits and numerical timesteps stay unchanged; elapsed playback speed can change.</p>
-      <label><input id="expert-print" type="checkbox"> Advanced print tools</label>
+      <label><input id="expert-print" type="checkbox" checked> Advanced print tools</label>
       <p class="hint">Show finishing controls and downloadable print-job details in the export dialog. This choice stays selected on this device.</p>
+      <label for="print-smoothing">Raster edge smoothing</label>
+      <select id="print-smoothing"><option value="off">Off: original detail</option><option value="gentle">Gentle</option><option value="soft">Softer edges</option></select>
+      <p class="hint">Optional smoothing for pixelated edges, up to 48 million pixels. Can blur fine detail; adds no simulation detail. Caption text and SVG stay sharp. Saved on this device.</p>
       <label><input id="colo-enabled" type="checkbox"> Include caption on the sheet</label>
       <label for="colo-position">Position</label>
       <select id="colo-position"><option value="bottom">Underneath</option><option value="top">Above</option><option value="left">Left</option><option value="right">Right</option></select>
@@ -1019,7 +1030,7 @@ shall not be misrepresented as the original profile.
         <button class="btn" id="printer-preset-save" type="button">Save current print settings</button>
         <label for="printer-preset-list">Saved on this device</label><select id="printer-preset-list"></select>
         <button class="btn" id="printer-preset-load" type="button">Apply preset</button><button class="btn" id="printer-preset-delete" type="button">Delete selected preset</button>
-        <p class="hint">Saves size, resolution, caption and PDF finishing settings. Does not save the artwork or a printer ICC profile.</p>
+        <p class="hint">Saves size, resolution, caption, raster smoothing and PDF finishing settings. Does not save the artwork or a printer ICC profile.</p>
         <p id="printer-preset-status" role="status"></p>
       </fieldset>
       <fieldset><legend>Caption parts</legend>
@@ -1051,6 +1062,11 @@ shall not be misrepresented as the original profile.
         </div>
       </div>
       <button class="btn" id="export-colo-edit" type="button">Studio setup</button>
+      <fieldset class="print-production"><legend>Raster edge smoothing</legend>
+        <label for="export-smoothing">Smooth pixelated edges</label>
+        <select id="export-smoothing"><option value="off">Off: original detail</option><option value="gentle">Gentle</option><option value="soft">Softer edges</option></select>
+        <p class="hint">Changing this renders a new print. Can blur fine detail; adds no simulation detail. Captions are drawn afterward. Vector artwork is left unchanged. Up to 48 million pixels.</p>
+      </fieldset>
       <fieldset class="print-production" data-expert-print hidden><legend>PDF finishing</legend>
         <label for="export-bleed">Extra artwork beyond the cut (bleed, mm)</label>
         <input id="export-bleed" type="number" min="0" max="25" step="0.1" value="0">
@@ -1105,7 +1121,9 @@ shall not be misrepresented as the original profile.
 
 <script type="application/json" id="science-records">[]</script>
 <script src="./src/shared/print-formats.js"></script>
+<script src="./src/shared/print-smoothing.js"></script>
 <script src="./src/shared/engine.js"></script>
+<script src="./src/shared/module-browser.js"></script>
 
 
 

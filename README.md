@@ -58,6 +58,22 @@ are opportunities to investigate; they do not by themselves establish new mathem
 
 ---
 
+## Find a module and read its measurements
+
+**Browse all modules** searches names, equations and references, with topic, familiarity, reference-year, science-evidence and favorites filters. Sort oldest to newest, newest to oldest, or common to rare. Dates refer to the listed scientific reference, not when a module was added. The quick tabs wrap instead of requiring an endless horizontal scroll.
+
+Advanced print tools and Maximum throughput start enabled for new users; saved preferences take priority. Zoom enlarges the complete sheet, including its caption. Scientific measurements occupy a separate readable panel below the artwork. [The browsing guide](docs/BROWSING-AND-LAYOUT.md) explains the controls and tested browser scope.
+
+## Contribute your own computing power
+
+The optional [local validation app](apps/validate/README.md) runs official checks and bounded research experiments on your computer without model calls, API tokens or an account. Run `npm run validator` from a checkout, then open `http://127.0.0.1:8787`. It provides logs, heat/power preferences, supported checkpoints, pseudonymous hardware cards and downloadable result bundles. Keep the server terminal open and the computer awake; the browser can close while a job continues.
+
+**Prefer a terminal?** Follow the [headless contribution guide](apps/validate/HEADLESS.md) for copyable commands, power controls and a reviewed GitHub upload. Start with `npm run validator:headless -- --mode inventory --machine m1pro`. Nothing uploads automatically.
+
+An [Apple GPU wave backend](apps/validate/APPLE-GPU.md) has finite-fixture verification on an M1 Pro against a CPU reference, a wrong-method control and checkpoint restart. That scope does not extend to every studio module. **A green job is machine evidence, not scientific certification. A candidate is not a discovery.**
+
+---
+
 ## What is actually different
 
 **The assembly.** The tabs implement models drawn from the papers they name, with validation coverage recorded separately. Chemistry, acoustics, liquid crystals, and aperiodic tiles share one seed field, one palette, and one export. Switching from Cahn–Hilliard to Chladni costs you nothing.
@@ -288,7 +304,10 @@ profile and physical sheet size. PDF supports bleed and cutting marks. An option
 native tool converts to CMYK TIFF or PDF/X-3 using a printer-supplied profile.
 See [sending a plate to a print shop](docs/PRINTING.md) for requirements and limits.
 
-Save printer presets and enable **Advanced print tools** in **Studio setup**. Every
+Save printer presets in **Studio setup**; **Advanced print tools** start enabled. Optional
+**Raster edge smoothing** softens pixelated edges while leaving caption text and vector
+artwork untouched. It adds no simulation detail and can blur fine texture, so compare
+the full-size print with smoothing off. Every
 export gets a basic resolution/layout report before download. **Science report** on
 the stage shows each technique's evidence and remaining gaps. **Device workload**
 offers lighter, balanced and maximum-throughput modes; the heavy gravity and volume

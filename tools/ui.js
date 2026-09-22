@@ -199,31 +199,31 @@ const { chromium } = require('playwright');
   }));
   t('descriptive three-vortex route restores its seed', namedBound.id === 'three-vortex-bound' && namedBound.seed === 'attribution-check', namedBound);
 
-  const pe = await p.evaluate(() => getComputedStyle(document.querySelector('#status')).pointerEvents);
-  t('status does not eat plate clicks', pe === 'none', pe);
-
-  const dragStart = await p.evaluate(() => {
-    const tabs = document.querySelector('#tabs');
-    const tab = tabs.querySelector('.tab[aria-selected="true"]') || tabs.querySelector('.tab[data-id]');
-    const r = tab.getBoundingClientRect();
-    return { x: r.x + 12, y: r.y + r.height / 2, sl: tabs.scrollLeft, startId: tab.dataset.id };
+  const placement = await p.evaluate(() => {
+    const art = document.querySelector('#art-viewport').getBoundingClientRect();
+    const status = document.querySelector('#status').getBoundingClientRect();
+    return { artBottom: art.bottom, statusTop: status.top };
   });
-  await p.mouse.move(dragStart.x, dragStart.y);
-  await p.mouse.down();
-  await p.mouse.move(dragStart.x + 180, dragStart.y, { steps: 12 });
-  await p.mouse.up();
-  await p.waitForTimeout(100);
-  const dragged = await p.evaluate(start => {
+  t('measurements occupy space outside the plate', placement.statusTop >= placement.artBottom, placement);
+
+  const scrollStart = await p.evaluate(() => {
+    const tabs = document.querySelector('#tabs'); tabs.scrollTop = 0;
+    const r = tabs.getBoundingClientRect();
+    return { x: r.x + r.width / 2, y: r.y + r.height / 2, id: document.querySelector('.tab[aria-selected="true"]').dataset.id };
+  });
+  await p.mouse.move(scrollStart.x, scrollStart.y);
+  await p.mouse.wheel(0, 160);
+  await p.waitForTimeout(250);
+  const scrolled = await p.evaluate(() => {
     const tabs = document.querySelector('#tabs');
-    return { sl: tabs.scrollLeft, id: document.querySelector('.tab[aria-selected="true"]').dataset.id, startId: start.startId, startSl: start.sl };
-  }, dragStart);
-  t('tab strip pans on a mouse drag', Math.abs(dragged.sl - dragged.startSl) > 20, dragged);
-  t('dragging a tab does not switch', dragged.id === dragged.startId, dragged);
+    return { top: tabs.scrollTop, overflowX: tabs.scrollWidth > tabs.clientWidth + 1, id: document.querySelector('.tab[aria-selected="true"]').dataset.id };
+  });
+  t('wrapped tabs scroll vertically without changing module', scrolled.top > 20 && !scrolled.overflowX && scrolled.id === scrollStart.id, scrolled);
 
   await p.evaluate(() => document.querySelector('.tab[data-id="life"]').click());
   await p.waitForTimeout(400);
   const afterClick = await p.evaluate(() => document.querySelector('.tab[aria-selected="true"]').dataset.id);
-  t('click after a drag still switches', afterClick === 'life', afterClick);
+  t('click after scrolling still switches', afterClick === 'life', afterClick);
 
   const viewpad = await p.evaluate(() => {
     const pad = document.querySelector('#viewpad');
@@ -243,7 +243,7 @@ const { chromium } = require('playwright');
   await p.keyboard.press('+');
   await p.waitForTimeout(80);
   const zoomed = await p.evaluate(() => {
-    const c = document.querySelector('canvas.art:not([hidden])');
+    const c = document.querySelector('#sheet');
     return { t: c && c.style.transform, fitOn: document.querySelector('#view-fit') && !document.querySelector('#view-fit').disabled };
   });
   t('+ zooms the plate', !!(zoomed.t && /scale/.test(zoomed.t)) && zoomed.fitOn, zoomed);
@@ -251,7 +251,7 @@ const { chromium } = require('playwright');
   await p.evaluate(() => document.querySelector('#view-fit').click());
   await p.waitForTimeout(80);
   const fitted = await p.evaluate(() => {
-    const c = document.querySelector('canvas.art:not([hidden])');
+    const c = document.querySelector('#sheet');
     return { t: (c && c.style.transform) || '', fitOff: document.querySelector('#view-fit') && document.querySelector('#view-fit').disabled };
   });
   t('Fit clears the view', fitted.t === '' && fitted.fitOff, fitted);
