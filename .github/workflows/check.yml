@@ -29,6 +29,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  distribution:
+    name: offline distribution
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install browser checks
+        run: |
+          npm install --no-save --package-lock=false playwright@1.58.2 axe-core@4.10.3
+          npx playwright install --with-deps chromium
+      - name: Package and test extracted offline studio
+        run: |
+          python3 tools/package-release.py --version v0.0.0-check
+          node tools/distribution-check.js tools/dist/release/GENChase-studio.zip
+
   pde-complete:
     name: complete PDE fields and prints
     runs-on: ubuntu-latest

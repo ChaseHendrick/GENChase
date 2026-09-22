@@ -2,7 +2,9 @@
 
 **Gen art, print ready.**
 
-**[Open the studio in your browser](https://sharpmeow.github.io/GENChase/)** · Works on phones, tablets and computers. No download or installation needed. Device support and practical simulation sizes vary.
+**[Make art in your browser](https://sharpmeow.github.io/GENChase/start.html)** · **[Download the offline studio](https://github.com/SharpMeow/GENChase/releases/latest/download/GENChase-studio.zip)** · **[Test or contribute](https://sharpmeow.github.io/GENChase/start.html#help)**
+
+Open the browser studio immediately, or unzip the offline bundle and double-click `START-HERE.html`. No account, Node.js or Python is needed to make art. Device support and practical simulation sizes vary.
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
@@ -66,9 +68,9 @@ Advanced print tools and Maximum throughput start enabled for new users; saved p
 
 ## Contribute your own computing power
 
-The optional [local validation app](apps/validate/README.md) runs official checks and bounded research experiments on your computer without model calls, API tokens or an account. Run `npm run validator` from a checkout, then open `http://127.0.0.1:8787`. It provides logs, heat/power preferences, supported checkpoints, pseudonymous hardware cards and downloadable result bundles. Keep the server terminal open and the computer awake; the browser can close while a job continues.
+The optional [local validation app](apps/validate/README.md) runs official checks and bounded research experiments on your computer without model calls, API tokens or an account. Run `npm run setup:checks` once to install the optional browser test tools, then `npm run validator` from a checkout, then open `http://127.0.0.1:8787`. It provides logs, heat/power preferences, supported checkpoints, pseudonymous hardware cards and downloadable result bundles. Keep the server terminal open and the computer awake; the browser can close while a job continues.
 
-**Prefer a terminal?** Follow the [headless contribution guide](apps/validate/HEADLESS.md) for copyable commands, power controls and a reviewed GitHub upload. Start with `npm run validator:headless -- --mode inventory --machine m1pro`. Nothing uploads automatically.
+**Prefer a terminal?** Follow the [headless contribution guide](apps/validate/HEADLESS.md) for copyable commands, power controls and a reviewed GitHub upload. Start with `npm run validator:headless -- --mode inventory --machine m1pro`. Results stay local unless you choose to share them. You can review and upload files directly, or opt in to automatic sharing for a run.
 
 An [Apple GPU wave backend](apps/validate/APPLE-GPU.md) has finite-fixture verification on an M1 Pro against a CPU reference, a wrong-method control and checkpoint restart. That scope does not extend to every studio module. **A green job is machine evidence, not scientific certification. A candidate is not a discovery.**
 
