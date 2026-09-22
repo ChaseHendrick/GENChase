@@ -47,7 +47,7 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Package and test extracted offline studio
         run: |
-          python3 tools/package-release.py --version v0.0.0-check
+          python3 tools/package-release.py --version v0.0.0
           node tools/distribution-check.js tools/dist/release/GENChase-studio.zip
 
   pde-complete:

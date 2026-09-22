@@ -10,14 +10,18 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parent.parent
 
+def validate_version(version):
+    if not re.fullmatch(r'v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', version):
+        raise ValueError('Use a numbered release such as v0.4.1 (no date or leading zeros)')
+
+
 def package(output, version):
-    if not re.fullmatch(r'v[0-9][0-9A-Za-z.\-]*', version):
-        raise ValueError('Use a release version such as v2026.09.22')
+    validate_version(version)
     subprocess.run(['node', 'tools/build.js', '--check'], cwd=ROOT, check=True)
     subprocess.run(['node', 'tools/science.js'], cwd=ROOT, check=True)
     commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     dirty = bool(subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT, text=True).strip())
-    names = ['dist/studio.html', 'LICENSE', 'NOTICE', 'OUTPUT-RIGHTS.md', 'VALIDATION.md']
+    names = ['CHANGELOG.md', 'dist/studio.html', 'LICENSE', 'NOTICE', 'OUTPUT-RIGHTS.md', 'VALIDATION.md']
     names += ['gallery/' + x + '.jpg' for x in ['tilings', 'snowflake', 'hyperbolic']]
     names += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'validation').glob('*.md'))]
     names += ['validation/techniques.json']
@@ -52,4 +56,9 @@ if __name__ == '__main__':
     args=argparse.ArgumentParser(description=__doc__)
     args.add_argument('--output', default='tools/dist/release')
     args.add_argument('--version', required=True)
-    a=args.parse_args();package(a.output,a.version)
+    args.add_argument('--check-version', action='store_true', help='Validate the release number without building')
+    a=args.parse_args()
+    if a.check_version:
+        validate_version(a.version)
+    else:
+        package(a.output,a.version)
