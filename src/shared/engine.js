@@ -646,7 +646,7 @@ void main(){
     balanced:Object.freeze({cpuSliceMs:8,cpuDelayMs:0,gpuSteps:1,gpuIntervalMs:0,previewDpr:2,previewPixels:8e6}),
     maximum:Object.freeze({cpuSliceMs:12,cpuDelayMs:0,gpuSteps:4,gpuIntervalMs:0,previewDpr:2,previewPixels:8e6})
   });
-  let computeMode='balanced';
+  let computeMode='maximum';
   try { const saved=localStorage.getItem(STORE+'computeMode');if(Object.hasOwn(COMPUTE_MODES,saved))computeMode=saved; } catch(err) { /* default */ }
   S.getComputeBudget = () => ({mode:computeMode,...COMPUTE_MODES[computeMode]});
 
@@ -2273,6 +2273,12 @@ void main(){
   /* ---- colophon: the piece, then the recipe that made it ---- */
   let colophon = false;
   let exportBusy = false;
+  let printSmoothing = 'off';
+  function setPrintSmoothing(mode) {
+    printSmoothing = window.GenChasePrintSmoothing.modes.includes(mode) ? mode : 'off';
+    for (const id of ['print-smoothing', 'export-smoothing']) $(id).value = printSmoothing;
+    try { localStorage.setItem(STORE+'printSmoothing',printSmoothing); } catch (err) { /* session only */ }
+  }
   const COLO_PARTS = ['title', 'equation', 'seed', 'parameters', 'palette', 'print', 'date'];
   let coloPrefs = { position: 'bottom', parts: Object.fromEntries(COLO_PARTS.map(k => [k, true])) };
   function captionRows(e, sp) {
@@ -2296,7 +2302,8 @@ void main(){
       typeof p.custom === 'boolean' && validInches(p.width) && validInches(p.height) && PRINT_INCHES.includes(p.inches) &&
       PRINT_DPI.some(x=>x[0]===p.dpi) && typeof p.colophon === 'boolean' &&
       ['top','bottom','left','right'].includes(p.caption?.position) && COLO_PARTS.every(k=>typeof p.caption.parts?.[k]==='boolean') &&
-      Number.isFinite(p.bleedMm) && p.bleedMm >= 0 && p.bleedMm <= 25 && typeof p.cropMarks === 'boolean';
+      Number.isFinite(p.bleedMm) && p.bleedMm >= 0 && p.bleedMm <= 25 && typeof p.cropMarks === 'boolean' &&
+      (p.smoothing === undefined || window.GenChasePrintSmoothing.modes.includes(p.smoothing));
   }
   function storePrinterPresets() {
     try { localStorage.setItem(STORE+'printerPresets',JSON.stringify(printerPresets)); return true; }
@@ -2308,7 +2315,7 @@ void main(){
     if (!name) { $('printer-preset-status').textContent='Enter a preset name.'; return; }
     const paper=printSpec();
     const p = {v:1,name,custom:true,width:paper.wIn,height:paper.hIn,inches:printInches,dpi:printDpi,
-      colophon,caption:JSON.parse(JSON.stringify(coloPrefs)),bleedMm:Number($('export-bleed').value),cropMarks:$('export-crop').checked};
+      colophon,caption:JSON.parse(JSON.stringify(coloPrefs)),bleedMm:Number($('export-bleed').value),cropMarks:$('export-crop').checked,smoothing:printSmoothing};
     if (!validPrinterPreset(p)) { $('printer-preset-status').textContent='Choose a sheet with both dimensions from 1 to 1000 inches before saving.'; return; }
     if (printerPresets.some(x=>x.name===name)) { $('printer-preset-status').textContent='That name exists. Choose a new name or delete the old preset.'; return; }
     if (printerPresets.length>=20) { $('printer-preset-status').textContent='Twenty presets saved. Delete one before adding another.'; return; }
@@ -2325,6 +2332,7 @@ void main(){
     try { localStorage.setItem(STORE+'printCustom',JSON.stringify({on:customPrint,width:printWidth,height:printHeight})); } catch (err) { /* session only */ }
     coloPrefs=JSON.parse(JSON.stringify(p.caption));setColophon(p.colophon);saveColoPrefs();
     $('export-bleed').value=String(p.bleedMm);$('export-crop').checked=p.cropMarks;
+    setPrintSmoothing(p.smoothing);
     updateDims();$('printer-preset-status').textContent='Applied '+p.name+'. The next export uses these settings.';
   }
 
@@ -2514,7 +2522,7 @@ void main(){
     const body = new XMLSerializer().serializeToString(art);
     return util.svgBlob(sp.pw, sp.ph, bg, body);
   }
-  function printQualityReport(e, sp, layout, vector) {
+  function printQualityReport(e, sp, layout, vector, smoothing) {
     const ppi = Math.min(sp.pw/sp.wIn,sp.ph/sp.hIn), issues = [];
     const lines = ['File: '+sp.pw+' × '+sp.ph+' pixels at '+ppi.toFixed(1)+' pixels per inch.'];
     if (ppi<150) issues.push('Low file resolution for close viewing. Ask the printer about the intended viewing distance.');
@@ -2532,7 +2540,11 @@ void main(){
       lines.push('Smallest caption text: '+smallest.toFixed(1)+' pt.');
       if (smallest<6) issues.push('Some caption text is below 6 pt. Use a larger sheet, fewer parts or a different caption position.');
     }
-    const report = {schemaVersion:1,ppi,lines,issues,scientificValidation:false};
+    if (smoothing.applied) {
+      lines.push('Raster smoothing: '+smoothing.requested+', '+smoothing.radiusPixels+' px filter radius, applied before caption text.');
+      issues.push('Smoothing softens raster edges and can blur fine detail. It adds no simulation detail. Scientific measurements describe the source simulation, not the filtered print.');
+    } else if (smoothing.requested !== 'off') lines.push('Raster smoothing skipped: the artwork already uses vector rasterization.');
+    const report = {schemaVersion:1,ppi,lines,issues,smoothing,scientificValidation:false};
     const box=$('export-quality');box.hidden=false;box.dataset.level=issues.length?'review':'ready';box.replaceChildren();
     box.appendChild(h('h3',{text:issues.length?'Print check: review before downloading':'Print check: no basic layout/resolution warnings'}));
     box.appendChild(h('ul',{},[...lines,...issues].map(text=>h('li',{text}))));
@@ -2583,7 +2595,8 @@ void main(){
     const withColophon = colophon;
     const lay = withColophon ? sheetLayout(sp, e) : null;
     const captionBg = e.state.bg;
-    for (const id of ['btn-colophon', 'btn-colophon-edit', 'export-colo-tog', 'export-colo-edit']) $(id).disabled = true;
+    const smoothingMode = printSmoothing;
+    for (const id of ['btn-colophon', 'btn-colophon-edit', 'export-colo-tog', 'export-colo-edit', 'export-smoothing', 'print-smoothing']) $(id).disabled = true;
     pnote.textContent = (colophon
       ? ('Image ' + inTxt(lay.artWIn) + ' × ' + inTxt(lay.artHIn) + ' in on a ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in sheet (' +
          cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) + ' cm) at ' + sp.effDpi + ' ppi. The image sits in a paper margin with the selected caption parts at the ' + lay.position + '.')
@@ -2674,6 +2687,10 @@ void main(){
         }
       }
       if (job.abort) throw new Error('cancelled');
+      let smoothingField = null;
+      try { smoothingField = e.inst.fieldCells?.(); } catch (err) { /* unknown */ }
+      const smoothing = window.GenChasePrintSmoothing.settings(smoothingMode,rw,rh,smoothingField,usedVector);
+      blob = await window.GenChasePrintSmoothing.smooth(blob,smoothing,job);
       if (withColophon) blob = await composeSheet(blob, lay, captionBg);
       else blob = await fitPrintSheet(blob, sp, e.state.bg || '#fff');
       if (svgBlob) svgBlob = await fitPrintSVG(svgBlob, sp, e.state.bg || '#fff');
@@ -2682,9 +2699,9 @@ void main(){
       lastBlob = blob; lastUrl = URL.createObjectURL(blob); lastPrintSpec = {...sp};
       lastName = 'genchase-' + e.mod.id + '-' + e.state.seed.replace(/[^a-z0-9_-]+/gi, '_') + '-' +
         inTxt(sp.wIn).replace('.', '_') + 'x' + inTxt(sp.hIn).replace('.', '_') + 'in-' + sp.effDpi + 'ppi' +
-        (colophon ? '-with-code' : '') + '.png';
+        (colophon ? '-with-code' : '') + (smoothing.applied ? '-smooth-'+smoothing.requested : '') + '.png';
       img.src = lastUrl; img.hidden = false;
-      const quality=printQualityReport(e,sp,lay,usedVector);
+      const quality=printQualityReport(e,sp,lay,usedVector,smoothing);
       lastPrintJob={schemaVersion:1,capturedAt:new Date().toISOString(),engineApiVersion:S.apiVersion,recipe:S.getRecipe(e.mod.id),printSpec:{...sp},caption:withColophon?JSON.parse(JSON.stringify(coloPrefs)):null,quality,witness:S.getWitness(e.mod.id),note:'Recipe and reporting snapshot, not a simulation-state checkpoint. Finishing choices are recorded when this report is downloaded.'};
       $('export-pdf').hidden = false; $('export-tiff').hidden = false; $('export-job-json').disabled=false;
       const size = (blob.size / 1048576).toFixed(1) + ' MB';
@@ -2717,7 +2734,7 @@ void main(){
     } finally {
       clearInterval(tick);
       exportBusy = false;
-      for (const id of ['btn-colophon', 'btn-colophon-edit', 'export-colo-tog', 'export-colo-edit']) $(id).disabled = false;
+      for (const id of ['btn-colophon', 'btn-colophon-edit', 'export-colo-tog', 'export-colo-edit', 'export-smoothing', 'print-smoothing']) $(id).disabled = false;
       if (S.exportJob === job) S.exportJob = null;
       if (cancel) cancel.hidden = true;
     }
@@ -2751,7 +2768,7 @@ void main(){
     printFormatBusy = true;
     const source = lastUrl, name = lastName.replace(/\.png$/i, format === 'tiff' ? '.tif' : '.pdf');
     const sp = {...lastPrintSpec};
-    const buttons = ['export-pdf', 'export-tiff', 'export-colo-tog', 'export-colo-edit', 'btn-colophon', 'btn-colophon-edit'];
+    const buttons = ['export-pdf', 'export-tiff', 'export-colo-tog', 'export-colo-edit', 'btn-colophon', 'btn-colophon-edit', 'export-smoothing', 'print-smoothing'];
     for (const id of buttons) $(id).disabled = true;
     $( 'export-' + format).setAttribute('aria-busy', 'true');
     try {
@@ -3136,7 +3153,7 @@ void main(){
     }
     $('btn-export').addEventListener('click', doExport);
     $('export-save').addEventListener('click', saveViaCapability);
-    try { setExpertPrint(localStorage.getItem(STORE+'expertPrint')==='1'); } catch(err) { setExpertPrint(false); }
+    try { setExpertPrint(localStorage.getItem(STORE+'expertPrint')!=='0'); } catch(err) { setExpertPrint(true); }
     $('compute-mode').value=computeMode;
     $('compute-mode').addEventListener('change',ev=>{
       if(!Object.hasOwn(COMPUTE_MODES,ev.target.value))return;computeMode=ev.target.value;
@@ -3144,6 +3161,9 @@ void main(){
       const e=instances[currentId];if(e&&fitCanvas(e)&&e.inst.resize)e.inst.resize();
     });
     $('expert-print').addEventListener('change',ev=>setExpertPrint(ev.target.checked));
+    try { setPrintSmoothing(localStorage.getItem(STORE+'printSmoothing')); } catch (err) { setPrintSmoothing('off'); }
+    $('print-smoothing').addEventListener('change',ev=>setPrintSmoothing(ev.target.value));
+    $('export-smoothing').addEventListener('change',ev=>{setPrintSmoothing(ev.target.value);doExport();});
     $('export-job-json').addEventListener('click',()=>{if(lastPrintJob&&!exportBusy)downloadBlob(new Blob([JSON.stringify({...lastPrintJob,pdfFinishing:{bleedMm:Number($('export-bleed').value),cropMarks:$('export-crop').checked}},null,2)],{type:'application/json'}),lastName.replace(/\.png$/i,'-print-job.json'));});
     $('export-pdf').addEventListener('click', () => exportPrintFormat('pdf'));
     $('export-tiff').addEventListener('click', () => exportPrintFormat('tiff'));

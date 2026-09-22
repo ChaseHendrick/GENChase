@@ -62,7 +62,7 @@ are opportunities to investigate; they do not by themselves establish new mathem
 
 **Browse all modules** searches names, equations and references, with topic, familiarity, reference-year, science-evidence and favorites filters. Sort oldest to newest, newest to oldest, or common to rare. Dates refer to the listed scientific reference, not when a module was added. The quick tabs wrap instead of requiring an endless horizontal scroll.
 
-Zoom now enlarges the complete sheet, including its caption. Scientific measurements occupy a separate readable panel below the artwork. [The browsing guide](docs/BROWSING-AND-LAYOUT.md) explains the controls and tested browser scope.
+Advanced print tools and Maximum throughput start enabled for new users; saved preferences take priority. Zoom enlarges the complete sheet, including its caption. Scientific measurements occupy a separate readable panel below the artwork. [The browsing guide](docs/BROWSING-AND-LAYOUT.md) explains the controls and tested browser scope.
 
 ## Contribute your own computing power
 
@@ -304,7 +304,10 @@ profile and physical sheet size. PDF supports bleed and cutting marks. An option
 native tool converts to CMYK TIFF or PDF/X-3 using a printer-supplied profile.
 See [sending a plate to a print shop](docs/PRINTING.md) for requirements and limits.
 
-Save printer presets and enable **Advanced print tools** in **Studio setup**. Every
+Save printer presets in **Studio setup**; **Advanced print tools** start enabled. Optional
+**Raster edge smoothing** softens pixelated edges while leaving caption text and vector
+artwork untouched. It adds no simulation detail and can blur fine texture, so compare
+the full-size print with smoothing off. Every
 export gets a basic resolution/layout report before download. **Science report** on
 the stage shows each technique's evidence and remaining gaps. **Device workload**
 offers lighter, balanced and maximum-throughput modes; the heavy gravity and volume

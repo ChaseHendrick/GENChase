@@ -1,7 +1,7 @@
 # Sending a plate to a print shop
 
 Choose the finished sheet dimensions and resolution, edit the caption if wanted,
-and select **Export PNG** to render the sheet. The export dialog then offers:
+and select **Export PNG** to render the sheet. **Advanced print tools** start enabled, including PDF finishing and print-job JSON. You can turn them off in Studio setup; your saved choice is remembered. The export dialog then offers:
 
 | Format | What it contains | Typical use |
 | --- | --- | --- |
@@ -15,6 +15,28 @@ add detail beyond the simulation's grid. PDF/TIFF conversion currently supports
 48 million pixels; larger PNG exports retain the existing device limits. TIFF is
 uncompressed in the browser and can be large. Transparent source pixels are flattened
 onto white when converting to PDF/TIFF.
+
+## Smoothing pixelated edges
+
+Choose **Raster edge smoothing** in Studio setup or the export dialog: **Off**, **Gentle**,
+or **Softer edges**. Changing it in the export dialog renders a new print. Off preserves
+the original output and is the default. The choice stays on this device and in saved
+printer presets. Older presets use Off.
+
+The studio already renders at the requested print size. Smoothing is an optional
+appearance adjustment to that raster, not an AI upscale or extra simulation resolution.
+It can soften stair-step edges, but also blur fine lines and texture. The filter averages
+neighboring colors with alpha-aware handling, using a radius of 1 to 8 output pixels
+based on the selected strength and declared field grid. It processes small strips and
+supports cancellation, with a 48-million-pixel limit.
+
+Caption text is drawn afterward. Vector artwork keeps its original rasterization and
+SVG. PNG, TIFF, PDF and other raster downloads use the same processed print. The filename,
+print check and print-job JSON identify smoothing; the JSON records its algorithm and radius.
+Scientific witnesses still describe the source simulation, not the filtered image.
+For quantitative image analysis, leave smoothing Off. Inspect both versions at full size
+before printing. Raising the simulation grid, where supported, can provide more source
+detail; increasing ppi or smoothing alone cannot.
 
 ## Bleed and cutting marks
 
@@ -79,7 +101,7 @@ is not a recommended printing condition for your work.
 ## Saved printer presets and print checks
 
 Open **Studio setup** to save a named printer preset. It stores the current physical
-sheet width/height, resolution, caption parts/position, bleed and cutting-mark choice.
+sheet width/height, resolution, caption parts/position, raster smoothing, bleed and cutting-mark choice.
 Applying it uses a fixed sheet size across techniques. Presets stay on this device;
 they do not store the artwork or a printer ICC profile. Names are unique, with up to
 20 saved presets. Delete a preset to replace it with an updated one.

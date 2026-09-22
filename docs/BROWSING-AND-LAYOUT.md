@@ -14,6 +14,10 @@ Scientific status text and structured comparisons have their own panel below the
 
 **Art only** hides the controls and measurement panel when you want to view the image. The existing exit control restores them. Caption visibility and placement remain controlled through Studio setup; the zoom change does not change exported caption dimensions.
 
+## Initial preferences
+
+New users start with **Advanced print tools** enabled and **Maximum throughput** selected. Studio setup lets you choose Balanced or Lighter use, or hide advanced printing. Existing saved choices are preserved. These are interface/workload preferences outside the scientific recipe. The separate offline runner retains its own power controls.
+
 ## Interface motion and browser scope
 
 Short transitions apply to interface controls and dialogs. The reduced-motion preference removes nonessential interface animation. These presentation changes do not modify the plates' numerical timesteps or their physical evolution.

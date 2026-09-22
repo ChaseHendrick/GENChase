@@ -58,6 +58,7 @@ jobs:
           node tools/rigid-body-audit.js
           node tools/direct-gravity-science.js
           node tools/physarum3d-display-check.js
+          node tools/print-smoothing-check.js
           node tools/bec-neighbors-check.js
           node tools/vortex-kernel-check.js
           npm test
@@ -127,6 +128,7 @@ jobs:
           BROWSER: ${{ matrix.browser }}
         run: |
           node tools/studio-navigation-check.js
+          node tools/print-smoothing-browser.js
           node tools/validator-ui-check.js
       - name: Witness corpus and deliberate misses
         if: matrix.browser == 'chromium'

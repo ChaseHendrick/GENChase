@@ -8,6 +8,8 @@ const assert=require('node:assert/strict'),path=require('node:path'),{chromium,w
   for(const width of [1512,1280,1024,768,390]){
    const page=await browser.newPage({viewport:{width,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.goto('file://'+path.resolve(__dirname,'../dist/studio.html')+'#reuleaux/navigation',{waitUntil:'domcontentloaded'});await page.evaluate(()=>Studio.ready);
+   assert.equal(await page.locator('#expert-print').isChecked(),true,'advanced print starts enabled');
+   assert.equal(await page.evaluate(()=>Studio.getComputeBudget().mode),'maximum','new users start at maximum throughput');
    const layout=await page.evaluate(()=>{const bar=document.querySelector('.bar'),p=document.querySelector('#preset'),r=p.getBoundingClientRect(),center=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return{barOverflow:bar.scrollWidth>bar.clientWidth+1,presetVisible:center===p,bodyOverflow:document.documentElement.scrollWidth>innerWidth+1,tabsOverflow:document.getElementById('tabs').scrollWidth>document.getElementById('tabs').clientWidth+1};});
    assert(!layout.barOverflow&&!layout.bodyOverflow&&!layout.tabsOverflow&&layout.presetVisible,JSON.stringify({name,width,layout}));
    await page.click('#browse-modules');await page.waitForSelector('#module-browser[open]');await page.locator('[data-filter="query"]').fill('reuleaux');
@@ -40,6 +42,10 @@ const assert=require('node:assert/strict'),path=require('node:path'),{chromium,w
   const balanced=await sampling();assert(balanced.ratio>1.95&&balanced.ratio<2.05);assert(balanced.pixels<=8e6);
   await detail.evaluate(()=>{const mode=document.getElementById('compute-mode');mode.value='light';mode.dispatchEvent(new Event('change'));});
   const light=await sampling();assert(light.ratio>.95&&light.ratio<1.05);assert.equal(light.recipe,balanced.recipe);
-  await detail.close();console.log('PASS',name,'vector preview sampling respects Light mode and leaves recipe unchanged');
+  await detail.evaluate(()=>{const expert=document.getElementById('expert-print');expert.checked=false;expert.dispatchEvent(new Event('change'));});
+  await detail.reload();await detail.evaluate(()=>Studio.ready);
+  assert.equal(await detail.locator('#expert-print').isChecked(),false,'saved advanced-print opt-out survives reload');
+  assert.equal(await detail.evaluate(()=>Studio.getComputeBudget().mode),'light','saved lower-power preference survives reload');
+  await detail.close();console.log('PASS',name,'vector preview sampling, maximum/advanced defaults and saved preference opt-outs');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

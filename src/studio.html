@@ -489,10 +489,13 @@
     <div class="head"><h2 id="colo-editor-title">Studio setup</h2><button class="x" id="colo-close" type="button" aria-label="Close caption editor">×</button></div>
     <div class="content colo-editor">
       <label for="compute-mode">Device workload</label>
-      <select id="compute-mode"><option value="light">Lighter use</option><option value="balanced">Balanced</option><option value="maximum">Maximum throughput</option></select>
+      <select id="compute-mode"><option value="light">Lighter use</option><option value="balanced">Balanced</option><option value="maximum" selected>Maximum throughput</option></select>
       <p class="hint">Lighter use reduces preview pixels. Direct gravity and volume wave also adjust work scheduling. Maximum throughput runs those heavy modules harder. Other modules keep their own controls. Exact CPU/GPU percentages are not available. Grid sizes, pause state, memory limits and numerical timesteps stay unchanged; elapsed playback speed can change.</p>
-      <label><input id="expert-print" type="checkbox"> Advanced print tools</label>
+      <label><input id="expert-print" type="checkbox" checked> Advanced print tools</label>
       <p class="hint">Show finishing controls and downloadable print-job details in the export dialog. This choice stays selected on this device.</p>
+      <label for="print-smoothing">Raster edge smoothing</label>
+      <select id="print-smoothing"><option value="off">Off: original detail</option><option value="gentle">Gentle</option><option value="soft">Softer edges</option></select>
+      <p class="hint">Optional smoothing for pixelated edges, up to 48 million pixels. Can blur fine detail; adds no simulation detail. Caption text and SVG stay sharp. Saved on this device.</p>
       <label><input id="colo-enabled" type="checkbox"> Include caption on the sheet</label>
       <label for="colo-position">Position</label>
       <select id="colo-position"><option value="bottom">Underneath</option><option value="top">Above</option><option value="left">Left</option><option value="right">Right</option></select>
@@ -501,7 +504,7 @@
         <button class="btn" id="printer-preset-save" type="button">Save current print settings</button>
         <label for="printer-preset-list">Saved on this device</label><select id="printer-preset-list"></select>
         <button class="btn" id="printer-preset-load" type="button">Apply preset</button><button class="btn" id="printer-preset-delete" type="button">Delete selected preset</button>
-        <p class="hint">Saves size, resolution, caption and PDF finishing settings. Does not save the artwork or a printer ICC profile.</p>
+        <p class="hint">Saves size, resolution, caption, raster smoothing and PDF finishing settings. Does not save the artwork or a printer ICC profile.</p>
         <p id="printer-preset-status" role="status"></p>
       </fieldset>
       <fieldset><legend>Caption parts</legend>
@@ -533,6 +536,11 @@
         </div>
       </div>
       <button class="btn" id="export-colo-edit" type="button">Studio setup</button>
+      <fieldset class="print-production"><legend>Raster edge smoothing</legend>
+        <label for="export-smoothing">Smooth pixelated edges</label>
+        <select id="export-smoothing"><option value="off">Off: original detail</option><option value="gentle">Gentle</option><option value="soft">Softer edges</option></select>
+        <p class="hint">Changing this renders a new print. Can blur fine detail; adds no simulation detail. Captions are drawn afterward. Vector artwork is left unchanged. Up to 48 million pixels.</p>
+      </fieldset>
       <fieldset class="print-production" data-expert-print hidden><legend>PDF finishing</legend>
         <label for="export-bleed">Extra artwork beyond the cut (bleed, mm)</label>
         <input id="export-bleed" type="number" min="0" max="25" step="0.1" value="0">
@@ -587,6 +595,7 @@
 
 <script type="application/json" id="science-records">{{science-reports}}</script>
 <script>{{include:shared/print-formats.js}}</script>
+<script>{{include:shared/print-smoothing.js}}</script>
 <script>{{include:shared/engine.js}}</script>
 <script>{{include:shared/module-browser.js}}</script>
 <script>{{include:modules/flow.js}}</script>
