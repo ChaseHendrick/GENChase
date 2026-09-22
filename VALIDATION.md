@@ -270,6 +270,7 @@ No technique currently has complete registered numerical-and-print validation.
 
 - Classical vortex model; these tests do not establish historical novelty.
 - Kernel and trajectory tests cover declared samples, not all parameters or print rendering.
+- The engine API exposes the existing relative self-similarity residual as structured witness data, with the existing 1e-9 tolerance and off-family/nonpositive-time preconditions. This API addition changes no solver or scientific validation status.
 
 ### maxwell
 

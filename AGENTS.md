@@ -160,6 +160,13 @@ the module's defaults. A bare `#id`, which names nothing, still means "this tab 
 If you add a technique that magnifies a grid, implement `fieldCells()` and splice `G.GLSL.bicubic` into
 the render shader. Nearest sampling gives a mosaic and bilinear leaves a lattice crease on every front.
 
+## Stable engine contract
+
+Preserve API version 1 as documented in [docs/ENGINE-API.md](docs/ENGINE-API.md).
+Changes to registration, RNG, recipe migrations, scientific witnesses or shared print
+behavior require the corresponding engine API, recipe, folder and UI regression checks.
+Keep physical print settings in the engine and scientific parameters in modules.
+
 ## Working in the source
 
 - Edit the canonical module in `src/modules/`. Copy a neighbor `Studio.register({ id, name, schema, defaults, create })`. Do not start a parallel architecture.

@@ -2609,13 +2609,14 @@
   {
     "id": "double-triangle-bound",
     "source": "src/modules/double-triangle-bound.js",
-    "sourceSha256": "ff69b13e9f63afd0a24bdc872746ec05b7843b59e222d2bde08ad9f2dac9ca3c",
+    "sourceSha256": "20778362fcd32e7be2631ff81c81d0a618bca87d3064bec7196dda059d7940d4",
     "reference": "Classical two-ring collapse: Aref, Physics of Fluids 25, 2183 (1982); Koiller, Pinto de Carvalho, Rodrigues da Silva and Gonçalves de Oliveira, Physica D 16, 27–61 (1985), §11. Two regular n-gons with outer circulation −1, inner circulation x = (n + √(2n−1))/(n−1), and squared radius ratio x. GENChase derives the product and its sharp minimum in identities/polygon-collapse.md. The n = 4 value √322/9 illustrates the general theorem. Historical priority of these explicit bounds is unconfirmed; the collapse family is classical.",
     "equation": "ω₀t_c = (K_n − √(2n−1) cos nθ)/(2n sin nθ) ≥ F_n; F₃ = √29/3, F₄ = √322/9",
     "status": "partially validated",
     "limitations": [
       "Classical vortex model; these tests do not establish historical novelty.",
-      "Kernel and trajectory tests cover declared samples, not all parameters or print rendering."
+      "Kernel and trajectory tests cover declared samples, not all parameters or print rendering.",
+      "The engine API exposes the existing relative self-similarity residual as structured witness data, with the existing 1e-9 tolerance and off-family/nonpositive-time preconditions. This API addition changes no solver or scientific validation status."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",

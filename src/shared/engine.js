@@ -648,6 +648,48 @@ void main(){
   // legacyFill gives it back to any recipe written before that version. Reprinting a seed years
   // later is the product; a default is allowed to move, a finished plate is not.
   const RECIPE_V = 2;
+  // Public compatibility versions, independent of each technique's scientific status.
+  Object.defineProperties(S, {
+    apiVersion: { value: 1, enumerable: true },
+    recipeVersion: { value: RECIPE_V, enumerable: true }
+  });
+  S.getRecipe = id => {
+    const e = instances[id || currentId];
+    return e ? JSON.parse(JSON.stringify(Object.assign({ id: e.mod.id }, recipePayload(e)))) : null;
+  };
+  S.getWitness = id => {
+    const e = instances[id || currentId];
+    return e && e.scienceWitness ? JSON.parse(JSON.stringify(e.scienceWitness)) : null;
+  };
+
+  function normalizeScienceWitness(record) {
+    if (!record || typeof record !== 'object' || Array.isArray(record)) throw new TypeError('Witness must be an object or null');
+    const number = key => {
+      const value = record[key];
+      if (value == null) return null;
+      if (typeof value !== 'number' || !Number.isFinite(value)) throw new TypeError('Witness ' + key + ' must be a finite number or null');
+      return value;
+    };
+    const measured = number('measured'), expected = number('expected'), tol = number('tol');
+    if (tol !== null && tol < 0) throw new TypeError('Witness tolerance must be nonnegative');
+    if (record.valid != null && typeof record.valid !== 'boolean') throw new TypeError('Witness valid must be boolean or null');
+    const text = key => { if (record[key] == null) return ''; if (typeof record[key] !== 'string') throw new TypeError('Witness ' + key + ' must be text'); return record[key]; };
+    const comparable = measured !== null && expected !== null && tol !== null;
+    const valid = record.valid === false ? false : record.valid === null ? null : comparable ? Math.abs(measured - expected) <= tol : null;
+    return { schemaVersion: 1, label: text('label') || 'Scientific check', measured, expected, tol, valid,
+      units: text('units'), missWhen: text('missWhen'), step: number('step') };
+  }
+  function scienceWitnessHtml(record) {
+    if (!record) return '';
+    const fmt = value => value === null ? 'unavailable' : value === 0 ? '0' :
+      Math.abs(value) < 1e-3 || Math.abs(value) >= 1e6 ? value.toExponential(3).replace(/\.?0+e/, 'e') : String(Number(value.toPrecision(6)));
+    const verdict = record.valid === null ? 'not evaluated' : record.valid ? 'within tolerance' : 'check failed';
+    return '<span class="science-witness" data-valid="' + String(record.valid) + '">' + escapeHtml(record.label) +
+      ': measured <b>' + escapeHtml(fmt(record.measured)) + '</b>, expected ' + escapeHtml(fmt(record.expected)) +
+      ' ± ' + escapeHtml(fmt(record.tol)) + (record.units ? ' ' + escapeHtml(record.units) : '') +
+      ' · ' + verdict + (record.missWhen ? ' · miss when ' + escapeHtml(record.missWhen) : '') + '</span>';
+  }
+
   const WORDS = ['kiln', 'harbor', 'moss', 'ember', 'slate', 'tide', 'quartz', 'loam', 'gale', 'reed', 'ochre', 'flint', 'delta', 'fern', 'basalt', 'wren', 'spore', 'lichen', 'coral', 'nacre'];
   // A seed you type can be any string up to 64 characters, so the input has never been the limit. The
   // roll was: one of twenty words and four digits is two hundred thousand seeds, and a birthday
@@ -662,7 +704,7 @@ void main(){
     return w() + '-' + w() + '-' + tail;
   }
   let currentId = null;
-  const instances = {};        // id -> { inst, canvas, state, anim... }
+  const instances = Object.create(null);        // id -> { inst, canvas, state, anim... }
   const presetAt = {};         // id -> the preset key last applied, so , and . can walk the list
   let regenTimer = null, historyTimer = null;
   let downloads = null;
@@ -700,7 +742,8 @@ void main(){
     const v = Number(src.v);
     if (!mod.legacy || !isFinite(v) || v >= RECIPE_V) return null;
     const out = {};
-    for (const step of Object.keys(mod.legacy)) {
+    // Apply newer transitions first so the earliest applicable old default wins.
+    for (const step of Object.keys(mod.legacy).sort((a, b) => Number(b) - Number(a))) {
       if (v >= Number(step)) continue;
       const vals = mod.legacy[step];
       for (const k of Object.keys(vals)) if (!(k in src)) out[k] = vals[k];
@@ -1145,18 +1188,24 @@ void main(){
     const cap = $('colo-preview');
     if (sheet && cap) sheet.insertBefore(canvas, cap);
     else $('stage').insertBefore(canvas, $('status'));
-    const e = { mod, canvas, state: initialState || loadState(mod), inst: null, statusHtml: '' };
+    const e = { mod, canvas, state: initialState || loadState(mod), inst: null, statusHtml: '', scienceWitness: null };
     const host = {
       canvas,
       util, gl: glh,
       getState: () => e.state,
-      setStatus: html => { e.statusHtml = html || ''; if (currentId === mod.id) renderStatus(); },
+      setStatus: html => { e.scienceWitness = null; e.statusHtml = html || ''; if (currentId === mod.id) renderStatus(); },
+      setWitness: record => {
+        e.scienceWitness = null;
+        try {
+          if (record !== null) e.scienceWitness = Object.assign(normalizeScienceWitness(record), { moduleId: mod.id, recipe: JSON.parse(JSON.stringify(Object.assign({ id: mod.id }, recipePayload(e)))) });
+        } finally { if (currentId === mod.id) renderStatus(); }
+      },
       reducedMotion,
       isActive: () => currentId === mod.id && !document.hidden,
       requestRepaint: () => { if (currentId === mod.id) repaint(); },
       // A technique that cannot run reports it here as well as in the status line, so the stage says
       // so instead of sitting empty. Only the technique on screen gets to raise the panel.
-      fault: (msg, opts) => { if (currentId === mod.id) showFault(mod.id, msg, opts); },
+      fault: (msg, opts) => { e.scienceWitness = null; if (currentId === mod.id) showFault(mod.id, msg, opts); },
     };
     e.host = host;
     e.inst = mod.create(host);
@@ -1171,6 +1220,8 @@ void main(){
     canvas.addEventListener('webglcontextlost', ev => {
       ev.preventDefault();
       e.contextLost = true;
+      e.scienceWitness = null;
+      if (currentId === mod.id) renderStatus();
       try { e.inst.pause && e.inst.pause(); } catch (err) { /* it is already gone */ }
       if (currentId === mod.id) {
         showFault(mod.id, 'The browser took back the graphics context, which usually means this tab was in the background or the device was short of memory. The plate can be rebuilt from its seed.',
@@ -1227,7 +1278,7 @@ void main(){
     // every integrator with a time step shows it, so a preset that changes dt says so
     const dt = Number(e.state.dt);
     const dtHtml = isFinite(dt) && dt > 0 && !/\bdt\b/.test(e.statusHtml) ? '<span>dt <b>' + (dt >= 1 ? dt.toFixed(1) : dt.toFixed(3).replace(/0+$/, '').replace(/\.$/, '')) + '</b></span>' : '';
-    $('status').innerHTML = e.statusHtml + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
+    $('status').innerHTML = e.statusHtml + scienceWitnessHtml(e.scienceWitness) + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
   }
 
   /* ---- lifecycle ---- */
@@ -1237,6 +1288,8 @@ void main(){
     clearTimeout(regenTimer);
     fitCanvas(e);
     e.paused = false;
+    e.scienceWitness = null;
+    renderStatus();
     try { e.inst.regenerate(); } catch (err) { showError(err); }
     updateDims();
     persist(currentId);
@@ -1253,6 +1306,8 @@ void main(){
   }
   function scheduleRegen(opts) { clearTimeout(regenTimer); regenTimer = setTimeout(() => regenerate(opts), 120); }
   function showError(err) {
+    const entry = instances[currentId];
+    if (entry) { entry.scienceWitness = null; renderStatus(); }
     console.error(err);
     toast('Something went wrong in this module: ' + (err && err.message ? err.message.split('\n')[0] : err));
   }
@@ -1783,7 +1838,9 @@ void main(){
   function setParam(e, key, value, kind, phase) {
     if (phase === 'drag' && !dragSnap) { snapshot(key); dragSnap = true; }
     if (phase === 'commit') dragSnap = false;
+    e.scienceWitness = null;
     e.state[key] = value;
+    if (currentId === e.mod.id) renderStatus();
     if (e.mod.onParam) e.mod.onParam(e.state, key);           // e.g. keep min <= max
     for (const k in controls) if (controls[k].sync) controls[k].sync(e.state[k]);
     refreshDims();

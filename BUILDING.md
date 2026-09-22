@@ -139,3 +139,7 @@ then their actual export-state checks. These support the bounded claims recorded
 ## Optional native experiments
 
 [Heavy computation](docs/HEAVY-COMPUTE.md) documents the separate NumPy/CuPy runner. These optional dependencies do not change the dependency-free browser studio or fast Node checks. `python tools/heavy-runner-check.py` runs CPU reference and CLI checks after installing NumPy. CUDA needs separate hardware verification.
+
+The [engine API contract](docs/ENGINE-API.md) documents the stable extension boundary.
+Run `node tools/engine-api-check.js` for witness, RNG, successive recipe migrations
+and shared print preferences, alongside the existing recipe and folder browser tests.
