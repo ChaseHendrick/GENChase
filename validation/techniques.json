@@ -102,26 +102,55 @@
   {
     "id": "phyllotaxis",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
-    "reference": "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). Primordia appear on a growing disc at the minimum of an inhibitory field left by the previous ones, then ride outward. The divergence angle converges on the golden angle 137.5° for a wide interval of the control parameter, which is how sunflowers count Fibonacci without counting.",
-    "equation": "new primordium at argmin_θ Σᵢ exp(−|x(θ) − xᵢ| / λ) on the meristem ring",
-    "status": "unvalidated",
+    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+    "reference": "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). This implementation is an inspired discrete variant: it grows existing radii, then approximately minimizes a softened inverse-square inhibitory field on a fixed insertion ring. It does not implement an exponential kernel or establish biological growth or golden-angle convergence.",
+    "equation": "xᵢ ← growth·xᵢ; new primordium near argmin_θ Σᵢ 1/(|r₀(cosθ,sinθ)−xᵢ|²+λ²)",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete numerical and print evidence covers exactly the finite recipes and benchmark domain in validation/PHYLLOTAXIS.md.",
+      "Larger parameter domains, longer histories, other hardware and physical or biological interpretations remain outside this completed label.",
+      "Softened inverse-square discrete variant; sampled minimization, no biological or golden-angle universality claim. Interactive disturbance and grain are excluded."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend the documented finite domain with independent evidence for further settings, longer histories and other renderers."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/phyllotaxis-review.js",
+        "command": "node tools/phyllotaxis-review.js --write",
+        "results": "validation/results/phyllotaxis-review.json",
+        "scope": "Every insertion in three finite greedy-growth histories against independent fine-angle optimization, radial growth and finite-history divergence; all circles, links or Voronoi cells in complete prints.",
+        "criteria": "Relative insertion objective gap<2e-7, radial error<1e-11, mean divergence error<1e-10, SVG<=.00501 pixels, every PNG channel<=1 byte, state unchanged.",
+        "benchmark": "Polar-distance inhibitory objective with1440-angle scan and48-step golden-section search, analytic radius powers, independent nearest-neighbor and Voronoi classifications.",
+        "failureControl": "Omitted radial growth, perturbed insertion angle and displaced prints must fail; Voronoi must refuse a dots-only vector substitute.",
+        "limitations": "Only the finite recipes and conditions in validation/PHYLLOTAXIS.md; no all-parameter, all-hardware or physical/biological certification."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/phyllotaxis-review.js",
+        "command": "node tools/phyllotaxis-review.js --write",
+        "results": "validation/results/phyllotaxis-review.json",
+        "scope": "Every insertion in three finite greedy-growth histories against independent fine-angle optimization, radial growth and finite-history divergence; all circles, links or Voronoi cells in complete prints.",
+        "criteria": "Relative insertion objective gap<2e-7, radial error<1e-11, mean divergence error<1e-10, SVG<=.00501 pixels, every PNG channel<=1 byte, state unchanged.",
+        "benchmark": "Polar-distance inhibitory objective with1440-angle scan and48-step golden-section search, analytic radius powers, independent nearest-neighbor and Voronoi classifications.",
+        "failureControl": "Omitted radial growth, perturbed insertion angle and displaced prints must fail; Voronoi must refuse a dots-only vector substitute.",
+        "limitations": "Only the finite recipes and conditions in validation/PHYLLOTAXIS.md; no all-parameter, all-hardware or physical/biological certification."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/phyllotaxis-review.json",
+    "domain": {
+      "parameters": "Exactly the enumerated recipes and full effective parameters in validation/results/phyllotaxis-review.json and validation/PHYLLOTAXIS.md.",
+      "conditions": "Every insertion in three finite greedy-growth histories against independent fine-angle optimization, radial growth and finite-history divergence; all circles, links or Voronoi cells in complete prints. Fixed recorded seeds and initial conditions; export preserves scientific state.",
+      "resolution": "Relative insertion objective gap<2e-7, radial error<1e-11, mean divergence error<1e-10, SVG<=.00501 pixels, every PNG channel<=1 byte, state unchanged. Exact grid, trajectory times and print dimensions are recorded with each case.",
+      "precision": "Binary64 numerical references and solver coordinates; Float32 fields where present; RGBA8 PNG and declared SVG decimal precision. Reference refinements and renderer environment recorded."
+    }
   },
   {
     "id": "hl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
+    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
     "reference": "M. B. Hastings and L. S. Levitov, Physica D 116, 244 (1998). Laplacian growth (viscous fingering, DLA in a limit) as iterated conformal maps of the exterior disk. α=0 grows a disk; α=2 is DLA-like; the transition at α=1 is sharp. Each particle is a slit map of capacity c composed onto the cluster.",
     "equation": "Φₙ = Φₙ₋₁ ∘ f_{θₙ,cₙ},   cₙ ∝ |Φ′(e^{iθ})|^{−α}",
     "status": "unvalidated",
@@ -140,7 +169,7 @@
   {
     "id": "lichtenberg",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
+    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
     "reference": "L. Niemeyer, L. Pietronero and H. J. Wiesmann, Phys. Rev. Lett. 52, 1033 (1984). The dielectric breakdown model grows a cluster where the harmonic potential of the Laplace equation, raised to η, is the attachment probability. η=1 is DLA; η→∞ is a ballistic needle; lightning lives in between.",
     "equation": "∇²φ = 0,   P(i) ∝ φᵢ^η  on the growth interface",
     "status": "unvalidated",
@@ -159,7 +188,7 @@
   {
     "id": "snowflake",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
+    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
     "reference": "Janko Gravner and David Griffeath, Physica D 237, 385 (2008); Phys. Rev. E 79, 011601 (2009). A hexagonal lattice map with three masses — vapor, quasi-liquid, ice — that combines diffusion-limited aggregation with anisotropic attachment and a quasi-liquid layer. It is the first local model to grow plates, sectored plates, stellar dendrites and ferns that look like Nakaya’s atlas, not like a cartoon star.",
     "equation": "diffusion of vapor on Aᶜ;  freeze κ;  attach by (n, b, α, β, θ);  melt μ, γ",
     "status": "unvalidated",
@@ -1405,7 +1434,7 @@
   {
     "id": "lp",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
+    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
     "reference": "Ron Lifshitz and Dean M. Petrich, Phys. Rev. Lett. 79, 1261 (1997). Faraday waves with two frequencies impose two length scales. The free energy with operator (∇²+1)²(∇²+q²)² and a quadratic term is enough to stabilize a dodecagonal quasicrystal when q = 2 cos(π/12) ≈ 1.932. Hexagons and stripes are the other ground states. This plate is a semi-implicit spectral integration of that PDE.",
     "equation": "∂tψ = εψ − (∇²+1)²(∇²+q²)²ψ + α ψ² − ψ³,   q = 2 cos(π/12)",
     "status": "unvalidated",
@@ -1462,7 +1491,7 @@
   {
     "id": "cgl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
+    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
     "reference": "The complex Ginzburg–Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969–71). The (α, β) plane was mapped by Aranson and Kramer: Benjamin–Feir when 1+αβ<0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.",
     "equation": "∂A/∂t = μA + (1 + iα) ∇²A − (1 + iβ) |A|² A",
     "status": "validated within stated limits",
@@ -2020,7 +2049,7 @@
   {
     "id": "smectic",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
+    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
     "reference": "G. Friedel, Annales de Physique 18, 273 (1910). Smectic-A layers prefer equal spacing and may bend; the surfaces of constant spacing whose centers of curvature lie on an ellipse and a confocal hyperbola are Dupin cyclides. Packed in the plane they are toroidal focal conic domains — an Apollonian foam of nested rings.",
     "equation": "layers: Dupin cyclides of a confocal ellipse–hyperbola pair",
     "status": "unvalidated",
@@ -2153,7 +2182,7 @@
   {
     "id": "hofstadter",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
+    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
     "reference": "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron colored them. At rational α=p/q the Harper matrix is q×q.",
     "equation": "ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ",
     "status": "unvalidated",
@@ -2220,7 +2249,7 @@
   {
     "id": "scars",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
+    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
     "reference": "Eric J. Heller, Phys. Rev. Lett. 53, 1515 (1984). In a classically chaotic billiard the high eigenfunctions of the Dirichlet Laplacian are usually ergodic — and yet some sit, as scars, along unstable periodic orbits. The Bunimovich stadium and the cardioid are the textbook domains. Inverse iteration of the discrete Laplacian with a Weyl shift yields a mode near index n.",
     "equation": "∇²ψ + k² ψ = 0  on Ω,   ψ = 0 on ∂Ω",
     "status": "unvalidated",
@@ -2258,7 +2287,7 @@
   {
     "id": "caustics",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
+    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
     "reference": "Michael V. Berry’s catastrophe optics: the brightness of a light field after a smooth phase screen is the density of the gradient map of the height. Folds (A2) and cusps (A3) are the generic caustics in the plane. The swimming-pool network is this map, not a Voronoi diagram.",
     "equation": "X = x + s ∇h(x),   I(X) = Σ 1 / |det(I + s Hess h)|",
     "status": "unvalidated",
@@ -2344,7 +2373,7 @@
   {
     "id": "talbot",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
+    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
     "reference": "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T and as a half-period image at z_T/2. Between, the near field is a carpet of fractional revivals — a plot of I(x,z) is one of the most intricate figures in wave optics.",
     "equation": "I(x,z) = |Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)|²,   z_T = 2 d²/λ",
     "status": "unvalidated",
@@ -2420,7 +2449,7 @@
   {
     "id": "pearls",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
+    "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
     "reference": "David Mumford, Caroline Series and David Wright, Indra's Pearls: The Vision of Felix Klein (Cambridge, 2002). A Schottky group is generated by pairing disjoint circles; the limit set is the dust (or curve) left when every complementary disk has been eaten. Nested inversions draw the group without matrices.",
     "equation": "Γ = ⟨a, b⟩  Schottky,   Λ(Γ) = ∩ g∈Γ g(Ĉ \\ Ω)",
     "status": "unvalidated",
@@ -2796,17 +2825,17 @@
   {
     "id": "peakon",
     "source": "src/modules/peakon.js",
-    "sourceSha256": "7d53e8eee70dfc0bac8b7d9f26967e27e61a9431877f83aa4212a3a7ead9f229",
+    "sourceSha256": "4834e70598cd058b068254df6dc94a59a4fa98058fa00064aa94eccc9b40f410",
     "reference": "The Camassa–Holm equation and the peakon u = c exp(−|x − c t|) are R. Camassa and D. D. Holm, Phys. Rev. Lett. 71, 1661 (1993). Multi-peakon collisions, including the Stieltjes / Hankel closed form used here, are R. Beals, D. H. Sattinger and J. Szmigielski, Inverse Problems 15, L1 (1999) and Adv. Math. 154, 229 (2000). This plate evaluates that exact N-peakon formula. It is not a new soliton.",
     "equation": "u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−|x−x_i|},   m = u − u_xx",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The maintained BSS functions pass the positive one-to-four-peakon particle ODE and invariant checks at sampled times and separations.",
-      "No weak-solution proof, mixed-sign collision audit, extreme-time conditioning study or print-state audit is claimed."
+      "Complete numerical and print evidence covers exactly the finite recipes and benchmark domain in validation/PEAKON-FIELD-REVIEW.md.",
+      "Larger parameter domains, longer histories, other hardware and physical or biological interpretations remain outside this completed label.",
+      "Positive one-to-four peakons only. Speed and slope UI values are a separate single-peakon control, not the displayed interacting crest."
     ],
     "remaining": [
-      "Audit the actual renderer and print path at declared dimensions.",
-      "Extend time and separation coverage and compare full trajectories against an independent integrator."
+      "Extend the documented finite domain with independent evidence for further settings, longer histories and other renderers."
     ],
     "numerical": [
       {
@@ -2818,9 +2847,38 @@
         "failureControl": "Mutate the maintained spectral time weights to 1.17 times their speed; the particle ODE residual must exceed 0.1.",
         "command": "node tools/peakon-science.js --write",
         "results": "validation/results/peakon-science.json"
+      },
+      {
+        "test": "tools/peakon-field-review.js",
+        "command": "node tools/peakon-field-review.js --write",
+        "results": "validation/results/peakon-field-review.json",
+        "scope": "18 positive peakon trajectory cases at 48 times with independent Hankel initialization and refined particle integration; six complete fields and native PNGs across four display modes.",
+        "criteria": "Initial error<2e-8, trajectory error<2e-7, full-field error<2e-6, reference refinement<2e-6, every PNG channel<=1 byte and unchanged state.",
+        "benchmark": "Hankel moment determinants and independent particle-ODE RK4 integration with three time resolutions, full-field sums and separate print mapping.",
+        "failureControl": "Wrong time evolution, displaced fields and displaced prints must fail; existing wrong spectral-speed and invariants remain checked.",
+        "limitations": "Only the finite recipes and conditions in validation/PEAKON-FIELD-REVIEW.md; no all-parameter, all-hardware or physical/biological certification."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/peakon-field-review.js",
+        "command": "node tools/peakon-field-review.js --write",
+        "results": "validation/results/peakon-field-review.json",
+        "scope": "18 positive peakon trajectory cases at 48 times with independent Hankel initialization and refined particle integration; six complete fields and native PNGs across four display modes.",
+        "criteria": "Initial error<2e-8, trajectory error<2e-7, full-field error<2e-6, reference refinement<2e-6, every PNG channel<=1 byte and unchanged state.",
+        "benchmark": "Hankel moment determinants and independent particle-ODE RK4 integration with three time resolutions, full-field sums and separate print mapping.",
+        "failureControl": "Wrong time evolution, displaced fields and displaced prints must fail; existing wrong spectral-speed and invariants remain checked.",
+        "limitations": "Only the finite recipes and conditions in validation/PEAKON-FIELD-REVIEW.md; no all-parameter, all-hardware or physical/biological certification."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/peakon-field-review.json",
+    "domain": {
+      "parameters": "Exactly the enumerated recipes and full effective parameters in validation/results/peakon-field-review.json and validation/PEAKON-FIELD-REVIEW.md.",
+      "conditions": "18 positive peakon trajectory cases at 48 times with independent Hankel initialization and refined particle integration; six complete fields and native PNGs across four display modes. Fixed recorded seeds and initial conditions; export preserves scientific state.",
+      "resolution": "Initial error<2e-8, trajectory error<2e-7, full-field error<2e-6, reference refinement<2e-6, every PNG channel<=1 byte and unchanged state. Exact grid, trajectory times and print dimensions are recorded with each case.",
+      "precision": "Binary64 numerical references and solver coordinates; Float32 fields where present; RGBA8 PNG and declared SVG decimal precision. Reference refinements and renderer environment recorded."
+    }
   },
   {
     "id": "photon",
@@ -3424,14 +3482,14 @@
     "sourceSha256": "9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1",
     "reference": "E. Montbrió, D. Pazó and A. Roxin, Macroscopic Description for Networks of Spiking Neurons, Physical Review X 5, 021028 (2015), doi:10.1103/PhysRevX.5.021028, Eq. (12). Original implementation of the established macroscopic equations.",
     "equation": "dr/dt = Δ/π + 2rv; dv/dt = v² + η̄ + Jr + I(t) − π²r²",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The evidence covers selected analytic, driven and preset trajectories of the infinite all-to-all MPR reduction; it does not validate every control, finite-neuron network or experimental brain recording.",
-      "Print checks preserve traces and dimensions but do not create temporal resolution beyond the stored samples."
+      "Complete numerical and print evidence covers exactly the finite recipes and benchmark domain in validation/NEURAL-MASS.md.",
+      "Larger parameter domains, longer histories, other hardware and physical or biological interpretations remain outside this completed label.",
+      "Infinite-population MPR model, not a finite-neuron or clinical model. Prints preserve recorded samples without adding temporal resolution."
     ],
     "remaining": [
-      "Extend independent parameter, long-duration and spatial/network comparisons before quantitative generalization.",
-      "Broaden browser and hardware print checks while retaining the principal-value population interpretation."
+      "Extend the documented finite domain with independent evidence for further settings, longer histories and other renderers."
     ],
     "numerical": [
       {
@@ -3443,17 +3501,38 @@
         "failureControl": "Reverse the quadratic rate term and use unsplit pulse endpoints; both produce measurable reference disagreement.",
         "command": "node tools/neural-mass-science.js --write",
         "results": "validation/results/neural-mass-science.json"
+      },
+      {
+        "test": "tools/neural-mass-print.js",
+        "command": "node tools/neural-mass-print.js --write",
+        "results": "validation/results/neural-mass-print.json",
+        "scope": "All 461184 values in three full browser recordings against two independently coded DOPRI5 refinements; all922368 SVG coordinates across six prints and actual shell export.",
+        "criteria": "Trajectory error<1e-6, independent refinement<1e-8, SVG coordinate error<1e-9 pixels, raster/vector mean difference<1.5 bytes, exact state preserved.",
+        "benchmark": "Separately coded Dormand-Prince tableau, independently split pulse events and complete trajectory-to-vector coordinate reconstruction.",
+        "failureControl": "Time-shifted trajectories and2-percent distorted SVG coordinates fail; existing wrong quadratic sign and pulse endpoint controls remain required.",
+        "limitations": "Only the finite recipes and conditions in validation/NEURAL-MASS.md; no all-parameter, all-hardware or physical/biological certification."
       }
     ],
     "print": [
       {
         "test": "tools/neural-mass-print.js",
-        "scope": "Actual phase/rate/voltage PNG and SVG exports at 2400×2400 and 2400×1800 for 32 and 128 preparations, including shell print routing.",
-        "criteria": "Exact numerical state and settings preservation, exact dimensions, SVG path/sample counts and bounded PNG/SVG raster differences; incomplete traces refuse export.",
-        "limitations": "Selected renderer and states only; no full parameter-domain, unrecorded-transient or cross-hardware guarantee.",
-        "results": "validation/results/neural-mass-print.json"
+        "command": "node tools/neural-mass-print.js --write",
+        "results": "validation/results/neural-mass-print.json",
+        "scope": "All 461184 values in three full browser recordings against two independently coded DOPRI5 refinements; all922368 SVG coordinates across six prints and actual shell export.",
+        "criteria": "Trajectory error<1e-6, independent refinement<1e-8, SVG coordinate error<1e-9 pixels, raster/vector mean difference<1.5 bytes, exact state preserved.",
+        "benchmark": "Separately coded Dormand-Prince tableau, independently split pulse events and complete trajectory-to-vector coordinate reconstruction.",
+        "failureControl": "Time-shifted trajectories and2-percent distorted SVG coordinates fail; existing wrong quadratic sign and pulse endpoint controls remain required.",
+        "limitations": "Only the finite recipes and conditions in validation/NEURAL-MASS.md; no all-parameter, all-hardware or physical/biological certification."
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/neural-mass-print.json",
+    "domain": {
+      "parameters": "Exactly the enumerated recipes and full effective parameters in validation/results/neural-mass-print.json and validation/NEURAL-MASS.md.",
+      "conditions": "All 461184 values in three full browser recordings against two independently coded DOPRI5 refinements; all922368 SVG coordinates across six prints and actual shell export. Fixed recorded seeds and initial conditions; export preserves scientific state.",
+      "resolution": "Trajectory error<1e-6, independent refinement<1e-8, SVG coordinate error<1e-9 pixels, raster/vector mean difference<1.5 bytes, exact state preserved. Exact grid, trajectory times and print dimensions are recorded with each case.",
+      "precision": "Binary64 numerical references and solver coordinates; Float32 fields where present; RGBA8 PNG and declared SVG decimal precision. Reference refinements and renderer environment recorded."
+    }
   },
   {
     "id": "volume-wave",

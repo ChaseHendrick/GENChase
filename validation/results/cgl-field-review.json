@@ -1,7 +1,7 @@
 {
   "date": "2026-09-22",
   "scope": "Four complete deterministic noise-free CGL lattice fields and prints at physical time 1; no continuum or chaotic-statistics claim.",
-  "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
+  "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
   "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
   "kernel": {
     "refinement": [

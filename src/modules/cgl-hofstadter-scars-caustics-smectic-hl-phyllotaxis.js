@@ -1117,15 +1117,15 @@ void main(){
   Studio.register({
     id: 'phyllotaxis',
     name: 'Phyllotaxis',
-    subtitle: 'Douady–Couder inhibitory field · 1996',
+    subtitle: 'discrete inhibitory growth inspired by Douady–Couder',
     order: 25,
-    equation: 'new primordium at argmin_θ Σᵢ exp(−|x(θ) − xᵢ| / λ) on the meristem ring',
-    credit: "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). Primordia appear on a growing disc at the minimum of an inhibitory field left by the previous ones, then ride outward. The divergence angle converges on the golden angle 137.5° for a wide interval of the control parameter, which is how sunflowers count Fibonacci without counting.",
-    blurb: 'Every sunflower generator you have seen is Vogel’s formula: points placed at n·137.5°. This is not that. A new bump appears on the meristem ring wherever the inhibition of the old ones is weakest, then the disc grows and they all move out. Fibonacci is not put in. It is what the inhibitory field does. Drag to drop a rogue primordium and watch the lattice forgive it, or not.',
+    equation: 'xᵢ ← growth·xᵢ; new primordium near argmin_θ Σᵢ 1/(|r₀(cosθ,sinθ)−xᵢ|²+λ²)',
+    credit: "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). This implementation is an inspired discrete variant: it grows existing radii, then approximately minimizes a softened inverse-square inhibitory field on a fixed insertion ring. It does not implement an exponential kernel or establish biological growth or golden-angle convergence.",
+    blurb: 'New points are inserted where inhibition from earlier points is small. Existing radii are multiplied by Growth before each insertion. The search samples 180 angles and performs eight local refinements. The resulting divergence depends on inhibition, growth and insertion radius; its sampled mean is a descriptive statistic.',
     schema: [
       { group: 'Meristem', key: 'N', label: 'Primordia', type: 'range', kind: GEOM, min: 40, max: 600, step: 10, fmt: String },
       { group: 'Meristem', key: 'lam', label: 'Inhibition λ', type: 'range', kind: GEOM, min: 0.04, max: 0.45, step: 0.01, fmt: f2,
-        hint: 'Range of the inhibitory field. This is Douady–Couder’s control parameter. Golden packing lives in the middle.' },
+        hint: 'Softening length in 1/(distance²+λ²). Growth and insertion radius also affect the selected angles.' },
       { group: 'Meristem', key: 'growth', label: 'Growth', type: 'range', kind: GEOM, min: 1.01, max: 1.08, step: 0.001, fmt: f3 },
       { group: 'Meristem', key: 'r0', label: 'Meristem radius', type: 'range', kind: GEOM, min: 0.02, max: 0.12, step: 0.005, fmt: f2 },
       { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['dots','Dots'],['voronoi','Voronoi'],['para','Parastichies']] },
@@ -1140,7 +1140,7 @@ void main(){
       para: pre('Parastichies', { lam: 0.12, N: 280, view: 'para' }, Pal.ember),
       tight: pre('Tight λ', { lam: 0.08, N: 600, view: 'dots', size: 1.6 }, Pal.meadow),
     },
-    hints: { Meristem: 'λ is the only number that matters. Too small: a radial pile-up. Too large: opposite pairs. In between: 137.5° and the Fibonacci spirals.' },
+    hints: { Meristem: 'Inhibition λ, Growth and Meristem radius jointly set the discrete geometry. The displayed divergence is a finite-history mean, not proof of a universal golden-angle attractor.' },
     palette: true, defaultPalette: 'tram', paletteLabel: 'Colors',
     headline: 'lam', headlineLabel: 'λ',
     sanitize(s){ s.N=U.clamp(Math.round(Number(s.N)/10)*10, 20, 800); },
@@ -1188,15 +1188,13 @@ void main(){
         const n=s.N|0;
         for (let i=0;i<n;i++) addOne(s);
       }
-      function draw() {
-        const s=host.getState();
-        const w=canvas.width, h=canvas.height;
+      function paintTo(ctx,w,h,s) {
         ctx.fillStyle=s.bg; ctx.fillRect(0,0,w,h);
         if (!pts.length) return;
         let m=0; for (let i=0;i<pts.length;i++) m=Math.max(m, Math.hypot(pts[i].x, pts[i].y));
         const sc=0.46*Math.min(w,h)/Math.max(m,1e-3), cx=w/2, cy=h/2;
         const lut=U.makeRampLUT(s.palette,null,256);
-        const col=t=>{ const li=((t%1)*255|0)*3; return 'rgb('+(lut[li]|0)+','+(lut[li+1]|0)+','+(lut[li+2]|0)+')'; };
+        const col=t=>{ const li=(U.clamp(t,0,1)*255|0)*3; return 'rgb('+(lut[li]|0)+','+(lut[li+1]|0)+','+(lut[li+2]|0)+')'; };
         if (s.view==='voronoi') {
           const img=ctx.createImageData(w,h), bg=U.hexToRgb(s.bg);
           const step=2;
@@ -1242,6 +1240,7 @@ void main(){
         }
         grainPut(ctx,w,h,s.grain,s.seed);
       }
+      function draw(){ paintTo(ctx,canvas.width,canvas.height,host.getState()); }
       function meanDiv() {
         if (!divs.length) return 0;
         const cut=divs.slice(Math.floor(divs.length*0.4));
@@ -1258,7 +1257,7 @@ void main(){
         aspect(){ return 1; },
         regenerate(){
           stop(); build(host.getState()); draw();
-          host.setStatus('<span>N <b>'+pts.length+'</b></span><span>⟨div⟩ <b>'+meanDiv().toFixed(1)+'°</b> · golden 137.5</span>');
+          host.setStatus('<span>N <b>'+pts.length+'</b></span><span>⟨div⟩ <b>'+meanDiv().toFixed(1)+'°</b> · last 60% of finite history</span>');
           if (host.getState().running && !host.reducedMotion()) raf=requestAnimationFrame(frame);
         },
         repaint(){ draw(); },
@@ -1273,43 +1272,33 @@ void main(){
         },
         async exportPNG(w,h){
           const out=document.createElement('canvas'); out.width=w; out.height=h;
-          const g=out.getContext('2d'); const s=host.getState();
-          g.fillStyle=s.bg; g.fillRect(0,0,w,h);
-          if(!pts.length) return U.toBlob(out);
-          let m=0; for (let i=0;i<pts.length;i++) m=Math.max(m, Math.hypot(pts[i].x,pts[i].y));
-          const sc=0.46*Math.min(w,h)/Math.max(m,1e-3), cx=w/2, cy=h/2;
-          const lut=U.makeRampLUT(s.palette,null,256);
-          const r0=s.size*Math.min(w,h)/220;
-          for (let i=0;i<pts.length;i++) {
-            const li=((i/Math.max(1,pts.length-1))*255|0)*3;
-            g.fillStyle='rgb('+lut[li]+','+lut[li+1]+','+lut[li+2]+')';
-            g.beginPath(); g.arc(cx+pts[i].x*sc, cy+pts[i].y*sc, r0*(0.7+0.6*i/pts.length), 0, TAU); g.fill();
-          }
+          paintTo(out.getContext('2d'),w,h,host.getState());
           return U.toBlob(out);
         },
         exportSVG(w,h){
-          const s=host.getState(); if(!pts.length) return null;
+          const s=host.getState(); if(!pts.length || s.view==='voronoi') return null;
           const W=w||1000, H=h||W;
           let m=0; for (let i=0;i<pts.length;i++) m=Math.max(m, Math.hypot(pts[i].x, pts[i].y));
           const sc=0.46*Math.min(W,H)/Math.max(m,1e-3), cx=W/2, cy=H/2;
-          const pal=s.palette||['#111'];
+          const lut=U.makeRampLUT(s.palette,null,256);
+          const color=t=>{const i=(t*255|0)*3;return 'rgb('+lut[i]+','+lut[i+1]+','+lut[i+2]+')';};
           const r0=s.size*Math.min(W,H)/220;
           let body='';
           if (s.view==='para') {
-            const lw=Math.max(0.4, Math.min(W,H)/1100).toFixed(2);
+            const lw=Math.max(0.6, Math.min(W,H)/900).toFixed(2);
             for (let i=0;i<pts.length;i++) {
               let b1=i, d1=1e9;
               for (let j=0;j<pts.length;j++) if (j!==i) {
                 const d=Math.hypot(pts[i].x-pts[j].x, pts[i].y-pts[j].y);
                 if (d<d1) { d1=d; b1=j; }
               }
-              const col=U.svgEsc(pal[i%pal.length]);
+              const col=U.svgEsc(color(i/pts.length));
               body+='<line x1="'+(cx+pts[i].x*sc).toFixed(2)+'" y1="'+(cy+pts[i].y*sc).toFixed(2)+'" x2="'+(cx+pts[b1].x*sc).toFixed(2)+'" y2="'+(cy+pts[b1].y*sc).toFixed(2)+'" stroke="'+col+'" stroke-width="'+lw+'"/>\n';
             }
           }
           for (let i=0;i<pts.length;i++) {
             const rr=r0*(0.7+0.6*i/pts.length);
-            body+='<circle cx="'+(cx+pts[i].x*sc).toFixed(2)+'" cy="'+(cy+pts[i].y*sc).toFixed(2)+'" r="'+rr.toFixed(2)+'" fill="'+U.svgEsc(pal[i%pal.length])+'" stroke="none"/>\n';
+            body+='<circle cx="'+(cx+pts[i].x*sc).toFixed(2)+'" cy="'+(cy+pts[i].y*sc).toFixed(2)+'" r="'+rr.toFixed(2)+'" fill="'+U.svgEsc(color(i/Math.max(1,pts.length-1)))+'" stroke="none"/>\n';
           }
           return U.svgBlob(W,H,s.bg,body);
         },

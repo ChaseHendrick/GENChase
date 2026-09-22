@@ -1,13 +1,13 @@
 // Actual browser trace, vector/raster print and shell export checks.
 // Requires Playwright and Chromium. node tools/neural-mass-print.js [--write]
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict'), crypto = require('node:crypto');
-const { chromium } = require('playwright');
+const { chromium } = require('playwright'), reference=require('./lib/mpr-reference');
 (async () => {
   const root = path.resolve(__dirname, '..'), temp = path.join(root, '.neural-mass-print-test.html');
   const source = fs.readFileSync(path.join(root, 'src/modules/neural-mass.js'), 'utf8');
   const marker = '    return {\n      aspect()'; assert(source.includes(marker));
   const instrumented = source.replace(marker, `    return globalThis.neuralAudit = {
-      audit() { return { n: sim.n, steps: sim.steps, recorded: sim.recorded, complete: sim.complete, halted: sim.halted, time: sim.time, r: [...sim.r], v: [...sim.v], historyR: [...sim.historyR], historyV: [...sim.historyV], times: [...sim.times] }; },
+      audit() { return { parameters: {...host.getState()}, n: sim.n, steps: sim.steps, recorded: sim.recorded, complete: sim.complete, halted: sim.halted, time: sim.time, r: [...sim.r], v: [...sim.v], historyR: [...sim.historyR], historyV: [...sim.historyV], times: [...sim.times] }; },
       restartPaused() { this.regenerate(); this.pause(); return this.audit(); },
       auditStop() {
         stop(); sim = makeSim(host.getState()); sim.r[0] = .2; sim.v[0] = 100; sim.reference();
@@ -26,6 +26,15 @@ const { chromium } = require('playwright');
       const encoded = Buffer.from(JSON.stringify({ v: 2, ...fixture })).toString('base64url');
       await page.goto('file://' + temp + '#neural-mass/neural-print/' + encoded);
       await page.waitForFunction(() => window.neuralAudit && neuralAudit.audit().complete, null, { timeout: 120000 });
+      const recording=await page.evaluate(()=>neuralAudit.audit()),p=recording.parameters;
+      const referenceRuns=[.002,.001].map(step=>reference(p,recording.historyR.slice(0,recording.n),recording.historyV.slice(0,recording.n),recording.times,step));
+      let trajectoryError=0,referenceError=0,wrongTraceError=0;
+      for(let j=0;j<recording.historyR.length;j++){
+        trajectoryError=Math.max(trajectoryError,Math.abs(recording.historyR[j]-referenceRuns[1].r[j]),Math.abs(recording.historyV[j]-referenceRuns[1].v[j]));
+        referenceError=Math.max(referenceError,Math.abs(referenceRuns[0].r[j]-referenceRuns[1].r[j]),Math.abs(referenceRuns[0].v[j]-referenceRuns[1].v[j]));
+        wrongTraceError=Math.max(wrongTraceError,Math.abs(recording.historyV[j]-referenceRuns[1].v[(j+recording.n)%recording.historyV.length]));
+      }
+      assert(trajectoryError<1e-6&&referenceError<1e-8&&wrongTraceError>.01,JSON.stringify({trajectoryError,referenceError,wrongTraceError}));
       rows.push(await page.evaluate(async fixture => {
         const instance = neuralAudit, initial = instance.audit(), before = JSON.stringify(initial), tests = [];
         instance.pause();
@@ -44,7 +53,7 @@ const { chromium } = require('playwright');
           for (let i = 0; i < pixels.length; i += 4) for (let k = 0; k < 3; k++) difference += Math.abs(pixels[i + k] - vector[i + k]);
           const documentSVG = new DOMParser().parseFromString(svg, 'image/svg+xml');
           const paths = documentSVG.querySelector('g').querySelectorAll('path');
-          const points = [...paths[0].getAttribute('d').matchAll(/[ML]([\d.e+-]+),([\d.e+-]+)/g)].map(m => [Number(m[1]), Number(m[2])]);
+          const curves = [...paths].map(path=>[...path.getAttribute('d').matchAll(/[ML]([\d.e+-]+),([\d.e+-]+)/g)].map(m=>[Number(m[1]),Number(m[2])])),points=curves[0];
           // Independently recover the coordinate map from the stored physical data.
           const yy = fixture.view === 'rate' ? initial.historyR : initial.historyV;
           let ymin = Infinity, ymax = -Infinity, xmin = Infinity, xmax = -Infinity;
@@ -54,18 +63,21 @@ const { chromium } = require('playwright');
             for (const v of initial.historyR) { xmin = Math.min(xmin, v); xmax = Math.max(xmax, v); }
             const xpad = Math.max(.02, (xmax - xmin) * .05); xmin = Math.max(0, xmin - xpad); xmax += xpad;
           } else { xmin = 0; xmax = initial.time; }
-          let coordinateError = 0;
-          for (const j of [0, 300, 600, 900, 1200]) {
-            const physicalX = fixture.view === 'phase' ? initial.historyR[j * initial.n] : initial.times[j];
+          let coordinateError = 0,wrongScaleError=0,coordinatesChecked=0;
+          for(let cell=0;cell<initial.n;cell++)for(let j=0;j<initial.times.length;j++){
+            const physicalX = fixture.view === 'phase' ? initial.historyR[j * initial.n+cell] : initial.times[j];
             const referenceX = w * (.11 + .83 * (physicalX - xmin) / (xmax - xmin));
-            const referenceY = h * (.89 - .82 * (yy[j * initial.n] - ymin) / (ymax - ymin));
-            coordinateError = Math.max(coordinateError, Math.hypot(points[j][0] - referenceX, points[j][1] - referenceY));
+            const referenceY = h * (.89 - .82 * (yy[j * initial.n+cell] - ymin) / (ymax - ymin));
+            coordinateError = Math.max(coordinateError, Math.hypot(curves[cell][j][0] - referenceX, curves[cell][j][1] - referenceY));
+            wrongScaleError=Math.max(wrongScaleError,Math.abs(curves[cell][j][0]*1.02-referenceX));coordinatesChecked+=2;
           }
-          tests.push({ requested: [w, h], width: a.width, height: a.height, svgWidth: image.naturalWidth, svgHeight: image.naturalHeight, pngBytes: png.size, svgBytes: svg.length, tracePaths: paths.length, pointsPerPath: points.length, physicalCoordinateErrorPixels: coordinateError, rasterVectorMAD: difference / (pixels.length * .75) });
+          if(wrongScaleError<1)throw Error('Wrong trace scale was not detected');
+          tests.push({ coordinatesChecked,wrongScaleError, requested: [w, h], width: a.width, height: a.height, svgWidth: image.naturalWidth, svgHeight: image.naturalHeight, pngBytes: png.size, svgBytes: svg.length, tracePaths: paths.length, pointsPerPath: points.length, physicalCoordinateErrorPixels: coordinateError, rasterVectorMAD: difference / (pixels.length * .75) });
           a.close(); URL.revokeObjectURL(url);
         }
         return { fixture, steps: initial.steps, complete: initial.complete, halted: initial.halted, tests, unchanged: before === JSON.stringify(instance.audit()) };
       }, fixture));
+      rows[rows.length-1].independentTrajectory={valuesCompared:recording.historyR.length*2,maximumError:trajectoryError,referenceStepSizes:[.002,.001],referenceRefinementError:referenceError,shiftedTraceError:wrongTraceError,parameters:p};
     }
     const shellBefore = await page.evaluate(() => JSON.stringify(neuralAudit.audit()));
     await page.evaluate(() => {
@@ -102,7 +114,7 @@ const { chromium } = require('playwright');
       return { message: result.message, status: document.getElementById('status').textContent, rolledBack: JSON.stringify(before) === JSON.stringify(after), exportMessage };
     });
     assert(stop.rolledBack); assert(stop.status.includes('Stopped:')); assert(stop.status.includes('Time step is too large')); assert.equal(stop.exportMessage, stop.message); assert.deepEqual(errors, []);
-    const result = { scope: 'Actual browser module: three trace views, 32/128 preparations, completed real seeded trajectories; 2400px square/non-square real vectors and raster exports; physical-to-SVG coordinates and exact numerical-state preservation; actual shell vector print; pause/resume and finite completion; visible rejected-step guard and refused incomplete export.', sourceSHA256: crypto.createHash('sha256').update(source).digest('hex'), rows, shell, computation: { pauseStops: true, resumeCompletes: true, finishedStateStaysStill: true }, stop, errors };
+    const result = { scope: 'Actual browser module: three trace views, 32/128 preparations, completed real seeded trajectories; 2400px square/non-square real vectors and raster exports; independent complete Dormand-Prince trajectories and every physical-to-SVG coordinate and exact numerical-state preservation; actual shell vector print; pause/resume and finite completion; visible rejected-step guard and refused incomplete export.', sourceSHA256: crypto.createHash('sha256').update(source).digest('hex'), rows, shell, computation: { pauseStops: true, resumeCompletes: true, finishedStateStaysStill: true }, stop, errors };
     if (process.argv.includes('--write')) fs.writeFileSync(path.join(root, 'validation/results/neural-mass-print.json'), JSON.stringify(result, null, 2) + '\n');
     console.log(JSON.stringify(result, null, 2));
   } finally { if (browser) await browser.close(); fs.rmSync(temp, { force: true }); }

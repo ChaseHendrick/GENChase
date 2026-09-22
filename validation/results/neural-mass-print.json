@@ -1,5 +1,5 @@
 {
-  "scope": "Actual browser module: three trace views, 32/128 preparations, completed real seeded trajectories; 2400px square/non-square real vectors and raster exports; physical-to-SVG coordinates and exact numerical-state preservation; actual shell vector print; pause/resume and finite completion; visible rejected-step guard and refused incomplete export.",
+  "scope": "Actual browser module: three trace views, 32/128 preparations, completed real seeded trajectories; 2400px square/non-square real vectors and raster exports; independent complete Dormand-Prince trajectories and every physical-to-SVG coordinate and exact numerical-state preservation; actual shell vector print; pause/resume and finite completion; visible rejected-step guard and refused incomplete export.",
   "sourceSHA256": "9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1",
   "rows": [
     {
@@ -12,6 +12,8 @@
       "halted": "",
       "tests": [
         {
+          "coordinatesChecked": 76864,
+          "wrongScaleError": 43.27240800459185,
           "requested": [
             2400,
             2400
@@ -21,13 +23,15 @@
           "svgWidth": 2400,
           "svgHeight": 2400,
           "pngBytes": 942022,
-          "svgBytes": 1458392,
+          "svgBytes": 1458408,
           "tracePaths": 32,
           "pointsPerPath": 1201,
-          "physicalCoordinateErrorPixels": 2.3437142008433856e-13,
+          "physicalCoordinateErrorPixels": 6.915300366811401e-13,
           "rasterVectorMAD": 0.45050416666666665
         },
         {
+          "coordinatesChecked": 76864,
+          "wrongScaleError": 43.27240800459185,
           "requested": [
             2400,
             1800
@@ -37,14 +41,49 @@
           "svgWidth": 2400,
           "svgHeight": 1800,
           "pngBytes": 774726,
-          "svgBytes": 1454844,
+          "svgBytes": 1454855,
           "tracePaths": 32,
           "pointsPerPath": 1201,
-          "physicalCoordinateErrorPixels": 2.2737367544323206e-13,
+          "physicalCoordinateErrorPixels": 6.915300366811401e-13,
           "rasterVectorMAD": 0.3272305555555556
         }
       ],
-      "unchanged": true
+      "unchanged": true,
+      "independentTrajectory": {
+        "valuesCompared": 76864,
+        "maximumError": 1.6828349824749012e-10,
+        "referenceStepSizes": [
+          0.002,
+          0.001
+        ],
+        "referenceRefinementError": 2.5257240743314924e-11,
+        "shiftedTraceError": 1.6705686923486174,
+        "parameters": {
+          "populations": 32,
+          "eta": -1,
+          "delta": 0.5,
+          "J": 5,
+          "drive": "sine",
+          "amplitude": 1.5,
+          "frequency": 0.16,
+          "duration": 30,
+          "dt": 0.002,
+          "spread": 0.8,
+          "view": "phase",
+          "weight": 0.8,
+          "opacity": 0.65,
+          "seed": "neural-print",
+          "v": 2,
+          "palette": [
+            "#0B3D5C",
+            "#0FA3B1",
+            "#5CE1E6",
+            "#B8FFF9",
+            "#F0FFFE"
+          ],
+          "bg": "#050A12"
+        }
+      }
     },
     {
       "fixture": {
@@ -57,6 +96,8 @@
       "halted": "",
       "tests": [
         {
+          "coordinatesChecked": 307456,
+          "wrongScaleError": 45.11999999999989,
           "requested": [
             2400,
             2400
@@ -66,13 +107,15 @@
           "svgWidth": 2400,
           "svgHeight": 2400,
           "pngBytes": 455657,
-          "svgBytes": 4676651,
+          "svgBytes": 4676658,
           "tracePaths": 128,
           "pointsPerPath": 1201,
-          "physicalCoordinateErrorPixels": 2.2737367544323206e-13,
+          "physicalCoordinateErrorPixels": 6.821210263296962e-13,
           "rasterVectorMAD": 0.455425
         },
         {
+          "coordinatesChecked": 307456,
+          "wrongScaleError": 45.11999999999989,
           "requested": [
             2400,
             1800
@@ -82,14 +125,49 @@
           "svgWidth": 2400,
           "svgHeight": 1800,
           "pngBytes": 357872,
-          "svgBytes": 4649043,
+          "svgBytes": 4649048,
           "tracePaths": 128,
           "pointsPerPath": 1201,
-          "physicalCoordinateErrorPixels": 2.2737367544323206e-13,
+          "physicalCoordinateErrorPixels": 5.084229945850415e-13,
           "rasterVectorMAD": 0.3287027777777778
         }
       ],
-      "unchanged": true
+      "unchanged": true,
+      "independentTrajectory": {
+        "valuesCompared": 307456,
+        "maximumError": 2.1971091612726923e-10,
+        "referenceStepSizes": [
+          0.002,
+          0.001
+        ],
+        "referenceRefinementError": 2.5712765250318625e-12,
+        "shiftedTraceError": 1.2264558013769826,
+        "parameters": {
+          "populations": 128,
+          "eta": -1,
+          "delta": 0.5,
+          "J": 5,
+          "drive": "pulse",
+          "amplitude": 1.5,
+          "frequency": 0.16,
+          "duration": 30,
+          "dt": 0.002,
+          "spread": 0.8,
+          "view": "rate",
+          "weight": 0.8,
+          "opacity": 0.65,
+          "seed": "neural-print",
+          "v": 2,
+          "palette": [
+            "#0B3D5C",
+            "#0FA3B1",
+            "#5CE1E6",
+            "#B8FFF9",
+            "#F0FFFE"
+          ],
+          "bg": "#050A12"
+        }
+      }
     },
     {
       "fixture": {
@@ -102,6 +180,8 @@
       "halted": "",
       "tests": [
         {
+          "coordinatesChecked": 76864,
+          "wrongScaleError": 45.11999999999989,
           "requested": [
             2400,
             2400
@@ -111,13 +191,15 @@
           "svgWidth": 2400,
           "svgHeight": 2400,
           "pngBytes": 319395,
-          "svgBytes": 1167156,
+          "svgBytes": 1167154,
           "tracePaths": 32,
           "pointsPerPath": 1201,
-          "physicalCoordinateErrorPixels": 2.2737367544323206e-13,
+          "physicalCoordinateErrorPixels": 5.684341886080801e-13,
           "rasterVectorMAD": 0.42025625
         },
         {
+          "coordinatesChecked": 76864,
+          "wrongScaleError": 45.11999999999989,
           "requested": [
             2400,
             1800
@@ -127,14 +209,49 @@
           "svgWidth": 2400,
           "svgHeight": 1800,
           "pngBytes": 250776,
-          "svgBytes": 1156313,
+          "svgBytes": 1156317,
           "tracePaths": 32,
           "pointsPerPath": 1201,
-          "physicalCoordinateErrorPixels": 1.1368683772161603e-13,
+          "physicalCoordinateErrorPixels": 5.084229945850415e-13,
           "rasterVectorMAD": 0.3244444444444444
         }
       ],
-      "unchanged": true
+      "unchanged": true,
+      "independentTrajectory": {
+        "valuesCompared": 76864,
+        "maximumError": 2.855338188112455e-11,
+        "referenceStepSizes": [
+          0.002,
+          0.001
+        ],
+        "referenceRefinementError": 3.979039320256561e-13,
+        "shiftedTraceError": 1.8947904971185987,
+        "parameters": {
+          "populations": 32,
+          "eta": -1,
+          "delta": 0.5,
+          "J": -6,
+          "drive": "sine",
+          "amplitude": 1.5,
+          "frequency": 0.16,
+          "duration": 30,
+          "dt": 0.002,
+          "spread": 0.8,
+          "view": "voltage",
+          "weight": 0.8,
+          "opacity": 0.65,
+          "seed": "neural-print",
+          "v": 2,
+          "palette": [
+            "#0B3D5C",
+            "#0FA3B1",
+            "#5CE1E6",
+            "#B8FFF9",
+            "#F0FFFE"
+          ],
+          "bg": "#050A12"
+        }
+      }
     }
   ],
   "shell": {

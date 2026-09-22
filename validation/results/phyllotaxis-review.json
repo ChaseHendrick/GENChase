@@ -1,0 +1,1598 @@
+{
+  "date": "2026-09-22",
+  "sourceSha256": "6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d",
+  "componentSha256": "6d6e4222920e3f9f97dd1d30630ef7d5a18a390eb394e24430b3ccfa32f2fa5d",
+  "scope": "Three finite greedy inhibitory-growth recipes; every insertion independently minimized, all printed circles/links or raster cells checked. No biological or golden-angle universality claim.",
+  "cases": [
+    {
+      "seed": "phyllotaxis-review-0",
+      "params": {
+        "N": 40,
+        "lam": 0.08,
+        "growth": 1.04,
+        "r0": 0.04,
+        "view": "dots",
+        "grain": 0,
+        "size": 1.1,
+        "running": false
+      },
+      "numerical": {
+        "radialError": 8.326672684688674e-17,
+        "maxObjectiveGap": 1.8603051380494722e-9,
+        "wrongGrowthError": 0.14465463953602523,
+        "wrongAngleGap": 0.005106011206900699,
+        "meanDivergence": 138.921875,
+        "insertionRows": [
+          {
+            "step": 1,
+            "relativeObjectiveGap": 0,
+            "refinedAngle": 3.141592694398207,
+            "actualAngle": 3.141592653589793
+          },
+          {
+            "step": 2,
+            "relativeObjectiveGap": 1.8603051380494722e-9,
+            "refinedAngle": 1.5783076131683285,
+            "actualAngle": 1.5784321422723715
+          },
+          {
+            "step": 3,
+            "relativeObjectiveGap": 6.629969573591981e-11,
+            "refinedAngle": 4.710184432515426,
+            "actualAngle": 4.710207318819697
+          },
+          {
+            "step": 4,
+            "relativeObjectiveGap": 2.514400812166545e-10,
+            "refinedAngle": 4.102744281308176,
+            "actualAngle": 4.102614572969171
+          },
+          {
+            "step": 5,
+            "relativeObjectiveGap": 7.326115347804159e-12,
+            "refinedAngle": 0.9266749661435656,
+            "actualAngle": 0.9266607497307393
+          },
+          {
+            "step": 6,
+            "relativeObjectiveGap": 6.205811026509264e-10,
+            "refinedAngle": 2.448751483458098,
+            "actualAngle": 2.4486423990089192
+          },
+          {
+            "step": 7,
+            "relativeObjectiveGap": 2.2077279121513033e-10,
+            "refinedAngle": 5.584021743105865,
+            "actualAngle": 5.583962775599358
+          },
+          {
+            "step": 8,
+            "relativeObjectiveGap": 9.65760260048925e-11,
+            "refinedAngle": 0.46400077494111125,
+            "actualAngle": 0.46387579025661796
+          },
+          {
+            "step": 9,
+            "relativeObjectiveGap": 2.496177988534671e-11,
+            "refinedAngle": 3.5184376784297333,
+            "actualAngle": 3.5184746889423186
+          },
+          {
+            "step": 10,
+            "relativeObjectiveGap": 4.6899613258810364e-14,
+            "refinedAngle": 5.225623671221191,
+            "actualAngle": 5.225624863549273
+          },
+          {
+            "step": 11,
+            "relativeObjectiveGap": 5.107457827892954e-10,
+            "refinedAngle": 2.0702443984125956,
+            "actualAngle": 2.070124117482649
+          },
+          {
+            "step": 12,
+            "relativeObjectiveGap": 2.853029257445532e-11,
+            "refinedAngle": 4.227431713882169,
+            "actualAngle": 4.227514697565015
+          },
+          {
+            "step": 13,
+            "relativeObjectiveGap": 1.712560444148709e-11,
+            "refinedAngle": 1.065700569052539,
+            "actualAngle": 1.0657416744990373
+          },
+          {
+            "step": 14,
+            "relativeObjectiveGap": 1.3951324789327132e-10,
+            "refinedAngle": 5.791138590089483,
+            "actualAngle": 5.791220624273685
+          },
+          {
+            "step": 15,
+            "relativeObjectiveGap": 4.0400176294886444e-10,
+            "refinedAngle": 2.6702096367957835,
+            "actualAngle": 2.6700810478556996
+          },
+          {
+            "step": 16,
+            "relativeObjectiveGap": 4.2868517662083175e-11,
+            "refinedAngle": 3.588394465036509,
+            "actualAngle": 3.5882878590220915
+          },
+          {
+            "step": 17,
+            "relativeObjectiveGap": 3.726576110991625e-11,
+            "refinedAngle": 0.3140966191020351,
+            "actualAngle": 0.3141592653589793
+          },
+          {
+            "step": 18,
+            "relativeObjectiveGap": 1.6096643411610516e-11,
+            "refinedAngle": 1.891743097179744,
+            "actualAngle": 1.8917732845444786
+          },
+          {
+            "step": 19,
+            "relativeObjectiveGap": 2.959527143485536e-12,
+            "refinedAngle": 5.041286519177952,
+            "actualAngle": 5.0412744613073714
+          },
+          {
+            "step": 20,
+            "relativeObjectiveGap": 3.783994373311408e-11,
+            "refinedAngle": 2.7555362336875526,
+            "actualAngle": 2.7554385565860477
+          },
+          {
+            "step": 21,
+            "relativeObjectiveGap": 2.5463578818163416e-11,
+            "refinedAngle": 6.134781978606146,
+            "actualAngle": 6.134832320760069
+          },
+          {
+            "step": 22,
+            "relativeObjectiveGap": 4.6131015405796765e-12,
+            "refinedAngle": 4.404520459286701,
+            "actualAngle": 4.404501992025066
+          },
+          {
+            "step": 23,
+            "relativeObjectiveGap": 3.0409514328511707e-10,
+            "refinedAngle": 1.3047556574460806,
+            "actualAngle": 1.3046336158657614
+          },
+          {
+            "step": 24,
+            "relativeObjectiveGap": 2.445384565667058e-11,
+            "refinedAngle": 3.6170022445732912,
+            "actualAngle": 3.6169221670626244
+          },
+          {
+            "step": 25,
+            "relativeObjectiveGap": 4.2170294714557785e-11,
+            "refinedAngle": 0.25071497510424,
+            "actualAngle": 0.25061837227856076
+          },
+          {
+            "step": 26,
+            "relativeObjectiveGap": 4.497992795971532e-11,
+            "refinedAngle": 1.8527087809050675,
+            "actualAngle": 1.8527760840702303
+          },
+          {
+            "step": 27,
+            "relativeObjectiveGap": 2.9978298267493135e-10,
+            "refinedAngle": 4.9893249506977675,
+            "actualAngle": 4.9894599991387905
+          },
+          {
+            "step": 28,
+            "relativeObjectiveGap": 1.346523733361648e-10,
+            "refinedAngle": 3.044384679840529,
+            "actualAngle": 3.0445087139476086
+          },
+          {
+            "step": 29,
+            "relativeObjectiveGap": 2.7916070488008416e-11,
+            "refinedAngle": 6.0866422414342,
+            "actualAngle": 6.086563058634599
+          },
+          {
+            "step": 30,
+            "relativeObjectiveGap": 1.58877204903747e-10,
+            "refinedAngle": 1.3487010603488474,
+            "actualAngle": 1.3488122625568677
+          },
+          {
+            "step": 31,
+            "relativeObjectiveGap": 3.5537282402684045e-12,
+            "refinedAngle": 4.458787945896624,
+            "actualAngle": 4.458770823454264
+          },
+          {
+            "step": 32,
+            "relativeObjectiveGap": 2.9781383002536106e-11,
+            "refinedAngle": 2.763265016556656,
+            "actualAngle": 2.7633470797591464
+          },
+          {
+            "step": 33,
+            "relativeObjectiveGap": 9.435606182783388e-12,
+            "refinedAngle": 5.685173690076843,
+            "actualAngle": 5.685137330675904
+          },
+          {
+            "step": 34,
+            "relativeObjectiveGap": 5.5437339442911765e-11,
+            "refinedAngle": 1.0501343760074293,
+            "actualAngle": 1.0501973358484626
+          },
+          {
+            "step": 35,
+            "relativeObjectiveGap": 3.8532402897669066e-11,
+            "refinedAngle": 4.035861953790105,
+            "actualAngle": 4.035801187541264
+          },
+          {
+            "step": 36,
+            "relativeObjectiveGap": 1.1554394552530081e-12,
+            "refinedAngle": 0.8309268214152126,
+            "actualAngle": 0.8309403485666753
+          },
+          {
+            "step": 37,
+            "relativeObjectiveGap": 4.804665354403092e-11,
+            "refinedAngle": 3.3994330844013705,
+            "actualAngle": 3.3993014259545804
+          },
+          {
+            "step": 38,
+            "relativeObjectiveGap": 1.6434004661114462e-10,
+            "refinedAngle": 5.35587404198866,
+            "actualAngle": 5.355979142057599
+          },
+          {
+            "step": 39,
+            "relativeObjectiveGap": 1.0652537966766321e-10,
+            "refinedAngle": 2.1409506971482695,
+            "actualAngle": 2.141028118344919
+          }
+        ]
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "rgbaChannelsChecked": 23040000,
+        "maxChannelError": 0,
+        "meanChannelError": 0,
+        "displacedChannelMismatches": 14320,
+        "svgCoordinatesChecked": 120,
+        "svgMaxError": 0.004982930559890519,
+        "vectorAvailable": true,
+        "params": {
+          "N": 40,
+          "lam": 0.08,
+          "growth": 1.04,
+          "r0": 0.04,
+          "view": "dots",
+          "size": 1.1,
+          "grain": 0,
+          "running": false,
+          "seed": "phyllotaxis-review-0",
+          "v": 2,
+          "palette": [
+            "#D94F30",
+            "#F2A541",
+            "#3C6E71",
+            "#284B63",
+            "#FAF3E3"
+          ],
+          "bg": "#F5E6C8"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "phyllotaxis-review-1",
+      "params": {
+        "N": 80,
+        "lam": 0.14,
+        "growth": 1.024,
+        "r0": 0.06,
+        "view": "para",
+        "grain": 0,
+        "size": 1.1,
+        "running": false
+      },
+      "numerical": {
+        "radialError": 3.3306690738754696e-16,
+        "maxObjectiveGap": 1.1723909562632249e-9,
+        "wrongGrowthError": 0.33070397067655494,
+        "wrongAngleGap": 0.004297137149718243,
+        "meanDivergence": 134.13118489583334,
+        "insertionRows": [
+          {
+            "step": 1,
+            "relativeObjectiveGap": 0,
+            "refinedAngle": 3.141592685199911,
+            "actualAngle": 3.141592653589793
+          },
+          {
+            "step": 2,
+            "relativeObjectiveGap": 1.9747513131259115e-10,
+            "refinedAngle": 1.5800174089756278,
+            "actualAngle": 1.5800683884461166
+          },
+          {
+            "step": 3,
+            "relativeObjectiveGap": 1.1723909562632249e-9,
+            "refinedAngle": 4.7100910992761325,
+            "actualAngle": 4.710207318819697
+          },
+          {
+            "step": 4,
+            "relativeObjectiveGap": 2.361501962348166e-13,
+            "refinedAngle": 4.155253983605192,
+            "actualAngle": 4.1552471582246255
+          },
+          {
+            "step": 5,
+            "relativeObjectiveGap": 7.010258081815969e-12,
+            "refinedAngle": 0.9863662433309222,
+            "actualAngle": 0.9863837350724204
+          },
+          {
+            "step": 6,
+            "relativeObjectiveGap": 7.1446680050402875e-12,
+            "refinedAngle": 2.5162581611955392,
+            "actualAngle": 2.5162739075237
+          },
+          {
+            "step": 7,
+            "relativeObjectiveGap": 3.314870792735604e-10,
+            "refinedAngle": 5.65177394187922,
+            "actualAngle": 5.651866991809762
+          },
+          {
+            "step": 8,
+            "relativeObjectiveGap": 4.517564700506089e-11,
+            "refinedAngle": 0.47217368630851664,
+            "actualAngle": 0.4720570211253413
+          },
+          {
+            "step": 9,
+            "relativeObjectiveGap": 1.7277366759048582e-16,
+            "refinedAngle": 3.5634713929198427,
+            "actualAngle": 3.5634714587202976
+          },
+          {
+            "step": 10,
+            "relativeObjectiveGap": 1.1608562546948598e-11,
+            "refinedAngle": 5.208145838949783,
+            "actualAngle": 5.208171571029329
+          },
+          {
+            "step": 11,
+            "relativeObjectiveGap": 3.3983269247711155e-10,
+            "refinedAngle": 2.0661538643538715,
+            "actualAngle": 2.0660335020482874
+          },
+          {
+            "step": 12,
+            "relativeObjectiveGap": 1.7236940598168464e-12,
+            "refinedAngle": 4.19229709830581,
+            "actualAngle": 4.192335404829503
+          },
+          {
+            "step": 13,
+            "relativeObjectiveGap": 3.6619534796175054e-11,
+            "refinedAngle": 1.0313094740824065,
+            "actualAngle": 1.0313805048503992
+          },
+          {
+            "step": 14,
+            "relativeObjectiveGap": 4.077987424322901e-11,
+            "refinedAngle": 5.733892954961522,
+            "actualAngle": 5.733952008192619
+          },
+          {
+            "step": 15,
+            "relativeObjectiveGap": 2.6732830732299147e-10,
+            "refinedAngle": 2.6009580297171397,
+            "actualAngle": 2.6010860008627996
+          },
+          {
+            "step": 16,
+            "relativeObjectiveGap": 1.1851661437839436e-12,
+            "refinedAngle": 3.3973667579731317,
+            "actualAngle": 3.3973924720852122
+          },
+          {
+            "step": 17,
+            "relativeObjectiveGap": 2.2388608761801592e-11,
+            "refinedAngle": 0.24631435614039754,
+            "actualAngle": 0.24625504914857493
+          },
+          {
+            "step": 18,
+            "relativeObjectiveGap": 4.057319356305988e-13,
+            "refinedAngle": 1.8293169086582723,
+            "actualAngle": 1.8293232222465567
+          },
+          {
+            "step": 19,
+            "relativeObjectiveGap": 4.276625811592348e-11,
+            "refinedAngle": 4.98313172345469,
+            "actualAngle": 4.9831877221394345
+          },
+          {
+            "step": 20,
+            "relativeObjectiveGap": 2.2751765109497916e-12,
+            "refinedAngle": 3.844961410154328,
+            "actualAngle": 3.844905800604383
+          },
+          {
+            "step": 21,
+            "relativeObjectiveGap": 7.109639251899296e-11,
+            "refinedAngle": 0.7274557872638061,
+            "actualAngle": 0.7275841319251362
+          },
+          {
+            "step": 22,
+            "relativeObjectiveGap": 8.711842312753024e-11,
+            "refinedAngle": 5.447447421278593,
+            "actualAngle": 5.447336220091677
+          },
+          {
+            "step": 23,
+            "relativeObjectiveGap": 1.7343844095366757e-10,
+            "refinedAngle": 2.2843458325282575,
+            "actualAngle": 2.284472366243203
+          },
+          {
+            "step": 24,
+            "relativeObjectiveGap": 2.9828264581681437e-12,
+            "refinedAngle": 4.598718148675289,
+            "actualAngle": 4.598669871309435
+          },
+          {
+            "step": 25,
+            "relativeObjectiveGap": 1.932438032747629e-11,
+            "refinedAngle": 1.477593890360757,
+            "actualAngle": 1.4775302948914495
+          },
+          {
+            "step": 26,
+            "relativeObjectiveGap": 1.3554357231009414e-10,
+            "refinedAngle": 6.183787554473994,
+            "actualAngle": 6.18391970597241
+          },
+          {
+            "step": 27,
+            "relativeObjectiveGap": 4.432167125617399e-11,
+            "refinedAngle": 3.048261911584867,
+            "actualAngle": 3.0483266216863463
+          },
+          {
+            "step": 28,
+            "relativeObjectiveGap": 4.29730657704714e-13,
+            "refinedAngle": 6.27011715340622,
+            "actualAngle": -0.013089969389957472
+          },
+          {
+            "step": 29,
+            "relativeObjectiveGap": 4.444538214718668e-12,
+            "refinedAngle": 3.1426485184136355,
+            "actualAngle": 3.1426834843722897
+          },
+          {
+            "step": 30,
+            "relativeObjectiveGap": 4.552297870417111e-11,
+            "refinedAngle": 1.5431626016744044,
+            "actualAngle": 1.5432528495368607
+          },
+          {
+            "step": 31,
+            "relativeObjectiveGap": 6.684394856376513e-11,
+            "refinedAngle": 4.671394809415688,
+            "actualAngle": 4.671482826041071
+          },
+          {
+            "step": 32,
+            "relativeObjectiveGap": 6.545518456248562e-13,
+            "refinedAngle": 5.872979748326488,
+            "actualAngle": 5.873032932960919
+          },
+          {
+            "step": 33,
+            "relativeObjectiveGap": 5.6537099195265404e-11,
+            "refinedAngle": 2.7168479501527307,
+            "actualAngle": 2.716714063807424
+          },
+          {
+            "step": 34,
+            "relativeObjectiveGap": 4.406979250334617e-11,
+            "refinedAngle": 4.25842095294581,
+            "actualAngle": 4.25833066717054
+          },
+          {
+            "step": 35,
+            "relativeObjectiveGap": 6.987831492457847e-11,
+            "refinedAngle": 1.1001960680127705,
+            "actualAngle": 1.1001028441476757
+          },
+          {
+            "step": 36,
+            "relativeObjectiveGap": 2.8580394573619405e-12,
+            "refinedAngle": 3.9915581297238063,
+            "actualAngle": 3.991622540850156
+          },
+          {
+            "step": 37,
+            "relativeObjectiveGap": 8.571504273433406e-12,
+            "refinedAngle": 0.8371600377556587,
+            "actualAngle": 0.8372126255660298
+          },
+          {
+            "step": 38,
+            "relativeObjectiveGap": 7.562620532365464e-11,
+            "refinedAngle": 2.3514293960590753,
+            "actualAngle": 2.3515584593667347
+          },
+          {
+            "step": 39,
+            "relativeObjectiveGap": 2.346788307667365e-12,
+            "refinedAngle": 5.479497352099138,
+            "actualAngle": 5.479515728175321
+          },
+          {
+            "step": 40,
+            "relativeObjectiveGap": 1.0695642430832599e-11,
+            "refinedAngle": 0.27862085986119356,
+            "actualAngle": 0.27870726492784453
+          },
+          {
+            "step": 41,
+            "relativeObjectiveGap": 5.5716390423530645e-11,
+            "refinedAngle": 3.4441496977830446,
+            "actualAngle": 3.4440254880369356
+          },
+          {
+            "step": 42,
+            "relativeObjectiveGap": 2.092405843845669e-11,
+            "refinedAngle": 1.8417999642749852,
+            "actualAngle": 1.841867776245266
+          },
+          {
+            "step": 43,
+            "relativeObjectiveGap": 1.0563048077616358e-10,
+            "refinedAngle": 4.985247907889784,
+            "actualAngle": 4.985369383704427
+          },
+          {
+            "step": 44,
+            "relativeObjectiveGap": 4.2690117121928917e-13,
+            "refinedAngle": 3.456871197908544,
+            "actualAngle": 3.456842749731269
+          },
+          {
+            "step": 45,
+            "relativeObjectiveGap": 2.22788401887581e-11,
+            "refinedAngle": 0.3135274845092545,
+            "actualAngle": 0.3136138499677311
+          },
+          {
+            "step": 46,
+            "relativeObjectiveGap": 2.4540602133328064e-12,
+            "refinedAngle": 5.030341239519901,
+            "actualAngle": 5.030366153482406
+          },
+          {
+            "step": 47,
+            "relativeObjectiveGap": 8.804688648975872e-13,
+            "refinedAngle": 1.8737622032659582,
+            "actualAngle": 1.8737745766332872
+          },
+          {
+            "step": 48,
+            "relativeObjectiveGap": 7.724750532668906e-12,
+            "refinedAngle": 3.9099325505202307,
+            "actualAngle": 3.9098102321629224
+          },
+          {
+            "step": 49,
+            "relativeObjectiveGap": 3.005869336980242e-11,
+            "refinedAngle": 0.7517477024137968,
+            "actualAngle": 0.7518551168356822
+          },
+          {
+            "step": 50,
+            "relativeObjectiveGap": 2.326572138867708e-11,
+            "refinedAngle": 2.410540656973526,
+            "actualAngle": 2.410463321621543
+          },
+          {
+            "step": 51,
+            "relativeObjectiveGap": 8.660804685189686e-12,
+            "refinedAngle": 5.5473817799189575,
+            "actualAngle": 5.5474199443857275
+          },
+          {
+            "step": 52,
+            "relativeObjectiveGap": 1.6255817266152971e-12,
+            "refinedAngle": 1.289948068554481,
+            "actualAngle": 1.289907400302059
+          },
+          {
+            "step": 53,
+            "relativeObjectiveGap": 4.365112757053917e-11,
+            "refinedAngle": 4.454556817199892,
+            "actualAngle": 4.4546802080199015
+          },
+          {
+            "step": 54,
+            "relativeObjectiveGap": 4.171437881372011e-11,
+            "refinedAngle": 2.882420603074815,
+            "actualAngle": 2.8825203427468855
+          },
+          {
+            "step": 55,
+            "relativeObjectiveGap": 1.6600918339697568e-12,
+            "refinedAngle": 6.013766444537952,
+            "actualAngle": 6.013750103902961
+          },
+          {
+            "step": 56,
+            "relativeObjectiveGap": 2.6867208253905364e-12,
+            "refinedAngle": 4.090999918576202,
+            "actualAngle": 4.090888142057334
+          },
+          {
+            "step": 57,
+            "relativeObjectiveGap": 1.7274687087800486e-15,
+            "refinedAngle": 0.9509325545531873,
+            "actualAngle": 0.9509317346412854
+          },
+          {
+            "step": 58,
+            "relativeObjectiveGap": 4.4294864584300564e-11,
+            "refinedAngle": 5.677614536622704,
+            "actualAngle": 5.67750151519843
+          },
+          {
+            "step": 59,
+            "relativeObjectiveGap": 5.6222303785794575e-12,
+            "refinedAngle": 2.535395412940603,
+            "actualAngle": 2.5353634462173877
+          },
+          {
+            "step": 60,
+            "relativeObjectiveGap": 7.65042941903603e-12,
+            "refinedAngle": 1.869532080804155,
+            "actualAngle": 1.8694112535033014
+          },
+          {
+            "step": 61,
+            "relativeObjectiveGap": 8.854336107095682e-12,
+            "refinedAngle": 4.985429746135443,
+            "actualAngle": 4.985369383704428
+          },
+          {
+            "step": 62,
+            "relativeObjectiveGap": 3.380734807447959e-11,
+            "refinedAngle": 0.24771044554701588,
+            "actualAngle": 0.24761858762669553
+          },
+          {
+            "step": 63,
+            "relativeObjectiveGap": 6.151806193576494e-11,
+            "refinedAngle": 3.40301728772705,
+            "actualAngle": 3.403119333693318
+          },
+          {
+            "step": 64,
+            "relativeObjectiveGap": 2.5016216050745722e-12,
+            "refinedAngle": 3.4210151892503062,
+            "actualAngle": 3.42111804160451
+          },
+          {
+            "step": 65,
+            "relativeObjectiveGap": 2.7114134225745628e-11,
+            "refinedAngle": 0.287275510936676,
+            "actualAngle": 0.2871612034921921
+          },
+          {
+            "step": 66,
+            "relativeObjectiveGap": 1.9582394885663472e-11,
+            "refinedAngle": 1.778793586705044,
+            "actualAngle": 1.7788722985560952
+          },
+          {
+            "step": 67,
+            "relativeObjectiveGap": 3.0912009976548993e-11,
+            "refinedAngle": 4.934179558961242,
+            "actualAngle": 4.934100336927093
+          },
+          {
+            "step": 68,
+            "relativeObjectiveGap": 4.375273660824111e-12,
+            "refinedAngle": 5.883877075868972,
+            "actualAngle": 5.883941240785884
+          },
+          {
+            "step": 69,
+            "relativeObjectiveGap": 1.9531011113783003e-12,
+            "refinedAngle": 2.7747750780631204,
+            "actualAngle": 2.7748008029753595
+          },
+          {
+            "step": 70,
+            "relativeObjectiveGap": 5.223696412932658e-11,
+            "refinedAngle": 1.2003417754444277,
+            "actualAngle": 1.20045927613735
+          },
+          {
+            "step": 71,
+            "relativeObjectiveGap": 4.4491065422622486e-11,
+            "refinedAngle": 4.311869511100518,
+            "actualAngle": 4.311781375512867
+          },
+          {
+            "step": 72,
+            "relativeObjectiveGap": 1.1427987988872145e-12,
+            "refinedAngle": 6.174426477873636,
+            "actualAngle": 6.174374936625566
+          },
+          {
+            "step": 73,
+            "relativeObjectiveGap": 8.15567163003513e-12,
+            "refinedAngle": 2.996848328537626,
+            "actualAngle": 2.9967848672133885
+          },
+          {
+            "step": 74,
+            "relativeObjectiveGap": 2.936680108833466e-11,
+            "refinedAngle": 4.53558337444257,
+            "actualAngle": 4.535674393620265
+          },
+          {
+            "step": 75,
+            "relativeObjectiveGap": 2.043507612112717e-11,
+            "refinedAngle": 1.410779673511135,
+            "actualAngle": 1.410716909463542
+          },
+          {
+            "step": 76,
+            "relativeObjectiveGap": 2.888885852168878e-12,
+            "refinedAngle": 5.335881414652311,
+            "actualAngle": 5.3357987725814136
+          },
+          {
+            "step": 77,
+            "relativeObjectiveGap": 1.8271699282016964e-13,
+            "refinedAngle": 2.2013052753240996,
+            "actualAngle": 2.2012965190778484
+          },
+          {
+            "step": 78,
+            "relativeObjectiveGap": 3.61441659989722e-11,
+            "refinedAngle": 3.8158977281141775,
+            "actualAngle": 3.815998784868227
+          },
+          {
+            "step": 79,
+            "relativeObjectiveGap": 2.3336459600135895e-11,
+            "refinedAngle": 0.6656128610123806,
+            "actualAngle": 0.6656794850184622
+          }
+        ]
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "rgbaChannelsChecked": 23040000,
+        "maxChannelError": 0,
+        "meanChannelError": 0,
+        "displacedChannelMismatches": 86233,
+        "svgCoordinatesChecked": 560,
+        "svgMaxError": 0.0049999999999954525,
+        "vectorAvailable": true,
+        "params": {
+          "N": 80,
+          "lam": 0.14,
+          "growth": 1.024,
+          "r0": 0.06,
+          "view": "para",
+          "size": 1.1,
+          "grain": 0,
+          "running": false,
+          "seed": "phyllotaxis-review-1",
+          "v": 2,
+          "palette": [
+            "#D94F30",
+            "#F2A541",
+            "#3C6E71",
+            "#284B63",
+            "#FAF3E3"
+          ],
+          "bg": "#F5E6C8"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "phyllotaxis-review-2",
+      "params": {
+        "N": 120,
+        "lam": 0.11,
+        "growth": 1.03,
+        "r0": 0.04,
+        "view": "voronoi",
+        "grain": 0,
+        "size": 1.1,
+        "running": false
+      },
+      "numerical": {
+        "radialError": 1.3322676295501878e-15,
+        "maxObjectiveGap": 1.050240973674791e-9,
+        "wrongGrowthError": 1.3079995004117064,
+        "wrongAngleGap": 0.0035270280457213136,
+        "meanDivergence": 128.43489583333334,
+        "insertionRows": [
+          {
+            "step": 1,
+            "relativeObjectiveGap": -2.656497599673457e-16,
+            "refinedAngle": 3.1415927041221043,
+            "actualAngle": 3.141592653589793
+          },
+          {
+            "step": 2,
+            "relativeObjectiveGap": 8.385086414234577e-10,
+            "refinedAngle": 4.693711100891605,
+            "actualAngle": 1.5893404500973363
+          },
+          {
+            "step": 3,
+            "relativeObjectiveGap": 1.050240973674791e-9,
+            "refinedAngle": 4.710339040816736,
+            "actualAngle": 4.7102073188196965
+          },
+          {
+            "step": 4,
+            "relativeObjectiveGap": 1.0267121264935604e-12,
+            "refinedAngle": 4.8094195024701065,
+            "actualAngle": 4.809472920026874
+          },
+          {
+            "step": 5,
+            "relativeObjectiveGap": 2.807622025781115e-11,
+            "refinedAngle": 1.6465639358779556,
+            "actualAngle": 1.6466090661784005
+          },
+          {
+            "step": 6,
+            "relativeObjectiveGap": 1.1853198782302588e-10,
+            "refinedAngle": 3.259225647713122,
+            "actualAngle": 3.259129670403786
+          },
+          {
+            "step": 7,
+            "relativeObjectiveGap": 2.3246305022127103e-10,
+            "refinedAngle": 0.12206948674343261,
+            "actualAngle": 0.12217304763960306
+          },
+          {
+            "step": 8,
+            "relativeObjectiveGap": 2.824022331527107e-11,
+            "refinedAngle": 5.5472382298318585,
+            "actualAngle": 5.547147236690104
+          },
+          {
+            "step": 9,
+            "relativeObjectiveGap": 7.461635281502808e-12,
+            "refinedAngle": 2.409398065576052,
+            "actualAngle": 2.409372490839047
+          },
+          {
+            "step": 10,
+            "relativeObjectiveGap": 3.867329502188255e-11,
+            "refinedAngle": 0.840814708157194,
+            "actualAngle": 0.8407578256091434
+          },
+          {
+            "step": 11,
+            "relativeObjectiveGap": 6.706387283781386e-11,
+            "refinedAngle": 3.9709571814876026,
+            "actualAngle": 3.9708967559827237
+          },
+          {
+            "step": 12,
+            "relativeObjectiveGap": 3.964633921116482e-11,
+            "refinedAngle": 3.973205446870166,
+            "actualAngle": 3.973078417547717
+          },
+          {
+            "step": 13,
+            "relativeObjectiveGap": 2.322187311405824e-11,
+            "refinedAngle": 0.8184500685230331,
+            "actualAngle": 0.818395794567966
+          },
+          {
+            "step": 14,
+            "relativeObjectiveGap": 1.8135004561330534e-11,
+            "refinedAngle": 2.3963285164559314,
+            "actualAngle": 2.3962825214490895
+          },
+          {
+            "step": 15,
+            "relativeObjectiveGap": 2.2233885308936173e-10,
+            "refinedAngle": 5.5461997357451125,
+            "actualAngle": 5.546329113603231
+          },
+          {
+            "step": 16,
+            "relativeObjectiveGap": 2.9929364796750285e-13,
+            "refinedAngle": 5.551797599806537,
+            "actualAngle": 5.551783267515713
+          },
+          {
+            "step": 17,
+            "relativeObjectiveGap": 1.272371611058322e-11,
+            "refinedAngle": 2.4147804673855777,
+            "actualAngle": 2.4148266447515288
+          },
+          {
+            "step": 18,
+            "relativeObjectiveGap": 6.771786553675771e-11,
+            "refinedAngle": 0.8384725667415789,
+            "actualAngle": 0.8385761640441506
+          },
+          {
+            "step": 19,
+            "relativeObjectiveGap": 3.612422385726332e-13,
+            "refinedAngle": 3.976890435125845,
+            "actualAngle": 3.9768963252864538
+          },
+          {
+            "step": 20,
+            "relativeObjectiveGap": 1.7028853025565046e-12,
+            "refinedAngle": 3.9833944329898436,
+            "actualAngle": 3.983441309981433
+          },
+          {
+            "step": 21,
+            "relativeObjectiveGap": 8.41596052473991e-12,
+            "refinedAngle": 0.8306226962049574,
+            "actualAngle": 0.830667640871051
+          },
+          {
+            "step": 22,
+            "relativeObjectiveGap": 2.3786272084746307e-11,
+            "refinedAngle": 2.4024860302332627,
+            "actualAngle": 2.4025547984484446
+          },
+          {
+            "step": 23,
+            "relativeObjectiveGap": 9.470164847998494e-11,
+            "refinedAngle": 5.55467577728937,
+            "actualAngle": 5.554783052167578
+          },
+          {
+            "step": 24,
+            "relativeObjectiveGap": 4.647477819988148e-13,
+            "refinedAngle": 5.579280819346499,
+            "actualAngle": 5.579326744773747
+          },
+          {
+            "step": 25,
+            "relativeObjectiveGap": 2.2515237707094328e-13,
+            "refinedAngle": 2.448907031843747,
+            "actualAngle": 2.4489151067045434
+          },
+          {
+            "step": 26,
+            "relativeObjectiveGap": 2.1245994953171434e-11,
+            "refinedAngle": 0.8788550966223592,
+            "actualAngle": 0.8789369029965195
+          },
+          {
+            "step": 27,
+            "relativeObjectiveGap": 1.2592369093574056e-12,
+            "refinedAngle": 4.018907707254288,
+            "actualAngle": 4.018893310412569
+          },
+          {
+            "step": 28,
+            "relativeObjectiveGap": 4.022800205667134e-12,
+            "refinedAngle": 3.1835278054858924,
+            "actualAngle": 3.183589638715907
+          },
+          {
+            "step": 29,
+            "relativeObjectiveGap": 2.5680727629193836e-11,
+            "refinedAngle": 0.02571384047914611,
+            "actualAngle": 0.025634523388666716
+          },
+          {
+            "step": 30,
+            "relativeObjectiveGap": 5.483660300328491e-12,
+            "refinedAngle": 1.6173952796529933,
+            "actualAngle": 1.6174293427466198
+          },
+          {
+            "step": 31,
+            "relativeObjectiveGap": 5.787394877275681e-11,
+            "refinedAngle": 4.769297916313912,
+            "actualAngle": 4.76938488877013
+          },
+          {
+            "step": 32,
+            "relativeObjectiveGap": 1.8519258547156083e-11,
+            "refinedAngle": 4.775276461506824,
+            "actualAngle": 4.77538445807386
+          },
+          {
+            "step": 33,
+            "relativeObjectiveGap": 3.446972164852034e-11,
+            "refinedAngle": 1.6375184525799085,
+            "actualAngle": 1.6376097122228048
+          },
+          {
+            "step": 34,
+            "relativeObjectiveGap": 5.987024831628469e-11,
+            "refinedAngle": 0.06370041656450562,
+            "actualAngle": 0.06381360077604267
+          },
+          {
+            "step": 35,
+            "relativeObjectiveGap": 1.7364854462806688e-13,
+            "refinedAngle": 3.195321049812961,
+            "actualAngle": 3.195316069627743
+          },
+          {
+            "step": 36,
+            "relativeObjectiveGap": 1.5771244399337992e-12,
+            "refinedAngle": 3.19255738548621,
+            "actualAngle": 3.1925889926715025
+          },
+          {
+            "step": 37,
+            "relativeObjectiveGap": 1.0223567018627972e-12,
+            "refinedAngle": 0.0438903415173868,
+            "actualAngle": 0.043905938995482355
+          },
+          {
+            "step": 38,
+            "relativeObjectiveGap": 2.229536961414159e-11,
+            "refinedAngle": 1.6215886820472258,
+            "actualAngle": 1.6215199581809814
+          },
+          {
+            "step": 39,
+            "relativeObjectiveGap": 2.1847564670657507e-11,
+            "refinedAngle": 4.77162195369122,
+            "actualAngle": 4.771566550335123
+          },
+          {
+            "step": 40,
+            "relativeObjectiveGap": 1.0235696553441276e-12,
+            "refinedAngle": 4.774043952704044,
+            "actualAngle": 4.774020919595739
+          },
+          {
+            "step": 41,
+            "relativeObjectiveGap": 1.2373041755740452e-11,
+            "refinedAngle": 1.634282381545718,
+            "actualAngle": 1.6343372198753152
+          },
+          {
+            "step": 42,
+            "relativeObjectiveGap": 3.1029095475525793e-11,
+            "refinedAngle": 0.05991194782652061,
+            "actualAngle": 0.05999569303730508
+          },
+          {
+            "step": 43,
+            "relativeObjectiveGap": 1.1431174109852674e-10,
+            "refinedAngle": 3.1965394086443824,
+            "actualAngle": 3.1964069004102402
+          },
+          {
+            "step": 44,
+            "relativeObjectiveGap": 8.340804915588335e-12,
+            "refinedAngle": 3.196206859390093,
+            "actualAngle": 3.196134192714616
+          },
+          {
+            "step": 45,
+            "relativeObjectiveGap": 3.9911291720359183e-16,
+            "refinedAngle": 0.0545413407005674,
+            "actualAngle": 0.054541539124822805
+          },
+          {
+            "step": 46,
+            "relativeObjectiveGap": 1.6314218330360784e-12,
+            "refinedAngle": 1.6267214067853757,
+            "actualAngle": 1.62670140439784
+          },
+          {
+            "step": 47,
+            "relativeObjectiveGap": 1.5698789450052392e-11,
+            "refinedAngle": 4.770970545400948,
+            "actualAngle": 4.771021134943875
+          },
+          {
+            "step": 48,
+            "relativeObjectiveGap": 1.9591135554533633e-11,
+            "refinedAngle": 4.771171594712138,
+            "actualAngle": 4.7712938426394995
+          },
+          {
+            "step": 49,
+            "relativeObjectiveGap": 4.5823088652514636e-11,
+            "refinedAngle": 1.6320332839809217,
+            "actualAngle": 1.6321555583103224
+          },
+          {
+            "step": 50,
+            "relativeObjectiveGap": 4.86827308956288e-11,
+            "refinedAngle": 0.0680282371661337,
+            "actualAngle": 0.06790421621040438
+          },
+          {
+            "step": 51,
+            "relativeObjectiveGap": 4.029563994771783e-12,
+            "refinedAngle": 3.2043438747887323,
+            "actualAngle": 3.204315423583339
+          },
+          {
+            "step": 52,
+            "relativeObjectiveGap": 3.968651299788695e-12,
+            "refinedAngle": 3.206338016110356,
+            "actualAngle": 3.206224377452708
+          },
+          {
+            "step": 53,
+            "relativeObjectiveGap": 3.362763151716755e-11,
+            "refinedAngle": 0.07104403010095363,
+            "actualAngle": 0.07117670855789375
+          },
+          {
+            "step": 54,
+            "relativeObjectiveGap": 3.4135478499873396e-13,
+            "refinedAngle": 4.792850756456511,
+            "actualAngle": 4.792837750593804
+          },
+          {
+            "step": 55,
+            "relativeObjectiveGap": 3.426249756631226e-12,
+            "refinedAngle": 1.6515476335797574,
+            "actualAngle": 1.6515178046996344
+          },
+          {
+            "step": 56,
+            "relativeObjectiveGap": 1.4263242567235105e-11,
+            "refinedAngle": 0.9344463643434995,
+            "actualAngle": 0.9345692729038387
+          },
+          {
+            "step": 57,
+            "relativeObjectiveGap": 1.2247403757962184e-11,
+            "refinedAngle": 4.034102000635352,
+            "actualAngle": 4.034164941367518
+          },
+          {
+            "step": 58,
+            "relativeObjectiveGap": 3.732704515387015e-11,
+            "refinedAngle": 5.585773678187325,
+            "actualAngle": 5.585871729468726
+          },
+          {
+            "step": 59,
+            "relativeObjectiveGap": 2.829290317546661e-12,
+            "refinedAngle": 2.441802827391464,
+            "actualAngle": 2.4418247066183167
+          },
+          {
+            "step": 60,
+            "relativeObjectiveGap": 2.3067798360093705e-11,
+            "refinedAngle": 5.583853792442953,
+            "actualAngle": 5.583962775599358
+          },
+          {
+            "step": 61,
+            "relativeObjectiveGap": 2.3127768243772307e-11,
+            "refinedAngle": 2.442446509672333,
+            "actualAngle": 2.4423701220095646
+          },
+          {
+            "step": 62,
+            "relativeObjectiveGap": 3.784651418122599e-11,
+            "refinedAngle": 3.969897098162079,
+            "actualAngle": 3.969805925200227
+          },
+          {
+            "step": 63,
+            "relativeObjectiveGap": 4.780362181278766e-12,
+            "refinedAngle": 0.8262774504684871,
+            "actualAngle": 0.8263043177410653
+          },
+          {
+            "step": 64,
+            "relativeObjectiveGap": 7.824753200451897e-12,
+            "refinedAngle": 0.8233586145559073,
+            "actualAngle": 0.8233045330892
+          },
+          {
+            "step": 65,
+            "relativeObjectiveGap": 3.43128570998751e-11,
+            "refinedAngle": 3.968901609750705,
+            "actualAngle": 3.968987802113355
+          },
+          {
+            "step": 66,
+            "relativeObjectiveGap": 2.2916528202432883e-11,
+            "refinedAngle": 2.4034394950659834,
+            "actualAngle": 2.4033729215353166
+          },
+          {
+            "step": 67,
+            "relativeObjectiveGap": 5.667992502612858e-13,
+            "refinedAngle": 5.544429150655743,
+            "actualAngle": 5.544420159733861
+          },
+          {
+            "step": 68,
+            "relativeObjectiveGap": 1.3896607577344266e-11,
+            "refinedAngle": 5.545578348742138,
+            "actualAngle": 5.545510990516358
+          },
+          {
+            "step": 69,
+            "relativeObjectiveGap": 3.179657038670884e-12,
+            "refinedAngle": 2.4063982668821318,
+            "actualAngle": 2.406372706187182
+          },
+          {
+            "step": 70,
+            "relativeObjectiveGap": 2.1950905054266924e-11,
+            "refinedAngle": 3.979286450904536,
+            "actualAngle": 3.979350694547071
+          },
+          {
+            "step": 71,
+            "relativeObjectiveGap": 5.248077700422949e-11,
+            "refinedAngle": 0.825673290896265,
+            "actualAngle": 0.8257589023498172
+          },
+          {
+            "step": 72,
+            "relativeObjectiveGap": 3.0359587357870083e-12,
+            "refinedAngle": 0.8222447396193262,
+            "actualAngle": 0.8222137023067035
+          },
+          {
+            "step": 73,
+            "relativeObjectiveGap": 8.938386643257495e-12,
+            "refinedAngle": 3.974485554242458,
+            "actualAngle": 3.9744419560258373
+          },
+          {
+            "step": 74,
+            "relativeObjectiveGap": 7.319309697003546e-12,
+            "refinedAngle": 2.404502221534616,
+            "actualAngle": 2.4044637523178127
+          },
+          {
+            "step": 75,
+            "relativeObjectiveGap": 1.2378019272099476e-11,
+            "refinedAngle": 5.544190921006324,
+            "actualAngle": 5.544147452038237
+          },
+          {
+            "step": 76,
+            "relativeObjectiveGap": 2.8384026151108702e-11,
+            "refinedAngle": 5.543164656079462,
+            "actualAngle": 5.543056621255741
+          },
+          {
+            "step": 77,
+            "relativeObjectiveGap": 2.2107130704904676e-13,
+            "refinedAngle": 2.4030930714314627,
+            "actualAngle": 2.403100213839693
+          },
+          {
+            "step": 78,
+            "relativeObjectiveGap": 1.860028400665681e-11,
+            "refinedAngle": 3.984738479628447,
+            "actualAngle": 3.9848048484595533
+          },
+          {
+            "step": 79,
+            "relativeObjectiveGap": 3.59449736652075e-11,
+            "refinedAngle": 0.8248622925390448,
+            "actualAngle": 0.8249407792629448
+          },
+          {
+            "step": 80,
+            "relativeObjectiveGap": 1.910115036719615e-11,
+            "refinedAngle": 0.817468986711904,
+            "actualAngle": 0.8175776714810936
+          },
+          {
+            "step": 81,
+            "relativeObjectiveGap": 3.198950560125652e-13,
+            "refinedAngle": 3.9706345936721372,
+            "actualAngle": 3.9706240482870996
+          },
+          {
+            "step": 82,
+            "relativeObjectiveGap": 3.817612615164813e-11,
+            "refinedAngle": 2.3975291176223896,
+            "actualAngle": 2.39764605992721
+          },
+          {
+            "step": 83,
+            "relativeObjectiveGap": 3.993425521746794e-11,
+            "refinedAngle": 5.532517793185203,
+            "actualAngle": 5.5324210211264
+          },
+          {
+            "step": 84,
+            "relativeObjectiveGap": 3.9088595401353056e-13,
+            "refinedAngle": 5.309700026027629,
+            "actualAngle": 5.3096188338014985
+          },
+          {
+            "step": 85,
+            "relativeObjectiveGap": 1.3106112952357798e-13,
+            "refinedAngle": 2.090022410459053,
+            "actualAngle": 2.0900317792632097
+          },
+          {
+            "step": 86,
+            "relativeObjectiveGap": 3.8000581472615756e-14,
+            "refinedAngle": 3.648279605851566,
+            "actualAngle": 3.6482835520593975
+          },
+          {
+            "step": 87,
+            "relativeObjectiveGap": 1.0576938530324515e-12,
+            "refinedAngle": 0.4714950871675958,
+            "actualAngle": 0.47151160573409306
+          },
+          {
+            "step": 88,
+            "relativeObjectiveGap": 5.239090124090086e-12,
+            "refinedAngle": 4.53300722545797,
+            "actualAngle": 4.532947316664022
+          },
+          {
+            "step": 89,
+            "relativeObjectiveGap": 2.748561289493398e-15,
+            "refinedAngle": 1.4660758685319466,
+            "actualAngle": 1.4660765716752369
+          },
+          {
+            "step": 90,
+            "relativeObjectiveGap": 4.0975818697967485e-13,
+            "refinedAngle": 6.27499357332186,
+            "actualAngle": -0.008181230868723419
+          },
+          {
+            "step": 91,
+            "relativeObjectiveGap": 1.0110136531881163e-13,
+            "refinedAngle": 3.1339608487494766,
+            "actualAngle": 3.1339568381123177
+          },
+          {
+            "step": 92,
+            "relativeObjectiveGap": 2.2311027133152323e-11,
+            "refinedAngle": 4.808020203233324,
+            "actualAngle": 4.8081093815487534
+          },
+          {
+            "step": 93,
+            "relativeObjectiveGap": 2.2162387509404794e-11,
+            "refinedAngle": 1.6304487809199606,
+            "actualAngle": 1.6305193121365773
+          },
+          {
+            "step": 94,
+            "relativeObjectiveGap": 6.895463253518874e-11,
+            "refinedAngle": 3.168434054821547,
+            "actualAngle": 3.1683180077609565
+          },
+          {
+            "step": 95,
+            "relativeObjectiveGap": 1.7313359098637834e-11,
+            "refinedAngle": 0.033321412836610165,
+            "actualAngle": 0.033270338866141905
+          },
+          {
+            "step": 96,
+            "relativeObjectiveGap": 1.8765184209519145e-11,
+            "refinedAngle": 4.75773232277664,
+            "actualAngle": 4.757658457858293
+          },
+          {
+            "step": 97,
+            "relativeObjectiveGap": 5.248085168287171e-11,
+            "refinedAngle": 1.6011696896662053,
+            "actualAngle": 1.601066881009173
+          },
+          {
+            "step": 98,
+            "relativeObjectiveGap": 8.177057515312415e-11,
+            "refinedAngle": 3.1676190749119795,
+            "actualAngle": 3.167499884674084
+          },
+          {
+            "step": 99,
+            "relativeObjectiveGap": 1.9538247583946318e-13,
+            "refinedAngle": 0.03053813652482403,
+            "actualAngle": 0.030543261909900768
+          },
+          {
+            "step": 100,
+            "relativeObjectiveGap": 6.719832608886767e-11,
+            "refinedAngle": 3.1687283029188165,
+            "actualAngle": 3.168863423152205
+          },
+          {
+            "step": 101,
+            "relativeObjectiveGap": 1.6769539593371842e-12,
+            "refinedAngle": 0.022380551863111223,
+            "actualAngle": 0.02236203104117735
+          },
+          {
+            "step": 102,
+            "relativeObjectiveGap": 3.1917931270142135e-16,
+            "refinedAngle": 4.753840363255318,
+            "actualAngle": 4.753840550119556
+          },
+          {
+            "step": 103,
+            "relativeObjectiveGap": 1.2690719399419888e-10,
+            "refinedAngle": 1.5938448135994934,
+            "actualAngle": 1.5939764809229462
+          },
+          {
+            "step": 104,
+            "relativeObjectiveGap": 6.441247518536669e-11,
+            "refinedAngle": 4.742253257455898,
+            "actualAngle": 4.742386826903342
+          },
+          {
+            "step": 105,
+            "relativeObjectiveGap": 2.5948296648602167e-11,
+            "refinedAngle": 1.5993584821308788,
+            "actualAngle": 1.5994306348354284
+          },
+          {
+            "step": 106,
+            "relativeObjectiveGap": 1.8406060784296168e-12,
+            "refinedAngle": 3.1492478964719086,
+            "actualAngle": 3.149228469067268
+          },
+          {
+            "step": 107,
+            "relativeObjectiveGap": 6.432502240090937e-12,
+            "refinedAngle": 0.015849386027239516,
+            "actualAngle": 0.015817046346198613
+          },
+          {
+            "step": 108,
+            "relativeObjectiveGap": 1.371934090401304e-11,
+            "refinedAngle": 4.728954787008302,
+            "actualAngle": 4.72902414981776
+          },
+          {
+            "step": 109,
+            "relativeObjectiveGap": 4.398101851298761e-11,
+            "refinedAngle": 1.5861721473020982,
+            "actualAngle": 1.5860679577498469
+          },
+          {
+            "step": 110,
+            "relativeObjectiveGap": 3.182567909152594e-12,
+            "refinedAngle": 3.1438024776568936,
+            "actualAngle": 3.1437743151547863
+          },
+          {
+            "step": 111,
+            "relativeObjectiveGap": 3.0824445162873802e-12,
+            "refinedAngle": -0.0021569405460550232,
+            "actualAngle": -0.002181661564992912
+          },
+          {
+            "step": 112,
+            "relativeObjectiveGap": 8.459972454879342e-12,
+            "refinedAngle": 4.688863900627288,
+            "actualAngle": 4.688936118561014
+          },
+          {
+            "step": 113,
+            "relativeObjectiveGap": 1.2106785417389913e-11,
+            "refinedAngle": 1.5512274171703648,
+            "actualAngle": 1.5511613727099602
+          },
+          {
+            "step": 114,
+            "relativeObjectiveGap": 2.7772483613207264e-12,
+            "refinedAngle": 3.108627180944189,
+            "actualAngle": 3.1085950224192755
+          },
+          {
+            "step": 115,
+            "relativeObjectiveGap": 3.675729068321513e-11,
+            "refinedAngle": 6.230727055694089,
+            "actualAngle": 6.230825429619757
+          },
+          {
+            "step": 116,
+            "relativeObjectiveGap": 5.471996543721382e-12,
+            "refinedAngle": 4.31271166521501,
+            "actualAngle": 4.312599498599739
+          },
+          {
+            "step": 117,
+            "relativeObjectiveGap": 3.998929797914442e-11,
+            "refinedAngle": 1.1455122953953931,
+            "actualAngle": 1.145645029316903
+          },
+          {
+            "step": 118,
+            "relativeObjectiveGap": 2.1015354957215753e-11,
+            "refinedAngle": 2.6379893331202227,
+            "actualAngle": 2.637901539772055
+          },
+          {
+            "step": 119,
+            "relativeObjectiveGap": 5.36139491879376e-11,
+            "refinedAngle": 5.725608422254886,
+            "actualAngle": 5.725498069628273
+          }
+        ]
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "rgbaChannelsChecked": 23040000,
+        "maxChannelError": 0,
+        "meanChannelError": 0,
+        "displacedChannelMismatches": 71881,
+        "svgCoordinatesChecked": 0,
+        "svgMaxError": 0,
+        "vectorAvailable": false,
+        "params": {
+          "N": 120,
+          "lam": 0.11,
+          "growth": 1.03,
+          "r0": 0.04,
+          "view": "voronoi",
+          "size": 1.1,
+          "grain": 0,
+          "running": false,
+          "seed": "phyllotaxis-review-2",
+          "v": 2,
+          "palette": [
+            "#D94F30",
+            "#F2A541",
+            "#3C6E71",
+            "#284B63",
+            "#FAF3E3"
+          ],
+          "bg": "#F5E6C8"
+        }
+      },
+      "statePreserved": true
+    }
+  ],
+  "environment": {
+    "node": "v24.21.0",
+    "chromium": "145.0.7632.6",
+    "platform": "darwin"
+  },
+  "passed": true
+}

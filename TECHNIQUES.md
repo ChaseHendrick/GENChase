@@ -16,7 +16,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Nonlinear Active Mixture**<br><sub>nonlinear nonreciprocal fields · 2025</sub> | `#nonreciprocal/active-mixture-2025` | ∂t ψ = ∇²[(-1+iα₀)ψ + (1−iα₁)\|ψ\|²ψ − K∇²ψ] | raster | live | Rare |
 | **Vortex Lattice**<br><sub>Gross-Pitaevskii, rotating · 1961</sub> | `#bec/abrikosov-1957` | iℏ ∂ψ/∂t = [−½∇² + V(r) + g\|ψ\|² − Ω L_z] ψ,   circulation quantized in units of h/m | SVG | live | Occasional |
 | **Physarum**<br><sub>slime mold agents building a transport network · 2010</sub> | `#physarum` | sense(L,F,R) -> turn ±RA -> step SS -> deposit D;   trail <- blur(trail)·(1-decay) | raster | still | Occasional |
-| **Phyllotaxis**<br><sub>Douady–Couder inhibitory field · 1996</sub> | `#phyllotaxis/douady-1996` | new primordium at argmin_θ Σᵢ exp(−\|x(θ) − xᵢ\| / λ) on the meristem ring | SVG | can run | Common |
+| **Phyllotaxis**<br><sub>discrete inhibitory growth inspired by Douady–Couder</sub> | `#phyllotaxis/douady-1996` | xᵢ ← growth·xᵢ; new primordium near argmin_θ Σᵢ 1/(\|r₀(cosθ,sinθ)−xᵢ\|²+λ²) | SVG | can run | Common |
 | **Hastings–Levitov**<br><sub>conformal Laplacian growth · 1998</sub> | `#hl/hastings-1998` | Φₙ = Φₙ₋₁ ∘ f_{θₙ,cₙ},   cₙ ∝ \|Φ′(e^{iθ})\|^{−α} | SVG | still | Occasional |
 | **Lichtenberg**<br><sub>dielectric breakdown · Niemeyer–Pietronero–Wiesmann 1984</sub> | `#lichtenberg/npw-1984` | ∇²φ = 0,   P(i) ∝ φᵢ^η  on the growth interface | SVG | still | Common |
 | **Gravner–Griffeath**<br><sub>mesoscopic snow crystal · 2008</sub> | `#snowflake/gravner-2008` | diffusion of vapor on Aᶜ;  freeze κ;  attach by (n, b, α, β, θ);  melt μ, γ | SVG | live | Common |
@@ -157,7 +157,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Physarum**. Agent model: Jeff Jones, 2010, 'Characteristics of pattern formation and evolution in approximations of Physarum transport networks'. The biology follows Toshiyuki Nakagaki's maze-solving slime mold experiments, Nature 2000.
 
-**Phyllotaxis**. S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). Primordia appear on a growing disc at the minimum of an inhibitory field left by the previous ones, then ride outward. The divergence angle converges on the golden angle 137.5° for a wide interval of the control parameter, which is how sunflowers count Fibonacci without counting.
+**Phyllotaxis**. S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). This implementation is an inspired discrete variant: it grows existing radii, then approximately minimizes a softened inverse-square inhibitory field on a fixed insertion ring. It does not implement an exponential kernel or establish biological growth or golden-angle convergence.
 
 **Hastings–Levitov**. M. B. Hastings and L. S. Levitov, Physica D 116, 244 (1998). Laplacian growth (viscous fingering, DLA in a limit) as iterated conformal maps of the exterior disk. α=0 grows a disk; α=2 is DLA-like; the transition at α=1 is sharp. Each particle is a slit map of capacity c composed onto the cluster.
 

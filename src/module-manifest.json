@@ -162,10 +162,10 @@
       "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
       "name": "Phyllotaxis",
       "tab": "",
-      "subtitle": "Douady–Couder inhibitory field · 1996",
-      "equation": "new primordium at argmin_θ Σᵢ exp(−|x(θ) − xᵢ| / λ) on the meristem ring",
-      "credit": "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). Primordia appear on a growing disc at the minimum of an inhibitory field left by the previous ones, then ride outward. The divergence angle converges on the golden angle 137.5° for a wide interval of the control parameter, which is how sunflowers count Fibonacci without counting.",
-      "blurb": "Every sunflower generator you have seen is Vogel’s formula: points placed at n·137.5°. This is not that. A new bump appears on the meristem ring wherever the inhibition of the old ones is weakest, then the disc grows and they all move out. Fibonacci is not put in. It is what the inhibitory field does. Drag to drop a rogue primordium and watch the lattice forgive it, or not.",
+      "subtitle": "discrete inhibitory growth inspired by Douady–Couder",
+      "equation": "xᵢ ← growth·xᵢ; new primordium near argmin_θ Σᵢ 1/(|r₀(cosθ,sinθ)−xᵢ|²+λ²)",
+      "credit": "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). This implementation is an inspired discrete variant: it grows existing radii, then approximately minimizes a softened inverse-square inhibitory field on a fixed insertion ring. It does not implement an exponential kernel or establish biological growth or golden-angle convergence.",
+      "blurb": "New points are inserted where inhibition from earlier points is small. Existing radii are multiplied by Growth before each insertion. The search samples 180 angles and performs eight local refinements. The resulting divergence depends on inhibition, growth and insertion radius; its sampled mean is a descriptive statistic.",
       "order": 25,
       "seed": "douady-1996",
       "presets": [
@@ -3083,7 +3083,7 @@
       "subtitle": "Camassa–Holm peaked traveling waves · 1993",
       "equation": "u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−|x−x_i|},   m = u − u_xx",
       "credit": "The Camassa–Holm equation and the peakon u = c exp(−|x − c t|) are R. Camassa and D. D. Holm, Phys. Rev. Lett. 71, 1661 (1993). Multi-peakon collisions, including the Stieltjes / Hankel closed form used here, are R. Beals, D. H. Sattinger and J. Szmigielski, Inverse Problems 15, L1 (1999) and Adv. Math. 154, 229 (2000). This plate evaluates that exact N-peakon formula. It is not a new soliton.",
-      "blurb": "A KdV soliton is smooth. The Camassa–Holm peakon is a traveling corner: u = c exp(−|x − c t|), and the speed is the height. Two of them collide exactly. They pass through each other and pick up a phase shift; the peak stays a corner, never rounding. The plate is the Beals–Sattinger–Szmigielski formula, not an integrator. The status line is the measured peak speed over c, which theory says is 1, and the left and right slopes at the crest, which theory says are +c and −c. If this were the wrong PDE, or the wrong exponential, both would fail.",
+      "blurb": "A KdV soliton is smooth. The Camassa–Holm peakon is a traveling corner: u = c exp(−|x − c t|), and the speed is the height. Two of them collide exactly. They pass through each other and pick up a phase shift; the peak stays a corner, never rounding. The plate is the Beals–Sattinger–Szmigielski formula, not an integrator. The speed and crest-slope status values are a separate single-peakon control at c=1.25, not a measurement of the displayed multi-peakon collision. The H1 ratio samples the selected spectral family at t=-2.4 and t=2.4. If this were the wrong PDE, or the wrong exponential, both would fail.",
       "order": 112,
       "seed": "",
       "presets": [

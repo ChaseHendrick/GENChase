@@ -104,3 +104,5 @@ The current PDE family guard and stencil review is recorded in [PDE-FAMILY.md](P
 [Complete analytic wave fields and prints](ANALYTIC-FIELD-REVIEW.md) covers 17 exact-wave recipes and the corrected breather energy diagnostic.
 
 [Periodic field review](PERIODIC-FIELD-REVIEW.md) completes finite gyroid-approximation and circle-map recipes with corrected diagnostics and high-precision references.
+
+Completed follow-ups: [positive peakon fields and prints](PEAKON-FIELD-REVIEW.md), [complete MPR recordings](NEURAL-MASS.md), and [discrete inhibitory growth](PHYLLOTAXIS.md).

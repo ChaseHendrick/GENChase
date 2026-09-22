@@ -256,7 +256,7 @@
     order: 112,
     equation: 'u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−|x−x_i|},   m = u − u_xx',
     credit: 'The Camassa–Holm equation and the peakon u = c exp(−|x − c t|) are R. Camassa and D. D. Holm, Phys. Rev. Lett. 71, 1661 (1993). Multi-peakon collisions, including the Stieltjes / Hankel closed form used here, are R. Beals, D. H. Sattinger and J. Szmigielski, Inverse Problems 15, L1 (1999) and Adv. Math. 154, 229 (2000). This plate evaluates that exact N-peakon formula. It is not a new soliton.',
-    blurb: 'A KdV soliton is smooth. The Camassa–Holm peakon is a traveling corner: u = c exp(−|x − c t|), and the speed is the height. Two of them collide exactly. They pass through each other and pick up a phase shift; the peak stays a corner, never rounding. The plate is the Beals–Sattinger–Szmigielski formula, not an integrator. The status line is the measured peak speed over c, which theory says is 1, and the left and right slopes at the crest, which theory says are +c and −c. If this were the wrong PDE, or the wrong exponential, both would fail.',
+    blurb: 'A KdV soliton is smooth. The Camassa–Holm peakon is a traveling corner: u = c exp(−|x − c t|), and the speed is the height. Two of them collide exactly. They pass through each other and pick up a phase shift; the peak stays a corner, never rounding. The plate is the Beals–Sattinger–Szmigielski formula, not an integrator. The speed and crest-slope status values are a separate single-peakon control at c=1.25, not a measurement of the displayed multi-peakon collision. The H1 ratio samples the selected spectral family at t=-2.4 and t=2.4. If this were the wrong PDE, or the wrong exponential, both would fail.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: {
       Peakons: 'One is the traveling corner, speed = amplitude. Two and Three are exact collisions. Train is an incoming peaked rank. Overtake is a tall peakon catching a short one. Rest is a slow peakon, almost a standing crease. Spacetime (x across, t up) is the collision as worldlines.',
@@ -372,9 +372,9 @@
         const cornerOk = m.cL > 0.7 && m.cR < -0.7 && Math.abs(Math.abs(m.cL) - 1) < 0.12 && Math.abs(Math.abs(m.cR) - 1) < 0.12;
         const hOk = Math.abs(m.hCons - 1) < 0.03;
         host.setStatus(
-          '<span>v/c <b>' + (isFinite(m.vRatio) ? f3(m.vRatio) : '?') + '</b> ± ' +
+          '<span>single-peakon control v/c <b>' + (isFinite(m.vRatio) ? f3(m.vRatio) : '?') + '</b> ± ' +
             (isFinite(m.sigmaV) ? m.sigmaV.toExponential(0) : '?') + ' against 1' + (vFail ? ' · miss' : '') + '</span>' +
-          '<span>|u_x|/c L/R <b>' + (isFinite(m.cL) ? (m.cL >= 0 ? '+' : '') + f2(m.cL) : '?') + ' / ' +
+          '<span>control slopes/c L/R <b>' + (isFinite(m.cL) ? (m.cL >= 0 ? '+' : '') + f2(m.cL) : '?') + ' / ' +
             (isFinite(m.cR) ? (m.cR >= 0 ? '+' : '') + f2(m.cR) : '?') + '</b> · ±1' + (cornerOk ? '' : ' · not a corner') + '</span>' +
           '<span>H1(t+)/H1(t-) <b>' + (isFinite(m.hCons) ? f3(m.hCons) : '?') + '</b>' + (hOk ? ' · conserved' : ' · drifted') + '</span>' +
           '<span>' + kindLabel + '</span>'
