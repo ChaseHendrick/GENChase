@@ -1,0 +1,159 @@
+{
+  "sourceSha256": {
+    "eight": "00e15b29caba92c9cf360487ddce8471e0f351e54168633c80d650e75a1c01b3",
+    "photon": "3636ca8433248c1afb594d76a13d78734592778668cb54dc37ca693af775fb84"
+  },
+  "eight": {
+    "referenceDifference": 3.4638958368304884e-14,
+    "rows": [
+      {
+        "n": 100,
+        "error": 0.0000029239975414263597
+      },
+      {
+        "n": 200,
+        "error": 1.8304558979664876e-7
+      },
+      {
+        "n": 400,
+        "error": 1.1444948100347574e-8
+      }
+    ],
+    "returnError": 5.935077351804097e-8,
+    "forceFailure": 0.026900508872090043
+  },
+  "photon": {
+    "critical": 5.196152422508021,
+    "radius": 3.0000000000989537,
+    "photons": [
+      {
+        "b": 4.5,
+        "runs": [
+          {
+            "h": 0.02,
+            "captured": true,
+            "rMin": 2.014903290516789,
+            "defl": null
+          },
+          {
+            "h": 0.01,
+            "captured": true,
+            "rMin": 2.0149032857183733,
+            "defl": null
+          },
+          {
+            "h": 0.005,
+            "captured": true,
+            "rMin": 2.0193276370410373,
+            "defl": null
+          }
+        ]
+      },
+      {
+        "b": 5,
+        "runs": [
+          {
+            "h": 0.02,
+            "captured": true,
+            "rMin": 2.0073732503208137,
+            "defl": null
+          },
+          {
+            "h": 0.01,
+            "captured": true,
+            "rMin": 2.015321961098193,
+            "defl": null
+          },
+          {
+            "h": 0.005,
+            "captured": true,
+            "rMin": 2.0192828035921484,
+            "defl": null
+          }
+        ]
+      },
+      {
+        "b": 5.5,
+        "target": 3.766750880816362,
+        "turningError": 0.000002095090948284195,
+        "runs": [
+          {
+            "h": 0.02,
+            "captured": false,
+            "rMin": 3.766773392170799,
+            "defl": 2.5530201880484653
+          },
+          {
+            "h": 0.01,
+            "captured": false,
+            "rMin": 3.766752976071163,
+            "defl": 2.5530201911940695
+          },
+          {
+            "h": 0.005,
+            "captured": false,
+            "rMin": 3.7667529759073104,
+            "defl": 2.553020196330625
+          }
+        ]
+      },
+      {
+        "b": 7,
+        "target": 5.617279912116331,
+        "turningError": 1.9571123566208826e-7,
+        "runs": [
+          {
+            "h": 0.02,
+            "captured": false,
+            "rMin": 5.617400855623911,
+            "defl": 1.1276391312671883
+          },
+          {
+            "h": 0.01,
+            "captured": false,
+            "rMin": 5.6172801079695365,
+            "defl": 1.127639131019149
+          },
+          {
+            "h": 0.005,
+            "captured": false,
+            "rMin": 5.6172801078275665,
+            "defl": 1.1276391310026461
+          }
+        ]
+      },
+      {
+        "b": 10,
+        "target": 8.78885066249973,
+        "turningError": 2.1474798828080566e-7,
+        "runs": [
+          {
+            "h": 0.02,
+            "captured": false,
+            "rMin": 8.789124562587501,
+            "defl": 0.5903958729964738
+          },
+          {
+            "h": 0.01,
+            "captured": false,
+            "rMin": 8.78885087739661,
+            "defl": 0.5903958716857465
+          },
+          {
+            "h": 0.005,
+            "captured": false,
+            "rMin": 8.788850877247718,
+            "defl": 0.5903958716033502
+          }
+        ]
+      }
+    ],
+    "photonFailure": 0.5196134883059358
+  },
+  "pass": true,
+  "limitations": [
+    "Finite deterministic fixtures only; no chaotic long-time, all-control, print or experimental validation.",
+    "Photon capture checks use finite launch radius and integration cutoff. Deflection values are recorded but not certified by the turning-point benchmark.",
+    "Figure-eight reference independently expresses Newtonian forces and uses RK4; production uses Yoshida splitting."
+  ]
+}

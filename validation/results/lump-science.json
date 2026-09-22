@@ -1,0 +1,66 @@
+{
+  "sourceSha256": "886024bfdf6db93fb90dcbf43625d02aacb7d7bf7adbce3dc6316d352274ba9c",
+  "cases": [
+    {
+      "kind": "one",
+      "rows": [
+        {
+          "h": 0.04,
+          "normalizedRms": 0.01369997250247188
+        },
+        {
+          "h": 0.02,
+          "normalizedRms": 0.0034936369601213466
+        },
+        {
+          "h": 0.01,
+          "normalizedRms": 0.0008779102385208776
+        }
+      ],
+      "ratio": 15.60520871194519
+    },
+    {
+      "kind": "oblique",
+      "rows": [
+        {
+          "h": 0.04,
+          "normalizedRms": 0.006147435237672225
+        },
+        {
+          "h": 0.02,
+          "normalizedRms": 0.0015501234840205372
+        },
+        {
+          "h": 0.01,
+          "normalizedRms": 0.0003883845977040113
+        }
+      ],
+      "ratio": 15.828215830425897
+    },
+    {
+      "kind": "tight",
+      "rows": [
+        {
+          "h": 0.04,
+          "normalizedRms": 0.11176844060213163
+        },
+        {
+          "h": 0.02,
+          "normalizedRms": 0.029465022161226595
+        },
+        {
+          "h": 0.01,
+          "normalizedRms": 0.007546854030427453
+        }
+      ],
+      "ratio": 14.809938041931504
+    }
+  ],
+  "failureResidual": 0.03712255330876759,
+  "pass": true,
+  "limitations": [
+    "Only three single-lump presets at twelve points each; finite differences are evidence, not proof.",
+    "Products of single-lump tau functions are excluded. They do not generally solve the nonlinear KP-I equation.",
+    "No print, displayed residual, peak-search or interaction accuracy claim."
+  ]
+}

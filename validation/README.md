@@ -1,5 +1,17 @@
 # Scientific validation contract
 
+The [CPU dynamics follow-up](CPU-DYNAMICS.md) covers the rigid-body integrator
+correction, finite-time FPUT evolution, single KP-I lumps and unresolved claims.
+
+The [orbit audit](ORBITS.md) tests finite figure-eight trajectories and selected
+Schwarzschild capture and turning-radius calculations.
+
+The [material-wave audit](MATERIAL-WAVES.md) covers limited Hasimoto, Gerstner and
+square Chladni calculations and records excluded components.
+
+The [exact-wave follow-up](EXACT-WAVE-FOLLOWUP.md) records bounded breather and
+peakon checks, plus known diagnostic and Airy gaps.
+
 `techniques.json` catalogs simulations. `validation/techniques.json` records their scientific
 validation coverage. `node tools/science.js --write` generates VALIDATION.md; without `--write`,
 the command checks coverage and report freshness. A passing inventory check verifies records,
