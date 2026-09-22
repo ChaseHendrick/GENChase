@@ -3210,17 +3210,17 @@
   {
     "id": "lump",
     "source": "src/modules/lump.js",
-    "sourceSha256": "886024bfdf6db93fb90dcbf43625d02aacb7d7bf7adbce3dc6316d352274ba9c",
-    "reference": "Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Multi-lumps: Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). They pass through each other with no phase shift. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.",
+    "sourceSha256": "cfeadd37892269236b7c41a450f223568dc65f5304da461655cb01040d5cbc3d",
+    "reference": "Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Exact multi-lump solutions are studied by Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). This module implements single rational lumps; its multiple-lump modes are illustrative sums, not those interacting solutions. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.",
     "equation": "(u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b²",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Only three single-lump presets; sampled residuals are evidence, not proof.",
-      "Multi-lump superpositions, interactions, displayed diagnostics and print accuracy are excluded."
+      "Exact single-lump algebra for the nine rational parameter pairs and seven finite field/print recipes in validation/LUMP-FIELD-REVIEW.md.",
+      "Multiple-lump modes are accurately rendered illustrative sums, not interacting KP-I solutions.",
+      "No all-parameter, experimental, other-renderer or every-export-backend certification. Sampled residual step sensitivity is not a global error bound."
     ],
     "remaining": [
-      "Correct unsupported exact interaction claims for the product-tau multi-lump modes.",
-      "Broaden the domain and audit displayed residuals, peaks and actual print exports."
+      "Extend the enumerated recipe domain and print backends with independent evidence; an exact interacting multi-lump implementation would require separate review."
     ],
     "numerical": [
       {
@@ -3232,9 +3232,38 @@
         "limitations": "Only three single-lump presets; sampled residuals are evidence, not proof. Multi-lump superpositions, interactions, displayed diagnostics and print accuracy are excluded.",
         "command": "node tools/lump-science.js --write",
         "results": "validation/results/lump-science.json"
+      },
+      {
+        "test": "tools/lump-field-review.js",
+        "command": "node tools/lump-field-review.js --write",
+        "results": "validation/results/lump-field-review.json",
+        "scope": "Exact polynomial residuals for nine rational single-lump parameter pairs; seven full fields, all three views, selected-field diagnostics, animation wrap and actual PNG exports.",
+        "criteria": "Exact residual numerator zero with wrong-time rejection; field/peak errors<1e-6, diagnostic errors<2e-6, all PNG channels<=1 byte, unchanged export state and correct time wrap.",
+        "benchmark": "Independent exact Fraction polynomial differentiation; separate logarithmic-tau derivative, full-resolution field and print transfer reference.",
+        "failureControl": "Wrong time derivatives leave nonzero exact polynomial coefficients; shifted fields and prints fail; multiple-lump sums must report nonzero PDE residuals.",
+        "limitations": "Only the conditions in validation/LUMP-FIELD-REVIEW.md; illustrative sums are not promoted to nonlinear PDE solutions."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/lump-field-review.js",
+        "command": "node tools/lump-field-review.js --write",
+        "results": "validation/results/lump-field-review.json",
+        "scope": "Exact polynomial residuals for nine rational single-lump parameter pairs; seven full fields, all three views, selected-field diagnostics, animation wrap and actual PNG exports.",
+        "criteria": "Exact residual numerator zero with wrong-time rejection; field/peak errors<1e-6, diagnostic errors<2e-6, all PNG channels<=1 byte, unchanged export state and correct time wrap.",
+        "benchmark": "Independent exact Fraction polynomial differentiation; separate logarithmic-tau derivative, full-resolution field and print transfer reference.",
+        "failureControl": "Wrong time derivatives leave nonzero exact polynomial coefficients; shifted fields and prints fail; multiple-lump sums must report nonzero PDE residuals.",
+        "limitations": "Only the conditions in validation/LUMP-FIELD-REVIEW.md; illustrative sums are not promoted to nonlinear PDE solutions."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/lump-field-review.json",
+    "domain": {
+      "parameters": "The nine rational (a,b) pairs and seven complete recipes recorded in validation/results/lump-field-review.json.",
+      "conditions": "Single closed-form KP-I lumps and explicit noninteracting sums at times -1.6,-.4,0,.1,.4,1.6; all three display views, no PDE evolution grid.",
+      "resolution": "Preview grids 128,192,256 with square,4:5,16:9 aspects. Native prints 2400x2400,1920x2400,2400x1350. Residual differences at .04,.02,.01 and stated whole-field/print thresholds.",
+      "precision": "Exact Python Fraction polynomial coefficients; binary64 evaluation and finite differences; Float32 fields; RGBA8 prints. Browser and platform recorded."
+    }
   },
   {
     "id": "three-vortex-bound",
