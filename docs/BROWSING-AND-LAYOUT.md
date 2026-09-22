@@ -31,7 +31,7 @@ node tools/studio-navigation-check.js
 BROWSER=webkit node tools/studio-navigation-check.js
 ```
 
-Install the matching WebKit browser with `npx playwright install webkit` before the second command. Use [BUILDING.md](../BUILDING.md) for the rest of the browser setup. Browser installation can require network access and additional OS dependencies.
+Install the tested Playwright and its WebKit browser with `npm install --no-save --package-lock=false playwright@1.58.2` and `npx playwright install webkit` before the second command, as CI does; the `playwright@1.49.1` in BUILDING.md installs an older WebKit. Use [BUILDING.md](../BUILDING.md) for the rest of the browser setup. Browser installation can require network access and additional OS dependencies.
 
 ## Design choices and sources
 

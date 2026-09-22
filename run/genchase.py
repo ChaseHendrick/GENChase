@@ -12,6 +12,7 @@ import os
 import socketserver
 import sys
 import threading
+import urllib.parse
 import webbrowser
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,6 +23,21 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
 
     def log_message(self, fmt, *args):
         pass
+
+    def send_head(self):
+        # The studio only needs its own files. Refuse a foreign Host (DNS rebinding) and anything
+        # under a dot folder or the validator's local output, which would expose .git and job logs.
+        host = (self.headers.get('Host') or '').rsplit(':', 1)[0].strip('[]').lower()
+        parts = [p for p in urllib.parse.unquote(urllib.parse.urlsplit(self.path).path).split('/') if p]
+        private = any(p.startswith('.') for p in parts) or parts[:2] == ['run', 'validator']
+        if host not in ('127.0.0.1', 'localhost') or private:
+            self.send_error(404)
+            return None
+        return super().send_head()
+
+    def list_directory(self, path):
+        self.send_error(404)
+        return None
 
 
 def main():

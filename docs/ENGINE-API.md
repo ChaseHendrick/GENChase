@@ -80,7 +80,8 @@ misrepresent the exported state.
 
 Polygon collapse bounds publishes its existing measured velocity-fit residual and
 its existing off-family failure condition through this API. The deliberately broken
-preset must report failure. Other legacy modules return `null` until explicitly
+preset must report failure. Reuleaux publishes a boundary sampling regression witness,
+which is not a pixel-width measurement. Other legacy modules return `null` until explicitly
 migrated. No HTML diagnostic is automatically parsed or promoted into scientific data.
 
 ## Contributor on-ramp and checks
