@@ -24,7 +24,7 @@ Only one validator server and one job may use this checkout's job folder at a ti
 
 Browser-based checks additionally need Playwright and its Chromium browser. Follow [the development setup](../../BUILDING.md#development-shortcuts-and-scientific-checks). Dependency and browser installation uses the network once; installed checks and local candidate searches run offline. Some checks need additional dependencies documented in [TESTING.md](../../TESTING.md). Missing tools cause a reported failure, not an automatic installation.
 
-## Validate
+## Check simulations
 
 The default is **All registered numerical and print checks**. This is the official evidence runner, not a promise that every setting in every module is covered.
 
@@ -43,9 +43,9 @@ Choose `ID` from the catalog. There is no freeform command box. The [runner guid
 
 Progress counts completed registered checks or native simulation steps when those counts are available. It is not an estimate of time remaining or a percentage of scientific validation. Otherwise the app shows the active stage and elapsed time without inventing a percentage.
 
-## Contribute
+## Run experiments
 
-**Contribute Mode** offers these bounded jobs:
+**Run experiments** offers these bounded jobs:
 
 | Job | What it produces |
 | --- | --- |
@@ -64,7 +64,7 @@ The offline comparison uses text matching and the existing polygon-family deriva
 
 ## Measurement corpus and misses
 
-Validate offers **Harvest all module measurements** and **Harvest one module measurement**. These record default recipes after a bounded three-second observation interval. They retain structured witnesses and literal numbers from status text, with offsets into that text. Prose numbers have no inferred units or acceptance rules. Missing structured witnesses stay unassessed. A witnessed disagreement or runtime failure produces a visible miss and a nonzero job exit.
+Check simulations offers **Harvest all module measurements** and **Harvest one module measurement**. These record default recipes after a bounded three-second observation interval. They retain structured witnesses and literal numbers from status text, with offsets into that text. Prose numbers have no inferred units or acceptance rules. Missing structured witnesses stay unassessed. A witnessed disagreement or runtime failure produces a visible miss and a nonzero job exit.
 
 Use **Download measurements** for the corpus. The same file is saved under `validation/results/witnesses-<commit>-<machine-slug>.json`. Miss packets are saved under `run/validator/misses/` and remain listed until you review them. A successful later job does not silently remove them. Both result locations are ignored by Git by default; choose which reviewed files to publish. No result stamps a technique validated or a formula novel.
 
@@ -100,7 +100,7 @@ Each job has a private, Git-ignored directory under `apps/validate/.runs/`. The 
 
 The source snapshot preserves tracked and unignored files present at job start verbatim. It can include public author credits, license notices and user-authored content, so the bundle is not anonymous. Changed-file reporting records observed changes, including concurrent edits; it cannot attribute every edit to the job. Avoid changing the checkout during a research run if you need an unambiguous input snapshot.
 
-A bundle is useful for review and reproduction, but it does not include installed browsers, Node, Swift, external libraries or the operating system. It is not a one-click import format or a guarantee of identical floating-point results on another machine. Inspect its included files before sharing. Nothing is uploaded automatically. Job directories are retained until you remove them, and long runs or repeated source bundles can use substantial disk space.
+A bundle is useful for review and reproduction, but it does not include installed browsers, Node, Swift, external libraries or the operating system. It is not a one-click import format or a guarantee of identical floating-point results on another machine. Inspect its included files before sharing. Sharing is off by default. Explicitly enabling automatic sharing sends each opted-in run after it finishes, including failed runs. Job directories are retained until you remove them, and long runs or repeated source bundles can use substantial disk space.
 
 ## Pseudonymous hardware evidence
 
@@ -115,3 +115,23 @@ This boundary applies to recorded runtime metadata and text, not the verbatim re
 The app binds only to `127.0.0.1`, checks the loopback host and origin, and requires a per-server token for job control and downloads. Commands come from an allowlist and do not use a shell. This is a local interface to trusted repository code running as your OS user, not a sandbox for untrusted code. Do not expose it through a public tunnel.
 
 Run `npm run test:validator` for the app's regression suite. Browser and native GPU evidence have separate scopes and prerequisites. The studio's scientific CI remains required. No model helper is installed or invoked; a model added in the future would be a helper, not an authority on scientific validity or originality.
+
+## Share results directly
+
+Install [GitHub CLI](https://cli.github.com/) once and run `gh auth login --hostname github.com`. Computation itself needs no account. The app uses that login without storing credentials in its UI or result files.
+
+After a run, choose **Review files to share**, inspect the list and select a file to read its exact redacted contents, then **Upload and open review**. The app creates an evidence branch in your GENChase fork (creating the fork if necessary) and a public pull request to SharpMeow/GENChase. The repository owner uses a new evidence branch directly. No download/reupload step is needed. The branch starts from the upstream default branch and never overwrites an existing branch.
+
+To submit unattended, check **Automatically share this run when it finishes** before starting. This choice belongs to that run and is retained by restart/resume. The server submits even if the browser closes. Upload progress and a submission link appear under **Share results**. A failed upload stays local and offers retry; interrupted or ambiguous submissions are looked up before opening another review. There is no background retry loop or automatic merge.
+
+A checksum manifest accompanies every submission. Shared files include job metadata, source fingerprints (without source contents), the hardware card, measurements, numerical JSON outputs, redacted logs and all available misses for the run's source commit. A failure or missing benchmark is not removed to make a submission look successful. Source snapshots, full bundles, arbitrary changed files and credentials are excluded. JSON numeric values retain their types and precision. The file list is checked again before a manual upload. A run is limited to 500 files, 8 MB per file and 20 MB total; larger runs retain the downloadable workflow.
+
+Submissions are public and linked to your GitHub account. Redaction removes common local identifiers; it is not a guarantee that user-written report text contains no personal information. Review files before sharing sensitive work. Formula source contributions still use the documented contributor workflow. Evidence submissions do not change scientific labels.
+
+The uploader uses the [GitHub tree API](https://docs.github.com/en/rest/git/trees) through [gh api](https://cli.github.com/manual/gh_api). New forks can take time to become available; retry after GitHub finishes preparing them. Tests simulate successful and failed API responses without publishing test data.
+
+## UI regression checks
+
+`npm run test:validator` checks job lifecycle, upload boundaries, dependency checks and recovery. For the isolated browser/accessibility review, install the optional test tools with `npm install --no-save --package-lock=false playwright@1.58.2 axe-core@4.10.3`, then run `npm run test:validator:ui`. The test checks navigation, evidence previews, distinct current/historical failure states, incomplete coverage, keyboard focus, horizontal overflow and automated WCAG A/AA rules at 1280, 768, 390 and 320 pixels. It starts its own temporary server and never starts or uploads a user run. Automated checks are not a complete accessibility certification.
+
+The app now checks browser installation before starting workflows that require it. Inventory and fast development checks remain available without a browser. A completed run with missing evidence has an **incomplete coverage** state; it is distinct from a command crash and does not imply that all modules are validated.

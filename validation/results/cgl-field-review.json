@@ -1,0 +1,249 @@
+{
+  "date": "2026-09-22",
+  "scope": "Four complete deterministic noise-free CGL lattice fields and prints at physical time 1; no continuum or chaotic-statistics claim.",
+  "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
+  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "kernel": {
+    "refinement": [
+      {
+        "error": 0.00019725074351155392,
+        "maxAmplitude": 0.22787245475947268,
+        "substeps": 1
+      },
+      {
+        "error": 0.00009860505640828243,
+        "maxAmplitude": 0.22781478864685958,
+        "substeps": 1
+      },
+      {
+        "error": 0.00004946102679097286,
+        "maxAmplitude": 0.227786419260581,
+        "substeps": 1
+      }
+    ],
+    "local": {
+      "error": 2.092035495393496e-7,
+      "maxAmplitude": 0.24191277903400002,
+      "substeps": 1
+    },
+    "wrong": {
+      "error": 0.055388013653226334,
+      "maxAmplitude": 0.2277864536494737,
+      "substeps": 1
+    },
+    "nyquist": {
+      "error": 0.11183754299947238,
+      "maxAmplitude": 0.15194830515904909,
+      "substeps": 11
+    },
+    "unsafe": {
+      "error": 3.1812244212700764,
+      "maxAmplitude": 3.4023060225006176,
+      "substeps": 1
+    },
+    "controls": 153,
+    "rotationError": 3.10391994329251e-8,
+    "unitLengthError": 3.123395886373004e-8
+  },
+  "cases": [
+    {
+      "seed": "cgl-field-review-0",
+      "grid": [
+        128,
+        128
+      ],
+      "fieldSha256": "9f6a31c889a773fb585563ce06e2db7211dff4bdc28c8f76c36b460539b794e0",
+      "maxComplexError": 0.0000017891192384822396,
+      "substeps": 1,
+      "substepDt": 0.02,
+      "physicalTime": 1,
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "maxChannelError": 0,
+        "channelsChecked": 17280000,
+        "displacedPixels": 547200,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "alpha": 2,
+          "beta": -0.5,
+          "lin": 1,
+          "noise": 0,
+          "init": "wave",
+          "running": false,
+          "steps": 1,
+          "dt": 0.02,
+          "warmup": 50,
+          "view": "amp",
+          "exposure": 1,
+          "gamma": 1,
+          "contrast": 1,
+          "grain": 0,
+          "seed": "cgl-field-review-0",
+          "v": 2,
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "cgl-field-review-1",
+      "grid": [
+        128,
+        160
+      ],
+      "fieldSha256": "98999dfde77cca36b0cb860ba58a5b8bacd43694ecc32fef64b880f74a211c6e",
+      "maxComplexError": 0.000009173389364795087,
+      "substeps": 1,
+      "substepDt": 0.02,
+      "physicalTime": 1,
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "maxChannelError": 1,
+        "channelsChecked": 13824000,
+        "displacedPixels": 1618455,
+        "params": {
+          "grid": 128,
+          "aspect": "4:5",
+          "alpha": -2,
+          "beta": 2,
+          "lin": 1,
+          "noise": 0,
+          "init": "vortex",
+          "running": false,
+          "steps": 1,
+          "dt": 0.02,
+          "warmup": 50,
+          "view": "real",
+          "exposure": 1,
+          "gamma": 1,
+          "contrast": 1,
+          "grain": 0,
+          "seed": "cgl-field-review-1",
+          "v": 2,
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "cgl-field-review-2",
+      "grid": [
+        128,
+        102
+      ],
+      "fieldSha256": "2378b03c5f411e19b8cb79fad64e96357fa4bbd509639d31ab7162c186a356c6",
+      "maxComplexError": 0.000005839884807706808,
+      "substeps": 1,
+      "substepDt": 0.02,
+      "physicalTime": 1,
+      "print": {
+        "width": 2400,
+        "height": 1920,
+        "maxChannelError": 1,
+        "channelsChecked": 13824000,
+        "displacedPixels": 422640,
+        "params": {
+          "grid": 128,
+          "aspect": "5:4",
+          "alpha": 0,
+          "beta": 1.4,
+          "lin": 0.2,
+          "noise": 0,
+          "init": "spiral",
+          "running": false,
+          "steps": 1,
+          "dt": 0.02,
+          "warmup": 50,
+          "view": "amp",
+          "exposure": 1,
+          "gamma": 1,
+          "contrast": 1,
+          "grain": 0,
+          "seed": "cgl-field-review-2",
+          "v": 2,
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "cgl-field-review-3",
+      "grid": [
+        128,
+        72
+      ],
+      "fieldSha256": "9e2a352c8babf4b04febc886bf8e1d3def9576166bc7ce4fb4d6c4aea5f993ed",
+      "maxComplexError": 0.00007925979916822978,
+      "substeps": 2,
+      "substepDt": 0.01,
+      "physicalTime": 1,
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "maxChannelError": 1,
+        "channelsChecked": 9720000,
+        "displacedPixels": 75096,
+        "params": {
+          "grid": 128,
+          "aspect": "16:9",
+          "alpha": 4,
+          "beta": -4,
+          "lin": 1.6,
+          "noise": 0,
+          "init": "vortex",
+          "running": false,
+          "steps": 1,
+          "dt": 0.02,
+          "warmup": 50,
+          "view": "defects",
+          "exposure": 1,
+          "gamma": 1,
+          "contrast": 1,
+          "grain": 0,
+          "seed": "cgl-field-review-3",
+          "v": 2,
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        }
+      },
+      "statePreserved": true
+    }
+  ],
+  "environment": {
+    "node": "v24.21.0",
+    "chromium": "145.0.7632.6",
+    "platform": "darwin",
+    "backend": "SwiftShader RGBA32F"
+  },
+  "passed": true
+}

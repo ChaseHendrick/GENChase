@@ -1,6 +1,6 @@
 
 /* modules/gyroid.js */
-/* GENChase: Schoen gyroid, a triply periodic minimal surface. Mean curvature on the level set is measured against 0. */
+/* GENChase: Trigonometric nodal approximation to the Schoen gyroid; it is not exactly minimal. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -35,15 +35,23 @@
 
   function surprise(rng) { return { z0: rng.range(0, 6), scale: rng.range(1.6, 4.5), kind: rng.pick(['level','field','abs']) }; }
   function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function nodalMeanCurvature(x, y, z) {
+    const sx=Math.sin(x), sy=Math.sin(y), sz=Math.sin(z), cx=Math.cos(x), cy=Math.cos(y), cz=Math.cos(z);
+    const g=[cx*cy-sz*sx, cy*cz-sx*sy, cz*cx-sy*sz];
+    const xx=-sx*cy-sz*cx, yy=-sx*cy-sy*cz, zz=-sy*cz-sz*cx;
+    const xy=-cx*sy, xz=-cz*sx, yz=-cy*sz, g2=g.reduce((sum,v)=>sum+v*v,0);
+    if (g2 < 1e-12) return NaN;
+    return (g2*(xx+yy+zz)-(g[0]*g[0]*xx+g[1]*g[1]*yy+g[2]*g[2]*zz+2*g[0]*g[1]*xy+2*g[0]*g[2]*xz+2*g[1]*g[2]*yz))/(2*g2**1.5);
+  }
   Studio.register({
     id: 'gyroid', name: 'Gyroid', tab: 'Gyroid',
-    subtitle: 'a sponge of zero mean curvature · 1970',
+    subtitle: 'a periodic nodal approximation · 1970 / 2001',
     order: 64,
-    equation: 'sin x cos y + sin y cos z + sin z cos x = 0,   H = 0',
-    credit: 'A. H. Schoen, NASA Technical Note D-5541 (1970), found the gyroid, a triply periodic minimal surface of genus 3 in the cubic cell, with no embedded straight lines. Its mean curvature vanishes. Butterfly-wing scales and block-copolymer melts later grew it for free. The plate is a 2-D slice of the level set, not a 3-D print.',
-    blurb: 'A surface that divides space into two congruent labyrinths and has mean curvature zero everywhere: a minimal sponge. It should not exist in a cubic lattice without straight lines, and then Schoen wrote it down. The plate is one slice. The status line reports mean |H| on the level set against 0.',
+    equation: 'F = sin x cos y + sin y cos z + sin z cos x; F = level; H = ½ div(∇F/|∇F|)',
+    credit: 'A. H. Schoen, NASA Technical Note D-5541 (1970), discovered the exact gyroid minimal surface. This module uses a three-term trigonometric nodal approximation, as distinguished from exact minimal geometry by Gandy, Bardhan, Mackay and Klinowski, Chemical Physics Letters 336, 187-195 (2001), doi:10.1016/S0009-2614(00)01418-4.',
+    blurb: 'A two-dimensional slice through a triply periodic scalar field. Its zero level approximates the gyroid, but its mean curvature is generally nonzero. The status samples the actual three-dimensional mean curvature in a finite band |F-level|<0.08 around the selected level. It is not an exact-surface average or a minimality test.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Surface: 'Scale packs more unit cells onto the plate. Level 0 is the classical gyroid.' },
+    hints: { Surface: 'Scale packs more unit cells onto the plate. Level 0 is the nodal gyroid approximation; nonzero levels are offset level sets.' },
     palette: true, defaultPalette: 'verdigris', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
@@ -56,20 +64,14 @@
         const s = host.getState();
         const sz = sizeFrom(s); W = sz.W; H = sz.H;
         field = new Float32Array(W * H);
-        const rng = U.makeRng(String(s.seed) + '/x');
 
         const z = s.z0, sc = s.scale, iso = s.iso, kind = s.kind;
         let hAcc = 0, nH = 0;
         for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
           const X = sc * Math.PI * 2 * x / W, Y = sc * Math.PI * 2 * y / H, Z = z;
           const F = Math.sin(X) * Math.cos(Y) + Math.sin(Y) * Math.cos(Z) + Math.sin(Z) * Math.cos(X);
-          const Fx = Math.cos(X) * Math.cos(Y) - Math.sin(Z) * Math.sin(X);
-          const Fy = -Math.sin(X) * Math.sin(Y) + Math.cos(Y) * Math.cos(Z);
-          const Fxx = -Math.sin(X) * Math.cos(Y) - Math.sin(Z) * Math.cos(X);
-          const Fyy = -Math.sin(X) * Math.cos(Y) - Math.sin(Y) * Math.cos(Z);
-          const g2 = Fx * Fx + Fy * Fy + 1e-8;
-          const Hm = (Fxx + Fyy) / Math.sqrt(g2) - (Fx * Fx * Fxx + Fy * Fy * Fyy) / Math.pow(g2, 1.5);
-          if (Math.abs(F - iso) < 0.08) { hAcc += Math.abs(Hm); nH++; }
+          const Hm = nodalMeanCurvature(X, Y, Z);
+          if (Math.abs(F - iso) < 0.08 && Number.isFinite(Hm)) { hAcc += Math.abs(Hm); nH++; }
           let v;
           if (kind === 'field') v = F;
           else if (kind === 'abs') v = Math.abs(F);
@@ -108,7 +110,7 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>|H| on surface <b>' + f3(metric) + '</b> · theory 0</span><span>samples ' + (extra | 0) + '</span><span>minimal</span>'); }
+      function status() { host.setStatus('<span>band mean |H| <b>' + (extra ? f3(metric) : 'no regular samples') + '</b></span><span>samples ' + (extra | 0) + ' · |F-level|&lt;0.08</span><span>nodal approximation · generally nonzero</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

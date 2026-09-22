@@ -1,0 +1,192 @@
+{
+  "date": "2026-09-22",
+  "scope": "Fixed-field unit-grid GL: four enumerated full fields and prints; no physical vortex-count or continuum claim.",
+  "sourceSha256": "fc8e66a17fe114da9a663f0827171ea70461c784e10802fac2bbd3d2205027f0",
+  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "kernel": {
+    "stencilError": 1.6653345369377348e-16,
+    "maxAmplitude": 0.9952067912339703,
+    "linearTimeErrors": [
+      6.711049571853997e-11,
+      3.351784009631029e-11,
+      1.6749585842379313e-11
+    ],
+    "signFailureControl": true
+  },
+  "cases": [
+    {
+      "seed": "vortex-field-review-0",
+      "grid": [
+        96,
+        96
+      ],
+      "initialSha256": "bdf562057d7b39fc2fd24ed3a9c8d721a849489feba4ff192d58e1de4c93f840",
+      "finalSha256": "38f89cc3f42b739fb3e63f201b6b8385a72d2bec3d782dc4b7e01715f0ecd063",
+      "complexError": 2.220446049250313e-15,
+      "fieldError": 0,
+      "maxAmplitude": 0.746114663546811,
+      "dt": 0.04,
+      "substeps": 3,
+      "physicalTime": 3.5999999999999996,
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 4995000,
+        "params": {
+          "grid": 96,
+          "aspect": "1:1",
+          "B": 0.4,
+          "kappa": 0.5,
+          "relax": 30,
+          "view": "int",
+          "exposure": 1,
+          "seed": "vortex-field-review-0",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "vortex-field-review-1",
+      "grid": [
+        96,
+        120
+      ],
+      "initialSha256": "f9e95327996e9f5e5f352871bd3583031c7bb103f8e14b68da2d4c6570ea2e47",
+      "finalSha256": "3e81d6fba6ec0809f3a67c0415c8032e6422c3817eee858709eafd6b03be64be",
+      "complexError": 2.7200464103316335e-15,
+      "fieldError": 0,
+      "maxAmplitude": 0.9888528076531536,
+      "dt": 0.12,
+      "substeps": 1,
+      "physicalTime": 3.5999999999999996,
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 4199600,
+        "params": {
+          "grid": 96,
+          "aspect": "4:5",
+          "B": 3.2,
+          "kappa": 4,
+          "relax": 30,
+          "view": "log",
+          "exposure": 0.8,
+          "seed": "vortex-field-review-1",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "vortex-field-review-2",
+      "grid": [
+        128,
+        102
+      ],
+      "initialSha256": "6cc46fdfb0b6dcda9a450bc9794763f5e616b0a08b5d5baade5f915b8991648e",
+      "finalSha256": "bf90b55acc68668fa8a6cdc836c1459fd430b9bfca1225e95c83b8901d4f76cd",
+      "complexError": 7.438494264988549e-15,
+      "fieldError": 0,
+      "maxAmplitude": 0.9989960228691329,
+      "dt": 0.12,
+      "substeps": 1,
+      "physicalTime": 10.799999999999999,
+      "print": {
+        "width": 2400,
+        "height": 1920,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 4082629,
+        "params": {
+          "grid": 128,
+          "aspect": "5:4",
+          "B": 1.4,
+          "kappa": 1.6,
+          "relax": 90,
+          "view": "int",
+          "exposure": 1,
+          "seed": "vortex-field-review-2",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "vortex-field-review-3",
+      "grid": [
+        96,
+        54
+      ],
+      "initialSha256": "e1f3e76c054a39da507393a9c8368f56afe68cbcf5f7211a62c73ad9c9cd5898",
+      "finalSha256": "82198110b07171aaca8def7f4bfeb366c77c0010b245405e4f5f50d6567c27a9",
+      "complexError": 4.113376306236205e-14,
+      "fieldError": 0,
+      "maxAmplitude": 0.999068992161444,
+      "dt": 0.12,
+      "substeps": 1,
+      "physicalTime": 14.399999999999999,
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsChecked": 12960000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 506250,
+        "params": {
+          "grid": 96,
+          "aspect": "16:9",
+          "B": 2.6,
+          "kappa": 2.2,
+          "relax": 120,
+          "view": "log",
+          "exposure": 1.2,
+          "seed": "vortex-field-review-3",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    }
+  ],
+  "environment": {
+    "node": "v24.21.0",
+    "chromium": "145.0.7632.6",
+    "platform": "darwin"
+  },
+  "passed": true
+}

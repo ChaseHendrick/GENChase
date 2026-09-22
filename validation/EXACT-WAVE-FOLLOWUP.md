@@ -17,10 +17,9 @@ agrees with `16 beta` to relative error below 1.2e-10. The integration uses 16,0
 trapezoids and derivative step 2e-5. These are sampled checks, not a global proof.
 For the established solution, see [Dorey's breather demonstration](https://maths.dur.ac.uk/users/P.E.Dorey/SOLITONS_2025_26/SGpictures/SG_Breather.html).
 
-Known limitation: the module's on-screen `E_out/E` sums `u²`, which is not energy.
-That diagnostic and its theory-zero label are not validated by this audit. The
-browser field is Float32 and its export enlarges the existing grid. Neither the
-diagnostic nor print accuracy receives a passing label here.
+The subsequent [complete analytic field review](ANALYTIC-FIELD-REVIEW.md) corrects
+the former squared-amplitude energy label and validates the actual field,
+physical energy diagnostic and PNG print for three enumerated recipes.
 
 ## Camassa-Holm peakons
 
@@ -50,6 +49,4 @@ terms. Its displayed peak-at-caustic comparison also needs review. No passing
 Airy evidence is registered. These issues need a separate correction and benchmark.
 
 Results are saved in [breather-science.json](results/breather-science.json) and
-[peakon-science.json](results/peakon-science.json). Both checks run in CI. The ledger
-now has 24 partially validated techniques and 104 unvalidated techniques, with zero
-fully validated techniques. These counts describe implementation evidence, not discoveries.
+[peakon-science.json](results/peakon-science.json). Both checks run in CI. Current counts are generated in [VALIDATION.md](../VALIDATION.md).

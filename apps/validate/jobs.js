@@ -2,6 +2,7 @@
 const fs = require('node:fs'), path = require('node:path'), os = require('node:os'), cp = require('node:child_process'), crypto = require('node:crypto');
 const { StringDecoder } = require('node:string_decoder');
 const { command } = require('./commands');
+const { browserSetup, requiresBrowser } = require('./setup');
 const { Power, settings } = require('./power');
 const { redact, sanitize } = require('./privacy');
 const { hardwareCard } = require('./hardware');
@@ -101,6 +102,7 @@ class Jobs {
   start(input, resumeFrom = null) {
     if (this.active()) throw Error('One job is already running. Stop it before starting another.');
     const spec = command(this.root, input);
+    if (requiresBrowser(this.root, spec.input)) { const setup=browserSetup(this.root); if(!setup.ready) throw Error(setup.message); }
     spec.input.power = settings(input.power);
     const before = files(this.root), commit = git(this.root, ['rev-parse', 'HEAD']);
     const id = new Date().toISOString().replace(/[:.]/g, '-') + '-' + crypto.randomBytes(4).toString('hex');
@@ -203,6 +205,13 @@ class Jobs {
       for (const f of j.filesWritten || []) {
         const dest = path.join(dir, 'outputs', f.path); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.copyFileSync(path.join(this.root, f.path), dest);
       }
+      // Freeze every miss for this commit with the run, including scientific misses.
+      const misses = path.join(this.root, 'run/validator/misses');
+      if (fs.existsSync(misses)) for (const name of fs.readdirSync(misses).filter(n => n.startsWith(j.commit + '-') && n.endsWith('.json'))) {
+        const value = JSON.parse(fs.readFileSync(path.join(misses, name), 'utf8'));
+        fs.mkdirSync(path.join(dir, 'misses'), {recursive:true});
+        save(path.join(dir, 'misses', name), sanitize(value, this.privacy));
+      }
       const archive = path.join(this.data, j.id + '.tar.gz');
       const metadata=process.platform==='darwin'?['--uid','0','--gid','0','--uname','','--gname','','--no-xattrs','--no-acls','--no-fflags']:['--owner=0','--group=0','--numeric-owner','--no-xattrs','--no-acls'];
       const result = cp.spawnSync('tar', [...metadata,'-czf', archive, '-C', dir, '.'], { encoding: 'utf8', timeout: 120000,env:{...process.env,COPYFILE_DISABLE:'1'} });
@@ -210,6 +219,7 @@ class Jobs {
       fs.renameSync(archive, path.join(dir, 'result-bundle.tar.gz')); j.artifacts.push('result-bundle.tar.gz');
       save(path.join(dir, 'job.json'), sanitize(j,this.privacy));
     } catch(e) { j.reason += ' Bundle failed: ' + e.message; save(path.join(this.data, j.id, 'job.json'), sanitize(j,this.privacy)); }
+    this.onFinished?.(j);
   }
   evidence() {
     const j=this.current;
@@ -221,7 +231,7 @@ class Jobs {
       save(path.join(dir,'hardware.json'),j.hardware);
     } catch(e) {j.reason+=' Hardware card failed: '+redact(e.message,this.privacy);}
     if(j.status!=='complete') {
-      const miss={format:1,kind:j.incomplete?'incomplete-evidence':j.interrupted?'interrupted-run':this.stopping?'stopped-run':'command-failure',status:j.status,jobId:j.id,commit:j.commit,id:j.input.id||'validator',recipeHash:null,expected:'Command completes with exit code 0; this is an execution check, not a scientific claim.',got:{exitCode:j.exitCode,signal:j.signal||null,reason:j.reason},reason:j.reason,command:j.command,hardwareCard:j.hardware||null,recorded:j.ended};
+      const miss={format:1,kind:j.incomplete?'incomplete-evidence':j.interrupted?'interrupted-run':this.stopping?'stopped-run':'command-failure',status:j.status,jobId:j.id,commit:j.commit,id:['technique','plate','print','witness'].includes(j.input.mode)?j.input.id:'validator',recipeHash:null,expected:'Command completes with exit code 0; this is an execution check, not a scientific claim.',got:{exitCode:j.exitCode,signal:j.signal||null,reason:j.reason},reason:j.reason,command:j.command,hardwareCard:j.hardware||null,recorded:j.ended};
       const missed=path.join(this.root,'run/validator/misses');fs.mkdirSync(missed,{recursive:true});
       save(path.join(missed,j.commit+'-validator-'+j.id.toLowerCase()+'.json'),sanitize(miss,this.privacy));
       save(path.join(dir,'miss.json'),sanitize(miss,this.privacy));

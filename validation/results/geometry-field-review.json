@@ -1,0 +1,582 @@
+{
+  "date": "2026-09-22",
+  "scope": "Nine enumerated complete Hopf, Apollonian and finite Weierstrass fields and actual prints; no infinite-series or arbitrary-parameter claim.",
+  "sourceSha256": {
+    "hopf": "62a4457707adf41bb37623379ec36e93e3bc455d11e87cf95aaea2880b86b85a",
+    "apollonian": "78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34",
+    "weierstrass": "62896cc45ed4ef272eed1ec89ca5a0d4977173dc464aa522c5b84fac08ae2e1d"
+  },
+  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "geometry": {
+    "scope": "Bounded geometric maps and sampled integral/support/packing checks; no global immersion proof or physical rolling model.",
+    "sourceSha256": {
+      "hopf": "62a4457707adf41bb37623379ec36e93e3bc455d11e87cf95aaea2880b86b85a",
+      "reuleaux": "179cef420e5bc881718b9904dc73240b446f54178ee8a1f592f786caf710e4f9",
+      "apollonian": "78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34"
+    },
+    "hopf": {
+      "inverseProjectionBaseMaximumError": 1.942890293094024e-15,
+      "links": [
+        {
+          "parameters": [
+            0.8,
+            0.2,
+            2,
+            1.5
+          ],
+          "segments": [
+            90,
+            180,
+            360
+          ],
+          "values": [
+            1.0006598320854907,
+            1.0001648838631072,
+            1.0000412163284351
+          ],
+          "errors": [
+            0.0006598320854906969,
+            0.00016488386310720138,
+            0.00004121632843512302
+          ],
+          "orders": [
+            2.0006487215158257,
+            2.0001623117282485
+          ]
+        },
+        {
+          "parameters": [
+            0.5,
+            2.4,
+            2.6,
+            0.7
+          ],
+          "segments": [
+            90,
+            180,
+            360
+          ],
+          "values": [
+            1.0000988213810742,
+            1.0000243627689929,
+            1.000006069274486
+          ],
+          "errors": [
+            0.00009882138107419891,
+            0.000024362768992869377,
+            0.000006069274486097953
+          ],
+          "orders": [
+            2.020145103675786,
+            2.0050821407368464
+          ]
+        },
+        {
+          "parameters": [
+            1,
+            0.4,
+            2.2,
+            5.1
+          ],
+          "segments": [
+            90,
+            180,
+            360
+          ],
+          "values": [
+            1.0003952138377827,
+            1.0000987501620213,
+            1.0000246842038674
+          ],
+          "errors": [
+            0.00039521383778273744,
+            0.00009875016202132159,
+            0.000024684203867364474
+          ],
+          "orders": [
+            2.0007784411251475,
+            2.0001950002421496
+          ]
+        }
+      ],
+      "orientationReversalResidual": 4.440892098500626e-16,
+      "unlinkedPairIntegral": 4.462402647181398e-18
+    },
+    "reuleaux": {
+      "widths": [
+        {
+          "samplesPerArc": 24,
+          "maximumWidthDeficit": 0.00023775529414060692,
+          "rmsWidthDeficit": 0.00010642591128588456,
+          "rigorousChordBound": 0.00047594584018173514,
+          "polygonArea": 0.7042725413676573,
+          "analyticArea": 0.704770923010458,
+          "areaError": 0.0004983816428006937
+        },
+        {
+          "samplesPerArc": 48,
+          "maximumWidthDeficit": 0.00005948449779014098,
+          "rmsWidthDeficit": 0.000026607114883120064,
+          "rigorousChordBound": 0.00011898999970050284,
+          "polygonArea": 0.704646318703962,
+          "analyticArea": 0.704770923010458,
+          "areaError": 0.00012460430649596788,
+          "observedWidthOrder": 1.9999654567325762
+        },
+        {
+          "samplesPerArc": 96,
+          "maximumWidthDeficit": 0.000014849284919349337,
+          "rmsWidthDeficit": 0.00000665178726290997,
+          "rigorousChordBound": 0.000029747721156825335,
+          "polygonArea": 0.7047397713778226,
+          "analyticArea": 0.704770923010458,
+          "areaError": 0.00003115163263534004,
+          "observedWidthOrder": 1.9999981473104973
+        },
+        {
+          "samplesPerArc": 192,
+          "maximumWidthDeficit": 0.000003713639991076434,
+          "rmsWidthDeficit": 0.0000016629498014837163,
+          "rigorousChordBound": 0.0000074369441163124606,
+          "polygonArea": 0.7047631350675482,
+          "analyticArea": 0.704770923010458,
+          "areaError": 0.000007787942909787127,
+          "observedWidthOrder": 1.999997409699583
+        },
+        {
+          "samplesPerArc": 720,
+          "maximumWidthDeficit": 2.6406425512881526e-7,
+          "rmsWidthDeficit": 1.1825424393432876e-7,
+          "rigorousChordBound": 5.288496638389262e-7,
+          "polygonArea": 0.7047703692004185,
+          "analyticArea": 0.704770923010458,
+          "areaError": 5.538100394941736e-7
+        }
+      ],
+      "straightTriangleFailure": 0.1311120312749935
+    },
+    "apollonian": {
+      "packings": [
+        {
+          "depth": 3,
+          "count": 56,
+          "truncated": false,
+          "maximumOverlap": 1.1102230246251565e-16,
+          "minimumTangentNeighbors": 3,
+          "integerCurvatureCenters": true,
+          "unfilledArea": 0.07406523534480303
+        },
+        {
+          "depth": 5,
+          "count": 214,
+          "truncated": false,
+          "maximumOverlap": 1.1102230246251565e-16,
+          "minimumTangentNeighbors": 3,
+          "integerCurvatureCenters": true,
+          "unfilledArea": 0.03217023329599544
+        },
+        {
+          "depth": 7,
+          "count": 275,
+          "truncated": false,
+          "maximumOverlap": 1.1102230246251565e-16,
+          "minimumTangentNeighbors": 3,
+          "integerCurvatureCenters": true,
+          "unfilledArea": 0.02473863069724125
+        },
+        {
+          "depth": 10,
+          "count": 293,
+          "truncated": false,
+          "maximumOverlap": 1.1102230246251565e-16,
+          "minimumTangentNeighbors": 3,
+          "integerCurvatureCenters": true,
+          "unfilledArea": 0.022840648148536147
+        }
+      ],
+      "incorrectHistoricalSeed": {
+        "maximumOverlap": 0,
+        "minimumTangentNeighbors": 1,
+        "integerCurvatureCenters": true,
+        "unfilledArea": 0.484375
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "hopf",
+      "seed": "geometry-field-hopf-0",
+      "grid": [
+        128,
+        128
+      ],
+      "fieldError": 7.25293136910176e-17,
+      "displacedFieldError": 2.2686457578092813,
+      "metric": 1.0000067284629264,
+      "inverseError": 3.0253577421035516e-15,
+      "fieldSha256": "eae4b9e33310c70b8ce37e43d664876be7a6e12b1dcd0718875dd1bbfc0f56d6",
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 2370322,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "fibres": 12,
+          "twist": 0.1,
+          "kind": "fibres",
+          "view": "int",
+          "exposure": 1,
+          "seed": "geometry-field-hopf-0",
+          "v": 2,
+          "palette": [
+            "#3A2E5C",
+            "#7A4FBF",
+            "#C084FC",
+            "#F7C8E0",
+            "#E6E1F5"
+          ],
+          "bg": "#17141F"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "hopf",
+      "seed": "geometry-field-hopf-1",
+      "grid": [
+        192,
+        240
+      ],
+      "fieldError": 8.811990799729866e-17,
+      "displacedFieldError": 1.5154865384101868,
+      "metric": 1.0000246461257234,
+      "inverseError": 4.218847493575595e-15,
+      "fieldSha256": "aad8ceec43075500dcf2eaa5d58a02ffea9947a46bc8ec25d7116c26f72bf5df",
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 2337000,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "fibres": 36,
+          "twist": 0.35,
+          "kind": "fibres",
+          "view": "int",
+          "exposure": 1,
+          "seed": "geometry-field-hopf-1",
+          "v": 2,
+          "palette": [
+            "#3A2E5C",
+            "#7A4FBF",
+            "#C084FC",
+            "#F7C8E0",
+            "#E6E1F5"
+          ],
+          "bg": "#17141F"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "hopf",
+      "seed": "geometry-field-hopf-2",
+      "grid": [
+        128,
+        72
+      ],
+      "fieldError": 9.242009574716173e-17,
+      "displacedFieldError": 1.2019399404525757,
+      "metric": 1.0000230875159863,
+      "inverseError": 2.2055274273569125e-14,
+      "fieldSha256": "e9e3a86c87735147c2ddfb05a54c39a2161028d18dee8be80de7a3480aad6d5d",
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsChecked": 12960000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 2693502,
+        "params": {
+          "grid": 128,
+          "aspect": "16:9",
+          "fibres": 48,
+          "twist": 0.7,
+          "kind": "tori",
+          "view": "log",
+          "exposure": 1,
+          "seed": "geometry-field-hopf-2",
+          "v": 2,
+          "palette": [
+            "#3A2E5C",
+            "#7A4FBF",
+            "#C084FC",
+            "#F7C8E0",
+            "#E6E1F5"
+          ],
+          "bg": "#17141F"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "apollonian",
+      "seed": "geometry-field-apollonian-0",
+      "grid": [
+        128,
+        128
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 1.350000023841858,
+      "metric": 0.07440521234665587,
+      "circles": 52,
+      "unfilled": 0.07440521234665587,
+      "fieldSha256": "1aa69676c2a1f5d8ead17cfef0e734e81c0be5a4cf2d95afcefbe578352f7cc6",
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 654454,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "depth": 3,
+          "kind": "gen",
+          "view": "int",
+          "exposure": 1,
+          "seed": "geometry-field-apollonian-0",
+          "v": 2,
+          "palette": [
+            "#C4472B",
+            "#E8A33C",
+            "#2E4A62",
+            "#1E1B18",
+            "#FFFBF2"
+          ],
+          "bg": "#F1E8D8"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "apollonian",
+      "seed": "geometry-field-apollonian-1",
+      "grid": [
+        192,
+        240
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 5.367280006408691,
+      "metric": 0.03225347991410166,
+      "circles": 212,
+      "unfilled": 0.03225347991410166,
+      "fieldSha256": "5472cb9fe0c419f04e3c2a035922ebbd4a578463d7f9287f8cdf23c0510ade51",
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 335600,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "depth": 5,
+          "kind": "k",
+          "view": "int",
+          "exposure": 1,
+          "seed": "geometry-field-apollonian-1",
+          "v": 2,
+          "palette": [
+            "#C4472B",
+            "#E8A33C",
+            "#2E4A62",
+            "#1E1B18",
+            "#FFFBF2"
+          ],
+          "bg": "#F1E8D8"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "apollonian",
+      "seed": "geometry-field-apollonian-2",
+      "grid": [
+        128,
+        72
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 1.350000023841858,
+      "metric": 0.04690014079290572,
+      "circles": 77,
+      "unfilled": 0.04690014079290572,
+      "fieldSha256": "6f515d21d8ac44e4da07fa15ed89b1318bf46e89671b8c3989cdc4c0b46a8540",
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsChecked": 12960000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 257417,
+        "params": {
+          "grid": 128,
+          "aspect": "16:9",
+          "depth": 7,
+          "kind": "fill",
+          "view": "log",
+          "exposure": 1,
+          "seed": "geometry-field-apollonian-2",
+          "v": 2,
+          "palette": [
+            "#C4472B",
+            "#E8A33C",
+            "#2E4A62",
+            "#1E1B18",
+            "#FFFBF2"
+          ],
+          "bg": "#F1E8D8"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "weierstrass",
+      "seed": "geometry-field-weierstrass-0",
+      "grid": [
+        128,
+        128
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.20608669519424438,
+      "metric": 1.4110103046711837,
+      "periodError": 3.2127078775090467e-15,
+      "tailViolation": 0,
+      "incrementRatio": 1.4110103046711813,
+      "fieldSha256": "e2649a99b8eb8cd4bbd51637330c07597633aa0c128a43b02d5d7e06391bf882",
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 4194973,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "a": 0.35,
+          "b": 3,
+          "terms": 6,
+          "kind": "field",
+          "view": "int",
+          "exposure": 1,
+          "seed": "geometry-field-weierstrass-0",
+          "v": 2,
+          "palette": [
+            "#1A1A1A",
+            "#4A4A4A",
+            "#8C8C8C",
+            "#C8C4BB",
+            "#E63B2E"
+          ],
+          "bg": "#E9E7E2"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "weierstrass",
+      "seed": "geometry-field-weierstrass-1",
+      "grid": [
+        192,
+        240
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.8632380440831184,
+      "metric": 3.4919722312174133,
+      "periodError": 2.2315482794965646e-14,
+      "tailViolation": 0,
+      "incrementRatio": 3.4919722312174026,
+      "fieldSha256": "8c336f077568fa5e500db171175c5f5c004e9b54b25a2a9e2a461c422601043e",
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 1198900,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "a": 0.5,
+          "b": 5,
+          "terms": 4,
+          "kind": "graph",
+          "view": "int",
+          "exposure": 1,
+          "seed": "geometry-field-weierstrass-1",
+          "v": 2,
+          "palette": [
+            "#1A1A1A",
+            "#4A4A4A",
+            "#8C8C8C",
+            "#C8C4BB",
+            "#E63B2E"
+          ],
+          "bg": "#E9E7E2"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "weierstrass",
+      "seed": "geometry-field-weierstrass-2",
+      "grid": [
+        128,
+        72
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.9748127404600382,
+      "metric": 4.2520485941136785,
+      "periodError": 2.7533531010703882e-14,
+      "tailViolation": 0,
+      "incrementRatio": 4.252048594113678,
+      "fieldSha256": "dc06fbc36283ee1e0236042129631794e0eaa26f4bc88aa19b4a63c397305045",
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsChecked": 12960000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 961065,
+        "params": {
+          "grid": 128,
+          "aspect": "16:9",
+          "a": 0.65,
+          "b": 3,
+          "terms": 5,
+          "kind": "rough",
+          "view": "log",
+          "exposure": 1,
+          "seed": "geometry-field-weierstrass-2",
+          "v": 2,
+          "palette": [
+            "#1A1A1A",
+            "#4A4A4A",
+            "#8C8C8C",
+            "#C8C4BB",
+            "#E63B2E"
+          ],
+          "bg": "#E9E7E2"
+        }
+      },
+      "statePreserved": true
+    }
+  ],
+  "environment": {
+    "node": "v24.21.0",
+    "chromium": "145.0.7632.6",
+    "platform": "darwin"
+  },
+  "passed": true
+}

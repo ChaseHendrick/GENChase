@@ -19,6 +19,7 @@
     "validator": "node apps/validate/server.js",
     "test:validator": "node --test apps/validate/*.test.js",
     "validator:headless": "node apps/validate/cli.js",
-    "test:navigation": "node tools/studio-navigation-check.js"
+    "test:navigation": "node tools/studio-navigation-check.js",
+    "test:validator:ui": "node tools/validator-ui-check.js && node tools/validator-ux-check.js"
   }
 }

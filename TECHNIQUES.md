@@ -87,7 +87,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Turing Patterns**<br><sub>spots, stripes and hexagons from two chemicals · 1952</sub> | `#turing/turing-1952` | Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v | raster | live | Common |
 | **Holomorphic dynamics**<br><sub>escape-time and Newton basins in the complex plane · 1918</sub> | `#holomorphic/julia-1918` | z ← z² + c   (Mandelbrot, Julia);   z ← z − a p(z)/p′(z)   (Newton);   z ← (\|Re z\| + i\|Im z\|)² + c   (Burning Ship) | raster | still | Ubiquitous |
 | **Klein Tunnel**<br><sub>a barrier a Dirac electron does not notice · 1929 / 2006</sub> | `#klein` | H = v_F σ · p + V(x),   T(θ=0) = 1  (massless) | raster | still | Occasional |
-| **Gyroid**<br><sub>a sponge of zero mean curvature · 1970</sub> | `#gyroid` | sin x cos y + sin y cos z + sin z cos x = 0,   H = 0 | raster | still | Occasional |
+| **Gyroid**<br><sub>a periodic nodal approximation · 1970 / 2001</sub> | `#gyroid` | F = sin x cos y + sin y cos z + sin z cos x; F = level; H = ½ div(∇F/\|∇F\|) | raster | still | Occasional |
 | **Dendritic Growth**<br><sub>phase-field solidification: snowflakes and metal dendrites · 1993</sub> | `#dendrite` | τ p_t = ∇·(ε(θ)²∇p) + ∂x(ε ε′ p_y) − ∂y(ε ε′ p_x) + p(1−p)(p − ½ + m);   T_t = ∇²T + K p_t | raster | live | Common |
 | **Purcell Swimmer**<br><sub>a scallop cannot swim in molasses · 1977</sub> | `#purcell` | Re → 0,   scallop theorem: a reciprocal gait gives Δx = 0,   three-link square gait: Δx ≠ 0 | raster | still | Rare |
 | **Exceptional Point**<br><sub>two eigenvectors become one · 1998</sub> | `#exceptional` | H = [[iγ, κ],[κ, −iγ]],   λ = ±√(κ²−γ²),   EP at γ = κ | raster | still | Almost unseen |
@@ -106,12 +106,12 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Airy Beam**<br><sub>a wave packet that accelerates with no force · 1979</sub> | `#airy` | ψ(x,z) = Ai(x − z²/4 + i a) exp(a x − a z²/2 + i(x z/2 − z³/12)),   x_peak = z²/4 | raster | still | Occasional |
 | **Chirikov map**<br><sub>standard map · KAM islands in a chaotic sea · 1969</sub> | `#chirikov/chirikov-1969` | pₙ₊₁ = pₙ + K sin θₙ,   θₙ₊₁ = θₙ + pₙ₊₁   (mod 2π) | raster | live | Occasional |
 | **Hofstadter butterfly**<br><sub>almost-Mathieu spectrum · 1976</sub> | `#hofstadter/hofstadter-1976` | ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ | raster | still | Occasional |
-| **Weierstrass**<br><sub>a curve with no tangent anywhere · 1872</sub> | `#weierstrass` | W(x) = Σ_{n=0}^∞ a^n cos(b^n π x),   0<a<1,   ab > 1 + 3π/2  ⇒  nowhere differentiable | raster | still | Occasional |
+| **Weierstrass**<br><sub>finite lacunary Fourier sums · inspired by 1872</sub> | `#weierstrass` | W_N(x) = Σ_{n=0}^{N−1} a^n cos(b^n π x + φ_n),   0<a<1,   N finite; seeded phases | raster | still | Occasional |
 | **Helmholtz scars**<br><sub>stadium and cardioid eigenmodes · Heller 1984</sub> | `#scars/heller-1984` | ∇²ψ + k² ψ = 0  on Ω,   ψ = 0 on ∂Ω | raster | can run | Occasional |
 | **Kitaev Chain**<br><sub>a fermion that is its own antiparticle, stuck to the ends · 2001</sub> | `#kitaev` | H = −μ Σ c†c − t Σ (c†_i c_{i+1}+h.c.) + Δ Σ (c_i c_{i+1}+h.c.),   \|μ\|<2t ⇒ unpaired γ_L, γ_R | raster | still | Rare |
 | **Optical caustics**<br><sub>folds and cusps of a light field · Berry</sub> | `#caustics/berry-caustic` | X = x + s ∇h(x),   I(X) = Σ 1 / \|det(I + s Hess h)\| | raster | still | Common |
 | **Veselago Lens**<br><sub>a slab that focuses because n is negative · 1968</sub> | `#veselago` | n₁ sin θ₁ = n₂ sin θ₂,   n₂ = −1  ⇒  θ₂ = −θ₁,   image at 2L − d | raster | still | Rare |
-| **Devil's Staircase**<br><sub>a staircase constant almost everywhere that still climbs · 1965</sub> | `#devil` | θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil's staircase) | raster | still | Rare |
+| **Devil's Staircase**<br><sub>finite-time circle-map rotation estimates · 1965</sub> | `#devil` | θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil's staircase) | raster | still | Rare |
 | **Talbot carpet**<br><sub>near-field self-imaging · 1836</sub> | `#talbot/talbot-1836` | I(x,z) = \|Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)\|²,   z_T = 2 d²/λ | raster | still | Occasional |
 | **Hydrogen orbitals**<br><sub>hydrogen atom probability density \|ψₙₗₘ\|² · 1926</sub> | `#orbitals/schrodinger-1926` | ψₙₗₘ = Rₙₗ(r) Yₗₘ(θ, φ),   Rₙₗ ∝ ρˡ e^{−ρ/2} L²ˡ⁺¹ₙ₋ₗ₋₁(ρ),   ρ = 2r / n a₀ | raster | still | Common |
 | **Loschmidt Echo**<br><sub>a gas that unmixes when you flip every arrow · 1876</sub> | `#loschmidt` | x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1 | raster | still | Rare |
@@ -299,7 +299,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Klein Tunnel**. O. Klein, Z. Phys. 53, 157 (1929), found that a relativistic electron can pass a tall barrier as if it were not there. Katsnelson, Novoselov and Geim, Nature Phys. 2, 620 (2006), showed the same for graphene at normal incidence: chirality forbids backscattering. The plate is \|ψ\|² of a 2-component Dirac wave on a line, stacked in time, not a carbon lattice.
 
-**Gyroid**. A. H. Schoen, NASA Technical Note D-5541 (1970), found the gyroid, a triply periodic minimal surface of genus 3 in the cubic cell, with no embedded straight lines. Its mean curvature vanishes. Butterfly-wing scales and block-copolymer melts later grew it for free. The plate is a 2-D slice of the level set, not a 3-D print.
+**Gyroid**. A. H. Schoen, NASA Technical Note D-5541 (1970), discovered the exact gyroid minimal surface. This module uses a three-term trigonometric nodal approximation, as distinguished from exact minimal geometry by Gandy, Bardhan, Mackay and Klinowski, Chemical Physics Letters 336, 187-195 (2001), doi:10.1016/S0009-2614(00)01418-4.
 
 **Dendritic Growth**. Ryo Kobayashi, 'Modeling and numerical simulations of dendritic crystal growth', Physica D 63 (1993) 410–423.
 
@@ -337,7 +337,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Hofstadter butterfly**. Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron colored them. At rational α=p/q the Harper matrix is q×q.
 
-**Weierstrass**. K. Weierstrass, presented to the Prussian Academy in 1872 (published 1875). Analysts had assumed a continuous function was differentiable except at isolated points; Weierstrass wrote a Fourier series that is continuous everywhere and differentiable nowhere. Hardy (1916) weakened the condition to ab ≥ 1. The plate is a finite truncation of that series, in one and two dimensions.
+**Weierstrass**. K. Weierstrass, presented to the Prussian Academy in 1872 (published 1875). Analysts had assumed a continuous function was differentiable except at isolated points; Weierstrass wrote a Fourier series that is continuous everywhere and differentiable nowhere. Hardy (1916) weakened the condition to ab ≥ 1. The plate uses a finite, seeded phase-shifted sum inspired by that series. Each finite sum is smooth; the classical infinite-series theorem is not established for this displayed field.
 
 **Helmholtz scars**. Eric J. Heller, Phys. Rev. Lett. 53, 1515 (1984). In a classically chaotic billiard the high eigenfunctions of the Dirichlet Laplacian are usually ergodic — and yet some sit, as scars, along unstable periodic orbits. The Bunimovich stadium and the cardioid are the textbook domains. Inverse iteration of the discrete Laplacian with a Weyl shift yields a mode near index n.
 
@@ -347,7 +347,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Veselago Lens**. V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968), asked what optics would do if ε and μ were both negative: a left-handed medium, a reversed Doppler shift, and a slab that acts as a lens. Pendry, Phys. Rev. Lett. 85, 3966 (2000), showed the same slab can amplify evanescent waves and beat the diffraction limit. The plate traces geometric rays through n < 0, not a fabricated metamaterial.
 
-**Devil's Staircase**. V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), on the tongues of a driven oscillator; the circle map is the standard example. At K = 1 the rotation number as a function of Ω is a devil's staircase: constant on a fat Cantor set of locked intervals (the Farey sequence of p/q), yet strictly increasing. B. B. Mandelbrot named the staircase. The plate is ρ(Ω, K) or ρ(Ω) itself.
+**Devil's Staircase**. V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), studied the circle-map resonance tongues. This plate evaluates the standard sine circle map with a fixed initial phase. The rotation number is an infinite-time quantity; the plate displays finite-time estimates. For non-monotone maps, different initial phases can have different long-time rotation behavior.
 
 **Talbot carpet**. H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T and as a half-period image at z_T/2. Between, the near field is a carpet of fractional revivals — a plot of I(x,z) is one of the most intricate figures in wave optics.
 

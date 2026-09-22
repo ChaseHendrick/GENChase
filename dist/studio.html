@@ -2000,7 +2000,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "phyllotaxis",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
+    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
     "reference": "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). Primordia appear on a growing disc at the minimum of an inhibitory field left by the previous ones, then ride outward. The divergence angle converges on the golden angle 137.5° for a wide interval of the control parameter, which is how sunflowers count Fibonacci without counting.",
     "equation": "new primordium at argmin_θ Σᵢ exp(−|x(θ) − xᵢ| / λ) on the meristem ring",
     "status": "unvalidated",
@@ -2019,7 +2019,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "hl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
+    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
     "reference": "M. B. Hastings and L. S. Levitov, Physica D 116, 244 (1998). Laplacian growth (viscous fingering, DLA in a limit) as iterated conformal maps of the exterior disk. α=0 grows a disk; α=2 is DLA-like; the transition at α=1 is sharp. Each particle is a slit map of capacity c composed onto the cluster.",
     "equation": "Φₙ = Φₙ₋₁ ∘ f_{θₙ,cₙ},   cₙ ∝ |Φ′(e^{iθ})|^{−α}",
     "status": "unvalidated",
@@ -2038,7 +2038,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "lichtenberg",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
+    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
     "reference": "L. Niemeyer, L. Pietronero and H. J. Wiesmann, Phys. Rev. Lett. 52, 1033 (1984). The dielectric breakdown model grows a cluster where the harmonic potential of the Laplace equation, raised to η, is the attachment probability. η=1 is DLA; η→∞ is a ballistic needle; lightning lives in between.",
     "equation": "∇²φ = 0,   P(i) ∝ φᵢ^η  on the growth interface",
     "status": "unvalidated",
@@ -2057,7 +2057,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "snowflake",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
+    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
     "reference": "Janko Gravner and David Griffeath, Physica D 237, 385 (2008); Phys. Rev. E 79, 011601 (2009). A hexagonal lattice map with three masses — vapor, quasi-liquid, ice — that combines diffusion-limited aggregation with anisotropic attachment and a quasi-liquid layer. It is the first local model to grow plates, sectored plates, stellar dendrites and ferns that look like Nakaya’s atlas, not like a cartoon star.",
     "equation": "diffusion of vapor on Aᶜ;  freeze κ;  attach by (n, b, α, β, θ);  melt μ, γ",
     "status": "unvalidated",
@@ -2654,14 +2654,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "63a5c263919c63e7d5bd224cde99e16a17ace1f61e6ffb88030d8fc1f8b42834",
     "reference": "D. H. Peregrine, J. Austral. Math. Soc. Ser. B 25, 16 (1983). Akhmediev, Eleonskii and Kulagin (1987); Kuznetsov (1977) and Ma (1979). Draupner measured a rogue wave in 1995. Formula conventions: Haragus and Pelinovsky, arXiv:2112.14426, Eqs1.1–1.4. The plate samples these established analytic solutions.",
     "equation": "i ψ_t + ½ ψ_xx + |ψ|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   |ψ|²_max / |ψ|²_∞ = 9",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The independent audit samples the exact analytic fields and checks the stated normalized NLS residual, peaks and periods; it does not integrate the browser solver or establish physical ocean accuracy.",
-      "The finite plate samples a bounded window and does not prove the solution for every parameter or export resolution."
+      "The completed label covers the enumerated recipes in validation/ANALYTIC-FIELD-REVIEW.md, not every parameter or renderer.",
+      "These are analytic solution samples, not independent time integration, physical experiments or a global proof. Finite grids and windows can miss peaks, mass or energy tails.",
+      "PNG enlargement adds no field resolution. Other exports, captions, smoothing and printer calibration are outside this review."
     ],
     "remaining": [
-      "Add an independent browser print-state check for all views and representative windows.",
-      "Review the rendered field and parameter limits against the primary sources before considering a stronger status."
+      "Extend the reviewed recipe and hardware domain with additional independent evidence."
     ],
     "numerical": [
       {
@@ -2673,9 +2673,38 @@ shall not be misrepresented as the original profile.
         "failureControl": "Use the old dispersion coefficient and additive KdV-style pulses; both produce residual failures.",
         "command": "node tools/analytic-wave-science.js --write",
         "results": "validation/results/analytic-wave-science.json"
+      },
+      {
+        "test": "tools/analytic-field-review.js",
+        "command": "node tools/analytic-field-review.js --write",
+        "results": "validation/results/analytic-field-review.json",
+        "scope": "Complete analytic fields, sampled diagnostics and every actual PNG pixel for the module recipes enumerated in validation/ANALYTIC-FIELD-REVIEW.md.",
+        "criteria": "Field error \u003c2e-6, diagnostic error \u003c1e-7, every PNG channel error \u003c=1, state preserved; existing PDE residual and invariant checks pass.",
+        "benchmark": "Independent gauge-invariant NLS intensities, direct Hirota tau derivatives, and atan2 breather with finite-difference physical energy; independent print color/cell mapping.",
+        "failureControl": "One-cell displacement fails fields and print; prior equation checks reject wrong dispersion, absent interaction or perturbed frequency.",
+        "limitations": "Only the enumerated finite recipes, recorded Chromium and caption-free unsmoothed PNG; no physical accuracy or all-parameter claim."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/analytic-field-review.js",
+        "command": "node tools/analytic-field-review.js --write",
+        "results": "validation/results/analytic-field-review.json",
+        "scope": "Complete analytic fields, sampled diagnostics and every actual PNG pixel for the module recipes enumerated in validation/ANALYTIC-FIELD-REVIEW.md.",
+        "criteria": "Field error \u003c2e-6, diagnostic error \u003c1e-7, every PNG channel error \u003c=1, state preserved; existing PDE residual and invariant checks pass.",
+        "benchmark": "Independent gauge-invariant NLS intensities, direct Hirota tau derivatives, and atan2 breather with finite-difference physical energy; independent print color/cell mapping.",
+        "failureControl": "One-cell displacement fails fields and print; prior equation checks reject wrong dispersion, absent interaction or perturbed frequency.",
+        "limitations": "Only the enumerated finite recipes, recorded Chromium and caption-free unsmoothed PNG; no physical accuracy or all-parameter claim."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/analytic-field-review.json",
+    "domain": {
+      "parameters": "Exactly the rogue recipes and recorded effective parameters in validation/results/analytic-field-review.json.",
+      "conditions": "Analytic spacetime sampling, finite windows and no PDE time integrator; details in validation/ANALYTIC-FIELD-REVIEW.md. Static export preserves recipe and field.",
+      "resolution": "Grids 128,192 or224 with recorded aspect-dependent height; all cells and all PNG pixels, longest edge2400; independent residual convergence over three difference steps.",
+      "precision": "Binary64 reference and diagnostics, Float32 field, RGBA8 print. Field error\u003c2e-6, diagnostic error\u003c1e-7, every channel\u003c=1 byte."
+    }
   },
   {
     "id": "aharonov",
@@ -2850,14 +2879,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "37cf9cfbd76b979fdaa91eaf9dc6b98b4c3d130304076f7abfc3242597cddb1e",
     "reference": "J. S. Russell, Report of the 14th Meeting of the British Association (1844), chased a heap of water that would not spread. Korteweg and de Vries (1895) wrote the equation. Zabusky and Kruskal, Phys. Rev. Lett. 15, 240 (1965), collided two and named them solitons. The plate evaluates the established Hirota two-soliton tau function, including its interaction term; Benes, Kasman and Young, On Decompositions of the KdV 2-Soliton (2006), provide a reference.",
     "equation": "u_t + 6 u u_x + ν² u_xxx = 0; u = 2ν² ∂xx log τ, τ = 1+e^η1+e^η2+A12 e^(η1+η2)",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The independent audit checks the exact Hirota two-soliton map against the KdV residual, mass and phase shift; it does not integrate the browser solver or establish physical shallow-water accuracy.",
-      "The finite plate samples a bounded window and does not prove the solution for every parameter or export resolution."
+      "The completed label covers the enumerated recipes in validation/ANALYTIC-FIELD-REVIEW.md, not every parameter or renderer.",
+      "These are analytic solution samples, not independent time integration, physical experiments or a global proof. Finite grids and windows can miss peaks, mass or energy tails.",
+      "PNG enlargement adds no field resolution. Other exports, captions, smoothing and printer calibration are outside this review."
     ],
     "remaining": [
-      "Add an independent browser print-state check for all views and representative windows.",
-      "Review the rendered field and parameter limits against the primary sources before considering a stronger status."
+      "Extend the reviewed recipe and hardware domain with additional independent evidence."
     ],
     "numerical": [
       {
@@ -2869,9 +2898,38 @@ shall not be misrepresented as the original profile.
         "failureControl": "Replace the tau-function interaction with a sum of two independent sech² pulses; the residual must fail.",
         "command": "node tools/analytic-wave-science.js --write",
         "results": "validation/results/analytic-wave-science.json"
+      },
+      {
+        "test": "tools/analytic-field-review.js",
+        "command": "node tools/analytic-field-review.js --write",
+        "results": "validation/results/analytic-field-review.json",
+        "scope": "Complete analytic fields, sampled diagnostics and every actual PNG pixel for the module recipes enumerated in validation/ANALYTIC-FIELD-REVIEW.md.",
+        "criteria": "Field error \u003c2e-6, diagnostic error \u003c1e-7, every PNG channel error \u003c=1, state preserved; existing PDE residual and invariant checks pass.",
+        "benchmark": "Independent gauge-invariant NLS intensities, direct Hirota tau derivatives, and atan2 breather with finite-difference physical energy; independent print color/cell mapping.",
+        "failureControl": "One-cell displacement fails fields and print; prior equation checks reject wrong dispersion, absent interaction or perturbed frequency.",
+        "limitations": "Only the enumerated finite recipes, recorded Chromium and caption-free unsmoothed PNG; no physical accuracy or all-parameter claim."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/analytic-field-review.js",
+        "command": "node tools/analytic-field-review.js --write",
+        "results": "validation/results/analytic-field-review.json",
+        "scope": "Complete analytic fields, sampled diagnostics and every actual PNG pixel for the module recipes enumerated in validation/ANALYTIC-FIELD-REVIEW.md.",
+        "criteria": "Field error \u003c2e-6, diagnostic error \u003c1e-7, every PNG channel error \u003c=1, state preserved; existing PDE residual and invariant checks pass.",
+        "benchmark": "Independent gauge-invariant NLS intensities, direct Hirota tau derivatives, and atan2 breather with finite-difference physical energy; independent print color/cell mapping.",
+        "failureControl": "One-cell displacement fails fields and print; prior equation checks reject wrong dispersion, absent interaction or perturbed frequency.",
+        "limitations": "Only the enumerated finite recipes, recorded Chromium and caption-free unsmoothed PNG; no physical accuracy or all-parameter claim."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/analytic-field-review.json",
+    "domain": {
+      "parameters": "Exactly the soliton recipes and recorded effective parameters in validation/results/analytic-field-review.json.",
+      "conditions": "Analytic spacetime sampling, finite windows and no PDE time integrator; details in validation/ANALYTIC-FIELD-REVIEW.md. Static export preserves recipe and field.",
+      "resolution": "Grids 128,192 or224 with recorded aspect-dependent height; all cells and all PNG pixels, longest edge2400; independent residual convergence over three difference steps.",
+      "precision": "Binary64 reference and diagnostics, Float32 field, RGBA8 print. Field error\u003c2e-6, diagnostic error\u003c1e-7, every channel\u003c=1 byte."
+    }
   },
   {
     "id": "cyclicca",
@@ -3116,14 +3174,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "62a4457707adf41bb37623379ec36e93e3bc455d11e87cf95aaea2880b86b85a",
     "reference": "H. Hopf, Math. Ann. 104, 637 (1931). The third homotopy group of the 2-sphere is not zero: π₃(S²) = ℤ, generated by this map. Stereographic projection from S³ turns the fibres into a nesting of linked circles in R³, then onto the plate. No two fibres are unlinked.",
     "equation": "η: S³ → S²,   η(z1,z2) = (2 z1 z2-bar, |z1|²-|z2|²),   fibres = circles,   lk = 1",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The independent audit checks inverse stereographic projection, sampled Gauss linking and orientation controls; it does not prove a continuous embedding for every parameter or validate the plate renderer.",
-      "Numerical linking estimates are finite polygon quadratures and have no physical-unit interpretation."
+      "The completed label covers only three explicitly enumerated finite field/print recipes for this module.",
+      "Print magnification adds no underlying resolution. Unlisted recipes, captions, smoothing, other formats, physical printer calibration and other hardware are excluded.",
+      "Finite projection/packing checks do not certify all infinite geometric objects or every configuration."
     ],
     "remaining": [
-      "Add an independent browser print-state check for the projected fibres and views.",
-      "Review projection clipping and fibre parameter limits against the cited topology references."
+      "Extend recipes, rendering modes, resolutions and hardware only with further independent evidence."
     ],
     "numerical": [
       {
@@ -3135,9 +3193,38 @@ shall not be misrepresented as the original profile.
         "failureControl": "Reverse one fibre and replace it with a translated planar circle; sign and near-zero controls must change as expected.",
         "command": "node tools/geometry-science.js --write",
         "results": "validation/results/geometry-science.json"
+      },
+      {
+        "test": "tools/geometry-field-review.js",
+        "command": "node tools/geometry-field-review.js --write",
+        "results": "validation/results/geometry-field-review.json",
+        "scope": "Three complete recipes per module, defined in validation/GEOMETRY-FIELD-REVIEW.md.",
+        "criteria": "Every field value error \u003c2e-6, every engine PNG channel error \u003c=1, unchanged scientific state. Module-specific geometric, exact-tail, period and diagnostic checks also pass.",
+        "benchmark": "Independent sphere lift/Hopf map and density deposition; quadratic Descartes construction and full-pixel circle classification; complex-angle finite Fourier sums with period/tail bounds. Independent print color mapping.",
+        "failureControl": "Displaced full field and displaced print must fail. Existing geometry controls include reversed orientation, unlinked circles and an incorrect Apollonian seed.",
+        "limitations": "Only the three enumerated finite recipes for each module and recorded Chromium; excludes unlisted views, singular limits, infinite-object and physical claims."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/geometry-field-review.js",
+        "command": "node tools/geometry-field-review.js --write",
+        "results": "validation/results/geometry-field-review.json",
+        "scope": "Three complete recipes per module, defined in validation/GEOMETRY-FIELD-REVIEW.md.",
+        "criteria": "Every field value error \u003c2e-6, every engine PNG channel error \u003c=1, unchanged scientific state. Module-specific geometric, exact-tail, period and diagnostic checks also pass.",
+        "benchmark": "Independent sphere lift/Hopf map and density deposition; quadratic Descartes construction and full-pixel circle classification; complex-angle finite Fourier sums with period/tail bounds. Independent print color mapping.",
+        "failureControl": "Displaced full field and displaced print must fail. Existing geometry controls include reversed orientation, unlinked circles and an incorrect Apollonian seed.",
+        "limitations": "Only the three enumerated finite recipes for each module and recorded Chromium; excludes unlisted views, singular limits, infinite-object and physical claims."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/geometry-field-review.json",
+    "domain": {
+      "parameters": "Exactly the three recipes for this module in validation/results/geometry-field-review.json and validation/GEOMETRY-FIELD-REVIEW.md.",
+      "conditions": "Finite static constructions with recorded seeds: Hopf fibers on S3, unit-disk Apollonian seed, or finite phase-shifted Fourier sums. Caption-free 8-inch 300-ppi PNG, smoothing off.",
+      "resolution": "Grids 128 or 192 with recorded aspect-dependent height; every field value and every exported pixel, longest edge 2400 pixels. Geometric refinement and finite-series tail checks documented.",
+      "precision": "Binary64 references, Float32 fields and RGBA8 exports. Field error \u003c2e-6 and print-channel error \u003c=1; module-specific invariant tolerances and environment recorded."
+    }
   },
   {
     "id": "swift",
@@ -3216,7 +3303,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "lp",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
+    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
     "reference": "Ron Lifshitz and Dean M. Petrich, Phys. Rev. Lett. 79, 1261 (1997). Faraday waves with two frequencies impose two length scales. The free energy with operator (∇²+1)²(∇²+q²)² and a quadratic term is enough to stabilize a dodecagonal quasicrystal when q = 2 cos(π/12) ≈ 1.932. Hexagons and stripes are the other ground states. This plate is a semi-implicit spectral integration of that PDE.",
     "equation": "∂tψ = εψ − (∇²+1)²(∇²+q²)²ψ + α ψ² − ψ³,   q = 2 cos(π/12)",
     "status": "unvalidated",
@@ -3273,22 +3360,50 @@ shall not be misrepresented as the original profile.
   {
     "id": "cgl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
+    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
     "reference": "The complex Ginzburg–Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969–71). The (α, β) plane was mapped by Aranson and Kramer: Benjamin–Feir when 1+αβ\u003c0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.",
     "equation": "∂A/∂t = μA + (1 + iα) ∇²A − (1 + iβ) |A|² A",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
-      "Numerical correction changes previous recipes. Bounded production-kernel checks and remaining limitations are documented in validation/GL-CORRECTIONS.md; these do not establish full paper accuracy or promote scientific status."
+      "Complete review covers four enumerated noise-free field/print recipes at physical time 1 in SwiftShader RGBA32F.",
+      "Noise, ongoing animation, long-time chaotic statistics, half-float hardware, other GPUs, phase views and general continuum accuracy are excluded. Defect intensity is not a calibrated defect count.",
+      "Small-angle GPU rotation correction changes existing recipes. The original full-field error failed the unchanged tolerance; corrected results and the reproduction are documented in validation/GL-FIELD-REVIEW.md."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend physical time, noisy dynamics, rendering modes and hardware only with additional independent evidence."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/cgl-field-review.js",
+        "command": "node tools/cgl-field-review.js --write",
+        "results": "validation/results/cgl-field-review.json",
+        "scope": "Four complete deterministic CGL lattice fields and their actual engine prints at physical time 1, documented in validation/GL-FIELD-REVIEW.md.",
+        "criteria": "Every complex field component error \u003c1e-4; analytic Fourier-mode refinement with ratios >1.7; 101 small-angle rotations accurate within 1e-7; every exported RGB channel error \u003c=2; opaque alpha and unchanged field/recipe.",
+        "benchmark": "Independent binary64 CPU periodic local-flow/diffusion solver and independently constructed initial fields; exact semidiscrete nonlinear Fourier-mode solutions; independent cardinal-cubic interpolation and color mapping of checked fields.",
+        "failureControl": "Wrong dispersion sign fails the analytic benchmark; unsafe Nyquist timestep grows; one-cell shifted image fails print comparison. Small-angle rotation regression detects inaccurate GPU rotations.",
+        "limitations": "Four deterministic noise-free short-time lattice recipes, recorded SwiftShader RGBA32F only; no chaotic statistics, continuum convergence, phase-view or arbitrary-parameter certification."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/cgl-field-review.js",
+        "command": "node tools/cgl-field-review.js --write",
+        "results": "validation/results/cgl-field-review.json",
+        "scope": "Four complete deterministic CGL lattice fields and their actual engine prints at physical time 1, documented in validation/GL-FIELD-REVIEW.md.",
+        "criteria": "Every complex field component error \u003c1e-4; analytic Fourier-mode refinement with ratios >1.7; 101 small-angle rotations accurate within 1e-7; every exported RGB channel error \u003c=2; opaque alpha and unchanged field/recipe.",
+        "benchmark": "Independent binary64 CPU periodic local-flow/diffusion solver and independently constructed initial fields; exact semidiscrete nonlinear Fourier-mode solutions; independent cardinal-cubic interpolation and color mapping of checked fields.",
+        "failureControl": "Wrong dispersion sign fails the analytic benchmark; unsafe Nyquist timestep grows; one-cell shifted image fails print comparison. Small-angle rotation regression detects inaccurate GPU rotations.",
+        "limitations": "Four deterministic noise-free short-time lattice recipes, recorded SwiftShader RGBA32F only; no chaotic statistics, continuum convergence, phase-view or arbitrary-parameter certification."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/cgl-field-review.json",
+    "domain": {
+      "parameters": "Exactly four complete recipes in validation/results/cgl-field-review.json, grid 128, wave/vortex/spiral initial fields, amplitude/real/defect-intensity views and four specified aspect ratios.",
+      "conditions": "Periodic unit lattice; no noise or grain; stopped animation; 50 macrosteps of 0.02 to time 1, with derived substeps. Caption-free 8-inch 300-ppi PNG, optional smoothing off.",
+      "resolution": "Every RGBA32F complex field component and every RGB print channel; 2400-pixel longest edge. Analytic semidiscrete Fourier-mode time refinement at 0.02, 0.01 and 0.005.",
+      "precision": "GPU RGBA32F evolution versus independent binary64 reference: component error \u003c1e-4. CPU reference print mapping versus RGBA8 export: per-channel error \u003c=2. SwiftShader version and observed errors recorded."
+    }
   },
   {
     "id": "vortex",
@@ -3296,19 +3411,48 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "fc8e66a17fe114da9a663f0827171ea70461c784e10802fac2bbd3d2205027f0",
     "reference": "A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. This plate is a reduced fixed-field Ginzburg-Landau relaxation with unit-modulus lattice links in Landau gauge and zero order parameter at the boundary. It does not evolve the magnetic field or establish critical fields.",
     "equation": "∂ψ/∂t = κ⁻²(∇ − iA)²ψ + (1 − |ψ|²)ψ,   A = (−0.08 B y, 0),   Δx = 1",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
-      "Numerical correction changes previous recipes. Bounded production-kernel checks and remaining limitations are documented in validation/GL-CORRECTIONS.md; these do not establish full paper accuracy or promote scientific status."
+      "Complete review covers exactly four recorded field and print recipes, not arbitrary settings or the full Abrikosov electromagnetic model.",
+      "Unit grid spacing with zero order parameter at the edges and fixed external field; grid size changes domain size, not mesh resolution.",
+      "Winding counts, critical fields, screening, type-I/type-II transitions, hexagonal equilibrium, physical calibration and continuum convergence are not validated."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend time, recipes, hardware and boundary domains only with further reviewed evidence.",
+      "Calibrate winding diagnostics separately before making quantitative physical claims."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/vortex-field-review.js",
+        "command": "node tools/vortex-field-review.js --write",
+        "results": "validation/results/vortex-field-review.json",
+        "scope": "Four complete fixed-field GL lattice recipes and their actual engine prints, defined in validation/GL-FIELD-REVIEW.md.",
+        "criteria": "Every complex coordinate error \u003c1e-11, stored density error \u003c1e-7, zero edges, bounded amplitude; first-order eigenmode refinement; every print channel error \u003c=1; unchanged field and recipe.",
+        "benchmark": "Independent binary64 complex-link stencil and local flow from the seeded initial arrays; analytic Dirichlet eigenmode; independent density-to-color and nearest-neighbor print mapping.",
+        "failureControl": "Reversed magnetic flux disagrees with independent kernel; one-cell shifted print disagrees with image; instability and nonfinite values fail assertions.",
+        "limitations": "Only four enumerated recipes on a fixed unit grid, in recorded Chromium; no magnetic screening, physical vortex-count, continuum or equilibrium claim."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/vortex-field-review.js",
+        "command": "node tools/vortex-field-review.js --write",
+        "results": "validation/results/vortex-field-review.json",
+        "scope": "Four complete fixed-field GL lattice recipes and their actual engine prints, defined in validation/GL-FIELD-REVIEW.md.",
+        "criteria": "Every complex coordinate error \u003c1e-11, stored density error \u003c1e-7, zero edges, bounded amplitude; first-order eigenmode refinement; every print channel error \u003c=1; unchanged field and recipe.",
+        "benchmark": "Independent binary64 complex-link stencil and local flow from the seeded initial arrays; analytic Dirichlet eigenmode; independent density-to-color and nearest-neighbor print mapping.",
+        "failureControl": "Reversed magnetic flux disagrees with independent kernel; one-cell shifted print disagrees with image; instability and nonfinite values fail assertions.",
+        "limitations": "Only four enumerated recipes on a fixed unit grid, in recorded Chromium; no magnetic screening, physical vortex-count, continuum or equilibrium claim."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/vortex-field-review.json",
+    "domain": {
+      "parameters": "Four fully enumerated seeds/recipes in validation/results/vortex-field-review.json; grid 96 or 128, B 0.4/1.4/2.6/3.2, kappa 0.5/1.6/2.2/4, intensity or log view.",
+      "conditions": "Fixed-field unit-spaced GL lattice, zero order parameter edges and recorded seeded initial fields; macrostep 0.12, total times 3.6, 10.8 or 14.4; 8-inch 300-ppi PNG without captions or smoothing.",
+      "resolution": "Every complex lattice component, Float32 density and exported RGBA channel; actual grids recorded per aspect; 2400-pixel longest-edge prints. Independent small-amplitude eigenmode time refinement at 0.02/0.01/0.005.",
+      "precision": "Binary64 evolution, Float32 density, RGBA8 raster; complete-field complex error \u003c1e-11, density error \u003c1e-7, per-channel print error \u003c=1. Environment and observed errors recorded."
+    }
   },
   {
     "id": "nematic",
@@ -3445,17 +3589,17 @@ shall not be misrepresented as the original profile.
   {
     "id": "breather",
     "source": "src/modules/breather.js",
-    "sourceSha256": "8d955572de4bd69b44164c0edd3e7ae4184c8d226caa72a2e0d825e3356b4578",
+    "sourceSha256": "09aab868ea80869b383f11d53275eaa86dd914f926be6cf446ce304f5c7c4879",
     "reference": "The sine-Gordon breather is an exact, time-periodic, spatially localised solution; see Seeger, Donth and Kochendörfer (1953) and the inverse-scattering account of Faddeev and Takhtajan. Linear waves radiate. This one does not: the envelope sech(β x) holds a bound oscillation forever. The plate is spacetime of u.",
     "equation": "u_tt − u_xx + sin u = 0,   u = 4 arctan[ (β/α) sin(α t) sech(β x) ],   α²+β² = 1",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The maintained field expression passes bounded residual, period and total-energy checks; the browser grid and print path are not audited.",
-      "The existing on-screen E_out/E diagnostic sums u squared, not sine-Gordon energy density. Its label and theory-zero comparison remain a known issue."
+      "The completed label covers the enumerated recipes in validation/ANALYTIC-FIELD-REVIEW.md, not every parameter or renderer.",
+      "These are analytic solution samples, not independent time integration, physical experiments or a global proof. Finite grids and windows can miss peaks, mass or energy tails.",
+      "PNG enlargement adds no field resolution. Other exports, captions, smoothing and printer calibration are outside this review."
     ],
     "remaining": [
-      "Audit the actual renderer and print path at declared dimensions.",
-      "Correct the squared-amplitude diagnostic and account for nonzero finite-window tails."
+      "Extend the reviewed recipe and hardware domain with additional independent evidence."
     ],
     "numerical": [
       {
@@ -3467,9 +3611,38 @@ shall not be misrepresented as the original profile.
         "failureControl": "Perturb the internal frequency while retaining the envelope; residual must exceed the correct residual by at least 20 times.",
         "command": "node tools/breather-science.js --write",
         "results": "validation/results/breather-science.json"
+      },
+      {
+        "test": "tools/analytic-field-review.js",
+        "command": "node tools/analytic-field-review.js --write",
+        "results": "validation/results/analytic-field-review.json",
+        "scope": "Complete analytic fields, sampled diagnostics and every actual PNG pixel for the module recipes enumerated in validation/ANALYTIC-FIELD-REVIEW.md.",
+        "criteria": "Field error \u003c2e-6, diagnostic error \u003c1e-7, every PNG channel error \u003c=1, state preserved; existing PDE residual and invariant checks pass.",
+        "benchmark": "Independent gauge-invariant NLS intensities, direct Hirota tau derivatives, and atan2 breather with finite-difference physical energy; independent print color/cell mapping.",
+        "failureControl": "One-cell displacement fails fields and print; prior equation checks reject wrong dispersion, absent interaction or perturbed frequency.",
+        "limitations": "Only the enumerated finite recipes, recorded Chromium and caption-free unsmoothed PNG; no physical accuracy or all-parameter claim."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/analytic-field-review.js",
+        "command": "node tools/analytic-field-review.js --write",
+        "results": "validation/results/analytic-field-review.json",
+        "scope": "Complete analytic fields, sampled diagnostics and every actual PNG pixel for the module recipes enumerated in validation/ANALYTIC-FIELD-REVIEW.md.",
+        "criteria": "Field error \u003c2e-6, diagnostic error \u003c1e-7, every PNG channel error \u003c=1, state preserved; existing PDE residual and invariant checks pass.",
+        "benchmark": "Independent gauge-invariant NLS intensities, direct Hirota tau derivatives, and atan2 breather with finite-difference physical energy; independent print color/cell mapping.",
+        "failureControl": "One-cell displacement fails fields and print; prior equation checks reject wrong dispersion, absent interaction or perturbed frequency.",
+        "limitations": "Only the enumerated finite recipes, recorded Chromium and caption-free unsmoothed PNG; no physical accuracy or all-parameter claim."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/analytic-field-review.json",
+    "domain": {
+      "parameters": "Exactly the breather recipes and recorded effective parameters in validation/results/analytic-field-review.json.",
+      "conditions": "Analytic spacetime sampling, finite windows and no PDE time integrator; details in validation/ANALYTIC-FIELD-REVIEW.md. Static export preserves recipe and field.",
+      "resolution": "Grids 128,192 or224 with recorded aspect-dependent height; all cells and all PNG pixels, longest edge2400; independent residual convergence over three difference steps.",
+      "precision": "Binary64 reference and diagnostics, Float32 field, RGBA8 print. Field error\u003c2e-6, diagnostic error\u003c1e-7, every channel\u003c=1 byte."
+    }
   },
   {
     "id": "turing",
@@ -3543,21 +3716,50 @@ shall not be misrepresented as the original profile.
   {
     "id": "gyroid",
     "source": "src/modules/gyroid.js",
-    "sourceSha256": "37184f8647539f1513ffa17cc55dfe8687615d58ab9e19f91538c40f3174b71a",
-    "reference": "A. H. Schoen, NASA Technical Note D-5541 (1970), found the gyroid, a triply periodic minimal surface of genus 3 in the cubic cell, with no embedded straight lines. Its mean curvature vanishes. Butterfly-wing scales and block-copolymer melts later grew it for free. The plate is a 2-D slice of the level set, not a 3-D print.",
-    "equation": "sin x cos y + sin y cos z + sin z cos x = 0,   H = 0",
-    "status": "unvalidated",
+    "sourceSha256": "267c0cd0e13360c490c9593cd4a58410dd30d9c7e8b21fd3cd8532221de4e87e",
+    "reference": "A. H. Schoen, NASA Technical Note D-5541 (1970), discovered the exact gyroid minimal surface. This module uses a three-term trigonometric nodal approximation, as distinguished from exact minimal geometry by Gandy, Bardhan, Mackay and Klinowski, Chemical Physics Letters 336, 187-195 (2001), doi:10.1016/S0009-2614(00)01418-4.",
+    "equation": "F = sin x cos y + sin y cos z + sin z cos x; F = level; H = ½ div(∇F/|∇F|)",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Only the enumerated finite recipes in validation/PERIODIC-FIELD-REVIEW.md and recorded Chromium are covered.",
+      "Gyroid uses a nodal approximation with nonzero mean curvature; circle-map finite averages and tolerance bands do not prove asymptotic mode locking.",
+      "Chaotic circle-map floating-point sensitivity is measured against 40/60/80-digit references; the tongue-field bound is1e-4. Longer trajectories, other parameters, hardware, captions, smoothing and printer calibration are excluded."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend parameters, averaging lengths, initial conditions and hardware with further independent references."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/periodic-field-review.js",
+        "command": "node tools/periodic-field-review.js --write",
+        "results": "validation/results/periodic-field-review.json",
+        "scope": "All cells, diagnostic values and PNG channels for four gyroid and five finite circle-map recipes; independent curvature, periodicity, rotation and high-precision controls.",
+        "criteria": "Field absolute error \u003c2e-6, except declared non-monotone circle fixture \u003c1e-4; diagnostic error \u003c2e-6, every PNG byte error \u003c=1; state unchanged.",
+        "benchmark": "Independent six-sine field and finite-difference Hessian curvature; unwrapped phase evolution, exact K=0 rotations, finite-time bounds and Decimal40/60/80-digit references.",
+        "failureControl": "Missing curvature factor, wrong drive and displaced fields/prints fail; an explicit F=0,H!=0 point rejects exact minimality.",
+        "limitations": "Finite enumerated domain only; no exact gyroid, infinite-time locking or longer chaotic-trajectory certification."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/periodic-field-review.js",
+        "command": "node tools/periodic-field-review.js --write",
+        "results": "validation/results/periodic-field-review.json",
+        "scope": "All cells, diagnostic values and PNG channels for four gyroid and five finite circle-map recipes; independent curvature, periodicity, rotation and high-precision controls.",
+        "criteria": "Field absolute error \u003c2e-6, except declared non-monotone circle fixture \u003c1e-4; diagnostic error \u003c2e-6, every PNG byte error \u003c=1; state unchanged.",
+        "benchmark": "Independent six-sine field and finite-difference Hessian curvature; unwrapped phase evolution, exact K=0 rotations, finite-time bounds and Decimal40/60/80-digit references.",
+        "failureControl": "Missing curvature factor, wrong drive and displaced fields/prints fail; an explicit F=0,H!=0 point rejects exact minimality.",
+        "limitations": "Finite enumerated domain only; no exact gyroid, infinite-time locking or longer chaotic-trajectory certification."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/periodic-field-review.json",
+    "domain": {
+      "parameters": "Exactly the gyroid rows and complete recipes in validation/results/periodic-field-review.json.",
+      "conditions": "Static gyroid nodal-field slices or circle-map initial phase .17 with20 burn-in steps; orbit phase .2 at golden-mean drive. Details in validation/PERIODIC-FIELD-REVIEW.md.",
+      "resolution": "Grids128,192,224 and aspect-dependent heights; complete2400-long-edge PNGs; three curvature difference steps, three averaging lengths and three Decimal precisions.",
+      "precision": "Binary64 reference arithmetic, Float32 fields, RGBA8 output; sensitive circle-map cells additionally checked at40/60/80 decimal digits. Explicit tolerances and recorded environment in result JSON."
+    }
   },
   {
     "id": "dendrite",
@@ -3716,7 +3918,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "smectic",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
+    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
     "reference": "G. Friedel, Annales de Physique 18, 273 (1910). Smectic-A layers prefer equal spacing and may bend; the surfaces of constant spacing whose centers of curvature lie on an ellipse and a confocal hyperbola are Dupin cyclides. Packed in the plane they are toroidal focal conic domains — an Apollonian foam of nested rings.",
     "equation": "layers: Dupin cyclides of a confocal ellipse–hyperbola pair",
     "status": "unvalidated",
@@ -3849,7 +4051,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "hofstadter",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
+    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
     "reference": "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron colored them. At rational α=p/q the Harper matrix is q×q.",
     "equation": "ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ",
     "status": "unvalidated",
@@ -3868,26 +4070,55 @@ shall not be misrepresented as the original profile.
   {
     "id": "weierstrass",
     "source": "src/modules/weierstrass.js",
-    "sourceSha256": "51fdf73ac8fa7863aa50a632419df5b7a44c14206fcc196feb5caedcd74634c0",
-    "reference": "K. Weierstrass, presented to the Prussian Academy in 1872 (published 1875). Analysts had assumed a continuous function was differentiable except at isolated points; Weierstrass wrote a Fourier series that is continuous everywhere and differentiable nowhere. Hardy (1916) weakened the condition to ab ≥ 1. The plate is a finite truncation of that series, in one and two dimensions.",
-    "equation": "W(x) = Σ_{n=0}^∞ a^n cos(b^n π x),   0\u003ca\u003c1,   ab > 1 + 3π/2  ⇒  nowhere differentiable",
-    "status": "unvalidated",
+    "sourceSha256": "62896cc45ed4ef272eed1ec89ca5a0d4977173dc464aa522c5b84fac08ae2e1d",
+    "reference": "K. Weierstrass, presented to the Prussian Academy in 1872 (published 1875). Analysts had assumed a continuous function was differentiable except at isolated points; Weierstrass wrote a Fourier series that is continuous everywhere and differentiable nowhere. Hardy (1916) weakened the condition to ab ≥ 1. The plate uses a finite, seeded phase-shifted sum inspired by that series. Each finite sum is smooth; the classical infinite-series theorem is not established for this displayed field.",
+    "equation": "W_N(x) = Σ_{n=0}^{N−1} a^n cos(b^n π x + φ_n),   0\u003ca\u003c1,   N finite; seeded phases",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The completed label covers only three explicitly enumerated finite field/print recipes for this module.",
+      "Print magnification adds no underlying resolution. Unlisted recipes, captions, smoothing, other formats, physical printer calibration and other hardware are excluded.",
+      "The displayed finite Fourier sum is smooth. No nowhere-differentiability, fractal-dimension or high-frequency argument-accuracy claim is validated."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend recipes, rendering modes, resolutions and hardware only with further independent evidence."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/geometry-field-review.js",
+        "command": "node tools/geometry-field-review.js --write",
+        "results": "validation/results/geometry-field-review.json",
+        "scope": "Three complete recipes per module, defined in validation/GEOMETRY-FIELD-REVIEW.md.",
+        "criteria": "Every field value error \u003c2e-6, every engine PNG channel error \u003c=1, unchanged scientific state. Module-specific geometric, exact-tail, period and diagnostic checks also pass.",
+        "benchmark": "Independent sphere lift/Hopf map and density deposition; quadratic Descartes construction and full-pixel circle classification; complex-angle finite Fourier sums with period/tail bounds. Independent print color mapping.",
+        "failureControl": "Displaced full field and displaced print must fail. Existing geometry controls include reversed orientation, unlinked circles and an incorrect Apollonian seed.",
+        "limitations": "Only the three enumerated finite recipes for each module and recorded Chromium; excludes unlisted views, singular limits, infinite-object and physical claims."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/geometry-field-review.js",
+        "command": "node tools/geometry-field-review.js --write",
+        "results": "validation/results/geometry-field-review.json",
+        "scope": "Three complete recipes per module, defined in validation/GEOMETRY-FIELD-REVIEW.md.",
+        "criteria": "Every field value error \u003c2e-6, every engine PNG channel error \u003c=1, unchanged scientific state. Module-specific geometric, exact-tail, period and diagnostic checks also pass.",
+        "benchmark": "Independent sphere lift/Hopf map and density deposition; quadratic Descartes construction and full-pixel circle classification; complex-angle finite Fourier sums with period/tail bounds. Independent print color mapping.",
+        "failureControl": "Displaced full field and displaced print must fail. Existing geometry controls include reversed orientation, unlinked circles and an incorrect Apollonian seed.",
+        "limitations": "Only the three enumerated finite recipes for each module and recorded Chromium; excludes unlisted views, singular limits, infinite-object and physical claims."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/geometry-field-review.json",
+    "domain": {
+      "parameters": "Exactly the three recipes for this module in validation/results/geometry-field-review.json and validation/GEOMETRY-FIELD-REVIEW.md.",
+      "conditions": "Finite static constructions with recorded seeds: Hopf fibers on S3, unit-disk Apollonian seed, or finite phase-shifted Fourier sums. Caption-free 8-inch 300-ppi PNG, smoothing off.",
+      "resolution": "Grids 128 or 192 with recorded aspect-dependent height; every field value and every exported pixel, longest edge 2400 pixels. Geometric refinement and finite-series tail checks documented.",
+      "precision": "Binary64 references, Float32 fields and RGBA8 exports. Field error \u003c2e-6 and print-channel error \u003c=1; module-specific invariant tolerances and environment recorded."
+    }
   },
   {
     "id": "scars",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
+    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
     "reference": "Eric J. Heller, Phys. Rev. Lett. 53, 1515 (1984). In a classically chaotic billiard the high eigenfunctions of the Dirichlet Laplacian are usually ergodic — and yet some sit, as scars, along unstable periodic orbits. The Bunimovich stadium and the cardioid are the textbook domains. Inverse iteration of the discrete Laplacian with a Weyl shift yields a mode near index n.",
     "equation": "∇²ψ + k² ψ = 0  on Ω,   ψ = 0 on ∂Ω",
     "status": "unvalidated",
@@ -3925,7 +4156,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "caustics",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
+    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
     "reference": "Michael V. Berry’s catastrophe optics: the brightness of a light field after a smooth phase screen is the density of the gradient map of the height. Folds (A2) and cusps (A3) are the generic caustics in the plane. The swimming-pool network is this map, not a Voronoi diagram.",
     "equation": "X = x + s ∇h(x),   I(X) = Σ 1 / |det(I + s Hess h)|",
     "status": "unvalidated",
@@ -3963,26 +4194,55 @@ shall not be misrepresented as the original profile.
   {
     "id": "devil",
     "source": "src/modules/devil.js",
-    "sourceSha256": "ac4eb88764c85a86f5ca0c4ddfd0f3d40700d5454f3efee32a876564e575115e",
-    "reference": "V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), on the tongues of a driven oscillator; the circle map is the standard example. At K = 1 the rotation number as a function of Ω is a devil's staircase: constant on a fat Cantor set of locked intervals (the Farey sequence of p/q), yet strictly increasing. B. B. Mandelbrot named the staircase. The plate is ρ(Ω, K) or ρ(Ω) itself.",
+    "sourceSha256": "b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc",
+    "reference": "V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), studied the circle-map resonance tongues. This plate evaluates the standard sine circle map with a fixed initial phase. The rotation number is an infinite-time quantity; the plate displays finite-time estimates. For non-monotone maps, different initial phases can have different long-time rotation behavior.",
     "equation": "θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil's staircase)",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Only the enumerated finite recipes in validation/PERIODIC-FIELD-REVIEW.md and recorded Chromium are covered.",
+      "Gyroid uses a nodal approximation with nonzero mean curvature; circle-map finite averages and tolerance bands do not prove asymptotic mode locking.",
+      "Chaotic circle-map floating-point sensitivity is measured against 40/60/80-digit references; the tongue-field bound is1e-4. Longer trajectories, other parameters, hardware, captions, smoothing and printer calibration are excluded."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend parameters, averaging lengths, initial conditions and hardware with further independent references."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/periodic-field-review.js",
+        "command": "node tools/periodic-field-review.js --write",
+        "results": "validation/results/periodic-field-review.json",
+        "scope": "All cells, diagnostic values and PNG channels for four gyroid and five finite circle-map recipes; independent curvature, periodicity, rotation and high-precision controls.",
+        "criteria": "Field absolute error \u003c2e-6, except declared non-monotone circle fixture \u003c1e-4; diagnostic error \u003c2e-6, every PNG byte error \u003c=1; state unchanged.",
+        "benchmark": "Independent six-sine field and finite-difference Hessian curvature; unwrapped phase evolution, exact K=0 rotations, finite-time bounds and Decimal40/60/80-digit references.",
+        "failureControl": "Missing curvature factor, wrong drive and displaced fields/prints fail; an explicit F=0,H!=0 point rejects exact minimality.",
+        "limitations": "Finite enumerated domain only; no exact gyroid, infinite-time locking or longer chaotic-trajectory certification."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/periodic-field-review.js",
+        "command": "node tools/periodic-field-review.js --write",
+        "results": "validation/results/periodic-field-review.json",
+        "scope": "All cells, diagnostic values and PNG channels for four gyroid and five finite circle-map recipes; independent curvature, periodicity, rotation and high-precision controls.",
+        "criteria": "Field absolute error \u003c2e-6, except declared non-monotone circle fixture \u003c1e-4; diagnostic error \u003c2e-6, every PNG byte error \u003c=1; state unchanged.",
+        "benchmark": "Independent six-sine field and finite-difference Hessian curvature; unwrapped phase evolution, exact K=0 rotations, finite-time bounds and Decimal40/60/80-digit references.",
+        "failureControl": "Missing curvature factor, wrong drive and displaced fields/prints fail; an explicit F=0,H!=0 point rejects exact minimality.",
+        "limitations": "Finite enumerated domain only; no exact gyroid, infinite-time locking or longer chaotic-trajectory certification."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/periodic-field-review.json",
+    "domain": {
+      "parameters": "Exactly the devil rows and complete recipes in validation/results/periodic-field-review.json.",
+      "conditions": "Static gyroid nodal-field slices or circle-map initial phase .17 with20 burn-in steps; orbit phase .2 at golden-mean drive. Details in validation/PERIODIC-FIELD-REVIEW.md.",
+      "resolution": "Grids128,192,224 and aspect-dependent heights; complete2400-long-edge PNGs; three curvature difference steps, three averaging lengths and three Decimal precisions.",
+      "precision": "Binary64 reference arithmetic, Float32 fields, RGBA8 output; sensitive circle-map cells additionally checked at40/60/80 decimal digits. Explicit tolerances and recorded environment in result JSON."
+    }
   },
   {
     "id": "talbot",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
+    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
     "reference": "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T and as a half-period image at z_T/2. Between, the near field is a carpet of fractional revivals — a plot of I(x,z) is one of the most intricate figures in wave optics.",
     "equation": "I(x,z) = |Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)|²,   z_T = 2 d²/λ",
     "status": "unvalidated",
@@ -4058,7 +4318,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "pearls",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
+    "sourceSha256": "204161ce35d68a6edfd63726ec1da5805a55ee52666826fa21b8c79e9a3536d2",
     "reference": "David Mumford, Caroline Series and David Wright, Indra's Pearls: The Vision of Felix Klein (Cambridge, 2002). A Schottky group is generated by pairing disjoint circles; the limit set is the dust (or curve) left when every complementary disk has been eaten. Nested inversions draw the group without matrices.",
     "equation": "Γ = ⟨a, b⟩  Schottky,   Λ(Γ) = ∩ g∈Γ g(Ĉ \\ Ω)",
     "status": "unvalidated",
@@ -4216,14 +4476,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34",
     "reference": "Descartes' circle theorem (1643, in a letter to Princess Elisabeth of the Palatinate) gives the fourth curvature from three mutually tangent circles. The Apollonian gasket iterates that packing to infinity. Soddy (1936) wrote the poem; Graham, Lagarias, Mallows, Wilks and Yan (2003) proved the integer curvatures are a well-defined subset of the integers. The plate is a finite generation of the packing inside a disk of curvature −1.",
     "equation": "k₄ = k₁+k₂+k₃ ± 2√(k₁k₂+k₁k₃+k₂k₃)   (Descartes),   k ∈ ℤ if the seeds are",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The independent audit checks the integer Descartes reflection construction, tangency and finite-generation area; it does not prove the infinite gasket limit or validate the browser renderer.",
-      "The displayed packing is bounded by generation and curvature/circle limits, so a finite nonzero gap is expected."
+      "The completed label covers only three explicitly enumerated finite field/print recipes for this module.",
+      "Print magnification adds no underlying resolution. Unlisted recipes, captions, smoothing, other formats, physical printer calibration and other hardware are excluded.",
+      "Finite projection/packing checks do not certify all infinite geometric objects or every configuration."
     ],
     "remaining": [
-      "Add an independent browser print-state check for representative generations and color modes.",
-      "Review the finite truncation and area display against the infinite-packing literature before considering a stronger status."
+      "Extend recipes, rendering modes, resolutions and hardware only with further independent evidence."
     ],
     "numerical": [
       {
@@ -4235,9 +4495,38 @@ shall not be misrepresented as the original profile.
         "failureControl": "Perturb one historical seed circle away from tangency; the tangent-neighbor check must fail.",
         "command": "node tools/geometry-science.js --write",
         "results": "validation/results/geometry-science.json"
+      },
+      {
+        "test": "tools/geometry-field-review.js",
+        "command": "node tools/geometry-field-review.js --write",
+        "results": "validation/results/geometry-field-review.json",
+        "scope": "Three complete recipes per module, defined in validation/GEOMETRY-FIELD-REVIEW.md.",
+        "criteria": "Every field value error \u003c2e-6, every engine PNG channel error \u003c=1, unchanged scientific state. Module-specific geometric, exact-tail, period and diagnostic checks also pass.",
+        "benchmark": "Independent sphere lift/Hopf map and density deposition; quadratic Descartes construction and full-pixel circle classification; complex-angle finite Fourier sums with period/tail bounds. Independent print color mapping.",
+        "failureControl": "Displaced full field and displaced print must fail. Existing geometry controls include reversed orientation, unlinked circles and an incorrect Apollonian seed.",
+        "limitations": "Only the three enumerated finite recipes for each module and recorded Chromium; excludes unlisted views, singular limits, infinite-object and physical claims."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/geometry-field-review.js",
+        "command": "node tools/geometry-field-review.js --write",
+        "results": "validation/results/geometry-field-review.json",
+        "scope": "Three complete recipes per module, defined in validation/GEOMETRY-FIELD-REVIEW.md.",
+        "criteria": "Every field value error \u003c2e-6, every engine PNG channel error \u003c=1, unchanged scientific state. Module-specific geometric, exact-tail, period and diagnostic checks also pass.",
+        "benchmark": "Independent sphere lift/Hopf map and density deposition; quadratic Descartes construction and full-pixel circle classification; complex-angle finite Fourier sums with period/tail bounds. Independent print color mapping.",
+        "failureControl": "Displaced full field and displaced print must fail. Existing geometry controls include reversed orientation, unlinked circles and an incorrect Apollonian seed.",
+        "limitations": "Only the three enumerated finite recipes for each module and recorded Chromium; excludes unlisted views, singular limits, infinite-object and physical claims."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/geometry-field-review.json",
+    "domain": {
+      "parameters": "Exactly the three recipes for this module in validation/results/geometry-field-review.json and validation/GEOMETRY-FIELD-REVIEW.md.",
+      "conditions": "Finite static constructions with recorded seeds: Hopf fibers on S3, unit-disk Apollonian seed, or finite phase-shifted Fourier sums. Caption-free 8-inch 300-ppi PNG, smoothing off.",
+      "resolution": "Grids 128 or 192 with recorded aspect-dependent height; every field value and every exported pixel, longest edge 2400 pixels. Geometric refinement and finite-series tail checks documented.",
+      "precision": "Binary64 references, Float32 fields and RGBA8 exports. Field error \u003c2e-6 and print-channel error \u003c=1; module-specific invariant tolerances and environment recorded."
+    }
   },
   {
     "id": "chladni",
@@ -4540,59 +4829,146 @@ shall not be misrepresented as the original profile.
   {
     "id": "three-vortex-bound",
     "source": "src/modules/three-vortex-bound.js",
-    "sourceSha256": "d34765e305184298c6e2db4f471f4a4bedfb94bae8fa4892fbfb2c6e6cd35ab8",
+    "sourceSha256": "733f40bd48157e2ea1269c797addcea0a7045d6f6b05680ae813e26227d2ce37",
     "reference": "Three-vortex collapse bound: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 \u003c θ \u003c π/2. θ is the third vortex's place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula explicitly specializes and reparameterizes the spiral coefficient in Gröbli (1877), section 10. It was independently derived here and recorded on 2026-09-19. Priority of the optimized minimum remains unconfirmed; see identities/ORIGINALITY-FOLLOWUP.md, identities/NOVELTY-AUDIT.md and IDENTITIES.md. Cite as Three-vortex collapse bound. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 misses and the status line marks miss. The picture still draws.",
     "equation": "ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2  on  Γ = (1, 1, −1/2), L = 0;  equality at tan θ = 1/√2",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Completed review covers only the four enumerated family recipes for this module; wider angular samples validate kernels, not every rendering setting.",
+      "Singular endpoints, expanding orientations, arbitrary broken-family dynamics, animation, bead/space views, captions, custom paper, Canvas2D export fallback and physical-fluid interpretation are excluded.",
+      "Time-index correction changes old recipes: requested 0.92 now reaches 0.92 collapse times, rather than approximately 0.8464. Historical originality remains unconfirmed."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend recipes, rendering paths and hardware only with additional reviewed evidence."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/vortex-family-review.js",
+        "command": "node tools/vortex-family-review.js --write",
+        "results": "validation/results/vortex-family-review.json",
+        "scope": "Complete numerical and print review for the four recipes per module in validation/VORTEX-FAMILIES.md.",
+        "criteria": "150 angular cases per family; relative product error \u003c1e-11 and trajectory error \u003c1e-10 RMS radius; RK4 fine-step error \u003c2e-6 and order 3.5 to 4.5; SVG error \u003c=0.00501 pixels; exact PNG channel preservation and unchanged scientific state.",
+        "benchmark": "Independently specified geometry and unique-pair Biot-Savart velocities; analytic similarity trajectories; independent SVG coordinate transformation and separate rasterization.",
+        "failureControl": "Wrong-sign production velocity mutation, off-family geometry residual, historical time-index regression, and one-pixel displaced raster are detected.",
+        "limitations": "Finite enumerated family recipes and recorded Chromium only; not arbitrary off-family dynamics, physical fluids or historical-priority evidence."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/vortex-family-review.js",
+        "command": "node tools/vortex-family-review.js --write",
+        "results": "validation/results/vortex-family-review.json",
+        "scope": "Complete numerical and print review for the four recipes per module in validation/VORTEX-FAMILIES.md.",
+        "criteria": "150 angular cases per family; relative product error \u003c1e-11 and trajectory error \u003c1e-10 RMS radius; RK4 fine-step error \u003c2e-6 and order 3.5 to 4.5; SVG error \u003c=0.00501 pixels; exact PNG channel preservation and unchanged scientific state.",
+        "benchmark": "Independently specified geometry and unique-pair Biot-Savart velocities; analytic similarity trajectories; independent SVG coordinate transformation and separate rasterization.",
+        "failureControl": "Wrong-sign production velocity mutation, off-family geometry residual, historical time-index regression, and one-pixel displaced raster are detected.",
+        "limitations": "Finite enumerated family recipes and recorded Chromium only; not arbitrary off-family dynamics, physical fluids or historical-priority evidence."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/vortex-family-review.json",
+    "domain": {
+      "parameters": "Exactly the four recipes for this module in validation/results/vortex-family-review.json: 8-degree spiral, exact-minimum spiral, 45-degree overlay and 82-degree polar plot.",
+      "conditions": "Unbounded inviscid point vortices in the stated classical collapse family; 0 through 0.92 collapse times; stopped animation; caption-free SVG-backed PNG, longest edge 8 inches at 300 ppi.",
+      "resolution": "Every stored trajectory coordinate, 720 samples for three vortices and 640 for four/five; RK4 refinement at 64/128/256 steps to half-collapse; actual 2400-pixel longest-edge export.",
+      "precision": "JavaScript binary64; SVG serialized to two decimals; Chromium RGBA8. Numerical and print tolerances and environment recorded in the evidence artifact."
+    }
   },
   {
     "id": "parallelogram-lock",
     "source": "src/modules/parallelogram-lock.js",
-    "sourceSha256": "8efce88f638ce2cfcb7f1376a86e49cb151296aeffe288d8255567168be1cca8",
+    "sourceSha256": "6d9f5d8842a30373d5b82d257572c193aba611027cb6263853417411cfb2231e",
     "reference": "A closed form and sharp minimum for the scale-invariant product on the classical four-vortex parallelogram collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −2 − √3, −2 − √3), diagonals in ratio √(2 + √3), angle θ between the diagonals, 0 \u003c θ \u003c π/2. ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4, equality uniquely at cos 2θ = 1/4. With φ = 2θ the quotient is (4 − cos φ)/sin φ, and the critical point is cos φ = 1/4. Four-vortex parallelogram collapse is Novikov and Sedov, Sov. Phys. JETP 50, 297 (1979). Gotoda, arXiv:2002.09624 (2020 preprint), eq. (3.13), gives the collapse rate A(θ) and the spin B(θ) separately after those authors. The product −B/(2A) simplifies to the formula above. The formula and minimum were derived here and recorded on 2026-09-20. Historical priority is unconfirmed; see identities/NOVELTY-AUDIT.md and IDENTITIES.md. The reciprocal pair Γ = (1, 1, −2 + √3, −2 + √3) is the same family with the diagonals swapped. If the vortices leave the parallelogram, or the kernel is wrong, the ratio against 3√5/4 misses and the status line marks miss. The picture still draws.",
     "equation": "ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4  on the Novikov–Sedov parallelogram;  equality at cos 2θ = 1/4",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Completed review covers only the four enumerated family recipes for this module; wider angular samples validate kernels, not every rendering setting.",
+      "Singular endpoints, expanding orientations, arbitrary broken-family dynamics, animation, bead/space views, captions, custom paper, Canvas2D export fallback and physical-fluid interpretation are excluded.",
+      "Time-index correction changes old recipes: requested 0.92 now reaches 0.92 collapse times, rather than approximately 0.8464. Historical originality remains unconfirmed."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend recipes, rendering paths and hardware only with additional reviewed evidence."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/vortex-family-review.js",
+        "command": "node tools/vortex-family-review.js --write",
+        "results": "validation/results/vortex-family-review.json",
+        "scope": "Complete numerical and print review for the four recipes per module in validation/VORTEX-FAMILIES.md.",
+        "criteria": "150 angular cases per family; relative product error \u003c1e-11 and trajectory error \u003c1e-10 RMS radius; RK4 fine-step error \u003c2e-6 and order 3.5 to 4.5; SVG error \u003c=0.00501 pixels; exact PNG channel preservation and unchanged scientific state.",
+        "benchmark": "Independently specified geometry and unique-pair Biot-Savart velocities; analytic similarity trajectories; independent SVG coordinate transformation and separate rasterization.",
+        "failureControl": "Wrong-sign production velocity mutation, off-family geometry residual, historical time-index regression, and one-pixel displaced raster are detected.",
+        "limitations": "Finite enumerated family recipes and recorded Chromium only; not arbitrary off-family dynamics, physical fluids or historical-priority evidence."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/vortex-family-review.js",
+        "command": "node tools/vortex-family-review.js --write",
+        "results": "validation/results/vortex-family-review.json",
+        "scope": "Complete numerical and print review for the four recipes per module in validation/VORTEX-FAMILIES.md.",
+        "criteria": "150 angular cases per family; relative product error \u003c1e-11 and trajectory error \u003c1e-10 RMS radius; RK4 fine-step error \u003c2e-6 and order 3.5 to 4.5; SVG error \u003c=0.00501 pixels; exact PNG channel preservation and unchanged scientific state.",
+        "benchmark": "Independently specified geometry and unique-pair Biot-Savart velocities; analytic similarity trajectories; independent SVG coordinate transformation and separate rasterization.",
+        "failureControl": "Wrong-sign production velocity mutation, off-family geometry residual, historical time-index regression, and one-pixel displaced raster are detected.",
+        "limitations": "Finite enumerated family recipes and recorded Chromium only; not arbitrary off-family dynamics, physical fluids or historical-priority evidence."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/vortex-family-review.json",
+    "domain": {
+      "parameters": "Exactly the four recipes for this module in validation/results/vortex-family-review.json: 8-degree spiral, exact-minimum spiral, 45-degree overlay and 82-degree polar plot.",
+      "conditions": "Unbounded inviscid point vortices in the stated classical collapse family; 0 through 0.92 collapse times; stopped animation; caption-free SVG-backed PNG, longest edge 8 inches at 300 ppi.",
+      "resolution": "Every stored trajectory coordinate, 720 samples for three vortices and 640 for four/five; RK4 refinement at 64/128/256 steps to half-collapse; actual 2400-pixel longest-edge export.",
+      "precision": "JavaScript binary64; SVG serialized to two decimals; Chromium RGBA8. Numerical and print tolerances and environment recorded in the evidence artifact."
+    }
   },
   {
     "id": "quincunx-lock",
     "source": "src/modules/quincunx-lock.js",
-    "sourceSha256": "5b02efd3e5c4b70db88de041d302307565ef115c1bf2ec3f6e3ddde3ef15080e",
+    "sourceSha256": "311a76734eed2af26b028ad2f03feef7f247934f320de3a8c5d94767bafa4600",
     "reference": "A closed form and sharp minimum for the scale-invariant product on a classical five-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (−1, −1, 1/2, 1/2, −3/4), four vortices at the vertices of a parallelogram whose diagonals meet at the fifth, diagonals in ratio 1/√2, angle θ between the diagonals, 0 \u003c θ \u003c π/2. ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16, equality uniquely at cos 2θ = 4/7. With φ = 2θ the quotient is (7 − 4 cos φ)/sin φ, and the critical point is cos φ = 4/7. Five-vortex parallelogram-plus-center collapse is Novikov and Sedov, Sov. Phys. JETP 50, 297 (1979). Gotoda, arXiv:2002.09624 (2020 preprint), eq. (3.13), gives the collapse rate A(θ) and the spin B(θ) separately after those authors, and plots this family (γ1 = −1, γ2 = 1/2, γ3 = −3/4) as Hamiltonian against collapse rate. The product −B/(2A) on that slice simplifies to the formula above. The formula and minimum were derived here and recorded on 2026-09-20. Historical priority is unconfirmed; see identities/NOVELTY-AUDIT.md and IDENTITIES.md. The reciprocal pair with the diagonals swapped is the same family. If the vortices leave the quincunx, or the kernel is wrong, the ratio against 3√33/16 misses and the status line marks miss. The picture still draws. This is not Novikov and Sedov's t_* or ω separately under a new name, and it is not the four-vortex parallelogram lock.",
     "equation": "ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16  on the Novikov–Sedov five-vortex quincunx;  equality at cos 2θ = 4/7",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Completed review covers only the four enumerated family recipes for this module; wider angular samples validate kernels, not every rendering setting.",
+      "Singular endpoints, expanding orientations, arbitrary broken-family dynamics, animation, bead/space views, captions, custom paper, Canvas2D export fallback and physical-fluid interpretation are excluded.",
+      "Time-index correction changes old recipes: requested 0.92 now reaches 0.92 collapse times, rather than approximately 0.8464. Historical originality remains unconfirmed."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend recipes, rendering paths and hardware only with additional reviewed evidence."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/vortex-family-review.js",
+        "command": "node tools/vortex-family-review.js --write",
+        "results": "validation/results/vortex-family-review.json",
+        "scope": "Complete numerical and print review for the four recipes per module in validation/VORTEX-FAMILIES.md.",
+        "criteria": "150 angular cases per family; relative product error \u003c1e-11 and trajectory error \u003c1e-10 RMS radius; RK4 fine-step error \u003c2e-6 and order 3.5 to 4.5; SVG error \u003c=0.00501 pixels; exact PNG channel preservation and unchanged scientific state.",
+        "benchmark": "Independently specified geometry and unique-pair Biot-Savart velocities; analytic similarity trajectories; independent SVG coordinate transformation and separate rasterization.",
+        "failureControl": "Wrong-sign production velocity mutation, off-family geometry residual, historical time-index regression, and one-pixel displaced raster are detected.",
+        "limitations": "Finite enumerated family recipes and recorded Chromium only; not arbitrary off-family dynamics, physical fluids or historical-priority evidence."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/vortex-family-review.js",
+        "command": "node tools/vortex-family-review.js --write",
+        "results": "validation/results/vortex-family-review.json",
+        "scope": "Complete numerical and print review for the four recipes per module in validation/VORTEX-FAMILIES.md.",
+        "criteria": "150 angular cases per family; relative product error \u003c1e-11 and trajectory error \u003c1e-10 RMS radius; RK4 fine-step error \u003c2e-6 and order 3.5 to 4.5; SVG error \u003c=0.00501 pixels; exact PNG channel preservation and unchanged scientific state.",
+        "benchmark": "Independently specified geometry and unique-pair Biot-Savart velocities; analytic similarity trajectories; independent SVG coordinate transformation and separate rasterization.",
+        "failureControl": "Wrong-sign production velocity mutation, off-family geometry residual, historical time-index regression, and one-pixel displaced raster are detected.",
+        "limitations": "Finite enumerated family recipes and recorded Chromium only; not arbitrary off-family dynamics, physical fluids or historical-priority evidence."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/vortex-family-review.json",
+    "domain": {
+      "parameters": "Exactly the four recipes for this module in validation/results/vortex-family-review.json: 8-degree spiral, exact-minimum spiral, 45-degree overlay and 82-degree polar plot.",
+      "conditions": "Unbounded inviscid point vortices in the stated classical collapse family; 0 through 0.92 collapse times; stopped animation; caption-free SVG-backed PNG, longest edge 8 inches at 300 ppi.",
+      "resolution": "Every stored trajectory coordinate, 720 samples for three vortices and 640 for four/five; RK4 refinement at 64/128/256 steps to half-collapse; actual 2400-pixel longest-edge export.",
+      "precision": "JavaScript binary64; SVG serialized to two decimals; Chromium RGBA8. Numerical and print tolerances and environment recorded in the evidence artifact."
+    }
   },
   {
     "id": "double-triangle-bound",
@@ -4600,16 +4976,15 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "20778362fcd32e7be2631ff81c81d0a618bca87d3064bec7196dda059d7940d4",
     "reference": "Classical two-ring collapse: Aref, Physics of Fluids 25, 2183 (1982); Koiller, Pinto de Carvalho, Rodrigues da Silva and Gonçalves de Oliveira, Physica D 16, 27–61 (1985), §11. Two regular n-gons with outer circulation −1, inner circulation x = (n + √(2n−1))/(n−1), and squared radius ratio x. GENChase derives the product and its sharp minimum in identities/polygon-collapse.md. The n = 4 value √322/9 illustrates the general theorem. Historical priority of these explicit bounds is unconfirmed; the collapse family is classical.",
     "equation": "ω₀t_c = (K_n − √(2n−1) cos nθ)/(2n sin nθ) ≥ F_n; F₃ = √29/3, F₄ = √322/9",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Classical vortex model; these tests do not establish historical novelty.",
-      "Kernel and trajectory tests cover declared samples, not all parameters or print rendering.",
-      "The engine API exposes the existing relative self-similarity residual as structured witness data, with the existing 1e-9 tolerance and off-family/nonpositive-time preconditions. This API addition changes no solver or scientific validation status."
+      "Completed numerical and print review applies only to the 16 listed recipes, mathematical point vortices and recorded Chromium environment. Not all parameters, hardware, physical fluids or external peer review.",
+      "The lower-angle five-vertex refinement becomes less accurate at four substeps (about 3.49e-5), though all measured errors stay below 4e-5. More substeps are not guaranteed to improve this case; no uniform convergence claim.",
+      "Historical novelty is unconfirmed. Singular collapse, off-family dynamics, animation, Canvas2D fallback, captions, custom paper, PDF/TIFF and physical printer accuracy are excluded."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Investigate lower-angle roundoff/error amplification before extending convergence claims or tightening the accuracy tolerance.",
+      "Broaden recipes, rendering paths and hardware only with additional reviewed evidence."
     ],
     "numerical": [
       {
@@ -4631,9 +5006,38 @@ shall not be misrepresented as the original profile.
         "benchmark": "Direct all-pairs module velocities versus unreduced ring sums for n=2 through 20; similarity minima and trajectory comparisons for the declared samples.",
         "failureControl": "Displaced vortex and anisotropic velocity-kernel controls must fail the similarity checks; expanding orientations must have negative collapse time.",
         "results": "validation/results/polygon-collapse.json"
+      },
+      {
+        "test": "tools/polygon-review.js",
+        "scope": "Independent full-trajectory and export review for the 16 recipes documented in validation/POLYGON-REVIEW.md.",
+        "criteria": "Absolute coordinate error \u003c4e-5, product relative error \u003c1e-11; recorded temporal refinements within tolerance, fourth order for minima/upper angles; SVG coordinate error \u003c1e-7 pixels, PNG channels unchanged, scientific state unchanged.",
+        "limitations": "Finite enumerated recipes and recorded environment; lower-angle refinement limitations retained; no physical-fluid or novelty claim.",
+        "benchmark": "Unreduced analytic complex ring sums and their similarity trajectories, independent SVG coordinate transformation and exact engine-to-SVG raster preservation.",
+        "failureControl": "Displaced trajectory, one-pixel displaced SVG raster, and existing displaced-vortex/anisotropic-kernel controls must fail.",
+        "command": "node tools/polygon-review.js --write",
+        "results": "validation/results/polygon-review.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/polygon-review.js",
+        "scope": "Independent full-trajectory and export review for the 16 recipes documented in validation/POLYGON-REVIEW.md.",
+        "criteria": "Absolute coordinate error \u003c4e-5, product relative error \u003c1e-11; recorded temporal refinements within tolerance, fourth order for minima/upper angles; SVG coordinate error \u003c1e-7 pixels, PNG channels unchanged, scientific state unchanged.",
+        "limitations": "Finite enumerated recipes and recorded environment; lower-angle refinement limitations retained; no physical-fluid or novelty claim.",
+        "benchmark": "Unreduced analytic complex ring sums and their similarity trajectories, independent SVG coordinate transformation and exact engine-to-SVG raster preservation.",
+        "failureControl": "Displaced trajectory, one-pixel displaced SVG raster, and existing displaced-vortex/anisotropic-kernel controls must fail.",
+        "command": "node tools/polygon-review.js --write",
+        "results": "validation/results/polygon-review.json"
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/polygon-review.json",
+    "domain": {
+      "parameters": "Exactly the 16 recipes enumerated in validation/results/polygon-review.json, orders 2 through 5, lower/minimum/upper angles and specified views/aspects; rotation 0, weight 1, default palette, animation off.",
+      "conditions": "Unbounded inviscid planar point-vortex model with two concentric regular polygons, circulations -1 and x, radius ratio sqrt(x). Time 0 through 0.9 collapse times. Caption-free SVG-backed PNG, 8-inch longest edge at 300 ppi.",
+      "resolution": "600 trajectory intervals, two RK4 substeps per interval in production; refinement at one, two and four substeps. Every stored trajectory coordinate and relevant SVG path is compared; prints have a 2400-pixel longest edge.",
+      "precision": "JavaScript binary64, SVG geometry and Chromium RGBA8. Absolute trajectory error below 4e-5; product relative error below 1e-11; SVG error below 1e-7 pixels; zero raster channel mismatches. Environment recorded in artifact."
+    }
   },
   {
     "id": "maxwell",
@@ -4721,16 +5125,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e",
     "reference": "Classical surfaces of Enneper and Dini, and the catenoid–helicoid associate family. Parameter maps: 3D-XplorMath / UCI, Enneper Surface; Thomas Banchoff, Brown University, Differential Geometry §7.3; Oliver Knill, Harvard Math 21a, Dini surface. MathMod inspired the selection; this is an independent implementation, not imported MathMod code or collection data.",
     "equation": "Enneper and catenoid–helicoid: H = 0; Dini (a = 1): K = −1/(1 + b²)",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Established parametric surfaces with finite transparent wire meshes, not physical soap-film simulations or new mathematics.",
       "Independent differential geometry and mesh checks cover declared samples; no global topology, complete immersion, self-intersection or all-parameter certification.",
       "Printed coordinates agree across raster/SVG, while antialiasing varies by backend; arbitrary devices remain untested."
     ],
     "remaining": [
-      "Broaden parameter-domain and independent implementation coverage.",
-      "Assess mesh approximation and visual accuracy across more resolutions and devices.",
-      "Keep global mathematical and physical claims separate from local curvature benchmarks."
+      "Extend the six-preset finite-mesh review to additional parameters, seeds and hardware with independent evidence."
     ],
     "numerical": [
       {
@@ -4749,11 +5151,19 @@ shall not be misrepresented as the original profile.
         "test": "tools/surfaces-print.js",
         "command": "node tools/surfaces-print.js",
         "results": "validation/results/surfaces-print.json",
-        "scope": "All six presets at 800-square, 1600x2000 and 2400-square with true SVG paths, exact requested dimensions, preserved state and repeated seeded geometry.",
+        "scope": "Independent complex-coordinate maps and combined camera matrix reconstruct every SVG vertex of all six presets at800-square,1600x2000,2400-square; actual PNG/SVG and state preservation.",
         "criteria": "Geometry within 0.000051 px, nonblank output, exact state preservation; mean RGB difference below 2/255 at preview and 1/255 at print; a 2% horizontal SVG distortion must fail.",
         "limitations": "Accelerated antialiasing differs from SVG; separate software-canvas control is recorded. SVG is a finite mesh, not an exact smooth surface."
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/surfaces-print.json",
+    "domain": {
+      "parameters": "Six presets enneper,folded,dini,catenoid,helicoid,associate at maintained preset/default parameters, detail96, seed surface-print-fixed; curvature parameters separately enumerated in validation/SURFACES.md.",
+      "conditions": "Finite regular parameter patches, transparent orthographic wire meshes; seeded camera offsets treated as display inputs. No physical dynamics or hidden-surface removal.",
+      "resolution": "225 differential samples with h=.02,.01,.005; mesh refinement48,96,192. Every SVG vertex in18 exports at800x800,1600x2000,2400x2400.",
+      "precision": "Binary64 geometry with independent complex-map and camera reconstruction. SVG\u003c=.000051pixel error, mean RGB error\u003c2 atpreview or\u003c1 atprint, exact state/replay; Chromium environment recorded."
+    }
   },
   {
     "id": "plasma",
@@ -20541,12 +20951,21 @@ vec2 lap2(sampler2D t, vec2 uv, vec2 px){
 uniform sampler2D u_a; uniform vec2 u_res;
 uniform float u_dt, u_alpha, u_beta, u_lin, u_noise, u_step, u_nOff;
 ${G.GLSL.hash}
+// Some GPU trigonometric intrinsics lose unit length even at tiny angles.
+// The bounded Taylor branch has truncation error below 1.1e-11 for |phase| <= 0.25.
+vec2 cglUnitRotation(float phase){
+  if (abs(phase) > 0.25) return vec2(cos(phase), sin(phase));
+  float q = phase * phase;
+  float c = 1.0 + q * (-0.5 + q * (1.0/24.0 + q * (-1.0/720.0 + q/40320.0)));
+  float s = phase * (1.0 + q * (-1.0/6.0 + q * (1.0/120.0 - q/5040.0)));
+  return vec2(c, s);
+}
 vec2 localFlow(vec2 A){
   float e = exp(2.0 * u_lin * u_dt);
   float d = 1.0 + dot(A,A) * (e - 1.0) / u_lin;
   float phase = -0.5 * u_beta * log(d);
-  return sqrt(e / d) * vec2(cos(phase)*A.x-sin(phase)*A.y,
-                            sin(phase)*A.x+cos(phase)*A.y);
+  vec2 r = cglUnitRotation(phase);
+  return sqrt(e / d) * vec2(r.x*A.x-r.y*A.y, r.y*A.x+r.x*A.y);
 }
 void main(){
   vec2 px = 1.0 / u_res;
@@ -41088,7 +41507,7 @@ void main(){
 </script>
 <script>
 /* modules/breather.js */
-/* GENChase: sine-Gordon breather. A localised oscillation that does not radiate. Exterior energy is measured against the total. */
+/* GENChase: sine-Gordon breather. A localised oscillation that does not radiate. Physical energy is integrated on the sampled middle time slice. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -41128,13 +41547,13 @@ void main(){
     order: 62,
     equation: 'u_tt − u_xx + sin u = 0,   u = 4 arctan[ (β/α) sin(α t) sech(β x) ],   α²+β² = 1',
     credit: 'The sine-Gordon breather is an exact, time-periodic, spatially localised solution; see Seeger, Donth and Kochendörfer (1953) and the inverse-scattering account of Faddeev and Takhtajan. Linear waves radiate. This one does not: the envelope sech(β x) holds a bound oscillation forever. The plate is spacetime of u.',
-    blurb: 'A lump of field that rings in place and never sheds a wave. Linear PDEs cannot do this; sine-Gordon can, because the oscillation sits below the phonon band. The plate is that spacetime. The status line reports energy outside a window of width 6/β against the total, which should stay near 0.',
+    blurb: 'A lump of field that rings in place and never sheds a wave. Linear PDEs cannot do this; sine-Gordon can, because the oscillation sits below the phonon band. The plate is that spacetime. The status compares middle-row energy quadrature with the whole-line value 16β and reports the sampled fraction outside |x|=3/β. Exponentially small tails are nonzero. A short window can miss those tails; their absence on the grid does not measure radiation.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: { Field: 'β sets how tight the envelope is. α = sqrt(1-β²) is the internal frequency.' },
     palette: true, defaultPalette: 'bioluminescent', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
+      let W = 0, H = 0, field, metric = 0, extra = 0, totalEnergy = 0, buf, img;
       function sizeFrom(s) {
         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
         return { W: g, H: Math.max(48, Math.round(g * a)) };
@@ -41143,7 +41562,6 @@ void main(){
         const s = host.getState();
         const sz = sizeFrom(s); W = sz.W; H = sz.H;
         field = new Float32Array(W * H);
-        const rng = U.makeRng(String(s.seed) + '/x');
 
         const b = U.clamp(s.beta, 0.05, 0.95), a = Math.sqrt(Math.max(0, 1 - b * b)), L = s.span, t0 = s.t0;
         let eOut = 0, eAll = 0;
@@ -41154,13 +41572,18 @@ void main(){
             const xx = L * (x / Math.max(1, W - 1) - 0.5);
             const u = 4 * Math.atan((b / Math.max(0.05, a)) * Math.sin(a * t) / Math.cosh(Math.max(-20, Math.min(20, b * xx))));
             field[y * W + x] = u;
-            const e = u * u;
-            eAll += e;
-            if (Math.abs(xx) > wCut) eOut += e;
+            if (y === (H >> 1)) {
+              const q = (b / a) * Math.sin(a * t) / Math.cosh(b * xx);
+              const ut = 4 * b * Math.cos(a * t) / (Math.cosh(b * xx) * (1 + q * q));
+              const ux = -4 * b * q * Math.tanh(b * xx) / (1 + q * q);
+              const e = ((ut * ut + ux * ux) / 2 + 1 - Math.cos(u)) * (x === 0 || x === W - 1 ? .5 : 1);
+              eAll += e;
+              if (Math.abs(xx) > wCut) eOut += e;
+            }
           }
         }
         metric = eOut / Math.max(1e-12, eAll);
-        extra = a;
+        extra = a; totalEnergy = eAll * L / (W - 1);
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
@@ -41191,7 +41614,7 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>ω = α <b>' + f2(extra) + '</b></span><span>E_out / E <b>' + f3(metric) + '</b> · theory 0</span><span>' + (metric < 0.08 ? 'bound' : 'leaking') + '</span>'); }
+      function status() { const b = U.clamp(host.getState().beta, .05, .95); host.setStatus('<span>ω = α <b>' + f2(extra) + '</b></span><span>sampled energy <b>' + f3(totalEnergy) + '</b> · whole line ' + f3(16 * b) + '</span><span>sampled energy outside |x|=3/β <b>' + f3(metric) + '</b> · finite window, nonzero tails</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
@@ -41358,7 +41781,7 @@ void main(){
 </script>
 <script>
 /* modules/gyroid.js */
-/* GENChase: Schoen gyroid, a triply periodic minimal surface. Mean curvature on the level set is measured against 0. */
+/* GENChase: Trigonometric nodal approximation to the Schoen gyroid; it is not exactly minimal. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -41393,15 +41816,23 @@ void main(){
 
   function surprise(rng) { return { z0: rng.range(0, 6), scale: rng.range(1.6, 4.5), kind: rng.pick(['level','field','abs']) }; }
   function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function nodalMeanCurvature(x, y, z) {
+    const sx=Math.sin(x), sy=Math.sin(y), sz=Math.sin(z), cx=Math.cos(x), cy=Math.cos(y), cz=Math.cos(z);
+    const g=[cx*cy-sz*sx, cy*cz-sx*sy, cz*cx-sy*sz];
+    const xx=-sx*cy-sz*cx, yy=-sx*cy-sy*cz, zz=-sy*cz-sz*cx;
+    const xy=-cx*sy, xz=-cz*sx, yz=-cy*sz, g2=g.reduce((sum,v)=>sum+v*v,0);
+    if (g2 < 1e-12) return NaN;
+    return (g2*(xx+yy+zz)-(g[0]*g[0]*xx+g[1]*g[1]*yy+g[2]*g[2]*zz+2*g[0]*g[1]*xy+2*g[0]*g[2]*xz+2*g[1]*g[2]*yz))/(2*g2**1.5);
+  }
   Studio.register({
     id: 'gyroid', name: 'Gyroid', tab: 'Gyroid',
-    subtitle: 'a sponge of zero mean curvature · 1970',
+    subtitle: 'a periodic nodal approximation · 1970 / 2001',
     order: 64,
-    equation: 'sin x cos y + sin y cos z + sin z cos x = 0,   H = 0',
-    credit: 'A. H. Schoen, NASA Technical Note D-5541 (1970), found the gyroid, a triply periodic minimal surface of genus 3 in the cubic cell, with no embedded straight lines. Its mean curvature vanishes. Butterfly-wing scales and block-copolymer melts later grew it for free. The plate is a 2-D slice of the level set, not a 3-D print.',
-    blurb: 'A surface that divides space into two congruent labyrinths and has mean curvature zero everywhere: a minimal sponge. It should not exist in a cubic lattice without straight lines, and then Schoen wrote it down. The plate is one slice. The status line reports mean |H| on the level set against 0.',
+    equation: 'F = sin x cos y + sin y cos z + sin z cos x; F = level; H = ½ div(∇F/|∇F|)',
+    credit: 'A. H. Schoen, NASA Technical Note D-5541 (1970), discovered the exact gyroid minimal surface. This module uses a three-term trigonometric nodal approximation, as distinguished from exact minimal geometry by Gandy, Bardhan, Mackay and Klinowski, Chemical Physics Letters 336, 187-195 (2001), doi:10.1016/S0009-2614(00)01418-4.',
+    blurb: 'A two-dimensional slice through a triply periodic scalar field. Its zero level approximates the gyroid, but its mean curvature is generally nonzero. The status samples the actual three-dimensional mean curvature in a finite band |F-level|<0.08 around the selected level. It is not an exact-surface average or a minimality test.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Surface: 'Scale packs more unit cells onto the plate. Level 0 is the classical gyroid.' },
+    hints: { Surface: 'Scale packs more unit cells onto the plate. Level 0 is the nodal gyroid approximation; nonzero levels are offset level sets.' },
     palette: true, defaultPalette: 'verdigris', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
@@ -41414,20 +41845,14 @@ void main(){
         const s = host.getState();
         const sz = sizeFrom(s); W = sz.W; H = sz.H;
         field = new Float32Array(W * H);
-        const rng = U.makeRng(String(s.seed) + '/x');
 
         const z = s.z0, sc = s.scale, iso = s.iso, kind = s.kind;
         let hAcc = 0, nH = 0;
         for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
           const X = sc * Math.PI * 2 * x / W, Y = sc * Math.PI * 2 * y / H, Z = z;
           const F = Math.sin(X) * Math.cos(Y) + Math.sin(Y) * Math.cos(Z) + Math.sin(Z) * Math.cos(X);
-          const Fx = Math.cos(X) * Math.cos(Y) - Math.sin(Z) * Math.sin(X);
-          const Fy = -Math.sin(X) * Math.sin(Y) + Math.cos(Y) * Math.cos(Z);
-          const Fxx = -Math.sin(X) * Math.cos(Y) - Math.sin(Z) * Math.cos(X);
-          const Fyy = -Math.sin(X) * Math.cos(Y) - Math.sin(Y) * Math.cos(Z);
-          const g2 = Fx * Fx + Fy * Fy + 1e-8;
-          const Hm = (Fxx + Fyy) / Math.sqrt(g2) - (Fx * Fx * Fxx + Fy * Fy * Fyy) / Math.pow(g2, 1.5);
-          if (Math.abs(F - iso) < 0.08) { hAcc += Math.abs(Hm); nH++; }
+          const Hm = nodalMeanCurvature(X, Y, Z);
+          if (Math.abs(F - iso) < 0.08 && Number.isFinite(Hm)) { hAcc += Math.abs(Hm); nH++; }
           let v;
           if (kind === 'field') v = F;
           else if (kind === 'abs') v = Math.abs(F);
@@ -41466,7 +41891,7 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>|H| on surface <b>' + f3(metric) + '</b> · theory 0</span><span>samples ' + (extra | 0) + '</span><span>minimal</span>'); }
+      function status() { host.setStatus('<span>band mean |H| <b>' + (extra ? f3(metric) : 'no regular samples') + '</b></span><span>samples ' + (extra | 0) + ' · |F-level|&lt;0.08</span><span>nodal approximation · generally nonzero</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
@@ -42266,7 +42691,7 @@ void main(){
 </script>
 <script>
 /* modules/weierstrass.js */
-/* GENChase: Weierstrass function. Continuous everywhere, differentiable nowhere. Increment ratios are measured at two scales. */
+/* GENChase: finite phase-shifted Weierstrass-type sums. Increment ratios are finite-resolution diagnostics. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -42303,13 +42728,13 @@ void main(){
   function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'weierstrass', name: 'Weierstrass', tab: 'Weierstrass',
-    subtitle: 'a curve with no tangent anywhere · 1872',
+    subtitle: 'finite lacunary Fourier sums · inspired by 1872',
     order: 92,
-    equation: 'W(x) = Σ_{n=0}^∞ a^n cos(b^n π x),   0<a<1,   ab > 1 + 3π/2  ⇒  nowhere differentiable',
-    credit: 'K. Weierstrass, presented to the Prussian Academy in 1872 (published 1875). Analysts had assumed a continuous function was differentiable except at isolated points; Weierstrass wrote a Fourier series that is continuous everywhere and differentiable nowhere. Hardy (1916) weakened the condition to ab ≥ 1. The plate is a finite truncation of that series, in one and two dimensions.',
-    blurb: 'A curve you can draw without lifting the pen, that has no tangent at any point. Nineteenth-century analysis said that could not happen. Weierstrass wrote the series anyway. Zoom in: the wiggles never stop, they just change scale. The status line reports the increment ratio |ΔW|/|Δx| at one pixel against ten, which refuses to settle.',
+    equation: 'W_N(x) = Σ_{n=0}^{N−1} a^n cos(b^n π x + φ_n),   0<a<1,   N finite; seeded phases',
+    credit: 'K. Weierstrass, presented to the Prussian Academy in 1872 (published 1875). Analysts had assumed a continuous function was differentiable except at isolated points; Weierstrass wrote a Fourier series that is continuous everywhere and differentiable nowhere. Hardy (1916) weakened the condition to ab ≥ 1. The plate uses a finite, seeded phase-shifted sum inspired by that series. Each finite sum is smooth; the classical infinite-series theorem is not established for this displayed field.',
+    blurb: 'A finite sum of increasingly high frequencies creates structure at several scales. Seeded phases shift each term. Every displayed finite sum is smooth, even when it looks rough. The increment ratio compares two finite distances; it is not proof of nowhere differentiability. Frequencies above the grid resolution alias, and increasing the term count alone does not resolve them.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Curve: 'ab > 1 is Hardy\'s nowhere-differentiable threshold. More terms reveal smaller wiggles; they never become a line.' },
+    hints: { Curve: 'a controls decay and b controls frequency growth. This is a finite smooth sum. Terms above the pixel resolution can alias; the increment ratio is only a sampled diagnostic.' },
     palette: true, defaultPalette: 'graphite', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
@@ -42394,7 +42819,7 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>ab <b>' + f2(extra) + '</b> · Hardy ≥ 1</span><span>|Δ|₁ / |Δ|₁₀ <b>' + f2(metric) + '</b> · ∞ if nowhere-diff</span><span>' + (extra > 1 ? 'nowhere differentiable' : 'too smooth') + '</span>'); }
+      function status() { host.setStatus('<span>ab <b>' + f2(extra) + '</b></span><span>sampled increment ratio <b>' + f2(metric) + '</b></span><span>finite smooth sum · unresolved frequencies may alias</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
@@ -42732,7 +43157,7 @@ void main(){
 </script>
 <script>
 /* modules/devil.js */
-/* GENChase: Circle-map devil's staircase and Arnold tongues. Rotation number is constant on locked intervals yet strictly increasing. */
+/* GENChase: Circle-map devil's staircase and Arnold tongues. Finite-time rotation estimates and orbit histograms; no infinite-time locking certificate. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -42766,31 +43191,8 @@ void main(){
 
   function surprise(rng) { return { K: rng.range(0.4, 1.6), kind: rng.pick(['tongues','stair','tongues']) }; }
   function sanitize(s) { s.grid = Math.max(96, Math.min(224, Math.round(s.grid / 16) * 16)); }
-  Studio.register({
-    id: 'devil', name: 'Devil\'s Staircase', tab: 'Devil',
-    subtitle: 'a staircase constant almost everywhere that still climbs · 1965',
-    order: 95,
-    equation: 'θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil\'s staircase)',
-    credit: 'V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), on the tongues of a driven oscillator; the circle map is the standard example. At K = 1 the rotation number as a function of Ω is a devil\'s staircase: constant on a fat Cantor set of locked intervals (the Farey sequence of p/q), yet strictly increasing. B. B. Mandelbrot named the staircase. The plate is ρ(Ω, K) or ρ(Ω) itself.',
-    blurb: 'A function that is locally constant on a set of positive measure, and still manages to climb from 0 to 1. The locked plateaux are the p/q resonances, the steps between them are chaotic or quasiperiodic according to K. Poincaré said a generic driven oscillator should lock; Arnold drew the tongues. The status line reports the width of the 1/2 tongue against the Bessel formula at small K.',
-    schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Map: 'K = 1 is critical, where the staircase first becomes complete. Tongues are the (Ω, K) plane coloured by ρ.' },
-    palette: true, defaultPalette: 'ember', surprise, sanitize,
-    create(host) {
-      const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
-      function sizeFrom(s) {
-        const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
-        return { W: g, H: Math.max(48, Math.round(g * a)) };
-      }
-      function compute() {
-        const s = host.getState();
-        const sz = sizeFrom(s); W = sz.W; H = sz.H;
-        field = new Float32Array(W * H);
-        const rng = U.makeRng(String(s.seed) + '/x');
-
-        const K0 = s.K, it = s.iters | 0, kind = s.kind;
-        function rho(omega, K, steps) {
+  function circleRotation(omega, K, steps) {
+          if (K === 0) return omega;
           let th = 0.17, acc = 0;
           const k = K / (Math.PI * 2);
           for (let i = 0; i < 20; i++) th = (th + omega - k * Math.sin(Math.PI * 2 * th)) % 1;
@@ -42803,15 +43205,38 @@ void main(){
           }
           return acc / steps;
         }
-        let halfW = 0, nHalf = 0;
+  Studio.register({
+    id: 'devil', name: 'Devil\'s Staircase', tab: 'Devil',
+    subtitle: 'finite-time circle-map rotation estimates · 1965',
+    order: 95,
+    equation: 'θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil\'s staircase)',
+    credit: 'V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), studied the circle-map resonance tongues. This plate evaluates the standard sine circle map with a fixed initial phase. The rotation number is an infinite-time quantity; the plate displays finite-time estimates. For non-monotone maps, different initial phases can have different long-time rotation behavior.',
+    blurb: 'The staircase and tongue views estimate mean phase advance after 20 discarded iterations. A tolerance band near 1/2 is a finite-sample statistic, not proof of a locked rational orbit or its tongue width. The orbit view bins one trajectory at golden-mean drive. K<=1 preserves orientation; K>1 need not have a unique rotation number.',
+    schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
+    hints: { Map: 'Tongues plot finite-time rotation estimates over Ω=0..1 and K=0..2.1. The K slider selects the diagnostic band only in this view. Staircase uses that K throughout. Iters controls averaging; a near-rational estimate does not establish locking.' },
+    palette: true, defaultPalette: 'ember', surprise, sanitize,
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
+      let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
+      function sizeFrom(s) {
+        const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
+        return { W: g, H: Math.max(48, Math.round(g * a)) };
+      }
+      function compute() {
+        const s = host.getState();
+        const sz = sizeFrom(s); W = sz.W; H = sz.H;
+        field = new Float32Array(W * H);
+
+        const K0 = s.K, it = s.iters | 0, kind = s.kind;
+        let halfW = 0, samplesInBand = 0;
         if (kind === 'stair') {
           for (let x = 0; x < W; x++) {
             const omega = x / Math.max(1, W - 1);
-            const r = rho(omega, K0, it);
-            if (Math.abs(r - 0.5) < 0.02) { halfW++; nHalf++; }
+            const r = circleRotation(omega, K0, it);
+            samplesInBand++; if (Math.abs(r - 0.5) < 0.02) halfW++;
             for (let y = 0; y < H; y++) {
               const yy = 1 - y / Math.max(1, H - 1);
-              field[y * W + x] = yy < r ? r : (Math.abs(yy - r) < 0.012 ? 1 : 0.05);
+              field[y * W + x] = Math.abs(yy - r) < 0.012 ? 1 : (yy < r ? r : 0.05);
             }
           }
         } else if (kind === 'orbit') {
@@ -42819,7 +43244,6 @@ void main(){
           const k = K0 / (Math.PI * 2);
           field.fill(0);
           for (let i = 0; i < W * H; i++) {
-            const omega = 0.5 * (1 + Math.sin(i * 0.001));
             th = (th + 0.5 * (Math.sqrt(5) - 1) - k * Math.sin(Math.PI * 2 * th));
             th -= Math.floor(th);
             const x = (th * W) | 0, y = ((i / (W * 2)) | 0) % H;
@@ -42830,13 +43254,13 @@ void main(){
             const K = 2.1 * y / Math.max(1, H - 1);
             for (let x = 0; x < W; x++) {
               const omega = x / Math.max(1, W - 1);
-              const r = rho(omega, K, Math.max(30, it >> 1));
+              const r = circleRotation(omega, K, Math.max(30, it >> 1));
               field[y * W + x] = r;
-              if (Math.abs(K - K0) < 0.05 && Math.abs(r - 0.5) < 0.02) halfW++;
+              if (Math.abs(K - K0) < 0.05) { samplesInBand++; if (Math.abs(r - 0.5) < 0.02) halfW++; }
             }
           }
         }
-        metric = halfW / Math.max(1, W);
+        metric = samplesInBand ? halfW / samplesInBand : null;
         extra = K0;
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
@@ -42868,7 +43292,7 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>K <b>' + f2(extra) + '</b></span><span>½-tongue occupancy <b>' + f2(metric) + '</b></span><span>' + (extra >= 1 ? 'complete staircase' : 'gapped tongues') + '</span>'); }
+      function status() { host.setStatus('<span>K <b>' + f2(extra) + '</b></span><span>near-½ sample fraction <b>' + (metric === null ? 'not measured' : f2(metric)) + '</b></span><span>finite iterations · tolerance 0.02 · no locking certificate</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
@@ -49224,6 +49648,13 @@ void main(){
     };
   }
 
+  // Time controls use physical time fractions, while stored trajectories stop at 0.92.
+  // Broken controls retain their original normalized diagnostic timeline.
+  function timeIndex(traj, fraction) {
+    const extent = traj.tt[traj.n - 1] || 1;
+    return U.clamp(Math.round(fraction / extent * (traj.n - 1)), 0, traj.n - 1);
+  }
+
   function metalsOf(s) {
     const pal = Array.isArray(s.palette) && s.palette.length ? s.palette : METAL_FALLBACK;
     return [pal[0] || METAL_FALLBACK[0], pal[Math.min(1, pal.length - 1)] || METAL_FALLBACK[1], pal[Math.min(2, pal.length - 1)] || METAL_FALLBACK[2]];
@@ -49292,7 +49723,7 @@ void main(){
     const lw = Math.max(0.8, 0.011 * Math.min(w, h) * s.weight);
     const fade = s.fade;
     const n = traj.n;
-    const kNow = U.clamp(Math.round(tFrac * (n - 1)), 0, n - 1);
+    const kNow = timeIndex(traj, tFrac);
 
     if (view === 'overlay') {
       const step = Math.max(1, (n / 18) | 0);
@@ -49392,7 +49823,7 @@ void main(){
     const xf = xformOf(packed, w, h, s.zoom, s.panX, s.panY);
     const lw = Math.max(0.8, 0.011 * Math.min(w, h) * s.weight);
     const n = traj.n;
-    const kNow = U.clamp(Math.round(tFrac * (n - 1)), 0, n - 1);
+    const kNow = timeIndex(traj, tFrac);
     const parts = [];
     if (view === 'overlay') {
       const step = Math.max(1, (n / 18) | 0);
@@ -49817,6 +50248,13 @@ void main(){
     };
   }
 
+  // Time controls use physical time fractions, while stored trajectories stop at 0.92.
+  // Broken controls retain their original normalized diagnostic timeline.
+  function timeIndex(traj, fraction) {
+    const extent = traj.tt[traj.n - 1] || 1;
+    return U.clamp(Math.round(fraction / extent * (traj.n - 1)), 0, traj.n - 1);
+  }
+
   function metalsOf(s) {
     const pal = Array.isArray(s.palette) && s.palette.length ? s.palette : METAL_FALLBACK;
     return [0, 1, 2, 3].map(i => pal[Math.min(i, pal.length - 1)] || METAL_FALLBACK[i]);
@@ -49878,7 +50316,7 @@ void main(){
     const lw = Math.max(0.8, 0.011 * Math.min(w, h) * s.weight);
     const fade = s.fade;
     const n = traj.n;
-    const kNow = U.clamp(Math.round(tFrac * (n - 1)), 0, n - 1);
+    const kNow = timeIndex(traj, tFrac);
 
     if (view === 'overlay') {
       const step = Math.max(1, (n / 18) | 0);
@@ -49978,7 +50416,7 @@ void main(){
     const xf = xformOf(packed, w, h, s.zoom, s.panX, s.panY);
     const lw = Math.max(0.8, 0.011 * Math.min(w, h) * s.weight);
     const n = traj.n;
-    const kNow = U.clamp(Math.round(tFrac * (n - 1)), 0, n - 1);
+    const kNow = timeIndex(traj, tFrac);
     const parts = [];
     if (view === 'overlay') {
       const step = Math.max(1, (n / 18) | 0);
@@ -50413,6 +50851,13 @@ void main(){
     };
   }
 
+  // Time controls use physical time fractions, while stored trajectories stop at 0.92.
+  // Broken controls retain their original normalized diagnostic timeline.
+  function timeIndex(traj, fraction) {
+    const extent = traj.tt[traj.n - 1] || 1;
+    return U.clamp(Math.round(fraction / extent * (traj.n - 1)), 0, traj.n - 1);
+  }
+
   function metalsOf(s) {
     const pal = Array.isArray(s.palette) && s.palette.length ? s.palette : METAL_FALLBACK;
     return [0, 1, 2, 3, 4].map(i => pal[Math.min(i, pal.length - 1)] || METAL_FALLBACK[i]);
@@ -50477,7 +50922,7 @@ void main(){
     const lw = Math.max(0.8, 0.011 * Math.min(w, h) * s.weight);
     const fade = s.fade;
     const n = traj.n;
-    const kNow = U.clamp(Math.round(tFrac * (n - 1)), 0, n - 1);
+    const kNow = timeIndex(traj, tFrac);
 
     if (view === 'overlay') {
       const step = Math.max(1, (n / 18) | 0);
@@ -50584,7 +51029,7 @@ void main(){
     const xf = xformOf(packed, w, h, s.zoom, s.panX, s.panY);
     const lw = Math.max(0.8, 0.011 * Math.min(w, h) * s.weight);
     const n = traj.n;
-    const kNow = U.clamp(Math.round(tFrac * (n - 1)), 0, n - 1);
+    const kNow = timeIndex(traj, tFrac);
     const parts = [];
     if (view === 'overlay') {
       const step = Math.max(1, (n / 18) | 0);

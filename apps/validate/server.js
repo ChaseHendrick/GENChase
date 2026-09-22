@@ -1,10 +1,12 @@
 'use strict';
 const http = require('node:http'), fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
 const { Jobs } = require('./jobs');
+const { Shares } = require('./share');
+const { browserSetup } = require('./setup');
 const { redact } = require('./privacy');
 const { MODES, EXPERIMENTS, ids } = require('./commands');
 const ROOT = path.resolve(__dirname, '../..');
-function createServer({ root = ROOT, data, port = 8787 } = {}) {
+function createServer({ root = ROOT, data, port = 8787, shareRequest } = {}) {
   if (process.platform === 'win32') throw Error('This runner requires POSIX process groups. macOS and Linux are supported.');
   data ||= path.join(root,'apps/validate/.runs');
   fs.mkdirSync(data,{recursive:true,mode:0o700});
@@ -20,6 +22,8 @@ function createServer({ root = ROOT, data, port = 8787 } = {}) {
   }
   let jobs;
   try { jobs=new Jobs(root,data); } catch(e) { fs.unlinkSync(lock); throw e; }
+  const shares = new Shares(root, data, shareRequest);
+  jobs.onFinished = job => { if (job.input.shareAutomatically === true) { try { const preview = shares.preview(job.id); shares.start(job.id, preview.digest); } catch(e) { shares.save(job.id, {status:'failed', message:redact(e.message,{root})}); } } };
   const reply = (res, status, body, type = 'application/json') => {
     res.writeHead(status, { 'Content-Type': type + '; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff',
       'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'" });
@@ -35,9 +39,11 @@ function createServer({ root = ROOT, data, port = 8787 } = {}) {
       if (req.method === 'GET' && assets[url.pathname]) {
         const [file, type] = assets[url.pathname]; return reply(res, 200, fs.readFileSync(path.join(__dirname, file), 'utf8'), type);
       }
-      if (req.method === 'GET' && url.pathname === '/api/config') return reply(res, 200, { token, modes: MODES, experiments: EXPERIMENTS, ids: ids(root) });
+      if (req.method === 'GET' && url.pathname === '/api/config') return reply(res, 200, { token, modes: MODES, experiments: EXPERIMENTS, ids: ids(root), setup: browserSetup(root) });
       if (req.headers['x-validator-token'] !== token) return reply(res, 403, { error: 'Open the local app before controlling jobs.' });
-      if (req.method === 'GET' && url.pathname === '/api/state') return reply(res, 200, jobs.state());
+      if (req.method === 'GET' && url.pathname === '/api/state') return reply(res, 200, {...jobs.state(), submission: jobs.current ? shares.state(jobs.current.id) : null});
+      if (req.method === 'GET' && url.pathname === '/api/share-file') return reply(res, 200, shares.read(url.searchParams.get('job'), url.searchParams.get('name')));
+      if (req.method === 'GET' && url.pathname === '/api/share-preview') return reply(res, 200, shares.preview(url.searchParams.get('job')));
       if (req.method === 'GET' && url.pathname === '/api/miss') {
         const name=url.searchParams.get('file');
         if(!/^[a-f0-9]{40,64}-[a-z0-9-]+\.json$/.test(name||''))throw Error('Invalid miss selection.');
@@ -59,6 +65,7 @@ function createServer({ root = ROOT, data, port = 8787 } = {}) {
       let body = '';
       for await (const chunk of req) { body += chunk; if (Buffer.byteLength(body) > 8192) return reply(res, 413, { error: 'Request too large.' }); }
       const input = JSON.parse(body || '{}');
+      if (url.pathname === '/api/share') return reply(res, 200, shares.start(input.job, input.digest));
       if (url.pathname === '/api/start') return reply(res, 200, jobs.start(input));
       if (url.pathname === '/api/stop') { jobs.stop(); return reply(res, 200, jobs.state()); }
       if (url.pathname === '/api/resume') return reply(res, 200, await jobs.resume());
@@ -69,12 +76,12 @@ function createServer({ root = ROOT, data, port = 8787 } = {}) {
   });
   let closing = false;
   async function close() {
-    if (closing) return; closing = true; jobs.stop(); await jobs.wait();
+    if (closing) return; closing = true; jobs.stop(); await jobs.wait(); await shares.wait();
     await new Promise(resolve => server.close(resolve));
     if (fs.existsSync(lock) && fs.readFileSync(lock, 'utf8') === String(process.pid)) fs.unlinkSync(lock);
   }
   server.once('error', () => { if (fs.existsSync(lock) && fs.readFileSync(lock, 'utf8') === String(process.pid)) fs.unlinkSync(lock); });
-  return { server, jobs, token, close, listen: () => new Promise((resolve, reject) => { server.once('error', reject); server.listen(port, '127.0.0.1', () => resolve(server.address())); }) };
+  return { server, jobs, shares, token, close, listen: () => new Promise((resolve, reject) => { server.once('error', reject); server.listen(port, '127.0.0.1', () => resolve(server.address())); }) };
 }
 module.exports = { createServer };
 if (require.main === module) {

@@ -286,6 +286,13 @@
     };
   }
 
+  // Time controls use physical time fractions, while stored trajectories stop at 0.92.
+  // Broken controls retain their original normalized diagnostic timeline.
+  function timeIndex(traj, fraction) {
+    const extent = traj.tt[traj.n - 1] || 1;
+    return U.clamp(Math.round(fraction / extent * (traj.n - 1)), 0, traj.n - 1);
+  }
+
   function metalsOf(s) {
     const pal = Array.isArray(s.palette) && s.palette.length ? s.palette : METAL_FALLBACK;
     return [0, 1, 2, 3, 4].map(i => pal[Math.min(i, pal.length - 1)] || METAL_FALLBACK[i]);
@@ -350,7 +357,7 @@
     const lw = Math.max(0.8, 0.011 * Math.min(w, h) * s.weight);
     const fade = s.fade;
     const n = traj.n;
-    const kNow = U.clamp(Math.round(tFrac * (n - 1)), 0, n - 1);
+    const kNow = timeIndex(traj, tFrac);
 
     if (view === 'overlay') {
       const step = Math.max(1, (n / 18) | 0);
@@ -457,7 +464,7 @@
     const xf = xformOf(packed, w, h, s.zoom, s.panX, s.panY);
     const lw = Math.max(0.8, 0.011 * Math.min(w, h) * s.weight);
     const n = traj.n;
-    const kNow = U.clamp(Math.round(tFrac * (n - 1)), 0, n - 1);
+    const kNow = timeIndex(traj, tFrac);
     const parts = [];
     if (view === 'overlay') {
       const step = Math.max(1, (n / 18) | 0);

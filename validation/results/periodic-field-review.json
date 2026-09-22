@@ -1,0 +1,1083 @@
+{
+  "date": "2026-09-22",
+  "scope": "Nine enumerated gyroid nodal-approximation and finite circle-map fields, diagnostics and actual PNG prints; no exact-minimality or infinite-time locking claim.",
+  "sourceSha256": {
+    "gyroid": "267c0cd0e13360c490c9593cd4a58410dd30d9c7e8b21fd3cd8532221de4e87e",
+    "devil": "b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc"
+  },
+  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "kernels": {
+    "curvatures": [
+      {
+        "point": [
+          0.3,
+          0.7,
+          1.2
+        ],
+        "meanCurvature": -1.5385519352540318,
+        "errors": [
+          0.00004870645408083796,
+          0.000012176231571459084,
+          0.0000030440404246157016
+        ],
+        "orders": [
+          2.000045254307335,
+          2.0000082788926825
+        ],
+        "missingHalfError": 1.538558023334881
+      },
+      {
+        "point": [
+          1,
+          2,
+          3
+        ],
+        "meanCurvature": 0.6776060957670299,
+        "errors": [
+          0.000048114292795720104,
+          0.000012028404043462615,
+          0.0000030070915817415056
+        ],
+        "orders": [
+          2.0000202884802625,
+          2.0000045237495936
+        ],
+        "missingHalfError": 0.6776121099501934
+      },
+      {
+        "point": [
+          0.2,
+          1.7,
+          2.6
+        ],
+        "meanCurvature": 0.13577983796289847,
+        "errors": [
+          0.000006114955971497915,
+          0.0000015287055684376494,
+          3.821805188986005e-7
+        ],
+        "orders": [
+          2.000031543511775,
+          1.9999844216799485
+        ],
+        "missingHalfError": 0.13578060232393627
+      },
+      {
+        "point": [
+          1.1,
+          0.4,
+          2.3
+        ],
+        "meanCurvature": -0.3544601499096217,
+        "errors": [
+          0.0000342500958826486,
+          0.000008562433946424086,
+          0.000002140599752342709
+        ],
+        "orders": [
+          2.000015168215005,
+          2.000005886599139
+        ],
+        "missingHalfError": 0.3544644311091264
+      }
+    ],
+    "periodError": 1.887379141862766e-15,
+    "zeroLevelCounterexample": {
+      "point": [
+        0.3,
+        0.5,
+        -0.7101936838369134
+      ],
+      "F": 0,
+      "H": -0.018964380669687073
+    },
+    "rotations": [
+      {
+        "K": 0,
+        "omega": 0,
+        "longReference": 0,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": 0,
+            "independentError": 0,
+            "finiteTimeError": 0,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": 0,
+            "independentError": 0,
+            "finiteTimeError": 0,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": 0,
+            "independentError": 0,
+            "finiteTimeError": 0,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0,
+        "omega": 0.31,
+        "longReference": 0.3100000000001196,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": 0.31,
+            "independentError": 5.551115123125783e-17,
+            "finiteTimeError": 1.1962653090336062e-13,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": 0.31,
+            "independentError": 2.7755575615628914e-16,
+            "finiteTimeError": 1.1962653090336062e-13,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": 0.31,
+            "independentError": 1.2212453270876722e-15,
+            "finiteTimeError": 1.1962653090336062e-13,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0,
+        "omega": 0.5,
+        "longReference": 0.5,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": 0.5,
+            "independentError": 0,
+            "finiteTimeError": 0,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": 0.5,
+            "independentError": 0,
+            "finiteTimeError": 0,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": 0.5,
+            "independentError": 1.1102230246251565e-16,
+            "finiteTimeError": 0,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0,
+        "omega": 0.6180339887498949,
+        "longReference": 0.6180339887503911,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": 0.6180339887498949,
+            "independentError": 1.5543122344752192e-15,
+            "finiteTimeError": 4.961586697049825e-13,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": 0.6180339887498949,
+            "independentError": 4.440892098500626e-16,
+            "finiteTimeError": 4.961586697049825e-13,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": 0.6180339887498949,
+            "independentError": 3.3306690738754696e-16,
+            "finiteTimeError": 4.961586697049825e-13,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0,
+        "omega": 1,
+        "longReference": 1,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": 1,
+            "independentError": 0,
+            "finiteTimeError": 0,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": 1,
+            "independentError": 2.220446049250313e-16,
+            "finiteTimeError": 0,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": 1,
+            "independentError": 0,
+            "finiteTimeError": 0,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0.55,
+        "omega": 0,
+        "longReference": -4.000276587243839e-13,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": -6.554053160540219e-10,
+            "independentError": 2.0679515313825692e-25,
+            "finiteTimeError": 6.550052883952975e-10,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": -2.1846843868467687e-10,
+            "independentError": 0,
+            "finiteTimeError": 2.1806841102595248e-10,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": -1.0923421934233843e-10,
+            "independentError": 0,
+            "finiteTimeError": 1.0883419168361406e-10,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0.55,
+        "omega": 0.31,
+        "longReference": 0.3018776268908445,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": 0.30150045579803025,
+            "independentError": 5.551115123125783e-17,
+            "finiteTimeError": 0.00037717109281426575,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": 0.301380378066192,
+            "independentError": 5.551115123125783e-17,
+            "finiteTimeError": 0.0004972488246525186,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": 0.30141927549551345,
+            "independentError": 1.1657341758564144e-15,
+            "finiteTimeError": 0.00045835139533106917,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0.55,
+        "omega": 0.5,
+        "longReference": 0.4999998823023265,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": 0.49980730750005653,
+            "independentError": 1.6653345369377348e-16,
+            "finiteTimeError": 0.0001925748022699736,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": 0.4999357213772885,
+            "independentError": 4.440892098500626e-16,
+            "finiteTimeError": 0.00006416092503802595,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": 0.4999678606886311,
+            "independentError": 5.551115123125783e-17,
+            "finiteTimeError": 0.000032021613695421,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0.55,
+        "omega": 0.6180339887498949,
+        "longReference": 0.6224231190374071,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": 0.6230717087928856,
+            "independentError": 4.440892098500626e-16,
+            "finiteTimeError": 0.0006485897554785458,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": 0.6227297850093383,
+            "independentError": 1.1102230246251565e-15,
+            "finiteTimeError": 0.00030666597193118594,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": 0.6222917885621716,
+            "independentError": 8.881784197001252e-16,
+            "finiteTimeError": 0.00013133047523550267,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0.55,
+        "omega": 1,
+        "longReference": 0.9999999999996,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": 0.9999999993445948,
+            "independentError": 1.1102230246251565e-16,
+            "finiteTimeError": 6.550051612208563e-10,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": 0.9999999997815315,
+            "independentError": 0,
+            "finiteTimeError": 2.1806845218463877e-10,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": 0.9999999998907658,
+            "independentError": 0,
+            "finiteTimeError": 1.0883416390328193e-10,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0.95,
+        "omega": 0,
+        "longReference": -1.2837293216826821e-31,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": -2.103262120644906e-28,
+            "independentError": 4.484155085839415e-44,
+            "finiteTimeError": 2.101978391323223e-28,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": -7.010873735483021e-29,
+            "independentError": 1.1210387714598537e-44,
+            "finiteTimeError": 6.998036442266194e-29,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": -3.5054368677415103e-29,
+            "independentError": 5.605193857299268e-45,
+            "finiteTimeError": 3.4925995745246837e-29,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0.95,
+        "omega": 0.31,
+        "longReference": 0.2857152146399966,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": 0.28879942837830413,
+            "independentError": 1.1102230246251565e-16,
+            "finiteTimeError": 0.0030842137383075285,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": 0.28727003506207677,
+            "independentError": 1.6653345369377348e-16,
+            "finiteTimeError": 0.001554820422080161,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": 0.285967944361694,
+            "independentError": 1.1102230246251565e-16,
+            "finiteTimeError": 0.0002527297216973756,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0.95,
+        "omega": 0.5,
+        "longReference": 0.4999999999999985,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": 0.49999999999755873,
+            "independentError": 1.1102230246251565e-16,
+            "finiteTimeError": 2.4397706077650128e-12,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": 0.49999999999918626,
+            "independentError": 5.551115123125783e-17,
+            "finiteTimeError": 8.122391648157645e-13,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": 0.4999999999995931,
+            "independentError": 5.551115123125783e-17,
+            "finiteTimeError": 4.053979374418759e-13,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0.95,
+        "omega": 0.6180339887498949,
+        "longReference": 0.631742201872057,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": 0.6330701421753662,
+            "independentError": 1.5543122344752192e-15,
+            "finiteTimeError": 0.001327940303309183,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": 0.6326752528649364,
+            "independentError": 2.220446049250313e-16,
+            "finiteTimeError": 0.0009330509928794362,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": 0.6321888204085189,
+            "independentError": 4.440892098500626e-16,
+            "finiteTimeError": 0.00044661853646188465,
+            "bound": 0.004181925455729167
+          }
+        ]
+      },
+      {
+        "K": 0.95,
+        "omega": 1,
+        "longReference": 1,
+        "rows": [
+          {
+            "iterations": 40,
+            "actual": 1,
+            "independentError": 0,
+            "finiteTimeError": 0,
+            "bound": 0.0250152587890625
+          },
+          {
+            "iterations": 120,
+            "actual": 1,
+            "independentError": 0,
+            "finiteTimeError": 0,
+            "bound": 0.008348592122395833
+          },
+          {
+            "iterations": 240,
+            "actual": 1,
+            "independentError": 0,
+            "finiteTimeError": 0,
+            "bound": 0.004181925455729167
+          }
+        ]
+      }
+    ],
+    "decimal": {
+      "reference": "Decimal Taylor sine and lifted phase, binary64 input values, 40/60/80 decimal digits",
+      "rows": [
+        {
+          "x": 84,
+          "y": 125,
+          "grid": 128,
+          "iterations": 30,
+          "burnIn": 20,
+          "precisions": [
+            40,
+            60,
+            80
+          ],
+          "rotation": [
+            "0.7461503600523693085452812994146795195717",
+            "0.746150360052369308545281299045575474445933830709029271097597",
+            "0.74615036005236930854528129904557547444593383070946155076259459109833527473215723"
+          ],
+          "actual": 0.7461764074442031,
+          "error": 0.000026047391833761147
+        },
+        {
+          "x": 43,
+          "y": 125,
+          "grid": 128,
+          "iterations": 30,
+          "burnIn": 20,
+          "precisions": [
+            40,
+            60,
+            80
+          ],
+          "rotation": [
+            "0.1980094765377988607089997809476710060321",
+            "0.198009476537798860708999780947674216949749150178619882425279",
+            "0.19800947653779886070899978094767421694974915017861988419876668180689290562838096"
+          ],
+          "actual": 0.1980094775844215,
+          "error": 1.0466226496586017e-9
+        },
+        {
+          "x": 67,
+          "y": 127,
+          "grid": 128,
+          "iterations": 30,
+          "burnIn": 20,
+          "precisions": [
+            40,
+            60,
+            80
+          ],
+          "rotation": [
+            "0.6672096904116386914293265868806651406407",
+            "0.66720969041163869142932658688066514278947633995752941317605",
+            "0.66720969041163869142932658688066514278947633995752941318036923026565238959723413"
+          ],
+          "actual": 0.6672096904103331,
+          "error": 1.305622276959184e-12
+        },
+        {
+          "x": 60,
+          "y": 127,
+          "grid": 128,
+          "iterations": 30,
+          "burnIn": 20,
+          "precisions": [
+            40,
+            60,
+            80
+          ],
+          "rotation": [
+            "0.3333428236018632634552333907121681724393",
+            "0.3333428236018632634552333907121681724482682935977933490276",
+            "0.33334282360186326345523339071216817244826829359779334902741845574390984584889307"
+          ],
+          "actual": 0.33334282360184,
+          "error": 2.325917236589703e-14
+        }
+      ]
+    },
+    "wrongDriveError": 0.10000000000000003
+  },
+  "cases": [
+    {
+      "id": "gyroid",
+      "seed": "periodic-field-gyroid-0",
+      "params": {
+        "z0": 0.6,
+        "scale": 2.6,
+        "iso": 0,
+        "kind": "level",
+        "grid": 128,
+        "aspect": "1:1",
+        "view": "int",
+        "exposure": 0.75
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.9963700175285243,
+      "diagnosticError": 2.663803011504484e-9,
+      "diagnostic": {
+        "metric": 0.019299957945955876,
+        "extra": 916
+      },
+      "fieldSha256": "34c34973ba86b0cc0f4179be8c704528288130fe2c80835d2d40f49b564ebac1",
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 2459718,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "z0": 0.6,
+          "scale": 2.6,
+          "iso": 0,
+          "kind": "level",
+          "view": "int",
+          "exposure": 0.75,
+          "seed": "periodic-field-gyroid-0",
+          "v": 2,
+          "palette": [
+            "#2A6F6B",
+            "#63A69F",
+            "#B8860B",
+            "#8C3B2F",
+            "#1B2A2A"
+          ],
+          "bg": "#EFEADF"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "gyroid",
+      "seed": "periodic-field-gyroid-1",
+      "params": {
+        "z0": 0.8,
+        "scale": 2.2,
+        "iso": 0,
+        "kind": "field",
+        "grid": 192,
+        "aspect": "4:5",
+        "view": "log",
+        "exposure": 1
+      },
+      "grid": [
+        192,
+        240
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 1.3332682847976685,
+      "diagnosticError": 2.4354185855501864e-9,
+      "diagnostic": {
+        "metric": 0.019635019890226528,
+        "extra": 3792
+      },
+      "fieldSha256": "33497624a7fe4ce2e0320380ac92c4af4424195b595d4bfb02536a91ae74cc39",
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 4153400,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "z0": 0.8,
+          "scale": 2.2,
+          "iso": 0,
+          "kind": "field",
+          "view": "log",
+          "exposure": 1,
+          "seed": "periodic-field-gyroid-1",
+          "v": 2,
+          "palette": [
+            "#2A6F6B",
+            "#63A69F",
+            "#B8860B",
+            "#8C3B2F",
+            "#1B2A2A"
+          ],
+          "bg": "#EFEADF"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "gyroid",
+      "seed": "periodic-field-gyroid-2",
+      "params": {
+        "z0": 2.2,
+        "scale": 2.8,
+        "iso": 0.3,
+        "kind": "abs",
+        "grid": 224,
+        "aspect": "16:9",
+        "view": "int",
+        "exposure": 1.3
+      },
+      "grid": [
+        224,
+        126
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 1.1622164137661457,
+      "diagnosticError": 4.870082850882973e-9,
+      "diagnostic": {
+        "metric": 0.08853034960045038,
+        "extra": 1731
+      },
+      "fieldSha256": "ac441c8deedb4c18137f5075a2f503000414f1fb1478e933fa46456115cb711d",
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsChecked": 12960000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 2433603,
+        "params": {
+          "grid": 224,
+          "aspect": "16:9",
+          "z0": 2.2,
+          "scale": 2.8,
+          "iso": 0.3,
+          "kind": "abs",
+          "view": "int",
+          "exposure": 1.3,
+          "seed": "periodic-field-gyroid-2",
+          "v": 2,
+          "palette": [
+            "#2A6F6B",
+            "#63A69F",
+            "#B8860B",
+            "#8C3B2F",
+            "#1B2A2A"
+          ],
+          "bg": "#EFEADF"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "gyroid",
+      "seed": "periodic-field-gyroid-3",
+      "params": {
+        "z0": 1.2,
+        "scale": 3,
+        "iso": 0.3,
+        "kind": "level",
+        "grid": 128,
+        "aspect": "1:1",
+        "view": "log",
+        "exposure": 0.75
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.648133173584938,
+      "diagnosticError": 3.6471346914757063e-9,
+      "diagnostic": {
+        "metric": 0.08298335989029998,
+        "extra": 800
+      },
+      "fieldSha256": "dade133fb690c7955c0991c2a061acad07c1852b83b06b3f3afbe85cac4594c6",
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 2534957,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "z0": 1.2,
+          "scale": 3,
+          "iso": 0.3,
+          "kind": "level",
+          "view": "log",
+          "exposure": 0.75,
+          "seed": "periodic-field-gyroid-3",
+          "v": 2,
+          "palette": [
+            "#2A6F6B",
+            "#63A69F",
+            "#B8860B",
+            "#8C3B2F",
+            "#1B2A2A"
+          ],
+          "bg": "#EFEADF"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "devil",
+      "seed": "periodic-field-devil-0",
+      "params": {
+        "K": 0,
+        "iters": 80,
+        "kind": "stair",
+        "grid": 128,
+        "aspect": "1:1",
+        "view": "int",
+        "exposure": 0.75
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.984251968562603,
+      "diagnosticError": 0,
+      "diagnostic": {
+        "metric": 0.046875,
+        "extra": 0
+      },
+      "fieldSha256": "9a1e15ba25886b44b6b17862ded2a95fcf59a30ad7fe834d211c114629f6d2d0",
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 2632211,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "K": 0,
+          "iters": 80,
+          "kind": "stair",
+          "view": "int",
+          "exposure": 0.75,
+          "seed": "periodic-field-devil-0",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "devil",
+      "seed": "periodic-field-devil-1",
+      "params": {
+        "K": 0.55,
+        "iters": 120,
+        "kind": "stair",
+        "grid": 192,
+        "aspect": "4:5",
+        "view": "log",
+        "exposure": 1
+      },
+      "grid": [
+        192,
+        240
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.9833817221224308,
+      "diagnosticError": 0,
+      "diagnostic": {
+        "metric": 0.041666666666666664,
+        "extra": 0.55
+      },
+      "fieldSha256": "46bcba7d1b1debf262f1ecd3b2442d23899e775e0f78298afca5b575394754e4",
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 1502800,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "K": 0.55,
+          "iters": 120,
+          "kind": "stair",
+          "view": "log",
+          "exposure": 1,
+          "seed": "periodic-field-devil-1",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "devil",
+      "seed": "periodic-field-devil-2",
+      "params": {
+        "K": 0.95,
+        "iters": 240,
+        "kind": "stair",
+        "grid": 224,
+        "aspect": "16:9",
+        "view": "int",
+        "exposure": 1.3
+      },
+      "grid": [
+        224,
+        126
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.9792450368404388,
+      "diagnosticError": 0,
+      "diagnostic": {
+        "metric": 0.07142857142857142,
+        "extra": 0.95
+      },
+      "fieldSha256": "33c06c71081278e401556820b6ccc3590790fff70f7c00822b0e583404db5dcc",
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsChecked": 12960000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 599962,
+        "params": {
+          "grid": 224,
+          "aspect": "16:9",
+          "K": 0.95,
+          "iters": 240,
+          "kind": "stair",
+          "view": "int",
+          "exposure": 1.3,
+          "seed": "periodic-field-devil-2",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "devil",
+      "seed": "periodic-field-devil-3",
+      "params": {
+        "K": 1,
+        "iters": 40,
+        "kind": "tongues",
+        "grid": 128,
+        "aspect": "1:1",
+        "view": "log",
+        "exposure": 0.75
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "fieldError": 0.00004798173904418945,
+      "displacedFieldError": 1.001583089120686,
+      "diagnosticError": 0,
+      "diagnostic": {
+        "metric": 0.07942708333333333,
+        "extra": 1
+      },
+      "fieldSha256": "f2cb1550b63c384e5d0a1ec37eacc1e5b9c8035f5291482642312613f287b132",
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 2429515,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "K": 1,
+          "iters": 40,
+          "kind": "tongues",
+          "view": "log",
+          "exposure": 0.75,
+          "seed": "periodic-field-devil-3",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "devil",
+      "seed": "periodic-field-devil-4",
+      "params": {
+        "K": 0,
+        "iters": 80,
+        "kind": "orbit",
+        "grid": 192,
+        "aspect": "4:5",
+        "view": "int",
+        "exposure": 1
+      },
+      "grid": [
+        192,
+        240
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 2,
+      "diagnosticError": 0,
+      "diagnostic": {
+        "metric": null,
+        "extra": 0
+      },
+      "fieldSha256": "0c51197b5186d00084bb71c5f54d29874e68375ee86e73e9bce364b2356d6136",
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 672500,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "K": 0,
+          "iters": 80,
+          "kind": "orbit",
+          "view": "int",
+          "exposure": 1,
+          "seed": "periodic-field-devil-4",
+          "v": 2,
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        }
+      },
+      "statePreserved": true
+    }
+  ],
+  "environment": {
+    "node": "v24.21.0",
+    "chromium": "145.0.7632.6",
+    "platform": "darwin"
+  },
+  "passed": true
+}

@@ -12,6 +12,10 @@ const {chromium}=require('playwright');
   const G=Studio.gl,{CGL_STEP,cglSubsteps}=new Function('G',code+'\nreturn {CGL_STEP,cglSubsteps};')(G),gl=G.createGL(document.createElement('canvas'));
   if(!gl.floatExt)throw Error('Float32 attachment required');
   const pass=new G.Pass(gl,CGL_STEP),bad=new G.Pass(gl,CGL_STEP.replace('L + u_alpha','L - u_alpha'));
+  const rotationPass=new G.Pass(gl,CGL_STEP.slice(0,CGL_STEP.indexOf('void main(){'))+'void main(){outColor=vec4(cglUnitRotation(u_dt),0.0,1.0);}');
+  const rotationTarget=new G.Target(gl,1,1,{type:'rgba32f'});let rotationError=0,unitLengthError=0;
+  for(let k=0;k<=100;k++){const phase=-.25+k*.005;rotationPass.draw(rotationTarget,{u_dt:phase});const out=new Float32Array(4);gl.bindFramebuffer(gl.FRAMEBUFFER,rotationTarget.fbo);gl.readPixels(0,0,1,1,gl.RGBA,gl.FLOAT,out);rotationError=Math.max(rotationError,Math.abs(out[0]-Math.cos(phase)),Math.abs(out[1]-Math.sin(phase)));unitLengthError=Math.max(unitLengthError,Math.abs(Math.hypot(out[0],out[1])-1));}
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null);rotationTarget.dispose();
   const n=16,amp=.2;
   function run(dt,T,alpha,beta,m,wrong=false,subdivide=false){
    const p=new G.PingPong(gl,n,n,{type:'rgba32f',filter:'nearest',wrap:'repeat'}),f=new Float32Array(n*n*4);
@@ -27,9 +31,9 @@ const {chromium}=require('playwright');
   const local=run(.02,.2,0,2,0),wrong=run(.005,.2,2,-.5,1,true);
   const nyquist=run(.12,.24,4,4,8,false,true),unsafe=run(.12,.24,4,4,8,false,false);
   let controls=0;for(let alpha=-4;alpha<=4;alpha+=.5)for(let beta=-4;beta<=4;beta+=1){const s={alpha,beta,lin:1.6,dt:.12},h=s.dt/cglSubsteps(s);if(h>0.8/(4*(1+alpha*alpha))+1e-14)throw Error('Unsafe substep');controls++;}
-  return {refinement,local,wrong,nyquist,unsafe,controls};
+  return {refinement,local,wrong,nyquist,unsafe,controls,rotationError,unitLengthError};
  },source.slice(a,b));
- assert(result.local.error<3e-5);assert(result.refinement[0].error/result.refinement[1].error>1.7);assert(result.refinement[1].error/result.refinement[2].error>1.7);assert(result.refinement[2].error<1e-4);assert(result.wrong.error>1e-2);assert(result.nyquist.maxAmplitude<.2);assert(result.unsafe.maxAmplitude>.4);
+ assert(result.rotationError<1e-7);assert(result.unitLengthError<1e-7);assert(result.local.error<3e-5);assert(result.refinement[0].error/result.refinement[1].error>1.7);assert(result.refinement[1].error/result.refinement[2].error>1.7);assert(result.refinement[2].error<1e-4);assert(result.wrong.error>1e-2);assert(result.nyquist.maxAmplitude<.2);assert(result.unsafe.maxAmplitude>.4);
  console.log('CGL KERNEL OK: '+JSON.stringify(result));
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

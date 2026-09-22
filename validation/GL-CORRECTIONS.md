@@ -4,7 +4,9 @@ The full runtime sweep found two numerical defects. CGL used the opposite disper
 sign from its displayed equation and an Euler step at the complex-diffusion limit.
 The fixed-field vortex module omitted magnetic link factors and became nonfinite for
 some low-κ settings. These corrections change existing recipes' computed fields.
-Neither module is promoted to full scientific validation.
+This initial correction review did not promote either module. The later
+[complete bounded field review](GL-FIELD-REVIEW.md) adds independently calculated
+full fields and actual print-pixel evidence for four recipes per module.
 
 ## CGL
 
@@ -50,7 +52,7 @@ condensate tab's detected windings are also not certified physical vortex counts
 Neither repair establishes long-time statistics, arbitrary parameter accuracy,
 continuum convergence, cross-device agreement, experimental calibration or general
 paper equivalence. Preview and print checks test rendering and export behavior only.
-The inventory status stays unvalidated. Scientific references and the search record
+The initial inventory status was unvalidated; see the later bounded review for current coverage. Scientific references and the search record
 are in [RESEARCH.md](../RESEARCH.md).
 
 The corrected CGL and vortex modules also passed all 6 and 7 default/preset exports,
