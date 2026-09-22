@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "date": "2026-09-21",
+  "date": "2026-09-22",
   "source": {
     "path": "src/modules/pde.js",
-    "sha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f"
+    "sha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e"
   },
   "harness": {
     "path": "tools/pde-family-science.js",
-    "sha256": "0e044155d58fc1aba5b87eebe2b4552a476ce31ba8f7c5ac68984028451f675e"
+    "sha256": "8a8517f56abb83c2e433ebdfe4c8bae233c484d3cf30af3f6cd95a989eee0a7c"
   },
-  "backend": "153.0.8010.48",
+  "backend": "145.0.7632.6",
   "scope": "Noise-free, unit-cell finite lattice. Independent Euler stencil, RK4 fixed-grid time refinement and analytic Fourier modes; no continuum convergence, phase diagram, thermal noise or global stability validation.",
   "criteria": {
     "stencilMax": 0.000003,

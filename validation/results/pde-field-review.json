@@ -1,0 +1,1463 @@
+{
+  "date": "2026-09-22",
+  "scope": "Twelve complete noise-free finite lattice trajectories at time 2 and every available view, with independent float64 reference and actual print comparisons. Not a long-time phase-diagram, stochastic or universal hardware certification.",
+  "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "environment": {
+    "node": "v24.21.0",
+    "chromium": "145.0.7632.6",
+    "platform": "darwin",
+    "backend": "SwiftShader RGBA32F"
+  },
+  "cases": [
+    {
+      "id": "cahn",
+      "seed": "pde-field-cahn-0",
+      "parameters": {
+        "grid": 128,
+        "aspect": "1:1",
+        "bc": "periodic",
+        "c0": 0,
+        "eps": 1.1,
+        "M": 1,
+        "deg": false,
+        "amp": 0.12,
+        "noise": 0,
+        "init": "bands",
+        "running": false,
+        "steps": 3,
+        "dt": 0.01,
+        "warmup": 0,
+        "view": "field",
+        "lo": -1,
+        "hi": 1,
+        "bump": 4,
+        "lightAng": 35,
+        "exposure": 1,
+        "gamma": 1,
+        "contrast": 1,
+        "grain": 0,
+        "seed": "pde-field-cahn-0",
+        "v": 2,
+        "palette": [
+          "#1A1A1A",
+          "#4A4A4A",
+          "#8C8C8C",
+          "#C8C4BB",
+          "#E63B2E"
+        ],
+        "bg": "#E9E7E2"
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "physicalTime": 2,
+      "initialSha256": "705c073b54e098ea8f885e83afee2392138a36bdbd281da2ffc428a216a318e4",
+      "finalSha256": "fb87a309457e449068b8f8d9f7246f29b436ea3b58e23d75d3197e7f9dfde481",
+      "discreteError": {
+        "max": 1.871267547581823e-7,
+        "rms": 5.088301982446836e-8
+      },
+      "referenceSensitivity": {
+        "max": 6.62188526234786e-10,
+        "rms": 1.5386090851885535e-10
+      },
+      "temporalLevels": [
+        {
+          "dt": 0.01,
+          "steps": 200,
+          "error": {
+            "max": 0.0002593585441478252,
+            "rms": 0.00011344091079728861
+          }
+        },
+        {
+          "dt": 0.005,
+          "steps": 400,
+          "error": {
+            "max": 0.00012942041853747366,
+            "rms": 0.000056551911314406195
+          }
+        },
+        {
+          "dt": 0.0025,
+          "steps": 800,
+          "error": {
+            "max": 0.00006451096037707327,
+            "rms": 0.000028238207677602288
+          }
+        }
+      ],
+      "orders": [
+        1.0042933312158775,
+        1.0019272631092428
+      ],
+      "wrongTimeError": {
+        "max": 0.0389743109390307,
+        "rms": 0.01735222425101943
+      },
+      "chemicalError": {
+        "max": 9.06036398573562e-7,
+        "rms": 2.2381997332275366e-7
+      },
+      "meanDrift": -1.8098944565281272e-9,
+      "prints": [
+        {
+          "view": "field",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.00006024305555555556,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 4105755,
+          "statePreserved": true
+        },
+        {
+          "view": "abs",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.00010763888888888889,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 4577059,
+          "statePreserved": true
+        },
+        {
+          "view": "grad",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 1694634,
+          "statePreserved": true
+        }
+      ]
+    },
+    {
+      "id": "cahn",
+      "seed": "pde-field-cahn-1",
+      "parameters": {
+        "grid": 128,
+        "aspect": "4:5",
+        "bc": "noflux",
+        "c0": -0.25,
+        "eps": 1.3,
+        "M": 0.7,
+        "deg": true,
+        "amp": 0.12,
+        "noise": 0,
+        "init": "drops",
+        "running": false,
+        "steps": 3,
+        "dt": 0.01,
+        "warmup": 0,
+        "view": "field",
+        "lo": -1,
+        "hi": 1,
+        "bump": 4,
+        "lightAng": 35,
+        "exposure": 1,
+        "gamma": 1,
+        "contrast": 1,
+        "grain": 0,
+        "seed": "pde-field-cahn-1",
+        "v": 2,
+        "palette": [
+          "#1A1A1A",
+          "#4A4A4A",
+          "#8C8C8C",
+          "#C8C4BB",
+          "#E63B2E"
+        ],
+        "bg": "#E9E7E2"
+      },
+      "grid": [
+        128,
+        160
+      ],
+      "physicalTime": 2,
+      "initialSha256": "35239da58f7748a7028de4396604bbfeab898cc222800aa4430926f67f9be09e",
+      "finalSha256": "e44305372f1f22bdec44daf74f76778dcc8b914325bf2c9fc82c4d4d7a253737",
+      "discreteError": {
+        "max": 8.791423182774594e-7,
+        "rms": 7.707574908412125e-8
+      },
+      "referenceSensitivity": {
+        "max": 3.447627050512381e-8,
+        "rms": 1.41538596673968e-9
+      },
+      "temporalLevels": [
+        {
+          "dt": 0.01,
+          "steps": 200,
+          "error": {
+            "max": 0.0005389031595173788,
+            "rms": 0.00007498250364950071
+          }
+        },
+        {
+          "dt": 0.005,
+          "steps": 400,
+          "error": {
+            "max": 0.00026914743842515465,
+            "rms": 0.00003733602136926771
+          }
+        },
+        {
+          "dt": 0.0025,
+          "steps": 800,
+          "error": {
+            "max": 0.00013427702845963951,
+            "rms": 0.000018631073441752247
+          }
+        }
+      ],
+      "orders": [
+        1.0059857995628283,
+        1.002857399627773
+      ],
+      "wrongTimeError": {
+        "max": 0.11665382019220497,
+        "rms": 0.016054867018390484
+      },
+      "chemicalError": {
+        "max": 0.00000806161661947441,
+        "rms": 3.393391220706302e-7
+      },
+      "meanDrift": 9.181098881150263e-9,
+      "prints": [
+        {
+          "view": "shade",
+          "width": 1920,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.000634765625,
+          "channelsChecked": 13824000,
+          "shiftedPrintFailurePixels": 723150,
+          "statePreserved": true
+        },
+        {
+          "view": "mu",
+          "width": 1920,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.00003255208333333333,
+          "channelsChecked": 13824000,
+          "shiftedPrintFailurePixels": 415575,
+          "statePreserved": true
+        }
+      ]
+    },
+    {
+      "id": "ohta",
+      "seed": "pde-field-ohta-0",
+      "parameters": {
+        "grid": 128,
+        "aspect": "1:1",
+        "bc": "periodic",
+        "c0": 0.15,
+        "eps": 1.05,
+        "sigma": 0.06,
+        "M": 1,
+        "deg": false,
+        "amp": 0.14,
+        "noise": 0,
+        "init": "bands",
+        "running": false,
+        "steps": 3,
+        "dt": 0.01,
+        "warmup": 0,
+        "view": "field",
+        "lo": -1,
+        "hi": 1,
+        "bump": 4,
+        "lightAng": 35,
+        "exposure": 1,
+        "gamma": 1,
+        "contrast": 1,
+        "grain": 0,
+        "seed": "pde-field-ohta-0",
+        "v": 2,
+        "palette": [
+          "#1A1A1A",
+          "#4A4A4A",
+          "#8C8C8C",
+          "#C8C4BB",
+          "#E63B2E"
+        ],
+        "bg": "#E9E7E2"
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "physicalTime": 2,
+      "initialSha256": "a618ce3af46a5788fe36c5d6c5f9791704e1526569a5cf7b7adfcfd6c68de20a",
+      "finalSha256": "d84dd91d19de56e1bd2ccdcf524c8cb054429e2f4f6c2b6a7b8d70292ec0833e",
+      "discreteError": {
+        "max": 2.1850074904961048e-7,
+        "rms": 5.601049852848124e-8
+      },
+      "referenceSensitivity": {
+        "max": 5.920791079638832e-10,
+        "rms": 1.5766865739027752e-10
+      },
+      "temporalLevels": [
+        {
+          "dt": 0.01,
+          "steps": 200,
+          "error": {
+            "max": 0.00032983882165626977,
+            "rms": 0.00017110791639583087
+          }
+        },
+        {
+          "dt": 0.005,
+          "steps": 400,
+          "error": {
+            "max": 0.00016455514169411156,
+            "rms": 0.00008526430602613156
+          }
+        },
+        {
+          "dt": 0.0025,
+          "steps": 800,
+          "error": {
+            "max": 0.0000823007319040725,
+            "rms": 0.0000425731540347792
+          }
+        }
+      ],
+      "orders": [
+        1.004892687022969,
+        1.0019979400331804
+      ],
+      "wrongTimeError": {
+        "max": 0.0657270488054239,
+        "rms": 0.04139817595268023
+      },
+      "chemicalError": {
+        "max": 7.714490770083238e-7,
+        "rms": 1.880768874244924e-7
+      },
+      "meanDrift": 2.217348082922399e-9,
+      "prints": [
+        {
+          "view": "field",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.00007517361111111112,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 5014135,
+          "statePreserved": true
+        },
+        {
+          "view": "abs",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.00012766203703703702,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 4910859,
+          "statePreserved": true
+        },
+        {
+          "view": "grad",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 4263450,
+          "statePreserved": true
+        }
+      ]
+    },
+    {
+      "id": "ohta",
+      "seed": "pde-field-ohta-1",
+      "parameters": {
+        "grid": 128,
+        "aspect": "4:5",
+        "bc": "noflux",
+        "c0": -0.3,
+        "eps": 1.2,
+        "sigma": 0.12,
+        "M": 0.7,
+        "deg": true,
+        "amp": 0.14,
+        "noise": 0,
+        "init": "drops",
+        "running": false,
+        "steps": 3,
+        "dt": 0.01,
+        "warmup": 0,
+        "view": "field",
+        "lo": -1,
+        "hi": 1,
+        "bump": 4,
+        "lightAng": 35,
+        "exposure": 1,
+        "gamma": 1,
+        "contrast": 1,
+        "grain": 0,
+        "seed": "pde-field-ohta-1",
+        "v": 2,
+        "palette": [
+          "#1A1A1A",
+          "#4A4A4A",
+          "#8C8C8C",
+          "#C8C4BB",
+          "#E63B2E"
+        ],
+        "bg": "#E9E7E2"
+      },
+      "grid": [
+        128,
+        160
+      ],
+      "physicalTime": 2,
+      "initialSha256": "a83fb90dae612391fe636288334617105a59431920d9c8b4d4b249720e2a1b31",
+      "finalSha256": "274db0101cd8da7ab37d1edfb30a7897b0000b017aa96aa5c0534e2d5bc7edf9",
+      "discreteError": {
+        "max": 3.2616963707710056e-7,
+        "rms": 3.372389543296274e-8
+      },
+      "referenceSensitivity": {
+        "max": 2.0254898536187227e-8,
+        "rms": 1.325926371094151e-9
+      },
+      "temporalLevels": [
+        {
+          "dt": 0.01,
+          "steps": 200,
+          "error": {
+            "max": 0.0006297727502594941,
+            "rms": 0.00009674956951864068
+          }
+        },
+        {
+          "dt": 0.005,
+          "steps": 400,
+          "error": {
+            "max": 0.0003174444116364472,
+            "rms": 0.0000484141176241348
+          }
+        },
+        {
+          "dt": 0.0025,
+          "steps": 800,
+          "error": {
+            "max": 0.0001592834867249482,
+            "rms": 0.00002421302439656156
+          }
+        }
+      ],
+      "orders": [
+        0.9988274413545747,
+        0.9996445062197769
+      ],
+      "wrongTimeError": {
+        "max": 0.15074263892128636,
+        "rms": 0.027349691293853243
+      },
+      "chemicalError": {
+        "max": 0.0000015938158722805795,
+        "rms": 1.0097804959218232e-7
+      },
+      "meanDrift": 8.41170355592169e-10,
+      "prints": [
+        {
+          "view": "shade",
+          "width": 1920,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.000537109375,
+          "channelsChecked": 13824000,
+          "shiftedPrintFailurePixels": 640125,
+          "statePreserved": true
+        },
+        {
+          "view": "mu",
+          "width": 1920,
+          "height": 2400,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "channelsChecked": 13824000,
+          "shiftedPrintFailurePixels": 221850,
+          "statePreserved": true
+        }
+      ]
+    },
+    {
+      "id": "amb",
+      "seed": "pde-field-amb-0",
+      "parameters": {
+        "grid": 128,
+        "aspect": "1:1",
+        "bc": "periodic",
+        "zeta": -4,
+        "lambda": 1,
+        "c0": -0.4,
+        "eps": 1.1,
+        "M": 1,
+        "amp": 0.2,
+        "noise": 0,
+        "init": "quench",
+        "running": false,
+        "steps": 3,
+        "dt": 0.01,
+        "warmup": 0,
+        "view": "field",
+        "lo": -1,
+        "hi": 1,
+        "bump": 4,
+        "lightAng": 35,
+        "exposure": 1,
+        "gamma": 1,
+        "contrast": 1,
+        "grain": 0,
+        "seed": "pde-field-amb-0",
+        "v": 2,
+        "palette": [
+          "#D9C7A7",
+          "#B08968",
+          "#7F5539",
+          "#3E2C22",
+          "#9C6644"
+        ],
+        "bg": "#F4F1EA"
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "physicalTime": 2,
+      "initialSha256": "18870347c176ad9988fb2b22128d7c73f157c50660d0e6566569e311ba641563",
+      "finalSha256": "2c0748c376fa95bef2da4bce383d0fd8c71888fe38c00a8f0274ebea117f05cd",
+      "discreteError": {
+        "max": 1.6424814242022023e-7,
+        "rms": 3.871618975862842e-8
+      },
+      "referenceSensitivity": {
+        "max": 1.5171625344923e-7,
+        "rms": 1.9364318591781686e-8
+      },
+      "temporalLevels": [
+        {
+          "dt": 0.01,
+          "steps": 200,
+          "error": {
+            "max": 0.0002507175145882723,
+            "rms": 0.00005607821776603237
+          }
+        },
+        {
+          "dt": 0.005,
+          "steps": 400,
+          "error": {
+            "max": 0.00010794806978947635,
+            "rms": 0.000025831053707056
+          }
+        },
+        {
+          "dt": 0.0025,
+          "steps": 800,
+          "error": {
+            "max": 0.00005308199427372928,
+            "rms": 0.000012531937360156814
+          }
+        }
+      ],
+      "orders": [
+        1.1183340040266672,
+        1.043497031798473
+      ],
+      "wrongTimeError": {
+        "max": 0.030897360530330265,
+        "rms": 0.0073057169696257645
+      },
+      "chemicalError": {
+        "max": 3.6766875805005483e-7,
+        "rms": 9.869234447041617e-8
+      },
+      "meanDrift": -1.1632437235675752e-9,
+      "prints": [
+        {
+          "view": "field",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.000028761574074074073,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 1474782,
+          "statePreserved": true
+        },
+        {
+          "view": "abs",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.000028356481481481483,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 2797419,
+          "statePreserved": true
+        },
+        {
+          "view": "grad",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.000020891203703703703,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 66177,
+          "statePreserved": true
+        }
+      ]
+    },
+    {
+      "id": "amb",
+      "seed": "pde-field-amb-1",
+      "parameters": {
+        "grid": 128,
+        "aspect": "4:5",
+        "bc": "noflux",
+        "zeta": -2,
+        "lambda": 2,
+        "c0": -0.45,
+        "eps": 1.3,
+        "M": 0.7,
+        "amp": 0.12,
+        "noise": 0,
+        "init": "drops",
+        "running": false,
+        "steps": 3,
+        "dt": 0.01,
+        "warmup": 0,
+        "view": "field",
+        "lo": -1,
+        "hi": 1,
+        "bump": 4,
+        "lightAng": 35,
+        "exposure": 1,
+        "gamma": 1,
+        "contrast": 1,
+        "grain": 0,
+        "seed": "pde-field-amb-1",
+        "v": 2,
+        "palette": [
+          "#D9C7A7",
+          "#B08968",
+          "#7F5539",
+          "#3E2C22",
+          "#9C6644"
+        ],
+        "bg": "#F4F1EA"
+      },
+      "grid": [
+        128,
+        160
+      ],
+      "physicalTime": 2,
+      "initialSha256": "b254c21cfd4927186ee75c195f79788d947c8b70df58d15447e1d4002fd3282f",
+      "finalSha256": "f1b50fd85182ac931a2349a9463a9210440a286ed91e82379b2bfaf5b8ecb5ae",
+      "discreteError": {
+        "max": 2.971199413170922e-7,
+        "rms": 4.4353529810949635e-8
+      },
+      "referenceSensitivity": {
+        "max": 3.094777710765939e-7,
+        "rms": 1.2627248215431687e-8
+      },
+      "temporalLevels": [
+        {
+          "dt": 0.01,
+          "steps": 200,
+          "error": {
+            "max": 0.0008113223040225881,
+            "rms": 0.00010333203043351665
+          }
+        },
+        {
+          "dt": 0.005,
+          "steps": 400,
+          "error": {
+            "max": 0.0003946858370426076,
+            "rms": 0.000051963737604157464
+          }
+        },
+        {
+          "dt": 0.0025,
+          "steps": 800,
+          "error": {
+            "max": 0.0001957851374271291,
+            "rms": 0.000026052573988338465
+          }
+        }
+      ],
+      "orders": [
+        0.9917104155533005,
+        0.9960792859924129
+      ],
+      "wrongTimeError": {
+        "max": 0.1281378305547385,
+        "rms": 0.01875647148022604
+      },
+      "chemicalError": {
+        "max": 0.000002006597710546565,
+        "rms": 2.1969875730751945e-7
+      },
+      "meanDrift": -1.2368083501801408e-9,
+      "prints": [
+        {
+          "view": "shade",
+          "width": 1920,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.0032063802083333332,
+          "channelsChecked": 13824000,
+          "shiftedPrintFailurePixels": 2523600,
+          "statePreserved": true
+        },
+        {
+          "view": "mu",
+          "width": 1920,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.000016276041666666666,
+          "channelsChecked": 13824000,
+          "shiftedPrintFailurePixels": 1159200,
+          "statePreserved": true
+        }
+      ]
+    },
+    {
+      "id": "swift",
+      "seed": "pde-field-swift-0",
+      "parameters": {
+        "grid": 128,
+        "aspect": "1:1",
+        "bc": "periodic",
+        "r": 0.3,
+        "k0": 0.62,
+        "g": 0,
+        "cub": 1,
+        "noise": 0,
+        "init": "roll",
+        "running": false,
+        "steps": 3,
+        "dt": 0.01,
+        "warmup": 0,
+        "view": "field",
+        "lo": -1.2,
+        "hi": 1.2,
+        "bump": 5,
+        "lightAng": 40,
+        "exposure": 1,
+        "gamma": 1,
+        "contrast": 1,
+        "grain": 0,
+        "seed": "pde-field-swift-0",
+        "v": 2,
+        "palette": [
+          "#1F3A5F",
+          "#4F7CAC",
+          "#C9D6DF",
+          "#E07A5F",
+          "#F2CC8F"
+        ],
+        "bg": "#ECEFEA"
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "physicalTime": 2,
+      "initialSha256": "54e9021fee67c5940698345939112d2a993782d8aba55c2e9c6d9b241ea1bc41",
+      "finalSha256": "4be63ff11b528ed51b6d42666cae87001bb05b3b604e5d7634b519d68d75096d",
+      "discreteError": {
+        "max": 2.102036513740302e-7,
+        "rms": 3.755739132309049e-8
+      },
+      "referenceSensitivity": {
+        "max": 3.3805913624007644e-10,
+        "rms": 5.7998999509461784e-11
+      },
+      "temporalLevels": [
+        {
+          "dt": 0.01,
+          "steps": 200,
+          "error": {
+            "max": 0.00013213823728158713,
+            "rms": 0.00006445433059796182
+          }
+        },
+        {
+          "dt": 0.005,
+          "steps": 400,
+          "error": {
+            "max": 0.00006606648854806663,
+            "rms": 0.00003223921391712872
+          }
+        },
+        {
+          "dt": 0.0025,
+          "steps": 800,
+          "error": {
+            "max": 0.000032956108375337134,
+            "rms": 0.000016123001489761586
+          }
+        }
+      ],
+      "orders": [
+        0.9994607272173442,
+        0.9996962235018719
+      ],
+      "wrongTimeError": {
+        "max": 0.06397919186440065,
+        "rms": 0.039248826437224486
+      },
+      "chemicalError": {
+        "max": 6.18734129709253e-7,
+        "rms": 9.283618549827133e-8
+      },
+      "meanDrift": 0.0009520472821094028,
+      "prints": [
+        {
+          "view": "field",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.00006076388888888889,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 5592611,
+          "statePreserved": true
+        },
+        {
+          "view": "abs",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.00022424768518518518,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 5697200,
+          "statePreserved": true
+        },
+        {
+          "view": "grad",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.00006047453703703704,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 5674333,
+          "statePreserved": true
+        }
+      ]
+    },
+    {
+      "id": "swift",
+      "seed": "pde-field-swift-1",
+      "parameters": {
+        "grid": 128,
+        "aspect": "4:5",
+        "bc": "noflux",
+        "r": 0.25,
+        "k0": 0.58,
+        "g": 0.7,
+        "cub": 1,
+        "noise": 0,
+        "init": "target",
+        "running": false,
+        "steps": 3,
+        "dt": 0.01,
+        "warmup": 0,
+        "view": "field",
+        "lo": -1.2,
+        "hi": 1.2,
+        "bump": 5,
+        "lightAng": 40,
+        "exposure": 1,
+        "gamma": 1,
+        "contrast": 1,
+        "grain": 0,
+        "seed": "pde-field-swift-1",
+        "v": 2,
+        "palette": [
+          "#1F3A5F",
+          "#4F7CAC",
+          "#C9D6DF",
+          "#E07A5F",
+          "#F2CC8F"
+        ],
+        "bg": "#ECEFEA"
+      },
+      "grid": [
+        128,
+        160
+      ],
+      "physicalTime": 2,
+      "initialSha256": "436d1e8321246fd7f9822d6698ad731bc30773f5c1ba9746ed384cca133cbecc",
+      "finalSha256": "317e4727a5e61e0685783a542eeedcdd461be4f3640337aaeec528a3c6cc8e8a",
+      "discreteError": {
+        "max": 1.9998613653982034e-7,
+        "rms": 3.077814037247711e-8
+      },
+      "referenceSensitivity": {
+        "max": 9.784395516021505e-13,
+        "rms": 1.2050287334403855e-13
+      },
+      "temporalLevels": [
+        {
+          "dt": 0.01,
+          "steps": 200,
+          "error": {
+            "max": 0.0004244019376073993,
+            "rms": 0.0001991077913121597
+          }
+        },
+        {
+          "dt": 0.005,
+          "steps": 400,
+          "error": {
+            "max": 0.00021244782078611024,
+            "rms": 0.00009963902263380268
+          }
+        },
+        {
+          "dt": 0.0025,
+          "steps": 800,
+          "error": {
+            "max": 0.00010632175076352723,
+            "rms": 0.00004983518608647691
+          }
+        }
+      ],
+      "orders": [
+        0.9987669011816522,
+        0.9995461546096777
+      ],
+      "wrongTimeError": {
+        "max": 0.16343013713656873,
+        "rms": 0.06183700625175548
+      },
+      "chemicalError": {
+        "max": 5.177542408141278e-7,
+        "rms": 6.71981642039842e-8
+      },
+      "meanDrift": 0.05636473283749623,
+      "prints": [
+        {
+          "view": "shade",
+          "width": 1920,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.0034016927083333334,
+          "channelsChecked": 13824000,
+          "shiftedPrintFailurePixels": 3633075,
+          "statePreserved": true
+        },
+        {
+          "view": "orient",
+          "width": 1920,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.00234375,
+          "channelsChecked": 13824000,
+          "shiftedPrintFailurePixels": 1485000,
+          "statePreserved": true
+        }
+      ]
+    },
+    {
+      "id": "ks",
+      "seed": "pde-field-ks-0",
+      "parameters": {
+        "grid": 128,
+        "aspect": "1:1",
+        "bc": "periodic",
+        "nu": 1,
+        "alpha": 1,
+        "noise": 0,
+        "init": "front",
+        "running": false,
+        "steps": 3,
+        "dt": 0.01,
+        "warmup": 0,
+        "view": "field",
+        "lo": -2,
+        "hi": 2,
+        "bump": 3.5,
+        "lightAng": 50,
+        "exposure": 1,
+        "gamma": 1,
+        "contrast": 1,
+        "grain": 0,
+        "seed": "pde-field-ks-0",
+        "v": 2,
+        "palette": [
+          "#2C0F4A",
+          "#8A1C6B",
+          "#E63946",
+          "#FF9F1C",
+          "#FFF1A8"
+        ],
+        "bg": "#0A0710"
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "physicalTime": 2,
+      "initialSha256": "3b35c4e557bce70bd13bec423cc5aed02705910f430a3a10e8e5b369a6dbf435",
+      "finalSha256": "2c6c45b6bd3f56de24292d87a32eb33ef5013a35e0cf6220e140155a42c386ba",
+      "discreteError": {
+        "max": 4.0263844058863185e-7,
+        "rms": 8.284764013526218e-8
+      },
+      "referenceSensitivity": {
+        "max": 5.521297863353425e-10,
+        "rms": 1.1275363642617635e-10
+      },
+      "temporalLevels": [
+        {
+          "dt": 0.01,
+          "steps": 200,
+          "error": {
+            "max": 0.0000765864066606392,
+            "rms": 0.00001741652313934482
+          }
+        },
+        {
+          "dt": 0.005,
+          "steps": 400,
+          "error": {
+            "max": 0.00003796259684618608,
+            "rms": 0.000008700428027308146
+          }
+        },
+        {
+          "dt": 0.0025,
+          "steps": 800,
+          "error": {
+            "max": 0.00001882950587328569,
+            "rms": 0.000004318042924270779
+          }
+        }
+      ],
+      "orders": [
+        1.0012983646381115,
+        1.0107087929093863
+      ],
+      "wrongTimeError": {
+        "max": 0.020819504856786575,
+        "rms": 0.004644820895009009
+      },
+      "chemicalError": {
+        "max": 7.135968274063487e-7,
+        "rms": 1.5543934604477732e-7
+      },
+      "meanDrift": -0.0010227345330060533,
+      "prints": [
+        {
+          "view": "field",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.000013194444444444444,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 3173882,
+          "statePreserved": true
+        },
+        {
+          "view": "abs",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.000028761574074074073,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 5251003,
+          "statePreserved": true
+        },
+        {
+          "view": "grad",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.00004068287037037037,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 528614,
+          "statePreserved": true
+        }
+      ]
+    },
+    {
+      "id": "ks",
+      "seed": "pde-field-ks-1",
+      "parameters": {
+        "grid": 128,
+        "aspect": "4:5",
+        "bc": "noflux",
+        "nu": 1.4,
+        "alpha": 0.9,
+        "noise": 0,
+        "init": "bump",
+        "running": false,
+        "steps": 3,
+        "dt": 0.01,
+        "warmup": 0,
+        "view": "field",
+        "lo": -2,
+        "hi": 2,
+        "bump": 3.5,
+        "lightAng": 50,
+        "exposure": 1,
+        "gamma": 1,
+        "contrast": 1,
+        "grain": 0,
+        "seed": "pde-field-ks-1",
+        "v": 2,
+        "palette": [
+          "#2C0F4A",
+          "#8A1C6B",
+          "#E63946",
+          "#FF9F1C",
+          "#FFF1A8"
+        ],
+        "bg": "#0A0710"
+      },
+      "grid": [
+        128,
+        160
+      ],
+      "physicalTime": 2,
+      "initialSha256": "21fa4eb3a3607e683b82223b84417cbf2429dff54d1e720d51fdab0ef5867e47",
+      "finalSha256": "7911959f6755ca18b88d19e013b1bd193e3e5795d25d294c56a150d276b8f375",
+      "discreteError": {
+        "max": 5.512363221438221e-7,
+        "rms": 5.043330528203273e-8
+      },
+      "referenceSensitivity": {
+        "max": 1.2714097122334955e-8,
+        "rms": 3.140971164126013e-9
+      },
+      "temporalLevels": [
+        {
+          "dt": 0.01,
+          "steps": 200,
+          "error": {
+            "max": 0.00017696454700562303,
+            "rms": 0.00005095557026696444
+          }
+        },
+        {
+          "dt": 0.005,
+          "steps": 400,
+          "error": {
+            "max": 0.00008832498964402025,
+            "rms": 0.000024994186680904088
+          }
+        },
+        {
+          "dt": 0.0025,
+          "steps": 800,
+          "error": {
+            "max": 0.00004409089264008348,
+            "rms": 0.000012395976144416463
+          }
+        }
+      ],
+      "orders": [
+        1.0276472828732923,
+        1.0117206983839218
+      ],
+      "wrongTimeError": {
+        "max": 0.04401493649930327,
+        "rms": 0.01016936064181056
+      },
+      "chemicalError": {
+        "max": 0.0000011961720600695003,
+        "rms": 9.65049388577606e-8
+      },
+      "meanDrift": -0.0018360279840731741,
+      "prints": [
+        {
+          "view": "shade",
+          "width": 1920,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.005419921875,
+          "channelsChecked": 13824000,
+          "shiftedPrintFailurePixels": 3982500,
+          "statePreserved": true
+        },
+        {
+          "view": "orient",
+          "width": 1920,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.00003255208333333333,
+          "channelsChecked": 13824000,
+          "shiftedPrintFailurePixels": 4298625,
+          "statePreserved": true
+        }
+      ]
+    },
+    {
+      "id": "pfc",
+      "seed": "pde-field-pfc-0",
+      "parameters": {
+        "grid": 128,
+        "aspect": "1:1",
+        "bc": "periodic",
+        "r": -0.35,
+        "psi0": 0.02,
+        "k0": 0.68,
+        "M": 0.35,
+        "amp": 0.55,
+        "misori": 12,
+        "noise": 0,
+        "init": "stripe",
+        "running": false,
+        "steps": 5,
+        "dt": 0.01,
+        "warmup": 0,
+        "view": "field",
+        "lo": -0.35,
+        "hi": 1.15,
+        "bump": 5,
+        "lightAng": 40,
+        "exposure": 1,
+        "gamma": 1,
+        "contrast": 1,
+        "grain": 0,
+        "seed": "pde-field-pfc-0",
+        "v": 2,
+        "palette": [
+          "#1A1A1A",
+          "#4A4A4A",
+          "#8C8C8C",
+          "#C8C4BB",
+          "#E63B2E"
+        ],
+        "bg": "#E9E7E2"
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "physicalTime": 2,
+      "initialSha256": "e12909873fd10a7f43bffef6d34be4e41ef6f6e185634d102d34cc4bae2a27fe",
+      "finalSha256": "ecf6300baba609a2e3629119486e52ddd3a64a77942474ada3fac886ba68e81e",
+      "discreteError": {
+        "max": 2.1862117449700236e-7,
+        "rms": 7.773176129399836e-8
+      },
+      "referenceSensitivity": {
+        "max": 1.093075630009821e-11,
+        "rms": 1.862830849654384e-12
+      },
+      "temporalLevels": [
+        {
+          "dt": 0.01,
+          "steps": 200,
+          "error": {
+            "max": 0.00005521513837764003,
+            "rms": 0.000014518228201938739
+          }
+        },
+        {
+          "dt": 0.005,
+          "steps": 400,
+          "error": {
+            "max": 0.000027767199458572644,
+            "rms": 0.000007248602633538232
+          }
+        },
+        {
+          "dt": 0.0025,
+          "steps": 800,
+          "error": {
+            "max": 0.000013789910258743543,
+            "rms": 0.0000036136612309149823
+          }
+        }
+      ],
+      "orders": [
+        1.0020905901137367,
+        1.0042416384590975
+      ],
+      "wrongTimeError": {
+        "max": 0.01947990715545911,
+        "rms": 0.007647681058709067
+      },
+      "chemicalError": {
+        "max": 7.950241991405704e-7,
+        "rms": 2.1104747297679587e-7
+      },
+      "meanDrift": -1.0869371180888265e-8,
+      "prints": [
+        {
+          "view": "field",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.00015347222222222222,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 4682400,
+          "statePreserved": true
+        },
+        {
+          "view": "abs",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 5652000,
+          "statePreserved": true
+        },
+        {
+          "view": "grad",
+          "width": 2400,
+          "height": 2400,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "channelsChecked": 17280000,
+          "shiftedPrintFailurePixels": 5534400,
+          "statePreserved": true
+        }
+      ]
+    },
+    {
+      "id": "pfc",
+      "seed": "pde-field-pfc-1",
+      "parameters": {
+        "grid": 128,
+        "aspect": "4:5",
+        "bc": "noflux",
+        "r": -0.25,
+        "psi0": 0.28,
+        "k0": 0.72,
+        "M": 0.35,
+        "amp": 0.55,
+        "misori": 12,
+        "noise": 0,
+        "init": "seed",
+        "running": false,
+        "steps": 5,
+        "dt": 0.01,
+        "warmup": 0,
+        "view": "field",
+        "lo": -0.35,
+        "hi": 1.15,
+        "bump": 5,
+        "lightAng": 40,
+        "exposure": 1,
+        "gamma": 1,
+        "contrast": 1,
+        "grain": 0,
+        "seed": "pde-field-pfc-1",
+        "v": 2,
+        "palette": [
+          "#1A1A1A",
+          "#4A4A4A",
+          "#8C8C8C",
+          "#C8C4BB",
+          "#E63B2E"
+        ],
+        "bg": "#E9E7E2"
+      },
+      "grid": [
+        128,
+        160
+      ],
+      "physicalTime": 2,
+      "initialSha256": "3f71fae049dd3e04aa6dc7f781c78893dd16fc6844ab907a438fbbdcff8ec503",
+      "finalSha256": "2b429333c09d273228283a7e67cd214edba75648fb44d76a0ca147cbe04bbd10",
+      "discreteError": {
+        "max": 0.0000024439421481003976,
+        "rms": 3.6863454870456e-7
+      },
+      "referenceSensitivity": {
+        "max": 7.390643652627205e-12,
+        "rms": 8.081274174883236e-13
+      },
+      "temporalLevels": [
+        {
+          "dt": 0.01,
+          "steps": 200,
+          "error": {
+            "max": 0.0009203760588298859,
+            "rms": 0.00009248470383227285
+          }
+        },
+        {
+          "dt": 0.005,
+          "steps": 400,
+          "error": {
+            "max": 0.00046046661974297187,
+            "rms": 0.00004621220479408317
+          }
+        },
+        {
+          "dt": 0.0025,
+          "steps": 800,
+          "error": {
+            "max": 0.00023027348162041328,
+            "rms": 0.00002314724700497508
+          }
+        }
+      ],
+      "orders": [
+        1.0009408536814708,
+        0.9974333042579921
+      ],
+      "wrongTimeError": {
+        "max": 0.15748387233365047,
+        "rms": 0.020046051502261335
+      },
+      "chemicalError": {
+        "max": 0.0000028687350595024697,
+        "rms": 3.252559914578928e-7
+      },
+      "meanDrift": -1.3741912163744985e-8,
+      "prints": [
+        {
+          "view": "shade",
+          "width": 1920,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.0008626302083333333,
+          "channelsChecked": 13824000,
+          "shiftedPrintFailurePixels": 873900,
+          "statePreserved": true
+        },
+        {
+          "view": "mu",
+          "width": 1920,
+          "height": 2400,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "channelsChecked": 13824000,
+          "shiftedPrintFailurePixels": 334800,
+          "statePreserved": true
+        },
+        {
+          "view": "orient",
+          "width": 1920,
+          "height": 2400,
+          "maxChannelError": 1,
+          "meanChannelError": 0.004296875,
+          "channelsChecked": 13824000,
+          "shiftedPrintFailurePixels": 1860300,
+          "statePreserved": true
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

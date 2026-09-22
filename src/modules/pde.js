@@ -253,6 +253,9 @@ void main(){
   t = clamp(t, 0.0, 1.0);
   vec3 col = mix(u_bg, ramp(t), mix(0.15, 1.0, t));
   if (u_view == 0 || u_view == 1) col = ramp(t);
+  // A direction is periodic. Join the palette endpoints and hide undefined
+  // directions in nearly flat cells instead of creating a color seam at 2π.
+  if (u_view == 5) col = mix(u_bg, ramp(t), smoothstep(0.0, 0.001, length(vec2(gx, gy))));
   col = pow(clamp(col, 0.0, 1.0), vec3(u_gamma));
   col *= u_exposure;
   col = clamp((col - 0.5) * u_contrast + 0.5, 0.0, 1.0);
@@ -354,10 +357,11 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         else gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.HALF_FLOAT, toHalf(f32));
       }
       function ensureRamp(s) {
-        const key = (s.bg || '') + '|' + (s.palette || []).join(',');
+        const cyclic = s.view === 'orient';
+        const key = cyclic + '|' + (s.bg || '') + '|' + (s.palette || []).join(',');
         if (ramp && rampKey === key) return;
         if (ramp) ramp.dispose();
-        ramp = G.rampTexture(gl, s.palette, s.bg); rampKey = key;
+        ramp = cyclic ? G.rampTexture(gl, [...s.palette, s.palette[0]], null) : G.rampTexture(gl, s.palette, s.bg); rampKey = key;
       }
       function refreshChem(s) {
         muPass.draw(muT, Object.assign({ u_c: C.read, u_res: [gw, gh] }, spec.muUniforms(s)));
@@ -655,7 +659,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (A → B)',
     headline: 'c0', headlineLabel: 'mean c₀',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.014, 0.002, chMaxDt(s.M, s.eps)); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.014, 0.0001, chMaxDt(s.M, s.eps)); },
     surprise(rng) {
       const c0 = rng.pick([0, 0, 0.05, -0.3, 0.35, -0.45]);
       return {
@@ -755,7 +759,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (A → B)',
     headline: 'sigma', headlineLabel: 'σ',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.sigma = U.clamp(Number(s.sigma) || 0, 0, 0.3); s.dt = U.clamp(Number(s.dt) || 0.015, 0.002, chMaxDt(s.M, s.eps, s.sigma)); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.sigma = U.clamp(Number(s.sigma) || 0, 0, 0.3); s.dt = U.clamp(Number(s.dt) || 0.015, 0.0001, chMaxDt(s.M, s.eps, s.sigma)); },
     surprise(rng) {
       const c0 = rng.pick([0, 0, 0.05, -0.3, 0.32]);
       return {
@@ -860,7 +864,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
       s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024);
       // Combine the passive linear ceiling with a heuristic activity restriction.
       // This is not a stability guarantee for the nonlinear active-current terms.
-      s.dt = U.clamp(Number(s.dt) || 0.013, 0.002, Math.min(chMaxDt(s.M, s.eps), 0.24 / (1 + Math.abs(Number(s.zeta) || 0))));
+      s.dt = U.clamp(Number(s.dt) || 0.013, 0.0001, Math.min(chMaxDt(s.M, s.eps), 0.24 / (1 + Math.abs(Number(s.zeta) || 0))));
     },
     surprise(rng) {
       const c0 = rng.pick([-0.4, -0.45, -0.35, 0.4, 0, -0.5]);
@@ -943,11 +947,11 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     closedGroups: ['Seeding'],
     hints: {
       Onset: 'r is the heat. k₀ is the depth of the pan, in disguise — it sets the stripe width. g is whether the fluid prefers hexagons (the usual weakly nonlinear result with non-Boussinesq effects).',
-      Picture: 'Field is u itself. Orientation colors the local roll direction. Relief is u as height, the convection cells as terrain.',
+      Picture: 'Field is u itself. Orientation colors the local field-gradient direction with a cyclic palette. Relief is u as height, the convection cells as terrain.',
     },
     palette: true, defaultPalette: 'harbor', paletteLabel: 'Colors',
     headline: 'r', headlineLabel: 'control r',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.025, 0.005, Math.min(0.12, shMaxDt(s.r, s.k0, s.g, s.cub))); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.025, 0.0001, Math.min(0.12, shMaxDt(s.r, s.k0, s.g, s.cub))); },
     surprise(rng) {
       const r = rng.pick([0.2, 0.3, 0.4, 0.55, -0.1]);
       // These negative-r choices exceed the continuum stripe threshold over the
@@ -1040,7 +1044,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     },
     palette: true, defaultPalette: 'thermal', paletteLabel: 'Colors',
     headline: 'nu', headlineLabel: 'viscosity ν',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.018, 0.004, Math.min(0.08, ksMaxDt(s.nu))); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.018, 0.0001, Math.min(0.08, ksMaxDt(s.nu))); },
     surprise(rng) {
       return {
         grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5', '16:9']),
@@ -1132,7 +1136,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     closedGroups: ['Seeding'],
     hints: {
       Crystal: 'This is Swift–Hohenberg with a conservation law. r and ψ₀ together pick the phase: liquid, stripes, or triangular crystal. k₀ is the lattice constant. Two orientations meeting is a grain boundary.',
-      Picture: 'Density is ψ, the atomic density wave. Orientation colors the local lattice angle — that is how you read grains. Relief treats atoms as height.',
+      Picture: 'Density is ψ, the atomic density wave. Orientation colors the local density-gradient direction with a cyclic palette; it is not a measured crystallographic orientation. Relief treats atoms as height.',
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors',
     headline: 'r', headlineLabel: 'quench r',
