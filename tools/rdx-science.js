@@ -320,9 +320,13 @@ function control(technique, name, mutant, value, tolerance, detected, extra) {
         // subtract the uniform part, which evolves separately (it is the k = 0 mode of a linear equation)
         const got = C.abs(modeAmp(out[1].f, N, N, dc.ch, mx, my)) / C.abs(modeAmp(out[0].f, N, N, dc.ch, mx, my));
         const q = qLat(lap === 9, TAU * mx / N, TAU * my / N, h);
-        const G = dc.implicit ? (1 + dt * dc.D * q) / (1 + dt * dc.alpha) : 1 + dt * (dc.D * q - dc.alpha);
+        // An implicit row divides by 1 + dt alpha, which the GPU forms in float32: near 1 that quantizes the
+        // effective loss rate by up to ulp(1)/(2 dt), 3e-5 relative at dt = 1e-3 (1.5e-6 at the studio's 0.02).
+        // The exact discrete factor therefore uses the float32 denominator; the unrounded value is recorded too.
+        const G = dc.implicit ? (1 + dt * dc.D * q) / Math.fround(1 + Math.fround(dt) * dc.alpha) : 1 + dt * (dc.D * q - dc.alpha);
+        const G64 = dc.implicit ? (1 + dt * dc.D * q) / (1 + dt * dc.alpha) : G;
         const exactDiscrete = Math.abs(G) ** steps, continuum = Math.exp((-dc.alpha - dc.D * kk) * T);
-        rows.push({ N, h, dt, steps, measured: got, exactDiscrete, continuum, discreteRelError: Math.abs(got / exactDiscrete - 1), continuumRelError: Math.abs(got / continuum - 1) });
+        rows.push({ N, h, dt, steps, measured: got, exactDiscrete, continuum, discreteRelError: Math.abs(got / exactDiscrete - 1), discreteRelErrorUnroundedDenominator: Math.abs(got / Math.abs(G64) ** steps - 1), continuumRelError: Math.abs(got / continuum - 1) });
       }
       const ord = orders(rows.map(r => r.continuumRelError)), worst = Math.max(...rows.map(r => r.discreteRelError));
       // cyclic's w(1 - w) is linear to first order; at amplitude 1e-6 the w^2 term is a 1e-6 relative residue

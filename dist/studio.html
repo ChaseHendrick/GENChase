@@ -2098,17 +2098,29 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a \u003c 1 \u003c b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
     "equation": "∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v)",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
+      "Deterministic PDE only; no spiral wavelength, no biodiversity-loss threshold of Reichenbach, Mobilia and Frey, noise term untested."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
+      "Record hardware precision (the float16 fallback) and validate the actual print path."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/rdx-science.js",
+        "scope": "Actual rdx.js May-Leonard step shader in WebGL2 float32 (SwiftShader): independent Float64 update, the well-mixed limit (uniform field), the interior fixed point and a diffusion mode.",
+        "criteria": "Update within 2e-5; for a + b = 2 the total population follows the exact logistic solution and uvw/(u+v+w)^3 is conserved, both with Euler order 0.85 to 1.2; that ratio falls monotonically for a + b > 2 and rises for a + b \u003c 2; fixed-point eigenvalue within 2e-4 of the exact Euler recurrence and converging to -x*(1 + a w + b w^2) at order 0.8 to 1.25; diffusion mode as for the other tabs.",
+        "limitations": "Deterministic PDE only; no spiral wavelength, no biodiversity-loss threshold of Reichenbach, Mobilia and Frey, noise term untested.",
+        "benchmark": "Identities dS/dt = S(1 - S) + (2 - a - b) Q and d ln(P/S^3)/dt = (2 - a - b)(S^2 - 3Q)/S (checked numerically in the harness), the circulant Jacobian at x* = 1/(1 + a + b), and exact heat modes.",
+        "failureControl": "Reaction sign flip, a and b swapped for one species only, diffusion 5% high and a broken stencil; each must fail.",
+        "command": "node tools/rdx-science.js --write",
+        "results": "validation/results/rdx-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -2459,17 +2471,29 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n², because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
     "equation": "∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
+      "Linear regime and uniform states only; no nonlinear band spacing or migration speed. The float32 implicit denominator 1 + dt quantizes the water loss rate by up to ulp(1)/(2 dt), modelled in the exact discrete reference."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
+      "Record hardware precision (the float16 fallback) and validate the actual print path."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/rdx-science.js",
+        "scope": "Actual rdx.js Klausmeier step shader in WebGL2 float32 (SwiftShader): independent Float64 update including the rainfall gradient and upwind water flux, the uniform states, the flat-ground Turing onset in D_w, the sloped differential-flow instability and a pure water advection-diffusion-loss mode.",
+        "criteria": "Update within 2e-5; vegetated state n = (a + sqrt(a^2 - 4m^2))/2m held within 1e-5 relative, cover collapses to (a, 0) for a \u003c 2m; critical mode sign correct and within 5% at 0.95 and 1.05 D_w,c; sloped fastest mode complex rate within 1% of the exact discrete rate, growing and travelling uphill; observed order 0.8 to 1.25 (formal 1, upwind) with Richardson limit within 1% of the continuum; water mode within 2e-5 of the exact discrete factor with order 0.8 to 1.25.",
+        "limitations": "Linear regime and uniform states only; no nonlinear band spacing or migration speed. The float32 implicit denominator 1 + dt quantizes the water loss rate by up to ulp(1)/(2 dt), modelled in the exact discrete reference.",
+        "benchmark": "Uniform states and linearization of the Klausmeier equations derived by hand; continuum advection symbol i k v, upwind lattice symbol v (e^{ikh} - 1)/h, and the semi-implicit one-step map.",
+        "failureControl": "Plant uptake sign flip, water advected the wrong way, water diffusion 5% high and a broken stencil; each must fail.",
+        "command": "node tools/rdx-science.js --write",
+        "results": "validation/results/rdx-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -2795,17 +2819,29 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
     "equation": "Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b)",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
+      "No spiral rotation period, meander or breakup statistics, no Barkley front speed (only its kinetics), noise term untested. A uniform excited Barkley cell stagnates near u = 1 in float32 (recorded finding)."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
+      "Record hardware precision (the float16 fallback) and validate the actual print path."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/rdx-science.js",
+        "scope": "Actual rdx.js step shader (Barkley and FitzHugh-Nagumo) in WebGL2 float32 (SwiftShader), periodic 5- and 9-point stencils: independent Float64 update, pure-diffusion Fourier modes, the bistable front obtained with eps = 0 and D_v = 0, and the Barkley upstroke kinetics.",
+        "criteria": "Update within 2e-5 over 10 steps; diffusion modes within 2e-5 of the exact discrete factor and observed order 2 +/- 0.25 against the continuum; front speed within 0.5% of the exact value at h = 1/16 with observed order 1.7 to 2.3; Barkley upstroke Euler order 0.85 to 1.2 against RK4.",
+        "limitations": "No spiral rotation period, meander or breakup statistics, no Barkley front speed (only its kinetics), noise term untested. A uniform excited Barkley cell stagnates near u = 1 in float32 (recorded finding).",
+        "benchmark": "Exact travelling-front speed c = (u1 + u3 - 2 u2)/sqrt 2 of u_t = u_xx + u - u^3 - v0 (the FHN u equation with v frozen), with the exact profile verified numerically in the harness; exact heat and decay modes; Float64 RK4 kinetics.",
+        "failureControl": "Reaction sign flip, recovery coupling sign flip, activator diffusion 10% high, recovery diffusion 5% high, 5-point centre weight -3.9 and a sign-flipped Barkley threshold; each must fail its criterion.",
+        "command": "node tools/rdx-science.js --write",
+        "results": "validation/results/rdx-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -3441,17 +3477,29 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry.",
     "equation": "Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
+      "Linear regime only; no nonlinear pattern selection (spots against stripes), no Hopf regime. The status-line wavelength is the onset-critical value 2 pi (Du Dv/det)^(1/4), 12 cells at the defaults, against 10.8 fastest-growing and 9.2 measured after saturation."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
+      "Record hardware precision (the float16 fallback) and validate the actual print path."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/rdx-science.js",
+        "scope": "Actual rdx.js step shader for all four kinetics (Schnakenberg, Brusselator, Gierer-Meinhardt, Lengyel-Epstein) in WebGL2 float32 (SwiftShader): independent Float64 update, analytic rest states, linear growth rate of single modes against the exact discrete, lattice and continuum dispersion relations, the Turing threshold, the dominant FFT wavelength from noise and decay below threshold.",
+        "criteria": "Update within 2e-5; rest states held within 1e-5 relative for 2000 steps; fastest-mode growth rate within 1% of the exact discrete rate; Schnakenberg observed order 2 +/- 0.25 and Richardson limit within 2e-3 of the continuum; critical mode sign correct and within 5% at 0.95 and 1.05 D_c; FFT peak within one spectral bin of the fastest-growing lattice wavenumber; noise r.m.s. falls below 10% at 0.9 D_c.",
+        "limitations": "Linear regime only; no nonlinear pattern selection (spots against stripes), no Hopf regime. The status-line wavelength is the onset-critical value 2 pi (Du Dv/det)^(1/4), 12 cells at the defaults, against 10.8 fastest-growing and 9.2 measured after saturation.",
+        "benchmark": "Linear stability of the homogeneous state derived by hand for each kinetics: J - k^2 diag(1, D) (continuum), the stencil symbol (lattice) and the one-step map of the documented semi-implicit Euler scheme (discrete); D_c from (D f_u + g_v)^2 = 4 D det J.",
+        "failureControl": "Reaction sign flip, inhibitor diffusion 5% high, broken stencil, and equal diffusivities at 1.05 D_c; each must fail.",
+        "command": "node tools/rdx-science.js --write",
+        "results": "validation/results/rdx-science.json"
+      }
+    ],
     "print": []
   },
   {
@@ -3640,17 +3688,29 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) \u003c c/2 − D − a.",
     "equation": "∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²)",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
+      "Logistic growth means total mass is not conserved; the balance, not conservation, is tested. No aggregate shape or coarsening statistics, no analytic nonuniform steady state (none is available for this form), noise term untested."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
+      "Record hardware precision (the float16 fallback) and validate the actual print path."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/rdx-science.js",
+        "scope": "Actual rdx.js Keller-Segel step shader in WebGL2 float32 (SwiftShader): independent Float64 update including the face fluxes, the discrete mass balance, the uniform state, the linear instability threshold and the growth rate of single modes.",
+        "criteria": "Update within 2e-5; sum(u_{n+1}) - sum(u_n) = dt sum u(1 - u) within 1e-6 relative on an aggregated field for both stencils; uniform state held; critical mode sign correct and within 5% of the exact discrete rate at 0.95 and 1.05 c*; growth rate within 1% of the exact discrete rate, observed order 2 +/- 0.25 and Richardson limit within 2e-3 of the continuum.",
+        "limitations": "Logistic growth means total mass is not conserved; the balance, not conservation, is tested. No aggregate shape or coarsening statistics, no analytic nonuniform steady state (none is available for this form), noise term untested.",
+        "benchmark": "Telescoping of conservative face fluxes on the torus; linearization at (1, 1/a) giving instability iff c > c* = 2 (sqrt a + sqrt D)^2 at k_c^2 = sqrt(a/D); exact heat and decay modes.",
+        "failureControl": "Non-conservative flux (sensitivity at the cell instead of the face), chemotactic flux sign flip, attractant diffusion 5% high and a broken stencil; each must fail.",
+        "command": "node tools/rdx-science.js --write",
+        "results": "validation/results/rdx-science.json"
+      }
+    ],
     "print": []
   },
   {
