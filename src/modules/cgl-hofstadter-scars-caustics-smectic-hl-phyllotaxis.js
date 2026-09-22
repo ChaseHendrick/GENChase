@@ -58,26 +58,39 @@ vec2 lap2(sampler2D t, vec2 uv, vec2 px){
        - 4.0 * texture(t, uv).rg;
 }
 `;
+  // Lie splitting: exact local cubic flow, then explicit complex diffusion.
+  // The five-point symbol is -q, q in [0,8]. Diffusion requires
+  // h <= 1 / (4*(1+alpha^2)); use an 80% margin. The phase limit is
+  // an accuracy precaution near saturated amplitude, not a global error bound.
+  function cglSubsteps(s) {
+    const limit = Math.min(0.8 / (4 * (1 + s.alpha * s.alpha)),
+      0.1 / Math.max(0.01, Math.abs(s.beta) * s.lin));
+    return Math.max(1, Math.ceil(s.dt / limit));
+  }
   const CGL_STEP = CGL_HEAD + `
 uniform sampler2D u_a; uniform vec2 u_res;
 uniform float u_dt, u_alpha, u_beta, u_lin, u_noise, u_step, u_nOff;
 ${G.GLSL.hash}
+vec2 localFlow(vec2 A){
+  float e = exp(2.0 * u_lin * u_dt);
+  float d = 1.0 + dot(A,A) * (e - 1.0) / u_lin;
+  float phase = -0.5 * u_beta * log(d);
+  return sqrt(e / d) * vec2(cos(phase)*A.x-sin(phase)*A.y,
+                            sin(phase)*A.x+cos(phase)*A.y);
+}
 void main(){
   vec2 px = 1.0 / u_res;
-  vec2 A = texture(u_a, v_uv).rg;
-  vec2 L = lap2(u_a, v_uv, px);
-  vec2 iL = vec2(-L.y, L.x);
-  float mag2 = dot(A, A);
-  vec2 iA = vec2(-A.y, A.x);
-  vec2 rhs = u_lin * A + L - u_alpha * iL - mag2 * (A + u_beta * iA);
+  vec2 A = localFlow(texture(u_a, v_uv).rg);
+  vec2 L = localFlow(texture(u_a, v_uv+vec2(px.x,0.0)).rg)
+         + localFlow(texture(u_a, v_uv-vec2(px.x,0.0)).rg)
+         + localFlow(texture(u_a, v_uv+vec2(0.0,px.y)).rg)
+         + localFlow(texture(u_a, v_uv-vec2(0.0,px.y)).rg) - 4.0*A;
+  A += u_dt * (L + u_alpha * vec2(-L.y, L.x));
   if (u_noise > 0.0) {
     vec2 n = vec2(hash21(v_uv * u_res + vec2(u_nOff, u_step)),
                   hash21(v_uv * u_res + vec2(u_step, u_nOff))) - 0.5;
-    rhs += n * 2.0 * u_noise;
+    A += u_dt * n * 2.0 * u_noise;
   }
-  A += u_dt * rhs;
-  float m = length(A);
-  if (m > 3.5) A *= 3.5 / m;
   outColor = vec4(A, 0.0, 1.0);
 }`;
   const CGL_DRAW = CGL_HEAD + `
@@ -86,8 +99,9 @@ uniform int u_view; uniform float u_exposure, u_gamma, u_contrast, u_grain;
 uniform vec3 u_bg;
 ${G.GLSL.hash}
 ${G.GLSL.ramp}
+${G.GLSL.bicubic}
 void main(){
-  vec2 A = texture(u_a, v_uv).rg;
+  vec2 A = texCR4(u_a, v_uv, u_res).rg;
   float amp = length(A);
   float ph = atan(A.y, A.x);
   float t = 0.0;
@@ -120,7 +134,7 @@ void main(){
     tab: 'CGL',
     subtitle: 'spirals, defect chaos, frozen vortex glass',
     order: 58.1,
-    equation: '∂A/∂t = A + (1 + iα) ∇²A − (1 + iβ) |A|² A',
+    equation: '∂A/∂t = μA + (1 + iα) ∇²A − (1 + iβ) |A|² A',
     credit: "The complex Ginzburg–Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969–71). The (α, β) plane was mapped by Aranson and Kramer: Benjamin–Feir when 1+αβ<0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.",
     blurb: 'A complex amplitude is enough. Real diffusion, imaginary dispersion, a cubic that saturates. The zeros of A are vortices, and they cannot die alone. In one corner of the (α, β) plane they freeze into a glass. In another they birth and annihilate forever — spiral defect chaos, the weather of an oscillatory medium. Color by phase and you see the spirals. Color by amplitude and you see the holes they leave.',
     schema: [
@@ -135,7 +149,7 @@ void main(){
         options: [['noise','Noise'],['vortex','Vortex'],['spiral','Spiral'],['wave','Wave']] },
       { group: 'Simulation', key: 'running', label: 'Running', type: 'toggle', kind: LIVE },
       { group: 'Simulation', key: 'steps', label: 'Steps per frame', type: 'range', kind: LIVE, min: 1, max: 8, step: 1, fmt: String },
-      { group: 'Simulation', key: 'dt', label: 'Time step', type: 'range', kind: LIVE, min: 0.01, max: 0.12, step: 0.002, fmt: f3 },
+      { group: 'Simulation', key: 'dt', label: 'Time step', type: 'range', kind: LIVE, min: 0.01, max: 0.12, step: 0.002, fmt: f3, hint: 'Requested time per step. Internal substeps respect the complex-diffusion limit.' },
       { group: 'Simulation', key: 'warmup', label: 'Warm-up steps', type: 'range', kind: GEOM, min: 0, max: 1500, step: 50, fmt: String },
       { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, wrap: true,
         options: [['phase','Phase'],['amp','|A|'],['real','Re A'],['defects','Defects']] },
@@ -195,7 +209,7 @@ void main(){
         const [W,H] = sizeOf(s);
         if (A && gw===W && gh===H) return;
         if (A) A.dispose();
-        A = new G.PingPong(gl, W, H, { type: texType, filter: 'linear', wrap: 'repeat' });
+        A = new G.PingPong(gl, W, H, { type: texType, filter: 'nearest', wrap: 'repeat' });
         gw = W; gh = H;
       }
       function seedField(s, W, H) {
@@ -226,10 +240,11 @@ void main(){
       }
       function step(n) {
         const s = host.getState();
-        for (let i=0;i<n;i++) {
+        const substeps = cglSubsteps(s), dt = s.dt / substeps;
+        for (let i=0;i<n;i++) for (let j=0;j<substeps;j++) {
           stepPass.draw(A.write, {
-            u_a: A.read, u_res:[gw,gh], u_dt:s.dt, u_alpha:s.alpha, u_beta:s.beta, u_lin:s.lin,
-            u_noise:s.noise, u_step:(stepCount+i)*1.13, u_nOff:nOff,
+            u_a: A.read, u_res:[gw,gh], u_dt:dt, u_alpha:s.alpha, u_beta:s.beta, u_lin:s.lin,
+            u_noise:s.noise, u_step:((stepCount+i)*substeps+j)*1.13, u_nOff:nOff,
           });
           A.swap();
         }
@@ -247,7 +262,7 @@ void main(){
       function status() {
         const s = host.getState();
         const bf = 1 + s.alpha * s.beta;
-        host.setStatus('<span>grid <b>'+gw+'×'+gh+'</b></span><span>1+αβ <b>'+bf.toFixed(2)+'</b> · '+(bf<0?'Benjamin–Feir':'stable')+'</span><span>step <b>'+stepCount.toLocaleString()+'</b></span>');
+        host.setStatus('<span>grid <b>'+gw+'×'+gh+'</b></span><span>1+αβ <b>'+bf.toFixed(2)+'</b> · '+(bf<0?'uniform wave unstable':'uniform wave criterion')+'</span><span>step <b>'+stepCount.toLocaleString()+'</b> · '+cglSubsteps(s)+' substeps</span>');
       }
       function stop(){ cancelAnimationFrame(raf); raf=0; clearTimeout(chunkTimer); chunkTimer=0; }
       function frame(){ raf=0; const s=host.getState(); step(s.steps); render(); if(stepCount%16<s.steps) status(); raf=requestAnimationFrame(frame); }
@@ -262,6 +277,7 @@ void main(){
         (function chunk(){ const n=Math.min(24,left); left-=n; step(n); render(); if(left>0) chunkTimer=setTimeout(chunk,0); else { status(); startLoop(); } })();
       }
       return {
+        fieldCells(){ return [gw,gh]; },
         aspect(s){ return ASPECTS[s.aspect]||1; },
         regenerate(){
           stop(); stepCount=0;

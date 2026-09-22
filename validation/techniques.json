@@ -101,7 +101,7 @@
   {
     "id": "phyllotaxis",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). Primordia appear on a growing disc at the minimum of an inhibitory field left by the previous ones, then ride outward. The divergence angle converges on the golden angle 137.5° for a wide interval of the control parameter, which is how sunflowers count Fibonacci without counting.",
     "equation": "new primordium at argmin_θ Σᵢ exp(−|x(θ) − xᵢ| / λ) on the meristem ring",
     "status": "unvalidated",
@@ -120,7 +120,7 @@
   {
     "id": "hl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "M. B. Hastings and L. S. Levitov, Physica D 116, 244 (1998). Laplacian growth (viscous fingering, DLA in a limit) as iterated conformal maps of the exterior disk. α=0 grows a disk; α=2 is DLA-like; the transition at α=1 is sharp. Each particle is a slit map of capacity c composed onto the cluster.",
     "equation": "Φₙ = Φₙ₋₁ ∘ f_{θₙ,cₙ},   cₙ ∝ |Φ′(e^{iθ})|^{−α}",
     "status": "unvalidated",
@@ -139,7 +139,7 @@
   {
     "id": "lichtenberg",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "L. Niemeyer, L. Pietronero and H. J. Wiesmann, Phys. Rev. Lett. 52, 1033 (1984). The dielectric breakdown model grows a cluster where the harmonic potential of the Laplace equation, raised to η, is the attachment probability. η=1 is DLA; η→∞ is a ballistic needle; lightning lives in between.",
     "equation": "∇²φ = 0,   P(i) ∝ φᵢ^η  on the growth interface",
     "status": "unvalidated",
@@ -158,7 +158,7 @@
   {
     "id": "snowflake",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "Janko Gravner and David Griffeath, Physica D 237, 385 (2008); Phys. Rev. E 79, 011601 (2009). A hexagonal lattice map with three masses — vapor, quasi-liquid, ice — that combines diffusion-limited aggregation with anisotropic attachment and a quasi-liquid layer. It is the first local model to grow plates, sectored plates, stellar dendrites and ferns that look like Nakaya’s atlas, not like a cartoon star.",
     "equation": "diffusion of vapor on Aᶜ;  freeze κ;  attach by (n, b, α, β, θ);  melt μ, γ",
     "status": "unvalidated",
@@ -1281,7 +1281,7 @@
   {
     "id": "lp",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "Ron Lifshitz and Dean M. Petrich, Phys. Rev. Lett. 79, 1261 (1997). Faraday waves with two frequencies impose two length scales. The free energy with operator (∇²+1)²(∇²+q²)² and a quadratic term is enough to stabilize a dodecagonal quasicrystal when q = 2 cos(π/12) ≈ 1.932. Hexagons and stripes are the other ground states. This plate is a semi-implicit spectral integration of that PDE.",
     "equation": "∂tψ = εψ − (∇²+1)²(∇²+q²)²ψ + α ψ² − ψ³,   q = 2 cos(π/12)",
     "status": "unvalidated",
@@ -1338,13 +1338,14 @@
   {
     "id": "cgl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "The complex Ginzburg–Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969–71). The (α, β) plane was mapped by Aranson and Kramer: Benjamin–Feir when 1+αβ<0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.",
-    "equation": "∂A/∂t = A + (1 + iα) ∇²A − (1 + iβ) |A|² A",
+    "equation": "∂A/∂t = μA + (1 + iα) ∇²A − (1 + iβ) |A|² A",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "Numerical correction changes previous recipes. Bounded production-kernel checks and remaining limitations are documented in validation/GL-CORRECTIONS.md; these do not establish full paper accuracy or promote scientific status."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
@@ -1357,13 +1358,14 @@
   {
     "id": "vortex",
     "source": "src/modules/vortex.js",
-    "sourceSha256": "b6635876895ed3141304ea617f0e353783183cb587dcde84a86323fd2d06908e",
-    "reference": "A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. The plate is imaginary-time Ginzburg-Landau in a uniform B, Landau gauge.",
-    "equation": "αψ + β|ψ|² ψ + (1/2m)(−i∇ − 2e A)² ψ = 0,   n_v = B Area / Φ0",
+    "sourceSha256": "fc8e66a17fe114da9a663f0827171ea70461c784e10802fac2bbd3d2205027f0",
+    "reference": "A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. This plate is a reduced fixed-field Ginzburg-Landau relaxation with unit-modulus lattice links in Landau gauge and zero order parameter at the boundary. It does not evolve the magnetic field or establish critical fields.",
+    "equation": "∂ψ/∂t = κ⁻²(∇ − iA)²ψ + (1 − |ψ|²)ψ,   A = (−0.08 B y, 0),   Δx = 1",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "Numerical correction changes previous recipes. Bounded production-kernel checks and remaining limitations are documented in validation/GL-CORRECTIONS.md; these do not establish full paper accuracy or promote scientific status."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
@@ -1755,7 +1757,7 @@
   {
     "id": "smectic",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "G. Friedel, Annales de Physique 18, 273 (1910). Smectic-A layers prefer equal spacing and may bend; the surfaces of constant spacing whose centers of curvature lie on an ellipse and a confocal hyperbola are Dupin cyclides. Packed in the plane they are toroidal focal conic domains — an Apollonian foam of nested rings.",
     "equation": "layers: Dupin cyclides of a confocal ellipse–hyperbola pair",
     "status": "unvalidated",
@@ -1888,7 +1890,7 @@
   {
     "id": "hofstadter",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron colored them. At rational α=p/q the Harper matrix is q×q.",
     "equation": "ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ",
     "status": "unvalidated",
@@ -1926,7 +1928,7 @@
   {
     "id": "scars",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "Eric J. Heller, Phys. Rev. Lett. 53, 1515 (1984). In a classically chaotic billiard the high eigenfunctions of the Dirichlet Laplacian are usually ergodic — and yet some sit, as scars, along unstable periodic orbits. The Bunimovich stadium and the cardioid are the textbook domains. Inverse iteration of the discrete Laplacian with a Weyl shift yields a mode near index n.",
     "equation": "∇²ψ + k² ψ = 0  on Ω,   ψ = 0 on ∂Ω",
     "status": "unvalidated",
@@ -1964,7 +1966,7 @@
   {
     "id": "caustics",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "Michael V. Berry’s catastrophe optics: the brightness of a light field after a smooth phase screen is the density of the gradient map of the height. Folds (A2) and cusps (A3) are the generic caustics in the plane. The swimming-pool network is this map, not a Voronoi diagram.",
     "equation": "X = x + s ∇h(x),   I(X) = Σ 1 / |det(I + s Hess h)|",
     "status": "unvalidated",
@@ -2021,7 +2023,7 @@
   {
     "id": "talbot",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T and as a half-period image at z_T/2. Between, the near field is a carpet of fractional revivals — a plot of I(x,z) is one of the most intricate figures in wave optics.",
     "equation": "I(x,z) = |Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)|²,   z_T = 2 d²/λ",
     "status": "unvalidated",
@@ -2097,7 +2099,7 @@
   {
     "id": "pearls",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "David Mumford, Caroline Series and David Wright, Indra's Pearls: The Vision of Felix Klein (Cambridge, 2002). A Schottky group is generated by pairing disjoint circles; the limit set is the dust (or curve) left when every complementary disk has been eaten. Nested inversions draw the group without matrices.",
     "equation": "Γ = ⟨a, b⟩  Schottky,   Λ(Γ) = ∩ g∈Γ g(Ĉ \\ Ω)",
     "status": "unvalidated",

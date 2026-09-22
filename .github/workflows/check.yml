@@ -58,6 +58,7 @@ jobs:
           node tools/direct-gravity-science.js
           node tools/physarum3d-display-check.js
           node tools/bec-neighbors-check.js
+          node tools/vortex-kernel-check.js
           npm test
       - name: Structural checks
         run: node tools/lint.js
@@ -130,6 +131,7 @@ jobs:
         run: |
           node tools/verify.js --print maxwell molecular
           node tools/volume-wave-science.js
+          node tools/cgl-kernel-check.js
 
   recipes:
     name: recipe compatibility

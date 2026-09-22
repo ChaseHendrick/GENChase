@@ -75,8 +75,8 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Lifshitz–Petrich**<br><sub>two-scale quasicrystal · 1997</sub> | `#lp/lifshitz-1997` | ∂tψ = εψ − (∇²+1)²(∇²+q²)²ψ + α ψ² − ψ³,   q = 2 cos(π/12) | raster | live | Occasional |
 | **Pendry Cloak**<br><sub>a disk that light goes around · 2006</sub> | `#cloak` | r = R1 + r' (R2-R1)/R2,   n_r = (r-R1)/r · R2/(R2-R1),   n_θ = r / (r-R1) | raster | still | Occasional |
 | **XY / Kosterlitz–Thouless**<br><sub>planar spins, bound vortices and the 1973 unbinding transition</sub> | `#xy/kt-1973` | H = −J Σ_<ij> cos(θ_i−θ_j);   dθ_i/dt = J Σ_j sin(θ_j−θ_i) + √(2T) η | SVG | live | Common |
-| **Complex Ginzburg–Landau**<br><sub>spirals, defect chaos, frozen vortex glass</sub> | `#cgl/cgl-1970` | ∂A/∂t = A + (1 + iα) ∇²A − (1 + iβ) \|A\|² A | raster | live | Occasional |
-| **Abrikosov**<br><sub>a superconductor that lets flux in as a lattice · 1957</sub> | `#vortex` | αψ + β\|ψ\|² ψ + (1/2m)(−i∇ − 2e A)² ψ = 0,   n_v = B Area / Φ0 | raster | still | Occasional |
+| **Complex Ginzburg–Landau**<br><sub>spirals, defect chaos, frozen vortex glass</sub> | `#cgl/cgl-1970` | ∂A/∂t = μA + (1 + iα) ∇²A − (1 + iβ) \|A\|² A | raster | live | Occasional |
+| **Abrikosov**<br><sub>fixed-field order-parameter relaxation · 1957</sub> | `#vortex` | ∂ψ/∂t = κ⁻²(∇ − iA)²ψ + (1 − \|ψ\|²)ψ,   A = (−0.08 B y, 0),   Δx = 1 | raster | still | Occasional |
 | **Active Nematics**<br><sub>self-driven rods, ±½ defects and active turbulence · 2012</sub> | `#nematic/dogic-2012` | ∂tQ + u·∇Q − S(Ω,E,Q) = Γ H,   H = [α − β\|Q\|²]Q + K∇²Q,   γu = −∇P − ζ ∇·Q | raster | live | Occasional |
 | **Dark Room**<br><sub>a polygonal room that a candle cannot fill · 1995</sub> | `#darkroom` | billiard in a polygon,   ∃ p,q: no reflected ray from p meets q | raster | still | Occasional |
 | **Fluid**<br><sub>Navier-Stokes dye advected by a stable-fluids solver · 1999</sub> | `#fluid` | du/dt + (u·grad)u = -grad p + nu·lap u,   div u = 0   (advect -> project -> advect dye) | raster | live | Ubiquitous |
@@ -277,7 +277,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Complex Ginzburg–Landau**. The complex Ginzburg–Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969–71). The (α, β) plane was mapped by Aranson and Kramer: Benjamin–Feir when 1+αβ<0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.
 
-**Abrikosov**. A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. The plate is imaginary-time Ginzburg-Landau in a uniform B, Landau gauge.
+**Abrikosov**. A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. This plate is a reduced fixed-field Ginzburg-Landau relaxation with unit-modulus lattice links in Landau gauge and zero order parameter at the boundary. It does not evolve the magnetic field or establish critical fields.
 
 **Active Nematics**. Continuum active nematohydrodynamics: Aditi Simha and Ramaswamy (2002); Beris–Edwards Q-tensor hydrodynamics. The experimental archetype is the microtubule–kinesin active gel of Sanchez, Chen, DeCamp, Heymann and Dogic, Nature 2012. Defect statistics and active turbulence: Giomi, PRL / Phys. Rev. X 2015; Doostmohammadi, Ignés-Mullol, Yeomans and Sagués, Nat. Commun. 2018. Flow here is the frictional (substrate) Stokes limit, incompressible: γ u = −∇P − ζ ∇·Q.
 

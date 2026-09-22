@@ -2485,7 +2485,7 @@ void main(){
       const size = (blob.size / 1048576).toFixed(1) + ' MB';
       const dims = pw.toLocaleString() + ' × ' + ph.toLocaleString() + ' px, ' + size + '. ';
       if (downloads) { save.hidden = false; note.textContent = dims + (usedVector ? 'PNG is a vector RIP at print pixels. ' : '') + 'Save PNG asks you to confirm the download.'; }
-      else { dl.href = lastUrl; dl.download = lastName; dl.hidden = false; note.textContent = dims + (usedVector ? 'Rasterized from SVG at print pixels (vector RIP).' : ('Recomputed at print pixels' + (ss > 1 ? ' with 2× supersampling' : '') + '.') + fieldNote) + ' If the download button does nothing, right-click the image and save it.'; }
+      else { dl.href = lastUrl; dl.download = lastName; dl.hidden = false; note.textContent = dims + (usedVector ? 'Rasterized from SVG at print pixels (vector RIP).' : ('Rendered at print pixels' + (ss > 1 ? ' with 2× supersampling' : '') + '.') + fieldNote) + ' If the download button does nothing, right-click the image and save it.'; }
       if (svgBlob && svgBtn) {
         const svgUrl = URL.createObjectURL(svgBlob);
         svgBtn.href = svgUrl;

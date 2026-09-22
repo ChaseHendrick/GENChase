@@ -1398,3 +1398,27 @@ The source gives the centered finite-difference dispersion relation and the cons
 Native backend installation was checked against https://docs.cupy.dev/en/stable/install.html using query `site.docs.cupy.dev stable install cupy CUDA requirements`. The optional backend requires compatible CUDA hardware; no CUDA run is claimed on the local Mac.
 
 The native CPU worker option was checked against https://numpy.org/doc/stable/reference/thread_safety.html. Workers read shared positions/masses, write disjoint force rows and finish before the next trajectory update; no hardware-independent speedup is claimed.
+
+
+## 2026-09-22: CGL and fixed-field vortex corrections
+
+A runtime sweep exposed CGL checkerboard growth and nonfinite vortex presets. These
+are repairs to established models, not new formulas. Reviewed Aranson and Kramer,
+[Rev. Mod. Phys. 74, 99 (2002), Eq. 1](https://empslocal.ex.ac.uk/people/staff/ma99ewb/articles/Aronson_and_Kramer.pdf),
+which uses positive imaginary diffusion and negative imaginary cubic saturation.
+The old shader had the opposite diffusion sign. The corrected update uses exact
+local cubic flow and explicit complex diffusion with internal substeps derived from
+the five-point Fourier symbol. This changes existing CGL recipes' numerical results.
+
+For magnetic discretization, checked the link-variable description in
+[Phys. Rev. Research 7, 013066 (2025)](https://journals.aps.org/prresearch/pdf/10.1103/PhysRevResearch.7.013066).
+The vortex implementation now uses unit-modulus links, exact local saturation and
+a bounded explicit diffusion step. It remains a reduced fixed-field model with zero
+order-parameter edges, not a self-consistent electromagnetic solution. Previous
+critical-field and vortex-count-versus-flux claims were removed. Existing vortex
+recipes change because the magnetic stencil, edges and stepping were corrected.
+
+Queries: `Aranson Kramer complex Ginzburg Landau equation 2002 review 1+i b`;
+`Ginzburg Landau link variable discretization gauge invariant finite difference exp vector potential`.
+These searches concerned implementation conventions, not a novelty investigation.
+See [bounded correction checks](validation/GL-CORRECTIONS.md) for evidence and gaps.

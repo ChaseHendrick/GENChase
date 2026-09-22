@@ -1,0 +1,3402 @@
+{
+  "date": "2026-09-22",
+  "techniques": 130,
+  "passed": 130,
+  "scope": "Runtime, preset contrast, checkerboard heuristic, recipe replay where comparable, and tab switching. Not scientific validation.",
+  "method": "Four workers ran node tools/check.js <id> 9000. Earlier passing runs were retained for unchanged technique implementations; follow-up failures were rerun with 12000 ms for CGL/vortex, 9000 ms for Aharonov, and 30000 ms for BEC. This is a consolidated repair sweep, not one frozen-build run. Preview budget and replay comparability limitations are retained below.",
+  "renderer": "Local macOS Chromium with SwiftShader. Cross-device reproducibility is not established.",
+  "records": [
+    {
+      "id": "aharonov",
+      "result": "runtime pass",
+      "replay": {
+        "first": "d91f7c04",
+        "second": "d91f7c04",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": true
+    },
+    {
+      "id": "airy",
+      "result": "runtime pass",
+      "replay": {
+        "first": "5b000cad",
+        "second": "5b000cad",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "amb",
+      "result": "runtime pass",
+      "replay": {
+        "first": "da84c02e",
+        "second": "da84c02e",
+        "same": true,
+        "steps": [
+          1800,
+          1800
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 6,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "anderson",
+      "result": "runtime pass",
+      "replay": {
+        "first": "b0caf0d5",
+        "second": "b0caf0d5",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "apollonian",
+      "result": "runtime pass",
+      "replay": {
+        "first": "daa03420",
+        "second": "daa03420",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "arago",
+      "result": "runtime pass",
+      "replay": {
+        "first": "b5dcd641",
+        "second": "b5dcd641",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "attractors",
+      "result": "runtime pass",
+      "replay": {
+        "first": "9f232460",
+        "second": "9f232460",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 10,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "aubry",
+      "result": "runtime pass",
+      "replay": {
+        "first": "903039e0",
+        "second": "903039e0",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "aztec",
+      "result": "runtime pass",
+      "replay": {
+        "first": "f5350b48",
+        "second": "f5350b48",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "bec",
+      "result": "runtime pass",
+      "replay": {
+        "first": "f1f85bd6",
+        "second": "f1f85bd6",
+        "same": true,
+        "steps": [
+          16000,
+          16000
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 1,
+      "presetCount": 7,
+      "rerunAfterCorrection": true
+    },
+    {
+      "id": "boy",
+      "result": "runtime pass",
+      "replay": {
+        "first": "a3d13d07",
+        "second": "a3d13d07",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "breather",
+      "result": "runtime pass",
+      "replay": {
+        "first": "60fbe850",
+        "second": "60fbe850",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "cahn",
+      "result": "runtime pass",
+      "replay": {
+        "first": "2973fe89",
+        "second": "2973fe89",
+        "same": true,
+        "steps": [
+          2000,
+          2000
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 5,
+      "presetCount": 5,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "caustics",
+      "result": "runtime pass",
+      "replay": {
+        "first": "e15685c4",
+        "second": "e15685c4",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 4,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "causticsea",
+      "result": "runtime pass",
+      "replay": {
+        "first": "c3773826",
+        "second": "c3773826",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "cgl",
+      "result": "runtime pass",
+      "replay": {
+        "first": "3cd5f6b7",
+        "second": "3cd5f6b7",
+        "same": true,
+        "steps": [
+          400,
+          400
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 5,
+      "rerunAfterCorrection": true
+    },
+    {
+      "id": "chemotaxis",
+      "result": "runtime pass",
+      "replay": {
+        "first": "8bd0793a",
+        "second": "8bd0793a",
+        "same": true,
+        "steps": [
+          1200,
+          1200
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 1,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "chimera",
+      "result": "runtime pass",
+      "replay": {
+        "first": "80259cdf",
+        "second": "80259cdf",
+        "same": true,
+        "steps": [
+          2800,
+          2800
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 8,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "chirikov",
+      "result": "runtime pass",
+      "replay": {
+        "first": "6b12e390",
+        "second": "6b12e390",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 5,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "chladni",
+      "result": "runtime pass",
+      "replay": {
+        "first": "ef398a0b",
+        "second": "ef398a0b",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 8,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "cloak",
+      "result": "runtime pass",
+      "replay": {
+        "first": "afd5825",
+        "second": "afd5825",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "convection",
+      "result": "runtime pass",
+      "replay": {
+        "first": "cbf8f2d1",
+        "second": "cbf8f2d1",
+        "same": true,
+        "steps": [
+          600,
+          600
+        ],
+        "canvas": [
+          "1024x576",
+          "1024x576"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "cortex",
+      "result": "runtime pass",
+      "replay": {
+        "first": "a8b876e4",
+        "second": "a8b876e4",
+        "same": true,
+        "steps": [
+          600,
+          600
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "cppn",
+      "result": "runtime pass",
+      "replay": {
+        "first": "4af68b4c",
+        "second": "4af68b4c",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 8,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "crapper",
+      "result": "runtime pass",
+      "replay": {
+        "first": "db9ac07c",
+        "second": "db9ac07c",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "1024x576",
+          "1024x576"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "cyclic",
+      "result": "runtime pass",
+      "replay": {
+        "first": "b6e9b2e1",
+        "second": "b6e9b2e1",
+        "same": true,
+        "steps": [
+          1500,
+          1500
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "cyclicca",
+      "result": "runtime pass",
+      "replay": {
+        "first": "a51788f0",
+        "second": "a51788f0",
+        "same": true,
+        "steps": [
+          300,
+          300
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 1,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "darkroom",
+      "result": "runtime pass",
+      "replay": {
+        "first": "70a2e719",
+        "second": "70a2e719",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "dendrite",
+      "result": "runtime pass",
+      "replay": {
+        "first": "e92d4664",
+        "second": "e92d4664",
+        "same": true,
+        "steps": [
+          200,
+          200
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 8,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "devil",
+      "result": "runtime pass",
+      "replay": {
+        "first": "92588f2a",
+        "second": "92588f2a",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "direct-gravity",
+      "result": "runtime pass",
+      "replay": {
+        "first": "7a65aec8",
+        "second": "7a65aec8",
+        "same": true,
+        "steps": [
+          0,
+          0
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "double-triangle-bound",
+      "result": "runtime pass",
+      "replay": {
+        "first": "5f0a53f8",
+        "second": "5f0a53f8",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "eight",
+      "result": "runtime pass",
+      "replay": {
+        "first": "8f727be1",
+        "second": "8f727be1",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "exceptional",
+      "result": "runtime pass",
+      "replay": {
+        "first": "36c19f3e",
+        "second": "36c19f3e",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "excitable",
+      "result": "runtime pass",
+      "replay": {
+        "first": "9d232a75",
+        "second": "9d232a75",
+        "same": true,
+        "steps": [
+          900,
+          900
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 1,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "faraday",
+      "result": "runtime pass",
+      "replay": {
+        "first": "78314003",
+        "second": "78314003",
+        "same": true,
+        "steps": [
+          360,
+          360
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "film",
+      "result": "runtime pass",
+      "replay": {
+        "first": "a7472035",
+        "second": "a7472035",
+        "same": true,
+        "steps": [
+          220,
+          220
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "flow",
+      "result": "runtime pass",
+      "replay": {
+        "first": "2bb83be6",
+        "second": "2bb83be6",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 9,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "fluid",
+      "result": "runtime pass",
+      "replay": {
+        "first": "385a9aae",
+        "second": "385a9aae",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 8,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "fput",
+      "result": "runtime pass",
+      "replay": {
+        "first": "c80099eb",
+        "second": "c80099eb",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "fractal",
+      "result": "runtime pass",
+      "replay": {
+        "first": "6e151ed4",
+        "second": "6e151ed4",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 8,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "gerstner",
+      "result": "runtime pass",
+      "replay": {
+        "first": "e1e7f17a",
+        "second": "e1e7f17a",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "1024x576",
+          "1024x576"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "grains",
+      "result": "runtime pass",
+      "replay": {
+        "first": "a2c8ff22",
+        "second": "a2c8ff22",
+        "same": true,
+        "steps": [
+          1100,
+          1100
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "growdomain",
+      "result": "runtime pass",
+      "replay": {
+        "first": "dbb37fa6",
+        "second": "dbb37fa6",
+        "same": true,
+        "steps": [
+          546600,
+          546600
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "growth",
+      "result": "runtime pass",
+      "replay": {
+        "first": "a5ff6174",
+        "second": "a5ff6174",
+        "same": true,
+        "steps": [
+          1500,
+          1500
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 7,
+      "presetCount": 8,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "gyroid",
+      "result": "runtime pass",
+      "replay": {
+        "first": "b1dbe116",
+        "second": "b1dbe116",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "hasimoto",
+      "result": "runtime pass",
+      "replay": {
+        "first": "4c18cbee",
+        "second": "4c18cbee",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "hl",
+      "result": "runtime pass",
+      "replay": {
+        "first": "cc0d4f8e",
+        "second": "cc0d4f8e",
+        "same": true,
+        "steps": [
+          560,
+          560
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 4,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "hodgkin-huxley",
+      "result": "runtime pass",
+      "replay": {
+        "first": "748072e",
+        "second": "748072e",
+        "same": true,
+        "steps": [
+          10000,
+          10000
+        ],
+        "canvas": [
+          "1024x683",
+          "1024x683"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "hofstadter",
+      "result": "runtime pass",
+      "replay": {
+        "first": "89609945",
+        "second": "89609945",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 4,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "holomorphic",
+      "result": "runtime pass",
+      "replay": {
+        "first": "9b4fb9db",
+        "second": "9b4fb9db",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "hopf",
+      "result": "runtime pass",
+      "replay": {
+        "first": "540313b",
+        "second": "540313b",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "hyperbolic",
+      "result": "runtime pass",
+      "replay": {
+        "first": "4fce65c9",
+        "second": "4fce65c9",
+        "same": true,
+        "steps": [
+          9000,
+          9000
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "ising",
+      "result": "runtime pass",
+      "replay": {
+        "first": "95b9fbbe",
+        "second": "95b9fbbe",
+        "same": true,
+        "steps": [
+          250,
+          250
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "kakeya",
+      "result": "runtime pass",
+      "replay": {
+        "first": "23151ead",
+        "second": "23151ead",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "kitaev",
+      "result": "runtime pass",
+      "replay": {
+        "first": "832891d8",
+        "second": "832891d8",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "klein",
+      "result": "runtime pass",
+      "replay": {
+        "first": "bc4249b0",
+        "second": "bc4249b0",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "knotlight",
+      "result": "runtime pass",
+      "replay": {
+        "first": "815c73b4",
+        "second": "815c73b4",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "kp",
+      "result": "runtime pass",
+      "replay": {
+        "first": "3200ad5a",
+        "second": "3200ad5a",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "kpz",
+      "result": "runtime pass",
+      "replay": {
+        "first": "82951fe",
+        "second": "82951fe",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "ks",
+      "result": "runtime pass",
+      "replay": {
+        "first": "89ce8942",
+        "second": "89ce8942",
+        "same": true,
+        "steps": [
+          350,
+          350
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 5,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "landscape",
+      "result": "runtime pass",
+      "replay": {
+        "first": "5a156f62",
+        "second": "5a156f62",
+        "same": true,
+        "steps": [
+          300,
+          300
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "lens",
+      "result": "runtime pass",
+      "replay": {
+        "first": "a61b7819",
+        "second": "a61b7819",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "lichtenberg",
+      "result": "runtime pass",
+      "replay": {
+        "first": "fe411a22",
+        "second": "fe411a22",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 4,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "liesegang",
+      "result": "runtime pass",
+      "replay": {
+        "first": "2743a4f6",
+        "second": "2743a4f6",
+        "same": true,
+        "steps": [
+          9000,
+          9000
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 1,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "life",
+      "result": "runtime pass",
+      "replay": {
+        "first": "cbd145a",
+        "second": "cbd145a",
+        "same": true,
+        "steps": [
+          60,
+          60
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 9,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "loschmidt",
+      "result": "runtime pass",
+      "replay": {
+        "first": "3a54ed25",
+        "second": "3a54ed25",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "lozenge",
+      "result": "runtime pass",
+      "replay": {
+        "first": "9c38a0f8",
+        "second": "9c38a0f8",
+        "same": true,
+        "steps": [
+          2405,
+          2405
+        ],
+        "canvas": [
+          "595x687",
+          "595x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "lp",
+      "result": "runtime pass",
+      "replay": {
+        "first": "5cd801e1",
+        "second": "5cd801e1",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 5,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "lump",
+      "result": "runtime pass",
+      "replay": {
+        "first": "1acd356d",
+        "second": "1acd356d",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "maxwell",
+      "result": "runtime pass",
+      "replay": {
+        "first": "d96e2dd7",
+        "second": "d96e2dd7",
+        "same": true,
+        "steps": [
+          96,
+          96
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "meissner",
+      "result": "runtime pass",
+      "replay": {
+        "first": "f2970139",
+        "second": "f2970139",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "molecular",
+      "result": "runtime pass",
+      "replay": {
+        "first": "fd82ee6a",
+        "second": "fd82ee6a",
+        "same": true,
+        "steps": [
+          1000,
+          1000
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 2,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "nematic",
+      "result": "runtime pass",
+      "replay": {
+        "first": "6e52704a",
+        "second": "6e52704a",
+        "same": true,
+        "steps": [
+          160,
+          160
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 8,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "neural-mass",
+      "result": "runtime pass",
+      "replay": {
+        "first": "14acc24a",
+        "second": "14acc24a",
+        "same": true,
+        "steps": [
+          15600,
+          15600
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "nonreciprocal",
+      "result": "runtime pass",
+      "replay": {
+        "first": "f3531fd8",
+        "second": "f3531fd8",
+        "same": true,
+        "steps": [
+          128,
+          128
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "ohta",
+      "result": "runtime pass",
+      "replay": {
+        "first": "265a32ad",
+        "second": "265a32ad",
+        "same": true,
+        "steps": [
+          2000,
+          2000
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 3,
+      "presetCount": 5,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "orbitals",
+      "result": "runtime pass",
+      "replay": {
+        "first": "2ed8914b",
+        "second": "2ed8914b",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "parallelogram-lock",
+      "result": "runtime pass",
+      "replay": {
+        "first": "e533b88f",
+        "second": "e533b88f",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "peakon",
+      "result": "runtime pass",
+      "replay": {
+        "first": "968d4a6e",
+        "second": "968d4a6e",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "pearls",
+      "result": "runtime pass",
+      "replay": {
+        "first": "40892dd1",
+        "second": "40892dd1",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 4,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "pendulum",
+      "result": "runtime pass",
+      "replay": {
+        "first": "9c46db05",
+        "second": "9c46db05",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "percolation",
+      "result": "runtime pass",
+      "replay": {
+        "first": "85d5c76b",
+        "second": "85d5c76b",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "pfc",
+      "result": "runtime pass",
+      "replay": {
+        "first": "443a58a4",
+        "second": "443a58a4",
+        "same": true,
+        "steps": [
+          800,
+          800
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "photon",
+      "result": "runtime pass",
+      "replay": {
+        "first": "89d5ac9b",
+        "second": "89d5ac9b",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "phyllotaxis",
+      "result": "runtime pass",
+      "replay": {
+        "first": "62a3c2d0",
+        "second": "62a3c2d0",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 4,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "physarum",
+      "result": "runtime pass",
+      "replay": {
+        "first": "984d766d",
+        "second": "cb83cac1",
+        "same": false,
+        "steps": [
+          4038,
+          6354
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "timeout",
+          "timeout"
+        ]
+      },
+      "replayLimitations": [
+        "determinism not comparable: steps 4038 and 6354, settle timeout and timeout. Neither load reached a state this harness can compare; raise DET_WAIT if the plate needs longer."
+      ],
+      "earlyPreviewCount": 9,
+      "presetCount": 8,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "physarum3d",
+      "result": "runtime pass",
+      "replay": {
+        "first": "5270144d",
+        "second": "5270144d",
+        "same": true,
+        "steps": [
+          1600,
+          1600
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 7,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "plasma",
+      "result": "runtime pass",
+      "replay": {
+        "first": "dc74df48",
+        "second": "dc74df48",
+        "same": true,
+        "steps": [
+          500,
+          500
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 1,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "potts",
+      "result": "runtime pass",
+      "replay": {
+        "first": "8686cc5",
+        "second": "8686cc5",
+        "same": true,
+        "steps": [
+          700,
+          700
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "purcell",
+      "result": "runtime pass",
+      "replay": {
+        "first": "25dded12",
+        "second": "25dded12",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "quincunx-lock",
+      "result": "runtime pass",
+      "replay": {
+        "first": "81e0238e",
+        "second": "81e0238e",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "reaction",
+      "result": "runtime pass",
+      "replay": {
+        "first": "84e0e830",
+        "second": "84e0e830",
+        "same": true,
+        "steps": [
+          300,
+          300
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 9,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "reuleaux",
+      "result": "runtime pass",
+      "replay": {
+        "first": "c1ed94d",
+        "second": "c1ed94d",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "rmt",
+      "result": "runtime pass",
+      "replay": {
+        "first": "8a892be5",
+        "second": "8a892be5",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "rogue",
+      "result": "runtime pass",
+      "replay": {
+        "first": "66881125",
+        "second": "66881125",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "rotor",
+      "result": "runtime pass",
+      "replay": {
+        "first": "1b6cdc48",
+        "second": "1b6cdc48",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "1024x512",
+          "1024x512"
+        ],
+        "pausable": true,
+        "settle": [
+          "timeout",
+          "timeout"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "sandpile",
+      "result": "runtime pass",
+      "replay": {
+        "first": "d404e0a2",
+        "second": "d404e0a2",
+        "same": true,
+        "steps": [
+          65536,
+          65536
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "scars",
+      "result": "runtime pass",
+      "replay": {
+        "first": "d0febf89",
+        "second": "d0febf89",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 5,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "schrodinger",
+      "result": "runtime pass",
+      "replay": {
+        "first": "dc375b28",
+        "second": "dc375b28",
+        "same": true,
+        "steps": [
+          1000,
+          1000
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 8,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "shallow",
+      "result": "runtime pass",
+      "replay": {
+        "first": "7b5ea967",
+        "second": "7b5ea967",
+        "same": true,
+        "steps": [
+          180,
+          180
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "skin",
+      "result": "runtime pass",
+      "replay": {
+        "first": "5d17b2be",
+        "second": "5d17b2be",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "skyrmion",
+      "result": "runtime pass",
+      "replay": {
+        "first": "f9958d3b",
+        "second": "f9958d3b",
+        "same": true,
+        "steps": [
+          400,
+          400
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "sle",
+      "result": "runtime pass",
+      "replay": {
+        "first": "dbc02eab",
+        "second": "dbc02eab",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "859x687",
+          "859x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "smectic",
+      "result": "runtime pass",
+      "replay": {
+        "first": "8ff14bb1",
+        "second": "8ff14bb1",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 4,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "snowflake",
+      "result": "runtime pass",
+      "replay": {
+        "first": "b8ee38d",
+        "second": "b8ee38d",
+        "same": true,
+        "steps": [
+          700,
+          700
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 5,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "soliton",
+      "result": "runtime pass",
+      "replay": {
+        "first": "13c24850",
+        "second": "13c24850",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "spinice",
+      "result": "runtime pass",
+      "replay": {
+        "first": "70ab0f29",
+        "second": "70ab0f29",
+        "same": true,
+        "steps": [
+          1843200,
+          1843200
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 1,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "ssh",
+      "result": "runtime pass",
+      "replay": {
+        "first": "5d16a9e",
+        "second": "5d16a9e",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "stealth",
+      "result": "runtime pass",
+      "replay": {
+        "first": "4894e924",
+        "second": "4894e924",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "surfaces",
+      "result": "runtime pass",
+      "replay": {
+        "first": "f418b50a",
+        "second": "f418b50a",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "swarm",
+      "result": "runtime pass",
+      "replay": {
+        "first": "74d28325",
+        "second": "74d28325",
+        "same": true,
+        "steps": [
+          90,
+          90
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 5,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "swift",
+      "result": "runtime pass",
+      "replay": {
+        "first": "27168ba",
+        "second": "27168ba",
+        "same": true,
+        "steps": [
+          500,
+          500
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 5,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "talbot",
+      "result": "runtime pass",
+      "replay": {
+        "first": "fc1e3b4a",
+        "second": "fc1e3b4a",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "597x687",
+          "597x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 4,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "tennis",
+      "result": "runtime pass",
+      "replay": {
+        "first": "a2ca69e0",
+        "second": "a2ca69e0",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "thouless",
+      "result": "runtime pass",
+      "replay": {
+        "first": "85b79043",
+        "second": "85b79043",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "three-vortex-bound",
+      "result": "runtime pass",
+      "replay": {
+        "first": "498c55f3",
+        "second": "498c55f3",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "tilings",
+      "result": "runtime pass",
+      "replay": {
+        "first": "a7fadd15",
+        "second": "a7fadd15",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 11,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "timecrystal",
+      "result": "runtime pass",
+      "replay": {
+        "first": "4b070f8f",
+        "second": "4b070f8f",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "tonertu",
+      "result": "runtime pass",
+      "replay": {
+        "first": "603d7bf4",
+        "second": "603d7bf4",
+        "same": true,
+        "steps": [
+          2500,
+          2500
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "track",
+      "result": "runtime pass",
+      "replay": {
+        "first": "1c58e9c2",
+        "second": "1c58e9c2",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "turing",
+      "result": "runtime pass",
+      "replay": {
+        "first": "617f5a12",
+        "second": "617f5a12",
+        "same": true,
+        "steps": [
+          1500,
+          1500
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "ust",
+      "result": "runtime pass",
+      "replay": {
+        "first": "2480174e",
+        "second": "2480174e",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "550x687",
+          "550x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "vegetation",
+      "result": "runtime pass",
+      "replay": {
+        "first": "84baf691",
+        "second": "84baf691",
+        "same": true,
+        "steps": [
+          1800,
+          1800
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "veselago",
+      "result": "runtime pass",
+      "replay": {
+        "first": "c6d8c97d",
+        "second": "c6d8c97d",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "volume-wave",
+      "result": "runtime pass",
+      "replay": {
+        "first": "13c8191c",
+        "second": "13c8191c",
+        "same": true,
+        "steps": [
+          16,
+          16
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 5,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "vortex",
+      "result": "runtime pass",
+      "replay": {
+        "first": "f3e8e9",
+        "second": "f3e8e9",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": true
+    },
+    {
+      "id": "web",
+      "result": "runtime pass",
+      "replay": {
+        "first": "3cace3a2",
+        "second": "3cace3a2",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 7,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "weierstrass",
+      "result": "runtime pass",
+      "replay": {
+        "first": "7c898ff5",
+        "second": "7c898ff5",
+        "same": true,
+        "steps": [
+          null,
+          null
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "still",
+          "still"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 6,
+      "rerunAfterCorrection": false
+    },
+    {
+      "id": "xy",
+      "result": "runtime pass",
+      "replay": {
+        "first": "a707968f",
+        "second": "a707968f",
+        "same": true,
+        "steps": [
+          400,
+          400
+        ],
+        "canvas": [
+          "687x687",
+          "687x687"
+        ],
+        "pausable": true,
+        "settle": [
+          "warmed",
+          "warmed"
+        ]
+      },
+      "replayLimitations": [],
+      "earlyPreviewCount": 0,
+      "presetCount": 8,
+      "rerunAfterCorrection": false
+    }
+  ],
+  "printFollowup": {
+    "size": "8 inches at 300 ppi, 2400 by 2400 pixels",
+    "passedSheets": {
+      "aharonov": 7,
+      "cgl": 6,
+      "vortex": 7,
+      "bec": 8
+    },
+    "scope": "Selected default/preset export dimensions, contrast and successful output. Not physical resolution or general print accuracy validation."
+  }
+}

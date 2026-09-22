@@ -74,6 +74,12 @@ are opportunities to investigate; they do not by themselves establish new mathem
 
 ## What the checks establish
 
+The [latest runtime sweep](validation/results/runtime-sweep.json) passed all 130 tabs after
+repairs. One Physarum replay comparison remained inconclusive because the captures reached
+different simulation steps; some previews were sampled during warm-up. Runtime success is
+separate from scientific accuracy. The [CGL and vortex corrections](validation/GL-CORRECTIONS.md)
+document changed numerical behavior and the checks' limits.
+
 Recent additions include classical geometry, field dynamics and larger optional workloads:
 
 | Technique | Explore | Larger setting | Scientific scope |
