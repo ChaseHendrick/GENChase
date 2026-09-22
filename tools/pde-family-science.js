@@ -51,30 +51,8 @@ function field(p){return Float32Array.from({length:p.W*p.H},(_,j)=>{const x=j%p.
  const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  try{
   const page=await browser.newPage();await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/pde-family-science');
-  await page.evaluate(source.slice(0,source.indexOf('  Studio.register({'))+'\nwindow.pdeAudit={MU_CH,STEP_OK,MU_AMB,STEP_AMB,MU_SH,STEP_SH,MU_KS,STEP_KS,MU_PFC,MID_PFC,STEP_PFC,chMaxDt,shMaxDt,ksMaxDt,pfcMaxDt};\n})();');
-  await page.evaluate(()=>{
-    window.runPde=({p,initial,dt,steps,mutant})=>{
-      const G=Studio.gl,S=window.pdeAudit,gl=G.createGL(document.createElement('canvas'));if(!gl?.floatExt)throw Error('Float32 required');
-      const pair={ohta:['MU_CH','STEP_OK'],amb:['MU_AMB','STEP_AMB'],swift:['MU_SH','STEP_SH'],ks:['MU_KS','STEP_KS'],pfc:['MU_PFC','STEP_PFC']}[p.id];
-      let muSource=S[pair[0]],stepSource=S[pair[1]];
-      if(mutant==='mixed-pfc')muSource=S.MU_SH;
-      if(mutant==='sign')stepSource=stepSource.replace(p.id==='pfc'?'psi += u_dt':p.id==='ohta'||p.id==='amb'?'c += u_dt':'u += u_dt',p.id==='pfc'?'psi -= u_dt':p.id==='ohta'||p.id==='amb'?'c -= u_dt':'u -= u_dt');
-      if(mutant==='clip-ks')stepSource=stepSource.replace('vec4(u, max(texture(u_c, v_uv).g, crossed(u, 10000.0)), 0.0, 1.0)','vec4(clamp(u,-8.0,8.0),0.0,0.0,1.0)');
-      const opts={type:'rgba32f',filter:'nearest',wrap:p.bc==='noflux'?'clamp':'repeat'},data=new Float32Array(initial.length*4);
-      initial.forEach((v,i)=>{data[4*i]=v;data[4*i+3]=1;});
-      let a=new G.Target(gl,p.W,p.H,{...opts,data}),b=new G.Target(gl,p.W,p.H,opts),mu=new G.Target(gl,p.W,p.H,opts),mid=new G.Target(gl,p.W,p.H,opts);
-      const passMu=new G.Pass(gl,muSource),passStep=new G.Pass(gl,stepSource),passMid=p.id==='pfc'?new G.Pass(gl,S.MID_PFC):null;
-      for(let i=0;i<steps;i++){
-        passMu.draw(mu,{u_c:a,u_res:[p.W,p.H],u_eps2:p.eps*p.eps,u_lambda:p.lambda});
-        if(passMid)passMid.draw(mid,{u_c:a,u_v:mu,u_res:[p.W,p.H],u_r:p.r,u_k0:p.k0});
-        passStep.draw(b,{u_c:a,u_mu:passMid?mid:mu,u_res:[p.W,p.H],u_dt:dt,u_M:p.M,u_sigma:p.sigma,u_m:mutant==='wrong-mean'?0:p.mean,u_deg:p.deg?1:0,u_zeta:p.zeta,u_r:p.r,u_k0:p.k0,u_g:p.g,u_cub:p.cub,u_nu:p.nu,u_alpha:p.alpha,u_noise:0,u_step:i,u_nOff:0});[a,b]=[b,a];
-      }
-      const pixels=new Float32Array(data.length);gl.bindFramebuffer(gl.FRAMEBUFFER,a.fbo);gl.readPixels(0,0,p.W,p.H,gl.RGBA,gl.FLOAT,pixels);if(gl.getError()!==gl.NO_ERROR)throw Error('Readback failed');
-      const out=Array.from({length:initial.length},(_,i)=>pixels[4*i]),flagged=Array.from({length:initial.length},(_,i)=>pixels[4*i+1]).some(v=>v>0);
-      for(const t of[a,b,mu,mid])t.dispose();for(const pass of[passMu,passStep,passMid])if(pass)gl.deleteProgram(pass.prog);gl.getExtension('WEBGL_lose_context')?.loseContext();
-      return {out,flagged};
-    };
-  });
+  await page.evaluate(source.slice(0,source.indexOf('  Studio.register({'))+'\nwindow.pdeAudit={MU_CH,STEP_CH,STEP_OK,MU_AMB,STEP_AMB,MU_SH,STEP_SH,MU_KS,STEP_KS,MU_PFC,MID_PFC,STEP_PFC,chMaxDt,shMaxDt,ksMaxDt,pfcMaxDt};\n})();');
+  await page.evaluate(require('./lib/pde-gpu-harness'));
   const gpu=(p,f,dt,steps,mutant)=>page.evaluate(arg=>window.runPde(arg),{p,initial:Array.from(f),dt,steps,mutant});
   const rows=[],temporal=[],controls=[];
   for(const id of['pfc','swift','ks','ohta','amb']){
@@ -127,7 +105,7 @@ function field(p){return Float32Array.from({length:p.W*p.H},(_,j)=>{const x=j%p.
     assert(wrongAmplitude>.01,'Historical dt did not expose mode amplification');
     pfcStability.push({M,dt,steps:16,initialAmplitude:amplitude(f),finalAmplitude,historicalDt:.08,historicalAmplitude:wrongAmplitude,historicalFlagged:b.flagged});
   }
-  const report={schema:1,date:'2026-09-21',source:{path:'src/modules/pde.js',sha256:hash(source)},harness:{path:'tools/pde-family-science.js',sha256:hash(fs.readFileSync(__filename))},backend:await browser.version(),scope:'Noise-free, unit-cell finite lattice. Independent Euler stencil, RK4 fixed-grid time refinement and analytic Fourier modes; no continuum convergence, phase diagram, thermal noise or global stability validation.',criteria:{stencilMax:3e-6,conservedMean:1e-7,signControlMin:1e-5,eulerOrder:[.85,1.2],referenceSensitivityMax:1e-10,analyticModeMax:5e-9},rows,temporal,modes,controls,ceilings,pfcStability,passed:true};
+  const report={schema:1,date:new Date().toISOString().slice(0,10),source:{path:'src/modules/pde.js',sha256:hash(source)},harness:{path:'tools/pde-family-science.js',sha256:hash(fs.readFileSync(__filename))},backend:await browser.version(),scope:'Noise-free, unit-cell finite lattice. Independent Euler stencil, RK4 fixed-grid time refinement and analytic Fourier modes; no continuum convergence, phase diagram, thermal noise or global stability validation.',criteria:{stencilMax:3e-6,conservedMean:1e-7,signControlMin:1e-5,eulerOrder:[.85,1.2],referenceSensitivityMax:1e-10,analyticModeMax:5e-9},rows,temporal,modes,controls,ceilings,pfcStability,passed:true};
   if(process.argv.includes('--write'))fs.writeFileSync(path.join(root,'validation/results/pde-family-science.json'),JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify(report,null,2));
  }finally{await browser.close();}

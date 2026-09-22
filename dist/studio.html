@@ -2642,21 +2642,50 @@ shall not be misrepresented as the original profile.
   {
     "id": "ust",
     "source": "src/modules/ust.js",
-    "sourceSha256": "28babe5a1d4138ce042d841dd27a145e8c8f13f4e0784c8c2cc98cc6e2cdc57c",
-    "reference": "David Bruce Wilson, 'Generating random spanning trees more quickly than the cover time', Proceedings of the 28th ACM Symposium on Theory of Computing, 296 (1996), is the algorithm drawn here: cycle popping by loop-erased random walk, exact rather than approximate, and finishing in the mean hitting time rather than the cover time the earlier samplers need. Those are Andrei Broder, 'Generating random spanning trees', 30th Symposium on Foundations of Computer Science, 442 (1989), and David Aldous, SIAM Journal on Discrete Mathematics 3, 450 (1990). The loop-erased walk itself is Gregory Lawler, Duke Mathematical Journal 47, 655 (1980). Lawler, Oded Schramm and Wendelin Werner, Annals of Probability 32, 939 (2004), proved that the loop-erased walk scales to SLE with κ = 2 and the tree's Peano curve to SLE with κ = 8. That every spanning tree of a graph can be counted at all is Gustav Kirchhoff, Annalen der Physik 148, 497 (1847).",
+    "sourceSha256": "5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef",
+    "reference": "David Bruce Wilson, 'Generating random spanning trees more quickly than the cover time', Proceedings of the 28th ACM Symposium on Theory of Computing, 296 (1996), is the algorithm drawn here: cycle popping by loop-erased random walk, exact rather than approximate, with the expected cost determined by root-dependent commute times. Those are Andrei Broder, 'Generating random spanning trees', 30th Symposium on Foundations of Computer Science, 442 (1989), and David Aldous, SIAM Journal on Discrete Mathematics 3, 450 (1990). The loop-erased walk itself is Gregory Lawler, Duke Mathematical Journal 47, 655 (1980). Lawler, Oded Schramm and Wendelin Werner, Annals of Probability 32, 939 (2004), proved that the loop-erased walk scales to SLE with κ = 2 and the tree's Peano curve to SLE with κ = 8. That every spanning tree of a graph can be counted at all is Gustav Kirchhoff, Annalen der Physik 148, 497 (1847).",
     "equation": "pick v ∉ T, walk at random from v erasing each loop as it closes, attach the surviving path;  P(T) = 1 / κ(G) for every one of the κ(G) spanning trees",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the finite recipes and benchmark domain in validation/UST.md",
+      "Ideal independent random draws underlie the uniformity theorem; fixed PRNG frequencies do not prove it. No SLE scaling claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend the completed finite domain to additional settings, durations and rendering platforms with measured evidence."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/ust-review.js",
+        "command": "node tools/ust-review.js --write",
+        "results": "validation/results/ust-review.json",
+        "scope": "Exact small-graph enumeration and sampler frequencies; six complete seeded trees and every actual PNG/SVG coordinate.",
+        "criteria": "Parent/depth/path equality, exact connectivity and acyclicity; declared simultaneous sampling bounds, PNG bytes\u003c=1 and SVG coordinates\u003c=0.00501px.",
+        "benchmark": "Chronological loop erasure, exhaustive graph enumeration, breadth-first graph invariants and separately reconstructed print geometry.",
+        "failureControl": "Biased successor probabilities, parent cycle, altered chunking and displaced print controls.",
+        "limitations": "Only the enumerated domain in validation/UST.md; no all-parameter, all-hardware or continuum-statistical certification."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/ust-review.js",
+        "command": "node tools/ust-review.js --write",
+        "results": "validation/results/ust-review.json",
+        "scope": "Exact small-graph enumeration and sampler frequencies; six complete seeded trees and every actual PNG/SVG coordinate.",
+        "criteria": "Parent/depth/path equality, exact connectivity and acyclicity; declared simultaneous sampling bounds, PNG bytes\u003c=1 and SVG coordinates\u003c=0.00501px.",
+        "benchmark": "Chronological loop erasure, exhaustive graph enumeration, breadth-first graph invariants and separately reconstructed print geometry.",
+        "failureControl": "Biased successor probabilities, parent cycle, altered chunking and displaced print controls.",
+        "limitations": "Only the enumerated domain in validation/UST.md; no all-parameter, all-hardware or continuum-statistical certification."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/ust-review.json",
+    "domain": {
+      "parameters": "Exactly the enumerated effective recipes in validation/results/ust-review.json and validation/UST.md",
+      "conditions": "Exact small-graph enumeration and sampler frequencies; six complete seeded trees and every actual PNG/SVG coordinate. Fixed recorded seeds; no grain or additive forcing; exports preserve scientific state.",
+      "resolution": "Parent/depth/path equality, exact connectivity and acyclicity; declared simultaneous sampling bounds, PNG bytes\u003c=1 and SVG coordinates\u003c=0.00501px. Exact grid, time and print dimensions are in each measured case.",
+      "precision": "Integer graph and Binary64 references, RGBA8 raster and SVG rounding; Chromium environment recorded."
+    }
   },
   {
     "id": "cppn",
@@ -3039,18 +3068,17 @@ shall not be misrepresented as the original profile.
   {
     "id": "amb",
     "source": "src/modules/pde.js",
-    "sourceSha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f",
+    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
     "reference": "Elsen Tjhung, Cesare Nardini and Michael E. Cates, Physical Review X 8, 031080 (2018). Cahn-Hilliard describes a passive mixture relaxing toward equilibrium. Two extra gradient terms, λ|∇φ|² in the chemical potential and a current ζ(∇²φ)∇φ that cannot come from any free energy, are the leading ways an active system (motile bacteria, self-propelled colloids) can break time-reversal symmetry while still conserving φ. They give the two phases different interfacial tensions, and when the tension felt by the minority phase turns negative the Ostwald process runs backward: large droplets shed material to small ones and coarsening stops.",
     "equation": "∂φ/∂t = M ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ|∇φ|²",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the finite recipes and benchmark domain in validation/PDE-FIELD-REVIEW.md",
+      "No Float16, stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend the completed finite domain to additional settings, durations and rendering platforms with measured evidence."
     ],
     "numerical": [
       {
@@ -3062,6 +3090,26 @@ shall not be misrepresented as the original profile.
         "failureControl": "Reverse the update sign and disable or reverse the active current; disagreement must exceed the reference tolerance.",
         "command": "node tools/pde-family-science.js --write",
         "results": "validation/results/pde-family-science.json"
+      },
+      {
+        "test": "tools/pde-field-review.js",
+        "command": "node tools/pde-field-review.js --write",
+        "results": "validation/results/pde-field-review.json",
+        "scope": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views.",
+        "criteria": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state.",
+        "benchmark": "Independent Float64 conservative finite-difference Euler, refined RK4 and independent print interpolation/colors/lighting.",
+        "failureControl": "Wrong evolution time and displaced prints; registered wrong-sign, mixed-stencil, wrong-mean and guard controls.",
+        "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
+      },
+      {
+        "test": "tools/pde-spatial-review.js",
+        "command": "node tools/pde-spatial-review.js --write",
+        "results": "validation/results/pde-spatial-review.json",
+        "scope": "Fixed 64x64 physical periodic domain, wave (2,1), amplitude 1e-4, time 2; grids16/32/64 with explicit parameter/field scaling.",
+        "criteria": "Spatial orders1.8..2.2; finest amplitude error\u003c0.002; nonlinear remainder\u003c2e-8.",
+        "benchmark": "Independent continuum linearized Fourier rates at fixed physical domain/time.",
+        "failureControl": "Deliberately unscaled coarse lattice must exceed ten times the correct coarse-grid error.",
+        "limitations": "Smooth small-mode convergence only; not nonlinear sharp-interface convergence."
       }
     ],
     "print": [
@@ -3070,8 +3118,26 @@ shall not be misrepresented as the original profile.
         "scope": "Real module exportPNG on paused 512x512 float32 initial fields at 2400x2400 pixels (8 inches, 300 ppi).",
         "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 512x512 numerical grid.",
         "limitations": "State preservation and dimensions only. Does not establish full scientific rendering accuracy, evolved states, all views, hardware or precision modes."
+      },
+      {
+        "test": "tools/pde-field-review.js",
+        "command": "node tools/pde-field-review.js --write",
+        "results": "validation/results/pde-field-review.json",
+        "scope": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views.",
+        "criteria": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state.",
+        "benchmark": "Independent Float64 conservative finite-difference Euler, refined RK4 and independent print interpolation/colors/lighting.",
+        "failureControl": "Wrong evolution time and displaced prints; registered wrong-sign, mixed-stencil, wrong-mean and guard controls.",
+        "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/pde-field-review.json",
+    "domain": {
+      "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
+      "conditions": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views. Fixed recorded seeds; no grain or additive forcing; exports preserve scientific state.",
+      "resolution": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state. Exact grid, time and print dimensions are in each measured case.",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RK4 refinements and renderer environment recorded."
+    }
   },
   {
     "id": "aubry",
@@ -3095,19 +3161,17 @@ shall not be misrepresented as the original profile.
   {
     "id": "cahn",
     "source": "src/modules/pde.js",
-    "sourceSha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f",
+    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
     "reference": "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ max(1−c²,0) suppresses mobility near pure phases; it does not imply pure surface diffusion for this polynomial free energy (Lee, Munch and Suli, 2015).",
     "equation": "∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The deterministic constant/variable-mobility stencil is checked at declared grids and both boundaries; first-order temporal convergence is checked for one fixed-domain fixture. No spatial/continuum convergence claim.",
-      "Additive forcing and clipping may change mass. Float16 fallback, long-time coarsening and all-parameter accuracy remain unaudited.",
-      "Corrected variable mobility, effective timestep ceilings and click mixing intentionally change affected historical images or interaction results. Default declarations and seed interpretation are preserved."
+      "Complete evidence covers only the finite recipes and benchmark domain in validation/PDE-FIELD-REVIEW.md",
+      "No Float16, stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Establish spatial convergence at fixed physical domain/time and extend temporal checks beyond the recorded fixture.",
-      "Audit clipping, float16, additive forcing and long-time coarsening with stated tolerances.",
-      "Extend print checks beyond state preservation and dimensions to scientific rendering accuracy."
+      "Extend the completed finite domain to additional settings, durations and rendering platforms with measured evidence."
     ],
     "numerical": [
       {
@@ -3149,6 +3213,26 @@ shall not be misrepresented as the original profile.
         "failureControl": "Reverse each update sign, restore the mixed PFC stencil, use a wrong Ohta mean and restore the historical timestep; each must fail its criterion.",
         "command": "node tools/pde-family-science.js --write",
         "results": "validation/results/pde-family-science.json"
+      },
+      {
+        "test": "tools/pde-field-review.js",
+        "command": "node tools/pde-field-review.js --write",
+        "results": "validation/results/pde-field-review.json",
+        "scope": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views.",
+        "criteria": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state.",
+        "benchmark": "Independent Float64 conservative finite-difference Euler, refined RK4 and independent print interpolation/colors/lighting.",
+        "failureControl": "Wrong evolution time and displaced prints; registered wrong-sign, mixed-stencil, wrong-mean and guard controls.",
+        "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
+      },
+      {
+        "test": "tools/pde-spatial-review.js",
+        "command": "node tools/pde-spatial-review.js --write",
+        "results": "validation/results/pde-spatial-review.json",
+        "scope": "Fixed 64x64 physical periodic domain, wave (2,1), amplitude 1e-4, time 2; grids16/32/64 with explicit parameter/field scaling.",
+        "criteria": "Spatial orders1.8..2.2; finest amplitude error\u003c0.002; nonlinear remainder\u003c2e-8.",
+        "benchmark": "Independent continuum linearized Fourier rates at fixed physical domain/time.",
+        "failureControl": "Deliberately unscaled coarse lattice must exceed ten times the correct coarse-grid error.",
+        "limitations": "Smooth small-mode convergence only; not nonlinear sharp-interface convergence."
       }
     ],
     "print": [
@@ -3157,24 +3241,41 @@ shall not be misrepresented as the original profile.
         "scope": "Real module exportPNG on paused 512x512 float32 initial fields at 2400x2400 pixels (8 inches, 300 ppi).",
         "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 512x512 numerical grid.",
         "limitations": "State preservation and dimensions only. Does not establish full scientific rendering accuracy, evolved states, all views, hardware or precision modes."
+      },
+      {
+        "test": "tools/pde-field-review.js",
+        "command": "node tools/pde-field-review.js --write",
+        "results": "validation/results/pde-field-review.json",
+        "scope": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views.",
+        "criteria": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state.",
+        "benchmark": "Independent Float64 conservative finite-difference Euler, refined RK4 and independent print interpolation/colors/lighting.",
+        "failureControl": "Wrong evolution time and displaced prints; registered wrong-sign, mixed-stencil, wrong-mean and guard controls.",
+        "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/pde-field-review.json",
+    "domain": {
+      "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
+      "conditions": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views. Fixed recorded seeds; no grain or additive forcing; exports preserve scientific state.",
+      "resolution": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state. Exact grid, time and print dimensions are in each measured case.",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RK4 refinements and renderer environment recorded."
+    }
   },
   {
     "id": "ohta",
     "source": "src/modules/pde.js",
-    "sourceSha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f",
+    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
     "reference": "Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). The long-range penalty can frustrate ordinary coarsening and favor microstructured states. Pattern selection depends on composition and parameters; a finite preview does not prove equilibrium.",
     "equation": "∂u/∂t = ∇·[M(u)∇μ] − σ(u−m),   μ = u³ − u − ε²Δu",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the finite recipes and benchmark domain in validation/PDE-FIELD-REVIEW.md",
+      "No Float16, stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend the completed finite domain to additional settings, durations and rendering platforms with measured evidence."
     ],
     "numerical": [
       {
@@ -3186,6 +3287,26 @@ shall not be misrepresented as the original profile.
         "failureControl": "Use a wrong mean target and reverse the update sign; both must fail their reference criteria.",
         "command": "node tools/pde-family-science.js --write",
         "results": "validation/results/pde-family-science.json"
+      },
+      {
+        "test": "tools/pde-field-review.js",
+        "command": "node tools/pde-field-review.js --write",
+        "results": "validation/results/pde-field-review.json",
+        "scope": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views.",
+        "criteria": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state.",
+        "benchmark": "Independent Float64 conservative finite-difference Euler, refined RK4 and independent print interpolation/colors/lighting.",
+        "failureControl": "Wrong evolution time and displaced prints; registered wrong-sign, mixed-stencil, wrong-mean and guard controls.",
+        "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
+      },
+      {
+        "test": "tools/pde-spatial-review.js",
+        "command": "node tools/pde-spatial-review.js --write",
+        "results": "validation/results/pde-spatial-review.json",
+        "scope": "Fixed 64x64 physical periodic domain, wave (2,1), amplitude 1e-4, time 2; grids16/32/64 with explicit parameter/field scaling.",
+        "criteria": "Spatial orders1.8..2.2; finest amplitude error\u003c0.002; nonlinear remainder\u003c2e-8.",
+        "benchmark": "Independent continuum linearized Fourier rates at fixed physical domain/time.",
+        "failureControl": "Deliberately unscaled coarse lattice must exceed ten times the correct coarse-grid error.",
+        "limitations": "Smooth small-mode convergence only; not nonlinear sharp-interface convergence."
       }
     ],
     "print": [
@@ -3194,8 +3315,26 @@ shall not be misrepresented as the original profile.
         "scope": "Real module exportPNG on paused 512x512 float32 initial fields at 2400x2400 pixels (8 inches, 300 ppi).",
         "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 512x512 numerical grid.",
         "limitations": "State preservation and dimensions only. Does not establish full scientific rendering accuracy, evolved states, all views, hardware or precision modes."
+      },
+      {
+        "test": "tools/pde-field-review.js",
+        "command": "node tools/pde-field-review.js --write",
+        "results": "validation/results/pde-field-review.json",
+        "scope": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views.",
+        "criteria": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state.",
+        "benchmark": "Independent Float64 conservative finite-difference Euler, refined RK4 and independent print interpolation/colors/lighting.",
+        "failureControl": "Wrong evolution time and displaced prints; registered wrong-sign, mixed-stencil, wrong-mean and guard controls.",
+        "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/pde-field-review.json",
+    "domain": {
+      "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
+      "conditions": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views. Fixed recorded seeds; no grain or additive forcing; exports preserve scientific state.",
+      "resolution": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state. Exact grid, time and print dimensions are in each measured case.",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RK4 refinements and renderer environment recorded."
+    }
   },
   {
     "id": "hopf",
@@ -3258,18 +3397,17 @@ shall not be misrepresented as the original profile.
   {
     "id": "swift",
     "source": "src/modules/pde.js",
-    "sourceSha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f",
+    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
     "reference": "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is a phenomenological pattern-forming model motivated by convection near onset: a real scalar field with a preferred wavenumber k₀. Quadratic and cubic nonlinearities affect the available branches. Localized patterns can exist in suitable subcritical regimes; this display does not establish branch stability.",
     "equation": "∂u/∂t = r u − (k₀² + ∇²)² u + g u² − b u³",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the finite recipes and benchmark domain in validation/PDE-FIELD-REVIEW.md",
+      "No Float16, stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend the completed finite domain to additional settings, durations and rendering platforms with measured evidence."
     ],
     "numerical": [
       {
@@ -3281,6 +3419,26 @@ shall not be misrepresented as the original profile.
         "failureControl": "Reverse the update sign and restore the historical timestep ceiling; each must fail its criterion.",
         "command": "node tools/pde-family-science.js --write",
         "results": "validation/results/pde-family-science.json"
+      },
+      {
+        "test": "tools/pde-field-review.js",
+        "command": "node tools/pde-field-review.js --write",
+        "results": "validation/results/pde-field-review.json",
+        "scope": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views.",
+        "criteria": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state.",
+        "benchmark": "Independent Float64 conservative finite-difference Euler, refined RK4 and independent print interpolation/colors/lighting.",
+        "failureControl": "Wrong evolution time and displaced prints; registered wrong-sign, mixed-stencil, wrong-mean and guard controls.",
+        "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
+      },
+      {
+        "test": "tools/pde-spatial-review.js",
+        "command": "node tools/pde-spatial-review.js --write",
+        "results": "validation/results/pde-spatial-review.json",
+        "scope": "Fixed 64x64 physical periodic domain, wave (2,1), amplitude 1e-4, time 2; grids16/32/64 with explicit parameter/field scaling.",
+        "criteria": "Spatial orders1.8..2.2; finest amplitude error\u003c0.002; nonlinear remainder\u003c2e-8.",
+        "benchmark": "Independent continuum linearized Fourier rates at fixed physical domain/time.",
+        "failureControl": "Deliberately unscaled coarse lattice must exceed ten times the correct coarse-grid error.",
+        "limitations": "Smooth small-mode convergence only; not nonlinear sharp-interface convergence."
       }
     ],
     "print": [
@@ -3289,24 +3447,41 @@ shall not be misrepresented as the original profile.
         "scope": "Real module exportPNG on paused 512x512 float32 initial fields at 2400x2400 pixels (8 inches, 300 ppi).",
         "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 512x512 numerical grid.",
         "limitations": "State preservation and dimensions only. Does not establish full scientific rendering accuracy, evolved states, all views, hardware or precision modes."
+      },
+      {
+        "test": "tools/pde-field-review.js",
+        "command": "node tools/pde-field-review.js --write",
+        "results": "validation/results/pde-field-review.json",
+        "scope": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views.",
+        "criteria": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state.",
+        "benchmark": "Independent Float64 conservative finite-difference Euler, refined RK4 and independent print interpolation/colors/lighting.",
+        "failureControl": "Wrong evolution time and displaced prints; registered wrong-sign, mixed-stencil, wrong-mean and guard controls.",
+        "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/pde-field-review.json",
+    "domain": {
+      "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
+      "conditions": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views. Fixed recorded seeds; no grain or additive forcing; exports preserve scientific state.",
+      "resolution": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state. Exact grid, time and print dimensions are in each measured case.",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RK4 refinements and renderer environment recorded."
+    }
   },
   {
     "id": "pfc",
     "source": "src/modules/pde.js",
-    "sourceSha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f",
+    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
     "reference": "K. R. Elder, M. Katakowski, M. Haataja and M. Grant, Phys. Rev. Lett. 88, 245701 (2002); Elder and Grant, Phys. Rev. E 70, 051605 (2004). The phase-field crystal model is Swift–Hohenberg’s free energy evolved with conserved (Cahn–Hilliard) dynamics. The field represents time-averaged atomic-scale density, not individual particle trajectories. The model supports crystalline order and defects on diffusive time scales; this finite-grid display does not locate a material melting line.",
     "equation": "∂ψ/∂t = M ∇²(δF/δψ),   F = ∫ ½ ψ [r + (k₀²+∇²)²] ψ + ψ⁴/4",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the finite recipes and benchmark domain in validation/PDE-FIELD-REVIEW.md",
+      "No Float16, stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "The orientation view encodes a local gradient direction, not crystallographic orientation."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend the completed finite domain to additional settings, durations and rendering platforms with measured evidence."
     ],
     "numerical": [
       {
@@ -3318,6 +3493,26 @@ shall not be misrepresented as the original profile.
         "failureControl": "Restore the mixed five/nine-point stencil, reverse the update sign and use the historical excessive timestep; each must fail.",
         "command": "node tools/pde-family-science.js --write",
         "results": "validation/results/pde-family-science.json"
+      },
+      {
+        "test": "tools/pde-field-review.js",
+        "command": "node tools/pde-field-review.js --write",
+        "results": "validation/results/pde-field-review.json",
+        "scope": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views.",
+        "criteria": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state.",
+        "benchmark": "Independent Float64 conservative finite-difference Euler, refined RK4 and independent print interpolation/colors/lighting.",
+        "failureControl": "Wrong evolution time and displaced prints; registered wrong-sign, mixed-stencil, wrong-mean and guard controls.",
+        "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
+      },
+      {
+        "test": "tools/pde-spatial-review.js",
+        "command": "node tools/pde-spatial-review.js --write",
+        "results": "validation/results/pde-spatial-review.json",
+        "scope": "Fixed 64x64 physical periodic domain, wave (2,1), amplitude 1e-4, time 2; grids16/32/64 with explicit parameter/field scaling.",
+        "criteria": "Spatial orders1.8..2.2; finest amplitude error\u003c0.002; nonlinear remainder\u003c2e-8.",
+        "benchmark": "Independent continuum linearized Fourier rates at fixed physical domain/time.",
+        "failureControl": "Deliberately unscaled coarse lattice must exceed ten times the correct coarse-grid error.",
+        "limitations": "Smooth small-mode convergence only; not nonlinear sharp-interface convergence."
       }
     ],
     "print": [
@@ -3326,8 +3521,26 @@ shall not be misrepresented as the original profile.
         "scope": "Real module exportPNG on paused 512x512 float32 initial fields at 2400x2400 pixels (8 inches, 300 ppi).",
         "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 512x512 numerical grid.",
         "limitations": "State preservation and dimensions only. Does not establish full scientific rendering accuracy, evolved states, all views, hardware or precision modes."
+      },
+      {
+        "test": "tools/pde-field-review.js",
+        "command": "node tools/pde-field-review.js --write",
+        "results": "validation/results/pde-field-review.json",
+        "scope": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views.",
+        "criteria": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state.",
+        "benchmark": "Independent Float64 conservative finite-difference Euler, refined RK4 and independent print interpolation/colors/lighting.",
+        "failureControl": "Wrong evolution time and displaced prints; registered wrong-sign, mixed-stencil, wrong-mean and guard controls.",
+        "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/pde-field-review.json",
+    "domain": {
+      "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
+      "conditions": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views. Fixed recorded seeds; no grain or additive forcing; exports preserve scientific state.",
+      "resolution": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state. Exact grid, time and print dimensions are in each measured case.",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RK4 refinements and renderer environment recorded."
+    }
   },
   {
     "id": "lp",
@@ -3581,18 +3794,17 @@ shall not be misrepresented as the original profile.
   {
     "id": "ks",
     "source": "src/modules/pde.js",
-    "sourceSha256": "a173050f754b21856593142cb16ee0201679ffd5509b4affdbfc13b69116327f",
+    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
     "reference": "Yoshiki Kuramoto and Toshio Tsuzuki, Prog. Theor. Phys. 55, 356 (1976); G. I. Sivashinsky, Acta Astronautica 4, 1177 (1977). Independently derived for reaction-diffusion phase turbulence and for laminar flame fronts. It is the simplest PDE that produces extensive spatiotemporal chaos: a band of unstable modes, a stabilizing biharmonic, and a Burgers-like nonlinearity. In two dimensions the cells of a flame.",
     "equation": "∂u/∂t = −ν ∇⁴u − ∇²u − (α/2)|∇u|²",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the finite recipes and benchmark domain in validation/PDE-FIELD-REVIEW.md",
+      "No Float16, stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend the completed finite domain to additional settings, durations and rendering platforms with measured evidence."
     ],
     "numerical": [
       {
@@ -3604,6 +3816,26 @@ shall not be misrepresented as the original profile.
         "failureControl": "Restore field clipping and reverse the update sign; both must be detected by the independent state and residual checks.",
         "command": "node tools/pde-family-science.js --write",
         "results": "validation/results/pde-family-science.json"
+      },
+      {
+        "test": "tools/pde-field-review.js",
+        "command": "node tools/pde-field-review.js --write",
+        "results": "validation/results/pde-field-review.json",
+        "scope": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views.",
+        "criteria": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state.",
+        "benchmark": "Independent Float64 conservative finite-difference Euler, refined RK4 and independent print interpolation/colors/lighting.",
+        "failureControl": "Wrong evolution time and displaced prints; registered wrong-sign, mixed-stencil, wrong-mean and guard controls.",
+        "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
+      },
+      {
+        "test": "tools/pde-spatial-review.js",
+        "command": "node tools/pde-spatial-review.js --write",
+        "results": "validation/results/pde-spatial-review.json",
+        "scope": "Fixed 64x64 physical periodic domain, wave (2,1), amplitude 1e-4, time 2; grids16/32/64 with explicit parameter/field scaling.",
+        "criteria": "Spatial orders1.8..2.2; finest amplitude error\u003c0.002; nonlinear remainder\u003c2e-8.",
+        "benchmark": "Independent continuum linearized Fourier rates at fixed physical domain/time.",
+        "failureControl": "Deliberately unscaled coarse lattice must exceed ten times the correct coarse-grid error.",
+        "limitations": "Smooth small-mode convergence only; not nonlinear sharp-interface convergence."
       }
     ],
     "print": [
@@ -3612,8 +3844,26 @@ shall not be misrepresented as the original profile.
         "scope": "Real module exportPNG on paused 512x512 float32 initial fields at 2400x2400 pixels (8 inches, 300 ppi).",
         "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 512x512 numerical grid.",
         "limitations": "State preservation and dimensions only. Does not establish full scientific rendering accuracy, evolved states, all views, hardware or precision modes."
+      },
+      {
+        "test": "tools/pde-field-review.js",
+        "command": "node tools/pde-field-review.js --write",
+        "results": "validation/results/pde-field-review.json",
+        "scope": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views.",
+        "criteria": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state.",
+        "benchmark": "Independent Float64 conservative finite-difference Euler, refined RK4 and independent print interpolation/colors/lighting.",
+        "failureControl": "Wrong evolution time and displaced prints; registered wrong-sign, mixed-stencil, wrong-mean and guard controls.",
+        "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/pde-field-review.json",
+    "domain": {
+      "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
+      "conditions": "Twelve complete noise-free PDE fields at time 2 with three time steps, independent Euler/RK4 and chemical fields; all 31 print views. Fixed recorded seeds; no grain or additive forcing; exports preserve scientific state.",
+      "resolution": "Discrete fields\u003c1e-5, RK4 sensitivity\u003c1e-6, temporal order 0.8..1.25, chemical field\u003c2e-5, trajectory\u003c0.025, every printed RGB channel\u003c=2 bytes; unchanged state. Exact grid, time and print dimensions are in each measured case.",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RK4 refinements and renderer environment recorded."
+    }
   },
   {
     "id": "breather",
@@ -19512,6 +19762,9 @@ void main(){
   t = clamp(t, 0.0, 1.0);
   vec3 col = mix(u_bg, ramp(t), mix(0.15, 1.0, t));
   if (u_view == 0 || u_view == 1) col = ramp(t);
+  // A direction is periodic. Join the palette endpoints and hide undefined
+  // directions in nearly flat cells instead of creating a color seam at 2π.
+  if (u_view == 5) col = mix(u_bg, ramp(t), smoothstep(0.0, 0.001, length(vec2(gx, gy))));
   col = pow(clamp(col, 0.0, 1.0), vec3(u_gamma));
   col *= u_exposure;
   col = clamp((col - 0.5) * u_contrast + 0.5, 0.0, 1.0);
@@ -19613,10 +19866,11 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         else gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.HALF_FLOAT, toHalf(f32));
       }
       function ensureRamp(s) {
-        const key = (s.bg || '') + '|' + (s.palette || []).join(',');
+        const cyclic = s.view === 'orient';
+        const key = cyclic + '|' + (s.bg || '') + '|' + (s.palette || []).join(',');
         if (ramp && rampKey === key) return;
         if (ramp) ramp.dispose();
-        ramp = G.rampTexture(gl, s.palette, s.bg); rampKey = key;
+        ramp = cyclic ? G.rampTexture(gl, [...s.palette, s.palette[0]], null) : G.rampTexture(gl, s.palette, s.bg); rampKey = key;
       }
       function refreshChem(s) {
         muPass.draw(muT, Object.assign({ u_c: C.read, u_res: [gw, gh] }, spec.muUniforms(s)));
@@ -19914,7 +20168,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (A → B)',
     headline: 'c0', headlineLabel: 'mean c₀',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.014, 0.002, chMaxDt(s.M, s.eps)); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.014, 0.0001, chMaxDt(s.M, s.eps)); },
     surprise(rng) {
       const c0 = rng.pick([0, 0, 0.05, -0.3, 0.35, -0.45]);
       return {
@@ -20014,7 +20268,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors (A → B)',
     headline: 'sigma', headlineLabel: 'σ',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.sigma = U.clamp(Number(s.sigma) || 0, 0, 0.3); s.dt = U.clamp(Number(s.dt) || 0.015, 0.002, chMaxDt(s.M, s.eps, s.sigma)); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.sigma = U.clamp(Number(s.sigma) || 0, 0, 0.3); s.dt = U.clamp(Number(s.dt) || 0.015, 0.0001, chMaxDt(s.M, s.eps, s.sigma)); },
     surprise(rng) {
       const c0 = rng.pick([0, 0, 0.05, -0.3, 0.32]);
       return {
@@ -20119,7 +20373,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
       s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024);
       // Combine the passive linear ceiling with a heuristic activity restriction.
       // This is not a stability guarantee for the nonlinear active-current terms.
-      s.dt = U.clamp(Number(s.dt) || 0.013, 0.002, Math.min(chMaxDt(s.M, s.eps), 0.24 / (1 + Math.abs(Number(s.zeta) || 0))));
+      s.dt = U.clamp(Number(s.dt) || 0.013, 0.0001, Math.min(chMaxDt(s.M, s.eps), 0.24 / (1 + Math.abs(Number(s.zeta) || 0))));
     },
     surprise(rng) {
       const c0 = rng.pick([-0.4, -0.45, -0.35, 0.4, 0, -0.5]);
@@ -20202,11 +20456,11 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     closedGroups: ['Seeding'],
     hints: {
       Onset: 'r is the heat. k₀ is the depth of the pan, in disguise — it sets the stripe width. g is whether the fluid prefers hexagons (the usual weakly nonlinear result with non-Boussinesq effects).',
-      Picture: 'Field is u itself. Orientation colors the local roll direction. Relief is u as height, the convection cells as terrain.',
+      Picture: 'Field is u itself. Orientation colors the local field-gradient direction with a cyclic palette. Relief is u as height, the convection cells as terrain.',
     },
     palette: true, defaultPalette: 'harbor', paletteLabel: 'Colors',
     headline: 'r', headlineLabel: 'control r',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.025, 0.005, Math.min(0.12, shMaxDt(s.r, s.k0, s.g, s.cub))); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.025, 0.0001, Math.min(0.12, shMaxDt(s.r, s.k0, s.g, s.cub))); },
     surprise(rng) {
       const r = rng.pick([0.2, 0.3, 0.4, 0.55, -0.1]);
       // These negative-r choices exceed the continuum stripe threshold over the
@@ -20299,7 +20553,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     },
     palette: true, defaultPalette: 'thermal', paletteLabel: 'Colors',
     headline: 'nu', headlineLabel: 'viscosity ν',
-    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.018, 0.004, Math.min(0.08, ksMaxDt(s.nu))); },
+    sanitize(s) { s.grid = U.clamp(Math.round(Number(s.grid) / 2) * 2, 96, 1024); s.dt = U.clamp(Number(s.dt) || 0.018, 0.0001, Math.min(0.08, ksMaxDt(s.nu))); },
     surprise(rng) {
       return {
         grid: rng.pick([128, 192, 192, 256]), aspect: rng.pick(['1:1', '1:1', '4:5', '16:9']),
@@ -20391,7 +20645,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     closedGroups: ['Seeding'],
     hints: {
       Crystal: 'This is Swift–Hohenberg with a conservation law. r and ψ₀ together pick the phase: liquid, stripes, or triangular crystal. k₀ is the lattice constant. Two orientations meeting is a grain boundary.',
-      Picture: 'Density is ψ, the atomic density wave. Orientation colors the local lattice angle — that is how you read grains. Relief treats atoms as height.',
+      Picture: 'Density is ψ, the atomic density wave. Orientation colors the local density-gradient direction with a cyclic palette; it is not a measured crystallographic orientation. Relief treats atoms as height.',
     },
     palette: true, defaultPalette: 'graphite', paletteLabel: 'Colors',
     headline: 'r', headlineLabel: 'quench r',
@@ -31853,9 +32107,9 @@ void main(){
   // cell outside it, walk at random until the walk first hits the tree, erase the loops the walk made,
   // and add what survives. The only state the erasure needs is next[], the direction most recently
   // taken out of each cell: a loop overwrites its own entries on the way round, so following the
-  // arrows from the start cell walks the loop-erased path and nothing else. Every spanning tree of the
-  // graph comes out with exactly equal probability. This is a sampler, not a relaxation, so there is
-  // no burn-in to get wrong and no bias to bound: the tree on screen is drawn from the exact measure.
+  // arrows from the start cell walks the loop-erased path and nothing else. Under independent uniform random choices, every spanning tree of the
+  // graph has equal probability. The implementation uses a finite seeded PRNG; numerical
+  // sampling tests do not prove literal uniformity across all possible seed strings.
   function makeWilson(W, H, rootIx, wrap, rng) {
     const N = W * H;
     const next = new Int8Array(N).fill(-1);
@@ -31932,8 +32186,8 @@ void main(){
     subtitle: 'uniform spanning trees by loop-erased random walk · 1996',
     order: 49,
     equation: 'pick v ∉ T, walk at random from v erasing each loop as it closes, attach the surviving path;  P(T) = 1 / κ(G) for every one of the κ(G) spanning trees',
-    credit: "David Bruce Wilson, 'Generating random spanning trees more quickly than the cover time', Proceedings of the 28th ACM Symposium on Theory of Computing, 296 (1996), is the algorithm drawn here: cycle popping by loop-erased random walk, exact rather than approximate, and finishing in the mean hitting time rather than the cover time the earlier samplers need. Those are Andrei Broder, 'Generating random spanning trees', 30th Symposium on Foundations of Computer Science, 442 (1989), and David Aldous, SIAM Journal on Discrete Mathematics 3, 450 (1990). The loop-erased walk itself is Gregory Lawler, Duke Mathematical Journal 47, 655 (1980). Lawler, Oded Schramm and Wendelin Werner, Annals of Probability 32, 939 (2004), proved that the loop-erased walk scales to SLE with κ = 2 and the tree's Peano curve to SLE with κ = 8. That every spanning tree of a graph can be counted at all is Gustav Kirchhoff, Annalen der Physik 148, 497 (1847).",
-    blurb: 'A spanning tree of a grid is a set of corridors that reaches every cell and closes no loop. A grid of any size has an astronomical number of them, and this plate holds one drawn with every tree exactly as likely as every other. Wilson\'s algorithm gets there by a move that looks like it should not work: start a random walk at any cell not yet in the tree, let it wander, erase each loop the moment it closes, and attach what is left. Repeat until the tree covers the grid. The result is exactly uniform, with nothing to converge and no approximation anywhere in it. What the walk leaves behind is the loop-erased random walk, the curve that scales to SLE at κ = 2 on the neighboring tab, and the path view picks one of them out of the finished tree. Depth colors every edge by how far it sits from the root, which is what makes the branching readable: a few long rivers leave the root and split, and the palette runs out along them. Maze draws the walls instead of the corridors, because a spanning tree of a grid is exactly a perfect maze, one route between any two cells and no loop anywhere. On a torus there is no boundary to push against, so the branches run off one edge of the plate and back in at the other.',
+    credit: "David Bruce Wilson, 'Generating random spanning trees more quickly than the cover time', Proceedings of the 28th ACM Symposium on Theory of Computing, 296 (1996), is the algorithm drawn here: cycle popping by loop-erased random walk, exact rather than approximate, with the expected cost determined by root-dependent commute times. Those are Andrei Broder, 'Generating random spanning trees', 30th Symposium on Foundations of Computer Science, 442 (1989), and David Aldous, SIAM Journal on Discrete Mathematics 3, 450 (1990). The loop-erased walk itself is Gregory Lawler, Duke Mathematical Journal 47, 655 (1980). Lawler, Oded Schramm and Wendelin Werner, Annals of Probability 32, 939 (2004), proved that the loop-erased walk scales to SLE with κ = 2 and the tree's Peano curve to SLE with κ = 8. That every spanning tree of a graph can be counted at all is Gustav Kirchhoff, Annalen der Physik 148, 497 (1847).",
+    blurb: 'A spanning tree of a grid is a set of corridors that reaches every cell and closes no loop. A grid of any size has an astronomical number of them, and this plate holds one drawn with Wilson’s uniform spanning-tree algorithm. Wilson\'s algorithm gets there by a move that looks like it should not work: start a random walk at any cell not yet in the tree, let it wander, erase each loop the moment it closes, and attach what is left. Repeat until the tree covers the grid. With independent uniform random choices, the algorithm samples the uniform spanning-tree measure without burn-in. This implementation uses a finite seeded pseudorandom generator; small-graph frequency checks measure its sampled behavior. What the walk leaves behind is the loop-erased random walk, the curve that scales to SLE at κ = 2 on the neighboring tab, and the path view picks one of them out of the finished tree. Depth colors every edge by how far it sits from the root, which is what makes the branching readable: a few long rivers leave the root and split, and the palette runs out along them. Maze draws the walls instead of the corridors, because a spanning tree of a grid is exactly a perfect maze, one route between any two cells and no loop anywhere. On a torus there is no boundary to push against, so the branches run off one edge of the plate and back in at the other.',
     schema: [
       RANGE('Lattice', 'grid', 'Grid', GEOM, 24, 220, 1, String, { hint: 'Cells across. The tree has one edge fewer than it has cells, so 200 across is roughly fifty thousand strokes and reads as a texture; below 60 you can follow a single branch by eye.' }),
       { group: 'Lattice', key: 'aspect', label: 'Aspect', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['3:2', '3:2'], ['16:9', '16:9']] },
