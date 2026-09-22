@@ -60,14 +60,15 @@
   {
     "id": "bec",
     "source": "src/modules/bec.js",
-    "sourceSha256": "6b853f47a57ead3ca3ab251bac769d734c88b614b4a08600d50e2d8717b42985",
+    "sourceSha256": "79529cc481dc186d42ffa47d8e960ed6b185d707b93707d8bedf64738cbec331",
     "reference": "The mean-field equation is Eugene Gross, Il Nuovo Cimento 20, 454 (1961), and Lev Pitaevskii, Soviet Physics JETP 13, 451 (1961). That a rotating superfluid answers with a triangular array of singly quantized vortices rather than rigid rotation is Alexei Abrikosov's 1957 result for type-II superconductors, Soviet Physics JETP 5, 1174, carried over to condensates; it was seen in the laboratory by Kirk Madison, Frédéric Chevy, Wendel Wohlleben and Jean Dalibard, Phys. Rev. Lett. 84, 806 (2000), and resolved into a lattice of well over a hundred vortices by Jamil Abo-Shaeer, Chandra Raman, Johnny Vogels and Wolfgang Ketterle, Science 292, 476 (2001). The staggered explicit scheme used in real time follows P. B. Visscher, Computers in Physics 5, 596 (1991). The quantization of circulation is Lars Onsager (1949) and Richard Feynman (1955).",
     "equation": "iℏ ∂ψ/∂t = [−½∇² + V(r) + g|ψ|² − Ω L_z] ψ,   circulation quantized in units of h/m",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
-      "Initial and intermediate warm-up fields are now rendered; this presentation fix does not validate condensate dynamics."
+      "Initial and intermediate warm-up fields are now rendered; this presentation fix does not validate condensate dynamics.",
+      "Combined phase/density colors now distinguish zero-phase matter from the empty background; the display correction leaves the computed field unchanged."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",

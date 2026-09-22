@@ -15,7 +15,7 @@ const {chromium}=require('playwright');
    const saved=Studio.register;let def;Studio.register=m=>{def=m;};
    async function run(code){
     try{(0,eval)(code);}finally{Studio.register=saved;}
-    const s={...def.defaults,grid:192,warmup:512,running:false,seed:'bec-batch-check',palette:['#132840','#ffd166'],bg:'#080c12'};
+    const s={...def.defaults,grid:192,warmup:512,running:false,view:'both',seed:'bec-batch-check',palette:['#132840','#ffd166'],bg:'#080c12'};
     const canvas=document.createElement('canvas');canvas.width=256;canvas.height=256;
     let status='';const instance=def.create({canvas,getState:()=>s,setStatus:x=>{status=x;},isActive:()=>true,reducedMotion:()=>false,fault:m=>{throw Error(m);}});
     instance.regenerate();

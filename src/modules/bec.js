@@ -113,7 +113,9 @@ void main(){
     col = ramp(clamp(abs(ph) / 3.14159265, 0.0, 1.0));
   } else if (u_view == 2) {
     float t = clamp(abs(ph) / 3.14159265, 0.0, 1.0);
-    col = mix(u_bg, ramp(t), clamp(pow(dens, 0.75) * 1.2, 0.0, 1.0));
+    // Zero phase is valid matter, not the empty background. Reserve the upper
+    // half of the ramp for phase when density controls opacity.
+    col = mix(u_bg, ramp(0.5 + 0.5 * t), clamp(pow(dens, 0.75) * 1.2, 0.0, 1.0));
   } else {
     col = ramp(clamp(dens, 0.0, 1.0));
   }
