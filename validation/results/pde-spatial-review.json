@@ -1,0 +1,817 @@
+{
+  "date": "2026-09-22",
+  "scope": "Small-amplitude periodic Fourier mode at one fixed 64 by 64 physical domain and time 2, grids 16/32/64. Parameter and field rescalings account for the unit-cell production stencil. Nonlinear remainder bounded, no nonlinear sharp-interface spatial convergence claim.",
+  "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+  "environment": {
+    "node": "v24.21.0",
+    "chromium": "145.0.7632.6",
+    "backend": "SwiftShader RGBA32F"
+  },
+  "rows": [
+    {
+      "id": "cahn",
+      "physicalParameters": {
+        "M": 0.7,
+        "eps": 1.1,
+        "sigma": 0.005,
+        "mean": 0,
+        "deg": false,
+        "lambda": 0.8,
+        "zeta": -1.2,
+        "r": 0.24,
+        "k0": 0.7,
+        "g": 0,
+        "cub": 1,
+        "nu": 1.1,
+        "alpha": 0.9
+      },
+      "physicalDomain": [
+        64,
+        64
+      ],
+      "physicalTime": 2,
+      "physicalDt": 0.002,
+      "initialAmplitude": 0.0001,
+      "wave": [
+        2,
+        1
+      ],
+      "continuumRate": 0.03176691500745702,
+      "targetAmplitude": 0.00010655955343045205,
+      "levels": [
+        {
+          "grid": [
+            16,
+            16
+          ],
+          "spacing": 4,
+          "shaderParameters": {
+            "M": 0.04375,
+            "eps": 0.275,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.05,
+            "zeta": -0.0046875,
+            "r": 0.24,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "cahn",
+            "W": 16,
+            "H": 16,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.002,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010628683119186147,
+          "relativeAmplitudeError": 0.0025593410427399155,
+          "maxNonlinearRemainder": 2.0713665917042323e-11
+        },
+        {
+          "grid": [
+            32,
+            32
+          ],
+          "spacing": 2,
+          "shaderParameters": {
+            "M": 0.175,
+            "eps": 0.55,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.2,
+            "zeta": -0.075,
+            "r": 0.24,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "cahn",
+            "W": 32,
+            "H": 32,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.002,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010649028601195326,
+          "relativeAmplitudeError": 0.0006500348046597493,
+          "maxNonlinearRemainder": 6.761014470990038e-12
+        },
+        {
+          "grid": [
+            64,
+            64
+          ],
+          "spacing": 1,
+          "shaderParameters": {
+            "M": 0.7,
+            "eps": 1.1,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.8,
+            "zeta": -1.2,
+            "r": 0.24,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "cahn",
+            "W": 64,
+            "H": 64,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.002,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010654236034704449,
+          "relativeAmplitudeError": 0.0001613471796199084,
+          "maxNonlinearRemainder": 1.1728616118404905e-10
+        }
+      ],
+      "orders": [
+        1.977183534045141,
+        2.0103486066331224
+      ],
+      "wrongUnscaledDomainError": 0.04812592436925156
+    },
+    {
+      "id": "ohta",
+      "physicalParameters": {
+        "M": 0.7,
+        "eps": 1.1,
+        "sigma": 0.005,
+        "mean": 0,
+        "deg": false,
+        "lambda": 0.8,
+        "zeta": -1.2,
+        "r": 0.24,
+        "k0": 0.7,
+        "g": 0,
+        "cub": 1,
+        "nu": 1.1,
+        "alpha": 0.9
+      },
+      "physicalDomain": [
+        64,
+        64
+      ],
+      "physicalTime": 2,
+      "physicalDt": 0.002,
+      "initialAmplitude": 0.0001,
+      "wave": [
+        2,
+        1
+      ],
+      "continuumRate": 0.02676691500745702,
+      "targetAmplitude": 0.00010549926815820465,
+      "levels": [
+        {
+          "grid": [
+            16,
+            16
+          ],
+          "spacing": 4,
+          "shaderParameters": {
+            "M": 0.04375,
+            "eps": 0.275,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.05,
+            "zeta": -0.0046875,
+            "r": 0.24,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "ohta",
+            "W": 16,
+            "H": 16,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.002,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010522932430439716,
+          "relativeAmplitudeError": 0.0025587272643701198,
+          "maxNonlinearRemainder": 5.7701105856235516e-12
+        },
+        {
+          "grid": [
+            32,
+            32
+          ],
+          "spacing": 2,
+          "shaderParameters": {
+            "M": 0.175,
+            "eps": 0.55,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.2,
+            "zeta": -0.075,
+            "r": 0.24,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "ohta",
+            "W": 32,
+            "H": 32,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.002,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010543076341122288,
+          "relativeAmplitudeError": 0.0006493385990037348,
+          "maxNonlinearRemainder": 3.5324778814419845e-11
+        },
+        {
+          "grid": [
+            64,
+            64
+          ],
+          "spacing": 1,
+          "shaderParameters": {
+            "M": 0.7,
+            "eps": 1.1,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.8,
+            "zeta": -1.2,
+            "r": 0.24,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "ohta",
+            "W": 64,
+            "H": 64,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.002,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010548245800182472,
+          "relativeAmplitudeError": 0.0001593390804828232,
+          "maxNonlinearRemainder": 1.2832915658670795e-10
+        }
+      ],
+      "orders": [
+        1.978383502236944,
+        2.026870816334422
+      ],
+      "wrongUnscaledDomainError": 0.04812707326917076
+    },
+    {
+      "id": "amb",
+      "physicalParameters": {
+        "M": 0.7,
+        "eps": 1.1,
+        "sigma": 0.005,
+        "mean": 0,
+        "deg": false,
+        "lambda": 0.8,
+        "zeta": -1.2,
+        "r": 0.24,
+        "k0": 0.7,
+        "g": 0,
+        "cub": 1,
+        "nu": 1.1,
+        "alpha": 0.9
+      },
+      "physicalDomain": [
+        64,
+        64
+      ],
+      "physicalTime": 2,
+      "physicalDt": 0.002,
+      "initialAmplitude": 0.0001,
+      "wave": [
+        2,
+        1
+      ],
+      "continuumRate": 0.03176691500745702,
+      "targetAmplitude": 0.00010655955343045205,
+      "levels": [
+        {
+          "grid": [
+            16,
+            16
+          ],
+          "spacing": 4,
+          "shaderParameters": {
+            "M": 0.04375,
+            "eps": 0.275,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.05,
+            "zeta": -0.0046875,
+            "r": 0.24,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "amb",
+            "W": 16,
+            "H": 16,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.002,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010628683840413487,
+          "relativeAmplitudeError": 0.00255927335971029,
+          "maxNonlinearRemainder": 9.451563835184842e-11
+        },
+        {
+          "grid": [
+            32,
+            32
+          ],
+          "spacing": 2,
+          "shaderParameters": {
+            "M": 0.175,
+            "eps": 0.55,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.2,
+            "zeta": -0.075,
+            "r": 0.24,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "amb",
+            "W": 32,
+            "H": 32,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.002,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010649028932183441,
+          "relativeAmplitudeError": 0.0006500037433325723,
+          "maxNonlinearRemainder": 1.242782788301016e-10
+        },
+        {
+          "grid": [
+            64,
+            64
+          ],
+          "spacing": 1,
+          "shaderParameters": {
+            "M": 0.7,
+            "eps": 1.1,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.8,
+            "zeta": -1.2,
+            "r": 0.24,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "amb",
+            "W": 64,
+            "H": 64,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.002,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010654235204095095,
+          "relativeAmplitudeError": 0.0001614251275210421,
+          "maxNonlinearRemainder": 2.2543538558258622e-10
+        }
+      ],
+      "orders": [
+        1.9772143202915815,
+        2.0095828597874084
+      ],
+      "wrongUnscaledDomainError": 0.048125627734157295
+    },
+    {
+      "id": "swift",
+      "physicalParameters": {
+        "M": 0.7,
+        "eps": 1.1,
+        "sigma": 0.005,
+        "mean": 0,
+        "deg": false,
+        "lambda": 0.8,
+        "zeta": -1.2,
+        "r": 0.24,
+        "k0": 0.7,
+        "g": 0,
+        "cub": 1,
+        "nu": 1.1,
+        "alpha": 0.9
+      },
+      "physicalDomain": [
+        64,
+        64
+      ],
+      "physicalTime": 2,
+      "physicalDt": 0.002,
+      "initialAmplitude": 0.0001,
+      "wave": [
+        2,
+        1
+      ],
+      "continuumRate": 0.04480518547731016,
+      "targetAmplitude": 0.00010937480446665185,
+      "levels": [
+        {
+          "grid": [
+            16,
+            16
+          ],
+          "spacing": 4,
+          "shaderParameters": {
+            "M": 0.7,
+            "eps": 1.1,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.8,
+            "zeta": -1.2,
+            "r": 61.44,
+            "k0": 2.8,
+            "g": 0,
+            "cub": 256,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "swift",
+            "W": 16,
+            "H": 16,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.0000078125,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010897509173599084,
+          "relativeAmplitudeError": 0.0036545229279278946,
+          "maxNonlinearRemainder": 1.8377030840534096e-11
+        },
+        {
+          "grid": [
+            32,
+            32
+          ],
+          "spacing": 2,
+          "shaderParameters": {
+            "M": 0.7,
+            "eps": 1.1,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.8,
+            "zeta": -1.2,
+            "r": 3.84,
+            "k0": 1.4,
+            "g": 0,
+            "cub": 16,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "swift",
+            "W": 32,
+            "H": 32,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.000125,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010927310614940949,
+          "relativeAmplitudeError": 0.0009298148484769841,
+          "maxNonlinearRemainder": 2.6544078661982183e-11
+        },
+        {
+          "grid": [
+            64,
+            64
+          ],
+          "spacing": 1,
+          "shaderParameters": {
+            "M": 0.7,
+            "eps": 1.1,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.8,
+            "zeta": -1.2,
+            "r": 0.24,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "swift",
+            "W": 64,
+            "H": 64,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.002,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010934912600721401,
+          "relativeAmplitudeError": 0.00023477490600376516,
+          "maxNonlinearRemainder": 8.38186791973566e-11
+        }
+      ],
+      "orders": [
+        1.9746677148951866,
+        1.9856652511122002
+      ],
+      "wrongUnscaledDomainError": 0.3064206131633742
+    },
+    {
+      "id": "ks",
+      "physicalParameters": {
+        "M": 0.7,
+        "eps": 1.1,
+        "sigma": 0.005,
+        "mean": 0,
+        "deg": false,
+        "lambda": 0.8,
+        "zeta": -1.2,
+        "r": 0.24,
+        "k0": 0.7,
+        "g": 0,
+        "cub": 1,
+        "nu": 1.1,
+        "alpha": 0.9
+      },
+      "physicalDomain": [
+        64,
+        64
+      ],
+      "physicalTime": 2,
+      "physicalDt": 0.002,
+      "initialAmplitude": 0.0001,
+      "wave": [
+        2,
+        1
+      ],
+      "continuumRate": 0.04563677266134496,
+      "targetAmplitude": 0.00010955686519535486,
+      "levels": [
+        {
+          "grid": [
+            16,
+            16
+          ],
+          "spacing": 4,
+          "shaderParameters": {
+            "M": 0.7,
+            "eps": 1.1,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.8,
+            "zeta": -1.2,
+            "r": 0.24,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 0.06875,
+            "alpha": 0.9,
+            "id": "ks",
+            "W": 16,
+            "H": 16,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.000125,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010915172881019318,
+          "relativeAmplitudeError": 0.0036979552530940207,
+          "maxNonlinearRemainder": 4.24550727886541e-10
+        },
+        {
+          "grid": [
+            32,
+            32
+          ],
+          "spacing": 2,
+          "shaderParameters": {
+            "M": 0.7,
+            "eps": 1.1,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.8,
+            "zeta": -1.2,
+            "r": 0.24,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 0.275,
+            "alpha": 0.9,
+            "id": "ks",
+            "W": 32,
+            "H": 32,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.0005,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010945378675772381,
+          "relativeAmplitudeError": 0.000940866986721911,
+          "maxNonlinearRemainder": 4.912255046972567e-10
+        },
+        {
+          "grid": [
+            64,
+            64
+          ],
+          "spacing": 1,
+          "shaderParameters": {
+            "M": 0.7,
+            "eps": 1.1,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.8,
+            "zeta": -1.2,
+            "r": 0.24,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "ks",
+            "W": 64,
+            "H": 64,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.002,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010953084549144732,
+          "relativeAmplitudeError": 0.00023749952922746953,
+          "maxNonlinearRemainder": 5.118974855647027e-10
+        }
+      ],
+      "orders": [
+        1.974665083376192,
+        1.9860661253757355
+      ],
+      "wrongUnscaledDomainError": 0.20494871595565445
+    },
+    {
+      "id": "pfc",
+      "physicalParameters": {
+        "M": 0.7,
+        "eps": 1.1,
+        "sigma": 0.005,
+        "mean": 0,
+        "deg": false,
+        "lambda": 0.8,
+        "zeta": -1.2,
+        "r": -0.25,
+        "k0": 0.7,
+        "g": 0,
+        "cub": 1,
+        "nu": 1.1,
+        "alpha": 0.9
+      },
+      "physicalDomain": [
+        64,
+        64
+      ],
+      "physicalTime": 2,
+      "physicalDt": 0.002,
+      "initialAmplitude": 0.0001,
+      "wave": [
+        2,
+        1
+      ],
+      "continuumRate": 0.001848798094983229,
+      "targetAmplitude": 0.00010037044407322762,
+      "levels": [
+        {
+          "grid": [
+            16,
+            16
+          ],
+          "spacing": 4,
+          "shaderParameters": {
+            "M": 0.7,
+            "eps": 1.1,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.8,
+            "zeta": -1.2,
+            "r": -64,
+            "k0": 2.8,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "pfc",
+            "W": 16,
+            "H": 16,
+            "bc": "periodic"
+          },
+          "shaderDt": 4.8828125e-7,
+          "fieldScale": 16,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010032970191105778,
+          "relativeAmplitudeError": 0.0004059179228110832,
+          "maxNonlinearRemainder": 2.2863446320106444e-9
+        },
+        {
+          "grid": [
+            32,
+            32
+          ],
+          "spacing": 2,
+          "shaderParameters": {
+            "M": 0.7,
+            "eps": 1.1,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.8,
+            "zeta": -1.2,
+            "r": -4,
+            "k0": 1.4,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "pfc",
+            "W": 32,
+            "H": 32,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.00003125,
+          "fieldScale": 4,
+          "steps": 1000,
+          "measuredAmplitude": 0.000100360557784653,
+          "relativeAmplitudeError": 0.00009849800572170331,
+          "maxNonlinearRemainder": 1.5849430426271736e-9
+        },
+        {
+          "grid": [
+            64,
+            64
+          ],
+          "spacing": 1,
+          "shaderParameters": {
+            "M": 0.7,
+            "eps": 1.1,
+            "sigma": 0.005,
+            "mean": 0,
+            "deg": false,
+            "lambda": 0.8,
+            "zeta": -1.2,
+            "r": -0.25,
+            "k0": 0.7,
+            "g": 0,
+            "cub": 1,
+            "nu": 1.1,
+            "alpha": 0.9,
+            "id": "pfc",
+            "W": 64,
+            "H": 64,
+            "bc": "periodic"
+          },
+          "shaderDt": 0.002,
+          "fieldScale": 1,
+          "steps": 1000,
+          "measuredAmplitude": 0.00010036769777444223,
+          "relativeAmplitudeError": 0.000027361628323396836,
+          "maxNonlinearRemainder": 4.336748370083101e-10
+        }
+      ],
+      "orders": [
+        2.0430216219934785,
+        1.8479404254818024
+      ],
+      "wrongUnscaledDomainError": 0.21452024584215068
+    }
+  ],
+  "passed": true
+}

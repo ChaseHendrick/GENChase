@@ -1430,3 +1430,7 @@ Reviewed Gotoda's [self-similar point-vortex equations](https://arxiv.org/abs/20
 The GL full-field audit adds independent CPU solutions and print-pixel references to the earlier equation/discretization review. It exposed artificial amplitude loss from small-angle SwiftShader trigonometric evaluation. A bounded polynomial rotation fixes the measured error without loosening the full-field tolerance. The original failure, corrected results, finite domains and physical claims excluded from review are recorded in validation/GL-FIELD-REVIEW.md. No new novelty search or physical-model claim is made.
 
 2026-09-22: Scientific claim review, not a priority search. Gyroid nodal versus exact minimal surface: Gandy et al., CPL336(2001),187-195, doi:10.1016/S0009-2614(00)01418-4. Circle-map finite averages versus rotation intervals: Alsedà and Borrós-Cullell, arXiv:2012.03340. Corrections and computed evidence are recorded in validation/PERIODIC-FIELD-REVIEW.md.
+
+### 2026-09-22: Wilson spanning-tree implementation review
+
+Query: `David Wilson 1996 generating random spanning trees more quickly than the cover time pdf Microsoft research`. Read Wilson 1996 Figure 1 and Theorem 1 at https://sites.math.rutgers.edu/~zeilberg/akherim/WilsonSpanningTree.pdf. The implementation follows last-exit arrows; ideal random successors are an assumption. Root-dependent commute-time complexity replaces the unqualified mean-hitting-time wording. This is established prior art, not an originality claim. Numerical and print evidence: validation/UST.md.
