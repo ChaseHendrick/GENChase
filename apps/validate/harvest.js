@@ -4,6 +4,7 @@ const fs = require('node:fs'), path = require('node:path'), cp = require('node:c
 const { ids } = require('./commands');
 const { hardwareCard } = require('./hardware');
 const { redactObject, redact } = require('./privacy');
+const { launchGraphicsBrowser } = require('./browser');
 const ROOT = path.resolve(__dirname, '../..');
 function numbers(text) {
   // Keep offsets and literal tokens. Do not infer units or tolerance from prose.
@@ -27,8 +28,9 @@ async function harvest({ root = ROOT, selected, dwellMs = 3000, machineSlug = 'm
   const commit = cp.execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
   if(jobDir)fs.mkdirSync(jobDir,{recursive:true});
   const started = Date.now(), command = 'node apps/validate/harvest.js ' + (selected.length === catalog.length ? '--all' : selected.join(' ')) + ' --machine '+machineSlug+' --dwell '+dwellMs;
-  const browser = await chromium.launch({ headless: true });
-  const entries = [], browserVersions = { chromium: browser.version() }; let webglRenderer = null;
+  const { browser, graphics } = await launchGraphicsBrowser(chromium);
+  console.log('Graphics: ' + (graphics.renderer || 'WebGL2 unavailable') + (graphics.fallback ? ' (software fallback requested)' : '') + '. Float32 targets: ' + graphics.float32 + '.');
+  const entries = [], browserVersions = { chromium: browser.version() }; let webglRenderer = graphics.renderer;
   try {
     for (const id of selected) {
       const page = await browser.newPage(); const errors = [];
@@ -67,7 +69,7 @@ async function harvest({ root = ROOT, selected, dwellMs = 3000, machineSlug = 'm
   const exitCode = misses.length ? 1 : 0;
   const hardware = hardwareCard({ machineSlug, commit, command, exitCode, elapsedSeconds: (Date.now() - started) / 1000, browserVersions, webglRenderer },{root});
   const safe = value => redactObject(value, { root });
-  const corpus = safe({ schemaVersion: 1, commit, machineSlug, observationMilliseconds: dwellMs, hardware,
+  const corpus = safe({ schemaVersion: 1, commit, machineSlug, observationMilliseconds: dwellMs, hardware, graphics,
     scope: 'Snapshots of default recipes after a bounded warm-up. Status tokens include untyped prose numbers; only structured witnesses define expected values and tolerance. A missing witness is unassessed. These observations do not change validation or originality labels.', entries });
   const file = 'validation/results/witnesses-' + commit + '-' + machineSlug + '.json';
   fs.mkdirSync(path.join(outputRoot, 'validation/results'), { recursive: true });
@@ -85,7 +87,7 @@ async function harvest({ root = ROOT, selected, dwellMs = 3000, machineSlug = 'm
     if (jobDir) fs.writeFileSync(path.join(jobDir, 'miss-' + miss.id + '.json'), JSON.stringify(packet, null, 2) + '\n');
     packets.push({ file: relative, artifact: 'miss-' + miss.id + '.json', kind: miss.status, status: 'miss', id: miss.id, commit, reason: packet.reason });
   }
-  const report = { corpus: file, misses: packets, browserVersions, webglRenderer, counts: { observed: entries.length, misses: misses.length, unassessed: entries.filter(e => e.status === 'unassessed').length } };
+  const report = safe({ corpus: file, misses: packets, browserVersions, webglRenderer, graphics, counts: { observed: entries.length, misses: misses.length, unassessed: entries.filter(e => e.status === 'unassessed').length } });
   if (jobDir) {
     fs.writeFileSync(path.join(jobDir, 'witnesses.json'), JSON.stringify(corpus, null, 2) + '\n');
     fs.writeFileSync(path.join(jobDir, 'harvest-report.json'), JSON.stringify(safe(report), null, 2) + '\n');

@@ -19,6 +19,12 @@ const root=path.resolve(__dirname,'..');
   for(const entry of baseline.corpus.entries){assert.equal(entry.recipe.id,entry.id);assert(entry.recipeHash.startsWith('#'+entry.id+'/'));assert.notEqual(entry.status,'runtime failure');for(const n of entry.numbers)assert.equal(entry.statusText.slice(n.offset,n.offset+n.token.length),n.token);}
   assert(baseline.report.browserVersions.chromium);assert.match(baseline.corpus.hardware.command,/--machine fixture-machine --dwell 100/);
   console.log('PASS actual Reuleaux and three-vortex modules preserve recipe IDs and numerical text');
+  const gpu=await harvest({root,selected:['life','cahn','maxwell'],dwellMs:100,machineSlug:'fixture-machine',outputRoot:path.join(temp,'gpu'),jobDir:path.join(temp,'gpu-job')});
+  assert.equal(gpu.corpus.graphics.webgl2,true,'real WebGL2 context is required');
+  assert.equal(gpu.corpus.graphics.float32,true,'float32 targets are available');
+  assert(gpu.corpus.hardware.webglRenderer,'actual renderer is recorded');
+  assert.equal(gpu.exitCode,0,JSON.stringify(gpu.corpus.entries));
+  console.log('PASS real GPU-dependent Life, Cahn-Hilliard and Maxwell observations with explicit renderer provenance');
   const fixture=path.join(temp,'fixture');fs.mkdirSync(path.join(fixture,'dist'),{recursive:true});
   fs.copyFileSync(path.join(root,'techniques.json'),path.join(fixture,'techniques.json'));
   const diagnosticError=fixture+'/private-result.json volunteer@example.com 192.168.1.8';
