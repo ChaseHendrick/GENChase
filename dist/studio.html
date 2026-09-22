@@ -2654,14 +2654,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "63a5c263919c63e7d5bd224cde99e16a17ace1f61e6ffb88030d8fc1f8b42834",
     "reference": "D. H. Peregrine, J. Austral. Math. Soc. Ser. B 25, 16 (1983). Akhmediev, Eleonskii and Kulagin (1987); Kuznetsov (1977) and Ma (1979). Draupner measured a rogue wave in 1995. Formula conventions: Haragus and Pelinovsky, arXiv:2112.14426, Eqs1.1–1.4. The plate samples these established analytic solutions.",
     "equation": "i ψ_t + ½ ψ_xx + |ψ|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   |ψ|²_max / |ψ|²_∞ = 9",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The independent audit samples the exact analytic fields and checks the stated normalized NLS residual, peaks and periods; it does not integrate the browser solver or establish physical ocean accuracy.",
-      "The finite plate samples a bounded window and does not prove the solution for every parameter or export resolution."
+      "The completed label covers the enumerated recipes in validation/ANALYTIC-FIELD-REVIEW.md, not every parameter or renderer.",
+      "These are analytic solution samples, not independent time integration, physical experiments or a global proof. Finite grids and windows can miss peaks, mass or energy tails.",
+      "PNG enlargement adds no field resolution. Other exports, captions, smoothing and printer calibration are outside this review."
     ],
     "remaining": [
-      "Add an independent browser print-state check for all views and representative windows.",
-      "Review the rendered field and parameter limits against the primary sources before considering a stronger status."
+      "Extend the reviewed recipe and hardware domain with additional independent evidence."
     ],
     "numerical": [
       {
@@ -2673,9 +2673,38 @@ shall not be misrepresented as the original profile.
         "failureControl": "Use the old dispersion coefficient and additive KdV-style pulses; both produce residual failures.",
         "command": "node tools/analytic-wave-science.js --write",
         "results": "validation/results/analytic-wave-science.json"
+      },
+      {
+        "test": "tools/analytic-field-review.js",
+        "command": "node tools/analytic-field-review.js --write",
+        "results": "validation/results/analytic-field-review.json",
+        "scope": "Complete analytic fields, sampled diagnostics and every actual PNG pixel for the module recipes enumerated in validation/ANALYTIC-FIELD-REVIEW.md.",
+        "criteria": "Field error \u003c2e-6, diagnostic error \u003c1e-7, every PNG channel error \u003c=1, state preserved; existing PDE residual and invariant checks pass.",
+        "benchmark": "Independent gauge-invariant NLS intensities, direct Hirota tau derivatives, and atan2 breather with finite-difference physical energy; independent print color/cell mapping.",
+        "failureControl": "One-cell displacement fails fields and print; prior equation checks reject wrong dispersion, absent interaction or perturbed frequency.",
+        "limitations": "Only the enumerated finite recipes, recorded Chromium and caption-free unsmoothed PNG; no physical accuracy or all-parameter claim."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/analytic-field-review.js",
+        "command": "node tools/analytic-field-review.js --write",
+        "results": "validation/results/analytic-field-review.json",
+        "scope": "Complete analytic fields, sampled diagnostics and every actual PNG pixel for the module recipes enumerated in validation/ANALYTIC-FIELD-REVIEW.md.",
+        "criteria": "Field error \u003c2e-6, diagnostic error \u003c1e-7, every PNG channel error \u003c=1, state preserved; existing PDE residual and invariant checks pass.",
+        "benchmark": "Independent gauge-invariant NLS intensities, direct Hirota tau derivatives, and atan2 breather with finite-difference physical energy; independent print color/cell mapping.",
+        "failureControl": "One-cell displacement fails fields and print; prior equation checks reject wrong dispersion, absent interaction or perturbed frequency.",
+        "limitations": "Only the enumerated finite recipes, recorded Chromium and caption-free unsmoothed PNG; no physical accuracy or all-parameter claim."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/analytic-field-review.json",
+    "domain": {
+      "parameters": "Exactly the rogue recipes and recorded effective parameters in validation/results/analytic-field-review.json.",
+      "conditions": "Analytic spacetime sampling, finite windows and no PDE time integrator; details in validation/ANALYTIC-FIELD-REVIEW.md. Static export preserves recipe and field.",
+      "resolution": "Grids 128,192 or224 with recorded aspect-dependent height; all cells and all PNG pixels, longest edge2400; independent residual convergence over three difference steps.",
+      "precision": "Binary64 reference and diagnostics, Float32 field, RGBA8 print. Field error\u003c2e-6, diagnostic error\u003c1e-7, every channel\u003c=1 byte."
+    }
   },
   {
     "id": "aharonov",
@@ -2850,14 +2879,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "37cf9cfbd76b979fdaa91eaf9dc6b98b4c3d130304076f7abfc3242597cddb1e",
     "reference": "J. S. Russell, Report of the 14th Meeting of the British Association (1844), chased a heap of water that would not spread. Korteweg and de Vries (1895) wrote the equation. Zabusky and Kruskal, Phys. Rev. Lett. 15, 240 (1965), collided two and named them solitons. The plate evaluates the established Hirota two-soliton tau function, including its interaction term; Benes, Kasman and Young, On Decompositions of the KdV 2-Soliton (2006), provide a reference.",
     "equation": "u_t + 6 u u_x + ν² u_xxx = 0; u = 2ν² ∂xx log τ, τ = 1+e^η1+e^η2+A12 e^(η1+η2)",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The independent audit checks the exact Hirota two-soliton map against the KdV residual, mass and phase shift; it does not integrate the browser solver or establish physical shallow-water accuracy.",
-      "The finite plate samples a bounded window and does not prove the solution for every parameter or export resolution."
+      "The completed label covers the enumerated recipes in validation/ANALYTIC-FIELD-REVIEW.md, not every parameter or renderer.",
+      "These are analytic solution samples, not independent time integration, physical experiments or a global proof. Finite grids and windows can miss peaks, mass or energy tails.",
+      "PNG enlargement adds no field resolution. Other exports, captions, smoothing and printer calibration are outside this review."
     ],
     "remaining": [
-      "Add an independent browser print-state check for all views and representative windows.",
-      "Review the rendered field and parameter limits against the primary sources before considering a stronger status."
+      "Extend the reviewed recipe and hardware domain with additional independent evidence."
     ],
     "numerical": [
       {
@@ -2869,9 +2898,38 @@ shall not be misrepresented as the original profile.
         "failureControl": "Replace the tau-function interaction with a sum of two independent sech² pulses; the residual must fail.",
         "command": "node tools/analytic-wave-science.js --write",
         "results": "validation/results/analytic-wave-science.json"
+      },
+      {
+        "test": "tools/analytic-field-review.js",
+        "command": "node tools/analytic-field-review.js --write",
+        "results": "validation/results/analytic-field-review.json",
+        "scope": "Complete analytic fields, sampled diagnostics and every actual PNG pixel for the module recipes enumerated in validation/ANALYTIC-FIELD-REVIEW.md.",
+        "criteria": "Field error \u003c2e-6, diagnostic error \u003c1e-7, every PNG channel error \u003c=1, state preserved; existing PDE residual and invariant checks pass.",
+        "benchmark": "Independent gauge-invariant NLS intensities, direct Hirota tau derivatives, and atan2 breather with finite-difference physical energy; independent print color/cell mapping.",
+        "failureControl": "One-cell displacement fails fields and print; prior equation checks reject wrong dispersion, absent interaction or perturbed frequency.",
+        "limitations": "Only the enumerated finite recipes, recorded Chromium and caption-free unsmoothed PNG; no physical accuracy or all-parameter claim."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/analytic-field-review.js",
+        "command": "node tools/analytic-field-review.js --write",
+        "results": "validation/results/analytic-field-review.json",
+        "scope": "Complete analytic fields, sampled diagnostics and every actual PNG pixel for the module recipes enumerated in validation/ANALYTIC-FIELD-REVIEW.md.",
+        "criteria": "Field error \u003c2e-6, diagnostic error \u003c1e-7, every PNG channel error \u003c=1, state preserved; existing PDE residual and invariant checks pass.",
+        "benchmark": "Independent gauge-invariant NLS intensities, direct Hirota tau derivatives, and atan2 breather with finite-difference physical energy; independent print color/cell mapping.",
+        "failureControl": "One-cell displacement fails fields and print; prior equation checks reject wrong dispersion, absent interaction or perturbed frequency.",
+        "limitations": "Only the enumerated finite recipes, recorded Chromium and caption-free unsmoothed PNG; no physical accuracy or all-parameter claim."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/analytic-field-review.json",
+    "domain": {
+      "parameters": "Exactly the soliton recipes and recorded effective parameters in validation/results/analytic-field-review.json.",
+      "conditions": "Analytic spacetime sampling, finite windows and no PDE time integrator; details in validation/ANALYTIC-FIELD-REVIEW.md. Static export preserves recipe and field.",
+      "resolution": "Grids 128,192 or224 with recorded aspect-dependent height; all cells and all PNG pixels, longest edge2400; independent residual convergence over three difference steps.",
+      "precision": "Binary64 reference and diagnostics, Float32 field, RGBA8 print. Field error\u003c2e-6, diagnostic error\u003c1e-7, every channel\u003c=1 byte."
+    }
   },
   {
     "id": "cyclicca",
@@ -3531,17 +3589,17 @@ shall not be misrepresented as the original profile.
   {
     "id": "breather",
     "source": "src/modules/breather.js",
-    "sourceSha256": "8d955572de4bd69b44164c0edd3e7ae4184c8d226caa72a2e0d825e3356b4578",
+    "sourceSha256": "09aab868ea80869b383f11d53275eaa86dd914f926be6cf446ce304f5c7c4879",
     "reference": "The sine-Gordon breather is an exact, time-periodic, spatially localised solution; see Seeger, Donth and Kochendörfer (1953) and the inverse-scattering account of Faddeev and Takhtajan. Linear waves radiate. This one does not: the envelope sech(β x) holds a bound oscillation forever. The plate is spacetime of u.",
     "equation": "u_tt − u_xx + sin u = 0,   u = 4 arctan[ (β/α) sin(α t) sech(β x) ],   α²+β² = 1",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The maintained field expression passes bounded residual, period and total-energy checks; the browser grid and print path are not audited.",
-      "The existing on-screen E_out/E diagnostic sums u squared, not sine-Gordon energy density. Its label and theory-zero comparison remain a known issue."
+      "The completed label covers the enumerated recipes in validation/ANALYTIC-FIELD-REVIEW.md, not every parameter or renderer.",
+      "These are analytic solution samples, not independent time integration, physical experiments or a global proof. Finite grids and windows can miss peaks, mass or energy tails.",
+      "PNG enlargement adds no field resolution. Other exports, captions, smoothing and printer calibration are outside this review."
     ],
     "remaining": [
-      "Audit the actual renderer and print path at declared dimensions.",
-      "Correct the squared-amplitude diagnostic and account for nonzero finite-window tails."
+      "Extend the reviewed recipe and hardware domain with additional independent evidence."
     ],
     "numerical": [
       {
@@ -3553,9 +3611,38 @@ shall not be misrepresented as the original profile.
         "failureControl": "Perturb the internal frequency while retaining the envelope; residual must exceed the correct residual by at least 20 times.",
         "command": "node tools/breather-science.js --write",
         "results": "validation/results/breather-science.json"
+      },
+      {
+        "test": "tools/analytic-field-review.js",
+        "command": "node tools/analytic-field-review.js --write",
+        "results": "validation/results/analytic-field-review.json",
+        "scope": "Complete analytic fields, sampled diagnostics and every actual PNG pixel for the module recipes enumerated in validation/ANALYTIC-FIELD-REVIEW.md.",
+        "criteria": "Field error \u003c2e-6, diagnostic error \u003c1e-7, every PNG channel error \u003c=1, state preserved; existing PDE residual and invariant checks pass.",
+        "benchmark": "Independent gauge-invariant NLS intensities, direct Hirota tau derivatives, and atan2 breather with finite-difference physical energy; independent print color/cell mapping.",
+        "failureControl": "One-cell displacement fails fields and print; prior equation checks reject wrong dispersion, absent interaction or perturbed frequency.",
+        "limitations": "Only the enumerated finite recipes, recorded Chromium and caption-free unsmoothed PNG; no physical accuracy or all-parameter claim."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/analytic-field-review.js",
+        "command": "node tools/analytic-field-review.js --write",
+        "results": "validation/results/analytic-field-review.json",
+        "scope": "Complete analytic fields, sampled diagnostics and every actual PNG pixel for the module recipes enumerated in validation/ANALYTIC-FIELD-REVIEW.md.",
+        "criteria": "Field error \u003c2e-6, diagnostic error \u003c1e-7, every PNG channel error \u003c=1, state preserved; existing PDE residual and invariant checks pass.",
+        "benchmark": "Independent gauge-invariant NLS intensities, direct Hirota tau derivatives, and atan2 breather with finite-difference physical energy; independent print color/cell mapping.",
+        "failureControl": "One-cell displacement fails fields and print; prior equation checks reject wrong dispersion, absent interaction or perturbed frequency.",
+        "limitations": "Only the enumerated finite recipes, recorded Chromium and caption-free unsmoothed PNG; no physical accuracy or all-parameter claim."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/analytic-field-review.json",
+    "domain": {
+      "parameters": "Exactly the breather recipes and recorded effective parameters in validation/results/analytic-field-review.json.",
+      "conditions": "Analytic spacetime sampling, finite windows and no PDE time integrator; details in validation/ANALYTIC-FIELD-REVIEW.md. Static export preserves recipe and field.",
+      "resolution": "Grids 128,192 or224 with recorded aspect-dependent height; all cells and all PNG pixels, longest edge2400; independent residual convergence over three difference steps.",
+      "precision": "Binary64 reference and diagnostics, Float32 field, RGBA8 print. Field error\u003c2e-6, diagnostic error\u003c1e-7, every channel\u003c=1 byte."
+    }
   },
   {
     "id": "turing",
@@ -3629,21 +3716,50 @@ shall not be misrepresented as the original profile.
   {
     "id": "gyroid",
     "source": "src/modules/gyroid.js",
-    "sourceSha256": "37184f8647539f1513ffa17cc55dfe8687615d58ab9e19f91538c40f3174b71a",
-    "reference": "A. H. Schoen, NASA Technical Note D-5541 (1970), found the gyroid, a triply periodic minimal surface of genus 3 in the cubic cell, with no embedded straight lines. Its mean curvature vanishes. Butterfly-wing scales and block-copolymer melts later grew it for free. The plate is a 2-D slice of the level set, not a 3-D print.",
-    "equation": "sin x cos y + sin y cos z + sin z cos x = 0,   H = 0",
-    "status": "unvalidated",
+    "sourceSha256": "267c0cd0e13360c490c9593cd4a58410dd30d9c7e8b21fd3cd8532221de4e87e",
+    "reference": "A. H. Schoen, NASA Technical Note D-5541 (1970), discovered the exact gyroid minimal surface. This module uses a three-term trigonometric nodal approximation, as distinguished from exact minimal geometry by Gandy, Bardhan, Mackay and Klinowski, Chemical Physics Letters 336, 187-195 (2001), doi:10.1016/S0009-2614(00)01418-4.",
+    "equation": "F = sin x cos y + sin y cos z + sin z cos x; F = level; H = ½ div(∇F/|∇F|)",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Only the enumerated finite recipes in validation/PERIODIC-FIELD-REVIEW.md and recorded Chromium are covered.",
+      "Gyroid uses a nodal approximation with nonzero mean curvature; circle-map finite averages and tolerance bands do not prove asymptotic mode locking.",
+      "Chaotic circle-map floating-point sensitivity is measured against 40/60/80-digit references; the tongue-field bound is1e-4. Longer trajectories, other parameters, hardware, captions, smoothing and printer calibration are excluded."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend parameters, averaging lengths, initial conditions and hardware with further independent references."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/periodic-field-review.js",
+        "command": "node tools/periodic-field-review.js --write",
+        "results": "validation/results/periodic-field-review.json",
+        "scope": "All cells, diagnostic values and PNG channels for four gyroid and five finite circle-map recipes; independent curvature, periodicity, rotation and high-precision controls.",
+        "criteria": "Field absolute error \u003c2e-6, except declared non-monotone circle fixture \u003c1e-4; diagnostic error \u003c2e-6, every PNG byte error \u003c=1; state unchanged.",
+        "benchmark": "Independent six-sine field and finite-difference Hessian curvature; unwrapped phase evolution, exact K=0 rotations, finite-time bounds and Decimal40/60/80-digit references.",
+        "failureControl": "Missing curvature factor, wrong drive and displaced fields/prints fail; an explicit F=0,H!=0 point rejects exact minimality.",
+        "limitations": "Finite enumerated domain only; no exact gyroid, infinite-time locking or longer chaotic-trajectory certification."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/periodic-field-review.js",
+        "command": "node tools/periodic-field-review.js --write",
+        "results": "validation/results/periodic-field-review.json",
+        "scope": "All cells, diagnostic values and PNG channels for four gyroid and five finite circle-map recipes; independent curvature, periodicity, rotation and high-precision controls.",
+        "criteria": "Field absolute error \u003c2e-6, except declared non-monotone circle fixture \u003c1e-4; diagnostic error \u003c2e-6, every PNG byte error \u003c=1; state unchanged.",
+        "benchmark": "Independent six-sine field and finite-difference Hessian curvature; unwrapped phase evolution, exact K=0 rotations, finite-time bounds and Decimal40/60/80-digit references.",
+        "failureControl": "Missing curvature factor, wrong drive and displaced fields/prints fail; an explicit F=0,H!=0 point rejects exact minimality.",
+        "limitations": "Finite enumerated domain only; no exact gyroid, infinite-time locking or longer chaotic-trajectory certification."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/periodic-field-review.json",
+    "domain": {
+      "parameters": "Exactly the gyroid rows and complete recipes in validation/results/periodic-field-review.json.",
+      "conditions": "Static gyroid nodal-field slices or circle-map initial phase .17 with20 burn-in steps; orbit phase .2 at golden-mean drive. Details in validation/PERIODIC-FIELD-REVIEW.md.",
+      "resolution": "Grids128,192,224 and aspect-dependent heights; complete2400-long-edge PNGs; three curvature difference steps, three averaging lengths and three Decimal precisions.",
+      "precision": "Binary64 reference arithmetic, Float32 fields, RGBA8 output; sensitive circle-map cells additionally checked at40/60/80 decimal digits. Explicit tolerances and recorded environment in result JSON."
+    }
   },
   {
     "id": "dendrite",
@@ -4078,21 +4194,50 @@ shall not be misrepresented as the original profile.
   {
     "id": "devil",
     "source": "src/modules/devil.js",
-    "sourceSha256": "ac4eb88764c85a86f5ca0c4ddfd0f3d40700d5454f3efee32a876564e575115e",
-    "reference": "V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), on the tongues of a driven oscillator; the circle map is the standard example. At K = 1 the rotation number as a function of Ω is a devil's staircase: constant on a fat Cantor set of locked intervals (the Farey sequence of p/q), yet strictly increasing. B. B. Mandelbrot named the staircase. The plate is ρ(Ω, K) or ρ(Ω) itself.",
+    "sourceSha256": "b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc",
+    "reference": "V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), studied the circle-map resonance tongues. This plate evaluates the standard sine circle map with a fixed initial phase. The rotation number is an infinite-time quantity; the plate displays finite-time estimates. For non-monotone maps, different initial phases can have different long-time rotation behavior.",
     "equation": "θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil's staircase)",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Only the enumerated finite recipes in validation/PERIODIC-FIELD-REVIEW.md and recorded Chromium are covered.",
+      "Gyroid uses a nodal approximation with nonzero mean curvature; circle-map finite averages and tolerance bands do not prove asymptotic mode locking.",
+      "Chaotic circle-map floating-point sensitivity is measured against 40/60/80-digit references; the tongue-field bound is1e-4. Longer trajectories, other parameters, hardware, captions, smoothing and printer calibration are excluded."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend parameters, averaging lengths, initial conditions and hardware with further independent references."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/periodic-field-review.js",
+        "command": "node tools/periodic-field-review.js --write",
+        "results": "validation/results/periodic-field-review.json",
+        "scope": "All cells, diagnostic values and PNG channels for four gyroid and five finite circle-map recipes; independent curvature, periodicity, rotation and high-precision controls.",
+        "criteria": "Field absolute error \u003c2e-6, except declared non-monotone circle fixture \u003c1e-4; diagnostic error \u003c2e-6, every PNG byte error \u003c=1; state unchanged.",
+        "benchmark": "Independent six-sine field and finite-difference Hessian curvature; unwrapped phase evolution, exact K=0 rotations, finite-time bounds and Decimal40/60/80-digit references.",
+        "failureControl": "Missing curvature factor, wrong drive and displaced fields/prints fail; an explicit F=0,H!=0 point rejects exact minimality.",
+        "limitations": "Finite enumerated domain only; no exact gyroid, infinite-time locking or longer chaotic-trajectory certification."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/periodic-field-review.js",
+        "command": "node tools/periodic-field-review.js --write",
+        "results": "validation/results/periodic-field-review.json",
+        "scope": "All cells, diagnostic values and PNG channels for four gyroid and five finite circle-map recipes; independent curvature, periodicity, rotation and high-precision controls.",
+        "criteria": "Field absolute error \u003c2e-6, except declared non-monotone circle fixture \u003c1e-4; diagnostic error \u003c2e-6, every PNG byte error \u003c=1; state unchanged.",
+        "benchmark": "Independent six-sine field and finite-difference Hessian curvature; unwrapped phase evolution, exact K=0 rotations, finite-time bounds and Decimal40/60/80-digit references.",
+        "failureControl": "Missing curvature factor, wrong drive and displaced fields/prints fail; an explicit F=0,H!=0 point rejects exact minimality.",
+        "limitations": "Finite enumerated domain only; no exact gyroid, infinite-time locking or longer chaotic-trajectory certification."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/periodic-field-review.json",
+    "domain": {
+      "parameters": "Exactly the devil rows and complete recipes in validation/results/periodic-field-review.json.",
+      "conditions": "Static gyroid nodal-field slices or circle-map initial phase .17 with20 burn-in steps; orbit phase .2 at golden-mean drive. Details in validation/PERIODIC-FIELD-REVIEW.md.",
+      "resolution": "Grids128,192,224 and aspect-dependent heights; complete2400-long-edge PNGs; three curvature difference steps, three averaging lengths and three Decimal precisions.",
+      "precision": "Binary64 reference arithmetic, Float32 fields, RGBA8 output; sensitive circle-map cells additionally checked at40/60/80 decimal digits. Explicit tolerances and recorded environment in result JSON."
+    }
   },
   {
     "id": "talbot",
@@ -4980,16 +5125,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e",
     "reference": "Classical surfaces of Enneper and Dini, and the catenoid–helicoid associate family. Parameter maps: 3D-XplorMath / UCI, Enneper Surface; Thomas Banchoff, Brown University, Differential Geometry §7.3; Oliver Knill, Harvard Math 21a, Dini surface. MathMod inspired the selection; this is an independent implementation, not imported MathMod code or collection data.",
     "equation": "Enneper and catenoid–helicoid: H = 0; Dini (a = 1): K = −1/(1 + b²)",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Established parametric surfaces with finite transparent wire meshes, not physical soap-film simulations or new mathematics.",
       "Independent differential geometry and mesh checks cover declared samples; no global topology, complete immersion, self-intersection or all-parameter certification.",
       "Printed coordinates agree across raster/SVG, while antialiasing varies by backend; arbitrary devices remain untested."
     ],
     "remaining": [
-      "Broaden parameter-domain and independent implementation coverage.",
-      "Assess mesh approximation and visual accuracy across more resolutions and devices.",
-      "Keep global mathematical and physical claims separate from local curvature benchmarks."
+      "Extend the six-preset finite-mesh review to additional parameters, seeds and hardware with independent evidence."
     ],
     "numerical": [
       {
@@ -5008,11 +5151,19 @@ shall not be misrepresented as the original profile.
         "test": "tools/surfaces-print.js",
         "command": "node tools/surfaces-print.js",
         "results": "validation/results/surfaces-print.json",
-        "scope": "All six presets at 800-square, 1600x2000 and 2400-square with true SVG paths, exact requested dimensions, preserved state and repeated seeded geometry.",
+        "scope": "Independent complex-coordinate maps and combined camera matrix reconstruct every SVG vertex of all six presets at800-square,1600x2000,2400-square; actual PNG/SVG and state preservation.",
         "criteria": "Geometry within 0.000051 px, nonblank output, exact state preservation; mean RGB difference below 2/255 at preview and 1/255 at print; a 2% horizontal SVG distortion must fail.",
         "limitations": "Accelerated antialiasing differs from SVG; separate software-canvas control is recorded. SVG is a finite mesh, not an exact smooth surface."
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/surfaces-print.json",
+    "domain": {
+      "parameters": "Six presets enneper,folded,dini,catenoid,helicoid,associate at maintained preset/default parameters, detail96, seed surface-print-fixed; curvature parameters separately enumerated in validation/SURFACES.md.",
+      "conditions": "Finite regular parameter patches, transparent orthographic wire meshes; seeded camera offsets treated as display inputs. No physical dynamics or hidden-surface removal.",
+      "resolution": "225 differential samples with h=.02,.01,.005; mesh refinement48,96,192. Every SVG vertex in18 exports at800x800,1600x2000,2400x2400.",
+      "precision": "Binary64 geometry with independent complex-map and camera reconstruction. SVG\u003c=.000051pixel error, mean RGB error\u003c2 atpreview or\u003c1 atprint, exact state/replay; Chromium environment recorded."
+    }
   },
   {
     "id": "plasma",
@@ -41356,7 +41507,7 @@ void main(){
 </script>
 <script>
 /* modules/breather.js */
-/* GENChase: sine-Gordon breather. A localised oscillation that does not radiate. Exterior energy is measured against the total. */
+/* GENChase: sine-Gordon breather. A localised oscillation that does not radiate. Physical energy is integrated on the sampled middle time slice. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -41396,13 +41547,13 @@ void main(){
     order: 62,
     equation: 'u_tt − u_xx + sin u = 0,   u = 4 arctan[ (β/α) sin(α t) sech(β x) ],   α²+β² = 1',
     credit: 'The sine-Gordon breather is an exact, time-periodic, spatially localised solution; see Seeger, Donth and Kochendörfer (1953) and the inverse-scattering account of Faddeev and Takhtajan. Linear waves radiate. This one does not: the envelope sech(β x) holds a bound oscillation forever. The plate is spacetime of u.',
-    blurb: 'A lump of field that rings in place and never sheds a wave. Linear PDEs cannot do this; sine-Gordon can, because the oscillation sits below the phonon band. The plate is that spacetime. The status line reports energy outside a window of width 6/β against the total, which should stay near 0.',
+    blurb: 'A lump of field that rings in place and never sheds a wave. Linear PDEs cannot do this; sine-Gordon can, because the oscillation sits below the phonon band. The plate is that spacetime. The status compares middle-row energy quadrature with the whole-line value 16β and reports the sampled fraction outside |x|=3/β. Exponentially small tails are nonzero. A short window can miss those tails; their absence on the grid does not measure radiation.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: { Field: 'β sets how tight the envelope is. α = sqrt(1-β²) is the internal frequency.' },
     palette: true, defaultPalette: 'bioluminescent', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
+      let W = 0, H = 0, field, metric = 0, extra = 0, totalEnergy = 0, buf, img;
       function sizeFrom(s) {
         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
         return { W: g, H: Math.max(48, Math.round(g * a)) };
@@ -41411,7 +41562,6 @@ void main(){
         const s = host.getState();
         const sz = sizeFrom(s); W = sz.W; H = sz.H;
         field = new Float32Array(W * H);
-        const rng = U.makeRng(String(s.seed) + '/x');
 
         const b = U.clamp(s.beta, 0.05, 0.95), a = Math.sqrt(Math.max(0, 1 - b * b)), L = s.span, t0 = s.t0;
         let eOut = 0, eAll = 0;
@@ -41422,13 +41572,18 @@ void main(){
             const xx = L * (x / Math.max(1, W - 1) - 0.5);
             const u = 4 * Math.atan((b / Math.max(0.05, a)) * Math.sin(a * t) / Math.cosh(Math.max(-20, Math.min(20, b * xx))));
             field[y * W + x] = u;
-            const e = u * u;
-            eAll += e;
-            if (Math.abs(xx) > wCut) eOut += e;
+            if (y === (H >> 1)) {
+              const q = (b / a) * Math.sin(a * t) / Math.cosh(b * xx);
+              const ut = 4 * b * Math.cos(a * t) / (Math.cosh(b * xx) * (1 + q * q));
+              const ux = -4 * b * q * Math.tanh(b * xx) / (1 + q * q);
+              const e = ((ut * ut + ux * ux) / 2 + 1 - Math.cos(u)) * (x === 0 || x === W - 1 ? .5 : 1);
+              eAll += e;
+              if (Math.abs(xx) > wCut) eOut += e;
+            }
           }
         }
         metric = eOut / Math.max(1e-12, eAll);
-        extra = a;
+        extra = a; totalEnergy = eAll * L / (W - 1);
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
@@ -41459,7 +41614,7 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>ω = α <b>' + f2(extra) + '</b></span><span>E_out / E <b>' + f3(metric) + '</b> · theory 0</span><span>' + (metric < 0.08 ? 'bound' : 'leaking') + '</span>'); }
+      function status() { const b = U.clamp(host.getState().beta, .05, .95); host.setStatus('<span>ω = α <b>' + f2(extra) + '</b></span><span>sampled energy <b>' + f3(totalEnergy) + '</b> · whole line ' + f3(16 * b) + '</span><span>sampled energy outside |x|=3/β <b>' + f3(metric) + '</b> · finite window, nonzero tails</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
@@ -41626,7 +41781,7 @@ void main(){
 </script>
 <script>
 /* modules/gyroid.js */
-/* GENChase: Schoen gyroid, a triply periodic minimal surface. Mean curvature on the level set is measured against 0. */
+/* GENChase: Trigonometric nodal approximation to the Schoen gyroid; it is not exactly minimal. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -41661,15 +41816,23 @@ void main(){
 
   function surprise(rng) { return { z0: rng.range(0, 6), scale: rng.range(1.6, 4.5), kind: rng.pick(['level','field','abs']) }; }
   function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function nodalMeanCurvature(x, y, z) {
+    const sx=Math.sin(x), sy=Math.sin(y), sz=Math.sin(z), cx=Math.cos(x), cy=Math.cos(y), cz=Math.cos(z);
+    const g=[cx*cy-sz*sx, cy*cz-sx*sy, cz*cx-sy*sz];
+    const xx=-sx*cy-sz*cx, yy=-sx*cy-sy*cz, zz=-sy*cz-sz*cx;
+    const xy=-cx*sy, xz=-cz*sx, yz=-cy*sz, g2=g.reduce((sum,v)=>sum+v*v,0);
+    if (g2 < 1e-12) return NaN;
+    return (g2*(xx+yy+zz)-(g[0]*g[0]*xx+g[1]*g[1]*yy+g[2]*g[2]*zz+2*g[0]*g[1]*xy+2*g[0]*g[2]*xz+2*g[1]*g[2]*yz))/(2*g2**1.5);
+  }
   Studio.register({
     id: 'gyroid', name: 'Gyroid', tab: 'Gyroid',
-    subtitle: 'a sponge of zero mean curvature · 1970',
+    subtitle: 'a periodic nodal approximation · 1970 / 2001',
     order: 64,
-    equation: 'sin x cos y + sin y cos z + sin z cos x = 0,   H = 0',
-    credit: 'A. H. Schoen, NASA Technical Note D-5541 (1970), found the gyroid, a triply periodic minimal surface of genus 3 in the cubic cell, with no embedded straight lines. Its mean curvature vanishes. Butterfly-wing scales and block-copolymer melts later grew it for free. The plate is a 2-D slice of the level set, not a 3-D print.',
-    blurb: 'A surface that divides space into two congruent labyrinths and has mean curvature zero everywhere: a minimal sponge. It should not exist in a cubic lattice without straight lines, and then Schoen wrote it down. The plate is one slice. The status line reports mean |H| on the level set against 0.',
+    equation: 'F = sin x cos y + sin y cos z + sin z cos x; F = level; H = ½ div(∇F/|∇F|)',
+    credit: 'A. H. Schoen, NASA Technical Note D-5541 (1970), discovered the exact gyroid minimal surface. This module uses a three-term trigonometric nodal approximation, as distinguished from exact minimal geometry by Gandy, Bardhan, Mackay and Klinowski, Chemical Physics Letters 336, 187-195 (2001), doi:10.1016/S0009-2614(00)01418-4.',
+    blurb: 'A two-dimensional slice through a triply periodic scalar field. Its zero level approximates the gyroid, but its mean curvature is generally nonzero. The status samples the actual three-dimensional mean curvature in a finite band |F-level|<0.08 around the selected level. It is not an exact-surface average or a minimality test.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Surface: 'Scale packs more unit cells onto the plate. Level 0 is the classical gyroid.' },
+    hints: { Surface: 'Scale packs more unit cells onto the plate. Level 0 is the nodal gyroid approximation; nonzero levels are offset level sets.' },
     palette: true, defaultPalette: 'verdigris', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
@@ -41682,20 +41845,14 @@ void main(){
         const s = host.getState();
         const sz = sizeFrom(s); W = sz.W; H = sz.H;
         field = new Float32Array(W * H);
-        const rng = U.makeRng(String(s.seed) + '/x');
 
         const z = s.z0, sc = s.scale, iso = s.iso, kind = s.kind;
         let hAcc = 0, nH = 0;
         for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
           const X = sc * Math.PI * 2 * x / W, Y = sc * Math.PI * 2 * y / H, Z = z;
           const F = Math.sin(X) * Math.cos(Y) + Math.sin(Y) * Math.cos(Z) + Math.sin(Z) * Math.cos(X);
-          const Fx = Math.cos(X) * Math.cos(Y) - Math.sin(Z) * Math.sin(X);
-          const Fy = -Math.sin(X) * Math.sin(Y) + Math.cos(Y) * Math.cos(Z);
-          const Fxx = -Math.sin(X) * Math.cos(Y) - Math.sin(Z) * Math.cos(X);
-          const Fyy = -Math.sin(X) * Math.cos(Y) - Math.sin(Y) * Math.cos(Z);
-          const g2 = Fx * Fx + Fy * Fy + 1e-8;
-          const Hm = (Fxx + Fyy) / Math.sqrt(g2) - (Fx * Fx * Fxx + Fy * Fy * Fyy) / Math.pow(g2, 1.5);
-          if (Math.abs(F - iso) < 0.08) { hAcc += Math.abs(Hm); nH++; }
+          const Hm = nodalMeanCurvature(X, Y, Z);
+          if (Math.abs(F - iso) < 0.08 && Number.isFinite(Hm)) { hAcc += Math.abs(Hm); nH++; }
           let v;
           if (kind === 'field') v = F;
           else if (kind === 'abs') v = Math.abs(F);
@@ -41734,7 +41891,7 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>|H| on surface <b>' + f3(metric) + '</b> · theory 0</span><span>samples ' + (extra | 0) + '</span><span>minimal</span>'); }
+      function status() { host.setStatus('<span>band mean |H| <b>' + (extra ? f3(metric) : 'no regular samples') + '</b></span><span>samples ' + (extra | 0) + ' · |F-level|&lt;0.08</span><span>nodal approximation · generally nonzero</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
@@ -43000,7 +43157,7 @@ void main(){
 </script>
 <script>
 /* modules/devil.js */
-/* GENChase: Circle-map devil's staircase and Arnold tongues. Rotation number is constant on locked intervals yet strictly increasing. */
+/* GENChase: Circle-map devil's staircase and Arnold tongues. Finite-time rotation estimates and orbit histograms; no infinite-time locking certificate. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -43034,31 +43191,8 @@ void main(){
 
   function surprise(rng) { return { K: rng.range(0.4, 1.6), kind: rng.pick(['tongues','stair','tongues']) }; }
   function sanitize(s) { s.grid = Math.max(96, Math.min(224, Math.round(s.grid / 16) * 16)); }
-  Studio.register({
-    id: 'devil', name: 'Devil\'s Staircase', tab: 'Devil',
-    subtitle: 'a staircase constant almost everywhere that still climbs · 1965',
-    order: 95,
-    equation: 'θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil\'s staircase)',
-    credit: 'V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), on the tongues of a driven oscillator; the circle map is the standard example. At K = 1 the rotation number as a function of Ω is a devil\'s staircase: constant on a fat Cantor set of locked intervals (the Farey sequence of p/q), yet strictly increasing. B. B. Mandelbrot named the staircase. The plate is ρ(Ω, K) or ρ(Ω) itself.',
-    blurb: 'A function that is locally constant on a set of positive measure, and still manages to climb from 0 to 1. The locked plateaux are the p/q resonances, the steps between them are chaotic or quasiperiodic according to K. Poincaré said a generic driven oscillator should lock; Arnold drew the tongues. The status line reports the width of the 1/2 tongue against the Bessel formula at small K.',
-    schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Map: 'K = 1 is critical, where the staircase first becomes complete. Tongues are the (Ω, K) plane coloured by ρ.' },
-    palette: true, defaultPalette: 'ember', surprise, sanitize,
-    create(host) {
-      const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
-      function sizeFrom(s) {
-        const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
-        return { W: g, H: Math.max(48, Math.round(g * a)) };
-      }
-      function compute() {
-        const s = host.getState();
-        const sz = sizeFrom(s); W = sz.W; H = sz.H;
-        field = new Float32Array(W * H);
-        const rng = U.makeRng(String(s.seed) + '/x');
-
-        const K0 = s.K, it = s.iters | 0, kind = s.kind;
-        function rho(omega, K, steps) {
+  function circleRotation(omega, K, steps) {
+          if (K === 0) return omega;
           let th = 0.17, acc = 0;
           const k = K / (Math.PI * 2);
           for (let i = 0; i < 20; i++) th = (th + omega - k * Math.sin(Math.PI * 2 * th)) % 1;
@@ -43071,15 +43205,38 @@ void main(){
           }
           return acc / steps;
         }
-        let halfW = 0, nHalf = 0;
+  Studio.register({
+    id: 'devil', name: 'Devil\'s Staircase', tab: 'Devil',
+    subtitle: 'finite-time circle-map rotation estimates · 1965',
+    order: 95,
+    equation: 'θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil\'s staircase)',
+    credit: 'V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), studied the circle-map resonance tongues. This plate evaluates the standard sine circle map with a fixed initial phase. The rotation number is an infinite-time quantity; the plate displays finite-time estimates. For non-monotone maps, different initial phases can have different long-time rotation behavior.',
+    blurb: 'The staircase and tongue views estimate mean phase advance after 20 discarded iterations. A tolerance band near 1/2 is a finite-sample statistic, not proof of a locked rational orbit or its tongue width. The orbit view bins one trajectory at golden-mean drive. K<=1 preserves orientation; K>1 need not have a unique rotation number.',
+    schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
+    hints: { Map: 'Tongues plot finite-time rotation estimates over Ω=0..1 and K=0..2.1. The K slider selects the diagnostic band only in this view. Staircase uses that K throughout. Iters controls averaging; a near-rational estimate does not establish locking.' },
+    palette: true, defaultPalette: 'ember', surprise, sanitize,
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
+      let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
+      function sizeFrom(s) {
+        const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
+        return { W: g, H: Math.max(48, Math.round(g * a)) };
+      }
+      function compute() {
+        const s = host.getState();
+        const sz = sizeFrom(s); W = sz.W; H = sz.H;
+        field = new Float32Array(W * H);
+
+        const K0 = s.K, it = s.iters | 0, kind = s.kind;
+        let halfW = 0, samplesInBand = 0;
         if (kind === 'stair') {
           for (let x = 0; x < W; x++) {
             const omega = x / Math.max(1, W - 1);
-            const r = rho(omega, K0, it);
-            if (Math.abs(r - 0.5) < 0.02) { halfW++; nHalf++; }
+            const r = circleRotation(omega, K0, it);
+            samplesInBand++; if (Math.abs(r - 0.5) < 0.02) halfW++;
             for (let y = 0; y < H; y++) {
               const yy = 1 - y / Math.max(1, H - 1);
-              field[y * W + x] = yy < r ? r : (Math.abs(yy - r) < 0.012 ? 1 : 0.05);
+              field[y * W + x] = Math.abs(yy - r) < 0.012 ? 1 : (yy < r ? r : 0.05);
             }
           }
         } else if (kind === 'orbit') {
@@ -43087,7 +43244,6 @@ void main(){
           const k = K0 / (Math.PI * 2);
           field.fill(0);
           for (let i = 0; i < W * H; i++) {
-            const omega = 0.5 * (1 + Math.sin(i * 0.001));
             th = (th + 0.5 * (Math.sqrt(5) - 1) - k * Math.sin(Math.PI * 2 * th));
             th -= Math.floor(th);
             const x = (th * W) | 0, y = ((i / (W * 2)) | 0) % H;
@@ -43098,13 +43254,13 @@ void main(){
             const K = 2.1 * y / Math.max(1, H - 1);
             for (let x = 0; x < W; x++) {
               const omega = x / Math.max(1, W - 1);
-              const r = rho(omega, K, Math.max(30, it >> 1));
+              const r = circleRotation(omega, K, Math.max(30, it >> 1));
               field[y * W + x] = r;
-              if (Math.abs(K - K0) < 0.05 && Math.abs(r - 0.5) < 0.02) halfW++;
+              if (Math.abs(K - K0) < 0.05) { samplesInBand++; if (Math.abs(r - 0.5) < 0.02) halfW++; }
             }
           }
         }
-        metric = halfW / Math.max(1, W);
+        metric = samplesInBand ? halfW / samplesInBand : null;
         extra = K0;
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
@@ -43136,7 +43292,7 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>K <b>' + f2(extra) + '</b></span><span>½-tongue occupancy <b>' + f2(metric) + '</b></span><span>' + (extra >= 1 ? 'complete staircase' : 'gapped tongues') + '</span>'); }
+      function status() { host.setStatus('<span>K <b>' + f2(extra) + '</b></span><span>near-½ sample fraction <b>' + (metric === null ? 'not measured' : f2(metric)) + '</b></span><span>finite iterations · tolerance 0.02 · no locking certificate</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

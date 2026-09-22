@@ -1,6 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
 const {chromium}=require('playwright'),root=path.resolve(__dirname,'..');
+const records=JSON.parse(fs.readFileSync(path.join(root,'validation/techniques.json'),'utf8'));
 let requests=0,failOnce=true;
 const server=http.createServer((req,res)=>{
  const name=new URL(req.url,'http://localhost').pathname,file=path.resolve(root,'.'+name);
@@ -21,12 +22,14 @@ const server=http.createServer((req,res)=>{
    await page.locator('#btn-science-report').click();
    if(!portable){await page.getByRole('button',{name:'Retry',exact:true}).click();}
    await page.waitForFunction(()=>document.querySelector('#science-content .science-status'));
-   assert.equal(await page.locator('.science-status').innerText(),'partially validated');
+   const expected=records.find(r=>r.id==='double-triangle-bound');
+   assert.equal(await page.locator('.science-status').innerText(),expected.status);
    assert.match(await page.locator('#science-content').innerText(),/Known limits/);
-   assert.match(await page.locator('#science-content').innerText(),/No evidence is registered in this category/);
-   assert.equal(await page.locator('#science-content .science-evidence').count(),2);
+   assert.equal(await page.locator('#science-content .science-evidence').count(),expected.numerical.length+expected.print.length);
+   assert.equal((await page.locator('#science-content').innerText()).includes('No evidence is registered in this category'),!expected.numerical.length||!expected.print.length);
    const pending=page.waitForEvent('download');await page.getByRole('button',{name:'Download science report JSON'}).click();const download=await pending;
    const report=JSON.parse(fs.readFileSync(await download.path(),'utf8'));
+   assert.deepEqual(report.record,expected);
    assert.equal(report.record.id,'double-triangle-bound');assert.equal(report.recipe.id,report.record.id);assert.equal(report.witness.moduleId,report.record.id);
    await page.locator('#science-close').click();assert.equal(await page.evaluate(()=>document.activeElement.id),'btn-science-report');
    await page.evaluate(()=>location.hash='three-vortex-bound/report');await page.waitForFunction(()=>Studio.getRecipe()?.id==='three-vortex-bound');

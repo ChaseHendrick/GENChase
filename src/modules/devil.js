@@ -1,6 +1,6 @@
 
 /* modules/devil.js */
-/* GENChase: Circle-map devil's staircase and Arnold tongues. Rotation number is constant on locked intervals yet strictly increasing. */
+/* GENChase: Circle-map devil's staircase and Arnold tongues. Finite-time rotation estimates and orbit histograms; no infinite-time locking certificate. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -34,31 +34,8 @@
 
   function surprise(rng) { return { K: rng.range(0.4, 1.6), kind: rng.pick(['tongues','stair','tongues']) }; }
   function sanitize(s) { s.grid = Math.max(96, Math.min(224, Math.round(s.grid / 16) * 16)); }
-  Studio.register({
-    id: 'devil', name: 'Devil\'s Staircase', tab: 'Devil',
-    subtitle: 'a staircase constant almost everywhere that still climbs · 1965',
-    order: 95,
-    equation: 'θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil\'s staircase)',
-    credit: 'V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), on the tongues of a driven oscillator; the circle map is the standard example. At K = 1 the rotation number as a function of Ω is a devil\'s staircase: constant on a fat Cantor set of locked intervals (the Farey sequence of p/q), yet strictly increasing. B. B. Mandelbrot named the staircase. The plate is ρ(Ω, K) or ρ(Ω) itself.',
-    blurb: 'A function that is locally constant on a set of positive measure, and still manages to climb from 0 to 1. The locked plateaux are the p/q resonances, the steps between them are chaotic or quasiperiodic according to K. Poincaré said a generic driven oscillator should lock; Arnold drew the tongues. The status line reports the width of the 1/2 tongue against the Bessel formula at small K.',
-    schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Map: 'K = 1 is critical, where the staircase first becomes complete. Tongues are the (Ω, K) plane coloured by ρ.' },
-    palette: true, defaultPalette: 'ember', surprise, sanitize,
-    create(host) {
-      const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
-      function sizeFrom(s) {
-        const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
-        return { W: g, H: Math.max(48, Math.round(g * a)) };
-      }
-      function compute() {
-        const s = host.getState();
-        const sz = sizeFrom(s); W = sz.W; H = sz.H;
-        field = new Float32Array(W * H);
-        const rng = U.makeRng(String(s.seed) + '/x');
-
-        const K0 = s.K, it = s.iters | 0, kind = s.kind;
-        function rho(omega, K, steps) {
+  function circleRotation(omega, K, steps) {
+          if (K === 0) return omega;
           let th = 0.17, acc = 0;
           const k = K / (Math.PI * 2);
           for (let i = 0; i < 20; i++) th = (th + omega - k * Math.sin(Math.PI * 2 * th)) % 1;
@@ -71,15 +48,38 @@
           }
           return acc / steps;
         }
-        let halfW = 0, nHalf = 0;
+  Studio.register({
+    id: 'devil', name: 'Devil\'s Staircase', tab: 'Devil',
+    subtitle: 'finite-time circle-map rotation estimates · 1965',
+    order: 95,
+    equation: 'θ_{n+1} = θ_n + Ω − (K/2π) sin(2π θ_n),   ρ(Ω) = lim (θ_n−θ_0)/n   (devil\'s staircase)',
+    credit: 'V. I. Arnold, Am. Math. Soc. Transl. Ser. 2, 46, 213 (1965), studied the circle-map resonance tongues. This plate evaluates the standard sine circle map with a fixed initial phase. The rotation number is an infinite-time quantity; the plate displays finite-time estimates. For non-monotone maps, different initial phases can have different long-time rotation behavior.',
+    blurb: 'The staircase and tongue views estimate mean phase advance after 20 discarded iterations. A tolerance band near 1/2 is a finite-sample statistic, not proof of a locked rational orbit or its tongue width. The orbit view bins one trajectory at golden-mean drive. K<=1 preserves orientation; K>1 need not have a unique rotation number.',
+    schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
+    hints: { Map: 'Tongues plot finite-time rotation estimates over Ω=0..1 and K=0..2.1. The K slider selects the diagnostic band only in this view. Staircase uses that K throughout. Iters controls averaging; a near-rational estimate does not establish locking.' },
+    palette: true, defaultPalette: 'ember', surprise, sanitize,
+    create(host) {
+      const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
+      let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
+      function sizeFrom(s) {
+        const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
+        return { W: g, H: Math.max(48, Math.round(g * a)) };
+      }
+      function compute() {
+        const s = host.getState();
+        const sz = sizeFrom(s); W = sz.W; H = sz.H;
+        field = new Float32Array(W * H);
+
+        const K0 = s.K, it = s.iters | 0, kind = s.kind;
+        let halfW = 0, samplesInBand = 0;
         if (kind === 'stair') {
           for (let x = 0; x < W; x++) {
             const omega = x / Math.max(1, W - 1);
-            const r = rho(omega, K0, it);
-            if (Math.abs(r - 0.5) < 0.02) { halfW++; nHalf++; }
+            const r = circleRotation(omega, K0, it);
+            samplesInBand++; if (Math.abs(r - 0.5) < 0.02) halfW++;
             for (let y = 0; y < H; y++) {
               const yy = 1 - y / Math.max(1, H - 1);
-              field[y * W + x] = yy < r ? r : (Math.abs(yy - r) < 0.012 ? 1 : 0.05);
+              field[y * W + x] = Math.abs(yy - r) < 0.012 ? 1 : (yy < r ? r : 0.05);
             }
           }
         } else if (kind === 'orbit') {
@@ -87,7 +87,6 @@
           const k = K0 / (Math.PI * 2);
           field.fill(0);
           for (let i = 0; i < W * H; i++) {
-            const omega = 0.5 * (1 + Math.sin(i * 0.001));
             th = (th + 0.5 * (Math.sqrt(5) - 1) - k * Math.sin(Math.PI * 2 * th));
             th -= Math.floor(th);
             const x = (th * W) | 0, y = ((i / (W * 2)) | 0) % H;
@@ -98,13 +97,13 @@
             const K = 2.1 * y / Math.max(1, H - 1);
             for (let x = 0; x < W; x++) {
               const omega = x / Math.max(1, W - 1);
-              const r = rho(omega, K, Math.max(30, it >> 1));
+              const r = circleRotation(omega, K, Math.max(30, it >> 1));
               field[y * W + x] = r;
-              if (Math.abs(K - K0) < 0.05 && Math.abs(r - 0.5) < 0.02) halfW++;
+              if (Math.abs(K - K0) < 0.05) { samplesInBand++; if (Math.abs(r - 0.5) < 0.02) halfW++; }
             }
           }
         }
-        metric = halfW / Math.max(1, W);
+        metric = samplesInBand ? halfW / samplesInBand : null;
         extra = K0;
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
@@ -136,7 +135,7 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>K <b>' + f2(extra) + '</b></span><span>½-tongue occupancy <b>' + f2(metric) + '</b></span><span>' + (extra >= 1 ? 'complete staircase' : 'gapped tongues') + '</span>'); }
+      function status() { host.setStatus('<span>K <b>' + f2(extra) + '</b></span><span>near-½ sample fraction <b>' + (metric === null ? 'not measured' : f2(metric)) + '</b></span><span>finite iterations · tolerance 0.02 · no locking certificate</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

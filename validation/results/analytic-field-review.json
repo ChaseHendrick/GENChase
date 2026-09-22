@@ -1,0 +1,1319 @@
+{
+  "date": "2026-09-22",
+  "scope": "17 enumerated analytic wave fields, sampled diagnostics and actual engine PNG prints; finite analytic sampling, not time integration or physical validation.",
+  "sourceSha256": {
+    "rogue": "63a5c263919c63e7d5bd224cde99e16a17ace1f61e6ffb88030d8fc1f8b42834",
+    "soliton": "37cf9cfbd76b979fdaa91eaf9dc6b98b4c3d130304076f7abfc3242597cddb1e",
+    "breather": "09aab868ea80869b383f11d53275eaa86dd914f926be6cf446ce304f5c7c4879"
+  },
+  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "kernels": {
+    "analytic": {
+      "scope": "Analytic maps, sampled equation residuals, periods, mass and asymptotic phase shifts. Not independent time integration, physical ocean accuracy or full print validation.",
+      "sourceSha256": {
+        "rogue": "63a5c263919c63e7d5bd224cde99e16a17ace1f61e6ffb88030d8fc1f8b42834",
+        "soliton": "37cf9cfbd76b979fdaa91eaf9dc6b98b4c3d130304076f7abfc3242597cddb1e"
+      },
+      "nls": [
+        {
+          "kind": "peregrine",
+          "a": 0.12,
+          "steps": [
+            0.004,
+            0.002,
+            0.001
+          ],
+          "maximumAbsoluteResidual": [
+            0.0018638804300508127,
+            0.0004659924988033026,
+            0.00011650013354014277
+          ],
+          "observedOrders": [
+            1.9999306757509492,
+            1.9999751230542004
+          ],
+          "peakIntensity": 9,
+          "analyticPeak": 9,
+          "periodIntensityError": 0
+        },
+        {
+          "kind": "peregrine",
+          "a": 0.25,
+          "steps": [
+            0.004,
+            0.002,
+            0.001
+          ],
+          "maximumAbsoluteResidual": [
+            0.0018638804300508127,
+            0.0004659924988033026,
+            0.00011650013354014277
+          ],
+          "observedOrders": [
+            1.9999306757509492,
+            1.9999751230542004
+          ],
+          "peakIntensity": 9,
+          "analyticPeak": 9,
+          "periodIntensityError": 0
+        },
+        {
+          "kind": "peregrine",
+          "a": 0.42,
+          "steps": [
+            0.004,
+            0.002,
+            0.001
+          ],
+          "maximumAbsoluteResidual": [
+            0.0018638804300508127,
+            0.0004659924988033026,
+            0.00011650013354014277
+          ],
+          "observedOrders": [
+            1.9999306757509492,
+            1.9999751230542004
+          ],
+          "peakIntensity": 9,
+          "analyticPeak": 9,
+          "periodIntensityError": 0
+        },
+        {
+          "kind": "akhmediev",
+          "a": 0.12,
+          "steps": [
+            0.004,
+            0.002,
+            0.001
+          ],
+          "maximumAbsoluteResidual": [
+            0.0001662360087664183,
+            0.0000415597996017425,
+            0.000010390453242692388
+          ],
+          "observedOrders": [
+            1.9999723186661322,
+            1.9999301101742017
+          ],
+          "peakIntensity": 3.9195917942265415,
+          "analyticPeak": 3.9195917942265424,
+          "periodIntensityError": 1.4432899320127035e-15
+        },
+        {
+          "kind": "akhmediev",
+          "a": 0.25,
+          "steps": [
+            0.004,
+            0.002,
+            0.001
+          ],
+          "maximumAbsoluteResidual": [
+            0.000524196526527021,
+            0.00013105261996848583,
+            0.000032763165430438335
+          ],
+          "observedOrders": [
+            1.999961598073483,
+            1.9999995403585034
+          ],
+          "peakIntensity": 5.82842712474619,
+          "analyticPeak": 5.82842712474619,
+          "periodIntensityError": 7.327471962526033e-15
+        },
+        {
+          "kind": "akhmediev",
+          "a": 0.42,
+          "steps": [
+            0.004,
+            0.002,
+            0.001
+          ],
+          "maximumAbsoluteResidual": [
+            0.00133084864374311,
+            0.00033272472127166,
+            0.00008318074213420346
+          ],
+          "observedOrders": [
+            1.9999455373311092,
+            2.0000075998817315
+          ],
+          "peakIntensity": 8.026060555964673,
+          "analyticPeak": 8.026060555964671,
+          "periodIntensityError": 2.220446049250313e-16
+        },
+        {
+          "kind": "km",
+          "a": 0.12,
+          "steps": [
+            0.004,
+            0.002,
+            0.001
+          ],
+          "maximumAbsoluteResidual": [
+            0.002872549540384739,
+            0.000718180178822081,
+            0.00017955210624620577
+          ],
+          "observedOrders": [
+            1.9999140325263705,
+            1.9999432596460185
+          ],
+          "peakIntensity": 10.414211490264027,
+          "analyticPeak": 10.414211490264018,
+          "periodIntensityError": 1.3322676295501878e-15
+        },
+        {
+          "kind": "km",
+          "a": 0.25,
+          "steps": [
+            0.004,
+            0.002,
+            0.001
+          ],
+          "maximumAbsoluteResidual": [
+            0.004279264651714243,
+            0.001069895620524619,
+            0.00026747764579226896
+          ],
+          "observedOrders": [
+            1.9998928518497365,
+            1.9999798238430009
+          ],
+          "peakIntensity": 11.898979485566354,
+          "analyticPeak": 11.898979485566354,
+          "periodIntensityError": 4.440892098500626e-16
+        },
+        {
+          "kind": "km",
+          "a": 0.42,
+          "steps": [
+            0.004,
+            0.002,
+            0.001
+          ],
+          "maximumAbsoluteResidual": [
+            0.006674026899183616,
+            0.001668663112774027,
+            0.0004171759475823933
+          ],
+          "observedOrders": [
+            1.999864783531172,
+            1.9999648313719356
+          ],
+          "peakIntensity": 13.785863986500221,
+          "analyticPeak": 13.785863986500214,
+          "periodIntensityError": 4.440892098500626e-16
+        }
+      ],
+      "solitons": [
+        {
+          "c1": 1.7,
+          "c2": 0.65,
+          "nu": 0.22,
+          "maximumScaledResidual": [
+            0.00003156461533895261,
+            0.000007894523663547481,
+            0.0000019770878779246102
+          ],
+          "observedOrders": [
+            1.9993840447600375,
+            1.997475222347349
+          ],
+          "measuredFastPhaseShift": 0.4875177303945648,
+          "analyticFastPhaseShift": 0.48751773176563684,
+          "massRows": [
+            {
+              "time": -0.66,
+              "mass": 0.9284291525829609,
+              "wholeLineReference": 0.9284291525829692
+            },
+            {
+              "time": 0,
+              "mass": 0.928429152582963,
+              "wholeLineReference": 0.9284291525829692
+            },
+            {
+              "time": 0.66,
+              "mass": 0.9284291525829628,
+              "wholeLineReference": 0.9284291525829692
+            }
+          ]
+        },
+        {
+          "c1": 1.1,
+          "c2": 1.05,
+          "nu": 0.4,
+          "maximumScaledResidual": [
+            0.00002058224721945834,
+            0.000005146552396739779,
+            0.0000013186597826120306
+          ],
+          "observedOrders": [
+            1.9997222879648813,
+            1.9645339208671073
+          ],
+          "measuredFastPhaseShift": 3.3975396474444324,
+          "analyticFastPhaseShift": 3.397539651480964,
+          "massRows": [
+            {
+              "time": -1.2000000000000002,
+              "mass": 1.658803139812882,
+              "wholeLineReference": 1.658803139812889
+            },
+            {
+              "time": 0,
+              "mass": 1.6588031398128698,
+              "wholeLineReference": 1.658803139812889
+            },
+            {
+              "time": 1.2000000000000002,
+              "mass": 1.6588031398128789,
+              "wholeLineReference": 1.658803139812889
+            }
+          ]
+        },
+        {
+          "c1": 2.4,
+          "c2": 0.2,
+          "nu": 0.08,
+          "maximumScaledResidual": [
+            0.0004357000240290177,
+            0.00010894212323506736,
+            0.00002723955611628526
+          ],
+          "observedOrders": [
+            1.9997733027481823,
+            1.9997867909338654
+          ],
+          "measuredFastPhaseShift": 0.06137291604916939,
+          "analyticFastPhaseShift": 0.061372915937664,
+          "massRows": [
+            {
+              "time": -0.24,
+              "mass": 0.31942510943726465,
+              "wholeLineReference": 0.31942510943726793
+            },
+            {
+              "time": 0,
+              "mass": 0.3194251094372638,
+              "wholeLineReference": 0.31942510943726793
+            },
+            {
+              "time": 0.24,
+              "mass": 0.31942510943726493,
+              "wholeLineReference": 0.31942510943726793
+            }
+          ]
+        },
+        {
+          "c1": 0.4,
+          "c2": 1.8,
+          "nu": 0.6,
+          "maximumScaledResidual": [
+            0.0000655300717362306,
+            0.00001638723144637977,
+            0.000004101305650727749
+          ],
+          "observedOrders": [
+            1.9995849732739641,
+            1.9984169678260313
+          ],
+          "measuredFastPhaseShift": 0.9156691472811929,
+          "analyticFastPhaseShift": 0.9156691482447954,
+          "massRows": [
+            {
+              "time": -1.7999999999999998,
+              "mass": 2.3689155822402332,
+              "wholeLineReference": 2.3689155822402594
+            },
+            {
+              "time": 0,
+              "mass": 2.368915582240237,
+              "wholeLineReference": 2.3689155822402594
+            },
+            {
+              "time": 1.7999999999999998,
+              "mass": 2.368915582240228,
+              "wholeLineReference": 2.3689155822402594
+            }
+          ]
+        }
+      ],
+      "controls": {
+        "wrongNlsDispersionResidual": 3.498324149224228,
+        "additivePulsesResidual": 0.31273485405591145,
+        "equalSpeedSinglePeak": 0.5
+      }
+    },
+    "breather": {
+      "sourceSha256": "09aab868ea80869b383f11d53275eaa86dd914f926be6cf446ce304f5c7c4879",
+      "model": "sine-Gordon breather",
+      "equation": "u_tt - u_xx + sin(u) = 0",
+      "cases": [
+        {
+          "beta": 0.2,
+          "errors": [
+            0.000017850514152724445,
+            0.000004462718480653189,
+            0.0000011156862543952381
+          ],
+          "observedOrder": 1.999981172300355,
+          "wrongFrequencyResidual": 0.0030313259649378975,
+          "period": 6.41274915080932,
+          "periodicError": 4.996003610813204e-16,
+          "totalEnergy": 3.199999999641067,
+          "energyRelativeError": 1.121666093339968e-10,
+          "outsideEnergyFraction": 0.000012417151950391991
+        },
+        {
+          "beta": 0.45,
+          "errors": [
+            0.00005138883146659923,
+            0.000012848029050587214,
+            0.0000032120641057869163
+          ],
+          "observedOrder": 1.999941127848739,
+          "wrongFrequencyResidual": 0.024915976635243583,
+          "period": 7.035816796875419,
+          "periodicError": 1.5543122344752192e-15,
+          "totalEnergy": 7.199999999236422,
+          "energyRelativeError": 1.0605261113738607e-10,
+          "outsideEnergyFraction": 0.00001294523839863956
+        },
+        {
+          "beta": 0.75,
+          "errors": [
+            0.00010606620359756914,
+            0.000026519288508183267,
+            0.000006629988417117859
+          ],
+          "observedOrder": 1.9999074381292183,
+          "wrongFrequencyResidual": 0.0717908931709128,
+          "period": 9.499283293789807,
+          "periodicError": 2.6645352591003757e-15,
+          "totalEnergy": 11.999999998851957,
+          "energyRelativeError": 9.567024950030145e-11,
+          "outsideEnergyFraction": 0.000014143406100558224
+        }
+      ],
+      "pass": true,
+      "limitations": [
+        "Checks the exact analytic field and a bounded spatial integral, not a browser time integrator.",
+        "The localization threshold and finite integration window do not establish every beta or infinite-domain energy."
+      ]
+    }
+  },
+  "cases": [
+    {
+      "id": "rogue",
+      "seed": "analytic-field-rogue-0",
+      "params": {
+        "kind": "peregrine",
+        "a": 0.12,
+        "span": 6,
+        "t0": -1,
+        "grid": 128,
+        "aspect": "1:1",
+        "view": "int",
+        "exposure": 0.75
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 1.0873222351074219,
+      "diagnosticError": 1.7763568394002505e-15,
+      "diagnostic": {
+        "metric": 9,
+        "extra": 8.938807926573453
+      },
+      "fieldSha256": "667e76b1cd2f32aa55cb31d7cdc2e8680556f03038f657e31bec53d215850e40",
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 545603,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "span": 6,
+          "t0": -1,
+          "kind": "peregrine",
+          "a": 0.12,
+          "view": "int",
+          "exposure": 0.75,
+          "seed": "analytic-field-rogue-0",
+          "v": 2,
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "rogue",
+      "seed": "analytic-field-rogue-1",
+      "params": {
+        "kind": "peregrine",
+        "a": 0.25,
+        "span": 10,
+        "t0": 0,
+        "grid": 192,
+        "aspect": "4:5",
+        "view": "log",
+        "exposure": 1
+      },
+      "grid": [
+        192,
+        240
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 1.2117085456848145,
+      "diagnosticError": 1.7763568394002505e-15,
+      "diagnostic": {
+        "metric": 9,
+        "extra": 8.920759032432121
+      },
+      "fieldSha256": "031b7fed29a72749bee3a1f6bc8afc6e5d265970a7ad28c23eaaf4d2f2e8e073",
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 479600,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "span": 10,
+          "t0": 0,
+          "kind": "peregrine",
+          "a": 0.25,
+          "view": "log",
+          "exposure": 1,
+          "seed": "analytic-field-rogue-1",
+          "v": 2,
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "rogue",
+      "seed": "analytic-field-rogue-2",
+      "params": {
+        "kind": "peregrine",
+        "a": 0.42,
+        "span": 16,
+        "t0": 2,
+        "grid": 224,
+        "aspect": "16:9",
+        "view": "int",
+        "exposure": 1.3
+      },
+      "grid": [
+        224,
+        126
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 1.6542210578918457,
+      "diagnosticError": 0,
+      "diagnostic": {
+        "metric": 9,
+        "extra": 8.869568609857604
+      },
+      "fieldSha256": "273642dfefdc1e290ed46e33159c2207d478034dcc38a1a3f7a4ff434df25ff0",
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsChecked": 12960000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 96557,
+        "params": {
+          "grid": 224,
+          "aspect": "16:9",
+          "span": 16,
+          "t0": 2,
+          "kind": "peregrine",
+          "a": 0.42,
+          "view": "int",
+          "exposure": 1.3,
+          "seed": "analytic-field-rogue-2",
+          "v": 2,
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "rogue",
+      "seed": "analytic-field-rogue-3",
+      "params": {
+        "kind": "akhmediev",
+        "a": 0.12,
+        "span": 6,
+        "t0": -1,
+        "grid": 128,
+        "aspect": "1:1",
+        "view": "log",
+        "exposure": 0.75
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.30361509323120117,
+      "diagnosticError": 8.881784197001252e-16,
+      "diagnostic": {
+        "metric": 3.9195917942265424,
+        "extra": 3.9094811852486084
+      },
+      "fieldSha256": "3d720211c293a7b78c74d96f478130210f903449d70dc78edf8657fde39887ee",
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 3469554,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "span": 6,
+          "t0": -1,
+          "kind": "akhmediev",
+          "a": 0.12,
+          "view": "log",
+          "exposure": 0.75,
+          "seed": "analytic-field-rogue-3",
+          "v": 2,
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "rogue",
+      "seed": "analytic-field-rogue-4",
+      "params": {
+        "kind": "akhmediev",
+        "a": 0.25,
+        "span": 10,
+        "t0": 0,
+        "grid": 192,
+        "aspect": "4:5",
+        "view": "int",
+        "exposure": 1
+      },
+      "grid": [
+        192,
+        240
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.6284482479095459,
+      "diagnosticError": 7.105427357601002e-15,
+      "diagnostic": {
+        "metric": 5.82842712474619,
+        "extra": 5.8107978054321725
+      },
+      "fieldSha256": "90e8d2787d8497ae9e8f570707464048974c91258648eb017c0e67fd62a502fe",
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 1019600,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "span": 10,
+          "t0": 0,
+          "kind": "akhmediev",
+          "a": 0.25,
+          "view": "int",
+          "exposure": 1,
+          "seed": "analytic-field-rogue-4",
+          "v": 2,
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "rogue",
+      "seed": "analytic-field-rogue-5",
+      "params": {
+        "kind": "akhmediev",
+        "a": 0.42,
+        "span": 16,
+        "t0": 2,
+        "grid": 224,
+        "aspect": "16:9",
+        "view": "log",
+        "exposure": 1.3
+      },
+      "grid": [
+        224,
+        126
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 1.3946037292480469,
+      "diagnosticError": 0,
+      "diagnostic": {
+        "metric": 8.026060555964671,
+        "extra": 8.019790051470391
+      },
+      "fieldSha256": "ebb3a22bdddca507c538691921ba5e3683c8759ba367e8d99b3122f964a14df8",
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsChecked": 12960000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 506875,
+        "params": {
+          "grid": 224,
+          "aspect": "16:9",
+          "span": 16,
+          "t0": 2,
+          "kind": "akhmediev",
+          "a": 0.42,
+          "view": "log",
+          "exposure": 1.3,
+          "seed": "analytic-field-rogue-5",
+          "v": 2,
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "rogue",
+      "seed": "analytic-field-rogue-6",
+      "params": {
+        "kind": "km",
+        "a": 0.12,
+        "span": 6,
+        "t0": -1,
+        "grid": 128,
+        "aspect": "1:1",
+        "view": "int",
+        "exposure": 0.75
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 1.3607821464538574,
+      "diagnosticError": 3.552713678800501e-15,
+      "diagnostic": {
+        "metric": 10.414211490264018,
+        "extra": 10.330825353305308
+      },
+      "fieldSha256": "7f039f7908aad6d7566e9e7a7e98a631d705e7a115f9fe0c2318d5f14a303e73",
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 465339,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "span": 6,
+          "t0": -1,
+          "kind": "km",
+          "a": 0.12,
+          "view": "int",
+          "exposure": 0.75,
+          "seed": "analytic-field-rogue-6",
+          "v": 2,
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "rogue",
+      "seed": "analytic-field-rogue-7",
+      "params": {
+        "kind": "km",
+        "a": 0.25,
+        "span": 10,
+        "t0": 0,
+        "grid": 192,
+        "aspect": "4:5",
+        "view": "log",
+        "exposure": 1
+      },
+      "grid": [
+        192,
+        240
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 1.8082656860351562,
+      "diagnosticError": 1.5987211554602254e-14,
+      "diagnostic": {
+        "metric": 11.898979485566354,
+        "extra": 11.780067841947368
+      },
+      "fieldSha256": "7074a2b862d3bdc05a1174c8efbc346f8cae398a2ccbabfd661545dd11883569",
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 1219600,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "span": 10,
+          "t0": 0,
+          "kind": "km",
+          "a": 0.25,
+          "view": "log",
+          "exposure": 1,
+          "seed": "analytic-field-rogue-7",
+          "v": 2,
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "rogue",
+      "seed": "analytic-field-rogue-8",
+      "params": {
+        "kind": "km",
+        "a": 0.42,
+        "span": 16,
+        "t0": 2,
+        "grid": 224,
+        "aspect": "16:9",
+        "view": "int",
+        "exposure": 1.3
+      },
+      "grid": [
+        224,
+        126
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 3.0377140045166016,
+      "diagnosticError": 8.881784197001252e-15,
+      "diagnostic": {
+        "metric": 13.785863986500214,
+        "extra": 13.483991085962037
+      },
+      "fieldSha256": "9603398f14435a72546b1143b2187763603501855a58b67ae5a57eb931d2c681",
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsChecked": 12960000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 396633,
+        "params": {
+          "grid": 224,
+          "aspect": "16:9",
+          "span": 16,
+          "t0": 2,
+          "kind": "km",
+          "a": 0.42,
+          "view": "int",
+          "exposure": 1.3,
+          "seed": "analytic-field-rogue-8",
+          "v": 2,
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "soliton",
+      "seed": "analytic-field-soliton-0",
+      "params": {
+        "c1": 1.7,
+        "c2": 0.65,
+        "nu": 0.22,
+        "grid": 128,
+        "aspect": "1:1",
+        "view": "int",
+        "exposure": 0.75
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "fieldError": 4.547473508864641e-13,
+      "displacedFieldError": 0.14867526292800903,
+      "diagnosticError": 1.9984014443252818e-15,
+      "diagnostic": {
+        "metric": 0.9284291525829692,
+        "extra": 0.9284290542843242
+      },
+      "fieldSha256": "bc412377dd66e40f3cb796094cc92e357405391ab9c8d3403975f2d3af613ee4",
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 2520739,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "c1": 1.7,
+          "c2": 0.65,
+          "nu": 0.22,
+          "view": "int",
+          "exposure": 0.75,
+          "seed": "analytic-field-soliton-0",
+          "v": 2,
+          "palette": [
+            "#1B4F72",
+            "#2E86C1",
+            "#7FB3D5",
+            "#D6EAF8",
+            "#F4F6F7"
+          ],
+          "bg": "#0F1B2D"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "soliton",
+      "seed": "analytic-field-soliton-1",
+      "params": {
+        "c1": 1.1,
+        "c2": 1.05,
+        "nu": 0.4,
+        "grid": 192,
+        "aspect": "4:5",
+        "view": "log",
+        "exposure": 1
+      },
+      "grid": [
+        192,
+        240
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.2054295295092743,
+      "diagnosticError": 2.220446049250313e-16,
+      "diagnostic": {
+        "metric": 1.658803139812889,
+        "extra": 1.6586492945740843
+      },
+      "fieldSha256": "4703d481d5760eb7afa1023e6bb86363c6a4120b096ab16a13d8224291848f08",
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 3040200,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "c1": 1.1,
+          "c2": 1.05,
+          "nu": 0.4,
+          "view": "log",
+          "exposure": 1,
+          "seed": "analytic-field-soliton-1",
+          "v": 2,
+          "palette": [
+            "#1B4F72",
+            "#2E86C1",
+            "#7FB3D5",
+            "#D6EAF8",
+            "#F4F6F7"
+          ],
+          "bg": "#0F1B2D"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "soliton",
+      "seed": "analytic-field-soliton-2",
+      "params": {
+        "c1": 2.4,
+        "c2": 0.2,
+        "nu": 0.08,
+        "grid": 224,
+        "aspect": "16:9",
+        "view": "int",
+        "exposure": 1.3
+      },
+      "grid": [
+        224,
+        126
+      ],
+      "fieldError": 9.094947017729282e-13,
+      "displacedFieldError": 0.25496554374694824,
+      "diagnosticError": 6.661338147750939e-16,
+      "diagnostic": {
+        "metric": 0.31942510943726793,
+        "extra": 0.3194251048929568
+      },
+      "fieldSha256": "a62d1fdc0ad3b7e8e029de17d473b9780b803cedb170d4ce0ce88213d4e8ef10",
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsChecked": 12960000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 710017,
+        "params": {
+          "grid": 224,
+          "aspect": "16:9",
+          "c1": 2.4,
+          "c2": 0.2,
+          "nu": 0.08,
+          "view": "int",
+          "exposure": 1.3,
+          "seed": "analytic-field-soliton-2",
+          "v": 2,
+          "palette": [
+            "#1B4F72",
+            "#2E86C1",
+            "#7FB3D5",
+            "#D6EAF8",
+            "#F4F6F7"
+          ],
+          "bg": "#0F1B2D"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "soliton",
+      "seed": "analytic-field-soliton-3",
+      "params": {
+        "c1": 0.4,
+        "c2": 1.8,
+        "nu": 0.6,
+        "grid": 128,
+        "aspect": "1:1",
+        "view": "log",
+        "exposure": 0.75
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "fieldError": 9.094947017729282e-13,
+      "displacedFieldError": 0.20520243048667908,
+      "diagnosticError": 8.881784197001252e-15,
+      "diagnostic": {
+        "metric": 2.3689155822402594,
+        "extra": 2.3689154846181912
+      },
+      "fieldSha256": "dab428ab1849838598f53ddf5872e1fbb3b07ef5615dc3d2b47e8dcf4d2c4659",
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 2608347,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "c1": 0.4,
+          "c2": 1.8,
+          "nu": 0.6,
+          "view": "log",
+          "exposure": 0.75,
+          "seed": "analytic-field-soliton-3",
+          "v": 2,
+          "palette": [
+            "#1B4F72",
+            "#2E86C1",
+            "#7FB3D5",
+            "#D6EAF8",
+            "#F4F6F7"
+          ],
+          "bg": "#0F1B2D"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "soliton",
+      "seed": "analytic-field-soliton-4",
+      "params": {
+        "c1": 1,
+        "c2": 1,
+        "nu": 0.3,
+        "grid": 192,
+        "aspect": "4:5",
+        "view": "int",
+        "exposure": 1
+      },
+      "grid": [
+        192,
+        240
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.03621968626976013,
+      "diagnosticError": 0,
+      "diagnostic": {
+        "metric": 0.6,
+        "extra": 0.5999999816699516
+      },
+      "fieldSha256": "f86ee5bd5a03b32f4f98d0acd02b33b59de9769fafa55956c6c6952df077991e",
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 1440000,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "c1": 1,
+          "c2": 1,
+          "nu": 0.3,
+          "view": "int",
+          "exposure": 1,
+          "seed": "analytic-field-soliton-4",
+          "v": 2,
+          "palette": [
+            "#1B4F72",
+            "#2E86C1",
+            "#7FB3D5",
+            "#D6EAF8",
+            "#F4F6F7"
+          ],
+          "bg": "#0F1B2D"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "breather",
+      "seed": "analytic-field-breather-0",
+      "params": {
+        "beta": 0.2,
+        "t0": 0,
+        "span": 24,
+        "grid": 128,
+        "aspect": "1:1",
+        "view": "int",
+        "exposure": 0.75
+      },
+      "grid": [
+        128,
+        128
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.212553471326828,
+      "diagnosticError": 4.1983794218936055e-10,
+      "diagnostic": {
+        "metric": 0,
+        "extra": 0.9797958971132712,
+        "totalEnergy": 3.1476989627784024
+      },
+      "fieldSha256": "18b0f9d06802b8ff8f96441f363fc2f83a6addf50f5396170b96fe4cf3efb462",
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsChecked": 23040000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 2349439,
+        "params": {
+          "grid": 128,
+          "aspect": "1:1",
+          "beta": 0.2,
+          "t0": 0,
+          "span": 24,
+          "view": "int",
+          "exposure": 0.75,
+          "seed": "analytic-field-breather-0",
+          "v": 2,
+          "palette": [
+            "#0B3D5C",
+            "#0FA3B1",
+            "#5CE1E6",
+            "#B8FFF9",
+            "#F0FFFE"
+          ],
+          "bg": "#050A12"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "breather",
+      "seed": "analytic-field-breather-1",
+      "params": {
+        "beta": 0.45,
+        "t0": 2,
+        "span": 18,
+        "grid": 192,
+        "aspect": "4:5",
+        "view": "log",
+        "exposure": 1
+      },
+      "grid": [
+        192,
+        240
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.03815770149230957,
+      "diagnosticError": 8.144596108650148e-12,
+      "diagnostic": {
+        "metric": 0.006230680079367833,
+        "extra": 0.8930285549745876,
+        "totalEnergy": 7.193544586822953
+      },
+      "fieldSha256": "7b6a7226e0e03e6d5895d4c62c9aa221725716e9fcc7386bad409da274ac8252",
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsChecked": 18432000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 762700,
+        "params": {
+          "grid": 192,
+          "aspect": "4:5",
+          "beta": 0.45,
+          "t0": 2,
+          "span": 18,
+          "view": "log",
+          "exposure": 1,
+          "seed": "analytic-field-breather-1",
+          "v": 2,
+          "palette": [
+            "#0B3D5C",
+            "#0FA3B1",
+            "#5CE1E6",
+            "#B8FFF9",
+            "#F0FFFE"
+          ],
+          "bg": "#050A12"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "id": "breather",
+      "seed": "analytic-field-breather-2",
+      "params": {
+        "beta": 0.75,
+        "t0": -3,
+        "span": 12,
+        "grid": 224,
+        "aspect": "16:9",
+        "view": "int",
+        "exposure": 1.3
+      },
+      "grid": [
+        224,
+        126
+      ],
+      "fieldError": 0,
+      "displacedFieldError": 0.06052827835083008,
+      "diagnosticError": 1.1877077099597955e-10,
+      "diagnostic": {
+        "metric": 0.01533425967680771,
+        "extra": 0.6614378277661477,
+        "totalEnergy": 11.990481185823858
+      },
+      "fieldSha256": "bbfbce2366bb2825c44771c08c0e69c859e2a201880ae6e4c393672d3726e88e",
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsChecked": 12960000,
+        "maxChannelError": 0,
+        "shiftedCellFailurePixels": 1006256,
+        "params": {
+          "grid": 224,
+          "aspect": "16:9",
+          "beta": 0.75,
+          "t0": -3,
+          "span": 12,
+          "view": "int",
+          "exposure": 1.3,
+          "seed": "analytic-field-breather-2",
+          "v": 2,
+          "palette": [
+            "#0B3D5C",
+            "#0FA3B1",
+            "#5CE1E6",
+            "#B8FFF9",
+            "#F0FFFE"
+          ],
+          "bg": "#050A12"
+        }
+      },
+      "statePreserved": true
+    }
+  ],
+  "environment": {
+    "node": "v24.21.0",
+    "chromium": "145.0.7632.6",
+    "platform": "darwin"
+  },
+  "passed": true
+}
