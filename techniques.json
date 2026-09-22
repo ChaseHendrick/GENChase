@@ -3071,7 +3071,7 @@
       "tab": "Reuleaux",
       "subtitle": "a non-circle of constant width · 1875",
       "equation": "width(θ) = R  for all θ,   W ≠ a disk,   area = ½(π − √3) R²",
-      "credit": "F. Reuleaux, The Kinematics of Machinery (1875), described the curved triangle of constant width now named for him. The intersection of three radius-R disks centered at an equilateral triangle has constant support width R. The plate shows this body, rotated overlays or a sampled support-width rose.",
+      "credit": "F. Reuleaux, The Kinematics of Machinery (Kennedy translation, 1876), described the curved triangle of constant width now named for him. The intersection of three radius-R disks centered at an equilateral triangle has constant support width R. The plate shows this body, rotated overlays or a sampled support-width rose.",
       "blurb": "A Reuleaux triangle has constant width despite being noncircular. Width is measured from sampled circular boundary arcs, not from the underlying straight triangle. The displayed variation is a finite-sampling error, bounded by the angular chord spacing. Rotated overlays are geometric poses, not a no-slip rolling or square-drilling mechanism.",
       "order": 99,
       "seed": "",

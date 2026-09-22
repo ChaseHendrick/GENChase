@@ -1,5 +1,9 @@
 # Scientific validation contract
 
+The [Reuleaux review](REULEAUX.md) demonstrates a complete numerical-and-print
+review within an explicitly enumerated recipe domain, including failure controls
+and the distinction between continuous geometry and raster output.
+
 The [CPU dynamics follow-up](CPU-DYNAMICS.md) covers the rigid-body integrator
 correction, finite-time FPUT evolution, single KP-I lumps and unresolved claims.
 

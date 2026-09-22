@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -14,7 +13,7 @@
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, 128, 224, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Body', 'R', 'Side R', GEOM, 24, 80, 1, v => v + ''),
     RANGE('Body', 'frames', 'Rotation frames', GEOM, 8, 48, 2, v => v + ''),
@@ -54,10 +53,10 @@
     subtitle: 'a non-circle of constant width · 1875',
     order: 99,
     equation: 'width(θ) = R  for all θ,   W ≠ a disk,   area = ½(π − √3) R²',
-    credit: 'F. Reuleaux, The Kinematics of Machinery (1875), described the curved triangle of constant width now named for him. The intersection of three radius-R disks centered at an equilateral triangle has constant support width R. The plate shows this body, rotated overlays or a sampled support-width rose.',
+    credit: 'F. Reuleaux, The Kinematics of Machinery (Kennedy translation, 1876), described the curved triangle of constant width now named for him. The intersection of three radius-R disks centered at an equilateral triangle has constant support width R. The plate shows this body, rotated overlays or a sampled support-width rose.',
     blurb: 'A Reuleaux triangle has constant width despite being noncircular. Width is measured from sampled circular boundary arcs, not from the underlying straight triangle. The displayed variation is a finite-sampling error, bounded by the angular chord spacing. Rotated overlays are geometric poses, not a no-slip rolling or square-drilling mechanism.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Body: 'Rotations stack copies of the same body. The width rose uses 720 samples on each curved arc; its finite sampling differs slightly from the exact width R.' },
+    hints: { Body: 'Rotations stack copies of the same body. The width rose uses 720 samples on each curved arc; its finite sampling differs slightly from the exact width R. Large bodies on narrow sheets may be cropped; R is measured in field cells.' },
     palette: true, defaultPalette: 'kiln', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
@@ -70,7 +69,6 @@
         const s = host.getState();
         const sz = sizeFrom(s); W = sz.W; H = sz.H;
         field = new Float32Array(W * H);
-        const rng = U.makeRng(String(s.seed) + '/x');
 
         const R = s.R, nF = s.frames | 0, kind = s.kind;
         const cx = W / 2, cy = H / 2;
@@ -142,7 +140,20 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { const R=host.getState().R, bound=2*R*(1-Math.cos(Math.PI/(6*720))); host.setStatus('<span>sampled mean width <b>'+f3(extra)+'</b> · exact '+f3(R)+'</span><span>relative spread <b>'+metric.toExponential(2)+'</b></span><span>width sampling bound '+bound.toExponential(2)+'</span>'); }
+      function status() {
+        const s = host.getState(), R = s.R;
+        const bound = 2 * R * (1 - Math.cos(Math.PI / (6 * 720)));
+        const roundoff = 1e-12 * R;
+        const mayCrop = s.kind !== 'width' && R / Math.sqrt(3) > Math.min(W, H) / 2;
+        host.setStatus('<span>sampled mean width <b>' + extra.toFixed(6) + '</b> cells · exact ' + R +
+          '</span><span>deficit ' + (R - extra).toExponential(3) + ' · sampling bound ' + bound.toExponential(3) +
+          '</span><span>relative spread ' + metric.toExponential(2) + '</span>' +
+          (mayCrop ? '<span>body may be cropped by the field; width check uses the complete mathematical boundary</span>' : ''));
+        host.setWitness({ label: 'Boundary sampling regression (not a pixel-width measurement)',
+          measured: extra, expected: R, tol: bound + roundoff,
+          valid: Number.isFinite(extra) && extra <= R + roundoff && R - extra <= bound + roundoff,
+          missWhen: 'Sampled mean exceeds the exact width or its chord-error bound; does not validate printed edge width or rolling physics.' });
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

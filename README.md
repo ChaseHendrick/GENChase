@@ -122,6 +122,8 @@ The following results have executable tests and recorded scope. They report disc
 | [Convection diffusion refinement](validation/CONVECTION.md) | Error decreases against exact continuum diffusion | 3.77 × 10⁻⁶ → 1.06 × 10⁻⁶ → 2.73 × 10⁻⁷ | One isolated component; does not validate the complete turbulent flow |
 | [Wave/convection print-state preservation](validation/results/wave-print-state.json) | No changed field or history components | Zero changes across 28 exports | Two grids, initial/evolved paused fields and every view; not full rendering accuracy |
 
+[Reuleaux now has numerical and print validation within a stated finite domain](validation/REULEAUX.md): 13 recorded recipes, 458,400 field cells, and matching cell centers in the actual 300 ppi PNG exports. This checks established geometry and its implementation. It does not establish a new formula, physical rolling behavior or accuracy at every setting.
+
 Other tabs still expose useful diagnostics, but their meaning differs:
 
 | Diagnostic family | What is being checked | What it does **not** establish |

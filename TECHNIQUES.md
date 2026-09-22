@@ -367,7 +367,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Rayleigh–Bénard**. Henri Bénard, Revue générale des Sciences pures et appliquées 11, 1261 (1900), saw the cells in a thin layer of spermaceti heated from below. Lord Rayleigh, Philosophical Magazine 32, 529 (1916), showed with the Boussinesq equations that the layer turns over only once the number now named for him passes a threshold: 657.5 for free surfaces, 1708 for rigid plates (Jeffreys 1928; Pellew and Southwell 1940). This is the two-dimensional Boussinesq system in vorticity-streamfunction form, scaled by the free-fall time, with a red-black SOR Poisson solve for ψ, semi-Lagrangian advection and Thom's wall vorticity.
 
-**Reuleaux**. F. Reuleaux, The Kinematics of Machinery (1875), described the curved triangle of constant width now named for him. The intersection of three radius-R disks centered at an equilateral triangle has constant support width R. The plate shows this body, rotated overlays or a sampled support-width rose.
+**Reuleaux**. F. Reuleaux, The Kinematics of Machinery (Kennedy translation, 1876), described the curved triangle of constant width now named for him. The intersection of three radius-R disks centered at an equilateral triangle has constant support width R. The plate shows this body, rotated overlays or a sampled support-width rose.
 
 **Parametric Surfaces**. Classical surfaces of Enneper and Dini, and the catenoid–helicoid associate family. Parameter maps: 3D-XplorMath / UCI, Enneper Surface; Thomas Banchoff, Brown University, Differential Geometry §7.3; Oliver Knill, Harvard Math 21a, Dini surface. MathMod inspired the selection; this is an independent implementation, not imported MathMod code or collection data.
 
