@@ -13,15 +13,10 @@ async function measure(p) {
     const cs = [...document.querySelectorAll('canvas')].filter(c => c.offsetParent !== null && c.width > 100);
     const c = cs[0]; if (!c) return { err: 'no visible canvas', visibleCanvases: cs.length };
     const st = document.querySelector('#status');
-    // 600, not 200. The seed the shell appends sits at the END of the status, and settle() waits to see
-    // it before believing the plate on screen is the one that was asked for. A technique that reports
-    // its measurements with uncertainties runs long: lozenge's status is about 390 characters and
-    // growdomain's 283 to 315, so at 200 the seed was always cut off, the guard never cleared, and the
-    // stillness route could never fire. Both plates DO go still, and both were quietly falling back to
-    // the step-count route or, for rotor, to nothing at all. rotor reports no step count, so its
-    // determinism passed only because two fingerprints happened to match; a real difference would have
-    // been excused as not comparable. It also cost lozenge about eleven minutes a run instead of three.
-    const status = st ? st.innerText.replace(/\s+/g, ' ').slice(0, 600) : null;
+    // Read the complete status. Long scientific diagnostics can put the appended seed
+    // beyond any fixed character limit; truncating it makes settle() wait for a seed
+    // it can never see, even after the plate has finished.
+    const status = st ? st.innerText.replace(/\s+/g, ' ') : null;
     // The status line is rendered by the technique and lags its state: the shell applies the hash
     // immediately but the text is not rewritten until the technique next reports. The seed field is
     // updated synchronously, so that is what says which plate this actually is.
