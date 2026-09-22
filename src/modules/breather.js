@@ -1,6 +1,6 @@
 
 /* modules/breather.js */
-/* GENChase: sine-Gordon breather. A localised oscillation that does not radiate. Exterior energy is measured against the total. */
+/* GENChase: sine-Gordon breather. A localised oscillation that does not radiate. Physical energy is integrated on the sampled middle time slice. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -40,13 +40,13 @@
     order: 62,
     equation: 'u_tt − u_xx + sin u = 0,   u = 4 arctan[ (β/α) sin(α t) sech(β x) ],   α²+β² = 1',
     credit: 'The sine-Gordon breather is an exact, time-periodic, spatially localised solution; see Seeger, Donth and Kochendörfer (1953) and the inverse-scattering account of Faddeev and Takhtajan. Linear waves radiate. This one does not: the envelope sech(β x) holds a bound oscillation forever. The plate is spacetime of u.',
-    blurb: 'A lump of field that rings in place and never sheds a wave. Linear PDEs cannot do this; sine-Gordon can, because the oscillation sits below the phonon band. The plate is that spacetime. The status line reports energy outside a window of width 6/β against the total, which should stay near 0.',
+    blurb: 'A lump of field that rings in place and never sheds a wave. Linear PDEs cannot do this; sine-Gordon can, because the oscillation sits below the phonon band. The plate is that spacetime. The status compares middle-row energy quadrature with the whole-line value 16β and reports the sampled fraction outside |x|=3/β. Exponentially small tails are nonzero. A short window can miss those tails; their absence on the grid does not measure radiation.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: { Field: 'β sets how tight the envelope is. α = sqrt(1-β²) is the internal frequency.' },
     palette: true, defaultPalette: 'bioluminescent', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
+      let W = 0, H = 0, field, metric = 0, extra = 0, totalEnergy = 0, buf, img;
       function sizeFrom(s) {
         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
         return { W: g, H: Math.max(48, Math.round(g * a)) };
@@ -55,7 +55,6 @@
         const s = host.getState();
         const sz = sizeFrom(s); W = sz.W; H = sz.H;
         field = new Float32Array(W * H);
-        const rng = U.makeRng(String(s.seed) + '/x');
 
         const b = U.clamp(s.beta, 0.05, 0.95), a = Math.sqrt(Math.max(0, 1 - b * b)), L = s.span, t0 = s.t0;
         let eOut = 0, eAll = 0;
@@ -66,13 +65,18 @@
             const xx = L * (x / Math.max(1, W - 1) - 0.5);
             const u = 4 * Math.atan((b / Math.max(0.05, a)) * Math.sin(a * t) / Math.cosh(Math.max(-20, Math.min(20, b * xx))));
             field[y * W + x] = u;
-            const e = u * u;
-            eAll += e;
-            if (Math.abs(xx) > wCut) eOut += e;
+            if (y === (H >> 1)) {
+              const q = (b / a) * Math.sin(a * t) / Math.cosh(b * xx);
+              const ut = 4 * b * Math.cos(a * t) / (Math.cosh(b * xx) * (1 + q * q));
+              const ux = -4 * b * q * Math.tanh(b * xx) / (1 + q * q);
+              const e = ((ut * ut + ux * ux) / 2 + 1 - Math.cos(u)) * (x === 0 || x === W - 1 ? .5 : 1);
+              eAll += e;
+              if (Math.abs(xx) > wCut) eOut += e;
+            }
           }
         }
         metric = eOut / Math.max(1e-12, eAll);
-        extra = a;
+        extra = a; totalEnergy = eAll * L / (W - 1);
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
@@ -103,7 +107,7 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>ω = α <b>' + f2(extra) + '</b></span><span>E_out / E <b>' + f3(metric) + '</b> · theory 0</span><span>' + (metric < 0.08 ? 'bound' : 'leaking') + '</span>'); }
+      function status() { const b = U.clamp(host.getState().beta, .05, .95); host.setStatus('<span>ω = α <b>' + f2(extra) + '</b></span><span>sampled energy <b>' + f3(totalEnergy) + '</b> · whole line ' + f3(16 * b) + '</span><span>sampled energy outside |x|=3/β <b>' + f3(metric) + '</b> · finite window, nonzero tails</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

@@ -137,3 +137,21 @@ and found the four exact collection names above. This confirms selection
 provenance, not numerical equivalence with MathMod. Existing Boy, Klein and gyroid
 catalog entries were excluded from this selection. No historical novelty search
 is needed for a module explicitly presenting these classical examples.
+
+## Completed finite preset review (2026-09-22)
+
+The print reference now reconstructs every vertex independently using complex
+polynomials for Enneper, a half-angle identity for Dini, complex coordinates for
+the associate family, and one combined orthogonal camera matrix. It never calls
+production point, mesh, rotate or project. Seeded camera offsets are captured as
+display inputs. All six presets at detail 96, default or preset wire count, seed
+`surface-print-fixed`, were checked at 800x800,1600x2000,2400x2400. Maximum SVG
+coordinate error was 0.0000500 pixels, within four-decimal serialization error.
+The 2-percent wrong-scale control remains rejected. Actual PNG/SVG, replay and
+state-preservation checks also pass. The independent differential-geometry and
+48/96/192 mesh-refinement suite was rerun on the same source.
+
+The full label covers these six finite preset meshes and exports together with
+the explicitly sampled differential geometry domain above. Other parameters,
+seeds, hardware, exact smooth topology, hidden-surface rendering, material
+stability and physical manufacturing accuracy remain outside that label.

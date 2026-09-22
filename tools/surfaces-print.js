@@ -5,7 +5,7 @@ const fs = require('node:fs'), path = require('node:path'), crypto = require('no
 const assert = require('node:assert/strict'), { chromium } = require('playwright');
 (async () => {
   const root = path.resolve(__dirname, '..'), source = fs.readFileSync(path.join(root, 'src/modules/surfaces.js'), 'utf8');
-  const instrumented = source.replace('  Studio.register({', '  window.surfaceAudit = { project, mesh };\n  Studio.register({');
+  const instrumented = source.replace('  Studio.register({', '  window.surfaceAudit = { camera };\n  Studio.register({');
   const softwareCanvas = process.argv.includes('--software-canvas');
   const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
     ...(softwareCanvas ? ['--disable-accelerated-2d-canvas'] : [])] });
@@ -25,6 +25,22 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
           return { w: img.width, h: img.height, canvas, data: g.getImageData(0, 0, img.width, img.height).data };
         } finally { URL.revokeObjectURL(url); }
       };
+      // Reconstruct parameter coordinates using complex polynomials and a combined
+      // orthogonal matrix, without production point/mesh/rotate/project calls.
+      function referenceProjection(s, w, h) {
+        const c=surfaceAudit.camera(s), C=Math.cos(c.yaw), S=Math.sin(c.yaw), T=Math.cos(c.tilt), U=Math.sin(c.tilt), R=Math.cos(c.roll), Q=Math.sin(c.roll);
+        const rows=[[R*C+Q*U*S,-R*S+Q*U*C,-Q*T],[Q*C-R*U*S,-Q*S-R*U*C,R*T],[T*S,T*C,U]];
+        const d=s.family==='enneper'?[-s.extent,s.extent,-s.extent,s.extent]:s.family==='dini'?[-Math.PI*s.turns,Math.PI*s.turns,.15,1.4]:[-Math.PI,Math.PI,-s.extent,s.extent],vertices=[];
+        for(let j=0;j<=s.detail;j++)for(let i=0;i<=s.detail;i++){
+          const u=d[0]+(d[1]-d[0])*i/s.detail,v=d[2]+(d[3]-d[2])*j/s.detail;let p;
+          if(s.family==='enneper'){const z2=[u*u-v*v,2*u*v],z3=[z2[0]*u-z2[1]*v,z2[0]*v+z2[1]*u];p=[u-z3[0]/3,v+z3[1]/3,z2[0]];}
+          else if(s.family==='dini'){const radius=Math.sin(v);p=[radius*Math.cos(u),radius*Math.sin(u),Math.cos(v)+Math.log(Math.sin(v)/(1+Math.cos(v)))+s.pitch*u];}
+          else {const t=s.associate*Math.PI/2,a=Math.cos(t)*(Math.exp(v)+Math.exp(-v))/2,b=-Math.sin(t)*(Math.exp(v)-Math.exp(-v))/2;p=[a*Math.cos(u)-b*Math.sin(u),a*Math.sin(u)+b*Math.cos(u),Math.cos(t)*v+Math.sin(t)*u];}
+          vertices.push(...rows.map(row=>row.reduce((n,x,k)=>n+x*p[k],0)));
+        }
+        const xs=vertices.filter((_,i)=>i%3===0),ys=vertices.filter((_,i)=>i%3===1),lo=[Math.min(...xs),Math.min(...ys)],hi=[Math.max(...xs),Math.max(...ys)],scale=.84*Math.min(w/(hi[0]-lo[0]),h/(hi[1]-lo[1]));
+        for(let k=0;k<vertices.length;k+=3){vertices[k]=w/2+scale*(vertices[k]-(lo[0]+hi[0])/2);vertices[k+1]=h/2-scale*(vertices[k+1]-(lo[1]+hi[1])/2);}return vertices;
+      }
       const fingerprint = values => { let n = 2166136261; for (const x of values) { n ^= x; n = Math.imul(n, 16777619); } return (n >>> 0).toString(16); };
       let controlError = 0;
       for (const [key, preset] of Object.entries(mod.presets)) {
@@ -42,7 +58,7 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
           require(!xml.querySelector('parsererror,image'), key + ' valid SVG with no raster image');
           const paths = [...xml.querySelectorAll('path')], coords = paths.map(p =>
             [...p.getAttribute('d').matchAll(/[ML]([-\d.]+),([-\d.]+)/g)].map(m => [+m[1], +m[2]]));
-          const vertices = surfaceAudit.project(surfaceAudit.mesh(s), s, w, h).vertices;
+          const vertices = referenceProjection(s, w, h);
           let coordinateError = 0, path = 0;
           for (let axis = 0; axis < 2; axis++) for (let line = 0; line <= s.wires; line++) {
             if (axis === 0 && line === s.wires && s.family === 'associate' && s.associate === 0) continue;
@@ -90,7 +106,8 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
     if (result.failures.length) console.error(JSON.stringify(result, null, 2));
     assert.deepEqual(result.failures, [], 'surface print regressions: ' + result.failures.join('; '));
     const artifact = { schemaVersion: 1, date: new Date().toISOString().slice(0, 10), passed: true,
-      source: 'src/modules/surfaces.js', sourceSha256: crypto.createHash('sha256').update(source).digest('hex'),
+      source: 'src/modules/surfaces.js', reference: 'Independent complex-coordinate maps and combined camera matrix reconstruct every exported vertex; camera random offsets are captured as display inputs.',
+      sourceSha256: crypto.createHash('sha256').update(source).digest('hex'),
       softwareCanvas,
       criteria: { svgCoordinateErrorPixels: 0.000051, rasterVectorMeanAbsoluteChannelError: { preview800: 2, print: 1 }, minInkFraction: 0.005,
         exactDimensions: true, deterministicReplay: true, recipeAndVisiblePlatePreserved: true, seedChangesView: true },
