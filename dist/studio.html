@@ -8440,7 +8440,8 @@ void main(){
     $('tabs').addEventListener('keydown', async ev => {
       const keys = ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Home', 'End'];
       if (keys.indexOf(ev.key) < 0) return;
-      const list = [...document.querySelectorAll('.tab[data-id]')];
+      // Only the tabs a search leaves visible; moving onto a hidden tab switches to a plate nobody can see.
+      const list = [...document.querySelectorAll('.tab[data-id]:not(.is-hidden)')];
       if (!list.length) return;
       const at = Math.max(0, list.findIndex(b => b.dataset.id === (loadingId || currentId)));
       let to = at;
@@ -8487,8 +8488,8 @@ void main(){
       const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || ev.target.isContentEditable;
       const modalOpen = MODALS.map($).some(m => m && !m.hidden);
       if (ev.key === 'Escape') {
-        if (find && find.value) { find.value = ''; find.dispatchEvent(new Event('input')); return; }
         if (modalOpen) { closeAllModals(); return; }
+        if (find && find.value) { find.value = ''; find.dispatchEvent(new Event('input')); return; }
         if (focusMode) { setFocus(false); return; }
         return;
       }
@@ -8498,6 +8499,8 @@ void main(){
         return;
       }
       if (modalOpen || typing) return;
+      // Ctrl, Cmd and Alt chords belong to the browser (find, print, reload, save); only undo is ours.
+      if ((ev.metaKey || ev.ctrlKey || ev.altKey) && ev.key !== 'z' && ev.key !== 'Z') return;
       const role = (ev.target && ev.target.getAttribute && ev.target.getAttribute('role')) || '';
       if (ev.key === ' ') {
         if (tag === 'BUTTON' || role === 'button' || role === 'tab' || role === 'switch' || tag === 'A' || tag === 'SUMMARY') return;
