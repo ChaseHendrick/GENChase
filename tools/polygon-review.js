@@ -77,7 +77,7 @@ async function main(){
           }
         }
         if(max>1e-7||!compared)throw Error('SVG coordinate mismatch '+max);
-        const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const g=canvas.getContext('2d');g.drawImage(img,0,0);
+        const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const g=canvas.getContext('2d',{alpha:false});g.drawImage(img,0,0);
         const pixels=g.getImageData(0,0,w,h).data;
         const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'})),direct=new Image();direct.src=url;await direct.decode();
         g.fillStyle=e.state.bg;g.fillRect(0,0,w,h);g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';g.drawImage(direct,0,0,w,h);const expected=g.getImageData(0,0,w,h).data;
@@ -85,7 +85,7 @@ async function main(){
         let displacedMismatches=0;for(let i=0;i<pixels.length;i++)if(pixels[i]!==shifted[i])displacedMismatches++;
         if(!displacedMismatches)throw Error('Displaced SVG print control was not detected');
         let mismatch=0,foreground=0;for(let i=0;i<pixels.length;i++){if(pixels[i]!==expected[i])mismatch++;if(i%4!==3&&pixels[i]!==pixels[i%4])foreground++;}
-        if(mismatch||!foreground)throw Error('PNG differs from validated SVG rasterization or is blank');
+        if(mismatch||!foreground)throw Error('PNG differs from validated SVG rasterization or is blank: '+JSON.stringify({mismatch,foreground,view:e.state.view,w,h}));
         return {width:w,height:h,svgCoordinatesCompared:compared,svgMaxError:max,pngChannelMismatches:mismatch,foregroundChannels:foreground,displacedPrintChannelMismatches:displacedMismatches};
       });
       assert.equal(Math.max(print.width,print.height),2400);
