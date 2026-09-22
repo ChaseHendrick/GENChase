@@ -1,0 +1,813 @@
+{
+  "date": "2026-09-22",
+  "sourceSha256": "20778362fcd32e7be2631ff81c81d0a618bca87d3064bec7196dda059d7940d4",
+  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "scope": "Only the 16 enumerated recipes; mathematical point-vortex model and exported geometry, not physical fluids or arbitrary settings.",
+  "reference": {
+    "angles": 11381,
+    "maxRelative": 6.582512313002553e-13,
+    "maxCoefficient": 3.1086244689504383e-15,
+    "rows": [
+      {
+        "n": 2,
+        "minimum": 1.6770509831248417,
+        "thetaDegrees": 37.76124390703504,
+        "largestResidual": 4.454402695409261e-16
+      },
+      {
+        "n": 3,
+        "minimum": 1.7950549357115013,
+        "thetaDegrees": 26.09041119133353,
+        "largestResidual": 5.7881749346642705e-16
+      },
+      {
+        "n": 4,
+        "minimum": 1.9938176049918177,
+        "thetaDegrees": 20.145493195011422,
+        "largestResidual": 5.075738098378413e-16
+      },
+      {
+        "n": 5,
+        "minimum": 2.224929774172659,
+        "thetaDegrees": 16.464159342462768,
+        "largestResidual": 5.566421940600227e-16
+      },
+      {
+        "n": 6,
+        "minimum": 2.478740630060174,
+        "thetaDegrees": 13.93961106300255,
+        "largestResidual": 6.299764187536503e-16
+      },
+      {
+        "n": 7,
+        "minimum": 2.7525388202496655,
+        "thetaDegrees": 12.093531726102926,
+        "largestResidual": 6.514573378136975e-16
+      },
+      {
+        "n": 8,
+        "minimum": 3.045653092898295,
+        "thetaDegrees": 10.68197700856447,
+        "largestResidual": 7.24317205515218e-16
+      },
+      {
+        "n": 9,
+        "minimum": 3.35819087575207,
+        "thetaDegrees": 9.56643469014479,
+        "largestResidual": 7.984885652767156e-16
+      },
+      {
+        "n": 10,
+        "minimum": 3.690614097102415,
+        "thetaDegrees": 8.662038899470751,
+        "largestResidual": 8.046765548034057e-16
+      },
+      {
+        "n": 11,
+        "minimum": 4.043570478762138,
+        "thetaDegrees": 7.9137358562830675,
+        "largestResidual": 8.513790623366642e-16
+      },
+      {
+        "n": 12,
+        "minimum": 4.417818267910036,
+        "thetaDegrees": 7.284180689722374,
+        "largestResidual": 8.873126086813033e-16
+      },
+      {
+        "n": 13,
+        "minimum": 4.814189804062457,
+        "thetaDegrees": 6.7471137080564585,
+        "largestResidual": 1.0754697046179497e-15
+      },
+      {
+        "n": 14,
+        "minimum": 5.233572844137677,
+        "thetaDegrees": 6.283514574217265,
+        "largestResidual": 1.1831052764094273e-15
+      },
+      {
+        "n": 15,
+        "minimum": 5.676900633756771,
+        "thetaDegrees": 5.879259451281041,
+        "largestResidual": 9.835955076407747e-16
+      },
+      {
+        "n": 16,
+        "minimum": 6.145146550699436,
+        "thetaDegrees": 5.523635645261289,
+        "largestResidual": 1.1734835185249195e-15
+      },
+      {
+        "n": 17,
+        "minimum": 6.639321258782902,
+        "thetaDegrees": 5.208367602058836,
+        "largestResidual": 1.2363568770708068e-15
+      },
+      {
+        "n": 18,
+        "minimum": 7.160471298641347,
+        "thetaDegrees": 4.926959488264595,
+        "largestResidual": 1.1557342631722294e-15
+      },
+      {
+        "n": 19,
+        "minimum": 7.7096785313193665,
+        "thetaDegrees": 4.674240188183292,
+        "largestResidual": 1.3313307147681275e-15
+      },
+      {
+        "n": 20,
+        "minimum": 8.288060104895877,
+        "thetaDegrees": 4.446041397166735,
+        "largestResidual": 1.3757784815708563e-15
+      }
+    ],
+    "trajectories": [
+      {
+        "n": 2,
+        "theta": 6,
+        "exactError": 2.6293197043447383e-8,
+        "stepEstimate": 2.6487137896905345e-8,
+        "shapeError": 1.5087166127003953e-11
+      },
+      {
+        "n": 2,
+        "theta": 37.76124390703504,
+        "exactError": 3.911008867731061e-11,
+        "stepEstimate": 3.918617371901402e-11,
+        "shapeError": 3.374329241674164e-15
+      },
+      {
+        "n": 2,
+        "theta": 84,
+        "exactError": 3.2077283124770566e-7,
+        "stepEstimate": 3.276630757719255e-7,
+        "shapeError": 3.224041595043731e-14
+      },
+      {
+        "n": 3,
+        "theta": 4,
+        "exactError": 4.5377990487881456e-8,
+        "stepEstimate": 4.5419926553753787e-8,
+        "shapeError": 9.197999852121465e-10
+      },
+      {
+        "n": 3,
+        "theta": 26.09041119133353,
+        "exactError": 5.1897078804574416e-11,
+        "stepEstimate": 5.199770516207288e-11,
+        "shapeError": 6.313905423575388e-15
+      },
+      {
+        "n": 3,
+        "theta": 56,
+        "exactError": 3.388042820000864e-7,
+        "stepEstimate": 3.463514235856446e-7,
+        "shapeError": 3.4712816654965514e-14
+      },
+      {
+        "n": 4,
+        "theta": 3,
+        "exactError": 1.0151401314170419e-7,
+        "stepEstimate": 9.433429675857819e-8,
+        "shapeError": 2.000995591317549e-8
+      },
+      {
+        "n": 4,
+        "theta": 20.145493195011422,
+        "exactError": 8.403834782606138e-11,
+        "stepEstimate": 8.41939293165207e-11,
+        "shapeError": 6.0085212140356545e-15
+      },
+      {
+        "n": 4,
+        "theta": 42,
+        "exactError": 4.5774732549838245e-7,
+        "stepEstimate": 4.692882421081747e-7,
+        "shapeError": 1.6661276949265678e-14
+      },
+      {
+        "n": 5,
+        "theta": 2.4,
+        "exactError": 0.0000017392016434822029,
+        "stepEstimate": 6.573165631680758e-7,
+        "shapeError": 0.0000017727081380210203
+      },
+      {
+        "n": 5,
+        "theta": 16.464159342462768,
+        "exactError": 1.4078283855278074e-10,
+        "stepEstimate": 1.4105134452929764e-10,
+        "shapeError": 1.68426652692321e-14
+      },
+      {
+        "n": 5,
+        "theta": 33.6,
+        "exactError": 6.723486707273446e-7,
+        "stepEstimate": 6.920882953054926e-7,
+        "shapeError": 1.9493066009706764e-14
+      }
+    ],
+    "controls": "displaced vortex, anisotropic kernel, expanding orientation",
+    "passed": true
+  },
+  "refinement": [
+    {
+      "n": 2,
+      "theta": 6,
+      "errors": [
+        6.514883960032399e-7,
+        4.044390639636019e-8,
+        2.9240745471797732e-9
+      ],
+      "orders": [
+        4.009745226310767,
+        3.789870353665937
+      ]
+    },
+    {
+      "n": 2,
+      "theta": 37.76124390703504,
+      "errors": [
+        9.64291196135149e-10,
+        6.01588182127059e-11,
+        3.770165154641019e-12
+      ],
+      "orders": [
+        4.002620745072967,
+        3.996076598108439
+      ]
+    },
+    {
+      "n": 2,
+      "theta": 84,
+      "errors": [
+        0.000008053525322374553,
+        4.934092408673493e-7,
+        3.0537358471741175e-8
+      ],
+      "orders": [
+        4.028763801163583,
+        4.014137558243433
+      ]
+    },
+    {
+      "n": 3,
+      "theta": 4,
+      "errors": [
+        9.752261954351516e-7,
+        6.103326193002454e-8,
+        6.7604342850487345e-9
+      ],
+      "orders": [
+        3.998069275944512,
+        3.1744078652756866
+      ]
+    },
+    {
+      "n": 3,
+      "theta": 26.09041119133353,
+      "errors": [
+        1.1188410124316639e-9,
+        6.980139815027937e-11,
+        4.3987387000415945e-12
+      ],
+      "orders": [
+        4.0026052988618614,
+        3.9880941265500085
+      ]
+    },
+    {
+      "n": 3,
+      "theta": 56,
+      "errors": [
+        0.000007443315248003534,
+        4.5569075094422537e-7,
+        2.8183777395330467e-8
+      ],
+      "orders": [
+        4.029818346050862,
+        4.015118198564753
+      ]
+    },
+    {
+      "n": 4,
+      "theta": 3,
+      "errors": [
+        0.0000018883235619324048,
+        1.28711811383088e-7,
+        1.6387091432823287e-8
+      ],
+      "orders": [
+        3.8748896346442656,
+        2.9735127337903866
+      ]
+    },
+    {
+      "n": 4,
+      "theta": 20.145493195011422,
+      "errors": [
+        1.7078173270692533e-9,
+        1.0655408273308697e-10,
+        6.669738095676771e-12
+      ],
+      "orders": [
+        4.002495890815001,
+        3.9978119509385266
+      ]
+    },
+    {
+      "n": 4,
+      "theta": 42,
+      "errors": [
+        0.000009505698295617882,
+        5.803877277776094e-7,
+        3.585156745714036e-8
+      ],
+      "orders": [
+        4.033703692967693,
+        4.016908913012974
+      ]
+    },
+    {
+      "n": 5,
+      "theta": 2.4,
+      "errors": [
+        0.000012510783374402014,
+        0.000002130078293066777,
+        0.00003487460227624578
+      ],
+      "orders": [
+        2.5541937638557504,
+        -4.033198399795307
+      ]
+    },
+    {
+      "n": 5,
+      "theta": 16.464159342462768,
+      "errors": [
+        2.7636915698597132e-9,
+        1.7242305658790682e-10,
+        1.0790522932964156e-11
+      ],
+      "orders": [
+        4.002572007715549,
+        3.9981160181137696
+      ]
+    },
+    {
+      "n": 5,
+      "theta": 33.6,
+      "errors": [
+        0.000013537929420110412,
+        8.234555864091476e-7,
+        5.0781565870445806e-8
+      ],
+      "orders": [
+        4.039172450907184,
+        4.019314052514564
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "name": "2-low-spiral",
+      "n": 2,
+      "position": "low",
+      "view": "spiral",
+      "aspect": "1:1",
+      "time": 0.9,
+      "numerical": {
+        "n": 2,
+        "thetaDegrees": 6,
+        "points": 2404,
+        "maxCoordinateError": 4.044390960044409e-8,
+        "displacedCoordinateError": 0.010000038134179932,
+        "product": 6.293539660897084,
+        "collapseTime": 15.440420776538502
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "svgCoordinatesCompared": 4808,
+        "svgMaxError": 0,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 1130254,
+        "displacedPrintChannelMismatches": 479008
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "2-minimum-triangles",
+      "n": 2,
+      "position": "minimum",
+      "view": "triangles",
+      "aspect": "4:5",
+      "time": 0.9,
+      "numerical": {
+        "n": 2,
+        "thetaDegrees": 37.76124390703504,
+        "points": 2404,
+        "maxCoordinateError": 6.015810493100873e-11,
+        "displacedCoordinateError": 0.010000000059587122,
+        "product": 1.6770509831248421,
+        "collapseTime": 5.678090146363056
+      },
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "svgCoordinatesCompared": 152,
+        "svgMaxError": 0,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 438273,
+        "displacedPrintChannelMismatches": 361931
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "2-high-spiral",
+      "n": 2,
+      "position": "high",
+      "view": "spiral",
+      "aspect": "16:9",
+      "time": 0.9,
+      "numerical": {
+        "n": 2,
+        "thetaDegrees": 84,
+        "points": 2404,
+        "maxCoordinateError": 4.934092126692047e-7,
+        "displacedCoordinateError": 0.01000043409931559,
+        "product": 10.367868851114586,
+        "collapseTime": 45.00048355612821
+      },
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "svgCoordinatesCompared": 4808,
+        "svgMaxError": 0,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 601436,
+        "displacedPrintChannelMismatches": 332498
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "2-minimum-bound",
+      "n": 2,
+      "position": "minimum",
+      "view": "bound",
+      "aspect": "5:4",
+      "time": 0.9,
+      "numerical": {
+        "n": 2,
+        "thetaDegrees": 37.76124390703504,
+        "points": 2404,
+        "maxCoordinateError": 6.015810493100873e-11,
+        "displacedCoordinateError": 0.010000000059587122,
+        "product": 1.6770509831248421,
+        "collapseTime": 5.678090146363056
+      },
+      "print": {
+        "width": 2400,
+        "height": 1920,
+        "svgCoordinatesCompared": 522,
+        "svgMaxError": 8.185452315956354e-11,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 267442,
+        "displacedPrintChannelMismatches": 142068
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "3-low-spiral",
+      "n": 3,
+      "position": "low",
+      "view": "spiral",
+      "aspect": "1:1",
+      "time": 0.9,
+      "numerical": {
+        "n": 3,
+        "thetaDegrees": 4,
+        "points": 3606,
+        "maxCoordinateError": 6.10332655412044e-8,
+        "displacedCoordinateError": 0.01000005821605751,
+        "product": 7.064534176399888,
+        "collapseTime": 12.671640858370814
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "svgCoordinatesCompared": 7212,
+        "svgMaxError": 0,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 1707875,
+        "displacedPrintChannelMismatches": 714772
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "3-minimum-triangles",
+      "n": 3,
+      "position": "minimum",
+      "view": "triangles",
+      "aspect": "4:5",
+      "time": 0.9,
+      "numerical": {
+        "n": 3,
+        "thetaDegrees": 26.09041119133353,
+        "points": 3606,
+        "maxCoordinateError": 6.980080362603157e-11,
+        "displacedCoordinateError": 0.010000000045462365,
+        "product": 1.7950549357115013,
+        "collapseTime": 4.348251157039144
+      },
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "svgCoordinatesCompared": 228,
+        "svgMaxError": 0,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 929184,
+        "displacedPrintChannelMismatches": 773621
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "3-high-spiral",
+      "n": 3,
+      "position": "high",
+      "view": "spiral",
+      "aspect": "16:9",
+      "time": 0.9,
+      "numerical": {
+        "n": 3,
+        "thetaDegrees": 56,
+        "points": 3606,
+        "maxCoordinateError": 4.556899678111734e-7,
+        "displacedCoordinateError": 0.0100004333703405,
+        "product": 10.571158420995257,
+        "collapseTime": 32.3783493780973
+      },
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "svgCoordinatesCompared": 7212,
+        "svgMaxError": 0,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 820714,
+        "displacedPrintChannelMismatches": 449316
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "3-minimum-bound",
+      "n": 3,
+      "position": "minimum",
+      "view": "bound",
+      "aspect": "5:4",
+      "time": 0.9,
+      "numerical": {
+        "n": 3,
+        "thetaDegrees": 26.09041119133353,
+        "points": 3606,
+        "maxCoordinateError": 6.980080362603157e-11,
+        "displacedCoordinateError": 0.010000000045462365,
+        "product": 1.7950549357115013,
+        "collapseTime": 4.348251157039144
+      },
+      "print": {
+        "width": 2400,
+        "height": 1920,
+        "svgCoordinatesCompared": 522,
+        "svgMaxError": 7.776179700158536e-11,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 272635,
+        "displacedPrintChannelMismatches": 145607
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "4-low-spiral",
+      "n": 4,
+      "position": "low",
+      "view": "spiral",
+      "aspect": "1:1",
+      "time": 0.9,
+      "numerical": {
+        "n": 4,
+        "thetaDegrees": 3,
+        "points": 4808,
+        "maxCoordinateError": 1.2871183181076304e-7,
+        "displacedCoordinateError": 0.010000127315369084,
+        "product": 8.164851675615493,
+        "collapseTime": 11.917495411371105
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "svgCoordinatesCompared": 9616,
+        "svgMaxError": 0,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 2132829,
+        "displacedPrintChannelMismatches": 900364
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "4-minimum-triangles",
+      "n": 4,
+      "position": "minimum",
+      "view": "triangles",
+      "aspect": "4:5",
+      "time": 0.9,
+      "numerical": {
+        "n": 4,
+        "thetaDegrees": 20.145493195011422,
+        "points": 4808,
+        "maxCoordinateError": 1.0655288179088064e-10,
+        "displacedCoordinateError": 0.010000000094406124,
+        "product": 1.9938176049918177,
+        "collapseTime": 3.808554433916428
+      },
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "svgCoordinatesCompared": 304,
+        "svgMaxError": 0,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 996080,
+        "displacedPrintChannelMismatches": 827825
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "4-high-spiral",
+      "n": 4,
+      "position": "high",
+      "view": "spiral",
+      "aspect": "16:9",
+      "time": 0.9,
+      "numerical": {
+        "n": 4,
+        "thetaDegrees": 42,
+        "points": 4808,
+        "maxCoordinateError": 5.803877461869944e-7,
+        "displacedCoordinateError": 0.01000057976096735,
+        "product": 11.276671995672135,
+        "collapseTime": 26.69752680116596
+      },
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "svgCoordinatesCompared": 9616,
+        "svgMaxError": 0,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 908330,
+        "displacedPrintChannelMismatches": 542164
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "4-minimum-bound",
+      "n": 4,
+      "position": "minimum",
+      "view": "bound",
+      "aspect": "5:4",
+      "time": 0.9,
+      "numerical": {
+        "n": 4,
+        "thetaDegrees": 20.145493195011422,
+        "points": 4808,
+        "maxCoordinateError": 1.0655288179088064e-10,
+        "displacedCoordinateError": 0.010000000094406124,
+        "product": 1.9938176049918177,
+        "collapseTime": 3.808554433916428
+      },
+      "print": {
+        "width": 2400,
+        "height": 1920,
+        "svgCoordinatesCompared": 522,
+        "svgMaxError": 7.491962605854496e-11,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 273306,
+        "displacedPrintChannelMismatches": 145756
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "5-low-spiral",
+      "n": 5,
+      "position": "low",
+      "view": "spiral",
+      "aspect": "1:1",
+      "time": 0.9,
+      "numerical": {
+        "n": 5,
+        "thetaDegrees": 2.4,
+        "points": 6010,
+        "maxCoordinateError": 0.000009365192190542743,
+        "displacedCoordinateError": 0.010006404796421862,
+        "product": 9.386772539682719,
+        "collapseTime": 11.717483936385918
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "svgCoordinatesCompared": 12020,
+        "svgMaxError": 0,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 2818575,
+        "displacedPrintChannelMismatches": 1179053
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "5-minimum-triangles",
+      "n": 5,
+      "position": "minimum",
+      "view": "triangles",
+      "aspect": "4:5",
+      "time": 0.9,
+      "numerical": {
+        "n": 5,
+        "thetaDegrees": 16.464159342462768,
+        "points": 6010,
+        "maxCoordinateError": 1.724211838834284e-10,
+        "displacedCoordinateError": 0.010000000163505218,
+        "product": 2.2249297741726592,
+        "collapseTime": 3.5291083025241843
+      },
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "svgCoordinatesCompared": 380,
+        "svgMaxError": 0,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 1043021,
+        "displacedPrintChannelMismatches": 857869
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "5-high-spiral",
+      "n": 5,
+      "position": "high",
+      "view": "spiral",
+      "aspect": "16:9",
+      "time": 0.9,
+      "numerical": {
+        "n": 5,
+        "thetaDegrees": 33.6,
+        "points": 6010,
+        "maxCoordinateError": 8.234570466269987e-7,
+        "displacedCoordinateError": 0.010000786920996155,
+        "product": 12.209550605369792,
+        "collapseTime": 23.5415090482218
+      },
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "svgCoordinatesCompared": 12020,
+        "svgMaxError": 0,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 1117774,
+        "displacedPrintChannelMismatches": 655171
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "5-minimum-bound",
+      "n": 5,
+      "position": "minimum",
+      "view": "bound",
+      "aspect": "5:4",
+      "time": 0.9,
+      "numerical": {
+        "n": 5,
+        "thetaDegrees": 16.464159342462768,
+        "points": 6010,
+        "maxCoordinateError": 1.724211838834284e-10,
+        "displacedCoordinateError": 0.010000000163505218,
+        "product": 2.2249297741726592,
+        "collapseTime": 3.5291083025241843
+      },
+      "print": {
+        "width": 2400,
+        "height": 1920,
+        "svgCoordinatesCompared": 522,
+        "svgMaxError": 7.253220246639103e-11,
+        "pngChannelMismatches": 0,
+        "foregroundChannels": 269694,
+        "displacedPrintChannelMismatches": 143423
+      },
+      "statePreserved": true
+    }
+  ],
+  "environment": {
+    "node": "v24.21.0",
+    "chromium": "145.0.7632.6",
+    "platform": "darwin"
+  },
+  "passed": true
+}

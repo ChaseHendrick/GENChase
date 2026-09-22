@@ -21,6 +21,7 @@ const HELP = `GENChase headless volunteer runner
 --slug       Candidate file slug
 --allow-battery  Continue on battery; thermal protection stays enabled
 --no-thermal-pause  Disable thermal pausing when you explicitly choose to run without it
+--share      Publicly submit this run and its failures through authenticated GitHub CLI
 --resume     Resume the latest checkpoint with its saved settings
 
 No browser UI or model tokens. Scientific checks may launch a headless browser.
@@ -34,6 +35,7 @@ function parse(args) {
     const flag = args[i];
     if (flag === '--help') return { help: true };
     if (flag === '--no-thermal-pause') { input.power.thermalPause = false; continue; }
+    if (flag === '--share') { input.shareAutomatically = true; continue; }
     if (flag === '--resume') { resume = true; continue; }
     if (flag === '--allow-battery') { input.power.pauseOnBattery = false; continue; }
     const key = { '--mode': 'mode', '--machine': 'machineSlug', '--id': 'id', '--workspace': 'workspace', '--grid': 'grid', '--steps': 'steps', '--n': 'n', '--samples': 'samples', '--slug': 'slug', '--power': 'power' }[flag];
@@ -65,7 +67,10 @@ async function main(args = process.argv.slice(2)) {
     show(); timer = setInterval(show, 1000); await app.jobs.wait(); show();
     const job = app.jobs.current;
     console.log('Exit: ' + job.exitCode + '. Result folder: ~/GENChase/apps/validate/.runs/' + job.id + '/');
-    console.log('Review hardware.json, paste-packet.md and any misses before sharing. No files were uploaded.');
+    await app.shares.wait();
+    const submission = app.shares.state(job.id);
+    console.log(submission.status === 'not-shared' ? 'Files remain local. Use --share to submit directly.' : 'Sharing: ' + submission.status + ' ' + (submission.url || submission.message));
+    if (job.input.shareAutomatically && submission.status !== 'shared') return 1;
     return interrupted ? 130 : job.exitCode ?? 1;
   } finally { clearInterval(timer); process.removeListener('SIGINT', stop); process.removeListener('SIGTERM', stop); await app.close(); }
 }

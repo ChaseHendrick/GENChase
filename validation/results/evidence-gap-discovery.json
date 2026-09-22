@@ -1,0 +1,1984 @@
+{
+  "scope": "Source-reference discovery; candidates require independent-reference, tolerance, failure-control and print review before registration.",
+  "modules": 130,
+  "incompleteModules": 120,
+  "missingEvidenceLists": 187,
+  "rows": [
+    {
+      "id": "life",
+      "source": "src/modules/life.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "physarum3d",
+      "source": "src/modules/physarum3d.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [
+        "tools/physarum3d-display-check.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "cortex",
+      "source": "src/modules/cortex.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "bec",
+      "source": "src/modules/bec.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [
+        "tools/bec-neighbors-check.js",
+        "tools/bec-preview-check.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "physarum",
+      "source": "src/modules/physarum.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "phyllotaxis",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [
+        "tools/cgl-kernel-check.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "hl",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [
+        "tools/cgl-kernel-check.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "lichtenberg",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [
+        "tools/cgl-kernel-check.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "snowflake",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [
+        "tools/cgl-kernel-check.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "growth",
+      "source": "src/modules/growth.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "cyclic",
+      "source": "src/modules/rdx.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/rdx-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
+        "Record hardware precision (the float16 fallback) and validate the actual print path."
+      ]
+    },
+    {
+      "id": "landscape",
+      "source": "src/modules/landscape.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "kpz",
+      "source": "src/modules/kpz.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "potts",
+      "source": "src/modules/potts.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "liesegang",
+      "source": "src/modules/liesegang.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "grains",
+      "source": "src/modules/grains.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "skyrmion",
+      "source": "src/modules/skyrmion.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "tonertu",
+      "source": "src/modules/tonertu.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "hyperbolic",
+      "source": "src/modules/hyperbolic.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "sle",
+      "source": "src/modules/sle.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "fractal",
+      "source": "src/modules/fractal.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "lens",
+      "source": "src/modules/lens.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "rotor",
+      "source": "src/modules/sandpile.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "web",
+      "source": "src/modules/web.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "faraday",
+      "source": "src/modules/faraday.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "film",
+      "source": "src/modules/film.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "timecrystal",
+      "source": "src/modules/timecrystal.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "growdomain",
+      "source": "src/modules/growdomain.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "spinice",
+      "source": "src/modules/spinice.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "vegetation",
+      "source": "src/modules/rdx.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/rdx-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
+        "Record hardware precision (the float16 fallback) and validate the actual print path."
+      ]
+    },
+    {
+      "id": "aztec",
+      "source": "src/modules/aztec.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "skin",
+      "source": "src/modules/skin.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "rmt",
+      "source": "src/modules/rmt.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "stealth",
+      "source": "src/modules/stealth.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "lozenge",
+      "source": "src/modules/lozenge.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "arago",
+      "source": "src/modules/arago.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "ust",
+      "source": "src/modules/ust.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "cppn",
+      "source": "src/modules/cppn.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "rogue",
+      "source": "src/modules/rogue.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/analytic-wave-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Add an independent browser print-state check for all views and representative windows.",
+        "Review the rendered field and parameter limits against the primary sources before considering a stronger status."
+      ]
+    },
+    {
+      "id": "aharonov",
+      "source": "src/modules/aharonov.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "pendulum",
+      "source": "src/modules/dynamics.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "anderson",
+      "source": "src/modules/anderson.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "fput",
+      "source": "src/modules/fput.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/chain-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Correct the mode-energy diagnostic and the unused periods control.",
+        "Establish physical time calibration and nonlinear recurrence benchmarks; audit print exports."
+      ]
+    },
+    {
+      "id": "schrodinger",
+      "source": "src/modules/wavesflow.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/schrodinger-science.js",
+        "tools/schrodinger-state.js",
+        "tools/wave-print-state.js"
+      ],
+      "candidates": [
+        "tools/schrodinger-disorder.js"
+      ],
+      "remaining": [
+        "Establish absorber and general-potential convergence, scattering probabilities and long-time phase error.",
+        "Audit float16, all supported aspect ratios, parameter ranges and graphics hardware.",
+        "Extend state-preserving export checks to quantitative scientific rendering and color fidelity."
+      ]
+    },
+    {
+      "id": "excitable",
+      "source": "src/modules/rdx.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/rdx-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
+        "Record hardware precision (the float16 fallback) and validate the actual print path."
+      ]
+    },
+    {
+      "id": "soliton",
+      "source": "src/modules/soliton.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/analytic-wave-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Add an independent browser print-state check for all views and representative windows.",
+        "Review the rendered field and parameter limits against the primary sources before considering a stronger status."
+      ]
+    },
+    {
+      "id": "cyclicca",
+      "source": "src/modules/lattice.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "chimera",
+      "source": "src/modules/chimera.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "ssh",
+      "source": "src/modules/ssh.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "swarm",
+      "source": "src/modules/swarm.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "amb",
+      "source": "src/modules/pde.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/pde-family-science.js",
+        "tools/pde-print-state.js"
+      ],
+      "candidates": [
+        "tools/cahn-scaling.js",
+        "tools/pde-family-state.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "aubry",
+      "source": "src/modules/aubry.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "cahn",
+      "source": "src/modules/pde.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/pde-science.js",
+        "tools/pde-convergence.js",
+        "tools/pde-stability.js",
+        "tools/pde-family-science.js",
+        "tools/pde-print-state.js"
+      ],
+      "candidates": [
+        "tools/cahn-scaling.js",
+        "tools/pde-family-state.js"
+      ],
+      "remaining": [
+        "Establish spatial convergence at fixed physical domain/time and extend temporal checks beyond the recorded fixture.",
+        "Audit clipping, float16, additive forcing and long-time coarsening with stated tolerances.",
+        "Extend print checks beyond state preservation and dimensions to scientific rendering accuracy."
+      ]
+    },
+    {
+      "id": "ohta",
+      "source": "src/modules/pde.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/pde-family-science.js",
+        "tools/pde-print-state.js"
+      ],
+      "candidates": [
+        "tools/cahn-scaling.js",
+        "tools/pde-family-state.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "swift",
+      "source": "src/modules/pde.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/pde-family-science.js",
+        "tools/pde-print-state.js"
+      ],
+      "candidates": [
+        "tools/cahn-scaling.js",
+        "tools/pde-family-state.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "pfc",
+      "source": "src/modules/pde.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/pde-family-science.js",
+        "tools/pde-print-state.js"
+      ],
+      "candidates": [
+        "tools/cahn-scaling.js",
+        "tools/pde-family-state.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "lp",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [
+        "tools/cgl-kernel-check.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "cloak",
+      "source": "src/modules/cloak.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "xy",
+      "source": "src/modules/xy.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "nematic",
+      "source": "src/modules/nematic.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "darkroom",
+      "source": "src/modules/darkroom.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "fluid",
+      "source": "src/modules/fluid.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "sandpile",
+      "source": "src/modules/lattice.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "kakeya",
+      "source": "src/modules/kakeya.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "ks",
+      "source": "src/modules/pde.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/pde-family-science.js",
+        "tools/pde-print-state.js"
+      ],
+      "candidates": [
+        "tools/cahn-scaling.js",
+        "tools/pde-family-state.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "breather",
+      "source": "src/modules/breather.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/breather-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Audit the actual renderer and print path at declared dimensions.",
+        "Correct the squared-amplitude diagnostic and account for nonzero finite-window tails."
+      ]
+    },
+    {
+      "id": "turing",
+      "source": "src/modules/rdx.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/rdx-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
+        "Record hardware precision (the float16 fallback) and validate the actual print path."
+      ]
+    },
+    {
+      "id": "holomorphic",
+      "source": "src/modules/dynamics.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "klein",
+      "source": "src/modules/klein.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "gyroid",
+      "source": "src/modules/gyroid.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "dendrite",
+      "source": "src/modules/dendrite.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "purcell",
+      "source": "src/modules/purcell.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Replace prescribed motion with a documented low-Reynolds-number force/torque model before claiming quantitative swimming physics.",
+        "Add independent reciprocal-gait, gait-reversal and hydrodynamic benchmarks plus print coverage."
+      ]
+    },
+    {
+      "id": "exceptional",
+      "source": "src/modules/exceptional.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "meissner",
+      "source": "src/modules/meissner.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "tennis",
+      "source": "src/modules/tennis.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/rigid-body-audit.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Broaden inertia, tilt, duration and sampling coverage and test flip-count resolution.",
+        "Audit the actual print path and numerical resolution separately."
+      ]
+    },
+    {
+      "id": "flow",
+      "source": "src/modules/flow.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "chemotaxis",
+      "source": "src/modules/rdx.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/rdx-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
+        "Record hardware precision (the float16 fallback) and validate the actual print path."
+      ]
+    },
+    {
+      "id": "smectic",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [
+        "tools/cgl-kernel-check.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "reaction",
+      "source": "src/modules/reaction.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "tilings",
+      "source": "src/modules/tilings.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "percolation",
+      "source": "src/modules/lattice.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "attractors",
+      "source": "src/modules/attractors.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "airy",
+      "source": "src/modules/airy.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "chirikov",
+      "source": "src/modules/swarm.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "hofstadter",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [
+        "tools/cgl-kernel-check.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "scars",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [
+        "tools/cgl-kernel-check.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "kitaev",
+      "source": "src/modules/kitaev.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "caustics",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [
+        "tools/cgl-kernel-check.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "veselago",
+      "source": "src/modules/veselago.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "devil",
+      "source": "src/modules/devil.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "talbot",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [
+        "tools/cgl-kernel-check.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "orbitals",
+      "source": "src/modules/dynamics.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "loschmidt",
+      "source": "src/modules/loschmidt.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "boy",
+      "source": "src/modules/boy.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "pearls",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [
+        "tools/cgl-kernel-check.js"
+      ],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "ising",
+      "source": "src/modules/lattice.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "thouless",
+      "source": "src/modules/thouless.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "convection",
+      "source": "src/modules/wavesflow.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/convection-science.js",
+        "tools/wave-print-state.js"
+      ],
+      "candidates": [
+        "tools/schrodinger-disorder.js"
+      ],
+      "remaining": [
+        "Establish full coupled spatial/time convergence, onset and sufficient Poisson iteration counts across the proposed domain.",
+        "Audit no-slip boundary accuracy, interpolation damping, float16 and high-Rayleigh resolution.",
+        "Quantify transport sampling/time errors and validate print rendering beyond state preservation."
+      ]
+    },
+    {
+      "id": "chladni",
+      "source": "src/modules/chladni.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/material-wave-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Extend parameter and boundary-condition comparisons with primary sources.",
+        "Validate rendered fields and exports independently at print resolution."
+      ]
+    },
+    {
+      "id": "track",
+      "source": "src/modules/track.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "knotlight",
+      "source": "src/modules/knotlight.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "causticsea",
+      "source": "src/modules/causticsea.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "kp",
+      "source": "src/modules/kp.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "gerstner",
+      "source": "src/modules/gerstner.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/material-wave-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Extend parameter and boundary-condition comparisons with primary sources.",
+        "Validate rendered fields and exports independently at print resolution."
+      ]
+    },
+    {
+      "id": "eight",
+      "source": "src/modules/eight.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/orbit-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Broaden independent reference trajectories and parameter coverage.",
+        "Audit actual print exports and displayed diagnostics."
+      ]
+    },
+    {
+      "id": "peakon",
+      "source": "src/modules/peakon.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/peakon-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Audit the actual renderer and print path at declared dimensions.",
+        "Extend time and separation coverage and compare full trajectories against an independent integrator."
+      ]
+    },
+    {
+      "id": "photon",
+      "source": "src/modules/photon.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/orbit-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Broaden independent reference trajectories and parameter coverage.",
+        "Audit actual print exports and displayed diagnostics."
+      ]
+    },
+    {
+      "id": "crapper",
+      "source": "src/modules/crapper.js",
+      "status": "unvalidated",
+      "missing": [
+        "numerical",
+        "print"
+      ],
+      "registered": [],
+      "candidates": [],
+      "remaining": [
+        "Review assumptions, boundaries, units and deviations against the primary source.",
+        "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
+        "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      ]
+    },
+    {
+      "id": "hasimoto",
+      "source": "src/modules/hasimoto.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/material-wave-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Extend parameter and boundary-condition comparisons with primary sources.",
+        "Validate rendered fields and exports independently at print resolution."
+      ]
+    },
+    {
+      "id": "lump",
+      "source": "src/modules/lump.js",
+      "status": "partially validated",
+      "missing": [
+        "print"
+      ],
+      "registered": [
+        "tools/lump-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Correct unsupported exact interaction claims for the product-tau multi-lump modes.",
+        "Broaden the domain and audit displayed residuals, peaks and actual print exports."
+      ]
+    },
+    {
+      "id": "maxwell",
+      "source": "src/modules/maxwell.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/maxwell-science.js",
+        "tools/maxwell-print-state.js"
+      ],
+      "candidates": [
+        "tools/maxwell-boundary.js",
+        "tools/maxwell-robust.js",
+        "tools/maxwell-search.js"
+      ],
+      "remaining": [
+        "Validate dielectric reflection/transmission and discontinuous-interface refinement against independent references.",
+        "Extend duration, parameter, aspect and hardware coverage including high-grid print paths.",
+        "Compare rendered pixels and color interpretation independently; state preservation alone is not full scientific print accuracy."
+      ]
+    },
+    {
+      "id": "molecular",
+      "source": "src/modules/molecular.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/molecular-science.js",
+        "tools/molecular-print.js"
+      ],
+      "candidates": [
+        "tools/molecular-memory.js"
+      ],
+      "remaining": [
+        "Establish equilibrated observables and transport with independent seeds, correlation-aware uncertainty and finite-size checks before making thermodynamic claims.",
+        "Extend timestep, parameter, seed, high-count and long-duration coverage.",
+        "Assess broader hardware and full scientific interpretation of printed observables."
+      ]
+    },
+    {
+      "id": "surfaces",
+      "source": "src/modules/surfaces.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/surfaces-science.js",
+        "tools/surfaces-print.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Broaden parameter-domain and independent implementation coverage.",
+        "Assess mesh approximation and visual accuracy across more resolutions and devices.",
+        "Keep global mathematical and physical claims separate from local curvature benchmarks."
+      ]
+    },
+    {
+      "id": "plasma",
+      "source": "src/modules/plasma.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/plasma-science.js",
+        "tools/plasma-print.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
+        "Broaden print interpretation and hardware coverage; retain stated model assumptions."
+      ]
+    },
+    {
+      "id": "shallow",
+      "source": "src/modules/shallow.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/shallow-science.js",
+        "tools/shallow-print.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
+        "Broaden print interpretation and hardware coverage; retain stated model assumptions."
+      ]
+    },
+    {
+      "id": "nonreciprocal",
+      "source": "src/modules/nonreciprocal.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/nonreciprocal-science.js",
+        "tools/nonreciprocal-print.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
+        "Broaden print interpretation and hardware coverage; retain stated model assumptions."
+      ]
+    },
+    {
+      "id": "hodgkin-huxley",
+      "source": "src/modules/hodgkin-huxley.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/hodgkin-huxley-science.js",
+        "tools/hodgkin-huxley-print.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Extend parameter-domain and long-duration convergence checks, including a spatial axon or propagation model if one is added.",
+        "Broaden browser and hardware print checks without presenting them as biological experiments."
+      ]
+    },
+    {
+      "id": "neural-mass",
+      "source": "src/modules/neural-mass.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/neural-mass-science.js",
+        "tools/neural-mass-print.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Extend independent parameter, long-duration and spatial/network comparisons before quantitative generalization.",
+        "Broaden browser and hardware print checks while retaining the principal-value population interpretation."
+      ]
+    },
+    {
+      "id": "volume-wave",
+      "source": "src/modules/volume-wave.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/volume-wave-science.js",
+        "tools/volume-wave-science.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Check high-grid allocation, long-time behavior and numerical dispersion across representative hardware.",
+        "Audit pulse continuum error and independently compare rendered slice values across all orientations and print resolutions."
+      ]
+    },
+    {
+      "id": "direct-gravity",
+      "source": "src/modules/direct-gravity.js",
+      "status": "partially validated",
+      "missing": [],
+      "registered": [
+        "tools/direct-gravity-science.js",
+        "tools/direct-gravity-browser.js"
+      ],
+      "candidates": [],
+      "remaining": [
+        "Audit large-N force accuracy, parameter regimes and timestep convergence for the intended experiment.",
+        "Compare scientific state and print geometry at additional dimensions, seeds and hardware."
+      ]
+    }
+  ]
+}

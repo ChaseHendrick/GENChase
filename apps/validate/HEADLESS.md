@@ -81,7 +81,9 @@ The card and runtime text exclude host identifiers and redact absolute paths. Th
 
 ## 5. Share through a reviewed GitHub pull request
 
-Nothing uploads or commits itself. When you decide a result is worth sharing:
+Sharing is off by default. For direct upload, install GitHub CLI, run `gh auth login --hostname github.com`, then add `--share` to the job command. This publicly submits reports, data and failures as an evidence pull request when the run ends, even if scientific checks fail. Upload errors preserve the local evidence and produce a nonzero exit. Open the local app to review files and retry. See [Share results](README.md#share-results-directly) for included files, limits and privacy details.
+
+For the manual download/upload alternative:
 
 1. Fork GENChase on GitHub and create a branch for the result.
 2. In your fork, use **Add file → Upload files** to upload the reviewed evidence JSON and hardware card into a clearly named results folder. Include failure or missing-evidence reports alongside passes.

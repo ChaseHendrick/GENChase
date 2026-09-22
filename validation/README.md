@@ -56,6 +56,13 @@ New formulas use the contributor module workflow in [FORMULA-SUBMISSIONS.md](FOR
 They begin as **unvalidated**. Finite numerical checks, mathematical proof, agreement with experiments
 and historical originality are separate claims.
 
+The [classical collapse-family review](VORTEX-FAMILIES.md) and
+[complete GL field review](GL-FIELD-REVIEW.md) add bounded full-field and actual print
+evidence, including corrections discovered by those independent comparisons.
+
+The [finite geometry field review](GEOMETRY-FIELD-REVIEW.md) independently reconstructs
+Hopf, Apollonian and finite Weierstrass fields and checks every actual print pixel.
+
 ## What a scientific review must establish
 
 The new field and particle additions have bounded audits in [MAXWELL.md](MAXWELL.md) and
@@ -81,8 +88,8 @@ Wave evolution, time levels and bounded convergence are covered in [SCHRODINGER.
 The convection component audit and instantaneous-transport limits are in [CONVECTION.md](CONVECTION.md).
 
 Priority: the remaining Cahn-Hilliard/PDE convergence and precision checks, wave/transport solvers, then stochastic measurements and
-the remaining families. The double-triangle/polygon vortex module already has independent numerical tests; its print
-paths and complete parameter coverage remain unvalidated. The inventory deliberately exposes gaps.
+the remaining families. The double-triangle/polygon vortex module has a complete review for 16 enumerated recipes;
+unlisted recipes remain outside its validated domain. The inventory deliberately exposes gaps.
 
 [Parametric surface geometry and print evidence](SURFACES.md) checks three classical families, with independent curvature and finite-mesh controls.
 

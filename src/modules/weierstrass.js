@@ -1,6 +1,6 @@
 
 /* modules/weierstrass.js */
-/* GENChase: Weierstrass function. Continuous everywhere, differentiable nowhere. Increment ratios are measured at two scales. */
+/* GENChase: finite phase-shifted Weierstrass-type sums. Increment ratios are finite-resolution diagnostics. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -37,13 +37,13 @@
   function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'weierstrass', name: 'Weierstrass', tab: 'Weierstrass',
-    subtitle: 'a curve with no tangent anywhere · 1872',
+    subtitle: 'finite lacunary Fourier sums · inspired by 1872',
     order: 92,
-    equation: 'W(x) = Σ_{n=0}^∞ a^n cos(b^n π x),   0<a<1,   ab > 1 + 3π/2  ⇒  nowhere differentiable',
-    credit: 'K. Weierstrass, presented to the Prussian Academy in 1872 (published 1875). Analysts had assumed a continuous function was differentiable except at isolated points; Weierstrass wrote a Fourier series that is continuous everywhere and differentiable nowhere. Hardy (1916) weakened the condition to ab ≥ 1. The plate is a finite truncation of that series, in one and two dimensions.',
-    blurb: 'A curve you can draw without lifting the pen, that has no tangent at any point. Nineteenth-century analysis said that could not happen. Weierstrass wrote the series anyway. Zoom in: the wiggles never stop, they just change scale. The status line reports the increment ratio |ΔW|/|Δx| at one pixel against ten, which refuses to settle.',
+    equation: 'W_N(x) = Σ_{n=0}^{N−1} a^n cos(b^n π x + φ_n),   0<a<1,   N finite; seeded phases',
+    credit: 'K. Weierstrass, presented to the Prussian Academy in 1872 (published 1875). Analysts had assumed a continuous function was differentiable except at isolated points; Weierstrass wrote a Fourier series that is continuous everywhere and differentiable nowhere. Hardy (1916) weakened the condition to ab ≥ 1. The plate uses a finite, seeded phase-shifted sum inspired by that series. Each finite sum is smooth; the classical infinite-series theorem is not established for this displayed field.',
+    blurb: 'A finite sum of increasingly high frequencies creates structure at several scales. Seeded phases shift each term. Every displayed finite sum is smooth, even when it looks rough. The increment ratio compares two finite distances; it is not proof of nowhere differentiability. Frequencies above the grid resolution alias, and increasing the term count alone does not resolve them.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Curve: 'ab > 1 is Hardy\'s nowhere-differentiable threshold. More terms reveal smaller wiggles; they never become a line.' },
+    hints: { Curve: 'a controls decay and b controls frequency growth. This is a finite smooth sum. Terms above the pixel resolution can alias; the increment ratio is only a sampled diagnostic.' },
     palette: true, defaultPalette: 'graphite', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
@@ -128,7 +128,7 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>ab <b>' + f2(extra) + '</b> · Hardy ≥ 1</span><span>|Δ|₁ / |Δ|₁₀ <b>' + f2(metric) + '</b> · ∞ if nowhere-diff</span><span>' + (extra > 1 ? 'nowhere differentiable' : 'too smooth') + '</span>'); }
+      function status() { host.setStatus('<span>ab <b>' + f2(extra) + '</b></span><span>sampled increment ratio <b>' + f2(metric) + '</b></span><span>finite smooth sum · unresolved frequencies may alias</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

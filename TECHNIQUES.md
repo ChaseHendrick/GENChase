@@ -106,7 +106,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Airy Beam**<br><sub>a wave packet that accelerates with no force · 1979</sub> | `#airy` | ψ(x,z) = Ai(x − z²/4 + i a) exp(a x − a z²/2 + i(x z/2 − z³/12)),   x_peak = z²/4 | raster | still | Occasional |
 | **Chirikov map**<br><sub>standard map · KAM islands in a chaotic sea · 1969</sub> | `#chirikov/chirikov-1969` | pₙ₊₁ = pₙ + K sin θₙ,   θₙ₊₁ = θₙ + pₙ₊₁   (mod 2π) | raster | live | Occasional |
 | **Hofstadter butterfly**<br><sub>almost-Mathieu spectrum · 1976</sub> | `#hofstadter/hofstadter-1976` | ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ | raster | still | Occasional |
-| **Weierstrass**<br><sub>a curve with no tangent anywhere · 1872</sub> | `#weierstrass` | W(x) = Σ_{n=0}^∞ a^n cos(b^n π x),   0<a<1,   ab > 1 + 3π/2  ⇒  nowhere differentiable | raster | still | Occasional |
+| **Weierstrass**<br><sub>finite lacunary Fourier sums · inspired by 1872</sub> | `#weierstrass` | W_N(x) = Σ_{n=0}^{N−1} a^n cos(b^n π x + φ_n),   0<a<1,   N finite; seeded phases | raster | still | Occasional |
 | **Helmholtz scars**<br><sub>stadium and cardioid eigenmodes · Heller 1984</sub> | `#scars/heller-1984` | ∇²ψ + k² ψ = 0  on Ω,   ψ = 0 on ∂Ω | raster | can run | Occasional |
 | **Kitaev Chain**<br><sub>a fermion that is its own antiparticle, stuck to the ends · 2001</sub> | `#kitaev` | H = −μ Σ c†c − t Σ (c†_i c_{i+1}+h.c.) + Δ Σ (c_i c_{i+1}+h.c.),   \|μ\|<2t ⇒ unpaired γ_L, γ_R | raster | still | Rare |
 | **Optical caustics**<br><sub>folds and cusps of a light field · Berry</sub> | `#caustics/berry-caustic` | X = x + s ∇h(x),   I(X) = Σ 1 / \|det(I + s Hess h)\| | raster | still | Common |
@@ -337,7 +337,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Hofstadter butterfly**. Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron colored them. At rational α=p/q the Harper matrix is q×q.
 
-**Weierstrass**. K. Weierstrass, presented to the Prussian Academy in 1872 (published 1875). Analysts had assumed a continuous function was differentiable except at isolated points; Weierstrass wrote a Fourier series that is continuous everywhere and differentiable nowhere. Hardy (1916) weakened the condition to ab ≥ 1. The plate is a finite truncation of that series, in one and two dimensions.
+**Weierstrass**. K. Weierstrass, presented to the Prussian Academy in 1872 (published 1875). Analysts had assumed a continuous function was differentiable except at isolated points; Weierstrass wrote a Fourier series that is continuous everywhere and differentiable nowhere. Hardy (1916) weakened the condition to ab ≥ 1. The plate uses a finite, seeded phase-shifted sum inspired by that series. Each finite sum is smooth; the classical infinite-series theorem is not established for this displayed field.
 
 **Helmholtz scars**. Eric J. Heller, Phys. Rev. Lett. 53, 1515 (1984). In a classically chaotic billiard the high eigenfunctions of the Dirichlet Laplacian are usually ergodic — and yet some sit, as scars, along unstable periodic orbits. The Bunimovich stadium and the cardioid are the textbook domains. Inverse iteration of the discrete Laplacian with a Weyl shift yields a mode near index n.
 

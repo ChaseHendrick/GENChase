@@ -1,0 +1,764 @@
+{
+  "date": "2026-09-22",
+  "scope": "Three classical point-vortex families; only the twelve enumerated field and print recipes. Analytic trajectories, not arbitrary off-family integrations or physical vortices.",
+  "results": [
+    {
+      "id": "three-vortex-bound",
+      "sourceSha256": "733f40bd48157e2ea1269c797addcea0a7045d6f6b05680ae813e26227d2ce37",
+      "numerical": {
+        "timeCases": [
+          {
+            "requested": 0,
+            "actual": 0
+          },
+          {
+            "requested": 0.23,
+            "actual": 0.23031988873435327
+          },
+          {
+            "requested": 0.5,
+            "actual": 0.5003059805285118
+          },
+          {
+            "requested": 0.92,
+            "actual": 0.92
+          }
+        ],
+        "oldTimeAtEnd": 0.8457858136300417,
+        "angles": 150,
+        "maxGeometryError": 0,
+        "maxVelocityError": 1.1102230246251565e-16,
+        "maxFormulaError": 9.992007221626409e-16,
+        "maxExactError": 6.866686775328119e-15,
+        "minimum": {
+          "theta": 35.264389682754654,
+          "expected": 1.4142135623730951,
+          "observed": 1.4142135623730945
+        },
+        "refinements": [
+          {
+            "theta": 8,
+            "steps": [
+              64,
+              128,
+              256
+            ],
+            "timeFraction": 0.5,
+            "errors": [
+              2.2049068882054283e-7,
+              1.3588875277337091e-8,
+              8.433430142315669e-10
+            ],
+            "orders": [
+              4.020219775667704,
+              4.010162701825866
+            ]
+          },
+          {
+            "theta": 35.264389682754654,
+            "steps": [
+              64,
+              128,
+              256
+            ],
+            "timeFraction": 0.5,
+            "errors": [
+              3.20429311855488e-9,
+              1.992266847429801e-10,
+              1.241993274063085e-11
+            ],
+            "orders": [
+              4.007523324584282,
+              4.003681631378004
+            ]
+          },
+          {
+            "theta": 45,
+            "steps": [
+              64,
+              128,
+              256
+            ],
+            "timeFraction": 0.5,
+            "errors": [
+              4.219755347717859e-9,
+              2.625482107701561e-10,
+              1.6372458836807713e-11
+            ],
+            "orders": [
+              4.006505087976541,
+              4.003239454949651
+            ]
+          },
+          {
+            "theta": 82,
+            "steps": [
+              64,
+              128,
+              256
+            ],
+            "timeFraction": 0.5,
+            "errors": [
+              0.000006932647336331067,
+              4.2283153118610847e-7,
+              2.6103737141176443e-8
+            ],
+            "orders": [
+              4.035251502723957,
+              4.0177546945708045
+            ]
+          }
+        ],
+        "wrongSignDetected": true,
+        "brokenResidual": 0.062217503134738526
+      },
+      "cases": [
+        {
+          "name": "three-vortex-bound-low",
+          "width": 2400,
+          "height": 2400,
+          "trajectoryError": 6.938893903907228e-16,
+          "svgMaxError": 0.004998856860311207,
+          "coordinates": 4320,
+          "pngChannelMismatches": 0,
+          "displacedPrintMismatches": 109268,
+          "params": {
+            "seed": "three-vortex-bound-low",
+            "aspect": "1:1",
+            "kind": "family",
+            "theta": 8,
+            "t": 0.92,
+            "running": false,
+            "speed": 0.85,
+            "view": "spiral",
+            "zoom": 1,
+            "fade": 0,
+            "weight": 1,
+            "panX": 0,
+            "panY": 0,
+            "v": 2,
+            "palette": [
+              "#D4B05A",
+              "#C06E3A",
+              "#8A96A3",
+              "#E8D5A3"
+            ],
+            "bg": "#0D0C0B"
+          },
+          "statePreserved": true
+        },
+        {
+          "name": "three-vortex-bound-minimum",
+          "width": 1920,
+          "height": 2400,
+          "trajectoryError": 8.604228440844963e-16,
+          "svgMaxError": 0.004999857509801586,
+          "coordinates": 4320,
+          "pngChannelMismatches": 0,
+          "displacedPrintMismatches": 46008,
+          "params": {
+            "seed": "three-vortex-bound-minimum",
+            "aspect": "4:5",
+            "kind": "family",
+            "theta": 35.264389682754654,
+            "t": 0.92,
+            "running": false,
+            "speed": 0.85,
+            "view": "spiral",
+            "zoom": 1,
+            "fade": 0,
+            "weight": 1,
+            "panX": 0,
+            "panY": 0,
+            "v": 2,
+            "palette": [
+              "#D4B05A",
+              "#C06E3A",
+              "#8A96A3",
+              "#E8D5A3"
+            ],
+            "bg": "#0D0C0B"
+          },
+          "statePreserved": true
+        },
+        {
+          "name": "three-vortex-bound-middle",
+          "width": 2400,
+          "height": 1920,
+          "trajectoryError": 1.1102230246251565e-15,
+          "svgMaxError": 0.0049986165158770746,
+          "coordinates": 108,
+          "pngChannelMismatches": 0,
+          "displacedPrintMismatches": 399676,
+          "params": {
+            "seed": "three-vortex-bound-middle",
+            "aspect": "5:4",
+            "kind": "family",
+            "theta": 45,
+            "t": 0.92,
+            "running": false,
+            "speed": 0.85,
+            "view": "overlay",
+            "zoom": 1,
+            "fade": 0,
+            "weight": 1,
+            "panX": 0,
+            "panY": 0,
+            "v": 2,
+            "palette": [
+              "#D4B05A",
+              "#C06E3A",
+              "#8A96A3",
+              "#E8D5A3"
+            ],
+            "bg": "#0D0C0B"
+          },
+          "statePreserved": true
+        },
+        {
+          "name": "three-vortex-bound-high",
+          "width": 2400,
+          "height": 1350,
+          "trajectoryError": 3.219646771412954e-15,
+          "svgMaxError": 0.004998969597977521,
+          "coordinates": 4320,
+          "pngChannelMismatches": 0,
+          "displacedPrintMismatches": 81295,
+          "params": {
+            "seed": "three-vortex-bound-high",
+            "aspect": "16:9",
+            "kind": "family",
+            "theta": 82,
+            "t": 0.92,
+            "running": false,
+            "speed": 0.85,
+            "view": "polar",
+            "zoom": 1,
+            "fade": 0,
+            "weight": 1,
+            "panX": 0,
+            "panY": 0,
+            "v": 2,
+            "palette": [
+              "#D4B05A",
+              "#C06E3A",
+              "#8A96A3",
+              "#E8D5A3"
+            ],
+            "bg": "#0D0C0B"
+          },
+          "statePreserved": true
+        }
+      ]
+    },
+    {
+      "id": "parallelogram-lock",
+      "sourceSha256": "6d9f5d8842a30373d5b82d257572c193aba611027cb6263853417411cfb2231e",
+      "numerical": {
+        "timeCases": [
+          {
+            "requested": 0,
+            "actual": 0
+          },
+          {
+            "requested": 0.23,
+            "actual": 0.23035993740219096
+          },
+          {
+            "requested": 0.5,
+            "actual": 0.49959311424100156
+          },
+          {
+            "requested": 0.92,
+            "actual": 0.92
+          }
+        ],
+        "oldTimeAtEnd": 0.8465727699530518,
+        "angles": 150,
+        "maxGeometryError": 0,
+        "maxVelocityError": 2.220446049250313e-16,
+        "maxFormulaError": 8.881784197001252e-16,
+        "maxExactError": 4.835877943868453e-15,
+        "minimum": {
+          "theta": 37.76124390703504,
+          "expected": 1.6770509831248424,
+          "observed": 1.6770509831248421
+        },
+        "refinements": [
+          {
+            "theta": 8,
+            "steps": [
+              64,
+              128,
+              256
+            ],
+            "timeFraction": 0.5,
+            "errors": [
+              7.882081495999717e-7,
+              4.8659232896223486e-8,
+              3.0222819948231144e-9
+            ],
+            "orders": [
+              4.017791184406453,
+              4.00900339369687
+            ]
+          },
+          {
+            "theta": 37.76124390703504,
+            "steps": [
+              64,
+              128,
+              256
+            ],
+            "timeFraction": 0.5,
+            "errors": [
+              6.013333745530162e-9,
+              3.7399712842289846e-10,
+              2.3316835101906446e-11
+            ],
+            "orders": [
+              4.0070659335013,
+              4.0035833095351245
+            ]
+          },
+          {
+            "theta": 45,
+            "steps": [
+              64,
+              128,
+              256
+            ],
+            "timeFraction": 0.5,
+            "errors": [
+              6.8097860977556984e-9,
+              4.237733975173983e-10,
+              2.642699030399993e-11
+            ],
+            "orders": [
+              4.006244552326026,
+              4.003208990060167
+            ]
+          },
+          {
+            "theta": 82,
+            "steps": [
+              64,
+              128,
+              256
+            ],
+            "timeFraction": 0.5,
+            "errors": [
+              0.000008144141636168524,
+              4.975170928719416e-7,
+              3.073912368392207e-8
+            ],
+            "orders": [
+              4.032944654431672,
+              4.01659815010907
+            ]
+          }
+        ],
+        "wrongSignDetected": true,
+        "brokenResidual": 0.1347829037577547
+      },
+      "cases": [
+        {
+          "name": "parallelogram-lock-low",
+          "width": 2400,
+          "height": 2400,
+          "trajectoryError": 2.2104713892634464e-15,
+          "svgMaxError": 0.00499998172335836,
+          "coordinates": 5120,
+          "pngChannelMismatches": 0,
+          "displacedPrintMismatches": 188936,
+          "params": {
+            "seed": "parallelogram-lock-low",
+            "aspect": "1:1",
+            "kind": "family",
+            "theta": 8,
+            "t": 0.92,
+            "running": false,
+            "speed": 0.85,
+            "view": "spiral",
+            "zoom": 1,
+            "fade": 0,
+            "weight": 1,
+            "panX": 0,
+            "panY": 0,
+            "v": 2,
+            "palette": [
+              "#D4B05A",
+              "#C06E3A",
+              "#8A96A3",
+              "#E8D5A3"
+            ],
+            "bg": "#0D0C0B"
+          },
+          "statePreserved": true
+        },
+        {
+          "name": "parallelogram-lock-minimum",
+          "width": 1920,
+          "height": 2400,
+          "trajectoryError": 7.476658181460039e-16,
+          "svgMaxError": 0.0049975213419770625,
+          "coordinates": 5120,
+          "pngChannelMismatches": 0,
+          "displacedPrintMismatches": 66141,
+          "params": {
+            "seed": "parallelogram-lock-minimum",
+            "aspect": "4:5",
+            "kind": "family",
+            "theta": 37.76124390703504,
+            "t": 0.92,
+            "running": false,
+            "speed": 0.85,
+            "view": "spiral",
+            "zoom": 1,
+            "fade": 0,
+            "weight": 1,
+            "panX": 0,
+            "panY": 0,
+            "v": 2,
+            "palette": [
+              "#D4B05A",
+              "#C06E3A",
+              "#8A96A3",
+              "#E8D5A3"
+            ],
+            "bg": "#0D0C0B"
+          },
+          "statePreserved": true
+        },
+        {
+          "name": "parallelogram-lock-middle",
+          "width": 2400,
+          "height": 1920,
+          "trajectoryError": 9.43689570931383e-16,
+          "svgMaxError": 0.004905478425371257,
+          "coordinates": 152,
+          "pngChannelMismatches": 0,
+          "displacedPrintMismatches": 503921,
+          "params": {
+            "seed": "parallelogram-lock-middle",
+            "aspect": "5:4",
+            "kind": "family",
+            "theta": 45,
+            "t": 0.92,
+            "running": false,
+            "speed": 0.85,
+            "view": "overlay",
+            "zoom": 1,
+            "fade": 0,
+            "weight": 1,
+            "panX": 0,
+            "panY": 0,
+            "v": 2,
+            "palette": [
+              "#D4B05A",
+              "#C06E3A",
+              "#8A96A3",
+              "#E8D5A3"
+            ],
+            "bg": "#0D0C0B"
+          },
+          "statePreserved": true
+        },
+        {
+          "name": "parallelogram-lock-high",
+          "width": 2400,
+          "height": 1350,
+          "trajectoryError": 2.525757381022231e-15,
+          "svgMaxError": 0.004997930807007833,
+          "coordinates": 5120,
+          "pngChannelMismatches": 0,
+          "displacedPrintMismatches": 123124,
+          "params": {
+            "seed": "parallelogram-lock-high",
+            "aspect": "16:9",
+            "kind": "family",
+            "theta": 82,
+            "t": 0.92,
+            "running": false,
+            "speed": 0.85,
+            "view": "polar",
+            "zoom": 1,
+            "fade": 0,
+            "weight": 1,
+            "panX": 0,
+            "panY": 0,
+            "v": 2,
+            "palette": [
+              "#D4B05A",
+              "#C06E3A",
+              "#8A96A3",
+              "#E8D5A3"
+            ],
+            "bg": "#0D0C0B"
+          },
+          "statePreserved": true
+        }
+      ]
+    },
+    {
+      "id": "quincunx-lock",
+      "sourceSha256": "311a76734eed2af26b028ad2f03feef7f247934f320de3a8c5d94767bafa4600",
+      "numerical": {
+        "timeCases": [
+          {
+            "requested": 0,
+            "actual": 0
+          },
+          {
+            "requested": 0.23,
+            "actual": 0.23035993740219096
+          },
+          {
+            "requested": 0.5,
+            "actual": 0.49959311424100156
+          },
+          {
+            "requested": 0.92,
+            "actual": 0.92
+          }
+        ],
+        "oldTimeAtEnd": 0.8465727699530518,
+        "angles": 150,
+        "maxGeometryError": 5.551115123125783e-17,
+        "maxVelocityError": 2.220446049250313e-16,
+        "maxFormulaError": 8.881784197001252e-16,
+        "maxExactError": 5.339011812145329e-15,
+        "minimum": {
+          "theta": 27.57504771047676,
+          "expected": 1.0771054962258804,
+          "observed": 1.0771054962258806
+        },
+        "refinements": [
+          {
+            "theta": 8,
+            "steps": [
+              64,
+              128,
+              256
+            ],
+            "timeFraction": 0.5,
+            "errors": [
+              1.762704024764012e-8,
+              1.0935828111424632e-9,
+              6.809922107694281e-11
+            ],
+            "orders": [
+              4.010655875225221,
+              4.005280365133017
+            ]
+          },
+          {
+            "theta": 27.57504771047676,
+            "steps": [
+              64,
+              128,
+              256
+            ],
+            "timeFraction": 0.5,
+            "errors": [
+              9.461684936726544e-10,
+              5.90357110414155e-11,
+              3.6859247588465864e-12
+            ],
+            "orders": [
+              4.002437303379731,
+              4.001489386561619
+            ]
+          },
+          {
+            "theta": 45,
+            "steps": [
+              64,
+              128,
+              256
+            ],
+            "timeFraction": 0.5,
+            "errors": [
+              1.8131909029253616e-9,
+              1.131783073377349e-10,
+              7.06899496845658e-12
+            ],
+            "orders": [
+              4.00186145684371,
+              4.000948540914977
+            ]
+          },
+          {
+            "theta": 82,
+            "steps": [
+              64,
+              128,
+              256
+            ],
+            "timeFraction": 0.5,
+            "errors": [
+              0.0000068066062703346266,
+              4.159281679407525e-7,
+              2.570186913754625e-8
+            ],
+            "orders": [
+              4.032529361955421,
+              4.016389205448803
+            ]
+          }
+        ],
+        "wrongSignDetected": true,
+        "brokenResidual": 0.3396428110559911
+      },
+      "cases": [
+        {
+          "name": "quincunx-lock-low",
+          "width": 2400,
+          "height": 2400,
+          "trajectoryError": 5.342948306008566e-16,
+          "svgMaxError": 0.004998514246722152,
+          "coordinates": 6400,
+          "pngChannelMismatches": 0,
+          "displacedPrintMismatches": 96977,
+          "params": {
+            "seed": "quincunx-lock-low",
+            "aspect": "1:1",
+            "kind": "family",
+            "theta": 8,
+            "t": 0.92,
+            "running": false,
+            "speed": 0.85,
+            "view": "spiral",
+            "zoom": 1,
+            "fade": 0,
+            "weight": 1,
+            "panX": 0,
+            "panY": 0,
+            "v": 2,
+            "palette": [
+              "#D4B05A",
+              "#C06E3A",
+              "#8A96A3",
+              "#E8D5A3",
+              "#6E8B74"
+            ],
+            "bg": "#0D0C0B"
+          },
+          "statePreserved": true
+        },
+        {
+          "name": "quincunx-lock-minimum",
+          "width": 1920,
+          "height": 2400,
+          "trajectoryError": 6.245004513516506e-16,
+          "svgMaxError": 0.004996910243107777,
+          "coordinates": 6400,
+          "pngChannelMismatches": 0,
+          "displacedPrintMismatches": 41220,
+          "params": {
+            "seed": "quincunx-lock-minimum",
+            "aspect": "4:5",
+            "kind": "family",
+            "theta": 27.57504771047676,
+            "t": 0.92,
+            "running": false,
+            "speed": 0.85,
+            "view": "spiral",
+            "zoom": 1,
+            "fade": 0,
+            "weight": 1,
+            "panX": 0,
+            "panY": 0,
+            "v": 2,
+            "palette": [
+              "#D4B05A",
+              "#C06E3A",
+              "#8A96A3",
+              "#E8D5A3",
+              "#6E8B74"
+            ],
+            "bg": "#0D0C0B"
+          },
+          "statePreserved": true
+        },
+        {
+          "name": "quincunx-lock-middle",
+          "width": 2400,
+          "height": 1920,
+          "trajectoryError": 3.7470027081099033e-16,
+          "svgMaxError": 0.0049829336660423,
+          "coordinates": 152,
+          "pngChannelMismatches": 0,
+          "displacedPrintMismatches": 492762,
+          "params": {
+            "seed": "quincunx-lock-middle",
+            "aspect": "5:4",
+            "kind": "family",
+            "theta": 45,
+            "t": 0.92,
+            "running": false,
+            "speed": 0.85,
+            "view": "overlay",
+            "zoom": 1,
+            "fade": 0,
+            "weight": 1,
+            "panX": 0,
+            "panY": 0,
+            "v": 2,
+            "palette": [
+              "#D4B05A",
+              "#C06E3A",
+              "#8A96A3",
+              "#E8D5A3",
+              "#6E8B74"
+            ],
+            "bg": "#0D0C0B"
+          },
+          "statePreserved": true
+        },
+        {
+          "name": "quincunx-lock-high",
+          "width": 2400,
+          "height": 1350,
+          "trajectoryError": 2.7096380694757727e-15,
+          "svgMaxError": 0.004999824008109499,
+          "coordinates": 5120,
+          "pngChannelMismatches": 0,
+          "displacedPrintMismatches": 108798,
+          "params": {
+            "seed": "quincunx-lock-high",
+            "aspect": "16:9",
+            "kind": "family",
+            "theta": 82,
+            "t": 0.92,
+            "running": false,
+            "speed": 0.85,
+            "view": "polar",
+            "zoom": 1,
+            "fade": 0,
+            "weight": 1,
+            "panX": 0,
+            "panY": 0,
+            "v": 2,
+            "palette": [
+              "#D4B05A",
+              "#C06E3A",
+              "#8A96A3",
+              "#E8D5A3",
+              "#6E8B74"
+            ],
+            "bg": "#0D0C0B"
+          },
+          "statePreserved": true
+        }
+      ]
+    }
+  ],
+  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "environment": {
+    "node": "v24.21.0",
+    "chromium": "145.0.7632.6",
+    "platform": "darwin"
+  },
+  "passed": true
+}

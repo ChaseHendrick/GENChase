@@ -71,12 +71,21 @@ vec2 lap2(sampler2D t, vec2 uv, vec2 px){
 uniform sampler2D u_a; uniform vec2 u_res;
 uniform float u_dt, u_alpha, u_beta, u_lin, u_noise, u_step, u_nOff;
 ${G.GLSL.hash}
+// Some GPU trigonometric intrinsics lose unit length even at tiny angles.
+// The bounded Taylor branch has truncation error below 1.1e-11 for |phase| <= 0.25.
+vec2 cglUnitRotation(float phase){
+  if (abs(phase) > 0.25) return vec2(cos(phase), sin(phase));
+  float q = phase * phase;
+  float c = 1.0 + q * (-0.5 + q * (1.0/24.0 + q * (-1.0/720.0 + q/40320.0)));
+  float s = phase * (1.0 + q * (-1.0/6.0 + q * (1.0/120.0 - q/5040.0)));
+  return vec2(c, s);
+}
 vec2 localFlow(vec2 A){
   float e = exp(2.0 * u_lin * u_dt);
   float d = 1.0 + dot(A,A) * (e - 1.0) / u_lin;
   float phase = -0.5 * u_beta * log(d);
-  return sqrt(e / d) * vec2(cos(phase)*A.x-sin(phase)*A.y,
-                            sin(phase)*A.x+cos(phase)*A.y);
+  vec2 r = cglUnitRotation(phase);
+  return sqrt(e / d) * vec2(r.x*A.x-r.y*A.y, r.y*A.x+r.x*A.y);
 }
 void main(){
   vec2 px = 1.0 / u_res;
