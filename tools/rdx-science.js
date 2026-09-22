@@ -770,12 +770,12 @@ function control(technique, name, mutant, value, tolerance, detected, extra) {
       // semi-implicit upwind step, and the continuum solution cos(k(x + v t)) exp(-(1 + Dw k^2) t):
       // phase velocity -v (downhill), convergence order 1 (upwind).
       {
-        const p = { a: 0, slope: 12, Dw: 0.5, Dn: 1 }, Lw = 10, k = TAU / Lw, Tw = 0.5, rows = [];
+        const p = { a: 0, slope: 12, Dw: 0.5, Dn: 1 }, Lw = 10, k = TAU / Lw, Tw = 0.3, rows = []; // k v T = 2.26 < pi: phase unambiguous
         for (const W of [32, 64, 128]) {
           const h = Lw / W, dt = Tw / Math.ceil(Tw / Math.min(0.2 * h / p.slope, 0.1 * h * h / p.Dw)), steps = Math.round(Tw / dt);
           const s = Object.assign(await defaults('vegetation'), p, { agrad: 0, m, lap: 5, scale: 1 / h });
           if (dt > await dtMax('vegetation', s)) throw Error('water fixture exceeds ceiling');
-          const out = await run({ id: 'vegetation', s, W, H: 2, init: field(W, 2, x => [1 + 1e-3 * Math.cos(TAU * x / W), 0]), dt, steps, snaps: [0, steps] });
+          const out = await run({ id: 'vegetation', s, W, H: 2, init: field(W, 2, x => [1e-3 * (1.2 + Math.cos(TAU * x / W)), 0]), dt, steps, snaps: [0, steps] });
           const z0 = modeAmp(out[0].f, W, 2, 0, 1, 0), z1 = modeAmp(out[1].f, W, 2, 0, 1, 0), ratio = C.div(z1, z0);
           const al = TAU / W, sym = [p.slope * (Math.cos(al) - 1) / h + p.Dw * q5(al, 0, h), p.slope * Math.sin(al) / h];
           let G = C.div(C.add([1, 0], [dt * sym[0], dt * sym[1]]), [1 + dt, 0]), Gn = [1, 0]; for (let i = 0; i < steps; i++) Gn = C.mul(Gn, G);
@@ -785,7 +785,7 @@ function control(technique, name, mutant, value, tolerance, detected, extra) {
         const ord = orders(rows.map(r => r.continuumError)), worst = Math.max(...rows.map(r => r.discreteError));
         vg.water = { params: p, rows, orders: ord };
         check('vegetation', 'water advection-diffusion-loss: exact discrete mode factor', worst, 2e-5, worst < 2e-5);
-        check('vegetation', 'water advection-diffusion-loss: continuum convergence (formal order 1, upwind)', ord[1], [0.8, 1.25], ord.every(o => o > 0.8 && o < 1.25) && rows[2].measured[1] > 0);
+        check('vegetation', 'water advection-diffusion-loss: continuum convergence (formal order 1, upwind), phase moving downhill (-x)', ord[1], [0.8, 1.25], ord.every(o => o > 0.8 && o < 1.25) && rows[2].measured[1] > 0);
       }
       report.vegetation = vg;
       process.stderr.write('vegetation ' + ((Date.now() - t0) / 1000).toFixed(1) + ' s\n');
