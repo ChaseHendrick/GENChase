@@ -89,6 +89,8 @@ jobs:
           node tools/pde-science.js
           node tools/pde-convergence.js
           node tools/pde-stability.js
+      - name: Reaction-diffusion family GPU benchmarks
+        run: node tools/rdx-science.js
       - name: Reuleaux geometry and actual print preservation
         run: node tools/reuleaux-science.js
       - name: PDE print exports preserve numerical state
