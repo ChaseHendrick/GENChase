@@ -88,7 +88,7 @@ node tools/check.js hodgkin-huxley 12000
 node tools/export.js hodgkin-huxley 8 300 7000
 ```
 
-The [application record](results/hodgkin-huxley-app.json) retains every preset's luminance measurements, duplicate-recipe comparison, tab-switch result and the actual print-UI artifacts. These visual checks are distinct from the numerical evidence above.
+No application record for these two commands is committed yet (there is no `results/hodgkin-huxley-app.json`, unlike the Maxwell and plasma records), so their per-preset luminance, duplicate-recipe, tab-switch and print-UI results are reproduced by running them. These visual checks are distinct from the numerical evidence above.
 
 ## Remaining limits
 
