@@ -15,13 +15,14 @@ node tools/lint.js
 node tools/science.js
 ```
 
-The build produces three committed artifacts from the maintained source:
+The build produces four committed artifacts from the maintained source:
 
 | Output | Purpose |
 |---|---|
 | `index.html` | Thin folder entry, served over local HTTP |
 | `src/module-manifest.json` | Maps each tab ID to its family and loading metadata |
 | `dist/studio.html` | Self-contained portable copy with embedded license notices |
+| `src/science-reports.json` | Validation inventory the folder entry fetches for science reports; the portable copy embeds it |
 
 The folder loads local engine, styles and selected family files. A family may register
 several tab IDs; the generated manifest resolves that mapping. No CDN, framework or
