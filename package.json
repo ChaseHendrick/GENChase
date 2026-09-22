@@ -10,6 +10,10 @@
     "test": "node tools/maintenance-check.js && node tools/verify-check.js && node tools/folder-check.js && node tools/verify.js --list --all",
     "test:solvers": "node tools/verify.js --all",
     "test:print": "node tools/verify.js --print --all",
-    "test:all": "npm test && npm run build:check && npm run lint && npm run science && node tools/verify.js --print --all"
+    "test:all": "npm test && npm run build:check && npm run lint && npm run science && node tools/verify.js --print --all",
+    "test:engine": "node tools/engine-api-check.js && node tools/folder-browser.js",
+    "test:ui": "node tools/ui.js && node tools/colophon-check.js && node tools/reports-check.js && node tools/art-only-check.js",
+    "test:formats": "node tools/print-formats-check.js",
+    "prepress:help": "python3 tools/prepress.py --help"
   }
 }

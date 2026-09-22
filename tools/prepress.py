@@ -79,14 +79,16 @@ def convert(source, output, profile, mode, condition, ghostscript='gs'):
                 ' /Info ' + ps_string(condition) + ' /DestOutputProfile {PressICC} >> /PUT pdfmark',
                 '[{Catalog} << /OutputIntents [{PressIntent}] >> /PUT pdfmark',
             ]), encoding='ascii')
-            command = [gs, '-dSAFER', '-dBATCH', '-dNOPAUSE', '-dPDFX=3', '-sDEVICE=pdfwrite',
+            # The boolean PDFX switch targets X-3 on both older 10.02 and current releases.
+            # Numeric -dPDFX=3 causes a pdfmark typecheck on 10.02.
+            command = [gs, '-dSAFER', '-dBATCH', '-dNOPAUSE', '-dPDFX', '-sDEVICE=pdfwrite',
                 '-sColorConversionStrategy=CMYK', '-dProcessColorModel=/DeviceCMYK', '-dAutoFilterColorImages=false', '-dColorImageFilter=/FlateEncode',
                 '-dDownsampleColorImages=false', '-dDownsampleGrayImages=false', '-dDownsampleMonoImages=false',
                 '--permit-file-read=' + str(local_profile), '-sOutputICCProfile=' + str(local_profile),
                 '-sOutputFile=' + str(staged), str(definition), str(source.resolve())]
             result = subprocess.run(command, capture_output=True, text=True, timeout=300, check=False)
             if result.returncode:
-                raise ValueError('Ghostscript conversion failed: ' + (result.stderr or result.stdout)[-3000:])
+                raise ValueError('Ghostscript conversion failed: ' + (result.stdout + '\n' + result.stderr)[-5000:])
             checked = PdfReader(staged)
             if 'PDF/X-3' not in str(checked.metadata.get('/GTS_PDFXVersion', '')):
                 raise ValueError('Ghostscript did not emit the requested PDF/X-3 identification.')

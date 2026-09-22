@@ -710,3 +710,12 @@
 
 #btn-science-report { position: absolute; top: 8px; left: 12px; z-index: 6; font-size: 11px; background: var(--panel); }
 @media print { #btn-science-report { display: none !important; } }
+
+#btn-art-only { position: absolute; top: 8px; left: 124px; z-index: 6; min-height: 44px; font-size: 11px; background: var(--panel); }
+.app.focus .status, .app.focus .witness, .app.focus .viewpad,
+.app.focus #btn-science-report, .app.focus #btn-art-only, .app.focus .poke-aim { display: none !important; }
+.app.focus .stage { position: fixed; inset: 0; z-index: 10; display: grid; height: 100dvh; box-sizing: border-box; }
+.app.focus .stage .sheet { flex: none; min-height: 0; max-height: 100%; }
+.app.focus #btn-exit-focus { min-height: 44px; transition: opacity .2s; }
+.app.focus.focus-quiet #btn-exit-focus:not(:focus-visible) { opacity: 0; pointer-events: none; }
+@media print { #btn-art-only, #btn-exit-focus { display: none !important; } }

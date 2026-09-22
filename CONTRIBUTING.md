@@ -85,3 +85,7 @@ Use descriptive names for derived bounds. Search the literature for the closed f
 ## Recipe-check runtime
 
 `node tools/recipe.js` checks every declared legacy default with five assertions, using two isolated browser pages at a time. Each trial starts with fresh storage and waits for its own sidebar to be ready; it never waits for the expected value. Optional arguments are an extra settle delay in milliseconds and a worker count from 1 to 4, for example `node tools/recipe.js 0 1` for a sequential diagnostic run. Plate and export checks still exercise rendering separately.
+
+[TESTING.md](TESTING.md) maps changes to relevant checks; [the release checklist](docs/RELEASING.md)
+covers merging and the hosted build. Use the existing source formatting when editing;
+`.editorconfig` sets basic defaults for new files without requiring a whole-repo reformat.

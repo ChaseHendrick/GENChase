@@ -72,6 +72,19 @@ const { chromium } = require('playwright');
    assert.equal(await page.locator('#colo-position').inputValue(),'right');assert.equal(await page.locator('#colo-part-seed').isChecked(),false);
    assert.equal(await page.locator('#expert-print').isChecked(),true);assert.equal(await page.locator('#compute-mode').inputValue(),'maximum');
    assert.equal(await page.locator('#printer-preset-list option').count(),1);
+   if(width===390){
+    for(const viewport of [{width:360,height:780},{width:740,height:720},{width:768,height:1024},{width:1024,height:768},{width:1180,height:820},{width:390,height:800}]){
+     await page.setViewportSize(viewport);
+     await page.locator('#colo-close').scrollIntoViewIfNeeded();
+     const rect=await page.locator('#modal-colophon .card').boundingBox();assert(rect.x>=0&&rect.x+rect.width<=viewport.width+1,'fold/tablet dialog width');
+     assert.equal(await page.locator('#expert-print').isChecked(),true,'advanced mode survives folding');
+     await page.locator('#colo-close').click();
+     await page.waitForTimeout(150);
+     assert.equal(await page.locator('#btn-colophon-edit').isVisible(),true);assert.equal(await page.locator('#btn-science-report').isVisible(),true);
+     const bounds=await page.locator('#sheet').boundingBox();assert(bounds.width>0&&bounds.x>=-1&&bounds.x+bounds.width<=viewport.width+1,'fold/tablet sheet fits');
+     await page.locator('#btn-colophon-edit').click();
+    }
+   }
    await page.locator('#printer-preset-delete').click();assert.equal(await page.locator('#printer-preset-list option').count(),0);
    assert.deepEqual(errors,[]);await page.close();console.log('Caption checks passed at '+width+' px');
   }

@@ -96,6 +96,7 @@ jobs:
           node tools/engine-api-check.js
           node tools/colophon-check.js
           node tools/reports-check.js
+          node tools/art-only-check.js
           node tools/direct-gravity-browser.js
           node tools/bec-preview-check.js
 

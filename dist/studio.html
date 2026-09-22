@@ -863,6 +863,15 @@
 
 #btn-science-report { position: absolute; top: 8px; left: 12px; z-index: 6; font-size: 11px; background: var(--panel); }
 @media print { #btn-science-report { display: none !important; } }
+
+#btn-art-only { position: absolute; top: 8px; left: 124px; z-index: 6; min-height: 44px; font-size: 11px; background: var(--panel); }
+.app.focus .status, .app.focus .witness, .app.focus .viewpad,
+.app.focus #btn-science-report, .app.focus #btn-art-only, .app.focus .poke-aim { display: none !important; }
+.app.focus .stage { position: fixed; inset: 0; z-index: 10; display: grid; height: 100dvh; box-sizing: border-box; }
+.app.focus .stage .sheet { flex: none; min-height: 0; max-height: 100%; }
+.app.focus #btn-exit-focus { min-height: 44px; transition: opacity .2s; }
+.app.focus.focus-quiet #btn-exit-focus:not(:focus-visible) { opacity: 0; pointer-events: none; }
+@media print { #btn-art-only, #btn-exit-focus { display: none !important; } }
 </style>
 <script type="text/plain" id="license-notices">LICENSE
 
@@ -1441,7 +1450,7 @@ shall not be misrepresented as the original profile.
         <select id="export-dpi" aria-label="Print resolution in pixels per inch"></select>
         <button id="btn-colophon" class="ptog" type="button" role="switch" aria-checked="false"
           title="Include the selected caption parts on the printed sheet">Colophon</button>
-        <button id="btn-colophon-edit" class="caption-edit" type="button">Edit caption</button>
+        <button id="btn-colophon-edit" class="caption-edit" type="button">Studio setup</button>
         <span class="dims" id="export-dims" aria-live="polite"></span>
       </div>
       <button class="btn" id="btn-export" type="button" title="Export a print (E)">
@@ -1470,8 +1479,9 @@ shall not be misrepresented as the original profile.
   <div class="main" id="main">
     <aside class="side" id="side"></aside>
     <section class="stage" id="stage" tabindex="-1">
+      <button class="btn" id="btn-art-only" type="button" title="Hide controls (F)">Art only</button>
       <button class="btn" id="btn-science-report" type="button">Science report</button>
-      <button class="btn" id="btn-exit-focus" type="button" hidden title="Leave focus mode (Esc or F)">Exit</button>
+      <button class="btn" id="btn-exit-focus" type="button" hidden title="Leave focus mode (Esc or F)">Show controls</button>
       <div class="poke-aim" id="poke-aim" hidden aria-hidden="true"></div>
       <figure class="sheet" id="sheet">
         <figcaption class="colo-preview" id="colo-preview" hidden>
@@ -1723,7 +1733,7 @@ shall not be misrepresented as the original profile.
 </div>
 <div class="modal" id="modal-colophon" hidden>
   <div class="card" role="dialog" aria-modal="true" aria-labelledby="colo-editor-title">
-    <div class="head"><h2 id="colo-editor-title">Edit printed caption</h2><button class="x" id="colo-close" type="button" aria-label="Close caption editor">×</button></div>
+    <div class="head"><h2 id="colo-editor-title">Studio setup</h2><button class="x" id="colo-close" type="button" aria-label="Close caption editor">×</button></div>
     <div class="content colo-editor">
       <label for="compute-mode">Device workload</label>
       <select id="compute-mode"><option value="light">Lighter use</option><option value="balanced">Balanced</option><option value="maximum">Maximum throughput</option></select>
@@ -1769,7 +1779,7 @@ shall not be misrepresented as the original profile.
           <p class="hint">Choose the caption position and which parts to include. Off prints the image alone.</p>
         </div>
       </div>
-      <button class="btn" id="export-colo-edit" type="button">Edit caption</button>
+      <button class="btn" id="export-colo-edit" type="button">Studio setup</button>
       <fieldset class="print-production" data-expert-print hidden><legend>PDF finishing</legend>
         <label for="export-bleed">Extra artwork beyond the cut (bleed, mm)</label>
         <input id="export-bleed" type="number" min="0" max="25" step="0.1" value="0">
@@ -6012,7 +6022,13 @@ void main(){
     openModal('modal-gallery');
   }
   let historyVisible = true;
-  let focusMode = false;
+  let focusMode = false, focusControlsTimer = null;
+  function revealArtControls() {
+    clearTimeout(focusControlsTimer);
+    const app=document.querySelector('.app');app?.classList.remove('focus-quiet');
+    if (focusMode) focusControlsTimer=setTimeout(()=>{if(focusMode&&document.activeElement!==$('btn-exit-focus'))app.classList.add('focus-quiet');},2000);
+  }
+
   function setHistoryVisible(on, opts) {
     historyVisible = !!on;
     try { localStorage.setItem(STORE + 'timeline', historyVisible ? '1' : '0'); } catch (err) { /* ignore */ }
@@ -6030,7 +6046,9 @@ void main(){
     if (btn) btn.setAttribute('aria-pressed', String(focusMode));
     const exit = $('btn-exit-focus');
     if (exit) exit.hidden = !focusMode;
+    revealArtControls();
     if (!focusMode && ambientOn) setAmbient(false);
+    updateColoPreview();
     refit();
     const stage = $('stage');
     if (focusMode) {
@@ -6208,7 +6226,7 @@ void main(){
     let cw = Math.max(1, availW), ch = cw * ar;
     if (ch > availH) { ch = Math.max(1, availH); cw = ch / ar; }
     const sheet = $('sheet');
-    if (colophon) {
+    if (colophon && !focusMode) {
       const L = sheetLayout(printSpec(), e);
       const height = matchMedia('(max-width: 900px)').matches ? Math.min(availH, innerHeight * .38) : availH;
       const scale = Math.max(.001, Math.min(availW / L.sheetW, height / L.sheetH));
@@ -7285,7 +7303,7 @@ void main(){
     const cap = $('colo-preview');
     if (!cap) return;
     const e = instances[currentId];
-    if (!colophon || !e) {
+    if (!colophon || focusMode || !e) {
       cap.hidden = true;
       if ($('sheet')) $('sheet').classList.remove('has-colo');
       return;
@@ -8094,7 +8112,10 @@ void main(){
     $('export-close').addEventListener('click', () => { closeModal('modal-export'); });
     $('modal-export').addEventListener('click', ev => { if (ev.target === $('modal-export')) closeModal('modal-export'); });
     const exitFocus = $('btn-exit-focus');
-    if (exitFocus) exitFocus.addEventListener('click', () => setFocus(false));
+    if (exitFocus) { exitFocus.addEventListener('click', () => setFocus(false)); exitFocus.addEventListener('focus',revealArtControls); }
+    $('btn-art-only').addEventListener('click',()=>{setFocus(true);toast('Art only. Tap the picture for controls; Esc or F returns.');});
+    $('stage').addEventListener('pointerdown',ev=>{if(focusMode&&document.querySelector('.app').classList.contains('focus-quiet')){ev.preventDefault();ev.stopPropagation();revealArtControls();}},true);
+    $('stage').addEventListener('pointermove',ev=>{if(focusMode&&ev.pointerType==='mouse')revealArtControls();});
     // settings JSON
     $('btn-about').addEventListener('click', () => { openModal('modal-about'); });
     $('about-close').addEventListener('click', () => { closeModal('modal-about'); });

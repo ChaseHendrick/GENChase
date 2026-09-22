@@ -98,7 +98,7 @@ loading failure/retry, UI, print and all scientific checks.
 
 ## Caption editing on desktop and mobile
 
-Use **Edit caption** beside the print controls, or in the export dialog. The shared
+Use **Studio setup** beside the print controls, or in the export dialog. The shared
 editor places the colophon above, underneath, left or right of the artwork. Each
 part can be hidden and restored: title, equation, seed, parameters, palette,
 print dimensions/resolution and date. **Restore all parts** restores their visibility.

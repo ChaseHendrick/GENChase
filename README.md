@@ -276,7 +276,7 @@ Built by Chaos.
 
 ### Customize the printed caption
 
-**Edit caption** in the print controls works on desktop and mobile. Place it above,
+**Studio setup** in the print controls works on desktop and mobile. Place it above,
 below, left or right of the artwork, and hide or restore individual details.
 Preferences apply across techniques on this device. Keep the recipe link or settings
 JSON when omitting details from a print. See the [engine guide](docs/ENGINE-API.md#caption-editing-on-desktop-and-mobile).
@@ -286,8 +286,12 @@ profile and physical sheet size. PDF supports bleed and cutting marks. An option
 native tool converts to CMYK TIFF or PDF/X-3 using a printer-supplied profile.
 See [sending a plate to a print shop](docs/PRINTING.md) for requirements and limits.
 
-Save printer presets and enable **Advanced print tools** in **Edit caption**. Every
+Save printer presets and enable **Advanced print tools** in **Studio setup**. Every
 export gets a basic resolution/layout report before download. **Science report** on
 the stage shows each technique's evidence and remaining gaps. **Device workload**
 offers lighter, balanced and maximum-throughput modes; the heavy gravity and volume
 wave modules use the scheduling budgets, while other modules retain their own controls.
+
+**Art only** on the stage hides controls and the caption preview. Tap the artwork to
+reveal **Show controls**, or press Esc/F to return. Print settings are preserved.
+For contributors: [testing guide](TESTING.md) · [release checklist](docs/RELEASING.md).

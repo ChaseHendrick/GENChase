@@ -1069,7 +1069,13 @@ void main(){
     openModal('modal-gallery');
   }
   let historyVisible = true;
-  let focusMode = false;
+  let focusMode = false, focusControlsTimer = null;
+  function revealArtControls() {
+    clearTimeout(focusControlsTimer);
+    const app=document.querySelector('.app');app?.classList.remove('focus-quiet');
+    if (focusMode) focusControlsTimer=setTimeout(()=>{if(focusMode&&document.activeElement!==$('btn-exit-focus'))app.classList.add('focus-quiet');},2000);
+  }
+
   function setHistoryVisible(on, opts) {
     historyVisible = !!on;
     try { localStorage.setItem(STORE + 'timeline', historyVisible ? '1' : '0'); } catch (err) { /* ignore */ }
@@ -1087,7 +1093,9 @@ void main(){
     if (btn) btn.setAttribute('aria-pressed', String(focusMode));
     const exit = $('btn-exit-focus');
     if (exit) exit.hidden = !focusMode;
+    revealArtControls();
     if (!focusMode && ambientOn) setAmbient(false);
+    updateColoPreview();
     refit();
     const stage = $('stage');
     if (focusMode) {
@@ -1265,7 +1273,7 @@ void main(){
     let cw = Math.max(1, availW), ch = cw * ar;
     if (ch > availH) { ch = Math.max(1, availH); cw = ch / ar; }
     const sheet = $('sheet');
-    if (colophon) {
+    if (colophon && !focusMode) {
       const L = sheetLayout(printSpec(), e);
       const height = matchMedia('(max-width: 900px)').matches ? Math.min(availH, innerHeight * .38) : availH;
       const scale = Math.max(.001, Math.min(availW / L.sheetW, height / L.sheetH));
@@ -2342,7 +2350,7 @@ void main(){
     const cap = $('colo-preview');
     if (!cap) return;
     const e = instances[currentId];
-    if (!colophon || !e) {
+    if (!colophon || focusMode || !e) {
       cap.hidden = true;
       if ($('sheet')) $('sheet').classList.remove('has-colo');
       return;
@@ -3151,7 +3159,10 @@ void main(){
     $('export-close').addEventListener('click', () => { closeModal('modal-export'); });
     $('modal-export').addEventListener('click', ev => { if (ev.target === $('modal-export')) closeModal('modal-export'); });
     const exitFocus = $('btn-exit-focus');
-    if (exitFocus) exitFocus.addEventListener('click', () => setFocus(false));
+    if (exitFocus) { exitFocus.addEventListener('click', () => setFocus(false)); exitFocus.addEventListener('focus',revealArtControls); }
+    $('btn-art-only').addEventListener('click',()=>{setFocus(true);toast('Art only. Tap the picture for controls; Esc or F returns.');});
+    $('stage').addEventListener('pointerdown',ev=>{if(focusMode&&document.querySelector('.app').classList.contains('focus-quiet')){ev.preventDefault();ev.stopPropagation();revealArtControls();}},true);
+    $('stage').addEventListener('pointermove',ev=>{if(focusMode&&ev.pointerType==='mouse')revealArtControls();});
     // settings JSON
     $('btn-about').addEventListener('click', () => { openModal('modal-about'); });
     $('about-close').addEventListener('click', () => { closeModal('modal-about'); });

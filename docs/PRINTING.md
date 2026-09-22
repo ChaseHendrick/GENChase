@@ -78,7 +78,7 @@ is not a recommended printing condition for your work.
 
 ## Saved printer presets and print checks
 
-Open **Edit caption** to save a named printer preset. It stores the current physical
+Open **Studio setup** to save a named printer preset. It stores the current physical
 sheet width/height, resolution, caption parts/position, bleed and cutting-mark choice.
 Applying it uses a fixed sheet size across techniques. Presets stay on this device;
 they do not store the artwork or a printer ICC profile. Names are unique, with up to
@@ -94,3 +94,7 @@ not measure optical sharpness, color reproduction or scientific accuracy.
 PDF finishing controls, prepress guidance and **Download print-job JSON**. This JSON
 records the recipe, print specification, caption settings, quality report and any
 structured measured check. It is an audit aid, not a checkpoint of an evolving field.
+
+Responsive browser tests include folded/unfolded transitions at 360/740 pixels and
+tablet portrait/landscape layouts at 768/1024/1180 pixels, with the editor open.
+These are viewport and touch-input tests, not certification of every physical device.
