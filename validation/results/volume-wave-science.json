@@ -1,0 +1,205 @@
+{
+  "scope": "Actual float32 atlas shader, periodic unit cube, zero initial velocity. Bounded discrete-mode, independent CPU, fixed-time continuum refinement and failure controls.",
+  "plates": [
+    {
+      "preset": "crossed",
+      "pattern": "crossed",
+      "axis": "xy",
+      "grid": 32,
+      "steps": 16,
+      "print": [
+        512,
+        384
+      ],
+      "luminanceP05": 15.333333333333334,
+      "luminanceP95": 181.66666666666666,
+      "exportStateMaxChange": 0,
+      "repeatFieldMaxDifference": 0
+    },
+    {
+      "preset": "pulse",
+      "pattern": "pulse",
+      "axis": "xy",
+      "grid": 32,
+      "steps": 12,
+      "print": [
+        512,
+        384
+      ],
+      "luminanceP05": 29,
+      "luminanceP95": 91.33333333333333,
+      "exportStateMaxChange": 0,
+      "repeatFieldMaxDifference": 0
+    },
+    {
+      "preset": "standing",
+      "pattern": "mode",
+      "axis": "xy",
+      "grid": 32,
+      "steps": 20,
+      "print": [
+        512,
+        384
+      ],
+      "luminanceP05": 15.666666666666666,
+      "luminanceP95": 180.66666666666666,
+      "exportStateMaxChange": 0,
+      "repeatFieldMaxDifference": 0
+    },
+    {
+      "preset": "transverse",
+      "pattern": "crossed",
+      "axis": "xz",
+      "grid": 32,
+      "steps": 24,
+      "print": [
+        512,
+        384
+      ],
+      "luminanceP05": 18,
+      "luminanceP95": 172,
+      "exportStateMaxChange": 0,
+      "repeatFieldMaxDifference": 0
+    },
+    {
+      "preset": "side",
+      "pattern": "mode",
+      "axis": "yz",
+      "grid": 32,
+      "steps": 8,
+      "print": [
+        512,
+        384
+      ],
+      "luminanceP05": 15.666666666666666,
+      "luminanceP95": 180.66666666666666,
+      "exportStateMaxChange": 0,
+      "repeatFieldMaxDifference": 0
+    }
+  ],
+  "stopSurvivesResume": true,
+  "modes": [
+    {
+      "grid": 16,
+      "mode": [
+        2,
+        3,
+        1
+      ],
+      "courant": 0.8,
+      "steps": 60,
+      "error": {
+        "max": 3.517283672649363e-7,
+        "rms": 2.0973247950124483e-7
+      }
+    },
+    {
+      "grid": 24,
+      "mode": [
+        7,
+        5,
+        9
+      ],
+      "courant": 0.95,
+      "steps": 60,
+      "error": {
+        "max": 0.0000019669802898691913,
+        "rms": 0.0000012400786748947024
+      }
+    },
+    {
+      "grid": 32,
+      "mode": [
+        0,
+        0,
+        0
+      ],
+      "courant": 0.9,
+      "steps": 40,
+      "error": {
+        "max": 3.5904101913786235e-10,
+        "rms": 3.5904101913780093e-10
+      }
+    },
+    {
+      "grid": 48,
+      "mode": [
+        5,
+        -2,
+        3
+      ],
+      "courant": 0.2,
+      "steps": 80,
+      "error": {
+        "max": 9.281421622930885e-7,
+        "rms": 4.4179339137769014e-7
+      }
+    }
+  ],
+  "cpuComparison": {
+    "grid": 20,
+    "steps": 35,
+    "courant": 0.7,
+    "error": {
+      "max": 8.115883913806243e-7,
+      "rms": 2.1978064071140886e-7
+    }
+  },
+  "convergence": [
+    {
+      "grid": 16,
+      "domain": [
+        1,
+        1,
+        1
+      ],
+      "time": 0.13,
+      "steps": 7,
+      "dt": 0.018571428571428572,
+      "error": {
+        "max": 0.02894591316139422,
+        "rms": 0.02053807961123207
+      }
+    },
+    {
+      "grid": 32,
+      "domain": [
+        1,
+        1,
+        1
+      ],
+      "time": 0.13,
+      "steps": 13,
+      "dt": 0.01,
+      "error": {
+        "max": 0.006959100808260066,
+        "rms": 0.004937673291307031
+      },
+      "refinementRatio": 4.15946507586684
+    },
+    {
+      "grid": 64,
+      "domain": [
+        1,
+        1,
+        1
+      ],
+      "time": 0.13,
+      "steps": 25,
+      "dt": 0.0052,
+      "error": {
+        "max": 0.0017064220200808111,
+        "rms": 0.0012068563395321948
+      },
+      "refinementRatio": 4.091351331195713
+    }
+  ],
+  "seedMaxError": 0.00017402968068525038,
+  "controls": {
+    "wrongSignMaxDifference": 473.68547904491425,
+    "stableNyquistMax": 0.09633612632751465,
+    "aboveCflNyquistMax": 283306304
+  },
+  "sanitizerCflCases": 84,
+  "limitations": "No long-time, extreme 96..256 grid, cross-device, arbitrary parameter, experimental acoustics or broad print accuracy certification. Five selected preset print states preserve the field at 512x384; this does not establish physical calibration. Scientific GPU fixtures use grids 16..64 and at most 80 steps."
+}

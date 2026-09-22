@@ -79,7 +79,7 @@ if (process.argv.includes('--controls')) { console.log(JSON.stringify(controls, 
 
 (async () => {
   const { chromium } = require('playwright');
-  const shared = fs.readFileSync(path.join(root, 'src/shared/studio.js'), 'utf8');
+  const shared = fs.readFileSync(path.join(root, 'src/shared/engine.js'), 'utf8');
   const source = fs.readFileSync(path.join(root, 'src/modules/pde.js'), 'utf8');
   const expose = source.slice(0, source.indexOf('  Studio.register({')) + '\nwindow.cahnScalingShaders={MU_CH,STEP_CH,chMaxDt};})();';
   const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });

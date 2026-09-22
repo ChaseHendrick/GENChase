@@ -8,7 +8,7 @@ const {chromium}=require('playwright');
   const exposed=source.replace(marker,'  window.maxwellAudit={H_FS,E_FS,timeStep,sizeOf,sanitize};\n'+marker);
   const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
   try {
-    const page=await browser.newPage();await page.goto('file://'+path.join(root,'studio.html')+'#three-vortex-bound/maxwell-audit');await page.evaluate(exposed);
+    const page=await browser.newPage();await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/maxwell-audit');await page.evaluate(exposed);
     const result=await page.evaluate(()=>{
       const G=Studio.gl,A=window.maxwellAudit,canvas=document.createElement('canvas'),gl=G.createGL(canvas);
       if(!gl||!gl.floatExt)throw Error('Maxwell benchmark requires WebGL2 float32');

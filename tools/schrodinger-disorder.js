@@ -51,7 +51,7 @@ async function main() {
   const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   let output;
   try {
-    const page = await browser.newPage(); await page.goto('file://' + path.join(ROOT, 'studio.html') + '#three-vortex-bound/disorder-experiment'); await page.evaluate(exposed);
+    const page = await browser.newPage(); await page.goto('file://' + path.join(ROOT, 'dist/studio.html') + '#three-vortex-bound/disorder-experiment'); await page.evaluate(exposed);
     output = await page.evaluate(({ s, potentials }) => {
       const G = Studio.gl, gl = G.createGL(document.createElement('canvas'));
       if (!gl || !gl.floatExt) throw Error('Disorder experiment requires float32 WebGL2');

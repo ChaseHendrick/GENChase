@@ -1,8 +1,9 @@
 {
   "project": "GENChase",
   "repository": "https://github.com/SharpMeow/GENChase",
-  "file": "studio.html",
-  "count": 128,
+  "file": "index.html",
+  "portableFile": "dist/studio.html",
+  "count": 130,
   "hashFormat": "#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>",
   "aliases": {},
   "familiarityBuckets": [
@@ -12,10 +13,10 @@
     "rare",
     "unseen"
   ],
-  "familiarityNote": "Nobody measured this. It is one person's estimate of how often you have seen the picture somewhere else, made in 2026. It is the only ordering in this studio that is not computed from the file.",
+  "familiarityNote": "Nobody measured this. It is one person's estimate of how often you have seen the picture somewhere else, made in 2026. It is the only ordering in this studio that is not computed from maintained registrations.",
   "forAI": {
     "read": "techniques.json",
-    "skip": "studio.html",
+    "skip": "dist/studio.html",
     "contract": "tools/modules/CONTRACT.md",
     "agents": "AGENTS.md",
     "research": "RESEARCH.md",
@@ -24,6 +25,7 @@
   "techniques": [
     {
       "id": "life",
+      "source": "src/modules/life.js",
       "name": "Artificial Life",
       "tab": "",
       "subtitle": "Lenia, Flow Lenia and cellular automata · 2019-23",
@@ -53,6 +55,7 @@
     },
     {
       "id": "physarum3d",
+      "source": "src/modules/physarum3d.js",
       "name": "Physarum 3D",
       "tab": "",
       "subtitle": "slime mold agents building a filament network in a volume · 2020",
@@ -79,6 +82,7 @@
     },
     {
       "id": "cortex",
+      "source": "src/modules/cortex.js",
       "name": "Cortical Planforms",
       "tab": "Cortex",
       "subtitle": "a neural field patterning, seen through the retinocortical map · 1979",
@@ -106,6 +110,7 @@
     },
     {
       "id": "nonreciprocal",
+      "source": "src/modules/nonreciprocal.js",
       "name": "Nonlinear Active Mixture",
       "tab": "Active mixture",
       "subtitle": "nonlinear nonreciprocal fields · 2025",
@@ -132,12 +137,13 @@
     },
     {
       "id": "bec",
+      "source": "src/modules/bec.js",
       "name": "Vortex Lattice",
       "tab": "Condensate",
       "subtitle": "Gross-Pitaevskii, rotating · 1961",
       "equation": "iℏ ∂ψ/∂t = [−½∇² + V(r) + g|ψ|² − Ω L_z] ψ,   circulation quantized in units of h/m",
       "credit": "The mean-field equation is Eugene Gross, Il Nuovo Cimento 20, 454 (1961), and Lev Pitaevskii, Soviet Physics JETP 13, 451 (1961). That a rotating superfluid answers with a triangular array of singly quantized vortices rather than rigid rotation is Alexei Abrikosov's 1957 result for type-II superconductors, Soviet Physics JETP 5, 1174, carried over to condensates; it was seen in the laboratory by Kirk Madison, Frédéric Chevy, Wendel Wohlleben and Jean Dalibard, Phys. Rev. Lett. 84, 806 (2000), and resolved into a lattice of well over a hundred vortices by Jamil Abo-Shaeer, Chandra Raman, Johnny Vogels and Wolfgang Ketterle, Science 292, 476 (2001). The staggered explicit scheme used in real time follows P. B. Visscher, Computers in Physics 5, 596 (1991). The quantization of circulation is Lars Onsager (1949) and Richard Feynman (1955).",
-      "blurb": "A condensate cannot rotate the way a bucket of water does. Its velocity field is the gradient of a phase, so it is irrotational everywhere the wavefunction is non-zero, and the only way to carry angular momentum is to make places where the wavefunction is zero and wind the phase by a whole turn around each of them. Those are vortices, and their circulation is not adjustable: it comes in units of Planck's constant over the mass. Spin the trap faster and the condensate does not spin faster, it makes more vortices, and they arrange themselves into the triangular lattice that minimises their mutual energy. This is the same lattice Abrikosov predicted for magnetic flux in a superconductor, and the same one photographed in sodium in 2001. The plate solves the equation and then finds the phase singularities directly, by walking the winding number around every plaquette, so the vortices marked are the ones the field actually has.",
+      "blurb": "A condensate cannot rotate the way a bucket of water does. Its velocity field is the gradient of a phase, so it is irrotational everywhere the wavefunction is non-zero, and the only way to carry angular momentum is to make places where the wavefunction is zero and wind the phase by a whole turn around each of them. Those are vortices, and their circulation is not adjustable: it comes in units of Planck's constant over the mass. Spin the trap faster and the condensate does not spin faster, it makes more vortices, and they arrange themselves into the triangular lattice that minimises their mutual energy. This is the same lattice Abrikosov predicted for magnetic flux in a superconductor, and the same one photographed in sodium in 2001. The plate walks phase winding around plaquettes and applies a density mask. The marked points are winding candidates from an encoded field, not a validated physical vortex count; noisy real-time fields can produce many candidates.",
       "order": 12,
       "seed": "abrikosov-1957",
       "presets": [
@@ -159,6 +165,7 @@
     },
     {
       "id": "physarum",
+      "source": "src/modules/physarum.js",
       "name": "Physarum",
       "tab": "",
       "subtitle": "slime mold agents building a transport network · 2010",
@@ -187,6 +194,7 @@
     },
     {
       "id": "phyllotaxis",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
       "name": "Phyllotaxis",
       "tab": "",
       "subtitle": "Douady–Couder inhibitory field · 1996",
@@ -211,6 +219,7 @@
     },
     {
       "id": "hl",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
       "name": "Hastings–Levitov",
       "tab": "HL growth",
       "subtitle": "conformal Laplacian growth · 1998",
@@ -235,6 +244,7 @@
     },
     {
       "id": "lichtenberg",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
       "name": "Lichtenberg",
       "tab": "Lichtenberg",
       "subtitle": "dielectric breakdown · Niemeyer–Pietronero–Wiesmann 1984",
@@ -259,6 +269,7 @@
     },
     {
       "id": "snowflake",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
       "name": "Gravner–Griffeath",
       "tab": "Snowflake",
       "subtitle": "mesoscopic snow crystal · 2008",
@@ -284,6 +295,7 @@
     },
     {
       "id": "growth",
+      "source": "src/modules/growth.js",
       "name": "Differential Growth",
       "tab": "",
       "subtitle": "buckling curves, coral and cortex folding · 2010s",
@@ -312,6 +324,7 @@
     },
     {
       "id": "cyclic",
+      "source": "src/modules/rdx.js",
       "name": "Cyclic Competition",
       "tab": "",
       "subtitle": "rock, paper, scissors in space · 2007",
@@ -338,6 +351,7 @@
     },
     {
       "id": "landscape",
+      "source": "src/modules/landscape.js",
       "name": "Drainage Networks",
       "tab": "Drainage",
       "subtitle": "stream-power incision against uplift · 1994",
@@ -365,6 +379,7 @@
     },
     {
       "id": "kpz",
+      "source": "src/modules/kpz.js",
       "name": "Rough Growth",
       "tab": "Roughness",
       "subtitle": "ballistic deposition and the KPZ exponent · 1986",
@@ -392,6 +407,7 @@
     },
     {
       "id": "potts",
+      "source": "src/modules/potts.js",
       "name": "Foam & Grains",
       "tab": "Froth",
       "subtitle": "the cellular Potts model, coarsening · 1992",
@@ -419,6 +435,7 @@
     },
     {
       "id": "liesegang",
+      "source": "src/modules/liesegang.js",
       "name": "Liesegang Rings",
       "tab": "Liesegang",
       "subtitle": "periodic precipitation in a gel · 1896",
@@ -446,6 +463,7 @@
     },
     {
       "id": "grains",
+      "source": "src/modules/grains.js",
       "name": "Force Chains",
       "tab": "Chains",
       "subtitle": "a granular packing and the network that carries it · 1979",
@@ -473,6 +491,7 @@
     },
     {
       "id": "skyrmion",
+      "source": "src/modules/skyrmion.js",
       "name": "Magnetic Skyrmions",
       "tab": "Skyrmions",
       "subtitle": "chiral magnets · 1989",
@@ -499,6 +518,7 @@
     },
     {
       "id": "neural-mass",
+      "source": "src/modules/neural-mass.js",
       "name": "Neural Populations",
       "tab": "",
       "subtitle": "exact QIF mean-field model · 2015",
@@ -515,7 +535,7 @@
         "slow",
         "broad"
       ],
-      "vectors": false,
+      "vectors": true,
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
@@ -525,6 +545,7 @@
     },
     {
       "id": "tonertu",
+      "source": "src/modules/tonertu.js",
       "name": "Flocking",
       "tab": "Flock",
       "subtitle": "Toner-Tu, a polar active fluid · 1995",
@@ -552,6 +573,7 @@
     },
     {
       "id": "hyperbolic",
+      "source": "src/modules/hyperbolic.js",
       "name": "Hyperbolic Turing",
       "tab": "Curved",
       "subtitle": "reaction-diffusion on a {p,q} tiling · Poincare disk",
@@ -579,6 +601,7 @@
     },
     {
       "id": "sle",
+      "source": "src/modules/sle.js",
       "name": "Schramm-Loewner Evolution",
       "tab": "SLE",
       "subtitle": "the random curve of critical two-dimensional systems · 2000",
@@ -606,6 +629,7 @@
     },
     {
       "id": "fractal",
+      "source": "src/modules/fractal.js",
       "name": "Fractal Geometry",
       "tab": "",
       "subtitle": "signed-distance raymarching of 3D fractals · 2009",
@@ -634,6 +658,7 @@
     },
     {
       "id": "lens",
+      "source": "src/modules/lens.js",
       "name": "Gravitational Lens",
       "tab": "Lens",
       "subtitle": "thin-lens mapping · 1936",
@@ -661,6 +686,7 @@
     },
     {
       "id": "rotor",
+      "source": "src/modules/sandpile.js",
       "name": "Rotor Routers",
       "tab": "Rotor",
       "subtitle": "rotor-router aggregation and internal DLA · 2009",
@@ -688,6 +714,7 @@
     },
     {
       "id": "web",
+      "source": "src/modules/web.js",
       "name": "Cosmic Web",
       "tab": "Web",
       "subtitle": "Zel'dovich adhesion · 1970 / 1989",
@@ -715,6 +742,7 @@
     },
     {
       "id": "faraday",
+      "source": "src/modules/faraday.js",
       "name": "Faraday Waves",
       "tab": "Faraday",
       "subtitle": "parametrically driven layer · 1831 / 1996",
@@ -742,6 +770,7 @@
     },
     {
       "id": "film",
+      "source": "src/modules/film.js",
       "name": "Thin Film",
       "tab": "Film",
       "subtitle": "draining soap and oil · interference",
@@ -769,6 +798,7 @@
     },
     {
       "id": "timecrystal",
+      "source": "src/modules/timecrystal.js",
       "name": "Time Crystal",
       "tab": "Time crystal",
       "subtitle": "Floquet Ising chain, period doubled · 2012 / 2016",
@@ -796,6 +826,7 @@
     },
     {
       "id": "growdomain",
+      "source": "src/modules/growdomain.js",
       "name": "Growing Domain",
       "tab": "",
       "subtitle": "Turing patterns on a domain that grows · 1999",
@@ -823,6 +854,7 @@
     },
     {
       "id": "spinice",
+      "source": "src/modules/spinice.js",
       "name": "Spin Ice",
       "tab": "Spin ice",
       "subtitle": "square ice, emergent monopoles · 1935 / 2008",
@@ -850,6 +882,7 @@
     },
     {
       "id": "vegetation",
+      "source": "src/modules/rdx.js",
       "name": "Vegetation Bands",
       "tab": "",
       "subtitle": "tiger bush on a dry hillside · 1999",
@@ -877,6 +910,7 @@
     },
     {
       "id": "aztec",
+      "source": "src/modules/aztec.js",
       "name": "Arctic Circle",
       "tab": "",
       "subtitle": "random domino tilings of the Aztec diamond · 1992",
@@ -903,6 +937,7 @@
     },
     {
       "id": "skin",
+      "source": "src/modules/skin.js",
       "name": "Skin Effect",
       "tab": "Skin",
       "subtitle": "non-Hermitian skin, Hatano–Nelson · 1996 / 2018",
@@ -930,6 +965,7 @@
     },
     {
       "id": "rmt",
+      "source": "src/modules/rmt.js",
       "name": "Random Matrices",
       "tab": "Matrices",
       "subtitle": "beta-ensemble spectra and Dyson Brownian motion · 1962",
@@ -957,6 +993,7 @@
     },
     {
       "id": "stealth",
+      "source": "src/modules/stealth.js",
       "name": "Stealthy Points",
       "tab": "Stealth",
       "subtitle": "hyperuniform collective coordinates · 2004",
@@ -984,6 +1021,7 @@
     },
     {
       "id": "lozenge",
+      "source": "src/modules/lozenge.js",
       "name": "Lozenge Tilings",
       "tab": "Lozenge",
       "subtitle": "random lozenge tilings of a hexagon, exact by coupling from the past · 1996",
@@ -1011,6 +1049,7 @@
     },
     {
       "id": "arago",
+      "source": "src/modules/arago.js",
       "name": "Arago Spot",
       "tab": "Arago",
       "subtitle": "Poisson bright spot behind a disk · 1818",
@@ -1037,6 +1076,7 @@
     },
     {
       "id": "ust",
+      "source": "src/modules/ust.js",
       "name": "Spanning Trees",
       "tab": "Trees",
       "subtitle": "uniform spanning trees by loop-erased random walk · 1996",
@@ -1064,6 +1104,7 @@
     },
     {
       "id": "cppn",
+      "source": "src/modules/cppn.js",
       "name": "Neural Patterns",
       "tab": "",
       "subtitle": "compositional pattern-producing networks evaluated per pixel · 2007",
@@ -1092,6 +1133,7 @@
     },
     {
       "id": "rogue",
+      "source": "src/modules/rogue.js",
       "name": "Rogue Wave",
       "tab": "Rogue",
       "subtitle": "Peregrine soliton, waves from nowhere · 1983",
@@ -1118,6 +1160,7 @@
     },
     {
       "id": "hodgkin-huxley",
+      "source": "src/modules/hodgkin-huxley.js",
       "name": "Hodgkin-Huxley Membranes",
       "tab": "Membranes",
       "subtitle": "sodium and potassium gates · 1952",
@@ -1134,7 +1177,7 @@
         "potassium",
         "rebound"
       ],
-      "vectors": true,
+      "vectors": false,
       "familiarity": "occasional",
       "liveCapable": false,
       "runningDefault": false,
@@ -1144,12 +1187,13 @@
     },
     {
       "id": "aharonov",
+      "source": "src/modules/aharonov.js",
       "name": "Aharonov–Bohm",
       "tab": "Aharonov",
       "subtitle": "phase from a field the particle never enters · 1959",
       "equation": "Δφ = (e/ℏ) ∮ A·dl = 2π Φ/Φ0,   I(x) = |ψ_L + e^{iΔφ} ψ_R|²",
       "credit": "Y. Aharonov and D. Bohm, Phys. Rev. 115, 485 (1959). Ehrenberg and Siday had the same phase in 1949. Chambers (1960) and Tonomura et al. (1986) saw the fringes shift around a shielded magnet. The plate is two Huygens slits plus a pure gauge phase, not a solenoid in a TEM.",
-      "blurb": "A particle that never enters a magnetic field still feels it. The vector potential around a shielded flux shifts the two-slit fringes by 2π Φ/Φ0. Classical Lorentz force is zero on both paths. The status line reports the measured fringe shift in flux quanta against the dialled Φ/Φ0.",
+      "blurb": "A particle that never enters a magnetic field still feels it. The vector potential around a shielded flux shifts the two-slit fringes by 2π Φ/Φ0. Classical Lorentz force is zero on both paths. The status line gives the brightest lower-field pixel’s horizontal offset as a fraction of plate width, not a calibrated fringe shift. Display intensity is scaled to its 95th percentile; the brightest 5% clips at unit exposure.",
       "order": 51,
       "seed": "",
       "presets": [
@@ -1170,6 +1214,7 @@
     },
     {
       "id": "pendulum",
+      "source": "src/modules/dynamics.js",
       "name": "Double pendulum flip time",
       "tab": "Pendulum",
       "subtitle": "first flip of a chaotic double pendulum · 1992",
@@ -1196,6 +1241,7 @@
     },
     {
       "id": "anderson",
+      "source": "src/modules/anderson.js",
       "name": "Anderson",
       "tab": "Anderson",
       "subtitle": "waves that refuse to diffuse · 1958",
@@ -1222,6 +1268,7 @@
     },
     {
       "id": "fput",
+      "source": "src/modules/fput.js",
       "name": "FPUT Recurrence",
       "tab": "FPUT",
       "subtitle": "a chain that refuses to thermalise · 1955",
@@ -1248,6 +1295,7 @@
     },
     {
       "id": "schrodinger",
+      "source": "src/modules/wavesflow.js",
       "name": "Schrödinger",
       "tab": "Schrödinger",
       "subtitle": "wave packet on a detector · 1926",
@@ -1276,6 +1324,7 @@
     },
     {
       "id": "maxwell",
+      "source": "src/modules/maxwell.js",
       "name": "Maxwell FDTD",
       "tab": "Maxwell",
       "subtitle": "electric and magnetic waves · 1966",
@@ -1302,6 +1351,7 @@
     },
     {
       "id": "plasma",
+      "source": "src/modules/plasma.js",
       "name": "Kinetic Plasma",
       "tab": "Plasma",
       "subtitle": "electrons in phase space · 1960s",
@@ -1328,6 +1378,7 @@
     },
     {
       "id": "excitable",
+      "source": "src/modules/rdx.js",
       "name": "Excitable Media",
       "tab": "",
       "subtitle": "spirals, targets and wave turbulence · 1991",
@@ -1355,6 +1406,7 @@
     },
     {
       "id": "soliton",
+      "source": "src/modules/soliton.js",
       "name": "KdV Soliton",
       "tab": "Soliton",
       "subtitle": "a wave that will not disperse · 1834 / 1965",
@@ -1381,6 +1433,7 @@
     },
     {
       "id": "cyclicca",
+      "source": "src/modules/lattice.js",
       "name": "Cyclic Automaton",
       "tab": "Cyclic CA",
       "subtitle": "cyclic and Greenberg-Hastings excitable automata · 1991",
@@ -1408,6 +1461,7 @@
     },
     {
       "id": "chimera",
+      "source": "src/modules/chimera.js",
       "name": "Chimera States",
       "tab": "",
       "subtitle": "identical oscillators that split into synchrony and chaos · 2004",
@@ -1436,6 +1490,7 @@
     },
     {
       "id": "ssh",
+      "source": "src/modules/ssh.js",
       "name": "SSH Edges",
       "tab": "SSH",
       "subtitle": "states in a gap that the bulk forbade · 1979",
@@ -1462,6 +1517,7 @@
     },
     {
       "id": "swarm",
+      "source": "src/modules/swarm.js",
       "name": "Swarmalators",
       "tab": "",
       "subtitle": "oscillators that sync and swarm · 2017",
@@ -1487,6 +1543,7 @@
     },
     {
       "id": "amb",
+      "source": "src/modules/pde.js",
       "name": "Active Model B+",
       "tab": "Active B+",
       "subtitle": "active conserved phase field · 2018",
@@ -1513,6 +1570,7 @@
     },
     {
       "id": "aubry",
+      "source": "src/modules/aubry.js",
       "name": "Aubry–André",
       "tab": "Aubry",
       "subtitle": "localisation without disorder · 1980",
@@ -1539,6 +1597,7 @@
     },
     {
       "id": "cahn",
+      "source": "src/modules/pde.js",
       "name": "Cahn–Hilliard",
       "tab": "",
       "subtitle": "spinodal decomposition · 1958",
@@ -1564,6 +1623,7 @@
     },
     {
       "id": "ohta",
+      "source": "src/modules/pde.js",
       "name": "Ohta–Kawasaki",
       "tab": "Ohta–Kawasaki",
       "subtitle": "diblock copolymer · finite-size spots and lamellae · 1986",
@@ -1589,6 +1649,7 @@
     },
     {
       "id": "hopf",
+      "source": "src/modules/hopf.js",
       "name": "Hopf Fibration",
       "tab": "Hopf",
       "subtitle": "every circle linked with every other · 1931",
@@ -1615,6 +1676,7 @@
     },
     {
       "id": "swift",
+      "source": "src/modules/pde.js",
       "name": "Swift–Hohenberg",
       "tab": "",
       "subtitle": "rolls, hexagons, localized states · 1977",
@@ -1640,6 +1702,7 @@
     },
     {
       "id": "pfc",
+      "source": "src/modules/pde.js",
       "name": "Phase-field crystal",
       "tab": "PFC",
       "subtitle": "Elder density-wave crystal · 2002",
@@ -1666,6 +1729,7 @@
     },
     {
       "id": "lp",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
       "name": "Lifshitz–Petrich",
       "tab": "12-fold",
       "subtitle": "two-scale quasicrystal · 1997",
@@ -1691,6 +1755,7 @@
     },
     {
       "id": "cloak",
+      "source": "src/modules/cloak.js",
       "name": "Pendry Cloak",
       "tab": "Cloak",
       "subtitle": "a disk that light goes around · 2006",
@@ -1717,6 +1782,7 @@
     },
     {
       "id": "xy",
+      "source": "src/modules/xy.js",
       "name": "XY / Kosterlitz–Thouless",
       "tab": "XY / KT",
       "subtitle": "planar spins, bound vortices and the 1973 unbinding transition",
@@ -1745,10 +1811,11 @@
     },
     {
       "id": "cgl",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
       "name": "Complex Ginzburg–Landau",
       "tab": "CGL",
       "subtitle": "spirals, defect chaos, frozen vortex glass",
-      "equation": "∂A/∂t = A + (1 + iα) ∇²A − (1 + iβ) |A|² A",
+      "equation": "∂A/∂t = μA + (1 + iα) ∇²A − (1 + iβ) |A|² A",
       "credit": "The complex Ginzburg–Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969–71). The (α, β) plane was mapped by Aranson and Kramer: Benjamin–Feir when 1+αβ<0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.",
       "blurb": "A complex amplitude is enough. Real diffusion, imaginary dispersion, a cubic that saturates. The zeros of A are vortices, and they cannot die alone. In one corner of the (α, β) plane they freeze into a glass. In another they birth and annihilate forever — spiral defect chaos, the weather of an oscillatory medium. Color by phase and you see the spirals. Color by amplitude and you see the holes they leave.",
       "order": 58.1,
@@ -1770,12 +1837,13 @@
     },
     {
       "id": "vortex",
+      "source": "src/modules/vortex.js",
       "name": "Abrikosov",
       "tab": "Vortex",
-      "subtitle": "a superconductor that lets flux in as a lattice · 1957",
-      "equation": "αψ + β|ψ|² ψ + (1/2m)(−i∇ − 2e A)² ψ = 0,   n_v = B Area / Φ0",
-      "credit": "A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. The plate is imaginary-time Ginzburg-Landau in a uniform B, Landau gauge.",
-      "blurb": "A superconductor that cannot stand a magnetic field was the story. Type II lets the field in as a hexagonal lattice of tubes, each a quantum of flux, and still superconducts around them. The plate is |ψ|. The status line reports the number of zeros against B Area / Φ0.",
+      "subtitle": "fixed-field order-parameter relaxation · 1957",
+      "equation": "∂ψ/∂t = κ⁻²(∇ − iA)²ψ + (1 − |ψ|²)ψ,   A = (−0.08 B y, 0),   Δx = 1",
+      "credit": "A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. This plate is a reduced fixed-field Ginzburg-Landau relaxation with unit-modulus lattice links in Landau gauge and zero order parameter at the boundary. It does not evolve the magnetic field or establish critical fields.",
+      "blurb": "A complex order parameter relaxes in an imposed magnetic field. Color shows its squared amplitude. The winding count is a descriptive grid diagnostic, not a test of flux quantization or proof of a hexagonal equilibrium. The model uses unit grid spacing and fixed zero edges; increasing the grid enlarges the domain. Magnetic screening and the type-I/type-II transition are outside this reduced model.",
       "order": 59,
       "seed": "",
       "presets": [
@@ -1796,6 +1864,7 @@
     },
     {
       "id": "nematic",
+      "source": "src/modules/nematic.js",
       "name": "Active Nematics",
       "tab": "Nematics",
       "subtitle": "self-driven rods, ±½ defects and active turbulence · 2012",
@@ -1824,6 +1893,7 @@
     },
     {
       "id": "darkroom",
+      "source": "src/modules/darkroom.js",
       "name": "Dark Room",
       "tab": "Dark room",
       "subtitle": "a polygonal room that a candle cannot fill · 1995",
@@ -1850,6 +1920,7 @@
     },
     {
       "id": "fluid",
+      "source": "src/modules/fluid.js",
       "name": "Fluid",
       "tab": "",
       "subtitle": "Navier-Stokes dye advected by a stable-fluids solver · 1999",
@@ -1878,6 +1949,7 @@
     },
     {
       "id": "sandpile",
+      "source": "src/modules/lattice.js",
       "name": "Abelian Sandpile",
       "tab": "Sandpile",
       "subtitle": "self-organized criticality · 1987",
@@ -1905,6 +1977,7 @@
     },
     {
       "id": "kakeya",
+      "source": "src/modules/kakeya.js",
       "name": "Kakeya",
       "tab": "Kakeya",
       "subtitle": "a needle rotated in arbitrarily small area · 1919",
@@ -1931,6 +2004,7 @@
     },
     {
       "id": "ks",
+      "source": "src/modules/pde.js",
       "name": "Kuramoto–Sivashinsky",
       "tab": "KS chaos",
       "subtitle": "cellular flame chaos · 1977",
@@ -1956,6 +2030,7 @@
     },
     {
       "id": "breather",
+      "source": "src/modules/breather.js",
       "name": "SG Breather",
       "tab": "Breather",
       "subtitle": "a lump that oscillates and never radiates · 1962",
@@ -1982,6 +2057,7 @@
     },
     {
       "id": "turing",
+      "source": "src/modules/rdx.js",
       "name": "Turing Patterns",
       "tab": "",
       "subtitle": "spots, stripes and hexagons from two chemicals · 1952",
@@ -2009,6 +2085,7 @@
     },
     {
       "id": "holomorphic",
+      "source": "src/modules/dynamics.js",
       "name": "Holomorphic dynamics",
       "tab": "Holomorphic",
       "subtitle": "escape-time and Newton basins in the complex plane · 1918",
@@ -2036,6 +2113,7 @@
     },
     {
       "id": "klein",
+      "source": "src/modules/klein.js",
       "name": "Klein Tunnel",
       "tab": "Klein",
       "subtitle": "a barrier a Dirac electron does not notice · 1929 / 2006",
@@ -2062,6 +2140,7 @@
     },
     {
       "id": "gyroid",
+      "source": "src/modules/gyroid.js",
       "name": "Gyroid",
       "tab": "Gyroid",
       "subtitle": "a sponge of zero mean curvature · 1970",
@@ -2088,6 +2167,7 @@
     },
     {
       "id": "dendrite",
+      "source": "src/modules/dendrite.js",
       "name": "Dendritic Growth",
       "tab": "",
       "subtitle": "phase-field solidification: snowflakes and metal dendrites · 1993",
@@ -2116,6 +2196,7 @@
     },
     {
       "id": "purcell",
+      "source": "src/modules/purcell.js",
       "name": "Purcell Swimmer",
       "tab": "Purcell",
       "subtitle": "a scallop cannot swim in molasses · 1977",
@@ -2142,6 +2223,7 @@
     },
     {
       "id": "exceptional",
+      "source": "src/modules/exceptional.js",
       "name": "Exceptional Point",
       "tab": "Exceptional",
       "subtitle": "two eigenvectors become one · 1998",
@@ -2167,7 +2249,35 @@
       "aliases": []
     },
     {
+      "id": "direct-gravity",
+      "source": "src/modules/direct-gravity.js",
+      "name": "Direct Gravity",
+      "tab": "Direct Gravity",
+      "subtitle": "every pair attracts · Newton 1687 / Verlet 1967",
+      "equation": "a_i = Σ(j≠i) m_j (r_j−r_i) / (|r_j−r_i|²+ε²)^(3/2), G=1; velocity Verlet",
+      "credit": "Newton, Principia (1687); Verlet, Physical Review 159 (1967), 98. Plummer softening and the direct all-pairs kernel: Nyland, Harris and Prins, GPU Gems 3, chapter 31 (2007). This implementation runs the pair kernel on the CPU.",
+      "blurb": "Every point attracts every other point, with no tree approximation or hidden particle cap. Positions lie in a plane but use the three-dimensional inverse-distance potential. Softening replaces singular encounters with a smooth force; it changes the model. Disk and ring seeds are prepared configurations, not claimed equilibrium galaxies. Heavy particle counts increase work quadratically. Each run stops at its step budget, and pause remains available while pairs are being computed.",
+      "order": 66.4,
+      "seed": "",
+      "presets": [
+        "disk",
+        "ring",
+        "collision",
+        "collapse",
+        "hot",
+        "extreme"
+      ],
+      "vectors": true,
+      "familiarity": "common",
+      "liveCapable": true,
+      "runningDefault": true,
+      "headline": "",
+      "hash": "#direct-gravity",
+      "aliases": []
+    },
+    {
       "id": "meissner",
+      "source": "src/modules/meissner.js",
       "name": "Meissner",
       "tab": "Meissner",
       "subtitle": "a field a perfect conductor would have frozen, expelled · 1933",
@@ -2194,6 +2304,7 @@
     },
     {
       "id": "tennis",
+      "source": "src/modules/tennis.js",
       "name": "Tennis Racket",
       "tab": "Tennis",
       "subtitle": "the intermediate axis that will not spin · 1834 / 1991",
@@ -2220,6 +2331,7 @@
     },
     {
       "id": "flow",
+      "source": "src/modules/flow.js",
       "name": "Flow Field",
       "tab": "",
       "subtitle": "collision-avoiding strokes in a noise field · 1985",
@@ -2239,7 +2351,7 @@
         "overprint",
         "relief"
       ],
-      "vectors": false,
+      "vectors": true,
       "familiarity": "ubiquitous",
       "liveCapable": false,
       "runningDefault": false,
@@ -2249,6 +2361,7 @@
     },
     {
       "id": "chemotaxis",
+      "source": "src/modules/rdx.js",
       "name": "Chemotaxis",
       "tab": "",
       "subtitle": "Keller-Segel aggregation · 1970",
@@ -2275,6 +2388,7 @@
     },
     {
       "id": "smectic",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
       "name": "Smectic focal conics",
       "tab": "Focal conics",
       "subtitle": "Dupin cyclides · Friedel 1910",
@@ -2299,6 +2413,7 @@
     },
     {
       "id": "reaction",
+      "source": "src/modules/reaction.js",
       "name": "Reaction-Diffusion",
       "tab": "",
       "subtitle": "Gray-Scott activator/inhibitor chemistry · 1983",
@@ -2328,6 +2443,7 @@
     },
     {
       "id": "molecular",
+      "source": "src/modules/molecular.js",
       "name": "Molecular Dynamics",
       "tab": "",
       "subtitle": "Lennard-Jones particles · 1924 / 1967",
@@ -2354,6 +2470,7 @@
     },
     {
       "id": "tilings",
+      "source": "src/modules/tilings.js",
       "name": "Aperiodic Tilings",
       "tab": "",
       "subtitle": "tiles that cover the plane but never repeat · 1974–2023",
@@ -2385,6 +2502,7 @@
     },
     {
       "id": "percolation",
+      "source": "src/modules/lattice.js",
       "name": "Percolation",
       "tab": "Percolation",
       "subtitle": "site and bond percolation on the square lattice · 1957",
@@ -2412,6 +2530,7 @@
     },
     {
       "id": "shallow",
+      "source": "src/modules/shallow.js",
       "name": "Shallow Water",
       "tab": "",
       "subtitle": "depth, flow and shock waves · 1871",
@@ -2438,6 +2557,7 @@
     },
     {
       "id": "attractors",
+      "source": "src/modules/attractors.js",
       "name": "Attractors",
       "tab": "",
       "subtitle": "strange attractors and harmonographs as density maps · 1963",
@@ -2468,6 +2588,7 @@
     },
     {
       "id": "airy",
+      "source": "src/modules/airy.js",
       "name": "Airy Beam",
       "tab": "Airy",
       "subtitle": "a wave packet that accelerates with no force · 1979",
@@ -2494,6 +2615,7 @@
     },
     {
       "id": "chirikov",
+      "source": "src/modules/swarm.js",
       "name": "Chirikov map",
       "tab": "",
       "subtitle": "standard map · KAM islands in a chaotic sea · 1969",
@@ -2519,6 +2641,7 @@
     },
     {
       "id": "hofstadter",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
       "name": "Hofstadter butterfly",
       "tab": "Hofstadter",
       "subtitle": "almost-Mathieu spectrum · 1976",
@@ -2543,6 +2666,7 @@
     },
     {
       "id": "weierstrass",
+      "source": "src/modules/weierstrass.js",
       "name": "Weierstrass",
       "tab": "Weierstrass",
       "subtitle": "a curve with no tangent anywhere · 1872",
@@ -2569,6 +2693,7 @@
     },
     {
       "id": "scars",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
       "name": "Helmholtz scars",
       "tab": "Scars",
       "subtitle": "stadium and cardioid eigenmodes · Heller 1984",
@@ -2594,6 +2719,7 @@
     },
     {
       "id": "kitaev",
+      "source": "src/modules/kitaev.js",
       "name": "Kitaev Chain",
       "tab": "Kitaev",
       "subtitle": "a fermion that is its own antiparticle, stuck to the ends · 2001",
@@ -2620,6 +2746,7 @@
     },
     {
       "id": "caustics",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
       "name": "Optical caustics",
       "tab": "Caustics",
       "subtitle": "folds and cusps of a light field · Berry",
@@ -2644,6 +2771,7 @@
     },
     {
       "id": "veselago",
+      "source": "src/modules/veselago.js",
       "name": "Veselago Lens",
       "tab": "Veselago",
       "subtitle": "a slab that focuses because n is negative · 1968",
@@ -2670,6 +2798,7 @@
     },
     {
       "id": "devil",
+      "source": "src/modules/devil.js",
       "name": "Devil's Staircase",
       "tab": "Devil",
       "subtitle": "a staircase constant almost everywhere that still climbs · 1965",
@@ -2696,6 +2825,7 @@
     },
     {
       "id": "talbot",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
       "name": "Talbot carpet",
       "tab": "Talbot",
       "subtitle": "near-field self-imaging · 1836",
@@ -2720,6 +2850,7 @@
     },
     {
       "id": "orbitals",
+      "source": "src/modules/dynamics.js",
       "name": "Hydrogen orbitals",
       "tab": "Orbitals",
       "subtitle": "hydrogen atom probability density |ψₙₗₘ|² · 1926",
@@ -2747,6 +2878,7 @@
     },
     {
       "id": "loschmidt",
+      "source": "src/modules/loschmidt.js",
       "name": "Loschmidt Echo",
       "tab": "Loschmidt",
       "subtitle": "a gas that unmixes when you flip every arrow · 1876",
@@ -2772,7 +2904,34 @@
       "aliases": []
     },
     {
+      "id": "volume-wave",
+      "source": "src/modules/volume-wave.js",
+      "name": "Wave volume",
+      "tab": "Wave volume",
+      "subtitle": "three-dimensional wave equation · classical",
+      "equation": "∂²u/∂t² = c²(∂²u/∂x² + ∂²u/∂y² + ∂²u/∂z²)",
+      "credit": "Classical scalar wave equation. Centered finite differences and the three-dimensional CFL bound follow H. P. Langtangen and S. Linge, Finite Difference Computing with PDEs (2017), wave equation chapter, https://hplgit.github.io/fdm-book/doc/pub/wave/html/._wave-solarized004.html. No novelty or full acoustic model is claimed.",
+      "blurb": "A wave travels through a periodic cube, including the unseen layers behind this slice. Select XY, XZ or YZ to look inside the same evolving field. A pulse launches waves in every direction; standing and crossed Fourier modes reveal interference. This is a scalar, uniform-speed, lossless wave equation in normalized units, not a full electromagnetic or elastic material model. Every step updates the whole volume. Heavy grids are explicit choices, and a print preserves the current field rather than adding simulated cells.",
+      "order": 96.3,
+      "seed": "wave-cube",
+      "presets": [
+        "crossed",
+        "pulse",
+        "standing",
+        "transverse",
+        "side"
+      ],
+      "vectors": false,
+      "familiarity": "occasional",
+      "liveCapable": true,
+      "runningDefault": false,
+      "headline": "",
+      "hash": "#volume-wave/wave-cube",
+      "aliases": []
+    },
+    {
       "id": "boy",
+      "source": "src/modules/boy.js",
       "name": "Boy's Surface",
       "tab": "Boy",
       "subtitle": "a projective plane sewn into R³ · 1901",
@@ -2799,6 +2958,7 @@
     },
     {
       "id": "pearls",
+      "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
       "name": "Indra's Pearls",
       "tab": "Pearls",
       "subtitle": "Schottky limit set · Mumford–Series–Wright",
@@ -2823,6 +2983,7 @@
     },
     {
       "id": "ising",
+      "source": "src/modules/lattice.js",
       "name": "Ising Model",
       "tab": "Ising",
       "subtitle": "Metropolis Monte Carlo on the square lattice · 1925",
@@ -2850,6 +3011,7 @@
     },
     {
       "id": "thouless",
+      "source": "src/modules/thouless.js",
       "name": "Thouless Pump",
       "tab": "Thouless",
       "subtitle": "a clock that pumps a whole electron per turn · 1983",
@@ -2876,6 +3038,7 @@
     },
     {
       "id": "convection",
+      "source": "src/modules/wavesflow.js",
       "name": "Rayleigh–Bénard",
       "tab": "Convection",
       "subtitle": "heated from below · 1900",
@@ -2903,6 +3066,7 @@
     },
     {
       "id": "reuleaux",
+      "source": "src/modules/reuleaux.js",
       "name": "Reuleaux",
       "tab": "Reuleaux",
       "subtitle": "a non-circle of constant width · 1875",
@@ -2929,6 +3093,7 @@
     },
     {
       "id": "surfaces",
+      "source": "src/modules/surfaces.js",
       "name": "Parametric Surfaces",
       "tab": "Surfaces",
       "subtitle": "Enneper, Dini and the catenoid–helicoid family · classical geometry",
@@ -2955,6 +3120,7 @@
     },
     {
       "id": "apollonian",
+      "source": "src/modules/apollonian.js",
       "name": "Apollonian",
       "tab": "Apollonian",
       "subtitle": "finite tangent-circle packing · 1643",
@@ -2981,6 +3147,7 @@
     },
     {
       "id": "chladni",
+      "source": "src/modules/chladni.js",
       "name": "Chladni & Waves",
       "tab": "",
       "subtitle": "standing waves, nodal lines and interference · 1787",
@@ -3009,6 +3176,7 @@
     },
     {
       "id": "track",
+      "source": "src/modules/track.js",
       "name": "Track",
       "tab": "Track",
       "subtitle": "a breather that paves the index it runs on, drawn as its worldline",
@@ -3036,6 +3204,7 @@
     },
     {
       "id": "knotlight",
+      "source": "src/modules/knotlight.js",
       "name": "Knotted Light",
       "tab": "Knot",
       "subtitle": "a trefoil of darkness, an open book, a bark with no tangent · 2001 / this plate",
@@ -3062,6 +3231,7 @@
     },
     {
       "id": "causticsea",
+      "source": "src/modules/causticsea.js",
       "name": "Caustic Sea",
       "tab": "Sea",
       "subtitle": "a sea that focuses its own light, and the light that writes the sea",
@@ -3088,6 +3258,7 @@
     },
     {
       "id": "kp",
+      "source": "src/modules/kp.js",
       "name": "Soliton Web",
       "tab": "KP",
       "subtitle": "resonant line-soliton webs of the Kadomtsev–Petviashvili equation",
@@ -3115,6 +3286,7 @@
     },
     {
       "id": "gerstner",
+      "source": "src/modules/gerstner.js",
       "name": "Gerstner",
       "tab": "Gerstner",
       "subtitle": "trochoidal waves, the exact Euler deep-water solution · 1802",
@@ -3142,6 +3314,7 @@
     },
     {
       "id": "eight",
+      "source": "src/modules/eight.js",
       "name": "Figure Eight",
       "tab": "Eight",
       "subtitle": "three equal masses chasing on a planar figure-eight · 1993 / 2000",
@@ -3169,6 +3342,7 @@
     },
     {
       "id": "peakon",
+      "source": "src/modules/peakon.js",
       "name": "Peakon",
       "tab": "Peakon",
       "subtitle": "Camassa–Holm peaked traveling waves · 1993",
@@ -3196,6 +3370,7 @@
     },
     {
       "id": "photon",
+      "source": "src/modules/photon.js",
       "name": "Photon Sphere",
       "tab": "Photon",
       "subtitle": "Schwarzschild photon sphere · 1916",
@@ -3223,6 +3398,7 @@
     },
     {
       "id": "crapper",
+      "source": "src/modules/crapper.js",
       "name": "Crapper",
       "tab": "Crapper",
       "subtitle": "exact finite-amplitude pure-capillary waves · 1957",
@@ -3250,6 +3426,7 @@
     },
     {
       "id": "hasimoto",
+      "source": "src/modules/hasimoto.js",
       "name": "Hasimoto",
       "tab": "Hasimoto",
       "subtitle": "a soliton on a vortex filament · 1972",
@@ -3277,6 +3454,7 @@
     },
     {
       "id": "lump",
+      "source": "src/modules/lump.js",
       "name": "Lump",
       "tab": "Lump",
       "subtitle": "KP-I lumps · 1977",
@@ -3304,6 +3482,7 @@
     },
     {
       "id": "three-vortex-bound",
+      "source": "src/modules/three-vortex-bound.js",
       "name": "Three-vortex collapse bound",
       "tab": "Three-vortex collapse bound",
       "subtitle": "ω₀ t_c ≥ √2 on Gröbli's collapsing triangle · Three-vortex collapse bound",
@@ -3331,6 +3510,7 @@
     },
     {
       "id": "parallelogram-lock",
+      "source": "src/modules/parallelogram-lock.js",
       "name": "Parallelogram lock",
       "tab": "Parallelogram",
       "subtitle": "ω₀ t_c ≥ 3√5/4 on Novikov-Sedov's parallelogram",
@@ -3358,6 +3538,7 @@
     },
     {
       "id": "quincunx-lock",
+      "source": "src/modules/quincunx-lock.js",
       "name": "Quincunx lock",
       "tab": "Quincunx",
       "subtitle": "ω₀ t_c ≥ 3√33/16 on Novikov-Sedov's five-vortex quincunx",
@@ -3385,6 +3566,7 @@
     },
     {
       "id": "double-triangle-bound",
+      "source": "src/modules/double-triangle-bound.js",
       "name": "Polygon collapse bounds",
       "tab": "Polygon bounds",
       "subtitle": "Two regular polygons · sharp spin–time floor · priority open",

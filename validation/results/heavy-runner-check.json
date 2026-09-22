@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "backend": "numpy",
+  "numpy_version": "2.3.5",
+  "backend_version": "2.3.5",
+  "python_version": "3.12.14",
+  "platform": "macOS-27.0-arm64-arm-64bit",
+  "source_sha256": "a9bde658b5b31d4721e10a6b02975c580bb3450d66824d69c13dcddc9ad2b788",
+  "parallel_tiles_identical": true,
+  "analytic": {
+    "passed": true,
+    "tests": [
+      {
+        "test": "periodic discrete wave eigenmode",
+        "max_error": 2.0576134279029104e-15,
+        "tolerance": 2e-12,
+        "wrong_frequency_error": 0.10977697125527941
+      },
+      {
+        "test": "softened circular orbit",
+        "errors": [
+          7.1551017059579e-06,
+          1.7887713232300761e-06,
+          4.4719257480396735e-07
+        ],
+        "refinement_ratio": 16.000045861884963,
+        "finest_tolerance": 1e-06,
+        "no_force_control_detected": true
+      }
+    ],
+    "limitations": [
+      "Finite analytic fixtures only.",
+      "No cross-hardware pixel equivalence or astrophysical validation."
+    ]
+  },
+  "continuum_wave_errors": [
+    0.01677699658740593,
+    0.004235151619168663,
+    0.0010613293721988546
+  ],
+  "continuum_wave_ratios": [
+    3.961368587483808,
+    3.9904215695023177
+  ],
+  "cli_checks": "invalid inputs, memory budget, deterministic archives, no overwrite, exclusive reservation",
+  "limitations": "CPU float64 fixtures only; CUDA is not exercised."
+}

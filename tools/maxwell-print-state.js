@@ -22,7 +22,7 @@ ${marker}`);
     for(const spec of [{grid:128,aspect:'1:1',width:2400,height:2400},{grid:256,aspect:'4:5',width:2400,height:3000}]){
       const page=await browser.newPage();
       try {
-        await page.goto('file://'+path.join(root,'studio.html')+'#three-vortex-bound/maxwell-print');await page.evaluate(source);
+        await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/maxwell-print');await page.evaluate(source);
         rows.push(await page.evaluate(async spec=>{
           const mod=Studio.modules.maxwell,pal=Studio.PALETTES[mod.defaultPalette],state={...mod.defaults,...spec,warmup:0,running:false,palette:pal.colors,bg:pal.bg};mod.sanitize(state);
           const canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;

@@ -13,7 +13,7 @@ if %errorlevel%==0 (
   goto :eof
 )
 echo Python was not found on this machine.
-echo Opening studio.html directly instead. That works, but the studio cannot
-echo keep your settings or gallery between sessions.
-start "" "%~dp0..\studio.html"
+echo Opening the portable dist/studio.html instead. Browser restrictions on
+echo local files may affect saved settings and clipboard access.
+start "" "%~dp0..\dist\studio.html"
 pause

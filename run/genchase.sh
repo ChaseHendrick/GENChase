@@ -4,6 +4,6 @@ DIR=$(dirname "$0")
 if command -v python3 >/dev/null 2>&1; then
   exec python3 "$DIR/genchase.py"
 fi
-echo "python3 was not found. Opening studio.html directly instead."
-echo "That works, but the studio cannot keep your settings or gallery between sessions."
-exec xdg-open "$DIR/../studio.html"
+echo "python3 was not found. Opening the portable dist/studio.html instead."
+echo "Browser restrictions on local files may affect saved settings and clipboard access."
+exec xdg-open "$DIR/../dist/studio.html"

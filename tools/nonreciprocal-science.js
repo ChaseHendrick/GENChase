@@ -85,7 +85,7 @@ function plane(p, mx, my, continuum = false, time = 0) {
   const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   try {
     const page = await browser.newPage();
-    await page.goto('file://' + path.join(root, 'studio.html') + '#three-vortex-bound/nonreciprocal-science');
+    await page.goto('file://' + path.join(root, 'dist/studio.html') + '#three-vortex-bound/nonreciprocal-science');
     await page.evaluate(source.replace('  Studio.register({', '  window.nrchAudit = { RHS_FS, MIX_FS, timeStep, LIMIT };\n  Studio.register({'));
     const measured = await page.evaluate(fixtures => {
       const G = Studio.gl, A = window.nrchAudit, gl = G.createGL(document.createElement('canvas'));

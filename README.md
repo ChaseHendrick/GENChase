@@ -4,7 +4,7 @@
 
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
-One portable HTML file, maintained as modular source. 128 pattern-forming systems with saved recipes and print exports.
+A folder-based studio with one shared engine and 130 pattern-forming systems. Techniques load when selected; a portable HTML export is also included.
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
@@ -73,6 +73,12 @@ are opportunities to investigate; they do not by themselves establish new mathem
 ---
 
 ## What the checks establish
+
+The [latest runtime sweep](validation/results/runtime-sweep.json) passed all 130 tabs after
+repairs. One Physarum replay comparison remained inconclusive because the captures reached
+different simulation steps; some previews were sampled during warm-up. Runtime success is
+separate from scientific accuracy. The [CGL and vortex corrections](validation/GL-CORRECTIONS.md)
+document changed numerical behavior and the checks' limits.
 
 Recent additions include classical geometry, field dynamics and larger optional workloads:
 
@@ -161,7 +167,13 @@ how to state assumptions, supply an independent benchmark and record measured er
 failure controls. New submissions start unvalidated. Passing syntax, image or runtime checks
 does not establish mathematical correctness or originality.
 
-GENChase is a studio file, not a package. You do not install it into another app. You open `studio.html`, or you add a technique to it. How to commit and open a pull request is in [CONTRIBUTING.md](CONTRIBUTING.md).
+**Heavy computation:** [Direct Gravity](validation/DIRECT-GRAVITY.md) evaluates every body pair on the CPU; [Wave volume](validation/VOLUME-WAVE.md) evolves a three-dimensional GPU field. Explicit stress controls reach 16,384 bodies or 256³ cells. The [heavy-compute guide](docs/HEAVY-COMPUTE.md) covers workload limits, bounded evidence and an optional Python runner with NumPy or CuPy/CUDA. The browser engine has no application-wide FPS cap; display refresh and hardware still govern rendering.
+
+**The engine:** [`src/shared/engine.js`](src/shared/engine.js) holds shared controls, recipes, palettes and print behavior. Techniques live in [`src/modules/`](src/modules/).
+
+**First contribution:** fork, edit `src/shared/engine.js` or one module in `src/modules/`, run `node tools/build.js`, `node tools/index.js` and `npm test`, then open a pull request. No `npm install` is needed for these fast checks. Start with the [contributor guide](CONTRIBUTING.md), [module template](src/modules/_template.js) or [draft tasks](docs/CONTRIBUTOR-TASKS.md).
+
+Keep contributions focused: no UI framework, published npm package, edits to generated HTML, hand-edited catalogs or unsupported novelty claims. Scientific changes still need their numerical and print checks.
 
 **Use it when** the work has to be a real simulation that reprints: a PDE, a lattice growth, a tiling, a living field someone can disturb. When the plate should state how it was made. When the next tab is a rare equation and the shell is already finished.
 
@@ -176,7 +188,7 @@ Simulation families share the same controls and print pipeline. New modules can 
 If you are an agent:
 
 1. Read `AGENTS.md`, then look at an existing module before writing a new one.
-2. Edit `src/`: modules, shared shell, styles and HTML template. Run `node tools/build.js` to generate the portable `studio.html`. See [BUILDING.md](BUILDING.md).
+2. Edit `src/`: modules, shared shell, styles and HTML template. Run `node tools/build.js` to generate `index.html`, the module manifest and portable `dist/studio.html`. See [BUILDING.md](BUILDING.md).
 3. All noise through `U.makeRng(seed)`. `Math.random` in a sim is a bug.
 4. Share via the hash. Bump `v` only when a default change would break old recipes.
 5. Still is Still. Live has to move. Snapshot the timeline on pointer up, and only if the recipe changed.
@@ -199,9 +211,9 @@ To use the download, open it in a compatible desktop browser. GPU simulations re
 | Windows | `run/GENChase (Windows).bat` |
 | Linux | `run/genchase.sh` |
 
-macOS may block a downloaded launcher. You can open `studio.html` directly instead; launcher permissions depend on your system settings.
+macOS may block a downloaded launcher. You can open `dist/studio.html` directly instead; launcher permissions depend on your system settings.
 
-Each one starts Python's own web server on a free loopback port, opens `studio.html`, and stops when you close its terminal window or press Ctrl+C there. Closing only the browser tab does not stop the server. Nothing is installed, nothing is bundled, and the port is not reachable from the network. If Python is missing the launcher opens the file directly instead and says so.
+Each one starts Python's own web server on a free loopback port, opens `index.html`, and stops when you close its terminal window or press Ctrl+C there. Closing only the browser tab does not stop the server. Nothing is installed, nothing is bundled, and the port is not reachable from the network. If Python is missing the launcher opens the portable `dist/studio.html` instead and says so.
 
 Or do it by hand:
 
@@ -211,9 +223,9 @@ cd GENChase
 python3 -m http.server 8080 --bind 127.0.0.1
 ```
 
-Then [http://127.0.0.1:8080/studio.html](http://127.0.0.1:8080/studio.html).
+Then [http://127.0.0.1:8080/index.html](http://127.0.0.1:8080/index.html).
 
-You can also open `studio.html` directly. Browsers impose different restrictions on local files, including clipboard and storage behavior. The local server avoids some of those restrictions; browser and GPU differences still apply.
+The folder entry uses local HTTP so its modules can load. You can also open the self-contained `dist/studio.html` directly. Browsers impose different restrictions on local files, including clipboard and storage behavior. The local server avoids some of those restrictions; browser and GPU differences still apply.
 
 | Key | |
 |---|---|
@@ -237,7 +249,7 @@ Click the seed label to copy it. Presets are starting points. The URL is the pie
 
 ## Techniques
 
-The full list, with the hash that reconstructs each plate and the papers each one implements, is in **[TECHNIQUES.md](TECHNIQUES.md)**. The same data in machine-readable form is [`techniques.json`](techniques.json). A short file for language models is [`llms.txt`](llms.txt). All three are generated from `studio.html` by `node tools/index.js`, and must be regenerated after changes; CI checks for catalog drift. Derivations and proofs live in **[IDENTITIES.md](IDENTITIES.md)**. The query-by-query prior-art ledger is [RESEARCH.md](RESEARCH.md).
+The full list, with the hash that reconstructs each plate and the papers each one implements, is in **[TECHNIQUES.md](TECHNIQUES.md)**. The same data in machine-readable form is [`techniques.json`](techniques.json). A short file for language models is [`llms.txt`](llms.txt). All three are generated from the assembled source by `node tools/index.js`, and must be regenerated after changes; CI checks for catalog drift. Derivations and proofs live in **[IDENTITIES.md](IDENTITIES.md)**. The query-by-query prior-art ledger is [RESEARCH.md](RESEARCH.md).
 
 
 Artificial Life (Lenia), Physarum, Physarum 3D, Phyllotaxis, Hastings–Levitov, Lichtenberg, Gravner–Griffeath snowflakes, differential growth, fractals, CPPNs, chimera states, swarmalators, Cahn–Hilliard, Ohta–Kawasaki, Swift–Hohenberg, phase-field crystal, XY / Kosterlitz–Thouless, complex Ginzburg–Landau, Lifshitz–Petrich 12-fold, active nematics, fluids, Kuramoto–Sivashinsky, dendritic growth, flow fields, smectic focal conics, Gray–Scott, Penrose / hat / spectre tilings, attractors, Chirikov, Hofstadter, Helmholtz scars, optical caustics, Talbot, Indra’s pearls, Chladni, cortical planforms, random matrices, drainage networks, rough growth, foam and grain coarsening, condensate vortex lattices, Toner-Tu flocking, hyperbolic Turing patterns, uniform spanning trees, granular force chains, Liesegang rings, Track, Caustic Sea, KP-II soliton webs, Gerstner waves, the figure-eight choreography, Camassa–Holm peakons, the Schwarzschild photon sphere, Crapper capillary waves, Hasimoto vortex filaments, KP-I lumps, classical point-vortex collapse.

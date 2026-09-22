@@ -1,6 +1,6 @@
 
 /* modules/vortex.js */
-/* GENChase: Abrikosov vortex lattice from a Ginzburg-Landau order parameter in a uniform B. Vortex number is measured against the flux. */
+/* GENChase: Abrikosov vortex lattice from a Ginzburg-Landau order parameter in a uniform B. Fixed-field relaxation with descriptive winding counts. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -24,29 +24,53 @@
   ];
   const DEFAULTS = { grid: 128, aspect: '1:1', B: 1.4, kappa: 1.6, relax: 90, view: 'int', exposure: 1 };
   const PRESETS = {
-    hex: pre('Hex lattice', { B: 1.5, kappa: 1.8, relax: 110 }, Pal.ember),
-    few: pre('Few vortices', { B: 0.7, kappa: 1.4, relax: 80 }, Pal.harbor),
+    hex: pre('Relaxed field', { B: 1.5, kappa: 1.8, relax: 110 }, Pal.ember),
+    few: pre('Lower field', { B: 0.7, kappa: 1.4, relax: 80 }, Pal.harbor),
     dense: pre('Dense', { B: 2.6, kappa: 2.2, relax: 120 }, Pal.thermal),
     type1: pre('Low κ', { B: 1.2, kappa: 0.7, relax: 90 }, Pal.glacier),
     log: pre('Log |ψ|', { B: 1.6, view: 'log' }, Pal.nightshade),
-    quiet: pre('Near Hc1', { B: 0.55, kappa: 2.4 }, Pal.kiln),
+    quiet: pre('Low field', { B: 0.55, kappa: 2.4 }, Pal.kiln),
   };
+
+  // Unit-grid, fixed-field covariant Laplacian; links have modulus one.
+  // Exact local saturation followed by a convex diffusion step keeps amplitudes bounded.
+  function vortexSubsteps(kappa) { return Math.max(1, Math.ceil(0.12 / (0.8 * kappa * kappa / 4))); }
+  function vortexAdvance(re, im, W, H, flux, kappa, dt) {
+    const r = new Float64Array(re.length), v = new Float64Array(im.length);
+    const nr = new Float64Array(re.length), ni = new Float64Array(im.length);
+    const e = Math.exp(2 * dt), weight = dt / (kappa * kappa);
+    for (let y = 1; y < H - 1; y++) for (let x = 1; x < W - 1; x++) {
+      const i = y * W + x, scale = Math.sqrt(e / (1 + (re[i] * re[i] + im[i] * im[i]) * (e - 1)));
+      r[i] = re[i] * scale; v[i] = im[i] * scale;
+    }
+    for (let y = 1; y < H - 1; y++) {
+      const ax = -flux * (y - H / 2), c = Math.cos(ax), a = Math.sin(ax);
+      for (let x = 1; x < W - 1; x++) {
+        const i = y * W + x;
+        const lr = c * (r[i-1] + r[i+1]) + a * (v[i+1] - v[i-1]) + r[i-W] + r[i+W];
+        const li = c * (v[i-1] + v[i+1]) + a * (r[i-1] - r[i+1]) + v[i-W] + v[i+W];
+        nr[i] = (1 - 4 * weight) * r[i] + weight * lr;
+        ni[i] = (1 - 4 * weight) * v[i] + weight * li;
+      }
+    }
+    return [nr, ni];
+  }
 
   function surprise(rng) { return { B: rng.range(0.7, 2.4), kappa: rng.range(0.8, 2.8) }; }
   function sanitize(s) { s.grid = Math.max(80, Math.min(192, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'vortex', name: 'Abrikosov', tab: 'Vortex',
-    subtitle: 'a superconductor that lets flux in as a lattice · 1957',
+    subtitle: 'fixed-field order-parameter relaxation · 1957',
     order: 59,
-    equation: 'αψ + β|ψ|² ψ + (1/2m)(−i∇ − 2e A)² ψ = 0,   n_v = B Area / Φ0',
-    credit: 'A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. The plate is imaginary-time Ginzburg-Landau in a uniform B, Landau gauge.',
-    blurb: 'A superconductor that cannot stand a magnetic field was the story. Type II lets the field in as a hexagonal lattice of tubes, each a quantum of flux, and still superconducts around them. The plate is |ψ|. The status line reports the number of zeros against B Area / Φ0.',
+    equation: '∂ψ/∂t = κ⁻²(∇ − iA)²ψ + (1 − |ψ|²)ψ,   A = (−0.08 B y, 0),   Δx = 1',
+    credit: 'A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. This plate is a reduced fixed-field Ginzburg-Landau relaxation with unit-modulus lattice links in Landau gauge and zero order parameter at the boundary. It does not evolve the magnetic field or establish critical fields.',
+    blurb: 'A complex order parameter relaxes in an imposed magnetic field. Color shows its squared amplitude. The winding count is a descriptive grid diagnostic, not a test of flux quantization or proof of a hexagonal equilibrium. The model uses unit grid spacing and fixed zero edges; increasing the grid enlarges the domain. Magnetic screening and the type-I/type-II transition are outside this reduced model.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { GL: 'κ is GL parameter. Large κ (type II) prefers a vortex lattice. B sets how many.' },
+    hints: { GL: 'κ sets the inverse diffusion scale in this reduced fixed-field equation. B sets the imposed link flux, 0.08 B radians per cell.' },
     palette: true, defaultPalette: 'ember', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
+      let W = 0, H = 0, field, metric = 0, usedDt = 0, buf, img;
       function sizeFrom(s) {
         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
         return { W: g, H: Math.max(48, Math.round(g * a)) };
@@ -60,25 +84,16 @@
         const B = s.B, kap = s.kappa, steps = s.relax | 0;
         const N = W * H;
         let re = new Float64Array(N), im = new Float64Array(N);
-        for (let i = 0; i < N; i++) { re[i] = 0.2 * rng.gauss(); im[i] = 0.2 * rng.gauss(); }
-        const twoPi = Math.PI * 2;
-        const flux = B * 0.08;
-        function Ax(y) { return -flux * (y - H / 2); }
-        const dt = 0.12;
-        for (let k = 0; k < steps; k++) {
-          const nr = re.slice(), ni = im.slice();
-          for (let y = 1; y < H - 1; y++) for (let x = 1; x < W - 1; x++) {
-            const i = y * W + x;
-            const ax = Ax(y);
-            const cx = Math.cos(ax), sx = Math.sin(ax);
-            const rL = nr[i - 1], iL = ni[i - 1], rR = nr[i + 1], iR = ni[i + 1];
-            const rU = nr[i - W], iU = ni[i - W], rD = nr[i + W], iD = ni[i + W];
-            const kinR = rL + rR + rU + rD - 4 * nr[i] - ax * (iR - iL) * 0.5;
-            const kinI = iL + iR + iU + iD - 4 * ni[i] + ax * (rR - rL) * 0.5;
-            const amp2 = nr[i] * nr[i] + ni[i] * ni[i];
-            re[i] += dt * (kinR / (kap * kap) + (1 - amp2) * nr[i]);
-            im[i] += dt * (kinI / (kap * kap) + (1 - amp2) * ni[i]);
-          }
+        for (let y = 1; y < H - 1; y++) for (let x = 1; x < W - 1; x++) {
+          const i = y * W + x; re[i] = 0.2 * rng.gauss(); im[i] = 0.2 * rng.gauss();
+        }
+        const flux = B * 0.08, macroDt = 0.12;
+        const substeps = vortexSubsteps(kap);
+        usedDt = macroDt / substeps;
+        for (let k = 0; k < steps * substeps; k++) [re, im] = vortexAdvance(re, im, W, H, flux, kap, usedDt);
+        for (let i = 0; i < N; i++) {
+          field[i] = re[i] * re[i] + im[i] * im[i];
+          if (!Number.isFinite(field[i])) throw new Error('Nonfinite order parameter; reduce the workload and reseed.');
         }
         let zeros = 0;
         for (let y = 2; y < H - 2; y++) for (let x = 2; x < W - 2; x++) {
@@ -94,7 +109,7 @@
           if (Math.abs(ang) > 4) zeros++;
         }
         metric = zeros;
-        extra = B * W * H / (twoPi * 80);
+
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
@@ -125,7 +140,8 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>vortices <b>' + (metric | 0) + '</b></span><span>flux / Φ0 ~ ' + f1(extra) + '</span><span>Abrikosov</span>'); function f1(v){return (v).toFixed(1);}  }
+      function status() { host.setStatus('<span>winding plaquettes <b>' + metric + '</b> (descriptive)</span><span>fixed field · zero edges · dx 1</span><span>substep dt ' + usedDt.toFixed(3) + '</span>'); }
+
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

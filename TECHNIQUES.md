@@ -1,12 +1,12 @@
 # Techniques
 
-128 pattern-forming systems, one file. Generated from `studio.html` by `node tools/index.js`; do not edit by hand.
+130 pattern-forming systems in a shared studio. Generated from maintained module registrations by `node tools/index.js`; do not edit by hand.
 
-Open `studio.html` and append the hash to restore its seed and settings. Preserve the studio version for historical reproduction; numerical precision and hardware can affect results. `#snowflake/gravner-2008` is a complete recipe: the technique, and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
+Serve the folder and open `index.html`, or open the portable `dist/studio.html`, and append the hash to restore its seed and settings. Preserve the studio version, settings and seed for historical reproduction; numerical precision, browser, hardware and output dimensions can affect results. `#snowflake/gravner-2008` names the technique and the seed that every random draw in it comes from. The longer form, `#<id>/<seed>/<base64url JSON>`, carries any settings that differ from the defaults. A hash written as `#id` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 
 The same data in machine-readable form is [`techniques.json`](techniques.json). A short file for language models is [`llms.txt`](llms.txt).
 
-**Seen elsewhere** is a curator's call, not a measurement. Nobody measured this. It is one person's estimate of how often you have seen the picture somewhere else, made in 2026. It is the only ordering in this studio that is not computed from the file. It is never the default sort.
+**Seen elsewhere** is a curator's call, not a measurement. Nobody measured this. It is one person's estimate of how often you have seen the picture somewhere else, made in 2026. It is the only ordering in this studio that is not computed from maintained registrations. It is never the default sort.
 
 | Technique | Hash | Rule | Vectors | Live | Seen elsewhere |
 |---|---|---|---|---|---|
@@ -28,7 +28,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Liesegang Rings**<br><sub>periodic precipitation in a gel · 1896</sub> | `#liesegang/liesegang-1896` | ∂a/∂t = Dₐ∇²a − kab,  ∂b/∂t = D_b∇²b − kab,  ∂c/∂t = D_c∇²c + kab − S,  ∂d/∂t = S | raster | live | Rare |
 | **Force Chains**<br><sub>a granular packing and the network that carries it · 1979</sub> | `#grains/cundall-1979` | F_n = k_n δ − γ_n v_n  for δ = r_i + r_j − \|x_ij\| > 0,   \|F_t\| ≤ μ F_n;   m ẍ = Σ F − m g ŷ;   Δt = T/35,  T = 2π√(m_eff/k_n) | SVG | still | Common |
 | **Magnetic Skyrmions**<br><sub>chiral magnets · 1989</sub> | `#skyrmion` | dn/dt = -n x (n x H),   H = J sum_nn n_j + H_DMI + 2K n_z zhat + B zhat,   Q = (1/4pi) int n · (dx n x dy n) dA | raster | live | Rare |
-| **Neural Populations**<br><sub>exact QIF mean-field model · 2015</sub> | `#neural-mass` | dr/dt = Δ/π + 2rv; dv/dt = v² + η̄ + Jr + I(t) − π²r² | raster | still | Occasional |
+| **Neural Populations**<br><sub>exact QIF mean-field model · 2015</sub> | `#neural-mass` | dr/dt = Δ/π + 2rv; dv/dt = v² + η̄ + Jr + I(t) − π²r² | SVG | still | Occasional |
 | **Flocking**<br><sub>Toner-Tu, a polar active fluid · 1995</sub> | `#tonertu/toner-1995` | ∂ρ/∂t + ∇·(ρv) = 0;   ∂v/∂t + λ(v·∇)v = (α(ρ) − β\|v\|²)v − σ∇ρ + ν∇²v + η | raster | live | Rare |
 | **Hyperbolic Turing**<br><sub>reaction-diffusion on a {p,q} tiling · Poincare disk</sub> | `#hyperbolic/poincare-1882` | ∂u/∂t = D_u Δ_G u − uv² + F(1−u),   ∂v/∂t = D_v Δ_G v + uv² − (F+k)v,   Δ_G u_i = Σ_{j∼i}(u_j − u_i) | SVG | live | Almost unseen |
 | **Schramm-Loewner Evolution**<br><sub>the random curve of critical two-dimensional systems · 2000</sub> | `#sle/schramm-2000` | ∂g_t/∂t = 2 / (g_t(z) − √κ B_t),   γ(t) = g_t⁻¹(√κ B_t);   κ = 2 loop-erased walk, 8/3 self-avoiding walk, 4 level lines, 6 percolation, 8 Peano curve | SVG | still | Occasional |
@@ -51,7 +51,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Spanning Trees**<br><sub>uniform spanning trees by loop-erased random walk · 1996</sub> | `#ust/wilson-1996` | pick v ∉ T, walk at random from v erasing each loop as it closes, attach the surviving path;  P(T) = 1 / κ(G) for every one of the κ(G) spanning trees | SVG | still | Rare |
 | **Neural Patterns**<br><sub>compositional pattern-producing networks evaluated per pixel · 2007</sub> | `#cppn` | c(x,y) = sigma(Wn · phi( ... phi(W1 · [x, y, r, theta, z, 1]) ... )) | raster | still | Common |
 | **Rogue Wave**<br><sub>Peregrine soliton, waves from nowhere · 1983</sub> | `#rogue` | i ψ_t + ½ ψ_xx + \|ψ\|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   \|ψ\|²_max / \|ψ\|²_∞ = 9 | raster | still | Occasional |
-| **Hodgkin-Huxley Membranes**<br><sub>sodium and potassium gates · 1952</sub> | `#hodgkin-huxley/membrane-gates` | C dV/dt = I − gNa m³h(V − ENa) − gK n⁴(V − EK) − gL(V − EL); dx/dt = αx(V)(1 − x) − βx(V)x | SVG | still | Occasional |
+| **Hodgkin-Huxley Membranes**<br><sub>sodium and potassium gates · 1952</sub> | `#hodgkin-huxley/membrane-gates` | C dV/dt = I − gNa m³h(V − ENa) − gK n⁴(V − EK) − gL(V − EL); dx/dt = αx(V)(1 − x) − βx(V)x | raster | still | Occasional |
 | **Aharonov–Bohm**<br><sub>phase from a field the particle never enters · 1959</sub> | `#aharonov` | Δφ = (e/ℏ) ∮ A·dl = 2π Φ/Φ0,   I(x) = \|ψ_L + e^{iΔφ} ψ_R\|² | raster | still | Occasional |
 | **Double pendulum flip time**<br><sub>first flip of a chaotic double pendulum · 1992</sub> | `#pendulum/pendulum-1992` | L = (m l² / 6)(ω₂² + 4ω₁² + 3ω₁ω₂ cos(θ₁ − θ₂)) + (m g l / 2)(3 cos θ₁ + cos θ₂);   plate = first t with \|θ₁\| > π or \|θ₂\| > π | raster | still | Ubiquitous |
 | **Anderson**<br><sub>waves that refuse to diffuse · 1958</sub> | `#anderson` | H = t Σ_<ij> \|i><j\| + Σ_i ε_i \|i><i\|,   ε ~ U[-W/2,W/2],   IPR = Σ \|ψ\|⁴ | raster | still | Occasional |
@@ -75,8 +75,8 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Lifshitz–Petrich**<br><sub>two-scale quasicrystal · 1997</sub> | `#lp/lifshitz-1997` | ∂tψ = εψ − (∇²+1)²(∇²+q²)²ψ + α ψ² − ψ³,   q = 2 cos(π/12) | raster | live | Occasional |
 | **Pendry Cloak**<br><sub>a disk that light goes around · 2006</sub> | `#cloak` | r = R1 + r' (R2-R1)/R2,   n_r = (r-R1)/r · R2/(R2-R1),   n_θ = r / (r-R1) | raster | still | Occasional |
 | **XY / Kosterlitz–Thouless**<br><sub>planar spins, bound vortices and the 1973 unbinding transition</sub> | `#xy/kt-1973` | H = −J Σ_<ij> cos(θ_i−θ_j);   dθ_i/dt = J Σ_j sin(θ_j−θ_i) + √(2T) η | SVG | live | Common |
-| **Complex Ginzburg–Landau**<br><sub>spirals, defect chaos, frozen vortex glass</sub> | `#cgl/cgl-1970` | ∂A/∂t = A + (1 + iα) ∇²A − (1 + iβ) \|A\|² A | raster | live | Occasional |
-| **Abrikosov**<br><sub>a superconductor that lets flux in as a lattice · 1957</sub> | `#vortex` | αψ + β\|ψ\|² ψ + (1/2m)(−i∇ − 2e A)² ψ = 0,   n_v = B Area / Φ0 | raster | still | Occasional |
+| **Complex Ginzburg–Landau**<br><sub>spirals, defect chaos, frozen vortex glass</sub> | `#cgl/cgl-1970` | ∂A/∂t = μA + (1 + iα) ∇²A − (1 + iβ) \|A\|² A | raster | live | Occasional |
+| **Abrikosov**<br><sub>fixed-field order-parameter relaxation · 1957</sub> | `#vortex` | ∂ψ/∂t = κ⁻²(∇ − iA)²ψ + (1 − \|ψ\|²)ψ,   A = (−0.08 B y, 0),   Δx = 1 | raster | still | Occasional |
 | **Active Nematics**<br><sub>self-driven rods, ±½ defects and active turbulence · 2012</sub> | `#nematic/dogic-2012` | ∂tQ + u·∇Q − S(Ω,E,Q) = Γ H,   H = [α − β\|Q\|²]Q + K∇²Q,   γu = −∇P − ζ ∇·Q | raster | live | Occasional |
 | **Dark Room**<br><sub>a polygonal room that a candle cannot fill · 1995</sub> | `#darkroom` | billiard in a polygon,   ∃ p,q: no reflected ray from p meets q | raster | still | Occasional |
 | **Fluid**<br><sub>Navier-Stokes dye advected by a stable-fluids solver · 1999</sub> | `#fluid` | du/dt + (u·grad)u = -grad p + nu·lap u,   div u = 0   (advect -> project -> advect dye) | raster | live | Ubiquitous |
@@ -91,9 +91,10 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Dendritic Growth**<br><sub>phase-field solidification: snowflakes and metal dendrites · 1993</sub> | `#dendrite` | τ p_t = ∇·(ε(θ)²∇p) + ∂x(ε ε′ p_y) − ∂y(ε ε′ p_x) + p(1−p)(p − ½ + m);   T_t = ∇²T + K p_t | raster | live | Common |
 | **Purcell Swimmer**<br><sub>a scallop cannot swim in molasses · 1977</sub> | `#purcell` | Re → 0,   scallop theorem: a reciprocal gait gives Δx = 0,   three-link square gait: Δx ≠ 0 | raster | still | Rare |
 | **Exceptional Point**<br><sub>two eigenvectors become one · 1998</sub> | `#exceptional` | H = [[iγ, κ],[κ, −iγ]],   λ = ±√(κ²−γ²),   EP at γ = κ | raster | still | Almost unseen |
+| **Direct Gravity**<br><sub>every pair attracts · Newton 1687 / Verlet 1967</sub> | `#direct-gravity` | a_i = Σ(j≠i) m_j (r_j−r_i) / (\|r_j−r_i\|²+ε²)^(3/2), G=1; velocity Verlet | SVG | live | Common |
 | **Meissner**<br><sub>a field a perfect conductor would have frozen, expelled · 1933</sub> | `#meissner` | ∇²B = B/λ²,   B(r) = B0 I0(r/λ) / I0(R/λ)   (cylinder) | raster | still | Occasional |
 | **Tennis Racket**<br><sub>the intermediate axis that will not spin · 1834 / 1991</sub> | `#tennis` | I1 ω1' = (I2−I3) ω2 ω3  (cyc.),   I1 < I2 < I3,   ω2 flips | raster | still | Occasional |
-| **Flow Field**<br><sub>collision-avoiding strokes in a noise field · 1985</sub> | `#flow` | theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta) | raster | still | Ubiquitous |
+| **Flow Field**<br><sub>collision-avoiding strokes in a noise field · 1985</sub> | `#flow` | theta(x,y) = fbm(x·s, y·s)·turbulence;   p <- p + step·(cos theta, sin theta) | SVG | still | Ubiquitous |
 | **Chemotaxis**<br><sub>Keller-Segel aggregation · 1970</sub> | `#chemotaxis/keller-1970` | ∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²) | raster | live | Common |
 | **Smectic focal conics**<br><sub>Dupin cyclides · Friedel 1910</sub> | `#smectic/friedel-1910` | layers: Dupin cyclides of a confocal ellipse–hyperbola pair | SVG | still | Rare |
 | **Reaction-Diffusion**<br><sub>Gray-Scott activator/inhibitor chemistry · 1983</sub> | `#reaction` | du/dt = Du·lap u - u·v^2 + F(1-u);   dv/dt = Dv·lap v + u·v^2 - (F+k)v | raster | live | Common |
@@ -114,6 +115,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Talbot carpet**<br><sub>near-field self-imaging · 1836</sub> | `#talbot/talbot-1836` | I(x,z) = \|Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)\|²,   z_T = 2 d²/λ | raster | still | Occasional |
 | **Hydrogen orbitals**<br><sub>hydrogen atom probability density \|ψₙₗₘ\|² · 1926</sub> | `#orbitals/schrodinger-1926` | ψₙₗₘ = Rₙₗ(r) Yₗₘ(θ, φ),   Rₙₗ ∝ ρˡ e^{−ρ/2} L²ˡ⁺¹ₙ₋ₗ₋₁(ρ),   ρ = 2r / n a₀ | raster | still | Common |
 | **Loschmidt Echo**<br><sub>a gas that unmixes when you flip every arrow · 1876</sub> | `#loschmidt` | x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1 | raster | still | Rare |
+| **Wave volume**<br><sub>three-dimensional wave equation · classical</sub> | `#volume-wave/wave-cube` | ∂²u/∂t² = c²(∂²u/∂x² + ∂²u/∂y² + ∂²u/∂z²) | raster | can run | Occasional |
 | **Boy's Surface**<br><sub>a projective plane sewn into R³ · 1901</sub> | `#boy` | Bryant–Kusner immersion RP² ↪ R³,   one triple point,   no boundary | raster | still | Occasional |
 | **Indra's Pearls**<br><sub>Schottky limit set · Mumford–Series–Wright</sub> | `#pearls/indra-2002` | Γ = ⟨a, b⟩  Schottky,   Λ(Γ) = ∩ g∈Γ g(Ĉ \ Ω) | SVG | still | Common |
 | **Ising Model**<br><sub>Metropolis Monte Carlo on the square lattice · 1925</sub> | `#ising/ising-1925` | E = −J Σ⟨ij⟩ sᵢsⱼ − h Σᵢ sᵢ,   P(flip) = min(1, e^{−ΔE/T}),   T_c = 2/ln(1+√2) ≈ 2.269 | raster | live | Ubiquitous |
@@ -275,7 +277,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Complex Ginzburg–Landau**. The complex Ginzburg–Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969–71). The (α, β) plane was mapped by Aranson and Kramer: Benjamin–Feir when 1+αβ<0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.
 
-**Abrikosov**. A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. The plate is imaginary-time Ginzburg-Landau in a uniform B, Landau gauge.
+**Abrikosov**. A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. This plate is a reduced fixed-field Ginzburg-Landau relaxation with unit-modulus lattice links in Landau gauge and zero order parameter at the boundary. It does not evolve the magnetic field or establish critical fields.
 
 **Active Nematics**. Continuum active nematohydrodynamics: Aditi Simha and Ramaswamy (2002); Beris–Edwards Q-tensor hydrodynamics. The experimental archetype is the microtubule–kinesin active gel of Sanchez, Chen, DeCamp, Heymann and Dogic, Nature 2012. Defect statistics and active turbulence: Giomi, PRL / Phys. Rev. X 2015; Doostmohammadi, Ignés-Mullol, Yeomans and Sagués, Nat. Commun. 2018. Flow here is the frictional (substrate) Stokes limit, incompressible: γ u = −∇P − ζ ∇·Q.
 
@@ -304,6 +306,8 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 **Purcell Swimmer**. E. M. Purcell, Am. J. Phys. 45, 3 (1977), "Life at low Reynolds number." Time-reversible stroking (a scallop) produces no net motion in Stokes flow. A three-link swimmer that traces a loop in shape space does. The plate is the trail of that gait, not a bacterium.
 
 **Exceptional Point**. C. M. Bender and S. Boettcher, Phys. Rev. Lett. 80, 5243 (1998), on PT-symmetric spectra; Heiss (2004) and many others on exceptional points, where both eigenvalues and eigenvectors coalesce. Hermitian matrices cannot do this. The plate is Re λ (and the gap) over the (κ, γ) plane, or the two modes of one dimer.
+
+**Direct Gravity**. Newton, Principia (1687); Verlet, Physical Review 159 (1967), 98. Plummer softening and the direct all-pairs kernel: Nyland, Harris and Prins, GPU Gems 3, chapter 31 (2007). This implementation runs the pair kernel on the CPU.
 
 **Meissner**. W. Meissner and R. Ochsenfeld, Naturwissenschaften 21, 787 (1933). A perfect conductor would freeze the flux it was born with. A superconductor expels it. The London brothers (1935) wrote ∇²B = B/λ². The plate is a Jacobi relax of that Helmholtz problem on a disk.
 
@@ -350,6 +354,8 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 **Hydrogen orbitals**. Erwin Schrödinger, Quantisierung als Eigenwertproblem, Annalen der Physik 79, 361 (1926), solved the hydrogen atom as a wave equation; the radial functions are associated Laguerre polynomials and the angular parts spherical harmonics. The plate evaluates \|ψ\|² exactly from those polynomials and either integrates it along view rays or cuts a plane through it.
 
 **Loschmidt Echo**. J. Loschmidt, Sitzungsber. Kais. Akad. Wiss. Wien 73, 128 (1876), objected to Boltzmann: reverse every velocity and the entropy decrease is as lawful as the increase. The objection is correct for a finite isolated system; the catch is the exponential sensitivity that makes the reversal unprepareable. The plate is non-interacting tracers on a ring, reversed on cue, so the echo is exact and visible.
+
+**Wave volume**. Classical scalar wave equation. Centered finite differences and the three-dimensional CFL bound follow H. P. Langtangen and S. Linge, Finite Difference Computing with PDEs (2017), wave equation chapter, https://hplgit.github.io/fdm-book/doc/pub/wave/html/._wave-solarized004.html. No novelty or full acoustic model is claimed.
 
 **Boy's Surface**. W. Boy, Math. Ann. 57, 151 (1903), constructed an immersion of the real projective plane in three-space at Hilbert's request; RP² is non-orientable and was not supposed to sit in R³ without a boundary. R. Bryant and R. Kusner (1980s) gave the smooth parametrisation used here. The plate is a z-buffer density of that immersion, not a glass model.
 

@@ -11,7 +11,7 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
     ...(softwareCanvas ? ['--disable-accelerated-2d-canvas'] : [])] });
   try {
     const page = await browser.newPage();
-    await page.goto('file://' + path.join(root, 'studio.html') + '#surfaces/print-benchmark');
+    await page.goto('file://' + path.join(root, 'dist/studio.html') + '#surfaces/print-benchmark');
     await page.evaluate(instrumented);
     const result = await page.evaluate(async () => {
       const mod = Studio.modules.surfaces, rows = [], failures = [];

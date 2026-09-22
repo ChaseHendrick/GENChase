@@ -36,7 +36,7 @@ ${marker}`);
   for(const fixture of ['well-corrected','well-retired-bound','dt-edit','hard-wall','hard-wall-stationary']){
    const page=await browser.newPage();
    try{
-    await page.goto('file://'+path.join(root,'studio.html')+'#three-vortex-bound/schrodinger-state');
+    await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/schrodinger-state');
     await page.evaluate(source);
     rows.push(await page.evaluate(fixture=>{
      const mod=Studio.modules.schrodinger,pal=Studio.PALETTES[mod.defaultPalette];

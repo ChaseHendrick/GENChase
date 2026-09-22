@@ -176,7 +176,7 @@ async function main() {
   const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   try {
     const page = await browser.newPage();
-    await page.goto('file://' + path.join(ROOT, 'studio.html') + '#three-vortex-bound/maxwell-robust');
+    await page.goto('file://' + path.join(ROOT, 'dist/studio.html') + '#three-vortex-bound/maxwell-robust');
     await page.evaluate(source.replace(marker, '  window.maxwellRobustShaders={H_FS,E_FS};\n' + marker));
     const backend = await page.evaluate(installRunner, { s: SETTINGS, plan: PLAN });
     let forwardRuns = 0;

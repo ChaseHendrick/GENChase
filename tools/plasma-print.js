@@ -26,7 +26,7 @@ ${marker}`);
     for(const spec of [{n:4096,grid:64,width:2400,height:2400},{n:16384,grid:256,width:2400,height:3000}]){
       const page=await browser.newPage();
       try{
-        await page.goto('file://'+path.join(root,'studio.html')+'#three-vortex-bound/plasma-print');await page.evaluate(source);
+        await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/plasma-print');await page.evaluate(source);
         rows.push(await page.evaluate(async spec=>{
           const mod=Studio.modules.plasma,pal=Studio.PALETTES[mod.defaultPalette],state={...mod.defaults,...spec,warmup:0,running:false,palette:pal.colors,bg:pal.bg};mod.sanitize(state);
           function instanceFor(settings){const canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;return mod.create({canvas,getState:()=>settings,setStatus(){},isActive:()=>false,reducedMotion:()=>true,requestRepaint(){},fault(message){throw Error(message);}});}

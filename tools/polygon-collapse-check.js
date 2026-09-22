@@ -1,7 +1,7 @@
 // node tools/polygon-collapse-check.js [studio.html]
 // Direct all-pairs velocities, sharp minima and independently integrated trajectories for two n-gons.
 const assert = require('node:assert/strict'), fs = require('node:fs'), vm = require('node:vm'), path = require('node:path');
-const src = fs.readFileSync(process.argv[2] || path.join(__dirname, '..', 'studio.html'), 'utf8');
+const src = fs.readFileSync(process.argv[2] || path.join(__dirname, '..', 'dist', 'studio.html'), 'utf8');
 const marker = '/* modules/double-triangle-bound.js */';
 assert(src.includes(marker));
 let body = src.slice(src.indexOf(marker)); body = body.slice(0, body.indexOf('</script>'));

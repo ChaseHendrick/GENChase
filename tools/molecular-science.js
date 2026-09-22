@@ -3,7 +3,7 @@
 const fs = require('node:fs'), path = require('node:path');
 const assert = require('node:assert/strict'), { performance } = require('node:perf_hooks');
 const root = path.resolve(__dirname, '..');
-const shared = fs.readFileSync(path.join(root, 'src/shared/studio.js'), 'utf8');
+const shared = fs.readFileSync(path.join(root, 'src/shared/engine.js'), 'utf8');
 const rngSource = shared.slice(shared.indexOf('  function makeRng('), shared.indexOf('  function makeNoise('));
 const source = fs.readFileSync(path.join(root, 'src/modules/molecular.js'), 'utf8');
 assert(source.includes('  Studio.register({'));

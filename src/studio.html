@@ -23,11 +23,11 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GENChase — generative art from real simulations">
-<meta property="og:description" content="128 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
+<meta property="og:description" content="130 pattern-forming systems from physics, chemistry and biology, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions with its own governing equation printed alongside.">
 <meta property="og:site_name" content="GENChase">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GENChase — generative art from real simulations">
-<meta name="twitter:description" content="128 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
+<meta name="twitter:description" content="130 pattern-forming systems from physics, chemistry and biology, deeply parameterized and print-ready.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Any browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "A generative art studio built from real scientific simulations. 128 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
+  "description": "A generative art studio built from real scientific simulations. 130 techniques spanning physics, chemistry, biology and mathematics, each deeply parameterized, with saved seeds and settings, and exportable at chosen print dimensions.",
   "featureList": [
     "Flow fields with collision-avoiding strokes",
     "Gray-Scott reaction-diffusion",
@@ -310,7 +310,7 @@
         rather than imitated, and opened up so you can compose with it.</p>
 
       <h3>What makes it different</h3>
-      <p>Almost every tab is the paper it names. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 128 sciences share one control surface,
+      <p>Almost every tab is the paper it names. Three-vortex collapse bound, the parallelogram lock, and the quincunx lock are worked derivations of classical dynamics, with historical priority unconfirmed, and locked so the status line marks <b>miss</b> if the claim is wrong. Miss is a grade on the numbers, not a crash: the picture still draws. What is unusual about the rest is the assembly. 130 sciences share one control surface,
         one seed field, one palette editor and one export pipeline, so moving between chemistry and acoustics costs you nothing.
         Each technique exposes dozens of parameters spanning subtle to broken, not the four sliders a demo needs to illustrate
         one behavior. And everything is deterministic: a seed plus its parameters reproduces a piece exactly, at any size, forever,
@@ -452,15 +452,17 @@
           in bands, with a spacing that grows geometrically. Liesegang, 1896.</li>
       </ul>
 
-      <p class="colo" id="catalog-count">The live catalog is 128 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
+      <p class="colo" id="catalog-count">The live catalog is 130 techniques. The list above is a sample. The rest is in TECHNIQUES.md.</p>
       <h3>How it is built</h3>
-      <p>Modular source is assembled into one portable HTML file. No installation or build step is needed to use the download. No frameworks, server, network calls, analytics or
-        no tracking of any kind. It runs offline, from a thumb drive, and will still run when every CDN-dependent tool from this
-        era has rotted. Simulations run on the GPU through WebGL2 where the technique calls for it and on the CPU where that is
-        faster, and nothing leaves your machine.</p>
+      <p>The folder studio uses one shared engine and loads technique files as you open their tabs.
+        Start a launcher in run/ to serve the folder on your own computer. No package installation,
+        framework, external CDN, analytics or tracking is required. The optional dist/studio.html
+        bundles the same studio into one portable file. Simulations use JavaScript and WebGL2.
+        Preserve the studio version with a recipe: changes to solvers, numerical precision, hardware
+        and output resolution can change a plate.</p>
 
       <p class="colo">Built by Chaos with Claude. Each technique credits the researchers who worked it out; the
-        implementations are original.</p>
+        validation coverage and remaining limitations are recorded in VALIDATION.md.</p>
     </div>
   </div>
 </div>
@@ -519,7 +521,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script>{{include:shared/studio.js}}</script>
+<script>{{include:shared/engine.js}}</script>
 <script>{{include:modules/flow.js}}</script>
 <script>{{include:modules/physarum.js}}</script>
 <script>{{include:modules/reaction.js}}</script>
@@ -621,6 +623,8 @@
 <script>{{include:modules/molecular.js}}</script>
 <script>{{include:modules/hodgkin-huxley.js}}</script>
 <script>{{include:modules/neural-mass.js}}</script>
+<script>{{include:modules/direct-gravity.js}}</script>
+<script>{{include:modules/volume-wave.js}}</script>
 <script>{{include:shared/boot.js}}</script>
 
 </body>

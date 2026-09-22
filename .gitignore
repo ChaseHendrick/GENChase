@@ -15,8 +15,13 @@ tools/modules/*.js
 # next to the harness; anything prefixed with an underscore is scratch and never ships.
 tools/_*
 
-# Local installs of the harness (Playwright) and its reports. The product is studio.html.
+# Local installs of the optional browser harness and its reports.
 node_modules/
 playwright-report/
 test-results/
 blob-report/
+
+# Optional native experiment environment and uncommitted run outputs.
+.venv-heavy/
+heavy-output/
+__pycache__/

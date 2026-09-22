@@ -58,7 +58,7 @@ function cases(src) {
     throw new Error('Usage: node tools/recipe.js [extraSettleMs >= 0] [workers: 1..4]');
   }
   const started = Date.now();
-  const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'studio.html');
+  const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
   const src = fs.readFileSync(studio, 'utf8');
   const cs = cases(src);
   if (!cs.length) { console.log('no legacy declarations to check'); return; }

@@ -1,91 +1,12 @@
 // node tools/index.js
-// Regenerates TECHNIQUES.md, techniques.json and llms.txt from studio.html itself.
-//
-// The index is generated rather than written by hand for the same reason the technique count is linted:
-// a hand-kept list of sixty entries is a list that is wrong within a month, and a wrong index is worse
-// than none, because it sends a reader to a tab that is not there. This boots the studio in a headless
-// browser and reads the registry the shell already exposes as Studio.modules, so the index cannot
-// disagree with the file it describes.
-//
-// It exists because the recipe is the product. Every row carries the URL hash that reconstructs that
-// plate exactly, which is the thing a reader, or a program reading on someone's behalf, actually needs.
-const path = require('path'), fs = require('fs'), vm = require('vm');
-const { chromium } = require('playwright');
+// Generate the catalog from actual maintained registrations, without dependencies.
+const path = require('node:path'), fs = require('node:fs');
 const count = require('./count.js');
 
-// A browser is still the authoritative path. This fallback only reads registration metadata,
-// which lets contributors regenerate the catalog on machines where a local headless browser
-// cannot start. It evaluates every maintained module with inert rendering stubs, then uses the
-// same fields and sort order as the browser path.
-function staticMetadata(root) {
-  const modules = [], noop = () => {};
-  const glsl = new Proxy({}, { get: () => '' });
-  const gl = new Proxy({ GLSL: glsl }, { get: (obj, key) => obj[key] || noop });
-  const util = new Proxy({ clamp: (x, a, b) => Math.max(a, Math.min(b, x)), hexToRgb: () => [0, 0, 0], makeRng: () => ({}) }, { get: (obj, key) => obj[key] || noop });
-  const palettes = new Proxy({}, { get: () => ({ colors: ['#000000'], bg: '#000000' }) });
-  const shell = fs.readFileSync(path.join(root, 'src/shared/studio.js'), 'utf8');
-  const fam = {};
-  const familyBlock = /const FAMILIARITY = \{([\s\S]*?)\n  \};/.exec(shell);
-  if (familyBlock) for (const m of familyBlock[1].matchAll(/^\s*'?([A-Za-z0-9_-]+)'?\s*:\s*'([^']+)'/gm)) fam[m[1]] = m[2];
-  for (const file of fs.readdirSync(path.join(root, 'src/modules')).filter(f => f.endsWith('.js')).sort()) {
-    const source = fs.readFileSync(path.join(root, 'src/modules', file), 'utf8');
-    const Studio = { util, gl, PALETTES: palettes, register: mod => modules.push(mod) };
-    const context = { Studio, console, Math, Number, JSON, Date, Intl, performance: { now: () => 0 },
-      Float32Array, Float64Array, Uint8Array, Uint8ClampedArray, Uint16Array, Uint32Array, ArrayBuffer,
-      setTimeout: noop, clearTimeout: noop, requestAnimationFrame: noop, document: {}, window: {} };
-    new vm.Script(source, { filename: file }).runInNewContext(context);
-  }
-  return modules.map(m => {
-    const d = m.defaults || {};
-    return {
-      id: m.id, name: m.name || m.id, tab: m.tab || '', subtitle: m.subtitle || '', equation: m.equation || '',
-      credit: m.credit || '', blurb: m.blurb || '', order: typeof m.order === 'number' ? m.order : 999,
-      seed: d.seed || '', presets: Object.keys(m.presets || {}), vectors: false,
-      familiarity: m.familiarity || fam[m.id] || '', liveCapable: Object.prototype.hasOwnProperty.call(d, 'running'),
-      runningDefault: !!d.running, headline: m.headline || '',
-    };
-  });
-}
-
-(async () => {
-  if (!process.env.STUDIO) require('./build.js').build(true);
-  const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'studio.html');
+(() => {
   const root = path.resolve(__dirname, '..');
-  let mods;
-  if (process.env.GENCHASE_STATIC_INDEX) {
-    mods = staticMetadata(root);
-  } else {
-    const launchOptions = { args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] };
-    if (process.env.GENCHASE_CHROME_PATH) launchOptions.executablePath = process.env.GENCHASE_CHROME_PATH;
-    const b = await chromium.launch(launchOptions);
-    const p = await b.newPage({ viewport: { width: 1200, height: 800 } });
-    // A fixed, inexpensive vector plate avoids booting a random GPU simulation just to read metadata.
-    await p.goto('file://' + studio + '#three-vortex-bound/catalog-index', { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await p.waitForFunction(() => window.Studio && window.Studio.modules, null, { timeout: 30000 });
-    mods = await p.evaluate(() => {
-      const out = [], fam = window.Studio.familiarity || {};
-      for (const id of Object.keys(window.Studio.modules)) {
-        const m = window.Studio.modules[id], d = m.defaults || {};
-        out.push({ id, name: m.name || id, tab: m.tab || '', subtitle: m.subtitle || '', equation: m.equation || '', credit: m.credit || '', blurb: m.blurb || '', order: typeof m.order === 'number' ? m.order : 999, seed: (d && d.seed) || '', presets: Object.keys(m.presets || {}), vectors: false, familiarity: m.familiarity || fam[id] || '', liveCapable: Object.prototype.hasOwnProperty.call(d, 'running'), runningDefault: !!d.running, headline: m.headline || '' });
-      }
-      return out;
-    });
-    await b.close();
-  }
-
-  mods.sort((a, b2) => (a.order - b2.order) || a.name.localeCompare(b2.name));
-
-  const src = fs.readFileSync(studio, 'utf8');
-  const regs = [...src.matchAll(/Studio\.register\(\{\s*\n?\s*id:\s*'([^']+)'/g)];
-  const spans = regs.map((m, i) => ({ id: m[1], body: src.slice(m.index, i + 1 < regs.length ? regs[i + 1].index : src.length) }));
-  const aliasBlock = /const ALIAS = \{([^}]*)\}/.exec(src);
-  const aliases = {};
-  if (aliasBlock) {
-    for (const m of aliasBlock[1].matchAll(/['"]?([A-Za-z0-9_-]+)['"]?\s*:\s*'([^']+)'/g)) aliases[m[1]] = m[2];
-  }
+  const { techniques: mods, aliases } = require('./build.js').verify();
   for (const m of mods) {
-    const sp = spans.find(x => x.id === m.id);
-    m.vectors = !!(sp && /exportSVG\s*\(/.test(sp.body));
     m.hash = m.seed ? '#' + m.id + '/' + m.seed : '#' + m.id;
     m.aliases = Object.keys(aliases).filter(k => aliases[k] === m.id);
   }
@@ -96,12 +17,13 @@ function staticMetadata(root) {
     process.exit(1);
   }
 
-  const FAM_NOTE = 'Nobody measured this. It is one person\'s estimate of how often you have seen the picture somewhere else, made in 2026. It is the only ordering in this studio that is not computed from the file.';
+  const FAM_NOTE = 'Nobody measured this. It is one person\'s estimate of how often you have seen the picture somewhere else, made in 2026. It is the only ordering in this studio that is not computed from maintained registrations.';
 
   fs.writeFileSync(path.join(root, 'techniques.json'), JSON.stringify({
     project: 'GENChase',
     repository: 'https://github.com/SharpMeow/GENChase',
-    file: 'studio.html',
+    file: 'index.html',
+    portableFile: 'dist/studio.html',
     count: mods.length,
     hashFormat: '#<id>/<seed>  or  #<id>/<seed>/<base64url of a JSON diff from defaults>',
     aliases,
@@ -109,7 +31,7 @@ function staticMetadata(root) {
     familiarityNote: FAM_NOTE,
     forAI: {
       read: 'techniques.json',
-      skip: 'studio.html',
+      skip: 'dist/studio.html',
       contract: 'tools/modules/CONTRACT.md',
       agents: 'AGENTS.md',
       research: 'RESEARCH.md',
@@ -122,9 +44,9 @@ function staticMetadata(root) {
   const famLabel = { ubiquitous: 'Ubiquitous', common: 'Common', occasional: 'Occasional', rare: 'Rare', unseen: 'Almost unseen' };
   let md = `# Techniques
 
-${mods.length} pattern-forming systems, one file. Generated from \`studio.html\` by \`node tools/index.js\`; do not edit by hand.
+${mods.length} pattern-forming systems in a shared studio. Generated from maintained module registrations by \`node tools/index.js\`; do not edit by hand.
 
-Open \`studio.html\` and append the hash to restore its seed and settings. Preserve the studio version for historical reproduction; numerical precision and hardware can affect results. \`#snowflake/gravner-2008\` is a complete recipe: the technique, and the seed that every random draw in it comes from. The longer form, \`#<id>/<seed>/<base64url JSON>\`, carries any settings that differ from the defaults. A hash written as \`#id\` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
+Serve the folder and open \`index.html\`, or open the portable \`dist/studio.html\`, and append the hash to restore its seed and settings. Preserve the studio version, settings and seed for historical reproduction; numerical precision, browser, hardware and output dimensions can affect results. \`#snowflake/gravner-2008\` names the technique and the seed that every random draw in it comes from. The longer form, \`#<id>/<seed>/<base64url JSON>\`, carries any settings that differ from the defaults. A hash written as \`#id\` with no seed means that tab ships no fixed default seed and the studio will roll one for you.
 
 The same data in machine-readable form is [\`techniques.json\`](techniques.json). A short file for language models is [\`llms.txt\`](llms.txt).
 
@@ -148,28 +70,28 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
   const llms = `# GENChase
 
-One HTML file of seeded scientific simulations. Each tab reprints from a hash. Generated images belong to the human. The source is Apache-2.0. Maintained sources are in src/; studio.html is generated.
+A folder-based studio of seeded scientific simulations. The shared engine loads a technique source when needed. index.html is the default entry point; dist/studio.html is a portable all-inline build. Both are generated from maintained sources in src/. Recipes preserve settings and seed, but historical reproduction also depends on the studio version, precision, browser, hardware and output dimensions. Generated images belong to the human. The source is Apache-2.0.
 
 ## Do not
 
-- Parse the generated studio.html to discover metadata; use the catalog. Edit maintained code in src/.
+- Parse the generated dist/studio.html to discover metadata; use the catalog. Edit maintained code in src/.
 - Invent a bundler, a framework tree, or a second architecture.
 - Do not put a name on a published equation. Credit the paper. A result derived here, uniqueness-checked, with a plate whose check can miss, belongs in IDENTITIES.md. Search the literature for the closed form and the extremum first. Preserve license notices.
 - Treat "familiarity" / "seen elsewhere" as a measurement. It is a curator's call from 2026, five named buckets, never a number, never the default sort.
 
 ## Read instead
 
-- techniques.json — every tab: id, name, subtitle, equation, credit, blurb, hash, presets, vectors, liveCapable, runningDefault, familiarity, aliases.
-- TECHNIQUES.md — the same catalog as a table.
-- AGENTS.md — product rules.
-- tools/modules/CONTRACT.md — how to add a tab.
-- README.md — usage, scope and evidence limits.
-- BUILDING.md — maintained source and reproducible assembly.
-- VALIDATION.md — scientific coverage and outstanding gaps.
-- IDENTITIES.md — derived formulas and bounds, with classical sources and originality limits. Use descriptive titles and credit the original mathematics.
-- identities/ORIGINALITY-FOLLOWUP.md — the first formula’s equivalence to Gröbli (1877); minimum priority remains unconfirmed.
-- identities/NOVELTY-AUDIT.md — evidence and limits for all five candidates.
-- RESEARCH.md — what was searched, what was not. Read before a prior-art search. Do not re-run a search marked skip.
+- techniques.json: every tab: id, name, subtitle, equation, credit, blurb, hash, presets, vectors, liveCapable, runningDefault, familiarity, aliases.
+- TECHNIQUES.md: the same catalog as a table.
+- AGENTS.md: product rules.
+- tools/modules/CONTRACT.md: how to add a tab.
+- README.md: usage, scope and evidence limits.
+- BUILDING.md: maintained source and reproducible assembly.
+- VALIDATION.md: scientific coverage and outstanding gaps.
+- IDENTITIES.md: derived formulas and bounds, with classical sources and originality limits. Use descriptive titles and credit the original mathematics.
+- identities/ORIGINALITY-FOLLOWUP.md: the first formula’s equivalence to Gröbli (1877); minimum priority remains unconfirmed.
+- identities/NOVELTY-AUDIT.md: evidence and limits for all five candidates.
+- RESEARCH.md: what was searched, what was not. Read before a prior-art search. Do not re-run a search marked skip.
 
 ## Recipe hash
 

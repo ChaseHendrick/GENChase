@@ -50,7 +50,7 @@ function field(p){return Float32Array.from({length:p.W*p.H},(_,j)=>{const x=j%p.
 (async()=>{
  const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  try{
-  const page=await browser.newPage();await page.goto('file://'+path.join(root,'studio.html')+'#three-vortex-bound/pde-family-science');
+  const page=await browser.newPage();await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/pde-family-science');
   await page.evaluate(source.slice(0,source.indexOf('  Studio.register({'))+'\nwindow.pdeAudit={MU_CH,STEP_OK,MU_AMB,STEP_AMB,MU_SH,STEP_SH,MU_KS,STEP_KS,MU_PFC,MID_PFC,STEP_PFC,chMaxDt,shMaxDt,ksMaxDt,pfcMaxDt};\n})();');
   await page.evaluate(()=>{
     window.runPde=({p,initial,dt,steps,mutant})=>{

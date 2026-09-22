@@ -15,7 +15,7 @@ const { chromium } = require('playwright');
   let results;
   try {
     const page = await browser.newPage();
-    await page.goto('file://' + path.join(root, 'studio.html') + '#three-vortex-bound/convection-science');
+    await page.goto('file://' + path.join(root, 'dist/studio.html') + '#three-vortex-bound/convection-science');
     await page.evaluate(expose);
     results = await page.evaluate(() => {
       const G = Studio.gl, sh = window.convScience, gl = G.createGL(document.createElement('canvas'));

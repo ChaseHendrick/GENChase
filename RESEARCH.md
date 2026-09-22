@@ -343,7 +343,7 @@ These are software claims. They transfer. They are not physics.
 
 ## Per-tab status
 
-128 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
+130 techniques. `science only` means the paper is credited and nobody logged a "is there already a browser plate" search. That is most of the studio. Do not upgrade a `science only` row to "never been done" without searching, and do not search it unless you are about to claim software novelty.
 
 Familiarity is listed so you do not confuse it with prior-art status.
 
@@ -477,6 +477,8 @@ Familiarity is listed so you do not confuse it with prior-art status.
 | `shallow` | Shallow Water | occasional | science only | never searched |
 | `neural-mass` | Neural Populations | occasional | science only | never searched |
 | `hodgkin-huxley` | Hodgkin-Huxley Membranes | occasional | science only | never searched |
+| `direct-gravity` | Direct Gravity | common | science only | never searched |
+| `volume-wave` | Wave volume | occasional | science only | never searched |
 
 ## Notes on the rows that are not `science only`
 
@@ -1357,3 +1359,66 @@ Exact implementation-review searches: `site.math.brown.edu Reuleaux triangle con
 The PDE family review corrected the phase-field-crystal stencil mismatch, parameter-dependent timestep ceilings, hidden value clipping, Ohta reference-mean handling and batch rollback. Independent shader-versus-Float64 checks cover PFC, Swift–Hohenberg, Kuramoto–Sivashinsky, Ohta–Kawasaki, Active Model B+ and Cahn–Hilliard fixtures. The resulting status is partial: finite-grid agreement and guard behavior are recorded, while fixed-physical-domain convergence, phase selection, long-time behavior, stochastic forcing and global nonlinear stability remain open. Full details and source comparisons are in `validation/PDE-FAMILY.md`.
 
 The Hodgkin–Huxley and Montbrió–Pazó–Roxin modules implement established equations, with independent analytic/reference ODE checks and actual print-state preservation tests. They make no novelty, clinical, finite-neuron or experimental claim. Their bounded assumptions and remaining parameter-domain gaps are recorded in `validation/HODGKIN-HUXLEY.md` and `validation/NEURAL-MASS.md`.
+
+## 2026-09-21: contributor proposal references
+
+Reference verification only, not an originality search or new simulation. Queries included
+`Hopf 1950 The partial differential equation u_t u u_x mu u_xx Wiley DOI`,
+`site.arxiv.org 1910.09175 Kovacs Rogolino heat transport`, and
+`Fisher 1937 wave of advance advantageous genes doi 10.1111`.
+Primary records confirm [Hopf (1950)](https://doi.org/10.1002/cpa.3160030302),
+[Kovacs and Rogolino](https://arxiv.org/abs/1910.09175), and
+[Fisher (1937)](https://doi.org/10.1111/j.1469-1809.1937.tb02153.x).
+Catalog inspection found existing Schnakenberg kinetics and a Hopf-Cole cosmic-web model.
+The two draft contributor proposals therefore cover a scalar Fisher-KPP front and
+finite-relaxation heat transport. They are proposed implementations of published science,
+not discoveries. See `docs/CONTRIBUTOR-TASKS.md`.
+
+
+## 2026-09-21: heavy computation reference checks
+
+
+2026-09-21. Reference verification for a direct CPU gravity module, not an originality search.
+Queries: `site.aanda.org gravitational softening Plummer force potential N body Dehnen 2001`
+and `site.nvidia.com GPU Gems 3 fast N body simulation softening velocity verlet`.
+Opened the author chapter by Nyland, Harris and Prins:
+https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-31-fast-n-body-simulation-cuda
+and Dehnen's primary preprint https://arxiv.org/abs/astro-ph/0011568 .
+The implementation uses established all-pairs Plummer-softened Newtonian gravity and
+velocity Verlet, restricted to planar coordinates. It claims neither novelty nor a
+paper-reproduced galaxy state. Softening and finite-time limitations are in DIRECT-GRAVITY.md.
+
+
+
+Date: 2026-09-21.
+Query: `site.hplgit.github.io fdm book wave three dimensional stability Courant sqrt`.
+Read the author-hosted [multidimensional wave stability analysis](https://hplgit.github.io/fdm-book/doc/pub/wave/html/._wave-solarized004.html), equations 94 through 100, including the three-dimensional bound (99).
+The source gives the centered finite-difference dispersion relation and the constant-speed stability bound. The new implementation specializes it to an equal-spacing periodic unit cube and uses a strict 0.95 margin. The method is established numerical analysis. No historical-originality search or novelty claim is implied.
+
+Native backend installation was checked against https://docs.cupy.dev/en/stable/install.html using query `site.docs.cupy.dev stable install cupy CUDA requirements`. The optional backend requires compatible CUDA hardware; no CUDA run is claimed on the local Mac.
+
+The native CPU worker option was checked against https://numpy.org/doc/stable/reference/thread_safety.html. Workers read shared positions/masses, write disjoint force rows and finish before the next trajectory update; no hardware-independent speedup is claimed.
+
+
+## 2026-09-22: CGL and fixed-field vortex corrections
+
+A runtime sweep exposed CGL checkerboard growth and nonfinite vortex presets. These
+are repairs to established models, not new formulas. Reviewed Aranson and Kramer,
+[Rev. Mod. Phys. 74, 99 (2002), Eq. 1](https://empslocal.ex.ac.uk/people/staff/ma99ewb/articles/Aronson_and_Kramer.pdf),
+which uses positive imaginary diffusion and negative imaginary cubic saturation.
+The old shader had the opposite diffusion sign. The corrected update uses exact
+local cubic flow and explicit complex diffusion with internal substeps derived from
+the five-point Fourier symbol. This changes existing CGL recipes' numerical results.
+
+For magnetic discretization, checked the link-variable description in
+[Phys. Rev. Research 7, 013066 (2025)](https://journals.aps.org/prresearch/pdf/10.1103/PhysRevResearch.7.013066).
+The vortex implementation now uses unit-modulus links, exact local saturation and
+a bounded explicit diffusion step. It remains a reduced fixed-field model with zero
+order-parameter edges, not a self-consistent electromagnetic solution. Previous
+critical-field and vortex-count-versus-flux claims were removed. Existing vortex
+recipes change because the magnetic stencil, edges and stepping were corrected.
+
+Queries: `Aranson Kramer complex Ginzburg Landau equation 2002 review 1+i b`;
+`Ginzburg Landau link variable discretization gauge invariant finite difference exp vector potential`.
+These searches concerned implementation conventions, not a novelty investigation.
+See [bounded correction checks](validation/GL-CORRECTIONS.md) for evidence and gaps.

@@ -5,17 +5,38 @@ const root=path.resolve(__dirname,'..');
 try {
   for(const dir of ['tools','src/modules','src/shared','src/styles'])fs.mkdirSync(path.join(tmp,dir),{recursive:true});
   fs.copyFileSync(path.join(__dirname,'build.js'),path.join(tmp,'tools/build.js'));
+  fs.copyFileSync(path.join(__dirname,'registry.js'),path.join(tmp,'tools/registry.js'));
   const put=(p,s)=>fs.writeFileSync(path.join(tmp,p),s);
   const run=(...args)=>cp.spawnSync(process.execPath,['tools/build.js',...args],{cwd:tmp,encoding:'utf8'});
-  const template='<script>{{include:modules/example.js}}</script>\n';
-  put('src/studio.html',template);put('src/modules/example.js','const x = 1;\n');
+  const moduleInclude='<script>{{include:modules/example.js}}</script>\n';
+  const template='<style>{{include:styles/studio.css}}</style>\n<script>{{include:shared/engine.js}}</script>\n'+moduleInclude+'<script>{{include:shared/boot.js}}</script>\n';
+  const example="Studio.register({id:'example',name:'Example',familiarity:'rare',defaults:{seed:'fixture'}});\n";
+  put('src/studio.html',template);put('src/modules/example.js',example);
+  put('src/shared/engine.js','// fixture shell\n');put('src/shared/boot.js','Studio.boot();');put('src/styles/studio.css','body {}');
   assert.equal(run().status,0);assert.equal(run('--check').status,0);
-  assert.equal(fs.readFileSync(path.join(tmp,'studio.html'),'utf8'),'<script>const x = 1;\n</script>\n');
-  put('studio.html','stale');assert.notEqual(run('--check').status,0);
-  put('src/studio.html',template+template);assert.notEqual(run().status,0);
+  assert.equal(fs.readFileSync(path.join(tmp,'dist/studio.html'),'utf8'),'<style>body {}</style>\n<script>// fixture shell\n</script>\n<script>'+example+'</script>\n<script>Studio.boot();</script>\n');
+  const folder=fs.readFileSync(path.join(tmp,'index.html'),'utf8');
+  assert.match(folder, /href="\.\/src\/styles\/studio.css"/);
+  assert.match(folder, /src="\.\/src\/shared\/engine.js"/);
+  assert.match(folder, /Studio.boot\(\{manifest: "\.\/src\/module-manifest.json"\}\)/);
+  assert.ok(!folder.includes('Studio.register'));
+  const manifest=JSON.parse(fs.readFileSync(path.join(tmp,'src/module-manifest.json'),'utf8'));
+  assert.equal(manifest.techniques.length,1);assert.equal(manifest.techniques[0].source,'src/modules/example.js');
+  for(const file of ['index.html','dist/studio.html','src/module-manifest.json']){
+    put(file,'stale');assert.notEqual(run('--check').status,0);assert.equal(run().status,0);
+  }
+  put('src/studio.html',template+moduleInclude);assert.notEqual(run().status,0);
+  put('src/studio.html',template);put('src/modules/_template.js','not executable: template');assert.equal(run().status,0);
+  put('src/modules/example.js',example+example);assert.notEqual(run().status,0);
+  put('src/modules/example.js',example+"Studio.register({id:'sibling',name:'Sibling'});\n");assert.equal(run().status,0);
+  const family=JSON.parse(fs.readFileSync(path.join(tmp,'src/module-manifest.json'),'utf8')).techniques;
+  assert.equal(family.length,2);assert.equal(family[0].source,family[1].source);
+  put('src/modules/example.js','// no registrations');assert.notEqual(run().status,0);
+  put('src/modules/example.js',example);
   put('src/studio.html',template);put('src/modules/orphan.js','');assert.notEqual(run().status,0);
   fs.unlinkSync(path.join(tmp,'src/modules/orphan.js'));
   put('src/studio.html','{{include:../LICENSE}}');assert.notEqual(run().status,0);
+  put('src/studio.html',template);put('src/modules/example.js',example+'// {{include:modules/nested.js}}');assert.notEqual(run().status,0);
   put('src/studio.html',template);fs.unlinkSync(path.join(tmp,'src/modules/example.js'));assert.notEqual(run().status,0);
   // Validate science inventory negative controls using a minimal catalog and one real record.
   fs.copyFileSync(path.join(__dirname,'science.js'),path.join(tmp,'tools/science.js'));
@@ -59,5 +80,5 @@ try {
   expect({...full,results:'tools/benchmark.js'},false,'Unstructured full result artifact');
   expect({...full,print:[]},false,'Full status without print evidence');
   records([record]);fs.appendFileSync(path.join(tmp,record.source),'\n// changed');assert.notEqual(science().status,0);
-  console.log('PASS: build parity and stale/duplicate/missing/path/orphan controls; coverage/source drift, numerical evidence, smoke-test rejection, result artifacts and reviewed-domain/date controls.');
+  console.log('PASS: folder/portable/manifest parity, family mappings, template exclusion and stale/duplicate/missing/path/orphan controls; coverage/source drift, numerical evidence, smoke-test rejection, result artifacts and reviewed-domain/date controls.');
 } finally { fs.rmSync(tmp,{recursive:true,force:true}); }

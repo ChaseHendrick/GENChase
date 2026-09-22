@@ -25,7 +25,7 @@ ${marker}`);
  const rows=[],guards=[];
  try{
   for(const id of['cahn','ohta','amb','swift','ks','pfc']){
-   const page=await browser.newPage();await page.goto('file://'+path.join(root,'studio.html')+'#three-vortex-bound/pde-family-state');await page.evaluate(source);
+   const page=await browser.newPage();await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/pde-family-state');await page.evaluate(source);
    const moduleRows=await page.evaluate(async id=>{
     const mod=Studio.modules[id],canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;
     let state,status='';const instance=mod.create({canvas,getState:()=>state,setStatus:s=>{status=s;},reducedMotion:()=>true,isActive:()=>false,fault:msg=>{throw Error(msg);}}),rows=[];
@@ -49,7 +49,7 @@ ${marker}`);
    },id);rows.push(...moduleRows);await page.close();process.stderr.write(id+' preparations and exports completed\n');
   }
   for(const legacy of[false,true]){
-   const page=await browser.newPage();await page.goto('file://'+path.join(root,'studio.html')+'#three-vortex-bound/pde-guard');
+   const page=await browser.newPage();await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/pde-guard');
    // This mutant disables batch rejection only; sticky flags still expose invalid intermediates.
    const tested=legacy?source.replace('        if (crossedGuard()) {','        if (false && crossedGuard()) {'):source;
    await page.evaluate(tested);

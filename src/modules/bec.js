@@ -113,7 +113,9 @@ void main(){
     col = ramp(clamp(abs(ph) / 3.14159265, 0.0, 1.0));
   } else if (u_view == 2) {
     float t = clamp(abs(ph) / 3.14159265, 0.0, 1.0);
-    col = mix(u_bg, ramp(t), clamp(pow(dens, 0.75) * 1.2, 0.0, 1.0));
+    // Zero phase is valid matter, not the empty background. Reserve the upper
+    // half of the ramp for phase when density controls opacity.
+    col = mix(u_bg, ramp(0.5 + 0.5 * t), clamp(pow(dens, 0.75) * 1.2, 0.0, 1.0));
   } else {
     col = ramp(clamp(dens, 0.0, 1.0));
   }
@@ -177,6 +179,36 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
     return [rgb[0] / 255, rgb[1] / 255, rgb[2] / 255];
   }
 
+  // Exact six-neighbor search. Equal distances retain original point order, matching
+  // the former stable all-pairs sort. This changes diagnostics cost, not the PDE.
+  function nearestVortexNeighbors(points) {
+    function build(ids, depth) {
+      if (!ids.length) return null;
+      const axis = depth % 2 ? 'y' : 'x';
+      ids.sort((a, b) => points[a][axis] - points[b][axis] || a - b);
+      const mid = ids.length >> 1;
+      return { id: ids[mid], axis, left: build(ids.slice(0, mid), depth + 1), right: build(ids.slice(mid + 1), depth + 1) };
+    }
+    const tree = build(points.map((_, i) => i), 0), count = Math.min(6, points.length - 1);
+    return points.map((p, index) => {
+      const best = [];
+      function visit(node) {
+        if (!node) return;
+        const q = points[node.id], delta = p[node.axis] - q[node.axis];
+        if (node.id !== index) {
+          const dx = q.x - p.x, dy = q.y - p.y, distance = dx * dx + dy * dy;
+          let at = 0;
+          while (at < best.length && (best[at][0] < distance || (best[at][0] === distance && best[at][1] < node.id))) at++;
+          if (at < count) { best.splice(at, 0, [distance, node.id]); if (best.length > count) best.pop(); }
+        }
+        visit(delta < 0 ? node.left : node.right);
+        if (best.length < count || delta * delta <= best[best.length - 1][0]) visit(delta < 0 ? node.right : node.left);
+      }
+      if (count > 0) visit(tree);
+      return best;
+    });
+  }
+
   /* ---------- Vortex Lattice ---------- */
   Studio.register({
     id: 'bec',
@@ -186,7 +218,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
     order: 12,
     equation: 'iℏ ∂ψ/∂t = [−½∇² + V(r) + g|ψ|² − Ω L_z] ψ,   circulation quantized in units of h/m',
     credit: "The mean-field equation is Eugene Gross, Il Nuovo Cimento 20, 454 (1961), and Lev Pitaevskii, Soviet Physics JETP 13, 451 (1961). That a rotating superfluid answers with a triangular array of singly quantized vortices rather than rigid rotation is Alexei Abrikosov's 1957 result for type-II superconductors, Soviet Physics JETP 5, 1174, carried over to condensates; it was seen in the laboratory by Kirk Madison, Frédéric Chevy, Wendel Wohlleben and Jean Dalibard, Phys. Rev. Lett. 84, 806 (2000), and resolved into a lattice of well over a hundred vortices by Jamil Abo-Shaeer, Chandra Raman, Johnny Vogels and Wolfgang Ketterle, Science 292, 476 (2001). The staggered explicit scheme used in real time follows P. B. Visscher, Computers in Physics 5, 596 (1991). The quantization of circulation is Lars Onsager (1949) and Richard Feynman (1955).",
-    blurb: 'A condensate cannot rotate the way a bucket of water does. Its velocity field is the gradient of a phase, so it is irrotational everywhere the wavefunction is non-zero, and the only way to carry angular momentum is to make places where the wavefunction is zero and wind the phase by a whole turn around each of them. Those are vortices, and their circulation is not adjustable: it comes in units of Planck\'s constant over the mass. Spin the trap faster and the condensate does not spin faster, it makes more vortices, and they arrange themselves into the triangular lattice that minimises their mutual energy. This is the same lattice Abrikosov predicted for magnetic flux in a superconductor, and the same one photographed in sodium in 2001. The plate solves the equation and then finds the phase singularities directly, by walking the winding number around every plaquette, so the vortices marked are the ones the field actually has.',
+    blurb: 'A condensate cannot rotate the way a bucket of water does. Its velocity field is the gradient of a phase, so it is irrotational everywhere the wavefunction is non-zero, and the only way to carry angular momentum is to make places where the wavefunction is zero and wind the phase by a whole turn around each of them. Those are vortices, and their circulation is not adjustable: it comes in units of Planck\'s constant over the mass. Spin the trap faster and the condensate does not spin faster, it makes more vortices, and they arrange themselves into the triangular lattice that minimises their mutual energy. This is the same lattice Abrikosov predicted for magnetic flux in a superconductor, and the same one photographed in sodium in 2001. The plate walks phase winding around plaquettes and applies a density mask. The marked points are winding candidates from an encoded field, not a validated physical vortex count; noisy real-time fields can produce many candidates.',
     schema: [
       { group: 'Condensate', key: 'mode', label: 'Evolution', type: 'seg', kind: GEOM, wrap: true,
         options: [['ground', 'Relax to the ground state'], ['turbulence', 'Real time']],
@@ -365,9 +397,9 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
         imPass.draw(P.write, Object.assign({}, base, { u_psi: P.read, u_omega: 0, u_dt: 0, u_scale: k }));
         P.swap();
       }
-      function step(n) {
+      function step(n, fixedDt) {
         const s = host.getState();
-        const dt = dtOf(s), dx = dxOf(s);
+        const dt = fixedDt === undefined ? dtOf(s) : fixedDt, dx = dxOf(s);
         const base = { u_res: [gw, gh], u_dx: dx, u_half: s.half, u_g: s.g, u_trap: s.trap, u_dt: dt };
         for (let i = 0; i < n; i++) {
           if (s.mode === 'ground') {
@@ -448,21 +480,18 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
         }
         // bond-orientational order: |psi6| is one for a perfect triangular lattice and near zero for a
         // disordered set of points. Six nearest neighbors per vortex, angles taken in the plate's frame.
+        const neighbors = nearestVortexNeighbors(out);
         psi6 = null;
         if (out.length >= 7) {
           let acc = 0, cnt = 0;
           for (let k = 0; k < out.length; k++) {
-            const d2 = [];
-            for (let m = 0; m < out.length; m++) {
-              if (m === k) continue;
-              const dx = out[m].x - out[k].x, dy = out[m].y - out[k].y;
-              d2.push([dx * dx + dy * dy, Math.atan2(dy, dx)]);
-            }
-            d2.sort((p, q) => p[0] - q[0]);
-            const use = Math.min(6, d2.length);
+            const nearest = neighbors[k];
             let sr = 0, si = 0;
-            for (let m = 0; m < use; m++) { sr += Math.cos(6 * d2[m][1]); si += Math.sin(6 * d2[m][1]); }
-            acc += Math.hypot(sr, si) / use; cnt++;
+            for (const [, m] of nearest) {
+              const angle = Math.atan2(out[m].y - out[k].y, out[m].x - out[k].x);
+              sr += Math.cos(6 * angle); si += Math.sin(6 * angle);
+            }
+            acc += Math.hypot(sr, si) / nearest.length; cnt++;
           }
           psi6 = acc / cnt;
         }
@@ -472,17 +501,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
         // pair to every other. The median nearest-neighbor distance makes no such assumption.
         bondLen = 0;
         if (out.length > 2) {
-          const nn = [];
-          for (let k = 0; k < out.length; k++) {
-            let best = Infinity;
-            for (let m = 0; m < out.length; m++) {
-              if (m === k) continue;
-              const dx = out[m].x - out[k].x, dy = out[m].y - out[k].y;
-              const d = dx * dx + dy * dy;
-              if (d < best) best = d;
-            }
-            if (isFinite(best)) nn.push(Math.sqrt(best));
-          }
+          const nn = neighbors.map(nearest => Math.sqrt(nearest[0][0]));
           nn.sort((a, b) => a - b);
           bondLen = nn.length ? nn[nn.length >> 1] * 1.35 : 0;
         }
@@ -536,7 +555,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
           '<span>grid <b>' + gw + '×' + gh + '</b> · dx ' + b.dx.toFixed(3) + '</span>' +
           '<span>' + (s.mode === 'ground' ? 'imaginary time · Ω <b>' + s.omega.toFixed(2) + '</b>' : 'real time') + '</span>' +
           '<span>step bound <b>' + b.dt.toExponential(1) + '</b>' + (isFinite(b.dtRot) && b.dtRot < b.dtOp ? ' (set by Ω)' : '') + ' · using ' + dtOf(s).toExponential(1) + '</span>' +
-          (nv !== null ? '<span><b>' + nv + '</b> vortices' + (psi6 !== null ? ' · |ψ₆| ' + psi6.toFixed(2) : '') + '</span>' : '') +
+          (nv !== null ? '<span><b>' + nv + '</b> winding candidates' + (psi6 !== null ? ' · |ψ₆| ' + psi6.toFixed(2) : '') + '</span>' : '') +
           '<span>step <b>' + stepCount.toLocaleString() + '</b></span>' +
           (extra ? '<span>' + extra + '</span>' : '')
         );
@@ -576,11 +595,14 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
       }
       function burst(total) {
         stop();
-        let left = total;
+        let left = total, batchLeft = 0, batchDt = 0;
         (function chunk() {
-          const n = Math.min(400, left); left -= n;
-          step(n);
-          if (left > 0) { if (left % 2000 < 400) { measure(); status('relaxing'); } chunkTimer = setTimeout(chunk, 0); }
+          // Preserve the existing 400-step timestep cadence while yielding more often.
+          // Recomputing dt every yield would change the numerical trajectory.
+          if (!batchLeft) { batchLeft = Math.min(400, left); batchDt = dtOf(host.getState()); }
+          const n = Math.min(8, batchLeft); left -= n; batchLeft -= n;
+          step(n, batchDt);
+          if (left > 0) { if (left % 2000 < 8) { measure(); paintAll(); status('relaxing'); } chunkTimer = setTimeout(chunk, 0); }
           else { measure(); findVortices(); paintAll(); status(); startLoop(); }
         })();
       }
@@ -599,8 +621,9 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
           normV = 1; maxV = 1;
           upload(P.read, seedField(s));
           measure();
+          paintAll(); // Show the initialized field while the finite warm-up runs.
           const warm = host.reducedMotion() ? Math.min(s.warmup, 2000) : s.warmup;
-          if (warm > 0) burst(warm);
+          if (warm > 0) { status('relaxing'); burst(warm); }
           else { paintAll(); status(); startLoop(); }
         },
         repaint() { if (P) { if (host.getState().view === 'vortices') findVortices(); paintAll(); } },

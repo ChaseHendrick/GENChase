@@ -1,7 +1,7 @@
 // node tools/zoom.js <hash> <waitMs> <out> [presetKey]  -- saves the plate at full canvas pixels
 const path=require('path'),fs=require('fs');const {chromium}=require('playwright');
 (async()=>{const hash=process.argv[2],wait=+(process.argv[3]||9000),out=process.argv[4]||'zoom',pk=process.argv[5];
- const studio=process.env.STUDIO?path.resolve(process.env.STUDIO):path.resolve(__dirname,'..','studio.html');
+ const studio=process.env.STUDIO?path.resolve(process.env.STUDIO):path.resolve(__dirname,'..','dist','studio.html');
  const b=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  const p=await b.newPage({viewport:{width:1600,height:1200}});
  const errs=[];p.on('pageerror',e=>{if(!/ServiceWorker/.test(e.message))errs.push(e.message);});

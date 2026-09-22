@@ -1,7 +1,7 @@
 // Actual maintained HH solver versus analytic limits and a separately expressed adaptive DOPRI5 reference.
 // Node only. node tools/hodgkin-huxley-science.js > validation/results/hodgkin-huxley-science.json
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict'),{performance}=require('node:perf_hooks');
-const root=path.resolve(__dirname,'..'),source=fs.readFileSync(path.join(root,'src/modules/hodgkin-huxley.js'),'utf8'),shared=fs.readFileSync(path.join(root,'src/shared/studio.js'),'utf8');
+const root=path.resolve(__dirname,'..'),source=fs.readFileSync(path.join(root,'src/modules/hodgkin-huxley.js'),'utf8'),shared=fs.readFileSync(path.join(root,'src/shared/engine.js'),'utf8');
 const rngSource=shared.slice(shared.indexOf('  function makeRng('),shared.indexOf('  function makeNoise('));
 const makeRng=new Function('const TAU=2*Math.PI;'+rngSource+'return makeRng;')();
 function load(text){const hooks={},marker='  Studio.register({';assert.equal(text.split(marker).length,2);let mod;const Studio={util:{makeRng,clamp:(x,a,b)=>Math.max(a,Math.min(x,b))},gl:{GLSL:{bicubic:'',ramp:''}},PALETTES:new Proxy({},{get:()=>({})}),register(m){mod=m;}};new Function('Studio','hooks',text.replace(marker,'  Object.assign(hooks,{P,exprel,rates,rhs,rk4,makeSim});\n'+marker))(Studio,hooks);return {...hooks,mod};}

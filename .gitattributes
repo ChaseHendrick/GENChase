@@ -4,4 +4,6 @@
 gallery export-ignore
 
 # Review maintained source by default; the portable build remains downloadable.
-studio.html linguist-generated=true
+dist/studio.html linguist-generated=true
+index.html linguist-generated=true
+src/module-manifest.json linguist-generated=true

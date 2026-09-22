@@ -30,7 +30,7 @@ The runner itself needs only Node. Browser benchmarks require the development se
 [BUILDING.md](../BUILDING.md):
 
 ```sh
-npm install --no-save playwright@1.49.1
+npm install --no-save --package-lock=false playwright@1.49.1
 npx playwright install chromium
 ```
 
@@ -61,3 +61,13 @@ The runner's own lightweight regression tests require no browser:
 ```sh
 node tools/verify-check.js
 ```
+
+## Development shortcuts
+
+`npm test` is a dependency-free development check plus `--list --all`; it does not run the
+scientific evidence. `npm run test:solvers` explicitly selects `--all`.
+`npm run test:print` selects `--print --all`, so numerical checks run too.
+`npm run test:all` adds the fast, build, lint and inventory checks before the same full evidence
+selection. Execution can return 2 for missing evidence; do not relabel that result as complete.
+All existing scientific CI checks remain required. No package installation is needed to use
+the studio or run the fast checks.

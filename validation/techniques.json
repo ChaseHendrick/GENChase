@@ -21,13 +21,14 @@
   {
     "id": "physarum3d",
     "source": "src/modules/physarum3d.js",
-    "sourceSha256": "c855e654cda72cbb5558fc39abba56ef049897c5def0c3db4e83caf169554f06",
+    "sourceSha256": "df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8",
     "reference": "The 3D Physarum model is Jeff Jones' 2010 agent rule lifted into a volume. Oskar Elek, Joseph N. Burchett, J. Xavier Prochaska and Angus G. Forbes used exactly this construction — slime mold agents released around seed points that deposit constantly — to reconstruct the cosmic web from galaxy positions: Burchett, Elek et al., 'Revealing the Dark Threads of the Cosmic Web', Astrophysical Journal Letters 891, L35 (2020).",
     "equation": "sense 5 cones around h -> h ← normalize(h + t·(best − h)) -> p += h·SS -> deposit;   trail ← blur₃(trail)·(1−decay)",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "Display exposure now depends only on the current field; this reproducibility correction does not validate the agent model."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
@@ -59,13 +60,17 @@
   {
     "id": "bec",
     "source": "src/modules/bec.js",
-    "sourceSha256": "0f38dac637e9cc7c33ec10c9a89dfe38115b7f339f165bcbfb5dc530a18dcb85",
+    "sourceSha256": "ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77",
     "reference": "The mean-field equation is Eugene Gross, Il Nuovo Cimento 20, 454 (1961), and Lev Pitaevskii, Soviet Physics JETP 13, 451 (1961). That a rotating superfluid answers with a triangular array of singly quantized vortices rather than rigid rotation is Alexei Abrikosov's 1957 result for type-II superconductors, Soviet Physics JETP 5, 1174, carried over to condensates; it was seen in the laboratory by Kirk Madison, Frédéric Chevy, Wendel Wohlleben and Jean Dalibard, Phys. Rev. Lett. 84, 806 (2000), and resolved into a lattice of well over a hundred vortices by Jamil Abo-Shaeer, Chandra Raman, Johnny Vogels and Wolfgang Ketterle, Science 292, 476 (2001). The staggered explicit scheme used in real time follows P. B. Visscher, Computers in Physics 5, 596 (1991). The quantization of circulation is Lars Onsager (1949) and Richard Feynman (1955).",
     "equation": "iℏ ∂ψ/∂t = [−½∇² + V(r) + g|ψ|² − Ω L_z] ψ,   circulation quantized in units of h/m",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "Initial and intermediate warm-up fields are now rendered; this presentation fix does not validate condensate dynamics.",
+      "Combined phase/density colors now distinguish zero-phase matter from the empty background; the display correction leaves the computed field unchanged.",
+      "The vortex diagnostic now uses an exact spatial six-neighbor search instead of repeated full all-pairs sorts. Equal-distance order and nearest-distance statistics are checked against brute force; this performance regression check does not validate vortex detection or the PDE.",
+      "The interface labels encoded-field phase windings as candidates. Noisy real-time windings are not a validated physical vortex count."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
@@ -97,7 +102,7 @@
   {
     "id": "phyllotaxis",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "S. Douady and Y. Couder, Phys. Rev. Lett. 68, 2098 (1992); J. Theor. Biol. 178, 255 (1996). Primordia appear on a growing disc at the minimum of an inhibitory field left by the previous ones, then ride outward. The divergence angle converges on the golden angle 137.5° for a wide interval of the control parameter, which is how sunflowers count Fibonacci without counting.",
     "equation": "new primordium at argmin_θ Σᵢ exp(−|x(θ) − xᵢ| / λ) on the meristem ring",
     "status": "unvalidated",
@@ -116,7 +121,7 @@
   {
     "id": "hl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "M. B. Hastings and L. S. Levitov, Physica D 116, 244 (1998). Laplacian growth (viscous fingering, DLA in a limit) as iterated conformal maps of the exterior disk. α=0 grows a disk; α=2 is DLA-like; the transition at α=1 is sharp. Each particle is a slit map of capacity c composed onto the cluster.",
     "equation": "Φₙ = Φₙ₋₁ ∘ f_{θₙ,cₙ},   cₙ ∝ |Φ′(e^{iθ})|^{−α}",
     "status": "unvalidated",
@@ -135,7 +140,7 @@
   {
     "id": "lichtenberg",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "L. Niemeyer, L. Pietronero and H. J. Wiesmann, Phys. Rev. Lett. 52, 1033 (1984). The dielectric breakdown model grows a cluster where the harmonic potential of the Laplace equation, raised to η, is the attachment probability. η=1 is DLA; η→∞ is a ballistic needle; lightning lives in between.",
     "equation": "∇²φ = 0,   P(i) ∝ φᵢ^η  on the growth interface",
     "status": "unvalidated",
@@ -154,7 +159,7 @@
   {
     "id": "snowflake",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "Janko Gravner and David Griffeath, Physica D 237, 385 (2008); Phys. Rev. E 79, 011601 (2009). A hexagonal lattice map with three masses — vapor, quasi-liquid, ice — that combines diffusion-limited aggregation with anisotropic attachment and a quasi-liquid layer. It is the first local model to grow plates, sectored plates, stellar dendrites and ferns that look like Nakaya’s atlas, not like a cartoon star.",
     "equation": "diffusion of vapor on Aᶜ;  freeze κ;  attach by (n, b, α, β, θ);  melt μ, γ",
     "status": "unvalidated",
@@ -753,13 +758,14 @@
   {
     "id": "aharonov",
     "source": "src/modules/aharonov.js",
-    "sourceSha256": "897ddf6d6005f4f2961c0892554a96509e5f25bd30f874c46d231ae015fe3807",
+    "sourceSha256": "1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf",
     "reference": "Y. Aharonov and D. Bohm, Phys. Rev. 115, 485 (1959). Ehrenberg and Siday had the same phase in 1949. Chambers (1960) and Tonomura et al. (1986) saw the fringes shift around a shielded magnet. The plate is two Huygens slits plus a pure gauge phase, not a solenoid in a TEM.",
     "equation": "Δφ = (e/ℏ) ∮ A·dl = 2π Φ/Φ0,   I(x) = |ψ_L + e^{iΔφ} ψ_R|²",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "Display intensity uses a clipped 95th-percentile scale to reveal interference away from slit sources. The lower-field peak offset is a descriptive pixel location, not a calibrated fringe shift or validation against flux. The computed field is unchanged by this display correction."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
@@ -1276,7 +1282,7 @@
   {
     "id": "lp",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "Ron Lifshitz and Dean M. Petrich, Phys. Rev. Lett. 79, 1261 (1997). Faraday waves with two frequencies impose two length scales. The free energy with operator (∇²+1)²(∇²+q²)² and a quadratic term is enough to stabilize a dodecagonal quasicrystal when q = 2 cos(π/12) ≈ 1.932. Hexagons and stripes are the other ground states. This plate is a semi-implicit spectral integration of that PDE.",
     "equation": "∂tψ = εψ − (∇²+1)²(∇²+q²)²ψ + α ψ² − ψ³,   q = 2 cos(π/12)",
     "status": "unvalidated",
@@ -1333,13 +1339,14 @@
   {
     "id": "cgl",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "The complex Ginzburg–Landau equation is the universal envelope of a Hopf instability in an extended medium (Newell, Whitehead, Segel, 1969–71). The (α, β) plane was mapped by Aranson and Kramer: Benjamin–Feir when 1+αβ<0, spiral defect chaos, frozen states, amplitude turbulence. The field A is complex; its zeros are topological defects.",
-    "equation": "∂A/∂t = A + (1 + iα) ∇²A − (1 + iβ) |A|² A",
+    "equation": "∂A/∂t = μA + (1 + iα) ∇²A − (1 + iβ) |A|² A",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "Numerical correction changes previous recipes. Bounded production-kernel checks and remaining limitations are documented in validation/GL-CORRECTIONS.md; these do not establish full paper accuracy or promote scientific status."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
@@ -1352,13 +1359,14 @@
   {
     "id": "vortex",
     "source": "src/modules/vortex.js",
-    "sourceSha256": "b6635876895ed3141304ea617f0e353783183cb587dcde84a86323fd2d06908e",
-    "reference": "A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. The plate is imaginary-time Ginzburg-Landau in a uniform B, Landau gauge.",
-    "equation": "αψ + β|ψ|² ψ + (1/2m)(−i∇ − 2e A)² ψ = 0,   n_v = B Area / Φ0",
+    "sourceSha256": "fc8e66a17fe114da9a663f0827171ea70461c784e10802fac2bbd3d2205027f0",
+    "reference": "A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. This plate is a reduced fixed-field Ginzburg-Landau relaxation with unit-modulus lattice links in Landau gauge and zero order parameter at the boundary. It does not evolve the magnetic field or establish critical fields.",
+    "equation": "∂ψ/∂t = κ⁻²(∇ − iA)²ψ + (1 − |ψ|²)ψ,   A = (−0.08 B y, 0),   Δx = 1",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "Numerical correction changes previous recipes. Bounded production-kernel checks and remaining limitations are documented in validation/GL-CORRECTIONS.md; these do not establish full paper accuracy or promote scientific status."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
@@ -1750,7 +1758,7 @@
   {
     "id": "smectic",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "G. Friedel, Annales de Physique 18, 273 (1910). Smectic-A layers prefer equal spacing and may bend; the surfaces of constant spacing whose centers of curvature lie on an ellipse and a confocal hyperbola are Dupin cyclides. Packed in the plane they are toroidal focal conic domains — an Apollonian foam of nested rings.",
     "equation": "layers: Dupin cyclides of a confocal ellipse–hyperbola pair",
     "status": "unvalidated",
@@ -1883,7 +1891,7 @@
   {
     "id": "hofstadter",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "Douglas R. Hofstadter, Phys. Rev. B 14, 2239 (1976). A Bloch electron in a square lattice with perpendicular flux α (in flux quanta per plaquette) has a spectrum that is a fractal in the (α, E) plane — the butterfly. Gaps carry Chern numbers; Avron colored them. At rational α=p/q the Harper matrix is q×q.",
     "equation": "ψₙ₊₁ + ψₙ₋₁ + 2 cos(2π n α) ψₙ = E ψₙ",
     "status": "unvalidated",
@@ -1921,7 +1929,7 @@
   {
     "id": "scars",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "Eric J. Heller, Phys. Rev. Lett. 53, 1515 (1984). In a classically chaotic billiard the high eigenfunctions of the Dirichlet Laplacian are usually ergodic — and yet some sit, as scars, along unstable periodic orbits. The Bunimovich stadium and the cardioid are the textbook domains. Inverse iteration of the discrete Laplacian with a Weyl shift yields a mode near index n.",
     "equation": "∇²ψ + k² ψ = 0  on Ω,   ψ = 0 on ∂Ω",
     "status": "unvalidated",
@@ -1959,7 +1967,7 @@
   {
     "id": "caustics",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "Michael V. Berry’s catastrophe optics: the brightness of a light field after a smooth phase screen is the density of the gradient map of the height. Folds (A2) and cusps (A3) are the generic caustics in the plane. The swimming-pool network is this map, not a Voronoi diagram.",
     "equation": "X = x + s ∇h(x),   I(X) = Σ 1 / |det(I + s Hess h)|",
     "status": "unvalidated",
@@ -2016,7 +2024,7 @@
   {
     "id": "talbot",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "H. F. Talbot, Phil. Mag. 9, 401 (1836). A periodic grating, lit coherently, revives as a sharp image at the Talbot distance z_T and as a half-period image at z_T/2. Between, the near field is a carpet of fractional revivals — a plot of I(x,z) is one of the most intricate figures in wave optics.",
     "equation": "I(x,z) = |Σₙ aₙ exp(i 2π n x/d − i π n² z/z_T)|²,   z_T = 2 d²/λ",
     "status": "unvalidated",
@@ -2092,7 +2100,7 @@
   {
     "id": "pearls",
     "source": "src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js",
-    "sourceSha256": "31717060e3112ad24c45ae8e04c426dd8f5e398752fe8f2c91999df77d8c9f53",
+    "sourceSha256": "83a4b43c08356787154cf7ec546d2d6ecc47d09779f71540f888d3fa9d816118",
     "reference": "David Mumford, Caroline Series and David Wright, Indra's Pearls: The Vision of Felix Klein (Cambridge, 2002). A Schottky group is generated by pairing disjoint circles; the limit set is the dust (or curve) left when every complementary disk has been eaten. Nested inversions draw the group without matrices.",
     "equation": "Γ = ⟨a, b⟩  Schottky,   Λ(Γ) = ∩ g∈Γ g(Ĉ \\ Ω)",
     "status": "unvalidated",
@@ -2943,6 +2951,84 @@
         "criteria": "Exact numerical state and settings preservation, exact dimensions, SVG path/sample counts and bounded PNG/SVG raster differences; incomplete traces refuse export.",
         "limitations": "Selected renderer and states only; no full parameter-domain, unrecorded-transient or cross-hardware guarantee.",
         "results": "validation/results/neural-mass-print.json"
+      }
+    ]
+  },
+  {
+    "id": "volume-wave",
+    "source": "src/modules/volume-wave.js",
+    "sourceSha256": "80fda0bb272f37958734bbb239ff89ffe706c47cb884b3a7b86886f55844e913",
+    "reference": "Classical scalar wave equation. Centered finite differences and the three-dimensional CFL bound follow H. P. Langtangen and S. Linge, Finite Difference Computing with PDEs (2017), wave equation chapter, https://hplgit.github.io/fdm-book/doc/pub/wave/html/._wave-solarized004.html. No novelty or full acoustic model is claimed.",
+    "equation": "∂²u/∂t² = c²(∂²u/∂x² + ∂²u/∂y² + ∂²u/∂z²)",
+    "status": "partially validated",
+    "limitations": [
+      "Periodic unit-cube constant-speed scalar wave only, zero initial velocity; no full acoustic, electromagnetic or elastic material model.",
+      "GPU numerical fixtures use grids 16 through 64 for at most 80 steps. Extreme 96 through 256 grids, long times, arbitrary parameters and other GPU drivers remain unaudited.",
+      "Selected small exports preserve the field and dimensions; physical color calibration and full print-resolution fidelity remain unvalidated."
+    ],
+    "remaining": [
+      "Check high-grid allocation, long-time behavior and numerical dispersion across representative hardware.",
+      "Audit pulse continuum error and independently compare rendered slice values across all orientations and print resolutions."
+    ],
+    "numerical": [
+      {
+        "test": "tools/volume-wave-science.js",
+        "scope": "Actual float32 atlas shader: four discrete Fourier fixtures, independent float64 mixed-field comparison, fixed-domain/time 16/32/64 combined refinement and 84 sanitizer cases.",
+        "criteria": "Maximum solver error below 5e-5, separate native GPU trig initializer error below 3e-4, refinement ratios in [3.5,4.5], maximum sanitized CFL fraction 0.95.",
+        "limitations": "Grids 16 through 64 and at most 80 steps; no extreme-grid, long-time, arbitrary-control, cross-device or experimental accuracy claim.",
+        "benchmark": "Closed solution of the discrete seven-point Fourier symbol; independent float64 seven-point recurrence; exact continuum standing wave at fixed unit cube and final time 0.13.",
+        "failureControl": "Reversing the Laplacian sign gives maximum error above 0.1; Nyquist mode at 1.05 CFL grows above 1e6 while 0.95 CFL remains below 1.0001.",
+        "command": "node tools/volume-wave-science.js",
+        "results": "validation/results/volume-wave-science.json"
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/volume-wave-science.js",
+        "scope": "Production instance, five presets at grid 32, 8 to 24 steps, XY/XZ/YZ slices, 512x384 exports from a 256x256 canvas. Same-seed field regeneration also checked.",
+        "criteria": "Requested dimensions, fifth-to-95th-percentile luminance span above 5, exact raw field equality before/after export, exact repeated field on the same renderer.",
+        "limitations": "One seed and diagnostic palette, one grid, small print dimensions and one renderer. No physical calibration or broad print fidelity claim.",
+        "command": "node tools/volume-wave-science.js",
+        "results": "validation/results/volume-wave-science.json"
+      }
+    ]
+  },
+  {
+    "id": "direct-gravity",
+    "source": "src/modules/direct-gravity.js",
+    "sourceSha256": "44afe7d477ceba1beeca7b6f27a657ef95f87546c673a8399c6f752b67acdd17",
+    "reference": "Newton, Principia (1687); Verlet, Physical Review 159 (1967), 98. Plummer softening and the direct all-pairs kernel: Nyland, Harris and Prins, GPU Gems 3, chapter 31 (2007). This implementation runs the pair kernel on the CPU.",
+    "equation": "a_i = Σ(j≠i) m_j (r_j−r_i) / (|r_j−r_i|²+ε²)^(3/2), G=1; velocity Verlet",
+    "status": "partially validated",
+    "limitations": [
+      "Planar Plummer-softened gravity with G=1; no galaxy equilibrium or physical collision model.",
+      "Finite small-body analytic and conservation fixtures only; large-N statistics, chaotic long-time accuracy and arbitrary controls remain unvalidated.",
+      "Browser cancellation and selected exports preserve a completed-step snapshot; this is not full scientific print certification."
+    ],
+    "remaining": [
+      "Audit large-N force accuracy, parameter regimes and timestep convergence for the intended experiment.",
+      "Compare scientific state and print geometry at additional dimensions, seeds and hardware."
+    ],
+    "numerical": [
+      {
+        "test": "tools/direct-gravity-science.js",
+        "scope": "Actual production force and velocity-Verlet generators, equal-mass softened circular orbit, unequal-mass five-body conservation and batching equivalence.",
+        "criteria": "Finest circular position error below 3e-5, refinement ratio 15 to 17, energy drift below 1e-8; five-body force/momentum residuals below 1e-14/1e-13 and energy drift below 1e-5.",
+        "limitations": "Small-body finite-time fixtures, not arbitrary stress settings or astrophysical accuracy.",
+        "benchmark": "Independent exact softened two-body circular orbit and independent energy/momentum formulas.",
+        "failureControl": "A 1% force-coefficient error exceeds 0.01 trajectory error; broken pair reciprocity exceeds 0.001 momentum-production residual.",
+        "command": "node tools/direct-gravity-science.js",
+        "results": "validation/results/direct-gravity-science.json"
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/direct-gravity-browser.js",
+        "scope": "16,384-body partially computed force can be paused; 1600x1000 PNG/SVG preserves the completed snapshot. A 128-body 8-step replay is identical.",
+        "criteria": "Pause/export state unchanged, requested dimensions, all 16,384 SVG circles retained, deterministic completed positions.",
+        "limitations": "One browser, selected dimensions and fixtures; CPU timing is hardware dependent and does not validate scientific accuracy.",
+        "command": "node tools/direct-gravity-browser.js",
+        "results": "validation/results/direct-gravity-browser.json"
       }
     ]
   }

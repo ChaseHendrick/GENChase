@@ -1,0 +1,74 @@
+{
+  "sourceSha256": "44afe7d477ceba1beeca7b6f27a657ef95f87546c673a8399c6f752b67acdd17",
+  "pass": true,
+  "circularOrbit": {
+    "eps": 0.12,
+    "separation": 1,
+    "totalMass": 1,
+    "time": 6,
+    "rows": [
+      {
+        "h": 0.02,
+        "error": 0.0003838153238633427,
+        "maxEnergyError": 4.494368655016956e-9,
+        "E0": -0.12587141308105107,
+        "final": [
+          -0.47003842215235875,
+          0.47003842215235875,
+          0.17048471206028637,
+          -0.17048471206028637,
+          -0.16865576457558257,
+          0.16865576457558257,
+          -0.46502655347765043,
+          0.46502655347765043
+        ]
+      },
+      {
+        "h": 0.01,
+        "error": 0.00009596210567538859,
+        "maxEnergyError": 2.8102001281560263e-10,
+        "E0": -0.12587141308105107,
+        "final": [
+          -0.4701356776473839,
+          0.4701356776473839,
+          0.17021378615370303,
+          -0.17021378615370303,
+          -0.1683956879958638,
+          0.1683956879958638,
+          -0.4651217078122607,
+          0.4651217078122607
+        ]
+      },
+      {
+        "h": 0.005,
+        "error": 0.00002399104387411972,
+        "maxEnergyError": 1.7564616427989677e-11,
+        "E0": -0.12587141308105107,
+        "final": [
+          -0.4701599701786028,
+          0.4701599701786028,
+          0.17014603877976642,
+          -0.17014603877976642,
+          -0.16833065104583803,
+          0.16833065104583803,
+          -0.46514547666151584,
+          0.46514547666151584
+        ]
+      }
+    ],
+    "convergenceRatio": 15.998275267937904
+  },
+  "unequalMassFixture": {
+    "forceResidual": 3.1031676915590914e-17,
+    "momentumResidual": 2.9052345828309734e-16,
+    "maxEnergyDrift": 1.556406781233477e-8
+  },
+  "corruptionError": 0.05765443745967268,
+  "brokenMomentum": 0.002068889207367308,
+  "batchingIdentical": true,
+  "limitations": [
+    "Planar Plummer-softened G=1 finite-time fixtures only. No galaxy equilibrium, unsoftened collision, large-N statistical or long-time chaotic accuracy claim.",
+    "Independent circular solution and energy formula test extracted production generators. Conservation alone does not prove trajectory accuracy.",
+    "Print and browser scheduling checks are separate from this numerical evidence."
+  ]
+}

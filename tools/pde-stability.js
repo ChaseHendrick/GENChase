@@ -25,7 +25,7 @@ ${marker}`);
     for (const fixture of ['real-click', 'uniform-mode']) for (const legacy of [false, true]) {
       const page = await browser.newPage();
       try {
-        await page.goto('file://' + path.join(root, 'studio.html') + '#three-vortex-bound/stability');
+        await page.goto('file://' + path.join(root, 'dist/studio.html') + '#three-vortex-bound/stability');
         // The click failure control restores both historical defects. The uniform-mode
         // failure control changes only dt, isolating the amplitude-envelope error.
         let tested = fixture === 'real-click' && legacy ? source.replace('spec.pokeMode ?? 1', 'spec.pokeMode || 1') : source;
@@ -99,7 +99,7 @@ ${marker}`);
     for (const id of ['cahn', 'ohta', 'amb']) {
       const page = await browser.newPage();
       try {
-        await page.goto('file://' + path.join(root, 'studio.html') + '#three-vortex-bound/mixing');
+        await page.goto('file://' + path.join(root, 'dist/studio.html') + '#three-vortex-bound/mixing');
         await page.evaluate(source);
         mixing.push(await page.evaluate(id => {
           const mod = Studio.modules[id], palette = Studio.PALETTES[mod.defaultPalette], N = 128;

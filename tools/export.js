@@ -31,7 +31,7 @@ const blank = m => !m.lum || ((m.lum.p99 - m.lum.p01) < 12 && m.lum.ink < 0.004)
   const exportMs = +(process.argv[6] || 180000);
   if (!id) { console.error('usage: node tools/export.js <id> [inches] [dpi] [settleMs] [exportMs]'); process.exit(1); }
 
-  const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'studio.html');
+  const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
   const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const p = await b.newPage({ viewport: { width: 1400, height: 900 } });
   const errs = [];
