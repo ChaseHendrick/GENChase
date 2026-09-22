@@ -2,6 +2,7 @@
 """CPU reference and command-line checks for the optional native runner."""
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -31,6 +32,8 @@ def main():
             expected[i] += m[j] * d / (float(d @ d) + 0.07 ** 2) ** 1.5
     for block in (1, 2, 3, 16):
         np.testing.assert_allclose(runner.acceleration(np, p, m, 0.07, block), expected, rtol=2e-15, atol=2e-15)
+    with runner.cpu_workers(2) as pool:
+        np.testing.assert_array_equal(runner.acceleration(np, p, m, 0.07, 2, pool), runner.acceleration(np, p, m, 0.07, 2))
     assert np.max(np.abs(np.sum(expected * m[:, None], axis=0))) < 1e-14
     # Fixed physical domain and time, independently known continuum frequency.
     errors = []
@@ -59,8 +62,9 @@ def main():
         assert not denied.exists()
         for module in ("volume-wave", "direct-gravity"):
             dirs = [root / (module + str(i)) for i in range(2)]
-            for out in dirs:
-                command(module, "--grid", "8", "--particles", "8", "--block", "3", "--steps", "3", "--output", out)
+            for i, out in enumerate(dirs):
+                worker_args = ["--workers", "2"] if i == 1 and module == "direct-gravity" and (os.cpu_count() or 1) >= 2 else []
+                command(module, *worker_args, "--grid", "8", "--particles", "8", "--block", "3", "--steps", "3", "--output", out)
                 metadata = json.loads((out / "run.json").read_text())
                 assert metadata["completed_steps"] == 3 and metadata["backend"] == "numpy"
                 assert metadata["source_sha256"] and metadata["state_arrays"]
@@ -77,7 +81,7 @@ def main():
                     raise AssertionError("Concurrent reservation unexpectedly succeeded")
             except ValueError:
                 pass
-    print(json.dumps({"passed": True, "backend": "numpy", "numpy_version": np.__version__, "analytic": evidence, "continuum_wave_errors": errors, "continuum_wave_ratios": ratios, "cli_checks": "invalid inputs, memory budget, deterministic archives, no overwrite, exclusive reservation", "limitations": "CPU float64 fixtures only; CUDA is not exercised."}, indent=2))
+    print(json.dumps({"passed": True, "backend": "numpy", **runner.provenance(np, np), "parallel_tiles_identical": True, "analytic": evidence, "continuum_wave_errors": errors, "continuum_wave_ratios": ratios, "cli_checks": "invalid inputs, memory budget, deterministic archives, no overwrite, exclusive reservation", "limitations": "CPU float64 fixtures only; CUDA is not exercised."}, indent=2))
 
 
 if __name__ == "__main__":

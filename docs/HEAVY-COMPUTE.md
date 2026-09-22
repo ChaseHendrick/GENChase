@@ -44,7 +44,7 @@ Inspect the proposed work without allocating arrays or importing either numerica
 
 ```sh
 python3 tools/heavy-runner.py volume-wave --grid 256 --steps 1000 --memory-mib 2048 --dry-run
-python3 tools/heavy-runner.py direct-gravity --particles 16384 --steps 100 --dry-run
+python3 tools/heavy-runner.py direct-gravity --particles 16384 --steps 100 --workers 4 --dry-run
 ```
 
 Run modest CPU examples first:
@@ -64,7 +64,12 @@ The array budget is an estimate, not a whole-process memory limit. Runtime, driv
 compression and output overhead require additional memory. Native grids can exceed browser
 limits when the explicitly selected budget and hardware allow it. Gravity uses bounded pair
 tiles, controlled by `--block`, instead of retaining an N by N distance matrix. It still
-evaluates all pairs. Ctrl+C stops the run; an interrupted run is not a completed result.
+evaluates all pairs. NumPy gravity accepts `--workers` up to the reported logical CPU count.
+The default is one; independent particle blocks can run concurrently while preserving each
+particle's summation order. The inputs are read-only during force evaluation, and workers
+write disjoint output rows. This follows [NumPy's threading guidance](https://numpy.org/doc/stable/reference/thread_safety.html). Extra tile memory is included in the estimate. More workers may
+be slower on small problems or memory-limited systems. This setting does not apply to CUDA
+or the native wave runner. Ctrl+C stops the run; an interrupted run is not a completed result.
 
 Each completed run writes `run.json` with parameters, precision, timing and software metadata,
 plus `state.npz` containing the final arrays. Use a fresh output directory for each experiment.

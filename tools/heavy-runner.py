@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Optional native stress experiments. NumPy CPU or explicitly selected CuPy CUDA."""
 import argparse
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import hashlib
 import json
 import math
+import os
+import threading
 from pathlib import Path
 import platform
 import sys
@@ -42,23 +45,46 @@ def wave_step(xp, previous, current, coefficient):
     return 2 * current - previous + coefficient * laplacian(xp, current)
 
 
-def acceleration(xp, positions, masses, epsilon, block):
+def acceleration(xp, positions, masses, epsilon, block, pool=None):
     """Direct summation in bounded tiles; no N by N retained distance matrix."""
     n = len(positions)
     result = xp.zeros_like(positions)
-    for i in range(0, n, block):
+    def row(i):
         local = result[i:i + block]
         for j in range(0, n, block):
+            if pool and pool[1].is_set():
+                raise RuntimeError("Computation cancelled")
             delta = positions[None, j:j + block, :] - positions[i:i + block, None, :]
             r2 = xp.sum(delta * delta, axis=2) + epsilon * epsilon
             weight = masses[None, j:j + block] / (r2 * xp.sqrt(r2))
             local += xp.sum(delta * weight[:, :, None], axis=1)
+    if pool:
+        executor, _, workers = pool
+        # Only one wave of tasks is queued at a time, so futures do not grow with N.
+        for start in range(0, n, block * workers):
+            futures = [executor.submit(row, i) for i in range(start, min(n, start + block * workers), block)]
+            for future in futures:
+                future.result()
+    else:
+        for i in range(0, n, block):
+            row(i)
     return result
 
 
-def gravity_step(xp, positions, velocity, masses, accel, dt, epsilon, block):
+@contextmanager
+def cpu_workers(count):
+    cancel = threading.Event()
+    executor = ThreadPoolExecutor(max_workers=count)
+    try:
+        yield executor, cancel, count
+    finally:
+        cancel.set()
+        executor.shutdown(wait=True, cancel_futures=True)
+
+
+def gravity_step(xp, positions, velocity, masses, accel, dt, epsilon, block, pool=None):
     p = positions + dt * velocity + (0.5 * dt * dt) * accel
-    a = acceleration(xp, p, masses, epsilon, block)
+    a = acceleration(xp, p, masses, epsilon, block, pool)
     v = velocity + 0.5 * dt * (accel + a)
     return p, v, a
 
@@ -113,6 +139,7 @@ def parse_args():
     p.add_argument("--particles", type=int, default=512)
     p.add_argument("--steps", type=int, default=100)
     p.add_argument("--block", type=int, default=256)
+    p.add_argument("--workers", type=int, default=1, help="Concurrent NumPy gravity tiles; maximum is the reported logical CPU count")
     p.add_argument("--courant", type=float, default=0.6)
     p.add_argument("--dt", type=float, default=0.001, help="Gravity timestep; convergence must be checked for each new regime")
     p.add_argument("--epsilon", type=float, default=0.05)
@@ -122,9 +149,13 @@ def parse_args():
     p.add_argument("--dry-run", action="store_true", help="Show workload estimate without importing NumPy/CuPy or allocating arrays")
     p.add_argument("--self-test", action="store_true")
     args = p.parse_args()
-    for key in ("grid", "particles", "steps", "block", "memory_mib"):
+    for key in ("grid", "particles", "steps", "block", "memory_mib", "workers"):
         if not 1 <= getattr(args, key) <= sys.maxsize:
             p.error(key.replace("_", "-") + " must be positive and fit a native integer")
+    if args.workers > max(1, os.cpu_count() or 1):
+        p.error("workers exceeds the reported logical CPU count")
+    if args.workers != 1 and (args.backend != "numpy" or args.module != "direct-gravity"):
+        p.error("multiple workers are supported only for NumPy direct-gravity runs")
     if args.grid < 8:
         p.error("grid must be at least 8 to resolve the initial mode")
     if not math.isfinite(args.courant) or not 0 < args.courant <= 0.95:
@@ -178,7 +209,7 @@ def main():
         work = {"cells": args.grid ** 3, "cell_updates": args.grid ** 3 * args.steps, "dt": args.courant / (math.sqrt(3) * args.grid)}
     else:
         b = min(args.block, args.particles)
-        estimate = 32 * args.particles * 8 + 12 * b * b * 8
+        estimate = 32 * args.particles * 8 + 12 * b * b * 8 * args.workers
         work = {"particles": args.particles, "directed_pair_evaluations": args.particles ** 2 * (args.steps + 1), "dt": args.dt}
     metadata = {"module": args.module, "backend": args.backend, "precision": "float64", "estimated_array_bytes": estimate, "array_budget_bytes": args.memory_mib * 1024 ** 2, **work}
     if args.dry_run:
@@ -195,11 +226,11 @@ def main():
         free, _ = xp.cuda.runtime.memGetInfo()
         if estimate > free * 0.8:
             raise ValueError("Estimated arrays exceed 80% of currently free CUDA memory")
-    with reserve_output(args.output):
-        run(args, np, xp, metadata)
+    with reserve_output(args.output), (cpu_workers(args.workers) if args.workers > 1 else nullcontext(None)) as pool:
+        run(args, np, xp, metadata, pool)
 
 
-def run(args, np, xp, metadata):
+def run(args, np, xp, metadata, pool=None):
     numeric_seed = int.from_bytes(hashlib.sha256(args.seed.encode()).digest()[:8], "little")
     started = time.perf_counter()
     if args.module == "volume-wave":
@@ -213,12 +244,12 @@ def run(args, np, xp, metadata):
         positions -= xp.mean(positions, axis=0)
         velocity = xp.stack((-positions[:, 1], positions[:, 0]), axis=1) * 0.5
         masses = xp.full(args.particles, 1 / args.particles, dtype=xp.float64)
-        accel = acceleration(xp, positions, masses, args.epsilon, args.block)
+        accel = acceleration(xp, positions, masses, args.epsilon, args.block, pool)
     for step in range(args.steps):
         if args.module == "volume-wave":
             previous, current = current, wave_step(xp, previous, current, args.courant ** 2 / 3)
         else:
-            positions, velocity, accel = gravity_step(xp, positions, velocity, masses, accel, args.dt, args.epsilon, args.block)
+            positions, velocity, accel = gravity_step(xp, positions, velocity, masses, accel, args.dt, args.epsilon, args.block, pool)
         if args.backend == "cupy":
             xp.cuda.get_current_stream().synchronize()
         if (step + 1) % max(1, args.steps // 10) == 0:

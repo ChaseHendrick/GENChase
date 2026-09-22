@@ -1396,3 +1396,5 @@ Read the author-hosted [multidimensional wave stability analysis](https://hplgit
 The source gives the centered finite-difference dispersion relation and the constant-speed stability bound. The new implementation specializes it to an equal-spacing periodic unit cube and uses a strict 0.95 margin. The method is established numerical analysis. No historical-originality search or novelty claim is implied.
 
 Native backend installation was checked against https://docs.cupy.dev/en/stable/install.html using query `site.docs.cupy.dev stable install cupy CUDA requirements`. The optional backend requires compatible CUDA hardware; no CUDA run is claimed on the local Mac.
+
+The native CPU worker option was checked against https://numpy.org/doc/stable/reference/thread_safety.html. Workers read shared positions/masses, write disjoint force rows and finish before the next trajectory update; no hardware-independent speedup is claimed.
