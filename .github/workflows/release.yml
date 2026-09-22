@@ -1,0 +1,70 @@
+name: Publish offline studio
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version, for example v2026.09.22
+        required: true
+        type: string
+permissions:
+  contents: write
+  actions: read
+  checks: read
+concurrency:
+  group: genchase-release
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Verify version and successful main checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          python3 -c 'import os,re; assert re.fullmatch(r"v[0-9][0-9A-Za-z.\-]*", os.environ["RELEASE_VERSION"]), "Invalid version"'
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/check.yml/runs?head_sha=$GITHUB_SHA&event=push&status=completed&per_page=20" > /tmp/check-runs.json
+          python3 -c 'import json,os; runs=json.load(open("/tmp/check-runs.json"))["workflow_runs"]; assert any(r["head_sha"]==os.environ["GITHUB_SHA"] and r["conclusion"]=="success" for r in runs), "This main commit needs a successful check workflow before publication"'
+          gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/$RELEASE_VERSION" > /tmp/tag-refs.json
+          python3 -c 'import json,os; refs=json.load(open("/tmp/tag-refs.json")); assert not any(r["ref"]=="refs/tags/"+os.environ["RELEASE_VERSION"] for r in refs), "An existing tag will not be replaced"'
+
+      - name: Install distribution test tools
+        run: |
+          npm install --no-save --package-lock=false playwright@1.58.2 axe-core@4.10.3
+          npx playwright install --with-deps chromium
+      - name: Build and verify offline bundle
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          node tools/build.js --check
+          node tools/science.js
+          node tools/lint.js
+          python3 tools/package-release.py --version "$RELEASE_VERSION"
+          node tools/distribution-check.js tools/dist/release/GENChase-studio.zip
+          test -z "$(git status --porcelain --untracked-files=no)"
+      - name: Publish immutable release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          repo=os.environ['GITHUB_REPOSITORY']; sha=os.environ['GITHUB_SHA']
+          Path('/tmp/release-notes.md').write_text(f'''Make art in your browser at https://sharpmeow.github.io/GENChase/start.html, or download **GENChase-studio.zip**, extract it, and open **START-HERE.html**. No development tools are needed for the offline art studio.
+
+          The ZIP includes the portable studio, introductory examples, licenses, and scientific evidence. **SHA256SUMS.txt** records its checksum. Use the automatically attached source archive for local checks or code contributions, following CONTRIBUTING.md.
+
+          Built from [{sha[:12]}](https://github.com/{repo}/commit/{sha}). Validation is limited to the domains in [VALIDATION.md](https://github.com/{repo}/blob/{sha}/VALIDATION.md); this release does not certify every simulation.
+          ''')
+          PY
+          gh release create "$RELEASE_VERSION" tools/dist/release/GENChase-studio.zip tools/dist/release/SHA256SUMS.txt --target "$GITHUB_SHA" --title "GENChase $RELEASE_VERSION" --notes-file /tmp/release-notes.md --latest
