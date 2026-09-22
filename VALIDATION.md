@@ -270,6 +270,7 @@ No technique currently has complete registered numerical-and-print validation.
 
 - Classical vortex model; these tests do not establish historical novelty.
 - Kernel and trajectory tests cover declared samples, not all parameters or print rendering.
+- The engine API exposes the existing relative self-similarity residual as structured witness data, with the existing 1e-9 tolerance and off-family/nonpositive-time preconditions. This API addition changes no solver or scientific validation status.
 
 ### maxwell
 
@@ -319,12 +320,14 @@ No technique currently has complete registered numerical-and-print validation.
 - Periodic unit-cube constant-speed scalar wave only, zero initial velocity; no full acoustic, electromagnetic or elastic material model.
 - GPU numerical fixtures use grids 16 through 64 for at most 80 steps. Extreme 96 through 256 grids, long times, arbitrary parameters and other GPU drivers remain unaudited.
 - Selected small exports preserve the field and dimensions; physical color calibration and full print-resolution fidelity remain unvalidated.
+- Shared workload modes change cooperative scheduling or steps per presentation frame, not the numerical timestep or solver. Maximum throughput is not a measured hardware utilization guarantee.
 
 ### direct-gravity
 
 - Planar Plummer-softened gravity with G=1; no galaxy equilibrium or physical collision model.
 - Finite small-body analytic and conservation fixtures only; large-N statistics, chaotic long-time accuracy and arbitrary controls remain unvalidated.
 - Browser cancellation and selected exports preserve a completed-step snapshot; this is not full scientific print certification.
+- Shared workload modes change cooperative scheduling or steps per presentation frame, not the numerical timestep or solver. Maximum throughput is not a measured hardware utilization guarantee.
 
 The remaining records retain each catalog equation and reference as a review target. They do not
 claim those descriptions have been checked against the primary paper. Full parameter, precision,

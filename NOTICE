@@ -7,3 +7,6 @@ See OUTPUT-RIGHTS.md for the licensor’s additional grant for generated output.
 Bundled fonts: Geist and Geist Mono, Copyright 2024 The Geist Project Authors;
 Instrument Serif, Copyright 2022 The Instrument Serif Project Authors.
 These fonts remain under SIL Open Font License 1.1; see licenses/.
+
+Print PDF and TIFF embed the International Color Consortium sRGB2014 profile.
+See licenses/ICC-sRGB.txt for its source and unrestricted distribution terms.

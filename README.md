@@ -2,9 +2,11 @@
 
 **Gen art, print ready.**
 
+**[Open the studio in your browser](https://sharpmeow.github.io/GENChase/)** · Works on phones, tablets and computers. No download or installation needed. Device support and practical simulation sizes vary.
+
 Generative art from real scientific simulations, built to leave the screen. Every plate is seeded and exports in inches at a chosen pixel resolution. Numerical resolution and validation coverage vary by simulation; see [VALIDATION.md](VALIDATION.md).
 
-A folder-based studio with one shared engine and 130 pattern-forming systems. Techniques load when selected; a portable HTML export is also included.
+A folder-based studio with one shared engine and 130 pattern-forming systems. Techniques load when selected; a portable HTML export is also included. The [stable engine API](docs/ENGINE-API.md) covers versioned recipes, shared print controls and machine-readable scientific witnesses.
 
 <p align="center">
   <img src="gallery/drainage.jpg" width="32%" alt="Drainage network from stream-power incision" />
@@ -271,3 +273,25 @@ The source migration and license provenance review are recorded in [BUILDING.md]
 The [technique catalog](TECHNIQUES.md) records the scientific sources behind each simulation. Derivations and proofs are in [IDENTITIES.md](IDENTITIES.md), and the [research ledger](RESEARCH.md) records literature checks and their limits. Credit the original scientific sources when using their mathematics.
 
 Built by Chaos.
+
+### Customize the printed caption
+
+**Studio setup** in the print controls works on desktop and mobile. Place it above,
+below, left or right of the artwork, and hide or restore individual details.
+Preferences apply across techniques on this device. Keep the recipe link or settings
+JSON when omitting details from a print. See the [engine guide](docs/ENGINE-API.md#caption-editing-on-desktop-and-mobile).
+
+**Print-shop formats:** the export dialog offers PDF and TIFF with an embedded sRGB
+profile and physical sheet size. PDF supports bleed and cutting marks. An optional
+native tool converts to CMYK TIFF or PDF/X-3 using a printer-supplied profile.
+See [sending a plate to a print shop](docs/PRINTING.md) for requirements and limits.
+
+Save printer presets and enable **Advanced print tools** in **Studio setup**. Every
+export gets a basic resolution/layout report before download. **Science report** on
+the stage shows each technique's evidence and remaining gaps. **Device workload**
+offers lighter, balanced and maximum-throughput modes; the heavy gravity and volume
+wave modules use the scheduling budgets, while other modules retain their own controls.
+
+**Art only** on the stage hides controls and the caption preview. Tap the artwork to
+reveal **Show controls**, or press Esc/F to return. Print settings are preserved.
+For contributors: [testing guide](TESTING.md) · [release checklist](docs/RELEASING.md).

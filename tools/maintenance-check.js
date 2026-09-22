@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),cp=r
 const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'genchase-build-'));
 const root=path.resolve(__dirname,'..');
 try {
-  for(const dir of ['tools','src/modules','src/shared','src/styles'])fs.mkdirSync(path.join(tmp,dir),{recursive:true});
+  for(const dir of ['tools','src/modules','src/shared','src/styles','validation'])fs.mkdirSync(path.join(tmp,dir),{recursive:true});
   fs.copyFileSync(path.join(__dirname,'build.js'),path.join(tmp,'tools/build.js'));
   fs.copyFileSync(path.join(__dirname,'registry.js'),path.join(tmp,'tools/registry.js'));
   const put=(p,s)=>fs.writeFileSync(path.join(tmp,p),s);
@@ -11,6 +11,7 @@ try {
   const moduleInclude='<script>{{include:modules/example.js}}</script>\n';
   const template='<style>{{include:styles/studio.css}}</style>\n<script>{{include:shared/engine.js}}</script>\n'+moduleInclude+'<script>{{include:shared/boot.js}}</script>\n';
   const example="Studio.register({id:'example',name:'Example',familiarity:'rare',defaults:{seed:'fixture'}});\n";
+  put('validation/techniques.json','[]');
   put('src/studio.html',template);put('src/modules/example.js',example);
   put('src/shared/engine.js','// fixture shell\n');put('src/shared/boot.js','Studio.boot();');put('src/styles/studio.css','body {}');
   assert.equal(run().status,0);assert.equal(run('--check').status,0);
@@ -22,7 +23,7 @@ try {
   assert.ok(!folder.includes('Studio.register'));
   const manifest=JSON.parse(fs.readFileSync(path.join(tmp,'src/module-manifest.json'),'utf8'));
   assert.equal(manifest.techniques.length,1);assert.equal(manifest.techniques[0].source,'src/modules/example.js');
-  for(const file of ['index.html','dist/studio.html','src/module-manifest.json']){
+  for(const file of ['index.html','dist/studio.html','src/module-manifest.json','src/science-reports.json']){
     put(file,'stale');assert.notEqual(run('--check').status,0);assert.equal(run().status,0);
   }
   put('src/studio.html',template+moduleInclude);assert.notEqual(run().status,0);
@@ -40,7 +41,7 @@ try {
   put('src/studio.html',template);fs.unlinkSync(path.join(tmp,'src/modules/example.js'));assert.notEqual(run().status,0);
   // Validate science inventory negative controls using a minimal catalog and one real record.
   fs.copyFileSync(path.join(__dirname,'science.js'),path.join(tmp,'tools/science.js'));
-  fs.mkdirSync(path.join(tmp,'validation'));
+  fs.mkdirSync(path.join(tmp,'validation'),{recursive:true});
   const record=JSON.parse(fs.readFileSync(path.join(root,'validation/techniques.json'),'utf8')).find(r=>r.status==='unvalidated');
   const module=JSON.parse(fs.readFileSync(path.join(root,'techniques.json'),'utf8')).techniques.find(r=>r.id===record.id);
   fs.copyFileSync(path.join(root,record.source),path.join(tmp,record.source));

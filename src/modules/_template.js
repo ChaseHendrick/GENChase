@@ -14,6 +14,8 @@ function makeTemplateDefinition(Studio) {
     blurb: 'Unregistered drawing scaffold, not a scientific simulation.',
     schema: [{ group: 'Marks', key: 'count', label: 'Count', type: 'range',
       kind: 'geom', min: 10, max: 200, step: 1, fmt: String }],
+    // Before changing defaults, add the old values under legacy for the new recipe version.
+    // See docs/ENGINE-API.md; do not invent a second recipe or print-size schema.
     defaults: { count: 60 }, presets: {},
     palette: true, defaultPalette: 'kiln',
     create(host) {
@@ -36,6 +38,8 @@ function makeTemplateDefinition(Studio) {
         points = Array.from({ length: s.count }, () => [rng.range(0.05, 0.95), rng.range(0.05, 0.95)]);
         paint(host.canvas);
         host.setStatus('<span>Scaffold only: no scientific check</span>');
+        host.setWitness({ label: 'Model check', measured: null, expected: null, tol: null, valid: null,
+          missWhen: 'Replace with a model-specific failure criterion and assumptions.' });
       }
       return {
         aspect: () => 1, regenerate,

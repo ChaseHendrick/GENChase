@@ -641,6 +641,15 @@ void main(){
   // numerical timesteps and finite warm-up step counts remain module settings.
 
   const STORE = 'genchase.v1.';
+  const COMPUTE_MODES = Object.freeze({
+    light:Object.freeze({cpuSliceMs:2,cpuDelayMs:16,gpuSteps:1,gpuIntervalMs:66,previewDpr:1,previewPixels:2e6}),
+    balanced:Object.freeze({cpuSliceMs:8,cpuDelayMs:0,gpuSteps:1,gpuIntervalMs:0,previewDpr:2,previewPixels:8e6}),
+    maximum:Object.freeze({cpuSliceMs:12,cpuDelayMs:0,gpuSteps:4,gpuIntervalMs:0,previewDpr:2,previewPixels:8e6})
+  });
+  let computeMode='balanced';
+  try { const saved=localStorage.getItem(STORE+'computeMode');if(Object.hasOwn(COMPUTE_MODES,saved))computeMode=saved; } catch(err) { /* default */ }
+  S.getComputeBudget = () => ({mode:computeMode,...COMPUTE_MODES[computeMode]});
+
   // Recipe version. Bumped to 2 when the default grids were raised so that plates print sharp.
   // A hash carries only what differs from the defaults, so raising a default would silently reprint
   // every older recipe that never named a grid at a resolution it was not made at. Modules that
@@ -648,6 +657,48 @@ void main(){
   // legacyFill gives it back to any recipe written before that version. Reprinting a seed years
   // later is the product; a default is allowed to move, a finished plate is not.
   const RECIPE_V = 2;
+  // Public compatibility versions, independent of each technique's scientific status.
+  Object.defineProperties(S, {
+    apiVersion: { value: 1, enumerable: true },
+    recipeVersion: { value: RECIPE_V, enumerable: true }
+  });
+  S.getRecipe = id => {
+    const e = instances[id || currentId];
+    return e ? JSON.parse(JSON.stringify(Object.assign({ id: e.mod.id }, recipePayload(e)))) : null;
+  };
+  S.getWitness = id => {
+    const e = instances[id || currentId];
+    return e && e.scienceWitness ? JSON.parse(JSON.stringify(e.scienceWitness)) : null;
+  };
+
+  function normalizeScienceWitness(record) {
+    if (!record || typeof record !== 'object' || Array.isArray(record)) throw new TypeError('Witness must be an object or null');
+    const number = key => {
+      const value = record[key];
+      if (value == null) return null;
+      if (typeof value !== 'number' || !Number.isFinite(value)) throw new TypeError('Witness ' + key + ' must be a finite number or null');
+      return value;
+    };
+    const measured = number('measured'), expected = number('expected'), tol = number('tol');
+    if (tol !== null && tol < 0) throw new TypeError('Witness tolerance must be nonnegative');
+    if (record.valid != null && typeof record.valid !== 'boolean') throw new TypeError('Witness valid must be boolean or null');
+    const text = key => { if (record[key] == null) return ''; if (typeof record[key] !== 'string') throw new TypeError('Witness ' + key + ' must be text'); return record[key]; };
+    const comparable = measured !== null && expected !== null && tol !== null;
+    const valid = record.valid === false ? false : record.valid === null ? null : comparable ? Math.abs(measured - expected) <= tol : null;
+    return { schemaVersion: 1, label: text('label') || 'Scientific check', measured, expected, tol, valid,
+      units: text('units'), missWhen: text('missWhen'), step: number('step') };
+  }
+  function scienceWitnessHtml(record) {
+    if (!record) return '';
+    const fmt = value => value === null ? 'unavailable' : value === 0 ? '0' :
+      Math.abs(value) < 1e-3 || Math.abs(value) >= 1e6 ? value.toExponential(3).replace(/\.?0+e/, 'e') : String(Number(value.toPrecision(6)));
+    const verdict = record.valid === null ? 'not evaluated' : record.valid ? 'within tolerance' : 'check failed';
+    return '<span class="science-witness" data-valid="' + String(record.valid) + '">' + escapeHtml(record.label) +
+      ': measured <b>' + escapeHtml(fmt(record.measured)) + '</b>, expected ' + escapeHtml(fmt(record.expected)) +
+      ' ± ' + escapeHtml(fmt(record.tol)) + (record.units ? ' ' + escapeHtml(record.units) : '') +
+      ' · ' + verdict + (record.missWhen ? ' · miss when ' + escapeHtml(record.missWhen) : '') + '</span>';
+  }
+
   const WORDS = ['kiln', 'harbor', 'moss', 'ember', 'slate', 'tide', 'quartz', 'loam', 'gale', 'reed', 'ochre', 'flint', 'delta', 'fern', 'basalt', 'wren', 'spore', 'lichen', 'coral', 'nacre'];
   // A seed you type can be any string up to 64 characters, so the input has never been the limit. The
   // roll was: one of twenty words and four digits is two hundred thousand seeds, and a birthday
@@ -662,7 +713,7 @@ void main(){
     return w() + '-' + w() + '-' + tail;
   }
   let currentId = null;
-  const instances = {};        // id -> { inst, canvas, state, anim... }
+  const instances = Object.create(null);        // id -> { inst, canvas, state, anim... }
   const presetAt = {};         // id -> the preset key last applied, so , and . can walk the list
   let regenTimer = null, historyTimer = null;
   let downloads = null;
@@ -700,7 +751,8 @@ void main(){
     const v = Number(src.v);
     if (!mod.legacy || !isFinite(v) || v >= RECIPE_V) return null;
     const out = {};
-    for (const step of Object.keys(mod.legacy)) {
+    // Apply newer transitions first so the earliest applicable old default wins.
+    for (const step of Object.keys(mod.legacy).sort((a, b) => Number(b) - Number(a))) {
       if (v >= Number(step)) continue;
       const vals = mod.legacy[step];
       for (const k of Object.keys(vals)) if (!(k in src)) out[k] = vals[k];
@@ -1017,7 +1069,13 @@ void main(){
     openModal('modal-gallery');
   }
   let historyVisible = true;
-  let focusMode = false;
+  let focusMode = false, focusControlsTimer = null;
+  function revealArtControls() {
+    clearTimeout(focusControlsTimer);
+    const app=document.querySelector('.app');app?.classList.remove('focus-quiet');
+    if (focusMode) focusControlsTimer=setTimeout(()=>{if(focusMode&&document.activeElement!==$('btn-exit-focus'))app.classList.add('focus-quiet');},2000);
+  }
+
   function setHistoryVisible(on, opts) {
     historyVisible = !!on;
     try { localStorage.setItem(STORE + 'timeline', historyVisible ? '1' : '0'); } catch (err) { /* ignore */ }
@@ -1035,7 +1093,9 @@ void main(){
     if (btn) btn.setAttribute('aria-pressed', String(focusMode));
     const exit = $('btn-exit-focus');
     if (exit) exit.hidden = !focusMode;
+    revealArtControls();
     if (!focusMode && ambientOn) setAmbient(false);
+    updateColoPreview();
     refit();
     const stage = $('stage');
     if (focusMode) {
@@ -1145,18 +1205,25 @@ void main(){
     const cap = $('colo-preview');
     if (sheet && cap) sheet.insertBefore(canvas, cap);
     else $('stage').insertBefore(canvas, $('status'));
-    const e = { mod, canvas, state: initialState || loadState(mod), inst: null, statusHtml: '' };
+    const e = { mod, canvas, state: initialState || loadState(mod), inst: null, statusHtml: '', scienceWitness: null };
     const host = {
       canvas,
       util, gl: glh,
       getState: () => e.state,
-      setStatus: html => { e.statusHtml = html || ''; if (currentId === mod.id) renderStatus(); },
+      computeBudget: () => S.getComputeBudget(),
+      setStatus: html => { e.scienceWitness = null; e.statusHtml = html || ''; if (currentId === mod.id) renderStatus(); },
+      setWitness: record => {
+        e.scienceWitness = null;
+        try {
+          if (record !== null) e.scienceWitness = Object.assign(normalizeScienceWitness(record), { moduleId: mod.id, recipe: JSON.parse(JSON.stringify(Object.assign({ id: mod.id }, recipePayload(e)))) });
+        } finally { if (currentId === mod.id) renderStatus(); }
+      },
       reducedMotion,
       isActive: () => currentId === mod.id && !document.hidden,
       requestRepaint: () => { if (currentId === mod.id) repaint(); },
       // A technique that cannot run reports it here as well as in the status line, so the stage says
       // so instead of sitting empty. Only the technique on screen gets to raise the panel.
-      fault: (msg, opts) => { if (currentId === mod.id) showFault(mod.id, msg, opts); },
+      fault: (msg, opts) => { e.scienceWitness = null; if (currentId === mod.id) showFault(mod.id, msg, opts); },
     };
     e.host = host;
     e.inst = mod.create(host);
@@ -1171,6 +1238,8 @@ void main(){
     canvas.addEventListener('webglcontextlost', ev => {
       ev.preventDefault();
       e.contextLost = true;
+      e.scienceWitness = null;
+      if (currentId === mod.id) renderStatus();
       try { e.inst.pause && e.inst.pause(); } catch (err) { /* it is already gone */ }
       if (currentId === mod.id) {
         showFault(mod.id, 'The browser took back the graphics context, which usually means this tab was in the background or the device was short of memory. The plate can be rebuilt from its seed.',
@@ -1199,20 +1268,32 @@ void main(){
     const stage = $('stage');
     const cs = getComputedStyle(stage);
     const availW = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-    const colo = $('colo-preview');
-    const coloH = colo && !colo.hidden ? colo.offsetHeight + 16 : 0;
-    const availH = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 24 - coloH;
+    const availH = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 24;
     const ar = (e.inst.aspect && e.inst.aspect(e.state)) || 1;
-    let cw = Math.max(120, availW), ch = cw * ar;
-    if (ch > availH) { ch = Math.max(120, availH); cw = ch / ar; }
+    let cw = Math.max(1, availW), ch = cw * ar;
+    if (ch > availH) { ch = Math.max(1, availH); cw = ch / ar; }
+    const sheet = $('sheet');
+    if (colophon && !focusMode) {
+      const L = sheetLayout(printSpec(), e);
+      const height = matchMedia('(max-width: 900px)').matches ? Math.min(availH, innerHeight * .38) : availH;
+      const scale = Math.max(.001, Math.min(availW / L.sheetW, height / L.sheetH));
+      sheet.style.width = L.sheetW * scale + 'px'; sheet.style.height = L.sheetH * scale + 'px';
+      cw = L.artW * scale; ch = L.artH * scale;
+      e.canvas.style.position = 'absolute'; e.canvas.style.left = L.artX * scale + 'px'; e.canvas.style.top = L.artY * scale + 'px';
+      updateColoPreview();
+    } else {
+      sheet.style.width = ''; sheet.style.height = '';
+      e.canvas.style.position = ''; e.canvas.style.left = ''; e.canvas.style.top = '';
+    }
     // The device ratio is capped at 2, but the CSS size is whatever the stage is, and the stage is
     // as wide as the window. On a 5K display that alone reaches roughly 28 megapixels of backbuffer
     // before any technique allocates its own, and the CPU techniques that raster at canvas size pay
     // it twice. Cap the drawing buffer by area instead and let CSS scale the last few percent: past
     // this size the limit is the screen, not the plate. Export is unaffected, since it recomputes at
     // print pixels rather than reading this canvas.
-    const MAX_CANVAS_PX = 8e6;
-    let dpr = Math.min(2, window.devicePixelRatio || 1);
+    const budget=COMPUTE_MODES[computeMode];
+    const MAX_CANVAS_PX = budget.previewPixels;
+    let dpr = Math.min(budget.previewDpr, window.devicePixelRatio || 1);
     if (cw * ch * dpr * dpr > MAX_CANVAS_PX) dpr = Math.sqrt(MAX_CANVAS_PX / Math.max(1, cw * ch));
     e.canvas.style.width = cw + 'px';
     e.canvas.style.height = ch + 'px';
@@ -1227,7 +1308,7 @@ void main(){
     // every integrator with a time step shows it, so a preset that changes dt says so
     const dt = Number(e.state.dt);
     const dtHtml = isFinite(dt) && dt > 0 && !/\bdt\b/.test(e.statusHtml) ? '<span>dt <b>' + (dt >= 1 ? dt.toFixed(1) : dt.toFixed(3).replace(/0+$/, '').replace(/\.$/, '')) + '</b></span>' : '';
-    $('status').innerHTML = e.statusHtml + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
+    $('status').innerHTML = e.statusHtml + scienceWitnessHtml(e.scienceWitness) + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
   }
 
   /* ---- lifecycle ---- */
@@ -1237,6 +1318,8 @@ void main(){
     clearTimeout(regenTimer);
     fitCanvas(e);
     e.paused = false;
+    e.scienceWitness = null;
+    renderStatus();
     try { e.inst.regenerate(); } catch (err) { showError(err); }
     updateDims();
     persist(currentId);
@@ -1253,12 +1336,14 @@ void main(){
   }
   function scheduleRegen(opts) { clearTimeout(regenTimer); regenTimer = setTimeout(() => regenerate(opts), 120); }
   function showError(err) {
+    const entry = instances[currentId];
+    if (entry) { entry.scienceWitness = null; renderStatus(); }
     console.error(err);
     toast('Something went wrong in this module: ' + (err && err.message ? err.message.split('\n')[0] : err));
   }
 
   /* ---- modals: open and close through here so focus goes in and comes back ---- */
-  const MODALS = ['modal-export', 'modal-settings', 'modal-about', 'modal-gallery', 'modal-more'];
+  const MODALS = ['modal-export', 'modal-settings', 'modal-about', 'modal-gallery', 'modal-more', 'modal-colophon', 'modal-science'];
   let returnFocusTo = null;
   function openModal(id) {
     const m = $(id);
@@ -1783,7 +1868,9 @@ void main(){
   function setParam(e, key, value, kind, phase) {
     if (phase === 'drag' && !dragSnap) { snapshot(key); dragSnap = true; }
     if (phase === 'commit') dragSnap = false;
+    e.scienceWitness = null;
     e.state[key] = value;
+    if (currentId === e.mod.id) renderStatus();
     if (e.mod.onParam) e.mod.onParam(e.state, key);           // e.g. keep min <= max
     for (const k in controls) if (controls[k].sync) controls[k].sync(e.state[k]);
     refreshDims();
@@ -1922,6 +2009,59 @@ void main(){
     controls.__palette = { sync: render };
     render();
     return h('div', { class: 'body' }, [presetSel, h('div', { class: 'btnrow' }, [randBtn, shuffleBtn, revBtn, swapBtn]), strip, wrap]);
+  }
+
+  let scienceRecordsPromise = null;
+  function loadScienceRecords() {
+    if (!scienceRecordsPromise) scienceRecordsPromise = (async () => {
+      const embedded = JSON.parse($('science-records').textContent);
+      if (embedded.length) return embedded;
+      const response = await fetch('./src/science-reports.json');
+      if (!response.ok) throw new Error('Science records could not be loaded.');
+      return response.json();
+    })().catch(err => { scienceRecordsPromise = null; throw err; });
+    return scienceRecordsPromise;
+  }
+  let scienceReportRequest = 0;
+  async function showScienceReport(e) {
+    const request = ++scienceReportRequest, body = $('science-content');
+    $('science-title').textContent = e.mod.name + ': science report';
+    body.textContent = 'Loading evidence and limitations…'; if ($('modal-science').hidden) openModal('modal-science');
+    try {
+      const records = await loadScienceRecords();
+      if (request !== scienceReportRequest) return;
+      const record = records.find(r => r.id === e.mod.id);
+      body.replaceChildren();
+      if (!record) { body.textContent = 'No validation record is available for this technique. Treat its scientific accuracy as unvalidated.'; return; }
+      const status = h('p', {class:'science-status',text:record.status}); status.dataset.status = record.status; body.appendChild(status);
+      body.appendChild(h('p', {text:'Coverage describes recorded tests, not certification of every parameter, image or device. No confirmed novel findings are claimed.'}));
+      const paragraph = (title, text) => { body.appendChild(h('h3',{text:title}));body.appendChild(h('p',{text:String(text)})); };
+      paragraph('Scientific source', record.reference);
+      paragraph('Equation under review', record.equation);
+      for (const [key,title] of [['numerical','Numerical evidence'],['print','Print evidence']]) {
+        body.appendChild(h('h3',{text:title}));
+        if (!record[key]?.length) body.appendChild(h('p',{text:'No evidence is registered in this category.'}));
+        for (const evidence of record[key] || []) {
+          const detail = h('details',{class:'science-evidence'},[h('summary',{text:evidence.scope || evidence.test || 'Recorded test'})]);
+          for (const [k,v] of Object.entries(evidence)) detail.appendChild(h('p',{text:k + ': ' + (typeof v === 'string' ? v : JSON.stringify(v))}));
+          body.appendChild(detail);
+        }
+      }
+      for (const [key,title] of [['limitations','Known limits'],['remaining','Still needed']]) {
+        body.appendChild(h('h3',{text:title}));body.appendChild(h('ul',{},(record[key] || []).map(text=>h('li',{text}))));
+      }
+      const witness = S.getWitness(e.mod.id);
+      paragraph('Current measured check', witness ? JSON.stringify(witness, null, 2) : 'No structured scientific measurement is available for this technique. Live or Still describes pixel motion, not scientific validity.');
+      paragraph('Source fingerprint', record.source + ' · SHA-256 ' + record.sourceSha256);
+      const snapshot = {record,recipe:S.getRecipe(e.mod.id),witness,capturedAt:new Date().toISOString()};
+      const download = h('button',{class:'btn',type:'button',text:'Download science report JSON'});
+      download.addEventListener('click',()=>downloadBlob(new Blob([JSON.stringify(snapshot,null,2)],{type:'application/json'}),'genchase-'+e.mod.id+'-science.json'));
+      body.appendChild(download);
+    } catch (err) {
+      if (request !== scienceReportRequest) return;
+      body.textContent = 'Report unavailable: ' + err.message;
+      const retry = h('button',{class:'btn',type:'button',text:'Retry'});retry.addEventListener('click',()=>showScienceReport(e));body.appendChild(retry);
+    }
   }
 
   function buildSidebar(e) {
@@ -2119,13 +2259,80 @@ void main(){
     el.title = 'At ' + sp.dpi + ' ppi this piece prints ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' inches (' +
       cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) + ' cm) from a ' + sp.pw.toLocaleString() + ' × ' + sp.ph.toLocaleString() +
       ' pixel file, ' + sp.mp.toFixed(0) + ' megapixels.' + why +
-      (colophon ? ' Colophon on: caption prints under the image.' : ' Colophon off: image only.');
+      (colophon ? ' Colophon on: caption position ' + coloPrefs.position + '.' : ' Colophon off: image only.');
     updateColoPreview();
+    const entry = instances[currentId];
+    if (colophon && fitCanvas(entry) && entry.inst.resize) entry.inst.resize();
   }
 
   /* ---- colophon: the piece, then the recipe that made it ---- */
   let colophon = false;
   let exportBusy = false;
+  const COLO_PARTS = ['title', 'equation', 'seed', 'parameters', 'palette', 'print', 'date'];
+  let coloPrefs = { position: 'bottom', parts: Object.fromEntries(COLO_PARTS.map(k => [k, true])) };
+  function captionRows(e, sp) {
+    const values = {
+      title: 'GENChase · ' + e.mod.name, equation: e.mod.equation || '',
+      seed: 'seed ' + e.state.seed, parameters: paramText(e),
+      palette: e.mod.palette ? 'bg=' + e.state.bg + '   palette=' + e.state.palette.join(',') : '',
+      print: inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in sheet · ' + sp.effDpi + ' ppi',
+      date: new Date().toISOString().slice(0, 10)
+    };
+    return COLO_PARTS.filter(k => coloPrefs.parts[k] && values[k]).map(k => ({ key: k, text: values[k] }));
+  }
+  let printerPresets = [];
+  function syncPrinterPresets() {
+    const list = $('printer-preset-list'); list.replaceChildren();
+    printerPresets.forEach((p,i)=>list.appendChild(h('option',{value:String(i),text:p.name})));
+    $('printer-preset-load').disabled = !printerPresets.length; $('printer-preset-delete').disabled = !printerPresets.length;
+  }
+  function validPrinterPreset(p) {
+    return p && p.v === 1 && typeof p.name === 'string' && p.name.length > 0 && p.name.length <= 60 &&
+      typeof p.custom === 'boolean' && validInches(p.width) && validInches(p.height) && PRINT_INCHES.includes(p.inches) &&
+      PRINT_DPI.some(x=>x[0]===p.dpi) && typeof p.colophon === 'boolean' &&
+      ['top','bottom','left','right'].includes(p.caption?.position) && COLO_PARTS.every(k=>typeof p.caption.parts?.[k]==='boolean') &&
+      Number.isFinite(p.bleedMm) && p.bleedMm >= 0 && p.bleedMm <= 25 && typeof p.cropMarks === 'boolean';
+  }
+  function storePrinterPresets() {
+    try { localStorage.setItem(STORE+'printerPresets',JSON.stringify(printerPresets)); return true; }
+    catch (err) { $('printer-preset-status').textContent = 'Storage is unavailable. Presets remain available for this session only.'; return false; }
+  }
+  function savePrinterPreset() {
+    if (exportBusy || printFormatBusy || !validPrintInputs() || !$('export-bleed').reportValidity()) return;
+    const name = $('printer-preset-name').value.trim();
+    if (!name) { $('printer-preset-status').textContent='Enter a preset name.'; return; }
+    const paper=printSpec();
+    const p = {v:1,name,custom:true,width:paper.wIn,height:paper.hIn,inches:printInches,dpi:printDpi,
+      colophon,caption:JSON.parse(JSON.stringify(coloPrefs)),bleedMm:Number($('export-bleed').value),cropMarks:$('export-crop').checked};
+    if (!validPrinterPreset(p)) { $('printer-preset-status').textContent='Choose a sheet with both dimensions from 1 to 1000 inches before saving.'; return; }
+    if (printerPresets.some(x=>x.name===name)) { $('printer-preset-status').textContent='That name exists. Choose a new name or delete the old preset.'; return; }
+    if (printerPresets.length>=20) { $('printer-preset-status').textContent='Twenty presets saved. Delete one before adding another.'; return; }
+    printerPresets.push(p); syncPrinterPresets(); $('printer-preset-list').value=String(printerPresets.length-1);
+    if (storePrinterPresets()) $('printer-preset-status').textContent='Saved ' + name + '.';
+  }
+  function applyPrinterPreset() {
+    if (exportBusy || printFormatBusy) return;
+    const p = printerPresets[Number($('printer-preset-list').value)]; if (!validPrinterPreset(p)) return;
+    const set = (id,value)=>{ $(id).value=String(value);$(id).dispatchEvent(new Event('change')); };
+    set('export-width',p.width);set('export-height',p.height);set('export-inches',p.custom?'custom':p.inches);set('export-dpi',p.dpi);
+    // Inputs can change while custom size is hidden; keep the stored physical size explicit.
+    printWidth=p.width;printHeight=p.height;customPrint=p.custom;
+    try { localStorage.setItem(STORE+'printCustom',JSON.stringify({on:customPrint,width:printWidth,height:printHeight})); } catch (err) { /* session only */ }
+    coloPrefs=JSON.parse(JSON.stringify(p.caption));setColophon(p.colophon);saveColoPrefs();
+    $('export-bleed').value=String(p.bleedMm);$('export-crop').checked=p.cropMarks;
+    updateDims();$('printer-preset-status').textContent='Applied '+p.name+'. The next export uses these settings.';
+  }
+
+  function syncColoEditor() {
+    $('colo-enabled').checked = colophon;
+    $('colo-position').value = coloPrefs.position;
+    for (const k of COLO_PARTS) $('colo-part-' + k).checked = coloPrefs.parts[k];
+  }
+  function saveColoPrefs() {
+    try { localStorage.setItem(STORE + 'colophonPrefs', JSON.stringify(coloPrefs)); } catch (err) { /* optional storage */ }
+    setColophon(colophon);
+  }
+
 
   function syncColophonButtons() {
     const top = $('btn-colophon');
@@ -2143,28 +2350,32 @@ void main(){
     const cap = $('colo-preview');
     if (!cap) return;
     const e = instances[currentId];
-    if (!colophon || !e) {
+    if (!colophon || focusMode || !e) {
       cap.hidden = true;
       if ($('sheet')) $('sheet').classList.remove('has-colo');
       return;
     }
     cap.hidden = false;
     if ($('sheet')) $('sheet').classList.add('has-colo');
-    const title = $('colo-title'), eq = $('colo-eq'), meta = $('colo-meta'), params = $('colo-params');
-    if (title) title.textContent = 'GENChase · ' + e.mod.name;
-    if (eq) { eq.textContent = e.mod.equation || ''; eq.hidden = !e.mod.equation; }
-    const sp = printSpec();
-    const L = sheetLayout(sp);
-    if (meta) {
-      meta.textContent = 'seed ' + e.state.seed + '   ·   image ' +
-        inTxt(L.artWIn) + ' × ' + inTxt(L.artHIn) + ' in on a ' +
-        inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in sheet   ·   ' + sp.effDpi + ' ppi';
+    const L = sheetLayout(printSpec(), e);
+    cap.replaceChildren();
+    for (const row of L.lines) {
+      const line = document.createElement('div');
+      line.dataset.part = row.key;
+      line.textContent = row.text;
+      Object.assign(line.style, { position: 'absolute', left: row.x + 'px', top: row.y + 'px',
+        font: row.font, lineHeight: row.size * 1.35 + 'px', whiteSpace: 'pre' });
+      cap.appendChild(line);
     }
-    if (params) params.textContent = paramText(e);
+    cap.style.width = L.sheetW + 'px'; cap.style.height = L.sheetH + 'px';
+    const scale = parseFloat($('sheet').style.width) / L.sheetW;
+    cap.style.transform = 'scale(' + (Number.isFinite(scale) ? scale : 1) + ')';
   }
 
   function setColophon(on, opts) {
+    if (exportBusy) return;
     colophon = !!on;
+    syncColoEditor();
     try { localStorage.setItem(STORE + 'colophon', colophon ? '1' : '0'); } catch (err) { /* ignore */ }
     syncColophonButtons();
     updateColoPreview();
@@ -2186,27 +2397,27 @@ void main(){
       if (v === undefined) continue;
       let out;
       if (typeof v === 'boolean') out = v ? 'on' : 'off';
-      else if (typeof v === 'number') out = (Math.abs(v) >= 1000 || Number.isInteger(v)) ? String(v) : String(Number(v.toPrecision(4)));
+      else if (typeof v === 'number') out = (Math.abs(v) >= 1000 || Number.isInteger(v)) ? String(v) : String(v);
       else out = String(v);
       parts.push(f.key + '=' + out);
-    }
-    if (e.mod.palette) {
-      parts.push('bg=' + st.bg);
-      parts.push('palette=' + st.palette.join(','));
     }
     return parts.join('   ');
   }
   function wrapText(ctx, text, maxW) {
-    const words = text.split(/\s+/).filter(Boolean), lines = [];
-    let line = '';
-    for (const w of words) {
-      const test = line ? line + '  ' + w : w;
-      if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = w; }
-      else line = test;
+    const lines = []; let line = '';
+    // Split oversized tokens too, so a long seed or equation cannot cross the paper edge.
+    for (const word of text.split(/\s+/).filter(Boolean)) {
+      if (line && ctx.measureText(line + '  ' + word).width <= maxW) { line += '  ' + word; continue; }
+      if (line) { lines.push(line); line = ''; }
+      for (const ch of word) {
+        if (line && ctx.measureText(line + ch).width > maxW) { lines.push(line); line = ''; }
+        line += ch;
+      }
     }
     if (line) lines.push(line);
     return lines;
   }
+
   function loadImage(url) {
     return new Promise((res, rej) => {
       const img = new Image();
@@ -2215,111 +2426,65 @@ void main(){
       img.src = url;
     });
   }
-  // Sheet layout: image inset in a paper margin, caption band beneath.
-  // Type is sized in points against physical inches, then converted at the file's ppi, so 8 in / 300 ppi
-  // does not print a 3 pt caption. Art size is the image window, not the sheet.
-  function sheetLayout(sp) {
-    const sheetW = sp.pw, sheetH = sp.ph;
-    const small = Math.min(sheetW, sheetH);
-    const pad = Math.round(small * 0.055);
-    const dpi = sp.dpi || printDpi;
-    const pt = (minPt, inchFrac) => Math.max(minPt, inchFrac * sp.wIn) / 72 * dpi;
-    const fs = {
-      title: pt(11, 0.16),
-      eq: pt(8, 0.10),
-      meta: pt(8, 0.085),
-      p: pt(7, 0.072),
-    };
-    // Very short custom sheets need smaller type so the caption cannot consume the image.
-    const typeHeight = fs.title * 1.25 + fs.eq * 2 + fs.meta * 1.9 + 12 * fs.p * 1.55;
-    const typeScale = sp.custom ? Math.min(1, ((sheetH - 2 * pad) * 0.55 - pad * 0.9) / typeHeight) : 1;
-    for (const key of Object.keys(fs)) fs[key] *= typeScale;
-    const bandH = Math.round(fs.title * 1.25 + fs.eq * 2.0 + fs.meta * 1.9 + 6 * fs.p * 1.55 + pad * 0.9);
-    const innerW = sheetW - pad * 2, innerH = sheetH - pad * 2 - bandH;
-    let artW = innerW, artH = Math.round(innerW * sp.ar);
-    if (artH > innerH) { artH = innerH; artW = Math.round(innerH / sp.ar); }
-    return {
-      sheetW, sheetH, pad, fs, artW, artH,
-      artWIn: artW / dpi, artHIn: artH / dpi,
-    };
+  // A single measured layout owns the preview, PNG and browser print geometry.
+  function sheetLayout(sp, e = instances[currentId]) {
+    const sheetW = sp.pw, sheetH = sp.ph, pad = Math.min(sheetW, sheetH) * .055;
+    const w = sheetW - 2 * pad, h = sheetH - 2 * pad;
+    const side = coloPrefs.position === 'left' || coloPrefs.position === 'right';
+    const rows = captionRows(e, sp), gap = rows.length ? pad * .65 : 0;
+    const capW = side ? w * .32 : w, maxH = side ? h : h * .36;
+    const ctx = document.createElement('canvas').getContext('2d');
+    const dpi = sheetW / sp.wIn;
+    let lines, usedH, scale = 1;
+    for (let attempt = 0; attempt < 100; attempt++) {
+      lines = []; usedH = 0;
+      for (const row of rows) {
+        const size = (row.key === 'title' ? 11 : 8) * dpi / 72 * scale;
+        const font = size + (row.key === 'title' ? 'px "Instrument Serif", Georgia, serif' : 'px "Geist Mono", ui-monospace, monospace');
+        ctx.font = font;
+        for (const text of wrapText(ctx, row.text, capW)) {
+          lines.push({ ...row, text, size, font, x: 0, y: usedH }); usedH += size * 1.35;
+        }
+        usedH += size * .35;
+      }
+      if (usedH <= maxH) break;
+      scale *= .85;
+    }
+    const reserveW = side && rows.length ? capW + gap : 0;
+    const reserveH = !side && rows.length ? usedH + gap : 0;
+    const areaW = w - reserveW, areaH = h - reserveH;
+    const artW = Math.min(areaW, areaH / sp.ar), artH = artW * sp.ar;
+    const left = coloPrefs.position === 'left', top = coloPrefs.position === 'top';
+    const artX = pad + (left ? reserveW : 0) + (areaW - artW) / 2;
+    const artY = pad + (top ? reserveH : 0) + (areaH - artH) / 2;
+    const capX = side && !left ? sheetW - pad - capW : pad;
+    const capY = side || top ? pad : sheetH - pad - usedH;
+    for (const line of lines) { line.x += capX; line.y += capY; }
+    return { sheetW, sheetH, artX, artY, artW, artH, lines,
+      artWIn: artW / dpi, artHIn: artH / dpi, position: coloPrefs.position };
   }
-  async function composeSheet(artBlob, e, sp) {
-    const L = sheetLayout(sp);
-    const { sheetW, sheetH, pad, fs } = L;
-    const meas = document.createElement('canvas').getContext('2d');
-    const monoP = fs.p + 'px "Geist Mono", ui-monospace, monospace';
-    meas.font = monoP;
-    const pLines = wrapText(meas, paramText(e), sheetW - pad * 2).slice(0, 12);
-    const bandH = Math.round(fs.title * 1.25 + fs.eq * 2.0 + fs.meta * 1.9 + pLines.length * fs.p * 1.55 + pad * 0.9);
-    const innerW = sheetW - pad * 2, innerH = sheetH - pad * 2 - bandH;
-    let artW = innerW, artH = Math.round(innerW * sp.ar);
-    if (artH > innerH) { artH = innerH; artW = Math.round(innerH / sp.ar); }
-    const artX = Math.round((sheetW - artW) / 2), artY = pad;
-    L.artW = artW; L.artH = artH; L.artWIn = artW / (sp.dpi || printDpi); L.artHIn = artH / (sp.dpi || printDpi);
-
-    // the module rendered at sheet size; draw it into the image window
+  async function composeSheet(artBlob, L, bg) {
     const url = URL.createObjectURL(artBlob);
     let img;
-    try { img = await loadImage(url); } finally { setTimeout(() => URL.revokeObjectURL(url), 0); }
-
-    const c = document.createElement('canvas');
-    c.width = sheetW; c.height = sheetH;
-    const cx = c.getContext('2d');
-    const light = util.isLight(e.state.bg);
-    const paper = light ? '#FAF7F1' : '#0A090B';
-    const ink = light ? '#17140F' : '#EDE8DF';
-    const mutedInk = light ? 'rgba(23,20,15,0.62)' : 'rgba(237,232,223,0.60)';
-    const faintInk = light ? 'rgba(23,20,15,0.42)' : 'rgba(237,232,223,0.42)';
-    cx.fillStyle = paper; cx.fillRect(0, 0, sheetW, sheetH);
+    try { img = await loadImage(url); } finally { URL.revokeObjectURL(url); }
+    const c = document.createElement('canvas'); c.width = L.sheetW; c.height = L.sheetH;
+    const cx = c.getContext('2d'), light = util.isLight(bg);
+    cx.fillStyle = light ? '#FAF7F1' : '#0A090B'; cx.fillRect(0, 0, c.width, c.height);
     cx.imageSmoothingEnabled = true; cx.imageSmoothingQuality = 'high';
-    cx.drawImage(img, artX, artY, artW, artH);
-    cx.strokeStyle = light ? 'rgba(0,0,0,0.20)' : 'rgba(255,255,255,0.18)';
-    cx.lineWidth = Math.max(1, sheetW / 2600);
-    cx.strokeRect(artX + cx.lineWidth / 2, artY + cx.lineWidth / 2, artW - cx.lineWidth, artH - cx.lineWidth);
-
-    let y = artY + artH + pad * 0.78 + fs.title;
-    cx.textBaseline = 'alphabetic';
-    cx.fillStyle = ink;
-    cx.font = '400 ' + fs.title + 'px "Instrument Serif", Georgia, serif';
-    cx.fillText('GENChase · ' + e.mod.name, pad, y);
-
-    // palette swatches, right-aligned on the title line
-    if (e.mod.palette) {
-      const sw = Math.round(fs.title * 0.62), gap = Math.round(sw * 0.32);
-      const cols = [e.state.bg].concat(e.state.palette);
-      let x = sheetW - pad - cols.length * (sw + gap) + gap;
-      for (const col of cols) {
-        cx.fillStyle = col;
-        cx.fillRect(x, y - sw, sw, sw);
-        cx.strokeStyle = faintInk; cx.lineWidth = Math.max(1, sheetW / 5000);
-        cx.strokeRect(x + 0.5, y - sw + 0.5, sw - 1, sw - 1);
-        x += sw + gap;
-      }
-    }
-
-    if (e.mod.equation) {
-      y += fs.eq * 1.75;
-      cx.fillStyle = mutedInk;
-      cx.font = fs.eq + 'px "Geist Mono", ui-monospace, monospace';
-      cx.fillText(e.mod.equation, pad, y);
-    }
-
-    y += fs.meta * 1.85;
-    cx.fillStyle = ink;
-    cx.font = fs.meta + 'px "Geist Mono", ui-monospace, monospace';
-    cx.fillText('seed ' + e.state.seed + '   ·   image ' + inTxt(L.artWIn) + ' × ' + inTxt(L.artHIn) +
-      ' in on a ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in sheet   ·   ' + sp.effDpi + ' ppi   ·   ' +
-      new Date().toISOString().slice(0, 10), pad, y);
-
-    cx.fillStyle = faintInk;
-    cx.font = monoP;
-    for (const line of pLines) { y += fs.p * 1.55; cx.fillText(line, pad, y); }
-
+    cx.drawImage(img, L.artX, L.artY, L.artW, L.artH);
+    cx.fillStyle = light ? '#17140F' : '#EDE8DF'; cx.textBaseline = 'top';
+    for (const line of L.lines) { cx.font = line.font; cx.fillText(line.text, line.x, line.y); }
     return util.toBlob(c);
   }
 
   /* ---- export ---- */
-  let lastUrl = null, lastBlob = null, lastName = '';
+  let lastUrl = null, lastBlob = null, lastName = '', lastPrintSpec = null;
+  let printFormatBusy = false, lastPrintJob = null;
+  function setExpertPrint(on) {
+    $('expert-print').checked=!!on;
+    for (const panel of document.querySelectorAll('[data-expert-print]')) panel.hidden=!on;
+    try { localStorage.setItem(STORE+'expertPrint',on?'1':'0'); } catch(err) { /* session only */ }
+  }
   async function fitPrintSheet(blob, sp, bg) {
     if (sp.rw === sp.pw && sp.rh === sp.ph) return blob;
     const url = URL.createObjectURL(blob);
@@ -2344,15 +2509,43 @@ void main(){
     const body = new XMLSerializer().serializeToString(art);
     return util.svgBlob(sp.pw, sp.ph, bg, body);
   }
+  function printQualityReport(e, sp, layout, vector) {
+    const ppi = Math.min(sp.pw/sp.wIn,sp.ph/sp.hIn), issues = [];
+    const lines = ['File: '+sp.pw+' × '+sp.ph+' pixels at '+ppi.toFixed(1)+' pixels per inch.'];
+    if (ppi<150) issues.push('Low file resolution for close viewing. Ask the printer about the intended viewing distance.');
+    else if (ppi<300) issues.push('Below the 300 ppi close-viewing guideline; suitability depends on the print process and viewing distance.');
+    if (sp.clamped) issues.push('The device reduced the requested resolution.');
+    let field = null;try { field=e.inst.fieldCells?.(); } catch (err) { /* unknown */ }
+    if (!vector && field && field.length>=2 && field.every(n=>Number.isFinite(n)&&n>0)) {
+      const artW = layout ? layout.artWIn : sp.rw/(sp.pw/sp.wIn), artH = layout ? layout.artHIn : sp.rh/(sp.ph/sp.hIn);
+      const density = Math.min(field[0]/artW,field[1]/artH);
+      lines.push('Simulation grid: '+field[0]+' × '+field[1]+' cells, about '+density.toFixed(1)+' cells per printed inch.');
+      if (density<ppi/2) issues.push('Simulation detail is coarser than the file pixels. Increasing export ppi alone cannot add field detail.');
+    } else lines.push(vector?'Source artwork was rasterized from vectors.':'Intrinsic simulation resolution is not declared; file ppi alone cannot establish sharpness.');
+    if (layout?.lines.length) {
+      const smallest = Math.min(...layout.lines.map(l=>l.size))*72/(sp.pw/sp.wIn);
+      lines.push('Smallest caption text: '+smallest.toFixed(1)+' pt.');
+      if (smallest<6) issues.push('Some caption text is below 6 pt. Use a larger sheet, fewer parts or a different caption position.');
+    }
+    const report = {schemaVersion:1,ppi,lines,issues,scientificValidation:false};
+    const box=$('export-quality');box.hidden=false;box.dataset.level=issues.length?'review':'ready';box.replaceChildren();
+    box.appendChild(h('h3',{text:issues.length?'Print check: review before downloading':'Print check: no basic layout/resolution warnings'}));
+    box.appendChild(h('ul',{},[...lines,...issues].map(text=>h('li',{text}))));
+    box.appendChild(h('p',{text:'This is a resolution and layout check, not a proof of sharpness, color accuracy or scientific validity. Inspect the full-size image and obtain a print proof.'}));
+    box.dataset.report=JSON.stringify(report);
+    return report;
+  }
+
   async function doExport() {
     const e = instances[currentId]; if (!e) return;
-    if (exportBusy) return;
+    if (exportBusy || printFormatBusy) return;
     if (!validPrintInputs()) {
       updateDims();
       for (const id of ['export-width', 'export-height']) if (!$(id).reportValidity()) break;
       return;
     }
     exportBusy = true;
+    if (colophon && document.fonts) { try { await document.fonts.ready; } catch (err) { /* fallback fonts */ } }
     const sp = printSpec();
     const pw = sp.pw, ph = sp.ph;
     const rw = sp.rw, rh = sp.rh;
@@ -2369,7 +2562,8 @@ void main(){
     if (jpgBtn) jpgBtn.hidden = true;
     if (webpBtn) webpBtn.hidden = true;
     if (clipBtn) clipBtn.hidden = true;
-    img.hidden = true; dl.hidden = true; save.hidden = true;
+    img.hidden = true; dl.hidden = true; save.hidden = true; $('export-quality').hidden = true; lastPrintJob=null; $('export-job-json').disabled=true;
+    $('export-pdf').hidden = true; $('export-tiff').hidden = true;
     if (cancel) cancel.hidden = false;
     const job = {
       abort: false,
@@ -2381,10 +2575,13 @@ void main(){
       (sp.mp > 45 ? ' A file this size takes a while and a lot of memory. Cancel stops it.' : ' Cancel stops it.');
     note.classList.remove('err');
     pnote.hidden = false;
-    const lay = colophon ? sheetLayout(sp) : null;
+    const withColophon = colophon;
+    const lay = withColophon ? sheetLayout(sp, e) : null;
+    const captionBg = e.state.bg;
+    for (const id of ['btn-colophon', 'btn-colophon-edit', 'export-colo-tog', 'export-colo-edit']) $(id).disabled = true;
     pnote.textContent = (colophon
       ? ('Image ' + inTxt(lay.artWIn) + ' × ' + inTxt(lay.artHIn) + ' in on a ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in sheet (' +
-         cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) + ' cm) at ' + sp.effDpi + ' ppi. The image sits in a paper margin with the technique, its rule, the seed and every parameter captioned beneath.')
+         cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) + ' cm) at ' + sp.effDpi + ' ppi. The image sits in a paper margin with the selected caption parts at the ' + lay.position + '.')
       : ('Prints ' + inTxt(sp.wIn) + ' × ' + inTxt(sp.hIn) + ' in (' + cmTxt(sp.wIn) + ' × ' + cmTxt(sp.hIn) +
          ' cm) at ' + sp.effDpi + ' ppi.')) +
       (customPrint ? ' The full artwork fits the sheet without stretching; unused space uses the background color.' : '') +
@@ -2472,16 +2669,19 @@ void main(){
         }
       }
       if (job.abort) throw new Error('cancelled');
-      if (colophon) blob = await composeSheet(blob, e, sp);
+      if (withColophon) blob = await composeSheet(blob, lay, captionBg);
       else blob = await fitPrintSheet(blob, sp, e.state.bg || '#fff');
       if (svgBlob) svgBlob = await fitPrintSVG(svgBlob, sp, e.state.bg || '#fff');
       if (job.abort) throw new Error('cancelled');
       if (lastUrl) URL.revokeObjectURL(lastUrl);
-      lastBlob = blob; lastUrl = URL.createObjectURL(blob);
+      lastBlob = blob; lastUrl = URL.createObjectURL(blob); lastPrintSpec = {...sp};
       lastName = 'genchase-' + e.mod.id + '-' + e.state.seed.replace(/[^a-z0-9_-]+/gi, '_') + '-' +
         inTxt(sp.wIn).replace('.', '_') + 'x' + inTxt(sp.hIn).replace('.', '_') + 'in-' + sp.effDpi + 'ppi' +
         (colophon ? '-with-code' : '') + '.png';
       img.src = lastUrl; img.hidden = false;
+      const quality=printQualityReport(e,sp,lay,usedVector);
+      lastPrintJob={schemaVersion:1,capturedAt:new Date().toISOString(),engineApiVersion:S.apiVersion,recipe:S.getRecipe(e.mod.id),printSpec:{...sp},caption:withColophon?JSON.parse(JSON.stringify(coloPrefs)):null,quality,witness:S.getWitness(e.mod.id),note:'Recipe and reporting snapshot, not a simulation-state checkpoint. Finishing choices are recorded when this report is downloaded.'};
+      $('export-pdf').hidden = false; $('export-tiff').hidden = false; $('export-job-json').disabled=false;
       const size = (blob.size / 1048576).toFixed(1) + ' MB';
       const dims = pw.toLocaleString() + ' × ' + ph.toLocaleString() + ' px, ' + size + '. ';
       if (downloads) { save.hidden = false; note.textContent = dims + (usedVector ? 'PNG is a vector RIP at print pixels. ' : '') + 'Save PNG asks you to confirm the download.'; }
@@ -2512,6 +2712,7 @@ void main(){
     } finally {
       clearInterval(tick);
       exportBusy = false;
+      for (const id of ['btn-colophon', 'btn-colophon-edit', 'export-colo-tog', 'export-colo-edit']) $(id).disabled = false;
       if (S.exportJob === job) S.exportJob = null;
       if (cancel) cancel.hidden = true;
     }
@@ -2537,6 +2738,37 @@ void main(){
     const a = h('a', { href: url, download: name });
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 12000);
+  }
+  async function exportPrintFormat(format) {
+    if (!lastUrl || !lastPrintSpec || exportBusy || printFormatBusy) return;
+    if (format === 'pdf' && !$('export-bleed').reportValidity()) return;
+    const production = {bleedMm:Number($('export-bleed').value),cropMarks:$('export-crop').checked};
+    printFormatBusy = true;
+    const source = lastUrl, name = lastName.replace(/\.png$/i, format === 'tiff' ? '.tif' : '.pdf');
+    const sp = {...lastPrintSpec};
+    const buttons = ['export-pdf', 'export-tiff', 'export-colo-tog', 'export-colo-edit', 'btn-colophon', 'btn-colophon-edit'];
+    for (const id of buttons) $(id).disabled = true;
+    $( 'export-' + format).setAttribute('aria-busy', 'true');
+    try {
+      const im = await loadImage(source);
+      const w = im.naturalWidth, h = im.naturalHeight;
+      if (w * h > 48e6) throw new Error('PDF and TIFF currently support up to 48 million pixels; lower the print resolution or use PNG.');
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      const cx = c.getContext('2d', {alpha:false, colorSpace:'srgb'});
+      cx.fillStyle = '#fff'; cx.fillRect(0,0,w,h); cx.drawImage(im,0,0);
+      const rgba = cx.getImageData(0,0,w,h).data, rgb = new Uint8Array(w*h*3);
+      for (let row=0;row<h;row++) {
+        for (let x=0;x<w;x++) { const p=row*w+x; rgb[p*3]=rgba[p*4];rgb[p*3+1]=rgba[p*4+1];rgb[p*3+2]=rgba[p*4+2]; }
+        if (row % 256 === 0) await new Promise(r=>setTimeout(r,0));
+      }
+      const blob = await window.GenChasePrintFormats[format](rgb,w,h,sp.wIn,sp.hIn,production);
+      downloadBlob(blob,name); toast('Saved ' + name);
+    } catch (err) { toast('Could not make ' + format.toUpperCase() + ': ' + err.message); }
+    finally {
+      printFormatBusy = false;
+      for (const id of buttons) $(id).disabled = false;
+      $('export-' + format).removeAttribute('aria-busy');
+    }
   }
   async function transcodeExport(type, ext, quality, label) {
     if (!lastUrl) return;
@@ -2866,12 +3098,35 @@ void main(){
       try { localStorage.setItem(STORE + 'printDpi', String(printDpi)); } catch (err) { /* ignore */ }
       updateDims();
     });
+    $('btn-science-report').addEventListener('click',()=>{const e=instances[currentId];if(e)showScienceReport(e);});
+    $('science-close').addEventListener('click',()=>closeModal('modal-science'));
+    $('modal-science').addEventListener('click',ev=>{if(ev.target===$('modal-science'))closeModal('modal-science');});
+    try { const saved=JSON.parse(localStorage.getItem(STORE+'printerPresets'));if(Array.isArray(saved))printerPresets=saved.filter(validPrinterPreset).slice(0,20); } catch(err) { /* empty library */ }
+    syncPrinterPresets();
+    $('printer-preset-save').addEventListener('click',savePrinterPreset);
+    $('printer-preset-load').addEventListener('click',applyPrinterPreset);
+    $('printer-preset-delete').addEventListener('click',()=>{printerPresets.splice(Number($('printer-preset-list').value),1);syncPrinterPresets();if(storePrinterPresets())$('printer-preset-status').textContent='Preset deleted.';});
     const coloBtn = $('btn-colophon');
     try { colophon = localStorage.getItem(STORE + 'colophon') === '1'; } catch (err) { colophon = false; }
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORE + 'colophonPrefs'));
+      if (saved && ['left', 'right', 'top', 'bottom'].includes(saved.position)) coloPrefs.position = saved.position;
+      for (const k of COLO_PARTS) if (typeof saved?.parts?.[k] === 'boolean') coloPrefs.parts[k] = saved.parts[k];
+    } catch (err) { /* defaults for absent or damaged preferences */ }
+    syncColoEditor();
+    const editCaption = () => { if (exportBusy) return; closeAllModals(); syncColoEditor(); openModal('modal-colophon'); returnFocusTo = $('btn-colophon-edit'); };
+    $('btn-colophon-edit').addEventListener('click', editCaption);
+    $('export-colo-edit').addEventListener('click', editCaption);
+    $('colo-close').addEventListener('click', () => closeModal('modal-colophon'));
+    $('modal-colophon').addEventListener('click', ev => { if (ev.target === $('modal-colophon')) closeModal('modal-colophon'); });
+    $('colo-enabled').addEventListener('change', ev => setColophon(ev.target.checked));
+    $('colo-position').addEventListener('change', ev => { coloPrefs.position = ev.target.value; saveColoPrefs(); });
+    for (const k of COLO_PARTS) $('colo-part-' + k).addEventListener('change', ev => { coloPrefs.parts[k] = ev.target.checked; saveColoPrefs(); });
+    $('colo-restore').addEventListener('click', () => { for (const k of COLO_PARTS) coloPrefs.parts[k] = true; saveColoPrefs(); });
     syncColophonButtons();
     coloBtn.addEventListener('click', () => {
       setColophon(!colophon);
-      toast(colophon ? 'Colophon on — caption will print under the image' : 'Colophon off — print is the image alone');
+      toast(colophon ? 'Colophon on: ' + coloPrefs.position : 'Colophon off: image only');
     });
     const coloModal = $('export-colo-tog');
     if (coloModal) {
@@ -2882,6 +3137,17 @@ void main(){
     }
     $('btn-export').addEventListener('click', doExport);
     $('export-save').addEventListener('click', saveViaCapability);
+    try { setExpertPrint(localStorage.getItem(STORE+'expertPrint')==='1'); } catch(err) { setExpertPrint(false); }
+    $('compute-mode').value=computeMode;
+    $('compute-mode').addEventListener('change',ev=>{
+      if(!Object.hasOwn(COMPUTE_MODES,ev.target.value))return;computeMode=ev.target.value;
+      try {localStorage.setItem(STORE+'computeMode',computeMode);} catch(err) { /* session only */ }
+      const e=instances[currentId];if(e&&fitCanvas(e)&&e.inst.resize)e.inst.resize();
+    });
+    $('expert-print').addEventListener('change',ev=>setExpertPrint(ev.target.checked));
+    $('export-job-json').addEventListener('click',()=>{if(lastPrintJob&&!exportBusy)downloadBlob(new Blob([JSON.stringify({...lastPrintJob,pdfFinishing:{bleedMm:Number($('export-bleed').value),cropMarks:$('export-crop').checked}},null,2)],{type:'application/json'}),lastName.replace(/\.png$/i,'-print-job.json'));});
+    $('export-pdf').addEventListener('click', () => exportPrintFormat('pdf'));
+    $('export-tiff').addEventListener('click', () => exportPrintFormat('tiff'));
     const exportJpg = $('export-jpg');
     if (exportJpg) exportJpg.addEventListener('click', ev => { ev.preventDefault(); transcodeExport('image/jpeg', 'jpg', 0.92, 'JPEG'); });
     const exportWebp = $('export-webp');
@@ -2893,7 +3159,10 @@ void main(){
     $('export-close').addEventListener('click', () => { closeModal('modal-export'); });
     $('modal-export').addEventListener('click', ev => { if (ev.target === $('modal-export')) closeModal('modal-export'); });
     const exitFocus = $('btn-exit-focus');
-    if (exitFocus) exitFocus.addEventListener('click', () => setFocus(false));
+    if (exitFocus) { exitFocus.addEventListener('click', () => setFocus(false)); exitFocus.addEventListener('focus',revealArtControls); }
+    $('btn-art-only').addEventListener('click',()=>{setFocus(true);toast('Art only. Tap the picture for controls; Esc or F returns.');});
+    $('stage').addEventListener('pointerdown',ev=>{if(focusMode&&document.querySelector('.app').classList.contains('focus-quiet')){ev.preventDefault();ev.stopPropagation();revealArtControls();}},true);
+    $('stage').addEventListener('pointermove',ev=>{if(focusMode&&ev.pointerType==='mouse')revealArtControls();});
     // settings JSON
     $('btn-about').addEventListener('click', () => { openModal('modal-about'); });
     $('about-close').addEventListener('click', () => { closeModal('modal-about'); });

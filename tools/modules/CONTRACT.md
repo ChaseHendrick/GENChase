@@ -2,6 +2,10 @@
 
 Read this before writing a block. It restates what the engine in `src/shared/engine.js` actually does, so a block written against it drops into the file without surprises. When this file and the maintained `src/` implementation disagree, inspect the implementation and correct the contract. Search for the function or `id:`. Do not cite line numbers; they drift.
 
+The [stable engine API](../../docs/ENGINE-API.md) defines versioning, recipe migrations,
+structured scientific witnesses and shared print ownership. API version 1 is the
+compatibility boundary for new modules.
+
 ## Files and workflow
 
 - Canonical source is `src/modules/<block>.js`, with one family per file. Copy `_template.js` as an unregistered starting point. Edit source, not generated HTML.
@@ -60,6 +64,7 @@ Presets: `{ key: { label: 'Label', p: { partial state }, palette: Studio.PALETTE
 host.canvas          the <canvas>; the shell sizes it in device pixels (dpr <= 2) before regenerate() and on resize
 host.util, host.gl   same objects as Studio.util / Studio.gl
 host.getState()      current state object
+host.setWitness(record) structured scientific comparison; call after its matching status
 host.setStatus(html) status bar; use '<span>label <b>value</b></span>' chunks
 host.reducedMotion() true when the viewer prefers reduced motion: finish quickly, do not animate
 host.isActive()      true when this tab is showing and the document is visible

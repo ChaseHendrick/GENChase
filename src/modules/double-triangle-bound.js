@@ -237,6 +237,11 @@
           '<span>shape <b>' + sci(data.shapeError) + '</b> · 0</span>' +
           '<span>ODE Δ/15 <b>' + sci(data.odeError) + '</b></span>' +
           '<span>' + (miss ? 'miss · off family or numerical disagreement' : 'bound held · no sampling error') + ' · priority open</span>');
+        if (host.setWitness) host.setWitness({
+          label: 'Self-similar velocity residual', measured: Number.isFinite(m.residual) ? m.residual : null,
+          expected: 0, tol: 1e-9, valid,
+          missWhen: 'Off the two-polygon family, nonpositive collapse time, or relative residual at least 1e-9.'
+        });
       }
       function draw() { if (data) paint(ctx, canvas.width, canvas.height, host.getState(), data, time); }
       function stop() { if (raf) cancelAnimationFrame(raf); raf = 0; last = 0; }
