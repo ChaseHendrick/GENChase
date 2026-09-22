@@ -1265,7 +1265,7 @@ void main(){
 
   /* ---- canvas sizing ---- */
   function fitCanvas(e) {
-    const stage = $('stage');
+    const stage = $('art-viewport') || $('stage');
     const cs = getComputedStyle(stage);
     const availW = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     const availH = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 24;
@@ -1308,7 +1308,10 @@ void main(){
     // every integrator with a time step shows it, so a preset that changes dt says so
     const dt = Number(e.state.dt);
     const dtHtml = isFinite(dt) && dt > 0 && !/\bdt\b/.test(e.statusHtml) ? '<span>dt <b>' + (dt >= 1 ? dt.toFixed(1) : dt.toFixed(3).replace(/0+$/, '').replace(/\.$/, '')) + '</b></span>' : '';
-    $('status').innerHTML = e.statusHtml + scienceWitnessHtml(e.scienceWitness) + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
+    const html = e.statusHtml + scienceWitnessHtml(e.scienceWitness) + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
+    const status = $('status');
+    // Preserve text selection and avoid rebuilding identical measurement rows.
+    if (status._renderedHtml !== html) { status.innerHTML = html; status._renderedHtml = html; }
   }
 
   /* ---- lifecycle ---- */
@@ -1600,14 +1603,13 @@ void main(){
   const VIEW_MIN = 1, VIEW_MAX = 8;
   function viewIdle() { return viewS === 1 && viewX === 0 && viewY === 0; }
   function applyView() {
-    const e = instances[currentId];
-    const c = e && e.canvas;
-    for (const other of document.querySelectorAll('.stage canvas.art')) {
-      if (other !== c) other.style.transform = '';
-    }
-    if (c) {
-      c.style.transformOrigin = 'center center';
-      c.style.transform = viewIdle() ? '' : ('translate(' + viewX + 'px,' + viewY + 'px) scale(' + viewS + ')');
+    // Transform the mounted sheet as one object, so the caption stays aligned
+    // and grows with the artwork. This never changes exported dimensions.
+    for (const canvas of document.querySelectorAll('.stage canvas.art')) canvas.style.transform = '';
+    const sheet = $('sheet');
+    if (sheet) {
+      sheet.style.transformOrigin = 'center center';
+      sheet.style.transform = viewIdle() ? '' : ('translate(' + viewX + 'px,' + viewY + 'px) scale(' + viewS + ')');
     }
     const fit = $('view-fit');
     if (fit) fit.disabled = viewIdle();
@@ -1624,12 +1626,12 @@ void main(){
     const e = instances[currentId]; if (!e || !e.canvas) return;
     const next = util.clamp(viewS * factor, VIEW_MIN, VIEW_MAX);
     if (Math.abs(next - viewS) < 1e-6) return;
-    const r = e.canvas.getBoundingClientRect();
+    const r = $('sheet').getBoundingClientRect();
     const fx = (clientX - r.left) / Math.max(1, r.width);
     const fy = (clientY - r.top) / Math.max(1, r.height);
     viewS = next;
     applyView();
-    const r2 = e.canvas.getBoundingClientRect();
+    const r2 = $('sheet').getBoundingClientRect();
     viewX += clientX - (r2.left + fx * r2.width);
     viewY += clientY - (r2.top + fy * r2.height);
     if (viewS === 1) { viewX = 0; viewY = 0; }
@@ -3026,13 +3028,7 @@ void main(){
       });
     }
     if (seenSel) seenSel.addEventListener('change', applyFind);
-    tabs.addEventListener('wheel', ev => {
-      if (!ev.deltaY || Math.abs(ev.deltaY) < Math.abs(ev.deltaX)) return;
-      if (tabs.scrollWidth <= tabs.clientWidth + 2) return;
-      tabs.scrollLeft += ev.deltaY;
-      ev.preventDefault();
-    }, { passive: false });
-    bindDragScroll(tabs);
+    if (window.ModuleBrowser) ModuleBrowser.mount({ modules, onSelect: switchTo, loadRecords: loadScienceRecords });
     bindDragScroll($('history'));
     bindViewControls();
     // top bar wiring
@@ -3324,6 +3320,8 @@ void main(){
       toast('Something went wrong: ' + String((r && r.message) || r || 'a background task failed').split('\n')[0].slice(0, 120));
     });
     document.addEventListener('keydown', ev => {
+      // Native dialogs own their keys, including Escape and activation keys.
+      if (document.querySelector('dialog[open]')) return;
       const tag = (ev.target && ev.target.tagName) || '';
       const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || ev.target.isContentEditable;
       const modalOpen = MODALS.map($).some(m => m && !m.hidden);
@@ -3389,6 +3387,17 @@ void main(){
       }
     });
     let resizeTimer = null;
+    // Caption and status wrapping can resize the artwork without a window resize.
+    if (window.ResizeObserver && $('art-viewport')) {
+      let layoutFrame = 0;
+      new ResizeObserver(() => {
+        cancelAnimationFrame(layoutFrame);
+        layoutFrame = requestAnimationFrame(() => {
+          const e = instances[currentId];
+          if (e && fitCanvas(e) && e.inst.resize) { try { e.inst.resize(); } catch (err) { showError(err); } }
+        });
+      }).observe($('art-viewport'));
+    }
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => { const e = instances[currentId]; if (!e) return; if (fitCanvas(e) && e.inst.resize) { try { e.inst.resize(); } catch (err) { showError(err); } } }, 80);

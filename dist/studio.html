@@ -454,9 +454,9 @@
   .toggle { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
   .toggle .lbl { color: var(--ink-2); font-size: 12.5px; }
   .switch { position: relative; width: 34px; height: 20px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--panel-2); padding: 0; flex: none; }
-  .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--muted); transition: left .15s ease, background .15s ease; }
+  .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--muted); transition: transform .15s ease, background .15s ease; }
   .switch[aria-checked="true"] { background: var(--ink); border-color: var(--ink); }
-  .switch[aria-checked="true"]::after { left: 16px; background: var(--panel); }
+  .switch[aria-checked="true"]::after { transform: translateX(14px); background: var(--panel); }
 
   .swatches { display: flex; flex-direction: column; gap: 6px; }
   .sw { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 8px; }
@@ -872,6 +872,54 @@
 .app.focus #btn-exit-focus { min-height: 44px; transition: opacity .2s; }
 .app.focus.focus-quiet #btn-exit-focus:not(:focus-visible) { opacity: 0; pointer-events: none; }
 @media print { #btn-art-only, #btn-exit-focus { display: none !important; } }
+
+/* Wrap controls instead of hiding presets behind sticky export controls. */
+.bar { flex-wrap: wrap; overflow: visible; mask-image: none !important; }
+.bar .printbox, .bar #btn-export { position: static; }
+.bar #preset { flex-shrink: 0; }
+.tabstrip { gap: 4px; padding-top: 5px; }
+#browse-modules { margin: 0 0 5px 10px; min-height: 36px; }
+.tabs { flex: 1 0 100%; display: flex; flex-wrap: wrap; overflow-y: auto; overflow-x: hidden; max-height: 88px; scrollbar-width: thin; cursor: auto; mask-image: none !important; align-content: start; }
+.tab { white-space: normal; text-align: left; }
+.sheet { transform-origin: center center; }
+.module-browser { color: var(--ink); background: var(--panel); border: 1px solid var(--line-strong); border-radius: 12px; width: min(1040px, calc(100vw - 28px)); max-height: min(850px, calc(100dvh - 28px)); padding: 22px; }
+.module-browser::backdrop { background: rgba(0,0,0,.55); }
+.module-browser header { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.module-browser h2 { margin: 0; }
+.module-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 16px 0; }
+.module-filters label { display: grid; gap: 5px; font-size: 12px; }
+.module-filters input, .module-filters select { min-height: 44px; min-width: 0; width: 100%; color: var(--ink); background: var(--panel-2); border: 1px solid var(--line-strong); border-radius: 6px; padding: 8px; }
+.module-results { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.module-card { position: relative; border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+.module-card .module-open { display: block; width: calc(100% - 38px); text-align: left; font-size: 16px; font-weight: 600; color: var(--ink); background: none; border: 0; min-height: 44px; }
+.module-card p { font-size: 12px; color: var(--ink-2); margin-top: 7px; }
+.module-card .module-star { position: absolute; right: 8px; top: 10px; min-width: 36px; min-height: 44px; background: none; border: 0; color: var(--ink); }
+.module-card .module-star[aria-pressed=true] { color: var(--accent); }
+.module-browser .browser-note { font-size: 12px; line-height: 1.5; color: var(--ink-2); }
+@media(max-width:900px) { .bar { overflow: visible; } .bar #preset { flex: 1 1 7rem; max-width: 12rem; } .tabs { max-height: 76px; } }
+@media print { .sheet { transform: none !important; } .module-browser { display: none !important; } }
+
+/* Measurements have their own layout space, never an overlay on the caption. */
+.stage { display: flex; flex-direction: column; padding: 0; align-items: stretch; justify-content: flex-start; }
+.art-viewport { position: relative; flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 60px 20px 16px; }
+.stage-readout { flex: 0 0 auto; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 12px; border-top: 1px solid var(--line-strong); background: var(--panel); padding: 12px 16px; z-index: 5; }
+.stage-readout .status { position: static; grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 7px 18px; min-width: 0; height: 116px; overflow: auto; color: var(--ink); font-size: 12px; line-height: 1.55; letter-spacing: 0; pointer-events: auto; overflow-wrap: anywhere; }
+.stage-readout .status b { color: var(--ink); font-weight: 650; }
+.stage-readout .science-witness { flex: 1 0 100%; border-top: 1px solid var(--line); padding-top: 7px; }
+.stage-readout .witness { position: static; max-width: none; min-width: 0; align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 8px; }
+.stage-readout .witness-hint { color: var(--ink-2); font-size: 12px; max-width: none; text-align: left; line-height: 1.45; }
+.stage-readout .viewpad { position: static; align-self: end; }
+.app.focus .stage-readout { display: none; }
+.app.focus .art-viewport { padding: 12px; }
+@media(max-width:900px) { .stage { padding: 0; } .art-viewport { flex: none; height: min(46dvh,480px); min-height: 240px; padding: 58px 14px 12px; } .stage-readout { padding: 10px 12px; gap: 8px; } .stage-readout .status { height: auto; max-height: none; } .stage-readout .witness-strip { display: none; } .app.focus .art-viewport { height: calc(100dvh - 24px); } }
+@media print { .art-viewport { display: contents; } .stage-readout { display: none !important; } }
+
+/* Short compositor-friendly interface transitions; no simulation timing changes. */
+@media(prefers-reduced-motion:no-preference) {
+  .btn, .tab, .module-star { transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease; }
+  .modal:not([hidden]) > .card, .module-browser[open] { animation: interface-reveal 150ms cubic-bezier(.2,.7,.2,1); }
+  @keyframes interface-reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+}
 </style>
 <script type="text/plain" id="license-notices">LICENSE
 
@@ -1461,15 +1509,19 @@ shall not be misrepresented as the original profile.
   </header>
 
   <div class="tabstrip">
+    <button class="btn" id="browse-modules" type="button">Browse all modules</button>
     <input class="find" id="find" type="search" placeholder="Find…" autocomplete="off" spellcheck="false" aria-label="Find a technique. Slash focuses this." />
     <span class="find-n" id="find-n" hidden></span>
     <select class="seen" id="seen" aria-label="How often you see it elsewhere (a curator's call)">
-      <option value="">Seen elsewhere…</option>
+      <option value="">Any familiarity</option>
       <option value="ubiquitous">Ubiquitous</option>
       <option value="common">Common</option>
       <option value="occasional">Occasional</option>
       <option value="rare">Rare</option>
       <option value="unseen">Almost unseen</option>
+    </select>
+    <select class="seen" id="module-sort" aria-label="Sort modules">
+      <option value="name">Name A to Z</option><option value="oldest">Oldest research first</option><option value="newest">Newest research first</option><option value="common">Most common to rarest</option><option value="rare">Rarest to most common</option>
     </select>
     <nav class="tabs" id="tabs" role="tablist" aria-label="Techniques"></nav>
     <p class="seen-hint" id="seen-hint" hidden>Nobody measured this. It is one person's estimate of how often you have seen the picture somewhere else, made in 2026. It is the only filter in this studio that is not computed from the file.</p>
@@ -1479,6 +1531,7 @@ shall not be misrepresented as the original profile.
   <div class="main" id="main">
     <aside class="side" id="side"></aside>
     <section class="stage" id="stage" tabindex="-1">
+      <div class="art-viewport" id="art-viewport">
       <button class="btn" id="btn-art-only" type="button" title="Hide controls (F)">Art only</button>
       <button class="btn" id="btn-science-report" type="button">Science report</button>
       <button class="btn" id="btn-exit-focus" type="button" hidden title="Leave focus mode (Esc or F)">Show controls</button>
@@ -1502,6 +1555,8 @@ shall not be misrepresented as the original profile.
           </div>
         </div>
       </div>
+      </div>
+      <div class="stage-readout">
       <div class="status" id="status" role="status" aria-live="polite"></div>
       <div class="witness" id="witness">
         <button class="live-badge" id="live-badge" type="button" title="LIVE when the field is still computing. Click, or press W, to quieten it">
@@ -1532,6 +1587,7 @@ shall not be misrepresented as the original profile.
           <button type="button" id="view-plus" title="Zoom in (+)" aria-label="Zoom in">+</button>
           <button type="button" class="vfit" id="view-fit" title="Fit the plate in the stage (0)" aria-label="Fit the plate">Fit</button>
         </div>
+      </div>
       </div>
     </section>
   </div>
@@ -6248,7 +6304,7 @@ void main(){
 
   /* ---- canvas sizing ---- */
   function fitCanvas(e) {
-    const stage = $('stage');
+    const stage = $('art-viewport') || $('stage');
     const cs = getComputedStyle(stage);
     const availW = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     const availH = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 24;
@@ -6291,7 +6347,10 @@ void main(){
     // every integrator with a time step shows it, so a preset that changes dt says so
     const dt = Number(e.state.dt);
     const dtHtml = isFinite(dt) && dt > 0 && !/\bdt\b/.test(e.statusHtml) ? '<span>dt <b>' + (dt >= 1 ? dt.toFixed(1) : dt.toFixed(3).replace(/0+$/, '').replace(/\.$/, '')) + '</b></span>' : '';
-    $('status').innerHTML = e.statusHtml + scienceWitnessHtml(e.scienceWitness) + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
+    const html = e.statusHtml + scienceWitnessHtml(e.scienceWitness) + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
+    const status = $('status');
+    // Preserve text selection and avoid rebuilding identical measurement rows.
+    if (status._renderedHtml !== html) { status.innerHTML = html; status._renderedHtml = html; }
   }
 
   /* ---- lifecycle ---- */
@@ -6583,14 +6642,13 @@ void main(){
   const VIEW_MIN = 1, VIEW_MAX = 8;
   function viewIdle() { return viewS === 1 && viewX === 0 && viewY === 0; }
   function applyView() {
-    const e = instances[currentId];
-    const c = e && e.canvas;
-    for (const other of document.querySelectorAll('.stage canvas.art')) {
-      if (other !== c) other.style.transform = '';
-    }
-    if (c) {
-      c.style.transformOrigin = 'center center';
-      c.style.transform = viewIdle() ? '' : ('translate(' + viewX + 'px,' + viewY + 'px) scale(' + viewS + ')');
+    // Transform the mounted sheet as one object, so the caption stays aligned
+    // and grows with the artwork. This never changes exported dimensions.
+    for (const canvas of document.querySelectorAll('.stage canvas.art')) canvas.style.transform = '';
+    const sheet = $('sheet');
+    if (sheet) {
+      sheet.style.transformOrigin = 'center center';
+      sheet.style.transform = viewIdle() ? '' : ('translate(' + viewX + 'px,' + viewY + 'px) scale(' + viewS + ')');
     }
     const fit = $('view-fit');
     if (fit) fit.disabled = viewIdle();
@@ -6607,12 +6665,12 @@ void main(){
     const e = instances[currentId]; if (!e || !e.canvas) return;
     const next = util.clamp(viewS * factor, VIEW_MIN, VIEW_MAX);
     if (Math.abs(next - viewS) < 1e-6) return;
-    const r = e.canvas.getBoundingClientRect();
+    const r = $('sheet').getBoundingClientRect();
     const fx = (clientX - r.left) / Math.max(1, r.width);
     const fy = (clientY - r.top) / Math.max(1, r.height);
     viewS = next;
     applyView();
-    const r2 = e.canvas.getBoundingClientRect();
+    const r2 = $('sheet').getBoundingClientRect();
     viewX += clientX - (r2.left + fx * r2.width);
     viewY += clientY - (r2.top + fy * r2.height);
     if (viewS === 1) { viewX = 0; viewY = 0; }
@@ -8009,13 +8067,7 @@ void main(){
       });
     }
     if (seenSel) seenSel.addEventListener('change', applyFind);
-    tabs.addEventListener('wheel', ev => {
-      if (!ev.deltaY || Math.abs(ev.deltaY) < Math.abs(ev.deltaX)) return;
-      if (tabs.scrollWidth <= tabs.clientWidth + 2) return;
-      tabs.scrollLeft += ev.deltaY;
-      ev.preventDefault();
-    }, { passive: false });
-    bindDragScroll(tabs);
+    if (window.ModuleBrowser) ModuleBrowser.mount({ modules, onSelect: switchTo, loadRecords: loadScienceRecords });
     bindDragScroll($('history'));
     bindViewControls();
     // top bar wiring
@@ -8307,6 +8359,8 @@ void main(){
       toast('Something went wrong: ' + String((r && r.message) || r || 'a background task failed').split('\n')[0].slice(0, 120));
     });
     document.addEventListener('keydown', ev => {
+      // Native dialogs own their keys, including Escape and activation keys.
+      if (document.querySelector('dialog[open]')) return;
       const tag = (ev.target && ev.target.tagName) || '';
       const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || ev.target.isContentEditable;
       const modalOpen = MODALS.map($).some(m => m && !m.hidden);
@@ -8372,6 +8426,17 @@ void main(){
       }
     });
     let resizeTimer = null;
+    // Caption and status wrapping can resize the artwork without a window resize.
+    if (window.ResizeObserver && $('art-viewport')) {
+      let layoutFrame = 0;
+      new ResizeObserver(() => {
+        cancelAnimationFrame(layoutFrame);
+        layoutFrame = requestAnimationFrame(() => {
+          const e = instances[currentId];
+          if (e && fitCanvas(e) && e.inst.resize) { try { e.inst.resize(); } catch (err) { showError(err); } }
+        });
+      }).observe($('art-viewport'));
+    }
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => { const e = instances[currentId]; if (!e) return; if (fitCanvas(e) && e.inst.resize) { try { e.inst.resize(); } catch (err) { showError(err); } } }, 80);
@@ -8426,6 +8491,82 @@ void main(){
       }
     } catch (err) { /* optional */ }
   }
+})();
+</script>
+<script>/* Shared catalog browser. Metadata only; opening this view never starts 130 simulations. */
+(function () {
+  'use strict';
+  const ranks = { ubiquitous: 0, common: 1, occasional: 2, rare: 3, unseen: 4 };
+  const groups = {
+    'Waves and fields': 'reaction fluid cahn ohta amb swift ks pfc cgl nematic schrodinger convection turing cyclic chemotaxis vegetation excitable faraday lens timecrystal arago rogue aharonov anderson soliton ssh breather cloak airy veselago causticsea kp gerstner peakon photon crapper hasimoto lump plasma shallow nonreciprocal maxwell volume-wave',
+    'Geometry and tilings': 'tilings aztec sle lozenge hyperbolic holomorphic ust rotor kakeya klein gyroid meissner weierstrass devil boy reuleaux apollonian knotlight surfaces',
+    'Particles and dynamics': 'attractors swarm chirikov pendulum orbitals fput vortex purcell tennis loschmidt eight three-vortex-bound parallelogram-lock quincunx-lock double-triangle-bound molecular direct-gravity',
+    'Growth and patterns': 'flow physarum growth dendrite snowflake lichtenberg pearls smectic hl phyllotaxis grains liesegang growdomain web film stealth track physarum3d',
+    'Neuroscience and collective systems': 'life cppn chimera cyclicca percolation cortex rmt landscape kpz bec potts tonertu skyrmion ising sandpile xy spinice skin hodgkin-huxley neural-mass',
+    'Quantum and optical structures': 'fractal chladni hofstadter scars caustics talbot lp aubry hopf exceptional kitaev thouless darkroom',
+  };
+  function topic(m) { return Object.keys(groups).find(k => groups[k].split(' ').includes(m.id)) || 'Other'; }
+  function year(m) { const hit = (m.subtitle || '').match(/\b(1[0-9]{3}|20[0-9]{2})\b/); return hit ? Number(hit[0]) : null; }
+  function compare(mode) {
+    return (a, b) => {
+      const fallback = (a.name || a.id).localeCompare(b.name || b.id);
+      if (mode === 'oldest' || mode === 'newest') {
+        const x=year(a),y=year(b);if(x===null||y===null)return x===y?fallback:x===null?1:-1;
+        return (mode==='oldest'?x-y:y-x)||fallback;
+      }
+      if (mode==='common'||mode==='rare') return (mode==='common'?1:-1)*((ranks[a.familiarity]??5)-(ranks[b.familiarity]??5))||fallback;
+      return fallback;
+    };
+  }
+  function mount({ modules, onSelect, loadRecords }) {
+    const byId = Object.fromEntries(modules.map(m=>[m.id,m]));
+    const tabs=document.getElementById('tabs'), sort=document.getElementById('module-sort');
+    const orderTabs=()=>{for(const m of modules.slice().sort(compare(sort.value))){const b=tabs.querySelector('[data-id="'+m.id+'"]');if(b)tabs.appendChild(b);}};
+    sort.addEventListener('change',orderTabs);orderTabs();
+    const el=(tag,attrs={},text)=>{const e=document.createElement(tag);for(const [k,v]of Object.entries(attrs))e.setAttribute(k,v);if(text!==undefined)e.textContent=text;return e;};
+    let favorites=new Set();try{const saved=JSON.parse(localStorage.getItem('genchase-module-favorites')||'[]');if(Array.isArray(saved))favorites=new Set(saved.filter(id=>byId[id]));}catch{}
+    const dialog=el('dialog',{class:'module-browser','aria-labelledby':'module-browser-title',id:'module-browser'}), header=el('header'), close=el('button',{class:'btn',type:'button'},'Close');
+    header.append(el('h2',{id:'module-browser-title'},'Browse modules'),close);dialog.append(header);
+    const controls=el('div',{class:'module-filters'}), fields={};
+    const field=(key,title,values)=>{const label=el('label',{},title), input=values?el('select',{'data-filter':key}):el('input',{type:'search','data-filter':key,placeholder:'Name, equation, paper or keyword'});if(values)for(const [value,text]of values)input.append(new Option(text,value));label.append(input);controls.append(label);fields[key]=input;input.addEventListener(values?'change':'input',render);return input;};
+    field('query','Search');
+    field('sort','Sort',[['name','Name A to Z'],['oldest','Oldest reference year first'],['newest','Newest reference year first'],['common','Most common to rarest'],['rare','Rarest to most common']]);
+    field('topic','Topic',[['','All topics'],...Object.keys(groups).map(k=>[k,k]),['Other','Other']]);
+    field('seen','Familiarity',[['','Any familiarity'],['ubiquitous','Ubiquitous'],['common','Common'],['occasional','Occasional'],['rare','Rare'],['unseen','Almost unseen']]);
+    field('era','Reference year',[['','Any date'],['early','Before 1900'],['modern','1900 to 1949'],['late','1950 to 1999'],['recent','2000 onward'],['unknown','Date not listed']]);
+    field('science','Science evidence',[['','Any evidence status'],['unvalidated','Unvalidated'],['partially validated','Partially validated'],['validated within stated limits','Validated within stated limits']]);fields.science.disabled=true;
+    field('favorites','Saved choices',[['','All modules'],['yes','Favorites only']]);
+    const reset=el('button',{type:'button',class:'btn'},'Clear filters');controls.append(reset);
+    const count=el('p',{'aria-live':'polite',id:'module-browser-count'}), note=el('p',{class:'browser-note'},'Dates come from the listed reference year, not the date a module was added. Familiarity and topics are editorial categories. Science labels apply only to their recorded limits.'), results=el('div',{class:'module-results'});
+    dialog.append(controls,count,note,results);document.body.append(dialog);
+    let records={},loadError='',opener=null;
+    function render(){
+      const bits=fields.query.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+      const selected=modules.filter(m=>{
+        const text=[m.id,m.name,m.subtitle,m.equation,m.credit,m.blurb,topic(m)].join(' ').toLowerCase(), y=year(m), era=fields.era.value;
+        return bits.every(b=>text.includes(b))&&(!fields.topic.value||topic(m)===fields.topic.value)&&(!fields.seen.value||m.familiarity===fields.seen.value)&&(!fields.science.value||records[m.id]===fields.science.value)&&(!fields.favorites.value||favorites.has(m.id))&&(!era||(era==='unknown'?y===null:y!==null&&(era==='early'?y<1900:era==='modern'?y>=1900&&y<1950:era==='late'?y>=1950&&y<2000:y>=2000)));
+      }).sort(compare(fields.sort.value));
+      count.textContent=selected.length+' of '+modules.length+' modules'+(loadError?' · '+loadError:'');
+      const fragment=document.createDocumentFragment();
+      for(const m of selected){
+        const card=el('article',{class:'module-card','data-id':m.id}), open=el('button',{type:'button',class:'module-open'},m.name||m.id), star=el('button',{type:'button',class:'module-star','aria-label':'Favorite '+(m.name||m.id),'aria-pressed':String(favorites.has(m.id))},favorites.has(m.id)?'★':'☆');
+        open.onclick=async()=>{dialog.close();await onSelect(m.id);document.getElementById('stage')?.focus();};
+        star.onclick=()=>{if(favorites.has(m.id))favorites.delete(m.id);else favorites.add(m.id);try{localStorage.setItem('genchase-module-favorites',JSON.stringify([...favorites]));}catch{}star.setAttribute('aria-pressed',String(favorites.has(m.id)));star.textContent=favorites.has(m.id)?'★':'☆';if(fields.favorites.value)render();};
+        card.append(open,star,el('p',{},m.subtitle||'Reference date not listed'),el('p',{},topic(m)+' · '+(records[m.id]||'Evidence status loading')));fragment.append(card);
+      }
+      results.replaceChildren(fragment);
+    }
+    reset.onclick=()=>{for(const [key,input]of Object.entries(fields))input.value=key==='sort'?'name':'';render();fields.query.focus();};
+    close.onclick=()=>dialog.close();dialog.addEventListener('close',()=>opener?.focus());
+    // Native modal dialogs manage focus containment and Escape in Safari/Chromium.
+    document.getElementById('browse-modules').onclick=async()=>{
+      opener=document.getElementById('browse-modules');fields.query.value=document.getElementById('find').value;fields.sort.value=sort.value;render();dialog.showModal();fields.query.focus();
+      try{for(const r of await loadRecords())records[r.id]=r.status;fields.science.disabled=false;loadError='';}catch{loadError='Evidence unavailable; reopen to retry';}render();
+    };
+  }
+  const api={year,topic,compare,mount};
+  if(typeof window!=='undefined')window.ModuleBrowser=api;
+  if(typeof module!=='undefined')module.exports=api;
 })();
 </script>
 <script>

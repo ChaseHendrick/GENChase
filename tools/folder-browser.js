@@ -133,6 +133,12 @@ async function settledPlate(page) {
     await page.unroute('**/' + delayedSource);
     console.log('ok: stale import cannot steal selected tab');
 
+    // Put two inexpensive unloaded modules next to the current tab. User sorting
+    // changes DOM order; keyboard navigation must follow the visible order.
+    await page.evaluate(id => {
+      const current = document.querySelector('.tab[data-id="' + id + '"]');
+      current.after(document.querySelector('.tab[data-id="parallelogram-lock"]'), document.querySelector('.tab[data-id="quincunx-lock"]'));
+    }, initialId);
     const arrowTargets = await page.evaluate(id => {
       const ids = [...document.querySelectorAll('.tab[data-id]')].map(tab => tab.dataset.id);
       const at = ids.indexOf(id);
