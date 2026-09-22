@@ -91,3 +91,27 @@ The required plate check `node tools/check.js neural-mass 12000` passed the defa
 | Broad inputs | 26 / 26 / 117 | 0.0283 |
 
 The standard all-preset print command `node tools/export.js neural-mass 8 300 8000` passed all seven 2400×2400 sheets. Browser/runtime checks are distinct from the numerical evidence above. This module remains a bounded partial validation, not a certification of every setting or a claim about real neural tissue.
+
+## Complete recorded-trajectory and print review (2026-09-22)
+
+`node tools/neural-mass-print.js --write` now independently recomputes every
+recorded value using a separately coded fifth-order Dormand-Prince method at
+steps .002 and .001. The reference splits pulse boundaries and begins with the
+actual recorded initial preparations. It never calls the production stepper.
+The three full 30-time-unit fixtures use seed `neural-print`: default phase
+with 32 preparations; pulse/rate with 128; sine/voltage with 32 and J=-6.
+Every other effective parameter is included in the result artifact.
+
+All 461,184 voltage/rate values agree within 1e-6 (observed worst 2.20e-10), and
+reference refinement must agree within 1e-8 (observed worst 2.53e-11).
+A one-time-sample shifted trajectory must differ by more than .01. Every point
+of every SVG trace is now checked at both 2400x2400 and 2400x1800: 922,368
+coordinates, tolerance 1e-9 pixels. A 2-percent horizontal scale distortion is
+rejected. Actual raster/vector comparisons, shell export, unchanged state,
+pause/resume and refused incomplete recordings remain checked. The independent
+analytic, convergence and guard suite is also required.
+
+The full label covers these three complete finite recordings and exports plus
+the analytic benchmark domain above. It does not certify arbitrary controls,
+long-time behavior, unrecorded transients, finite-neuron or spatial networks,
+experimental brain data, clinical predictions or other rendering hardware.
