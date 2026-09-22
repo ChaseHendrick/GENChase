@@ -2951,7 +2951,7 @@
   {
     "id": "volume-wave",
     "source": "src/modules/volume-wave.js",
-    "sourceSha256": "65bed29197706b1b1195692630d43e68773813c60eacf7c3cd3c4b74d0383ad0",
+    "sourceSha256": "80fda0bb272f37958734bbb239ff89ffe706c47cb884b3a7b86886f55844e913",
     "reference": "Classical scalar wave equation. Centered finite differences and the three-dimensional CFL bound follow H. P. Langtangen and S. Linge, Finite Difference Computing with PDEs (2017), wave equation chapter, https://hplgit.github.io/fdm-book/doc/pub/wave/html/._wave-solarized004.html. No novelty or full acoustic model is claimed.",
     "equation": "∂²u/∂t² = c²(∂²u/∂x² + ∂²u/∂y² + ∂²u/∂z²)",
     "status": "partially validated",

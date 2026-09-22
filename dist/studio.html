@@ -48964,15 +48964,15 @@ float a=v*u_exposure;outColor=vec4(ramp(0.5+0.49*a/sqrt(1.0+a*a)),1);}
     if(!gl||!gl.floatExt)return dead('Wave volume needs WebGL2 and float32 color buffers.');
     let evolve,seed,display;
     try{evolve=new G.Pass(gl,STEP_FS);seed=new G.Pass(gl,SEED_FS);display=new G.Pass(gl,DISPLAY_FS);}catch(error){return dead('Wave volume shader failed: '+error.message);}
-    let field=null,n=0,shape=null,dt=0,count=0,pending=0,raf=0,fence=null,ramp=null,rampKey='',failed=false;
+    let field=null,n=0,shape=null,dt=0,count=0,pending=0,raf=0,fence=null,ramp=null,rampKey='',failed=false,halted=false;
     function stop(){cancelAnimationFrame(raf);raf=0;}
     function uniforms(){return {u_n:{int:n},u_tiles:{int:shape.tiles}};}
     function step(first){evolve.draw(field.write,Object.assign(uniforms(),{u_state:field.read,u_r2:(host.getState().courant**2)/3,u_first:!!first}));field.swap();if(!first)count++;}
-    function status(){const bytes=shape.w*shape.h*32;host.setStatus('<span>grid <b>'+n+'³</b> · float32</span><span>textures <b>'+(bytes/1048576).toFixed(1)+' MiB</b></span><span>step <b>'+count+'</b> · t '+(count*dt).toFixed(3)+'</span><span>dt '+dt.toExponential(2)+(pending?' · '+pending+' queued':'')+'</span>');}
+    function status(){const bytes=shape.w*shape.h*32;host.setStatus('<span>grid <b>'+n+'³</b> · float32</span><span>textures <b>'+(bytes/1048576).toFixed(1)+' MiB</b></span><span>step <b>'+count+'</b> · t '+(count*dt).toFixed(3)+'</span><span>dt '+dt.toExponential(2)+(halted?' · stopped':pending?' · '+pending+' queued':'')+'</span>');}
     function render(target){const s=host.getState(),key=s.bg+'|'+s.palette.join(',');if(!ramp||key!==rampKey){if(ramp)ramp.dispose();ramp=G.rampTexture(gl,s.palette,s.bg);rampKey=key;}
       display.draw(target||null,Object.assign(uniforms(),{u_state:field.read,u_ramp:ramp,u_slice:s.slice,u_exposure:s.exposure,u_axis:{int:{xy:0,xz:1,yz:2}[s.axis]||0}}));}
     function schedule(){
-      if(raf||failed||!field||!host.isActive())return;
+      if(raf||failed||halted||!field||!host.isActive())return;
       const s=host.getState();if(!pending&&(!s.running||host.reducedMotion()))return;
       raf=requestAnimationFrame(()=>{raf=0;
         if(fence){const ready=gl.clientWaitSync(fence,0,0);if(ready===gl.TIMEOUT_EXPIRED){schedule();return;}gl.deleteSync(fence);fence=null;if(ready===gl.WAIT_FAILED){failed=true;host.fault('GPU work failed. Select a smaller grid and regenerate.');return;}}
@@ -48982,7 +48982,7 @@ float a=v*u_exposure;outColor=vec4(ramp(0.5+0.49*a/sqrt(1.0+a*a)),1);}
     }
     return {
       aspect:()=>1,
-      regenerate(){stop();pending=0;failed=false;if(fence){gl.deleteSync(fence);fence=null;}const s=host.getState(),next=layout(s.grid),max=gl.getParameter(gl.MAX_TEXTURE_SIZE);
+      regenerate(){stop();pending=0;failed=false;halted=false;if(fence){gl.deleteSync(fence);fence=null;}const s=host.getState(),next=layout(s.grid),max=gl.getParameter(gl.MAX_TEXTURE_SIZE);
         if(field){field.read.dispose();field.write.dispose();field=null;}
         // Browsers expose texture limits, not free VRAM. Allocation can still fail below this explicit budget.
         if(next.w>max||next.h>max||next.w*next.h*32>576*1048576){host.fault('Selected volume exceeds the texture or 576 MiB field budget. Select a smaller grid.');return;}
@@ -48992,8 +48992,8 @@ float a=v*u_exposure;outColor=vec4(ramp(0.5+0.49*a/sqrt(1.0+a*a)),1);}
         step(true);pending=s.warmup;render();status();schedule();
       },
       fieldCells(){return field?[n,n]:null;},
-      resize(){if(field)render();},repaint(){if(field)render();},pause:stop,resume:schedule,live(){stop();if(!host.getState().running)pending=0;schedule();},
-      action(key){if(key==='cancel'){stop();pending=0;status();}else if(key==='burst'&&field){pending+=128;schedule();}else if(key==='reseed')this.regenerate();},
+      resize(){if(field)render();},repaint(){if(field)render();},pause:stop,resume:schedule,live(){stop();halted=false;if(!host.getState().running)pending=0;schedule();},
+      action(key){if(!field)return;if(key==='cancel'){stop();halted=true;pending=0;status();}else if(key==='burst'){halted=false;pending+=128;schedule();}else if(key==='reseed')this.regenerate();},
       async exportPNG(w,h){if(!field)throw Error('No wave volume to export.');if(w>gl.getParameter(gl.MAX_TEXTURE_SIZE)||h>gl.getParameter(gl.MAX_TEXTURE_SIZE))throw Error('Print exceeds the GPU texture limit.');
         const target=new G.Target(gl,w,h,{type:'rgba8'}),pixels=new Uint8Array(w*h*4);
         try{render(target);gl.bindFramebuffer(gl.FRAMEBUFFER,target.fbo);gl.readPixels(0,0,w,h,gl.RGBA,gl.UNSIGNED_BYTE,pixels);}finally{gl.bindFramebuffer(gl.FRAMEBUFFER,null);target.dispose();}
