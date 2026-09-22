@@ -4736,7 +4736,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "shallow",
     "source": "src/modules/shallow.js",
-    "sourceSha256": "0b967d37d97262202418768b0d99cb0a397fbb0d83078908fef013934efa0bd2",
+    "sourceSha256": "65d975766f9266e6c68ae53af438b1f624a6e8907228fd781d45db9ef497c0a9",
     "reference": "A. J. C. de Saint-Venant (1871), shallow-water equations. Rusanov/local Lax–Friedrichs conservative finite-volume flux. Exact wave benchmarks follow D. I. Ketcheson, R. J. LeVeque and M. J. del Razo, Riemann Problems and Jupyter Solutions (2020). Original implementation of established equations; no Clawpack code is included.",
     "equation": "h_t + ∇·(h u) = 0; (h u)_t + ∇·(h u⊗u + ½h² I) = 0, g = 1",
     "status": "partially validated",
@@ -51521,7 +51521,10 @@ void main(){
         } catch (error) { host.fault(error.message); }
       },
       fieldCells() { return sim ? [sim.nx, sim.ny] : null; },
-      repaint() { draw(); }, resize() { if (sim) render(); }, live() { start(); },
+      repaint() { draw(); }, resize() { if (sim) render(); },
+      // Stopping drops the rest of the current frame's batch so no step lands after Running is off.
+      // Warmup and burst steps in `remaining` still finish; they are part of generating the plate.
+      live(key) { if (key === 'running' && !host.getState().running) liveRemaining = 0; start(); },
       pause() { paused = true; stop(); }, resume() { paused = false; start(); },
       action(key) { if (key === 'reseed') this.regenerate(); else if (key === 'burst' && sim) { remaining += 64; start(); } },
       async exportPNG(w, h) {
