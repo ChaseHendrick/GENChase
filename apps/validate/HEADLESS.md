@@ -34,6 +34,13 @@ Then choose work to contribute:
 
 Witness collection records what the module actually exposes. A missing witness is missing evidence, not a passing result. An observed witness pass still needs its scientific assumptions, independence and convergence reviewed. The polygon adapter can recover a known formula and never establishes originality by itself.
 
+Measurement collection probes WebGL2 and float32 color buffers before opening the modules.
+On macOS it requests the Metal renderer. If native headless graphics are unavailable,
+it retries with the software renderer and reports that fallback explicitly. The corpus
+records the actual renderer and browser launch flags. Software rendering uses CPU time;
+it is not evidence of Apple GPU execution. These observations still do not establish
+scientific accuracy.
+
 ## 3. Choose how much power to use
 
 The default is Balanced, with roughly half of scheduled running time reserved for work. Add `--power light` for roughly a quarter, or `--power maximum` for continuous work:
