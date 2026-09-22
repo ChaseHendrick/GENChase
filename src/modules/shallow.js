@@ -163,7 +163,10 @@ void main(){
         } catch (error) { host.fault(error.message); }
       },
       fieldCells() { return sim ? [sim.nx, sim.ny] : null; },
-      repaint() { draw(); }, resize() { if (sim) render(); }, live() { start(); },
+      repaint() { draw(); }, resize() { if (sim) render(); },
+      // Stopping drops the rest of the current frame's batch so no step lands after Running is off.
+      // Warmup and burst steps in `remaining` still finish; they are part of generating the plate.
+      live(key) { if (key === 'running' && !host.getState().running) liveRemaining = 0; start(); },
       pause() { paused = true; stop(); }, resume() { paused = false; start(); },
       action(key) { if (key === 'reseed') this.regenerate(); else if (key === 'burst' && sim) { remaining += 64; start(); } },
       async exportPNG(w, h) {
