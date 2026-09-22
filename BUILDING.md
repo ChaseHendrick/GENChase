@@ -62,6 +62,13 @@ Those optional contributor tools are not runtime dependencies and are not record
 `package.json`. The builder and catalog generator need only Node; `node tools/index.js`
 reads the maintained registrations without starting a browser.
 
+Catalog generation shares one source snapshot within a run instead of evaluating every
+module three times. A frozen-output comparison preserved all generated files; three
+alternating local runs reduced median catalog time from 739 ms to 293 ms. These timings
+are machine-specific. The condensate vortex diagnostic also uses an exact spatial
+neighbor search; `node tools/bec-neighbors-check.js` compares it with brute force,
+including tied distances. Neither optimization changes a numerical validation label.
+
 To target specific techniques or preview the full evidence plan:
 
 ```sh

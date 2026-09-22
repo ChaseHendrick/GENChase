@@ -57,6 +57,7 @@ jobs:
           node tools/rigid-body-audit.js
           node tools/direct-gravity-science.js
           node tools/physarum3d-display-check.js
+          node tools/bec-neighbors-check.js
           npm test
       - name: Structural checks
         run: node tools/lint.js

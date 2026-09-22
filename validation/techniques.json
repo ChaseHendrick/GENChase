@@ -60,7 +60,7 @@
   {
     "id": "bec",
     "source": "src/modules/bec.js",
-    "sourceSha256": "79529cc481dc186d42ffa47d8e960ed6b185d707b93707d8bedf64738cbec331",
+    "sourceSha256": "b45982b1396f335da7bc4b6f3e624c55afec7bc30f7f8b0374b856211199d61c",
     "reference": "The mean-field equation is Eugene Gross, Il Nuovo Cimento 20, 454 (1961), and Lev Pitaevskii, Soviet Physics JETP 13, 451 (1961). That a rotating superfluid answers with a triangular array of singly quantized vortices rather than rigid rotation is Alexei Abrikosov's 1957 result for type-II superconductors, Soviet Physics JETP 5, 1174, carried over to condensates; it was seen in the laboratory by Kirk Madison, Frédéric Chevy, Wendel Wohlleben and Jean Dalibard, Phys. Rev. Lett. 84, 806 (2000), and resolved into a lattice of well over a hundred vortices by Jamil Abo-Shaeer, Chandra Raman, Johnny Vogels and Wolfgang Ketterle, Science 292, 476 (2001). The staggered explicit scheme used in real time follows P. B. Visscher, Computers in Physics 5, 596 (1991). The quantization of circulation is Lars Onsager (1949) and Richard Feynman (1955).",
     "equation": "iℏ ∂ψ/∂t = [−½∇² + V(r) + g|ψ|² − Ω L_z] ψ,   circulation quantized in units of h/m",
     "status": "unvalidated",
@@ -68,7 +68,8 @@
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
       "Initial and intermediate warm-up fields are now rendered; this presentation fix does not validate condensate dynamics.",
-      "Combined phase/density colors now distinguish zero-phase matter from the empty background; the display correction leaves the computed field unchanged."
+      "Combined phase/density colors now distinguish zero-phase matter from the empty background; the display correction leaves the computed field unchanged.",
+      "The vortex diagnostic now uses an exact spatial six-neighbor search instead of repeated full all-pairs sorts. Equal-distance order and nearest-distance statistics are checked against brute force; this performance regression check does not validate vortex detection or the PDE."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
@@ -756,13 +757,14 @@
   {
     "id": "aharonov",
     "source": "src/modules/aharonov.js",
-    "sourceSha256": "897ddf6d6005f4f2961c0892554a96509e5f25bd30f874c46d231ae015fe3807",
+    "sourceSha256": "1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf",
     "reference": "Y. Aharonov and D. Bohm, Phys. Rev. 115, 485 (1959). Ehrenberg and Siday had the same phase in 1949. Chambers (1960) and Tonomura et al. (1986) saw the fringes shift around a shielded magnet. The plate is two Huygens slits plus a pure gauge phase, not a solenoid in a TEM.",
     "equation": "Δφ = (e/ℏ) ∮ A·dl = 2π Φ/Φ0,   I(x) = |ψ_L + e^{iΔφ} ψ_R|²",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "Display intensity uses a clipped 95th-percentile scale to reveal interference away from slit sources. The lower-field peak offset is a descriptive pixel location, not a calibrated fringe shift or validation against flux. The computed field is unchanged by this display correction."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",

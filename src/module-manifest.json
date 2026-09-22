@@ -1086,7 +1086,7 @@
       "subtitle": "phase from a field the particle never enters · 1959",
       "equation": "Δφ = (e/ℏ) ∮ A·dl = 2π Φ/Φ0,   I(x) = |ψ_L + e^{iΔφ} ψ_R|²",
       "credit": "Y. Aharonov and D. Bohm, Phys. Rev. 115, 485 (1959). Ehrenberg and Siday had the same phase in 1949. Chambers (1960) and Tonomura et al. (1986) saw the fringes shift around a shielded magnet. The plate is two Huygens slits plus a pure gauge phase, not a solenoid in a TEM.",
-      "blurb": "A particle that never enters a magnetic field still feels it. The vector potential around a shielded flux shifts the two-slit fringes by 2π Φ/Φ0. Classical Lorentz force is zero on both paths. The status line reports the measured fringe shift in flux quanta against the dialled Φ/Φ0.",
+      "blurb": "A particle that never enters a magnetic field still feels it. The vector potential around a shielded flux shifts the two-slit fringes by 2π Φ/Φ0. Classical Lorentz force is zero on both paths. The status line gives the brightest lower-field pixel’s horizontal offset as a fraction of plate width, not a calibrated fringe shift. Display intensity is scaled to its 95th percentile; the brightest 5% clips at unit exposure.",
       "order": 51,
       "seed": "",
       "presets": [

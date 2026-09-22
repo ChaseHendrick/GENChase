@@ -179,6 +179,36 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
     return [rgb[0] / 255, rgb[1] / 255, rgb[2] / 255];
   }
 
+  // Exact six-neighbor search. Equal distances retain original point order, matching
+  // the former stable all-pairs sort. This changes diagnostics cost, not the PDE.
+  function nearestVortexNeighbors(points) {
+    function build(ids, depth) {
+      if (!ids.length) return null;
+      const axis = depth % 2 ? 'y' : 'x';
+      ids.sort((a, b) => points[a][axis] - points[b][axis] || a - b);
+      const mid = ids.length >> 1;
+      return { id: ids[mid], axis, left: build(ids.slice(0, mid), depth + 1), right: build(ids.slice(mid + 1), depth + 1) };
+    }
+    const tree = build(points.map((_, i) => i), 0), count = Math.min(6, points.length - 1);
+    return points.map((p, index) => {
+      const best = [];
+      function visit(node) {
+        if (!node) return;
+        const q = points[node.id], delta = p[node.axis] - q[node.axis];
+        if (node.id !== index) {
+          const dx = q.x - p.x, dy = q.y - p.y, distance = dx * dx + dy * dy;
+          let at = 0;
+          while (at < best.length && (best[at][0] < distance || (best[at][0] === distance && best[at][1] < node.id))) at++;
+          if (at < count) { best.splice(at, 0, [distance, node.id]); if (best.length > count) best.pop(); }
+        }
+        visit(delta < 0 ? node.left : node.right);
+        if (best.length < count || delta * delta <= best[best.length - 1][0]) visit(delta < 0 ? node.right : node.left);
+      }
+      if (count > 0) visit(tree);
+      return best;
+    });
+  }
+
   /* ---------- Vortex Lattice ---------- */
   Studio.register({
     id: 'bec',
@@ -450,21 +480,18 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
         }
         // bond-orientational order: |psi6| is one for a perfect triangular lattice and near zero for a
         // disordered set of points. Six nearest neighbors per vortex, angles taken in the plate's frame.
+        const neighbors = nearestVortexNeighbors(out);
         psi6 = null;
         if (out.length >= 7) {
           let acc = 0, cnt = 0;
           for (let k = 0; k < out.length; k++) {
-            const d2 = [];
-            for (let m = 0; m < out.length; m++) {
-              if (m === k) continue;
-              const dx = out[m].x - out[k].x, dy = out[m].y - out[k].y;
-              d2.push([dx * dx + dy * dy, Math.atan2(dy, dx)]);
-            }
-            d2.sort((p, q) => p[0] - q[0]);
-            const use = Math.min(6, d2.length);
+            const nearest = neighbors[k];
             let sr = 0, si = 0;
-            for (let m = 0; m < use; m++) { sr += Math.cos(6 * d2[m][1]); si += Math.sin(6 * d2[m][1]); }
-            acc += Math.hypot(sr, si) / use; cnt++;
+            for (const [, m] of nearest) {
+              const angle = Math.atan2(out[m].y - out[k].y, out[m].x - out[k].x);
+              sr += Math.cos(6 * angle); si += Math.sin(6 * angle);
+            }
+            acc += Math.hypot(sr, si) / nearest.length; cnt++;
           }
           psi6 = acc / cnt;
         }
@@ -474,17 +501,7 @@ void main(){ outColor = vec4(texture(u_tex, vec2(v_uv.x, 1.0 - v_uv.y)).rgb, 1.0
         // pair to every other. The median nearest-neighbor distance makes no such assumption.
         bondLen = 0;
         if (out.length > 2) {
-          const nn = [];
-          for (let k = 0; k < out.length; k++) {
-            let best = Infinity;
-            for (let m = 0; m < out.length; m++) {
-              if (m === k) continue;
-              const dx = out[m].x - out[k].x, dy = out[m].y - out[k].y;
-              const d = dx * dx + dy * dy;
-              if (d < best) best = d;
-            }
-            if (isFinite(best)) nn.push(Math.sqrt(best));
-          }
+          const nn = neighbors.map(nearest => Math.sqrt(nearest[0][0]));
           nn.sort((a, b) => a - b);
           bondLen = nn.length ? nn[nn.length >> 1] * 1.35 : 0;
         }
