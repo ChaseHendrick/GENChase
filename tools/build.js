@@ -35,7 +35,7 @@ function generate() {
   });
   if (folder.includes('{{include:')) throw Error('Unresolved folder include');
   const manifest = require('./registry.js').metadata(root, [...seen].filter(name => name.startsWith('modules/')), bodies);
-  const portable = result.replace('{{science-reports}}', science.replace(/</g, '\\u003c')).replace('href="VALIDATION.md"', 'href="../VALIDATION.md"');
+  const portable = result.replace('{{science-reports}}', () => science.replace(/</g, '\\u003c')).replace('href="VALIDATION.md"', 'href="../VALIDATION.md"');
   return { manifest, files: { 'index.html': folder.replace('{{science-reports}}', '[]'), 'src/science-reports.json': science + '\n', 'dist/studio.html': portable, 'src/module-manifest.json': JSON.stringify({ techniques: manifest.techniques }, null, 2) + '\n' } };
 }
 function outputs() { return generate().files; }

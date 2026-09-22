@@ -13,4 +13,4 @@
 
 A passed hypothesis is not a new law, and a negative experiment does not show that its effect is impossible. Each report states its model, reference, thresholds, numerical checks and remaining gaps.
 
-The Cahn experiment includes a **Python analysis layer**: `python3 tools/cahn-scaling.py` fits the saved measurements, evaluates held-out predictions and resamples whole seeds for uncertainty. It uses only the Python standard library. The simulations remain in JavaScript/WebGL; the existing Python launcher serves the portable studio locally.
+The Cahn experiment includes a **Python analysis layer**: `python3 tools/cahn-scaling.py` fits the saved measurements, evaluates held-out predictions and resamples whole seeds for uncertainty. It uses only the Python standard library. The simulations remain in JavaScript/WebGL; the existing Python launcher serves the folder studio (`index.html`) locally.

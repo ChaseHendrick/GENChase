@@ -15,8 +15,8 @@
 <title>GENChase — Generative Art from Real Simulations</title>
 <meta name="theme-color" content="#B3712A">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23ECE9E2'/%3E%3Ccircle cx='16' cy='16.6' r='9.1' fill='none' stroke='%23B3712A' stroke-width='1.7'/%3E%3Ccircle cx='16' cy='16.6' r='1.05' fill='%23B3712A'/%3E%3Ccircle cx='10.3' cy='20.4' r='2.4' fill='%23C06E3A'/%3E%3Ccircle cx='21.7' cy='20.4' r='2.4' fill='%23D4B05A'/%3E%3Ccircle cx='16' cy='9.3' r='1.8' fill='%238A96A3'/%3E%3C/svg%3E">
-<meta property="og:image" content="/og.jpg">
-<meta name="twitter:image" content="/og.jpg">
+<meta property="og:image" content="https://sharpmeow.github.io/GENChase/og.jpg">
+<meta name="twitter:image" content="https://sharpmeow.github.io/GENChase/og.jpg">
 <meta name="description" content="GENChase is a generative art studio built from real scientific simulations: flow fields, reaction-diffusion, slime mold, Lenia, fluids, Cahn–Hilliard, Ohta–Kawasaki copolymers, Swift–Hohenberg, phase-field crystal, Kuramoto–Sivashinsky, complex Ginzburg–Landau, swarmalators, Chirikov and Hofstadter, Helmholtz scars, optical caustics, smectic focal conics, Hastings–Levitov growth, Douady–Couder phyllotaxis, strange attractors, fractal raymarching, Penrose tilings, dendritic growth, chimera states, XY vortices, active nematics, Chladni figures, excitable media, Turing patterns, the Ising model, Abelian sandpiles, percolation, Mandelbrot and Julia sets, the double pendulum, hydrogen orbitals, Schrödinger wave packets and Rayleigh–Bénard convection, plus additional mathematical plates: KP soliton webs, Gerstner waves, the figure-eight choreography, Camassa–Holm peakons, the photon sphere, Crapper capillary waves, Hasimoto filaments, KP-I lumps and Three-vortex collapse bound. Seeded recipes and adjustable print exports; scientific validation coverage varies.">
 <meta name="keywords" content="generative art, Turing patterns, Barkley excitable media, Ising model, Abelian sandpile, percolation, Mandelbrot, Julia set, Newton fractal, double pendulum, hydrogen orbitals, Schrodinger, Rayleigh-Benard, Keller-Segel, Klausmeier, Indra pearls, Schottky, Lichtenberg, dielectric breakdown, Talbot carpet, Ohta-Kawasaki, Hofstadter butterfly, Helmholtz quantum scars, optical caustics, smectic focal conics, Hastings-Levitov, Douady-Couder phyllotaxis, complex Ginzburg-Landau, Cahn-Hilliard, Swift-Hohenberg, phase-field crystal, Kuramoto-Sivashinsky, swarmalators, Chirikov, chimera, XY model, active nematics, print quality generative art, Three-vortex collapse bound, three-vortex collapse, point vortex, Gröbli, Aref, parallelogram lock, quincunx lock, Novikov-Sedov, five-vortex collapse">
 <meta name="author" content="Chaos">
@@ -8500,7 +8500,8 @@ void main(){
     $('tabs').addEventListener('keydown', async ev => {
       const keys = ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Home', 'End'];
       if (keys.indexOf(ev.key) < 0) return;
-      const list = [...document.querySelectorAll('.tab[data-id]')];
+      // Only the tabs a search leaves visible; moving onto a hidden tab switches to a plate nobody can see.
+      const list = [...document.querySelectorAll('.tab[data-id]:not(.is-hidden)')];
       if (!list.length) return;
       const at = Math.max(0, list.findIndex(b => b.dataset.id === (loadingId || currentId)));
       let to = at;
@@ -8547,8 +8548,8 @@ void main(){
       const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || ev.target.isContentEditable;
       const modalOpen = MODALS.map($).some(m => m && !m.hidden);
       if (ev.key === 'Escape') {
-        if (find && find.value) { find.value = ''; find.dispatchEvent(new Event('input')); return; }
         if (modalOpen) { closeAllModals(); return; }
+        if (find && find.value) { find.value = ''; find.dispatchEvent(new Event('input')); return; }
         if (focusMode) { setFocus(false); return; }
         return;
       }
@@ -8558,6 +8559,8 @@ void main(){
         return;
       }
       if (modalOpen || typing) return;
+      // Ctrl, Cmd and Alt chords belong to the browser (find, print, reload, save); only undo is ours.
+      if ((ev.metaKey || ev.ctrlKey || ev.altKey) && ev.key !== 'z' && ev.key !== 'Z') return;
       const role = (ev.target && ev.target.getAttribute && ev.target.getAttribute('role')) || '';
       if (ev.key === ' ') {
         if (tag === 'BUTTON' || role === 'button' || role === 'tab' || role === 'switch' || tag === 'A' || tag === 'SUMMARY') return;
