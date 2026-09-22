@@ -197,7 +197,7 @@
   {
     "id": "cyclic",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "a589e425439e0cf813f5c5614c6615c216b4785fc05f07053ae278eb00acc1de",
+    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a < 1 < b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
     "equation": "∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v)",
     "status": "unvalidated",
@@ -558,7 +558,7 @@
   {
     "id": "vegetation",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "a589e425439e0cf813f5c5614c6615c216b4785fc05f07053ae278eb00acc1de",
+    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n², because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
     "equation": "∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n",
     "status": "unvalidated",
@@ -894,7 +894,7 @@
   {
     "id": "excitable",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "a589e425439e0cf813f5c5614c6615c216b4785fc05f07053ae278eb00acc1de",
+    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
     "equation": "Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b)",
     "status": "unvalidated",
@@ -1540,7 +1540,7 @@
   {
     "id": "turing",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "a589e425439e0cf813f5c5614c6615c216b4785fc05f07053ae278eb00acc1de",
+    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry.",
     "equation": "Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v",
     "status": "unvalidated",
@@ -1739,7 +1739,7 @@
   {
     "id": "chemotaxis",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "a589e425439e0cf813f5c5614c6615c216b4785fc05f07053ae278eb00acc1de",
+    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) < c/2 − D − a.",
     "equation": "∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²)",
     "status": "unvalidated",

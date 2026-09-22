@@ -1040,7 +1040,7 @@ void main(){
     blurb: 'Cells that secrete an attractant and crawl up its gradient cannot stay evenly spread. Wherever a few more cells gather, more attractant is made there, and more cells arrive: Keller and Segel wrote that feedback down for the amoebae of Dictyostelium streaming toward a common point before they build a fruiting body. In the plain model the collapse runs away to a singularity. Here the sensitivity χ(u) falls off in a crowd and the cells reproduce logistically, so the run-away stops at finite density and the plate settles into spots, worms and honeycombs of cells around pools of attractant. c is how strongly cells respond, a how fast the attractant decays, D how fast it spreads. The chemotactic flux is differenced conservatively across cell faces, so the total number of cells is exactly what growth and death make it.',
     schema: GRID.concat([scaleField(0.5, 4, '2.2')]).concat([
       RANGE('Cells', 'chi', 'Sensitivity c', LIVE, 0.5, 8, 0.05, f2, {
-        hint: 'Chemotactic strength. Patterns need c/2 − D − a > 2√(aD); at the defaults that is c > 2.6. Around 3.3 to 3.6 the aggregates are spots and short worms.' }),
+        hint: 'Chemotactic strength. Patterns need c/2 − D − a > 2√(aD); at the defaults that is c > 1.6. Around 3.3 to 3.6 the aggregates are spots and short worms.' }),
       RANGE('Cells', 'a', 'Attractant decay a', LIVE, 0.02, 1.5, 0.01, f2),
       RANGE('Cells', 'D', 'Attractant diffusion D', LIVE, 0.02, 3, 0.01, f2),
       { group: 'Seeding', key: 'init', label: 'Seeding', type: 'seg', kind: GEOM,
