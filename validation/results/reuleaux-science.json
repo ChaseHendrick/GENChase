@@ -1,0 +1,681 @@
+{
+  "scope": "Finite listed recipes only; exact continuous geometry, sampled boundary, native field and caption-free PNG cell-center preservation. No rolling physics, pixel-edge exact-width, arbitrary settings or printer calibration claim.",
+  "sourceSha256": "179cef420e5bc881718b9904dc73240b446f54178ee8a1f592f786caf710e4f9",
+  "engineSha256": "3b0c63a571852efa11bdc9f48964866b5d11d7c38a4d4432f2387574079e1c07",
+  "environment": {
+    "node": "v24.21.0",
+    "chromium": "145.0.7632.6",
+    "platform": "darwin"
+  },
+  "geometry": {
+    "results": [
+      {
+        "R": 1,
+        "directions": 997,
+        "maxExactError": 4.440892098500626e-16,
+        "maxDeficit": 2.6406425512881526e-7,
+        "maxOvershoot": 0,
+        "chordBound": 5.288496638389262e-7,
+        "polygonArea": 0.7047703692004185,
+        "exactArea": 0.704770923010458,
+        "exactPolygonDeficit": 5.538100388436523e-7
+      },
+      {
+        "R": 24,
+        "directions": 997,
+        "maxExactError": 1.0658141036401503e-14,
+        "maxDeficit": 0.0000063375421213152094,
+        "maxOvershoot": 0,
+        "chordBound": 0.000012692391932134228,
+        "polygonArea": 405.9477326594412,
+        "exactArea": 405.94805165402374,
+        "exactPolygonDeficit": 0.00031899458237394374
+      },
+      {
+        "R": 44,
+        "directions": 997,
+        "maxExactError": 1.4210854715202004e-14,
+        "maxDeficit": 0.000011618827230108764,
+        "maxOvershoot": 0,
+        "chordBound": 0.000023269385208912752,
+        "polygonArea": 1364.435434772012,
+        "exactArea": 1364.4365069482465,
+        "exactPolygonDeficit": 0.0010721762352013109
+      },
+      {
+        "R": 48,
+        "directions": 997,
+        "maxExactError": 2.1316282072803006e-14,
+        "maxDeficit": 0.000012675084242630419,
+        "maxOvershoot": 0,
+        "chordBound": 0.000025384783864268456,
+        "polygonArea": 1623.7909306377649,
+        "exactArea": 1623.792206616095,
+        "exactPolygonDeficit": 0.001275978329495775
+      },
+      {
+        "R": 52,
+        "directions": 997,
+        "maxExactError": 2.1316282072803006e-14,
+        "maxDeficit": 0.000013731341269362929,
+        "maxOvershoot": 0,
+        "chordBound": 0.00002750018251962416,
+        "polygonArea": 1905.6990783179328,
+        "exactArea": 1905.7005758202783,
+        "exactPolygonDeficit": 0.0014975023450332359
+      },
+      {
+        "R": 64,
+        "directions": 997,
+        "maxExactError": 2.842170943040401e-14,
+        "maxDeficit": 0.000016900112328244177,
+        "maxOvershoot": 0,
+        "chordBound": 0.000033846378485691275,
+        "polygonArea": 2886.739432244914,
+        "exactArea": 2886.741700650836,
+        "exactPolygonDeficit": 0.0022684059191036
+      },
+      {
+        "R": 80,
+        "directions": 997,
+        "maxExactError": 2.842170943040401e-14,
+        "maxDeficit": 0.000021125140406752507,
+        "maxOvershoot": 0,
+        "chordBound": 0.000042307973107114094,
+        "polygonArea": 4510.530362882672,
+        "exactArea": 4510.533907266931,
+        "exactPolygonDeficit": 0.003544384248599375
+      }
+    ],
+    "straightTriangleError": 0.1311120312749935
+  },
+  "missingDiskMutationChangedCells": 1416,
+  "cases": [
+    {
+      "name": "default",
+      "params": {
+        "grid": 192,
+        "aspect": "1:1",
+        "R": 44,
+        "frames": 24,
+        "kind": "roll",
+        "view": "int",
+        "exposure": 1,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "numerical": {
+        "W": 192,
+        "H": 192,
+        "cells": 36864,
+        "mismatches": 0,
+        "minMembershipMargin": 0.12088406983184541,
+        "roseRoundingMargin": null,
+        "roundingSensitivePoints": 0,
+        "shiftedFromExactCircle": 0,
+        "measuredMean": 43.99999410186228,
+        "expectedWidth": 44,
+        "witnessTolerance": 0.000023269429208912752,
+        "mayCrop": false,
+        "oneCellCorruptionDetected": true
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "nativeWidth": 192,
+        "nativeHeight": 192,
+        "comparedCells": 36864,
+        "channelMismatches": 0,
+        "shiftedPrintMismatches": 896
+      },
+      "exportPreservesState": true
+    },
+    {
+      "name": "roll",
+      "params": {
+        "grid": 192,
+        "aspect": "1:1",
+        "R": 44,
+        "frames": 28,
+        "kind": "roll",
+        "view": "int",
+        "exposure": 1,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "numerical": {
+        "W": 192,
+        "H": 192,
+        "cells": 36864,
+        "mismatches": 0,
+        "minMembershipMargin": 0.03121812182962458,
+        "roseRoundingMargin": null,
+        "roundingSensitivePoints": 0,
+        "shiftedFromExactCircle": 0,
+        "measuredMean": 43.99999410186228,
+        "expectedWidth": 44,
+        "witnessTolerance": 0.000023269429208912752,
+        "mayCrop": false,
+        "oneCellCorruptionDetected": true
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "nativeWidth": 192,
+        "nativeHeight": 192,
+        "comparedCells": 36864,
+        "channelMismatches": 0,
+        "shiftedPrintMismatches": 908
+      },
+      "exportPreservesState": true
+    },
+    {
+      "name": "shape",
+      "params": {
+        "grid": 192,
+        "aspect": "1:1",
+        "R": 52,
+        "frames": 24,
+        "kind": "shape",
+        "view": "int",
+        "exposure": 1,
+        "palette": [
+          "#1F3A5F",
+          "#4F7CAC",
+          "#C9D6DF",
+          "#E07A5F",
+          "#F2CC8F"
+        ],
+        "bg": "#ECEFEA"
+      },
+      "numerical": {
+        "W": 192,
+        "H": 192,
+        "cells": 36864,
+        "mismatches": 0,
+        "minMembershipMargin": 1.1332223044505554,
+        "roseRoundingMargin": null,
+        "roundingSensitivePoints": 0,
+        "shiftedFromExactCircle": 0,
+        "measuredMean": 51.99999302947359,
+        "expectedWidth": 52,
+        "witnessTolerance": 0.00002750023451962416,
+        "mayCrop": false,
+        "oneCellCorruptionDetected": true
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "nativeWidth": 192,
+        "nativeHeight": 192,
+        "comparedCells": 36864,
+        "channelMismatches": 0,
+        "shiftedPrintMismatches": 104
+      },
+      "exportPreservesState": true
+    },
+    {
+      "name": "rose",
+      "params": {
+        "grid": 192,
+        "aspect": "1:1",
+        "R": 48,
+        "frames": 24,
+        "kind": "width",
+        "view": "int",
+        "exposure": 1,
+        "palette": [
+          "#3F3A36",
+          "#8C2F0D",
+          "#F25C05",
+          "#F2A20C",
+          "#FFF3D6"
+        ],
+        "bg": "#121110"
+      },
+      "numerical": {
+        "W": 192,
+        "H": 192,
+        "cells": 36864,
+        "mismatches": 0,
+        "minMembershipMargin": null,
+        "roseRoundingMargin": 0.0010481115942866381,
+        "roundingSensitivePoints": 0,
+        "shiftedFromExactCircle": 0,
+        "measuredMean": 47.99999356566793,
+        "expectedWidth": 48,
+        "witnessTolerance": 0.000025384831864268458,
+        "mayCrop": false,
+        "oneCellCorruptionDetected": true
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "nativeWidth": 192,
+        "nativeHeight": 192,
+        "comparedCells": 36864,
+        "channelMismatches": 0,
+        "shiftedPrintMismatches": 536
+      },
+      "exportPreservesState": true
+    },
+    {
+      "name": "fat",
+      "params": {
+        "grid": 192,
+        "aspect": "1:1",
+        "R": 64,
+        "frames": 24,
+        "kind": "shape",
+        "view": "int",
+        "exposure": 1,
+        "palette": [
+          "#3A2E5C",
+          "#7A4FBF",
+          "#C084FC",
+          "#F7C8E0",
+          "#E6E1F5"
+        ],
+        "bg": "#17141F"
+      },
+      "numerical": {
+        "W": 192,
+        "H": 192,
+        "cells": 36864,
+        "mismatches": 0,
+        "minMembershipMargin": 0.06897265080260695,
+        "roseRoundingMargin": null,
+        "roundingSensitivePoints": 0,
+        "shiftedFromExactCircle": 0,
+        "measuredMean": 63.999991420890595,
+        "expectedWidth": 64,
+        "witnessTolerance": 0.00003384644248569128,
+        "mayCrop": false,
+        "oneCellCorruptionDetected": true
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "nativeWidth": 192,
+        "nativeHeight": 192,
+        "comparedCells": 36864,
+        "channelMismatches": 0,
+        "shiftedPrintMismatches": 128
+      },
+      "exportPreservesState": true
+    },
+    {
+      "name": "many",
+      "params": {
+        "grid": 192,
+        "aspect": "1:1",
+        "R": 44,
+        "frames": 40,
+        "kind": "roll",
+        "view": "int",
+        "exposure": 1,
+        "palette": [
+          "#1A1A1A",
+          "#4A4A4A",
+          "#8C8C8C",
+          "#C8C4BB",
+          "#E63B2E"
+        ],
+        "bg": "#E9E7E2"
+      },
+      "numerical": {
+        "W": 192,
+        "H": 192,
+        "cells": 36864,
+        "mismatches": 0,
+        "minMembershipMargin": 0.0276682203314067,
+        "roseRoundingMargin": null,
+        "roundingSensitivePoints": 0,
+        "shiftedFromExactCircle": 0,
+        "measuredMean": 43.99999410186228,
+        "expectedWidth": 44,
+        "witnessTolerance": 0.000023269429208912752,
+        "mayCrop": false,
+        "oneCellCorruptionDetected": true
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "nativeWidth": 192,
+        "nativeHeight": 192,
+        "comparedCells": 36864,
+        "channelMismatches": 0,
+        "shiftedPrintMismatches": 916
+      },
+      "exportPreservesState": true
+    },
+    {
+      "name": "log",
+      "params": {
+        "grid": 192,
+        "aspect": "1:1",
+        "R": 44,
+        "frames": 24,
+        "kind": "roll",
+        "view": "log",
+        "exposure": 1,
+        "palette": [
+          "#2C0F4A",
+          "#8A1C6B",
+          "#E63946",
+          "#FF9F1C",
+          "#FFF1A8"
+        ],
+        "bg": "#0A0710"
+      },
+      "numerical": {
+        "W": 192,
+        "H": 192,
+        "cells": 36864,
+        "mismatches": 0,
+        "minMembershipMargin": 0.12088406983184541,
+        "roseRoundingMargin": null,
+        "roundingSensitivePoints": 0,
+        "shiftedFromExactCircle": 0,
+        "measuredMean": 43.99999410186228,
+        "expectedWidth": 44,
+        "witnessTolerance": 0.000023269429208912752,
+        "mayCrop": false,
+        "oneCellCorruptionDetected": true
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "nativeWidth": 192,
+        "nativeHeight": 192,
+        "comparedCells": 36864,
+        "channelMismatches": 0,
+        "shiftedPrintMismatches": 764
+      },
+      "exportPreservesState": true
+    },
+    {
+      "name": "small-square",
+      "params": {
+        "grid": 128,
+        "aspect": "1:1",
+        "R": 24,
+        "frames": 8,
+        "kind": "shape",
+        "view": "int",
+        "exposure": 0.4,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "numerical": {
+        "W": 128,
+        "H": 128,
+        "cells": 16384,
+        "mismatches": 0,
+        "minMembershipMargin": 0.007732164214303339,
+        "roseRoundingMargin": null,
+        "roundingSensitivePoints": 0,
+        "shiftedFromExactCircle": 0,
+        "measuredMean": 23.999996782833964,
+        "expectedWidth": 24,
+        "witnessTolerance": 0.000012692415932134229,
+        "mayCrop": false,
+        "oneCellCorruptionDetected": true
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "nativeWidth": 128,
+        "nativeHeight": 128,
+        "comparedCells": 16384,
+        "channelMismatches": 0,
+        "shiftedPrintMismatches": 48
+      },
+      "exportPreservesState": true
+    },
+    {
+      "name": "cropped-wide",
+      "params": {
+        "grid": 128,
+        "aspect": "16:9",
+        "R": 80,
+        "frames": 48,
+        "kind": "roll",
+        "view": "int",
+        "exposure": 2.2,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "numerical": {
+        "W": 128,
+        "H": 72,
+        "cells": 9216,
+        "mismatches": 0,
+        "minMembershipMargin": 0.0006812954825363704,
+        "roseRoundingMargin": null,
+        "roundingSensitivePoints": 0,
+        "shiftedFromExactCircle": 0,
+        "measuredMean": 79.99998927611338,
+        "expectedWidth": 80,
+        "witnessTolerance": 0.00004230805310711409,
+        "mayCrop": true,
+        "oneCellCorruptionDetected": true
+      },
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "nativeWidth": 128,
+        "nativeHeight": 72,
+        "comparedCells": 9216,
+        "channelMismatches": 0,
+        "shiftedPrintMismatches": 1668
+      },
+      "exportPreservesState": true
+    },
+    {
+      "name": "large-portrait",
+      "params": {
+        "grid": 224,
+        "aspect": "4:5",
+        "R": 80,
+        "frames": 48,
+        "kind": "roll",
+        "view": "log",
+        "exposure": 1,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "numerical": {
+        "W": 224,
+        "H": 280,
+        "cells": 62720,
+        "mismatches": 0,
+        "minMembershipMargin": 0.0006812954825363704,
+        "roseRoundingMargin": null,
+        "roundingSensitivePoints": 0,
+        "shiftedFromExactCircle": 0,
+        "measuredMean": 79.99998927611338,
+        "expectedWidth": 80,
+        "witnessTolerance": 0.00004230805310711409,
+        "mayCrop": false,
+        "oneCellCorruptionDetected": true
+      },
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "nativeWidth": 224,
+        "nativeHeight": 280,
+        "comparedCells": 62720,
+        "channelMismatches": 0,
+        "shiftedPrintMismatches": 2912
+      },
+      "exportPreservesState": true
+    },
+    {
+      "name": "landscape",
+      "params": {
+        "grid": 224,
+        "aspect": "5:4",
+        "R": 24,
+        "frames": 8,
+        "kind": "roll",
+        "view": "int",
+        "exposure": 1,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "numerical": {
+        "W": 224,
+        "H": 179,
+        "cells": 40096,
+        "mismatches": 0,
+        "minMembershipMargin": 0.18335800641841615,
+        "roseRoundingMargin": null,
+        "roundingSensitivePoints": 0,
+        "shiftedFromExactCircle": 0,
+        "measuredMean": 23.999996782833964,
+        "expectedWidth": 24,
+        "witnessTolerance": 0.000012692415932134229,
+        "mayCrop": false,
+        "oneCellCorruptionDetected": true
+      },
+      "print": {
+        "width": 2400,
+        "height": 1920,
+        "nativeWidth": 224,
+        "nativeHeight": 179,
+        "comparedCells": 40096,
+        "channelMismatches": 0,
+        "shiftedPrintMismatches": 232
+      },
+      "exportPreservesState": true
+    },
+    {
+      "name": "small-rose",
+      "params": {
+        "grid": 128,
+        "aspect": "16:9",
+        "R": 24,
+        "frames": 24,
+        "kind": "width",
+        "view": "int",
+        "exposure": 1,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "numerical": {
+        "W": 128,
+        "H": 72,
+        "cells": 9216,
+        "mismatches": 0,
+        "minMembershipMargin": null,
+        "roseRoundingMargin": 0.000045897415020590415,
+        "roundingSensitivePoints": 0,
+        "shiftedFromExactCircle": 0,
+        "measuredMean": 23.999996782833964,
+        "expectedWidth": 24,
+        "witnessTolerance": 0.000012692415932134229,
+        "mayCrop": false,
+        "oneCellCorruptionDetected": true
+      },
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "nativeWidth": 128,
+        "nativeHeight": 72,
+        "comparedCells": 9216,
+        "channelMismatches": 0,
+        "shiftedPrintMismatches": 266
+      },
+      "exportPreservesState": true
+    },
+    {
+      "name": "large-rose",
+      "params": {
+        "grid": 224,
+        "aspect": "4:5",
+        "R": 80,
+        "frames": 24,
+        "kind": "width",
+        "view": "log",
+        "exposure": 1,
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "numerical": {
+        "W": 224,
+        "H": 280,
+        "cells": 62720,
+        "mismatches": 0,
+        "minMembershipMargin": null,
+        "roseRoundingMargin": 0.000027461522932981097,
+        "roundingSensitivePoints": 4,
+        "shiftedFromExactCircle": 0,
+        "measuredMean": 79.99998927611338,
+        "expectedWidth": 80,
+        "witnessTolerance": 0.00004230805310711409,
+        "mayCrop": false,
+        "oneCellCorruptionDetected": true
+      },
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "nativeWidth": 224,
+        "nativeHeight": 280,
+        "comparedCells": 62720,
+        "channelMismatches": 0,
+        "shiftedPrintMismatches": 592
+      },
+      "exportPreservesState": true
+    }
+  ],
+  "pageErrors": []
+}

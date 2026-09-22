@@ -2196,17 +2196,20 @@
   {
     "id": "reuleaux",
     "source": "src/modules/reuleaux.js",
-    "sourceSha256": "279629ef500e0ebf8f48d7c7fd1802cb493c4cc487462ccb2971b99156e8cfbc",
-    "reference": "F. Reuleaux, The Kinematics of Machinery (1875), described the curved triangle of constant width now named for him. The intersection of three radius-R disks centered at an equilateral triangle has constant support width R. The plate shows this body, rotated overlays or a sampled support-width rose.",
+    "sourceSha256": "179cef420e5bc881718b9904dc73240b446f54178ee8a1f592f786caf710e4f9",
+    "reference": "F. Reuleaux, The Kinematics of Machinery (Kennedy translation, 1876), described the curved triangle of constant width now named for him. The intersection of three radius-R disks centered at an equilateral triangle has constant support width R. The plate shows this body, rotated overlays or a sampled support-width rose.",
     "equation": "width(θ) = R  for all θ,   W ≠ a disk,   area = ½(π − √3) R²",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The independent audit samples the actual circular-arc construction and checks constant-width convergence and area; it does not validate rolling dynamics or the browser print path.",
-      "Support widths are sampled at finite angular resolution and the area check is polygonal."
+      "Validated only for the 13 recorded recipes and stated continuous-geometry, finite-field and caption-free PNG preservation claims. Not every parameter combination or external peer review.",
+      "Width is measured from the complete sampled mathematical boundary, not the pixelated or possibly cropped picture. Geometry is known by construction, so this is a regression check, not a novel formula or independent physical prediction.",
+      "Rotated overlays have no no-slip, force, contact or square-drilling model. Shape and width rose are finite-grid drawings.",
+      "Print checks compare every native cell center, not every resampled edge pixel, perceptual color, PDF/TIFF conversion, captions/custom paper or physical output. More print pixels do not increase native scientific resolution.",
+      "Four large-rose marks lie within the conservative rounding-error zone; the independent discrete support check finds no changed rounded locations for the recorded recipe. This is not a universal pixel-circle guarantee."
     ],
     "remaining": [
-      "Add an independent browser print-state check for the arc mesh and width rose.",
-      "Review the rolling and near-corner limits against a primary kinematics source."
+      "Broaden the finite recipe domain before extending this label to arbitrary settings or browsers.",
+      "Validate captions/custom paper and physical print measurements separately; add vector geometry if exact scalable body outlines are required."
     ],
     "numerical": [
       {
@@ -2218,9 +2221,36 @@
         "failureControl": "Use the three triangle vertices as a boundary; its sampled support width must deviate by more than 0.1.",
         "command": "node tools/geometry-science.js --write",
         "results": "validation/results/geometry-science.json"
+      },
+      {
+        "test": "tools/reuleaux-science.js",
+        "scope": "Independent continuous and discrete support extrema, analytic polygon-area deficit, all native field cells and live witness for 13 enumerated recipes; see validation/REULEAUX.md.",
+        "criteria": "Support deficits below the rigorous chord bound plus 1e-12 R, area residual below 1e-11 R squared, zero field mismatches; reject omitted disk and corrupted field controls.",
+        "limitations": "Finite recipe domain; static geometric construction, not rolling physics. Constant width of the continuous body does not mean exact width of its raster image.",
+        "benchmark": "Feasible disk support points and corners independently maximize the support function; exact circular-segment area; inverse-rotated cell centers with squared-distance membership; independently quantized angular support for the rose.",
+        "failureControl": "A straight triangle fails constant width; removing the third disk changes the reviewed shape field; one corrupted cell fails equality. Actual counts are recorded.",
+        "command": "node tools/reuleaux-science.js --write",
+        "results": "validation/results/reuleaux-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/reuleaux-science.js",
+        "scope": "Actual engine PNG export dialog for all 13 recorded recipes at 8-inch longest edge, 300 ppi, caption disabled and aspect-matched paper.",
+        "criteria": "2400-pixel longest edge; zero RGBA mismatches at every native cell center; unchanged field, recipe and structured witness; deliberately shifted print rejected.",
+        "limitations": "Preserves the native field and its existing pixel colors, not exact continuous edge widths, arbitrary export settings or printer color accuracy.",
+        "command": "node tools/reuleaux-science.js --write",
+        "results": "validation/results/reuleaux-science.json"
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/reuleaux-science.json",
+    "domain": {
+      "parameters": "Exactly the 13 recipes and palettes enumerated in validation/results/reuleaux-science.json: default, six presets each applied to defaults, and six boundary-setting fixtures. No claim for unlisted slider combinations.",
+      "conditions": "Static intersection of three equal-radius disks centered on an equilateral triangle, finite rotations or sampled width rose in a centered rectangular field. No physical time, dynamics or contact law. Cropped-wide fixture validates only the finite window. Caption disabled; standard aspect-matched 8-inch-longest-edge PNG at 300 ppi.",
+      "resolution": "Recorded native fields from 128x72 to 224x280; 720 subdivisions per arc and 180 rose angles. Geometry checks use 997 independent directions at seven radii, plus the separate 24/48/96/192/720 refinement audit. Prints have a 2400-pixel longest edge; every native cell center is compared.",
+      "precision": "JavaScript binary64 geometry and Float32 field accumulation, Canvas2D RGBA8 pixels in the recorded Chromium environment. Width roundoff allowance 1e-12 R; area-deficit residual below 1e-11 R squared; zero field-entry and print-center channel mismatches. Not a cross-browser or physical-printer guarantee."
+    }
   },
   {
     "id": "apollonian",
