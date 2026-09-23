@@ -5614,14 +5614,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "0f5427d1446138675dd4be67d1c3df9896ec06ffa1103d9dbc94060332a7c1b0",
     "reference": "S. Saha and R. Golestanian, Effervescence in a binary mixture with nonlinear non-reciprocal interactions, Nature Communications 16, 7310 (2025), doi:10.1038/s41467-025-61728-8, equation 5. Original finite-difference implementation; the paper uses a different spectral solver.",
     "equation": "∂t ψ = ∇²[(-1+iα₀)ψ + (1−iα₁)|ψ|²ψ − K∇²ψ]",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Periodic finite-difference Heun implementation of Saha–Golestanian2025 Eq5, not the paper spectral solver or a reproduced phase diagram. Conditional timestep scale is not a nonlinear stability proof. Prepared waves are imposed.",
+      "Periodic finite-difference Heun twin of Saha–Golestanian 2025 Eq5, not the paper spectral solver or a reproduced phase diagram. Conditional timestep scale is not a nonlinear stability proof. Prepared waves are imposed; long runs T≤20 on stated grids only.",
       "Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device."
     ],
     "remaining": [
-      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
-      "Broaden print interpretation and hardware coverage; retain stated model assumptions."
+      "Nonlinear long-time statistics, boundary variants, spectral-solver comparison and phase-diagram evidence before quantitative generalization beyond prepared plane waves.",
+      "Broaden print interpretation and hardware coverage beyond the recorded export states."
     ],
     "numerical": [
       {
@@ -5633,6 +5633,16 @@ shall not be misrepresented as the original profile.
         "benchmark": "Independent Float64 complete-chemical-potential Laplacian, refined RK4 and continuum/discrete complex plane-wave solutions obtained by substitution into Eq5.",
         "failureControl": "Reverse rotation or biharmonic sign, omit nonlinearity, or inject mass source; all must fail. Unsafe internal step must halt and restore accepted state.",
         "limitations": "Periodic finite-difference Heun implementation of Saha–Golestanian2025 Eq5, not the paper spectral solver or a reproduced phase diagram. Conditional timestep scale is not a nonlinear stability proof. Prepared waves are imposed."
+      },
+      {
+        "test": "tools/nonreciprocal-longrun-science.js",
+        "command": "node tools/nonreciprocal-longrun-science.js",
+        "results": "validation/results/nonreciprocal-longrun-science.json",
+        "scope": "Node Float64 twin of the periodic FD+Heun operators: exact discrete plane-wave tracking at T=5..20 across five (α0,α1,K,mode) points, a 3×3 parameter matrix at T=5, and 32/64 refined grids on a fixed 32×32 box.",
+        "criteria": "Field max error below1e-5, amplitude error below1e-5 and conserved means within1e-9 on all long-run/matrix/resolution fixtures; stated failure controls must reject the long-run claim.",
+        "benchmark": "Analytic discrete dispersion q_h, ρ²=1−Kq_h, ω=q_h(α0−α1ρ²) from NONRECIPROCAL.md; exact ψ=ρ exp(i(k·x−ωt)) compared to independent Float64 Heun on the complete-chemical-potential Laplacian twin.",
+        "failureControl": "Flip ω sign, use wrong K in the dispersion amplitude/frequency, take an unstable coarse timestep (dt=0.05), or inject a mean drift; each must miss the long-run band or become nonfinite.",
+        "limitations": "Discrete modal long runs and a finite parameter/resolution band only; not nonlinear droplet/chaos/phase-diagram evidence, not GPU float32, not open boundaries or spectral-solver comparison."
       }
     ],
     "print": [
@@ -5644,7 +5654,15 @@ shall not be misrepresented as the original profile.
         "criteria": "Exact scientific state preserved, output dimensions exact, luminance spread above12/255; rejected batch restores accepted field and step count.",
         "limitations": "Selected states and rendering backend; more output pixels do not improve numerical resolution or establish physical accuracy."
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/nonreciprocal-longrun-science.json",
+    "domain": {
+      "parameters": "Periodic finite-difference Heun implementation of Saha–Golestanian 2025 Eq5 with prepared discrete plane waves; long-run fixtures cover grids 32×24..64×32, K∈{0.4..1.5}, a0/a1 pairs, modes (1–3,1–2), dx∈{0.75,1}, plus the short-T science pack and 3×3 parameter matrix / 32→64 refine cases in validation/results/nonreciprocal-longrun-science.json and nonreciprocal-science.json.",
+      "conditions": "Periodic domain; Float64 twin of discrete plane-wave dispersion from NONRECIPROCAL.md; long durations T∈{5,8,10,20}; failure controls (wrong ω/K, oversized dt→nonfinite, mean inject) must reject the exact-wave claim; print preserves registered export states.",
+      "resolution": "Long-run max field error ≤1.75e-7 (tol 1e-5), 3×3 param matrix ≤1.08e-7, 32→64 refine ~5e-9; conserved mean |drift| at machine epsilon. Exact grids, dt, steps and modes recorded per case.",
+      "precision": "Float64 fields and independent discrete-dispersion reference; not the paper spectral solver or a reproduced phase diagram. RGBA8/SVG print precision as registered."
+    }
   },
   {
     "id": "hodgkin-huxley",
