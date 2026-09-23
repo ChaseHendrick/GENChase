@@ -35,6 +35,33 @@ Statuses:
 - **validated within stated limits**: numerical and print evidence cover a documented parameter domain.
   This does not mean all parameters, all hardware, or exact agreement with a physical experiment.
 
+### Higher tiers (defined, not yet granted)
+
+Two stronger labels sit above validated within stated limits. No technique holds either, and
+`tools/science.js` accepts only the three statuses above, so a record cannot claim a higher tier by
+editing a field; each will be accepted only when its checks exist. A technique must be validated
+within stated limits before it is considered for either.
+
+- **rigorously bounded**: for a documented compact parameter box and a finite time horizon, validated
+  numerics prove that the true mathematical value lies within a stated bound of what the plate shows.
+  That means interval or ball arithmetic with outward rounding, or a Taylor-model ODE integrator, in a
+  harness that shares no code with the production solver. The enclosures must cover the whole box by
+  subdivision, not only sampled points, and the record states the box, the horizon and the bound. This
+  does not extend past the horizon in chaotic regimes, where finite precision cannot follow a trajectory,
+  and it does not cover rendering or colour.
+- **proven**: the mathematical claim the plate illustrates is a theorem with a published proof, and the
+  code is shown to implement it exactly. Either the technique is an exact discrete construction whose
+  correctness is a published theorem (for example coupling from the past for exact sampling, or a
+  substitution rule for an aperiodic tiling) and exhaustive enumeration at small sizes matches the
+  theorem, or the computational core carries a machine-checked proof (Lean, Coq or Isabelle). The record
+  names the theorem and citation and says what is machine-checked and what is not, such as drawing and
+  floating-point rendering. An open conjecture cannot be proven here however strong the evidence: for
+  example that ballistic deposition has growth exponent 1/3, or that SLE(8/3) is the scaling limit of
+  self-avoiding walk.
+
+Neither tier means all parameters and all hardware. Rigorous bounds hold inside their box; a proof holds
+for its theorem, while every print remains a finite rendering of it.
+
 Evidence entries specify a repository test path, scope, acceptance criteria and limitations.
 Every numerical entry also requires:
 
