@@ -3721,7 +3721,7 @@
       "Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device."
     ],
     "remaining": [
-      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
+      "Broaden beyond discrete modal long runs: nonlinear long-time statistics, boundary variants, spectral-solver comparison and phase-diagram evidence before quantitative generalization.",
       "Broaden print interpretation and hardware coverage; retain stated model assumptions."
     ],
     "numerical": [
@@ -3734,6 +3734,16 @@
         "benchmark": "Independent Float64 complete-chemical-potential Laplacian, refined RK4 and continuum/discrete complex plane-wave solutions obtained by substitution into Eq5.",
         "failureControl": "Reverse rotation or biharmonic sign, omit nonlinearity, or inject mass source; all must fail. Unsafe internal step must halt and restore accepted state.",
         "limitations": "Periodic finite-difference Heun implementation of Saha–Golestanian2025 Eq5, not the paper spectral solver or a reproduced phase diagram. Conditional timestep scale is not a nonlinear stability proof. Prepared waves are imposed."
+      },
+      {
+        "test": "tools/nonreciprocal-longrun-science.js",
+        "command": "node tools/nonreciprocal-longrun-science.js",
+        "results": "validation/results/nonreciprocal-longrun-science.json",
+        "scope": "Node Float64 twin of the periodic FD+Heun operators: exact discrete plane-wave tracking at T=5..20 across five (α0,α1,K,mode) points, a 3×3 parameter matrix at T=5, and 32/64 refined grids on a fixed 32×32 box.",
+        "criteria": "Field max error below1e-5, amplitude error below1e-5 and conserved means within1e-9 on all long-run/matrix/resolution fixtures; stated failure controls must reject the long-run claim.",
+        "benchmark": "Analytic discrete dispersion q_h, ρ²=1−Kq_h, ω=q_h(α0−α1ρ²) from NONRECIPROCAL.md; exact ψ=ρ exp(i(k·x−ωt)) compared to independent Float64 Heun on the complete-chemical-potential Laplacian twin.",
+        "failureControl": "Flip ω sign, use wrong K in the dispersion amplitude/frequency, take an unstable coarse timestep (dt=0.05), or inject a mean drift; each must miss the long-run band or become nonfinite.",
+        "limitations": "Discrete modal long runs and a finite parameter/resolution band only; not nonlinear droplet/chaos/phase-diagram evidence, not GPU float32, not open boundaries or spectral-solver comparison."
       }
     ],
     "print": [

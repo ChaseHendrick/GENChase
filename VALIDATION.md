@@ -140,7 +140,7 @@ Complete labels apply only within each record's reviewed domain.
 | [surfaces](src/modules/surfaces.js) | validated within stated limits | [surfaces-science.js](tools/surfaces-science.js) | Limited evidence recorded |
 | [plasma](src/modules/plasma.js) | partially validated | [plasma-science.js](tools/plasma-science.js) | Limited evidence recorded |
 | [shallow](src/modules/shallow.js) | partially validated | [shallow-science.js](tools/shallow-science.js) | Limited evidence recorded |
-| [nonreciprocal](src/modules/nonreciprocal.js) | partially validated | [nonreciprocal-science.js](tools/nonreciprocal-science.js) | Limited evidence recorded |
+| [nonreciprocal](src/modules/nonreciprocal.js) | partially validated | [nonreciprocal-science.js](tools/nonreciprocal-science.js), [nonreciprocal-longrun-science.js](tools/nonreciprocal-longrun-science.js) | Limited evidence recorded |
 | [hodgkin-huxley](src/modules/hodgkin-huxley.js) | partially validated | [hodgkin-huxley-science.js](tools/hodgkin-huxley-science.js) | Limited evidence recorded |
 | [neural-mass](src/modules/neural-mass.js) | validated within stated limits | [neural-mass-science.js](tools/neural-mass-science.js), [neural-mass-print.js](tools/neural-mass-print.js) | Limited evidence recorded |
 | [volume-wave](src/modules/volume-wave.js) | partially validated | [volume-wave-science.js](tools/volume-wave-science.js) | Limited evidence recorded |
