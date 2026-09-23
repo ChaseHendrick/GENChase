@@ -3060,14 +3060,16 @@
     "sourceSha256": "fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509",
     "reference": "Ernst Chladni, Entdeckungen uber die Theorie des Klanges, 1787. The governing plate equation was solved by Sophie Germain, whose 1816 work won the Paris Academy prize; Lord Rayleigh's Theory of Sound, 1877, put it on modern footing.",
     "equation": "u = sum Ak[cos(nk·pi·x)cos(mk·pi·y) - cos(mk·pi·x)cos(nk·pi·y)];   nodes where u = 0",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Square membrane-style cosine modes only, not elastic-plate mechanics. Circular mode radii use approximate rather than true Bessel zeros and are excluded. Sand, interference, mixed modes and print accuracy remain unvalidated.",
-      "No novel finding, physical experimental agreement or general parameter-domain certification is claimed."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/MATERIAL-WAVES.md and validation/results/material-wave-science.json plus paused-export print preservation in validation/results/material-wave-print-state.json.",
+      "Square membrane-style cosine modes only within this domain. Circular mode radii use approximate rather than true Bessel zeros and are excluded. Sand, interference, and mixed modes are excluded.",
+      "No Float16 claim, physical experimental agreement, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Extend parameter and boundary-condition comparisons with primary sources.",
-      "Validate rendered fields and exports independently at print resolution."
+      "Extend beyond the documented square cosine-mode fixtures and paused-export print domain with independent evidence for sand, circular modes, interference, color fidelity, running exports, and other hardware."
     ],
     "numerical": [
       {
@@ -3081,7 +3083,26 @@
         "results": "validation/results/material-wave-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/material-wave-print-state.js",
+        "scope": "Actual module exportPNG to 2400x2400 (8 in at 300 ppi) on paused fixtures in the material-wave numerical domain (square cosine modes; single-train Gerstner steepness; Hasimoto filament pairs), initial and time/phase-advanced states, with a deliberate post-export mutation control.",
+        "criteria": "Exact settings JSON and local scientific snapshot unchanged across export; 2400x2400 dimensions; PNG bytes > 1000; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only. Not color fidelity, sand/circular Chladni, two-train Gerstner, Biot-Savart Hasimoto, running exports, other aspects, or physical agreement.",
+        "benchmark": "Exact before/after comparison of host settings plus closed-over scientific locals (Chladni phase, Gerstner metric/trains, Hasimoto meas curve digest) around the real exportPNG path; plate size matches 8 in at 300 ppi.",
+        "failureControl": "Export wrapper that advances the actual scientific time or phase after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/material-wave-print-state.js --write",
+        "results": "validation/results/material-wave-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained square cosine-mode fixtures (1,2)/(3,2)/(4,5) in nodal/filled/contour named in validation/MATERIAL-WAVES.md and measured in validation/results/material-wave-science.json, plus paused exportPNG at those fixtures.",
+      "conditions": "Paused scientific state through real module exportPNG to 2400x2400 (8 in, 300 ppi) on Canvas2D SwiftShader. Exact settings JSON and local scientific locals compared before and after export; deliberate post-export time/phase-advance failure control must be rejected. No sand, circular Bessel modes, interference, mixed modes, running exports, color fidelity, or physical plate agreement.",
+      "resolution": "Numerical acceptance as recorded in material-wave-science.json for the named square fixtures. Print: settingsChanged=false, snapshotChanged=false, correct 2400x2400 plate, failureControl.rejected=true (validation/results/material-wave-print-state.json).",
+      "precision": "Canvas2D path (no GPU float32 field buffers for this tab). Binary64 / independent references for the numerical package; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/material-wave-science.json"
   },
   {
     "id": "track",
@@ -3165,14 +3186,16 @@
     "sourceSha256": "18fa85720739ce503e313b5d928da01f65e3f9f163136050d276a9fc3e970a7a",
     "reference": "Gerstner, Theorie der Wellen, Abh. Bohm. Ges. Wiss. (1802), found the unique exact periodic deep-water gravity wave of finite amplitude: every particle traces a circle, the free surface is an inverted trochoid, and the pressure is constant along it. Rankine, On the exact form of waves near the surface of deep water, Phil. Trans. Roy. Soc. 153, 127 (1863), rediscovered the same motion. Superposing two Gerstners (the Two trains control) is graphics practice, Tessendorf, Simulating Ocean Water, SIGGRAPH course notes (2001), and is not an Euler solution. This plate is a seeded print of the exact Lagrangian map. It is not a new equation.",
     "equation": "X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "One train only. Two-train graphical superposition is excluded. Full Euler pressure-field reconstruction and print accuracy remain unvalidated.",
-      "No novel finding, physical experimental agreement or general parameter-domain certification is claimed."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/MATERIAL-WAVES.md and validation/results/material-wave-science.json plus paused-export print preservation in validation/results/material-wave-print-state.json.",
+      "One train only within this domain. Two-train graphical superposition and full Euler pressure-field reconstruction are excluded.",
+      "No Float16 claim, physical experimental agreement, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Extend parameter and boundary-condition comparisons with primary sources.",
-      "Validate rendered fields and exports independently at print resolution."
+      "Extend beyond the documented single-train / filament numerical fixtures and paused-export print domain with independent evidence for excluded graphics, Biot-Savart dynamics, sand/circular modes, color fidelity, running exports, and other hardware."
     ],
     "numerical": [
       {
@@ -3186,7 +3209,26 @@
         "results": "validation/results/material-wave-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/material-wave-print-state.js",
+        "scope": "Actual module exportPNG to 2400x2400 (8 in at 300 ppi) on paused fixtures in the material-wave numerical domain (square cosine modes; single-train Gerstner steepness; Hasimoto filament pairs), initial and time/phase-advanced states, with a deliberate post-export mutation control.",
+        "criteria": "Exact settings JSON and local scientific snapshot unchanged across export; 2400x2400 dimensions; PNG bytes > 1000; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only. Not color fidelity, sand/circular Chladni, two-train Gerstner, Biot-Savart Hasimoto, running exports, other aspects, or physical agreement.",
+        "benchmark": "Exact before/after comparison of host settings plus closed-over scientific locals (Chladni phase, Gerstner metric/trains, Hasimoto meas curve digest) around the real exportPNG path; plate size matches 8 in at 300 ppi.",
+        "failureControl": "Export wrapper that advances the actual scientific time or phase after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/material-wave-print-state.js --write",
+        "results": "validation/results/material-wave-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained single-train Gerstner fixtures (steepness 0.22/0.54/0.86) named in validation/MATERIAL-WAVES.md and measured in validation/results/material-wave-science.json, plus paused exportPNG at those fixtures.",
+      "conditions": "Paused scientific state through real module exportPNG to 2400x2400 (8 in, 300 ppi) on Canvas2D SwiftShader. Exact settings JSON and local scientific locals compared before and after export; deliberate post-export time/phase-advance failure control must be rejected. No two-train graphics, full Euler pressure reconstruction, running exports, or physical experiment agreement.",
+      "resolution": "Numerical acceptance as recorded in material-wave-science.json for the named fixtures. Print: settingsChanged=false, snapshotChanged=false, correct 2400x2400 plate, failureControl.rejected=true (validation/results/material-wave-print-state.json).",
+      "precision": "Canvas2D path (no GPU float32 field buffers for these tabs). Binary64 / independent references for the numerical package; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/material-wave-science.json"
   },
   {
     "id": "eight",
@@ -3329,14 +3371,16 @@
     "sourceSha256": "88499871add56cf578919868f1ac033824f0594629abb241d77e41f5bb459765",
     "reference": "H. Hasimoto, J. Fluid Mech. 51, 477 (1972), mapped the local-induction approximation for a thin vortex filament to the cubic nonlinear Schrödinger equation and found the sech soliton: a loop of helical motion that travels along a line vortex at speed equal to twice the torsion. The explicit traveling-wave curve sampled here is the solitary-wave member of S. Kida, J. Fluid Mech. 112, 397 (1981). This plate is a print of that curve. It is not a new law of vortex motion.",
     "equation": "γ_t = γ_s × γ_ss,   ψ = κ exp(i ∫ τ ds),   κ = 2ν sech(ν(s−2τ₀ t)),   c = 2τ₀",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Only sampled local-induction soliton geometry. Full Biot-Savart dynamics, all controls and the print path remain unvalidated.",
-      "No novel finding, physical experimental agreement or general parameter-domain certification is claimed."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/MATERIAL-WAVES.md and validation/results/material-wave-science.json plus paused-export print preservation in validation/results/material-wave-print-state.json.",
+      "Sampled local-induction soliton geometry only within this domain. Full Biot-Savart dynamics and unlisted controls are excluded.",
+      "No Float16 claim, physical experimental agreement, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Extend parameter and boundary-condition comparisons with primary sources.",
-      "Validate rendered fields and exports independently at print resolution."
+      "Extend beyond the documented single-train / filament numerical fixtures and paused-export print domain with independent evidence for excluded graphics, Biot-Savart dynamics, sand/circular modes, color fidelity, running exports, and other hardware."
     ],
     "numerical": [
       {
@@ -3350,7 +3394,26 @@
         "results": "validation/results/material-wave-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/material-wave-print-state.js",
+        "scope": "Actual module exportPNG to 2400x2400 (8 in at 300 ppi) on paused fixtures in the material-wave numerical domain (square cosine modes; single-train Gerstner steepness; Hasimoto filament pairs), initial and time/phase-advanced states, with a deliberate post-export mutation control.",
+        "criteria": "Exact settings JSON and local scientific snapshot unchanged across export; 2400x2400 dimensions; PNG bytes > 1000; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only. Not color fidelity, sand/circular Chladni, two-train Gerstner, Biot-Savart Hasimoto, running exports, other aspects, or physical agreement.",
+        "benchmark": "Exact before/after comparison of host settings plus closed-over scientific locals (Chladni phase, Gerstner metric/trains, Hasimoto meas curve digest) around the real exportPNG path; plate size matches 8 in at 300 ppi.",
+        "failureControl": "Export wrapper that advances the actual scientific time or phase after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/material-wave-print-state.js --write",
+        "results": "validation/results/material-wave-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained Hasimoto (nu,tau0) filament fixtures named in validation/MATERIAL-WAVES.md and measured in validation/results/material-wave-science.json, plus paused exportPNG at those fixtures.",
+      "conditions": "Paused scientific state through real module exportPNG to 2400x2400 (8 in, 300 ppi) on Canvas2D SwiftShader. Exact settings JSON and local scientific locals compared before and after export; deliberate post-export time/phase-advance failure control must be rejected. No full Biot-Savart dynamics, unlisted controls, running exports, or physical experiment agreement.",
+      "resolution": "Numerical acceptance as recorded in material-wave-science.json for the named fixtures. Print: settingsChanged=false, snapshotChanged=false, correct 2400x2400 plate, failureControl.rejected=true (validation/results/material-wave-print-state.json).",
+      "precision": "Canvas2D path (no GPU float32 field buffers for these tabs). Binary64 / independent references for the numerical package; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/material-wave-science.json"
   },
   {
     "id": "lump",
