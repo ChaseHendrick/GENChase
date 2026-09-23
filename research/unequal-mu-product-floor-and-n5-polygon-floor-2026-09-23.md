@@ -34,6 +34,7 @@ Detail drafts (do not duplicate every algebra here):
 - [`identities/sources/oneil2007-read-2026-09-23.md`](../identities/sources/oneil2007-read-2026-09-23.md)
 - [`identities/sources/purchase-log-2026-09-23.md`](../identities/sources/purchase-log-2026-09-23.md)
 - [`identities/sources/deeper-kill-Pstar-F5-2026-09-23.md`](../identities/sources/deeper-kill-Pstar-F5-2026-09-23.md)
+- [`identities/sources/oa/deeper-kill-oa-2026-09-23.md`](../identities/sources/oa/deeper-kill-oa-2026-09-23.md)
 
 ---
 
