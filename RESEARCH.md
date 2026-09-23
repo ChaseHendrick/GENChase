@@ -32,6 +32,8 @@ Minpoly over ℚ: 8748 x⁶ − 49005 x⁴ + 27794 x² + 18723 = 0 (casus irredu
 
 **Correction.** The adjacent-open / skip-table figure ≈1.741 used Gotoda (3.3) B, which disagrees with Prop. 2.1 when Γ₁ ≠ Γ₂. That witness is withdrawn. The corrected floor is ~2.204.
 
+**Second correction (2026-09-23, later).** P⋆ ≈ 2.2039 is the minimum on Gotoda’s arc 0 < θ < θ₀ only. For Γ₁ ≠ Γ₂ the L = 0 family has a second collapsing branch, the opposite triangle orientation (π < θ < 2π − θ₀ in the same parametrization), whose minimum is lower: P_min ≈ 1.064705976271204, the other positive root of the same sextic, = √(605/324 + (7√5201)/162 · cos(⅓ arccos(245351√5201 / 5201²) − 2π/3)). So the μ = 1/2 floor is P_min, not P⋆. The critical point was in the earlier derivation (cos θ ≈ −0.924) but was set aside as expanding; that holds only for sin θ > 0. Independent Biot–Savart validation, including direct time integration and the μ → 1 limit (both branches → √2): `research/verify_floors_independent.py`; note: `research/artifacts/unequal-mu-n5-floors-2026-09-23.pdf`.
+
 **Status.** Proved candidate; priority unconfirmed. Same classical L = 0 family as √2. RESEARCH already forbids stamping μ≠1 as a new identity row. See `identities/sources/unequal-mu-half-draft-2026-09-23.md`, `identities/sources/unequal-mu-half-Pstar-closed-2026-09-23.md`, `tools/verify-unequal-mu-half.js`.
 
 ### B. Explicit n = 5 polygon / two-ring floor
@@ -139,7 +141,7 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Five-vortex NS, ρ = d₁²/d₂² = 2 | Reciprocal of the quincunx. Same product. Already in IDENTITIES.md. |
 | Five-vortex NS, ρ = 3 | Recovers the three-vortex bound identically. Already not claimed. |
 | Five-vortex NS, ρ = 4 | ω t_c = 5(35 − 8 cos 2θ)/(96 sin 2θ) ≥ 5√1161 / 96. A nested radical, not a floor like √2. Not claimed. |
-| Three-vortex L = 0, Γ = (1, μ, −μ/(1+μ)), μ ≠ 1 | Prop. 2.1 / 2π kernel product (not Gotoda (3.3) B). For μ = 1/2: P = (14 sin²θ + 6√7 cosθ + 21) / [2(14 cosθ + √7) sinθ] ≥ P⋆ ≈ 2.203855 with closed trig/Cardano form (2026-09-23). Older ~1.741 witness from Gotoda (3.3) B is withdrawn. Same L = 0 family as √2. Proved candidate; priority unconfirmed. Do not stamp as a new identity row. |
+| Three-vortex L = 0, Γ = (1, μ, −μ/(1+μ)), μ ≠ 1 | Prop. 2.1 / 2π kernel product (not Gotoda (3.3) B). For μ = 1/2: P = (14 sin²θ + 6√7 cosθ + 21) / [2(14 cosθ + √7) sinθ] ≥ P⋆ ≈ 2.203855 with closed trig/Cardano form (2026-09-23) on Gotoda’s arc; the opposite-orientation branch has the lower global floor P_min ≈ 1.064705976271204 (same sextic; see §A second correction). Older ~1.741 witness from Gotoda (3.3) B is withdrawn. Same L = 0 family as √2. Proved candidate; priority unconfirmed. Do not stamp as a new identity row. |
 | Kite, non-parallelogram isosceles trapezoid, equilateral plus interior | Biot-Savart scan: no self-similar L = 0 collapsing family (similarity residual never jointly small with I = 0 and finite positive τ). |
 | Seven-vortex Gotoda (4.4), Γ = (1,1,−2,−2,−2,−2,3/2) | Numerical H-A curves. O'Neil 1987 and Kudela 2014: existence and numerical positions, not A(θ), B(θ). |
 | Trapezoidal / kite four-vortex papers | Relative equilibria (central configurations), not self-similar collapse. |
@@ -271,7 +273,7 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Hicks doughnut | Hollow ring with swirl. Thin-core series (Hicks 1884; Saffman 1970). Norbury–Fraenkel already logged. |
 | Fukumoto–Miyazaki | Filament + axial flow. Permanent form = elastica (already logged). Hasimoto already in the studio. |
 | Coaxial leapfrog rings | Helmholtz 1858. 3D Euler existence: CPAM 2024; García–Hassainia–Hmidi arXiv:2603.21644 (Mar 2026). KAM/Nash–Moser, not an algebraic floor. Love leapfrog already logged. |
-| 3-vortex μ≠1 cubic | **Corrected 2026-09-23.** Gotoda (3.3) B disagreed with Prop. 2.1 when Γ₁≠Γ₂; the ~1.741 |B/2A| witness is withdrawn. Corrected μ=1/2 floor is P⋆≈2.203855 (closed form in sources/). μ=1 still recovers √2. Same family as the three-vortex bound, not a new row. Do not claim. |
+| 3-vortex μ≠1 cubic | **Corrected 2026-09-23.** Gotoda (3.3) B disagreed with Prop. 2.1 when Γ₁≠Γ₂; the ~1.741 |B/2A| witness is withdrawn. Corrected μ=1/2 floor on Gotoda’s arc is P⋆≈2.203855; the global floor over both collapsing orientations is P_min ≈ 1.064705976271204 (same sextic; §A second correction). μ=1 still recovers √2. Same family as the three-vortex bound, not a new row. Do not claim. |
 | Gallay–Sverak 2026 | arXiv:2609.10847 (9 Sep 2026). Hopf/ζ reduction, new energy inequalities H(ζ_A)>H(ζ_B), near-collision regularization. Not a two-rate product min. Cite; do not claim. |
 | Rott 1994 body | Still AIP-blocked. Abstract: winding number = ratio of two periods; "beyond a certain level of the analysis, still the more practical method of solution" is step-by-step integration. No unpublished algebraic interior min extracted. Leapfrog already logged. |
 | Möbius / Klein vortices | Balabanova–Montaldi Physica D 488, 135084 (Apr 2026); arXiv:2202.06160v3. One/two vortex motion, N-ring RE with coth/tanh angular velocities. Two-vortex fixed equilibria: nested-radical y. No collapse product. Catenoid coth already logged. |
