@@ -1967,10 +1967,10 @@ shall not be misrepresented as the original profile.
       "Independent Float64 twin of the discrete 2D Gross–Pitaevskii operators (5-point Laplacian, harmonic trap, contact g, Visscher stagger, imag-time Euler with periodic L2 renormalization). Not a bit-exact GPU float32/float16 replay.",
       "Real-time norm evidence uses g=0 (linear Schrödinger limit); nonlinear dens at mixed half-levels is not claimed to conserve naive L2 exactly. Rotating-frame Ω L_z, Abrikosov lattice counting and turbulence are unvalidated.",
       "Thomas–Fermi μ/energy bands are asymptotic large-g checks; prepared single-vortex winding is not a noisy real-time vortex count or experimental Na BEC claim.",
-      "No print-state accuracy audit is registered."
+      "Print evidence covers paused exportPNG state preservation and plate dimensions only; not lattice fidelity, calibrated color, or evolved/rotating exports."
     ],
     "remaining": [
-      "Register print-state preservation for density/phase/vortex views and quantitative export checks.",
+      "Extend print beyond paused initial Ω=0 float32 preservation to evolved/rotating states, float16 fallback, and independent pixel/color checks.",
       "Extend to GPU float32 agreement, rotating-frame vortex lattices, parameter-domain and long-time turbulence evidence.",
       "Review catalog equation/citation assumptions against Gross–Pitaevskii / Abrikosov primary sources beyond the discrete-operator twin."
     ],
@@ -1986,7 +1986,18 @@ shall not be misrepresented as the original profile.
         "limitations": "Float64 CPU twin only; g=0 for unitary norm; no GPU, Ω>0 lattice, turbulence, print or experimental certification."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/bec-print-state.js",
+        "command": "node tools/bec-print-state.js --write",
+        "results": "validation/results/bec-print-state.json",
+        "scope": "Paused initial 256x256 float32 BEC/GPE fields (ground mode, Ω=0, Thomas–Fermi seed) exported through the real module exportPNG to 2400x2400 (8 in at 300 ppi) for density, phase, both and vortices views, with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite float32 words; cells/settings/metadata unchanged; correct 2400x2400 dimensions; retained 256x256 grid; nonzero seeded field; mutating-export failure control rejected for every view.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256 with Ω=0 and warmup 0. Does not establish vortex-lattice fidelity, colorimetric print accuracy, float16 fallback, evolved/rotating states, other grids/hardware, or running exports."
+      }
+    ]
   },
   {
     "id": "physarum",

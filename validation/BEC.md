@@ -27,9 +27,20 @@ Thomas–Fermi seed formula and `NORM_EVERY = 32` renormalization stride.
 
 ## Honest limits
 
+- Print evidence is state-preservation only; see Print evidence below.
 - Nonlinear real-time evolution with dens evaluated at mixed Visscher half-levels is not claimed to conserve naive `L2` exactly; the registered unitary check is the linear `g=0` limit.
 - Rotating-frame `Ω L_z`, Abrikosov lattice counting, quantum turbulence and GPU float32/float16 agreement remain unvalidated.
 - Prepared single-vortex winding is not a physical vortex count from noisy real-time encoded fields.
-- No print-state preservation audit is registered yet; status stays **partially validated**.
+
+## Print evidence
+
+Run `node tools/bec-print-state.js --write`. Results are recorded in
+[bec-print-state.json](results/bec-print-state.json). The harness instruments the live
+module only inside Playwright, reads the float32 PingPong plate before and after the real
+`exportPNG` path (2400×2400, density/phase/both/vortices), and rejects a deliberate
+post-export one-step advance.
+
+- Preservation and declared plate dimensions only on paused initial Ω=0 SwiftShader float32 fields at grid 256; not lattice fidelity, calibrated color, evolved/rotating exports, or float16 fallback.
+- Status stays **partially validated** (numerical + print recorded; not Ledger-promoted).
 
 Neighbor-search and preview checks (`tools/bec-neighbors-check.js`, `tools/bec-preview-check.js`) remain non-science diagnostics.

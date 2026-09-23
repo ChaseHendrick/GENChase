@@ -1,0 +1,84 @@
+{
+  "scope": "Paused initial 256x256 float32 BEC/GPE fields (ground mode, Ω=0, Thomas–Fermi seed) exported through the real module exportPNG to 2400x2400 (8 in at 300 ppi) for density, phase, both and vortices views. Checks exact float32 PingPong read-texture preservation, cells, settings and solver metadata, plus a deliberate state-mutating export control.",
+  "limitations": "Preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256 with Ω=0 and warmup 0. Does not establish vortex-lattice fidelity, colorimetric print accuracy, float16 fallback, evolved/rotating states, other grids/hardware, or running exports.",
+  "reviewed": "2026-09-23",
+  "command": "node tools/bec-print-state.js --write",
+  "rows": [
+    {
+      "id": "bec",
+      "view": "density",
+      "cells": [
+        256,
+        256
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 4582650,
+      "changedWords": 0,
+      "nonfinite": 0,
+      "nonzero": 100680,
+      "failureControl": {
+        "description": "Export wrapper advances the actual solver one step after producing the PNG",
+        "rejected": true,
+        "changedWords": 59587
+      }
+    },
+    {
+      "id": "bec",
+      "view": "phase",
+      "cells": [
+        256,
+        256
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 4498534,
+      "changedWords": 0,
+      "nonfinite": 0,
+      "nonzero": 100680,
+      "failureControl": {
+        "description": "Export wrapper advances the actual solver one step after producing the PNG",
+        "rejected": true,
+        "changedWords": 59974
+      }
+    },
+    {
+      "id": "bec",
+      "view": "both",
+      "cells": [
+        256,
+        256
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 4325290,
+      "changedWords": 0,
+      "nonfinite": 0,
+      "nonzero": 100680,
+      "failureControl": {
+        "description": "Export wrapper advances the actual solver one step after producing the PNG",
+        "rejected": true,
+        "changedWords": 59710
+      }
+    },
+    {
+      "id": "bec",
+      "view": "vortices",
+      "cells": [
+        256,
+        256
+      ],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 106272,
+      "changedWords": 0,
+      "nonfinite": 0,
+      "nonzero": 100680,
+      "failureControl": {
+        "description": "Export wrapper advances the actual solver one step after producing the PNG",
+        "rejected": true,
+        "changedWords": 59727
+      }
+    }
+  ]
+}
