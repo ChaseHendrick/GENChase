@@ -2128,16 +2128,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a \u003c 1 \u003c b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
     "equation": "∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v)",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
-      "Deterministic PDE only; no spiral wavelength, no biodiversity-loss threshold of Reichenbach, Mobilia and Frey, noise term untested."
+      "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
+      "Deterministic PDE only; no spiral wavelength or biodiversity-loss threshold of Reichenbach, Mobilia and Frey.",
+      "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, float16 fallback, evolved/running exports, other grids and hardware."
     ],
     "numerical": [
       {
@@ -2151,7 +2151,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained defaults and kinetics cases named in validation/RDX.md and measured in validation/results/rdx-science.json for each tab (excitable Barkley/FHN, Turing Schnakenberg/Brusselator/Gierer-Meinhardt/Lengyel-Epstein, May-Leonard cyclic, Keller-Segel chemotaxis, Klausmeier vegetation), plus paused initial export at those defaults.",
+      "conditions": "Periodic 256x256 grid; forward-Euler RDX step shaders in WebGL2 float32 (SwiftShader); independent Float64 references for discrete update, diffusion modes, and the linear/uniform/front cases in tools/rdx-science.js. Print: paused initial fields only through real module exportPNG at 2400x2400 (8 in, 300 ppi) with a state-mutating export failure control. No noise; no nonlinear pattern-selection statistics; no float16 fallback.",
+      "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-22",
+    "results": "validation/results/rdx-science.json"
   },
   {
     "id": "landscape",
@@ -2501,16 +2520,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n², because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
     "equation": "∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
-      "Linear regime and uniform states only; no nonlinear band spacing or migration speed. The float32 implicit denominator 1 + dt quantizes the water loss rate by up to ulp(1)/(2 dt), modelled in the exact discrete reference."
+      "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
+      "Linear regime and uniform states only within this domain; float32 implicit denominator 1 + dt quantizes water loss (modelled in the discrete reference).",
+      "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, float16 fallback, evolved/running exports, other grids and hardware."
     ],
     "numerical": [
       {
@@ -2524,7 +2543,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained defaults and kinetics cases named in validation/RDX.md and measured in validation/results/rdx-science.json for each tab (excitable Barkley/FHN, Turing Schnakenberg/Brusselator/Gierer-Meinhardt/Lengyel-Epstein, May-Leonard cyclic, Keller-Segel chemotaxis, Klausmeier vegetation), plus paused initial export at those defaults.",
+      "conditions": "Periodic 256x256 grid; forward-Euler RDX step shaders in WebGL2 float32 (SwiftShader); independent Float64 references for discrete update, diffusion modes, and the linear/uniform/front cases in tools/rdx-science.js. Print: paused initial fields only through real module exportPNG at 2400x2400 (8 in, 300 ppi) with a state-mutating export failure control. No noise; no nonlinear pattern-selection statistics; no float16 fallback.",
+      "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-22",
+    "results": "validation/results/rdx-science.json"
   },
   {
     "id": "aztec",
@@ -2936,16 +2974,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
     "equation": "Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b)",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
-      "No spiral rotation period, meander or breakup statistics, no Barkley front speed (only its kinetics), noise term untested. A uniform excited Barkley cell stagnates near u = 1 in float32 (recorded finding)."
+      "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
+      "No spiral rotation period, meander or breakup statistics; no Barkley front speed (kinetics only). A uniform excited Barkley cell stagnates near u = 1 in float32 (recorded finding).",
+      "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, float16 fallback, evolved/running exports, other grids and hardware."
     ],
     "numerical": [
       {
@@ -2959,7 +2997,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained defaults and kinetics cases named in validation/RDX.md and measured in validation/results/rdx-science.json for each tab (excitable Barkley/FHN, Turing Schnakenberg/Brusselator/Gierer-Meinhardt/Lengyel-Epstein, May-Leonard cyclic, Keller-Segel chemotaxis, Klausmeier vegetation), plus paused initial export at those defaults.",
+      "conditions": "Periodic 256x256 grid; forward-Euler RDX step shaders in WebGL2 float32 (SwiftShader); independent Float64 references for discrete update, diffusion modes, and the linear/uniform/front cases in tools/rdx-science.js. Print: paused initial fields only through real module exportPNG at 2400x2400 (8 in, 300 ppi) with a state-mutating export failure control. No noise; no nonlinear pattern-selection statistics; no float16 fallback.",
+      "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-22",
+    "results": "validation/results/rdx-science.json"
   },
   {
     "id": "soliton",
@@ -3959,16 +4016,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry.",
     "equation": "Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
-      "Linear regime only; no nonlinear pattern selection (spots against stripes), no Hopf regime. The status-line wavelength is the onset-critical value 2 pi (Du Dv/det)^(1/4), 12 cells at the defaults, against 10.8 fastest-growing and 9.2 measured after saturation."
+      "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
+      "Linear regime only within this domain; status-line wavelength is the onset-critical value, not a saturated nonlinear pattern measurement.",
+      "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, float16 fallback, evolved/running exports, other grids and hardware."
     ],
     "numerical": [
       {
@@ -3982,7 +4039,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained defaults and kinetics cases named in validation/RDX.md and measured in validation/results/rdx-science.json for each tab (excitable Barkley/FHN, Turing Schnakenberg/Brusselator/Gierer-Meinhardt/Lengyel-Epstein, May-Leonard cyclic, Keller-Segel chemotaxis, Klausmeier vegetation), plus paused initial export at those defaults.",
+      "conditions": "Periodic 256x256 grid; forward-Euler RDX step shaders in WebGL2 float32 (SwiftShader); independent Float64 references for discrete update, diffusion modes, and the linear/uniform/front cases in tools/rdx-science.js. Print: paused initial fields only through real module exportPNG at 2400x2400 (8 in, 300 ppi) with a state-mutating export failure control. No noise; no nonlinear pattern-selection statistics; no float16 fallback.",
+      "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-22",
+    "results": "validation/results/rdx-science.json"
   },
   {
     "id": "holomorphic",
@@ -4199,16 +4275,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) \u003c c/2 − D − a.",
     "equation": "∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²)",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
-      "Logistic growth means total mass is not conserved; the balance, not conservation, is tested. No aggregate shape or coarsening statistics, no analytic nonuniform steady state (none is available for this form), noise term untested."
+      "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
+      "Logistic growth means total mass is not conserved; the balance, not conservation, is tested. No aggregate shape or coarsening statistics.",
+      "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, float16 fallback, evolved/running exports, other grids and hardware."
     ],
     "numerical": [
       {
@@ -4222,7 +4298,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained defaults and kinetics cases named in validation/RDX.md and measured in validation/results/rdx-science.json for each tab (excitable Barkley/FHN, Turing Schnakenberg/Brusselator/Gierer-Meinhardt/Lengyel-Epstein, May-Leonard cyclic, Keller-Segel chemotaxis, Klausmeier vegetation), plus paused initial export at those defaults.",
+      "conditions": "Periodic 256x256 grid; forward-Euler RDX step shaders in WebGL2 float32 (SwiftShader); independent Float64 references for discrete update, diffusion modes, and the linear/uniform/front cases in tools/rdx-science.js. Print: paused initial fields only through real module exportPNG at 2400x2400 (8 in, 300 ppi) with a state-mutating export failure control. No noise; no nonlinear pattern-selection statistics; no float16 fallback.",
+      "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-22",
+    "results": "validation/results/rdx-science.json"
   },
   {
     "id": "smectic",
