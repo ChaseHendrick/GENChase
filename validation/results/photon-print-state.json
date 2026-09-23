@@ -1,0 +1,224 @@
+{
+  "pass": true,
+  "source": "src/modules/photon.js",
+  "sourceSha256": "3636ca8433248c1afb594d76a13d78734592778668cb54dc37ca693af775fb84",
+  "harnessSha256": "0c1df7dbf444096ef832e93b626b0eef3712d1221860d6100b124f7581a18f41",
+  "command": "node tools/photon-print-state.js --write",
+  "scope": "Actual photon exportPNG at 2400 longest edge for ring, spray, polar and impact fixtures (2400x2400, 1920x2400 and 2400x1350). Exact Float32 field and mask words, bMeas/rPh/deflRatio diagnostics, cells, buffer size and settings preserved; deterministic regenerate replay; nonblank reduced raster.",
+  "criteria": "Zero changed/nonfinite field/mask words; diagnostics/settings/cells unchanged across export; exact requested PNG dimensions and >1000-byte blobs; luminance spread >12/255; wrong dimensions and deliberate post-export field+bMeas mutation rejected; disk capture fraction exceeds equatorial pencil; bMeas and rPh within 2% of 3√3 M and 3M.",
+  "rows": [
+    {
+      "fixture": "ring",
+      "view": "disk",
+      "scene": "stars",
+      "cells": [
+        480,
+        480
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "bMeas": 5.196152422508021,
+      "rPh": 3.0000000000989537,
+      "deflRatio": 1.0635443465297225,
+      "bRatio": 0.9999999999617774,
+      "rRatio": 1.0000000000329845,
+      "captureFrac": 0.15583333333333332,
+      "export": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 11973053,
+        "bMeas": 5.196152422508021,
+        "rPh": 3.0000000000989537,
+        "deflRatio": 1.0635443465297225,
+        "cells": [
+          480,
+          480
+        ],
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 460800,
+          "cellsChanged": false,
+          "diagnosticsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 226.4946,
+          "finite": 102400,
+          "samples": 102400
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1,
+        "diagnosticsChanged": true
+      }
+    },
+    {
+      "fixture": "spray",
+      "view": "equatorial",
+      "scene": "spray",
+      "cells": [
+        480,
+        600
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "bMeas": 5.196152422508021,
+      "rPh": 3.0000000000989537,
+      "deflRatio": 1.0635443465297225,
+      "bRatio": 0.9999999999617774,
+      "rRatio": 1.0000000000329845,
+      "captureFrac": 0.011541666666666667,
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 1308885,
+        "bMeas": 5.196152422508021,
+        "rPh": 3.0000000000989537,
+        "deflRatio": 1.0635443465297225,
+        "cells": [
+          480,
+          600
+        ],
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 576000,
+          "cellsChanged": false,
+          "diagnosticsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 226.4946,
+          "finite": 128000,
+          "samples": 128000
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1,
+        "diagnosticsChanged": true
+      }
+    },
+    {
+      "fixture": "polar",
+      "view": "polar",
+      "scene": "belt",
+      "cells": [
+        480,
+        270
+      ],
+      "requested": [
+        2400,
+        1350
+      ],
+      "bMeas": 5.196152422508021,
+      "rPh": 3.0000000000989537,
+      "deflRatio": 1.0635443465297225,
+      "bRatio": 0.9999999999617774,
+      "rRatio": 1.0000000000329845,
+      "captureFrac": 0.21203703703703702,
+      "export": {
+        "width": 2400,
+        "height": 1350,
+        "bytes": 5392771,
+        "bMeas": 5.196152422508021,
+        "rPh": 3.0000000000989537,
+        "deflRatio": 1.0635443465297225,
+        "cells": [
+          480,
+          270
+        ],
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 259200,
+          "cellsChanged": false,
+          "diagnosticsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 226.4946,
+          "finite": 57600,
+          "samples": 57600
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1,
+        "diagnosticsChanged": true
+      }
+    },
+    {
+      "fixture": "impact",
+      "view": "impact",
+      "scene": "spray",
+      "cells": [
+        480,
+        480
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "bMeas": 5.196152422508021,
+      "rPh": 3.0000000000989537,
+      "deflRatio": 1.0635443465297225,
+      "bRatio": 0.9999999999617774,
+      "rRatio": 1.0000000000329845,
+      "captureFrac": 0.3854166666666667,
+      "export": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 569481,
+        "bMeas": 5.196152422508021,
+        "rPh": 3.0000000000989537,
+        "deflRatio": 1.0635443465297225,
+        "cells": [
+          480,
+          480
+        ],
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 460800,
+          "cellsChanged": false,
+          "diagnosticsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 225.70719999999997,
+          "finite": 102400,
+          "samples": 102400
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1,
+        "diagnosticsChanged": true
+      }
+    }
+  ],
+  "limitations": "State preservation and declared dimensions only. Does not establish geodesic capture accuracy beyond the recorded ratios, calibrated color, printed numerical resolution or coverage of every control/aspect/hardware."
+}

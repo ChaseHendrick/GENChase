@@ -298,17 +298,30 @@
     "sourceSha256": "30b2393368ab389e0e5fabc4e17215de292e0dbfb945dc92b3b04d2aab57fb19",
     "reference": "Mehran Kardar, Giorgio Parisi and Yi-Cheng Zhang, 'Dynamic scaling of growing interfaces', Physical Review Letters 56, 889 (1986). The scaling form W(L, t) = L^α f(t/L^z) is Fereydoon Family and Tamás Vicsek, J. Phys. A 18, L75 (1985). Ballistic deposition is Murray Vold (1959) and Michael Sutherland (1966); the restricted solid-on-solid model is Jin Min Kim and Joel Kosterlitz, Phys. Rev. Lett. 62, 2289 (1989); surface relaxation is Family, J. Phys. A 19, L441 (1986); the cluster model is Murray Eden, in the Berkeley Symposium proceedings (1961). That the edge fluctuations follow the Tracy-Widom distributions is Michael Prähofer and Herbert Spohn, Phys. Rev. Lett. 84, 4882 (2000), and Kazumasa Takeuchi and Masaki Sano measured it in turbulent liquid crystal, Phys. Rev. Lett. 104, 230601 (2010).",
     "equation": "∂h/∂t = ν∇²h + (λ/2)(∇h)² + η,   W(t) ~ t^β with β = 1/3 in 1+1 dimensions",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Independent Float64 twin of column deposition kernels (random, relax, ballistic, RSOS) measuring W(t)~t^β; not a browser UI replay or Eden radial audit.",
+      "Finite L=512 and five seeds per class; KPZ ballistic crossover often fits under 1/3. RSOS is the KPZ gate with a wider acceptance band.",
+      "Family–Vicsek α at small L uses coarse bands only; no Tracy–Widom edge law or liquid-crystal experiment claim.",
+      "No print-state accuracy audit is registered."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Register print-state preservation for strata/rings exports and quantitative raster checks.",
+      "Tighten finite-size / multi-seed statistics, ballistic crossover diagnostics and optional Eden radial KPZ evidence.",
+      "Review catalog equation/citation assumptions against Kardar–Parisi–Zhang / Family–Vicsek primary sources beyond the deposition twin."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/kpz-science.js",
+        "command": "node tools/kpz-science.js --write",
+        "results": "validation/results/kpz-science.json",
+        "scope": "Independent Float64 twin of kpz.js column kernels: log-spaced W(t) growth and β fits for random (RD), relax (EW) and RSOS (KPZ), with ballistic reported; coarse Family–Vicsek α at small L; production source markers checked.",
+        "criteria": "Mean β in [0.42,0.58] for RD (theory 1/2), [0.12,0.38] for EW (theory 1/4), [0.22,0.45] for RSOS (theory 1/3); ballistic mean in [0.18,0.42]; RD>RSOS>EW ordering; α(EW/RSOS) in [0.2,0.95] and α(RD)<0.25.",
+        "benchmark": "1+1 universality: random deposition β=1/2, Edwards–Wilkinson β=1/4, KPZ β=1/3 (Family–Vicsek α=1/2 for EW/KPZ). Fit window matches production status-line filter.",
+        "failureControl": "Claiming the KPZ β band for random deposition must fail; removing ballistic lateral sticking or relaxation site choice collapses each to RD (β~1/2) and must miss the KPZ/EW bands.",
+        "limitations": "Float64 CPU twin only; finite L/crossover/single-realization noise; Eden, Tracy–Widom and print unvalidated."
+      }
+    ],
     "print": []
   },
   {
@@ -3256,14 +3269,16 @@
     "sourceSha256": "00e15b29caba92c9cf360487ddce8471e0f351e54168633c80d650e75a1c01b3",
     "reference": "Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.",
     "equation": "r̈_i = −Σ_{j≠i} (r_i−r_j)/|r_i−r_j|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Finite deterministic fixtures only; no all-parameter or print accuracy claim.",
-      "Figure-eight comparison covers time 1.5 and one-period return only; no chaotic long-time guarantee."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/ORBITS.md and the orbit-science / eight-print-state results artifacts.",
+      "Figure-eight comparison covers time 1.5 and one-period return only; no chaotic long-time guarantee.",
+      "No all-parameter or independent pixel print claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Broaden independent reference trajectories and parameter coverage.",
-      "Audit actual print exports and displayed diagnostics."
+      "Extend beyond the documented finite Yoshida figure-eight fixtures and paused-export print domain with independent evidence for broader parameter coverage, longer histories, and independent pixel print accuracy."
     ],
     "numerical": [
       {
@@ -3277,7 +3292,26 @@
         "results": "validation/results/orbit-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/eight-print-state.js",
+        "command": "node tools/eight-print-state.js --write",
+        "results": "validation/results/eight-print-state.json",
+        "scope": "Actual eight exportPNG and exportSVG at 2400 longest edge for world, braid, shape, broken and wreath fixtures (2400x2400, 1920x2400 and 2400x1350).",
+        "criteria": "Exact Float64 trajectory words, L/dE/dq diagnostics, phase, raf and settings preserved across PNG and SVG; deterministic regenerate replay; exact requested dimensions; nonblank reduced raster; nonempty SVG paths; wrong dimensions and deliberate post-export traj+phase mutation rejected; broken return distance exceeds world.",
+        "benchmark": "In-harness auditSnapshot of the private Yoshida trajectory arrays, diagnostics and settings against the same module exportPNG and exportSVG paths.",
+        "failureControl": "Requested PNG/SVG width reduced by one pixel must fail acceptance; mutating traj.px[0][0] and phase after export must fail the identical preservation predicate.",
+        "limitations": "State preservation and declared dimensions only. Does not establish long-time orbit accuracy, calibrated color, printed numerical resolution, SVG/PNG pixel agreement or every control/aspect/hardware."
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained figure-eight orbit fixtures named in validation/ORBITS.md and measured in validation/results/orbit-science.json (Yoshida solver at 100/200/400 steps to t=1.5 and 9600-step one-period return), plus paused exportPNG/SVG fixtures world/braid/shape/broken/wreath at 2400 longest edge.",
+      "conditions": "Float64 trajectory words with Yoshida integrator. Print: real exportPNG and exportSVG; exact traj/diagnostics/phase/raf/settings preserved; deterministic regenerate replay; wrong-dimension and post-export traj+phase mutation rejected; broken return distance exceeds world. No chaotic long-time guarantee, all-parameter coverage, or independent pixel print accuracy.",
+      "resolution": "Numerical acceptance as recorded in orbit-science.json. Print: preserved state across PNG/SVG, exact dimensions, nonblank raster, nonempty SVG paths, failureControls rejected (validation/results/eight-print-state.json).",
+      "precision": "Float64 trajectories; RGBA8 PNG and SVG path output. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/orbit-science.json"
   },
   {
     "id": "peakon",
@@ -3343,14 +3377,16 @@
     "sourceSha256": "3636ca8433248c1afb594d76a13d78734592778668cb54dc37ca693af775fb84",
     "reference": "K. Schwarzschild, Sitzungsber. Preuss. Akad. Wiss. (1916). The unstable circular photon orbit at r = 3M is a textbook consequence of that metric. C. Darwin, Proc. R. Soc. Lond. A 249, 180 (1959) and J. L. Synge, Mon. Not. R. Astron. Soc. 131, 463 (1966) integrated the null geodesics and the capture cross-section. The plate is a seeded print of those equatorial (or slightly inclined) rays. It is not a new black hole.",
     "equation": "d²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Finite deterministic fixtures only; no all-parameter or print accuracy claim.",
-      "Finite launch radius and integration cutoffs; deflection is recorded but not validated by the turning-radius benchmark."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/ORBITS.md and the orbit-science / photon-print-state results artifacts.",
+      "Finite launch radius and integration cutoffs; deflection is recorded but not validated by the turning-radius benchmark.",
+      "No all-parameter or independent pixel print claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Broaden independent reference trajectories and parameter coverage.",
-      "Audit actual print exports and displayed diagnostics."
+      "Extend beyond the documented finite null-geodesic fixtures and paused-export print domain with independent evidence for deflection validation, broader parameters, and independent pixel print accuracy."
     ],
     "numerical": [
       {
@@ -3364,7 +3400,26 @@
         "results": "validation/results/orbit-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/photon-print-state.js",
+        "command": "node tools/photon-print-state.js --write",
+        "results": "validation/results/photon-print-state.json",
+        "scope": "Actual photon exportPNG at 2400 longest edge for ring, spray, polar and impact fixtures (2400x2400, 1920x2400 and 2400x1350).",
+        "criteria": "Exact Float32 field and mask words, bMeas/rPh/deflRatio diagnostics, cells, buffer size and settings preserved; deterministic regenerate replay; exact PNG dimensions; nonblank reduced raster; wrong dimensions and deliberate post-export field+bMeas mutation rejected; disk capture fraction exceeds equatorial pencil; bMeas and rPh within 2% of 3√3 M and 3M.",
+        "benchmark": "In-harness auditSnapshot of the private Float32 field/mask plate, capture diagnostics and settings against the same module exportPNG path.",
+        "failureControl": "Requested PNG width reduced by one pixel must fail acceptance; mutating field[0] and bMeas after export must fail the identical preservation predicate.",
+        "limitations": "State preservation and declared dimensions only. Does not establish geodesic capture accuracy beyond the recorded ratios, calibrated color, printed numerical resolution or every control/aspect/hardware."
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained null-geodesic fixtures named in validation/ORBITS.md and measured in validation/results/orbit-science.json (five impact parameters, three angular steps, critical impact and circular radius searches), plus paused exportPNG fixtures ring/spray/polar/impact at 2400 longest edge.",
+      "conditions": "Float32 field/mask with null-geodesic solver. Print: real exportPNG; exact field/mask words and bMeas/rPh/deflRatio diagnostics preserved; deterministic regenerate replay; wrong-dimension and post-export field+bMeas mutation rejected; disk capture exceeds equatorial pencil; bMeas and rPh within 2% of 3√3 M and 3M. Deflection recorded but not validated by the turning-radius benchmark. No all-parameter coverage or independent pixel print accuracy.",
+      "resolution": "Numerical acceptance as recorded in orbit-science.json. Print: zero changed field/mask words, exact dimensions, nonblank raster, failureControls rejected (validation/results/photon-print-state.json).",
+      "precision": "Float32 fields versus recorded orbit-science references; RGBA8 PNG. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/orbit-science.json"
   },
   {
     "id": "crapper",
