@@ -29,7 +29,7 @@
 #align(center)[*Abstract*]
 #v(0.3em)
 
-We record exact closed forms for classical point-vortex collapse floors, where the floor is the minimum of the spin–collapse product $omega_0 t_c$ (initial rotation rate times collapse time) over a self-similar collapsing family. (i) For $Gamma = (1, 1\/2, -1\/3)$ the angular-impulse-zero ($L = 0$) family has *two* collapsing branches, one for each orientation of the triangle. Their floors are the two positive real roots of one irreducible sextic: $P_"min" approx 1.064706$ (the global floor) and $P_star approx 2.203855$ (the floor on the branch covered by Gotoda’s $L=0$ arc, which version 1 of this note reported as the μ = 1/2 floor). (ii) The $n=5$ specialization $F_5 = sqrt(31682)\/80$ of the two-ring polygon floor $F_n$. Both results were re-derived from raw Biot–Savart velocities, independently of the formulas they replace, and the algebra was checked in exact arithmetic. They are *proved candidates*; *priority is unconfirmed*.
+We record exact closed forms for classical point-vortex collapse floors, where the floor is the minimum of the spin–collapse product $omega_0 t_c$ (initial rotation rate times collapse time) over a self-similar collapsing family. (i) For $Gamma = (1, 1\/2, -1\/3)$ the angular-impulse-zero ($L = 0$) family has *two* collapsing branches, one for each orientation of the triangle. Their floors are the two positive real roots of one irreducible sextic: $P_"min" approx 1.064706$ (the global floor) and $P_star approx 2.203855$ (the floor on the branch covered by Gotoda’s $L=0$ arc, which version 1 of this note reported as the μ = 1/2 floor). (ii) The $n=5$ specialization $F_5 = sqrt(31682)\/80$ of the two-ring polygon floor $F_n$. Both results were re-derived from raw Biot–Savart velocities, independently of the formulas they replace, and the algebra was checked in exact arithmetic. The families and the product $omega_0 t_c$ are classical (Gröbli, Aref, Gotoda, Koiller et al.); only the minimizations and their closed forms are claimed. They are *proved candidates*; *priority is unconfirmed*.
 
 #block(fill: luma(240), inset: 8pt, radius: 3pt, width: 100%)[
   *Correction to version 1.* Version 1 called $P_star approx 2.2039$ “the μ = 1/2 product floor”. $P_star$ is the minimum on Gotoda’s arc $0 < theta < theta_0$ only. The opposite orientation, $pi < theta < 2 pi - theta_0$ in the same parametrization, also collapses, and its minimum $P_"min" approx 1.0647$ is lower. The original derivation found this critical point ($cos theta approx -0.9244$) and set it aside as “on the expanding side”; that is true for $sin theta > 0$, but with $sin theta < 0$ the configuration collapses. Every algebraic statement about $P_star$ in version 1 remains correct.
@@ -66,7 +66,7 @@ $ 8748 x^6 - 49005 x^4 + 27794 x^2 + 18723 = 0 , $
 
 whose real roots are exactly $plus.minus P_"min"$ and $plus.minus P_star$. Equivalently $P_"min"^2 approx 1.133599$ and $P_star^2 approx 4.856977$ are the two positive roots of the irreducible cubic $8748 q^3 - 49005 q^2 + 27794 q + 18723 = 0$, whose third root is negative. The two floors are Galois conjugates. The critical cosines are the roots of $196 c^3 + 224 sqrt(7) c^2 + 14 c - 128 sqrt(7) = 0$ with $c approx 0.673984$ (branch B) and $c approx -0.924389$ (branch A). As $mu -> 1$ the two branch minima merge into the classical equal-strength floor $sqrt(2)$.
 
-*Disclaimer.* This is the classical Gotoda / Aref unequal-circulation family: closed forms for its floors, not a new interaction law. The formula uses the corrected product (Gotoda Prop. 2.1), not the Gotoda (3.3)–$B$ specialization, which disagrees with direct Biot–Savart when $Gamma_1 != Gamma_2$ and gives a spurious $approx 1.741$.
+*Disclaimer.* This is the classical Gotoda / Aref unequal-circulation family: closed forms for its floors, not a new interaction law. The formula uses the product from Gotoda Prop. 2.1, which matches direct Biot–Savart on both arcs. An earlier campaign note built a different quotient from Gotoda’s eq. (3.3) for $B$; that quotient disagrees with direct Biot–Savart (for example $1.746$ against $2.207$ at $theta = 0.8$) and has a spurious minimum $approx 1.741$. Whether the discrepancy lies in eq. (3.3) as printed or in that specialization has not been re-checked against Gotoda’s text.
 
 === Proof sketch
 
@@ -112,6 +112,7 @@ Script: `research/verify_floors_independent.py` (Python, mpmath and sympy, about
   [$P(theta)$ versus raw Biot–Savart at Gotoda’s own positions, 399 points on each arc], [$<= 10^(-59)$ relative on both; every branch-A point collapses],
   [Both branch minima as $mu -> 1$ ($mu = 0.9, 0.99, 0.999, 1$)], [$(1.3399, 1.4983)$, $(1.4067, 1.4218)$, $(1.41346, 1.41496)$, then both $sqrt(2)$; $mu$ and $1\/mu$ give identical values],
   [Time integration of the three-vortex ODE (Taylor method, 30 digits) at the $P_"min"$ configuration], [size² follows the self-similar line to $<= 5 times 10^(-31)$ relative up to $0.9 t_c$],
+  [Quotient built from Gotoda (3.3)–$B$ versus raw Biot–Savart], [disagrees ($2.269$ vs $3.118$, $1.746$ vs $2.207$, $2.350$ vs $2.705$ at $theta = 0.4, 0.8, 1.2$)],
   [Exact algebra (sympy): critical cubic, one root per arc, resultant, irreducibility over $QQ$ and $QQ(sqrt(7))$, positive discriminant], [all confirmed],
   [Two-ring family, $n = 2, dots, 8$: self-similar for every $theta$; minimum over $theta$ versus the $F_n$ formula], [residual $<= 10^(-60)$; minima match $F_n$ to $<= 2 times 10^(-60)$],
   [$n=5$ curve versus $(127 sqrt(2) - 24 cos 5 theta)\/(80 sin 5 theta)$; $F_2, dots, F_5$ radicals], [$<= 10^(-58)$ relative; radicals match to $<= 10^(-34)$],
@@ -131,10 +132,18 @@ The check covers the stated families only. It does not show that no other config
   [Aref, Phys. Fluids 25 (1982)], [AIP PPV + OCR], [*DOES NOT KILL*: center-of-symmetry / Havelock; no floor literals],
   [O’Neil, Physica D 236 (2007)], [ScienceDirect PPV], [*DOES NOT KILL*: triple-ring RE/collapse; no optimized floors],
   [Outside-family pass (web, OA, arXiv needles; GENChase PR \#128)], [Open web], [*STILL OPEN* for $P_star$ and $F_5$],
-  [LITERATURE_V2_ROWS], [], [],
+  [Gröbli (1877) §10; Aref, Phys. Fluids 22 (2010)], [repo reads (earlier passes)], [Give the rates and the product $omega_0 t_c$ as a logarithmic-spiral pitch for general strengths. $P(theta)$ is a specialization of these; no μ = 1/2 minimization located.],
+  [Tavantzis & Ting (1988)], [search metadata], [One-parameter contracting family in side-length variables, where orientation is invisible; consistent with two oriented arcs. *DOES NOT KILL.*],
+  [Leoncini, Kuznetsov & Zaslavsky (2000)], [search metadata], [Detailed analysis for two identical vortices only; excludes $Gamma = (1, 1\/2, -1\/3)$.],
+  [Krishnamurthy & Stremler (2018)], [earlier postprint read; search metadata], [Orientation-aware geometric collapse theory; collapse time and path length, no minimized $omega_0 t_c$ found. Not re-read this pass.],
+  [Novikov & Sedov (1979)], [search metadata], [Parallelogram collapse; the $n=2$ member of the two-ring family is classical. Its minimum $F_2$ is not claimed as new.],
+  [Demina & Kudryashov (2014)], [abstract only], [Explicit double-ring configurations of two regular polygons with arbitrary circulations. *AMBIGUOUS for $F_n$ and $F_5$ until read in full*; no statement of the minimization seen.],
+  [Fingerprint pass v2 (decimals of $P_star$, $P_"min"$, $F_5$; $31682$; $245351$, $5201$; sextic coefficients)], [search engine only], [No hits. Full-text pages and OEIS could not be opened from the checking machine, so *no OEIS check is claimed*.],
 )
 
-*Limits.* Negative searches are not a novelty certificate. Priority remains unconfirmed.
+*Verdicts (version 2).* $P_star$: *STILL OPEN*. $P_"min"$: *STILL OPEN*. $F_5$: *STILL OPEN*, with one unread lead (Demina & Kudryashov 2014) that could settle the general $F_n$ minimization.
+
+*Limits.* The version 2 pass could not open full texts or OEIS; its rows rest on search-engine metadata and snippets, plus earlier full reads recorded in the repo. Negative searches are not a novelty certificate. Priority remains unconfirmed. The collapse families and the product itself are classical: the contribution claimed is only the minimizations and their closed forms.
 
 Copyrighted PDFs are not redistributed with this note.
 
@@ -155,4 +164,15 @@ Closed forms for the two μ = 1/2 three-vortex product floors $P_"min" approx 1.
 
 = References
 
-LITERATURE_V2_REFS
++ H. Aref, Point vortex motions with a center of symmetry, _Phys. Fluids_ *25*(12), 2183–2187 (1982). DOI 10.1063/1.863710.
++ H. Aref, Self-similar motion of three point vortices, _Phys. Fluids_ *22*, 057104 (2010). DOI 10.1063/1.3425649.
++ M. V. Demina and N. A. Kudryashov, Rotation, collapse, and scattering of point vortices, _Theor. Comput. Fluid Dyn._ *28*, 357–368 (2014). DOI 10.1007/s00162-014-0319-4. (Abstract only.)
++ T. Gotoda, Self-similar motions and related relative equilibria in the N-point vortex system, _J. Dyn. Diff. Equat._ *33*, 1759–1777 (2021). DOI 10.1007/s10884-020-09867-y; arXiv:2002.09624.
++ W. Gröbli, Specielle Probleme über die Bewegung geradliniger paralleler Wirbelfäden (1877); English translation by L. Goodman, arXiv:2404.01305.
++ J. Koiller, S. Pinto de Carvalho, R. Rodrigues da Silva and L. C. Gonçalves de Oliveira, On Aref’s vortex motions with a symmetry center, _Physica D_ *16*, 27–61 (1985). DOI 10.1016/0167-2789(85)90084-3.
++ V. S. Krishnamurthy and M. A. Stremler, Finite-time collapse of three point vortices in the plane, _Regul. Chaotic Dyn._ *23*(5), 530–550 (2018). DOI 10.1134/S1560354718050040.
++ X. Leoncini, L. Kuznetsov and G. M. Zaslavsky, Motion of three vortices near collapse, _Phys. Fluids_ *12*(8), 1911–1927 (2000); arXiv:physics/9908055.
++ E. A. Novikov and Yu. B. Sedov, Vortex collapse, _Sov. Phys. JETP_ *50*(2), 297–301 (1979).
++ K. A. O’Neil, Relative equilibrium and collapse configurations of heterogeneous vortex triple rings, _Physica D_ *236*(2), 123–130 (2007).
++ D. Tavantzis and L. Ting, The dynamics of three vortices revisited, _Phys. Fluids_ *31*(6), 1392–1409 (1988).
++ SharpMeow/GENChase (2026-09-23): `research/verify_floors_independent.py`, `identities/sources/unequal-mu-half-Pstar-closed-2026-09-23.md`, `new-formula-candidate-2026-09-23.md`, `deeper-kill-Pstar-F5-2026-09-23.md`, `outside-family-prior-art-Pstar-F5-2026-09-23.md`.

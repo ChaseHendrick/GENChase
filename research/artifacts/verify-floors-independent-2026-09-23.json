@@ -35,6 +35,24 @@
   "sexticResidualAtClosedForm": "2.0392e-56",
   "gotodaFormulaVsRawBiotSavartMaxRel": 8.402174136721273e-60,
   "secondArcFormulaVsRawBiotSavartMaxRel": 9.711688578373466e-60,
+  "gotoda33QuotientVsRaw": [
+   {
+    "theta": "0.4",
+    "rawBiotSavart": "3.11844934142",
+    "quotient33": "2.2691855088"
+   },
+   {
+    "theta": "0.8",
+    "rawBiotSavart": "2.20710763211",
+    "quotient33": "1.74608288013"
+   },
+   {
+    "theta": "1.2",
+    "rawBiotSavart": "2.70454555852",
+    "quotient33": "2.3497118194"
+   }
+  ],
+  "gotoda33QuotientSampledMin": "1.74096",
   "secondArcAllCollapsing": true,
   "gotodaThetaStar": "0.83120794968893198391511275213",
   "gotodaCosThetaStar": "0.6739838839479822237475678027",

@@ -124,6 +124,13 @@ for i in range(1, 400):        # second collapsing arc: π < θ < 2π − θ0
     km, _ = kappa_spread(gotoda_positions(th), g3)
     arcA_all_collapse = arcA_all_collapse and km.real < 0
     arcA_err = max(arcA_err, abs(product(km) - P_gotoda(th)) / P_gotoda(th))
+# the quotient an earlier campaign note built from Gotoda (3.3)-B, versus raw Biot–Savart
+Q33 = lambda t: (56 * mp.cos(t) ** 2 - 10 * mp.sqrt(7) * mp.cos(t) - 133) / (8 * (14 * mp.cos(t) + mp.sqrt(7)) * mp.sin(t))
+q33_cmp = []
+for t in ('0.4', '0.8', '1.2'):
+    km, _ = kappa_spread(gotoda_positions(mp.mpf(t)), g3)
+    q33_cmp.append({'theta': t, 'rawBiotSavart': mp.nstr(product(km), 12), 'quotient33': mp.nstr(abs(Q33(mp.mpf(t))), 12)})
+q33_min = min(abs(Q33(th0 * i / 2000)) for i in range(1, 2000))
 thstar = mp.findroot(lambda t: mp.diff(P_gotoda, t), mp.mpf('0.83'))
 
 branch_minima = []
@@ -156,7 +163,8 @@ results['Pstar'] = {
     'absDifference': mp.nstr(abs(Pmin_indep - Pstar_closed), 5),
     'sexticResidualAtClosedForm': mp.nstr(abs(sextic(Pstar_closed)), 5),
     'gotodaFormulaVsRawBiotSavartMaxRel': float(arc_err),
-    'secondArcFormulaVsRawBiotSavartMaxRel': float(arcA_err), 'secondArcAllCollapsing': bool(arcA_all_collapse),
+    'secondArcFormulaVsRawBiotSavartMaxRel': float(arcA_err),
+    'gotoda33QuotientVsRaw': q33_cmp, 'gotoda33QuotientSampledMin': mp.nstr(q33_min, 8), 'secondArcAllCollapsing': bool(arcA_all_collapse),
     'gotodaThetaStar': mp.nstr(thstar, 30), 'gotodaCosThetaStar': mp.nstr(mp.cos(thstar), 30),
     'gotodaPAtThetaStar': mp.nstr(P_gotoda(thstar), 40),
 }
