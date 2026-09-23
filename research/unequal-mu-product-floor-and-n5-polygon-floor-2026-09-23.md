@@ -85,21 +85,14 @@ Searches for the numbers and the sextic found only this repository. That is weak
 
 ## Before submission
 
-1. Read three papers in full:
-   - Demina and Kudryashov (2014), the ring configurations.
-   - Aref (2010), the three-vortex rates.
-   - Krishnamurthy and Stremler (2018) §3.5, the distance travelled.
+The submission package is in [`submission/`](submission/): arXiv metadata (categories, MSC, a TeX abstract under the 1920-character limit, CC BY 4.0 license), an endorsement request and a cover letter for *Regular and Chaotic Dynamics*. The author's contact email is kept out of this public repository; the author has a private copy of the PDF with the email for arXiv and the journal.
 
-   If any of them states one of the minima or the √3/2 bound, cite it and narrow the sentence "We have not found … stated in the literature". If Krishnamurthy and Stremler observe the > 2 path-length bound numerically, say so in the Discussion as the observation Corollary 1 proves.
-2. Re-check Gotoda Sect. 3 (the parametrization and the θ range) against the journal version.
-3. arXiv:
-   - Submit the PDF. arXiv accepts PDF-only submissions that are not produced from TeX, and fonts must be embedded, which Typst does.
-   - Suggested category: physics.flu-dyn, cross-listed to math-ph and math.DS. Regular and Chaotic Dynamics fits the paper better than Physica D.
-   - The abstract must be under 1920 characters; the current one is about 1500.
-   - A first submission to a category needs an endorsement from an established arXiv author.
-   - arXiv asks authors to report significant use of generative AI; the paper has one line for this.
-4. Journal: most journals take LaTeX or Word. A LaTeX transcription of the Typst source is mechanical. Journals also want a corresponding-author email, which the PDF does not include yet.
-5. Choose a license when posting to arXiv. CC BY 4.0 is compatible with most journals.
+Still open:
+
+1. **Read three papers in full:** Demina and Kudryashov (2014), Aref (2010) and Krishnamurthy and Stremler (2018) §3.5. An attempt on 2026-09-23 could not reach them because the session's network policy blocks the hosting sites (people.iith.ac.in, vtechworks.lib.vt.edu, orbit.dtu.dk, link.springer.com, arxiv.org). If one of them states a minimum of Theorem 1, Proposition 1 or 2, or the √3/2 bound, cite it and narrow the Discussion sentence "We have not found … in the literature". If Krishnamurthy and Stremler observe the path-length bound (> 2) numerically, say that Corollary 1 proves it.
+2. **Re-check Gotoda's parametrization** against the journal version.
+3. **Endorsement:** start the arXiv submission to get a code, then send [`submission/endorsement-request.md`](submission/endorsement-request.md) to one established physics.flu-dyn author.
+4. **Journal:** most journals take LaTeX or Word, so the Typst source would need a LaTeX transcription at acceptance. Fill in the suggested reviewers in the cover letter.
 
 ## Not claimed
 
