@@ -39,7 +39,10 @@ Write P = |ω₀|t_c, the initial angular velocity times the collapse time. Each
 
 The results changed twice on the way, and the paper states only the final version.
 
-- **First correction.** An early witness gave a minimum near 1.741. It came from a quotient built with Gotoda's Eq. (3.3) for the rotation rate B. Off the equal-circulation slice, that quotient disagrees with the Biot–Savart velocities and with Gotoda's own Prop. 2.1: at θ = 0.8 it gives 1.746 where Biot–Savart gives 2.207 (see `gotoda33QuotientVsRaw` in the JSON). We have not checked whether the discrepancy is in Gotoda's printed (3.3) or in how it was transcribed here, so the paper does not mention it.
+- **First correction.** An early witness gave a minimum near 1.741. It came from a quotient built with Gotoda's Eq. (3.3) for the rotation rate B. That formula, as printed in arXiv v1 (2002.09624), has a typo:
+  - The factor (Γ₁² + Γ₂²)(Γ₂λ₁ + Γ₁λ₂) should read (Γ₁ + Γ₂)(Γ₁²λ₁ + Γ₂²λ₂).
+  - With that change, (3.3) matches direct Biot–Savart to 10⁻³¹. The two forms coincide when Γ₁ = Γ₂, which is why the error only shows for unequal circulations.
+  - Checked 2026-09-23 against the uploaded arXiv PDF. The journal version was not seen, so the paper does not mention the typo.
 - **Second correction.** The corrected formula was then minimized on 𝓑 only, which gives 2.2039. For Γ₁ ≠ Γ₂ the opposite orientation also collapses. Its critical point, cos θ ≈ −0.924, had been set aside as "expanding", but that holds only when sin θ > 0. The minimum over the whole family is 1.0647. The earlier drafts in `identities/sources/` carry dated correction notes.
 
 ## What the verification covers
@@ -74,8 +77,8 @@ The μ = 1/2 checks:
 | Aref 1982 | Full text (purchased) | Two-ring equations and integrability. Sec. III treats equal and opposite strengths, which do not satisfy the self-similar collapse condition. |
 | Koiller et al. 1985 | Full text | §11 has the two-ring circulation condition, the rates as functions of the angle, and logarithmic spirals. No minimization, no K_n, no F_n. |
 | O'Neil 2007 | Full text (purchased) | Finiteness for three rings. Credits Koiller for two-ring collapse. |
-| Gotoda 2021 | arXiv version, Sect. 3, read earlier | The parametrization. Re-check Sect. 3 against the journal version before submission. |
-| Aref 2010 | Author manuscript, eqs. (25) and (29), read earlier | Both rates and their product in the spiral. **Read in full before submission**, since P is the ratio of its two rates. |
+| Gotoda 2021 | **arXiv v1 Sect. 2–3 read 2026-09-23** | Eq. (3.6) is exactly our positions (5). Gotoda uses the same normalization, Γ₁ ≥ Γ₂ > 0 > Γ₃. He treats the whole circle θ ∈ [0, 2π), and Fig. 1 shows collapse on both orientations. Eqs. (3.1)–(3.2) state that Γ_H = 0 and M = 0 are necessary and sufficient for self-similar collapse. Eq. (3.3) gets A right, but B as printed in v1 is wrong for Γ₁ ≠ Γ₂ (see below). No minimization of −B/(2A). |
+| Aref 2010 | **Full text read 2026-09-23** (author's complimentary copy, provided by the owner) | Gives Ω (25a) and τ (25d) through the side lengths. Derives the necessary conditions γ₂ = 0 and L = 0 for self-similar motion (Sect. II B), and the zero-impulse circle and its parametrization (Eqs. 20–22). Shows the trajectories are logarithmic spirals with exponent fixed by Ωτ = P (Eq. 29c). **Never minimizes or bounds Ωτ.** The paper now credits all of this. |
 | Krishnamurthy and Stremler 2018 | Abstract; §3.5 of the postprint read earlier | Distance travelled before collapse. The earlier read noted a numerical observation that the normalized distance exceeds 2, which Corollary 1 proves with the sharp constant. **Verify §3.5 and cite it.** |
 | Aref, Rott and Thomann 1992; Newton 2001 | Bibliographic data verified | History and general theory. |
 | Tavantzis and Ting 1988; Leoncini et al. 2000; Aref 1979 | Abstracts | Context only. |
@@ -85,21 +88,14 @@ Searches for the numbers and the sextic found only this repository. That is weak
 
 ## Before submission
 
-1. Read three papers in full:
-   - Demina and Kudryashov (2014), the ring configurations.
-   - Aref (2010), the three-vortex rates.
-   - Krishnamurthy and Stremler (2018) §3.5, the distance travelled.
+The submission package is in [`submission/`](submission/): arXiv metadata (categories, MSC, a TeX abstract under the 1920-character limit, CC BY 4.0 license), an endorsement request and a cover letter for *Regular and Chaotic Dynamics*. The author's contact email is kept out of this public repository; the author has a private copy of the PDF with the email for arXiv and the journal.
 
-   If any of them states one of the minima or the √3/2 bound, cite it and narrow the sentence "We have not found … stated in the literature". If Krishnamurthy and Stremler observe the > 2 path-length bound numerically, say so in the Discussion as the observation Corollary 1 proves.
-2. Re-check Gotoda Sect. 3 (the parametrization and the θ range) against the journal version.
-3. arXiv:
-   - Submit the PDF. arXiv accepts PDF-only submissions that are not produced from TeX, and fonts must be embedded, which Typst does.
-   - Suggested category: physics.flu-dyn, cross-listed to math-ph and math.DS. Regular and Chaotic Dynamics fits the paper better than Physica D.
-   - The abstract must be under 1920 characters; the current one is about 1500.
-   - A first submission to a category needs an endorsement from an established arXiv author.
-   - arXiv asks authors to report significant use of generative AI; the paper has one line for this.
-4. Journal: most journals take LaTeX or Word. A LaTeX transcription of the Typst source is mechanical. Journals also want a corresponding-author email, which the PDF does not include yet.
-5. Choose a license when posting to arXiv. CC BY 4.0 is compatible with most journals.
+Still open:
+
+1. **Read two papers in full:** Demina and Kudryashov (2014), and Krishnamurthy and Stremler (2018) §3.5, whose postprint link on the author's page is broken. Both are Springer journals, so try a university library login before buying. Aref (2010) has been read and does not anticipate the results; see the table above. An attempt on 2026-09-23 could not reach them because the session's network policy blocks the hosting sites (people.iith.ac.in, vtechworks.lib.vt.edu, orbit.dtu.dk, link.springer.com, arxiv.org). If one of them states a minimum of Theorem 1, Proposition 1 or 2, or the √3/2 bound, cite it and narrow the Discussion sentence "We have not found … in the literature". If Krishnamurthy and Stremler observe the path-length bound (> 2) numerically, say that Corollary 1 proves it.
+2. **Gotoda's parametrization** was checked against arXiv v1: it is identical. The paper now cites it as [6, Sect. 3], which uses no equation numbers in case the journal numbering differs.
+3. **Endorsement:** start the arXiv submission to get a code, then send [`submission/endorsement-request.md`](submission/endorsement-request.md) to one established physics.flu-dyn author.
+4. **Journal:** most journals take LaTeX or Word, so the Typst source would need a LaTeX transcription at acceptance. Fill in the suggested reviewers in the cover letter.
 
 ## Not claimed
 
