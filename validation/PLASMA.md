@@ -1,6 +1,6 @@
 # Kinetic plasma: bounded numerical and print evidence
 
-This is an original implementation of established one-dimensional electrostatic particle-in-cell physics. It makes no novelty claim. The checked cold oscillation, discrete field solve, sampling noise and print behavior support partial validation within the fixtures below. They do not establish arbitrary plasma stability, a measured Landau damping rate, or agreement with physical experiments.
+This is an original implementation of established one-dimensional electrostatic particle-in-cell physics. It makes no novelty claim. The checked cold oscillation, discrete field solve, sampling noise, one Maxwellian Landau damping rate and print behavior support partial validation within the fixtures below. They do not establish arbitrary plasma stability, a general Landau map, or agreement with physical experiments.
 
 The primary numerical reference is [J. U. Brackbill, *On Energy and Momentum Conservation in Particle-in-Cell Plasma Simulation* (2015)](https://arxiv.org/html/1510.08741), sections 3.1–3.5, especially the standard cloud-in-cell field centering and its conservation limitations. Birdsall and Langdon's *Plasma Physics via Computer Simulation* (1985) supplies the classical model context. No reference code was copied. This is not [GEMPIC](https://arxiv.org/abs/1609.03053) and does not inherit that method's geometric properties.
 
@@ -53,6 +53,31 @@ Run `node tools/plasma-science.js > validation/results/plasma-science.json`. Thi
 
 The cold sheet relation follows from the noncrossing ordering: the charge to a displaced sheet is its displacement relative to the uniform background, so its acceleration is minus that displacement. This is an independent continuum benchmark; a finite grid is expected to depart from it. The temporal comparison is self-convergence against a smaller step of the same solver and is labeled accordingly. Sampling uncertainties use the independent seeds as units, not correlated cells or time samples. The noise test concerns deposition only and does not establish a damping rate or nonlinear dynamical noise law.
 
+
+## Landau damping check
+
+Run `node tools/plasma-landau-science.js > validation/results/plasma-landau-science.json`. The harness loads the actual `plasma.js` CIC solver and compares an early-time mode-1 electric-field envelope decay rate against an independent Float64 plasma-dispersion root.
+
+Fixture: Maxwellian electrons with `beam=0`, `thermal=0.4` (so `v_th=σ=0.4`, `λ_D=thermal` in these units), mode-1 displacement amplitude `0.03`, `k=1` on `L=2π`, hence `kλ_D=0.4`. The dielectric root of
+
+```text
+ε(ω,k) = 1 + (1/(k²λ_D²)) [1 + ζ Z(ζ)] = 0,   ζ = ω/(√2 k v_th)
+```
+
+is solved with the Faddeeva representation `Z(ζ)=i√π w(ζ)` and Newton iteration. Verified anchors: `Z(0)`, `Z(1)`, and the `kλ_D=0.5` root. The measured `γ_theory ≈ -0.06613`. Particle runs fit `log|E_k|` peaks on `t∈[2,12]` before trapping; acceptance is relative error below `0.15` at the primary and finest two refinements, with a four-seed fine mean within `0.2`.
+
+| Check | Recorded result |
+|---|---|
+| Theory root (`kλ_D=0.4`) | `ω ≈ 1.28506 - 0.06613 i`, residual `<1e-12` |
+| Primary `N=131072`, `M=256` | `γ_num ≈ -0.06667`, relative error `≈0.008` |
+| Refinement | Coarse through fine relative errors reported; two finest below `0.15` |
+| Multi-seed fine mean | Relative error `≈0.058` |
+| Cold `thermal=0` | `γ≈0`; warm-rate claim rejected |
+| Amplitude `0.35` trapping | Linear-rate claim rejected |
+| Flipped force sign | Energy guard halt / growth; Landau match rejected |
+
+This is one linear electrostatic fixture. Finite-N noise and the early-time window limit accuracy. It is not a two-stream growth-rate, finite-grid instability, multi-`kλ_D`, collisional, electromagnetic or laboratory certificate.
+
 ## Print and application checks
 
 Run `node tools/plasma-print.js > validation/results/plasma-print.json` with Playwright and Chromium as described in [BUILDING.md](../BUILDING.md). [The print artifact](results/plasma-print.json) records eight actual exports: 2400×2400 with 4,096 particles/64 spatial cells and 2400×3000 with 16,384 particles/256 cells, both density and velocity colors, initial and 40-step paused states. The velocity histogram has 256 rows in each case.
@@ -72,7 +97,7 @@ The display deposits particles into a finite histogram and interpolates it for p
 
 ## Remaining limits
 
-- No quantitative Landau-damping or arbitrary two-stream growth-rate benchmark, finite-grid instability map, general equilibrium or transport claim.
+- Landau damping is checked only for one Maxwellian `kλ_D=0.4` fixture. No arbitrary two-stream growth-rate benchmark, finite-grid instability map, general equilibrium or transport claim.
 - No exhaustive scan of allowed seeds, beam speeds, temperatures, counts, grids, timesteps or long elapsed times. The high-count fixture covers four steps only.
 - No electromagnetic effects, collisions, moving ions, multiple species, higher-dimensional model or laboratory comparison.
 - No exact energy conservation. A visible numerical guard can stop a long run; it is not a replacement for convergence testing.

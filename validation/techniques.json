@@ -3641,11 +3641,11 @@
     "equation": "∂f/∂t + v ∂f/∂x − E ∂f/∂v = 0; ∂E/∂x = 1 − ∫f dv; x ∈ [0, 2π), periodic",
     "status": "partially validated",
     "limitations": [
-      "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. No validated Landau damping, nonlinear instability threshold, collisions or magnetic physics.",
+      "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. Landau damping is checked only for one Maxwellian kλ_D fixture against an independent plasma-Z root; no validated nonlinear instability threshold, collisions or magnetic physics.",
       "Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device."
     ],
     "remaining": [
-      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
+      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization; two-stream growth-rate and finite-grid instability maps remain open.",
       "Broaden print interpretation and hardware coverage; retain stated model assumptions."
     ],
     "numerical": [
@@ -3657,7 +3657,17 @@
         "criteria": "Poisson fields within 1e-12; cold frequency relative error below .002; trajectory RMS below .00015; spatial/temporal error reductions3.5–4.5 and3.5–4.6; noise mean within4 seed standard errors; exact failed-trial rollback.",
         "benchmark": "Independent dense periodic Poisson solve, all-pairs triangular deposition weights, analytic noncrossing cold-sheet oscillation, same-domain refinement and exact expected CIC sampling variance.",
         "failureControl": "Reversed force sign and nonneutral deposited charge must be detected; rejected dynamics restore accepted arrays and counters.",
-        "limitations": "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. No validated Landau damping, nonlinear instability threshold, collisions or magnetic physics."
+        "limitations": "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. Cold-sheet/Poisson/noise fixture only; Landau rate is covered by the separate landau harness within one Maxwellian kλ_D window."
+      },
+      {
+        "test": "tools/plasma-landau-science.js",
+        "command": "node tools/plasma-landau-science.js",
+        "results": "validation/results/plasma-landau-science.json",
+        "scope": "Actual Float64 1D1V CIC Maxwellian mode-1 Langmuir wave (beam=0, thermal=0.4, k=1, kλ_D=0.4): independent plasma-Z Landau root vs early-time |E_k| envelope γ; particle/grid refinement; cold, trapping, and flipped-force controls.",
+        "criteria": "Primary and finest-two refinements |γ_num-γ_theory|/|γ_theory|<0.15 with envelope r²>0.9; multi-seed fine mean within 0.2; cold nearly undamped and rejects warm rate; large-amplitude and flipped-force cases reject the linear damping claim.",
+        "benchmark": "Independent Float64 plasma dispersion Z / Newton root of ε(ω,k)=1+(1/(k²λ_D²))[1+ζZ(ζ)] with v_th=thermal, λ_D=thermal, ζ=ω/(√2 k v_th); verified against Z(0), Z(1) and the kλ_D=0.5 root.",
+        "failureControl": "thermal→0 must leave the wave nearly undamped and fail the warm-rate claim; amplitude 0.35 trapping must miss linear γ; flipped kick sign must halt or grow and must not match Landau damping.",
+        "limitations": "One kλ_D fixture, electrostatic 1D1V, finite-N noise and early-time window only; no collisions, EM, ions, multi-mode map or experimental claim."
       }
     ],
     "print": [

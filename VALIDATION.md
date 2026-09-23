@@ -138,7 +138,7 @@ Complete labels apply only within each record's reviewed domain.
 | [maxwell](src/modules/maxwell.js) | partially validated | [maxwell-science.js](tools/maxwell-science.js) | Limited evidence recorded |
 | [molecular](src/modules/molecular.js) | partially validated | [molecular-science.js](tools/molecular-science.js) | Limited evidence recorded |
 | [surfaces](src/modules/surfaces.js) | validated within stated limits | [surfaces-science.js](tools/surfaces-science.js) | Limited evidence recorded |
-| [plasma](src/modules/plasma.js) | partially validated | [plasma-science.js](tools/plasma-science.js) | Limited evidence recorded |
+| [plasma](src/modules/plasma.js) | partially validated | [plasma-science.js](tools/plasma-science.js), [plasma-landau-science.js](tools/plasma-landau-science.js) | Limited evidence recorded |
 | [shallow](src/modules/shallow.js) | partially validated | [shallow-science.js](tools/shallow-science.js) | Limited evidence recorded |
 | [nonreciprocal](src/modules/nonreciprocal.js) | partially validated | [nonreciprocal-science.js](tools/nonreciprocal-science.js) | Limited evidence recorded |
 | [hodgkin-huxley](src/modules/hodgkin-huxley.js) | partially validated | [hodgkin-huxley-science.js](tools/hodgkin-huxley-science.js) | Limited evidence recorded |
@@ -398,7 +398,7 @@ Complete labels apply only within each record's reviewed domain.
 
 ### plasma
 
-- One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. No validated Landau damping, nonlinear instability threshold, collisions or magnetic physics.
+- One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. Landau damping is checked only for one Maxwellian kλ_D fixture against an independent plasma-Z root; no validated nonlinear instability threshold, collisions or magnetic physics.
 - Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device.
 
 ### shallow
