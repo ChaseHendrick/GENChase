@@ -20,6 +20,14 @@ perturbation produces an error above 0.026 and is rejected. The periodic solutio
 is classical, described by [Chenciner and Montgomery](https://arxiv.org/abs/math/0011268).
 This does not establish long-time accuracy for arbitrary or chaotic trajectories.
 
+## Print-state preservation
+
+`node tools/eight-print-state.js --write` records paused exportPNG and exportSVG
+checks for five fixtures in [results/eight-print-state.json](results/eight-print-state.json).
+Export does not alter the Float64 trajectory, diagnostics or settings at the requested
+dimensions. That is state preservation only; it does not add printed numerical resolution
+or long-time orbit accuracy.
+
 ## Schwarzschild photons
 
 For mass parameter M = 1, the module's searched capture threshold agrees with

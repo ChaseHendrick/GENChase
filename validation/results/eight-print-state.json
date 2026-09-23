@@ -1,0 +1,312 @@
+{
+  "pass": true,
+  "source": "src/modules/eight.js",
+  "sourceSha256": "00e15b29caba92c9cf360487ddce8471e0f351e54168633c80d650e75a1c01b3",
+  "harnessSha256": "62c39cbc9da8cbfe885ee60a0a0343e093f89464f60d2ba46b1215d365c0586e",
+  "command": "node tools/eight-print-state.js --write",
+  "scope": "Actual eight exportPNG and exportSVG at 2400 longest edge for world, braid, shape, broken and wreath fixtures (2400x2400, 1920x2400 and 2400x1350). Exact Float64 trajectory words, diagnostics (L, dE, dq), phase, raf and settings preserved; deterministic regenerate replay; nonblank reduced raster; SVG path geometry with exact width/height.",
+  "criteria": "Zero changed/nonfinite trajectory words; scalars/phase/settings unchanged across PNG and SVG export; exact requested dimensions and nonempty PNG/SVG; luminance spread >12/255; wrong dimensions and deliberate post-export traj+phase mutation rejected; broken return distance exceeds world.",
+  "rows": [
+    {
+      "fixture": "world",
+      "kind": "eight",
+      "view": "world",
+      "n": 2401,
+      "requested": [
+        2400,
+        2400
+      ],
+      "L": -1.9405343440740023e-14,
+      "dE": 2.0183646406883744e-14,
+      "dq": 5.9433884140662716e-8,
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 1081591,
+        "L": -1.9405343440740023e-14,
+        "dE": 2.0183646406883744e-14,
+        "dq": 5.9433884140662716e-8,
+        "n": 2401,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 31213,
+          "phaseChanged": false,
+          "rafChanged": false,
+          "scalarsChanged": false,
+          "settingsChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 224.60979999999998,
+          "finite": 102400,
+          "samples": 102400
+        }
+      },
+      "svg": {
+        "width": 2400,
+        "height": 2400,
+        "paths": 3,
+        "bytes": 117997,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 31213,
+          "phaseChanged": false,
+          "rafChanged": false,
+          "scalarsChanged": false,
+          "settingsChanged": false
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongPngDimensionsRejected": true,
+        "wrongSvgDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 2,
+        "phaseChanged": true
+      }
+    },
+    {
+      "fixture": "braid",
+      "kind": "eight",
+      "view": "braid",
+      "n": 2401,
+      "requested": [
+        1920,
+        2400
+      ],
+      "L": -1.9405343440740023e-14,
+      "dE": 2.0183646406883744e-14,
+      "dq": 5.9433884140662716e-8,
+      "png": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 962931,
+        "L": -1.9405343440740023e-14,
+        "dE": 2.0183646406883744e-14,
+        "dq": 5.9433884140662716e-8,
+        "n": 2401,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 31213,
+          "phaseChanged": false,
+          "rafChanged": false,
+          "scalarsChanged": false,
+          "settingsChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 205.5738,
+          "finite": 128000,
+          "samples": 128000
+        }
+      },
+      "svg": {
+        "width": 1920,
+        "height": 2400,
+        "paths": 3,
+        "bytes": 116023,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 31213,
+          "phaseChanged": false,
+          "rafChanged": false,
+          "scalarsChanged": false,
+          "settingsChanged": false
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongPngDimensionsRejected": true,
+        "wrongSvgDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 2,
+        "phaseChanged": true
+      }
+    },
+    {
+      "fixture": "shape",
+      "kind": "eight",
+      "view": "shape",
+      "n": 2401,
+      "requested": [
+        2400,
+        2400
+      ],
+      "L": -1.9405343440740023e-14,
+      "dE": 2.0183646406883744e-14,
+      "dq": 5.9433884140662716e-8,
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 1022301,
+        "L": -1.9405343440740023e-14,
+        "dE": 2.0183646406883744e-14,
+        "dq": 5.9433884140662716e-8,
+        "n": 2401,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 31213,
+          "phaseChanged": false,
+          "rafChanged": false,
+          "scalarsChanged": false,
+          "settingsChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 204.5738,
+          "finite": 102400,
+          "samples": 102400
+        }
+      },
+      "svg": {
+        "width": 2400,
+        "height": 2400,
+        "paths": 1,
+        "bytes": 38846,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 31213,
+          "phaseChanged": false,
+          "rafChanged": false,
+          "scalarsChanged": false,
+          "settingsChanged": false
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongPngDimensionsRejected": true,
+        "wrongSvgDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 2,
+        "phaseChanged": true
+      }
+    },
+    {
+      "fixture": "broken",
+      "kind": "broken",
+      "view": "world",
+      "n": 2401,
+      "requested": [
+        2400,
+        2400
+      ],
+      "L": -1.4876988529977098e-14,
+      "dE": 2.2749025936965263e-11,
+      "dq": 1.9815560132104661,
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 994220,
+        "L": -1.4876988529977098e-14,
+        "dE": 2.2749025936965263e-11,
+        "dq": 1.9815560132104661,
+        "n": 2401,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 31213,
+          "phaseChanged": false,
+          "rafChanged": false,
+          "scalarsChanged": false,
+          "settingsChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 223.53760000000003,
+          "finite": 102400,
+          "samples": 102400
+        }
+      },
+      "svg": {
+        "width": 2400,
+        "height": 2400,
+        "paths": 3,
+        "bytes": 119368,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 31213,
+          "phaseChanged": false,
+          "rafChanged": false,
+          "scalarsChanged": false,
+          "settingsChanged": false
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongPngDimensionsRejected": true,
+        "wrongSvgDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 2,
+        "phaseChanged": true
+      }
+    },
+    {
+      "fixture": "wreath",
+      "kind": "eight",
+      "view": "polar",
+      "n": 2401,
+      "requested": [
+        2400,
+        1350
+      ],
+      "L": -1.9405343440740023e-14,
+      "dE": 2.0183646406883744e-14,
+      "dq": 5.9433884140662716e-8,
+      "png": {
+        "width": 2400,
+        "height": 1350,
+        "bytes": 631816,
+        "L": -1.9405343440740023e-14,
+        "dE": 2.0183646406883744e-14,
+        "dq": 5.9433884140662716e-8,
+        "n": 2401,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 31213,
+          "phaseChanged": false,
+          "rafChanged": false,
+          "scalarsChanged": false,
+          "settingsChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 217.67,
+          "finite": 57600,
+          "samples": 57600
+        }
+      },
+      "svg": {
+        "width": 2400,
+        "height": 1350,
+        "paths": 3,
+        "bytes": 114877,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 31213,
+          "phaseChanged": false,
+          "rafChanged": false,
+          "scalarsChanged": false,
+          "settingsChanged": false
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongPngDimensionsRejected": true,
+        "wrongSvgDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 2,
+        "phaseChanged": true
+      }
+    }
+  ],
+  "limitations": "State preservation and declared dimensions only. Does not establish long-time orbit accuracy, calibrated color, printed numerical resolution, SVG/PNG pixel agreement or coverage of every control/aspect/hardware."
+}
