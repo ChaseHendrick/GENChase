@@ -6033,14 +6033,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8",
     "reference": "A. L. Hodgkin and A. F. Huxley, A quantitative description of membrane current and its application to conduction and excitation in nerve, J. Physiol. 117, 500–544 (1952), doi:10.1113/jphysiol.1952.sp004764. Classical squid membrane at 6.3°C, modern −65 mV resting-voltage convention. Original implementation of established equations.",
     "equation": "C dV/dt = I − gNa m³h(V − ENa) − gK n⁴(V − EK) − gL(V − EL); dx/dt = αx(V)(1 − x) − βx(V)x",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The independent audit covers the stated squid parameters, selected currents and finite recording durations; it does not validate every control, temperature, biological preparation or human application.",
-      "Print checks preserve numerical state and dimensions but do not calibrate colors or establish experimental accuracy."
+      "Single-compartment classical squid parameters only; stated currents, shipped timesteps, pulse lengths and a 200 ms sustained-drive fixture. No spatial conduction, synapses, stochastic channels, temperature sweep, network or experimental validation.",
+      "Print evidence is state/scheduler preservation for selected PNG sizes — not calibrated color or biological guarantee."
     ],
     "remaining": [
-      "Extend parameter-domain and long-duration convergence checks, including a spatial axon or propagation model if one is added.",
-      "Broaden browser and hardware print checks without presenting them as biological experiments."
+      "No spatial axon or propagation model exists; add and validate one before any conduction claim.",
+      "Broaden browser/hardware print checks without presenting them as biological experiments."
     ],
     "numerical": [
       {
@@ -6052,6 +6052,16 @@ shall not be misrepresented as the original profile.
         "failureControl": "Replace sodium m³ with m², remove the removable singular series and inject an excessive trial; each must be detected.",
         "command": "node tools/hodgkin-huxley-science.js > validation/results/hodgkin-huxley-science.json",
         "results": "validation/results/hodgkin-huxley-science.json"
+      },
+      {
+        "test": "tools/hodgkin-huxley-duration-science.js",
+        "command": "node tools/hodgkin-huxley-duration-science.js",
+        "results": "validation/results/hodgkin-huxley-duration-science.json",
+        "scope": "Float64 classical squid HH at 6.3 °C: current densities {-4,0,5,10,15,25}, shipped timesteps {0.01,0.005,0.0025}, pulse lengths {1,20,80}, and 200 ms sustained-drive / quiet-rest fixtures versus an independently expressed modern-voltage Dormand–Prince 5(4) reference. Single-compartment only.",
+        "criteria": "Across the current and pulse scans, RK4 at dt=0.005 keeps max voltage error below 0.05 mV with exact spike counts versus DOPRI5; shipped-dt short refinement ratios 8–30; 200 ms drive yields 11 matching spikes, fine voltage error below 1e-4 mV and refinement ratio ~16; quiet 200 ms rest has zero spikes near −65 mV; wrong-Na-exponent and swapped-reversal failure controls separate.",
+        "limitations": "Bounded deterministic single-compartment ODE evidence only. No spatial axon, synapses, stochastic channels, temperature sweep, network or experimental validation. Parameter scans cover stated fixtures, not every UI combination.",
+        "benchmark": "Independently expressed modern-voltage HH rates/RHS with a separately implemented Float64 Dormand–Prince 5(4) adaptive trajectory (not the production RK4). Cross-checked long-fixture reference uncertainty between tolerances 2e-12 and 1e-11.",
+        "failureControl": "Replace sodium m³ with m² in the maintained solver: driven short-fixture voltage error versus correct DOPRI5 must exceed 5 mV. Compare the correct solver to an independent reference with ENa and EK swapped: voltage disagreement must exceed 20 mV."
       }
     ],
     "print": [
@@ -6060,9 +6070,18 @@ shall not be misrepresented as the original profile.
         "scope": "Actual paused PNG exports at 2400×1600 and 2400×2400 for 16 and 64 membranes, all three views and intermediate/completed recordings.",
         "criteria": "Exact CPU/GPU history, state, counters, events and settings preservation; exact output dimensions; deliberate mutating export and wrong dimensions rejected.",
         "limitations": "State and scheduler evidence only; no calibrated-color, biological or all-hardware guarantee.",
-        "results": "validation/results/hodgkin-huxley-print.json"
+        "results": "validation/results/hodgkin-huxley-print.json",
+        "command": "node tools/hodgkin-huxley-print.js"
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/hodgkin-huxley-duration-science.json",
+    "domain": {
+      "parameters": "Classical squid HH at 6.3 °C, single compartment: current densities {-4,0,5,10,15,25} μA/cm², shipped dt {0.01,0.005,0.0025} ms, pulse lengths {1,20,80} ms, plus 200 ms sustained-drive (I=10) and quiet-rest fixtures as in hodgkin-huxley-duration-science.json / hodgkin-huxley-science.json.",
+      "conditions": "Float64 production RK4 vs independently expressed modern-voltage DOPRI5(4) reference; wrong-Na-exponent and swapped-reversal controls must separate; print preserves history/state for registered PNG sizes and membrane counts. No spatial axon in the module.",
+      "resolution": "Across current/pulse scans, RK4 dt=0.005 keeps max |V| error ≪0.05 mV with exact spike counts; shipped-dt short refinement ratios ~16–17; 200 ms drive: 11 matching spikes, fine |V| error ~6e-6 mV, refinement ~16; quiet 200 ms rest: 0 spikes near −65 mV.",
+      "precision": "Float64Array membrane state; independent Float64 DOPRI5 trajectory. Bounded deterministic ODE evidence only — not temperature sweep, synapses, stochastic channels, network, or experiment."
+    }
   },
   {
     "id": "neural-mass",
@@ -6128,16 +6147,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234",
     "reference": "Classical scalar wave equation. Centered finite differences and the three-dimensional CFL bound follow H. P. Langtangen and S. Linge, Finite Difference Computing with PDEs (2017), wave equation chapter, https://hplgit.github.io/fdm-book/doc/pub/wave/html/._wave-solarized004.html. No novelty or full acoustic model is claimed.",
     "equation": "∂²u/∂t² = c²(∂²u/∂x² + ∂²u/∂y² + ∂²u/∂z²)",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Periodic unit-cube constant-speed scalar wave only, zero initial velocity; no full acoustic, electromagnetic or elastic material model.",
-      "GPU numerical fixtures use grids 16 through 64 for at most 80 steps. Extreme 96 through 256 grids, long times, arbitrary parameters and other GPU drivers remain unaudited.",
-      "Selected small exports preserve the field and dimensions; physical color calibration and full print-resolution fidelity remain unvalidated.",
-      "Shared workload modes change cooperative scheduling or steps per presentation frame, not the numerical timestep or solver. Maximum throughput is not a measured hardware utilization guarantee."
+      "Periodic unit-cube constant-speed scalar wave only; prepared Fourier modes; no full acoustic/EM/elastic material model. Float64 twin long-time through 96³/1200 and 128³ short fixture; GPU atlas remains short-time ≤80 steps on grids ≤64.",
+      "Selected exports preserve field and dimensions; physical color calibration and full print-resolution fidelity remain unvalidated."
     ],
     "remaining": [
-      "Check high-grid allocation, long-time behavior and numerical dispersion across representative hardware.",
-      "Audit pulse continuum error and independently compare rendered slice values across all orientations and print resolutions."
+      "Pulse continuum error, extreme 192–256 GPU allocation, and cross-device behavior before generalizing beyond prepared modes.",
+      "Independent print-resolution / orientation fidelity beyond the registered small export states."
     ],
     "numerical": [
       {
@@ -6149,6 +6166,16 @@ shall not be misrepresented as the original profile.
         "failureControl": "Reversing the Laplacian sign gives maximum error above 0.1; Nyquist mode at 1.05 CFL grows above 1e6 while 0.95 CFL remains below 1.0001.",
         "command": "node tools/volume-wave-science.js",
         "results": "validation/results/volume-wave-science.json"
+      },
+      {
+        "test": "tools/volume-wave-dispersion-science.js",
+        "command": "node tools/volume-wave-dispersion-science.js",
+        "results": "validation/results/volume-wave-dispersion-science.json",
+        "scope": "Node Float64 twin of the seven-point leapfrog: long-time discrete modal phase/frequency fidelity at grids 32–96³ (400–1200 steps), continuum dispersion RMS under 32/48/64/96 refinement at fixed T=0.25, and a 128³ short discrete fixture.",
+        "criteria": "Discrete long-time field max below 5e-5 and relative θ error below 1e-10; continuum RMS shrinks under refinement with 96³ RMS below 1/4 of 32³; wrong Courant in analytic θ and reverse Laplacian each exceed max error 0.1.",
+        "limitations": "Float64 twin of prepared Fourier modes only; not a GPU float32/SwiftShader long-time campaign, pulse continuum, arbitrary-control, cross-device or print-accuracy certificate. Combined space/time continuum trend only.",
+        "benchmark": "Exact discrete dispersion sin(θ/2)²=(ν²/3)Σsin(π m_j/N)² with standing-wave cos(θ steps)φ; continuum standing wave cos(2π|m|T)φ on the unit cube.",
+        "failureControl": "Claiming θ from Courant 0.5 while evolving at 0.8 yields field max above 0.1 and phase gap above 1 after 400 steps; reversing the Laplacian yields field max above 0.1 within 40 steps."
       }
     ],
     "print": [
@@ -6160,7 +6187,15 @@ shall not be misrepresented as the original profile.
         "command": "node tools/volume-wave-science.js",
         "results": "validation/results/volume-wave-science.json"
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/volume-wave-dispersion-science.json",
+    "domain": {
+      "parameters": "Periodic unit-cube constant-speed scalar wave with zero initial velocity; Float64 seven-point leapfrog twin. Long-time discrete modes on grids 32–96³ (400–1200 steps, Courant 0.7–0.85), continuum dispersion at T=0.25 under 32/48/64/96 refinement, 128³ short discrete fixture, plus the short GPU atlas fixtures in volume-wave-science.json.",
+      "conditions": "Prepared single Fourier standing modes only; discrete dispersion sin(θ/2)²=(ν²/3)Σsin(π m_j/N)² and continuum cos(2π|m|T)φ references; wrong-Courant-in-θ and reverse-Laplacian controls must reject (max error ≫0.1). Print/export checks as registered in the science harness for stated presets.",
+      "resolution": "Discrete long-time field max ~1e-14 (criteria \u003c5e-5) with relative θ error ~1e-15; continuum RMS 6.56e-3→7.22e-4 (32→96 @ T=0.25); 128³ short discrete max ~6e-15. Exact grids/modes/steps recorded.",
+      "precision": "Float64 twin of the discrete stencil; not a GPU float32/SwiftShader long-time or cross-device certificate. Combined space/time continuum trend only. Extreme 192–256 GPU allocation unaudited."
+    }
   },
   {
     "id": "direct-gravity",
@@ -6168,15 +6203,13 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041",
     "reference": "Newton, Principia (1687); Verlet, Physical Review 159 (1967), 98. Plummer softening and the direct all-pairs kernel: Nyland, Harris and Prins, GPU Gems 3, chapter 31 (2007). This implementation runs the pair kernel on the CPU.",
     "equation": "a_i = Σ(j≠i) m_j (r_j−r_i) / (|r_j−r_i|²+ε²)^(3/2), G=1; velocity Verlet",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Planar Plummer-softened gravity with G=1; no galaxy equilibrium or physical collision model.",
-      "Finite small-body analytic and conservation fixtures only; large-N statistics, chaotic long-time accuracy and arbitrary controls remain unvalidated.",
-      "Browser cancellation and selected exports preserve a completed-step snapshot; this is not full scientific print certification.",
-      "Shared workload modes change cooperative scheduling or steps per presentation frame, not the numerical timestep or solver. Maximum throughput is not a measured hardware utilization guarantee."
+      "Planar Plummer-softened G=1 only. Large-N evidence is force-kernel agreement at fixed snapshots, not a statistical N-body convergence study; dt/ε band is finite-time energy drift on one N=64 disk seed.",
+      "Browser cancellation and selected exports preserve a completed-step snapshot — not full scientific print certification across hardware."
     ],
     "remaining": [
-      "Audit large-N force accuracy, parameter regimes and timestep convergence for the intended experiment.",
+      "Galaxy equilibrium, unsoftened close encounters and long-time chaotic accuracy remain outside the registered evidence.",
       "Compare scientific state and print geometry at additional dimensions, seeds and hardware."
     ],
     "numerical": [
@@ -6189,6 +6222,16 @@ shall not be misrepresented as the original profile.
         "failureControl": "A 1% force-coefficient error exceeds 0.01 trajectory error; broken pair reciprocity exceeds 0.001 momentum-production residual.",
         "command": "node tools/direct-gravity-science.js",
         "results": "validation/results/direct-gravity-science.json"
+      },
+      {
+        "test": "tools/direct-gravity-largen-science.js",
+        "scope": "Production Float64 force/Verlet kernels vs independent reverse-order all-pairs Plummer reference at N in {256,1024,4096}; multi-dt/eps energy-drift and position self-convergence on a seeded equal-mass disk (N=64).",
+        "criteria": "Force max absolute acceleration difference below 1e-12 and relative L2 below 1e-14 at each N; disk relative energy drift below 5e-4 across dt in {0.004,0.002,0.001} and below 2e-3 across eps in {0.06,0.12,0.24}; position RMS refinement ratio vs fine step in 4.5-5.5.",
+        "limitations": "Force-kernel snapshot agreement and finite-time moderate-N regime only; not galaxy equilibrium, unsoftened collisions or chaotic long-time accuracy.",
+        "benchmark": "Independent Float64 directed all-pairs Plummer accelerations (reverse partner order, Math.pow r^{-3} form) and production equal-mass disk initial conditions via extracted initial/makeRng.",
+        "failureControl": "Reference with G=1.01 or eps*1.05 must exceed 1e-4 / 1e-5 max absolute acceleration difference; 1% broken pair reciprocity must produce net force above 1e-4 and disagree with the independent reference.",
+        "command": "node tools/direct-gravity-largen-science.js",
+        "results": "validation/results/direct-gravity-largen-science.json"
       }
     ],
     "print": [
@@ -6200,7 +6243,15 @@ shall not be misrepresented as the original profile.
         "command": "node tools/direct-gravity-browser.js",
         "results": "validation/results/direct-gravity-browser.json"
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/direct-gravity-largen-science.json",
+    "domain": {
+      "parameters": "Planar Plummer-softened gravity with G=1; large-N force-kernel fixtures at N∈{256,1024,4096}, ε=0.12; moderate-N dt/ε band at N=64, t=0.4, ε∈{0.06,0.12,0.24} and h∈{0.004,0.002,0.001}; plus the small-orbit science pack and registered browser print fixtures.",
+      "conditions": "Equal-mass disk seed for regime tests; independent all-pairs Float64 force reference at fixed snapshot; wrong-G, ε×1.05, and broken-reciprocity controls must reject. Print: pause/export of completed 16,384-body snapshot and 128-body replay as registered.",
+      "resolution": "Force max |Δa| ~2e-15 / 5e-15 / 1e-14 at N=256/1024/4096; relative energy drift ~4.5e-6→2.8e-7 under h 0.004→0.001 (ratio ~16); position RMS refine ~5 on the ε band. Exact N/ε/h/steps recorded.",
+      "precision": "Float64 production kernel vs independent all-pairs reference; finite-time fixtures only — not galaxy equilibrium, unsoftened close encounters, or chaotic long-time accuracy."
+    }
   }
 ]</script>
 <script>/* Lossless print containers. ICC sRGB2014 profile: see licenses/ICC-sRGB.txt. */
