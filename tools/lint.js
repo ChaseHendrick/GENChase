@@ -22,7 +22,7 @@ const fail = m => fails.push(m);
 const lineAt = i => src.slice(0, i).split('\n').length;
 
 /* ---- 1. every script block parses ---- */
-const blocks = [...src.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+const blocks = [...src.matchAll(/<script>([\s\S]*?)<\/script\s*>/gi)];
 if (!blocks.length) fail('no <script> blocks found: is this the studio file?');
 for (const b of blocks) {
   try { new Function(b[1]); }

@@ -5,6 +5,7 @@ function fixture(script='console.log("FIXTURE completed");'){
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'genchase-validator-test-'));fs.mkdirSync(path.join(root,'tools'));fs.writeFileSync(path.join(root,'tools/science.js'),script);fs.writeFileSync(path.join(root,'techniques.json'),JSON.stringify({techniques:[{id:'fixture'}]}));
  cp.execFileSync('git',['init','-q'],{cwd:root});cp.execFileSync('git',['add','.'],{cwd:root});cp.execFileSync('git',['-c','user.name=Chaos','-c','user.email=326338179+SharpMeow@users.noreply.github.com','commit','-qm','Create test fixture.'],{cwd:root});return root;
 }
+const jsString=v=>JSON.stringify(String(v)).replace(/[<>\u2028\u2029]/g,c=>'\\u'+c.charCodeAt(0).toString(16).padStart(4,'0'));
 const power={mode:'maximum',pauseOnBattery:false,thermalPause:false};
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function until(fn,limit=12000){const start=Date.now();while(!fn()){if(Date.now()-start>limit)throw Error('Condition timed out');await sleep(30);}}
@@ -94,7 +95,7 @@ test('server death stops even a SIGSTOP-paused process group',async()=>{
 });
 test('finished jobs persist redacted logs, hardware cards and explicit execution misses',async()=>{
  const root=fixture('console.log("fixture");'),data=fs.mkdtempSync(path.join(os.tmpdir(),'genchase-private-'));
- fs.writeFileSync(path.join(root,'tools/science.js'),`process.stdout.write(${JSON.stringify(root+'/sensitive.js error somebody@example.com 192.168.1.2')} .slice(0,12));setTimeout(()=>{process.stdout.write(${JSON.stringify(root+'/sensitive.js error somebody@example.com 192.168.1.2')} .slice(12)+"\\n");process.exitCode=2;},20);`);
+ fs.writeFileSync(path.join(root,'tools/science.js'),`process.stdout.write(${jsString(root+'/sensitive.js error somebody@example.com 192.168.1.2')} .slice(0,12));setTimeout(()=>{process.stdout.write(${jsString(root+'/sensitive.js error somebody@example.com 192.168.1.2')} .slice(12)+"\\n");process.exitCode=2;},20);`);
  const jobs=new Jobs(root,data);
  try {
   jobs.start({workspace:'validate',mode:'inventory',power});await jobs.wait();

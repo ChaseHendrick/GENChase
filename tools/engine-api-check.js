@@ -14,6 +14,7 @@ const {chromium}=require('playwright');
   for(const id of ['missing','__proto__','constructor','toString'])check(Studio.getRecipe(id)===null&&Studio.getWitness(id)===null,'unknown module lookup '+id);
   const recipe=Studio.getRecipe();check(recipe.v===2&&recipe.seed==='api-baseline','versioned recipe');recipe.seed='mutated';check(Studio.getRecipe().seed==='api-baseline','recipe clone');
   const rng=Studio.util.makeRng('engine-api-v1'),random=Array.from({length:6},()=>rng());
+  check(Studio.util.svgEsc('a<b & "c"')==='a&lt;b &amp; &quot;c&quot;','svg escape');
   const inches=document.getElementById('export-inches'),dpi=document.getElementById('export-dpi');inches.value='12';inches.dispatchEvent(new Event('change'));dpi.value='300';dpi.dispatchEvent(new Event('change'));
   document.getElementById('btn-colophon').click();
   for(const [kind,expected] of [['minimum',true],['broken',false]]){

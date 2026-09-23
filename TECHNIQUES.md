@@ -117,7 +117,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 | **Loschmidt Echo**<br><sub>a gas that unmixes when you flip every arrow · 1876</sub> | `#loschmidt` | x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1 | raster | still | Rare |
 | **Wave volume**<br><sub>three-dimensional wave equation · classical</sub> | `#volume-wave/wave-cube` | ∂²u/∂t² = c²(∂²u/∂x² + ∂²u/∂y² + ∂²u/∂z²) | raster | can run | Occasional |
 | **Boy's Surface**<br><sub>a projective plane sewn into R³ · 1901</sub> | `#boy` | Bryant–Kusner immersion RP² ↪ R³,   one triple point,   no boundary | raster | still | Occasional |
-| **Indra's Pearls**<br><sub>Schottky limit set · Mumford–Series–Wright</sub> | `#pearls/indra-2002` | Γ = ⟨a, b⟩  Schottky,   Λ(Γ) = ∩ g∈Γ g(Ĉ \ Ω) | SVG | still | Common |
+| **Indra's Pearls**<br><sub>Schottky limit set · Mumford–Series–Wright</sub> | `#pearls/indra-2002` | Γ = ⟨a, b⟩  Schottky,   Λ(Γ) = ∩ g∈Γ g(Ĉ \\ Ω) | SVG | still | Common |
 | **Ising Model**<br><sub>Metropolis Monte Carlo on the square lattice · 1925</sub> | `#ising/ising-1925` | E = −J Σ⟨ij⟩ sᵢsⱼ − h Σᵢ sᵢ,   P(flip) = min(1, e^{−ΔE/T}),   T_c = 2/ln(1+√2) ≈ 2.269 | raster | live | Ubiquitous |
 | **Thouless Pump**<br><sub>a clock that pumps a whole electron per turn · 1983</sub> | `#thouless` | P(φ) = (1/2π) ∮ A(k,φ) dk,   ΔP over a cycle = C₁ ∈ ℤ | raster | still | Rare |
 | **Rayleigh–Bénard**<br><sub>heated from below · 1900</sub> | `#convection/benard-1900` | ∂ω/∂t + u·∇ω = √(Pr/Ra) ∇²ω + ∂T/∂x,   ∂T/∂t + u·∇T = ∇²T/√(Ra Pr),   ∇²ψ = −ω,   u = ∂ψ/∂y, v = −∂ψ/∂x | raster | live | Common |
