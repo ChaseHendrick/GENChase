@@ -4209,16 +4209,14 @@
     "sourceSha256": "5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234",
     "reference": "Classical scalar wave equation. Centered finite differences and the three-dimensional CFL bound follow H. P. Langtangen and S. Linge, Finite Difference Computing with PDEs (2017), wave equation chapter, https://hplgit.github.io/fdm-book/doc/pub/wave/html/._wave-solarized004.html. No novelty or full acoustic model is claimed.",
     "equation": "∂²u/∂t² = c²(∂²u/∂x² + ∂²u/∂y² + ∂²u/∂z²)",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Periodic unit-cube constant-speed scalar wave only, zero initial velocity; no full acoustic, electromagnetic or elastic material model.",
-      "GPU numerical fixtures use grids 16 through 64 for at most 80 steps. Float64 twin covers long-time modal phase through 96\u00b3/1200 steps and a 128\u00b3 short discrete fixture; extreme 192\u2013256 GPU allocation, arbitrary parameters and other GPU drivers remain unaudited.",
-      "Selected small exports preserve the field and dimensions; physical color calibration and full print-resolution fidelity remain unvalidated.",
-      "Shared workload modes change cooperative scheduling or steps per presentation frame, not the numerical timestep or solver. Maximum throughput is not a measured hardware utilization guarantee."
+      "Periodic unit-cube constant-speed scalar wave only; prepared Fourier modes; no full acoustic/EM/elastic material model. Float64 twin long-time through 96³/1200 and 128³ short fixture; GPU atlas remains short-time ≤80 steps on grids ≤64.",
+      "Selected exports preserve field and dimensions; physical color calibration and full print-resolution fidelity remain unvalidated."
     ],
     "remaining": [
-      "Check extreme 192\u2013256 GPU allocation and cross-device behavior on representative hardware.",
-      "Audit pulse continuum error and independently compare rendered slice values across all orientations and print resolutions."
+      "Pulse continuum error, extreme 192–256 GPU allocation, and cross-device behavior before generalizing beyond prepared modes.",
+      "Independent print-resolution / orientation fidelity beyond the registered small export states."
     ],
     "numerical": [
       {
@@ -4235,11 +4233,11 @@
         "test": "tools/volume-wave-dispersion-science.js",
         "command": "node tools/volume-wave-dispersion-science.js",
         "results": "validation/results/volume-wave-dispersion-science.json",
-        "scope": "Node Float64 twin of the seven-point leapfrog: long-time discrete modal phase/frequency fidelity at grids 32\u201396\u00b3 (400\u20131200 steps), continuum dispersion RMS under 32/48/64/96 refinement at fixed T=0.25, and a 128\u00b3 short discrete fixture.",
-        "criteria": "Discrete long-time field max below 5e-5 and relative \u03b8 error below 1e-10; continuum RMS shrinks under refinement with 96\u00b3 RMS below 1/4 of 32\u00b3; wrong Courant in analytic \u03b8 and reverse Laplacian each exceed max error 0.1.",
+        "scope": "Node Float64 twin of the seven-point leapfrog: long-time discrete modal phase/frequency fidelity at grids 32–96³ (400–1200 steps), continuum dispersion RMS under 32/48/64/96 refinement at fixed T=0.25, and a 128³ short discrete fixture.",
+        "criteria": "Discrete long-time field max below 5e-5 and relative θ error below 1e-10; continuum RMS shrinks under refinement with 96³ RMS below 1/4 of 32³; wrong Courant in analytic θ and reverse Laplacian each exceed max error 0.1.",
         "limitations": "Float64 twin of prepared Fourier modes only; not a GPU float32/SwiftShader long-time campaign, pulse continuum, arbitrary-control, cross-device or print-accuracy certificate. Combined space/time continuum trend only.",
-        "benchmark": "Exact discrete dispersion sin(\u03b8/2)\u00b2=(\u03bd\u00b2/3)\u03a3sin(\u03c0 m_j/N)\u00b2 with standing-wave cos(\u03b8 steps)\u03c6; continuum standing wave cos(2\u03c0|m|T)\u03c6 on the unit cube.",
-        "failureControl": "Claiming \u03b8 from Courant 0.5 while evolving at 0.8 yields field max above 0.1 and phase gap above 1 after 400 steps; reversing the Laplacian yields field max above 0.1 within 40 steps."
+        "benchmark": "Exact discrete dispersion sin(θ/2)²=(ν²/3)Σsin(π m_j/N)² with standing-wave cos(θ steps)φ; continuum standing wave cos(2π|m|T)φ on the unit cube.",
+        "failureControl": "Claiming θ from Courant 0.5 while evolving at 0.8 yields field max above 0.1 and phase gap above 1 after 400 steps; reversing the Laplacian yields field max above 0.1 within 40 steps."
       }
     ],
     "print": [
@@ -4251,7 +4249,15 @@
         "command": "node tools/volume-wave-science.js",
         "results": "validation/results/volume-wave-science.json"
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/volume-wave-dispersion-science.json",
+    "domain": {
+      "parameters": "Periodic unit-cube constant-speed scalar wave with zero initial velocity; Float64 seven-point leapfrog twin. Long-time discrete modes on grids 32–96³ (400–1200 steps, Courant 0.7–0.85), continuum dispersion at T=0.25 under 32/48/64/96 refinement, 128³ short discrete fixture, plus the short GPU atlas fixtures in volume-wave-science.json.",
+      "conditions": "Prepared single Fourier standing modes only; discrete dispersion sin(θ/2)²=(ν²/3)Σsin(π m_j/N)² and continuum cos(2π|m|T)φ references; wrong-Courant-in-θ and reverse-Laplacian controls must reject (max error ≫0.1). Print/export checks as registered in the science harness for stated presets.",
+      "resolution": "Discrete long-time field max ~1e-14 (criteria <5e-5) with relative θ error ~1e-15; continuum RMS 6.56e-3→7.22e-4 (32→96 @ T=0.25); 128³ short discrete max ~6e-15. Exact grids/modes/steps recorded.",
+      "precision": "Float64 twin of the discrete stencil; not a GPU float32/SwiftShader long-time or cross-device certificate. Combined space/time continuum trend only. Extreme 192–256 GPU allocation unaudited."
+    }
   },
   {
     "id": "direct-gravity",
