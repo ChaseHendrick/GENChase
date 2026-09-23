@@ -200,6 +200,30 @@
   "angularImpulseZero": true,
   "ringSelfSimilarityCondition": "(n*x**2 - 2*n*x + n - x**2 - 1)/(2*x)"
  },
+ "certified": {
+  "criticalCubicSigns": {
+   "0.67": -1,
+   "0.68": 1,
+   "-0.93": 1,
+   "-0.92": -1
+  },
+  "signChangeOnArcPlus": true,
+  "signChangeOnArcMinus": true,
+  "P2EnclosureArcPlus": [
+   4.700765191132742,
+   5.019631171620475
+  ],
+  "P2EnclosureArcMinus": [
+   0.999112473900335,
+   1.2902787351479972
+  ],
+  "rootsInsideArcPlus": [
+   4.8569769317076235
+  ],
+  "rootsInsideArcMinus": [
+   1.1335988159076182
+  ]
+ },
  "timeIntegration": {
   "predictedTc": "4.1839925778709329124",
   "omega0": "0.25447128704348485708",

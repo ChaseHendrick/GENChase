@@ -63,7 +63,7 @@ Citation check: Gotoda is J. Dyn. Differ. Equ. 33 (2021) 1759–1777. Gröbli's 
 
 ### F. General circulation ratio and the √3/2 bound (same day)
 
-The paper now covers every circulation ratio. Any three-vortex collapse normalizes to Γ = (1, μ, −μ/(1+μ)) with 0 < μ ≤ 1. For each μ, each collapsing arc (one per orientation of the triangle) has one critical point of P = |ω₀|t_c, and the squared minima are roots of an explicit cubic Q(μ, y), irreducible over ℚ[μ, y], which gives the μ = 1/2 sextic at μ = 1/2 and (y − 2)² at μ = 1. The least winding P₋(μ) increases strictly from √3/2 (μ → 0, not attained) to √2 (μ = 1). So every three-vortex collapse has |ω₀|t_c > √3/2, sharp. Equivalently, each vortex travels more than twice its initial distance from the collision point. Proofs are in the paper. Checks:
+The paper now covers every circulation ratio. Any self-similar three-vortex collapse normalizes to Γ = (1, μ, −μ/(1+μ)) with 0 < μ ≤ 1. For each μ, each collapsing arc (one per orientation of the triangle) has one critical point of P = |ω₀|t_c, and the squared minima are roots of an explicit cubic Q(μ, y), irreducible over ℚ[μ, y], which gives the μ = 1/2 sextic at μ = 1/2 and (y − 2)² at μ = 1. The least winding P₋(μ) increases strictly from √3/2 (μ → 0, not attained) to √2 (μ = 1). So every self-similar three-vortex collapse has |ω₀|t_c > √3/2, sharp. Equivalently, each vortex travels more than twice its initial distance from the collision point. Proofs are in the paper. Checks:
 
 - `research/verify_general_mu.py`: 94 checks, with output in `research/artifacts/`.
 - An independent re-derivation in the session: κ, P, K, the resultant, the discriminant, Res_y(Q, Q_μ), and irreducibility for all 277 μ = a/b with b ≤ 30.

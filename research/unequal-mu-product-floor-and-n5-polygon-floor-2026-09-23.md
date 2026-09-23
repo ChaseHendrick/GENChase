@@ -13,7 +13,7 @@ Cite the person, Chase Hendrick, not the GitHub handle. No result here carries a
 
 Write P = |ω₀|t_c, the initial angular velocity times the collapse time. Each vortex moves on a logarithmic spiral, and P is the angle the configuration turns while the square of its size falls by the factor e.
 
-1. **Every three-vortex collapse.** Any collapse of three point vortices normalizes to circulations Γ = (1, μ, −μ/(1+μ)) with 0 < μ ≤ 1 and zero angular impulse.
+1. **Every self-similar three-vortex collapse.** Any self-similar collapse of three point vortices normalizes to circulations Γ = (1, μ, −μ/(1+μ)) with 0 < μ ≤ 1 and zero angular impulse.
    - **Arcs.** The collapsing configurations form two arcs, 𝓐₊ and 𝓐₋, one for each orientation of the triangle.
    - **One minimum per arc.** P has exactly one critical point on each arc, and it is the minimum there (Theorem 1). Write P₊(μ) and P₋(μ) for the two minima.
    - **The cubic.** P₊² and P₋² are roots of an explicit cubic Q(μ, y), irreducible over ℚ. Written in u = μ + 1 + 1/μ:
@@ -21,7 +21,7 @@ Write P = |ω₀|t_c, the initial angular velocity times the collapse time. Each
          Q = μ⁶[1728(u+1)²y³ − 144(u+1)(8u³−9u−9)y² − 4(16u⁶−288u⁴−288u³−81u²−162u−81)y + 3(4u³−3u−3)²]
 
    - **The least winding.** For μ < 1 the two minima differ. The smaller one, P₋(μ), increases strictly from √3/2 (as μ → 0, never attained) to √2 (at μ = 1).
-   - **Corollary 1.** |ω₀|t_c > √3/2 for every three-vortex collapse, and the bound is sharp. Equivalently, every vortex travels more than twice its initial distance from the collision point.
+   - **Corollary 1.** |ω₀|t_c > √3/2 for every self-similar three-vortex collapse, and the bound is sharp. Equivalently, every vortex travels more than twice its initial distance from the collision point.
 2. **The ratio μ = 1/2, Γ = (1, 1/2, −1/3).** The two minima have closed forms in X = 245351/5201^{3/2} and S = 7√5201/162:
 
        P₋ = √(605/324 + S cos(⅓ arccos X − 2π/3)) = 1.0647059762712043…   (the least winding)

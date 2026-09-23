@@ -327,6 +327,28 @@ results['symbolic'] = {
     'ringSelfSimilarityCondition': str(ring),
 }
 
+# ------------------------------------- Part 3c: certified root identification at mu = 1/2
+cS2 = sp.symbols('cS2')
+Ccub = 196 * cS2**3 + 224 * sp.sqrt(7) * cS2**2 + 14 * cS2 - 128 * sp.sqrt(7)
+signs = {v: int(sp.sign(sp.nsimplify(Ccub.subs(cS2, sp.Rational(v))))) for v in ('0.67', '0.68', '-0.93', '-0.92')}
+iv = mp.iv
+iv.dps = 30
+def P2_interval(lo, hi):
+    cc = iv.mpf([lo, hi]); s7 = iv.sqrt(7)
+    Nn = 35 + 6 * s7 * cc - 14 * cc**2
+    return Nn**2 / (4 * (14 * cc + s7)**2 * (1 - cc**2))
+encB, encA = P2_interval('0.67', '0.68'), P2_interval('-0.93', '-0.92')
+qroots = [r for r in sp.Poly(8748 * sp.Symbol('q')**3 - 49005 * sp.Symbol('q')**2 + 27794 * sp.Symbol('q') + 18723).nroots(n=30)]
+inside = lambda e: [float(r) for r in qroots if float(e.a) <= float(r) <= float(e.b)]
+results['certified'] = {
+    'criticalCubicSigns': signs,
+    'signChangeOnArcPlus': signs['0.67'] * signs['0.68'] < 0,
+    'signChangeOnArcMinus': signs['-0.93'] * signs['-0.92'] < 0,
+    'P2EnclosureArcPlus': [float(encB.a), float(encB.b)],
+    'P2EnclosureArcMinus': [float(encA.a), float(encA.b)],
+    'rootsInsideArcPlus': inside(encB), 'rootsInsideArcMinus': inside(encA),
+}
+
 # ------------------------------------------------ Part 4: time integration
 def rhs(t, y):
     zs = [mp.mpc(y[2 * i], y[2 * i + 1]) for i in range(3)]
