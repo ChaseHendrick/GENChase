@@ -129,8 +129,8 @@ The check covers the stated families only. It does not show that no other config
   inset: 5pt,
   [*Source*], [*Access*], [*Verdict*],
   [Koiller et al. (1985)], [Full text read], [*DOES NOT KILL* optimized product floors],
-  [Aref, Phys. Fluids 25 (1982)], [AIP PPV + OCR], [*DOES NOT KILL*: center-of-symmetry / Havelock; no floor literals],
-  [O’Neil, Physica D 236 (2007)], [ScienceDirect PPV], [*DOES NOT KILL*: triple-ring RE/collapse; no optimized floors],
+  [Aref, Phys. Fluids 25 (1982)], [Full text (purchased PDF, all pages re-read for v2)], [*DOES NOT KILL*. Sets up the general two-ring ($2n$-vortex) center-of-symmetry equations (strengths $kappa$, $lambda$), of which the $F_n$ family is a special case, but analyzes only $kappa = -lambda$ (Havelock double alternate rings: relative equilibria and pair dissolution). No collapse, no $omega_0 t_c$, no floor.],
+  [O’Neil, Physica D 236 (2007)], [Full text (purchased PDF, re-read for v2)], [*DOES NOT KILL*. Finiteness of relative-equilibrium and collapse configurations of three rings; cites two-ring collapse as known (Koiller et al. 1985). No $omega_0 t_c$ minimization.],
   [Outside-family pass (web, OA, arXiv needles; GENChase PR \#128)], [Open web], [*STILL OPEN* for $P_star$ and $F_5$],
   [Gröbli (1877) §10; Aref, Phys. Fluids 22 (2010)], [repo reads (earlier passes)], [Give the rates and the product $omega_0 t_c$ as a logarithmic-spiral pitch for general strengths. $P(theta)$ is a specialization of these; no μ = 1/2 minimization located.],
   [Tavantzis & Ting (1988)], [search metadata], [One-parameter contracting family in side-length variables, where orientation is invisible; consistent with two oriented arcs. *DOES NOT KILL.*],
@@ -143,7 +143,7 @@ The check covers the stated families only. It does not show that no other config
 
 *Verdicts (version 2).* $P_star$: *STILL OPEN*. $P_"min"$: *STILL OPEN*. $F_5$: *STILL OPEN*, with one unread lead (Demina & Kudryashov 2014) that could settle the general $F_n$ minimization.
 
-*Limits.* The version 2 pass could not open full texts or OEIS; its rows rest on search-engine metadata and snippets, plus earlier full reads recorded in the repo. Negative searches are not a novelty certificate. Priority remains unconfirmed. The collapse families and the product itself are classical: the contribution claimed is only the minimizations and their closed forms.
+*Limits.* Aref (1982) and O’Neil (2007) were re-read in full for version 2. The other version 2 rows rest on search-engine metadata and snippets plus earlier full reads recorded in the repo; full texts and OEIS could not be opened from the checking machine. Negative searches are not a novelty certificate. Priority remains unconfirmed. The collapse families and the product itself are classical: the contribution claimed is only the minimizations and their closed forms.
 
 Copyrighted PDFs are not redistributed with this note.
 
@@ -168,11 +168,11 @@ Closed forms for the two μ = 1/2 three-vortex product floors $P_"min" approx 1.
 + H. Aref, Self-similar motion of three point vortices, _Phys. Fluids_ *22*, 057104 (2010). DOI 10.1063/1.3425649.
 + M. V. Demina and N. A. Kudryashov, Rotation, collapse, and scattering of point vortices, _Theor. Comput. Fluid Dyn._ *28*, 357–368 (2014). DOI 10.1007/s00162-014-0319-4. (Abstract only.)
 + T. Gotoda, Self-similar motions and related relative equilibria in the N-point vortex system, _J. Dyn. Diff. Equat._ *33*, 1759–1777 (2021). DOI 10.1007/s10884-020-09867-y; arXiv:2002.09624.
-+ W. Gröbli, Specielle Probleme über die Bewegung geradliniger paralleler Wirbelfäden (1877); English translation by L. Goodman, arXiv:2404.01305.
++ W. Gröbli, Specielle Probleme über die Bewegung geradliniger paralleler Wirbelfäden (1877); English translation: arXiv:2404.01305.
 + J. Koiller, S. Pinto de Carvalho, R. Rodrigues da Silva and L. C. Gonçalves de Oliveira, On Aref’s vortex motions with a symmetry center, _Physica D_ *16*, 27–61 (1985). DOI 10.1016/0167-2789(85)90084-3.
 + V. S. Krishnamurthy and M. A. Stremler, Finite-time collapse of three point vortices in the plane, _Regul. Chaotic Dyn._ *23*(5), 530–550 (2018). DOI 10.1134/S1560354718050040.
 + X. Leoncini, L. Kuznetsov and G. M. Zaslavsky, Motion of three vortices near collapse, _Phys. Fluids_ *12*(8), 1911–1927 (2000); arXiv:physics/9908055.
 + E. A. Novikov and Yu. B. Sedov, Vortex collapse, _Sov. Phys. JETP_ *50*(2), 297–301 (1979).
-+ K. A. O’Neil, Relative equilibrium and collapse configurations of heterogeneous vortex triple rings, _Physica D_ *236*(2), 123–130 (2007).
-+ D. Tavantzis and L. Ting, The dynamics of three vortices revisited, _Phys. Fluids_ *31*(6), 1392–1409 (1988).
++ K. A. O’Neil, Relative equilibrium and collapse configurations of heterogeneous vortex triple rings, _Physica D_ *236*(2), 123–130 (2007). DOI 10.1016/j.physd.2007.07.015.
++ J. Tavantzis and L. Ting, The dynamics of three vortices revisited, _Phys. Fluids_ *31*(6), 1392–1409 (1988).
 + SharpMeow/GENChase (2026-09-23): `research/verify_floors_independent.py`, `identities/sources/unequal-mu-half-Pstar-closed-2026-09-23.md`, `new-formula-candidate-2026-09-23.md`, `deeper-kill-Pstar-F5-2026-09-23.md`, `outside-family-prior-art-Pstar-F5-2026-09-23.md`.
