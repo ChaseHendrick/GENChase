@@ -3553,16 +3553,16 @@
     "sourceSha256": "b0152563304cd2f85948d12def42b459c6f110f8730f0f55b86a45dd145f814a",
     "reference": "J. E. Lennard-Jones, Proceedings of the Royal Society A (1924). L. Verlet, Physical Review (1967). Force shifting and molecular dynamics: M. P. Allen and D. J. Tildesley, Computer Simulation of Liquids, second edition (2017).",
     "equation": "V(r) = 4(r^-12 - r^-6) - V_LJ(rc) + (r-rc)F_LJ(rc), r < rc = 2.5;  m r̈ = -∇V",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Two-dimensional periodic force-shifted Lennard-Jones model, with no thermostat or named material/EOS claim.",
-      "Force, linked-cell, bounded trajectory and a density-0.4 multi-seed equilibration/transport fixture support stated cases only; the local stiffness/energy guard is not a global nonlinear stability proof.",
-      "Print checks preserve evolved particle state and compare raster/SVG output; broad devices, parameters and thermodynamic claims remain unvalidated."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/MOLECULAR.md and the molecular-science / molecular-equilibration-science / molecular-print results artifacts.",
+      "Two-dimensional periodic force-shifted Lennard-Jones NVE only; kinetic temperature is an NVE observable, not a canonical control. Diffusion proxy is MSD/(4t) at a single late time, not a plateaued Green–Kubo integral.",
+      "Print marks represent particle geometry, not chemical bonds or calibrated physical appearance.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Extend equilibration/transport beyond the density-0.4 NVE fixture to equation-of-state, melting/phase coexistence, Green–Kubo plateau diffusion and broader (N,T,ρ,seed) coverage before thermodynamic claims.",
-      "Extend high-count and long-duration coverage beyond the recorded fixtures.",
-      "Assess broader hardware and full scientific interpretation of printed observables."
+      "Extend beyond the documented density-0.4 NVE equilibration/transport and paused-export print domain with independent evidence for EOS, melting/phase coexistence, Green–Kubo diffusion, broader (N,T,ρ,seed) coverage, other hardware, and full scientific interpretation of printed observables."
     ],
     "numerical": [
       {
@@ -3593,9 +3593,19 @@
         "results": "validation/results/molecular-print.json",
         "scope": "Paused evolved 1024-particle states with/without links and a completed 4096-particle warmup; 2400-square and 2400x1800 raster/SVG exports, real shell print, live/pause and visible halt.",
         "criteria": "Exact positions/velocities/forces/energy/counters preserved, each requested raster and decoded SVG dimension correct, matched-format reduced-image RGB mean absolute difference <1.5/255; visible halt and live/pause behavior checked.",
-        "limitations": "Declared seeds, states and backend only. Marks represent particle geometry, not chemical bonds or calibrated physical appearance. Intermediate warmups can legitimately differ from later screens."
+        "limitations": "Declared seeds, states and backend only. Marks represent particle geometry, not chemical bonds or calibrated physical appearance. Intermediate warmups can legitimately differ from later screens.",
+        "benchmark": "Exact positions/velocities/forces/energy/counters before and after real raster/SVG/shell export; requested dimensions and matched-format reduced-image MAD <1.5/255.",
+        "failureControl": "Visible halt and live/pause behavior checked in the harness; export must preserve scientific state (see molecular-print results)."
       }
-    ]
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained 2D force-shifted LJ NVE fixtures named in validation/MOLECULAR.md and measured in validation/results/molecular-science.json plus molecular-equilibration-science.json (force/linked-cell/trajectory guards; density-0.4 multi-seed equilibration/transport with N=64/144 and dt controls), plus paused molecular-print exports at the recorded particle counts/aspects.",
+      "conditions": "Periodic Float64 NVE without thermostat. Equilibration of kinetic temperature and E/N with block-averaged uncertainty; ballistic MSD vs independent free-flight reference; late-time MSD/(4t) diffusion proxy. Print: paused evolved states through real raster/SVG/shell export with exact positions/velocities/forces/energy/counters preserved. No EOS, melting, phase coexistence, Green–Kubo plateau diffusion, experimental transport, or calibrated chemical appearance.",
+      "resolution": "Numerical acceptance as recorded in molecular-science.json and molecular-equilibration-science.json (8-seed T/E/N, ballistic MSD, D proxy, finite-size/timestep controls; wrapped-MSD / wrong-T / transient failure controls). Print: exact state preservation and dimension/MAD criteria in validation/results/molecular-print.json.",
+      "precision": "Float64Array positions/velocities/forces with independent Float64 free-flight reference; RGBA8/SVG print. Renderer environment recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/molecular-equilibration-science.json"
   },
   {
     "id": "surfaces",
