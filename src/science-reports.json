@@ -2349,28 +2349,48 @@
     "sourceSha256": "9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d",
     "reference": "L. Poinsot (1834) drew the polhode. The tennis-racket (or intermediate-axis) theorem says a rotation about the middle principal axis is unstable. V. Dzhanibekov saw a wingnut flip in free fall in 1985; video from 1991 made it famous. The plate is spacetime of the body-frame ω, with the middle component across the page.",
     "equation": "I1 ω1' = (I2−I3) ω2 ω3  (cyc.),   I1 < I2 < I3,   ω2 flips",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Finite parameter/time fixtures only; no exact flip-time, all-control or print accuracy claim.",
-      "RK4 is not exactly symplectic and does not establish indefinite energy preservation. Corrected trajectories change prior recipe images."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/CPU-DYNAMICS.md and the rigid-body-audit / tennis-print-state results artifacts.",
+      "No exact flip-time, all-control, calibrated color or indefinite energy-preservation claim; RK4 is not exactly symplectic.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Broaden inertia, tilt, duration and sampling coverage and test flip-count resolution.",
-      "Audit the actual print path and numerical resolution separately."
+      "Extend beyond the documented I2, tilt, duration, grid and aspect fixtures with independent evidence for broader parameters, other presets and SVG or calibrated print output."
     ],
     "numerical": [
       {
         "test": "tools/rigid-body-audit.js",
-        "scope": "RK4 torque-free rotation at I2 1.05, 1.4 and 1.7; nine conservation fixtures to time 120 and three refined trajectories to time 20.",
-        "criteria": "Energy and squared angular momentum relative drift below 1e-7; production final-state error below 1e-6. Helper finest state error below 1e-7 and fourth-order convergence.",
-        "benchmark": "Independent angular-momentum-vector evolution L prime = L cross inverse(I)L, refined reference and torque-free conserved quantities.",
-        "failureControl": "Reinstating forward Euler must produce more than 4% energy drift on the default fixture.",
-        "limitations": "Finite parameter/time fixtures only; no exact flip-time, all-control or print accuracy claim. RK4 is not exactly symplectic and does not establish indefinite energy preservation. Corrected trajectories change prior recipe images.",
+        "scope": "RK4 torque-free rotation at I2 1.05, 1.4 and 1.7; nine conservation fixtures to time 120 and three refined trajectories to time 20. The four print fixtures (flip, stable1, log, square) at their own I2, tilt, duration and aspect, with every plate row compared against an independent reference.",
+        "criteria": "Energy and squared angular momentum relative drift below 1e-7; production final-state error below 1e-6. Helper finest state error below 1e-7 and fourth-order convergence. Print fixtures: every Float32 field word within 2e-6 of the independently sampled reference field, identical ω2 flip counts with minimum sampled |ω2| above 1e-4, reference refinement change below 1e-9.",
+        "benchmark": "Independent angular-momentum-vector evolution L prime = L cross inverse(I)L, sampled at every plate row and refined from 32 to 64 substeps per row, plus torque-free conserved quantities.",
+        "failureControl": "Reinstating forward Euler must produce more than 4% energy drift on the default fixture and more than 1e-3 field error on every print fixture; a reference with I2 raised by 1% must differ from the production field by more than 1e-3.",
+        "limitations": "Finite parameter/time fixtures only; no exact flip-time or all-control claim. RK4 is not exactly symplectic and does not establish indefinite energy preservation. Corrected trajectories change prior recipe images.",
         "command": "node tools/rigid-body-audit.js --write",
         "results": "validation/results/rigid-body-audit.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/tennis-print-state.js",
+        "command": "node tools/tennis-print-state.js --write",
+        "results": "validation/results/tennis-print-state.json",
+        "scope": "Actual tennis exportPNG at 2400 longest edge for flip, stable1, log and square fixtures (1920x2400 and 2400x2400). Exact Float32 field words, ω2 flip count, I2 extra, cells, buffer size and settings preserved; deterministic regenerate replay; nonblank reduced raster.",
+        "criteria": "Zero changed/nonfinite field words; metric/extra/settings/cells unchanged across export; exact requested PNG dimensions and >1000-byte blobs; luminance spread >12/255; wrong dimensions and deliberate post-export field+metric mutation rejected.",
+        "benchmark": "In-harness auditSnapshot of the private Float32 field, flip count, I2, cells, buffer and settings against the same module exportPNG path; the field itself is checked word for word against the independent reference by tools/rigid-body-audit.js.",
+        "failureControl": "Requested PNG width reduced by one pixel must fail acceptance; mutating field[0] and the flip count after export must fail the identical preservation predicate.",
+        "limitations": "State preservation and declared dimensions only. Does not establish calibrated color, SVG output, printed numerical resolution beyond the recorded grid, or every control, aspect or hardware."
+      }
+    ],
+    "domain": {
+      "parameters": "Numerical: I2 1.05, 1.4, 1.7 with tilt 0.02 at durations 20, 60, 120 (grid 160, 4:5), plus the four print fixtures flip (I2 1.4, tilt 0.02, T 70, 4:5), stable1 (1.05, 0.01, 50, 4:5), log (1.45, 0.02, 60, 4:5, log view) and square (1.4, 0.02, 60, 1:1), all at grid 160 with I1 = 1, I3 = 2.",
+      "conditions": "Initial ω = (tilt, 1, 0.4 tilt); torque-free Euler equations; eight RK4 steps per plate row, dt = T / rows / 8. Print: real exportPNG at 2400 longest edge; field, flip count, I2, cells and settings preserved; deterministic regenerate replay; wrong-dimension and post-export mutation rejected.",
+      "resolution": "160x200 plate cells for 4:5 and 160x160 for 1:1; field words within 2e-6 of the independent reference (measured 5.96e-8, the Float32 rounding level), exact PNG dimensions 1920x2400 and 2400x2400 (validation/results/rigid-body-audit.json, validation/results/tennis-print-state.json).",
+      "precision": "Float64 integration stored in a Float32 field; RGBA8 PNG output. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/rigid-body-audit.json"
   },
   {
     "id": "flow",
