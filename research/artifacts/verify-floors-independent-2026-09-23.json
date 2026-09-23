@@ -56,7 +56,11 @@
   "secondArcAllCollapsing": true,
   "gotodaThetaStar": "0.83120794968893198391511275213",
   "gotodaCosThetaStar": "0.6739838839479822237475678027",
-  "gotodaPAtThetaStar": "2.20385501603613279399410133387360727982"
+  "gotodaPAtThetaStar": "2.20385501603613279399410133387360727982",
+  "branchMinimaVsClosedFormsAbsDiff": [
+   "1.5558e-61",
+   "0.0"
+  ]
  },
  "branchesVsMu": {
   "0.5": [
@@ -87,6 +91,7 @@
  },
  "Fn": {
   "2": {
+   "generalProductFormulaMaxRel": 6.272721433878312e-59,
    "selfSimilarityResidualMaxRel": 4.4505064821807114e-61,
    "allCollapsing": true,
    "independentMinimum": "1.6770509831248422723068802515484572",
@@ -97,6 +102,7 @@
    "radicalVsIndependent": "2.342e-35"
   },
   "3": {
+   "generalProductFormulaMaxRel": 9.208543321338047e-59,
    "selfSimilarityResidualMaxRel": 5.091376476536e-61,
    "allCollapsing": true,
    "independentMinimum": "1.7950549357115013437502368305134432",
@@ -107,6 +113,7 @@
    "radicalVsIndependent": "1.4568e-35"
   },
   "4": {
+   "generalProductFormulaMaxRel": 6.569378389387112e-59,
    "selfSimilarityResidualMaxRel": 6.325286244771962e-61,
    "allCollapsing": true,
    "independentMinimum": "1.9938176049918178616381616548588797",
@@ -117,6 +124,7 @@
    "radicalVsIndependent": "2.5685e-35"
   },
   "5": {
+   "generalProductFormulaMaxRel": 9.094294651029014e-59,
    "selfSimilarityResidualMaxRel": 6.310441817706496e-61,
    "allCollapsing": true,
    "independentMinimum": "2.2249297741726591402902833420562199",
@@ -130,6 +138,7 @@
    "radicalVsIndependent": "4.0613e-35"
   },
   "6": {
+   "generalProductFormulaMaxRel": 1.4076505809783314e-58,
    "selfSimilarityResidualMaxRel": 8.412092876368668e-61,
    "allCollapsing": true,
    "independentMinimum": "2.4787406300601745514429821837530752",
@@ -138,6 +147,7 @@
    "cosNThetaStar": "0.110815602836879432624113475177"
   },
   "7": {
+   "generalProductFormulaMaxRel": 2.1473022564413245e-58,
    "selfSimilarityResidualMaxRel": 8.916189742648252e-61,
    "allCollapsing": true,
    "independentMinimum": "2.7525388202496655843995819547573588",
@@ -146,6 +156,7 @@
    "cosNThetaStar": "0.0931574287053904704739591791515"
   },
   "8": {
+   "generalProductFormulaMaxRel": 1.989210586949428e-58,
    "selfSimilarityResidualMaxRel": 8.429563639017116e-61,
    "allCollapsing": true,
    "independentMinimum": "3.0456530928982954306395855745604352",
@@ -182,6 +193,12 @@
   "F5equalsSqrt31682over80": true,
   "boundSqrtA2minusB2over80": "sqrt(31682)/80",
   "minimizerCos": "12*sqrt(2)/127"
+ },
+ "symbolic": {
+  "lemma1AllKappasEqualClaim": true,
+  "shapeRatioIsCircle": true,
+  "angularImpulseZero": true,
+  "ringSelfSimilarityCondition": "(n*x**2 - 2*n*x + n - x**2 - 1)/(2*x)"
  },
  "timeIntegration": {
   "predictedTc": "4.1839925778709329124",

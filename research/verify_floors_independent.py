@@ -133,13 +133,14 @@ for t in ('0.4', '0.8', '1.2'):
 q33_min = min(abs(Q33(th0 * i / 2000)) for i in range(1, 2000))
 thstar = mp.findroot(lambda t: mp.diff(P_gotoda, t), mp.mpf('0.83'))
 
-branch_minima = []
+branch_minima, branch_raw = [], []
 for i in range(N):
     if samples[i][1] != mp.inf and samples[i][1] < samples[i - 1][1] and samples[i][1] < samples[(i + 1) % N][1]:
         p = mp.findroot(lambda t: mp.diff(P_phi, t), samples[i][0])
         zs = tri(p)
         orient = 'counterclockwise' if ((zs[1] - zs[0]) * mp.conj(zs[2] - zs[0])).imag < 0 else 'clockwise'
         branch_minima.append({'phiDeg': mp.nstr(p * 180 / mp.pi, 15), 'orientation123': orient, 'minimum': mp.nstr(P_phi(p), 40)})
+        branch_raw.append(P_phi(p))
 X = 245351 * mp.sqrt(5201) / mp.mpf(5201) ** 2
 Pmin_closed = mp.sqrt(mp.mpf(605) / 324 + 7 * mp.sqrt(5201) / 162 * mp.cos(mp.acos(X) / 3 - 2 * mp.pi / 3))
 thA = 2 * mp.pi - mp.acos(mp.sqrt(7) * mp.mpf('-0.349386340300794394073391946872'))
@@ -167,6 +168,8 @@ results['Pstar'] = {
     'gotoda33QuotientVsRaw': q33_cmp, 'gotoda33QuotientSampledMin': mp.nstr(q33_min, 8), 'secondArcAllCollapsing': bool(arcA_all_collapse),
     'gotodaThetaStar': mp.nstr(thstar, 30), 'gotodaCosThetaStar': mp.nstr(mp.cos(thstar), 30),
     'gotodaPAtThetaStar': mp.nstr(P_gotoda(thstar), 40),
+    'branchMinimaVsClosedFormsAbsDiff': [mp.nstr(abs(min(branch_raw) - Pmin_closed), 5),
+                                         mp.nstr(abs(max(branch_raw) - Pstar_closed), 5)],
 }
 
 # ------------------------------------------- Part 1b: both branches vs mu
@@ -229,7 +232,11 @@ for n in range(2, 9):
         worst = max(worst, spr / abs(km))
         vals.append(product(km) if km.real < 0 else mp.inf)
     ths = golden(Pn, mp.pi / n * mp.mpf('0.001'), mp.pi / n * mp.mpf('0.999'))
-    entry = {'selfSimilarityResidualMaxRel': float(worst), 'allCollapsing': all(v != mp.inf for v in vals),
+    Kn = (n - 1) * mp.sinh((n + 2) / mp.mpf(2) * mp.acosh(mp.mpf(n) / (n - 1)))
+    general = max(abs(vals[i] - (Kn - mp.sqrt(2 * n - 1) * mp.cos(n * grid[i])) / (2 * n * mp.sin(n * grid[i])))
+                  / vals[i] for i in range(0, len(grid), 20))
+    entry = {'generalProductFormulaMaxRel': float(general),
+             'selfSimilarityResidualMaxRel': float(worst), 'allCollapsing': all(v != mp.inf for v in vals),
              'independentMinimum': mp.nstr(Pn(ths), 35), 'formula': mp.nstr(Fn_formula(n), 35),
              'absDifference': mp.nstr(abs(Pn(ths) - Fn_formula(n)), 5),
              'cosNThetaStar': mp.nstr(mp.cos(n * ths), 30)}
@@ -295,6 +302,29 @@ results['exact'] = {
     'F5equalsSqrt31682over80': sp.simplify(F5 - sp.sqrt(31682) / 80) == 0,
     'boundSqrtA2minusB2over80': str(sp.simplify(sp.sqrt(a_ ** 2 - b_ ** 2) / 80)),
     'minimizerCos': str(sp.nsimplify(b_ / a_)),
+}
+
+# ------------------------------------- Part 3b: exact rates (Lemma 1) and ring condition
+thS = sp.symbols('thetaS', real=True)
+gS = [sp.Integer(1), sp.Rational(1, 2), sp.Rational(-1, 3)]
+eS = sp.cos(thS) - sp.I * sp.sin(thS)
+zS = [sp.Rational(2, 9) * (1 + sp.sqrt(7) / 2 * eS), sp.Rational(2, 9) * (1 - sp.sqrt(7) * eS), sp.Integer(1)]
+zcS = sum(g * z for g, z in zip(gS, zS)) / sum(gS)
+def velS(j):
+    return sp.conjugate(sum(gS[k] / (zS[j] - zS[k]) for k in range(3) if k != j) / (2 * sp.pi * sp.I))
+kS = [velS(j) / (zS[j] - zcS) for j in range(3)]
+cS, sS = sp.cos(thS), sp.sin(thS)
+DS = 28 * sS ** 2 + 5 * sp.sqrt(7) * cS + 16
+kappa_claim = (-27 * (14 * cS + sp.sqrt(7)) * sS + sp.I * 27 * (14 * sS ** 2 + 6 * sp.sqrt(7) * cS + 21)) / (28 * sp.pi * DS)
+wS = (zS[2] - zS[0]) / (zS[1] - zS[0])
+LS = sum(gS[i] * gS[j] * (zS[i] - zS[j]) * sp.conjugate(zS[i] - zS[j]) for i in range(3) for j in range(i + 1, 3))
+nS, xS, wwS = sp.symbols('n x w')
+ring = sp.factor(sp.simplify(xS * (nS - 1) / 2 - nS / (1 - wwS) - (-(nS - 1) / (2 * xS) - nS * wwS / (1 - wwS))))
+results['symbolic'] = {
+    'lemma1AllKappasEqualClaim': all(sp.simplify(sp.expand_complex(k - kappa_claim)) == 0 for k in kS),
+    'shapeRatioIsCircle': sp.simplify(sp.expand_complex(wS - (sp.Rational(1, 3) - sp.sqrt(7) / 3 * (cS + sp.I * sS)))) == 0,
+    'angularImpulseZero': sp.simplify(sp.expand_complex(LS)) == 0,
+    'ringSelfSimilarityCondition': str(ring),
 }
 
 # ------------------------------------------------ Part 4: time integration
