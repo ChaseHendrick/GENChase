@@ -136,7 +136,7 @@ Complete labels apply only within each record's reviewed domain.
 | [quincunx-lock](src/modules/quincunx-lock.js) | validated within stated limits | [vortex-family-review.js](tools/vortex-family-review.js) | Limited evidence recorded |
 | [double-triangle-bound](src/modules/double-triangle-bound.js) | validated within stated limits | [double-triangle-check.js](tools/double-triangle-check.js), [polygon-collapse-check.js](tools/polygon-collapse-check.js), [polygon-review.js](tools/polygon-review.js) | Limited evidence recorded |
 | [maxwell](src/modules/maxwell.js) | partially validated | [maxwell-science.js](tools/maxwell-science.js) | Limited evidence recorded |
-| [molecular](src/modules/molecular.js) | partially validated | [molecular-science.js](tools/molecular-science.js) | Limited evidence recorded |
+| [molecular](src/modules/molecular.js) | partially validated | [molecular-science.js](tools/molecular-science.js), [molecular-equilibration-science.js](tools/molecular-equilibration-science.js) | Limited evidence recorded |
 | [surfaces](src/modules/surfaces.js) | validated within stated limits | [surfaces-science.js](tools/surfaces-science.js) | Limited evidence recorded |
 | [plasma](src/modules/plasma.js) | partially validated | [plasma-science.js](tools/plasma-science.js) | Limited evidence recorded |
 | [shallow](src/modules/shallow.js) | partially validated | [shallow-science.js](tools/shallow-science.js) | Limited evidence recorded |
@@ -387,8 +387,8 @@ Complete labels apply only within each record's reviewed domain.
 ### molecular
 
 - Two-dimensional periodic force-shifted Lennard-Jones model, with no thermostat or named material/EOS claim.
-- Force, linked-cell and bounded trajectory checks support stated fixtures only; the local stiffness/energy guard is not a global nonlinear stability proof.
-- Print checks preserve evolved particle state and compare raster/SVG output; broad devices, parameters and long-time thermodynamics remain unvalidated.
+- Force, linked-cell, bounded trajectory and a density-0.4 multi-seed equilibration/transport fixture support stated cases only; the local stiffness/energy guard is not a global nonlinear stability proof.
+- Print checks preserve evolved particle state and compare raster/SVG output; broad devices, parameters and thermodynamic claims remain unvalidated.
 
 ### surfaces
 

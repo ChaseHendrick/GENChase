@@ -3556,12 +3556,12 @@
     "status": "partially validated",
     "limitations": [
       "Two-dimensional periodic force-shifted Lennard-Jones model, with no thermostat or named material/EOS claim.",
-      "Force, linked-cell and bounded trajectory checks support stated fixtures only; the local stiffness/energy guard is not a global nonlinear stability proof.",
-      "Print checks preserve evolved particle state and compare raster/SVG output; broad devices, parameters and long-time thermodynamics remain unvalidated."
+      "Force, linked-cell, bounded trajectory and a density-0.4 multi-seed equilibration/transport fixture support stated cases only; the local stiffness/energy guard is not a global nonlinear stability proof.",
+      "Print checks preserve evolved particle state and compare raster/SVG output; broad devices, parameters and thermodynamic claims remain unvalidated."
     ],
     "remaining": [
-      "Establish equilibrated observables and transport with independent seeds, correlation-aware uncertainty and finite-size checks before making thermodynamic claims.",
-      "Extend timestep, parameter, seed, high-count and long-duration coverage.",
+      "Extend equilibration/transport beyond the density-0.4 NVE fixture to equation-of-state, melting/phase coexistence, Green–Kubo plateau diffusion and broader (N,T,ρ,seed) coverage before thermodynamic claims.",
+      "Extend high-count and long-duration coverage beyond the recorded fixtures.",
       "Assess broader hardware and full scientific interpretation of printed observables."
     ],
     "numerical": [
@@ -3574,6 +3574,16 @@
         "limitations": "Short declared fixtures, not an EOS, equilibrium phase diagram, arbitrary trajectory or global-stability certification. High-count timing is machine-specific.",
         "benchmark": "Independent scalar energy finite difference, radial force/cutoff signs, all-pairs minimum-image forces and energies, and fixed-time all-pairs RK4 with separately refined reference timestep.",
         "failureControl": "Reverse pair force, omit force shift, ignore periodic separation, use one full kick/drift instead of Verlet, and provoke initial and post-drift failures with exact rollback checks."
+      },
+      {
+        "test": "tools/molecular-equilibration-science.js",
+        "command": "node tools/molecular-equilibration-science.js",
+        "results": "validation/results/molecular-equilibration-science.json",
+        "scope": "Actual Float64 NVE force-shifted LJ at density 0.4, initial T=0.8: eight independent seeds for N=64, four-seed finite-size N=144 and dt=0.001 controls; block-averaged temperature/energy, ballistic MSD vs free-flight reference, late-time MSD/(4t) diffusion proxy.",
+        "criteria": "Block SE exceeds naive SE; short-time ballistic MSD relative error mean <0.2 vs independent Float64 free flight; multi-seed T and E/N with reported stderr; finite-size and timestep T shifts within 8 combined seed stderr; energy drift <2% scale; raw-wrapped MSD, wrong DoF and transient-mean failure controls separate.",
+        "limitations": "Bounded fluid-density NVE fixture only. Diffusion proxy is single-time MSD/(4t), not Green–Kubo or experimental D. No EOS, melting, phase coexistence or canonical thermostat claim.",
+        "benchmark": "Independent Float64 force-free free-flight MSD from production-start velocities; independent kinetic temperature K/(N-1); multi-seed means with Flyvbjerg–Petersen-style block stderr and across-seed stderr; N and dt controls at matched physical production time.",
+        "failureControl": "Raw wrapped-coordinate MSD without unwrapping must disagree with unwrapped MSD; temperature divisor K/N must miss independent K/(N-1); unequilibrated transient mean must lie outside the equilibrated multi-seed uncertainty."
       }
     ],
     "print": [
