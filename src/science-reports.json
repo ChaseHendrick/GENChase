@@ -4284,15 +4284,13 @@
     "sourceSha256": "240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041",
     "reference": "Newton, Principia (1687); Verlet, Physical Review 159 (1967), 98. Plummer softening and the direct all-pairs kernel: Nyland, Harris and Prins, GPU Gems 3, chapter 31 (2007). This implementation runs the pair kernel on the CPU.",
     "equation": "a_i = Σ(j≠i) m_j (r_j−r_i) / (|r_j−r_i|²+ε²)^(3/2), G=1; velocity Verlet",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Planar Plummer-softened gravity with G=1; no galaxy equilibrium or physical collision model.",
-      "Finite small-body analytic and conservation fixtures only; large-N statistics, chaotic long-time accuracy and arbitrary controls remain unvalidated.",
-      "Browser cancellation and selected exports preserve a completed-step snapshot; this is not full scientific print certification.",
-      "Shared workload modes change cooperative scheduling or steps per presentation frame, not the numerical timestep or solver. Maximum throughput is not a measured hardware utilization guarantee."
+      "Planar Plummer-softened G=1 only. Large-N evidence is force-kernel agreement at fixed snapshots, not a statistical N-body convergence study; dt/ε band is finite-time energy drift on one N=64 disk seed.",
+      "Browser cancellation and selected exports preserve a completed-step snapshot — not full scientific print certification across hardware."
     ],
     "remaining": [
-      "Audit large-N force accuracy, parameter regimes and timestep convergence for the intended experiment.",
+      "Galaxy equilibrium, unsoftened close encounters and long-time chaotic accuracy remain outside the registered evidence.",
       "Compare scientific state and print geometry at additional dimensions, seeds and hardware."
     ],
     "numerical": [
@@ -4305,6 +4303,16 @@
         "failureControl": "A 1% force-coefficient error exceeds 0.01 trajectory error; broken pair reciprocity exceeds 0.001 momentum-production residual.",
         "command": "node tools/direct-gravity-science.js",
         "results": "validation/results/direct-gravity-science.json"
+      },
+      {
+        "test": "tools/direct-gravity-largen-science.js",
+        "scope": "Production Float64 force/Verlet kernels vs independent reverse-order all-pairs Plummer reference at N in {256,1024,4096}; multi-dt/eps energy-drift and position self-convergence on a seeded equal-mass disk (N=64).",
+        "criteria": "Force max absolute acceleration difference below 1e-12 and relative L2 below 1e-14 at each N; disk relative energy drift below 5e-4 across dt in {0.004,0.002,0.001} and below 2e-3 across eps in {0.06,0.12,0.24}; position RMS refinement ratio vs fine step in 4.5-5.5.",
+        "limitations": "Force-kernel snapshot agreement and finite-time moderate-N regime only; not galaxy equilibrium, unsoftened collisions or chaotic long-time accuracy.",
+        "benchmark": "Independent Float64 directed all-pairs Plummer accelerations (reverse partner order, Math.pow r^{-3} form) and production equal-mass disk initial conditions via extracted initial/makeRng.",
+        "failureControl": "Reference with G=1.01 or eps*1.05 must exceed 1e-4 / 1e-5 max absolute acceleration difference; 1% broken pair reciprocity must produce net force above 1e-4 and disagree with the independent reference.",
+        "command": "node tools/direct-gravity-largen-science.js",
+        "results": "validation/results/direct-gravity-largen-science.json"
       }
     ],
     "print": [
@@ -4316,6 +4324,14 @@
         "command": "node tools/direct-gravity-browser.js",
         "results": "validation/results/direct-gravity-browser.json"
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/direct-gravity-largen-science.json",
+    "domain": {
+      "parameters": "Planar Plummer-softened gravity with G=1; large-N force-kernel fixtures at N∈{256,1024,4096}, ε=0.12; moderate-N dt/ε band at N=64, t=0.4, ε∈{0.06,0.12,0.24} and h∈{0.004,0.002,0.001}; plus the small-orbit science pack and registered browser print fixtures.",
+      "conditions": "Equal-mass disk seed for regime tests; independent all-pairs Float64 force reference at fixed snapshot; wrong-G, ε×1.05, and broken-reciprocity controls must reject. Print: pause/export of completed 16,384-body snapshot and 128-body replay as registered.",
+      "resolution": "Force max |Δa| ~2e-15 / 5e-15 / 1e-14 at N=256/1024/4096; relative energy drift ~4.5e-6→2.8e-7 under h 0.004→0.001 (ratio ~16); position RMS refine ~5 on the ε band. Exact N/ε/h/steps recorded.",
+      "precision": "Float64 production kernel vs independent all-pairs reference; finite-time fixtures only — not galaxy equilibrium, unsoftened close encounters, or chaotic long-time accuracy."
+    }
   }
 ]
