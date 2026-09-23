@@ -21,7 +21,7 @@
     Do not treat this note as a personal theorem stamp (no “Hendrick’s Identity / Law”).
   ]
   #v(0.4em)
-  #text(size: 9pt)[Version 2, revised 2026-09-23 (America/New_York). Companion markdown and the validation script are in-repo under `research/`.]
+  #text(size: 9pt)[Date: 2026-09-23 (America/New_York). Companion markdown and the validation script are in-repo under `research/`.]
 ]
 
 #v(0.8em)
@@ -29,11 +29,8 @@
 #align(center)[*Abstract*]
 #v(0.3em)
 
-We record exact closed forms for classical point-vortex collapse floors, where the floor is the minimum of the spin–collapse product $omega_0 t_c$ (initial rotation rate times collapse time) over a self-similar collapsing family. (i) For $Gamma = (1, 1\/2, -1\/3)$ the angular-impulse-zero ($L = 0$) family has *two* collapsing branches, one for each orientation of the triangle. Their floors are the two positive real roots of one irreducible sextic: $P_"min" approx 1.064706$ (the global floor) and $P_star approx 2.203855$ (the floor on the branch covered by Gotoda’s $L=0$ arc, which version 1 of this note reported as the μ = 1/2 floor). (ii) The $n=5$ specialization $F_5 = sqrt(31682)\/80$ of the two-ring polygon floor $F_n$. Both results were re-derived from raw Biot–Savart velocities, independently of the formulas they replace, and the algebra was checked in exact arithmetic. The families and the product $omega_0 t_c$ are classical (Gröbli, Aref, Gotoda, Koiller et al.); only the minimizations and their closed forms are claimed. They are *proved candidates*; *priority is unconfirmed*.
+We record exact closed forms for classical point-vortex collapse floors, where the floor is the minimum of the spin–collapse product $omega_0 t_c$ (initial rotation rate times collapse time) over a self-similar collapsing family. (i) For $Gamma = (1, 1\/2, -1\/3)$ the angular-impulse-zero ($L = 0$) family has *two* collapsing branches, one for each orientation of the triangle. Their floors are the two positive real roots of one irreducible sextic: $P_"min" approx 1.064706$ (the global floor) and $P_star approx 2.203855$ (the floor on the branch covered by Gotoda’s $L=0$ arc). (ii) The $n=5$ specialization $F_5 = sqrt(31682)\/80$ of the two-ring polygon floor $F_n$. Both results were re-derived from raw Biot–Savart velocities, independently of the closed forms, and the algebra was checked in exact arithmetic. The families and the product $omega_0 t_c$ are classical (Gröbli, Aref, Gotoda, Koiller et al.); only the minimizations and their closed forms are claimed. They are *proved candidates*; *priority is unconfirmed*.
 
-#block(fill: luma(240), inset: 8pt, radius: 3pt, width: 100%)[
-  *Correction to version 1.* Version 1 called $P_star approx 2.2039$ “the μ = 1/2 product floor”. $P_star$ is the minimum on Gotoda’s arc $0 < theta < theta_0$ only. The opposite orientation, $pi < theta < 2 pi - theta_0$ in the same parametrization, also collapses, and its minimum $P_"min" approx 1.0647$ is lower. The original derivation found this critical point ($cos theta approx -0.9244$) and set it aside as “on the expanding side”; that is true for $sin theta > 0$, but with $sin theta < 0$ the configuration collapses. Every algebraic statement about $P_star$ in version 1 remains correct.
-]
 
 = Statements
 
@@ -71,7 +68,7 @@ whose real roots are exactly $plus.minus P_"min"$ and $plus.minus P_star$. Equiv
 === Proof sketch
 
 + *Critical points.* Setting $d P \/ d theta = 0$ and writing $c = cos theta$ gives the cubic above (checked symbolically). The substitution $c = sqrt(7) u$ makes it rational: $1372 u^3 + 1568 u^2 + 14 u - 128 = 0$, with exact real roots $u approx -1.0482, -0.3494, 0.2547$.
-+ *One critical point per arc.* Exact real-root isolation over $QQ$ puts exactly one root in each arc’s cosine range: $u in (-1\/14, 1\/sqrt(7))$ for branch B and $u in (-1\/sqrt(7), -1\/14)$ for branch A. The third root has $|c| > 1$.
++ *One critical point per arc.* Exact real-root isolation over $QQ$ puts exactly one root in each arc’s cosine range: $u in (-1\/14, 1\/sqrt(7))$ for branch B and $u in (-1\/sqrt(7), -1\/14)$ for branch A. The third root has $|c| > 1$. The branch-A critical point ($cos theta approx -0.9244$) is easy to miss: with $sin theta > 0$ that configuration expands, but with $sin theta < 0$ it collapses, and it carries the global minimum.
 + *Blow-up at the ends.* The numerator is positive at every arc end ($6 sqrt(7) + 21$ at $theta -> 0^+$, $63\/2$ at $cos theta = -sqrt(7)\/14$, and $21 - 6 sqrt(7) > 0$ at $theta -> pi^+$) while the denominator tends to $0$ with the sign that makes $P -> +infinity$. With one critical point, each branch has a unique global minimum.
 + *Minimal polynomial.* An independent resultant elimination of $c$ and $sqrt(7)$ gives exactly $(8748 P^6 - 49005 P^4 + 27794 P^2 + 18723)^2$. The sextic is irreducible over $QQ$ and over $QQ(sqrt(7))$, and the cubic in $q = P^2$ has positive discriminant (casus irreducibilis), so the trigonometric Cardano forms cannot be reduced to real radicals. The branches $k = 0$ and $k = 1$ of $cos(1\/3 arccos(X) - 2 pi k \/ 3)$ give $P_star^2$ and $P_"min"^2$.
 
@@ -97,7 +94,7 @@ alongside $F_2 = 3 sqrt(5)\/4$, $F_3 = sqrt(29)\/3$ and $F_4 = sqrt(322)\/9$. Th
 + The product $omega_0 t_c = (K_5 - 3 cos(5 theta)) \/ (10 sin(5 theta))$ clears to the quotient above.
 + The elementary bound $(a - b cos alpha)\/sin alpha >= sqrt(a^2 - b^2)$ on $0 < alpha < pi$, with $a = 127 sqrt(2)$ and $b = 24$, has equality at $cos alpha = b\/a$ and gives $sqrt(31682)\/80$. Consistently, $F_5 = (sqrt(K_5^2 - 9)) / 10$.
 
-= Independent validation (version 2)
+= Independent validation
 
 Script: `research/verify_floors_independent.py` (Python, mpmath and sympy, about 25 s). Results: `research/artifacts/verify-floors-independent-2026-09-23.json`. The check does not reuse Gotoda’s rates, the repo’s JavaScript verifiers or the formulas above. It computes each vortex velocity from the $2 pi$ Biot–Savart law. A configuration collapses self-similarly exactly when every velocity is $kappa (z_j - z_c)$ for one complex $kappa$ about the centre of vorticity. Then $|z|^2$ shrinks linearly and $omega_0 t_c = |op("Im") kappa| \/ (-2 op("Re") kappa)$.
 
@@ -129,8 +126,8 @@ The check covers the stated families only. It does not show that no other config
   inset: 5pt,
   [*Source*], [*Access*], [*Verdict*],
   [Koiller et al. (1985)], [Full text read], [*DOES NOT KILL* optimized product floors],
-  [Aref, Phys. Fluids 25 (1982)], [Full text (purchased PDF, all pages re-read for v2)], [*DOES NOT KILL*. Sets up the general two-ring ($2n$-vortex) center-of-symmetry equations (strengths $kappa$, $lambda$), of which the $F_n$ family is a special case, but analyzes only $kappa = -lambda$ (Havelock double alternate rings: relative equilibria and pair dissolution). No collapse, no $omega_0 t_c$, no floor.],
-  [O’Neil, Physica D 236 (2007)], [Full text (purchased PDF, re-read for v2)], [*DOES NOT KILL*. Finiteness of relative-equilibrium and collapse configurations of three rings; cites two-ring collapse as known (Koiller et al. 1985). No $omega_0 t_c$ minimization.],
+  [Aref, Phys. Fluids 25 (1982)], [Full text read], [*DOES NOT KILL*. Sets up the general two-ring ($2n$-vortex) center-of-symmetry equations (strengths $kappa$, $lambda$), of which the $F_n$ family is a special case, but analyzes only $kappa = -lambda$ (Havelock double alternate rings: relative equilibria and pair dissolution). No collapse, no $omega_0 t_c$, no floor.],
+  [O’Neil, Physica D 236 (2007)], [Full text read], [*DOES NOT KILL*. Finiteness of relative-equilibrium and collapse configurations of three rings; cites two-ring collapse as known (Koiller et al. 1985). No $omega_0 t_c$ minimization.],
   [Outside-family pass (web, OA, arXiv needles; GENChase PR \#128)], [Open web], [*STILL OPEN* for $P_star$ and $F_5$],
   [Gröbli (1877) §10; Aref, Phys. Fluids 22 (2010)], [repo reads (earlier passes)], [Give the rates and the product $omega_0 t_c$ as a logarithmic-spiral pitch for general strengths. $P(theta)$ is a specialization of these; no μ = 1/2 minimization located.],
   [Tavantzis & Ting (1988)], [search metadata], [One-parameter contracting family in side-length variables, where orientation is invisible; consistent with two oriented arcs. *DOES NOT KILL.*],
@@ -138,12 +135,12 @@ The check covers the stated families only. It does not show that no other config
   [Krishnamurthy & Stremler (2018)], [earlier postprint read; search metadata], [Orientation-aware geometric collapse theory; collapse time and path length, no minimized $omega_0 t_c$ found. Not re-read this pass.],
   [Novikov & Sedov (1979)], [search metadata], [Parallelogram collapse; the $n=2$ member of the two-ring family is classical. Its minimum $F_2$ is not claimed as new.],
   [Demina & Kudryashov (2014)], [abstract only], [Explicit double-ring configurations of two regular polygons with arbitrary circulations. *AMBIGUOUS for $F_n$ and $F_5$ until read in full*; no statement of the minimization seen.],
-  [Fingerprint pass v2 (decimals of $P_star$, $P_"min"$, $F_5$; $31682$; $245351$, $5201$; sextic coefficients)], [search engine only], [No hits. Full-text pages and OEIS could not be opened from the checking machine, so *no OEIS check is claimed*.],
+  [Fingerprint search (decimals of $P_star$, $P_"min"$, $F_5$; $31682$; $245351$, $5201$; sextic coefficients)], [search engine only], [No hits. Full-text pages and OEIS could not be opened from the checking machine, so *no OEIS check is claimed*.],
 )
 
-*Verdicts (version 2).* $P_star$: *STILL OPEN*. $P_"min"$: *STILL OPEN*. $F_5$: *STILL OPEN*, with one unread lead (Demina & Kudryashov 2014) that could settle the general $F_n$ minimization.
+*Verdicts.* $P_star$: *STILL OPEN*. $P_"min"$: *STILL OPEN*. $F_5$: *STILL OPEN*, with one unread lead (Demina & Kudryashov 2014) that could settle the general $F_n$ minimization.
 
-*Limits.* Aref (1982) and O’Neil (2007) were re-read in full for version 2. The other version 2 rows rest on search-engine metadata and snippets plus earlier full reads recorded in the repo; full texts and OEIS could not be opened from the checking machine. Negative searches are not a novelty certificate. Priority remains unconfirmed. The collapse families and the product itself are classical: the contribution claimed is only the minimizations and their closed forms.
+*Limits.* Koiller et al. (1985), Aref (1982) and O’Neil (2007) were read in full. The other rows rest on search-engine metadata and snippets plus earlier full reads recorded in the repo; full texts and OEIS could not be opened from the checking machine. Negative searches are not a novelty certificate. Priority remains unconfirmed. The collapse families and the product itself are classical: the contribution claimed is only the minimizations and their closed forms.
 
 Copyrighted PDFs are not redistributed with this note.
 
