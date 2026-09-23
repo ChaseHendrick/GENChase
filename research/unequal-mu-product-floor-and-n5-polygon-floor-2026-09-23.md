@@ -75,7 +75,7 @@ The μ = 1/2 checks:
 | Koiller et al. 1985 | Full text | §11 has the two-ring circulation condition, the rates as functions of the angle, and logarithmic spirals. No minimization, no K_n, no F_n. |
 | O'Neil 2007 | Full text (purchased) | Finiteness for three rings. Credits Koiller for two-ring collapse. |
 | Gotoda 2021 | arXiv version, Sect. 3, read earlier | The parametrization. Re-check Sect. 3 against the journal version before submission. |
-| Aref 2010 | Author manuscript, eqs. (25) and (29), read earlier | Both rates and their product in the spiral. **Read in full before submission**, since P is the ratio of its two rates. |
+| Aref 2010 | **Full text read 2026-09-23** (author's complimentary copy, provided by the owner) | Gives Ω (25a) and τ (25d) through the side lengths. Derives the necessary conditions γ₂ = 0 and L = 0 for self-similar motion (Sect. II B), and the zero-impulse circle and its parametrization (Eqs. 20–22). Shows the trajectories are logarithmic spirals with exponent fixed by Ωτ = P (Eq. 29c). **Never minimizes or bounds Ωτ.** The paper now credits all of this. |
 | Krishnamurthy and Stremler 2018 | Abstract; §3.5 of the postprint read earlier | Distance travelled before collapse. The earlier read noted a numerical observation that the normalized distance exceeds 2, which Corollary 1 proves with the sharp constant. **Verify §3.5 and cite it.** |
 | Aref, Rott and Thomann 1992; Newton 2001 | Bibliographic data verified | History and general theory. |
 | Tavantzis and Ting 1988; Leoncini et al. 2000; Aref 1979 | Abstracts | Context only. |
@@ -89,7 +89,7 @@ The submission package is in [`submission/`](submission/): arXiv metadata (categ
 
 Still open:
 
-1. **Read three papers in full:** Demina and Kudryashov (2014), Aref (2010) and Krishnamurthy and Stremler (2018) §3.5. An attempt on 2026-09-23 could not reach them because the session's network policy blocks the hosting sites (people.iith.ac.in, vtechworks.lib.vt.edu, orbit.dtu.dk, link.springer.com, arxiv.org). If one of them states a minimum of Theorem 1, Proposition 1 or 2, or the √3/2 bound, cite it and narrow the Discussion sentence "We have not found … in the literature". If Krishnamurthy and Stremler observe the path-length bound (> 2) numerically, say that Corollary 1 proves it.
+1. **Read two papers in full:** Demina and Kudryashov (2014) and Krishnamurthy and Stremler (2018) §3.5. Aref (2010) has been read and does not anticipate the results; see the table above. An attempt on 2026-09-23 could not reach them because the session's network policy blocks the hosting sites (people.iith.ac.in, vtechworks.lib.vt.edu, orbit.dtu.dk, link.springer.com, arxiv.org). If one of them states a minimum of Theorem 1, Proposition 1 or 2, or the √3/2 bound, cite it and narrow the Discussion sentence "We have not found … in the literature". If Krishnamurthy and Stremler observe the path-length bound (> 2) numerically, say that Corollary 1 proves it.
 2. **Re-check Gotoda's parametrization** against the journal version.
 3. **Endorsement:** start the arXiv submission to get a code, then send [`submission/endorsement-request.md`](submission/endorsement-request.md) to one established physics.flu-dyn author.
 4. **Journal:** most journals take LaTeX or Word, so the Typst source would need a LaTeX transcription at acceptance. Fill in the suggested reviewers in the cover letter.

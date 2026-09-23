@@ -88,6 +88,20 @@ Tried to read Demina–Kudryashov 2014, Aref 2010 and Krishnamurthy–Stremler 2
   - arXiv:2607.16490 (collapse of three vortices on surfaces) may summarize the planar literature.
   - Neither was reachable in full from the session.
 
+### H. Aref 2010 read in full (same day, later)
+
+The owner provided the author's copy, which is not committed.
+
+- **What it contains:**
+  - Ω (25a) and τ (25d) in terms of the side lengths.
+  - The necessary conditions γ₂ = 0 (from conservation of H) and L = 0 for self-similar motion (Sect. II B, Eq. 12).
+  - The zero-impulse circle (20a), centered at −Γ₁/(Γ₁+Γ₂) with radius Γ*/(Γ₁+Γ₂), Γ* = √(Γ₁² + Γ₁Γ₂ + Γ₂²).
+  - Logarithmic-spiral trajectories ρ = ρ₀ exp(−φ/(2Ωτ)) (29c), where Ωτ is our P.
+  - A linear-stability analysis, and the remark that a reflected configuration has parameters (Ω, −τ).
+- **What it does not contain:** any minimization or bound of Ωτ over configurations.
+- **Verdict:** DOES NOT KILL Theorem 1 or Corollary 1. The paper now credits [3] for the spiral exponent, the necessary conditions (Lemma 2) and the circle.
+- **Still to read:** Demina–Kudryashov 2014 and Krishnamurthy–Stremler 2018.
+
 ## Do this, do not do that
 
 **Do**
