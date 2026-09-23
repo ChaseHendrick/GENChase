@@ -102,6 +102,18 @@ The owner provided the author's copy, which is not committed.
 - **Verdict:** DOES NOT KILL Theorem 1 or Corollary 1. The paper now credits [3] for the spiral exponent, the necessary conditions (Lemma 2) and the circle.
 - **Still to read:** Demina–Kudryashov 2014 and Krishnamurthy–Stremler 2018.
 
+### I. Gotoda arXiv v1, Section 3, read (same day, later)
+
+The owner provided the arXiv PDF; it is not committed.
+
+- **Positions.** Eq. (3.6) is identical to the paper's positions (5).
+- **Normalization.** Gotoda uses the same normalization (Γ₁ ≥ Γ₂ > 0 > Γ₃, Γ₃ = −Γ₁Γ₂/(Γ₁+Γ₂)) and the same θ₀.
+- **Conditions.** Eqs. (3.1)–(3.2) state that Γ_H = 0 and M = 0 are necessary and sufficient for self-similar collapse.
+- **Both orientations.** Fig. 1 plots A(θ) over the full circle, so both collapsing orientations appear there.
+- **The (3.3) typo.** In Eq. (3.3), A agrees with Biot–Savart, but B does not when Γ₁ ≠ Γ₂. Replacing (Γ₁² + Γ₂²)(Γ₂λ₁ + Γ₁λ₂) by (Γ₁ + Γ₂)(Γ₁²λ₁ + Γ₂²λ₂) fixes it to 10⁻³¹, on five test cases including (10, 1). This settles the old "(3.3) discrepancy": it is a typo in the printed formula, not an error in our computation.
+- **Verdict.** No minimization of the product; DOES NOT KILL.
+- **Paper edits.** The paper now cites [6, Sect. 3] for the parametrization and the normalization, and adds the arXiv number to the reference.
+
 ## Do this, do not do that
 
 **Do**

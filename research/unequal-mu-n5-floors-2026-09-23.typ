@@ -84,11 +84,11 @@ $ H = H(0) - 1/(4 pi) (sum_(j < k) Gamma_j Gamma_k) ln lambda^2 , $
 
 and $ln lambda^2 -> -infinity$, so $sum_(j < k) Gamma_j Gamma_k = 0$. If one circulation vanished, this would force a second one to vanish; the remaining vortex would then be at rest and the other two would move on circles about it, so no collapse would occur. Hence all $Gamma_j != 0$, and $sum_(j < k) Gamma_j Gamma_k = Gamma_1 Gamma_2 Gamma_3 sum_j 1\/Gamma_j$ gives the harmonic condition. Moreover $(sum_j Gamma_j)^2 = sum_j Gamma_j^2 > 0$. Finally, the angular impulse @eq:L is conserved and proportional to $lambda^2$, so it vanishes. #h(0.6em) #h(1fr) $square$
 
-By Lemma 2 two of the three circulations of a self-similarly collapsing configuration have the same sign. Multiplying all circulations by a positive constant rescales time and leaves $P$ unchanged. Multiplying them by $-1$ reverses time, and so does complex conjugation of the positions, which maps solutions of @eq:bs to solutions; the composition maps collapsing solutions to collapsing solutions with the same $P$. After relabeling we may therefore assume
+By Lemma 2 two of the three circulations of a self-similarly collapsing configuration have the same sign. Multiplying all circulations by a positive constant rescales time and leaves $P$ unchanged. Multiplying them by $-1$ reverses time, and so does complex conjugation of the positions, which maps solutions of @eq:bs to solutions; the composition maps collapsing solutions to collapsing solutions with the same $P$. After relabeling we may therefore assume, as Gotoda does [6, Sect. 3],
 
 $ Gamma = (1, mu, -mu/(1 + mu)) , quad 0 < mu <= 1 . $ <eq:norm>
 
-Then $sum_j Gamma_j = R\/(1 + mu) > 0$, where $R = 1 + mu + mu^2$. For $w = (z_3 - z_1)\/(z_2 - z_1)$ the sum $sum_(j < k) Gamma_j Gamma_k |z_j - z_k|^2$ in @eq:L equals $mu (1 + mu)^(-1) |z_2 - z_1|^2 (1 + 2 mu op("Re") w - (1 + mu)|w|^2)$, which vanishes exactly on the circle $|w - mu\/(1 + mu)| = sqrt(R)\/(1 + mu)$. This is the circle of Aref [3, Eq. (20)], and we use a parametrization of it equivalent to those of [3, Eqs. (21)–(22)] and Gotoda [6]:
+Then $sum_j Gamma_j = R\/(1 + mu) > 0$, where $R = 1 + mu + mu^2$. For $w = (z_3 - z_1)\/(z_2 - z_1)$ the sum $sum_(j < k) Gamma_j Gamma_k |z_j - z_k|^2$ in @eq:L equals $mu (1 + mu)^(-1) |z_2 - z_1|^2 (1 + 2 mu op("Re") w - (1 + mu)|w|^2)$, which vanishes exactly on the circle $|w - mu\/(1 + mu)| = sqrt(R)\/(1 + mu)$. This is the circle of Aref [3, Eq. (20)], and we use the parametrization of it given by Gotoda [6, Sect. 3]:
 
 $ z_1 = (mu (1 + sqrt(R) e^(-i theta))) / (1 + mu)^2 , quad z_2 = (mu - sqrt(R) e^(-i theta)) / (1 + mu)^2 , quad z_3 = 1 , quad theta in [0, 2 pi) . $ <eq:pos>
 
@@ -322,7 +322,7 @@ For two rings, Aref [2] derived the reduced equations @eq:rings for arbitrary ci
 + H. Aref, Self-similar motion of three point vortices, _Phys. Fluids_ *22* (2010) 057104.
 + H. Aref, N. Rott and H. Thomann, Gröbli's solution of the three-vortex problem, _Annu. Rev. Fluid Mech._ *24* (1992) 1–21.
 + M. V. Demina and N. A. Kudryashov, Rotation, collapse, and scattering of point vortices, _Theor. Comput. Fluid Dyn._ *28* (2014) 357–368.
-+ T. Gotoda, Self-similar motions and related relative equilibria in the $N$-point vortex system, _J. Dyn. Differ. Equ._ *33* (2021) 1759–1777.
++ T. Gotoda, Self-similar motions and related relative equilibria in the $N$-point vortex system, _J. Dyn. Differ. Equ._ *33* (2021) 1759–1777; arXiv:2002.09624.
 + W. Gröbli, _Specielle Probleme über die Bewegung geradliniger paralleler Wirbelfäden_, Inaugural-Dissertation, Göttingen; Zürcher und Furrer, Zürich, 1877. English translation: arXiv:2404.01305.
 + Y. Kimura, Similarity solution of two-dimensional point vortices, _J. Phys. Soc. Jpn._ *56* (1987) 2024–2030.
 + J. Koiller, S. Pinto de Carvalho, R. Rodrigues da Silva and L. C. Gonçalves de Oliveira, On Aref's vortex motions with a symmetry center, _Physica D_ *16* (1985) 27–61.
