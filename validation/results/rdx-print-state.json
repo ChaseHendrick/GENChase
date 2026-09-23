@@ -13,11 +13,7 @@
       "changes": 0,
       "nonfinite": 0,
       "nonzero": 135455,
-      "failureControl": {
-        "description": "Export wrapper advances the actual solver one step after producing the PNG",
-        "rejected": true,
-        "changes": 100815
-      }
+      "failureControl": {"description": "Export wrapper advances the actual solver one step after producing the PNG", "rejected": true, "changes": 100815}
     },
     {
       "id": "turing",
@@ -28,11 +24,7 @@
       "changes": 0,
       "nonfinite": 0,
       "nonzero": 196608,
-      "failureControl": {
-        "description": "Export wrapper advances the actual solver one step after producing the PNG",
-        "rejected": true,
-        "changes": 131064
-      }
+      "failureControl": {"description": "Export wrapper advances the actual solver one step after producing the PNG", "rejected": true, "changes": 131064}
     },
     {
       "id": "cyclic",
@@ -43,11 +35,7 @@
       "changes": 0,
       "nonfinite": 0,
       "nonzero": 262144,
-      "failureControl": {
-        "description": "Export wrapper advances the actual solver one step after producing the PNG",
-        "rejected": true,
-        "changes": 196608
-      }
+      "failureControl": {"description": "Export wrapper advances the actual solver one step after producing the PNG", "rejected": true, "changes": 196608}
     },
     {
       "id": "chemotaxis",
@@ -58,11 +46,7 @@
       "changes": 0,
       "nonfinite": 0,
       "nonzero": 196608,
-      "failureControl": {
-        "description": "Export wrapper advances the actual solver one step after producing the PNG",
-        "rejected": true,
-        "changes": 131068
-      }
+      "failureControl": {"description": "Export wrapper advances the actual solver one step after producing the PNG", "rejected": true, "changes": 131068}
     },
     {
       "id": "vegetation",
@@ -73,11 +57,7 @@
       "changes": 0,
       "nonfinite": 0,
       "nonzero": 196608,
-      "failureControl": {
-        "description": "Export wrapper advances the actual solver one step after producing the PNG",
-        "rejected": true,
-        "changes": 131069
-      }
+      "failureControl": {"description": "Export wrapper advances the actual solver one step after producing the PNG", "rejected": true, "changes": 131069}
     }
   ]
 }
