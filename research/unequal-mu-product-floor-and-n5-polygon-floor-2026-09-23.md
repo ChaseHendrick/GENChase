@@ -1,177 +1,90 @@
-# Unequal-μ product floor and n=5 polygon floor
+# Minimal winding in self-similar point-vortex collapse: companion note
 
-> **Two collapsing branches.** For Γ = (1, 1/2, −1/3) the L = 0 family has two collapsing branches, one per triangle orientation: Gotoda's arc 0 < θ < θ₀ and the opposite orientation π < θ < 2π − θ₀. P⋆ ≈ 2.203855016 is the minimum on Gotoda's arc only. The global μ = 1/2 floor is P_min ≈ 1.064705976271204, the other positive root of the same sextic, equal to √(605/324 + (7√5201/162)·cos(⅓·arccos(245351√5201/5201²) − 2π/3)). Every algebraic statement about P⋆ below remains correct. F₅ = √31682/80 is confirmed. Independent Biot–Savart validation: `research/verify_floors_independent.py`; results in `research/artifacts/verify-floors-independent-2026-09-23.json`; typeset note: `research/artifacts/unequal-mu-n5-floors-2026-09-23.pdf`.
+This is the repository's working note for the paper *Minimal winding in the self-similar collapse of three unequal point vortices and of two concentric vortex polygons* (Chase Hendrick). The paper is the reviewed version and is meant to be posted as its first public version (v1). This note keeps what the paper leaves out: how the results were found, what was corrected on the way, what the verification covers, and what is still open before submission.
 
-**Date.** 2026-09-23 (America/New_York).  
-**Repo.** SharpMeow/GENChase.  
-**Author / finder (for citation).** Chase Hendrick. These closed forms and the accompanying literature checks were **found / derived in this campaign by Chase Hendrick**. Cite the person by that name. Do **not** attribute the results to the GitHub handle SharpMeow, and do **not** treat this note as a personal theorem stamp or named identity (no “Hendrick’s Identity / Law”).
+- Paper source: [`unequal-mu-n5-floors-2026-09-23.typ`](unequal-mu-n5-floors-2026-09-23.typ) (Typst)
+- Paper PDF: [`artifacts/unequal-mu-n5-floors-2026-09-23.pdf`](artifacts/unequal-mu-n5-floors-2026-09-23.pdf)
+- Verification program: [`verify_floors_independent.py`](verify_floors_independent.py)
+- Verification output: [`artifacts/verify-floors-independent-2026-09-23.json`](artifacts/verify-floors-independent-2026-09-23.json)
 
-**Status.** Proved candidates; **priority unconfirmed**. Same classical families as existing GENChase polygon / two-ring work — **not** a new dynamical family and **not** a sixth independent `IDENTITIES.md` row. This note does **not** edit `IDENTITIES.md`.
+Cite the person, Chase Hendrick, not the GitHub handle. No result here carries a personal name.
 
-**Companion PDF (our text only).** [`research/artifacts/unequal-mu-n5-floors-2026-09-23.pdf`](artifacts/unequal-mu-n5-floors-2026-09-23.pdf) (built from [`unequal-mu-n5-floors-2026-09-23.typ`](unequal-mu-n5-floors-2026-09-23.typ)).
+## Results
 
----
+Write P = ω₀t_c, the initial angular velocity times the collapse time. Each vortex moves on a logarithmic spiral, and P is the angle the configuration turns while the square of its size falls by the factor e.
 
-## Abstract
+1. **Three vortices, Γ = (1, 1/2, −1/3), zero angular impulse.** The collapsing configurations form two arcs, one per orientation of the triangle. In Gotoda's parametrization they are 𝓑 = (0, θ₀) and 𝓐 = (π, 2π − θ₀), with cos θ₀ = −√7/14, and
 
-We record exact closed forms for two classical point-vortex collapse floors derived in the SharpMeow/GENChase campaign: (i) the unique interior product minimum \(P_\star\) on Gotoda’s \(L=0\) arc for \(\Gamma=(1,1/2,-1/3)\) (corrected \(2\pi\) Biot–Savart product); (ii) the \(n=5\) specialization \(F_5=\sqrt{31682}/80\) of the already-proved two-ring / polygon floor \(F_n\). Both are **proved candidates**. **Priority is unconfirmed**: the expressions may already appear as classical specializations in unread literature. Floor-kill body reads of Koiller et al. (1985), Aref (1982), and O’Neil (2007) return **DOES NOT KILL** for the optimized floors and radicals named here; those verdicts are limited to the texts read and do not certify novelty.
+       P(θ) = (14 sin²θ + 6√7 cos θ + 21) / (2(14 cos θ + √7) sin θ).
 
----
+   P has one critical point, a minimum, on each arc:
 
-## What is recorded here
+       min over 𝓐 = √(605/324 + R cos(⅓ arccos X − 2π/3)) = 1.0647059762712043…   (the minimum over the whole family)
+       min over 𝓑 = √(605/324 + R cos(⅓ arccos X))        = 2.2038550160361327…
 
-1. Exact closed form for the **μ = 1/2** Gotoda \(L=0\) spin–collapse **product floor** \(P_\star\).
-2. Explicit radical for the **n = 5** polygon-collapse floor \(F_5=\sqrt{31682}/80\).
-3. Verify / Float64 status.
-4. Literature floor-kill results: **Koiller 1985**, **Aref 1982**, **O’Neil 2007** — all **DOES NOT KILL**.
-5. What would still kill priority.
-6. References.
+   Here X = 245351√5201/5201² and R = 7√5201/162. Both are roots of 8748x⁶ − 49005x⁴ + 27794x² + 18723, which is irreducible over ℚ and over ℚ(√7). They are not expressible by real radicals.
+2. **Equal circulations, Γ = (1, 1, −1/2).** P = (3 − cos 2φ)/(2 sin 2φ) ≥ √2 on both collapsing arcs, with equality at cos 2φ = 1/3. This reparametrizes Gröbli's spiral coefficient and is included for comparison, not as a new result.
+3. **Two concentric regular n-gons, circulations x_n and −1.** Here x_n = (n + √(2n − 1))/(n − 1) = e^a with cosh a = n/(n − 1), and
 
-Detail drafts (do not duplicate every algebra here):
+       P = (K_n − √(2n − 1) cos nθ) / (2n sin nθ) ≥ F_n = √(K_n² − (2n − 1)) / (2n),   K_n = (n − 1) sinh((n + 2)a/2).
 
-- [`identities/sources/unequal-mu-half-Pstar-closed-2026-09-23.md`](../identities/sources/unequal-mu-half-Pstar-closed-2026-09-23.md)
-- [`identities/sources/new-formula-candidate-2026-09-23.md`](../identities/sources/new-formula-candidate-2026-09-23.md)
-- [`identities/sources/koiller1985-read-2026-09-23.md`](../identities/sources/koiller1985-read-2026-09-23.md)
-- [`identities/sources/aref1982-read-2026-09-23.md`](../identities/sources/aref1982-read-2026-09-23.md)
-- [`identities/sources/oneil2007-read-2026-09-23.md`](../identities/sources/oneil2007-read-2026-09-23.md)
-- [`identities/sources/purchase-log-2026-09-23.md`](../identities/sources/purchase-log-2026-09-23.md)
-- [`identities/sources/deeper-kill-Pstar-F5-2026-09-23.md`](../identities/sources/deeper-kill-Pstar-F5-2026-09-23.md)
-- [`identities/sources/oa/deeper-kill-oa-2026-09-23.md`](../identities/sources/oa/deeper-kill-oa-2026-09-23.md)
+   Equality holds at cos nθ = √(2n − 1)/K_n. For n = 5, x₅ = 2, K₅ = 127√2/8 and F₅ = √31682/80 = 2.2249297741726591…, attained at cos 5θ = 12√2/127.
 
----
+## How the three-vortex result was corrected
 
-## 1. μ = 1/2 Gotoda \(L=0\) product floor
+The results changed twice on the way, and the paper states only the final version.
 
-On Gotoda’s classical \(L=0\) collapsing arc for \(\Gamma=(1,\tfrac12,-\tfrac13)\), with the corrected product from the \(2\pi\) Biot–Savart kernel / Gotoda Prop. 2.1,
+- **First correction.** An early witness gave a minimum near 1.741. It came from a quotient built with Gotoda's Eq. (3.3) for the rotation rate B. Off the equal-circulation slice, that quotient disagrees with the Biot–Savart velocities and with Gotoda's own Prop. 2.1: at θ = 0.8 it gives 1.746 where Biot–Savart gives 2.207 (see `gotoda33QuotientVsRaw` in the JSON). We have not checked whether the discrepancy is in Gotoda's printed (3.3) or in how it was transcribed here, so the paper does not mention it.
+- **Second correction.** The corrected formula was then minimized on 𝓑 only, which gives 2.2039. For Γ₁ ≠ Γ₂ the opposite orientation also collapses. Its critical point, cos θ ≈ −0.924, had been set aside as "expanding", but that holds only when sin θ > 0. The minimum over the whole family is 1.0647. The earlier drafts in `identities/sources/` carry dated correction notes.
 
-\[
-P(\theta)=\frac{14\sin^2\theta+6\sqrt7\cos\theta+21}{2(14\cos\theta+\sqrt7)\sin\theta},
-\]
+## What the verification covers
 
-the unique interior minimum \(P_\star=P(\theta_\star)\) admits the real trigonometric Cardano form
+`python3 research/verify_floors_independent.py --json research/artifacts/verify-floors-independent-2026-09-23.json` takes about a minute and needs `mpmath` and `sympy`.
 
-\[
-P_\star=\sqrt{\dfrac{605}{324}+\dfrac{7\sqrt{5201}}{162}\cos\!\Bigl(\dfrac13\arccos\Bigl(\dfrac{245351\sqrt{5201}}{5201^{2}}\Bigr)\Bigr)}.
-\]
+- **Three vortices.** The program generates the shapes independently of Gotoda's parametrization, fixing two vortices and moving the third around the zero-impulse circle, with 4000 shapes in 60-digit arithmetic. The three velocity quotients agree to 9 × 10⁻⁶¹, and 2000 of the 4000 shapes collapse.
+  - P has two local minima over the collapsing shapes. They match the closed forms to 2 × 10⁻⁶¹ (`branchMinimaVsClosedFormsAbsDiff`).
+  - The closed-form P(θ) agrees with direct evaluation on both arcs to 10⁻⁵⁹.
+- **Direct integration.** A Taylor-series integration at 30 digits from the minimizing configuration shows |z_j − z_c|² following 1 − t/t_c to 5 × 10⁻³¹ up to 0.9 t_c.
+- **Exact algebra (SymPy).** Checked exactly:
+  - Lemma 2, for all three vortices;
+  - the shape circle and zero angular impulse;
+  - the ring self-similarity condition;
+  - the critical cubic, the resultant, irreducibility, and K₅ and F₅.
+- **Rings, n = 2 to 8.** P from Biot–Savart matches the closed form to 3 × 10⁻⁵⁸, and the numerical minima match F_n to 2 × 10⁻⁶⁰.
+- **The μ = 1 limit.** Branch minima computed at μ → 1 approach √2 (`branchesVsMu`).
 
-Equivalently, \(P_\star\) is the unique positive real root greater than \(2\) of the irreducible sextic
+## Literature status
 
-\[
-8748\,x^{6}-49005\,x^{4}+27794\,x^{2}+18723=0,
-\]
+| Source | What was read | Bearing on the claims |
+|---|---|---|
+| Gröbli 1877 | §10, original scan | The equal-circulation formula reparametrizes his spiral coefficient. |
+| Novikov and Sedov 1979 | Full text | Four- and five-vortex collapse; n = 2 is their parallelogram. No minimization. |
+| Aref 1982 | Full text (purchased) | Two-ring equations and integrability. Sec. III treats equal and opposite strengths, which do not satisfy the self-similar collapse condition. |
+| Koiller et al. 1985 | Full text | §11 has the two-ring circulation condition, the rates as functions of the angle, and logarithmic spirals. No minimization, no K_n, no F_n. |
+| O'Neil 2007 | Full text (purchased) | Finiteness for three rings. Credits Koiller for two-ring collapse. |
+| Gotoda 2021 | arXiv version, Sect. 3, read earlier | The parametrization. Re-check Sect. 3 against the journal version before submission. |
+| Krishnamurthy and Stremler 2018 | Abstract; postprint read earlier | Collapse time and distance travelled. That distance is √(1 + 4P²) × the initial distance. |
+| Tavantzis and Ting 1988; Leoncini et al. 2000; Aref 1979, 2010 | Abstracts | Context only. |
+| **Demina and Kudryashov 2014** | **Abstract only** | **Closest prior work for the rings.** Explicit double-ring configurations of two regular polygons with arbitrary circulations. Must be read in full before submission. |
 
-and \(q=P_\star^{2}\) is the unique real root in \((4,5)\) of the irreducible cubic
+Searches for the numbers and the sextic found only this repository. That is weak evidence, because many publisher hosts were unreachable. See the RESEARCH.md ledger for 2026-09-23, entries A–E.
 
-\[
-8748\,q^{3}-49005\,q^{2}+27794\,q+18723=0.
-\]
+## Before submission
 
-### Proof sketch
+1. Read Demina and Kudryashov (2014) in full. If it states the ring product or its minimum, cite it and remove the ring part of the sentence "We have not found the minimal values…".
+2. Re-check Gotoda Sect. 3 (the parametrization and the θ range) against the journal version.
+3. arXiv:
+   - Submit the PDF. arXiv accepts PDF-only submissions that are not produced from TeX, and fonts must be embedded, which Typst does.
+   - Suggested category: physics.flu-dyn, cross-listed to math-ph and math.DS.
+   - The abstract must be under 1920 characters; the current one is about 1400.
+   - A first submission to a category needs an endorsement from an established arXiv author.
+   - arXiv asks authors to report significant use of generative AI; the paper has one line for this.
+4. Journal: most journals take LaTeX or Word. A LaTeX transcription of the Typst source is mechanical. Journals also want a corresponding-author email, which the PDF does not include yet.
+5. Choose a license when posting to arXiv. CC BY 4.0 is compatible with most journals.
 
-1. Critical cosine \(\cos\theta_\star\) solves the cubic \(c^{3}+(8\sqrt7/7)c^{2}+(1/14)c-32\sqrt7/49=0\) on the collapsing arc.
-2. Write \(P=N(c)/(D_0(c)\sqrt{1-c^{2}})\) and clear radicals to a bihomogeneous relation in \((P,c,\sqrt7)\).
-3. Resultant elimination of \(c\) and \(\sqrt7\) yields the sextic above (minimal over \(\mathbb Q\)); \(q=P_\star^{2}\) satisfies the cubic.
-4. Casus irreducibilis on the cubic gives the real trig Cardano form; Float64 agrees with direct minimization.
+## Not claimed
 
-**Float64.** \(P_\star\approx 2.203855016036133\) (matches `tools/verify-unequal-mu-half.js`). Uses the **corrected** \(P\), not the buggy Gotoda (3.3)–\(B\) specialization that produced an earlier \(\approx 1.741\) witness.
-
-**Disclaimer.** Classical Gotoda unequal-circulation family; closed form for the floor, not a claim of a new interaction law.
-
----
-
-## 2. n = 5 polygon-collapse floor
-
-Specialize the classical two-ring / general polygon collapse family (Koiller et al. 1985 §11; GENChase candidate 5) at order \(n=5\). With the standard planar \(2\pi\) Biot–Savart kernel,
-
-\[
-\omega_0 t_c=\frac{127\sqrt{2}-24\cos(5\theta)}{80\sin(5\theta)}\ge\frac{\sqrt{31682}}{80},\qquad 0<\theta<\frac\pi5,
-\]
-
-with equality uniquely at \(\cos(5\theta_*)=12\sqrt{2}/127\). The floor is
-
-\[
-F_5=\frac{\sqrt{31682}}{80}=2.224929774172659\ldots
-\]
-
-This is the \(n=5\) radical under the already-proved general formula
-
-\[
-F_n=\frac{\sqrt{K_n^2-(2n-1)}}{2n},\qquad
-K_n=(n-1)\sinh\Bigl(\tfrac{n+2}{2}\operatorname{arcosh}\tfrac{n}{n-1}\Bigr),
-\]
-
-parallel to \(F_2=3\sqrt5/4\), \(F_3=\sqrt{29}/3\), \(F_4=\sqrt{322}/9\). **Not** a new dynamical family; **not** a new `IDENTITIES.md` row by itself.
-
-### Proof sketch
-
-1. For \(n=5\), \(K_5=127\sqrt2/8\).
-2. Product form \(\omega_0 t_c=(K_5-3\cos(5\theta))/(10\sin(5\theta))\) clears to the boxed quotient.
-3. Elementary bound \((a-b\cos\alpha)/\sin\alpha\ge\sqrt{a^{2}-b^{2}}\) with \(a=127\sqrt2\), \(b=24\) yields \(\sqrt{31682}/80\).
-4. Consistency: \(F_5=\sqrt{K_5^{2}-9}/10\) recovers the same radical.
-
----
-
-## 3. Verify status
-
-| Item | Status |
-|------|--------|
-| \(P_\star\) closed form / minimal polynomials | Algebraic derivation + Float64 cross-check (`tools/verify-unequal-mu-half.js`) |
-| \(F_5=\sqrt{31682}/80\) | Specialization of general \(F_n\); Float64 equality cosine / floor check (`tools/verify-new-formula-candidate.js`) |
-| Priority / ledger stamp | **Unconfirmed** — no `IDENTITIES.md` promotion from this note |
-
----
-
-## 4. Literature (floor-kill)
-
-| Paper | Access | Verdict |
-|-------|--------|---------|
-| Koiller, Pinto-Schuhmacher, et al., *On Aref’s vortex motions with a symmetry center* (1985) | Full text read | **DOES NOT KILL** optimized product floors |
-| H. Aref, *Point vortex motions with a center of symmetry*, Phys. Fluids **25**, 2183–2187 (1982), DOI [10.1063/1.863710](https://doi.org/10.1063/1.863710) | AIP PPV + OCR body read (2026-09-23) | **DOES NOT KILL** — center-of-symmetry integrability / Havelock double-ring dissolution; no floor literals |
-| K. A. O’Neil, *Relative equilibrium and collapse configurations of heterogeneous vortex triple rings*, Physica D **236**, 123–130 (2007), DOI [10.1016/j.physd.2007.07.015](https://doi.org/10.1016/j.physd.2007.07.015) | ScienceDirect PPV body read (2026-09-23) | **DOES NOT KILL** — triple-ring finiteness / computation; cites Aref as background, Koiller for two-ring collapse existence; no optimized floors |
-
-### Limits of those claims
-
-- Verdicts are **floor-kill only**: absence of \(P_\star\), \(F_5=\sqrt{31682}/80\), equality cosines, and related rate numerals in the bodies read.
-- They are **not** paper-equivalence audits of the full classical literature, and **not** a novelty certificate.
-- Negative search \(\neq\) priority. Deeper OA greps (Gotoda, Leoncini, Kudela, Banica–Miot, Aref nested RE, …) likewise found no hard-needle hits; status remains **STILL OPEN / priority unconfirmed** ([`deeper-kill-Pstar-F5-2026-09-23.md`](../identities/sources/deeper-kill-Pstar-F5-2026-09-23.md)).
-
-Copyrighted PDFs are **not** in the repository. Purchase / OA status: [`identities/sources/purchase-log-2026-09-23.md`](../identities/sources/purchase-log-2026-09-23.md).
-
----
-
-## 5. What would still kill priority
-
-Any of the following in a prior publication (or classical monograph specialization) would kill or demote priority of the closed forms as research contributions, while leaving the algebraic derivations intact as checks:
-
-- Explicit appearance of \(P_\star\) as the Cardano / minpoly form above, or of the decimal \(2.203855\ldots\) as a named product floor on \(\Gamma=(1,1/2,-1/3)\).
-- Explicit radical \(F_5=\sqrt{31682}/80\) (or equivalent \(\sqrt{15841}/(40\sqrt2)\)) as an optimized two-ring / pentagon collapse pitch.
-- Prior minimization of Gotoda’s corrected \(P(\theta)\) (or equivalent \(-B/(2A)\)) at \(\mu=1/2\) yielding the same critical value.
-- Clearance of \(K_5=127\sqrt2/8\) into the same elementary \(\sqrt{a^{2}-b^{2}}\) floor in a published note.
-
-A later kill does **not** invalidate the verify scripts; it only removes priority.
-
----
-
-## 6. How to cite (suggested)
-
-> Closed forms for the μ = 1/2 Gotoda \(L=0\) product floor \(P_\star\) and the \(n=5\) polygon floor \(F_5=\sqrt{31682}/80\) were derived by Chase Hendrick (2026) in the SharpMeow/GENChase validation campaign; see `research/unequal-mu-product-floor-and-n5-polygon-floor-2026-09-23.md` and companion PDF. Status: proved candidates, priority unconfirmed. Classical families only.
-
----
-
-## 7. References
-
-1. H. Aref, Point vortex motions with a center of symmetry, *Phys. Fluids* **25**, 2183–2187 (1982). DOI 10.1063/1.863710.
-2. J. Koiller, S. Pinto-Schuhmacher, et al., On Aref’s vortex motions with a symmetry center, *Physica D* (1985) / related center-symmetry two-ring collapse notes (GENChase body read 2026-09-23).
-3. K. A. O’Neil, Relative equilibrium and collapse configurations of heterogeneous vortex triple rings, *Physica D* **236**, 123–130 (2007). DOI 10.1016/j.physd.2007.07.015.
-4. Y. Gotoda, related \(L=0\) unequal-circulation collapse product (Prop. 2.1 / arc used in GENChase unequal-μ draft; arXiv source as filed in campaign OA mirror).
-5. SharpMeow/GENChase campaign notes (2026-09-23): `identities/sources/unequal-mu-half-Pstar-closed-2026-09-23.md`, `new-formula-candidate-2026-09-23.md`, floor-kill reads for Koiller / Aref / O’Neil, `deeper-kill-Pstar-F5-2026-09-23.md`.
-
----
-
-## Anti-claims
-
-- No novelty claim beyond “closed form / explicit radical written down and checked in this campaign.”
-- No personal named theorem.
-- No `IDENTITIES.md` edit from this file.
-- Lit verdicts are floor-kill only, not paper-equivalence audits of the full classical literature.
-- PDF artifact contains only campaign-authored text (no copyrighted paper extracts).
+- No new dynamical family. Both families are classical.
+- No name on any result, and no `IDENTITIES.md` row from this work.
+- The literature verdicts cover only the texts read. They do not certify novelty.
+- No copyrighted publisher PDF is in the repository.

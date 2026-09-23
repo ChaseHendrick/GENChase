@@ -55,6 +55,12 @@ Full Physica D 16 (1985) 27–61 was reconstructed and read on this box (35 page
 
 Live indexed searches did not hit the radicals, P⋆ closed form, or equality angles as prior statements. Absence of an OA hit is **not** novelty. Details: `identities/sources/internet-search-2026-09-23.md`, `identities/sources/internet-search-live-2026-09-23.md`.
 
+### E. Paper v1 and citation check (same day)
+
+The two results are written up as one paper, `research/unequal-mu-n5-floors-2026-09-23.typ` (PDF in `research/artifacts/`), with self-contained proofs. It also proves the equal-circulation case: for Γ = (1, 1, −1/2), P = (3 − cos 2φ)/(2 sin 2φ) ≥ √2 on both collapsing arcs, a reparametrization of Gröbli's spiral coefficient. The two-ring product is written as (K_n − √(2n − 1) cos nθ)/(2n sin nθ) with K_n = (n − 1) sinh((n + 2)a/2), cosh a = n/(n − 1); Koiller et al. §11 already has the circulation condition and the rates as functions of the angle, so only the constant and the minimum are claimed.
+
+Citation check: Gotoda is J. Dyn. Differ. Equ. 33 (2021) 1759–1777. Gröbli's dissertation was a Göttingen degree printed in Zürich (1877). Tavantzis–Ting (1988) give the contracting and expanding K = 0 families and their stability. Krishnamurthy–Stremler (2018) relate the collapse time and the distance travelled before collapse to the triangle; that distance is √(1 + 4P²) times the initial distance. **Demina–Kudryashov, TCFD 28 (2014) 357–368, is the closest prior work:** its abstract gives explicit double-ring configurations of two regular polygons with arbitrary circulations. Its full text is unread, and it must be read before any submission claims the ring minimum. Searches for 1.0647, 2.2039, the sextic, √31682/80 and 2.22493 found nothing but this repository. Many publisher and archive hosts were blocked from the session, so this is weak evidence of absence.
+
 ## Do this, do not do that
 
 **Do**

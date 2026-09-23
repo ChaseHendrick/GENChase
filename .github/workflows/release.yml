@@ -63,11 +63,11 @@ jobs:
           repo=os.environ['GITHUB_REPOSITORY']; sha=os.environ['GITHUB_SHA']
           Path('/tmp/release-notes.md').write_text(f'''Make art in your browser at https://sharpmeow.github.io/GENChase/start.html, or download **GENChase-studio.zip**, extract it, and open **START-HERE.html**. No development tools are needed for the offline art studio.
 
-          The ZIP includes the portable studio, introductory examples, licenses, and scientific evidence. **SHA256SUMS.txt** records its checksum. Use the automatically attached source archive for local checks or code contributions, following CONTRIBUTING.md.
+          The ZIP includes the portable studio, introductory examples, licenses, and scientific evidence. **SHA256SUMS.txt** records its checksum. Research papers from `research/` are attached as PDFs, together with the programs that verify them and their output. Use the automatically attached source archive for local checks or code contributions, following CONTRIBUTING.md.
 
           Released {datetime.now(timezone.utc).date().isoformat()}.
 
           Built from [{sha[:12]}](https://github.com/{repo}/commit/{sha}). Validation is limited to the domains in [VALIDATION.md](https://github.com/{repo}/blob/{sha}/VALIDATION.md); this release does not certify every simulation.
           ''')
           PY
-          gh release create "$RELEASE_VERSION" tools/dist/release/GENChase-studio.zip tools/dist/release/SHA256SUMS.txt --target "$GITHUB_SHA" --title "GENChase $RELEASE_VERSION" --notes-file /tmp/release-notes.md --latest
+          gh release create "$RELEASE_VERSION" tools/dist/release/GENChase-studio.zip tools/dist/release/SHA256SUMS.txt research/artifacts/*.pdf research/artifacts/*.json research/*.py --target "$GITHUB_SHA" --title "GENChase $RELEASE_VERSION" --notes-file /tmp/release-notes.md --latest
