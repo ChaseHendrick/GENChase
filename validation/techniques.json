@@ -2944,14 +2944,16 @@
     "sourceSha256": "fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509",
     "reference": "Ernst Chladni, Entdeckungen uber die Theorie des Klanges, 1787. The governing plate equation was solved by Sophie Germain, whose 1816 work won the Paris Academy prize; Lord Rayleigh's Theory of Sound, 1877, put it on modern footing.",
     "equation": "u = sum Ak[cos(nk·pi·x)cos(mk·pi·y) - cos(mk·pi·x)cos(nk·pi·y)];   nodes where u = 0",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Square membrane-style cosine modes only, not elastic-plate mechanics. Circular mode radii use approximate rather than true Bessel zeros and are excluded. Sand, interference, mixed modes and print accuracy remain unvalidated.",
-      "No novel finding, physical experimental agreement or general parameter-domain certification is claimed."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/MATERIAL-WAVES.md and validation/results/material-wave-science.json plus paused-export print preservation in validation/results/material-wave-print-state.json.",
+      "Square membrane-style cosine modes only within this domain. Circular mode radii use approximate rather than true Bessel zeros and are excluded. Sand, interference, and mixed modes are excluded.",
+      "No Float16 claim, physical experimental agreement, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Extend parameter and boundary-condition comparisons with primary sources.",
-      "Broaden print checks beyond paused square-plate state preservation (sand, circular modes, color fidelity, other aspects)."
+      "Extend beyond the documented square cosine-mode fixtures and paused-export print domain with independent evidence for sand, circular modes, interference, color fidelity, running exports, and other hardware."
     ],
     "numerical": [
       {
@@ -2976,7 +2978,15 @@
         "command": "node tools/material-wave-print-state.js --write",
         "results": "validation/results/material-wave-print-state.json"
       }
-    ]
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained square cosine-mode fixtures (1,2)/(3,2)/(4,5) in nodal/filled/contour named in validation/MATERIAL-WAVES.md and measured in validation/results/material-wave-science.json, plus paused exportPNG at those fixtures.",
+      "conditions": "Paused scientific state through real module exportPNG to 2400x2400 (8 in, 300 ppi) on Canvas2D SwiftShader. Exact settings JSON and local scientific locals compared before and after export; deliberate post-export time/phase-advance failure control must be rejected. No sand, circular Bessel modes, interference, mixed modes, running exports, color fidelity, or physical plate agreement.",
+      "resolution": "Numerical acceptance as recorded in material-wave-science.json for the named square fixtures. Print: settingsChanged=false, snapshotChanged=false, correct 2400x2400 plate, failureControl.rejected=true (validation/results/material-wave-print-state.json).",
+      "precision": "Canvas2D path (no GPU float32 field buffers for this tab). Binary64 / independent references for the numerical package; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/material-wave-science.json"
   },
   {
     "id": "track",
