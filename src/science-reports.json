@@ -988,16 +988,16 @@
     "sourceSha256": "3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6",
     "reference": "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979.",
     "equation": "i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Periodic Fourier and uniform-potential fixtures support the discrete recurrence, modified invariant and bounded second-order time/space refinement. Stability and conservation do not imply accuracy at coarse steps.",
-      "Harmonic-bound, time-step edit, hard-wall and injection regressions cover stated float32 cases only. Native GPU trigonometric approximation is measured separately.",
-      "Absorption, arbitrary potentials, long times, float16 and full physical scattering/print fidelity remain unvalidated. Corrections intentionally change affected historical images."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/SCHRODINGER.md and the schrodinger-science / schrodinger-state / schrodinger-absorber-science / wave-print-state results artifacts.",
+      "Periodic wrap still couples opposite edges through the absorber layer. Stability and conservation do not imply accuracy at coarse steps. Long-time phase covers two free/uniform-V traveling modes over elapsed time 120 (~25 periods at dt=0.05).",
+      "Scattering probabilities, arbitrary potentials/packets, float16, all aspect ratios, other hardware, and full print color fidelity remain outside this domain.",
+      "Broader settings require additional independent evidence. Corrections intentionally change affected historical images."
     ],
     "remaining": [
-      "Establish absorber and general-potential convergence, scattering probabilities and long-time phase error.",
-      "Audit float16, all supported aspect ratios, parameter ranges and graphics hardware.",
-      "Extend state-preserving export checks to quantitative scientific rendering and color fidelity."
+      "Extend beyond the documented Fourier/uniform-V/absorber/long-time-phase and paused-export print domain with independent evidence for scattering probabilities, general non-uniform potentials, float16, other aspect ratios, hardware, and quantitative scientific rendering."
     ],
     "numerical": [
       {
@@ -1019,6 +1019,16 @@
         "limitations": "One harmonic packet and declared edit/injection fixtures, without absorption. Native sine/cosine errors are backend dependent; broad parameter/precision/hardware coverage remains outstanding.",
         "benchmark": "Actual potential envelope and closed-system modified norm; analytic checkerboard time-level reconstruction; independent Gaussian complex addition with masked walls and measured native GPU arithmetic.",
         "failureControl": "Restore the old harmonic step ceiling. Compare omitted-restagger and unprojected-wall controls against corrected expected states."
+      },
+      {
+        "test": "tools/schrodinger-absorber-science.js",
+        "command": "node tools/schrodinger-absorber-science.js",
+        "results": "validation/results/schrodinger-absorber-science.json",
+        "scope": "Actual float32 SCH_STEP_FS with uniform and production-shaped edge absorbers (pot.b weight, damp=exp(-dt*damp*b)), plus long-time free/uniform-V phase. Independent Float64 stencil twin and modal damped recurrence on SwiftShader RGBA32F.",
+        "criteria": "GPU vs Float64 twin recurrence error<5e-6 for uniform, temporal and edge fixtures; uniform modal error<5e-6 with remaining norm fraction<0.5; edge remaining fraction<0.95; long-time twin error<5e-6, phase error vs exact continuous-time discrete mode<0.08 and field error<0.08 over elapsed time 120 (~25 periods). Wrong-sign damp recurrence error>0.05 and >100x the correct uniform case, with amplified norm fraction>1.5.",
+        "limitations": "Periodic grids only; wrap couples opposite edges through the absorber. References are implementation twins and modal recurrence, not continuum PML or experimental absorption. No scattering coefficients, hard-wall stadium, packet injection, float16 or hardware certification. Long-time covers two traveling modes only.",
+        "benchmark": "Independent Float64 five-point Visscher twin with the production damp factor; uniform-b modal 2x2 damped recurrence; exact continuous-time discrete eigenmode phase e^{-i E t} for long-time free/uniform-V fixtures.",
+        "failureControl": "Replace damp=exp(-dt*damp*b) with exp(+dt*damp*b). The growing absorber must disagree with the correct Float64 twin and amplify the remaining norm."
       }
     ],
     "print": [
@@ -1027,9 +1037,20 @@
         "scope": "Actual 2400x2400 exports of initial and 16-step paused float32 fields, grids 128 and 192, every view. Checks both solver buffers, auxiliary fields, histories and scalar state.",
         "criteria": "Zero changed float32 words, nonfinite values, settings or metadata changes; correct dimensions and grids; deliberate state-mutating exports rejected.",
         "limitations": "State preservation and output dimensions only. No full physical/rendering/color validation, arbitrary evolved state or hardware guarantee.",
-        "results": "validation/results/wave-print-state.json"
+        "results": "validation/results/wave-print-state.json",
+        "command": "node tools/wave-print-state.js --write",
+        "benchmark": "Exact float32 readback of solver buffers, auxiliary fields, histories and scalar state before and after the real exportPNG path; dimensions must match the declared 2400 longest-edge plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same preservation predicate."
       }
-    ]
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained Schrödinger fixtures named in validation/SCHRODINGER.md and measured in validation/results/schrodinger-science.json, schrodinger-state.json, and schrodinger-absorber-science.json (periodic Fourier/uniform-V, harmonic-bound/hard-wall/injection regressions, uniform and production-shaped edge absorbers, long-time free/uniform-V traveling modes at T=120), plus paused wave-print-state exports at grids 128 and 192.",
+      "conditions": "Float32 SCH_STEP_FS on SwiftShader RGBA32F with independent Float64 stencil/modal references. Absorber uses production damp factor on pot.b (uniform and edge profiles). Print: paused initial and 16-step fields through real exportPNG at 2400x2400 for every view; deliberate state-mutating export rejected. No scattering coefficients, arbitrary non-uniform potentials beyond the edge profile, float16, other aspects, running exports, or full colorimetric print fidelity.",
+      "resolution": "Numerical acceptance as recorded in the three results artifacts (recurrence, invariants, refinement orders, absorber twin errors, long-time phase ~0.027 rad at T=120). Print: zero changed float32 words/nonfinite, unchanged settings/metadata, correct dimensions/grids, failureControl rejected (validation/results/wave-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/schrodinger-absorber-science.json"
   },
   {
     "id": "excitable",
