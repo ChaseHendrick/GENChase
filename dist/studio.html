@@ -5412,16 +5412,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c",
     "reference": "K. S. Yee, Numerical solution of initial boundary value problems involving Maxwell’s equations in isotropic media, IEEE Transactions on Antennas and Propagation 14, 302–307 (1966), doi:10.1109/TAP.1966.1138693. TMz Yee differences and staggering follow the equations described in John B. Schneider, Understanding the FDTD Method, chapter 8. This is an original implementation of the classical method, not new physics.",
     "equation": "ε ∂Ez/∂t = ∂Hy/∂x − ∂Hx/∂y; μ ∂Hx/∂t = −∂Ez/∂y; μ ∂Hy/∂t = ∂Ez/∂x",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Periodic lossless TMz fields only, stationary positive epsilon and uniform mu; no absorption, PML, losses, dispersion or nonlinear materials.",
-      "Analytic modes and one float64 dielectric slab fixture support the recorded cases; discontinuous-interface scattering and geometry convergence remain unvalidated.",
-      "Float32 is required. High-grid evidence is four-step sanity only; long-time, hardware and complete parameter coverage remain open."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/MAXWELL.md and the maxwell-science / maxwell-dielectric-science / maxwell-print-state results artifacts.",
+      "Periodic lossless TMz with stationary positive epsilon and uniform mu only. Normal-incidence staircase interfaces; peak-in-window coefficient extraction before periodic wrap.",
+      "Float32 is required. High-grid four-step sanity, oblique incidence, PML, losses, and full print colorimetry remain outside this domain.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Validate dielectric reflection/transmission and discontinuous-interface refinement against independent references.",
-      "Extend duration, parameter, aspect and hardware coverage including high-grid print paths.",
-      "Compare rendered pixels and color interpretation independently; state preservation alone is not full scientific print accuracy."
+      "Extend beyond the documented normal-incidence staircase dielectric and paused-export print domain with independent evidence for oblique Fresnel, subcell treatments, PML/losses, longer times, other hardware, and quantitative scientific rendering."
     ],
     "numerical": [
       {
@@ -5433,6 +5433,16 @@ shall not be misrepresented as the original profile.
         "failureControl": "Electric-curl sign reversal must produce error > 0.1; a Nyquist mode at 105% CFL must grow above 1e6 while the 95% case stays below 1.0001.",
         "command": "node tools/maxwell-science.js",
         "results": "validation/results/maxwell-science.json"
+      },
+      {
+        "test": "tools/maxwell-dielectric-science.js",
+        "scope": "Actual TMz Yee shaders on a vertical discontinuous dielectric interface: normal-incidence Gaussian-packet Fresnel Ez R/T at eps2 in {2.25,4} on grids 128–512, GPU vs independent Float64 Yee twins at 64/128/256, and fixed-time discontinuous field refinement 128/256 vs Float64 512.",
+        "criteria": "At 256 cells: |R−Γ|\u003c0.02 and |T−T_F|\u003c0.03; at 512: both \u003c0.01; reflection error refines 128→256→512; transmission error improves 128→512; |R²+(n2/n1)T²−1|\u003c0.02 at 512; GPU/Float64 twin max error \u003c2e-5; discontinuous field RMS refinement ratio >1.5.",
+        "limitations": "Normal-incidence staircase interfaces only; peak-in-window coefficient extraction before periodic wrap. Not oblique incidence, subcell averaging, PML, losses, experimental measurement or arbitrary long-time certification.",
+        "benchmark": "Independent continuum Fresnel Ez coefficients Γ=(n1−n2)/(n1+n2), T=2n1/(n1+n2) with n=√ε; independent Float64 Yee twin of the declared staggered updates; fine Float64 reference field at fixed physical time.",
+        "failureControl": "Zero-contrast (homogeneous ε1) packet must yield |R|≪|Γ| so Fresnel match fails (|R−Γ|>0.2 with |R|\u003c0.08). Ignore-epsilon electric update mutant must miss Fresnel by |ΔR| or |ΔT| > 0.15.",
+        "command": "node tools/maxwell-dielectric-science.js",
+        "results": "validation/results/maxwell-dielectric-science.json"
       }
     ],
     "print": [
@@ -5442,9 +5452,19 @@ shall not be misrepresented as the original profile.
         "criteria": "Exact field-buffer bits, settings and metadata preserved; finite values, requested dimensions, >1000-byte PNGs; deliberate one-step state mutation rejected.",
         "limitations": "Preservation and dimensions only. One renderer/seed/material set, two grids/aspects, no calibrated colors or high-grid/running exports.",
         "command": "node tools/maxwell-print-state.js",
-        "results": "validation/results/maxwell-print-state.json"
+        "results": "validation/results/maxwell-print-state.json",
+        "benchmark": "Exact field-buffer bits, settings and metadata before and after the real exportPNG path; dimensions must match the declared plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same preservation predicate."
       }
-    ]
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained periodic lossless TMz fixtures named in validation/MAXWELL.md and measured in validation/results/maxwell-science.json plus maxwell-dielectric-science.json (analytic modes, float64 dielectric slab, normal-incidence Fresnel on vertical staircase interfaces eps 1→4, discontinuous-field refinement), plus paused maxwell-print-state exports at 128 square and 256×320.",
+      "conditions": "Float32 Yee shaders on SwiftShader with independent Float64 Yee twin and continuum Fresnel Ez coefficients. Print: twelve actual exports at 2400×2400 and 2400×3000, initial and 32-step paused states, all three views; deliberate one-step mutation rejected. No absorption, PML, losses, dispersion, nonlinear materials, oblique incidence, subcell averaging, high-grid running exports, or calibrated colors.",
+      "resolution": "Numerical acceptance as recorded in maxwell-science.json and maxwell-dielectric-science.json (Float64 twin ≲4.5e-7; Fresnel |R| error ~0.032 at 128×8; refine RMS 0.020→0.007 ratio ~2.89; zero-contrast and ignore-ε failure controls rejected). Print: exact field-buffer bits/settings/metadata preserved, failureControl rejected (validation/results/maxwell-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 twin/Fresnel references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/maxwell-dielectric-science.json"
   },
   {
     "id": "molecular",
