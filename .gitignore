@@ -34,3 +34,7 @@ run/validator/logs/
 run/validator/screenshots/
 run/validator/misses/
 validation/results/witnesses-*.json
+
+# Never commit copyrighted publisher PDFs or full-text paper extracts under lit sources
+identities/sources/**/*.pdf
+identities/sources/**/*.txt
