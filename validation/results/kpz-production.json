@@ -1,0 +1,344 @@
+{
+  "pass": true,
+  "source": "src/modules/kpz.js",
+  "sourceSha256": "30b2393368ab389e0e5fabc4e17215de292e0dbfb945dc92b3b04d2aab57fb19",
+  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "harnessSha256": "cd2f7517e231a0a5c9d4f6a82db58e910566d143b38ba34bb520f3d69a6da360",
+  "command": "node tools/kpz-production.js --write",
+  "scope": "Actual kpz.js column deposition (random, relax, ballistic, rsos) at the kpz, ew, rd, rsos, rings and wide preset lattices, run through its own time-sliced build with the engine makeRng, against an independent replay; displayed exponent statistics over 16 seeds per class at the preset lattice. Eden is excluded.",
+  "criteria": "Every cell word, column height, width sample, fitted exponent and final width identical to the replay (floating values within 1e-12); repeated runs identical; no particle above the lattice; seed-mean exponent inside its stated class band; random over RSOS, RSOS over relaxation and random over ballistic separated by more than 5 standard errors at 16 seeds, ballistic over relaxation by more than 5 at 64 seeds; failure controls detected.",
+  "fixtures": [
+    {
+      "name": "kpz",
+      "model": "ballistic",
+      "cols": 700,
+      "fill": 0.86,
+      "aspect": "1:1",
+      "seed": "kardar-1986",
+      "cells": [
+        700,
+        700
+      ],
+      "particles": 226560,
+      "samples": 20,
+      "pointsUsed": 20,
+      "cellWordsDiffering": 0,
+      "heightsDiffering": 0,
+      "widthSampleError": 0,
+      "betaFit": 0.23623740799879506,
+      "betaError": 2.220446049250313e-16,
+      "wFinalError": 0,
+      "particlesAboveLattice": 0,
+      "replayIdentical": true,
+      "exact": true
+    },
+    {
+      "name": "ew",
+      "model": "relax",
+      "cols": 700,
+      "fill": 0.88,
+      "aspect": "1:1",
+      "seed": "kardar-1986",
+      "cells": [
+        700,
+        700
+      ],
+      "particles": 439610,
+      "samples": 23,
+      "pointsUsed": 23,
+      "cellWordsDiffering": 0,
+      "heightsDiffering": 0,
+      "widthSampleError": 0,
+      "betaFit": 0.22433019988207495,
+      "betaError": 3.885780586188048e-16,
+      "wFinalError": 0,
+      "particlesAboveLattice": 0,
+      "replayIdentical": true,
+      "exact": true
+    },
+    {
+      "name": "rd",
+      "model": "random",
+      "cols": 700,
+      "fill": 0.86,
+      "aspect": "1:1",
+      "seed": "kardar-1986",
+      "cells": [
+        700,
+        700
+      ],
+      "particles": 434772,
+      "samples": 23,
+      "pointsUsed": 23,
+      "cellWordsDiffering": 0,
+      "heightsDiffering": 0,
+      "widthSampleError": 0,
+      "betaFit": 0.5098460118254479,
+      "betaError": 9.992007221626409e-16,
+      "wFinalError": 0,
+      "particlesAboveLattice": 0,
+      "replayIdentical": true,
+      "exact": true
+    },
+    {
+      "name": "rsos",
+      "model": "rsos",
+      "cols": 900,
+      "fill": 0.9,
+      "aspect": "1:1",
+      "seed": "kardar-1986",
+      "cells": [
+        900,
+        900
+      ],
+      "particles": 732416,
+      "samples": 24,
+      "pointsUsed": 24,
+      "cellWordsDiffering": 0,
+      "heightsDiffering": 0,
+      "widthSampleError": 0,
+      "betaFit": 0.3358915262104978,
+      "betaError": 7.216449660063518e-16,
+      "wFinalError": 0,
+      "particlesAboveLattice": 0,
+      "replayIdentical": true,
+      "exact": true
+    },
+    {
+      "name": "rings",
+      "model": "ballistic",
+      "cols": 900,
+      "fill": 0.9,
+      "aspect": "1:1",
+      "seed": "kardar-1986",
+      "cells": [
+        900,
+        900
+      ],
+      "particles": 372329,
+      "samples": 21,
+      "pointsUsed": 21,
+      "cellWordsDiffering": 0,
+      "heightsDiffering": 0,
+      "widthSampleError": 0,
+      "betaFit": 0.2861926898296137,
+      "betaError": 1.6653345369377348e-15,
+      "wFinalError": 0,
+      "particlesAboveLattice": 0,
+      "replayIdentical": true,
+      "exact": true
+    },
+    {
+      "name": "wide",
+      "model": "ballistic",
+      "cols": 1400,
+      "fill": 0.8,
+      "aspect": "16:9",
+      "seed": "kardar-1986",
+      "cells": [
+        1400,
+        788
+      ],
+      "particles": 448654,
+      "samples": 20,
+      "pointsUsed": 20,
+      "cellWordsDiffering": 0,
+      "heightsDiffering": 0,
+      "widthSampleError": 0,
+      "betaFit": 0.27970812519666566,
+      "betaError": 6.106226635438361e-16,
+      "wFinalError": 0,
+      "particlesAboveLattice": 0,
+      "replayIdentical": true,
+      "exact": true
+    }
+  ],
+  "statistics": [
+    {
+      "name": "kpz",
+      "model": "ballistic",
+      "seeds": 16,
+      "classBeta": 0.3333333333333333,
+      "band": [
+        0.24,
+        0.35333333333333333
+      ],
+      "betas": [
+        0.2690523841227661,
+        0.28510357631410604,
+        0.33401265788402273,
+        0.29447450349374527,
+        0.28888029474391497,
+        0.22352098858225666,
+        0.2582183973234479,
+        0.26446767187904124,
+        0.28536647256545844,
+        0.22686199737056628,
+        0.2761364164972957,
+        0.32529816826205443,
+        0.2258017056782651,
+        0.2976345627758684,
+        0.2543758626860528,
+        0.3765972574814293
+      ],
+      "mean": 0.2803626823537682,
+      "sd": 0.041158601841851994,
+      "se": 0.010289650460462998,
+      "deviation": -0.052970650979565104,
+      "inBand": true
+    },
+    {
+      "name": "ew",
+      "model": "relax",
+      "seeds": 16,
+      "classBeta": 0.25,
+      "band": [
+        0.21,
+        0.31
+      ],
+      "betas": [
+        0.18791420216477026,
+        0.28101319167866406,
+        0.22875649282783483,
+        0.22870116940039142,
+        0.22691308846865169,
+        0.22642585597359857,
+        0.20970909111085026,
+        0.2674238716466381,
+        0.25214817916347076,
+        0.26588872922227985,
+        0.258560294701668,
+        0.2669725665403937,
+        0.22154478158286162,
+        0.23973224865594717,
+        0.25159142976504917,
+        0.2504753519341212
+      ],
+      "mean": 0.24148565905232441,
+      "sd": 0.024648839497640455,
+      "se": 0.006162209874410114,
+      "deviation": -0.008514340947675586,
+      "inBand": true
+    },
+    {
+      "name": "rd",
+      "model": "random",
+      "seeds": 16,
+      "classBeta": 0.5,
+      "band": [
+        0.47,
+        0.53
+      ],
+      "betas": [
+        0.5081684638937012,
+        0.49642408038208996,
+        0.48973766751571013,
+        0.4893727689118541,
+        0.5081341555717233,
+        0.4910745865261114,
+        0.5087209556151158,
+        0.5108866155488064,
+        0.4894138101257011,
+        0.5041964852544703,
+        0.5051271617517704,
+        0.5133663463308968,
+        0.5056242116829082,
+        0.49939295692148966,
+        0.5008010097811009,
+        0.5021743047488498
+      ],
+      "mean": 0.5014134737851438,
+      "sd": 0.008075449716779926,
+      "se": 0.0020188624291949814,
+      "deviation": 0.0014134737851437817,
+      "inBand": true
+    },
+    {
+      "name": "rsos",
+      "model": "rsos",
+      "seeds": 16,
+      "classBeta": 0.3333333333333333,
+      "band": [
+        0.29333333333333333,
+        0.3633333333333333
+      ],
+      "betas": [
+        0.29615821865124664,
+        0.30519759448271544,
+        0.26027266002003546,
+        0.30601196861839897,
+        0.3311332145498381,
+        0.34069413699715645,
+        0.3599983967547523,
+        0.2858784246976207,
+        0.31707099991338317,
+        0.29293677361221987,
+        0.2994750536235083,
+        0.29861284784075526,
+        0.3170113768361344,
+        0.301212082889792,
+        0.2923610932590564,
+        0.31443509631117894
+      ],
+      "mean": 0.30740374619111205,
+      "sd": 0.023244694803997195,
+      "se": 0.005811173700999299,
+      "deviation": -0.025929587142221266,
+      "inBand": true
+    }
+  ],
+  "ordering": {
+    "rdOverRsos": 31.536690962415424,
+    "rsosOverEw": 7.782446254753379,
+    "rdOverKpz": 21.08089771531676,
+    "kpzOverEw": 3.2414435936314807
+  },
+  "followUp": {
+    "seeds": 64,
+    "added": "after kpzOverEw was below 5 standard errors at 16 seeds",
+    "kpz": {
+      "mean": 0.27999752176579595,
+      "sd": 0.03511255498453376,
+      "se": 0.00438906937306672
+    },
+    "ew": {
+      "mean": 0.2391354131344637,
+      "sd": 0.02315130598457595,
+      "se": 0.0028939132480719936
+    },
+    "kpzOverEw": 7.7725272278578075
+  },
+  "failureControls": {
+    "noLateralSticking": {
+      "cellWordsDiffering": 453923,
+      "betaFit": 0.5098460118254479,
+      "seedMeanBeta": 0.5008746201482502,
+      "outsideKpzBand": true
+    },
+    "rngWithoutDiscard": {
+      "cellWordsDiffering": 232835
+    },
+    "widthCadence12": {
+      "samples": [
+        20,
+        20
+      ],
+      "matches": false
+    }
+  },
+  "relaxEdge": {
+    "cols": 192,
+    "fill": 0.98,
+    "aspect": "16:9",
+    "particlesAboveLattice": 1293,
+    "particles": 21837
+  },
+  "limitations": [
+    "Finite preset lattices, the default seed and 16 further seeds per class; no all-parameter, Tracy-Widom, Eden or experimental claim.",
+    "Class bands include a finite-size allowance; ballistic deposition crosses over slowly and fits below 1/3 at plate size.",
+    "A single plate cannot distinguish ballistic from relaxation: their per-plate exponent spreads overlap, and only ensemble means over many seeds separate."
+  ],
+  "environment": {
+    "node": "v22.22.2"
+  }
+}
