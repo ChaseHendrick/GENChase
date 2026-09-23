@@ -34,6 +34,8 @@ The conserved quantities follow the torque-free Euler equations described in
 These checks do not certify indefinite energy preservation, all controls, exact
 flip times or printed numerical resolution. RK4 is not an exactly symplectic method.
 
+Print-path state preservation for the enumerated flip, stable1, log and square fixtures is recorded by `node tools/tennis-print-state.js --write` in [results/tennis-print-state.json](results/tennis-print-state.json). That check confirms exportPNG does not alter the Float32 field, flip count or settings at the requested dimensions; it does not add printed numerical resolution or flip-time accuracy.
+
 ## FPUT chain evolution (historical partial audit)
 
 Superseded by the [complete finite review](FPUT-FIELD-REVIEW.md), which corrects
