@@ -3172,7 +3172,7 @@
     ],
     "remaining": [
       "Broaden independent reference trajectories and parameter coverage.",
-      "Audit actual print exports and displayed diagnostics."
+      "Compare rendered pixels independently; state preservation alone is not full scientific print accuracy or printed numerical resolution."
     ],
     "numerical": [
       {
@@ -3186,7 +3186,18 @@
         "results": "validation/results/orbit-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/photon-print-state.js",
+        "command": "node tools/photon-print-state.js --write",
+        "results": "validation/results/photon-print-state.json",
+        "scope": "Actual photon exportPNG at 2400 longest edge for ring, spray, polar and impact fixtures (2400x2400, 1920x2400 and 2400x1350).",
+        "criteria": "Exact Float32 field and mask words, bMeas/rPh/deflRatio diagnostics, cells, buffer size and settings preserved; deterministic regenerate replay; exact PNG dimensions; nonblank reduced raster; wrong dimensions and deliberate post-export field+bMeas mutation rejected; disk capture fraction exceeds equatorial pencil; bMeas and rPh within 2% of 3√3 M and 3M.",
+        "benchmark": "In-harness auditSnapshot of the private Float32 field/mask plate, capture diagnostics and settings against the same module exportPNG path.",
+        "failureControl": "Requested PNG width reduced by one pixel must fail acceptance; mutating field[0] and bMeas after export must fail the identical preservation predicate.",
+        "limitations": "State preservation and declared dimensions only. Does not establish geodesic capture accuracy beyond the recorded ratios, calibrated color, printed numerical resolution or every control/aspect/hardware."
+      }
+    ]
   },
   {
     "id": "crapper",

@@ -127,7 +127,7 @@ Complete labels apply only within each record's reviewed domain.
 | [gerstner](src/modules/gerstner.js) | partially validated | [material-wave-science.js](tools/material-wave-science.js) | Not scientifically validated |
 | [eight](src/modules/eight.js) | partially validated | [orbit-science.js](tools/orbit-science.js) | Not scientifically validated |
 | [peakon](src/modules/peakon.js) | validated within stated limits | [peakon-science.js](tools/peakon-science.js), [peakon-field-review.js](tools/peakon-field-review.js) | Limited evidence recorded |
-| [photon](src/modules/photon.js) | partially validated | [orbit-science.js](tools/orbit-science.js) | Not scientifically validated |
+| [photon](src/modules/photon.js) | partially validated | [orbit-science.js](tools/orbit-science.js) | Limited evidence recorded |
 | [crapper](src/modules/crapper.js) | unvalidated | None registered | Not scientifically validated |
 | [hasimoto](src/modules/hasimoto.js) | partially validated | [material-wave-science.js](tools/material-wave-science.js) | Not scientifically validated |
 | [lump](src/modules/lump.js) | validated within stated limits | [lump-science.js](tools/lump-science.js), [lump-field-review.js](tools/lump-field-review.js) | Limited evidence recorded |
