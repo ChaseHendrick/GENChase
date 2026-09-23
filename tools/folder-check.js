@@ -15,7 +15,7 @@ assert.equal(new Set(ids).size, ids.length, 'Manifest IDs must be unique');
 assert.deepEqual([...ids].sort(), catalog.techniques.map(m => m.id).sort(), 'Manifest must contain every catalog technique');
 assert.ok(!index.includes('{{include:'), 'Index contains an unexpanded build directive');
 assert.ok(!/Studio\.register\s*\(/.test(index), 'Index must not embed simulation registrations');
-const scripts = [...index.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
+const scripts = [...index.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\b[^>]*>/gi)];
 assert.ok(scripts.some(m => /src\s*=/.test(m[1])), 'Index must load the shared engine externally');
 assert.ok(scripts.every(m => !/src\/modules\//.test(m[1])), 'Index must load modules lazily');
 const executable = scripts.filter(m => !/\btype\s*=\s*["'](?:application\/ld\+json|text\/plain)["']/i.test(m[1]));
