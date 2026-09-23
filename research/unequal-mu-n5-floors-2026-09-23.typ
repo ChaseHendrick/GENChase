@@ -1,4 +1,4 @@
-#set document(title: "Minimal winding in self-similar point-vortex collapse", author: "Chase Hendrick")
+#set document(title: "Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons", author: "Chase Hendrick")
 #set page(paper: "us-letter", margin: (x: 1in, y: 1in), numbering: "1")
 #set text(font: "New Computer Modern", size: 11pt)
 #set par(justify: true, leading: 0.65em)
@@ -13,12 +13,12 @@
   }
 }
 #show table: set par(justify: false)
-#show table: set align(left)
+#show figure.caption: set text(size: 9.5pt)
 
 #align(center)[
   #text(size: 14pt, weight: "bold")[
-    Minimal winding in the self-similar collapse of three \
-    unequal point vortices and of two concentric vortex polygons
+    Minimal winding in the self-similar collapse of \
+    three point vortices and of two concentric vortex polygons
   ]
   #v(0.7em)
   #text(size: 11pt)[Chase Hendrick]
@@ -30,7 +30,7 @@
 
 #pad(x: 2.2em)[
   #text(size: 10pt)[
-    *Abstract.* In a self-similar collapse of point vortices every vortex moves on a logarithmic spiral, and the dimensionless product $P = omega_0 t_c$ of the initial angular velocity and the collapse time measures how tightly the spiral winds. We minimize $P$ in closed form over two classical collapsing families. For three vortices with circulations $(1, 1\/2, -1\/3)$ and zero angular impulse, the collapsing configurations form two arcs, one for each orientation of the vortex triangle, and $P$ has a unique critical point, a minimum, on each. The two minima, $1.0647059762 dots$ and $2.2038550160 dots$, are the positive roots of the irreducible polynomial $8748 x^6 - 49005 x^4 + 27794 x^2 + 18723$; they are given by the trigonometric form of Cardano's formula and are not expressible by real radicals. The smaller one is the minimum over the whole family. For equal circulations $Gamma_1 = Gamma_2$ the two arcs are equivalent and the minimum is $sqrt(2)$. For two concentric regular $n$-gons carrying circulations $x_n$ and $-1$, $P = (K_n - sqrt(2n - 1) cos n theta) \/ (2n sin n theta)$ in terms of the relative rotation $theta$, with an explicit constant $K_n$, and its minimum is $sqrt(K_n^2 - 2n + 1) \/ (2n)$; for pentagons this is $sqrt(31682)\/80$. The results are checked against the Biot–Savart velocities in 60-digit arithmetic and by direct integration of the equations of motion.
+    *Abstract.* In a self-similar collapse of point vortices every vortex moves on a logarithmic spiral, and the dimensionless number $P = |omega_0| t_c$, the initial angular velocity times the collapse time, measures how tightly the spiral winds. We minimize $P$ over two classical collapsing families. Every collapse of three point vortices can be normalized to circulations $(1, mu, -mu\/(1 + mu))$ with $0 < mu <= 1$ and zero angular impulse. For each $mu$ the collapsing configurations form two arcs, one for each orientation of the vortex triangle, and $P$ has exactly one critical point, a minimum, on each. The squares of the two minima are roots of an explicit cubic whose coefficients are polynomials in $mu$, and for $mu < 1$ the two minima differ. The smaller one increases strictly from $sqrt(3)\/2$, approached as $mu -> 0$, to $sqrt(2)$ at $mu = 1$. Hence $P > sqrt(3)\/2$ for every collapse of three point vortices, and the constant is sharp; equivalently, every vortex travels more than twice its initial distance from the collision point. For $mu = 1\/2$ the two minima are $1.0647059762 dots$ and $2.2038550160 dots$, the positive roots of $8748 x^6 - 49005 x^4 + 27794 x^2 + 18723$, and they are not expressible by real radicals. For two concentric regular $n$-gons with circulations $x_n$ and $-1$, $P = (K_n - sqrt(2n - 1) cos n theta) \/ (2n sin n theta)$ in terms of the relative rotation $theta$, with an explicit constant $K_n$, and the minimum over $theta$ is $sqrt(K_n^2 - 2n + 1) \/ (2n)$; for pentagons it is $sqrt(31682)\/80$. The results are proved, and they are checked against the Biot–Savart velocities in high-precision arithmetic.
 
     #v(0.4em)
     *Keywords:* point vortices; vortex collapse; self-similar motion; logarithmic spiral. \
@@ -40,11 +40,11 @@
 
 = Introduction
 
-Three point vortices can collapse to a point in finite time only if $1\/Gamma_1 + 1\/Gamma_2 + 1\/Gamma_3 = 0$ and their angular impulse vanishes, and under these conditions the motion is self-similar: the vortex triangle keeps its shape while it shrinks and rotates [1, 8]. Such collapse was found by Gröbli [6] and rediscovered by Novikov and Sedov [10], who also constructed collapsing configurations of four and five vortices. Aref [3] gave the collapse rate and the rotation frequency for general circulations, and Gotoda [5] gave an explicit parametrization of the collapsing configurations. Collapse also occurs in configurations of higher symmetry. Aref [2] reduced the motion of two concentric regular $n$-gons of vortices to an integrable Hamiltonian system with two degrees of freedom, and Koiller et al. [7] found collapsing two-ring configurations, whose vortices move on logarithmic spirals.
+Three point vortices can collapse to a point in finite time only if $1\/Gamma_1 + 1\/Gamma_2 + 1\/Gamma_3 = 0$ and their angular impulse about the center of vorticity vanishes, and under these conditions the motion is self-similar: the vortex triangle keeps its shape while it shrinks and rotates [1, 9]. Such collapse was found by Gröbli [7] and found again by Aref [1] and by Novikov and Sedov [12], who also constructed collapsing configurations of four and five vortices; see [4] for the history and [11] for the general theory. Aref [3] gave the collapse rate and the rotation frequency for general circulations, and Gotoda [6] gave explicit formulas for the self-similar motions of three vortices. Collapse also occurs in configurations of higher symmetry. Aref [2] reduced the motion of two concentric regular $n$-gons of vortices to an integrable Hamiltonian system with two degrees of freedom, and Koiller et al. [8] found collapsing configurations of two such rings, whose vortices move on logarithmic spirals.
 
-In a self-similar collapse at time $t_c$ the configuration rotates through the angle $omega_0 t_c thin ln(1 - t\/t_c)^(-1)$ by time $t$, where $omega_0$ is the initial angular velocity. Each vortex therefore moves on a logarithmic spiral about the collision point, and the dimensionless number $P = |omega_0| t_c$, which is invariant under rescaling of lengths, times and circulations, is the angle through which the configuration turns while the square of its size decreases by the factor $e$. Equivalently, the path of each vortex makes the constant angle $arctan 2P$ with the direction to the collision point, and a vortex that starts at distance $r_0$ from that point travels the distance $r_0 sqrt(1 + 4P^2)$ before the collapse. Within a collapsing family it is natural to ask which configuration winds least.
+In a self-similar collapse at time $t_c$ the configuration has rotated by time $t$ through the angle $-omega_0 t_c ln(1 - t\/t_c)$, where $omega_0$ is the initial angular velocity. The angular velocity at time $t$ is $omega_0 t_c \/ (t_c - t)$, so the product of the angular velocity and the remaining time does not depend on which instant is taken as initial. Each vortex moves on a logarithmic spiral about the collision point, and the dimensionless number $P = |omega_0| t_c$, which is invariant under rescaling of lengths, times and circulations, is the angle through which the configuration turns while the square of its size decreases by the factor $e$. Equivalently, the path of each vortex makes the constant angle $arctan 2P$ with the direction to the collision point, and a vortex that starts at distance $r_0$ from that point travels the distance $r_0 sqrt(1 + 4P^2)$ before the collapse. Within a collapsing family it is natural to ask which configuration winds least.
 
-We answer this question for two families. In Section 3 we treat three vortices with circulations $(1, 1\/2, -1\/3)$. The collapsing configurations form two arcs, one for each orientation of the triangle, and $P$ has a unique minimum on each; the two minima are distinct conjugate algebraic numbers of degree six, and the smaller is the minimum over the whole family. For $Gamma_1 = Gamma_2$ the two orientations are exchanged by interchanging the equal vortices and the minimum is $sqrt(2)$ (Remark 3). In Section 4 we treat two concentric regular $n$-gons, for which the minimization reduces to an elementary inequality once $P$ is written in a suitable form. Section 5 describes an independent numerical check.
+For three vortices we answer this question completely (Section 3). After normalization the circulations are $(1, mu, -mu\/(1 + mu))$ with $0 < mu <= 1$. The collapsing configurations form two arcs, one for each orientation of the triangle, and $P$ has a unique minimum on each (Theorem 1). For $mu < 1$ the two minima differ, and the smaller one increases strictly with $mu$, from $sqrt(3)\/2$ as $mu -> 0$ to $sqrt(2)$ at $mu = 1$, the value for two equal circulations. Thus $P > sqrt(3)\/2$ for every collapse of three vortices, and the bound is sharp (Corollary 1). For $mu = 1\/2$ the two minima are conjugate algebraic numbers of degree six, given explicitly in Proposition 1. In Section 4 we treat two concentric regular $n$-gons, for which the minimization reduces to an elementary inequality once $P$ is written in a suitable form. Section 5 describes an independent numerical check.
 
 = Self-similar collapse
 
@@ -52,7 +52,7 @@ The positions $z_j in CC$ of point vortices with circulations $Gamma_j$ evolve a
 
 $ overline(dot(z)_j) = 1/(2 pi i) sum_(k != j) Gamma_k / (z_j - z_k) . $ <eq:bs>
 
-Suppose $sum_j Gamma_j != 0$, let $z_c = sum_j Gamma_j z_j \/ sum_j Gamma_j$ be the center of vorticity, which is conserved, and suppose that at $t = 0$ there is $kappa in CC$ with $dot(z)_j = kappa (z_j - z_c)$ for all $j$. The right-hand side of @eq:bs is homogeneous of degree $-1$ in the relative positions and commutes with rotations, so the solution is $z_j (t) = z_c + lambda(t) e^(i phi(t)) (z_j (0) - z_c)$ with $lambda dot(lambda) = op("Re") kappa$ and $lambda^2 dot(phi) = op("Im") kappa$. Hence $lambda^2 = 1 + 2 op("Re") kappa thin t$. If $op("Re") kappa < 0$ the vortices collide at $z_c$ at the time $t_c = -1\/(2 op("Re") kappa)$, and $omega_0 = op("Im") kappa$, so that
+Suppose $sum_j Gamma_j != 0$, let $z_c = sum_j Gamma_j z_j \/ sum_j Gamma_j$ be the center of vorticity, which is conserved, and suppose that at $t = 0$ there is $kappa in CC$ with $dot(z)_j = kappa (z_j - z_c)$ for all $j$. The right-hand side of @eq:bs is homogeneous of degree $-1$ in the relative positions and equivariant under rotations, so the solution is $z_j (t) = z_c + lambda(t) e^(i phi(t)) (z_j (0) - z_c)$ with $lambda dot(lambda) = op("Re") kappa$ and $lambda^2 dot(phi) = op("Im") kappa$. Hence $lambda^2 = 1 + 2 t op("Re") kappa$. If $op("Re") kappa < 0$ the vortices collide at $z_c$ at the time $t_c = -1\/(2 op("Re") kappa)$, and $omega_0 = op("Im") kappa$, so that
 
 $ P = |omega_0| t_c = (|op("Im") kappa|) / (-2 op("Re") kappa) . $ <eq:P>
 
@@ -60,104 +60,160 @@ Integrating $dot(phi) = omega_0 \/ lambda^2$ gives $phi = -P ln lambda^2$ when $
 
 $ sum_j Gamma_j |z_j - z_c|^2 = 1/(sum_j Gamma_j) sum_(j < k) Gamma_j Gamma_k |z_j - z_k|^2 . $ <eq:L>
 
-It is conserved and, in a self-similar motion, proportional to $lambda^2$, so it must vanish for a collapse. The minimizations below reduce to the following elementary inequality.
+It is conserved and, in a self-similar motion, proportional to $lambda^2$, so it must vanish for a collapse. Two of the minimizations below (Remark 2 and Proposition 2) reduce to the following elementary inequality.
 
 *Lemma 1.* _Let $a > |b|$. For $0 < alpha < pi$, $(a - b cos alpha) \/ sin alpha >= sqrt(a^2 - b^2)$, with equality if and only if $cos alpha = b\/a$._
 
 _Proof._ The numerator is positive, and $(a - b cos alpha)^2 - (a^2 - b^2) sin^2 alpha = (a cos alpha - b)^2$. #h(1fr) $square$
 
-= Three vortices with circulations $(1, 1\/2, -1\/3)$
+= Three vortices
 
-Let $Gamma = (1, 1\/2, -1\/3)$, so that $1\/Gamma_1 + 1\/Gamma_2 + 1\/Gamma_3 = 0$ and $sum_j Gamma_j = 7\/6$. For $w = (z_3 - z_1)\/(z_2 - z_1)$ the sum $sum_(j < k) Gamma_j Gamma_k |z_j - z_k|^2$ in @eq:L equals $|z_2 - z_1|^2 (1\/2 - |w|^2 \/ 3 - |w - 1|^2 \/ 6)$, which vanishes exactly on the circle $|w - 1\/3| = sqrt(7)\/3$. We use the parametrization of the zero-impulse configurations given by Gotoda [5, Sect. 3], which for these circulations reads
+== Normalization and the collapsing configurations
 
-$ z_1 = 2/9 (1 + sqrt(7)/2 e^(-i theta)) , quad z_2 = 2/9 (1 - sqrt(7) e^(-i theta)) , quad z_3 = 1 , quad theta in [0, 2 pi) . $ <eq:pos>
+By the necessary conditions recalled in the introduction, two of the three circulations of a collapsing configuration have the same sign. Multiplying all circulations by a positive constant rescales time and leaves $P$ unchanged. Multiplying them by $-1$ reverses time, and so does complex conjugation of the positions, which maps solutions of @eq:bs to solutions; the composition maps collapsing solutions to collapsing solutions with the same $P$. After relabeling we may therefore assume
+
+$ Gamma = (1, mu, -mu/(1 + mu)) , quad 0 < mu <= 1 . $ <eq:norm>
+
+Then $sum_j Gamma_j = R\/(1 + mu) > 0$, where $R = 1 + mu + mu^2$. For $w = (z_3 - z_1)\/(z_2 - z_1)$ the sum $sum_(j < k) Gamma_j Gamma_k |z_j - z_k|^2$ in @eq:L equals $mu (1 + mu)^(-1) |z_2 - z_1|^2 (1 + 2 mu op("Re") w - (1 + mu)|w|^2)$, which vanishes exactly on the circle $|w - mu\/(1 + mu)| = sqrt(R)\/(1 + mu)$. We use a parametrization of the zero-impulse configurations equivalent to that of Gotoda [6, Sect. 3]:
+
+$ z_1 = (mu (1 + sqrt(R) e^(-i theta))) / (1 + mu)^2 , quad z_2 = (mu - sqrt(R) e^(-i theta)) / (1 + mu)^2 , quad z_3 = 1 , quad theta in [0, 2 pi) . $ <eq:pos>
 
 Here $sum_j Gamma_j z_j = 0$, so $z_c = 0$, and
 
-$ z_1 - z_2 = sqrt(7)/3 e^(-i theta) , quad z_3 - z_1 = sqrt(7)/9 (sqrt(7) - e^(-i theta)) , quad z_3 - z_2 = sqrt(7)/9 (sqrt(7) + 2 e^(-i theta)) . $
+$ z_1 - z_2 = (sqrt(R) e^(-i theta)) / (1 + mu) , quad z_3 - z_1 = (sqrt(R) (sqrt(R) - mu e^(-i theta))) / (1 + mu)^2 , quad z_3 - z_2 = (sqrt(R) (sqrt(R) + e^(-i theta))) / (1 + mu)^2 . $
 
-The shape ratio is $w = 1\/3 - (sqrt(7)\/3) e^(i theta)$, which traverses the zero-impulse circle exactly once. Every zero-impulse configuration is therefore obtained, up to translation, rotation and dilation, for exactly one $theta$. Since $op("Im") w = -(sqrt(7)\/3) sin theta$, the triangle $z_1 z_2 z_3$ is positively oriented for $sin theta < 0$ and negatively oriented for $sin theta > 0$.
+The shape ratio is $w = mu\/(1 + mu) - (sqrt(R)\/(1 + mu)) e^(i theta)$, which traverses the zero-impulse circle exactly once, so every zero-impulse configuration is obtained, up to translation, rotation and dilation, for exactly one $theta$. Since $op("Im") w = -(sqrt(R)\/(1 + mu)) sin theta$, the triangle $z_1 z_2 z_3$ is negatively oriented for $sin theta > 0$ and positively oriented for $sin theta < 0$. Put $C = sqrt(R) cos theta$ and
+
+$ N(C) = 2 (1 + mu^2) R + (1 - mu)(2 + mu + 2 mu^2) C - 2 mu C^2 , quad M(C) = 1 - mu + 2 C . $
 
 *Lemma 2.* _For every $theta$ the three quotients $dot(z)_j \/ (z_j - z_c)$ are equal to_
 
-$ kappa = (27 i) / (4 sqrt(7) pi) dot (sqrt(7) + e^(i theta)) / ((sqrt(7) - e^(i theta)) (sqrt(7) + 2 e^(i theta))) . $
+$ kappa = (i (1 + mu)^3) / (2 pi sqrt(R)) dot (sqrt(R) + (1 - mu) e^(i theta)) / ((sqrt(R) - mu e^(i theta)) (sqrt(R) + e^(i theta))) , $
 
-_Consequently, with $D(theta) = (4 - sqrt(7) cos theta)(11 + 4 sqrt(7) cos theta) > 0$,_
+_and, with $D = (R + mu^2 - 2 mu C)(R + 1 + 2 C) > 0$,_
 
-$ op("Re") kappa = - (27 (14 cos theta + sqrt(7)) sin theta) / (28 pi D(theta)) , quad op("Im") kappa = (27 (14 sin^2 theta + 6 sqrt(7) cos theta + 21)) / (28 pi D(theta)) . $
+$ op("Re") kappa = - ((1 + mu)^3 mu M(C) sin theta) / (2 pi sqrt(R) D) , quad op("Im") kappa = ((1 + mu)^3 N(C)) / (2 pi R D) . $
 
-_Proof._ Since $z_c = 0$ and $z_3 = 1$, $kappa = dot(z)_3$, and by @eq:bs, $overline(dot(z)_3) = (2 pi i)^(-1) ((z_3 - z_1)^(-1) + (1\/2)(z_3 - z_2)^(-1))$. Inserting the differences above gives the stated $kappa$, and the same computation for $j = 1, 2$ gives the same value. Multiplying numerator and denominator by $(sqrt(7) - e^(-i theta))(sqrt(7) + 2 e^(-i theta))$ and using $|sqrt(7) - e^(i theta)|^2 = 2(4 - sqrt(7) cos theta)$ and $|sqrt(7) + 2 e^(i theta)|^2 = 11 + 4 sqrt(7) cos theta$ gives the real and imaginary parts. Both factors of $D$ are positive because $sqrt(7) < 4$ and $4 sqrt(7) < 11$. #h(1fr) $square$
+_Moreover $N(C) > 0$ for every $theta$._
 
-The numerator of $op("Im") kappa$ is at least $21 - 6 sqrt(7) > 0$, so every zero-impulse configuration rotates in the positive sense, and by Lemma 2 it collapses exactly when $(14 cos theta + sqrt(7)) sin theta > 0$. Let $theta_0 in (pi\/2, pi)$ be defined by $cos theta_0 = -sqrt(7)\/14$. The collapsing configurations are those with $theta$ in one of the two arcs
+_Proof._ Since $z_c = 0$ and $z_3 = 1$, $kappa = dot(z)_3$, and by @eq:bs, $overline(dot(z)_3) = (2 pi i)^(-1) ((z_3 - z_1)^(-1) + mu (z_3 - z_2)^(-1))$. Inserting the differences above gives the stated $kappa$. The same computation for $j = 1$ and $j = 2$ gives the same value, as it must, since these configurations move self-similarly [9]. The real and imaginary parts follow on multiplying numerator and denominator by the complex conjugate of the denominator, since $|sqrt(R) - mu e^(i theta)|^2 thin |sqrt(R) + e^(i theta)|^2 = D$. The two factors of $D$ are at least $(sqrt(R) - mu)^2$ and $(sqrt(R) - 1)^2$, which are positive because $R > mu^2$ and $R > 1$. Finally, $N$ is concave in $C$, and $N(sqrt(R)) N(-sqrt(R)) = 3 mu^2 (1 + mu)^2 R$ and $N(sqrt(R)) + N(-sqrt(R)) = 4 R (1 - mu + mu^2)$ are positive, so $N > 0$ on $|C| <= sqrt(R)$. #h(1fr) $square$
 
-$ cal(B) = (0, theta_0) , quad cal(A) = (pi, 2 pi - theta_0) , $
+By Lemma 2 every zero-impulse configuration rotates in the positive sense, and it collapses exactly when $M(C) sin theta > 0$. Let $theta_0 in (0, pi)$ be defined by $cos theta_0 = (mu - 1)\/(2 sqrt(R))$. The configurations with $theta = 0$ and $theta = pi$ are collinear, and those with $theta = plus.minus theta_0$ are equilateral triangles; these four are relative equilibria. The collapsing configurations form the two arcs
 
-the triangle being negatively oriented on $cal(B)$ and positively oriented on $cal(A)$. By @eq:P,
+$ cal(A)_+ = (0, theta_0) , quad cal(A)_- = (pi, 2 pi - theta_0) , $
 
-$ P(theta) = (14 sin^2 theta + 6 sqrt(7) cos theta + 21) / (2 (14 cos theta + sqrt(7)) sin theta) , quad theta in cal(A) union cal(B) . $ <eq:Ptheta>
+the triangle being negatively oriented on $cal(A)_+$ and positively oriented on $cal(A)_-$, and on them @eq:P gives
 
-Complex conjugation maps solutions of @eq:bs to solutions with time reversed, and $z_j (-theta) = overline(z_j (theta))$, so $theta -> -theta$ maps $cal(A)$ onto the expanding arc $(theta_0, pi)$ and $cal(B)$ onto the expanding arc $(2 pi - theta_0, 2 pi)$. No such symmetry relates $cal(A)$ to $cal(B)$.
+$ P(theta) = N(C) / (2 mu sqrt(R) M(C) sin theta) , quad C = sqrt(R) cos theta . $ <eq:Ptheta>
 
-#v(0.3em)
-*Proposition 1.* _The function $P$ has exactly one critical point on each of $cal(A)$ and $cal(B)$, and it is the minimum of $P$ on that arc. Let_
+Since $z_j (-theta) = overline(z_j (theta))$, the reflection $theta -> -theta$ maps $cal(A)_+$ and $cal(A)_-$ onto the expanding arcs $(2 pi - theta_0, 2 pi)$ and $(theta_0, pi)$.
 
-$ X = (245351 sqrt(5201)) / 5201^2 , quad R = (7 sqrt(5201)) / 162 . $
+== The minimal winding
 
-_Then_
+Let $u = mu + 1 + 1\/mu >= 3$ and $Q(mu, y) = mu^6 tilde(Q)(u, y)$, where
 
-$ min_(cal(A)) P = sqrt(605/324 + R cos(1/3 arccos X - (2 pi)/3)) = 1.0647059762712043 dots , $
+$ tilde(Q)(u, y) = & 1728 (u + 1)^2 y^3 - 144 (u + 1)(8 u^3 - 9 u - 9) y^2 \
+  & zws - 4 (16 u^6 - 288 u^4 - 288 u^3 - 81 u^2 - 162 u - 81) y + 3 (4 u^3 - 3 u - 3)^2 . $ <eq:Q>
 
-$ min_(cal(B)) P = sqrt(605/324 + R cos(1/3 arccos X)) = 2.2038550160361327 dots , $
+Then $Q$ is a polynomial in $mu$ and $y$ with integer coefficients, irreducible over $QQ$. Its discriminant with respect to $y$ is
 
-_attained at $cos theta = -0.9243893679 dots$ and $cos theta = 0.6739838839 dots$ respectively. Both minima are roots of the polynomial $8748 x^6 - 49005 x^4 + 27794 x^2 + 18723$, which is irreducible over $QQ$ and over $QQ(sqrt(7))$ and whose real roots are exactly these two numbers and their negatives. In particular, the least value of $P$ over all collapsing configurations is $1.0647059762712043 dots$._
+$ 28311552 thin mu^4 (mu - 1)^2 (mu + 1)^4 (mu + 2)^2 (2 mu + 1)^2 R^6 B^3 , $
 
-#v(0.3em)
-_Proof._ Write $c = cos theta$, so that $P = N(c) \/ (2 (14 c + sqrt(7)) sin theta)$ with $N(c) = 35 + 6 sqrt(7) c - 14 c^2$, which is positive on both arcs. Since $P > 0$ there and $d c \/ d theta = -sin theta != 0$, the critical points of $P$ on each arc correspond to the zeros of $d(P^2)\/d c$ in the range of $c$ on that arc. Now $P^2 = N^2 \/ (4 (14 c + sqrt(7))^2 (1 - c^2))$, and a direct computation gives
-
-$ (d (P^2)) / (d c) = (sqrt(7) N(c) C(c)) / (4 (1 - c^2)^2 (14 c + sqrt(7))^3) , quad C(c) = 196 c^3 + 224 sqrt(7) c^2 + 14 c - 128 sqrt(7) . $
-
-With $c = sqrt(7) u$ we have $C = sqrt(7) f(u)$, $f(u) = 1372 u^3 + 1568 u^2 + 14 u - 128$. Now $f(-2) < 0 < f(-1)$, $f(-1\/sqrt(7)) = 96 - 30 sqrt(7) > 0$, $f(-1\/14) = -243\/2 < 0$ and $f(1\/sqrt(7)) = 96 + 30 sqrt(7) > 0$, so the cubic $f$ has one root in each of $(-2, -1)$, $(-1\/sqrt(7), -1\/14)$ and $(-1\/14, 1\/sqrt(7))$. The first gives $|c| > 1$. The second and third lie in the ranges of $u$ on $cal(A)$ and on $cal(B)$, which are $(-1\/sqrt(7), -1\/14)$ and $(-1\/14, 1\/sqrt(7))$. Hence each arc contains exactly one critical point. At the endpoints of both arcs the numerator of @eq:Ptheta takes the values $21 + 6 sqrt(7)$, $63\/2$ and $21 - 6 sqrt(7)$, all positive, while the denominator vanishes; since $P > 0$ on the arcs, $P -> +infinity$ at every endpoint. A continuous function on an open interval that tends to $+infinity$ at both ends and has a single critical point attains its minimum there.
-
-To find the minimal values we eliminate $c$ between $C(c) = 0$ and $4 P^2 (14 c + sqrt(7))^2 (1 - c^2) = N(c)^2$, and then eliminate $sqrt(7)$. The resultant is a constant multiple of $(8748 P^6 - 49005 P^4 + 27794 P^2 + 18723)^2$. As a cubic in $q = P^2$ this polynomial is irreducible over $QQ$ and has positive discriminant, so it has three real roots, $q approx 4.856977$, $1.133599$ and $-0.388724$, given by $q_k = 605\/324 + R cos(1\/3 arccos X - 2 pi k\/3)$, $k = 0, 1, 2$. The minima are positive roots of the sextic, so their squares are $q_0$ and $q_1$, and evaluating $P$ at the two critical points identifies $q_0$ with $cal(B)$ and $q_1$ with $cal(A)$. #h(1fr) $square$
+where $B = 4 mu^6 + 12 mu^5 + 51 mu^4 + 82 mu^3 + 51 mu^2 + 12 mu + 4$; the sum of its roots is $(8 u^3 - 9 u - 9) \/ (12 (u + 1)) > 0$, and their product is $-((4 u^3 - 3 u - 3) \/ (24 (u + 1)))^2 < 0$. Hence for $0 < mu < 1$ the cubic $Q(mu, dot)$ has three distinct real roots, one negative and two positive, which we denote $y_1 (mu) < y_2 (mu)$.
 
 #v(0.3em)
-*Remark 1.* The two minima are conjugate algebraic numbers of degree six. Since the cubic in $q$ is irreducible over $QQ$ with three real roots, none of its roots is expressible by real radicals (casus irreducibilis), and hence neither is the square root of one.
+*Theorem 1.* _Let $0 < mu <= 1$._
 
-*Remark 2.* The same construction applies to $Gamma = (1, mu, -mu\/(1 + mu))$. Multiplying the circulations by $1\/mu$ and interchanging the first two vortices shows that the pair of branch minima is invariant under $mu -> 1\/mu$. Numerically the two branch minima are $(1.3399, 1.4983)$ at $mu = 0.9$, $(1.4067, 1.4218)$ at $mu = 0.99$ and $(1.41346, 1.41496)$ at $mu = 0.999$, and they tend to $sqrt(2)$ as $mu -> 1$.
+_(a) On each of $cal(A)_+$ and $cal(A)_-$ the function $P$ has exactly one critical point, and it is the minimum of $P$ on that arc. Denote the two minima by $P_+ (mu)$ and $P_- (mu)$._
 
-*Remark 3.* For $Gamma = (1, 1, -1\/2)$ the zero-impulse circle is $|w - 1\/2| = sqrt(3)\/2$. With $w = 1\/2 + (sqrt(3)\/2) e^(i phi)$, $z_1 = 0$ and $z_2 = 1$, the same computation gives
+_(b) $P_+ (mu)^2$ and $P_- (mu)^2$ are roots of $Q(mu, dot)$. For $mu < 1$, $P_- (mu)^2 = y_1 (mu)$ and $P_+ (mu)^2 = y_2 (mu)$, so $P_- (mu) < P_+ (mu)$; for $mu = 1$, $P_+ = P_- = sqrt(2)$._
 
-$ op("Re") kappa = (3 sin 2 phi) / (2 pi (3 cos 2 phi - 5)) , quad op("Im") kappa = (3 (cos 2 phi - 3)) / (2 pi (3 cos 2 phi - 5)) , quad P = (3 - cos 2 phi) / (2 sin 2 phi) , $
+_(c) The least value of $P$ over the collapsing configurations, $P_- (mu)$, is strictly increasing on $(0, 1]$, and $P_- (mu) -> sqrt(3)\/2$ as $mu -> 0^+$._
 
-on the collapsing arcs $0 < phi < pi\/2$ and $pi < phi < 3 pi\/2$, which are exchanged by interchanging the two equal vortices ($w -> 1 - w$). By Lemma 1, $P >= sqrt(2)$, with equality if and only if $cos 2 phi = 1\/3$. This formula is a specialization and reparametrization of Gröbli's spiral coefficient [6, Sect. 10].
+#v(0.3em)
+_Proof._ (a) A direct computation from @eq:Ptheta gives
+
+$ (d P) / (d theta) = - K(C) / (2 mu M(C)^2 sin^2 theta) , $
+
+where
+
+$ K(C) = 4 (1 - mu) C^3 + 4 (2 mu^2 - mu + 2) C^2 + 2 (1 - mu)^3 C - (2 mu^4 + 7 mu^3 + 6 mu^2 + 7 mu + 2) . $ <eq:K>
+
+As $theta$ runs over $cal(A)_+$, $C$ decreases monotonically from $sqrt(R)$ to $C_0 = (mu - 1)\/2$; over $cal(A)_-$ it increases from $-sqrt(R)$ to $C_0$. The critical points on the two arcs therefore correspond to the roots of $K$ in $(C_0, sqrt(R))$ and in $(-sqrt(R), C_0)$. Now $K(plus.minus sqrt(R)) = plus.minus sqrt(R) N(plus.minus sqrt(R)) M(plus.minus sqrt(R)) \/ R$, which is positive because $M(sqrt(R)) > 0 > M(-sqrt(R))$, and $K(C_0) = -3 (1 + mu)^4 \/ 2 < 0$. So $K$ has a root in each interval. For $mu < 1$, $K$ is a cubic with positive leading coefficient, so it also has a root below $-sqrt(R)$, and each interval contains exactly one root. For $mu = 1$, $K = 12 C^2 - 24$, with one root in each of $(-sqrt(3), 0)$ and $(0, sqrt(3))$. The function $P$ is differentiable on each arc, and at the ends of each arc $M(C) sin theta -> 0$ while $N > 0$, so $P -> +infinity$; hence the single critical point is the minimum.
+
+(b) At a critical point $K(C) = 0$, and since $R sin^2 theta = R - C^2$, the number $y = P^2$ satisfies $4 mu^2 y (R - C^2) M(C)^2 = N(C)^2$. The resultant of these two polynomials with respect to $C$ is $-48 mu^4 (1 + mu)^8 Q(mu, y)$, so $P_plus.minus (mu)^2$ are roots of $Q(mu, dot)$. For $mu = 1$, $Q(1, y) = 6912 (y - 2)^2 (4 y + 1)$, so $P_plus.minus (1) = sqrt(2)$. For $0 < mu < 1$ both are positive roots, hence each lies in ${y_1 (mu), y_2 (mu)}$. The three roots of $K$ are simple, so $P_+ (mu)$ and $P_- (mu)$ depend continuously on $mu$, and so do $y_1 (mu) < y_2 (mu)$. By connectedness each of $P_+^2$ and $P_-^2$ coincides with the same $y_i$ on all of $(0, 1)$. At $mu = 1\/2$, $P_- = 1.0647 dots$ and $P_+ = 2.2038 dots$ (Proposition 1, whose proof uses only (a) and the first part of (b)), so $P_-^2 = y_1$ and $P_+^2 = y_2$.
+
+(c) The roots $y_i (mu)$ are simple for $0 < mu < 1$ and hence differentiable, with $y'_i = -(partial Q \/ partial mu) \/ (partial Q \/ partial y)$. A zero of $y'_1$ at some $mu$ would be a common root of $Q(mu, dot)$ and $partial Q (mu, dot) \/ partial mu$, but their resultant with respect to $y$,
+
+$ 7044820107264 thin mu^7 (mu - 1)^3 (mu + 1)^7 (mu + 2)^3 (2 mu + 1)^3 R^6 A B^3 , $
+
+where $A = 4 mu^6 + 12 mu^5 + 21 mu^4 + 22 mu^3 + 21 mu^2 + 12 mu + 4$, has no zero in $(0, 1)$. So $y_1$ is strictly monotone on $(0, 1)$. The leading coefficient of $Q(mu, dot)$ does not vanish at $mu = 1$, so the roots stay bounded as $mu -> 1^-$, and $y_1$ tends to a nonnegative root of $Q(1, dot)$, which is $2$. Since $y_1 (1\/2) = 1.1335 dots < 2$, $y_1$ is increasing. As $mu -> 0^+$ it therefore decreases to a limit $L >= 0$, which is a root of $Q(0, y) = -16 (4 y - 3)$, so $L = 3\/4$. #h(1fr) $square$
+
+#v(0.3em)
+*Corollary 1.* _Every collapse of three point vortices has $|omega_0| t_c > sqrt(3)\/2$, and for every $epsilon > 0$ there is a collapse with $|omega_0| t_c < sqrt(3)\/2 + epsilon$. Equivalently, each vortex travels more than twice its initial distance from the collision point, and the factor $2$ is sharp._
+
+_Proof._ By the normalization @eq:norm and Theorem 1, $P >= P_- (mu) > sqrt(3)\/2$, and $P_- (mu) -> sqrt(3)\/2$ as $mu -> 0^+$. The path length is $r_0 sqrt(1 + 4 P^2) > 2 r_0$, and no vortex starts at the collision point, since $z_1$, $z_2$ and $z_3$ in @eq:pos never vanish. #h(1fr) $square$
+
+#figure(
+  image("figures/minimal-winding.svg", width: 78%),
+  caption: [The minima $P_- (mu)$ and $P_+ (mu)$ of $P = |omega_0| t_c$ on the two collapsing arcs, as functions of the circulation ratio $mu$. The dots mark $mu = 1\/2$ (Proposition 1). As $mu -> 0$, $P_-$ tends to $sqrt(3)\/2$ and $P_+$ grows without bound.],
+  placement: top,
+) <fig:minima>
+
+The two minima are shown in @fig:minima.
+
+== The ratio $mu = 1\/2$
+
+For $Gamma = (1, 1\/2, -1\/3)$ we have $R = 7\/4$ and $cos theta_0 = -sqrt(7)\/14$, and @eq:Ptheta becomes
+
+$ P(theta) = (14 sin^2 theta + 6 sqrt(7) cos theta + 21) / (2 (14 cos theta + sqrt(7)) sin theta) . $
+
+#v(0.3em)
+*Proposition 1.* _Let $X = 245351 \/ 5201^(3\/2)$ and $S = 7 sqrt(5201) \/ 162$. For $mu = 1\/2$,_
+
+$ P_- = sqrt(605/324 + S cos(1/3 arccos X - (2 pi)/3)) = 1.0647059762712043 dots , $
+
+$ P_+ = sqrt(605/324 + S cos(1/3 arccos X)) = 2.2038550160361327 dots , $
+
+_attained at $cos theta = -0.9243893679 dots$ and $cos theta = 0.6739838839 dots$ respectively. Both are roots of the polynomial $8748 xi^6 - 49005 xi^4 + 27794 xi^2 + 18723$, which is irreducible over $QQ$ and whose real roots are exactly these two numbers and their negatives._
+
+#v(0.3em)
+_Proof._ Here $16 Q(1\/2, xi^2) = 8748 xi^6 - 49005 xi^4 + 27794 xi^2 + 18723$, and by Theorem 1(b) the squares of both minima are roots of this polynomial. As a cubic in $q = xi^2$ it is irreducible over $QQ$ and has positive discriminant, so its roots are real and are given by the trigonometric solution of the cubic, $q_k = 605\/324 + S cos(1\/3 arccos X - 2 pi k \/ 3)$, $k = 0, 1, 2$, with $q_0 approx 4.856977$, $q_1 approx 1.133599$ and $q_2 approx -0.388724$. The critical points are the roots of $K$ in the two intervals of the proof of Theorem 1(a); with $C = (sqrt(7)\/2) cos theta$ they are at the stated values of $cos theta$. Evaluating @eq:Ptheta there gives $P_- = sqrt(q_1)$ and $P_+ = sqrt(q_0)$; the numerical values differ from these square roots by less than $10^(-50)$, far less than the separation of the roots. #h(1fr) $square$
+
+#v(0.3em)
+*Remark 1.* The two minima are conjugate algebraic numbers of degree six. Since the cubic in $q$ is irreducible over $QQ$ and has three real roots, none of its roots is expressible by real radicals (casus irreducibilis), and therefore neither minimum is. The same holds for every rational $mu = a\/b in (0, 1)$ with $b <= 30$: for each of these 277 values, $Q(mu, xi^2)$ is irreducible over $QQ$.
+
+*Remark 2.* For $mu = 1$, that is $Gamma = (1, 1, -1\/2)$, the zero-impulse circle is $|w - 1\/2| = sqrt(3)\/2$. With $w = 1\/2 + (sqrt(3)\/2) e^(i beta)$, $z_1 = 0$ and $z_2 = 1$, the same computation gives $P = (3 - cos 2 beta) \/ (2 sin 2 beta)$ on the collapsing arcs $0 < beta < pi\/2$ and $pi < beta < 3 pi\/2$, which are exchanged by interchanging the two equal vortices ($w -> 1 - w$). Since $P$ has period $pi$ in $beta$, Lemma 1 applies on both arcs and gives $P >= sqrt(2)$, with equality if and only if $cos 2 beta = 1\/3$, in agreement with Theorem 1. This expression for $P$ is a specialization and reparametrization of Gröbli's spiral coefficient [7, Sect. 10].
+
+*Remark 3.* Interchanging the first two vortices and multiplying the circulations by $1\/mu$ maps the family with ratio $mu$ onto the family with ratio $1\/mu$ and exchanges the two orientations, so the arc minima satisfy $P_+ (mu) = P_- (1\/mu)$. For $mu > 1$ the smaller minimum is therefore attained on $cal(A)_+$.
 
 = Two concentric regular polygons
 
-Let $n >= 2$ and $epsilon = e^(2 pi i \/ n)$, and place vortices of circulation $x > 0$ at $z epsilon^k$ and vortices of circulation $-1$ at $zeta epsilon^k$, $k = 0, dots, n - 1$. The motion preserves this symmetry, the center of vorticity is the origin, and, since $sum_(k = 1)^(n - 1) (1 - epsilon^k)^(-1) = (n - 1)\/2$ and $sum_(k = 0)^(n - 1) (z - zeta epsilon^k)^(-1) = n z^(n - 1) \/ (z^n - zeta^n)$, @eq:bs reduces to [2, Eq. (3)]
+In this section $theta$ denotes the relative rotation of two rings. Let $n >= 2$ and $epsilon = e^(2 pi i \/ n)$, and place vortices of circulation $x > 0$ at $z epsilon^k$ and vortices of circulation $-1$ at $zeta epsilon^k$, $k = 0, dots, n - 1$. The motion preserves this symmetry, the center of vorticity is the origin, and, since $sum_(k = 1)^(n - 1) (1 - epsilon^k)^(-1) = (n - 1)\/2$ and $sum_(k = 0)^(n - 1) (z - zeta epsilon^k)^(-1) = n z^(n - 1) \/ (z^n - zeta^n)$, @eq:bs reduces to [2, Eq. (3)]
 
 $ overline(dot(z)) = 1/(2 pi i) ( (x (n - 1))/(2 z) - (n z^(n - 1))/(z^n - zeta^n) ) , quad overline(dot(zeta)) = 1/(2 pi i) ( -(n - 1)/(2 zeta) + (x n zeta^(n - 1))/(zeta^n - z^n) ) . $ <eq:rings>
 
-A collapse requires the angular impulse $n (x |z|^2 - |zeta|^2)$ to vanish, and after a rotation and a dilation we take $z = 1$ and $zeta = sqrt(x) e^(i theta)$. The motion is self-similar exactly when $dot(z) \/ z = dot(zeta) \/ zeta$. Writing $w = zeta^n$, @eq:rings gives
+A collapse requires the angular impulse $n (x |z|^2 - |zeta|^2)$ to vanish, and after a rotation and a dilation we take $z = 1$ and $zeta = sqrt(x) e^(i theta)$. The motion is self-similar exactly when $dot(z) \/ z = dot(zeta) \/ zeta$. Writing $v = zeta^n$, @eq:rings gives
 
-$ overline(dot(z)\/z) = 1/(2 pi i) ( (x (n - 1))/2 - n/(1 - w) ) , quad overline(dot(zeta)\/zeta) = 1/(2 pi i) ( -(n - 1)/(2 x) - (n w)/(1 - w) ) , $
+$ overline(dot(z)\/z) = 1/(2 pi i) ( (x (n - 1))/2 - n/(1 - v) ) , quad overline(dot(zeta)\/zeta) = 1/(2 pi i) ( -(n - 1)/(2 x) - (n v)/(1 - v) ) , $
 
 and these are equal if and only if
 
-$ (n - 1) x^2 - 2 n x + (n - 1) = 0 , $ <eq:circ>
+$ (n - 1) x^2 - 2 n x + (n - 1) = 0 . $ <eq:circ>
 
-a condition that does not involve $theta$; it is the circulation condition of Koiller et al. [7, Sect. 11]. Its roots are $x_n$ and $1\/x_n$, where
+This is the circulation condition of Koiller et al. [8, Sect. 11]. It does not involve $theta$ because it is the classical condition $sum_(i < j) Gamma_i Gamma_j = 0$ for the $2n$ vortices, whose left side here equals $(n\/2)((n - 1) x^2 - 2 n x + (n - 1))$. Its roots are $x_n$ and $1\/x_n$, where
 
-$ x_n = (n + sqrt(2n - 1)) / (n - 1) = e^a , quad cosh a = n / (n - 1) . $
+$ x_n = (n + sqrt(2n - 1)) / (n - 1) = e^eta , quad cosh eta = n / (n - 1) . $
 
-The root $1\/x_n$ gives the same family with the two rings interchanged, as one sees by multiplying the circulations by $-x_n$ and reflecting the configuration, so we take $x = x_n$. Then every $theta$ gives a self-similar motion. Let $rho = x_n^(n\/2) = e^(n a \/ 2) > 1$ and $alpha = n theta$, so that $w = rho e^(i alpha)$. The common value of $overline(kappa)$ is $S \/ (2 pi i)$ with $S = x_n (n - 1)\/2 - n\/(1 - w)$, so $kappa = (op("Im") S + i op("Re") S)\/(2 pi)$, and since $op("Im")(1 - w)^(-1) = rho sin alpha \/ |1 - w|^2$,
+The root $1\/x_n$ gives the same family with the two rings interchanged, as one sees by multiplying the circulations by $-x_n$ and reflecting the configuration, so we take $x = x_n$. Then every $theta$ gives a self-similar motion. Let $rho = x_n^(n\/2) = e^(n eta \/ 2) > 1$ and $alpha = n theta$, so that $v = rho e^(i alpha)$. The common value of $overline(kappa)$ is $S \/ (2 pi i)$ with $S = x_n (n - 1)\/2 - n\/(1 - v)$, so $kappa = (op("Im") S + i op("Re") S)\/(2 pi)$, and since $op("Im")(1 - v)^(-1) = rho sin alpha \/ |1 - v|^2$,
 
-$ op("Re") kappa = - (n rho sin alpha) / (2 pi |1 - w|^2) . $
+$ op("Re") kappa = - (n rho sin alpha) / (2 pi |1 - v|^2) . $
 
-The configuration therefore collapses exactly when $sin n theta > 0$, that is, for $0 < theta < pi\/n$ modulo $2 pi \/ n$. Using $|1 - w|^2 = 1 - 2 rho cos alpha + rho^2$ one finds
+The configuration therefore collapses exactly when $sin n theta > 0$, that is, for $0 < theta < pi\/n$ modulo $2 pi \/ n$. Using $|1 - v|^2 = 1 - 2 rho cos alpha + rho^2$ one finds
 
-$ (|1 - w|^2 op("Re") S) / rho = K_n - ((n - 1) x_n - n) cos alpha , quad K_n = ((n - 1) x_n (rho + rho^(-1))) / 2 - n / rho . $
+$ (|1 - v|^2 op("Re") S) / rho = K_n - ((n - 1) x_n - n) cos alpha , quad K_n = ((n - 1) x_n (rho + rho^(-1))) / 2 - n / rho . $
 
-Here $(n - 1) x_n - n = sqrt(2n - 1)$, and substituting $n = (n - 1) cosh a$ in $n\/rho$ gives $K_n = (n - 1) sinh((n + 2) a \/ 2)$. Moreover
+Here $(n - 1) x_n - n = sqrt(2n - 1)$, and substituting $n = (n - 1) cosh eta$ in $n\/rho$ gives $K_n = (n - 1) sinh((n + 2) eta \/ 2)$. Moreover
 
 $ K_n - sqrt(2n - 1) = ((n - 1) x_n (rho^(1\/2) - rho^(-1\/2))^2) / 2 + n (1 - rho^(-1)) > 0 , $
 
@@ -165,7 +221,7 @@ so $op("Re") S > 0$, and @eq:P gives
 
 $ P = (K_n - sqrt(2n - 1) cos n theta) / (2 n sin n theta) , quad 0 < n theta < pi . $ <eq:Pring>
 
-The collapse rates as functions of the relative angle are given by Koiller et al. [7, Sect. 11]; @eq:Pring expresses their ratio with the constant $K_n$ explicit.
+The collapse rate and the rotation rate as functions of the relative angle are given by Koiller et al. [8, Sect. 11]; @eq:Pring writes their ratio in closed form.
 
 #v(0.3em)
 *Proposition 2.* _For $n >= 2$ the collapsing configurations of two concentric regular $n$-gons with circulations $x_n$ and $-1$ satisfy_
@@ -193,39 +249,44 @@ For small $n$ the constants are as follows.
   )
 ]
 
-For $n = 2$ the configuration is a parallelogram of four vortices, a case treated by Novikov and Sedov [10, Sect. 4]. For $n = 5$ the circulation ratio is rational, $x_5 = 2$, and
+For $n = 2$ the configuration is a parallelogram of four vortices; four-vortex collapse is treated by Novikov and Sedov [12, Sect. 4]. The ratio $x_n$ is rational exactly when $2n - 1$ is a perfect square, and $n = 5$ is the smallest such $n$. There $x_5 = 2$ and
 
 $ P = (127 sqrt(2) - 24 cos 5 theta) / (80 sin 5 theta) >= sqrt(31682) / 80 = 2.2249297741726591 dots . $
 
 = Numerical verification
 
-The results were checked by a computation that does not use the formulas above. It evaluates the Biot–Savart velocities @eq:bs directly, tests self-similarity by comparing $dot(z)_j \/ (z_j - z_c)$ across all vortices, and obtains $P$ from @eq:P. For three vortices the zero-impulse configurations were generated independently of @eq:pos, by fixing two vortices and moving the third around the zero-impulse circle. The computations used 60 significant digits (mpmath) unless stated otherwise, and the algebraic steps in the proofs, including Lemma 2, the factorization of $d(P^2)\/d c$, the resultant and the irreducibility statements, were verified in exact arithmetic (SymPy).
+The results were checked numerically as summarized in @tab:checks. Except where the table says otherwise, the checks evaluate the Biot–Savart velocities @eq:bs directly for configurations built independently of @eq:pos (two vortices fixed and the third moved around the zero-impulse circle), test self-similarity by comparing $dot(z)_j \/ (z_j - z_c)$ across all vortices, and obtain $P$ from @eq:P. Differences at the level of the working precision are reported as such. The algebraic steps in the proofs were verified in exact arithmetic (SymPy): Lemma 2 for all three vortices, @eq:K, the resultant in the proof of Theorem 1(b), the discriminant and the resultant in the proof of Theorem 1(c), the irreducibility of $Q$ and of the 277 specializations in Remark 1, Proposition 1, and the identities of Section 4.
 
-#v(0.3em)
-#block(breakable: false)[#table(
-  columns: (2.3fr, 1.7fr),
-  stroke: 0.4pt,
-  inset: 5pt,
-  [*Check*], [*Result*],
-  [Three vortices: spread of the three quotients $dot(z)_j \/ (z_j - z_c)$ relative to $|kappa|$, 4000 shapes on the zero-impulse circle], [$<= 9 times 10^(-61)$; 2000 of the 4000 shapes collapse],
-  [Local minima of $P$ over the collapsing shapes, refined by solving $d P \/ d phi = 0$ numerically], [two; they differ from the values in Proposition 1 by $<= 2 times 10^(-61)$],
-  [Formula @eq:Ptheta against direct evaluation at the positions @eq:pos, 399 interior points of each arc], [relative difference $<= 10^(-59)$],
-  [Integration of @eq:bs from the minimizing configuration on $cal(A)$ (Taylor method, 30 digits)], [$|z_j - z_c|^2$ follows $1 - t\/t_c$ to relative accuracy $5 times 10^(-31)$ up to $t = 0.9 thin t_c$],
-  [Two rings, $n = 2, dots, 8$: $P$ from @eq:bs against @eq:Pring over the collapsing range, and its numerical minimum against $F_n$], [relative difference $<= 3 times 10^(-58)$; minima agree to $2 times 10^(-60)$],
-)]
+#figure(
+  table(
+    columns: (2.3fr, 1.7fr),
+    stroke: 0.4pt,
+    inset: 5pt,
+    align: left,
+    [*Check*], [*Result*],
+    [Lemma 2 against the Biot–Savart velocities of all three vortices at the positions @eq:pos, 36 random pairs $(mu, theta)$, 50 digits], [relative difference $<= 10^(-50)$],
+    [Arc minima by direct minimization of $P$, 26 values of $mu in (0, 1]$ at 30 digits and 12 rational values at 50 digits], [agree with the roots of $Q(mu, dot)$ to $6 times 10^(-25)$ and $5 times 10^(-45)$],
+    [$mu = 1\/2$: the three quotients over 4000 shapes on the zero-impulse circle, 60 digits], [equal to working precision; 2000 of the 4000 shapes collapse],
+    [$mu = 1\/2$: local minima of $P$ over the collapsing shapes, located numerically], [two, equal to the values of Proposition 1 to working precision],
+    [$mu = 1\/2$: formula for $P(theta)$ against direct evaluation at the positions @eq:pos, 399 interior points of each arc], [relative difference $<= 10^(-59)$],
+    [$mu = 1\/2$: integration of @eq:bs from the minimizing configuration on $cal(A)_-$ (Taylor method, 30 digits)], [$|z_j - z_c|^2$ follows $1 - t\/t_c$ to working precision up to $t = 0.9 thin t_c$],
+    [Two rings, $n = 2, dots, 8$: $P$ from @eq:bs against @eq:Pring over the collapsing range, and its numerical minimum against $F_n$, 60 digits], [relative difference $<= 3 times 10^(-58)$; minima agree to $2 times 10^(-60)$],
+  ),
+  caption: [Numerical checks of the results.],
+  kind: table,
+  placement: top,
+) <tab:checks>
 
 = Discussion
 
-The expression @eq:Ptheta is a special case of the rates of Gröbli [6] and Aref [3], and the content of Proposition 1 is its minimization over the whole collapsing family. What distinguishes unequal circulations is that the two orientations of the triangle are no longer equivalent. For $Gamma_1 = Gamma_2$ the interchange of the equal vortices maps one collapsing arc onto the other and the two branch minima coincide (Remark 3); for $Gamma_1 != Gamma_2$ no symmetry relates the arcs, the minima separate (Remark 2), and a minimization restricted to one orientation of the triangle finds only one of them.
+Lemma 2 is a special case of the rates of Gröbli [7] and Aref [3], and Theorem 1 concerns their minimization. When the two circulations of the same sign differ, $mu < 1$, the two orientations of the triangle are not equivalent and the minima on the two arcs differ, so a minimization restricted to one orientation finds only one of them. The infimum $sqrt(3)\/2$ of Corollary 1 is approached only as $mu -> 0$ and is not attained.
 
-Leoncini, Kuznetsov and Zaslavsky [9] analyze the motion near collapse when two of the vortices are identical. Tavantzis and Ting [12] describe the contracting and the expanding self-similar solutions as one-parameter families and discuss their stability. Krishnamurthy and Stremler [8] relate the angles of the triangle, the circulation ratios, the collapse time and the distance travelled before collapse. Since that distance is $sqrt(1 + 4 P^2)$ times the initial distance from the collision point, Propositions 1 and 2 also give the least value of this ratio.
+Leoncini, Kuznetsov and Zaslavsky [10] analyze the motion near collapse when two of the vortices are identical. Tavantzis and Ting [14] describe, for $sum_(j < k) Gamma_j Gamma_k = 0$, the contracting and the expanding self-similar solutions as one-parameter families and discuss their stability. Krishnamurthy and Stremler [9] relate the interior angles of the triangle, the circulation ratios, the energy, the collapse time and the distance traveled before collapse. Since that distance is $sqrt(1 + 4P^2)$ times the initial distance from the collision point, Corollary 1 shows that it always exceeds twice the initial distance and that the factor $2$ cannot be improved.
 
-For two rings, Aref [2] derived the reduced equations @eq:rings for arbitrary circulations and analyzed in detail equal and opposite circulations, $x = 1$, which do not satisfy @eq:circ. Koiller et al. [7] found the collapsing configurations and their rates; Proposition 2 adds the constant $K_n$ and the minimum over the relative rotation. O'Neil [11] proves that for generic circulations three concentric rings have finitely many relative equilibria and collapse configurations, and Demina and Kudryashov [4] give explicit double-ring configurations formed by two regular polygons with arbitrary circulations. We have not found the minimal values of Propositions 1 and 2 stated in the literature.
-
-The elimination in the proof of Proposition 1 applies to any rational circulation ratio $mu$ and yields a polynomial with rational coefficients satisfied by both branch minima.
+For two rings, Aref [2] derived the reduced equations @eq:rings for arbitrary circulations and analyzed equal and opposite circulations, $x = 1$, which do not satisfy @eq:circ. Koiller et al. [8] found the collapsing configurations and their rates; @eq:Pring writes the ratio of these rates in closed form, and Proposition 2 gives its minimum over the relative rotation. O'Neil [13] proves that for generic circulations three concentric rings have finitely many relative equilibria and collapse configurations. Demina and Kudryashov [5] study relative equilibria, collapse and scattering of point vortices with arbitrary circulations and give explicit double-ring configurations formed by two regular polygons. We have not found the minimal values of Theorem 1 and Propositions 1 and 2, or the bound of Corollary 1, stated in the literature.
 
 #v(0.5em)
-*Data availability.* The verification program and its output are available at https://github.com/SharpMeow/GENChase in the directory `research/`.
+*Data availability.* The programs used for the checks in Section 5 and for @fig:minima, and their output, are in the directory `research/` of the repository https://github.com/SharpMeow/GENChase.
 
 #v(0.3em)
 #text(size: 9pt)[This work was prepared with AI assistance. The author takes full responsibility for its content.]
@@ -237,12 +298,14 @@ The elimination in the proof of Proposition 1 applies to any rational circulatio
 + H. Aref, Motion of three vortices, _Phys. Fluids_ *22* (1979) 393–400.
 + H. Aref, Point vortex motions with a center of symmetry, _Phys. Fluids_ *25* (1982) 2183–2187.
 + H. Aref, Self-similar motion of three point vortices, _Phys. Fluids_ *22* (2010) 057104.
++ H. Aref, N. Rott and H. Thomann, Gröbli's solution of the three-vortex problem, _Annu. Rev. Fluid Mech._ *24* (1992) 1–21.
 + M. V. Demina and N. A. Kudryashov, Rotation, collapse, and scattering of point vortices, _Theor. Comput. Fluid Dyn._ *28* (2014) 357–368.
 + T. Gotoda, Self-similar motions and related relative equilibria in the $N$-point vortex system, _J. Dyn. Differ. Equ._ *33* (2021) 1759–1777.
 + W. Gröbli, _Specielle Probleme über die Bewegung geradliniger paralleler Wirbelfäden_, Inaugural-Dissertation, Göttingen; Zürcher und Furrer, Zürich, 1877.
 + J. Koiller, S. Pinto de Carvalho, R. Rodrigues da Silva and L. C. Gonçalves de Oliveira, On Aref's vortex motions with a symmetry center, _Physica D_ *16* (1985) 27–61.
 + V. S. Krishnamurthy and M. A. Stremler, Finite-time collapse of three point vortices in the plane, _Regul. Chaotic Dyn._ *23* (2018) 530–550.
 + X. Leoncini, L. Kuznetsov and G. M. Zaslavsky, Motion of three vortices near collapse, _Phys. Fluids_ *12* (2000) 1911–1927.
++ P. K. Newton, _The $N$-Vortex Problem: Analytical Techniques_, Applied Mathematical Sciences 145, Springer, 2001.
 + E. A. Novikov and Yu. B. Sedov, Vortex collapse, _Sov. Phys. JETP_ *50* (1979) 297–301 [_Zh. Eksp. Teor. Fiz._ *77* (1979) 588–597].
 + K. A. O'Neil, Relative equilibrium and collapse configurations of heterogeneous vortex triple rings, _Physica D_ *236* (2007) 123–130.
 + J. Tavantzis and L. Ting, The dynamics of three vortices revisited, _Phys. Fluids_ *31* (1988) 1392–1409.
