@@ -1,0 +1,250 @@
+{
+ "Pstar": {
+  "branchMinima": [
+   {
+    "phiDeg": "22.4235437115828",
+    "orientation123": "counterclockwise",
+    "minimum": "1.06470597627120433735498624890810207179"
+   },
+   {
+    "phiDeg": "227.624707414898",
+    "orientation123": "clockwise",
+    "minimum": "2.20385501603613279399410133387360727982"
+   }
+  ],
+  "secondBranchClosedForm": "1.06470597627120433735498624890810207179",
+  "secondBranchSexticResidual": "2.0392e-56",
+  "secondBranchGotodaTheta": "3.53295732132178269766219808093",
+  "secondBranchGotodaThetaDeg": "202.423543711583",
+  "secondBranchCosTheta": "-0.924389367918885972494354153436",
+  "secondBranchPformula": "1.06470597627120433735498624890810207179",
+  "secondBranchRawBiotSavart": "1.06470597627120433735498624890810207179",
+  "secondBranchCollapses": true,
+  "arcA_deg": [
+   180,
+   "259.106605350869"
+  ],
+  "selfSimilarityResidualMaxRel": 8.92776081586671e-61,
+  "angularImpulseResidualMax": 1.8960749674733166e-61,
+  "collapsingSamples": 2000,
+  "totalSamples": 4000,
+  "localMinimaOnCircle": 2,
+  "independentMinimum": "1.06470597627120433735498624890810207179",
+  "closedForm": "2.20385501603613279399410133387360727982",
+  "absDifference": "1.1391",
+  "sexticResidualAtClosedForm": "2.0392e-56",
+  "gotodaFormulaVsRawBiotSavartMaxRel": 8.402174136721273e-60,
+  "secondArcFormulaVsRawBiotSavartMaxRel": 9.711688578373466e-60,
+  "gotoda33QuotientVsRaw": [
+   {
+    "theta": "0.4",
+    "rawBiotSavart": "3.11844934142",
+    "quotient33": "2.2691855088"
+   },
+   {
+    "theta": "0.8",
+    "rawBiotSavart": "2.20710763211",
+    "quotient33": "1.74608288013"
+   },
+   {
+    "theta": "1.2",
+    "rawBiotSavart": "2.70454555852",
+    "quotient33": "2.3497118194"
+   }
+  ],
+  "gotoda33QuotientSampledMin": "1.74096",
+  "secondArcAllCollapsing": true,
+  "gotodaThetaStar": "0.83120794968893198391511275213",
+  "gotodaCosThetaStar": "0.6739838839479822237475678027",
+  "gotodaPAtThetaStar": "2.20385501603613279399410133387360727982",
+  "branchMinimaVsClosedFormsAbsDiff": [
+   "1.5558e-61",
+   "0.0"
+  ]
+ },
+ "branchesVsMu": {
+  "0.5": [
+   "1.0647059762712043374",
+   "2.203855016036132794"
+  ],
+  "2": [
+   "1.0647059762712043374",
+   "2.203855016036132794"
+  ],
+  "0.9": [
+   "1.3399324903011640487",
+   "1.4983145790839310592"
+  ],
+  "0.99": [
+   "1.4067203029745222221",
+   "1.421796102849495094"
+  ],
+  "0.999": [
+   "1.4134636293609734189",
+   "1.4149643801534534111"
+  ],
+  "1": [
+   "1.4142135623730950488",
+   "1.4142135623730950488"
+  ],
+  "sqrt2": "1.4142135623730950488"
+ },
+ "Fn": {
+  "2": {
+   "generalProductFormulaMaxRel": 6.272721433878312e-59,
+   "selfSimilarityResidualMaxRel": 4.4505064821807114e-61,
+   "allCollapsing": true,
+   "independentMinimum": "1.6770509831248422723068802515484572",
+   "formula": "1.6770509831248422723068802515484572",
+   "absDifference": "0.0",
+   "cosNThetaStar": "0.25",
+   "statedRadical": "1.6770509831248422723068802515484572",
+   "radicalVsIndependent": "2.342e-35"
+  },
+  "3": {
+   "generalProductFormulaMaxRel": 9.208543321338047e-59,
+   "selfSimilarityResidualMaxRel": 5.091376476536e-61,
+   "allCollapsing": true,
+   "independentMinimum": "1.7950549357115013437502368305134432",
+   "formula": "1.7950549357115013437502368305134432",
+   "absDifference": "6.223e-61",
+   "cosNThetaStar": "0.203278907045435426946288515339",
+   "statedRadical": "1.7950549357115013437502368305134432",
+   "radicalVsIndependent": "1.4568e-35"
+  },
+  "4": {
+   "generalProductFormulaMaxRel": 6.569378389387112e-59,
+   "selfSimilarityResidualMaxRel": 6.325286244771962e-61,
+   "allCollapsing": true,
+   "independentMinimum": "1.9938176049918178616381616548588797",
+   "formula": "1.9938176049918178616381616548588797",
+   "absDifference": "6.223e-61",
+   "cosNThetaStar": "0.163636363636363636363636363636",
+   "statedRadical": "1.9938176049918178616381616548588797",
+   "radicalVsIndependent": "2.5685e-35"
+  },
+  "5": {
+   "generalProductFormulaMaxRel": 9.094294651029014e-59,
+   "selfSimilarityResidualMaxRel": 6.310441817706496e-61,
+   "allCollapsing": true,
+   "independentMinimum": "2.2249297741726591402902833420562199",
+   "formula": "2.2249297741726591402902833420562199",
+   "absDifference": "9.3345e-61",
+   "cosNThetaStar": "0.133626478334465673902521769217",
+   "pentagonCurveVsClosedMaxRel": 9.094294651029014e-59,
+   "closedF5": "2.2249297741726591402902833420562199",
+   "closedCos5ThetaStar": "0.133626478334465673902521769217",
+   "statedRadical": "2.2249297741726591402902833420562199",
+   "radicalVsIndependent": "4.0613e-35"
+  },
+  "6": {
+   "generalProductFormulaMaxRel": 1.4076505809783314e-58,
+   "selfSimilarityResidualMaxRel": 8.412092876368668e-61,
+   "allCollapsing": true,
+   "independentMinimum": "2.4787406300601745514429821837530752",
+   "formula": "2.4787406300601745514429821837530752",
+   "absDifference": "6.223e-61",
+   "cosNThetaStar": "0.110815602836879432624113475177"
+  },
+  "7": {
+   "generalProductFormulaMaxRel": 2.1473022564413245e-58,
+   "selfSimilarityResidualMaxRel": 8.916189742648252e-61,
+   "allCollapsing": true,
+   "independentMinimum": "2.7525388202496655843995819547573588",
+   "formula": "2.7525388202496655843995819547573588",
+   "absDifference": "9.3345e-61",
+   "cosNThetaStar": "0.0931574287053904704739591791515"
+  },
+  "8": {
+   "generalProductFormulaMaxRel": 1.989210586949428e-58,
+   "selfSimilarityResidualMaxRel": 8.429563639017116e-61,
+   "allCollapsing": true,
+   "independentMinimum": "3.0456530928982954306395855745604352",
+   "formula": "3.0456530928982954306395855745604352",
+   "absDifference": "1.2446e-60",
+   "cosNThetaStar": "0.0792278501897376670516416432929"
+  }
+ },
+ "exact": {
+  "rootsInsideSecondArc": 1,
+  "numeratorAtSecondArcStart": "21 - 6*sqrt(7)",
+  "numeratorAtSecondArcStartPositive": true,
+  "criticalCubicMatchesDerivative": "7*(-14*sqrt(7)*c**3 - 112*c**2 - sqrt(7)*c + 64)/(2*(98*c**3 + 112*sqrt(7)*c**2 + 7*c - 64*sqrt(7)))",
+  "realRootsOfRationalCubicU": [
+   "-1.04821276606945972611769312200",
+   "-0.349386340300794394073391946872",
+   "0.254741963513111263048227926012"
+  ],
+  "rootsInsideCollapsingArc": 1,
+  "numeratorAtTheta0": "6*sqrt(7) + 21",
+  "numeratorAtArcEnd": "63/2",
+  "resultantFactors": [
+   [
+    "8748*P**6 - 49005*P**4 + 27794*P**2 + 18723",
+    2
+   ]
+  ],
+  "sexticIrreducibleOverQ": true,
+  "cubicIrreducibleOverQ": true,
+  "cubicDiscriminantPositive": true,
+  "sexticIrreducibleOverQsqrt7": true,
+  "K5": "127*sqrt(2)/8",
+  "K5equals127sqrt2over8": true,
+  "F5equalsSqrt31682over80": true,
+  "boundSqrtA2minusB2over80": "sqrt(31682)/80",
+  "minimizerCos": "12*sqrt(2)/127"
+ },
+ "symbolic": {
+  "lemma1AllKappasEqualClaim": true,
+  "shapeRatioIsCircle": true,
+  "angularImpulseZero": true,
+  "ringSelfSimilarityCondition": "(n*x**2 - 2*n*x + n - x**2 - 1)/(2*x)"
+ },
+ "certified": {
+  "criticalCubicSigns": {
+   "0.67": -1,
+   "0.68": 1,
+   "-0.93": 1,
+   "-0.92": -1
+  },
+  "signChangeOnArcPlus": true,
+  "signChangeOnArcMinus": true,
+  "P2EnclosureArcPlus": [
+   4.700765191132742,
+   5.019631171620475
+  ],
+  "P2EnclosureArcMinus": [
+   0.999112473900335,
+   1.2902787351479972
+  ],
+  "rootsInsideArcPlus": [
+   4.8569769317076235
+  ],
+  "rootsInsideArcMinus": [
+   1.1335988159076182
+  ]
+ },
+ "timeIntegration": {
+  "predictedTc": "4.1839925778709329124",
+  "omega0": "0.25447128704348485708",
+  "omega0TimesTc": "1.0647059762712043374",
+  "checks": [
+   {
+    "fractionOfTc": 0.25,
+    "relErrSize2": 1.314768175368353e-31
+   },
+   {
+    "fractionOfTc": 0.5,
+    "relErrSize2": 1.9721522630525295e-31
+   },
+   {
+    "fractionOfTc": 0.75,
+    "relErrSize2": 3.944304526105059e-31
+   },
+   {
+    "fractionOfTc": 0.9,
+    "relErrSize2": 4.930380657631324e-31
+   }
+  ]
+ }
+}

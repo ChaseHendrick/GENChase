@@ -32,6 +32,8 @@ Minpoly over ℚ: 8748 x⁶ − 49005 x⁴ + 27794 x² + 18723 = 0 (casus irredu
 
 **Correction.** The adjacent-open / skip-table figure ≈1.741 used Gotoda (3.3) B, which disagrees with Prop. 2.1 when Γ₁ ≠ Γ₂. That witness is withdrawn. The corrected floor is ~2.204.
 
+**Second correction (2026-09-23, later).** P⋆ ≈ 2.2039 is the minimum on Gotoda’s arc 0 < θ < θ₀ only. For Γ₁ ≠ Γ₂ the L = 0 family has a second collapsing branch, the opposite triangle orientation (π < θ < 2π − θ₀ in the same parametrization), whose minimum is lower: P_min ≈ 1.064705976271204, the other positive root of the same sextic, = √(605/324 + (7√5201)/162 · cos(⅓ arccos(245351√5201 / 5201²) − 2π/3)). So the μ = 1/2 floor is P_min, not P⋆. The critical point was in the earlier derivation (cos θ ≈ −0.924) but was set aside as expanding; that holds only for sin θ > 0. Independent Biot–Savart validation, including direct time integration and the μ → 1 limit (both branches → √2): `research/verify_floors_independent.py`; note: `research/artifacts/unequal-mu-n5-floors-2026-09-23.pdf`.
+
 **Status.** Proved candidate; priority unconfirmed. Same classical L = 0 family as √2. RESEARCH already forbids stamping μ≠1 as a new identity row. See `identities/sources/unequal-mu-half-draft-2026-09-23.md`, `identities/sources/unequal-mu-half-Pstar-closed-2026-09-23.md`, `tools/verify-unequal-mu-half.js`.
 
 ### B. Explicit n = 5 polygon / two-ring floor
@@ -52,6 +54,26 @@ Full Physica D 16 (1985) 27–61 was reconstructed and read on this box (35 page
 ### D. Open-web / OA sweep (same day)
 
 Live indexed searches did not hit the radicals, P⋆ closed form, or equality angles as prior statements. Absence of an OA hit is **not** novelty. Details: `identities/sources/internet-search-2026-09-23.md`, `identities/sources/internet-search-live-2026-09-23.md`.
+
+### E. Paper v1 and citation check (same day)
+
+The two results are written up as one paper, `research/unequal-mu-n5-floors-2026-09-23.typ` (PDF in `research/artifacts/`), with self-contained proofs. It also proves the equal-circulation case: for Γ = (1, 1, −1/2), P = (3 − cos 2φ)/(2 sin 2φ) ≥ √2 on both collapsing arcs, a reparametrization of Gröbli's spiral coefficient. The two-ring product is written as (K_n − √(2n − 1) cos nθ)/(2n sin nθ) with K_n = (n − 1) sinh((n + 2)a/2), cosh a = n/(n − 1); Koiller et al. §11 already has the circulation condition and the rates as functions of the angle, so only the constant and the minimum are claimed.
+
+Citation check: Gotoda is J. Dyn. Differ. Equ. 33 (2021) 1759–1777. Gröbli's dissertation was a Göttingen degree printed in Zürich (1877). Tavantzis–Ting (1988) give the contracting and expanding K = 0 families and their stability. Krishnamurthy–Stremler (2018) relate the collapse time and the distance travelled before collapse to the triangle; that distance is √(1 + 4P²) times the initial distance. **Demina–Kudryashov, TCFD 28 (2014) 357–368, is the closest prior work:** its abstract gives explicit double-ring configurations of two regular polygons with arbitrary circulations. Its full text is unread, and it must be read before any submission claims the ring minimum. Searches for 1.0647, 2.2039, the sextic, √31682/80 and 2.22493 found nothing but this repository. Many publisher and archive hosts were blocked from the session, so this is weak evidence of absence.
+
+### F. General circulation ratio and the √3/2 bound (same day)
+
+The paper now covers every circulation ratio. Any self-similar three-vortex collapse normalizes to Γ = (1, μ, −μ/(1+μ)) with 0 < μ ≤ 1. For each μ, each collapsing arc (one per orientation of the triangle) has one critical point of P = |ω₀|t_c, and the squared minima are roots of an explicit cubic Q(μ, y), irreducible over ℚ[μ, y], which gives the μ = 1/2 sextic at μ = 1/2 and (y − 2)² at μ = 1. The least winding P₋(μ) increases strictly from √3/2 (μ → 0, not attained) to √2 (μ = 1). So every self-similar three-vortex collapse has |ω₀|t_c > √3/2, sharp. Equivalently, each vortex travels more than twice its initial distance from the collision point. Proofs are in the paper. Checks:
+
+- `research/verify_general_mu.py`: 94 checks, with output in `research/artifacts/`.
+- An independent re-derivation in the session: κ, P, K, the resultant, the discriminant, Res_y(Q, Q_μ), and irreducibility for all 277 μ = a/b with b ≤ 30.
+- An adversarial referee pass on the μ = 1/2 version.
+
+References added and checked: Aref, Rott and Thomann, Annu. Rev. Fluid Mech. 24 (1992) 1–21; Newton, *The N-Vortex Problem*, AMS 145 (2001). Before claiming priority, read three papers in full:
+
+- **Aref 2010.** It gives both rates, so P is their ratio.
+- **Krishnamurthy–Stremler 2018.** It covers distance travelled before collapse, which is √(1 + 4P²) × the initial distance. An earlier read of §3.5 noted a numerical observation that this normalized distance exceeds 2. That observation is exactly what the √3/2 bound proves, so check it and cite it.
+- **Demina–Kudryashov 2014.**
 
 ## Do this, do not do that
 
@@ -139,7 +161,7 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Five-vortex NS, ρ = d₁²/d₂² = 2 | Reciprocal of the quincunx. Same product. Already in IDENTITIES.md. |
 | Five-vortex NS, ρ = 3 | Recovers the three-vortex bound identically. Already not claimed. |
 | Five-vortex NS, ρ = 4 | ω t_c = 5(35 − 8 cos 2θ)/(96 sin 2θ) ≥ 5√1161 / 96. A nested radical, not a floor like √2. Not claimed. |
-| Three-vortex L = 0, Γ = (1, μ, −μ/(1+μ)), μ ≠ 1 | Prop. 2.1 / 2π kernel product (not Gotoda (3.3) B). For μ = 1/2: P = (14 sin²θ + 6√7 cosθ + 21) / [2(14 cosθ + √7) sinθ] ≥ P⋆ ≈ 2.203855 with closed trig/Cardano form (2026-09-23). Older ~1.741 witness from Gotoda (3.3) B is withdrawn. Same L = 0 family as √2. Proved candidate; priority unconfirmed. Do not stamp as a new identity row. |
+| Three-vortex L = 0, Γ = (1, μ, −μ/(1+μ)), μ ≠ 1 | Prop. 2.1 / 2π kernel product (not Gotoda (3.3) B). For μ = 1/2: P = (14 sin²θ + 6√7 cosθ + 21) / [2(14 cosθ + √7) sinθ] ≥ P⋆ ≈ 2.203855 with closed trig/Cardano form (2026-09-23) on Gotoda’s arc; the opposite-orientation branch has the lower global floor P_min ≈ 1.064705976271204 (same sextic; see §A second correction). Older ~1.741 witness from Gotoda (3.3) B is withdrawn. Same L = 0 family as √2. Proved candidate; priority unconfirmed. Do not stamp as a new identity row. |
 | Kite, non-parallelogram isosceles trapezoid, equilateral plus interior | Biot-Savart scan: no self-similar L = 0 collapsing family (similarity residual never jointly small with I = 0 and finite positive τ). |
 | Seven-vortex Gotoda (4.4), Γ = (1,1,−2,−2,−2,−2,3/2) | Numerical H-A curves. O'Neil 1987 and Kudela 2014: existence and numerical positions, not A(θ), B(θ). |
 | Trapezoidal / kite four-vortex papers | Relative equilibria (central configurations), not self-similar collapse. |
@@ -271,7 +293,7 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Hicks doughnut | Hollow ring with swirl. Thin-core series (Hicks 1884; Saffman 1970). Norbury–Fraenkel already logged. |
 | Fukumoto–Miyazaki | Filament + axial flow. Permanent form = elastica (already logged). Hasimoto already in the studio. |
 | Coaxial leapfrog rings | Helmholtz 1858. 3D Euler existence: CPAM 2024; García–Hassainia–Hmidi arXiv:2603.21644 (Mar 2026). KAM/Nash–Moser, not an algebraic floor. Love leapfrog already logged. |
-| 3-vortex μ≠1 cubic | **Corrected 2026-09-23.** Gotoda (3.3) B disagreed with Prop. 2.1 when Γ₁≠Γ₂; the ~1.741 |B/2A| witness is withdrawn. Corrected μ=1/2 floor is P⋆≈2.203855 (closed form in sources/). μ=1 still recovers √2. Same family as the three-vortex bound, not a new row. Do not claim. |
+| 3-vortex μ≠1 cubic | **Corrected 2026-09-23.** Gotoda (3.3) B disagreed with Prop. 2.1 when Γ₁≠Γ₂; the ~1.741 |B/2A| witness is withdrawn. Corrected μ=1/2 floor on Gotoda’s arc is P⋆≈2.203855; the global floor over both collapsing orientations is P_min ≈ 1.064705976271204 (same sextic; §A second correction). μ=1 still recovers √2. Same family as the three-vortex bound, not a new row. Do not claim. |
 | Gallay–Sverak 2026 | arXiv:2609.10847 (9 Sep 2026). Hopf/ζ reduction, new energy inequalities H(ζ_A)>H(ζ_B), near-collision regularization. Not a two-rate product min. Cite; do not claim. |
 | Rott 1994 body | Still AIP-blocked. Abstract: winding number = ratio of two periods; "beyond a certain level of the analysis, still the more practical method of solution" is step-by-step integration. No unpublished algebraic interior min extracted. Leapfrog already logged. |
 | Möbius / Klein vortices | Balabanova–Montaldi Physica D 488, 135084 (Apr 2026); arXiv:2202.06160v3. One/two vortex motion, N-ring RE with coth/tanh angular velocities. Two-vortex fixed equilibria: nested-radical y. No collapse product. Catenoid coth already logged. |

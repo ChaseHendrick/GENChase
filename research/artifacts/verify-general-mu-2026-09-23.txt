@@ -1,0 +1,315 @@
+
+==============================================================================
+1. Zero-impulse circle, parametrization, exact kappa  [exact, sympy]
+==============================================================================
+  PASS 1a impulse(z1=0,z2=1,z3=w) = -(mu/(1+mu))[(1+mu)|w|^2 - 2 mu Re w - 1]
+  PASS 1b circle: |w - mu/(1+mu)|^2 = R/(1+mu)^2
+  PASS 1c center of vorticity sum G_j z_j = 0
+  PASS 1c shape ratio w = mu/(1+mu) - (sqrt R/(1+mu)) e^{i theta}
+  PASS 1c positions have zero angular impulse
+  PASS 1d kappa_1 == i(1+mu)^3/(2 pi sqrtR) (sqrtR+(1-mu)E)/((sqrtR-mu E)(sqrtR+E))
+  PASS 1d kappa_2 == i(1+mu)^3/(2 pi sqrtR) (sqrtR+(1-mu)E)/((sqrtR-mu E)(sqrtR+E))
+  PASS 1d kappa_3 == i(1+mu)^3/(2 pi sqrtR) (sqrtR+(1-mu)E)/((sqrtR-mu E)(sqrtR+E))
+  PASS 1e mu=1/2: kappa reproduces 27i/(4 sqrt7 pi)(sqrt7+E)/((sqrt7-E)(sqrt7+2E))
+  PASS 1e mu=1/2: positions reproduce the known ones
+  PASS 1f f := (q+(1-mu)E)/((q-mu E)(q+E)) = [N(C)/q + i mu s M(C)]/D(C),  C = q cos(theta)
+  PASS 1f D(C) = |q - mu E|^2 |q + E|^2
+  PASS 1f P = N(qc)/(2 mu q s M(qc)) equals [2R(1-mu+mu^2) + 2mu R s^2 + (1-mu)(2+mu+2mu^2) sqrtR c]/[2 mu sqrtR s (1-mu+2 sqrtR c)]
+  PASS 1f mu=1/2: P reproduces (14 s^2 + 6 sqrt7 c + 21)/(2(14c + sqrt7) s)
+
+==============================================================================
+2. Collapsing arcs and the critical-point equation  [exact, sympy]
+==============================================================================
+  PASS 2a R + mu^2 - 2 mu q = (q - mu)^2  and  R + 1 - 2q = (q - 1)^2  (so D > 0 on |C| <= q)
+  PASS 2a q > max(1, mu):  q^2 - 1 = mu(1+mu) > 0,  q^2 - mu^2 = 1 + mu > 0
+  PASS 2b N(+-q) = 2R(1-mu+mu^2) +- (1-mu)(2+mu+2mu^2) q
+  PASS 2b N(q) N(-q) = 3 mu^2 (1+mu)^2 R > 0 and N(q)+N(-q) = 4 R (1-mu+mu^2) > 0 :: N(q)N(-q) = 3*mu**2*(mu + 1)**2*(mu**2 + mu + 1)
+  PASS 2b N is concave in C (coefficient of C^2 is -2 mu), hence N > 0 on [-q, q]
+  PASS 2b N(C0) = (1+mu)^2 R at C0 = (mu-1)/2 (the equilateral point)
+  PASS 2c R - C0^2 = 3(1+mu)^2/4 > 0, so c0 = cos(theta0) = (mu-1)/(2 sqrtR) lies in (-1, 1)
+  PASS 2c (2q)^2 - (1-mu)^2 = 3(1+mu)^2 > 0: M(q) > 0 > M(-q)
+  PASS 2c theta0: sin(theta0) = sqrt3 (1+mu)/(2 sqrtR)
+  PASS 2c theta = theta0 is the equilateral triangle w = e^{-i pi/3}; 2pi - theta0 is w = e^{+i pi/3}
+  PASS 2c theta = 0, pi are collinear: w = (mu -+ sqrtR)/(1+mu) real
+   collapsing arcs: A+ = (0, theta0), A- = (pi, 2pi - theta0), cos theta0 = (mu-1)/(2 sqrt R)
+   on both arcs Im kappa = (1+mu)^3 N/(2 pi R D) > 0 (same sense of rotation) and
+   P^2 = N(C)^2 / (4 mu^2 (R - C^2) M(C)^2),  one rational function of C for BOTH arcs.
+  PASS 2d d(P^2)/dC = 2 N H / (4 mu^2 (R-C^2)^2 M^3),  H := N'(R-C^2)M + N C M - N (R-C^2) M'
+  PASS 2d H(C) = R * K(C),  K(C) := 4(1-mu)C^3 + 4(2mu^2-mu+2)C^2 + 2(1-mu)^3 C - (2mu^4+7mu^3+6mu^2+7mu+2) :: H coeffs (C^3..C^0): [-4*(mu - 1)*(mu**2 + mu + 1), 4*(mu**2 + mu + 1)*(2*mu**2 - mu + 2), -2*(mu - 1)**3*(mu**2 + mu + 1), -(mu**2 + mu + 1)*(2*mu**4 + 7*mu**3 + 6*mu**2 + 7*mu + 2)]
+  PASS 2d deg_C K = 3 for mu != 1 (lead 4(1-mu)); at mu = 1, K = 12C^2 - 24 (quadratic)
+  PASS 2d H(+-q) = +-q N(+-q) M(+-q)  (so H(q) > 0, H(-q) > 0)
+  PASS 2d H(C0) = -2 N(C0)(R - C0^2) = -(3/2)(1+mu)^4 R < 0
+  PASS 2e K(sqrtR c) = 4(1-mu) R^{3/2} c^3 + 4(2mu^2-mu+2) R c^2 + 2(1-mu)^3 sqrtR c - (2mu^4+7mu^3+6mu^2+7mu+2)
+  PASS 2e mu=1/2: 16 sqrt7 * K(sqrt7 c/2) = 196c^3 + 224 sqrt7 c^2 + 14c - 128 sqrt7
+   Proof of "exactly one critical point on each arc" (all mu > 0):
+   P > 0 on the arcs (N > 0), so dP/dtheta = 0 <=> d(P^2)/dC = 0 (dC/dtheta = -q s != 0)
+   <=> H(C) = 0 (N > 0, M != 0, R - C^2 > 0 inside the arcs).  Signs: H(-q) > 0, H(C0) < 0,
+   H(q) > 0.  IVT: a root in (-q, C0) [arc A-] and a root in (C0, q) [arc A+].
+   mu < 1: lead > 0, H(-inf) = -inf < 0 < H(-q): third root in (-inf, -q).
+   mu > 1: lead < 0, H(+inf) = -inf < 0 < H(q): third root in (q, +inf).
+   mu = 1: H = 12(C^2 - 2), roots +-sqrt2, one per arc.  deg H <= 3  =>  exactly one
+   (simple) root per arc; P -> +inf at both ends of each arc, so it is the arc minimum.
+  PASS 2f sign pattern numerically sane at mu in {0.1, 0.5, 2, 7}
+  PASS 2g closed form: dP/dtheta = -K(sqrtR cos theta) / (2 mu sin^2(theta) (1 - mu + 2 sqrtR cos theta)^2)
+
+==============================================================================
+3. Elimination: Q(mu, y) with y = P^2  [exact, sympy]
+==============================================================================
+  PASS 3a Res_C(H, 4mu^2 y (R-C^2) M^2 - N^2) = const(mu) * Q(mu, y), Q as stated :: ratio = -48*mu**4*(mu + 1)**8*(mu**2 + mu + 1)**4
+  PASS 3b Q is irreducible in Q[mu, y] (primitive in y, so irreducible over Q(mu))
+  PASS 3c Q(1/2, P^2) = (8748 P^6 - 49005 P^4 + 27794 P^2 + 18723)/16
+  PASS 3c Q(1, y) = 6912 (y - 2)^2 (4y + 1)  (double root y = 2: both minima sqrt 2)
+  PASS 3c Q(0, y) = -16(4y - 3)
+  PASS 3d palindromic: mu^12 Q(1/mu, y) = Q(mu, y)
+  PASS 3d Q = mu^6 Qu(u, y),  u = R/mu = mu + 1 + 1/mu,  Qu as stated
+  PASS 3e disc_y Q = 28311552 mu^4 (mu-1)^2 (mu+1)^4 (mu+2)^2 (2mu+1)^2 R^6 (4mu^6+12mu^5+51mu^4+82mu^3+51mu^2+12mu+4)^3
+   => for mu > 0 the three roots of Q are distinct except at mu = 1 (only positive zero).
+  PASS 3e constant term 3 A0^2 > 0 and leading 1728 mu^4 (1+mu)^4 > 0: y1 y2 y3 < 0
+   The roots of Q are y_i = N(C_i)^2/(4 mu^2 (R - C_i^2) M(C_i)^2) over the 3 roots C_i of H
+   (Res = lc(H)^4 prod_i F(C_i, y), F linear in y).  Two C_i lie in the arcs (y > 0, the squared
+   branch minima); the third has |C| > q, so its y is < 0 (y = 0 is not a root).  Hence
+   Q_mu(P) := Q(mu, P^2) vanishes at both branch minima, and its other roots are their
+   negatives and +-i sqrt|y3|.
+
+==============================================================================
+4. Exact asymptotics  [exact series from Q, rigorous by the implicit function theorem]
+==============================================================================
+   y_-(mu) = P_-^2 = 45*mu**6/8 - 9*mu**5/4 + 9*mu**4/4 - 9*mu**3/4 + 9*mu**2/4 + 3/4 + O(mu^7)
+   P_-(mu) = 3*sqrt(3)*mu**4/16 - 3*sqrt(3)*mu**3/4 + 3*sqrt(3)*mu**2/4 + sqrt(3)/2 + O(mu^5)
+  PASS 4a P_-(mu) = sqrt3/2 + (3 sqrt3/4) mu^2 - (3 sqrt3/4) mu^3 + O(mu^4)
+  PASS 4b mu^2 Q(mu, Y/mu^2) is polynomial; at mu = 0 it is 64 Y (27Y^2 - 18Y - 1)
+   mu^2 y_+(mu) = [1/3 + 2*sqrt(3)/9, 1/3 + 2*sqrt(3)/9, 1/4 + sqrt(3)/6, 0, -1/8 + 5*sqrt(3)/48] (coeffs of mu^0..mu^4)
+   mu P_+(mu) = sqrt(3+2sqrt3)/3 * (1 + 1/2 mu + 1/4 mu^2 + -1/8 mu^3) + O(mu^4)
+  PASS 4b P_+(mu) = (sqrt(3+2sqrt3)/3) (1/mu + 1/2 + mu/4 - mu^2/8 + O(mu^3))
+   (the other root of 27Y^2-18Y-1, Y = (3-2sqrt3)/9 < 0, is the negative root y3 ~ Y/mu^2)
+  PASS 4c K(0, C) = 2(C+1)(2C^2+2C-1): minimizers tend to C_- = -1, C_+ = (sqrt3-1)/2; 3rd root -> -(1+sqrt3)/2
+   C_-(mu) = sqrtR cos(theta_-*) = -3*mu**4/2 + 3*mu**3/4 - mu/2 - 1 + O(mu^5)
+   |z3 - z2|^2/|z2 - z1|^2 = |w - 1|^2 = (R + 1 + 2C)/(1+mu)^2 = -3*mu**4 - mu**3/2 + mu**2 + O(mu^5)
+  PASS 4c at the A- minimizer |z3 - z2|/|z2 - z1| = mu + O(mu^2): the weak pair (2,3) closes up
+  PASS 4d at mu = 1+eps: Q(1+eps, 2+alpha eps) has no eps^0, eps^1 terms
+   eps^2 coefficient: 31104*(2*alpha**2 - 9)  -> alpha = [-3*sqrt(2)/2, 3*sqrt(2)/2]
+   P_(branch)(1+eps) = sqrt2 + alpha/(2 sqrt2) eps + O(eps^2), slopes dP/dmu at mu = 1: [-3/4, 3/4]
+  PASS 4d alpha = +-3 sqrt2/2, so the branch slopes at mu = 1 are dP/dmu = +-3/4
+
+==============================================================================
+5. Direct Biot-Savart at 50 digits  [numerical, mpmath]
+==============================================================================
+  PASS 5a 36 (mu, theta) pairs: the three Biot-Savart kappa_j equal the product formula :: max rel dev 9.47e-51
+  PASS 5a on the collapsing ones, P from kappa equals the closed-form P(theta; mu) :: max abs dev 1.37e-48
+  PASS 5a mu = 1/2: P(theta) matches the known formula at theta = 0.4 and 3.7
+  PASS 5b 30 zero-impulse triangles built independently (polar solve + random similarity): kappa_j coincide and equal the formula (scaled by 1/|z3-zc|^2) :: max dev 1.28e-49
+   ODE mu=0.3 arc A+ theta=0.936103: t_c=13.36305566, omega0=0.2473617665, P=3.305509054, |z(0.9 t_c) - self-similar| = 6.4e-11
+   ODE mu=0.3 arc A- theta=3.77629: t_c=7.960475419, omega0=0.21018835, P=1.67319919382, |z(0.9 t_c) - self-similar| = 2.89e-12
+   ODE mu=2 arc A+ theta=0.690335: t_c=2.692602034, omega0=0.516650666, P=1.39113463433, |z(0.9 t_c) - self-similar| = 1.34e-12
+   ODE mu=2 arc A- theta=4.02205: t_c=3.752687075, omega0=0.5893985448, P=2.21182830115, |z(0.9 t_c) - self-similar| = 9.86e-12
+  PASS 5c RK4 integration to 0.9 t_c follows z(0)(1 + 2 Re(k0) t)^{k0/(2 Re k0)} :: max dev 6.4e-11
+
+==============================================================================
+6. Branch minima by direct minimization; rational mu factorization table
+==============================================================================
+   mu = 1/2 direct:  P_+ (arc (0,theta0)) = 2.203855016036132794,  P_- (arc (pi, 2pi-theta0)) = 1.0647059762712043374
+  PASS 6a mu = 1/2 direct minima = 2.2038550160361327, 1.0647059762712043
+  PASS 6a mu = 0.9 direct (P_+, P_-) = (1.4983146, 1.3399325) vs stated (1.4983, 1.3399)
+  PASS 6a mu = 0.99 direct (P_+, P_-) = (1.4217961, 1.4067203) vs stated (1.4218, 1.4067)
+  PASS 6a mu = 0.999 direct (P_+, P_-) = (1.4149644, 1.4134636) vs stated (1.41496, 1.41346)
+
+   mu = 1/3
+     Q_mu(y) (primitive) = 2239488*y**3 - 21098880*y**2 + 3891164*y + 13091763
+     factor over Q in y: irreducible cubic
+     sextic in P = Q_mu(P^2): irreducible over Q;  over Q(sqrt(13)/3): irreducible
+     direct min  P_+ (arc (0,th0)) = 3.02688130700195923291706   P_- (arc (pi,2pi-th0)) = 0.9689576846728665656774866
+     positive roots of sextic: ['0.9689576846728665656774866', '3.02688130700195923291706'];  |direct - root| <= 4.64e-45
+  PASS 6b mu=1/3: Q_mu irreducible over Q (both in y and as sextic in P); minima = its 2 positive roots
+
+   mu = 2/3
+     Q_mu(y) (primitive) = 5467500*y**3 - 23678325*y**2 + 17042636*y + 7170348
+     factor over Q in y: irreducible cubic
+     sextic in P = Q_mu(P^2): irreducible over Q;  over Q(sqrt(19)/3): irreducible
+     direct min  P_+ (arc (0,th0)) = 1.801661560847630888135272   P_- (arc (pi,2pi-th0)) = 1.173865184274806817832818
+     positive roots of sextic: ['1.173865184274806817832818', '1.801661560847630888135272'];  |direct - root| <= 1.35e-45
+  PASS 6b mu=2/3: Q_mu irreducible over Q (both in y and as sextic in P); minima = its 2 positive roots
+
+   mu = 1/4
+     Q_mu(y) (primitive) = 640000*y**3 - 9398400*y**2 - 2707692*y + 8922169
+     factor over Q in y: irreducible cubic
+     sextic in P = Q_mu(P^2): irreducible over Q;  over Q(sqrt(21)/4): irreducible
+     direct min  P_+ (arc (0,th0)) = 3.8608400097839601529755   P_- (arc (pi,2pi-th0)) = 0.9288901008400102394261449
+     positive roots of sextic: ['0.9288901008400102394261449', '3.8608400097839601529755'];  |direct - root| <= 2.99e-45
+  PASS 6b mu=1/4: Q_mu irreducible over Q (both in y and as sextic in P); minima = its 2 positive roots
+
+   mu = 3/4
+     Q_mu(y) (primitive) = 5377010688*y**3 - 21700586880*y**2 + 16478628764*y + 6172860963
+     factor over Q in y: irreducible cubic
+     sextic in P = Q_mu(P^2): irreducible over Q;  over Q(sqrt(37)/4): irreducible
+     direct min  P_+ (arc (0,th0)) = 1.670262523987156732498958   P_- (arc (pi,2pi-th0)) = 1.231767078572963233863514
+     positive roots of sextic: ['1.231767078572963233863514', '1.670262523987156732498958'];  |direct - root| <= 2.83e-46
+  PASS 6b mu=3/4: Q_mu irreducible over Q (both in y and as sextic in P); minima = its 2 positive roots
+
+   mu = 2/5
+     Q_mu(y) (primitive) = 6002500*y**3 - 43941975*y**2 + 16988358*y + 21501769
+     factor over Q in y: irreducible cubic
+     sextic in P = Q_mu(P^2): irreducible over Q;  over Q(sqrt(39)/5): irreducible
+     direct min  P_+ (arc (0,th0)) = 2.613310677580922804231269   P_- (arc (pi,2pi-th0)) = 1.005166229236727131881843
+     positive roots of sextic: ['1.005166229236727131881843', '2.613310677580922804231269'];  |direct - root| <= 2.03e-45
+  PASS 6b mu=2/5: Q_mu irreducible over Q (both in y and as sextic in P); minima = its 2 positive roots
+
+   mu = 3/5
+     Q_mu(y) (primitive) = 22394880000*y**3 - 105182323200*y**2 + 70812374396*y + 34250126403
+     factor over Q in y: irreducible cubic
+     sextic in P = Q_mu(P^2): irreducible over Q;  sqrt R = 7/5 rational
+     direct min  P_+ (arc (0,th0)) = 1.934602679482638405676029   P_- (arc (pi,2pi-th0)) = 1.128988867350267106736219
+     positive roots of sextic: ['1.128988867350267106736219', '1.934602679482638405676029'];  |direct - root| <= 1.11e-45
+  PASS 6b mu=3/5: Q_mu irreducible over Q (both in y and as sextic in P); minima = its 2 positive roots
+
+   mu = 1/5
+     Q_mu(y) (primitive) = 5467500*y**3 - 116552925*y**2 - 100197214*y + 158951523
+     factor over Q in y: irreducible cubic
+     sextic in P = Q_mu(P^2): irreducible over Q;  over Q(sqrt(31)/5): irreducible
+     direct min  P_+ (arc (0,th0)) = 4.699735539257942510998282   P_- (arc (pi,2pi-th0)) = 0.9083539440495773158508065
+     positive roots of sextic: ['0.9083539440495773158508065', '4.699735539257942510998282'];  |direct - root| <= 8.3e-47
+  PASS 6b mu=1/5: Q_mu irreducible over Q (both in y and as sextic in P); minima = its 2 positive roots
+
+   mu = 4/5
+     Q_mu(y) (primitive) = 113374080000*y**3 - 444470716800*y**2 + 344677419356*y + 123238763283
+     factor over Q in y: irreducible cubic
+     sextic in P = Q_mu(P^2): irreducible over Q;  over Q(sqrt(61)/5): irreducible
+     direct min  P_+ (arc (0,th0)) = 1.605282734922127765199108   P_- (arc (pi,2pi-th0)) = 1.267318818063535749982123
+     positive roots of sextic: ['1.267318818063535749982123', '1.605282734922127765199108'];  |direct - root| <= 3.37e-46
+  PASS 6b mu=4/5: Q_mu irreducible over Q (both in y and as sextic in P); minima = its 2 positive roots
+
+   mu = 1/6
+     Q_mu(y) (primitive) = 21003948*y**3 - 615373605*y**2 - 945275956*y + 1146138348
+     factor over Q in y: irreducible cubic
+     sextic in P = Q_mu(P^2): irreducible over Q;  over Q(sqrt(43)/6): irreducible
+     direct min  P_+ (arc (0,th0)) = 5.541281007185820623876854   P_- (arc (pi,2pi-th0)) = 0.8964441119624933710171779
+     positive roots of sextic: ['0.8964441119624933710171779', '5.541281007185820623876854'];  |direct - root| <= 3.4e-45
+  PASS 6b mu=1/6: Q_mu irreducible over Q (both in y and as sextic in P); minima = its 2 positive roots
+
+   mu = 5/6
+     Q_mu(y) (primitive) = 80049667500*y**3 - 309250217925*y**2 + 242329468196*y + 84645794028
+     factor over Q in y: irreducible cubic
+     sextic in P = Q_mu(P^2): irreducible over Q;  over Q(sqrt(91)/6): irreducible
+     direct min  P_+ (arc (0,th0)) = 1.566566987487046026678752   P_- (arc (pi,2pi-th0)) = 1.291314114085786906588535
+     positive roots of sextic: ['1.291314114085786906588535', '1.566566987487046026678752'];  |direct - root| <= 1.09e-45
+  PASS 6b mu=5/6: Q_mu irreducible over Q (both in y and as sextic in P); minima = its 2 positive roots
+
+   mu = 2/7
+     Q_mu(y) (primitive) = 1701319788*y**3 - 20211120405*y**2 - 808487836*y + 15644585388
+     factor over Q in y: irreducible cubic
+     sextic in P = Q_mu(P^2): irreducible over Q;  over Q(sqrt(67)/7): irreducible
+     direct min  P_+ (arc (0,th0)) = 3.443010615608148846027735   P_- (arc (pi,2pi-th0)) = 0.9452576262545116901575267
+     positive roots of sextic: ['0.9452576262545116901575267', '3.443010615608148846027735'];  |direct - root| <= 2.65e-46
+  PASS 6b mu=2/7: Q_mu irreducible over Q (both in y and as sextic in P); minima = its 2 positive roots
+
+   mu = 3/7
+     Q_mu(y) (primitive) = 13127467500*y**3 - 87997988925*y**2 + 39533125826*y + 39668790243
+     factor over Q in y: irreducible cubic
+     sextic in P = Q_mu(P^2): irreducible over Q;  over Q(sqrt(79)/7): irreducible
+     direct min  P_+ (arc (0,th0)) = 2.476259271484165467548334   P_- (arc (pi,2pi-th0)) = 1.021602995606393949392121
+     positive roots of sextic: ['1.021602995606393949392121', '2.476259271484165467548334'];  |direct - root| <= 2.27e-45
+  PASS 6b mu=3/7: Q_mu irreducible over Q (both in y and as sextic in P); minima = its 2 positive roots
+
+   mu = 1/2
+     Q_mu(y) (primitive) = 8748*y**3 - 49005*y**2 + 27794*y + 18723
+     factor over Q in y: irreducible cubic
+     sextic in P = Q_mu(P^2): irreducible over Q;  over Q(sqrt(7)/2): irreducible
+     direct min  P_+ (arc (0,th0)) = 2.203855016036132793994101   P_- (arc (pi,2pi-th0)) = 1.064705976271204337354986
+     positive roots of sextic: ['1.064705976271204337354986', '2.203855016036132793994101'];  |direct - root| <= 2.07e-46
+  PASS 6b mu=1/2: Q_mu irreducible over Q (both in y and as sextic in P); minima = its 2 positive roots
+
+   rational mu = a/b in (0,1], b <= 60, with Q_mu(y) reducible over Q:
+     mu = 1 -> (6912, [(4*y + 1, 1), (y - 2, 2)])
+  PASS 6c search b <= 60: only mu = 1 gives a reducible Q_mu(y) :: ['1']
+   Lemma: if Q_mu(y) is irreducible over Q then Q_mu(x^2) is irreducible: y1 y2 y3 =
+   -3 A0^2/(1728 mu^4 (1+mu)^4) = -(A0/(24 mu^2 (1+mu)^2))^2 < 0 is not a square in Q, so y1 is
+   not a square in Q(y1) and [Q(sqrt y1):Q] = 6.  So P_+ and P_- are Galois conjugates of degree 6.
+  PASS 6d y1 y2 y3 = -(A0/(24 mu^2 (1+mu)^2))^2
+
+==============================================================================
+7. Branch minima on a grid of mu; monotonicity; limits  [exact argument + numerics]
+==============================================================================
+   Res_y(Q, dQ/dmu) = 7044820107264*mu**7*(mu - 1)**3*(mu + 1)**7*(mu + 2)**3*(2*mu + 1)**3*(mu**2 + mu + 1)**6*(4*mu**6 + 12*mu**5 + 21*mu**4 + 22*mu**3 + 21*mu**2 + 12*mu + 4)*(4*mu**6 + 12*mu**5 + 51*mu**4 + 82*mu**3 + 51*mu**2 + 12*mu + 4)**3
+  PASS 7a Res_y(Q, dQ/dmu) has no zero in (0,1) U (1,inf): dy/dmu = -Q_mu/Q_y never vanishes there, so each branch minimum is strictly monotone on (0,1) and on (1,inf)
+   With disc_y Q != 0 on (0,1), the branches never cross there; P_- < P_+ at mu = 1/2, so
+   min over branches = P_- on (0,1]: strictly increasing from sqrt3/2 (mu->0+) to sqrt2 (mu=1).
+
+   mu       P_+ min on (0,th0)       P_- min on (pi,2pi-th0)  argmin     |direct-poly|
+   0.0001   8475.28962060361984      0.866025416773520698     A-         4.5e-21
+   0.001    847.910540671046787      0.866026701523831629     A-         3.4e-23
+   0.01     85.1745100357609455      0.866154011871157813     A-         1.8e-24
+   0.02     42.8022680998231892      0.866534680866442076     A-         6.5e-25
+   0.05     17.3838109283909253      0.869112874060804666     A-         2.2e-26
+   0.1      8.91879276295277688      0.877756781756315388     A-         7.2e-27
+   0.15     6.10323419137092885      0.891091867806453673     A-         1.0e-27
+   0.2      4.69973553925794251      0.908353944049577316     A-         4.8e-27
+   0.25     3.86084000978396015      0.928890100840010239     A-         2.1e-27
+   0.3      3.30407885265951445      0.952155656442227746     A-         7.7e-28
+   0.35     2.90840670872408592      0.977702839883195371     A-         2.3e-27
+   0.4      2.6133106775809228       1.00516622923672713      A-         6.4e-28
+   0.45     2.38518017731496404      1.03424820215112022      A-         1.2e-27
+   0.5      2.20385501603613279      1.06470597627120434      A-         1.5e-27
+   0.55     2.05651097587300434      1.09634074495717004      A-         1.8e-27
+   0.6      1.93460267948263841      1.12898886735026711      A-         1.1e-27
+   0.65     1.83221749916539418      1.1625148501760618       A-         1.5e-27
+   0.7      1.7451349789712515       1.19680580431710305      A-         2.0e-28
+   0.75     1.67026252398715673      1.23176707857296323      A-         5.9e-28
+   0.8      1.60528273492212777      1.26731881806353575      A-         2.0e-27
+   0.85     1.54842523601207722      1.30339324339706975      A-         1.5e-27
+   0.9      1.49831457908393106      1.33993249030116405      A-         4.1e-28
+   0.95     1.45386619326183369      1.37688688540316841      A-         2.3e-28
+   0.99     1.42179610284949509      1.40672030297452222      A-         7.7e-28
+   0.999    1.41496438015345341      1.41346362936097342      A-         3.1e-27
+   1        1.41421356237309505      1.41421356237309505      tie        3.0e-28
+  PASS 7b grid: direct minimization agrees with the roots of Q (rel. dev < 1e-20) :: 5.33e-25
+  PASS 7b grid: P_- increasing, P_+ decreasing, P_- < P_+ for mu < 1
+   mu=0.0001: P_- - [sqrt3/2 + 3sqrt3/4 mu^2 - 3sqrt3/4 mu^3] = 3.25e-17 ;  P_+ - sqrt(3+2sqrt3)/3 (1/mu + 1/2 + mu/4) = -1.06e-9
+   mu=0.001: P_- - [sqrt3/2 + 3sqrt3/4 mu^2 - 3sqrt3/4 mu^3] = 3.25e-13 ;  P_+ - sqrt(3+2sqrt3)/3 (1/mu + 1/2 + mu/4) = -1.06e-7
+   mu=0.01: P_- - [sqrt3/2 + 3sqrt3/4 mu^2 - 3sqrt3/4 mu^3] = 3.31e-9 ;  P_+ - sqrt(3+2sqrt3)/3 (1/mu + 1/2 + mu/4) = -1.05e-5
+  PASS 7c mu = 1e-4: P_- - sqrt3/2 - (3sqrt3/4)mu^2 = O(mu^3) and mu P_+ - (sqrt(3+2sqrt3)/3)(1 + mu/2) = O(mu^2)
+  PASS 7d slopes dP/dmu at mu = 1 match the exact values [-0.75, 0.75] :: ['-0.7500008169', '0.7499999331']
+
+==============================================================================
+8. Symmetry mu -> 1/mu  [exact + numerical]
+==============================================================================
+  PASS 8a kappa(theta + pi; 1/mu) = kappa(theta; mu)/mu  (exact; sqrt R(1/mu) = sqrt R/mu)
+   Relabelling 1<->2 and scaling circulations by mu maps Gamma(1/mu) to mu Gamma(mu), w -> 1 - w,
+   theta -> theta + pi.  cos theta0(1/mu) = -cos theta0(mu), so arc A+(mu) = (0, theta0) maps onto
+   (pi, pi + theta0(mu)) = (pi, 2pi - theta0(1/mu)) = arc A-(1/mu):  P_+(mu) = P_-(1/mu).
+  PASS 8a K(1/mu, -C/mu) = K(mu, C)/mu^4  (critical points map to critical points, C -> -C/mu) :: ratio = mu**(-4)
+   mu=0.5   (P_+, P_-) = (2.203855016036133, 1.064705976271204);  mu=1/0.5: (P_+, P_-) = (1.064705976271204, 2.203855016036133)
+   mu=0.3   (P_+, P_-) = (3.304078852659514, 0.9521556564422277);  mu=1/0.3: (P_+, P_-) = (0.9521556564422277, 3.304078852659514)
+   mu=0.8   (P_+, P_-) = (1.605282734922128, 1.267318818063536);  mu=1/0.8: (P_+, P_-) = (1.267318818063536, 1.605282734922128)
+   mu=0.05  (P_+, P_-) = (17.38381092839093, 0.8691128740608047);  mu=1/0.05: (P_+, P_-) = (0.8691128740608047, 17.38381092839093)
+  PASS 8b numerically P_+(mu) = P_-(1/mu), P_-(mu) = P_+(1/mu), and Biot-Savart kappa(theta+pi;1/mu) = kappa/mu :: 2.34e-36
+
+==============================================================================
+9. Every rational mu > 0, mu != 1: Q_mu irreducible  [exact: genus-1 curve with 6 rational points]
+==============================================================================
+  PASS 9a K(-1+a, -1+t a) = a^2 (A a^2 + B a + Cq): (mu,C) = (-1,-1) is a tacnode (tangent cone -(a-2b)^2)
+  PASS 9a B^2 - 4 A Cq = (2t-1)^2 G(t),  G(t) = 16t^4 - 32t^3 + 12t^2 + 4t + 1
+  PASS 9b (t, v) -> (X, Y) maps v^2 = G(t) onto E: Y^2 = X^3 - 15X + 22
+  PASS 9b the map is birational (explicit inverse t = (2(x+c) - d^2/2)/y verified), so C_G(Q) = E(Q) in number
+  PASS 9b j(E) = 54000 (CM by Z[sqrt(-3)])
+  PASS 9c E(Q) torsion = Z/6: points O,(2,0),(3,+-2),(-1,+-6); #E(F_5) = 6, #E(F_7) = 12 bound it by gcd = 6 :: #E(F5)=6 #E(F7)=12
+  PASS 9d E shifted: X^3 - 15X + 22 at X = x+2 equals x^3 + 6x^2 - 3x; E' = x^3 - 12x^2 + 48x = (x-4)^3 + 64 ~ y^2 = x^3 + 1
+  PASS 9d 2-isogeny descent: |alpha(E)| = 2 (d = 3, -1 fail 3-adically), |alpha'(E')| = 2 (d' = 2, 6 fail 2-adically, d' < 0 fail over R)  =>  2^r = 2*2/4 = 1, rank 0; so #E(Q) = 6
+  PASS 9e G(0) = G(1) = 1 (6 points with the two at infinity, leading coeff 16 = 4^2)
+  PASS 9e K(-1, C) = 4(C+1)^2(2C+1); line t = 1/2 meets the curve only at the tacnode; 2t^2-2t-1 has no rational root
+   all affine rational points of K(mu, C) = 0: [(-2, -2), (-1, -1), (-1, -1/2), (-1/2, -1), (0, -1)]
+  PASS 9e they all lie on K = 0 and all have mu <= 0
+  PASS 9f brute force t = r/s, s < 150, |r| <= 300: G(t) is a square only at t = 0, 1 :: [0, 1]
+   CONCLUSION (proved): for every rational mu > 0 with mu != 1, K(mu, .) has no rational root, hence
+   Q_mu(y) is an irreducible cubic, hence (6d) Q_mu(P^2) is an irreducible sextic: the two branch
+   minima are Galois-conjugate algebraic numbers of degree exactly 6.  At mu = 1 both equal sqrt 2.
+
+==============================================================================
+SUMMARY
+==============================================================================
+checks: 94, passed: 94, failed: 0   (23.9 s)
+
+kappa(theta; mu) = i (1+mu)^3/(2 pi sqrtR) * (sqrtR + (1-mu) e^{i theta}) / ((sqrtR - mu e^{i theta})(sqrtR + e^{i theta}))
+   [normalization |z3 - z_c| = 1, R = 1 + mu + mu^2; zero-impulse circle |w - mu/(1+mu)| = sqrtR/(1+mu)]
+P(theta; mu) = [2R(1-mu+mu^2) + 2mu R sin^2 + (1-mu)(2+mu+2mu^2) sqrtR cos] / [2 mu sqrtR sin (1-mu+2 sqrtR cos)]
+critical points: 4(1-mu)C^3 + 4(2mu^2-mu+2)C^2 + 2(1-mu)^3 C - (2mu^4+7mu^3+6mu^2+7mu+2) = 0,  C = sqrtR cos theta
+Q(mu, P^2) = 0 with Q = 1728 mu^4(1+mu)^4 y^3 - 144 mu^2(1+mu)^2 A2 y^2 - 4 A1 y + 3 A0^2
+
