@@ -22,3 +22,10 @@
 - No copyrighted publisher PDFs in the tree.
 - No full-text extracts (`*.txt` of papers, `*.pdf`) committed for these sources.
 - Notes and OA/archive status markdown only.
+
+## Purchased (Aref)
+
+- **H. Aref (1982)**, *Point vortex motions with a center of symmetry*, Phys. Fluids **25**, 2183–2187. DOI [10.1063/1.863710](https://doi.org/10.1063/1.863710).
+- **How.** Sharpie bought AIP Physics of Fluids PPV (~$40). Filename `2183_1_online.pdf` (Mac Downloads); box copy `/workspace/aref1982-purchased.pdf`.
+- **Repo policy.** Copyrighted PDF **not** committed (OCR working copy only, off-git).
+- **Verdict after purchase + OCR body read.** **DOES NOT KILL** GENChase product floors — [`aref1982-read-2026-09-23.md`](aref1982-read-2026-09-23.md).
