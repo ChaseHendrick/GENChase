@@ -172,11 +172,23 @@ The mathematical theorem holds for every integer $n\ge2$, but the interactive in
 
 `ODE Δ/15` is the fourth-order step-halving estimate, not a rigorous enclosure. At $n=5$ near the arc boundary, the exact error was about 2.7 times this estimate. The analytic trajectory comparison is an additional check. A uniform error in the kernel's overall multiplier cancels from the dimensionless product; checking the dimensional $A,B$ coefficients detects it.
 
+
+## Explicit n = 5 radical (2026-09-23)
+
+The general theorem already covers every $n\ge2$. Clearing radicals at $n=5$ gives the first in-repo explicit specialization beyond $F_2,F_3,F_4$:
+
+$$
+\boxed{\omega_0 t_c=\frac{127\sqrt{2}-24\cos(5\theta)}{80\sin(5\theta)}
+\ge\frac{\sqrt{31682}}{80},\qquad 0<\theta<\frac{\pi}{5}.}
+$$
+
+Equality at $\cos(5\theta_*)=12\sqrt{2}/127$. Float64 verify: `tools/verify-new-formula-candidate.js`. **Proved candidate; priority unconfirmed.** This is a specialization of candidate 5, not a separate discovery. Draft: [`sources/new-formula-candidate-2026-09-23.md`](sources/new-formula-candidate-2026-09-23.md).
+
 ## Prior art and status
 
 Koiller et al. (1985), §11, Proposition 12, already treat collapse of two regular $n$-gons. Aref (1982) is foundational, and O'Neil (2007) explicitly identifies two-ring collapse as known before studying triple rings. The general family, the virial condition, and logarithmic spirals belong to that literature.
 
-Targeted searches for the square expression, $\sqrt{322}/9$, optimized polygon spiral pitch, and a hyperbolic-sine expression for the minimum did not locate an earlier statement. This is limited negative evidence. The 1985 paper remains available here only as indexed excerpts; the 2007 paper was accessible as its abstract/introduction. Neither search proves priority, and an equivalent general bound in an unread source would defeat the novelty claim. **Keep this as a proved candidate, not a verified fifth first-discovery claim.** The query log is in [RESEARCH.md](../RESEARCH.md).
+Targeted searches for the square expression, $\sqrt{322}/9$, optimized polygon spiral pitch, and a hyperbolic-sine expression for the minimum did not locate an earlier statement. This is limited negative evidence. The 1985 paper was read in full on 2026-09-23 (`sources/koiller1985-read-2026-09-23.md`): it states the two-ring family and log-spiral rates, not these optimized floors. The 2007 paper was accessible as its abstract/introduction. Negative search plus a non-matching full Koiller read still does not prove priority; an equivalent general bound in Aref 1982 or O’Neil 2007 would defeat the novelty claim. **Keep this as a proved candidate, not a verified fifth first-discovery claim.** The query log is in [RESEARCH.md](../RESEARCH.md).
 
 References:
 

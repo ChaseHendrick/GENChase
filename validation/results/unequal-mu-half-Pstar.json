@@ -1,0 +1,70 @@
+{
+  "generated": "2026-09-23T14:54:04.065Z",
+  "status": "proved candidate; priority unconfirmed",
+  "claim": {
+    "PstarClosed": "sqrt(605/324 + (7*sqrt(5201)/162)*cos(arccos(245351*sqrt(5201)/5201^2)/3))",
+    "minpolySextic": "8748*x^6 - 49005*x^4 + 27794*x^2 + 18723 = 0",
+    "minpolyCubicP2": "8748*q^3 - 49005*q^2 + 27794*q + 18723 = 0",
+    "irreducibleOverQ": true,
+    "degree": 6,
+    "note": "Casus irreducibilis for cubic in P⋆²; no simpler real radical over Q. Uses corrected Prop. 2.1 product, not Gotoda (3.3) B."
+  },
+  "numbers": {
+    "Pstar": 2.2038550160361328,
+    "PstarClosedForm": 2.2038550160361328,
+    "Pstar2": 4.856976931707623,
+    "targetDigits": 2.203855016036133,
+    "absDiffVsTarget": 4.440892098500626e-16,
+    "minpolySexticResidual": -5.820766091346741e-11,
+    "minpolyCubicResidual": 5.820766091346741e-11
+  },
+  "checks": [
+    {
+      "name": "closed_form_matches_product",
+      "ok": true,
+      "detail": {
+        "Pclosed": 2.2038550160361328,
+        "Pstar": 2.2038550160361328,
+        "rel": 0
+      }
+    },
+    {
+      "name": "closed_form_ge12_digits_vs_target",
+      "ok": true,
+      "detail": {
+        "Pclosed": 2.2038550160361328,
+        "TARGET_DIGITS": 2.203855016036133,
+        "absDiff": 4.440892098500626e-16
+      }
+    },
+    {
+      "name": "minpoly_sextic_residual",
+      "ok": true,
+      "detail": {
+        "residual": -5.820766091346741e-11,
+        "Pstar": 2.2038550160361328
+      }
+    },
+    {
+      "name": "minpoly_cubic_P2_residual",
+      "ok": true,
+      "detail": {
+        "residual": 5.820766091346741e-11,
+        "P2": 4.856976931707623
+      }
+    },
+    {
+      "name": "closed_form_minpoly_residual",
+      "ok": true,
+      "detail": {
+        "residual": -5.820766091346741e-11,
+        "Pclosed": 2.2038550160361328
+      }
+    }
+  ],
+  "pass": true,
+  "sources": [
+    "identities/sources/unequal-mu-half-draft-2026-09-23.md",
+    "identities/sources/unequal-mu-half-Pstar-closed-2026-09-23.md"
+  ]
+}

@@ -1,0 +1,223 @@
+{
+  "generated": "2026-09-23T14:54:04.294Z",
+  "target": {
+    "n": 5,
+    "x": 2,
+    "d": 3,
+    "claim": "ω₀ t_c = (127√2 − 24 cos 5θ)/(80 sin 5θ) ≥ √31682/80 on collapsing two-pentagon arc"
+  },
+  "closedForm": {
+    "K5": "127√2 / 8",
+    "product": "(127√2 − 24 cos(5θ)) / (80 sin(5θ))",
+    "floor": "√31682 / 80",
+    "cos5thetaStar": "12√2 / 127"
+  },
+  "numbers": {
+    "K5": 22.450640302672884,
+    "F5": 2.224929774172659,
+    "cosAlphaStar": 0.1336264783344657,
+    "alphaStarRad": 1.4367689454947998,
+    "thetaStarRad": 0.28735378909896,
+    "thetaStarDeg": 16.464159342462768,
+    "Pstar": 2.2249297741726592,
+    "Astar": -0.14167884834885247,
+    "Bstar": 0.6304509761237095,
+    "sampleMin": 2.224929774172659,
+    "sampleCosAlpha": 0.13362646962931696,
+    "biotSavart": {
+      "A": -0.14167884834885242,
+      "B": 0.6304509761237095,
+      "P": 2.22492977417266,
+      "residual": 3.510833468576701e-16,
+      "inertia": 0
+    },
+    "generalKn": 22.45064030267288,
+    "generalFn": 2.224929774172659
+  },
+  "checks": [
+    {
+      "name": "F5_finite_positive",
+      "ok": true,
+      "detail": {
+        "F5": 2.224929774172659
+      }
+    },
+    {
+      "name": "Pstar_equals_F5",
+      "ok": true,
+      "detail": {
+        "Pstar": 2.2249297741726592,
+        "F5": 2.224929774172659,
+        "rel": 1.9959695582535737e-16
+      }
+    },
+    {
+      "name": "cos_alpha_star_in_arc",
+      "ok": true,
+      "detail": {
+        "COS_ALPHA_STAR": 0.1336264783344657
+      }
+    },
+    {
+      "name": "A_negative_at_star",
+      "ok": true,
+      "detail": {
+        "Astar": -0.14167884834885247
+      }
+    },
+    {
+      "name": "P_from_AB_matches_closed",
+      "ok": true,
+      "detail": {
+        "PfromAB": 2.2249297741726592,
+        "Pstar": 2.2249297741726592,
+        "rel": 0
+      }
+    },
+    {
+      "name": "sample_min_matches_F5",
+      "ok": true,
+      "detail": {
+        "sampleMin": 2.224929774172659,
+        "F5": 2.224929774172659,
+        "rel": 0,
+        "cosSample": 0.13362646962931696,
+        "cosStar": 0.1336264783344657
+      }
+    },
+    {
+      "name": "K5_matches_general_sinh",
+      "ok": true,
+      "detail": {
+        "K5": 22.450640302672884,
+        "K5fromGen": 22.45064030267288,
+        "rel": 1.5824553914293166e-16
+      }
+    },
+    {
+      "name": "F5_matches_general_Fn",
+      "ok": true,
+      "detail": {
+        "F5": 2.224929774172659,
+        "F5fromGen": 2.224929774172659,
+        "rel": 0
+      }
+    },
+    {
+      "name": "exact_Ksq_identity",
+      "ok": true,
+      "detail": {
+        "KsqMinusDsq": 495.03125,
+        "expectedKsqMinus": 495.03125,
+        "rel": 0
+      }
+    },
+    {
+      "name": "exact_cos_equals_d_over_K",
+      "ok": true,
+      "detail": {
+        "COS_ALPHA_STAR": 0.1336264783344657,
+        "dOverK": 0.13362647833446567
+      }
+    },
+    {
+      "name": "biot_savart_common_C",
+      "ok": true,
+      "detail": {
+        "residual": 3.510833468576701e-16
+      }
+    },
+    {
+      "name": "biot_savart_A_matches",
+      "ok": true,
+      "detail": {
+        "bsA": -0.14167884834885242,
+        "Astar": -0.14167884834885247,
+        "rel": 3.9180972938581514e-16
+      }
+    },
+    {
+      "name": "biot_savart_B_matches",
+      "ok": true,
+      "detail": {
+        "bsB": 0.6304509761237095,
+        "Bstar": 0.6304509761237095,
+        "rel": 0
+      }
+    },
+    {
+      "name": "biot_savart_P_matches",
+      "ok": true,
+      "detail": {
+        "Pbs": 2.22492977417266,
+        "F5": 2.224929774172659,
+        "rel": 5.987908674760718e-16
+      }
+    },
+    {
+      "name": "inertia_near_zero",
+      "ok": true,
+      "detail": {
+        "inertia": 0
+      }
+    },
+    {
+      "name": "dense_sample_obeys_floor",
+      "ok": true,
+      "detail": {
+        "undershoot": 0,
+        "minSeen": 2.2249297901120095,
+        "F5": 2.224929774172659
+      }
+    },
+    {
+      "name": "wrong_too_large_floor_control_fails",
+      "ok": true,
+      "detail": {
+        "sampleMin": 2.224929774172659,
+        "tooLarge": 3
+      }
+    },
+    {
+      "name": "not_square_floor_F4",
+      "ok": true,
+      "detail": {
+        "F5": 2.224929774172659,
+        "F4": 1.993817604991818,
+        "rel": 0.10387391632024882
+      }
+    },
+    {
+      "name": "wrong_equality_angle_not_min",
+      "ok": true,
+      "detail": {
+        "Pwrong": 2.2259776869675143,
+        "F5": 2.224929774172659,
+        "gap": 0.001047912794855499
+      }
+    },
+    {
+      "name": "sanity_F2",
+      "ok": true,
+      "detail": {
+        "F2": 1.6770509831248417
+      }
+    },
+    {
+      "name": "sanity_F3",
+      "ok": true,
+      "detail": {
+        "F3": 1.7950549357115013
+      }
+    },
+    {
+      "name": "sanity_F4",
+      "ok": true,
+      "detail": {
+        "F4": 1.9938176049918177
+      }
+    }
+  ],
+  "pass": true,
+  "note": "Specialization of candidate-5 / Koiller two-ring family at n=5. Not a new dynamical family. Priority of the explicit radical unconfirmed. Do not invent novelty; do not count as a sixth independent IDENTITIES row."
+}

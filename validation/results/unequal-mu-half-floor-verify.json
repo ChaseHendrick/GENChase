@@ -1,0 +1,158 @@
+{
+  "generated": "2026-09-23T07:35:11.009Z",
+  "target": {
+    "Gamma": [
+      1,
+      0.5,
+      -0.3333333333333333
+    ],
+    "mu": 0.5,
+    "claim": "P(θ)=−B/(2A) ≥ P⋆ on collapsing L=0 arc, unique interior min"
+  },
+  "closedForm": {
+    "P": "(14 sin^2 θ + 6√7 cos θ + 21) / [2 (14 cos θ + √7) sin θ]",
+    "criticalCubic": "c^3 + (8√7/7) c^2 + c/14 − 32√7/49 = 0",
+    "cosThetaStar": "−8√7/21 + (5√70/21) cos(arccos(−124√10/3125)/3)"
+  },
+  "numbers": {
+    "cosThetaStar": 0.6739838839479824,
+    "thetaStarRad": 0.8312079496889317,
+    "thetaStarDeg": 47.62470741489825,
+    "Pstar": 2.2038550160361328,
+    "Astar": -0.06815234475805701,
+    "Bstar": 0.3003957736993355,
+    "theta0Rad": 1.7609219301413634,
+    "theta0Deg": 100.89339464913091,
+    "cosTheta0": -0.18898223650461363,
+    "sampleMin": 2.203855016036134,
+    "sampleCos": 0.6739838731921574,
+    "biotSavart": {
+      "A": -0.068152344758057,
+      "B": 0.30039577369933546,
+      "P": 2.2038550160361323,
+      "residual": 5.551115123125783e-17,
+      "M": 0
+    }
+  },
+  "checks": [
+    {
+      "name": "Pstar_finite_positive",
+      "ok": true,
+      "detail": {
+        "Pstar": 2.2038550160361328
+      }
+    },
+    {
+      "name": "cosStar_in_collapsing_arc",
+      "ok": true,
+      "detail": {
+        "cosStar": 0.6739838839479824,
+        "COS_TH0": -0.18898223650461363
+      }
+    },
+    {
+      "name": "A_negative_at_star",
+      "ok": true,
+      "detail": {
+        "Astar": -0.06815234475805701
+      }
+    },
+    {
+      "name": "cubic_residual",
+      "ok": true,
+      "detail": {
+        "cubic": 6.661338147750939e-16
+      }
+    },
+    {
+      "name": "P_from_AB_matches_closed",
+      "ok": true,
+      "detail": {
+        "PfromAB": 2.2038550160361323,
+        "Pstar": 2.2038550160361328,
+        "rel": 2.0150563744833098e-16
+      }
+    },
+    {
+      "name": "sample_min_matches_Pstar",
+      "ok": true,
+      "detail": {
+        "sampleMin": 2.203855016036134,
+        "Pstar": 2.2038550160361328,
+        "rel": 6.045169123449926e-16,
+        "cosSample": 0.6739838731921574,
+        "cosStar": 0.6739838839479824
+      }
+    },
+    {
+      "name": "biot_savart_common_C",
+      "ok": true,
+      "detail": {
+        "residual": 5.551115123125783e-17
+      }
+    },
+    {
+      "name": "biot_savart_A_matches",
+      "ok": true,
+      "detail": {
+        "bsA": -0.068152344758057,
+        "Astar": -0.06815234475805701,
+        "rel": 2.0362891191904027e-16
+      }
+    },
+    {
+      "name": "biot_savart_B_matches",
+      "ok": true,
+      "detail": {
+        "bsB": 0.30039577369933546,
+        "Bstar": 0.3003957736993355,
+        "rel": 1.8479338290164707e-16
+      }
+    },
+    {
+      "name": "biot_savart_P_matches",
+      "ok": true,
+      "detail": {
+        "Pbs": 2.2038550160361323,
+        "Pstar": 2.2038550160361328,
+        "rel": 2.0150563744833098e-16
+      }
+    },
+    {
+      "name": "M_invariant_near_zero",
+      "ok": true,
+      "detail": {
+        "M": 0
+      }
+    },
+    {
+      "name": "wrong_too_large_floor_control_fails",
+      "ok": true,
+      "detail": {
+        "sampleMin": 2.203855016036134,
+        "tooLarge": 3
+      }
+    },
+    {
+      "name": "not_equal_slice_formula",
+      "ok": true,
+      "detail": {
+        "equalSliceP": 1.5522561004093705,
+        "Pstar": 2.2038550160361328,
+        "rel": 0.29566324049697795
+      }
+    },
+    {
+      "name": "gotoda_33_B_specialization_disagrees",
+      "ok": true,
+      "detail": {
+        "buggyP": 1.756178964768762,
+        "Pstar": 2.2038550160361328,
+        "rel": 0.20313316802144438,
+        "note": "adjacent-open / RESEARCH ≈1.741 came from Gotoda (3.3) B; Prop. 2.1 gives ≈2.204"
+      }
+    }
+  ],
+  "pass": true,
+  "note": "Gotoda (3.3) B specialization disagrees with Prop. 2.1 / Biot–Savart when Γ1≠Γ2; A and P here use the 2π kernel. Priority of the optimized floor is unconfirmed. Do not invent novelty."
+}

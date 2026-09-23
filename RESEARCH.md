@@ -1,6 +1,6 @@
 # RESEARCH
 
-Ledger of prior-art searches and physics claims for GENChase. Handwritten, not generated. Last updated 2026-09-21.
+Ledger of prior-art searches and physics claims for GENChase. Handwritten, not generated. Last updated 2026-09-23.
 
 Agents: read this file **before** a web search for "has this been done", "is this a new law", or "never been theorized". Humans: the same, if you are about to spend an afternoon proving a negative.
 
@@ -11,6 +11,47 @@ The catalog of what the file actually contains is [`techniques.json`](techniques
 **Confirmed novel findings among the five candidates: 0.** Mathematical proofs and numerical checks establish validity, not historical originality. The fifth contains the second and fourth; there are not four confirmed discoveries remaining after correcting the first.
 
 The [2026-09-20 audit of all five candidates](identities/NOVELTY-AUDIT.md) supersedes earlier unqualified first-discovery or uniqueness assertions in this chronological ledger. The first formula explicitly specializes Gröbli’s 1877 spiral coefficient; priority of the optimized minima remains unconfirmed. The [follow-up comparison](identities/ORIGINALITY-FOLLOWUP.md) supplies the substitution. The personal name has been retired in favor of Three-vortex collapse bound. Their families and the spin–collapse product are classical; the exact minima were not located in the sources inspected. The fifth contains the second and fourth. Old skip decisions and rejected-family claims below are historical search notes, not current novelty certifications.
+
+
+## 2026-09-23 — proved candidates (priority unconfirmed)
+
+Two algebraic floors were derived and Float64-verified on this box. **Neither is stamped into IDENTITIES.md.** Confirmed novel findings among the original five candidates remain **0**. These notes correct a bad μ≠1 witness and record an explicit n=5 specialization plus a full-text Koiller read.
+
+### A. Unequal-μ three-vortex product floor (μ = 1/2)
+
+Circulations Γ = (1, 1/2, −1/3) on Gotoda’s L = 0 collapsing arc. Product from the 2π Biot–Savart / Prop. 2.1 kernel (not Gotoda (3.3) B):
+
+    P(θ) = (14 sin²θ + 6√7 cosθ + 21) / [2(14 cosθ + √7) sinθ]
+         ≥ P⋆ ≈ 2.203855016036133
+
+Equality at the unique collapsing-arc critical cosine (cubic in cos θ). Closed form:
+
+    P⋆ = √(605/324 + (7√5201)/162 · cos(⅓ arccos(245351√5201 / 5201²)))
+
+Minpoly over ℚ: 8748 x⁶ − 49005 x⁴ + 27794 x² + 18723 = 0 (casus irreducibilis). μ ↔ 1/μ shares the product.
+
+**Correction.** The adjacent-open / skip-table figure ≈1.741 used Gotoda (3.3) B, which disagrees with Prop. 2.1 when Γ₁ ≠ Γ₂. That witness is withdrawn. The corrected floor is ~2.204.
+
+**Status.** Proved candidate; priority unconfirmed. Same classical L = 0 family as √2. RESEARCH already forbids stamping μ≠1 as a new identity row. See `identities/sources/unequal-mu-half-draft-2026-09-23.md`, `identities/sources/unequal-mu-half-Pstar-closed-2026-09-23.md`, `tools/verify-unequal-mu-half.js`.
+
+### B. Explicit n = 5 polygon / two-ring floor
+
+Specialize the classical two-ring family (Koiller §11; candidate 5) at n = 5:
+
+    ω₀ t_c = (127√2 − 24 cos(5θ)) / (80 sin(5θ))
+           ≥ √31682 / 80 ≈ 2.224929774172659
+
+Equality at cos(5θ⋆) = 12√2 / 127. Parallel to the already-written F₂, F₃, F₄ radicals; first explicit cleared radical for n = 5 in-repo.
+
+**Status.** Proved candidate; priority unconfirmed. Specialization of candidate 5, not a sixth independent discovery. See `identities/sources/new-formula-candidate-2026-09-23.md`, `tools/verify-new-formula-candidate.js`, and the F₅ note in `identities/polygon-collapse.md`.
+
+### C. Koiller et al. 1985 full-text read
+
+Full Physica D 16 (1985) 27–61 was reconstructed and read on this box (35 pages). §11 Prop. 12 + (11.1)–(11.5): two-ring virial collapse and logarithmic-spiral rates as functions of fixed relative angle. **Does not** state √29/3, √322/9, equality cosines for the optimized floors, general F_n, or a pitch/product min over angle. Verdict: **does not kill** candidates 4–5 optimized floors. Family classical; optimized floors still priority-unconfirmed. Residual kill risk: Aref 1982 and O’Neil 2007 full texts. Notes: `identities/sources/koiller1985-read-2026-09-23.md` (analysis only; copyrighted PDF not committed).
+
+### D. Open-web / OA sweep (same day)
+
+Live indexed searches did not hit the radicals, P⋆ closed form, or equality angles as prior statements. Absence of an OA hit is **not** novelty. Details: `identities/sources/internet-search-2026-09-23.md`, `identities/sources/internet-search-live-2026-09-23.md`.
 
 ## Do this, do not do that
 
@@ -98,7 +139,7 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Five-vortex NS, ρ = d₁²/d₂² = 2 | Reciprocal of the quincunx. Same product. Already in IDENTITIES.md. |
 | Five-vortex NS, ρ = 3 | Recovers the three-vortex bound identically. Already not claimed. |
 | Five-vortex NS, ρ = 4 | ω t_c = 5(35 − 8 cos 2θ)/(96 sin 2θ) ≥ 5√1161 / 96. A nested radical, not a floor like √2. Not claimed. |
-| Three-vortex L = 0, Γ = (1, μ, −μ/(1+μ)), μ ≠ 1 | Gotoda (3.3)-(3.5) is a closed product. For μ = 1/2 it is (56 cos²θ − 10√7 cosθ − 133) / [8(14 cosθ + √7) sinθ]; the critical point solves a cubic in cos θ. Aref already has Ω and τ separately for general circulations. Not claimed. |
+| Three-vortex L = 0, Γ = (1, μ, −μ/(1+μ)), μ ≠ 1 | Prop. 2.1 / 2π kernel product (not Gotoda (3.3) B). For μ = 1/2: P = (14 sin²θ + 6√7 cosθ + 21) / [2(14 cosθ + √7) sinθ] ≥ P⋆ ≈ 2.203855 with closed trig/Cardano form (2026-09-23). Older ~1.741 witness from Gotoda (3.3) B is withdrawn. Same L = 0 family as √2. Proved candidate; priority unconfirmed. Do not stamp as a new identity row. |
 | Kite, non-parallelogram isosceles trapezoid, equilateral plus interior | Biot-Savart scan: no self-similar L = 0 collapsing family (similarity residual never jointly small with I = 0 and finite positive τ). |
 | Seven-vortex Gotoda (4.4), Γ = (1,1,−2,−2,−2,−2,3/2) | Numerical H-A curves. O'Neil 1987 and Kudela 2014: existence and numerical positions, not A(θ), B(θ). |
 | Trapezoidal / kite four-vortex papers | Relative equilibria (central configurations), not self-similar collapse. |
@@ -230,7 +271,7 @@ Do not re-derive these unless the check is missing the lock. Do not search the n
 | Hicks doughnut | Hollow ring with swirl. Thin-core series (Hicks 1884; Saffman 1970). Norbury–Fraenkel already logged. |
 | Fukumoto–Miyazaki | Filament + axial flow. Permanent form = elastica (already logged). Hasimoto already in the studio. |
 | Coaxial leapfrog rings | Helmholtz 1858. 3D Euler existence: CPAM 2024; García–Hassainia–Hmidi arXiv:2603.21644 (Mar 2026). KAM/Nash–Moser, not an algebraic floor. Love leapfrog already logged. |
-| 3-vortex μ≠1 cubic | Gotoda A,B closed for Γ_H=0. μ=1 recovers the three-vortex bound √2. Reciprocal pairs share the product (μ ↔ 1/μ): μ=1/2 and 2 give min |B/2A|≈1.741 (cubic crit, not a floor like √2). Same 3-vortex family as the three-vortex bound, not a new row. Do not claim. Computed 2026-09-20 from Gotoda (3.3) plus M=0. |
+| 3-vortex μ≠1 cubic | **Corrected 2026-09-23.** Gotoda (3.3) B disagreed with Prop. 2.1 when Γ₁≠Γ₂; the ~1.741 |B/2A| witness is withdrawn. Corrected μ=1/2 floor is P⋆≈2.203855 (closed form in sources/). μ=1 still recovers √2. Same family as the three-vortex bound, not a new row. Do not claim. |
 | Gallay–Sverak 2026 | arXiv:2609.10847 (9 Sep 2026). Hopf/ζ reduction, new energy inequalities H(ζ_A)>H(ζ_B), near-collision regularization. Not a two-rate product min. Cite; do not claim. |
 | Rott 1994 body | Still AIP-blocked. Abstract: winding number = ratio of two periods; "beyond a certain level of the analysis, still the more practical method of solution" is step-by-step integration. No unpublished algebraic interior min extracted. Leapfrog already logged. |
 | Möbius / Klein vortices | Balabanova–Montaldi Physica D 488, 135084 (Apr 2026); arXiv:2202.06160v3. One/two vortex motion, N-ring RE with coth/tanh angular velocities. Two-vortex fixed equilibria: nested-radical y. No collapse product. Catenoid coth already logged. |
