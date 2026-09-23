@@ -1962,21 +1962,30 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77",
     "reference": "The mean-field equation is Eugene Gross, Il Nuovo Cimento 20, 454 (1961), and Lev Pitaevskii, Soviet Physics JETP 13, 451 (1961). That a rotating superfluid answers with a triangular array of singly quantized vortices rather than rigid rotation is Alexei Abrikosov's 1957 result for type-II superconductors, Soviet Physics JETP 5, 1174, carried over to condensates; it was seen in the laboratory by Kirk Madison, Frédéric Chevy, Wendel Wohlleben and Jean Dalibard, Phys. Rev. Lett. 84, 806 (2000), and resolved into a lattice of well over a hundred vortices by Jamil Abo-Shaeer, Chandra Raman, Johnny Vogels and Wolfgang Ketterle, Science 292, 476 (2001). The staggered explicit scheme used in real time follows P. B. Visscher, Computers in Physics 5, 596 (1991). The quantization of circulation is Lars Onsager (1949) and Richard Feynman (1955).",
     "equation": "iℏ ∂ψ/∂t = [−½∇² + V(r) + g|ψ|² − Ω L_z] ψ,   circulation quantized in units of h/m",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
-      "Initial and intermediate warm-up fields are now rendered; this presentation fix does not validate condensate dynamics.",
-      "Combined phase/density colors now distinguish zero-phase matter from the empty background; the display correction leaves the computed field unchanged.",
-      "The vortex diagnostic now uses an exact spatial six-neighbor search instead of repeated full all-pairs sorts. Equal-distance order and nearest-distance statistics are checked against brute force; this performance regression check does not validate vortex detection or the PDE.",
-      "The interface labels encoded-field phase windings as candidates. Noisy real-time windings are not a validated physical vortex count."
+      "Independent Float64 twin of the discrete 2D Gross–Pitaevskii operators (5-point Laplacian, harmonic trap, contact g, Visscher stagger, imag-time Euler with periodic L2 renormalization). Not a bit-exact GPU float32/float16 replay.",
+      "Real-time norm evidence uses g=0 (linear Schrödinger limit); nonlinear dens at mixed half-levels is not claimed to conserve naive L2 exactly. Rotating-frame Ω L_z, Abrikosov lattice counting and turbulence are unvalidated.",
+      "Thomas–Fermi μ/energy bands are asymptotic large-g checks; prepared single-vortex winding is not a noisy real-time vortex count or experimental Na BEC claim.",
+      "No print-state accuracy audit is registered."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Register print-state preservation for density/phase/vortex views and quantitative export checks.",
+      "Extend to GPU float32 agreement, rotating-frame vortex lattices, parameter-domain and long-time turbulence evidence.",
+      "Review catalog equation/citation assumptions against Gross–Pitaevskii / Abrikosov primary sources beyond the discrete-operator twin."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/bec-science.js",
+        "command": "node tools/bec-science.js --write",
+        "results": "validation/results/bec-science.json",
+        "scope": "Independent Float64 twin of bec.js discrete GPE operators: real-time Visscher norm at g=0, Thomas–Fermi seed and imag-time ground-state μ/energy/kinetic residual at Ω=0, prepared singly quantized vortex winding; shader source markers checked.",
+        "criteria": "Real-time |‖ψ‖₂−1|\u003c2e-3 over T=2; TF-seed μ/energy relative errors \u003c0.04/0.05; imag-time ground-state μ/energy relative errors \u003c0.12/0.06 with kinetic fraction \u003c0.05; central plaquette winding exactly 1.",
+        "benchmark": "Analytic 2D harmonic Thomas–Fermi μ=√(g·trap/π) and E=(2/3)μ for unit norm; continuum TF radius; prepared e^{iθ} winding; discrete operators matching maintained shader formulas.",
+        "failureControl": "Reverse imag-time kinetic Laplacian sign (anti-diffusion) must miss TF energy by relative error >1; attractive g sign must collapse or miss repulsive TF energy; skipping imag-time renormalization must drive norm below 0.1.",
+        "limitations": "Float64 CPU twin only; g=0 for unitary norm; no GPU, Ω>0 lattice, turbulence, print or experimental certification."
+      }
+    ],
     "print": []
   },
   {
