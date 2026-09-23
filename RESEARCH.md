@@ -75,6 +75,19 @@ References added and checked: Aref, Rott and Thomann, Annu. Rev. Fluid Mech. 24 
 - **Krishnamurthy–Stremler 2018.** It covers distance travelled before collapse, which is √(1 + 4P²) × the initial distance. An earlier read of §3.5 noted a numerical observation that this normalized distance exceeds 2. That observation is exactly what the √3/2 bound proves, so check it and cite it.
 - **Demina–Kudryashov 2014.**
 
+### G. Access attempt for the three open papers (same day, later)
+
+Tried to read Demina–Kudryashov 2014, Aref 2010 and Krishnamurthy–Stremler 2018 in full.
+
+- **Blocked hosts.** The session's egress policy blocked every host that has them: people.iith.ac.in (the KS postprint), vtechworks.lib.vt.edu and backend.orbit.dtu.dk (open copies of Aref 2010), link.springer.com, arxiv.org, academia.edu, researchgate, core.ac.uk, semanticscholar, archive.org and mathnet.ru.
+- **No arXiv version.** None of the three is on arXiv. The Hugging Face paper index and the owner's Google Drive have no copy either.
+- **Search summaries.** These return only the abstracts already recorded in entry E.
+- **Status.** Nothing new is known about their contents. Read them from a browser: the Aref 2010 and KS postprints are free at the hosts above, and Demina–Kudryashov needs library access.
+- **Related open papers:**
+  - Demina–Kudryashov arXiv:1407.1641 extends the same polynomial method.
+  - arXiv:2607.16490 (collapse of three vortices on surfaces) may summarize the planar literature.
+  - Neither was reachable in full from the session.
+
 ## Do this, do not do that
 
 **Do**
