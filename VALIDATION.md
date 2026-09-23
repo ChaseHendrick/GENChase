@@ -144,7 +144,7 @@ Complete labels apply only within each record's reviewed domain.
 | [hodgkin-huxley](src/modules/hodgkin-huxley.js) | partially validated | [hodgkin-huxley-science.js](tools/hodgkin-huxley-science.js) | Limited evidence recorded |
 | [neural-mass](src/modules/neural-mass.js) | validated within stated limits | [neural-mass-science.js](tools/neural-mass-science.js), [neural-mass-print.js](tools/neural-mass-print.js) | Limited evidence recorded |
 | [volume-wave](src/modules/volume-wave.js) | validated within stated limits | [volume-wave-science.js](tools/volume-wave-science.js), [volume-wave-dispersion-science.js](tools/volume-wave-dispersion-science.js) | Limited evidence recorded |
-| [direct-gravity](src/modules/direct-gravity.js) | partially validated | [direct-gravity-science.js](tools/direct-gravity-science.js) | Limited evidence recorded |
+| [direct-gravity](src/modules/direct-gravity.js) | partially validated | [direct-gravity-science.js](tools/direct-gravity-science.js), [direct-gravity-largen-science.js](tools/direct-gravity-largen-science.js) | Limited evidence recorded |
 
 ## Recorded limitations
 
@@ -476,7 +476,7 @@ Complete labels apply only within each record's reviewed domain.
 ### direct-gravity
 
 - Planar Plummer-softened gravity with G=1; no galaxy equilibrium or physical collision model.
-- Finite small-body analytic and conservation fixtures only; large-N statistics, chaotic long-time accuracy and arbitrary controls remain unvalidated.
+- Finite-time analytic, conservation, large-N force-kernel and moderate-N dt/ε fixtures only; chaotic long-time accuracy and arbitrary controls remain unvalidated.
 - Browser cancellation and selected exports preserve a completed-step snapshot; this is not full scientific print certification.
 - Shared workload modes change cooperative scheduling or steps per presentation frame, not the numerical timestep or solver. Maximum throughput is not a measured hardware utilization guarantee.
 

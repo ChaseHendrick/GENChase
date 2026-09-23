@@ -6167,13 +6167,13 @@ shall not be misrepresented as the original profile.
     "status": "partially validated",
     "limitations": [
       "Planar Plummer-softened gravity with G=1; no galaxy equilibrium or physical collision model.",
-      "Finite small-body analytic and conservation fixtures only; large-N statistics, chaotic long-time accuracy and arbitrary controls remain unvalidated.",
+      "Finite-time analytic, conservation, large-N force-kernel and moderate-N dt/ε fixtures only; chaotic long-time accuracy and arbitrary controls remain unvalidated.",
       "Browser cancellation and selected exports preserve a completed-step snapshot; this is not full scientific print certification.",
       "Shared workload modes change cooperative scheduling or steps per presentation frame, not the numerical timestep or solver. Maximum throughput is not a measured hardware utilization guarantee."
     ],
     "remaining": [
-      "Audit large-N force accuracy, parameter regimes and timestep convergence for the intended experiment.",
-      "Compare scientific state and print geometry at additional dimensions, seeds and hardware."
+      "Compare scientific state and print geometry at additional dimensions, seeds and hardware.",
+      "Galaxy equilibrium, unsoftened close encounters and long-time chaotic accuracy remain outside the registered evidence."
     ],
     "numerical": [
       {
@@ -6185,6 +6185,16 @@ shall not be misrepresented as the original profile.
         "failureControl": "A 1% force-coefficient error exceeds 0.01 trajectory error; broken pair reciprocity exceeds 0.001 momentum-production residual.",
         "command": "node tools/direct-gravity-science.js",
         "results": "validation/results/direct-gravity-science.json"
+      },
+      {
+        "test": "tools/direct-gravity-largen-science.js",
+        "scope": "Production Float64 force/Verlet kernels vs independent reverse-order all-pairs Plummer reference at N in {256,1024,4096}; multi-dt/eps energy-drift and position self-convergence on a seeded equal-mass disk (N=64).",
+        "criteria": "Force max absolute acceleration difference below 1e-12 and relative L2 below 1e-14 at each N; disk relative energy drift below 5e-4 across dt in {0.004,0.002,0.001} and below 2e-3 across eps in {0.06,0.12,0.24}; position RMS refinement ratio vs fine step in 4.5-5.5.",
+        "limitations": "Force-kernel snapshot agreement and finite-time moderate-N regime only; not galaxy equilibrium, unsoftened collisions or chaotic long-time accuracy.",
+        "benchmark": "Independent Float64 directed all-pairs Plummer accelerations (reverse partner order, Math.pow r^{-3} form) and production equal-mass disk initial conditions via extracted initial/makeRng.",
+        "failureControl": "Reference with G=1.01 or eps*1.05 must exceed 1e-4 / 1e-5 max absolute acceleration difference; 1% broken pair reciprocity must produce net force above 1e-4 and disagree with the independent reference.",
+        "command": "node tools/direct-gravity-largen-science.js",
+        "results": "validation/results/direct-gravity-largen-science.json"
       }
     ],
     "print": [

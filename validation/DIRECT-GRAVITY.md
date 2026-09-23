@@ -52,8 +52,21 @@ check; it alone does not validate trajectories.
 
 The circular-orbit audit deliberately includes timesteps larger than the UI's conservative
 limit to demonstrate convergence of the kernel. It does not change the browser limit.
-Large-N statistical accuracy, galaxy equilibrium, all controls, chaotic long-term orbits,
-all hardware and scientific print accuracy remain unvalidated.
+
+Run `node tools/direct-gravity-largen-science.js`; add `--write` to refresh its result artifact.
+An independent Float64 directed all-pairs Plummer reference (reverse partner order) matches the
+production unordered-pair `forces` kernel at N = 256, 1024 and 4096 on a seeded equal-mass disk:
+maximum absolute acceleration differences stay below about 1.1e-14 with relative L2 norms below
+about 2.4e-15. A multi-dt energy-drift band at N = 64, epsilon 0.12, time 0.4 reports relative
+drifts near 4.5e-6, 1.1e-6 and 2.8e-7 for dt = 0.004, 0.002 and 0.001 (coarse-to-fine drift ratio
+near 16). Softening values 0.06, 0.12 and 0.24 under the production time-step cap keep relative
+energy drift below 8e-6. Position self-convergence against a fine step gives an RMS ratio near 5,
+consistent with second-order Verlet when comparing coarse and mid steps to the same fine reference.
+Wrong G = 1.01, wrong softening (eps×1.05) and 1% broken pair reciprocity each separate from the
+acceptance claim.
+
+Galaxy equilibrium, unsoftened collisions, chaotic long-term orbits, all controls, all hardware
+and broader scientific print accuracy remain unvalidated.
 
 ## Sources
 
