@@ -1,233 +1,282 @@
 {
-  "sourceSha256": "93b8bf74f41fe23eed1260a1ee783bab2a08dc2d582fce39324094ca2839bc7e",
+  "sourceSha256": "607417802982b99de7ea1912c083757cefdec471ed8561df9363faa99f7c118a",
   "cases": [
     {
       "grid": 48,
       "alpha": 0,
-      "time": 16.799999999999997,
+      "time": 120,
       "rows": [
         {
-          "dt": 0.07,
-          "steps": 240,
-          "error": 0.0021079178783721675
+          "requestedStep": 0.1,
+          "actualStep": 0.1,
+          "error": 0.000014711578743997755,
+          "energyDrift": 0.00001116558349190111,
+          "metric": 0.9999891379036338
         },
         {
-          "dt": 0.035,
-          "steps": 480,
-          "error": 0.0010537258349068157
+          "requestedStep": 0.05,
+          "actualStep": 0.05,
+          "error": 0.000003677884269220888,
+          "energyDrift": 0.000002791395782630879,
+          "metric": 0.9999972844657484
         },
         {
-          "dt": 0.0175,
-          "steps": 960,
-          "error": 0.0005268049603721625
+          "requestedStep": 0.025,
+          "actualStep": 0.025,
+          "error": 9.194704174153578e-7,
+          "energyDrift": 6.978489397457821e-7,
+          "metric": 0.999999321115803
         }
       ],
-      "ratio": 4.0013250385551125,
+      "order": 2.0000025529060954,
       "referenceDifference": 0
     },
     {
       "grid": 48,
       "alpha": 0.22,
-      "time": 16.799999999999997,
+      "time": 120,
       "rows": [
         {
-          "dt": 0.07,
-          "steps": 240,
-          "error": 0.002108210227776519
+          "requestedStep": 0.1,
+          "actualStep": 0.1,
+          "error": 0.000014805464463030216,
+          "energyDrift": 0.000011182764556361136,
+          "metric": 0.9991034441401683
         },
         {
-          "dt": 0.035,
-          "steps": 480,
-          "error": 0.0010538713373675068
+          "requestedStep": 0.05,
+          "actualStep": 0.05,
+          "error": 0.000003701354881785468,
+          "energyDrift": 0.000002795690556944841,
+          "metric": 0.9991116078302013
         },
         {
-          "dt": 0.0175,
-          "steps": 960,
-          "error": 0.0005268775437952677
+          "requestedStep": 0.025,
+          "actualStep": 0.025,
+          "error": 9.253380423290825e-7,
+          "energyDrift": 6.989226009057603e-7,
+          "metric": 0.9991136487621293
         }
       ],
-      "ratio": 4.001328681785155,
-      "referenceDifference": 6.890321646579878e-15
+      "order": 2.0000027179828836,
+      "referenceDifference": 5.303257832878217e-13
     },
     {
       "grid": 48,
       "alpha": 0.42,
-      "time": 16.799999999999997,
+      "time": 120,
       "rows": [
         {
-          "dt": 0.07,
-          "steps": 240,
-          "error": 0.0021085084809412957
+          "requestedStep": 0.1,
+          "actualStep": 0.1,
+          "error": 0.00001503167299155006,
+          "energyDrift": 0.000011228403617558058,
+          "metric": 0.9967607169991788
         },
         {
-          "dt": 0.035,
-          "steps": 480,
-          "error": 0.0010540196304398841
+          "requestedStep": 0.05,
+          "actualStep": 0.05,
+          "error": 0.0000037579052093172916,
+          "energyDrift": 0.0000028070989523953926,
+          "metric": 0.9967689260043378
         },
         {
-          "dt": 0.0175,
-          "steps": 960,
-          "error": 0.0005269514825532173
+          "requestedStep": 0.025,
+          "actualStep": 0.025,
+          "error": 9.394755139946476e-7,
+          "energyDrift": 7.017746173065831e-7,
+          "metric": 0.9967709782647504
         }
       ],
-      "ratio": 4.001333236079008,
-      "referenceDifference": 4.3576253716537394e-15
+      "order": 2.0000031081087313,
+      "referenceDifference": 6.4279137568235e-13
     },
     {
       "grid": 96,
       "alpha": 0,
-      "time": 33.599999999999994,
+      "time": 120,
       "rows": [
         {
-          "dt": 0.07,
-          "steps": 480,
-          "error": 0.0010372973566372123
+          "requestedStep": 0.1,
+          "actualStep": 0.09615384615384616,
+          "error": 0.0000012294384347244502,
+          "energyDrift": 0.0000025274716005663223,
+          "metric": 0.9999986323569674
         },
         {
-          "dt": 0.035,
-          "steps": 960,
-          "error": 0.0005185928027719999
+          "requestedStep": 0.05,
+          "actualStep": 0.05,
+          "error": 3.324396912196548e-7,
+          "energyDrift": 6.834283210466197e-7,
+          "metric": 0.9999996301901539
         },
         {
-          "dt": 0.0175,
-          "steps": 1920,
-          "error": 0.0002592824710417885
+          "requestedStep": 0.025,
+          "actualStep": 0.025,
+          "error": 8.310989108029077e-8,
+          "energyDrift": 1.708570795955211e-7,
+          "metric": 0.9999999075475965
         }
       ],
-      "ratio": 4.000645907412813,
+      "order": 2.000001313981175,
       "referenceDifference": 0
     },
     {
       "grid": 96,
       "alpha": 0.22,
-      "time": 33.599999999999994,
+      "time": 120,
       "rows": [
         {
-          "dt": 0.07,
-          "steps": 480,
-          "error": 0.0010373364996419387
+          "requestedStep": 0.1,
+          "actualStep": 0.09615384615384616,
+          "error": 0.0000012320800774068275,
+          "energyDrift": 0.0000025274458251844933,
+          "metric": 0.9999408064767601
         },
         {
-          "dt": 0.035,
-          "steps": 960,
-          "error": 0.0005186123337945769
+          "requestedStep": 0.05,
+          "actualStep": 0.05,
+          "error": 3.33153986842305e-7,
+          "energyDrift": 6.834213517326049e-7,
+          "metric": 0.9999418046754445
         },
         {
-          "dt": 0.0175,
-          "steps": 1920,
-          "error": 0.000259292226440333
+          "requestedStep": 0.025,
+          "actualStep": 0.025,
+          "error": 8.328846456961969e-8,
+          "energyDrift": 1.7085533732252856e-7,
+          "metric": 0.9999420821344831
         }
       ],
-      "ratio": 4.000646351350009,
-      "referenceDifference": 5.3464177529605195e-15
+      "order": 2.000001325032552,
+      "referenceDifference": 1.5987211554602254e-14
     },
     {
       "grid": 96,
       "alpha": 0.42,
-      "time": 33.599999999999994,
+      "time": 120,
       "rows": [
         {
-          "dt": 0.07,
-          "steps": 480,
-          "error": 0.001037376990589145
+          "requestedStep": 0.1,
+          "actualStep": 0.09615384615384616,
+          "error": 0.0000012384282046529194,
+          "energyDrift": 0.0000025273775007272903,
+          "metric": 0.999787893147314
         },
         {
-          "dt": 0.035,
-          "steps": 960,
-          "error": 0.0005186325293227156
+          "requestedStep": 0.05,
+          "actualStep": 0.05,
+          "error": 3.3487051143143987e-7,
+          "energyDrift": 6.834028764002298e-7,
+          "metric": 0.9997888923127053
         },
         {
-          "dt": 0.0175,
-          "steps": 1920,
-          "error": 0.0002593023117381521
+          "requestedStep": 0.025,
+          "actualStep": 0.025,
+          "error": 8.371759285807912e-8,
+          "energyDrift": 1.7085071946087993e-7,
+          "metric": 0.9997891700404458
         }
       ],
-      "ratio": 4.000646903744946,
-      "referenceDifference": 5.797445856714489e-15
+      "order": 2.000001363582385,
+      "referenceDifference": 1.4210854715202004e-14
     },
     {
       "grid": 128,
       "alpha": 0,
-      "time": 44.8,
+      "time": 120,
       "rows": [
         {
-          "dt": 0.07,
-          "steps": 640,
-          "error": 0.0007748358755643725
+          "requestedStep": 0.1,
+          "actualStep": 0.09375,
+          "error": 1.1464195937005428e-7,
+          "energyDrift": 0.0000013444242052962352,
+          "metric": 0.999999960054432
         },
         {
-          "dt": 0.035,
-          "steps": 1280,
-          "error": 0.0003873868385496082
+          "requestedStep": 0.05,
+          "actualStep": 0.049342105263157895,
+          "error": 3.1756807516991614e-8,
+          "energyDrift": 3.724166778296123e-7,
+          "metric": 0.999999988934685
         },
         {
-          "dt": 0.0175,
-          "steps": 2560,
-          "error": 0.00019368566058819425
+          "requestedStep": 0.025,
+          "actualStep": 0.024671052631578948,
+          "error": 7.93920462704989e-9,
+          "energyDrift": 9.310416904106944e-8,
+          "metric": 0.9999999972336674
         }
       ],
-      "ratio": 4.000481363521246,
+      "order": 1.9999989843361812,
       "referenceDifference": 0
     },
     {
       "grid": 128,
       "alpha": 0.22,
-      "time": 44.8,
+      "time": 120,
       "rows": [
         {
-          "dt": 0.07,
-          "steps": 640,
-          "error": 0.0007748526448080884
+          "requestedStep": 0.1,
+          "actualStep": 0.09375,
+          "error": 1.1489969020672675e-7,
+          "energyDrift": 0.0000013444178081911673,
+          "metric": 0.9999818400942208
         },
         {
-          "dt": 0.035,
-          "steps": 1280,
-          "error": 0.0003873952104886391
+          "requestedStep": 0.05,
+          "actualStep": 0.049342105263157895,
+          "error": 3.1828198188144086e-8,
+          "energyDrift": 3.724149063577542e-7,
+          "metric": 0.9999818690235037
         },
         {
-          "dt": 0.0175,
-          "steps": 2560,
-          "error": 0.00019368984338852258
+          "requestedStep": 0.025,
+          "actualStep": 0.024671052631578948,
+          "error": 7.957052017282251e-9,
+          "energyDrift": 9.310372683923873e-8,
+          "metric": 0.9999818773365757
         }
       ],
-      "ratio": 4.000481549534897,
-      "referenceDifference": 6.102757188486407e-15
+      "order": 1.9999990812854045,
+      "referenceDifference": 7.919880029572113e-15
     },
     {
       "grid": 128,
       "alpha": 0.42,
-      "time": 44.8,
+      "time": 120,
       "rows": [
         {
-          "dt": 0.07,
-          "steps": 640,
-          "error": 0.000774870035139541
+          "requestedStep": 0.1,
+          "actualStep": 0.09375,
+          "error": 1.1555589829459478e-7,
+          "energyDrift": 0.0000013444008610807856,
+          "metric": 0.9999339157856213
         },
         {
-          "dt": 0.035,
-          "steps": 1280,
-          "error": 0.0003874038900250065
+          "requestedStep": 0.05,
+          "actualStep": 0.049342105263157895,
+          "error": 3.200997089614077e-8,
+          "energyDrift": 3.7241021133560537e-7,
+          "metric": 0.9999339448445793
         },
         {
-          "dt": 0.0175,
-          "steps": 2560,
-          "error": 0.0001936941792547442
+          "requestedStep": 0.025,
+          "actualStep": 0.024671052631578948,
+          "error": 8.002494000791671e-9,
+          "energyDrift": 9.310255444372473e-8,
+          "metric": 0.9999339531949099
         }
       ],
-      "ratio": 4.000481780717021,
-      "referenceDifference": 4.433953204596719e-15
+      "order": 1.9999992540426985,
+      "referenceDifference": 5.773159728050814e-15
     }
   ],
-  "failureError": 0.050554538932256254,
-  "diagnostic": {
-    "periodsChangesState": false,
-    "periodsStateDifference": 0,
-    "note": "The recorded metric is absolute first-mode displacement amplitude. It is not first-mode energy, which also needs the projected velocity."
-  },
+  "failureError": 0.3636169327202694,
+  "durationDifference": 0.3016947724460656,
   "pass": true,
   "limitations": [
-    "Only fixed-end displacement and velocity evolution at the stated finite times is supported.",
-    "The smallest refinement step 0.0175 is injected through the test state, below the UI slider minimum 0.02.",
-    "No nonlinear recurrence, energy diagnostic, periods control, equipartition, long-time or print claim."
+    "Fixed-end alpha-chain at enumerated finite times and amplitudes. No long-time recurrence, equilibrium or physical experiment claim.",
+    "Sites change the finite chain, not a fixed-domain continuum discretization."
   ]
 }

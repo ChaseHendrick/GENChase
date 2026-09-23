@@ -1,0 +1,377 @@
+{
+  "date": "2026-09-22",
+  "sourceSha256": "607417802982b99de7ea1912c083757cefdec471ed8561df9363faa99f7c118a",
+  "scope": "Finite fixed-end alpha-chain histories and harmonic mode-energy diagnostics with independent RK4, reference refinement, every native PNG channel and state preservation.",
+  "cases": [
+    {
+      "seed": "fput-field-0",
+      "params": {
+        "dt": 0.05,
+        "alpha": 0.22,
+        "periods": 140,
+        "grid": 48,
+        "aspect": "1:1",
+        "view": "int",
+        "exposure": 1
+      },
+      "grid": [
+        48,
+        48
+      ],
+      "fieldError": 0.0000036174957591950108,
+      "referenceRefinement": 5.225680999032534e-13,
+      "displacedFieldError": 0.06680483371019363,
+      "diagnostics": {
+        "finalEnergyError": 2.3011324956634382e-8,
+        "minimumEnergyError": 2.3011324956634382e-8,
+        "sampledTotalEnergyDrift": 0.000002728170853449896,
+        "referenceEnergyDrift": 1.7763568394002505e-15
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsCompared": 23040000,
+        "maxChannelError": 1,
+        "shiftedPrintMismatches": 12512500,
+        "params": {
+          "grid": 48,
+          "aspect": "1:1",
+          "alpha": 0.22,
+          "periods": 140,
+          "dt": 0.05,
+          "view": "int",
+          "exposure": 1,
+          "seed": "fput-field-0",
+          "v": 2,
+          "palette": [
+            "#1F3A5F",
+            "#4F7CAC",
+            "#C9D6DF",
+            "#E07A5F",
+            "#F2CC8F"
+          ],
+          "bg": "#ECEFEA"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "fput-field-1",
+      "params": {
+        "dt": 0.05,
+        "alpha": 0,
+        "periods": 80,
+        "grid": 96,
+        "aspect": "4:5",
+        "view": "log",
+        "exposure": 1
+      },
+      "grid": [
+        96,
+        120
+      ],
+      "fieldError": 2.1174727982131714e-7,
+      "referenceRefinement": 1.0103029524088925e-14,
+      "displacedFieldError": 0.033055335351816914,
+      "diagnostics": {
+        "finalEnergyError": 1.404834918394826e-7,
+        "minimumEnergyError": 6.198703151882867e-7,
+        "sampledTotalEnergyDrift": 6.198703168536213e-7,
+        "referenceEnergyDrift": 1.9984014443252818e-15
+      },
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsCompared": 18432000,
+        "maxChannelError": 0,
+        "shiftedPrintMismatches": 5325600,
+        "params": {
+          "grid": 96,
+          "aspect": "4:5",
+          "alpha": 0,
+          "periods": 80,
+          "dt": 0.05,
+          "view": "log",
+          "exposure": 1,
+          "seed": "fput-field-1",
+          "v": 2,
+          "palette": [
+            "#1F3A5F",
+            "#4F7CAC",
+            "#C9D6DF",
+            "#E07A5F",
+            "#F2CC8F"
+          ],
+          "bg": "#ECEFEA"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "fput-field-2",
+      "params": {
+        "dt": 0.05,
+        "alpha": 0.38,
+        "periods": 160,
+        "grid": 128,
+        "aspect": "16:9",
+        "view": "int",
+        "exposure": 1
+      },
+      "grid": [
+        128,
+        72
+      ],
+      "fieldError": 2.034301803677252e-7,
+      "referenceRefinement": 8.548717289613705e-15,
+      "displacedFieldError": 0.024733969941735268,
+      "diagnostics": {
+        "finalEnergyError": 1.9813613338914848e-7,
+        "minimumEnergyError": 1.9813613338914848e-7,
+        "sampledTotalEnergyDrift": 3.7283884579686344e-7,
+        "referenceEnergyDrift": 1.5543122344752192e-15
+      },
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsCompared": 12960000,
+        "maxChannelError": 1,
+        "shiftedPrintMismatches": 5485656,
+        "params": {
+          "grid": 128,
+          "aspect": "16:9",
+          "alpha": 0.38,
+          "periods": 160,
+          "dt": 0.05,
+          "view": "int",
+          "exposure": 1,
+          "seed": "fput-field-2",
+          "v": 2,
+          "palette": [
+            "#1F3A5F",
+            "#4F7CAC",
+            "#C9D6DF",
+            "#E07A5F",
+            "#F2CC8F"
+          ],
+          "bg": "#ECEFEA"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "fput-field-3",
+      "params": {
+        "dt": 0.05,
+        "alpha": 0.18,
+        "periods": 200,
+        "grid": 48,
+        "aspect": "1:1",
+        "view": "log",
+        "exposure": 1
+      },
+      "grid": [
+        48,
+        48
+      ],
+      "fieldError": 0.000005087675775644618,
+      "referenceRefinement": 7.428224702010766e-13,
+      "displacedFieldError": 0.06677615459487612,
+      "diagnostics": {
+        "finalEnergyError": 0.0000014296671432267871,
+        "minimumEnergyError": 0.0000014296671432267871,
+        "sampledTotalEnergyDrift": 0.00000274703368741136,
+        "referenceEnergyDrift": 2.220446049250313e-15
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsCompared": 23040000,
+        "maxChannelError": 1,
+        "shiftedPrintMismatches": 10192500,
+        "params": {
+          "grid": 48,
+          "aspect": "1:1",
+          "alpha": 0.18,
+          "periods": 200,
+          "dt": 0.05,
+          "view": "log",
+          "exposure": 1,
+          "seed": "fput-field-3",
+          "v": 2,
+          "palette": [
+            "#1F3A5F",
+            "#4F7CAC",
+            "#C9D6DF",
+            "#E07A5F",
+            "#F2CC8F"
+          ],
+          "bg": "#ECEFEA"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "fput-field-4",
+      "params": {
+        "dt": 0.03,
+        "alpha": 0.2,
+        "periods": 120,
+        "grid": 96,
+        "aspect": "4:5",
+        "view": "int",
+        "exposure": 1
+      },
+      "grid": [
+        96,
+        120
+      ],
+      "fieldError": 1.4093253797309302e-7,
+      "referenceRefinement": 1.687538997430238e-14,
+      "displacedFieldError": 0.03306170925498009,
+      "diagnostics": {
+        "finalEnergyError": 1.2800054982609055e-7,
+        "minimumEnergyError": 1.2800054982609055e-7,
+        "sampledTotalEnergyDrift": 2.3641519697470414e-7,
+        "referenceEnergyDrift": 1.3322676295501878e-15
+      },
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "channelsCompared": 18432000,
+        "maxChannelError": 0,
+        "shiftedPrintMismatches": 8733600,
+        "params": {
+          "grid": 96,
+          "aspect": "4:5",
+          "alpha": 0.2,
+          "periods": 120,
+          "dt": 0.03,
+          "view": "int",
+          "exposure": 1,
+          "seed": "fput-field-4",
+          "v": 2,
+          "palette": [
+            "#1F3A5F",
+            "#4F7CAC",
+            "#C9D6DF",
+            "#E07A5F",
+            "#F2CC8F"
+          ],
+          "bg": "#ECEFEA"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "fput-field-5",
+      "params": {
+        "dt": 0.05,
+        "alpha": 0.42,
+        "periods": 220,
+        "grid": 128,
+        "aspect": "16:9",
+        "view": "log",
+        "exposure": 1
+      },
+      "grid": [
+        128,
+        72
+      ],
+      "fieldError": 3.084498929606383e-7,
+      "referenceRefinement": 1.176836406102666e-14,
+      "displacedFieldError": 0.024731108977381504,
+      "diagnostics": {
+        "finalEnergyError": 2.0675885137322325e-7,
+        "minimumEnergyError": 2.0675885137322325e-7,
+        "sampledTotalEnergyDrift": 3.7143651065996153e-7,
+        "referenceEnergyDrift": 2.6645352591003757e-15
+      },
+      "print": {
+        "width": 2400,
+        "height": 1350,
+        "channelsCompared": 12960000,
+        "maxChannelError": 1,
+        "shiftedPrintMismatches": 3773298,
+        "params": {
+          "grid": 128,
+          "aspect": "16:9",
+          "alpha": 0.42,
+          "periods": 220,
+          "dt": 0.05,
+          "view": "log",
+          "exposure": 1,
+          "seed": "fput-field-5",
+          "v": 2,
+          "palette": [
+            "#1F3A5F",
+            "#4F7CAC",
+            "#C9D6DF",
+            "#E07A5F",
+            "#F2CC8F"
+          ],
+          "bg": "#ECEFEA"
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "seed": "fput-field-6",
+      "params": {
+        "dt": 0.05,
+        "alpha": 0,
+        "periods": 40,
+        "grid": 48,
+        "aspect": "1:1",
+        "view": "int",
+        "exposure": 1
+      },
+      "grid": [
+        48,
+        48
+      ],
+      "fieldError": 8.266090627540024e-7,
+      "referenceRefinement": 1.0241807402167069e-13,
+      "displacedFieldError": 0.06668908149003983,
+      "diagnostics": {
+        "finalEnergyError": 5.468239173689327e-7,
+        "minimumEnergyError": 0.0000026826576801086688,
+        "sampledTotalEnergyDrift": 0.0000026826576817740033,
+        "referenceEnergyDrift": 6.661338147750939e-16
+      },
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "channelsCompared": 23040000,
+        "maxChannelError": 0,
+        "shiftedPrintMismatches": 12185000,
+        "params": {
+          "grid": 48,
+          "aspect": "1:1",
+          "alpha": 0,
+          "periods": 40,
+          "dt": 0.05,
+          "view": "int",
+          "exposure": 1,
+          "seed": "fput-field-6",
+          "v": 2,
+          "palette": [
+            "#1F3A5F",
+            "#4F7CAC",
+            "#C9D6DF",
+            "#E07A5F",
+            "#F2CC8F"
+          ],
+          "bg": "#ECEFEA"
+        }
+      },
+      "statePreserved": true
+    }
+  ],
+  "environment": {
+    "node": "v24.21.0",
+    "chromium": "145.0.7632.6",
+    "platform": "darwin"
+  },
+  "passed": true
+}

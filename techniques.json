@@ -1269,12 +1269,12 @@
     {
       "id": "fput",
       "source": "src/modules/fput.js",
-      "name": "FPUT Recurrence",
+      "name": "FPUT Chain",
       "tab": "FPUT",
-      "subtitle": "a chain that refuses to thermalise · 1955",
-      "equation": "ẍ_i = (q_{i+1}-2q_i+q_{i-1}) + α[(q_{i+1}-q_i)²-(q_i-q_{i-1})²],   E_1(t) returns",
-      "credit": "Fermi, Pasta, Ulam and Tsingou, Los Alamos report LA-1940 (1955). A weakly nonlinear string, started in one Fourier mode, was expected to thermalise. It did not: the energy came back. Zabusky and Kruskal (1965) met the soliton in the continuum limit. The plate is spacetime of the displacements, with the first-mode energy measured against its start.",
-      "blurb": "Put all the energy in one mode of a weakly nonlinear string. Equipartition says it should leak into every mode and stay there. On the first computers it came back instead. The plate is that recurrence. The status line reports how close E1 returns to its start, against 1 for a perfect revival and 1/N for a thermal soup.",
+      "subtitle": "nonlinear chain and mode energy · 1955",
+      "equation": "ẍ_i = (q_{i+1}-2q_i+q_{i-1}) + α[(q_{i+1}-q_i)²-(q_i-q_{i-1})²],   E_1 = (P_1² + ω_1² Q_1²)/2",
+      "credit": "Fermi, Pasta, Ulam and Tsingou, Los Alamos report LA-1940 (1955). A weakly nonlinear string, started in one Fourier mode, was expected to thermalise. It did not: the energy came back. Zabusky and Kruskal (1965) met the soliton in the continuum limit. This plate records finite fixed-end displacement histories and harmonic first-mode energy relative to its initial value. It does not reproduce the original long recurrence experiment.",
+      "blurb": "A fixed-end chain begins in its first sine mode with zero velocity. Nonlinear bond forces transfer energy between modes. The picture records displacement over the selected time span. The status reports first-mode harmonic energy, its sampled minimum, and total-energy drift. A return or thermal equilibrium is not inferred from a single final value.",
       "order": 53,
       "seed": "",
       "presets": [

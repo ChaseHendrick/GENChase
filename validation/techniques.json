@@ -927,31 +927,60 @@
   {
     "id": "fput",
     "source": "src/modules/fput.js",
-    "sourceSha256": "93b8bf74f41fe23eed1260a1ee783bab2a08dc2d582fce39324094ca2839bc7e",
-    "reference": "Fermi, Pasta, Ulam and Tsingou, Los Alamos report LA-1940 (1955). A weakly nonlinear string, started in one Fourier mode, was expected to thermalise. It did not: the energy came back. Zabusky and Kruskal (1965) met the soliton in the continuum limit. The plate is spacetime of the displacements, with the first-mode energy measured against its start.",
-    "equation": "ẍ_i = (q_{i+1}-2q_i+q_{i-1}) + α[(q_{i+1}-q_i)²-(q_i-q_{i-1})²],   E_1(t) returns",
-    "status": "partially validated",
+    "sourceSha256": "607417802982b99de7ea1912c083757cefdec471ed8561df9363faa99f7c118a",
+    "reference": "Fermi, Pasta, Ulam and Tsingou, Los Alamos report LA-1940 (1955). A weakly nonlinear string, started in one Fourier mode, was expected to thermalise. It did not: the energy came back. Zabusky and Kruskal (1965) met the soliton in the continuum limit. This plate records finite fixed-end displacement histories and harmonic first-mode energy relative to its initial value. It does not reproduce the original long recurrence experiment.",
+    "equation": "ẍ_i = (q_{i+1}-2q_i+q_{i-1}) + α[(q_{i+1}-q_i)²-(q_i-q_{i-1})²],   E_1 = (P_1² + ω_1² Q_1²)/2",
+    "status": "validated within stated limits",
     "limitations": [
-      "Finite-time state evolution only; finest refinement step is below the UI minimum.",
-      "The displayed E1 value is displacement amplitude, not energy. Periods kept is unused. Recurrence, equipartition and print accuracy are not validated."
+      "Only the finite fixed-end alpha-chain equations, histories, diagnostics and native PNG recipes in validation/FPUT-FIELD-REVIEW.md.",
+      "No long nonlinear recurrence, equipartition, arbitrary-amplitude cubic-potential stability, continuum limit or physical experiment certification.",
+      "The historical periods key now denotes elapsed physical time; corrected integration and energy diagnostics intentionally change old recipe output."
     ],
     "remaining": [
-      "Correct the mode-energy diagnostic and the unused periods control.",
-      "Establish physical time calibration and nonlinear recurrence benchmarks; audit print exports."
+      "Extend the finite reference trajectories, other print backends and independently defined long-time recurrence experiments."
     ],
     "numerical": [
       {
         "test": "tools/chain-science.js",
-        "scope": "Maintained displacement and velocity arrays for 48, 96 and 128 sites, alpha 0, 0.22 and 0.42, steps 0.07, 0.035 and 0.0175 at fixed time for each grid.",
-        "criteria": "Finest state error below 0.001; first-order error ratio between 3.5 and 4.5 over fourfold refinement. Reference refinement below 1e-9.",
-        "benchmark": "Exact fixed-end harmonic first mode and separately assembled bond-tension RK4 reference at 2000 and 4000 steps.",
-        "failureControl": "Increasing the linear force by 10% must cause state error above 0.02.",
-        "limitations": "Finite-time state evolution only; finest refinement step is below the UI minimum. The displayed E1 value is displacement amplitude, not energy. Periods kept is unused. Recurrence, equipartition and print accuracy are not validated.",
         "command": "node tools/chain-science.js --write",
-        "results": "validation/results/chain-science.json"
+        "results": "validation/results/chain-science.json",
+        "scope": "Nine fixed-end chains with 48,96,128 sites and alpha 0,.22,.42, all at physical time 120; three actual timesteps and duration control.",
+        "criteria": "State error<2e-5; RK4 refinement<1e-8; observed order 1.9 to 2.1; sampled total-energy drift<2e-5.",
+        "benchmark": "Exact linear sine mode and separate bond-tension RK4 compared with production velocity Verlet.",
+        "failureControl": "Ten percent incorrect linear force must miss by>.02; changing duration from40 to220 must change positions by>.1.",
+        "limitations": "Enumerated finite chain and initial condition only; changing site count is not continuum refinement."
+      },
+      {
+        "test": "tools/fput-field-review.js",
+        "command": "node tools/fput-field-review.js --write",
+        "results": "validation/results/fput-field-review.json",
+        "scope": "Seven complete histories at times40 to220, every display view, mode-energy diagnostics and actual native PNG exports.",
+        "criteria": "Every field value error<2e-5; reference refinement<1e-8; mode-energy errors<2e-5; PNG channels<=1 byte; unchanged state.",
+        "benchmark": "Independent refined bond-tension RK4 histories and harmonic mode projections, plus separate full print color mapping.",
+        "failureControl": "Displaced fields and prints must fail. The registered solver review rejects an incorrect force and tests the duration control.",
+        "limitations": "Only the finite recipes and browser environment in validation/FPUT-FIELD-REVIEW.md; no recurrence or equilibrium claim."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/fput-field-review.js",
+        "command": "node tools/fput-field-review.js --write",
+        "results": "validation/results/fput-field-review.json",
+        "scope": "Seven complete histories at times40 to220, every display view, mode-energy diagnostics and actual native PNG exports.",
+        "criteria": "Every field value error<2e-5; reference refinement<1e-8; mode-energy errors<2e-5; PNG channels<=1 byte; unchanged state.",
+        "benchmark": "Independent refined bond-tension RK4 histories and harmonic mode projections, plus separate full print color mapping.",
+        "failureControl": "Displaced fields and prints must fail. The registered solver review rejects an incorrect force and tests the duration control.",
+        "limitations": "Only the finite recipes and browser environment in validation/FPUT-FIELD-REVIEW.md; no recurrence or equilibrium claim."
+      }
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/fput-field-review.json",
+    "domain": {
+      "parameters": "Nine numerical refinement cases and seven full effective recipes in validation/results/chain-science.json and validation/results/fput-field-review.json.",
+      "conditions": "Unit masses and linear springs; fixed endpoints included in N; q_i=sin(pi*i/(N-1)), zero velocities; alpha0 to.42; finite physical times40 to220.",
+      "resolution": "N=48,96,128; aspect-dependent history rows; production steps .1,.05,.025 for refinement; independent RK4 .025/.0125; native PNGs2400x2400,1920x2400,2400x1350.",
+      "precision": "Binary64 state and independent references; Float32 stored history; RGBA8 PNG; full measured errors and browser/platform recorded."
+    }
   },
   {
     "id": "schrodinger",

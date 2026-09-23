@@ -111,3 +111,6 @@ The current PDE family guard and stencil review is recorded in [PDE-FAMILY.md](P
 Completed follow-ups: [positive peakon fields and prints](PEAKON-FIELD-REVIEW.md), [complete MPR recordings](NEURAL-MASS.md), and [discrete inhibitory growth](PHYLLOTAXIS.md).
 
 The [complete PDE field review](PDE-FIELD-REVIEW.md) checks six finite solvers and all their print views. The [spanning-tree review](UST.md) combines exact graph enumeration, measured sampling frequencies, and independent print geometry.
+
+The [complete finite FPUT review](FPUT-FIELD-REVIEW.md) covers independent chain
+trajectories, energy diagnostics, working duration controls and real print output.

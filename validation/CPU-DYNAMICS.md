@@ -34,7 +34,11 @@ The conserved quantities follow the torque-free Euler equations described in
 These checks do not certify indefinite energy preservation, all controls, exact
 flip times or printed numerical resolution. RK4 is not an exactly symplectic method.
 
-## FPUT chain evolution
+## FPUT chain evolution (historical partial audit)
+
+Superseded by the [complete finite review](FPUT-FIELD-REVIEW.md), which corrects
+the energy diagnostic, duration control and integration scheme. The observations
+below describe the earlier implementation.
 
 Run `node tools/chain-science.js --write` for the
 [results](results/chain-science.json). The actual displacement and velocity arrays
