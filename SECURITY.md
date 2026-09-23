@@ -42,6 +42,6 @@ Out of scope: GitHub, a copy someone else hosted, browsers, WebGL drivers.
 
 ## What we will do
 
-We will answer. A report that reproduces gets a fix in `studio.html` and a note in the advisory. There is no bounty.
+We will answer. A report that reproduces gets a fix in `studio.html` and a note in the advisory. There may be a bounty.
 
 The source is Apache-2.0. General licensing questions belong in repository issues, not private security reports.
