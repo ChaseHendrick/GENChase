@@ -40,7 +40,7 @@ const count = require('./count.js');
     techniques: mods,
   }, null, 2) + '\n');
 
-  const esc = t => String(t).replace(/\|/g, '\\|').replace(/\n+/g, ' ').trim();
+  const esc = t => String(t).replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/\n+/g, ' ').trim();
   const famLabel = { ubiquitous: 'Ubiquitous', common: 'Common', occasional: 'Occasional', rare: 'Rare', unseen: 'Almost unseen' };
   let md = `# Techniques
 
