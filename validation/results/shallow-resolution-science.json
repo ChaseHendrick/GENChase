@@ -1,0 +1,312 @@
+{
+  "scope": "Float64 wet flat-bed Saint-Venant: dam-break resolution through 512² vs independent exact Riemann cell averages; CFL/amplitude parameter scans and non-square aspect on the linearized oblique wave / dam; long-duration (t=1) periodic/wall positivity+conservation and multi-period acoustic RMS. No dry-bed, bathymetry, viscosity or flood-forecast claim.",
+  "sourceSHA256": "65d975766f9266e6c68ae53af438b1f624a6e8907228fd781d45db9ef497c0a9",
+  "command": "node tools/shallow-resolution-science.js",
+  "domain": {
+    "damGrids": [
+      64,
+      128,
+      256,
+      512
+    ],
+    "damTime": 0.08,
+    "cflValues": [
+      0.25,
+      0.45,
+      0.7
+    ],
+    "amplitudes": [
+      0.000005,
+      0.00001,
+      0.00002
+    ],
+    "aspects": [
+      "1:1",
+      "4:5"
+    ],
+    "longTime": 1,
+    "waveMode": "(1,1)",
+    "omega": 8.885765876316732,
+    "precision": "Float64Array conserved fields; independent rarefaction/shock and linearized acoustic references in Float64"
+  },
+  "exact": {
+    "hl": 2,
+    "hr": 1,
+    "hs": 1.453840892374573,
+    "us": 0.4169206309754827,
+    "head": -1.4142135623730951,
+    "tail": -0.7888326159098711,
+    "shock": 1.33556995936474
+  },
+  "damBreakResolution": [
+    {
+      "grid": 64,
+      "nx": 64,
+      "ny": 64,
+      "aspect": "1:1",
+      "steps": 34,
+      "time": 0.08,
+      "milliseconds": 30.444339,
+      "depthL1": 0.02385146606046353,
+      "momentumL1": 0.029292424558519558,
+      "massDrift": 6.3652786745175644e-15,
+      "minDepth": 1,
+      "energy": 1.2390594505309112
+    },
+    {
+      "grid": 128,
+      "nx": 128,
+      "ny": 128,
+      "aspect": "1:1",
+      "steps": 69,
+      "time": 0.08,
+      "milliseconds": 110.705646,
+      "depthL1": 0.015555445327774135,
+      "momentumL1": 0.01881833279143574,
+      "massDrift": 8.881784197001252e-16,
+      "minDepth": 1,
+      "energy": 1.2421850588813947,
+      "depthErrorRatio": 1.5333193976695034,
+      "momentumErrorRatio": 1.5565897831209892
+    },
+    {
+      "grid": 256,
+      "nx": 256,
+      "ny": 256,
+      "aspect": "1:1",
+      "steps": 138,
+      "time": 0.08,
+      "milliseconds": 835.1668009999999,
+      "depthL1": 0.01020727639595911,
+      "momentumL1": 0.012029409551249124,
+      "massDrift": -1.4654943925052066e-14,
+      "minDepth": 1,
+      "energy": 1.2443695656299818,
+      "depthErrorRatio": 1.5239565114482718,
+      "momentumErrorRatio": 1.564360470999315
+    },
+    {
+      "grid": 512,
+      "nx": 512,
+      "ny": 512,
+      "aspect": "1:1",
+      "steps": 276,
+      "time": 0.08,
+      "milliseconds": 6162.186089000001,
+      "depthL1": 0.006395082422573823,
+      "momentumL1": 0.0075918361508462776,
+      "massDrift": 1.5987211554602254e-13,
+      "minDepth": 1,
+      "energy": 1.2458490764965988,
+      "depthErrorRatio": 1.596113344830198,
+      "momentumErrorRatio": 1.584519121887026
+    }
+  ],
+  "aspectDam": {
+    "grid": 64,
+    "nx": 64,
+    "ny": 80,
+    "aspect": "4:5",
+    "steps": 34,
+    "time": 0.08,
+    "milliseconds": 11.839109999999891,
+    "depthL1": 0.02385146606046359,
+    "momentumL1": 0.02929242455851932,
+    "massDrift": 8.881784197001252e-15,
+    "minDepth": 1,
+    "energy": 1.5488243131636403,
+    "depthErrorRatioVsSquare": 0.9999999999999973
+  },
+  "cflScan": [
+    {
+      "grid": 64,
+      "nx": 64,
+      "ny": 64,
+      "aspect": "1:1",
+      "courant": 0.25,
+      "amplitude": 0.00001,
+      "omega": 8.885765876316732,
+      "time": 0.1,
+      "steps": 52,
+      "relativeRMS": 0.03713831759627529,
+      "massDrift": -2.886579864025407e-15,
+      "momentumError": 3.8958138774238534e-18,
+      "minDepth": 0.9999905332943646
+    },
+    {
+      "grid": 64,
+      "nx": 64,
+      "ny": 64,
+      "aspect": "1:1",
+      "courant": 0.45,
+      "amplitude": 0.00001,
+      "omega": 8.885765876316732,
+      "time": 0.1,
+      "steps": 29,
+      "relativeRMS": 0.03306928340541786,
+      "massDrift": -4.6629367034256575e-15,
+      "momentumError": 5.9933288049372654e-18,
+      "minDepth": 0.9999904757953265
+    },
+    {
+      "grid": 64,
+      "nx": 64,
+      "ny": 64,
+      "aspect": "1:1",
+      "courant": 0.7,
+      "amplitude": 0.00001,
+      "omega": 8.885765876316732,
+      "time": 0.1,
+      "steps": 19,
+      "relativeRMS": 0.027940879986616013,
+      "massDrift": -2.3314683517128287e-15,
+      "momentumError": 3.458620406238236e-18,
+      "minDepth": 0.9999904032221575
+    }
+  ],
+  "ampScan": [
+    {
+      "grid": 64,
+      "nx": 64,
+      "ny": 64,
+      "aspect": "1:1",
+      "courant": 0.45,
+      "amplitude": 0.000005,
+      "omega": 8.885765876316732,
+      "time": 0.1,
+      "steps": 29,
+      "relativeRMS": 0.0330691560300695,
+      "massDrift": 2.6645352591003627e-15,
+      "momentumError": 4.255024983007226e-18,
+      "minDepth": 0.999995237904049
+    },
+    {
+      "grid": 64,
+      "nx": 64,
+      "ny": 64,
+      "aspect": "1:1",
+      "courant": 0.45,
+      "amplitude": 0.00001,
+      "omega": 8.885765876316732,
+      "time": 0.1,
+      "steps": 29,
+      "relativeRMS": 0.03306928340541786,
+      "massDrift": -4.6629367034256575e-15,
+      "momentumError": 5.9933288049372654e-18,
+      "minDepth": 0.9999904757953265
+    },
+    {
+      "grid": 64,
+      "nx": 64,
+      "ny": 64,
+      "aspect": "1:1",
+      "courant": 0.45,
+      "amplitude": 0.00002,
+      "omega": 8.885765876316732,
+      "time": 0.1,
+      "steps": 29,
+      "relativeRMS": 0.03306953863459831,
+      "massDrift": 1.2656542480726785e-14,
+      "momentumError": 1.15556512911922e-18,
+      "minDepth": 0.9999809515395656
+    }
+  ],
+  "cflSpread": 1.3291749441701532,
+  "ampSpread": 1.0000115698304626,
+  "wallImpermeable": {
+    "time": 0.25,
+    "steps": 85,
+    "massDrift": 7.80856860653087e-14,
+    "initialMomentumX": 0.14999999999998842,
+    "momentumX": 0.06767034792720478,
+    "momentumY": 0,
+    "minDepth": 1.0664779910231357,
+    "maxDepthChange": 0.140246852910467
+  },
+  "longStress": [
+    {
+      "boundary": "periodic",
+      "time": 1,
+      "steps": 280,
+      "milliseconds": 65.18154700000014,
+      "minDepth": 1.2751575335341774,
+      "massDrift": 6.600961197710518e-16,
+      "energyRatio": 0.5094160312104254,
+      "momentumError": 1.5345195611549584e-17
+    },
+    {
+      "boundary": "walls",
+      "time": 1,
+      "steps": 284,
+      "milliseconds": 65.58291199999985,
+      "minDepth": 1.2156231748750976,
+      "massDrift": 2.7925787388814303e-15,
+      "energyRatio": 0.5105367773351022,
+      "momentumError": 0.045301961267765124
+    }
+  ],
+  "longWave": [
+    {
+      "grid": 64,
+      "nx": 64,
+      "ny": 64,
+      "aspect": "1:1",
+      "courant": 0.45,
+      "amplitude": 0.00001,
+      "omega": 8.885765876316732,
+      "time": 1,
+      "steps": 285,
+      "relativeRMS": 0.2685887594970906,
+      "massDrift": -8.43769498715119e-15,
+      "momentumError": 2.097185864262413e-18,
+      "minDepth": 0.9999938129885846
+    },
+    {
+      "grid": 128,
+      "nx": 128,
+      "ny": 128,
+      "aspect": "1:1",
+      "courant": 0.45,
+      "amplitude": 0.00001,
+      "omega": 8.885765876316732,
+      "time": 1,
+      "steps": 569,
+      "relativeRMS": 0.15032016703801632,
+      "massDrift": 4.8183679268731794e-14,
+      "momentumError": 2.295762848100554e-18,
+      "minDepth": 0.9999921278491922,
+      "order": 0.837360353885328
+    }
+  ],
+  "failureControls": {
+    "pressureOmittedDam": {
+      "grid": 128,
+      "nx": 128,
+      "ny": 128,
+      "aspect": "1:1",
+      "steps": 65,
+      "time": 0.08,
+      "milliseconds": 80.91229899999962,
+      "depthL1": 0.0748700070754936,
+      "momentumL1": 0.11999999999999669,
+      "massDrift": -6.3652786745175644e-15,
+      "minDepth": 1,
+      "energy": 1.242141615535935
+    },
+    "wrongOmega": {
+      "omega": 6.283185307179586,
+      "relativeRMS": 1.2187412006976583,
+      "correctRelativeRMS": 0.15032016703801632
+    },
+    "wallsAsPeriodic": {
+      "time": 0.25,
+      "steps": 83,
+      "massDrift": 0,
+      "initialMomentumX": 0.14999999999998842,
+      "momentumX": 0.14999999999998842,
+      "momentumY": 0,
+      "minDepth": 1.2,
+      "maxDepthChange": 0
+    }
+  }
+}

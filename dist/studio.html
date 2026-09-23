@@ -5579,10 +5579,10 @@ shall not be misrepresented as the original profile.
     "status": "partially validated",
     "limitations": [
       "First-order wet flat-bottom two-dimensional Saint-Venant finite volumes. No dry-bed flooding, relief, physical viscosity, dispersion or real-world flood forecast. Numerical diffusion broadens shocks.",
-      "Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device."
+      "Resolution through 512², CFL/amplitude scans, non-square aspect, wall impermeability and t=1 fixtures support stated cases only; bounded print states do not certify every allowed setting or device."
     ],
     "remaining": [
-      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
+      "Extend dry-bed, bathymetry, higher-order / entropy convergence and broader aspect/parameter coverage before quantitative generalization beyond the wet flat-bed fixtures.",
       "Broaden print interpretation and hardware coverage; retain stated model assumptions."
     ],
     "numerical": [
@@ -5595,6 +5595,16 @@ shall not be misrepresented as the original profile.
         "benchmark": "Independent rarefaction/shock Riemann solution integrated over cells and analytic linearized oblique shallow-water wave at fixed domain/time.",
         "failureControl": "Omitting pressure must fail exact-wave benchmark; oversized CFL and injected dry state must stop before accepting a step.",
         "limitations": "First-order wet flat-bottom two-dimensional Saint-Venant finite volumes. No dry-bed flooding, relief, physical viscosity, dispersion or real-world flood forecast. Numerical diffusion broadens shocks."
+      },
+      {
+        "test": "tools/shallow-resolution-science.js",
+        "command": "node tools/shallow-resolution-science.js",
+        "results": "validation/results/shallow-resolution-science.json",
+        "scope": "Float64 wet flat-bed Saint-Venant: dam-break resolution 64–512² vs independent exact Riemann cell averages; CFL {0.25,0.45,0.7} and amplitude {5e-6,1e-5,2e-5} scans; non-square 4:5 dam; wall impermeability under streamwise inflow; long-duration t=1 periodic/wall positivity+conservation and multi-period (1,1) acoustic RMS at 64/128.",
+        "criteria": "Dam depth L1 ratios 1.2–2.5 through 512 with fine depth/momentum L1 below 0.014/0.02; CFL RMS spread \u003c2.5 and amp spread \u003c1.5 with mass/momentum errors below 1e-12; aspect-64×80 dam depth L1 below 0.04; walls conserve volume and reduce streamwise momentum vs walls-as-periodic impostor; t=1 stress stays wet with volume drift below 3e-12; long-wave order 0.7–1.4 and fine RMS below 0.35; pressure-omit, wrong-ω and walls-as-periodic failure controls separate.",
+        "limitations": "Wet flat-bed fixtures only. First-order numerical diffusion; no dry-bed, bathymetry, viscosity, dispersion or flood-forecast claim. Long-wave RMS at t=1 is still O(h) dissipative error, not a continuum limit.",
+        "benchmark": "Independent rarefaction/shock Riemann solution integrated over cells through 512²; independent linearized oblique acoustic wave with ω=2π√2; wall volume conservation and streamwise-momentum reflection versus a deliberate periodic impostor.",
+        "failureControl": "Omitting pressure must inflate dam-break momentum L1 above 3× the correct 128² error; wrong acoustic frequency ω=2π must exceed 0.5 relative RMS at t=1 and more than double the correct-ω fine RMS; walls implemented as periodic wrap must retain streamwise momentum while true walls reduce it."
       }
     ],
     "print": [

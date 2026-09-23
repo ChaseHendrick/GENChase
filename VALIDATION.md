@@ -139,7 +139,11 @@ Complete labels apply only within each record's reviewed domain.
 | [molecular](src/modules/molecular.js) | partially validated | [molecular-science.js](tools/molecular-science.js) | Limited evidence recorded |
 | [surfaces](src/modules/surfaces.js) | validated within stated limits | [surfaces-science.js](tools/surfaces-science.js) | Limited evidence recorded |
 | [plasma](src/modules/plasma.js) | partially validated | [plasma-science.js](tools/plasma-science.js) | Limited evidence recorded |
+<<<<<<< Updated upstream
 | [shallow](src/modules/shallow.js) | partially validated | [shallow-science.js](tools/shallow-science.js) | Limited evidence recorded |
+=======
+| [shallow](src/modules/shallow.js) | partially validated | [shallow-science.js](tools/shallow-science.js), [shallow-resolution-science.js](tools/shallow-resolution-science.js) | Limited evidence recorded |
+>>>>>>> Stashed changes
 | [nonreciprocal](src/modules/nonreciprocal.js) | partially validated | [nonreciprocal-science.js](tools/nonreciprocal-science.js) | Limited evidence recorded |
 | [hodgkin-huxley](src/modules/hodgkin-huxley.js) | partially validated | [hodgkin-huxley-science.js](tools/hodgkin-huxley-science.js) | Limited evidence recorded |
 | [neural-mass](src/modules/neural-mass.js) | validated within stated limits | [neural-mass-science.js](tools/neural-mass-science.js), [neural-mass-print.js](tools/neural-mass-print.js) | Limited evidence recorded |
@@ -404,7 +408,7 @@ Complete labels apply only within each record's reviewed domain.
 ### shallow
 
 - First-order wet flat-bottom two-dimensional Saint-Venant finite volumes. No dry-bed flooding, relief, physical viscosity, dispersion or real-world flood forecast. Numerical diffusion broadens shocks.
-- Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device.
+- Resolution through 512², CFL/amplitude scans, non-square aspect, wall impermeability and t=1 fixtures support stated cases only; bounded print states do not certify every allowed setting or device.
 
 ### nonreciprocal
 
