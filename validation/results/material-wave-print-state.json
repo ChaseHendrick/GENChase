@@ -1,0 +1,332 @@
+{
+  "scope": "Actual chladni/gerstner/hasimoto exportPNG to 2400x2400 (8 in at 300 ppi) on paused fixtures matching the material-wave numerical domain: square cosine modes (1,2)/(3,2)/(4,5) in nodal/filled/contour; single-train Gerstner steepness 0.22/0.54/0.86; Hasimoto (nu,tau0) pairs from the filament audit. Compares exact settings JSON plus local scientific locals (phase/metric/meas digest) before and after export; includes a deliberate post-export time/phase advance failure control.",
+  "limitations": "State preservation and output dimensions only. Not print color fidelity, sand/circular Chladni, two-train Gerstner, full Biot-Savart Hasimoto, running exports, other aspect ratios, or physical plate agreement. Canvas 2D SwiftShader path; no GPU float32 field buffers.",
+  "reviewed": "2026-09-22",
+  "command": "node tools/material-wave-print-state.js --write",
+  "rows": [
+    {
+      "id": "chladni",
+      "fixture": "square-12-nodal",
+      "precision": "canvas2d",
+      "exports": [
+        {
+          "steps": 0,
+          "label": "square-12-nodal",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 3862425,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        },
+        {
+          "steps": 1,
+          "label": "square-12-nodal",
+          "time": 0.4,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 3862425,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Export wrapper advances the actual scientific time/phase after producing the PNG",
+        "rejected": true,
+        "snapshotChanged": true
+      }
+    },
+    {
+      "id": "chladni",
+      "fixture": "square-32-filled",
+      "precision": "canvas2d",
+      "exports": [
+        {
+          "steps": 0,
+          "label": "square-32-filled",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 4822309,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        },
+        {
+          "steps": 1,
+          "label": "square-32-filled",
+          "time": 0.4,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 4822309,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Export wrapper advances the actual scientific time/phase after producing the PNG",
+        "rejected": true,
+        "snapshotChanged": true
+      }
+    },
+    {
+      "id": "chladni",
+      "fixture": "square-45-contour",
+      "precision": "canvas2d",
+      "exports": [
+        {
+          "steps": 0,
+          "label": "square-45-contour",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 6933306,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        },
+        {
+          "steps": 1,
+          "label": "square-45-contour",
+          "time": 0.4,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 6933306,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Export wrapper advances the actual scientific time/phase after producing the PNG",
+        "rejected": true,
+        "snapshotChanged": true
+      }
+    },
+    {
+      "id": "gerstner",
+      "fixture": "single-022-slice",
+      "precision": "canvas2d",
+      "exports": [
+        {
+          "steps": 0,
+          "label": "single-022-slice",
+          "time": 0.1,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 362897,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        },
+        {
+          "steps": 1,
+          "label": "single-022-slice",
+          "time": 0.47,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 365275,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Export wrapper advances the actual scientific time/phase after producing the PNG",
+        "rejected": true,
+        "snapshotChanged": true
+      }
+    },
+    {
+      "id": "gerstner",
+      "fixture": "single-054-slice",
+      "precision": "canvas2d",
+      "exports": [
+        {
+          "steps": 0,
+          "label": "single-054-slice",
+          "time": 0.37,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 482708,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        },
+        {
+          "steps": 1,
+          "label": "single-054-slice",
+          "time": 0.74,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 476969,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Export wrapper advances the actual scientific time/phase after producing the PNG",
+        "rejected": true,
+        "snapshotChanged": true
+      }
+    },
+    {
+      "id": "gerstner",
+      "fixture": "single-086-woodcut",
+      "precision": "canvas2d",
+      "exports": [
+        {
+          "steps": 0,
+          "label": "single-086-woodcut",
+          "time": 0.61,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 522729,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        },
+        {
+          "steps": 1,
+          "label": "single-086-woodcut",
+          "time": 0.98,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 512834,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Export wrapper advances the actual scientific time/phase after producing the PNG",
+        "rejected": true,
+        "snapshotChanged": true
+      }
+    },
+    {
+      "id": "hasimoto",
+      "fixture": "nu045-tau0-filament",
+      "precision": "canvas2d",
+      "exports": [
+        {
+          "steps": 0,
+          "label": "nu045-tau0-filament",
+          "time": 0,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 939551,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        },
+        {
+          "steps": 1,
+          "label": "nu045-tau0-filament",
+          "time": 0.41,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 940642,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Export wrapper advances the actual scientific time/phase after producing the PNG",
+        "rejected": true,
+        "snapshotChanged": true
+      }
+    },
+    {
+      "id": "hasimoto",
+      "fixture": "nu088-tau034-print",
+      "precision": "canvas2d",
+      "exports": [
+        {
+          "steps": 0,
+          "label": "nu088-tau034-print",
+          "time": 0.3,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 574416,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        },
+        {
+          "steps": 1,
+          "label": "nu088-tau034-print",
+          "time": 0.71,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 574416,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Export wrapper advances the actual scientific time/phase after producing the PNG",
+        "rejected": true,
+        "snapshotChanged": true
+      }
+    },
+    {
+      "id": "hasimoto",
+      "fixture": "nu172-tau046-filament",
+      "precision": "canvas2d",
+      "exports": [
+        {
+          "steps": 0,
+          "label": "nu172-tau046-filament",
+          "time": -0.4,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 951127,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        },
+        {
+          "steps": 1,
+          "label": "nu172-tau046-filament",
+          "time": 0.009999999999999953,
+          "width": 2400,
+          "height": 2400,
+          "bytes": 932275,
+          "comparison": {
+            "settingsChanged": false,
+            "snapshotChanged": false
+          }
+        }
+      ],
+      "failureControl": {
+        "description": "Export wrapper advances the actual scientific time/phase after producing the PNG",
+        "rejected": true,
+        "snapshotChanged": true
+      }
+    }
+  ]
+}

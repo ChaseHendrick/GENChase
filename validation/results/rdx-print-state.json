@@ -1,0 +1,83 @@
+{
+  "scope": "Paused initial 256x256 float32 RDX fields exported through each real module exportPNG to 2400x2400 (8 in at 300 ppi). Checks state preservation and dimensions, not nonlinear pattern fidelity or colorimetric print accuracy.",
+  "limitations": "Preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+  "reviewed": "2026-09-23",
+  "command": "node tools/rdx-print-state.js --write",
+  "rows": [
+    {
+      "id": "excitable",
+      "cells": [256, 256],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 5322587,
+      "changes": 0,
+      "nonfinite": 0,
+      "nonzero": 135455,
+      "failureControl": {
+        "description": "Export wrapper advances the actual solver one step after producing the PNG",
+        "rejected": true,
+        "changes": 100815
+      }
+    },
+    {
+      "id": "turing",
+      "cells": [256, 256],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 8699291,
+      "changes": 0,
+      "nonfinite": 0,
+      "nonzero": 196608,
+      "failureControl": {
+        "description": "Export wrapper advances the actual solver one step after producing the PNG",
+        "rejected": true,
+        "changes": 131064
+      }
+    },
+    {
+      "id": "cyclic",
+      "cells": [256, 256],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 7076188,
+      "changes": 0,
+      "nonfinite": 0,
+      "nonzero": 262144,
+      "failureControl": {
+        "description": "Export wrapper advances the actual solver one step after producing the PNG",
+        "rejected": true,
+        "changes": 196608
+      }
+    },
+    {
+      "id": "chemotaxis",
+      "cells": [256, 256],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 7881544,
+      "changes": 0,
+      "nonfinite": 0,
+      "nonzero": 196608,
+      "failureControl": {
+        "description": "Export wrapper advances the actual solver one step after producing the PNG",
+        "rejected": true,
+        "changes": 131068
+      }
+    },
+    {
+      "id": "vegetation",
+      "cells": [256, 256],
+      "width": 2400,
+      "height": 2400,
+      "bytes": 12136966,
+      "changes": 0,
+      "nonfinite": 0,
+      "nonzero": 196608,
+      "failureControl": {
+        "description": "Export wrapper advances the actual solver one step after producing the PNG",
+        "rejected": true,
+        "changes": 131069
+      }
+    }
+  ]
+}
