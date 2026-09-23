@@ -38,9 +38,18 @@ privacy, recovery and the difference between completed execution and scientific 
 
 ## Maintainer release process
 
-GitHub Pages publishes `main` from the repository root. The start page and the
-studio therefore update together after a merge. Do not replace the studio root
-with the start page: that would break saved recipe links.
+GitHub Pages uses **GitHub Actions** as its publishing source. The
+[Pages workflow](../.github/workflows/pages.yml) checks the maintained build,
+scientific inventory and catalog, then uploads a snapshot of tracked files.
+Pull requests build the same artifact without deploying. Pushes to `main` and
+manual runs on `main` deploy through the protected `github-pages` environment.
+Local dependencies, credentials and untracked volunteer files are not copied.
+
+The start page and studio update together after a merge. `DEPLOYMENT.json` on
+the live site identifies the exact deployed commit and workflow run. To recover
+a deployment, rerun the Pages workflow on `main`. Keep Settings > Pages > Source
+set to **GitHub Actions**. Do not replace the studio root with the start page:
+that would break saved recipe links.
 
 Releases use `vMAJOR.MINOR.PATCH`, starting at `v0.4.1`. Patch numbers identify
 fixes, and minor numbers identify new features. During the initial `0.x` series,
@@ -48,8 +57,9 @@ minor releases may also change compatibility; their notes must explain this.
 A future `1.0.0` will mark the declared stable software interface. These software
 versions are independent of recipe/API versions and scientific validation status.
 Dates belong in [CHANGELOG.md](../CHANGELOG.md) and release notes, not version names.
-The original date-named download remains available for existing links; `v0.4.1`
-is the first numbered release and the latest download link follows it.
+`v0.4.1` is the first public release in this series. The earlier calendar-named
+release is withdrawn when v0.4.1 is published; the latest download link follows
+the numbered release.
 
 The release workflow is manually dispatched with a version such as `v0.4.1`.
 It checks the selected main commit, creates the deterministic offline ZIP and a
