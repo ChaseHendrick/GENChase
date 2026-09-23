@@ -25,7 +25,7 @@ Complete labels apply only within each record's reviewed domain.
 | [lichtenberg](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
 | [snowflake](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
 | [growth](src/modules/growth.js) | unvalidated | None registered | Not scientifically validated |
-| [cyclic](src/modules/rdx.js) | partially validated | [rdx-science.js](tools/rdx-science.js) | Not scientifically validated |
+| [cyclic](src/modules/rdx.js) | partially validated | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded |
 | [landscape](src/modules/landscape.js) | unvalidated | None registered | Not scientifically validated |
 | [kpz](src/modules/kpz.js) | unvalidated | None registered | Not scientifically validated |
 | [potts](src/modules/potts.js) | unvalidated | None registered | Not scientifically validated |
@@ -44,7 +44,7 @@ Complete labels apply only within each record's reviewed domain.
 | [timecrystal](src/modules/timecrystal.js) | unvalidated | None registered | Not scientifically validated |
 | [growdomain](src/modules/growdomain.js) | unvalidated | None registered | Not scientifically validated |
 | [spinice](src/modules/spinice.js) | unvalidated | None registered | Not scientifically validated |
-| [vegetation](src/modules/rdx.js) | partially validated | [rdx-science.js](tools/rdx-science.js) | Not scientifically validated |
+| [vegetation](src/modules/rdx.js) | partially validated | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded |
 | [aztec](src/modules/aztec.js) | unvalidated | None registered | Not scientifically validated |
 | [skin](src/modules/skin.js) | unvalidated | None registered | Not scientifically validated |
 | [rmt](src/modules/rmt.js) | unvalidated | None registered | Not scientifically validated |
@@ -59,7 +59,7 @@ Complete labels apply only within each record's reviewed domain.
 | [anderson](src/modules/anderson.js) | unvalidated | None registered | Not scientifically validated |
 | [fput](src/modules/fput.js) | validated within stated limits | [chain-science.js](tools/chain-science.js), [fput-field-review.js](tools/fput-field-review.js) | Limited evidence recorded |
 | [schrodinger](src/modules/wavesflow.js) | partially validated | [schrodinger-science.js](tools/schrodinger-science.js), [schrodinger-state.js](tools/schrodinger-state.js) | Limited evidence recorded |
-| [excitable](src/modules/rdx.js) | partially validated | [rdx-science.js](tools/rdx-science.js) | Not scientifically validated |
+| [excitable](src/modules/rdx.js) | partially validated | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded |
 | [soliton](src/modules/soliton.js) | validated within stated limits | [analytic-wave-science.js](tools/analytic-wave-science.js), [analytic-field-review.js](tools/analytic-field-review.js) | Limited evidence recorded |
 | [cyclicca](src/modules/lattice.js) | unvalidated | None registered | Not scientifically validated |
 | [chimera](src/modules/chimera.js) | unvalidated | None registered | Not scientifically validated |
@@ -84,7 +84,7 @@ Complete labels apply only within each record's reviewed domain.
 | [kakeya](src/modules/kakeya.js) | unvalidated | None registered | Not scientifically validated |
 | [ks](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded |
 | [breather](src/modules/breather.js) | validated within stated limits | [breather-science.js](tools/breather-science.js), [analytic-field-review.js](tools/analytic-field-review.js) | Limited evidence recorded |
-| [turing](src/modules/rdx.js) | partially validated | [rdx-science.js](tools/rdx-science.js) | Not scientifically validated |
+| [turing](src/modules/rdx.js) | partially validated | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded |
 | [holomorphic](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated |
 | [klein](src/modules/klein.js) | unvalidated | None registered | Not scientifically validated |
 | [gyroid](src/modules/gyroid.js) | validated within stated limits | [periodic-field-review.js](tools/periodic-field-review.js) | Limited evidence recorded |
@@ -94,7 +94,7 @@ Complete labels apply only within each record's reviewed domain.
 | [meissner](src/modules/meissner.js) | unvalidated | None registered | Not scientifically validated |
 | [tennis](src/modules/tennis.js) | partially validated | [rigid-body-audit.js](tools/rigid-body-audit.js) | Not scientifically validated |
 | [flow](src/modules/flow.js) | unvalidated | None registered | Not scientifically validated |
-| [chemotaxis](src/modules/rdx.js) | partially validated | [rdx-science.js](tools/rdx-science.js) | Not scientifically validated |
+| [chemotaxis](src/modules/rdx.js) | partially validated | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded |
 | [smectic](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
 | [reaction](src/modules/reaction.js) | unvalidated | None registered | Not scientifically validated |
 | [tilings](src/modules/tilings.js) | unvalidated | None registered | Not scientifically validated |
@@ -157,13 +157,13 @@ Complete labels apply only within each record's reviewed domain.
 ### cyclic
 
 - Catalog equation and citation are review targets, not verified paper equivalence.
-- Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.
+- Registered numerical evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain or nonlinear-pattern audit. Print evidence covers paused initial float32 state preservation and plate dimensions only.
 - Deterministic PDE only; no spiral wavelength, no biodiversity-loss threshold of Reichenbach, Mobilia and Frey, noise term untested.
 
 ### vegetation
 
 - Catalog equation and citation are review targets, not verified paper equivalence.
-- Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.
+- Registered numerical evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain or nonlinear-pattern audit. Print evidence covers paused initial float32 state preservation and plate dimensions only.
 - Linear regime and uniform states only; no nonlinear band spacing or migration speed. The float32 implicit denominator 1 + dt quantizes the water loss rate by up to ulp(1)/(2 dt), modelled in the exact discrete reference.
 
 ### ust
@@ -193,7 +193,7 @@ Complete labels apply only within each record's reviewed domain.
 ### excitable
 
 - Catalog equation and citation are review targets, not verified paper equivalence.
-- Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.
+- Registered numerical evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain or nonlinear-pattern audit. Print evidence covers paused initial float32 state preservation and plate dimensions only.
 - No spiral rotation period, meander or breakup statistics, no Barkley front speed (only its kinetics), noise term untested. A uniform excited Barkley cell stagnates near u = 1 in float32 (recorded finding).
 
 ### soliton
@@ -265,7 +265,7 @@ Complete labels apply only within each record's reviewed domain.
 ### turing
 
 - Catalog equation and citation are review targets, not verified paper equivalence.
-- Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.
+- Registered numerical evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain or nonlinear-pattern audit. Print evidence covers paused initial float32 state preservation and plate dimensions only.
 - Linear regime only; no nonlinear pattern selection (spots against stripes), no Hopf regime. The status-line wavelength is the onset-critical value 2 pi (Du Dv/det)^(1/4), 12 cells at the defaults, against 10.8 fastest-growing and 9.2 measured after saturation.
 
 ### gyroid
@@ -282,7 +282,7 @@ Complete labels apply only within each record's reviewed domain.
 ### chemotaxis
 
 - Catalog equation and citation are review targets, not verified paper equivalence.
-- Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.
+- Registered numerical evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain or nonlinear-pattern audit. Print evidence covers paused initial float32 state preservation and plate dimensions only.
 - Logistic growth means total mass is not conserved; the balance, not conservation, is tested. No aggregate shape or coarsening statistics, no analytic nonuniform steady state (none is available for this form), noise term untested.
 
 ### weierstrass

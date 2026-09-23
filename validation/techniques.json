@@ -232,13 +232,13 @@
     "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
+      "Registered numerical evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain or nonlinear-pattern audit. Print evidence covers paused initial float32 state preservation and plate dimensions only.",
       "Deterministic PDE only; no spiral wavelength, no biodiversity-loss threshold of Reichenbach, Mobilia and Frey, noise term untested."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
       "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Record hardware precision (the float16 fallback) and extend print checks beyond paused initial float32 state preservation."
     ],
     "numerical": [
       {
@@ -252,7 +252,18 @@
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ]
   },
   {
     "id": "landscape",
@@ -605,13 +616,13 @@
     "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
+      "Registered numerical evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain or nonlinear-pattern audit. Print evidence covers paused initial float32 state preservation and plate dimensions only.",
       "Linear regime and uniform states only; no nonlinear band spacing or migration speed. The float32 implicit denominator 1 + dt quantizes the water loss rate by up to ulp(1)/(2 dt), modelled in the exact discrete reference."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
       "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Record hardware precision (the float16 fallback) and extend print checks beyond paused initial float32 state preservation."
     ],
     "numerical": [
       {
@@ -625,7 +636,18 @@
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ]
   },
   {
     "id": "aztec",
@@ -1040,13 +1062,13 @@
     "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
+      "Registered numerical evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain or nonlinear-pattern audit. Print evidence covers paused initial float32 state preservation and plate dimensions only.",
       "No spiral rotation period, meander or breakup statistics, no Barkley front speed (only its kinetics), noise term untested. A uniform excited Barkley cell stagnates near u = 1 in float32 (recorded finding)."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
       "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Record hardware precision (the float16 fallback) and extend print checks beyond paused initial float32 state preservation."
     ],
     "numerical": [
       {
@@ -1060,7 +1082,18 @@
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ]
   },
   {
     "id": "soliton",
@@ -2063,13 +2096,13 @@
     "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
+      "Registered numerical evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain or nonlinear-pattern audit. Print evidence covers paused initial float32 state preservation and plate dimensions only.",
       "Linear regime only; no nonlinear pattern selection (spots against stripes), no Hopf regime. The status-line wavelength is the onset-critical value 2 pi (Du Dv/det)^(1/4), 12 cells at the defaults, against 10.8 fastest-growing and 9.2 measured after saturation."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
       "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Record hardware precision (the float16 fallback) and extend print checks beyond paused initial float32 state preservation."
     ],
     "numerical": [
       {
@@ -2083,7 +2116,18 @@
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ]
   },
   {
     "id": "holomorphic",
@@ -2303,13 +2347,13 @@
     "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
+      "Registered numerical evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain or nonlinear-pattern audit. Print evidence covers paused initial float32 state preservation and plate dimensions only.",
       "Logistic growth means total mass is not conserved; the balance, not conservation, is tested. No aggregate shape or coarsening statistics, no analytic nonuniform steady state (none is available for this form), noise term untested."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
       "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Record hardware precision (the float16 fallback) and extend print checks beyond paused initial float32 state preservation."
     ],
     "numerical": [
       {
@@ -2323,7 +2367,18 @@
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ]
   },
   {
     "id": "smectic",
