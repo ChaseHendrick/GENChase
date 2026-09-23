@@ -75,6 +75,22 @@ The refinement norm divides voltage error by `100 mV` and leaves dimensionless g
 
 The prescribed ensemble is not an experimental population estimate, so its finite-record spike counts are not advertised as a measured biological firing-rate law. No statistical error bars are attached to deterministic ODE agreement; convergence and reference uncertainty are reported instead.
 
+## Parameter-domain and long-duration extension
+
+Run `node tools/hodgkin-huxley-duration-science.js` (optional `--write`). [The result JSON](results/hodgkin-huxley-duration-science.json) extends the ODE audit with UI-relevant currents, shipped timesteps, pulse lengths and a 200 ms sustained-drive fixture. The reference remains an independently expressed modern-voltage Dormand–Prince 5(4) integrator in Float64, not the production RK4. No spatial axon exists in the module; none is tested.
+
+| Check | Reference / acceptance | Recorded result |
+|---|---|---|
+| Current-domain scan | Currents `{-4,0,5,10,15,25}` µA/cm², 50 ms (or stated), `dt=.005`, vs DOPRI5 | Max voltage errors below `8e-6 mV`; spike counts match; `I=0` silent; `I=10` two spikes; inhibitory `I=-4` one rebound spike agreed |
+| Shipped-dt refinement | Short driven fixture, steps `.01/.005/.0025 ms` | Normalized RMS reductions about `16–18` between successive steps |
+| Pulse-length scan | Pulses `{1,20,80}` ms at `I=12` | Exact spike counts vs DOPRI5; brief pulse still spikes; longer pulse yields more spikes |
+| Long sustained drive | `I=10` from 5–165 ms, record to 200 ms; RK4 `.01` and `.005` vs DOPRI5 | Eleven matching spikes; fine max voltage error `6.19e-6 mV`; RMS reduction `16.03`; reference uncertainty vs looser tol `2.0e-8` |
+| Long quiet rest | Zero current, 200 ms, `dt=.01` | Zero spikes; final voltage `-64.996379 mV` |
+| Wrong sodium exponent | Production `m³` replaced by `m²` | Short-fixture voltage error `110.1 mV`; spike-count delta `3` |
+| Swapped reversals | Independent reference with `ENa ↔ EK` | Voltage disagreement `124.7 mV` against the correct solver |
+
+Subtract-before-add: both failure controls are asserted to separate before any parameter or duration acceptance. These fixtures do not certify every UI combination, temperature, network coupling or biological preparation.
+
 ## Print and application evidence
 
 Run `node tools/hodgkin-huxley-print.js > validation/results/hodgkin-huxley-print.json` with Playwright/Chromium from [BUILDING.md](../BUILDING.md). [The print record](results/hodgkin-huxley-print.json) covers 12 actual PNG exports: 2400×1600 at 16 membranes and 2400×2400 at 64, all three color views, 15-ms intermediate states and completed recordings. It compares exact bytes of Float64 voltages/gates/currents/work buffers, Float32 CPU/GPU histories, counters, spike-event times, settings and scheduling state before and after each paused export. All remain unchanged. Deliberate advancement during a comparison and incorrect output dimensions are rejected.
@@ -92,4 +108,4 @@ No application record for these two commands is committed yet (there is no `resu
 
 ## Remaining limits
 
-No spatial axon conduction, synapses, interacting network, stochastic channel kinetics, temperature sweep, metabolic model or human-patient inference is implemented. There is no general firing threshold, precise refractory interval, biological population statistic or full all-parameter stability claim. Source-level agreement and numerical convergence do not repeat the original biological experiments. The short largest-count check is not a completed maximum-workload browser benchmark. Print evidence covers stated paused states and one renderer, not arbitrary simultaneous live exports or new scientific resolution created by enlargement.
+No spatial axon conduction, synapses, interacting network, stochastic channel kinetics, temperature sweep, metabolic model or human-patient inference is implemented. Parameter-domain and 200 ms duration checks cover the stated currents, shipped timesteps and pulse lengths only. There is no general firing threshold, precise refractory interval, biological population statistic or full all-parameter stability claim. Source-level agreement and numerical convergence do not repeat the original biological experiments. The short largest-count check is not a completed maximum-workload browser benchmark. Print evidence covers stated paused states and one renderer, not arbitrary simultaneous live exports or new scientific resolution created by enlargement.

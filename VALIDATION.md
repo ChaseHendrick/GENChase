@@ -141,7 +141,7 @@ Complete labels apply only within each record's reviewed domain.
 | [plasma](src/modules/plasma.js) | validated within stated limits | [plasma-science.js](tools/plasma-science.js), [plasma-landau-science.js](tools/plasma-landau-science.js) | Limited evidence recorded |
 | [shallow](src/modules/shallow.js) | validated within stated limits | [shallow-science.js](tools/shallow-science.js), [shallow-resolution-science.js](tools/shallow-resolution-science.js) | Limited evidence recorded |
 | [nonreciprocal](src/modules/nonreciprocal.js) | validated within stated limits | [nonreciprocal-science.js](tools/nonreciprocal-science.js), [nonreciprocal-longrun-science.js](tools/nonreciprocal-longrun-science.js) | Limited evidence recorded |
-| [hodgkin-huxley](src/modules/hodgkin-huxley.js) | partially validated | [hodgkin-huxley-science.js](tools/hodgkin-huxley-science.js) | Limited evidence recorded |
+| [hodgkin-huxley](src/modules/hodgkin-huxley.js) | partially validated | [hodgkin-huxley-science.js](tools/hodgkin-huxley-science.js), [hodgkin-huxley-duration-science.js](tools/hodgkin-huxley-duration-science.js) | Limited evidence recorded |
 | [neural-mass](src/modules/neural-mass.js) | validated within stated limits | [neural-mass-science.js](tools/neural-mass-science.js), [neural-mass-print.js](tools/neural-mass-print.js) | Limited evidence recorded |
 | [volume-wave](src/modules/volume-wave.js) | validated within stated limits | [volume-wave-science.js](tools/volume-wave-science.js), [volume-wave-dispersion-science.js](tools/volume-wave-dispersion-science.js) | Limited evidence recorded |
 | [direct-gravity](src/modules/direct-gravity.js) | partially validated | [direct-gravity-science.js](tools/direct-gravity-science.js) | Limited evidence recorded |
@@ -459,7 +459,7 @@ Complete labels apply only within each record's reviewed domain.
 
 ### hodgkin-huxley
 
-- The independent audit covers the stated squid parameters, selected currents and finite recording durations; it does not validate every control, temperature, biological preparation or human application.
+- The independent audit covers classical squid parameters, stated currents, shipped timesteps, pulse lengths and a 200 ms sustained-drive fixture; it does not validate every control, temperature, biological preparation, spatial conduction or human application.
 - Print checks preserve numerical state and dimensions but do not calibrate colors or establish experimental accuracy.
 
 ### neural-mass
