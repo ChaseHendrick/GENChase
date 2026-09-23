@@ -4828,16 +4828,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6",
     "reference": "Henri Bénard, Revue générale des Sciences pures et appliquées 11, 1261 (1900), saw the cells in a thin layer of spermaceti heated from below. Lord Rayleigh, Philosophical Magazine 32, 529 (1916), showed with the Boussinesq equations that the layer turns over only once the number now named for him passes a threshold: 657.5 for free surfaces, 1708 for rigid plates (Jeffreys 1928; Pellew and Southwell 1940). This is the two-dimensional Boussinesq system in vorticity-streamfunction form, scaled by the free-fall time, with a red-black SOR Poisson solve for ψ, semi-Lagrangian advection and Thom's wall vorticity.",
     "equation": "∂ω/∂t + u·∇ω = √(Pr/Ra) ∇²ω + ∂T/∂x,   ∂T/∂t + u·∇T = ∇²T/√(Ra Pr),   ∇²ψ = −ω,   u = ∂ψ/∂y, v = −∂ψ/∂x",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Analytic component tests cover diffusion, conduction, free-slip velocity, Poisson inversion, buoyancy sign and signed instantaneous transport. These are not complete nonlinear Boussinesq validation.",
-      "The Poisson benchmark uses 300 sweeps and does not certify the default four. No-slip convergence, high-Rayleigh resolution, half precision and temporal alignment of transport remain unaudited.",
-      "The displayed Nu is sampled instantaneous transport, not a converged time average. Timestep/wall corrections intentionally change affected historical trajectories."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/CONVECTION.md and the convection-science / convection-coupled-science / wave-print-state results artifacts.",
+      "Below-onset free-slip decay of a small mode; SOR uses 24 sweeps/step (not the production default of four). Temperature spatial order vs continuum is reduced by semi-Lagrangian advection and forward-Euler diffusion.",
+      "Displayed Nu remains sampled instantaneous transport, not a converged time average. No-slip, high-Ra, float16, and full print colorimetry are outside this domain.",
+      "Broader settings require additional independent evidence. Timestep/wall corrections intentionally change affected historical trajectories."
     ],
     "remaining": [
-      "Establish full coupled spatial/time convergence, onset and sufficient Poisson iteration counts across the proposed domain.",
-      "Audit no-slip boundary accuracy, interpolation damping, float16 and high-Rayleigh resolution.",
-      "Quantify transport sampling/time errors and validate print rendering beyond state preservation."
+      "Extend beyond the documented below-onset free-slip coupled-decay and paused-export print domain with independent evidence for onset, no-slip plates, high-Ra/Nu, default four-sweep Poisson, float16, other hardware, and quantitative scientific rendering."
     ],
     "numerical": [
       {
@@ -4849,6 +4849,16 @@ shall not be misrepresented as the original profile.
         "limitations": "Component tests, not complete coupled onset/turbulence validation. Poisson uses 300 sweeps; scalar diffusion refinement isolates a substep. Float16 and general nonlinear/print accuracy are not established.",
         "benchmark": "Independent Fourier diffusion factors, exact T=1-y conduction, known continuum diffusion decay on a fixed box/time, analytic psi=sin(pi*y) wall velocity and manufactured discrete Poisson/buoyancy fields.",
         "failureControl": "Restore the old timestep floor, compare the historical half-wall derivative, reverse buoyancy sign, and exercise negative/saturated transport display cases."
+      },
+      {
+        "test": "tools/convection-coupled-science.js",
+        "command": "node tools/convection-coupled-science.js",
+        "results": "validation/results/convection-coupled-science.json",
+        "scope": "Full coupled free-slip chain (SOR velocity, semi-Lagrangian advection, diffusion/buoyancy) on fixed Gamma=2x1 box, Pr=1, Ra=100\u003c\u003cRa_c, eps=1e-3 mode decay to t=0.08. Float64 CPU twin plus continuum linear free-fall rates; Float32 GPU fidelity.",
+        "criteria": "GPU/CPU amplitude errors \u003c3e-6 (T) and \u003c1e-6 (omega); CPU spatial Om orders in (1.5,2.5) and Th orders in (0.8,2.5) vs continuum; temporal self-convergence orders in (0.9,2.2); negated buoyancy and half-time controls exceed honest omega error by >100x and >5x; false domain-width change rejected as order-2.",
+        "limitations": "Below-onset free-slip single-mode decay only. Uses 24 SOR sweeps/step (not default 4). Spatial orders from Float64 twin vs continuum; temperature order reduced by SL/FE. No onset, no-slip, high-Ra, Nu, float16 or print claims.",
+        "benchmark": "Independent Float64 CPU twin of the same discrete coupled operators (laplacian, +dT/dx buoyancy, red-black SOR, bicubic SL) and continuum 2x2 free-fall linear rates for sin(pi y) cos(pi x) at Ra=100, Pr=1.",
+        "failureControl": "Negate buoyancy (+Tx->-Tx) on GPU/CPU; evolve half T_final; refine H while shrinking physical width (W=H-1) so a claimed fixed-domain study cannot look order-2."
       }
     ],
     "print": [
@@ -4857,9 +4867,20 @@ shall not be misrepresented as the original profile.
         "scope": "Actual 2400x2400 exports of initial and 16-step paused float32 fields, grids 128 and 192, every view. Checks both solver buffers, auxiliary fields, histories and scalar state.",
         "criteria": "Zero changed float32 words, nonfinite values, settings or metadata changes; correct dimensions and grids; deliberate state-mutating exports rejected.",
         "limitations": "State preservation and output dimensions only. No full physical/rendering/color validation, arbitrary evolved state or hardware guarantee.",
-        "results": "validation/results/wave-print-state.json"
+        "results": "validation/results/wave-print-state.json",
+        "command": "node tools/wave-print-state.js --write",
+        "benchmark": "Exact float32 readback of solver buffers, auxiliary fields, histories and scalar state before and after the real exportPNG path; dimensions must match the declared 2400 plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same preservation predicate."
       }
-    ]
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained free-slip Boussinesq fixtures named in validation/CONVECTION.md and measured in validation/results/convection-science.json plus convection-coupled-science.json (component identities; coupled decay at Ra=100≪Ra_c, Pr=1, Γ=2×1, T_final=0.08 with 24 SOR sweeps/step), plus paused wave-print-state exports at grids 128 and 192.",
+      "conditions": "Periodic/free-slip chain solvePsi → CONV_ADV_FS → CONV_DIFF_FS on Float32 GPU with independent Float64 CPU twin and continuum linear free-fall rates. Print: paused initial and 16-step fields through real exportPNG at 2400x2400; deliberate state-mutating export rejected. No onset, no-slip, high-Ra, turbulent Nu, float16, default four-sweep Poisson certification, or full print colorimetry.",
+      "resolution": "Numerical acceptance as recorded in convection-science.json and convection-coupled-science.json (spatial Om orders ~2.03/2.10, Th ~1.59/1.12; temporal ~1.22–1.59; GPU/CPU amp ≲1e-6; negated-buoyancy / half-time / false-domain failure controls). Print: zero changed float32 words, failureControl rejected (validation/results/wave-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 twin/continuum references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/convection-coupled-science.json"
   },
   {
     "id": "reuleaux",
