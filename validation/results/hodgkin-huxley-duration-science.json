@@ -1,0 +1,323 @@
+{
+  "scope": "Float64 classical squid HH at 6.3 C: parameter-domain current/dt/pulse scans and long-duration (200 ms) sustained-drive convergence versus an independently expressed modern-voltage Dormand–Prince 5(4) reference. Single-compartment only; no spatial axon exists in the module.",
+  "sourceSha256": "ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8",
+  "harnessSha256": "97a3716e20fbb76dbf1112b8c54da15fb00d61045b88377d88f1b82a348878fd",
+  "command": "node tools/hodgkin-huxley-duration-science.js",
+  "domain": {
+    "currentsUA": [
+      -4,
+      0,
+      5,
+      10,
+      15,
+      25
+    ],
+    "dtMs": [
+      0.01,
+      0.005,
+      0.0025
+    ],
+    "pulseMs": [
+      1,
+      20,
+      80
+    ],
+    "shortFixture": {
+      "current": 10,
+      "start": 5,
+      "pulse": 20,
+      "duration": 40
+    },
+    "longFixture": {
+      "current": 10,
+      "start": 5,
+      "pulse": 160,
+      "duration": 200
+    },
+    "quietFixture": {
+      "current": 0,
+      "start": 5,
+      "pulse": 20,
+      "duration": 200
+    },
+    "precision": "Float64Array membrane state; independent DOPRI5 trajectory reference in Float64",
+    "spatialAxon": false
+  },
+  "failureControls": {
+    "wrongSodiumExponent": {
+      "mutation": "gNa m**3 -> m**2",
+      "maxVoltageErrorMv": 110.11222329593613,
+      "spikeCountDelta": 3,
+      "separated": true
+    },
+    "swappedReversalPotentials": {
+      "mutation": "ENa <-> EK in independent reference",
+      "maxVoltageErrorMv": 124.6679777499549,
+      "spikeCountDelta": 1,
+      "separated": true
+    }
+  },
+  "currentScan": [
+    {
+      "currentDensity": -4,
+      "durationMs": 50,
+      "pulseMs": 25,
+      "dtMs": 0.005,
+      "maxVoltageErrorMv": 0.000007805648444048074,
+      "maxGateError": 4.489914329219857e-9,
+      "normalizedRmsError": 2.255848449480916e-9,
+      "spikeCount": 1,
+      "refSpikeCount": 1,
+      "spikeCountDelta": 0,
+      "spikeTimeMaxMs": 8.384661001059612e-7,
+      "minVoltageMv": -76.20713639304131,
+      "maxVoltageMv": 41.96101783181806,
+      "timeMs": 50,
+      "acceptedSteps": 2967,
+      "rejectedSteps": 6
+    },
+    {
+      "currentDensity": 0,
+      "durationMs": 50,
+      "pulseMs": 25,
+      "dtMs": 0.005,
+      "maxVoltageErrorMv": 6.551204023708124e-12,
+      "maxGateError": 3.80633025098831e-13,
+      "normalizedRmsError": 2.432557649199774e-14,
+      "spikeCount": 0,
+      "refSpikeCount": 0,
+      "spikeCountDelta": 0,
+      "spikeTimeMaxMs": 0,
+      "minVoltageMv": -65,
+      "maxVoltageMv": -64.99283968454164,
+      "timeMs": 50,
+      "acceptedSteps": 516,
+      "rejectedSteps": 0
+    },
+    {
+      "currentDensity": 5,
+      "durationMs": 50,
+      "pulseMs": 25,
+      "dtMs": 0.005,
+      "maxVoltageErrorMv": 0.000004993883969461876,
+      "maxGateError": 3.3052826031720883e-9,
+      "normalizedRmsError": 1.5020679958529233e-9,
+      "spikeCount": 1,
+      "refSpikeCount": 1,
+      "spikeCountDelta": 0,
+      "spikeTimeMaxMs": 0.000007730515787507386,
+      "minVoltageMv": -75.60852370658554,
+      "maxVoltageMv": 39.05086748503286,
+      "timeMs": 50,
+      "acceptedSteps": 2949,
+      "rejectedSteps": 5
+    },
+    {
+      "currentDensity": 10,
+      "durationMs": 50,
+      "pulseMs": 25,
+      "dtMs": 0.005,
+      "maxVoltageErrorMv": 0.00000619363964204922,
+      "maxGateError": 6.229540328028804e-9,
+      "normalizedRmsError": 1.9076759681555926e-9,
+      "spikeCount": 2,
+      "refSpikeCount": 2,
+      "spikeCountDelta": 0,
+      "spikeTimeMaxMs": 0.000004498084378745659,
+      "minVoltageMv": -75.07813282893116,
+      "maxVoltageMv": 40.26313749146105,
+      "timeMs": 50,
+      "acceptedSteps": 4299,
+      "rejectedSteps": 8
+    },
+    {
+      "currentDensity": 15,
+      "durationMs": 50,
+      "pulseMs": 25,
+      "dtMs": 0.005,
+      "maxVoltageErrorMv": 0.000006355990365136677,
+      "maxGateError": 5.714613449114836e-9,
+      "normalizedRmsError": 1.9198188113494752e-9,
+      "spikeCount": 2,
+      "refSpikeCount": 2,
+      "spikeCountDelta": 0,
+      "spikeTimeMaxMs": 0.000009146541398052932,
+      "minVoltageMv": -74.55483751574052,
+      "maxVoltageMv": 40.86684895300412,
+      "timeMs": 50,
+      "acceptedSteps": 4353,
+      "rejectedSteps": 9
+    },
+    {
+      "currentDensity": 25,
+      "durationMs": 50,
+      "pulseMs": 25,
+      "dtMs": 0.005,
+      "maxVoltageErrorMv": 0.000007801359750203574,
+      "maxGateError": 5.589533946803726e-9,
+      "normalizedRmsError": 2.117344812282776e-9,
+      "spikeCount": 3,
+      "refSpikeCount": 3,
+      "spikeCountDelta": 0,
+      "spikeTimeMaxMs": 0.000005032809612615097,
+      "minVoltageMv": -76.0542894349638,
+      "maxVoltageMv": 41.64854723046666,
+      "timeMs": 50,
+      "acceptedSteps": 5425,
+      "rejectedSteps": 13
+    }
+  ],
+  "dtScan": [
+    {
+      "dtMs": 0.01,
+      "maxVoltageErrorMv": 0.00010928870881343755,
+      "maxGateError": 9.832069103321572e-8,
+      "normalizedRmsError": 3.6603297275946386e-8,
+      "spikeCount": 2,
+      "refSpikeCount": 2,
+      "spikeCountDelta": 0,
+      "spikeTimeMaxMs": 0.000010268828928516882,
+      "minVoltageMv": -75.74565210737977,
+      "maxVoltageMv": 40.26307002974528,
+      "timeMs": 40
+    },
+    {
+      "dtMs": 0.005,
+      "maxVoltageErrorMv": 0.00000619365859932941,
+      "maxGateError": 6.227675375392039e-9,
+      "normalizedRmsError": 2.1324244778086605e-9,
+      "spikeCount": 2,
+      "refSpikeCount": 2,
+      "spikeCountDelta": 0,
+      "spikeTimeMaxMs": 0.000004699908596528246,
+      "minVoltageMv": -75.74565209592845,
+      "maxVoltageMv": 40.26313749146105,
+      "timeMs": 40,
+      "errorReduction": 17.165108381029732
+    },
+    {
+      "dtMs": 0.0025,
+      "maxVoltageErrorMv": 3.685389415863938e-7,
+      "maxGateError": 3.9414171926210884e-10,
+      "normalizedRmsError": 1.2884858184877179e-10,
+      "spikeCount": 2,
+      "refSpikeCount": 2,
+      "spikeCountDelta": 0,
+      "spikeTimeMaxMs": 0.0000016869299219735012,
+      "minVoltageMv": -75.74565654487184,
+      "maxVoltageMv": 40.264747850046426,
+      "timeMs": 40,
+      "errorReduction": 16.549848257635187
+    }
+  ],
+  "pulseScan": [
+    {
+      "pulseMs": 1,
+      "durationMs": 40,
+      "dtMs": 0.005,
+      "maxVoltageErrorMv": 0.000005540429938832858,
+      "maxGateError": 3.5082425853261157e-9,
+      "normalizedRmsError": 1.807942975264459e-9,
+      "spikeCount": 1,
+      "refSpikeCount": 1,
+      "spikeCountDelta": 0,
+      "spikeTimeMaxMs": 0.000008349163207022059,
+      "minVoltageMv": -76.17623792447672,
+      "maxVoltageMv": 39.616727737873525,
+      "timeMs": 40
+    },
+    {
+      "pulseMs": 20,
+      "durationMs": 40,
+      "dtMs": 0.005,
+      "maxVoltageErrorMv": 0.000006530386436054414,
+      "maxGateError": 6.06503836042549e-9,
+      "normalizedRmsError": 2.1557222939392675e-9,
+      "spikeCount": 2,
+      "refSpikeCount": 2,
+      "spikeCountDelta": 0,
+      "spikeTimeMaxMs": 0.0000017484113810084523,
+      "minVoltageMv": -74.86785339583598,
+      "maxVoltageMv": 40.53852516014722,
+      "timeMs": 40
+    },
+    {
+      "pulseMs": 80,
+      "durationMs": 100,
+      "dtMs": 0.005,
+      "maxVoltageErrorMv": 0.000006530386436054414,
+      "maxGateError": 1.5396277475154818e-8,
+      "normalizedRmsError": 2.2087655460768344e-9,
+      "spikeCount": 6,
+      "refSpikeCount": 6,
+      "spikeCountDelta": 0,
+      "spikeTimeMaxMs": 0.0000023557461901191346,
+      "minVoltageMv": -74.86785339583598,
+      "maxVoltageMv": 40.53852516014722,
+      "timeMs": 100
+    }
+  ],
+  "longDuration": {
+    "fixture": {
+      "current": 10,
+      "start": 5,
+      "pulse": 160,
+      "duration": 200
+    },
+    "reference": {
+      "method": "Independently expressed modern-voltage RHS and Dormand-Prince 5(4)",
+      "tolerance": 2e-12,
+      "acceptedSteps": 20444,
+      "rejectedSteps": 23,
+      "spikeCount": 11,
+      "minVoltageMv": -75.07625261523161,
+      "maxVoltageMv": 39.79135237750199,
+      "uncertaintyVsLooserTol": 1.983334385613489e-8
+    },
+    "refinement": [
+      {
+        "dtMs": 0.01,
+        "milliseconds": 19.65280899999999,
+        "maxVoltageErrorMv": 0.00010928868985615736,
+        "maxGateError": 5.01294858956669e-7,
+        "normalizedRmsError": 4.8608092858638566e-8,
+        "spikeCount": 11,
+        "refSpikeCount": 11,
+        "spikeCountDelta": 0,
+        "spikeTimeMaxMs": 0.000013336391688767435,
+        "minVoltageMv": -75.07813259497702,
+        "maxVoltageMv": 40.26307002974528,
+        "timeMs": 200,
+        "firstSpikeMs": 6.900779338597693,
+        "lastSpikeMs": 153.56220982856266
+      },
+      {
+        "dtMs": 0.005,
+        "milliseconds": 38.15254900000002,
+        "maxVoltageErrorMv": 0.00000619363964204922,
+        "maxGateError": 3.179295493538348e-8,
+        "normalizedRmsError": 3.032092411725164e-9,
+        "spikeCount": 11,
+        "refSpikeCount": 11,
+        "spikeCountDelta": 0,
+        "spikeTimeMaxMs": 0.000004498084378745659,
+        "minVoltageMv": -75.07813282893116,
+        "maxVoltageMv": 40.26313749146105,
+        "timeMs": 200,
+        "errorReduction": 16.031204283441383,
+        "firstSpikeMs": 6.900784907518025,
+        "lastSpikeMs": 153.56221452787864
+      }
+    ],
+    "quiet": {
+      "durationMs": 200,
+      "dtMs": 0.01,
+      "spikes": 0,
+      "finalVoltageMv": -64.99637933119209,
+      "minVoltageMv": -65,
+      "maxVoltageMv": -64.99283968535177
+    }
+  },
+  "seconds": 0.5661589789999999,
+  "limitations": "Bounded deterministic single-compartment ODE evidence only. No spatial axon, synapses, stochastic channels, temperature sweep, network, or experimental validation. Parameter scans cover stated currents, shipped timesteps and pulse lengths; not every UI combination. Long-duration fixture is 200 ms sustained drive, not an infinite-time stability proof."
+}
