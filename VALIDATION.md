@@ -135,7 +135,7 @@ Complete labels apply only within each record's reviewed domain.
 | [parallelogram-lock](src/modules/parallelogram-lock.js) | validated within stated limits | [vortex-family-review.js](tools/vortex-family-review.js) | Limited evidence recorded |
 | [quincunx-lock](src/modules/quincunx-lock.js) | validated within stated limits | [vortex-family-review.js](tools/vortex-family-review.js) | Limited evidence recorded |
 | [double-triangle-bound](src/modules/double-triangle-bound.js) | validated within stated limits | [double-triangle-check.js](tools/double-triangle-check.js), [polygon-collapse-check.js](tools/polygon-collapse-check.js), [polygon-review.js](tools/polygon-review.js) | Limited evidence recorded |
-| [maxwell](src/modules/maxwell.js) | partially validated | [maxwell-science.js](tools/maxwell-science.js) | Limited evidence recorded |
+| [maxwell](src/modules/maxwell.js) | partially validated | [maxwell-science.js](tools/maxwell-science.js), [maxwell-dielectric-science.js](tools/maxwell-dielectric-science.js) | Limited evidence recorded |
 | [molecular](src/modules/molecular.js) | partially validated | [molecular-science.js](tools/molecular-science.js) | Limited evidence recorded |
 | [surfaces](src/modules/surfaces.js) | validated within stated limits | [surfaces-science.js](tools/surfaces-science.js) | Limited evidence recorded |
 | [plasma](src/modules/plasma.js) | partially validated | [plasma-science.js](tools/plasma-science.js) | Limited evidence recorded |
@@ -381,7 +381,7 @@ Complete labels apply only within each record's reviewed domain.
 ### maxwell
 
 - Periodic lossless TMz fields only, stationary positive epsilon and uniform mu; no absorption, PML, losses, dispersion or nonlinear materials.
-- Analytic modes and one float64 dielectric slab fixture support the recorded cases; discontinuous-interface scattering and geometry convergence remain unvalidated.
+- Analytic modes, one float64 dielectric slab fixture, normal-incidence Fresnel R/T and discontinuous-interface refinement support the recorded cases; oblique incidence, subcell averaging and PML remain unvalidated.
 - Float32 is required. High-grid evidence is four-step sanity only; long-time, hardware and complete parameter coverage remain open.
 
 ### molecular

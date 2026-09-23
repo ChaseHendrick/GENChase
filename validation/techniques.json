@@ -3516,11 +3516,11 @@
     "status": "partially validated",
     "limitations": [
       "Periodic lossless TMz fields only, stationary positive epsilon and uniform mu; no absorption, PML, losses, dispersion or nonlinear materials.",
-      "Analytic modes and one float64 dielectric slab fixture support the recorded cases; discontinuous-interface scattering and geometry convergence remain unvalidated.",
+      "Analytic modes, one float64 dielectric slab fixture, normal-incidence Fresnel R/T and discontinuous-interface refinement support the recorded cases; oblique incidence, subcell averaging and PML remain unvalidated.",
       "Float32 is required. High-grid evidence is four-step sanity only; long-time, hardware and complete parameter coverage remain open."
     ],
     "remaining": [
-      "Validate dielectric reflection/transmission and discontinuous-interface refinement against independent references.",
+      "Validate oblique-incidence Fresnel coefficients, subcell material treatments and broader discontinuous geometries against independent references.",
       "Extend duration, parameter, aspect and hardware coverage including high-grid print paths.",
       "Compare rendered pixels and color interpretation independently; state preservation alone is not full scientific print accuracy."
     ],
@@ -3534,6 +3534,16 @@
         "failureControl": "Electric-curl sign reversal must produce error > 0.1; a Nyquist mode at 105% CFL must grow above 1e6 while the 95% case stays below 1.0001.",
         "command": "node tools/maxwell-science.js",
         "results": "validation/results/maxwell-science.json"
+      },
+      {
+        "test": "tools/maxwell-dielectric-science.js",
+        "scope": "Actual TMz Yee shaders on a vertical discontinuous dielectric interface: normal-incidence Gaussian-packet Fresnel Ez R/T at eps2 in {2.25,4} on grids 128–512, GPU vs independent Float64 Yee twins at 64/128/256, and fixed-time discontinuous field refinement 128/256 vs Float64 512.",
+        "criteria": "At 256 cells: |R−Γ|<0.02 and |T−T_F|<0.03; at 512: both <0.01; reflection error refines 128→256→512; transmission error improves 128→512; |R²+(n2/n1)T²−1|<0.02 at 512; GPU/Float64 twin max error <2e-5; discontinuous field RMS refinement ratio >1.5.",
+        "limitations": "Normal-incidence staircase interfaces only; peak-in-window coefficient extraction before periodic wrap. Not oblique incidence, subcell averaging, PML, losses, experimental measurement or arbitrary long-time certification.",
+        "benchmark": "Independent continuum Fresnel Ez coefficients Γ=(n1−n2)/(n1+n2), T=2n1/(n1+n2) with n=√ε; independent Float64 Yee twin of the declared staggered updates; fine Float64 reference field at fixed physical time.",
+        "failureControl": "Zero-contrast (homogeneous ε1) packet must yield |R|≪|Γ| so Fresnel match fails (|R−Γ|>0.2 with |R|<0.08). Ignore-epsilon electric update mutant must miss Fresnel by |ΔR| or |ΔT| > 0.15.",
+        "command": "node tools/maxwell-dielectric-science.js",
+        "results": "validation/results/maxwell-dielectric-science.json"
       }
     ],
     "print": [
