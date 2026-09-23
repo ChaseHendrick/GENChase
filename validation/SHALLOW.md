@@ -44,6 +44,29 @@ Additional bounded checks cover physical flux consistency, impermeable reflected
 
 All six presets plus the default finish their complete prescribed warmups with positive depth and volume drift below 2×10⁻¹⁴. These extra conservation checks are regressions for a conservative method, not independent proof that the waves have the correct speed. The exact dam break and analytic wave supply that independent evidence. No statistical error bars are fabricated for deterministic reference discrepancies; discretization errors and tolerances are reported directly.
 
+
+## Resolution, parameter, boundary and long-duration evidence
+
+Run `node tools/shallow-resolution-science.js --write`. Measured results: [shallow-resolution-science.json](results/shallow-resolution-science.json). The harness drives the same Float64 module with no browser.
+
+| Check | Independent reference / acceptance | Recorded result |
+|---|---|---|
+| Dam-break resolution through 512² | Exact wet Riemann cell averages at t=0.08; depth L1 ratios 1.2–2.5; fine depth/momentum L1 below 0.014/0.02 | 64→128→256→512 depth L1 0.02385, 0.01556, 0.01021, 0.00640 (ratios 1.53, 1.52, 1.60) |
+| Non-square aspect dam | Walls, aspect `4:5` (64×80), same exact x-Riemann reference | Depth L1 0.02385; volume drift below 3×10⁻¹² |
+| CFL parameter scan | Linearized `(1,1)` wave at t=0.1, N=64, CFL ∈ {0.25, 0.45, 0.7}; RMS spread <2.5; mass/momentum errors below 10⁻¹² | Relative RMS 0.0371, 0.0331, 0.0279 (spread 1.33) |
+| Amplitude parameter scan | Same wave; amplitude ∈ {5×10⁻⁶, 10⁻⁵, 2×10⁻⁵}; relative-RMS spread <1.5 | Relative RMS all ≈0.03307 (spread ≈1.000) |
+| Wall impermeability | Uniform h=1.2, mₓ=0.15 into reflecting walls to t=0.25 | Volume drift ≈7.8×10⁻¹⁴; streamwise momentum falls 0.150→0.068 |
+| Long-duration wet stress | Random wet states, CFL 0.6, t=1, periodic and walls | Positive depth; volume drift below 3×10⁻¹⁵; periodic momentum error ~10⁻¹⁷; energy ratios ≈0.51 |
+| Long-duration acoustic wave | Independent ω=`2π√2` reference at t=1; order 0.7–1.4; fine RMS below 0.35 | 64² / 128² relative RMS 0.269 / 0.150 (order 0.837) |
+
+Deliberate failures (subtract before add):
+
+- Omitting the pressure flux yields dam-break momentum L1 0.120 at 128², more than six times the correct error.
+- Wrong acoustic frequency ω=`2π` (missing `√2`) gives relative RMS 1.22 at t=1 on 128², versus 0.150 with the correct frequency.
+- Walls implemented as periodic wrap retain streamwise momentum 0.150, while true reflecting walls reduce it to 0.068.
+
+These checks extend resolution, CFL/amplitude, aspect/wall boundary and t=1 duration evidence for the declared wet flat-bed model. They do not validate dry beds, bathymetry, viscosity, dispersion or flood forecasts.
+
 ## Actual browser and print checks
 
 Requires Playwright and a browser with WebGL2 float32 render targets. Run:
@@ -75,4 +98,4 @@ All physical arrays, volume, energy, step count, last timestep and simulation ti
 
 ## Remaining limits
 
-This evidence covers the declared wet benchmarks and selected presets/settings, not every possible initial state, aspect, long evolution or browser. It does not validate a real flood forecast, bathymetry, coastlines, full 3D hydrodynamics, a dry-bed Riemann solver, or a higher-order method. Independent CPU references and preserved print state support bounded implementation claims; source citations and attractive pictures alone do not certify the science.
+Resolution through 512², CFL/amplitude scans, a non-square aspect, wall impermeability and t=1 fixtures are recorded for the wet flat-bed model. This still does not validate a real flood forecast, bathymetry, coastlines, full 3D hydrodynamics, a dry-bed Riemann solver, or a higher-order method. Independent CPU references and preserved print state support bounded implementation claims; source citations and attractive pictures alone do not certify the science.
