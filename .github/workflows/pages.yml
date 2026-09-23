@@ -31,11 +31,26 @@ jobs:
       - name: Stage tracked site files
         run: |
           mkdir -p "$RUNNER_TEMP/pages"
-          git archive HEAD | tar -x -C "$RUNNER_TEMP/pages"
+          python3 - <<'PYTHON'
+          import os, shutil, subprocess
+          from pathlib import Path
+          destination = Path(os.environ['RUNNER_TEMP']) / 'pages'
+          for name in subprocess.check_output(['git', 'ls-files', '-z']).decode().split('\0'):
+              if not name:
+                  continue
+              source = Path(name)
+              assert source.is_file() and not source.is_symlink(), name
+              target = destination / name
+              target.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copyfile(source, target)
+          PYTHON
           node -e 'require("fs").writeFileSync(process.env.RUNNER_TEMP + "/pages/DEPLOYMENT.json", JSON.stringify({commit: process.env.GITHUB_SHA, workflow: process.env.GITHUB_RUN_ID}, null, 2) + "\n")'
           test -f "$RUNNER_TEMP/pages/index.html"
           test -f "$RUNNER_TEMP/pages/start.html"
           test -f "$RUNNER_TEMP/pages/src/module-manifest.json"
+          test -f "$RUNNER_TEMP/pages/gallery/tilings.jpg"
+          test -f "$RUNNER_TEMP/pages/gallery/snowflake.jpg"
+          test -f "$RUNNER_TEMP/pages/gallery/hyperbolic.jpg"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ runner.temp }}/pages
