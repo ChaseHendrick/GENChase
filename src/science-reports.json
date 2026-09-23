@@ -3236,14 +3236,16 @@
     "sourceSha256": "00e15b29caba92c9cf360487ddce8471e0f351e54168633c80d650e75a1c01b3",
     "reference": "Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.",
     "equation": "r̈_i = −Σ_{j≠i} (r_i−r_j)/|r_i−r_j|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Finite deterministic fixtures only; no all-parameter or print accuracy claim.",
-      "Figure-eight comparison covers time 1.5 and one-period return only; no chaotic long-time guarantee."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/ORBITS.md and the orbit-science / eight-print-state results artifacts.",
+      "Figure-eight comparison covers time 1.5 and one-period return only; no chaotic long-time guarantee.",
+      "No all-parameter or independent pixel print claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Broaden independent reference trajectories and parameter coverage.",
-      "Audit actual print exports and displayed diagnostics."
+      "Extend beyond the documented finite Yoshida figure-eight fixtures and paused-export print domain with independent evidence for broader parameter coverage, longer histories, and independent pixel print accuracy."
     ],
     "numerical": [
       {
@@ -3257,7 +3259,26 @@
         "results": "validation/results/orbit-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/eight-print-state.js",
+        "command": "node tools/eight-print-state.js --write",
+        "results": "validation/results/eight-print-state.json",
+        "scope": "Actual eight exportPNG and exportSVG at 2400 longest edge for world, braid, shape, broken and wreath fixtures (2400x2400, 1920x2400 and 2400x1350).",
+        "criteria": "Exact Float64 trajectory words, L/dE/dq diagnostics, phase, raf and settings preserved across PNG and SVG; deterministic regenerate replay; exact requested dimensions; nonblank reduced raster; nonempty SVG paths; wrong dimensions and deliberate post-export traj+phase mutation rejected; broken return distance exceeds world.",
+        "benchmark": "In-harness auditSnapshot of the private Yoshida trajectory arrays, diagnostics and settings against the same module exportPNG and exportSVG paths.",
+        "failureControl": "Requested PNG/SVG width reduced by one pixel must fail acceptance; mutating traj.px[0][0] and phase after export must fail the identical preservation predicate.",
+        "limitations": "State preservation and declared dimensions only. Does not establish long-time orbit accuracy, calibrated color, printed numerical resolution, SVG/PNG pixel agreement or every control/aspect/hardware."
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained figure-eight orbit fixtures named in validation/ORBITS.md and measured in validation/results/orbit-science.json (Yoshida solver at 100/200/400 steps to t=1.5 and 9600-step one-period return), plus paused exportPNG/SVG fixtures world/braid/shape/broken/wreath at 2400 longest edge.",
+      "conditions": "Float64 trajectory words with Yoshida integrator. Print: real exportPNG and exportSVG; exact traj/diagnostics/phase/raf/settings preserved; deterministic regenerate replay; wrong-dimension and post-export traj+phase mutation rejected; broken return distance exceeds world. No chaotic long-time guarantee, all-parameter coverage, or independent pixel print accuracy.",
+      "resolution": "Numerical acceptance as recorded in orbit-science.json. Print: preserved state across PNG/SVG, exact dimensions, nonblank raster, nonempty SVG paths, failureControls rejected (validation/results/eight-print-state.json).",
+      "precision": "Float64 trajectories; RGBA8 PNG and SVG path output. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/orbit-science.json"
   },
   {
     "id": "peakon",
