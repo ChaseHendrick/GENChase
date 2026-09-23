@@ -1,0 +1,1302 @@
+{
+  "pass": true,
+  "source": "src/modules/veselago.js",
+  "sourceSha256": "acffd62c4377107f0710caf58976f5c161cbb78d3e61eae49b9048665af3dacf",
+  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "harnessSha256": "9c26fe158546a83939724ae349761be0f292909cf593cfe248a8b8d80a025a9b",
+  "traceHarness": "tools/veselago-science.js",
+  "traceHarnessSha256": "36781af0948c703b8bfbf92345c3338b583dff980ff103b541278ad5271e1b67",
+  "command": "node tools/veselago-print-state.js --write",
+  "setup": "npm install --no-save --package-lock=false playwright@1.56.1",
+  "scope": "Actual veselago.js in dist/studio.html (Chromium, SwiftShader) at seed veselago-1968 for the six presets perfect, shallow, deep, n12, many and log at their own palettes, plus wide (16:9, grid 144, 144x81 cells, axis on a cell boundary), portrait (4:5, grid 224, n = -1.5) and tir (5:4, grid 160, n = -0.4, 6 of 64 rays removed by total reflection). exportPNG at 2400 px on the longest edge (2400x2400, 2400x1350, 1920x2400, 2400x1920) with every print pixel compared against the paint buffer; the browser field compared word for word with the module run headless in Node and checked against the independent Snell trace. veselago has no exportSVG.",
+  "criteria": "Browser field words, metric and cells identical to the Node run; regenerate identical; exact requested PNG dimensions, image/png over 1000 bytes, luminance spread over 12/255 with more than 0.1% of pixels off the background; zero changed field words, metric, extra, cells, buffer size or settings across every export; every print pixel equal to the buffer cell containing its centre (either cell when the centre is exactly on a boundary), all opaque; one colour for every empty field cell and no other colour where the field is empty; zero lit cells off the independently traced rays and every ray segment inking at least 70% of its eligible columns; at n = -1 with the axis on a cell centre, every maximal cell within 2.5 px (x) and 0.5 px (y) of slab0 + 2L - d. Failure controls: a PNG 1 px narrower and a post-export change to one field word and the metric must each be rejected by the one predicate they target.",
+  "criteriaConstants": {
+    "pngMinBytes": 1000,
+    "luminanceSpread": 12,
+    "inkFraction": 0.001,
+    "inkLuminanceDelta": 16,
+    "pixelMismatches": 0,
+    "inkWithoutRay": 0,
+    "strayInk": 0,
+    "brightestTolPx": [
+      2.5,
+      0.5
+    ]
+  },
+  "rows": [
+    {
+      "fixture": "perfect",
+      "preset": "perfect",
+      "n": -1,
+      "L": 48,
+      "src": 24,
+      "rays": 28,
+      "grid": 192,
+      "aspect": "1:1",
+      "view": "int",
+      "exposure": 1,
+      "bg": "#0F1B2D",
+      "seed": "veselago-1968",
+      "requested": [
+        2400,
+        2400
+      ],
+      "cells": [
+        192,
+        192
+      ],
+      "metric": -0.004734432234432188,
+      "extra": 72,
+      "raysDrawn": 28,
+      "raysDroppedTotalReflection": 0,
+      "node": {
+        "fieldWordsDiffering": 0,
+        "metricIdentical": true,
+        "cellsIdentical": true,
+        "fieldSha256": "3427b886f0e45d3c40cbdfcb345b20dd580f9afd23ea41a4e03b5215ab8efac8",
+        "nodeFieldSha256": "3427b886f0e45d3c40cbdfcb345b20dd580f9afd23ea41a4e03b5215ab8efac8",
+        "exact": true
+      },
+      "deterministicReplay": {
+        "changedWords": 0,
+        "metricChanged": false,
+        "extraChanged": false,
+        "cellsChanged": false,
+        "bufChanged": false,
+        "settingsChanged": false,
+        "identical": true
+      },
+      "seedIndependent": true,
+      "buffer": {
+        "zeroColorUnique": true,
+        "maxColorUnique": true,
+        "inkWithoutRay": 0,
+        "lit": 2714,
+        "faintLit": 0,
+        "maxCells": 2,
+        "maxColorCells": 2,
+        "allOpaque": true
+      },
+      "independentTrace": {
+        "stray": 0,
+        "lit": 2714,
+        "segmentsChecked": 84,
+        "minCoverage": 1,
+        "lowCoverage": 0
+      },
+      "brightest": {
+        "value": 39.20000076293945,
+        "cells": 2,
+        "analyticImage": [
+          122.64,
+          96
+        ],
+        "maxDx": 0.6399999999999864,
+        "maxDy": 0,
+        "applies": true,
+        "atImage": true
+      },
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 99937,
+        "type": "image/png",
+        "luminance": {
+          "spread": 219.89860000000002,
+          "min": 25.748399999999997,
+          "max": 245.64700000000002,
+          "finite": 5760000,
+          "samples": 5760000,
+          "inkFraction": 0.016378298611111113
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "bufChanged": false,
+          "settingsChanged": false
+        },
+        "statePreserved": true,
+        "dimensionsMatch": true,
+        "accepted": true,
+        "pixels": {
+          "compared": 5760000,
+          "mismatches": 0,
+          "tiesX": 96,
+          "tiesY": 96,
+          "tieChoice": {
+            "decisiveX": 7896,
+            "higherCellX": 2448,
+            "lowerCellX": 5448,
+            "decisiveY": 15084,
+            "higherCellY": 4896,
+            "lowerCellY": 10188
+          },
+          "alphaNot255": 0,
+          "firstMismatch": null
+        }
+      },
+      "regeneratedAfterMutation": true,
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            2400
+          ],
+          "width": 2399,
+          "height": 2400,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 18554,
+          "changedWords": 1,
+          "metricChanged": true,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      },
+      "accepted": true
+    },
+    {
+      "fixture": "shallow",
+      "preset": "shallow",
+      "n": -1,
+      "L": 28,
+      "src": 16,
+      "rays": 28,
+      "grid": 192,
+      "aspect": "1:1",
+      "view": "int",
+      "exposure": 1,
+      "bg": "#ECEFEA",
+      "seed": "veselago-1968",
+      "requested": [
+        2400,
+        2400
+      ],
+      "cells": [
+        192,
+        192
+      ],
+      "metric": -0.0049409722222222285,
+      "extra": 40,
+      "raysDrawn": 28,
+      "raysDroppedTotalReflection": 0,
+      "node": {
+        "fieldWordsDiffering": 0,
+        "metricIdentical": true,
+        "cellsIdentical": true,
+        "fieldSha256": "08e5d01baacb4c1198da86c06f3a169223e3d46d16073ca45c3dea8e490d6ba5",
+        "nodeFieldSha256": "08e5d01baacb4c1198da86c06f3a169223e3d46d16073ca45c3dea8e490d6ba5",
+        "exact": true
+      },
+      "deterministicReplay": {
+        "changedWords": 0,
+        "metricChanged": false,
+        "extraChanged": false,
+        "cellsChanged": false,
+        "bufChanged": false,
+        "settingsChanged": false,
+        "identical": true
+      },
+      "seedIndependent": true,
+      "buffer": {
+        "zeroColorUnique": true,
+        "maxColorUnique": true,
+        "inkWithoutRay": 0,
+        "lit": 3088,
+        "faintLit": 0,
+        "maxCells": 2,
+        "maxColorCells": 2,
+        "allOpaque": true
+      },
+      "independentTrace": {
+        "stray": 0,
+        "lit": 3088,
+        "segmentsChecked": 84,
+        "minCoverage": 0.991667,
+        "lowCoverage": 0
+      },
+      "brightest": {
+        "value": 39.20000076293945,
+        "cells": 2,
+        "analyticImage": [
+          81.44,
+          96
+        ],
+        "maxDx": 1.4399999999999977,
+        "maxDy": 0,
+        "applies": true,
+        "atImage": true
+      },
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 101106,
+        "type": "image/png",
+        "luminance": {
+          "spread": 175.49519999999998,
+          "min": 62.50599999999999,
+          "max": 238.00119999999998,
+          "finite": 5760000,
+          "samples": 5760000,
+          "inkFraction": 0.08319965277777777
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "bufChanged": false,
+          "settingsChanged": false
+        },
+        "statePreserved": true,
+        "dimensionsMatch": true,
+        "accepted": true,
+        "pixels": {
+          "compared": 5760000,
+          "mismatches": 0,
+          "tiesX": 96,
+          "tiesY": 96,
+          "tieChoice": {
+            "decisiveX": 9240,
+            "higherCellX": 2292,
+            "lowerCellX": 6948,
+            "decisiveY": 25776,
+            "higherCellY": 8388,
+            "lowerCellY": 17388
+          },
+          "alphaNot255": 0,
+          "firstMismatch": null
+        }
+      },
+      "regeneratedAfterMutation": true,
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            2400
+          ],
+          "width": 2399,
+          "height": 2400,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 18512,
+          "changedWords": 1,
+          "metricChanged": true,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      },
+      "accepted": true
+    },
+    {
+      "fixture": "deep",
+      "preset": "deep",
+      "n": -1,
+      "L": 64,
+      "src": 20,
+      "rays": 28,
+      "grid": 192,
+      "aspect": "1:1",
+      "view": "int",
+      "exposure": 1,
+      "bg": "#17141F",
+      "seed": "veselago-1968",
+      "requested": [
+        2400,
+        2400
+      ],
+      "cells": [
+        192,
+        192
+      ],
+      "metric": -0.0024868143459915912,
+      "extra": 108,
+      "raysDrawn": 28,
+      "raysDroppedTotalReflection": 0,
+      "node": {
+        "fieldWordsDiffering": 0,
+        "metricIdentical": true,
+        "cellsIdentical": true,
+        "fieldSha256": "d7e066aba8853331768a493471c06a74f460faa5710ed172e91dcc5d53e43c6d",
+        "nodeFieldSha256": "d7e066aba8853331768a493471c06a74f460faa5710ed172e91dcc5d53e43c6d",
+        "exact": true
+      },
+      "deterministicReplay": {
+        "changedWords": 0,
+        "metricChanged": false,
+        "extraChanged": false,
+        "cellsChanged": false,
+        "bufChanged": false,
+        "settingsChanged": false,
+        "identical": true
+      },
+      "seedIndependent": true,
+      "buffer": {
+        "zeroColorUnique": true,
+        "maxColorUnique": true,
+        "inkWithoutRay": 0,
+        "lit": 2742,
+        "faintLit": 0,
+        "maxCells": 2,
+        "maxColorCells": 2,
+        "allOpaque": true
+      },
+      "independentTrace": {
+        "stray": 0,
+        "lit": 2742,
+        "segmentsChecked": 84,
+        "minCoverage": 0.984127,
+        "lowCoverage": 0
+      },
+      "brightest": {
+        "value": 39.20000076293945,
+        "cells": 2,
+        "analyticImage": [
+          154.04,
+          96
+        ],
+        "maxDx": 0.960000000000008,
+        "maxDy": 0,
+        "applies": true,
+        "atImage": true
+      },
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 99512,
+        "type": "image/png",
+        "luminance": {
+          "spread": 206.075,
+          "min": 21.432,
+          "max": 227.50699999999998,
+          "finite": 5760000,
+          "samples": 5760000,
+          "inkFraction": 0.0049109375
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "bufChanged": false,
+          "settingsChanged": false
+        },
+        "statePreserved": true,
+        "dimensionsMatch": true,
+        "accepted": true,
+        "pixels": {
+          "compared": 5760000,
+          "mismatches": 0,
+          "tiesX": 96,
+          "tiesY": 96,
+          "tieChoice": {
+            "decisiveX": 7608,
+            "higherCellX": 2292,
+            "lowerCellX": 5316,
+            "decisiveY": 10020,
+            "higherCellY": 3156,
+            "lowerCellY": 6864
+          },
+          "alphaNot255": 0,
+          "firstMismatch": null
+        }
+      },
+      "regeneratedAfterMutation": true,
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            2400
+          ],
+          "width": 2399,
+          "height": 2400,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 18586,
+          "changedWords": 1,
+          "metricChanged": true,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      },
+      "accepted": true
+    },
+    {
+      "fixture": "n12",
+      "preset": "n12",
+      "n": -1.2,
+      "L": 48,
+      "src": 24,
+      "rays": 28,
+      "grid": 192,
+      "aspect": "1:1",
+      "view": "int",
+      "exposure": 1,
+      "bg": "#121110",
+      "seed": "veselago-1968",
+      "requested": [
+        2400,
+        2400
+      ],
+      "cells": [
+        192,
+        192
+      ],
+      "metric": -0.05179487179487182,
+      "extra": 72,
+      "raysDrawn": 28,
+      "raysDroppedTotalReflection": 0,
+      "node": {
+        "fieldWordsDiffering": 0,
+        "metricIdentical": true,
+        "cellsIdentical": true,
+        "fieldSha256": "2d38d3441fe3bcbf6e6bda19bae26627fca0cfd6563a54d58567632ed6d37c14",
+        "nodeFieldSha256": "2d38d3441fe3bcbf6e6bda19bae26627fca0cfd6563a54d58567632ed6d37c14",
+        "exact": true
+      },
+      "deterministicReplay": {
+        "changedWords": 0,
+        "metricChanged": false,
+        "extraChanged": false,
+        "cellsChanged": false,
+        "bufChanged": false,
+        "settingsChanged": false,
+        "identical": true
+      },
+      "seedIndependent": true,
+      "buffer": {
+        "zeroColorUnique": true,
+        "maxColorUnique": true,
+        "inkWithoutRay": 0,
+        "lit": 2714,
+        "faintLit": 0,
+        "maxCells": 2,
+        "maxColorCells": 2,
+        "allOpaque": true
+      },
+      "independentTrace": {
+        "stray": 0,
+        "lit": 2714,
+        "segmentsChecked": 84,
+        "minCoverage": 1,
+        "lowCoverage": 0
+      },
+      "brightest": {
+        "value": 39.20000076293945,
+        "cells": 2,
+        "analyticImage": [
+          122.64,
+          96
+        ],
+        "maxDx": 9.639999999999986,
+        "maxDy": 0,
+        "applies": false,
+        "atImage": false
+      },
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 99941,
+        "type": "image/png",
+        "luminance": {
+          "spread": 226.31699999999998,
+          "min": 17.1404,
+          "max": 243.45739999999998,
+          "finite": 5760000,
+          "samples": 5760000,
+          "inkFraction": 0.014534895833333334
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "bufChanged": false,
+          "settingsChanged": false
+        },
+        "statePreserved": true,
+        "dimensionsMatch": true,
+        "accepted": true,
+        "pixels": {
+          "compared": 5760000,
+          "mismatches": 0,
+          "tiesX": 96,
+          "tiesY": 96,
+          "tieChoice": {
+            "decisiveX": 8388,
+            "higherCellX": 1752,
+            "lowerCellX": 6636,
+            "decisiveY": 17460,
+            "higherCellY": 5580,
+            "lowerCellY": 11880
+          },
+          "alphaNot255": 0,
+          "firstMismatch": null
+        }
+      },
+      "regeneratedAfterMutation": true,
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            2400
+          ],
+          "width": 2399,
+          "height": 2400,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 18545,
+          "changedWords": 1,
+          "metricChanged": true,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      },
+      "accepted": true
+    },
+    {
+      "fixture": "many",
+      "preset": "many",
+      "n": -1,
+      "L": 48,
+      "src": 24,
+      "rays": 48,
+      "grid": 192,
+      "aspect": "1:1",
+      "view": "int",
+      "exposure": 1,
+      "bg": "#0A0710",
+      "seed": "veselago-1968",
+      "requested": [
+        2400,
+        2400
+      ],
+      "cells": [
+        192,
+        192
+      ],
+      "metric": -0.004734432234432188,
+      "extra": 72,
+      "raysDrawn": 48,
+      "raysDroppedTotalReflection": 0,
+      "node": {
+        "fieldWordsDiffering": 0,
+        "metricIdentical": true,
+        "cellsIdentical": true,
+        "fieldSha256": "8df1083511e6d1561ae1f3d2fcc79cfb586106c5ed64400e5a559ac3f325a6de",
+        "nodeFieldSha256": "8df1083511e6d1561ae1f3d2fcc79cfb586106c5ed64400e5a559ac3f325a6de",
+        "exact": true
+      },
+      "deterministicReplay": {
+        "changedWords": 0,
+        "metricChanged": false,
+        "extraChanged": false,
+        "cellsChanged": false,
+        "bufChanged": false,
+        "settingsChanged": false,
+        "identical": true
+      },
+      "seedIndependent": true,
+      "buffer": {
+        "zeroColorUnique": true,
+        "maxColorUnique": true,
+        "inkWithoutRay": 0,
+        "lit": 3300,
+        "faintLit": 0,
+        "maxCells": 2,
+        "maxColorCells": 2,
+        "allOpaque": true
+      },
+      "independentTrace": {
+        "stray": 0,
+        "lit": 3300,
+        "segmentsChecked": 144,
+        "minCoverage": 1,
+        "lowCoverage": 0
+      },
+      "brightest": {
+        "value": 67.20002746582031,
+        "cells": 2,
+        "analyticImage": [
+          122.64,
+          96
+        ],
+        "maxDx": 0.6399999999999864,
+        "maxDy": 0,
+        "applies": true,
+        "atImage": true
+      },
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 100131,
+        "type": "image/png",
+        "luminance": {
+          "spread": 230.41819999999998,
+          "min": 8.2876,
+          "max": 238.70579999999998,
+          "finite": 5760000,
+          "samples": 5760000,
+          "inkFraction": 0.0012522569444444445
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "bufChanged": false,
+          "settingsChanged": false
+        },
+        "statePreserved": true,
+        "dimensionsMatch": true,
+        "accepted": true,
+        "pixels": {
+          "compared": 5760000,
+          "mismatches": 0,
+          "tiesX": 96,
+          "tiesY": 96,
+          "tieChoice": {
+            "decisiveX": 8796,
+            "higherCellX": 2196,
+            "lowerCellX": 6600,
+            "decisiveY": 10956,
+            "higherCellY": 3252,
+            "lowerCellY": 7704
+          },
+          "alphaNot255": 0,
+          "firstMismatch": null
+        }
+      },
+      "regeneratedAfterMutation": true,
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            2400
+          ],
+          "width": 2399,
+          "height": 2400,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 18554,
+          "changedWords": 1,
+          "metricChanged": true,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      },
+      "accepted": true
+    },
+    {
+      "fixture": "log",
+      "preset": "log",
+      "n": -1,
+      "L": 48,
+      "src": 24,
+      "rays": 28,
+      "grid": 192,
+      "aspect": "1:1",
+      "view": "log",
+      "exposure": 1,
+      "bg": "#F1E8D8",
+      "seed": "veselago-1968",
+      "requested": [
+        2400,
+        2400
+      ],
+      "cells": [
+        192,
+        192
+      ],
+      "metric": -0.004734432234432188,
+      "extra": 72,
+      "raysDrawn": 28,
+      "raysDroppedTotalReflection": 0,
+      "node": {
+        "fieldWordsDiffering": 0,
+        "metricIdentical": true,
+        "cellsIdentical": true,
+        "fieldSha256": "3427b886f0e45d3c40cbdfcb345b20dd580f9afd23ea41a4e03b5215ab8efac8",
+        "nodeFieldSha256": "3427b886f0e45d3c40cbdfcb345b20dd580f9afd23ea41a4e03b5215ab8efac8",
+        "exact": true
+      },
+      "deterministicReplay": {
+        "changedWords": 0,
+        "metricChanged": false,
+        "extraChanged": false,
+        "cellsChanged": false,
+        "bufChanged": false,
+        "settingsChanged": false,
+        "identical": true
+      },
+      "seedIndependent": true,
+      "buffer": {
+        "zeroColorUnique": true,
+        "maxColorUnique": true,
+        "inkWithoutRay": 0,
+        "lit": 2714,
+        "faintLit": 0,
+        "maxCells": 2,
+        "maxColorCells": 2,
+        "allOpaque": true
+      },
+      "independentTrace": {
+        "stray": 0,
+        "lit": 2714,
+        "segmentsChecked": 84,
+        "minCoverage": 1,
+        "lowCoverage": 0
+      },
+      "brightest": {
+        "value": 39.20000076293945,
+        "cells": 2,
+        "analyticImage": [
+          122.64,
+          96
+        ],
+        "maxDx": 0.6399999999999864,
+        "maxDy": 0,
+        "applies": true,
+        "atImage": true
+      },
+      "png": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 99944,
+        "type": "image/png",
+        "luminance": {
+          "spread": 219.2688,
+          "min": 31.931799999999996,
+          "max": 251.20059999999998,
+          "finite": 5760000,
+          "samples": 5760000,
+          "inkFraction": 0.07356128472222222
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "bufChanged": false,
+          "settingsChanged": false
+        },
+        "statePreserved": true,
+        "dimensionsMatch": true,
+        "accepted": true,
+        "pixels": {
+          "compared": 5760000,
+          "mismatches": 0,
+          "tiesX": 96,
+          "tiesY": 96,
+          "tieChoice": {
+            "decisiveX": 7896,
+            "higherCellX": 2448,
+            "lowerCellX": 5448,
+            "decisiveY": 15084,
+            "higherCellY": 4896,
+            "lowerCellY": 10188
+          },
+          "alphaNot255": 0,
+          "firstMismatch": null
+        }
+      },
+      "regeneratedAfterMutation": true,
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            2400
+          ],
+          "width": 2399,
+          "height": 2400,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 18554,
+          "changedWords": 1,
+          "metricChanged": true,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      },
+      "accepted": true
+    },
+    {
+      "fixture": "wide",
+      "preset": null,
+      "n": -1,
+      "L": 40,
+      "src": 20,
+      "rays": 28,
+      "grid": 144,
+      "aspect": "16:9",
+      "view": "int",
+      "exposure": 1,
+      "bg": "#0F1B2D",
+      "seed": "veselago-1968",
+      "requested": [
+        2400,
+        1350
+      ],
+      "cells": [
+        144,
+        81
+      ],
+      "metric": -0.012413479052823343,
+      "extra": 60,
+      "raysDrawn": 28,
+      "raysDroppedTotalReflection": 0,
+      "node": {
+        "fieldWordsDiffering": 0,
+        "metricIdentical": true,
+        "cellsIdentical": true,
+        "fieldSha256": "b3fcfcb3bc5789e2558b8a061c1c92c6f1337b303aec79906edc056c2005d941",
+        "nodeFieldSha256": "b3fcfcb3bc5789e2558b8a061c1c92c6f1337b303aec79906edc056c2005d941",
+        "exact": true
+      },
+      "deterministicReplay": {
+        "changedWords": 0,
+        "metricChanged": false,
+        "extraChanged": false,
+        "cellsChanged": false,
+        "bufChanged": false,
+        "settingsChanged": false,
+        "identical": true
+      },
+      "seedIndependent": true,
+      "buffer": {
+        "zeroColorUnique": true,
+        "maxColorUnique": true,
+        "inkWithoutRay": 0,
+        "lit": 1638,
+        "faintLit": 0,
+        "maxCells": 2,
+        "maxColorCells": 10,
+        "allOpaque": true
+      },
+      "independentTrace": {
+        "stray": 0,
+        "lit": 1638,
+        "segmentsChecked": 84,
+        "minCoverage": 0.983607,
+        "lowCoverage": 0
+      },
+      "brightest": {
+        "value": 19.600000381469727,
+        "cells": 2,
+        "analyticImage": [
+          100.28,
+          40.5
+        ],
+        "maxDx": 80.28,
+        "maxDy": 0.5,
+        "applies": false,
+        "atImage": false
+      },
+      "png": {
+        "width": 2400,
+        "height": 1350,
+        "bytes": 57215,
+        "type": "image/png",
+        "luminance": {
+          "spread": 219.89860000000002,
+          "min": 25.748399999999997,
+          "max": 245.64700000000002,
+          "finite": 3240000,
+          "samples": 3240000,
+          "inkFraction": 0.12957345679012347
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "bufChanged": false,
+          "settingsChanged": false
+        },
+        "statePreserved": true,
+        "dimensionsMatch": true,
+        "accepted": true,
+        "pixels": {
+          "compared": 3240000,
+          "mismatches": 0,
+          "tiesX": 0,
+          "tiesY": 0,
+          "tieChoice": {
+            "decisiveX": 0,
+            "higherCellX": 0,
+            "lowerCellX": 0,
+            "decisiveY": 0,
+            "higherCellY": 0,
+            "lowerCellY": 0
+          },
+          "alphaNot255": 0,
+          "firstMismatch": null
+        }
+      },
+      "regeneratedAfterMutation": true,
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            1350
+          ],
+          "width": 2399,
+          "height": 1350,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 5924,
+          "changedWords": 1,
+          "metricChanged": true,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      },
+      "accepted": true
+    },
+    {
+      "fixture": "portrait",
+      "preset": null,
+      "n": -1.5,
+      "L": 60,
+      "src": 18,
+      "rays": 36,
+      "grid": 224,
+      "aspect": "4:5",
+      "view": "int",
+      "exposure": 1,
+      "bg": "#0F1B2D",
+      "seed": "veselago-1968",
+      "requested": [
+        1920,
+        2400
+      ],
+      "cells": [
+        224,
+        280
+      ],
+      "metric": -0.09788533834586463,
+      "extra": 102,
+      "raysDrawn": 36,
+      "raysDroppedTotalReflection": 0,
+      "node": {
+        "fieldWordsDiffering": 0,
+        "metricIdentical": true,
+        "cellsIdentical": true,
+        "fieldSha256": "f9e3726c0ece0e7a272ed24ed41abff67cbf1a7c14be169574a2966f4a6cddb9",
+        "nodeFieldSha256": "f9e3726c0ece0e7a272ed24ed41abff67cbf1a7c14be169574a2966f4a6cddb9",
+        "exact": true
+      },
+      "deterministicReplay": {
+        "changedWords": 0,
+        "metricChanged": false,
+        "extraChanged": false,
+        "cellsChanged": false,
+        "bufChanged": false,
+        "settingsChanged": false,
+        "identical": true
+      },
+      "seedIndependent": true,
+      "buffer": {
+        "zeroColorUnique": true,
+        "maxColorUnique": true,
+        "inkWithoutRay": 0,
+        "lit": 3763,
+        "faintLit": 0,
+        "maxCells": 1,
+        "maxColorCells": 1,
+        "allOpaque": true
+      },
+      "independentTrace": {
+        "stray": 0,
+        "lit": 3763,
+        "segmentsChecked": 108,
+        "minCoverage": 1,
+        "lowCoverage": 0
+      },
+      "brightest": {
+        "value": 50.4000129699707,
+        "cells": 1,
+        "analyticImage": [
+          149.58,
+          140
+        ],
+        "maxDx": 21.579999999999984,
+        "maxDy": 0,
+        "applies": false,
+        "atImage": false
+      },
+      "png": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 86141,
+        "type": "image/png",
+        "luminance": {
+          "spread": 219.89860000000002,
+          "min": 25.748399999999997,
+          "max": 245.64700000000002,
+          "finite": 4608000,
+          "samples": 4608000,
+          "inkFraction": 0.012345703125
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "bufChanged": false,
+          "settingsChanged": false
+        },
+        "statePreserved": true,
+        "dimensionsMatch": true,
+        "accepted": true,
+        "pixels": {
+          "compared": 4608000,
+          "mismatches": 0,
+          "tiesX": 0,
+          "tiesY": 0,
+          "tieChoice": {
+            "decisiveX": 0,
+            "higherCellX": 0,
+            "lowerCellX": 0,
+            "decisiveY": 0,
+            "higherCellY": 0,
+            "lowerCellY": 0
+          },
+          "alphaNot255": 0,
+          "firstMismatch": null
+        }
+      },
+      "regeneratedAfterMutation": true,
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            1919,
+            2400
+          ],
+          "width": 1919,
+          "height": 2400,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 31488,
+          "changedWords": 1,
+          "metricChanged": true,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      },
+      "accepted": true
+    },
+    {
+      "fixture": "tir",
+      "preset": null,
+      "n": -0.4,
+      "L": 30,
+      "src": 12,
+      "rays": 64,
+      "grid": 160,
+      "aspect": "5:4",
+      "view": "int",
+      "exposure": 1,
+      "bg": "#0F1B2D",
+      "seed": "veselago-1968",
+      "requested": [
+        2400,
+        1920
+      ],
+      "cells": [
+        160,
+        128
+      ],
+      "metric": 0.325,
+      "extra": 48,
+      "raysDrawn": 58,
+      "raysDroppedTotalReflection": 6,
+      "node": {
+        "fieldWordsDiffering": 0,
+        "metricIdentical": true,
+        "cellsIdentical": true,
+        "fieldSha256": "d93a65c75a6d74c1646d628be57eb5cb3922323dd488e08c45f80e43170d8a1f",
+        "nodeFieldSha256": "d93a65c75a6d74c1646d628be57eb5cb3922323dd488e08c45f80e43170d8a1f",
+        "exact": true
+      },
+      "deterministicReplay": {
+        "changedWords": 0,
+        "metricChanged": false,
+        "extraChanged": false,
+        "cellsChanged": false,
+        "bufChanged": false,
+        "settingsChanged": false,
+        "identical": true
+      },
+      "seedIndependent": true,
+      "buffer": {
+        "zeroColorUnique": true,
+        "maxColorUnique": true,
+        "inkWithoutRay": 0,
+        "lit": 4465,
+        "faintLit": 0,
+        "maxCells": 2,
+        "maxColorCells": 2,
+        "allOpaque": true
+      },
+      "independentTrace": {
+        "stray": 0,
+        "lit": 4465,
+        "segmentsChecked": 172,
+        "minCoverage": 1,
+        "lowCoverage": 0
+      },
+      "brightest": {
+        "value": 40.60002136230469,
+        "cells": 2,
+        "analyticImage": [
+          81,
+          64
+        ],
+        "maxDx": 60,
+        "maxDy": 0,
+        "applies": false,
+        "atImage": false
+      },
+      "png": {
+        "width": 2400,
+        "height": 1920,
+        "bytes": 89139,
+        "type": "image/png",
+        "luminance": {
+          "spread": 219.89860000000002,
+          "min": 25.748399999999997,
+          "max": 245.64700000000002,
+          "finite": 4608000,
+          "samples": 4608000,
+          "inkFraction": 0.042333984375
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "bufChanged": false,
+          "settingsChanged": false
+        },
+        "statePreserved": true,
+        "dimensionsMatch": true,
+        "accepted": true,
+        "pixels": {
+          "compared": 4608000,
+          "mismatches": 0,
+          "tiesX": 0,
+          "tiesY": 0,
+          "tieChoice": {
+            "decisiveX": 0,
+            "higherCellX": 0,
+            "lowerCellX": 0,
+            "decisiveY": 0,
+            "higherCellY": 0,
+            "lowerCellY": 0
+          },
+          "alphaNot255": 0,
+          "firstMismatch": null
+        }
+      },
+      "regeneratedAfterMutation": true,
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            1920
+          ],
+          "width": 2399,
+          "height": 1920,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 10261,
+          "changedWords": 1,
+          "metricChanged": true,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      },
+      "accepted": true
+    }
+  ],
+  "limitations": [
+    "Print-path state, dimensions and raster content for nine fixtures at one seed, one browser build and a software renderer; not every control, palette, exposure or hardware.",
+    "The plate is a nearest-neighbour magnification of a 128-224 cell field; the print adds pixels, not resolved rays. Colour is not calibrated.",
+    "The plate does not depend on the seed (the module creates a generator it never draws from); recorded per fixture.",
+    "Lit cells whose weight maps to the empty-cell colour are counted, not hidden: faint single-ray cells can be indistinguishable from the background in the print.",
+    "On the 16:9 fixture the axis falls on a cell boundary, the image splits over two rows and the brightest-cell check is not applied there.",
+    "No claim about the status label; see tools/veselago-science.js."
+  ],
+  "environment": {
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
+    "platform": "linux",
+    "playwright": "1.56.1"
+  }
+}

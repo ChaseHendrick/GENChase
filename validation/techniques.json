@@ -2717,18 +2717,54 @@
     "sourceSha256": "acffd62c4377107f0710caf58976f5c161cbb78d3e61eae49b9048665af3dacf",
     "reference": "V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968), asked what optics would do if ε and μ were both negative: a left-handed medium, a reversed Doppler shift, and a slab that acts as a lens. Pendry, Phys. Rev. Lett. 85, 3966 (2000), showed the same slab can amplify evanescent waves and beat the diffraction limit. The plate traces geometric rays through n < 0, not a fabricated metamaterial.",
     "equation": "n₁ sin θ₁ = n₂ sin θ₂,   n₂ = −1  ⇒  θ₂ = −θ₁,   image at 2L − d",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Evidence covers only the documented domain in validation/VESELAGO.md and the veselago-science / veselago-print-state results artifacts: the geometric ray trace, the drawn rays, the n = −1 image metric and the print path.",
+      "The status label is not validated and is wrong over part of the slider domain. It reads \"Veselago focus\" whenever |Δx|/W < 0.12 (veselago.js:132): in 11,829 of the 16,468 in-domain sweep configurations where no ray crosses the axis behind the slab, including n = −2.20 to −2.00 at the default slab, and at n = +1. This defect blocks full validation.",
+      "When the back face lies beyond the last drawn column (grid 128 or 144 with a thick slab and a distant source), the exit segment is drawn backwards from the back face to W − 2 (veselago.js:79–82). That inks cells no ray reaches: 1,767 of 2,368 such sweep configurations, 24,214 stray cells. These plates are outside the domain, and the defect blocks full validation.",
+      "Transmitted geometric rays only: no Fresnel reflection, wave optics, evanescent-wave amplification (Pendry), absorption or dispersion. At n = −0.40, rays with |sin θ| > 0.4 have no transmitted ray and are skipped entirely at veselago.js:74, incident segment included, with nothing on the plate or status line to say so: 2 of 12, 4 of 28, 6 of 48 and 6 of 64 rays.",
+      "Refocusing at n = −1 (slab0 + d inside, slab0 + 2L − d behind) is a geometric identity of the flat slab. It is recorded as a regression check, not a prediction.",
+      "Hash-only indices between −0.43497 and −0.4 reach the 0.05 slope clamp (veselago.js:83) for near-grazing rays: 322.85 px vertex error at n = −0.43527. These indices are outside the domain."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Fix the status label (veselago.js:132) so it reports a focus only when rays cross the axis behind the slab. Measure against the paraxial image L/|n| − d or use a pixel-scale tolerance, then re-run both harnesses and review for full promotion.",
+      "Guard the exit segment when the back face lies beyond W − 2 (veselago.js:79–82), or keep the slab on the plate.",
+      "Say when total reflection removes rays, or draw the reflected rays.",
+      "Extend print fixtures to more exposures, palettes and hardware; the plate does not depend on the seed."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/veselago-science.js",
+        "command": "node tools/veselago-science.js --write",
+        "results": "validation/results/veselago-science.json",
+        "scope": "Actual veselago.js run headless, with read-only hooks on every ray. 59,200 sweep configurations: 37 slider n values from −2.20 to −0.40, L 20/36/48/64/80, source 8/16/24/36/50, 12/28/48/64 rays, grid 128/144/192/224 and all four aspects. 56,832 of them keep the back face on the plate. Plus 2,931 seeded continuous-valued configurations with n from −2.2 to −0.44. Checked per ray: entry, exit and end vertices, axis crossings and total-reflection drops, plus lit cells against the traced rays. n = −1: inside and behind images over 4,440 layouts and the brightest-point metric over 2,412. Closed-form crossings, paraxial image and aberration at n −0.8, −1.2, −1.5, −2.2, −0.4 and +1.5. The status label is measured, not validated.",
+        "criteria": "Vertices, crossings and layout within 1e-9 px of the reference. Identical total-reflection sets. Zero lit cells more than half a cell from every traced ray, and every ray segment inks at least 70% of its eligible columns. n = −1: every crossing within 1e-9 px of slab0 + d and slab0 + 2L − d, and no crossing behind the slab when d > L. Where L − d ≥ 5 and the image lies at or before W − 5, the brightest point is within 2.5 px of slab0 + 2L − d and the recorded peak equals the independent window maximum. n ≠ −1: crossings within 1e-9 px of the closed form. The innermost ray is within twice the third-order term of the paraxial image L/|n| − d. The aberration has the sign of 1/n² − 1, and the brightest point lies inside the crossing range ± 2.5 px.",
+        "benchmark": "Independent vector Snell refraction at both faces. The tangential wavevector is continuous, n1 sin θ1 = n2 sin θ2, so n2 < 0 puts the refracted ray on the incident side of the normal while energy leaves the interface. Line-plane and line-axis intersections, and the closed-form flat-slab crossing L|tan θ2|/|tan θ| − d with paraxial limit L/|n| − d.",
+        "failureControl": "n = +1 is rejected: no ray crosses the axis behind the slab, and the brightest point is 21.99 px from 2L − d. A wrong-sign refraction (46.37 px vertex error at n = −1) and an exit ray that keeps the slab angle (88.26 px) are rejected at every tested n. An inverted index ratio (sin θ2 = n sin θ) is identical at n = −1 and rejected only at n −0.8, −1.2 and −1.5 (10.70 to 26.78 px), which is why n = −1 alone is not evidence. The n = −1.2 preset is 9.94 px from 2L − d and fails the 2.5 px image predicate.",
+        "limitations": "Geometric transmitted rays only. The n = −1 images are an identity (regression check). The status label is measured, not validated, and is wrong where no image exists. Back faces beyond the last drawn column and hash-only near-grazing indices are outside the domain."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/veselago-print-state.js",
+        "command": "node tools/veselago-print-state.js --write",
+        "results": "validation/results/veselago-print-state.json",
+        "scope": "Actual veselago.js in dist/studio.html (Chromium 141, SwiftShader) at seed veselago-1968. Fixtures: the six presets perfect, shallow, deep, n12, many and log, plus wide (16:9, grid 144, 144x81 cells), portrait (4:5, grid 224, n −1.5) and tir (5:4, grid 160, n −0.4, 6 of 64 rays removed). exportPNG at 2400 px on the longest edge, with every print pixel compared against the paint buffer. The browser field is compared word for word with the module run in Node and checked against the independent Snell trace.",
+        "criteria": "Browser field words, metric and cells identical to the Node run, and regenerate identical. Exact requested PNG dimensions; image/png over 1000 bytes; luminance spread over 12/255 with more than 0.1% of pixels off the background. Zero changed field words, metric, extra, cells, buffer size or settings across every export. Every print pixel equals the buffer cell containing its centre (either cell on an exact boundary), all opaque. Empty field cells share one colour, and no other colour appears where the field is empty. Zero lit cells off the traced rays. At n = −1 with the axis on a cell centre, every maximal cell lies within 2.5 px (x) and 0.5 px (y) of slab0 + 2L − d.",
+        "benchmark": "The module run headless in Node for the field; the independent Snell trace of tools/veselago-science.js for the lit cells and the n = −1 brightest cells; the paint buffer for every print pixel.",
+        "failureControl": "A PNG requested 1 px narrower, and a post-export change to one field word and the metric, must each be rejected by the one predicate they target.",
+        "limitations": "Nine fixtures at one seed (the plate does not depend on the seed), one browser build and a software renderer. The print is a nearest-neighbour magnification of the field; colour is not calibrated. The brightest-cell check is skipped on the odd-height 16:9 fixture, where the image splits across two rows and ties the source cell. veselago has no SVG export."
+      }
+    ],
+    "domain": {
+      "parameters": "Slider n from −2.20 to −0.40 in 0.05 steps, with L 20–80, source 8–50, 12–64 rays, grid 128–224 and all four aspects (the sweep axes in the results), restricted to plates whose back face lies at or before W − 2. Also 2,931 continuous-valued configurations with n from −2.2 to −0.44. The n = −1 image metric covers configurations where L − d ≥ 5 and the image lies at or before W − 5. Print fixtures: six presets, wide, portrait and tir. Excluded: the status label, back faces beyond the last drawn column, and hash-only n between −0.43497 and −0.4.",
+      "conditions": "Point source on the axis at x0 = 0.12 W + 0.15 d, fan ±0.45 rad, vacuum on both sides of a flat slab of index n, rays drawn to W − 2. Transmitted rays only, no reflection. Print: real exportPNG at 2400 px on the longest edge.",
+      "resolution": "Vertices and crossings agree to 3.98e-12 px or better over 2,152,704 in-domain sweep rays. The n = −1 brightest point lies within 1 px (even plate height) and 1.998 px (odd plate height) of the analytic image. Prints: 2400x2400, 2400x1350, 1920x2400 and 2400x1920, every pixel compared (validation/results/veselago-science.json, validation/results/veselago-print-state.json).",
+      "precision": "Float64 ray geometry, Float32 field accumulation, RGBA8 PNG. Renderer environment and failure controls are recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/veselago-science.json"
   },
   {
     "id": "devil",

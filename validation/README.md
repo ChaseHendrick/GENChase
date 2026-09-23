@@ -114,3 +114,9 @@ The [complete PDE field review](PDE-FIELD-REVIEW.md) checks six finite solvers a
 
 The [complete finite FPUT review](FPUT-FIELD-REVIEW.md) covers independent chain
 trajectories, energy diagnostics, working duration controls and real print output.
+
+The [Veselago lens review](VESELAGO.md) checks every ray of the actual module against an
+independent negative-index Snell trace across the slider domain, and checks every print pixel
+against the field. It stays partially validated because of two recorded defects: the status label
+claims a focus where no image exists, and the exit ray is drawn backwards when the slab runs off
+the plate.
