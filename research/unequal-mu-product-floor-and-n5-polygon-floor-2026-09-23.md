@@ -4,6 +4,7 @@ This is the repository's working note for the paper *Minimal winding in the self
 
 - Paper source: [`unequal-mu-n5-floors-2026-09-23.typ`](unequal-mu-n5-floors-2026-09-23.typ) (Typst)
 - Paper PDF: [`artifacts/unequal-mu-n5-floors-2026-09-23.pdf`](artifacts/unequal-mu-n5-floors-2026-09-23.pdf)
+- LaTeX version: [`unequal-mu-n5-floors-2026-09-23.tex`](unequal-mu-n5-floors-2026-09-23.tex), the same text for arXiv and journals. It uses [`figures/minimal-winding.pdf`](figures/minimal-winding.pdf), which `plot_minimal_winding.py` writes next to the SVG. Build it from `research/` with `pdflatex` run twice. The Typst file stays the reference text, so keep the two in step.
 - Verification program: [`verify_floors_independent.py`](verify_floors_independent.py)
 - Verification output: [`artifacts/verify-floors-independent-2026-09-23.json`](artifacts/verify-floors-independent-2026-09-23.json)
 
@@ -79,10 +80,22 @@ The μ = 1/2 checks:
 | O'Neil 2007 | Full text (purchased) | Finiteness for three rings. Credits Koiller for two-ring collapse. |
 | Gotoda 2021 | **arXiv v1 Sect. 2–3 read 2026-09-23** | Eq. (3.6) is exactly our positions (5). Gotoda uses the same normalization, Γ₁ ≥ Γ₂ > 0 > Γ₃. He treats the whole circle θ ∈ [0, 2π), and Fig. 1 shows collapse on both orientations. Eqs. (3.1)–(3.2) state that Γ_H = 0 and M = 0 are necessary and sufficient for self-similar collapse. Eq. (3.3) gets A right, but B as printed in v1 is wrong for Γ₁ ≠ Γ₂ (see below). No minimization of −B/(2A). |
 | Aref 2010 | **Full text read 2026-09-23** (author's complimentary copy, provided by the owner) | Gives Ω (25a) and τ (25d) through the side lengths. Derives the necessary conditions γ₂ = 0 and L = 0 for self-similar motion (Sect. II B), and the zero-impulse circle and its parametrization (Eqs. 20–22). Shows the trajectories are logarithmic spirals with exponent fixed by Ωτ = P (Eq. 29c). **Never minimizes or bounds Ωτ.** The paper now credits all of this. |
-| Krishnamurthy and Stremler 2018 | Abstract; §3.5 of the postprint read earlier | Distance travelled before collapse. The earlier read noted a numerical observation that the normalized distance exceeds 2, which Corollary 1 proves with the sharp constant. **Verify §3.5 and cite it.** |
+| Krishnamurthy and Stremler 2018 | Author postprint (21 pages) downloaded and read in an earlier session; see `identities/NOVELTY-AUDIT.md`, item 4, and RESEARCH.md. The copy is no longer on disk. | §3.5, eqs. (3.26)–(3.29): the normalized path length before collapse, which is √(1 + 4P²) in our notation, with a **numerical** observation that it exceeds 2. No sharp bound, no minimum over configurations. The paper now credits this observation [10, Sect. 3.5] and states Corollary 1 as its proof. Check the section number against the journal version when a copy is at hand. |
 | Aref, Rott and Thomann 1992; Newton 2001 | Bibliographic data verified | History and general theory. |
 | Tavantzis and Ting 1988; Leoncini et al. 2000; Aref 1979 | Abstracts | Context only. |
 | **Demina and Kudryashov 2014** | **Abstract only** | **Closest prior work for the rings.** Explicit double-ring configurations of two regular polygons with arbitrary circulations. Must be read in full before submission. |
+
+Later and related papers found on 2026-09-23 from search-engine summaries. None has been read, so none has a verdict yet.
+
+| Source | Access | Why it matters |
+|---|---|---|
+| Borisov and coauthors, "Dynamics of three vortices on a plane and a sphere III: noncompact case, problems of collapse and scattering", *Regul. Chaotic Dyn.* 3(4) (1998) | Free: arXiv nlin/0503057 | **Prior work on three-vortex collapse that the paper does not cite.** Read it first: it may treat the collapse time and the rotation together. |
+| Krishnamurthy, Aref and Stremler, "Evolving geometry of a vortex triangle", *Phys. Rev. Fluids* 3 (2018) 024702 | Free: arXiv:1706.00731 | The geometric framework that Krishnamurthy and Stremler 2018 builds on. It may already contain the path-length relation. |
+| Demina and Kudryashov, "Multi-particle dynamical systems and polynomials", *Regul. Chaotic Dyn.* 21 (2016) | Free: arXiv:1407.1641 | Extends the polynomial method of their 2014 paper. It may repeat the double-ring configurations. |
+| "On the collapse of three point vortices on surfaces" (2026) | Free: arXiv:2607.16490 | A recent collapse paper whose introduction should survey the planar results, including any bound on the collapse time. |
+| Kudela, "Self-similar collapse of n point vortices", *J. Nonlinear Sci.* (2014), doi:10.1007/s00332-014-9207-8 | Related free version: arXiv:1512.05116 | Explicit self-similar collapse trajectories for n vortices. It may include rings. |
+| Reinaud, Dritschel and Scott, *Physica D* 434 (2022) 133226 | Paywalled | Collapse conditions and collapse time in the generalised Euler and QG equations. |
+| "Intrinsic dynamical shadowing of point vortices and finite time singularities" (2026) | Free: arXiv:2609.25989 | The reverse collapse route. Probably context only. |
 
 Searches for the numbers and the sextic found only this repository. That is weak evidence, because many publisher hosts were unreachable. See the RESEARCH.md ledger for 2026-09-23, entries A–E.
 
@@ -92,10 +105,10 @@ The submission package is in [`submission/`](submission/): arXiv metadata (categ
 
 Still open:
 
-1. **Read two papers in full:** Demina and Kudryashov (2014), and Krishnamurthy and Stremler (2018) §3.5, whose postprint link on the author's page is broken. Both are Springer journals, so try a university library login before buying. Aref (2010) has been read and does not anticipate the results; see the table above. An attempt on 2026-09-23 could not reach them because the session's network policy blocks the hosting sites (people.iith.ac.in, vtechworks.lib.vt.edu, orbit.dtu.dk, link.springer.com, arxiv.org). If one of them states a minimum of Theorem 1, Proposition 1 or 2, or the √3/2 bound, cite it and narrow the Discussion sentence "We have not found … in the literature". If Krishnamurthy and Stremler observe the path-length bound (> 2) numerically, say that Corollary 1 proves it.
+1. **Read Demina and Kudryashov (2014) in full, and the free related papers.** It is the one remaining priority risk, for the rings. Krishnamurthy and Stremler (2018) §3.5 is covered by the earlier read of their postprint, which the paper now credits. Confirm its section number against the journal version if a copy turns up; the postprint link on the author's page is now broken. Both are Springer journals, so try a university library login before buying. Aref (2010) has been read and does not anticipate the results; see the table above. An attempt on 2026-09-23 could not reach them because the session's network policy blocks the hosting sites (people.iith.ac.in, vtechworks.lib.vt.edu, orbit.dtu.dk, link.springer.com, arxiv.org). If one of them states a minimum of Theorem 1, Proposition 1 or 2, or the √3/2 bound, cite it and narrow the Discussion sentence "We have not found … in the literature". If Krishnamurthy and Stremler observe the path-length bound (> 2) numerically, say that Corollary 1 proves it. The free papers in the second table above are on arXiv, which only this session's network blocks, so the owner can download them. Start with nlin/0503057, then 2607.16490 and 1706.00731.
 2. **Gotoda's parametrization** was checked against arXiv v1: it is identical. The paper now cites it as [6, Sect. 3], which uses no equation numbers in case the journal numbering differs.
 3. **Endorsement:** start the arXiv submission to get a code, then send [`submission/endorsement-request.md`](submission/endorsement-request.md) to one established physics.flu-dyn author.
-4. **Journal:** most journals take LaTeX or Word, so the Typst source would need a LaTeX transcription at acceptance. Fill in the suggested reviewers in the cover letter.
+4. **Journal:** most journals take LaTeX or Word. The LaTeX version above is ready. Journals use their own class file, so a journal submission changes only the preamble. Fill in the suggested reviewers in the cover letter.
 
 ## Not claimed
 

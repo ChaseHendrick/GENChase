@@ -114,6 +114,20 @@ The owner provided the arXiv PDF; it is not committed.
 - **Verdict.** No minimization of the product; DOES NOT KILL.
 - **Paper edits.** The paper now cites [6, Sect. 3] for the parametrization and the normalization, and adds the arXiv number to the reference.
 
+### J. Second attempt at the two open papers, and later papers (same day, later)
+
+The aim was to learn what Krishnamurthy–Stremler 2018 §3.5 and Demina–Kudryashov 2014 contain without a copy of either.
+
+- **Hosts.** Every scholarly host and metadata API tried was blocked: arxiv.org, export.arxiv.org, OpenAlex, Crossref, Semantic Scholar, Unpaywall, OpenCitations, zbMATH, Europe PMC, scholar.archive.org, APS, AIP and MDPI. The Hugging Face paper index has none of the relevant arXiv ids.
+- **Search summaries.** They repeat the two abstracts and nothing from §3.5 or from the double-ring section. Do not take a search summary as a reading.
+- **Krishnamurthy–Stremler is already read.** The 2026-09-20 entries below record a full download of their postprint (21 pages). `identities/NOVELTY-AUDIT.md` item 4 gives §3.5, eqs. (3.26)–(3.29): the normalized path length is √(1 + 4P²), and they observe numerically that it exceeds 2, with no sharp bound. The paper now credits that observation [10, Sect. 3.5], and Corollary 1 proves it. Verdict: DOES NOT KILL. Check this ledger before calling a paper unread.
+- **Demina–Kudryashov 2014 is still unread.** It is the only remaining priority risk, for the two-ring minimum.
+- **New to the ledger:**
+  - Borisov and coauthors, RCD 3(4) 1998, "Dynamics of three vortices on a plane and a sphere III: noncompact case, problems of collapse and scattering" (arXiv nlin/0503057). This is prior work on collapse that the paper does not cite, so read it first.
+  - Also found: Krishnamurthy–Aref–Stremler, PRF 3 (2018) 024702 (arXiv:1706.00731); Demina–Kudryashov, RCD 21 (2016) (arXiv:1407.1641); arXiv:2607.16490 (2026, collapse on surfaces); Kudela, J. Nonlinear Sci. (2014) (arXiv:1512.05116 is related); Reinaud–Dritschel–Scott, Physica D 434 (2022); arXiv:2609.25989 (2026).
+  - The companion note lists them with what each might contain.
+- **Status.** Priority is still unconfirmed. The free papers are on arXiv, which only this session blocks, so the owner can fetch them.
+
 ## Do this, do not do that
 
 **Do**

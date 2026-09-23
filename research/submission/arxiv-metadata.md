@@ -2,15 +2,15 @@
 
 Fill the arXiv form with the fields below.
 
-- **File to upload:** the author's private copy of the PDF, which adds a contact email under the affiliation. The copy in `research/artifacts/` is the same paper without the email; the email is deliberately kept out of this public repository.
-  - Upload it as a PDF-only submission. arXiv accepts a PDF that was not produced from TeX.
-  - Typst embeds its fonts as CID fonts, not Type 3.
+- **Files to upload:** the author's private copy, which adds a contact email under the affiliation. The public repository deliberately leaves out the email. Either format works:
+  - **LaTeX source (preferred by arXiv).** Upload the private `.tex` together with `figures/minimal-winding.pdf`, keeping that folder path. It is [`../unequal-mu-n5-floors-2026-09-23.tex`](../unequal-mu-n5-floors-2026-09-23.tex) with the email added. The source is plain `article` with standard packages, and it compiles without warnings in two `pdflatex` runs. arXiv makes the source downloadable. The private copy has no comments, so the source shows nothing that the PDF does not.
+  - **PDF only.** arXiv accepts a PDF that was not produced from TeX. Typst embeds its fonts as CID fonts, not Type 3.
 - **Title:** Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons
 - **Authors:** Chase Hendrick
 - **Primary category:** physics.flu-dyn (Fluid Dynamics)
 - **Cross-lists:** math-ph (Mathematical Physics), math.DS (Dynamical Systems)
 - **MSC class:** 76B47, 37N10
-- **Comments:** 11 pages, 1 figure, 1 table. Verification programs and data: https://github.com/SharpMeow/GENChase/tree/main/research
+- **Comments:** 10 pages, 1 figure, 1 table (the LaTeX build; the Typst PDF is 11 pages). Verification programs and data: https://github.com/SharpMeow/GENChase/tree/main/research
 - **License:** CC BY 4.0 (Creative Commons Attribution 4.0). It is compatible with most journals, including Regular and Chaotic Dynamics.
 - **Report number, journal reference, DOI:** leave blank.
 
