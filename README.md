@@ -1,6 +1,6 @@
 # GENChase
 
-**Gen art, print ready.**
+**Generative art from real simulations you can check and print.**
 
 **[Make art in your browser](https://sharpmeow.github.io/GENChase/start.html)** · **[Download the offline studio](https://github.com/SharpMeow/GENChase/releases/latest/download/GENChase-studio.zip)** · **[Test or contribute](https://sharpmeow.github.io/GENChase/start.html#help)**
 
