@@ -1,0 +1,549 @@
+{
+  "scope": "Actual Float64 2D force-shifted LJ NVE module: multi-seed equilibration of kinetic temperature and energy per particle with block-averaged uncertainty, short-time ballistic MSD against an independent force-free Float64 free-flight reference, late-time MSD/(4t) diffusion proxy, N=64 vs N=144 finite-size and dt=.002 vs .001 timestep controls. No EOS, melting, phase coexistence or experimental transport claim.",
+  "sourceSha256": "b0152563304cd2f85948d12def42b459c6f110f8730f0f55b86a45dd145f814a",
+  "command": "node tools/molecular-equilibration-science.js",
+  "domain": {
+    "density": 0.4,
+    "initialTemperature": 0.8,
+    "nPrimary": 64,
+    "nFiniteSize": 144,
+    "dt": 0.002,
+    "dtFine": 0.001,
+    "eqSteps": 1500,
+    "prodSteps": 3000,
+    "sampleStride": 5,
+    "msdTimes": [
+      0.02,
+      0.05,
+      0.2,
+      1,
+      5
+    ],
+    "independentSeeds": 8,
+    "precision": "Float64Array positions/velocities/forces; independent free-flight reference in Float64"
+  },
+  "primary": {
+    "runs": [
+      {
+        "seed": "molecular-eq/eq-a",
+        "temperature": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 1.234849535420637,
+          "stderr": 0.0065920546555017666,
+          "naiveStderr": 0.0025328077027706557
+        },
+        "energyPerParticle": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 0.3989007300213362,
+          "stderr": 0.0000013191381552096201,
+          "naiveStderr": 0.0000013333033861238638
+        },
+        "diffusionProxy": 0.4150498594078124,
+        "ballisticRelativeError": 0.010230783790183785,
+        "peakRelativeEnergyDrift": 0.0001530429580801038,
+        "msd": {
+          "1": {
+            "unwrapped": 1.1868484338898915,
+            "rawWrappedCoordinates": 12.551845517722652,
+            "freeFlightReference": 2.4296326183384074
+          },
+          "5": {
+            "unwrapped": 8.300997188156249,
+            "rawWrappedCoordinates": 29.668408249146392,
+            "freeFlightReference": 60.740815458460155
+          },
+          "0.02": {
+            "unwrapped": 0.0009619102289322432,
+            "rawWrappedCoordinates": 2.4836028969507784,
+            "freeFlightReference": 0.0009718530473353626
+          },
+          "0.05": {
+            "unwrapped": 0.005879643066854932,
+            "rawWrappedCoordinates": 4.930553225340743,
+            "freeFlightReference": 0.006074081545846015
+          },
+          "0.2": {
+            "unwrapped": 0.08510589964629778,
+            "rawWrappedCoordinates": 7.322555400976487,
+            "freeFlightReference": 0.09718530473353625
+          }
+        },
+        "rawWrappedRelativeError": 2.5740776170213477
+      },
+      {
+        "seed": "molecular-eq/eq-b",
+        "temperature": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 1.2393621424983243,
+          "stderr": 0.011141671869411424,
+          "naiveStderr": 0.0022470628785772966
+        },
+        "energyPerParticle": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 0.3988041893717357,
+          "stderr": 0.0000027108826899566203,
+          "naiveStderr": 0.000001319593720897321
+        },
+        "diffusionProxy": 0.5283205934211708,
+        "ballisticRelativeError": 0.012630199705800529,
+        "peakRelativeEnergyDrift": 0.00011331399703794528,
+        "msd": {
+          "1": {
+            "unwrapped": 0.8470658709777321,
+            "rawWrappedCoordinates": 13.509272618877292,
+            "freeFlightReference": 2.209819140636892
+          },
+          "5": {
+            "unwrapped": 10.566411868423415,
+            "rawWrappedCoordinates": 44.89092860059021,
+            "freeFlightReference": 55.245478515922294
+          },
+          "0.02": {
+            "unwrapped": 0.0008727634734307787,
+            "rawWrappedCoordinates": 0.0008727634734307787,
+            "freeFlightReference": 0.0008839276562547564
+          },
+          "0.05": {
+            "unwrapped": 0.005423450662200564,
+            "rawWrappedCoordinates": 0.005423450662200564,
+            "freeFlightReference": 0.005524547851592226
+          },
+          "0.2": {
+            "unwrapped": 0.07775561262665831,
+            "rawWrappedCoordinates": 2.547017362870826,
+            "freeFlightReference": 0.08839276562547561
+          }
+        },
+        "rawWrappedRelativeError": 3.2484553091046844
+      },
+      {
+        "seed": "molecular-eq/eq-c",
+        "temperature": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 1.2528568378272447,
+          "stderr": 0.01323453254721168,
+          "naiveStderr": 0.002804532780836881
+        },
+        "energyPerParticle": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 0.39876778211957076,
+          "stderr": 0.000001854252057235544,
+          "naiveStderr": 0.000001318691105426802
+        },
+        "diffusionProxy": 0.3661956081225434,
+        "ballisticRelativeError": 0.01410899313982153,
+        "peakRelativeEnergyDrift": 0.00019550690955376422,
+        "msd": {
+          "1": {
+            "unwrapped": 1.2464442421603452,
+            "rawWrappedCoordinates": 16.285952673433307,
+            "freeFlightReference": 2.5598102155835614
+          },
+          "5": {
+            "unwrapped": 7.323912162450869,
+            "rawWrappedCoordinates": 35.02184383638121,
+            "freeFlightReference": 63.995255389589005
+          },
+          "0.02": {
+            "unwrapped": 0.0010094775483250587,
+            "rawWrappedCoordinates": 0.0010094775483250587,
+            "freeFlightReference": 0.001023924086233424
+          },
+          "0.05": {
+            "unwrapped": 0.006115292661363328,
+            "rawWrappedCoordinates": 0.006115292661363328,
+            "freeFlightReference": 0.0063995255389589015
+          },
+          "0.2": {
+            "unwrapped": 0.09156537471804682,
+            "rawWrappedCoordinates": 7.175978598745999,
+            "freeFlightReference": 0.10239240862334242
+          }
+        },
+        "rawWrappedRelativeError": 3.781849243896656
+      },
+      {
+        "seed": "molecular-eq/eq-d",
+        "temperature": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 1.2767615515902369,
+          "stderr": 0.004968352014537511,
+          "naiveStderr": 0.00217620980409239
+        },
+        "energyPerParticle": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 0.3987506365176102,
+          "stderr": 0.00000170793835400369,
+          "naiveStderr": 0.0000012560953452440061
+        },
+        "diffusionProxy": 0.43157028440280926,
+        "ballisticRelativeError": 0.025614240563519883,
+        "peakRelativeEnergyDrift": 0.00014043152422586888,
+        "msd": {
+          "1": {
+            "unwrapped": 1.144791754169989,
+            "rawWrappedCoordinates": 15.199554646854667,
+            "freeFlightReference": 2.5378453570345805
+          },
+          "5": {
+            "unwrapped": 8.631405688056185,
+            "rawWrappedCoordinates": 30.796837971441455,
+            "freeFlightReference": 63.44613392586453
+          },
+          "0.02": {
+            "unwrapped": 0.0009891361502185943,
+            "rawWrappedCoordinates": 0.0009891361502185943,
+            "freeFlightReference": 0.0010151381428138327
+          },
+          "0.05": {
+            "unwrapped": 0.00576416056829361,
+            "rawWrappedCoordinates": 0.00576416056829361,
+            "freeFlightReference": 0.006344613392586452
+          },
+          "0.2": {
+            "unwrapped": 0.0860911284417114,
+            "rawWrappedCoordinates": 0.0860911284417114,
+            "freeFlightReference": 0.10151381428138323
+          }
+        },
+        "rawWrappedRelativeError": 2.5679979697926796
+      },
+      {
+        "seed": "molecular-eq/eq-e",
+        "temperature": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 1.1930561675747828,
+          "stderr": 0.020685729909046397,
+          "naiveStderr": 0.0028081012384070366
+        },
+        "energyPerParticle": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 0.3984609556451295,
+          "stderr": 0.000002233126835493944,
+          "naiveStderr": 0.000001239608800698659
+        },
+        "diffusionProxy": 0.3811882384413471,
+        "ballisticRelativeError": 0.002643874121430552,
+        "peakRelativeEnergyDrift": 0.0001391366570235939,
+        "msd": {
+          "1": {
+            "unwrapped": 1.125544309180096,
+            "rawWrappedCoordinates": 9.581495196547687,
+            "freeFlightReference": 2.5485109003495365
+          },
+          "5": {
+            "unwrapped": 7.623764768826942,
+            "rawWrappedCoordinates": 31.299692055733143,
+            "freeFlightReference": 63.71277250873839
+          },
+          "0.02": {
+            "unwrapped": 0.0010220995369468616,
+            "rawWrappedCoordinates": 2.4881924109324847,
+            "freeFlightReference": 0.0010194043601398145
+          },
+          "0.05": {
+            "unwrapped": 0.006317137232199318,
+            "rawWrappedCoordinates": 2.474417324618516,
+            "freeFlightReference": 0.006371277250873842
+          },
+          "0.2": {
+            "unwrapped": 0.08245453291906177,
+            "rawWrappedCoordinates": 2.4639073810293466,
+            "freeFlightReference": 0.10194043601398148
+          }
+        },
+        "rawWrappedRelativeError": 3.1055427344394815
+      },
+      {
+        "seed": "molecular-eq/eq-f",
+        "temperature": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 1.246596209188764,
+          "stderr": 0.010197731052877268,
+          "naiveStderr": 0.0023156027527303107
+        },
+        "energyPerParticle": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 0.3989573449985019,
+          "stderr": 0.000001368723178874785,
+          "naiveStderr": 0.0000012833054036868006
+        },
+        "diffusionProxy": 0.4924509286203043,
+        "ballisticRelativeError": 0.008432089841107137,
+        "peakRelativeEnergyDrift": 0.0001818786317375735,
+        "msd": {
+          "1": {
+            "unwrapped": 1.4504318573504813,
+            "rawWrappedCoordinates": 11.043495781627358,
+            "freeFlightReference": 2.6583338279941233
+          },
+          "5": {
+            "unwrapped": 9.849018572406086,
+            "rawWrappedCoordinates": 31.296044133021265,
+            "freeFlightReference": 66.45834569985308
+          },
+          "0.02": {
+            "unwrapped": 0.001054367407331529,
+            "rawWrappedCoordinates": 2.48733933332072,
+            "freeFlightReference": 0.0010633335311976493
+          },
+          "0.05": {
+            "unwrapped": 0.006412624619621424,
+            "rawWrappedCoordinates": 2.472413988962504,
+            "freeFlightReference": 0.0066458345699853105
+          },
+          "0.2": {
+            "unwrapped": 0.08969226351013845,
+            "rawWrappedCoordinates": 7.257001073017673,
+            "freeFlightReference": 0.10633335311976497
+          }
+        },
+        "rawWrappedRelativeError": 2.1775799693081233
+      },
+      {
+        "seed": "molecular-eq/eq-g",
+        "temperature": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 1.249649847595715,
+          "stderr": 0.005888932785486924,
+          "naiveStderr": 0.001959774835168553
+        },
+        "energyPerParticle": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 0.3984893672178982,
+          "stderr": 0.0000014114990288200757,
+          "naiveStderr": 0.0000012145030361227226
+        },
+        "diffusionProxy": 0.36686140704962267,
+        "ballisticRelativeError": 0.006691052760461368,
+        "peakRelativeEnergyDrift": 0.00015865733644151178,
+        "msd": {
+          "1": {
+            "unwrapped": 1.2521525747933975,
+            "rawWrappedCoordinates": 14.0943112857515,
+            "freeFlightReference": 2.2953648796238357
+          },
+          "5": {
+            "unwrapped": 7.337228140992453,
+            "rawWrappedCoordinates": 32.66410547220864,
+            "freeFlightReference": 57.38412199059589
+          },
+          "0.02": {
+            "unwrapped": 0.0009242893148551637,
+            "rawWrappedCoordinates": 0.0009242893148551637,
+            "freeFlightReference": 0.0009181459518495344
+          },
+          "0.05": {
+            "unwrapped": 0.005776088318070542,
+            "rawWrappedCoordinates": 2.4844019410376266,
+            "freeFlightReference": 0.005738412199059589
+          },
+          "0.2": {
+            "unwrapped": 0.08076432497421764,
+            "rawWrappedCoordinates": 2.501408280756817,
+            "freeFlightReference": 0.09181459518495343
+          }
+        },
+        "rawWrappedRelativeError": 3.451831787772434
+      },
+      {
+        "seed": "molecular-eq/eq-h",
+        "temperature": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 1.2219489567098827,
+          "stderr": 0.011249144784961036,
+          "naiveStderr": 0.0028745541207854295
+        },
+        "energyPerParticle": {
+          "blockSize": 128,
+          "blocks": 4,
+          "mean": 0.39897411159543195,
+          "stderr": 0.0000013646930314878049,
+          "naiveStderr": 0.0000012696873696514307
+        },
+        "diffusionProxy": 0.35861217461227424,
+        "ballisticRelativeError": 0.0013789475878676284,
+        "peakRelativeEnergyDrift": 0.0001513418599551726,
+        "msd": {
+          "1": {
+            "unwrapped": 0.9058549597444749,
+            "rawWrappedCoordinates": 9.278277276810128,
+            "freeFlightReference": 2.6058544134162807
+          },
+          "5": {
+            "unwrapped": 7.172243492245485,
+            "rawWrappedCoordinates": 35.11690968468741,
+            "freeFlightReference": 65.14636033540702
+          },
+          "0.02": {
+            "unwrapped": 0.0010437791000295984,
+            "rawWrappedCoordinates": 0.0010437791000295984,
+            "freeFlightReference": 0.0010423417653665126
+          },
+          "0.05": {
+            "unwrapped": 0.006403634125876356,
+            "rawWrappedCoordinates": 0.006403634125876356,
+            "freeFlightReference": 0.006514636033540705
+          },
+          "0.2": {
+            "unwrapped": 0.07703954339260287,
+            "rawWrappedCoordinates": 0.07703954339260287,
+            "freeFlightReference": 0.10423417653665128
+          }
+        },
+        "rawWrappedRelativeError": 3.8962238555697737
+      }
+    ],
+    "temperature": {
+      "values": [
+        1.234849535420637,
+        1.2393621424983243,
+        1.2528568378272447,
+        1.2767615515902369,
+        1.1930561675747828,
+        1.246596209188764,
+        1.249649847595715,
+        1.2219489567098827
+      ],
+      "mean": 1.2393851560506983,
+      "stderrAcrossSeeds": 0.008667275212450925,
+      "nSeeds": 8
+    },
+    "energyPerParticle": {
+      "values": [
+        0.3989007300213362,
+        0.3988041893717357,
+        0.39876778211957076,
+        0.3987506365176102,
+        0.3984609556451295,
+        0.3989573449985019,
+        0.3984893672178982,
+        0.39897411159543195
+      ],
+      "mean": 0.39876313968590177,
+      "stderrAcrossSeeds": 0.00006934456762466005,
+      "nSeeds": 8
+    },
+    "diffusionProxy": {
+      "values": [
+        0.4150498594078124,
+        0.5283205934211708,
+        0.3661956081225434,
+        0.43157028440280926,
+        0.3811882384413471,
+        0.4924509286203043,
+        0.36686140704962267,
+        0.35861217461227424
+      ],
+      "mean": 0.4175311367597356,
+      "stderrAcrossSeeds": 0.022394810340981876,
+      "nSeeds": 8
+    },
+    "ballisticRelativeError": {
+      "values": [
+        0.010230783790183785,
+        0.012630199705800529,
+        0.01410899313982153,
+        0.025614240563519883,
+        0.002643874121430552,
+        0.008432089841107137,
+        0.006691052760461368,
+        0.0013789475878676284
+      ],
+      "mean": 0.01021627268877405,
+      "stderrAcrossSeeds": 0.00270293478191497,
+      "nSeeds": 8
+    },
+    "meanBlockOverNaiveSE": 4.1564533337541345
+  },
+  "finiteSize": {
+    "n": 144,
+    "seeds": 4,
+    "temperature": {
+      "values": [
+        1.231252966224032,
+        1.2455253092758838,
+        1.2278023349885325,
+        1.234110999454066
+      ],
+      "mean": 1.2346729024856287,
+      "stderrAcrossSeeds": 0.0038404766405963314,
+      "nSeeds": 4
+    },
+    "energyPerParticle": {
+      "values": [
+        0.405962431918934,
+        0.4066355885473539,
+        0.40656543955391494,
+        0.40591035684858556
+      ],
+      "mean": 0.4062684542171971,
+      "stderrAcrossSeeds": 0.00019254247995481718,
+      "nSeeds": 4
+    },
+    "temperatureDifference": 0.004712253565069657,
+    "temperatureCombinedStderr": 0.009480027449081165,
+    "energyDifference": 0.007505314531295326,
+    "energyCombinedStderr": 0.00020464915256653818
+  },
+  "timestep": {
+    "dt": 0.001,
+    "seeds": 4,
+    "temperature": {
+      "values": [
+        1.219118537967617,
+        1.2531307040959179,
+        1.2671664536595542,
+        1.2415171835865009
+      ],
+      "mean": 1.2452332198273974,
+      "stderrAcrossSeeds": 0.010162113207435384,
+      "nSeeds": 4
+    },
+    "energyPerParticle": {
+      "values": [
+        0.3991677179461025,
+        0.39916530411667606,
+        0.39892712463392677,
+        0.39903246899172967
+      ],
+      "mean": 0.3990731539221088,
+      "stderrAcrossSeeds": 0.00005803291419500056,
+      "nSeeds": 4
+    },
+    "temperatureDifference": 0.005848063776699108,
+    "temperatureCombinedStderr": 0.013356279588609205,
+    "energyDifference": 0.0003100142362070235,
+    "energyCombinedStderr": 0.00009042393592968263
+  },
+  "failureControls": {
+    "rawWrappedMsdRelativeErrorMean": 3.1004448108631477,
+    "wrongTemperatureDivisorError": 0.018653329526112206,
+    "transientMeanTemperature": 0.9116703504004384,
+    "transientVersusEquilibratedGap": 0.3277148056502599,
+    "moduleMatchesIndependentDoF": true
+  },
+  "limitations": [
+    "Bounded fluid-density NVE fixtures only; not an equation of state, melting point, or phase diagram.",
+    "Diffusion proxy is MSD/(4t) at a single late time, not a plateaued Green–Kubo integral or continuum experimental D.",
+    "Finite-size and timestep comparisons use four seeds each; residual shifts within a few combined standard errors are reported, not eliminated.",
+    "No thermostat: kinetic temperature is an NVE observable, not a canonical control parameter."
+  ],
+  "elapsedSeconds": 4.461876665,
+  "pass": true
+}

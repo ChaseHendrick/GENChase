@@ -20,6 +20,14 @@ perturbation produces an error above 0.026 and is rejected. The periodic solutio
 is classical, described by [Chenciner and Montgomery](https://arxiv.org/abs/math/0011268).
 This does not establish long-time accuracy for arbitrary or chaotic trajectories.
 
+## Print-state preservation
+
+`node tools/eight-print-state.js --write` records paused exportPNG and exportSVG
+checks for five fixtures in [results/eight-print-state.json](results/eight-print-state.json).
+Export does not alter the Float64 trajectory, diagnostics or settings at the requested
+dimensions. That is state preservation only; it does not add printed numerical resolution
+or long-time orbit accuracy.
+
 ## Schwarzschild photons
 
 For mass parameter M = 1, the module's searched capture threshold agrees with
@@ -36,4 +44,11 @@ coefficient from 3 to 3.3 shifts the capture threshold by more than 0.51 and fai
 
 The launch radius is finite (280), and integration has a cutoff. Deflection values
 are saved for inspection but are not certified by these tests. Near-critical
-whirling, all controls, rendering and exported plates remain outside this audit.
+whirling, all controls and printed numerical resolution remain outside the
+numerical audit.
+
+`node tools/photon-print-state.js --write` records exportPNG state preservation for
+four fixtures in [results/photon-print-state.json](results/photon-print-state.json).
+That check confirms export does not alter the Float32 field/mask, capture diagnostics
+or settings at the requested dimensions; it does not add printed numerical resolution
+or geodesic accuracy.

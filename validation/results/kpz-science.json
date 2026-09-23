@@ -1,0 +1,192 @@
+{
+  "sourceSha256": "30b2393368ab389e0e5fabc4e17215de292e0dbfb945dc92b3b04d2aab57fb19",
+  "pass": true,
+  "elapsedMs": 503,
+  "protocol": {
+    "L": 512,
+    "layers": 80,
+    "seedsPerClass": 5,
+    "seedPrefix": "kpz-science-2026",
+    "fitWindow": {
+      "tMin": 4,
+      "wMin": 0.4,
+      "wMaxFracL": 0.06,
+      "note": "Matches production kpz.js status-line filter."
+    },
+    "measureSchedule": "log-spaced: nextMeasure starts at 4L, multiplies by 1.25"
+  },
+  "classes": {
+    "random": {
+      "theoryBeta": 0.5,
+      "band": [
+        0.42,
+        0.58
+      ],
+      "name": "random deposition (RD)",
+      "meanBeta": 0.50695959312601,
+      "stdBeta": 0.011778687032128662,
+      "betas": [
+        0.5075615012504919,
+        0.5105077208597029,
+        0.49843988106133946,
+        0.4918440944050867,
+        0.5264447680534294
+      ],
+      "inBand": true
+    },
+    "relax": {
+      "theoryBeta": 0.25,
+      "band": [
+        0.12,
+        0.38
+      ],
+      "name": "surface relaxation (EW)",
+      "meanBeta": 0.22765795123399327,
+      "stdBeta": 0.04761871538027557,
+      "betas": [
+        0.18409429869072522,
+        0.2176159212285559,
+        0.27786279613005405,
+        0.28772260047325954,
+        0.1709941396473716
+      ],
+      "inBand": true
+    },
+    "rsos": {
+      "theoryBeta": 0.3333333333333333,
+      "band": [
+        0.22,
+        0.45
+      ],
+      "name": "restricted solid-on-solid (KPZ)",
+      "meanBeta": 0.2907949855685815,
+      "stdBeta": 0.041841332309915644,
+      "betas": [
+        0.3168373029023513,
+        0.21465155261031066,
+        0.285992811682149,
+        0.33757555035291015,
+        0.29891771029518627
+      ],
+      "inBand": true
+    },
+    "ballistic": {
+      "theoryBeta": 0.3333333333333333,
+      "band": [
+        0.18,
+        0.42
+      ],
+      "name": "ballistic deposition (KPZ, crossover)",
+      "meanBeta": 0.28374489489918664,
+      "stdBeta": 0.02808858257018822,
+      "betas": [
+        0.2834909339582369,
+        0.23422610208840425,
+        0.3030842528494272,
+        0.3170662946820683,
+        0.2808568909177964
+      ],
+      "inBand": true,
+      "note": "Reported for completeness; RSOS is the KPZ gate (faster crossover)."
+    }
+  },
+  "failureControl": {
+    "randomClaimedAsKpz": {
+      "landsInKpzBand": false,
+      "mustFail": true,
+      "passed": true
+    },
+    "brokenBallisticSticking": {
+      "meanBeta": 0.5002517238282429,
+      "stdBeta": 0.011760485719045477,
+      "betas": [
+        0.5007908353091677,
+        0.4795501617643325,
+        0.4981722937969246,
+        0.513720551779527,
+        0.509024776491263
+      ],
+      "landsInKpzBand": false,
+      "landsInRdBand": true,
+      "mustMissKpzBand": true,
+      "passed": true
+    },
+    "brokenRelaxation": {
+      "meanBeta": 0.501912904802514,
+      "stdBeta": 0.009843835254684966,
+      "betas": [
+        0.5033092788720296,
+        0.5186555841195282,
+        0.49161055860585123,
+        0.5037126349952997,
+        0.49227646741986125
+      ],
+      "landsInEwBand": false,
+      "landsInRdBand": true,
+      "mustMissEwBand": true,
+      "passed": true
+    }
+  },
+  "familyVicsekAlpha": {
+    "theory": 0.5,
+    "band": [
+      0.2,
+      0.95
+    ],
+    "rdMax": 0.25,
+    "relax": {
+      "Ls": [
+        24,
+        48,
+        96
+      ],
+      "layers": 2500,
+      "seeds": 6,
+      "Wsat": [
+        0.9009936095524483,
+        1.4032025169407485,
+        2.4148479781424506
+      ],
+      "alpha": 0.7111717956732839
+    },
+    "rsos": {
+      "Ls": [
+        24,
+        48,
+        96
+      ],
+      "layers": 2500,
+      "seeds": 6,
+      "Wsat": [
+        1.0380671031875754,
+        1.6743049582171008,
+        2.4550797376442506
+      ],
+      "alpha": 0.6209350880180023
+    },
+    "random": {
+      "Ls": [
+        24,
+        48,
+        96
+      ],
+      "layers": 2500,
+      "seeds": 6,
+      "Wsat": [
+        44.52826497309448,
+        50.11149119501247,
+        51.151050196477826
+      ],
+      "alpha": 0.10002123091821717
+    },
+    "note": "Coarse small-L saturation probe only; not a precision α=1/2 claim."
+  },
+  "limitations": [
+    "Finite L=512 and one growth window; KPZ ballistic deposition has a known slow crossover (fits often sit under 1/3).",
+    "Single-realization noise averaged over only 5 seeds per class; no block-bootstrap uncertainty certification.",
+    "Eden radial geometry is separate and not measured here; no Tracy–Widom edge statistics or liquid-crystal experiment claim.",
+    "Float64 CPU twin of column kernels; production Int32Array heights agree in integer arithmetic but this is not a browser UI replay.",
+    "Family–Vicsek α uses wide bands at small L; undersaturation and noise remain.",
+    "No print-state accuracy audit is registered."
+  ]
+}

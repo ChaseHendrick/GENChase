@@ -74,16 +74,32 @@ free-slip wall error decreases from 0.001302 to 0.0003203 to 0.00007955. Conduct
 and vorticity were unchanged in the tested float32 fixtures. The manufactured Poisson maximum
 error was 3.055e-7; buoyancy error was below 1e-9.
 
-These are component tests. The scalar-diffusion refinement isolates the diffusion substep; its
+The table above is component tests. The scalar-diffusion refinement isolates the diffusion substep; its
 nonzero vorticity is not evolved as a complete coupled Boussinesq solution. The physical box
 and final time remain fixed as resolution changes. Test grids with a wall-inclusive odd row count
-are numerical fixtures, not additional UI grid presets.
+are numerical fixtures, not additional UI grid presets. A separate coupled study is recorded below.
+
+## Coupled spatial/time convergence
+
+Run `node tools/convection-coupled-science.js`. Results are in
+[results/convection-coupled-science.json](results/convection-coupled-science.json).
+
+On a fixed free-slip box of aspect ratio Γ=2, Pr=1 and Ra=100 (well below free-slip onset), a small
+`sin(π y) cos(π x)` temperature seed with zero vorticity is evolved with the full production chain
+`solvePsi → CONV_ADV_FS → CONV_DIFF_FS` to a common final time. A Float64 CPU twin of the same discrete
+operators is the independent discrete reference; continuum free-fall linear rates for that mode provide
+the spatial continuum comparison. Temporal orders use self-convergence against a fine-dt Float64 twin
+at fixed H=65. Deliberate controls negate buoyancy, halt at half the final time, and shrink the physical
+width while refining H so a false fixed-domain study cannot look second-order.
+
+This covers below-onset free-slip coupled decay only. It uses 24 SOR sweeps per step and does not
+certify the default four, onset thresholds, no-slip plates, high Rayleigh number or turbulent Nu.
 
 ## Limits and reproduction impact
 
-The module remains only partially validated. Full coupled spatial/time convergence, onset and
-aspect-ratio effects, sufficient Poisson iteration counts, no-slip boundary accuracy, high-Rayleigh
-resolution, half precision, interpolation damping, and full scientific print fidelity remain outstanding.
+The module remains only partially validated. Onset and aspect-ratio effects, sufficient Poisson
+iteration counts for the production default, no-slip boundary accuracy, high-Rayleigh resolution,
+half precision, interpolation damping, and full scientific print fidelity remain outstanding.
 Velocity used by the live transport estimate comes from the preceding streamfunction solve;
 its temporal error also needs review. No agreement with experimental turbulent heat transport
 is claimed. An exploratory diffusion refinement at a smaller timestep reached the float32

@@ -1,0 +1,610 @@
+{
+  "format": "genchase-maxwell-dielectric-science-v1",
+  "command": "node tools/maxwell-dielectric-science.js",
+  "sourceSha256": "17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c",
+  "harnessSha256": "72e25a34dca849586635265e76e577d4a904efd9b75be19cc4e75ca60b75bb1b",
+  "pass": true,
+  "backend": {
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.33 Safari/537.36",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+  },
+  "scope": "Periodic lossless TMz Yee float32 shaders with a vertical discontinuous dielectric interface. Normal-incidence Gaussian packets measured against continuum Fresnel Ez coefficients and an independent Float64 Yee twin; fixed-time discontinuous field refinement versus a fine Float64 reference.",
+  "domain": {
+    "parameters": "eps1=1 with eps2 in {2.25,4}, mu=1, cycles=8, sigma=0.04, interface at x=0.5, y-invariant H=8 strips",
+    "conditions": "Periodic unit-width domain; one-way rightward packet initialized with matching Hy; no PML/losses/dispersion",
+    "resolution": "RT grids 128/192/256/384/512; twin checks 64/128/256; field refinement 128 and 256 vs Float64 512",
+    "precision": "GPU float32 shaders; independent Float64 CPU Yee and continuum Fresnel references"
+  },
+  "failureControls": {
+    "zeroContrast": {
+      "cells": [
+        256,
+        8
+      ],
+      "analyticGamma": -0.3333333333333333,
+      "measuredR": 1.5887336093023679e-7,
+      "absErrorVsFresnel": 0.3333334922066942,
+      "rejected": true
+    },
+    "ignoreEpsilonFresnelErrors": {
+      "R": 0.3333334922066942,
+      "T": -0.14482715312258698,
+      "absR": 0.3333334922066942,
+      "absT": 0.14482715312258698
+    },
+    "ignoreEpsilonRejected": true
+  },
+  "float64Twins": [
+    {
+      "cells": [
+        64,
+        8
+      ],
+      "eps": [
+        1,
+        4
+      ],
+      "mu": 1,
+      "dt": 0.005524271728019902,
+      "steps": 80,
+      "error": {
+        "max": 2.995016067375289e-7,
+        "rms": 6.057347984909073e-8
+      }
+    },
+    {
+      "cells": [
+        128,
+        8
+      ],
+      "eps": [
+        1,
+        4
+      ],
+      "mu": 1,
+      "dt": 0.002762135864009951,
+      "steps": 80,
+      "error": {
+        "max": 4.4896318840415006e-7,
+        "rms": 5.096952414737986e-8
+      }
+    },
+    {
+      "cells": [
+        256,
+        8
+      ],
+      "eps": [
+        1,
+        4
+      ],
+      "mu": 1,
+      "dt": 0.0013810679320049755,
+      "steps": 80,
+      "error": {
+        "max": 2.3673008753277713e-7,
+        "rms": 3.516675864575157e-8
+      }
+    }
+  ],
+  "fresnel": [
+    {
+      "material": {
+        "eps1": 1,
+        "eps2": 4
+      },
+      "refinement": [
+        {
+          "cells": [
+            128,
+            8
+          ],
+          "eps1": 1,
+          "eps2": 4,
+          "analytic": {
+            "Gamma": -0.3333333333333333,
+            "T": 0.6666666666666666,
+            "n1": 1,
+            "n2": 2
+          },
+          "gpu": {
+            "R": -0.3655122377982722,
+            "T": 0.5324401048979668,
+            "incidentPeak": 1.0005592107772827,
+            "reflectedPeak": -0.3657166361808777,
+            "transmittedPeak": 0.5327378511428833,
+            "incidentAt": 0.12153397801643787,
+            "reflectedAt": 0.44663736921040914,
+            "transmittedAt": 0.6988203735945177
+          },
+          "float64": {
+            "R": -0.36551237338870896,
+            "T": 0.5324400781928887,
+            "incidentPeak": 1.0005591996168712,
+            "reflectedPeak": -0.3657167677678696,
+            "transmittedPeak": 0.5327378184806211,
+            "incidentAt": 0.12153397801643787,
+            "reflectedAt": 0.44663736921040914,
+            "transmittedAt": 0.6988203735945177
+          },
+          "errors": {
+            "R": -0.03217890446493887,
+            "T": -0.13422656176869985,
+            "absR": 0.03217890446493887,
+            "absT": 0.13422656176869985
+          },
+          "powerIdentity": 0.7005841265878164,
+          "powerIdentityError": -0.29941587341218356,
+          "gpuFloat64CoefficientDelta": {
+            "R": 1.3559043676725224e-7,
+            "T": 2.670507803781419e-8
+          },
+          "dt": 0.0030383494504109465
+        },
+        {
+          "cells": [
+            192,
+            8
+          ],
+          "eps1": 1,
+          "eps2": 4,
+          "analytic": {
+            "Gamma": -0.3333333333333333,
+            "T": 0.6666666666666666,
+            "n1": 1,
+            "n2": 2
+          },
+          "gpu": {
+            "R": -0.34766508950614344,
+            "T": 0.6292482651631414,
+            "incidentPeak": 1.0004901885986328,
+            "reflectedPeak": -0.347835510969162,
+            "transmittedPeak": 0.6295567154884338,
+            "incidentAt": 0.12153397801643784,
+            "reflectedAt": 0.44157345345972415,
+            "transmittedAt": 0.6907181083934217
+          },
+          "float64": {
+            "R": -0.3476650529113743,
+            "T": 0.6292482441068787,
+            "incidentPeak": 1.000490167882438,
+            "reflectedPeak": -0.3478354671541576,
+            "transmittedPeak": 0.6295566813862205,
+            "incidentAt": 0.12153397801643784,
+            "reflectedAt": 0.44157345345972415,
+            "transmittedAt": 0.6907181083934217
+          },
+          "errors": {
+            "R": -0.014331756172810128,
+            "T": -0.03741840150352527,
+            "absR": 0.014331756172810128,
+            "absT": 0.03741840150352527
+          },
+          "powerIdentity": 0.9127777728829609,
+          "powerIdentityError": -0.08722222711703909,
+          "gpuFloat64CoefficientDelta": {
+            "R": 3.659476915940374e-8,
+            "T": 2.1056262622387578e-8
+          },
+          "dt": 0.002025566300273964
+        },
+        {
+          "cells": [
+            256,
+            8
+          ],
+          "eps1": 1,
+          "eps2": 4,
+          "analytic": {
+            "Gamma": -0.3333333333333333,
+            "T": 0.6666666666666666,
+            "n1": 1,
+            "n2": 2
+          },
+          "gpu": {
+            "R": -0.34148065721270343,
+            "T": 0.6563021635531863,
+            "incidentPeak": 0.999782383441925,
+            "reflectedPeak": -0.34140634536743164,
+            "transmittedPeak": 0.6561593413352966,
+            "incidentAt": 0.12153397801643787,
+            "reflectedAt": 0.43904149558438177,
+            "transmittedAt": 0.6881861505180794
+          },
+          "float64": {
+            "R": -0.34148062921328265,
+            "T": 0.6563022237164319,
+            "incidentPeak": 0.9997823851010297,
+            "reflectedPeak": -0.34140631794065607,
+            "transmittedPeak": 0.6561594025743238,
+            "incidentAt": 0.12153397801643787,
+            "reflectedAt": 0.43904149558438177,
+            "transmittedAt": 0.6881861505180794
+          },
+          "errors": {
+            "R": -0.008147323879370116,
+            "T": -0.010364503113480361,
+            "absR": 0.008147323879370116,
+            "absT": 0.010364503113480361
+          },
+          "powerIdentity": 0.9780740990196064,
+          "powerIdentityError": -0.021925900980393598,
+          "gpuFloat64CoefficientDelta": {
+            "R": 2.799942078191009e-8,
+            "T": 6.01632456076473e-8
+          },
+          "dt": 0.0015191747252054732
+        },
+        {
+          "cells": [
+            384,
+            8
+          ],
+          "eps1": 1,
+          "eps2": 4,
+          "analytic": {
+            "Gamma": -0.3333333333333333,
+            "T": 0.6666666666666666,
+            "n1": 1,
+            "n2": 2
+          },
+          "gpu": {
+            "R": -0.33701537633701545,
+            "T": 0.6657293442043503,
+            "incidentPeak": 0.9998095631599426,
+            "reflectedPeak": -0.33695119619369507,
+            "transmittedPeak": 0.6656025648117065,
+            "incidentAt": 0.11950841171616387,
+            "reflectedAt": 0.4405606703095872,
+            "transmittedAt": 0.6816030600421888
+          },
+          "float64": {
+            "R": -0.3370154820849483,
+            "T": 0.6657291244897194,
+            "incidentPeak": 0.9998096404337159,
+            "reflectedPeak": -0.3369513279639476,
+            "transmittedPeak": 0.6656023965823189,
+            "incidentAt": 0.11950841171616387,
+            "reflectedAt": 0.4405606703095872,
+            "transmittedAt": 0.6816030600421888
+          },
+          "errors": {
+            "R": -0.003682043003682134,
+            "T": -0.0009373224623163701,
+            "absR": 0.003682043003682134,
+            "absT": 0.0009373224623163701
+          },
+          "powerIdentity": 0.9999704833570887,
+          "powerIdentityError": -0.000029516642911286972,
+          "gpuFloat64CoefficientDelta": {
+            "R": 1.0574793285478279e-7,
+            "T": 2.1971463082248732e-7
+          },
+          "dt": 0.001012783150136982
+        },
+        {
+          "cells": [
+            512,
+            8
+          ],
+          "eps1": 1,
+          "eps2": 4,
+          "analytic": {
+            "Gamma": -0.3333333333333333,
+            "T": 0.6666666666666666,
+            "n1": 1,
+            "n2": 2
+          },
+          "gpu": {
+            "R": -0.33530152800828006,
+            "T": 0.6667847935110576,
+            "incidentPeak": 1.000080943107605,
+            "reflectedPeak": -0.3353286683559418,
+            "transmittedPeak": 0.6668387651443481,
+            "incidentAt": 0.12077439065383512,
+            "reflectedAt": 0.4398010829469845,
+            "transmittedAt": 0.6821094516172574
+          },
+          "float64": {
+            "R": -0.3353016165605978,
+            "T": 0.6667848611273803,
+            "incidentPeak": 1.000080971406167,
+            "reflectedPeak": -0.3353287664039808,
+            "transmittedPeak": 0.6668388516351966,
+            "incidentAt": 0.12077439065383512,
+            "reflectedAt": 0.4398010829469845,
+            "transmittedAt": 0.6821094516172574
+          },
+          "errors": {
+            "R": -0.001968194674946744,
+            "T": 0.00011812684439094223,
+            "absR": 0.001968194674946744,
+            "absT": 0.00011812684439094223
+          },
+          "powerIdentity": 1.0016310363998548,
+          "powerIdentityError": 0.001631036399854846,
+          "gpuFloat64CoefficientDelta": {
+            "R": 8.855231775628525e-8,
+            "T": 6.76163227630866e-8
+          },
+          "dt": 0.0007595873626027366
+        }
+      ]
+    },
+    {
+      "material": {
+        "eps1": 1,
+        "eps2": 2.25
+      },
+      "refinement": [
+        {
+          "cells": [
+            128,
+            8
+          ],
+          "eps1": 1,
+          "eps2": 2.25,
+          "analytic": {
+            "Gamma": -0.2,
+            "T": 0.8,
+            "n1": 1,
+            "n2": 1.5
+          },
+          "gpu": {
+            "R": -0.2124297758247383,
+            "T": 0.7501876794809764,
+            "incidentPeak": 1.0005592107772827,
+            "reflectedPeak": -0.21254856884479523,
+            "transmittedPeak": 0.7506071925163269,
+            "incidentAt": 0.12153397801643787,
+            "reflectedAt": 0.44663736921040914,
+            "transmittedAt": 0.5894397933797236
+          },
+          "float64": {
+            "R": -0.21242984548295826,
+            "T": 0.7501877032515339,
+            "incidentPeak": 1.0005591996168712,
+            "reflectedPeak": -0.21254863617116435,
+            "transmittedPeak": 0.7506072079277737,
+            "incidentAt": 0.12153397801643787,
+            "reflectedAt": 0.44663736921040914,
+            "transmittedAt": 0.5894397933797236
+          },
+          "errors": {
+            "R": -0.012429775824738282,
+            "T": -0.04981232051902362,
+            "absR": 0.012429775824738282,
+            "absT": 0.04981232051902362
+          },
+          "powerIdentity": 0.8892987413245269,
+          "powerIdentityError": -0.11070125867547309,
+          "gpuFloat64CoefficientDelta": {
+            "R": 6.965821996995913e-8,
+            "T": 2.377055752234014e-8
+          },
+          "dt": 0.0030383494504109465
+        },
+        {
+          "cells": [
+            192,
+            8
+          ],
+          "eps1": 1,
+          "eps2": 2.25,
+          "analytic": {
+            "Gamma": -0.2,
+            "T": 0.8,
+            "n1": 1,
+            "n2": 1.5
+          },
+          "gpu": {
+            "R": -0.20611080198076429,
+            "T": 0.7909503116987103,
+            "incidentPeak": 1.0004901885986328,
+            "reflectedPeak": -0.20621183514595032,
+            "transmittedPeak": 0.7913380265235901,
+            "incidentAt": 0.12153397801643784,
+            "reflectedAt": 0.44157345345972415,
+            "transmittedAt": 0.5853886607791756
+          },
+          "float64": {
+            "R": -0.20611078235705543,
+            "T": 0.7909503528391085,
+            "incidentPeak": 1.000490167882438,
+            "reflectedPeak": -0.20621181124279103,
+            "transmittedPeak": 0.7913380512986733,
+            "incidentAt": 0.12153397801643784,
+            "reflectedAt": 0.44157345345972415,
+            "transmittedAt": 0.5853886607791756
+          },
+          "errors": {
+            "R": -0.006110801980764274,
+            "T": -0.009049688301289716,
+            "absR": 0.006110801980764274,
+            "absT": 0.009049688301289716
+          },
+          "powerIdentity": 0.9808852560575843,
+          "powerIdentityError": -0.019114743942415746,
+          "gpuFloat64CoefficientDelta": {
+            "R": 1.9623708852334332e-8,
+            "T": 4.114039819924642e-8
+          },
+          "dt": 0.002025566300273964
+        },
+        {
+          "cells": [
+            256,
+            8
+          ],
+          "eps1": 1,
+          "eps2": 2.25,
+          "analytic": {
+            "Gamma": -0.2,
+            "T": 0.8,
+            "n1": 1,
+            "n2": 1.5
+          },
+          "gpu": {
+            "R": -0.20358282511797582,
+            "T": 0.7988419873771616,
+            "incidentPeak": 0.999782383441925,
+            "reflectedPeak": -0.20353852212429047,
+            "transmittedPeak": 0.7986681461334229,
+            "incidentAt": 0.12153397801643787,
+            "reflectedAt": 0.43904149558438177,
+            "transmittedAt": 0.5848822692041072
+          },
+          "float64": {
+            "R": -0.20358289645462507,
+            "T": 0.798841983004001,
+            "incidentPeak": 0.9997823851010297,
+            "reflectedPeak": -0.203538593783181,
+            "transmittedPeak": 0.7986681430865763,
+            "incidentAt": 0.12153397801643787,
+            "reflectedAt": 0.43904149558438177,
+            "transmittedAt": 0.5848822692041072
+          },
+          "errors": {
+            "R": -0.0035828251179758075,
+            "T": -0.0011580126228384335,
+            "absR": 0.0035828251179758075,
+            "absT": 0.0011580126228384335
+          },
+          "powerIdentity": 0.9986687478780562,
+          "powerIdentityError": -0.001331252121943849,
+          "gpuFloat64CoefficientDelta": {
+            "R": 7.133664925440542e-8,
+            "T": 4.373160611415017e-9
+          },
+          "dt": 0.0015191747252054732
+        },
+        {
+          "cells": [
+            384,
+            8
+          ],
+          "eps1": 1,
+          "eps2": 2.25,
+          "analytic": {
+            "Gamma": -0.2,
+            "T": 0.8,
+            "n1": 1,
+            "n2": 1.5
+          },
+          "gpu": {
+            "R": -0.20165482384933225,
+            "T": 0.8005565868791985,
+            "incidentPeak": 0.9998095631599426,
+            "reflectedPeak": -0.20161642134189606,
+            "transmittedPeak": 0.8004041314125061,
+            "incidentAt": 0.11950841171616387,
+            "reflectedAt": 0.4405606703095872,
+            "transmittedAt": 0.5803247450284907
+          },
+          "float64": {
+            "R": -0.2016548425316259,
+            "T": 0.8005568419774063,
+            "incidentPeak": 0.9998096404337159,
+            "reflectedPeak": -0.2016164556032625,
+            "transmittedPeak": 0.8004044483241817,
+            "incidentAt": 0.11950841171616387,
+            "reflectedAt": 0.4405606703095872,
+            "transmittedAt": 0.5803247450284907
+          },
+          "errors": {
+            "R": -0.0016548238493322431,
+            "T": 0.0005565868791984618,
+            "absR": 0.0016548238493322431,
+            "absT": 0.0005565868791984618
+          },
+          "powerIdentity": 1.0020009411752129,
+          "powerIdentityError": 0.002000941175212878,
+          "gpuFloat64CoefficientDelta": {
+            "R": 1.868229365653562e-8,
+            "T": 2.550982077798025e-7
+          },
+          "dt": 0.001012783150136982
+        },
+        {
+          "cells": [
+            512,
+            8
+          ],
+          "eps1": 1,
+          "eps2": 2.25,
+          "analytic": {
+            "Gamma": -0.2,
+            "T": 0.8,
+            "n1": 1,
+            "n2": 1.5
+          },
+          "gpu": {
+            "R": -0.20087405818873522,
+            "T": 0.800369387767995,
+            "incidentPeak": 1.000080943107605,
+            "reflectedPeak": -0.20089031755924225,
+            "transmittedPeak": 0.8004341721534729,
+            "incidentAt": 0.12077439065383512,
+            "reflectedAt": 0.4398010829469845,
+            "transmittedAt": 0.5810843323910935
+          },
+          "float64": {
+            "R": -0.20087414220893615,
+            "T": 0.8003692946794954,
+            "incidentPeak": 1.000080971406167,
+            "reflectedPeak": -0.20089040727069338,
+            "transmittedPeak": 0.8004341017067383,
+            "incidentAt": 0.12077439065383512,
+            "reflectedAt": 0.4398010829469845,
+            "transmittedAt": 0.5810843323910935
+          },
+          "errors": {
+            "R": -0.000874058188735205,
+            "T": 0.00036938776799499973,
+            "absR": 0.000874058188735205,
+            "absT": 0.00036938776799499973
+          },
+          "powerIdentity": 1.0012371225673844,
+          "powerIdentityError": 0.0012371225673843966,
+          "gpuFloat64CoefficientDelta": {
+            "R": 8.402020093556395e-8,
+            "T": 9.308849968636679e-8
+          },
+          "dt": 0.0007595873626027366
+        }
+      ]
+    }
+  ],
+  "discontinuousRefinement": [
+    {
+      "cells": [
+        128,
+        8
+      ],
+      "referenceCells": [
+        512,
+        8
+      ],
+      "time": 0.35,
+      "dt": 0.0027559055118110236,
+      "steps": 127,
+      "electricRmsVsFineFloat64": 0.0202975948049724
+    },
+    {
+      "cells": [
+        256,
+        8
+      ],
+      "referenceCells": [
+        512,
+        8
+      ],
+      "time": 0.35,
+      "dt": 0.0013833992094861658,
+      "steps": 253,
+      "electricRmsVsFineFloat64": 0.007026304826646318,
+      "refinementRatio": 2.888800771636963
+    }
+  ],
+  "limitations": "Normal-incidence staircase interfaces only; peak-in-window coefficient extraction before periodic wrap; not oblique incidence, subcell averaging, PML, losses, experimental measurement, or arbitrary long-time certification."
+}

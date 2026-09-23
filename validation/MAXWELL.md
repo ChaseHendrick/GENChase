@@ -4,7 +4,7 @@ The `maxwell` technique solves the classical two-dimensional TMz Maxwell system 
 periodic Yee grid. It is an original implementation of an established method, with no
 claim of new physics or historical originality. Its appropriate scientific status is
 **partially validated**: the tests below cover specific smooth modes, one dielectric
-slab fixture and limited print states.
+slab fixture, normal-incidence Fresnel R/T on a discontinuous interface, and limited print states.
 
 ## Model and stored fields
 
@@ -168,10 +168,39 @@ reports `fieldCells()` to the shell. More print pixels interpolate the same nume
 field; they do not add physical resolution. Intensity means a display mapping of
 `Ez²`, not total electromagnetic energy or a calibrated detector signal.
 
+## Dielectric reflection/transmission and discontinuous-interface refinement
+
+```sh
+node tools/maxwell-dielectric-science.js
+```
+
+Measured results: [maxwell-dielectric-science.json](results/maxwell-dielectric-science.json).
+The harness drives the actual maintained magnetic and electric shader strings on a vertical
+ε jump. Independent references are continuum Fresnel Ez coefficients
+Γ=(n₁−n₂)/(n₁+n₂), T=2n₁/(n₁+n₂) with n=√ε, and a separate JavaScript float64 Yee twin.
+
+| Check | Measured result | Acceptance |
+|---|---:|---:|
+| GPU vs float64 discontinuous twin, 64/128/256×8, 80 steps | Maximum field error $4.49\times10^{-7}$ | $<2\times10^{-5}$ |
+| Normal-incidence Fresnel R/T, ε₂=4, 512×8 | $|R-Γ|=1.97\times10^{-3}$, $|T-T_F|=1.18\times10^{-4}$ | both $<10^{-2}$ |
+| Normal-incidence Fresnel R/T, ε₂=2.25, 512×8 | $|R-Γ|=8.74\times10^{-4}$, $|T-T_F|=3.69\times10^{-4}$ | both $<10^{-2}$ |
+| Power identity $R^2+(n_2/n_1)T^2$ at 512 | errors $1.63\times10^{-3}$ and $1.24\times10^{-3}$ | $|·-1|<0.02$ |
+| Reflection error refinement 128→256→512 (ε₂=4) | decreases at each step | monotone decrease |
+| Discontinuous field RMS vs float64 512, t=0.35 | ratio $128/256 = 2.89$ | $>1.5$ |
+
+Deliberate failures (subtract before add):
+
+- Zero-contrast homogeneous ε₁ packet yields $|R|\approx1.6\times10^{-7}$ against Γ=−1/3, so the Fresnel match is rejected.
+- Electric update that ignores stored ε (uses 1.0) misses Fresnel by $|ΔR|\approx0.333$.
+
+These checks close normal-incidence staircase R/T and discontinuous-interface refinement for
+the stated fixtures. They do not certify oblique incidence, subcell averaging, PML, losses
+or experimental measurement.
+
 ## Remaining work
 
-- Dielectric-interface reflection/transmission coefficients, subcell material treatments,
-  and convergence of discontinuous geometries have not been validated.
+- Oblique-incidence Fresnel coefficients, subcell material treatments, and broader
+  discontinuous geometries remain unvalidated.
 - Only the stated initial states, times, parameters, precision and renderer have evidence.
   Long trajectories, all parameter combinations, devices and high-grid print paths remain open.
 - Independent per-pixel rendering/color comparisons, calibrated measurements and experimental
