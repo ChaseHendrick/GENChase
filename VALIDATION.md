@@ -116,7 +116,7 @@ Complete labels apply only within each record's reviewed domain.
 | [pearls](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
 | [ising](src/modules/lattice.js) | unvalidated | None registered | Not scientifically validated |
 | [thouless](src/modules/thouless.js) | unvalidated | None registered | Not scientifically validated |
-| [convection](src/modules/wavesflow.js) | partially validated | [convection-science.js](tools/convection-science.js) | Limited evidence recorded |
+| [convection](src/modules/wavesflow.js) | partially validated | [convection-science.js](tools/convection-science.js), [convection-coupled-science.js](tools/convection-coupled-science.js) | Limited evidence recorded |
 | [reuleaux](src/modules/reuleaux.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [reuleaux-science.js](tools/reuleaux-science.js) | Limited evidence recorded |
 | [apollonian](src/modules/apollonian.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [geometry-field-review.js](tools/geometry-field-review.js) | Limited evidence recorded |
 | [chladni](src/modules/chladni.js) | partially validated | [material-wave-science.js](tools/material-wave-science.js) | Not scientifically validated |

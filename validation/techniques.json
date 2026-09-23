@@ -2809,6 +2809,16 @@
         "limitations": "Component tests, not complete coupled onset/turbulence validation. Poisson uses 300 sweeps; scalar diffusion refinement isolates a substep. Float16 and general nonlinear/print accuracy are not established.",
         "benchmark": "Independent Fourier diffusion factors, exact T=1-y conduction, known continuum diffusion decay on a fixed box/time, analytic psi=sin(pi*y) wall velocity and manufactured discrete Poisson/buoyancy fields.",
         "failureControl": "Restore the old timestep floor, compare the historical half-wall derivative, reverse buoyancy sign, and exercise negative/saturated transport display cases."
+      },
+      {
+        "test": "tools/convection-coupled-science.js",
+        "command": "node tools/convection-coupled-science.js",
+        "results": "validation/results/convection-coupled-science.json",
+        "scope": "Full coupled free-slip chain (SOR velocity, semi-Lagrangian advection, diffusion/buoyancy) on fixed Gamma=2x1 box, Pr=1, Ra=100<<Ra_c, eps=1e-3 mode decay to t=0.08. Float64 CPU twin plus continuum linear free-fall rates; Float32 GPU fidelity.",
+        "criteria": "GPU/CPU amplitude errors <3e-6 (T) and <1e-6 (omega); CPU spatial Om orders in (1.5,2.5) and Th orders in (0.8,2.5) vs continuum; temporal self-convergence orders in (0.9,2.2); negated buoyancy and half-time controls exceed honest omega error by >100x and >5x; false domain-width change rejected as order-2.",
+        "limitations": "Below-onset free-slip single-mode decay only. Uses 24 SOR sweeps/step (not default 4). Spatial orders from Float64 twin vs continuum; temperature order reduced by SL/FE. No onset, no-slip, high-Ra, Nu, float16 or print claims.",
+        "benchmark": "Independent Float64 CPU twin of the same discrete coupled operators (laplacian, +dT/dx buoyancy, red-black SOR, bicubic SL) and continuum 2x2 free-fall linear rates for sin(pi y) cos(pi x) at Ra=100, Pr=1.",
+        "failureControl": "Negate buoyancy (+Tx->-Tx) on GPU/CPU; evolve half T_final; refine H while shrinking physical width (W=H-1) so a claimed fixed-domain study cannot look order-2."
       }
     ],
     "print": [
