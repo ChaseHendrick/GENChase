@@ -1284,15 +1284,27 @@
     "equation": "H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open)",
     "status": "unvalidated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Independent Float64 SSH spectrum/edge checks in validation/SSH.md do not certify the production visualization heuristic, print path, interactions or experiment.",
+      "Finite open/periodic chains only; catalog equation and citation remain review targets for full paper equivalence.",
+      "No print-state evidence is registered; status stays unvalidated."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add print-path evidence and review before any status promotion.",
+      "Optionally compare studio end-weight metric against independent eigenvectors on shared presets.",
+      "Extend parameter, disorder and larger-N surveys beyond the registered fixtures."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/ssh-science.js",
+        "command": "node tools/ssh-science.js --write",
+        "results": "validation/results/ssh-science.json",
+        "scope": "Independent Float64 dimerized SSH Hamiltonian: periodic spectrum vs analytic Bloch energies, open mid-gap edge localization/end weight, nontrivial vs trivial regimes, open-vs-periodic control.",
+        "criteria": "Periodic spectrum max error <1e-10 and gap error <1e-10; nontrivial mid-gap |E|<1e-8 with mean end weight >0.55 and analytic left-edge subspace overlap >0.98; trivial mid-gap |E|>0.1 and end weight <0.35; all failure controls separate.",
+        "benchmark": "Independent Float64 real-symmetric Jacobi diagonalization compared with analytic Bloch energies E(k)=±sqrt(v²+w²+2vw cos k), bulk gap 2|w-v|, and analytic open-chain left zero mode ψ_{2j}∝(-v/w)^j.",
+        "failureControl": "Equal hoppings v=w must close the periodic gap and keep open near-zero end weight bulk-like; trivial dimerization must not look topological; scrambled and reversed hop patterns must destroy ordered edge-mode signatures.",
+        "limitations": "Finite even N in {24,32,40,48}; single-particle nearest-neighbour SSH only. Does not validate the production ssh.js display heuristic, print exports, interactions or experimental systems."
+      }
+    ],
     "print": []
   },
   {
