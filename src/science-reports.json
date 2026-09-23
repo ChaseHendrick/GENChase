@@ -298,17 +298,30 @@
     "sourceSha256": "30b2393368ab389e0e5fabc4e17215de292e0dbfb945dc92b3b04d2aab57fb19",
     "reference": "Mehran Kardar, Giorgio Parisi and Yi-Cheng Zhang, 'Dynamic scaling of growing interfaces', Physical Review Letters 56, 889 (1986). The scaling form W(L, t) = L^α f(t/L^z) is Fereydoon Family and Tamás Vicsek, J. Phys. A 18, L75 (1985). Ballistic deposition is Murray Vold (1959) and Michael Sutherland (1966); the restricted solid-on-solid model is Jin Min Kim and Joel Kosterlitz, Phys. Rev. Lett. 62, 2289 (1989); surface relaxation is Family, J. Phys. A 19, L441 (1986); the cluster model is Murray Eden, in the Berkeley Symposium proceedings (1961). That the edge fluctuations follow the Tracy-Widom distributions is Michael Prähofer and Herbert Spohn, Phys. Rev. Lett. 84, 4882 (2000), and Kazumasa Takeuchi and Masaki Sano measured it in turbulent liquid crystal, Phys. Rev. Lett. 104, 230601 (2010).",
     "equation": "∂h/∂t = ν∇²h + (λ/2)(∇h)² + η,   W(t) ~ t^β with β = 1/3 in 1+1 dimensions",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Independent Float64 twin of column deposition kernels (random, relax, ballistic, RSOS) measuring W(t)~t^β; not a browser UI replay or Eden radial audit.",
+      "Finite L=512 and five seeds per class; KPZ ballistic crossover often fits under 1/3. RSOS is the KPZ gate with a wider acceptance band.",
+      "Family–Vicsek α at small L uses coarse bands only; no Tracy–Widom edge law or liquid-crystal experiment claim.",
+      "No print-state accuracy audit is registered."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Register print-state preservation for strata/rings exports and quantitative raster checks.",
+      "Tighten finite-size / multi-seed statistics, ballistic crossover diagnostics and optional Eden radial KPZ evidence.",
+      "Review catalog equation/citation assumptions against Kardar–Parisi–Zhang / Family–Vicsek primary sources beyond the deposition twin."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/kpz-science.js",
+        "command": "node tools/kpz-science.js --write",
+        "results": "validation/results/kpz-science.json",
+        "scope": "Independent Float64 twin of kpz.js column kernels: log-spaced W(t) growth and β fits for random (RD), relax (EW) and RSOS (KPZ), with ballistic reported; coarse Family–Vicsek α at small L; production source markers checked.",
+        "criteria": "Mean β in [0.42,0.58] for RD (theory 1/2), [0.12,0.38] for EW (theory 1/4), [0.22,0.45] for RSOS (theory 1/3); ballistic mean in [0.18,0.42]; RD>RSOS>EW ordering; α(EW/RSOS) in [0.2,0.95] and α(RD)<0.25.",
+        "benchmark": "1+1 universality: random deposition β=1/2, Edwards–Wilkinson β=1/4, KPZ β=1/3 (Family–Vicsek α=1/2 for EW/KPZ). Fit window matches production status-line filter.",
+        "failureControl": "Claiming the KPZ β band for random deposition must fail; removing ballistic lateral sticking or relaxation site choice collapses each to RD (β~1/2) and must miss the KPZ/EW bands.",
+        "limitations": "Float64 CPU twin only; finite L/crossover/single-realization noise; Eden, Tracy–Widom and print unvalidated."
+      }
+    ],
     "print": []
   },
   {
