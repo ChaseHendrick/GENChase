@@ -1,0 +1,200 @@
+{
+  "pass": true,
+  "source": "src/modules/tennis.js",
+  "sourceSha256": "9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d",
+  "harnessSha256": "47b1358531887d841f2038af5ccef73224c4d6f25365f0b9659ca21eb73895e7",
+  "command": "node tools/tennis-print-state.js --write",
+  "scope": "Actual tennis exportPNG at 2400 longest edge for flip, stable1, log and square fixtures (1920x2400 and 2400x2400). Exact Float32 field words, ω2 flip count, I2 extra, cells, buffer size and settings preserved; deterministic regenerate replay; nonblank reduced raster.",
+  "criteria": "Zero changed/nonfinite field words; metric/extra/settings/cells unchanged across export; exact requested PNG dimensions and >1000-byte blobs; luminance spread >12/255; wrong dimensions and deliberate post-export field+metric mutation rejected.",
+  "rows": [
+    {
+      "fixture": "flip",
+      "cells": [
+        160,
+        200
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "flips": 2,
+      "I2": 1.4,
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 417508,
+        "flips": 2,
+        "I2": 1.4,
+        "cells": [
+          160,
+          200
+        ],
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 32000,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 226.31699999999998,
+          "finite": 128000,
+          "samples": 128000
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1,
+        "metricChanged": true
+      }
+    },
+    {
+      "fixture": "stable1",
+      "cells": [
+        160,
+        200
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "flips": 1,
+      "I2": 1.05,
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 383906,
+        "flips": 1,
+        "I2": 1.05,
+        "cells": [
+          160,
+          200
+        ],
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 32000,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 226.31699999999998,
+          "finite": 128000,
+          "samples": 128000
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1,
+        "metricChanged": true
+      }
+    },
+    {
+      "fixture": "log",
+      "cells": [
+        160,
+        200
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "flips": 2,
+      "I2": 1.45,
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 428845,
+        "flips": 2,
+        "I2": 1.45,
+        "cells": [
+          160,
+          200
+        ],
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 32000,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 226.31699999999998,
+          "finite": 128000,
+          "samples": 128000
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1,
+        "metricChanged": true
+      }
+    },
+    {
+      "fixture": "square",
+      "cells": [
+        160,
+        160
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "flips": 2,
+      "I2": 1.4,
+      "export": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 466815,
+        "flips": 2,
+        "I2": 1.4,
+        "cells": [
+          160,
+          160
+        ],
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 25600,
+          "metricChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "nonblank": true,
+        "luminance": {
+          "spread": 226.31699999999998,
+          "finite": 102400,
+          "samples": 102400
+        }
+      },
+      "replayUnchanged": true,
+      "failureControls": {
+        "wrongDimensionsRejected": true,
+        "mutatingExportRejected": true,
+        "changedWords": 1,
+        "metricChanged": true
+      }
+    }
+  ],
+  "limitations": "State preservation and declared dimensions only. Does not establish flip-time accuracy, symplectic long-time behavior, calibrated color, printed numerical resolution or coverage of every control/aspect/hardware."
+}
