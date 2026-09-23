@@ -1,0 +1,59 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: build static Pages site
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify maintained studio and evidence
+        run: |
+          node tools/build.js --check
+          node tools/science.js
+          node tools/lint.js
+      - name: Stage tracked site files
+        run: |
+          mkdir -p "$RUNNER_TEMP/pages"
+          git archive HEAD | tar -x -C "$RUNNER_TEMP/pages"
+          node -e 'require("fs").writeFileSync(process.env.RUNNER_TEMP + "/pages/DEPLOYMENT.json", JSON.stringify({commit: process.env.GITHUB_SHA, workflow: process.env.GITHUB_RUN_ID}, null, 2) + "\n")'
+          test -f "$RUNNER_TEMP/pages/index.html"
+          test -f "$RUNNER_TEMP/pages/start.html"
+          test -f "$RUNNER_TEMP/pages/src/module-manifest.json"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/pages
+
+  deploy:
+    name: deploy Pages
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Deploy verified site
+        id: deployment
+        uses: actions/deploy-pages@v4

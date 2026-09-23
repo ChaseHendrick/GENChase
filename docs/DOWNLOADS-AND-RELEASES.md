@@ -38,9 +38,18 @@ privacy, recovery and the difference between completed execution and scientific 
 
 ## Maintainer release process
 
-GitHub Pages publishes `main` from the repository root. The start page and the
-studio therefore update together after a merge. Do not replace the studio root
-with the start page: that would break saved recipe links.
+GitHub Pages uses **GitHub Actions** as its publishing source. The
+[Pages workflow](../.github/workflows/pages.yml) checks the maintained build,
+scientific inventory and catalog, then uploads a snapshot of tracked files.
+Pull requests build the same artifact without deploying. Pushes to `main` and
+manual runs on `main` deploy through the protected `github-pages` environment.
+Local dependencies, credentials and untracked volunteer files are not copied.
+
+The start page and studio update together after a merge. `DEPLOYMENT.json` on
+the live site identifies the exact deployed commit and workflow run. To recover
+a deployment, rerun the Pages workflow on `main`. Keep Settings > Pages > Source
+set to **GitHub Actions**. Do not replace the studio root with the start page:
+that would break saved recipe links.
 
 Releases use `vMAJOR.MINOR.PATCH`, starting at `v0.4.1`. Patch numbers identify
 fixes, and minor numbers identify new features. During the initial `0.x` series,
