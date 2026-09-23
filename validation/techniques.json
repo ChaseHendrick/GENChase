@@ -3639,14 +3639,14 @@
     "sourceSha256": "237cfe67009ed638ec3b021c6f872dd1190e13e0ea0fd85ac49f6ea9c62dbdd4",
     "reference": "Standard cloud-in-cell electrostatic plasma model. C. K. Birdsall and A. B. Langdon, Plasma Physics via Computer Simulation (1985). CIC field centering and conservation limitations: J. U. Brackbill, arXiv:1510.08741 (2015), sections 3.1–3.5. Original implementation; not the GEMPIC geometric scheme.",
     "equation": "∂f/∂t + v ∂f/∂x − E ∂f/∂v = 0; ∂E/∂x = 1 − ∫f dv; x ∈ [0, 2π), periodic",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. Landau damping is checked only for one Maxwellian kλ_D fixture against an independent plasma-Z root; no validated nonlinear instability threshold, collisions or magnetic physics.",
-      "Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device."
+      "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. Landau damping validated only for one Maxwellian kλ_D=0.4 fixture against an independent plasma-Z root within an early-time fit window; no validated nonlinear instability threshold, collisions, EM, or magnetic physics.",
+      "Bounded fixtures and selected print states do not certify every allowed setting, long evolution, or device."
     ],
     "remaining": [
-      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization; two-stream growth-rate and finite-grid instability maps remain open.",
-      "Broaden print interpretation and hardware coverage; retain stated model assumptions."
+      "Two-stream growth-rate and finite-grid instability maps; independent multi-kλ_D / long-duration / nonlinear threshold evidence before generalizing beyond this Maxwellian fixture.",
+      "Broaden print interpretation and hardware coverage beyond the recorded phase-space export states."
     ],
     "numerical": [
       {
@@ -3679,7 +3679,15 @@
         "criteria": "Exact numerical arrays, CPU/GPU histograms, diagnostics, counters and recipes preserved; output dimensions exact; resumed warmup matches direct fixed-step trajectory.",
         "limitations": "Selected states and rendering backend; more output pixels do not improve numerical resolution or establish physical accuracy."
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/plasma-landau-science.json",
+    "domain": {
+      "parameters": "Electrostatic 1D1V CIC electrons with immobile uniform ions; Landau check uses Maxwellian beam=0, thermal=0.4 (v_th=σ), mode-1 on L=2π (k=1, kλ_D=0.4), amplitude=0.03, plus the plasma-science Poisson/oscillation/refinement fixtures recorded in validation/results/plasma-science.json and validation/results/plasma-landau-science.json.",
+      "conditions": "Periodic normalized plasma; early-time |E_k| envelope fit window t∈[2,12] vs independent plasma-Z / Newton Landau root; cold (thermal→0), large-amplitude trapping (amp=0.35), and flipped-force controls must reject the linear warm-rate claim; print preserves listed phase-space export states.",
+      "resolution": "Primary Landau: N=131072 particles, M=256 cells, dt=0.015, 800 steps, seed ld-r2; |γ_num−γ_theory|/|γ_theory|≈0.81% with envelope r²≈0.981 (acceptance <0.15 on primary and finest two refinements; multi-seed mean <0.2). Print: exact numerical arrays and stated PNG/SVG dimensions for the eight recorded states.",
+      "precision": "Float64 plasma.js solver and independent Faddeeva/plasma-Z reference; finite-N sampling noise and early-time window only; RGBA8 PNG / declared SVG decimals for prints. No collisions, EM, mobile ions, multi-mode map, or experimental claim."
+    }
   },
   {
     "id": "shallow",

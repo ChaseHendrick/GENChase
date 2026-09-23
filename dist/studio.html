@@ -5538,14 +5538,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "237cfe67009ed638ec3b021c6f872dd1190e13e0ea0fd85ac49f6ea9c62dbdd4",
     "reference": "Standard cloud-in-cell electrostatic plasma model. C. K. Birdsall and A. B. Langdon, Plasma Physics via Computer Simulation (1985). CIC field centering and conservation limitations: J. U. Brackbill, arXiv:1510.08741 (2015), sections 3.1–3.5. Original implementation; not the GEMPIC geometric scheme.",
     "equation": "∂f/∂t + v ∂f/∂x − E ∂f/∂v = 0; ∂E/∂x = 1 − ∫f dv; x ∈ [0, 2π), periodic",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. No validated Landau damping, nonlinear instability threshold, collisions or magnetic physics.",
-      "Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device."
+      "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. Landau damping validated only for one Maxwellian kλ_D=0.4 fixture against an independent plasma-Z root within an early-time fit window; no validated nonlinear instability threshold, collisions, EM, or magnetic physics.",
+      "Bounded fixtures and selected print states do not certify every allowed setting, long evolution, or device."
     ],
     "remaining": [
-      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
-      "Broaden print interpretation and hardware coverage; retain stated model assumptions."
+      "Two-stream growth-rate and finite-grid instability maps; independent multi-kλ_D / long-duration / nonlinear threshold evidence before generalizing beyond this Maxwellian fixture.",
+      "Broaden print interpretation and hardware coverage beyond the recorded phase-space export states."
     ],
     "numerical": [
       {
@@ -5556,7 +5556,17 @@ shall not be misrepresented as the original profile.
         "criteria": "Poisson fields within 1e-12; cold frequency relative error below .002; trajectory RMS below .00015; spatial/temporal error reductions3.5–4.5 and3.5–4.6; noise mean within4 seed standard errors; exact failed-trial rollback.",
         "benchmark": "Independent dense periodic Poisson solve, all-pairs triangular deposition weights, analytic noncrossing cold-sheet oscillation, same-domain refinement and exact expected CIC sampling variance.",
         "failureControl": "Reversed force sign and nonneutral deposited charge must be detected; rejected dynamics restore accepted arrays and counters.",
-        "limitations": "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. No validated Landau damping, nonlinear instability threshold, collisions or magnetic physics."
+        "limitations": "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. Cold-sheet/Poisson/noise fixture only; Landau rate is covered by the separate landau harness within one Maxwellian kλ_D window."
+      },
+      {
+        "test": "tools/plasma-landau-science.js",
+        "command": "node tools/plasma-landau-science.js",
+        "results": "validation/results/plasma-landau-science.json",
+        "scope": "Actual Float64 1D1V CIC Maxwellian mode-1 Langmuir wave (beam=0, thermal=0.4, k=1, kλ_D=0.4): independent plasma-Z Landau root vs early-time |E_k| envelope γ; particle/grid refinement; cold, trapping, and flipped-force controls.",
+        "criteria": "Primary and finest-two refinements |γ_num-γ_theory|/|γ_theory|\u003c0.15 with envelope r²>0.9; multi-seed fine mean within 0.2; cold nearly undamped and rejects warm rate; large-amplitude and flipped-force cases reject the linear damping claim.",
+        "benchmark": "Independent Float64 plasma dispersion Z / Newton root of ε(ω,k)=1+(1/(k²λ_D²))[1+ζZ(ζ)] with v_th=thermal, λ_D=thermal, ζ=ω/(√2 k v_th); verified against Z(0), Z(1) and the kλ_D=0.5 root.",
+        "failureControl": "thermal→0 must leave the wave nearly undamped and fail the warm-rate claim; amplitude 0.35 trapping must miss linear γ; flipped kick sign must halt or grow and must not match Landau damping.",
+        "limitations": "One kλ_D fixture, electrostatic 1D1V, finite-N noise and early-time window only; no collisions, EM, ions, multi-mode map or experimental claim."
       }
     ],
     "print": [
@@ -5568,7 +5578,15 @@ shall not be misrepresented as the original profile.
         "criteria": "Exact numerical arrays, CPU/GPU histograms, diagnostics, counters and recipes preserved; output dimensions exact; resumed warmup matches direct fixed-step trajectory.",
         "limitations": "Selected states and rendering backend; more output pixels do not improve numerical resolution or establish physical accuracy."
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/plasma-landau-science.json",
+    "domain": {
+      "parameters": "Electrostatic 1D1V CIC electrons with immobile uniform ions; Landau check uses Maxwellian beam=0, thermal=0.4 (v_th=σ), mode-1 on L=2π (k=1, kλ_D=0.4), amplitude=0.03, plus the plasma-science Poisson/oscillation/refinement fixtures recorded in validation/results/plasma-science.json and validation/results/plasma-landau-science.json.",
+      "conditions": "Periodic normalized plasma; early-time |E_k| envelope fit window t∈[2,12] vs independent plasma-Z / Newton Landau root; cold (thermal→0), large-amplitude trapping (amp=0.35), and flipped-force controls must reject the linear warm-rate claim; print preserves listed phase-space export states.",
+      "resolution": "Primary Landau: N=131072 particles, M=256 cells, dt=0.015, 800 steps, seed ld-r2; |γ_num−γ_theory|/|γ_theory|≈0.81% with envelope r²≈0.981 (acceptance \u003c0.15 on primary and finest two refinements; multi-seed mean \u003c0.2). Print: exact numerical arrays and stated PNG/SVG dimensions for the eight recorded states.",
+      "precision": "Float64 plasma.js solver and independent Faddeeva/plasma-Z reference; finite-N sampling noise and early-time window only; RGBA8 PNG / declared SVG decimals for prints. No collisions, EM, mobile ions, multi-mode map, or experimental claim."
+    }
   },
   {
     "id": "shallow",
