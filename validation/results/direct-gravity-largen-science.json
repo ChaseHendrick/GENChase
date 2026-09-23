@@ -1,0 +1,158 @@
+{
+  "sourceSha256": "240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041",
+  "pass": true,
+  "milliseconds": 1602.6791580000001,
+  "forceAccuracy": {
+    "seed": "largen-direct-gravity",
+    "eps": 0.12,
+    "rows": [
+      {
+        "n": 256,
+        "pairs": 32640,
+        "eps": 0.12,
+        "prodMs": 8.349069,
+        "refMs": 7.764477999999997,
+        "maxAbsDeltaA": 2.3525204118543076e-15,
+        "relativeL2": 6.699212657661988e-16,
+        "relativeLinfVsMean": 2.4820907103036266e-15,
+        "refAccelNorm": 17.078349627146704
+      },
+      {
+        "n": 1024,
+        "pairs": 523776,
+        "eps": 0.12,
+        "prodMs": 11.235891999999993,
+        "refMs": 75.82991899999999,
+        "maxAbsDeltaA": 5.10702591327572e-15,
+        "relativeL2": 1.2223297526990741e-15,
+        "relativeLinfVsMean": 5.69648543439494e-15,
+        "refAccelNorm": 32.86323943553239
+      },
+      {
+        "n": 4096,
+        "pairs": 8386560,
+        "eps": 0.12,
+        "prodMs": 115.64392900000001,
+        "refMs": 1241.031286,
+        "maxAbsDeltaA": 1.0658344887048021e-14,
+        "relativeL2": 2.372353901154352e-15,
+        "relativeLinfVsMean": 1.2331729339227337e-14,
+        "refAccelNorm": 64.0550111015725
+      }
+    ]
+  },
+  "regime": {
+    "seed": "largen-direct-gravity/regime",
+    "n": 64,
+    "time": 0.4,
+    "eps": 0.12,
+    "dtRows": [
+      {
+        "h": 0.004,
+        "eps": 0.12,
+        "n": 64,
+        "steps": 100,
+        "time": 0.4,
+        "E0": -0.5271612189515826,
+        "maxEnergyDrift": 0.0000023929503502051475,
+        "relativeEnergyDrift": 0.000004539314092497629,
+        "finalHash": "f6e72328f7fac7e8"
+      },
+      {
+        "h": 0.002,
+        "eps": 0.12,
+        "n": 64,
+        "steps": 200,
+        "time": 0.4,
+        "E0": -0.5271612189515826,
+        "maxEnergyDrift": 5.98244116689628e-7,
+        "relativeEnergyDrift": 0.00000113484090859228,
+        "finalHash": "3a62011b7db68172"
+      },
+      {
+        "h": 0.001,
+        "eps": 0.12,
+        "n": 64,
+        "steps": 400,
+        "time": 0.4,
+        "E0": -0.5271612189515826,
+        "maxEnergyDrift": 1.4956144056554876e-7,
+        "relativeEnergyDrift": 2.83711007541481e-7,
+        "finalHash": "49482b486841e9b7"
+      }
+    ],
+    "dtDriftRatio": 15.999781368489703,
+    "epsRows": [
+      {
+        "h": 0.0015588457268119894,
+        "eps": 0.06,
+        "n": 64,
+        "steps": 257,
+        "time": 0.40062335179068126,
+        "E0": -0.5841370443546777,
+        "maxEnergyDrift": 0.000004458649009109195,
+        "relativeEnergyDrift": 0.00000763288179066757,
+        "finalHash": "dee14d17aeae5407",
+        "requestedDt": 0.004,
+        "cappedDt": 0.0015588457268119894
+      },
+      {
+        "h": 0.004,
+        "eps": 0.12,
+        "n": 64,
+        "steps": 100,
+        "time": 0.4,
+        "E0": -0.5271612189515826,
+        "maxEnergyDrift": 0.0000023929503502051475,
+        "relativeEnergyDrift": 0.000004539314092497629,
+        "finalHash": "f6e72328f7fac7e8",
+        "requestedDt": 0.004,
+        "cappedDt": 0.004
+      },
+      {
+        "h": 0.004,
+        "eps": 0.24,
+        "n": 64,
+        "steps": 100,
+        "time": 0.4,
+        "E0": -0.4407608948231677,
+        "maxEnergyDrift": 3.174033341712956e-8,
+        "relativeEnergyDrift": 7.20125895693712e-8,
+        "finalHash": "0d0f7042e3a74b2f",
+        "requestedDt": 0.004,
+        "cappedDt": 0.004
+      }
+    ],
+    "positionSelfConvergence": {
+      "coarseVsFine": {
+        "maxAbs": 0.000004064661914534867,
+        "rms": 0.0000016354564439146276
+      },
+      "midVsFine": {
+        "maxAbs": 8.129208157681491e-7,
+        "rms": 3.27082882236894e-7
+      },
+      "positionRefinementRatio": 5.0001285078872675
+    }
+  },
+  "failureControl": {
+    "wrongG": {
+      "maxAbsDeltaA": 0.020679537776935833,
+      "relativeL2": 0.009900990099009922
+    },
+    "wrongSoftening": {
+      "maxAbsDeltaA": 0.08619737291374269,
+      "relativeL2": 0.03479682445593712
+    },
+    "brokenReciprocity": {
+      "netForce": 0.00014186417840186122,
+      "maxAbsDeltaAVsReference": 0.019478753153795214
+    }
+  },
+  "limitations": [
+    "Planar Plummer-softened G=1 Float64 fixtures only. No galaxy equilibrium, unsoftened collision, or chaotic long-time accuracy claim.",
+    "Large-N check is force-kernel agreement vs an independent all-pairs reference at fixed snapshot, not a statistical N-body convergence study.",
+    "Timestep/ε band is finite-time energy drift and self-convergence on one equal-mass disk seed at N=64; not a global stability proof.",
+    "Print and browser scheduling checks are separate from this numerical evidence."
+  ]
+}
