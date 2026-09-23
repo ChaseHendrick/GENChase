@@ -3178,19 +3178,18 @@ shall not be misrepresented as the original profile.
   {
     "id": "ssh",
     "source": "src/modules/ssh.js",
-    "sourceSha256": "1fa05fe97e929dad52fd9c3367b4ec2f1f097a38cf4297d78bf7a94b3c6924a9",
+    "sourceSha256": "1f7ba2287a329e855e3ec69bed470934794cb2c48dc1b884b7b43ff45d6754c4",
     "reference": "W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)| of every eigenmode, stacked.",
     "equation": "H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open)",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Independent Float64 SSH spectrum/edge checks in validation/SSH.md do not certify the production visualization heuristic, print path, interactions or experiment.",
-      "Finite open/periodic chains only; catalog equation and citation remain review targets for full paper equivalence.",
-      "No print-state evidence is registered; status stays unvalidated."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/SSH.md and the ssh-science / ssh-production / ssh-print-state results artifacts.",
+      "Finite single-particle chains; no interactions, disorder, continuum limit or experimental polyacetylene claim. Rows inside exactly degenerate clusters follow a documented basis convention.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Add print-path evidence and review before any status promotion.",
-      "Optionally compare studio end-weight metric against independent eigenvectors on shared presets.",
-      "Extend parameter, disorder and larger-N surveys beyond the registered fixtures."
+      "Extend beyond the enumerated hoppings, grids and aspects with independent evidence, for example disorder, next-nearest hopping or SVG output."
     ],
     "numerical": [
       {
@@ -3202,9 +3201,38 @@ shall not be misrepresented as the original profile.
         "benchmark": "Independent Float64 real-symmetric Jacobi diagonalization compared with analytic Bloch energies E(k)=±sqrt(v²+w²+2vw cos k), bulk gap 2|w-v|, and analytic open-chain left zero mode ψ_{2j}∝(-v/w)^j.",
         "failureControl": "Equal hoppings v=w must close the periodic gap and keep open near-zero end weight bulk-like; trivial dimerization must not look topological; scrambled and reversed hop patterns must destroy ordered edge-mode signatures.",
         "limitations": "Finite even N in {24,32,40,48}; single-particle nearest-neighbour SSH only. Does not validate the production ssh.js display heuristic, print exports, interactions or experimental systems."
+      },
+      {
+        "test": "tools/ssh-production.js",
+        "command": "node tools/ssh-production.js --write",
+        "results": "validation/results/ssh-production.json",
+        "scope": "Actual ssh.js Householder/QL diagonalization and Float32 plate field for the six presets and the default at grid 96 (4:5), topo/triv/ring at grids 64 and 160 on 1:1 and 16:9 sheets, and balanced v = w open and periodic chains, against an independent Jacobi reference, analytic Bloch energies and the analytic left zero mode.",
+        "criteria": "Eigenvalues, residual |Hψ − Eψ| and orthonormality within 1e-12; every plate field word within 1e-7 of the reference plate; end weight within 1e-9 and mid-gap |E| within 1e-12; ring energies within 1e-12 of E(k) = ±sqrt(v² + w² + 2vw cos k); topological presets end weight above 0.99 with mid-gap |E| below 1e-10 and more than 0.999 of the analytic left zero mode inside the mid-gap pair; swapped hoppings, a wrong ring bond and a 1% intra-hopping change rejected.",
+        "benchmark": "Independent Jacobi eigenpairs (tools/lib/ssh-reference.js) passed through the plate rule in tools/lib/ssh-plate.js, analytic Bloch energies E(k) = ±sqrt(v² + w² + 2vw cos k) and the analytic open-chain left zero mode ψ_2j ∝ (−v/w)^j.",
+        "failureControl": "Swapped hoppings (field error 0.93), the ring's closing bond given v (energies off by 0.45) and a 1% change in v (field error 2.7e-3) are each rejected on the actual module source.",
+        "limitations": "Finite chains of 64 to 160 sites at the enumerated hoppings; single-particle nearest-neighbour SSH only. Rows inside an exactly degenerate cluster follow the documented pivoted basis; that basis is a convention, not a physical claim."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/ssh-print-state.js",
+        "command": "node tools/ssh-print-state.js --write",
+        "results": "validation/results/ssh-print-state.json",
+        "scope": "Actual ssh exportPNG in Chromium at 2400 px on the longest edge for the six presets at grid 96 on 4:5 (1920x2400), topo and ring at grid 96 on 1:1 (2400x2400) and 16:9 (2400x1350), and topo at grid 160 on 4:5 (1920x2400). The module source is src/modules/ssh.js with audit hooks, evaluated over dist/studio.html; the unmodified bundled module prints byte-identical PNGs. The Float32 plate is compared with a reference plate rebuilt in Node from independent Jacobi eigenpairs (tools/lib/ssh-reference.js) with the same row and degenerate-cluster rule. Each preset is also picked from the real studio preset menu to read the state the shell hands the module.",
+        "criteria": "Every plate field word within 1e-7 of the reference plate, end weight within 1e-9, mid-gap |E| within 1e-12; exact requested PNG dimensions, more than 1000 bytes and a decoded luminance spread above 12/255; every cell-centre print pixel and every print pixel equal in RGB to the buffer pixel of the cell it maps to under nearest-neighbour scaling; the buffer equal to the palette ramp of the snapshot field; zero changed or nonfinite field words, zero changed buffer pixels, and metric, mid-gap |E|, winding, cells, buffer size and settings unchanged across export and across same-instance and fresh-instance regenerate; the shipped bundled module prints byte-identical PNGs; the studio shell hands the module the preset v, w, bc and view when the preset is picked from its menu. One predicate rejects a PNG requested 1 px narrower, a post-export field[0] and metric mutation, and a reference plate with v and w swapped (on rings, where that swap is a translation, a reference whose closing bond is v instead of w).",
+        "benchmark": "The reference plate from tools/lib/ssh-plate.js for the browser field, the buffer pixel of each cell for every print pixel, and the palette ramp of the field for the buffer.",
+        "failureControl": "A PNG requested 1 px narrower, a post-export change to the field and end weight, a reference with swapped hoppings (open chains) and a reference with the wrong closing bond (rings) must each be rejected by the same predicate.",
+        "limitations": "Nearest-neighbour upscaling of a 96- to 160-site plate; no calibrated colour, SVG output or every control, aspect or hardware."
+      }
+    ],
+    "domain": {
+      "parameters": "The six presets (Topological 0.4/1.2 open, Trivial 1.2/0.4 open, Periodic 0.4/1.2 ring, Deep edge 0.2/1.4, Critical 0.9/0.95, Log 0.35/1.25) and the default 0.45/1.15 at grid 96 on 4:5; Topological, Trivial and Periodic at grids 64 and 160 on 1:1 and 16:9; balanced v = w open and periodic chains; print fixtures as listed in validation/results/ssh-print-state.json.",
+      "conditions": "Even chains of n = grid sites packed a0 b0 a1 b1 …, intra-cell hopping v, inter-cell w, closing w bond on a ring; exact diagonalization; rows are modes by energy (central band when the plate has fewer rows than sites), degenerate clusters (splitting below 1e-8(|v|+|w|)) resolved by pivoted Gram–Schmidt on the sites; end weight on the outer tenth of sites at each end. Print: presets chosen from the real preset menu, exportPNG at 2400 px on the longest edge.",
+      "resolution": "96 to 160 sites; eigenvalues, residuals and orthonormality within 1e-12 of the reference, every plate word within 1e-7 (measured at most 3.6e-12), every print pixel equal to its cell (validation/results/ssh-production.json, validation/results/ssh-print-state.json).",
+      "precision": "Float64 diagonalization stored in a Float32 plate; RGBA8 PNG. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/ssh-production.json"
   },
   {
     "id": "swarm",
@@ -41131,37 +41159,125 @@ void main(){
   const SCHEMA = [
     RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
-    RANGE('Chain', 'v', 'Intra v', GEOM, 0.1, 1.6, 0.05, f2),
+    RANGE('Chain', 'intra', 'Intra v', GEOM, 0.1, 1.6, 0.05, f2),
     RANGE('Chain', 'w', 'Inter w', GEOM, 0.1, 1.6, 0.05, f2),
     { group: 'Chain', key: 'bc', label: 'Ends', type: 'seg', kind: GEOM, options: [['open', 'Open'], ['periodic', 'Periodic']] },
     { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['int', 'Field'], ['log', 'Log']] },
     RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.4, 2.2, 0.05, f2),
   ];
-  const DEFAULTS = { grid: 96, aspect: '4:5', v: 0.45, w: 1.15, bc: 'open', view: 'int', exposure: 1.05 };
+  const DEFAULTS = { grid: 96, aspect: '4:5', intra: 0.45, w: 1.15, bc: 'open', view: 'int', exposure: 1.05 };
   const PRESETS = {
-    topo: pre('Topological', { v: 0.4, w: 1.2, bc: 'open' }, Pal.ember),
-    triv: pre('Trivial', { v: 1.2, w: 0.4, bc: 'open' }, Pal.graphite),
-    ring: pre('Periodic', { v: 0.4, w: 1.2, bc: 'periodic' }, Pal.harbor),
-    edge: pre('Deep edge', { v: 0.2, w: 1.4, bc: 'open' }, Pal.nightshade),
-    crit: pre('Critical', { v: 0.9, w: 0.95, bc: 'open' }, Pal.kiln),
-    log: pre('Log |ψ|', { v: 0.35, w: 1.25, view: 'log', bc: 'open' }, Pal.thermal),
+    topo: pre('Topological', { intra: 0.4, w: 1.2, bc: 'open' }, Pal.ember),
+    triv: pre('Trivial', { intra: 1.2, w: 0.4, bc: 'open' }, Pal.graphite),
+    ring: pre('Periodic', { intra: 0.4, w: 1.2, bc: 'periodic' }, Pal.harbor),
+    edge: pre('Deep edge', { intra: 0.2, w: 1.4, bc: 'open' }, Pal.nightshade),
+    crit: pre('Critical', { intra: 0.9, w: 0.95, bc: 'open' }, Pal.kiln),
+    log: pre('Log |ψ|', { intra: 0.35, w: 1.25, view: 'log', bc: 'open' }, Pal.thermal),
   };
 
-  function surprise(rng) { return { v: rng.range(0.2, 1.3), w: rng.range(0.2, 1.3), bc: rng() < 0.2 ? 'periodic' : 'open' }; }
+  function surprise(rng) { return { intra: rng.range(0.2, 1.3), w: rng.range(0.2, 1.3), bc: rng() < 0.2 ? 'periodic' : 'open' }; }
   function sanitize(s) { s.grid = Math.max(64, Math.min(160, Math.round(s.grid / 16) * 16)); }
+  // H = v Σ (a†_j b_j + h.c.) + w Σ (b†_j a_{j+1} + h.c.) on n sites packed a0 b0 a1 b1 ..., with the
+  // w bond closing a ring. Householder reduction to tridiagonal form, then implicit-shift QL (the EISPACK
+  // tred2 / tql2 scheme). Returns ascending energies and unit eigenvectors.
+  function sshEigen(n, v, w, periodic) {
+    const V = Array.from({ length: n }, () => new Float64Array(n)), d = new Float64Array(n), e = new Float64Array(n);
+    for (let i = 0; i < n - 1; i++) V[i][i + 1] = V[i + 1][i] = i % 2 === 0 ? v : w;
+    if (periodic) V[0][n - 1] = V[n - 1][0] = w;
+    for (let j = 0; j < n; j++) d[j] = V[n - 1][j];
+    for (let i = n - 1; i > 0; i--) {
+      let scale = 0, h = 0;
+      for (let k = 0; k < i; k++) scale += Math.abs(d[k]);
+      if (scale === 0) {
+        e[i] = d[i - 1];
+        for (let j = 0; j < i; j++) { d[j] = V[i - 1][j]; V[i][j] = 0; V[j][i] = 0; }
+      } else {
+        for (let k = 0; k < i; k++) { d[k] /= scale; h += d[k] * d[k]; }
+        let f = d[i - 1], g = Math.sqrt(h);
+        if (f > 0) g = -g;
+        e[i] = scale * g; h -= f * g; d[i - 1] = f - g;
+        for (let j = 0; j < i; j++) e[j] = 0;
+        for (let j = 0; j < i; j++) {
+          f = d[j]; V[j][i] = f; g = e[j] + V[j][j] * f;
+          for (let k = j + 1; k <= i - 1; k++) { g += V[k][j] * d[k]; e[k] += V[k][j] * f; }
+          e[j] = g;
+        }
+        f = 0;
+        for (let j = 0; j < i; j++) { e[j] /= h; f += e[j] * d[j]; }
+        const hh = f / (h + h);
+        for (let j = 0; j < i; j++) e[j] -= hh * d[j];
+        for (let j = 0; j < i; j++) {
+          f = d[j]; g = e[j];
+          for (let k = j; k <= i - 1; k++) V[k][j] -= f * e[k] + g * d[k];
+          d[j] = V[i - 1][j]; V[i][j] = 0;
+        }
+      }
+      d[i] = h;
+    }
+    for (let i = 0; i < n - 1; i++) {
+      V[n - 1][i] = V[i][i]; V[i][i] = 1;
+      const h = d[i + 1];
+      if (h !== 0) {
+        for (let k = 0; k <= i; k++) d[k] = V[k][i + 1] / h;
+        for (let j = 0; j <= i; j++) {
+          let g = 0;
+          for (let k = 0; k <= i; k++) g += V[k][i + 1] * V[k][j];
+          for (let k = 0; k <= i; k++) V[k][j] -= g * d[k];
+        }
+      }
+      for (let k = 0; k <= i; k++) V[k][i + 1] = 0;
+    }
+    for (let j = 0; j < n; j++) { d[j] = V[n - 1][j]; V[n - 1][j] = 0; }
+    V[n - 1][n - 1] = 1; e[0] = 0;
+    for (let i = 1; i < n; i++) e[i - 1] = e[i];
+    e[n - 1] = 0;
+    let f = 0, tst1 = 0;
+    const eps = Math.pow(2, -52);
+    for (let l = 0; l < n; l++) {
+      tst1 = Math.max(tst1, Math.abs(d[l]) + Math.abs(e[l]));
+      let m = l;
+      while (m < n - 1 && Math.abs(e[m]) > eps * tst1) m++;
+      if (m > l) {
+        for (let iter = 0; iter < 64; iter++) {
+          let g = d[l], p = (d[l + 1] - g) / (2 * e[l]), r = Math.hypot(p, 1);
+          if (p < 0) r = -r;
+          d[l] = e[l] / (p + r); d[l + 1] = e[l] * (p + r);
+          const dl1 = d[l + 1];
+          let h = g - d[l];
+          for (let i = l + 2; i < n; i++) d[i] -= h;
+          f += h;
+          p = d[m];
+          let c = 1, c2 = 1, c3 = 1, s = 0, s2 = 0;
+          const el1 = e[l + 1];
+          for (let i = m - 1; i >= l; i--) {
+            c3 = c2; c2 = c; s2 = s;
+            g = c * e[i]; h = c * p; r = Math.hypot(p, e[i]);
+            e[i + 1] = s * r; s = e[i] / r; c = p / r; p = c * d[i] - s * g;
+            d[i + 1] = h + s * (c * g + s * d[i]);
+            for (let k = 0; k < n; k++) { h = V[k][i + 1]; V[k][i + 1] = s * V[k][i] + c * h; V[k][i] = c * V[k][i] - s * h; }
+          }
+          p = -s * s2 * c3 * el1 * e[l] / dl1; e[l] = s * p; d[l] = c * p;
+          if (Math.abs(e[l]) <= eps * tst1) break;
+        }
+      }
+      d[l] += f; e[l] = 0;
+    }
+    const order = Array.from({ length: n }, (_, i) => i).sort((a, b) => d[a] - d[b]);
+    return { values: order.map(i => d[i]), vectors: order.map(j => Float64Array.from({ length: n }, (_, k) => V[k][j])) };
+  }
   Studio.register({
     id: 'ssh', name: 'SSH Edges', tab: 'SSH',
     subtitle: 'states in a gap that the bulk forbade · 1979',
     order: 55,
     equation: 'H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open)',
-    credit: 'W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)| of every eigenmode, stacked.',
-    blurb: 'A gapped chain is not supposed to have states in the gap. Dimerise it the right way, open the ends, and two zero modes sit on the edges, exponentially bound, because the bulk winding has nowhere else to go. Close the chain into a ring and they vanish. The status line reports the weight of the mid-gap pair on the last tenth of the sites.',
+    credit: 'W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)| of every eigenmode of the finite chain, stacked by energy, with the mid-gap pair across the middle.',
+    blurb: 'A gapped chain is not supposed to have states in the gap. Dimerise it the right way, open the ends, and two zero modes sit on the edges, exponentially bound, because the bulk winding has nowhere else to go. Close the chain into a ring and they vanish. The chain is diagonalized exactly and every eigenmode is stacked by energy. The status line reports how much of the mid-gap pair sits on the outer tenth of the sites at each end, and how far that pair is from zero energy.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: { Chain: 'w > v is the topological dimerisation. Periodic boundaries are the control that should look empty at the edge.' },
     palette: true, defaultPalette: 'ember', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
+      let W = 0, H = 0, field, metric = 0, extra = 0, midE = 0, buf, img;
       function sizeFrom(s) {
         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
         return { W: g, H: Math.max(48, Math.round(g * a)) };
@@ -41170,45 +41286,49 @@ void main(){
         const s = host.getState();
         const sz = sizeFrom(s); W = sz.W; H = sz.H;
         field = new Float32Array(W * H);
-        const rng = U.makeRng(String(s.seed) + '/x');
-
-        const n = W, v = s.v, w = s.w, open = s.bc !== 'periodic';
-        const dim = n; // sites; two sublattices packed even/odd
-        function modeAt(nIdx) {
-          const k = Math.PI * (nIdx + 1) / (n / 2 + 1);
-          const row = new Float32Array(n);
-          const ratio = v / Math.max(1e-6, w);
-          if (open && w > v + 0.04) {
-            let nrm = 0;
-            for (let i = 0; i < n; i++) {
-              const a = (i % 2 === 0) ? Math.pow(ratio, i / 2) : 0;
-              row[i] = a; nrm += a * a;
+        const n = W, v = s.intra, w = s.w, periodic = s.bc === 'periodic';
+        const eig = sshEigen(n, v, w, periodic);
+        // Rows are eigenmodes in order of energy. A plate shorter than the chain shows the band of modes
+        // centred on E = 0, one row each, so the mid-gap pair is always on it.
+        const modeOf = H >= n ? y => Math.floor(y * n / H) : y => n / 2 - Math.floor(H / 2) + y;
+        // Exactly degenerate modes (every ±k pair on a ring, the two zero modes of a long open chain) have no
+        // preferred eigenvector basis. Inside such a cluster the rows are fixed by pivoted Gram–Schmidt on the
+        // sites: each is the normalized projection of the site with the most remaining weight, ties going to
+        // the leftmost site. Any correct diagonalization gives the same rows.
+        const tol = 1e-8 * (Math.abs(v) + Math.abs(w)), rows = [], density = [];
+        for (let i = 0; i < n;) {
+          let j = i + 1;
+          while (j < n && eig.values[j] - eig.values[j - 1] < tol) j++;
+          const cluster = eig.vectors.slice(i, j), rho = new Float64Array(n);
+          for (const psi of cluster) for (let x = 0; x < n; x++) rho[x] += psi[x] * psi[x];
+          if (j - i === 1) rows[i] = eig.vectors[i];
+          else {
+            const left = Float64Array.from(rho), chosen = [];
+            for (let m = i; m < j; m++) {
+              const top = Math.max(...left);
+              let site = 0;
+              while (left[site] < top * (1 - 1e-9)) site++;
+              const b = new Float64Array(n);
+              for (const psi of cluster) for (let x = 0; x < n; x++) b[x] += psi[site] * psi[x];
+              for (const c of chosen) for (let x = 0; x < n; x++) b[x] -= c[site] * c[x];
+              const norm = Math.hypot(...b);
+              for (let x = 0; x < n; x++) { b[x] /= norm; left[x] -= b[x] * b[x]; }
+              chosen.push(b); rows[m] = b;
             }
-            const inv = 1 / Math.sqrt(nrm || 1);
-            for (let i = 0; i < n; i++) row[i] *= inv;
-            return row;
           }
-          let nrm = 0;
-          for (let i = 0; i < n; i++) {
-            const a = Math.sin(k * (Math.floor(i / 2) + 1));
-            row[i] = a; nrm += a * a;
-          }
-          const inv = 1 / Math.sqrt(nrm || 1);
-          for (let i = 0; i < n; i++) row[i] *= inv;
-          return row;
+          for (let m = i; m < j; m++) density[m] = rho.map(r => r / (j - i));
+          i = j;
         }
-        let endW = 0;
         for (let y = 0; y < H; y++) {
-          const row = modeAt(y % Math.max(1, (n / 2) | 0));
-          let right = 0;
-          for (let x = 0; x < n; x++) {
-            const p = row[x] * row[x];
-            field[y * n + x] = p;
-            if (x < n * 0.12 || x > n * 0.88) right += p;
-          }
-          if (y < 6) endW += right;
+          const row = rows[modeOf(y)];
+          for (let x = 0; x < n; x++) field[y * n + x] = Math.abs(row[x]);
         }
-        metric = endW / 6;
+        // End weight: the mean share of the two modes nearest E = 0 on the outer tenth of sites at each end.
+        const edge = Math.max(1, Math.floor(n * 0.1));
+        const pair = eig.values.map((e, i) => i).sort((a, b) => Math.abs(eig.values[a]) - Math.abs(eig.values[b])).slice(0, 2);
+        metric = 0;
+        for (const m of pair) for (let x = 0; x < n; x++) if (x < edge || x >= n - edge) metric += density[m][x] / 2;
+        midE = Math.max(...pair.map(m => Math.abs(eig.values[m])));
         extra = w > v ? 1 : 0;
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
@@ -41240,7 +41360,7 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>w/v <b>' + f2(host.getState().w / Math.max(0.05, host.getState().v)) + '</b></span><span>end weight <b>' + f2(metric) + '</b></span><span>' + (host.getState().bc === 'periodic' ? 'ring' : (metric > 0.45 ? 'edge modes' : 'trivial')) + '</span>'); }
+      function status() { host.setStatus('<span>w/v <b>' + f2(host.getState().w / Math.max(0.05, host.getState().intra)) + '</b></span><span>end weight <b>' + f2(metric) + '</b></span><span>mid-gap |E| <b>' + midE.toExponential(1) + '</b></span><span>' + (host.getState().bc === 'periodic' ? 'ring' : (metric > 0.45 ? 'edge modes' : 'bulk-like')) + '</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

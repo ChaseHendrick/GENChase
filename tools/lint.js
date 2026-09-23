@@ -102,6 +102,17 @@ for (const m of mods) {
   if (hit) fail(m.id + ' uses Math.random at line ' + lineAt(m.start + hit.index) + ': a seeded plate cannot reprint');
 }
 
+/* ---- 5b. no schema key the shell owns ---- */
+// sanitize() writes the recipe version into state.v after clamping the schema, and seed, palette and bg
+// are shell state. A control with one of those keys is overwritten on every load: ssh's intra-cell
+// hopping was named v and ran at 2 in every preset. Matches `key: 'v'` and helper calls RANGE(group, 'v', label.
+for (const m of mods) {
+  const hit = /\bkey\s*:\s*['"](v|seed|palette|bg)['"]|\(\s*['"][^'"]*['"]\s*,\s*['"](v|seed|palette|bg)['"]\s*,\s*['"]/.exec(m.body);
+  // Module slices run from one register call to the next, so a schema declared above its own register
+  // call lands in the previous slice: report the line, which is exact, rather than a module name.
+  if (hit) fail('a control at line ' + lineAt(m.start + hit.index) + ' is named "' + (hit[1] || hit[2]) + '", a key the shell overwrites');
+}
+
 /* ---- 6. (deliberately absent) every schema control has a default ---- */
 // Tried and removed. A module's schema is assembled from shared helpers (GRID, simFields(),
 // pictureFields()) that are defined between registrations, so attributing a control to the module

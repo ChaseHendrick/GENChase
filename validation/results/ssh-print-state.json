@@ -1,0 +1,2153 @@
+{
+  "pass": true,
+  "checks": {
+    "dimensions": "11/11",
+    "nonblank": "11/11",
+    "preserved": "11/11",
+    "reference": "11/11",
+    "pixels": "11/11",
+    "bundle": "11/11",
+    "shellState": "11/11"
+  },
+  "source": "src/modules/ssh.js",
+  "sourceSha256": "1f7ba2287a329e855e3ec69bed470934794cb2c48dc1b884b7b43ff45d6754c4",
+  "harnessSha256": "76e3353954ddcbc363d6d0267528b502f1a2c927f45d72e14acca07ddae6670b",
+  "command": "node tools/ssh-print-state.js --write",
+  "scope": "Actual ssh exportPNG in Chromium at 2400 px on the longest edge for the six presets at grid 96 on 4:5 (1920x2400), topo and ring at grid 96 on 1:1 (2400x2400) and 16:9 (2400x1350), and topo at grid 160 on 4:5 (1920x2400). The module source is src/modules/ssh.js with audit hooks, evaluated over dist/studio.html; the unmodified bundled module prints byte-identical PNGs. The Float32 plate is compared with a reference plate rebuilt in Node from independent Jacobi eigenpairs (tools/lib/ssh-reference.js) with the same row and degenerate-cluster rule. Each preset is also picked from the real studio preset menu to read the state the shell hands the module.",
+  "criteria": "Every plate field word within 1e-7 of the reference plate, end weight within 1e-9, mid-gap |E| within 1e-12; exact requested PNG dimensions, more than 1000 bytes and a decoded luminance spread above 12/255; every cell-centre print pixel and every print pixel equal in RGB to the buffer pixel of the cell it maps to under nearest-neighbour scaling; the buffer equal to the palette ramp of the snapshot field; zero changed or nonfinite field words, zero changed buffer pixels, and metric, mid-gap |E|, winding, cells, buffer size and settings unchanged across export and across same-instance and fresh-instance regenerate; the shipped bundled module prints byte-identical PNGs; the studio shell hands the module the preset v, w, bc and view when the preset is picked from its menu. One predicate rejects a PNG requested 1 px narrower, a post-export field[0] and metric mutation, and a reference plate with v and w swapped (on rings, where that swap is a translation, a reference whose closing bond is v instead of w).",
+  "rows": [
+    {
+      "fixture": "topo",
+      "preset": "topo",
+      "grid": 96,
+      "aspect": "4:5",
+      "intra": 0.4,
+      "w": 1.2,
+      "bc": "open",
+      "view": "int",
+      "cells": [
+        96,
+        120
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "bufferSize": [
+        96,
+        120
+      ],
+      "fieldWords": 11520,
+      "fieldSha256": "85039186437c0cb45d322eca7d8833531163752307a6d4732b0e0bbbcaec6403",
+      "distinctFieldWords": 2429,
+      "fieldRange": [
+        7.844187825989154e-32,
+        0.9428090453147888
+      ],
+      "metric": 0.9999830649121932,
+      "midE": 1.1102230246249321e-15,
+      "extra": 1,
+      "settings": {
+        "grid": 96,
+        "aspect": "4:5",
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "open",
+        "view": "int",
+        "exposure": 1.05,
+        "seed": "ssh-print-state/topo",
+        "palette": [
+          "#3F3A36",
+          "#8C2F0D",
+          "#F25C05",
+          "#F2A20C",
+          "#FFF3D6"
+        ],
+        "bg": "#121110"
+      },
+      "reference": {
+        "fieldMaxError": 3.2439329000766293e-15,
+        "metricError": 1.2212453270876722e-15,
+        "midEError": 2.713232616832176e-15
+      },
+      "replay": {
+        "sameInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "freshInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 112782,
+        "pngSha256": "be3fb66f4436d674a29b2875f4b472dd12648979422b60f81be2ba08ef2f66eb",
+        "luminance": {
+          "min": 17.1404,
+          "max": 243.45739999999998,
+          "spread": 226.31699999999998,
+          "finite": 4608000,
+          "samples": 4608000
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "pixels": {
+        "cellCentres": {
+          "compared": 11520,
+          "mismatches": 0
+        },
+        "fullRaster": {
+          "compared": 4608000,
+          "mismatches": 0
+        },
+        "bufferFromField": {
+          "compared": 11520,
+          "mismatches": 0
+        },
+        "bufferLuminance": {
+          "min": 17.1404,
+          "max": 243.45739999999998,
+          "spread": 226.31699999999998,
+          "finite": 11520,
+          "samples": 11520
+        }
+      },
+      "bundle": {
+        "pngSha256": "be3fb66f4436d674a29b2875f4b472dd12648979422b60f81be2ba08ef2f66eb",
+        "pngIdentical": true
+      },
+      "shell": {
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "open",
+        "view": "int",
+        "recipe": {
+          "id": "ssh",
+          "v": 2,
+          "intra": 0.4,
+          "w": 1.2,
+          "seed": "ssh-print-state-shell",
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        },
+        "status": "w/v 3.00 end weight 1.00 mid-gap |E| 1.1e-15 edge modes seed ssh-print-state-shell",
+        "matchesPreset": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            1919,
+            2400
+          ],
+          "decoded": [
+            1919,
+            2400
+          ],
+          "failedChecks": [
+            "dimensions"
+          ],
+          "rejected": true
+        },
+        "postExportMutation": {
+          "changedWords": 1,
+          "metricChanged": true,
+          "failedChecks": [
+            "preserved"
+          ],
+          "rejected": true
+        },
+        "swappedHoppings": {
+          "fieldMaxError": 0.9293067082762718,
+          "metricError": 0.9839130645328643,
+          "midEError": 0.8012071324241851,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        }
+      },
+      "failedChecks": [],
+      "accepted": true
+    },
+    {
+      "fixture": "triv",
+      "preset": "triv",
+      "grid": 96,
+      "aspect": "4:5",
+      "intra": 1.2,
+      "w": 0.4,
+      "bc": "open",
+      "view": "int",
+      "cells": [
+        96,
+        120
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "bufferSize": [
+        96,
+        120
+      ],
+      "fieldWords": 11520,
+      "fieldSha256": "1e7ad6eb5b6481872520deec0ff0be26966fa06e4ff52c414598c468b519746d",
+      "distinctFieldWords": 2304,
+      "fieldRange": [
+        0.00006027192284818739,
+        0.14318086206912994
+      ],
+      "metric": 0.016070000379333232,
+      "midE": 0.801207132424187,
+      "extra": 0,
+      "settings": {
+        "grid": 96,
+        "aspect": "4:5",
+        "intra": 1.2,
+        "w": 0.4,
+        "bc": "open",
+        "view": "int",
+        "exposure": 1.05,
+        "seed": "ssh-print-state/triv",
+        "palette": [
+          "#1A1A1A",
+          "#4A4A4A",
+          "#8C8C8C",
+          "#C8C4BB",
+          "#E63B2E"
+        ],
+        "bg": "#E9E7E2"
+      },
+      "reference": {
+        "fieldMaxError": 0,
+        "metricError": 4.295175326518574e-15,
+        "midEError": 7.771561172376096e-16
+      },
+      "replay": {
+        "sameInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "freshInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 117442,
+        "pngSha256": "036ca485a900fc696676820d9d49e27c8a31778e3f74d6a5d932c0b3cb4b34ae",
+        "luminance": {
+          "min": 25.999999999999996,
+          "max": 231.06419999999997,
+          "spread": 205.06419999999997,
+          "finite": 4608000,
+          "samples": 4608000
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "pixels": {
+        "cellCentres": {
+          "compared": 11520,
+          "mismatches": 0
+        },
+        "fullRaster": {
+          "compared": 4608000,
+          "mismatches": 0
+        },
+        "bufferFromField": {
+          "compared": 11520,
+          "mismatches": 0
+        },
+        "bufferLuminance": {
+          "min": 25.999999999999996,
+          "max": 231.06419999999997,
+          "spread": 205.06419999999997,
+          "finite": 11520,
+          "samples": 11520
+        }
+      },
+      "bundle": {
+        "pngSha256": "036ca485a900fc696676820d9d49e27c8a31778e3f74d6a5d932c0b3cb4b34ae",
+        "pngIdentical": true
+      },
+      "shell": {
+        "intra": 1.2,
+        "w": 0.4,
+        "bc": "open",
+        "view": "int",
+        "recipe": {
+          "id": "ssh",
+          "v": 2,
+          "intra": 1.2,
+          "w": 0.4,
+          "seed": "ssh-print-state-shell",
+          "palette": [
+            "#1A1A1A",
+            "#4A4A4A",
+            "#8C8C8C",
+            "#C8C4BB",
+            "#E63B2E"
+          ],
+          "bg": "#E9E7E2"
+        },
+        "status": "w/v 0.33 end weight 0.02 mid-gap |E| 8.0e-1 bulk-like seed ssh-print-state-shell",
+        "matchesPreset": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            1919,
+            2400
+          ],
+          "decoded": [
+            1919,
+            2400
+          ],
+          "failedChecks": [
+            "dimensions"
+          ],
+          "rejected": true
+        },
+        "postExportMutation": {
+          "changedWords": 1,
+          "metricChanged": true,
+          "failedChecks": [
+            "preserved"
+          ],
+          "rejected": true
+        },
+        "swappedHoppings": {
+          "fieldMaxError": 0.9293067082762718,
+          "metricError": 0.9839130645328588,
+          "midEError": 0.8012071324241832,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        }
+      },
+      "failedChecks": [],
+      "accepted": true
+    },
+    {
+      "fixture": "ring",
+      "preset": "ring",
+      "grid": 96,
+      "aspect": "4:5",
+      "intra": 0.4,
+      "w": 1.2,
+      "bc": "periodic",
+      "view": "int",
+      "cells": [
+        96,
+        120
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "bufferSize": [
+        96,
+        120
+      ],
+      "fieldWords": 11520,
+      "fieldSha256": "ee5bd374f39be636a2148c70d6438be94ec1e818044954deda53b7820bdd59d7",
+      "distinctFieldWords": 794,
+      "fieldRange": [
+        4.5366996649540716e-32,
+        0.14433756470680237
+      ],
+      "metric": 0.18750000000008077,
+      "midE": 0.8000000000000015,
+      "extra": 1,
+      "settings": {
+        "grid": 96,
+        "aspect": "4:5",
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "periodic",
+        "view": "int",
+        "exposure": 1.05,
+        "seed": "ssh-print-state/ring",
+        "palette": [
+          "#1F3A5F",
+          "#4F7CAC",
+          "#C9D6DF",
+          "#E07A5F",
+          "#F2CC8F"
+        ],
+        "bg": "#ECEFEA"
+      },
+      "reference": {
+        "fieldMaxError": 2.2055856524017068e-13,
+        "metricError": 1.174060848541103e-13,
+        "midEError": 9.992007221626409e-16
+      },
+      "replay": {
+        "sameInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "freshInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 112972,
+        "pngSha256": "fd33dd891eba83239e01d1441d98af57476b0d3cd495121bca3e063990962b9a",
+        "luminance": {
+          "min": 56.9312,
+          "max": 238.00119999999998,
+          "spread": 181.07,
+          "finite": 4608000,
+          "samples": 4608000
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "pixels": {
+        "cellCentres": {
+          "compared": 11520,
+          "mismatches": 0
+        },
+        "fullRaster": {
+          "compared": 4608000,
+          "mismatches": 0
+        },
+        "bufferFromField": {
+          "compared": 11520,
+          "mismatches": 0
+        },
+        "bufferLuminance": {
+          "min": 56.9312,
+          "max": 238.00119999999998,
+          "spread": 181.07,
+          "finite": 11520,
+          "samples": 11520
+        }
+      },
+      "bundle": {
+        "pngSha256": "fd33dd891eba83239e01d1441d98af57476b0d3cd495121bca3e063990962b9a",
+        "pngIdentical": true
+      },
+      "shell": {
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "periodic",
+        "view": "int",
+        "recipe": {
+          "id": "ssh",
+          "v": 2,
+          "intra": 0.4,
+          "w": 1.2,
+          "bc": "periodic",
+          "seed": "ssh-print-state-shell",
+          "palette": [
+            "#1F3A5F",
+            "#4F7CAC",
+            "#C9D6DF",
+            "#E07A5F",
+            "#F2CC8F"
+          ],
+          "bg": "#ECEFEA"
+        },
+        "status": "w/v 3.00 end weight 0.19 mid-gap |E| 8.0e-1 ring seed ssh-print-state-shell",
+        "matchesPreset": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            1919,
+            2400
+          ],
+          "decoded": [
+            1919,
+            2400
+          ],
+          "failedChecks": [
+            "dimensions"
+          ],
+          "rejected": true
+        },
+        "postExportMutation": {
+          "changedWords": 1,
+          "metricChanged": true,
+          "failedChecks": [
+            "preserved"
+          ],
+          "rejected": true
+        },
+        "swappedHoppings": {
+          "fieldMaxError": 0.13551408052444458,
+          "metricError": 2.320366121466577e-13,
+          "midEError": 2.4424906541753444e-15,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        },
+        "wrongRingBond": {
+          "fieldMaxError": 0.5501313507556915,
+          "metricError": 0.8124483325916181,
+          "midEError": 0.4492422502470632,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        }
+      },
+      "failedChecks": [],
+      "accepted": true
+    },
+    {
+      "fixture": "edge",
+      "preset": "edge",
+      "grid": 96,
+      "aspect": "4:5",
+      "intra": 0.2,
+      "w": 1.4,
+      "bc": "open",
+      "view": "int",
+      "cells": [
+        96,
+        120
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "bufferSize": [
+        96,
+        120
+      ],
+      "fieldWords": 11520,
+      "fieldSha256": "001c3fdb702a083203a972e2ed8caa5bd95c7c0c45c52be667f8e06c59831424",
+      "distinctFieldWords": 2439,
+      "fieldRange": [
+        8.439374483880504e-37,
+        0.9897432923316956
+      ],
+      "metric": 0.9999999964598686,
+      "midE": 5.10702591327572e-15,
+      "extra": 1,
+      "settings": {
+        "grid": 96,
+        "aspect": "4:5",
+        "intra": 0.2,
+        "w": 1.4,
+        "bc": "open",
+        "view": "int",
+        "exposure": 1.05,
+        "seed": "ssh-print-state/edge",
+        "palette": [
+          "#3A2E5C",
+          "#7A4FBF",
+          "#C084FC",
+          "#F7C8E0",
+          "#E6E1F5"
+        ],
+        "bg": "#17141F"
+      },
+      "reference": {
+        "fieldMaxError": 4.520555547189893e-15,
+        "metricError": 1.6653345369377348e-15,
+        "midEError": 2.449196721482729e-15
+      },
+      "replay": {
+        "sameInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "freshInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 113094,
+        "pngSha256": "1e47d8b262805c573ff17cbeff7816de350f95e0b4cbb3a000107971eba7c84e",
+        "luminance": {
+          "min": 21.432,
+          "max": 227.50699999999998,
+          "spread": 206.075,
+          "finite": 4608000,
+          "samples": 4608000
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "pixels": {
+        "cellCentres": {
+          "compared": 11520,
+          "mismatches": 0
+        },
+        "fullRaster": {
+          "compared": 4608000,
+          "mismatches": 0
+        },
+        "bufferFromField": {
+          "compared": 11520,
+          "mismatches": 0
+        },
+        "bufferLuminance": {
+          "min": 21.432,
+          "max": 227.50699999999998,
+          "spread": 206.075,
+          "finite": 11520,
+          "samples": 11520
+        }
+      },
+      "bundle": {
+        "pngSha256": "1e47d8b262805c573ff17cbeff7816de350f95e0b4cbb3a000107971eba7c84e",
+        "pngIdentical": true
+      },
+      "shell": {
+        "intra": 0.2,
+        "w": 1.4,
+        "bc": "open",
+        "view": "int",
+        "recipe": {
+          "id": "ssh",
+          "v": 2,
+          "intra": 0.2,
+          "w": 1.4,
+          "seed": "ssh-print-state-shell",
+          "palette": [
+            "#3A2E5C",
+            "#7A4FBF",
+            "#C084FC",
+            "#F7C8E0",
+            "#E6E1F5"
+          ],
+          "bg": "#17141F"
+        },
+        "status": "w/v 7.00 end weight 1.00 mid-gap |E| 5.1e-15 edge modes seed ssh-print-state-shell",
+        "matchesPreset": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            1919,
+            2400
+          ],
+          "decoded": [
+            1919,
+            2400
+          ],
+          "failedChecks": [
+            "dimensions"
+          ],
+          "rejected": true
+        },
+        "postExportMutation": {
+          "changedWords": 1,
+          "metricChanged": true,
+          "failedChecks": [
+            "preserved"
+          ],
+          "rejected": true
+        },
+        "swappedHoppings": {
+          "fieldMaxError": 0.9791232421994209,
+          "metricError": 0.9853639837112759,
+          "midEError": 1.2004760737227336,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        }
+      },
+      "failedChecks": [],
+      "accepted": true
+    },
+    {
+      "fixture": "crit",
+      "preset": "crit",
+      "grid": 96,
+      "aspect": "4:5",
+      "intra": 0.9,
+      "w": 0.95,
+      "bc": "open",
+      "view": "int",
+      "cells": [
+        96,
+        120
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "bufferSize": [
+        96,
+        120
+      ],
+      "fieldWords": 11520,
+      "fieldSha256": "772d114c41349e865caf24be99540ee14f6756d90ad3c7aa0786f6b124c628c0",
+      "distinctFieldWords": 2304,
+      "fieldRange": [
+        0.00045023986604064703,
+        0.23064927756786346
+      ],
+      "metric": 0.43355321201067154,
+      "midE": 0.007440033771360334,
+      "extra": 1,
+      "settings": {
+        "grid": 96,
+        "aspect": "4:5",
+        "intra": 0.9,
+        "w": 0.95,
+        "bc": "open",
+        "view": "int",
+        "exposure": 1.05,
+        "seed": "ssh-print-state/crit",
+        "palette": [
+          "#C4472B",
+          "#E8A33C",
+          "#2E4A62",
+          "#1E1B18",
+          "#FFFBF2"
+        ],
+        "bg": "#F1E8D8"
+      },
+      "reference": {
+        "fieldMaxError": 0,
+        "metricError": 6.994405055138486e-15,
+        "midEError": 3.122502256758253e-17
+      },
+      "replay": {
+        "sameInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "freshInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 118138,
+        "pngSha256": "2f993b2d159dbb4848bb482e3e7bf93c826dea24e469080c781a7bb85b655090",
+        "luminance": {
+          "min": 27.4212,
+          "max": 251.20059999999998,
+          "spread": 223.77939999999998,
+          "finite": 4608000,
+          "samples": 4608000
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "pixels": {
+        "cellCentres": {
+          "compared": 11520,
+          "mismatches": 0
+        },
+        "fullRaster": {
+          "compared": 4608000,
+          "mismatches": 0
+        },
+        "bufferFromField": {
+          "compared": 11520,
+          "mismatches": 0
+        },
+        "bufferLuminance": {
+          "min": 27.4212,
+          "max": 251.20059999999998,
+          "spread": 223.77939999999998,
+          "finite": 11520,
+          "samples": 11520
+        }
+      },
+      "bundle": {
+        "pngSha256": "2f993b2d159dbb4848bb482e3e7bf93c826dea24e469080c781a7bb85b655090",
+        "pngIdentical": true
+      },
+      "shell": {
+        "intra": 0.9,
+        "w": 0.95,
+        "bc": "open",
+        "view": "int",
+        "recipe": {
+          "id": "ssh",
+          "v": 2,
+          "intra": 0.9,
+          "w": 0.95,
+          "seed": "ssh-print-state-shell",
+          "palette": [
+            "#C4472B",
+            "#E8A33C",
+            "#2E4A62",
+            "#1E1B18",
+            "#FFFBF2"
+          ],
+          "bg": "#F1E8D8"
+        },
+        "status": "w/v 1.06 end weight 0.43 mid-gap |E| 7.4e-3 bulk-like seed ssh-print-state-shell",
+        "matchesPreset": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            1919,
+            2400
+          ],
+          "decoded": [
+            1919,
+            2400
+          ],
+          "failedChecks": [
+            "dimensions"
+          ],
+          "rejected": true
+        },
+        "postExportMutation": {
+          "changedWords": 1,
+          "metricChanged": true,
+          "failedChecks": [
+            "preserved"
+          ],
+          "rejected": true
+        },
+        "swappedHoppings": {
+          "fieldMaxError": 0.14004666358232498,
+          "metricError": 0.3322718078861369,
+          "midEError": 0.06033542886949134,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        }
+      },
+      "failedChecks": [],
+      "accepted": true
+    },
+    {
+      "fixture": "log",
+      "preset": "log",
+      "grid": 96,
+      "aspect": "4:5",
+      "intra": 0.35,
+      "w": 1.25,
+      "bc": "open",
+      "view": "log",
+      "cells": [
+        96,
+        120
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "bufferSize": [
+        96,
+        120
+      ],
+      "fieldWords": 11520,
+      "fieldSha256": "ee9190ebfbc9b405dc79019f5f6d101eea396e265197974e99a1b5d0ee82ae93",
+      "distinctFieldWords": 2432,
+      "fieldRange": [
+        3.8518598887744717e-32,
+        0.9599999785423279
+      ],
+      "metric": 0.9999970380323335,
+      "midE": 4.440892114849641e-16,
+      "extra": 1,
+      "settings": {
+        "grid": 96,
+        "aspect": "4:5",
+        "intra": 0.35,
+        "w": 1.25,
+        "bc": "open",
+        "view": "log",
+        "exposure": 1.05,
+        "seed": "ssh-print-state/log",
+        "palette": [
+          "#2C0F4A",
+          "#8A1C6B",
+          "#E63946",
+          "#FF9F1C",
+          "#FFF1A8"
+        ],
+        "bg": "#0A0710"
+      },
+      "reference": {
+        "fieldMaxError": 3.637978807091713e-12,
+        "metricError": 5.551115123125783e-16,
+        "midEError": 2.2470824763299632e-15
+      },
+      "replay": {
+        "sameInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "freshInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 116720,
+        "pngSha256": "28d7e797aad0dc2ed1aaf51cf69d37835e468be3e445ddc7c8b34469181c57c6",
+        "luminance": {
+          "min": 8.2876,
+          "max": 238.70579999999998,
+          "spread": 230.41819999999998,
+          "finite": 4608000,
+          "samples": 4608000
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 11520,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "pixels": {
+        "cellCentres": {
+          "compared": 11520,
+          "mismatches": 0
+        },
+        "fullRaster": {
+          "compared": 4608000,
+          "mismatches": 0
+        },
+        "bufferFromField": {
+          "compared": 11520,
+          "mismatches": 0
+        },
+        "bufferLuminance": {
+          "min": 8.2876,
+          "max": 238.70579999999998,
+          "spread": 230.41819999999998,
+          "finite": 11520,
+          "samples": 11520
+        }
+      },
+      "bundle": {
+        "pngSha256": "28d7e797aad0dc2ed1aaf51cf69d37835e468be3e445ddc7c8b34469181c57c6",
+        "pngIdentical": true
+      },
+      "shell": {
+        "intra": 0.35,
+        "w": 1.25,
+        "bc": "open",
+        "view": "log",
+        "recipe": {
+          "id": "ssh",
+          "v": 2,
+          "intra": 0.35,
+          "w": 1.25,
+          "view": "log",
+          "seed": "ssh-print-state-shell",
+          "palette": [
+            "#2C0F4A",
+            "#8A1C6B",
+            "#E63946",
+            "#FF9F1C",
+            "#FFF1A8"
+          ],
+          "bg": "#0A0710"
+        },
+        "status": "w/v 3.57 end weight 1.00 mid-gap |E| 4.4e-16 edge modes seed ssh-print-state-shell",
+        "matchesPreset": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            1919,
+            2400
+          ],
+          "decoded": [
+            1919,
+            2400
+          ],
+          "failedChecks": [
+            "dimensions"
+          ],
+          "rejected": true
+        },
+        "postExportMutation": {
+          "changedWords": 1,
+          "metricChanged": true,
+          "failedChecks": [
+            "preserved"
+          ],
+          "rejected": true
+        },
+        "swappedHoppings": {
+          "fieldMaxError": 0.9474506387487054,
+          "metricError": 0.9844161091067591,
+          "midEError": 0.9009825953458483,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        }
+      },
+      "failedChecks": [],
+      "accepted": true
+    },
+    {
+      "fixture": "topo 1:1",
+      "preset": "topo",
+      "grid": 96,
+      "aspect": "1:1",
+      "intra": 0.4,
+      "w": 1.2,
+      "bc": "open",
+      "view": "int",
+      "cells": [
+        96,
+        96
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "bufferSize": [
+        96,
+        96
+      ],
+      "fieldWords": 9216,
+      "fieldSha256": "f98d3e73ad1305f35aa33d15571f4fc54f207c85ada6352c7f8be1f563cadb5f",
+      "distinctFieldWords": 2429,
+      "fieldRange": [
+        7.844187825989154e-32,
+        0.9428090453147888
+      ],
+      "metric": 0.9999830649121932,
+      "midE": 1.1102230246249321e-15,
+      "extra": 1,
+      "settings": {
+        "grid": 96,
+        "aspect": "1:1",
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "open",
+        "view": "int",
+        "exposure": 1.05,
+        "seed": "ssh-print-state/topo 1:1",
+        "palette": [
+          "#3F3A36",
+          "#8C2F0D",
+          "#F25C05",
+          "#F2A20C",
+          "#FFF3D6"
+        ],
+        "bg": "#121110"
+      },
+      "reference": {
+        "fieldMaxError": 3.2439329000766293e-15,
+        "metricError": 1.2212453270876722e-15,
+        "midEError": 2.713232616832176e-15
+      },
+      "replay": {
+        "sameInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 9216,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "freshInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 9216,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "export": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 129693,
+        "pngSha256": "921c798ed0fd5aa0e6d4e2437d4677dbfb630eff182c282f08aa2a63e7199b4e",
+        "luminance": {
+          "min": 17.1404,
+          "max": 243.45739999999998,
+          "spread": 226.31699999999998,
+          "finite": 5760000,
+          "samples": 5760000
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 9216,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "pixels": {
+        "cellCentres": {
+          "compared": 9216,
+          "mismatches": 0
+        },
+        "fullRaster": {
+          "compared": 5760000,
+          "mismatches": 0
+        },
+        "bufferFromField": {
+          "compared": 9216,
+          "mismatches": 0
+        },
+        "bufferLuminance": {
+          "min": 17.1404,
+          "max": 243.45739999999998,
+          "spread": 226.31699999999998,
+          "finite": 9216,
+          "samples": 9216
+        }
+      },
+      "bundle": {
+        "pngSha256": "921c798ed0fd5aa0e6d4e2437d4677dbfb630eff182c282f08aa2a63e7199b4e",
+        "pngIdentical": true
+      },
+      "shell": {
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "open",
+        "view": "int",
+        "recipe": {
+          "id": "ssh",
+          "v": 2,
+          "intra": 0.4,
+          "w": 1.2,
+          "seed": "ssh-print-state-shell",
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        },
+        "status": "w/v 3.00 end weight 1.00 mid-gap |E| 1.1e-15 edge modes seed ssh-print-state-shell",
+        "matchesPreset": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            2400
+          ],
+          "decoded": [
+            2399,
+            2400
+          ],
+          "failedChecks": [
+            "dimensions"
+          ],
+          "rejected": true
+        },
+        "postExportMutation": {
+          "changedWords": 1,
+          "metricChanged": true,
+          "failedChecks": [
+            "preserved"
+          ],
+          "rejected": true
+        },
+        "swappedHoppings": {
+          "fieldMaxError": 0.9293067082762718,
+          "metricError": 0.9839130645328643,
+          "midEError": 0.8012071324241851,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        }
+      },
+      "failedChecks": [],
+      "accepted": true
+    },
+    {
+      "fixture": "topo 16:9",
+      "preset": "topo",
+      "grid": 96,
+      "aspect": "16:9",
+      "intra": 0.4,
+      "w": 1.2,
+      "bc": "open",
+      "view": "int",
+      "cells": [
+        96,
+        54
+      ],
+      "requested": [
+        2400,
+        1350
+      ],
+      "bufferSize": [
+        96,
+        54
+      ],
+      "fieldWords": 5184,
+      "fieldSha256": "e1822404cdf5c74e4ee739eec551ff108c96787b445ed8dd31d2cea831cb29b2",
+      "distinctFieldWords": 1422,
+      "fieldRange": [
+        7.844187825989154e-32,
+        0.9428090453147888
+      ],
+      "metric": 0.9999830649121932,
+      "midE": 1.1102230246249321e-15,
+      "extra": 1,
+      "settings": {
+        "grid": 96,
+        "aspect": "16:9",
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "open",
+        "view": "int",
+        "exposure": 1.05,
+        "seed": "ssh-print-state/topo 16:9",
+        "palette": [
+          "#3F3A36",
+          "#8C2F0D",
+          "#F25C05",
+          "#F2A20C",
+          "#FFF3D6"
+        ],
+        "bg": "#121110"
+      },
+      "reference": {
+        "fieldMaxError": 3.2439329000766293e-15,
+        "metricError": 1.2212453270876722e-15,
+        "midEError": 2.713232616832176e-15
+      },
+      "replay": {
+        "sameInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 5184,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "freshInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 5184,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "export": {
+        "width": 2400,
+        "height": 1350,
+        "bytes": 72948,
+        "pngSha256": "fddc26b7f4f1ce75a726ea6d89aed7ffaa78c0fce25dd8004ca853b72c300b63",
+        "luminance": {
+          "min": 17.1404,
+          "max": 243.45739999999998,
+          "spread": 226.31699999999998,
+          "finite": 3240000,
+          "samples": 3240000
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 5184,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "pixels": {
+        "cellCentres": {
+          "compared": 5184,
+          "mismatches": 0
+        },
+        "fullRaster": {
+          "compared": 3240000,
+          "mismatches": 0
+        },
+        "bufferFromField": {
+          "compared": 5184,
+          "mismatches": 0
+        },
+        "bufferLuminance": {
+          "min": 17.1404,
+          "max": 243.45739999999998,
+          "spread": 226.31699999999998,
+          "finite": 5184,
+          "samples": 5184
+        }
+      },
+      "bundle": {
+        "pngSha256": "fddc26b7f4f1ce75a726ea6d89aed7ffaa78c0fce25dd8004ca853b72c300b63",
+        "pngIdentical": true
+      },
+      "shell": {
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "open",
+        "view": "int",
+        "recipe": {
+          "id": "ssh",
+          "v": 2,
+          "intra": 0.4,
+          "w": 1.2,
+          "seed": "ssh-print-state-shell",
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        },
+        "status": "w/v 3.00 end weight 1.00 mid-gap |E| 1.1e-15 edge modes seed ssh-print-state-shell",
+        "matchesPreset": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            1350
+          ],
+          "decoded": [
+            2399,
+            1350
+          ],
+          "failedChecks": [
+            "dimensions"
+          ],
+          "rejected": true
+        },
+        "postExportMutation": {
+          "changedWords": 1,
+          "metricChanged": true,
+          "failedChecks": [
+            "preserved"
+          ],
+          "rejected": true
+        },
+        "swappedHoppings": {
+          "fieldMaxError": 0.9293067082762718,
+          "metricError": 0.9839130645328643,
+          "midEError": 0.8012071324241851,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        }
+      },
+      "failedChecks": [],
+      "accepted": true
+    },
+    {
+      "fixture": "ring 1:1",
+      "preset": "ring",
+      "grid": 96,
+      "aspect": "1:1",
+      "intra": 0.4,
+      "w": 1.2,
+      "bc": "periodic",
+      "view": "int",
+      "cells": [
+        96,
+        96
+      ],
+      "requested": [
+        2400,
+        2400
+      ],
+      "bufferSize": [
+        96,
+        96
+      ],
+      "fieldWords": 9216,
+      "fieldSha256": "c77c68180fc54e340d943ae1536f94cf0d7054e53c32448901d3af91fd224873",
+      "distinctFieldWords": 794,
+      "fieldRange": [
+        4.5366996649540716e-32,
+        0.14433756470680237
+      ],
+      "metric": 0.18750000000008077,
+      "midE": 0.8000000000000015,
+      "extra": 1,
+      "settings": {
+        "grid": 96,
+        "aspect": "1:1",
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "periodic",
+        "view": "int",
+        "exposure": 1.05,
+        "seed": "ssh-print-state/ring 1:1",
+        "palette": [
+          "#1F3A5F",
+          "#4F7CAC",
+          "#C9D6DF",
+          "#E07A5F",
+          "#F2CC8F"
+        ],
+        "bg": "#ECEFEA"
+      },
+      "reference": {
+        "fieldMaxError": 2.2055856524017068e-13,
+        "metricError": 1.174060848541103e-13,
+        "midEError": 9.992007221626409e-16
+      },
+      "replay": {
+        "sameInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 9216,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "freshInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 9216,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "export": {
+        "width": 2400,
+        "height": 2400,
+        "bytes": 130217,
+        "pngSha256": "d436a956bfe3c2f42dc680fa073229cbfbd927d1f2302e7c8df542a26c9eb334",
+        "luminance": {
+          "min": 56.9312,
+          "max": 238.00119999999998,
+          "spread": 181.07,
+          "finite": 5760000,
+          "samples": 5760000
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 9216,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "pixels": {
+        "cellCentres": {
+          "compared": 9216,
+          "mismatches": 0
+        },
+        "fullRaster": {
+          "compared": 5760000,
+          "mismatches": 0
+        },
+        "bufferFromField": {
+          "compared": 9216,
+          "mismatches": 0
+        },
+        "bufferLuminance": {
+          "min": 56.9312,
+          "max": 238.00119999999998,
+          "spread": 181.07,
+          "finite": 9216,
+          "samples": 9216
+        }
+      },
+      "bundle": {
+        "pngSha256": "d436a956bfe3c2f42dc680fa073229cbfbd927d1f2302e7c8df542a26c9eb334",
+        "pngIdentical": true
+      },
+      "shell": {
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "periodic",
+        "view": "int",
+        "recipe": {
+          "id": "ssh",
+          "v": 2,
+          "intra": 0.4,
+          "w": 1.2,
+          "bc": "periodic",
+          "seed": "ssh-print-state-shell",
+          "palette": [
+            "#1F3A5F",
+            "#4F7CAC",
+            "#C9D6DF",
+            "#E07A5F",
+            "#F2CC8F"
+          ],
+          "bg": "#ECEFEA"
+        },
+        "status": "w/v 3.00 end weight 0.19 mid-gap |E| 8.0e-1 ring seed ssh-print-state-shell",
+        "matchesPreset": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            2400
+          ],
+          "decoded": [
+            2399,
+            2400
+          ],
+          "failedChecks": [
+            "dimensions"
+          ],
+          "rejected": true
+        },
+        "postExportMutation": {
+          "changedWords": 1,
+          "metricChanged": true,
+          "failedChecks": [
+            "preserved"
+          ],
+          "rejected": true
+        },
+        "swappedHoppings": {
+          "fieldMaxError": 0.13551408052444458,
+          "metricError": 2.320366121466577e-13,
+          "midEError": 2.4424906541753444e-15,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        },
+        "wrongRingBond": {
+          "fieldMaxError": 0.5501313507556915,
+          "metricError": 0.8124483325916181,
+          "midEError": 0.4492422502470632,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        }
+      },
+      "failedChecks": [],
+      "accepted": true
+    },
+    {
+      "fixture": "ring 16:9",
+      "preset": "ring",
+      "grid": 96,
+      "aspect": "16:9",
+      "intra": 0.4,
+      "w": 1.2,
+      "bc": "periodic",
+      "view": "int",
+      "cells": [
+        96,
+        54
+      ],
+      "requested": [
+        2400,
+        1350
+      ],
+      "bufferSize": [
+        96,
+        54
+      ],
+      "fieldWords": 5184,
+      "fieldSha256": "9f851cea6ded6bd095e8b21bd84c851f7f264318bac0579616c782ea1f2918aa",
+      "distinctFieldWords": 475,
+      "fieldRange": [
+        1.7079339292800672e-31,
+        0.14433756470680237
+      ],
+      "metric": 0.18750000000008077,
+      "midE": 0.8000000000000015,
+      "extra": 1,
+      "settings": {
+        "grid": 96,
+        "aspect": "16:9",
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "periodic",
+        "view": "int",
+        "exposure": 1.05,
+        "seed": "ssh-print-state/ring 16:9",
+        "palette": [
+          "#1F3A5F",
+          "#4F7CAC",
+          "#C9D6DF",
+          "#E07A5F",
+          "#F2CC8F"
+        ],
+        "bg": "#ECEFEA"
+      },
+      "reference": {
+        "fieldMaxError": 1.444851093524335e-13,
+        "metricError": 1.174060848541103e-13,
+        "midEError": 9.992007221626409e-16
+      },
+      "replay": {
+        "sameInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 5184,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "freshInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 5184,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "export": {
+        "width": 2400,
+        "height": 1350,
+        "bytes": 73370,
+        "pngSha256": "8c7a175cff2eebc4f23a586cc510fae196e1ef9798117e805e63231bbdf99b9f",
+        "luminance": {
+          "min": 56.9312,
+          "max": 238.00119999999998,
+          "spread": 181.07,
+          "finite": 3240000,
+          "samples": 3240000
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 5184,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "pixels": {
+        "cellCentres": {
+          "compared": 5184,
+          "mismatches": 0
+        },
+        "fullRaster": {
+          "compared": 3240000,
+          "mismatches": 0
+        },
+        "bufferFromField": {
+          "compared": 5184,
+          "mismatches": 0
+        },
+        "bufferLuminance": {
+          "min": 56.9312,
+          "max": 238.00119999999998,
+          "spread": 181.07,
+          "finite": 5184,
+          "samples": 5184
+        }
+      },
+      "bundle": {
+        "pngSha256": "8c7a175cff2eebc4f23a586cc510fae196e1ef9798117e805e63231bbdf99b9f",
+        "pngIdentical": true
+      },
+      "shell": {
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "periodic",
+        "view": "int",
+        "recipe": {
+          "id": "ssh",
+          "v": 2,
+          "intra": 0.4,
+          "w": 1.2,
+          "bc": "periodic",
+          "seed": "ssh-print-state-shell",
+          "palette": [
+            "#1F3A5F",
+            "#4F7CAC",
+            "#C9D6DF",
+            "#E07A5F",
+            "#F2CC8F"
+          ],
+          "bg": "#ECEFEA"
+        },
+        "status": "w/v 3.00 end weight 0.19 mid-gap |E| 8.0e-1 ring seed ssh-print-state-shell",
+        "matchesPreset": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            1350
+          ],
+          "decoded": [
+            2399,
+            1350
+          ],
+          "failedChecks": [
+            "dimensions"
+          ],
+          "rejected": true
+        },
+        "postExportMutation": {
+          "changedWords": 1,
+          "metricChanged": true,
+          "failedChecks": [
+            "preserved"
+          ],
+          "rejected": true
+        },
+        "swappedHoppings": {
+          "fieldMaxError": 0.13551408052444458,
+          "metricError": 2.320366121466577e-13,
+          "midEError": 2.4424906541753444e-15,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        },
+        "wrongRingBond": {
+          "fieldMaxError": 0.5501313507556915,
+          "metricError": 0.8124483325916181,
+          "midEError": 0.4492422502470632,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        }
+      },
+      "failedChecks": [],
+      "accepted": true
+    },
+    {
+      "fixture": "topo grid 160",
+      "preset": "topo",
+      "grid": 160,
+      "aspect": "4:5",
+      "intra": 0.4,
+      "w": 1.2,
+      "bc": "open",
+      "view": "int",
+      "cells": [
+        160,
+        200
+      ],
+      "requested": [
+        1920,
+        2400
+      ],
+      "bufferSize": [
+        160,
+        200
+      ],
+      "fieldWords": 32000,
+      "fieldSha256": "16b83f841f7759cf1a0ae886c8a3c01bfff0774de764baa2a98df4ef4b3875b5",
+      "distinctFieldWords": 6621,
+      "fieldRange": [
+        1.761339980449984e-33,
+        0.9428090453147888
+      ],
+      "metric": 0.9999999767694302,
+      "midE": 4.3424140271293726e-15,
+      "extra": 1,
+      "settings": {
+        "grid": 160,
+        "aspect": "4:5",
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "open",
+        "view": "int",
+        "exposure": 1.05,
+        "seed": "ssh-print-state/topo grid 160",
+        "palette": [
+          "#3F3A36",
+          "#8C2F0D",
+          "#F25C05",
+          "#F2A20C",
+          "#FFF3D6"
+        ],
+        "bg": "#121110"
+      },
+      "reference": {
+        "fieldMaxError": 4.682451581524233e-15,
+        "metricError": 2.9976021664879227e-15,
+        "midEError": 4.763168233575802e-16
+      },
+      "replay": {
+        "sameInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 32000,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        },
+        "freshInstance": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 32000,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "export": {
+        "width": 1920,
+        "height": 2400,
+        "bytes": 168097,
+        "pngSha256": "782858b2e657ad19c760d599f8d1cd9210ddeb1028ba05a199b4830c87603070",
+        "luminance": {
+          "min": 17.1404,
+          "max": 243.45739999999998,
+          "spread": 226.31699999999998,
+          "finite": 4608000,
+          "samples": 4608000
+        },
+        "nonblank": true,
+        "state": {
+          "changedWords": 0,
+          "nonfinite": 0,
+          "words": 32000,
+          "bufPixelsChanged": 0,
+          "metricChanged": false,
+          "midEChanged": false,
+          "extraChanged": false,
+          "cellsChanged": false,
+          "settingsChanged": false,
+          "bufChanged": false
+        }
+      },
+      "pixels": {
+        "cellCentres": {
+          "compared": 32000,
+          "mismatches": 0
+        },
+        "fullRaster": {
+          "compared": 4608000,
+          "mismatches": 0
+        },
+        "bufferFromField": {
+          "compared": 32000,
+          "mismatches": 0
+        },
+        "bufferLuminance": {
+          "min": 17.1404,
+          "max": 243.45739999999998,
+          "spread": 226.31699999999998,
+          "finite": 32000,
+          "samples": 32000
+        }
+      },
+      "bundle": {
+        "pngSha256": "782858b2e657ad19c760d599f8d1cd9210ddeb1028ba05a199b4830c87603070",
+        "pngIdentical": true
+      },
+      "shell": {
+        "intra": 0.4,
+        "w": 1.2,
+        "bc": "open",
+        "view": "int",
+        "recipe": {
+          "id": "ssh",
+          "v": 2,
+          "intra": 0.4,
+          "w": 1.2,
+          "seed": "ssh-print-state-shell",
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110"
+        },
+        "status": "w/v 3.00 end weight 1.00 mid-gap |E| 1.1e-15 edge modes seed ssh-print-state-shell",
+        "matchesPreset": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            1919,
+            2400
+          ],
+          "decoded": [
+            1919,
+            2400
+          ],
+          "failedChecks": [
+            "dimensions"
+          ],
+          "rejected": true
+        },
+        "postExportMutation": {
+          "changedWords": 1,
+          "metricChanged": true,
+          "failedChecks": [
+            "preserved"
+          ],
+          "rejected": true
+        },
+        "swappedHoppings": {
+          "fieldMaxError": 0.9364093355834484,
+          "metricError": 0.9841035428847144,
+          "midEError": 0.8004455895839822,
+          "failedChecks": [
+            "reference"
+          ],
+          "rejected": true
+        }
+      },
+      "failedChecks": [],
+      "accepted": true
+    }
+  ],
+  "limitations": [
+    "Print path and state preservation at the enumerated presets, grids and sheets on SwiftShader Chromium; not calibrated colour, ICC handling, printer output or other hardware.",
+    "Printing magnifies a 96 or 160 site chain by 12 to 25 print pixels per cell; the extra pixels carry no additional resolved physics.",
+    "The buffer check re-applies the module paint rule with Studio.util.makeRamp; it confirms the buffer is the current field, not that the palette ramp is perceptually uniform.",
+    "Degenerate clusters are shown as mean densities; individual rows inside a cluster are not unique and are not claimed."
+  ],
+  "environment": {
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
+    "playwright": "1.56.1",
+    "platform": "linux x64 6.18.44-fc-v37"
+  }
+}
