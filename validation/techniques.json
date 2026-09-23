@@ -3085,7 +3085,7 @@
     ],
     "remaining": [
       "Broaden independent reference trajectories and parameter coverage.",
-      "Audit actual print exports and displayed diagnostics."
+      "Compare rendered pixels independently; state preservation alone is not full scientific print accuracy or printed numerical resolution."
     ],
     "numerical": [
       {
@@ -3099,7 +3099,18 @@
         "results": "validation/results/orbit-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/eight-print-state.js",
+        "command": "node tools/eight-print-state.js --write",
+        "results": "validation/results/eight-print-state.json",
+        "scope": "Actual eight exportPNG and exportSVG at 2400 longest edge for world, braid, shape, broken and wreath fixtures (2400x2400, 1920x2400 and 2400x1350).",
+        "criteria": "Exact Float64 trajectory words, L/dE/dq diagnostics, phase, raf and settings preserved across PNG and SVG; deterministic regenerate replay; exact requested dimensions; nonblank reduced raster; nonempty SVG paths; wrong dimensions and deliberate post-export traj+phase mutation rejected; broken return distance exceeds world.",
+        "benchmark": "In-harness auditSnapshot of the private Yoshida trajectory arrays, diagnostics and settings against the same module exportPNG and exportSVG paths.",
+        "failureControl": "Requested PNG/SVG width reduced by one pixel must fail acceptance; mutating traj.px[0][0] and phase after export must fail the identical preservation predicate.",
+        "limitations": "State preservation and declared dimensions only. Does not establish long-time orbit accuracy, calibrated color, printed numerical resolution, SVG/PNG pixel agreement or every control/aspect/hardware."
+      }
+    ]
   },
   {
     "id": "peakon",
