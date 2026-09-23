@@ -2194,20 +2194,18 @@ shall not be misrepresented as the original profile.
   {
     "id": "kpz",
     "source": "src/modules/kpz.js",
-    "sourceSha256": "30b2393368ab389e0e5fabc4e17215de292e0dbfb945dc92b3b04d2aab57fb19",
+    "sourceSha256": "9221d87ad41bd0067a4aceee17da808147d61144b454a27eda85bcf9ce3d7dac",
     "reference": "Mehran Kardar, Giorgio Parisi and Yi-Cheng Zhang, 'Dynamic scaling of growing interfaces', Physical Review Letters 56, 889 (1986). The scaling form W(L, t) = L^α f(t/L^z) is Fereydoon Family and Tamás Vicsek, J. Phys. A 18, L75 (1985). Ballistic deposition is Murray Vold (1959) and Michael Sutherland (1966); the restricted solid-on-solid model is Jin Min Kim and Joel Kosterlitz, Phys. Rev. Lett. 62, 2289 (1989); surface relaxation is Family, J. Phys. A 19, L441 (1986); the cluster model is Murray Eden, in the Berkeley Symposium proceedings (1961). That the edge fluctuations follow the Tracy-Widom distributions is Michael Prähofer and Herbert Spohn, Phys. Rev. Lett. 84, 4882 (2000), and Kazumasa Takeuchi and Masaki Sano measured it in turbulent liquid crystal, Phys. Rev. Lett. 104, 230601 (2010).",
     "equation": "∂h/∂t = ν∇²h + (λ/2)(∇h)² + η,   W(t) ~ t^β with β = 1/3 in 1+1 dimensions",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Independent Float64 twin of column deposition kernels (random, relax, ballistic, RSOS) measuring W(t)~t^β; not a browser UI replay or Eden radial audit.",
-      "Finite L=512 and five seeds per class; KPZ ballistic crossover often fits under 1/3. RSOS is the KPZ gate with a wider acceptance band.",
-      "Family–Vicsek α at small L uses coarse bands only; no Tracy–Widom edge law or liquid-crystal experiment claim.",
-      "No print-state accuracy audit is registered."
+      "Catalog equation and citation are review targets, not verified paper equivalence; the continuum KPZ equation is not integrated, only discrete deposition rules in its class.",
+      "Complete evidence covers only the documented domain in validation/KPZ.md and the kpz-science / kpz-production / kpz-print-state results artifacts.",
+      "Eden radial growth is excluded. A single ballistic plate's fitted exponent cannot distinguish KPZ from Edwards–Wilkinson; ballistic deposition fits near 0.28 at plate size.",
+      "No Tracy–Widom, experimental or all-parameter claim; broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Register print-state preservation for strata/rings exports and quantitative raster checks.",
-      "Tighten finite-size / multi-seed statistics, ballistic crossover diagnostics and optional Eden radial KPZ evidence.",
-      "Review catalog equation/citation assumptions against Kardar–Parisi–Zhang / Family–Vicsek primary sources beyond the deposition twin."
+      "Extend beyond the six column presets and enumerated seeds: Eden radial growth, larger lattices for the ballistic crossover, per-pixel strata colour and Tracy–Widom statistics."
     ],
     "numerical": [
       {
@@ -2219,9 +2217,38 @@ shall not be misrepresented as the original profile.
         "benchmark": "1+1 universality: random deposition β=1/2, Edwards–Wilkinson β=1/4, KPZ β=1/3 (Family–Vicsek α=1/2 for EW/KPZ). Fit window matches production status-line filter.",
         "failureControl": "Claiming the KPZ β band for random deposition must fail; removing ballistic lateral sticking or relaxation site choice collapses each to RD (β~1/2) and must miss the KPZ/EW bands.",
         "limitations": "Float64 CPU twin only; finite L/crossover/single-realization noise; Eden, Tracy–Widom and print unvalidated."
+      },
+      {
+        "test": "tools/kpz-production.js",
+        "command": "node tools/kpz-production.js --write",
+        "results": "validation/results/kpz-production.json",
+        "scope": "Actual kpz.js column deposition (random, relax, ballistic, rsos), run headless through its own time-sliced build with the engine makeRng, at the kpz, ew, rd, rsos, rings and wide preset lattices and a thin nearly full relaxation lattice, against an independent replay of the kernels, width schedule, stopping rules and status-line fit; fitted-exponent statistics over 16 seeds per class at the preset lattice, with a 64-seed ballistic and relaxation follow-up. Eden is excluded.",
+        "criteria": "Every cell word, column height, width sample, fitted exponent and final width identical to the replay (floating values within 1e-12), repeated runs identical, no particle above the lattice; seed-mean exponent inside its stated class band (RD [0.47, 0.53], relaxation [0.21, 0.31], RSOS [0.293, 0.363], ballistic [0.24, 0.353]); RD over RSOS, RSOS over relaxation and RD over ballistic separated by more than 5 standard errors at 16 seeds and ballistic over relaxation at 64 seeds.",
+        "benchmark": "Independent re-implementation of the deposition rules and measurement schedule on the same engine random stream, and the 1+1 class exponents β = 1/2 (random deposition), 1/4 (Edwards–Wilkinson), 1/3 (KPZ).",
+        "failureControl": "Removing ballistic lateral sticking changes 453923 cell words and moves the seed-mean exponent to 0.50, outside the ballistic band; a generator without the engine's twelve discarded draws, a 1.2 width cadence and the pre-2026-09-23 relaxation rule without a top check are each detected by the exact comparison.",
+        "limitations": "Finite preset lattices, the default seed and the enumerated seed sets. A single ballistic plate cannot be distinguished from relaxation by its fitted exponent; only seed means separate. No Eden, Tracy–Widom, Family–Vicsek α at plate size or experimental claim."
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/kpz-print-state.js",
+        "command": "node tools/kpz-print-state.js --write",
+        "results": "validation/results/kpz-print-state.json",
+        "scope": "Actual kpz.js in dist/studio.html (Chromium, SwiftShader) for the six column presets kpz, ew, rd, rsos, rings and wide at seed kardar-1986 with each preset's own paint settings and palette. The browser build (cell, column heights, width samples, fitted exponent, particle count, lattice) is compared with the independent Node replay in tools/kpz-production.js. exportPNG at 2400 px on the longest edge (2400x2400; 2400x1350 for 16:9) with the full state compared before and after; exportSVG of the Interfaces view (rings) with every polyline vertex compared against column heights recorded during an independent Node deposition at the interface times; exportSVG refused for the strata and both views. Eden is excluded.",
+        "criteria": "Cell words, column heights, particle count and lattice identical to the Node replay and width samples, final width and fitted exponent within 1e-12; regenerate identical; exact requested PNG dimensions, image/png over 1000 bytes, luminance spread over 12/255 with more than 0.1% of pixels off the background; zero changed cell, height or width words, fitted exponent, scalars or settings across every export; Interfaces SVG exactly 2400x2400 with max(2, lines) polylines of one vertex per column, every vertex equal to round2(ox + pw (x + 0.5)/W), round2(oy + ph (1 - (h_T[x] + 0.5)/H)) with zero error; no deposit that fails to raise its column, particle numbers rising with height in every production column, and interface heights nondecreasing in T; exportSVG throws \"raster view\" for strata and both. Failure controls: a PNG requested 1 px narrower, a post-export change to one cell and to h[0], and one interface shifted by one cell must each be rejected by the same predicate.",
+        "benchmark": "The Node replay of tools/kpz-production.js for the whole deposit, and column heights recorded during an independent Node deposition at every interface time for the vector print.",
+        "failureControl": "A PNG requested 1 px narrower, a post-export change to one cell and to h[0], and one interface shifted up by one cell (all 900 of its vertices off, up to 2.51 px) must each be rejected by the same predicate.",
+        "limitations": "Strata and both views are rasters checked for exact dimensions, nonblank output and preserved state, not per-pixel colour; only the Interfaces view is compared vertex by vertex. No calibrated colour or every control, aspect or hardware."
+      }
+    ],
+    "domain": {
+      "parameters": "The kpz (ballistic, 700 columns, fill 0.86), ew (relax, 700, 0.88), rd (random, 700, 0.86), rsos (900, 0.9), rings (ballistic, 900, 0.9, Interfaces view) and wide (ballistic, 1400, 0.8, 16:9, both view) presets at seed kardar-1986 with their own paint settings; 16 seeds per class and 64 ballistic and relaxation seeds at the preset lattices for exponent statistics; one thin relaxation lattice (192 columns, 16:9, fill 0.98). Eden is excluded.",
+      "conditions": "Periodic columns, heights from 0 with the first particle at y = 1; engine makeRng stream seed + '/kpz'; width sampled after each deposition block at particle counts growing by 1.25 from 4L; stop when a deposit would pass row H − 2, the mean height reaches fill · H, or 1.4 · fill · W · H particles; fit over samples with t ≥ 4, 0.4 \u003c W \u003c 0.06 L. Print: real exportPNG at 2400 px on the longest edge and exportSVG of the Interfaces view.",
+      "resolution": "Lattices 700x700, 900x900 and 1400x788 (192x108 for the relaxation edge); 20 to 24 width samples per preset; exponent means with standard errors 0.002 to 0.010 at 16 seeds and 0.003 to 0.004 at 64 (validation/results/kpz-production.json); 2400x2400 and 2400x1350 prints with 14400 Interfaces vertices compared (validation/results/kpz-print-state.json).",
+      "precision": "Int32 cells and heights, Float64 widths and fit; RGBA8 PNG; SVG coordinates rounded to 0.01 px. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/kpz-production.json"
   },
   {
     "id": "potts",
@@ -30116,6 +30143,7 @@ void main(){
             if (h[lx] < h[best]) best = lx;
             if (h[rx] < h[best]) best = rx;
             y = h[best] + 1;
+            if (y > top) { target = nPart; return true; }
             cell[y * W + best] = ++nPart; h[best] = y;
             continue;
           } else {

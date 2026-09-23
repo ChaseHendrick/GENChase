@@ -165,6 +165,7 @@
             if (h[lx] < h[best]) best = lx;
             if (h[rx] < h[best]) best = rx;
             y = h[best] + 1;
+            if (y > top) { target = nPart; return true; }
             cell[y * W + best] = ++nPart; h[best] = y;
             continue;
           } else {

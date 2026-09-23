@@ -1,11 +1,11 @@
 {
   "pass": true,
   "source": "src/modules/kpz.js",
-  "sourceSha256": "30b2393368ab389e0e5fabc4e17215de292e0dbfb945dc92b3b04d2aab57fb19",
+  "sourceSha256": "9221d87ad41bd0067a4aceee17da808147d61144b454a27eda85bcf9ce3d7dac",
   "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
   "harnessSha256": "f2b2eb93884d4f36777da2c879f658c5b676eb8e90f6b6d5e0805ddb2fc9d419",
   "replayHarness": "tools/kpz-production.js",
-  "replayHarnessSha256": "cd2f7517e231a0a5c9d4f6a82db58e910566d143b38ba34bb520f3d69a6da360",
+  "replayHarnessSha256": "2c55b75f43b34db83289bdef3a2ce144af3810457e802b9cf501f25b258cd5e8",
   "command": "node tools/kpz-print-state.js --write",
   "setup": "npm install --no-save --package-lock=false playwright@1.56.1",
   "scope": "Actual kpz.js in dist/studio.html (Chromium, SwiftShader) for the six column presets kpz, ew, rd, rsos, rings and wide at seed kardar-1986 with each preset's own paint settings and palette. The browser build (cell, column heights, width samples, fitted exponent, particle count, lattice) is compared with the independent Node replay in tools/kpz-production.js. exportPNG at 2400 px on the longest edge (2400x2400; 2400x1350 for 16:9) with the full state compared before and after; exportSVG of the Interfaces view (rings) with every polyline vertex compared against column heights recorded during an independent Node deposition at the interface times; exportSVG refused for the strata and both views. Eden is excluded.",

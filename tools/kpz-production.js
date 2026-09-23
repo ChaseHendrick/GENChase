@@ -31,7 +31,7 @@ function loadProduction(mutate = s => s) {
 
 // Independent replay. Heights start at 0 and the first particle in a column sits at y = 1. Particles are
 // deposited in blocks whose size is set by the next logarithmic sample; the width is measured after each block.
-function replay(state, rng = makeRng(state.seed + '/kpz'), cadence = 1.25) {
+function replay(state, rng = makeRng(state.seed + '/kpz'), cadence = 1.25, legacyRelax = false) {
   const ratio = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 }[state.aspect] || 1;
   const W = state.cols, H = Math.max(64, Math.round(W * ratio)), top = H - 2;
   const cell = new Int32Array(W * H), h = new Int32Array(W), widths = [];
@@ -52,8 +52,13 @@ function replay(state, rng = makeRng(state.seed + '/kpz'), cadence = 1.25) {
       else if (state.model === 'relax') {
         for (const c of [left(x), right(x)]) if (h[c] < h[col]) col = c;
         y = h[col] + 1;
-        if (y >= H) outside++; else cell[y * W + col] = n + 1;
-        n++; h[col] = y;
+        if (y > top) {
+          if (!legacyRelax) { full = true; break; }
+          if (y >= H) outside++; else cell[y * W + col] = n + 1;
+          n++; h[col] = y;
+          continue;
+        }
+        cell[y * W + col] = ++n; h[col] = y;
         continue;
       } else {
         y = h[x] + 1;
@@ -185,9 +190,16 @@ if (require.main === module) (async () => {
   assert(unskipped.cellWordsDiffering > 1000);
   assert(!exact(cadence));
 
-  // Extreme relaxation setting: the relax rule has no top check, so a thin 16:9 lattice near full fill can
-  // place particles above the last row. Recorded, not part of the validated domain.
-  const extreme = replay({ model: 'relax', cols: 192, fill: 0.98, aspect: '16:9', seed: 'kpz-production/relax-edge' });
+  // Thin, nearly full relaxation lattice. Before 2026-09-23 the relax rule had no top check, so particles
+  // could land above the last row, where the typed-array write is silently dropped: absent from the plate
+  // but counted in the heights and width. It now stops at the top like the other rules.
+  const edgeState = { model: 'relax', cols: 192, fill: 0.98, aspect: '16:9', seed: 'kpz-production/relax-edge' };
+  const edgeCompare = compare(await production(edgeState), replay(edgeState));
+  const legacy = replay(edgeState, undefined, 1.25, true);
+  const legacyModule = loadProduction(s => replaceOnce(s, '            if (y > top) { target = nPart; return true; }\n            cell[y * W + best] = ++nPart;', '            cell[y * W + best] = ++nPart;'));
+  const legacyCompare = compare(await legacyModule(edgeState), replay(edgeState));
+  assert(exact(edgeCompare) && edgeCompare.particlesAboveLattice === 0 && legacy.outside > 0 && !exact(legacyCompare));
+  const extreme = { ...edgeCompare, exact: true, legacyParticlesAboveLattice: legacy.outside, legacyParticles: legacy.nPart, legacyRejected: true };
   const result = {
     pass: true,
     source: 'src/modules/kpz.js', sourceSha256: sha(original), engineSha256: sha(shared), harnessSha256: sha(fs.readFileSync(__filename)),
@@ -195,7 +207,7 @@ if (require.main === module) (async () => {
     scope: 'Actual kpz.js column deposition (random, relax, ballistic, rsos) at the kpz, ew, rd, rsos, rings and wide preset lattices, run through its own time-sliced build with the engine makeRng, against an independent replay; displayed exponent statistics over ' + SEEDS + ' seeds per class at the preset lattice. Eden is excluded.',
     criteria: 'Every cell word, column height, width sample, fitted exponent and final width identical to the replay (floating values within 1e-12); repeated runs identical; no particle above the lattice; seed-mean exponent inside its stated class band; random over RSOS, RSOS over relaxation and random over ballistic separated by more than 5 standard errors at ' + SEEDS + ' seeds, ballistic over relaxation by more than 5 at 64 seeds; failure controls detected.',
     fixtures, statistics, ordering, followUp, failureControls,
-    relaxEdge: { cols: 192, fill: 0.98, aspect: '16:9', particlesAboveLattice: extreme.outside, particles: extreme.nPart },
+    relaxEdge: { cols: 192, fill: 0.98, aspect: '16:9', ...extreme },
     limitations: [
       'Finite preset lattices, the default seed and ' + SEEDS + ' further seeds per class; no all-parameter, Tracy-Widom, Eden or experimental claim.',
       'Class bands include a finite-size allowance; ballistic deposition crosses over slowly and fits below 1/3 at plate size.',

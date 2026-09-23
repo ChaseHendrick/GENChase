@@ -27,7 +27,7 @@ Complete labels apply only within each record's reviewed domain.
 | [growth](src/modules/growth.js) | unvalidated | None registered | Not scientifically validated |
 | [cyclic](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded |
 | [landscape](src/modules/landscape.js) | unvalidated | None registered | Not scientifically validated |
-| [kpz](src/modules/kpz.js) | partially validated | [kpz-science.js](tools/kpz-science.js) | Not scientifically validated |
+| [kpz](src/modules/kpz.js) | validated within stated limits | [kpz-science.js](tools/kpz-science.js), [kpz-production.js](tools/kpz-production.js) | Limited evidence recorded |
 | [potts](src/modules/potts.js) | unvalidated | None registered | Not scientifically validated |
 | [liesegang](src/modules/liesegang.js) | unvalidated | None registered | Not scientifically validated |
 | [grains](src/modules/grains.js) | unvalidated | None registered | Not scientifically validated |
@@ -164,10 +164,10 @@ Complete labels apply only within each record's reviewed domain.
 
 ### kpz
 
-- Independent Float64 twin of column deposition kernels (random, relax, ballistic, RSOS) measuring W(t)~t^β; not a browser UI replay or Eden radial audit.
-- Finite L=512 and five seeds per class; KPZ ballistic crossover often fits under 1/3. RSOS is the KPZ gate with a wider acceptance band.
-- Family–Vicsek α at small L uses coarse bands only; no Tracy–Widom edge law or liquid-crystal experiment claim.
-- No print-state accuracy audit is registered.
+- Catalog equation and citation are review targets, not verified paper equivalence; the continuum KPZ equation is not integrated, only discrete deposition rules in its class.
+- Complete evidence covers only the documented domain in validation/KPZ.md and the kpz-science / kpz-production / kpz-print-state results artifacts.
+- Eden radial growth is excluded. A single ballistic plate's fitted exponent cannot distinguish KPZ from Edwards–Wilkinson; ballistic deposition fits near 0.28 at plate size.
+- No Tracy–Widom, experimental or all-parameter claim; broader settings require additional independent evidence.
 
 ### vegetation
 

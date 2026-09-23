@@ -1,9 +1,9 @@
 {
   "pass": true,
   "source": "src/modules/kpz.js",
-  "sourceSha256": "30b2393368ab389e0e5fabc4e17215de292e0dbfb945dc92b3b04d2aab57fb19",
+  "sourceSha256": "9221d87ad41bd0067a4aceee17da808147d61144b454a27eda85bcf9ce3d7dac",
   "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
-  "harnessSha256": "cd2f7517e231a0a5c9d4f6a82db58e910566d143b38ba34bb520f3d69a6da360",
+  "harnessSha256": "2c55b75f43b34db83289bdef3a2ce144af3810457e802b9cf501f25b258cd5e8",
   "command": "node tools/kpz-production.js --write",
   "scope": "Actual kpz.js column deposition (random, relax, ballistic, rsos) at the kpz, ew, rd, rsos, rings and wide preset lattices, run through its own time-sliced build with the engine makeRng, against an independent replay; displayed exponent statistics over 16 seeds per class at the preset lattice. Eden is excluded.",
   "criteria": "Every cell word, column height, width sample, fitted exponent and final width identical to the replay (floating values within 1e-12); repeated runs identical; no particle above the lattice; seed-mean exponent inside its stated class band; random over RSOS, RSOS over relaxation and random over ballistic separated by more than 5 standard errors at 16 seeds, ballistic over relaxation by more than 5 at 64 seeds; failure controls detected.",
@@ -330,8 +330,24 @@
     "cols": 192,
     "fill": 0.98,
     "aspect": "16:9",
-    "particlesAboveLattice": 1293,
-    "particles": 21837
+    "cells": [
+      192,
+      108
+    ],
+    "particles": 19642,
+    "samples": 15,
+    "pointsUsed": 15,
+    "cellWordsDiffering": 0,
+    "heightsDiffering": 0,
+    "widthSampleError": 0,
+    "betaFit": 0.14493529538608738,
+    "betaError": 4.718447854656915e-16,
+    "wFinalError": 0,
+    "particlesAboveLattice": 0,
+    "exact": true,
+    "legacyParticlesAboveLattice": 1293,
+    "legacyParticles": 21837,
+    "legacyRejected": true
   },
   "limitations": [
     "Finite preset lattices, the default seed and 16 further seeds per class; no all-parameter, Tracy-Widom, Eden or experimental claim.",
