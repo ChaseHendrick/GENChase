@@ -1,0 +1,324 @@
+{
+  "scope": "Actual float32 SCH_STEP_FS with uniform and production-shaped edge absorbers (pot.b weight, damp=exp(-dt*damp*b)), plus long-time free/uniform-V phase. Independent Float64 stencil twin and modal damped recurrence on SwiftShader RGBA32F. No scattering coefficients, hard walls, float16, arbitrary packets or print certification.",
+  "sourceSha256": "3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6",
+  "backend": {
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.33 Safari/537.36",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+  },
+  "uniform": [
+    {
+      "label": "uniform-absorber-traveling",
+      "grid": 32,
+      "potential": 0.25,
+      "dt": 0.1,
+      "steps": 40,
+      "elapsed": 4,
+      "dampStrength": 0.8,
+      "absorber": "uniform",
+      "absorbFraction": 0,
+      "modes": [
+        {
+          "x": 3,
+          "y": 2,
+          "amplitude": 0.35,
+          "discreteEnergy": 0.4946508551861679
+        }
+      ],
+      "recurrenceError": 2.6583257574375185e-8,
+      "modalError": 2.6583257553558504e-8,
+      "exactDiscreteError": 0.33571804739402966,
+      "phaseError": 0.07739366971054862,
+      "remainingNorm": 0.20859349104098057,
+      "initialNorm": 125.44000000000159,
+      "remainingNormFraction": 0.0016628945395486122,
+      "maxAbsPsi": 0.014283692159107547
+    },
+    {
+      "label": "uniform-absorber-negative-V",
+      "grid": 32,
+      "potential": -0.4,
+      "dt": 0.1,
+      "steps": 40,
+      "elapsed": 4,
+      "dampStrength": 1,
+      "absorber": "uniform",
+      "absorbFraction": 0,
+      "modes": [
+        {
+          "x": 2,
+          "y": 1,
+          "amplitude": 0.35,
+          "discreteEnergy": -0.3046648129145172
+        }
+      ],
+      "recurrenceError": 2.183104906138683e-8,
+      "modalError": 2.18310490553153e-8,
+      "exactDiscreteError": 0.3433038582325123,
+      "phaseError": 0.05938488145316989,
+      "remainingNorm": 0.0421334072086267,
+      "initialNorm": 125.44000000000159,
+      "remainingNormFraction": 0.00033588494267080806,
+      "maxAbsPsi": 0.006421156411834226
+    },
+    {
+      "label": "uniform-absorber-constant",
+      "grid": 32,
+      "potential": 0.5,
+      "dt": 0.12,
+      "steps": 32,
+      "elapsed": 3.84,
+      "dampStrength": 0.6,
+      "absorber": "uniform",
+      "absorbFraction": 0,
+      "modes": [
+        {
+          "x": 0,
+          "y": 0,
+          "amplitude": 0.4,
+          "discreteEnergy": 0.5
+        }
+      ],
+      "recurrenceError": 1.826755855749429e-7,
+      "modalError": 1.8267558559575958e-7,
+      "exactDiscreteError": 0.3557431739139636,
+      "phaseError": 0.06671976487464071,
+      "remainingNorm": 1.6341881184553793,
+      "initialNorm": 163.83999999999722,
+      "remainingNormFraction": 0.009974292715181927,
+      "maxAbsPsi": 0.03994855234459833
+    }
+  ],
+  "temporal": [
+    {
+      "label": "absorber-temporal-refinement",
+      "grid": 32,
+      "potential": 0.2,
+      "dt": 0.2,
+      "steps": 10,
+      "elapsed": 2,
+      "dampStrength": 0.7,
+      "absorber": "uniform",
+      "absorbFraction": 0,
+      "modes": [
+        {
+          "x": 4,
+          "y": 2,
+          "amplitude": 0.35,
+          "discreteEnergy": 0.5690136863021658
+        }
+      ],
+      "recurrenceError": 2.2850852238187613e-8,
+      "modalError": 2.2850852182676462e-8,
+      "exactDiscreteError": 0.2640081381301314,
+      "phaseError": 0.07637033381155267,
+      "remainingNorm": 7.646944943751274,
+      "initialNorm": 125.44000000000159,
+      "remainingNormFraction": 0.0609609769112817,
+      "maxAbsPsi": 0.08674240225888187
+    },
+    {
+      "label": "absorber-temporal-refinement",
+      "grid": 32,
+      "potential": 0.2,
+      "dt": 0.1,
+      "steps": 20,
+      "elapsed": 2,
+      "dampStrength": 0.7,
+      "absorber": "uniform",
+      "absorbFraction": 0,
+      "modes": [
+        {
+          "x": 4,
+          "y": 2,
+          "amplitude": 0.35,
+          "discreteEnergy": 0.5690136863021658
+        }
+      ],
+      "recurrenceError": 1.7541920005470502e-7,
+      "modalError": 1.7541919980490484e-7,
+      "exactDiscreteError": 0.2636816164354712,
+      "phaseError": 0.03899498987747618,
+      "remainingNorm": 7.6327318493197085,
+      "initialNorm": 125.44000000000159,
+      "remainingNormFraction": 0.06084767099266272,
+      "maxAbsPsi": 0.08641955869654003
+    },
+    {
+      "label": "absorber-temporal-refinement",
+      "grid": 32,
+      "potential": 0.2,
+      "dt": 0.05,
+      "steps": 40,
+      "elapsed": 2,
+      "dampStrength": 0.7,
+      "absorber": "uniform",
+      "absorbFraction": 0,
+      "modes": [
+        {
+          "x": 4,
+          "y": 2,
+          "amplitude": 0.35,
+          "discreteEnergy": 0.5690136863021658
+        }
+      ],
+      "recurrenceError": 2.8854774623832125e-7,
+      "modalError": 2.885477460440322e-7,
+      "exactDiscreteError": 0.26356430704397266,
+      "phaseError": 0.019704679282090076,
+      "remainingNorm": 7.629235864056223,
+      "initialNorm": 125.44000000000159,
+      "remainingNormFraction": 0.060819801212182126,
+      "maxAbsPsi": 0.0863371442188575
+    }
+  ],
+  "edge": [
+    {
+      "label": "edge-absorber-packet-mode",
+      "grid": 48,
+      "potential": 0,
+      "dt": 0.1,
+      "steps": 60,
+      "elapsed": 6,
+      "dampStrength": 0.9,
+      "absorber": "edge",
+      "absorbFraction": 0.12,
+      "modes": [
+        {
+          "x": 5,
+          "y": 0,
+          "amplitude": 0.3,
+          "discreteEnergy": 0.20664665970876483
+        }
+      ],
+      "recurrenceError": 6.15038684037561e-7,
+      "modalError": null,
+      "exactDiscreteError": null,
+      "phaseError": null,
+      "remainingNorm": 130.58639796151832,
+      "initialNorm": 207.36000000000658,
+      "remainingNormFraction": 0.6297569346137836,
+      "maxAbsPsi": 0.33345594222423297
+    },
+    {
+      "label": "edge-absorber-with-V",
+      "grid": 48,
+      "potential": 0.3,
+      "dt": 0.08,
+      "steps": 50,
+      "elapsed": 4,
+      "dampStrength": 1.1,
+      "absorber": "edge",
+      "absorbFraction": 0.15,
+      "modes": [
+        {
+          "x": 3,
+          "y": 3,
+          "amplitude": 0.3,
+          "discreteEnergy": 0.4522409349774265
+        }
+      ],
+      "recurrenceError": 4.508353434462542e-7,
+      "modalError": null,
+      "exactDiscreteError": null,
+      "phaseError": null,
+      "remainingNorm": 121.99204491256337,
+      "initialNorm": 207.36000000000658,
+      "remainingNormFraction": 0.5883104017773896,
+      "maxAbsPsi": 0.3146835622957701
+    }
+  ],
+  "longTime": [
+    {
+      "label": "long-time-phase-traveling",
+      "grid": 32,
+      "potential": 0,
+      "dt": 0.05,
+      "steps": 2400,
+      "elapsed": 120,
+      "dampStrength": 0,
+      "absorber": "none",
+      "absorbFraction": 0,
+      "modes": [
+        {
+          "x": 8,
+          "y": 4,
+          "amplitude": 0.4,
+          "discreteEnergy": 1.2928932188134525
+        }
+      ],
+      "recurrenceError": 8.157822792287384e-7,
+      "modalError": 8.157822772858481e-7,
+      "exactDiscreteError": 0.010162398853884841,
+      "phaseError": 0.027028699732177586,
+      "remainingNorm": 163.84025091456988,
+      "initialNorm": 163.83999999999722,
+      "remainingNormFraction": 1.0000015314610147,
+      "maxAbsPsi": 0.4001867455417264,
+      "periods": 24.69244159969829
+    },
+    {
+      "label": "long-time-phase-with-V",
+      "grid": 32,
+      "potential": 0.5,
+      "dt": 0.05,
+      "steps": 2400,
+      "elapsed": 120,
+      "dampStrength": 0,
+      "absorber": "none",
+      "absorbFraction": 0,
+      "modes": [
+        {
+          "x": 6,
+          "y": 3,
+          "amplitude": 0.4,
+          "discreteEnergy": 1.285846955332365
+        }
+      ],
+      "recurrenceError": 8.492409011573443e-7,
+      "modalError": 8.49240899214454e-7,
+      "exactDiscreteError": 0.01070642378842171,
+      "phaseError": 0.02658869092713445,
+      "remainingNorm": 163.84007670508043,
+      "initialNorm": 163.83999999999722,
+      "remainingNormFraction": 1.000000468170674,
+      "maxAbsPsi": 0.4000788204023692,
+      "periods": 24.557867880097135
+    }
+  ],
+  "failureControl": {
+    "label": "wrong-absorber-damp-sign",
+    "grid": 32,
+    "potential": 0.2,
+    "dt": 0.1,
+    "steps": 24,
+    "elapsed": 2.4000000000000004,
+    "dampStrength": 0.9,
+    "absorber": "uniform",
+    "absorbFraction": 0,
+    "modes": [
+      {
+        "x": 4,
+        "y": 2,
+        "amplitude": 0.35,
+        "discreteEnergy": 0.5690136863021658
+      }
+    ],
+    "recurrenceError": 2.9670656764862673,
+    "modalError": 2.9670656764862673,
+    "exactDiscreteError": 2.6633851723339337,
+    "phaseError": 0.06308333586621195,
+    "remainingNorm": 9441.286171126994,
+    "initialNorm": 125.44000000000159,
+    "remainingNormFraction": 75.2653553182946,
+    "maxAbsPsi": 3.040141587389436
+  },
+  "command": "node tools/schrodinger-absorber-science.js",
+  "harnessSha256": "1b4d91ddddc7e2b3f011c1672113efa8781ad4b12d85c2a7753e00addde54f01",
+  "pass": true,
+  "limitations": [
+    "Uniform and production-shaped edge absorbers on periodic float32 grids only; wrap still couples opposite edges through the absorber layer.",
+    "Independent references are the Float64 stencil twin of this implementation and modal damped recurrence for uniform b. Not continuum PML accuracy or experimental absorption.",
+    "Long-time phase covers two free/uniform-V traveling modes over elapsed time 120 (~25 periods); not chaotic, interacting, or arbitrary-potential long runs.",
+    "No scattering probabilities, hard-wall stadium, packet injection, float16, aspect-ratio or hardware certification."
+  ]
+}

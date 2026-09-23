@@ -119,13 +119,35 @@ and the actual preset/export controls. Printing samples the existing grid with
 bicubic interpolation. Additional pixels do not add resolved dynamics, and there
 is no honest vector representation of this field density.
 
+## Long-duration and parameter-band extension
+
+Run `node tools/nonreciprocal-longrun-science.js --write`. The
+[long-run artifact](results/nonreciprocal-longrun-science.json) records a Node
+Float64 twin of the same complete-chemical-potential Laplacian / Heun operators
+used by the short-time GPU audit. It does not replace that GPU campaign.
+
+Five exact discrete plane waves are integrated to times T ∈ {5, 8, 10, 20} at
+distinct (α₀, α₁, K, mode) points. Against the analytic discrete dispersion
+above, maximum component errors stay below 1.75×10⁻⁷ (limit 10⁻⁵), amplitude
+errors below 5×10⁻⁸, and both conserved means within about 10⁻¹⁶ (limit 10⁻⁹).
+A 3×3 parameter matrix at T=5 on a 32×32 grid and a 32→64 refinement on a fixed
+physical 32×32 box remain inside the same absolute band. Because the reference
+is the exact discrete mode, spatial refinement need not reduce that modal error.
+
+Four deliberate long-run failures are rejected: reversed ω in the analytic
+phase, a 25% wrong K inside the dispersion amplitude/frequency, an unstable
+coarse step dt=0.05 (nonfinite by step 32), and a injected mean drift of order
+10⁻². This package still does not validate nonlinear long-time statistics,
+open boundaries, spectral solvers or the paper phase diagram.
+
 ## Remaining limits and source review
 
-The tests establish bounded component, modal, refinement, conservation and print
-properties. The complete allowed parameter/grid range, nonlinear stability,
-long-time phase diagram, spontaneous wave selection, Lyapunov exponents,
-independent spectral-solver comparison and cross-device reproducibility remain
-unvalidated. No new mathematical identity or historical priority is claimed.
+The tests establish bounded component, modal, short-time refinement, discrete
+long-duration modal, finite parameter/resolution-band, conservation and print
+properties. Nonlinear long-time statistics, the complete allowed parameter/grid
+range, nonlinear stability, phase diagram, spontaneous wave selection, Lyapunov
+exponents, independent spectral-solver comparison and cross-device reproducibility
+remain unvalidated. No new mathematical identity or historical priority is claimed.
 
 On 2026-09-21, the initial source search used `2025 nonreciprocal Cahn Hilliard
 model pattern formation traveling waves chaos` and `2024 2025 odd elasticity
