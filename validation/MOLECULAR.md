@@ -53,6 +53,22 @@ Run `node tools/molecular-science.js`; add `--write` to refresh [the measured JS
 
 The 16,384-particle performance fixture tests 249,569 candidate pairs versus 134,209,536 brute-force pairs after 20 steps. Timing measurements in JSON describe this machine/run only; they are not a browser performance guarantee. This short high-count fixture is not a long-time thermodynamic validation.
 
+## Equilibration and transport evidence
+
+Run `node tools/molecular-equilibration-science.js`; add `--write` to refresh [the measured JSON](results/molecular-equilibration-science.json). The harness drives the same Float64 module, with no browser.
+
+| Check | Independent reference / acceptance | Recorded result |
+|---|---|---|
+| Multi-seed equilibrated temperature | Eight seeds, N=64, density `0.4`, initial `T=0.8`, 1500 equilibration + 3000 production steps at `dt=0.002`; Flyvbjerg–Petersen-style block SE and across-seed SE | Mean `T ≈ 1.239` with across-seed SE `≈ 0.0087`; block SE / naive SE ≈ `4.16` |
+| Multi-seed energy per particle | Same fixture; block and across-seed uncertainty | Mean `E/N ≈ 0.399` with across-seed SE `≈ 6.9e-5` |
+| Short-time ballistic MSD | Independent force-free Float64 free-flight of production-start velocities at `t=0.02` | Mean relative error `≈ 0.010` |
+| Late-time diffusion proxy | Unwrapped MSD / `(4t)` at `t=5` across seeds | Mean `D ≈ 0.418` with across-seed SE `≈ 0.022` |
+| Finite-size control | Four seeds at `N=144`, same density / times | `|ΔT| ≈ 0.0047` vs combined SE `≈ 0.0095` |
+| Timestep control | Four seeds at `dt=0.001` with doubled step counts | `|ΔT| ≈ 0.0058` vs combined SE `≈ 0.013` |
+| Failure controls | Raw wrapped-coordinate MSD; temperature divisor `K/N`; unequilibrated transient mean | Raw MSD relative error mean `≈ 3.10`; DoF error `≈ 0.019`; transient gap `≈ 0.33` |
+
+This fixture does not claim an equation of state, melting point, Green–Kubo plateau or experimental transport coefficient. Kinetic temperature remains an NVE observable: there is no thermostat.
+
 ## Print and application evidence
 
 `node tools/molecular-print.js --write` uses Playwright and an installed Chromium-compatible browser. Use the development browser setup in [BUILDING.md](../BUILDING.md). Results are in [molecular-print.json](results/molecular-print.json).
@@ -70,8 +86,8 @@ These check every preset, duplicate hash rendering, tab visibility, nonblank out
 
 ## Remaining limits
 
-- No equation-of-state, melting temperature, phase-coexistence or transport-coefficient claim. Apparent clusters and ordering are visual observations in a finite 2D model.
-- No full scan over every allowed density, temperature, count, timestep, seed and long elapsed time. Chaotic trajectories eventually separate under tiny rounding changes; cross-engine bitwise agreement is not promised.
+- No equation-of-state, melting temperature, phase-coexistence or Green–Kubo / experimental transport-coefficient claim. Apparent clusters and ordering are visual observations in a finite 2D model.
+- A bounded density-`0.4` multi-seed equilibration/transport fixture exists; it does not scan every allowed density, temperature, count, timestep, seed or long elapsed time. Chaotic trajectories eventually separate under tiny rounding changes; cross-engine bitwise agreement is not promised.
 - The cutoff is part of the model. No long-range tail correction or force beyond `2.5` is included.
-- Initialization and instantaneous temperature are specified, not sampled from an equilibrated canonical distribution. Quantitative equilibrium observables would need equilibration, independent seeds and correlated-sample uncertainty.
+- Initialization is still a jittered lattice with once-rescaled Gaussian velocities, not a canonical ensemble sample. The equilibration harness discards a declared transient and reports correlation-aware uncertainty for that NVE fixture only.
 - Rendering circles and near-neighbor links is a representation of positions, not literal particle boundaries or chemical bonds. Increasing print pixels sharpens these marks without adding particles or improving temporal accuracy.
