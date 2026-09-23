@@ -3165,14 +3165,16 @@
     "sourceSha256": "3636ca8433248c1afb594d76a13d78734592778668cb54dc37ca693af775fb84",
     "reference": "K. Schwarzschild, Sitzungsber. Preuss. Akad. Wiss. (1916). The unstable circular photon orbit at r = 3M is a textbook consequence of that metric. C. Darwin, Proc. R. Soc. Lond. A 249, 180 (1959) and J. L. Synge, Mon. Not. R. Astron. Soc. 131, 463 (1966) integrated the null geodesics and the capture cross-section. The plate is a seeded print of those equatorial (or slightly inclined) rays. It is not a new black hole.",
     "equation": "d²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Finite deterministic fixtures only; no all-parameter or print accuracy claim.",
-      "Finite launch radius and integration cutoffs; deflection is recorded but not validated by the turning-radius benchmark."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/ORBITS.md and the orbit-science / photon-print-state results artifacts.",
+      "Finite launch radius and integration cutoffs; deflection is recorded but not validated by the turning-radius benchmark.",
+      "No all-parameter or independent pixel print claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Broaden independent reference trajectories and parameter coverage.",
-      "Compare rendered pixels independently; state preservation alone is not full scientific print accuracy or printed numerical resolution."
+      "Extend beyond the documented finite null-geodesic fixtures and paused-export print domain with independent evidence for deflection validation, broader parameters, and independent pixel print accuracy."
     ],
     "numerical": [
       {
@@ -3197,7 +3199,15 @@
         "failureControl": "Requested PNG width reduced by one pixel must fail acceptance; mutating field[0] and bMeas after export must fail the identical preservation predicate.",
         "limitations": "State preservation and declared dimensions only. Does not establish geodesic capture accuracy beyond the recorded ratios, calibrated color, printed numerical resolution or every control/aspect/hardware."
       }
-    ]
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained null-geodesic fixtures named in validation/ORBITS.md and measured in validation/results/orbit-science.json (five impact parameters, three angular steps, critical impact and circular radius searches), plus paused exportPNG fixtures ring/spray/polar/impact at 2400 longest edge.",
+      "conditions": "Float32 field/mask with null-geodesic solver. Print: real exportPNG; exact field/mask words and bMeas/rPh/deflRatio diagnostics preserved; deterministic regenerate replay; wrong-dimension and post-export field+bMeas mutation rejected; disk capture exceeds equatorial pencil; bMeas and rPh within 2% of 3√3 M and 3M. Deflection recorded but not validated by the turning-radius benchmark. No all-parameter coverage or independent pixel print accuracy.",
+      "resolution": "Numerical acceptance as recorded in orbit-science.json. Print: zero changed field/mask words, exact dimensions, nonblank raster, failureControls rejected (validation/results/photon-print-state.json).",
+      "precision": "Float32 fields versus recorded orbit-science references; RGBA8 PNG. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/orbit-science.json"
   },
   {
     "id": "crapper",
