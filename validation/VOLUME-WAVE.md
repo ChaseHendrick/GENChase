@@ -60,6 +60,13 @@ After the optional browser setup in [BUILDING.md](../BUILDING.md), run:
 node tools/volume-wave-science.js
 ```
 
+Long-time discrete modal phase and continuum dispersion refinement (Float64 twin,
+including grids above 64³) are recorded separately:
+
+```sh
+node tools/volume-wave-dispersion-science.js
+```
+
 The [saved result](results/volume-wave-science.json) was measured on 2026-09-21
 with Chromium's SwiftShader WebGL2 renderer. The harness compiles the maintained
 shader strings and compares float32 readback against independently computed
@@ -111,10 +118,30 @@ readback access only; production code does not export that testing hook. A print
 one cell-aligned slice with bicubic display interpolation. It does not add cells or
 calibrate amplitude as acoustic pressure or detector intensity.
 
+## Long-time modal fidelity and numerical dispersion
+
+This package is a Node Float64 twin of the seven-point leapfrog (no browser required):
+
+```sh
+node tools/volume-wave-dispersion-science.js
+```
+
+The [saved result](results/volume-wave-dispersion-science.json) was measured on
+2026-09-22. Against the exact discrete θ above, single Fourier modes at grids
+32³–96³ over 400–1200 steps keep field max error below about 3×10⁻¹⁴ and relative
+θ error below 10⁻¹⁵ (limits 5×10⁻⁵ and 10⁻¹⁰). Continuum standing-wave RMS error
+at fixed T=0.25 shrinks from 6.56×10⁻³ on 32³ to 7.22×10⁻⁴ on 96³ (refinement
+ratios about 2.3 as expected for 1.5× grid steps). A 128³ short discrete fixture
+(80 steps) also stays inside the discrete band. Deliberately wrong Courant 0.5
+inside analytic θ (true 0.8) yields field max 1.60 and phase gap above 1 after
+400 steps; reversing the Laplacian exceeds max error 0.1 within 40 steps.
+
+This package does not replace the short-time GPU atlas campaign, certify SwiftShader
+allocation at 96³–256³, or audit pulse continuum / print fidelity.
+
 ## Remaining limits
 
-No actual 96³ through 256³ simulation is included in this numerical audit. Those
-choices are resource-gated capabilities, not certified devices or performance levels.
-Long-time behavior, arbitrary controls, all GPU drivers, full print-resolution
-behavior, physical experiments and the pulse's continuum error remain unvalidated.
-There is no general scientific validation or new-mathematics claim.
+Extreme 192³–256³ GPU allocation across hardware, arbitrary controls, all GPU
+drivers, full print-resolution behavior, physical experiments and the pulse's
+continuum error remain unvalidated. There is no general scientific validation or
+new-mathematics claim.
