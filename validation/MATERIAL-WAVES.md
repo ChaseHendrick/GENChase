@@ -8,9 +8,9 @@ positions or field values; the module's own diagnostics are not used as the orac
 
 | Module | Tested scope | Finest measured errors | Excluded scope |
 |---|---|---|---|
-| Hasimoto | Unit arclength, curvature, binormal motion | Arclength below 4.9e-5, curvature below 2.3e-4, flow below 1.1e-4 | Full fluid dynamics and print path |
-| Gerstner | Single-train Jacobian and surface pressure | Jacobian below 1.1e-5, normalized pressure below 1.2e-6 | Two-train superposition, interior pressure and print path |
-| Chladni | Three integer square cosine modes | Normalized Helmholtz residual below 1.7e-5, boundary normal derivative below 1e-10 | Circular, sand, interference, elastic-plate and print behavior |
+| Hasimoto | Unit arclength, curvature, binormal motion | Arclength below 4.9e-5, curvature below 2.3e-4, flow below 1.1e-4 | Full Biot-Savart dynamics; print limited to paused export state preservation |
+| Gerstner | Single-train Jacobian and surface pressure | Jacobian below 1.1e-5, normalized pressure below 1.2e-6 | Two-train superposition, interior pressure; print limited to paused export state preservation |
+| Chladni | Three integer square cosine modes | Normalized Helmholtz residual below 1.7e-5, boundary normal derivative below 1e-10 | Circular, sand, interference, elastic-plate; print limited to paused export state preservation |
 
 Each test uses three difference steps and requires second-order convergence.
 Full sample parameters and tolerances are recorded in the script and validation
@@ -38,3 +38,7 @@ Helmholtz benchmark follows directly by differentiating its separable cosine mod
 
 The request to audit every remaining module is not complete. See the generated
 [coverage inventory](../VALIDATION.md) for current counts. No blanket promotion is made.
+
+Paused export state-preservation evidence for these three modules is recorded by
+`node tools/material-wave-print-state.js --write` → [results](results/material-wave-print-state.json).
+That check does not promote color fidelity, sand, circular modes, two-train maps or Biot-Savart dynamics.

@@ -1,5 +1,0 @@
-fieldCells() { return gw && gh ? [gw, gh] : null; },
-auditAdvance
-auditSnapshot
-failureControl
-rgba32f
