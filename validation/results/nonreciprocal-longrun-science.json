@@ -1,0 +1,724 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-23",
+  "passed": true,
+  "source": "src/modules/nonreciprocal.js",
+  "sourceSha256": "0f5427d1446138675dd4be67d1c3df9896ec06ffa1103d9dbc94060332a7c1b0",
+  "harness": "tools/nonreciprocal-longrun-science.js",
+  "equation": "Saha–Golestanian 2025 Eq5; Float64 twin of periodic FD + Heun; discrete plane-wave dispersion from NONRECIPROCAL.md",
+  "criteria": {
+    "fieldMax": 0.00001,
+    "amplitudeMax": 0.00001,
+    "conservedMeanAbsolute": 1e-9,
+    "longDuration": "T in {5,8,10,20}"
+  },
+  "longRuns": [
+    {
+      "name": "long-T5-mode21",
+      "grid": [
+        32,
+        24
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 24,
+        "dx": 1,
+        "K": 1,
+        "a0": 3,
+        "a1": 1
+      },
+      "mode": [
+        2,
+        1
+      ],
+      "time": 5,
+      "dt": 0.001,
+      "steps": 5000,
+      "q": 0.22038928239928987,
+      "amplitude": 0.8829556713678837,
+      "omega": 0.4893500005950536,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 6.087449933023237e-8,
+        "rms": 4.3095878887916374e-8
+      },
+      "amplitudeErrorMax": 4.3368740598737077e-8,
+      "mean": [
+        -4.5825611823720656e-17,
+        -6.750965527343074e-17
+      ],
+      "meanDrift": [
+        -8.673617379884035e-18,
+        -1.3227266504323154e-17
+      ],
+      "meanAbsMax": 6.750965527343074e-17,
+      "meanDriftAbsMax": 1.3227266504323154e-17
+    },
+    {
+      "name": "long-T10-mode32",
+      "grid": [
+        32,
+        32
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 32,
+        "dx": 1,
+        "K": 0.5,
+        "a0": -1,
+        "a1": 0.7
+      },
+      "mode": [
+        3,
+        2
+      ],
+      "time": 10,
+      "dt": 0.0005,
+      "steps": 20000,
+      "q": 0.4893017103723359,
+      "amplitude": 0.8691082468909337,
+      "omega": -0.7480172503123184,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 1.748528792866466e-7,
+        "rms": 1.2410057902386138e-7
+      },
+      "amplitudeErrorMax": 3.037438134345649e-8,
+      "mean": [
+        -1.0234868508263162e-16,
+        -1.4799359654427136e-17
+      ],
+      "meanDrift": [
+        3.469446951953614e-18,
+        4.824699667560495e-17
+      ],
+      "meanAbsMax": 1.0234868508263162e-16,
+      "meanDriftAbsMax": 4.824699667560495e-17
+    },
+    {
+      "name": "long-T20-mode12",
+      "grid": [
+        48,
+        48
+      ],
+      "parameters": {
+        "W": 48,
+        "H": 48,
+        "dx": 1,
+        "K": 0.8,
+        "a0": 2.2,
+        "a1": 0.5
+      },
+      "mode": [
+        1,
+        2
+      ],
+      "time": 20,
+      "dt": 0.002,
+      "steps": 10000,
+      "q": 0.08525862467424258,
+      "amplitude": 0.9652943075873833,
+      "omega": 0.14784727517874977,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 3.7358993010272457e-8,
+        "rms": 2.645616650205444e-8
+      },
+      "amplitudeErrorMax": 2.0221168517409183e-8,
+      "mean": [
+        -6.090806871207457e-17,
+        -7.63459029791876e-17
+      ],
+      "meanDrift": [
+        2.2551405187698492e-17,
+        -1.170336011744075e-17
+      ],
+      "meanAbsMax": 7.63459029791876e-17,
+      "meanDriftAbsMax": 2.2551405187698492e-17
+    },
+    {
+      "name": "long-T10-mode22",
+      "grid": [
+        40,
+        40
+      ],
+      "parameters": {
+        "W": 40,
+        "H": 40,
+        "dx": 1,
+        "K": 0.4,
+        "a0": -0.5,
+        "a1": 1.2
+      },
+      "mode": [
+        2,
+        2
+      ],
+      "time": 10,
+      "dt": 0.001,
+      "steps": 10000,
+      "q": 0.1957739348193857,
+      "amplitude": 0.9600470957574142,
+      "omega": -0.3144185210867165,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 8.07922485579482e-8,
+        "rms": 5.71481284095691e-8
+      },
+      "amplitudeErrorMax": 2.3085726441607335e-8,
+      "mean": [
+        -1.6438239658356225e-16,
+        -3.9135361618036766e-17
+      ],
+      "meanDrift": [
+        -2.3175905639050142e-17,
+        7.28583859910259e-18
+      ],
+      "meanAbsMax": 1.6438239658356225e-16,
+      "meanDriftAbsMax": 2.3175905639050142e-17
+    },
+    {
+      "name": "long-T8-mode21",
+      "grid": [
+        64,
+        32
+      ],
+      "parameters": {
+        "W": 64,
+        "H": 32,
+        "dx": 0.75,
+        "K": 1.5,
+        "a0": 1,
+        "a1": -1
+      },
+      "mode": [
+        2,
+        1
+      ],
+      "time": 8,
+      "dt": 0.001,
+      "steps": 8000,
+      "q": 0.13663800602147236,
+      "amplitude": 0.891651832818052,
+      "omega": 0.24527109500865885,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 3.0607133716387125e-8,
+        "rms": 2.167828346391273e-8
+      },
+      "amplitudeErrorMax": 1.1051516923821225e-8,
+      "mean": [
+        -4.0549161250957866e-17,
+        -1.1584700213007615e-16
+      ],
+      "meanDrift": [
+        1.1384122811097797e-17,
+        -5.388484797252957e-17
+      ],
+      "meanAbsMax": 1.1584700213007615e-16,
+      "meanDriftAbsMax": 5.388484797252957e-17
+    }
+  ],
+  "parameterMatrix": [
+    {
+      "name": "matrix-0",
+      "grid": [
+        32,
+        32
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 32,
+        "dx": 1,
+        "K": 0.6,
+        "a0": 1.5,
+        "a1": 0.4
+      },
+      "mode": [
+        2,
+        1
+      ],
+      "time": 5,
+      "dt": 0.001,
+      "steps": 5000,
+      "q": 0.19067037417096558,
+      "amplitude": 0.9410620465715429,
+      "omega": 0.21846265756882116,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 1.0182953480430967e-8,
+        "rms": 7.217369682204823e-9
+      },
+      "amplitudeErrorMax": 9.154371705122344e-9,
+      "mean": [
+        -4.0007060164715114e-17,
+        -6.331740687315346e-17
+      ],
+      "meanDrift": [
+        9.107298248878237e-18,
+        -5.421010862427522e-18
+      ],
+      "meanAbsMax": 6.331740687315346e-17,
+      "meanDriftAbsMax": 9.107298248878237e-18
+    },
+    {
+      "name": "matrix-1",
+      "grid": [
+        32,
+        32
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 32,
+        "dx": 1,
+        "K": 0.6,
+        "a0": -1.2,
+        "a1": 0.9
+      },
+      "mode": [
+        2,
+        1
+      ],
+      "time": 5,
+      "dt": 0.001,
+      "steps": 5000,
+      "q": 0.19067037417096558,
+      "amplitude": 0.9410620465715429,
+      "omega": -0.38077598230231985,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 7.368982463118456e-8,
+        "rms": 5.2166163338459544e-8
+      },
+      "amplitudeErrorMax": 2.7806775437788644e-8,
+      "mean": [
+        -6.657678965418801e-17,
+        -8.608565249534905e-17
+      ],
+      "meanDrift": [
+        -9.64939933512099e-18,
+        -2.42861286636753e-17
+      ],
+      "meanAbsMax": 8.608565249534905e-17,
+      "meanDriftAbsMax": 2.42861286636753e-17
+    },
+    {
+      "name": "matrix-2",
+      "grid": [
+        32,
+        32
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 32,
+        "dx": 1,
+        "K": 0.6,
+        "a0": 2,
+        "a1": -0.5
+      },
+      "mode": [
+        2,
+        1
+      ],
+      "time": 5,
+      "dt": 0.001,
+      "steps": 5000,
+      "q": 0.19067037417096558,
+      "amplitude": 0.9410620465715429,
+      "omega": 0.46576937795146517,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 1.0818535983725397e-7,
+        "rms": 7.662168924018293e-8
+      },
+      "amplitudeErrorMax": 4.1601321276729664e-8,
+      "mean": [
+        -3.5344990823027445e-17,
+        -7.849623728795052e-17
+      ],
+      "meanDrift": [
+        4.119968255444917e-18,
+        -2.553296116203363e-17
+      ],
+      "meanAbsMax": 7.849623728795052e-17,
+      "meanDriftAbsMax": 2.553296116203363e-17
+    },
+    {
+      "name": "matrix-3",
+      "grid": [
+        32,
+        32
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 32,
+        "dx": 1,
+        "K": 1,
+        "a0": 1.5,
+        "a1": 0.4
+      },
+      "mode": [
+        2,
+        1
+      ],
+      "time": 5,
+      "dt": 0.001,
+      "steps": 5000,
+      "q": 0.19067037417096558,
+      "amplitude": 0.8996274928152399,
+      "omega": 0.22427948822266053,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 1.011927608374208e-8,
+        "rms": 7.181119613946341e-9
+      },
+      "amplitudeErrorMax": 8.896070879949036e-9,
+      "mean": [
+        -1.8350121769317163e-17,
+        -5.128276275856436e-17
+      ],
+      "meanDrift": [
+        1.691355389077387e-17,
+        -3.2526065174565133e-18
+      ],
+      "meanAbsMax": 5.128276275856436e-17,
+      "meanDriftAbsMax": 1.691355389077387e-17
+    },
+    {
+      "name": "matrix-4",
+      "grid": [
+        32,
+        32
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 32,
+        "dx": 1,
+        "K": 1,
+        "a0": -1.2,
+        "a1": 0.9
+      },
+      "mode": [
+        2,
+        1
+      ],
+      "time": 5,
+      "dt": 0.001,
+      "steps": 5000,
+      "q": 0.19067037417096558,
+      "amplitude": 0.8996274928152399,
+      "omega": -0.36768811333118134,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 6.34564484847111e-8,
+        "rms": 4.4877668123469114e-8
+      },
+      "amplitudeErrorMax": 2.390663733642384e-8,
+      "mean": [
+        -4.529932201915998e-17,
+        -8.890457814381136e-18
+      ],
+      "meanDrift": [
+        -1.5287250632045613e-17,
+        6.028164079019405e-17
+      ],
+      "meanAbsMax": 4.529932201915998e-17,
+      "meanDriftAbsMax": 6.028164079019405e-17
+    },
+    {
+      "name": "matrix-5",
+      "grid": [
+        32,
+        32
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 32,
+        "dx": 1,
+        "K": 1,
+        "a0": 2,
+        "a1": -0.5
+      },
+      "mode": [
+        2,
+        1
+      ],
+      "time": 5,
+      "dt": 0.001,
+      "steps": 5000,
+      "q": 0.19067037417096558,
+      "amplitude": 0.8996274928152399,
+      "omega": 0.458498339634166,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 9.81548498035778e-8,
+        "rms": 6.941337817017527e-8
+      },
+      "amplitudeErrorMax": 3.716909946493985e-8,
+      "mean": [
+        -4.9873299934333204e-17,
+        -9.405453846311751e-17
+      ],
+      "meanDrift": [
+        -1.431146867680866e-17,
+        -4.0901526957015655e-17
+      ],
+      "meanAbsMax": 9.405453846311751e-17,
+      "meanDriftAbsMax": 4.0901526957015655e-17
+    },
+    {
+      "name": "matrix-6",
+      "grid": [
+        32,
+        32
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 32,
+        "dx": 1,
+        "K": 1.2,
+        "a0": 0.8,
+        "a1": 0.3
+      },
+      "mode": [
+        2,
+        1
+      ],
+      "time": 5,
+      "dt": 0.001,
+      "steps": 5000,
+      "q": 0.19067037417096558,
+      "amplitude": 0.8781774029174523,
+      "omega": 0.10842305605662136,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 2.0120310972870925e-9,
+        "rms": 1.4256866931693105e-9
+      },
+      "amplitudeErrorMax": 1.9879750068341195e-9,
+      "mean": [
+        -5.0090140368830305e-17,
+        -2.0057740190981832e-17
+      ],
+      "meanDrift": [
+        -1.1709383462843448e-17,
+        3.6591823321385775e-17
+      ],
+      "meanAbsMax": 5.0090140368830305e-17,
+      "meanDriftAbsMax": 3.6591823321385775e-17
+    },
+    {
+      "name": "matrix-7",
+      "grid": [
+        32,
+        32
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 32,
+        "dx": 1,
+        "K": 1.2,
+        "a0": -0.7,
+        "a1": 1.1
+      },
+      "mode": [
+        2,
+        1
+      ],
+      "time": 5,
+      "dt": 0.001,
+      "steps": 5000,
+      "q": 0.19067037417096558,
+      "amplitude": 0.8781774029174523,
+      "omega": -0.2952178206135633,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 3.800509751350489e-8,
+        "rms": 2.688160498271791e-8
+      },
+      "amplitudeErrorMax": 1.4736586173569322e-8,
+      "mean": [
+        -5.1011712215442984e-17,
+        -9.107298248878237e-18
+      ],
+      "meanDrift": [
+        -9.974659986866641e-18,
+        3.946495907847236e-17
+      ],
+      "meanAbsMax": 5.1011712215442984e-17,
+      "meanDriftAbsMax": 3.946495907847236e-17
+    },
+    {
+      "name": "matrix-8",
+      "grid": [
+        32,
+        32
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 32,
+        "dx": 1,
+        "K": 1.2,
+        "a0": 1.1,
+        "a1": -0.8
+      },
+      "mode": [
+        2,
+        1
+      ],
+      "time": 5,
+      "dt": 0.001,
+      "steps": 5000,
+      "q": 0.19067037417096558,
+      "amplitude": 0.8781774029174523,
+      "omega": 0.3273727270017985,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 4.4069265459079077e-8,
+        "rms": 3.116595990269073e-8
+      },
+      "amplitudeErrorMax": 1.8120991818193488e-8,
+      "mean": [
+        -6.315477654728063e-17,
+        -8.066464163292153e-17
+      ],
+      "meanDrift": [
+        -3.144186300207963e-17,
+        -3.968179951296946e-17
+      ],
+      "meanAbsMax": 8.066464163292153e-17,
+      "meanDriftAbsMax": 3.968179951296946e-17
+    }
+  ],
+  "resolution": [
+    {
+      "name": "resolution-32",
+      "grid": [
+        32,
+        32
+      ],
+      "parameters": {
+        "W": 32,
+        "H": 32,
+        "dx": 1,
+        "K": 1,
+        "a0": 2,
+        "a1": 0.5
+      },
+      "mode": [
+        2,
+        1
+      ],
+      "time": 5,
+      "dt": 0.0005,
+      "steps": 10000,
+      "q": 0.19067037417096558,
+      "amplitude": 0.8996274928152399,
+      "omega": 0.3041831570496964,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 5.206198250284899e-9,
+        "rms": 3.685304753588508e-9
+      },
+      "amplitudeErrorMax": 4.090711103188482e-9,
+      "mean": [
+        -6.513344551206668e-17,
+        -7.654467337747661e-17
+      ],
+      "meanDrift": [
+        -1.8214596497756474e-17,
+        -1.4094628242311558e-17
+      ],
+      "meanAbsMax": 7.654467337747661e-17,
+      "meanDriftAbsMax": 1.8214596497756474e-17
+    },
+    {
+      "name": "resolution-64",
+      "grid": [
+        64,
+        64
+      ],
+      "parameters": {
+        "W": 64,
+        "H": 64,
+        "dx": 0.5,
+        "K": 1,
+        "a0": 2,
+        "a1": 0.5
+      },
+      "mode": [
+        2,
+        1
+      ],
+      "time": 5,
+      "dt": 0.0005,
+      "steps": 10000,
+      "q": 0.19223994339658132,
+      "amplitude": 0.8987547254971284,
+      "omega": 0.30683801301343233,
+      "tolerance": 0.00001,
+      "error": {
+        "max": 5.328428365203308e-9,
+        "rms": 3.7704821961487115e-9
+      },
+      "amplitudeErrorMax": 4.169283140953439e-9,
+      "mean": [
+        -1.0062751413381088e-16,
+        -6.768132061740761e-17
+      ],
+      "meanDrift": [
+        -2.4990860075790877e-17,
+        7.724940478959219e-18
+      ],
+      "meanAbsMax": 1.0062751413381088e-16,
+      "meanDriftAbsMax": 2.4990860075790877e-17
+    }
+  ],
+  "resolutionBand": {
+    "physicalDomain": [
+      32,
+      32
+    ],
+    "time": 5,
+    "dt": 0.0005,
+    "note": "Errors stay within the stated absolute band; order need not improve vs exact discrete modal reference.",
+    "maxErrors": [
+      5.206198250284899e-9,
+      5.328428365203308e-9
+    ]
+  },
+  "controls": {
+    "wrongOmegaSign": {
+      "maxError": 1.129337255919002,
+      "threshold": 0.1,
+      "rejected": true
+    },
+    "wrongKDispersion": {
+      "maxError": 0.06142721392851325,
+      "Kfactor": 1.25,
+      "threshold": 0.01,
+      "rejected": true
+    },
+    "wrongTimestep": {
+      "finite": false,
+      "blewAt": 32,
+      "dt": 0.05,
+      "claimRejected": true
+    },
+    "meanDriftInjection": {
+      "meanAbsMax": 0.009999999999999962,
+      "injected": [
+        0.01,
+        -0.007
+      ],
+      "threshold": 0.001,
+      "rejected": true
+    }
+  },
+  "limitations": [
+    "Exact discrete modal long runs and a finite parameter/resolution band only; not a nonlinear droplet, chaos or phase-diagram claim.",
+    "Node Float64 twin of the discrete operators, not a fresh GPU float32 campaign or spectral-solver comparison.",
+    "Periodic boundaries only; no open/absorbing/Neumann variants.",
+    "Does not weaken or replace the short-time GPU Heun evidence in nonreciprocal-science.js."
+  ]
+}
