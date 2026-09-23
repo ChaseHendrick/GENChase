@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-23",
+  "passed": true,
+  "source": "src/modules/ssh.js",
+  "sourceSha256": "1fa05fe97e929dad52fd9c3367b4ec2f1f097a38cf4297d78bf7a94b3c6924a9",
+  "harness": "tools/ssh-science.js",
+  "command": "node tools/ssh-science.js --write",
+  "precision": "Float64",
+  "scope": "Independent Float64 dimerized tight-binding SSH Hamiltonian: periodic spectrum vs analytic Bloch energies, open-chain mid-gap edge localization / end weight, nontrivial vs trivial dimerization, open-vs-periodic control.",
+  "criteria": {
+    "periodicSpectrumMaxError": 1e-10,
+    "periodicGapError": 1e-10,
+    "nontrivialMidGapAbs": 1e-8,
+    "nontrivialMeanEndWeightMin": 0.55,
+    "analyticLeftEdgeSubspaceOverlapMin": 0.98,
+    "trivialMidGapAbsMin": 0.1,
+    "trivialMeanEndWeightMax": 0.35,
+    "failureControlsMustSeparate": true
+  },
+  "failureControls": [
+    {
+      "name": "equal-hoppings-gap-closure",
+      "v": 0.8,
+      "w": 0.8,
+      "N": 40,
+      "openGap": 0.12256874780811294,
+      "periodicGap": 4.0755200574412526e-16,
+      "analyticGap": 0,
+      "meanMidGapEndWeight": 0.19654070288908582,
+      "midGapEnergies": [
+        0.06128437390405608,
+        -0.06128437390405685
+      ],
+      "separated": true
+    },
+    {
+      "name": "wrong-dimerization-trivial-as-topo",
+      "v": 1.2,
+      "w": 0.4,
+      "N": 48,
+      "measuredGap": 1.6090723517898604,
+      "midGapEnergies": [
+        -0.8045361758949301,
+        0.8045361758949303
+      ],
+      "meanMidGapEndWeight": 0.015684025098735992,
+      "separated": true
+    },
+    {
+      "name": "scrambled-hop-pattern",
+      "v": 0.4,
+      "w": 1.2,
+      "N": 40,
+      "orderedEndWeight": 0.9876543209876543,
+      "scrambledEndWeight": 0.6164468504484139,
+      "orderedMidGapAbs": 3.059172447572271e-10,
+      "scrambledMidGapAbs": 0.004039645800968347,
+      "separated": true
+    },
+    {
+      "name": "reversed-dimerization-pattern",
+      "v": 0.4,
+      "w": 1.2,
+      "N": 40,
+      "orderedEndWeight": 0.9876543209876543,
+      "reversedEndWeight": 0.02591488065013422,
+      "orderedMidGapAbs": 3.059172447572271e-10,
+      "reversedMidGapAbs": 0.8063717431949918,
+      "separated": true
+    }
+  ],
+  "spectrum": [
+    {
+      "N": 24,
+      "v": 0.45,
+      "w": 1.15,
+      "boundary": "periodic",
+      "maxSpectrumError": 8.881784197001252e-16,
+      "meanSpectrumError": 4.0245584642661925e-16,
+      "measuredGap": 1.399999999999999,
+      "analyticGap": 1.4,
+      "gapError": 8.881784197001252e-16
+    },
+    {
+      "N": 32,
+      "v": 0.4,
+      "w": 1.2,
+      "boundary": "periodic",
+      "maxSpectrumError": 1.3322676295501878e-15,
+      "meanSpectrumError": 5.134781488891349e-16,
+      "measuredGap": 1.5999999999999999,
+      "analyticGap": 1.5999999999999999,
+      "gapError": 0
+    },
+    {
+      "N": 48,
+      "v": 0.7,
+      "w": 1.1,
+      "boundary": "periodic",
+      "maxSpectrumError": 1.7763568394002505e-15,
+      "meanSpectrumError": 5.331383482835387e-16,
+      "measuredGap": 0.7999999999999998,
+      "analyticGap": 0.8000000000000003,
+      "gapError": 4.440892098500626e-16
+    },
+    {
+      "N": 32,
+      "v": 1.2,
+      "w": 0.4,
+      "boundary": "periodic",
+      "maxSpectrumError": 1.3322676295501878e-15,
+      "meanSpectrumError": 4.649058915617843e-16,
+      "measuredGap": 1.6000000000000005,
+      "analyticGap": 1.5999999999999999,
+      "gapError": 6.661338147750939e-16
+    }
+  ],
+  "topology": [
+    {
+      "N": 40,
+      "v": 0.4,
+      "w": 1.2,
+      "regime": "nontrivial",
+      "measuredBulkGap": 1.6154548670935565,
+      "rawGapAroundZero": 6.118340234573021e-10,
+      "analyticBulkGap": 1.5999999999999999,
+      "midGapEnergies": [
+        -3.05916778700075e-10,
+        3.059172447572271e-10
+      ],
+      "meanEndWeight": 0.9876543209876543,
+      "analyticLeftEdgeSubspaceOverlap": 1.000000000000002,
+      "analyticLeftEdgeMaxSingleOverlap": 0.7071095364721255,
+      "midGapAbsMax": 3.059172447572271e-10
+    },
+    {
+      "N": 48,
+      "v": 0.35,
+      "w": 1.25,
+      "regime": "nontrivial",
+      "measuredBulkGap": 1.8085708822200068,
+      "rawGapAroundZero": 1.2296664541844242e-13,
+      "analyticBulkGap": 1.8,
+      "midGapEnergies": [
+        -6.112451650120058e-14,
+        6.184212891724183e-14
+      ],
+      "meanEndWeight": 0.99385344,
+      "analyticLeftEdgeSubspaceOverlap": 1.0000000000000075,
+      "analyticLeftEdgeMaxSingleOverlap": 0.7578471465183206,
+      "midGapAbsMax": 6.184212891724183e-14
+    },
+    {
+      "N": 40,
+      "v": 1.2,
+      "w": 0.4,
+      "regime": "trivial",
+      "measuredBulkGap": 1.6127434863899828,
+      "rawGapAroundZero": 1.6127434863899828,
+      "analyticBulkGap": 1.5999999999999999,
+      "midGapEnergies": [
+        0.8063717431949909,
+        -0.8063717431949918
+      ],
+      "meanEndWeight": 0.02591488065013422,
+      "midGapAbsMax": 0.8063717431949918
+    },
+    {
+      "N": 48,
+      "v": 1,
+      "w": 0.5,
+      "regime": "trivial",
+      "measuredBulkGap": 1.0144933192772212,
+      "rawGapAroundZero": 1.0144933192772212,
+      "analyticBulkGap": 1,
+      "midGapEnergies": [
+        0.5072466596386104,
+        -0.5072466596386108
+      ],
+      "meanEndWeight": 0.01950401850590535,
+      "midGapAbsMax": 0.5072466596386108
+    },
+    {
+      "N": 40,
+      "v": 0.2,
+      "w": 1.4,
+      "regime": "nontrivial",
+      "measuredBulkGap": 2.405834479480073,
+      "rawGapAroundZero": 1.2029172397400376,
+      "analyticBulkGap": 2.4,
+      "midGapEnergies": [
+        2.5986228768159485e-18,
+        1.294633257743496e-16
+      ],
+      "meanEndWeight": 0.9995835068721368,
+      "analyticLeftEdgeSubspaceOverlap": 1.000000000000005,
+      "analyticLeftEdgeMaxSingleOverlap": 0.9999896382695456,
+      "midGapAbsMax": 1.294633257743496e-16
+    }
+  ],
+  "openVersusPeriodic": {
+    "N": 40,
+    "v": 0.4,
+    "w": 1.2,
+    "openMeanEndWeight": 0.9876543209876543,
+    "periodicMeanEndWeight": 0.19999999999999726,
+    "openMidGapAbs": 3.059172447572271e-10,
+    "periodicMidGapAbs": 0.8000000000000005,
+    "periodicGap": 1.6000000000000005
+  },
+  "domain": {
+    "parameters": "Finite even N in {24,32,40,48}; hoppings (v,w) covering nontrivial w>v and trivial v>w; open and periodic boundaries.",
+    "conditions": "Single-particle nearest-neighbour SSH; no interactions, disorder (except scramble control), or continuum limit.",
+    "resolution": "Dense N×N real-symmetric Jacobi diagonalization; analytic Bloch reference for periodic chains.",
+    "precision": "IEEE Float64 throughout; spectrum agreement to 1e-10 on tested sizes."
+  },
+  "limitations": [
+    "Finite open/periodic chains only; no thermodynamic-limit proof, interactions, phonons, or experimental polyacetylene claim.",
+    "Does not certify the production ssh.js visualization heuristic (stacked approximate modes), print path, or GPU/CPU studio path.",
+    "Jacobi dense eigensolve is an independent numerical reference, not a published table lookup.",
+    "End weight uses a fixed 10% site window; localization length vs |v/w| is sampled, not exhaustively mapped."
+  ]
+}
