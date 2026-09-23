@@ -119,17 +119,17 @@ Complete labels apply only within each record's reviewed domain.
 | [convection](src/modules/wavesflow.js) | partially validated | [convection-science.js](tools/convection-science.js) | Limited evidence recorded |
 | [reuleaux](src/modules/reuleaux.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [reuleaux-science.js](tools/reuleaux-science.js) | Limited evidence recorded |
 | [apollonian](src/modules/apollonian.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [geometry-field-review.js](tools/geometry-field-review.js) | Limited evidence recorded |
-| [chladni](src/modules/chladni.js) | partially validated | [material-wave-science.js](tools/material-wave-science.js) | Not scientifically validated |
+| [chladni](src/modules/chladni.js) | partially validated | [material-wave-science.js](tools/material-wave-science.js) | Limited evidence recorded |
 | [track](src/modules/track.js) | unvalidated | None registered | Not scientifically validated |
 | [knotlight](src/modules/knotlight.js) | unvalidated | None registered | Not scientifically validated |
 | [causticsea](src/modules/causticsea.js) | unvalidated | None registered | Not scientifically validated |
 | [kp](src/modules/kp.js) | unvalidated | None registered | Not scientifically validated |
-| [gerstner](src/modules/gerstner.js) | partially validated | [material-wave-science.js](tools/material-wave-science.js) | Not scientifically validated |
+| [gerstner](src/modules/gerstner.js) | partially validated | [material-wave-science.js](tools/material-wave-science.js) | Limited evidence recorded |
 | [eight](src/modules/eight.js) | partially validated | [orbit-science.js](tools/orbit-science.js) | Not scientifically validated |
 | [peakon](src/modules/peakon.js) | validated within stated limits | [peakon-science.js](tools/peakon-science.js), [peakon-field-review.js](tools/peakon-field-review.js) | Limited evidence recorded |
 | [photon](src/modules/photon.js) | partially validated | [orbit-science.js](tools/orbit-science.js) | Not scientifically validated |
 | [crapper](src/modules/crapper.js) | unvalidated | None registered | Not scientifically validated |
-| [hasimoto](src/modules/hasimoto.js) | partially validated | [material-wave-science.js](tools/material-wave-science.js) | Not scientifically validated |
+| [hasimoto](src/modules/hasimoto.js) | partially validated | [material-wave-science.js](tools/material-wave-science.js) | Limited evidence recorded |
 | [lump](src/modules/lump.js) | validated within stated limits | [lump-science.js](tools/lump-science.js), [lump-field-review.js](tools/lump-field-review.js) | Limited evidence recorded |
 | [three-vortex-bound](src/modules/three-vortex-bound.js) | validated within stated limits | [vortex-family-review.js](tools/vortex-family-review.js) | Limited evidence recorded |
 | [parallelogram-lock](src/modules/parallelogram-lock.js) | validated within stated limits | [vortex-family-review.js](tools/vortex-family-review.js) | Limited evidence recorded |

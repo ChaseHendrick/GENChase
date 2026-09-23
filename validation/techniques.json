@@ -2951,7 +2951,7 @@
     ],
     "remaining": [
       "Extend parameter and boundary-condition comparisons with primary sources.",
-      "Validate rendered fields and exports independently at print resolution."
+      "Broaden print checks beyond paused square-plate state preservation (sand, circular modes, color fidelity, other aspects)."
     ],
     "numerical": [
       {
@@ -2965,7 +2965,18 @@
         "results": "validation/results/material-wave-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/material-wave-print-state.js",
+        "scope": "Actual module exportPNG to 2400x2400 (8 in at 300 ppi) on paused fixtures in the material-wave numerical domain (square cosine modes; single-train Gerstner steepness; Hasimoto filament pairs), initial and time/phase-advanced states, with a deliberate post-export mutation control.",
+        "criteria": "Exact settings JSON and local scientific snapshot unchanged across export; 2400x2400 dimensions; PNG bytes > 1000; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only. Not color fidelity, sand/circular Chladni, two-train Gerstner, Biot-Savart Hasimoto, running exports, other aspects, or physical agreement.",
+        "benchmark": "Exact before/after comparison of host settings plus closed-over scientific locals (Chladni phase, Gerstner metric/trains, Hasimoto meas curve digest) around the real exportPNG path; plate size matches 8 in at 300 ppi.",
+        "failureControl": "Export wrapper that advances the actual scientific time or phase after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/material-wave-print-state.js --write",
+        "results": "validation/results/material-wave-print-state.json"
+      }
+    ]
   },
   {
     "id": "track",
@@ -3056,7 +3067,7 @@
     ],
     "remaining": [
       "Extend parameter and boundary-condition comparisons with primary sources.",
-      "Validate rendered fields and exports independently at print resolution."
+      "Broaden print checks beyond paused single-train state preservation (two-train graphics, interior pressure visuals, color, other aspects)."
     ],
     "numerical": [
       {
@@ -3070,7 +3081,18 @@
         "results": "validation/results/material-wave-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/material-wave-print-state.js",
+        "scope": "Actual module exportPNG to 2400x2400 (8 in at 300 ppi) on paused fixtures in the material-wave numerical domain (square cosine modes; single-train Gerstner steepness; Hasimoto filament pairs), initial and time/phase-advanced states, with a deliberate post-export mutation control.",
+        "criteria": "Exact settings JSON and local scientific snapshot unchanged across export; 2400x2400 dimensions; PNG bytes > 1000; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only. Not color fidelity, sand/circular Chladni, two-train Gerstner, Biot-Savart Hasimoto, running exports, other aspects, or physical agreement.",
+        "benchmark": "Exact before/after comparison of host settings plus closed-over scientific locals (Chladni phase, Gerstner metric/trains, Hasimoto meas curve digest) around the real exportPNG path; plate size matches 8 in at 300 ppi.",
+        "failureControl": "Export wrapper that advances the actual scientific time or phase after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/material-wave-print-state.js --write",
+        "results": "validation/results/material-wave-print-state.json"
+      }
+    ]
   },
   {
     "id": "eight",
@@ -3220,7 +3242,7 @@
     ],
     "remaining": [
       "Extend parameter and boundary-condition comparisons with primary sources.",
-      "Validate rendered fields and exports independently at print resolution."
+      "Broaden print checks beyond paused filament state preservation (Biot-Savart dynamics, all views, color, other aspects)."
     ],
     "numerical": [
       {
@@ -3234,7 +3256,18 @@
         "results": "validation/results/material-wave-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/material-wave-print-state.js",
+        "scope": "Actual module exportPNG to 2400x2400 (8 in at 300 ppi) on paused fixtures in the material-wave numerical domain (square cosine modes; single-train Gerstner steepness; Hasimoto filament pairs), initial and time/phase-advanced states, with a deliberate post-export mutation control.",
+        "criteria": "Exact settings JSON and local scientific snapshot unchanged across export; 2400x2400 dimensions; PNG bytes > 1000; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only. Not color fidelity, sand/circular Chladni, two-train Gerstner, Biot-Savart Hasimoto, running exports, other aspects, or physical agreement.",
+        "benchmark": "Exact before/after comparison of host settings plus closed-over scientific locals (Chladni phase, Gerstner metric/trains, Hasimoto meas curve digest) around the real exportPNG path; plate size matches 8 in at 300 ppi.",
+        "failureControl": "Export wrapper that advances the actual scientific time or phase after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/material-wave-print-state.js --write",
+        "results": "validation/results/material-wave-print-state.json"
+      }
+    ]
   },
   {
     "id": "lump",
