@@ -143,7 +143,7 @@ Complete labels apply only within each record's reviewed domain.
 | [nonreciprocal](src/modules/nonreciprocal.js) | validated within stated limits | [nonreciprocal-science.js](tools/nonreciprocal-science.js), [nonreciprocal-longrun-science.js](tools/nonreciprocal-longrun-science.js) | Limited evidence recorded |
 | [hodgkin-huxley](src/modules/hodgkin-huxley.js) | partially validated | [hodgkin-huxley-science.js](tools/hodgkin-huxley-science.js) | Limited evidence recorded |
 | [neural-mass](src/modules/neural-mass.js) | validated within stated limits | [neural-mass-science.js](tools/neural-mass-science.js), [neural-mass-print.js](tools/neural-mass-print.js) | Limited evidence recorded |
-| [volume-wave](src/modules/volume-wave.js) | partially validated | [volume-wave-science.js](tools/volume-wave-science.js) | Limited evidence recorded |
+| [volume-wave](src/modules/volume-wave.js) | partially validated | [volume-wave-science.js](tools/volume-wave-science.js), [volume-wave-dispersion-science.js](tools/volume-wave-dispersion-science.js) | Limited evidence recorded |
 | [direct-gravity](src/modules/direct-gravity.js) | partially validated | [direct-gravity-science.js](tools/direct-gravity-science.js) | Limited evidence recorded |
 
 ## Recorded limitations
@@ -471,7 +471,7 @@ Complete labels apply only within each record's reviewed domain.
 ### volume-wave
 
 - Periodic unit-cube constant-speed scalar wave only, zero initial velocity; no full acoustic, electromagnetic or elastic material model.
-- GPU numerical fixtures use grids 16 through 64 for at most 80 steps. Extreme 96 through 256 grids, long times, arbitrary parameters and other GPU drivers remain unaudited.
+- GPU numerical fixtures use grids 16 through 64 for at most 80 steps. Float64 twin covers long-time modal phase through 96³/1200 steps and a 128³ short discrete fixture; extreme 192–256 GPU allocation, arbitrary parameters and other GPU drivers remain unaudited.
 - Selected small exports preserve the field and dimensions; physical color calibration and full print-resolution fidelity remain unvalidated.
 - Shared workload modes change cooperative scheduling or steps per presentation frame, not the numerical timestep or solver. Maximum throughput is not a measured hardware utilization guarantee.
 

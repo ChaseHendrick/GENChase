@@ -1,0 +1,303 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-23",
+  "passed": true,
+  "source": "src/modules/volume-wave.js",
+  "sourceSha256": "5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234",
+  "harness": "tools/volume-wave-dispersion-science.js",
+  "scope": "Node Float64 twin of the maintained seven-point leapfrog on the periodic unit cube with zero initial velocity. Long-time discrete modal phase/frequency fidelity (hundreds to 1200 steps, grids 32–96³), continuum dispersion error under 32/48/64/96 refinement at fixed T=0.25, and a 128³ short discrete fixture.",
+  "criteria": {
+    "discreteFieldMax": 0.00005,
+    "relativeThetaError": 1e-10,
+    "continuumRefinement": "RMS must shrink under refinement; 96³ RMS below 1/4 of 32³",
+    "failureControl": "Wrong Courant in analytic θ and reverse Laplacian each exceed max error 0.1"
+  },
+  "longTime": [
+    {
+      "grid": 32,
+      "mode": [
+        2,
+        1,
+        1
+      ],
+      "courant": 0.8,
+      "steps": 400,
+      "theta": 0.2215287680979759,
+      "measuredTheta": 0.22152876809797561,
+      "expectedPhase": 88.61150723919036,
+      "measuredPhase": 88.61150723919025,
+      "phaseError": -1.1368683772161603e-13,
+      "relativeThetaError": 1.2529106650091338e-15,
+      "cosAmplitude": 0.797948249813175,
+      "expectedCosAmplitude": 0.7979482498131049,
+      "error": {
+        "max": 1.2351231148954867e-14,
+        "rms": 6.1096567055727775e-15
+      },
+      "elapsedMs": 170
+    },
+    {
+      "grid": 48,
+      "mode": [
+        3,
+        2,
+        1
+      ],
+      "courant": 0.7,
+      "steps": 500,
+      "theta": 0.19727555953585982,
+      "measuredTheta": 0.19727555953585998,
+      "expectedPhase": 98.63777976792991,
+      "measuredPhase": 98.63777976793,
+      "phaseError": 8.526512829121202e-14,
+      "relativeThetaError": 8.441666777455106e-16,
+      "cosAmplitude": -0.3168332136212822,
+      "expectedCosAmplitude": -0.3168332136213675,
+      "error": {
+        "max": 1.9595436384634013e-14,
+        "rms": 8.211433349896083e-15
+      },
+      "elapsedMs": 705
+    },
+    {
+      "grid": 64,
+      "mode": [
+        1,
+        2,
+        2
+      ],
+      "courant": 0.85,
+      "steps": 600,
+      "theta": 0.14444996740160565,
+      "measuredTheta": 0.14444996740160565,
+      "expectedPhase": 86.66998044096339,
+      "measuredPhase": 86.66998044096339,
+      "phaseError": 0,
+      "relativeThetaError": 0,
+      "cosAmplitude": 0.27268478311963157,
+      "expectedCosAmplitude": 0.27268478311962197,
+      "error": {
+        "max": 1.865174681370263e-14,
+        "rms": 7.790778795980051e-15
+      },
+      "elapsedMs": 1776
+    },
+    {
+      "grid": 96,
+      "mode": [
+        2,
+        3,
+        1
+      ],
+      "courant": 0.75,
+      "steps": 400,
+      "theta": 0.10595801371959979,
+      "measuredTheta": 0.10595801371959969,
+      "expectedPhase": 42.383205487839916,
+      "measuredPhase": 42.383205487839874,
+      "phaseError": -4.263256414560601e-14,
+      "relativeThetaError": 9.16820835390308e-16,
+      "cosAmplitude": -0.028291560109828407,
+      "expectedCosAmplitude": -0.028291560109786534,
+      "error": {
+        "max": 1.6431300764452317e-14,
+        "rms": 5.821127742919083e-15
+      },
+      "elapsedMs": 13785
+    },
+    {
+      "grid": 64,
+      "mode": [
+        1,
+        1,
+        2
+      ],
+      "courant": 0.8,
+      "steps": 1200,
+      "theta": 0.11099530103845537,
+      "measuredTheta": 0.11099530103845542,
+      "expectedPhase": 133.19436124614643,
+      "measuredPhase": 133.1943612461465,
+      "phaseError": 8.526512829121202e-14,
+      "relativeThetaError": 5.001216331854036e-16,
+      "cosAmplitude": 0.3177224757698886,
+      "expectedCosAmplitude": 0.31772247576996987,
+      "error": {
+        "max": 2.6922908347160046e-14,
+        "rms": 1.117325657858425e-14
+      },
+      "elapsedMs": 2705,
+      "label": "longest-64"
+    }
+  ],
+  "dispersion": [
+    {
+      "grid": 32,
+      "domain": [
+        1,
+        1,
+        1
+      ],
+      "time": 0.25,
+      "mode": [
+        1,
+        2,
+        1
+      ],
+      "steps": 24,
+      "dt": 0.010416666666666666,
+      "courant": 0.5773502691896257,
+      "continuumOmega": 15.390597961942367,
+      "discreteTheta": 0.15971761810964114,
+      "continuumError": {
+        "max": 0.009249340176166077,
+        "rms": 0.0065626999786553095
+      },
+      "discreteError": {
+        "max": 3.858025010572419e-15,
+        "rms": 9.062566279580527e-16
+      },
+      "elapsedMs": 17
+    },
+    {
+      "grid": 48,
+      "domain": [
+        1,
+        1,
+        1
+      ],
+      "time": 0.25,
+      "mode": [
+        1,
+        2,
+        1
+      ],
+      "steps": 35,
+      "dt": 0.007142857142857143,
+      "courant": 0.5938459911664722,
+      "continuumOmega": 15.390597961942367,
+      "discreteTheta": 0.10975270160824831,
+      "continuumError": {
+        "max": 0.0040709982528743804,
+        "rms": 0.002881977670627702
+      },
+      "discreteError": {
+        "max": 5.10702591327572e-15,
+        "rms": 9.351772976321784e-16
+      },
+      "elapsedMs": 69,
+      "refinementRatio": 2.2771515704443113
+    },
+    {
+      "grid": 64,
+      "domain": [
+        1,
+        1,
+        1
+      ],
+      "time": 0.25,
+      "mode": [
+        1,
+        2,
+        1
+      ],
+      "steps": 47,
+      "dt": 0.005319148936170213,
+      "courant": 0.5896343174702561,
+      "continuumOmega": 15.390597961942367,
+      "discreteTheta": 0.0817891048587669,
+      "continuumError": {
+        "max": 0.0023057710604937887,
+        "rms": 0.0016306216132843763
+      },
+      "discreteError": {
+        "max": 4.343747583845925e-15,
+        "rms": 1.0883358177731342e-15
+      },
+      "elapsedMs": 178,
+      "refinementRatio": 1.767410444672606
+    },
+    {
+      "grid": 96,
+      "domain": [
+        1,
+        1,
+        1
+      ],
+      "time": 0.25,
+      "mode": [
+        1,
+        2,
+        1
+      ],
+      "steps": 70,
+      "dt": 0.0035714285714285713,
+      "courant": 0.5938459911664722,
+      "continuumOmega": 15.390597961942367,
+      "discreteTheta": 0.054943907327353825,
+      "continuumError": {
+        "max": 0.0010214573525327841,
+        "rms": 0.0007223868860889542
+      },
+      "discreteError": {
+        "max": 4.9960036108132044e-15,
+        "rms": 1.3395227774417008e-15
+      },
+      "elapsedMs": 1034,
+      "refinementRatio": 2.2572691236307727
+    }
+  ],
+  "highGrid": {
+    "grid": 128,
+    "mode": [
+      2,
+      1,
+      1
+    ],
+    "courant": 0.8,
+    "steps": 80,
+    "theta": 0.05552644486854898,
+    "error": {
+      "max": 5.6066262743570405e-15,
+      "rms": 1.247809606159117e-15
+    },
+    "elapsedMs": 2083,
+    "note": "Float64 twin allocation and short discrete fidelity at 128³; not a GPU SwiftShader allocation certificate."
+  },
+  "controls": {
+    "wrongCourantInTheta": {
+      "actualCourant": 0.8,
+      "claimedCourant": 0.5,
+      "steps": 400,
+      "grid": 48,
+      "mode": [
+        2,
+        1,
+        1
+      ],
+      "maxError": 1.601322495473597,
+      "phaseGap": 1.8757816372887177,
+      "threshold": 0.1,
+      "rejected": true
+    },
+    "reverseLaplacian": {
+      "steps": 40,
+      "grid": 48,
+      "mode": [
+        2,
+        1,
+        1
+      ],
+      "maxError": 815803702.821389,
+      "threshold": 0.1,
+      "rejected": true
+    }
+  },
+  "elapsedMs": 23520,
+  "limitations": [
+    "Node Float64 twin of the discrete stencil, not a fresh GPU float32 / SwiftShader long-time campaign or cross-device certificate.",
+    "Prepared single Fourier modes only; pulse continuum error, arbitrary controls and print fidelity remain outside this package.",
+    "Continuum dispersion refinement identifies combined space/time second-order trend, not separately identified spatial vs temporal orders.",
+    "Does not weaken or replace the short-time GPU atlas evidence in volume-wave-science.js. Extreme 192–256 GPU allocation across hardware remains unaudited."
+  ]
+}
