@@ -2128,16 +2128,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a \u003c 1 \u003c b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
     "equation": "∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v)",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
-      "Deterministic PDE only; no spiral wavelength, no biodiversity-loss threshold of Reichenbach, Mobilia and Frey, noise term untested."
+      "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
+      "Deterministic PDE only; no spiral wavelength or biodiversity-loss threshold of Reichenbach, Mobilia and Frey.",
+      "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, float16 fallback, evolved/running exports, other grids and hardware."
     ],
     "numerical": [
       {
@@ -2151,7 +2151,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained defaults and kinetics cases named in validation/RDX.md and measured in validation/results/rdx-science.json for each tab (excitable Barkley/FHN, Turing Schnakenberg/Brusselator/Gierer-Meinhardt/Lengyel-Epstein, May-Leonard cyclic, Keller-Segel chemotaxis, Klausmeier vegetation), plus paused initial export at those defaults.",
+      "conditions": "Periodic 256x256 grid; forward-Euler RDX step shaders in WebGL2 float32 (SwiftShader); independent Float64 references for discrete update, diffusion modes, and the linear/uniform/front cases in tools/rdx-science.js. Print: paused initial fields only through real module exportPNG at 2400x2400 (8 in, 300 ppi) with a state-mutating export failure control. No noise; no nonlinear pattern-selection statistics; no float16 fallback.",
+      "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-22",
+    "results": "validation/results/rdx-science.json"
   },
   {
     "id": "landscape",
@@ -2178,17 +2197,30 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "30b2393368ab389e0e5fabc4e17215de292e0dbfb945dc92b3b04d2aab57fb19",
     "reference": "Mehran Kardar, Giorgio Parisi and Yi-Cheng Zhang, 'Dynamic scaling of growing interfaces', Physical Review Letters 56, 889 (1986). The scaling form W(L, t) = L^α f(t/L^z) is Fereydoon Family and Tamás Vicsek, J. Phys. A 18, L75 (1985). Ballistic deposition is Murray Vold (1959) and Michael Sutherland (1966); the restricted solid-on-solid model is Jin Min Kim and Joel Kosterlitz, Phys. Rev. Lett. 62, 2289 (1989); surface relaxation is Family, J. Phys. A 19, L441 (1986); the cluster model is Murray Eden, in the Berkeley Symposium proceedings (1961). That the edge fluctuations follow the Tracy-Widom distributions is Michael Prähofer and Herbert Spohn, Phys. Rev. Lett. 84, 4882 (2000), and Kazumasa Takeuchi and Masaki Sano measured it in turbulent liquid crystal, Phys. Rev. Lett. 104, 230601 (2010).",
     "equation": "∂h/∂t = ν∇²h + (λ/2)(∇h)² + η,   W(t) ~ t^β with β = 1/3 in 1+1 dimensions",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Independent Float64 twin of column deposition kernels (random, relax, ballistic, RSOS) measuring W(t)~t^β; not a browser UI replay or Eden radial audit.",
+      "Finite L=512 and five seeds per class; KPZ ballistic crossover often fits under 1/3. RSOS is the KPZ gate with a wider acceptance band.",
+      "Family–Vicsek α at small L uses coarse bands only; no Tracy–Widom edge law or liquid-crystal experiment claim.",
+      "No print-state accuracy audit is registered."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Register print-state preservation for strata/rings exports and quantitative raster checks.",
+      "Tighten finite-size / multi-seed statistics, ballistic crossover diagnostics and optional Eden radial KPZ evidence.",
+      "Review catalog equation/citation assumptions against Kardar–Parisi–Zhang / Family–Vicsek primary sources beyond the deposition twin."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/kpz-science.js",
+        "command": "node tools/kpz-science.js --write",
+        "results": "validation/results/kpz-science.json",
+        "scope": "Independent Float64 twin of kpz.js column kernels: log-spaced W(t) growth and β fits for random (RD), relax (EW) and RSOS (KPZ), with ballistic reported; coarse Family–Vicsek α at small L; production source markers checked.",
+        "criteria": "Mean β in [0.42,0.58] for RD (theory 1/2), [0.12,0.38] for EW (theory 1/4), [0.22,0.45] for RSOS (theory 1/3); ballistic mean in [0.18,0.42]; RD>RSOS>EW ordering; α(EW/RSOS) in [0.2,0.95] and α(RD)\u003c0.25.",
+        "benchmark": "1+1 universality: random deposition β=1/2, Edwards–Wilkinson β=1/4, KPZ β=1/3 (Family–Vicsek α=1/2 for EW/KPZ). Fit window matches production status-line filter.",
+        "failureControl": "Claiming the KPZ β band for random deposition must fail; removing ballistic lateral sticking or relaxation site choice collapses each to RD (β~1/2) and must miss the KPZ/EW bands.",
+        "limitations": "Float64 CPU twin only; finite L/crossover/single-realization noise; Eden, Tracy–Widom and print unvalidated."
+      }
+    ],
     "print": []
   },
   {
@@ -2501,16 +2533,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n², because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
     "equation": "∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
-      "Linear regime and uniform states only; no nonlinear band spacing or migration speed. The float32 implicit denominator 1 + dt quantizes the water loss rate by up to ulp(1)/(2 dt), modelled in the exact discrete reference."
+      "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
+      "Linear regime and uniform states only within this domain; float32 implicit denominator 1 + dt quantizes water loss (modelled in the discrete reference).",
+      "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, float16 fallback, evolved/running exports, other grids and hardware."
     ],
     "numerical": [
       {
@@ -2524,7 +2556,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained defaults and kinetics cases named in validation/RDX.md and measured in validation/results/rdx-science.json for each tab (excitable Barkley/FHN, Turing Schnakenberg/Brusselator/Gierer-Meinhardt/Lengyel-Epstein, May-Leonard cyclic, Keller-Segel chemotaxis, Klausmeier vegetation), plus paused initial export at those defaults.",
+      "conditions": "Periodic 256x256 grid; forward-Euler RDX step shaders in WebGL2 float32 (SwiftShader); independent Float64 references for discrete update, diffusion modes, and the linear/uniform/front cases in tools/rdx-science.js. Print: paused initial fields only through real module exportPNG at 2400x2400 (8 in, 300 ppi) with a state-mutating export failure control. No noise; no nonlinear pattern-selection statistics; no float16 fallback.",
+      "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-22",
+    "results": "validation/results/rdx-science.json"
   },
   {
     "id": "aztec",
@@ -2887,16 +2938,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6",
     "reference": "Erwin Schrödinger, 'Quantisierung als Eigenwertproblem', Annalen der Physik, 1926. Integrated with P. B. Visscher's staggered leapfrog, Computers in Physics 5, 596 (1991): real values live at integer times and imaginary values at adjacent half times. With fixed steps, a static real potential and no absorption or injection, the summed discrete norm Re² + Im₋ Im₊ is conserved in exact arithmetic. Displayed density uses the centered imaginary value and is an approximation. The disorder potential is P. W. Anderson's, Phys. Rev. 109, 1492 (1958); the stadium is L. A. Bunimovich's, Communications in Mathematical Physics, 1979.",
     "equation": "i ∂ψ/∂t = −½ ∇²ψ + V ψ   (ħ = m = 1);   Re ψ on integer steps, Im ψ on half steps",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Periodic Fourier and uniform-potential fixtures support the discrete recurrence, modified invariant and bounded second-order time/space refinement. Stability and conservation do not imply accuracy at coarse steps.",
-      "Harmonic-bound, time-step edit, hard-wall and injection regressions cover stated float32 cases only. Native GPU trigonometric approximation is measured separately.",
-      "Absorption, arbitrary potentials, long times, float16 and full physical scattering/print fidelity remain unvalidated. Corrections intentionally change affected historical images."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/SCHRODINGER.md and the schrodinger-science / schrodinger-state / schrodinger-absorber-science / wave-print-state results artifacts.",
+      "Periodic wrap still couples opposite edges through the absorber layer. Stability and conservation do not imply accuracy at coarse steps. Long-time phase covers two free/uniform-V traveling modes over elapsed time 120 (~25 periods at dt=0.05).",
+      "Scattering probabilities, arbitrary potentials/packets, float16, all aspect ratios, other hardware, and full print color fidelity remain outside this domain.",
+      "Broader settings require additional independent evidence. Corrections intentionally change affected historical images."
     ],
     "remaining": [
-      "Establish absorber and general-potential convergence, scattering probabilities and long-time phase error.",
-      "Audit float16, all supported aspect ratios, parameter ranges and graphics hardware.",
-      "Extend state-preserving export checks to quantitative scientific rendering and color fidelity."
+      "Extend beyond the documented Fourier/uniform-V/absorber/long-time-phase and paused-export print domain with independent evidence for scattering probabilities, general non-uniform potentials, float16, other aspect ratios, hardware, and quantitative scientific rendering."
     ],
     "numerical": [
       {
@@ -2918,6 +2969,16 @@ shall not be misrepresented as the original profile.
         "limitations": "One harmonic packet and declared edit/injection fixtures, without absorption. Native sine/cosine errors are backend dependent; broad parameter/precision/hardware coverage remains outstanding.",
         "benchmark": "Actual potential envelope and closed-system modified norm; analytic checkerboard time-level reconstruction; independent Gaussian complex addition with masked walls and measured native GPU arithmetic.",
         "failureControl": "Restore the old harmonic step ceiling. Compare omitted-restagger and unprojected-wall controls against corrected expected states."
+      },
+      {
+        "test": "tools/schrodinger-absorber-science.js",
+        "command": "node tools/schrodinger-absorber-science.js",
+        "results": "validation/results/schrodinger-absorber-science.json",
+        "scope": "Actual float32 SCH_STEP_FS with uniform and production-shaped edge absorbers (pot.b weight, damp=exp(-dt*damp*b)), plus long-time free/uniform-V phase. Independent Float64 stencil twin and modal damped recurrence on SwiftShader RGBA32F.",
+        "criteria": "GPU vs Float64 twin recurrence error\u003c5e-6 for uniform, temporal and edge fixtures; uniform modal error\u003c5e-6 with remaining norm fraction\u003c0.5; edge remaining fraction\u003c0.95; long-time twin error\u003c5e-6, phase error vs exact continuous-time discrete mode\u003c0.08 and field error\u003c0.08 over elapsed time 120 (~25 periods). Wrong-sign damp recurrence error>0.05 and >100x the correct uniform case, with amplified norm fraction>1.5.",
+        "limitations": "Periodic grids only; wrap couples opposite edges through the absorber. References are implementation twins and modal recurrence, not continuum PML or experimental absorption. No scattering coefficients, hard-wall stadium, packet injection, float16 or hardware certification. Long-time covers two traveling modes only.",
+        "benchmark": "Independent Float64 five-point Visscher twin with the production damp factor; uniform-b modal 2x2 damped recurrence; exact continuous-time discrete eigenmode phase e^{-i E t} for long-time free/uniform-V fixtures.",
+        "failureControl": "Replace damp=exp(-dt*damp*b) with exp(+dt*damp*b). The growing absorber must disagree with the correct Float64 twin and amplify the remaining norm."
       }
     ],
     "print": [
@@ -2926,9 +2987,20 @@ shall not be misrepresented as the original profile.
         "scope": "Actual 2400x2400 exports of initial and 16-step paused float32 fields, grids 128 and 192, every view. Checks both solver buffers, auxiliary fields, histories and scalar state.",
         "criteria": "Zero changed float32 words, nonfinite values, settings or metadata changes; correct dimensions and grids; deliberate state-mutating exports rejected.",
         "limitations": "State preservation and output dimensions only. No full physical/rendering/color validation, arbitrary evolved state or hardware guarantee.",
-        "results": "validation/results/wave-print-state.json"
+        "results": "validation/results/wave-print-state.json",
+        "command": "node tools/wave-print-state.js --write",
+        "benchmark": "Exact float32 readback of solver buffers, auxiliary fields, histories and scalar state before and after the real exportPNG path; dimensions must match the declared 2400 longest-edge plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same preservation predicate."
       }
-    ]
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained Schrödinger fixtures named in validation/SCHRODINGER.md and measured in validation/results/schrodinger-science.json, schrodinger-state.json, and schrodinger-absorber-science.json (periodic Fourier/uniform-V, harmonic-bound/hard-wall/injection regressions, uniform and production-shaped edge absorbers, long-time free/uniform-V traveling modes at T=120), plus paused wave-print-state exports at grids 128 and 192.",
+      "conditions": "Float32 SCH_STEP_FS on SwiftShader RGBA32F with independent Float64 stencil/modal references. Absorber uses production damp factor on pot.b (uniform and edge profiles). Print: paused initial and 16-step fields through real exportPNG at 2400x2400 for every view; deliberate state-mutating export rejected. No scattering coefficients, arbitrary non-uniform potentials beyond the edge profile, float16, other aspects, running exports, or full colorimetric print fidelity.",
+      "resolution": "Numerical acceptance as recorded in the three results artifacts (recurrence, invariants, refinement orders, absorber twin errors, long-time phase ~0.027 rad at T=120). Print: zero changed float32 words/nonfinite, unchanged settings/metadata, correct dimensions/grids, failureControl rejected (validation/results/wave-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/schrodinger-absorber-science.json"
   },
   {
     "id": "excitable",
@@ -2936,16 +3008,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
     "equation": "Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b)",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
-      "No spiral rotation period, meander or breakup statistics, no Barkley front speed (only its kinetics), noise term untested. A uniform excited Barkley cell stagnates near u = 1 in float32 (recorded finding)."
+      "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
+      "No spiral rotation period, meander or breakup statistics; no Barkley front speed (kinetics only). A uniform excited Barkley cell stagnates near u = 1 in float32 (recorded finding).",
+      "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, float16 fallback, evolved/running exports, other grids and hardware."
     ],
     "numerical": [
       {
@@ -2959,7 +3031,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained defaults and kinetics cases named in validation/RDX.md and measured in validation/results/rdx-science.json for each tab (excitable Barkley/FHN, Turing Schnakenberg/Brusselator/Gierer-Meinhardt/Lengyel-Epstein, May-Leonard cyclic, Keller-Segel chemotaxis, Klausmeier vegetation), plus paused initial export at those defaults.",
+      "conditions": "Periodic 256x256 grid; forward-Euler RDX step shaders in WebGL2 float32 (SwiftShader); independent Float64 references for discrete update, diffusion modes, and the linear/uniform/front cases in tools/rdx-science.js. Print: paused initial fields only through real module exportPNG at 2400x2400 (8 in, 300 ppi) with a state-mutating export failure control. No noise; no nonlinear pattern-selection statistics; no float16 fallback.",
+      "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-22",
+    "results": "validation/results/rdx-science.json"
   },
   {
     "id": "soliton",
@@ -3065,15 +3156,27 @@ shall not be misrepresented as the original profile.
     "equation": "H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open)",
     "status": "unvalidated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Independent Float64 SSH spectrum/edge checks in validation/SSH.md do not certify the production visualization heuristic, print path, interactions or experiment.",
+      "Finite open/periodic chains only; catalog equation and citation remain review targets for full paper equivalence.",
+      "No print-state evidence is registered; status stays unvalidated."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add print-path evidence and review before any status promotion.",
+      "Optionally compare studio end-weight metric against independent eigenvectors on shared presets.",
+      "Extend parameter, disorder and larger-N surveys beyond the registered fixtures."
     ],
-    "numerical": [],
+    "numerical": [
+      {
+        "test": "tools/ssh-science.js",
+        "command": "node tools/ssh-science.js --write",
+        "results": "validation/results/ssh-science.json",
+        "scope": "Independent Float64 dimerized SSH Hamiltonian: periodic spectrum vs analytic Bloch energies, open mid-gap edge localization/end weight, nontrivial vs trivial regimes, open-vs-periodic control.",
+        "criteria": "Periodic spectrum max error \u003c1e-10 and gap error \u003c1e-10; nontrivial mid-gap |E|\u003c1e-8 with mean end weight >0.55 and analytic left-edge subspace overlap >0.98; trivial mid-gap |E|>0.1 and end weight \u003c0.35; all failure controls separate.",
+        "benchmark": "Independent Float64 real-symmetric Jacobi diagonalization compared with analytic Bloch energies E(k)=±sqrt(v²+w²+2vw cos k), bulk gap 2|w-v|, and analytic open-chain left zero mode ψ_{2j}∝(-v/w)^j.",
+        "failureControl": "Equal hoppings v=w must close the periodic gap and keep open near-zero end weight bulk-like; trivial dimerization must not look topological; scrambled and reversed hop patterns must destroy ordered edge-mode signatures.",
+        "limitations": "Finite even N in {24,32,40,48}; single-particle nearest-neighbour SSH only. Does not validate the production ssh.js display heuristic, print exports, interactions or experimental systems."
+      }
+    ],
     "print": []
   },
   {
@@ -3959,16 +4062,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry.",
     "equation": "Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
-      "Linear regime only; no nonlinear pattern selection (spots against stripes), no Hopf regime. The status-line wavelength is the onset-critical value 2 pi (Du Dv/det)^(1/4), 12 cells at the defaults, against 10.8 fastest-growing and 9.2 measured after saturation."
+      "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
+      "Linear regime only within this domain; status-line wavelength is the onset-critical value, not a saturated nonlinear pattern measurement.",
+      "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, float16 fallback, evolved/running exports, other grids and hardware."
     ],
     "numerical": [
       {
@@ -3982,7 +4085,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained defaults and kinetics cases named in validation/RDX.md and measured in validation/results/rdx-science.json for each tab (excitable Barkley/FHN, Turing Schnakenberg/Brusselator/Gierer-Meinhardt/Lengyel-Epstein, May-Leonard cyclic, Keller-Segel chemotaxis, Klausmeier vegetation), plus paused initial export at those defaults.",
+      "conditions": "Periodic 256x256 grid; forward-Euler RDX step shaders in WebGL2 float32 (SwiftShader); independent Float64 references for discrete update, diffusion modes, and the linear/uniform/front cases in tools/rdx-science.js. Print: paused initial fields only through real module exportPNG at 2400x2400 (8 in, 300 ppi) with a state-mutating export failure control. No noise; no nonlinear pattern-selection statistics; no float16 fallback.",
+      "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-22",
+    "results": "validation/results/rdx-science.json"
   },
   {
     "id": "holomorphic",
@@ -4199,16 +4321,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
     "reference": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) \u003c c/2 − D − a.",
     "equation": "∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²)",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "Registered evidence covers linear dynamics, uniform states, stencils and the cases named in tools/rdx-science.js on SwiftShader float32; it is not a parameter-domain, nonlinear-pattern or print-state audit.",
-      "Logistic growth means total mass is not conserved; the balance, not conservation, is tested. No aggregate shape or coarsening statistics, no analytic nonuniform steady state (none is available for this form), noise term untested."
+      "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
+      "Logistic growth means total mass is not conserved; the balance, not conservation, is tested. No aggregate shape or coarsening statistics.",
+      "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Test nonlinear pattern statistics against published quantitative results, and the noise term.",
-      "Record hardware precision (the float16 fallback) and validate the actual print path."
+      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, float16 fallback, evolved/running exports, other grids and hardware."
     ],
     "numerical": [
       {
@@ -4222,7 +4344,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/rdx-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/rdx-print-state.js",
+        "scope": "Real module exportPNG on paused 256x256 float32 initial RDX fields at 2400x2400 pixels (8 inches, 300 ppi), with a deliberate state-mutating export control.",
+        "criteria": "Zero changed/nonfinite field components; correct 2400x2400 image dimensions; retained 256x256 numerical grid; nonzero seeded field; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only on SwiftShader float32 paused initial fields at grid 256. Does not establish nonlinear pattern fidelity, colorimetric print accuracy, float16 fallback, evolved states, other grids/hardware, noise, or running exports.",
+        "benchmark": "Exact float32 readback of the live PingPong read texture before and after the real exportPNG path; dimensions must match the declared 8 in at 300 ppi plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/rdx-print-state.js --write",
+        "results": "validation/results/rdx-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained defaults and kinetics cases named in validation/RDX.md and measured in validation/results/rdx-science.json for each tab (excitable Barkley/FHN, Turing Schnakenberg/Brusselator/Gierer-Meinhardt/Lengyel-Epstein, May-Leonard cyclic, Keller-Segel chemotaxis, Klausmeier vegetation), plus paused initial export at those defaults.",
+      "conditions": "Periodic 256x256 grid; forward-Euler RDX step shaders in WebGL2 float32 (SwiftShader); independent Float64 references for discrete update, diffusion modes, and the linear/uniform/front cases in tools/rdx-science.js. Print: paused initial fields only through real module exportPNG at 2400x2400 (8 in, 300 ppi) with a state-mutating export failure control. No noise; no nonlinear pattern-selection statistics; no float16 fallback.",
+      "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-22",
+    "results": "validation/results/rdx-science.json"
   },
   {
     "id": "smectic",
@@ -4687,16 +4828,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6",
     "reference": "Henri Bénard, Revue générale des Sciences pures et appliquées 11, 1261 (1900), saw the cells in a thin layer of spermaceti heated from below. Lord Rayleigh, Philosophical Magazine 32, 529 (1916), showed with the Boussinesq equations that the layer turns over only once the number now named for him passes a threshold: 657.5 for free surfaces, 1708 for rigid plates (Jeffreys 1928; Pellew and Southwell 1940). This is the two-dimensional Boussinesq system in vorticity-streamfunction form, scaled by the free-fall time, with a red-black SOR Poisson solve for ψ, semi-Lagrangian advection and Thom's wall vorticity.",
     "equation": "∂ω/∂t + u·∇ω = √(Pr/Ra) ∇²ω + ∂T/∂x,   ∂T/∂t + u·∇T = ∇²T/√(Ra Pr),   ∇²ψ = −ω,   u = ∂ψ/∂y, v = −∂ψ/∂x",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Analytic component tests cover diffusion, conduction, free-slip velocity, Poisson inversion, buoyancy sign and signed instantaneous transport. These are not complete nonlinear Boussinesq validation.",
-      "The Poisson benchmark uses 300 sweeps and does not certify the default four. No-slip convergence, high-Rayleigh resolution, half precision and temporal alignment of transport remain unaudited.",
-      "The displayed Nu is sampled instantaneous transport, not a converged time average. Timestep/wall corrections intentionally change affected historical trajectories."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/CONVECTION.md and the convection-science / convection-coupled-science / wave-print-state results artifacts.",
+      "Below-onset free-slip decay of a small mode; SOR uses 24 sweeps/step (not the production default of four). Temperature spatial order vs continuum is reduced by semi-Lagrangian advection and forward-Euler diffusion.",
+      "Displayed Nu remains sampled instantaneous transport, not a converged time average. No-slip, high-Ra, float16, and full print colorimetry are outside this domain.",
+      "Broader settings require additional independent evidence. Timestep/wall corrections intentionally change affected historical trajectories."
     ],
     "remaining": [
-      "Establish full coupled spatial/time convergence, onset and sufficient Poisson iteration counts across the proposed domain.",
-      "Audit no-slip boundary accuracy, interpolation damping, float16 and high-Rayleigh resolution.",
-      "Quantify transport sampling/time errors and validate print rendering beyond state preservation."
+      "Extend beyond the documented below-onset free-slip coupled-decay and paused-export print domain with independent evidence for onset, no-slip plates, high-Ra/Nu, default four-sweep Poisson, float16, other hardware, and quantitative scientific rendering."
     ],
     "numerical": [
       {
@@ -4708,6 +4849,16 @@ shall not be misrepresented as the original profile.
         "limitations": "Component tests, not complete coupled onset/turbulence validation. Poisson uses 300 sweeps; scalar diffusion refinement isolates a substep. Float16 and general nonlinear/print accuracy are not established.",
         "benchmark": "Independent Fourier diffusion factors, exact T=1-y conduction, known continuum diffusion decay on a fixed box/time, analytic psi=sin(pi*y) wall velocity and manufactured discrete Poisson/buoyancy fields.",
         "failureControl": "Restore the old timestep floor, compare the historical half-wall derivative, reverse buoyancy sign, and exercise negative/saturated transport display cases."
+      },
+      {
+        "test": "tools/convection-coupled-science.js",
+        "command": "node tools/convection-coupled-science.js",
+        "results": "validation/results/convection-coupled-science.json",
+        "scope": "Full coupled free-slip chain (SOR velocity, semi-Lagrangian advection, diffusion/buoyancy) on fixed Gamma=2x1 box, Pr=1, Ra=100\u003c\u003cRa_c, eps=1e-3 mode decay to t=0.08. Float64 CPU twin plus continuum linear free-fall rates; Float32 GPU fidelity.",
+        "criteria": "GPU/CPU amplitude errors \u003c3e-6 (T) and \u003c1e-6 (omega); CPU spatial Om orders in (1.5,2.5) and Th orders in (0.8,2.5) vs continuum; temporal self-convergence orders in (0.9,2.2); negated buoyancy and half-time controls exceed honest omega error by >100x and >5x; false domain-width change rejected as order-2.",
+        "limitations": "Below-onset free-slip single-mode decay only. Uses 24 SOR sweeps/step (not default 4). Spatial orders from Float64 twin vs continuum; temperature order reduced by SL/FE. No onset, no-slip, high-Ra, Nu, float16 or print claims.",
+        "benchmark": "Independent Float64 CPU twin of the same discrete coupled operators (laplacian, +dT/dx buoyancy, red-black SOR, bicubic SL) and continuum 2x2 free-fall linear rates for sin(pi y) cos(pi x) at Ra=100, Pr=1.",
+        "failureControl": "Negate buoyancy (+Tx->-Tx) on GPU/CPU; evolve half T_final; refine H while shrinking physical width (W=H-1) so a claimed fixed-domain study cannot look order-2."
       }
     ],
     "print": [
@@ -4716,9 +4867,20 @@ shall not be misrepresented as the original profile.
         "scope": "Actual 2400x2400 exports of initial and 16-step paused float32 fields, grids 128 and 192, every view. Checks both solver buffers, auxiliary fields, histories and scalar state.",
         "criteria": "Zero changed float32 words, nonfinite values, settings or metadata changes; correct dimensions and grids; deliberate state-mutating exports rejected.",
         "limitations": "State preservation and output dimensions only. No full physical/rendering/color validation, arbitrary evolved state or hardware guarantee.",
-        "results": "validation/results/wave-print-state.json"
+        "results": "validation/results/wave-print-state.json",
+        "command": "node tools/wave-print-state.js --write",
+        "benchmark": "Exact float32 readback of solver buffers, auxiliary fields, histories and scalar state before and after the real exportPNG path; dimensions must match the declared 2400 plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same preservation predicate."
       }
-    ]
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained free-slip Boussinesq fixtures named in validation/CONVECTION.md and measured in validation/results/convection-science.json plus convection-coupled-science.json (component identities; coupled decay at Ra=100≪Ra_c, Pr=1, Γ=2×1, T_final=0.08 with 24 SOR sweeps/step), plus paused wave-print-state exports at grids 128 and 192.",
+      "conditions": "Periodic/free-slip chain solvePsi → CONV_ADV_FS → CONV_DIFF_FS on Float32 GPU with independent Float64 CPU twin and continuum linear free-fall rates. Print: paused initial and 16-step fields through real exportPNG at 2400x2400; deliberate state-mutating export rejected. No onset, no-slip, high-Ra, turbulent Nu, float16, default four-sweep Poisson certification, or full print colorimetry.",
+      "resolution": "Numerical acceptance as recorded in convection-science.json and convection-coupled-science.json (spatial Om orders ~2.03/2.10, Th ~1.59/1.12; temporal ~1.22–1.59; GPU/CPU amp ≲1e-6; negated-buoyancy / half-time / false-domain failure controls). Print: zero changed float32 words, failureControl rejected (validation/results/wave-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 twin/continuum references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/convection-coupled-science.json"
   },
   {
     "id": "reuleaux",
@@ -4843,14 +5005,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509",
     "reference": "Ernst Chladni, Entdeckungen uber die Theorie des Klanges, 1787. The governing plate equation was solved by Sophie Germain, whose 1816 work won the Paris Academy prize; Lord Rayleigh's Theory of Sound, 1877, put it on modern footing.",
     "equation": "u = sum Ak[cos(nk·pi·x)cos(mk·pi·y) - cos(mk·pi·x)cos(nk·pi·y)];   nodes where u = 0",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Square membrane-style cosine modes only, not elastic-plate mechanics. Circular mode radii use approximate rather than true Bessel zeros and are excluded. Sand, interference, mixed modes and print accuracy remain unvalidated.",
-      "No novel finding, physical experimental agreement or general parameter-domain certification is claimed."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/MATERIAL-WAVES.md and validation/results/material-wave-science.json plus paused-export print preservation in validation/results/material-wave-print-state.json.",
+      "Square membrane-style cosine modes only within this domain. Circular mode radii use approximate rather than true Bessel zeros and are excluded. Sand, interference, and mixed modes are excluded.",
+      "No Float16 claim, physical experimental agreement, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Extend parameter and boundary-condition comparisons with primary sources.",
-      "Validate rendered fields and exports independently at print resolution."
+      "Extend beyond the documented square cosine-mode fixtures and paused-export print domain with independent evidence for sand, circular modes, interference, color fidelity, running exports, and other hardware."
     ],
     "numerical": [
       {
@@ -4864,7 +5028,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/material-wave-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/material-wave-print-state.js",
+        "scope": "Actual module exportPNG to 2400x2400 (8 in at 300 ppi) on paused fixtures in the material-wave numerical domain (square cosine modes; single-train Gerstner steepness; Hasimoto filament pairs), initial and time/phase-advanced states, with a deliberate post-export mutation control.",
+        "criteria": "Exact settings JSON and local scientific snapshot unchanged across export; 2400x2400 dimensions; PNG bytes > 1000; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only. Not color fidelity, sand/circular Chladni, two-train Gerstner, Biot-Savart Hasimoto, running exports, other aspects, or physical agreement.",
+        "benchmark": "Exact before/after comparison of host settings plus closed-over scientific locals (Chladni phase, Gerstner metric/trains, Hasimoto meas curve digest) around the real exportPNG path; plate size matches 8 in at 300 ppi.",
+        "failureControl": "Export wrapper that advances the actual scientific time or phase after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/material-wave-print-state.js --write",
+        "results": "validation/results/material-wave-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained square cosine-mode fixtures (1,2)/(3,2)/(4,5) in nodal/filled/contour named in validation/MATERIAL-WAVES.md and measured in validation/results/material-wave-science.json, plus paused exportPNG at those fixtures.",
+      "conditions": "Paused scientific state through real module exportPNG to 2400x2400 (8 in, 300 ppi) on Canvas2D SwiftShader. Exact settings JSON and local scientific locals compared before and after export; deliberate post-export time/phase-advance failure control must be rejected. No sand, circular Bessel modes, interference, mixed modes, running exports, color fidelity, or physical plate agreement.",
+      "resolution": "Numerical acceptance as recorded in material-wave-science.json for the named square fixtures. Print: settingsChanged=false, snapshotChanged=false, correct 2400x2400 plate, failureControl.rejected=true (validation/results/material-wave-print-state.json).",
+      "precision": "Canvas2D path (no GPU float32 field buffers for this tab). Binary64 / independent references for the numerical package; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/material-wave-science.json"
   },
   {
     "id": "track",
@@ -4948,14 +5131,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "18fa85720739ce503e313b5d928da01f65e3f9f163136050d276a9fc3e970a7a",
     "reference": "Gerstner, Theorie der Wellen, Abh. Bohm. Ges. Wiss. (1802), found the unique exact periodic deep-water gravity wave of finite amplitude: every particle traces a circle, the free surface is an inverted trochoid, and the pressure is constant along it. Rankine, On the exact form of waves near the surface of deep water, Phil. Trans. Roy. Soc. 153, 127 (1863), rediscovered the same motion. Superposing two Gerstners (the Two trains control) is graphics practice, Tessendorf, Simulating Ocean Water, SIGGRAPH course notes (2001), and is not an Euler solution. This plate is a seeded print of the exact Lagrangian map. It is not a new equation.",
     "equation": "X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A \u003c 1",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "One train only. Two-train graphical superposition is excluded. Full Euler pressure-field reconstruction and print accuracy remain unvalidated.",
-      "No novel finding, physical experimental agreement or general parameter-domain certification is claimed."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/MATERIAL-WAVES.md and validation/results/material-wave-science.json plus paused-export print preservation in validation/results/material-wave-print-state.json.",
+      "One train only within this domain. Two-train graphical superposition and full Euler pressure-field reconstruction are excluded.",
+      "No Float16 claim, physical experimental agreement, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Extend parameter and boundary-condition comparisons with primary sources.",
-      "Validate rendered fields and exports independently at print resolution."
+      "Extend beyond the documented single-train / filament numerical fixtures and paused-export print domain with independent evidence for excluded graphics, Biot-Savart dynamics, sand/circular modes, color fidelity, running exports, and other hardware."
     ],
     "numerical": [
       {
@@ -4969,7 +5154,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/material-wave-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/material-wave-print-state.js",
+        "scope": "Actual module exportPNG to 2400x2400 (8 in at 300 ppi) on paused fixtures in the material-wave numerical domain (square cosine modes; single-train Gerstner steepness; Hasimoto filament pairs), initial and time/phase-advanced states, with a deliberate post-export mutation control.",
+        "criteria": "Exact settings JSON and local scientific snapshot unchanged across export; 2400x2400 dimensions; PNG bytes > 1000; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only. Not color fidelity, sand/circular Chladni, two-train Gerstner, Biot-Savart Hasimoto, running exports, other aspects, or physical agreement.",
+        "benchmark": "Exact before/after comparison of host settings plus closed-over scientific locals (Chladni phase, Gerstner metric/trains, Hasimoto meas curve digest) around the real exportPNG path; plate size matches 8 in at 300 ppi.",
+        "failureControl": "Export wrapper that advances the actual scientific time or phase after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/material-wave-print-state.js --write",
+        "results": "validation/results/material-wave-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained single-train Gerstner fixtures (steepness 0.22/0.54/0.86) named in validation/MATERIAL-WAVES.md and measured in validation/results/material-wave-science.json, plus paused exportPNG at those fixtures.",
+      "conditions": "Paused scientific state through real module exportPNG to 2400x2400 (8 in, 300 ppi) on Canvas2D SwiftShader. Exact settings JSON and local scientific locals compared before and after export; deliberate post-export time/phase-advance failure control must be rejected. No two-train graphics, full Euler pressure reconstruction, running exports, or physical experiment agreement.",
+      "resolution": "Numerical acceptance as recorded in material-wave-science.json for the named fixtures. Print: settingsChanged=false, snapshotChanged=false, correct 2400x2400 plate, failureControl.rejected=true (validation/results/material-wave-print-state.json).",
+      "precision": "Canvas2D path (no GPU float32 field buffers for these tabs). Binary64 / independent references for the numerical package; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/material-wave-science.json"
   },
   {
     "id": "eight",
@@ -4977,14 +5181,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "00e15b29caba92c9cf360487ddce8471e0f351e54168633c80d650e75a1c01b3",
     "reference": "Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.",
     "equation": "r̈_i = −Σ_{j≠i} (r_i−r_j)/|r_i−r_j|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Finite deterministic fixtures only; no all-parameter or print accuracy claim.",
-      "Figure-eight comparison covers time 1.5 and one-period return only; no chaotic long-time guarantee."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/ORBITS.md and the orbit-science / eight-print-state results artifacts.",
+      "Figure-eight comparison covers time 1.5 and one-period return only; no chaotic long-time guarantee.",
+      "No all-parameter or independent pixel print claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Broaden independent reference trajectories and parameter coverage.",
-      "Audit actual print exports and displayed diagnostics."
+      "Extend beyond the documented finite Yoshida figure-eight fixtures and paused-export print domain with independent evidence for broader parameter coverage, longer histories, and independent pixel print accuracy."
     ],
     "numerical": [
       {
@@ -4998,7 +5204,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/orbit-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/eight-print-state.js",
+        "command": "node tools/eight-print-state.js --write",
+        "results": "validation/results/eight-print-state.json",
+        "scope": "Actual eight exportPNG and exportSVG at 2400 longest edge for world, braid, shape, broken and wreath fixtures (2400x2400, 1920x2400 and 2400x1350).",
+        "criteria": "Exact Float64 trajectory words, L/dE/dq diagnostics, phase, raf and settings preserved across PNG and SVG; deterministic regenerate replay; exact requested dimensions; nonblank reduced raster; nonempty SVG paths; wrong dimensions and deliberate post-export traj+phase mutation rejected; broken return distance exceeds world.",
+        "benchmark": "In-harness auditSnapshot of the private Yoshida trajectory arrays, diagnostics and settings against the same module exportPNG and exportSVG paths.",
+        "failureControl": "Requested PNG/SVG width reduced by one pixel must fail acceptance; mutating traj.px[0][0] and phase after export must fail the identical preservation predicate.",
+        "limitations": "State preservation and declared dimensions only. Does not establish long-time orbit accuracy, calibrated color, printed numerical resolution, SVG/PNG pixel agreement or every control/aspect/hardware."
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained figure-eight orbit fixtures named in validation/ORBITS.md and measured in validation/results/orbit-science.json (Yoshida solver at 100/200/400 steps to t=1.5 and 9600-step one-period return), plus paused exportPNG/SVG fixtures world/braid/shape/broken/wreath at 2400 longest edge.",
+      "conditions": "Float64 trajectory words with Yoshida integrator. Print: real exportPNG and exportSVG; exact traj/diagnostics/phase/raf/settings preserved; deterministic regenerate replay; wrong-dimension and post-export traj+phase mutation rejected; broken return distance exceeds world. No chaotic long-time guarantee, all-parameter coverage, or independent pixel print accuracy.",
+      "resolution": "Numerical acceptance as recorded in orbit-science.json. Print: preserved state across PNG/SVG, exact dimensions, nonblank raster, nonempty SVG paths, failureControls rejected (validation/results/eight-print-state.json).",
+      "precision": "Float64 trajectories; RGBA8 PNG and SVG path output. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/orbit-science.json"
   },
   {
     "id": "peakon",
@@ -5064,14 +5289,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "3636ca8433248c1afb594d76a13d78734592778668cb54dc37ca693af775fb84",
     "reference": "K. Schwarzschild, Sitzungsber. Preuss. Akad. Wiss. (1916). The unstable circular photon orbit at r = 3M is a textbook consequence of that metric. C. Darwin, Proc. R. Soc. Lond. A 249, 180 (1959) and J. L. Synge, Mon. Not. R. Astron. Soc. 131, 463 (1966) integrated the null geodesics and the capture cross-section. The plate is a seeded print of those equatorial (or slightly inclined) rays. It is not a new black hole.",
     "equation": "d²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Finite deterministic fixtures only; no all-parameter or print accuracy claim.",
-      "Finite launch radius and integration cutoffs; deflection is recorded but not validated by the turning-radius benchmark."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/ORBITS.md and the orbit-science / photon-print-state results artifacts.",
+      "Finite launch radius and integration cutoffs; deflection is recorded but not validated by the turning-radius benchmark.",
+      "No all-parameter or independent pixel print claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Broaden independent reference trajectories and parameter coverage.",
-      "Audit actual print exports and displayed diagnostics."
+      "Extend beyond the documented finite null-geodesic fixtures and paused-export print domain with independent evidence for deflection validation, broader parameters, and independent pixel print accuracy."
     ],
     "numerical": [
       {
@@ -5085,7 +5312,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/orbit-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/photon-print-state.js",
+        "command": "node tools/photon-print-state.js --write",
+        "results": "validation/results/photon-print-state.json",
+        "scope": "Actual photon exportPNG at 2400 longest edge for ring, spray, polar and impact fixtures (2400x2400, 1920x2400 and 2400x1350).",
+        "criteria": "Exact Float32 field and mask words, bMeas/rPh/deflRatio diagnostics, cells, buffer size and settings preserved; deterministic regenerate replay; exact PNG dimensions; nonblank reduced raster; wrong dimensions and deliberate post-export field+bMeas mutation rejected; disk capture fraction exceeds equatorial pencil; bMeas and rPh within 2% of 3√3 M and 3M.",
+        "benchmark": "In-harness auditSnapshot of the private Float32 field/mask plate, capture diagnostics and settings against the same module exportPNG path.",
+        "failureControl": "Requested PNG width reduced by one pixel must fail acceptance; mutating field[0] and bMeas after export must fail the identical preservation predicate.",
+        "limitations": "State preservation and declared dimensions only. Does not establish geodesic capture accuracy beyond the recorded ratios, calibrated color, printed numerical resolution or every control/aspect/hardware."
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained null-geodesic fixtures named in validation/ORBITS.md and measured in validation/results/orbit-science.json (five impact parameters, three angular steps, critical impact and circular radius searches), plus paused exportPNG fixtures ring/spray/polar/impact at 2400 longest edge.",
+      "conditions": "Float32 field/mask with null-geodesic solver. Print: real exportPNG; exact field/mask words and bMeas/rPh/deflRatio diagnostics preserved; deterministic regenerate replay; wrong-dimension and post-export field+bMeas mutation rejected; disk capture exceeds equatorial pencil; bMeas and rPh within 2% of 3√3 M and 3M. Deflection recorded but not validated by the turning-radius benchmark. No all-parameter coverage or independent pixel print accuracy.",
+      "resolution": "Numerical acceptance as recorded in orbit-science.json. Print: zero changed field/mask words, exact dimensions, nonblank raster, failureControls rejected (validation/results/photon-print-state.json).",
+      "precision": "Float32 fields versus recorded orbit-science references; RGBA8 PNG. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/orbit-science.json"
   },
   {
     "id": "crapper",
@@ -5112,14 +5358,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "88499871add56cf578919868f1ac033824f0594629abb241d77e41f5bb459765",
     "reference": "H. Hasimoto, J. Fluid Mech. 51, 477 (1972), mapped the local-induction approximation for a thin vortex filament to the cubic nonlinear Schrödinger equation and found the sech soliton: a loop of helical motion that travels along a line vortex at speed equal to twice the torsion. The explicit traveling-wave curve sampled here is the solitary-wave member of S. Kida, J. Fluid Mech. 112, 397 (1981). This plate is a print of that curve. It is not a new law of vortex motion.",
     "equation": "γ_t = γ_s × γ_ss,   ψ = κ exp(i ∫ τ ds),   κ = 2ν sech(ν(s−2τ₀ t)),   c = 2τ₀",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Only sampled local-induction soliton geometry. Full Biot-Savart dynamics, all controls and the print path remain unvalidated.",
-      "No novel finding, physical experimental agreement or general parameter-domain certification is claimed."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/MATERIAL-WAVES.md and validation/results/material-wave-science.json plus paused-export print preservation in validation/results/material-wave-print-state.json.",
+      "Sampled local-induction soliton geometry only within this domain. Full Biot-Savart dynamics and unlisted controls are excluded.",
+      "No Float16 claim, physical experimental agreement, or universal hardware claim.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Extend parameter and boundary-condition comparisons with primary sources.",
-      "Validate rendered fields and exports independently at print resolution."
+      "Extend beyond the documented single-train / filament numerical fixtures and paused-export print domain with independent evidence for excluded graphics, Biot-Savart dynamics, sand/circular modes, color fidelity, running exports, and other hardware."
     ],
     "numerical": [
       {
@@ -5133,7 +5381,26 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/material-wave-science.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/material-wave-print-state.js",
+        "scope": "Actual module exportPNG to 2400x2400 (8 in at 300 ppi) on paused fixtures in the material-wave numerical domain (square cosine modes; single-train Gerstner steepness; Hasimoto filament pairs), initial and time/phase-advanced states, with a deliberate post-export mutation control.",
+        "criteria": "Exact settings JSON and local scientific snapshot unchanged across export; 2400x2400 dimensions; PNG bytes > 1000; mutating-export failure control rejected.",
+        "limitations": "State preservation and dimensions only. Not color fidelity, sand/circular Chladni, two-train Gerstner, Biot-Savart Hasimoto, running exports, other aspects, or physical agreement.",
+        "benchmark": "Exact before/after comparison of host settings plus closed-over scientific locals (Chladni phase, Gerstner metric/trains, Hasimoto meas curve digest) around the real exportPNG path; plate size matches 8 in at 300 ppi.",
+        "failureControl": "Export wrapper that advances the actual scientific time or phase after producing the PNG must be rejected by the same acceptance predicate.",
+        "command": "node tools/material-wave-print-state.js --write",
+        "results": "validation/results/material-wave-print-state.json"
+      }
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained Hasimoto (nu,tau0) filament fixtures named in validation/MATERIAL-WAVES.md and measured in validation/results/material-wave-science.json, plus paused exportPNG at those fixtures.",
+      "conditions": "Paused scientific state through real module exportPNG to 2400x2400 (8 in, 300 ppi) on Canvas2D SwiftShader. Exact settings JSON and local scientific locals compared before and after export; deliberate post-export time/phase-advance failure control must be rejected. No full Biot-Savart dynamics, unlisted controls, running exports, or physical experiment agreement.",
+      "resolution": "Numerical acceptance as recorded in material-wave-science.json for the named fixtures. Print: settingsChanged=false, snapshotChanged=false, correct 2400x2400 plate, failureControl.rejected=true (validation/results/material-wave-print-state.json).",
+      "precision": "Canvas2D path (no GPU float32 field buffers for these tabs). Binary64 / independent references for the numerical package; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/material-wave-science.json"
   },
   {
     "id": "lump",
@@ -5412,16 +5679,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c",
     "reference": "K. S. Yee, Numerical solution of initial boundary value problems involving Maxwell’s equations in isotropic media, IEEE Transactions on Antennas and Propagation 14, 302–307 (1966), doi:10.1109/TAP.1966.1138693. TMz Yee differences and staggering follow the equations described in John B. Schneider, Understanding the FDTD Method, chapter 8. This is an original implementation of the classical method, not new physics.",
     "equation": "ε ∂Ez/∂t = ∂Hy/∂x − ∂Hx/∂y; μ ∂Hx/∂t = −∂Ez/∂y; μ ∂Hy/∂t = ∂Ez/∂x",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Periodic lossless TMz fields only, stationary positive epsilon and uniform mu; no absorption, PML, losses, dispersion or nonlinear materials.",
-      "Analytic modes and one float64 dielectric slab fixture support the recorded cases; discontinuous-interface scattering and geometry convergence remain unvalidated.",
-      "Float32 is required. High-grid evidence is four-step sanity only; long-time, hardware and complete parameter coverage remain open."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/MAXWELL.md and the maxwell-science / maxwell-dielectric-science / maxwell-print-state results artifacts.",
+      "Periodic lossless TMz with stationary positive epsilon and uniform mu only. Normal-incidence staircase interfaces; peak-in-window coefficient extraction before periodic wrap.",
+      "Float32 is required. High-grid four-step sanity, oblique incidence, PML, losses, and full print colorimetry remain outside this domain.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Validate dielectric reflection/transmission and discontinuous-interface refinement against independent references.",
-      "Extend duration, parameter, aspect and hardware coverage including high-grid print paths.",
-      "Compare rendered pixels and color interpretation independently; state preservation alone is not full scientific print accuracy."
+      "Extend beyond the documented normal-incidence staircase dielectric and paused-export print domain with independent evidence for oblique Fresnel, subcell treatments, PML/losses, longer times, other hardware, and quantitative scientific rendering."
     ],
     "numerical": [
       {
@@ -5433,6 +5700,16 @@ shall not be misrepresented as the original profile.
         "failureControl": "Electric-curl sign reversal must produce error > 0.1; a Nyquist mode at 105% CFL must grow above 1e6 while the 95% case stays below 1.0001.",
         "command": "node tools/maxwell-science.js",
         "results": "validation/results/maxwell-science.json"
+      },
+      {
+        "test": "tools/maxwell-dielectric-science.js",
+        "scope": "Actual TMz Yee shaders on a vertical discontinuous dielectric interface: normal-incidence Gaussian-packet Fresnel Ez R/T at eps2 in {2.25,4} on grids 128–512, GPU vs independent Float64 Yee twins at 64/128/256, and fixed-time discontinuous field refinement 128/256 vs Float64 512.",
+        "criteria": "At 256 cells: |R−Γ|\u003c0.02 and |T−T_F|\u003c0.03; at 512: both \u003c0.01; reflection error refines 128→256→512; transmission error improves 128→512; |R²+(n2/n1)T²−1|\u003c0.02 at 512; GPU/Float64 twin max error \u003c2e-5; discontinuous field RMS refinement ratio >1.5.",
+        "limitations": "Normal-incidence staircase interfaces only; peak-in-window coefficient extraction before periodic wrap. Not oblique incidence, subcell averaging, PML, losses, experimental measurement or arbitrary long-time certification.",
+        "benchmark": "Independent continuum Fresnel Ez coefficients Γ=(n1−n2)/(n1+n2), T=2n1/(n1+n2) with n=√ε; independent Float64 Yee twin of the declared staggered updates; fine Float64 reference field at fixed physical time.",
+        "failureControl": "Zero-contrast (homogeneous ε1) packet must yield |R|≪|Γ| so Fresnel match fails (|R−Γ|>0.2 with |R|\u003c0.08). Ignore-epsilon electric update mutant must miss Fresnel by |ΔR| or |ΔT| > 0.15.",
+        "command": "node tools/maxwell-dielectric-science.js",
+        "results": "validation/results/maxwell-dielectric-science.json"
       }
     ],
     "print": [
@@ -5442,9 +5719,19 @@ shall not be misrepresented as the original profile.
         "criteria": "Exact field-buffer bits, settings and metadata preserved; finite values, requested dimensions, >1000-byte PNGs; deliberate one-step state mutation rejected.",
         "limitations": "Preservation and dimensions only. One renderer/seed/material set, two grids/aspects, no calibrated colors or high-grid/running exports.",
         "command": "node tools/maxwell-print-state.js",
-        "results": "validation/results/maxwell-print-state.json"
+        "results": "validation/results/maxwell-print-state.json",
+        "benchmark": "Exact field-buffer bits, settings and metadata before and after the real exportPNG path; dimensions must match the declared plate.",
+        "failureControl": "Export wrapper that advances the actual solver one step after producing the PNG must be rejected by the same preservation predicate."
       }
-    ]
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained periodic lossless TMz fixtures named in validation/MAXWELL.md and measured in validation/results/maxwell-science.json plus maxwell-dielectric-science.json (analytic modes, float64 dielectric slab, normal-incidence Fresnel on vertical staircase interfaces eps 1→4, discontinuous-field refinement), plus paused maxwell-print-state exports at 128 square and 256×320.",
+      "conditions": "Float32 Yee shaders on SwiftShader with independent Float64 Yee twin and continuum Fresnel Ez coefficients. Print: twelve actual exports at 2400×2400 and 2400×3000, initial and 32-step paused states, all three views; deliberate one-step mutation rejected. No absorption, PML, losses, dispersion, nonlinear materials, oblique incidence, subcell averaging, high-grid running exports, or calibrated colors.",
+      "resolution": "Numerical acceptance as recorded in maxwell-science.json and maxwell-dielectric-science.json (Float64 twin ≲4.5e-7; Fresnel |R| error ~0.032 at 128×8; refine RMS 0.020→0.007 ratio ~2.89; zero-contrast and ignore-ε failure controls rejected). Print: exact field-buffer bits/settings/metadata preserved, failureControl rejected (validation/results/maxwell-print-state.json).",
+      "precision": "Float32 GPU fields versus Binary64 twin/Fresnel references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/maxwell-dielectric-science.json"
   },
   {
     "id": "molecular",
@@ -5452,16 +5739,16 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "b0152563304cd2f85948d12def42b459c6f110f8730f0f55b86a45dd145f814a",
     "reference": "J. E. Lennard-Jones, Proceedings of the Royal Society A (1924). L. Verlet, Physical Review (1967). Force shifting and molecular dynamics: M. P. Allen and D. J. Tildesley, Computer Simulation of Liquids, second edition (2017).",
     "equation": "V(r) = 4(r^-12 - r^-6) - V_LJ(rc) + (r-rc)F_LJ(rc), r \u003c rc = 2.5;  m r̈ = -∇V",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Two-dimensional periodic force-shifted Lennard-Jones model, with no thermostat or named material/EOS claim.",
-      "Force, linked-cell and bounded trajectory checks support stated fixtures only; the local stiffness/energy guard is not a global nonlinear stability proof.",
-      "Print checks preserve evolved particle state and compare raster/SVG output; broad devices, parameters and long-time thermodynamics remain unvalidated."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/MOLECULAR.md and the molecular-science / molecular-equilibration-science / molecular-print results artifacts.",
+      "Two-dimensional periodic force-shifted Lennard-Jones NVE only; kinetic temperature is an NVE observable, not a canonical control. Diffusion proxy is MSD/(4t) at a single late time, not a plateaued Green–Kubo integral.",
+      "Print marks represent particle geometry, not chemical bonds or calibrated physical appearance.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Establish equilibrated observables and transport with independent seeds, correlation-aware uncertainty and finite-size checks before making thermodynamic claims.",
-      "Extend timestep, parameter, seed, high-count and long-duration coverage.",
-      "Assess broader hardware and full scientific interpretation of printed observables."
+      "Extend beyond the documented density-0.4 NVE equilibration/transport and paused-export print domain with independent evidence for EOS, melting/phase coexistence, Green–Kubo diffusion, broader (N,T,ρ,seed) coverage, other hardware, and full scientific interpretation of printed observables."
     ],
     "numerical": [
       {
@@ -5473,6 +5760,16 @@ shall not be misrepresented as the original profile.
         "limitations": "Short declared fixtures, not an EOS, equilibrium phase diagram, arbitrary trajectory or global-stability certification. High-count timing is machine-specific.",
         "benchmark": "Independent scalar energy finite difference, radial force/cutoff signs, all-pairs minimum-image forces and energies, and fixed-time all-pairs RK4 with separately refined reference timestep.",
         "failureControl": "Reverse pair force, omit force shift, ignore periodic separation, use one full kick/drift instead of Verlet, and provoke initial and post-drift failures with exact rollback checks."
+      },
+      {
+        "test": "tools/molecular-equilibration-science.js",
+        "command": "node tools/molecular-equilibration-science.js",
+        "results": "validation/results/molecular-equilibration-science.json",
+        "scope": "Actual Float64 NVE force-shifted LJ at density 0.4, initial T=0.8: eight independent seeds for N=64, four-seed finite-size N=144 and dt=0.001 controls; block-averaged temperature/energy, ballistic MSD vs free-flight reference, late-time MSD/(4t) diffusion proxy.",
+        "criteria": "Block SE exceeds naive SE; short-time ballistic MSD relative error mean \u003c0.2 vs independent Float64 free flight; multi-seed T and E/N with reported stderr; finite-size and timestep T shifts within 8 combined seed stderr; energy drift \u003c2% scale; raw-wrapped MSD, wrong DoF and transient-mean failure controls separate.",
+        "limitations": "Bounded fluid-density NVE fixture only. Diffusion proxy is single-time MSD/(4t), not Green–Kubo or experimental D. No EOS, melting, phase coexistence or canonical thermostat claim.",
+        "benchmark": "Independent Float64 force-free free-flight MSD from production-start velocities; independent kinetic temperature K/(N-1); multi-seed means with Flyvbjerg–Petersen-style block stderr and across-seed stderr; N and dt controls at matched physical production time.",
+        "failureControl": "Raw wrapped-coordinate MSD without unwrapping must disagree with unwrapped MSD; temperature divisor K/N must miss independent K/(N-1); unequilibrated transient mean must lie outside the equilibrated multi-seed uncertainty."
       }
     ],
     "print": [
@@ -5482,9 +5779,19 @@ shall not be misrepresented as the original profile.
         "results": "validation/results/molecular-print.json",
         "scope": "Paused evolved 1024-particle states with/without links and a completed 4096-particle warmup; 2400-square and 2400x1800 raster/SVG exports, real shell print, live/pause and visible halt.",
         "criteria": "Exact positions/velocities/forces/energy/counters preserved, each requested raster and decoded SVG dimension correct, matched-format reduced-image RGB mean absolute difference \u003c1.5/255; visible halt and live/pause behavior checked.",
-        "limitations": "Declared seeds, states and backend only. Marks represent particle geometry, not chemical bonds or calibrated physical appearance. Intermediate warmups can legitimately differ from later screens."
+        "limitations": "Declared seeds, states and backend only. Marks represent particle geometry, not chemical bonds or calibrated physical appearance. Intermediate warmups can legitimately differ from later screens.",
+        "benchmark": "Exact positions/velocities/forces/energy/counters before and after real raster/SVG/shell export; requested dimensions and matched-format reduced-image MAD \u003c1.5/255.",
+        "failureControl": "Visible halt and live/pause behavior checked in the harness; export must preserve scientific state (see molecular-print results)."
       }
-    ]
+    ],
+    "domain": {
+      "parameters": "Exactly the maintained 2D force-shifted LJ NVE fixtures named in validation/MOLECULAR.md and measured in validation/results/molecular-science.json plus molecular-equilibration-science.json (force/linked-cell/trajectory guards; density-0.4 multi-seed equilibration/transport with N=64/144 and dt controls), plus paused molecular-print exports at the recorded particle counts/aspects.",
+      "conditions": "Periodic Float64 NVE without thermostat. Equilibration of kinetic temperature and E/N with block-averaged uncertainty; ballistic MSD vs independent free-flight reference; late-time MSD/(4t) diffusion proxy. Print: paused evolved states through real raster/SVG/shell export with exact positions/velocities/forces/energy/counters preserved. No EOS, melting, phase coexistence, Green–Kubo plateau diffusion, experimental transport, or calibrated chemical appearance.",
+      "resolution": "Numerical acceptance as recorded in molecular-science.json and molecular-equilibration-science.json (8-seed T/E/N, ballistic MSD, D proxy, finite-size/timestep controls; wrapped-MSD / wrong-T / transient failure controls). Print: exact state preservation and dimension/MAD criteria in validation/results/molecular-print.json.",
+      "precision": "Float64Array positions/velocities/forces with independent Float64 free-flight reference; RGBA8/SVG print. Renderer environment recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/molecular-equilibration-science.json"
   },
   {
     "id": "surfaces",
@@ -5538,14 +5845,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "237cfe67009ed638ec3b021c6f872dd1190e13e0ea0fd85ac49f6ea9c62dbdd4",
     "reference": "Standard cloud-in-cell electrostatic plasma model. C. K. Birdsall and A. B. Langdon, Plasma Physics via Computer Simulation (1985). CIC field centering and conservation limitations: J. U. Brackbill, arXiv:1510.08741 (2015), sections 3.1–3.5. Original implementation; not the GEMPIC geometric scheme.",
     "equation": "∂f/∂t + v ∂f/∂x − E ∂f/∂v = 0; ∂E/∂x = 1 − ∫f dv; x ∈ [0, 2π), periodic",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. No validated Landau damping, nonlinear instability threshold, collisions or magnetic physics.",
-      "Bounded fixtures and selected print states do not certify every allowed setting, long evolution or device."
+      "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. Landau damping validated only for one Maxwellian kλ_D=0.4 fixture against an independent plasma-Z root within an early-time fit window; no validated nonlinear instability threshold, collisions, EM, or magnetic physics.",
+      "Bounded fixtures and selected print states do not certify every allowed setting, long evolution, or device."
     ],
     "remaining": [
-      "Extend independent parameter, boundary, resolution and long-duration evidence before quantitative generalization.",
-      "Broaden print interpretation and hardware coverage; retain stated model assumptions."
+      "Two-stream growth-rate and finite-grid instability maps; independent multi-kλ_D / long-duration / nonlinear threshold evidence before generalizing beyond this Maxwellian fixture.",
+      "Broaden print interpretation and hardware coverage beyond the recorded phase-space export states."
     ],
     "numerical": [
       {
@@ -5556,7 +5863,17 @@ shall not be misrepresented as the original profile.
         "criteria": "Poisson fields within 1e-12; cold frequency relative error below .002; trajectory RMS below .00015; spatial/temporal error reductions3.5–4.5 and3.5–4.6; noise mean within4 seed standard errors; exact failed-trial rollback.",
         "benchmark": "Independent dense periodic Poisson solve, all-pairs triangular deposition weights, analytic noncrossing cold-sheet oscillation, same-domain refinement and exact expected CIC sampling variance.",
         "failureControl": "Reversed force sign and nonneutral deposited charge must be detected; rejected dynamics restore accepted arrays and counters.",
-        "limitations": "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. No validated Landau damping, nonlinear instability threshold, collisions or magnetic physics."
+        "limitations": "One-dimensional electrostatic periodic CIC electrons with immobile uniform ions; physical energy is approximate. Cold-sheet/Poisson/noise fixture only; Landau rate is covered by the separate landau harness within one Maxwellian kλ_D window."
+      },
+      {
+        "test": "tools/plasma-landau-science.js",
+        "command": "node tools/plasma-landau-science.js",
+        "results": "validation/results/plasma-landau-science.json",
+        "scope": "Actual Float64 1D1V CIC Maxwellian mode-1 Langmuir wave (beam=0, thermal=0.4, k=1, kλ_D=0.4): independent plasma-Z Landau root vs early-time |E_k| envelope γ; particle/grid refinement; cold, trapping, and flipped-force controls.",
+        "criteria": "Primary and finest-two refinements |γ_num-γ_theory|/|γ_theory|\u003c0.15 with envelope r²>0.9; multi-seed fine mean within 0.2; cold nearly undamped and rejects warm rate; large-amplitude and flipped-force cases reject the linear damping claim.",
+        "benchmark": "Independent Float64 plasma dispersion Z / Newton root of ε(ω,k)=1+(1/(k²λ_D²))[1+ζZ(ζ)] with v_th=thermal, λ_D=thermal, ζ=ω/(√2 k v_th); verified against Z(0), Z(1) and the kλ_D=0.5 root.",
+        "failureControl": "thermal→0 must leave the wave nearly undamped and fail the warm-rate claim; amplitude 0.35 trapping must miss linear γ; flipped kick sign must halt or grow and must not match Landau damping.",
+        "limitations": "One kλ_D fixture, electrostatic 1D1V, finite-N noise and early-time window only; no collisions, EM, ions, multi-mode map or experimental claim."
       }
     ],
     "print": [
@@ -5568,7 +5885,15 @@ shall not be misrepresented as the original profile.
         "criteria": "Exact numerical arrays, CPU/GPU histograms, diagnostics, counters and recipes preserved; output dimensions exact; resumed warmup matches direct fixed-step trajectory.",
         "limitations": "Selected states and rendering backend; more output pixels do not improve numerical resolution or establish physical accuracy."
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/plasma-landau-science.json",
+    "domain": {
+      "parameters": "Electrostatic 1D1V CIC electrons with immobile uniform ions; Landau check uses Maxwellian beam=0, thermal=0.4 (v_th=σ), mode-1 on L=2π (k=1, kλ_D=0.4), amplitude=0.03, plus the plasma-science Poisson/oscillation/refinement fixtures recorded in validation/results/plasma-science.json and validation/results/plasma-landau-science.json.",
+      "conditions": "Periodic normalized plasma; early-time |E_k| envelope fit window t∈[2,12] vs independent plasma-Z / Newton Landau root; cold (thermal→0), large-amplitude trapping (amp=0.35), and flipped-force controls must reject the linear warm-rate claim; print preserves listed phase-space export states.",
+      "resolution": "Primary Landau: N=131072 particles, M=256 cells, dt=0.015, 800 steps, seed ld-r2; |γ_num−γ_theory|/|γ_theory|≈0.81% with envelope r²≈0.981 (acceptance \u003c0.15 on primary and finest two refinements; multi-seed mean \u003c0.2). Print: exact numerical arrays and stated PNG/SVG dimensions for the eight recorded states.",
+      "precision": "Float64 plasma.js solver and independent Faddeeva/plasma-Z reference; finite-N sampling noise and early-time window only; RGBA8 PNG / declared SVG decimals for prints. No collisions, EM, mobile ions, multi-mode map, or experimental claim."
+    }
   },
   {
     "id": "shallow",

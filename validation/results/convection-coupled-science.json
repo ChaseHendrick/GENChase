@@ -1,0 +1,316 @@
+{
+  "scope": "Full coupled free-slip Boussinesq chain (solvePsi -> CONV_ADV_FS -> CONV_DIFF_FS) on a fixed physical box Gamma=2x1, Pr=1, Ra=100<<Ra_c, small multimodal seed decaying to T_final=0.08. Float64 CPU twin of the discrete operators plus continuum linear free-fall rates. Float32 GPU. Not onset, turbulence, Nu, no-slip, float16, or default four-sweep Poisson certification.",
+  "parameters": {
+    "Ra": 100,
+    "Pr": 1,
+    "nu": 0.1,
+    "kappa": 0.1,
+    "gamma": 2,
+    "epsilon": 0.001,
+    "finalTime": 0.08,
+    "wall": "free-slip",
+    "mode": "sin(pi y) cos(pi x)",
+    "itersPerStep": 24,
+    "warmSweeps": 40,
+    "continuumRates": [
+      -1.2668140990313241,
+      -2.681027661404419
+    ],
+    "continuumAmps": {
+      "Th": 0.0008552901396214033,
+      "Om": -0.00021472886227389136
+    },
+    "note": "W=GAMMA*(H-1) matches the existing fixed-domain diffusion fixture (periodic width 2)."
+  },
+  "spatial": [
+    {
+      "height": 33,
+      "width": 64,
+      "dx": 0.03125,
+      "dt": 0.001951219512195122,
+      "steps": 41,
+      "iters": 24,
+      "ms": 99,
+      "amps": {
+        "Th": 0.000855091646444708,
+        "Om": -0.00021517225215339058
+      },
+      "continuum": {
+        "Th": 0.0008552901396214033,
+        "Om": -0.00021472886227389136
+      },
+      "errTh": 1.984931766953104e-07,
+      "errOm": 4.4338987949921844e-07
+    },
+    {
+      "height": 65,
+      "width": 128,
+      "dx": 0.015625,
+      "dt": 0.0004878048780487805,
+      "steps": 164,
+      "iters": 24,
+      "ms": 1392,
+      "amps": {
+        "Th": 0.0008552243726624451,
+        "Om": -0.00021483741966822276
+      },
+      "continuum": {
+        "Th": 0.0008552901396214033,
+        "Om": -0.00021472886227389136
+      },
+      "errTh": 6.576695895819593e-08,
+      "errOm": 1.0855739433139437e-07
+    },
+    {
+      "height": 129,
+      "width": 256,
+      "dx": 0.0078125,
+      "dt": 0.00012195121951219512,
+      "steps": 656,
+      "iters": 24,
+      "ms": 21272,
+      "amps": {
+        "Th": 0.0008552599320043869,
+        "Om": -0.0002147542226768402
+      },
+      "continuum": {
+        "Th": 0.0008552901396214033,
+        "Om": -0.00021472886227389136
+      },
+      "errTh": 3.020761701639108e-08,
+      "errOm": 2.5360402948845394e-08
+    }
+  ],
+  "spatialOrders": {
+    "Th": [
+      1.5936545476396524,
+      1.1224505831925884
+    ],
+    "Om": [
+      2.0301178429193816,
+      2.097808424128988
+    ]
+  },
+  "gpuVsCpu": [
+    {
+      "height": 33,
+      "width": 64,
+      "dx": 0.03125,
+      "dt": 0.001951219512195122,
+      "steps": 41,
+      "gpuAmps": {
+        "Th": 0.0008551499088273073,
+        "Om": -0.00021516207417928722
+      },
+      "cpuAmps": {
+        "Th": 0.000855091646444708,
+        "Om": -0.00021517225215339058
+      },
+      "ampErrTh": 5.82623825993089e-08,
+      "ampErrOm": 1.0177974103358625e-08,
+      "nonfinite": false,
+      "continuumErrTh": 1.402307940960015e-07,
+      "continuumErrOm": 4.332119053958598e-07,
+      "maxFieldT": 5.963965201694066e-07,
+      "maxFieldOm": 9.717981441110104e-08,
+      "fieldNonfinite": false
+    },
+    {
+      "height": 65,
+      "width": 128,
+      "dx": 0.015625,
+      "dt": 0.0004878048780487805,
+      "steps": 164,
+      "gpuAmps": {
+        "Th": 0.0008540689741683186,
+        "Om": -0.0002147411470325145
+      },
+      "cpuAmps": {
+        "Th": 0.0008552243726624451,
+        "Om": -0.00021483741966822276
+      },
+      "ampErrTh": 1.1553984941264483e-06,
+      "ampErrOm": 9.627263570824679e-08,
+      "nonfinite": false,
+      "continuumErrTh": 1.2211654530846442e-06,
+      "continuumErrOm": 1.2284758623147584e-08,
+      "maxFieldT": 1.182822393253069e-06,
+      "maxFieldOm": 1.5946720003122877e-07,
+      "fieldNonfinite": false
+    },
+    {
+      "height": 129,
+      "width": 256,
+      "dx": 0.0078125,
+      "dt": 0.00012195121951219512,
+      "steps": 656,
+      "gpuAmps": {
+        "Th": 0.0008561024279652015,
+        "Om": -0.00021491791019280073
+      },
+      "cpuAmps": {
+        "Th": 0.0008552599320043869,
+        "Om": -0.0002147542226768402
+      },
+      "ampErrTh": 8.424959608146565e-07,
+      "ampErrOm": 1.6368751596052217e-07,
+      "nonfinite": false,
+      "continuumErrTh": 8.122883437982654e-07,
+      "continuumErrOm": 1.8904791890936756e-07
+    }
+  ],
+  "gpuSpatialOrders": {
+    "Th": [
+      -3.122383582171395,
+      0.5881948340116555
+    ],
+    "Om": [
+      5.1401314748664335,
+      -3.9438105515108837
+    ]
+  },
+  "temporal": [
+    {
+      "height": 65,
+      "width": 128,
+      "dx": 0.015625,
+      "dt": 0.0004878048780487805,
+      "steps": 164,
+      "factor": 1,
+      "ms": 1448,
+      "maxT": 8.052855132723025e-08,
+      "maxOm": 1.6454434022004157e-07,
+      "nonfinite": false,
+      "amps": {
+        "Th": 0.0008552243726624451,
+        "Om": -0.00021483741966822276
+      }
+    },
+    {
+      "height": 65,
+      "width": 128,
+      "dx": 0.015625,
+      "dt": 0.00024390243902439024,
+      "steps": 328,
+      "factor": 2,
+      "ms": 2659,
+      "maxT": 3.453671471032038e-08,
+      "maxOm": 7.046869413343537e-08,
+      "nonfinite": false,
+      "amps": {
+        "Th": 0.000855270364192603,
+        "Om": -0.00021474334402190925
+      }
+    },
+    {
+      "height": 65,
+      "width": 128,
+      "dx": 0.015625,
+      "dt": 0.00012195121951219512,
+      "steps": 656,
+      "factor": 4,
+      "ms": 5565,
+      "maxT": 1.1511267328234709e-08,
+      "maxOm": 2.3470941285110665e-08,
+      "nonfinite": false,
+      "amps": {
+        "Th": 0.0008552933896186737,
+        "Om": -0.00021469634626904022
+      }
+    }
+  ],
+  "temporalOrders": {
+    "T": [
+      1.2213695265195725,
+      1.585084178536977
+    ],
+    "Om": [
+      1.2234220187671272,
+      1.5861067782464005
+    ]
+  },
+  "temporalReference": {
+    "height": 65,
+    "dt": 6.1022120518688026e-05,
+    "steps": 1311,
+    "factor": 8
+  },
+  "failureControl": {
+    "negatedBuoyancy": {
+      "description": "GPU (and CPU twin) replace +Tx with -Tx in CONV_DIFF_FS",
+      "gpu": {
+        "errTh": 1.3574484342731208e-06,
+        "errOm": 0.0004294671832925245,
+        "amps": {
+          "Th": 0.0008539326911871302,
+          "Om": 0.00021473832101863313
+        }
+      },
+      "cpu": {
+        "errTh": 2.742561628348017e-06,
+        "errOm": 0.00042934229373548817
+      },
+      "marginOverHonestOmErr": 3956.13017369858
+    },
+    "halfElapsedTime": {
+      "description": "Evolve only floor(steps/2) at the same dt; compare to full-time continuum amplitudes",
+      "gpu": {
+        "errTh": 6.883544340715686e-05,
+        "errOm": 9.853920450003595e-05,
+        "amps": {
+          "Th": 0.0009241255830285601,
+          "Om": -0.00011618965777385541
+        },
+        "steps": 82
+      },
+      "cpu": {
+        "errTh": 6.912333714188747e-05,
+        "errOm": 9.852812153839606e-05,
+        "elapsed": 0.04
+      },
+      "marginOverHonestOmErr": 907.715269944894
+    },
+    "falseDomainRefinement": {
+      "description": "Refine H while setting W=H-1 so physical width shrinks from 2 toward 1; reject if Om error shows order-2-like decay vs continuum of the Gamma=2 mode",
+      "rows": [
+        {
+          "height": 33,
+          "width": 32,
+          "physicalWidth": 1,
+          "dx": 0.03125,
+          "dt": 0.001951219512195122,
+          "steps": 41,
+          "amps": {
+            "Th": 0.0005214383837482154,
+            "Om": -0.00013066939081820888
+          },
+          "continuumErrTh": 0.00033385175587318785,
+          "continuumErrOm": 8.405947145568248e-05
+        },
+        {
+          "height": 65,
+          "width": 64,
+          "physicalWidth": 1,
+          "dx": 0.015625,
+          "dt": 0.0004878048780487805,
+          "steps": 164,
+          "amps": {
+            "Th": 0.0005187371183555218,
+            "Om": -0.00013032432514838242
+          },
+          "continuumErrTh": 0.0003365530212658815,
+          "continuumErrOm": 8.440453712550895e-05
+        }
+      ],
+      "observedOrderOm": -0.005910167175179797,
+      "rejectedAsHonestOrder2": true
+    }
+  },
+  "limitations": [
+    "Below-onset free-slip decay of one small mode; nonlinear onset, no-slip plates, high Ra and turbulent Nu are out of scope.",
+    "SOR uses 24 sweeps per step (plus 40 warm); this does not certify the production default of four.",
+    "Temperature spatial order vs continuum is reduced relative to vorticity by semi-Lagrangian advection and forward-Euler diffusion. Reported spatialOrders are Float64 CPU twin vs continuum; gpuSpatialOrders are diagnostic only.",
+    "Temporal orders are self-convergence against a fine-dt Float64 twin at fixed H=65, not continuum rates.",
+    "Float32 GPU only; half precision and print rendering are not covered. GPU/CPU amplitude drift grows with step count (float32 vs float64)."
+  ]
+}
