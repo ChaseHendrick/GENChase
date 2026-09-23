@@ -1,0 +1,146 @@
+{
+  "sourceSha256": "ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77",
+  "harnessSha256": "35f1450a8281b1e49b33a485a136310bc6df291c4a1113f70a64b6aed70e79ef",
+  "command": "node tools/bec-science.js --write",
+  "scope": "Independent Float64 twin of the discrete 2D GPE operators in bec.js (5-point Laplacian with clamp neighbors, harmonic trap, contact interaction, Visscher real-time stagger, imag-time Euler with NORM_EVERY=32 L2 renormalization). Shader source markers are checked. No GPU float32 path, no Abrikosov lattice count, no experimental Na BEC claim.",
+  "criteria": {
+    "realTimeNormAbsError": 0.002,
+    "tfSeedMuRelativeError": 0.04,
+    "tfSeedEnergyRelativeError": 0.05,
+    "groundStateMuRelativeError": 0.12,
+    "groundStateEnergyRelativeError": 0.06,
+    "groundStateKineticFraction": 0.05,
+    "vortexWindingExact": 1
+  },
+  "normConservation": {
+    "grid": 64,
+    "half": 8,
+    "g": 0,
+    "trap": 1,
+    "omega": 0,
+    "sigma": 1.2,
+    "dt": 0.003125,
+    "physicalTime": 2,
+    "steps": 640,
+    "initialNorm": 0.9999999999999971,
+    "finalNorm": 0.9987934552039902,
+    "absNormError": 0.0012065447960097897,
+    "tolerance": 0.002,
+    "note": "Linear (g=0) harmonic case of the Visscher stagger; nonlinear GPE with dens from mixed half-levels is not claimed to conserve naive L2 exactly."
+  },
+  "thomasFermi": [
+    {
+      "grid": 96,
+      "half": 8,
+      "g": 400,
+      "trap": 1,
+      "dt": 0.001251456606989006,
+      "imagSteps": 3000,
+      "muTF": 11.283791670955125,
+      "energyTF": 7.52252778063675,
+      "radiusTF": 4.750535058486596,
+      "seed": {
+        "chemicalPotential": 11.50225106314473,
+        "energy": 7.7402156764170575,
+        "muRelativeError": 0.01936045954764715,
+        "energyRelativeError": 0.028938131187849346
+      },
+      "groundState": {
+        "chemicalPotential": 12.229706385597295,
+        "energy": 7.7608694821328355,
+        "kinetic": 0.11125233068021985,
+        "trapEnergy": 3.18078024798804,
+        "interaction": 4.468836903464576,
+        "norm": 1.0000000000000093,
+        "muRelativeError": 0.08382950892978529,
+        "energyRelativeError": 0.03168372499860821,
+        "kineticFraction": 0.01433503435875919,
+        "massRadius95": 3.9175530911810523,
+        "energyBefore": 10.082638105342868
+      },
+      "tolerances": {
+        "seedMu": 0.04,
+        "seedEnergy": 0.05,
+        "groundMu": 0.12,
+        "groundEnergy": 0.06,
+        "kineticFraction": 0.05
+      }
+    },
+    {
+      "grid": 96,
+      "half": 9,
+      "g": 800,
+      "trap": 1,
+      "dt": 0.0011620673138889978,
+      "imagSteps": 4000,
+      "muTF": 15.957691216057308,
+      "energyTF": 10.63846081070487,
+      "radiusTF": 5.649370091622129,
+      "seed": {
+        "chemicalPotential": 16.10567069993543,
+        "energy": 10.787138342549168,
+        "muRelativeError": 0.00927323895885512,
+        "energyRelativeError": 0.013975473942122531
+      },
+      "groundState": {
+        "chemicalPotential": 17.813446032455197,
+        "energy": 11.0493934421153,
+        "kinetic": 0.08894969712924289,
+        "trapEnergy": 4.196391154646143,
+        "interaction": 6.764052590339913,
+        "norm": 0.9999999999999989,
+        "muRelativeError": 0.11629218733914023,
+        "energyRelativeError": 0.03862707573232124,
+        "kineticFraction": 0.008050188238406536,
+        "massRadius95": 4.4548516389437705,
+        "energyBefore": 18.04035707537203
+      },
+      "tolerances": {
+        "seedMu": 0.04,
+        "seedEnergy": 0.05,
+        "groundMu": 0.12,
+        "groundEnergy": 0.06,
+        "kineticFraction": 0.05
+      }
+    }
+  ],
+  "vortexWinding": {
+    "grid": 96,
+    "half": 8,
+    "g": 400,
+    "trap": 1,
+    "preparedWinding": 1,
+    "expected": 1,
+    "note": "Prepared singly quantized vortex (phase e^{iθ} with TF amplitude and healing core); plaquette winding only — not Abrikosov lattice counting."
+  },
+  "failureControls": {
+    "wrongKineticLaplacianSign": {
+      "energy": 72.16460010559976,
+      "energyTF": 7.52252778063675,
+      "energyRelativeError": 8.593131751717019,
+      "norm": 1.000000000000001,
+      "detected": true
+    },
+    "wrongInteractionSign": {
+      "collapsed": true,
+      "energy": null,
+      "energyTF": 7.52252778063675,
+      "energyRelativeError": null,
+      "chemicalPotential": null,
+      "muTF": 11.283791670955125,
+      "detected": true
+    },
+    "brokenImagTimeRenormalization": {
+      "finalNorm": 0.00009246974268265853,
+      "detected": true
+    }
+  },
+  "seconds": 1.352360457,
+  "limitations": [
+    "Float64 CPU twin of the discrete operators, not a bit-exact GPU float32/float16 replay of the studio shaders.",
+    "Real-time norm check uses g=0 (linear Schrödinger limit of the GPE); nonlinear dens at mixed Visscher half-levels is not claimed to conserve naive L2 exactly.",
+    "Thomas–Fermi comparison is asymptotic (large repulsive g); rotating-frame Ω L_z, Abrikosov lattice counting and turbulence diagnostics are not certified.",
+    "Prepared single-vortex winding is not a physical vortex count from noisy real-time encoded fields.",
+    "No print-state audit, no experimental sodium BEC claim, no full quantum-turbulence certification."
+  ]
+}
