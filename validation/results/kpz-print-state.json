@@ -1,0 +1,1020 @@
+{
+  "pass": true,
+  "source": "src/modules/kpz.js",
+  "sourceSha256": "30b2393368ab389e0e5fabc4e17215de292e0dbfb945dc92b3b04d2aab57fb19",
+  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "harnessSha256": "f2b2eb93884d4f36777da2c879f658c5b676eb8e90f6b6d5e0805ddb2fc9d419",
+  "replayHarness": "tools/kpz-production.js",
+  "replayHarnessSha256": "704b9d14931653ba939020fff200294d23df6306c01aa5f407f330714b559253",
+  "command": "node tools/kpz-print-state.js --write",
+  "setup": "npm install --no-save --package-lock=false playwright@1.56.1",
+  "scope": "Actual kpz.js in dist/studio.html (Chromium, SwiftShader) for the six column presets kpz, ew, rd, rsos, rings and wide at seed kardar-1986 with each preset's own paint settings and palette. The browser build (cell, column heights, width samples, fitted exponent, particle count, lattice) is compared with the independent Node replay in tools/kpz-production.js. exportPNG at 2400 px on the longest edge (2400x2400; 2400x1350 for 16:9) with the full state compared before and after; exportSVG of the Interfaces view (rings) with every polyline vertex compared against column heights recorded during an independent Node deposition at the interface times; exportSVG refused for the strata and both views. Eden is excluded.",
+  "criteria": "Cell words, column heights, particle count and lattice identical to the Node replay and width samples, final width and fitted exponent within 1e-12; regenerate identical; exact requested PNG dimensions, image/png over 1000 bytes, luminance spread over 12/255 with more than 0.1% of pixels off the background; zero changed cell, height or width words, fitted exponent, scalars or settings across every export; Interfaces SVG exactly 2400x2400 with max(2, lines) polylines of one vertex per column, every vertex equal to round2(ox + pw (x + 0.5)/W), round2(oy + ph (1 - (h_T[x] + 0.5)/H)) with zero error; no deposit that fails to raise its column, particle numbers rising with height in every production column, and interface heights nondecreasing in T; exportSVG throws \"raster view\" for strata and both. Failure controls: a PNG requested 1 px narrower, a post-export change to one cell and to h[0], and one interface shifted by one cell must each be rejected by the same predicate.",
+  "rows": [
+    {
+      "fixture": "kpz",
+      "model": "ballistic",
+      "cols": 700,
+      "fill": 0.86,
+      "aspect": "1:1",
+      "view": "strata",
+      "bands": 26,
+      "lines": 18,
+      "lw": 1.2,
+      "logTime": false,
+      "void": 0.55,
+      "margin": 0.03,
+      "grain": 0.04,
+      "shift": 0,
+      "palette": "ember",
+      "bg": "#121110",
+      "seed": "kardar-1986",
+      "requested": [
+        2400,
+        2400
+      ],
+      "cells": [
+        700,
+        700
+      ],
+      "particles": 226560,
+      "betaFit": 0.23623740799879506,
+      "pointsUsed": 20,
+      "wFinal": 7.052593096709553,
+      "snapshot": {
+        "cellSha256": "30ce2c93b624aba40337268546348d3feced041d1858a8820406e680c4c538dc",
+        "replayCellSha256": "30ce2c93b624aba40337268546348d3feced041d1858a8820406e680c4c538dc",
+        "hSha256": "5589d8089687089ea75974ea84c39b48d8afb993354a1f48a339f8bdd515e7e8",
+        "widthsSha256": "2a53288381aaee1cbae5aa0bf4322867ca19f291811cb6356d3df372282e44e7",
+        "settingsSha256": "74c8f5de2401cebff77707910e0b0b2556a6db3a3281e447f14d58e845e944c8",
+        "betaFit": 0.23623740799879506,
+        "nPart": 226560,
+        "W": 700,
+        "H": 700
+      },
+      "replay": {
+        "cells": [
+          700,
+          700
+        ],
+        "replayCells": [
+          700,
+          700
+        ],
+        "cellWordsDiffering": 0,
+        "heightsDiffering": 0,
+        "widthSamples": 20,
+        "widthSampleError": 0,
+        "betaError": 2.220446049250313e-16,
+        "wFinalError": 0,
+        "particlesDiffer": false,
+        "pointsUsedDiffer": false,
+        "particlesAboveLattice": 0,
+        "exact": true
+      },
+      "deterministicReplay": {
+        "cellWordsChanged": 0,
+        "heightWordsChanged": 0,
+        "widthValuesChanged": 0,
+        "betaFitChanged": false,
+        "scalarsChanged": [],
+        "settingsChanged": false,
+        "identical": true
+      },
+      "monotone": {
+        "deposits": 226560,
+        "draws": 226560,
+        "rejected": 0,
+        "complete": true,
+        "depositsNotRaisingColumn": 0,
+        "productionColumnOrderViolations": 0,
+        "interfaceHeightDecreases": 0,
+        "aboveLattice": 0,
+        "depositMatchesProduction": true,
+        "lastInterfaceIsFinalHeight": true,
+        "ok": true
+      },
+      "png": {
+        "requested": [
+          2400,
+          2400
+        ],
+        "width": 2400,
+        "height": 2400,
+        "bytes": 2971793,
+        "type": "image/png",
+        "luminance": {
+          "spread": 237.31699999999998,
+          "min": 6.9277999999999995,
+          "max": 244.24479999999997,
+          "finite": 5760000,
+          "samples": 5760000,
+          "inkFraction": 0.4086548611111111
+        },
+        "nonblank": true,
+        "state": {
+          "cellWordsChanged": 0,
+          "heightWordsChanged": 0,
+          "widthValuesChanged": 0,
+          "betaFitChanged": false,
+          "scalarsChanged": [],
+          "settingsChanged": false
+        },
+        "dimensionsMatch": true,
+        "statePreserved": true,
+        "accepted": true
+      },
+      "allExportsPreserved": true,
+      "exportsState": {
+        "cellWordsChanged": 0,
+        "heightWordsChanged": 0,
+        "widthValuesChanged": 0,
+        "betaFitChanged": false,
+        "scalarsChanged": [],
+        "settingsChanged": false
+      },
+      "svg": {
+        "throws": true,
+        "error": "raster view",
+        "state": {
+          "cellWordsChanged": 0,
+          "heightWordsChanged": 0,
+          "widthValuesChanged": 0,
+          "betaFitChanged": false,
+          "scalarsChanged": [],
+          "settingsChanged": false
+        },
+        "statePreserved": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            2400
+          ],
+          "width": 2399,
+          "height": 2400,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 479850,
+          "cellWordsChanged": 1,
+          "heightWordsChanged": 1,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      }
+    },
+    {
+      "fixture": "ew",
+      "model": "relax",
+      "cols": 700,
+      "fill": 0.88,
+      "aspect": "1:1",
+      "view": "strata",
+      "bands": 30,
+      "lines": 18,
+      "lw": 1.2,
+      "logTime": false,
+      "void": 0.55,
+      "margin": 0.03,
+      "grain": 0.04,
+      "shift": 0,
+      "palette": "glacier",
+      "bg": "#0F1B2D",
+      "seed": "kardar-1986",
+      "requested": [
+        2400,
+        2400
+      ],
+      "cells": [
+        700,
+        700
+      ],
+      "particles": 439610,
+      "betaFit": 0.22433019988207495,
+      "pointsUsed": 23,
+      "wFinal": 3.043460704728169,
+      "snapshot": {
+        "cellSha256": "487242ed586f0699495de52b96c41fa819ab183c8228dce3c3ec438ef3e885e0",
+        "replayCellSha256": "487242ed586f0699495de52b96c41fa819ab183c8228dce3c3ec438ef3e885e0",
+        "hSha256": "8cd122a66c505e0ecb55be3d353fc48e431914f94fdb220cebef238b516596cd",
+        "widthsSha256": "46d64bcd52a04ae4337390929e5baf77b175c11f18137ef0decb3a48a28da8c2",
+        "settingsSha256": "47e9ad2de756aa1c41d8c829b713effe432a002d2d4f9b6bcb9f8ef145cd077d",
+        "betaFit": 0.22433019988207495,
+        "nPart": 439610,
+        "W": 700,
+        "H": 700
+      },
+      "replay": {
+        "cells": [
+          700,
+          700
+        ],
+        "replayCells": [
+          700,
+          700
+        ],
+        "cellWordsDiffering": 0,
+        "heightsDiffering": 0,
+        "widthSamples": 23,
+        "widthSampleError": 0,
+        "betaError": 3.885780586188048e-16,
+        "wFinalError": 0,
+        "particlesDiffer": false,
+        "pointsUsedDiffer": false,
+        "particlesAboveLattice": 0,
+        "exact": true
+      },
+      "deterministicReplay": {
+        "cellWordsChanged": 0,
+        "heightWordsChanged": 0,
+        "widthValuesChanged": 0,
+        "betaFitChanged": false,
+        "scalarsChanged": [],
+        "settingsChanged": false,
+        "identical": true
+      },
+      "monotone": {
+        "deposits": 439610,
+        "draws": 439610,
+        "rejected": 0,
+        "complete": true,
+        "depositsNotRaisingColumn": 0,
+        "productionColumnOrderViolations": 0,
+        "interfaceHeightDecreases": 0,
+        "aboveLattice": 0,
+        "depositMatchesProduction": true,
+        "lastInterfaceIsFinalHeight": true,
+        "ok": true
+      },
+      "png": {
+        "requested": [
+          2400,
+          2400
+        ],
+        "width": 2400,
+        "height": 2400,
+        "bytes": 2632515,
+        "type": "image/png",
+        "luminance": {
+          "spread": 236.1324,
+          "min": 10.5146,
+          "max": 246.647,
+          "finite": 5760000,
+          "samples": 5760000,
+          "inkFraction": 0.7927842013888889
+        },
+        "nonblank": true,
+        "state": {
+          "cellWordsChanged": 0,
+          "heightWordsChanged": 0,
+          "widthValuesChanged": 0,
+          "betaFitChanged": false,
+          "scalarsChanged": [],
+          "settingsChanged": false
+        },
+        "dimensionsMatch": true,
+        "statePreserved": true,
+        "accepted": true
+      },
+      "allExportsPreserved": true,
+      "exportsState": {
+        "cellWordsChanged": 0,
+        "heightWordsChanged": 0,
+        "widthValuesChanged": 0,
+        "betaFitChanged": false,
+        "scalarsChanged": [],
+        "settingsChanged": false
+      },
+      "svg": {
+        "throws": true,
+        "error": "raster view",
+        "state": {
+          "cellWordsChanged": 0,
+          "heightWordsChanged": 0,
+          "widthValuesChanged": 0,
+          "betaFitChanged": false,
+          "scalarsChanged": [],
+          "settingsChanged": false
+        },
+        "statePreserved": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            2400
+          ],
+          "width": 2399,
+          "height": 2400,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 440650,
+          "cellWordsChanged": 1,
+          "heightWordsChanged": 1,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      }
+    },
+    {
+      "fixture": "rd",
+      "model": "random",
+      "cols": 700,
+      "fill": 0.86,
+      "aspect": "1:1",
+      "view": "strata",
+      "bands": 30,
+      "lines": 18,
+      "lw": 1.2,
+      "logTime": false,
+      "void": 0.55,
+      "margin": 0.03,
+      "grain": 0.04,
+      "shift": 0,
+      "palette": "kiln",
+      "bg": "#F1E8D8",
+      "seed": "kardar-1986",
+      "requested": [
+        2400,
+        2400
+      ],
+      "cells": [
+        700,
+        700
+      ],
+      "particles": 434772,
+      "betaFit": 0.5098460118254479,
+      "pointsUsed": 23,
+      "wFinal": 26.69346079060549,
+      "snapshot": {
+        "cellSha256": "8b7cffa92925e665196bfa8701e9db7a67e73a2e2b73565476ce0ebfcc6e8bc8",
+        "replayCellSha256": "8b7cffa92925e665196bfa8701e9db7a67e73a2e2b73565476ce0ebfcc6e8bc8",
+        "hSha256": "933af4959912ecbe7bbc564d4cb116174b6aab84061eb91714b03cb8a62f0051",
+        "widthsSha256": "be491d3974e3f2fadd6588d0b6ea5a8691e30ce245c13f3ecb62bf10c45f4037",
+        "settingsSha256": "50609106d3990d9bb0c756d2dcae9aeb001861d7aee57c5ca77c008cfe5c9299",
+        "betaFit": 0.5098460118254479,
+        "nPart": 434772,
+        "W": 700,
+        "H": 700
+      },
+      "replay": {
+        "cells": [
+          700,
+          700
+        ],
+        "replayCells": [
+          700,
+          700
+        ],
+        "cellWordsDiffering": 0,
+        "heightsDiffering": 0,
+        "widthSamples": 23,
+        "widthSampleError": 0,
+        "betaError": 9.992007221626409e-16,
+        "wFinalError": 0,
+        "particlesDiffer": false,
+        "pointsUsedDiffer": false,
+        "particlesAboveLattice": 0,
+        "exact": true
+      },
+      "deterministicReplay": {
+        "cellWordsChanged": 0,
+        "heightWordsChanged": 0,
+        "widthValuesChanged": 0,
+        "betaFitChanged": false,
+        "scalarsChanged": [],
+        "settingsChanged": false,
+        "identical": true
+      },
+      "monotone": {
+        "deposits": 434772,
+        "draws": 434772,
+        "rejected": 0,
+        "complete": true,
+        "depositsNotRaisingColumn": 0,
+        "productionColumnOrderViolations": 0,
+        "interfaceHeightDecreases": 0,
+        "aboveLattice": 0,
+        "depositMatchesProduction": true,
+        "lastInterfaceIsFinalHeight": true,
+        "ok": true
+      },
+      "png": {
+        "requested": [
+          2400,
+          2400
+        ],
+        "width": 2400,
+        "height": 2400,
+        "bytes": 2800691,
+        "type": "image/png",
+        "luminance": {
+          "spread": 218.337,
+          "min": 33.650999999999996,
+          "max": 251.98799999999997,
+          "finite": 5760000,
+          "samples": 5760000,
+          "inkFraction": 0.7344020833333333
+        },
+        "nonblank": true,
+        "state": {
+          "cellWordsChanged": 0,
+          "heightWordsChanged": 0,
+          "widthValuesChanged": 0,
+          "betaFitChanged": false,
+          "scalarsChanged": [],
+          "settingsChanged": false
+        },
+        "dimensionsMatch": true,
+        "statePreserved": true,
+        "accepted": true
+      },
+      "allExportsPreserved": true,
+      "exportsState": {
+        "cellWordsChanged": 0,
+        "heightWordsChanged": 0,
+        "widthValuesChanged": 0,
+        "betaFitChanged": false,
+        "scalarsChanged": [],
+        "settingsChanged": false
+      },
+      "svg": {
+        "throws": true,
+        "error": "raster view",
+        "state": {
+          "cellWordsChanged": 0,
+          "heightWordsChanged": 0,
+          "widthValuesChanged": 0,
+          "betaFitChanged": false,
+          "scalarsChanged": [],
+          "settingsChanged": false
+        },
+        "statePreserved": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            2400
+          ],
+          "width": 2399,
+          "height": 2400,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 414750,
+          "cellWordsChanged": 1,
+          "heightWordsChanged": 1,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      }
+    },
+    {
+      "fixture": "rsos",
+      "model": "rsos",
+      "cols": 900,
+      "fill": 0.9,
+      "aspect": "1:1",
+      "view": "strata",
+      "bands": 34,
+      "lines": 18,
+      "lw": 1.2,
+      "logTime": false,
+      "void": 0.55,
+      "margin": 0.03,
+      "grain": 0.04,
+      "shift": 0,
+      "palette": "verdigris",
+      "bg": "#EFEADF",
+      "seed": "kardar-1986",
+      "requested": [
+        2400,
+        2400
+      ],
+      "cells": [
+        900,
+        900
+      ],
+      "particles": 732416,
+      "betaFit": 0.3358915262104978,
+      "pointsUsed": 24,
+      "wFinal": 6.603061766435177,
+      "snapshot": {
+        "cellSha256": "1ab0c78d837a25de0e9fa7d742379e05a33b412c5af912f798670382ec4aa53e",
+        "replayCellSha256": "1ab0c78d837a25de0e9fa7d742379e05a33b412c5af912f798670382ec4aa53e",
+        "hSha256": "5790310e74651ecf66d21c22cfb7af5256eb11ce49a362bb20b47c88e5a34808",
+        "widthsSha256": "feea30812c938bf67c875f417ae2bbdeab3302e4bae17253bd37d45d0e73de09",
+        "settingsSha256": "d1b5a994ce4c3560d9684d67f9145b713264d530660b4fdfcdc84b81e886d5bd",
+        "betaFit": 0.3358915262104978,
+        "nPart": 732416,
+        "W": 900,
+        "H": 900
+      },
+      "replay": {
+        "cells": [
+          900,
+          900
+        ],
+        "replayCells": [
+          900,
+          900
+        ],
+        "cellWordsDiffering": 0,
+        "heightsDiffering": 0,
+        "widthSamples": 24,
+        "widthSampleError": 0,
+        "betaError": 7.216449660063518e-16,
+        "wFinalError": 0,
+        "particlesDiffer": false,
+        "pointsUsedDiffer": false,
+        "particlesAboveLattice": 0,
+        "exact": true
+      },
+      "deterministicReplay": {
+        "cellWordsChanged": 0,
+        "heightWordsChanged": 0,
+        "widthValuesChanged": 0,
+        "betaFitChanged": false,
+        "scalarsChanged": [],
+        "settingsChanged": false,
+        "identical": true
+      },
+      "monotone": {
+        "deposits": 732416,
+        "draws": 1737183,
+        "rejected": 1004767,
+        "complete": true,
+        "depositsNotRaisingColumn": 0,
+        "productionColumnOrderViolations": 0,
+        "interfaceHeightDecreases": 0,
+        "aboveLattice": 0,
+        "depositMatchesProduction": true,
+        "lastInterfaceIsFinalHeight": true,
+        "ok": true
+      },
+      "png": {
+        "requested": [
+          2400,
+          2400
+        ],
+        "width": 2400,
+        "height": 2400,
+        "bytes": 2658277,
+        "type": "image/png",
+        "luminance": {
+          "spread": 197.45779999999996,
+          "min": 37.811,
+          "max": 235.26879999999997,
+          "finite": 5760000,
+          "samples": 5760000,
+          "inkFraction": 0.7998803819444444
+        },
+        "nonblank": true,
+        "state": {
+          "cellWordsChanged": 0,
+          "heightWordsChanged": 0,
+          "widthValuesChanged": 0,
+          "betaFitChanged": false,
+          "scalarsChanged": [],
+          "settingsChanged": false
+        },
+        "dimensionsMatch": true,
+        "statePreserved": true,
+        "accepted": true
+      },
+      "allExportsPreserved": true,
+      "exportsState": {
+        "cellWordsChanged": 0,
+        "heightWordsChanged": 0,
+        "widthValuesChanged": 0,
+        "betaFitChanged": false,
+        "scalarsChanged": [],
+        "settingsChanged": false
+      },
+      "svg": {
+        "throws": true,
+        "error": "raster view",
+        "state": {
+          "cellWordsChanged": 0,
+          "heightWordsChanged": 0,
+          "widthValuesChanged": 0,
+          "betaFitChanged": false,
+          "scalarsChanged": [],
+          "settingsChanged": false
+        },
+        "statePreserved": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            2400
+          ],
+          "width": 2399,
+          "height": 2400,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 738450,
+          "cellWordsChanged": 1,
+          "heightWordsChanged": 1,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      }
+    },
+    {
+      "fixture": "rings",
+      "model": "ballistic",
+      "cols": 900,
+      "fill": 0.9,
+      "aspect": "1:1",
+      "view": "rings",
+      "bands": 26,
+      "lines": 16,
+      "lw": 1.4,
+      "logTime": true,
+      "void": 0.55,
+      "margin": 0.03,
+      "grain": 0.04,
+      "shift": 0,
+      "palette": "graphite",
+      "bg": "#E9E7E2",
+      "seed": "kardar-1986",
+      "requested": [
+        2400,
+        2400
+      ],
+      "cells": [
+        900,
+        900
+      ],
+      "particles": 372329,
+      "betaFit": 0.2861926898296137,
+      "pointsUsed": 21,
+      "wFinal": 9.445760104439302,
+      "snapshot": {
+        "cellSha256": "964c1e5c620265b4bd9d228fcd0cdd548f5317b4559cd62a91017b938ee99801",
+        "replayCellSha256": "964c1e5c620265b4bd9d228fcd0cdd548f5317b4559cd62a91017b938ee99801",
+        "hSha256": "6ba9223633aa1472ce5c2a3bfdc733e4524bb18226091e687b9bcb3302143a8a",
+        "widthsSha256": "38ce36261bd5fb2b03c6966cec033c6b5bd995ec5fb695947d953c98949cf717",
+        "settingsSha256": "b70cee1a50a89a60511d3edf15dcced60654c64c37a024ad4caa458d7bf2b291",
+        "betaFit": 0.2861926898296137,
+        "nPart": 372329,
+        "W": 900,
+        "H": 900
+      },
+      "replay": {
+        "cells": [
+          900,
+          900
+        ],
+        "replayCells": [
+          900,
+          900
+        ],
+        "cellWordsDiffering": 0,
+        "heightsDiffering": 0,
+        "widthSamples": 21,
+        "widthSampleError": 0,
+        "betaError": 1.6653345369377348e-15,
+        "wFinalError": 0,
+        "particlesDiffer": false,
+        "pointsUsedDiffer": false,
+        "particlesAboveLattice": 0,
+        "exact": true
+      },
+      "deterministicReplay": {
+        "cellWordsChanged": 0,
+        "heightWordsChanged": 0,
+        "widthValuesChanged": 0,
+        "betaFitChanged": false,
+        "scalarsChanged": [],
+        "settingsChanged": false,
+        "identical": true
+      },
+      "monotone": {
+        "deposits": 372329,
+        "draws": 372329,
+        "rejected": 0,
+        "complete": true,
+        "depositsNotRaisingColumn": 0,
+        "productionColumnOrderViolations": 0,
+        "interfaceHeightDecreases": 0,
+        "aboveLattice": 0,
+        "depositMatchesProduction": true,
+        "lastInterfaceIsFinalHeight": true,
+        "ok": true
+      },
+      "png": {
+        "requested": [
+          2400,
+          2400
+        ],
+        "width": 2400,
+        "height": 2400,
+        "bytes": 2760194,
+        "type": "image/png",
+        "luminance": {
+          "spread": 206.0642,
+          "min": 25.999999999999996,
+          "max": 232.0642,
+          "finite": 5760000,
+          "samples": 5760000,
+          "inkFraction": 0.020581944444444444
+        },
+        "nonblank": true,
+        "state": {
+          "cellWordsChanged": 0,
+          "heightWordsChanged": 0,
+          "widthValuesChanged": 0,
+          "betaFitChanged": false,
+          "scalarsChanged": [],
+          "settingsChanged": false
+        },
+        "dimensionsMatch": true,
+        "statePreserved": true,
+        "accepted": true
+      },
+      "allExportsPreserved": true,
+      "exportsState": {
+        "cellWordsChanged": 0,
+        "heightWordsChanged": 0,
+        "widthValuesChanged": 0,
+        "betaFitChanged": false,
+        "scalarsChanged": [],
+        "settingsChanged": false
+      },
+      "svg": {
+        "width": 2400,
+        "height": 2400,
+        "viewBox": "0 0 2400 2400",
+        "bytes": 222397,
+        "parseOk": true,
+        "domPolylines": 16,
+        "interfaceTimes": [
+          2,
+          4,
+          11,
+          24,
+          55,
+          122,
+          273,
+          610,
+          1360,
+          3032,
+          6761,
+          15072,
+          33603,
+          74913,
+          167010,
+          372329
+        ],
+        "vertices": {
+          "polylines": 16,
+          "verticesCompared": 14400,
+          "coordinatesCompared": 28800,
+          "mismatches": 0,
+          "maxAbsError": 0,
+          "shapeMismatch": false
+        },
+        "state": {
+          "cellWordsChanged": 0,
+          "heightWordsChanged": 0,
+          "widthValuesChanged": 0,
+          "betaFitChanged": false,
+          "scalarsChanged": [],
+          "settingsChanged": false
+        },
+        "statePreserved": true,
+        "accepted": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            2400
+          ],
+          "width": 2399,
+          "height": 2400,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 806850,
+          "cellWordsChanged": 1,
+          "heightWordsChanged": 1,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        },
+        "svgShiftedInterface": {
+          "polyline": 8,
+          "T": 1360,
+          "mismatches": 900,
+          "maxAbsError": 2.5100000000002183,
+          "rejected": true
+        }
+      }
+    },
+    {
+      "fixture": "wide",
+      "model": "ballistic",
+      "cols": 1400,
+      "fill": 0.8,
+      "aspect": "16:9",
+      "view": "both",
+      "bands": 22,
+      "lines": 12,
+      "lw": 1.2,
+      "logTime": false,
+      "void": 0.55,
+      "margin": 0.03,
+      "grain": 0.04,
+      "shift": 0,
+      "palette": "harbor",
+      "bg": "#ECEFEA",
+      "seed": "kardar-1986",
+      "requested": [
+        2400,
+        1350
+      ],
+      "cells": [
+        1400,
+        788
+      ],
+      "particles": 448654,
+      "betaFit": 0.27970812519666566,
+      "pointsUsed": 20,
+      "wFinal": 9.988794512669003,
+      "snapshot": {
+        "cellSha256": "553170a257135554de647eedfcefafdd6e5f0cde3e9ea7b16ae6f70af8be3508",
+        "replayCellSha256": "553170a257135554de647eedfcefafdd6e5f0cde3e9ea7b16ae6f70af8be3508",
+        "hSha256": "2cf85735c7c9e24ae71a907ee4a1244d9c8da79d55eac154d32d6bdb6d43fb9d",
+        "widthsSha256": "41bfa275afb4314c7a58dc8c37eceebae4615bf859da7f17ea816e79deef65c2",
+        "settingsSha256": "835b1c73d305aafad3549d7990b992419acd5ee96d903fb86254779875f37f43",
+        "betaFit": 0.27970812519666566,
+        "nPart": 448654,
+        "W": 1400,
+        "H": 788
+      },
+      "replay": {
+        "cells": [
+          1400,
+          788
+        ],
+        "replayCells": [
+          1400,
+          788
+        ],
+        "cellWordsDiffering": 0,
+        "heightsDiffering": 0,
+        "widthSamples": 20,
+        "widthSampleError": 0,
+        "betaError": 6.106226635438361e-16,
+        "wFinalError": 0,
+        "particlesDiffer": false,
+        "pointsUsedDiffer": false,
+        "particlesAboveLattice": 0,
+        "exact": true
+      },
+      "deterministicReplay": {
+        "cellWordsChanged": 0,
+        "heightWordsChanged": 0,
+        "widthValuesChanged": 0,
+        "betaFitChanged": false,
+        "scalarsChanged": [],
+        "settingsChanged": false,
+        "identical": true
+      },
+      "monotone": {
+        "deposits": 448654,
+        "draws": 448654,
+        "rejected": 0,
+        "complete": true,
+        "depositsNotRaisingColumn": 0,
+        "productionColumnOrderViolations": 0,
+        "interfaceHeightDecreases": 0,
+        "aboveLattice": 0,
+        "depositMatchesProduction": true,
+        "lastInterfaceIsFinalHeight": true,
+        "ok": true
+      },
+      "png": {
+        "requested": [
+          2400,
+          1350
+        ],
+        "width": 2400,
+        "height": 1350,
+        "bytes": 2201292,
+        "type": "image/png",
+        "luminance": {
+          "spread": 212.635,
+          "min": 26.3662,
+          "max": 239.00119999999998,
+          "finite": 3240000,
+          "samples": 3240000,
+          "inkFraction": 0.7650833333333333
+        },
+        "nonblank": true,
+        "state": {
+          "cellWordsChanged": 0,
+          "heightWordsChanged": 0,
+          "widthValuesChanged": 0,
+          "betaFitChanged": false,
+          "scalarsChanged": [],
+          "settingsChanged": false
+        },
+        "dimensionsMatch": true,
+        "statePreserved": true,
+        "accepted": true
+      },
+      "allExportsPreserved": true,
+      "exportsState": {
+        "cellWordsChanged": 0,
+        "heightWordsChanged": 0,
+        "widthValuesChanged": 0,
+        "betaFitChanged": false,
+        "scalarsChanged": [],
+        "settingsChanged": false
+      },
+      "svg": {
+        "throws": true,
+        "error": "raster view",
+        "state": {
+          "cellWordsChanged": 0,
+          "heightWordsChanged": 0,
+          "widthValuesChanged": 0,
+          "betaFitChanged": false,
+          "scalarsChanged": [],
+          "settingsChanged": false
+        },
+        "statePreserved": true
+      },
+      "failureControls": {
+        "narrowPng": {
+          "requested": [
+            2399,
+            1350
+          ],
+          "width": 2399,
+          "height": 1350,
+          "dimensionsMatch": false,
+          "nonblank": true,
+          "statePreserved": true,
+          "rejected": true
+        },
+        "mutationAfterExport": {
+          "index": 966700,
+          "cellWordsChanged": 1,
+          "heightWordsChanged": 1,
+          "dimensionsMatch": true,
+          "nonblank": true,
+          "statePreserved": false,
+          "rejected": true
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Print-path state, dimensions and SVG vertex geometry for six presets at one seed, one browser build and a software renderer; not every aspect, lattice width, fill, palette, seed or hardware.",
+    "The raster strata and the lines drawn over them in the both view are checked for dimensions, nonblank output and state preservation only; PNG pixels are not compared cell by cell with the lattice and colour is not calibrated.",
+    "The vertex check covers the ballistic Interfaces preset only; the lines drawn over the strata in the both view are raster and are not compared vertex by vertex.",
+    "An interface reconstructed from the deposit is exact only while every deposit raises its column inside the lattice, which holds at all six presets. The relaxation rule has no top check, so a thin lattice near full fill can deposit above the last row (recorded in tools/kpz-production.js); that setting is outside this domain.",
+    "No claim about the growth exponent; see tools/kpz-production.js and tools/kpz-science.js for the numerical evidence. Eden is excluded."
+  ],
+  "environment": {
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
+    "platform": "linux",
+    "playwright": "1.56.1"
+  }
+}
