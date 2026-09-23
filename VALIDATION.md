@@ -18,7 +18,7 @@ Complete labels apply only within each record's reviewed domain.
 | [life](src/modules/life.js) | unvalidated | None registered | Not scientifically validated |
 | [physarum3d](src/modules/physarum3d.js) | unvalidated | None registered | Not scientifically validated |
 | [cortex](src/modules/cortex.js) | unvalidated | None registered | Not scientifically validated |
-| [bec](src/modules/bec.js) | partially validated | [bec-science.js](tools/bec-science.js) | Not scientifically validated |
+| [bec](src/modules/bec.js) | partially validated | [bec-science.js](tools/bec-science.js) | Limited evidence recorded |
 | [physarum](src/modules/physarum.js) | unvalidated | None registered | Not scientifically validated |
 | [phyllotaxis](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | validated within stated limits | [phyllotaxis-review.js](tools/phyllotaxis-review.js) | Limited evidence recorded |
 | [hl](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
@@ -153,7 +153,7 @@ Complete labels apply only within each record's reviewed domain.
 - Independent Float64 twin of the discrete 2D Gross–Pitaevskii operators (5-point Laplacian, harmonic trap, contact g, Visscher stagger, imag-time Euler with periodic L2 renormalization). Not a bit-exact GPU float32/float16 replay.
 - Real-time norm evidence uses g=0 (linear Schrödinger limit); nonlinear dens at mixed half-levels is not claimed to conserve naive L2 exactly. Rotating-frame Ω L_z, Abrikosov lattice counting and turbulence are unvalidated.
 - Thomas–Fermi μ/energy bands are asymptotic large-g checks; prepared single-vortex winding is not a noisy real-time vortex count or experimental Na BEC claim.
-- No print-state accuracy audit is registered.
+- Print evidence covers paused exportPNG state preservation and plate dimensions only; not lattice fidelity, calibrated color, or evolved/rotating exports.
 
 ### phyllotaxis
 
