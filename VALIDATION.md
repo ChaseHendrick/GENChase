@@ -58,7 +58,7 @@ Complete labels apply only within each record's reviewed domain.
 | [pendulum](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated |
 | [anderson](src/modules/anderson.js) | unvalidated | None registered | Not scientifically validated |
 | [fput](src/modules/fput.js) | validated within stated limits | [chain-science.js](tools/chain-science.js), [fput-field-review.js](tools/fput-field-review.js) | Limited evidence recorded |
-| [schrodinger](src/modules/wavesflow.js) | partially validated | [schrodinger-science.js](tools/schrodinger-science.js), [schrodinger-state.js](tools/schrodinger-state.js) | Limited evidence recorded |
+| [schrodinger](src/modules/wavesflow.js) | partially validated | [schrodinger-science.js](tools/schrodinger-science.js), [schrodinger-state.js](tools/schrodinger-state.js), [schrodinger-absorber-science.js](tools/schrodinger-absorber-science.js) | Limited evidence recorded |
 | [excitable](src/modules/rdx.js) | partially validated | [rdx-science.js](tools/rdx-science.js) | Not scientifically validated |
 | [soliton](src/modules/soliton.js) | validated within stated limits | [analytic-wave-science.js](tools/analytic-wave-science.js), [analytic-field-review.js](tools/analytic-field-review.js) | Limited evidence recorded |
 | [cyclicca](src/modules/lattice.js) | unvalidated | None registered | Not scientifically validated |
@@ -188,7 +188,8 @@ Complete labels apply only within each record's reviewed domain.
 
 - Periodic Fourier and uniform-potential fixtures support the discrete recurrence, modified invariant and bounded second-order time/space refinement. Stability and conservation do not imply accuracy at coarse steps.
 - Harmonic-bound, time-step edit, hard-wall and injection regressions cover stated float32 cases only. Native GPU trigonometric approximation is measured separately.
-- Absorption, arbitrary potentials, long times, float16 and full physical scattering/print fidelity remain unvalidated. Corrections intentionally change affected historical images.
+- Uniform and production-shaped edge absorbers match an independent Float64 stencil twin on periodic float32 grids; wrap still couples opposite edges. Long-time phase is measured for two free/uniform-V traveling modes over elapsed time 120 (~25 periods at dt=0.05).
+- Scattering probabilities, arbitrary potentials/packets, float16, aspect ratios, hardware and full print fidelity remain unvalidated. Corrections intentionally change affected historical images.
 
 ### excitable
 

@@ -992,10 +992,11 @@
     "limitations": [
       "Periodic Fourier and uniform-potential fixtures support the discrete recurrence, modified invariant and bounded second-order time/space refinement. Stability and conservation do not imply accuracy at coarse steps.",
       "Harmonic-bound, time-step edit, hard-wall and injection regressions cover stated float32 cases only. Native GPU trigonometric approximation is measured separately.",
-      "Absorption, arbitrary potentials, long times, float16 and full physical scattering/print fidelity remain unvalidated. Corrections intentionally change affected historical images."
+      "Uniform and production-shaped edge absorbers match an independent Float64 stencil twin on periodic float32 grids; wrap still couples opposite edges. Long-time phase is measured for two free/uniform-V traveling modes over elapsed time 120 (~25 periods at dt=0.05).",
+      "Scattering probabilities, arbitrary potentials/packets, float16, aspect ratios, hardware and full print fidelity remain unvalidated. Corrections intentionally change affected historical images."
     ],
     "remaining": [
-      "Establish absorber and general-potential convergence, scattering probabilities and long-time phase error.",
+      "Establish scattering probabilities and general non-uniform potential convergence beyond the uniform/edge-absorber fixtures.",
       "Audit float16, all supported aspect ratios, parameter ranges and graphics hardware.",
       "Extend state-preserving export checks to quantitative scientific rendering and color fidelity."
     ],
@@ -1019,6 +1020,16 @@
         "limitations": "One harmonic packet and declared edit/injection fixtures, without absorption. Native sine/cosine errors are backend dependent; broad parameter/precision/hardware coverage remains outstanding.",
         "benchmark": "Actual potential envelope and closed-system modified norm; analytic checkerboard time-level reconstruction; independent Gaussian complex addition with masked walls and measured native GPU arithmetic.",
         "failureControl": "Restore the old harmonic step ceiling. Compare omitted-restagger and unprojected-wall controls against corrected expected states."
+      },
+      {
+        "test": "tools/schrodinger-absorber-science.js",
+        "command": "node tools/schrodinger-absorber-science.js",
+        "results": "validation/results/schrodinger-absorber-science.json",
+        "scope": "Actual float32 SCH_STEP_FS with uniform and production-shaped edge absorbers (pot.b weight, damp=exp(-dt*damp*b)), plus long-time free/uniform-V phase. Independent Float64 stencil twin and modal damped recurrence on SwiftShader RGBA32F.",
+        "criteria": "GPU vs Float64 twin recurrence error<5e-6 for uniform, temporal and edge fixtures; uniform modal error<5e-6 with remaining norm fraction<0.5; edge remaining fraction<0.95; long-time twin error<5e-6, phase error vs exact continuous-time discrete mode<0.08 and field error<0.08 over elapsed time 120 (~25 periods). Wrong-sign damp recurrence error>0.05 and >100x the correct uniform case, with amplified norm fraction>1.5.",
+        "limitations": "Periodic grids only; wrap couples opposite edges through the absorber. References are implementation twins and modal recurrence, not continuum PML or experimental absorption. No scattering coefficients, hard-wall stadium, packet injection, float16 or hardware certification. Long-time covers two traveling modes only.",
+        "benchmark": "Independent Float64 five-point Visscher twin with the production damp factor; uniform-b modal 2x2 damped recurrence; exact continuous-time discrete eigenmode phase e^{-i E t} for long-time free/uniform-V fixtures.",
+        "failureControl": "Replace damp=exp(-dt*damp*b) with exp(+dt*damp*b). The growing absorber must disagree with the correct Float64 twin and amplify the remaining norm."
       }
     ],
     "print": [
