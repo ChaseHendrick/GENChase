@@ -1,6 +1,6 @@
 # Minimal winding in self-similar point-vortex collapse: companion note
 
-This is the repository's working note for the paper *Minimal winding in the self-similar collapse of three unequal point vortices and of two concentric vortex polygons* (Chase Hendrick). The paper is the reviewed version and is meant to be posted as its first public version (v1). This note keeps what the paper leaves out: how the results were found, what was corrected on the way, what the verification covers, and what is still open before submission.
+This is the repository's working note for the paper *Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons* (Chase Hendrick). The paper is the reviewed version and is meant to be posted as its first public version (v1). This note keeps what the paper leaves out: how the results were found, what was corrected on the way, what the verification covers, and what is still open before submission.
 
 - Paper source: [`unequal-mu-n5-floors-2026-09-23.typ`](unequal-mu-n5-floors-2026-09-23.typ) (Typst)
 - Paper PDF: [`artifacts/unequal-mu-n5-floors-2026-09-23.pdf`](artifacts/unequal-mu-n5-floors-2026-09-23.pdf)
@@ -11,24 +11,29 @@ Cite the person, Chase Hendrick, not the GitHub handle. No result here carries a
 
 ## Results
 
-Write P = ω₀t_c, the initial angular velocity times the collapse time. Each vortex moves on a logarithmic spiral, and P is the angle the configuration turns while the square of its size falls by the factor e.
+Write P = |ω₀|t_c, the initial angular velocity times the collapse time. Each vortex moves on a logarithmic spiral, and P is the angle the configuration turns while the square of its size falls by the factor e.
 
-1. **Three vortices, Γ = (1, 1/2, −1/3), zero angular impulse.** The collapsing configurations form two arcs, one per orientation of the triangle. In Gotoda's parametrization they are 𝓑 = (0, θ₀) and 𝓐 = (π, 2π − θ₀), with cos θ₀ = −√7/14, and
+1. **Every three-vortex collapse.** Any collapse of three point vortices normalizes to circulations Γ = (1, μ, −μ/(1+μ)) with 0 < μ ≤ 1 and zero angular impulse.
+   - **Arcs.** The collapsing configurations form two arcs, 𝓐₊ and 𝓐₋, one for each orientation of the triangle.
+   - **One minimum per arc.** P has exactly one critical point on each arc, and it is the minimum there (Theorem 1). Write P₊(μ) and P₋(μ) for the two minima.
+   - **The cubic.** P₊² and P₋² are roots of an explicit cubic Q(μ, y), irreducible over ℚ. Written in u = μ + 1 + 1/μ:
 
-       P(θ) = (14 sin²θ + 6√7 cos θ + 21) / (2(14 cos θ + √7) sin θ).
+         Q = μ⁶[1728(u+1)²y³ − 144(u+1)(8u³−9u−9)y² − 4(16u⁶−288u⁴−288u³−81u²−162u−81)y + 3(4u³−3u−3)²]
 
-   P has one critical point, a minimum, on each arc:
+   - **The least winding.** For μ < 1 the two minima differ. The smaller one, P₋(μ), increases strictly from √3/2 (as μ → 0, never attained) to √2 (at μ = 1).
+   - **Corollary 1.** |ω₀|t_c > √3/2 for every three-vortex collapse, and the bound is sharp. Equivalently, every vortex travels more than twice its initial distance from the collision point.
+2. **The ratio μ = 1/2, Γ = (1, 1/2, −1/3).** The two minima have closed forms in X = 245351/5201^{3/2} and S = 7√5201/162:
 
-       min over 𝓐 = √(605/324 + R cos(⅓ arccos X − 2π/3)) = 1.0647059762712043…   (the minimum over the whole family)
-       min over 𝓑 = √(605/324 + R cos(⅓ arccos X))        = 2.2038550160361327…
+       P₋ = √(605/324 + S cos(⅓ arccos X − 2π/3)) = 1.0647059762712043…   (the least winding)
+       P₊ = √(605/324 + S cos(⅓ arccos X))        = 2.2038550160361327…
 
-   Here X = 245351√5201/5201² and R = 7√5201/162. Both are roots of 8748x⁶ − 49005x⁴ + 27794x² + 18723, which is irreducible over ℚ and over ℚ(√7). They are not expressible by real radicals.
-2. **Equal circulations, Γ = (1, 1, −1/2).** P = (3 − cos 2φ)/(2 sin 2φ) ≥ √2 on both collapsing arcs, with equality at cos 2φ = 1/3. This reparametrizes Gröbli's spiral coefficient and is included for comparison, not as a new result.
-3. **Two concentric regular n-gons, circulations x_n and −1.** Here x_n = (n + √(2n − 1))/(n − 1) = e^a with cosh a = n/(n − 1), and
+   They are the positive roots of 8748x⁶ − 49005x⁴ + 27794x² + 18723, which is 16·Q(1/2, x²). That polynomial is irreducible, so the minima are not expressible by real radicals. The same irreducibility holds for all 277 rationals μ = a/b < 1 with b ≤ 30.
+3. **Equal circulations, Γ = (1, 1, −1/2).** Here P = (3 − cos 2β)/(2 sin 2β) ≥ √2. This is Gröbli's spiral coefficient reparametrized, and it is included for comparison.
+4. **Two concentric regular n-gons, circulations x_n and −1.** Here x_n = (n + √(2n − 1))/(n − 1) = e^η with cosh η = n/(n − 1). The winding is
 
-       P = (K_n − √(2n − 1) cos nθ) / (2n sin nθ) ≥ F_n = √(K_n² − (2n − 1)) / (2n),   K_n = (n − 1) sinh((n + 2)a/2).
+       P = (K_n − √(2n − 1) cos nθ)/(2n sin nθ) ≥ F_n = √(K_n² − (2n − 1))/(2n),   K_n = (n − 1) sinh((n + 2)η/2).
 
-   Equality holds at cos nθ = √(2n − 1)/K_n. For n = 5, x₅ = 2, K₅ = 127√2/8 and F₅ = √31682/80 = 2.2249297741726591…, attained at cos 5θ = 12√2/127.
+   For n = 5: F₅ = √31682/80 = 2.2249297741726591…, attained at cos 5θ = 12√2/127.
 
 ## How the three-vortex result was corrected
 
@@ -39,7 +44,14 @@ The results changed twice on the way, and the paper states only the final versio
 
 ## What the verification covers
 
-`python3 research/verify_floors_independent.py --json research/artifacts/verify-floors-independent-2026-09-23.json` takes about a minute and needs `mpmath` and `sympy`.
+There are two programs, and both need `mpmath` and `sympy`.
+
+- `python3 research/verify_general_mu.py` checks the general-μ theory. It runs 94 checks in about 25 s, and its output is in `artifacts/verify-general-mu-2026-09-23.txt`. The output also contains an argument not used in the paper: Q(μ, ·) is irreducible for every rational μ ≠ 1, shown via an elliptic curve of rank 0. That argument has not been refereed.
+- `python3 research/verify_floors_independent.py --json research/artifacts/verify-floors-independent-2026-09-23.json` checks μ = 1/2 and the rings. It takes about a minute.
+
+`python3 research/plot_minimal_winding.py` redraws the figure.
+
+The μ = 1/2 checks:
 
 - **Three vortices.** The program generates the shapes independently of Gotoda's parametrization, fixing two vortices and moving the third around the zero-impulse circle, with 4000 shapes in 60-digit arithmetic. The three velocity quotients agree to 9 × 10⁻⁶¹, and 2000 of the 4000 shapes collapse.
   - P has two local minima over the collapsing shapes. They match the closed forms to 2 × 10⁻⁶¹ (`branchMinimaVsClosedFormsAbsDiff`).
@@ -63,20 +75,27 @@ The results changed twice on the way, and the paper states only the final versio
 | Koiller et al. 1985 | Full text | §11 has the two-ring circulation condition, the rates as functions of the angle, and logarithmic spirals. No minimization, no K_n, no F_n. |
 | O'Neil 2007 | Full text (purchased) | Finiteness for three rings. Credits Koiller for two-ring collapse. |
 | Gotoda 2021 | arXiv version, Sect. 3, read earlier | The parametrization. Re-check Sect. 3 against the journal version before submission. |
-| Krishnamurthy and Stremler 2018 | Abstract; postprint read earlier | Collapse time and distance travelled. That distance is √(1 + 4P²) × the initial distance. |
-| Tavantzis and Ting 1988; Leoncini et al. 2000; Aref 1979, 2010 | Abstracts | Context only. |
+| Aref 2010 | Author manuscript, eqs. (25) and (29), read earlier | Both rates and their product in the spiral. **Read in full before submission**, since P is the ratio of its two rates. |
+| Krishnamurthy and Stremler 2018 | Abstract; §3.5 of the postprint read earlier | Distance travelled before collapse. The earlier read noted a numerical observation that the normalized distance exceeds 2, which Corollary 1 proves with the sharp constant. **Verify §3.5 and cite it.** |
+| Aref, Rott and Thomann 1992; Newton 2001 | Bibliographic data verified | History and general theory. |
+| Tavantzis and Ting 1988; Leoncini et al. 2000; Aref 1979 | Abstracts | Context only. |
 | **Demina and Kudryashov 2014** | **Abstract only** | **Closest prior work for the rings.** Explicit double-ring configurations of two regular polygons with arbitrary circulations. Must be read in full before submission. |
 
 Searches for the numbers and the sextic found only this repository. That is weak evidence, because many publisher hosts were unreachable. See the RESEARCH.md ledger for 2026-09-23, entries A–E.
 
 ## Before submission
 
-1. Read Demina and Kudryashov (2014) in full. If it states the ring product or its minimum, cite it and remove the ring part of the sentence "We have not found the minimal values…".
+1. Read three papers in full:
+   - Demina and Kudryashov (2014), the ring configurations.
+   - Aref (2010), the three-vortex rates.
+   - Krishnamurthy and Stremler (2018) §3.5, the distance travelled.
+
+   If any of them states one of the minima or the √3/2 bound, cite it and narrow the sentence "We have not found … stated in the literature". If Krishnamurthy and Stremler observe the > 2 path-length bound numerically, say so in the Discussion as the observation Corollary 1 proves.
 2. Re-check Gotoda Sect. 3 (the parametrization and the θ range) against the journal version.
 3. arXiv:
    - Submit the PDF. arXiv accepts PDF-only submissions that are not produced from TeX, and fonts must be embedded, which Typst does.
-   - Suggested category: physics.flu-dyn, cross-listed to math-ph and math.DS.
-   - The abstract must be under 1920 characters; the current one is about 1400.
+   - Suggested category: physics.flu-dyn, cross-listed to math-ph and math.DS. Regular and Chaotic Dynamics fits the paper better than Physica D.
+   - The abstract must be under 1920 characters; the current one is about 1500.
    - A first submission to a category needs an endorsement from an established arXiv author.
    - arXiv asks authors to report significant use of generative AI; the paper has one line for this.
 4. Journal: most journals take LaTeX or Word. A LaTeX transcription of the Typst source is mechanical. Journals also want a corresponding-author email, which the PDF does not include yet.

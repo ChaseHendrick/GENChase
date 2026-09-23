@@ -70,4 +70,4 @@ jobs:
           Built from [{sha[:12]}](https://github.com/{repo}/commit/{sha}). Validation is limited to the domains in [VALIDATION.md](https://github.com/{repo}/blob/{sha}/VALIDATION.md); this release does not certify every simulation.
           ''')
           PY
-          gh release create "$RELEASE_VERSION" tools/dist/release/GENChase-studio.zip tools/dist/release/SHA256SUMS.txt research/artifacts/*.pdf research/artifacts/*.json research/*.py --target "$GITHUB_SHA" --title "GENChase $RELEASE_VERSION" --notes-file /tmp/release-notes.md --latest
+          gh release create "$RELEASE_VERSION" tools/dist/release/GENChase-studio.zip tools/dist/release/SHA256SUMS.txt research/artifacts/*.pdf research/artifacts/*.json research/artifacts/*.txt research/*.py --target "$GITHUB_SHA" --title "GENChase $RELEASE_VERSION" --notes-file /tmp/release-notes.md --latest
