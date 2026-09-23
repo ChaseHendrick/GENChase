@@ -63,7 +63,7 @@ Complete labels apply only within each record's reviewed domain.
 | [soliton](src/modules/soliton.js) | validated within stated limits | [analytic-wave-science.js](tools/analytic-wave-science.js), [analytic-field-review.js](tools/analytic-field-review.js) | Limited evidence recorded |
 | [cyclicca](src/modules/lattice.js) | unvalidated | None registered | Not scientifically validated |
 | [chimera](src/modules/chimera.js) | unvalidated | None registered | Not scientifically validated |
-| [ssh](src/modules/ssh.js) | unvalidated | None registered | Not scientifically validated |
+| [ssh](src/modules/ssh.js) | unvalidated | [ssh-science.js](tools/ssh-science.js) | Not scientifically validated |
 | [swarm](src/modules/swarm.js) | unvalidated | None registered | Not scientifically validated |
 | [amb](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded |
 | [aubry](src/modules/aubry.js) | unvalidated | None registered | Not scientifically validated |
@@ -207,6 +207,12 @@ Complete labels apply only within each record's reviewed domain.
 - The completed label covers the enumerated recipes in validation/ANALYTIC-FIELD-REVIEW.md, not every parameter or renderer.
 - These are analytic solution samples, not independent time integration, physical experiments or a global proof. Finite grids and windows can miss peaks, mass or energy tails.
 - PNG enlargement adds no field resolution. Other exports, captions, smoothing and printer calibration are outside this review.
+
+### ssh
+
+- Independent Float64 SSH spectrum/edge checks in validation/SSH.md do not certify the production visualization heuristic, print path, interactions or experiment.
+- Finite open/periodic chains only; catalog equation and citation remain review targets for full paper equivalence.
+- No print-state evidence is registered; status stays unvalidated.
 
 ### amb
 
