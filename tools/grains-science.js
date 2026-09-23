@@ -187,6 +187,20 @@ const CRITERIA = {
   },
   coordination: { seeds: 4, frictionless: [3.8, 4.6], mu04: [3.0, 4.0], mu08: [2.8, 3.6], separationSE: 3 },
 };
+// Follow-ups added on 2026-09-23 after the first run missed two of the criteria above (the rmin-rmax pair at
+// damping 0.5 on the production step, and the incline slip at tan(theta) / 3 mu = 1.05). They do not replace
+// those criteria, which stay failed in the results; they test the suspected causes. These criteria were written
+// before any follow-up was run.
+const FOLLOW_UP = {
+  // The linear dashpot pushes with gamma v0 the instant contact begins, so where in a step contact starts moves
+  // the first impulse by up to about 2 zeta omega0 h v0. Sweep that phase; on refinement every phase must converge.
+  phases: 16, phaseFinestRelError: 5e-3,
+  // The undamped tangential spring must stretch by mu F_n / k_t before it can slide, and it reaches that limit
+  // with the contact point already slipping at about mu g cos(theta) sqrt(3 m / k_t). If that start-up is the
+  // excess, (a) the late half of the run follows u' = A - c u from the slip speed measured at its start, (b) the
+  // excess scales as 1 / sqrt(k_n) across hardness 800, 4000, 12000, and (c) it does not change when h is refined.
+  lateWindowRel: 1e-2, stiffnessRatioRel: 0.15, refinementRel: 0.10,
+};
 
 /* ---------------- A. normal collisions ---------------- */
 // A unit simulation: the production makeSim with a hand-built D, gravity and drag off (g = 0), radii and
@@ -199,32 +213,35 @@ function unitSim(L, base, { geom, damp, mu, h, g, radii }) {
   sim.vx.fill(0); sim.vy.fill(0); sim.om.fill(0); sim.audit.wxi.fill(0);
   return sim;
 }
-function collide(L, base, { R1, R2, wall, zeta, h, v0 = 0.01 }) {
+// phase: null starts the disks exactly touching (the pre-registered runs); a number in [0, 1) starts them
+// phase * v0 * h apart, so the first overlap the integrator sees is (1 - phase) v0 h.
+function collide(L, base, { R1, R2, wall, zeta, h, v0 = 0.01, phase = null }) {
   const sim = unitSim(L, base, { geom: 'periodic', damp: zeta, mu: 0.4, h, g: 0, radii: wall ? [R1] : [R1, R2] });
+  const gap0 = phase === null ? 0 : phase * v0 * h;
   let vnOf, omega0;
   if (wall) {
-    sim.x[0] = 0.5; sim.y[0] = R1; sim.vy[0] = -v0;
+    sim.x[0] = 0.5; sim.y[0] = R1 + gap0; sim.vy[0] = -v0;
     vnOf = () => sim.vy[0];
     omega0 = Math.sqrt(base.kn / sim.m[0]);
   } else {
     const m1 = sim.m[0], m2 = sim.m[1];
-    sim.x[0] = 0.5 - R1; sim.x[1] = 0.5 + R2; sim.y[0] = sim.y[1] = 0.5;
+    sim.x[0] = 0.5 - R1; sim.x[1] = 0.5 + R2 + gap0; sim.y[0] = sim.y[1] = 0.5;
     sim.vx[0] = v0 * m2 / (m1 + m2); sim.vx[1] = -v0 * m1 / (m1 + m2);
     vnOf = () => -(sim.vx[0] - sim.vx[1]);           // n points from grain 1 to grain 0, i.e. -x
     omega0 = Math.sqrt(base.kn * (m1 + m2) / (m1 * m2));
   }
   sim.audit.rebuild();
   const vBefore = vnOf();
-  let forceSteps = 0, overlapSteps = 0, touched = false, k = 0;
+  let forceSteps = 0, overlapSteps = 0, touched = false, k = 0, firstForceStep = null;
   const gap = () => wall ? sim.y[0] - R1 : (sim.x[1] - sim.x[0]) - R1 - R2;
   for (; k < 5e6; k++) {
     const a = [sim.vx[0], sim.vy[0], sim.vx[wall ? 0 : 1]];
     sim.stepOnce();
-    if (sim.vx[0] !== a[0] || sim.vy[0] !== a[1] || sim.vx[wall ? 0 : 1] !== a[2]) forceSteps++;
+    if (sim.vx[0] !== a[0] || sim.vy[0] !== a[1] || sim.vx[wall ? 0 : 1] !== a[2]) { forceSteps++; if (firstForceStep === null) firstForceStep = k; }
     if (gap() < 0) { overlapSteps++; touched = true; } else if (touched) break;
   }
   const e = vnOf() / -vBefore, ref = clampedCollision(zeta, omega0), tens = tensileCollision(zeta, omega0);
-  return { e, tc: forceSteps * h, overlapTime: overlapSteps * h, forceSteps, omega0h: omega0 * h, eRef: ref.e, tcRef: ref.tc, overlapRef: ref.overlapTime,
+  return { e, tc: forceSteps * h, overlapTime: overlapSteps * h, forceSteps, firstForceStep, omega0h: omega0 * h, eRef: ref.e, tcRef: ref.tc, overlapRef: ref.overlapTime,
     eTensile: tens.e, tcTensile: tens.tc, eRelError: e / ref.e - 1, tcRelError: forceSteps * h / ref.tc - 1, eTensileRelError: e / tens.e - 1, spin: Math.abs(sim.om[0]) };
 }
 function collisionStudy(L, base, h0, zetas, levels) {
@@ -300,20 +317,25 @@ function incline(L, base, { mu, q, zeta = 0.35, T = 0.5, h }) {
   sim.x[0] = 0.5; sim.y[0] = R - m * g * cs / base.kn;
   sim.audit.rebuild();
   const n = Math.round(T / h), half = Math.round(n / 2);
-  let x = 0, s = 0, sHalf = 0, maxLate = 0;
+  let x = 0, s = 0, sHalf = 0, maxLate = 0, uHalf = 0;
   for (let k = 0; k < n; k++) {
     const u = sim.vx[0] + sim.om[0] * R, xb = sim.x[0];
     sim.stepOnce();
     let dx = sim.x[0] - xb; if (dx < -0.5) dx += 1;
     x += dx; s += u * h;
-    if (k + 1 === half) sHalf = s;
+    if (k + 1 === half) { sHalf = s; uHalf = sim.vx[0] + sim.om[0] * R; }
     if (k + 1 > half) maxLate = Math.max(maxLate, Math.abs(s - sHalf));
   }
   const t = n * h, rolls = q < 1;
   const a = rolls ? (2 / 3) * g * sn : g * (sn - mu * cs), A = g * (sn - 3 * mu * cs);
   const xRef = driven(a, c, t), sRef = rolls ? 0 : driven(A, c, t);
+  // Follow-up diagnostic: the late half of the run predicted from the slip velocity measured at its start,
+  // u' = A - c u, which isolates sustained Coulomb sliding from the start-up transient.
+  const uEnd = sim.vx[0] + sim.om[0] * R, dt2 = (n - half) * h;
+  const lateRef = rolls ? 0 : (A / c) * dt2 + (uHalf - A / c) * (1 - Math.exp(-c * dt2)) / c;
   return { mu, q, thetaDeg: th * 180 / Math.PI, tanTheta: Math.tan(th), h, steps: n, rolls, x, xRef, xRelError: x / xRef - 1, slip: s, slipRef: sRef,
-    slipRelError: rolls ? null : s / sRef - 1, lateSlip: maxLate, elasticLimit: 2 * mu * m * g * cs / (KT_KN * base.kn) };
+    slipRelError: rolls ? null : s / sRef - 1, lateSlip: maxLate, elasticLimit: 2 * mu * m * g * cs / (KT_KN * base.kn),
+    slipExcess: s - sRef, uHalf, uEnd, lateWindowSlip: s - sHalf, lateWindowSlipRef: lateRef, lateWindowRelError: rolls ? null : (s - sHalf) / lateRef - 1 };
 }
 function judgeIncline(r) {
   const C = CRITERIA.incline;
@@ -526,6 +548,42 @@ if (require.main === module) (async () => {
 
   const prep = PRESETS.map(name => ({ name, ...preparation(L, presetState(L.module, name)) }));
 
+  // Follow-ups to the two misses (see FOLLOW_UP). Their own misses are listed separately.
+  const followUpMisses = [];
+  const shapes = [['pair r0-r0', base.r0, base.r0, false], ['pair rmin-rmin', base.rmin, base.rmin, false], ['pair rmin-rmax', base.rmin, base.rmax, false], ['floor r0', base.r0, 0, true]];
+  const phaseSweep = [];
+  for (const [shape, R1, R2, wall] of shapes) for (const zeta of zetas) {
+    const ph = Array.from({ length: FOLLOW_UP.phases }, (_, k) => k / FOLLOW_UP.phases);
+    const prod = ph.map(phase => collide(L, base, { R1, R2, wall, zeta, h: h0, phase }));
+    const fine = ph.map(phase => collide(L, base, { R1, R2, wall, zeta, h: h0 / 64, phase }));
+    const eP = prod.map(r => r.eRelError), eF = fine.map(r => r.eRelError), tF = fine.map(r => r.tcRelError);
+    const row = { shape, zeta, omega0h: prod[0].omega0h, predictedSwing: 2 * zeta * prod[0].omega0h,
+      productionMin: Math.min(...eP), productionMax: Math.max(...eP), productionSwing: Math.max(...eP) - Math.min(...eP),
+      finestMaxAbsE: Math.max(...eF.map(Math.abs)), finestMaxAbsTc: Math.max(...tF.map(Math.abs)) };
+    row.pass = row.finestMaxAbsE < FOLLOW_UP.phaseFinestRelError && row.finestMaxAbsTc < FOLLOW_UP.phaseFinestRelError;
+    if (!row.pass) followUpMisses.push('phase sweep ' + shape + ' zeta ' + zeta);
+    phaseSweep.push(row);
+  }
+  const lateWindow = inclines.filter(r => !r.rolls).map(r => ({ mu: r.mu, q: r.q, lateWindowSlip: r.lateWindowSlip, lateWindowSlipRef: r.lateWindowSlipRef,
+    lateWindowRelError: r.lateWindowRelError, pass: Math.abs(r.lateWindowRelError) < FOLLOW_UP.lateWindowRel }));
+  lateWindow.forEach(r => { if (!r.pass) followUpMisses.push('incline late window mu ' + r.mu + ' q ' + r.q); });
+  const stiffness = [800, 4000, 12000].map(hard => {
+    const st = { ...L.module.defaults, hard }; L.module.sanitize(st);
+    const b = L.hooks.derive(st), r = incline(LT, b, { mu: 0.4, q: 1.05, h: st.dt });
+    return { hard, dt: st.dt, slip: r.slip, slipRef: r.slipRef, slipExcess: r.slipExcess, slipRelError: r.slipRelError };
+  });
+  const ex = Object.fromEntries(stiffness.map(r => [r.hard, r.slipExcess]));
+  const stiffnessScaling = { ratio800to12000: ex[800] / ex[12000], expected800to12000: Math.sqrt(15), ratio800to4000: ex[800] / ex[4000], expected800to4000: Math.sqrt(5) };
+  stiffnessScaling.pass = Math.abs(stiffnessScaling.ratio800to12000 / Math.sqrt(15) - 1) < FOLLOW_UP.stiffnessRatioRel &&
+    Math.abs(stiffnessScaling.ratio800to4000 / Math.sqrt(5) - 1) < FOLLOW_UP.stiffnessRatioRel;
+  if (!stiffnessScaling.pass) followUpMisses.push('incline excess stiffness scaling');
+  const stepRefinement = [1, 4, 16].map(k => { const r = incline(LT, base, { mu: 0.4, q: 1.05, h: h0 / k }); return { refine: k, slipExcess: r.slipExcess, slipRelError: r.slipRelError }; });
+  const stepRefinementPass = stepRefinement.every(r => Math.abs(r.slipExcess / stepRefinement[0].slipExcess - 1) < FOLLOW_UP.refinementRel);
+  if (!stepRefinementPass) followUpMisses.push('incline excess changes with h');
+  const followUps = { added: 'after the first run missed pair rmin-rmax zeta 0.5 productionPass and incline q 1.05 at every friction', criteria: FOLLOW_UP,
+    phaseSweep, inclineLateWindow: lateWindow, inclineStiffness: stiffness, stiffnessScaling, inclineStepRefinement: stepRefinement, stepRefinementPass, misses: followUpMisses };
+  console.error('follow-ups done', ((Date.now() - t0) / 1000).toFixed(1) + 's');
+
   // Failure controls. Each must be rejected by the same predicate that accepts the production code.
   const r0pair = (LL, zeta = 0.35) => collide(LL, base, { R1: base.r0, R2: base.r0, wall: false, zeta, h: h0 / 64 });
   const push = 'can only push.\n      let fn = kn * delta - gamma * vn;\n      if (fn < 0) fn = 0;';
@@ -570,7 +628,7 @@ if (require.main === module) (async () => {
     criteria: CRITERIA,
     parameters: { defaultState: { n: defaults.n, poly: defaults.poly, hard: defaults.hard, damp: defaults.damp, mu: defaults.mu, grav: defaults.grav }, r0: base.r0, rmin: base.rmin, rmax: base.rmax, kn: base.kn, productionDt: h0, contactPeriodMin: base.period },
     collisions, hardness, hardnessPass, slides, inclines, obliques, fixtures, frictionless, janssen: { columnSideWallFrictionShare: column.sideWallFrictionShare, pass: janssenPass },
-    chunkedIdentical, coordination, coordinationResult, preparation: prep, failureControls,
+    chunkedIdentical, coordination, coordinationResult, preparation: prep, followUps, failureControls,
     limitations: [
       'Contact-law benchmarks isolate one or two disks with gravity or drag switched off through D; the packings are checked for static equilibrium and bookkeeping, not for their force distribution.',
       'The static load balance follows from Newton\'s third law once the packing is at rest; it certifies that the plate\'s network is a static one, not the statistics of force chains.',
@@ -589,7 +647,10 @@ if (require.main === module) (async () => {
     obliques: obliques.map(r => [r.mu, r.impulseRatioRelError, r.slipChangeRelError, r.lineOfCentresRotation, r.pass]),
     fixtures: fixtures.map(f => [f.name, f.steps, f.ke, f.verticalResidual, f.horizontalResidual, f.dashpotShare, f.perGrainResidual.p95, f.Z, f.top10, f.sideWallFrictionShare, f.readout.pass, f.pass]),
     frictionless: [frictionless.verticalResidual, frictionless.dashpotShare, frictionless.Z, frictionless.pass],
-    chunkedIdentical, coordination: coordination.map(c => [c.mu, c.mean, c.sd, c.se]), coordinationResult, preparation: prep, failureControls, seconds: result.seconds,
+    chunkedIdentical, coordination: coordination.map(c => [c.mu, c.mean, c.sd, c.se]), coordinationResult, preparation: prep,
+    followUps: { misses: followUpMisses, phaseSweep: phaseSweep.map(r => [r.shape, r.zeta, r.omega0h, r.predictedSwing, r.productionMin, r.productionMax, r.finestMaxAbsE, r.finestMaxAbsTc, r.pass]),
+      lateWindow: lateWindow.map(r => [r.mu, r.q, r.lateWindowRelError, r.pass]), stiffness, stiffnessScaling, stepRefinement, stepRefinementPass },
+    failureControls, seconds: result.seconds,
   };
   console.log(JSON.stringify(brief, null, 1));
   if (!result.pass) process.exitCode = 1;
