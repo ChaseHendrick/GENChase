@@ -82,6 +82,25 @@ terms and retains the tighter 2e-6 check, with measured error about 1.15e-7. Thi
 backend limitation, not a universal precision guarantee. The state test reproduces the probe;
 its detailed result is also saved in [schrodinger-kick-precision.json](results/schrodinger-kick-precision.json).
 
+## Absorber and long-time phase
+
+`node tools/schrodinger-absorber-science.js` runs the production float32 step with
+`damp = exp(-dt * damp * pot.b)` against an independent Float64 five-point Visscher twin.
+Uniform absorber weight and the production edge profile (`a = clamp(1 - edge/layer, 0, 1)^2`)
+are both checked. Uniform cases also match a modal 2×2 damped recurrence. Results live in
+[schrodinger-absorber-science.json](results/schrodinger-absorber-science.json).
+
+| Test | Measured result | What it establishes |
+|---|---|---|
+| Uniform absorber vs Float64 twin / modal recurrence | Max recurrence 1.83e-07 (modal 1.83e-07); remaining norm fraction down to 3.36e-04 | Production damp factor on uniform `pot.b` |
+| Edge absorber vs Float64 twin | Max recurrence 6.15e-07; remaining fraction 0.59–0.63 | Production-shaped edge layer on periodic grids |
+| Absorber temporal fixtures (dt 0.2/0.1/0.05, T=2) | Twin error stays below 2.89e-07 at each step | Agreement is roundoff-limited, not a continuum order claim |
+| Long-time free / uniform-V phase (T=120, ~25 periods) | Twin error 8.49e-07; phase error vs exact e^{-iEt} ~0.027 rad; field error ~0.011 | Bounded temporal dispersion over long runs |
+| Wrong-sign damp control | Recurrence error ~2.97; norm fraction ~75 | Deliberate `exp(+dt*damp*b)` is detected |
+
+Periodic wrap still couples opposite edges through the absorber layer. These fixtures do not
+certify continuum PML accuracy, scattering probabilities, hard-wall stadiums or arbitrary packets.
+
 ## Print and remaining limits
 
 `node tools/wave-print-state.js` checks initial and evolved paused states, every display view,
@@ -91,8 +110,9 @@ It also tests convection, for 28 exports in total, and rejects deliberately stat
 See [wave-print-state.json](results/wave-print-state.json). This verifies state preservation and
 dimensions, not color fidelity or accuracy of every printed pixel.
 
-Absorber convergence, arbitrary potentials and packet shapes, scattering probabilities,
-long-time error, float16, all aspect ratios and hardware remain unvalidated. Current tests
-support a **partially validated** label only. Corrected centering, detector accumulation,
+Absorber twin agreement and long-time phase bounds above close part of the previous numerical
+gap. Scattering probabilities, general non-uniform potentials beyond the edge-absorber profile,
+arbitrary packets, float16, all aspect ratios and hardware remain unvalidated. Current tests
+still support a **partially validated** label only. Corrected centering, detector accumulation,
 hard-wall handling and effective timesteps can change existing recipe images. Keep the earlier
 release when reproducing the previous numerical behavior.
