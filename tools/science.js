@@ -31,7 +31,7 @@ const validDate = s => {
 const nonNumericalTests = new Set([
   'build', 'check', 'export', 'index', 'lint', 'maintenance-check', 'pde-print-state',
   'plate', 'preset', 'recipe', 'science', 'sharp', 'shot', 'ui', 'zoom', 'verify', 'verify-check', 'wave-print-state', 'material-wave-print-state',
-  'surfaces-print', 'plasma-print', 'shallow-print', 'nonreciprocal-print', 'maxwell-print-state', 'rdx-print-state', 'molecular-print', 'tennis-print-state', 'eight-print-state', 'photon-print-state', 'maxwell-search', 'maxwell-search-check', 'maxwell-boundary', 'molecular-memory', 'maxwell-robust', 'schrodinger-disorder', 'cahn-scaling'
+  'surfaces-print', 'plasma-print', 'shallow-print', 'nonreciprocal-print', 'maxwell-print-state', 'rdx-print-state', 'molecular-print', 'tennis-print-state', 'eight-print-state', 'photon-print-state', 'grains-print-state', 'maxwell-search', 'maxwell-search-check', 'maxwell-boundary', 'molecular-memory', 'maxwell-robust', 'schrodinger-disorder', 'cahn-scaling'
 ].map(name => fs.existsSync(path.join(root, 'tools', name + '.js')) ? fs.realpathSync(path.join(root, 'tools', name + '.js')) : path.join(root, 'tools', name + '.js')));
 try {
   assert(Array.isArray(records), 'Expected validation record array');

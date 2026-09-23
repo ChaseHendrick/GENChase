@@ -7,6 +7,10 @@ and the distinction between continuous geometry and raster output.
 The [CPU dynamics follow-up](CPU-DYNAMICS.md) covers the rigid-body integrator
 correction, finite-time FPUT evolution, single KP-I lumps and unresolved claims.
 
+The [force-chain audit](GRAINS.md) tests Cundall–Strack contact mechanics against
+analytic collisions and friction, and the static balance of settled packings with their
+actual prints. It records two missed criteria and a top-load defect.
+
 The [complete rational lump review](LUMP-FIELD-REVIEW.md) adds exact local algebra,
 whole fields, corrected sum diagnostics and actual print comparisons.
 
