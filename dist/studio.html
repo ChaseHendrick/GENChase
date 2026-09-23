@@ -6013,14 +6013,14 @@ shall not be misrepresented as the original profile.
     "sourceSha256": "ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8",
     "reference": "A. L. Hodgkin and A. F. Huxley, A quantitative description of membrane current and its application to conduction and excitation in nerve, J. Physiol. 117, 500–544 (1952), doi:10.1113/jphysiol.1952.sp004764. Classical squid membrane at 6.3°C, modern −65 mV resting-voltage convention. Original implementation of established equations.",
     "equation": "C dV/dt = I − gNa m³h(V − ENa) − gK n⁴(V − EK) − gL(V − EL); dx/dt = αx(V)(1 − x) − βx(V)x",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "The independent audit covers classical squid parameters, stated currents, shipped timesteps, pulse lengths and a 200 ms sustained-drive fixture; it does not validate every control, temperature, biological preparation, spatial conduction or human application.",
-      "Print checks preserve numerical state and dimensions but do not calibrate colors or establish experimental accuracy."
+      "Single-compartment classical squid parameters only; stated currents, shipped timesteps, pulse lengths and a 200 ms sustained-drive fixture. No spatial conduction, synapses, stochastic channels, temperature sweep, network or experimental validation.",
+      "Print evidence is state/scheduler preservation for selected PNG sizes — not calibrated color or biological guarantee."
     ],
     "remaining": [
-      "No spatial axon or propagation model exists in the module; add and validate one before any conduction claim.",
-      "Broaden browser and hardware print checks without presenting them as biological experiments."
+      "No spatial axon or propagation model exists; add and validate one before any conduction claim.",
+      "Broaden browser/hardware print checks without presenting them as biological experiments."
     ],
     "numerical": [
       {
@@ -6050,9 +6050,18 @@ shall not be misrepresented as the original profile.
         "scope": "Actual paused PNG exports at 2400×1600 and 2400×2400 for 16 and 64 membranes, all three views and intermediate/completed recordings.",
         "criteria": "Exact CPU/GPU history, state, counters, events and settings preservation; exact output dimensions; deliberate mutating export and wrong dimensions rejected.",
         "limitations": "State and scheduler evidence only; no calibrated-color, biological or all-hardware guarantee.",
-        "results": "validation/results/hodgkin-huxley-print.json"
+        "results": "validation/results/hodgkin-huxley-print.json",
+        "command": "node tools/hodgkin-huxley-print.js"
       }
-    ]
+    ],
+    "reviewed": "2026-09-22",
+    "results": "validation/results/hodgkin-huxley-duration-science.json",
+    "domain": {
+      "parameters": "Classical squid HH at 6.3 °C, single compartment: current densities {-4,0,5,10,15,25} μA/cm², shipped dt {0.01,0.005,0.0025} ms, pulse lengths {1,20,80} ms, plus 200 ms sustained-drive (I=10) and quiet-rest fixtures as in hodgkin-huxley-duration-science.json / hodgkin-huxley-science.json.",
+      "conditions": "Float64 production RK4 vs independently expressed modern-voltage DOPRI5(4) reference; wrong-Na-exponent and swapped-reversal controls must separate; print preserves history/state for registered PNG sizes and membrane counts. No spatial axon in the module.",
+      "resolution": "Across current/pulse scans, RK4 dt=0.005 keeps max |V| error ≪0.05 mV with exact spike counts; shipped-dt short refinement ratios ~16–17; 200 ms drive: 11 matching spikes, fine |V| error ~6e-6 mV, refinement ~16; quiet 200 ms rest: 0 spikes near −65 mV.",
+      "precision": "Float64Array membrane state; independent Float64 DOPRI5 trajectory. Bounded deterministic ODE evidence only — not temperature sweep, synapses, stochastic channels, network, or experiment."
+    }
   },
   {
     "id": "neural-mass",
