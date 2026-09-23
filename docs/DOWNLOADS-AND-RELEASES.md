@@ -42,7 +42,16 @@ GitHub Pages publishes `main` from the repository root. The start page and the
 studio therefore update together after a merge. Do not replace the studio root
 with the start page: that would break saved recipe links.
 
-The release workflow is manually dispatched with a version such as `v2026.09.22`.
+Releases use `vMAJOR.MINOR.PATCH`, starting at `v0.4.1`. Patch numbers identify
+fixes, and minor numbers identify new features. During the initial `0.x` series,
+minor releases may also change compatibility; their notes must explain this.
+A future `1.0.0` will mark the declared stable software interface. These software
+versions are independent of recipe/API versions and scientific validation status.
+Dates belong in [CHANGELOG.md](../CHANGELOG.md) and release notes, not version names.
+The original date-named download remains available for existing links; `v0.4.1`
+is the first numbered release and the latest download link follows it.
+
+The release workflow is manually dispatched with a version such as `v0.4.1`.
 It checks the selected main commit, creates the deterministic offline ZIP and a
 SHA-256 checksum, tests the extracted bundle in Chromium, and publishes assets
 on a GitHub Release. It refuses an existing tag so older releases stay immutable.
@@ -51,7 +60,7 @@ Release notes identify the exact commit and link its scientific evidence.
 Build a local preview without publishing:
 
 ```sh
-python3 tools/package-release.py --version v2026.09.22
+python3 tools/package-release.py --version v0.4.1
 node tools/distribution-check.js tools/dist/release/GENChase-studio.zip
 ```
 

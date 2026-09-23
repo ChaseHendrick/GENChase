@@ -47,7 +47,7 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Package and test extracted offline studio
         run: |
-          python3 tools/package-release.py --version v0.0.0-check
+          python3 tools/package-release.py --version v0.0.0
           node tools/distribution-check.js tools/dist/release/GENChase-studio.zip
 
   pde-complete:
@@ -193,7 +193,7 @@ jobs:
           npm install --no-save --package-lock=false playwright@1.58.2
           npx playwright install --with-deps --only-shell chromium
       - name: Independent complete fields, trajectories and actual exports
-        run: node tools/verify.js --print three-vortex-bound parallelogram-lock quincunx-lock double-triangle-bound cgl vortex hopf apollonian weierstrass rogue soliton breather gyroid devil surfaces peakon neural-mass phyllotaxis ust lump
+        run: node tools/verify.js --print three-vortex-bound parallelogram-lock quincunx-lock double-triangle-bound cgl vortex hopf apollonian weierstrass rogue soliton breather gyroid devil surfaces peakon neural-mass phyllotaxis ust lump fput
 
   wave-science:
     name: wave science

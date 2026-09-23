@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Release version, for example v2026.09.22
+        description: Release version, for example v0.4.1
         required: true
         type: string
 permissions:
@@ -31,7 +31,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_VERSION: ${{ inputs.version }}
         run: |
-          python3 -c 'import os,re; assert re.fullmatch(r"v[0-9][0-9A-Za-z.\-]*", os.environ["RELEASE_VERSION"]), "Invalid version"'
+          python3 tools/package-release.py --version "$RELEASE_VERSION" --check-version
           gh api "repos/$GITHUB_REPOSITORY/actions/workflows/check.yml/runs?head_sha=$GITHUB_SHA&event=push&status=completed&per_page=20" > /tmp/check-runs.json
           python3 -c 'import json,os; runs=json.load(open("/tmp/check-runs.json"))["workflow_runs"]; assert any(r["head_sha"]==os.environ["GITHUB_SHA"] and r["conclusion"]=="success" for r in runs), "This main commit needs a successful check workflow before publication"'
           gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/$RELEASE_VERSION" > /tmp/tag-refs.json
@@ -58,11 +58,14 @@ jobs:
         run: |
           python3 - <<'PY'
           import os
+          from datetime import datetime, timezone
           from pathlib import Path
           repo=os.environ['GITHUB_REPOSITORY']; sha=os.environ['GITHUB_SHA']
           Path('/tmp/release-notes.md').write_text(f'''Make art in your browser at https://sharpmeow.github.io/GENChase/start.html, or download **GENChase-studio.zip**, extract it, and open **START-HERE.html**. No development tools are needed for the offline art studio.
 
           The ZIP includes the portable studio, introductory examples, licenses, and scientific evidence. **SHA256SUMS.txt** records its checksum. Use the automatically attached source archive for local checks or code contributions, following CONTRIBUTING.md.
+
+          Released {datetime.now(timezone.utc).date().isoformat()}.
 
           Built from [{sha[:12]}](https://github.com/{repo}/commit/{sha}). Validation is limited to the domains in [VALIDATION.md](https://github.com/{repo}/blob/{sha}/VALIDATION.md); this release does not certify every simulation.
           ''')
