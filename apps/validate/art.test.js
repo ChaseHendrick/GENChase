@@ -206,7 +206,9 @@ test('the gallery escapes recipe text, links relatively and makes no network ref
   assert(galleryHtml({ ...page, studio: '../../my%20runs/dist/studio.html' }).includes('href="../../my%20runs/dist/studio.html#cahn/'), 'a runner-supplied link is used');
   assert(html.includes('entropy 5.1 ± 0.061 bits') && html.includes('edge 1.2 ± 0.012'), 'the crop sampling error is shown beside the metric');
   assert(html.includes('src="thumbs/c-0001.jpg"'));
-  const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]);
+  // Count openings in any case and with any attributes, so an injected <SCRIPT> or </script > is not missed.
+  assert.equal((html.match(/<script\b/gi) || []).length, 1, 'exactly one script element');
+  const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script\b[^>]*>/gi)].map(m => m[1]);
   assert.equal(scripts.length, 1); new vm.Script(scripts[0]);
 });
 
