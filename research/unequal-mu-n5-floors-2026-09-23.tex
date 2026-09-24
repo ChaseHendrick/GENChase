@@ -1,6 +1,6 @@
 % LaTeX version of unequal-mu-n5-floors-2026-09-23.typ, for journals and arXiv.
 % The Typst file is the reference text; keep the two in step when either changes.
-% Build from this directory with pdflatex -output-directory=<a scratch dir> run twice, so no build files land here.
+% Build from this directory with pdflatex -output-directory=<a scratch dir> run three times, so no build files land here.
 % The figure is research/figures/minimal-winding.pdf, written by plot_minimal_winding.py.
 \documentclass[11pt]{article}
 \usepackage[letterpaper,margin=1in]{geometry}
@@ -52,7 +52,7 @@ In a self-similar collapse of point vortices every vortex moves on a logarithmic
 
 \section{Introduction}
 
-Three point vortices collapse self-similarly only if $1/\Gamma_1 + 1/\Gamma_2 + 1/\Gamma_3 = 0$ and their angular impulse about the center of vorticity vanishes (Lemma~\ref{lem:necessary} below). Under these conditions every configuration moves self-similarly: the triangle keeps its shape and rotates while it shrinks to a point in finite time, expands, or rotates rigidly \cite{aref1979,ks2018}. Such collapse was found by Gr\"obli \cite{grobli1877} and found again by Aref \cite{aref1979} and by Novikov and Sedov \cite{ns1979}, who also constructed collapsing configurations of four and five vortices; see \cite{art1992} for the history and \cite{newton2001} for the general theory. Kimura \cite{kimura1987} studied similarity solutions of point-vortex systems, Aref \cite{aref2010} derived formulas for the rate of collapse or expansion and the angular frequency of rotation, and Gotoda \cite{gotoda2021} gave explicit formulas for the self-similar motions of three vortices. Collapse also occurs in configurations of higher symmetry. Aref \cite{aref1982} reduced the motion of two concentric regular $n$-gons of vortices to an integrable Hamiltonian system with two degrees of freedom, and Koiller et al.\ \cite{koiller1985} found collapsing configurations of two such rings, whose vortices move on logarithmic spirals.
+Three point vortices collapse self-similarly only if $1/\Gamma_1 + 1/\Gamma_2 + 1/\Gamma_3 = 0$ and their angular impulse about the center of vorticity vanishes (Lemma~\ref{lem:necessary} below). Under these conditions every configuration moves self-similarly: the triangle keeps its shape and rotates while it shrinks to a point in finite time, expands, or rotates rigidly \cite[Sect.~4.5.2]{gallay2026}, \cite{kas2018}. Such collapse was found by Gr\"obli \cite{grobli1877} and found again by Aref \cite{aref1979} and by Novikov and Sedov \cite{ns1979}, who also constructed collapsing configurations of four and five vortices; see \cite{art1992} for the history and \cite{newton2001} for the general theory. Kimura \cite{kimura1987} studied similarity solutions of point-vortex systems, Aref \cite{aref2010} derived formulas for the rate of collapse or expansion and the angular frequency of rotation, and Gotoda \cite{gotoda2021} gave explicit formulas for the self-similar motions of three vortices. Borisov and Lebedev \cite{bl1998} obtained conditions for the collapse and the scattering of three vortices within the Lie--Poisson formulation of the problem, and Krishnamurthy, Aref and Stremler \cite{kas2018} recast the motion of three vortices in terms of the circumcircle and the interior angles of the vortex triangle and derived equations of motion for these quantities. Collapse also occurs in configurations of higher symmetry. Aref \cite{aref1982} reduced the motion of two concentric regular $n$-gons of vortices to an integrable Hamiltonian system with two degrees of freedom, and Koiller et al.\ \cite{koiller1985} found collapsing configurations of two such rings, whose vortices move on logarithmic spirals. Demina and Kudryashov \cite[Sect.~3]{dk2014} gave explicitly a family of such configurations that collapse or scatter, with an additional vortex, possibly of zero circulation, at the center, together with the complex constant that determines their rates of collapse and rotation.
 
 In a self-similar collapse at time $t_c$ the configuration has rotated by time $t$ through the angle $-\omega_0 t_c \ln(1 - t/t_c)$, where $\omega_0$ is the initial angular velocity. The angular velocity at time $t$ is $\omega_0 t_c/(t_c - t)$, so the product of the angular velocity and the remaining time does not depend on which instant is taken as initial. Each vortex moves on a logarithmic spiral about the collision point, whose exponent is fixed by this product \cite[Eq.~(29)]{aref2010}, and the dimensionless number $P = |\omega_0| t_c$, which is invariant under rescaling of lengths, times and circulations, is the angle through which the configuration turns while the square of its size decreases by the factor $e$. Equivalently, the path of each vortex makes the constant angle $\arctan 2P$ with the direction to the collision point, and a vortex that starts at distance $r_0$ from that point travels the distance $r_0 \sqrt{1 + 4P^2}$ before the collapse. Within a collapsing family it is natural to ask which configuration winds least.
 
@@ -68,7 +68,7 @@ Suppose $\sum_j \Gamma_j \ne 0$, let $z_c = \sum_j \Gamma_j z_j / \sum_j \Gamma_
 \begin{equation}\label{eq:P}
   P = |\omega_0| t_c = \frac{|\im\kappa|}{-2\re\kappa}.
 \end{equation}
-Integrating $\dot\phi = \omega_0/\lambda^2$ gives $\phi = -P \ln\lambda^2$ when $\omega_0 > 0$, which is the description of the spiral given in the introduction. The angular impulse about the center of vorticity satisfies
+Integrating $\dot\phi = \omega_0/\lambda^2$ gives $\phi = -P \ln\lambda^2$ when $\omega_0 > 0$, which is the description of the spiral given in the introduction. This is Kimura's similarity solution \cite[Sect.~3.1]{kimura1987}: up to the factor $2\pi$ in his normalization of the circulations, $\kappa$ is his constant $C = A + iB$, \eqref{eq:P} reads $P = |B|/(-2A)$, and the spirals and the collision time $t_c = -1/(2A)$ are his Eqs.~(3.7) and~(3.9). Demina and Kudryashov \cite[Eqs.~(7)--(12)]{dk2014} derive the same solution, like Kimura for any number of vortices but with the normalization of \eqref{eq:bs}, so that their complex constant $c_1$ equals $\kappa$; they give the collapse time $1/(2|\re c_1|)$ \cite[Eq.~(12)]{dk2014} and the rotation angle $(\im c_1/(2\re c_1))\ln(1 + 2t\re c_1)$ \cite[Eq.~(10)]{dk2014}, whose coefficient has absolute value $P$. Gallay and \v{S}ver\'ak \cite[Prop.~5.2, Eq.~(5.11)]{gallay2026} write the collapsing solution as $z_j(t) = (1 - t/T)^{1/2 + is} a_j$ with $z_c = 0$; comparing the two descriptions gives $T = t_c$ and $s = -\omega_0 t_c$, so $|s| = P$. The angular impulse about the center of vorticity satisfies
 \begin{equation}\label{eq:L}
   \sum_j \Gamma_j |z_j - z_c|^2 = \frac{1}{\sum_j \Gamma_j} \sum_{j < k} \Gamma_j \Gamma_k |z_j - z_k|^2.
 \end{equation}
@@ -93,7 +93,7 @@ In a self-similar collapse of three point vortices all circulations are nonzero,
 \end{lemma}
 
 \begin{proof}
-The harmonic condition and the vanishing of the angular impulse are the classical necessary conditions \cite[Sect.~II~B]{aref2010}; we include the short argument. Along the motion
+The harmonic condition and the vanishing of the angular impulse are the classical necessary conditions \cite[Sect.~II~B]{aref2010} (see also \cite[Eqs.~(3.20)--(3.21), (3.33)]{kimura1987}, \cite[Sect.~3]{bl1998} and, for both conditions and any number of vortices, \cite[Eqs.~(26)--(28)]{dk2014}); we include the short argument. Along the motion
 \[
   H = H(0) - \frac{1}{4\pi} \Bigl(\sum_{j<k} \Gamma_j \Gamma_k\Bigr) \ln\lambda^2,
 \]
@@ -104,7 +104,7 @@ By Lemma~\ref{lem:necessary} two of the three circulations of a self-similarly c
 \begin{equation}\label{eq:norm}
   \Gamma = \Bigl(1, \mu, -\frac{\mu}{1 + \mu}\Bigr), \quad 0 < \mu \le 1.
 \end{equation}
-Then $\sum_j \Gamma_j = R/(1 + \mu) > 0$, where $R = 1 + \mu + \mu^2$. For $w = (z_3 - z_1)/(z_2 - z_1)$ the sum $\sum_{j<k} \Gamma_j \Gamma_k |z_j - z_k|^2$ in \eqref{eq:L} equals $\mu(1 + \mu)^{-1} |z_2 - z_1|^2 (1 + 2\mu \re w - (1 + \mu)|w|^2)$, which vanishes exactly on the circle $|w - \mu/(1 + \mu)| = \sqrt{R}/(1 + \mu)$. This is the circle of Aref \cite[Eq.~(20)]{aref2010}, and we use the parametrization of it given by Gotoda \cite[Sect.~3]{gotoda2021}:
+Then $\sum_j \Gamma_j = R/(1 + \mu) > 0$, where $R = 1 + \mu + \mu^2$. For $w = (z_3 - z_1)/(z_2 - z_1)$ the sum $\sum_{j<k} \Gamma_j \Gamma_k |z_j - z_k|^2$ in \eqref{eq:L} equals $\mu(1 + \mu)^{-1} |z_2 - z_1|^2 (1 + 2\mu \re w - (1 + \mu)|w|^2)$, which vanishes exactly on the circle $|w - \mu/(1 + \mu)| = \sqrt{R}/(1 + \mu)$. This circle appears in Kimura \cite[Eqs.~(3.34)--(3.35)]{kimura1987}, who notes that it splits into two arcs of collapse and two of expansion, and in Aref \cite[Eq.~(20)]{aref2010}; we use the parametrization of it given by Gotoda \cite[Sect.~3]{gotoda2021}:
 \begin{equation}\label{eq:pos}
   z_1 = \frac{\mu(1 + \sqrt{R} e^{-i\theta})}{(1 + \mu)^2}, \quad
   z_2 = \frac{\mu - \sqrt{R} e^{-i\theta}}{(1 + \mu)^2}, \quad
@@ -201,7 +201,7 @@ Every self-similar collapse of three point vortices has $|\omega_0| t_c > \sqrt{
 By Lemma~\ref{lem:necessary}, the normalization \eqref{eq:norm} and Theorem~\ref{thm:main}, $P \ge P_-(\mu) > \sqrt{3}/2$, and $P_-(\mu) \to \sqrt{3}/2$ as $\mu \to 0^+$. The path length is $r_0\sqrt{1 + 4P^2} > 2r_0$, and no vortex starts at the collision point, since $z_1$, $z_2$ and $z_3$ in \eqref{eq:pos} never vanish.
 \end{proof}
 
-Every collapse of three point vortices in the plane is self-similar \cite[Theorem~1.1]{drivas2026}, \cite{ks2018}, so the bound of Corollary~\ref{cor:bound} holds for every collapse of three point vortices.
+Every collapse of three point vortices in the plane is self-similar \cite[Theorem~1.1]{drivas2026}, \cite[Prop.~5.2]{gallay2026}, \cite{ks2018}, so the bound of Corollary~\ref{cor:bound} holds for every collapse of three point vortices. The bound does not carry over to larger systems: the collapsing configuration of seven vortices in \cite[Table~1, Fig.~1a]{dk2014} has the constant $\Omega = 12433/9000 - (31\sqrt{155}/450)\,i$, where $\Omega = 2\pi i\,\overline{\kappa}$ \cite[Eq.~(11)]{dk2014}, so $P = |\re\Omega|/(2|\im\Omega|) = 12433/(1240\sqrt{155}) = 0.8053\ldots < \sqrt{3}/2$.
 
 \begin{figure}[t]
   \centering
@@ -239,7 +239,7 @@ The two minima are conjugate algebraic numbers of degree six. Since the cubic in
 \end{remark}
 
 \begin{remark}\label{rem:equal}
-For $\mu = 1$, that is $\Gamma = (1, 1, -1/2)$, the zero-impulse circle is $|w - 1/2| = \sqrt{3}/2$. With $w = 1/2 + (\sqrt{3}/2) e^{i\beta}$, $z_1 = 0$ and $z_2 = 1$, the same computation gives $P = (3 - \cos 2\beta)/(2\sin 2\beta)$ on the collapsing arcs $0 < \beta < \pi/2$ and $\pi < \beta < 3\pi/2$, which are exchanged by interchanging the two equal vortices ($w \mapsto 1 - w$). Since $P$ has period $\pi$ in $\beta$, Lemma~\ref{lem:ineq} applies on both arcs and gives $P \ge \sqrt{2}$, with equality if and only if $\cos 2\beta = 1/3$, in agreement with Theorem~\ref{thm:main}. This expression for $P$ is a specialization and reparametrization of Gr\"obli's spiral coefficient \cite[Sect.~10]{grobli1877}.
+For $\mu = 1$, that is $\Gamma = (1, 1, -1/2)$, the zero-impulse circle is $|w - 1/2| = \sqrt{3}/2$. With $w = 1/2 + (\sqrt{3}/2) e^{i\beta}$, $z_1 = 0$ and $z_2 = 1$, the same computation gives $P = (3 - \cos 2\beta)/(2\sin 2\beta)$ on the collapsing arcs $0 < \beta < \pi/2$ and $\pi < \beta < 3\pi/2$, which are exchanged by interchanging the two equal vortices ($w \mapsto 1 - w$). Since $P$ has period $\pi$ in $\beta$, Lemma~\ref{lem:ineq} applies on both arcs and gives $P \ge \sqrt{2}$, with equality if and only if $\cos 2\beta = 1/3$, in agreement with Theorem~\ref{thm:main}. This parametrization is Kimura's \cite[Sect.~4]{kimura1987}, who gives the two rates for $\Gamma = (2, 2, -1)$ in his Eq.~(4.4); their ratio $B/(-2A)$ is this expression for $P$, which is also a specialization and reparametrization of Gr\"obli's spiral coefficient \cite[Sect.~10]{grobli1877}.
 \end{remark}
 
 \begin{remark}\label{rem:swap}
@@ -267,7 +267,7 @@ and these are equal if and only if
 \begin{equation}\label{eq:circ}
   (n - 1)x^2 - 2nx + (n - 1) = 0.
 \end{equation}
-This is the circulation condition of Koiller et al.\ \cite[Sect.~11]{koiller1985}. It coincides with the classical condition $\sum_{i<j} \Gamma_i \Gamma_j = 0$ for the $2n$ vortices, whose left side here equals $(n/2)((n - 1)x^2 - 2nx + (n - 1))$. Its roots are $x_n$ and $1/x_n$, where
+This is the circulation condition of Koiller et al.\ \cite[Sect.~11]{koiller1985}. Demina and Kudryashov \cite[Sect.~3]{dk2014} place circulations $\Gamma_1$ and $\Gamma_2 = -\Gamma_1/r^2$ on two such rings, where $r$ is the ratio of the radii, and a vortex of circulation $\Gamma_0$ at the center; for $\Gamma_0 = 0$ their equation for $r$ \cite[Eq.~(37)]{dk2014} is \eqref{eq:circ} with $x = r^2$. The condition \eqref{eq:circ} coincides with the classical condition $\sum_{i<j} \Gamma_i \Gamma_j = 0$ for the $2n$ vortices, whose left side here equals $(n/2)((n - 1)x^2 - 2nx + (n - 1))$. Its roots are $x_n$ and $1/x_n$, where
 \[
   x_n = \frac{n + \sqrt{2n - 1}}{n - 1} = e^\eta, \quad \cosh\eta = \frac{n}{n - 1}.
 \]
@@ -292,7 +292,7 @@ so $\re S > 0$, and \eqref{eq:P} gives
 \begin{equation}\label{eq:Pring}
   P = \frac{K_n - \sqrt{2n - 1}\cos n\theta}{2n\sin n\theta}, \quad 0 < n\theta < \pi.
 \end{equation}
-The collapse rate and the rotation rate as functions of the relative angle are given by Koiller et al.\ \cite[Sect.~11]{koiller1985}; \eqref{eq:Pring} writes their ratio in closed form.
+The collapse rate and the rotation rate as functions of the relative angle are given by Koiller et al.\ \cite[Sect.~11]{koiller1985}. The constant $S$ is the constant $\Omega$ of \cite[Eq.~(11)]{dk2014}, and Demina and Kudryashov write it for these rings, with the central vortex, as an explicit function of $e^{in\theta}$ \cite[Eq.~(36)]{dk2014}; for $\Gamma_0 = 0$, $\Gamma_1 = x_n$ and radii $1$ and $\sqrt{x_n}$ their expression reduces to $S$ by \eqref{eq:circ}. \eqref{eq:Pring} writes the ratio of the two rates in closed form.
 
 \begin{proposition}\label{prop:rings}
 For $n \ge 2$ the collapsing configurations of two concentric regular $n$-gons with circulations $x_n$ and $-1$ satisfy
@@ -350,10 +350,18 @@ The results were checked numerically as summarized in Table~\ref{tab:checks}. Ex
       & distances to the collision point, rotation angles, the angle $\arctan 2P$ between each velocity and the direction to the collision point, and path lengths $r_0 \sqrt{1 + 4P^2}\,(1 - \sqrt{1 - t/t_c})$ agree to $2 \times 10^{-10}$ \\ \hline
     $\mu = 1$ (Remark~\ref{rem:equal}): $P$ from \eqref{eq:bs} against $(3 - \cos 2\beta)/(2\sin 2\beta)$ on both collapsing arcs, and its minimum, 50 digits
       & difference $\le 2 \times 10^{-47}$; minimum $\sqrt{2}$ at $\cos 2\beta = 1/3$ on both arcs \\ \hline
+    $\mu = 1$: the configuration with the fastest collapse at $|z_1 - z_2| = 1$, 50 digits
+      & $\cos 2\beta = 3/5$, $t_c = 4\pi/3$ and $P = 3/2$ to $10^{-40}$ \\ \hline
+    $\mu = 1$: Kimura's rates $A$, $B$ \cite[Eq.~(4.4)]{kimura1987} at ten angles in $0 < \beta < \pi/2$, 50 digits
+      & $\kappa = (A + iB)/(4\pi)$ for $\Gamma = (1, 1, -1/2)$, to $10^{-45}$ \\ \hline
     Two rings, $n = 2, \dots, 10$: the reduced equations \eqref{eq:rings} and the two sums over roots of unity against the full Biot--Savart sum, 50 digits
       & difference $\le 10^{-49}$ \\ \hline
     Two rings, $n = 2, \dots, 8$: $P$ from \eqref{eq:bs} against \eqref{eq:Pring} over the collapsing range, and its numerical minimum against $F_n$, 60 digits
       & relative difference $\le 3 \times 10^{-58}$; minima agree to $2 \times 10^{-60}$ \\ \hline
+    Two rings: the equations of Demina and Kudryashov \cite[Eqs.~(36)--(37)]{dk2014} at $\Gamma_0 = 0$ (exact, SymPy), and their constant against the Biot--Savart sum, $n = 2, \dots, 8$, 50 digits
+      & (37) is \eqref{eq:circ} with $x = r^2$; (36) minus $S$ is a multiple of \eqref{eq:circ}; difference $\le 10^{-45}$ \\ \hline
+    The collapsing configuration of seven vortices in \cite[Table~1, Fig.~1a]{dk2014}, Biot--Savart at 50 digits
+      & self-similar, the printed $\Omega$ to $10^{-45}$, and $P = 12433/(1240\sqrt{155}) < \sqrt{3}/2$ \\ \hline
   \end{tabular}
   \caption{Numerical checks of the results.}
   \label{tab:checks}
@@ -361,11 +369,13 @@ The results were checked numerically as summarized in Table~\ref{tab:checks}. Ex
 
 \section{Discussion}
 
-Lemma~\ref{lem:rates} gives, in a form suited to minimization, the collapse and rotation rates that Aref \cite[Eqs.~(25a), (25d)]{aref2010} expresses through the side lengths of the triangle (see also \cite{gotoda2021}); Aref also notes that the product of the two rates fixes the logarithmic spiral \cite[Eq.~(29c)]{aref2010}. Theorem~\ref{thm:main} concerns the minimization of that product, which \cite{aref2010} does not consider. When the two circulations of the same sign differ, $\mu < 1$, the two orientations of the triangle are not equivalent and the minima on the two arcs differ, so a minimization restricted to one orientation finds only one of them. The infimum $\sqrt{3}/2$ of Corollary~\ref{cor:bound} is approached only as $\mu \to 0$ and is not attained.
+Lemma~\ref{lem:rates} gives, in a form suited to minimization, the collapse and rotation rates that Aref \cite[Eqs.~(25a), (25d)]{aref2010} expresses through the side lengths of the triangle (see also \cite{gotoda2021}, \cite[Eq.~(E.1)]{gallay2026}, and, for equal circulations, \cite[Eq.~(4.4)]{kimura1987}); Aref also notes that the product of the two rates fixes the logarithmic spiral \cite[Eq.~(29c)]{aref2010}. Theorem~\ref{thm:main} concerns the minimization of that product, which neither \cite{aref2010} nor \cite{kimura1987} considers. When the two circulations of the same sign differ, $\mu < 1$, the two orientations of the triangle are not equivalent and the minima on the two arcs differ, so a minimization restricted to one orientation finds only one of them. The infimum $\sqrt{3}/2$ of Corollary~\ref{cor:bound} is approached only as $\mu \to 0$ and is not attained.
 
-Leoncini, Kuznetsov and Zaslavsky \cite{lkz2000} analyze the motion near collapse when two of the vortices are identical. Tavantzis and Ting \cite{tt1988} describe, for $\sum_{j<k} \Gamma_j \Gamma_k = 0$, the contracting and the expanding self-similar solutions as one-parameter families and discuss their stability. Krishnamurthy and Stremler \cite{ks2018} relate the interior angles of the triangle, the circulation ratios, the energy, the collapse time and the distance traveled before collapse. In their normalization that distance is $\sqrt{1 + 4P^2}$, and they observe numerically that it exceeds $2$ \cite[Sect.~3.5]{ks2018}. Corollary~\ref{cor:bound} proves this observation and shows that the constant $2$ cannot be improved.
+Leoncini, Kuznetsov and Zaslavsky \cite{lkz2000} analyze the motion near collapse when two of the vortices are identical; the configuration that collapses fastest at a fixed distance between the identical vortices, found by Kimura \cite[Eq.~(4.6)]{kimura1987} and shown in \cite[Fig.~18]{lkz2000}, has $P = 3/2$, and the value $\sqrt{3}/2$ quoted there is that of their energy parameter $\Lambda = e^{4\pi H}$, not of $P$. Tavantzis and Ting \cite{tt1988} describe, for $\sum_{j<k} \Gamma_j \Gamma_k = 0$, the contracting and the expanding self-similar solutions as one-parameter families and discuss their stability. Reinaud, Dritschel and Scott \cite{rds2022} extend the collapse conditions to generalized Euler and quasi-geostrophic models and map the collapse time over the collapsing configurations, with the distance between the like-signed vortices fixed, finding local minima of that time; $P$, unlike the collapse time, does not depend on the choice of length and time scales. Krishnamurthy and Stremler \cite{ks2018} relate the interior angles of the triangle, the circulation ratios, the energy, the collapse time and the distance traveled before collapse by the circumcenter of the triangle. When the angular impulse about the center of vorticity vanishes, the circumcircle passes through the center of vorticity at all times \cite[Eq.~(40)]{kas2018}, so in a collapse the circumcenter stays one circumradius from the collision point; since it is carried by the self-similar motion, it travels $\sqrt{1 + 4P^2}$ times the initial circumradius before the collapse. They observe numerically that this normalized distance exceeds $2$ \cite[Sect.~3.5]{ks2018}; Corollary~\ref{cor:bound} proves this observation and shows that the constant $2$ cannot be improved.
 
-For two rings, Aref \cite{aref1982} derived the reduced equations \eqref{eq:rings} for arbitrary circulations and analyzed equal and opposite circulations, $x = 1$, which do not satisfy \eqref{eq:circ}. Koiller et al.\ \cite{koiller1985} found the collapsing configurations and their rates; \eqref{eq:Pring} writes the ratio of these rates in closed form, and Proposition~\ref{prop:rings} gives its minimum over the relative rotation. O'Neil \cite{oneil2007} proves that for generic circulations three concentric rings have finitely many relative equilibria and collapse configurations. Demina and Kudryashov \cite{dk2014} study relative equilibria, collapse and scattering of point vortices with arbitrary circulations and give explicit double-ring configurations formed by two regular polygons. We have not found the minimal values of Theorem~\ref{thm:main} and Propositions~\ref{prop:half} and~\ref{prop:rings} stated in the literature, nor a proof of the bound of Corollary~\ref{cor:bound} or of its sharpness.
+Gallay and \v{S}ver\'ak \cite{gallay2026} ask when a collision of three point vortices is regularizable, that is, a limit of nearby motions without collision. Whether it is depends on the perturbation \cite[Theorems~5.8, 5.10, 5.15]{gallay2026}, and when it is, the limit is determined only up to a rotation \cite[Sect.~1]{gallay2026}, because the triangle turns through the angle $s \ln(1 - t/T)$ and so makes infinitely many turns before the collision \cite[Sect.~5.2]{gallay2026}. They note that $s \neq 0$ \cite[Remark~E.2]{gallay2026}; since $|s| = P$, Corollary~\ref{cor:bound} sharpens this to $|s| > \sqrt{3}/2$ for every collision, and no larger constant holds for all of them.
+
+For two rings, Aref \cite{aref1982} derived the reduced equations \eqref{eq:rings} for arbitrary circulations and analyzed equal and opposite circulations, $x = 1$, which do not satisfy \eqref{eq:circ}. Koiller et al.\ \cite{koiller1985} found the collapsing configurations and their rates. Demina and Kudryashov \cite{dk2014} study relative equilibria, collapse and scattering of point vortices with arbitrary circulations by a polynomial method. For two regular polygons with a vortex of circulation $\Gamma_0$, possibly zero, at the center, they give the equation for the ratio of the radii, which for $\Gamma_0 = 0$ is \eqref{eq:circ}, and the constant $\Omega$, which for $\Gamma_0 = 0$ is $S$, as an explicit function of the relative rotation \cite[Eqs.~(36)--(37)]{dk2014}, and they state that every relative rotation with $e^{in\theta} \neq \pm 1$ gives a collapse or a scattering. For this family they do not say which of the two occurs, separate the collapse rate from the rotation rate, or evaluate their ratio. \eqref{eq:Pring} writes this ratio in closed form, and Proposition~\ref{prop:rings} gives its minimum over the relative rotation. O'Neil \cite{oneil2007} proves that for generic circulations three concentric rings have finitely many relative equilibria and collapse configurations. We have not found the minimal values of Theorem~\ref{thm:main} and Propositions~\ref{prop:half} and~\ref{prop:rings} stated in the literature, nor a proof of the bound of Corollary~\ref{cor:bound} or of its sharpness.
 
 \medskip
 \noindent\textbf{Data availability.} The programs \texttt{verify\_general\_mu.py}, \texttt{verify\_floors\_independent.py} and \texttt{plot\_minimal\_winding.py}, used for Section~\ref{sec:numerics} and Figure~\ref{fig:minima}, and their output are in the directory \texttt{research/} of the repository \url{https://github.com/SharpMeow/GENChase}.
@@ -373,7 +383,7 @@ For two rings, Aref \cite{aref1982} derived the reduced equations \eqref{eq:ring
 \smallskip
 \noindent{\footnotesize This work was prepared with AI assistance. The author takes full responsibility for its content.}
 
-\begin{thebibliography}{16}
+\begin{thebibliography}{20}
 \small
 
 \bibitem{aref1979} H. Aref, Motion of three vortices, \emph{Phys. Fluids} \textbf{22} (1979) 393--400.
@@ -384,9 +394,13 @@ For two rings, Aref \cite{aref1982} derived the reduced equations \eqref{eq:ring
 
 \bibitem{art1992} H. Aref, N. Rott and H. Thomann, Gr\"obli's solution of the three-vortex problem, \emph{Annu. Rev. Fluid Mech.} \textbf{24} (1992) 1--21.
 
-\bibitem{dk2014} M. V. Demina and N. A. Kudryashov, Rotation, collapse, and scattering of point vortices, \emph{Theor. Comput. Fluid Dyn.} \textbf{28} (2014) 357--368.
+\bibitem{bl1998} A. V. Borisov and V. G. Lebedev, Dynamics of three vortices on a plane and a sphere --- III. Noncompact case. Problems of collapse and scattering, \emph{Regul. Chaotic Dyn.} \textbf{3} (1998), no.~4; arXiv:nlin/0503057.
+
+\bibitem{dk2014} M. V. Demina and N. A. Kudryashov, Rotation, collapse, and scattering of point vortices, \emph{Theor. Comput. Fluid Dyn.} \textbf{28} (2014) 357--368; doi:10.1007/s00162-014-0319-4.
 
 \bibitem{drivas2026} T. D. Drivas, B. A. Khanikati and V. A. Khanikati, On the collapse of three point vortices on surfaces, preprint, arXiv:2607.16490 (2026).
+
+\bibitem{gallay2026} T. Gallay and V. \v{S}ver\'ak, The three-vortex system: Hopf fibration, symplectic reduction, and near-collisions, preprint, arXiv:2609.10847 (2026).
 
 \bibitem{gotoda2021} T. Gotoda, Self-similar motions and related relative equilibria in the $N$-point vortex system, \emph{J. Dyn. Differ. Equ.} \textbf{33} (2021) 1759--1777; arXiv:2002.09624.
 
@@ -395,6 +409,8 @@ For two rings, Aref \cite{aref1982} derived the reduced equations \eqref{eq:ring
 \bibitem{kimura1987} Y. Kimura, Similarity solution of two-dimensional point vortices, \emph{J. Phys. Soc. Jpn.} \textbf{56} (1987) 2024--2030.
 
 \bibitem{koiller1985} J. Koiller, S. Pinto de Carvalho, R. Rodrigues da Silva and L. C. Gon\c{c}alves de Oliveira, On Aref's vortex motions with a symmetry center, \emph{Physica D} \textbf{16} (1985) 27--61.
+
+\bibitem{kas2018} V. S. Krishnamurthy, H. Aref and M. A. Stremler, Evolving geometry of a vortex triangle, \emph{Phys. Rev. Fluids} \textbf{3} (2018) 024702; arXiv:1706.00731.
 
 \bibitem{ks2018} V. S. Krishnamurthy and M. A. Stremler, Finite-time collapse of three point vortices in the plane, \emph{Regul. Chaotic Dyn.} \textbf{23} (2018) 530--550.
 
@@ -405,6 +421,8 @@ For two rings, Aref \cite{aref1982} derived the reduced equations \eqref{eq:ring
 \bibitem{ns1979} E. A. Novikov and Yu. B. Sedov, Vortex collapse, \emph{Sov. Phys. JETP} \textbf{50} (1979) 297--301 [\emph{Zh. Eksp. Teor. Fiz.} \textbf{77} (1979) 588--597].
 
 \bibitem{oneil2007} K. A. O'Neil, Relative equilibrium and collapse configurations of heterogeneous vortex triple rings, \emph{Physica D} \textbf{236} (2007) 123--130.
+
+\bibitem{rds2022} J. N. Reinaud, D. G. Dritschel and R. K. Scott, Self-similar collapse of three vortices in the generalised Euler and quasi-geostrophic equations, \emph{Physica D} \textbf{434} (2022) 133226.
 
 \bibitem{tt1988} J. Tavantzis and L. Ting, The dynamics of three vortices revisited, \emph{Phys. Fluids} \textbf{31} (1988) 1392--1409.
 

@@ -1,10 +1,10 @@
 {
-  "date": "2026-09-22",
+  "date": "2026-09-24",
   "scope": "Three classical point-vortex families; only the twelve enumerated field and print recipes. Analytic trajectories, not arbitrary off-family integrations or physical vortices.",
   "results": [
     {
       "id": "three-vortex-bound",
-      "sourceSha256": "733f40bd48157e2ea1269c797addcea0a7045d6f6b05680ae813e26227d2ce37",
+      "sourceSha256": "616006e58a131d8a309e01ac7037f8e0af1261a4e16fac3c2f7705bd7b872f54",
       "numerical": {
         "timeCases": [
           {
@@ -28,7 +28,7 @@
         "angles": 150,
         "maxGeometryError": 0,
         "maxVelocityError": 1.1102230246251565e-16,
-        "maxFormulaError": 9.992007221626409e-16,
+        "maxFormulaError": 8.881784197001252e-16,
         "maxExactError": 6.866686775328119e-15,
         "minimum": {
           "theta": 35.264389682754654,
@@ -754,11 +754,11 @@
       ]
     }
   ],
-  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "engineSha256": "ce99dfbdd830b8a7abd742b610f1014fea65411163767f9f57fa94843f8d3a66",
   "environment": {
-    "node": "v24.21.0",
-    "chromium": "145.0.7632.6",
-    "platform": "darwin"
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
+    "platform": "linux"
   },
   "passed": true
 }
