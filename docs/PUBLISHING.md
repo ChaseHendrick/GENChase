@@ -5,7 +5,7 @@ project's accounts. Everything that could be done inside the repository is done;
 one action, and says how to check it worked.
 
 Decide one thing first: **the name you publish under.** The software metadata (`CITATION.cff`,
-`.zenodo.json`, `identities/zenodo.json`, `paper/paper.md`) says "Chaos" with affiliation "GENChase".
+`.zenodo.json`, `identities/zenodo.json`, `paper/paper.md`) says "Chaos", an independent researcher.
 The vortex manuscript and its cover letter use your legal name. A DOI record carries whatever the
 metadata says on the day of the release, so change the creator entries before step 1.4 if you want a
 different name on it. The git identity rule in AGENTS.md is about commits and is unaffected. Never
@@ -22,12 +22,17 @@ Apache-2.0), the identities note has its own metadata in `identities/zenodo.json
 1. **Sign in to Zenodo** at zenodo.org with the GitHub account that owns `SharpMeow/GENChase`.
 2. **Switch on the repository** in Zenodo's GitHub settings page (under your account menu). Zenodo
    archives only releases published after the switch is on; v0.6.2 and earlier are not archived.
+   The integration works with public repositories only, so a release made while the repository is
+   private is not archived ([COMMITMENTS.md](COMMITMENTS.md) lists the other costs of going private).
 3. **Prepare the release in a pull request.** In `CITATION.cff`, set `version` to the tag you are
    about to create and `date-released` to the release day. Reread the description in
    `.zenodo.json`. Run `node tools/build.js --check`, `node tools/science.js` and
    `node tools/lint.js`; the release workflow runs all three and stops if any fails. Merge.
-4. **Make the release** with the "Publish offline studio" workflow (Actions, run on `main`, version
-   `vX.Y.Z`). It needs a green `check` run on that commit.
+4. **Make the release.** Once your signing key is set up ([SIGNING.md](SIGNING.md)), sign the tag
+   on `main` first: `node tools/tag-release.js vX.Y.Z`, then `git push origin vX.Y.Z`. Then run the
+   "Publish offline studio" workflow (Actions, run on `main`, version `vX.Y.Z`). It needs a green
+   `check` run on that commit, verifies the signed tag and releases from it. Until
+   `identities/allowed_signers` lists a key, the workflow can still make an unsigned tag itself.
 5. **Copy the DOIs.** Zenodo's GitHub page lists the new record. It shows a DOI for this version and
    a concept DOI that always resolves to the latest version. Check that the record's title, type
    (Software), license and description are the ones in `.zenodo.json`.
