@@ -20,7 +20,7 @@ const EXPERIMENTS = {
 };
 function ids(root) { return JSON.parse(fs.readFileSync(path.join(root, 'techniques.json'), 'utf8')).techniques.map(t => t.id); }
 function command(root, input) {
-  if (!input || Object.keys(input).some(k => !['workspace', 'mode', 'id', 'slug', 'n', 'samples', 'grid', 'steps', 'alpha', 'start', 'power', 'machineSlug', 'shareAutomatically'].includes(k))) throw Error('Unsupported job settings.');
+  if (!input || Object.keys(input).some(k => !['workspace', 'mode', 'id', 'slug', 'n', 'samples', 'grid', 'steps', 'alpha', 'start', 'threads', 'to', 'power', 'machineSlug', 'shareAutomatically'].includes(k))) throw Error('Unsupported job settings.');
   if (input.shareAutomatically !== undefined && typeof input.shareAutomatically !== 'boolean') throw Error('Automatic sharing must be on or off.');
   const machineSlug = input.machineSlug || 'm1pro';
   if (typeof machineSlug !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(machineSlug) || machineSlug.length > 32) throw Error('Use a pseudonymous machine slug of lowercase letters, numbers and single hyphens, up to 32 characters.');
@@ -44,17 +44,31 @@ function command(root, input) {
     const args = ['apps/validate/native.js', '--grid', String(grid), '--steps', String(steps)];
     return { title: 'Apple GPU periodic wave workload', executable: process.execPath, args, display: 'node ' + args.join(' '), input: { ...input, grid, steps } };
   }
+  // Three decimals at most, tolerant of binary rounding (1.005 * 1000 is not exactly 1005).
+  const threeDecimals = v => Math.abs(v * 1000 - Math.round(v * 1000)) < 1e-6;
+  if (input.mode === 'vortex-threshold') {
+    // Follow a recorded minimum in alpha and bracket where it first collapses without rotating.
+    const alpha = Number(input.alpha ?? 1), n = Number(input.n ?? 16), to = Number(input.to ?? 3);
+    for (const [v, name] of [[alpha, 'alpha'], [to, 'end alpha']]) if (!Number.isFinite(v) || v <= -2 || v > 3 || !threeDecimals(v)) throw Error(`The ${name} must lie in (-2, 3], with at most three decimals.`);
+    if (to === alpha) throw Error('The end alpha must differ from the start.');
+    if (!Number.isInteger(n) || n < 3 || n > 128) throw Error('Vortex count must be 3 through 128.');
+    const args = ['tools/vortex-collapse-search.js', '--continue', '--alpha', String(alpha), '--n', String(n), '--to', String(to)];
+    return { title: 'Vortex collapse: zero-winding threshold', executable: process.execPath, args, display: 'node ' + args.join(' '), input: { ...input, alpha, n, to } };
+  }
   if (input.mode === 'vortex-collapse' || input.mode === 'vortex-grow') {
     // Open problems on minimal winding: alpha-model family, N vortices, a block of deterministic seeds. Growth
     // continues the deepest recorded family one vortex at a time up to N, running the seed block at every step.
     const grow = input.mode === 'vortex-grow', alpha = Number(input.alpha ?? 0), n = Number(input.n ?? (grow ? 12 : 5)), samples = Number(input.samples ?? (grow ? 10 : 50));
     const start = input.start === undefined || input.start === '' ? crypto.randomInt(0, 2 ** 31 - 1e6) : Number(input.start);
-    if (!Number.isFinite(alpha) || alpha <= -2 || alpha > 3 || Math.round(alpha * 1000) !== alpha * 1000) throw Error('Kernel exponent alpha must lie in (-2, 3], with at most three decimals.');
-    if (!Number.isInteger(n) || n < (grow ? 5 : 3) || n > (grow ? 64 : 16)) throw Error(grow ? 'Growth target must be 5 through 64 vortices.' : 'Vortex count must be 3 through 16.');
+    // Worker threads: results do not depend on the count, only the speed and the heat do.
+    const os = require('node:os'), cores = (os.availableParallelism ? os.availableParallelism() : os.cpus().length) || 1, threads = Number(input.threads ?? 1);
+    if (!Number.isInteger(threads) || threads < 1 || threads > Math.min(64, cores)) throw Error(`Threads must be a whole number from 1 to ${Math.min(64, cores)}.`);
+    if (!Number.isFinite(alpha) || alpha <= -2 || alpha > 3 || !threeDecimals(alpha)) throw Error('Kernel exponent alpha must lie in (-2, 3], with at most three decimals.');
+    if (!Number.isInteger(n) || n < (grow ? 5 : 3) || n > (grow ? 128 : 16)) throw Error(grow ? 'Growth target must be 5 through 128 vortices.' : 'Vortex count must be 3 through 16.');
     if (!Number.isInteger(samples) || samples < 1 || samples > 100000) throw Error('Seeds per job must be 1 through 100,000.');
     if (!Number.isInteger(start) || start < 0 || start + samples > 2 ** 31) throw Error('Seed block start must be a non-negative integer below 2^31.');
-    const args = ['tools/vortex-collapse-search.js', ...(grow ? ['--grow'] : []), '--alpha', String(alpha), '--n', String(n), '--start', String(start), '--count', String(samples)];
-    return { title: grow ? 'Vortex collapse: grow the deepest family' : 'Vortex collapse: least winding search', executable: process.execPath, args, display: 'node ' + args.join(' '), input: { ...input, alpha, n, samples, start } };
+    const args = ['tools/vortex-collapse-search.js', ...(grow ? ['--grow'] : []), '--alpha', String(alpha), '--n', String(n), '--start', String(start), '--count', String(samples), '--threads', String(threads)];
+    return { title: grow ? 'Vortex collapse: grow the deepest family' : 'Vortex collapse: least winding search', executable: process.execPath, args, display: 'node ' + args.join(' '), input: { ...input, alpha, n, samples, start, threads } };
   }
   if (EXPERIMENTS[input.mode]) {
     const [title, script] = EXPERIMENTS[input.mode];

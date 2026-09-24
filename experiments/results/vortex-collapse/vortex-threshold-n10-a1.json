@@ -1,0 +1,290 @@
+{
+ "experiment": "vortex-threshold",
+ "protocol": 2,
+ "N": 10,
+ "fromAlpha": 1,
+ "toAlpha": 3,
+ "source": "leaderboard alpha 1, N 10, P 0.29509631175036627",
+ "step": 0.05,
+ "tol": 0.0001,
+ "sourceSha256": "72f913d048bc0373a74a3031761b6ffae0ba572da057b147502b8bbd30bfa34c",
+ "commit": "e3ad739ac606d8ef1e72fcd42c7c15bfe5b991c1",
+ "machine": "maintainer-cloud",
+ "path": [
+  {
+   "alpha": 1,
+   "P": 0.29509631175036627,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.05,
+   "P": 0.2802518288568419,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.1,
+   "P": 0.26561296897736286,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.1500000000000001,
+   "P": 0.25116684048443005,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.2000000000000002,
+   "P": 0.23690092521938716,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.2500000000000002,
+   "P": 0.22280302701459562,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.3000000000000003,
+   "P": 0.20886122430045648,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.3500000000000003,
+   "P": 0.19506382621490384,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.4000000000000004,
+   "P": 0.1813993316787463,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.4500000000000004,
+   "P": 0.1678563909386087,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.5000000000000004,
+   "P": 0.15442376911201347,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.5500000000000005,
+   "P": 0.1410903112963626,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.6000000000000005,
+   "P": 0.1278449088256276,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.6500000000000006,
+   "P": 0.11467646627566874,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.7000000000000006,
+   "P": 0.10157386883133655,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.7500000000000007,
+   "P": 0.08852594963566493,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.8000000000000007,
+   "P": 0.0755214567439965,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.8500000000000008,
+   "P": 0.06254901930209822,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.9000000000000008,
+   "P": 0.04959711255881428,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.9500000000000008,
+   "P": 0.036654021308028174,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 2.000000000000001,
+   "P": 0.023707801332181856,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 2.0500000000000007,
+   "P": 0.010746238388707375,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 2.1000000000000005,
+   "P": 6.237441930933434e-13,
+   "status": "zero-winding"
+  }
+ ],
+ "end": null,
+ "threshold": {
+  "positive": {
+   "alpha": 2.0913085937500004,
+   "P": 0.00001729295223997795,
+   "status": "certified-local-minimum",
+   "config": {
+    "z": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      0
+     ],
+     [
+      1.3770076685660144,
+      -0.09192981194790201
+     ],
+     [
+      0.2853183757348677,
+      -0.8145041928892389
+     ],
+     [
+      0.3380648478692582,
+      0.0665954603770301
+     ],
+     [
+      0.6653943813224055,
+      0.05849289384467487
+     ],
+     [
+      1.8836753813955665,
+      -0.19682310810265358
+     ],
+     [
+      3.5367819551194124,
+      -0.028312675914765006
+     ],
+     [
+      -0.3584636831736773,
+      -0.1867935115526342
+     ],
+     [
+      -0.7414099873054356,
+      -0.6208712332631846
+     ]
+    ],
+    "G": [
+     1,
+     0.8108730230450087,
+     0.9616441392769592,
+     -9.776405441025332,
+     0.8418222357052815,
+     0.7849410900703602,
+     1.4960879458035208,
+     33.23064286035275,
+     1.3719320208469121,
+     2.579765371689687
+    ],
+    "kappa": [
+     -0.30769939201945357,
+     0.000010642061780925327
+    ]
+   },
+   "soscRatio": 0.00010901501534590239,
+   "unstableShapeModes": 7
+  },
+  "zero": {
+   "alpha": 2.0914062500000004,
+   "P": 2.837969004835463e-16,
+   "status": "zero-winding",
+   "config": {
+    "z": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      0
+     ],
+     [
+      1.3775183726551041,
+      -0.09183127796672003
+     ],
+     [
+      0.28475784118989783,
+      -0.8133903596851885
+     ],
+     [
+      0.33796470840336607,
+      0.06660387670154264
+     ],
+     [
+      0.665239771334062,
+      0.058485984615077806
+     ],
+     [
+      1.8848662952458757,
+      -0.1959448180257028
+     ],
+     [
+      3.5368135451187763,
+      -0.020242602165320797
+     ],
+     [
+      -0.35829052842427894,
+      -0.1869138519199254
+     ],
+     [
+      -0.7404509293667577,
+      -0.6211050770756835
+     ]
+    ],
+    "G": [
+     1,
+     0.8117648127621939,
+     0.9627522848378359,
+     -9.758042612074014,
+     0.8416467897019327,
+     0.7846497214594084,
+     1.4942435355544037,
+     33.11097979619352,
+     1.3726741248465488,
+     2.575366681421954
+    ],
+    "kappa": [
+     -0.30866220510805437,
+     1.7519475421216493e-16
+    ]
+   },
+   "soscRatio": -1.817717181151281e-10,
+   "unstableShapeModes": 7
+  },
+  "width": 0.00009765624999991118,
+  "converged": true,
+  "certified": true
+ },
+ "compute": {
+  "wallSeconds": 0.722,
+  "cpuSeconds": 0.881794,
+  "energy": {
+   "method": "estimate: CPU seconds times 1 to 20 W per busy core; not measured on this machine",
+   "wattHoursLow": 0.0002449427777777778,
+   "wattHoursHigh": 0.004898855555555555
+  }
+ },
+ "runtime": {
+  "cpuModel": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+  "logicalCores": 4,
+  "memoryGiB": 15.7,
+  "os": "Linux",
+  "osRelease": "6.18.44-fc-v37",
+  "arch": "x64",
+  "node": "v22.22.2",
+  "v8": "12.4.254.21-node.39"
+ },
+ "scope": "Continuation of one certified branch. The zero-winding threshold is an upper bound on the least alpha at which N vortices can collapse without rotating; other branches may reach zero at smaller alpha. Numerical, not a proof."
+}
