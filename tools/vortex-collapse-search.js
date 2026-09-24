@@ -640,6 +640,9 @@ async function continueAlpha(opt) {
   assert(config, 'No certified minimum to continue from.');
   const to = opt.to, step = opt.step || 0.05, tol = opt.tol || 1e-4, dir = Math.sign(to - a0), t0 = Date.now(), c0 = process.cpuUsage();
   assert(Number.isFinite(to) && to > -2 && to <= 3 && dir !== 0, '--to must lie in (-2, 3] and differ from the start.');
+  // The bracket follows P itself: a point whose certificate fails still counts on the side its P puts it,
+  // so an uncertified point cannot hide the crossing. Certification is then required of both ends.
+  const zero = r => r.P < ZERO_WINDING;
   let cur = atAlpha(N, a0, fromConfig(model(N, a0), config)), alpha = a0, h = step; const path_ = [];
   assert(cur.x, 'The starting minimum could not be re-polished.');
   path_.push({ alpha, P: cur.P, status: cur.status });
@@ -649,26 +652,26 @@ async function continueAlpha(opt) {
     if (!got.x) { if (h > step / 64) { h /= 2; continue; } end = { alpha: next, lost: got.lost }; break; }
     path_.push({ alpha: next, P: got.P, status: got.status });
     console.log('GENCHASE_PROGRESS ' + JSON.stringify({ stage: 'search', message: `N ${N}: alpha ${next.toFixed(4)}, P ${got.P.toPrecision(6)}` }));
-    if ((got.status === 'zero-winding') !== (cur.status === 'zero-winding')) { bracket = { a: alpha, xa: cur, b: next, xb: got }; break; }
+    if (zero(got) !== zero(cur)) { bracket = { a: alpha, xa: cur, b: next, xb: got }; break; }
     alpha = next; cur = got; h = Math.min(step, h * 2);
   }
   // Bisect the crossing until the bracket is narrower than tol, always restarting from the positive-P side.
   if (bracket) {
-    let { a, xa, b, xb } = bracket; const aZero = xa.status === 'zero-winding';
+    let { a, xa, b, xb } = bracket; const aZero = zero(xa);
     while (Math.abs(b - a) > tol) {
       const mid = (a + b) / 2;
       let got = atAlpha(N, mid, (aZero ? xb : xa).x);
       if (!got.x) got = atAlpha(N, mid, (aZero ? xa : xb).x);
       if (!got.x) break;
-      if ((got.status === 'zero-winding') === aZero) { a = mid; xa = got; } else { b = mid; xb = got; }
+      if (zero(got) === aZero) { a = mid; xa = got; } else { b = mid; xb = got; }
     }
     bracket = { a, xa, b, xb };
   }
   const side = r => r && { alpha: null, P: r.P, status: r.status, config: configOf(r.mdl, r.x), soscRatio: r.so.soscRatio, unstableShapeModes: r.cert.stability.unstableShapeModes };
   let threshold = null;
   if (bracket) {
-    const lowSide = bracket.xa.status === 'zero-winding' ? { at: bracket.b, r: bracket.xb } : { at: bracket.a, r: bracket.xa };
-    const zeroSide = bracket.xa.status === 'zero-winding' ? { at: bracket.a, r: bracket.xa } : { at: bracket.b, r: bracket.xb };
+    const lowSide = zero(bracket.xa) ? { at: bracket.b, r: bracket.xb } : { at: bracket.a, r: bracket.xa };
+    const zeroSide = zero(bracket.xa) ? { at: bracket.a, r: bracket.xa } : { at: bracket.b, r: bracket.xb };
     threshold = { positive: { ...side(lowSide.r), alpha: lowSide.at }, zero: { ...side(zeroSide.r), alpha: zeroSide.at }, width: Math.abs(bracket.b - bracket.a),
       converged: Math.abs(bracket.b - bracket.a) <= tol + 1e-12,
       certified: lowSide.r.status === 'certified-local-minimum' && zeroSide.r.status === 'zero-winding' && Math.abs(bracket.b - bracket.a) <= tol + 1e-12 };
