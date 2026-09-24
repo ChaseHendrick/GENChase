@@ -189,10 +189,15 @@ Copies supplied by the owner, not committed.
   - A Jacobi and Lie–Poisson reduction removes translations and rotations. At Γ = (2/3, 2/3, −1/3) with zero angular impulse, collapsing triangles are rays through the triple-collision point (Fig. 5.6).
   - The reduction removes the rotation, so P cannot appear. No rates, bounds or rings. **DOES NOT KILL.**
   - Context only; not cited. Readers note that their Eq. (5.1) and a sign convention are internally inconsistent as printed.
+- **Kudela 2021 (Energies 14, 943, open access, CC BY), full text layer read; figures not viewed.** The owner supplied it as a free stand-in for the paywalled Kudela 2014.
+  - It restates, citing his two 2014 papers (J. Nonlinear Sci. and Fluid Dyn. Res. 46, 031414) and Demina–Kudryashov 2014, the self-similar solution z_k(t) = √(1 − t/T_c) e^{−iλ_i(0) T_c ln(1 − t/T_c)} z_k(0) with T_c = −1/(2λ_r(0)) (Eqs. 14–16). That is a logarithmic spiral whose coefficient λ_i(0)T_c is ±P, but it is never named, bounded or minimized.
+  - The method, attributed to the 2014 papers: Newton's method from a Levenberg–Marquardt start finds collapse positions for given circulations. Stepping the Hamiltonian then traces collapse curves, with T_c plotted against H (Figs. 4b, 21b). The examples are n = 50 vortices with one, two or four strong vortices, forming vortex sheets that trap passive tracers.
+  - There is no minimization of P or of T_c, no bound, and no concentric rings. **DOES NOT KILL.**
+  - It lowers but does not remove the Kudela 2014 risk. It describes the 2014 method in a way consistent with no minimization of P, but that is indirect. The 2026-09-20 entries say, from summaries, that Kudela 2014 has collapse-time minima; nothing in the 2021 paper shows one.
 - **Still unread:**
   - Demina–Kudryashov 2014: the main risk, for the rings.
   - Tavantzis–Ting 1988 and Aref 1979: abstracts only.
-  - Kudela 2014: summaries only.
+  - Kudela 2014 (J. Nonlinear Sci.; also Fluid Dyn. Res. 46, 031414): summaries, plus his 2021 restatement.
 
 ## Do this, do not do that
 
