@@ -143,7 +143,7 @@ The same data in machine-readable form is [`techniques.json`](techniques.json). 
 
 ## Credits
 
-Each technique names the people whose work it implements. The vortex-collapse formulas are derived here from classical dynamics. The first specializes Gröbli’s 1877 spiral coefficient; priority of the optimized minima remains unconfirmed. See identities/NOVELTY-AUDIT.md and identities/ORIGINALITY-FOLLOWUP.md. Their plates mark miss if the measured claim is wrong. Miss is a grade on the numbers, not a crash. The statements are in IDENTITIES.md.
+Each technique names the people whose work it implements. The vortex-collapse formulas are derived here from classical dynamics. The first specializes Gröbli’s 1877 spiral coefficient and is the ratio of the rates in Kimura (1987), Eq. (4.4); priority of the optimized minima remains unconfirmed. See identities/NOVELTY-AUDIT.md and identities/ORIGINALITY-FOLLOWUP.md. Their plates mark miss if the measured claim is wrong. Miss is a grade on the numbers, not a crash. The statements are in IDENTITIES.md.
 
 **Artificial Life**. Lenia: Bert Wang-Chak Chan, 2018-19. The discrete rules go back to John Conway's Game of Life, 1970, and Stanislaw Ulam and John von Neumann's cellular automata in the 1940s.
 
