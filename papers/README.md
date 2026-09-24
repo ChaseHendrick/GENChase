@@ -16,7 +16,9 @@ software paper are listed there too (they live in `identities/` and `paper/`).
 This repository may be private, so a paper never sends readers here. When `papers.json` marks a paper
 `ready`, the **publish papers** workflow copies its folder, without `notes/` and `submission/`, to its
 own public repository, adds a LICENSE, a CITATION.cff and a .zenodo.json, and locks that repository so
-only its owner can change it. A release there gives the paper's programs and data a Zenodo DOI.
+only its owner can change it. You can edit the public repository directly as well: the workflow merges
+its updates and never overwrites your edits there, and `sh tools/paper-pull.sh <id>` brings those edits
+back here. A release there gives the paper's programs and data a Zenodo DOI.
 [docs/PUBLISHING-PAPERS.md](../docs/PUBLISHING-PAPERS.md) is the runbook.
 
 | Command | What it does |
@@ -25,6 +27,7 @@ only its owner can change it. A release there gives the paper's programs and dat
 | `node tools/paper-check.js` | Checks every paper: titles, page counts, references, stray email addresses, and whether it can go public |
 | `node tools/paper-sync.js --check <id>` | Stages the public repository in a scratch folder and lists anything that points back here |
 | `sh tools/arxiv-bundle.sh <id>` | Writes the arXiv upload, the LaTeX source and its figures, outside the repository |
+| `sh tools/paper-pull.sh <id>` | Brings edits made directly in the public repository back into `papers/<id>/` |
 
 The manuscripts carry the author's contact address, `chasewhendrick@gmail.com`; `paper-check` refuses
 any other address in a paper's files. Manuscript text is Copyright (c) 2026 Chase Hendrick, all rights
