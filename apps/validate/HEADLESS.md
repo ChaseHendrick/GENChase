@@ -32,6 +32,7 @@ Then choose work to contribute:
 | Verify and run a small Apple GPU wave workload | `npm run validator:headless -- --mode metal --grid 32 --steps 1000 --machine m1pro` |
 | Explore the existing polygon candidate adapter | `npm run validator:headless -- --mode derive --machine m1pro` |
 | Search an open problem: least-winding vortex collapse ([protocol](../../experiments/VORTEX-COLLAPSE.md)) | `npm run validator:headless -- --mode vortex-collapse --alpha 0 --n 7 --samples 200 --machine m1pro` |
+| Grow the deepest vortex family toward many vortices | `npm run validator:headless -- --mode vortex-grow --alpha 0 --n 30 --samples 10 --machine m1pro` |
 
 Witness collection records what the module actually exposes. A missing witness is missing evidence, not a passing result. An observed witness pass still needs its scientific assumptions, independence and convergence reviewed. The polygon adapter can recover a known formula and never establishes originality by itself.
 

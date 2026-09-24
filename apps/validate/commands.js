@@ -44,16 +44,17 @@ function command(root, input) {
     const args = ['apps/validate/native.js', '--grid', String(grid), '--steps', String(steps)];
     return { title: 'Apple GPU periodic wave workload', executable: process.execPath, args, display: 'node ' + args.join(' '), input: { ...input, grid, steps } };
   }
-  if (input.mode === 'vortex-collapse') {
-    // Open problems on minimal winding: alpha-model family, N vortices, a block of deterministic seeds.
-    const alpha = Number(input.alpha ?? 0), n = Number(input.n ?? 5), samples = Number(input.samples ?? 50);
+  if (input.mode === 'vortex-collapse' || input.mode === 'vortex-grow') {
+    // Open problems on minimal winding: alpha-model family, N vortices, a block of deterministic seeds. Growth
+    // continues the deepest recorded family one vortex at a time up to N, running the seed block at every step.
+    const grow = input.mode === 'vortex-grow', alpha = Number(input.alpha ?? 0), n = Number(input.n ?? (grow ? 12 : 5)), samples = Number(input.samples ?? (grow ? 10 : 50));
     const start = input.start === undefined || input.start === '' ? crypto.randomInt(0, 2 ** 31 - 1e6) : Number(input.start);
     if (!Number.isFinite(alpha) || alpha <= -2 || alpha > 3 || Math.round(alpha * 1000) !== alpha * 1000) throw Error('Kernel exponent alpha must lie in (-2, 3], with at most three decimals.');
-    if (!Number.isInteger(n) || n < 3 || n > 16) throw Error('Vortex count must be 3 through 16.');
+    if (!Number.isInteger(n) || n < (grow ? 5 : 3) || n > (grow ? 64 : 16)) throw Error(grow ? 'Growth target must be 5 through 64 vortices.' : 'Vortex count must be 3 through 16.');
     if (!Number.isInteger(samples) || samples < 1 || samples > 100000) throw Error('Seeds per job must be 1 through 100,000.');
     if (!Number.isInteger(start) || start < 0 || start + samples > 2 ** 31) throw Error('Seed block start must be a non-negative integer below 2^31.');
-    const args = ['tools/vortex-collapse-search.js', '--alpha', String(alpha), '--n', String(n), '--start', String(start), '--count', String(samples)];
-    return { title: 'Vortex collapse: least winding search', executable: process.execPath, args, display: 'node ' + args.join(' '), input: { ...input, alpha, n, samples, start } };
+    const args = ['tools/vortex-collapse-search.js', ...(grow ? ['--grow'] : []), '--alpha', String(alpha), '--n', String(n), '--start', String(start), '--count', String(samples)];
+    return { title: grow ? 'Vortex collapse: grow the deepest family' : 'Vortex collapse: least winding search', executable: process.execPath, args, display: 'node ' + args.join(' '), input: { ...input, alpha, n, samples, start } };
   }
   if (EXPERIMENTS[input.mode]) {
     const [title, script] = EXPERIMENTS[input.mode];

@@ -1,6 +1,7 @@
 # Least-winding vortex collapse: a volunteer search
 
-**Open questions. Contributions of computer time are welcome. No confirmed novel finding.**
+**Open questions. Contributions of computer time are welcome. Every value here is a numerical candidate with
+priority unconfirmed; none has been peer reviewed.**
 
 Point vortices in the α-model family move by
 
@@ -25,7 +26,32 @@ vortices the answer is not known here, and that is what this search is for.
    certified three-vortex collapse below `√(3+α)/(2+α)` would disprove it for that α. The job flags
    such a result automatically.
 4. **What are the least windings for N ≥ 4 when α ≠ 0?** The SQG and α = 2 values fall faster with N
-   than the Euler ones.
+   than the Euler ones. **For α = 2 the search reached zero** (next section). The questions left are
+   whether SQG and the Euler case also reach zero, and at which α zero first becomes possible.
+
+## A collapse that does not turn
+
+At α = 2, growing the deepest family gives P = 0.0676 at N = 9 and 0.0237 at N = 10. At N = 11, eleven of
+twelve seeds reach **P = 0 exactly**: a self-similar collapse in which every vortex moves straight toward
+the centre and the cluster shrinks without rotating. Such points were found by
+`--grow --alpha 2 --n 11 --start 0 --count 12`, and the file is in
+[results/vortex-collapse/](results/vortex-collapse/).
+
+- **In binary64,** the point passes every test of the certificate except the strict second-order test.
+  That test cannot apply, because zero-winding collapses form a family (Im κ = 0 cuts out a submanifold),
+  so the Hessian is singular along it. Since P ≥ 0, such a point is a global minimum. The job records it
+  with the status `zero-winding`.
+- **At 60 digits,** `python3 tools/vortex-precision-check.py` is a separate mpmath implementation of
+  the model. With κ held exactly real, it Newton-polishes the point from its binary64 positions and
+  circulations and converges quadratically:
+  - similarity residual 2 × 10⁻⁶⁰;
+  - angular impulse and energy vanish to about 10⁻⁶¹;
+  - the configuration is not degenerate: the closest pair is 7% of the cluster's size, and the
+    circulations stay within a factor of 40 of one another.
+
+This is strong numerical evidence that zero-winding collapse exists for 11 vortices at α = 2, and so that
+the least winding for α = 2 is 0 from N = 11 on. It is not an interval-arithmetic proof. Whether zero
+winding already occurs at α = 2 for fewer vortices, and for which α it first appears, are open.
 
 ## What one job does
 
@@ -77,10 +103,13 @@ shrinks to size r, where `k = −Re μ / Re κ`. Six exponents are fixed by symm
 The rescaled flow is Hamiltonian apart from a uniform dilation, so every other exponent has a partner
 with k + k′ = 2.
 
-Every certified minimum so far has all 2N − 6 genuine shape modes real and hyperbolic, with N − 3 of
-them unstable. The largest exponent grows quickly with N and α: about 12 for four Euler vortices and
-about 68 for eight SQG vortices. Such fast growth is also why direct integration can only follow a
-collapse over a limited shrink. The job integrates only as far as the fastest mode can amplify
+Because the exponents pair as k + k′ = 2, at least one member of each pair is positive, so every
+self-similar collapse has at least N − 3 unstable shape modes. A pair with both exponents between 0 and
+2 adds a second unstable mode. Every certified minimum recorded so far has no exponent at zero. The
+least minimum of each case has exactly N − 3 unstable modes, except Euler N = 10, α = 2 at N = 9 and 10,
+and SQG N = 10, where the least minimum found has one pair in (0, 2). The largest exponent is large: about
+12 for four Euler vortices and 130 for eight vortices at α = 2. Such fast growth is also why direct
+integration can only follow a collapse over a limited shrink. The job integrates only as far as the fastest mode can amplify
 round-off by 10⁴, and never below a shrink of one half.
 
 Iwayama and Yajima (J. Phys. Soc. Jpn. 92, 084401, 2023) proved that collapsing
@@ -97,18 +126,36 @@ npm run validator:headless -- --mode vortex-collapse --alpha 1 --n 6 --samples 2
 ```
 
 Leave out `--start` to get a random block; the block is recorded in the job so that `--resume`
-continues it. The local app (`npm run validator`) has the same job under **Run experiments → Open
-problem: least-winding vortex collapse**.
+continues it. The local app (`npm run validator`) has the same jobs under **Run experiments**.
+
+**Growing a family.** Random starts rarely find the deep basins beyond eight vortices: at α = 2 they
+found 0.261 at N = 9, and growth found 0.0676. The growth job starts from the lowest recorded minimum
+below the target and adds one vortex at a time. It places each new vortex just outside one of the three
+outermost ones, with a weaker circulation, then descends and certifies. The best certified child
+becomes the next parent:
+
+```sh
+npm run validator:headless -- --mode vortex-grow --alpha 0 --n 30 --samples 10 --machine lab-mac-2
+```
+
+Every step writes its own result file and checkpoint, and growth stops when a step certifies nothing
+or reaches zero winding. `--from file.json` on the command-line tool starts from a chosen minimum
+instead of the leaderboard.
+
+**Claiming a block** is optional. Random blocks rarely collide, but for a long run you can open a
+[Claim a seed block](https://github.com/SharpMeow/GENChase/issues/new?template=compute-block.yml)
+issue so others pick a different one. Deliberate reruns of a recorded block are welcome too, because
+their digests test reproducibility.
 
 | Question | Suggested job |
 |---|---|
-| 1. Euler lower bound | `--alpha 0 --n 7` up to `--n 16` |
+| 1. Euler lower bound | `--mode vortex-grow --alpha 0 --n 40`, or `--alpha 0 --n 7` up to `--n 16` |
 | 2. Four-vortex global minimum | `--alpha 0 --n 4 --samples 5000` |
 | 3. Three-vortex bound below −59/40 | `--alpha -1.6 --n 3`, `--alpha -1.8 --n 3`, `--alpha -1.95 --n 3` |
-| 4. Least winding for α ≠ 0 | `--alpha 1 --n 5` up to `--n 12`, and `--alpha 2` or `--alpha 0.5` |
+| 4. Least winding for α ≠ 0 | `--mode vortex-grow --alpha 1 --n 40`; `--mode vortex-grow --alpha 1.5 --n 20` and other α between 1 and 2, to find where zero winding first appears |
 
-A job writes `run/vortex-collapse/vortex-collapse-a<α>-n<N>-s<start>-c<count>.json`, which Git
-ignores, and places a copy in its evidence folder. `--share` submits that file through your GitHub
+A job writes `run/vortex-collapse/vortex-collapse-a<α>-n<N>-s<start>-c<count>.json` (growth writes
+`vortex-grow-…` for each step), which Git ignores, and places a copy in its evidence folder. `--share` submits that file through your GitHub
 account, and HEADLESS.md explains the manual route. Share every result, including blocks that found
 nothing new; basin counts are evidence too.
 
@@ -136,6 +183,16 @@ runs every certificate again. A claimed value that does not survive, or that mov
 is rejected. `--write` records the survivors in
 [results/vortex-collapse-leaderboard.json](results/vortex-collapse-leaderboard.json).
 
+This happens automatically. The `volunteer results` workflow re-verifies every vortex result file in a
+pull request, using the verifier from the base branch so that a pull request cannot pass by editing it,
+and fails if any claimed minimum is rejected. After a merge the same workflow runs `--refresh` and
+`node tools/compute-ledger.js`, and opens a pull request that updates the table below and
+[COMPUTE.md](../COMPUTE.md).
+
+For a second opinion at high precision, `python3 tools/vortex-precision-check.py <files> --dps 60`
+Newton-polishes each certified minimum in mpmath from its positions and circulations alone. It reports
+the residual, P and the two conservation laws.
+
 `node tools/vortex-collapse-search.js --controls`, which runs in CI in a few seconds, checks the
 following:
 
@@ -150,16 +207,43 @@ following:
 
 ## Recorded values
 
-Certified local minima from the maintainers' first sweep. The seed counts are the seeds whose run
-ended at that minimum. The reference column comes from an independent Python search (SciPy SLSQP with
-an 80-digit KKT polish at N = 4).
+Certified local minima from every recorded file, rebuilt by `node tools/vortex-collapse-search.js --refresh`.
+The first files are the maintainers' sweep in [results/vortex-collapse/](results/vortex-collapse/), and
+submissions are added after they merge. "Seeds ending there" counts the seeds whose run ended at the least
+minimum, out of every seed recorded for that case. The reference column comes from an independent Python search
+(SciPy SLSQP, with an 80-digit KKT polish at N = 4).
 
-RESULTS_TABLE
+<!-- leaderboard:start -->
+| α | N | Least certified P | Seeds ending there | Distinct certified minima | Largest shape exponent k | Unstable shape modes | Independent reference |
+|---:|---:|---:|---:|---|---:|---:|---:|
+| 0 | 4 | 0.7978967839 | 79 of 80 | 1 (0.7978967839) | 11.85 | 1 | 0.7978967838 |
+| 0 | 5 | 0.7448144570 | 42 of 80 | 1 (0.7448144570) | 17.82 | 2 | 0.7448144570 |
+| 0 | 6 | 0.7136801485 | 20 of 80 | 2 (0.7136801485, 0.8022675725) | 23.24 | 3 | 0.7136801485 |
+| 0 | 7 | 0.6936617908 | 6 of 40 | 3 (0.6936617908, 0.7344649418, 0.7563344056) | 28.53 | 4 |  |
+| 0 | 8 | 0.6797704208 | 3 of 40 | 3 (0.6797704208, 0.6944114725, 0.7287092159) | 33.83 | 5 |  |
+| 0 | 9 | 0.6695811206 | 1 of 40 | 1 (0.6695811206) | 39.14 | 6 |  |
+| 0 | 10 | 0.6377055919 | 2 of 40 | 2 (0.6377055919, 0.6617926944) | 15.37 | 8 |  |
+| 1 | 4 | 0.5499151189 | 77 of 80 | 1 (0.5499151189) | 12.77 | 1 | 0.5499151189 |
+| 1 | 5 | 0.4667708118 | 34 of 80 | 1 (0.4667708118) | 23.84 | 2 | 0.4667708118 |
+| 1 | 6 | 0.4121913837 | 18 of 80 | 1 (0.4121913837) | 36.34 | 3 |  |
+| 1 | 7 | 0.3724816694 | 6 of 40 | 2 (0.3724816694, 0.5002732127) | 51.02 | 4 |  |
+| 1 | 8 | 0.3415530821 | 1 of 40 | 2 (0.3415530821, 0.4473240201) | 68.00 | 5 |  |
+| 1 | 10 | 0.3708641612 | 1 of 40 | 1 (0.3708641612) | 27.10 | 8 |  |
+| 2 | 4 | 0.4116738600 | 78 of 80 | 1 (0.4116738600) | 15.26 | 1 | 0.4116738600 |
+| 2 | 5 | 0.3046288623 | 40 of 80 | 1 (0.3046288623) | 33.31 | 2 | 0.3046288623 |
+| 2 | 6 | 0.2280296027 | 21 of 80 | 1 (0.2280296027) | 57.17 | 3 |  |
+| 2 | 7 | 0.1669117663 | 5 of 40 | 2 (0.1669117663, 0.3765333370) | 89.24 | 4 |  |
+| 2 | 8 | 0.1145989729 | 1 of 40 | 2 (0.1145989729, 0.3130794153) | 130.46 | 5 |  |
+| 2 | 9 | 0.0675758057 | 9 of 52 | 3 (0.0675758057, 0.2611735311, 0.2631798720) | 181.99 | 6 |  |
+| 2 | 10 | 0.0237078013 | 7 of 52 | 2 (0.0237078013, 0.2190693120) | 245.26 | 7 |  |
+| 2 | 11 | 0.0000000000 | 11 of 12 | 1 (0.0000000000) | 258.15 | 8 |  |
+<!-- leaderboard:end -->
 
 ## Limitations
 
-- Binary64 arithmetic throughout. A certificate says that a nondegenerate strict local minimum lies
-  within numerical tolerance of the reported point. It is not interval arithmetic and not a proof.
+- The search and its certificate use binary64 throughout. A certificate says that a nondegenerate strict
+  local minimum, or a zero-winding collapse, lies within numerical tolerance of the reported point. The
+  optional mpmath check raises the precision, but neither is interval arithmetic or a proof.
 - A multistart search cannot show that a minimum is global. Basin counts measure how often random
   starts reach a minimum under this protocol, not the probability that a lower one exists.
 - Minima on the boundary of the manifold, where vortices collide or circulations diverge, are not

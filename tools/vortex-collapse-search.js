@@ -325,7 +325,8 @@ function certify(mdl, x, { wrongExponent = 0, wrongWinding = 1 } = {}) {
   const fx = run.y[2 * far] - zc[0], fy = run.y[2 * far + 1] - zc[1], r1 = Math.hypot(fx, fy);
   let dA = Math.atan2(fy, fx) - a0; turn = theta + Math.atan2(Math.sin(dA - theta), Math.cos(dA - theta));
   const measuredP = Math.abs(turn) / (2 * Math.abs(Math.log(r1 / r0)));
-  const ode = { shrink: lambda, time: T, steps: run.steps, shapeError: shape / (lambda * radius), measuredWinding: measuredP, windingError: Math.abs(measuredP - P) / P };
+  // Relative winding error, absolute below P = 1e-3 so that a zero-winding collapse is checked too.
+  const ode = { shrink: lambda, time: T, steps: run.steps, shapeError: shape / (lambda * radius), measuredWinding: measuredP, windingError: Math.abs(measuredP - P) / Math.max(P, 1e-3) };
   const g = geometry(mdl, x), fz = feasibility(res);
   const checks = { feasibility: fz < L.feasibility, ode: ode.shapeError < L.odeShape && ode.windingError < L.odeWinding,
     invariants: invariants.angularImpulse < L.invariant && invariants.energy < L.invariant && (invariants.centreOfVorticity === null || invariants.centreOfVorticity < L.center),
@@ -362,15 +363,49 @@ function searchSeed(alpha, N, seed) {
     if (pr.feasibility < 1e-12 && !degenerate(mdl, pr.x)) landed = pr.x;
   }
   if (!landed) return { seed, status: 'no-landing', attempts, ms: Date.now() - started };
-  const opt = minimize(mdl, landed), out = { seed, attempts, iterations: opt.iterations, P: Math.sqrt(opt.f), ms: 0 };
+  return classify(mdl, minimize(mdl, landed), { seed, attempts }, started);
+}
+function classify(mdl, opt, out, started) {
+  Object.assign(out, { iterations: opt.iterations, P: Math.sqrt(opt.f), ms: 0 });
   if (opt.status === 'degenerate') Object.assign(out, { status: 'degenerate', geometry: geometry(mdl, opt.x) });
   else if (opt.status === 'stalled') Object.assign(out, { status: 'stalled', geometry: geometry(mdl, opt.x) });
   else {
-    const so = secondOrder(mdl, opt.x), cert = certify(mdl, opt.x), ok = so.passed && Object.values(cert.checks).every(Boolean);
-    Object.assign(out, { status: ok ? 'certified-local-minimum' : 'unverified-stationary', secondOrder: so, certificate: cert });
+    const so = secondOrder(mdl, opt.x), cert = certify(mdl, opt.x);
+    Object.assign(out, { status: certifiedStatus(so, cert) || 'unverified-stationary', secondOrder: so, certificate: cert });
   }
   out.config = configOf(mdl, opt.x); out.ms = Date.now() - started;
   return out;
+}
+// P >= 0, so a collapse with no winding at all is a global minimum. Such collapses form a family (Im kappa = 0 cuts
+// out a submanifold), so the Hessian is singular along it and the strict second-order test cannot apply; every
+// other test still must pass.
+const ZERO_WINDING = 1e-12;
+function certifiedStatus(so, cert) {
+  if (!Object.values(cert.checks).every(Boolean)) return null;
+  if (so.passed) return 'certified-local-minimum';
+  if (cert.P < ZERO_WINDING && so.licq > PROTOCOL.limits.licq) return 'zero-winding';
+  return null;
+}
+const isCertified = r => r.status === 'certified-local-minimum' || r.status === 'zero-winding';
+// Family continuation: add one vortex beyond a certified N-vortex minimum and descend again. New vortices go just
+// outside one of the three outermost vortices, turned a little along the spiral, with a weaker circulation of either
+// sign. The one-arm and two-arm families of the research notes grow this way.
+const growLabel = (alpha, N, seed) => `vortex-collapse/v${PROTOCOL.version}/grow/alpha=${alpha}/N=${N}/seed=${seed}`;
+function growSeed(alpha, parent, seed) {
+  const N = parent.z.length + 1, mdl = model(N, alpha), small = model(N - 1, alpha), u = rng(growLabel(alpha, N, seed)), started = Date.now();
+  const xs = fromConfig(small, parent), { z, G, kappa } = small.unpack(xs), v0 = small.velocities(z, G, false).v[0], k2 = kappa[0] ** 2 + kappa[1] ** 2;
+  const zc = [z[0][0] - (v0[0] * kappa[0] + v0[1] * kappa[1]) / k2, z[0][1] - (v0[1] * kappa[0] - v0[0] * kappa[1]) / k2];
+  const outer = z.map((p, i) => [Math.hypot(p[0] - zc[0], p[1] - zc[1]), i]).sort((a, b) => b[0] - a[0]).slice(0, 3).map(q => q[1]);
+  let landed = null, attempts = 0;
+  for (; attempts < PROTOCOL.landingAttempts && !landed; attempts++) {
+    const k = outer[Math.floor(u() * outer.length)], s = 1.05 + 0.6 * u(), phi = (u() - 0.5) * 1.2, dx = z[k][0] - zc[0], dy = z[k][1] - zc[1];
+    const nz = [zc[0] + s * (dx * Math.cos(phi) - dy * Math.sin(phi)), zc[1] + s * (dx * Math.sin(phi) + dy * Math.cos(phi))];
+    const g = G[k] * (0.05 + 0.6 * u()) * (u() < 0.75 ? 1 : -1);
+    const pr = project(mdl, fromConfig(mdl, { z: [...z, nz], G: [...G, g] }), 200);
+    if (pr.feasibility < 1e-12 && !degenerate(mdl, pr.x)) landed = pr.x;
+  }
+  if (!landed) return { seed, status: 'no-landing', attempts, ms: Date.now() - started };
+  return classify(mdl, minimize(mdl, landed), { seed, attempts }, started);
 }
 const configOf = (mdl, x) => { const { z, G, kappa } = mdl.unpack(x); return { z, G, kappa }; };
 function fromConfig(mdl, config) {
@@ -389,13 +424,14 @@ function fromConfig(mdl, config) {
 }
 function distinct(results) {
   const minima = [];
-  for (const r of results.filter(r => r.status === 'certified-local-minimum').sort((a, b) => a.P - b.P)) {
+  for (const r of results.filter(isCertified).sort((a, b) => a.P - b.P)) {
     const hit = minima.find(m => Math.abs(m.P - r.P) < 1e-8 * Math.max(1, r.P));
     if (hit) { hit.basinSeeds++; continue; }
-    minima.push({ P: r.P, basinSeeds: 1, firstSeed: r.seed, soscRatio: r.secondOrder.soscRatio, config: r.config });
+    minima.push({ P: r.P, status: r.status, basinSeeds: 1, firstSeed: r.seed, soscRatio: r.secondOrder.soscRatio, config: r.config });
   }
   return minima;
 }
+const certifiedOf = rs => rs.filter(isCertified);
 const lowest = rs => { const v = rs.map(r => r.P).filter(Number.isFinite); return v.length ? Math.min(...v) : null; };
 function git(args) { const r = cp.spawnSync('git', args, { cwd: root, encoding: 'utf8' }); return r.status === 0 ? r.stdout.trim() : null; }
 function header(alpha, N) {
@@ -430,7 +466,7 @@ function margins(results) {
 }
 function computeSummary(results, wallSeconds, measuredJoules) {
   const cpuSeconds = results.reduce((a, r) => a + (r.cpuMs || 0), 0) / 1000, hours = cpuSeconds / 3600;
-  const tally = results.reduce((a, r) => (a[r.status] = (a[r.status] || 0) + 1, a), {}), certified = tally['certified-local-minimum'] || 0;
+  const tally = results.reduce((a, r) => (a[r.status] = (a[r.status] || 0) + 1, a), {}), certified = (tally['certified-local-minimum'] || 0) + (tally['zero-winding'] || 0);
   return { seeds: results.length, wallSeconds, cpuSeconds, cpuSecondsPerSeed: results.length ? cpuSeconds / results.length : null,
     utilization: wallSeconds > 0 ? Math.min(1, cpuSeconds / wallSeconds) : null, peakMemoryMiB: +(process.resourceUsage().maxRSS / 1024).toFixed(1),
     seedsPerCpuHour: hours > 0 ? results.length / hours : null, certifiedPerCpuHour: hours > 0 ? certified / hours : null,
@@ -438,9 +474,12 @@ function computeSummary(results, wallSeconds, measuredJoules) {
     energy: energy(cpuSeconds, measuredJoules ?? undefined) };
 }
 function run(opt) {
-  const { alpha, N, start, count } = opt, file = opt.out || defaultOut(alpha, N, start, count);
-  const jobDir = process.env.GENCHASE_JOB_DIR, checkpointFile = jobDir && path.join(jobDir, 'vortex-checkpoint.json');
-  const signature = crypto.createHash('sha256').update(fs.readFileSync(__filename)).update(JSON.stringify({ alpha, N, start, count })).digest('hex');
+  const { alpha, N, start, count } = opt;
+  return runBlock({ alpha, N, start, count, file: opt.out || defaultOut(alpha, N, start, count), seedFn: seed => searchSeed(alpha, N, seed), method: { kind: 'multistart' } });
+}
+function runBlock({ alpha, N, start, count, file, seedFn, method, checkpointName = 'vortex-checkpoint.json' }) {
+  const jobDir = process.env.GENCHASE_JOB_DIR, checkpointFile = jobDir && path.join(jobDir, checkpointName);
+  const signature = crypto.createHash('sha256').update(fs.readFileSync(__filename)).update(JSON.stringify({ alpha, N, start, count, method })).digest('hex');
   let results = [];
   if (checkpointFile && fs.existsSync(checkpointFile)) {
     try { const old = JSON.parse(fs.readFileSync(checkpointFile, 'utf8')); const { checksum, ...body } = old;
@@ -450,7 +489,7 @@ function run(opt) {
   }
   const t0 = Date.now(), e0 = energyCounter();
   for (let i = results.length; i < count; i++) {
-    const c0 = process.cpuUsage(), r = searchSeed(alpha, N, start + i), dc = process.cpuUsage(c0);
+    const c0 = process.cpuUsage(), r = seedFn(start + i), dc = process.cpuUsage(c0);
     r.cpuMs = (dc.user + dc.system) / 1000; results.push(r);
     console.log(`seed ${start + i}: ${r.status}${r.P ? ' P=' + r.P.toPrecision(12) : ''} (${r.ms} ms)`);
     console.log('GENCHASE_PROGRESS ' + JSON.stringify({ stage: 'search', message: `alpha ${alpha}, N ${N}: seed ${i + 1}/${count}`, done: i + 1, total: count, unit: 'seeds' }));
@@ -467,7 +506,7 @@ function run(opt) {
     // CPU time covers every seed, including seeds finished before a resume; wall time and energy cover this run only.
     compute: computeSummary(results, (Date.now() - t0) / 1000, energyBetween(e0, energyCounter())),
     certificateMargins: margins(results), resultsDigest: digest(results), runtime: runtimeCard() };
-  const out = { ...header(alpha, N), summary, minima, results };
+  const out = { ...header(alpha, N), method, summary, minima, results };
   fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, JSON.stringify(out, null, 1) + '\n');
   if (jobDir) { const dest = path.join(jobDir, 'outputs/validation/results', path.basename(file)); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.copyFileSync(file, dest); }
   console.log(JSON.stringify(summary, null, 2));
@@ -476,11 +515,52 @@ function run(opt) {
   if (summary.belowN3Infimum) { console.error('A three-vortex result below the proved infimum means a bug. Please report it.'); process.exitCode = 1; }
   return out;
 }
+// Grow a family from a certified parent: the best minimum in --from, or the leaderboard's best at the largest N below
+// the target. Each step runs its own seed block, and the best certified child becomes the next parent.
+function grow(opt) {
+  const { alpha, N: target, start, count } = opt;
+  let parent, parentN, source;
+  if (opt.from) { const d = JSON.parse(fs.readFileSync(opt.from, 'utf8')); assert(Number(d.alpha) === alpha, '--from has a different alpha.'); const m = (d.minima || [])[0]; assert(m?.config, '--from has no certified minimum.'); parent = m.config; parentN = Number(d.N); source = path.basename(opt.from); }
+  else {
+    const board = JSON.parse(fs.readFileSync(path.join(root, 'experiments/results/vortex-collapse-leaderboard.json'), 'utf8'));
+    // The deepest family below the target, not merely the nearest N: multistart misses deep basins at large N.
+    const e = board.entries.filter(q => q.alpha === alpha && q.N < target).sort((a, b) => a.best - b.best || b.N - a.N)[0]; assert(e, 'No leaderboard entry below N = ' + target + ' at alpha ' + alpha + '.');
+    parent = e.minima[0].config; parentN = e.N; source = `leaderboard alpha ${alpha}, N ${e.N}, P ${e.best}`;
+  }
+  assert(parentN < target && target <= 64, 'Growth target must exceed the parent and be at most 64.');
+  const outputs = [];
+  for (let N = parentN + 1; N <= target; N++) {
+    console.log(`Growing alpha ${alpha} from N ${N - 1} to N ${N} (${count} seeds).`);
+    const from = parent, out = runBlock({ alpha, N, start, count, file: opt.out && target === parentN + 1 ? opt.out : path.join(root, 'run/vortex-collapse', `vortex-grow-a${alpha}-n${N}-s${start}-c${count}.json`),
+      seedFn: seed => growSeed(alpha, from, seed), method: { kind: 'grow', parentN: N - 1, parentP: N - 1 === parentN ? null : outputs.at(-1).minima[0].P, source }, checkpointName: `vortex-grow-${N}-checkpoint.json` });
+    outputs.push(out);
+    if (!out.minima.length) { console.log('No certified minimum at N ' + N + '; the family stops here for this seed block.'); break; }
+    if (out.minima[0].P < ZERO_WINDING) { console.log('Zero winding reached at N ' + N + ': no collapse can wind less.'); break; }
+    parent = out.minima[0].config;
+  }
+  return outputs;
+}
+// Smaller copies for the repository: per-seed outcomes, winding and CPU time stay; per-seed certificates and
+// configurations are dropped. Certified minima keep their full configurations, which is all that review needs.
+function compact(data) { return { ...data, results: data.results.map(({ seed, status, P, cpuMs, iterations, attempts }) => ({ seed, status, P, cpuMs, iterations, attempts })) }; }
+function sources() {
+  const found = [], walk = dir => { if (!fs.existsSync(dir)) return; for (const e of fs.readdirSync(dir, { withFileTypes: true })) { const f = path.join(dir, e.name); if (e.isDirectory()) walk(f); else if (/^vortex-(collapse|grow)-.*\.json$/.test(e.name)) found.push(f); } };
+  walk(path.join(root, 'experiments/results/vortex-collapse')); walk(path.join(root, 'validation/submissions'));
+  return found.sort();
+}
+// Rebuild the leaderboard from every recorded file and put its table into the experiment page.
+function refresh() {
+  const board = verifyFiles(sources(), true), doc = path.join(root, 'experiments/VORTEX-COLLAPSE.md'), text = fs.readFileSync(doc, 'utf8');
+  const a = '<!-- leaderboard:start -->', b = '<!-- leaderboard:end -->', i = text.indexOf(a), j = text.indexOf(b);
+  assert(i >= 0 && j > i, 'Leaderboard markers missing from experiments/VORTEX-COLLAPSE.md.');
+  fs.writeFileSync(doc, text.slice(0, i + a.length) + '\n' + table(board) + '\n' + text.slice(j));
+  return board;
+}
 const defaultOut = (alpha, N, start, count) => path.join(root, 'run/vortex-collapse', `vortex-collapse-a${alpha}-n${N}-s${start}-c${count}.json`);
 
 // ---------- independent re-verification of submitted files ----------
 function verifyFiles(files, write) {
-  const board = {}, spent = { files: 0, seeds: 0, cpuSeconds: 0, wallSecondsWithoutCpuRecord: 0, measuredJoules: 0, filesMeasured: 0, machines: new Set() };
+  const board = {}, rejected = [], spent = { files: 0, seeds: 0, cpuSeconds: 0, wallSecondsWithoutCpuRecord: 0, measuredJoules: 0, filesMeasured: 0, machines: new Set() };
   for (const f of files) {
     const data = JSON.parse(fs.readFileSync(f, 'utf8'));
     assert(data.experiment === 'vortex-collapse-search', f + ' is not a vortex-collapse result.');
@@ -495,18 +575,18 @@ function verifyFiles(files, write) {
     const mdl = model(N, alpha), key = alpha + '/' + N;
     for (const m of data.minima || []) {
       // Trust only the submitted positions and circulations. Re-project, re-polish and re-certify here.
-      let x; try { x = project(mdl, fromConfig(mdl, m.config)).x; } catch (e) { console.log(`${f}: rejected configuration (${e.message})`); continue; }
-      const opt = minimize(mdl, x), so = secondOrder(mdl, opt.x), cert = certify(mdl, opt.x), ok = so.passed && Object.values(cert.checks).every(Boolean);
-      const drift = Math.abs(cert.P - m.P) / m.P;
+      let x; try { x = project(mdl, fromConfig(mdl, m.config)).x; } catch (e) { console.log(`${f}: rejected configuration (${e.message})`); rejected.push({ file: path.basename(f), P: m.P, reason: e.message }); continue; }
+      const opt = minimize(mdl, x), so = secondOrder(mdl, opt.x), cert = certify(mdl, opt.x), status = certifiedStatus(so, cert), ok = !!status;
+      const drift = Math.abs(cert.P - m.P) / Math.max(m.P, 1e-4);
       console.log(`${path.basename(f)} alpha=${alpha} N=${N}: claimed ${m.P} re-verified ${cert.P} (${ok ? 'certified' : 'NOT certified'}, drift ${drift.toExponential(2)})`);
-      if (!ok || drift > 1e-8) continue;
+      if (!ok || drift > 1e-8) { rejected.push({ file: path.basename(f), P: m.P, reason: ok ? 'value moved by ' + drift.toExponential(2) : 'certificate failed' }); continue; }
       const entry = board[key] ||= { alpha, N, best: null, minima: [], submissions: 0, reference: REFERENCE[String(alpha)]?.[N] ?? null };
       entry.submissions++;
       const hit = entry.minima.find(e => Math.abs(e.P - cert.P) < 1e-8 * cert.P);
       // Basin counts are as reported; anyone can reproduce them by rerunning the named seed block.
       const reported = Number.isInteger(m.basinSeeds) && m.basinSeeds > 0 ? m.basinSeeds : 0, block = data.summary?.seeds;
       if (hit) { hit.confirmations++; hit.reportedBasinSeeds += reported; hit.machines = [...new Set([...hit.machines, data.machine || 'unlabelled'])]; }
-      else entry.minima.push({ P: cert.P, confirmations: 1, reportedBasinSeeds: reported, machines: [data.machine || 'unlabelled'], soscRatio: so.soscRatio,
+      else entry.minima.push({ P: cert.P, status, confirmations: 1, reportedBasinSeeds: reported, machines: [data.machine || 'unlabelled'], soscRatio: so.soscRatio,
         stability: { maxShapeExponent: cert.stability.maxShapeExponent, unstableShapeModes: cert.stability.unstableShapeModes, shapeExponents: cert.stability.shapeModes.map(q => q.exponent) },
         config: configOf(mdl, opt.x), commit: data.commit });
       if (block) entry.seedBlocks = [...(entry.seedBlocks || []), block].filter((b, i, all) => all.findIndex(o => o.start === b.start && o.count === b.count) === i);
@@ -515,12 +595,12 @@ function verifyFiles(files, write) {
   }
   const leaderboard = { experiment: 'vortex-collapse-leaderboard', protocol: PROTOCOL.version, generatedFrom: files.map(f => path.basename(f)).sort(),
     scope: 'Each entry was re-projected, re-polished and re-certified from submitted positions and circulations only. Numerical candidates; priority unconfirmed.',
-    entries: Object.values(board).sort((a, b) => a.alpha - b.alpha || a.N - b.N) };
+    entries: Object.values(board).sort((a, b) => a.alpha - b.alpha || a.N - b.N), rejected };
   const busy = spent.cpuSeconds + spent.wallSecondsWithoutCpuRecord;
   // The same seed block run twice must give the same digest on the same protocol; list any block that disagreed.
   const byCase = Object.values(spent.byCase || {}).map(c => { const seen = {}, disagreements = [];
     for (const d of c.digests) { const k = d.block.start + '+' + d.block.count; if (seen[k] && seen[k].digest !== d.digest) disagreements.push({ block: d.block, a: seen[k], b: d }); seen[k] ||= d; }
-    return { alpha: c.alpha, N: c.N, seeds: c.seeds, cpuHours: c.cpuSeconds / 3600, independentReruns: c.digests.length - Object.keys(seen).length, disagreements }; });
+    return { alpha: c.alpha, N: c.N, seeds: c.seeds, cpuHours: c.cpuSeconds / 3600, independentReruns: c.digests.length - Object.keys(seen).length, disagreements }; }).sort((a, b) => a.alpha - b.alpha || a.N - b.N);
   delete spent.byCase;
   leaderboard.compute = { ...spent, machines: spent.machines.size, cpuHours: busy / 3600, byCase,
     estimatedWattHours: [busy * WATTS_PER_BUSY_CORE[0] / 3600, busy * WATTS_PER_BUSY_CORE[1] / 3600],
@@ -602,6 +682,12 @@ function controls() {
     const log = console.log; console.log = () => {}; let board; try { board = verifyFiles([tmp], false); } finally { console.log = log; fs.unlinkSync(tmp); }
     const e = board.entries[0]; assert(e && e.minima.length === 1 && Math.abs(e.best - m.P) < 1e-9, 'resubmission check failed');
     report.resubmission = { accepted: e.best, rejectedClaim: m.P * 0.9 }; }
+  // 5. The recorded zero-winding collapse (alpha = 2, N = 11) re-verifies from positions alone, with P = 0.
+  { const f = path.join(root, 'experiments/results/vortex-collapse/vortex-grow-a2-n11-s0-c12.json');
+    if (fs.existsSync(f)) { const log = console.log; console.log = () => {}; let b; try { b = verifyFiles([f], false); } finally { console.log = log; }
+      const e = b.entries[0]; assert(e && e.best < ZERO_WINDING && e.minima[0].status === 'zero-winding' && !b.rejected.length, 'zero-winding collapse did not re-verify');
+      const mdl = model(11, 2.05), x = fromConfig(mdl, e.minima[0].config); assert(feasibility(mdl.residual(x)) > 1e-4, 'zero-winding point also solves a shifted kernel');
+      report.zeroWinding = { P: e.best, status: e.minima[0].status }; } }
   report.passed = true;
   return report;
 }
@@ -612,21 +698,27 @@ function parse(argv) {
     const a = argv[i];
     if (a === '--controls') o.controls = true;
     else if (a === '--write') o.write = true;
-    else if (a === '--verify') { o.verify = argv.slice(i + 1).filter(f => !f.startsWith('--')); o.write = argv.includes('--write'); break; }
-    else if (['--alpha', '--n', '--start', '--count', '--out'].includes(a) && argv[i + 1] !== undefined) { const v = argv[++i]; if (a === '--out') o.out = path.resolve(v); else o[{ '--alpha': 'alpha', '--n': 'N', '--start': 'start', '--count': 'count' }[a]] = Number(v); }
+    else if (a === '--verify') { o.verify = argv.slice(i + 1).filter(f => !f.startsWith('--')); o.write = argv.includes('--write'); o.strict = argv.includes('--strict'); break; }
+    else if (a === '--refresh') o.refresh = true;
+    else if (a === '--grow') o.grow = true;
+    else if (a === '--compact') { o.compact = argv.slice(i + 1); break; }
+    else if (['--alpha', '--n', '--start', '--count', '--out', '--from'].includes(a) && argv[i + 1] !== undefined) { const v = argv[++i]; if (a === '--out' || a === '--from') o[a.slice(2)] = path.resolve(v); else o[{ '--alpha': 'alpha', '--n': 'N', '--start': 'start', '--count': 'count' }[a]] = Number(v); }
     else throw Error('Unknown option ' + a);
   }
-  if (!o.controls && !o.verify) {
+  if (!o.controls && !o.verify && !o.refresh && !o.compact) {
     if (!(Number.isFinite(o.alpha) && o.alpha > -2 && o.alpha <= 3)) throw Error('--alpha must lie in (-2, 3].');
-    if (!(Number.isInteger(o.N) && o.N >= 3 && o.N <= 16)) throw Error('--n must be an integer from 3 to 16.');
+    if (!(Number.isInteger(o.N) && o.N >= 3 && o.N <= (o.grow ? 64 : 16))) throw Error(o.grow ? '--n must be an integer up to 64.' : '--n must be an integer from 3 to 16.');
     if (!(Number.isInteger(o.start) && o.start >= 0 && o.start < 2 ** 31) || !(Number.isInteger(o.count) && o.count >= 1 && o.count <= 1e6)) throw Error('--start and --count must be non-negative integers.');
   }
   return o;
 }
-module.exports = { PROTOCOL, REFERENCE, model, project, minimize, certify, stability, eigenvalues, secondOrder, searchSeed, fromConfig, distinct, verifyFiles, controls, infimum3 };
+module.exports = { PROTOCOL, REFERENCE, growSeed, compact, sources, model, project, minimize, certify, stability, eigenvalues, secondOrder, searchSeed, fromConfig, distinct, verifyFiles, controls, infimum3 };
 if (require.main === module) {
   const o = parse(process.argv.slice(2));
   if (o.controls) console.log(JSON.stringify(controls(), null, 1));
-  else if (o.verify) verifyFiles(o.verify, o.write);
+  else if (o.verify) { const b = verifyFiles(o.verify, o.write); if (o.strict && b.rejected.length) { console.error('Rejected: ' + JSON.stringify(b.rejected)); process.exitCode = 1; } }
+  else if (o.refresh) refresh();
+  else if (o.compact) { const [from, to] = o.compact; fs.mkdirSync(path.dirname(path.resolve(to)), { recursive: true }); fs.writeFileSync(to, JSON.stringify(compact(JSON.parse(fs.readFileSync(from, 'utf8'))), null, 1) + '\n'); }
+  else if (o.grow) grow(o);
   else run(o);
 }

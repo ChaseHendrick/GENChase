@@ -11,7 +11,34 @@ No job has been shared through an evidence pull request yet.
 
 ## Least-winding vortex search
 
-No verified results yet.
+1236 seeds in 24 result files from 1 machine label(s): 0.49 CPU hours, about 0.5 to 9.7 Wh estimated. The maintainers' own runs are included.
+
+| α | N | Seeds | CPU hours | Independent reruns of a block | Reruns that disagreed |
+|---:|---:|---:|---:|---:|---:|
+| 0 | 4 | 80 | 0.000 | 0 | 0 |
+| 0 | 5 | 80 | 0.006 | 0 | 0 |
+| 0 | 6 | 80 | 0.011 | 0 | 0 |
+| 0 | 7 | 40 | 0.014 | 0 | 0 |
+| 0 | 8 | 40 | 0.019 | 0 | 0 |
+| 0 | 9 | 40 | 0.030 | 0 | 0 |
+| 0 | 10 | 40 | 0.032 | 0 | 0 |
+| 1 | 4 | 80 | 0.000 | 0 | 0 |
+| 1 | 5 | 80 | 0.006 | 0 | 0 |
+| 1 | 6 | 80 | 0.016 | 0 | 0 |
+| 1 | 7 | 40 | 0.013 | 0 | 0 |
+| 1 | 8 | 40 | 0.017 | 0 | 0 |
+| 1 | 9 | 40 | 0.038 | 0 | 0 |
+| 1 | 10 | 40 | 0.051 | 0 | 0 |
+| 2 | 4 | 80 | 0.000 | 0 | 0 |
+| 2 | 5 | 80 | 0.005 | 0 | 0 |
+| 2 | 6 | 80 | 0.021 | 0 | 0 |
+| 2 | 7 | 40 | 0.019 | 0 | 0 |
+| 2 | 8 | 40 | 0.031 | 0 | 0 |
+| 2 | 9 | 52 | 0.055 | 0 | 0 |
+| 2 | 10 | 52 | 0.096 | 0 | 0 |
+| 2 | 11 | 12 | 0.005 | 0 | 0 |
+
+A rerun of the same seed block on another machine must reproduce the block's results digest. A disagreement shows platform dependence, not an error in either machine.
 
 ## How these numbers are made
 

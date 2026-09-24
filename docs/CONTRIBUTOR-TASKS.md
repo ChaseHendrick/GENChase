@@ -9,7 +9,9 @@ does not establish scientific accuracy. Preserve the shared engine and scientifi
 Scope: run seed blocks of the vortex-collapse search on your own machine and share the result
 files, including blocks that found nothing new. The open questions, the certificate and the
 suggested jobs are in `experiments/VORTEX-COLLAPSE.md`. No code change is needed.
-Command: `npm run validator:headless -- --mode vortex-collapse --alpha 0 --n 7 --samples 200 --machine <label>`.
+Command: `npm run validator:headless -- --mode vortex-collapse --alpha 0 --n 7 --samples 200 --machine <label>`,
+or `--mode vortex-grow --alpha 0 --n 30 --samples 10` to continue the deepest family. Long runs can be
+announced with the "Claim a seed block" issue template.
 Acceptance: the maintainer re-verifies every submitted minimum from its positions and circulations
 with `node tools/vortex-collapse-search.js --verify <file> --write`. A lower value is recorded only
 after it survives that check. It remains a numerical candidate with priority unconfirmed.

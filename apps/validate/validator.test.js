@@ -17,6 +17,8 @@ test('command allowlist rejects injection and defaults to full evidence',()=>{
   const vortex=command(root,{workspace:'contribute',mode:'vortex-collapse',alpha:1,n:6,samples:20,start:40});
   assert.deepEqual(vortex.args,['tools/vortex-collapse-search.js','--alpha','1','--n','6','--start','40','--count','20']);
   assert(Number.isInteger(command(root,{workspace:'contribute',mode:'vortex-collapse'}).input.start),'a random seed block is recorded in the job input');
+  assert.deepEqual(command(root,{workspace:'contribute',mode:'vortex-grow',alpha:0,n:30,samples:8,start:0}).args,['tools/vortex-collapse-search.js','--grow','--alpha','0','--n','30','--start','0','--count','8']);
+  for(const bad of [{n:65},{n:4},{samples:0}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-grow',...bad}));
   for(const bad of [{alpha:-2},{alpha:'1; rm'},{alpha:0.12345},{n:2},{n:17},{samples:0},{start:-1},{start:2**31}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-collapse',...bad}));
  }finally{fs.rmSync(root,{recursive:true,force:true});}
 });

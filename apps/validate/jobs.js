@@ -119,7 +119,7 @@ class Jobs {
     for (const name of Object.keys(before)) {
       const dest = path.join(dir, 'source', name); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.copyFileSync(path.join(this.root, name), dest);
     }
-    if (resumeFrom) for (const name of ['verify-checkpoint.json','derive-checkpoint.json','vortex-checkpoint.json','metal-checkpoint']) {
+    if (resumeFrom) for (const name of ['verify-checkpoint.json','derive-checkpoint.json','metal-checkpoint',...fs.readdirSync(path.join(this.data,resumeFrom)).filter(n=>/^vortex-[a-z0-9-]*checkpoint\.json$/.test(n))]) {
       const from = path.join(this.data, resumeFrom, name); if (fs.existsSync(from)) fs.cpSync(from, path.join(dir, name), { recursive: true });
     }
     this.current.resumedFrom = resumeFrom;
@@ -180,7 +180,7 @@ class Jobs {
   resumeAvailable() {
     if (!this.current) return false;
     const dir = path.join(this.data, this.current.id);
-    return ['verify-checkpoint.json','derive-checkpoint.json','vortex-checkpoint.json','metal-checkpoint/checkpoint.json'].some(name=>fs.existsSync(path.join(dir,name)));
+    return ['verify-checkpoint.json','derive-checkpoint.json','metal-checkpoint/checkpoint.json'].some(name=>fs.existsSync(path.join(dir,name)))||(fs.existsSync(dir)&&fs.readdirSync(dir).some(n=>/^vortex-[a-z0-9-]*checkpoint\.json$/.test(n)));
   }
   async restart() {
     const input = this.lastInput; if (!input) throw Error('Start a job before restarting.');
