@@ -251,7 +251,7 @@ Each technique names the people whose work it implements. The vortex-collapse fo
 
 **Chimera States**. Yoshiki Kuramoto and Dorjsuren Battogtokh found a ring of identical, identically coupled oscillators splitting into a coherent and an incoherent domain in 2002 — a state everyone had assumed impossible. Daniel Abrams and Steven Strogatz named it the chimera state in 2004, after the Greek beast assembled from mismatched animals.
 
-**SSH Edges**. W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is \|ψ_n(x)\| of every eigenmode, stacked.
+**SSH Edges**. W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is \|ψ_n(x)\|² of every eigenmode of the finite chain, energy increasing upward, each row scaled to its own peak; the mid-gap pair sits in the middle rows.
 
 **Swarmalators**. Kevin P. O’Keeffe, Hyunsuk Hong and Steven H. Strogatz, Nature Communications 8, 1504 (2017), 'Oscillators that sync and swarm'. Identical agents with a phase and a position: spatial attraction depends on phase agreement, and phase coupling falls with distance. Five collective states live in the (J, K) plane, including a static rainbow ring and an active phase wave.
 

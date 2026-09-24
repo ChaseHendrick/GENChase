@@ -58,6 +58,8 @@ Presets: `{ key: { label: 'Label', p: { partial state }, palette: Studio.PALETTE
 
 `s.seed` (string), `s.palette` (array of `#RRGGBB`, up to 16), `s.bg` (`#RRGGBB`), plus your keys. Treat `s` as read-only inside `create`; the shell owns it.
 
+`s.v` is the recipe version, which the shell's `sanitize` writes after it clamps your schema. `v`, `seed`, `palette`, `bg` and `id` belong to the recipe, so none of them may key a control, and `defaults` and presets may not set `v` or `id`. A default `seed` is allowed. `node tools/lint.js` enforces this. SSH once keyed its intra hopping `v`, and every plate opened from a link read 2.
+
 ## host
 
 ```

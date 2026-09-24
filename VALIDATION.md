@@ -227,7 +227,9 @@ No record has an outside review yet; every review so far was done inside the pro
 
 ### ssh
 
-- Independent Float64 SSH spectrum/edge checks in validation/SSH.md do not certify the production visualization heuristic, print path, interactions or experiment.
+- The studio solver is compared with an independent Float64 Jacobi solve on every registered preset (N = 96, and Critical at N = 160). Other grids, the plate's row mapping, per-row scaling and palette, and the print path are not compared pixel by pixel. No interactions or experiment.
+- The end weight and the verdict are measured from the eigenvectors of one finite chain and carry no sampling error; they are finite-size quantities with a fixed 10% window at each end. Mid-gap energies under 1e-13 are not resolved in double precision and are printed as a bound. Critical (w/v 1.06) reads crossover at the default 96 sites, because its localisation length of 18.5 cells is comparable to the 48-cell chain; at 160 sites it reads edge modes.
+- Until 2026-09-24 the intra hopping was keyed v, which the engine overwrites with the recipe version (2). Every plate opened from a hash, a preset, Surprise or a reload therefore ran at v = 2 and drew the trivial picture whatever the controls said. Dragging the slider changed the plate on screen, but its hash still recorded only v = 2. The key is now vIntra. A hash written before the rename never stored the intra hopping, so it reprints at the default 0.45 with its stored w, and its pixels change.
 - Finite open/periodic chains only; catalog equation and citation remain review targets for full paper equivalence.
 - No print-state evidence is registered; status stays unvalidated.
 

@@ -82,6 +82,44 @@ for (const m of mods) {
   }
 }
 
+/* ---- 3d. no technique uses a key the recipe itself owns ---- */
+// The engine writes its own keys into every state and every hash. sanitize() sets `seed` and the recipe
+// version `v` after the schema clamps and fills `palette` and `bg`; a recipe payload always carries those,
+// and Studio.getRecipe and the hash parser add `id`, which a payload key of the same name would replace.
+// A control with one of these keys is overwritten before the technique reads it. SSH shipped its
+// intra-cell hopping as `v`, so every plate opened from a link, preset or reload ran at v = 2, the recipe
+// version, and no link could ever reprint an edge mode. Defaults and presets may not name `v` or `id` either; a default
+// `seed` is how a technique pins its opening plate, so that one is allowed there.
+// Schemas are assembled from shared helpers, which a text scan cannot attribute (see 6 below), so each
+// module block is evaluated against the same stub helpers the builder's registry uses.
+{
+  const RESERVED = ['v', 'seed', 'palette', 'bg', 'id'];
+  const ENGINE_ONLY = ['v', 'id'];
+  const { registrations } = require('./registry.js');
+  const isModule = b => regs.some(r => r.index >= b.index && r.index < b.index + b[0].length);
+  for (const b of blocks.filter(isModule)) {
+    let defs;
+    try { defs = registrations(b[1], path.basename(file) + ':' + lineAt(b.index)); }
+    catch (e) { fail('module block at line ' + lineAt(b.index) + ' does not evaluate: ' + e.message); continue; }
+    for (const d of defs) {
+      const where = d.id + ' (line ' + (seen.get(d.id) || lineAt(b.index)) + ')';
+      for (const f of d.schema || []) {
+        if (f && RESERVED.includes(f.key)) {
+          fail(where + ' has a control keyed "' + f.key + '", which the recipe owns: the engine overwrites it, ' +
+            'so the technique never reads the control. Rename the key and keep the label.');
+        }
+      }
+      for (const k of Object.keys(d.defaults || {})) {
+        if (ENGINE_ONLY.includes(k)) fail(where + ' sets defaults.' + k + ', which the engine owns');
+      }
+      for (const k of ENGINE_ONLY) {
+        const named = Object.keys(d.presets || {}).filter(name => Object.hasOwn((d.presets[name] && d.presets[name].p) || {}, k));
+        if (named.length) fail(where + ' presets ' + named.join(', ') + ' set ' + k + ', which the engine owns');
+      }
+    }
+  }
+}
+
 /* ---- 4. every technique carries what the shell and the colophon need ---- */
 // The colophon prints the technique, its rule and its credit under the plate; a technique missing one
 // prints a gap on a sheet somebody paid to have framed.

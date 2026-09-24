@@ -38,6 +38,10 @@ covers successive changes and explicit overrides; `tools/recipe.js` covers exist
 module declarations. This does not guarantee identical pixels after a documented
 solver correction or across GPU implementations.
 
+The recipe owns the keys `v`, `seed`, `palette`, `bg` and `id`, and `sanitize` writes
+`v` after the schema clamps. A module may not key a control with any of them, or set
+`v` or `id` in its defaults or presets; `tools/lint.js` rejects both.
+
 ## Scientific witness data
 
 Report status first, then its matching comparison:
