@@ -9,13 +9,11 @@ tags:
   - scientific visualization
   - generative art
 authors:
-  # Owner: the name you publish under is your decision (docs/PUBLISHING.md). The software
-  # metadata uses "Chaos"; the vortex manuscript uses your legal name. Add an orcid: line when
-  # you have one.
-  - name: Chaos
+  # Add an orcid: line when you have one (docs/PUBLISHING.md, section 2).
+  - name: Chase Hendrick
     affiliation: 1
 affiliations:
-  - name: Independent researcher
+  - name: Independent Researcher
     index: 1
 date: 24 September 2026
 bibliography: paper.bib
@@ -195,7 +193,6 @@ keep their one-line statement. -->
 # Acknowledgements
 
 The scientific models are the work of the researchers named in each technique's credit line and
-in `TECHNIQUES.md`.
-<!-- Owner: add funding, or say that there was none, and thank anyone who contributed. -->
+in `TECHNIQUES.md`. This work received no external funding.
 
 # References

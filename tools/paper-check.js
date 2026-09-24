@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Pre-submission checks for every publication in research/submission/papers.json.
+// Pre-submission checks for every publication in papers/papers.json.
 // docs/PUBLISHING-PAPERS.md is the runbook; this catches the mechanical mistakes before a submission.
 //
 //   node tools/paper-check.js                    every paper
@@ -7,11 +7,12 @@
 //   node tools/paper-check.js --self-test        the checks against planted mistakes (npm test runs this)
 //
 // Per paper: the status is known and its bookkeeping is filled in (an arXiv id once on arXiv, and so
-// on); the listed files exist; the title is the same in every source; no email address appears in any
-// public file of the paper; the arXiv abstract fits arXiv's 1,920 characters and its stated length is
-// right; the page count the metadata gives for the Typst PDF matches the PDF (and, when pdflatex is
-// installed, the LaTeX build matches the Comments line); and the Typst and LaTeX reference lists have the
-// same entries in the same order, with the same works cited. Placeholders still to fill are listed.
+// on); the listed files exist; the title is the same in every source; the only email address in a
+// paper's files is the author's published one (papers.json "author.email"); the arXiv abstract fits arXiv's
+// 1,920 characters and its stated length is right; the committed PDF has the page count the Comments line
+// gives (and, when pdflatex is installed, so does a fresh LaTeX build); and the Typst and LaTeX reference
+// lists have the same entries in the same order, with the same works cited. From "ready" on, a paper with
+// a companion repository must stage cleanly for it (tools/paper-sync.js). Placeholders are listed.
 'use strict';
 const fs = require('fs');
 const os = require('os');
@@ -81,9 +82,10 @@ function checkPaper(root, p, opts = {}) {
   const t = titles(root, p);
   if (t.length && t.some(([, x]) => x !== p.title)) bad('title differs: ' + t.filter(([, x]) => x !== p.title).map(([w, x]) => w + ' has "' + x + '"').join('; '));
 
+  const allowed = new Set((opts.emails || []).map(a => a.toLowerCase()));
   for (const f of files.filter(f => !/\.pdf$/i.test(f))) {
-    const found = (read(root, f).match(EMAIL) || []).filter(a => !EXAMPLE.test(a));
-    if (found.length) bad(f + ' contains an email address; public files never do (research/submission/PRIVATE-COPIES.md)');
+    const found = (read(root, f).match(EMAIL) || []).filter(a => !EXAMPLE.test(a) && !allowed.has(a.toLowerCase()));
+    if (found.length) bad(f + ' contains ' + [...new Set(found)].join(', ') + ', which is not the author address in papers/papers.json');
   }
 
   let pages = null;
@@ -97,9 +99,8 @@ function checkPaper(root, p, opts = {}) {
       if (n > ABSTRACT_LIMIT) bad('the arXiv abstract has ' + n + ' characters; arXiv allows ' + ABSTRACT_LIMIT);
       if (stated && +stated[1].replace(/,/g, '') !== n) bad(p.arxiv.metadata + ' says the abstract has ' + stated[1] + ' characters; it has ' + n);
     }
-    const typClaim = /Typst PDF, write (\d+) pages/.exec(meta);
-    if (typClaim && pages != null && +typClaim[1] !== pages) bad(p.arxiv.metadata + ' says the Typst PDF has ' + typClaim[1] + ' pages; ' + p.pdf + ' has ' + pages);
     const comments = /\*\*Comments:\*\*\s*`(\d+) pages/.exec(meta);
+    if (comments && pages != null && +comments[1] !== pages) bad('the Comments line says ' + comments[1] + ' pages; ' + p.pdf + ' has ' + pages);
     if (comments && p.latex) {
       const built = opts.latexPages ? opts.latexPages(root, p.latex) : latexPages(root, p.latex);
       if (built == null) note('the Comments line says ' + comments[1] + ' pages for the LaTeX build; pdflatex is not installed here, so that was not checked');
@@ -144,15 +145,22 @@ function latexPages(root, tex) {
 }
 
 function run(root, only) {
-  const reg = JSON.parse(read(root, 'research/submission/papers.json'));
+  const reg = JSON.parse(read(root, 'papers/papers.json'));
   const papers = reg.papers.filter(p => !only || p.id === only);
-  if (only && !papers.length) throw new Error('No paper ' + only + ' in research/submission/papers.json');
+  if (only && !papers.length) throw new Error('No paper ' + only + ' in papers/papers.json');
+  const emails = reg.author && reg.author.email ? [reg.author.email] : [];
   const ids = new Set();
   let failed = 0;
   for (const p of papers) {
     if (ids.has(p.id)) { console.log('FAIL duplicate id ' + p.id); failed++; }
     ids.add(p.id);
-    const { problems, notes } = checkPaper(root, p);
+    const { problems, notes } = checkPaper(root, p, { emails });
+    // A paper goes public as its own repository (tools/paper-sync.js); from "ready" on it must stage cleanly.
+    if (p.companion && !problems.some(m => m.startsWith('missing file'))) {
+      const found = require('./paper-sync.js').check(root, p.id), due = ORDER.indexOf(p.status) >= ORDER.indexOf('ready');
+      found.forEach(m => (due ? problems : notes).push('companion ' + p.companion + ': ' + m + (due ? '' : ' (fix before "ready")')));
+      if (!found.length) notes.push('companion ' + p.companion + ': stages cleanly');
+    }
     console.log((problems.length ? 'FAIL ' : 'OK   ') + p.id + '  [' + p.status + ']');
     problems.forEach(m => console.log('       ' + m));
     notes.forEach(m => console.log('       note: ' + m));
@@ -169,12 +177,12 @@ function selfTest() {
   const base = () => {
     w('p.typ', '#set document(title: "A Test Paper", author: "A")\nText [1] and [2, Sect. 3], with $[0, 1]$ math.\n#heading[References]\n+ A. One, J. 22 (1979) 1.\n+ B. Two, J. 25 (1982) 2.\n');
     w('p.tex', '\\title{\\Large\\bfseries A Test\\\\ Paper}\nText \\cite{one} and \\cite[Sect.~3]{two}.\n\\begin{thebibliography}{9}\n\\bibitem{one} A. One, J. 22 (1979) 1.\n\\bibitem{two} B. Two, J. 25 (1982) 2.\n\\end{thebibliography}\n');
-    w('p.pdf', '%PDF-1.7\n<< /Type/Pages/Count 2 >>\n');
-    w('meta.md', '- **Title:** A Test Paper\n- **Comments:** `3 pages, 1 figure`\n  - For the PDF-only route with the Typst PDF, write 2 pages.\n\n## Abstract (' + abstract.length + ' characters; the limit is 1,920)\n\n```\n' + abstract + '\n```\n');
+    w('p.pdf', '%PDF-1.7\n<< /Type/Pages/Count 3 >>\n');
+    w('meta.md', '- **Title:** A Test Paper\n- **Comments:** `3 pages, 1 figure`\n\n## Abstract (' + abstract.length + ' characters; the limit is 1,920)\n\n```\n' + abstract + '\n```\n');
     w('letter.md', 'Dear Editors, [arXiv identifier].\n');
   };
   const paper = () => ({ id: 't', title: 'A Test Paper', status: 'preparing', typst: 'p.typ', latex: 'p.tex', pdf: 'p.pdf', arxiv: { metadata: 'meta.md', id: null }, journal: { coverLetter: 'letter.md', submitted: null, doi: null } });
-  const opts = { latexPages: () => 3 };
+  const opts = { latexPages: () => 3, emails: ['author@real-domain.org'] };
   const expect = (want, what, mutate) => {
     base(); const p = paper(); if (mutate) mutate(p);
     const r = checkPaper(tmp, p, opts), ok = want ? r.problems.length === 0 : r.problems.length > 0;
@@ -184,9 +192,11 @@ function selfTest() {
     expect(true, 'a consistent paper passes');
     expect(false, 'an email address in the LaTeX source', () => w('p.tex', read(tmp, 'p.tex').replace('Text', 'Mail me@real-domain.org. Text')));
     expect(true, 'a you@example.com placeholder is allowed', () => w('letter.md', 'Write to you@example.com.\n'));
+    expect(true, "the author's published address is allowed", () => w('p.tex', read(tmp, 'p.tex').replace('Text', 'Author@Real-Domain.org. Text')));
+    expect(false, 'another address beside the author one', () => w('letter.md', 'author@real-domain.org and me@real-domain.org\n'));
     expect(false, 'an abstract over 1,920 characters', () => w('meta.md', read(tmp, 'meta.md').replace(abstract, 'x'.repeat(1921)).replace('(' + abstract.length + ' characters', '(1921 characters')));
     expect(false, 'a wrong stated abstract length', () => w('meta.md', read(tmp, 'meta.md').replace('(' + abstract.length + ' characters', '(999 characters')));
-    expect(false, 'a wrong Typst page count', () => w('meta.md', read(tmp, 'meta.md').replace('write 2 pages', 'write 3 pages')));
+    expect(false, 'a committed PDF with another page count', () => w('p.pdf', '%PDF-1.7\n<< /Type/Pages/Count 2 >>\n'));
     expect(false, 'a wrong LaTeX page count', p => { opts.latexPages = () => 4; });
     opts.latexPages = () => 3;
     expect(false, 'a reference whose year differs', () => w('p.typ', read(tmp, 'p.typ').replace('(1982)', '(1983)')));

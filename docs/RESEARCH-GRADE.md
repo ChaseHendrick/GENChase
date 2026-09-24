@@ -59,8 +59,8 @@ This is the largest gap, and most of it is not code.
   pull request.
 
 **1b. The vortex paper.**
-- **Finding:** `research/submission/cover-letter-rcd.md` is a draft. It still has placeholders
-  for the suggested reviewers and the arXiv identifier, and `endorsement-request.md` sits beside it.
+- **Finding:** `papers/minimal-winding/submission/cover-letter-rcd.md` is a draft. It still has placeholders
+  for the suggested reviewers and the arXiv identifier. No endorsement is needed.
 - **Why:** one peer-reviewed publication is worth more credibility than any number of internal
   audits.
 - **Done when:** the preprint has an arXiv identifier and the manuscript is submitted.

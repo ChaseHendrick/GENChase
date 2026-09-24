@@ -12,7 +12,6 @@ The note and statement files were corrected on 2026-09-21 to remove personal nam
 | [STATEMENTS.txt](STATEMENTS.txt) | 🔵 Corrected statements | Plain-text formulas; project dates are not first-discovery dates |
 | [HASHES.txt](HASHES.txt) | 🔵 File fingerprints | SHA-256 of the corrected files and statement blocks |
 | [COMMITMENTS.txt](COMMITMENTS.txt) | 🔵 Hash commitments | Salted hashes of unpublished results, timestamped before they are revealed ([docs/COMMITMENTS.md](../docs/COMMITMENTS.md)) |
-| [allowed_signers](allowed_signers) | 🔵 Signing keys | The SSH key that signs release tags ([docs/SIGNING.md](../docs/SIGNING.md)) |
 | [NOVELTY-AUDIT.md](NOVELTY-AUDIT.md) | 🟠 Originality unconfirmed | Evidence, overlaps and remaining literature gaps |
 | [ORIGINALITY-FOLLOWUP.md](ORIGINALITY-FOLLOWUP.md) | 🔵 Source comparison | Explicit reduction to Gröbli’s original formula |
 | [ARXIV.md](ARXIV.md) | 🔵 Publication guidance | Attribution requirements and limits on priority claims |

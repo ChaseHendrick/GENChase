@@ -173,7 +173,7 @@ Status: validated within stated limits (2026-09-22). Sources are the modules of 
     Gröbli's spiral coefficient, and the other minima are bounds on classical families whose
     originality is unconfirmed.
 - The manuscript on minimal winding in `research/` is a separate matter from these records; see
-  [research/submission/CHECKLIST.md](../research/submission/CHECKLIST.md).
+  [papers/minimal-winding/submission/CHECKLIST.md](../papers/minimal-winding/submission/CHECKLIST.md).
 
 ## Recording the sign-off
 

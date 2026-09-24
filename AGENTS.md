@@ -12,8 +12,7 @@ This repository is SharpMeow. The only author for commits, `user.email`, and tra
 
 Never use `sharpie@users.noreply.github.com`. GitHub maps that address to github.com/Sharpie (Charlie Sharpsteen), who does not work here. Do not put it in `Co-authored-by` or `Signed-off-by`. Do not guess `login@users.noreply.github.com` from the display name. Squash-merge copies those trailers onto `main` and pins a stranger on the log. If you did not write the commit as a second person, omit `Co-authored-by`.
 
-Release tags are made by the owner with `node tools/tag-release.js vX.Y.Z`, signed with the key in
-`identities/allowed_signers` ([docs/SIGNING.md](docs/SIGNING.md)). An agent never creates, moves or pushes a tag.
+Releases are made by the owner through the "Publish offline studio" workflow ([docs/PUBLISHING.md](docs/PUBLISHING.md)). An agent never creates, moves or pushes a tag.
 
 ## What is in here
 
@@ -250,4 +249,4 @@ Read VALIDATION.md and validation/README.md before modifying numerical methods. 
 
 The dated plan for what research grade still needs, in priority order, is [docs/RESEARCH-GRADE.md](docs/RESEARCH-GRADE.md): outside review, the exactly solvable tabs, an uncertainty gate, real-GPU runs, data export and provenance. Read it before choosing validation or infrastructure work, and move an item to its Done list in the pull request that finishes it.
 
-Every manuscript is listed with its status in `research/submission/papers.json`. When one is ready, [docs/PUBLISHING-PAPERS.md](docs/PUBLISHING-PAPERS.md) is the runbook (code DOI, arXiv, commitments, journal), and `node tools/paper-check.js` checks titles, email leaks, the arXiv abstract, page counts and the two reference lists before anything is sent.
+Every manuscript is listed with its status in `papers/papers.json`. When one is ready, [docs/PUBLISHING-PAPERS.md](docs/PUBLISHING-PAPERS.md) is the runbook (code DOI, arXiv, commitments, journal), and `node tools/paper-check.js` checks titles, email leaks, the arXiv abstract, page counts and the two reference lists before anything is sent.
