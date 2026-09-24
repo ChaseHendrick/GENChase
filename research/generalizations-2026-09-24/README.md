@@ -34,7 +34,13 @@ The run was stopped before these reached a checker. Treat every item as a lead o
 - The rotation-conjecture sigma(w) = 1^T (I + D)^{-1} s > 0 for N points.
 - The Kendall-sphere normal form, the crossing-angle characterization of self-similarity, and the mu -> 0 and mu = 1 limits (G3-G7).
 - The noise orientation law and the tracer dynamics (C3, C4, C7).
-- The alpha <= -1 case (numerically the same floor, not claimed).
+- The alpha <= -1 case (numerically the same floor, not claimed). Status after a local attempt:
+  - The sharpness limit survives for every beta > 0. Exactly, S − ρm − ρ² coth b = 2X[(1 + ρm)/(1 − X) − 1/(Y − X)] = O(Xρ).
+  - The chain P > Λ/(4β sin ψ) breaks only at step (iii), and only below β ≈ 0.2. A 20,000-point sample at β ≤ 1/2 has 69 failures of step (iii) and none of P > B.
+  - Case m ≥ 2 of step (iii) holds for β > 0.2171, the root of 12β² + 2β − 1, via D(m).
+  - Case m < 2 needs E(m) = ((1+β)m − 2/m − 1)² + (1 + 6β − βm² − m)/3 > 0 on [m₀(β), 2), where the bracket turns negative. On a grid this holds for β ≥ 0.2620, that is α ≥ −1.476, so the method reaches about α ≈ −1.48 once that two-variable inequality is proved.
+  - Below that, a sharper chain is needed. The draft keeps the clean statement α > −1, the range where the velocity decays with distance.
+
 
 The three-ring family was explored only for 2-gons in any depth (the row above); n = 3 and n = 4 had a short random search.
 
