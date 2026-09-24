@@ -43,3 +43,8 @@ identities/sources/**/*.txt
 research/*.aux
 research/*.out
 research/*.pdf
+
+# Private copies of the paper carry the author's email and never belong in this repository.
+# See research/submission/PRIVATE-COPIES.md.
+research/_private*
+Hendrick-minimal-winding-*

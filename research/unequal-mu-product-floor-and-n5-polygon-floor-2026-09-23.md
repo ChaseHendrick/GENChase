@@ -113,7 +113,7 @@ Searches for the numbers and the sextic found only this repository. That is weak
 
 ## Before submission
 
-The submission package is in [`submission/`](submission/): arXiv metadata (categories, MSC, a TeX abstract under the 1920-character limit, CC BY 4.0 license), an endorsement request and a cover letter for *Regular and Chaotic Dynamics*. The author's contact email is kept out of this public repository; the author has a private copy of the PDF with the email for arXiv and the journal.
+The submission package is in [`submission/`](submission/): arXiv metadata (categories, MSC, a TeX abstract under the 1920-character limit, CC BY 4.0 license), an endorsement request and a cover letter for *Regular and Chaotic Dynamics*. The author's contact email is kept out of this public repository; the author keeps private copies of the PDF and the LaTeX source with the email for arXiv and the journal, described in [`submission/PRIVATE-COPIES.md`](submission/PRIVATE-COPIES.md).
 
 Still open:
 
