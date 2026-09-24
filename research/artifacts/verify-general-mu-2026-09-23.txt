@@ -260,7 +260,7 @@
    0.99     1.42179610284949509      1.40672030297452222      A-         7.7e-28
    0.999    1.41496438015345341      1.41346362936097342      A-         3.1e-27
    1        1.41421356237309505      1.41421356237309505      tie        3.0e-28
-  PASS 7b grid: direct minimization agrees with the roots of Q (rel. dev < 1e-20) :: 5.33e-25
+  PASS 7b grid: direct minimization agrees with the roots of Q (abs. dev < 1e-20) :: 4.52e-21
   PASS 7b grid: P_- increasing, P_+ decreasing, P_- < P_+ for mu < 1
    mu=0.0001: P_- - [sqrt3/2 + 3sqrt3/4 mu^2 - 3sqrt3/4 mu^3] = 3.25e-17 ;  P_+ - sqrt(3+2sqrt3)/3 (1/mu + 1/2 + mu/4) = -1.06e-9
    mu=0.001: P_- - [sqrt3/2 + 3sqrt3/4 mu^2 - 3sqrt3/4 mu^3] = 3.25e-13 ;  P_+ - sqrt(3+2sqrt3)/3 (1/mu + 1/2 + mu/4) = -1.06e-7
@@ -303,9 +303,39 @@
    minima are Galois-conjugate algebraic numbers of degree exactly 6.  At mu = 1 both equal sqrt 2.
 
 ==============================================================================
+10. Path length and spiral angle; Remark 2; Section 4; Proposition 1; Remark 1  [exact + numerical]
+==============================================================================
+   mu=0.3 arc A+: P=3.305509054, 2P tan-angle check and path length to 0.9 t_c done
+   mu=0.3 arc A-: P=1.67319919382, 2P tan-angle check and path length to 0.9 t_c done
+   mu=0.5 arc A-: P=1.39113463433, 2P tan-angle check and path length to 0.9 t_c done
+   mu=2 arc A+: P=1.39113463433, 2P tan-angle check and path length to 0.9 t_c done
+   mu=2 arc A-: P=2.21182830115, 2P tan-angle check and path length to 0.9 t_c done
+  PASS 10a ODE to 0.9 t_c: |z_j - z_c|^2 = r_j0^2 (1 - t/t_c) for every vortex :: 6.95e-11
+  PASS 10a ODE to 0.9 t_c: rotation angle = -omega0 t_c ln(1 - t/t_c) for every vortex :: 1.99e-10
+  PASS 10a ODE: the velocity makes the angle arctan(2P) with the direction to the collision point :: 1.0e-28
+  PASS 10a ODE: path length to 0.9 t_c = r_j0 sqrt(1 + 4P^2)(1 - sqrt(0.1)) :: 2.49e-12
+  PASS 10b Remark 2: collapse exactly on 0 < beta < pi/2 and pi < beta < 3pi/2 (sampled), self-similar
+  PASS 10b Remark 2: Biot-Savart P = (3 - cos 2beta)/(2 sin 2beta) on the collapsing arcs :: 1.21e-47
+  PASS 10b Remark 2: on both arcs min P = sqrt 2 at cos 2beta = 1/3 :: [('1.4142135623730950488', '0.333333333333333'), ('1.4142135623730950488', '0.333333333333333')]
+  PASS 10c the two quotients are equal iff (n-1)x^2 - 2nx + (n-1) = 0  (eq. 11)
+  PASS 10c the zeta quotient follows from eq. (10) with z = 1, |zeta|^2 = x
+  PASS 10c sum_{i<j} Gamma_i Gamma_j of the 2n vortices = (n/2)((n-1)x^2 - 2nx + (n-1))
+  PASS 10c x_n = (n + sqrt(2n-1))/(n-1) is a root of (11), (x_n + 1/x_n)/2 = n/(n-1), (n-1)x_n - n = sqrt(2n-1)
+  PASS 10c |1-v|^2 Re S / rho = K_n - ((n-1)x - n) cos alpha
+  PASS 10c Re kappa = -n rho sin(alpha)/(2 pi |1-v|^2)
+  PASS 10c P = (K_n - sqrt(2n-1) cos(n theta))/(2n sin(n theta))  (eq. 12)
+  PASS 10c K_n = (n-1) sinh((n+2) eta/2) when x = e^eta, rho = e^{n eta/2}, n = (n-1) cosh eta
+  PASS 10c K_n - sqrt(2n-1) = (n-1) x (rho^{1/2} - rho^{-1/2})^2/2 + n(1 - 1/rho)
+  PASS 10c the table of x_n, K_n, F_n and cos(n theta) at the minimum, n = 2..5, exactly
+  PASS 10c the root-of-unity sums and the reduced equations (10) against the full Biot-Savart sum, n = 2..10 :: 3.22e-50
+  PASS 10d Prop. 1: q = s + 605/324 removes the quadratic term; sigma = 2 sqrt(-p/3) = 7 sqrt(5201)/162, X = (3r/2p) sqrt(-3/p) = 245351/5201^(3/2)
+  PASS 10d Prop. 1: the cubic in q equals 16 Q(1/2, q)
+  PASS 10e Remark 1: Q(a/b, xi^2) factored directly: irreducible sextic for all a/b in (0,1), b <= 30 :: count 277
+
+==============================================================================
 SUMMARY
 ==============================================================================
-checks: 94, passed: 94, failed: 0   (23.9 s)
+checks: 115, passed: 115, failed: 0   (26.9 s)
 
 kappa(theta; mu) = i (1+mu)^3/(2 pi sqrtR) * (sqrtR + (1-mu) e^{i theta}) / ((sqrtR - mu e^{i theta})(sqrtR + e^{i theta}))
    [normalization |z3 - z_c| = 1, R = 1 + mu + mu^2; zero-impulse circle |w - mu/(1+mu)| = sqrtR/(1+mu)]

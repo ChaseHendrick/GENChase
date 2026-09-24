@@ -12,9 +12,9 @@ In a self-similar collapse, point vortices move on logarithmic spirals. The dime
 - The squared minima are roots of an explicit cubic in P².
 - The smaller minimum increases strictly from √3/2 (as μ → 0) to √2 (at μ = 1).
 
-Consequently every self-similar three-vortex collapse satisfies |ω₀|t_c > √3/2, and the bound is sharp. Equivalently, each vortex travels more than twice its initial distance from the collision point before the collapse. For two concentric regular n-gons we give the product in closed form and its minimum over the relative rotation.
+Consequently every self-similar three-vortex collapse satisfies |ω₀|t_c > √3/2, and the bound is sharp; since every collapse of three point vortices in the plane is self-similar, the bound covers every such collapse. Equivalently, each vortex travels more than twice its initial distance from the collision point before the collapse. For two concentric regular n-gons we give the product in closed form and its minimum over the relative rotation.
 
-The proofs are self-contained. The algebraic steps were verified in exact arithmetic, and all results were checked against direct Biot–Savart computations in high-precision arithmetic. The code and data are publicly available. The manuscript is also posted on arXiv as [arXiv identifier].
+The proofs are self-contained. The algebraic steps were verified in exact arithmetic, and the formulas for P, its minima and the vortex paths were checked against direct Biot–Savart computations in high-precision arithmetic. The code and data are publicly available. The manuscript is also posted on arXiv as [arXiv identifier].
 
 The manuscript has not been published and is not under consideration elsewhere. Preparation of the work was AI-assisted, as stated in the manuscript, and the author takes full responsibility for its content.
 

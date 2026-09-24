@@ -638,13 +638,13 @@ for g in GRID:
         devg = max(abs(Pp - mp.sqrt(2)), abs(Pm - mp.sqrt(2)))
     else:
         devg = max(abs(Pm - pr[0]), abs(Pp - pr[1]))
-    worstgrid = max(worstgrid, devg/max(1, abs(Pp)))
+    worstgrid = max(worstgrid, devg)
     rows.append((g, Pp, Pm, devg))
 print('\n   %-8s %-24s %-24s %-10s %s' % ('mu', 'P_+ min on (0,th0)', 'P_- min on (pi,2pi-th0)', 'argmin', '|direct-poly|'))
 for g, Pp, Pm, devg in rows:
     print('   %-8s %-24s %-24s %-10s %s' % (g, mp.nstr(Pp, 18), mp.nstr(Pm, 18), 'A-' if Pp - Pm > 1e-20 else 'tie' if abs(Pp - Pm) <= 1e-20 else 'A+',
                                          mp.nstr(devg, 2)))
-check('7b grid: direct minimization agrees with the roots of Q (rel. dev < 1e-20)', worstgrid < mp.mpf('1e-20'),
+check('7b grid: direct minimization agrees with the roots of Q (abs. dev < 1e-20)', worstgrid < mp.mpf('1e-20'),
       mp.nstr(worstgrid, 3))
 mono = all(rows[i][2] < rows[i + 1][2] and rows[i][1] > rows[i + 1][1] for i in range(len(rows) - 1))
 check('7b grid: P_- increasing, P_+ decreasing, P_- < P_+ for mu < 1', mono and all(r[2] < r[1] for r in rows[:-1]))
@@ -793,6 +793,186 @@ check('9f brute force t = r/s, s < 150, |r| <= 300: G(t) is a square only at t =
 print('   CONCLUSION (proved): for every rational mu > 0 with mu != 1, K(mu, .) has no rational root, hence')
 print('   Q_mu(y) is an irreducible cubic, hence (6d) Q_mu(P^2) is an irreducible sextic: the two branch')
 print('   minima are Galois-conjugate algebraic numbers of degree exactly 6.  At mu = 1 both equal sqrt 2.')
+
+# ==================================================================================
+hdr('10. Path length and spiral angle; Remark 2; Section 4; Proposition 1; Remark 1  [exact + numerical]')
+# ==================================================================================
+# 10a. Integrate the Biot-Savart ODE (RK4, 30 digits) and compare each vortex's distance to the
+#      collision point, rotation angle, velocity angle and path length with the self-similar formulas.
+mp.mp.dps = 30
+w_r = w_ph = w_ang = w_len = mp.mpf(0)
+for (mu, arc) in [('0.3', '+'), ('0.3', '-'), ('0.5', '-'), ('2', '+'), ('2', '-')]:
+    muv = mp.mpf(mu)
+    th0 = mp.acos((muv - 1)/(2*mp.sqrt(1 + muv + muv**2)))
+    thv = th0/2 if arc == '+' else mp.pi + (mp.pi - th0)/2
+    Gs = Gams(muv)
+    zs = config_theta(muv, thv)                       # centre of vorticity at 0
+    k0 = kappa_formula(muv, thv)
+    tc = -1/(2*k0.real)
+    Pk = P_of_kappa(k0)
+    cos_pred = 1/mp.sqrt(1 + 4*Pk**2)                 # cos of the angle arctan(2P)
+    T = mp.mpf('0.9')*tc
+    nsteps = 3000
+    h = T/nsteps
+    z = list(zs)
+    speeds = [[abs(v) for v in rhs(Gs, z)]]
+    for i in range(nsteps):
+        k1 = rhs(Gs, z)
+        k2 = rhs(Gs, [z[j] + h/2*k1[j] for j in range(3)])
+        k3 = rhs(Gs, [z[j] + h/2*k2[j] for j in range(3)])
+        k4 = rhs(Gs, [z[j] + h*k3[j] for j in range(3)])
+        z = [z[j] + h/6*(k1[j] + 2*k2[j] + 2*k3[j] + k4[j]) for j in range(3)]
+        t = (i + 1)*h
+        vel = rhs(Gs, z)
+        speeds.append([abs(v) for v in vel])
+        if (i + 1) % 300 == 0:
+            lam2 = 1 - t/tc
+            phi_pred = -k0.imag*tc*mp.log(lam2)
+            for j in range(3):
+                w_r = max(w_r, abs(abs(z[j])**2 - abs(zs[j])**2*lam2)/(abs(zs[j])**2*lam2))
+                w_ph = max(w_ph, abs(mp.arg(z[j]/zs[j]*mp.expj(-phi_pred))))
+                cos_meas = (vel[j]*mp.conj(-z[j])).real/(abs(vel[j])*abs(z[j]))
+                w_ang = max(w_ang, abs(cos_meas - cos_pred))
+    for j in range(3):                                # composite Simpson rule over the RK4 grid
+        f = [sp_[j] for sp_ in speeds]
+        L = h/3*(f[0] + f[-1] + 4*sum(f[1:-1:2]) + 2*sum(f[2:-1:2]))
+        L_pred = mp.sqrt(1 + 4*Pk**2)*abs(zs[j])*(1 - mp.sqrt(1 - mp.mpf('0.9')))
+        w_len = max(w_len, abs(L - L_pred)/L_pred)
+    print('   mu=%s arc A%s: P=%s, 2P tan-angle check and path length to 0.9 t_c done' % (mu, arc, mp.nstr(Pk, 12)))
+check('10a ODE to 0.9 t_c: |z_j - z_c|^2 = r_j0^2 (1 - t/t_c) for every vortex', w_r < mp.mpf('1e-9'), mp.nstr(w_r, 3))
+check('10a ODE to 0.9 t_c: rotation angle = -omega0 t_c ln(1 - t/t_c) for every vortex', w_ph < mp.mpf('1e-9'), mp.nstr(w_ph, 3))
+check('10a ODE: the velocity makes the angle arctan(2P) with the direction to the collision point',
+      w_ang < mp.mpf('1e-9'), mp.nstr(w_ang, 3))
+check('10a ODE: path length to 0.9 t_c = r_j0 sqrt(1 + 4P^2)(1 - sqrt(0.1))', w_len < mp.mpf('1e-9'), mp.nstr(w_len, 3))
+
+# 10b. Remark 2: Gamma = (1, 1, -1/2), z1 = 0, z2 = 1, z3 = 1/2 + (sqrt3/2) e^{i beta}.
+mp.mp.dps = 50
+G11 = [mp.mpf(1), mp.mpf(1), mp.mpf(-1)/2]
+def kappa_beta(beta):
+    zs = [mp.mpc(0), mp.mpc(1), mp.mpf(1)/2 + mp.sqrt(3)/2*mp.expj(beta)]
+    ks, _ = kappas_direct(G11, zs)
+    return ks
+dev_r2 = mp.mpf(0); arcs_ok = True
+for bb in ['0.05', '0.3', '0.7', '1.2', '1.5', '3.2', '3.6', '4.0', '4.5', '4.7']:
+    beta = mp.mpf(bb)
+    ks = kappa_beta(beta)
+    spread = max(abs(ks[j] - ks[0]) for j in range(3))/abs(ks[0])
+    collapsing = ks[0].real < 0
+    in_arc = (0 < beta < mp.pi/2) or (mp.pi < beta < 3*mp.pi/2)
+    arcs_ok = arcs_ok and collapsing == in_arc and spread < mp.mpf('1e-45')
+    if collapsing:
+        dev_r2 = max(dev_r2, abs(P_of_kappa(ks[0]) - (3 - mp.cos(2*beta))/(2*mp.sin(2*beta))))
+for bb in ['1.8', '2.5', '5.0', '6.0']:                 # the other two arcs expand
+    arcs_ok = arcs_ok and kappa_beta(mp.mpf(bb))[0].real > 0
+check('10b Remark 2: collapse exactly on 0 < beta < pi/2 and pi < beta < 3pi/2 (sampled), self-similar',
+      arcs_ok)
+check('10b Remark 2: Biot-Savart P = (3 - cos 2beta)/(2 sin 2beta) on the collapsing arcs', dev_r2 < mp.mpf('1e-45'),
+      mp.nstr(dev_r2, 3))
+fb = lambda bb: P_of_kappa(kappa_beta(bb)[0])
+r2min = []
+for (a_, b_) in [(mp.mpf('0.01'), mp.pi/2 - mp.mpf('0.01')), (mp.pi + mp.mpf('0.01'), 3*mp.pi/2 - mp.mpf('0.01'))]:
+    bmin, Pmin_ = golden_min(fb, a_, b_, mp.mpf('1e-20'))
+    r2min.append((Pmin_, mp.cos(2*bmin)))
+check('10b Remark 2: on both arcs min P = sqrt 2 at cos 2beta = 1/3',
+      all(abs(pm - mp.sqrt(2)) < mp.mpf('1e-30') and abs(cb - mp.mpf(1)/3) < mp.mpf('1e-15') for pm, cb in r2min),
+      [(mp.nstr(pm, 20), mp.nstr(cb, 15)) for pm, cb in r2min])
+
+# 10c. Section 4, exact and for general n.
+n_, x_, rho_, al_ = sp.symbols('n x rho alpha', positive=True)
+Eh, mexp, zt, ztb = sp.symbols('E m zeta zetabar', positive=True)
+v_ = rho_*sp.exp(I*al_)
+S_z = x_*(n_ - 1)/2 - n_/(1 - v_)
+S_zeta = -(n_ - 1)/(2*x_) - n_*v_/(1 - v_)
+check('10c the two quotients are equal iff (n-1)x^2 - 2nx + (n-1) = 0  (eq. 11)',
+      sp.simplify(2*x_*(S_z - S_zeta) - ((n_ - 1)*x_**2 - 2*n_*x_ + (n_ - 1))) == 0)
+zeta_quot = (-(n_ - 1)/(2*zt) + zt*ztb*n_*zt**(n_ - 1)/(zt**n_ - 1))/ztb       # conj(zeta dot)/conj(zeta), z = 1, x = |zeta|^2
+check('10c the zeta quotient follows from eq. (10) with z = 1, |zeta|^2 = x',
+      sp.simplify(sp.powsimp(zeta_quot - (-(n_ - 1)/(2*zt*ztb) - n_*zt**n_/(1 - zt**n_)), force=True)) == 0)
+pair_sum = sp.binomial(n_, 2)*x_**2 + sp.binomial(n_, 2) - n_**2*x_
+check('10c sum_{i<j} Gamma_i Gamma_j of the 2n vortices = (n/2)((n-1)x^2 - 2nx + (n-1))',
+      sp.simplify(sp.expand_func(pair_sum) - n_/2*((n_ - 1)*x_**2 - 2*n_*x_ + (n_ - 1))) == 0)
+kk = sp.symbols('k', positive=True)                     # n = k + 1 > 1
+xn = (kk + 1 + sp.sqrt(2*kk + 1))/kk
+check('10c x_n = (n + sqrt(2n-1))/(n-1) is a root of (11), (x_n + 1/x_n)/2 = n/(n-1), (n-1)x_n - n = sqrt(2n-1)',
+      sp.simplify(kk*xn**2 - 2*(kk + 1)*xn + kk) == 0 and sp.simplify((xn + 1/xn)/2 - (kk + 1)/kk) == 0
+      and sp.simplify(kk*xn - (kk + 1) - sp.sqrt(2*kk + 1)) == 0)
+Kn = (n_ - 1)*x_*(rho_ + 1/rho_)/2 - n_/rho_
+ReS = sp.re(sp.expand_complex(S_z))
+absv2 = 1 - 2*rho_*sp.cos(al_) + rho_**2
+check('10c |1-v|^2 Re S / rho = K_n - ((n-1)x - n) cos alpha',
+      sp.simplify(absv2*ReS/rho_ - (Kn - ((n_ - 1)*x_ - n_)*sp.cos(al_))) == 0)
+kap = I*sp.conjugate(S_z)/(2*pi)                        # conj(kappa) = S/(2 pi i)
+kap = sp.expand_complex(kap)
+check('10c Re kappa = -n rho sin(alpha)/(2 pi |1-v|^2)',
+      sp.simplify(sp.re(kap) + n_*rho_*sp.sin(al_)/(2*pi*absv2)) == 0)
+bS = sp.symbols('b', positive=True)                     # b stands for sqrt(2n-1) = (n-1)x - n
+Pring = sp.simplify((sp.im(kap)/(-2*sp.re(kap))).subs(x_, (bS + n_)/(n_ - 1)))
+check('10c P = (K_n - sqrt(2n-1) cos(n theta))/(2n sin(n theta))  (eq. 12)',
+      sp.simplify(Pring - ((Kn.subs(x_, (bS + n_)/(n_ - 1)) - bS*sp.cos(al_))/(2*n_*sp.sin(al_)))) == 0)
+Kn_E = (n_ - 1)*Eh**2*(Eh**mexp + Eh**-mexp)/2 - (n_ - 1)*(Eh**2 + Eh**-2)/2*Eh**-mexp     # x = E^2, rho = E^n, n = (n-1)cosh(eta)
+check('10c K_n = (n-1) sinh((n+2) eta/2) when x = e^eta, rho = e^{n eta/2}, n = (n-1) cosh eta',
+      sp.simplify(sp.expand(Kn_E - (n_ - 1)*(Eh**(mexp + 2) - Eh**(-mexp - 2))/2)) == 0)
+check('10c K_n - sqrt(2n-1) = (n-1) x (rho^{1/2} - rho^{-1/2})^2/2 + n(1 - 1/rho)',
+      sp.simplify((n_ - 1)*x_*(sp.sqrt(rho_) - 1/sp.sqrt(rho_))**2/2 + n_*(1 - 1/rho_) - (Kn - ((n_ - 1)*x_ - n_))) == 0)
+t_ = sp.symbols('t')
+table = {2: (2 + sp.sqrt(3), 4*sp.sqrt(3), 3*sp.sqrt(5)/4, sp.Rational(1, 4)),
+         3: ((3 + sp.sqrt(5))/2, sp.Integer(11), sp.sqrt(29)/3, sp.sqrt(5)/11),
+         4: ((4 + sp.sqrt(7))/3, 55*sp.sqrt(7)/9, sp.sqrt(322)/9, sp.Rational(9, 55)),
+         5: (sp.Integer(2), 127*sp.sqrt(2)/8, sp.sqrt(31682)/80, 12*sp.sqrt(2)/127)}
+tab_ok = True
+for nn, (xc, Kc, Fc, cc) in table.items():
+    xv = (nn + sp.sqrt(2*nn - 1))/(nn - 1)
+    rv = xv**sp.Rational(nn, 2)
+    Kv = (nn - 1)*xv*(rv + 1/rv)/2 - nn/rv
+    for expr in (xv - xc, Kv - Kc, sp.sqrt(Kv**2 - (2*nn - 1))/(2*nn) - Fc, sp.sqrt(2*nn - 1)/Kv - cc):
+        tab_ok = tab_ok and sp.minimal_polynomial(expr, t_) == t_
+check('10c the table of x_n, K_n, F_n and cos(n theta) at the minimum, n = 2..5, exactly', tab_ok)
+# the two sums over roots of unity and the reduced equations (10), numerically for n = 2..10
+mp.mp.dps = 50
+dev10 = mp.mpf(0)
+for nn in range(2, 11):
+    eps_ = mp.expj(2*mp.pi/nn)
+    dev10 = max(dev10, abs(sum(1/(1 - eps_**k) for k in range(1, nn)) - mp.mpf(nn - 1)/2))
+    zz, zeta = mp.mpc('0.83', '0.21'), mp.mpc('-0.4', '1.37')
+    xv = mp.mpf('1.9')
+    dev10 = max(dev10, abs(sum(1/(zz - zeta*eps_**k) for k in range(nn)) - nn*zz**(nn - 1)/(zz**nn - zeta**nn)))
+    pos = [zz*eps_**k for k in range(nn)] + [zeta*eps_**k for k in range(nn)]
+    gam = [xv]*nn + [mp.mpf(-1)]*nn
+    def vel(j):
+        return mp.conj(sum(gam[k]/(pos[j] - pos[k]) for k in range(2*nn) if k != j)/(2*mp.pi*mp.mpc(0, 1)))
+    red_z = mp.conj((xv*(nn - 1)/(2*zz) - nn*zz**(nn - 1)/(zz**nn - zeta**nn))/(2*mp.pi*mp.mpc(0, 1)))
+    red_zeta = mp.conj((-(nn - 1)/(2*zeta) + xv*nn*zeta**(nn - 1)/(zeta**nn - zz**nn))/(2*mp.pi*mp.mpc(0, 1)))
+    dev10 = max(dev10, abs(vel(0) - red_z), abs(vel(nn) - red_zeta))
+check('10c the root-of-unity sums and the reduced equations (10) against the full Biot-Savart sum, n = 2..10',
+      dev10 < mp.mpf('1e-45'), mp.nstr(dev10, 3))
+
+# 10d. Proposition 1: the parameters of the trigonometric solution, exactly.
+qv, sv = sp.symbols('qv sv')
+cubq = 8748*qv**3 - 49005*qv**2 + 27794*qv + 18723
+dep = sp.expand(cubq.subs(qv, sv + sp.Rational(605, 324))/8748)
+p_dep, r_dep = dep.coeff(sv, 1), dep.coeff(sv, 0)
+sigma_ = 2*sp.sqrt(-p_dep/3)
+X_ = 3*r_dep/(2*p_dep)*sp.sqrt(-3/p_dep)
+check('10d Prop. 1: q = s + 605/324 removes the quadratic term; sigma = 2 sqrt(-p/3) = 7 sqrt(5201)/162,'
+      ' X = (3r/2p) sqrt(-3/p) = 245351/5201^(3/2)',
+      dep.coeff(sv, 2) == 0 and sp.simplify(sigma_ - 7*sp.sqrt(5201)/162) == 0
+      and sp.simplify(X_ - 245351/sp.Integer(5201)**sp.Rational(3, 2)) == 0)
+check('10d Prop. 1: the cubic in q equals 16 Q(1/2, q)', sp.expand(16*Qexp.subs(m, sp.Rational(1, 2)).subs(y, qv) - cubq) == 0)
+
+# 10e. Remark 1: Q(a/b, xi^2) irreducible over Q for every a/b in (0, 1) with b <= 30, one by one.
+xi = sp.symbols('xi')
+cnt = 0
+irr_all = True
+for bden in range(2, 31):
+    for anum in range(1, bden):
+        if sp.igcd(anum, bden) != 1:
+            continue
+        cnt += 1
+        sext = sp.Poly(sp.numer(sp.together(Qexp.subs(m, sp.Rational(anum, bden)).subs(y, xi**2))), xi)
+        fl = sp.factor_list(sext.as_expr())[1]
+        irr_all = irr_all and len(fl) == 1 and fl[0][1] == 1 and sp.degree(fl[0][0], xi) == 6
+check('10e Remark 1: Q(a/b, xi^2) factored directly: irreducible sextic for all a/b in (0,1), b <= 30',
+      irr_all and cnt == 277, 'count %d' % cnt)
 
 # ==================================================================================
 hdr('SUMMARY')

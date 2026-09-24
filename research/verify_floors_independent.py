@@ -370,7 +370,13 @@ for frac in (mp.mpf('0.25'), mp.mpf('0.5'), mp.mpf('0.75'), mp.mpf('0.9')):
     zs = [mp.mpc(y[2 * i], y[2 * i + 1]) for i in range(3)]
     size2 = abs(zs[1] - zs[0]) ** 2
     expected = abs(zs0[1] - zs0[0]) ** 2 * (1 + 2 * km.real * t)
-    checks.append({'fractionOfTc': float(frac), 'relErrSize2': float(abs(size2 - expected) / expected)})
+    lam2 = 1 + 2 * km.real * t
+    phi_pred = -km.imag * tc_pred * mp.log(lam2)
+    r2err = max(abs(abs(zs[j] - zc) ** 2 - abs(zs0[j] - zc) ** 2 * lam2) / (abs(zs0[j] - zc) ** 2 * lam2) for j in range(3))
+    phierr = max(abs(mp.arg((zs[j] - zc) / (zs0[j] - zc) * mp.expj(-phi_pred))) for j in range(3))
+    checks.append({'fractionOfTc': float(frac), 'relErrSize2': float(abs(size2 - expected) / expected),
+                   'relErrDistanceToCollisionPoint2AllVortices': float(r2err),
+                   'rotationAngleErrAllVortices': float(phierr)})
 results['timeIntegration'] = {'predictedTc': mp.nstr(tc_pred, 20), 'omega0': mp.nstr(abs(km.imag), 20),
                               'omega0TimesTc': mp.nstr(abs(km.imag) * tc_pred, 20), 'checks': checks}
 
