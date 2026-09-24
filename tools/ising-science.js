@@ -1,4 +1,5 @@
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 // node tools/ising-science.js [--full] [--write]
 //
 // Validates the ising tab's actual GPU checkerboard Metropolis (ISING_STEP in src/modules/lattice.js)
@@ -277,7 +278,7 @@ const PAGE_RUNNER = () => {
     },
   };
 };
-const BROWSER_ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'];
+const BROWSER_ARGS = glArgs();
 
 async function openStudio(browser, file) {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } }), errors = [];

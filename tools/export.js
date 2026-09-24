@@ -12,6 +12,7 @@
 // and the vector RIP are all covered as the user meets them.
 //
 // Set STUDIO=path/to/studio.html to test a copy.
+const { glArgs } = require('./lib/gl-args');
 const path = require('path');
 const { chromium } = require('playwright');
 
@@ -32,7 +33,7 @@ const blank = m => !m.lum || ((m.lum.p99 - m.lum.p01) < 12 && m.lum.ink < 0.004)
   if (!id) { console.error('usage: node tools/export.js <id> [inches] [dpi] [settleMs] [exportMs]'); process.exit(1); }
 
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
-  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+  const b = await chromium.launch({ args: [...glArgs(), '--ignore-gpu-blocklist'] });
   const p = await b.newPage({ viewport: { width: 1400, height: 900 } });
   const errs = [];
   p.on('console', m => { const t = m.text(); if (m.type() === 'error' && !NOISE.some(r => r.test(t))) errs.push(t); });

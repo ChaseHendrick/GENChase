@@ -1,4 +1,5 @@
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),assert=require('node:assert/strict'),{execFileSync}=require('node:child_process'),{chromium}=require('playwright');
 async function main(){
  const root=path.resolve(__dirname,'..'),zip=path.resolve(process.argv[2]||path.join(root,'tools/dist/release/GENChase-studio.zip')),dir=fs.mkdtempSync(path.join(os.tmpdir(),'genchase-distribution-'));
@@ -11,7 +12,7 @@ with zipfile.ZipFile(sys.argv[1]) as z:
  assert z.testzip() is None
  z.extractall(sys.argv[2])`,zip,dir]);
  const home=path.join(dir,'GENChase'),meta=JSON.parse(fs.readFileSync(path.join(home,'VERSION.json')));assert(meta.version&&/^[a-f0-9]{40}$/.test(meta.commit));
- const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+ const browser=await chromium.launch({args:glArgs()});
  try{const page=await browser.newPage(),errors=[],requests=[];page.on('pageerror',e=>errors.push(e.message));await page.route(/^https?:/,r=>{requests.push(r.request().url());return r.abort();});
  await page.goto('file://'+path.join(home,'START-HERE.html'));
  const axe=fs.readFileSync(require.resolve('axe-core/axe.min.js'),'utf8');

@@ -10,12 +10,13 @@
 //   - A CSS transition means getComputedStyle right after a click returns the value mid-animation.
 //     Wait for it to settle or you will assert against a frame nobody sees.
 //   - Do not put a word in the seed that you also grep the hash for. The seed IS in the hash.
+const { glArgs } = require('./lib/gl-args');
 const path = require('path');
 const { chromium } = require('playwright');
 
 (async()=>{
   const studio=process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
-  const b=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+  const b=await chromium.launch({args:glArgs()});
   const p=await b.newPage({viewport:{width:1400,height:900}});
   const errs=[]; p.on('pageerror',e=>{if(!/ServiceWorker/.test(e.message))errs.push(e.message);});
   await p.goto('file://'+studio+'#snowflake/gravner-2008',{waitUntil:'domcontentloaded'});

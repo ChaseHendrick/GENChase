@@ -1,5 +1,6 @@
 // Bounded offline configuration search; this does not discover/certify a physical law.
 // Requires Playwright + Chromium as in BUILDING.md. The output JSON is also a replay input.
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto'), assert = require('node:assert/strict');
 const ROOT = path.resolve(__dirname, '..');
 const SETTINGS = {
@@ -60,7 +61,7 @@ async function main() {
   const marker = '  Studio.register({'; assert.equal(source.split(marker).length, 2, 'Maxwell shader hook changed');
   const instrumented = source.replace(marker, '  window.maxwellSearchShaders = {H_FS,E_FS};\n' + marker);
   const { chromium } = require('playwright');
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   try {
     const page = await browser.newPage();
     await page.goto('file://' + path.join(ROOT, 'dist/studio.html') + '#three-vortex-bound/maxwell-offline-search');

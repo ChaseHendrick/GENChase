@@ -38,6 +38,7 @@ The default is **All registered numerical and print checks**. This is the offici
 | One technique: runtime and determinism | `node tools/check.js ID 12000` |
 | One technique: 8-inch, 300 ppi export | `node tools/export.js ID 8 300` |
 | Full development and registered science checks | `npm run test:all` |
+| Hardware GPU: registered GPU science and print checks | `node tools/gpu-science.js` |
 
 Choose `ID` from the catalog. There is no freeform command box. The [runner guide](../../tools/VERIFY.md) explains evidence gaps and exit codes. In particular, exit **2** means requested evidence is incomplete, even when all registered tests passed. The app retains that result instead of turning it green.
 
@@ -97,7 +98,7 @@ Choose **Light**, **Balanced** or **Continuous compute**. Light and Balanced sch
 
 On Apple Silicon macOS, **Pause on battery** and **Pause at serious or critical thermal state** use Apple's system readings. With thermal protection enabled, an unavailable thermal reading also pauses work and is reported. These controls supplement the operating system's own thermal management. They do not report a temperature in degrees. Changing a duty preference does not change the solver's numerical timestep.
 
-The native Metal job first verifies the actual Apple GPU against a CPU reference and failure controls. If that verification fails, the workload does not start. Other browser checks may deliberately use Chromium's software renderer, so a GPU-themed studio module does not imply that its validation job uses the physical GPU. See [the Apple GPU evidence and limits](APPLE-GPU.md).
+The native Metal job first verifies the actual Apple GPU against a CPU reference and failure controls. If that verification fails, the workload does not start. Other browser checks may deliberately use Chromium's software renderer, so a GPU-themed studio module does not imply that its validation job uses the physical GPU. See [the Apple GPU evidence and limits](APPLE-GPU.md). The **Hardware GPU** job is the exception: it runs the registered GPU science and print-state tools on this computer's own GPU through Chromium, refuses (exit 3, nothing written) when the browser only offers a software renderer such as SwiftShader or llvmpipe, and writes `validation/results/gpu/<platform>-<renderer>.json`, which sharing includes. See [the hardware GPU guide](../../docs/HARDWARE-GPU.md).
 
 ## Stop, restart and resume
 

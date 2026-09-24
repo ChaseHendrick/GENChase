@@ -1,8 +1,9 @@
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const assert=require('node:assert/strict'),path=require('node:path');
 const {chromium}=require('playwright');
 (async()=>{
- const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+ const browser=await chromium.launch({args:glArgs()});
  try{
  const page=await browser.newPage();await page.goto('file://'+path.resolve(__dirname,'../dist/studio.html')+'#three-vortex-bound/api-baseline');
  await page.waitForFunction(()=>Studio.ready);await page.evaluate(()=>Studio.ready);

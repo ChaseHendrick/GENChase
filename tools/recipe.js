@@ -8,6 +8,7 @@
 //
 // The cases are derived from studio.html itself rather than listed here, so this cannot drift from
 // the file it checks: every legacy declaration in the source becomes five assertions.
+const { glArgs } = require('./lib/gl-args');
 const path = require('path'), fs = require('fs');
 const { chromium } = require('playwright');
 const b64 = o => Buffer.from(JSON.stringify(o)).toString('base64url');
@@ -62,7 +63,7 @@ function cases(src) {
   const src = fs.readFileSync(studio, 'utf8');
   const cs = cases(src);
   if (!cs.length) { console.log('no legacy declarations to check'); return; }
-  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const b = await chromium.launch({ args: glArgs() });
   const jobs = [];
   const LABEL = { grid: 'Grid', stream: 'Random stream' };
   for (const c of cs) {

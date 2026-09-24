@@ -1,5 +1,7 @@
 // Probe the actual headless renderer before collecting scientific observations.
 'use strict';
+// The software fallback is always SwiftShader; GENCHASE_GL=hardware concerns the tools, not this probe.
+const { swiftshaderArgs } = require('../../tools/lib/gl-args');
 async function probe(browser) {
   const page = await browser.newPage();
   try {
@@ -28,7 +30,7 @@ async function launchGraphicsBrowser(chromium, { platform = process.platform, ha
   } catch (error) { fallbackReason = 'Native headless graphics setup failed: ' + error.message; }
   if (browser) await browser.close();
   // Only local repository pages are opened by harvest, with HTTP(S) requests blocked.
-  const args = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'];
+  const args = swiftshaderArgs();
   browser = await chromium.launch({ headless: true, args, ...signals });
   try {
     graphics = await probe(browser);

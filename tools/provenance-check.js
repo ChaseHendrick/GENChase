@@ -7,8 +7,10 @@
 // Browser: Studio.getProvenance() matches the embedded build facts and the source file's SHA-256;
 // Studio.exportData() gives a readable .npz (a tab without exportData() says so instead of inventing
 // arrays); and the PNG, PDF, TIFF and JPEG from the real export buttons carry the same provenance.
-// The status badge and the tab strip show the validation status. Needs Playwright (see TESTING.md).
+// The status badge and the tab strip show the validation status, and a tab forced onto its rgba16f
+// fallback says so in its status line and its provenance. Needs Playwright (see TESTING.md).
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 const fs = require('node:fs');
@@ -85,7 +87,7 @@ async function browserChecks() {
   const html = fs.readFileSync(studio, 'utf8');
   const build = JSON.parse(/id="build-info">([^<]*)</.exec(html)[1]);
   const records = JSON.parse(fs.readFileSync(path.join(root, 'validation', 'techniques.json'), 'utf8'));
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+  const browser = await chromium.launch({ args: [...glArgs(), '--ignore-gpu-blocklist'] });
   try {
     const ctx = await browser.newContext({ acceptDownloads: true, viewport: { width: 1400, height: 900 } });
     const page = await ctx.newPage();
@@ -114,7 +116,30 @@ async function browserChecks() {
     // The badge and the tab strip.
     const badge = await page.locator('#btn-science-report').innerText(), badgeName = await page.locator('#btn-science-report').getAttribute('aria-label');
     ok(badge.trim() === '✓ Validated' && /^Validated within stated limits: open the science report$/.test(badgeName), 'stage badge shows the status', badge + ' / ' + badgeName);
-    ok(await page.locator('.tab[data-id="ising"] .tab-evidence').innerText() === '○', 'tab strip shows the status glyph');
+    // One validated tab and one unvalidated tab, so the glyph has to follow the record rather than be constant.
+    ok(await page.locator('.tab[data-id="ising"] .tab-evidence').innerText() === '✓' && await page.locator('.tab[data-id="cyclicca"] .tab-evidence').innerText() === '○', 'tab strip shows the status glyph');
+
+    // Half-float state is visible. Hide EXT_color_buffer_float so the tab takes its own rgba16f fallback.
+    const readStatus = p => p.evaluate(() => [...document.querySelectorAll('#status span')].map(x => ({ text: x.innerText, cls: x.className })));
+    const shape = spans => spans.filter(x => !/half-float/.test(x.cls)).map(x => x.text.replace(/[-+]?\d[\d,.]*/g, '#'));
+    const full = await readStatus(page);
+    ok(prov.compute.precision === 'float32 state' && !full.some(x => /half-float/.test(x.cls)), 'control: float32 state shows no half-float span', JSON.stringify(full));
+    const halfCtx = await browser.newContext({ viewport: { width: 1400, height: 900 } });
+    await halfCtx.addInitScript(() => {
+      const get = WebGL2RenderingContext.prototype.getExtension;
+      WebGL2RenderingContext.prototype.getExtension = function (name) { return name === 'EXT_color_buffer_float' ? null : get.call(this, name); };
+    });
+    const half = await halfCtx.newPage();
+    half.on('pageerror', e => errors.push(e.message));
+    // A small grid without warm-up: the status line appears at once, and SwiftShader's float16 path is slow.
+    const halfRecipe = Buffer.from(JSON.stringify({ seed: 'provenance-check', v: prov.recipeVersion, grid: 128, warmup: 0 }), 'utf8').toString('base64url');
+    await half.goto('file://' + studio + '#cahn/provenance-check/' + halfRecipe, { waitUntil: 'domcontentloaded' });
+    await half.waitForFunction(() => window.Studio && Studio.getRecipe() && /step/.test(document.querySelector('#status').innerText), null, { timeout: 90000 });
+    const halfPrecision = await half.evaluate(() => Studio.getProvenance().compute.precision), halfSpans = await readStatus(half);
+    ok(halfPrecision === 'float16 state (half-float fallback)', 'provenance records the half-float fallback', halfPrecision);
+    ok(halfSpans.filter(x => /half-float/.test(x.cls)).length === 1 && halfSpans.some(x => /half-float/.test(x.cls) && /measurements carry half-float rounding/.test(x.text)), 'the status line says measurements carry half-float rounding', JSON.stringify(halfSpans));
+    ok(JSON.stringify(shape(halfSpans)) === JSON.stringify(shape(full)), 'the half-float span is additive: every other status span keeps its form', JSON.stringify(shape(halfSpans)) + ' vs ' + JSON.stringify(shape(full)));
+    await halfCtx.close();
 
     // A tab without exportData(): meta.json says so rather than inventing arrays.
     await page.evaluate(() => { location.hash = '#reuleaux/provenance-check'; });

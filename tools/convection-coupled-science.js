@@ -1,5 +1,6 @@
 // Full coupled free-slip Boussinesq chain vs Float64 CPU twin and continuum linear rates.
 // Below-onset decay only; not onset, turbulence, Nu, or default SOR-count certification.
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const { chromium } = require('playwright');
 
@@ -244,7 +245,7 @@ function makeCpu(H, iters) {
   assert(source.includes('function convectionCreate'), 'convectionCreate missing');
   const expose = source.slice(0, source.lastIndexOf('})();'))
     + 'window.convScience={CONV_ADV_FS,CONV_DIFF_FS,CONV_SOR_FS,CONV_VEL_FS};})();';
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   let gpu;
   try {
     const page = await browser.newPage();

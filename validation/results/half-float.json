@@ -1,0 +1,1244 @@
+{
+  "date": "2026-09-24",
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "recipeVersion": 2,
+  "seed": "half-float-check",
+  "steps": [
+    100,
+    1000
+  ],
+  "method": "Real studio, each tab's default recipe with warmup N and running:false; float16 by hiding EXT_color_buffer_float in an init script; state from Studio.exportData(). relL2 = ||f16 - f32||2 / ||f32||2 over the exported array; maxRel = max|f16 - f32| / max|f32|; moments are the mean and standard deviation of each channel of the exported array; unchangedSince says whether the state of each precision is bit for bit the same as at the first step count. One seed: the differences are exact for it, with no sampling error, and their spread over seeds is not measured.",
+  "controls": "float32 repeated bit for bit at the largest step count; rgba16f in the fallback export and float16 provenance; half-float status span present only on the fallback; nonzero difference.",
+  "seconds": 638,
+  "rows": [
+    {
+      "id": "amb",
+      "steps": 100,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "field",
+      "dt": 0.011527377521613832,
+      "relL2": 0.0016473252517924563,
+      "maxAbs": 0.0028301775455474854,
+      "maxRel": 0.00569537694801203,
+      "fieldMaxAbs": 0.496925413608551,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": -0.40014943972152534,
+            "sd": 0.02308381649108936
+          }
+        ],
+        "float16": [
+          {
+            "mean": -0.40003110282122284,
+            "sd": 0.023170507780590315
+          }
+        ]
+      },
+      "float32Repeat": "not repeated at this step count",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "⟨φ⟩ # · active terms",
+          "float32": "⟨φ⟩ -0.40 · active terms",
+          "float16": "⟨φ⟩ -0.40 · active terms",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 11.9
+    },
+    {
+      "id": "amb",
+      "steps": 1000,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "field",
+      "dt": 0.011527377521613832,
+      "relL2": 0.03221630622808971,
+      "maxAbs": 0.08028861880302429,
+      "maxRel": 0.1646215957920054,
+      "fieldMaxAbs": 0.4877161979675293,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": -0.4003828739250862,
+            "sd": 0.02722301696088201
+          }
+        ],
+        "float16": [
+          {
+            "mean": -0.40013010520487446,
+            "sd": 0.021918465474539815
+          }
+        ]
+      },
+      "float32Repeat": "identical",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "⟨φ⟩ # · active terms",
+          "float32": "⟨φ⟩ -0.40 · active terms",
+          "float16": "⟨φ⟩ -0.40 · active terms",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 61.6,
+      "unchangedSince": {
+        "steps": 100,
+        "float32": false,
+        "float16": false
+      }
+    },
+    {
+      "id": "cahn",
+      "steps": 100,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "field",
+      "dt": 0.011527377521613832,
+      "relL2": 0.0009785394291471385,
+      "maxAbs": 0.00021983683109283447,
+      "maxRel": 0.002158522583248077,
+      "fieldMaxAbs": 0.10184597223997116,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": -0.000042282108218920925,
+            "sd": 0.02416254858030077
+          }
+        ],
+        "float16": [
+          {
+            "mean": -0.00004238510314280349,
+            "sd": 0.02415460984377333
+          }
+        ]
+      },
+      "float32Repeat": "not repeated at this step count",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "⟨c⟩ ≈ #",
+          "float32": "⟨c⟩ ≈ 0.00",
+          "float16": "⟨c⟩ ≈ 0.00",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 6
+    },
+    {
+      "id": "cahn",
+      "steps": 1000,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "field",
+      "dt": 0.011527377521613832,
+      "relL2": 0.0028412616722585564,
+      "maxAbs": 0.0059130191802978516,
+      "maxRel": 0.01262605500308893,
+      "fieldMaxAbs": 0.4683188199996948,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": -0.00013390025001452075,
+            "sd": 0.11885318271531337
+          }
+        ],
+        "float16": [
+          {
+            "mean": -0.00014657073211310522,
+            "sd": 0.11883375246233564
+          }
+        ]
+      },
+      "float32Repeat": "identical",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "⟨c⟩ ≈ #",
+          "float32": "⟨c⟩ ≈ -0.00",
+          "float16": "⟨c⟩ ≈ -0.00",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 50.9,
+      "unchangedSince": {
+        "steps": 100,
+        "float32": false,
+        "float16": false
+      }
+    },
+    {
+      "id": "ohta",
+      "steps": 100,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "field",
+      "dt": 0.012123048946810122,
+      "relL2": 0.0010187715652805664,
+      "maxAbs": 0.00027076900005340576,
+      "maxRel": 0.0021639474517199516,
+      "fieldMaxAbs": 0.12512734532356262,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": -0.00011126564384176216,
+            "sd": 0.02762127631425652
+          }
+        ],
+        "float16": [
+          {
+            "mean": -0.00011130512166345922,
+            "sd": 0.02761145706267909
+          }
+        ]
+      },
+      "float32Repeat": "not repeated at this step count",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "⟨u⟩ ≈ #",
+          "float32": "⟨u⟩ ≈ 0.00",
+          "float16": "⟨u⟩ ≈ 0.00",
+          "diff": [
+            0
+          ]
+        },
+        {
+          "label": "σ #",
+          "float32": "σ 0.060",
+          "float16": "σ 0.060",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 7.4
+    },
+    {
+      "id": "ohta",
+      "steps": 1000,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "field",
+      "dt": 0.012123048946810122,
+      "relL2": 0.0041408984569440725,
+      "maxAbs": 0.00581786036491394,
+      "maxRel": 0.01600226178524795,
+      "fieldMaxAbs": 0.3635648787021637,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": -0.0004130615469237239,
+            "sd": 0.09794865348562677
+          }
+        ],
+        "float16": [
+          {
+            "mean": -0.00040599507860861515,
+            "sd": 0.09816627196786498
+          }
+        ]
+      },
+      "float32Repeat": "identical",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "⟨u⟩ ≈ #",
+          "float32": "⟨u⟩ ≈ -0.00",
+          "float16": "⟨u⟩ ≈ -0.00",
+          "diff": [
+            0
+          ]
+        },
+        {
+          "label": "σ #",
+          "float32": "σ 0.060",
+          "float16": "σ 0.060",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 67.3,
+      "unchangedSince": {
+        "steps": 100,
+        "float32": false,
+        "float16": false
+      }
+    },
+    {
+      "id": "swift",
+      "steps": 100,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "field",
+      "dt": 0.01514472249106587,
+      "relL2": 0.0009803632866718969,
+      "maxAbs": 0.0003015249967575073,
+      "maxRel": 0.0015814713302733472,
+      "fieldMaxAbs": 0.19066105782985687,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": 0.0001786329228386598,
+            "sd": 0.03913544036323311
+          }
+        ],
+        "float16": [
+          {
+            "mean": 0.00017861626815829793,
+            "sd": 0.03912103319565343
+          }
+        ]
+      },
+      "float32Repeat": "not repeated at this step count",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "r # · above linear onset",
+          "float32": "r 0.35 · above linear onset",
+          "float16": "r 0.35 · above linear onset",
+          "diff": [
+            0
+          ]
+        },
+        {
+          "label": "|u|̄ #",
+          "float32": "|u|̄ 0.03",
+          "float16": "|u|̄ 0.03",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 5.9
+    },
+    {
+      "id": "swift",
+      "steps": 1000,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "field",
+      "dt": 0.01514472249106587,
+      "relL2": 0.004249678735050652,
+      "maxAbs": 0.009002268314361572,
+      "maxRel": 0.011425016074738076,
+      "fieldMaxAbs": 0.7879436016082764,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": -0.00035100682103085854,
+            "sd": 0.429197294965803
+          }
+        ],
+        "float16": [
+          {
+            "mean": -0.00035045228582930295,
+            "sd": 0.42793993648646667
+          }
+        ]
+      },
+      "float32Repeat": "identical",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "r # · above linear onset",
+          "float32": "r 0.35 · above linear onset",
+          "float16": "r 0.35 · above linear onset",
+          "diff": [
+            0
+          ]
+        },
+        {
+          "label": "|u|̄ #",
+          "float32": "|u|̄ 0.38",
+          "float16": "|u|̄ 0.38",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 54.2,
+      "unchangedSince": {
+        "steps": 100,
+        "float32": false,
+        "float16": false
+      }
+    },
+    {
+      "id": "pfc",
+      "steps": 100,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "field",
+      "dt": 0.005,
+      "relL2": 0.003631307887987568,
+      "maxAbs": 0.018887460231781006,
+      "maxRel": 0.013223787435208955,
+      "fieldMaxAbs": 1.42829430103302,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": 0.27998601402136203,
+            "sd": 0.234403115717288
+          }
+        ],
+        "float16": [
+          {
+            "mean": 0.2797574342980677,
+            "sd": 0.23468098378121835
+          }
+        ]
+      },
+      "float32Repeat": "not repeated at this step count",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "⟨ψ⟩ ≈ #",
+          "float32": "⟨ψ⟩ ≈ 0.28",
+          "float16": "⟨ψ⟩ ≈ 0.28",
+          "diff": [
+            0
+          ]
+        },
+        {
+          "label": "r #",
+          "float32": "r -0.25",
+          "float16": "r -0.25",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 10.2
+    },
+    {
+      "id": "pfc",
+      "steps": 1000,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "field",
+      "dt": 0.005,
+      "relL2": 0.044780208244309706,
+      "maxAbs": 0.10414642095565796,
+      "maxRel": 0.11299068914357231,
+      "fieldMaxAbs": 0.9217256903648376,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": 0.2798358935486784,
+            "sd": 0.15866780608353703
+          }
+        ],
+        "float16": [
+          {
+            "mean": 0.2842694728226437,
+            "sd": 0.1656474566293911
+          }
+        ]
+      },
+      "float32Repeat": "identical",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "⟨ψ⟩ ≈ #",
+          "float32": "⟨ψ⟩ ≈ 0.28",
+          "float16": "⟨ψ⟩ ≈ 0.28",
+          "diff": [
+            0
+          ]
+        },
+        {
+          "label": "r #",
+          "float32": "r -0.25",
+          "float16": "r -0.25",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 101.8,
+      "unchangedSince": {
+        "steps": 100,
+        "float32": false,
+        "float16": false
+      }
+    },
+    {
+      "id": "ks",
+      "steps": 100,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "field",
+      "dt": 0.018,
+      "relL2": 0.0009638849671332509,
+      "maxAbs": 0.0005868524312973022,
+      "maxRel": 0.002385235776344188,
+      "fieldMaxAbs": 0.2460353970527649,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": -0.0027261572560789717,
+            "sd": 0.06092883282501572
+          }
+        ],
+        "float16": [
+          {
+            "mean": -0.00272458344443298,
+            "sd": 0.06090927037976234
+          }
+        ]
+      },
+      "float32Repeat": "not repeated at this step count",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "ν #",
+          "float32": "ν 1.00",
+          "float16": "ν 1.00",
+          "diff": [
+            0
+          ]
+        },
+        {
+          "label": "α #",
+          "float32": "α 1.00",
+          "float16": "α 1.00",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 6.4
+    },
+    {
+      "id": "ks",
+      "steps": 1000,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "field",
+      "dt": 0.018,
+      "relL2": 0.015996610866000363,
+      "maxAbs": 0.20644044876098633,
+      "maxRel": 0.020030011451616366,
+      "fieldMaxAbs": 10.306556701660156,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": -2.046245474592058,
+            "sd": 2.2791540310728187
+          }
+        ],
+        "float16": [
+          {
+            "mean": -2.0811146720172737,
+            "sd": 2.3045470654280495
+          }
+        ]
+      },
+      "float32Repeat": "identical",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "ν #",
+          "float32": "ν 1.00",
+          "float16": "ν 1.00",
+          "diff": [
+            0
+          ]
+        },
+        {
+          "label": "α #",
+          "float32": "α 1.00",
+          "float16": "α 1.00",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 56.8,
+      "unchangedSince": {
+        "steps": 100,
+        "float32": false,
+        "float16": false
+      }
+    },
+    {
+      "id": "excitable",
+      "steps": 100,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "species",
+      "dt": 0.012,
+      "relL2": 0.0007316132974384531,
+      "maxAbs": 0.0041318535804748535,
+      "maxRel": 0.004131987313575224,
+      "fieldMaxAbs": 0.999967634677887,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": 0.02844158440055003,
+            "sd": 0.15680747037893664
+          },
+          {
+            "mean": 0.022674884579516517,
+            "sd": 0.09391779634215563
+          }
+        ],
+        "float16": [
+          {
+            "mean": 0.0284455949986295,
+            "sd": 0.15680383516052995
+          },
+          {
+            "mean": 0.02267587311280233,
+            "sd": 0.09391515324850352
+          }
+        ]
+      },
+      "float32Repeat": "not repeated at this step count",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "Barkley · ε #",
+          "float32": "Barkley · ε 0.020",
+          "float16": "Barkley · ε 0.020",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 5.1
+    },
+    {
+      "id": "excitable",
+      "steps": 1000,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "species",
+      "dt": 0.012,
+      "relL2": 0.0012521736043517415,
+      "maxAbs": 0.017150402069091797,
+      "maxRel": 0.017150403091335482,
+      "fieldMaxAbs": 0.9999999403953552,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": 0.22871427493169708,
+            "sd": 0.3979340147888504
+          },
+          {
+            "mean": 0.20797694215979143,
+            "sd": 0.23242369648755629
+          }
+        ],
+        "float16": [
+          {
+            "mean": 0.2287549483457923,
+            "sd": 0.39791264429286094
+          },
+          {
+            "mean": 0.20794950320464947,
+            "sd": 0.23238615088209194
+          }
+        ]
+      },
+      "float32Repeat": "identical",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "Barkley · ε #",
+          "float32": "Barkley · ε 0.020",
+          "float16": "Barkley · ε 0.020",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 34.8,
+      "unchangedSince": {
+        "steps": 100,
+        "float32": false,
+        "float16": false
+      }
+    },
+    {
+      "id": "turing",
+      "steps": 100,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "species",
+      "dt": 0.008333333333333333,
+      "relL2": 0.011105128101227843,
+      "maxAbs": 0.055016398429870605,
+      "maxRel": 0.03975892965137376,
+      "fieldMaxAbs": 1.3837494850158691,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": 1.0082906002366958,
+            "sd": 0.12006389093714297
+          },
+          {
+            "mean": 0.8872967520171661,
+            "sd": 0.013299891948052395
+          }
+        ],
+        "float16": [
+          {
+            "mean": 1.0077900383621756,
+            "sd": 0.12152798239803422
+          },
+          {
+            "mean": 0.8876599688082937,
+            "sd": 0.01332757572847237
+          }
+        ]
+      },
+      "float32Repeat": "not repeated at this step count",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "Schnakenberg · D #",
+          "float32": "Schnakenberg · D 100.0",
+          "float16": "Schnakenberg · D 100.0",
+          "diff": [
+            0
+          ]
+        },
+        {
+          "label": "λ ≈ # cells",
+          "float32": "λ ≈ 12 cells",
+          "float16": "λ ≈ 12 cells",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 6
+    },
+    {
+      "id": "turing",
+      "steps": 1000,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "species",
+      "dt": 0.008333333333333333,
+      "relL2": 0.3004459530464564,
+      "maxAbs": 13.481945037841797,
+      "maxRel": 0.9693512399357644,
+      "fieldMaxAbs": 13.908214569091797,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": 1.0361359597067272,
+            "sd": 1.6099250789005686
+          },
+          {
+            "mean": 0.5276448971024504,
+            "sd": 0.14084493951712493
+          }
+        ],
+        "float16": [
+          {
+            "mean": 1.035821248777235,
+            "sd": 1.6141939687607676
+          },
+          {
+            "mean": 0.5273537493776519,
+            "sd": 0.14393299302343424
+          }
+        ]
+      },
+      "float32Repeat": "identical",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "Schnakenberg · D #",
+          "float32": "Schnakenberg · D 100.0",
+          "float16": "Schnakenberg · D 100.0",
+          "diff": [
+            0
+          ]
+        },
+        {
+          "label": "λ ≈ # cells",
+          "float32": "λ ≈ 12 cells",
+          "float16": "λ ≈ 12 cells",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 45.1,
+      "unchangedSince": {
+        "steps": 100,
+        "float32": false,
+        "float16": false
+      }
+    },
+    {
+      "id": "cyclic",
+      "steps": 100,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "species",
+      "dt": 0.1,
+      "relL2": 0.00042879318476292996,
+      "maxAbs": 0.0009407401084899902,
+      "maxRel": 0.001139957088556963,
+      "fieldMaxAbs": 0.8252416849136353,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": 0.3693343898427998,
+            "sd": 0.329627548398133
+          },
+          {
+            "mean": 0.2548593018263732,
+            "sd": 0.29797198572527894
+          },
+          {
+            "mean": 0.3379476632619365,
+            "sd": 0.34612880093474063
+          }
+        ],
+        "float16": [
+          {
+            "mean": 0.36936505362973915,
+            "sd": 0.3297342349803959
+          },
+          {
+            "mean": 0.254860168002778,
+            "sd": 0.2980497032156905
+          },
+          {
+            "mean": 0.337991599400992,
+            "sd": 0.34622253320336843
+          }
+        ]
+      },
+      "float32Repeat": "not repeated at this step count",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "a # · b # · heteroclinic",
+          "float32": "a 0.60 · b 1.60 · heteroclinic",
+          "float16": "a 0.60 · b 1.60 · heteroclinic",
+          "diff": [
+            0,
+            0
+          ]
+        }
+      ],
+      "seconds": 4.9
+    },
+    {
+      "id": "cyclic",
+      "steps": 1000,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "species",
+      "dt": 0.1,
+      "relL2": 0.005486458890032165,
+      "maxAbs": 0.017042040824890137,
+      "maxRel": 0.017065868853204626,
+      "fieldMaxAbs": 0.9986037611961365,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": 0.3527633153103134,
+            "sd": 0.3917855583261573
+          },
+          {
+            "mean": 0.2589333160458165,
+            "sd": 0.3410634078932915
+          },
+          {
+            "mean": 0.3673609776648596,
+            "sd": 0.3952783102728291
+          }
+        ],
+        "float16": [
+          {
+            "mean": 0.3525145419250725,
+            "sd": 0.39131131357155957
+          },
+          {
+            "mean": 0.2587589723566554,
+            "sd": 0.34078000957840543
+          },
+          {
+            "mean": 0.3670105051824006,
+            "sd": 0.3948797232520464
+          }
+        ]
+      },
+      "float32Repeat": "identical",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "a # · b # · heteroclinic",
+          "float32": "a 0.60 · b 1.60 · heteroclinic",
+          "float16": "a 0.60 · b 1.60 · heteroclinic",
+          "diff": [
+            0,
+            0
+          ]
+        }
+      ],
+      "seconds": 32.3,
+      "unchangedSince": {
+        "steps": 100,
+        "float32": false,
+        "float16": false
+      }
+    },
+    {
+      "id": "chemotaxis",
+      "steps": 100,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "species",
+      "dt": 0.019994668088509727,
+      "relL2": 0.004034566078518487,
+      "maxAbs": 0.06876516342163086,
+      "maxRel": 0.013548826546909937,
+      "fieldMaxAbs": 5.075359344482422,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": 0.9997090409101537,
+            "sd": 0.016680864535139138
+          },
+          {
+            "mean": 4.999316357627364,
+            "sd": 0.01723920440259381
+          }
+        ],
+        "float16": [
+          {
+            "mean": 1.0005276780575596,
+            "sd": 0.009713289929590944
+          },
+          {
+            "mean": 4.999947756528922,
+            "sd": 0.004113249290266399
+          }
+        ]
+      },
+      "float32Repeat": "not repeated at this step count",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "c # · aggregating",
+          "float32": "c 3.50 · aggregating",
+          "float16": "c 3.50 · aggregating",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 5.5
+    },
+    {
+      "id": "chemotaxis",
+      "steps": 1000,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "species",
+      "dt": 0.019994668088509727,
+      "relL2": 0.9965596869367523,
+      "maxAbs": 3.843390464782715,
+      "maxRel": 0.5167071337059826,
+      "fieldMaxAbs": 7.43823766708374,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": 0.35275056429038554,
+            "sd": 0.7758166869122929
+          },
+          {
+            "mean": 2.5346368427272026,
+            "sd": 1.0870249929611164
+          }
+        ],
+        "float16": [
+          {
+            "mean": 1.0005276780575596,
+            "sd": 0.009713289929590944
+          },
+          {
+            "mean": 4.999947756528922,
+            "sd": 0.004113249290266399
+          }
+        ]
+      },
+      "float32Repeat": "identical",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "c # · aggregating",
+          "float32": "c 3.50 · aggregating",
+          "float16": "c 3.50 · aggregating",
+          "diff": [
+            0
+          ]
+        }
+      ],
+      "seconds": 34.7,
+      "unchangedSince": {
+        "steps": 100,
+        "float32": false,
+        "float16": true
+      }
+    },
+    {
+      "id": "vegetation",
+      "steps": 100,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "species",
+      "dt": 0.02,
+      "relL2": 0.002731984851059475,
+      "maxAbs": 0.01709723472595215,
+      "maxRel": 0.004365981134183402,
+      "fieldMaxAbs": 3.9160120487213135,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": 0.43410045666382835,
+            "sd": 0.05858192552736371
+          },
+          {
+            "mean": 1.2578965821669263,
+            "sd": 0.4625641122128083
+          }
+        ],
+        "float16": [
+          {
+            "mean": 0.43400555569679194,
+            "sd": 0.05832953443254503
+          },
+          {
+            "mean": 1.257793767377714,
+            "sd": 0.4633865169783032
+          }
+        ]
+      },
+      "float32Repeat": "not repeated at this step count",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "a #–# · #m = # · bare → bands → cover",
+          "float32": "a 0.44–1.76 · 2m = 0.90 · bare → bands → cover",
+          "float16": "a 0.44–1.76 · 2m = 0.90 · bare → bands → cover",
+          "diff": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "seconds": 3.5
+    },
+    {
+      "id": "vegetation",
+      "steps": 1000,
+      "grid": [
+        512,
+        512
+      ],
+      "array": "species",
+      "dt": 0.02,
+      "relL2": 0.12769903157734888,
+      "maxAbs": 9.728507280349731,
+      "maxRel": 0.9191443320203574,
+      "fieldMaxAbs": 10.584308624267578,
+      "nonfinite": 0,
+      "moments": {
+        "float32": [
+          {
+            "mean": 0.28727732557004143,
+            "sd": 0.1970280992845169
+          },
+          {
+            "mean": 1.8061344129722696,
+            "sd": 1.7263073831055948
+          }
+        ],
+        "float16": [
+          {
+            "mean": 0.2832264289027051,
+            "sd": 0.1921080579363715
+          },
+          {
+            "mean": 1.8118741234047908,
+            "sd": 1.7098358240996339
+          }
+        ]
+      },
+      "float32Repeat": "identical",
+      "guard": {
+        "float32": null,
+        "float16": null
+      },
+      "status": [
+        {
+          "label": "a #–# · #m = # · bare → bands → cover",
+          "float32": "a 0.44–1.76 · 2m = 0.90 · bare → bands → cover",
+          "float16": "a 0.44–1.76 · 2m = 0.90 · bare → bands → cover",
+          "diff": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "seconds": 19.1,
+      "unchangedSince": {
+        "steps": 100,
+        "float32": false,
+        "float16": false
+      }
+    }
+  ]
+}

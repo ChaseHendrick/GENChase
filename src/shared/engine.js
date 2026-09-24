@@ -714,8 +714,19 @@ void main(){
       vendor = String(gl.getParameter(dbg ? dbg.UNMASKED_VENDOR_WEBGL : gl.VENDOR) || '');
     } catch (err) { /* a lost context has no renderer to report */ }
     const types = [...(gl.__targetTypes || [])].sort();
-    const precision = types.includes('rgba32f') ? 'float32 state' : types.includes('rgba16f') ? 'float16 state (half-float fallback)' : 'no float state targets';
-    return { api: 'WebGL2', renderer, vendor, floatRenderTargets: !!gl.floatExt, targetTypes: types, precision };
+    return { api: 'WebGL2', renderer, vendor, floatRenderTargets: !!gl.floatExt, targetTypes: types, precision: statePrecision(types) };
+  }
+  // One classification for the provenance record and the status line, so the two cannot disagree.
+  function statePrecision(types) {
+    return types.includes('rgba32f') ? 'float32 state' : types.includes('rgba16f') ? 'float16 state (half-float fallback)' : 'no float state targets';
+  }
+  // A device without float32 color buffers runs the GPU tabs on rgba16f state (about three significant
+  // digits). Every number the status line measures then carries that rounding, so it says so. The span
+  // sits beside the measurements; compare() spans are built by the modules and are not touched.
+  function halfFloatHtml(e) {
+    const gl = glContexts.get(e.canvas);
+    if (!gl || statePrecision([...(gl.__targetTypes || [])]) !== 'float16 state (half-float fallback)') return '';
+    return '<span class="half-float" title="This device lacks float32 color buffers (EXT_color_buffer_float), so the simulation state is stored as float16. Measured values carry half-float rounding, of order one part in a thousand of each stored value.">half-float state: measurements carry half-float rounding</span>';
   }
   // Deterministic for a given recipe, build and device: nothing time-dependent, so the same plate
   // exported twice gives the same bytes.
@@ -1450,7 +1461,7 @@ void main(){
     const dt = Number(e.state.dt);
     const dtHtml = isFinite(dt) && dt > 0 && !/\bdt\b/.test(e.statusHtml) ? '<span>dt <b>' + (dt >= 1 ? dt.toFixed(1) : dt.toFixed(3).replace(/0+$/, '').replace(/\.$/, '')) + '</b></span>' : '';
     renderEvidenceBadge(e.mod.id);
-    const html = e.statusHtml + scienceWitnessHtml(e.scienceWitness) + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
+    const html = e.statusHtml + scienceWitnessHtml(e.scienceWitness) + halfFloatHtml(e) + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
     const status = $('status');
     // Preserve text selection and avoid rebuilding identical measurement rows.
     if (status._renderedHtml !== html) { status.innerHTML = html; status._renderedHtml = html; }

@@ -12,6 +12,7 @@ const MODES = {
   plate: ['One technique: runtime and determinism', 'node', ['tools/check.js']],
   print: ['One technique: 8-inch, 300 ppi export', 'node', ['tools/export.js']],
   full: ['Full development and registered science checks', 'npm', ['run', 'test:all']],
+  'gpu-science': ['Hardware GPU: registered GPU science and print checks', 'node', ['tools/gpu-science.js']],
 };
 const EXPERIMENTS = {
   'maxwell-search': ['Maxwell design search', 'tools/maxwell-search.js'],

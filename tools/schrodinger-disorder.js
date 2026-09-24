@@ -1,5 +1,6 @@
 // A frozen finite-lattice experiment, not a discovery claim or continuum localization test.
 // node tools/schrodinger-disorder.js > experiments/results/schrodinger-disorder.json
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto'), assert = require('node:assert/strict');
 const ROOT = path.resolve(__dirname, '..');
 const SETTINGS = {
@@ -48,7 +49,7 @@ async function main() {
   const closing = source.lastIndexOf('})();'); assert(closing >= 0);
   const exposed = source.slice(0, closing) + 'window.disorderStepShader = SCH_STEP_FS;\n' + source.slice(closing), potentials = SETTINGS.seeds.map(potential);
   const { chromium } = require('playwright');
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   let output;
   try {
     const page = await browser.newPage(); await page.goto('file://' + path.join(ROOT, 'dist/studio.html') + '#three-vortex-bound/disorder-experiment'); await page.evaluate(exposed);

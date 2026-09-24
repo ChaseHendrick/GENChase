@@ -108,7 +108,7 @@ class Jobs {
     }
     if (line.startsWith('GENCHASE_PROGRESS ')) {
       try { const p = JSON.parse(line.slice(18)); if (['derive', 'check', 'search', 'calibrate', 'render', 'score'].includes(p.stage)) { j.stage = p.stage; j.now = p.message || p.stage; }
-        if (['seeds', 'candidates', 'steps'].includes(p.unit) && Number.isInteger(p.done) && Number.isInteger(p.total) && p.done >= 0 && p.done <= p.total) j.progress = { done: p.done, total: p.total, unit: p.unit }; } catch { /* Ordinary log text is never executable. */ }
+        if (['seeds', 'candidates', 'steps', 'tools'].includes(p.unit) && Number.isInteger(p.done) && Number.isInteger(p.total) && p.done >= 0 && p.done <= p.total) j.progress = { done: p.done, total: p.total, unit: p.unit }; } catch { /* Ordinary log text is never executable. */ }
     }
   }
   start(input, resumeFrom = null) {

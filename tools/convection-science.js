@@ -1,5 +1,6 @@
 // Maintained convection GPU operators versus analytic modes and independent references.
 // These bounded component checks do not establish nonlinear onset or turbulent accuracy.
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const { chromium } = require('playwright');
 (async () => {
@@ -11,7 +12,7 @@ const { chromium } = require('playwright');
     '    return { auditMeasurement(bytes) { applyMeasure(bytes, "benchmark"); return nusselt; },');
   const expose = source.slice(0, source.lastIndexOf('})();')) +
     'window.convScience={CONV_ADV_FS,CONV_DIFF_FS,CONV_SOR_FS,CONV_VEL_FS,CONV_REDUCE_FS,convDtMax};})();';
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   let results;
   try {
     const page = await browser.newPage();

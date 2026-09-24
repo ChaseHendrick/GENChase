@@ -9,6 +9,7 @@ const HELP = `GENChase headless volunteer runner
 
   npm run validator:headless -- --mode inventory --machine m1pro
   npm run validator:headless -- --mode witnesses --machine m1pro
+  npm run validator:headless -- --mode gpu-science --machine m1pro
   npm run validator:headless -- --mode metal --grid 128 --steps 10000
   npm run validator:headless -- --mode vortex-collapse --alpha 1 --n 6 --samples 200
   npm run validator:headless -- --mode vortex-grow --alpha 0 --n 24 --samples 10 --threads 4

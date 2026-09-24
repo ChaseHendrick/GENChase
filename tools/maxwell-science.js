@@ -1,12 +1,13 @@
 // Actual TMz GPU shaders versus independent float64 updates and analytic periodic modes.
 // Setup: Playwright and Chromium per BUILDING.md. Run: node tools/maxwell-science.js
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');
 (async()=>{
   const root=path.resolve(__dirname,'..'),source=fs.readFileSync(path.join(root,'src/modules/maxwell.js'),'utf8');
   const marker='  Studio.register({';assert.equal(source.split(marker).length,2);
   const exposed=source.replace(marker,'  window.maxwellAudit={H_FS,E_FS,timeStep,sizeOf,sanitize};\n'+marker);
-  const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+  const browser=await chromium.launch({args:glArgs()});
   try {
     const page=await browser.newPage();await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/maxwell-audit');await page.evaluate(exposed);
     const result=await page.evaluate(()=>{

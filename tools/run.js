@@ -16,6 +16,7 @@
 //
 // Set STUDIO=path/to/studio.html to run a copy. Needs Playwright (see TESTING.md).
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs = require('fs');
 const path = require('path');
 const F = require('../src/shared/data-formats.js');
@@ -39,7 +40,7 @@ function parseArgs(argv) {
 async function run(opts) {
   const { chromium } = require('playwright');
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+  const browser = await chromium.launch({ args: [...glArgs(), '--ignore-gpu-blocklist'] });
   try {
     const page = await browser.newPage({ viewport: { width: 1200, height: 900 } });
     const errors = [];

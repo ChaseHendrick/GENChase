@@ -26,6 +26,7 @@
 //    independent painting within one level, the shell's own export (the vector RIP at 8 in, 300 ppi)
 //    must be the rasterized SVG of that geometry, and exporting must not change the state.
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs');
 const path = require('node:path');
 const os = require('node:os');
@@ -271,7 +272,7 @@ async function browser() {
   assert(html.includes(SOURCE), 'dist/studio.html does not contain the current src/modules/aztec.js; run node tools/build.js');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aztec-science-')), file = path.join(dir, 'studio.html');
   fs.writeFileSync(file, S.patch(html, [[SOURCE, injected], ['generatePalette, register, boot,', 'generatePalette, register, auditInstances:()=>instances, boot,']]));
-  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+  const b = await chromium.launch({ args: [...glArgs(), '--ignore-gpu-blocklist'] });
   const cases = [], node = sampler();
   try {
     const page = await b.newPage({ viewport: { width: 1400, height: 900 } }), errors = [];

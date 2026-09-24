@@ -3,6 +3,7 @@
 // Setup: Playwright + Chromium per BUILDING.md.
 // Run: node tools/material-wave-print-state.js --write
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const { chromium } = require('playwright');
 
@@ -129,7 +130,7 @@ const fixtures = {
 
 (async () => {
   const browser = await chromium.launch({
-    args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'],
+    args: glArgs(),
   });
   const rows = [];
   try {

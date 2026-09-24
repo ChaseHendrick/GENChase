@@ -1,4 +1,5 @@
 // New frozen experiment following MAXWELL-BOUNDARY.md, not a retuned earlier result.
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto'), assert = require('node:assert/strict');
 const ROOT = path.resolve(__dirname, '..');
 const SETTINGS = {
@@ -173,7 +174,7 @@ async function main() {
   const boundaryText = fs.readFileSync(path.join(ROOT, 'experiments/results/maxwell-boundary.json'), 'utf8'), boundary = JSON.parse(boundaryText);
   assert.equal(boundary.sourceSha256, sha(source), 'Boundary evidence belongs to another solver revision');
   const { chromium } = require('playwright');
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   try {
     const page = await browser.newPage();
     await page.goto('file://' + path.join(ROOT, 'dist/studio.html') + '#three-vortex-bound/maxwell-robust');

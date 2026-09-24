@@ -1,5 +1,6 @@
 // Actual photon exportPNG state preservation; not geodesic accuracy or calibrated color.
 // node tools/photon-print-state.js [--write]
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict'), crypto = require('node:crypto');
 const { chromium } = require('playwright');
 
@@ -38,7 +39,7 @@ ${marker}`);
     { name: 'impact', aspect: '1:1', overlay: { view: 'impact', scene: 'spray', zoom: 1, rays: 96, tone: 'log', grid: 160 } },
   ];
 
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   const rows = [];
   try {
     const page = await browser.newPage();

@@ -2,6 +2,7 @@
 // Run: node tools/wave-print-state.js > validation/results/wave-print-state.json
 // Tests real exportPNG methods with read-only, test-only access to solver textures.
 // This checks preservation of a paused scientific state, not physical or color accuracy.
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const { chromium } = require('playwright');
 
@@ -33,7 +34,7 @@ ${marker}`;
   let source = fs.readFileSync(path.join(root, 'src/modules/wavesflow.js'), 'utf8');
   source = instrument(source, 'S', "wave: S.read, wavePrevious: S.write, potential: potT", 'nOff, norm0, normNow, expWhite, densWhite, simTime, staggerDt');
   source = instrument(source, 'F', "fluid: F.read, fluidPrevious: F.write, streamfunction: PSI.read, streamfunctionPrevious: PSI.write, velocity: velT", 'dx, wMax, gMax, nusselt, simTime');
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   const rows = [];
   try {
     for (const id of ['schrodinger', 'convection']) for (const grid of [128, 192]) {

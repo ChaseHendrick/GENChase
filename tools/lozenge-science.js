@@ -26,6 +26,7 @@
 //    0.01 px rounding, every PNG byte must match an independent painting within one level, the shell's
 //    own export must be the rasterized SVG of that geometry, and exporting must not change the state.
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs');
 const path = require('node:path');
 const os = require('node:os');
@@ -328,7 +329,7 @@ async function browser() {
   assert(html.includes(SOURCE), 'dist/studio.html does not contain the current src/modules/lozenge.js; run node tools/build.js');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lozenge-science-')), file = path.join(dir, 'studio.html');
   fs.writeFileSync(file, S.patch(html, [[SOURCE, S.patch(SOURCE, [AUDIT])], ['generatePalette, register, boot,', 'generatePalette, register, auditInstances:()=>instances, boot,']]));
-  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+  const b = await chromium.launch({ args: [...glArgs(), '--ignore-gpu-blocklist'] });
   const cases = [], Lm = loadModule();
   try {
     const page = await b.newPage({ viewport: { width: 1400, height: 900 } }), errors = [];
