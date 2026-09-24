@@ -5,6 +5,7 @@ const { Shares } = require('./share');
 const { browserSetup } = require('./setup');
 const { redact } = require('./privacy');
 const { MODES, EXPERIMENTS, ids } = require('./commands');
+const { ART_TABS } = require('./art-tabs');
 const ROOT = path.resolve(__dirname, '../..');
 function createServer({ root = ROOT, data, port = 8787, shareRequest } = {}) {
   if (process.platform === 'win32') throw Error('This runner requires POSIX process groups. macOS and Linux are supported.');
@@ -39,7 +40,7 @@ function createServer({ root = ROOT, data, port = 8787, shareRequest } = {}) {
       if (req.method === 'GET' && assets[url.pathname]) {
         const [file, type] = assets[url.pathname]; return reply(res, 200, fs.readFileSync(path.join(__dirname, file), 'utf8'), type);
       }
-      if (req.method === 'GET' && url.pathname === '/api/config') return reply(res, 200, { token, modes: MODES, experiments: EXPERIMENTS, ids: ids(root), setup: browserSetup(root) });
+      if (req.method === 'GET' && url.pathname === '/api/config') return reply(res, 200, { token, modes: MODES, experiments: EXPERIMENTS, ids: ids(root), artTabs: Object.keys(ART_TABS), setup: browserSetup(root) });
       if (req.headers['x-validator-token'] !== token) return reply(res, 403, { error: 'Open the local app before controlling jobs.' });
       if (req.method === 'GET' && url.pathname === '/api/state') return reply(res, 200, {...jobs.state(), submission: jobs.current ? shares.state(jobs.current.id) : null});
       if (req.method === 'GET' && url.pathname === '/api/share-file') return reply(res, 200, shares.read(url.searchParams.get('job'), url.searchParams.get('name')));

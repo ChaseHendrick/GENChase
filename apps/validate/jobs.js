@@ -3,6 +3,7 @@ const { energyCounter, energyBetween, parseTimes, jobCompute, describe } = requi
 const fs = require('node:fs'), path = require('node:path'), os = require('node:os'), cp = require('node:child_process'), crypto = require('node:crypto');
 const { StringDecoder } = require('node:string_decoder');
 const { command } = require('./commands');
+const { ART_MODES } = require('./art-tabs');
 const { browserSetup, requiresBrowser } = require('./setup');
 const { Power, settings } = require('./power');
 const { redact, sanitize } = require('./privacy');
@@ -23,6 +24,15 @@ function files(root) {
     if (fs.existsSync(p) && fs.lstatSync(p).isFile()) out[name] = digest(fs.readFileSync(p));
   }
   return out;
+}
+function treeBytes(dir) {
+  let total = 0;
+  if (!fs.existsSync(dir)) return 0;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, entry.name);
+    if (entry.isDirectory()) total += treeBytes(p); else if (entry.isFile()) total += fs.statSync(p).size;
+  }
+  return total;
 }
 function save(file, object) { fs.writeFileSync(file + '.tmp', JSON.stringify(object, null, 2) + '\n', { mode: 0o600 }); fs.renameSync(file + '.tmp', file); }
 function logTail(file, maximum=200000) {
@@ -97,8 +107,8 @@ class Jobs {
       try { const p=JSON.parse(line.slice(17));if(Number.isInteger(p.done)&&Number.isInteger(p.total)&&p.done>=0&&p.done<=p.total){j.progress={done:p.done,total:p.total,unit:'modules'};j.now=p.id+': '+p.status;} } catch {}
     }
     if (line.startsWith('GENCHASE_PROGRESS ')) {
-      try { const p = JSON.parse(line.slice(18)); if (['derive', 'check', 'search'].includes(p.stage)) { j.stage = p.stage; j.now = p.message || p.stage; }
-        if (p.unit === 'seeds' && Number.isInteger(p.done) && Number.isInteger(p.total) && p.done >= 0 && p.done <= p.total) j.progress = { done: p.done, total: p.total, unit: 'seeds' }; } catch { /* Ordinary log text is never executable. */ }
+      try { const p = JSON.parse(line.slice(18)); if (['derive', 'check', 'search', 'calibrate', 'render', 'score'].includes(p.stage)) { j.stage = p.stage; j.now = p.message || p.stage; }
+        if (['seeds', 'candidates', 'steps'].includes(p.unit) && Number.isInteger(p.done) && Number.isInteger(p.total) && p.done >= 0 && p.done <= p.total) j.progress = { done: p.done, total: p.total, unit: p.unit }; } catch { /* Ordinary log text is never executable. */ }
     }
   }
   start(input, resumeFrom = null) {
@@ -119,7 +129,8 @@ class Jobs {
     for (const name of Object.keys(before)) {
       const dest = path.join(dir, 'source', name); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.copyFileSync(path.join(this.root, name), dest);
     }
-    if (resumeFrom) for (const name of ['verify-checkpoint.json','derive-checkpoint.json','metal-checkpoint',...fs.readdirSync(path.join(this.data,resumeFrom)).filter(n=>/^vortex-[a-z0-9-]*checkpoint\.json$/.test(n))]) {
+    // Art keeps its checkpoint beside the thumbnails and prints it vouches for, so the whole folder moves.
+    if (resumeFrom) for (const name of ['verify-checkpoint.json','derive-checkpoint.json','metal-checkpoint','art',...fs.readdirSync(path.join(this.data,resumeFrom)).filter(n=>/^vortex-[a-z0-9-]*checkpoint\.json$/.test(n))]) {
       const from = path.join(this.data, resumeFrom, name); if (fs.existsSync(from)) fs.cpSync(from, path.join(dir, name), { recursive: true });
     }
     this.current.resumedFrom = resumeFrom;
@@ -180,7 +191,7 @@ class Jobs {
   resumeAvailable() {
     if (!this.current) return false;
     const dir = path.join(this.data, this.current.id);
-    return ['verify-checkpoint.json','derive-checkpoint.json','metal-checkpoint/checkpoint.json'].some(name=>fs.existsSync(path.join(dir,name)))||(fs.existsSync(dir)&&fs.readdirSync(dir).some(n=>/^vortex-[a-z0-9-]*checkpoint\.json$/.test(n)));
+    return ['verify-checkpoint.json','derive-checkpoint.json','metal-checkpoint/checkpoint.json','art/checkpoint.json'].some(name=>fs.existsSync(path.join(dir,name)))||(fs.existsSync(dir)&&fs.readdirSync(dir).some(n=>/^vortex-[a-z0-9-]*checkpoint\.json$/.test(n)));
   }
   async restart() {
     const input = this.lastInput; if (!input) throw Error('Start a job before restarting.');
@@ -220,7 +231,12 @@ class Jobs {
       }
       const archive = path.join(this.data, j.id + '.tar.gz');
       const metadata=process.platform==='darwin'?['--uid','0','--gid','0','--uname','','--gname','','--no-xattrs','--no-acls','--no-fflags']:['--owner=0','--group=0','--numeric-owner','--no-xattrs','--no-acls'];
-      const result = cp.spawnSync('tar', [...metadata,'-czf', archive, '-C', dir, '.'], { encoding: 'utf8', timeout: 120000,env:{...process.env,COPYFILE_DISABLE:'1'} });
+      // Art prints can be hundreds of megabytes each. Allow the archive more time, and past 2 GB of prints
+      // leave them out of the bundle: the recipe and its step count reprint every plate.
+      const art = ART_MODES.includes(j.input.mode), printBytes = art ? treeBytes(path.join(dir, 'art', 'prints')) : 0;
+      if (printBytes > 2 * 1024 ** 3) { j.bundleNote = 'Art prints (' + (printBytes / 1024 ** 3).toFixed(1) + ' GB) stay in art/prints and are not in the bundle.'; j.reason += ' ' + j.bundleNote; }
+      const skip = printBytes > 2 * 1024 ** 3 ? ['--exclude=./art/prints'] : [];
+      const result = cp.spawnSync('tar', [...metadata, ...skip, '-czf', archive, '-C', dir, '.'], { encoding: 'utf8', timeout: art ? 600000 : 120000,env:{...process.env,COPYFILE_DISABLE:'1'} });
       if (result.status !== 0) throw Error(result.stderr || result.error?.message || 'archive failed');
       fs.renameSync(archive, path.join(dir, 'result-bundle.tar.gz')); j.artifacts.push('result-bundle.tar.gz');
       save(path.join(dir, 'job.json'), sanitize(j,this.privacy));
@@ -231,13 +247,15 @@ class Jobs {
     const j=this.current;
     j.reason=redact(j.reason,this.privacy);
     const dir=path.join(this.data,j.id);let harvest={};
-    try { harvest=JSON.parse(fs.readFileSync(path.join(dir,'harvest-report.json'),'utf8')); } catch {}
+    // Browser jobs other than harvest (the art modes) write browser-report.json with the same two fields.
+    for (const name of ['browser-report.json','harvest-report.json']) { try { harvest=JSON.parse(fs.readFileSync(path.join(dir,name),'utf8')); break; } catch {} }
     try {
       j.hardware=hardwareCard({machineSlug:j.input.machineSlug||'m1pro',commit:j.commit,command:j.command,exitCode:j.exitCode,elapsedSeconds:Math.max(0,(Date.parse(j.ended)-Date.parse(j.started))/1000),browserVersions:harvest.browserVersions||{},webglRenderer:harvest.webglRenderer||null},this.privacy);
       save(path.join(dir,'hardware.json'),j.hardware);
     } catch(e) {j.reason+=' Hardware card failed: '+redact(e.message,this.privacy);}
     if(j.status!=='complete') {
-      const miss={format:1,kind:j.incomplete?'incomplete-evidence':j.interrupted?'interrupted-run':this.stopping?'stopped-run':'command-failure',status:j.status,jobId:j.id,commit:j.commit,id:['technique','plate','print','witness'].includes(j.input.mode)?j.input.id:'validator',recipeHash:null,expected:'Command completes with exit code 0; this is an execution check, not a scientific claim.',got:{exitCode:j.exitCode,signal:j.signal||null,reason:j.reason},reason:j.reason,command:j.command,hardwareCard:j.hardware||null,recorded:j.ended};
+      const art=ART_MODES.includes(j.input.mode);
+      const miss={format:1,kind:j.incomplete?'incomplete-evidence':j.interrupted?'interrupted-run':this.stopping?'stopped-run':art?'art-run-failure':'command-failure',status:j.status,jobId:j.id,commit:j.commit,id:['technique','plate','print','witness',...ART_MODES].includes(j.input.mode)&&j.input.id?j.input.id:'validator',recipeHash:null,expected:art?'Art job completes with exit code 0; this is an execution check of a rendering job, not a scientific or aesthetic claim.':'Command completes with exit code 0; this is an execution check, not a scientific claim.',got:{exitCode:j.exitCode,signal:j.signal||null,reason:j.reason},reason:j.reason,command:j.command,hardwareCard:j.hardware||null,recorded:j.ended};
       const missed=path.join(this.root,'run/validator/misses');fs.mkdirSync(missed,{recursive:true});
       save(path.join(missed,j.commit+'-validator-'+j.id.toLowerCase()+'.json'),sanitize(miss,this.privacy));
       save(path.join(dir,'miss.json'),sanitize(miss,this.privacy));

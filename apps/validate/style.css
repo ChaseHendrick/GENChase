@@ -20,6 +20,9 @@ summary:focus-visible, a:focus-visible { outline: 3px solid #b7a5fa; outline-off
 .advanced-controls { margin-top: 18px; border-top: 1px solid var(--edge); }
 .advanced-controls .power-controls { margin-top: 0; }
 .check-label { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+textarea { font: 13px/1.5 ui-monospace, monospace; border: 1px solid var(--edge); border-radius: 9px; color: inherit; background: #1e2b3b; padding: 9px 14px; min-height: 96px; width: 100%; max-width: 100%; resize: vertical; overflow-wrap: anywhere; }
+textarea:focus-visible { outline: 3px solid #b7a5fa; outline-offset: 3px; }
+.settings label.wide { flex-basis: 100%; }
 input[type=checkbox] { width: 20px; height: 20px; min-height: 20px; padding: 0; flex-shrink: 0; accent-color: var(--accent); }
 #setup-status { padding: 10px 14px; border-radius: 8px; background: #0e1822; color: #ffd58f; }
 #setup-status[data-ready=true] { color: var(--accent); }

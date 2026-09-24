@@ -42,6 +42,28 @@ const root = path.resolve(__dirname, '..');
     await page.click('#contribute-tab');
     assert.equal(await page.inputValue('#mode'), 'metal');
     assert.equal(await page.inputValue('#gpu-steps'), '400');
+    // Art jobs show only the settings each one uses, and a malformed recipe launches nothing.
+    const shown = async ids => Object.fromEntries(await Promise.all(ids.map(async id => [id, await page.isVisible('#' + id + '-field')])));
+    const artFields = ['art-id', 'art-recipe', 'art-parents', 'art-steps', 'art-grid', 'art-samples', 'art-start', 'art-keep', 'art-inches', 'art-ppi', 'art-budget'];
+    await page.selectOption('#mode', 'art-hunt');
+    assert.deepEqual(await shown(artFields), { 'art-id': true, 'art-recipe': true, 'art-parents': false, 'art-steps': false, 'art-grid': false, 'art-samples': true, 'art-start': true, 'art-keep': true, 'art-inches': true, 'art-ppi': true, 'art-budget': true });
+    assert.deepEqual(await page.locator('#art-id option').allTextContents(), ['cahn', 'turing']);
+    assert.equal(await page.isVisible('#gpu-steps'), false);
+    await page.selectOption('#mode', 'art-deep');
+    assert.deepEqual(await shown(artFields), { 'art-id': false, 'art-recipe': true, 'art-parents': false, 'art-steps': true, 'art-grid': true, 'art-samples': false, 'art-start': false, 'art-keep': false, 'art-inches': true, 'art-ppi': true, 'art-budget': true });
+    await page.selectOption('#mode', 'art-evolve');
+    assert.deepEqual(await shown(artFields), { 'art-id': false, 'art-recipe': false, 'art-parents': true, 'art-steps': false, 'art-grid': false, 'art-samples': true, 'art-start': false, 'art-keep': true, 'art-inches': true, 'art-ppi': true, 'art-budget': true });
+    await page.fill('#art-parents', '#not-a-recipe');
+    // Wait for the request itself, so a click the form refuses names the field it refused.
+    const artRequest = page.waitForResponse(r => r.url().endsWith('/api/start'), { timeout: 10000 }).catch(() => null);
+    await page.click('#start');
+    if (!await artRequest) throw Error('Start sent no request. Invalid fields: ' + JSON.stringify(await page.evaluate(() => [...document.querySelectorAll('.settings input, .settings textarea, #machine-slug')]
+      .filter(i => !i.checkValidity()).map(i => i.id + (i.closest('[hidden]') ? ' (hidden) ' : ' ') + JSON.stringify(i.value) + ': ' + i.validationMessage)))
+      + '; error text ' + JSON.stringify(await page.textContent('#error')) + '; page errors ' + JSON.stringify(errors));
+    await page.waitForFunction(() => document.querySelector('#error').textContent.includes('recipe hash'), null, { timeout: 10000 })
+      .catch(async () => { throw Error('Expected a recipe hash error; the page shows ' + JSON.stringify(await page.textContent('#error'))); });
+    assert.equal(app.jobs.current, null, 'a malformed recipe does not launch a job');
+    await page.fill('#art-parents', '');
     await page.selectOption('#mode', 'derive');
     await page.fill('#slug', '../invalid');
     await page.click('#start');
@@ -146,7 +168,7 @@ const root = path.resolve(__dirname, '..');
     assert.deepEqual(errors, []);
     assert.deepEqual(external, [], 'the app made no external network requests');
     await context.close();
-    console.log('PASS', name, 'local job lifecycle, workspace persistence, downloads, input/API errors, blocked storage, clipboard fallback, hardware cards, visible miss packets, mobile layout, reduced motion and offline requests');
+    console.log('PASS', name, 'local job lifecycle, workspace persistence, art job fields, downloads, input/API errors, blocked storage, clipboard fallback, hardware cards, visible miss packets, mobile layout, reduced motion and offline requests');
   } finally {
     await browser?.close();
     await app.close();

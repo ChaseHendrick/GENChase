@@ -130,7 +130,7 @@ follow, and all four are in place.
 - The sheet states the field's own resolution rather than letting the paper take the blame.
 - The grid ceilings go to 1024 on the 2D GPU families.
 - **The defaults were raised at recipe v2.** The 16 tabs that magnify a grid, which are the six
-  `pdeCreate` tabs, the six `rdxCreate` tabs, `nematic`, and `cortex`, `bec`, `tonertu` and `liesegang`,
+  `pdeCreate` tabs, the five `rdxCreate` tabs, `nematic`, and `cortex`, `bec`, `tonertu` and `liesegang`,
   now default to 512, or 384 on `liesegang`, whose ceiling is lower. Cahn-Hilliard at 512 rather than
   192 measures edge acutance 0.88 against 0.41, which is the difference between a verdict of SOFT and
   a verdict of sharp. 512 is the measured knee, not a round number: 384 reaches 0.74 and is still only
@@ -155,6 +155,23 @@ means "this tab as I left it".
 
 If you add a technique that magnifies a grid, implement `fieldCells()` and splice `G.GLSL.bicubic` into
 the render shader. Nearest sampling gives a mosaic and bilinear leaves a lattice crease on every front.
+
+## Art modes
+
+The volunteer runner's `art-hunt`, `art-deep` and `art-evolve` jobs (`apps/validate/art.js`) render
+studio recipes on a contributor's computer through the product path: hash, `applyHash` and `sanitize`,
+`regenerate`, and the shell's own export. They cover `cahn` and `turing` (`ART_TABS` in
+`apps/validate/art-tabs.js`); a tab joins only after `node tools/art-check.js` passes for it.
+
+- The step count is the recipe's `warmup` with `running:false`. A plate counts only when its status
+  reads "step N" and "paused", so that status format and those semantics are now a contract.
+- A budget decides whether the next render starts, never how a plate is computed.
+- The scores are print-sharpness proxies, comparable within one job. They are not measurements of
+  beauty or of the science, and an evolved child is an unvalidated recipe.
+- Never put bookkeeping (a score, a generation number) into a recipe payload: the engine keeps unknown
+  keys and would publish them in the hash. A payload holds schema keys plus `seed`, `palette`, `bg`, `v`.
+- Art output stays in the job folder under `apps/validate/.runs/`, never in repository paths. Sharing
+  publishes `art/share.json` and at most 12 small JPEG thumbnails; never prints.
 
 ## Stable engine contract
 
