@@ -306,8 +306,9 @@ test('Resume renders failed, interrupted and foreign checkpoint records again an
   const { ArtRun } = require('./art'), { seal } = require('./checkpoint'), crypto = require('node:crypto');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'art-restore-')); t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
   const sha = b => crypto.createHash('sha256').update(b).digest('hex'), victim = path.join(dir, 'victim.txt'); fs.writeFileSync(victim, 'keep');
+  let serial = 0;
   async function restored(mode, records, controls, total = 4) {
-    const run = new ArtRun({ mode, id: 'turing', samples: total, keep: 1, inches: 8, ppi: 300 }, path.join(dir, mode + '-' + Math.random().toString(36).slice(2)));
+    const run = new ArtRun({ mode, id: 'turing', samples: total, keep: 1, inches: 8, ppi: 300 }, path.join(dir, mode + '-' + ++serial));
     run.log = () => {};
     try {
       run.sig = 'S'; run.total = total;
