@@ -1441,7 +1441,7 @@
       "subtitle": "localisation without disorder · 1980",
       "equation": "ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localised for λ>2",
       "credit": "S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 2 every eigenstate localises. The model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 2. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.",
-      "blurb": "Anderson needed randomness. Aubry and André did not: a cosine at an irrational period is enough, and the transition is sharp. Below λ = 2 the ground state is extended; above, it sits in a well. The status line reports the inverse participation ratio against 1/N, and whether λ sits past the dual point 2.",
+      "blurb": "Anderson needed randomness. Aubry and André did not: a cosine at an irrational period is enough, and the transition is sharp. Below λ = 2 the ground state is extended; above, it sits in a well. The status line reports the inverse participation ratio against 1/N.",
       "order": 56,
       "seed": "",
       "presets": [
@@ -1818,7 +1818,7 @@
       "subtitle": "a needle rotated in arbitrarily small area · 1919",
       "equation": "K_ε ⊃ a unit segment in every direction,   |K_ε| → 0 as ε → 0",
       "credit": "S. Kakeya asked in 1917 for the smallest set in which a unit needle can be rotated. Besicovitch (1919/1928) showed the infimum of the area is zero: a Perron tree of overlapping triangles contains a unit segment in a dense set of directions and can be made as thin as one likes. The plate is a finite Perron-like union, not the infinite construction.",
-      "blurb": "To turn a needle through every angle you would think you need a disk of area π/4. Besicovitch built a set of area as small as you please that still contains a unit segment in every direction. The plate is a finite sprouting of those needles, packed so they share area. The status line reports occupied fraction against π/4 for a spinning disk.",
+      "blurb": "To turn a needle through every angle you would think you need a disk of area π/4. Besicovitch built a set of area as small as you please that still contains a unit segment in every direction. The plate is a finite sprouting of those needles, packed so they share area. The status line reports the occupied fraction of the sheet against the disk one needle sweeps as it turns.",
       "order": 61,
       "seed": "",
       "presets": [
