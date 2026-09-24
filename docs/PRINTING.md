@@ -16,6 +16,8 @@ add detail beyond the simulation's grid. PDF/TIFF conversion currently supports
 uncompressed in the browser and can be large. Transparent source pixels are flattened
 onto white when converting to PDF/TIFF.
 
+An audit on 2026-09-24 found print issues that are not fixed yet: a downloaded PNG carries no physical size or color profile (tell the shop the dimensions, or send the PDF or TIFF, which carry both); some tabs print their coarse field as a mosaic of flat squares; and smooth gradients on some GPU tabs can show faint contour bands. The findings, measurements and prototype fixes are in [print-audit-2026-09-24/](print-audit-2026-09-24/README.md).
+
 ## Smoothing pixelated edges
 
 Choose **Raster edge smoothing** in Studio setup or the export dialog: **Off**, **Gentle**,

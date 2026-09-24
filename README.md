@@ -292,6 +292,8 @@ The source migration and license provenance review are recorded in [BUILDING.md]
 
 The [technique catalog](TECHNIQUES.md) records the scientific sources behind each simulation. Derivations and proofs are in [IDENTITIES.md](IDENTITIES.md), and the [research ledger](RESEARCH.md) records literature checks and their limits. Credit the original scientific sources when using their mathematics.
 
+The [research folder](research/) holds one preprint so far, *Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons* ([PDF](research/artifacts/unequal-mu-n5-floors-2026-09-23.pdf), with a [LaTeX version](research/unequal-mu-n5-floors-2026-09-23.tex) and a [companion note](research/unequal-mu-product-floor-and-n5-polygon-floor-2026-09-23.md)). Every claim it checks numerically maps to a program in the same folder, and the note lists which papers were read and which were not. Its results have not been peer reviewed and their priority is not established. Each release attaches the PDF and its verification programs.
+
 Built by Chaos.
 
 ### Customize the printed caption

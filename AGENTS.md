@@ -122,7 +122,7 @@ hard edge anywhere still scored `ok` on the acuity term alone: the condensate ti
 README gallery measured edge 0.08 with acuity 0.129, was called `ok`, and read as obviously blurry to
 anyone looking at it. Every tab credited on acuity alone is suspect, so the real split is worse than the
 one above. Re-run `sh tools/sharpall.sh` and replace these numbers; it is roughly an hour on a software
-renderer, which is why it has not been done yet. That was arithmetic rather than a bug: a 192-cell
+renderer. A full sweep of all 130 tabs was run on 2026-09-24 (51 sharp, 17 ok, 59 soft, 3 timed out; raw results and notes in [docs/print-audit-2026-09-24/](docs/print-audit-2026-09-24/)), but do not copy those counts here yet: that run exposed a blind spot in `sharp.js` itself. It samples only even pixel offsets, so a plate enlarged by nearest-neighbour blocks of even size never shows a block edge and scores as featureless. Fix the sampling, re-run, then replace the numbers above. The soft verdicts themselves were arithmetic rather than a bug: a 192-cell
 field across 2,400 print pixels is twelve pixels per cell and there is no detail under that. Four things
 follow, and all four are in place.
 
