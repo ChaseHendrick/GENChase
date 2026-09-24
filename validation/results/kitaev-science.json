@@ -1,0 +1,1905 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-24",
+  "passed": true,
+  "source": "src/modules/kitaev.js",
+  "sourceSha256": "9927bcc6b318388f7730f7e86cfe975ea2cb99dc98ce28c6e1cfd0a12f4e569e",
+  "engineSha256": "7af4b65a0177f0853ee6d7a20486e7d7527abc938c3cba276b8895b585e54ddb",
+  "harness": "tools/kitaev-science.js",
+  "command": "node tools/kitaev-science.js --write",
+  "precision": "IEEE 754 binary64 throughout the solver; the plate field is stored as Float32 and painted to RGBA8.",
+  "scope": "The kitaev module's own BdG matrix, exact diagonalization (Householder and implicit QL), pairing rule and status measurements, extracted from the source, against the exact band on periodic and antiperiodic rings, the winding criterion with the exact bulk gap, the closed-form Majorana roots and profile, the exact SSH identity at Δ = t, an independent Jacobi solver on a separately built matrix, failure controls, and the real studio plate, status and print.",
+  "criteria": {
+    "ringEigenvalueAbsError": 1e-12,
+    "eigenvectorResidual": 1e-12,
+    "orthonormality": 1e-12,
+    "jacobiEigenvalueDifference": 1e-11,
+    "jacobiFieldDifference": 0.000001,
+    "criterion": "in-gap count (|E| below the exact bulk gap) equals 2 × winding at every tested lattice point; topological points need max|x±|^N ≤ 1e-3",
+    "splitting": "computed splitting / (max|x±|^N, times |sin((N+1)θ)| for complex roots) constant to 1e-3 relative over the upper half of the resolved window, drift rate < 1e-4 per site; at Δ = t, |split − 2 E_SSH| below the 4Nε‖H‖ floor",
+    "majorana": "|u| = |v| and the left mode equals the closed form, and the pair density equals ½(φ_L² + φ_R²), all within 1e-9 + 4 max|x±|^N",
+    "print": "every exported pixel within 1 channel level of its nearest-neighbor cell (a neighboring cell on a cell boundary or corner); state unchanged by export; a displacement by one cell must mismatch > 1% of pixels"
+  },
+  "rings": {
+    "cases": 72,
+    "grids": [
+      64,
+      96,
+      160
+    ],
+    "parameters": [
+      [
+        0.4,
+        1,
+        0.8
+      ],
+      [
+        0.3,
+        1,
+        0.85
+      ],
+      [
+        2.2,
+        1,
+        0.6
+      ],
+      [
+        0.1,
+        1,
+        1.1
+      ],
+      [
+        1.85,
+        1,
+        0.7
+      ],
+      [
+        0.25,
+        1,
+        0.9
+      ],
+      [
+        0.4,
+        1,
+        0.2
+      ],
+      [
+        -1.3,
+        0.6,
+        0.4
+      ],
+      [
+        -2.4,
+        1.6,
+        1.4
+      ],
+      [
+        0,
+        1,
+        1
+      ],
+      [
+        2,
+        1,
+        0.5
+      ],
+      [
+        1.2,
+        0.4,
+        0.05
+      ]
+    ],
+    "maxEigenvalueError": 4.3520742565306136e-14,
+    "maxResidual": 1.1435297153639112e-14,
+    "maxOrthonormalityError": 9.547918011776346e-15,
+    "note": "residual and orthonormality computed for N ≤ 96",
+    "rows": [
+      {
+        "N": 64,
+        "mu": 0.4,
+        "t": 1,
+        "delta": 0.8,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.042810365310288e-14,
+        "residual": 4.6629367034256575e-15,
+        "orthonormality": 5.995204332975845e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 0.4,
+        "t": 1,
+        "delta": 0.8,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.865174681370263e-14,
+        "residual": 4.829470157119431e-15,
+        "orthonormality": 6.217248937900877e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 0.3,
+        "t": 1,
+        "delta": 0.85,
+        "bc": "periodic",
+        "maxEigenvalueError": 1.554312234475219e-14,
+        "residual": 4.107825191113079e-15,
+        "orthonormality": 5.995204332975845e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 0.3,
+        "t": 1,
+        "delta": 0.85,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.4654943925052066e-14,
+        "residual": 3.9968028886505635e-15,
+        "orthonormality": 5.10702591327572e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 2.2,
+        "t": 1,
+        "delta": 0.6,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.353672812205332e-14,
+        "residual": 6.217248937900877e-15,
+        "orthonormality": 4.6629367034256575e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 2.2,
+        "t": 1,
+        "delta": 0.6,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.6201263381153694e-14,
+        "residual": 6.217248937900877e-15,
+        "orthonormality": 4.440892098500626e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 0.1,
+        "t": 1,
+        "delta": 1.1,
+        "bc": "periodic",
+        "maxEigenvalueError": 1.2878587085651816e-14,
+        "residual": 4.6074255521944e-15,
+        "orthonormality": 9.103828801926284e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 0.1,
+        "t": 1,
+        "delta": 1.1,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.176836406102666e-14,
+        "residual": 4.385380947269368e-15,
+        "orthonormality": 6.5503158452884236e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 1.85,
+        "t": 1,
+        "delta": 0.7,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.708944180085382e-14,
+        "residual": 8.770761894538737e-15,
+        "orthonormality": 6.8833827526759706e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 1.85,
+        "t": 1,
+        "delta": 0.7,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.6645352591003757e-14,
+        "residual": 6.6058269965196814e-15,
+        "orthonormality": 7.105427357601002e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 0.25,
+        "t": 1,
+        "delta": 0.9,
+        "bc": "periodic",
+        "maxEigenvalueError": 1.3766765505351941e-14,
+        "residual": 3.608224830031759e-15,
+        "orthonormality": 7.327471962526033e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 0.25,
+        "t": 1,
+        "delta": 0.9,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.9539925233402755e-14,
+        "residual": 5.773159728050814e-15,
+        "orthonormality": 7.327471962526033e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 0.4,
+        "t": 1,
+        "delta": 0.2,
+        "bc": "periodic",
+        "maxEigenvalueError": 1.554312234475219e-14,
+        "residual": 3.83026943495679e-15,
+        "orthonormality": 6.217248937900877e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 0.4,
+        "t": 1,
+        "delta": 0.2,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.7319479184152442e-14,
+        "residual": 4.496403249731884e-15,
+        "orthonormality": 7.993605777301127e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": -1.3,
+        "t": 0.6,
+        "delta": 0.4,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.398081733190338e-14,
+        "residual": 5.10702591327572e-15,
+        "orthonormality": 6.439293542825908e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": -1.3,
+        "t": 0.6,
+        "delta": 0.4,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.1546319456101628e-14,
+        "residual": 3.969047313034935e-15,
+        "orthonormality": 8.43769498715119e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": -2.4,
+        "t": 1.6,
+        "delta": 1.4,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.55351295663786e-14,
+        "residual": 1.1435297153639112e-14,
+        "orthonormality": 8.215650382226158e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": -2.4,
+        "t": 1.6,
+        "delta": 1.4,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.930988785010413e-14,
+        "residual": 1.0547118733938987e-14,
+        "orthonormality": 6.661338147750939e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 0,
+        "t": 1,
+        "delta": 1,
+        "bc": "periodic",
+        "maxEigenvalueError": 3.552713678800501e-15,
+        "residual": 1.7763568394002505e-15,
+        "orthonormality": 1.3322676295501878e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 0,
+        "t": 1,
+        "delta": 1,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.9984014443252818e-15,
+        "residual": 1.6653345369377348e-15,
+        "orthonormality": 1.1102230246251565e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 2,
+        "t": 1,
+        "delta": 0.5,
+        "bc": "periodic",
+        "maxEigenvalueError": 3.9968028886505635e-14,
+        "residual": 8.215650382226158e-15,
+        "orthonormality": 5.551115123125783e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 2,
+        "t": 1,
+        "delta": 0.5,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.708944180085382e-14,
+        "residual": 5.88418203051333e-15,
+        "orthonormality": 6.217248937900877e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 1.2,
+        "t": 0.4,
+        "delta": 0.05,
+        "bc": "periodic",
+        "maxEigenvalueError": 9.992007221626409e-15,
+        "residual": 2.7200464103316335e-15,
+        "orthonormality": 6.217248937900877e-15,
+        "pass": true
+      },
+      {
+        "N": 64,
+        "mu": 1.2,
+        "t": 0.4,
+        "delta": 0.05,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.2878587085651816e-14,
+        "residual": 2.886579864025407e-15,
+        "orthonormality": 5.10702591327572e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 0.4,
+        "t": 1,
+        "delta": 0.8,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.353672812205332e-14,
+        "residual": 5.995204332975845e-15,
+        "orthonormality": 6.661338147750939e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 0.4,
+        "t": 1,
+        "delta": 0.8,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.4424906541753444e-14,
+        "residual": 4.385380947269368e-15,
+        "orthonormality": 7.105427357601002e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 0.3,
+        "t": 1,
+        "delta": 0.85,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.042810365310288e-14,
+        "residual": 4.218847493575595e-15,
+        "orthonormality": 9.547918011776346e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 0.3,
+        "t": 1,
+        "delta": 0.85,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.9984014443252818e-14,
+        "residual": 4.052314039881821e-15,
+        "orthonormality": 8.659739592076221e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 2.2,
+        "t": 1,
+        "delta": 0.6,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.1316282072803006e-14,
+        "residual": 6.5503158452884236e-15,
+        "orthonormality": 6.8833827526759706e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 2.2,
+        "t": 1,
+        "delta": 0.6,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 3.375077994860476e-14,
+        "residual": 6.5503158452884236e-15,
+        "orthonormality": 6.8833827526759706e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 0.1,
+        "t": 1,
+        "delta": 1.1,
+        "bc": "periodic",
+        "maxEigenvalueError": 1.5987211554602254e-14,
+        "residual": 4.496403249731884e-15,
+        "orthonormality": 8.659739592076221e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 0.1,
+        "t": 1,
+        "delta": 1.1,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.1546319456101628e-14,
+        "residual": 3.83026943495679e-15,
+        "orthonormality": 7.327471962526033e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 1.85,
+        "t": 1,
+        "delta": 0.7,
+        "bc": "periodic",
+        "maxEigenvalueError": 1.9539925233402755e-14,
+        "residual": 4.440892098500626e-15,
+        "orthonormality": 5.88418203051333e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 1.85,
+        "t": 1,
+        "delta": 0.7,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.3092638912203256e-14,
+        "residual": 6.827871601444713e-15,
+        "orthonormality": 7.993605777301127e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 0.25,
+        "t": 1,
+        "delta": 0.9,
+        "bc": "periodic",
+        "maxEigenvalueError": 1.4654943925052066e-14,
+        "residual": 3.941291737419306e-15,
+        "orthonormality": 8.43769498715119e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 0.25,
+        "t": 1,
+        "delta": 0.9,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.7533531010703882e-14,
+        "residual": 6.8833827526759706e-15,
+        "orthonormality": 7.549516567451064e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 0.4,
+        "t": 1,
+        "delta": 0.2,
+        "bc": "periodic",
+        "maxEigenvalueError": 1.509903313490213e-14,
+        "residual": 3.9968028886505635e-15,
+        "orthonormality": 8.326672684688674e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 0.4,
+        "t": 1,
+        "delta": 0.2,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.3092638912203256e-14,
+        "residual": 6.106226635438361e-15,
+        "orthonormality": 8.659739592076221e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": -1.3,
+        "t": 0.6,
+        "delta": 0.4,
+        "bc": "periodic",
+        "maxEigenvalueError": 1.4210854715202004e-14,
+        "residual": 3.6637359812630166e-15,
+        "orthonormality": 8.43769498715119e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": -1.3,
+        "t": 0.6,
+        "delta": 0.4,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.6209256159527285e-14,
+        "residual": 5.218048215738236e-15,
+        "orthonormality": 8.43769498715119e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": -2.4,
+        "t": 1.6,
+        "delta": 1.4,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.7533531010703882e-14,
+        "residual": 7.66053886991358e-15,
+        "orthonormality": 6.5503158452884236e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": -2.4,
+        "t": 1.6,
+        "delta": 1.4,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.2537527399890678e-14,
+        "residual": 8.104628079763643e-15,
+        "orthonormality": 8.43769498715119e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 0,
+        "t": 1,
+        "delta": 1,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.6645352591003757e-15,
+        "residual": 1.6653345369377348e-15,
+        "orthonormality": 1.3322676295501878e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 0,
+        "t": 1,
+        "delta": 1,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 3.1086244689504383e-15,
+        "residual": 1.6653345369377348e-15,
+        "orthonormality": 1.5543122344752192e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 2,
+        "t": 1,
+        "delta": 0.5,
+        "bc": "periodic",
+        "maxEigenvalueError": 3.3306690738754696e-14,
+        "residual": 5.440092820663267e-15,
+        "orthonormality": 9.103828801926284e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 2,
+        "t": 1,
+        "delta": 0.5,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.6201263381153694e-14,
+        "residual": 5.773159728050814e-15,
+        "orthonormality": 6.772360450213455e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 1.2,
+        "t": 0.4,
+        "delta": 0.05,
+        "bc": "periodic",
+        "maxEigenvalueError": 9.769962616701378e-15,
+        "residual": 2.7755575615628914e-15,
+        "orthonormality": 5.329070518200751e-15,
+        "pass": true
+      },
+      {
+        "N": 96,
+        "mu": 1.2,
+        "t": 0.4,
+        "delta": 0.05,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.0436096431476471e-14,
+        "residual": 2.831068712794149e-15,
+        "orthonormality": 7.771561172376096e-15,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 0.4,
+        "t": 1,
+        "delta": 0.8,
+        "bc": "periodic",
+        "maxEigenvalueError": 1.9095836023552692e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 0.4,
+        "t": 1,
+        "delta": 0.8,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.531308496145357e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 0.3,
+        "t": 1,
+        "delta": 0.85,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.886579864025407e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 0.3,
+        "t": 1,
+        "delta": 0.85,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.2648549702353193e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 2.2,
+        "t": 1,
+        "delta": 0.6,
+        "bc": "periodic",
+        "maxEigenvalueError": 4.3076653355456074e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 2.2,
+        "t": 1,
+        "delta": 0.6,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 3.3306690738754696e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 0.1,
+        "t": 1,
+        "delta": 1.1,
+        "bc": "periodic",
+        "maxEigenvalueError": 1.7763568394002505e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 0.1,
+        "t": 1,
+        "delta": 1.1,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.4432899320127035e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 1.85,
+        "t": 1,
+        "delta": 0.7,
+        "bc": "periodic",
+        "maxEigenvalueError": 3.5083047578154947e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 1.85,
+        "t": 1,
+        "delta": 0.7,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.398081733190338e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 0.25,
+        "t": 1,
+        "delta": 0.9,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.842170943040401e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 0.25,
+        "t": 1,
+        "delta": 0.9,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.4424906541753444e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 0.4,
+        "t": 1,
+        "delta": 0.2,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.042810365310288e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 0.4,
+        "t": 1,
+        "delta": 0.2,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.8207657603852567e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": -1.3,
+        "t": 0.6,
+        "delta": 0.4,
+        "bc": "periodic",
+        "maxEigenvalueError": 1.687538997430238e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": -1.3,
+        "t": 0.6,
+        "delta": 0.4,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 2.4424906541753444e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": -2.4,
+        "t": 1.6,
+        "delta": 1.4,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.3092638912203256e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": -2.4,
+        "t": 1.6,
+        "delta": 1.4,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 4.3520742565306136e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 0,
+        "t": 1,
+        "delta": 1,
+        "bc": "periodic",
+        "maxEigenvalueError": 4.884981308350689e-15,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 0,
+        "t": 1,
+        "delta": 1,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 5.329070518200751e-15,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 2,
+        "t": 1,
+        "delta": 0.5,
+        "bc": "periodic",
+        "maxEigenvalueError": 2.7533531010703882e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 2,
+        "t": 1,
+        "delta": 0.5,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 4.04121180963557e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 1.2,
+        "t": 0.4,
+        "delta": 0.05,
+        "bc": "periodic",
+        "maxEigenvalueError": 1.6653345369377348e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      },
+      {
+        "N": 160,
+        "mu": 1.2,
+        "t": 0.4,
+        "delta": 0.05,
+        "bc": "antiperiodic",
+        "maxEigenvalueError": 1.9984014443252818e-14,
+        "residual": 0,
+        "orthonormality": 0,
+        "pass": true
+      }
+    ]
+  },
+  "jacobi": [
+    {
+      "N": 32,
+      "mu": 0.4,
+      "t": 1,
+      "delta": 0.8,
+      "bc": "open",
+      "maxEigenvalueDifference": 8.881784197001252e-15,
+      "residual": 6.681325334991879e-15,
+      "orthonormality": 3.9968028886505635e-15,
+      "maxFieldDifference": 8.388810979198524e-9
+    },
+    {
+      "N": 64,
+      "mu": 2.2,
+      "t": 1,
+      "delta": 0.6,
+      "bc": "open",
+      "maxEigenvalueDifference": 1.7763568394002505e-14,
+      "residual": 6.439293542825908e-15,
+      "orthonormality": 5.773159728050814e-15,
+      "maxFieldDifference": 9.299435527188038e-10
+    },
+    {
+      "N": 64,
+      "mu": 1.85,
+      "t": 1,
+      "delta": 0.7,
+      "bc": "open",
+      "maxEigenvalueDifference": 1.3322676295501878e-14,
+      "residual": 5.995204332975845e-15,
+      "orthonormality": 4.107825191113079e-15,
+      "maxFieldDifference": 2.6929194985036986e-9
+    },
+    {
+      "N": 96,
+      "mu": 0.4,
+      "t": 1,
+      "delta": 0.2,
+      "bc": "open",
+      "maxEigenvalueDifference": 1.9539925233402755e-14,
+      "residual": 3.969047313034935e-15,
+      "orthonormality": 7.993605777301127e-15,
+      "maxFieldDifference": 1.390773923803934e-8
+    },
+    {
+      "N": 48,
+      "mu": -1.3,
+      "t": 0.6,
+      "delta": 0.4,
+      "bc": "open",
+      "maxEigenvalueDifference": 1.176836406102666e-14,
+      "residual": 3.774758283725532e-15,
+      "orthonormality": 3.3306690738754696e-15,
+      "maxFieldDifference": 1.8594049841502702e-9
+    },
+    {
+      "N": 48,
+      "mu": 0.4,
+      "t": 1,
+      "delta": 0.8,
+      "bc": "periodic",
+      "maxEigenvalueDifference": 1.2878587085651816e-14,
+      "residual": 3.164135620181696e-15,
+      "orthonormality": 4.884981308350689e-15,
+      "maxFieldDifference": 1.83119371055529e-9
+    }
+  ],
+  "criterion": {
+    "lattice": "μ −2.40..2.40 step 0.05, t ∈ {0.4, 1, 1.6}, Δ ∈ {0.05, 0.2, 0.5, 0.8, 1.1, 1.4}, N = 64 sites",
+    "tested": 1492,
+    "topological": 1012,
+    "trivial": 480,
+    "critical": 24,
+    "shallow": 230,
+    "shallowWithPair": 230,
+    "disagreements": 0
+  },
+  "splitting": [
+    {
+      "mu": 1.2,
+      "t": 1,
+      "delta": 0.9,
+      "roots": "real",
+      "xmax": 0.5327950329272454,
+      "theta": 0,
+      "xiSites": 1.5882634134476386,
+      "expectedRate": -0.6296184823834121,
+      "measuredRate": -0.6296184823903085,
+      "rateDeviation": 6.896339708849969e-12,
+      "NRange": [
+        4,
+        38
+      ],
+      "upperWindow": [
+        21,
+        38
+      ],
+      "ratioConstant": 2.977269726588836,
+      "ratioRelativeSpread": 7.573719429387893e-11,
+      "samples": [
+        {
+          "N": 4,
+          "split": 0.2458868350006314,
+          "ratio": 3.05136813934692
+        },
+        {
+          "N": 9,
+          "split": 0.010301663167886697,
+          "ratio": 2.977596457769862
+        },
+        {
+          "N": 14,
+          "split": 0.000442242693127102,
+          "ratio": 2.977270693743774
+        },
+        {
+          "N": 19,
+          "split": 0.000018987219119962487,
+          "ratio": 2.977269729035871
+        },
+        {
+          "N": 24,
+          "split": 8.151962983922284e-7,
+          "ratio": 2.9772697265854395
+        },
+        {
+          "N": 29,
+          "split": 3.499959637381111e-8,
+          "ratio": 2.9772697265874712
+        },
+        {
+          "N": 34,
+          "split": 1.5026708890093652e-9,
+          "ratio": 2.9772697268143262
+        },
+        {
+          "N": 38,
+          "split": 1.2108895814188662e-10,
+          "ratio": 2.977269726449852
+        }
+      ]
+    },
+    {
+      "mu": 1.8,
+      "t": 1,
+      "delta": 0.5,
+      "roots": "real",
+      "xmax": 0.7632993161855453,
+      "theta": 0,
+      "xiSites": 3.70226344034913,
+      "expectedRate": -0.270105036044031,
+      "measuredRate": -0.2701050358426296,
+      "rateDeviation": 2.0140140188675232e-10,
+      "NRange": [
+        4,
+        82
+      ],
+      "upperWindow": [
+        43,
+        82
+      ],
+      "ratioConstant": 1.1841394374264809,
+      "ratioRelativeSpread": 1.0490681656705192e-8,
+      "samples": [
+        {
+          "N": 4,
+          "split": 0.6136268513241836,
+          "ratio": 1.8076937735644965
+        },
+        {
+          "N": 9,
+          "split": 0.11051640678048438,
+          "ratio": 1.256530099818229
+        },
+        {
+          "N": 14,
+          "split": 0.02717386256734669,
+          "ratio": 1.192403242254959
+        },
+        {
+          "N": 19,
+          "split": 0.00699689195461162,
+          "ratio": 1.1849569559394706
+        },
+        {
+          "N": 24,
+          "split": 0.00181178469843947,
+          "ratio": 1.1842124645692857
+        },
+        {
+          "N": 29,
+          "split": 0.0004694144100435337,
+          "ratio": 1.1841455612088614
+        },
+        {
+          "N": 34,
+          "split": 0.00012162664251558745,
+          "ratio": 1.1841399289349268
+        },
+        {
+          "N": 39,
+          "split": 0.000031513955546474494,
+          "ratio": 1.1841394742192441
+        },
+        {
+          "N": 44,
+          "split": 0.000008165396372837507,
+          "ratio": 1.184139438550884
+        },
+        {
+          "N": 49,
+          "split": 0.000002115688069697123,
+          "ratio": 1.1841394357938722
+        },
+        {
+          "N": 54,
+          "split": 5.48183555743502e-7,
+          "ratio": 1.1841394355390378
+        },
+        {
+          "N": 59,
+          "split": 1.420366334691252e-7,
+          "ratio": 1.1841394356900041
+        },
+        {
+          "N": 64,
+          "split": 3.680228098812023e-8,
+          "ratio": 1.1841394360931607
+        },
+        {
+          "N": 69,
+          "split": 9.535623681203203e-9,
+          "ratio": 1.1841394363022382
+        },
+        {
+          "N": 74,
+          "split": 2.4707196576594297e-9,
+          "ratio": 1.1841394377423775
+        },
+        {
+          "N": 79,
+          "split": 6.401737135658391e-10,
+          "ratio": 1.1841394384875816
+        },
+        {
+          "N": 82,
+          "split": 2.8469671860915296e-10,
+          "ratio": 1.1841394498489106
+        }
+      ]
+    },
+    {
+      "mu": -1.4,
+      "t": 1,
+      "delta": 0.6,
+      "roots": "complex",
+      "xmax": 0.5,
+      "theta": 0.5053605102841576,
+      "xiSites": 1.4426950408889634,
+      "expectedRate": -0.6931471805599453,
+      "measuredRate": -0.6931471804925561,
+      "rateDeviation": 6.738917568711038e-11,
+      "NRange": [
+        4,
+        34
+      ],
+      "upperWindow": [
+        19,
+        34
+      ],
+      "ratioConstant": 3.160354410387799,
+      "ratioRelativeSpread": 1.7437445931633988e-9,
+      "samples": [
+        {
+          "N": 4,
+          "split": 0.11590349037063763,
+          "ratio": 3.215148085746985
+        },
+        {
+          "N": 9,
+          "split": 0.005816975556684836,
+          "ratio": 3.160499303464205
+        },
+        {
+          "N": 14,
+          "split": 0.00018571933100281363,
+          "ratio": 3.1603545200474974
+        },
+        {
+          "N": 19,
+          "split": 0.0000038016890231491494,
+          "ratio": 3.1603544104614256
+        },
+        {
+          "N": 24,
+          "split": 1.2732157897341647e-8,
+          "ratio": 3.1603544124760687
+        },
+        {
+          "N": 29,
+          "split": 3.0625350511194117e-9,
+          "ratio": 3.16035440929564
+        },
+        {
+          "N": 34,
+          "split": 1.6879425660580353e-10,
+          "ratio": 3.1603544136560306
+        }
+      ]
+    },
+    {
+      "mu": 1.5,
+      "t": 1,
+      "delta": 0.2,
+      "roots": "complex",
+      "xmax": 0.8164965809277259,
+      "theta": 2.4425608292745817,
+      "xiSites": 4.93260692475286,
+      "expectedRate": -0.20273255405408233,
+      "measuredRate": -0.20273255408109953,
+      "rateDeviation": 2.7017192116784298e-11,
+      "NRange": [
+        4,
+        97
+      ],
+      "upperWindow": [
+        54,
+        97
+      ],
+      "ratioConstant": 0.9065334717381965,
+      "ratioRelativeSpread": 2.843254520712435e-9,
+      "samples": [
+        {
+          "N": 4,
+          "split": 0.15781487352653567,
+          "ratio": 1.0255240686227503
+        },
+        {
+          "N": 9,
+          "split": 0.09742923543311272,
+          "ratio": 0.9298565536310667
+        },
+        {
+          "N": 14,
+          "split": 0.046693415627420964,
+          "ratio": 0.914178241915446
+        },
+        {
+          "N": 19,
+          "split": 0.019058808547485796,
+          "ratio": 0.9084584588119835
+        },
+        {
+          "N": 24,
+          "split": 0.006854459259692473,
+          "ratio": 0.9068882544406346
+        },
+        {
+          "N": 29,
+          "split": 0.0021608783336557642,
+          "ratio": 0.9065822702571188
+        },
+        {
+          "N": 34,
+          "split": 0.0005689332965909743,
+          "ratio": 0.9065383229354422
+        },
+        {
+          "N": 39,
+          "split": 0.00010282908379759397,
+          "ratio": 0.9065337731900022
+        },
+        {
+          "N": 44,
+          "split": 0.000004906502304646469,
+          "ratio": 0.906533480582717
+        },
+        {
+          "N": 49,
+          "split": 0.000016882018610203858,
+          "ratio": 0.9065334744463581
+        },
+        {
+          "N": 54,
+          "split": 0.000010848523230673762,
+          "ratio": 0.9065334730800971
+        },
+        {
+          "N": 59,
+          "split": 0.000005163407687907006,
+          "ratio": 0.9065334719693736
+        },
+        {
+          "N": 64,
+          "split": 0.0000020870544726398914,
+          "ratio": 0.9065334716193046
+        },
+        {
+          "N": 69,
+          "split": 7.4108097415421e-7,
+          "ratio": 0.9065334715491323
+        },
+        {
+          "N": 74,
+          "split": 2.297495623187278e-7,
+          "ratio": 0.906533471533077
+        },
+        {
+          "N": 79,
+          "split": 5.8841219118348546e-8,
+          "ratio": 0.9065334715616323
+        },
+        {
+          "N": 84,
+          "split": 9.808786213633159e-9,
+          "ratio": 0.9065334716662755
+        },
+        {
+          "N": 89,
+          "split": 1.0700209935684705e-9,
+          "ratio": 0.9065334710661218
+        },
+        {
+          "N": 94,
+          "split": 2.0202490579124533e-9,
+          "ratio": 0.9065334716208608
+        },
+        {
+          "N": 97,
+          "split": 1.4961046355906838e-9,
+          "ratio": 0.9065334720269416
+        }
+      ]
+    },
+    {
+      "mu": 1,
+      "t": 1,
+      "delta": 0.3,
+      "roots": "complex",
+      "xmax": 0.7337993857053428,
+      "theta": 2.1225041396982,
+      "xiSites": 3.230813125955614,
+      "expectedRate": -0.3095196042031118,
+      "measuredRate": -0.30951960423383107,
+      "rateDeviation": 3.0719274361601125e-11,
+      "NRange": [
+        4,
+        69
+      ],
+      "upperWindow": [
+        37,
+        69
+      ],
+      "ratioConstant": 1.6258402884908694,
+      "ratioRelativeSpread": 9.193366068416253e-10,
+      "samples": [
+        {
+          "N": 4,
+          "split": 0.49893538682636085,
+          "ratio": 1.8552739980459863
+        },
+        {
+          "N": 9,
+          "split": 0.06990284042071448,
+          "ratio": 1.6343890103445162
+        },
+        {
+          "N": 14,
+          "split": 0.008735241563985963,
+          "ratio": 1.6262971315321115
+        },
+        {
+          "N": 19,
+          "split": 0.004536765447889836,
+          "ratio": 1.625923515450368
+        },
+        {
+          "N": 24,
+          "split": 0.00032618541610295856,
+          "ratio": 1.6258408067540755
+        },
+        {
+          "N": 29,
+          "split": 0.00015347522723581272,
+          "ratio": 1.6258404699913276
+        },
+        {
+          "N": 34,
+          "split": 0.000039173665515389975,
+          "ratio": 1.6258402988577323
+        },
+        {
+          "N": 39,
+          "split": 7.170965309124998e-7,
+          "ratio": 1.625840288437458
+        },
+        {
+          "N": 44,
+          "split": 0.0000018872867041502145,
+          "ratio": 1.6258402884287524
+        },
+        {
+          "N": 49,
+          "split": 2.676916572165969e-7,
+          "ratio": 1.625840288393298
+        },
+        {
+          "N": 54,
+          "split": 4.28568146377338e-8,
+          "ratio": 1.6258402883899623
+        },
+        {
+          "N": 59,
+          "split": 1.893326453016165e-8,
+          "ratio": 1.6258402883920429
+        },
+        {
+          "N": 64,
+          "split": 1.071161554018168e-9,
+          "ratio": 1.625840288340313
+        },
+        {
+          "N": 69,
+          "split": 6.866794881425162e-10,
+          "ratio": 1.6258402883873355
+        }
+      ]
+    },
+    {
+      "mu": 0.4,
+      "t": 1,
+      "delta": 0.8,
+      "roots": "complex",
+      "xmax": 0.33333333333333326,
+      "theta": 1.9106332362490186,
+      "xiSites": 0.9102392266268371,
+      "expectedRate": -1.09861228866811,
+      "measuredRate": -1.0986122886765064,
+      "rateDeviation": 8.39629754640247e-12,
+      "NRange": [
+        4,
+        21
+      ],
+      "upperWindow": [
+        13,
+        21
+      ],
+      "ratioConstant": 3.620386713102972,
+      "ratioRelativeSpread": 1.4906082035359702e-8,
+      "samples": [
+        {
+          "N": 4,
+          "split": 0.00572291419050367,
+          "ratio": 3.6205191418660427
+        },
+        {
+          "N": 9,
+          "split": 0.000046712793679704663,
+          "ratio": 3.620386726999719
+        },
+        {
+          "N": 14,
+          "split": 2.8438858632743697e-7,
+          "ratio": 3.620386719288867
+        },
+        {
+          "N": 19,
+          "split": 1.5302969574608385e-9,
+          "ratio": 3.620386719749386
+        },
+        {
+          "N": 21,
+          "split": 3.217270779699381e-10,
+          "ratio": 3.6203867194693724
+        }
+      ]
+    }
+  ],
+  "deltaEqualsT": [
+    {
+      "mu": 0.4,
+      "t": 0.8,
+      "delta": 0.8,
+      "chains": 158,
+      "maxErrorOverFloor": 0.1250291407593303,
+      "smallestResolvedSplit": 4.2633228323352006e-14
+    },
+    {
+      "mu": 1,
+      "t": 1,
+      "delta": 1,
+      "chains": 158,
+      "maxErrorOverFloor": 0.07120472364179195,
+      "smallestResolvedSplit": 1.7061193016665747e-13
+    },
+    {
+      "mu": 1.5,
+      "t": 1.2,
+      "delta": 1.2,
+      "chains": 158,
+      "maxErrorOverFloor": 0.107607080540701,
+      "smallestResolvedSplit": 2.526079353801758e-13
+    },
+    {
+      "mu": -0.6,
+      "t": 0.5,
+      "delta": 0.5,
+      "chains": 158,
+      "maxErrorOverFloor": 0.0980472127219613,
+      "smallestResolvedSplit": 1.0430676333328532e-13
+    },
+    {
+      "mu": 1.9,
+      "t": 1,
+      "delta": 1,
+      "chains": 141,
+      "maxErrorOverFloor": 0.028374140066397,
+      "smallestResolvedSplit": 0.00010637557683618995
+    }
+  ],
+  "profile": [
+    {
+      "N": 64,
+      "mu": 0.4,
+      "t": 1,
+      "delta": 0.8,
+      "maxUVImbalance": 1.5543122344752192e-15,
+      "maxProfileError": 1.0690233420707074e-15,
+      "maxPairDensityError": 1.2212453270876722e-15,
+      "allowance": 1e-9,
+      "endWeight": 0.9999988883846785,
+      "closedFormEndWeight": 0.9999988883846788,
+      "endWeightDifference": 2.220446049250313e-16,
+      "pass": true
+    },
+    {
+      "N": 96,
+      "mu": 0.3,
+      "t": 1,
+      "delta": 0.85,
+      "maxUVImbalance": 2.6645352591003757e-15,
+      "maxProfileError": 1.887379141862766e-15,
+      "maxPairDensityError": 4.3298697960381105e-15,
+      "allowance": 1e-9,
+      "endWeight": 0.9999999999767526,
+      "closedFormEndWeight": 0.9999999999767528,
+      "endWeightDifference": 2.220446049250313e-16,
+      "pass": true
+    },
+    {
+      "N": 96,
+      "mu": 1.2,
+      "t": 1,
+      "delta": 0.9,
+      "maxUVImbalance": 3.3306690738754696e-16,
+      "maxProfileError": 5.551115123125783e-16,
+      "maxPairDensityError": 4.440892098500626e-15,
+      "allowance": 1e-9,
+      "endWeight": 0.9999839237281039,
+      "closedFormEndWeight": 0.9999839237281042,
+      "endWeightDifference": 3.3306690738754696e-16,
+      "pass": true
+    },
+    {
+      "N": 160,
+      "mu": 1.8,
+      "t": 1,
+      "delta": 0.5,
+      "maxUVImbalance": 7.771561172376096e-16,
+      "maxProfileError": 9.43689570931383e-16,
+      "maxPairDensityError": 9.020562075079397e-16,
+      "allowance": 1.0000000006811452e-9,
+      "endWeight": 0.9996103887407501,
+      "closedFormEndWeight": 0.9996103887407505,
+      "endWeightDifference": 3.3306690738754696e-16,
+      "pass": true
+    },
+    {
+      "N": 128,
+      "mu": 1.5,
+      "t": 1,
+      "delta": 0.2,
+      "maxUVImbalance": 4.517458145227264e-12,
+      "maxProfileError": 2.8222721790815356e-12,
+      "maxPairDensityError": 7.771561172376096e-16,
+      "allowance": 1.0214891586286333e-9,
+      "endWeight": 0.9952642847734965,
+      "closedFormEndWeight": 0.9952642847734967,
+      "endWeightDifference": 2.220446049250313e-16,
+      "pass": true
+    },
+    {
+      "N": 96,
+      "mu": -1.1,
+      "t": 0.7,
+      "delta": 0.4,
+      "maxUVImbalance": 4.440892098500626e-16,
+      "maxProfileError": 4.440892098500626e-16,
+      "maxPairDensityError": 5.273559366969494e-16,
+      "allowance": 1e-9,
+      "endWeight": 0.9999975280781843,
+      "closedFormEndWeight": 0.9999975280781843,
+      "endWeightDifference": 0,
+      "pass": true
+    }
+  ],
+  "failureControls": [
+    {
+      "name": "pairing Δ dropped from the BdG matrix",
+      "check": "band structure and topological criterion",
+      "maxEigenvalueError": 1.498675110666385,
+      "criterionDisagreements": 38,
+      "criterionPoints": 46,
+      "failed": true
+    },
+    {
+      "name": "ring closed with the opposite boundary sign",
+      "check": "periodic band on k = 2πm/N",
+      "maxEigenvalueError": 0.08700883558908412,
+      "failed": true
+    },
+    {
+      "name": "open chain given a closing bond (boundary hopping not removed)",
+      "check": "topological criterion",
+      "criterionDisagreements": 38,
+      "criterionPoints": 46,
+      "topologicalPoints": 38,
+      "failed": true
+    },
+    {
+      "name": "QL rotation not applied to one eigenvector row",
+      "check": "eigenvector residual and Majorana profile",
+      "residual": 2.037858935037409,
+      "orthonormality": 4.882946598289741,
+      "profilePass": false,
+      "failed": true
+    }
+  ],
+  "studio": {
+    "cases": [
+      {
+        "fixture": "default",
+        "seed": "kitaev-science-default",
+        "parameters": {
+          "grid": 96,
+          "aspect": "4:5",
+          "mu": 0.4,
+          "tHop": 1,
+          "delta": 0.8,
+          "view": "int",
+          "exposure": 1.05
+        },
+        "field": [
+          96,
+          120
+        ],
+        "computeMs": 603,
+        "identicalToExtractedCode": true,
+        "maxFieldDifferenceVsJacobi": 8.388845840201498e-9,
+        "endWeight": 0.999999999590274,
+        "closedFormEndWeight": 0.9999999995902742,
+        "split": 3.030141368324625e-15,
+        "floor": 2.0459430046896248e-13,
+        "xiSites": 0.9102392266268373,
+        "status": "|μ|/2t 0.20 · topo < 1 end weight 1 · Majorana closed form 1 · deterministic, no sampling error 2|E₀| 3.03e-15 · deterministic, no sampling error · below the 2e-13 floor of double precision Majorana ends · ξ 0.91 sites seed kitaev-science-default",
+        "print": {
+          "width": 1920,
+          "height": 2400,
+          "pixels": 4608000,
+          "maxChannelError": 0.4999648470108511,
+          "boundaryPixels": 0,
+          "unmatched": 0,
+          "displacedMismatch": 0.6967013888888889
+        },
+        "statePreserved": true
+      },
+      {
+        "fixture": "majorana-1x1-128",
+        "seed": "kitaev-science-majorana-1x1-128",
+        "parameters": {
+          "grid": 128,
+          "aspect": "1:1",
+          "mu": 0.3,
+          "tHop": 1,
+          "delta": 0.85,
+          "view": "int",
+          "exposure": 1.05
+        },
+        "field": [
+          128,
+          128
+        ],
+        "computeMs": 149,
+        "identicalToExtractedCode": true,
+        "maxFieldDifferenceVsJacobi": 1.489904150053789e-8,
+        "endWeight": 0.9999999999999385,
+        "closedFormEndWeight": 0.9999999999999387,
+        "split": 1.199040866595169e-14,
+        "floor": 2.6145451892538864e-13,
+        "xiSites": 0.7960814882206444,
+        "status": "|μ|/2t 0.15 · topo < 1 end weight 1 · Majorana closed form 1 · deterministic, no sampling error 2|E₀| 1.20e-14 · deterministic, no sampling error · below the 3e-13 floor of double precision Majorana ends · ξ 0.80 sites seed kitaev-science-majorana-1x1-128",
+        "print": {
+          "width": 2400,
+          "height": 2400,
+          "pixels": 5760000,
+          "maxChannelError": 0.9188145968066124,
+          "boundaryPixels": 7703,
+          "unmatched": 0,
+          "displacedMismatch": 0.649903125
+        },
+        "statePreserved": true
+      },
+      {
+        "fixture": "trivial-5x4-112",
+        "seed": "kitaev-science-trivial-5x4-112",
+        "parameters": {
+          "grid": 112,
+          "aspect": "5:4",
+          "mu": 2.2,
+          "tHop": 1,
+          "delta": 0.6,
+          "view": "int",
+          "exposure": 1.05
+        },
+        "field": [
+          112,
+          90
+        ],
+        "computeMs": 128,
+        "identicalToExtractedCode": true,
+        "maxFieldDifferenceVsJacobi": 9.309473747443064e-10,
+        "endWeight": 0.02375311672957949,
+        "closedFormEndWeight": null,
+        "split": 0.40641638532310176,
+        "floor": 4.1773527086668147e-13,
+        "xiSites": null,
+        "status": "|μ|/2t 1.10 · topo < 1 end weight 0.0238 · deterministic, no sampling error 2|E₀| 0.406 · deterministic, no sampling error trivial seed kitaev-science-trivial-5x4-112",
+        "print": {
+          "width": 2400,
+          "height": 1920,
+          "pixels": 4608000,
+          "maxChannelError": 0.4999452043271475,
+          "boundaryPixels": 0,
+          "unmatched": 0,
+          "displacedMismatch": 0.9930802951388888
+        },
+        "statePreserved": true
+      },
+      {
+        "fixture": "deep-1x1-96",
+        "seed": "kitaev-science-deep-1x1-96",
+        "parameters": {
+          "grid": 96,
+          "aspect": "1:1",
+          "mu": 0.1,
+          "tHop": 1,
+          "delta": 1.1,
+          "view": "int",
+          "exposure": 1.05
+        },
+        "field": [
+          96,
+          96
+        ],
+        "computeMs": 64,
+        "identicalToExtractedCode": true,
+        "maxFieldDifferenceVsJacobi": 1.4759292454868955e-8,
+        "endWeight": 0.9999999999976499,
+        "closedFormEndWeight": 0.9999999999976498,
+        "split": 4.440892098500626e-16,
+        "floor": 1.8868061074769074e-13,
+        "xiSites": 0.7075300114651457,
+        "status": "|μ|/2t 0.05 · topo < 1 end weight 1 · Majorana closed form 1 · deterministic, no sampling error 2|E₀| 4.44e-16 · deterministic, no sampling error · below the 2e-13 floor of double precision Majorana ends · ξ 0.71 sites seed kitaev-science-deep-1x1-96",
+        "print": {
+          "width": 2400,
+          "height": 2400,
+          "pixels": 5760000,
+          "maxChannelError": 0.4998991532920556,
+          "boundaryPixels": 0,
+          "unmatched": 0,
+          "displacedMismatch": 0.53515625
+        },
+        "statePreserved": true
+      },
+      {
+        "fixture": "near-critical-4x5-144",
+        "seed": "kitaev-science-near-critical-4x5-144",
+        "parameters": {
+          "grid": 144,
+          "aspect": "4:5",
+          "mu": 1.85,
+          "tHop": 1,
+          "delta": 0.7,
+          "view": "int",
+          "exposure": 1.05
+        },
+        "field": [
+          144,
+          180
+        ],
+        "computeMs": 215,
+        "identicalToExtractedCode": true,
+        "maxFieldDifferenceVsJacobi": 7.02244104533456e-9,
+        "endWeight": 0.9574658428145596,
+        "closedFormEndWeight": 0.9574658428144216,
+        "split": 3.123821841644979e-8,
+        "floor": 4.923612354175734e-13,
+        "xiSites": 8.57627748107668,
+        "status": "|μ|/2t 0.93 · topo < 1 end weight 0.957 · Majorana closed form 0.957 · deterministic, no sampling error 2|E₀| 3.12e-8 · deterministic, no sampling error Majorana ends · ξ 8.58 sites seed kitaev-science-near-critical-4x5-144",
+        "print": {
+          "width": 1920,
+          "height": 2400,
+          "pixels": 4608000,
+          "maxChannelError": 0.4999182704749501,
+          "boundaryPixels": 0,
+          "unmatched": 0,
+          "displacedMismatch": 0.9572354600694445
+        },
+        "statePreserved": true
+      },
+      {
+        "fixture": "log-view",
+        "seed": "kitaev-science-log-view",
+        "parameters": {
+          "grid": 96,
+          "aspect": "4:5",
+          "mu": 0.25,
+          "tHop": 1,
+          "delta": 0.9,
+          "view": "log",
+          "exposure": 1.4
+        },
+        "field": [
+          96,
+          120
+        ],
+        "computeMs": 76,
+        "identicalToExtractedCode": true,
+        "maxFieldDifferenceVsJacobi": 3.6323739571741953e-9,
+        "endWeight": 0.999999999999648,
+        "closedFormEndWeight": 0.9999999999996478,
+        "split": 1.4210854715202004e-14,
+        "floor": 1.9182126443634182e-13,
+        "xiSites": 0.6792465437902171,
+        "status": "|μ|/2t 0.13 · topo < 1 end weight 1 · Majorana closed form 1 · deterministic, no sampling error 2|E₀| 1.42e-14 · deterministic, no sampling error · below the 2e-13 floor of double precision Majorana ends · ξ 0.68 sites seed kitaev-science-log-view",
+        "print": {
+          "width": 1920,
+          "height": 2400,
+          "pixels": 4608000,
+          "maxChannelError": 0.4992576719448607,
+          "boundaryPixels": 0,
+          "unmatched": 0,
+          "displacedMismatch": 0.4956597222222222
+        },
+        "statePreserved": true
+      },
+      {
+        "fixture": "weak-16x9-160",
+        "seed": "kitaev-science-weak-16x9-160",
+        "parameters": {
+          "grid": 160,
+          "aspect": "16:9",
+          "mu": 0.4,
+          "tHop": 1,
+          "delta": 0.2,
+          "view": "int",
+          "exposure": 1.05
+        },
+        "field": [
+          160,
+          90
+        ],
+        "computeMs": 219,
+        "identicalToExtractedCode": true,
+        "maxFieldDifferenceVsJacobi": 1.3907726303941104e-8,
+        "endWeight": 0.9985068887045647,
+        "closedFormEndWeight": 0.9985068887045646,
+        "split": 6.352904807919047e-15,
+        "floor": 3.4100820073229885e-13,
+        "xiSites": 4.932606924752863,
+        "status": "|μ|/2t 0.20 · topo < 1 end weight 0.999 · Majorana closed form 0.999 · deterministic, no sampling error 2|E₀| 6.35e-15 · deterministic, no sampling error · below the 3e-13 floor of double precision Majorana ends · ξ 4.93 sites seed kitaev-science-weak-16x9-160",
+        "print": {
+          "width": 2400,
+          "height": 1350,
+          "pixels": 3240000,
+          "maxChannelError": 0.4998724875151126,
+          "boundaryPixels": 0,
+          "unmatched": 0,
+          "displacedMismatch": 0.9411805555555556
+        },
+        "statePreserved": true
+      }
+    ]
+  },
+  "environment": {
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
+    "platform": "linux x64",
+    "cpus": 4
+  },
+  "runSeconds": 69.422,
+  "domain": {
+    "parameters": "Rings: N = 64, 96, 160 with twelve (μ, t, Δ) sets, periodic and antiperiodic. Open: μ −2.4..2.4 (step 0.05) × three t × six Δ at N = 64; splitting from N = 4 to the largest N still above 1000 floors (97 at most) for six sets and the Δ = t identity for N = 3..160; seven studio recipes covering the presets, all four sheets and every grid the tab allows (96 to 160 in steps of 16; the schema minimum is 96).",
+    "conditions": "Spinless single-band Kitaev chain in the BdG mean-field form of the tab equation, real t, Δ and μ, no disorder or self-consistency. Open ends in the tab; rings only in the band check. No randomness is drawn.",
+    "resolution": "Exact diagonalization of the 2N × 2N BdG matrix; eigenvalues to about 1e-14 absolute. Splittings below 4Nε‖H‖ (about 1e-13 to 4e-13) are not resolved and the tab says so.",
+    "precision": "Binary64 solver and references; Float32 field; RGBA8 raster print at 300 ppi sizes."
+  },
+  "limitations": [
+    "Finite chains of up to 160 sites in the studio (splitting study up to 97 sites, Δ = t identity up to 160). Thermodynamic-limit statements are the closed forms.",
+    "A splitting below about 4Nε‖H‖ is not resolved by double precision; the tab prints it with that note. Only at Δ = t is an exact finite-N splitting available here.",
+    "Topological lattice points with max|x±|^N > 1e-3 are too shallow for a length-64 chain to separate the pair; they are counted but not tested.",
+    "Mean-field BdG only: no self-consistent Δ, interactions, disorder, spin or experimental nanowire claim."
+  ]
+}
