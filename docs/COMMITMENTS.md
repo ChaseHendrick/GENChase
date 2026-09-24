@@ -2,8 +2,8 @@
 
 This is how the project records that a result existed before it is published, without publishing
 it. The tools are `tools/commit-hash.js` and `tools/verify-commitment.js`; the public record is
-[identities/COMMITMENTS.txt](../identities/COMMITMENTS.txt). Release tags are signed as described in
-[SIGNING.md](SIGNING.md), and [PUBLISHING.md](PUBLISHING.md) covers the DOI.
+[identities/COMMITMENTS.txt](../identities/COMMITMENTS.txt). [PUBLISHING.md](PUBLISHING.md) covers the
+software DOI and [PUBLISHING-PAPERS.md](PUBLISHING-PAPERS.md) the papers.
 
 ## What a commitment proves, and what it does not
 

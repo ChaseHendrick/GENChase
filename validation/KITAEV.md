@@ -9,8 +9,8 @@ node tools/build.js
 node tools/kitaev-science.js --write   # about 100 s on a 4-core machine with SwiftShader
 ```
 
-The results are in [results/kitaev-science.json](results/kitaev-science.json). The proposed record is
-[pending/kitaev.json](pending/kitaev.json), with status **validated within stated limits**.
+The results are in [results/kitaev-science.json](results/kitaev-science.json). The record is the `kitaev`
+entry of [techniques.json](techniques.json), with status **validated within stated limits**.
 
 ## What changed (2026-09-24)
 

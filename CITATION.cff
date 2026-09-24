@@ -3,7 +3,9 @@ title: "GENChase: a studio of seeded scientific simulations, built for print"
 message: "If you use Three-vortex collapse bound, the parallelogram lock, or the quincunx lock, cite IDENTITIES.md. If you use GENChase or a plate made with it, cite this software and also cite the researchers named in the technique's own credit line."
 type: software
 authors:
-  - name: "Chaos"
+  - given-names: "Chase"
+    family-names: "Hendrick"
+    affiliation: "Independent Researcher"
     website: "https://github.com/SharpMeow"
 # Software DOI: when Zenodo archives a release (docs/PUBLISHING.md), add the concept DOI,
 # which resolves to the latest version, on the next line and delete this comment:
@@ -57,7 +59,9 @@ references:
   - type: generic
     title: "Three-vortex collapse bound: an explicit formula and sharp minimum for a classical three-vortex collapse family"
     authors:
-      - name: "Chaos"
+      - given-names: "Chase"
+        family-names: "Hendrick"
+        affiliation: "Independent Researcher"
         website: "https://github.com/SharpMeow"
     year: 2026
     month: 9
@@ -82,7 +86,9 @@ references:
   - type: generic
     title: "Parallelogram lock: an explicit formula and sharp minimum for the Novikov–Sedov four-vortex parallelogram collapse"
     authors:
-      - name: "Chaos"
+      - given-names: "Chase"
+        family-names: "Hendrick"
+        affiliation: "Independent Researcher"
         website: "https://github.com/SharpMeow"
     year: 2026
     month: 9
@@ -91,7 +97,9 @@ references:
   - type: generic
     title: "Quincunx lock: an explicit formula and sharp minimum for the Novikov–Sedov five-vortex quincunx collapse"
     authors:
-      - name: "Chaos"
+      - given-names: "Chase"
+        family-names: "Hendrick"
+        affiliation: "Independent Researcher"
         website: "https://github.com/SharpMeow"
     year: 2026
     month: 9

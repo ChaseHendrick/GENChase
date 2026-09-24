@@ -4,14 +4,18 @@ This is the part of [RESEARCH-GRADE.md](RESEARCH-GRADE.md), section 1, that need
 project's accounts. For a manuscript (arXiv, a journal), follow [PUBLISHING-PAPERS.md](PUBLISHING-PAPERS.md). Everything that could be done inside the repository is done; each step below is
 one action, and says how to check it worked.
 
-Decide one thing first: **the name you publish under.** The software metadata (`CITATION.cff`,
-`.zenodo.json`, `identities/zenodo.json`, `paper/paper.md`) says "Chaos", an independent researcher.
-The vortex manuscript and its cover letter use your legal name. A DOI record carries whatever the
-metadata says on the day of the release, so change the creator entries before step 1.4 if you want a
-different name on it. The git identity rule in AGENTS.md is about commits and is unaffected. Never
-put an email address in any of these files (see `research/submission/PRIVATE-COPIES.md`).
+**The name on publications is Chase Hendrick, Independent Researcher** (decided 2026-09-24). The software
+metadata (`CITATION.cff`, `.zenodo.json`, `identities/zenodo.json`, `paper/paper.md`) and the manuscripts
+all use it, and a DOI record carries whatever the metadata says on the day of the release. The git identity
+rule in AGENTS.md is about commits and is unaffected. The manuscripts carry the contact address
+`chasewhendrick@gmail.com` under the affiliation (owner's decision, 2026-09-24), as `author.email` in
+`papers/papers.json` records; `node tools/paper-check.js` refuses any other address in a paper's files.
 
 ## 1. A DOI for the software (RESEARCH-GRADE 1c)
+
+While this repository is private, skip this section: Zenodo archives public repositories only. Each
+paper's programs and data get their DOI from the paper's own public repository instead
+([PUBLISHING-PAPERS.md](PUBLISHING-PAPERS.md), section 1).
 
 Already done in the repository: `.zenodo.json` describes the software (upload type software,
 Apache-2.0), the identities note has its own metadata in `identities/zenodo.json`, and
@@ -28,11 +32,8 @@ Apache-2.0), the identities note has its own metadata in `identities/zenodo.json
    about to create and `date-released` to the release day. Reread the description in
    `.zenodo.json`. Run `node tools/build.js --check`, `node tools/science.js` and
    `node tools/lint.js`; the release workflow runs all three and stops if any fails. Merge.
-4. **Make the release.** Once your signing key is set up ([SIGNING.md](SIGNING.md)), sign the tag
-   on `main` first: `node tools/tag-release.js vX.Y.Z`, then `git push origin vX.Y.Z`. Then run the
-   "Publish offline studio" workflow (Actions, run on `main`, version `vX.Y.Z`). It needs a green
-   `check` run on that commit, verifies the signed tag and releases from it. Until
-   `identities/allowed_signers` lists a key, the workflow can still make an unsigned tag itself.
+4. **Make the release.** Run the "Publish offline studio" workflow (Actions, run on `main`, version
+   `vX.Y.Z`). It needs a green `check` run on that commit, makes the tag and publishes the release.
 5. **Copy the DOIs.** Zenodo's GitHub page lists the new record. It shows a DOI for this version and
    a concept DOI that always resolves to the latest version. Check that the record's title, type
    (Software), license and description are the ones in `.zenodo.json`.
@@ -89,7 +90,7 @@ Before submitting:
 
 ## 5. The vortex paper (RESEARCH-GRADE 1b)
 
-See [research/submission/CHECKLIST.md](../research/submission/CHECKLIST.md): what is ready, what is
+See [papers/minimal-winding/submission/CHECKLIST.md](../papers/minimal-winding/submission/CHECKLIST.md): what is ready, what is
 missing and the order of the remaining steps (endorsement, arXiv, journal).
 
 ## 6. Outside review (RESEARCH-GRADE 1a)

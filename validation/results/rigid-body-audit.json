@@ -152,8 +152,100 @@
     }
   ],
   "historicalEnergyDrift": 0.05403035502320175,
+  "printFixtures": [
+    {
+      "name": "flip",
+      "I2": 1.4,
+      "eps": 0.02,
+      "T": 70,
+      "aspect": "4:5",
+      "cells": [
+        160,
+        200
+      ],
+      "flips": 2,
+      "referenceFlips": 2,
+      "minAbsOmega2": 0.006134915758045366,
+      "referenceChange": 2.7861407625451307e-11,
+      "productionStateError": 2.264665295570456e-10,
+      "fieldMaxError": 5.960464477539063e-8,
+      "energyRelativeDrift": 5.376332712359044e-11,
+      "momentumRelativeDrift": 5.377509548765147e-11,
+      "inertiaControlFieldError": 0.2298823525197804,
+      "inertiaControlDetected": true
+    },
+    {
+      "name": "stable1",
+      "I2": 1.05,
+      "eps": 0.01,
+      "T": 50,
+      "aspect": "4:5",
+      "cells": [
+        160,
+        200
+      ],
+      "flips": 1,
+      "referenceFlips": 1,
+      "minAbsOmega2": 0.0179525340849205,
+      "referenceChange": 1.0966227925734984e-13,
+      "productionStateError": 7.341932617421776e-12,
+      "fieldMaxError": 5.960464477539063e-8,
+      "energyRelativeDrift": 6.971090371621358e-13,
+      "momentumRelativeDrift": 6.967759702547482e-13,
+      "inertiaControlFieldError": 0.33585747703909874,
+      "inertiaControlDetected": true
+    },
+    {
+      "name": "log",
+      "I2": 1.45,
+      "eps": 0.02,
+      "T": 60,
+      "aspect": "4:5",
+      "cells": [
+        160,
+        200
+      ],
+      "flips": 2,
+      "referenceFlips": 2,
+      "minAbsOmega2": 0.04012040571881396,
+      "referenceChange": 2.699736267874897e-11,
+      "productionStateError": 1.4011053428575337e-10,
+      "fieldMaxError": 5.960464477539063e-8,
+      "energyRelativeDrift": 2.7164714921923405e-11,
+      "momentumRelativeDrift": 2.717059910395392e-11,
+      "inertiaControlFieldError": 0.153665630845353,
+      "inertiaControlDetected": true
+    },
+    {
+      "name": "square",
+      "I2": 1.4,
+      "eps": 0.02,
+      "T": 60,
+      "aspect": "1:1",
+      "cells": [
+        160,
+        160
+      ],
+      "flips": 2,
+      "referenceFlips": 2,
+      "minAbsOmega2": 0.025312675533997485,
+      "referenceChange": 4.2064046690271084e-11,
+      "productionStateError": 7.294171100458158e-10,
+      "fieldMaxError": 5.960464477539063e-8,
+      "energyRelativeDrift": 8.239287030420428e-11,
+      "momentumRelativeDrift": 8.240741422582687e-11,
+      "inertiaControlFieldError": 0.2301769219338894,
+      "inertiaControlDetected": true
+    }
+  ],
+  "eulerFieldErrors": [
+    0.059340521693229675,
+    0.010593235492706299,
+    0.04871159791946411,
+    0.0636378675699234
+  ],
   "sciencePass": true,
-  "criteria": "Nine production fixtures conserve energy and squared angular momentum within 1e-7 and match reference states within 1e-6; three helper trajectories converge at fourth order with finest error below 1e-7.",
+  "criteria": "Nine production fixtures conserve energy and squared angular momentum within 1e-7 and match reference states within 1e-6; three helper trajectories converge at fourth order with finest error below 1e-7. The four print fixtures match an independently sampled reference field word for word within 2e-6, with identical flip counts, and reject a 1% inertia error and the old Euler update.",
   "limitations": [
     "Finite parameter fixtures and durations only; no all-control, exact flip-time or print accuracy claim.",
     "RK4 is not exactly symplectic. Finite-time conservation does not establish indefinite energy preservation."

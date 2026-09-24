@@ -1,9 +1,0 @@
-# SSH keys allowed to sign GENChase release tags. docs/SIGNING.md explains how to add yours.
-#
-# One line per key, in the format of ssh-keygen(1), ALLOWED SIGNERS:
-#   326338179+SharpMeow@users.noreply.github.com namespaces="git" ssh-ed25519 AAAA... comment
-#
-# While this file lists no key, release tags need not be signed. Once it lists one, the release
-# workflow and the tag check refuse a tag that is unsigned or signed by any other key. Anyone can
-# verify a release with:
-#   git -c gpg.ssh.allowedSignersFile=identities/allowed_signers tag -v vX.Y.Z

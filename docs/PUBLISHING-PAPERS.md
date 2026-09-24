@@ -1,30 +1,33 @@
 # When a paper is ready: the publishing runbook
 
 What to do, in order, when a manuscript is ready to go public, for one paper or several. Every paper
-this project prepares is listed with its status in
-[research/submission/papers.json](../research/submission/papers.json), and
-`node tools/paper-check.js` checks each one against its files. The software DOI and signed releases
-are in [PUBLISHING.md](PUBLISHING.md) and [SIGNING.md](SIGNING.md); protecting a result before it is
-public is in [COMMITMENTS.md](COMMITMENTS.md).
+is a folder under [papers/](../papers/) and has a line in [papers/papers.json](../papers/papers.json)
+with its status; `node tools/paper-check.js` checks each one against its files.
+[COMMITMENTS.md](COMMITMENTS.md) covers protecting a result before it is public.
 
-Only you can do the steps that need your accounts (Zenodo, arXiv, a journal's submission system),
-your email or your judgment. A Claude session can do everything else: edit the sources, rebuild the
-PDFs, run the checks, update `papers.json`, and draft the messages.
+This repository may be private, so a paper never sends readers here. Each paper goes public as a
+repository of its own, its **companion** (for example `SharpMeow/minimal-winding`): the paper folder
+without its `notes/` and `submission/`, plus a LICENSE, a CITATION.cff and a .zenodo.json. The
+**publish papers** workflow keeps the companion in step and locked; nobody writes to it by hand.
+
+Only you can do the steps that need your accounts (GitHub settings, Zenodo, arXiv, a journal's
+submission system) or your judgment. A Claude session can do everything else: edit the sources,
+rebuild the PDFs, run the checks, update `papers.json`, and draft the messages.
 
 ## The order, and why
 
-1. **The code gets its DOI first, on Zenodo**, through a signed release. The paper then cites a DOI
-   for the exact code and verification programs it used. One release can serve several papers.
+1. **The paper's programs and data get their DOI first, on Zenodo**, from a release of its
+   companion. The paper then cites a DOI for the exact programs it used.
 2. **The paper goes to arXiv next.** arXiv is where this field reads preprints, its announcement
    date is the community's record of when a result appeared, and it gives the paper a DOI of its own
-   (`10.48550/arXiv.<id>`). A separate Zenodo record for the paper is optional.
+   (`10.48550/arXiv.<id>`).
 3. **Then reveal** any hash commitments that covered drafts of the paper.
 4. **Then one journal.** Journals in this area generally accept papers already posted on arXiv, but
    check each journal's own policy before you submit.
-5. **After acceptance,** link the published version from arXiv and from this repository.
+5. **After acceptance,** link the published version from arXiv and from the companion's README.
 
-So: Zenodo first for the code, arXiv first for the paper. The identities note is the exception: it
-goes to Zenodo as a record of its own and not to a journal (below).
+The identities note is the exception: it goes to Zenodo as a record of its own and not to a journal
+(below).
 
 ## Statuses
 
@@ -43,33 +46,53 @@ goes to Zenodo as a record of its own and not to a journal (below).
   and that the Typst and LaTeX reference lists agree entry by entry and cite the same works. It also
   lists the placeholders you still fill by hand.
 - The paper's own checklist is clear. For the minimal-winding paper that is
-  [research/submission/CHECKLIST.md](../research/submission/CHECKLIST.md).
+  [papers/minimal-winding/submission/CHECKLIST.md](../papers/minimal-winding/submission/CHECKLIST.md).
 - Set the status to `ready`.
 
-## 1. The code DOI (once per release, shared by the papers)
+## 1. The companion repository and its DOI
 
-1. Make a signed release ([SIGNING.md](SIGNING.md)) with Zenodo switched on for the repository
-   ([PUBLISHING.md](PUBLISHING.md), section 1). The repository must be public at that moment.
-2. Zenodo shows two DOIs. Cite the **version DOI** in the paper, because it names exactly the code
-   you used. The concept DOI always points to the newest release.
-3. Put the version DOI in the paper's data availability paragraph, in both the Typst and the LaTeX
-   source. Rebuild the PDF, rebuild the private copies
-   ([PRIVATE-COPIES.md](../research/submission/PRIVATE-COPIES.md)), and set `codeDoi` in
-   `papers.json`.
+**Once, for all papers** (about ten minutes):
+
+1. Make a fine-grained personal access token: GitHub, Settings, Developer settings, Personal access
+   tokens, Fine-grained tokens, Generate new token. Resource owner: your account. Repository access:
+   **All repositories**, so papers added later are covered too (or "Only select repositories", then
+   add each companion when you create it). Permissions: **Contents: Read and write** and
+   **Administration: Read and write**; the second lets the workflow lock each companion. Pick an
+   expiry you will remember to renew.
+2. In GENChase: Settings, Secrets and variables, Actions, New repository secret, named
+   `PAPERS_TOKEN`, with the token as its value. Until that secret exists the workflow does nothing.
+3. On zenodo.org, sign in with GitHub, open the GitHub page of your account, and allow Zenodo access.
+
+**For each paper:**
+
+1. On GitHub, create the companion as an **empty public** repository named as `companion` in
+   `papers.json` (for example `minimal-winding`), with no README, license or .gitignore.
+2. `node tools/paper-sync.js --check <id>` must say the paper is ready to publish. Then set its
+   status to `ready` in `papers.json` and merge. The **publish papers** workflow pushes the folder to
+   the companion and locks it: issues, wiki, projects and discussions off; interactions limited to
+   collaborators; rulesets that forbid deleting or rewriting the main branch and deleting or moving
+   tags. A monthly run renews the lock, and every run overwrites the companion with this repository's
+   copy, so this folder stays the only place you edit.
+3. On Zenodo's GitHub page, switch the companion **on**.
+4. Actions, **publish papers**, Run workflow, with the paper id and a release tag such as `v1.0.0`.
+   Zenodo archives the release within minutes and shows two DOIs. Cite the **version DOI**, because
+   it names exactly the programs you used; the concept DOI always points to the newest release.
+5. Put the version DOI in the paper's data availability paragraph, in both the LaTeX and the Typst
+   source, rebuild with `sh tools/paper-build.sh <id>`, set `codeDoi` in `papers.json`, and merge;
+   the workflow updates the companion. Make a `v1.0.1` release if you want the archived copy to carry
+   the DOI in its own PDF too.
 
 ## 2. arXiv
 
-1. **Endorsement, the first time only.** A first submission to a category such as physics.flu-dyn
-   needs an endorsement from an established author there. Start the submission; arXiv shows a code.
-   Send it with [endorsement-request.md](../research/submission/endorsement-request.md) to one
-   person at a time. After you are endorsed, later papers in the same subject area need no new
-   endorsement; arXiv's endorsement page says which categories share one.
-2. **Upload** the private copy, which is the only version with your email: the LaTeX source with its
-   `figures/` folder (arXiv prefers source), or the PDF. The paper's metadata file, for example
-   [arxiv-metadata.md](../research/submission/arxiv-metadata.md), has every field of the form.
-3. **License.** The metadata recommends CC BY 4.0: anyone may reuse the text, but only with
-   attribution. arXiv also offers more restrictive licenses; decide before you submit, because the license
-   granted with an announced version cannot be taken back.
+1. **Endorsement.** arXiv asks some first-time submitters to a category for an endorsement from an
+   established author there. The owner's account needs none for physics.flu-dyn (2026-09-24).
+2. **Upload** the zip that `sh tools/arxiv-bundle.sh <id>` writes: the LaTeX source, which carries
+   the contact email, and its `figures/` folder (arXiv prefers source). The paper's metadata file, for example
+   [arxiv-metadata.md](../papers/minimal-winding/submission/arxiv-metadata.md), has every field of the form.
+3. **License.** Choose the arXiv.org perpetual, non-exclusive license: you keep every right, readers
+   may read and download but not republish or adapt the paper without your permission, and every journal
+   accepts it. CC BY 4.0 lets anyone reuse the text with attribution; choose it only when a funder or
+   journal requires open reuse. The license granted with an announced version cannot be taken back.
 4. **Check the preview** arXiv builds before you confirm. Once announced, a version is permanent: a
    correction becomes v2, and v1 stays visible.
 5. **When it is announced,** in one pull request: set `status: "on-arxiv"` and `arxiv.id` in
@@ -118,7 +141,7 @@ the result; reveal it, and any others you want on record. List their ids in the 
   `node tools/paper-check.js` checks them all.
 - Post them to arXiv in dependency order, so that a later paper can cite an earlier one's arXiv
   identifier.
-- One code release and DOI can serve every paper that used that version of the code.
+- Each paper has its own companion and its own DOI, so each cites exactly the programs it used.
 - Different papers may be under review at different journals at the same time. The same result must
   not appear in two papers as if it were new in each; journals treat that as redundant publication.
 

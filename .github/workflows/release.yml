@@ -34,17 +34,6 @@ jobs:
           python3 tools/package-release.py --version "$RELEASE_VERSION" --check-version
           gh api "repos/$GITHUB_REPOSITORY/actions/workflows/check.yml/runs?head_sha=$GITHUB_SHA&event=push&status=completed&per_page=20" > /tmp/check-runs.json
           python3 -c 'import json,os; runs=json.load(open("/tmp/check-runs.json"))["workflow_runs"]; assert any(r["head_sha"]==os.environ["GITHUB_SHA"] and r["conclusion"]=="success" for r in runs), "This main commit needs a successful check workflow before publication"'
-          # A signed tag pushed by the owner (docs/SIGNING.md) is released as it is, and only from the
-          # commit it signs. Without one, GitHub makes the tag, unless identities/allowed_signers lists a
-          # key, in which case an unsigned release is refused.
-          if git ls-remote --exit-code --tags origin "refs/tags/$RELEASE_VERSION" > /dev/null; then
-            git fetch --force --no-tags origin "refs/tags/$RELEASE_VERSION:refs/tags/$RELEASE_VERSION"
-            node tools/tag-release.js --verify "$RELEASE_VERSION" --commit "$GITHUB_SHA"
-            echo "RELEASE_FROM_TAG=1" >> "$GITHUB_ENV"
-          elif [ "$(node tools/tag-release.js --policy)" = signed ]; then
-            echo "::error::Release tags must be signed. On main, run node tools/tag-release.js $RELEASE_VERSION and push the tag first (docs/SIGNING.md)."
-            exit 1
-          fi
 
       - name: Install distribution test tools
         run: |
@@ -73,11 +62,11 @@ jobs:
           repo=os.environ['GITHUB_REPOSITORY']; sha=os.environ['GITHUB_SHA']
           Path('/tmp/release-notes.md').write_text(f'''Make art in your browser at https://sharpmeow.github.io/GENChase/start.html, or download **GENChase-studio.zip**, extract it, and open **START-HERE.html**. No development tools are needed for the offline art studio.
 
-          The ZIP includes the portable studio, introductory examples, licenses, and scientific evidence. **SHA256SUMS.txt** records its checksum. Research papers from `research/` are attached as PDFs, together with the programs that verify them and their output. Use the automatically attached source archive for local checks or code contributions, following CONTRIBUTING.md.
+          The ZIP includes the portable studio, introductory examples, licenses, and scientific evidence. **SHA256SUMS.txt** records its checksum. Research papers from `papers/` are attached as PDFs, together with the programs that verify them and their output. Use the automatically attached source archive for local checks or code contributions, following CONTRIBUTING.md.
 
           Released {datetime.now(timezone.utc).date().isoformat()}.
 
           Built from [{sha[:12]}](https://github.com/{repo}/commit/{sha}). Validation is limited to the domains in [VALIDATION.md](https://github.com/{repo}/blob/{sha}/VALIDATION.md); this release does not certify every simulation.
           ''')
           PY
-          gh release create "$RELEASE_VERSION" tools/dist/release/GENChase-studio.zip tools/dist/release/SHA256SUMS.txt research/artifacts/*.pdf research/artifacts/*.json research/artifacts/*.txt research/*.py --target "$GITHUB_SHA" ${RELEASE_FROM_TAG:+--verify-tag} --title "GENChase $RELEASE_VERSION" --notes-file /tmp/release-notes.md --latest
+          gh release create "$RELEASE_VERSION" tools/dist/release/GENChase-studio.zip tools/dist/release/SHA256SUMS.txt papers/*/paper/*.pdf papers/*/data/* papers/*/code/*.py --target "$GITHUB_SHA" --title "GENChase $RELEASE_VERSION" --notes-file /tmp/release-notes.md --latest

@@ -7,6 +7,10 @@ and the distinction between continuous geometry and raster output.
 The [CPU dynamics follow-up](CPU-DYNAMICS.md) covers the rigid-body integrator
 correction, finite-time FPUT evolution, single KP-I lumps and unresolved claims.
 
+The [force-chain audit](GRAINS.md) tests Cundall–Strack contact mechanics against
+analytic collisions and friction, and the static balance of settled packings with their
+actual prints. It records two missed criteria and a top-load defect.
+
 The [complete rational lump review](LUMP-FIELD-REVIEW.md) adds exact local algebra,
 whole fields, corrected sum diagnostics and actual print comparisons.
 
@@ -126,3 +130,13 @@ The exactly solvable tabs of [RESEARCH-GRADE.md](../docs/RESEARCH-GRADE.md), sec
 
 The [complete finite FPUT review](FPUT-FIELD-REVIEW.md) covers independent chain
 trajectories, energy diagnostics, working duration controls and real print output.
+
+The [aperiodic tilings review](TILINGS.md) checks the Penrose, Ammann-Beenker and dodecagonal
+geometry exactly and the print path against it. It stays partially validated because of two recorded
+defects: the P3 matching arcs are not a valid decoration, and the grout inset moves tiles outward.
+
+The [Veselago lens review](VESELAGO.md) checks every ray of the actual module against an
+independent negative-index Snell trace across the slider domain, and checks every print pixel
+against the field. It stays partially validated because of two recorded defects: the status label
+claims a focus where no image exists, and the exit ray is drawn backwards when the slab runs off
+the plate.

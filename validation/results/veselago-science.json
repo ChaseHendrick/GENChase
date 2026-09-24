@@ -1,0 +1,2258 @@
+{
+  "pass": true,
+  "source": "src/modules/veselago.js",
+  "sourceSha256": "eb6d985b791127b6665a1d6b29f0a63e56fc35ae6d75930b62a9d75f3bd07b59",
+  "harnessSha256": "2eafa5134e67f1648609ffba02e53668a45845bba359da90c1af354c7973e40d",
+  "command": "node tools/veselago-science.js --write",
+  "criteria": {
+    "geometryTolPx": 1e-9,
+    "focusPeakTolPx": 2.5,
+    "focusWindow": {
+      "minBehindFacePx": 5,
+      "minFromEndPx": 3
+    },
+    "aberrationPeakMarginPx": 2.5,
+    "minColumnCoverage": 0.7,
+    "strayInk": 0,
+    "controlRejectPx": 1
+  },
+  "schema": {
+    "ranges": {
+      "grid": [
+        128,
+        224,
+        16
+      ],
+      "n": [
+        -2.2,
+        -0.4,
+        0.05
+      ],
+      "L": [
+        20,
+        80,
+        1
+      ],
+      "src": [
+        8,
+        50,
+        1
+      ],
+      "rays": [
+        12,
+        64,
+        2
+      ],
+      "exposure": [
+        0.4,
+        2.2,
+        0.05
+      ]
+    },
+    "aspects": [
+      "1:1",
+      "4:5",
+      "5:4",
+      "16:9"
+    ],
+    "gridsAfterSanitize": [
+      [
+        96,
+        128
+      ],
+      [
+        112,
+        128
+      ],
+      [
+        128,
+        128
+      ],
+      [
+        144,
+        144
+      ],
+      [
+        160,
+        160
+      ],
+      [
+        176,
+        176
+      ],
+      [
+        192,
+        192
+      ],
+      [
+        208,
+        208
+      ],
+      [
+        224,
+        224
+      ]
+    ]
+  },
+  "sweep": {
+    "axes": {
+      "n": [
+        -2.2,
+        -2.15,
+        -2.1,
+        -2.05,
+        -2,
+        -1.95,
+        -1.9,
+        -1.85,
+        -1.8,
+        -1.75,
+        -1.7,
+        -1.65,
+        -1.6,
+        -1.55,
+        -1.5,
+        -1.45,
+        -1.4,
+        -1.35,
+        -1.3,
+        -1.25,
+        -1.2,
+        -1.15,
+        -1.1,
+        -1.05,
+        -1,
+        -0.95,
+        -0.9,
+        -0.85,
+        -0.8,
+        -0.75,
+        -0.7,
+        -0.65,
+        -0.6,
+        -0.55,
+        -0.5,
+        -0.45,
+        -0.4
+      ],
+      "L": [
+        20,
+        36,
+        48,
+        64,
+        80
+      ],
+      "src": [
+        8,
+        16,
+        24,
+        36,
+        50
+      ],
+      "rays": [
+        12,
+        28,
+        48,
+        64
+      ],
+      "grid": [
+        128,
+        144,
+        192,
+        224
+      ],
+      "aspect": [
+        "1:1",
+        "4:5",
+        "5:4",
+        "16:9"
+      ]
+    },
+    "configs": 59200,
+    "inDomain": 56832,
+    "rays": 2152704,
+    "dropped": 6912,
+    "maxVertexErr": 9.66e-13,
+    "maxCrossErr": 3.98e-12,
+    "maxLayoutErr": 0,
+    "dropMismatch": 0,
+    "missing": 0,
+    "nonfinite": 0,
+    "failedGeometry": 0,
+    "stray": 0,
+    "lit": 177546255,
+    "segmentsChecked": 6375772,
+    "minCoverage": 0.857143,
+    "lowCoverage": 0,
+    "labelRuleViolations": 0,
+    "tirConfigs": 1536,
+    "seconds": 41.7,
+    "pass": true
+  },
+  "continuous": {
+    "seed": 19680509,
+    "configs": 2931,
+    "rays": 110460,
+    "maxVertexErr": 2.84e-13,
+    "maxCrossErr": 2.61e-12,
+    "failedGeometry": 0,
+    "stray": 0,
+    "lowCoverage": 0,
+    "skippedOffPlate": 69,
+    "pass": true
+  },
+  "outOfDomainBackFaceOffPlate": {
+    "configs": 2368,
+    "grids": {
+      "128": 1776,
+      "144": 592
+    },
+    "withStray": 1767,
+    "strayCells": 24214,
+    "maxVertexErr": 9.66e-13,
+    "example": {
+      "n": -2.2,
+      "L": 64,
+      "src": 50,
+      "rays": 12,
+      "grid": 128,
+      "aspect": "1:1",
+      "W": 128,
+      "H": 128,
+      "face1": 136.86,
+      "xEnd": 126,
+      "stray": 7,
+      "firstStray": [
+        126,
+        58,
+        1.399999976158142
+      ]
+    }
+  },
+  "fixtures": [
+    {
+      "n": -1,
+      "cfg": {
+        "L": 48,
+        "src": 24,
+        "rays": 28,
+        "grid": 192,
+        "aspect": "1:1",
+        "n": -1
+      },
+      "compare": {
+        "rays": 28,
+        "dropped": 0,
+        "dropMismatch": 0,
+        "maxVertexErr": 1.4210854715202004e-14,
+        "maxCrossErr": 1.4210854715202004e-14,
+        "maxLayoutErr": 0,
+        "maxAngleErr": 0,
+        "nonfinite": 0,
+        "missing": 0,
+        "pass": true
+      },
+      "dropped": 0,
+      "closedFormMaxErr": 1.85e-13,
+      "paraxialImageBehindFace": 24,
+      "innermostBehindFace": 24,
+      "marginalBehindFace": 24,
+      "paraxialGap": 0,
+      "thirdOrderBound": 0,
+      "paraxialWithinBound": true,
+      "raysCrossingInside": 28,
+      "raysCrossingBehind": 28,
+      "outerSpreadPx": 0,
+      "aberrationSign": 0,
+      "peakX": 121.730989,
+      "peakBehindFace": 23.090989,
+      "metric": -0.004734,
+      "label": "Veselago focus",
+      "allCrossingsInWindow": true,
+      "peakInCaustic": true,
+      "perRay": [
+        {
+          "theta": 0.016667,
+          "entryY": 0.400037,
+          "exitY": -0.400037,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        },
+        {
+          "theta": 0.05,
+          "entryY": 1.201001,
+          "exitY": -1.201001,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        },
+        {
+          "theta": 0.083333,
+          "entryY": 2.004643,
+          "exitY": -2.004643,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        },
+        {
+          "theta": 0.116667,
+          "entryY": 2.812773,
+          "exitY": -2.812773,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        },
+        {
+          "theta": 0.15,
+          "entryY": 3.627245,
+          "exitY": -3.627245,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        },
+        {
+          "theta": 0.183333,
+          "entryY": 4.449968,
+          "exitY": -4.449968,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        },
+        {
+          "theta": 0.216667,
+          "entryY": 5.282928,
+          "exitY": -5.282928,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        },
+        {
+          "theta": 0.25,
+          "entryY": 6.128206,
+          "exitY": -6.128206,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        },
+        {
+          "theta": 0.283333,
+          "entryY": 6.988002,
+          "exitY": -6.988002,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        },
+        {
+          "theta": 0.316667,
+          "entryY": 7.864658,
+          "exitY": -7.864658,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        },
+        {
+          "theta": 0.35,
+          "entryY": 8.760684,
+          "exitY": -8.760684,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        },
+        {
+          "theta": 0.383333,
+          "entryY": 9.678792,
+          "exitY": -9.678792,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        },
+        {
+          "theta": 0.416667,
+          "entryY": 10.621929,
+          "exitY": -10.621929,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        },
+        {
+          "theta": 0.45,
+          "entryY": 11.593322,
+          "exitY": -11.593322,
+          "innerDepth": 24,
+          "outerBehindFace": 24,
+          "closedFormOuterBehindFace": 24
+        }
+      ]
+    },
+    {
+      "n": -0.8,
+      "cfg": {
+        "L": 48,
+        "src": 24,
+        "rays": 28,
+        "grid": 192,
+        "aspect": "1:1",
+        "n": -0.8
+      },
+      "compare": {
+        "rays": 28,
+        "dropped": 0,
+        "dropMismatch": 0,
+        "maxVertexErr": 1.4210854715202004e-14,
+        "maxCrossErr": 2.842170943040401e-14,
+        "maxLayoutErr": 0,
+        "maxAngleErr": 0,
+        "nonfinite": 0,
+        "missing": 0,
+        "pass": true
+      },
+      "dropped": 0,
+      "closedFormMaxErr": 4.83e-13,
+      "paraxialImageBehindFace": 36,
+      "innermostBehindFace": 36.004689,
+      "marginalBehindFace": 40.373198,
+      "paraxialGap": 0.00469,
+      "thirdOrderBound": 0.00937,
+      "paraxialWithinBound": true,
+      "raysCrossingInside": 28,
+      "raysCrossingBehind": 28,
+      "outerSpreadPx": 4.368509,
+      "aberrationSign": 1,
+      "peakX": 136.79033,
+      "peakBehindFace": 38.15033,
+      "metric": 0.0737,
+      "label": "Veselago focus",
+      "allCrossingsInWindow": true,
+      "peakInCaustic": true,
+      "perRay": [
+        {
+          "theta": 0.016667,
+          "entryY": 0.400037,
+          "exitY": -0.600134,
+          "innerDepth": 19.1985,
+          "outerBehindFace": 36.004689,
+          "closedFormOuterBehindFace": 36.004689
+        },
+        {
+          "theta": 0.05,
+          "entryY": 1.201001,
+          "exitY": -1.803618,
+          "innerDepth": 19.186473,
+          "outerBehindFace": 36.042303,
+          "closedFormOuterBehindFace": 36.042303
+        },
+        {
+          "theta": 0.083333,
+          "entryY": 2.004643,
+          "exitY": -3.016827,
+          "innerDepth": 19.162289,
+          "outerBehindFace": 36.11808,
+          "closedFormOuterBehindFace": 36.11808
+        },
+        {
+          "theta": 0.116667,
+          "entryY": 2.812773,
+          "exitY": -4.246484,
+          "innerDepth": 19.125684,
+          "outerBehindFace": 36.23314,
+          "closedFormOuterBehindFace": 36.23314
+        },
+        {
+          "theta": 0.15,
+          "entryY": 3.627245,
+          "exitY": -5.499691,
+          "innerDepth": 19.076255,
+          "outerBehindFace": 36.389211,
+          "closedFormOuterBehindFace": 36.389211
+        },
+        {
+          "theta": 0.183333,
+          "entryY": 4.449968,
+          "exitY": -6.784105,
+          "innerDepth": 19.013448,
+          "outerBehindFace": 36.588695,
+          "closedFormOuterBehindFace": 36.588695
+        },
+        {
+          "theta": 0.216667,
+          "entryY": 5.282928,
+          "exitY": -8.108141,
+          "innerDepth": 18.936543,
+          "outerBehindFace": 36.834759,
+          "closedFormOuterBehindFace": 36.834759
+        },
+        {
+          "theta": 0.25,
+          "entryY": 6.128206,
+          "exitY": -9.481218,
+          "innerDepth": 18.844634,
+          "outerBehindFace": 37.13146,
+          "closedFormOuterBehindFace": 37.13146
+        },
+        {
+          "theta": 0.283333,
+          "entryY": 6.988002,
+          "exitY": -10.914071,
+          "innerDepth": 18.736606,
+          "outerBehindFace": 37.48392,
+          "closedFormOuterBehindFace": 37.48392
+        },
+        {
+          "theta": 0.316667,
+          "entryY": 7.864658,
+          "exitY": -12.41913,
+          "innerDepth": 18.611098,
+          "outerBehindFace": 37.89855,
+          "closedFormOuterBehindFace": 37.89855
+        },
+        {
+          "theta": 0.35,
+          "entryY": 8.760684,
+          "exitY": -14.011023,
+          "innerDepth": 18.46646,
+          "outerBehindFace": 38.383369,
+          "closedFormOuterBehindFace": 38.383369
+        },
+        {
+          "theta": 0.383333,
+          "entryY": 9.678792,
+          "exitY": -15.707234,
+          "innerDepth": 18.300698,
+          "outerBehindFace": 38.948418,
+          "closedFormOuterBehindFace": 38.948418
+        },
+        {
+          "theta": 0.416667,
+          "entryY": 10.621929,
+          "exitY": -17.52899,
+          "innerDepth": 18.111401,
+          "outerBehindFace": 39.606342,
+          "closedFormOuterBehindFace": 39.606342
+        },
+        {
+          "theta": 0.45,
+          "entryY": 11.593322,
+          "exitY": -19.502478,
+          "innerDepth": 17.895646,
+          "outerBehindFace": 40.373198,
+          "closedFormOuterBehindFace": 40.373198
+        }
+      ]
+    },
+    {
+      "n": -1.2,
+      "cfg": {
+        "L": 48,
+        "src": 24,
+        "rays": 28,
+        "grid": 192,
+        "aspect": "1:1",
+        "n": -1.2
+      },
+      "compare": {
+        "rays": 28,
+        "dropped": 0,
+        "dropMismatch": 0,
+        "maxVertexErr": 1.4210854715202004e-14,
+        "maxCrossErr": 1.4210854715202004e-14,
+        "maxLayoutErr": 0,
+        "maxAngleErr": 0,
+        "nonfinite": 0,
+        "missing": 0,
+        "pass": true
+      },
+      "dropped": 0,
+      "closedFormMaxErr": 4.83e-13,
+      "paraxialImageBehindFace": 16,
+      "innermostBehindFace": 15.998302,
+      "marginalBehindFace": 14.646008,
+      "paraxialGap": 0.0017,
+      "thirdOrderBound": 0.00339,
+      "paraxialWithinBound": true,
+      "raysCrossingInside": 28,
+      "raysCrossingBehind": 28,
+      "outerSpreadPx": 1.352294,
+      "aberrationSign": -1,
+      "peakX": 112.695385,
+      "peakBehindFace": 14.055385,
+      "metric": -0.051795,
+      "label": "Veselago focus",
+      "allCrossingsInWindow": true,
+      "peakInCaustic": true,
+      "perRay": [
+        {
+          "theta": 0.016667,
+          "entryY": 0.400037,
+          "exitY": -0.266663,
+          "innerDepth": 28.801222,
+          "outerBehindFace": 15.998302,
+          "closedFormOuterBehindFace": 15.998302
+        },
+        {
+          "theta": 0.05,
+          "entryY": 1.201001,
+          "exitY": -0.799902,
+          "innerDepth": 28.811016,
+          "outerBehindFace": 15.984705,
+          "closedFormOuterBehindFace": 15.984705
+        },
+        {
+          "theta": 0.083333,
+          "entryY": 2.004643,
+          "exitY": -1.332873,
+          "innerDepth": 28.830681,
+          "outerBehindFace": 15.957433,
+          "closedFormOuterBehindFace": 15.957433
+        },
+        {
+          "theta": 0.116667,
+          "entryY": 2.812773,
+          "exitY": -1.865375,
+          "innerDepth": 28.860373,
+          "outerBehindFace": 15.916324,
+          "closedFormOuterBehindFace": 15.916324
+        },
+        {
+          "theta": 0.15,
+          "entryY": 3.627245,
+          "exitY": -2.397176,
+          "innerDepth": 28.900329,
+          "outerBehindFace": 15.861137,
+          "closedFormOuterBehindFace": 15.861137
+        },
+        {
+          "theta": 0.183333,
+          "entryY": 4.449968,
+          "exitY": -2.927995,
+          "innerDepth": 28.950872,
+          "outerBehindFace": 15.791548,
+          "closedFormOuterBehindFace": 15.791548
+        },
+        {
+          "theta": 0.216667,
+          "entryY": 5.282928,
+          "exitY": -3.457487,
+          "innerDepth": 29.012413,
+          "outerBehindFace": 15.707142,
+          "closedFormOuterBehindFace": 15.707142
+        },
+        {
+          "theta": 0.25,
+          "entryY": 6.128206,
+          "exitY": -3.985227,
+          "innerDepth": 29.085463,
+          "outerBehindFace": 15.607415,
+          "closedFormOuterBehindFace": 15.607415
+        },
+        {
+          "theta": 0.283333,
+          "entryY": 6.988002,
+          "exitY": -4.510687,
+          "innerDepth": 29.170639,
+          "outerBehindFace": 15.491765,
+          "closedFormOuterBehindFace": 15.491765
+        },
+        {
+          "theta": 0.316667,
+          "entryY": 7.864658,
+          "exitY": -5.033213,
+          "innerDepth": 29.268674,
+          "outerBehindFace": 15.359488,
+          "closedFormOuterBehindFace": 15.359488
+        },
+        {
+          "theta": 0.35,
+          "entryY": 8.760684,
+          "exitY": -5.551999,
+          "innerDepth": 29.380433,
+          "outerBehindFace": 15.20977,
+          "closedFormOuterBehindFace": 15.20977
+        },
+        {
+          "theta": 0.383333,
+          "entryY": 9.678792,
+          "exitY": -6.066053,
+          "innerDepth": 29.506927,
+          "outerBehindFace": 15.041679,
+          "closedFormOuterBehindFace": 15.041679
+        },
+        {
+          "theta": 0.416667,
+          "entryY": 10.621929,
+          "exitY": -6.574159,
+          "innerDepth": 29.649337,
+          "outerBehindFace": 14.854158,
+          "closedFormOuterBehindFace": 14.854158
+        },
+        {
+          "theta": 0.45,
+          "entryY": 11.593322,
+          "exitY": -7.074828,
+          "innerDepth": 29.80903,
+          "outerBehindFace": 14.646008,
+          "closedFormOuterBehindFace": 14.646008
+        }
+      ]
+    },
+    {
+      "n": -1.5,
+      "cfg": {
+        "L": 48,
+        "src": 24,
+        "rays": 28,
+        "grid": 192,
+        "aspect": "1:1",
+        "n": -1.5
+      },
+      "compare": {
+        "rays": 28,
+        "dropped": 0,
+        "dropMismatch": 0,
+        "maxVertexErr": 2.842170943040401e-14,
+        "maxCrossErr": 1.4210854715202004e-14,
+        "maxLayoutErr": 0,
+        "maxAngleErr": 0,
+        "nonfinite": 0,
+        "missing": 0,
+        "pass": true
+      },
+      "dropped": 0,
+      "closedFormMaxErr": 4.41e-13,
+      "paraxialImageBehindFace": 8,
+      "innermostBehindFace": 7.997531,
+      "marginalBehindFace": 6.107937,
+      "paraxialGap": 0.00247,
+      "thirdOrderBound": 0.00494,
+      "paraxialWithinBound": true,
+      "raysCrossingInside": 28,
+      "raysCrossingBehind": 28,
+      "outerSpreadPx": 1.889594,
+      "aberrationSign": -1,
+      "peakX": 104.663736,
+      "peakBehindFace": 6.023736,
+      "metric": -0.093626,
+      "label": "Veselago focus",
+      "allCrossingsInWindow": true,
+      "peakInCaustic": true,
+      "perRay": [
+        {
+          "theta": 0.016667,
+          "entryY": 0.400037,
+          "exitY": -0.133305,
+          "innerDepth": 36.002778,
+          "outerBehindFace": 7.997531,
+          "closedFormOuterBehindFace": 7.997531
+        },
+        {
+          "theta": 0.05,
+          "entryY": 1.201001,
+          "exitY": -0.399221,
+          "innerDepth": 36.025033,
+          "outerBehindFace": 7.977764,
+          "closedFormOuterBehindFace": 7.977764
+        },
+        {
+          "theta": 0.083333,
+          "entryY": 2.004643,
+          "exitY": -0.663049,
+          "innerDepth": 36.0697,
+          "outerBehindFace": 7.938164,
+          "closedFormOuterBehindFace": 7.938164
+        },
+        {
+          "theta": 0.116667,
+          "entryY": 2.812773,
+          "exitY": -0.923363,
+          "innerDepth": 36.137095,
+          "outerBehindFace": 7.8786,
+          "closedFormOuterBehindFace": 7.8786
+        },
+        {
+          "theta": 0.15,
+          "entryY": 3.627245,
+          "exitY": -1.178684,
+          "innerDepth": 36.227698,
+          "outerBehindFace": 7.798873,
+          "closedFormOuterBehindFace": 7.798873
+        },
+        {
+          "theta": 0.183333,
+          "entryY": 4.449968,
+          "exitY": -1.427461,
+          "innerDepth": 36.342162,
+          "outerBehindFace": 7.698719,
+          "closedFormOuterBehindFace": 7.698719
+        },
+        {
+          "theta": 0.216667,
+          "entryY": 5.282928,
+          "exitY": -1.668042,
+          "innerDepth": 36.481319,
+          "outerBehindFace": 7.577805,
+          "closedFormOuterBehindFace": 7.577805
+        },
+        {
+          "theta": 0.25,
+          "entryY": 6.128206,
+          "exitY": -1.898654,
+          "innerDepth": 36.646195,
+          "outerBehindFace": 7.435733,
+          "closedFormOuterBehindFace": 7.435733
+        },
+        {
+          "theta": 0.283333,
+          "entryY": 6.988002,
+          "exitY": -2.117374,
+          "innerDepth": 36.838027,
+          "outerBehindFace": 7.272033,
+          "closedFormOuterBehindFace": 7.272033
+        },
+        {
+          "theta": 0.316667,
+          "entryY": 7.864658,
+          "exitY": -2.322096,
+          "innerDepth": 37.058279,
+          "outerBehindFace": 7.086171,
+          "closedFormOuterBehindFace": 7.086171
+        },
+        {
+          "theta": 0.35,
+          "entryY": 8.760684,
+          "exitY": -2.510498,
+          "innerDepth": 37.308672,
+          "outerBehindFace": 6.87754,
+          "closedFormOuterBehindFace": 6.87754
+        },
+        {
+          "theta": 0.383333,
+          "entryY": 9.678792,
+          "exitY": -2.680003,
+          "innerDepth": 37.591206,
+          "outerBehindFace": 6.645465,
+          "closedFormOuterBehindFace": 6.645465
+        },
+        {
+          "theta": 0.416667,
+          "entryY": 10.621929,
+          "exitY": -2.827736,
+          "innerDepth": 37.908201,
+          "outerBehindFace": 6.389202,
+          "closedFormOuterBehindFace": 6.389202
+        },
+        {
+          "theta": 0.45,
+          "entryY": 11.593322,
+          "exitY": -2.95047,
+          "innerDepth": 38.262336,
+          "outerBehindFace": 6.107937,
+          "closedFormOuterBehindFace": 6.107937
+        }
+      ]
+    },
+    {
+      "n": -2.2,
+      "cfg": {
+        "L": 48,
+        "src": 24,
+        "rays": 28,
+        "grid": 192,
+        "aspect": "1:1",
+        "n": -2.2
+      },
+      "compare": {
+        "rays": 28,
+        "dropped": 0,
+        "dropMismatch": 0,
+        "maxVertexErr": 1.4210854715202004e-14,
+        "maxCrossErr": 8.526512829121202e-14,
+        "maxLayoutErr": 0,
+        "maxAngleErr": 0,
+        "nonfinite": 0,
+        "missing": 0,
+        "pass": true
+      },
+      "dropped": 0,
+      "closedFormMaxErr": 3.69e-13,
+      "paraxialImageBehindFace": -2.181818,
+      "innermostBehindFace": -2.184222,
+      "marginalBehindFace": -3.958262,
+      "paraxialGap": 0.0024,
+      "thirdOrderBound": 0.00481,
+      "paraxialWithinBound": true,
+      "raysCrossingInside": 0,
+      "raysCrossingBehind": 0,
+      "outerSpreadPx": null,
+      "aberrationSign": null,
+      "peakX": 100.647912,
+      "peakBehindFace": 2.007912,
+      "metric": -0.114542,
+      "label": "Veselago focus",
+      "allCrossingsInWindow": false,
+      "peakInCaustic": null,
+      "perRay": [
+        {
+          "theta": 0.016667,
+          "entryY": 0.400037,
+          "exitY": 0.036407,
+          "innerDepth": 52.805819,
+          "outerBehindFace": -2.184222,
+          "closedFormOuterBehindFace": -2.184222
+        },
+        {
+          "theta": 0.05,
+          "entryY": 1.201001,
+          "exitY": 0.110265,
+          "innerDepth": 52.852425,
+          "outerBehindFace": -2.20346,
+          "closedFormOuterBehindFace": -2.20346
+        },
+        {
+          "theta": 0.083333,
+          "entryY": 2.004643,
+          "exitY": 0.187263,
+          "innerDepth": 52.945929,
+          "outerBehindFace": -2.241953,
+          "closedFormOuterBehindFace": -2.241953
+        },
+        {
+          "theta": 0.116667,
+          "entryY": 2.812773,
+          "exitY": 0.269527,
+          "innerDepth": 53.086918,
+          "outerBehindFace": -2.299739,
+          "closedFormOuterBehindFace": -2.299739
+        },
+        {
+          "theta": 0.15,
+          "entryY": 3.627245,
+          "exitY": 0.359229,
+          "innerDepth": 53.276285,
+          "outerBehindFace": -2.376871,
+          "closedFormOuterBehindFace": -2.376871
+        },
+        {
+          "theta": 0.183333,
+          "entryY": 4.449968,
+          "exitY": 0.45861,
+          "innerDepth": 53.515236,
+          "outerBehindFace": -2.47342,
+          "closedFormOuterBehindFace": -2.47342
+        },
+        {
+          "theta": 0.216667,
+          "entryY": 5.282928,
+          "exitY": 0.57,
+          "innerDepth": 53.805314,
+          "outerBehindFace": -2.589475,
+          "closedFormOuterBehindFace": -2.589475
+        },
+        {
+          "theta": 0.25,
+          "entryY": 6.128206,
+          "exitY": 0.695842,
+          "innerDepth": 54.148415,
+          "outerBehindFace": -2.725139,
+          "closedFormOuterBehindFace": -2.725139
+        },
+        {
+          "theta": 0.283333,
+          "entryY": 6.988002,
+          "exitY": 0.838714,
+          "innerDepth": 54.54682,
+          "outerBehindFace": -2.880529,
+          "closedFormOuterBehindFace": -2.880529
+        },
+        {
+          "theta": 0.316667,
+          "entryY": 7.864658,
+          "exitY": 1.001359,
+          "innerDepth": 55.003226,
+          "outerBehindFace": -3.055774,
+          "closedFormOuterBehindFace": -3.055774
+        },
+        {
+          "theta": 0.35,
+          "entryY": 8.760684,
+          "exitY": 1.186714,
+          "innerDepth": 55.520792,
+          "outerBehindFace": -3.251017,
+          "closedFormOuterBehindFace": -3.251017
+        },
+        {
+          "theta": 0.383333,
+          "entryY": 9.678792,
+          "exitY": 1.397943,
+          "innerDepth": 56.103185,
+          "outerBehindFace": -3.466407,
+          "closedFormOuterBehindFace": -3.466407
+        },
+        {
+          "theta": 0.416667,
+          "entryY": 10.621929,
+          "exitY": 1.638477,
+          "innerDepth": 56.754643,
+          "outerBehindFace": -3.702101,
+          "closedFormOuterBehindFace": -3.702101
+        },
+        {
+          "theta": 0.45,
+          "entryY": 11.593322,
+          "exitY": 1.912059,
+          "innerDepth": 57.480045,
+          "outerBehindFace": -3.958262,
+          "closedFormOuterBehindFace": -3.958262
+        }
+      ]
+    },
+    {
+      "n": -0.4,
+      "cfg": {
+        "L": 48,
+        "src": 24,
+        "rays": 28,
+        "grid": 192,
+        "aspect": "1:1",
+        "n": -0.4
+      },
+      "compare": {
+        "rays": 24,
+        "dropped": 4,
+        "dropMismatch": 0,
+        "maxVertexErr": 1.4210854715202004e-14,
+        "maxCrossErr": 5.684341886080802e-14,
+        "maxLayoutErr": 0,
+        "maxAngleErr": 0,
+        "nonfinite": 0,
+        "missing": 0,
+        "pass": true
+      },
+      "dropped": 4,
+      "closedFormMaxErr": 2.84e-13,
+      "paraxialImageBehindFace": 96,
+      "innermostBehindFace": 96.087612,
+      "marginalBehindFace": 289.887934,
+      "paraxialGap": 0.0876,
+      "thirdOrderBound": 0.175,
+      "paraxialWithinBound": true,
+      "raysCrossingInside": 24,
+      "raysCrossingBehind": 24,
+      "outerSpreadPx": 193.800322,
+      "aberrationSign": 1,
+      "peakX": 185.984176,
+      "peakBehindFace": 87.344176,
+      "metric": 0.329918,
+      "label": "shifted",
+      "allCrossingsInWindow": false,
+      "peakInCaustic": null,
+      "perRay": [
+        {
+          "theta": 0.016667,
+          "entryY": 0.400037,
+          "exitY": -1.601609,
+          "innerDepth": 9.592996,
+          "outerBehindFace": 96.087612,
+          "closedFormOuterBehindFace": 96.087612
+        },
+        {
+          "theta": 0.05,
+          "entryY": 1.201001,
+          "exitY": -4.843871,
+          "innerDepth": 9.536686,
+          "outerBehindFace": 96.796678,
+          "closedFormOuterBehindFace": 96.796678
+        },
+        {
+          "theta": 0.083333,
+          "entryY": 2.004643,
+          "exitY": -8.207336,
+          "innerDepth": 9.422547,
+          "outerBehindFace": 98.259943,
+          "closedFormOuterBehindFace": 98.259943
+        },
+        {
+          "theta": 0.116667,
+          "entryY": 2.812773,
+          "exitY": -11.787363,
+          "innerDepth": 9.247388,
+          "outerBehindFace": 100.575723,
+          "closedFormOuterBehindFace": 100.575723
+        },
+        {
+          "theta": 0.15,
+          "entryY": 3.627245,
+          "exitY": -15.705155,
+          "innerDepth": 9.006009,
+          "outerBehindFace": 103.914596,
+          "closedFormOuterBehindFace": 103.914596
+        },
+        {
+          "theta": 0.183333,
+          "entryY": 4.449968,
+          "exitY": -20.1282,
+          "innerDepth": 8.690578,
+          "outerBehindFace": 108.557358,
+          "closedFormOuterBehindFace": 108.557358
+        },
+        {
+          "theta": 0.216667,
+          "entryY": 5.282928,
+          "exitY": -25.307564,
+          "innerDepth": 8.289521,
+          "outerBehindFace": 114.970629,
+          "closedFormOuterBehindFace": 114.970629
+        },
+        {
+          "theta": 0.25,
+          "entryY": 6.128206,
+          "exitY": -31.65411,
+          "innerDepth": 7.785491,
+          "outerBehindFace": 123.96754,
+          "closedFormOuterBehindFace": 123.96754
+        },
+        {
+          "theta": 0.283333,
+          "entryY": 6.988002,
+          "exitY": -39.915987,
+          "innerDepth": 7.151292,
+          "outerBehindFace": 137.089779,
+          "closedFormOuterBehindFace": 137.089779
+        },
+        {
+          "theta": 0.316667,
+          "entryY": 7.864658,
+          "exitY": -51.67256,
+          "innerDepth": 6.340632,
+          "outerBehindFace": 157.685364,
+          "closedFormOuterBehindFace": 157.685364
+        },
+        {
+          "theta": 0.35,
+          "entryY": 8.760684,
+          "exitY": -71.151871,
+          "innerDepth": 5.262162,
+          "outerBehindFace": 194.921416,
+          "closedFormOuterBehindFace": 194.921416
+        },
+        {
+          "theta": 0.383333,
+          "entryY": 9.678792,
+          "exitY": -116.906873,
+          "innerDepth": 3.6701,
+          "outerBehindFace": 289.887934,
+          "closedFormOuterBehindFace": 289.887934
+        }
+      ]
+    },
+    {
+      "n": 1.5,
+      "cfg": {
+        "L": 48,
+        "src": 24,
+        "rays": 28,
+        "grid": 192,
+        "aspect": "1:1",
+        "n": 1.5
+      },
+      "compare": {
+        "rays": 28,
+        "dropped": 0,
+        "dropMismatch": 0,
+        "maxVertexErr": 2.842170943040401e-14,
+        "maxCrossErr": 1.4210854715202004e-14,
+        "maxLayoutErr": 0,
+        "maxAngleErr": 0,
+        "nonfinite": 0,
+        "missing": 0,
+        "pass": true
+      },
+      "dropped": 0,
+      "closedFormMaxErr": 0,
+      "paraxialImageBehindFace": null,
+      "innermostBehindFace": -55.997531,
+      "marginalBehindFace": -54.107937,
+      "paraxialGap": null,
+      "thirdOrderBound": null,
+      "paraxialWithinBound": null,
+      "raysCrossingInside": 0,
+      "raysCrossingBehind": 0,
+      "outerSpreadPx": null,
+      "aberrationSign": null,
+      "peakX": 100.647912,
+      "peakBehindFace": 2.007912,
+      "metric": -0.114542,
+      "label": "Veselago focus",
+      "allCrossingsInWindow": false,
+      "peakInCaustic": null,
+      "perRay": [
+        {
+          "theta": 0.016667,
+          "entryY": 0.400037,
+          "exitY": 0.933379,
+          "innerDepth": -36.002778,
+          "outerBehindFace": -55.997531,
+          "closedFormOuterBehindFace": null
+        },
+        {
+          "theta": 0.05,
+          "entryY": 1.201001,
+          "exitY": 2.801223,
+          "innerDepth": -36.025033,
+          "outerBehindFace": -55.977764,
+          "closedFormOuterBehindFace": null
+        },
+        {
+          "theta": 0.083333,
+          "entryY": 2.004643,
+          "exitY": 4.672334,
+          "innerDepth": -36.0697,
+          "outerBehindFace": -55.938164,
+          "closedFormOuterBehindFace": null
+        },
+        {
+          "theta": 0.116667,
+          "entryY": 2.812773,
+          "exitY": 6.54891,
+          "innerDepth": -36.137095,
+          "outerBehindFace": -55.8786,
+          "closedFormOuterBehindFace": null
+        },
+        {
+          "theta": 0.15,
+          "entryY": 3.627245,
+          "exitY": 8.433175,
+          "innerDepth": -36.227698,
+          "outerBehindFace": -55.798873,
+          "closedFormOuterBehindFace": null
+        },
+        {
+          "theta": 0.183333,
+          "entryY": 4.449968,
+          "exitY": 10.327397,
+          "innerDepth": -36.342162,
+          "outerBehindFace": -55.698719,
+          "closedFormOuterBehindFace": null
+        },
+        {
+          "theta": 0.216667,
+          "entryY": 5.282928,
+          "exitY": 12.233897,
+          "innerDepth": -36.481319,
+          "outerBehindFace": -55.577805,
+          "closedFormOuterBehindFace": null
+        },
+        {
+          "theta": 0.25,
+          "entryY": 6.128206,
+          "exitY": 14.155066,
+          "innerDepth": -36.646195,
+          "outerBehindFace": -55.435733,
+          "closedFormOuterBehindFace": null
+        },
+        {
+          "theta": 0.283333,
+          "entryY": 6.988002,
+          "exitY": 16.093379,
+          "innerDepth": -36.838027,
+          "outerBehindFace": -55.272033,
+          "closedFormOuterBehindFace": null
+        },
+        {
+          "theta": 0.316667,
+          "entryY": 7.864658,
+          "exitY": 18.051412,
+          "innerDepth": -37.058279,
+          "outerBehindFace": -55.086171,
+          "closedFormOuterBehindFace": null
+        },
+        {
+          "theta": 0.35,
+          "entryY": 8.760684,
+          "exitY": 20.031866,
+          "innerDepth": -37.308672,
+          "outerBehindFace": -54.87754,
+          "closedFormOuterBehindFace": null
+        },
+        {
+          "theta": 0.383333,
+          "entryY": 9.678792,
+          "exitY": 22.037587,
+          "innerDepth": -37.591206,
+          "outerBehindFace": -54.645465,
+          "closedFormOuterBehindFace": null
+        },
+        {
+          "theta": 0.416667,
+          "entryY": 10.621929,
+          "exitY": 24.071594,
+          "innerDepth": -37.908201,
+          "outerBehindFace": -54.389202,
+          "closedFormOuterBehindFace": null
+        },
+        {
+          "theta": 0.45,
+          "entryY": 11.593322,
+          "exitY": 26.137113,
+          "innerDepth": -38.262336,
+          "outerBehindFace": -54.107937,
+          "closedFormOuterBehindFace": null
+        }
+      ]
+    }
+  ],
+  "minusOneIdentity": {
+    "configs": 4440,
+    "rays": 113152,
+    "maxInnerErr": 1.98e-12,
+    "maxOuterErr": 3.24e-12,
+    "virtualConfigs": 1008,
+    "virtualRaysCrossingBehind": 0,
+    "pass": true
+  },
+  "minusOneMetric": {
+    "configs": 2412,
+    "maxPeakErrEvenH": 1,
+    "maxPeakErrOddH": 1.998154,
+    "evenH": 1908,
+    "oddH": 504,
+    "fails": 0,
+    "peakIMismatch": 0,
+    "labelFocus": 2412,
+    "maxAbsMetric": 0.013776,
+    "formulaErr": 1.11e-16,
+    "pass": true,
+    "failures": []
+  },
+  "totalReflection": {
+    "sliderValuesWithDrops": [
+      -0.4
+    ],
+    "rows": [
+      {
+        "n": -0.4,
+        "rays": 12,
+        "dropped": 2,
+        "expectedTir": 2,
+        "same": true,
+        "smallestDroppedAngle": 0.45
+      },
+      {
+        "n": -0.4,
+        "rays": 28,
+        "dropped": 4,
+        "expectedTir": 4,
+        "same": true,
+        "smallestDroppedAngle": 0.416667
+      },
+      {
+        "n": -0.4,
+        "rays": 48,
+        "dropped": 6,
+        "expectedTir": 6,
+        "same": true,
+        "smallestDroppedAngle": 0.411702
+      },
+      {
+        "n": -0.4,
+        "rays": 64,
+        "dropped": 6,
+        "expectedTir": 6,
+        "same": true,
+        "smallestDroppedAngle": 0.421429
+      }
+    ],
+    "criticalAngleAtMinus040": 0.411517,
+    "fanHalfAngle": 0.45,
+    "tirThresholdIndex": 0.434966,
+    "allMatch": true
+  },
+  "grazingSlopeClamp": {
+    "n": -0.43527,
+    "clampedRays": 2,
+    "maxVertexErrPx": 322.852365,
+    "maxCrossErrPx": 668.355199,
+    "clampedRaysAtSliderIndices": 0,
+    "tirBandLow": -0.434966
+  },
+  "statusLabel": {
+    "toleranceFractionOfWidth": 0.12,
+    "tolerancePxAtGrid192": 23.04,
+    "sliderValues": 37,
+    "labelledFocus": 30,
+    "labelledFocusWithoutRealImage": [
+      -2.2,
+      -2.15,
+      -2.1,
+      -2.05,
+      -2
+    ],
+    "labelledFocusCrossingsPartlyOutsideWindow": [
+      -1.95,
+      -1.9,
+      -1.85,
+      -1.8,
+      -1.75
+    ],
+    "labelledFocusImageInWindow": [
+      -1.7,
+      -1.65,
+      -1.6,
+      -1.55,
+      -1.5,
+      -1.45,
+      -1.4,
+      -1.35,
+      -1.3,
+      -1.25,
+      -1.2,
+      -1.15,
+      -1.1,
+      -1.05,
+      -1,
+      -0.95,
+      -0.9,
+      -0.85,
+      -0.8,
+      -0.75
+    ],
+    "labelledShifted": [
+      -0.7,
+      -0.65,
+      -0.6,
+      -0.55,
+      -0.5,
+      -0.45,
+      -0.4
+    ],
+    "wholeSweep": {
+      "imageInWindow": {
+        "configs": 24800,
+        "labelledFocus": 15236
+      },
+      "crossingsPartlyOutsideWindow": {
+        "configs": 15564,
+        "labelledFocus": 5090
+      },
+      "noRealImageBehindSlab": {
+        "configs": 16468,
+        "labelledFocus": 11829
+      },
+      "labelledFocusNoImageExample": {
+        "n": -2.2,
+        "L": 20,
+        "src": 16,
+        "rays": 12,
+        "grid": 128,
+        "aspect": "1:1",
+        "metric": -0.015573
+      }
+    },
+    "positiveIndexPlusOne": {
+      "n": 1,
+      "metric": -0.114542,
+      "label": "Veselago focus",
+      "image": "noRealImageBehindSlab",
+      "paraxialImageMinus2LminusD": null,
+      "raysCrossingBehind": 0,
+      "rays": 28
+    },
+    "rows": [
+      {
+        "n": -2.2,
+        "metric": -0.114542,
+        "label": "Veselago focus",
+        "image": "noRealImageBehindSlab",
+        "paraxialImageMinus2LminusD": -26.181818,
+        "raysCrossingBehind": 0,
+        "rays": 28
+      },
+      {
+        "n": -2.15,
+        "metric": -0.114542,
+        "label": "Veselago focus",
+        "image": "noRealImageBehindSlab",
+        "paraxialImageMinus2LminusD": -25.674419,
+        "raysCrossingBehind": 0,
+        "rays": 28
+      },
+      {
+        "n": -2.1,
+        "metric": -0.114542,
+        "label": "Veselago focus",
+        "image": "noRealImageBehindSlab",
+        "paraxialImageMinus2LminusD": -25.142857,
+        "raysCrossingBehind": 0,
+        "rays": 28
+      },
+      {
+        "n": -2.05,
+        "metric": -0.114542,
+        "label": "Veselago focus",
+        "image": "noRealImageBehindSlab",
+        "paraxialImageMinus2LminusD": -24.585366,
+        "raysCrossingBehind": 0,
+        "rays": 28
+      },
+      {
+        "n": -2,
+        "metric": -0.114542,
+        "label": "Veselago focus",
+        "image": "noRealImageBehindSlab",
+        "paraxialImageMinus2LminusD": -24,
+        "raysCrossingBehind": 0,
+        "rays": 28
+      },
+      {
+        "n": -1.95,
+        "metric": -0.114542,
+        "label": "Veselago focus",
+        "image": "crossingsPartlyOutsideWindow",
+        "paraxialImageMinus2LminusD": -23.384615,
+        "raysCrossingBehind": 16,
+        "rays": 28
+      },
+      {
+        "n": -1.9,
+        "metric": -0.114542,
+        "label": "Veselago focus",
+        "image": "crossingsPartlyOutsideWindow",
+        "paraxialImageMinus2LminusD": -22.736842,
+        "raysCrossingBehind": 22,
+        "rays": 28
+      },
+      {
+        "n": -1.85,
+        "metric": -0.114542,
+        "label": "Veselago focus",
+        "image": "crossingsPartlyOutsideWindow",
+        "paraxialImageMinus2LminusD": -22.054054,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.8,
+        "metric": -0.114542,
+        "label": "Veselago focus",
+        "image": "crossingsPartlyOutsideWindow",
+        "paraxialImageMinus2LminusD": -21.333333,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.75,
+        "metric": -0.114542,
+        "label": "Veselago focus",
+        "image": "crossingsPartlyOutsideWindow",
+        "paraxialImageMinus2LminusD": -20.571429,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.7,
+        "metric": -0.114542,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -19.764706,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.65,
+        "metric": -0.109313,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -18.909091,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.6,
+        "metric": -0.104084,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -18,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.55,
+        "metric": -0.098855,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -17.032258,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.5,
+        "metric": -0.093626,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -16,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.45,
+        "metric": -0.088397,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -14.896552,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.4,
+        "metric": -0.083168,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -13.714286,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.35,
+        "metric": -0.072711,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -12.444444,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.3,
+        "metric": -0.067482,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -11.076923,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.25,
+        "metric": -0.057024,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -9.6,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.2,
+        "metric": -0.051795,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -8,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.15,
+        "metric": -0.041337,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -6.26087,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.1,
+        "metric": -0.030879,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -4.363636,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1.05,
+        "metric": -0.015192,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": -2.285714,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -1,
+        "metric": -0.004734,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": 0,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -0.95,
+        "metric": 0.016181,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": 2.526316,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -0.9,
+        "metric": 0.031868,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": 5.333333,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -0.85,
+        "metric": 0.052784,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": 8.470588,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -0.8,
+        "metric": 0.0737,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": 12,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -0.75,
+        "metric": 0.099844,
+        "label": "Veselago focus",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": 16,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -0.7,
+        "metric": 0.125989,
+        "label": "shifted",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": 20.571429,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -0.65,
+        "metric": 0.152134,
+        "label": "shifted",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": 25.846154,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -0.6,
+        "metric": 0.183507,
+        "label": "shifted",
+        "image": "imageInWindow",
+        "paraxialImageMinus2LminusD": 32,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -0.55,
+        "metric": 0.225339,
+        "label": "shifted",
+        "image": "crossingsPartlyOutsideWindow",
+        "paraxialImageMinus2LminusD": 39.272727,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -0.5,
+        "metric": 0.26717,
+        "label": "shifted",
+        "image": "crossingsPartlyOutsideWindow",
+        "paraxialImageMinus2LminusD": 48,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -0.45,
+        "metric": 0.335147,
+        "label": "shifted",
+        "image": "crossingsPartlyOutsideWindow",
+        "paraxialImageMinus2LminusD": 58.666667,
+        "raysCrossingBehind": 28,
+        "rays": 28
+      },
+      {
+        "n": -0.4,
+        "metric": 0.329918,
+        "label": "shifted",
+        "image": "crossingsPartlyOutsideWindow",
+        "paraxialImageMinus2LminusD": 72,
+        "raysCrossingBehind": 24,
+        "rays": 24
+      },
+      {
+        "n": 1,
+        "metric": -0.114542,
+        "label": "Veselago focus",
+        "image": "noRealImageBehindSlab",
+        "paraxialImageMinus2LminusD": null,
+        "raysCrossingBehind": 0,
+        "rays": 28
+      }
+    ]
+  },
+  "failureControls": {
+    "positiveIndexOne": {
+      "n": 1,
+      "traceMatchesReference": true,
+      "raysCrossingBehindReference": 0,
+      "raysCrossingBehindModule": 0,
+      "peakErrorPx": 21.992088,
+      "peakPredicateAccepted": false,
+      "focusPredicateAccepted": false,
+      "rejected": true,
+      "label": "Veselago focus",
+      "metric": -0.114542
+    },
+    "wrongSign": {
+      "rows": [
+        {
+          "n": -1,
+          "maxVertexErrPx": 46.373286,
+          "maxCrossErrPx": 96,
+          "geometryAccepted": false,
+          "detected": true,
+          "raysAtAnalyticImage": 0
+        },
+        {
+          "n": -0.8,
+          "maxVertexErrPx": 62.191599,
+          "maxCrossErrPx": 129,
+          "geometryAccepted": false,
+          "detected": true,
+          "raysAtAnalyticImage": 0
+        },
+        {
+          "n": -1.2,
+          "maxVertexErrPx": 37.3363,
+          "maxCrossErrPx": 80,
+          "geometryAccepted": false,
+          "detected": true,
+          "raysAtAnalyticImage": 0
+        },
+        {
+          "n": -1.5,
+          "maxVertexErrPx": 29.087583,
+          "maxCrossErrPx": 76.5,
+          "geometryAccepted": false,
+          "detected": true,
+          "raysAtAnalyticImage": 0
+        }
+      ],
+      "rejectedAtEveryN": true,
+      "rejectedAtMinusOne": true
+    },
+    "invertedRatio": {
+      "rows": [
+        {
+          "n": -1,
+          "maxVertexErrPx": 0,
+          "maxCrossErrPx": 1.42e-14,
+          "geometryAccepted": true,
+          "detected": false,
+          "raysAtAnalyticImage": 28
+        },
+        {
+          "n": -0.8,
+          "maxVertexErrPx": 13.279702,
+          "maxCrossErrPx": 27.5,
+          "geometryAccepted": false,
+          "detected": true,
+          "raysAtAnalyticImage": 0
+        },
+        {
+          "n": -1.2,
+          "maxVertexErrPx": 10.704503,
+          "maxCrossErrPx": 22.2,
+          "geometryAccepted": false,
+          "detected": true,
+          "raysAtAnalyticImage": 0
+        },
+        {
+          "n": -1.5,
+          "maxVertexErrPx": 26.781288,
+          "maxCrossErrPx": 55.4,
+          "geometryAccepted": false,
+          "detected": true,
+          "raysAtAnalyticImage": 0
+        }
+      ],
+      "rejectedAtEveryN": false,
+      "rejectedAtMinusOne": false
+    },
+    "exitKeepsSlabAngle": {
+      "rows": [
+        {
+          "n": -1,
+          "maxVertexErrPx": 88.263822,
+          "maxCrossErrPx": 48,
+          "geometryAccepted": false,
+          "detected": true,
+          "raysAtAnalyticImage": 0
+        },
+        {
+          "n": -0.8,
+          "maxVertexErrPx": 99.296799,
+          "maxCrossErrPx": 72.7,
+          "geometryAccepted": false,
+          "detected": true,
+          "raysAtAnalyticImage": 0
+        },
+        {
+          "n": -1.2,
+          "maxVertexErrPx": 80.908503,
+          "maxCrossErrPx": 35.2,
+          "geometryAccepted": false,
+          "detected": true,
+          "raysAtAnalyticImage": 0
+        },
+        {
+          "n": -1.5,
+          "maxVertexErrPx": 73.553185,
+          "maxCrossErrPx": 20,
+          "geometryAccepted": false,
+          "detected": true,
+          "raysAtAnalyticImage": 0
+        }
+      ],
+      "rejectedAtEveryN": true,
+      "rejectedAtMinusOne": true
+    },
+    "metricAtMinus12": {
+      "peakErrorPx": 9.944615,
+      "rejected": true,
+      "label": "Veselago focus",
+      "metric": -0.051795
+    }
+  },
+  "presets": [
+    {
+      "name": "perfect",
+      "n": -1,
+      "L": 48,
+      "src": 24,
+      "rays": 28,
+      "grid": 192,
+      "aspect": "1:1",
+      "geometry": true,
+      "maxVertexErr": 1.42e-14,
+      "stray": 0,
+      "minCoverage": 1,
+      "metric": -0.004734,
+      "label": "Veselago focus",
+      "peakBehindFace": 23.090989
+    },
+    {
+      "name": "shallow",
+      "n": -1,
+      "L": 28,
+      "src": 16,
+      "rays": 28,
+      "grid": 192,
+      "aspect": "1:1",
+      "geometry": true,
+      "maxVertexErr": 1.42e-14,
+      "stray": 0,
+      "minCoverage": 0.991667,
+      "metric": -0.004941,
+      "label": "Veselago focus",
+      "peakBehindFace": 11.051333
+    },
+    {
+      "name": "deep",
+      "n": -1,
+      "L": 64,
+      "src": 20,
+      "rays": 28,
+      "grid": 192,
+      "aspect": "1:1",
+      "geometry": true,
+      "maxVertexErr": 1.42e-14,
+      "stray": 0,
+      "minCoverage": 0.984127,
+      "metric": -0.002487,
+      "label": "Veselago focus",
+      "peakBehindFace": 43.522532
+    },
+    {
+      "name": "n12",
+      "n": -1.2,
+      "L": 48,
+      "src": 24,
+      "rays": 28,
+      "grid": 192,
+      "aspect": "1:1",
+      "geometry": true,
+      "maxVertexErr": 1.42e-14,
+      "stray": 0,
+      "minCoverage": 1,
+      "metric": -0.051795,
+      "label": "Veselago focus",
+      "peakBehindFace": 14.055385
+    },
+    {
+      "name": "many",
+      "n": -1,
+      "L": 48,
+      "src": 24,
+      "rays": 48,
+      "grid": 192,
+      "aspect": "1:1",
+      "geometry": true,
+      "maxVertexErr": 1.42e-14,
+      "stray": 0,
+      "minCoverage": 1,
+      "metric": -0.004734,
+      "label": "Veselago focus",
+      "peakBehindFace": 23.090989
+    },
+    {
+      "name": "log",
+      "n": -1,
+      "L": 48,
+      "src": 24,
+      "rays": 28,
+      "grid": 192,
+      "aspect": "1:1",
+      "geometry": true,
+      "maxVertexErr": 1.42e-14,
+      "stray": 0,
+      "minCoverage": 1,
+      "metric": -0.004734,
+      "label": "Veselago focus",
+      "peakBehindFace": 23.090989
+    }
+  ],
+  "printFixtures": [
+    {
+      "name": "perfect",
+      "cfg": {
+        "grid": 192,
+        "aspect": "1:1",
+        "n": -1,
+        "L": 48,
+        "src": 24,
+        "rays": 28,
+        "view": "int",
+        "exposure": 1
+      },
+      "cells": [
+        192,
+        192
+      ],
+      "geometry": true,
+      "maxVertexErr": 1.42e-14,
+      "dropped": 0,
+      "stray": 0,
+      "minCoverage": 1,
+      "faceBeforeEnd": true
+    },
+    {
+      "name": "shallow",
+      "cfg": {
+        "grid": 192,
+        "aspect": "1:1",
+        "n": -1,
+        "L": 28,
+        "src": 16,
+        "rays": 28,
+        "view": "int",
+        "exposure": 1
+      },
+      "cells": [
+        192,
+        192
+      ],
+      "geometry": true,
+      "maxVertexErr": 1.42e-14,
+      "dropped": 0,
+      "stray": 0,
+      "minCoverage": 0.991667,
+      "faceBeforeEnd": true
+    },
+    {
+      "name": "deep",
+      "cfg": {
+        "grid": 192,
+        "aspect": "1:1",
+        "n": -1,
+        "L": 64,
+        "src": 20,
+        "rays": 28,
+        "view": "int",
+        "exposure": 1
+      },
+      "cells": [
+        192,
+        192
+      ],
+      "geometry": true,
+      "maxVertexErr": 1.42e-14,
+      "dropped": 0,
+      "stray": 0,
+      "minCoverage": 0.984127,
+      "faceBeforeEnd": true
+    },
+    {
+      "name": "n12",
+      "cfg": {
+        "grid": 192,
+        "aspect": "1:1",
+        "n": -1.2,
+        "L": 48,
+        "src": 24,
+        "rays": 28,
+        "view": "int",
+        "exposure": 1
+      },
+      "cells": [
+        192,
+        192
+      ],
+      "geometry": true,
+      "maxVertexErr": 1.42e-14,
+      "dropped": 0,
+      "stray": 0,
+      "minCoverage": 1,
+      "faceBeforeEnd": true
+    },
+    {
+      "name": "many",
+      "cfg": {
+        "grid": 192,
+        "aspect": "1:1",
+        "n": -1,
+        "L": 48,
+        "src": 24,
+        "rays": 48,
+        "view": "int",
+        "exposure": 1
+      },
+      "cells": [
+        192,
+        192
+      ],
+      "geometry": true,
+      "maxVertexErr": 1.42e-14,
+      "dropped": 0,
+      "stray": 0,
+      "minCoverage": 1,
+      "faceBeforeEnd": true
+    },
+    {
+      "name": "log",
+      "cfg": {
+        "grid": 192,
+        "aspect": "1:1",
+        "n": -1,
+        "L": 48,
+        "src": 24,
+        "rays": 28,
+        "view": "log",
+        "exposure": 1
+      },
+      "cells": [
+        192,
+        192
+      ],
+      "geometry": true,
+      "maxVertexErr": 1.42e-14,
+      "dropped": 0,
+      "stray": 0,
+      "minCoverage": 1,
+      "faceBeforeEnd": true
+    },
+    {
+      "name": "wide",
+      "cfg": {
+        "grid": 144,
+        "aspect": "16:9",
+        "n": -1,
+        "L": 40,
+        "src": 20,
+        "rays": 28,
+        "view": "int",
+        "exposure": 1
+      },
+      "cells": [
+        144,
+        81
+      ],
+      "geometry": true,
+      "maxVertexErr": 7.11e-15,
+      "dropped": 0,
+      "stray": 0,
+      "minCoverage": 0.983607,
+      "faceBeforeEnd": true
+    },
+    {
+      "name": "portrait",
+      "cfg": {
+        "grid": 224,
+        "aspect": "4:5",
+        "n": -1.5,
+        "L": 60,
+        "src": 18,
+        "rays": 36,
+        "view": "int",
+        "exposure": 1
+      },
+      "cells": [
+        224,
+        280
+      ],
+      "geometry": true,
+      "maxVertexErr": 5.68e-14,
+      "dropped": 0,
+      "stray": 0,
+      "minCoverage": 1,
+      "faceBeforeEnd": true
+    },
+    {
+      "name": "tir",
+      "cfg": {
+        "grid": 160,
+        "aspect": "5:4",
+        "n": -0.4,
+        "L": 30,
+        "src": 12,
+        "rays": 64,
+        "view": "int",
+        "exposure": 1
+      },
+      "cells": [
+        160,
+        128
+      ],
+      "geometry": true,
+      "maxVertexErr": 2.84e-13,
+      "dropped": 6,
+      "stray": 0,
+      "minCoverage": 1,
+      "faceBeforeEnd": true
+    }
+  ],
+  "limitations": [
+    "Geometric rays only: no wave optics, no evanescent-wave amplification (Pendry), no absorption, dispersion or finite-aperture diffraction; the plate is not a metamaterial simulation.",
+    "Transmitted rays only. No Fresnel reflection is drawn at either face. A ray with no transmitted ray (|sin θ| > |n|) is skipped entirely at veselago.js:79, including its incident segment from the source; the plate and status line do not say so.",
+    "n = -1 refocusing at slab0 + d and slab0 + 2L - d is a geometric identity of the flat slab; it is recorded as a regression check, not a prediction.",
+    "The status label compares |Δx|/W with 0.12 (veselago.js:152). It is not a focus classifier: it reports \"Veselago focus\" for slabs with no real image behind them and cannot tell n = -1 from nearby n.",
+    "Configurations whose back face lies beyond the last drawn column (grid 128 or 144 with a thick slab and a distant source) draw a backward exit stub; they are outside this domain.",
+    "Hash-only indices between -sin(0.45) and -0.4 reach the 0.05 slope clamp at veselago.js:88 for near-grazing rays; outside this domain."
+  ],
+  "environment": {
+    "node": "v22.22.2",
+    "platform": "linux"
+  },
+  "seconds": 47.1
+}

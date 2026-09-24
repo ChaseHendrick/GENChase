@@ -1,8 +1,8 @@
 {
  "date": "2026-09-24",
  "tool": "tools/percolation-science.js",
- "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
- "engineSha256": "a84197737dd6c83940054aecc7c1d3ff86fb5d43b12f4f8da3c4224f07ae3ac0",
+ "sourceSha256": "d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836",
+ "engineSha256": "d4ab4d63c01bca7c4c8a0e3ec0dafe996b1ed2844f2ad969ed3c20de73322f16",
  "scope": "Percolation tab (src/modules/lattice.js): Hoshen-Kopelman labeling against breadth-first search on 240 lattices; the p sweep; per-seed exact spanning thresholds from the tab labeler, cross-checked seed by seed against an independent reference; spanning-probability crossings for L = 128, 256, 512 against the exact bond threshold and the numerical site threshold; failure controls; five exported prints.",
  "estimatorCheck": [
   {
@@ -3199,7 +3199,7 @@
      "L": 128,
      "M": 4000,
      "seedPattern": "perc-science/bond/L128/<0..3999>",
-     "seconds": 71.434,
+     "seconds": 14.582,
      "labelCalls": 10150,
      "bisectedByTabAlone": 50,
      "bracketedByTab": 3950,
@@ -3491,7 +3491,7 @@
      "L": 256,
      "M": 2000,
      "seedPattern": "perc-science/bond/L256/<0..1999>",
-     "seconds": 109.817,
+     "seconds": 22.51,
      "labelCalls": 6250,
      "bisectedByTabAlone": 50,
      "bracketedByTab": 1950,
@@ -3783,7 +3783,7 @@
      "L": 512,
      "M": 1000,
      "seedPattern": "perc-science/bond/L512/<0..999>",
-     "seconds": 217.654,
+     "seconds": 81.668,
      "labelCalls": 4350,
      "bisectedByTabAlone": 50,
      "bracketedByTab": 950,
@@ -4154,7 +4154,7 @@
      "L": 128,
      "M": 4000,
      "seedPattern": "perc-science/site/L128/<0..3999>",
-     "seconds": 43.175,
+     "seconds": 12.93,
      "labelCalls": 10000,
      "bisectedByTabAlone": 50,
      "bracketedByTab": 3950,
@@ -4428,7 +4428,7 @@
      "L": 256,
      "M": 2000,
      "seedPattern": "perc-science/site/L256/<0..1999>",
-     "seconds": 53.904,
+     "seconds": 20.575,
      "labelCalls": 6100,
      "bisectedByTabAlone": 50,
      "bracketedByTab": 1950,
@@ -4702,7 +4702,7 @@
      "L": 512,
      "M": 1000,
      "seedPattern": "perc-science/site/L512/<0..999>",
-     "seconds": 180.979,
+     "seconds": 48.624,
      "labelCalls": 4200,
      "bisectedByTabAlone": 50,
      "bracketedByTab": 950,
@@ -5120,7 +5120,7 @@
      "#E63B2E"
     ],
     "bg": "#E9E7E2",
-    "v": 2
+    "v": 3
    },
    "grid": [
     256,
@@ -5182,7 +5182,7 @@
      "#FFFFFF"
     ],
     "bg": "#000000",
-    "v": 2
+    "v": 3
    },
    "grid": [
     192,
@@ -5244,7 +5244,7 @@
      "#FFF3D6"
     ],
     "bg": "#121110",
-    "v": 2
+    "v": 3
    },
    "grid": [
     256,
@@ -5306,7 +5306,7 @@
      "#264653"
     ],
     "bg": "#F6F3E8",
-    "v": 2
+    "v": 3
    },
    "grid": [
     192,
@@ -5367,7 +5367,7 @@
      "#2B2B2B"
     ],
     "bg": "#FBF7EE",
-    "v": 2
+    "v": 3
    },
    "grid": [
     128,
@@ -5427,20 +5427,20 @@
   "why": "Binomial error of R_L near 1/2 is 0.008 at 4000 seeds and 0.016 at 1000; the crossing errors that result are about 3e-4, which bounds the bond crossing to 0.06 per cent of 1/2. The controls need only resolve shifts of 0.027 and 0.185, which 400 seeds per size do at well over 10 sigma."
  },
  "timings": {
-  "estimator check": 0.654,
-  "partitions": 23.695,
-  "sweep": 4.045,
-  "main thresholds and crossings": 683.563,
-  "failure controls": 108.954,
-  "prints": 35.587
+  "estimator check": 0.253,
+  "partitions": 8.086,
+  "sweep": 1.756,
+  "main thresholds and crossings": 205.533,
+  "failure controls": 26.7,
+  "prints": 29.312
  },
- "cpuSeconds": 604.832305,
+ "cpuSeconds": 567.175397,
  "environment": {
   "node": "v22.22.2",
   "chromium": "141.0.7390.37",
   "platform": "linux",
   "cpus": 4
  },
- "seconds": 856.499,
+ "seconds": 271.642,
  "passed": true
 }

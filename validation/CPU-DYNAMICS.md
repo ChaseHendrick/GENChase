@@ -36,6 +36,24 @@ flip times or printed numerical resolution. RK4 is not an exactly symplectic met
 
 Print-path state preservation for the enumerated flip, stable1, log and square fixtures is recorded by `node tools/tennis-print-state.js --write` in [results/tennis-print-state.json](results/tennis-print-state.json). That check confirms exportPNG does not alter the Float32 field, flip count or settings at the requested dimensions; it does not add printed numerical resolution or flip-time accuracy.
 
+The same audit now covers those four print fixtures at their own inertia, tilt,
+duration and aspect: flip (I2 1.4, tilt 0.02, T 70), stable1 (1.05, 0.01, 50),
+log (1.45, 0.02, 60) and square (1.4, 0.02, 60, 1:1), all at grid 160. The
+independent angular-momentum reference is sampled at every plate row, refined
+from 32 to 64 substeps per row (change below 4.3e-11), and used to rebuild the
+whole field and the ω2 flip count. Every Float32 field word agrees within
+5.96e-8, the Float32 rounding level; the acceptance limit is 2e-6. Flip counts
+are 2, 1, 2 and 2 in both calculations, and the smallest sampled |ω2| is
+6.1e-3, so no sign change sits within the state error of a sample. A reference
+with I2 raised by 1% differs from the production field by 0.15 to 0.34, and the
+old Euler update by 0.011 to 0.064, so both are rejected.
+
+On 2026-09-23 tennis was promoted to validated within stated limits for exactly
+these nine conservation fixtures, three refinement trajectories and four print
+fixtures. The tennis-print-state rerun reproduced every preserved field word,
+flip count, dimension, replay and failure control; only PNG byte counts differ
+between browser builds.
+
 ## FPUT chain evolution (historical partial audit)
 
 Superseded by the [complete finite review](FPUT-FIELD-REVIEW.md), which corrects

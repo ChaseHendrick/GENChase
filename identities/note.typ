@@ -11,7 +11,7 @@
 #set math.equation(numbering: "(1)")
 #show link: set text(fill: rgb("#0b3d6e"))
 
-#let affil = [Independent researcher. Code: #link("https://github.com/SharpMeow/GENChase")[github.com/SharpMeow/GENChase]]
+#let affil = [Independent Researcher. Code: #link("https://github.com/SharpMeow/GENChase")[github.com/SharpMeow/GENChase]]
 
 #align(center)[
   #text(size: 14.5pt, weight: "bold")[Closed forms and sharp minima of $omega thin t_c$ on three classical point-vortex collapse families]

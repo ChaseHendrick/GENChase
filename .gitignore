@@ -39,15 +39,12 @@ validation/results/witnesses-*.json
 identities/sources/**/*.pdf
 identities/sources/**/*.txt
 
-# LaTeX build output of the paper, if it is built in place under research/.
-research/*.aux
-research/*.out
-research/*.pdf
-
-# Private copies of the paper carry the author's email and never belong in this repository.
-# See research/submission/PRIVATE-COPIES.md.
-research/_private*
-Hendrick-minimal-winding-*
+# LaTeX build output, if a paper is built in place instead of with tools/paper-build.sh.
+papers/*/paper/*.aux
+papers/*/paper/*.log
+papers/*/paper/*.out
+# arXiv uploads from tools/arxiv-bundle.sh are written outside the repository.
+*-arxiv.zip
 # Vortex-collapse search results stay local until shared.
 run/vortex-collapse/
 

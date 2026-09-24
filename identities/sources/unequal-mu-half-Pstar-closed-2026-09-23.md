@@ -1,6 +1,6 @@
 # Closed form for the μ = 1/2 spin–collapse product floor P⋆
 
-> **Correction (2026-09-23, later).** P⋆ ≈ 2.2039 below is the minimum on Gotoda’s arc 0 < θ < θ₀ only. The opposite triangle orientation, π < θ < 2π − θ₀ in the same parametrization, also collapses, and its minimum is lower: P_min ≈ 1.064705976271204 = √(605/324 + (7√5201)/162 · cos(⅓ arccos(245351√5201/5201²) − 2π/3)), the other positive root of the same sextic. That is the μ = 1/2 floor. The critical cosine ≈ −0.924 dismissed below as "expanding side" is expanding only for sin θ > 0; with sin θ < 0 it collapses. All algebra about P⋆ below stays correct. Validation: `research/verify_floors_independent.py`; note: `research/artifacts/unequal-mu-n5-floors-2026-09-23.pdf`.
+> **Correction (2026-09-23, later).** P⋆ ≈ 2.2039 below is the minimum on Gotoda’s arc 0 < θ < θ₀ only. The opposite triangle orientation, π < θ < 2π − θ₀ in the same parametrization, also collapses, and its minimum is lower: P_min ≈ 1.064705976271204 = √(605/324 + (7√5201)/162 · cos(⅓ arccos(245351√5201/5201²) − 2π/3)), the other positive root of the same sextic. That is the μ = 1/2 floor. The critical cosine ≈ −0.924 dismissed below as "expanding side" is expanding only for sin θ > 0; with sin θ < 0 it collapses. All algebra about P⋆ below stays correct. Validation: `papers/minimal-winding/code/verify_floors_independent.py`; note: `papers/minimal-winding/paper/minimal-winding.pdf`.
 
 Scout / derivation date: 2026-09-23 (America/New_York).  
 Parent draft: `identities/sources/unequal-mu-half-draft-2026-09-23.md`.  

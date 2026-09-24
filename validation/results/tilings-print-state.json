@@ -1,0 +1,1946 @@
+{
+ "pass": true,
+ "misses": {
+  "insetDirection": {
+   "criterion": "Fill and outline polygons equal the tiles inset (moved inward) by the grout distance, within 0.005 px.",
+   "cause": "src/modules/tilings.js:626 insetPoly offsets along the left normals (-uy, ux); the y flip at print (py = oy - y sc) makes every tile clockwise in page coordinates, so the offset moves outward. Every recipe with inset > 0 prints tiles enlarged by the inset distance, overlapping their neighbours instead of leaving grout.",
+   "fixtures": [
+    {
+     "fixture": "rhombs",
+     "inset": 0.012,
+     "matchedOffset": "outward",
+     "fillCoverageOfPage": 1.0601514640883167,
+     "inwardMaxAbsError": 6.185613590558546
+    },
+    {
+     "fixture": "kitedart",
+     "inset": 0.02,
+     "matchedOffset": "outward",
+     "fillCoverageOfPage": 1.133821909219388,
+     "inwardMaxAbsError": 10.306036628189872
+    },
+    {
+     "fixture": "ammann",
+     "inset": 0.016,
+     "matchedOffset": "outward",
+     "fillCoverageOfPage": 1.07841873608323,
+     "inwardMaxAbsError": 6.15299446575591
+    },
+    {
+     "fixture": "dodeca",
+     "inset": 0.02,
+     "matchedOffset": "outward",
+     "fillCoverageOfPage": 1.1019950541704373,
+     "inwardMaxAbsError": 11.884948940820777
+    },
+    {
+     "fixture": "kilnfloor",
+     "inset": 0.05,
+     "matchedOffset": "outward",
+     "fillCoverageOfPage": 1.2618295839851215,
+     "inwardMaxAbsError": 12.737854839118427
+    },
+    {
+     "fixture": "sweep-p3-3",
+     "inset": 0.012,
+     "matchedOffset": "outward",
+     "fillCoverageOfPage": 1.061812352092921,
+     "inwardMaxAbsError": 40.45193608323821
+    },
+    {
+     "fixture": "sweep-d12-4",
+     "inset": 0.012,
+     "matchedOffset": "outward",
+     "fillCoverageOfPage": 1.0631245423609808,
+     "inwardMaxAbsError": 30.759680221667168
+    }
+   ]
+  },
+  "browserNodeWordIdentity": {
+   "criterion": "Browser and Node models identical word for word.",
+   "cause": "The two JavaScript engines round some sun-wheel sin/cos values differently (libmProbe); the deflation carries the last-bit difference into descendant vertices. Integer tile data are identical, coordinates agree within 1e-12, and the browser model passes the tiling predicates itself.",
+   "libmProbe": {
+    "compared": 56,
+    "differing": [
+     {
+      "value": "sin (2i+1)pi/10 i=9",
+      "node": -0.3090169943749476,
+      "chromium": -0.3090169943749477
+     }
+    ]
+   },
+   "fixtures": [
+    {
+     "fixture": "rhombs",
+     "xyWordsDiffering": 21,
+     "maxAbsDifference": 1.7763568394002505e-15,
+     "levelSegmentWordsDiffering": 22,
+     "levelSegmentMaxAbsDifference": 1.7763568394002505e-15
+    },
+    {
+     "fixture": "arcs",
+     "xyWordsDiffering": 591,
+     "maxAbsDifference": 7.105427357601002e-15,
+     "levelSegmentWordsDiffering": 365,
+     "levelSegmentMaxAbsDifference": 7.105427357601002e-15
+    },
+    {
+     "fixture": "inflation",
+     "xyWordsDiffering": 1696,
+     "maxAbsDifference": 7.105427357601002e-15,
+     "levelSegmentWordsDiffering": 1041,
+     "levelSegmentMaxAbsDifference": 3.552713678800501e-15
+    },
+    {
+     "fixture": "kilnfloor",
+     "xyWordsDiffering": 1374,
+     "maxAbsDifference": 7.105427357601002e-15,
+     "levelSegmentWordsDiffering": 820,
+     "levelSegmentMaxAbsDifference": 3.552713678800501e-15
+    },
+    {
+     "fixture": "rhombs-inset-0",
+     "xyWordsDiffering": 21,
+     "maxAbsDifference": 1.7763568394002505e-15,
+     "levelSegmentWordsDiffering": 22,
+     "levelSegmentMaxAbsDifference": 1.7763568394002505e-15
+    }
+   ]
+  }
+ },
+ "source": "src/modules/tilings.js",
+ "sourceSha256": "cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357",
+ "engineSha256": "d4ab4d63c01bca7c4c8a0e3ec0dafe996b1ed2844f2ad969ed3c20de73322f16",
+ "harnessSha256": "ad8edb4ab65d97dd6bd25506ab5c337942a4484c37293f0951234083cd33c3c2",
+ "geometrySha256": "64d908ddfbe75fa8ca021432f5304f733468f04991ad78c82ef98e9c213a705f",
+ "command": "node tools/tilings-print-state.js --write",
+ "setup": "npm install --no-save --package-lock=false playwright@1.56.1",
+ "scope": "Actual tilings.js in dist/studio.html (Chromium, SwiftShader) for the eight Penrose P3/P2, Ammann-Beenker and dodecagonal presets at seed penrose-1974 with their own paint settings and palettes, and two rotated, panned, non-square sweep recipes from tools/tilings-science.js. The browser model (every Float64 vertex word, tile types, orientation classes, ancestors, flip flags and inflation-level segments) is compared with the Node model that tools/tilings-science.js validates. exportPNG at 2400 px on the longest edge with the complete model compared before and after, a second export compared pixel for pixel; exportSVG with every fill and outline polygon vertex (mitred inset recomputed by line intersection), every line-work edge as a set, every inflation-level segment and every arc endpoint and radius compared with geometry computed in Node.",
+ "criteria": "Browser and Node models identical word for word; regenerate identical; exact requested PNG dimensions, image/png over 1000 bytes, luminance spread over 12/255, more than 0.1% of pixels off the background, all pixels finite; repeated export pixel-identical; zero changed model words or settings across every export; SVG exactly the requested size and viewBox, one fill polygon per tile (and one outline per tile where drawn), every coordinate within 0.005 px (half the printed 0.01 px) of the Node geometry, line work equal to the set of distinct tile edges meeting the cull rectangle, each once, level and arc paths complete. Failure controls: a PNG requested 1 px narrower, a post-export change to one vertex word and one tile type, and one expected SVG vertex moved 0.02 px must each be rejected by the same predicate. Where the engines round a sun-wheel sin/cos differently, word identity misses (misses.browserNodeWordIdentity) and is replaced by identical integer data, coordinates within 1e-12 and the browser model passing the tiling predicates itself. For inset > 0 the polygons were required to be inward insets; that criterion misses (misses.insetDirection) and the rows record the outward offset the module prints, which the SVG then matches within the same 0.005 px.",
+ "rows": [
+  {
+   "fixture": "rhombs",
+   "preset": "rhombs",
+   "seed": "penrose-1974",
+   "requested": [
+    2400,
+    2400
+   ],
+   "state": {
+    "mode": "p3",
+    "depth": 5,
+    "zoom": 1,
+    "rotation": 0,
+    "panx": 0,
+    "pany": 0,
+    "aspect": "1:1",
+    "fill": "type",
+    "inset": 0.012,
+    "strokeWidth": 1.2,
+    "linework": false,
+    "levels": 0,
+    "arcs": false,
+    "jitter": 0.3,
+    "grain": 0.12,
+    "bg": "#F1E8D8"
+   },
+   "tiles": 1728,
+   "depthRendered": 5,
+   "levelsDeflated": 8,
+   "settingsSha256": "050b2ed8289f1a981429b356dcc75e2ccf3aa1c2697ce05f99ef4f4eb5840bca",
+   "xySha256": "905f140bcc51aded2d5d70198889458ac203b0b0eab92e393289694eda97b7c5",
+   "browserEqualsNode": {
+    "tiles": [
+     1728,
+     1728
+    ],
+    "xyWordsDiffering": 21,
+    "maxAbsDifference": 1.7763568394002505e-15,
+    "integersIdentical": true,
+    "levelSegmentWordsDiffering": 22,
+    "levelSegmentMaxAbsDifference": 1.7763568394002505e-15,
+    "levelSegmentShapeMismatch": false,
+    "hxhy": true,
+    "depth": true,
+    "exact": false,
+    "sameStructureWithin1e12": true
+   },
+   "nodeModelTiling": {
+    "tiles": 1728,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 1.1102230246251565e-16,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "browserModelTiling": {
+    "tiles": 1728,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 1.1102230246251565e-16,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "deterministicReplay": true,
+   "png": {
+    "requested": [
+     2400,
+     2400
+    ],
+    "width": 2400,
+    "height": 2400,
+    "spread": 152.2712,
+    "inkFraction": 1,
+    "finite": true,
+    "bytes": 6511292,
+    "type": "image/png",
+    "statePreserved": true,
+    "nonblank": true,
+    "dimensionsMatch": true,
+    "accepted": true
+   },
+   "pngRepeatIdenticalPixels": true,
+   "pixelSha256": "2a63628d6cd99a22e1ec582035c445715930c7c07070577edac4a78c7556bd31",
+   "allExportsPreserved": true,
+   "svg": {
+    "width": 2400,
+    "height": 2400,
+    "viewBox": "0 0 2400 2400",
+    "fills": {
+     "polygons": 1728,
+     "expected": 1728,
+     "verticesCompared": 6912,
+     "maxAbsError": 0.004998190162041283,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "outlines": {
+     "polygons": 1728,
+     "expected": 1728,
+     "verticesCompared": 6912,
+     "maxAbsError": 0.004998190162041283,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "linework": {
+     "expected": 0,
+     "segments": 0,
+     "accepted": true
+    },
+    "levels": [],
+    "arcs": [],
+    "pathCount": 0,
+    "expectedPathCount": 0,
+    "accepted": true,
+    "insetCriterionAsFixed": {
+     "inset": 0.012,
+     "accepted": false,
+     "fillsMaxAbsError": 6.185613590558546,
+     "outlinesMaxAbsError": 6.185613590558546
+    },
+    "matchedOffset": "outward",
+    "bytes": 457296,
+    "parse": {
+     "ok": true,
+     "polygons": 3456,
+     "paths": 0
+    },
+    "statePreserved": true,
+    "fillCoverageOfPage": 1.0601514640883167
+   },
+   "failureControls": {
+    "narrowPng": {
+     "requested": [
+      2399,
+      2400
+     ],
+     "width": 2399,
+     "height": 2400,
+     "dimensionsMatch": false,
+     "nonblank": true,
+     "statePreserved": true,
+     "rejected": true
+    },
+    "mutationAfterExport": {
+     "dimensionsMatch": true,
+     "nonblank": true,
+     "statePreserved": false,
+     "rejected": true
+    },
+    "svgShift": {
+     "what": "one polygon vertex moved 0.02 px",
+     "rejected": true,
+     "maxAbsError": 0.020026555782237665
+    }
+   }
+  },
+  {
+   "fixture": "arcs",
+   "preset": "arcs",
+   "seed": "penrose-1974",
+   "requested": [
+    2400,
+    2400
+   ],
+   "state": {
+    "mode": "p3",
+    "depth": 6,
+    "zoom": 1.1,
+    "rotation": 0,
+    "panx": 0,
+    "pany": 0,
+    "aspect": "1:1",
+    "fill": "none",
+    "inset": 0,
+    "strokeWidth": 0.5,
+    "linework": true,
+    "levels": 0,
+    "arcs": true,
+    "jitter": 0.3,
+    "grain": 0.1,
+    "bg": "#17141F"
+   },
+   "tiles": 3367,
+   "depthRendered": 6,
+   "levelsDeflated": 9,
+   "settingsSha256": "352af081b2cb69548c375420926bc94f53ff1ce1d5f7de16efb13dc833ac7b80",
+   "xySha256": "077d0cea037d932b723d1001e846af13380b40527568c7430e0c359a81c340f1",
+   "browserEqualsNode": {
+    "tiles": [
+     3367,
+     3367
+    ],
+    "xyWordsDiffering": 591,
+    "maxAbsDifference": 7.105427357601002e-15,
+    "integersIdentical": true,
+    "levelSegmentWordsDiffering": 365,
+    "levelSegmentMaxAbsDifference": 7.105427357601002e-15,
+    "levelSegmentShapeMismatch": false,
+    "hxhy": true,
+    "depth": true,
+    "exact": false,
+    "sameStructureWithin1e12": true
+   },
+   "nodeModelTiling": {
+    "tiles": 3367,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 1.3766765505351941e-14,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "browserModelTiling": {
+    "tiles": 3367,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 1.354472090042691e-14,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "deterministicReplay": true,
+   "png": {
+    "requested": [
+     2400,
+     2400
+    ],
+    "width": 2400,
+    "height": 2400,
+    "spread": 192.7956,
+    "inkFraction": 0.15375017361111112,
+    "finite": true,
+    "bytes": 4748240,
+    "type": "image/png",
+    "statePreserved": true,
+    "nonblank": true,
+    "dimensionsMatch": true,
+    "accepted": true
+   },
+   "pngRepeatIdenticalPixels": true,
+   "pixelSha256": "6e2512f7682bfe04ae56a82e065bd7750240f7e0d4a049344102b52125c59fea",
+   "allExportsPreserved": true,
+   "svg": {
+    "width": 2400,
+    "height": 2400,
+    "viewBox": "0 0 2400 2400",
+    "fills": {
+     "polygons": 0,
+     "expected": 0,
+     "verticesCompared": 0,
+     "maxAbsError": 0,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "outlines": {
+     "polygons": 0,
+     "expected": 0,
+     "verticesCompared": 0,
+     "maxAbsError": 0,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "linework": {
+     "segments": 6691,
+     "expected": 6691,
+     "unmatched": 0,
+     "missing": 0,
+     "repeated": 0,
+     "maxAbsError": 0.0049958263400640135,
+     "accepted": true
+    },
+    "levels": [],
+    "arcs": [
+     {
+      "family": 0,
+      "arcs": 4635,
+      "expected": 4635,
+      "maxAbsError": 0.004995826340291387,
+      "accepted": true
+     },
+     {
+      "family": 1,
+      "arcs": 2099,
+      "expected": 2099,
+      "maxAbsError": 0.0049958263400640135,
+      "accepted": true
+     }
+    ],
+    "pathCount": 3,
+    "expectedPathCount": 3,
+    "accepted": true,
+    "insetCriterionAsFixed": {
+     "inset": 0,
+     "accepted": true,
+     "fillsMaxAbsError": 0,
+     "outlinesMaxAbsError": 0
+    },
+    "matchedOffset": "none",
+    "bytes": 527838,
+    "parse": {
+     "ok": true,
+     "polygons": 0,
+     "paths": 3
+    },
+    "statePreserved": true,
+    "fillCoverageOfPage": null
+   },
+   "failureControls": {
+    "narrowPng": {
+     "requested": [
+      2399,
+      2400
+     ],
+     "width": 2399,
+     "height": 2400,
+     "dimensionsMatch": false,
+     "nonblank": true,
+     "statePreserved": true,
+     "rejected": true
+    },
+    "mutationAfterExport": {
+     "dimensionsMatch": true,
+     "nonblank": true,
+     "statePreserved": false,
+     "rejected": true
+    },
+    "svgShift": {
+     "what": "one line-work endpoint moved 0.02 px",
+     "rejected": true,
+     "unmatched": 1
+    }
+   }
+  },
+  {
+   "fixture": "kitedart",
+   "preset": "kitedart",
+   "seed": "penrose-1974",
+   "requested": [
+    2400,
+    2400
+   ],
+   "state": {
+    "mode": "p2",
+    "depth": 5,
+    "zoom": 1,
+    "rotation": 0,
+    "panx": 0,
+    "pany": 0,
+    "aspect": "1:1",
+    "fill": "type",
+    "inset": 0.02,
+    "strokeWidth": 1.1,
+    "linework": false,
+    "levels": 0,
+    "arcs": false,
+    "jitter": 0.25,
+    "grain": 0.12,
+    "bg": "#ECEFEA"
+   },
+   "tiles": 2814,
+   "depthRendered": 5,
+   "levelsDeflated": 8,
+   "settingsSha256": "62e551fcf4555f70111fbe6f7adab7740ff9fbb227980367799558ae42e04dd3",
+   "xySha256": "f9bc4a4b95462069e35975bfc2e40484cf98640442a3bd5cd71dcf40831b9f1e",
+   "browserEqualsNode": {
+    "tiles": [
+     2814,
+     2814
+    ],
+    "xyWordsDiffering": 0,
+    "maxAbsDifference": 0,
+    "integersIdentical": true,
+    "levelSegmentWordsDiffering": 0,
+    "levelSegmentMaxAbsDifference": 0,
+    "levelSegmentShapeMismatch": false,
+    "hxhy": true,
+    "depth": true,
+    "exact": true,
+    "sameStructureWithin1e12": true
+   },
+   "nodeModelTiling": {
+    "tiles": 2814,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 2.4868995751603507e-14,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "browserModelTiling": {
+    "tiles": 2814,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 2.4868995751603507e-14,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "deterministicReplay": true,
+   "png": {
+    "requested": [
+     2400,
+     2400
+    ],
+    "width": 2400,
+    "height": 2400,
+    "spread": 164.11359999999996,
+    "inkFraction": 1,
+    "finite": true,
+    "bytes": 7567997,
+    "type": "image/png",
+    "statePreserved": true,
+    "nonblank": true,
+    "dimensionsMatch": true,
+    "accepted": true
+   },
+   "pngRepeatIdenticalPixels": true,
+   "pixelSha256": "95ae26fb5c85824a036650a377b6f1ee5f223db3a6246721fc5775447d5c13f9",
+   "allExportsPreserved": true,
+   "svg": {
+    "width": 2400,
+    "height": 2400,
+    "viewBox": "0 0 2400 2400",
+    "fills": {
+     "polygons": 2814,
+     "expected": 2814,
+     "verticesCompared": 11256,
+     "maxAbsError": 0.004998261897753764,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "outlines": {
+     "polygons": 2814,
+     "expected": 2814,
+     "verticesCompared": 11256,
+     "maxAbsError": 0.004998261897753764,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "linework": {
+     "expected": 0,
+     "segments": 0,
+     "accepted": true
+    },
+    "levels": [],
+    "arcs": [],
+    "pathCount": 0,
+    "expectedPathCount": 0,
+    "accepted": true,
+    "insetCriterionAsFixed": {
+     "inset": 0.02,
+     "accepted": false,
+     "fillsMaxAbsError": 10.306036628189872,
+     "outlinesMaxAbsError": 10.306036628189872
+    },
+    "matchedOffset": "outward",
+    "bytes": 744288,
+    "parse": {
+     "ok": true,
+     "polygons": 5628,
+     "paths": 0
+    },
+    "statePreserved": true,
+    "fillCoverageOfPage": 1.133821909219388
+   },
+   "failureControls": {
+    "narrowPng": {
+     "requested": [
+      2399,
+      2400
+     ],
+     "width": 2399,
+     "height": 2400,
+     "dimensionsMatch": false,
+     "nonblank": true,
+     "statePreserved": true,
+     "rejected": true
+    },
+    "mutationAfterExport": {
+     "dimensionsMatch": true,
+     "nonblank": true,
+     "statePreserved": false,
+     "rejected": true
+    },
+    "svgShift": {
+     "what": "one polygon vertex moved 0.02 px",
+     "rejected": true,
+     "maxAbsError": 0.020409365859904938
+    }
+   }
+  },
+  {
+   "fixture": "ammann",
+   "preset": "ammann",
+   "seed": "penrose-1974",
+   "requested": [
+    2400,
+    2400
+   ],
+   "state": {
+    "mode": "ab",
+    "depth": 5,
+    "zoom": 1,
+    "rotation": 0,
+    "panx": 0,
+    "pany": 0,
+    "aspect": "1:1",
+    "fill": "orient",
+    "inset": 0.016,
+    "strokeWidth": 1,
+    "linework": false,
+    "levels": 0,
+    "arcs": false,
+    "jitter": 0.2,
+    "grain": 0.1,
+    "bg": "#EFEADF"
+   },
+   "tiles": 1729,
+   "depthRendered": 5,
+   "levelsDeflated": 0,
+   "settingsSha256": "b52432398ba63183b3db02a54ea3e19d5484d37786bc1c71482bde0e34158dc1",
+   "xySha256": "ad9f137bd2e3bc8797eb226e0b8e134eaf0b40ffef937dc07c83e5ff290b9da2",
+   "browserEqualsNode": {
+    "tiles": [
+     1729,
+     1729
+    ],
+    "xyWordsDiffering": 0,
+    "maxAbsDifference": 0,
+    "integersIdentical": true,
+    "levelSegmentWordsDiffering": 0,
+    "levelSegmentMaxAbsDifference": 0,
+    "levelSegmentShapeMismatch": false,
+    "hxhy": true,
+    "depth": true,
+    "exact": true,
+    "sameStructureWithin1e12": true
+   },
+   "nodeModelTiling": {
+    "tiles": 1729,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 3.3306690738754696e-15,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "browserModelTiling": {
+    "tiles": 1729,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 3.3306690738754696e-15,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "deterministicReplay": true,
+   "png": {
+    "requested": [
+     2400,
+     2400
+    ],
+    "width": 2400,
+    "height": 2400,
+    "spread": 127.362,
+    "inkFraction": 1,
+    "finite": true,
+    "bytes": 5739246,
+    "type": "image/png",
+    "statePreserved": true,
+    "nonblank": true,
+    "dimensionsMatch": true,
+    "accepted": true
+   },
+   "pngRepeatIdenticalPixels": true,
+   "pixelSha256": "fdfa17b801c180f19dac976103962b0e8a804c71b5bd976e5b5da09d029f61ac",
+   "allExportsPreserved": true,
+   "svg": {
+    "width": 2400,
+    "height": 2400,
+    "viewBox": "0 0 2400 2400",
+    "fills": {
+     "polygons": 1729,
+     "expected": 1729,
+     "verticesCompared": 6916,
+     "maxAbsError": 0.004997491149396183,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "outlines": {
+     "polygons": 1729,
+     "expected": 1729,
+     "verticesCompared": 6916,
+     "maxAbsError": 0.004997491149396183,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "linework": {
+     "expected": 0,
+     "segments": 0,
+     "accepted": true
+    },
+    "levels": [],
+    "arcs": [],
+    "pathCount": 0,
+    "expectedPathCount": 0,
+    "accepted": true,
+    "insetCriterionAsFixed": {
+     "inset": 0.016,
+     "accepted": false,
+     "fillsMaxAbsError": 6.15299446575591,
+     "outlinesMaxAbsError": 6.15299446575591
+    },
+    "matchedOffset": "outward",
+    "bytes": 457839,
+    "parse": {
+     "ok": true,
+     "polygons": 3458,
+     "paths": 0
+    },
+    "statePreserved": true,
+    "fillCoverageOfPage": 1.07841873608323
+   },
+   "failureControls": {
+    "narrowPng": {
+     "requested": [
+      2399,
+      2400
+     ],
+     "width": 2399,
+     "height": 2400,
+     "dimensionsMatch": false,
+     "nonblank": true,
+     "statePreserved": true,
+     "rejected": true
+    },
+    "mutationAfterExport": {
+     "dimensionsMatch": true,
+     "nonblank": true,
+     "statePreserved": false,
+     "rejected": true
+    },
+    "svgShift": {
+     "what": "one polygon vertex moved 0.02 px",
+     "rejected": true,
+     "maxAbsError": 0.02291256753187554
+    }
+   }
+  },
+  {
+   "fixture": "inflation",
+   "preset": "inflation",
+   "seed": "penrose-1974",
+   "requested": [
+    2400,
+    2400
+   ],
+   "state": {
+    "mode": "p3",
+    "depth": 7,
+    "zoom": 1,
+    "rotation": 0,
+    "panx": 0,
+    "pany": 0,
+    "aspect": "1:1",
+    "fill": "none",
+    "inset": 0,
+    "strokeWidth": 0.55,
+    "linework": true,
+    "levels": 4,
+    "arcs": false,
+    "jitter": 0.3,
+    "grain": 0.08,
+    "bg": "#E9E7E2"
+   },
+   "tiles": 9820,
+   "depthRendered": 7,
+   "levelsDeflated": 10,
+   "settingsSha256": "ea182a6dab761cab5224de1a774c6714a12d04bdfe4381c3826bb3b07e4362e8",
+   "xySha256": "501072b43879926fe36130e1549b478d61b3657be37279731c6de99a866b6a61",
+   "browserEqualsNode": {
+    "tiles": [
+     9820,
+     9820
+    ],
+    "xyWordsDiffering": 1696,
+    "maxAbsDifference": 7.105427357601002e-15,
+    "integersIdentical": true,
+    "levelSegmentWordsDiffering": 1041,
+    "levelSegmentMaxAbsDifference": 3.552713678800501e-15,
+    "levelSegmentShapeMismatch": false,
+    "hxhy": true,
+    "depth": true,
+    "exact": false,
+    "sameStructureWithin1e12": true
+   },
+   "nodeModelTiling": {
+    "tiles": 9820,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 9.50350909079134e-14,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "browserModelTiling": {
+    "tiles": 9820,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 9.481304630298837e-14,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "deterministicReplay": true,
+   "png": {
+    "requested": [
+     2400,
+     2400
+    ],
+    "width": 2400,
+    "height": 2400,
+    "spread": 160.06419999999997,
+    "inkFraction": 0.4170947916666667,
+    "finite": true,
+    "bytes": 4794932,
+    "type": "image/png",
+    "statePreserved": true,
+    "nonblank": true,
+    "dimensionsMatch": true,
+    "accepted": true
+   },
+   "pngRepeatIdenticalPixels": true,
+   "pixelSha256": "2b293004ac452717002993abc88b3540ae08dfae13c0f9dc9d723533491fcf5d",
+   "allExportsPreserved": true,
+   "svg": {
+    "width": 2400,
+    "height": 2400,
+    "viewBox": "0 0 2400 2400",
+    "fills": {
+     "polygons": 0,
+     "expected": 0,
+     "verticesCompared": 0,
+     "maxAbsError": 0,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "outlines": {
+     "polygons": 0,
+     "expected": 0,
+     "verticesCompared": 0,
+     "maxAbsError": 0,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "linework": {
+     "segments": 19344,
+     "expected": 19344,
+     "unmatched": 0,
+     "missing": 0,
+     "repeated": 0,
+     "maxAbsError": 0.004985649074114917,
+     "accepted": true
+    },
+    "levels": [
+     {
+      "segments": 449,
+      "expected": 449,
+      "maxAbsError": 0.004993929681631926,
+      "accepted": true
+     },
+     {
+      "segments": 1114,
+      "expected": 1114,
+      "maxAbsError": 0.004993929681859299,
+      "accepted": true
+     },
+     {
+      "segments": 2920,
+      "expected": 2920,
+      "maxAbsError": 0.004993929681859299,
+      "accepted": true
+     },
+     {
+      "segments": 7472,
+      "expected": 7472,
+      "maxAbsError": 0.00497449208614853,
+      "accepted": true
+     }
+    ],
+    "arcs": [],
+    "pathCount": 5,
+    "expectedPathCount": 5,
+    "accepted": true,
+    "insetCriterionAsFixed": {
+     "inset": 0,
+     "accepted": true,
+     "fillsMaxAbsError": 0,
+     "outlinesMaxAbsError": 0
+    },
+    "matchedOffset": "none",
+    "bytes": 946352,
+    "parse": {
+     "ok": true,
+     "polygons": 0,
+     "paths": 5
+    },
+    "statePreserved": true,
+    "fillCoverageOfPage": null
+   },
+   "failureControls": {
+    "narrowPng": {
+     "requested": [
+      2399,
+      2400
+     ],
+     "width": 2399,
+     "height": 2400,
+     "dimensionsMatch": false,
+     "nonblank": true,
+     "statePreserved": true,
+     "rejected": true
+    },
+    "mutationAfterExport": {
+     "dimensionsMatch": true,
+     "nonblank": true,
+     "statePreserved": false,
+     "rejected": true
+    },
+    "svgShift": {
+     "what": "one line-work endpoint moved 0.02 px",
+     "rejected": true,
+     "unmatched": 1
+    }
+   }
+  },
+  {
+   "fixture": "linedrawing",
+   "preset": "linedrawing",
+   "seed": "penrose-1974",
+   "requested": [
+    1920,
+    2400
+   ],
+   "state": {
+    "mode": "p2",
+    "depth": 7,
+    "zoom": 1.2,
+    "rotation": 0,
+    "panx": 0,
+    "pany": 0,
+    "aspect": "4:5",
+    "fill": "none",
+    "inset": 0,
+    "strokeWidth": 0.6,
+    "linework": true,
+    "levels": 0,
+    "arcs": false,
+    "jitter": 0.3,
+    "grain": 0.06,
+    "bg": "#000000"
+   },
+   "tiles": 9366,
+   "depthRendered": 7,
+   "levelsDeflated": 10,
+   "settingsSha256": "e73c97206a0437414f45dce80e45e3bee8e1a7b74b1fe8e3e0c55a5df1a1a051",
+   "xySha256": "2759356c41b6f634bd526805854098ca9a9b6786a3264220137bb0b2e50e128d",
+   "browserEqualsNode": {
+    "tiles": [
+     9366,
+     9366
+    ],
+    "xyWordsDiffering": 0,
+    "maxAbsDifference": 0,
+    "integersIdentical": true,
+    "levelSegmentWordsDiffering": 0,
+    "levelSegmentMaxAbsDifference": 0,
+    "levelSegmentShapeMismatch": false,
+    "hxhy": true,
+    "depth": true,
+    "exact": true,
+    "sameStructureWithin1e12": true
+   },
+   "nodeModelTiling": {
+    "tiles": 9366,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 8.704148513061227e-14,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "browserModelTiling": {
+    "tiles": 9366,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 8.704148513061227e-14,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "deterministicReplay": true,
+   "png": {
+    "requested": [
+     1920,
+     2400
+    ],
+    "width": 1920,
+    "height": 2400,
+    "spread": 41.4636,
+    "inkFraction": 0.10498524305555555,
+    "finite": true,
+    "bytes": 1569619,
+    "type": "image/png",
+    "statePreserved": true,
+    "nonblank": true,
+    "dimensionsMatch": true,
+    "accepted": true
+   },
+   "pngRepeatIdenticalPixels": true,
+   "pixelSha256": "ccbfdb74b3f4a1bacc90ff1e7698f1fcb0eb930331e8375966f343dc35fb3c62",
+   "allExportsPreserved": true,
+   "svg": {
+    "width": 1920,
+    "height": 2400,
+    "viewBox": "0 0 1920 2400",
+    "fills": {
+     "polygons": 0,
+     "expected": 0,
+     "verticesCompared": 0,
+     "maxAbsError": 0,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "outlines": {
+     "polygons": 0,
+     "expected": 0,
+     "verticesCompared": 0,
+     "maxAbsError": 0,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "linework": {
+     "segments": 18286,
+     "expected": 18286,
+     "unmatched": 0,
+     "missing": 0,
+     "repeated": 0,
+     "maxAbsError": 0.004994709785250961,
+     "accepted": true
+    },
+    "levels": [],
+    "arcs": [],
+    "pathCount": 1,
+    "expectedPathCount": 1,
+    "accepted": true,
+    "insetCriterionAsFixed": {
+     "inset": 0,
+     "accepted": true,
+     "fillsMaxAbsError": 0,
+     "outlinesMaxAbsError": 0
+    },
+    "matchedOffset": "none",
+    "bytes": 548993,
+    "parse": {
+     "ok": true,
+     "polygons": 0,
+     "paths": 1
+    },
+    "statePreserved": true,
+    "fillCoverageOfPage": null
+   },
+   "failureControls": {
+    "narrowPng": {
+     "requested": [
+      1919,
+      2400
+     ],
+     "width": 1919,
+     "height": 2400,
+     "dimensionsMatch": false,
+     "nonblank": true,
+     "statePreserved": true,
+     "rejected": true
+    },
+    "mutationAfterExport": {
+     "dimensionsMatch": true,
+     "nonblank": true,
+     "statePreserved": false,
+     "rejected": true
+    },
+    "svgShift": {
+     "what": "one line-work endpoint moved 0.02 px",
+     "rejected": true,
+     "unmatched": 1
+    }
+   }
+  },
+  {
+   "fixture": "dodeca",
+   "preset": "dodeca",
+   "seed": "penrose-1974",
+   "requested": [
+    2400,
+    2400
+   ],
+   "state": {
+    "mode": "d12",
+    "depth": 5,
+    "zoom": 1,
+    "rotation": 0,
+    "panx": 0,
+    "pany": 0,
+    "aspect": "1:1",
+    "fill": "orient",
+    "inset": 0.02,
+    "strokeWidth": 1,
+    "linework": false,
+    "levels": 0,
+    "arcs": false,
+    "jitter": 0.3,
+    "grain": 0.12,
+    "bg": "#F5E6C8"
+   },
+   "tiles": 1783,
+   "depthRendered": 5,
+   "levelsDeflated": 0,
+   "settingsSha256": "4a72c6c411e8321d21d6dcc79b732ee82159b41eefebb330c6be8b9750040fa2",
+   "xySha256": "f3347318a6bfefa56a31d3a80b1ae3964c47be539e497dd08b50788fb52b5082",
+   "browserEqualsNode": {
+    "tiles": [
+     1783,
+     1783
+    ],
+    "xyWordsDiffering": 0,
+    "maxAbsDifference": 0,
+    "integersIdentical": true,
+    "levelSegmentWordsDiffering": 0,
+    "levelSegmentMaxAbsDifference": 0,
+    "levelSegmentShapeMismatch": false,
+    "hxhy": true,
+    "depth": true,
+    "exact": true,
+    "sameStructureWithin1e12": true
+   },
+   "nodeModelTiling": {
+    "tiles": 1783,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 5.551115123125783e-15,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "browserModelTiling": {
+    "tiles": 1783,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 5.551115123125783e-15,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "deterministicReplay": true,
+   "png": {
+    "requested": [
+     2400,
+     2400
+    ],
+    "width": 2400,
+    "height": 2400,
+    "spread": 189.3472,
+    "inkFraction": 0.8801600694444445,
+    "finite": true,
+    "bytes": 6911277,
+    "type": "image/png",
+    "statePreserved": true,
+    "nonblank": true,
+    "dimensionsMatch": true,
+    "accepted": true
+   },
+   "pngRepeatIdenticalPixels": true,
+   "pixelSha256": "dbb9be9e60be3327108816e45e61a38d0d450e62cd2260809bb7ed182168740a",
+   "allExportsPreserved": true,
+   "svg": {
+    "width": 2400,
+    "height": 2400,
+    "viewBox": "0 0 2400 2400",
+    "fills": {
+     "polygons": 1783,
+     "expected": 1783,
+     "verticesCompared": 7132,
+     "maxAbsError": 0.004998249820573619,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "outlines": {
+     "polygons": 1783,
+     "expected": 1783,
+     "verticesCompared": 7132,
+     "maxAbsError": 0.004998249820573619,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "linework": {
+     "expected": 0,
+     "segments": 0,
+     "accepted": true
+    },
+    "levels": [],
+    "arcs": [],
+    "pathCount": 0,
+    "expectedPathCount": 0,
+    "accepted": true,
+    "insetCriterionAsFixed": {
+     "inset": 0.02,
+     "accepted": false,
+     "fillsMaxAbsError": 11.884948940820777,
+     "outlinesMaxAbsError": 11.884948940820777
+    },
+    "matchedOffset": "outward",
+    "bytes": 471757,
+    "parse": {
+     "ok": true,
+     "polygons": 3566,
+     "paths": 0
+    },
+    "statePreserved": true,
+    "fillCoverageOfPage": 1.1019950541704373
+   },
+   "failureControls": {
+    "narrowPng": {
+     "requested": [
+      2399,
+      2400
+     ],
+     "width": 2399,
+     "height": 2400,
+     "dimensionsMatch": false,
+     "nonblank": true,
+     "statePreserved": true,
+     "rejected": true
+    },
+    "mutationAfterExport": {
+     "dimensionsMatch": true,
+     "nonblank": true,
+     "statePreserved": false,
+     "rejected": true
+    },
+    "svgShift": {
+     "what": "one polygon vertex moved 0.02 px",
+     "rejected": true,
+     "maxAbsError": 0.015506330906646326
+    }
+   }
+  },
+  {
+   "fixture": "kilnfloor",
+   "preset": "kilnfloor",
+   "seed": "penrose-1974",
+   "requested": [
+    2400,
+    1920
+   ],
+   "state": {
+    "mode": "p3",
+    "depth": 6,
+    "zoom": 1,
+    "rotation": 0,
+    "panx": 0,
+    "pany": 0,
+    "aspect": "5:4",
+    "fill": "gen",
+    "inset": 0.05,
+    "strokeWidth": 0,
+    "linework": false,
+    "levels": 0,
+    "arcs": false,
+    "jitter": 0.55,
+    "grain": 0.22,
+    "bg": "#F4F1EA"
+   },
+   "tiles": 5080,
+   "depthRendered": 6,
+   "levelsDeflated": 9,
+   "settingsSha256": "4d7954d705a298be475896c73ced3ef246fca7f953a48e1759f1a1e1086233be",
+   "xySha256": "81e449128e0b6014993702920f8842115355c1384934a0aae0a953a52cb8d08e",
+   "browserEqualsNode": {
+    "tiles": [
+     5080,
+     5080
+    ],
+    "xyWordsDiffering": 1374,
+    "maxAbsDifference": 7.105427357601002e-15,
+    "integersIdentical": true,
+    "levelSegmentWordsDiffering": 820,
+    "levelSegmentMaxAbsDifference": 3.552713678800501e-15,
+    "levelSegmentShapeMismatch": false,
+    "hxhy": true,
+    "depth": true,
+    "exact": false,
+    "sameStructureWithin1e12": true
+   },
+   "nodeModelTiling": {
+    "tiles": 5080,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 1.9984014443252818e-15,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "browserModelTiling": {
+    "tiles": 5080,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 1.6653345369377348e-15,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "deterministicReplay": true,
+   "png": {
+    "requested": [
+     2400,
+     1920
+    ],
+    "width": 2400,
+    "height": 1920,
+    "spread": 186.99319999999997,
+    "inkFraction": 1,
+    "finite": true,
+    "bytes": 6617582,
+    "type": "image/png",
+    "statePreserved": true,
+    "nonblank": true,
+    "dimensionsMatch": true,
+    "accepted": true
+   },
+   "pngRepeatIdenticalPixels": true,
+   "pixelSha256": "820ae72d18798827342ee0994f5aa308e281e85b54e4c635114f3c8bed91cc3c",
+   "allExportsPreserved": true,
+   "svg": {
+    "width": 2400,
+    "height": 1920,
+    "viewBox": "0 0 2400 1920",
+    "fills": {
+     "polygons": 5080,
+     "expected": 5080,
+     "verticesCompared": 20320,
+     "maxAbsError": 0.004999230039857139,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "outlines": {
+     "polygons": 0,
+     "expected": 0,
+     "verticesCompared": 0,
+     "maxAbsError": 0,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "linework": {
+     "expected": 0,
+     "segments": 0,
+     "accepted": true
+    },
+    "levels": [],
+    "arcs": [],
+    "pathCount": 0,
+    "expectedPathCount": 0,
+    "accepted": true,
+    "insetCriterionAsFixed": {
+     "inset": 0.05,
+     "accepted": false,
+     "fillsMaxAbsError": 12.737854839118427,
+     "outlinesMaxAbsError": 0
+    },
+    "matchedOffset": "outward",
+    "bytes": 554765,
+    "parse": {
+     "ok": true,
+     "polygons": 5080,
+     "paths": 0
+    },
+    "statePreserved": true,
+    "fillCoverageOfPage": 1.2618295839851215
+   },
+   "failureControls": {
+    "narrowPng": {
+     "requested": [
+      2399,
+      1920
+     ],
+     "width": 2399,
+     "height": 1920,
+     "dimensionsMatch": false,
+     "nonblank": true,
+     "statePreserved": true,
+     "rejected": true
+    },
+    "mutationAfterExport": {
+     "dimensionsMatch": true,
+     "nonblank": true,
+     "statePreserved": false,
+     "rejected": true
+    },
+    "svgShift": {
+     "what": "one polygon vertex moved 0.02 px",
+     "rejected": true,
+     "maxAbsError": 0.02126473404450735
+    }
+   }
+  },
+  {
+   "fixture": "rhombs-inset-0",
+   "preset": "rhombs",
+   "seed": "penrose-1974",
+   "requested": [
+    2400,
+    2400
+   ],
+   "state": {
+    "mode": "p3",
+    "depth": 5,
+    "zoom": 1,
+    "rotation": 0,
+    "panx": 0,
+    "pany": 0,
+    "aspect": "1:1",
+    "fill": "type",
+    "inset": 0,
+    "strokeWidth": 1.2,
+    "linework": false,
+    "levels": 0,
+    "arcs": false,
+    "jitter": 0.3,
+    "grain": 0.12,
+    "bg": "#F1E8D8"
+   },
+   "tiles": 1728,
+   "depthRendered": 5,
+   "levelsDeflated": 8,
+   "settingsSha256": "7de83830e4cf6cc3a29eba8eb409e460f711f2b9f5d7c792d263a905fe35e956",
+   "xySha256": "905f140bcc51aded2d5d70198889458ac203b0b0eab92e393289694eda97b7c5",
+   "browserEqualsNode": {
+    "tiles": [
+     1728,
+     1728
+    ],
+    "xyWordsDiffering": 21,
+    "maxAbsDifference": 1.7763568394002505e-15,
+    "integersIdentical": true,
+    "levelSegmentWordsDiffering": 22,
+    "levelSegmentMaxAbsDifference": 1.7763568394002505e-15,
+    "levelSegmentShapeMismatch": false,
+    "hxhy": true,
+    "depth": true,
+    "exact": false,
+    "sameStructureWithin1e12": true
+   },
+   "nodeModelTiling": {
+    "tiles": 1728,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 1.1102230246251565e-16,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "browserModelTiling": {
+    "tiles": 1728,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 1.1102230246251565e-16,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "deterministicReplay": true,
+   "png": {
+    "requested": [
+     2400,
+     2400
+    ],
+    "width": 2400,
+    "height": 2400,
+    "spread": 152.2712,
+    "inkFraction": 1,
+    "finite": true,
+    "bytes": 6620375,
+    "type": "image/png",
+    "statePreserved": true,
+    "nonblank": true,
+    "dimensionsMatch": true,
+    "accepted": true
+   },
+   "pngRepeatIdenticalPixels": true,
+   "pixelSha256": "4c597331d4adc865ed7533a55c3a5426b25ca5df11b432958c288f1aa0e28116",
+   "allExportsPreserved": true,
+   "svg": {
+    "width": 2400,
+    "height": 2400,
+    "viewBox": "0 0 2400 2400",
+    "fills": {
+     "polygons": 1728,
+     "expected": 1728,
+     "verticesCompared": 6912,
+     "maxAbsError": 0.004993929681177178,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "outlines": {
+     "polygons": 1728,
+     "expected": 1728,
+     "verticesCompared": 6912,
+     "maxAbsError": 0.004993929681177178,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "linework": {
+     "expected": 0,
+     "segments": 0,
+     "accepted": true
+    },
+    "levels": [],
+    "arcs": [],
+    "pathCount": 0,
+    "expectedPathCount": 0,
+    "accepted": true,
+    "insetCriterionAsFixed": {
+     "inset": 0,
+     "accepted": true,
+     "fillsMaxAbsError": 0.004993929681177178,
+     "outlinesMaxAbsError": 0.004993929681177178
+    },
+    "matchedOffset": "none",
+    "bytes": 457278,
+    "parse": {
+     "ok": true,
+     "polygons": 3456,
+     "paths": 0
+    },
+    "statePreserved": true,
+    "fillCoverageOfPage": 0.9999999999999951
+   },
+   "failureControls": {
+    "narrowPng": {
+     "requested": [
+      2399,
+      2400
+     ],
+     "width": 2399,
+     "height": 2400,
+     "dimensionsMatch": false,
+     "nonblank": true,
+     "statePreserved": true,
+     "rejected": true
+    },
+    "mutationAfterExport": {
+     "dimensionsMatch": true,
+     "nonblank": true,
+     "statePreserved": false,
+     "rejected": true
+    },
+    "svgShift": {
+     "what": "one polygon vertex moved 0.02 px",
+     "rejected": true,
+     "maxAbsError": 0.019620019425587998
+    }
+   }
+  },
+  {
+   "fixture": "sweep-p3-3",
+   "preset": null,
+   "seed": "tilings-sweep-p3-3",
+   "requested": [
+    1920,
+    2400
+   ],
+   "state": {
+    "mode": "p3",
+    "depth": 3,
+    "zoom": 2.5,
+    "rotation": 233,
+    "panx": -2.9,
+    "pany": 3,
+    "aspect": "4:5",
+    "fill": "type",
+    "inset": 0.012,
+    "strokeWidth": 1.2,
+    "linework": false,
+    "levels": 0,
+    "arcs": false,
+    "jitter": 0.3,
+    "grain": 0.12,
+    "bg": "#F1E8D8"
+   },
+   "tiles": 150,
+   "depthRendered": 3,
+   "levelsDeflated": 7,
+   "settingsSha256": "d78e5189c705973d837d400a116d02ca7aa1477a20020fcf8631364a1c708a4a",
+   "xySha256": "8e7ef510de2f4ec8751540f52d3bcca3cd8aa7a821f45c80a6470a915971e1d8",
+   "browserEqualsNode": {
+    "tiles": [
+     150,
+     150
+    ],
+    "xyWordsDiffering": 0,
+    "maxAbsDifference": 0,
+    "integersIdentical": true,
+    "levelSegmentWordsDiffering": 0,
+    "levelSegmentMaxAbsDifference": 0,
+    "levelSegmentShapeMismatch": false,
+    "hxhy": true,
+    "depth": true,
+    "exact": true,
+    "sameStructureWithin1e12": true
+   },
+   "nodeModelTiling": {
+    "tiles": 150,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 2.220446049250313e-16,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "browserModelTiling": {
+    "tiles": 150,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 2.220446049250313e-16,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "deterministicReplay": true,
+   "png": {
+    "requested": [
+     1920,
+     2400
+    ],
+    "width": 1920,
+    "height": 2400,
+    "spread": 152.2712,
+    "inkFraction": 1,
+    "finite": true,
+    "bytes": 3188664,
+    "type": "image/png",
+    "statePreserved": true,
+    "nonblank": true,
+    "dimensionsMatch": true,
+    "accepted": true
+   },
+   "pngRepeatIdenticalPixels": true,
+   "pixelSha256": "ae746251ebf3f5e3a9d8d3eab2135cf9c874b35c3e4f9ac7e6c414eb170bc46d",
+   "allExportsPreserved": true,
+   "svg": {
+    "width": 1920,
+    "height": 2400,
+    "viewBox": "0 0 1920 2400",
+    "fills": {
+     "polygons": 150,
+     "expected": 150,
+     "verticesCompared": 600,
+     "maxAbsError": 0.004996704379891526,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "outlines": {
+     "polygons": 150,
+     "expected": 150,
+     "verticesCompared": 600,
+     "maxAbsError": 0.004996704379891526,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "linework": {
+     "expected": 0,
+     "segments": 0,
+     "accepted": true
+    },
+    "levels": [],
+    "arcs": [],
+    "pathCount": 0,
+    "expectedPathCount": 0,
+    "accepted": true,
+    "insetCriterionAsFixed": {
+     "inset": 0.012,
+     "accepted": false,
+     "fillsMaxAbsError": 40.45193608323821,
+     "outlinesMaxAbsError": 40.45193608323821
+    },
+    "matchedOffset": "outward",
+    "bytes": 40742,
+    "parse": {
+     "ok": true,
+     "polygons": 300,
+     "paths": 0
+    },
+    "statePreserved": true,
+    "fillCoverageOfPage": 1.061812352092921
+   },
+   "failureControls": {
+    "narrowPng": {
+     "requested": [
+      1919,
+      2400
+     ],
+     "width": 1919,
+     "height": 2400,
+     "dimensionsMatch": false,
+     "nonblank": true,
+     "statePreserved": true,
+     "rejected": true
+    },
+    "mutationAfterExport": {
+     "dimensionsMatch": true,
+     "nonblank": true,
+     "statePreserved": false,
+     "rejected": true
+    },
+    "svgShift": {
+     "what": "one polygon vertex moved 0.02 px",
+     "rejected": true,
+     "maxAbsError": 0.01822047140046834
+    }
+   }
+  },
+  {
+   "fixture": "sweep-d12-4",
+   "preset": null,
+   "seed": "tilings-sweep-d12-4",
+   "requested": [
+    2400,
+    1600
+   ],
+   "state": {
+    "mode": "d12",
+    "depth": 4,
+    "zoom": 4,
+    "rotation": 90,
+    "panx": 0,
+    "pany": 0,
+    "aspect": "3:2",
+    "fill": "type",
+    "inset": 0.012,
+    "strokeWidth": 1.2,
+    "linework": false,
+    "levels": 0,
+    "arcs": false,
+    "jitter": 0.3,
+    "grain": 0.12,
+    "bg": "#F1E8D8"
+   },
+   "tiles": 178,
+   "depthRendered": 4,
+   "levelsDeflated": 0,
+   "settingsSha256": "f4554faf796ac8f26651e266553cf13c48421a412404344c0b9f8c95bba9e093",
+   "xySha256": "cad17c097c1aaf0ee09d46250df9da310f3fadffc639b5b1aad89366550c70fa",
+   "browserEqualsNode": {
+    "tiles": [
+     178,
+     178
+    ],
+    "xyWordsDiffering": 0,
+    "maxAbsDifference": 0,
+    "integersIdentical": true,
+    "levelSegmentWordsDiffering": 0,
+    "levelSegmentMaxAbsDifference": 0,
+    "levelSegmentShapeMismatch": false,
+    "hxhy": true,
+    "depth": true,
+    "exact": true,
+    "sameStructureWithin1e12": true
+   },
+   "nodeModelTiling": {
+    "tiles": 178,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 0,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "browserModelTiling": {
+    "tiles": 178,
+    "viewCoveredOnce": true,
+    "tJunctions": 0,
+    "repeated": 0,
+    "viewAreaRelativeError": 0,
+    "shapesUnmatched": 0,
+    "labelMismatch": 0,
+    "ok": true
+   },
+   "deterministicReplay": true,
+   "png": {
+    "requested": [
+     2400,
+     1600
+    ],
+    "width": 2400,
+    "height": 1600,
+    "spread": 152.2712,
+    "inkFraction": 1,
+    "finite": true,
+    "bytes": 3125755,
+    "type": "image/png",
+    "statePreserved": true,
+    "nonblank": true,
+    "dimensionsMatch": true,
+    "accepted": true
+   },
+   "pngRepeatIdenticalPixels": true,
+   "pixelSha256": "ffac13d19444f8e85464fe00311f3556b808b590efb16794369c16904f19bc1e",
+   "allExportsPreserved": true,
+   "svg": {
+    "width": 2400,
+    "height": 1600,
+    "viewBox": "0 0 2400 1600",
+    "fills": {
+     "polygons": 178,
+     "expected": 178,
+     "verticesCompared": 712,
+     "maxAbsError": 0.004999537787966801,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "outlines": {
+     "polygons": 178,
+     "expected": 178,
+     "verticesCompared": 712,
+     "maxAbsError": 0.004999537787966801,
+     "shapeMismatch": false,
+     "accepted": true
+    },
+    "linework": {
+     "expected": 0,
+     "segments": 0,
+     "accepted": true
+    },
+    "levels": [],
+    "arcs": [],
+    "pathCount": 0,
+    "expectedPathCount": 0,
+    "accepted": true,
+    "insetCriterionAsFixed": {
+     "inset": 0.012,
+     "accepted": false,
+     "fillsMaxAbsError": 30.759680221667168,
+     "outlinesMaxAbsError": 30.759680221667168
+    },
+    "matchedOffset": "outward",
+    "bytes": 47822,
+    "parse": {
+     "ok": true,
+     "polygons": 356,
+     "paths": 0
+    },
+    "statePreserved": true,
+    "fillCoverageOfPage": 1.0631245423609808
+   },
+   "failureControls": {
+    "narrowPng": {
+     "requested": [
+      2399,
+      1600
+     ],
+     "width": 2399,
+     "height": 1600,
+     "dimensionsMatch": false,
+     "nonblank": true,
+     "statePreserved": true,
+     "rejected": true
+    },
+    "mutationAfterExport": {
+     "dimensionsMatch": true,
+     "nonblank": true,
+     "statePreserved": false,
+     "rejected": true
+    },
+    "svgShift": {
+     "what": "one polygon vertex moved 0.02 px",
+     "rejected": true,
+     "maxAbsError": 0.016295185773287812
+    }
+   }
+  }
+ ],
+ "limitations": [
+  "Ten recipes at one seed each (eight presets, two sweep recipes), one Chromium build and a software renderer; not every seed, control, palette, aspect or hardware.",
+  "PNG output is checked for dimensions, nonblank content, determinism and preserved state, not pixel by pixel against the geometry; colour, jitter and grain are presentation and not calibrated.",
+  "The arcs preset prints exactly the decoration the module specifies; the P3 thin-rhomb arc specification itself is defective (see validation/TILINGS.md), so its arcs are print-faithful but not a valid Penrose matching decoration.",
+  "Hat and spectre prints are not covered."
+ ],
+ "environment": {
+  "node": "v22.22.2",
+  "chromium": "141.0.7390.37",
+  "platform": "linux",
+  "playwright": "1.56.1"
+ }
+}

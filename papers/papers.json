@@ -1,0 +1,98 @@
+{
+  "about": "Every publication this project prepares, and where each one stands. docs/PUBLISHING-PAPERS.md explains the steps and the statuses; node tools/paper-check.js checks each entry against its files, and allows no email address in a paper's files except author.email. Update this file in the pull request that changes a status.",
+  "author": {
+    "name": "Chase Hendrick",
+    "given-names": "Chase",
+    "family-names": "Hendrick",
+    "affiliation": "Independent Researcher",
+    "email": "chasewhendrick@gmail.com",
+    "orcid": null
+  },
+  "statuses": ["draft", "preparing", "ready", "on-arxiv", "submitted", "accepted", "published"],
+  "papers": [
+    {
+      "id": "minimal-winding",
+      "title": "Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons",
+      "status": "preparing",
+      "note": "Ready for arXiv once the code DOI is in its data availability paragraph (papers/minimal-winding/submission/CHECKLIST.md).",
+      "typst": "papers/minimal-winding/paper/minimal-winding.typ",
+      "latex": "papers/minimal-winding/paper/minimal-winding.tex",
+      "pdf": "papers/minimal-winding/paper/minimal-winding.pdf",
+      "companion": "SharpMeow/minimal-winding",
+      "textLicense": "all-rights-reserved",
+      "arxiv": {
+        "category": "physics.flu-dyn",
+        "crossLists": ["math-ph", "math.DS"],
+        "metadata": "papers/minimal-winding/submission/arxiv-metadata.md",
+        "id": null
+      },
+      "journal": {
+        "name": "Regular and Chaotic Dynamics",
+        "coverLetter": "papers/minimal-winding/submission/cover-letter-rcd.md",
+        "submitted": null,
+        "doi": null
+      },
+      "codeDoi": null,
+      "commitments": []
+    },
+    {
+      "id": "alpha-winding",
+      "title": "A sharp winding bound for the self-similar collapse of three point vortices in the alpha-models",
+      "status": "draft",
+      "note": "Not peer reviewed and not cleared for submission (CHANGELOG.md). Before it can go public, the checks it cites in research/generalizations-2026-09-24/ must move into its code/ and data/ folders (node tools/paper-sync.js --check alpha-winding).",
+      "typst": "papers/alpha-winding/paper/alpha-winding.typ",
+      "latex": "papers/alpha-winding/paper/alpha-winding.tex",
+      "pdf": "papers/alpha-winding/paper/alpha-winding.pdf",
+      "companion": "SharpMeow/alpha-winding",
+      "textLicense": "all-rights-reserved",
+      "arxiv": {
+        "category": "physics.flu-dyn",
+        "crossLists": [],
+        "metadata": null,
+        "id": null
+      },
+      "journal": {
+        "name": null,
+        "coverLetter": null,
+        "submitted": null,
+        "doi": null
+      },
+      "codeDoi": null,
+      "commitments": []
+    },
+    {
+      "id": "identities-note",
+      "title": "Closed forms and sharp minima of ω t_c on three classical point-vortex collapse families",
+      "status": "preparing",
+      "note": "Zero confirmed novel findings; a Zenodo record of its own is planned (identities/README.md), not a journal submission. Its links into this repository must be replaced before the record, since this repository may be private.",
+      "typst": "identities/note.typ",
+      "latex": null,
+      "pdf": "identities/note.pdf",
+      "arxiv": null,
+      "journal": null,
+      "zenodo": {
+        "metadata": "identities/zenodo.json",
+        "doi": null
+      },
+      "codeDoi": null,
+      "commitments": []
+    },
+    {
+      "id": "software-paper",
+      "title": "GENChase: seeded scientific simulations with validation records, provenance and print export",
+      "status": "draft",
+      "note": "Journal of Open Source Software draft; JOSS needs the software DOI from Zenodo before acceptance (docs/PUBLISHING.md, section 4).",
+      "markdown": "paper/paper.md",
+      "pdf": null,
+      "arxiv": null,
+      "journal": {
+        "name": "Journal of Open Source Software",
+        "coverLetter": null,
+        "submitted": null,
+        "doi": null
+      },
+      "codeDoi": null,
+      "commitments": []
+    }
+  ]
+}
