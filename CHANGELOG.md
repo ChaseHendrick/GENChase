@@ -1,9 +1,38 @@
 # Changelog
 
-## Unreleased
+## v0.6.2
 
-- The paper cites three more papers, each read for the purpose; the Typst and LaTeX sources were edited together and both PDFs rebuilt (13 pages each):
-  - Conte and de Seze, a 1980 CEN Saclay report printed in 2015 (arXiv:1511.00069), which writes the zero-impulse collapse as the spiral (1 − t/t_c)^(1/2 − iωt_c), so |ωt_c| = P, and gives the complex rate in closed form for arbitrary circulations before Kimura. It is credited in the Introduction and beside Kimura, and the Discussion says that it, like Aref and Kimura, does not minimize P.
+The publication date is recorded in the GitHub release notes.
+
+- **Volunteer computing for the open winding problems (#141).** The local validator gains two jobs that anyone can run on macOS or Linux, headless or in the app. They keep checkpoints, pause on battery and heat (on Apple Silicon Macs), and share results only on request:
+  - `vortex-collapse` searches for self-similar collapses of N point vortices in the α-models (α = 0 Euler, α = 1 surface quasi-geostrophic) with the least winding P = |Im κ|/(2|Re κ|).
+  - `vortex-grow` continues the deepest recorded family one vortex at a time.
+  - A point is recorded as a certified local minimum only if it passes all of these tests:
+    - the similarity equations;
+    - first- and second-order optimality on the collapse manifold;
+    - the conservation laws;
+    - a separately written time integration;
+    - the six symmetry eigenvalues of its linearization;
+    - the pairing k + k′ = 2 of its stability exponents.
+  - The similarity, integration, symmetry and pairing tests each have a control that must fail. The optimality and conservation tests are checked directly. A `zero-winding` status covers P = 0, where the strict second-order test cannot apply.
+  - `tools/vortex-precision-check.py` re-checks minima in an independent mpmath implementation, at 60 digits by default (`--dps` sets the precision).
+  - The `volunteer results` workflow re-verifies vortex result files in pull requests with the verifier from the base branch. After submissions merge, it opens a pull request that refreshes the leaderboard and `COMPUTE.md`.
+  - A "Claim a seed block" issue template lets long runs avoid overlap.
+- **Computer time and energy (#141).** Every volunteer job records the CPU time of its command and every process it waited for; detached processes and stopped jobs are not counted. It also records an energy figure: measured from the Linux RAPL counter where one is readable, otherwise an estimate of 1 to 20 W per busy core, labelled as an estimate. `COMPUTE.md` totals the computer time of shared jobs and recorded vortex results, and the README gains a section on contributing computer time.
+- **First recorded results (#141).** These are numerical candidates, not proofs, and their priority is unconfirmed:
+  - 1,596 seeds from the maintainers' own runs, in about 1 CPU hour. Of the 0.98 h, 0.38 h is wall time standing in for files recorded before CPU accounting existed.
+  - For N = 4 and 5, the Euler, SQG and α = 2 minima agree with an independent Python search.
+  - Growth reaches P = 0.5215733789 for 30 Euler vortices and 0.1453121018 for 24 SQG vortices.
+  - At α = 2 and 11 vortices it reaches P = 0: a self-similar collapse that shrinks without rotating. It was checked at 60 digits in mpmath: similarity residual 2 × 10⁻⁶⁰, conservation laws vanishing, non-degenerate geometry. This is strong numerical evidence, not a proof.
+- **Research notes on generalizations of the winding bound (#138)**, in `research/generalizations-2026-09-24/`, with independent re-check scripts and their output.
+  - Each result carries a status: proved, derived, exact (SymPy) or numerical evidence. Leads that were not checked are listed separately.
+  - `RESEARCH.md` entries O and P log the papers read and the searches made. None of the papers read minimizes or bounds the winding for four or more vortices. The papers read for entry P do not report a collapse without rotation; a dedicated search for non-rotating self-similar collapse has not been made yet.
+- **A second draft preprint (#140)**, *A sharp winding bound for the self-similar collapse of three point vortices in the α-models*, as Typst, LaTeX and PDF, with a figure, verification programs and their output.
+  - It proves P > √(3+α)/(2+α), sharp and not attained, for every α > −1. It extends the bound to α ≥ −59/40 with one interval-arithmetic step.
+  - Its Section 5 reports, as numerical results only, four-vortex collapses below the three-vortex floor for α = 0, 1 and 2.
+  - **It is a draft that has not been peer reviewed and is not cleared for submission.** Its companion note lists the reading still owed. The PDF attached to this release does not itself say it is a draft.
+- **The first paper cites three more papers (#139)**, each read for the purpose. The Typst and LaTeX sources were edited together and both PDFs rebuilt (13 pages each):
+  - Conte and de Seze, a 1980 CEN Saclay report printed in 2015 (arXiv:1511.00069). It writes the zero-impulse collapse as the spiral (1 − t/t_c)^(1/2 − iωt_c), so |ωt_c| = P, and gives the complex rate in closed form for arbitrary circulations before Kimura. It is credited in the Introduction and beside Kimura, and the Discussion says that it, like Aref and Kimura, does not minimize P.
   - Hernández-Garduño and Lacomba (J. Math. Fluid Mech. 2007), who prove that every motion of three vortices ending in a total collision is self-similar; cited where the paper extends Corollary 1 to every collapse.
   - Grotto, Romito and Viviani (arXiv:2307.05133), who select a continuation after collapse by vanishing noise; cited beside Gallay and Šverák's regularization.
   - The Typst reference list grows from 20 to 23 entries and every citation number was remapped; the Typst and LaTeX texts carry the same 80 citations in the same order.
