@@ -6,6 +6,7 @@
 //   node tools/paper-sync.js --list [--paper <id>]    "<id> <owner/repo>" for each paper ready to publish
 //   node tools/paper-sync.js --stage <id> <dir>       write the companion's files into an empty <dir>
 //   node tools/paper-sync.js --check <id>             stage into a scratch folder and report problems
+//   node tools/paper-sync.js --companion <id>         the paper's companion repository, owner/name
 //   node tools/paper-sync.js --self-test              the checks against planted mistakes (npm test)
 //
 // The companion holds papers/<id>/ without notes/ and submission/, which are working files that stay
@@ -189,13 +190,18 @@ function main() {
       if (bad.length) { bad.forEach(m => console.error('  ' + m)); throw new Error(id + ' cannot go public until these are fixed'); }
       console.log('Staged ' + id + ' in ' + dir); return;
     }
+    if (argv.includes('--companion')) {
+      const p = registry(root).papers.find(q => q.id === at('--companion'));
+      if (!p || !p.companion || !/^[A-Za-z0-9-]+\/[A-Za-z0-9._-]+$/.test(p.companion)) throw new Error('no companion repository for ' + at('--companion') + ' in papers/papers.json');
+      console.log(p.companion); return;
+    }
     if (argv.includes('--check')) {
       const bad = check(root, at('--check'));
       bad.forEach(m => console.log('  ' + m));
       console.log(bad.length ? at('--check') + ': ' + bad.length + ' problem(s) before it can go public' : at('--check') + ': ready to publish as its own repository');
       process.exit(bad.length ? 1 : 0);
     }
-    console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 15).map(s => s.replace(/^\/\/ ?/, '')).join('\n'));
+    console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 16).map(s => s.replace(/^\/\/ ?/, '')).join('\n'));
   } catch (e) { console.error('paper-sync: ' + e.message); process.exit(2); }
 }
 

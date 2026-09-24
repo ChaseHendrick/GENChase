@@ -680,7 +680,9 @@ void main(){
   // legacyFill gives it back to any recipe written before that version. Reprinting a seed years
   // later is the product; a default is allowed to move, a finished plate is not.
   // v3 (2026-09-24): Ising's Metropolis random numbers are keyed by the seed; older recipes keep the shared stream.
-  const RECIPE_V = 3;
+  // v4 (2026-09-24): the lozenge tab calls a rhombus frozen when it is joined to the rim by rhombi of its own
+  // orientation; older recipes keep the local radius-3 test they were made with.
+  const RECIPE_V = 4;
   // Public compatibility versions, independent of each technique's scientific status.
   Object.defineProperties(S, {
     apiVersion: { value: 1, enumerable: true },

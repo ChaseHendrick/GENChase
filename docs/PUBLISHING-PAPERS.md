@@ -69,10 +69,10 @@ The identities note is the exception: it goes to Zenodo as a record of its own a
    `papers.json` (for example `minimal-winding`), with no README, license or .gitignore.
 2. `node tools/paper-sync.js --check <id>` must say the paper is ready to publish. Then set its
    status to `ready` in `papers.json` and merge. The **publish papers** workflow pushes the folder to
-   the companion and locks it: issues, wiki, projects and discussions off; interactions limited to
-   collaborators; rulesets that forbid deleting or rewriting the main branch and deleting or moving
-   tags. A monthly run renews the lock, and every run overwrites the companion with this repository's
-   copy, so this folder stays the only place you edit.
+   the companion and locks it against everyone but you: issues, wiki, projects and discussions off;
+   interactions limited to collaborators; rulesets that forbid deleting or force-pushing the main
+   branch and deleting or moving tags. A monthly run renews the lock. You can still edit the
+   companion yourself (below).
 3. On Zenodo's GitHub page, switch the companion **on**.
 4. Actions, **publish papers**, Run workflow, with the paper id and a release tag such as `v1.0.0`.
    Zenodo archives the release within minutes and shows two DOIs. Cite the **version DOI**, because
@@ -81,6 +81,31 @@ The identities note is the exception: it goes to Zenodo as a record of its own a
    source, rebuild with `sh tools/paper-build.sh <id>`, set `codeDoi` in `papers.json`, and merge;
    the workflow updates the companion. Make a `v1.0.1` release if you want the archived copy to carry
    the DOI in its own PDF too.
+
+### Editing a paper after it is public
+
+Edit it in either place.
+
+- **Here** (best for anything that changes the PDF): edit `papers/<id>/`, rebuild with
+  `sh tools/paper-build.sh <id>`, run `node tools/paper-check.js --paper <id>`, and merge. The workflow
+  publishes the change.
+- **In the companion**, on GitHub or with git (quick fixes, such as a README correction): commit to its
+  main branch as usual. The workflow never overwrites your edits. It keeps what this repository
+  published on a separate branch, `genchase-sync`, and merges that into main, so an edit there and an
+  update from here combine like any git merge. If both change the same lines, the run stops, pushes
+  nothing and names the files.
+- **Keep the two in step:** after editing the companion, run `sh tools/paper-pull.sh <id>` here. It
+  copies the companion's files into `papers/<id>/` (never `notes/` or `submission/`, and not the
+  generated LICENSE, CITATION.cff and .zenodo.json), lists any file you deleted there, and leaves the
+  result for you to review and merge. Do the same when the workflow reports a conflict: keep the
+  version you want in `papers/<id>/`, merge, and the next run publishes it.
+- **A new version of record:** a change to a paper already on arXiv is a replacement there (v2, v1
+  stays visible), and a new release of the companion (for example `v1.1.0`) gives Zenodo a new
+  version DOI. The concept DOI always resolves to the newest.
+
+`node tools/paper-publish-check.js` (part of `npm test`) runs both scripts end to end against local
+repositories: the first publish, a direct edit that survives an update, a conflict that pushes
+nothing, and the pull back.
 
 ## 2. arXiv
 

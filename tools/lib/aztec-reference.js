@@ -157,6 +157,32 @@ function polarBoundary(list, n) {
   return { flags, byType, fraction: f, se4: sd / 2 };
 }
 
+// The status line's error bar, recomputed from the definition in validation/AZTEC.md without the module's code:
+// every cell of the diamond outside the polar regions is placed at the angle of its center about the center of
+// the diamond and shared between the two nearest of 60 sector centers in proportion to its angular distance;
+// the error bar is sd sqrt(60 tau) over the number of cells, with tau = 1 + 2 sum of the circular
+// autocorrelations up to the first that is not positive (at most lag 15), then held between 2 and 15.
+function sectorBar(list, flags, n) {
+  const w = 2 * n, owner = new Int32Array(w * w).fill(-1), NB = 60, bins = new Array(NB).fill(0);
+  list.forEach(([x, y, , hz], k) => { owner[y * w + x] = k; owner[(hz ? y : y + 1) * w + (hz ? x + 1 : x)] = k; });
+  const all = cells(n);
+  for (const c of all) {
+    const i = c % w, j = (c - i) / w;
+    if (flags[owner[c]]) continue;
+    const ang = (Math.atan2(j + 0.5 - n, i + 0.5 - n) + 2 * Math.PI) % (2 * Math.PI);
+    const pos = ang / (2 * Math.PI / NB) - 0.5, lo = Math.floor(pos), t = pos - lo;
+    bins[(lo + NB) % NB] += 1 - t; bins[(lo + 1 + NB) % NB] += t;
+  }
+  const m = bins.reduce((a, b) => a + b, 0) / NB, dev = bins.map(b => b - m);
+  const gamma = l => dev.reduce((acc, d, k) => acc + d * dev[(k + l) % NB], 0) / NB;
+  const g0 = gamma(0);
+  let tau = 1;
+  for (let l = 1; l <= NB / 4; l++) { const r = gamma(l) / g0; if (!(r > 0)) break; tau += 2 * r; }
+  tau = Math.min(NB / 4, Math.max(2, tau));
+  const sd = Math.sqrt(g0 * NB / (NB - 1));
+  return { bins, tau, se: sd * Math.sqrt(NB * tau) / all.length };
+}
+
 // Print geometry written from the documented layout: a square of side min(W, H)(1 - 2 margin) centered
 // on the sheet, 2n cells across, each domino a rectangle inset by inset * cell on every side. Colors
 // by fill mode from the palette with the offset; frozen flags come from localFrozen.
@@ -170,4 +196,4 @@ function geometry(s, list, frozen, n, W, H) {
   return { rects, stroke, circle, cell };
 }
 
-module.exports = { inDiamond, cells, enumerate, keyOf, inspect, localFrozen, polar, polarBoundary, geometry };
+module.exports = { inDiamond, cells, enumerate, keyOf, inspect, localFrozen, polar, polarBoundary, sectorBar, geometry };

@@ -1,8 +1,8 @@
 {
   "date": "2026-09-24",
   "tool": "tools/aztec-science.js",
-  "sourceSha256": "f71c42ea92eef62abe321d79eda9e0b05d56316fa1a088f73adf688ced95ae56",
-  "engineSha256": "99cc63fff9a1f75e68abce1e66e07bfd72dc5e1c25ff057218fe6c8a65dfaa63",
+  "sourceSha256": "38ffddc95db3b644c9d21cf1c727658e692f0c214bc35ab5fb64bf54ecb6da01",
+  "engineSha256": "ab2b5e7b2547701f593054b32f19c75a40c1cc066e48dd2f7105d316d60b4294",
   "scope": "Domino shuffling as implemented in src/modules/aztec.js (build, shuffle, dominoes, the polar regions) run from the unmodified source. Exhaustive enumeration and sampled frequencies at orders 1 to 5; polar-region area, axis radius and the tab's frozen fraction over independent seeds at seven orders from 40 to 320; five complete rendered recipes with every SVG rectangle, every PNG byte and the shell's vector RIP checked.",
   "references": {
     "count": "N. Elkies, G. Kuperberg, M. Larsen and J. Propp, J. Algebraic Combin. 1, 111 and 219 (1992): 2^{n(n+1)/2} tilings; domino shuffling samples them uniformly.",
@@ -61,7 +61,7 @@
             "count": 1993
           }
         ],
-        "ms": 205
+        "ms": 124
       },
       {
         "order": 2,
@@ -177,7 +177,7 @@
             "count": 2015
           }
         ],
-        "ms": 171
+        "ms": 191
       },
       {
         "order": 3,
@@ -449,7 +449,7 @@
             "count": 1567
           }
         ],
-        "ms": 301
+        "ms": 344
       },
       {
         "order": 4,
@@ -475,7 +475,7 @@
         "passes": true,
         "minCount": 21,
         "maxCount": 61,
-        "ms": 1325
+        "ms": 1236
       },
       {
         "order": 5,
@@ -501,7 +501,7 @@
         "passes": true,
         "minCount": 4,
         "maxCount": 39,
-        "ms": 32291
+        "ms": 30476
       }
     ],
     "interpretation": "Seeds are distinct recipe strings through U.makeRng; the probability statements assume those streams behave as independent uniform draws, which a fixed PRNG regression does not prove."
@@ -558,7 +558,7 @@
               "count": 1229
             }
           ],
-          "ms": 207
+          "ms": 79
         },
         {
           "order": 2,
@@ -674,7 +674,7 @@
               "count": 768
             }
           ],
-          "ms": 264
+          "ms": 167
         },
         {
           "order": 3,
@@ -946,7 +946,7 @@
               "count": 335
             }
           ],
-          "ms": 435
+          "ms": 312
         },
         {
           "order": 4,
@@ -972,7 +972,7 @@
           "passes": false,
           "minCount": 0,
           "maxCount": 1144,
-          "ms": 2636
+          "ms": 1257
         }
       ],
       "caught": true
@@ -1251,7 +1251,7 @@
               "count": 1567
             }
           ],
-          "ms": 920
+          "ms": 479
         },
         {
           "order": 4,
@@ -1278,7 +1278,7 @@
           "passes": false,
           "minCount": 0,
           "maxCount": 60,
-          "ms": 2020
+          "ms": 1914
         }
       ],
       "caught": true
@@ -1387,8 +1387,23 @@
         "printedMismatches": 0,
         "errorBarCalibration": {
           "scatter": 0.018663687842360985,
-          "rmsBar": 0.027545198826399525,
-          "ratio": 0.6775659148436992
+          "rmsBar": 0.020871177754342177,
+          "ratio": 0.8942326140880128,
+          "ratio95": [
+            0.8362615414180561,
+            0.960905751157224
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 4.661150993442423
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.2801715098431193,
+          "correlationOpposite": 0.09174391149517439,
+          "spreadBarRatio": 0.6775659148436992,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
         },
         "northSouthMinusEastWest": {
           "mean": 0.0004062499999999998,
@@ -1398,7 +1413,7 @@
           "min": -0.125,
           "max": 0.125
         },
-        "ms": 2172
+        "ms": 1695
       },
       {
         "order": 57,
@@ -1409,8 +1424,23 @@
         "printedMismatches": 0,
         "errorBarCalibration": {
           "scatter": 0.014080369221719723,
-          "rmsBar": 0.019819393780598635,
-          "ratio": 0.7104339001278187
+          "rmsBar": 0.01593742316688552,
+          "ratio": 0.8834784064073578,
+          "ratio95": [
+            0.8262045046358242,
+            0.9493497199337156
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 4.461512168499606
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.23736581865033116,
+          "correlationOpposite": 0.050306153203946845,
+          "spreadBarRatio": 0.7104339001278187,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
         },
         "northSouthMinusEastWest": {
           "mean": -0.0007456140350877202,
@@ -1420,7 +1450,7 @@
           "min": -0.10526315789473684,
           "max": 0.10526315789473684
         },
-        "ms": 4318
+        "ms": 3417
       },
       {
         "order": 80,
@@ -1431,8 +1461,23 @@
         "printedMismatches": 0,
         "errorBarCalibration": {
           "scatter": 0.01145907315241668,
-          "rmsBar": 0.01498515063307713,
-          "ratio": 0.7646952261609408
+          "rmsBar": 0.012798699206753831,
+          "ratio": 0.895331077580897,
+          "ratio95": [
+            0.8372887940134981,
+            0.9620861150481398
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 4.39077852074663
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.2267958315897756,
+          "correlationOpposite": 0.10551937031646234,
+          "spreadBarRatio": 0.7646952261609408,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
         },
         "northSouthMinusEastWest": {
           "mean": 0.000859374999999999,
@@ -1442,95 +1487,155 @@
           "min": -0.0625,
           "max": 0.075
         },
-        "ms": 8890
+        "ms": 7537
       },
       {
         "order": 113,
-        "seeds": 300,
+        "seeds": 400,
         "seedPattern": "'aztec-arctic-n113-<i>'",
         "cornerTypeMismatches": 0,
         "frozenDefinitionMismatches": 0,
         "printedMismatches": 0,
         "errorBarCalibration": {
-          "scatter": 0.007967662518779756,
-          "rmsBar": 0.011542222920459689,
-          "ratio": 0.6903057213230838
+          "scatter": 0.008525920019894648,
+          "rmsBar": 0.010231422291164307,
+          "ratio": 0.833307410960595,
+          "ratio95": [
+            0.7792859810595205,
+            0.8954380225670925
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 4.388481704593361
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.2267646975680242,
+          "correlationOpposite": 0.07317762690907471,
+          "spreadBarRatio": 0.7412341531771524,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
         },
         "northSouthMinusEastWest": {
-          "mean": 0.0010324483775811216,
-          "sd": 0.02369681142860526,
-          "se": 0.0013681360457241047,
-          "n": 300,
-          "min": -0.06637168141592921,
+          "mean": 0.0012721238938053106,
+          "sd": 0.023401085005509466,
+          "se": 0.0011700542502754733,
+          "n": 400,
+          "min": -0.07079646017699115,
           "max": 0.0752212389380531
         },
-        "ms": 14338
+        "ms": 17610
       },
       {
         "order": 160,
-        "seeds": 200,
+        "seeds": 300,
         "seedPattern": "'aztec-arctic-n160-<i>'",
         "cornerTypeMismatches": 0,
         "frozenDefinitionMismatches": 0,
         "printedMismatches": 0,
         "errorBarCalibration": {
-          "scatter": 0.006911959879168816,
-          "rmsBar": 0.00811993820702826,
-          "ratio": 0.851233063964222
+          "scatter": 0.006857716452817,
+          "rmsBar": 0.007539562197009874,
+          "ratio": 0.9095642788830247,
+          "ratio95": [
+            0.8421399643874292,
+            0.9888153766033011
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 4.00978348037524
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.15139546228636283,
+          "correlationOpposite": 0.11603342691923159,
+          "spreadBarRatio": 0.874330208384816,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
         },
         "northSouthMinusEastWest": {
-          "mean": 0.002203124999999999,
-          "sd": 0.018477918870595696,
-          "se": 0.0013065861735613088,
-          "n": 200,
+          "mean": 0.0021979166666666657,
+          "sd": 0.018132419650568877,
+          "se": 0.0010468757366315202,
+          "n": 300,
           "min": -0.05,
           "max": 0.04375
         },
-        "ms": 25029
+        "ms": 33181
       },
       {
         "order": 226,
-        "seeds": 150,
+        "seeds": 250,
         "seedPattern": "'aztec-arctic-n226-<i>'",
         "cornerTypeMismatches": 0,
         "frozenDefinitionMismatches": 0,
         "printedMismatches": 0,
         "errorBarCalibration": {
-          "scatter": 0.005865414232027859,
-          "rmsBar": 0.005984827441694867,
-          "ratio": 0.9800473429133336
+          "scatter": 0.005349848784130087,
+          "rmsBar": 0.0060168647019401495,
+          "ratio": 0.8891422774397799,
+          "ratio95": [
+            0.8174363704636282,
+            0.9747453131586662
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 3.9541163329102673
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.1050531664491712,
+          "correlationOpposite": 0.0317116165055382,
+          "spreadBarRatio": 0.8814479159159456,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
         },
         "northSouthMinusEastWest": {
-          "mean": -0.00033923303834808245,
-          "sd": 0.013577095809270657,
-          "se": 0.0011085652307197648,
-          "n": 150,
+          "mean": -0.00011504424778761045,
+          "sd": 0.01320032738594589,
+          "se": 0.0008348620079897109,
+          "n": 250,
           "min": -0.033185840707964605,
           "max": 0.03761061946902655
         },
-        "ms": 42761
+        "ms": 68055
       },
       {
         "order": 320,
-        "seeds": 100,
+        "seeds": 200,
         "seedPattern": "'aztec-arctic-n320-<i>'",
         "cornerTypeMismatches": 0,
         "frozenDefinitionMismatches": 0,
         "printedMismatches": 0,
         "errorBarCalibration": {
-          "scatter": 0.0035226463021089047,
-          "rmsBar": 0.004637395256798204,
-          "ratio": 0.7596174376003146
+          "scatter": 0.004231105402763724,
+          "rmsBar": 0.004835175531635778,
+          "ratio": 0.8750675906345654,
+          "ratio95": [
+            0.7968911411924192,
+            0.9703842593000875
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 3.938564741333017
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.06245128874503935,
+          "correlationOpposite": -0.05410410930531146,
+          "spreadBarRatio": 0.8800665323538481,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
         },
         "northSouthMinusEastWest": {
-          "mean": -0.00043749999999999985,
-          "sd": 0.011743355901456911,
-          "se": 0.001174335590145691,
-          "n": 100,
-          "min": -0.0296875,
-          "max": 0.0265625
+          "mean": -0.00036718750000000016,
+          "sd": 0.011960295918197346,
+          "se": 0.0008457206348755127,
+          "n": 200,
+          "min": -0.0359375,
+          "max": 0.0296875
         },
-        "ms": 67207
+        "ms": 130847
       }
     ],
     "polarFraction": {
@@ -1567,43 +1672,43 @@
         },
         {
           "order": 113,
-          "seeds": 300,
-          "mean": 0.272717228173679,
-          "sd": 0.007967662518779756,
-          "se": 0.00046001321000295833,
-          "deviation": 0.05811539157112727,
-          "deviationTimesN23": 1.3583451319690332,
-          "sigmaFromExact": 126.33417977443199
+          "seeds": 400,
+          "mean": 0.27293976090669164,
+          "sd": 0.008525920019894648,
+          "se": 0.0004262960009947324,
+          "deviation": 0.05833792430413992,
+          "deviationTimesN23": 1.363546443470506,
+          "sigmaFromExact": 136.84839681351076
         },
         {
           "order": 160,
-          "seeds": 200,
-          "mean": 0.2621764363354038,
-          "sd": 0.006911959879168816,
-          "se": 0.0004887493701849619,
-          "deviation": 0.04757459973285205,
-          "deviationTimesN23": 1.4021305916082836,
-          "sigmaFromExact": 97.33945992574468
+          "seeds": 300,
+          "mean": 0.26196726190476183,
+          "sd": 0.006857716452817,
+          "se": 0.00039593044400600206,
+          "deviation": 0.04736542530221011,
+          "deviationTimesN23": 1.3959657500787228,
+          "sigmaFromExact": 119.63067255695063
         },
         {
           "order": 226,
-          "seeds": 150,
-          "mean": 0.2516958403181162,
-          "sd": 0.005865414232027859,
-          "se": 0.0004789090666175571,
-          "deviation": 0.03709400371556448,
-          "deviationTimesN23": 1.3762880443576777,
-          "sigmaFromExact": 77.4552129020073
+          "seeds": 250,
+          "mean": 0.25184959650695854,
+          "sd": 0.005349848784130087,
+          "se": 0.0003383541459066708,
+          "deviation": 0.03724775990440682,
+          "deviationTimesN23": 1.3819928155673953,
+          "sigmaFromExact": 110.08512930910258
         },
         {
           "order": 320,
-          "seeds": 100,
-          "mean": 0.24477910825545166,
-          "sd": 0.0035226463021089047,
-          "se": 0.00035226463021089045,
-          "deviation": 0.030177271652899934,
-          "deviationTimesN23": 1.4118220416631628,
-          "sigmaFromExact": 85.66648214109289
+          "seeds": 200,
+          "mean": 0.2443322624610592,
+          "sd": 0.004231105402763724,
+          "se": 0.00029918433222092674,
+          "deviation": 0.029730425858507492,
+          "deviationTimesN23": 1.3909166811983737,
+          "sigmaFromExact": 99.37160023658474
         }
       ],
       "exact": 0.21460183660255172,
@@ -1618,17 +1723,17 @@
           226,
           320
         ],
-        "limit": 0.21412228977844203,
-        "limitSe": 0.0014351176477660746,
+        "limit": 0.2126549752968936,
+        "limitSe": 0.001291046506838285,
         "coefficients": [
-          0.21412228977844203,
-          1.5475183673863875,
-          -0.8145414218867078
+          0.2126549752968936,
+          1.6367436873421781,
+          -1.0681796387887705
         ],
-        "chiSquare": 5.087552835048425,
+        "chiSquare": 3.113434159956913,
         "dof": 4,
-        "fitPValue": 0.27843142649220476,
-        "sigmaFromExact": -0.3341515762531136,
+        "fitPValue": 0.5390251573266511,
+        "sigmaFromExact": -1.5079714753467,
         "bootstrapReplicates": 1000
       },
       "two": {
@@ -1639,16 +1744,16 @@
           226,
           320
         ],
-        "limit": 0.2165634796776752,
-        "limitSe": 0.0007846048533140337,
+        "limit": 0.21557429807939435,
+        "limitSe": 0.0007030332992110338,
         "coefficients": [
-          0.2165634796776752,
-          1.3200103866229471
+          0.21557429807939435,
+          1.3494900191813397
         ],
-        "chiSquare": 4.1986206525559675,
+        "chiSquare": 3.2542894620424225,
         "dof": 2,
-        "fitPValue": 0.12254091236352674,
-        "sigmaFromExact": 2.5001668888967976,
+        "fitPValue": 0.19648980518651404,
+        "sigmaFromExact": 1.3832367228322695,
         "bootstrapReplicates": 1000
       }
     },
@@ -1686,43 +1791,43 @@
         },
         {
           "order": 113,
-          "seeds": 300,
-          "mean": 0.6769026548672589,
-          "sd": 0.009817302401806378,
-          "se": 0.0005668022184398873,
-          "deviation": -0.030204126319288704,
-          "deviationTimesN23": -0.7059683646968112,
-          "sigmaFromExact": -53.288652261145
+          "seeds": 400,
+          "mean": 0.6765542035398251,
+          "sd": 0.010267331114046983,
+          "se": 0.0005133665557023492,
+          "deviation": -0.03055257764672248,
+          "deviationTimesN23": -0.7141128020231694,
+          "sigmaFromExact": -59.514156711908825
         },
         {
           "order": 160,
-          "seeds": 200,
-          "mean": 0.6810078125000004,
-          "sd": 0.008574058784572227,
-          "se": 0.000606277510886311,
-          "deviation": -0.026098968686547153,
-          "deviationTimesN23": -0.7691953817861505,
-          "sigmaFromExact": -43.047891795282546
+          "seeds": 300,
+          "mean": 0.6808281250000002,
+          "sd": 0.008197121897647448,
+          "se": 0.0004732610534186929,
+          "deviation": -0.026278656186547344,
+          "deviationTimesN23": -0.7744911770654517,
+          "sigmaFromExact": -55.52676687996694
         },
         {
           "order": 226,
-          "seeds": 150,
-          "mean": 0.6863790560471976,
-          "sd": 0.006870319241526407,
-          "se": 0.000560959217058828,
-          "deviation": -0.02072772513934995,
-          "deviationTimesN23": -0.7690547646127904,
-          "sigmaFromExact": -36.950502833392655
+          "seeds": 250,
+          "mean": 0.6865619469026552,
+          "sd": 0.006482362898397126,
+          "se": 0.00040998062757411155,
+          "deviation": -0.02054483428389242,
+          "deviationTimesN23": -0.7622690183310288,
+          "sigmaFromExact": -50.1117196816295
         },
         {
           "order": 320,
-          "seeds": 100,
-          "mean": 0.6904218750000001,
-          "sd": 0.005127954579170467,
-          "se": 0.0005127954579170468,
-          "deviation": -0.0166849061865475,
-          "deviationTimesN23": -0.7805913863981193,
-          "sigmaFromExact": -32.53715673364361
+          "seeds": 200,
+          "mean": 0.69067578125,
+          "sd": 0.005309148955576443,
+          "se": 0.0003754135228817579,
+          "deviation": -0.01643099993654762,
+          "deviationTimesN23": -0.7687125643366352,
+          "sigmaFromExact": -43.76773593668017
         }
       ],
       "exact": 0.7071067811865476,
@@ -1737,17 +1842,17 @@
           226,
           320
         ],
-        "limit": 0.7083927756218265,
-        "limitSe": 0.0018967052735536177,
+        "limit": 0.7097344340484872,
+        "limitSe": 0.001581003558194947,
         "coefficients": [
-          0.7083927756218265,
-          -1.0416317601854415,
-          1.3721932188572392
+          0.7097344340484872,
+          -1.1330257053794262,
+          1.6402648904955532
         ],
-        "chiSquare": 6.51372294461617,
+        "chiSquare": 6.7866325602239,
         "dof": 4,
-        "fitPValue": 0.16392777784528845,
-        "sigmaFromExact": 0.678014899420549,
+        "fitPValue": 0.14760257497666207,
+        "sigmaFromExact": 1.662015779989574,
         "bootstrapReplicates": 1000
       },
       "two": {
@@ -1758,16 +1863,16 @@
           226,
           320
         ],
-        "limit": 0.7037346482727506,
-        "limitSe": 0.0010965698089296107,
+        "limit": 0.7049190753752939,
+        "limitSe": 0.0008407888399290621,
         "coefficients": [
-          0.7037346482727506,
-          -0.6399548258502713
+          0.7049190753752939,
+          -0.6798268779669709
         ],
-        "chiSquare": 4.272274549326023,
+        "chiSquare": 7.250361507332982,
         "dof": 2,
-        "fitPValue": 0.11811019023938331,
-        "sigmaFromExact": -3.075164833407764,
+        "fitPValue": 0.026644280849615197,
+        "sigmaFromExact": -2.601968184352082,
         "bootstrapReplicates": 1000
       }
     },
@@ -1805,43 +1910,43 @@
         },
         {
           "order": 113,
-          "seeds": 300,
-          "mean": 0.272717228173679,
-          "sd": 0.007967662518779756,
-          "se": 0.00046001321000295833,
-          "deviation": 0.05811539157112727,
-          "deviationTimesN23": 1.3583451319690332,
-          "sigmaFromExact": 126.33417977443199
+          "seeds": 400,
+          "mean": 0.27293976090669164,
+          "sd": 0.008525920019894648,
+          "se": 0.0004262960009947324,
+          "deviation": 0.05833792430413992,
+          "deviationTimesN23": 1.363546443470506,
+          "sigmaFromExact": 136.84839681351076
         },
         {
           "order": 160,
-          "seeds": 200,
-          "mean": 0.2621764363354038,
-          "sd": 0.006911959879168816,
-          "se": 0.0004887493701849619,
-          "deviation": 0.04757459973285205,
-          "deviationTimesN23": 1.4021305916082836,
-          "sigmaFromExact": 97.33945992574468
+          "seeds": 300,
+          "mean": 0.26196726190476183,
+          "sd": 0.006857716452817,
+          "se": 0.00039593044400600206,
+          "deviation": 0.04736542530221011,
+          "deviationTimesN23": 1.3959657500787228,
+          "sigmaFromExact": 119.63067255695063
         },
         {
           "order": 226,
-          "seeds": 150,
-          "mean": 0.2516958403181162,
-          "sd": 0.005865414232027859,
-          "se": 0.0004789090666175571,
-          "deviation": 0.03709400371556448,
-          "deviationTimesN23": 1.3762880443576777,
-          "sigmaFromExact": 77.4552129020073
+          "seeds": 250,
+          "mean": 0.25184959650695854,
+          "sd": 0.005349848784130087,
+          "se": 0.0003383541459066708,
+          "deviation": 0.03724775990440682,
+          "deviationTimesN23": 1.3819928155673953,
+          "sigmaFromExact": 110.08512930910258
         },
         {
           "order": 320,
-          "seeds": 100,
-          "mean": 0.24477910825545166,
-          "sd": 0.0035226463021089047,
-          "se": 0.00035226463021089045,
-          "deviation": 0.030177271652899934,
-          "deviationTimesN23": 1.4118220416631628,
-          "sigmaFromExact": 85.66648214109289
+          "seeds": 200,
+          "mean": 0.2443322624610592,
+          "sd": 0.004231105402763724,
+          "se": 0.00029918433222092674,
+          "deviation": 0.029730425858507492,
+          "deviationTimesN23": 1.3909166811983737,
+          "sigmaFromExact": 99.37160023658474
         }
       ],
       "exact": 0.21460183660255172,
@@ -1856,17 +1961,17 @@
           226,
           320
         ],
-        "limit": 0.21412228977844203,
-        "limitSe": 0.0014294540237418624,
+        "limit": 0.2126549752968936,
+        "limitSe": 0.0013354315228456192,
         "coefficients": [
-          0.21412228977844203,
-          1.5475183673863875,
-          -0.8145414218867078
+          0.2126549752968936,
+          1.6367436873421781,
+          -1.0681796387887705
         ],
-        "chiSquare": 5.087552835048425,
+        "chiSquare": 3.113434159956913,
         "dof": 4,
-        "fitPValue": 0.27843142649220476,
-        "sigmaFromExact": -0.33547551452854096,
+        "fitPValue": 0.5390251573266511,
+        "sigmaFromExact": -1.457851842159335,
         "bootstrapReplicates": 1000
       },
       "two": {
@@ -1877,16 +1982,16 @@
           226,
           320
         ],
-        "limit": 0.2165634796776752,
-        "limitSe": 0.0007924676537867779,
+        "limit": 0.21557429807939435,
+        "limitSe": 0.0007006631890012641,
         "coefficients": [
-          0.2165634796776752,
-          1.3200103866229471
+          0.21557429807939435,
+          1.3494900191813397
         ],
-        "chiSquare": 4.1986206525559675,
+        "chiSquare": 3.2542894620424225,
         "dof": 2,
-        "fitPValue": 0.12254091236352674,
-        "sigmaFromExact": 2.475360433640207,
+        "fitPValue": 0.19648980518651404,
+        "sigmaFromExact": 1.3879157519731984,
         "bootstrapReplicates": 1000
       }
     },
@@ -1904,15 +2009,15 @@
         1.725463052157565,
         1.9416116732560893,
         2.254014449898419,
-        2.4705771377421137,
-        2.689060987589324,
-        3.0419200194813967,
-        3.6052080734023186
+        2.45315094549918,
+        2.6546550477452837,
+        3.0018903013811307,
+        3.6266678713725944
       ],
-      "exponent": 0.3391367384276018,
-      "exponentSe": 0.01332298269948601,
+      "exponent": 0.33691963699819627,
+      "exponentSe": 0.010694147250976335,
       "reference": 0.3333333333333333,
-      "sigmaFromReference": 0.43559353225703407,
+      "sigmaFromReference": 0.33535199962161916,
       "bootstrapReplicates": 1000
     }
   },
@@ -1924,7 +2029,7 @@
     "frozenFlagsMatchDefinitionOnEveryPlate": true,
     "printedValueAndBarMatch": true,
     "tabPolarLimitWithin3Sigma": true,
-    "printedBarCalibrated": false,
+    "printedBarCalibrated": true,
     "cornerTypesAsExpected": true,
     "polarLimitWithin3Sigma": true,
     "axisLimitWithin3Sigma": true,
@@ -1954,7 +2059,7 @@
             "#FAF3E3"
           ],
           "bg": "#F5E6C8",
-          "v": 3
+          "v": 4
         },
         "order": 8,
         "dominoes": 72,
@@ -2027,7 +2132,7 @@
             "#FFFBF2"
           ],
           "bg": "#F1E8D8",
-          "v": 3
+          "v": 4
         },
         "order": 28,
         "dominoes": 812,
@@ -2100,7 +2205,7 @@
             "#1B2A2A"
           ],
           "bg": "#EFEADF",
-          "v": 3
+          "v": 4
         },
         "order": 60,
         "dominoes": 3660,
@@ -2173,7 +2278,7 @@
             "#FFFBF2"
           ],
           "bg": "#F1E8D8",
-          "v": 3
+          "v": 4
         },
         "order": 120,
         "dominoes": 14520,
@@ -2246,7 +2351,7 @@
             "#E63B2E"
           ],
           "bg": "#E9E7E2",
-          "v": 3
+          "v": 4
         },
         "order": 180,
         "dominoes": 32580,
@@ -2306,7 +2411,7 @@
     "chromium": "141.0.7390.37",
     "platform": "linux",
     "cpus": 4,
-    "seconds": 255
+    "seconds": 336
   },
-  "passed": false
+  "passed": true
 }

@@ -1,8 +1,8 @@
 {
   "date": "2026-09-24",
   "tool": "tools/rmt-science.js",
-  "sourceSha256": "2e101e58cdfe5ba8e27f6642622072abe9fbdcc283009472644935b81ca1e17d",
-  "engineSha256": "99cc63fff9a1f75e68abce1e66e07bfd72dc5e1c25ff057218fe6c8a65dfaa63",
+  "sourceSha256": "1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4",
+  "engineSha256": "d4ab4d63c01bca7c4c8a0e3ec0dafe996b1ed2844f2ad969ed3c20de73322f16",
   "referenceSha256": "2cb24549bb39a095928ec27e9545b88702ebe325e55cc109ed6ab8661664a35e",
   "scope": "Dumitriu-Edelman tridiagonal sampler and QL eigenvalues of src/modules/rmt.js: exact second and fourth spectral moments, semicircle convergence, Gaudin-Mehta spacing law and the printed spacing spread at beta 1 and 2, exact Ornstein-Uhlenbeck Dyson statistics, and five complete studio prints. Finite samples from the seeded generator.",
   "normalization": "The tab samples diagonal N(0,2) and subdiagonal chi_{beta(n-i)} without the 1/sqrt(2) of Dumitriu and Edelman, so its eigenvalue density is proportional to prod|l_i - l_j|^beta exp(-sum l^2 / 4) and the spectrum edge is 2 sqrt(beta n). The displayed equation writes exp(-sum l^2 / 2).",
@@ -1573,11 +1573,11 @@
         "maxChannelError": 0,
         "meanChannelError": 0,
         "channelsChecked": 23040000,
-        "displacedPrintFailureChannels": 3119962,
+        "displacedPrintFailureChannels": 3116362,
         "vectorRip": {
           "maxChannelDifference": 10,
-          "meanChannelDifference": 0.10845099826388889,
-          "fractionOver2Levels": 0.0005966145833333333
+          "meanChannelDifference": 0.10831723090277778,
+          "fractionOver2Levels": 0.0005884982638888888
         }
       },
       "statePreserved": true
@@ -1691,11 +1691,11 @@
         "maxChannelError": 0,
         "meanChannelError": 0,
         "channelsChecked": 18432000,
-        "displacedPrintFailureChannels": 2702636,
+        "displacedPrintFailureChannels": 2697725,
         "vectorRip": {
           "maxChannelDifference": 11,
-          "meanChannelDifference": 0.12759760199652778,
-          "fractionOver2Levels": 0.004157769097222222
+          "meanChannelDifference": 0.12746885850694445,
+          "fractionOver2Levels": 0.004153645833333333
         }
       },
       "statePreserved": true
@@ -1750,11 +1750,11 @@
         "maxChannelError": 0,
         "meanChannelError": 0,
         "channelsChecked": 23040000,
-        "displacedPrintFailureChannels": 2926969,
+        "displacedPrintFailureChannels": 2925587,
         "vectorRip": {
           "maxChannelDifference": 5,
-          "meanChannelDifference": 0.10730746527777778,
-          "fractionOver2Levels": 0.00023563368055555555
+          "meanChannelDifference": 0.10730486111111111,
+          "fractionOver2Levels": 0.0002140625
         }
       },
       "statePreserved": true
@@ -1809,11 +1809,11 @@
         "maxChannelError": 0,
         "meanChannelError": 0,
         "channelsChecked": 15360000,
-        "displacedPrintFailureChannels": 2208503,
+        "displacedPrintFailureChannels": 2189913,
         "vectorRip": {
           "maxChannelDifference": 46,
-          "meanChannelDifference": 0.10892473958333333,
-          "fractionOver2Levels": 0.0030505208333333335
+          "meanChannelDifference": 0.1091173828125,
+          "fractionOver2Levels": 0.0029900390625
         }
       },
       "statePreserved": true
@@ -1826,6 +1826,6 @@
     "arch": "x64",
     "cpus": 4
   },
-  "runtimeSeconds": 257,
+  "runtimeSeconds": 189.9,
   "passed": true
 }

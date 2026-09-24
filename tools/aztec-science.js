@@ -16,8 +16,11 @@
 //    an independent union-find implementation on every plate. Measured: the tab's polar fraction, the
 //    corner-attached variant (the cluster containing each corner domino, computed here), and the boundary
 //    radius along the four axes; each is extrapolated in n with a stated finite-size form and compared
-//    with 1 - pi/4 and 1/sqrt(2). The status line's per-plate error bar (the spread of the four polar
-//    regions) is calibrated against the scatter of the printed fraction over seeds.
+//    with 1 - pi/4 and 1/sqrt(2). The status line's per-plate error bar (the free cells counted in 60
+//    angular sectors, with the standard error of their sum from the integrated autocorrelation time) must
+//    equal an independent recomputation on every plate, and its calibration against the scatter of the
+//    printed fraction over seeds must fall in the band 0.75 to 1.33 at every order. The spread of the four
+//    polar regions, the bar it replaced, and the correlation of the four regions are reported alongside.
 // 4. Failure controls. A coin biased to 0.7 must fail the uniformity test and move the boundary; a
 //    shuffle with the destruction step removed must be rejected by the independent tiling check.
 // 5. Print. Five recipes are built in a temporary copy of dist/studio.html with an auditRead() hook:
@@ -97,7 +100,11 @@ function uniformity(sm, orders, label) {
 
 /* ---------------- 3: the arctic circle ---------------- */
 const ORDERS = [40, 57, 80, 113, 160, 226, 320];
-const SEEDS = { 40: 400, 57: 400, 80: 400, 113: 300, 160: 200, 226: 150, 320: 100 };
+// Raised at the four largest orders (from 300, 200, 150, 100) before the run that calibrates the sector bar, so that
+// the calibration ratio carries a relative error of about 5 per cent or less at every order.
+const SEEDS = { 40: 400, 57: 400, 80: 400, 113: 400, 160: 300, 226: 250, 320: 200 };
+// The calibration band, fixed before any run of the sector bar and unchanged from the review that set it.
+const BAND = [0.75, 1.33];
 const F_EXACT = 1 - Math.PI / 4, R_EXACT = Math.SQRT1_2;
 
 function measurePlate(sm, n, seed) {
@@ -109,10 +116,13 @@ function measurePlate(sm, n, seed) {
   // the status line prints this fraction and its error bar through compare(): "<b>value ± error</b>"
   const m = /polar regions <b>([\d.]+) ± ([\d.]+)<\/b>/.exec(a.status);
   assert(m, 'status line carries no polar fraction with an error bar');
-  const p = R.polar(a.list, r.partner, r.types, n);
-  return { tabFrozen, printed: Number(m[1]), printedSe: Number(m[2]), se4: pb.se4, frozenMatchesDefinition: same,
-    polar: p.fraction, radius: p.radius, cornerType: p.cornerType };
+  const p = R.polar(a.list, r.partner, r.types, n), sb = R.sectorBar(a.list, pb.flags, n);
+  return { tabFrozen, printed: Number(m[1]), printedSe: Number(m[2]), seSector: sb.se, tauSector: sb.tau, se4: pb.se4, q: pb.byType.map(c => 4 * c / a.list.length),
+    frozenMatchesDefinition: same, polar: p.fraction, radius: p.radius, cornerType: p.cornerType };
 }
+
+// chi-square quantile by bisection on the upper tail
+function chiQuantile(p, df) { let lo = 0, hi = df + 20 * Math.sqrt(2 * df) + 50; for (let i = 0; i < 200; i++) { const mid = (lo + hi) / 2; if (1 - S.chiSquareP(mid, df) < p) lo = mid; else hi = mid; } return (lo + hi) / 2; }
 
 // Weighted least squares y = X b with weights 1/se^2; returns b, chi-square and degrees of freedom.
 function wls(X, y, se) {
@@ -181,14 +191,25 @@ function arctic(sm) {
     perOrder[n] = plates.map(p => Object.assign({}, p, { axis: (p.radius.N + p.radius.S + p.radius.E + p.radius.W) / (4 * n) }));
     const wrongCorner = plates.filter(p => p.cornerType.N !== 1 || p.cornerType.S !== 2 || p.cornerType.W !== 3 || p.cornerType.E !== 4).length;
     const definitionMismatch = plates.filter(p => !p.frozenMatchesDefinition).length;
-    const printedMismatch = plates.filter(p => Math.abs(p.printed - p.tabFrozen) > 5e-4 + 1e-12 || Math.abs(p.printedSe - p.se4) > 5e-4 + 1e-12).length;
-    // Calibration of the printed error bar: the scatter of the fraction over seeds against the RMS per-plate bar.
-    const scatter = S.stats.sd(plates.map(p => p.tabFrozen)), rmsBar = Math.sqrt(plates.reduce((a, p) => a + p.se4 * p.se4, 0) / plates.length);
+    // the printed value and bar, to the digits compare() prints them with (the bar to two significant figures)
+    const printedMismatch = plates.filter(p => { const [v, e] = S.stats.formatPair(p.tabFrozen, p.seSector); return p.printed !== Number(v) || p.printedSe !== Number(e); }).length;
+    // Calibration of the printed error bar: the scatter of the fraction over seeds against the RMS per-plate bar,
+    // with a 95 per cent interval from the chi-square distribution of the sample variance.
+    const rms = key => Math.sqrt(plates.reduce((a, p) => a + p[key] * p[key], 0) / plates.length);
+    const scatter = S.stats.sd(plates.map(p => p.tabFrozen)), rmsBar = rms('seSector'), N = plates.length;
+    const ratio95 = [scatter / rmsBar * Math.sqrt((N - 1) / chiQuantile(0.975, N - 1)), scatter / rmsBar * Math.sqrt((N - 1) / chiQuantile(0.025, N - 1))];
+    // The bar this replaced, and why it was wrong: the four regions' covariance over seeds.
+    const cov = (i, j) => { const xi = plates.map(p => p.q[i]), xj = plates.map(p => p.q[j]), mi = S.stats.mean(xi), mj = S.stats.mean(xj); return xi.reduce((acc, v, k) => acc + (v - mi) * (xj[k] - mj), 0) / (N - 1); };
+    const s2 = [0, 1, 2, 3].reduce((acc, i) => acc + cov(i, i), 0) / 4;   // types N, S, W, E; N and S are opposite corners
+    const regions = { correlationAdjacent: (cov(0, 2) + cov(0, 3) + cov(1, 2) + cov(1, 3)) / 4 / s2, correlationOpposite: (cov(0, 1) + cov(2, 3)) / 2 / s2,
+      spreadBarRatio: scatter / rms('se4'), note: 'the spread of the four polar regions, the bar before this review, against the same scatter' };
     const nsew = plates.map(p => (p.radius.N + p.radius.S - p.radius.E - p.radius.W) / (2 * n));
     rows.push({ order: n, seeds: plates.length, seedPattern: "'aztec-arctic-n" + n + "-<i>'", cornerTypeMismatches: wrongCorner, frozenDefinitionMismatches: definitionMismatch,
-      printedMismatches: printedMismatch, errorBarCalibration: { scatter, rmsBar, ratio: scatter / rmsBar }, northSouthMinusEastWest: S.stats.ensemble(nsew), ms: Date.now() - t0 });
+      printedMismatches: printedMismatch, errorBarCalibration: { scatter, rmsBar, ratio: scatter / rmsBar, ratio95, band: BAND, meanTau: S.stats.mean(plates.map(p => p.tauSector)) },
+      fourRegions: regions, northSouthMinusEastWest: S.stats.ensemble(nsew), ms: Date.now() - t0 });
     log('arctic n=' + n + ' seeds ' + plates.length + ' polar ' + S.stats.ensemble(plates.map(p => p.polar)).mean.toFixed(4) + ' tab ' + S.stats.ensemble(plates.map(p => p.tabFrozen)).mean.toFixed(4) +
-      ' axis ' + S.stats.ensemble(perOrder[n].map(p => p.axis)).mean.toFixed(4) + ' bar calibration ' + (scatter / rmsBar).toFixed(2) + ' (' + (Date.now() - t0) + ' ms)');
+      ' axis ' + S.stats.ensemble(perOrder[n].map(p => p.axis)).mean.toFixed(4) + ' bar calibration ' + (scatter / rmsBar).toFixed(3) + ' [' + ratio95.map(x => x.toFixed(2)).join(', ') + '] (spread bar ' + regions.spreadBarRatio.toFixed(3) +
+      ', adjacent correlation ' + regions.correlationAdjacent.toFixed(3) + ') (' + (Date.now() - t0) + ' ms)');
   }
   const rng = S.util.makeRng('aztec-science-bootstrap'), B = 1000;
   return {
@@ -406,7 +427,7 @@ async function main() {
     frozenFlagsMatchDefinitionOnEveryPlate: arc.orders.every(r => r.frozenDefinitionMismatches === 0),
     printedValueAndBarMatch: arc.orders.every(r => r.printedMismatches === 0),
     tabPolarLimitWithin3Sigma: Math.abs(arc.tabFrozenFraction.three.sigmaFromExact) < 3,
-    printedBarCalibrated: arc.orders.every(r => r.errorBarCalibration.ratio > 0.75 && r.errorBarCalibration.ratio < 1.33),
+    printedBarCalibrated: arc.orders.every(r => r.errorBarCalibration.ratio > BAND[0] && r.errorBarCalibration.ratio < BAND[1]),
     cornerTypesAsExpected: arc.orders.every(r => r.cornerTypeMismatches === 0),
     polarLimitWithin3Sigma: Math.abs(arc.polarFraction.three.sigmaFromExact) < 3,
     axisLimitWithin3Sigma: Math.abs(arc.axisRadius.three.sigmaFromExact) < 3,

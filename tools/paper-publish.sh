@@ -8,9 +8,15 @@
 # RELEASE    also publish a release with this tag (v1.0.0 and so on) in PAPER's companion; Zenodo
 #            archives it and gives it a DOI, if Zenodo is switched on for that repository.
 #
-# The lock, renewed on every run: issues, wiki, projects and discussions off; GitHub's interaction
-# limit at collaborators only for six months; rulesets that forbid deleting or rewriting the default
-# branch and deleting or moving tags. Every run overwrites the companion with this repository's copy.
+# Direct edits are kept. The branch genchase-sync holds exactly what this repository published, one
+# commit per change, and each run merges it into the companion's default branch. Edits the owner makes
+# there directly survive every run; if an edit and an update touch the same lines, the run stops,
+# pushes nothing, and names the files. tools/paper-pull.sh brings direct edits back into papers/<id>/.
+#
+# The lock, renewed on every run, keeps everyone but the owner out: issues, wiki, projects and
+# discussions off; GitHub's interaction limit at collaborators only for six months; rulesets that
+# forbid deleting or force-pushing the default branch and deleting or moving tags. The owner can still
+# commit to the default branch, on the web or with git.
 set -eu
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 REMOTE=${PAPERS_REMOTE:-https://github.com}
@@ -49,22 +55,49 @@ JSON
 JSON
 }
 
+SYNC=genchase-sync
+# The project identity for every commit and merge here, whatever the environment or git config says.
+GIT_AUTHOR_NAME=Chaos GIT_COMMITTER_NAME=Chaos
+GIT_AUTHOR_EMAIL=326338179+SharpMeow@users.noreply.github.com GIT_COMMITTER_EMAIL=326338179+SharpMeow@users.noreply.github.com
+export GIT_AUTHOR_NAME GIT_COMMITTER_NAME GIT_AUTHOR_EMAIL GIT_COMMITTER_EMAIL
 while read -r id repo; do
   work=$(mktemp -d)
   node "$ROOT/tools/paper-sync.js" --stage "$id" "$work/stage"
-  git clone -q "$REMOTE/$repo.git" "$work/repo" 2>/dev/null ||
+  git clone -q --no-single-branch "$REMOTE/$repo.git" "$work/repo" 2>/dev/null ||
     { echo "::error::Cannot reach $repo. Create it on GitHub as an empty public repository, and give the token access to it."; exit 1; }
   cd "$work/repo"
-  branch=$(git symbolic-ref --short -q HEAD || echo main)
-  git rev-parse -q --verify HEAD >/dev/null || git checkout -q -b "$branch"
+  if git rev-parse -q --verify HEAD >/dev/null; then branch=$(git symbolic-ref --short HEAD); else branch=main; fi
+  had_sync=$(git rev-parse -q --verify "refs/remotes/origin/$SYNC" || echo none)
+  had_main=$(git rev-parse -q --verify "refs/remotes/origin/$branch" || echo none)
+
+  # 1. genchase-sync: exactly what this repository publishes now.
+  if [ "$had_sync" != none ]; then git checkout -q -B "$SYNC" "origin/$SYNC"; else git checkout -q --orphan "$SYNC"; fi
   find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
   cp -R "$work/stage/." .
   git add -A
-  if git diff --cached --quiet; then
+  if [ "$had_sync" = none ] || ! git diff --cached --quiet; then
+    git commit -q -m "Update the paper, its programs and their output from GENChase"
+  fi
+
+  # 2. Merge it into the default branch, keeping any edits made there directly.
+  if [ "$had_main" != none ]; then
+    git checkout -q -B "$branch" "origin/$branch"
+    if ! git merge -q --no-edit --allow-unrelated-histories -m "Merge the update from GENChase" "$SYNC" >"$work/merge.log" 2>&1; then
+      conflicts=$(git diff --name-only --diff-filter=U | tr '\n' ' ')
+      git merge --abort 2>/dev/null || true
+      echo "::error::$repo was edited directly in the same place as this update (${conflicts:-see the log below}). Nothing was pushed. Run sh tools/paper-pull.sh $id, keep the version you want in papers/$id, merge that, and the next run publishes it."
+      cat "$work/merge.log"
+      exit 1
+    fi
+  else
+    git checkout -q -B "$branch" "$SYNC"
+  fi
+
+  if [ "$(git rev-parse "$branch")" = "$had_main" ] && [ "$(git rev-parse "$SYNC")" = "$had_sync" ]; then
     echo "$repo is already up to date."
   else
-    git -c user.name=Chaos -c user.email=326338179+SharpMeow@users.noreply.github.com commit -q -m "Update the paper, its programs and their output"
-    git push -q origin "HEAD:$branch"
+    git push -q origin "$branch"
+    git push -q origin "$SYNC"
     echo "Published $id to $repo."
   fi
   if [ "$REMOTE" = https://github.com ]; then

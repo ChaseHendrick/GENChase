@@ -227,5 +227,11 @@ sample, an eigenvalue or a mark, and `tools/rmt-science.js --write` was rerun on
   surmise is shown as a note, the 2x2 approximation it is.
 - The Dyson SVG polylines carry `stroke-linecap="round"`, as the canvas strokes do.
 
-Still open: the color ramp applies the palette shift modulo 1, so a level at exactly t = 1 takes the first
-stop; the beta = 4 spacing law; and a global unfolding without the n = 150 scale bias.
+- The color ramp no longer wraps its top to its bottom colour. The palette offset was applied to t modulo 1,
+  so at offset 0 the top level and the last row took the lowest colour; it now turns the 256-entry ramp by
+  16 entries per step, wrapping in index space. At offset 0 every other level keeps its colour exactly; a
+  nonzero offset leaves the two ends of the data range on neighbouring colours. The print check's own
+  colour rule follows the fix, and the old rule, put back in the module, fails it ("Wrong tick ink at 280").
+  No mark moves, and the spectra, spacing and print results are unchanged.
+
+Still open: the beta = 4 spacing law, and a global unfolding without the n = 150 scale bias.
