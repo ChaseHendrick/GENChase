@@ -54,8 +54,13 @@ const root = path.resolve(__dirname, '..');
     await page.selectOption('#mode', 'art-evolve');
     assert.deepEqual(await shown(artFields), { 'art-id': false, 'art-recipe': false, 'art-parents': true, 'art-steps': false, 'art-grid': false, 'art-samples': true, 'art-start': false, 'art-keep': true, 'art-inches': true, 'art-ppi': true, 'art-budget': true });
     await page.fill('#art-parents', '#not-a-recipe');
+    // Wait for the request itself, so a click the form refuses names the field it refused.
+    const artRequest = page.waitForResponse(r => r.url().endsWith('/api/start'), { timeout: 10000 }).catch(() => null);
     await page.click('#start');
-    await page.waitForFunction(() => document.querySelector('#error').textContent.includes('recipe hash'));
+    if (!await artRequest) throw Error('Start sent no request. Fields the form refused: ' + JSON.stringify(await page.evaluate(() => [...document.querySelectorAll('.settings input, .settings textarea, #machine-slug')]
+      .filter(i => !i.closest('[hidden]') && !i.checkValidity()).map(i => i.id + ' ' + JSON.stringify(i.value) + ': ' + i.validationMessage))));
+    await page.waitForFunction(() => document.querySelector('#error').textContent.includes('recipe hash'), null, { timeout: 10000 })
+      .catch(async () => { throw Error('Expected a recipe hash error; the page shows ' + JSON.stringify(await page.textContent('#error'))); });
     assert.equal(app.jobs.current, null, 'a malformed recipe does not launch a job');
     await page.fill('#art-parents', '');
     await page.selectOption('#mode', 'derive');
