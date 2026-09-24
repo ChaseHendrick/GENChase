@@ -13,8 +13,10 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // The Grid slider and sanitize() read the same bounds, so no slider position is clamped away.
+  const GRID_MIN = 128, GRID_MAX = 224;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Slab', 'n', 'Index n', GEOM, -2.2, -0.4, 0.05, f2),
     RANGE('Slab', 'L', 'Thickness L', GEOM, 20, 80, 1, v => v + ''),
@@ -34,7 +36,7 @@
   };
 
   function surprise(rng) { return { n: -rng.range(0.7, 1.6), L: rng.int(28, 64), src: rng.int(14, 36), rays: rng.int(18, 48) }; }
-  function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'veselago', name: 'Veselago Lens', tab: 'Veselago',
     subtitle: 'a slab that focuses because n is negative · 1968',

@@ -91,16 +91,18 @@ for (const m of mods) {
 // version, and no link could ever reprint an edge mode. Defaults and presets may not name `v` or `id` either; a default
 // `seed` is how a technique pins its opening plate, so that one is allowed there.
 // Schemas are assembled from shared helpers, which a text scan cannot attribute (see 6 below), so each
-// module block is evaluated against the same stub helpers the builder's registry uses.
+// module block is evaluated against the same stub helpers the builder's registry uses. 6c reads the
+// same evaluation.
+const { registrations } = require('./registry.js');
+const isModule = b => regs.some(r => r.index >= b.index && r.index < b.index + b[0].length);
+const evaluated = blocks.filter(isModule).map(b => {
+  try { return { b, defs: registrations(b[1], path.basename(file) + ':' + lineAt(b.index)) }; }
+  catch (e) { fail('module block at line ' + lineAt(b.index) + ' does not evaluate: ' + e.message); return { b, defs: [] }; }
+});
 {
   const RESERVED = ['v', 'seed', 'palette', 'bg', 'id'];
   const ENGINE_ONLY = ['v', 'id'];
-  const { registrations } = require('./registry.js');
-  const isModule = b => regs.some(r => r.index >= b.index && r.index < b.index + b[0].length);
-  for (const b of blocks.filter(isModule)) {
-    let defs;
-    try { defs = registrations(b[1], path.basename(file) + ':' + lineAt(b.index)); }
-    catch (e) { fail('module block at line ' + lineAt(b.index) + ' does not evaluate: ' + e.message); continue; }
+  for (const { b, defs } of evaluated) {
     for (const d of defs) {
       const where = d.id + ' (line ' + (seen.get(d.id) || lineAt(b.index)) + ')';
       for (const f of d.schema || []) {
@@ -185,6 +187,37 @@ for (const m of mods) {
   if (max > +cl[2]) {
     fail(m.id + ' (line ' + m.line + ') offers grid ' + max + ' but its sanitize clamps grid to ' + cl[2] +
       ': the larger options do nothing');
+  }
+}
+
+/* ---- 6c. a Grid slider offers exactly what its own sanitizer allows ---- */
+// The range-slider form of 6b. Fourteen tabs offered grid 96 to 224 while sanitize() capped it at 160 or
+// 192, or floored it at 128, so the outer positions moved the label and changed nothing. The engine
+// clamps a range to the slider's [min, max] and then calls the technique's sanitize(), so each slider
+// stop is fed to sanitize() with the state the engine would hand it, and a stop that comes back changed
+// is a dead position. Every stop is checked, not only the ends: sanitize() may also round to a coarser
+// step than the slider's. This is scoped to `grid` on purpose. The same test over every range control
+// flags dozens of other endpoints, most of them a time step capped at its stability bound or an angle
+// the technique locks, and those clamps are the physics, not a lie.
+{
+  const recipeV = +((/const RECIPE_V = (\d+);/.exec(src) || [])[1] || 1);
+  for (const { b, defs } of evaluated) {
+    for (const d of defs) {
+      const f = (d.schema || []).find(x => x && x.key === 'grid' && x.type === 'range');
+      if (!f || typeof d.sanitize !== 'function') continue;
+      const where = d.id + ' (line ' + (seen.get(d.id) || lineAt(b.index)) + ')';
+      const moved = [];
+      for (let g = f.min; g <= f.max; g += f.step) {
+        const s = Object.assign({}, d.defaults, { grid: g, seed: 'lint', v: recipeV });
+        try { d.sanitize(s); }
+        catch (e) { notes.push(where + ' sanitize() did not run against the registry stubs, so 6c skipped its grid: ' + e.message); moved.length = 0; break; }
+        if (s.grid !== g) moved.push(g + ' -> ' + s.grid);
+      }
+      if (moved.length) {
+        fail(where + ' has Grid slider stops its own sanitize() moves (' + moved.join(', ') + '): those positions ' +
+          'change the label and not the plate. Set the slider min/max from the same constants sanitize() uses.');
+      }
+    }
   }
 }
 

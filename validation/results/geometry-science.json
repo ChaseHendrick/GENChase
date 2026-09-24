@@ -1,9 +1,9 @@
 {
   "scope": "Bounded geometric maps and sampled integral/support/packing checks; no global immersion proof or physical rolling model.",
   "sourceSha256": {
-    "hopf": "62a4457707adf41bb37623379ec36e93e3bc455d11e87cf95aaea2880b86b85a",
+    "hopf": "4732427222cb6acb822f2368a2e1e9f14b522cfb12745084c81c0380e5481e03",
     "reuleaux": "179cef420e5bc881718b9904dc73240b446f54178ee8a1f592f786caf710e4f9",
-    "apollonian": "78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34"
+    "apollonian": "33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8"
   },
   "hopf": {
     "inverseProjectionBaseMaximumError": 1.942890293094024e-15,
@@ -76,29 +76,29 @@
         ],
         "values": [
           1.0003952138377827,
-          1.0000987501620213,
-          1.0000246842038674
+          1.0000987501620215,
+          1.0000246842038683
         ],
         "errors": [
           0.00039521383778273744,
-          0.00009875016202132159,
-          0.000024684203867364474
+          0.00009875016202154363,
+          0.000024684203868252652
         ],
         "orders": [
-          2.0007784411251475,
-          2.0001950002421496
+          2.0007784411219034,
+          2.0001950001934827
         ]
       }
     ],
     "orientationReversalResidual": 4.440892098500626e-16,
-    "unlinkedPairIntegral": 4.462402647181398e-18
+    "unlinkedPairIntegral": 3.401182416549854e-18
   },
   "reuleaux": {
     "widths": [
       {
         "samplesPerArc": 24,
         "maximumWidthDeficit": 0.00023775529414060692,
-        "rmsWidthDeficit": 0.00010642591128588456,
+        "rmsWidthDeficit": 0.00010642591128588387,
         "rigorousChordBound": 0.00047594584018173514,
         "polygonArea": 0.7042725413676573,
         "analyticArea": 0.704770923010458,
@@ -107,41 +107,41 @@
       {
         "samplesPerArc": 48,
         "maximumWidthDeficit": 0.00005948449779014098,
-        "rmsWidthDeficit": 0.000026607114883120064,
+        "rmsWidthDeficit": 0.000026607114883120518,
         "rigorousChordBound": 0.00011898999970050284,
         "polygonArea": 0.704646318703962,
         "analyticArea": 0.704770923010458,
         "areaError": 0.00012460430649596788,
-        "observedWidthOrder": 1.9999654567325762
+        "observedWidthOrder": 1.9999654567325422
       },
       {
         "samplesPerArc": 96,
         "maximumWidthDeficit": 0.000014849284919349337,
-        "rmsWidthDeficit": 0.00000665178726290997,
+        "rmsWidthDeficit": 0.000006651787262909978,
         "rigorousChordBound": 0.000029747721156825335,
-        "polygonArea": 0.7047397713778226,
+        "polygonArea": 0.7047397713778228,
         "analyticArea": 0.704770923010458,
-        "areaError": 0.00003115163263534004,
-        "observedWidthOrder": 1.9999981473104973
+        "areaError": 0.000031151632635118,
+        "observedWidthOrder": 1.9999981473105202
       },
       {
         "samplesPerArc": 192,
         "maximumWidthDeficit": 0.000003713639991076434,
-        "rmsWidthDeficit": 0.0000016629498014837163,
+        "rmsWidthDeficit": 0.0000016629498014837339,
         "rigorousChordBound": 0.0000074369441163124606,
         "polygonArea": 0.7047631350675482,
         "analyticArea": 0.704770923010458,
         "areaError": 0.000007787942909787127,
-        "observedWidthOrder": 1.999997409699583
+        "observedWidthOrder": 1.9999974096995694
       },
       {
         "samplesPerArc": 720,
         "maximumWidthDeficit": 2.6406425512881526e-7,
-        "rmsWidthDeficit": 1.1825424393432876e-7,
+        "rmsWidthDeficit": 1.1825424393411471e-7,
         "rigorousChordBound": 5.288496638389262e-7,
-        "polygonArea": 0.7047703692004185,
+        "polygonArea": 0.7047703692004187,
         "analyticArea": 0.704770923010458,
-        "areaError": 5.538100394941736e-7
+        "areaError": 5.53810039272129e-7
       }
     ],
     "straightTriangleFailure": 0.1311120312749935

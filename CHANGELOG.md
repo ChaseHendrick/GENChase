@@ -22,6 +22,7 @@
     - **Checked against the independent solve.** `tools/ssh-science.js` now evaluates the module's own solver against the independent Jacobi solve on every preset: eigenvalues within 10⁻¹⁰, |ψ|² within 10⁻⁹, end weights within 10⁻⁹. It adds failure controls: swapped hoppings must read trivial, and a wrongly terminated reference and the retired heuristic must both miss.
   - The Grid slider now stops at 160, where the tab's own sanitize always capped the chain; its top four positions used to change the label and nothing else. Every recipe was clamped to 160 either way, so no plate changes.
   - `tools/lint.js` now evaluates each module block and rejects a control keyed `v`, `seed`, `palette`, `bg` or `id`, and any `v` or `id` in defaults or presets. `tools/registry.js` exposes the sandbox it already used, as `registrations()`.
+- **Thirteen more Grid sliders stop where sanitize does**, the same fix as SSH: `anderson` and `kitaev` now run 96 to 160, `aubry` and `vortex` 96 to 192, and `hopf`, `cloak`, `darkroom`, `kakeya`, `gyroid`, `weierstrass`, `veselago`, `boy` and `apollonian` 128 to 224; each slider and its sanitize read one pair of constants, every recipe reprints at the same grid, and lint rule 6c now fails any Grid slider stop that a technique's own sanitize moves.
 
 ## v0.6.2
 

@@ -13,8 +13,10 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // The Grid slider and sanitize() read the same bounds, so no slider position is clamped away.
+  const GRID_MIN = 128, GRID_MAX = 224;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Surface', 'nu', 'u samples', GEOM, 24, 80, 2, v => v + ''),
     RANGE('Surface', 'nv', 'v samples', GEOM, 24, 80, 2, v => v + ''),
@@ -34,7 +36,7 @@
   };
 
   function surprise(rng) { return { nu: rng.int(36, 64), nv: rng.int(36, 64), tilt: rng.range(0.1, 1.0), kind: rng.pick(['density','z','density']) }; }
-  function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'boy', name: 'Boy\'s Surface', tab: 'Boy',
     subtitle: 'a projective plane sewn into R³ · 1901',

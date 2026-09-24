@@ -13,8 +13,10 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // The Grid slider and sanitize() read the same bounds, so no slider position is clamped away.
+  const GRID_MIN = 128, GRID_MAX = 224;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Curve', 'a', 'Amplitude a', GEOM, 0.2, 0.8, 0.02, f2),
     RANGE('Curve', 'b', 'Frequency b', GEOM, 3, 21, 2, v => v + ''),
@@ -34,7 +36,7 @@
   };
 
   function surprise(rng) { return { a: rng.range(0.35, 0.7), b: rng.pick([5,7,9,11,13]), terms: rng.int(8, 18), kind: rng.pick(['field','graph','rough']) }; }
-  function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'weierstrass', name: 'Weierstrass', tab: 'Weierstrass',
     subtitle: 'finite lacunary Fourier sums · inspired by 1872',
