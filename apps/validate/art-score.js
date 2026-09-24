@@ -93,6 +93,15 @@
     if (edge >= 0.5 || acuity >= 0.10) return 'ok';
     return 'soft';
   }
+  function edgeOf(L, w, h) { const { sd } = moments(L); return sd > 0.5 ? edgeP99(L, w, h) / sd : 0; }
+  // The two numbers the ranking and the informative test use, rounded as metrics() rounds them.
+  function rankingMetrics(L, w, h) { return { entropy: round(entropy(L), 4), edge: round(edgeOf(L, w, h), 4) }; }
+  // Sample standard deviation (n - 1); null below two values.
+  function sampleSd(values) {
+    const v = values.filter(Number.isFinite); if (v.length < 2) return null;
+    const m = v.reduce((a, b) => a + b, 0) / v.length;
+    return Math.sqrt(v.reduce((a, x) => a + (x - m) * (x - m), 0) / (v.length - 1));
+  }
   function metrics(L, w, h) {
     const { sd } = moments(L), mad = madCurve(L, w, h), p99 = edgeP99(L, w, h), t = tonal(L);
     const edge = sd > 0.5 ? p99 / sd : 0, acuity = mad[16] > 0.01 ? mad[1] / mad[16] : 0;
@@ -119,6 +128,19 @@
     cg.drawImage(im, Math.floor((W - S) / 2), Math.floor((H - S) / 2), S, S, 0, 0, S, S);
     const L = luminance(cg.getImageData(0, 0, S, S).data);
     const m = metrics(L, S, S);
+    // Sampling error of the ranking numbers: the same measurement on the four corner crops of the same size.
+    // The central crop is one draw from these positions, so their spread is its crop-position error. The
+    // crops overlap on a small sheet, so this is a lower bound on the error.
+    let sampling = null;
+    if (W > S || H > S) {
+      const entropyAt = [m.entropy], edgeAt = [m.edge];
+      for (const [x, y] of [[0, 0], [W - S, 0], [0, H - S], [W - S, H - S]]) {
+        cg.clearRect(0, 0, S, S); cg.drawImage(im, x, y, S, S, 0, 0, S, S);
+        const q = rankingMetrics(luminance(cg.getImageData(0, 0, S, S).data), S, S);
+        entropyAt.push(q.entropy); edgeAt.push(q.edge);
+      }
+      sampling = { crops: 'centre and four corners, ' + S + ' px', entropy: entropyAt, edge: edgeAt, entropySd: round(sampleSd(entropyAt), 4), edgeSd: round(sampleSd(edgeAt), 4) };
+    }
     const tw = 200, th = Math.max(1, Math.round(200 * H / W)), [tc, tg] = canvas(tw, th);
     tg.drawImage(im, 0, 0, tw, th);
     const flat = flatSummary(luminance(tg.getImageData(0, 0, tw, th).data));
@@ -146,10 +168,10 @@
     }
     const thumb = blob ? await new Promise((resolve, reject) => { const r = new FileReader(); r.onload = () => resolve(String(r.result).split(',')[1]); r.onerror = reject; r.readAsDataURL(blob); }) : null;
     cc.width = cc.height = tc.width = tc.height = qc.width = qc.height = 0; im.src = '';
-    return { width: W, height: H, metrics: m, flat, flatGate: isFlat(flat), nyq: n, lumSha256, thumb, thumbQuality: quality };
+    return { width: W, height: H, metrics: m, sampling, flat, flatGate: isFlat(flat), nyq: n, lumSha256, thumb, thumbQuality: quality };
   }
 
-  const api = { KS, NYQ_LIMIT, CLASS_RANK, luminance, moments, madCurve, edgeP99, tonal, entropy, featurePx, nyq, flatSummary, isFlat, isChecker, classify, metrics, compare, measureExport };
+  const api = { KS, NYQ_LIMIT, CLASS_RANK, luminance, moments, madCurve, edgeP99, tonal, entropy, featurePx, nyq, flatSummary, isFlat, isChecker, classify, metrics, edgeOf, rankingMetrics, sampleSd, compare, measureExport };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.GenChaseArtScore = api;
 })(typeof window === 'undefined' ? globalThis : window);

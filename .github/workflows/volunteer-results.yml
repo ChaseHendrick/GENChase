@@ -40,11 +40,15 @@ jobs:
           git worktree add --detach "$RUNNER_TEMP/base" "$BASE"
           verifier="$RUNNER_TEMP/base/tools/vortex-collapse-search.js"; from='the base branch'
           if [ ! -f "$verifier" ]; then verifier=tools/vortex-collapse-search.js; from='this pull request, which introduces it'; fi
-          files=$(git diff --name-only --diff-filter=AM "$BASE"...HEAD -- validation/submissions experiments/results/vortex-collapse | grep -E '/vortex-(collapse|grow)-[^/]*\.json$' || true)
-          if [ -z "$files" ]; then echo 'No vortex result files changed.' >> "$GITHUB_STEP_SUMMARY"; exit 0; fi
+          # NUL-separated paths: a name with a space or a non-ASCII letter is neither split nor quoted.
+          files=(); re='/vortex-(collapse|grow)-[^/]*\.json$'
+          while IFS= read -r -d '' f; do
+            if [[ $f =~ $re ]]; then files+=("$f"); fi
+          done < <(git diff -z --name-only --diff-filter=AM "$BASE"...HEAD -- validation/submissions experiments/results/vortex-collapse)
+          if [ ${#files[@]} -eq 0 ]; then echo 'No vortex result files changed.' >> "$GITHUB_STEP_SUMMARY"; exit 0; fi
           { echo "## Vortex results re-verified with the verifier from $from"; echo; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           set +e
-          node "$verifier" --verify $files --strict > "$RUNNER_TEMP/verify.log" 2>&1
+          node "$verifier" --verify "${files[@]}" --strict > "$RUNNER_TEMP/verify.log" 2>&1
           status=$?
           set -e
           cat "$RUNNER_TEMP/verify.log"; cat "$RUNNER_TEMP/verify.log" >> "$GITHUB_STEP_SUMMARY"; echo '```' >> "$GITHUB_STEP_SUMMARY"
@@ -56,11 +60,11 @@ jobs:
           [ -d "$RUNNER_TEMP/base" ] || git worktree add --detach "$RUNNER_TEMP/base" "$BASE"
           checker="$RUNNER_TEMP/base/tools/art-submission-check.js"; from='the base branch'
           if [ ! -f "$checker" ]; then checker=tools/art-submission-check.js; from='this pull request, which introduces it'; fi
-          files=$(git diff --name-only --diff-filter=AMR "$BASE"...HEAD -- validation/submissions | grep -E '^validation/submissions/[^/]+/art/' || true)
-          if [ -z "$files" ]; then echo 'No art result files changed.' >> "$GITHUB_STEP_SUMMARY"; exit 0; fi
+          # The checker lists every change under validation/submissions itself (git diff -z, all change types),
+          # so no path is split by the shell, and a job folder that is not a job ID fails.
           { echo "## Art results checked with the checker from $from"; echo; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           set +e
-          node "$checker" $files > "$RUNNER_TEMP/art.log" 2>&1
+          node "$checker" --base "$BASE" > "$RUNNER_TEMP/art.log" 2>&1
           status=$?
           set -e
           cat "$RUNNER_TEMP/art.log"; cat "$RUNNER_TEMP/art.log" >> "$GITHUB_STEP_SUMMARY"; echo '```' >> "$GITHUB_STEP_SUMMARY"

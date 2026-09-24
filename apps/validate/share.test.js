@@ -67,13 +67,13 @@ function jpeg(extra=[],w=320,h=320){const seg=(m,b)=>Buffer.concat([Buffer.from(
  return Buffer.concat([Buffer.from([0xFF,0xD8]),seg(0xE0,Buffer.from('JFIF\0\x01\x01\0\0\x01\0\x01\0\0','latin1')),seg(0xE2,Buffer.from('ICC_PROFILE\0\x01\x01','latin1')),...extra,
   seg(0xDB,Buffer.alloc(65)),seg(0xC0,Buffer.from([8,h>>8,h&255,w>>8,w&255,1,1,0x11,0])),seg(0xC4,Buffer.alloc(20)),seg(0xDA,Buffer.from([1,1,0,0,63,0])),Buffer.from([1,2,0xFF,0,3,0xFF,0xD9])]);}
 const b64=o=>Buffer.from(JSON.stringify(o)).toString('base64url');
-function artFixture(t,{thumb=jpeg(),seed='h-1',thumbs=['thumbs/c-0001.jpg']}={}){
- const f=fixture(t);fs.writeFileSync(path.join(f.dir,'job.json'),JSON.stringify({id,status:'complete',ended:'2026-09-24',exitCode:0,commit:'a'.repeat(40),input:{workspace:'contribute',mode:'art-hunt',id:'turing'}}));
+function artFixture(t,{thumb=jpeg(),seed='h-1',thumbs=['thumbs/c-0001.jpg'],input={workspace:'contribute',mode:'art-hunt',id:'turing'},shareInput=undefined,parentHash=null}={}){
+ const f=fixture(t);fs.writeFileSync(path.join(f.dir,'job.json'),JSON.stringify({id,status:'complete',ended:'2026-09-24',exitCode:0,commit:'a'.repeat(40),input}));
  fs.writeFileSync(path.join(f.dir,'browser-report.json'),JSON.stringify({browserVersions:{chromium:'141.0.7390.37'},webglRenderer:'SwiftShader'}));
  const art=path.join(f.dir,'art');for(const d of ['thumbs','prints'])fs.mkdirSync(path.join(art,d),{recursive:true});
  const hash='#turing/'+encodeURIComponent(seed)+'/'+b64({v:2,grid:128,running:false,warmup:300,seed});
  fs.writeFileSync(path.join(art,'thumbs/c-0001.jpg'),thumb);fs.writeFileSync(path.join(art,'thumbs/c-0002.jpg'),jpeg());
- fs.writeFileSync(path.join(art,'share.json'),JSON.stringify({schemaVersion:1,kind:'genchase-art',mode:'art-hunt',id:'turing',thumbs,records:[{rank:1,index:0,hash,seed,steps:300,class:'ok',metrics:{entropy:4.5},thumb:thumbs[0]||null,thumbSha256:crypto.createHash('sha256').update(thumb).digest('hex'),validated:false}]}));
+ fs.writeFileSync(path.join(art,'share.json'),JSON.stringify({schemaVersion:1,kind:'genchase-art',mode:'art-hunt',id:'turing',input:shareInput,thumbs,records:[{rank:1,index:0,hash,seed,parentHash,steps:300,class:'ok',metrics:{entropy:4.5},thumb:thumbs[0]||null,thumbSha256:crypto.createHash('sha256').update(thumb).digest('hex'),validated:false}]}));
  for(const name of ['candidates.json','checkpoint.json'])fs.writeFileSync(path.join(art,name),'{"secret":"CANDIDATES"}');
  fs.writeFileSync(path.join(art,'gallery.html'),'<p>GALLERY</p>');fs.writeFileSync(path.join(art,'prints/c-0001.png'),'PRINT');
  return {...f,thumb,hash};
@@ -98,6 +98,14 @@ test('thumbnails with metadata, private-looking recipes and unlisted paths are r
  const seg=(m,b)=>Buffer.concat([Buffer.from([0xFF,m,(b.length+2)>>8,(b.length+2)&255]),b]);
  for(const [thumb,why] of [[jpeg([seg(0xE1,Buffer.from('Exif\0\0GPS'))]),/not allowed/],[jpeg([seg(0xFE,Buffer.from('made by someone'))]),/not allowed/],[jpeg([],321,10),/exceed/]]){const g=artFixture(t,{thumb});assert.throws(()=>pack(g.root,g.data,id),why);}
  let f=artFixture(t,{seed:'me@example.com'});assert.throws(()=>pack(f.root,f.data,id),/looks private/);
+ // A hash keeps its seed percent-encoded and its settings in base64url, where plain redaction sees nothing.
+ // The share decodes them and fails closed wherever the recipe is written: job.json, share.json and records.
+ const hidden='#turing/me%40example.com',hiddenPayload='#turing/x/'+b64({v:2,seed:'x',bg:'/Users/someone/private'});
+ for(const [opts,where] of [[{input:{workspace:'contribute',mode:'art-deep',id:'turing',recipe:hidden}},/job\.json/],[{input:{workspace:'contribute',mode:'art-evolve',id:'turing',parents:['#turing/a',hiddenPayload]}},/job\.json/],
+  [{shareInput:{mode:'art-hunt',id:'turing',recipe:hidden}},/share\.json \(its input\)/],[{parentHash:hiddenPayload},/parentHash of record 1/]]){
+  f=artFixture(t,opts);assert.throws(()=>pack(f.root,f.data,id),where,JSON.stringify(opts).slice(0,100));assert.throws(()=>pack(f.root,f.data,id),/Nothing was shared/);
+ }
+ f=artFixture(t,{input:{workspace:'contribute',mode:'art-hunt',id:'turing',recipe:'#turing/base/'+b64({grid:128,warmup:300})},parentHash:'#turing/h-2'});assert.doesNotThrow(()=>pack(f.root,f.data,id),'an ordinary recipe still shares');
  for(const thumbs of [['../job.json'],['prints/c-0001.png'],Array.from({length:13},(_,i)=>'thumbs/c-'+String(i).padStart(4,'0')+'.jpg')]){f=artFixture(t,{thumbs});assert.throws(()=>pack(f.root,f.data,id),/cannot be shared/);}
  f=artFixture(t,{thumbs:['thumbs/c-0009.jpg']});assert.throws(()=>pack(f.root,f.data,id),/missing/);
 });

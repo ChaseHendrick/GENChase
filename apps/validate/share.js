@@ -2,7 +2,7 @@
 // Optional network boundary. Computation never needs GitHub or credentials.
 const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process'), crypto = require('node:crypto');
 const { sanitize, redact } = require('./privacy');
-const { ART_MODES, LIMITS, jpegInfo } = require('./art-tabs');
+const { ART_MODES, LIMITS, jpegInfo, recipeLooksPrivate } = require('./art-tabs');
 const TARGET = 'SharpMeow/GENChase';
 const sha = s => crypto.createHash('sha256').update(s).digest('hex');
 function gh(method, endpoint, body) {
@@ -58,6 +58,13 @@ function pack(root, data, id) {
   }
   const job = JSON.parse(fs.readFileSync(path.join(dir, 'job.json'), 'utf8'));
   if (!['complete', 'failed'].includes(job.status) || !job.ended) throw Error('Wait for the job to finish before sharing.');
+  // A recipe hash hides its seed and settings in encoded form, where redaction cannot see them. An art job
+  // whose recipes decode to text that looks private shares nothing: job.json, its command and the log
+  // carry the same recipe strings.
+  const looksPrivate = hash => recipeLooksPrivate(hash, text => redact(text, { root }));
+  const recipesOf = input => [input?.recipe, ...(Array.isArray(input?.parents) ? input.parents : [])];
+  const refuse = where => { throw Error('A recipe in ' + where + ' contains text that looks private. Nothing was shared. Keep this run local.'); };
+  if (ART_MODES.includes(job.input?.mode) && recipesOf(job.input).some(looksPrivate)) refuse('job.json');
   // Allowlisted reports only. Never source snapshots, archives, arbitrary changed files or credentials.
   for (const name of ['job.json', 'hardware.json', 'witnesses.json', 'harvest-report.json', 'browser-report.json', 'miss.json', 'verify-checkpoint.json', 'source-before.json', 'job.log', 'paste-packet.md']) add(name);
   // Art jobs share their recipe list and at most 12 thumbnails. Never prints, the gallery page, the full
@@ -69,7 +76,11 @@ function pack(root, data, id) {
     if (art.kind !== 'genchase-art' || !Array.isArray(art.records) || !Array.isArray(art.thumbs)) throw Error('art/share.json is not an art result.');
     // A recipe is published exactly as the studio reprints it, so redaction must not touch it. If it would,
     // the recipe holds text that looks private, and nothing is shared.
-    art.records.forEach((r, i) => { for (const key of ['hash', 'seed', 'parentHash']) if (r && r[key] !== clean.records[i]?.[key]) throw Error('A recipe in art/share.json contains text that looks private (' + key + ' of record ' + (i + 1) + '). Nothing was shared. Keep this run local.'); });
+    art.records.forEach((r, i) => {
+      for (const key of ['hash', 'seed', 'parentHash']) if (r && r[key] !== clean.records[i]?.[key]) refuse('art/share.json (' + key + ' of record ' + (i + 1) + ')');
+      for (const key of ['hash', 'parentHash']) if (r && looksPrivate(r[key])) refuse('art/share.json (' + key + ' of record ' + (i + 1) + ')');
+    });
+    if (recipesOf(art.input).some(looksPrivate)) refuse('art/share.json (its input)');
     if (art.thumbs.length > LIMITS.thumbs || new Set(art.thumbs).size !== art.thumbs.length || art.thumbs.some(t => typeof t !== 'string' || !/^thumbs\/[a-z0-9-]{1,40}\.jpg$/.test(t))) throw Error('art/share.json lists thumbnails that cannot be shared.');
     add('art/share.json');
     for (const t of art.thumbs) addBinary('art/' + t);

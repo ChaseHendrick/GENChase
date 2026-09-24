@@ -22,6 +22,9 @@ const EXPERIMENTS = {
 function ids(root) { return JSON.parse(fs.readFileSync(path.join(root, 'techniques.json'), 'utf8')).techniques.map(t => t.id); }
 function command(root, input) {
   if (!input || Object.keys(input).some(k => !['workspace', 'mode', 'id', 'slug', 'n', 'samples', 'grid', 'steps', 'alpha', 'start', 'power', 'machineSlug', 'shareAutomatically', 'recipe', 'parents', 'vary', 'keep', 'inches', 'ppi', 'budget', 'generations'].includes(k))) throw Error('Unsupported job settings.');
+  // Settings only the art jobs read. Any other job would store them and ignore them, which misleads.
+  const artOnly = ['recipe', 'parents', 'vary', 'keep', 'inches', 'ppi', 'budget', 'generations'].filter(k => input[k] !== undefined && input[k] !== null && input[k] !== '');
+  if (!ART_MODES.includes(input.mode) && artOnly.length) throw Error(artOnly.join(', ') + (artOnly.length > 1 ? ' apply' : ' applies') + ' only to art jobs.');
   if (input.shareAutomatically !== undefined && typeof input.shareAutomatically !== 'boolean') throw Error('Automatic sharing must be on or off.');
   const machineSlug = input.machineSlug || 'm1pro';
   if (typeof machineSlug !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(machineSlug) || machineSlug.length > 32) throw Error('Use a pseudonymous machine slug of lowercase letters, numbers and single hyphens, up to 32 characters.');

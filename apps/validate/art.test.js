@@ -59,6 +59,11 @@ test('art commands accept bounded jobs, store the seed block and reject everythi
   ];
   for (const input of bad) assert.throws(() => command(root, { ...base, ...input }), undefined, JSON.stringify(input).slice(0, 120));
   assert.throws(() => command(root, { ...base, mode: 'art-hunt', id: 'ising' }), /cahn and turing/);
+  // Other jobs would store an art setting and ignore it; a volunteer who asked for a budget must not get none.
+  for (const extra of [{ budget: 60 }, { keep: 3 }, { inches: 8 }, { ppi: 300 }, { recipe: '#cahn/x' }, { parents: ['#cahn/x'] }, { vary: 'seed' }, { generations: 1 }])
+    assert.throws(() => command(root, { ...base, mode: 'vortex-collapse', alpha: 0, n: 7, samples: 5, ...extra }), /only to art jobs/, JSON.stringify(extra));
+  assert.throws(() => command(root, { workspace: 'validate', mode: 'all', power, budget: 5 }), /budget applies only to art jobs/);
+  assert.doesNotThrow(() => command(root, { ...base, mode: 'vortex-collapse', alpha: 0, n: 7, samples: 5, budget: '' }), 'a blank field is not a setting');
 });
 
 test('recipe hashes decode as the engine reads them and refuse what the engine would drop', () => {
@@ -189,11 +194,17 @@ test('the gallery escapes recipe text, links relatively and makes no network ref
   const seed = '<script>alert(1)</script>';
   const record = { index: 0, rank: 1, status: 'scored', seed, hash: "#cahn/%3Cscript%3E'x/" + b64({ seed }), steps: 200, grid: [128, 128], thumb: 'thumbs/c-0001.jpg', operator: 'reseed', clamped: [],
     metrics: { class: 'sharp', entropy: 5.1, edge: 1.2, acuity: 0.3, contrast: 40, featurePx: 2 } };
-  const html = galleryHtml({ job: { id: 'cahn', mode: 'art-evolve', commit: 'a'.repeat(40), renderer: seed, chromium: '141', inches: 8, ppi: 300, reducedMotionNote: 'note' },
-    records: [record], controls: { summary: 'repeatable' }, counts: { candidates: 1, scored: 1, failed: 0, rejected: { flat: 2 } }, scoring: { definition: 'd', limits: 'l' }, headline: seed });
+  const page = { job: { id: 'cahn', mode: 'art-evolve', commit: 'a'.repeat(40), renderer: seed, chromium: '141', inches: 8, ppi: 300, reducedMotionNote: 'note' },
+    records: [{ ...record, sampling: { entropySd: 0.061, edgeSd: 0.012 } }], controls: { summary: 'repeatable' }, counts: { candidates: 1, scored: 1, failed: 0, rejected: { flat: 2 } }, scoring: { definition: 'd', limits: 'l' }, headline: seed };
+  const html = galleryHtml(page);
   assert(!html.includes('<script>alert'), 'recipe text is escaped');
   assert(!/http/i.test(html), 'no network reference');
-  assert(html.includes('href="../../../../dist/studio.html#cahn/'));
+  // The validator writes the gallery to apps/validate/.runs/<job>/art/, five levels below the repository root.
+  assert(html.includes('href="../../../../../dist/studio.html#cahn/'));
+  const art = path.join(ROOT, 'apps/validate/.runs/2026-09-24T00-00-00-000Z-0123abcd/art');
+  assert.equal(path.resolve(art, '../../../../../dist/studio.html'), path.join(ROOT, 'dist/studio.html'), 'the default link reaches dist/studio.html');
+  assert(galleryHtml({ ...page, studio: '../../my%20runs/dist/studio.html' }).includes('href="../../my%20runs/dist/studio.html#cahn/'), 'a runner-supplied link is used');
+  assert(html.includes('entropy 5.1 ± 0.061 bits') && html.includes('edge 1.2 ± 0.012'), 'the crop sampling error is shown beside the metric');
   assert(html.includes('src="thumbs/c-0001.jpg"'));
   const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]);
   assert.equal(scripts.length, 1); new vm.Script(scripts[0]);
@@ -267,6 +278,78 @@ test('the runner finds clamps, refuses out-of-schema requests and does not bill 
   try { clock.last -= 60000; assert(clock.seconds() < 1, 'a minute-long pause counts as a tenth of a second'); } finally { clock.stop(); }
 });
 
+test('the runner reads locale-formatted step counts, legacy grids and the print memory need', async () => {
+  const { stepOf, fieldCellsOf, legacyValue, printMemory, ArtRun, Refusal } = require('./art');
+  // toLocaleString() under en-US, de-DE, fr-FR (narrow no-break space, or a space after whitespace folding) and de-CH.
+  for (const [text, n] of [['step 1,000 paused', 1000], ['grid 128×128 Schnakenberg · D 100.0 λ ≈ 12 cells step 1.000 paused dt 0.008 seed h-3', 1000], ['step 1 000 paused', 1000],
+    ['step 1\u202f000 paused', 1000], ['step 12\u2019345 paused', 12345], ['step 300 paused', 300], ['step 1500 running', 1500], ['step 0', 0], ['no count', null]]) assert.equal(stepOf(text), n, text);
+  assert.deepEqual(fieldCellsOf('The field is 1.024 × 1.024 cells, so one cell'), [1024, 1024]); assert.deepEqual(fieldCellsOf('field is 128 × 128 cells'), [128, 128]);
+  // legacyFill: a recipe older than the change gets the old default, and the earliest applicable one wins.
+  const legacy = { 2: { grid: 192 } }, two = { 2: { grid: 192 }, 3: { grid: 256 } };
+  assert.equal(legacyValue(legacy, 1, 'grid', 2), 192); assert.equal(legacyValue(legacy, '1', 'grid', 2), 192);
+  assert.equal(legacyValue(legacy, 2, 'grid', 2), undefined); assert.equal(legacyValue(legacy, undefined, 'grid', 2), undefined, 'a recipe without v is current');
+  assert.equal(legacyValue(two, 1, 'grid', 3), 192); assert.equal(legacyValue(two, 2, 'grid', 3), 256); assert.equal(legacyValue(null, 1, 'grid', 2), undefined);
+  // 60 in at 600 ppi is clamped to 16,000 px and 132 MP, about 4 GB: refused on a 4 GB computer, not on a 16 GB one.
+  assert.equal(printMemory(60, 600, 4 * 1024 ** 3).ok, false); assert.equal(printMemory(60, 600, 16 * 1024 ** 3).ok, true); assert.equal(printMemory(8, 300, 4 * 1024 ** 3).ok, true);
+  // Every art mode refuses before launching a browser, not only a deep render.
+  const real = os.totalmem;
+  os.totalmem = () => 4 * 1024 ** 3;
+  try {
+    for (const mode of ['art-hunt', 'art-evolve', 'art-deep']) {
+      const run = new ArtRun({ mode, id: 'turing', inches: 60, ppi: 600, keep: 1, samples: 1 }, fs.mkdtempSync(path.join(os.tmpdir(), 'art-mem-')));
+      try { await assert.rejects(run.setup(), e => e instanceof Refusal && /half of this computer's memory/.test(e.message), mode); } finally { run.clock.stop(); fs.rmSync(run.dir, { recursive: true, force: true }); }
+    }
+  } finally { os.totalmem = real; }
+});
+
+test('Resume renders failed, interrupted and foreign checkpoint records again and never deletes outside art/', async t => {
+  const { ArtRun } = require('./art'), { seal } = require('./checkpoint'), crypto = require('node:crypto');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'art-restore-')); t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const sha = b => crypto.createHash('sha256').update(b).digest('hex'), victim = path.join(dir, 'victim.txt'); fs.writeFileSync(victim, 'keep');
+  async function restored(mode, records, controls, total = 4) {
+    const run = new ArtRun({ mode, id: 'turing', samples: total, keep: 1, inches: 8, ppi: 300 }, path.join(dir, mode + '-' + Math.random().toString(36).slice(2)));
+    run.log = () => {};
+    try {
+      run.sig = 'S'; run.total = total;
+      for (const d of ['thumbs', 'prints']) fs.mkdirSync(path.join(run.art, d), { recursive: true });
+      fs.writeFileSync(path.join(run.art, 'thumbs/c-0001.jpg'), 'thumb');
+      fs.writeFileSync(path.join(run.art, 'checkpoint.json'), JSON.stringify(seal({ format: 1, signature: 'S', mode, records, calibration: null, controls })));
+      await run.restore();
+      return run;
+    } finally { run.clock.stop(); }
+  }
+  const scored = { index: 0, status: 'scored', thumb: 'thumbs/c-0001.jpg', thumbSha256: sha('thumb'), print: null, printJob: null };
+  const stopped = { index: 1, status: 'failed', reason: 'page.evaluate: Target page, context or browser has been closed' };
+  const done = { repeats: [{ status: 'scored' }, { status: 'scored' }], repeatable: true };
+  let run = await restored('art-hunt', [scored, stopped], done);
+  assert.deepEqual(Object.keys(run.records).map(Number), [0], 'the candidate a stop cut short renders again');
+  assert.equal(run.controls, null, 'controls wait for the candidate that renders again');
+  run = await restored('art-hunt', [scored, { ...scored, index: 1, thumb: null, thumbSha256: null }], { repeats: [{ status: 'scored' }, { status: 'failed' }], repeatable: false });
+  assert.deepEqual(Object.keys(run.records).map(Number), [0, 1]); assert.equal(run.controls, null, 'a repeat cut short is not a result');
+  run = await restored('art-hunt', [scored, { ...scored, index: 1, thumb: null, thumbSha256: null }], done);
+  assert.deepEqual(run.controls, done, 'finished controls are kept');
+  // A checkpoint handed over from elsewhere cannot point a check or a delete outside art/.
+  run = await restored('art-hunt', [scored, { index: 2, status: 'scored', thumb: '../../victim.txt', thumbSha256: '0' }, { index: 3, status: 'scored', print: '../victim.txt', printSha256: '0' },
+    { index: 9, status: 'scored' }, { index: 1.5, status: 'scored' }, { index: '1', status: 'scored' }], null);
+  assert.deepEqual(Object.keys(run.records).map(Number), [0]); assert.equal(fs.readFileSync(victim, 'utf8'), 'keep', 'nothing outside art/ was touched');
+  // A deep render stopped during its final render starts again from step 0.
+  run = await restored('art-deep', [{ index: 0, status: 'failed', reason: 'page.evaluate: Target page, context or browser has been closed' }], null, 1);
+  assert.equal(run.records[0], undefined);
+});
+
+test('an evolve parent the engine would clamp is refused before anything renders', async () => {
+  const { ArtRun, Refusal } = require('./art');
+  const b64p = o => Buffer.from(JSON.stringify(o)).toString('base64url');
+  const run = new ArtRun({ mode: 'art-evolve', id: 'cahn', parents: ['#cahn/p1/' + b64p({ grid: 128, warmup: 2500 })], samples: 1, keep: 0, inches: 8, ppi: 300 }, fs.mkdtempSync(path.join(os.tmpdir(), 'art-evo-')));
+  run.tab = { recipeVersion: 2, defaults: { warmup: 2000, grid: 512 }, fields: [{ key: 'warmup', type: 'range', min: 0, max: 2000 }, { key: 'grid', type: 'seg', options: [128, 512] }, { key: 'running', type: 'toggle' }] };
+  run.restore = () => { throw Error('restore must not run'); };
+  try {
+    await assert.rejects(run.evolve(), e => e instanceof Refusal && /Parent 1 .*would be clamped: warmup 2500 is outside 0 to 2000/.test(e.message));
+    run.opts.parents = ['#cahn/p1/' + b64p({ grid: 128, warmup: '300' })];
+    await assert.rejects(run.evolve(), e => e instanceof Refusal && /warmup "300" is outside/.test(e.message), 'a warmup that is not a number is refused, not coerced');
+  } finally { run.clock.stop(); fs.rmSync(run.dir, { recursive: true, force: true }); }
+});
+
 test('the submission check accepts a shared art folder and names every structural fault', t => {
   const { checkFolder, context, main } = require('../../tools/art-submission-check');
   const ctx = context(ROOT), crypto = require('node:crypto');
@@ -293,7 +376,32 @@ test('the submission check accepts a shared art folder and names every structura
   for (const [opts, why] of cases) assert.match(checkFolder(folder(opts), ctx).join('\n'), why, JSON.stringify(opts).slice(0, 80));
   // Defaults count: a recipe that leaves warmup at the tab's default records the default step count.
   assert.deepEqual(checkFolder(folder({ payload: { grid: 128, running: false }, steps: 1500 }), ctx), []);
-  const cwd = process.cwd(), log = console.log; console.log = () => {};
-  try { process.chdir(base); assert.equal(main(['validation/submissions/job1/art/share.json', 'validation/submissions/job1/job.json']), 0); assert.equal(main(['validation/submissions/job2/art/share.json']), 1); }
-  finally { process.chdir(cwd); console.log = log; }
+  const cwd = process.cwd(), log = console.log, lines = []; console.log = line => lines.push(line);
+  try {
+    process.chdir(base);
+    // Folders under validation/submissions/ carry a job ID, as apps/validate/share.js names them.
+    const good = '2026-09-24T10-19-41-937Z-079f8680', bad = '2026-09-24T10-19-41-937Z-079f8681';
+    fs.renameSync('validation/submissions/job1', 'validation/submissions/' + good); fs.renameSync('validation/submissions/job2', 'validation/submissions/' + bad);
+    assert.equal(main(['validation/submissions/' + good + '/art/share.json', 'validation/submissions/' + good + '/job.json']), 0);
+    assert.equal(main(['validation/submissions/' + bad + '/art/share.json']), 1);
+    // A name a shell would split, or a folder that is not a job ID, fails instead of being skipped.
+    for (const args of [['validation/submissions/j', 'k/art/evil.bin'], ['validation/submissions/job3/art/share.json'], ['validation/submissions/jöb/art/share.json'], ['validation/submissions/' + good + ' /art/share.json']])
+      assert.equal(main(args), 1, JSON.stringify(args));
+    // --base lists the changes itself: NUL-separated, every change type, no rename pairing.
+    const git = (...args) => cp.execFileSync('git', args, { cwd: base, encoding: 'utf8' });
+    const commit = message => git('-c', 'user.name=Chaos', '-c', 'user.email=326338179+SharpMeow@users.noreply.github.com', 'commit', '-qm', message);
+    git('init', '-q'); fs.rmSync('validation/submissions/' + bad, { recursive: true }); git('add', '-A'); commit('base'); const baseSha = git('rev-parse', 'HEAD').trim();
+    lines.length = 0; assert.equal(main(['--base', baseSha]), 0); assert.match(lines.join('\n'), /No art result folders to check/);
+    fs.mkdirSync('validation/submissions/j k/art', { recursive: true }); fs.writeFileSync('validation/submissions/j k/art/share.json', '{'); git('add', '-A'); commit('space');
+    lines.length = 0; assert.equal(main(['--base', baseSha]), 1, 'a folder name with a space is not skipped'); assert.match(lines.join('\n'), /"j k" is not a job ID/);
+    git('reset', '-q', '--hard', baseSha);
+    fs.rmSync('validation/submissions/' + good + '/art/thumbs/c-0001.jpg'); git('add', '-A'); commit('delete a listed thumbnail');
+    lines.length = 0; assert.equal(main(['--base', baseSha]), 1, 'a deletion is checked'); assert.match(lines.join('\n'), /listed but missing/);
+    git('reset', '-q', '--hard', baseSha);
+    fs.rmSync('validation/submissions/' + good + '/art/share.json'); fs.symlinkSync('../../../../elsewhere.json', 'validation/submissions/' + good + '/art/share.json'); git('add', '-A'); commit('type change');
+    lines.length = 0; assert.equal(main(['--base', baseSha]), 1, 'a type change is checked'); assert.match(lines.join('\n'), /symbolic link/);
+    git('reset', '-q', '--hard', baseSha);
+    fs.rmSync('validation/submissions/' + good + '/art', { recursive: true }); fs.symlinkSync('../../elsewhere', 'validation/submissions/' + good + '/art'); git('add', '-A'); commit('art becomes a link');
+    lines.length = 0; assert.equal(main(['--base', baseSha]), 1, 'art/ replaced by a link fails'); assert.match(lines.join('\n'), /plain folders/);
+  } finally { process.chdir(cwd); console.log = log; }
 });

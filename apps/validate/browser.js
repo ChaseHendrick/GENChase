@@ -14,11 +14,14 @@ async function probe(browser) {
     });
   } finally { await page.close(); }
 }
-async function launchGraphicsBrowser(chromium, { platform = process.platform } = {}) {
+// handleSignals: false leaves SIGINT, SIGTERM and SIGHUP to the caller. Playwright's own handlers close
+// the browser without exiting, so a runner that records results must decide what a stop means itself.
+async function launchGraphicsBrowser(chromium, { platform = process.platform, handleSignals = true } = {}) {
   const nativeArgs = platform === 'darwin' ? ['--use-gl=angle', '--use-angle=metal'] : [];
+  const signals = handleSignals ? {} : { handleSIGINT: false, handleSIGTERM: false, handleSIGHUP: false };
   let browser, graphics, fallbackReason;
   try {
-    browser = await chromium.launch({ headless: true, args: nativeArgs });
+    browser = await chromium.launch({ headless: true, args: nativeArgs, ...signals });
     graphics = await probe(browser);
     if (graphics.webgl2 && graphics.float32) return { browser, graphics: { ...graphics, launchArgs: nativeArgs, fallback: false } };
     fallbackReason = 'Native headless browser lacks WebGL2 or float32 color buffers.';
@@ -26,7 +29,7 @@ async function launchGraphicsBrowser(chromium, { platform = process.platform } =
   if (browser) await browser.close();
   // Only local repository pages are opened by harvest, with HTTP(S) requests blocked.
   const args = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'];
-  browser = await chromium.launch({ headless: true, args });
+  browser = await chromium.launch({ headless: true, args, ...signals });
   try {
     graphics = await probe(browser);
     return { browser, graphics: { ...graphics, launchArgs: args, fallback: true, fallbackReason } };

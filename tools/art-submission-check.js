@@ -1,4 +1,4 @@
-// node tools/art-submission-check.js <changed file>... | --dir validation/submissions/<job>/art
+// node tools/art-submission-check.js --base <sha> | <changed file>... | --dir validation/submissions/<job>/art
 // Structural check of shared art results before a person reviews them. It runs from the base branch in the
 // volunteer-results workflow, so the catalog, the schemas and these rules come from this file's own checkout,
 // never from the pull request under review. It checks that:
@@ -9,8 +9,11 @@
 //   - every recipe is paused (running false) with its recorded step count equal to its warmup;
 //   - every thumbnail matches its recorded hash, and every record says validated: false.
 // It does not compare pixels: renderers differ, and a recipe reprints its own plate.
+// With --base it lists the pull request's changes itself (git diff -z, every change type, no rename
+// pairing), so no file name is ever split or quoted by a shell. A changed path under validation/submissions/
+// whose job folder is not a job ID (apps/validate/share.js names every folder that way) fails the check.
 'use strict';
-const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
+const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto'), cp = require('node:child_process');
 const tabs = require('../apps/validate/art-tabs');
 const TRUSTED = path.resolve(__dirname, '..');
 const CLASSES = ['sharp', 'ok', 'soft'];
@@ -79,24 +82,60 @@ function checkFolder(artDir, ctx = context()) {
   for (const t of listed) if (!s.records?.some(r => r && r.thumb === t)) fail(t + ' belongs to no record');
   return errors;
 }
+// The job-ID rule of apps/validate/share.js folder().
+const JOB_ID = /^\d{4}-\d\d-\d\dT[0-9TZ.-]+-[a-f0-9]{8}$/;
+function changedPaths(base, cwd = process.cwd()) {
+  if (!/^[0-9A-Za-z][0-9A-Za-z._/-]{0,199}$/.test(base || '')) throw Error('--base needs a commit, such as the pull request base SHA.');
+  const r = cp.spawnSync('git', ['diff', '-z', '--name-only', '--no-renames', base + '...HEAD', '--', 'validation/submissions'], { cwd, maxBuffer: 256 * 1024 * 1024 });
+  if (r.status !== 0) throw Error('git diff failed: ' + String(r.stderr || r.error?.message || '').slice(0, 500));
+  return r.stdout.toString('utf8').split('\0').filter(Boolean);
+}
+// Classify one changed path. Paths outside validation/submissions/ are ignored; inside it, a path must sit
+// in a folder named by a job ID, and an art path gives the art folder to check.
+function classify(file) {
+  const m = /^(.*?)validation\/submissions\/(.*)$/s.exec(String(file).replace(/\\/g, '/'));
+  if (!m) return { ignored: true };
+  const [job, ...rest] = m[2].split('/');
+  if (!job || !rest.length || !rest[0]) return { error: JSON.stringify(file) + ' is not inside a job folder' };
+  if (!JOB_ID.test(job)) return { error: JSON.stringify(file) + ': the job folder ' + JSON.stringify(job) + ' is not a job ID' };
+  if (rest[0] !== 'art') return { other: true };
+  return { art: m[1] + 'validation/submissions/' + job + '/art', job: m[1] + 'validation/submissions/' + job };
+}
 function main(argv = process.argv.slice(2)) {
-  const dirs = new Set();
+  const dirs = new Map(), problems = [];
+  let base = null;
+  const files = [];
   for (let i = 0; i < argv.length; i++) {
-    if (argv[i] === '--dir') { dirs.add(path.resolve(argv[++i])); continue; }
-    const m = /^(.*?validation\/submissions\/[^/]+\/art)\//.exec(argv[i].replace(/\\/g, '/'));
-    if (!m) { console.log('Ignored (not under validation/submissions/<job>/art/): ' + argv[i]); continue; }
-    dirs.add(path.resolve(m[1]));
+    if (argv[i] === '--dir') { const d = path.resolve(argv[++i]); dirs.set(d, { dir: d, job: path.dirname(d), explicit: true }); continue; }
+    if (argv[i] === '--base') { base = argv[++i]; continue; }
+    files.push(argv[i]);
   }
-  if (!dirs.size) { console.log('No art result folders to check.'); return 0; }
-  const ctx = context();
+  if (base !== null) files.push(...changedPaths(base));
+  for (const file of files) {
+    const c = classify(file);
+    if (c.ignored) { console.log('Ignored (not under validation/submissions/): ' + JSON.stringify(file)); continue; }
+    if (c.error) { problems.push(c.error); continue; }
+    if (c.art) dirs.set(path.resolve(c.art), { dir: path.resolve(c.art), job: path.resolve(c.job) });
+  }
   let bad = 0;
-  for (const dir of [...dirs].sort()) {
-    const errors = fs.existsSync(dir) ? checkFolder(dir, ctx) : ['the folder is missing'];
-    const label = path.relative(process.cwd(), dir) || dir;
+  if (problems.length) { bad++; console.log('FAIL changed paths'); for (const e of problems) console.log('  - ' + e); }
+  if (!dirs.size) { console.log(bad ? 'No art result folders could be checked.' : 'No art result folders to check.'); return bad ? 1 : 0; }
+  const ctx = context();
+  const lstat = p => { try { return fs.lstatSync(p); } catch { return null; } };
+  for (const { dir, job, explicit } of [...dirs.values()].sort((a, b) => a.dir.localeCompare(b.dir))) {
+    const label = path.relative(process.cwd(), dir) || dir, st = lstat(dir), jobSt = lstat(job);
+    let errors;
+    if (!st) {
+      // Only a folder named on the command line must exist; a change that removed a whole art folder
+      // leaves nothing to check, and the deletion is in the diff for the reviewer.
+      if (explicit) errors = ['the folder is missing'];
+      else { console.log('REMOVED ' + label + ': the pull request deletes this art folder; nothing to check.'); continue; }
+    } else if (st.isSymbolicLink() || !st.isDirectory() || (jobSt && jobSt.isSymbolicLink())) errors = ['art/ and its job folder must be plain folders, not links or files'];
+    else errors = checkFolder(dir, ctx);
     if (errors.length) { bad++; console.log('FAIL ' + label); for (const e of errors) console.log('  - ' + e); }
     else console.log('PASS ' + label + ': structure, recipes, step counts and thumbnails are consistent. Pixels are not compared.');
   }
   return bad ? 1 : 0;
 }
-module.exports = { checkFolder, context, main };
+module.exports = { checkFolder, context, classify, changedPaths, main };
 if (require.main === module) process.exitCode = main();

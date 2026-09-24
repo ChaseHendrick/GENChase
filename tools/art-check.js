@@ -4,6 +4,8 @@
 //   (a) hunt: turing at grid 128, warmup 300, three seeds, one kept print. Every step count is verified,
 //       every hash is the engine's own encoding of its recipe, a fresh re-run gives identical metrics and
 //       luminance hashes, a resume in the same folder renders nothing again, and the print is 2400 px.
+//       A hunt stopped by SIGTERM mid-candidate (as the validator's Stop does) records no failure, and its
+//       Resume scores every candidate. A hunt under a German system locale still reads its step counts.
 //   (b) deep render: cahn at grid 128 for 200 steps. The print is 2400 px, the engine's print-job recipe
 //       equals the recorded recipe, and the grid change is labelled a new plate.
 //   (c) evolve: one parent, four children. Fixed keys stay the parent's, hashes carry only schema keys.
@@ -24,11 +26,26 @@ const sha = file => crypto.createHash('sha256').update(fs.readFileSync(file)).di
 const schemas = tabs.loadSchemas(ROOT, Object.keys(tabs.ART_TABS));
 const summary = [];
 
-function run(args, out) {
+function run(args, out, env = {}) {
   const t0 = Date.now();
-  const r = cp.spawnSync(process.execPath, [RUNNER, ...args, '--out', out], { encoding: 'utf8', timeout: 20 * 60 * 1000, env: { ...process.env, GENCHASE_JOB_DIR: '' } });
+  const r = cp.spawnSync(process.execPath, [RUNNER, ...args, '--out', out], { encoding: 'utf8', timeout: 20 * 60 * 1000, env: { ...process.env, GENCHASE_JOB_DIR: '', ...env } });
   const seconds = (Date.now() - t0) / 1000, log = (r.stdout || '') + (r.stderr || '');
   return { code: r.status, log, seconds };
+}
+// Start the runner in its own process group and stop it as jobs.js stop() does: SIGTERM to the group once
+// `when` matches the log and `delay` ms have passed, then SIGKILL 3 s later if anything is left.
+function runStopped(args, out, when, delay) {
+  return new Promise(resolve => {
+    const t0 = Date.now(), child = cp.spawn(process.execPath, [RUNNER, ...args, '--out', out], { detached: true, env: { ...process.env, GENCHASE_JOB_DIR: '' } });
+    let log = '', sent = false, killer = null;
+    const signal = s => { try { process.kill(-child.pid, s); } catch { /* Already gone. */ } };
+    const feed = d => {
+      log += d;
+      if (!sent && when.test(log)) { sent = true; setTimeout(() => { signal('SIGTERM'); killer = setTimeout(() => signal('SIGKILL'), 3000); }, delay); }
+    };
+    child.stdout.on('data', feed); child.stderr.on('data', feed);
+    child.on('close', (code, sig) => { clearTimeout(killer); resolve({ code, signal: sig, log, seconds: (Date.now() - t0) / 1000 }); });
+  });
 }
 function pngSize(file) {
   const b = fs.readFileSync(file);
@@ -58,7 +75,12 @@ function checkPrint(dir, r, size) {
   assert.equal(r.printJobMatches, true);
 }
 function load(dir) { const c = read(dir, 'candidates.json'); for (const r of c.records) r.dir = dir; return c; }
-function noNetwork(dir) { assert(!/http/i.test(fs.readFileSync(path.join(dir, 'art/gallery.html'), 'utf8')), 'the gallery has no network reference'); }
+function noNetwork(dir) {
+  const html = fs.readFileSync(path.join(dir, 'art/gallery.html'), 'utf8');
+  assert(!/http/i.test(html), 'the gallery has no network reference');
+  // Every "Open in the studio" link resolves, from the gallery's own folder, to dist/studio.html.
+  for (const [, href] of html.matchAll(/<a href="([^"#]*)#/g)) assert.equal(path.resolve(path.join(dir, 'art'), decodeURIComponent(href)), STUDIO, 'the studio link resolves to dist/studio.html');
+}
 function checkShare(dir) {
   const share = read(dir, 'share.json');
   assert(share.thumbs.length <= 12);
@@ -75,7 +97,7 @@ async function eligibility() {
     for (const id of Object.keys(tabs.ART_TABS)) {
       const loads = [];
       for (let n = 0; n < 2; n++) {
-        const ctx = await browser.newContext({ viewport: { width: 1400, height: 900 }, reducedMotion: 'no-preference' });
+        const ctx = await browser.newContext({ viewport: { width: 1400, height: 900 }, locale: 'en-US', reducedMotion: 'no-preference' });
         try {
           await ctx.route(/^https?:\/\//, r => r.abort());
           const page = await ctx.newPage(), errors = []; page.on('pageerror', e => errors.push(e.message));
@@ -133,6 +155,30 @@ async function eligibility() {
     assert.match(r.log, /Resumed 3 candidate\(s\) from the art checkpoint\./); assert(!/candidate \d+ (scored|rejected|failed)/.test(r.log), 'a resume renders nothing again');
     assert.deepEqual(load(A).records.map(x => x.lumSha256), a.records.map(x => x.lumSha256));
     summary.push({ check: 'hunt resume', seconds: r.seconds, rendered: 0 });
+
+    // (a') Stop mid-candidate, then Resume. The stopped runner records nothing further, and nothing it
+    // left behind is a failure; the resumed run renders the rest and scores every candidate.
+    const T = path.join(tmp, 'hunt-stop');
+    const stopped = await runStopped(huntArgs, T, /: candidate 1 scored/, 1000);
+    assert.equal(stopped.code, 143, 'the runner exits at once on SIGTERM (code ' + stopped.code + ', signal ' + stopped.signal + ')\n' + stopped.log);
+    const saved = read(T, 'checkpoint.json').records.filter(Boolean);
+    assert(saved.length >= 1 && saved.length < 3, 'the stop came mid-hunt: ' + saved.length + ' candidate(s) saved');
+    assert.deepEqual(saved.filter(x => x.status !== 'scored'), [], 'a stop records no failed candidate');
+    r = run(huntArgs, T); assert.equal(r.code, 0, r.log);
+    assert.match(r.log, new RegExp('Resumed ' + saved.length + ' candidate\\(s\\) from the art checkpoint\\.'));
+    const t = load(T);
+    assert.deepEqual(t.records.map(x => x.status), ['scored', 'scored', 'scored'], 'every candidate is scored after Resume');
+    assert.deepEqual(t.records.map(x => x.lumSha256), a.records.map(x => x.lumSha256), 'the resumed hunt gives the same plates');
+    summary.push({ check: 'hunt stop and resume', seconds: stopped.seconds + r.seconds, savedAtStop: saved.length });
+
+    // (a'') A German system locale formats the status step as "1.000". Art pages pin en-US, and the reader
+    // accepts other groupings, so a plate at 1000 steps still counts.
+    const G = path.join(tmp, 'hunt-de');
+    r = run(['--mode', 'art-hunt', '--id', 'turing', '--recipe', '#turing/base/' + b64({ grid: 128, warmup: 1000 }), '--samples', '1', '--start', '0', '--keep', '0'], G,
+      { LANG: 'de_DE.UTF-8', LC_ALL: 'de_DE.UTF-8', LANGUAGE: 'de' });
+    assert.equal(r.code, 0, r.log);
+    commonRecord('turing', load(G).records[0], 1000);
+    summary.push({ check: 'hunt under de_DE', seconds: r.seconds, status: load(G).records[0].status });
 
     // (b) deep render
     const D = path.join(tmp, 'deep');

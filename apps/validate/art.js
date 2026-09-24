@@ -32,8 +32,8 @@ const GUARD = /numerical guard|exceeds the monitored range/i;
 const FIXED_CLAMP = ['warmup', 'running', 'grid'];
 const METRIC_KEYS = ['contrast', 'edge', 'acuity', 'spread', 'ink', 'entropy', 'featurePx'];
 const SCORING = {
-  definition: 'Candidates are ordered by print-sharpness class (sharp, ok, soft, using the edge and acuity thresholds of tools/sharp.js), then by the entropy of the 64-bin luminance histogram, then by candidate number. Metrics are measured on a central crop of the real export at native pixels, with pixel differences taken at every offset, so they are not comparable with the 2026-09-24 print audit.',
-  limits: 'These are proxies for print sharpness and tonal range at this print size, grid, step count and renderer, comparable only within one job. They are not a measure of beauty or composition, and not scientific evidence. They favour high-contrast, fine-grained plates and early coarsening stages.',
+  definition: 'Candidates are ordered by print-sharpness class (sharp, ok, soft, using the edge and acuity thresholds of tools/sharp.js), then by the entropy of the 64-bin luminance histogram, then by candidate number. Metrics are measured on a central 1024 px crop of the real export at native pixels, with pixel differences taken at every offset, so they are not comparable with the 2026-09-24 print audit. The flat gate uses a 200 px reduction of the whole sheet. Entropy and edge are measured again on the four corner crops of the same size, and the standard deviation over those five crops is recorded as each candidate\'s sampling error.',
+  limits: 'These are proxies for print sharpness and tonal range at this print size, grid, step count and renderer, comparable only within one job. They are not a measure of beauty or composition, and not scientific evidence. They favour high-contrast, fine-grained plates and early coarsening stages. The crop sampling error is a lower bound (the crops overlap on a small sheet), and candidates whose entropy differs by less than about twice it are not distinguished by these numbers: their order within a class may be sampling noise. The repeat control compares the central crop only.',
 };
 const REDUCED_MOTION_NOTE = 'Rendered with full motion. A viewer whose browser asks for reduced motion sees only the first 80 steps of a cahn (pde family) recipe, a known studio limitation; turing (rdx family) computes every step either way.';
 const REPRODUCIBILITY = 'The same recipe at the same step count gives the same plate on the same renderer and Chromium build, and a statistically similar plate elsewhere. Identical pixels across GPUs are not claimed.';
@@ -48,6 +48,27 @@ function writeFile(file, data) { fs.writeFileSync(file + '.tmp', data); fs.renam
 const writeJson = (file, value) => writeFile(file, JSON.stringify(value, null, 2) + '\n');
 function fileSha256(file) {
   return new Promise((resolve, reject) => { const h = crypto.createHash('sha256'); fs.createReadStream(file).on('data', d => h.update(d)).on('error', reject).on('end', () => resolve(h.digest('hex'))); });
+}
+// The pde and rdx status writes the step with toLocaleString(). Art pages pin en-US, and this reader also
+// accepts the digit groupings of other locales ("1.000", "1 000", "1'000"), so a step is never misread.
+const LOCALE_INT = String.raw`(\d{1,3}(?:[.,'\u2019\u00a0\u202f ]\d{3})+|\d+)(?!\d)`;
+const localeInt = text => Number(String(text).replace(/\D/g, ''));
+function stepOf(status) { const m = new RegExp(String.raw`\bstep\s+` + LOCALE_INT).exec(status || ''); return m ? localeInt(m[1]) : null; }
+function fieldCellsOf(note) { const m = new RegExp('field is ' + LOCALE_INT + ' × ' + LOCALE_INT + ' cells').exec(note || ''); return m ? [localeInt(m[1]), localeInt(m[2])] : null; }
+// The grid a recipe renders at when it does not name one: an older recipe gets the default its version was
+// made at, by the rule of legacyFill in src/shared/engine.js (the earliest applicable transition wins).
+function legacyValue(legacy, v, key, current) {
+  const n = Number(v);
+  if (!legacy || !Number.isFinite(n) || n >= current) return undefined;
+  let out;
+  for (const step of Object.keys(legacy).sort((a, b) => Number(b) - Number(a))) if (n < Number(step) && Object.hasOwn(legacy[step], key)) out = legacy[step][key];
+  return out;
+}
+// A shell export needs about 31 bytes per pixel for a single-target GL sheet, clamped to 16,000 px and
+// 132 MP (docs/print-audit-2026-09-24). Every art mode refuses a print over half this computer's memory.
+function printMemory(inches, ppi, total = os.totalmem()) {
+  const long = Math.min(inches * ppi, 16000), need = Math.min(long * long, 132e6) * 31;
+  return { long, need, ok: need <= total / 2 };
 }
 function gitHead() { const r = cp.spawnSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }); return r.status === 0 ? r.stdout.trim() : null; }
 function playwrightVersion() { try { return require('playwright/package.json').version; } catch { return null; } }
@@ -117,12 +138,14 @@ class ArtRun {
     return Promise.race([promise, watch]).finally(() => clearInterval(timer));
   }
   async launch() {
-    const { browser, graphics } = await launchGraphicsBrowser(this.chromium);
+    const { browser, graphics } = await launchGraphicsBrowser(this.chromium, { handleSignals: false });
     if (this.graphics && graphics.renderer !== this.graphics.renderer) { await browser.close(); throw new Failure('The renderer changed after a browser restart.'); }
     this.browser = browser; this.graphics = graphics;
   }
   async restartBrowser() { await this.browser?.close().catch(() => {}); await this.launch(); }
   async setup() {
+    const mem = printMemory(this.opts.inches, this.opts.ppi);
+    if (!mem.ok) throw new Refusal('A ' + mem.long + ' px print needs about ' + (mem.need / 1024 ** 3).toFixed(1) + ' GB, more than half of this computer\'s memory. Choose a smaller print size.');
     this.chromium = require('playwright').chromium;
     await this.launch();
     const g = this.graphics;
@@ -138,7 +161,8 @@ class ArtRun {
     this.sig = this.signature();
   }
   async openPage(seed, payload, deadline) {
-    const ctx = await this.browser.newContext({ viewport: { width: 1400, height: 900 }, reducedMotion: 'no-preference', acceptDownloads: true });
+    // en-US: the status step count is locale-formatted, and a volunteer's system locale must not change it.
+    const ctx = await this.browser.newContext({ viewport: { width: 1400, height: 900 }, locale: 'en-US', reducedMotion: 'no-preference', acceptDownloads: true });
     const errors = [];
     try {
       // Only the local studio file. No research, font or telemetry requests.
@@ -157,7 +181,7 @@ class ArtRun {
     try {
       return await page.evaluate(id => {
         const m = Studio.modules[id];
-        return { recipeVersion: Studio.recipeVersion, apiVersion: Studio.apiVersion, defaults: JSON.parse(JSON.stringify(m.defaults)), palette: !!m.palette,
+        return { recipeVersion: Studio.recipeVersion, apiVersion: Studio.apiVersion, defaults: JSON.parse(JSON.stringify(m.defaults)), legacy: m.legacy ? JSON.parse(JSON.stringify(m.legacy)) : null, palette: !!m.palette,
           fields: m.schema.filter(f => f.type !== 'action').map(f => ({ key: f.key, type: f.type, min: f.min, max: f.max, step: f.step, options: f.options ? f.options.map(o => o[0]) : undefined })),
           reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches };
       }, this.opts.id);
@@ -201,7 +225,7 @@ class ArtRun {
         last = snap.status;
         if (errors.length) throw new Failure('page error: ' + errors[0]);
         if (snap.fault) throw new Failure('studio fault: ' + snap.fault);
-        const m = /\bstep\s+([\d,]+)/.exec(snap.status), step = m ? Number(m[1].replace(/,/g, '')) : null;
+        const step = stepOf(snap.status);
         if (snap.seed === c.seed && GUARD.test(snap.status)) { rec.status = 'rejected'; rec.reason = 'guard'; rec.steps = step; return rec; }
         if (snap.seed === c.seed && step !== null && step !== lastStep) { lastStep = step; c.onStep?.(step); }
         if (snap.seed === c.seed && step === c.target && /\bpaused\b/.test(snap.status)) break;
@@ -251,14 +275,14 @@ class ArtRun {
       }
       if (done.state === 'err') throw new Failure('export failed: ' + done.note.slice(0, 300));
       rec.exportNote = done.note.slice(0, 400);
-      const cells = /field is ([\d,]+) × ([\d,]+) cells/.exec(done.note); rec.fieldCells = cells ? [Number(cells[1].replace(/,/g, '')), Number(cells[2].replace(/,/g, ''))] : null;
+      rec.fieldCells = fieldCellsOf(done.note);
       timing.export = this.clock.seconds() - tExport;
       await page.addScriptTag({ path: path.join(__dirname, 'art-score.js') });
       const [gw, gh] = rec.grid || [0, 0];
       const m = await this.within(page.evaluate(o => window.GenChaseArtScore.measureExport(document.querySelector('#export-img'), o),
         { gw, gh, crop: CROP, thumb: THUMB, maxBytes: tabs.LIMITS.thumbBytes }), deadline, 'scoring');
       timing.score = this.clock.seconds() - tExport - timing.export;
-      Object.assign(rec, { printSize: [m.width, m.height], metrics: m.metrics, class: m.metrics.class, flat: m.flat, nyq: m.nyq, lumSha256: m.lumSha256 });
+      Object.assign(rec, { printSize: [m.width, m.height], metrics: m.metrics, sampling: m.sampling, class: m.metrics.class, flat: m.flat, nyq: m.nyq, lumSha256: m.lumSha256 });
       if (m.flatGate) { rec.status = 'rejected'; rec.reason = 'flat'; }
       else if (score.isChecker(m.nyq)) { rec.status = 'rejected'; rec.reason = 'checkerboard'; }
       else rec.status = 'scored';
@@ -339,6 +363,14 @@ class ArtRun {
     let kept = 0, redo = 0;
     for (const r of saved.records) {
       if (!r) continue;
+      // Only the file names this runner writes for that candidate, so a checkpoint from elsewhere cannot
+      // point a check or a delete outside art/. Anything else is dropped without touching the disk.
+      if (!Number.isInteger(r.index) || r.index < 0 || r.index >= this.total) { redo++; continue; }
+      const name = this.opts.mode === 'art-deep' ? 'deep' : nameFor(r.index);
+      const own = { thumb: 'thumbs/' + name + '.jpg', print: 'prints/' + name + '.png', printJob: 'prints/' + name + '-print-job.json' };
+      if (Object.keys(own).some(k => r[k] != null && r[k] !== own[k])) { redo++; continue; }
+      // A failed candidate (a stop, a crash, a timeout) renders again, and so do its files.
+      if (r.status === 'failed') { redo++; for (const k of Object.keys(own)) if (r[k]) fs.rmSync(path.join(this.art, own[k]), { force: true }); continue; }
       let ok = true;
       for (const [rel, want] of [[r.thumb, r.thumbSha256], [r.print, r.printSha256]]) {
         if (!rel) continue;
@@ -350,8 +382,10 @@ class ArtRun {
       else { redo++; for (const rel of [r.thumb, r.print, r.printJob]) if (rel) fs.rmSync(path.join(this.art, rel), { force: true }); }
     }
     this.calibration = saved.calibration || null;
-    this.controls = redo ? null : saved.controls || null;
-    this.log('Resumed ' + kept + ' candidate(s) from the art checkpoint' + (redo ? '; ' + redo + ' with missing or changed images will render again.' : '.'));
+    // Controls count only when every repeat rendered; a repeat cut short by a stop runs again.
+    const controlsDone = c => c && Array.isArray(c.repeats) && c.repeats.length > 0 && c.repeats.every(x => x && x.status === 'scored');
+    this.controls = !redo && controlsDone(saved.controls) ? saved.controls : null;
+    this.log('Resumed ' + kept + ' candidate(s) from the art checkpoint' + (redo ? '; ' + redo + ' failed, interrupted or with missing or changed images will render again.' : '.'));
   }
 
   basePayload(hash) {
@@ -376,12 +410,20 @@ class ArtRun {
   }
   async evolve() {
     const o = this.opts, parents = o.parents.map(tabs.parseRecipeHash);
+    // As for a hunt's base recipe: a parent the engine would clamp (a warmup over the tab's maximum, or one
+    // that is not a number) never reaches its target step, so it is refused before anything renders.
+    const payloads = parents.map((p, i) => {
+      const payload = { ...this.basePayload(p.hash), v: p.payload.v ?? this.tab.recipeVersion, running: false, warmup: p.payload.warmup ?? this.tab.defaults.warmup };
+      const outside = outOfSchema(payload, this.tab.fields);
+      if (outside.length) throw new Refusal('Parent ' + (i + 1) + ' (' + p.hash.slice(0, 80) + ') would be clamped: ' + outside.join('; ') + '. Nothing was rendered.');
+      return payload;
+    });
     this.total = parents.length + o.samples;
     await this.restore();
     for (let i = 0; i < parents.length; i++) {
       if (this.records[i]) continue;
-      const p = parents[i], payload = { ...p.payload, v: p.payload.v ?? this.tab.recipeVersion, running: false, warmup: p.payload.warmup ?? this.tab.defaults.warmup };
-      await this.candidate({ index: i, generation: 0, seed: p.seed, operator: 'parent', parentHash: null, payload, givenHash: p.hash });
+      const p = parents[i];
+      await this.candidate({ index: i, generation: 0, seed: p.seed, operator: 'parent', parentHash: null, payload: payloads[i], givenHash: p.hash });
     }
     const usable = this.records.slice(0, parents.length).filter(r => r && r.recipe);
     if (!usable.length) throw new Refusal('No parent recipe rendered, so there is nothing to evolve.');
@@ -419,12 +461,10 @@ class ArtRun {
     if (o.grid !== undefined) payload.grid = o.grid;
     const outside = outOfSchema(payload, this.tab.fields);
     if (outside.length) throw new Refusal('The recipe would be clamped: ' + outside.join('; ') + '. A deep render never trims a request.');
-    // The shell clamps a sheet to 16,000 px and 132 MP (and to the GPU texture limit); a single-target GL
-    // export then needs about 31 bytes per pixel (docs/print-audit-2026-09-24). Keep that under half the RAM.
-    const long = Math.min(o.inches * o.ppi, 16000), need = Math.min(long * long, 132e6) * 31;
-    if (need > os.totalmem() / 2) throw new Refusal('A ' + long + ' px print needs about ' + (need / 1024 ** 3).toFixed(1) + ' GB, more than half of this computer\'s memory.');
+    // The print-memory refusal runs in setup() for every art mode.
     // A different grid is a larger domain with an unrelated initial field (per-cell draws run in row-major order).
-    const baseGrid = base.grid ?? (Number(base.v) < rv ? null : this.tab.defaults.grid);
+    // A recipe that names no grid renders at its version's default, which legacyFill supplies for old recipes.
+    const baseGrid = base.grid ?? legacyValue(this.tab.legacy, base.v, 'grid', rv) ?? this.tab.defaults.grid;
     const gridChanged = o.grid !== undefined && o.grid !== baseGrid;
     this.total = 1;
     await this.restore();
@@ -454,7 +494,9 @@ class ArtRun {
       final.gridChanged = gridChanged;
       if (gridChanged) final.label = 'new plate, not an enlargement';
       if (final.printSpec && final.printSpec.clamped) this.log('The shell clamped this sheet to ' + final.printSpec.pw + ' × ' + final.printSpec.ph + ' px (' + final.printSpec.clampWhy + ' limit), about ' + final.printSpec.effDpi + ' ppi.');
-      this.records[0] = final; this.rerank(); this.saveCheckpoint();
+      // A failed render is not a checkpoint: Resume starts it again from step 0.
+      this.records[0] = final; this.rerank();
+      if (final.status !== 'failed') this.saveCheckpoint();
     }
   }
   stepProgress(step, total, stage = 'render') {
@@ -488,10 +530,19 @@ class ArtRun {
     }
     const worst = k => Math.max(0, ...repeats.map(x => x.diffs[k] ?? Infinity));
     const repeatable = repeats.every(x => x.status === 'scored' && x.lumSame && x.hashSame && METRIC_KEYS.every(k => x.diffs[k] === 0));
-    const informative = scored.length >= 2 && ((spread.entropy ?? 0) > 2 * worst('entropy') || (spread.edge ?? 0) > 2 * worst('edge'));
-    this.controls = { repeats, repeatable, spread, repeatDifference: { entropy: worst('entropy'), edge: worst('edge') }, informative,
+    // On one renderer the repeat difference is 0 by construction, so it cannot say whether the ranking means
+    // anything. The yardstick is the metric's own sampling error: the pooled (root-mean-square) crop
+    // standard deviation of the scored candidates. The ranking is informative only when the spread between
+    // candidates exceeds twice the larger of that error and the repeat difference.
+    const pooled = k => { const v = scored.map(r => r.sampling?.[k + 'Sd']).filter(Number.isFinite); return v.length ? Number(Math.sqrt(v.reduce((a, x) => a + x * x, 0) / v.length).toFixed(4)) : null; };
+    const samplingError = { entropy: pooled('entropy'), edge: pooled('edge') };
+    const beats = k => spread[k] !== null && samplingError[k] !== null && spread[k] > 2 * Math.max(worst(k), samplingError[k]);
+    const informative = scored.length >= 2 && (beats('entropy') || beats('edge'));
+    const against = k => (spread[k] === null ? 'n/a' : spread[k].toFixed(4)) + ' against a crop sampling error of ' + (samplingError[k] === null ? 'n/a' : samplingError[k].toFixed(4));
+    this.controls = { repeats, repeatable, spread, samplingError, repeatDifference: { entropy: worst('entropy'), edge: worst('edge') }, informative,
       summary: (repeatable ? 'repeatable: the repeated renders gave identical metrics and luminance hashes' : 'NOT repeatable: a repeated render differed; treat the ranking with caution') +
-        '; entropy spread ' + (spread.entropy === null ? 'n/a' : spread.entropy.toFixed(4)) + ' bits, edge spread ' + (spread.edge === null ? 'n/a' : spread.edge.toFixed(4)) + '.' };
+        '; entropy spread ' + against('entropy') + ' bits, edge spread ' + against('edge') + '; ' +
+        (informative ? 'the spread exceeds twice the sampling error.' : 'the spread does not exceed twice the sampling error, so the order may be sampling noise.') };
     this.saveCheckpoint();
   }
 
@@ -511,23 +562,27 @@ class ArtRun {
     if (this.opts.mode === 'art-deep') return this.records[0]?.label ? 'Grid changed: a new plate, not an enlargement of the recipe.' : null;
     if (!this.controls || !this.controls.repeats?.length) return null;
     if (!this.controls.repeatable) return 'A repeated render did not reproduce its metrics on this renderer: the ranking is not reliable.';
-    return this.controls.informative ? null : 'Ranking is not informative for this tab at these settings: the spread between candidates is no larger than twice the repeat difference.';
+    return this.controls.informative ? null : 'Ranking is not informative for this tab at these settings: the spread between candidates is no larger than twice their crop sampling error (or the repeat difference), so the order may be sampling noise.';
   }
   writeOutputs() {
     const job = this.jobMeta(), counts = this.counts(), records = this.records.filter(Boolean);
     const ranked = records.filter(r => r.status === 'scored').sort(score.compare);
     writeJson(path.join(this.art, 'candidates.json'), { schemaVersion: 1, job, scoring: SCORING, controls: this.controls, counts, records });
     writeFile(path.join(this.art, 'recipes.txt'), ranked.map(r => r.hash).join('\n') + (ranked.length ? '\n' : ''));
-    writeFile(path.join(this.art, 'gallery.html'), galleryHtml({ job, records: this.opts.mode === 'art-deep' ? records.map(r => ({ ...r, rank: r.rank || 1 })) : ranked, controls: this.controls, counts, scoring: SCORING, headline: this.headline() }));
+    // The studio link is relative to wherever this gallery lives (the validator's .runs folder or --out).
+    const studio = path.relative(this.art, STUDIO).split(path.sep).map(encodeURIComponent).join('/');
+    writeFile(path.join(this.art, 'gallery.html'), galleryHtml({ job, records: this.opts.mode === 'art-deep' ? records.map(r => ({ ...r, rank: r.rank || 1 })) : ranked, controls: this.controls, counts, scoring: SCORING, headline: this.headline(), studio }));
     // What sharing may publish: recipes, their scores and at most 12 small thumbnails. Never prints,
     // the gallery, the full candidate list or the checkpoint. A record whose recipe text would be
     // changed by redaction looks private, so it is left out here and sharing refuses it as well.
-    const looksPrivate = r => [r.hash, r.seed, r.parentHash].some(s => s && redact(s, { root: ROOT }) !== s);
+    const clean = s => redact(s, { root: ROOT });
+    const looksPrivate = r => [r.hash, r.parentHash].some(h => tabs.recipeLooksPrivate(h, clean)) || (r.seed != null && clean(String(r.seed)) !== String(r.seed));
     const shareable = (this.opts.mode === 'art-deep' ? records.filter(r => r.status !== 'failed' && r.hash) : ranked).filter(r => !looksPrivate(r));
     const privateLooking = (this.opts.mode === 'art-deep' ? records.filter(r => r.hash) : ranked).length - shareable.length;
     const thumbs = shareable.filter(r => r.thumb).slice(0, tabs.LIMITS.thumbs).map(r => r.thumb);
     const pick = r => ({ rank: r.rank, index: r.index, hash: r.hash, seed: r.seed, operator: r.operator, parentHash: r.parentHash, generation: r.generation, steps: r.steps, grid: r.grid,
-      status: r.status, reason: r.reason, class: r.class, metrics: r.metrics && Object.fromEntries(METRIC_KEYS.map(k => [k, r.metrics[k]])), clamped: r.clamped, gridChanged: r.gridChanged,
+      status: r.status, reason: r.reason, class: r.class, metrics: r.metrics && Object.fromEntries(METRIC_KEYS.map(k => [k, r.metrics[k]])),
+      samplingError: r.sampling ? { entropy: r.sampling.entropySd, edge: r.sampling.edgeSd } : null, clamped: r.clamped, gridChanged: r.gridChanged,
       thumb: thumbs.includes(r.thumb) ? r.thumb : null, thumbSha256: thumbs.includes(r.thumb) ? r.thumbSha256 : null, validated: false });
     let list = shareable.slice(0, tabs.LIMITS.shareRecords).map(pick), share;
     for (;;) {
@@ -535,7 +590,7 @@ class ArtRun {
         chromium: job.chromium, renderer: job.renderer, float32: job.float32, reducedMotion: false, print: { inches: job.inches, ppi: job.ppi }, input: this.opts,
         scoring: SCORING, reproducibility: REPRODUCIBILITY, claim: 'Recipes and print-sharpness proxy scores. No scientific, validation or aesthetic claim; every recipe is unvalidated.',
         counts: { ...counts, privateLooking }, controls: this.controls && { repeatable: this.controls.repeatable ?? null, informative: this.controls.informative ?? null, spread: this.controls.spread ?? null,
-          repeatDifference: this.controls.repeatDifference ?? null, summary: this.controls.summary }, stoppedBy: this.stoppedBy, thumbs: thumbs.filter(t => list.some(r => r.thumb === t)), records: list };
+          samplingError: this.controls.samplingError ?? null, repeatDifference: this.controls.repeatDifference ?? null, summary: this.controls.summary }, stoppedBy: this.stoppedBy, thumbs: thumbs.filter(t => list.some(r => r.thumb === t)), records: list };
       if (Buffer.byteLength(JSON.stringify(share, null, 2)) <= tabs.LIMITS.shareBytes || !list.length) break;
       list = list.slice(0, Math.floor(list.length * 0.9));
     }
@@ -591,6 +646,15 @@ async function main(argv = process.argv.slice(2)) {
   const dir = out || process.env.GENCHASE_JOB_DIR;
   if (!dir) throw Error('Run art jobs through the validator, or give --out DIR for a local run.');
   const run = new ArtRun(opts, dir);
+  // Stop, Ctrl+C or a closed terminal ends the runner at once. Nothing more is recorded: the checkpoint
+  // holds only finished candidates, so Resume renders the interrupted one again. The browser was launched
+  // without Playwright's signal handlers, and Playwright's exit handler kills it as this process exits.
+  for (const [signal, code] of [['SIGINT', 130], ['SIGTERM', 143], ['SIGHUP', 129]]) {
+    process.on(signal, () => {
+      try { fs.writeSync(1, 'Stopped by ' + signal + '. Finished candidates are in the art checkpoint; Resume renders the rest.\n'); } catch { /* The log may be gone. */ }
+      process.exit(code);
+    });
+  }
   try { return await run.run(); }
   catch (e) {
     if (!(e instanceof Refusal)) throw e;
@@ -600,5 +664,5 @@ async function main(argv = process.argv.slice(2)) {
     return 3;
   }
 }
-module.exports = { ArtRun, parseArgs, outOfSchema, clampedKeys, ActiveClock, main };
+module.exports = { ArtRun, Refusal, parseArgs, outOfSchema, clampedKeys, stepOf, fieldCellsOf, legacyValue, printMemory, ActiveClock, main };
 if (require.main === module) main().then(code => { process.exitCode = code; }).catch(e => { console.error(redact(String(e && e.stack || e), { root: ROOT })); process.exitCode = 1; });

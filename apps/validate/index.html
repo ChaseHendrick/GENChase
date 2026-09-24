@@ -21,9 +21,9 @@
 <label id="art-samples-field" hidden>Candidates (hunt) or children (evolve)<input id="art-samples" required type="number" min="1" max="5000" value="24"></label>
 <label id="art-start-field" hidden>First seed (blank: random block)<input id="art-start" type="number" min="0" max="2147483647" placeholder="random"></label>
 <label id="art-keep-field" hidden>Prints kept<input id="art-keep" required type="number" min="0" max="24" value="6"></label>
-<label id="art-inches-field" hidden>Print long edge, inches<select id="art-inches"><option selected>8</option><option>10</option><option>11</option><option>12</option><option>14</option><option>16</option><option>18</option><option>20</option><option>24</option><option>28</option><option>30</option><option>36</option><option>40</option><option>44</option><option>48</option><option>60</option></select></label>
+<label id="art-inches-field" hidden>Print long edge, inches<select id="art-inches"><option value="" selected>Default: 8, or 20 for a deep render</option><option>8</option><option>10</option><option>11</option><option>12</option><option>14</option><option>16</option><option>18</option><option>20</option><option>24</option><option>28</option><option>30</option><option>36</option><option>40</option><option>44</option><option>48</option><option>60</option></select></label>
 <label id="art-ppi-field" hidden>Print resolution<select id="art-ppi"><option value="300">300 ppi</option><option value="360">360 ppi</option><option value="450">450 ppi</option><option value="600">600 ppi</option></select></label>
-<label id="art-budget-field" hidden>Active-time budget, minutes (blank: none)<input id="art-budget" type="number" min="1" max="1440" placeholder="none"></label>
+<label id="art-budget-field" hidden>Active-time budget, minutes (blank: none, or 120 for a deep render)<input id="art-budget" type="number" min="1" max="1440" placeholder="none"></label>
 <label id="samples-field" hidden>Sweep samples<input id="samples" required type="number" min="100" max="5000000" step="100" value="10000"></label></div>
 <p id="job-help" class="muted"></p>
 <p id="contribute-note" hidden>The first adapter fits a candidate in the existing two-polygon vortex family, checks a seeded plate, then compares local sources. It can recover a known formula. No job establishes originality.</p>

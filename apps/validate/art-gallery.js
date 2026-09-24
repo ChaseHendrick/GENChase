@@ -6,7 +6,9 @@ const num = (v, d = 3) => v === null || v === undefined || !Number.isFinite(Numb
 // A JSON island that cannot close its own script element.
 const island = value => JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
 
-function galleryHtml({ job, records, controls, counts, scoring, headline }) {
+// `studio` is the relative link from the gallery's folder to dist/studio.html. The default fits the
+// validator layout: apps/validate/.runs/<job>/art/gallery.html, five levels below the repository root.
+function galleryHtml({ job, records, controls, counts, scoring, headline, studio = '../../../../../dist/studio.html' }) {
   const cards = records.filter(r => r.status !== 'failed' && r.thumb);
   const evolve = job.mode === 'art-evolve';
   const card = r => {
@@ -14,11 +16,11 @@ function galleryHtml({ job, records, controls, counts, scoring, headline }) {
     return '<li class="card" data-rank="' + esc(r.rank) + '" data-entropy="' + esc(m.entropy) + '" data-edge="' + esc(m.edge) + '" data-acuity="' + esc(m.acuity) +
       '" data-contrast="' + esc(m.contrast) + '" data-feature="' + esc(m.featurePx ?? '') + '" data-index="' + esc(r.index) + '">' +
       '<img src="' + esc(r.thumb) + '" alt="Candidate ' + esc(r.index) + ' thumbnail" width="160">' +
-      '<p><b>#' + esc(r.rank) + '</b> ' + esc(m.class) + ' · entropy ' + esc(num(m.entropy)) + ' bits · edge ' + esc(num(m.edge)) + ' · acuity ' + esc(num(m.acuity)) +
+      '<p><b>#' + esc(r.rank) + '</b> ' + esc(m.class) + ' · entropy ' + esc(num(m.entropy)) + (r.sampling?.entropySd != null ? ' ± ' + esc(num(r.sampling.entropySd)) : '') + ' bits · edge ' + esc(num(m.edge)) + (r.sampling?.edgeSd != null ? ' ± ' + esc(num(r.sampling.edgeSd)) : '') + ' · acuity ' + esc(num(m.acuity)) +
       (r.operator ? ' · ' + esc(r.operator) : '') + (r.print ? ' · print kept' : '') + (r.status === 'rejected' ? ' · rejected: ' + esc(r.reason) : '') + (r.label ? ' · ' + esc(r.label) : '') + '</p>' +
       '<p class="muted">seed ' + esc(r.seed) + ' · ' + esc(r.steps) + ' steps · grid ' + esc((r.grid || []).join('×')) + (r.clamped && r.clamped.length ? ' · clamped: ' + esc(r.clamped.join(', ')) : '') + '</p>' +
       '<label>Recipe hash <input readonly value="' + esc(r.hash) + '"></label>' +
-      '<p><a href="../../../../dist/studio.html' + esc(r.hash) + '">Open in the studio</a> (commit ' + esc(String(job.commit || 'unknown').slice(0, 12)) + ')</p>' +
+      '<p><a href="' + esc(studio) + esc(r.hash) + '">Open in the studio</a> (commit ' + esc(String(job.commit || 'unknown').slice(0, 12)) + ')</p>' +
       (evolve ? '<label class="pick"><input type="checkbox" class="parent" value="' + esc(r.hash) + '"> Use as a parent</label>' : '') + '</li>';
   };
   const reasons = Object.entries(counts.rejected || {}).map(([k, v]) => esc(k) + ' ' + esc(v)).join(', ') || 'none';

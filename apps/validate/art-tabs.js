@@ -62,6 +62,22 @@ function encodeRecipe(recipe) {
   const { id, ...payload } = recipe;
   return '#' + id + '/' + encodeURIComponent(String(payload.seed || '')) + '/' + Buffer.from(JSON.stringify(payload), 'utf8').toString('base64url');
 }
+// A hash stores its seed percent-encoded and its payload as base64url, so redaction of the hash text
+// alone never sees an address or a path inside it. `redact` is privacy.js's redact with the caller's
+// options. The hash, its percent-decoded text, its decoded seed and its decoded payload values are all
+// checked; a hash that cannot be decoded counts as private, so sharing fails closed.
+function recipeLooksPrivate(hash, redact) {
+  if (hash === null || hash === undefined || hash === '') return false;
+  if (typeof hash !== 'string') return true;
+  const changed = s => redact(s) !== s;
+  if (changed(hash)) return true;
+  let text;
+  try { text = decodeURIComponent(hash); } catch { return true; }
+  if (changed(text)) return true;
+  let r;
+  try { r = parseRecipeHash(hash); } catch { return true; }
+  return changed(r.seed) || changed(JSON.stringify(Object.values(r.payload)));
+}
 function unknownKeys(payload, schemaKeys) {
   return Object.keys(payload).filter(k => !RECIPE_META_KEYS.includes(k) && !schemaKeys.has(k));
 }
@@ -202,4 +218,4 @@ function jpegInfo(buffer, { maxBytes = LIMITS.thumbBytes, maxEdge = LIMITS.thumb
 }
 
 module.exports = { ART_TABS, ART_MODES, FIXED_KEYS, SELECTOR_KEYS, RECIPE_META_KEYS, PRINT_INCHES, PRINT_DPI, LIMITS, TITLES,
-  parseRecipeHash, encodeRecipe, unknownKeys, normalizeArtInput, artArgs, loadSchemas, jpegInfo };
+  parseRecipeHash, encodeRecipe, recipeLooksPrivate, unknownKeys, normalizeArtInput, artArgs, loadSchemas, jpegInfo };
