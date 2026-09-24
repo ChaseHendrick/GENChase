@@ -199,6 +199,21 @@ Copies supplied by the owner, not committed.
   - Tavantzis–Ting 1988 and Aref 1979: abstracts only.
   - Kudela 2014 (J. Nonlinear Sci.; also Fluid Dyn. Res. 46, 031414): summaries, plus his 2021 restatement.
 
+### N. Demina–Kudryashov 2014 read, and a completeness sweep (2026-09-24, later)
+
+- **Demina and Kudryashov 2014 (Theor. Comput. Fluid Dyn. 28, 357–368), read in full.** The owner bought it; the copy is not committed. Two independent readings from the page images (the text layer drops the Greek letters), an independent numerical check at 50 digits, two referees and a reconciliation.
+  - Sect. 3 gives the two-ring collapse family with an optional central vortex Γ₀. At Γ₀ = 0, their Eq. (37) is the paper's circulation condition with x = r², and their Eq. (36) is the paper's constant S as a function of e^{inθ}; the difference is a multiple of the circulation condition, checked exactly and against Biot–Savart for n = 2 to 8 (`verify_general_mu.py` 10h).
+  - They state that every relative rotation other than e^{inθ} = ±1 collapses or scatters, without saying which. For this family they never separate the two rates or evaluate their ratio (their Eq. (10) does contain the coefficient β/(2α), whose absolute value is P, for the general solution), and they minimize or bound nothing. No K_n, F_n, table, or three-vortex result.
+  - **DOES NOT KILL** any result. It under-credited them, though: the paper now credits their Eqs. (36)–(37) in the Introduction, Section 4 and the Discussion, their general-N solution (7)–(12) in Section 2, and their conditions (26)–(28) in the proof of Lemma 2. The paper must not say that they "do not form the ratio".
+  - Their Table 1 seven-vortex collapse (Fig. 1a) is self-similar with the printed Ω to 50-digit precision (residual 1e-50) and has P = 12433/(1240√155) = 0.805 < √3/2 (10i). The paper now says that the bound of Corollary 1 does not carry over to larger systems. Their Table 2, Fig. 2a has a misprinted sign of Γ₀; do not cite it.
+- **The Introduction's [1, 14] for "every zero-impulse configuration moves self-similarly"** rested on Aref 1979, which was not read. It now cites Gallay–Šverák Sect. 4.5.2 and Krishnamurthy–Aref–Stremler, both read in full.
+- **Completeness sweep.** One agent mined the reference lists of every paper read (Borisov–Lebedev, Krishnamurthy–Aref–Stremler, Kimura, Leoncini et al., Reinaud et al., Drivas et al., Gallay–Šverák, Anurag–Goodman, Demina–Kudryashov 2014 and 1407.1641, Kudela 2021, Gotoda, Aref 2010, O'Neil 2007, Aref 1982). A second ran about 70 WebSearch queries: forward citations of Kimura 1987, Koiller 1985, Demina–Kudryashov 2014, Aref 2010, Krishnamurthy–Stremler 2018 and O'Neil 2007; "three point vortices" collapse "angular velocity" minimum; "self-similar collapse" logarithmic spiral bound; rotation angle, rotation number, winding number, pitch angle, minimal winding; concentric polygons collapse rate; collapse path length; Hiraoka; Hernández-Garduño–Lacomba; Gallay–Šverák follow-ups; generalized Euler and SQG collapse (Badin–Barry, Reinaud, Chen–Liu, Taylor–Llewellyn Smith); sphere; 2025–2026 arXiv collapse papers; a Russian-language query. WebFetch was refused for arxiv.org, ntrs.nasa.gov, vtechworks.lib.vt.edu and others, so every item below is judged from abstracts and search summaries only.
+  - **Must read before submission:** Stremler 2021 (RCD 26, 482–504; his review after Krishnamurthy–Stremler 2018; paywalled); Conte–de Seze 2015 (Mod. Phys. Lett. B 29, 1530017; arXiv:1511.00069, free); the zero-impulse section of Tavantzis–Ting 1988.
+  - **Cite after reading:** Hernández-Garduño–Lacomba 2007 (arXiv:math-ph/0412024), Hiraoka 2008 and 2009, Synge 1949, Grotto–Romito–Viviani 2024 (arXiv:2307.05133).
+  - **Optional:** O'Neil 2007 RCD, Chen–Liu 2024 Physica D (authors Jiahe Chen and Qihuai Liu, which settles entry J's "authors not confirmed"), the reviews [4] and [16].
+  - **Dismissed:** Aref 1979 and Kudela 2014 (low risk, see above), Kimura 1990/1991, Novikov 1975 and 1980, the reductions that remove rotation (Anurag–Goodman–O'Grady 2024, Luo–Chen–Liu 2022, Ohsawa 2019), and the desingularization, regularity and tracer papers.
+- **Still unread:** every item in the sweep lists above, all judged from abstracts only; the three must-reads come first.
+
 ## Do this, do not do that
 
 **Do**

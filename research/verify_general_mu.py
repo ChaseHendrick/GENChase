@@ -901,6 +901,56 @@ for bb in ['0.05', '0.2', '0.35', '0.5', '0.65', '0.8', '0.95', '1.1', '1.3', '1
 check('10g mu = 1: Kimura 1987 Eq. (4.4) gives kappa = (A + iB)/(4 pi) at ten angles of 0 < beta < pi/2',
       dev_kim < mp.mpf('1e-45'), 'max |kappa - (A + iB)/(4 pi)| = %s' % mp.nstr(dev_kim, 3))
 
+# 10h. Demina and Kudryashov 2014, Sect. 3: two regular n-gons with circulations G1 (radius R1) and G2 (radius r R1)
+#      and G0 at the center. With G2 = -G1/r^2 (zero angular impulse) their Eq. (37) fixes r, and their Eq. (36)
+#      gives the constant Omega of their Eq. (11), Omega conj(z_k) = sum_j G_j/(z_k - z_j), i.e. Omega = S = 2 pi i conj(kappa),
+#      as a function of b2 = e^{i n phi2}. At G0 = 0, G1 = x, R1 = 1, r^2 = x and r^n b2 = v:
+nn_, xx_, vv_, G0_, G1_, rr_, R1_, bb_ = sp.symbols('n x v Gamma0 Gamma1 r R1 b2')
+Om36 = (((2*(nn_*G1_ + G0_)*rr_**2 - (nn_ - 1)*G1_)*rr_**nn_*bb_ + (nn_ - 1)*G1_ - 2*G0_*rr_**2)
+        / (2*R1_**2*rr_**4*(rr_**nn_*bb_ - 1)))
+E37 = ((nn_ - 1)*G1_ + 2*G0_)*rr_**4 - 2*(nn_*G1_ + G0_)*rr_**2 + (nn_ - 1)*G1_
+circ_ = (nn_ - 1)*xx_**2 - 2*nn_*xx_ + (nn_ - 1)
+S_ = xx_*(nn_ - 1)/2 - nn_/(1 - vv_)
+Om36_x = sp.simplify(Om36.subs({G0_: 0, R1_: 1, G1_: xx_}).subs(rr_**nn_*bb_, vv_).subs(rr_, sp.sqrt(xx_)))
+check('10h DK Eq. (37) at Gamma0 = 0, r^2 = x is Gamma1 times the circulation condition (n-1)x^2 - 2nx + (n-1)',
+      sp.simplify(E37.subs(G0_, 0).subs(rr_, sp.sqrt(xx_)) - G1_*circ_) == 0)
+check('10h DK Eq. (36) at Gamma0 = 0, Gamma1 = x, R1 = 1, r^2 = x, r^n b2 = v equals S - circ/(2x) identically',
+      sp.simplify(Om36_x - (S_ - circ_/(2*xx_))) == 0)
+mp.mp.dps = 50
+dev_dk = mp.mpf(0)
+for n_dk in range(2, 9):
+    xn_dk = (n_dk + mp.sqrt(2*n_dk - 1))/(n_dk - 1)
+    eps_dk = mp.expj(2*mp.pi/n_dk)
+    for f_dk in ['0.11', '0.4', '0.77']:
+        th_dk = mp.mpf(f_dk)*mp.pi/n_dk
+        zs_dk = [eps_dk**k for k in range(n_dk)] + [mp.sqrt(xn_dk)*mp.expj(th_dk)*eps_dk**k for k in range(n_dk)]
+        Gs_dk = [xn_dk]*n_dk + [mp.mpf(-1)]*n_dk
+        vv_dk = xn_dk**(mp.mpf(n_dk)/2)*mp.expj(n_dk*th_dk)
+        Om_dk = (((2*n_dk*xn_dk - (n_dk - 1))*xn_dk)*vv_dk + (n_dk - 1)*xn_dk)/(2*xn_dk**2*(vv_dk - 1))
+        for k in range(2*n_dk):
+            sm = sum(Gs_dk[j]/(zs_dk[k] - zs_dk[j]) for j in range(2*n_dk) if j != k)
+            dev_dk = max(dev_dk, abs(Om_dk*mp.conj(zs_dk[k]) - sm)/abs(sm))
+check('10h DK Eq. (36) against the Biot-Savart sum over all 2n vortices, n = 2..8, three relative rotations each',
+      dev_dk < mp.mpf('1e-45'), 'max relative difference %s' % mp.nstr(dev_dk, 3))
+
+# 10i. The seven-vortex collapse of DK Table 1 (Fig. 1a): G0 = 6383/2250 at 0, G1 = 14/15 at +-2,
+#      G2 = -62/45 at +-2 e^{i phi2} with cos 2 phi2 = 13/18, G3 = 1 at +-4/3. It is self-similar with the printed
+#      Omega, and P = |Re Omega|/(2 |Im Omega|) = 12433/(1240 sqrt 155) < sqrt(3)/2: Corollary 1 is specific to three vortices.
+ph_t1 = mp.acos(mp.mpf(13)/18)/2
+zs_t1 = [mp.mpc(0), mp.mpc(2), mp.mpc(-2), 2*mp.expj(ph_t1), -2*mp.expj(ph_t1), mp.mpc(4)/3, mp.mpc(-4)/3]
+Gs_t1 = [mp.mpf(6383)/2250] + [mp.mpf(14)/15]*2 + [mp.mpf(-62)/45]*2 + [mp.mpf(1)]*2
+Om_t1 = mp.mpf(12433)/9000 - 31*mp.sqrt(155)/450*mp.mpc(0, 1)
+dev_t1 = mp.mpf(0)
+for k in range(7):
+    sm = sum(Gs_t1[j]/(zs_t1[k] - zs_t1[j]) for j in range(7) if j != k)
+    dev_t1 = max(dev_t1, abs(Om_t1*mp.conj(zs_t1[k]) - sm))
+imp_t1 = sum(g*abs(z)**2 for g, z in zip(Gs_t1, zs_t1))
+P_t1 = abs(Om_t1.real)/(2*abs(Om_t1.imag))
+check('10i DK Table 1: seven vortices collapse self-similarly with the printed Omega, and P = 12433/(1240 sqrt 155) < sqrt(3)/2',
+      dev_t1 < mp.mpf('1e-45') and abs(imp_t1) < mp.mpf('1e-45') and Om_t1.imag < 0
+      and abs(P_t1 - mp.mpf(12433)/(1240*mp.sqrt(155))) < mp.mpf('1e-45') and P_t1 < mp.sqrt(3)/2,
+      'residual %s, P = %s' % (mp.nstr(dev_t1, 3), mp.nstr(P_t1, 15)))
+
 # 10c. Section 4, exact and for general n.
 n_, x_, rho_, al_ = sp.symbols('n x rho alpha', positive=True)
 Eh, mexp, zt, ztb = sp.symbols('E m zeta zetabar', positive=True)

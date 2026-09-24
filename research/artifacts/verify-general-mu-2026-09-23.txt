@@ -319,6 +319,10 @@
   PASS 10b Remark 2: on both arcs min P = sqrt 2 at cos 2beta = 1/3 :: [('1.4142135623730950488', '0.333333333333333'), ('1.4142135623730950488', '0.333333333333333')]
   PASS 10f mu = 1: the fastest collapse at |z1 - z2| = 1 has t_c = 4 pi/3, P = 3/2, cos 2beta = 3/5 :: beta=0.463647609000806 t_c=4.18879020478639 P=1.5
   PASS 10g mu = 1: Kimura 1987 Eq. (4.4) gives kappa = (A + iB)/(4 pi) at ten angles of 0 < beta < pi/2 :: max |kappa - (A + iB)/(4 pi)| = 2.17e-51
+  PASS 10h DK Eq. (37) at Gamma0 = 0, r^2 = x is Gamma1 times the circulation condition (n-1)x^2 - 2nx + (n-1)
+  PASS 10h DK Eq. (36) at Gamma0 = 0, Gamma1 = x, R1 = 1, r^2 = x, r^n b2 = v equals S - circ/(2x) identically
+  PASS 10h DK Eq. (36) against the Biot-Savart sum over all 2n vortices, n = 2..8, three relative rotations each :: max relative difference 1.35e-50
+  PASS 10i DK Table 1: seven vortices collapse self-similarly with the printed Omega, and P = 12433/(1240 sqrt 155) < sqrt(3)/2 :: residual 1.2e-50, P = 0.805356928729417
   PASS 10c the two quotients are equal iff (n-1)x^2 - 2nx + (n-1) = 0  (eq. 11)
   PASS 10c the zeta quotient follows from eq. (10) with z = 1, |zeta|^2 = x
   PASS 10c sum_{i<j} Gamma_i Gamma_j of the 2n vortices = (n/2)((n-1)x^2 - 2nx + (n-1))
@@ -337,7 +341,7 @@
 ==============================================================================
 SUMMARY
 ==============================================================================
-checks: 117, passed: 117, failed: 0   (29.0 s)
+checks: 121, passed: 121, failed: 0   (29.9 s)
 
 kappa(theta; mu) = i (1+mu)^3/(2 pi sqrtR) * (sqrtR + (1-mu) e^{i theta}) / ((sqrtR - mu e^{i theta})(sqrtR + e^{i theta}))
    [normalization |z3 - z_c| = 1, R = 1 + mu + mu^2; zero-impulse circle |w - mu/(1+mu)| = sqrtR/(1+mu)]
