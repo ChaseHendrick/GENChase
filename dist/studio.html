@@ -1911,7 +1911,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "life",
     "source": "src/modules/life.js",
-    "sourceSha256": "2a673daa8172051fc117948ce2caac2f9ecc99353bba100dc2c0ef28d8ca8a70",
+    "sourceSha256": "ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f",
     "reference": "Lenia: Bert Wang-Chak Chan, 2018-19. The discrete rules go back to John Conway's Game of Life, 1970, and Stanislaw Ulam and John von Neumann's cellular automata in the 1940s.",
     "equation": "A \u003c- clamp(A + (1/T)·G(K*A)),   G(u) = 2·exp(-(u-mu)^2 / 2·sigma^2) - 1",
     "status": "unvalidated",
@@ -2313,7 +2313,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "skyrmion",
     "source": "src/modules/skyrmion.js",
-    "sourceSha256": "c4006ffc3d97ca506cd57ef802b6067a54c2fca8ba390d59ca856ad6c69ac4b8",
+    "sourceSha256": "0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e",
     "reference": "A. N. Bogdanov and D. A. Yablonskii, Sov. Phys. JETP 68, 101 (1989), predicted localized chiral solitons in magnets with Dzyaloshinskii-Moriya coupling. S. Muhlbauer, B. Binz, F. Jonietz, C. Pfleiderer, A. Rosch, A. Neubauer, R. Georgii and P. Boni, Science 323, 915 (2009), observed the skyrmion lattice in MnSi. The topological charge on the plate is the Berg-Luscher lattice invariant, Berg and Luscher, Nucl. Phys. B 190, 412 (1981).",
     "equation": "dn/dt = -n x (n x H),   H = J sum_nn n_j + H_DMI + 2K n_z zhat + B zhat,   Q = (1/4pi) int n · (dx n x dy n) dA",
     "status": "unvalidated",
@@ -2408,7 +2408,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "lens",
     "source": "src/modules/lens.js",
-    "sourceSha256": "609139547acb15a97d4272143d5f8b1c6141348d4f73b92e77071f7dfecffd46",
+    "sourceSha256": "5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d",
     "reference": "A. Einstein, Science 84, 506 (1936), computed the deflection of starlight by the sun and noted the ring that appears when source and lens align. The plate is the thin-lens equation as in Schneider, Ehlers and Falco, Gravitational Lenses (1992). The potential is solved by Jacobi iteration on the Poisson equation for the seeded convergence.",
     "equation": "β = θ − α(θ),   α = ∇ψ,   ∇²ψ = 2κ,   θ_E² = 4GM D_ls / (c² D_l D_s)",
     "status": "unvalidated",
@@ -2503,7 +2503,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "timecrystal",
     "source": "src/modules/timecrystal.js",
-    "sourceSha256": "b5704db157a328d7b03b8f821141307570e4e5741b17658432a34862e096b03c",
+    "sourceSha256": "fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b",
     "reference": "Frank Wilczek, Phys. Rev. Lett. 109, 160401 (2012), named the time crystal. Watanabe and Oshikawa, Phys. Rev. Lett. 114, 251603 (2015), proved an equilibrium one cannot exist. Else, Bauer and Nayak, Phys. Rev. Lett. 117, 090402 (2016), and Khemani, Lazarides, Moessner and Sondhi, Phys. Rev. Lett. 116, 250401 (2016), showed a periodically driven, many-body-localised spin chain can still lock at twice the drive period. Zhang et al., Nature 543, 217 (2017), saw it in trapped ions. This plate is the classical Floquet-Ising analog of that chain, not a quantum register.",
     "equation": "U(T) = exp(−i T H_Ising) · exp(−i π(1−ε) Σ X_i),   m₂ = ⟨(−1)^n m(nT)⟩",
     "status": "unvalidated",
@@ -2686,7 +2686,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "lozenge",
     "source": "src/modules/lozenge.js",
-    "sourceSha256": "c53780ea0ee6831557cfd89ff5b1fb913e749451eeb07b8559aa235ca4d95d62",
+    "sourceSha256": "e7beea07d24d9bc485fdface9d33a4806d55190cd219273b7ba26239fcc8ef8b",
     "reference": "The sampler is James Propp and David Wilson, 'Exact sampling with coupled Markov chains and applications to statistical mechanics', Random Structures and Algorithms 9, 223 to 252 (1996); random tilings are one of their own worked examples. The limit shape measured on the plate is Henry Cohn, Michael Larsen and James Propp, 'The shape of a typical boxed plane partition', New York Journal of Mathematics 4, 137 to 165 (1998). The count of boxed plane partitions is Percy MacMahon, 'Memoir on the theory of the partitions of numbers, Part VI: partitions in two-dimensional space, to which is added an adumbration of the theory of partitions in three-dimensional space', Philosophical Transactions of the Royal Society A 211, 345 to 373 (1912). The height function that turns a tiling into a stack of cubes is William Thurston, 'Conway's tiling groups', American Mathematical Monthly 97, 757 to 773 (1990). How long this chain needs is David Wilson, 'Mixing times of lozenge tiling and card shuffling Markov chains', Annals of Applied Probability 14, 274 to 325 (2004).",
     "equation": "h(x, y) ∈ [0, c] weakly decreasing;  heat bath h(x, y) ~ U{max(h(x+1,y), h(x,y+1)) … min(h(x−1,y), h(x,y−1))};  run −T → 0 from ⊥ and ⊤ on one fixed set of maps, doubling T until they agree, and read the common value at 0",
     "status": "unvalidated",
@@ -2705,7 +2705,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "arago",
     "source": "src/modules/arago.js",
-    "sourceSha256": "def471f2df1ae32559f6444a166db0e7fb9a1f8be05b3a91820617a7b6678566",
+    "sourceSha256": "63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06",
     "reference": "S. D. Poisson argued in 1818 that Fresnel's wave theory implied a bright spot on axis in the shadow of an opaque disk, which he took as a reductio. D. F. J. Arago performed the experiment and found the spot. The plate is a Fresnel propagator through a circular stop.",
     "equation": "U(0) = (e^{ikz}/iλz) ∫_{|ρ|>R} exp(ik|ρ|²/2z) dρ,   I(0) ≃ I_open",
     "status": "unvalidated",
@@ -2791,7 +2791,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "rogue",
     "source": "src/modules/rogue.js",
-    "sourceSha256": "63a5c263919c63e7d5bd224cde99e16a17ace1f61e6ffb88030d8fc1f8b42834",
+    "sourceSha256": "91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f",
     "reference": "D. H. Peregrine, J. Austral. Math. Soc. Ser. B 25, 16 (1983). Akhmediev, Eleonskii and Kulagin (1987); Kuznetsov (1977) and Ma (1979). Draupner measured a rogue wave in 1995. Formula conventions: Haragus and Pelinovsky, arXiv:2112.14426, Eqs1.1–1.4. The plate samples these established analytic solutions.",
     "equation": "i ψ_t + ½ ψ_xx + |ψ|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   |ψ|²_max / |ψ|²_∞ = 9",
     "status": "validated within stated limits",
@@ -2888,7 +2888,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "anderson",
     "source": "src/modules/anderson.js",
-    "sourceSha256": "e3a71c358f0c08209a1f494a5da3d484b8b5a07e14266f83a6505a654a8a4dce",
+    "sourceSha256": "1676978773d9d615778f1a035a465d5ac63a9c79bc01b5106669b285d9cee23a",
     "reference": "P. W. Anderson, Phys. Rev. 109, 1492 (1958). A random potential can trap a wave that classical intuition says must spread. Abrahams, Anderson, Licciardello and Ramakrishnan (1979) argued that in two dimensions all states localise. The plate is imaginary-time relaxation to the ground state of a tight-binding square, not a wave-packet detector (that lives on Schrödinger).",
     "equation": "H = t Σ_\u003cij> |i>\u003cj| + Σ_i ε_i |i>\u003ci|,   ε ~ U[-W/2,W/2],   IPR = Σ |ψ|⁴",
     "status": "unvalidated",
@@ -3085,7 +3085,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "soliton",
     "source": "src/modules/soliton.js",
-    "sourceSha256": "37cf9cfbd76b979fdaa91eaf9dc6b98b4c3d130304076f7abfc3242597cddb1e",
+    "sourceSha256": "baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1",
     "reference": "J. S. Russell, Report of the 14th Meeting of the British Association (1844), chased a heap of water that would not spread. Korteweg and de Vries (1895) wrote the equation. Zabusky and Kruskal, Phys. Rev. Lett. 15, 240 (1965), collided two and named them solitons. The plate evaluates the established Hirota two-soliton tau function, including its interaction term; Benes, Kasman and Young, On Decompositions of the KdV 2-Soliton (2006), provide a reference.",
     "equation": "u_t + 6 u u_x + ν² u_xxx = 0; u = 2ν² ∂xx log τ, τ = 1+e^η1+e^η2+A12 e^(η1+η2)",
     "status": "validated within stated limits",
@@ -3181,7 +3181,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "ssh",
     "source": "src/modules/ssh.js",
-    "sourceSha256": "1fa05fe97e929dad52fd9c3367b4ec2f1f097a38cf4297d78bf7a94b3c6924a9",
+    "sourceSha256": "392be5b4ae8e8218d411c55e2db41a205193ae2ec987f4ffb7eaae708da5fe45",
     "reference": "W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)| of every eigenmode, stacked.",
     "equation": "H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open)",
     "status": "unvalidated",
@@ -3305,7 +3305,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "aubry",
     "source": "src/modules/aubry.js",
-    "sourceSha256": "fab98cf5c44a3d1907ba0c9a8289fe824d1d4456f0d7d0bac63e686621d84556",
+    "sourceSha256": "0831c9cf2d31401025a82f41df10d17095d2f09b0a8d2b7fed8b5f9288592f1d",
     "reference": "S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 2 every eigenstate localises. The model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 2. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.",
     "equation": "ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localised for λ>2",
     "status": "unvalidated",
@@ -3502,7 +3502,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "hopf",
     "source": "src/modules/hopf.js",
-    "sourceSha256": "62a4457707adf41bb37623379ec36e93e3bc455d11e87cf95aaea2880b86b85a",
+    "sourceSha256": "ae591b50d5062c9a122bdd7270ff4e4e45e43e4d37ba047e6bda6d23d74967ce",
     "reference": "H. Hopf, Math. Ann. 104, 637 (1931). The third homotopy group of the 2-sphere is not zero: π₃(S²) = ℤ, generated by this map. Stereographic projection from S³ turns the fibres into a nesting of linked circles in R³, then onto the plate. No two fibres are unlinked.",
     "equation": "η: S³ → S²,   η(z1,z2) = (2 z1 z2-bar, |z1|²-|z2|²),   fibres = circles,   lk = 1",
     "status": "validated within stated limits",
@@ -3938,7 +3938,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "kakeya",
     "source": "src/modules/kakeya.js",
-    "sourceSha256": "03d9a92edaf8824847e6c3ca03df4b9d52db0d1a1c14dab3eaa4e12c6aa184c1",
+    "sourceSha256": "d1032c40c96cb013ba2a97d5ab176553ad803893c93321a1305360248c10dbb0",
     "reference": "S. Kakeya asked in 1917 for the smallest set in which a unit needle can be rotated. Besicovitch (1919/1928) showed the infimum of the area is zero: a Perron tree of overlapping triangles contains a unit segment in a dense set of directions and can be made as thin as one likes. The plate is a finite Perron-like union, not the infinite construction.",
     "equation": "K_ε ⊃ a unit segment in every direction,   |K_ε| → 0 as ε → 0",
     "status": "unvalidated",
@@ -4031,7 +4031,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "breather",
     "source": "src/modules/breather.js",
-    "sourceSha256": "09aab868ea80869b383f11d53275eaa86dd914f926be6cf446ce304f5c7c4879",
+    "sourceSha256": "29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70",
     "reference": "The sine-Gordon breather is an exact, time-periodic, spatially localised solution; see Seeger, Donth and Kochendörfer (1953) and the inverse-scattering account of Faddeev and Takhtajan. Linear waves radiate. This one does not: the envelope sech(β x) holds a bound oscillation forever. The plate is spacetime of u.",
     "equation": "u_tt − u_xx + sin u = 0,   u = 4 arctan[ (β/α) sin(α t) sech(β x) ],   α²+β² = 1",
     "status": "validated within stated limits",
@@ -4158,7 +4158,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "klein",
     "source": "src/modules/klein.js",
-    "sourceSha256": "cd8bba95fae1502891662da51bbd20fdb71fd929c40d37337d66d21524e09822",
+    "sourceSha256": "42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29",
     "reference": "O. Klein, Z. Phys. 53, 157 (1929), found that a relativistic electron can pass a tall barrier as if it were not there. Katsnelson, Novoselov and Geim, Nature Phys. 2, 620 (2006), showed the same for graphene at normal incidence: chirality forbids backscattering. The plate is |ψ|² of a 2-component Dirac wave on a line, stacked in time, not a carbon lattice.",
     "equation": "H = v_F σ · p + V(x),   T(θ=0) = 1  (massless)",
     "status": "unvalidated",
@@ -4244,7 +4244,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "purcell",
     "source": "src/modules/purcell.js",
-    "sourceSha256": "ce0ba0ed90bdfe3a32c54511616eed3d38da1dc597dd3263d916041614a69236",
+    "sourceSha256": "f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52",
     "reference": "E. M. Purcell, Am. J. Phys. 45, 3 (1977), \"Life at low Reynolds number.\" Time-reversible stroking (a scallop) produces no net motion in Stokes flow. A three-link swimmer that traces a loop in shape space does. The plate is the trail of that gait, not a bacterium.",
     "equation": "Re → 0,   scallop theorem: a reciprocal gait gives Δx = 0,   three-link square gait: Δx ≠ 0",
     "status": "unvalidated",
@@ -4262,7 +4262,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "exceptional",
     "source": "src/modules/exceptional.js",
-    "sourceSha256": "ad94987a5e8ecf2776e680f74a319acf39ec4943e7274a14a1a0773fd0cbd3db",
+    "sourceSha256": "aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6",
     "reference": "C. M. Bender and S. Boettcher, Phys. Rev. Lett. 80, 5243 (1998), on PT-symmetric spectra; Heiss (2004) and many others on exceptional points, where both eigenvalues and eigenvectors coalesce. Hermitian matrices cannot do this. The plate is Re λ (and the gap) over the (κ, γ) plane, or the two modes of one dimer.",
     "equation": "H = [[iγ, κ],[κ, −iγ]],   λ = ±√(κ²−γ²),   EP at γ = κ",
     "status": "unvalidated",
@@ -4493,7 +4493,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "airy",
     "source": "src/modules/airy.js",
-    "sourceSha256": "f33fefde24a7ec594dbd108370c21337b533eaaf0b0f69ee2312f82f4ca0fd77",
+    "sourceSha256": "7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f",
     "reference": "M. V. Berry and N. L. Balazs, Am. J. Phys. 47, 264 (1979). A free Schrödinger (or paraxial Helmholtz) packet is not supposed to accelerate: there is no force. The Airy packet does, its intensity maximum riding the parabola x = z²/4, a consequence of the linear potential in the Airy ODE rather than of a force in the wave equation. Siviloglou, Broky, Dogariu and Christodoulides, Phys. Rev. Lett. 99, 213901 (2007), flew one in the lab. The plate is the exact finite-energy Airy beam, not a cannonball.",
     "equation": "ψ(x,z) = Ai(x − z²/4 + i a) exp(a x − a z²/2 + i(x z/2 − z³/12)),   x_peak = z²/4",
     "status": "unvalidated",
@@ -4655,7 +4655,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "veselago",
     "source": "src/modules/veselago.js",
-    "sourceSha256": "acffd62c4377107f0710caf58976f5c161cbb78d3e61eae49b9048665af3dacf",
+    "sourceSha256": "d43e80339587c7273e1cab5cd6f629826cd1d2b46cab3c74539f8b9ee3164191",
     "reference": "V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968), asked what optics would do if ε and μ were both negative: a left-handed medium, a reversed Doppler shift, and a slab that acts as a lens. Pendry, Phys. Rev. Lett. 85, 3966 (2000), showed the same slab can amplify evanescent waves and beat the diffraction limit. The plate traces geometric rays through n \u003c 0, not a fabricated metamaterial.",
     "equation": "n₁ sin θ₁ = n₂ sin θ₂,   n₂ = −1  ⇒  θ₂ = −θ₁,   image at 2L − d",
     "status": "unvalidated",
@@ -4915,7 +4915,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "reuleaux",
     "source": "src/modules/reuleaux.js",
-    "sourceSha256": "179cef420e5bc881718b9904dc73240b446f54178ee8a1f592f786caf710e4f9",
+    "sourceSha256": "eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707",
     "reference": "F. Reuleaux, The Kinematics of Machinery (Kennedy translation, 1876), described the curved triangle of constant width now named for him. The intersection of three radius-R disks centered at an equilateral triangle has constant support width R. The plate shows this body, rotated overlays or a sampled support-width rose.",
     "equation": "width(θ) = R  for all θ,   W ≠ a disk,   area = ½(π − √3) R²",
     "status": "validated within stated limits",
@@ -5082,7 +5082,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "track",
     "source": "src/modules/track.js",
-    "sourceSha256": "7d731f0d2cc21a0dfe4502f49f7be6fc8627434f7401298c6360000e098f4322",
+    "sourceSha256": "b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7",
     "reference": "The sine-Gordon breather is exact; Seeger, Donth and Kochendörfer (1953), Faddeev and Takhtajan. A prescribed index n(x) is an inhomogeneous Josephson junction. A beam that writes the index it travels in is a self-written waveguide: Monro, de Sterke and Poladian, J. Mod. Opt. 45, 1998, and the photorefractive soliton of Segev. This plate puts that idea on a sine-Gordon breather, writes n from strain, and checks the open loop against the Lorentz speed. It is not a new law and it is not named as one.",
     "equation": "φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1)",
     "status": "unvalidated",
@@ -5101,7 +5101,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "knotlight",
     "source": "src/modules/knotlight.js",
-    "sourceSha256": "aa2f0b0173a44e44c7b7d9bdb80d5910bab2e85ac7f056eb5eece9113bc1d1c2",
+    "sourceSha256": "779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb",
     "reference": "The polynomial whose zeros are a trefoil in R³ is M. V. Berry and M. R. Dennis, Proc. R. Soc. A 457, 2251 (2001); J. Leach, M. R. Dennis, J. Courtial and M. J. Padgett flew a knotted optical vortex in Nature 432, 165 (2004). The open-book fibration of the trefoil singularity is J. Milnor, Singular Points of Complex Hypersurfaces, 1968. The bark is Weierstrass, 1872. No paper draws the three on one seed. That arrangement, and this print, are the artifact; the science is not a claim.",
     "equation": "ψ = (x+iy)³ − (z−ia)²,   zeros ≃ (2,3) torus knot;   pages = arg ψ;   bark = Σ α^n cos(β^n s)",
     "status": "unvalidated",
@@ -5139,7 +5139,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "kp",
     "source": "src/modules/kp.js",
-    "sourceSha256": "44075d6ab4ad2f25ae7fda38c1a92a226e1e078e9bd06aafacaf5a224fadaf1f",
+    "sourceSha256": "3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329",
     "reference": "The KP equation is Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). The tau function as a Wronskian of exponentials is Sato and Hirota. Resonant Y-junctions are Miles, J. Fluid Mech. 79, 171 (1977). The classification of the webs by totally nonnegative Grassmannians is Biondini and Chakravarty, J. Math. Phys. 47, 033514 (2006), and Kodama. Asymptotic webs expand and keep their morphology: Horowitz and Zarmi, Physica D 300, 1 (2015). This plate evaluates the exact tau function. It is not a new equation.",
     "equation": "(−4 u_t + u_xxx + 6 u u_x)_x + 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = Σ_I det(A_I) Δ(k_I) e^{Σ θ}",
     "status": "unvalidated",
@@ -5258,7 +5258,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "peakon",
     "source": "src/modules/peakon.js",
-    "sourceSha256": "4834e70598cd058b068254df6dc94a59a4fa98058fa00064aa94eccc9b40f410",
+    "sourceSha256": "cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23",
     "reference": "The Camassa–Holm equation and the peakon u = c exp(−|x − c t|) are R. Camassa and D. D. Holm, Phys. Rev. Lett. 71, 1661 (1993). Multi-peakon collisions, including the Stieltjes / Hankel closed form used here, are R. Beals, D. H. Sattinger and J. Szmigielski, Inverse Problems 15, L1 (1999) and Adv. Math. 154, 229 (2000). This plate evaluates that exact N-peakon formula. It is not a new soliton.",
     "equation": "u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−|x−x_i|},   m = u − u_xx",
     "status": "validated within stated limits",
@@ -5366,7 +5366,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "crapper",
     "source": "src/modules/crapper.js",
-    "sourceSha256": "19bf94596e6ddc63063735b53dd99216b50e6580dd1ae6ea8d4f59995f1f3e32",
+    "sourceSha256": "463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92",
     "reference": "Crapper, An exact solution for progressive capillary waves of arbitrary amplitude, J. Fluid Mech. 2, 532 (1957), found the unique closed-form finite-amplitude pure-capillary wave on deep water: crests flatten, troughs sharpen, and at s* ≈ 0.730 the trough pinches a bubble of air. Hur and Vanden-Broeck, Eur. J. Mech. B/Fluids 83, 190 (2020), arXiv:2003.00950, showed that the same profile is a periodic traveling wave of a constant-vorticity Euler flow with g=0 and σ=0. The flows underneath differ. Constantin and Martín, On Crapper's wave, J. Nonlinear Math. Phys. (2011), proved the interior map is a diffeomorphism only for |A| ≤ 3−2√2 ≈ 0.172, a smaller range than the bubble. This plate is a seeded print of the exact map. It is not a new equation.",
     "equation": "X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4|A|/(π(1−A²))",
     "status": "unvalidated",
@@ -5385,7 +5385,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "hasimoto",
     "source": "src/modules/hasimoto.js",
-    "sourceSha256": "88499871add56cf578919868f1ac033824f0594629abb241d77e41f5bb459765",
+    "sourceSha256": "984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741",
     "reference": "H. Hasimoto, J. Fluid Mech. 51, 477 (1972), mapped the local-induction approximation for a thin vortex filament to the cubic nonlinear Schrödinger equation and found the sech soliton: a loop of helical motion that travels along a line vortex at speed equal to twice the torsion. The explicit traveling-wave curve sampled here is the solitary-wave member of S. Kida, J. Fluid Mech. 112, 397 (1981). This plate is a print of that curve. It is not a new law of vortex motion.",
     "equation": "γ_t = γ_s × γ_ss,   ψ = κ exp(i ∫ τ ds),   κ = 2ν sech(ν(s−2τ₀ t)),   c = 2τ₀",
     "status": "validated within stated limits",
@@ -5766,7 +5766,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "molecular",
     "source": "src/modules/molecular.js",
-    "sourceSha256": "b0152563304cd2f85948d12def42b459c6f110f8730f0f55b86a45dd145f814a",
+    "sourceSha256": "5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874",
     "reference": "J. E. Lennard-Jones, Proceedings of the Royal Society A (1924). L. Verlet, Physical Review (1967). Force shifting and molecular dynamics: M. P. Allen and D. J. Tildesley, Computer Simulation of Liquids, second edition (2017).",
     "equation": "V(r) = 4(r^-12 - r^-6) - V_LJ(rc) + (r-rc)F_LJ(rc), r \u003c rc = 2.5;  m r̈ = -∇V",
     "status": "validated within stated limits",
@@ -5872,7 +5872,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "plasma",
     "source": "src/modules/plasma.js",
-    "sourceSha256": "237cfe67009ed638ec3b021c6f872dd1190e13e0ea0fd85ac49f6ea9c62dbdd4",
+    "sourceSha256": "07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e",
     "reference": "Standard cloud-in-cell electrostatic plasma model. C. K. Birdsall and A. B. Langdon, Plasma Physics via Computer Simulation (1985). CIC field centering and conservation limitations: J. U. Brackbill, arXiv:1510.08741 (2015), sections 3.1–3.5. Original implementation; not the GEMPIC geometric scheme.",
     "equation": "∂f/∂t + v ∂f/∂x − E ∂f/∂v = 0; ∂E/∂x = 1 − ∫f dv; x ∈ [0, 2π), periodic",
     "status": "validated within stated limits",
@@ -5928,7 +5928,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "shallow",
     "source": "src/modules/shallow.js",
-    "sourceSha256": "65d975766f9266e6c68ae53af438b1f624a6e8907228fd781d45db9ef497c0a9",
+    "sourceSha256": "764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6",
     "reference": "A. J. C. de Saint-Venant (1871), shallow-water equations. Rusanov/local Lax–Friedrichs conservative finite-volume flux. Exact wave benchmarks follow D. I. Ketcheson, R. J. LeVeque and M. J. del Razo, Riemann Problems and Jupyter Solutions (2020). Original implementation of established equations; no Clawpack code is included.",
     "equation": "h_t + ∇·(h u) = 0; (h u)_t + ∇·(h u⊗u + ½h² I) = 0, g = 1",
     "status": "validated within stated limits",
