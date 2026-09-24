@@ -370,7 +370,10 @@ const PRINT = async ({ spectra, colorSpectra, w, h }) => {
   const e = Studio.auditInstances().rmt, s = e.state, U = Studio.util;
   const ramp = U.makeRamp(s.palette), lut = [];
   for (let i = 0; i < 256; i++) { const c = ramp(i / 255); lut.push('rgb(' + Math.round(c[0]) + ',' + Math.round(c[1]) + ',' + Math.round(c[2]) + ')'); }
-  const pick = t => lut[Math.max(0, Math.min(255, Math.round((((t + s.shift / 16) % 1) + 1) % 1 * 255)))];
+  // The documented rule: t in [0, 1] indexes the 256-entry ramp, and the palette offset turns it by 16
+  // entries per step, wrapping over the 256 entries, so t = 1 keeps the top colour at offset 0.
+  const pick = t => lut[(Math.max(0, Math.min(255, Math.round(t * 255))) + 16 * (((Math.round(s.shift) % 16) + 16) % 16)) % 256];
+  if (s.shift === 0 && (pick(1) !== lut[255] || pick(0) !== lut[0])) throw Error('the reference colour rule wraps the ramp');
   const color = (rowIdx, i, n, lam, sc, rows) => {
     if (s.ink === 'flat') return pick(0.72);
     if (s.ink === 'row') return pick(rows > 1 ? rowIdx / (rows - 1) : 0.5);

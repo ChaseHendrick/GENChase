@@ -838,7 +838,7 @@
   {
     "id": "rmt",
     "source": "src/modules/rmt.js",
-    "sourceSha256": "2e101e58cdfe5ba8e27f6642622072abe9fbdcc283009472644935b81ca1e17d",
+    "sourceSha256": "1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4",
     "reference": "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The status line compares the spacing spread with the exact Gaudin-Mehta law (Michel Mehta, Random Matrices), evaluated as Fredholm determinants by Folkmar Bornemann's method, Math. Comp. 79, 871 (2010); Wigner's surmise is its 2×2 approximation. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
     "equation": "p(λ) ∝ ∏_{i<j} |λ_i − λ_j|^β · e^{−Σλ_i²/4};   Dyson (β = 1): dλ_i = √2 dB_i + (Σ_{j≠i} 1/(λ_i − λ_j) − λ_i/2) dt",
     "status": "validated within stated limits",
@@ -848,11 +848,11 @@
       "At n 150 the local unfolding (24-gap window) biases the spacing scale: the CV agrees with Gaudin-Mehta but the pooled KS distance (0.0043, 0.0044) exceeds its bootstrap critical value (0.0027, 0.0025). The spacing-distribution claim is limited to n 400.",
       "Since 2026-09-24 the status line prints the unfolded CV through compare() with its row-bootstrap error against the exact Gaudin-Mehta values (0.53435 at beta 1, 0.42426 at beta 2), with the Wigner surmise as a note; at beta 1 the tab's own sample resolves the surmise's 0.012 error. Only beta 1 and 2 have an exact reference in the status line.",
       "Finite samples from one seeded PRNG; error bars assume independent draws. Beta 4 spacings, edge statistics, beta outside 0.05-20 and the sweep plate's printed spread are not tested.",
-      "The shell's SVG raster differs from the canvas only where ticks overlap (group versus per-mark opacity); since 2026-09-24 the Dyson polylines carry round caps, as the canvas does."
+      "The shell's SVG raster differs from the canvas only where ticks overlap (group versus per-mark opacity); since 2026-09-24 the Dyson polylines carry round caps, as the canvas does.",
+      "Colour is not evidence. Since 2026-09-24 the ramp no longer wraps its top to its bottom colour at palette offset 0 (the top level and the last row had taken the lowest colour). A nonzero offset rotates the ramp cyclically by 16 of 256 entries per step, so the two ends of the data range take neighbouring colours. No mark moves."
     ],
     "remaining": [
-      "Extend the spacing test to beta 4 and to a global (semicircle) unfolding that removes the n 150 scale bias.",
-      "The color ramp wraps t = 1 to the first stop, because the palette shift is applied modulo 1; the largest level can take the lowest color. It does not move any mark."
+      "Extend the spacing test to beta 4 and to a global (semicircle) unfolding that removes the n 150 scale bias."
     ],
     "numerical": [
       {

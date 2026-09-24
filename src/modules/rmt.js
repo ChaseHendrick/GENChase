@@ -406,7 +406,10 @@
         }
         lutKey = key;
       }
-      const pick = (s, t) => lut[Math.max(0, Math.min(255, Math.round((((t + s.shift / 16) % 1) + 1) % 1 * 255)))];
+      // The palette offset turns the ramp by 16 of its 256 entries per step. It wraps in index space, where
+      // the two ends of the ramp are different entries; wrapping t itself modulo 1 gave t = 1 the colour of
+      // t = 0, so the top level and the last row took the lowest colour.
+      const pick = (s, t) => lut[(Math.max(0, Math.min(255, Math.round(t * 255))) + 16 * (((Math.round(s.shift) % 16) + 16) % 16)) % 256];
       function colorOf(s, rowIdx, i, n, lam, rowScale, rows) {
         if (s.ink === 'flat') return pick(s, 0.72);
         if (s.ink === 'row') return pick(s, rows > 1 ? rowIdx / (rows - 1) : 0.5);

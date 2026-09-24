@@ -219,6 +219,7 @@ No record has an outside review yet; every review so far was done inside the pro
 - Since 2026-09-24 the status line prints the unfolded CV through compare() with its row-bootstrap error against the exact Gaudin-Mehta values (0.53435 at beta 1, 0.42426 at beta 2), with the Wigner surmise as a note; at beta 1 the tab's own sample resolves the surmise's 0.012 error. Only beta 1 and 2 have an exact reference in the status line.
 - Finite samples from one seeded PRNG; error bars assume independent draws. Beta 4 spacings, edge statistics, beta outside 0.05-20 and the sweep plate's printed spread are not tested.
 - The shell's SVG raster differs from the canvas only where ticks overlap (group versus per-mark opacity); since 2026-09-24 the Dyson polylines carry round caps, as the canvas does.
+- Colour is not evidence. Since 2026-09-24 the ramp no longer wraps its top to its bottom colour at palette offset 0 (the top level and the last row had taken the lowest colour). A nonzero offset rotates the ramp cyclically by 16 of 256 entries per step, so the two ends of the data range take neighbouring colours. No mark moves.
 
 ### lozenge
 
