@@ -2,7 +2,8 @@
 """Plot the two arc minima of P = |omega_0| t_c against the circulation ratio mu.
 
 Circulations (1, mu, -mu/(1+mu)); the squared minima are the two positive roots of
-the cubic Q(mu, y) of Theorem 1 in the paper. Writes research/figures/minimal-winding.svg.
+the cubic Q(mu, y) of Theorem 1 in the paper. Writes research/figures/minimal-winding.svg
+(for the Typst paper) and minimal-winding.pdf (for the LaTeX version).
 """
 import math, os
 import mpmath as mp
@@ -45,4 +46,5 @@ ax.legend(frameon=False, loc='upper right')
 fig.tight_layout()
 out = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'figures', 'minimal-winding.svg')
 fig.savefig(out, metadata={'Date': None})
-print('wrote', out, 'check mu=0.5:', lo[124], hi[124], 'at mu=', mus[124])
+fig.savefig(out[:-4] + '.pdf', metadata={'CreationDate': None, 'ModDate': None})
+print('wrote', out, 'and .pdf,', 'check mu=0.5:', lo[124], hi[124], 'at mu=', mus[124])

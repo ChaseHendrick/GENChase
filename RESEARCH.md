@@ -1,6 +1,6 @@
 # RESEARCH
 
-Ledger of prior-art searches and physics claims for GENChase. Handwritten, not generated. Last updated 2026-09-23.
+Ledger of prior-art searches and physics claims for GENChase. Handwritten, not generated. Last updated 2026-09-24.
 
 Agents: read this file **before** a web search for "has this been done", "is this a new law", or "never been theorized". Humans: the same, if you are about to spend an afternoon proving a negative.
 
@@ -113,6 +113,48 @@ The owner provided the arXiv PDF; it is not committed.
 - **The (3.3) typo.** In Eq. (3.3), A agrees with Biot–Savart, but B does not when Γ₁ ≠ Γ₂. Replacing (Γ₁² + Γ₂²)(Γ₂λ₁ + Γ₁λ₂) by (Γ₁ + Γ₂)(Γ₁²λ₁ + Γ₂²λ₂) fixes it to 10⁻³¹, on five test cases including (10, 1). This settles the old "(3.3) discrepancy": it is a typo in the printed formula, not an error in our computation.
 - **Verdict.** No minimization of the product; DOES NOT KILL.
 - **Paper edits.** The paper now cites [6, Sect. 3] for the parametrization and the normalization, and adds the arXiv number to the reference.
+
+### J. Second attempt at the two open papers, and later papers (same day, later)
+
+The aim was to learn what Krishnamurthy–Stremler 2018 §3.5 and Demina–Kudryashov 2014 contain without a copy of either.
+
+- **Queries (WebSearch):**
+  - `"Finite-time collapse of three point vortices in the plane" pdf vtechworks OR mathnet OR researchgate OR semanticscholar`
+  - `"Rotation, collapse, and scattering of point vortices" Demina Kudryashov pdf arXiv preprint`
+  - `Krishnamurthy Stremler three vortex collapse "distance traveled" circumcenter collapse time energy relation cited result`
+  - `Krishnamurthy Stremler 2018 self-similar collapse "distance" traveled vortices "twice" OR "greater than" initial distance numerical observation`
+  - `"On the collapse of three point vortices on surfaces" arXiv 2607.16490 abstract`
+  - `Demina Kudryashov 2014 double-ring vortex configurations collapse "two regular polygons" angular velocity collapse rate circulations`
+  - `"Self-similar collapse of three vortices in the generalised Euler and quasi-geostrophic equations" Physica D 2022 authors abstract`
+  - `"Sufficient and necessary conditions for self-similar motions of three point vortices in generalized fluid systems" Physica D abstract authors`
+  - `Kudela "Self-similar collapse of n point vortices" Journal of Nonlinear Science 2014 abstract rings polygons`
+  - `three point vortices collapse "collapse time" "angular velocity" product minimum OR lower bound "logarithmic spiral" number of turns before collapse`
+  - `"Intrinsic dynamical shadowing of point vortices and finite time singularities" arXiv 2609.25989`
+  - `Borisov Mamaev Kilin "Dynamics of three vortices on a plane and a sphere" III noncompact case collapse scattering nlin/0503057 collapse time rotation`
+  - `arxiv.org Demina Kudryashov "collapse" "scattering" point vortices polynomials double-ring 2013 OR 2014 arXiv`
+  - `arXiv 1407.1641`
+  - Hugging Face paper index: `three point vortices collapse`, `point vortex collapse self-similar`, `vortex polygons rings collapse`.
+- **Hosts.** Every scholarly host and metadata API tried was blocked: arxiv.org, export.arxiv.org, OpenAlex, Crossref, Semantic Scholar, Unpaywall, OpenCitations, zbMATH, Europe PMC, scholar.archive.org, APS, AIP and MDPI. The Hugging Face paper index has none of the relevant arXiv ids.
+- **Search summaries.** They repeat the two abstracts and nothing from §3.5 or from the double-ring section. Do not take a search summary as a reading.
+- **Krishnamurthy–Stremler is already covered.** The 2026-09-20 entries below record a download of the whole postprint (21 pages), whose relevant sections (§§3.4–3.5) were read. `identities/NOVELTY-AUDIT.md` item 4 gives §3.5, eqs. (3.26)–(3.29): the normalized path length is √(1 + 4P²), and they observe numerically that it exceeds 2, with no sharp bound. The paper now credits that observation, and Corollary 1 proves it. Verdict: DOES NOT KILL. Check this ledger before calling a paper unread.
+- **Demina–Kudryashov 2014 is still unread.** It is the main remaining priority risk, for the two-ring minimum. Entry K lists the other papers that are unread or known only from summaries.
+- **New to the ledger:** Borisov and Lebedev, RCD 3(4) (1998), "Dynamics of three vortices on a plane and a sphere III: noncompact case, problems of collapse and scattering" (arXiv nlin/0503057); Krishnamurthy–Aref–Stremler, PRF 3 (2018) 024702 (arXiv:1706.00731); arXiv:2609.25989 (2026, shadowing after a burst); and a Physica D paper (2024) on necessary and sufficient conditions for self-similar motion in generalized fluid systems (authors not confirmed).
+- **Already in the ledger:** Demina–Kudryashov arXiv:1407.1641 and arXiv:2607.16490 (entry G); Kudela 2014 and Reinaud–Dritschel–Scott 2022 (the 2026-09-19/20 entries, which record from summaries that they minimize the collapse time, not P).
+- **Status.** Priority is still unconfirmed. The free papers are on arXiv, which only this session blocks, so the owner can fetch them.
+
+### K. Four papers read (2026-09-24)
+
+The owner downloaded four arXiv papers; the copies are not committed. For each, the abstract, the introduction and every section on collapse or self-similar motion were read in full, and the rest was searched for rotation, spirals, path length, collapse time and bounds.
+
+- **Borisov and Lebedev 1998 (nlin/0503057).** The collapse conditions (the harmonic condition and D = 0) and the homogeneous solutions M_k = C_k τ. Its angular velocities are for the equilateral and collinear relative equilibria only. Nothing on rotation during collapse, spirals, path length or minima. **DOES NOT KILL.**
+- **Krishnamurthy, Aref and Stremler 2018 (1706.00731).** The collapse time through the triangle's angles (Eq. 46b), and L = 0, γ₂ = 0 as necessary and sufficient for self-similar motion. For L = 0 the circumcircle passes through the center of vorticity (Eq. 40), so the circumcenter starts one circumradius from the collision point. That confirms that Krishnamurthy–Stremler's normalized circumcenter path length equals √(1 + 4P²). No rotation rate, spiral or minimum. **DOES NOT KILL.**
+- **Demina and Kudryashov, arXiv:1407.1641.** A polynomial method for multi-particle systems. Point vortices appear only in the introduction, which cites their 2014 paper for collapse. No rings, no rates. **DOES NOT KILL, and does not replace the 2014 paper.**
+- **Drivas, Khanikati and Khanikati 2026 (2607.16490).** Theorem 1.1: every three-vortex collapse on the plane or the sphere is self-similar; none is self-similar on the hyperbolic plane. Its review of planar collapse cites Leoncini et al. 2000, Krishnamurthy–Stremler 2018 and Aref 2010, and states no bound on rotation or path length. **DOES NOT KILL.** The paper now cites Theorem 1.1 to say that Corollary 1 covers every planar three-vortex collapse.
+- **Also in the same round.** A review found that Table 1 claimed an agreement of 6 × 10⁻²⁵ for the μ-grid minima. That figure came from a mislabeled metric in `verify_general_mu.py`; the true figure is 4.5 × 10⁻²¹. The script and the paper are corrected. The paper's other verification claims now each map to a committed check (section 10 of that script).
+- **Still unread:**
+  - Demina–Kudryashov 2014: library or purchase; the main risk, for the rings.
+  - The cited Tavantzis–Ting 1988, Kimura 1987 and Aref 1979: abstracts only.
+  - The full texts of Kudela 2014 and Reinaud–Dritschel–Scott 2022.
 
 ## Do this, do not do that
 

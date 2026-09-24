@@ -231,19 +231,27 @@
   "checks": [
    {
     "fractionOfTc": 0.25,
-    "relErrSize2": 1.314768175368353e-31
+    "relErrSize2": 1.314768175368353e-31,
+    "relErrDistanceToCollisionPoint2AllVortices": 3.2126199922446944e-31,
+    "rotationAngleErrAllVortices": 6.271265279980948e-32
    },
    {
     "fractionOfTc": 0.5,
-    "relErrSize2": 1.9721522630525295e-31
+    "relErrSize2": 1.9721522630525295e-31,
+    "relErrDistanceToCollisionPoint2AllVortices": 1.594943592496777e-31,
+    "rotationAngleErrAllVortices": 1.6667279107076825e-31
    },
    {
     "fractionOfTc": 0.75,
-    "relErrSize2": 3.944304526105059e-31
+    "relErrSize2": 3.944304526105059e-31,
+    "relErrDistanceToCollisionPoint2AllVortices": 3.6141974912752813e-31,
+    "rotationAngleErrAllVortices": 2.144734102348819e-31
    },
    {
     "fractionOfTc": 0.9,
-    "relErrSize2": 4.930380657631324e-31
+    "relErrSize2": 4.930380657631324e-31,
+    "relErrDistanceToCollisionPoint2AllVortices": 3.8347405114910296e-31,
+    "rotationAngleErrAllVortices": 2.943898812480466e-31
    }
   ]
  }
