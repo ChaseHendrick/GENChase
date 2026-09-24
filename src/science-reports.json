@@ -1272,18 +1272,20 @@
   {
     "id": "ssh",
     "source": "src/modules/ssh.js",
-    "sourceSha256": "1fa05fe97e929dad52fd9c3367b4ec2f1f097a38cf4297d78bf7a94b3c6924a9",
-    "reference": "W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)| of every eigenmode, stacked.",
+    "sourceSha256": "4cdabf9e4f57e7a1f808ff2b80acdf69ff50e18ac217229cf83fe07ce9666ee4",
+    "reference": "W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)|² of every eigenmode of the finite chain, energy increasing upward, each row scaled to its own peak; the mid-gap pair sits in the middle rows.",
     "equation": "H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open)",
     "status": "unvalidated",
     "limitations": [
-      "Independent Float64 SSH spectrum/edge checks in validation/SSH.md do not certify the production visualization heuristic, print path, interactions or experiment.",
+      "The studio solver is compared with an independent Float64 Jacobi solve on every registered preset (N = 96, and Critical at N = 160). Other grids, the plate's row mapping, per-row scaling and palette, and the print path are not compared pixel by pixel. No interactions or experiment.",
+      "The end weight and the verdict are measured from the eigenvectors of one finite chain and carry no sampling error; they are finite-size quantities with a fixed 10% window at each end. Mid-gap energies under 1e-13 are not resolved in double precision and are printed as a bound. Critical (w/v 1.06) reads crossover at the default 96 sites, because its localisation length of 18.5 cells is comparable to the 48-cell chain; at 160 sites it reads edge modes.",
+      "Until 2026-09-24 the intra hopping was keyed v, which the engine overwrites with the recipe version (2). Every plate opened from a hash, a preset, Surprise or a reload therefore ran at v = 2 and drew the trivial picture whatever the controls said. Dragging the slider changed the plate on screen, but its hash still recorded only v = 2. The key is now vIntra. A hash written before the rename never stored the intra hopping, so it reprints at the default 0.45 with its stored w, and its pixels change.",
       "Finite open/periodic chains only; catalog equation and citation remain review targets for full paper equivalence.",
       "No print-state evidence is registered; status stays unvalidated."
     ],
     "remaining": [
       "Add print-path evidence and review before any status promotion.",
-      "Optionally compare studio end-weight metric against independent eigenvectors on shared presets.",
+      "Review the studio comparison in validation/results/ssh-science.json before any promotion to partially validated.",
       "Extend parameter, disorder and larger-N surveys beyond the registered fixtures."
     ],
     "numerical": [
@@ -1291,11 +1293,11 @@
         "test": "tools/ssh-science.js",
         "command": "node tools/ssh-science.js --write",
         "results": "validation/results/ssh-science.json",
-        "scope": "Independent Float64 dimerized SSH Hamiltonian: periodic spectrum vs analytic Bloch energies, open mid-gap edge localization/end weight, nontrivial vs trivial regimes, open-vs-periodic control.",
-        "criteria": "Periodic spectrum max error <1e-10 and gap error <1e-10; nontrivial mid-gap |E|<1e-8 with mean end weight >0.55 and analytic left-edge subspace overlap >0.98; trivial mid-gap |E|>0.1 and end weight <0.35; all failure controls separate.",
-        "benchmark": "Independent Float64 real-symmetric Jacobi diagonalization compared with analytic Bloch energies E(k)=±sqrt(v²+w²+2vw cos k), bulk gap 2|w-v|, and analytic open-chain left zero mode ψ_{2j}∝(-v/w)^j.",
-        "failureControl": "Equal hoppings v=w must close the periodic gap and keep open near-zero end weight bulk-like; trivial dimerization must not look topological; scrambled and reversed hop patterns must destroy ordered edge-mode signatures.",
-        "limitations": "Finite even N in {24,32,40,48}; single-particle nearest-neighbour SSH only. Does not validate the production ssh.js display heuristic, print exports, interactions or experimental systems."
+        "scope": "Independent Float64 dimerized SSH Hamiltonian: periodic spectrum vs analytic Bloch energies, open mid-gap edge localization/end weight, nontrivial vs trivial regimes, open-vs-periodic control; and the studio solver in src/modules/ssh.js (eigenvalues, mode densities, mid-gap end weight and energy, verdict) against the independent solve on every registered preset.",
+        "criteria": "Periodic spectrum max error <1e-10 and gap error <1e-10; nontrivial mid-gap |E|<1e-8 with mean end weight >0.55 and analytic left-edge subspace overlap >0.98; trivial mid-gap |E|>0.1 and end weight <0.35. Studio solver on each preset: eigenvalues within 1e-10, residual and orthonormality within 1e-12, |psi|^2 summed over degenerate groups within 1e-9, rows mirror-symmetric within 1e-10, end weight within 1e-9 and mid-gap |E| within 1e-10 of the reference, verdict as expected; all failure controls separate.",
+        "benchmark": "Independent Float64 real-symmetric Jacobi diagonalization compared with analytic Bloch energies E(k)=±sqrt(v²+w²+2vw cos k), bulk gap 2|w-v|, and analytic open-chain left zero mode ψ_{2j}∝(-v/w)^j. The same Jacobi solve is the reference for the studio's Householder and implicit-QL solver.",
+        "failureControl": "Equal hoppings v=w must close the periodic gap and keep open near-zero end weight bulk-like; trivial dimerization must not look topological; scrambled and reversed hop patterns must destroy ordered edge-mode signatures. The studio verdict must read trivial for the edge-mode presets with v and w swapped; a reference chain terminated on the wrong bond must miss the studio eigenvalues by more than 0.1; the retired display heuristic must miss the reference densities by more than 0.1.",
+        "limitations": "Finite even N in {24,32,40,48} for the reference checks and N in {96,160} for the studio comparison; single-particle nearest-neighbour SSH only. Does not compare plate pixels or print exports, interactions or experimental systems."
       }
     ],
     "print": []

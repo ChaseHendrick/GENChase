@@ -2,16 +2,30 @@
 // Only registrations run: renderers are never constructed by this build helper.
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
 
+const noop = () => {};
+const glsl = new Proxy({}, { get: () => '' });
+const gl = new Proxy({ GLSL: glsl }, { get: (obj, key) => obj[key] || noop });
+const util = new Proxy({ clamp: (x, a, b) => Math.max(a, Math.min(b, x)), hexToRgb: () => [0, 0, 0], makeRng: () => ({}) }, { get: (obj, key) => obj[key] || noop });
+const palettes = new Proxy({}, { get: () => ({ colors: ['#000000'], bg: '#000000' }) });
+
+// The definitions one module source hands to Studio.register, evaluated against stub helpers.
+// tools/lint.js reuses this to read each technique's schema out of the assembled studio file.
+function registrations(source, filename) {
+  const registered = [];
+  const Studio = { util, gl, PALETTES: palettes, register: m => registered.push(m) };
+  const context = { Studio, console, Math, Number, JSON, Date, Intl, performance: { now: () => 0 },
+    Float32Array, Float64Array, Uint8Array, Uint8ClampedArray, Uint16Array, Uint32Array, ArrayBuffer,
+    setTimeout: noop, clearTimeout: noop, requestAnimationFrame: noop, document: {}, window: {} };
+  new vm.Script(source, { filename }).runInNewContext(context, { timeout: 5000 });
+  return registered;
+}
+
 function metadata(root, files, sources) {
   // The assembler already read these exact sources. Reuse its per-call snapshot, never a
   // process-wide cache: the next invocation must observe edits and newly added files.
   const readSource = file => sources && sources.has(file)
     ? sources.get(file) : fs.readFileSync(path.join(root, 'src', file), 'utf8');
-  const modules = [], ids = new Set(), noop = () => {};
-  const glsl = new Proxy({}, { get: () => '' });
-  const gl = new Proxy({ GLSL: glsl }, { get: (obj, key) => obj[key] || noop });
-  const util = new Proxy({ clamp: (x, a, b) => Math.max(a, Math.min(b, x)), hexToRgb: () => [0, 0, 0], makeRng: () => ({}) }, { get: (obj, key) => obj[key] || noop });
-  const palettes = new Proxy({}, { get: () => ({ colors: ['#000000'], bg: '#000000' }) });
+  const modules = [], ids = new Set();
   const shell = readSource('shared/engine.js');
   const familiarity = {}, aliases = {};
   const familyBlock = /const FAMILIARITY = \{([\s\S]*?)\n  \};/.exec(shell);
@@ -20,13 +34,7 @@ function metadata(root, files, sources) {
   if (aliasBlock) for (const m of aliasBlock[1].matchAll(/['"]?([A-Za-z0-9_-]+)['"]?\s*:\s*'([^']+)'/g)) aliases[m[1]] = m[2];
   if (!files) files = [...fs.readFileSync(path.join(root, 'src/studio.html'), 'utf8').matchAll(/\{\{include:(modules\/[a-z0-9-]+\.js)\}\}/g)].map(m => m[1]);
   for (const file of files) {
-    const source = readSource(file);
-    const registered = [];
-    const Studio = { util, gl, PALETTES: palettes, register: m => registered.push(m) };
-    const context = { Studio, console, Math, Number, JSON, Date, Intl, performance: { now: () => 0 },
-      Float32Array, Float64Array, Uint8Array, Uint8ClampedArray, Uint16Array, Uint32Array, ArrayBuffer,
-      setTimeout: noop, clearTimeout: noop, requestAnimationFrame: noop, document: {}, window: {} };
-    new vm.Script(source, { filename: file }).runInNewContext(context, { timeout: 5000 });
+    const registered = registrations(readSource(file), file);
     if (!registered.length) throw Error('Module registers no techniques: ' + file);
     for (const m of registered) {
       if (!/^[a-z0-9-]+$/.test(m.id || '')) throw Error('Invalid technique id in ' + file);
@@ -46,4 +54,4 @@ function metadata(root, files, sources) {
   return { techniques: modules, aliases };
 }
 
-module.exports = { metadata };
+module.exports = { metadata, registrations };
