@@ -83,6 +83,7 @@ jobs:
           node tools/molecular-memory.js --controls
           node tools/cahn-scaling.js --controls
           node tools/vortex-collapse-search.js --controls > /dev/null
+          node tools/compute-ledger.js --check
           python3 tools/cahn-scaling.py --controls
           node tools/build.js --check
           node tools/science.js

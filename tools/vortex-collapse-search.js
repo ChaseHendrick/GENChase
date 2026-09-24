@@ -404,6 +404,39 @@ function header(alpha, N) {
     reference: REFERENCE[String(alpha)]?.[N] ?? null, infimumN3: N === 3 ? infimum3(alpha) : undefined,
     scope: 'Binary64 multistart search. A certified strict local minimum is a numerical candidate with a second-order certificate, not a proof of a global minimum. Priority unconfirmed.' };
 }
+// ---------- compute and energy accounting ----------
+// CPU time is measured by the process itself. Energy is measured only where the operating system exposes a
+// package energy counter (Linux RAPL); that counter covers the whole processor package, including other programs.
+// Everywhere else the job reports an estimate from CPU time, with its assumption written beside it.
+const { WATTS_PER_BUSY_CORE, energyCounter, energyBetween, energy } = require('../apps/validate/compute');
+function runtimeCard() { // general hardware only: no hostname, user name, network or serial number
+  const cpus = require('node:os').cpus(), os = require('node:os');
+  return { cpuModel: (cpus[0]?.model || 'unknown').replace(/\s+/g, ' ').trim(), logicalCores: cpus.length, memoryGiB: +(os.totalmem() / 2 ** 30).toFixed(1),
+    os: os.type(), osRelease: os.release(), arch: process.arch, node: process.version, v8: process.versions.v8 };
+}
+// Fingerprint of every seed's outcome and winding, rounded to 1e-9. Two machines running the same block on the same
+// protocol should agree; a mismatch shows platform dependence, which is itself worth reporting.
+const digest = results => crypto.createHash('sha256').update(results.map(r => r.seed + ':' + r.status + ':' + (Number.isFinite(r.P) ? r.P.toFixed(9) : '-')).join('\n')).digest('hex');
+function margins(results) {
+  const c = results.filter(r => r.status === 'certified-local-minimum'), L = PROTOCOL.limits;
+  if (!c.length) return null;
+  const worst = (f, pick = Math.max) => pick(...c.map(f));
+  return { certified: c.length, limits: L,
+    worstFeasibility: worst(r => r.certificate.feasibility), worstReducedGradient: worst(r => r.secondOrder.reducedGradient),
+    smallestSoscRatio: worst(r => r.secondOrder.soscRatio, Math.min), smallestLicq: worst(r => r.secondOrder.licq, Math.min),
+    worstOdeShape: worst(r => r.certificate.ode.shapeError), worstOdeWinding: worst(r => r.certificate.ode.windingError),
+    worstInvariant: worst(r => Math.max(r.certificate.invariants.angularImpulse, r.certificate.invariants.energy)),
+    worstSymmetryMode: worst(r => r.certificate.stability.trivialModeError), worstPairing: worst(r => r.certificate.stability.pairingError) };
+}
+function computeSummary(results, wallSeconds, measuredJoules) {
+  const cpuSeconds = results.reduce((a, r) => a + (r.cpuMs || 0), 0) / 1000, hours = cpuSeconds / 3600;
+  const tally = results.reduce((a, r) => (a[r.status] = (a[r.status] || 0) + 1, a), {}), certified = tally['certified-local-minimum'] || 0;
+  return { seeds: results.length, wallSeconds, cpuSeconds, cpuSecondsPerSeed: results.length ? cpuSeconds / results.length : null,
+    utilization: wallSeconds > 0 ? Math.min(1, cpuSeconds / wallSeconds) : null, peakMemoryMiB: +(process.resourceUsage().maxRSS / 1024).toFixed(1),
+    seedsPerCpuHour: hours > 0 ? results.length / hours : null, certifiedPerCpuHour: hours > 0 ? certified / hours : null,
+    yield: Object.fromEntries(Object.entries(tally).map(([k, v]) => [k, v / results.length])),
+    energy: energy(cpuSeconds, measuredJoules ?? undefined) };
+}
 function run(opt) {
   const { alpha, N, start, count } = opt, file = opt.out || defaultOut(alpha, N, start, count);
   const jobDir = process.env.GENCHASE_JOB_DIR, checkpointFile = jobDir && path.join(jobDir, 'vortex-checkpoint.json');
@@ -415,9 +448,10 @@ function run(opt) {
       else console.log('Vortex checkpoint changed or damaged; restarting this seed block.');
     } catch { console.log('Vortex checkpoint could not be read; restarting this seed block.'); }
   }
-  const t0 = Date.now();
+  const t0 = Date.now(), e0 = energyCounter();
   for (let i = results.length; i < count; i++) {
-    const r = searchSeed(alpha, N, start + i); results.push(r);
+    const c0 = process.cpuUsage(), r = searchSeed(alpha, N, start + i), dc = process.cpuUsage(c0);
+    r.cpuMs = (dc.user + dc.system) / 1000; results.push(r);
     console.log(`seed ${start + i}: ${r.status}${r.P ? ' P=' + r.P.toPrecision(12) : ''} (${r.ms} ms)`);
     console.log('GENCHASE_PROGRESS ' + JSON.stringify({ stage: 'search', message: `alpha ${alpha}, N ${N}: seed ${i + 1}/${count}`, done: i + 1, total: count, unit: 'seeds' }));
     if (checkpointFile) { const body = { signature, results }; fs.writeFileSync(checkpointFile, JSON.stringify({ ...body, checksum: crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') })); }
@@ -429,7 +463,10 @@ function run(opt) {
     // Stalled and degenerate runs end on or near the boundary of the collapse manifold: sub-clusters, collisions or
     // runaway circulations. Their values say where the search went, not what the infimum is.
     boundaryApproach: lowest(results.filter(r => ['stalled', 'degenerate'].includes(r.status))),
-    belowN3Infimum: N === 3 ? (lowest(results) ?? Infinity) < infimum3(alpha) * (1 - 1e-9) : undefined, elapsedSeconds: (Date.now() - t0) / 1000 };
+    belowN3Infimum: N === 3 ? (lowest(results) ?? Infinity) < infimum3(alpha) * (1 - 1e-9) : undefined, elapsedSeconds: (Date.now() - t0) / 1000,
+    // CPU time covers every seed, including seeds finished before a resume; wall time and energy cover this run only.
+    compute: computeSummary(results, (Date.now() - t0) / 1000, energyBetween(e0, energyCounter())),
+    certificateMargins: margins(results), resultsDigest: digest(results), runtime: runtimeCard() };
   const out = { ...header(alpha, N), summary, minima, results };
   fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, JSON.stringify(out, null, 1) + '\n');
   if (jobDir) { const dest = path.join(jobDir, 'outputs/validation/results', path.basename(file)); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.copyFileSync(file, dest); }
@@ -443,10 +480,17 @@ const defaultOut = (alpha, N, start, count) => path.join(root, 'run/vortex-colla
 
 // ---------- independent re-verification of submitted files ----------
 function verifyFiles(files, write) {
-  const board = {};
+  const board = {}, spent = { files: 0, seeds: 0, cpuSeconds: 0, wallSecondsWithoutCpuRecord: 0, measuredJoules: 0, filesMeasured: 0, machines: new Set() };
   for (const f of files) {
     const data = JSON.parse(fs.readFileSync(f, 'utf8'));
     assert(data.experiment === 'vortex-collapse-search', f + ' is not a vortex-collapse result.');
+    // Compute is as reported by the contributor's machine; it cannot be re-verified, only rerun.
+    const c = data.summary?.compute; spent.files++; spent.seeds += data.results?.length || c?.seeds || 0; spent.machines.add(data.machine || 'unlabelled');
+    if (Number.isFinite(c?.cpuSeconds)) spent.cpuSeconds += c.cpuSeconds; else spent.wallSecondsWithoutCpuRecord += Number(data.summary?.elapsedSeconds) || 0;
+    if (Number.isFinite(c?.energy?.joules)) { spent.measuredJoules += c.energy.joules; spent.filesMeasured++; }
+    const cell = (spent.byCase ||= {})[data.alpha + '/' + data.N] ||= { alpha: Number(data.alpha), N: Number(data.N), seeds: 0, cpuSeconds: 0, digests: [] };
+    cell.seeds += data.results?.length || 0; cell.cpuSeconds += Number.isFinite(c?.cpuSeconds) ? c.cpuSeconds : Number(data.summary?.elapsedSeconds) || 0;
+    if (data.summary?.resultsDigest && data.summary.seeds) cell.digests.push({ block: data.summary.seeds, digest: data.summary.resultsDigest, machine: data.machine || 'unlabelled', runtime: data.summary.runtime ? data.summary.runtime.cpuModel + ', ' + data.summary.runtime.node : null });
     const alpha = Number(data.alpha), N = Number(data.N); assert(Number.isFinite(alpha) && Number.isInteger(N) && N >= 3 && N <= 16, f + ': bad alpha or N.');
     const mdl = model(N, alpha), key = alpha + '/' + N;
     for (const m of data.minima || []) {
@@ -472,6 +516,16 @@ function verifyFiles(files, write) {
   const leaderboard = { experiment: 'vortex-collapse-leaderboard', protocol: PROTOCOL.version, generatedFrom: files.map(f => path.basename(f)).sort(),
     scope: 'Each entry was re-projected, re-polished and re-certified from submitted positions and circulations only. Numerical candidates; priority unconfirmed.',
     entries: Object.values(board).sort((a, b) => a.alpha - b.alpha || a.N - b.N) };
+  const busy = spent.cpuSeconds + spent.wallSecondsWithoutCpuRecord;
+  // The same seed block run twice must give the same digest on the same protocol; list any block that disagreed.
+  const byCase = Object.values(spent.byCase || {}).map(c => { const seen = {}, disagreements = [];
+    for (const d of c.digests) { const k = d.block.start + '+' + d.block.count; if (seen[k] && seen[k].digest !== d.digest) disagreements.push({ block: d.block, a: seen[k], b: d }); seen[k] ||= d; }
+    return { alpha: c.alpha, N: c.N, seeds: c.seeds, cpuHours: c.cpuSeconds / 3600, independentReruns: c.digests.length - Object.keys(seen).length, disagreements }; });
+  delete spent.byCase;
+  leaderboard.compute = { ...spent, machines: spent.machines.size, cpuHours: busy / 3600, byCase,
+    estimatedWattHours: [busy * WATTS_PER_BUSY_CORE[0] / 3600, busy * WATTS_PER_BUSY_CORE[1] / 3600],
+    method: `As reported by each submission. CPU time is measured by the job; files without a CPU record count their single-threaded wall time. Energy is an estimate of ${WATTS_PER_BUSY_CORE[0]} to ${WATTS_PER_BUSY_CORE[1]} W per busy core unless a file measured it.` };
+  console.log(`Compute: ${spent.seeds} seeds in ${spent.files} files from ${spent.machines.size} machine label(s), ${(busy / 3600).toFixed(3)} CPU hours, about ${leaderboard.compute.estimatedWattHours.map(v => v.toFixed(2)).join(' to ')} Wh estimated.`);
   for (const e of leaderboard.entries) console.log(`alpha ${e.alpha}, N ${e.N}: best ${e.best} over ${e.minima.length} distinct minima${e.reference ? ', reference ' + e.reference : ''}`);
   console.log(table(leaderboard));
   if (write) { const file = path.join(root, 'experiments/results/vortex-collapse-leaderboard.json'); fs.writeFileSync(file, JSON.stringify(leaderboard, null, 1) + '\n'); console.log('Wrote ' + path.relative(root, file)); }
@@ -492,6 +546,10 @@ function controls() {
   { const mdl = model(5, 0.7), u = rng('controls/jacobian'), x = Float64Array.from({ length: mdl.n }, () => gauss(u)), r = mdl.residual(x, true); let err = 0;
     for (let i = 0; i < mdl.n; i++) { const h = 1e-6, a = Float64Array.from(x), b = Float64Array.from(x); a[i] += h; b[i] -= h; const ca = mdl.residual(a).c, cb = mdl.residual(b).c; for (let k = 0; k < mdl.m; k++) err = Math.max(err, Math.abs((ca[k] - cb[k]) / (2 * h) - r.J[k][i]) / (1 + Math.abs(r.J[k][i]))); }
     assert(err < 1e-6, 'Jacobian mismatch ' + err); report.jacobian = { maxRelativeError: err }; }
+  // 1a. Energy counter arithmetic, including one wrap of the RAPL register.
+  { const joules = energyBetween([{ uj: 900, max: 1000 }, { uj: 10, max: 5000 }], [{ uj: 100, max: 1000 }, { uj: 4010, max: 5000 }]);
+    assert(Math.abs(joules - 0.0042) < 1e-15, 'energy counter arithmetic ' + joules); assert(energyBetween(null, []) === null);
+    report.energyCounter = { wrappedJoules: joules }; }
   // 1b. Eigenvalues of a companion matrix with known roots 1, 2, 3 and -1 +/- 2i.
   { const coeffs = [-30, 43, -14, 4, -4], n = 5, C = zeros(n, n); for (let i = 1; i < n; i++) C[i][i - 1] = 1; for (let i = 0; i < n; i++) C[i][n - 1] = -coeffs[i];
     const got = eigenvalues(C), want = [[1, 0], [2, 0], [3, 0], [-1, 2], [-1, -2]], err = Math.max(...want.map(w => Math.min(...got.map(g => Math.hypot(g[0] - w[0], g[1] - w[1])))));

@@ -1,4 +1,5 @@
 'use strict';
+const { energyCounter, energyBetween, parseTimes, jobCompute, describe } = require('./compute');
 const fs = require('node:fs'), path = require('node:path'), os = require('node:os'), cp = require('node:child_process'), crypto = require('node:crypto');
 const { StringDecoder } = require('node:string_decoder');
 const { command } = require('./commands');
@@ -123,6 +124,7 @@ class Jobs {
     }
     this.current.resumedFrom = resumeFrom;
     this.power = new Power(this, spec.input.power);
+    this.energyStart = energyCounter(); this.startedAt = Date.now();
     this.child = cp.spawn(process.execPath, [path.join(__dirname, 'worker.js')], {
       cwd: this.root, detached: true, shell: false, stdio: ['ignore', 'pipe', 'pipe'],
       env: { ...process.env, GENCHASE_JOB_SPEC: JSON.stringify({ ...spec, root: this.root }), GENCHASE_JOB_DIR: dir, GENCHASE_JOB_COMMIT: commit, GENCHASE_MACHINE_SLUG: spec.input.machineSlug || 'm1pro', GENCHASE_CHECKPOINT_ROOT: this.root, GENCHASE_VERIFY_CHECKPOINT: path.join(dir, 'verify-checkpoint.json') },
@@ -190,6 +192,9 @@ class Jobs {
     this.guard?.kill(); this.guard=null;
     if (this.pending || this.droppingLongLine) this.append('\n');
     const j = this.current; j.exitCode = code; j.signal = signal; j.ended = new Date().toISOString();
+    try { const dir = path.join(this.data, j.id), f = path.join(dir, 'cpu-times.txt');
+      j.compute = jobCompute(fs.existsSync(f) ? parseTimes(fs.readFileSync(f, 'utf8')) : null, (Date.now() - this.startedAt) / 1000, energyBetween(this.energyStart, energyCounter()) ?? undefined);
+    } catch (e) { j.compute = { recorded: false, note: 'Compute accounting failed: ' + e.message }; }
     j.status = !this.stopping && code === 0 ? 'complete' : 'failed';
     j.reason ||= this.stopping ? 'Stopped by user.' : j.incomplete ? 'Registered checks finished, but requested evidence is missing.' : code === 0 ? 'Command completed. Read its scope and limitations.' : 'Command failed. See the log.';
     if (j.status === 'complete' && j.progress && j.runningTest) j.progress.done = j.progress.total;
@@ -247,6 +252,7 @@ class Jobs {
       'Reason: ' + j.reason, 'Started: ' + j.started, 'Ended: ' + j.ended,
       'Environment: ' + JSON.stringify({ node: j.node, platform: j.platform, arch: j.arch, macOS: j.macOS }),
       'Dirty at start: ' + (j.dirtyAtStart || 'no'), 'Existing source changed during job: ' + !!j.sourceChangedDuringJob,
+      'Compute: ' + describe(j.compute),
       '', '## Files written or changed (observed, including concurrent edits)', ...(j.filesWritten || []).map(f => '- ' + f.path + ' (' + f.sha256 + ')'),
       '', '## Job artifacts', ...j.artifacts.map(n => '- apps/validate/.runs/' + j.id + '/' + n),
       '', '## Last 80 log lines', '', ...this.tail.slice(-80).map(line => '    ' + line), ''].join('\n');

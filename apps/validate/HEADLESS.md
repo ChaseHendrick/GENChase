@@ -72,7 +72,7 @@ Resume is available for completed registered-test boundaries, polygon sweep chun
 
 ## 4. Inspect the results
 
-The terminal reports the job result and its files. The job folder under `apps/validate/.runs/` holds a paste packet, pseudonymous `hardware.json`, redacted log and available reports/checkpoints. A result bundle keeps the source snapshot and artifacts together for local review. Job status preserves an incomplete-evidence exit even when registered checks passed.
+The terminal reports the job result, its files and the computer time it used. Each job records its CPU time, including every process it started and waited for, and an energy figure: measured where Linux exposes a RAPL counter, otherwise an estimate of 1 to 20 W per busy core that the record labels as such. Shared records are totalled in [COMPUTE.md](../../COMPUTE.md). The job folder under `apps/validate/.runs/` holds a paste packet, pseudonymous `hardware.json`, redacted log and available reports/checkpoints. A result bundle keeps the source snapshot and artifacts together for local review. Job status preserves an incomplete-evidence exit even when registered checks passed.
 
 Witness collection writes `validation/results/witnesses-<commit>-<machine-slug>.json`. Scientific misses write `run/validator/misses/<commit>-<id>.json`; execution failures use a separate job suffix. These paths are Git-ignored until you deliberately stage selected files. Repeating a corpus for the same commit and machine replaces that corpus file, while each job keeps its own copy and previous miss packets remain visible.
 

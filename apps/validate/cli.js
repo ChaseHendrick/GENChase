@@ -3,6 +3,7 @@
 const { createServer } = require('./server');
 const { MODES, EXPERIMENTS } = require('./commands');
 const { redact } = require('./privacy');
+const { describe } = require('./compute');
 const HELP = `GENChase headless volunteer runner
 
   npm run validator:headless -- --mode inventory --machine m1pro
@@ -70,6 +71,7 @@ async function main(args = process.argv.slice(2)) {
     show(); timer = setInterval(show, 1000); await app.jobs.wait(); show();
     const job = app.jobs.current;
     console.log('Exit: ' + job.exitCode + '. Result folder: ~/GENChase/apps/validate/.runs/' + job.id + '/');
+    console.log('Compute: ' + describe(job.compute) + '.');
     await app.shares.wait();
     const submission = app.shares.state(job.id);
     console.log(submission.status === 'not-shared' ? 'Files remain local. Use --share to submit directly.' : 'Sharing: ' + submission.status + ' ' + (submission.url || submission.message));

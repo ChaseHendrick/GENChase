@@ -112,6 +112,17 @@ ignores, and places a copy in its evidence folder. `--share` submits that file t
 account, and HEADLESS.md explains the manual route. Share every result, including blocks that found
 nothing new; basin counts are evidence too.
 
+## What each result file records
+
+Beside the minima, every file records:
+
+- **CPU time.** Per seed and in total, measured by the process. Also wall time, utilization (low when the power controls paused the job), peak memory, seeds per CPU-hour and certified minima per CPU-hour.
+- **Energy.** Measured from the Linux RAPL counter where one is readable, which includes other programs. Otherwise estimated as 1 to 20 W per busy core and labelled as an estimate.
+- **Yield.** The share of seeds that ended as certified minima, stalled runs, degenerate runs or failed landings.
+- **Certificate margins.** The worst value of every certificate test across the file's certified minima, beside its threshold, so a reviewer can see how much room each pass had.
+- **A results digest.** A SHA-256 of every seed's outcome and winding rounded to 1e−9. Running the same block on another machine should give the same digest, so reruns are a direct reproducibility test. The leaderboard counts reruns and lists any that disagree.
+- **A runtime card.** CPU model, core count, memory, operating system, and the Node and V8 versions. There is no hostname, user name or serial number.
+
 ## Review of submitted results
 
 Nothing in a submitted file is trusted except the positions and circulations of each minimum:
