@@ -48,6 +48,7 @@ a claim of originality.
 - **Conte-de Seze (arXiv:1511.00069; a 1980 report), read in the zero-impulse section:** writes three-vortex collapse as the exact spiral (1 - t/t_c)^(1/2 - i omega t_c) and gives the complex rate in closed form for arbitrary strengths. It also describes the J != 0 orbits qualitatively, arriving from and leaving on logarithmic spirals. It has no bound on omega t_c and no rotation law, but the scattering law C1 should credit it for the qualitative picture.
 - **Decrease with N:** no source found. The N-vortex collapse papers (Kudela 2014 and 2021,
   Lewkowicz and others) find configurations; none minimizes this quantity.
+- **alpha-models:** Grotto-Pappalettera (arXiv:2505.19782, Prop. 2.1) characterize self-similar gSQG three-vortex motion and write the spiral, without bounding its winding; Reinaud 2021 did the SQG case. Credit both. Their alpha is 2 minus ours.
 - **alpha-models:** judged probably not stated. Self-similar collapse in the alpha-models is
   known; a bound on the winding was not found.
 - **Central-vortex rings:** unclear. The two rates are published in closed form for n = 2
