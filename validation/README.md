@@ -134,3 +134,9 @@ trajectories, energy diagnostics, working duration controls and real print outpu
 The [aperiodic tilings review](TILINGS.md) checks the Penrose, Ammann-Beenker and dodecagonal
 geometry exactly and the print path against it. It stays partially validated because of two recorded
 defects: the P3 matching arcs are not a valid decoration, and the grout inset moves tiles outward.
+
+The [Veselago lens review](VESELAGO.md) checks every ray of the actual module against an
+independent negative-index Snell trace across the slider domain, and checks every print pixel
+against the field. It stays partially validated because of two recorded defects: the status label
+claims a focus where no image exists, and the exit ray is drawn backwards when the slab runs off
+the plate.
