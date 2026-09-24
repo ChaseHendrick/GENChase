@@ -8,7 +8,10 @@ The publication date is recorded in the GitHub release notes.
   - The Discussion now explains why Krishnamurthy and Stremler's normalized path length equals √(1 + 4P²): the circumcircle passes through the collision point.
   - It contrasts collapse-time minima, which depend on the chosen scale, with P, which does not.
   - It notes that the √3/2 in Leoncini et al. is an energy parameter, and that their fastest collapse has P = 3/2.
-- `verify_general_mu.py` adds a check of that fastest collapse (116 checks in all), and Table 1 gains a row for it.
+- The paper credits Kimura (1987), read in full, for the similarity solution with κ as his complex constant, the zero-impulse circle and its split into collapsing and expanding arcs, and the Remark 2 parametrization: his Eq. (4.4) gives both rates for circulations (2, 2, −1), and their ratio is the Remark 2 formula. He minimizes the collision time rather than P, and the general-μ minimum and the ring results are not in his paper.
+  - The studio's Three-vortex collapse bound credit names the same equation, since its closed form is that ratio. Its vortex-family evidence was re-run for the new source hash, with all 12 recipes passing.
+- The paper cites Gallay and Šverák (2026), read in full. Their collision solution is (1 − t/T)^(1/2 + is), and |s| = P. The paper cites their proof that every collision is self-similar and their closed-form rates. It also notes that Corollary 1 sharpens their s ≠ 0 to |s| > √3/2; a nonzero s is why a regularized collision is determined only up to a rotation. They do not bound or minimize s. The LaTeX version is now 12 pages, like the Typst one.
+- `verify_general_mu.py` adds checks of that fastest collapse and of Kimura's rates against κ (117 checks in all), and Table 1 gains a row for each.
 - The LaTeX build instructions now say three `pdflatex` runs, which is what settles the cross-references from a clean directory.
 
 ## v0.6.0

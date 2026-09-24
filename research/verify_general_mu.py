@@ -889,6 +889,18 @@ check('10f mu = 1: the fastest collapse at |z1 - z2| = 1 has t_c = 4 pi/3, P = 3
       and abs(mp.cos(2*bfast) - mp.mpf(3)/5) < mp.mpf('1e-40'),
       'beta=%s t_c=%s P=%s' % (mp.nstr(bfast, 15), mp.nstr(tc_fast, 15), mp.nstr(P_fast, 15)))
 
+# 10g. Kimura 1987, Eq. (4.4): his rates A, B for Gamma = (2, 2, -1) in the Remark 2 parametrization.
+#      Halving the circulations and restoring the 2 pi of his normalization, kappa = (A + iB)/(4 pi),
+#      so his B/(-2A) is the Remark 2 formula for P.
+dev_kim = mp.mpf(0)
+for bb in ['0.05', '0.2', '0.35', '0.5', '0.65', '0.8', '0.95', '1.1', '1.3', '1.5']:
+    beta = mp.mpf(bb)
+    A_k = -6*mp.sin(2*beta)/(5 - 3*mp.cos(2*beta))
+    B_k = (18 - 6*mp.cos(2*beta))/(5 - 3*mp.cos(2*beta))
+    dev_kim = max(dev_kim, abs(kappa_beta(beta)[0] - mp.mpc(A_k, B_k)/(4*mp.pi)))
+check('10g mu = 1: Kimura 1987 Eq. (4.4) gives kappa = (A + iB)/(4 pi) at ten angles of 0 < beta < pi/2',
+      dev_kim < mp.mpf('1e-45'), 'max |kappa - (A + iB)/(4 pi)| = %s' % mp.nstr(dev_kim, 3))
+
 # 10c. Section 4, exact and for general n.
 n_, x_, rho_, al_ = sp.symbols('n x rho alpha', positive=True)
 Eh, mexp, zt, ztb = sp.symbols('E m zeta zetabar', positive=True)
