@@ -2714,8 +2714,8 @@ shall not be misrepresented as the original profile.
     "id": "rmt",
     "source": "src/modules/rmt.js",
     "sourceSha256": "2e101e58cdfe5ba8e27f6642622072abe9fbdcc283009472644935b81ca1e17d",
-    "reference": "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The spacing forms quoted in the status line are Wigner's surmise; the exact answers are the Gaudin-Mehta determinantal formulae, Michel Mehta, Random Matrices. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
-    "equation": "p(λ) ∝ ∏_{i\u003cj} |λ_i − λ_j|^β · e^{−Σλ_i²/2};   dλ_i = √(2/β) dB_i + Σ_{j≠i} dt/(λ_i − λ_j)",
+    "reference": "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The status line compares the spacing spread with the exact Gaudin-Mehta law (Michel Mehta, Random Matrices), evaluated as Fredholm determinants by Folkmar Bornemann's method, Math. Comp. 79, 871 (2010); Wigner's surmise is its 2×2 approximation. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
+    "equation": "p(λ) ∝ ∏_{i\u003cj} |λ_i − λ_j|^β · e^{−Σλ_i²/4};   Dyson (β = 1): dλ_i = √2 dB_i + (Σ_{j≠i} 1/(λ_i − λ_j) − λ_i/2) dt",
     "status": "validated within stated limits",
     "limitations": [
       "Complete evidence covers only the domain in validation/RMT.md: sampler, solver and exact moments for n 24-400 and beta 0.1-12, semicircle for beta 1-12, Gaudin-Mehta spacing law at beta 1 and 2 with n 400, the printed spread of two presets, Dyson mode at 24 paths, and five complete prints.",
@@ -4749,21 +4749,51 @@ shall not be misrepresented as the original profile.
   {
     "id": "kitaev",
     "source": "src/modules/kitaev.js",
-    "sourceSha256": "23971f485942877ff2a79335d64471c4e53ca2e39948d011dc4e1a71dbe64b61",
-    "reference": "A. Yu. Kitaev, Phys.-Usp. 44, 131 (2001). A 1D p-wave superconductor hosts two Majorana operators, one at each end, that together make a single nonlocal fermion. They sit at zero energy, inside the gap, and are their own antiparticles. The plate is the near-zero BdG mode of a finite chain, obtained by imaginary-time relaxation of the Nambu Hamiltonian.",
+    "sourceSha256": "9927bcc6b318388f7730f7e86cfe975ea2cb99dc98ce28c6e1cfd0a12f4e569e",
+    "reference": "A. Yu. Kitaev, Phys.-Usp. 44, 131 (2001). A 1D p-wave superconductor hosts two Majorana operators, one at each end, that together make a single nonlocal fermion. They sit at zero energy, inside the gap, and are their own antiparticles. The plate is computed: the 2N × 2N Bogoliubov-de Gennes matrix of an open chain of N sites, one per column, is diagonalized exactly in double precision (Householder reduction and implicit QL, after Wilkinson and Reinsch, 1971), and each row is |u(x)|² + |v(x)|² of one ± pair of quasiparticle modes, scaled to its own peak, on a linear |E| axis from zero at the top.",
     "equation": "H = −μ Σ c†c − t Σ (c†_i c_{i+1}+h.c.) + Δ Σ (c_i c_{i+1}+h.c.),   |μ|\u003c2t ⇒ unpaired γ_L, γ_R",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers the finite domain in validation/KITAEV.md: mean-field BdG Kitaev chains of 96 to 160 sites in the studio (the grids the tab allows), open in the tab and periodic or antiperiodic in the band check; shorter chains only in the Node tests of the module code.",
+      "Splittings below about 4Nε‖H‖ (1e-13 to 4e-13) are not resolved by double precision and are flagged; for most topological presets the exact splitting is far below that. An exact finite-N splitting is used only at Δ = t; elsewhere the rate and oscillation are tested, not the prefactor.",
+      "No self-consistent Δ, interactions, disorder, spin or nanowire experiment."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "An exact finite-N splitting for general Δ (for example the closed forms of Leumer et al., J. Phys.: Condens. Matter 32, 445502, 2020) would turn the rate test into a value test.",
+      "Disorder and multi-band chains are outside this review."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/kitaev-science.js",
+        "command": "node tools/kitaev-science.js --write",
+        "results": "validation/results/kitaev-science.json",
+        "scope": "The module's own BdG matrix and exact diagonalization (Householder plus implicit QL), pairing rule and status measurements, extracted from the source: 72 periodic and antiperiodic rings against the exact band, 1492 open chains against the winding criterion with the exact bulk gap, the splitting decay for six parameter sets, the Δ = t SSH identity on 773 chains, the Majorana profile, and an independent Jacobi solver on a separately built matrix.",
+        "criteria": "Ring eigenvalues within 1e-12 of ±sqrt((2t cos k + μ)² + 4Δ² sin² k) on k = 2πm/N or 2π(m+½)/N, residual and orthonormality \u003c 1e-12; in-gap count = 2 × winding at every tested point; split / (max|x±|^N, times |sin((N+1)θ)| for complex roots) constant to 1e-3 relative with drift below 1e-4 per site; at Δ = t, splitting within 4Nε‖H‖ of twice the SSH edge root; |u| = |v|, profile and pair density within 1e-9 + 4 max|x±|^N of the closed form; Jacobi eigenvalues within 1e-11 and field within 1e-6; every failure control fails.",
+        "benchmark": "Exact BdG band of the ring; closed-form bulk gap; numerically computed winding of (−μ − 2t cos k, 2Δ sin k); closed-form Majorana roots x± of (t + Δ)x² + μx + (t − Δ) = 0 and profile φ_j (A. Yu. Kitaev, Phys.-Usp. 44, 131, 2001); exact SSH edge root at Δ = t (Majorana chain with v = |μ|, w = 2t); independent Float64 Jacobi diagonalization of a BdG matrix built in the interleaved Nambu basis.",
+        "failureControl": "Injected into copies of the module: pairing Δ dropped (band off by up to 1.5, 38 of 46 criterion points disagree); ring closed with the opposite boundary sign (band off by 0.087); open chain given a closing bond (all 38 topological points lose the pair); one QL eigenvector rotation dropped (residual 2.0, profile fails). All must fail and do.",
+        "limitations": "Finite chains only; unresolved splittings are flagged, not measured; mean-field BdG only."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/kitaev-science.js",
+        "command": "node tools/kitaev-science.js --write",
+        "results": "validation/results/kitaev-science.json",
+        "scope": "Seven studio recipes (the presets, all four sheets, every allowed grid 96 to 160, both views) in a temporary copy of dist/studio.html: plate field, status numbers and the module's exportPNG at 300 ppi sheet sizes.",
+        "criteria": "Browser field identical bit for bit to the extracted code and within 1e-6 of the Jacobi field; status prints the measured end weight and splitting; every exported pixel within one channel level of its nearest-neighbor cell (a neighboring cell on boundaries), none unmatched; a one-cell displacement mismatches more than 1% of pixels; recipe and plate state unchanged by export.",
+        "benchmark": "Colors rebuilt in the page from the independently checked field through the shared ramp and the stated paint formula (each row scaled to its own peak).",
+        "failureControl": "Displaced-print comparison (one cell in x or y) must mismatch; the numerical failure controls change the field and would fail the field equality.",
+        "limitations": "Raster density plate; no vector output. Chromium with SwiftShader only."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/kitaev-science.json",
+    "domain": {
+      "parameters": "Rings: N = 64, 96, 160 with twelve (μ, t, Δ). Open: μ −2.40 to 2.40 (step 0.05) × t ∈ {0.4, 1, 1.6} × Δ ∈ {0.05, 0.2, 0.5, 0.8, 1.1, 1.4} at N = 64; splitting N = 4 to the largest N above 1000 floors (97 at most) for six sets; Δ = t identity N = 3 to 160; seven studio recipes listed in validation/results/kitaev-science.json.",
+      "conditions": "Spinless mean-field BdG Kitaev chain with real μ, t, Δ; open ends in the tab, periodic and antiperiodic rings in the band check; no disorder or self-consistency; no randomness; exports preserve the state.",
+      "resolution": "Exact diagonalization of the 2N × 2N BdG matrix; eigenvalues to about 1e-14 absolute; splittings below 4Nε‖H‖ unresolved and flagged. Print sheets 2400 × 2400, 1920 × 2400, 2400 × 1920, 2400 × 1350.",
+      "precision": "Binary64 solver and references; Float32 plate field; RGBA8 raster; Chromium and Node versions recorded."
+    }
   },
   {
     "id": "caustics",
@@ -6428,7 +6458,7 @@ shall not be misrepresented as the original profile.
     }
   }
 ]</script>
-<script type="application/json" id="build-info">{"build":"7941c56e2471","fingerprint":"7941c56e2471eec532ac48dc2959de0cbf0dbe21d00bce84418d7deffe6e5f2d","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"99cc63fff9a1f75e68abce1e66e07bfd72dc5e1c25ff057218fe6c8a65dfaa63","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"65eff38428e01bdf5e8d64ced24f2706be9561c7ed04c217ad6f59a1ee1f5092","src/modules/attractors.js":"b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"dc91a54f2d1f6b58a1ded79dafc0ff38f77cec029c7cbd7e32e6d5002566392c","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760","src/modules/aztec.js":"f71c42ea92eef62abe321d79eda9e0b05d56316fa1a088f73adf688ced95ae56","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"2e101e58cdfe5ba8e27f6642622072abe9fbdcc283009472644935b81ca1e17d","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"e7beea07d24d9bc485fdface9d33a4806d55190cd219273b7ba26239fcc8ef8b","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"1676978773d9d615778f1a035a465d5ac63a9c79bc01b5106669b285d9cee23a","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"0831c9cf2d31401025a82f41df10d17095d2f09b0a8d2b7fed8b5f9288592f1d","src/modules/hopf.js":"ae591b50d5062c9a122bdd7270ff4e4e45e43e4d37ba047e6bda6d23d74967ce","src/modules/cloak.js":"3f1c2b4adc3ca5692b31dcdf2178be8f825abe15fba109aa699f98f5515c543d","src/modules/vortex.js":"fc8e66a17fe114da9a663f0827171ea70461c784e10802fac2bbd3d2205027f0","src/modules/darkroom.js":"d6734878edd1e64e7e955a61519038f9caaa46bdba4fc2ff48bd6831c97ad24d","src/modules/kakeya.js":"d1032c40c96cb013ba2a97d5ab176553ad803893c93321a1305360248c10dbb0","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"267c0cd0e13360c490c9593cd4a58410dd30d9c7e8b21fd3cd8532221de4e87e","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"62896cc45ed4ef272eed1ec89ca5a0d4977173dc464aa522c5b84fac08ae2e1d","src/modules/kitaev.js":"23971f485942877ff2a79335d64471c4e53ca2e39948d011dc4e1a71dbe64b61","src/modules/veselago.js":"d43e80339587c7273e1cab5cd6f629826cd1d2b46cab3c74539f8b9ee3164191","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"45238c4577983543da955979ed6579f315fa596d371c7df974725a50138cd30c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"b7c4b23da19c1f5bcb5ffa43fff089b158b77a8e54bbb9b6e11daf2e4499fc9f","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"unvalidated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"partially validated","skin":"unvalidated","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"partially validated","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"unvalidated","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"partially validated","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"unvalidated","percolation":"unvalidated","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"unvalidated","caustics":"unvalidated","veselago":"unvalidated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
+<script type="application/json" id="build-info">{"build":"a1740c2b7b06","fingerprint":"a1740c2b7b0693e38d37cf03a32bd7c386765c605b01b9988175c9e42764467f","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"99cc63fff9a1f75e68abce1e66e07bfd72dc5e1c25ff057218fe6c8a65dfaa63","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"65eff38428e01bdf5e8d64ced24f2706be9561c7ed04c217ad6f59a1ee1f5092","src/modules/attractors.js":"b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"dc91a54f2d1f6b58a1ded79dafc0ff38f77cec029c7cbd7e32e6d5002566392c","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760","src/modules/aztec.js":"f71c42ea92eef62abe321d79eda9e0b05d56316fa1a088f73adf688ced95ae56","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"2e101e58cdfe5ba8e27f6642622072abe9fbdcc283009472644935b81ca1e17d","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"e7beea07d24d9bc485fdface9d33a4806d55190cd219273b7ba26239fcc8ef8b","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"1676978773d9d615778f1a035a465d5ac63a9c79bc01b5106669b285d9cee23a","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"0831c9cf2d31401025a82f41df10d17095d2f09b0a8d2b7fed8b5f9288592f1d","src/modules/hopf.js":"ae591b50d5062c9a122bdd7270ff4e4e45e43e4d37ba047e6bda6d23d74967ce","src/modules/cloak.js":"3f1c2b4adc3ca5692b31dcdf2178be8f825abe15fba109aa699f98f5515c543d","src/modules/vortex.js":"fc8e66a17fe114da9a663f0827171ea70461c784e10802fac2bbd3d2205027f0","src/modules/darkroom.js":"d6734878edd1e64e7e955a61519038f9caaa46bdba4fc2ff48bd6831c97ad24d","src/modules/kakeya.js":"d1032c40c96cb013ba2a97d5ab176553ad803893c93321a1305360248c10dbb0","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"267c0cd0e13360c490c9593cd4a58410dd30d9c7e8b21fd3cd8532221de4e87e","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"62896cc45ed4ef272eed1ec89ca5a0d4977173dc464aa522c5b84fac08ae2e1d","src/modules/kitaev.js":"9927bcc6b318388f7730f7e86cfe975ea2cb99dc98ce28c6e1cfd0a12f4e569e","src/modules/veselago.js":"d43e80339587c7273e1cab5cd6f629826cd1d2b46cab3c74539f8b9ee3164191","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"45238c4577983543da955979ed6579f315fa596d371c7df974725a50138cd30c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"b7c4b23da19c1f5bcb5ffa43fff089b158b77a8e54bbb9b6e11daf2e4499fc9f","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"unvalidated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"partially validated","skin":"unvalidated","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"partially validated","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"unvalidated","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"partially validated","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"unvalidated","percolation":"unvalidated","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"validated within stated limits","caustics":"unvalidated","veselago":"unvalidated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
 <script>/* The shared uncertainty harness. Every measured number the studio prints against theory gets its
    error bar from here, in the browser and in the Node tools alike, so there is one method per kind of
    number instead of one per tab. AGENTS.md ("A measured number carries an error bar") says which method
@@ -45174,15 +45204,13 @@ void main(){
   });
 })();
 </script>
-<script>
-/* modules/kitaev.js */
-/* GENChase: Kitaev chain. Majorana zero modes bound to the ends. End weight of the mid-gap state is measured. */
+<script>/* modules/kitaev.js */
+/* GENChase: Kitaev chain. Majorana zero modes bound to the ends. The Bogoliubov-de Gennes matrix is diagonalized exactly; end weight and splitting are measured from its quasiparticle modes. */
 (function () {
   'use strict';
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -45210,85 +45238,310 @@ void main(){
 
   function surprise(rng) { return { mu: rng.range(-1.6, 2.2), delta: rng.range(0.2, 1.1), tHop: rng.range(0.7, 1.3) }; }
   function sanitize(s) { s.grid = Math.max(64, Math.min(160, Math.round(s.grid / 16) * 16)); }
+
+  /* ---- exact diagonalization ----
+     Householder tridiagonalization (tred2) and implicit QL with shifts (tql2), after the EISPACK routines
+     of the same names (Wilkinson and Reinsch, Handbook for Automatic Computation II, 1971). Only + - * /
+     and sqrt, which IEEE 754 rounds exactly, so every JavaScript engine produces the same bits. Both are
+     generators that yield between outer iterations, so the tab can spread a long chain over several
+     frames; the arithmetic does not depend on where it pauses. */
+  const EPS = 2.220446049250313e-16;
+  function pyth(a, b) {
+    const x = Math.abs(a), y = Math.abs(b);
+    if (x > y) { const r = y / x; return x * Math.sqrt(1 + r * r); }
+    if (y === 0) return 0;
+    const r = x / y; return y * Math.sqrt(1 + r * r);
+  }
+  // Dense symmetric A (row-major n*n, overwritten) -> tridiagonal d, e (e[i] = T[i][i+1]) and the
+  // orthogonal basis Z with basis vectors as rows.
+  function* tred2(A, n) {
+    const V = A, d = new Float64Array(n), e = new Float64Array(n);
+    for (let j = 0; j < n; j++) d[j] = V[(n - 1) * n + j];
+    for (let i = n - 1; i > 0; i--) {
+      let scale = 0, h = 0;
+      for (let k = 0; k < i; k++) scale += Math.abs(d[k]);
+      if (scale === 0) {
+        e[i] = d[i - 1];
+        for (let j = 0; j < i; j++) { d[j] = V[(i - 1) * n + j]; V[i * n + j] = 0; V[j * n + i] = 0; }
+      } else {
+        for (let k = 0; k < i; k++) { d[k] /= scale; h += d[k] * d[k]; }
+        let f = d[i - 1], g = Math.sqrt(h);
+        if (f > 0) g = -g;
+        e[i] = scale * g; h -= f * g; d[i - 1] = f - g;
+        for (let j = 0; j < i; j++) e[j] = 0;
+        for (let j = 0; j < i; j++) {
+          f = d[j]; V[j * n + i] = f; g = e[j] + V[j * n + j] * f;
+          for (let k = j + 1; k <= i - 1; k++) { g += V[k * n + j] * d[k]; e[k] += V[k * n + j] * f; }
+          e[j] = g;
+        }
+        f = 0;
+        for (let j = 0; j < i; j++) { e[j] /= h; f += e[j] * d[j]; }
+        const hh = f / (h + h);
+        for (let j = 0; j < i; j++) e[j] -= hh * d[j];
+        for (let j = 0; j < i; j++) {
+          f = d[j]; g = e[j];
+          for (let k = j; k <= i - 1; k++) V[k * n + j] -= (f * e[k] + g * d[k]);
+          d[j] = V[(i - 1) * n + j]; V[i * n + j] = 0;
+        }
+      }
+      d[i] = h;
+      yield;
+    }
+    for (let i = 0; i < n - 1; i++) {
+      V[(n - 1) * n + i] = V[i * n + i]; V[i * n + i] = 1;
+      const h = d[i + 1];
+      if (h !== 0) {
+        for (let k = 0; k <= i; k++) d[k] = V[k * n + i + 1] / h;
+        for (let j = 0; j <= i; j++) {
+          let g = 0;
+          for (let k = 0; k <= i; k++) g += V[k * n + i + 1] * V[k * n + j];
+          for (let k = 0; k <= i; k++) V[k * n + j] -= g * d[k];
+        }
+      }
+      for (let k = 0; k <= i; k++) V[k * n + i + 1] = 0;
+      yield;
+    }
+    for (let j = 0; j < n; j++) { d[j] = V[(n - 1) * n + j]; V[(n - 1) * n + j] = 0; }
+    V[(n - 1) * n + n - 1] = 1;
+    for (let i = 1; i < n; i++) e[i - 1] = e[i];
+    e[n - 1] = 0;
+    const Z = new Float64Array(n * n);
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) Z[c * n + r] = V[r * n + c];
+    return { d, e, Z };
+  }
+  // Symmetric tridiagonal (d, e) in the basis Z -> eigenvalues ascending in d, unit eigenvectors as rows of Z.
+  function* tql2(d, e, Z, n) {
+    let f = 0, tst1 = 0;
+    for (let l = 0; l < n; l++) {
+      tst1 = Math.max(tst1, Math.abs(d[l]) + Math.abs(e[l]));
+      let m = l;
+      while (m < n - 1 && Math.abs(e[m]) > EPS * tst1) m++;
+      if (m > l) {
+        let iter = 0;
+        do {
+          if (++iter > 60) throw new Error('QL iteration did not converge');
+          let g = d[l], p = (d[l + 1] - g) / (2 * e[l]), r = pyth(p, 1);
+          if (p < 0) r = -r;
+          d[l] = e[l] / (p + r); d[l + 1] = e[l] * (p + r);
+          const dl1 = d[l + 1];
+          let h = g - d[l];
+          for (let i = l + 2; i < n; i++) d[i] -= h;
+          f += h;
+          p = d[m];
+          let c = 1, c2 = 1, c3 = 1, s = 0, s2 = 0;
+          const el1 = e[l + 1];
+          for (let i = m - 1; i >= l; i--) {
+            c3 = c2; c2 = c; s2 = s;
+            g = c * e[i]; h = c * p; r = pyth(p, e[i]);
+            e[i + 1] = s * r; s = e[i] / r; c = p / r;
+            p = c * d[i] - s * g;
+            d[i + 1] = h + s * (c * g + s * d[i]);
+            const a = i * n, b = (i + 1) * n;
+            for (let k = 0; k < n; k++) { h = Z[b + k]; Z[b + k] = s * Z[a + k] + c * h; Z[a + k] = c * Z[a + k] - s * h; }
+          }
+          p = -s * s2 * c3 * el1 * e[l] / dl1;
+          e[l] = s * p; d[l] = c * p;
+          yield;
+        } while (Math.abs(e[l]) > EPS * tst1);
+      }
+      d[l] += f; e[l] = 0;
+    }
+    for (let i = 0; i < n - 1; i++) {
+      let k = i, p = d[i];
+      for (let j = i + 1; j < n; j++) if (d[j] < p) { k = j; p = d[j]; }
+      if (k !== i) {
+        d[k] = d[i]; d[i] = p;
+        const a = i * n, b = k * n;
+        for (let j = 0; j < n; j++) { const t = Z[a + j]; Z[a + j] = Z[b + j]; Z[b + j] = t; }
+      }
+    }
+    return { values: d, vectors: Z };
+  }
+
+  // Bogoliubov-de Gennes matrix of the chain of N sites, in the Nambu basis (c_0 .. c_{N-1}, c†_0 .. c†_{N-1}):
+  //   H_BdG = [[h, D], [-D, -h]],  h_jj = -μ,  h_{j,j+1} = h_{j+1,j} = -t,  D_{j,j+1} = -Δ,  D_{j+1,j} = +Δ,
+  // so that H = ½ Ψ† H_BdG Ψ + const is the tab's Hamiltonian. Real symmetric, 2N × 2N. bc 'periodic' adds
+  // the bond from site N-1 to site 0 with the bulk sign (k = 2πm/N), 'antiperiodic' with the opposite sign
+  // (k = 2π(m+½)/N). The tab draws the open chain; the rings are the band-structure check.
+  function bdgMatrix(N, mu, t, D, bc) {
+    const n = 2 * N, A = new Float64Array(n * n);
+    for (let j = 0; j < N; j++) { A[j * n + j] = -mu; A[(N + j) * n + N + j] = mu; }
+    const bond = (j, k, sg) => {
+      A[j * n + k] += -t * sg; A[k * n + j] += -t * sg;
+      A[(N + j) * n + N + k] += t * sg; A[(N + k) * n + N + j] += t * sg;
+      A[j * n + N + k] += -D * sg; A[(N + k) * n + j] += -D * sg;
+      A[k * n + N + j] += D * sg; A[(N + j) * n + k] += D * sg;
+    };
+    for (let j = 0; j < N - 1; j++) bond(j, j + 1, 1);
+    if (bc === 'periodic') bond(N - 1, 0, 1);
+    else if (bc === 'antiperiodic') bond(N - 1, 0, -1);
+    return A;
+  }
+  function* solveChain(N, mu, t, D, bc) {
+    const n = 2 * N, T = yield* tred2(bdgMatrix(N, mu, t, D, bc), n);
+    return yield* tql2(T.d, T.e, T.Z, n);
+  }
+
+  // One row per +/- pair of quasiparticle modes, ordered by |E|. Particle-hole symmetry maps (u, v) at E
+  // to (v, u) at -E, so a pair has one density |u|² + |v|² and each positive level is drawn once. Levels
+  // that agree to within 1e-9 of the bandwidth are treated as one degenerate level, so that the picture
+  // depends on the Hamiltonian alone, not on rounding inside the solver: a level straddling zero (a
+  // Majorana pair whose splitting double precision cannot resolve) is drawn as its mean density, which no
+  // choice of basis inside it can change, and any other degenerate level is rotated to a canonical basis,
+  // Gram-Schmidt on the level's projector applied to the basis states in order.
+  function pairModes(values, vectors, n, sites, density) {
+    const Z = vectors, Emax = Math.abs(values[n - 1]) || 1, tol = 1e-9 * Emax, pairs = [];
+    for (let i = 0; i < n;) {
+      let j = i + 1;
+      while (j < n && values[j] - values[j - 1] <= tol) j++;
+      if (values[i] <= tol && values[j - 1] >= -tol) {
+        const d = new Float64Array(sites);
+        let e = 0;
+        for (let a = i; a < j; a++) { const da = density(Z, n, a); for (let x = 0; x < sites; x++) d[x] += da[x] / (j - i); e += Math.abs(values[a]) / (j - i); }
+        pairs.push({ E: e, dens: d });
+      } else if (values[i] > tol) {
+        if (j - i > 1) canonical(Z, n, i, j);
+        for (let a = i; a < j; a++) pairs.push({ E: values[a], dens: density(Z, n, a) });
+      }
+      i = j;
+    }
+    return pairs;
+  }
+  function canonical(Z, n, from, to) {
+    const m = to - from, out = [];
+    for (let s = 0; s < n && out.length < m; s++) {
+      const q = new Float64Array(n);
+      for (let a = from; a < to; a++) { const c = Z[a * n + s]; if (c !== 0) for (let k = 0; k < n; k++) q[k] += c * Z[a * n + k]; }
+      for (let pass = 0; pass < 2; pass++) for (const o of out) { let dot = 0; for (let k = 0; k < n; k++) dot += o[k] * q[k]; for (let k = 0; k < n; k++) q[k] -= dot * o[k]; }
+      let nr = 0; for (let k = 0; k < n; k++) nr += q[k] * q[k];
+      if (nr > 1e-12) { const inv = 1 / Math.sqrt(nr); for (let k = 0; k < n; k++) q[k] *= inv; out.push(q); }
+    }
+    for (let a = 0; a < out.length; a++) Z.set(out[a], (from + a) * n);
+  }
+  const siteDensity = (Z, n, j) => {
+    const N = n / 2, o = new Float64Array(N);
+    for (let x = 0; x < N; x++) { const u = Z[j * n + x], v = Z[j * n + N + x]; o[x] = u * u + v * v; }
+    return o;
+  };
+  // Fraction of a density on the outer tenth of the sites at each end.
+  function endWeight(dens) {
+    const n = dens.length, c = Math.max(1, Math.floor(n / 10));
+    let end = 0, tot = 0;
+    for (let x = 0; x < n; x++) { tot += dens[x]; if (x < c || x >= n - c) end += dens[x]; }
+    return end / (tot || 1);
+  }
+  // The zero modes of the semi-infinite chain in closed form. The left Majorana lives on one Majorana
+  // sublattice with amplitude φ_j = (x₊^(j+1) − x₋^(j+1)) / (x₊ − x₋), where x± are the roots of
+  // (t + Δ) x² + μ x + (t − Δ) = 0; it is normalizable, and the phase topological, when both |x±| < 1,
+  // which is |μ| < 2|t| for Δ ≠ 0. The right Majorana is its mirror. ξ = −1/ln max|x±| is the
+  // localization length in sites, and the splitting of a finite chain decays as max|x±|^N, times
+  // |sin((N+1)θ)| when the roots are complex, x± = |x| e^(±iθ).
+  function majorana(N, mu, t, D) {
+    const a = t + D, b = mu, c = t - D, disc = b * b - 4 * a * c;
+    let xmax, phi = new Float64Array(N);
+    if (disc >= 0) {
+      const s = Math.sqrt(disc), x1 = (-b + s) / (2 * a), x2 = (-b - s) / (2 * a);
+      xmax = Math.max(Math.abs(x1), Math.abs(x2));
+      let p1 = x1, p2 = x2, pd = 1;
+      for (let j = 0; j < N; j++) {
+        phi[j] = Math.abs(x1 - x2) > 1e-12 * xmax ? (p1 - p2) / (x1 - x2) : (j + 1) * pd;
+        pd = p1; p1 *= x1; p2 *= x2;
+      }
+    } else {
+      const re = -b / (2 * a), im = Math.sqrt(-disc) / (2 * a), th = Math.atan2(im, re);
+      xmax = Math.sqrt(re * re + im * im);
+      let r = xmax;
+      for (let j = 0; j < N; j++) { phi[j] = r * Math.sin((j + 1) * th); r *= xmax; }
+    }
+    const topo = xmax < 1 && D !== 0;
+    let end = null;
+    if (topo) {
+      const cut = Math.max(1, Math.floor(N / 10));
+      let e = 0, tot = 0;
+      for (let j = 0; j < N; j++) { const p = phi[j] * phi[j]; tot += p; if (j < cut || j >= N - cut) e += p; }
+      end = e / tot;
+    }
+    return { topo, xmax, xi: xmax > 0 && xmax < 1 ? -1 / Math.log(xmax) : Infinity, endWeight: end };
+  }
+  function analyse(res, N, mu, t, D) {
+    const n = 2 * N, pairs = pairModes(res.values, res.vectors, n, N, siteDensity);
+    const split = res.values[N] - res.values[N - 1], Emax = Math.abs(res.values[n - 1]);
+    return {
+      pairs, Emax, split, E1: pairs.length > 1 ? pairs[1].E : Emax,
+      endW: endWeight(pairs[0].dens), floor: 2 * n * EPS * Emax, zero: majorana(N, mu, t, D),
+    };
+  }
+  // Rows run down a linear |E| axis from zero at the top to the band top at the bottom; each row shows
+  // the pair whose |E| is nearest, so the gap appears as a band of whatever sits in it. A pair has to be
+  // nearer by more than rounding to displace an earlier one, so a degenerate level always shows its first
+  // canonical mode.
+  function fill(field, W, H, pairs, Emax) {
+    const tol = 1e-9 * Emax;
+    for (let y = 0; y < H; y++) {
+      const eps = (y + 0.5) / H * Emax;
+      let best = 0, bd = Infinity;
+      for (let j = 0; j < pairs.length; j++) { const dd = Math.abs(pairs[j].E - eps); if (dd < bd - tol) { bd = dd; best = j; } }
+      field.set(pairs[best].dens, y * W);
+    }
+  }
+
   Studio.register({
     id: 'kitaev', name: 'Kitaev Chain', tab: 'Kitaev',
     subtitle: 'a fermion that is its own antiparticle, stuck to the ends · 2001',
     order: 93,
     equation: 'H = −μ Σ c†c − t Σ (c†_i c_{i+1}+h.c.) + Δ Σ (c_i c_{i+1}+h.c.),   |μ|<2t ⇒ unpaired γ_L, γ_R',
-    credit: 'A. Yu. Kitaev, Phys.-Usp. 44, 131 (2001). A 1D p-wave superconductor hosts two Majorana operators, one at each end, that together make a single nonlocal fermion. They sit at zero energy, inside the gap, and are their own antiparticles. The plate is the near-zero BdG mode of a finite chain, obtained by imaginary-time relaxation of the Nambu Hamiltonian.',
-    blurb: 'A particle that is its own antiparticle was a curiosity of Dirac\'s algebra until Kitaev put two of them on the ends of a wire, where they cannot pair up. They are Majorana zero modes: half a fermion each, nonlocal, and the reason a topological qubit might exist. Close the chemical potential past 2t and they dissolve into the bulk. The status line reports the weight of the mid-gap mode on the last tenth of the sites.',
+    credit: 'A. Yu. Kitaev, Phys.-Usp. 44, 131 (2001). A 1D p-wave superconductor hosts two Majorana operators, one at each end, that together make a single nonlocal fermion. They sit at zero energy, inside the gap, and are their own antiparticles. The plate is computed: the 2N × 2N Bogoliubov-de Gennes matrix of an open chain of N sites, one per column, is diagonalized exactly in double precision (Householder reduction and implicit QL, after Wilkinson and Reinsch, 1971), and each row is |u(x)|² + |v(x)|² of one ± pair of quasiparticle modes, scaled to its own peak, on a linear |E| axis from zero at the top.',
+    blurb: 'A particle that is its own antiparticle was a curiosity of Dirac\'s algebra until Kitaev put two of them on the ends of a wire, where they cannot pair up. They are Majorana zero modes: half a fermion each, nonlocal, and the reason a topological qubit might exist. Close the chemical potential past 2t and they dissolve into the bulk. Every row is a quasiparticle mode of the chain, found by diagonalizing it; rows run from zero energy at the top to the band top at the bottom, so the superconducting gap shows as a band of whatever lives in it. The status line reports the weight of the mid-gap pair on the outer tenth of the sites at each end and the energy splitting of the pair.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: { Chain: '|μ| < 2t and Δ ≠ 0 is the topological phase. The trivial side is the control: the same Hamiltonian, no end states.' },
     palette: true, defaultPalette: 'ember', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
+      let W = 0, H = 0, field = null, buf = null, img = null, info = null;
+      let timer = 0, job = 0, busy = false, waiters = [];
       function sizeFrom(s) {
         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
         return { W: g, H: Math.max(48, Math.round(g * a)) };
       }
       function compute() {
-        const s = host.getState();
-        const sz = sizeFrom(s); W = sz.W; H = sz.H;
-        field = new Float32Array(W * H);
-        const rng = U.makeRng(String(s.seed) + '/x');
-
-        const N = W, mu = s.mu, t = s.tHop, D = s.delta;
-        const topo = Math.abs(mu) < 2 * t && Math.abs(D) > 0.02;
-        const xi = Math.abs((t - D) / Math.max(1e-6, t + D));
-        const xiMu = Math.abs(mu) / Math.max(1e-6, 2 * t);
-        const decay = topo ? Math.min(0.92, Math.max(0.15, 0.35 + 0.6 * xiMu)) : 0.98;
-        const left = new Float64Array(N), right = new Float64Array(N);
-        let nL = 0, nR = 0;
-        for (let i = 0; i < N; i++) {
-          const a = Math.pow(decay, i);
-          const b = Math.pow(decay, N - 1 - i);
-          left[i] = topo ? a : Math.sin(Math.PI * (i + 1) / (N + 1));
-          right[i] = topo ? b : Math.sin(2 * Math.PI * (i + 1) / (N + 1));
-          nL += left[i] * left[i]; nR += right[i] * right[i];
-        }
-        const iL = 1 / Math.sqrt(nL || 1), iR = 1 / Math.sqrt(nR || 1);
-        for (let i = 0; i < N; i++) { left[i] *= iL; right[i] *= iR; }
-        let endW = 0, tot = 0;
-        const cut = Math.max(2, (N * 0.12) | 0);
-        for (let y = 0; y < H; y++) {
-          const u = y / Math.max(1, H - 1);
-          for (let x = 0; x < N; x++) {
-            let p;
-            if (u < 0.22) p = left[x] * left[x];
-            else if (u > 0.78) p = right[x] * right[x];
-            else {
-              const k = 1 + ((u - 0.22) / 0.56) * 6;
-              p = Math.sin(Math.PI * k * (x + 1) / (N + 1));
-              p = p * p / (N / 2);
-            }
-            field[y * N + x] = p;
-            if (u < 0.22 || u > 0.78) {
-              tot += p;
-              if (x < cut || x >= N - cut) endW += p;
-            }
-          }
-        }
-        metric = endW / Math.max(1e-12, tot);
-        extra = Math.abs(mu) / (2 * t);
-
-        buf = document.createElement('canvas'); buf.width = W; buf.height = H;
-        img = buf.getContext('2d').createImageData(W, H);
+        clearTimeout(timer);
+        const s = host.getState(), my = ++job;
+        const sz = sizeFrom(s), N = sz.W;
+        const it = solveChain(N, s.mu, s.tHop, s.delta, 'open');
+        busy = true;
+        host.setStatus('<span>computing ' + (2 * N) + ' quasiparticle modes</span>');
+        const slice = () => {
+          if (my !== job) return;
+          const t0 = performance.now(), budget = host.computeBudget ? host.computeBudget().cpuSliceMs : 12;
+          let r;
+          do r = it.next(); while (!r.done && performance.now() - t0 < budget);
+          if (!r.done) { timer = setTimeout(slice, 0); return; }
+          W = sz.W; H = sz.H;
+          info = analyse(r.value, N, s.mu, s.tHop, s.delta);
+          field = new Float32Array(W * H);
+          fill(field, W, H, info.pairs, info.Emax);
+          buf = document.createElement('canvas'); buf.width = W; buf.height = H;
+          img = buf.getContext('2d').createImageData(W, H);
+          busy = false;
+          paint(); status();
+          const ws = waiters; waiters = []; ws.forEach(f => f());
+        };
+        slice();
       }
 
-
       function paint() {
-        if (!field) return;
+        if (!field || busy) return;
         const s = host.getState();
         const pal = Array.isArray(s.palette) && s.palette.length ? s.palette : ['#111', '#eee'];
         const ramp = U.makeRamp(pal, s.bg || '#111');
         const data = img.data;
         const exp = isFinite(s.exposure) && s.exposure > 0 ? s.exposure : 1;
-        let lo = Infinity, hi = -Infinity;
-        for (let i = 0; i < field.length; i++) { const v = field[i]; if (v < lo) lo = v; if (v > hi) hi = v; }
-        const span = (hi - lo) || 1, logv = s.view === 'log';
+        // Each row is one mode scaled to its own peak: an edge mode piles its weight on a few sites, and on
+        // a shared scale it would leave every bulk mode near black.
+        const logv = s.view === 'log', rowHi = new Float64Array(H);
+        for (let i = 0; i < field.length; i++) { const y = (i / W) | 0; if (field[i] > rowHi[y]) rowHi[y] = field[i]; }
         for (let i = 0; i < field.length; i++) {
-          let t = (field[i] - lo) / span;
+          let t = field[i] / (rowHi[(i / W) | 0] || 1);
           if (logv) t = Math.log(1.001 + 9 * Math.max(0, t)) / Math.log(10);
           t = U.clamp(t * exp, 0, 1);
           const c = ramp(isFinite(t) ? t : 0);
@@ -45301,23 +45554,34 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      // The end-mode rows are an assumed profile (an exponential with a decay chosen from μ, or a sine
-      // in the trivial phase), not eigenvectors of the chain, so their end weight is set by that choice.
+      // Both numbers are read off the computed quasiparticle modes, so they are deterministic. The end
+      // weight is set beside the closed-form Majorana of the semi-infinite chain (they differ by
+      // hybridization of order max|x±|^N). The splitting has no closed form here; ξ gives the rate at
+      // which it decays with N. Double precision cannot resolve a splitting below about 2nε‖H‖.
       function status() {
-        host.setStatus('<span>|μ|/2t <b>' + f2(extra) + '</b> · topo < 1</span>' +
-          U.stats.compare({ label: 'end weight', measured: metric, basis: 'construction', digits: 2, note: 'assumed end-mode profile' }) +
-          '<span>' + (extra < 1 && metric > 0.4 ? 'Majorana ends' : (extra < 1 ? 'topo, finite-size' : 'trivial')) + '</span>');
+        if (!info || busy) return;
+        const s = host.getState(), ratio = Math.abs(s.mu) / (2 * s.tHop), z = info.zero;
+        const resolved = info.split >= info.floor;
+        let word;
+        if (z.topo) word = (info.split < 0.1 * info.E1 ? 'Majorana ends' : 'topo, finite-size') + ' · ξ ' + f2(z.xi) + ' sites';
+        else word = ratio > 1 ? 'trivial' : 'critical';
+        host.setStatus('<span>|μ|/2t <b>' + f2(ratio) + '</b> · topo < 1</span>' +
+          U.stats.compare({ label: 'end weight', measured: info.endW, expected: z.endWeight === null ? undefined : z.endWeight, reference: 'Majorana closed form', basis: 'deterministic', digits: 3 }) +
+          U.stats.compare({ label: '2|E₀|', measured: info.split, basis: 'deterministic', digits: 3,
+            note: resolved ? undefined : 'below the ' + info.floor.toExponential(0) + ' floor of double precision' }) +
+          '<span>' + word + '</span>');
       }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
         fieldCells() { return W && H ? [W, H] : null; },
-        regenerate() { compute(); paint(); status(); },
+        regenerate() { compute(); },
         repaint() { paint(); status(); },
         resize() { paint(); },
         pause() {},
         resume() { paint(); },
         async exportPNG(w, h) {
+          if (busy) await new Promise(r => waiters.push(r));
           if (!buf) throw new Error('nothing to export');
           const s = host.getState();
           const c = document.createElement('canvas'); c.width = w; c.height = h;
