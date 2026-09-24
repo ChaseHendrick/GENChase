@@ -1,0 +1,31 @@
+name: tag signature
+
+# Every pushed release tag must be annotated, made by the project identity from AGENTS.md, on a commit
+# of main, and signed by a key in identities/allowed_signers once that file lists one. docs/SIGNING.md.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: signed release tag
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify the tag
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          # Fetch the tag object itself: a checkout of a tag event may leave only its commit.
+          git fetch --force --no-tags origin "refs/tags/$TAG:refs/tags/$TAG" "+refs/heads/main:refs/remotes/origin/main"
+          node tools/tag-release.js --verify "$TAG" --on-main

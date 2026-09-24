@@ -50,3 +50,9 @@ research/_private*
 Hendrick-minimal-winding-*
 # Vortex-collapse search results stay local until shared.
 run/vortex-collapse/
+
+# Hash commitments (docs/COMMITMENTS.md). A private record holds the salt that proves a commitment,
+# and private/ is a convenience folder for unpublished work; neither may ever be committed.
+*.commitment.json
+private/
+*.ots.bak

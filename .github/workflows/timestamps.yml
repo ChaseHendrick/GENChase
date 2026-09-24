@@ -1,0 +1,84 @@
+name: timestamps
+
+# OpenTimestamps proofs for the hash commitments in identities/commitments/ (docs/COMMITMENTS.md).
+# `ots stamp` makes a proof that stays pending until a Bitcoin block confirms it, a few hours later,
+# and `ots upgrade` then completes it. This workflow stamps any commitment that reached main without a
+# proof, completes pending proofs, and proposes the changed proof files as a pull request, because main
+# only takes pull requests. A pull request opened with the workflow token does not start other
+# workflows, so the last step starts the check workflow on the proposal's branch.
+#
+# Scheduled workflows run from main only. With no commitments the job stops after the checkout.
+
+on:
+  push:
+    branches: [main]
+    paths: ['identities/COMMITMENTS.txt', 'identities/commitments/**']
+  schedule:
+    - cron: '23 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: genchase-timestamps
+  cancel-in-progress: false
+
+jobs:
+  proofs:
+    name: stamp and complete proofs
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Find commitments
+        id: need
+        run: |
+          shopt -s nullglob
+          stamps=(identities/commitments/*.txt)
+          echo "count=${#stamps[@]}" >> "$GITHUB_OUTPUT"
+          echo "${#stamps[@]} commitment(s) in the ledger."
+      - uses: actions/setup-node@v4
+        if: steps.need.outputs.count != '0'
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        if: steps.need.outputs.count != '0'
+        with:
+          python-version: '3.x'
+      - name: Stamp new commitments and complete pending proofs
+        if: steps.need.outputs.count != '0'
+        run: |
+          python3 -m pip install --quiet opentimestamps-client==0.7.2
+          shopt -s nullglob
+          for f in identities/commitments/*.txt; do
+            [ -e "$f.ots" ] || ots stamp "$f" || echo "::warning::Could not stamp $f; the next run tries again."
+          done
+          # ots upgrade exits 1 while a proof is still waiting for its block, and keeps a .bak when it
+          # rewrites one; neither is an error here.
+          for p in identities/commitments/*.txt.ots; do
+            ots upgrade "$p" || echo "$p is still pending."
+          done
+          rm -f identities/commitments/*.ots.bak
+          node tools/verify-commitment.js --all
+      - name: Propose the proofs
+        if: steps.need.outputs.count != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$(git status --porcelain -- identities/commitments)" ]; then echo "No proof changed."; exit 0; fi
+          branch=automation/timestamps
+          # The project identity from AGENTS.md; it is the only commit author this repository uses.
+          git config user.name 'Chaos'
+          git config user.email '326338179+SharpMeow@users.noreply.github.com'
+          git switch -c "$branch"
+          git add identities/commitments
+          git commit -q -m "OpenTimestamps proofs for the commitment ledger" -m "Made by the timestamps workflow, run $GITHUB_RUN_ID."
+          git push --force origin "$branch"
+          if [ -z "$(gh pr list --head "$branch" --state open --json number --jq '.[].number')" ]; then
+            gh pr create --base main --head "$branch" --title "OpenTimestamps proofs for the commitment ledger" \
+              --body "The timestamps workflow stamped new commitments or completed pending proofs in identities/commitments/. Only .ots files change. Merge it so the proofs are archived with the next release (docs/COMMITMENTS.md)."
+          fi
+          gh workflow run check.yml --ref "$branch"
