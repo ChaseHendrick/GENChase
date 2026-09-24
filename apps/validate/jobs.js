@@ -96,7 +96,8 @@ class Jobs {
       try { const p=JSON.parse(line.slice(17));if(Number.isInteger(p.done)&&Number.isInteger(p.total)&&p.done>=0&&p.done<=p.total){j.progress={done:p.done,total:p.total,unit:'modules'};j.now=p.id+': '+p.status;} } catch {}
     }
     if (line.startsWith('GENCHASE_PROGRESS ')) {
-      try { const p = JSON.parse(line.slice(18)); if (['derive', 'check', 'search'].includes(p.stage)) { j.stage = p.stage; j.now = p.message || p.stage; } } catch { /* Ordinary log text is never executable. */ }
+      try { const p = JSON.parse(line.slice(18)); if (['derive', 'check', 'search'].includes(p.stage)) { j.stage = p.stage; j.now = p.message || p.stage; }
+        if (p.unit === 'seeds' && Number.isInteger(p.done) && Number.isInteger(p.total) && p.done >= 0 && p.done <= p.total) j.progress = { done: p.done, total: p.total, unit: 'seeds' }; } catch { /* Ordinary log text is never executable. */ }
     }
   }
   start(input, resumeFrom = null) {
@@ -117,7 +118,7 @@ class Jobs {
     for (const name of Object.keys(before)) {
       const dest = path.join(dir, 'source', name); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.copyFileSync(path.join(this.root, name), dest);
     }
-    if (resumeFrom) for (const name of ['verify-checkpoint.json','derive-checkpoint.json','metal-checkpoint']) {
+    if (resumeFrom) for (const name of ['verify-checkpoint.json','derive-checkpoint.json','vortex-checkpoint.json','metal-checkpoint']) {
       const from = path.join(this.data, resumeFrom, name); if (fs.existsSync(from)) fs.cpSync(from, path.join(dir, name), { recursive: true });
     }
     this.current.resumedFrom = resumeFrom;
@@ -177,7 +178,7 @@ class Jobs {
   resumeAvailable() {
     if (!this.current) return false;
     const dir = path.join(this.data, this.current.id);
-    return ['verify-checkpoint.json','derive-checkpoint.json','metal-checkpoint/checkpoint.json'].some(name=>fs.existsSync(path.join(dir,name)));
+    return ['verify-checkpoint.json','derive-checkpoint.json','vortex-checkpoint.json','metal-checkpoint/checkpoint.json'].some(name=>fs.existsSync(path.join(dir,name)));
   }
   async restart() {
     const input = this.lastInput; if (!input) throw Error('Start a job before restarting.');

@@ -48,3 +48,5 @@ research/*.pdf
 # See research/submission/PRIVATE-COPIES.md.
 research/_private*
 Hendrick-minimal-winding-*
+# Vortex-collapse search results stay local until shared.
+run/vortex-collapse/

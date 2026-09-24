@@ -9,6 +9,7 @@
 | [Nominal versus robust selection](MAXWELL-ROBUST.md) | ❌ Different-winner hypothesis failed | Both objectives selected the same candidate from the frozen pool |
 | [Molecular preparation sensitivity](MOLECULAR-MEMORY.md) | ⚠️ Inconclusive; refinement failed | No supported memory effect and no evidence of its absence |
 | [Correlated Schrödinger disorder](SCHRODINGER-DISORDER.md) | ⚠️ Preliminary screening signal | Greater finite-time spread in this small ensemble; the inferential conclusion depends on the interval method |
+| [Least-winding vortex collapse](VORTEX-COLLAPSE.md) | 🔄 Open; volunteer search | Certified local minima of the winding for 4 to 10 vortices; no global minimum or lower bound established |
 | [Cahn coarsening calibration](CAHN-SCALING.md) | ❌ Formula rejected | Held-out predictions were useful, but the fitted exponent depended too strongly on the fitting window |
 
 A passed hypothesis is not a new law, and a negative experiment does not show that its effect is impossible. Each report states its model, reference, thresholds, numerical checks and remaining gaps.

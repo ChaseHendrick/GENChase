@@ -14,6 +14,10 @@ test('command allowlist rejects injection and defaults to full evidence',()=>{
   assert.equal(command(root,{workspace:'validate'}).display,'node tools/verify.js --print --all');
   for(const input of [{workspace:'validate',mode:'plate',id:'fixture; touch /tmp/oops'},{workspace:'validate',mode:'shell'},{workspace:'validate',command:'whoami'},{workspace:'contribute',mode:'derive',slug:'../bad'},{workspace:'contribute',mode:'metal',grid:999}])assert.throws(()=>command(root,input));
   assert.equal(command(root,{workspace:'validate',mode:'plate',id:'fixture'}).args.at(-1),'12000');
+  const vortex=command(root,{workspace:'contribute',mode:'vortex-collapse',alpha:1,n:6,samples:20,start:40});
+  assert.deepEqual(vortex.args,['tools/vortex-collapse-search.js','--alpha','1','--n','6','--start','40','--count','20']);
+  assert(Number.isInteger(command(root,{workspace:'contribute',mode:'vortex-collapse'}).input.start),'a random seed block is recorded in the job input');
+  for(const bad of [{alpha:-2},{alpha:'1; rm'},{alpha:0.12345},{n:2},{n:17},{samples:0},{start:-1},{start:2**31}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-collapse',...bad}));
  }finally{fs.rmSync(root,{recursive:true,force:true});}
 });
 test('job persists log, actual exit code, source snapshot and portable bundle',async()=>{
