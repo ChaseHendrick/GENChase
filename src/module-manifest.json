@@ -1366,8 +1366,8 @@
       "tab": "SSH",
       "subtitle": "states in a gap that the bulk forbade · 1979",
       "equation": "H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open)",
-      "credit": "W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)| of every eigenmode, stacked.",
-      "blurb": "A gapped chain is not supposed to have states in the gap. Dimerise it the right way, open the ends, and two zero modes sit on the edges, exponentially bound, because the bulk winding has nowhere else to go. Close the chain into a ring and they vanish. The status line reports the weight of the mid-gap pair on the last tenth of the sites.",
+      "credit": "W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)|² of every eigenmode of the finite chain, energy increasing upward, each row scaled to its own peak; the mid-gap pair sits in the middle rows.",
+      "blurb": "A gapped chain is not supposed to have states in the gap. Dimerise it the right way, open the ends, and two zero modes sit on the edges, exponentially bound, because the bulk winding has nowhere else to go. Close the chain into a ring and they vanish. The chain is diagonalised exactly. The status line reports the pair of states nearest zero energy: its weight on the tenth of the sites at each end, and its energy against the bulk gap 2|w − v|.",
       "order": 55,
       "seed": "",
       "presets": [

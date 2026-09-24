@@ -146,7 +146,126 @@ function overlapAbs(a, b) {
 
 
 
-function runScience(sourceSha256) {
+// Groups of consecutive eigenvalues closer than tol. Inside a group the eigenvectors are not unique, so
+// the comparison below sums |psi|^2 over the group (the diagonal of its projector), which every basis
+// agrees on; a nondegenerate mode is its own group and is compared row by row.
+function clusters(values, tol) {
+  const out = [];
+  for (let a = 0; a < values.length;) {
+    let b = a;
+    while (b + 1 < values.length && values[b + 1] - values[b] <= tol) b++;
+    out.push([a, b]);
+    a = b + 1;
+  }
+  return out;
+}
+
+// The studio's own solver (src/modules/ssh.js: spectrum, midGap, verdict) against this file's independent
+// Jacobi reference, on every registered preset. `studio` is passed in by tools/ssh-science.js, which
+// evaluates the module source; nothing here is shared with the module.
+function compareStudio(studio) {
+  const EXPECT = { default: 'edge modes', topo: 'edge modes', edge: 'edge modes', log: 'edge modes', triv: 'trivial', ring: 'ring', crit: 'crossover' };
+  const presets = [['default', studio.DEFAULTS], ...Object.entries(studio.PRESETS).map(([k, p]) => [k, Object.assign({}, studio.DEFAULTS, p.p)])];
+  const runs = presets.map(([name, p]) => ({ name, N: 96, v: p.vIntra, w: p.w, periodic: p.bc === 'periodic', expect: EXPECT[name] }));
+  // Critical again on a longer chain: its localisation length (18.5 cells) no longer spans the chain.
+  runs.push({ name: 'crit-160', N: 160, v: 0.9, w: 0.95, periodic: false, expect: 'edge modes' });
+  const cases = [];
+  for (const c of runs) {
+    assert(c.expect, 'no expected verdict for preset ' + c.name);
+    const { N, v, w, periodic } = c;
+    const mod = studio.spectrum(N, v, w, periodic);
+    const H = sshHamiltonian(N, v, w, { periodic });
+    const ref = jacobiEigen(H);
+    const eigenvalueError = maxAbsDiff(mod.values, ref.values);
+    let residual = 0, orthonormality = 0, mirror = 0;
+    for (let k = 0; k < N; k++) {
+      for (let i = 0; i < N; i++) {
+        let hx = 0;
+        for (let j = 0; j < N; j++) hx += H[i][j] * mod.vectors[k * N + j];
+        residual = Math.max(residual, Math.abs(hx - mod.values[k] * mod.vectors[k * N + i]));
+        mirror = Math.max(mirror, Math.abs(mod.density[k * N + i] - mod.density[k * N + N - 1 - i]));
+      }
+      for (let l = k; l < N; l++) {
+        let dot = 0;
+        for (let i = 0; i < N; i++) dot += mod.vectors[k * N + i] * mod.vectors[l * N + i];
+        orthonormality = Math.max(orthonormality, Math.abs(dot - (k === l ? 1 : 0)));
+      }
+    }
+    const groups = clusters(ref.values, 1e-8);
+    let densityError = 0;
+    for (const [a, b] of groups) {
+      for (let i = 0; i < N; i++) {
+        let m = 0, r = 0;
+        for (let k = a; k <= b; k++) { m += mod.density[k * N + i]; r += ref.vectors[k][i] * ref.vectors[k][i]; }
+        densityError = Math.max(densityError, Math.abs(m - r));
+      }
+    }
+    const mid = studio.midGap(mod);
+    const pair = midGapPair(ref.values, ref.vectors);
+    const referenceEndWeight = 0.5 * (pair[0].endWeight + pair[1].endWeight);
+    const referenceMidGapAbs = Math.max(Math.abs(pair[0].energy), Math.abs(pair[1].energy));
+    const verdict = studio.verdict(mod, mid);
+    assert(eigenvalueError < 1e-10, c.name + ' eigenvalues ' + eigenvalueError);
+    assert(residual < 1e-12, c.name + ' residual ' + residual);
+    assert(orthonormality < 1e-12, c.name + ' orthonormality ' + orthonormality);
+    assert(densityError < 1e-9, c.name + ' densities ' + densityError);
+    assert(mirror < 1e-10, c.name + ' mirror symmetry ' + mirror);
+    assert(Math.abs(mid.endWeight - referenceEndWeight) < 1e-9, c.name + ' end weight');
+    assert(Math.abs(mid.energy - referenceMidGapAbs) < 1e-10, c.name + ' mid-gap energy');
+    assert(verdict.startsWith(c.expect), c.name + ' verdict "' + verdict + '", expected ' + c.expect);
+    cases.push({
+      preset: c.name, N, v, w, boundary: periodic ? 'periodic' : 'open', degenerateGroups: groups.filter(([a, b]) => b > a).length,
+      eigenvalueError, residual, orthonormality, densityError, mirrorSymmetryError: mirror,
+      endWeight: mid.endWeight, referenceEndWeight, midGapAbs: mid.energy, referenceMidGapAbs,
+      analyticBulkGap: 2 * Math.abs(w - v), verdict,
+    });
+  }
+  const controls = [];
+  // Swap the hoppings of every edge-mode preset: the same solver and the same verdict must now read trivial.
+  for (const name of ['topo', 'edge', 'log']) {
+    const p = Object.assign({}, studio.DEFAULTS, studio.PRESETS[name].p);
+    const mod = studio.spectrum(96, p.w, p.vIntra, false);
+    const mid = studio.midGap(mod), verdict = studio.verdict(mod, mid);
+    controls.push({ name: 'swapped-hoppings-' + name, v: p.w, w: p.vIntra, endWeight: mid.endWeight, midGapAbs: mid.energy, verdict,
+      separated: verdict === 'trivial' && mid.endWeight < 0.35 });
+  }
+  // The eigenvalue comparison must be able to miss: a reference chain terminated on the wrong bond.
+  {
+    const mod = studio.spectrum(96, 0.4, 1.2, false);
+    const wrong = jacobiEigen(sshHamiltonian(96, 0.4, 1.2, { periodic: false, reversePattern: true }));
+    const eigenvalueError = maxAbsDiff(mod.values, wrong.values);
+    controls.push({ name: 'reference-with-reversed-termination', eigenvalueError, separated: eigenvalueError > 0.1 });
+  }
+  // The density comparison must be able to miss: the retired display heuristic, which put the analytic
+  // left zero mode on every row of a topological plate.
+  {
+    const N = 96, v = 0.4, w = 1.2;
+    const ref = jacobiEigen(sshHamiltonian(N, v, w, { periodic: false }));
+    const row = new Float64Array(N);
+    let norm = 0;
+    for (let j = 0; j < N / 2; j++) { row[2 * j] = (v / w) ** (2 * j); norm += row[2 * j]; }
+    let densityError = 0;
+    for (const [a, b] of clusters(ref.values, 1e-8)) {
+      for (let i = 0; i < N; i++) {
+        let r = 0;
+        for (let k = a; k <= b; k++) r += ref.vectors[k][i] * ref.vectors[k][i];
+        densityError = Math.max(densityError, Math.abs((b - a + 1) * row[i] / norm - r));
+      }
+    }
+    controls.push({ name: 'retired-heuristic-densities', densityError, separated: densityError > 0.1 });
+  }
+  assert(controls.every(f => f.separated), 'studio failure controls must separate');
+  return {
+    criteria: {
+      eigenvalueMaxError: 1e-10, residualMax: 1e-12, orthonormalityMax: 1e-12,
+      densityMaxErrorSummedOverDegenerateGroups: 1e-9, degenerateGroupTolerance: 1e-8, mirrorSymmetryMax: 1e-10,
+      endWeightMaxError: 1e-9, midGapEnergyMaxError: 1e-10, verdictMatchesExpectation: true, failureControlsMustSeparate: true,
+    },
+    cases, failureControls: controls,
+  };
+}
+
+function runScience(sourceSha256, studio) {
 // ---------- poteto-mode: deliberate failure controls first ----------
 const failures = [];
 {
@@ -302,7 +421,7 @@ const result = {
   harness: 'tools/ssh-science.js',
   command: 'node tools/ssh-science.js --write',
   precision: 'Float64',
-  scope: 'Independent Float64 dimerized tight-binding SSH Hamiltonian: periodic spectrum vs analytic Bloch energies, open-chain mid-gap edge localization / end weight, nontrivial vs trivial dimerization, open-vs-periodic control.',
+  scope: 'Independent Float64 dimerized tight-binding SSH Hamiltonian: periodic spectrum vs analytic Bloch energies, open-chain mid-gap edge localization / end weight, nontrivial vs trivial dimerization, open-vs-periodic control; and the studio solver in src/modules/ssh.js (spectrum, mode densities, mid-gap end weight, verdict) against the independent Jacobi solve on every registered preset.',
   criteria: {
     periodicSpectrumMaxError: 1e-10,
     periodicGapError: 1e-10,
@@ -317,21 +436,23 @@ const result = {
   spectrum: spectrumCases,
   topology: topologyCases,
   openVersusPeriodic: openTopo,
+  studio: compareStudio(studio),
   domain: {
-    parameters: 'Finite even N in {24,32,40,48}; hoppings (v,w) covering nontrivial w>v and trivial v>w; open and periodic boundaries.',
+    parameters: 'Finite even N in {24,32,40,48} for the reference checks; N = 96 for every studio preset and N = 160 for Critical; hoppings (v,w) covering nontrivial w>v and trivial v>w; open and periodic boundaries.',
     conditions: 'Single-particle nearest-neighbour SSH; no interactions, disorder (except scramble control), or continuum limit.',
     resolution: 'Dense N×N real-symmetric Jacobi diagonalization; analytic Bloch reference for periodic chains.',
     precision: 'IEEE Float64 throughout; spectrum agreement to 1e-10 on tested sizes.',
   },
   limitations: [
     'Finite open/periodic chains only; no thermodynamic-limit proof, interactions, phonons, or experimental polyacetylene claim.',
-    'Does not certify the production ssh.js visualization heuristic (one analytic left zero mode on every row when w > v + 0.04 on an open chain, otherwise sine profiles independent of v and w), its by-construction end-weight verdict, print path, or GPU/CPU studio path.',
+    'The studio comparison covers the registered presets at N = 96 and Critical at N = 160. Other grids, the row mapping, per-row scaling and palette of the plate, and the print path are not compared pixel by pixel.',
     'Jacobi dense eigensolve is an independent numerical reference, not a published table lookup.',
     'End weight uses a fixed 10% site window; localization length vs |v/w| is sampled, not exhaustively mapped.',
   ],
 };
 assert(result.passed);
 assert(result.failureControls.every((f) => f.separated));
+assert(result.studio.failureControls.every((f) => f.separated));
 
   return result;
 }
@@ -339,5 +460,5 @@ assert(result.failureControls.every((f) => f.separated));
 module.exports = {
   sshHamiltonian, analyticBulkEnergies, jacobiEigen, endWeight, midGapPair,
   gapFromSpectrum, bulkGapExcludingMidGap, maxAbsDiff, meanAbsDiffSorted,
-  analyticLeftEdge, overlapAbs, runScience,
+  analyticLeftEdge, overlapAbs, clusters, compareStudio, runScience,
 };
