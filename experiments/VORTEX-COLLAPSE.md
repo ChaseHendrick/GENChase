@@ -17,8 +17,10 @@ vortices the answer is not known here, and that is what this search is for.
 ## The questions
 
 1. **Is there a positive lower bound on P for any number of vortices (Euler)?** The smallest values
-   found so far fall with N: 0.7979 at N = 4, 0.7448 at N = 5 and 0.7137 at N = 6. In special
-   two-arm families computed for the research notes, the value falls below 1/2 at 61 vortices.
+   found so far fall with N: 0.7979 at N = 4, 0.7448 at N = 5 and 0.7137 at N = 6. Growing the
+   deepest family gives 0.5216 at N = 30, with the fall per added vortex shrinking (about 0.0016 at
+   N = 30). In special two-arm families computed for the research notes, the value falls below 1/2 at
+   61 vortices.
 2. **Is the four-vortex Euler value 0.7978967838 the global minimum?** A seed sweep that always
    finds the same basin is evidence, not proof.
 3. **Does the three-vortex bound hold for −2 < α < −59/40?** The proof in preparation covers
@@ -26,7 +28,8 @@ vortices the answer is not known here, and that is what this search is for.
    certified three-vortex collapse below `√(3+α)/(2+α)` would disprove it for that α. The job flags
    such a result automatically.
 4. **What are the least windings for N ≥ 4 when α ≠ 0?** The SQG and α = 2 values fall faster with N
-   than the Euler ones. **For α = 2 the search reached zero** (next section). The questions left are
+   than the Euler ones. **For α = 2 the search reached zero** (next section). For SQG, growth gives
+   0.1453 at N = 24 and is still falling by about 0.007 per added vortex. The questions left are
    whether SQG and the Euler case also reach zero, and at which α zero first becomes possible.
 
 ## A collapse that does not turn
@@ -105,10 +108,12 @@ with k + k′ = 2.
 
 Because the exponents pair as k + k′ = 2, at least one member of each pair is positive, so every
 self-similar collapse has at least N − 3 unstable shape modes. A pair with both exponents between 0 and
-2 adds a second unstable mode. Every certified minimum recorded so far has no exponent at zero. The
-least minimum of each case has exactly N − 3 unstable modes, except Euler N = 10, α = 2 at N = 9 and 10,
-and SQG N = 10, where the least minimum found has one pair in (0, 2). The largest exponent is large: about
-12 for four Euler vortices and 130 for eight vortices at α = 2. Such fast growth is also why direct
+2 adds a second unstable mode. No least minimum recorded so far has an exponent at zero.
+
+The least minimum of every case has exactly N − 3 unstable modes, except the Euler minima from N = 10 to
+N = 30, the family that takes over at N = 10. Each of those has exactly one pair in (0, 2), and so N − 2
+unstable modes. The largest exponent is large: about 12 for four Euler vortices, 49 for thirty, and 639
+for 24 SQG vortices. Such fast growth is also why direct
 integration can only follow a collapse over a limited shrink. The job integrates only as far as the fastest mode can amplify
 round-off by 10⁴, and never below a shrink of one half.
 
@@ -223,12 +228,47 @@ minimum, out of every seed recorded for that case. The reference column comes fr
 | 0 | 8 | 0.6797704208 | 3 of 40 | 3 (0.6797704208, 0.6944114725, 0.7287092159) | 33.83 | 5 |  |
 | 0 | 9 | 0.6695811206 | 1 of 40 | 1 (0.6695811206) | 39.14 | 6 |  |
 | 0 | 10 | 0.6377055919 | 2 of 40 | 2 (0.6377055919, 0.6617926944) | 15.37 | 8 |  |
+| 0 | 11 | 0.6179510627 | 6 of 10 | 1 (0.6179510627) | 15.33 | 9 |  |
+| 0 | 12 | 0.6044746933 | 8 of 10 | 1 (0.6044746933) | 18.76 | 10 |  |
+| 0 | 13 | 0.5918604652 | 3 of 10 | 2 (0.5918604652, 0.5945336345) | 18.84 | 11 |  |
+| 0 | 14 | 0.5826273179 | 8 of 10 | 1 (0.5826273179) | 22.12 | 12 |  |
+| 0 | 15 | 0.5738915441 | 9 of 10 | 1 (0.5738915441) | 22.32 | 13 |  |
+| 0 | 16 | 0.5671672974 | 7 of 10 | 1 (0.5671672974) | 25.49 | 14 |  |
+| 0 | 17 | 0.5607700272 | 8 of 10 | 1 (0.5607700272) | 25.82 | 15 |  |
+| 0 | 18 | 0.5556533062 | 4 of 10 | 1 (0.5556533062) | 28.86 | 16 |  |
+| 0 | 19 | 0.5507731410 | 6 of 10 | 1 (0.5507731410) | 29.33 | 17 |  |
+| 0 | 20 | 0.5467481822 | 6 of 10 | 1 (0.5467481822) | 32.22 | 18 |  |
+| 0 | 21 | 0.5429071858 | 10 of 10 | 1 (0.5429071858) | 32.85 | 19 |  |
+| 0 | 22 | 0.5396573325 | 7 of 10 | 1 (0.5396573325) | 35.56 | 20 |  |
+| 0 | 23 | 0.5365586895 | 9 of 10 | 1 (0.5365586895) | 36.38 | 21 |  |
+| 0 | 24 | 0.5338787483 | 8 of 10 | 1 (0.5338787483) | 38.82 | 22 |  |
+| 0 | 25 | 0.5313285211 | 8 of 10 | 1 (0.5313285211) | 39.92 | 23 |  |
+| 0 | 26 | 0.5290797127 | 8 of 10 | 1 (0.5290797127) | 41.85 | 24 |  |
+| 0 | 27 | 0.5269459053 | 8 of 10 | 1 (0.5269459053) | 43.46 | 25 |  |
+| 0 | 28 | 0.5250320549 | 6 of 10 | 1 (0.5250320549) | 45.16 | 26 |  |
+| 0 | 29 | 0.5232207435 | 8 of 10 | 1 (0.5232207435) | 47.01 | 27 |  |
+| 0 | 30 | 0.5215733789 | 6 of 10 | 1 (0.5215733789) | 48.73 | 28 |  |
 | 1 | 4 | 0.5499151189 | 77 of 80 | 1 (0.5499151189) | 12.77 | 1 | 0.5499151189 |
 | 1 | 5 | 0.4667708118 | 34 of 80 | 1 (0.4667708118) | 23.84 | 2 | 0.4667708118 |
 | 1 | 6 | 0.4121913837 | 18 of 80 | 1 (0.4121913837) | 36.34 | 3 |  |
 | 1 | 7 | 0.3724816694 | 6 of 40 | 2 (0.3724816694, 0.5002732127) | 51.02 | 4 |  |
 | 1 | 8 | 0.3415530821 | 1 of 40 | 2 (0.3415530821, 0.4473240201) | 68.00 | 5 |  |
-| 1 | 10 | 0.3708641612 | 1 of 40 | 1 (0.3708641612) | 27.10 | 8 |  |
+| 1 | 9 | 0.3163357095 | 8 of 10 | 2 (0.3163357095, 0.4029041577) | 87.25 | 6 |  |
+| 1 | 10 | 0.2950963118 | 9 of 50 | 2 (0.2950963118, 0.3708641612) | 108.73 | 7 |  |
+| 1 | 11 | 0.2767707240 | 8 of 10 | 1 (0.2767707240) | 132.43 | 8 |  |
+| 1 | 12 | 0.2606629481 | 9 of 10 | 1 (0.2606629481) | 158.33 | 9 |  |
+| 1 | 13 | 0.2462948937 | 5 of 10 | 2 (0.2462948937, 0.3016024770) | 186.43 | 10 |  |
+| 1 | 14 | 0.2333250646 | 10 of 10 | 1 (0.2333250646) | 216.71 | 11 |  |
+| 1 | 15 | 0.2215016405 | 7 of 10 | 2 (0.2215016405, 0.2667928269) | 249.17 | 12 |  |
+| 1 | 16 | 0.2106339556 | 8 of 10 | 1 (0.2106339556) | 283.81 | 13 |  |
+| 1 | 17 | 0.2005743960 | 9 of 10 | 1 (0.2005743960) | 320.63 | 14 |  |
+| 1 | 18 | 0.1912064831 | 8 of 10 | 2 (0.1912064831, 0.2291370344) | 359.62 | 15 |  |
+| 1 | 19 | 0.1824367839 | 7 of 10 | 2 (0.1824367839, 0.2190355553) | 400.80 | 16 |  |
+| 1 | 20 | 0.1741892690 | 7 of 10 | 2 (0.1741892690, 0.2087899745) | 444.15 | 17 |  |
+| 1 | 21 | 0.1664012854 | 7 of 10 | 2 (0.1664012854, 0.1995779361) | 489.69 | 18 |  |
+| 1 | 22 | 0.1590206224 | 6 of 10 | 2 (0.1590206224, 0.1911972532) | 537.42 | 19 |  |
+| 1 | 23 | 0.1520033350 | 5 of 10 | 2 (0.1520033350, 0.1831328750) | 587.34 | 20 |  |
+| 1 | 24 | 0.1453121018 | 9 of 10 | 1 (0.1453121018) | 639.47 | 21 |  |
 | 2 | 4 | 0.4116738600 | 78 of 80 | 1 (0.4116738600) | 15.26 | 1 | 0.4116738600 |
 | 2 | 5 | 0.3046288623 | 40 of 80 | 1 (0.3046288623) | 33.31 | 2 | 0.3046288623 |
 | 2 | 6 | 0.2280296027 | 21 of 80 | 1 (0.2280296027) | 57.17 | 3 |  |

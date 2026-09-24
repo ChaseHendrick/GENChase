@@ -571,7 +571,7 @@ function verifyFiles(files, write) {
     const cell = (spent.byCase ||= {})[data.alpha + '/' + data.N] ||= { alpha: Number(data.alpha), N: Number(data.N), seeds: 0, cpuSeconds: 0, digests: [] };
     cell.seeds += data.results?.length || 0; cell.cpuSeconds += Number.isFinite(c?.cpuSeconds) ? c.cpuSeconds : Number(data.summary?.elapsedSeconds) || 0;
     if (data.summary?.resultsDigest && data.summary.seeds) cell.digests.push({ block: data.summary.seeds, digest: data.summary.resultsDigest, machine: data.machine || 'unlabelled', runtime: data.summary.runtime ? data.summary.runtime.cpuModel + ', ' + data.summary.runtime.node : null });
-    const alpha = Number(data.alpha), N = Number(data.N); assert(Number.isFinite(alpha) && Number.isInteger(N) && N >= 3 && N <= 16, f + ': bad alpha or N.');
+    const alpha = Number(data.alpha), N = Number(data.N); assert(Number.isFinite(alpha) && Number.isInteger(N) && N >= 3 && N <= 64, f + ': bad alpha or N.');
     const mdl = model(N, alpha), key = alpha + '/' + N;
     for (const m of data.minima || []) {
       // Trust only the submitted positions and circulations. Re-project, re-polish and re-certify here.
