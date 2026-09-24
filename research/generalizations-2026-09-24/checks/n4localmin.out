@@ -1,0 +1,2 @@
+alpha=1.0: 800 constrained perturbations of size 1e-3 and 1e-2 around P4 = 0.549915118901; 0 with lower P; min (P-P4)/h^2 = 1.098e-03
+alpha=2.0: 800 constrained perturbations of size 1e-3 and 1e-2 around P4 = 0.411673860045; 0 with lower P; min (P-P4)/h^2 = 2.461e-01

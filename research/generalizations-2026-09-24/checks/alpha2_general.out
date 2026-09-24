@@ -1,0 +1,5 @@
+[1] discriminant c1^2 - 4 c2 c0 = -256*s1**3*s2**2*(s1**3 - 2*s3)**2*(s1**3 - 4*s1*s2 + 8*s3)**3*(4*s1**3*s3 - s1**2*s2**2 - 18*s1*s2*s3 + 4*s2**3 + 27*s3**2)  (the last factor is minus the discriminant of the cubic with roots a_i)
+[2] resultant factor minus the symmetric-function quartic: 0
+[3] 40 random collapsing triangles at alpha = 2: P^2 equals one of the two closed-form roots to 3.61e-39 relative
+[4] quartic at the equal-circulation closed form: 0
+[5] SQG: y = -a2*x/(a1 + a3*x); shape quartic a1**3*x**2 + 2*a1**2*a3*x**3 + a1**2*a3 + a1*a3**2*x**4 + 2*a1*a3**2*x + a2**3*x**2 + a3**3*x**2 = 0

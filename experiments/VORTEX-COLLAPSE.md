@@ -131,8 +131,9 @@ For each seed the job:
    Hessian of the Lagrangian, and a saddle-free eigenvalue modification, followed by retraction onto
    the manifold.
 3. **Certifies the result.** A point is recorded as a **certified local minimum** only if every
-   test below passes. Each test is independent of the optimizer, and each has a control that must
-   fail.
+   test below passes. Each test is independent of the optimizer. The similarity, integration,
+   symmetry and pairing tests each have a control that must fail; the optimality and conservation
+   tests are checked directly.
 
 | Test | Requirement | Its control |
 |---|---|---|

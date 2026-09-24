@@ -1,0 +1,15 @@
+alpha 0.0 rho 0.1 min P 0.8785146
+alpha 0.0 rho 0.03 min P 0.8671782
+alpha 0.0 rho 0.01 min P 0.8661547
+alpha 0.0 rho 0.003 min P 0.8660371
+claimed inf 0.8660254037844386
+alpha 0.5 rho 0.1 min P 0.7532796
+alpha 0.5 rho 0.03 min P 0.7486403
+alpha 0.5 rho 0.01 min P 0.7483574
+alpha 0.5 rho 0.003 min P 0.7483333
+claimed inf 0.7483314773547882
+alpha 1.0 rho 0.1 min P 0.6691713
+alpha 1.0 rho 0.03 min P 0.6668231
+alpha 1.0 rho 0.01 min P 0.6666817
+alpha 1.0 rho 0.003 min P 0.6666679
+claimed inf 0.6666666666666666
