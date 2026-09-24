@@ -220,6 +220,8 @@ Copies supplied by the owner, not committed.
 - **Conclusion.** No source found minimizes the winding for N = 4, for any N, in the alpha-models, on the sphere, or for the central-vortex rings. Each is still unconfirmed, not new.
   - **Unread risks.** O'Neil 2007 (RCD 12, 117-126) computes four-vortex collapse configurations and is the first to read before stating the N = 4 minimum P_4 = 0.7978968 < sqrt(3)/2. The n = 2 central-vortex literature publishes both rates; nobody checked whether it prints their ratio.
   - **Sphere.** The time law and the collapsing shapes are classical (Borisov-Lebedev 1998; Kidambi-Newton 1998, 1999). Credit them.
+- **O'Neil 2007 access (checked 2026-09-24).** Web search finds only the Springer page (doi:10.1134/S1560354707020013, paywalled); no arXiv or author copy. Its abstract: finiteness of four-vortex relative equilibria (at most 56) and a method that yields all collapse configurations with a given velocity-to-position ratio, i.e. fixed kappa, not a minimum over kappa. Gotoda 2020 (arXiv:2002.09624), the other hit, is already read (entry on Gotoda (3.3)). Do not re-search; buy or borrow O'Neil 2007.
+- **Local re-checks (same day).** Independent scripts in `research/generalizations-2026-09-24/checks/` confirm the N = 4..25 minimizers, the alpha-model floor, the central-vortex ring infimum, the shape-sphere formula, the scattering rotation law and the sphere loxodrome law. That is verification of the mathematics, not of priority.
 - **Do not** call the bound universal. It fails at N = 4, as DK 2014's Table 1 already shows at N = 7 (entry N).
 
 ## Do this, do not do that
