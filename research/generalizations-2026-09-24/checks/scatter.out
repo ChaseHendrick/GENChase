@@ -1,0 +1,8 @@
+mu=0.3 th=2.0 L=+4.1e-06: slope 5.33702 | P_in+P_out 5.32962 (P_in 3.45607, P_out 1.87355) | channel cross | >= sqrt3: True
+mu=0.3 th=2.0 L=-4.1e-06: slope 6.90664 | P_in+P_out 6.91182 (P_in 3.45607, P_out 3.45576) | channel mirror | >= sqrt3: True
+mu=0.3 th=2.6 L=+3.6e-06: slope 5.28820 | P_in+P_out 5.29880 (P_in 4.20501, P_out 1.09380) | channel cross | >= sqrt3: True
+mu=0.3 th=2.6 L=-3.6e-06: slope 8.43286 | P_in+P_out 8.41108 (P_in 4.20501, P_out 4.20607) | channel mirror | >= sqrt3: True
+mu=1.0 th=2.0 L=+7.6e-06: slope 4.84003 | P_in+P_out 4.82828 (P_in 2.41387, P_out 2.41441) | channel cross | >= sqrt3: True
+mu=1.0 th=2.0 L=-7.6e-06: slope 4.81546 | P_in+P_out 4.82720 (P_in 2.41387, P_out 2.41333) | channel mirror | >= sqrt3: True
+mu=1.0 th=2.6 L=+5.1e-06: slope 2.86454 | P_in+P_out 2.86542 (P_in 1.43272, P_out 1.43270) | channel cross | >= sqrt3: True
+mu=1.0 th=2.6 L=-5.1e-06: slope 2.86638 | P_in+P_out 2.86546 (P_in 1.43272, P_out 1.43274) | channel mirror | >= sqrt3: True

@@ -19,14 +19,14 @@ independent local re-checks listed in the last column; each has its output next 
 | **The smallest known P keeps falling with N** (two-arm minimizers): N = 5: 0.744814, N = 6: 0.713680, N = 7: 0.693662, N = 8: 0.679770, ... | numerical evidence | Confirmed with four small corrections (the N = 31 value is 0.52001570337864422040) | not re-run |
 | **alpha-models (kernel r^-alpha; SQG at alpha = 1).** Every self-similar three-vortex collapse has P > sqrt(3+alpha)/(2+alpha), sharp and not attained, for alpha > -0.896. The value is 2/3 at SQG. The infimum is approached by a weak dipole next to a strong vortex. | proved | Confirmed independently | `alpha.py`: about 600 solutions per alpha, none below the floor. `alpha2.py`: descent into the dipole limit reaches 0.8660371, 0.7483333, 0.6666679 at alpha = 0, 0.5, 1, from above. `sympy_checks.py`: the limit minimum is exactly sqrt(3+alpha)/(2+alpha). |
 | **Two n-gons plus a central vortex** (Demina-Kudryashov 2014 Sect. 3 with Gamma_0 != 0). Closed form P = (K - B cos a)/(2n sin a); the minimum over a is F(n, gamma) = sqrt(K^2 - B^2)/(2n). The infimum over the family is sqrt(3)/2 for every n (not attained, approached as r -> 1). So a central vortex lowers the two-ring floor F_n (1.677 at n = 2, ...) arbitrarily close to the three-vortex bound but never below it. | proved | CV-a3 and CV-b confirmed independently | `rings.py`: solves the linear circulation conditions directly. Reproduces the example n = 2, r = 2 exactly (Gamma_2 = -1/4, gamma = -1/24, P = 5 sqrt(129)/32). The scan minimum for n = 2..8 is 0.86603 > sqrt(3)/2, at r close to 1. |
-| **Shape-sphere formula and a short proof of the Euler bound.** P = (2 - cos^2 lambda + eps cos psi cos lambda)/(sin psi sin 2 lambda) on Kendall's shape sphere; P > sqrt(3)/2 then follows from (1 + sin^2 l)^2 - cos^2 l (1 + 3 sin^2 l) = 4 sin^4 l and Cauchy-Schwarz. | derived; not independently checked | none | `sympy_checks.py`: the identity is exact. The master formula itself is not re-checked. |
+| **Shape-sphere formula and a short proof of the Euler bound.** P = (2 - cos^2 lambda + eps cos psi cos lambda)/(sin psi sin 2 lambda) on Kendall's shape sphere; P > sqrt(3)/2 then follows from (1 + sin^2 l)^2 - cos^2 l (1 + 3 sin^2 l) = 4 sin^4 l and Cauchy-Schwarz. | derived | none by an agent | `master.py`: matches Biot-Savart on 2000 zero-impulse triangles at each of mu = 0.1, 0.3, 0.7, 1, 2.5 (relative error at most 1.5e-8), with eps constant on each arc. `sympy_checks.py`: the identity is exact. |
+| **Scattering rotation law.** Perturb a collapse off L = 0: the configuration passes the collapse point and rotates by (P_in + P_out) ln(1/|L|) + O(1). L < 0 always exits through the mirror image of the entry shape (P_out = P_in); for L > 0 above the Gallay-Sverak threshold it exits through the second collapsing shape with the same energy. Since P_in, P_out >= P_-(mu) > sqrt(3)/2, the rate is always above sqrt(3), and sqrt(3) is sharp as mu -> 0. | derived (proof sketch) | none by an agent | `scatter.py`: direct DOP853 integration at mu = 0.3 and 1, two entry shapes each, both signs of L, |L| from 1e-4 down to 4e-6. The fitted rotation rate matches P_in + P_out within 0.5% in all eight runs. At mu = 0.3, L < 0 took the mirror channel and L > 0 the cross channel, as claimed. At mu = 1 both exits have P_out = P_in, because swapping vortices 1 and 2 is a symmetry there. Every rate is above sqrt(3). The sharpness as mu -> 0 is not re-checked. |
 | **Sphere.** On a sphere of radius R the circumcircle pole moves on a loxodrome about the collision point, with |d psi / d ln tan^2(beta/2)| = P_0. The winding per unit ln(chord^2) is P_0 sec(beta). Floors: (sqrt(3)/2)/sqrt(1 - K rho_c^2) per ln(chord^2), and sqrt(3)/2 on the loxodrome. | proved, with one sentence corrected (the equilateral shapes are relative equilibria on the sphere, so they are excluded) | Confirmed independently | not re-run |
 
 ## Explored but not checked
 
 The run was stopped before these reached a checker. Treat every item as a lead only.
 
-- The scattering law: a near-collapse encounter rotates by (P_in + P_out) ln(1/|L|) + O(1) >= 2 P_-(mu) ln(1/|L|); the sharp rate floor is sqrt(3).
 - The link between the least-winding collapse and the Gallay-Sverak regularizability threshold (mu* = 0.394750503...).
 - The rotation-conjecture sigma(w) = 1^T (I + D)^{-1} s > 0 for N points.
 - The Kendall-sphere normal form, the crossing-angle characterization of self-similarity, and the mu -> 0 and mu = 1 limits (G3-G7).
@@ -57,6 +57,4 @@ a claim of originality.
 ## Next steps
 
 1. Read O'Neil 2007 before stating the N = 4 result anywhere.
-2. Check the shape-sphere master formula (G1) against the paper's Proposition, and the
-   scattering law (C1/C2), with a local script. Both are cheap.
-3. Settle whether the central-vortex ratio is in the n = 2 literature.
+2. Settle whether the central-vortex ratio is in the n = 2 literature.
