@@ -1,0 +1,206 @@
+diff --git a/src/shared/engine.js b/src/shared/engine.js
+index 259f456..d60b5e0 100644
+--- a/src/shared/engine.js
++++ b/src/shared/engine.js
+@@ -2522,6 +2522,16 @@ void main(){
+     const body = new XMLSerializer().serializeToString(art);
+     return util.svgBlob(sp.pw, sp.ph, bg, body);
+   }
++  // Unitless SVG width/height are CSS pixels (96 per inch), so a 2400 px sheet opens as 25 inches in a
++  // vector editor. Give the root the physical sheet size and keep the pixel viewBox for the geometry.
++  async function svgPhysical(blob, sp) {
++    const doc = new DOMParser().parseFromString(await blob.text(), 'image/svg+xml');
++    if (doc.querySelector('parsererror')) return blob;
++    const root = doc.documentElement;
++    if (!root.hasAttribute('viewBox')) root.setAttribute('viewBox', '0 0 ' + sp.pw + ' ' + sp.ph);
++    root.setAttribute('width', Number(sp.wIn.toFixed(4)) + 'in'); root.setAttribute('height', Number(sp.hIn.toFixed(4)) + 'in');
++    return new Blob(['<?xml version="1.0" encoding="UTF-8"?>\n' + new XMLSerializer().serializeToString(root)], { type: 'image/svg+xml' });
++  }
+   function printQualityReport(e, sp, layout, vector, smoothing) {
+     const ppi = Math.min(sp.pw/sp.wIn,sp.ph/sp.hIn), issues = [];
+     const lines = ['File: '+sp.pw+' × '+sp.ph+' pixels at '+ppi.toFixed(1)+' pixels per inch.'];
+@@ -2693,7 +2703,12 @@ void main(){
+       blob = await window.GenChasePrintSmoothing.smooth(blob,smoothing,job);
+       if (withColophon) blob = await composeSheet(blob, lay, captionBg);
+       else blob = await fitPrintSheet(blob, sp, e.state.bg || '#fff');
+-      if (svgBlob) svgBlob = await fitPrintSVG(svgBlob, sp, e.state.bg || '#fff');
++      if (svgBlob) svgBlob = await svgPhysical(await fitPrintSVG(svgBlob, sp, e.state.bg || '#fff'), sp);
++      // Physical size (pHYs) and the sRGB profile (iCCP) travel with the file, so software that opens
++      // the PNG does not fall back to 72 ppi or to its own working space. Pixels are untouched.
++      blob = await window.GenChasePrintFormats.pngTag(blob, sp.pw / sp.wIn, sp.ph / sp.hIn, {icc:true, text:{
++        Title: (e.mod.name || e.mod.id) + ' / ' + e.state.seed, Software: 'GENChase recipe v' + RECIPE_V,
++        Comment: 'Recipe ' + encodeRecipe(e) + ' ; sheet ' + inTxt(sp.wIn) + ' x ' + inTxt(sp.hIn) + ' in at ' + sp.effDpi + ' ppi, sRGB'}});
+       if (job.abort) throw new Error('cancelled');
+       if (lastUrl) URL.revokeObjectURL(lastUrl);
+       lastBlob = blob; lastUrl = URL.createObjectURL(blob); lastPrintSpec = {...sp};
+@@ -2805,11 +2820,12 @@ void main(){
+       cx.fillStyle = '#fff';
+       cx.fillRect(0, 0, c.width, c.height);
+       cx.drawImage(im, 0, 0);
+-      const blob = await new Promise((res, rej) => c.toBlob(
++      let blob = await new Promise((res, rej) => c.toBlob(
+         b => b ? res(b) : rej(new Error('this browser cannot encode ' + label)),
+         type, quality
+       ));
+       const name = lastName.replace(/\.png$/i, '.' + ext);
++      if (type === 'image/jpeg' && lastPrintSpec) blob = await window.GenChasePrintFormats.jpegDensity(blob, lastPrintSpec.pw / lastPrintSpec.wIn);
+       downloadBlob(blob, name);
+       toast('Saved ' + name + ' (' + (blob.size / 1048576).toFixed(1) + ' MB)');
+     } catch (err) {
+diff --git a/src/shared/print-formats.js b/src/shared/print-formats.js
+index 058a524..0ac2513 100644
+--- a/src/shared/print-formats.js
++++ b/src/shared/print-formats.js
+@@ -19,10 +19,22 @@
+     const icc = profile(), unit = Math.max(1, fullW / 14400, fullH / 14400);
+     const w = wIn * 72 / unit, h = hIn * 72 / unit, m = margin / unit, b = bleed / unit, mp = markPad / unit;
+     const box = [m, m, m+w, m+h], bleedBox = [mp, mp, mp+w+2*b, mp+h+2*b];
+-    // Cover the bleed area without distorting the image. This slightly crops the trim view.
+-    const scale = Math.max((w+2*b)/w, (h+2*b)/h), iw = w*scale, ih = h*scale;
+-    let drawing = 'q\n' + [mp,mp,w+2*b,h+2*b].join(' ') + ' re W n\n' +
+-      [iw,0,0,ih,m+(w-iw)/2,m+(h-ih)/2].join(' ') + ' cm\n/Plate Do\nQ\n';
++    let drawing;
++    if (b > 0 && options.bleedFill === 'scale') {
++      // Cover the bleed area without distorting the image. This slightly crops the trim view.
++      const scale = Math.max((w+2*b)/w, (h+2*b)/h), iw = w*scale, ih = h*scale;
++      drawing = 'q\n' + [mp,mp,w+2*b,h+2*b].join(' ') + ' re W n\n' +
++        [iw,0,0,ih,m+(w-iw)/2,m+(h-ih)/2].join(' ') + ' cm\n/Plate Do\nQ\n';
++    } else {
++      // The trim shows the sheet at exactly its stated size and resolution. The bleed is the sheet's own
++      // edge reflected outward (the same image object placed mirrored, so no extra bytes), which is what
++      // survives a cut that wanders into the bleed.
++      drawing = 'q\n' + [mp,mp,w+2*b,h+2*b].join(' ') + ' re W n\n';
++      const reach = b > 0 ? [-1,0,1] : [0];
++      for (const i of reach) for (const j of reach)
++        drawing += 'q ' + [i ? -w : w, 0, 0, j ? -h : h, i > 0 ? m+2*w : m, j > 0 ? m+2*h : m].join(' ') + ' cm /Plate Do Q\n';
++      drawing += 'Q\n';
++    }
+     if (marks) {
+       drawing += '0 G ' + (.25/unit) + ' w\n';
+       for (const x of [m,m+w]) for (const y of [m,m+h]) {
+@@ -54,9 +66,25 @@
+       'trailer\n<< /Size 7 /Root 1 0 R >>\nstartxref\n' + offset + '\n%%EOF\n'));
+     return new Blob(chunks, {type:'application/pdf'});
+   }
+-  function tiff(rgb, width, height, wIn, hIn) {
++  // Adobe Deflate (8) with horizontal differencing (Predictor 2), in strips of about 256 KB, unless
++  // compression 'none' is asked for. Pixels are lossless either way.
++  async function tiff(rgb, width, height, wIn, hIn, options = {}) {
+     validate(rgb, width, height, wIn, hIn);
+-    const icc = profile(), count = 14, bits = 8 + 2 + count * 12 + 4, xr = bits + 6, yr = xr + 8, iccAt = yr + 8;
++    const deflate = options.compression !== 'none' && typeof CompressionStream !== 'undefined';
++    const row = width * 3, rps = deflate ? Math.max(1, Math.min(height, Math.floor(262144 / row))) : height;
++    const strips = Math.ceil(height / rps), data = [], counts = [];
++    if (!deflate) { data.push(rgb); counts.push(rgb.length); }
++    else for (let s = 0; s < strips; s++) {
++      const src = rgb.subarray(s * rps * row, Math.min(height, (s + 1) * rps) * row), pred = new Uint8Array(src.length);
++      for (let o = 0; o < src.length; o += row) {
++        pred[o] = src[o]; pred[o+1] = src[o+1]; pred[o+2] = src[o+2];
++        for (let i = 3; i < row; i++) pred[o+i] = src[o+i] - src[o+i-3];
++      }
++      const z = new Uint8Array(await new Response(new Blob([pred]).stream().pipeThrough(new CompressionStream('deflate'))).arrayBuffer());
++      data.push(z); counts.push(z.length);
++    }
++    const icc = profile(), count = deflate ? 15 : 14, bits = 8 + 2 + count * 12 + 4, xr = bits + 6, yr = xr + 8;
++    const offAt = yr + 8, cntAt = offAt + (strips > 1 ? 4 * strips : 0), iccAt = cntAt + (strips > 1 ? 4 * strips : 0);
+     const pixelAt = (iccAt + icc.length + 3) & ~3;
+     const header = new Uint8Array(pixelAt), v = new DataView(header.buffer);
+     v.setUint16(0, 0x4949, true); v.setUint16(2, 42, true); v.setUint32(4, 8, true); v.setUint16(8, count, true);
+@@ -66,15 +94,77 @@
+       if (type===3 && n===1) v.setUint16(at+8,value,true); else v.setUint32(at+8,value,true);
+       at += 12;
+     };
+-    tag(256,4,1,width); tag(257,4,1,height); tag(258,3,3,bits); tag(259,3,1,1);
+-    tag(262,3,1,2); tag(273,4,1,pixelAt); tag(277,3,1,3); tag(278,4,1,height);
+-    tag(279,4,1,rgb.length); tag(282,5,1,xr); tag(283,5,1,yr); tag(284,3,1,1);
+-    tag(296,3,1,2); tag(34675,7,icc.length,iccAt);
++    let p = pixelAt; const offsets = counts.map(n => { const o = p; p += n; return o; });
++    if (p > 0xFFFFFFFF) throw new Error('TIFF exceeds 4 GB.');
++    tag(256,4,1,width); tag(257,4,1,height); tag(258,3,3,bits); tag(259,3,1,deflate ? 8 : 1);
++    tag(262,3,1,2); tag(273,4,strips,strips > 1 ? offAt : offsets[0]); tag(277,3,1,3); tag(278,4,1,rps);
++    tag(279,4,strips,strips > 1 ? cntAt : counts[0]); tag(282,5,1,xr); tag(283,5,1,yr); tag(284,3,1,1);
++    tag(296,3,1,2); if (deflate) tag(317,3,1,2); tag(34675,7,icc.length,iccAt);
+     for (let i=0;i<3;i++) v.setUint16(bits+i*2,8,true);
+     v.setUint32(xr,width*10000,true); v.setUint32(xr+4,Math.round(wIn*10000),true);
+     v.setUint32(yr,height*10000,true); v.setUint32(yr+4,Math.round(hIn*10000),true);
++    if (strips > 1) for (let s = 0; s < strips; s++) { v.setUint32(offAt + 4*s, offsets[s], true); v.setUint32(cntAt + 4*s, counts[s], true); }
+     header.set(icc,iccAt);
+-    return new Blob([header,rgb], {type:'image/tiff'});
++    return new Blob([header, ...data], {type:'image/tiff'});
++  }
++  // A browser PNG carries no physical size and no color tag. Without pHYs, layout and print software
++  // assumes 72 ppi (a 2400 px, 8 inch plate opens as 33.3 inches); without a tag, software with an
++  // Adobe RGB or CMYK-oriented working space may reinterpret the sRGB values. Splice the chunks in after
++  // IHDR, leaving the compressed pixels untouched.
++  const CRC = (() => { const t = new Uint32Array(256); for (let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;} return t; })();
++  function crc32(parts) { let c = 0xFFFFFFFF; for (const p of parts) for (let i=0;i<p.length;i++) c = CRC[(c^p[i])&255]^(c>>>8); return (c^0xFFFFFFFF)>>>0; }
++  function chunk(type, data) {
++    const out = new Uint8Array(12 + data.length), v = new DataView(out.buffer), t = bytes(type);
++    v.setUint32(0, data.length); out.set(t, 4); out.set(data, 8); v.setUint32(8 + data.length, crc32([t, data]));
++    return out;
++  }
++  async function pngTag(blob, ppiX, ppiY, options = {}) {
++    // Only the head is read; the pixels are passed through by reference with Blob.slice.
++    const png = new Uint8Array(await blob.slice(0, 1 << 16).arrayBuffer());
++    const sig = [137,80,78,71,13,10,26,10];
++    if (png.length < 33 || sig.some((b,i)=>png[i]!==b) || String.fromCharCode(...png.subarray(12,16)) !== 'IHDR') return blob;
++    const have = new Set(); let at = 8;
++    while (at + 8 <= png.length) {
++      const n = new DataView(png.buffer, at, 4).getUint32(0), type = String.fromCharCode(...png.subarray(at+4, at+8));
++      if (type === 'IDAT') break; have.add(type); at += 12 + n;
++    }
++    const add = [];
++    if (!have.has('pHYs') && Number.isFinite(ppiX) && Number.isFinite(ppiY) && ppiX > 0 && ppiY > 0) {
++      const d = new Uint8Array(9), v = new DataView(d.buffer);
++      v.setUint32(0, Math.round(ppiX / 0.0254)); v.setUint32(4, Math.round(ppiY / 0.0254)); d[8] = 1;
++      add.push(chunk('pHYs', d));
++    }
++    if (!have.has('iCCP') && !have.has('sRGB')) {
++      if (options.icc && typeof CompressionStream !== 'undefined') {
++        const z = new Uint8Array(await new Response(new Blob([profile()]).stream().pipeThrough(new CompressionStream('deflate'))).arrayBuffer());
++        const name = bytes('sRGB2014'), d = new Uint8Array(name.length + 2 + z.length);
++        d.set(name, 0); d.set(z, name.length + 2); add.push(chunk('iCCP', d));
++      } else {
++        add.push(chunk('sRGB', Uint8Array.of(0)));
++        const g = new Uint8Array(4); new DataView(g.buffer).setUint32(0, 45455); add.push(chunk('gAMA', g));
++        const c = new Uint8Array(32), cv = new DataView(c.buffer);
++        [31270,32900,64000,33000,30000,60000,15000,6000].forEach((x,i)=>cv.setUint32(i*4,x)); add.push(chunk('cHRM', c));
++      }
++    }
++    // Latin-1 tEXt with the PNG predefined keywords (Title, Software, Comment); the recipe hash is ASCII.
++    for (const [key, value] of Object.entries(options.text || {})) {
++      const text = String(value).replace(/[^\x20-\x7E]/g, '?').slice(0, 4000);
++      if (!/^[A-Za-z ]{1,79}$/.test(key) || !text) continue;
++      const k = bytes(key), t = bytes(text), d = new Uint8Array(k.length + 1 + t.length);
++      d.set(k, 0); d.set(t, k.length + 1); add.push(chunk('tEXt', d));
++    }
++    if (!add.length) return blob;
++    return new Blob([blob.slice(0, 33), ...add, blob.slice(33)], {type: 'image/png'});
++  }
++  // Chromium writes JFIF density 1:1 with units 0 (aspect ratio only), which readers treat as 72 ppi.
++  async function jpegDensity(blob, ppi) {
++    const j = new Uint8Array(await blob.slice(0, 18).arrayBuffer());
++    const d = Math.round(ppi);
++    if (!(d >= 1 && d <= 65535) || j[0] !== 0xFF || j[1] !== 0xD8 || j[2] !== 0xFF || j[3] !== 0xE0 ||
++        String.fromCharCode(...j.subarray(6, 11)) !== 'JFIF\0') return blob;
++    const out = j.slice(), v = new DataView(out.buffer);
++    out[13] = 1; v.setUint16(14, d); v.setUint16(16, d);
++    return new Blob([out, blob.slice(18)], {type: 'image/jpeg'});
+   }
+-  root.GenChasePrintFormats = Object.freeze({pdf,tiff});
++  root.GenChasePrintFormats = Object.freeze({pdf,tiff,pngTag,jpegDensity});
+ })(typeof window !== 'undefined' ? window : globalThis);
+diff --git a/tools/print-formats-check.js b/tools/print-formats-check.js
+index 78a7e2a..8311f0d 100644
+--- a/tools/print-formats-check.js
++++ b/tools/print-formats-check.js
+@@ -5,7 +5,8 @@ require('../src/shared/print-formats.js');
+  const dir=process.argv[2] || '/tmp/genchase-print-check';fs.mkdirSync(dir,{recursive:true});
+  const w=300,h=150,rgb=new Uint8Array(w*h*3);
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const i=(y*w+x)*3;rgb[i]=x%256;rgb[i+1]=y;rgb[i+2]=73;}
+- for(const [name,blob] of [['plate.pdf',await GenChasePrintFormats.pdf(rgb,w,h,3,1.5)],['bleed.pdf',await GenChasePrintFormats.pdf(rgb,w,h,3,1.5,{bleedMm:3,cropMarks:true})],['plate.tif',GenChasePrintFormats.tiff(rgb,w,h,3,1.5)]])fs.writeFileSync(path.join(dir,name),Buffer.from(await blob.arrayBuffer()));
++ const tall=new Uint8Array(w*800*3);for(let i=0;i<tall.length;i++)tall[i]=(i*2654435761>>>13)&255;
++ for(const [name,blob] of [['plate.pdf',await GenChasePrintFormats.pdf(rgb,w,h,3,1.5)],['bleed.pdf',await GenChasePrintFormats.pdf(rgb,w,h,3,1.5,{bleedMm:3,cropMarks:true})],['plate.tif',await GenChasePrintFormats.tiff(rgb,w,h,3,1.5)],['plate-raw.tif',await GenChasePrintFormats.tiff(rgb,w,h,3,1.5,{compression:'none'})],['plate-tall.tif',await GenChasePrintFormats.tiff(tall,w,800,3,8)],['bleed-scale.pdf',await GenChasePrintFormats.pdf(rgb,w,h,3,1.5,{bleedMm:3,cropMarks:true,bleedFill:'scale'})]])fs.writeFileSync(path.join(dir,name),Buffer.from(await blob.arrayBuffer()));
+  for(const fn of [GenChasePrintFormats.pdf,GenChasePrintFormats.tiff]){
+   await assert.rejects(async()=>fn(rgb,w,h,0,1));await assert.rejects(async()=>fn(rgb,9000,9000,3,1.5));
+  }
