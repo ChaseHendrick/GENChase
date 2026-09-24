@@ -231,6 +231,11 @@ Copies supplied by the owner, not committed.
   - **Vankerschaver-Leok** (arXiv:1211.4560) use a spherical three-vortex collapse (1, 1, -1/2) only to test integrators, with no rotation law. It does not touch the sphere loxodrome law.
   - **O'Neil's 1985 PhD thesis** (UIUC, UMI 8521651; ProQuest preview only). The contents list 7.4 'Collapse Configurations' and 8.3 'Angular Momentum 0' for four vortices, but the preview stops at the front matter. It is unread and joins O'Neil 2007 as the risk for N = 4.
   - **Paper edit:** Conte-de Seze, Hernández-Garduño-Lacomba and Grotto-Romito-Viviani are now cited in the paper (PR #139).
+- **Alpha-model prior art (same day).**
+  - **Badin-Barry (arXiv:1805.10127), read in full.** They give no winding result. Lemma 2 of the alpha-model draft (#140) reproduces their SQG interval 0.387464 < Gamma < 1/2.
+  - **Chen-Liu 2024** (Physica D 470, 134392; sciencedirect.com and its abs page are blocked by the egress proxy; no arXiv copy found by search, although one search summary claimed a May 2024 preprint). According to search summaries it gives necessary and sufficient conditions (Gamma_H = 0 and L = 0) and 'explicit and exact expressions for each nontrivial self-similar solution', and says collapse versus expansion depends only on the strengths. So it is the main risk for the draft's Lemmas 2-3 (explicit circulations, rate formula). No summary mentions a bound on rotation or spiral angle.
+  - **JPSJ 90 124401 (2021)** (pdf at journals.jps.jp, which is blocked) and **JPSJ 92 084401 (2023)**, the latter on the linear stability of the self-similar motions (collapse unstable, expansion stable), are unread.
+  - All three need the owner to fetch them; do not re-search.
 - **Local re-checks (same day).** Independent scripts in `research/generalizations-2026-09-24/checks/` confirm the N = 4..25 minimizers, the alpha-model floor, the central-vortex ring infimum, the shape-sphere formula, the scattering rotation law and the sphere loxodrome law. That is verification of the mathematics, not of priority.
 - **Do not** call the bound universal. It fails at N = 4, as DK 2014's Table 1 already shows at N = 7 (entry N).
 
