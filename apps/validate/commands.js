@@ -1,5 +1,6 @@
 'use strict';
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
+const { ART_MODES, TITLES: ART_TITLES, normalizeArtInput, artArgs } = require('./art-tabs');
 const MODES = {
   fast: ['Fast development checks', 'npm', ['test']],
   inventory: ['Science inventory', 'node', ['tools/science.js']],
@@ -20,7 +21,7 @@ const EXPERIMENTS = {
 };
 function ids(root) { return JSON.parse(fs.readFileSync(path.join(root, 'techniques.json'), 'utf8')).techniques.map(t => t.id); }
 function command(root, input) {
-  if (!input || Object.keys(input).some(k => !['workspace', 'mode', 'id', 'slug', 'n', 'samples', 'grid', 'steps', 'alpha', 'start', 'power', 'machineSlug', 'shareAutomatically'].includes(k))) throw Error('Unsupported job settings.');
+  if (!input || Object.keys(input).some(k => !['workspace', 'mode', 'id', 'slug', 'n', 'samples', 'grid', 'steps', 'alpha', 'start', 'power', 'machineSlug', 'shareAutomatically', 'recipe', 'parents', 'vary', 'keep', 'inches', 'ppi', 'budget', 'generations'].includes(k))) throw Error('Unsupported job settings.');
   if (input.shareAutomatically !== undefined && typeof input.shareAutomatically !== 'boolean') throw Error('Automatic sharing must be on or off.');
   const machineSlug = input.machineSlug || 'm1pro';
   if (typeof machineSlug !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(machineSlug) || machineSlug.length > 32) throw Error('Use a pseudonymous machine slug of lowercase letters, numbers and single hyphens, up to 32 characters.');
@@ -55,6 +56,13 @@ function command(root, input) {
     if (!Number.isInteger(start) || start < 0 || start + samples > 2 ** 31) throw Error('Seed block start must be a non-negative integer below 2^31.');
     const args = ['tools/vortex-collapse-search.js', ...(grow ? ['--grow'] : []), '--alpha', String(alpha), '--n', String(n), '--start', String(start), '--count', String(samples)];
     return { title: grow ? 'Vortex collapse: grow the deepest family' : 'Vortex collapse: least winding search', executable: process.execPath, args, display: 'node ' + args.join(' '), input: { ...input, alpha, n, samples, start } };
+  }
+  if (ART_MODES.includes(input.mode)) {
+    // Render studio recipes through the shell's own recipe and print path. The seed block of a hunt is drawn
+    // here, like the vortex block, so Resume and Restart reuse it.
+    const { workspace, power, machineSlug: slug, shareAutomatically, ...art } = input;
+    const normalized = normalizeArtInput(art, ids(root)), args = artArgs(normalized);
+    return { title: ART_TITLES[input.mode], executable: process.execPath, args, display: 'node ' + args.join(' '), input: { ...input, ...normalized } };
   }
   if (EXPERIMENTS[input.mode]) {
     const [title, script] = EXPERIMENTS[input.mode];
