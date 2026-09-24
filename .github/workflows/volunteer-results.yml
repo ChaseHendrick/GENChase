@@ -41,10 +41,12 @@ jobs:
           verifier="$RUNNER_TEMP/base/tools/vortex-collapse-search.js"; from='the base branch'
           if [ ! -f "$verifier" ]; then verifier=tools/vortex-collapse-search.js; from='this pull request, which introduces it'; fi
           # NUL-separated paths: a name with a space or a non-ASCII letter is neither split nor quoted.
-          files=(); re='/vortex-(collapse|grow)-[^/]*\.json$'
+          files=(); re='/vortex-(collapse|grow|threshold)-[^/]*\.json$'
           while IFS= read -r -d '' f; do
             if [[ $f =~ $re ]]; then files+=("$f"); fi
           done < <(git diff -z --name-only --diff-filter=AM "$BASE"...HEAD -- validation/submissions experiments/results/vortex-collapse)
+          # A base verifier older than threshold files cannot check them; use this pull request's for the transition only.
+          if [ -f "$verifier" ] && ! grep -q "vortex-threshold" "$verifier"; then verifier=tools/vortex-collapse-search.js; from='this pull request, which adds threshold verification'; fi
           if [ ${#files[@]} -eq 0 ]; then echo 'No vortex result files changed.' >> "$GITHUB_STEP_SUMMARY"; exit 0; fi
           { echo "## Vortex results re-verified with the verifier from $from"; echo; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           set +e

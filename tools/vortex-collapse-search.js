@@ -10,13 +10,14 @@
 // a certified strict local minimum in binary64, not a proof of a global minimum.
 'use strict';
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto'), cp = require('node:child_process'), assert = require('node:assert/strict');
+const { Worker, isMainThread, parentPort, workerData } = require('node:worker_threads');
 const root = path.resolve(__dirname, '..');
 const PROTOCOL = {
-  version: 1, frozenDate: '2026-09-24',
+  version: 2, frozenDate: '2026-09-24',
   gauge: 'z_1 = 0, z_2 = 1, G_1 = 1; unknowns z_3..z_N, G_2..G_N, kappa. Residual v_j - v_1 - kappa (z_j - z_1), j = 2..N.',
   landingAttempts: 24, newtonIterations: 250,
   limits: { feasibility: 1e-11, reducedGradient: 1e-8, soscRelative: 1e-7, licq: 1e-7, minSeparation: 1e-6, circulationSpread: 1e8,
-    odeShrink: 0.5, odeAmplification: 1e4, odeShape: 1e-6, odeWinding: 1e-6, invariant: 1e-8, center: 1e-8, trivialModes: 1e-7 },
+    odeShrink: 0.5, odeAmplification: 1e4, odeShape: 1e-6, odeWinding: 1e-6, invariant: 1e-8, center: 1e-8, trivialModes: 1e-7, thresholdWidth: 1e-4 },
 };
 // Values this repository's Python searches found; numerical, priority unconfirmed. The N = 3 entry is
 // the sharp infimum sqrt(3 + alpha)/(2 + alpha), which no configuration attains.
@@ -42,7 +43,21 @@ function solve(A, b) {
   for (let k = n - 1; k >= 0; k--) { let s = x[k]; for (let j = k + 1; j < n; j++) s -= M[k][j] * x[j]; x[k] = s / M[k][k]; }
   return x;
 }
-const gram = (J, mu = 0) => J.map((a, i) => Float64Array.from(J, (b, j) => dot(a, b) + (i === j ? mu : 0)));
+// J J^T + mu I, filling only one triangle's worth of dot products.
+const gram = (J, mu = 0) => { const m = J.length, G = zeros(m, m); for (let i = 0; i < m; i++) for (let j = 0; j <= i; j++) { const v = dot(J[i], J[j]) + (i === j ? mu : 0); G[i][j] = v; G[j][i] = v; } return G; };
+// Cholesky factor of a symmetric positive definite matrix, reusable across right-hand sides; null if not positive definite.
+function cholesky(A) {
+  const n = A.length, L = zeros(n, n);
+  for (let i = 0; i < n; i++) for (let j = 0; j <= i; j++) {
+    let s = A[i][j]; const Li = L[i], Lj = L[j]; for (let k = 0; k < j; k++) s -= Li[k] * Lj[k];
+    if (i === j) { if (!(s > 0)) return null; Li[i] = Math.sqrt(s); } else Li[j] = s / Lj[j];
+  }
+  return b => { const y = new Float64Array(n), x = new Float64Array(n);
+    for (let i = 0; i < n; i++) { let s = b[i]; const Li = L[i]; for (let k = 0; k < i; k++) s -= Li[k] * y[k]; y[i] = s / Li[i]; }
+    for (let i = n - 1; i >= 0; i--) { let s = y[i]; for (let k = i + 1; k < n; k++) s -= L[k][i] * x[k]; x[i] = s / L[i][i]; }
+    return x; };
+}
+const spdSolve = (A, b) => { const f = cholesky(A); return f ? f(b) : solve(A, b); };
 const mulT = (J, y) => { const out = new Float64Array(J[0].length); J.forEach((row, i) => { for (let k = 0; k < row.length; k++) out[k] += row[k] * y[i]; }); return out; };
 const mul = (J, x) => Float64Array.from(J, row => dot(row, x));
 function jacobiEigen(S) { // symmetric eigenvalues and vectors (columns of V)
@@ -186,46 +201,57 @@ function geometry(mdl, x) {
     relativeEquilibrium: Math.abs(kappa[0]) < 1e-12 * Math.hypot(...kappa) || rate < 1e-6 };
 }
 const degenerate = (mdl, x) => { const g = geometry(mdl, x); return !x.every(Number.isFinite) || g.separation < PROTOCOL.limits.minSeparation || g.spread > PROTOCOL.limits.circulationSpread || g.size > 1e4 || g.relativeEquilibrium; };
-function project(mdl, x0, iterations = 60) { // damped minimum-norm Gauss-Newton onto c = 0
-  let x = Float64Array.from(x0), r = mdl.residual(x, true), mu = 1e-6 * Math.max(1, ...gram(r.J).map((row, i) => row[i]));
+// Damped minimum-norm Gauss-Newton onto c = 0. For short retractions near the manifold (chord = true) the
+// factorization of J J^T is reused while it keeps making good progress, which needs only the residual, and is
+// refreshed with a new Jacobian when progress slows. Landing from a far start uses a fresh Jacobian every step.
+function project(mdl, x0, iterations = 60, chord = true) {
+  let x = Float64Array.from(x0), r = mdl.residual(x, true), J = r.J, mu = 1e-6 * Math.max(1, ...J.map(row => dot(row, row))), factor = null;
   for (let it = 0; it < iterations; it++) {
     const f = feasibility(r); if (f < 1e-14) break;
-    let step; try { step = mulT(r.J, solve(gram(r.J, mu), r.c)); } catch { mu *= 100; continue; }
-    const trial = Float64Array.from(x, (xi, i) => xi - step[i]);
-    if (!trial.every(Number.isFinite)) { mu *= 100; continue; }
-    const rt = mdl.residual(trial, true);
-    if (norm(rt.c) < norm(r.c)) { x = trial; r = rt; mu = Math.max(mu / 10, 1e-300); } else { mu *= 10; if (mu > 1e20) break; }
+    if (!factor) { factor = cholesky(gram(J, mu)); if (!factor) { mu *= 100; continue; } }
+    const step = mulT(J, factor(r.c)), trial = Float64Array.from(x, (xi, i) => xi - step[i]);
+    const rt = trial.every(Number.isFinite) ? mdl.residual(trial, false) : null, before = norm(r.c), after = rt ? norm(rt.c) : Infinity;
+    if (after < before) {
+      x = trial; r = rt;
+      if (!chord || after > 0.25 * before) { r = mdl.residual(x, true); J = r.J; factor = null; mu = Math.max(mu / 10, 1e-300); }
+    } else { r = mdl.residual(x, true); J = r.J; factor = null; mu *= 10; if (mu > 1e20) break; }
   }
-  return { x, r, feasibility: feasibility(r) };
+  return { x, feasibility: feasibility(r) };
 }
 function lagrangeGradient(mdl, x, lambda) { const r = mdl.residual(x, true), g = mdl.gradient(x), jl = mulT(r.J, lambda); return g.map((gi, i) => gi + jl[i]); }
 function reducedState(mdl, x) {
   const r = mdl.residual(x, true), g = mdl.gradient(x), Z = nullBasis(r.J);
-  const lambda = solve(gram(r.J), mul(r.J, g)).map(v => -v);
+  const lambda = spdSolve(gram(r.J), mul(r.J, g)).map(v => -v);
   const reduced = Float64Array.from(Z, zc => dot(zc, g));
   return { r, g, Z, lambda, reduced };
 }
+// Z^T H Z from central differences of the Lagrangian gradient along each unit tangent direction: N - 1 directions
+// instead of all 3N - 3 coordinates, and no n x n Hessian.
 function reducedHessian(mdl, x, Z, lambda) {
-  const n = mdl.n, H = zeros(n, n);
-  for (let i = 0; i < n; i++) {
-    const h = 1e-5 * Math.max(1, Math.abs(x[i])), a = Float64Array.from(x), b = Float64Array.from(x); a[i] += h; b[i] -= h;
-    const ga = lagrangeGradient(mdl, a, lambda), gb = lagrangeGradient(mdl, b, lambda);
-    for (let k = 0; k < n; k++) H[k][i] = (ga[k] - gb[k]) / (2 * h);
-  }
-  for (let i = 0; i < n; i++) for (let k = 0; k < i; k++) H[i][k] = H[k][i] = (H[i][k] + H[k][i]) / 2;
-  const HZ = Z.map(zc => mul(H, zc));
-  return Z.map((zi, i) => Float64Array.from(Z, (_, j) => dot(zi, HZ[j])));
+  const h = 1e-5 * Math.max(1, Math.sqrt(dot(x, x) / x.length));
+  const HZ = Z.map(zc => {
+    const ga = lagrangeGradient(mdl, Float64Array.from(x, (v, k) => v + h * zc[k]), lambda), gb = lagrangeGradient(mdl, Float64Array.from(x, (v, k) => v - h * zc[k]), lambda);
+    return Float64Array.from(ga, (v, k) => (v - gb[k]) / (2 * h));
+  });
+  const R = Z.map((zi, i) => Float64Array.from(Z, (_, j) => dot(zi, HZ[j])));
+  for (let i = 0; i < R.length; i++) for (let j = 0; j < i; j++) R[i][j] = R[j][i] = (R[i][j] + R[j][i]) / 2;
+  return R;
 }
 // Riemannian Newton on the collapse manifold with a saddle-free eigenvalue modification.
 function minimize(mdl, x0) {
-  let x = x0, f = mdl.objective(x), iterations = 0, status = 'stalled', state; const history = [];
+  let x = x0, f = mdl.objective(x), iterations = 0, status = 'stalled', state; const history = [], grads = [];
   for (; iterations < PROTOCOL.newtonIterations; iterations++) {
-    // Newton converges in a few dozen steps near a nondegenerate minimum; a long crawl is a stall.
-    history.push(f); if (history.length > 60 && history[history.length - 31] - f < 1e-2 * f) break;
     if (degenerate(mdl, x)) { status = 'degenerate'; break; }
     state = reducedState(mdl, x);
     const gscale = Math.max(1e-300, Math.sqrt(f));
-    if (norm(state.reduced) / gscale < PROTOCOL.limits.reducedGradient * 1e-2) { status = 'stationary'; break; }
+    // Newton reaches a nondegenerate minimum in 10 to 30 steps here. After 30, a run whose P^2 fell by under 1% and
+    // whose reduced gradient shrank by under a factor 10 over the last 15 steps is crawling, not converging.
+    history.push(f); grads.push(norm(state.reduced) / gscale);
+    const k = history.length;
+    if (k > 30 && history[k - 16] - f < 1e-2 * f && grads[k - 16] < 10 * grads[k - 1]) break;
+    // P >= 0, so a point with P below the zero-winding tolerance is a global minimum; the gradient test, which is
+    // relative to sqrt(P^2) = P, stops meaning anything as P -> 0.
+    if (Math.sqrt(f) < ZERO_WINDING || norm(state.reduced) / gscale < PROTOCOL.limits.reducedGradient * 1e-2) { status = 'stationary'; break; }
     const R = reducedHessian(mdl, x, state.Z, state.lambda), { values, vectors } = jacobiEigen(R);
     const big = Math.max(...values.map(Math.abs), 1e-300), dir = new Float64Array(mdl.n);
     for (let e = 0; e < values.length; e++) {
@@ -359,7 +385,7 @@ function searchSeed(alpha, N, seed) {
     for (let k = 0; k < 2 * (N - 2); k++) x[k] = 1.2 * gauss(u);
     for (let k = 1; k < N; k++) x[2 * (N - 2) + k - 1] = (u() < 0.5 ? -1 : 1) * (0.2 + 1.8 * u());
     x[mdl.n - 2] = gauss(u); x[mdl.n - 1] = gauss(u);
-    const pr = project(mdl, x, 200);
+    const pr = project(mdl, x, 200, false);
     if (pr.feasibility < 1e-12 && !degenerate(mdl, pr.x)) landed = pr.x;
   }
   if (!landed) return { seed, status: 'no-landing', attempts, ms: Date.now() - started };
@@ -401,7 +427,7 @@ function growSeed(alpha, parent, seed) {
     const k = outer[Math.floor(u() * outer.length)], s = 1.05 + 0.6 * u(), phi = (u() - 0.5) * 1.2, dx = z[k][0] - zc[0], dy = z[k][1] - zc[1];
     const nz = [zc[0] + s * (dx * Math.cos(phi) - dy * Math.sin(phi)), zc[1] + s * (dx * Math.sin(phi) + dy * Math.cos(phi))];
     const g = G[k] * (0.05 + 0.6 * u()) * (u() < 0.75 ? 1 : -1);
-    const pr = project(mdl, fromConfig(mdl, { z: [...z, nz], G: [...G, g] }), 200);
+    const pr = project(mdl, fromConfig(mdl, { z: [...z, nz], G: [...G, g] }), 200, false);
     if (pr.feasibility < 1e-12 && !degenerate(mdl, pr.x)) landed = pr.x;
   }
   if (!landed) return { seed, status: 'no-landing', attempts, ms: Date.now() - started };
@@ -464,20 +490,44 @@ function margins(results) {
     worstInvariant: worst(r => Math.max(r.certificate.invariants.angularImpulse, r.certificate.invariants.energy)),
     worstSymmetryMode: worst(r => r.certificate.stability.trivialModeError), worstPairing: worst(r => r.certificate.stability.pairingError) };
 }
-function computeSummary(results, wallSeconds, measuredJoules) {
-  const cpuSeconds = results.reduce((a, r) => a + (r.cpuMs || 0), 0) / 1000, hours = cpuSeconds / 3600;
+function computeSummary(results, wallSeconds, measuredJoules, block = {}) {
+  const threads = block.threads || 1, cpuSeconds = Number.isFinite(block.cpuSeconds) ? block.cpuSeconds : results.reduce((a, r) => a + (r.cpuMs || 0), 0) / 1000, hours = cpuSeconds / 3600;
   const tally = results.reduce((a, r) => (a[r.status] = (a[r.status] || 0) + 1, a), {}), certified = (tally['certified-local-minimum'] || 0) + (tally['zero-winding'] || 0);
   return { seeds: results.length, wallSeconds, cpuSeconds, cpuSecondsPerSeed: results.length ? cpuSeconds / results.length : null,
-    utilization: wallSeconds > 0 ? Math.min(1, cpuSeconds / wallSeconds) : null, peakMemoryMiB: +(process.resourceUsage().maxRSS / 1024).toFixed(1),
+    utilization: wallSeconds > 0 ? cpuSeconds / (wallSeconds * threads) : null, peakMemoryMiB: +(process.resourceUsage().maxRSS / 1024).toFixed(1),
     seedsPerCpuHour: hours > 0 ? results.length / hours : null, certifiedPerCpuHour: hours > 0 ? certified / hours : null,
     yield: Object.fromEntries(Object.entries(tally).map(([k, v]) => [k, v / results.length])),
     energy: energy(cpuSeconds, measuredJoules ?? undefined) };
 }
 function run(opt) {
   const { alpha, N, start, count } = opt;
-  return runBlock({ alpha, N, start, count, file: opt.out || defaultOut(alpha, N, start, count), seedFn: seed => searchSeed(alpha, N, seed), method: { kind: 'multistart' } });
+  return runBlock({ alpha, N, start, count, file: opt.out || defaultOut(alpha, N, start, count), spec: { kind: 'search', alpha, N }, method: { kind: 'multistart' }, threads: opt.threads });
 }
-function runBlock({ alpha, N, start, count, file, seedFn, method, checkpointName = 'vortex-checkpoint.json' }) {
+// One seed of either kind, with its own CPU time. Worker threads measure their own thread; the main thread measures itself.
+function runSeed(spec, seed) {
+  // A worker thread has no honest per-seed CPU without a per-thread clock: process.cpuUsage would count every thread.
+  const clock = process.threadCpuUsage ? () => process.threadCpuUsage() : isMainThread ? () => process.cpuUsage() : null, c0 = clock && clock();
+  const r = spec.kind === 'grow' ? growSeed(spec.alpha, spec.parent, seed) : searchSeed(spec.alpha, spec.N, seed), c1 = clock && clock();
+  r.cpuMs = clock ? (c1.user - c0.user + c1.system - c0.system) / 1000 : null;
+  return r;
+}
+// Run seeds on up to `threads` worker threads. Seeds are independent and deterministic, so the results, their order and
+// the block's digest do not depend on the thread count. Results are delivered in completion order.
+async function mapSeeds(spec, seeds, threads, onResult) {
+  if (threads <= 1 || seeds.length <= 1) { for (const s of seeds) onResult(runSeed(spec, s)); return; }
+  await new Promise((resolve, reject) => {
+    let next = 0, done = 0; const workers = [];
+    const finish = err => { for (const w of workers) w.terminate(); err ? reject(err) : resolve(); };
+    const feed = w => { if (next < seeds.length) w.postMessage(seeds[next++]); };
+    for (let i = 0; i < Math.min(threads, seeds.length); i++) {
+      const w = new Worker(__filename, { workerData: { vortexWorker: true, spec } });
+      w.on('message', r => { onResult(r); if (++done === seeds.length) finish(); else feed(w); });
+      w.on('error', finish);
+      workers.push(w); feed(w);
+    }
+  });
+}
+async function runBlock({ alpha, N, start, count, file, spec, method, threads = 1, checkpointName = 'vortex-checkpoint.json' }) {
   const jobDir = process.env.GENCHASE_JOB_DIR, checkpointFile = jobDir && path.join(jobDir, checkpointName);
   const signature = crypto.createHash('sha256').update(fs.readFileSync(__filename)).update(JSON.stringify({ alpha, N, start, count, method })).digest('hex');
   let results = [];
@@ -487,14 +537,18 @@ function runBlock({ alpha, N, start, count, file, seedFn, method, checkpointName
       else console.log('Vortex checkpoint changed or damaged; restarting this seed block.');
     } catch { console.log('Vortex checkpoint could not be read; restarting this seed block.'); }
   }
-  const t0 = Date.now(), e0 = energyCounter();
-  for (let i = results.length; i < count; i++) {
-    const c0 = process.cpuUsage(), r = seedFn(start + i), dc = process.cpuUsage(c0);
-    r.cpuMs = (dc.user + dc.system) / 1000; results.push(r);
-    console.log(`seed ${start + i}: ${r.status}${r.P ? ' P=' + r.P.toPrecision(12) : ''} (${r.ms} ms)`);
-    console.log('GENCHASE_PROGRESS ' + JSON.stringify({ stage: 'search', message: `alpha ${alpha}, N ${N}: seed ${i + 1}/${count}`, done: i + 1, total: count, unit: 'seeds' }));
-    if (checkpointFile) { const body = { signature, results }; fs.writeFileSync(checkpointFile, JSON.stringify({ ...body, checksum: crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') })); }
-  }
+  const t0 = Date.now(), e0 = energyCounter(), pending = new Map(), cpu0 = process.cpuUsage(), resumedCpuMs = results.reduce((a, r) => a + (r.cpuMs || 0), 0);
+  const seeds = Array.from({ length: count - results.length }, (_, i) => start + results.length + i);
+  // Buffer out-of-order results and commit them in seed order, so the checkpoint is always a clean prefix.
+  await mapSeeds(spec, seeds, threads, r => {
+    pending.set(r.seed, r);
+    while (pending.has(start + results.length)) {
+      const q = pending.get(start + results.length); pending.delete(q.seed); results.push(q);
+      console.log(`seed ${q.seed}: ${q.status}${q.P ? ' P=' + q.P.toPrecision(12) : ''} (${q.ms} ms)`);
+      console.log('GENCHASE_PROGRESS ' + JSON.stringify({ stage: 'search', message: `alpha ${alpha}, N ${N}: seed ${results.length}/${count}`, done: results.length, total: count, unit: 'seeds' }));
+      if (checkpointFile) { const body = { signature, results }; fs.writeFileSync(checkpointFile, JSON.stringify({ ...body, checksum: crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') })); }
+    }
+  });
   const minima = distinct(results), best = minima[0] || null, ref = REFERENCE[String(alpha)]?.[N];
   const tally = results.reduce((a, r) => (a[r.status] = (a[r.status] || 0) + 1, a), {});
   const summary = { seeds: { start, count }, tally, distinctMinima: minima.length, best: best && { P: best.P, basinSeeds: best.basinSeeds, firstSeed: best.firstSeed },
@@ -504,8 +558,10 @@ function runBlock({ alpha, N, start, count, file, seedFn, method, checkpointName
     boundaryApproach: lowest(results.filter(r => ['stalled', 'degenerate'].includes(r.status))),
     belowN3Infimum: N === 3 ? (lowest(results) ?? Infinity) < infimum3(alpha) * (1 - 1e-9) : undefined, elapsedSeconds: (Date.now() - t0) / 1000,
     // CPU time covers every seed, including seeds finished before a resume; wall time and energy cover this run only.
-    compute: computeSummary(results, (Date.now() - t0) / 1000, energyBetween(e0, energyCounter())),
-    certificateMargins: margins(results), resultsDigest: digest(results), runtime: runtimeCard() };
+    // The block's CPU is the whole process over this run (main thread, workers, GC and compiler threads), plus the
+    // recorded CPU of seeds resumed from a checkpoint; per-seed cpuMs is each seed's own thread.
+    compute: computeSummary(results, (Date.now() - t0) / 1000, energyBetween(e0, energyCounter()), { cpuSeconds: (resumedCpuMs + (u => (u.user + u.system) / 1000)(process.cpuUsage(cpu0))) / 1000, threads }),
+    certificateMargins: margins(results), resultsDigest: digest(results), runtime: { ...runtimeCard(), threads } };
   const out = { ...header(alpha, N), method, summary, minima, results };
   fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, JSON.stringify(out, null, 1) + '\n');
   if (jobDir) { const dest = path.join(jobDir, 'outputs/validation/results', path.basename(file)); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.copyFileSync(file, dest); }
@@ -517,7 +573,7 @@ function runBlock({ alpha, N, start, count, file, seedFn, method, checkpointName
 }
 // Grow a family from a certified parent: the best minimum in --from, or the leaderboard's best at the largest N below
 // the target. Each step runs its own seed block, and the best certified child becomes the next parent.
-function grow(opt) {
+async function grow(opt) {
   const { alpha, N: target, start, count } = opt;
   let parent, parentN, source;
   if (opt.from) { const d = JSON.parse(fs.readFileSync(opt.from, 'utf8')); assert(Number(d.alpha) === alpha, '--from has a different alpha.'); const m = (d.minima || [])[0]; assert(m?.config, '--from has no certified minimum.'); parent = m.config; parentN = Number(d.N); source = path.basename(opt.from); }
@@ -527,12 +583,12 @@ function grow(opt) {
     const e = board.entries.filter(q => q.alpha === alpha && q.N < target).sort((a, b) => a.best - b.best || b.N - a.N)[0]; assert(e, 'No leaderboard entry below N = ' + target + ' at alpha ' + alpha + '.');
     parent = e.minima[0].config; parentN = e.N; source = `leaderboard alpha ${alpha}, N ${e.N}, P ${e.best}`;
   }
-  assert(parentN < target && target <= 64, 'Growth target must exceed the parent and be at most 64.');
+  assert(parentN < target && target <= 128, 'Growth target must exceed the parent and be at most 128.');
   const outputs = [];
   for (let N = parentN + 1; N <= target; N++) {
     console.log(`Growing alpha ${alpha} from N ${N - 1} to N ${N} (${count} seeds).`);
-    const from = parent, out = runBlock({ alpha, N, start, count, file: opt.out && target === parentN + 1 ? opt.out : path.join(root, 'run/vortex-collapse', `vortex-grow-a${alpha}-n${N}-s${start}-c${count}.json`),
-      seedFn: seed => growSeed(alpha, from, seed), method: { kind: 'grow', parentN: N - 1, parentP: N - 1 === parentN ? null : outputs.at(-1).minima[0].P, source }, checkpointName: `vortex-grow-${N}-checkpoint.json` });
+    const out = await runBlock({ alpha, N, start, count, threads: opt.threads, file: opt.out && target === parentN + 1 ? opt.out : path.join(root, 'run/vortex-collapse', `vortex-grow-a${alpha}-n${N}-s${start}-c${count}.json`),
+      spec: { kind: 'grow', alpha, parent }, method: { kind: 'grow', parentN: N - 1, parentP: N - 1 === parentN ? null : outputs.at(-1).minima[0].P, source }, checkpointName: `vortex-grow-${N}-checkpoint.json` });
     outputs.push(out);
     if (!out.minima.length) { console.log('No certified minimum at N ' + N + '; the family stops here for this seed block.'); break; }
     if (out.minima[0].P < ZERO_WINDING) { console.log('Zero winding reached at N ' + N + ': no collapse can wind less.'); break; }
@@ -544,7 +600,7 @@ function grow(opt) {
 // configurations are dropped. Certified minima keep their full configurations, which is all that review needs.
 function compact(data) { return { ...data, results: data.results.map(({ seed, status, P, cpuMs, iterations, attempts }) => ({ seed, status, P, cpuMs, iterations, attempts })) }; }
 function sources() {
-  const found = [], walk = dir => { if (!fs.existsSync(dir)) return; for (const e of fs.readdirSync(dir, { withFileTypes: true })) { const f = path.join(dir, e.name); if (e.isDirectory()) walk(f); else if (/^vortex-(collapse|grow)-.*\.json$/.test(e.name)) found.push(f); } };
+  const found = [], walk = dir => { if (!fs.existsSync(dir)) return; for (const e of fs.readdirSync(dir, { withFileTypes: true })) { const f = path.join(dir, e.name); if (e.isDirectory()) walk(f); else if (/^vortex-(collapse|grow|threshold)-.*\.json$/.test(e.name)) found.push(f); } };
   walk(path.join(root, 'experiments/results/vortex-collapse')); walk(path.join(root, 'validation/submissions'));
   return found.sort();
 }
@@ -553,16 +609,97 @@ function refresh() {
   const board = verifyFiles(sources(), true), doc = path.join(root, 'experiments/VORTEX-COLLAPSE.md'), text = fs.readFileSync(doc, 'utf8');
   const a = '<!-- leaderboard:start -->', b = '<!-- leaderboard:end -->', i = text.indexOf(a), j = text.indexOf(b);
   assert(i >= 0 && j > i, 'Leaderboard markers missing from experiments/VORTEX-COLLAPSE.md.');
-  fs.writeFileSync(doc, text.slice(0, i + a.length) + '\n' + table(board) + '\n' + text.slice(j));
+  let next = text.slice(0, i + a.length) + '\n' + table(board) + '\n' + text.slice(j);
+  const ta = '<!-- thresholds:start -->', tb = '<!-- thresholds:end -->', ti = next.indexOf(ta), tj = next.indexOf(tb);
+  if (ti >= 0 && tj > ti) next = next.slice(0, ti + ta.length) + '\n' + thresholdTable(board) + '\n' + next.slice(tj);
+  fs.writeFileSync(doc, next);
   return board;
+}
+// ---------- continuation in the kernel exponent ----------
+// Follow one certified minimum as alpha changes, re-minimizing P at each step from the previous point, and bracket the
+// alpha at which the branch first reaches zero winding. The bracket's low end carries a certified minimum with P > 0
+// and its high end a certified zero-winding collapse. Along one branch this is an upper bound on the least alpha at
+// which N vortices can collapse without rotating: another branch could reach zero earlier.
+const isZero = (so, cert) => certifiedStatus(so, cert) === 'zero-winding';
+function atAlpha(N, alpha, x0) {
+  const mdl = model(N, alpha), pr = project(mdl, x0, 200, false);
+  if (!(pr.feasibility < 1e-12)) return { lost: 'projection' };
+  const opt = minimize(mdl, pr.x);
+  if (opt.status === 'degenerate') return { lost: 'degenerate', P: Math.sqrt(opt.f) };
+  const so = secondOrder(mdl, opt.x), cert = certify(mdl, opt.x), status = certifiedStatus(so, cert);
+  return { x: opt.x, P: cert.P, status: status || 'uncertified', cert, so, mdl };
+}
+async function continueAlpha(opt) {
+  let source, N, a0, config;
+  if (opt.from) { const d = JSON.parse(fs.readFileSync(opt.from, 'utf8')); N = Number(d.N); a0 = Number(d.alpha); config = (d.minima || [])[0]?.config; source = path.basename(opt.from); }
+  else {
+    const board = JSON.parse(fs.readFileSync(path.join(root, 'experiments/results/vortex-collapse-leaderboard.json'), 'utf8'));
+    const e = board.entries.find(q => q.alpha === opt.alpha && q.N === opt.N); assert(e, `No leaderboard entry at alpha ${opt.alpha}, N ${opt.N}.`);
+    N = e.N; a0 = e.alpha; config = e.minima[0].config; source = `leaderboard alpha ${a0}, N ${N}, P ${e.best}`;
+  }
+  assert(config, 'No certified minimum to continue from.');
+  const to = opt.to, step = opt.step || 0.05, tol = opt.tol || 1e-4, dir = Math.sign(to - a0), t0 = Date.now(), c0 = process.cpuUsage();
+  assert(Number.isFinite(to) && to > -2 && to <= 3 && dir !== 0, '--to must lie in (-2, 3] and differ from the start.');
+  // The bracket follows P itself: a point whose certificate fails still counts on the side its P puts it,
+  // so an uncertified point cannot hide the crossing. Certification is then required of both ends.
+  const zero = r => r.P < ZERO_WINDING;
+  let cur = atAlpha(N, a0, fromConfig(model(N, a0), config)), alpha = a0, h = step; const path_ = [];
+  assert(cur.x, 'The starting minimum could not be re-polished.');
+  path_.push({ alpha, P: cur.P, status: cur.status });
+  let bracket = null, end = null;
+  while (dir * (to - alpha) > 1e-12) {
+    const next = dir > 0 ? Math.min(alpha + h, to) : Math.max(alpha - h, to), got = atAlpha(N, next, cur.x);
+    if (!got.x) { if (h > step / 64) { h /= 2; continue; } end = { alpha: next, lost: got.lost }; break; }
+    path_.push({ alpha: next, P: got.P, status: got.status });
+    console.log('GENCHASE_PROGRESS ' + JSON.stringify({ stage: 'search', message: `N ${N}: alpha ${next.toFixed(4)}, P ${got.P.toPrecision(6)}` }));
+    if (zero(got) !== zero(cur)) { bracket = { a: alpha, xa: cur, b: next, xb: got }; break; }
+    alpha = next; cur = got; h = Math.min(step, h * 2);
+  }
+  // Bisect the crossing until the bracket is narrower than tol, always restarting from the positive-P side.
+  if (bracket) {
+    let { a, xa, b, xb } = bracket; const aZero = zero(xa);
+    while (Math.abs(b - a) > tol) {
+      const mid = (a + b) / 2;
+      let got = atAlpha(N, mid, (aZero ? xb : xa).x);
+      if (!got.x) got = atAlpha(N, mid, (aZero ? xa : xb).x);
+      if (!got.x) break;
+      if (zero(got) === aZero) { a = mid; xa = got; } else { b = mid; xb = got; }
+    }
+    bracket = { a, xa, b, xb };
+  }
+  const side = r => r && { alpha: null, P: r.P, status: r.status, config: configOf(r.mdl, r.x), soscRatio: r.so.soscRatio, unstableShapeModes: r.cert.stability.unstableShapeModes };
+  let threshold = null;
+  if (bracket) {
+    const lowSide = zero(bracket.xa) ? { at: bracket.b, r: bracket.xb } : { at: bracket.a, r: bracket.xa };
+    const zeroSide = zero(bracket.xa) ? { at: bracket.a, r: bracket.xa } : { at: bracket.b, r: bracket.xb };
+    threshold = { positive: { ...side(lowSide.r), alpha: lowSide.at }, zero: { ...side(zeroSide.r), alpha: zeroSide.at }, width: Math.abs(bracket.b - bracket.a),
+      converged: Math.abs(bracket.b - bracket.a) <= tol + 1e-12,
+      certified: lowSide.r.status === 'certified-local-minimum' && zeroSide.r.status === 'zero-winding' && Math.abs(bracket.b - bracket.a) <= tol + 1e-12 };
+  }
+  const dc = process.cpuUsage(c0), cpuSeconds = (dc.user + dc.system) / 1e6;
+  const out = { experiment: 'vortex-threshold', protocol: PROTOCOL.version, N, fromAlpha: a0, toAlpha: to, source, step, tol,
+    sourceSha256: crypto.createHash('sha256').update(fs.readFileSync(__filename)).digest('hex'), commit: process.env.GENCHASE_JOB_COMMIT || git(['rev-parse', 'HEAD']), machine: process.env.GENCHASE_MACHINE_SLUG || null,
+    path: path_, end, threshold, compute: { wallSeconds: (Date.now() - t0) / 1000, cpuSeconds, energy: energy(cpuSeconds) }, runtime: runtimeCard(),
+    scope: 'Continuation of one certified branch. The zero-winding threshold is an upper bound on the least alpha at which N vortices can collapse without rotating; other branches may reach zero at smaller alpha. Numerical, not a proof.' };
+  const file = opt.out || path.join(root, 'run/vortex-collapse', `vortex-threshold-n${N}-a${a0}-to${to}.json`);
+  fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, JSON.stringify(out, null, 1) + '\n');
+  if (process.env.GENCHASE_JOB_DIR) { const dest = path.join(process.env.GENCHASE_JOB_DIR, 'outputs/validation/results', path.basename(file)); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.copyFileSync(file, dest); }
+  console.log(threshold ? `N ${N}: zero winding between alpha ${threshold.positive.alpha.toFixed(6)} (P = ${threshold.positive.P.toExponential(3)}) and ${threshold.zero.alpha.toFixed(6)}${threshold.certified ? ', both sides certified' : threshold.converged ? ', NOT both certified' : `, bisection stopped at width ${threshold.width.toExponential(2)} (NOT converged)`}.` : `N ${N}: no crossing between alpha ${a0} and ${to}${end ? ` (branch lost at ${end.alpha}: ${end.lost})` : ''}.`);
+  console.log('Result: ' + path.relative(root, file));
+  return out;
 }
 const defaultOut = (alpha, N, start, count) => path.join(root, 'run/vortex-collapse', `vortex-collapse-a${alpha}-n${N}-s${start}-c${count}.json`);
 
 // ---------- independent re-verification of submitted files ----------
 function verifyFiles(files, write) {
-  const board = {}, rejected = [], spent = { files: 0, seeds: 0, cpuSeconds: 0, wallSecondsWithoutCpuRecord: 0, measuredJoules: 0, filesMeasured: 0, machines: new Set() };
+  const board = {}, rejected = [], thresholds = [], spent = { files: 0, seeds: 0, cpuSeconds: 0, wallSecondsWithoutCpuRecord: 0, measuredJoules: 0, filesMeasured: 0, machines: new Set() };
   for (const f of files) {
     const data = JSON.parse(fs.readFileSync(f, 'utf8'));
+    if (data.experiment === 'vortex-threshold') {
+      // Threshold runs count toward the compute ledger like any other job.
+      spent.files++; spent.machines.add(data.machine || 'unlabelled'); if (Number.isFinite(data.compute?.cpuSeconds)) spent.cpuSeconds += data.compute.cpuSeconds;
+      verifyThreshold(f, data, thresholds, rejected); continue;
+    }
     assert(data.experiment === 'vortex-collapse-search', f + ' is not a vortex-collapse result.');
     // Compute is as reported by the contributor's machine; it cannot be re-verified, only rerun.
     const c = data.summary?.compute; spent.files++; spent.seeds += data.results?.length || c?.seeds || 0; spent.machines.add(data.machine || 'unlabelled');
@@ -570,8 +707,8 @@ function verifyFiles(files, write) {
     if (Number.isFinite(c?.energy?.joules)) { spent.measuredJoules += c.energy.joules; spent.filesMeasured++; }
     const cell = (spent.byCase ||= {})[data.alpha + '/' + data.N] ||= { alpha: Number(data.alpha), N: Number(data.N), seeds: 0, cpuSeconds: 0, digests: [] };
     cell.seeds += data.results?.length || 0; cell.cpuSeconds += Number.isFinite(c?.cpuSeconds) ? c.cpuSeconds : Number(data.summary?.elapsedSeconds) || 0;
-    if (data.summary?.resultsDigest && data.summary.seeds) cell.digests.push({ block: data.summary.seeds, digest: data.summary.resultsDigest, machine: data.machine || 'unlabelled', runtime: data.summary.runtime ? data.summary.runtime.cpuModel + ', ' + data.summary.runtime.node : null });
-    const alpha = Number(data.alpha), N = Number(data.N); assert(Number.isFinite(alpha) && Number.isInteger(N) && N >= 3 && N <= 64, f + ': bad alpha or N.');
+    if (data.summary?.resultsDigest && data.summary.seeds) cell.digests.push({ block: data.summary.seeds, key: [data.protocol?.version ?? 1, data.method?.kind || 'multistart', data.method?.parentN ?? '', data.method?.parentP ?? data.method?.source ?? '', data.summary.seeds.start, data.summary.seeds.count].join('/'), digest: data.summary.resultsDigest, machine: data.machine || 'unlabelled', runtime: data.summary.runtime ? data.summary.runtime.cpuModel + ', ' + data.summary.runtime.node : null });
+    const alpha = Number(data.alpha), N = Number(data.N); assert(Number.isFinite(alpha) && Number.isInteger(N) && N >= 3 && N <= 128, f + ': bad alpha or N.');
     const mdl = model(N, alpha), key = alpha + '/' + N;
     for (const m of data.minima || []) {
       // Trust only the submitted positions and circulations. Re-project, re-polish and re-certify here.
@@ -595,11 +732,11 @@ function verifyFiles(files, write) {
   }
   const leaderboard = { experiment: 'vortex-collapse-leaderboard', protocol: PROTOCOL.version, generatedFrom: files.map(f => path.basename(f)).sort(),
     scope: 'Each entry was re-projected, re-polished and re-certified from submitted positions and circulations only. Numerical candidates; priority unconfirmed.',
-    entries: Object.values(board).sort((a, b) => a.alpha - b.alpha || a.N - b.N), rejected };
+    entries: Object.values(board).sort((a, b) => a.alpha - b.alpha || a.N - b.N), thresholds: thresholds.sort((a, b) => a.fromAlpha - b.fromAlpha || a.N - b.N || a.zeroAlpha - b.zeroAlpha), rejected };
   const busy = spent.cpuSeconds + spent.wallSecondsWithoutCpuRecord;
   // The same seed block run twice must give the same digest on the same protocol; list any block that disagreed.
   const byCase = Object.values(spent.byCase || {}).map(c => { const seen = {}, disagreements = [];
-    for (const d of c.digests) { const k = d.block.start + '+' + d.block.count; if (seen[k] && seen[k].digest !== d.digest) disagreements.push({ block: d.block, a: seen[k], b: d }); seen[k] ||= d; }
+    for (const d of c.digests) { const k = d.key || d.block.start + '+' + d.block.count; if (seen[k] && seen[k].digest !== d.digest) disagreements.push({ block: d.block, a: seen[k], b: d }); seen[k] ||= d; }
     return { alpha: c.alpha, N: c.N, seeds: c.seeds, cpuHours: c.cpuSeconds / 3600, independentReruns: c.digests.length - Object.keys(seen).length, disagreements }; }).sort((a, b) => a.alpha - b.alpha || a.N - b.N);
   delete spent.byCase;
   leaderboard.compute = { ...spent, machines: spent.machines.size, cpuHours: busy / 3600, byCase,
@@ -617,6 +754,43 @@ function table(board) {
   const rows = board.entries.map(e => { const m = e.minima[0], seeds = (e.seedBlocks || []).reduce((a, b) => a + b.count, 0);
     return `| ${e.alpha} | ${e.N} | ${fmt(e.best)} | ${m.reportedBasinSeeds} of ${seeds} | ${e.minima.length} (${e.minima.map(q => fmt(q.P)).join(', ')}) | ${m.stability.maxShapeExponent.toFixed(2)} | ${m.stability.unstableShapeModes} | ${fmt(e.reference)} |`; });
   return ['| α | N | Least certified P | Seeds ending there | Distinct certified minima | Largest shape exponent k | Unstable shape modes | Independent reference |', '|---:|---:|---:|---:|---|---:|---:|---:|', ...rows].join('\n');
+}
+
+// A threshold is re-derived from its two configurations alone: the low side must re-certify as a strict local minimum
+// with P > 0 at its alpha, and the high side as a zero-winding collapse at its alpha.
+// Nothing in the file is trusted except the two configurations: the width limit is the protocol's, the P on each side
+// must reproduce, the two sides must be one branch, and the family label is checked by following the positive side
+// back to the family's alpha, where it must reproduce the first point of the recorded path.
+function verifyThreshold(f, data, thresholds, rejected) {
+  const t = data.threshold, name = path.basename(f), N = Number(data.N), fromAlpha = Number(data.fromAlpha);
+  const reject = reason => { console.log(`${name}: threshold rejected (${reason})`); rejected.push({ file: name, reason }); };
+  if (!t) return;
+  const aLo = Number(t.positive?.alpha), aHi = Number(t.zero?.alpha), inRange = a => Number.isFinite(a) && a > -2 && a <= 3;
+  if (!(Number.isInteger(N) && N >= 3 && N <= 128 && inRange(aLo) && inRange(aHi) && inRange(fromAlpha))) return reject('bad N or alpha');
+  if (!(Math.abs(aHi - aLo) <= PROTOCOL.limits.thresholdWidth + 1e-12)) return reject('bracket wider than ' + PROTOCOL.limits.thresholdWidth);
+  const check = (sideData, alpha, want) => { const mdl = model(N, alpha); let x; try { x = project(mdl, fromConfig(mdl, sideData.config), 200, false).x; } catch (e) { return { ok: false, status: e.message }; }
+    const opt = minimize(mdl, x), so = secondOrder(mdl, opt.x), cert = certify(mdl, opt.x), status = certifiedStatus(so, cert) || 'uncertified';
+    return { ok: status === want, P: cert.P, status, x: opt.x, mdl }; };
+  const lo = check(t.positive, aLo, 'certified-local-minimum'), hi = check(t.zero, aHi, 'zero-winding');
+  if (!lo.ok || !hi.ok) return reject(`low side ${lo.status}, high side ${hi.status}`);
+  if (!(lo.P > ZERO_WINDING) || Math.abs(lo.P - Number(t.positive.P)) > 1e-6 * Math.max(lo.P, 1e-6)) return reject('low-side P does not reproduce');
+  // One branch: the two gauge-fixed configurations must nearly coincide, since their alphas differ by at most 1e-4.
+  const gap = Math.max(...lo.x.map((v, k) => Math.abs(v - hi.x[k]))) / Math.max(1, ...lo.x.map(Math.abs));
+  if (!(gap < 0.05)) return reject('the two sides are not one branch');
+  // Family label: follow the positive side back to fromAlpha and compare with the recorded start of the path.
+  let back = { x: lo.x, P: lo.P }, a = aLo; const dir = Math.sign(fromAlpha - aLo);
+  // Only P is compared on the way back, so each step projects and re-minimizes without the full certificate.
+  const light = (alpha, x0) => { const mdl = model(N, alpha), pr = project(mdl, x0, 200, false); if (!(pr.feasibility < 1e-12)) return {}; const opt = minimize(mdl, pr.x); return opt.status === 'degenerate' ? {} : { x: opt.x, P: Math.sqrt(opt.f) }; };
+  while (dir && Math.abs(fromAlpha - a) > 1e-12) { a = dir > 0 ? Math.min(a + 0.1, fromAlpha) : Math.max(a - 0.1, fromAlpha); back = light(a, back.x); if (!back.x) return reject('branch lost on the way back to its family'); }
+  const P0 = Number(data.path?.[0]?.P);
+  if (!(Number.isFinite(P0) && Math.abs(back.P - P0) <= 1e-6 * Math.max(P0, 1e-6))) return reject(`family label: P at alpha ${fromAlpha} is ${back.P}, file says ${P0}`);
+  console.log(`${name} N=${N}: zero winding between alpha ${aLo} and ${aHi}: certified (family alpha ${fromAlpha} reproduced)`);
+  thresholds.push({ N, fromAlpha, positiveAlpha: aLo, zeroAlpha: aHi, width: aHi - aLo, machine: data.machine || 'unlabelled', commit: data.commit });
+}
+
+function thresholdTable(board) {
+  const rows = (board.thresholds || []).map(t => `| ${t.fromAlpha} | ${t.N} | ${t.positiveAlpha.toFixed(6)} | ${t.zeroAlpha.toFixed(6)} |`);
+  return ['| Family grown at α | N | Last α with P > 0 (certified) | First α with P = 0 (certified) |', '|---:|---:|---:|---:|', ...rows].join('\n');
 }
 
 // ---------- controls: each must be able to fail ----------
@@ -640,7 +814,7 @@ function controls() {
   for (const alpha of [-0.5, 0, 1, 2]) {
     const mdl = model(3, alpha), beta = 1 + alpha / 2, u = rng('controls/three/' + alpha); let worst = 0, lowest = Infinity, samples = 0;
     for (let t = 0; t < 60 && samples < 12; t++) {
-      const x0 = Float64Array.from({ length: mdl.n }, () => gauss(u)), pr = project(mdl, x0, 200);
+      const x0 = Float64Array.from({ length: mdl.n }, () => gauss(u)), pr = project(mdl, x0, 200, false);
       if (pr.feasibility > 1e-12 || degenerate(mdl, pr.x)) continue;
       const { z } = mdl.unpack(pr.x), side = (i, j) => Math.hypot(z[i][0] - z[j][0], z[i][1] - z[j][1]), r = [side(1, 2), side(2, 0), side(0, 1)];
       const A = Math.abs((z[1][0] - z[0][0]) * (z[2][1] - z[0][1]) - (z[2][0] - z[0][0]) * (z[1][1] - z[0][1])) / 2;
@@ -691,9 +865,24 @@ function controls() {
   report.passed = true;
   return report;
 }
+// Controls that need worker threads or take a few seconds; awaited separately by the CLI.
+async function asyncControls(report) {
+  // 6. Threads change speed, never results: the same seed block on one and on three threads has one digest.
+  { const one = [], three = [], seeds = [0, 1, 2, 3, 4, 5], spec = { kind: 'search', alpha: 1, N: 4 };
+    await mapSeeds(spec, seeds, 1, r => one.push(r)); await mapSeeds(spec, seeds, 3, r => three.push(r));
+    const order = rs => rs.slice().sort((a, b) => a.seed - b.seed), d1 = digest(order(one)), d3 = digest(order(three));
+    assert.equal(d1, d3, 'thread count changed the results'); report.threads = { digest: d1 }; }
+  // 7. Continuation brackets the zero-winding threshold of a recorded SQG branch, both sides certified.
+  { const f = path.join(root, 'experiments/results/vortex-collapse/vortex-grow-a1-n12-s0-c10.json');
+    if (fs.existsSync(f)) { const log = console.log; console.log = () => {}; let t;
+      try { t = (await continueAlpha({ from: f, to: 2.5, step: 0.1, tol: 1e-3, out: path.join(require('node:os').tmpdir(), 'vortex-threshold-control-' + process.pid + '.json') })).threshold; } finally { console.log = log; }
+      assert(t && t.certified && t.width <= 1e-3 + 1e-12 && t.zero.P < ZERO_WINDING && t.positive.P > 0, 'continuation did not bracket a certified threshold');
+      report.threshold = { N: 12, positiveAlpha: t.positive.alpha, zeroAlpha: t.zero.alpha }; } }
+  return report;
+}
 
 function parse(argv) {
-  const o = { alpha: 0, N: 4, start: 0, count: 10 };
+  const o = { alpha: 0, N: 4, start: 0, count: 10, threads: 1 };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--controls') o.controls = true;
@@ -701,24 +890,35 @@ function parse(argv) {
     else if (a === '--verify') { o.verify = argv.slice(i + 1).filter(f => !f.startsWith('--')); o.write = argv.includes('--write'); o.strict = argv.includes('--strict'); break; }
     else if (a === '--refresh') o.refresh = true;
     else if (a === '--grow') o.grow = true;
+    else if (a === '--continue') o.continue = true;
     else if (a === '--compact') { o.compact = argv.slice(i + 1); break; }
-    else if (['--alpha', '--n', '--start', '--count', '--out', '--from'].includes(a) && argv[i + 1] !== undefined) { const v = argv[++i]; if (a === '--out' || a === '--from') o[a.slice(2)] = path.resolve(v); else o[{ '--alpha': 'alpha', '--n': 'N', '--start': 'start', '--count': 'count' }[a]] = Number(v); }
+    else if (['--alpha', '--n', '--start', '--count', '--out', '--from', '--threads', '--to', '--step', '--tol'].includes(a) && argv[i + 1] !== undefined) { const v = argv[++i]; if (a === '--out' || a === '--from') o[a.slice(2)] = path.resolve(v); else o[{ '--alpha': 'alpha', '--n': 'N', '--start': 'start', '--count': 'count', '--threads': 'threads', '--to': 'to', '--step': 'step', '--tol': 'tol' }[a]] = Number(v); }
     else throw Error('Unknown option ' + a);
+  }
+  if (!(Number.isInteger(o.threads) && o.threads >= 1 && o.threads <= 256)) throw Error('--threads must be an integer from 1 to 256.');
+  if (o.continue) {
+    if (!o.from && !(Number.isFinite(o.alpha) && Number.isInteger(o.N))) throw Error('--continue needs --from file.json, or --alpha and --n of a leaderboard entry.');
+    if (!(Number.isFinite(o.to) && o.to > -2 && o.to <= 3)) throw Error('--to must lie in (-2, 3].');
+    if (o.step !== undefined && !(o.step > 0 && o.step <= 0.5)) throw Error('--step must lie in (0, 0.5].');
+    if (o.tol !== undefined && !(o.tol >= 1e-8 && o.tol <= 0.1)) throw Error('--tol must lie in [1e-8, 0.1].');
+    return o;
   }
   if (!o.controls && !o.verify && !o.refresh && !o.compact) {
     if (!(Number.isFinite(o.alpha) && o.alpha > -2 && o.alpha <= 3)) throw Error('--alpha must lie in (-2, 3].');
-    if (!(Number.isInteger(o.N) && o.N >= 3 && o.N <= (o.grow ? 64 : 16))) throw Error(o.grow ? '--n must be an integer up to 64.' : '--n must be an integer from 3 to 16.');
+    if (!(Number.isInteger(o.N) && o.N >= 3 && o.N <= (o.grow ? 128 : 16))) throw Error(o.grow ? '--n must be an integer up to 128.' : '--n must be an integer from 3 to 16.');
     if (!(Number.isInteger(o.start) && o.start >= 0 && o.start < 2 ** 31) || !(Number.isInteger(o.count) && o.count >= 1 && o.count <= 1e6)) throw Error('--start and --count must be non-negative integers.');
   }
   return o;
 }
-module.exports = { PROTOCOL, REFERENCE, growSeed, compact, sources, model, project, minimize, certify, stability, eigenvalues, secondOrder, searchSeed, fromConfig, distinct, verifyFiles, controls, infimum3 };
-if (require.main === module) {
+module.exports = { PROTOCOL, REFERENCE, growSeed, runSeed, mapSeeds, continueAlpha, verifyThreshold, compact, sources, model, project, minimize, certify, stability, eigenvalues, secondOrder, searchSeed, fromConfig, distinct, verifyFiles, controls, infimum3 };
+if (!isMainThread && workerData?.vortexWorker) parentPort.on('message', seed => parentPort.postMessage(runSeed(workerData.spec, seed)));
+else if (require.main === module) {
   const o = parse(process.argv.slice(2));
-  if (o.controls) console.log(JSON.stringify(controls(), null, 1));
+  if (o.controls) asyncControls(controls()).then(r => console.log(JSON.stringify(r, null, 1))).catch(e => { console.error(e.stack || e.message); process.exitCode = 1; });
   else if (o.verify) { const b = verifyFiles(o.verify, o.write); if (o.strict && b.rejected.length) { console.error('Rejected: ' + JSON.stringify(b.rejected)); process.exitCode = 1; } }
   else if (o.refresh) refresh();
   else if (o.compact) { const [from, to] = o.compact; fs.mkdirSync(path.dirname(path.resolve(to)), { recursive: true }); fs.writeFileSync(to, JSON.stringify(compact(JSON.parse(fs.readFileSync(from, 'utf8'))), null, 1) + '\n'); }
-  else if (o.grow) grow(o);
-  else run(o);
+  else if (o.continue) continueAlpha(o).catch(e => { console.error(e.message); process.exitCode = 1; });
+  else if (o.grow) grow(o).catch(e => { console.error(e.message); process.exitCode = 1; });
+  else run(o).catch(e => { console.error(e.message); process.exitCode = 1; });
 }

@@ -6,7 +6,7 @@ const storage = {
   get(key) { try { return localStorage.getItem(key); } catch { return null; } },
   set(key, value) { try { localStorage.setItem(key, value); } catch { /* Session controls still work. */ } }
 };
-const fieldIds = ['mode', 'technique', 'slug', 'order', 'samples', 'gpu-grid', 'gpu-steps', 'vortex-alpha', 'vortex-n', 'vortex-seeds', 'vortex-start',
+const fieldIds = ['mode', 'technique', 'slug', 'order', 'samples', 'gpu-grid', 'gpu-steps', 'vortex-alpha', 'vortex-n', 'vortex-seeds', 'vortex-start', 'vortex-threads', 'vortex-to',
   'art-id', 'art-recipe', 'art-parents', 'art-steps', 'art-grid', 'art-samples', 'art-start', 'art-keep', 'art-inches', 'art-ppi', 'art-budget'];
 // Which art settings each art job uses. The runner and the command allowlist check every value again.
 const ART_FIELDS = { 'art-id': ['art-hunt'], 'art-recipe': ['art-hunt', 'art-deep'], 'art-parents': ['art-evolve'], 'art-steps': ['art-deep'], 'art-grid': ['art-deep'],
@@ -53,7 +53,10 @@ function modeFields() {
   $('technique-field').hidden = workspace !== 'validate' || !['technique', 'plate', 'print', 'witness'].includes($('mode').value);
   for (const id of ['slug-field', 'order-field', 'samples-field']) $(id).hidden = !derive;
   for(const id of ['grid-field','steps-field'])$(id).hidden=workspace!=='contribute'||$('mode').value!=='metal';
-  for(const id of ['vortex-alpha-field','vortex-n-field','vortex-seeds-field','vortex-start-field'])$(id).hidden=workspace!=='contribute'||!['vortex-collapse','vortex-grow'].includes($('mode').value);
+  const vm=workspace==='contribute'?$('mode').value:'';
+  for(const id of ['vortex-alpha-field','vortex-n-field'])$(id).hidden=!['vortex-collapse','vortex-grow','vortex-threshold'].includes(vm);
+  for(const id of ['vortex-seeds-field','vortex-start-field','vortex-threads-field'])$(id).hidden=!['vortex-collapse','vortex-grow'].includes(vm);
+  $('vortex-to-field').hidden=vm!=='vortex-threshold';
   for (const [id, modes] of Object.entries(ART_FIELDS)) $(id + '-field').hidden = workspace !== 'contribute' || !modes.includes($('mode').value);
   $('art-recipe').required = $('mode').value === 'art-deep'; $('art-parents').required = $('mode').value === 'art-evolve';
   $('art-samples').max = $('mode').value === 'art-evolve' ? '200' : '5000';
@@ -71,7 +74,7 @@ function choose(value) {
   $('workspace-title').textContent = value === 'validate' ? 'Check simulations' : 'Run experiments';
   $('workspace-description').textContent = value === 'validate' ? "Compare existing simulations with registered benchmarks and check their exports. Each result names its tested scope." : 'Explore formula candidates, parameter searches and experimental GPU workloads. Candidate formulas still need review.';
   $('contribute-note').hidden = value !== 'contribute';
-  const modes = value === 'validate' ? config.modes : { 'vortex-collapse': ['Open problem: least-winding vortex collapse'], 'vortex-grow': ['Open problem: grow the deepest vortex family'], derive: ['Derive candidate: existing polygon family'], metal: ['Apple GPU wave: verify, compute and checkpoint'],
+  const modes = value === 'validate' ? config.modes : { 'vortex-collapse': ['Open problem: least-winding vortex collapse'], 'vortex-grow': ['Open problem: grow the deepest vortex family'], 'vortex-threshold': ['Open problem: zero-winding threshold in alpha'], derive: ['Derive candidate: existing polygon family'], metal: ['Apple GPU wave: verify, compute and checkpoint'],
     'art-hunt': ['Art: seed hunt for print-sharp plates'], 'art-deep': ['Art: deep render of one recipe'], 'art-evolve': ['Art: evolve children from parent recipes'], ...config.experiments };
   $('mode').replaceChildren(...Object.entries(modes).map(([key, values]) => new Option(values[0], key)));
   $('mode').value = value === 'validate' ? 'all' : 'derive';
@@ -89,7 +92,7 @@ function paint() {
   if (active && j && syncedJob !== j.id) {
     syncedJob=j.id;choose(j.input.workspace || 'validate');$('mode').value=j.input.mode;
     const art=String(j.input.mode).startsWith('art-');
-    const fields=art?ART_INPUT:['vortex-collapse','vortex-grow'].includes(j.input.mode)?{alpha:'vortex-alpha',n:'vortex-n',samples:'vortex-seeds',start:'vortex-start'}:{id:'technique',slug:'slug',n:'order',samples:'samples',grid:'gpu-grid',steps:'gpu-steps'};
+    const fields=art?ART_INPUT:['vortex-collapse','vortex-grow','vortex-threshold'].includes(j.input.mode)?{alpha:'vortex-alpha',n:'vortex-n',samples:'vortex-seeds',start:'vortex-start',threads:'vortex-threads',to:'vortex-to'}:{id:'technique',slug:'slug',n:'order',samples:'samples',grid:'gpu-grid',steps:'gpu-steps'};
     for(const [key,id] of Object.entries(fields))if(j.input[key]!==undefined)$(id).value=String(j.input[key]);
     if(art&&Array.isArray(j.input.parents))$('art-parents').value=j.input.parents.join('\n');
     $('machine-slug').value=j.input.machineSlug || 'm1pro';$('share-auto').checked=!!j.input.shareAutomatically;restorePower(j.power || j.input.power);modeFields();
@@ -140,7 +143,7 @@ async function action(name) {
   }
   busy = true; $('error').textContent = ''; if (state) paint();
   try {
-    const input = name === 'start' ? { workspace, shareAutomatically: $('share-auto').checked, machineSlug: $('machine-slug').value, mode: $('mode').value, power: powerSettings(), ...(workspace === 'validate' ? (['technique','plate','print','witness'].includes($('mode').value) ? { id: $('technique').value } : {}) : $('mode').value === 'derive' ? { slug: $('slug').value, n: Number($('order').value), samples: Number($('samples').value) } : $('mode').value==='metal'?{grid:Number($('gpu-grid').value),steps:Number($('gpu-steps').value)}:$('mode').value.startsWith('art-')?artInput($('mode').value):['vortex-collapse','vortex-grow'].includes($('mode').value)?{alpha:Number($('vortex-alpha').value),n:Number($('vortex-n').value),samples:Number($('vortex-seeds').value),...($('vortex-start').value===''?{}:{start:Number($('vortex-start').value)})}:{}) } : {};
+    const input = name === 'start' ? { workspace, shareAutomatically: $('share-auto').checked, machineSlug: $('machine-slug').value, mode: $('mode').value, power: powerSettings(), ...(workspace === 'validate' ? (['technique','plate','print','witness'].includes($('mode').value) ? { id: $('technique').value } : {}) : $('mode').value === 'derive' ? { slug: $('slug').value, n: Number($('order').value), samples: Number($('samples').value) } : $('mode').value==='metal'?{grid:Number($('gpu-grid').value),steps:Number($('gpu-steps').value)}:$('mode').value.startsWith('art-')?artInput($('mode').value):$('mode').value==='vortex-threshold'?{alpha:Number($('vortex-alpha').value),n:Number($('vortex-n').value),to:Number($('vortex-to').value)}:['vortex-collapse','vortex-grow'].includes($('mode').value)?{alpha:Number($('vortex-alpha').value),n:Number($('vortex-n').value),samples:Number($('vortex-seeds').value),threads:Number($('vortex-threads').value),...($('vortex-start').value===''?{}:{start:Number($('vortex-start').value)})}:{}) } : {};
     state = await api('/api/' + name, input);
   } catch (e) { $('error').textContent = e.message; }
   finally { busy = false; if (state) paint(); }
