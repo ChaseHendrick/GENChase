@@ -22,7 +22,9 @@ const assert=require('node:assert/strict'),path=require('node:path'),{chromium,w
    await page.locator('.module-open').first().focus();await page.keyboard.press('s');await page.keyboard.press('e');await page.keyboard.press('f');
    assert.equal(await page.evaluate(()=>JSON.stringify(Studio.getRecipe())),dialogRecipe,'shortcuts cannot change art behind a modal');
    assert.equal(await page.locator('#module-browser[open]').count(),1);
-   await page.keyboard.press('Escape');assert.equal(await page.evaluate(()=>document.activeElement.id),'browse-modules');
+   // The app refocuses the opener from the dialog's close event, which the browser queues after the dialog shuts, so an immediate read can land before it runs.
+   await page.keyboard.press('Escape');await page.waitForFunction(()=>document.activeElement&&document.activeElement.id==='browse-modules',null,{timeout:2000}).catch(e=>{if(e.name!=='TimeoutError')throw e;});
+   assert.equal(await page.evaluate(()=>document.activeElement.id),'browse-modules');
    await page.click('#btn-colophon-edit');await page.check('#colo-enabled');await page.click('#colo-close');
    await page.waitForTimeout(200);
    const before=await page.evaluate(()=>{const line=document.querySelector('#colo-preview [data-part]'),a=line.getBoundingClientRect(),c=document.querySelector('canvas.art:not([hidden])').getBoundingClientRect();return {textHeight:a.height,artWidth:c.width,recipe:JSON.stringify(Studio.getRecipe())};});
