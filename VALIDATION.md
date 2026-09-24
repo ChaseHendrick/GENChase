@@ -12,139 +12,140 @@ It does not run the recorded commands or judge their scientific adequacy. Numeri
 also run successfully and receive scientific review; fingerprints do not validate mathematics.
 Runtime, determinism and print sharpness checks are separate from scientific accuracy.
 Complete labels apply only within each record's reviewed domain.
+No record has an outside review yet; every review so far was done inside the project. See [docs/REVIEWING.md](docs/REVIEWING.md).
 
-| Technique / source | Scientific status | Numerical test | Print accuracy |
-|---|---|---|---|
-| [life](src/modules/life.js) | unvalidated | None registered | Not scientifically validated |
-| [physarum3d](src/modules/physarum3d.js) | unvalidated | None registered | Not scientifically validated |
-| [cortex](src/modules/cortex.js) | unvalidated | None registered | Not scientifically validated |
-| [bec](src/modules/bec.js) | partially validated | [bec-science.js](tools/bec-science.js) | Limited evidence recorded |
-| [physarum](src/modules/physarum.js) | unvalidated | None registered | Not scientifically validated |
-| [phyllotaxis](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | validated within stated limits | [phyllotaxis-review.js](tools/phyllotaxis-review.js) | Limited evidence recorded |
-| [hl](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
-| [lichtenberg](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
-| [snowflake](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
-| [growth](src/modules/growth.js) | unvalidated | None registered | Not scientifically validated |
-| [cyclic](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded |
-| [landscape](src/modules/landscape.js) | unvalidated | None registered | Not scientifically validated |
-| [kpz](src/modules/kpz.js) | partially validated | [kpz-science.js](tools/kpz-science.js) | Not scientifically validated |
-| [potts](src/modules/potts.js) | unvalidated | None registered | Not scientifically validated |
-| [liesegang](src/modules/liesegang.js) | unvalidated | None registered | Not scientifically validated |
-| [grains](src/modules/grains.js) | unvalidated | None registered | Not scientifically validated |
-| [skyrmion](src/modules/skyrmion.js) | unvalidated | None registered | Not scientifically validated |
-| [tonertu](src/modules/tonertu.js) | unvalidated | None registered | Not scientifically validated |
-| [hyperbolic](src/modules/hyperbolic.js) | unvalidated | None registered | Not scientifically validated |
-| [sle](src/modules/sle.js) | unvalidated | None registered | Not scientifically validated |
-| [fractal](src/modules/fractal.js) | unvalidated | None registered | Not scientifically validated |
-| [lens](src/modules/lens.js) | unvalidated | None registered | Not scientifically validated |
-| [rotor](src/modules/sandpile.js) | unvalidated | None registered | Not scientifically validated |
-| [web](src/modules/web.js) | unvalidated | None registered | Not scientifically validated |
-| [faraday](src/modules/faraday.js) | unvalidated | None registered | Not scientifically validated |
-| [film](src/modules/film.js) | unvalidated | None registered | Not scientifically validated |
-| [timecrystal](src/modules/timecrystal.js) | unvalidated | None registered | Not scientifically validated |
-| [growdomain](src/modules/growdomain.js) | unvalidated | None registered | Not scientifically validated |
-| [spinice](src/modules/spinice.js) | unvalidated | None registered | Not scientifically validated |
-| [vegetation](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded |
-| [aztec](src/modules/aztec.js) | unvalidated | None registered | Not scientifically validated |
-| [skin](src/modules/skin.js) | unvalidated | None registered | Not scientifically validated |
-| [rmt](src/modules/rmt.js) | unvalidated | None registered | Not scientifically validated |
-| [stealth](src/modules/stealth.js) | unvalidated | None registered | Not scientifically validated |
-| [lozenge](src/modules/lozenge.js) | unvalidated | None registered | Not scientifically validated |
-| [arago](src/modules/arago.js) | unvalidated | None registered | Not scientifically validated |
-| [ust](src/modules/ust.js) | validated within stated limits | [ust-review.js](tools/ust-review.js) | Limited evidence recorded |
-| [cppn](src/modules/cppn.js) | unvalidated | None registered | Not scientifically validated |
-| [rogue](src/modules/rogue.js) | validated within stated limits | [analytic-wave-science.js](tools/analytic-wave-science.js), [analytic-field-review.js](tools/analytic-field-review.js) | Limited evidence recorded |
-| [aharonov](src/modules/aharonov.js) | unvalidated | None registered | Not scientifically validated |
-| [pendulum](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated |
-| [anderson](src/modules/anderson.js) | unvalidated | None registered | Not scientifically validated |
-| [fput](src/modules/fput.js) | validated within stated limits | [chain-science.js](tools/chain-science.js), [fput-field-review.js](tools/fput-field-review.js) | Limited evidence recorded |
-| [schrodinger](src/modules/wavesflow.js) | validated within stated limits | [schrodinger-science.js](tools/schrodinger-science.js), [schrodinger-state.js](tools/schrodinger-state.js), [schrodinger-absorber-science.js](tools/schrodinger-absorber-science.js) | Limited evidence recorded |
-| [excitable](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded |
-| [soliton](src/modules/soliton.js) | validated within stated limits | [analytic-wave-science.js](tools/analytic-wave-science.js), [analytic-field-review.js](tools/analytic-field-review.js) | Limited evidence recorded |
-| [cyclicca](src/modules/lattice.js) | unvalidated | None registered | Not scientifically validated |
-| [chimera](src/modules/chimera.js) | unvalidated | None registered | Not scientifically validated |
-| [ssh](src/modules/ssh.js) | unvalidated | [ssh-science.js](tools/ssh-science.js) | Not scientifically validated |
-| [swarm](src/modules/swarm.js) | unvalidated | None registered | Not scientifically validated |
-| [amb](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded |
-| [aubry](src/modules/aubry.js) | unvalidated | None registered | Not scientifically validated |
-| [cahn](src/modules/pde.js) | validated within stated limits | [pde-science.js](tools/pde-science.js), [pde-convergence.js](tools/pde-convergence.js), [pde-stability.js](tools/pde-stability.js), [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded |
-| [ohta](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded |
-| [hopf](src/modules/hopf.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [geometry-field-review.js](tools/geometry-field-review.js) | Limited evidence recorded |
-| [swift](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded |
-| [pfc](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded |
-| [lp](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
-| [cloak](src/modules/cloak.js) | unvalidated | None registered | Not scientifically validated |
-| [xy](src/modules/xy.js) | unvalidated | None registered | Not scientifically validated |
-| [cgl](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | validated within stated limits | [cgl-field-review.js](tools/cgl-field-review.js) | Limited evidence recorded |
-| [vortex](src/modules/vortex.js) | validated within stated limits | [vortex-field-review.js](tools/vortex-field-review.js) | Limited evidence recorded |
-| [nematic](src/modules/nematic.js) | unvalidated | None registered | Not scientifically validated |
-| [darkroom](src/modules/darkroom.js) | unvalidated | None registered | Not scientifically validated |
-| [fluid](src/modules/fluid.js) | unvalidated | None registered | Not scientifically validated |
-| [sandpile](src/modules/lattice.js) | unvalidated | None registered | Not scientifically validated |
-| [kakeya](src/modules/kakeya.js) | unvalidated | None registered | Not scientifically validated |
-| [ks](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded |
-| [breather](src/modules/breather.js) | validated within stated limits | [breather-science.js](tools/breather-science.js), [analytic-field-review.js](tools/analytic-field-review.js) | Limited evidence recorded |
-| [turing](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded |
-| [holomorphic](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated |
-| [klein](src/modules/klein.js) | unvalidated | None registered | Not scientifically validated |
-| [gyroid](src/modules/gyroid.js) | validated within stated limits | [periodic-field-review.js](tools/periodic-field-review.js) | Limited evidence recorded |
-| [dendrite](src/modules/dendrite.js) | unvalidated | None registered | Not scientifically validated |
-| [purcell](src/modules/purcell.js) | unvalidated | None registered | Not scientifically validated |
-| [exceptional](src/modules/exceptional.js) | unvalidated | None registered | Not scientifically validated |
-| [meissner](src/modules/meissner.js) | unvalidated | None registered | Not scientifically validated |
-| [tennis](src/modules/tennis.js) | partially validated | [rigid-body-audit.js](tools/rigid-body-audit.js) | Not scientifically validated |
-| [flow](src/modules/flow.js) | unvalidated | None registered | Not scientifically validated |
-| [chemotaxis](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded |
-| [smectic](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
-| [reaction](src/modules/reaction.js) | unvalidated | None registered | Not scientifically validated |
-| [tilings](src/modules/tilings.js) | unvalidated | None registered | Not scientifically validated |
-| [percolation](src/modules/lattice.js) | unvalidated | None registered | Not scientifically validated |
-| [attractors](src/modules/attractors.js) | unvalidated | None registered | Not scientifically validated |
-| [airy](src/modules/airy.js) | unvalidated | None registered | Not scientifically validated |
-| [chirikov](src/modules/swarm.js) | unvalidated | None registered | Not scientifically validated |
-| [hofstadter](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
-| [weierstrass](src/modules/weierstrass.js) | validated within stated limits | [geometry-field-review.js](tools/geometry-field-review.js) | Limited evidence recorded |
-| [scars](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
-| [kitaev](src/modules/kitaev.js) | unvalidated | None registered | Not scientifically validated |
-| [caustics](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
-| [veselago](src/modules/veselago.js) | unvalidated | None registered | Not scientifically validated |
-| [devil](src/modules/devil.js) | validated within stated limits | [periodic-field-review.js](tools/periodic-field-review.js) | Limited evidence recorded |
-| [talbot](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
-| [orbitals](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated |
-| [loschmidt](src/modules/loschmidt.js) | unvalidated | None registered | Not scientifically validated |
-| [boy](src/modules/boy.js) | unvalidated | None registered | Not scientifically validated |
-| [pearls](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated |
-| [ising](src/modules/lattice.js) | unvalidated | None registered | Not scientifically validated |
-| [thouless](src/modules/thouless.js) | unvalidated | None registered | Not scientifically validated |
-| [convection](src/modules/wavesflow.js) | validated within stated limits | [convection-science.js](tools/convection-science.js), [convection-coupled-science.js](tools/convection-coupled-science.js) | Limited evidence recorded |
-| [reuleaux](src/modules/reuleaux.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [reuleaux-science.js](tools/reuleaux-science.js) | Limited evidence recorded |
-| [apollonian](src/modules/apollonian.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [geometry-field-review.js](tools/geometry-field-review.js) | Limited evidence recorded |
-| [chladni](src/modules/chladni.js) | validated within stated limits | [material-wave-science.js](tools/material-wave-science.js) | Limited evidence recorded |
-| [track](src/modules/track.js) | unvalidated | None registered | Not scientifically validated |
-| [knotlight](src/modules/knotlight.js) | unvalidated | None registered | Not scientifically validated |
-| [causticsea](src/modules/causticsea.js) | unvalidated | None registered | Not scientifically validated |
-| [kp](src/modules/kp.js) | unvalidated | None registered | Not scientifically validated |
-| [gerstner](src/modules/gerstner.js) | validated within stated limits | [material-wave-science.js](tools/material-wave-science.js) | Limited evidence recorded |
-| [eight](src/modules/eight.js) | validated within stated limits | [orbit-science.js](tools/orbit-science.js) | Limited evidence recorded |
-| [peakon](src/modules/peakon.js) | validated within stated limits | [peakon-science.js](tools/peakon-science.js), [peakon-field-review.js](tools/peakon-field-review.js) | Limited evidence recorded |
-| [photon](src/modules/photon.js) | validated within stated limits | [orbit-science.js](tools/orbit-science.js) | Limited evidence recorded |
-| [crapper](src/modules/crapper.js) | unvalidated | None registered | Not scientifically validated |
-| [hasimoto](src/modules/hasimoto.js) | validated within stated limits | [material-wave-science.js](tools/material-wave-science.js) | Limited evidence recorded |
-| [lump](src/modules/lump.js) | validated within stated limits | [lump-science.js](tools/lump-science.js), [lump-field-review.js](tools/lump-field-review.js) | Limited evidence recorded |
-| [three-vortex-bound](src/modules/three-vortex-bound.js) | validated within stated limits | [vortex-family-review.js](tools/vortex-family-review.js) | Limited evidence recorded |
-| [parallelogram-lock](src/modules/parallelogram-lock.js) | validated within stated limits | [vortex-family-review.js](tools/vortex-family-review.js) | Limited evidence recorded |
-| [quincunx-lock](src/modules/quincunx-lock.js) | validated within stated limits | [vortex-family-review.js](tools/vortex-family-review.js) | Limited evidence recorded |
-| [double-triangle-bound](src/modules/double-triangle-bound.js) | validated within stated limits | [double-triangle-check.js](tools/double-triangle-check.js), [polygon-collapse-check.js](tools/polygon-collapse-check.js), [polygon-review.js](tools/polygon-review.js) | Limited evidence recorded |
-| [maxwell](src/modules/maxwell.js) | validated within stated limits | [maxwell-science.js](tools/maxwell-science.js), [maxwell-dielectric-science.js](tools/maxwell-dielectric-science.js) | Limited evidence recorded |
-| [molecular](src/modules/molecular.js) | validated within stated limits | [molecular-science.js](tools/molecular-science.js), [molecular-equilibration-science.js](tools/molecular-equilibration-science.js) | Limited evidence recorded |
-| [surfaces](src/modules/surfaces.js) | validated within stated limits | [surfaces-science.js](tools/surfaces-science.js) | Limited evidence recorded |
-| [plasma](src/modules/plasma.js) | validated within stated limits | [plasma-science.js](tools/plasma-science.js), [plasma-landau-science.js](tools/plasma-landau-science.js) | Limited evidence recorded |
-| [shallow](src/modules/shallow.js) | validated within stated limits | [shallow-science.js](tools/shallow-science.js), [shallow-resolution-science.js](tools/shallow-resolution-science.js) | Limited evidence recorded |
-| [nonreciprocal](src/modules/nonreciprocal.js) | validated within stated limits | [nonreciprocal-science.js](tools/nonreciprocal-science.js), [nonreciprocal-longrun-science.js](tools/nonreciprocal-longrun-science.js) | Limited evidence recorded |
-| [hodgkin-huxley](src/modules/hodgkin-huxley.js) | validated within stated limits | [hodgkin-huxley-science.js](tools/hodgkin-huxley-science.js), [hodgkin-huxley-duration-science.js](tools/hodgkin-huxley-duration-science.js) | Limited evidence recorded |
-| [neural-mass](src/modules/neural-mass.js) | validated within stated limits | [neural-mass-science.js](tools/neural-mass-science.js), [neural-mass-print.js](tools/neural-mass-print.js) | Limited evidence recorded |
-| [volume-wave](src/modules/volume-wave.js) | validated within stated limits | [volume-wave-science.js](tools/volume-wave-science.js), [volume-wave-dispersion-science.js](tools/volume-wave-dispersion-science.js) | Limited evidence recorded |
-| [direct-gravity](src/modules/direct-gravity.js) | validated within stated limits | [direct-gravity-science.js](tools/direct-gravity-science.js), [direct-gravity-largen-science.js](tools/direct-gravity-largen-science.js) | Limited evidence recorded |
+| Technique / source | Scientific status | Numerical test | Print accuracy | Outside review |
+|---|---|---|---|---|
+| [life](src/modules/life.js) | unvalidated | None registered | Not scientifically validated | none |
+| [physarum3d](src/modules/physarum3d.js) | unvalidated | None registered | Not scientifically validated | none |
+| [cortex](src/modules/cortex.js) | unvalidated | None registered | Not scientifically validated | none |
+| [bec](src/modules/bec.js) | partially validated | [bec-science.js](tools/bec-science.js) | Limited evidence recorded | none |
+| [physarum](src/modules/physarum.js) | unvalidated | None registered | Not scientifically validated | none |
+| [phyllotaxis](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | validated within stated limits | [phyllotaxis-review.js](tools/phyllotaxis-review.js) | Limited evidence recorded | none |
+| [hl](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
+| [lichtenberg](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
+| [snowflake](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
+| [growth](src/modules/growth.js) | unvalidated | None registered | Not scientifically validated | none |
+| [cyclic](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded | none |
+| [landscape](src/modules/landscape.js) | unvalidated | None registered | Not scientifically validated | none |
+| [kpz](src/modules/kpz.js) | partially validated | [kpz-science.js](tools/kpz-science.js) | Not scientifically validated | none |
+| [potts](src/modules/potts.js) | unvalidated | None registered | Not scientifically validated | none |
+| [liesegang](src/modules/liesegang.js) | unvalidated | None registered | Not scientifically validated | none |
+| [grains](src/modules/grains.js) | unvalidated | None registered | Not scientifically validated | none |
+| [skyrmion](src/modules/skyrmion.js) | unvalidated | None registered | Not scientifically validated | none |
+| [tonertu](src/modules/tonertu.js) | unvalidated | None registered | Not scientifically validated | none |
+| [hyperbolic](src/modules/hyperbolic.js) | unvalidated | None registered | Not scientifically validated | none |
+| [sle](src/modules/sle.js) | unvalidated | None registered | Not scientifically validated | none |
+| [fractal](src/modules/fractal.js) | unvalidated | None registered | Not scientifically validated | none |
+| [lens](src/modules/lens.js) | unvalidated | None registered | Not scientifically validated | none |
+| [rotor](src/modules/sandpile.js) | unvalidated | None registered | Not scientifically validated | none |
+| [web](src/modules/web.js) | unvalidated | None registered | Not scientifically validated | none |
+| [faraday](src/modules/faraday.js) | unvalidated | None registered | Not scientifically validated | none |
+| [film](src/modules/film.js) | unvalidated | None registered | Not scientifically validated | none |
+| [timecrystal](src/modules/timecrystal.js) | unvalidated | None registered | Not scientifically validated | none |
+| [growdomain](src/modules/growdomain.js) | unvalidated | None registered | Not scientifically validated | none |
+| [spinice](src/modules/spinice.js) | unvalidated | None registered | Not scientifically validated | none |
+| [vegetation](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded | none |
+| [aztec](src/modules/aztec.js) | unvalidated | None registered | Not scientifically validated | none |
+| [skin](src/modules/skin.js) | unvalidated | None registered | Not scientifically validated | none |
+| [rmt](src/modules/rmt.js) | unvalidated | None registered | Not scientifically validated | none |
+| [stealth](src/modules/stealth.js) | unvalidated | None registered | Not scientifically validated | none |
+| [lozenge](src/modules/lozenge.js) | unvalidated | None registered | Not scientifically validated | none |
+| [arago](src/modules/arago.js) | unvalidated | None registered | Not scientifically validated | none |
+| [ust](src/modules/ust.js) | validated within stated limits | [ust-review.js](tools/ust-review.js) | Limited evidence recorded | none |
+| [cppn](src/modules/cppn.js) | unvalidated | None registered | Not scientifically validated | none |
+| [rogue](src/modules/rogue.js) | validated within stated limits | [analytic-wave-science.js](tools/analytic-wave-science.js), [analytic-field-review.js](tools/analytic-field-review.js) | Limited evidence recorded | none |
+| [aharonov](src/modules/aharonov.js) | unvalidated | None registered | Not scientifically validated | none |
+| [pendulum](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated | none |
+| [anderson](src/modules/anderson.js) | unvalidated | None registered | Not scientifically validated | none |
+| [fput](src/modules/fput.js) | validated within stated limits | [chain-science.js](tools/chain-science.js), [fput-field-review.js](tools/fput-field-review.js) | Limited evidence recorded | none |
+| [schrodinger](src/modules/wavesflow.js) | validated within stated limits | [schrodinger-science.js](tools/schrodinger-science.js), [schrodinger-state.js](tools/schrodinger-state.js), [schrodinger-absorber-science.js](tools/schrodinger-absorber-science.js) | Limited evidence recorded | none |
+| [excitable](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded | none |
+| [soliton](src/modules/soliton.js) | validated within stated limits | [analytic-wave-science.js](tools/analytic-wave-science.js), [analytic-field-review.js](tools/analytic-field-review.js) | Limited evidence recorded | none |
+| [cyclicca](src/modules/lattice.js) | unvalidated | None registered | Not scientifically validated | none |
+| [chimera](src/modules/chimera.js) | unvalidated | None registered | Not scientifically validated | none |
+| [ssh](src/modules/ssh.js) | unvalidated | [ssh-science.js](tools/ssh-science.js) | Not scientifically validated | none |
+| [swarm](src/modules/swarm.js) | unvalidated | None registered | Not scientifically validated | none |
+| [amb](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded | none |
+| [aubry](src/modules/aubry.js) | unvalidated | None registered | Not scientifically validated | none |
+| [cahn](src/modules/pde.js) | validated within stated limits | [pde-science.js](tools/pde-science.js), [pde-convergence.js](tools/pde-convergence.js), [pde-stability.js](tools/pde-stability.js), [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded | none |
+| [ohta](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded | none |
+| [hopf](src/modules/hopf.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [geometry-field-review.js](tools/geometry-field-review.js) | Limited evidence recorded | none |
+| [swift](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded | none |
+| [pfc](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded | none |
+| [lp](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
+| [cloak](src/modules/cloak.js) | unvalidated | None registered | Not scientifically validated | none |
+| [xy](src/modules/xy.js) | unvalidated | None registered | Not scientifically validated | none |
+| [cgl](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | validated within stated limits | [cgl-field-review.js](tools/cgl-field-review.js) | Limited evidence recorded | none |
+| [vortex](src/modules/vortex.js) | validated within stated limits | [vortex-field-review.js](tools/vortex-field-review.js) | Limited evidence recorded | none |
+| [nematic](src/modules/nematic.js) | unvalidated | None registered | Not scientifically validated | none |
+| [darkroom](src/modules/darkroom.js) | unvalidated | None registered | Not scientifically validated | none |
+| [fluid](src/modules/fluid.js) | unvalidated | None registered | Not scientifically validated | none |
+| [sandpile](src/modules/lattice.js) | unvalidated | None registered | Not scientifically validated | none |
+| [kakeya](src/modules/kakeya.js) | unvalidated | None registered | Not scientifically validated | none |
+| [ks](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded | none |
+| [breather](src/modules/breather.js) | validated within stated limits | [breather-science.js](tools/breather-science.js), [analytic-field-review.js](tools/analytic-field-review.js) | Limited evidence recorded | none |
+| [turing](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded | none |
+| [holomorphic](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated | none |
+| [klein](src/modules/klein.js) | unvalidated | None registered | Not scientifically validated | none |
+| [gyroid](src/modules/gyroid.js) | validated within stated limits | [periodic-field-review.js](tools/periodic-field-review.js) | Limited evidence recorded | none |
+| [dendrite](src/modules/dendrite.js) | unvalidated | None registered | Not scientifically validated | none |
+| [purcell](src/modules/purcell.js) | unvalidated | None registered | Not scientifically validated | none |
+| [exceptional](src/modules/exceptional.js) | unvalidated | None registered | Not scientifically validated | none |
+| [meissner](src/modules/meissner.js) | unvalidated | None registered | Not scientifically validated | none |
+| [tennis](src/modules/tennis.js) | partially validated | [rigid-body-audit.js](tools/rigid-body-audit.js) | Not scientifically validated | none |
+| [flow](src/modules/flow.js) | unvalidated | None registered | Not scientifically validated | none |
+| [chemotaxis](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded | none |
+| [smectic](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
+| [reaction](src/modules/reaction.js) | unvalidated | None registered | Not scientifically validated | none |
+| [tilings](src/modules/tilings.js) | unvalidated | None registered | Not scientifically validated | none |
+| [percolation](src/modules/lattice.js) | unvalidated | None registered | Not scientifically validated | none |
+| [attractors](src/modules/attractors.js) | unvalidated | None registered | Not scientifically validated | none |
+| [airy](src/modules/airy.js) | unvalidated | None registered | Not scientifically validated | none |
+| [chirikov](src/modules/swarm.js) | unvalidated | None registered | Not scientifically validated | none |
+| [hofstadter](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
+| [weierstrass](src/modules/weierstrass.js) | validated within stated limits | [geometry-field-review.js](tools/geometry-field-review.js) | Limited evidence recorded | none |
+| [scars](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
+| [kitaev](src/modules/kitaev.js) | unvalidated | None registered | Not scientifically validated | none |
+| [caustics](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
+| [veselago](src/modules/veselago.js) | unvalidated | None registered | Not scientifically validated | none |
+| [devil](src/modules/devil.js) | validated within stated limits | [periodic-field-review.js](tools/periodic-field-review.js) | Limited evidence recorded | none |
+| [talbot](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
+| [orbitals](src/modules/dynamics.js) | unvalidated | None registered | Not scientifically validated | none |
+| [loschmidt](src/modules/loschmidt.js) | unvalidated | None registered | Not scientifically validated | none |
+| [boy](src/modules/boy.js) | unvalidated | None registered | Not scientifically validated | none |
+| [pearls](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
+| [ising](src/modules/lattice.js) | unvalidated | None registered | Not scientifically validated | none |
+| [thouless](src/modules/thouless.js) | unvalidated | None registered | Not scientifically validated | none |
+| [convection](src/modules/wavesflow.js) | validated within stated limits | [convection-science.js](tools/convection-science.js), [convection-coupled-science.js](tools/convection-coupled-science.js) | Limited evidence recorded | none |
+| [reuleaux](src/modules/reuleaux.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [reuleaux-science.js](tools/reuleaux-science.js) | Limited evidence recorded | none |
+| [apollonian](src/modules/apollonian.js) | validated within stated limits | [geometry-science.js](tools/geometry-science.js), [geometry-field-review.js](tools/geometry-field-review.js) | Limited evidence recorded | none |
+| [chladni](src/modules/chladni.js) | validated within stated limits | [material-wave-science.js](tools/material-wave-science.js) | Limited evidence recorded | none |
+| [track](src/modules/track.js) | unvalidated | None registered | Not scientifically validated | none |
+| [knotlight](src/modules/knotlight.js) | unvalidated | None registered | Not scientifically validated | none |
+| [causticsea](src/modules/causticsea.js) | unvalidated | None registered | Not scientifically validated | none |
+| [kp](src/modules/kp.js) | unvalidated | None registered | Not scientifically validated | none |
+| [gerstner](src/modules/gerstner.js) | validated within stated limits | [material-wave-science.js](tools/material-wave-science.js) | Limited evidence recorded | none |
+| [eight](src/modules/eight.js) | validated within stated limits | [orbit-science.js](tools/orbit-science.js) | Limited evidence recorded | none |
+| [peakon](src/modules/peakon.js) | validated within stated limits | [peakon-science.js](tools/peakon-science.js), [peakon-field-review.js](tools/peakon-field-review.js) | Limited evidence recorded | none |
+| [photon](src/modules/photon.js) | validated within stated limits | [orbit-science.js](tools/orbit-science.js) | Limited evidence recorded | none |
+| [crapper](src/modules/crapper.js) | unvalidated | None registered | Not scientifically validated | none |
+| [hasimoto](src/modules/hasimoto.js) | validated within stated limits | [material-wave-science.js](tools/material-wave-science.js) | Limited evidence recorded | none |
+| [lump](src/modules/lump.js) | validated within stated limits | [lump-science.js](tools/lump-science.js), [lump-field-review.js](tools/lump-field-review.js) | Limited evidence recorded | none |
+| [three-vortex-bound](src/modules/three-vortex-bound.js) | validated within stated limits | [vortex-family-review.js](tools/vortex-family-review.js) | Limited evidence recorded | none |
+| [parallelogram-lock](src/modules/parallelogram-lock.js) | validated within stated limits | [vortex-family-review.js](tools/vortex-family-review.js) | Limited evidence recorded | none |
+| [quincunx-lock](src/modules/quincunx-lock.js) | validated within stated limits | [vortex-family-review.js](tools/vortex-family-review.js) | Limited evidence recorded | none |
+| [double-triangle-bound](src/modules/double-triangle-bound.js) | validated within stated limits | [double-triangle-check.js](tools/double-triangle-check.js), [polygon-collapse-check.js](tools/polygon-collapse-check.js), [polygon-review.js](tools/polygon-review.js) | Limited evidence recorded | none |
+| [maxwell](src/modules/maxwell.js) | validated within stated limits | [maxwell-science.js](tools/maxwell-science.js), [maxwell-dielectric-science.js](tools/maxwell-dielectric-science.js) | Limited evidence recorded | none |
+| [molecular](src/modules/molecular.js) | validated within stated limits | [molecular-science.js](tools/molecular-science.js), [molecular-equilibration-science.js](tools/molecular-equilibration-science.js) | Limited evidence recorded | none |
+| [surfaces](src/modules/surfaces.js) | validated within stated limits | [surfaces-science.js](tools/surfaces-science.js) | Limited evidence recorded | none |
+| [plasma](src/modules/plasma.js) | validated within stated limits | [plasma-science.js](tools/plasma-science.js), [plasma-landau-science.js](tools/plasma-landau-science.js) | Limited evidence recorded | none |
+| [shallow](src/modules/shallow.js) | validated within stated limits | [shallow-science.js](tools/shallow-science.js), [shallow-resolution-science.js](tools/shallow-resolution-science.js) | Limited evidence recorded | none |
+| [nonreciprocal](src/modules/nonreciprocal.js) | validated within stated limits | [nonreciprocal-science.js](tools/nonreciprocal-science.js), [nonreciprocal-longrun-science.js](tools/nonreciprocal-longrun-science.js) | Limited evidence recorded | none |
+| [hodgkin-huxley](src/modules/hodgkin-huxley.js) | validated within stated limits | [hodgkin-huxley-science.js](tools/hodgkin-huxley-science.js), [hodgkin-huxley-duration-science.js](tools/hodgkin-huxley-duration-science.js) | Limited evidence recorded | none |
+| [neural-mass](src/modules/neural-mass.js) | validated within stated limits | [neural-mass-science.js](tools/neural-mass-science.js), [neural-mass-print.js](tools/neural-mass-print.js) | Limited evidence recorded | none |
+| [volume-wave](src/modules/volume-wave.js) | validated within stated limits | [volume-wave-science.js](tools/volume-wave-science.js), [volume-wave-dispersion-science.js](tools/volume-wave-dispersion-science.js) | Limited evidence recorded | none |
+| [direct-gravity](src/modules/direct-gravity.js) | validated within stated limits | [direct-gravity-science.js](tools/direct-gravity-science.js), [direct-gravity-largen-science.js](tools/direct-gravity-largen-science.js) | Limited evidence recorded | none |
 
 ## Recorded limitations
 

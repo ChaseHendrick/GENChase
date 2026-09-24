@@ -1,6 +1,7 @@
 {
-  "title": "GENChase identities: Three-vortex collapse bound, the parallelogram lock, and the quincunx lock",
-  "description": "Project derivations of three closed forms and unique algebraic minima of the scale-invariant product ω₀ t_c on classical point-vortex collapse families. Three-vortex collapse bound (2026-09-19): ω₀ t_c ≥ √2 on Gröbli's Γ = (1, 1, −1/2) family. Parallelogram lock (2026-09-20): ω₀ t_c ≥ 3√5/4 on the Novikov–Sedov four-vortex parallelogram. Quincunx lock (2026-09-20): ω₀ t_c ≥ 3√33/16 on the Novikov–Sedov five-vortex quincunx. The motion is classical. Zero of the five audited candidates is confirmed historically original; the entries are not five independent discoveries. The first formula is a specialization and reparameterization of Gröbli’s 1877 spiral coefficient, as shown in identities/ORIGINALITY-FOLLOWUP.md. Priority of the optimized minima remains unconfirmed. The 2026-09-20 audit in identities/NOVELTY-AUDIT.md supersedes earlier first-discovery assertions. Dates record this project's statements, not established worldwide priority.",
+  "title": "GENChase: a studio of seeded scientific simulations, built for print",
+  "description": "GENChase is a browser studio of 130 techniques: seeded scientific simulations (partial differential equations, lattices, growth models, tilings and dynamical systems), each crediting the paper it implements, that export at physical print size. The studio is folder based, with one shared engine; a portable single-file HTML build is included. Every plate is deterministic from a seed, and the URL hash carries the recipe that reconstructs it. Exports are sized in inches at a chosen pixel resolution (PNG, PDF with an embedded ICC profile, TIFF, JPEG, and SVG where the picture is discrete marks), and each carries its provenance: the recipe link, a build fingerprint, the source file's SHA-256, the technique's validation status, its scientific witness, and the renderer and precision used. Selected techniques export their simulation state as NumPy arrays (.npz), and tools/run.js runs a recipe headlessly. Validation coverage differs by technique and is recorded, with its limits, in VALIDATION.md of each release; a validated label applies only within its recorded domain. Printed comparisons between a measured quantity and theory go through a shared uncertainty harness that refuses a comparison without a stated basis. Seeds do not guarantee identical pixels across solver revisions, hardware or simulation resolutions. The source is Apache-2.0; images a person generates belong to that person (OUTPUT-RIGHTS.md). The derived point-vortex bounds in IDENTITIES.md are a separate record, not this software.",
+  "notes": "If you use GENChase or a plate made with it, cite this software and also cite the researchers named in the technique's own credit line.",
   "creators": [
     {
       "name": "Chaos",
@@ -8,13 +9,16 @@
     }
   ],
   "keywords": [
-    "Three-vortex collapse bound",
-    "parallelogram lock",
-    "quincunx lock",
-    "point vortices",
-    "self-similar collapse",
-    "Gröbli",
-    "Novikov-Sedov"
+    "generative art",
+    "scientific visualization",
+    "simulation",
+    "reaction-diffusion",
+    "pattern formation",
+    "partial differential equations",
+    "WebGL",
+    "reproducibility",
+    "provenance",
+    "print"
   ],
   "related_identifiers": [
     {
@@ -24,8 +28,7 @@
       "scheme": "url"
     }
   ],
-  "upload_type": "publication",
-  "publication_type": "article",
-  "access_right": "open",
-  "communities": []
+  "upload_type": "software",
+  "license": "Apache-2.0",
+  "access_right": "open"
 }

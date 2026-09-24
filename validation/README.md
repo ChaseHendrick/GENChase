@@ -55,6 +55,14 @@ A reviewer must run the test, inspect the reference and failure control, and che
 limits match the results before promoting a status. Merely filling these fields cannot validate a
 formula. Never upgrade a status because an export looks good, syntax passes or a source is cited.
 
+An outside review is recorded on a record as an optional `reviewers` array. Each entry is an object with
+exactly `name`, `affiliation`, `date` (a real, nonfuture `YYYY-MM-DD`), `scope` (what was checked, in the
+reviewer's words) and `evidence` (an `https` link to the sign-off, such as the outside-review issue, or a
+file in this repository). The inventory fails a malformed entry and an empty array; omit the field when
+there is none. VALIDATION.md shows the reviews in its Outside review column. A review covers the scope it
+states, which is at most the recorded domain, never the whole tab, and a status is promoted only by the
+evidence rules above. [docs/REVIEWING.md](../docs/REVIEWING.md) is the reviewer's guide.
+
 New formulas use the contributor module workflow in [FORMULA-SUBMISSIONS.md](FORMULA-SUBMISSIONS.md).
 They begin as **unvalidated**. Finite numerical checks, mathematical proof, agreement with experiments
 and historical originality are separate claims.

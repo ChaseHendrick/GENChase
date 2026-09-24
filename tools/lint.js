@@ -160,6 +160,8 @@ const llmsTxt = fs.existsSync(path.join(root, 'llms.txt')) ? fs.readFileSync(pat
 const agentsMd = fs.existsSync(path.join(root, 'AGENTS.md')) ? fs.readFileSync(path.join(root, 'AGENTS.md'), 'utf8') : '';
 const researchMd = fs.existsSync(path.join(root, 'RESEARCH.md')) ? fs.readFileSync(path.join(root, 'RESEARCH.md'), 'utf8') : '';
 const contributingMd = fs.existsSync(path.join(root, 'CONTRIBUTING.md')) ? fs.readFileSync(path.join(root, 'CONTRIBUTING.md'), 'utf8') : '';
+const zenodoJson = fs.existsSync(path.join(root, '.zenodo.json')) ? fs.readFileSync(path.join(root, '.zenodo.json'), 'utf8') : '';
+const paperMd = fs.existsSync(path.join(root, 'paper', 'paper.md')) ? fs.readFileSync(path.join(root, 'paper', 'paper.md'), 'utf8') : '';
 if (!researchMd) fail('RESEARCH.md is missing');
 for (const [label, text] of [
   ['studio.html', src],
@@ -171,6 +173,8 @@ for (const [label, text] of [
   ['AGENTS.md', agentsMd],
   ['RESEARCH.md', researchMd],
   ['CONTRIBUTING.md', contributingMd],
+  ['.zenodo.json', zenodoJson],
+  ['paper/paper.md', paperMd],
 ]) {
   if (!text) continue;
   const claims = count.claimsIn(text);
