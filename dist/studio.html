@@ -2224,7 +2224,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "kpz",
     "source": "src/modules/kpz.js",
-    "sourceSha256": "30b2393368ab389e0e5fabc4e17215de292e0dbfb945dc92b3b04d2aab57fb19",
+    "sourceSha256": "ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4",
     "reference": "Mehran Kardar, Giorgio Parisi and Yi-Cheng Zhang, 'Dynamic scaling of growing interfaces', Physical Review Letters 56, 889 (1986). The scaling form W(L, t) = L^α f(t/L^z) is Fereydoon Family and Tamás Vicsek, J. Phys. A 18, L75 (1985). Ballistic deposition is Murray Vold (1959) and Michael Sutherland (1966); the restricted solid-on-solid model is Jin Min Kim and Joel Kosterlitz, Phys. Rev. Lett. 62, 2289 (1989); surface relaxation is Family, J. Phys. A 19, L441 (1986); the cluster model is Murray Eden, in the Berkeley Symposium proceedings (1961). That the edge fluctuations follow the Tracy-Widom distributions is Michael Prähofer and Herbert Spohn, Phys. Rev. Lett. 84, 4882 (2000), and Kazumasa Takeuchi and Masaki Sano measured it in turbulent liquid crystal, Phys. Rev. Lett. 104, 230601 (2010).",
     "equation": "∂h/∂t = ν∇²h + (λ/2)(∇h)² + η,   W(t) ~ t^β with β = 1/3 in 1+1 dimensions",
     "status": "partially validated",
@@ -2465,7 +2465,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "faraday",
     "source": "src/modules/faraday.js",
-    "sourceSha256": "b8b0aec62a48d48fcc42d7524ddd734e85f7df75786fd94860370492248ba8f0",
+    "sourceSha256": "bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14",
     "reference": "M. Faraday, Philos. Trans. R. Soc. 121, 299 (1831), saw crisp standing waves on a shaken plate of liquid. P. Umbanhowar, F. Melo and H. L. Swinney, Nature 382, 793 (1996), found oscillons: localized, subharmonic bouncing spots on a granular layer. The sheet here is a damped, parametrically driven conservation law with a cubic saturation, not a box of brass beads.",
     "equation": "∂tt h + γ ∂t h + (g − Γ cos ωt) ∇²h + κ ∇⁴h + u h³ = 0",
     "status": "unvalidated",
@@ -2522,7 +2522,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "growdomain",
     "source": "src/modules/growdomain.js",
-    "sourceSha256": "6ed99960b38288382cc77834580ecc4b8113d601d2302c7bc909d07a06024708",
+    "sourceSha256": "1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f",
     "reference": "Alan M. Turing, 'The chemical basis of morphogenesis', Philosophical Transactions of the Royal Society of London B 237, 37 (1952), showed that two substances which react and diffuse at different rates can break a uniform state into a pattern with a wavelength of its own. Edward J. Crampin, Eamonn A. Gaffney and Philip K. Maini, 'Reaction and diffusion on growing domains: scenarios for robust pattern formation', Bulletin of Mathematical Biology 61, 1093 (1999), wrote the same problem in fixed Lagrangian coordinates on a domain of changing length L(t); the diffusion coefficients pick up a factor 1/L², and a dilution term d(L̇/L) appears because growth carries material apart. That is the formulation integrated here. Shigeru Kondo and Rihito Asai, 'A reaction-diffusion wave on the skin of the marine angelfish Pomacanthus', Nature 376, 765 (1995), measured the consequence on a live animal: as the fish grows its stripes do not widen, new ones are inserted between the old, at the spacing the reaction-diffusion wavelength fixes. The kinetics are Schnakenberg's trimolecular scheme and the Gierer-Meinhardt activator-inhibitor pair.",
     "equation": "∂u/∂t = (D_u/L²)∂²u/∂ξ² + f(u,v) − d(L̇/L)u,  ∂v/∂t = (D_v/L²)∂²v/∂ξ² + g(u,v) − d(L̇/L)v",
     "status": "unvalidated",
@@ -2541,7 +2541,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "spinice",
     "source": "src/modules/spinice.js",
-    "sourceSha256": "e42fb2916740320bbc429cf3e719f54f1b6fd7fb978fc366b69db95bfb224a21",
+    "sourceSha256": "2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f",
     "reference": "Linus Pauling, J. Am. Chem. Soc. 57, 2680 (1935), counted the residual entropy of ice. Castelnovo, Moessner and Sondhi, Nature 451, 42 (2008), showed that the same two-in/two-out rule on a pyrochlore magnet fractionalises a dipole into a pair of magnetic monopoles. The plate is square ice, the 2-D vertex model, not a 3-D crystal of Dy₂Ti₂O₇.",
     "equation": "E = (J/2) Σ_v Q_v² − h Σ σ,   Q_v = n_in − 2,   ice: Q = 0",
     "status": "unvalidated",
@@ -2629,7 +2629,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "skin",
     "source": "src/modules/skin.js",
-    "sourceSha256": "4795322865f333524fa265e40e10939bc947090d3c58a4c60fc60b66b01c37a4",
+    "sourceSha256": "7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0",
     "reference": "N. Hatano and D. R. Nelson, Phys. Rev. Lett. 77, 570 (1996), wrote a directed-hopping chain whose bulk spectrum is that of Hermitian tight-binding while every eigenvector piles onto a boundary. Yao and Wang, Phys. Rev. Lett. 121, 086803 (2018), named this the non-Hermitian skin effect and showed it breaks the usual bulk-boundary correspondence. Hermitian quantum mechanics cannot do it: a similarity transform that is not unitary has no counterpart when H = H†.",
     "equation": "H_{j,j+1} = e^{g},   H_{j+1,j} = e^{−g},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1))",
     "status": "unvalidated",
@@ -2648,7 +2648,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "rmt",
     "source": "src/modules/rmt.js",
-    "sourceSha256": "b45f9d8257ec669aa62929c91cc1a40f7f68e3de2a8a3101daf6fdd0944bb701",
+    "sourceSha256": "f49ae253935fca62af479a4b2585c3a5ff287b038ef4e60d788f357028d9ff3b",
     "reference": "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The spacing forms quoted in the status line are Wigner's surmise; the exact answers are the Gaudin-Mehta determinantal formulae, Michel Mehta, Random Matrices. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
     "equation": "p(λ) ∝ ∏_{i\u003cj} |λ_i − λ_j|^β · e^{−Σλ_i²/2};   dλ_i = √(2/β) dB_i + Σ_{j≠i} dt/(λ_i − λ_j)",
     "status": "unvalidated",
@@ -2907,7 +2907,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "fput",
     "source": "src/modules/fput.js",
-    "sourceSha256": "607417802982b99de7ea1912c083757cefdec471ed8561df9363faa99f7c118a",
+    "sourceSha256": "a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc",
     "reference": "Fermi, Pasta, Ulam and Tsingou, Los Alamos report LA-1940 (1955). A weakly nonlinear string, started in one Fourier mode, was expected to thermalise. It did not: the energy came back. Zabusky and Kruskal (1965) met the soliton in the continuum limit. This plate records finite fixed-end displacement histories and harmonic first-mode energy relative to its initial value. It does not reproduce the original long recurrence experiment.",
     "equation": "ẍ_i = (q_{i+1}-2q_i+q_{i-1}) + α[(q_{i+1}-q_i)²-(q_i-q_{i-1})²],   E_1 = (P_1² + ω_1² Q_1²)/2",
     "status": "validated within stated limits",
@@ -3727,7 +3727,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "cloak",
     "source": "src/modules/cloak.js",
-    "sourceSha256": "525c48f41781dd1011f8b3b03c23a5f2f29cfed8cc50152ff1d9298f672e0541",
+    "sourceSha256": "3f1c2b4adc3ca5692b31dcdf2178be8f825abe15fba109aa699f98f5515c543d",
     "reference": "J. B. Pendry, D. Schurig and D. R. Smith, Science 312, 1780 (2006). A coordinate transformation that blows a point into a disk pulls every ray around the hole. In the virtual plane the rays are straight; in the physical plane they miss the core. The plate traces that map, not a fabricated metamaterial.",
     "equation": "r = R1 + r' (R2-R1)/R2,   n_r = (r-R1)/r · R2/(R2-R1),   n_θ = r / (r-R1)",
     "status": "unvalidated",
@@ -3881,7 +3881,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "darkroom",
     "source": "src/modules/darkroom.js",
-    "sourceSha256": "0875413599232914f3c72df7d04830eb69454400d710f30ce11d026654de990b",
+    "sourceSha256": "d6734878edd1e64e7e955a61519038f9caaa46bdba4fc2ff48bd6831c97ad24d",
     "reference": "G. W. Tokarsky, Amer. Math. Monthly 102, 867 (1995), built a polygonal room with two points that do not illuminate each other via mirrored walls. Penrose (1958) had a smooth unilluminable room with elliptical pockets. The plate traces billiard rays from a source; a marked vertex stays dark in the Tokarsky geometry and lights up in a rectangle.",
     "equation": "billiard in a polygon,   ∃ p,q: no reflected ray from p meets q",
     "status": "unvalidated",
@@ -4617,7 +4617,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "kitaev",
     "source": "src/modules/kitaev.js",
-    "sourceSha256": "1416d69aa96ef5e12b1ab7748bac756742d6d22cd0a0d45642b4ac6be1e7d8a2",
+    "sourceSha256": "23971f485942877ff2a79335d64471c4e53ca2e39948d011dc4e1a71dbe64b61",
     "reference": "A. Yu. Kitaev, Phys.-Usp. 44, 131 (2001). A 1D p-wave superconductor hosts two Majorana operators, one at each end, that together make a single nonlocal fermion. They sit at zero energy, inside the gap, and are their own antiparticles. The plate is the near-zero BdG mode of a finite chain, obtained by imaginary-time relaxation of the Nambu Hamiltonian.",
     "equation": "H = −μ Σ c†c − t Σ (c†_i c_{i+1}+h.c.) + Δ Σ (c_i c_{i+1}+h.c.),   |μ|\u003c2t ⇒ unpaired γ_L, γ_R",
     "status": "unvalidated",
@@ -5120,7 +5120,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "causticsea",
     "source": "src/modules/causticsea.js",
-    "sourceSha256": "1aa15625af54f76a1cfdf619fc72233522a655f56c675f43cfcfb5d355b6082e",
+    "sourceSha256": "bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f",
     "reference": "The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). This plate is that family with the caustic in the loop, and it reports corr(h, I) against the open-loop control. It is not a new equation and it is not named as one.",
     "equation": "∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/|det(I + s Hess h)|",
     "status": "unvalidated",
@@ -5435,7 +5435,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "lump",
     "source": "src/modules/lump.js",
-    "sourceSha256": "cfeadd37892269236b7c41a450f223568dc65f5304da461655cb01040d5cbc3d",
+    "sourceSha256": "7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4",
     "reference": "Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Exact multi-lump solutions are studied by Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). This module implements single rational lumps; its multiple-lump modes are illustrative sums, not those interacting solutions. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.",
     "equation": "(u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b²",
     "status": "validated within stated limits",
@@ -5493,7 +5493,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "three-vortex-bound",
     "source": "src/modules/three-vortex-bound.js",
-    "sourceSha256": "616006e58a131d8a309e01ac7037f8e0af1261a4e16fac3c2f7705bd7b872f54",
+    "sourceSha256": "b7c4b23da19c1f5bcb5ffa43fff089b158b77a8e54bbb9b6e11daf2e4499fc9f",
     "reference": "Three-vortex collapse bound: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 \u003c θ \u003c π/2. θ is the third vortex's place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula explicitly specializes and reparameterizes the spiral coefficient in Gröbli (1877), section 10. Kimura, J. Phys. Soc. Jpn. 56, 2024 (1987), section 4, gives the collapse and rotation rates A and B in this same parametrization, for circulations (2, 2, −1), and their ratio B/(−2A) is this formula; he minimizes the collision time instead, at cos 2θ = 3/5, where the product is 3/2, the value it also takes at θ = 45°. It was independently derived here and recorded on 2026-09-19. Priority of the optimized minimum remains unconfirmed; see identities/ORIGINALITY-FOLLOWUP.md, identities/NOVELTY-AUDIT.md and IDENTITIES.md. Cite as Three-vortex collapse bound. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 misses and the status line marks miss. The picture still draws.",
     "equation": "ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2  on  Γ = (1, 1, −1/2), L = 0;  equality at tan θ = 1/√2",
     "status": "validated within stated limits",
@@ -5541,7 +5541,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "parallelogram-lock",
     "source": "src/modules/parallelogram-lock.js",
-    "sourceSha256": "6d9f5d8842a30373d5b82d257572c193aba611027cb6263853417411cfb2231e",
+    "sourceSha256": "0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc",
     "reference": "A closed form and sharp minimum for the scale-invariant product on the classical four-vortex parallelogram collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −2 − √3, −2 − √3), diagonals in ratio √(2 + √3), angle θ between the diagonals, 0 \u003c θ \u003c π/2. ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4, equality uniquely at cos 2θ = 1/4. With φ = 2θ the quotient is (4 − cos φ)/sin φ, and the critical point is cos φ = 1/4. Four-vortex parallelogram collapse is Novikov and Sedov, Sov. Phys. JETP 50, 297 (1979). Gotoda, arXiv:2002.09624 (2020 preprint), eq. (3.13), gives the collapse rate A(θ) and the spin B(θ) separately after those authors. The product −B/(2A) simplifies to the formula above. The formula and minimum were derived here and recorded on 2026-09-20. Historical priority is unconfirmed; see identities/NOVELTY-AUDIT.md and IDENTITIES.md. The reciprocal pair Γ = (1, 1, −2 + √3, −2 + √3) is the same family with the diagonals swapped. If the vortices leave the parallelogram, or the kernel is wrong, the ratio against 3√5/4 misses and the status line marks miss. The picture still draws.",
     "equation": "ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4  on the Novikov–Sedov parallelogram;  equality at cos 2θ = 1/4",
     "status": "validated within stated limits",
@@ -5589,7 +5589,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "quincunx-lock",
     "source": "src/modules/quincunx-lock.js",
-    "sourceSha256": "311a76734eed2af26b028ad2f03feef7f247934f320de3a8c5d94767bafa4600",
+    "sourceSha256": "2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e",
     "reference": "A closed form and sharp minimum for the scale-invariant product on a classical five-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (−1, −1, 1/2, 1/2, −3/4), four vortices at the vertices of a parallelogram whose diagonals meet at the fifth, diagonals in ratio 1/√2, angle θ between the diagonals, 0 \u003c θ \u003c π/2. ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16, equality uniquely at cos 2θ = 4/7. With φ = 2θ the quotient is (7 − 4 cos φ)/sin φ, and the critical point is cos φ = 4/7. Five-vortex parallelogram-plus-center collapse is Novikov and Sedov, Sov. Phys. JETP 50, 297 (1979). Gotoda, arXiv:2002.09624 (2020 preprint), eq. (3.13), gives the collapse rate A(θ) and the spin B(θ) separately after those authors, and plots this family (γ1 = −1, γ2 = 1/2, γ3 = −3/4) as Hamiltonian against collapse rate. The product −B/(2A) on that slice simplifies to the formula above. The formula and minimum were derived here and recorded on 2026-09-20. Historical priority is unconfirmed; see identities/NOVELTY-AUDIT.md and IDENTITIES.md. The reciprocal pair with the diagonals swapped is the same family. If the vortices leave the quincunx, or the kernel is wrong, the ratio against 3√33/16 misses and the status line marks miss. The picture still draws. This is not Novikov and Sedov's t_* or ω separately under a new name, and it is not the four-vortex parallelogram lock.",
     "equation": "ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16  on the Novikov–Sedov five-vortex quincunx;  equality at cos 2θ = 4/7",
     "status": "validated within stated limits",
@@ -5637,7 +5637,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "double-triangle-bound",
     "source": "src/modules/double-triangle-bound.js",
-    "sourceSha256": "20778362fcd32e7be2631ff81c81d0a618bca87d3064bec7196dda059d7940d4",
+    "sourceSha256": "93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8",
     "reference": "Classical two-ring collapse: Aref, Physics of Fluids 25, 2183 (1982); Koiller, Pinto de Carvalho, Rodrigues da Silva and Gonçalves de Oliveira, Physica D 16, 27–61 (1985), §11. Two regular n-gons with outer circulation −1, inner circulation x = (n + √(2n−1))/(n−1), and squared radius ratio x. GENChase derives the product and its sharp minimum in identities/polygon-collapse.md. The n = 4 value √322/9 illustrates the general theorem. Historical priority of these explicit bounds is unconfirmed; the collapse family is classical.",
     "equation": "ω₀t_c = (K_n − √(2n−1) cos nθ)/(2n sin nθ) ≥ F_n; F₃ = √29/3, F₄ = √322/9",
     "status": "validated within stated limits",
@@ -6264,7 +6264,7 @@ shall not be misrepresented as the original profile.
     }
   }
 ]</script>
-<script type="application/json" id="build-info">{"build":"b72a02443abb","fingerprint":"b72a02443abb45aafc58e86168188a996d7f6750ca36ea44552de158ec785541","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"a84197737dd6c83940054aecc7c1d3ff86fb5d43b12f4f8da3c4224f07ae3ac0","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"65eff38428e01bdf5e8d64ced24f2706be9561c7ed04c217ad6f59a1ee1f5092","src/modules/attractors.js":"b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760","src/modules/aztec.js":"d3cb40f6561fe895da5d7b12762f529af4b3e31e9f8561095f280d61851c31fb","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"b45f9d8257ec669aa62929c91cc1a40f7f68e3de2a8a3101daf6fdd0944bb701","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"30b2393368ab389e0e5fabc4e17215de292e0dbfb945dc92b3b04d2aab57fb19","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"b3c1e3f924fad80deda39c85f1fd2606fe01c1cb3d7c4d033aa8853d40d78b62","src/modules/tonertu.js":"be0f91a16da5e11522b787d1bd4975ef415d7e62e921fd80553886a4a94bd31e","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"e7beea07d24d9bc485fdface9d33a4806d55190cd219273b7ba26239fcc8ef8b","src/modules/growdomain.js":"6ed99960b38288382cc77834580ecc4b8113d601d2302c7bc909d07a06024708","src/modules/sandpile.js":"0dc76ac4faf5c36f0c12c37fd436ec4189b150c715151451acb63c9ed8da21a1","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"b8b0aec62a48d48fcc42d7524ddd734e85f7df75786fd94860370492248ba8f0","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"e42fb2916740320bbc429cf3e719f54f1b6fd7fb978fc366b69db95bfb224a21","src/modules/skin.js":"4795322865f333524fa265e40e10939bc947090d3c58a4c60fc60b66b01c37a4","src/modules/stealth.js":"a45d5bf1ddc129ea01667167f37912c8bf47b5593de93de6a7ca2eb8225a3c30","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"1676978773d9d615778f1a035a465d5ac63a9c79bc01b5106669b285d9cee23a","src/modules/fput.js":"607417802982b99de7ea1912c083757cefdec471ed8561df9363faa99f7c118a","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"392be5b4ae8e8218d411c55e2db41a205193ae2ec987f4ffb7eaae708da5fe45","src/modules/aubry.js":"0831c9cf2d31401025a82f41df10d17095d2f09b0a8d2b7fed8b5f9288592f1d","src/modules/hopf.js":"ae591b50d5062c9a122bdd7270ff4e4e45e43e4d37ba047e6bda6d23d74967ce","src/modules/cloak.js":"525c48f41781dd1011f8b3b03c23a5f2f29cfed8cc50152ff1d9298f672e0541","src/modules/vortex.js":"fc8e66a17fe114da9a663f0827171ea70461c784e10802fac2bbd3d2205027f0","src/modules/darkroom.js":"0875413599232914f3c72df7d04830eb69454400d710f30ce11d026654de990b","src/modules/kakeya.js":"d1032c40c96cb013ba2a97d5ab176553ad803893c93321a1305360248c10dbb0","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"267c0cd0e13360c490c9593cd4a58410dd30d9c7e8b21fd3cd8532221de4e87e","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"ec8af35f812d14da83411239abfa6331350b56c8a89b3e8256eb2aa35fd0f398","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"62896cc45ed4ef272eed1ec89ca5a0d4977173dc464aa522c5b84fac08ae2e1d","src/modules/kitaev.js":"1416d69aa96ef5e12b1ab7748bac756742d6d22cd0a0d45642b4ac6be1e7d8a2","src/modules/veselago.js":"d43e80339587c7273e1cab5cd6f629826cd1d2b46cab3c74539f8b9ee3164191","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"242d6a0460fa061507460e3ef4279511b99d9379dc3b698de5539503aa2a6165","src/modules/boy.js":"45238c4577983543da955979ed6579f315fa596d371c7df974725a50138cd30c","src/modules/thouless.js":"2d393e8f18660c4cf634576e096810d06d99ed7b21197c04292c064b9f75a7b9","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"1aa15625af54f76a1cfdf619fc72233522a655f56c675f43cfcfb5d355b6082e","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"18fa85720739ce503e313b5d928da01f65e3f9f163136050d276a9fc3e970a7a","src/modules/eight.js":"00e15b29caba92c9cf360487ddce8471e0f351e54168633c80d650e75a1c01b3","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"3636ca8433248c1afb594d76a13d78734592778668cb54dc37ca693af775fb84","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"cfeadd37892269236b7c41a450f223568dc65f5304da461655cb01040d5cbc3d","src/modules/three-vortex-bound.js":"616006e58a131d8a309e01ac7037f8e0af1261a4e16fac3c2f7705bd7b872f54","src/modules/parallelogram-lock.js":"6d9f5d8842a30373d5b82d257572c193aba611027cb6263853417411cfb2231e","src/modules/quincunx-lock.js":"311a76734eed2af26b028ad2f03feef7f247934f320de3a8c5d94767bafa4600","src/modules/double-triangle-bound.js":"20778362fcd32e7be2631ff81c81d0a618bca87d3064bec7196dda059d7940d4","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"0f5427d1446138675dd4be67d1c3df9896ec06ffa1103d9dbc94060332a7c1b0","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"unvalidated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"unvalidated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"unvalidated","skin":"unvalidated","rmt":"unvalidated","stealth":"unvalidated","lozenge":"unvalidated","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"unvalidated","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"partially validated","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"unvalidated","percolation":"unvalidated","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"unvalidated","caustics":"unvalidated","veselago":"unvalidated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"unvalidated","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
+<script type="application/json" id="build-info">{"build":"ad0789695718","fingerprint":"ad078969571881bb660710da9b4bc397b96481f4cab95d68066a649b35d4a760","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"a84197737dd6c83940054aecc7c1d3ff86fb5d43b12f4f8da3c4224f07ae3ac0","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"65eff38428e01bdf5e8d64ced24f2706be9561c7ed04c217ad6f59a1ee1f5092","src/modules/attractors.js":"b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760","src/modules/aztec.js":"d3cb40f6561fe895da5d7b12762f529af4b3e31e9f8561095f280d61851c31fb","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"f49ae253935fca62af479a4b2585c3a5ff287b038ef4e60d788f357028d9ff3b","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"b3c1e3f924fad80deda39c85f1fd2606fe01c1cb3d7c4d033aa8853d40d78b62","src/modules/tonertu.js":"be0f91a16da5e11522b787d1bd4975ef415d7e62e921fd80553886a4a94bd31e","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"e7beea07d24d9bc485fdface9d33a4806d55190cd219273b7ba26239fcc8ef8b","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"0dc76ac4faf5c36f0c12c37fd436ec4189b150c715151451acb63c9ed8da21a1","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"a45d5bf1ddc129ea01667167f37912c8bf47b5593de93de6a7ca2eb8225a3c30","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"1676978773d9d615778f1a035a465d5ac63a9c79bc01b5106669b285d9cee23a","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"392be5b4ae8e8218d411c55e2db41a205193ae2ec987f4ffb7eaae708da5fe45","src/modules/aubry.js":"0831c9cf2d31401025a82f41df10d17095d2f09b0a8d2b7fed8b5f9288592f1d","src/modules/hopf.js":"ae591b50d5062c9a122bdd7270ff4e4e45e43e4d37ba047e6bda6d23d74967ce","src/modules/cloak.js":"3f1c2b4adc3ca5692b31dcdf2178be8f825abe15fba109aa699f98f5515c543d","src/modules/vortex.js":"fc8e66a17fe114da9a663f0827171ea70461c784e10802fac2bbd3d2205027f0","src/modules/darkroom.js":"d6734878edd1e64e7e955a61519038f9caaa46bdba4fc2ff48bd6831c97ad24d","src/modules/kakeya.js":"d1032c40c96cb013ba2a97d5ab176553ad803893c93321a1305360248c10dbb0","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"267c0cd0e13360c490c9593cd4a58410dd30d9c7e8b21fd3cd8532221de4e87e","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"ec8af35f812d14da83411239abfa6331350b56c8a89b3e8256eb2aa35fd0f398","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"62896cc45ed4ef272eed1ec89ca5a0d4977173dc464aa522c5b84fac08ae2e1d","src/modules/kitaev.js":"23971f485942877ff2a79335d64471c4e53ca2e39948d011dc4e1a71dbe64b61","src/modules/veselago.js":"d43e80339587c7273e1cab5cd6f629826cd1d2b46cab3c74539f8b9ee3164191","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"242d6a0460fa061507460e3ef4279511b99d9379dc3b698de5539503aa2a6165","src/modules/boy.js":"45238c4577983543da955979ed6579f315fa596d371c7df974725a50138cd30c","src/modules/thouless.js":"2d393e8f18660c4cf634576e096810d06d99ed7b21197c04292c064b9f75a7b9","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"18fa85720739ce503e313b5d928da01f65e3f9f163136050d276a9fc3e970a7a","src/modules/eight.js":"00e15b29caba92c9cf360487ddce8471e0f351e54168633c80d650e75a1c01b3","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"3636ca8433248c1afb594d76a13d78734592778668cb54dc37ca693af775fb84","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"b7c4b23da19c1f5bcb5ffa43fff089b158b77a8e54bbb9b6e11daf2e4499fc9f","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"0f5427d1446138675dd4be67d1c3df9896ec06ffa1103d9dbc94060332a7c1b0","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"unvalidated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"unvalidated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"unvalidated","skin":"unvalidated","rmt":"unvalidated","stealth":"unvalidated","lozenge":"unvalidated","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"unvalidated","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"partially validated","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"unvalidated","percolation":"unvalidated","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"unvalidated","caustics":"unvalidated","veselago":"unvalidated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"unvalidated","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
 <script>/* The shared uncertainty harness. Every measured number the studio prints against theory gets its
    error bar from here, in the browser and in the Node tools alike, so there is one method per kind of
    number instead of one per tab. AGENTS.md ("A measured number carries an error bar") says which method
@@ -30125,6 +30125,30 @@ void main(){
       if (local > 1e-12) out.push((lam[i + 1] - lam[i]) / local);
     }
   }
+  // One row's spacings appended to the pooled sample, with that row's count, sum and sum of squares
+  // recorded beside it for the bootstrap below.
+  function rowInto(lam, n, out, rowsOut) {
+    const start = out.length;
+    unfolded(lam, n, out);
+    let S = 0, Q = 0;
+    for (let i = start; i < out.length; i++) { S += out[i]; Q += out[i] * out[i]; }
+    rowsOut.push({ n: out.length - start, S, Q });
+  }
+  // Standard error of the pooled coefficient of variation. Rows are independent spectra, so rows are
+  // the resampling unit: draw row indices with replacement, pool their spacings, recompute the spread.
+  // The spacings within one row are correlated and stay together. Seeded, so the bar reprints.
+  function cvBootstrap(rowStats, seed) {
+    const R = rowStats.length;
+    if (R < 2) return NaN;
+    const rng = U.makeRng(seed), reps = 200, draws = [];
+    for (let r = 0; r < reps; r++) {
+      let N = 0, S = 0, Q = 0;
+      for (let k = 0; k < R; k++) { const q = rowStats[Math.floor(rng() * R)]; N += q.n; S += q.S; Q += q.Q; }
+      const m = S / N;
+      if (N > 0 && m > 0) draws.push(Math.sqrt(Math.max(0, Q / N - m * m)) / m);
+    }
+    return draws.length > 1 ? U.stats.sd(draws) : NaN;
+  }
   const SURMISE = { '1.00': 0.523, '2.00': 0.422 };
 
   /* ---------- Random Matrices ---------- */
@@ -30216,6 +30240,7 @@ void main(){
       const canvas = host.canvas, ctx = canvas.getContext('2d');
       let series = null;        // array of { lam: [...], beta } for rows/sweep, or paths for dyson
       let scaleG = 1, cv = null, cvLo = null, cvHi = null, timer = 0, building = false, capped = false, note = '';
+      let cvSE = NaN, cvLoSE = NaN, cvHiSE = NaN, nAll = 0, nLo = 0, nHi = 0;
 
       function stop() { clearTimeout(timer); }
 
@@ -30232,7 +30257,7 @@ void main(){
         const n = s.n, rows = s.rows;
         const d = new Float64Array(n), e = new Float64Array(n);
         series = []; scaleG = 0;
-        const uLo = [], uHi = [], uAll = [];
+        const uLo = [], uHi = [], uAll = [], rLo = [], rHi = [], rAll = [];
         let j = 0;
         (function chunk() {
           const t0 = performance.now();
@@ -30243,8 +30268,10 @@ void main(){
             for (let i = 0; i < n; i++) mx = Math.max(mx, Math.abs(lam[i]));
             scaleG = Math.max(scaleG, mx);
             series.push({ lam, beta: b, scale: mx || 1 });
-            if (s.mode === 'sweep') { if (j < rows * 0.08) unfolded(lam, n, uLo); else if (j > rows * 0.92) unfolded(lam, n, uHi); }
-            else if (uAll.length < 40000) unfolded(lam, n, uAll);
+            // Each row's unfolded spacings go into the pooled sample exactly as before, and the row's
+            // count, sum and sum of squares are kept so the pooled spread can be bootstrapped by row.
+            if (s.mode === 'sweep') { if (j < rows * 0.08) rowInto(lam, n, uLo, rLo); else if (j > rows * 0.92) rowInto(lam, n, uHi, rHi); }
+            else if (uAll.length < 40000) rowInto(lam, n, uAll, rAll);
             j++;
           }
           if (j < rows) { note = 'sampling ' + j + ' / ' + rows; status(); timer = setTimeout(chunk, 0); }
@@ -30256,6 +30283,10 @@ void main(){
               return m > 0 ? Math.sqrt(v) / m : null;
             };
             cv = stat(uAll); cvLo = stat(uLo); cvHi = stat(uHi);
+            cvSE = cv !== null ? cvBootstrap(rAll, s.seed + '/rmt-cv') : NaN;
+            cvLoSE = cvLo !== null ? cvBootstrap(rLo, s.seed + '/rmt-cv-lo') : NaN;
+            cvHiSE = cvHi !== null ? cvBootstrap(rHi, s.seed + '/rmt-cv-hi') : NaN;
+            nAll = rAll.length; nLo = rLo.length; nHi = rHi.length;
             note = ''; building = false; done();
           }
         })();
@@ -30298,7 +30329,7 @@ void main(){
             unfolded(series[series.length - 1].lam, n, u);
             const m = u.length ? u.reduce((x, y) => x + y, 0) / u.length : 0;
             const v = u.length ? u.reduce((x, y) => x + (y - m) * (y - m), 0) / u.length : 0;
-            cv = m > 0 ? Math.sqrt(v) / m : null; cvLo = cvHi = null;
+            cv = m > 0 ? Math.sqrt(v) / m : null; cvLo = cvHi = null; cvSE = cvLoSE = cvHiSE = NaN;
             note = ''; building = false; done();
           }
         })();
@@ -30314,12 +30345,20 @@ void main(){
         } else if (s.mode === 'sweep') {
           P.push('<span><b>' + s.rows + '</b> spectra of <b>' + s.n + '</b></span>');
           P.push('<span>β <b>' + s.betaLo.toFixed(2) + ' → ' + s.betaHi.toFixed(2) + '</b>' + (s.logSweep ? ' (log)' : '') + '</span>');
-          if (cvLo !== null && cvHi !== null) P.push('<span>spacing spread <b>' + cvLo.toFixed(2) + ' → ' + cvHi.toFixed(2) + '</b> (1.00 is independent)</span>');
+          // Poisson (uncorrelated levels) gives a spread of 1 and is the β → 0 limit, so it is the
+          // reference for the low end only; the high end is printed with its error bar and no reference.
+          if (cvLo !== null && cvHi !== null) P.push('<span>' +
+            U.stats.compare({ label: 'spacing spread, low-β end', measured: cvLo, expected: 1, reference: 'Poisson', basis: 'sampled',
+              uncertainty: cvLoSE, method: 'bootstrap over ' + nLo + ' rows', pending: 'fewer than 2 rows', note: 'β → 0 limit' }) + ' → ' +
+            U.stats.compare({ label: 'high-β end', measured: cvHi, basis: 'sampled',
+              uncertainty: cvHiSE, method: 'bootstrap over ' + nHi + ' rows', pending: 'fewer than 2 rows' }) + '</span>');
         } else {
           P.push('<span><b>' + s.rows + '</b> spectra of <b>' + s.n + '</b> · β <b>' + s.beta.toFixed(2) + '</b></span>');
           if (cv !== null) {
             const sur = SURMISE[s.beta.toFixed(2)];
-            P.push('<span>unfolded spacing spread <b>' + cv.toFixed(3) + '</b>' + (sur ? ' · surmise ' + sur.toFixed(3) : '') + '</span>');
+            P.push(U.stats.compare({ label: 'unfolded spacing spread', measured: cv, expected: sur, reference: 'Wigner surmise', basis: 'sampled',
+              uncertainty: cvSE, method: 'bootstrap over ' + nAll + ' rows', pending: 'fewer than 2 rows',
+              note: sur ? 'the surmise is the 2×2 approximation' : undefined }));
           }
         }
         P.push('<span>' + (series ? series.length.toLocaleString() : 0) + ' rows</span>');
@@ -31026,7 +31065,7 @@ void main(){
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d');
       let W = 0, H = 0, cell = null, h = null, snaps = null, nPart = 0, target = 0;
-      let timer = 0, building = false, betaFit = null, wFinal = 0, radial = false, pointsUsed = 0;
+      let timer = 0, building = false, betaFit = null, betaSE = NaN, wFinal = 0, radial = false, pointsUsed = 0;
       let perim = null, nPerim = 0;
 
       function stop() { clearTimeout(timer); }
@@ -31153,14 +31192,21 @@ void main(){
           // fluctuates by tens of percent between samples, so a single decade is noise and the fitted
           // number swung between 0.09 and 0.41 on runs of the same model. Over the full run it is stable.
           const pts = widths.filter(p => p[0] >= 4 && p[1] > 0.4 && p[1] < W * 0.06);
-          betaFit = null; pointsUsed = pts.length;
+          betaFit = null; betaSE = NaN; pointsUsed = pts.length;
           if (pts.length > 5) {
             let sx = 0, sy = 0, sxx = 0, sxy = 0;
             for (const [t, w] of pts) { const X = Math.log(t), Y = Math.log(w); sx += X; sy += Y; sxx += X * X; sxy += X * Y; }
             const n = pts.length, den = n * sxx - sx * sx;
             if (Math.abs(den) > 1e-9) betaFit = (n * sxy - sx * sy) / den;
+            // The samples lie along one growing interface, so their residuals are correlated and the
+            // ordinary least squares error would be far too small. A moving-block bootstrap over the
+            // same points keeps neighbors together; its draws are seeded, so the bar reprints.
+            if (betaFit !== null && n >= 8) {
+              betaSE = U.stats.slopeBootstrap(pts.map(p => Math.log(p[0])), pts.map(p => Math.log(p[1])),
+                { seed: s.seed + '/kpz-beta', reps: 300 }).se;
+            }
           }
-        } else { betaFit = null; wFinal = 0; pointsUsed = 0; }
+        } else { betaFit = null; betaSE = NaN; wFinal = 0; pointsUsed = 0; }
       }
 
       function status(extra) {
@@ -31170,7 +31216,10 @@ void main(){
           '<span><b>' + nPart.toLocaleString() + '</b> particles</span>' +
           (radial ? '' : '<span>interface width <b>' + wFinal.toFixed(1) + '</b></span>') +
           (betaFit !== null
-            ? '<span>fitted β <b>' + betaFit.toFixed(3) + '</b> over ' + pointsUsed + ' samples · ' + C.cls + '</span>'
+            ? U.stats.compare({ label: 'fitted β', measured: betaFit, expected: C.cls.split('β = ')[1], expectedValue: C.beta,
+                reference: C.cls.split(',')[0], basis: 'sampled', uncertainty: betaSE, digits: 3,
+                method: 'block bootstrap over ' + pointsUsed + ' log-spaced samples of one run',
+                pending: pointsUsed < 8 ? 'fewer than 8 samples' : 'bootstrap gave no spread', note: pointsUsed + ' samples' })
             : '<span>' + C.cls + '</span>') +
           (extra ? '<span>' + extra + '</span>' : '')
         );
@@ -36619,25 +36668,13 @@ void main(){
     return u - (2.30753 + 0.27061 * u) / (1 + 0.99229 * u + 0.04481 * u * u);
   }
   // The deviation as it is printed: a t on the sample's own degrees of freedom, expressed as the
-  // normal deviate that carries the same probability.
-  function devTxt(v, se, ref, df) {
+  // normal deviate that carries the same probability. The shared compare() prints it, with the value
+  // and its error bar to matching decimals, so the sign and size come from here and nothing else.
+  function devZ(v, se, ref, df) {
     const z = sigmas(v, se, ref);
-    if (z === null) return 'no uncertainty available';
-    return sigTxt(z < 0 ? -tToSigma(z, df) : tToSigma(z, df));
+    if (z === null) return undefined;
+    return z < 0 ? -tToSigma(z, df) : tToSigma(z, df);
   }
-
-  function sigTxt(z) {
-    if (z === null) return 'no uncertainty available';
-    const m = Math.abs(z);
-    return m.toFixed(1) + 'σ ' + (m < 0.05 ? 'from it' : (z > 0 ? 'high' : 'low'));
-  }
-  // Enough decimals to show the error bar. A value printed to two places beside an uncertainty of
-  // four thousandths reads as "± 0.00", which is exactly the sort of decoration this tab is trying
-  // not to print.
-  const pm = (v, se) => {
-    const d = !isFinite(se) || se >= 0.05 ? 2 : (se >= 0.005 ? 3 : 4);
-    return v.toFixed(d) + ' ± ' + (isFinite(se) ? se.toFixed(d) : '?');
-  };
 
   // The plane has no single row to count, so the mode index is read off the cosine transform instead.
   // Zero flux walls make cos(m pi xi) cos(n pi eta) the natural basis, so the amplitudes are a plain
@@ -37179,10 +37216,19 @@ void main(){
         // divide one by the other, which on the plane preset would read as a twenty sigma
         // disagreement from a number that cannot support the comparison. The sigma against theory is
         // quoted once, on the k term of the self-check, where the sample is the run's own snapshots.
-        const meas = !measN ? 'not yet'
-          : (P.plane ? '<b>' + pm(measN, modeMN ? modeMN.se : NaN) + '</b> ('
-              + (modeMN ? modeMN.sectors : 0) + ' sectors)'
-                     : '<b>' + measN + '</b> exact');
+        //
+        // So the plane's ring radius goes through compare() with its sector error bar and the
+        // prediction passed as text: printed beside it, but with no sigma formed from a sample that
+        // cannot support one. The sheet's count is one integer read off one realization; it is
+        // printed beside the prediction with the error bar stated as pending for that reason.
+        const lbl = P.plane ? 'ρ' : 'n';
+        const meas = !measN ? '<span>' + lbl + ' not yet · dispersion peak <b>' + pred.toFixed(1) + '</b></span>'
+          : (P.plane
+            ? U.stats.compare({ label: lbl, measured: measN, expected: pred.toFixed(1), reference: 'dispersion peak', basis: 'sampled',
+                uncertainty: modeMN ? modeMN.se : NaN, method: (modeMN ? modeMN.sectors : 0) + ' angular sectors of one snapshot (ring roundness)',
+                pending: 'fewer than 2 sectors', note: (modeMN ? modeMN.sectors : 0) + ' sectors, roundness only' })
+            : U.stats.compare({ label: lbl, measured: measN, expected: pred.toFixed(1), reference: 'dispersion peak', basis: 'sampled',
+                pending: 'one realization' }));
 
         // The self-check. Every measured quantity beside a theoretical one carries an uncertainty and
         // every comparison is in standard deviations; where no uncertainty can be formed, because
@@ -37202,19 +37248,22 @@ void main(){
         // is the other answer to the same question.
         const span = expRange && isFinite(expRange[0]) && isFinite(expRange[1])
           ? ' over L ' + expRange[0].toFixed(1) + '-' + expRange[1].toFixed(1) : '';
+        const expLabel = expVar + ' ∝ L^a';
         if (expStat && isFinite(expStat.a) && isFinite(expStat.se) && expStat.se > 0) {
-          chk = expVar + ' ∝ L^<b>' + pm(expStat.a, expStat.se) + '</b>, ' + expStat.n + ' '
-            + expSample + span + (expStat.df <= 2 ? ' (' + expStat.df + ' d.f.)' : '')
-            + ', <b>' + devTxt(expStat.a, expStat.se, 1, expStat.df) + '</b> of 1';
+          chk = U.stats.compare({ label: expLabel, measured: expStat.a, expected: 1, reference: 'fixed wavelength', basis: 'sampled',
+            uncertainty: expStat.se, z: devZ(expStat.a, expStat.se, 1, expStat.df),
+            method: 'least squares slope over ' + expStat.n + ' ' + expSample + ' (' + expStat.df + ' d.f.), row quantization in quadrature, Student t as a normal deviate',
+            note: expStat.n + ' ' + expSample + span + (expStat.df <= 2 ? ' (' + expStat.df + ' d.f.)' : '') });
         } else {
-          chk = expVar + ' ∝ L not fitted, ' + (expStat ? expStat.n : 0) + ' '
-            + (expSample || 'samples') + ' is too few for an error bar';
+          chk = U.stats.compare({ label: expLabel, measured: expStat ? expStat.a : NaN, expected: 1, reference: 'fixed wavelength', basis: 'sampled',
+            pending: 'not fitted, ' + (expStat ? expStat.n : 0) + ' ' + (expSample || 'samples') + ' is too few for an error bar' });
         }
         if (kStat && isFinite(kStat.mean) && isFinite(kStat.se) && kStat.se > 0) {
-          const z0 = sigmas(kStat.mean, kStat.se, P.kSel);
-          const z = z0 === null ? 0 : (z0 < 0 ? -tToSigma(z0, kStat.n - 1) : tToSigma(z0, kStat.n - 1));
-          chk += ' · k <b>' + pm(kStat.mean, kStat.se) + '</b>, ' + kStat.n + ' ' + kSample
-            + ' vs ' + P.kSel.toFixed(2) + ', <b>' + sigTxt(z) + '</b>';
+          const z = devZ(kStat.mean, kStat.se, P.kSel, kStat.n - 1) || 0;
+          chk += ' · ' + U.stats.compare({ label: 'k', measured: kStat.mean, expected: P.kSel, reference: 'dispersion peak', basis: 'sampled',
+            uncertainty: kStat.se, z,
+            method: 'mean over ' + kStat.n + ' ' + kSample + ', Student t on ' + (kStat.n - 1) + ' d.f. as a normal deviate',
+            note: kStat.n + ' ' + kSample + (Math.abs(z) > 3 ? ', growth lag' : '') });
           // A large deviation is named, and the reason given where it is known. The peak of the
           // dispersion relation is the fastest growing mode of a FIXED domain; on a growing one the
           // pattern holds a count while k slides down the band and then splits, so the realized k
@@ -37222,11 +37271,11 @@ void main(){
           // only integer numbers of half wavelengths fit.
           // A large deviation is named and its cause given, in the few words the bar has room for.
           // The Growth hint carries the rest: the count is held while k slides down the band and
-          // jumps back at each insertion, so a faster domain lags further behind the peak.
-          if (Math.abs(z) > 3) chk += ', growth lag';
+          // jumps back at each insertion, so a faster domain lags further behind the peak. The note on
+          // the span above carries those two words.
         } else if (kStat && isFinite(kStat.mean)) {
-          chk += ' · k <b>' + kStat.mean.toFixed(2) + '</b>, one ' + (kSample || 'sample')
-            + ', no uncertainty claimed';
+          chk += ' · ' + U.stats.compare({ label: 'k', measured: kStat.mean, expected: P.kSel, reference: 'dispersion peak', basis: 'sampled',
+            pending: 'one ' + (kSample ? kSample.replace(/s$/, '') : 'sample') + ', no uncertainty claimed' });
         }
 
         // Four spans, and short ones. The shell gives the bar about two lines before the text starts
@@ -37243,8 +37292,7 @@ void main(){
             stepsDone.toLocaleString() + '</b></span>' +
           '<span>' + KIN_LABEL[P.K.kind] + ', ' + LAW_LABEL[s.law] + ' · ' + win +
             ' · L <b>' + P.L0.toFixed(2) + ' → ' + L.toFixed(2) + '</b></span>' +
-          '<span>' + (P.plane ? 'ρ' : 'n') + ' ' + meas + ' of <b>' + pred.toFixed(1) + '</b> · ' +
-            tr + '</span>' +
+          '<span>' + meas + ' · ' + tr + '</span>' +
           '<span>' + chk + (P.clamped ? ' · run trimmed to fit' : '') + (extra ? ' · ' + extra : '') + '</span>'
         );
       }
@@ -39655,7 +39703,7 @@ void main(){
     create(host) {
       const canvas = host.canvas;
       const ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, hh, vv, step = 0, raf = 0, paused = false, buf, img, lam = 0, lamTh = 0;
+      let W = 0, H = 0, hh, vv, step = 0, raf = 0, paused = false, buf, img, lam = 0, lamTh = 0, lamStat = null;
 
       function sizeFrom(s) {
         const aspect = ASPECTS[s.aspect] || 1;
@@ -39731,16 +39779,31 @@ void main(){
         }
       }
 
-      function measure(s) {
-        // Zero-crossing wavelength along the mid row, against 2π sqrt(κ / ω).
-        const y = (H / 2) | 0;
+      // Zero-crossing wavelength along one row, or 0 when the row crosses fewer than twice.
+      function rowLam(y) {
         let crossings = 0, last = hh[idx(0, y)];
         for (let x = 1; x < W; x++) {
           const v = hh[idx(x, y)];
           if (last === 0 || (last < 0 && v >= 0) || (last > 0 && v <= 0)) crossings++;
           last = v;
         }
-        lam = crossings > 1 ? (2 * W / crossings) : 0;
+        return crossings > 1 ? (2 * W / crossings) : 0;
+      }
+      function measure(s) {
+        // Zero-crossing wavelength, against 2π sqrt(κ / ω). The Stripe, Oscillon and Two-spot seeds
+        // start from a formula with no randomness, so their mid row is read as before. The Noise seed
+        // is a random draw: there the wavelength is averaged over every row that crosses at least
+        // twice, with its error bar from tau_int over the row sequence, since neighboring rows of one
+        // field are correlated.
+        lamStat = null;
+        if (s.init === 'noise') {
+          const rows = [];
+          for (let y = 0; y < H; y++) { const v = rowLam(y); if (v) rows.push(v); }
+          lamStat = rows.length ? U.stats.seriesMean(rows) : null;
+          lam = lamStat ? lamStat.mean : 0;
+        } else {
+          lam = rowLam((H / 2) | 0);
+        }
         lamTh = s.omega > 0.05 ? (2 * Math.PI * Math.sqrt(Math.max(1e-4, s.tension) / s.omega)) : 0;
       }
 
@@ -39779,7 +39842,12 @@ void main(){
       function status() {
         host.setStatus(
           '<span>grid <b>' + W + '×' + H + '</b></span>' +
-          '<span>λ <b>' + (lam ? lam.toFixed(1) : '—') + '</b> · est ' + lamTh.toFixed(1) + '</span>' +
+          (!lam ? '<span>λ <b>—</b> · linear estimate ' + lamTh.toFixed(1) + '</span>'
+            : lamStat
+              ? U.stats.compare({ label: 'λ', measured: lam, expected: lamTh, reference: 'linear estimate', basis: 'sampled', digits: 3,
+                  uncertainty: lamStat.se, method: 'τ_int over ' + lamStat.n + ' rows',
+                  pending: lamStat.se === 0 ? 'every row gives the same crossing count' : 'too few rows to estimate τ_int' })
+              : U.stats.compare({ label: 'λ', measured: lam, expected: lamTh, reference: 'linear estimate', basis: 'deterministic', digits: 3 })) +
           '<span>step <b>' + step.toLocaleString() + '</b></span>'
         );
       }
@@ -40601,12 +40669,15 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
+      // Both numbers as fractions. e^{−2J/T} is the Boltzmann weight of one defect vertex, not a
+      // prediction of the density, and the density is read from one snapshot of a correlated field.
       function status(s) {
-        const theory = Math.exp(-2 * s.J / Math.max(0.05, s.temp));
+        const weight = Math.exp(-2 * s.J / Math.max(0.05, s.temp));
         host.setStatus(
           '<span>grid <b>' + W + '×' + H + '</b></span>' +
           '<span>ice <b>' + Math.round(iceFrac * 100) + '%</b></span>' +
-          '<span>monopoles <b>' + (rho * 100).toFixed(1) + '%</b> · e^{−2J/T} ' + theory.toFixed(3) + '</span>' +
+          U.stats.compare({ label: 'monopole density', measured: rho, expected: weight, reference: 'Boltzmann weight e^{−2J/T}', basis: 'sampled', digits: 3,
+            pending: 'one snapshot; e^{−2J/T} is a vertex weight, not a density' }) +
           '<span>step <b>' + step.toLocaleString() + '</b></span>'
         );
       }
@@ -40907,12 +40978,19 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
+      // On the clean open chain the rows are the closed-form modes e^{gj} sin(k j), so the weight on the
+      // last tenth follows from the formula that drew them. With disorder or periodic ends the rows come
+      // from subspace iteration with Gram-Schmidt, which returns an orthonormal basis rather than the
+      // right eigenvectors, so the number is printed with that caveat and no reference.
       function status(s) {
-        const theory = s.bc === 'periodic' ? '0 (ring)' : 'e^{2gN} pile';
+        const exact = s.disorder < 0.04 && s.bc !== 'periodic';
         const verdict = s.bc === 'periodic' ? (skinW > 0.35 ? 'skin leaked' : 'no skin') : (skinW > 0.45 ? 'skinned' : (s.g < 0.01 ? 'Hermitian' : 'partial'));
         host.setStatus(
           '<span>chain <b>' + W + '</b> · modes <b>' + H + '</b></span>' +
-          '<span>skin weight <b>' + f3(skinW) + '</b> · ' + theory + '</span>' +
+          (exact
+            ? U.stats.compare({ label: 'skin weight', measured: skinW, basis: 'construction', digits: 3, note: 'closed-form modes' })
+            : U.stats.compare({ label: 'skin weight', measured: skinW, basis: 'sampled', digits: 3,
+                pending: 'Gram–Schmidt basis is orthonormal, not the right eigenvectors' })) +
           '<span>' + verdict + '</span>'
         );
         void ipr;
@@ -41919,7 +41997,13 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>E1 final / initial <b>' + f3(metric) + '</b></span><span>sampled minimum <b>' + f3(extra) + '</b></span><span>sampled energy drift <b>' + drift.toExponential(1) + '</b></span><span>time <b>' + f2(elapsed) + '</b>, linear period <b>' + f2(linearPeriod) + '</b></span>'); }
+      // The chain starts from a formula and is stepped by velocity Verlet with no randomness, so the
+      // total-energy drift (the largest |E/E0 - 1| over the recorded rows) is integration error only.
+      function status() {
+        host.setStatus('<span>E1 final / initial <b>' + f3(metric) + '</b></span><span>sampled minimum <b>' + f3(extra) + '</b></span>' +
+          U.stats.compare({ label: 'energy drift', measured: drift, expected: 0, reference: 'exact flow', basis: 'deterministic', note: 'max over recorded rows' }) +
+          '<span>time <b>' + f2(elapsed) + '</b>, linear period <b>' + f2(linearPeriod) + '</b></span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
@@ -42693,7 +42777,16 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>core hits <b>' + (100 * metric).toFixed(1) + '%</b></span><span>theory ' + (host.getState().on === 'on' ? '0' : 'geometric') + '</span><span>' + (host.getState().on === 'on' && metric < 0.08 ? 'cloaked' : 'visible') + '</span>'); }
+      // With the cloak on, the ray positions are pushed through the Pendry, Schurig and Smith map r -> R1 + r (R2 - R1) / R2,
+      // which sends every point outside R1: the hit count is then a regression test of that map, not
+      // a measurement of the optics. With it off the rays go straight and the count is plain geometry.
+      function status() {
+        const on = host.getState().on === 'on';
+        host.setStatus((on
+          ? U.stats.compare({ label: 'core hits', measured: 100 * metric, units: '%', expected: 0, reference: 'coordinate map', basis: 'construction', digits: 3 })
+          : '<span>core hits <b>' + (100 * metric).toFixed(1) + '%</b></span><span>geometric</span>') +
+          '<span>' + (on && metric < 0.08 ? 'cloaked' : 'visible') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
@@ -42937,6 +43030,8 @@ void main(){
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
       let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
+      const GROUPS = 8;
+      let groupHits = null, groupRays = null, groupMetric = [];
       function sizeFrom(s) {
         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
         return { W: g, H: Math.max(48, Math.round(g * a)) };
@@ -42977,8 +43072,14 @@ void main(){
           }
           return q ? { q, nrm, t: best } : null;
         }
+        // The window's hits are also tallied by ray index mod 8. Each of those interleaved groups is an
+        // independent stratified sweep of the whole circle, so their scatter gives the error bar.
+        const gx = (dark[0] * W) | 0, gy = (dark[1] * H) | 0;
+        groupHits = new Float64Array(GROUPS); groupRays = new Float64Array(GROUPS);
         for (let r = 0; r < nR; r++) {
           const ang = (r + rng()) * Math.PI * 2 / nR;
+          const grp = r % GROUPS;
+          groupRays[grp]++;
           let p = src.slice(), d = [Math.cos(ang), Math.sin(ang)];
           for (let b = 0; b < bnc; b++) {
             const h = hitEdge(p, d);
@@ -42987,7 +43088,10 @@ void main(){
             for (let k = 0; k <= steps; k++) {
               const xx = p[0] + d[0] * h.t * k / steps, yy = p[1] + d[1] * h.t * k / steps;
               const xi = (xx * W) | 0, yi = (yy * H) | 0;
-              if (xi >= 0 && yi >= 0 && xi < W && yi < H) field[yi * W + xi] += 1;
+              if (xi >= 0 && yi >= 0 && xi < W && yi < H) {
+                field[yi * W + xi] += 1;
+                if (Math.abs(xi - gx) <= 3 && Math.abs(yi - gy) <= 3) groupHits[grp] += 1;
+              }
             }
             const nd = d[0] * h.nrm[0] + d[1] * h.nrm[1];
             d = [d[0] - 2 * nd * h.nrm[0], d[1] - 2 * nd * h.nrm[1]];
@@ -43001,6 +43105,8 @@ void main(){
         }
         metric = darkHits / Math.max(1, win);
         extra = kind === 'tokarsky' ? 0 : 1;
+        // Each group's estimate of the same per-cell hit count, scaled up to the full ray count.
+        groupMetric = Array.from(groupHits, (g, i) => groupRays[i] ? g / Math.max(1, win) * nR / groupRays[i] : NaN).filter(Number.isFinite);
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
@@ -43031,7 +43137,20 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>dark-window hits <b>' + f2(metric) + '</b></span><span>theory ' + (host.getState().kind === 'tokarsky' ? '0' : 'lit') + '</span><span>' + (host.getState().kind === 'tokarsky' && metric < 0.4 ? 'unilluminable' : 'lit') + '</span>'); }
+      // Only the Tokarsky-style room is compared with 0, and it is this project's own drawing of a
+      // room with a dark point, not Tokarsky's published construction. The rectangle and the L are
+      // controls with no reference value; their hits are printed plainly.
+      function status() {
+        const tok = host.getState().kind === 'tokarsky';
+        const g = U.stats.sampleMean(groupMetric);
+        host.setStatus((tok
+          ? U.stats.compare({ label: 'dark-window hits', measured: metric, expected: 0, reference: 'dark point', basis: 'sampled', digits: 3,
+              uncertainty: g.se, method: GROUPS + ' interleaved ray groups',
+              pending: groupHits && groupHits.every(v => v === 0) ? 'no hits in any of ' + GROUPS + ' ray groups' : 'ray groups too few',
+              note: 'hand-drawn room, not Tokarsky\'s construction' })
+          : '<span>dark-window hits <b>' + f2(metric) + '</b></span>') +
+          '<span>' + (tok && metric < 0.4 ? 'unilluminable' : 'lit') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
@@ -44698,7 +44817,13 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>|μ|/2t <b>' + f2(extra) + '</b> · topo < 1</span><span>end weight <b>' + f2(metric) + '</b></span><span>' + (extra < 1 && metric > 0.4 ? 'Majorana ends' : (extra < 1 ? 'topo, finite-size' : 'trivial')) + '</span>'); }
+      // The end-mode rows are an assumed profile (an exponential with a decay chosen from μ, or a sine
+      // in the trivial phase), not eigenvectors of the chain, so their end weight is set by that choice.
+      function status() {
+        host.setStatus('<span>|μ|/2t <b>' + f2(extra) + '</b> · topo < 1</span>' +
+          U.stats.compare({ label: 'end weight', measured: metric, basis: 'construction', digits: 2, note: 'assumed end-mode profile' }) +
+          '<span>' + (extra < 1 && metric > 0.4 ? 'Majorana ends' : (extra < 1 ? 'topo, finite-size' : 'trivial')) + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
@@ -46056,7 +46181,6 @@ void main(){
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -46121,7 +46245,7 @@ void main(){
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
       let W = 0, H = 0, hh, hn, lin, II, step = 0, raf = 0, paused = false, buf, img;
-      let corr = 0, lam = 0, lamTh = 0;
+      let corr = 0, lam = 0, lamTh = 0, lamStat = null;
 
       function sizeFrom(s) {
         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
@@ -46231,14 +46355,20 @@ void main(){
           num += a * b; dh += a * a; dI += b * b;
         }
         corr = num / Math.sqrt((dh * dI) || 1e-12);
-        const y = (H / 2) | 0;
-        let crossings = 0, last = hh[idx(0, y)];
-        for (let x = 1; x < W; x++) {
-          const v = hh[idx(x, y)];
-          if ((last < 0 && v >= 0) || (last > 0 && v <= 0)) crossings++;
-          last = v;
+        // Zero-crossing wavelength on every row that crosses at least twice. Neighboring rows of one
+        // field are correlated, so the mean's error bar comes from tau_int over the row sequence.
+        const rows = [];
+        for (let y = 0; y < H; y++) {
+          let crossings = 0, last = hh[idx(0, y)];
+          for (let x = 1; x < W; x++) {
+            const v = hh[idx(x, y)];
+            if ((last < 0 && v >= 0) || (last > 0 && v <= 0)) crossings++;
+            last = v;
+          }
+          if (crossings > 1) rows.push(2 * W / crossings);
         }
-        lam = crossings > 1 ? (2 * W / crossings) : 0;
+        lamStat = rows.length ? U.stats.seriesMean(rows) : null;
+        lam = lamStat ? lamStat.mean : 0;
         lamTh = s.waves;
       }
 
@@ -46283,9 +46413,15 @@ void main(){
       function status() {
         const s = host.getState();
         const loop = (s.eta > 0.08) && (corr > 0.12);
+        const n = lamStat ? lamStat.n : 0;
         host.setStatus(
-          '<span>corr(h, I) <b>' + f3(corr) + '</b> · η=0 ⇒ ~0</span>' +
-          '<span>λ <b>' + (lam ? lam.toFixed(1) : '—') + '</b> · k₀ ' + lamTh.toFixed(0) + '</span>' +
+          U.stats.compare({ label: 'corr(h, I)', measured: corr, basis: 'sampled', digits: 3,
+            pending: 'one snapshot; the η = 0 control is not computed' }) +
+          (lam
+            ? U.stats.compare({ label: 'λ', measured: lam, expected: lamTh, reference: 'preferred wavelength', units: 'cells', basis: 'sampled',
+                uncertainty: lamStat.se, method: 'τ_int over ' + n + ' rows',
+                pending: lamStat.se === 0 ? 'every row gives the same crossing count' : 'too few rows to estimate τ_int' })
+            : '<span>λ <b>—</b></span>') +
           '<span>' + (s.eta < 0.05 ? 'open loop' : (loop ? 'fold lock' : 'writing')) + '</span>'
         );
       }
@@ -51022,8 +51158,10 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
       function status() {
+        // The residual is a finite-difference evaluation of KP-I at a fixed set of points, with no
+        // randomness in it: its only error is the difference step, which the next span reports.
         host.setStatus(
-          '<span>sampled KP-I residual <b>' + metric.toExponential(1) + '</b></span>' +
+          U.stats.compare({ label: 'KP-I residual', measured: metric, expected: 0, reference: 'KP-I solution', basis: 'deterministic', note: 'rms at fixed points' }) +
           '<span>step sensitivity <b>' + residualChange.toExponential(1) + '</b></span>' +
           '<span>visible grid peak <b>' + f2(extra) + '</b></span>' +
           '<span>' + kindLabel + '</span>'
@@ -51095,7 +51233,6 @@ void main(){
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const sci = v => {
     if (!isFinite(v)) return '-';
     const a = Math.abs(v);
@@ -51620,14 +51757,23 @@ void main(){
         else if (!lockFail && onOctant) tag = 'lock held';
         else if (traj.collapsing) tag = 'collapsing';
         else tag = 'drifting';
+        // The spread of the three rotation rates about their mean says how rigidly the triangle turns. It
+        // is not an error bar: ω t_c comes from Biot-Savart velocities at t = 0 with no randomness in it.
         const sig = (isFinite(m.tau) && isFinite(m.wSig)) ? sci(m.wSig * Math.abs(m.tau) / SQRT2) : '0';
-        const lockStr = isFinite(lock) ? f3(lock) : 'inf';
-        const wtcStr = isFinite(m.wtc) ? f3(m.wtc) : 'inf';
+        const miss = fail => fail ? ' · miss' : '';
+        // Octant and Family frames come from the analytic similarity map and are placed on the L = 0
+        // circle, so those two checks hold by construction there. Broken integrates the ODE off it.
+        const built = traj.broken ? 'deterministic' : 'construction';
         host.setStatus(
-          '<span>ω t_c / √2 <b>' + lockStr + '</b> ± ' + sig + ' · 1' + (onOctant && lockFail ? ' · miss' : '') + '</span>' +
-          '<span>similar <b>' + sci(traj.simMax) + '</b> · 0' + (simFail ? ' · miss' : '') + '</span>' +
-          '<span>L <b>' + sci(m.I) + '</b> · 0' + (IFail ? ' · miss' : '') + '</span>' +
-          '<span>' + tag + (odeFail ? ' · ODE off' : '') + ' · ω t_c ' + wtcStr + '</span>'
+          (isFinite(lock)
+            ? U.stats.compare({ label: 'ω t_c / √2', measured: lock, expected: 1, reference: 'sharp minimum', basis: 'deterministic',
+                note: 'rotation-rate spread ' + sig + miss(onOctant && lockFail) })
+            : '<span>ω t_c / √2 <b>inf</b></span>') +
+          U.stats.compare({ label: 'similar', measured: traj.simMax, expected: 0, reference: 'self-similar', basis: built, note: simFail ? 'miss' : undefined }) +
+          U.stats.compare({ label: 'L', measured: m.I, expected: 0, reference: 'collapse condition', basis: built, note: IFail ? 'miss' : undefined }) +
+          '<span>' + tag + ' · ' + (isFinite(m.wtc)
+            ? U.stats.compare({ label: 'ω t_c', measured: m.wtc, expected: isFinite(form) ? form : undefined, reference: 'closed form', basis: 'deterministic', note: odeFail ? 'ODE off' : undefined })
+            : 'ω t_c inf' + (odeFail ? ' · ODE off' : '')) + '</span>'
         );
       }
       function compute() {
@@ -51705,7 +51851,6 @@ void main(){
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const sci = v => {
     if (!isFinite(v)) return '-';
     const a = Math.abs(v);
@@ -52212,14 +52357,23 @@ void main(){
         else if (onLock && !lockFail && !simFail && !IFail) tag = 'lock held';
         else if (traj.collapsing) tag = 'collapsing';
         else tag = 'drifting';
+        // The spread of the four rotation rates about their mean says how rigidly the figure turns. It is
+        // not an error bar: ω t_c comes from Biot-Savart velocities at t = 0 with no randomness in it.
         const sig = (isFinite(m.tau) && isFinite(m.wSig)) ? sci(m.wSig * Math.abs(m.tau) / LOCK) : '0';
-        const lockStr = isFinite(lock) ? f3(lock) : 'inf';
-        const wtcStr = isFinite(m.wtc) ? f3(Math.abs(m.wtc)) : 'inf';
+        const miss = fail => fail ? ' · miss' : '';
+        // Lock and Family frames come from the analytic similarity map and are placed on L = 0, so
+        // those two checks hold by construction there. Broken integrates the ODE off the family.
+        const built = traj.broken ? 'deterministic' : 'construction';
         host.setStatus(
-          '<span>ω t_c / (3√5/4) <b>' + lockStr + '</b> ± ' + sig + ' · 1' + (onLock && lockFail ? ' · miss' : '') + '</span>' +
-          '<span>similar <b>' + sci(traj.simMax) + '</b> · 0' + (simFail ? ' · miss' : '') + '</span>' +
-          '<span>L <b>' + sci(m.I) + '</b> · 0' + (IFail ? ' · miss' : '') + '</span>' +
-          '<span>' + tag + (odeFail ? ' · ODE off' : '') + ' · ω t_c ' + wtcStr + '</span>'
+          (isFinite(lock)
+            ? U.stats.compare({ label: 'ω t_c / (3√5/4)', measured: lock, expected: 1, reference: 'sharp minimum', basis: 'deterministic',
+                note: 'rotation-rate spread ' + sig + miss(onLock && lockFail) })
+            : '<span>ω t_c / (3√5/4) <b>inf</b></span>') +
+          U.stats.compare({ label: 'similar', measured: traj.simMax, expected: 0, reference: 'self-similar', basis: built, note: simFail ? 'miss' : undefined }) +
+          U.stats.compare({ label: 'L', measured: m.I, expected: 0, reference: 'collapse condition', basis: built, note: IFail ? 'miss' : undefined }) +
+          '<span>' + tag + ' · ' + (isFinite(m.wtc)
+            ? U.stats.compare({ label: 'ω t_c', measured: Math.abs(m.wtc), expected: isFinite(form) ? form : undefined, reference: 'closed form', basis: 'deterministic', note: odeFail ? 'ODE off' : undefined })
+            : 'ω t_c inf' + (odeFail ? ' · ODE off' : '')) + '</span>'
         );
       }
       function compute() {
@@ -52297,7 +52451,6 @@ void main(){
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const sci = v => {
     if (!isFinite(v)) return '-';
     const a = Math.abs(v);
@@ -52826,14 +52979,23 @@ void main(){
         else if (onLock && !lockFail && !simFail && !IFail) tag = 'lock held';
         else if (traj.collapsing) tag = 'collapsing';
         else tag = 'drifting';
+        // The spread of the rotation rates about their mean says how rigidly the quincunx turns. It is
+        // not an error bar: ω t_c comes from Biot-Savart velocities at t = 0 with no randomness in it.
         const sig = (isFinite(m.tau) && isFinite(m.wSig)) ? sci(m.wSig * Math.abs(m.tau) / LOCK) : '0';
-        const lockStr = isFinite(lock) ? f3(lock) : 'inf';
-        const wtcStr = isFinite(m.wtc) ? f3(Math.abs(m.wtc)) : 'inf';
+        const miss = fail => fail ? ' · miss' : '';
+        // Lock and Family frames come from the analytic similarity map and are placed on L = 0, so
+        // those two checks hold by construction there. Broken integrates the ODE off the family.
+        const built = traj.broken ? 'deterministic' : 'construction';
         host.setStatus(
-          '<span>ω t_c / (3√33/16) <b>' + lockStr + '</b> ± ' + sig + ' · 1' + (onLock && lockFail ? ' · miss' : '') + '</span>' +
-          '<span>similar <b>' + sci(traj.simMax) + '</b> · 0' + (simFail ? ' · miss' : '') + '</span>' +
-          '<span>L <b>' + sci(m.I) + '</b> · 0' + (IFail ? ' · miss' : '') + '</span>' +
-          '<span>' + tag + (odeFail ? ' · ODE off' : '') + ' · ω t_c ' + wtcStr + '</span>'
+          (isFinite(lock)
+            ? U.stats.compare({ label: 'ω t_c / (3√33/16)', measured: lock, expected: 1, reference: 'sharp minimum', basis: 'deterministic',
+                note: 'rotation-rate spread ' + sig + miss(onLock && lockFail) })
+            : '<span>ω t_c / (3√33/16) <b>inf</b></span>') +
+          U.stats.compare({ label: 'similar', measured: traj.simMax, expected: 0, reference: 'self-similar', basis: built, note: simFail ? 'miss' : undefined }) +
+          U.stats.compare({ label: 'L', measured: m.I, expected: 0, reference: 'collapse condition', basis: built, note: IFail ? 'miss' : undefined }) +
+          '<span>' + tag + ' · ' + (isFinite(m.wtc)
+            ? U.stats.compare({ label: 'ω t_c', measured: Math.abs(m.wtc), expected: isFinite(form) ? form : undefined, reference: 'closed form', basis: 'deterministic', note: odeFail ? 'ODE off' : undefined })
+            : 'ω t_c inf' + (odeFail ? ' · ODE off' : '')) + '</span>'
         );
       }
       function compute() {
@@ -53136,15 +53298,21 @@ void main(){
       function report() {
         const m = data.m, valid = !data.broken && m.tc > 0 && m.residual < 1e-9;
         const miss = !valid || data.formulaError > 1e-8 || data.shapeError > 1e-5 || data.exactError > 1e-5;
-        const score = valid ? (m.product / data.family.floor).toFixed(6) : 'n/a';
-        host.setStatus('<span>n = ' + data.n + ' · ω₀t_c / F_n <b>' + score + '</b> · ≥ 1</span>' +
-          '<span>formula <b>' + (valid ? sci(data.formulaError) : 'off family') + '</b></span>' +
-          '<span>shape <b>' + sci(data.shapeError) + '</b> · 0</span>' +
+        // Every number here comes from pairwise Biot-Savart velocities and a fixed-step integrator: no
+        // randomness enters, so each comparison is deterministic and its only error is numerical.
+        // The step-doubling ODE estimate is a size of numerical error, not a comparison, and stays plain.
+        host.setStatus('<span>n = ' + data.n + ' · ' + (valid
+            ? U.stats.compare({ label: 'ω₀t_c / F_n', measured: m.product / data.family.floor, expected: '≥ 1', expectedValue: 1, reference: 'derived floor', basis: 'deterministic', digits: 7 })
+            : 'ω₀t_c / F_n <b>n/a</b>') + '</span>' +
+          (valid
+            ? U.stats.compare({ label: 'formula error', measured: data.formulaError, expected: 0, reference: 'exact agreement', basis: 'deterministic' })
+            : '<span>closed form <b>off family</b></span>') +
+          U.stats.compare({ label: 'shape change', measured: data.shapeError, expected: 0, reference: 'self-similar', basis: 'deterministic' }) +
           '<span>ODE Δ/15 <b>' + sci(data.odeError) + '</b></span>' +
           '<span>' + (miss ? 'miss · off family or numerical disagreement' : 'bound held · no sampling error') + ' · priority open</span>');
         if (host.setWitness) host.setWitness({
           label: 'Self-similar velocity residual', measured: Number.isFinite(m.residual) ? m.residual : null,
-          expected: 0, tol: 1e-9, valid,
+          expected: 0, tol: 1e-9, valid, basis: 'deterministic',
           missWhen: 'Off the two-polygon family, nonpositive collapse time, or relative residual at least 1e-9.'
         });
       }

@@ -97,6 +97,26 @@ needs its own review against the primary source before it is touched.
 - `lens`: the ring source has a finite radius, the point mass has an enclosed mass that grows like ln r, and
   the deflection factor of 8 is arbitrary, so the measured radius is not an Einstein-radius test.
 - `darkroom`: the "tokarsky" room is a hand-drawn 16-gon, not Tokarsky's construction.
+- `ssh`: the intra-cell hopping is stored under the key `v`, which the engine's `sanitize` overwrites with the
+  recipe version after the schema clamp, so every SSH plate has run with v = 2 whatever the slider said.
+- `skyrmion`: two seeded-texture references are wrong. The Berg–Lüscher charge of the seeded crystal is −6, not
+  about 7, and of the seeded bimeron −2, not about 0; a skyrmion seed with several cores still prints ±1.
+- `timecrystal`: the period-doubled, prethermal and melted verdicts use thresholds on |m₂| alone and ignore the
+  new error bar; the prethermal preset reads m₂ 0.49 ± 0.17 and is labeled period-doubled.
+- `veselago`: the "many" preset renders nearly flat (ink 0.0039 against the 0.004 floor) before and after this change.
+
+## Disagreements the error bars exposed
+
+With honest uncertainties several tabs now print a clear miss. These are reported, not rounded away:
+
+| Tab | What prints | Likely reason, where known |
+|---|---|---|
+| `causticsea` | measured wavelength 14 to 23σ above the preferred Swift–Hohenberg wavelength on every preset | not diagnosed |
+| `darkroom` | the "tokarsky" room's dark window lit, 7 to 33σ above 0 | the room is not Tokarsky's construction (above) |
+| `faraday` | wavelength 12 to 17σ from the printed linear estimate (Noise presets), 2 to 4 times off on the others | the estimate formula (above) |
+| `kpz` | ballistic Rings and Wide presets 4.6 to 5.3σ below β = 1/3 | the slow crossover the tab's hint already documents |
+| `rmt` | GOE spacing spread 7σ above the Wigner surmise; the low end of the β sweep 9σ below the Poisson value | the surmise is the 2×2 approximation, and unfolding over ±12 levels biases the spread; open |
+
 - `tennis`, `swarm`, `devil`, `gyroid`, `hyperbolic`, `apollonian`: verdict labels from thresholds or parameters,
   not measured comparisons; left as labels.
 
