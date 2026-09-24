@@ -43,6 +43,7 @@ a claim of originality.
 - **N = 4 minimum:** no source found that minimizes the winding over four-vortex collapses. The
   risk is O'Neil 2007 (Regul. Chaotic Dyn. 12, 117-126), which computes four-vortex collapse
   configurations with a given kappa. It was not read in full. Read it before making any claim.
+- **Gotoda 2020 (arXiv:2002.09624), read in full for N >= 4:** computes collapsing families at fixed circulations (uniform (1, ..., 1, -(N-2)/2) for N = 4..10, and one seven-vortex set) and plots only the expansion rate A against the energy H. It never forms the ratio B/A or minimizes it, so it does not anticipate the N = 4 minimum, but it should be credited for the families and the continuation method.
 - **Decrease with N:** no source found. The N-vortex collapse papers (Kudela 2014 and 2021,
   Lewkowicz and others) find configurations; none minimizes this quantity.
 - **alpha-models:** judged probably not stated. Self-similar collapse in the alpha-models is
