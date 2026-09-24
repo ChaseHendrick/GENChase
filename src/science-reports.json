@@ -246,7 +246,7 @@
   {
     "id": "cyclic",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a < 1 < b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
     "equation": "∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v)",
     "status": "validated within stated limits",
@@ -651,7 +651,7 @@
   {
     "id": "vegetation",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n², because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
     "equation": "∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n",
     "status": "validated within stated limits",
@@ -1126,7 +1126,7 @@
   {
     "id": "excitable",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
     "equation": "Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b)",
     "status": "validated within stated limits",
@@ -1234,7 +1234,7 @@
   {
     "id": "cyclicca",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "25975c4c12a36e25ea28f09df64a78ae0bc3814d46d3c6df190400858f5ccec6",
+    "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
     "reference": "Robert Fisch, Janko Gravner and David Griffeath, Statistics and Computing 1, 23 (1991), on threshold-range scaling of excitable automata; David Griffeath, Notices of the AMS, 1988, for the cyclic cellular automaton; James M. Greenberg and Stuart P. Hastings, SIAM J. Appl. Math. 34, 515 (1978), for the excitable rest-excited-refractory rule. In the cyclic automaton every state eats the one below it, so k colors chase each other around the cycle and a random soup organizes into spirals. Greenberg-Hastings is the same cycle with one excitable state: waves propagate, refractory tails follow, and broken fronts curl into spiral pairs.",
     "equation": "cyclic: s → s+1 (mod k) if ≥ θ neighbors within range r are in state s+1;   GH: 0 → 1 if ≥ θ excited, 1 → 2 → … → k−1 → 0",
     "status": "unvalidated",
@@ -1322,7 +1322,7 @@
   {
     "id": "amb",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "Elsen Tjhung, Cesare Nardini and Michael E. Cates, Physical Review X 8, 031080 (2018). Cahn-Hilliard describes a passive mixture relaxing toward equilibrium. Two extra gradient terms, λ|∇φ|² in the chemical potential and a current ζ(∇²φ)∇φ that cannot come from any free energy, are the leading ways an active system (motile bacteria, self-propelled colloids) can break time-reversal symmetry while still conserving φ. They give the two phases different interfacial tensions, and when the tension felt by the minority phase turns negative the Ostwald process runs backward: large droplets shed material to small ones and coarsening stops.",
     "equation": "∂φ/∂t = M ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ|∇φ|²",
     "status": "validated within stated limits",
@@ -1415,7 +1415,7 @@
   {
     "id": "cahn",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ max(1−c²,0) suppresses mobility near pure phases; it does not imply pure surface diffusion for this polynomial free energy (Lee, Munch and Suli, 2015).",
     "equation": "∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c",
     "status": "validated within stated limits",
@@ -1519,7 +1519,7 @@
   {
     "id": "ohta",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). The long-range penalty can frustrate ordinary coarsening and favor microstructured states. Pattern selection depends on composition and parameters; a finite preview does not prove equilibrium.",
     "equation": "∂u/∂t = ∇·[M(u)∇μ] − σ(u−m),   μ = u³ − u − ε²Δu",
     "status": "validated within stated limits",
@@ -1651,7 +1651,7 @@
   {
     "id": "swift",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is a phenomenological pattern-forming model motivated by convection near onset: a real scalar field with a preferred wavenumber k₀. Quadratic and cubic nonlinearities affect the available branches. Localized patterns can exist in suitable subcritical regimes; this display does not establish branch stability.",
     "equation": "∂u/∂t = r u − (k₀² + ∇²)² u + g u² − b u³",
     "status": "validated within stated limits",
@@ -1725,7 +1725,7 @@
   {
     "id": "pfc",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "K. R. Elder, M. Katakowski, M. Haataja and M. Grant, Phys. Rev. Lett. 88, 245701 (2002); Elder and Grant, Phys. Rev. E 70, 051605 (2004). The phase-field crystal model is Swift–Hohenberg’s free energy evolved with conserved (Cahn–Hilliard) dynamics. The field represents time-averaged atomic-scale density, not individual particle trajectories. The model supports crystalline order and defects on diffusive time scales; this finite-grid display does not locate a material melting line.",
     "equation": "∂ψ/∂t = M ∇²(δF/δψ),   F = ∫ ½ ψ [r + (k₀²+∇²)²] ψ + ψ⁴/4",
     "status": "validated within stated limits",
@@ -2010,7 +2010,7 @@
   {
     "id": "sandpile",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "25975c4c12a36e25ea28f09df64a78ae0bc3814d46d3c6df190400858f5ccec6",
+    "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
     "reference": "Per Bak, Chao Tang and Kurt Wiesenfeld, Phys. Rev. Lett. 59, 381 (1987); Deepak Dhar, Phys. Rev. Lett. 64, 1613 (1990). Bak, Tang and Wiesenfeld dropped grains one at a time on a lattice with a toppling threshold and found avalanches of every size, a power law with no tuning: self-organized criticality. Dhar showed the toppling operators commute, so the final stable state does not depend on the order of toppling, and the recurrent configurations form an Abelian group. The identity of that group, computed on a square, is the fractal plate in the second mode.",
     "equation": "if hᵢ ≥ 4: hᵢ −= 4, hⱼ += 1 for each neighbor j;   identity e = (2m − (2m)°)°, m = all 3",
     "status": "unvalidated",
@@ -2048,7 +2048,7 @@
   {
     "id": "ks",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "Yoshiki Kuramoto and Toshio Tsuzuki, Prog. Theor. Phys. 55, 356 (1976); G. I. Sivashinsky, Acta Astronautica 4, 1177 (1977). Independently derived for reaction-diffusion phase turbulence and for laminar flame fronts. It is the simplest PDE that produces extensive spatiotemporal chaos: a band of unstable modes, a stabilizing biharmonic, and a Burgers-like nonlinearity. In two dimensions the cells of a flame.",
     "equation": "∂u/∂t = −ν ∇⁴u − ∇²u − (α/2)|∇u|²",
     "status": "validated within stated limits",
@@ -2180,7 +2180,7 @@
   {
     "id": "turing",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry.",
     "equation": "Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v",
     "status": "validated within stated limits",
@@ -2439,7 +2439,7 @@
   {
     "id": "chemotaxis",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) < c/2 − D − a.",
     "equation": "∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²)",
     "status": "validated within stated limits",
@@ -2546,7 +2546,7 @@
   {
     "id": "percolation",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "25975c4c12a36e25ea28f09df64a78ae0bc3814d46d3c6df190400858f5ccec6",
+    "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
     "reference": "S. R. Broadbent and J. M. Hammersley, Proc. Cambridge Philos. Soc. 53, 629 (1957); J. Hoshen and R. Kopelman, Phys. Rev. B 14, 3438 (1976); Harry Kesten, Comm. Math. Phys. 74, 41 (1980). Broadbent and Hammersley asked how a fluid spreads through a random porous medium and found a sharp threshold: below p_c every cluster is finite, above it one cluster spans the lattice. Kesten proved the bond threshold on the square lattice is exactly 1/2. The site threshold, about 0.592746, is known only numerically. Hoshen and Kopelman gave the one-pass labeling that finds the clusters.",
     "equation": "site occupied iff rᵢ < p;   bond open iff rᵢⱼ < p;   p_c(site) ≈ 0.5927,   p_c(bond) = 1/2",
     "status": "unvalidated",
@@ -2908,7 +2908,7 @@
   {
     "id": "ising",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "25975c4c12a36e25ea28f09df64a78ae0bc3814d46d3c6df190400858f5ccec6",
+    "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
     "reference": "Ernst Ising, Z. Phys. 31, 253 (1925); Lars Onsager, Phys. Rev. 65, 117 (1944); Nicholas Metropolis, Arianna W. Rosenbluth, Marshall N. Rosenbluth, Augusta H. Teller and Edward Teller, J. Chem. Phys. 21, 1087 (1953). Ising solved the chain and found no transition. Onsager solved the square lattice exactly and found one at T_c = 2/ln(1+√2). The Metropolis algorithm samples the Boltzmann distribution by proposing single flips and accepting them with probability min(1, exp(−ΔE/T)). Here the lattice is updated as a checkerboard: two half-sweeps per step, each parity with its neighbors held fixed, so the GPU can flip every site of one color at once.",
     "equation": "E = −J Σ⟨ij⟩ sᵢsⱼ − h Σᵢ sᵢ,   P(flip) = min(1, e^{−ΔE/T}),   T_c = 2/ln(1+√2) ≈ 2.269",
     "status": "unvalidated",

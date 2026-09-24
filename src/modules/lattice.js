@@ -321,6 +321,11 @@ void main(){
       let C = null, B = null, reduceT = null, gw = 0, gh = 0, ramp = null, rampPal = null, rampKey = '';
       const redBuf = new Uint8Array(RED * RED * 4);
       let raf = 0, chunkTimer = 0, sweeps = 0, tick0 = 0, meanM = 0;
+      // |m| is sampled every SAMPLE sweeps into a time series, so its error bar can account for the
+      // autocorrelation of the Markov chain. Near T_c single-flip Metropolis decorrelates slowly (critical
+      // slowing down), and a naive error on those samples would be far too small; tau_int says how slow.
+      const SAMPLE = 24;
+      let mSeries = [], nextSample = SAMPLE, fieldBuf = null;
 
       function ensureGrid(s) {
         const [W, H] = gridSize(s);
@@ -372,6 +377,50 @@ void main(){
         });
       }
       function measure() { meanM = gpuMeasure(gl, reducePass, reduceT, C.read, gw, gh, redBuf).mean; }
+      // Magnetization over every site from the float spin field. The 8-bit block reduction above is
+      // enough for the picture but rounds each block, which biases |m| by up to about 0.004 when every
+      // block agrees; a half-float device falls back to it and the method says so.
+      function exactMag() {
+        if (texType !== 'rgba32f') return null;
+        const n = gw * gh * 4;
+        if (!fieldBuf || fieldBuf.length !== n) fieldBuf = new Float32Array(n);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, C.read.fbo);
+        gl.readPixels(0, 0, gw, gh, gl.RGBA, gl.FLOAT, fieldBuf);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        let sum = 0;
+        for (let i = 0; i < n; i += 4) sum += fieldBuf[i] > 0 ? 1 : -1;
+        return sum / (gw * gh);
+      }
+      function sample() {
+        if (sweeps < nextSample) return;
+        const m = exactMag();
+        if (m === null) measure();
+        mSeries.push(Math.abs(m === null ? meanM : m));
+        if (mSeries.length > 4096) mSeries = mSeries.slice(-2048);
+        nextSample = sweeps + SAMPLE;
+      }
+      function resetSeries() { mSeries = []; nextSample = sweeps + SAMPLE; }
+      // Onsager's T_c and Yang's spontaneous magnetization for the infinite square lattice at h = 0
+      // (C. N. Yang, Phys. Rev. 85, 808, 1952): M(T) = (1 - sinh(2J/T)^-4)^(1/8) below T_c.
+      const yangM = T => T < T_C ? Math.pow(1 - Math.pow(Math.sinh(2 / T), -4), 1 / 8) : 0;
+      function magnetization(s, r) {
+        // The first half of the series is discarded as equilibration: a hot start quenched below T_c
+        // coarsens for a long time before |m| settles, and those samples would drag the mean down.
+        const eq = mSeries.slice(Math.floor(mSeries.length / 2));
+        const clean = s.h === 0 && s.hMode === 'uniform';
+        const withYang = clean && r < 0.95;
+        const near = r >= 0.95 && r < 1.05;
+        const base = { label: '|m|', measured: eq.length ? U.stats.mean(eq) : Math.abs(meanM) };
+        if (withYang) Object.assign(base, { expected: yangM(s.T), reference: 'Yang, infinite lattice', digits: 4 });
+        if (eq.length < 20) return U.stats.compare(Object.assign(base, { basis: 'sampled', pending: eq.length + ' samples after equilibration; let it run' }));
+        const est = U.stats.seriesMean(eq), tauSweeps = Math.round(est.tau * SAMPLE);
+        const method = 'τ_int ' + est.tau.toFixed(1) + ' samples of ' + SAMPLE + ' sweeps (' + tauSweeps + ' sweeps), n_eff ' +
+          Math.round(est.nEff) + ' of ' + eq.length + ', first half of the run discarded as equilibration' +
+          (texType === 'rgba32f' ? ', every site counted' : ', 8-bit block reduction on a half-float device');
+        if (!est.reliable) return U.stats.compare(Object.assign(base, { basis: 'sampled', pending: 'run shorter than 50 τ_int (τ_int ≈ ' + tauSweeps + ' sweeps)' }));
+        return U.stats.compare(Object.assign(base, { basis: 'sampled', measured: est.mean, uncertainty: est.se, method,
+          note: near ? 'τ_int ' + tauSweeps + ' sweeps, critical slowing down' : withYang ? 'finite L' : undefined }));
+      }
       function status(extra) {
         const s = host.getState(), r = s.T / T_C;
         const phase = r < 0.93 ? 'ordered' : r < 1.07 ? 'critical' : 'disordered';
@@ -379,6 +428,7 @@ void main(){
           '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
           '<span>T <b>' + s.T.toFixed(2) + '</b> · ' + r.toFixed(2) + ' T<sub>c</sub> · ' + phase + '</span>' +
           '<span>m <b>' + (meanM >= 0 ? '+' : '') + meanM.toFixed(2) + '</b></span>' +
+          magnetization(s, r) +
           '<span>sweep <b>' + sweeps.toLocaleString() + '</b></span>' +
           (extra ? '<span>' + extra + '</span>' : '')
         );
@@ -387,7 +437,7 @@ void main(){
       function frame() {
         raf = 0;
         const s = host.getState();
-        step(s.steps); render();
+        step(s.steps); sample(); render();
         if (sweeps % 16 < s.steps) { measure(); status(); }
         raf = requestAnimationFrame(frame);
       }
@@ -402,7 +452,7 @@ void main(){
         let left = total;
         (function chunk() {
           const n = Math.min(24, left); left -= n;
-          step(n); render();
+          step(n); sample(); render();
           if (left > 0) chunkTimer = setTimeout(chunk, 0);
           else { measure(); status(); startLoop(); }
         })();
@@ -410,7 +460,7 @@ void main(){
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
         regenerate() {
-          stop(); sweeps = 0;
+          stop(); sweeps = 0; resetSeries();
           const s = host.getState();
           tick0 = U.makeRng(s.seed + '/ising/tick').int(0, 1e6);
           ensureGrid(s);
@@ -421,7 +471,11 @@ void main(){
           else { render(); measure(); status(); startLoop(); }
         },
         repaint() { if (C) render(); },
-        live(key) { if (key === 'running') startLoop(); else if (!raf) startLoop(); },
+        live(key) {
+          // a new temperature or field starts a new ensemble: samples from the old one would bias the mean
+          if (key === 'T' || key === 'h' || key === 'hMode' || key === 'bands') resetSeries();
+          if (key === 'running') startLoop(); else if (!raf) startLoop();
+        },
         resize() { if (C) render(); },
         pause() { stop(); },
         resume() { if (C) { render(); startLoop(); } },
@@ -434,7 +488,21 @@ void main(){
           // paint a disk of the minority spin so the poke is visible whatever the plate's majority
           const v = meanM > 0 ? -1 : 1;
           splatPass.draw(C.write, { u_src: C.read, u_pos: [p.x, p.yGL], u_add: [v, 0, 0, 1], u_rad: 0.05, u_amt: 1, u_mode: { int: 0 } });
-          C.swap(); render(); startLoop();
+          C.swap(); resetSeries(); render(); startLoop();
+        },
+        // The spin configuration and the |m| time series behind the printed error bar, for research use.
+        async exportData() {
+          if (!C) throw new Error('nothing to export');
+          const s = host.getState(), st = G.readTarget(C.read), n = gw * gh, spins = new Int8Array(n);
+          for (let i = 0; i < n; i++) spins[i] = st[i * 4] > 0 ? 1 : -1;
+          return {
+            arrays: {
+              spins: { data: spins, shape: [gh, gw], description: 'spin at each site, +1 or -1' },
+              abs_m_series: { data: Float64Array.from(mSeries), shape: [mSeries.length], description: '|m| sampled every ' + SAMPLE + ' sweeps since the last reset; the printed error bar discards the first half' },
+            },
+            meta: { tab: 'ising', grid: [gw, gh], boundary: 'periodic', T: s.T, h: s.h, hMode: s.hMode, J: 1, kB: 1, sweeps,
+              update: 'checkerboard Metropolis, two half-sweeps per sweep', sampleEverySweeps: SAMPLE, T_c: T_C },
+          };
         },
         exportPNG(w, h) {
           if (!C) return Promise.reject(new Error('nothing to export'));

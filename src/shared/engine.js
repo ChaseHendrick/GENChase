@@ -275,6 +275,8 @@
       this.gl = gl; this.w = w; this.h = h;
       const type = opts.type || (gl.floatExt ? 'rgba32f' : 'rgba8');
       this.type = type;
+      // Provenance reports which precisions a technique's state actually used on this device.
+      (gl.__targetTypes || (gl.__targetTypes = new Set())).add(type);
       this.tex = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, this.tex);
       const filter = opts.filter === 'nearest' ? gl.NEAREST : gl.LINEAR;
@@ -396,7 +398,25 @@ void main(){
     const t = new Target(gl, 256, 1, { type: 'rgba8', filter: 'linear', data });
     return t;
   }
-  const glh = { createGL, compile, Pass, Target, PingPong, glToCanvas, rampTexture, GLSL, QUAD_VS };
+  // Read a float or byte render target back as a Float32Array of w*h*4 values, rows top to bottom (the
+  // image convention, not GL's bottom-up order). Byte targets are scaled to 0..1. For exportData().
+  function readTarget(target) {
+    const gl = target.gl, w = target.w, h = target.h, out = new Float32Array(w * h * 4);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, target.fbo);
+    if (target.type === 'rgba8') {
+      const px = new Uint8Array(w * h * 4);
+      gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, px);
+      for (let i = 0; i < px.length; i++) out[i] = px[i] / 255;
+    } else gl.readPixels(0, 0, w, h, gl.RGBA, gl.FLOAT, out);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    const row = w * 4, tmp = new Float32Array(row);
+    for (let y = 0; y < h >> 1; y++) {
+      const a = y * row, b = (h - 1 - y) * row;
+      tmp.set(out.subarray(a, a + row)); out.copyWithin(a, b, b + row); out.set(tmp, b);
+    }
+    return out;
+  }
+  const glh = { createGL, compile, Pass, Target, PingPong, glToCanvas, rampTexture, readTarget, GLSL, QUAD_VS };
 
   /* ================================================================
      Palettes (original)
@@ -674,6 +694,109 @@ void main(){
     return e && e.scienceWitness ? JSON.parse(JSON.stringify(e.scienceWitness)) : null;
   };
 
+  /* ---- provenance and research data ---- */
+  // Build facts written by tools/build.js: a fingerprint of the assembled source, each script's SHA-256
+  // and each tab's validation status. Every exported file carries them, so a print says what made it.
+  const BUILD = (() => {
+    try { return Object.freeze(JSON.parse(document.getElementById('build-info').textContent)); }
+    catch (err) { return Object.freeze({}); }
+  })();
+  S.build = BUILD;
+  S.validationStatus = id => (BUILD.validation && BUILD.validation[id || currentId]) || null;
+  function computeInfo(e) {
+    const gl = glContexts.get(e.canvas);
+    if (!gl) return { api: 'CPU', precision: 'JavaScript numbers (float64) unless the technique stores typed arrays' };
+    let renderer = '', vendor = '';
+    try {
+      const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+      renderer = String(gl.getParameter(dbg ? dbg.UNMASKED_RENDERER_WEBGL : gl.RENDERER) || '');
+      vendor = String(gl.getParameter(dbg ? dbg.UNMASKED_VENDOR_WEBGL : gl.VENDOR) || '');
+    } catch (err) { /* a lost context has no renderer to report */ }
+    const types = [...(gl.__targetTypes || [])].sort();
+    const precision = types.includes('rgba32f') ? 'float32 state' : types.includes('rgba16f') ? 'float16 state (half-float fallback)' : 'no float state targets';
+    return { api: 'WebGL2', renderer, vendor, floatRenderTargets: !!gl.floatExt, targetTypes: types, precision };
+  }
+  // Deterministic for a given recipe, build and device: nothing time-dependent, so the same plate
+  // exported twice gives the same bytes.
+  S.getProvenance = id => {
+    const e = instances[id || currentId]; if (!e) return null;
+    const source = e.mod.source || (BUILD.sourceOf && BUILD.sourceOf[e.mod.id]) || null;
+    return JSON.parse(JSON.stringify({
+      schemaVersion: 1, software: 'GENChase', engineApiVersion: S.apiVersion, recipeVersion: RECIPE_V,
+      build: BUILD.build || null, buildFingerprint: BUILD.fingerprint || null,
+      technique: { id: e.mod.id, name: e.mod.name, source, sourceSha256: (source && BUILD.sources && BUILD.sources[source]) || null,
+        validation: S.validationStatus(e.mod.id) },
+      link: encodeRecipe(e), recipe: S.getRecipe(e.mod.id), compute: computeInfo(e), witness: S.getWitness(e.mod.id),
+      note: 'What made this file. The link reprints the recipe; exact pixels can differ across solver revisions, GPUs and resolutions.',
+    }));
+  };
+  // Validation status is shown where the plate is, not only in a report: a research user trusts the
+  // weakest tab they happen to open, so every tab and the stage say how far its numerics were checked.
+  const EVIDENCE = {
+    'validated within stated limits': { glyph: '✓', short: 'Validated within stated limits' },
+    'partially validated': { glyph: '◐', short: 'Partially validated' },
+    unvalidated: { glyph: '○', short: 'Unvalidated' },
+  };
+  const evidenceOf = id => EVIDENCE[S.validationStatus(id)] || null;
+  function renderEvidenceBadge(id) {
+    const badge = document.getElementById('btn-science-report'), status = S.validationStatus(id), ev = evidenceOf(id);
+    if (!badge || badge.dataset.status === (status || '')) return;
+    badge.dataset.status = status || '';
+    badge.textContent = ev ? ev.glyph + ' ' + ev.short + ' · Science report' : 'Science report';
+    badge.title = ev ? 'Validation status from validation/techniques.json. Open the evidence, limits and data export.' : 'Open the science report';
+  }
+  const softwareLine = () => 'GENChase, engine API ' + S.apiVersion + ', recipe v' + RECIPE_V + ', build ' + (BUILD.build || 'unknown');
+  function statusText(e) {
+    const d = document.createElement('div');
+    d.innerHTML = e.statusHtml + scienceWitnessHtml(e.scienceWitness);
+    const parts = [...d.children].map(c => c.textContent.replace(/\s+/g, ' ').trim()).filter(Boolean);
+    return (parts.length ? parts.join(' · ') : d.textContent).replace(/\s+/g, ' ').trim();
+  }
+  // A research copy of the plate's state: an uncompressed .npz that numpy.load reads, holding one .npy
+  // per array the technique exports and meta.json with the provenance, units and grid. A technique that
+  // does not implement exportData() still yields meta.json, and says that its state is not included.
+  async function dataPackage(e) {
+    const F = window.GenChaseDataFormats;
+    let out = null, failure = '';
+    if (typeof e.inst.exportData === 'function') {
+      try { out = await e.inst.exportData(); } catch (err) { failure = String((err && err.message) || err); }
+    }
+    const members = [], arrays = {};
+    for (const [name, a] of Object.entries((out && out.arrays) || {})) {
+      if (!/^[a-z][a-z0-9_]{0,40}$/.test(name)) throw new Error('Invalid data array name: ' + name);
+      members.push({ name: name + '.npy', data: F.npy(a.data, a.shape) });
+      arrays[name] = { file: name + '.npy', shape: a.shape, dtype: F.dtypeOf(a.data), units: a.units || '', description: a.description || '' };
+    }
+    const meta = {
+      schemaVersion: 1, kind: 'genchase-data', provenance: S.getProvenance(e.mod.id), stateExported: members.length > 0,
+      arrays, grid: (out && out.meta) || null, status: statusText(e),
+      note: members.length ? 'Arrays are row-major (C order); a 2D field has row 0 at the top of the plate.'
+        : failure ? 'The state could not be exported: ' + failure
+        : 'This technique does not export its state yet. The recipe, provenance and printed measurements are included.',
+    };
+    members.unshift({ name: 'meta.json', data: new TextEncoder().encode(JSON.stringify(meta, null, 2) + '\n') });
+    return new Blob([F.zipStore(members)], { type: 'application/zip' });
+  }
+  S.exportData = id => {
+    const e = instances[id || currentId];
+    return e ? dataPackage(e) : Promise.reject(new Error('No technique is loaded'));
+  };
+  async function pngWithProvenance(blob, prov) {
+    try {
+      const F = window.GenChaseDataFormats, bytes = new Uint8Array(await blob.arrayBuffer());
+      return new Blob([F.pngWithText(bytes, { Software: softwareLine(), 'GENChase provenance': JSON.stringify(prov) })], { type: 'image/png' });
+    } catch (err) { console.warn('Provenance could not be embedded in the PNG:', err); return blob; }
+  }
+  async function svgWithProvenance(blob, prov) {
+    try {
+      const text = await blob.text(), at = text.search(/<svg\b[^>]*>/);
+      if (at < 0) return blob;
+      const end = text.indexOf('>', at) + 1;
+      const xml = JSON.stringify(prov).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return new Blob([text.slice(0, end) + '<metadata id="genchase-provenance">' + xml + '</metadata>' + text.slice(end)], { type: 'image/svg+xml' });
+    } catch (err) { console.warn('Provenance could not be embedded in the SVG:', err); return blob; }
+  }
+
   function normalizeScienceWitness(record) {
     if (!record || typeof record !== 'object' || Array.isArray(record)) throw new TypeError('Witness must be an object or null');
     const number = key => {
@@ -688,8 +811,14 @@ void main(){
     const text = key => { if (record[key] == null) return ''; if (typeof record[key] !== 'string') throw new TypeError('Witness ' + key + ' must be text'); return record[key]; };
     const comparable = measured !== null && expected !== null && tol !== null;
     const valid = record.valid === false ? false : record.valid === null ? null : comparable ? Math.abs(measured - expected) <= tol : null;
+    // basis, uncertainty and method are additive (API version 1): the same gate compare() applies to
+    // status lines. tools/lint.js requires a basis in every setWitness() call in the modules.
+    const basis = record.basis == null ? null : record.basis;
+    if (basis !== null && !Object.prototype.hasOwnProperty.call(util.stats.BASES, basis)) throw new TypeError('Witness basis must be sampled, exact, deterministic or construction');
+    const uncertainty = number('uncertainty');
+    if (uncertainty !== null && uncertainty < 0) throw new TypeError('Witness uncertainty must be nonnegative');
     return { schemaVersion: 1, label: text('label') || 'Scientific check', measured, expected, tol, valid,
-      units: text('units'), missWhen: text('missWhen'), step: number('step') };
+      units: text('units'), missWhen: text('missWhen'), step: number('step'), basis, uncertainty, method: text('method') };
   }
   function scienceWitnessHtml(record) {
     if (!record) return '';
@@ -699,7 +828,9 @@ void main(){
     return '<span class="science-witness" data-valid="' + String(record.valid) + '">' + escapeHtml(record.label) +
       ': measured <b>' + escapeHtml(fmt(record.measured)) + '</b>, expected ' + escapeHtml(fmt(record.expected)) +
       ' ± ' + escapeHtml(fmt(record.tol)) + (record.units ? ' ' + escapeHtml(record.units) : '') +
-      ' · ' + verdict + (record.missWhen ? ' · miss when ' + escapeHtml(record.missWhen) : '') + '</span>';
+      ' · ' + verdict + (record.basis === 'sampled' && record.uncertainty !== null ? ' · measured ± ' + escapeHtml(fmt(record.uncertainty)) : '') +
+      (record.basis && record.basis !== 'sampled' ? ' · ' + escapeHtml(util.stats.BASES[record.basis]) : '') +
+      (record.missWhen ? ' · miss when ' + escapeHtml(record.missWhen) : '') + '</span>';
   }
 
   const WORDS = ['kiln', 'harbor', 'moss', 'ember', 'slate', 'tide', 'quartz', 'loam', 'gale', 'reed', 'ochre', 'flint', 'delta', 'fern', 'basalt', 'wren', 'spore', 'lichen', 'coral', 'nacre'];
@@ -1314,6 +1445,7 @@ void main(){
     // every integrator with a time step shows it, so a preset that changes dt says so
     const dt = Number(e.state.dt);
     const dtHtml = isFinite(dt) && dt > 0 && !/\bdt\b/.test(e.statusHtml) ? '<span>dt <b>' + (dt >= 1 ? dt.toFixed(1) : dt.toFixed(3).replace(/0+$/, '').replace(/\.$/, '')) + '</b></span>' : '';
+    renderEvidenceBadge(e.mod.id);
     const html = e.statusHtml + scienceWitnessHtml(e.scienceWitness) + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
     const status = $('status');
     // Preserve text selection and avoid rebuilding identical measurement rows.
@@ -2065,6 +2197,18 @@ void main(){
       const download = h('button',{class:'btn',type:'button',text:'Download science report JSON'});
       download.addEventListener('click',()=>downloadBlob(new Blob([JSON.stringify(snapshot,null,2)],{type:'application/json'}),'genchase-'+e.mod.id+'-science.json'));
       body.appendChild(download);
+      body.appendChild(h('h3',{text:'Research data'}));
+      body.appendChild(h('p',{text: typeof e.inst.exportData === 'function'
+        ? 'The simulation state as NumPy arrays (.npz, read with numpy.load), with meta.json holding the provenance, grid, units and printed measurements.'
+        : 'This technique does not export its state yet. The .npz still carries meta.json with the recipe, provenance and printed measurements.'}));
+      const data = h('button',{class:'btn',type:'button',id:'science-data',text:'Download data (.npz)'});
+      data.addEventListener('click',async()=>{
+        data.disabled = true;
+        try { downloadBlob(await S.exportData(e.mod.id),'genchase-'+e.mod.id+'-'+String(e.state.seed).replace(/[^a-z0-9_-]+/gi,'_')+'.npz'); }
+        catch (err) { toast('Could not export data: ' + err.message); }
+        finally { data.disabled = false; }
+      });
+      body.appendChild(data);
     } catch (err) {
       if (request !== scienceReportRequest) return;
       body.textContent = 'Report unavailable: ' + err.message;
@@ -2494,7 +2638,7 @@ void main(){
   }
 
   /* ---- export ---- */
-  let lastUrl = null, lastBlob = null, lastName = '', lastPrintSpec = null;
+  let lastUrl = null, lastBlob = null, lastName = '', lastPrintSpec = null, lastProvenance = null;
   let printFormatBusy = false, lastPrintJob = null;
   function setExpertPrint(on) {
     $('expert-print').checked=!!on;
@@ -2697,6 +2841,11 @@ void main(){
       if (withColophon) blob = await composeSheet(blob, lay, captionBg);
       else blob = await fitPrintSheet(blob, sp, e.state.bg || '#fff');
       if (svgBlob) svgBlob = await fitPrintSVG(svgBlob, sp, e.state.bg || '#fff');
+      // Every file says what made it: recipe link, build fingerprint, source hash, device and precision.
+      const provenance = S.getProvenance(e.mod.id);
+      blob = await pngWithProvenance(blob, provenance);
+      if (svgBlob) svgBlob = await svgWithProvenance(svgBlob, provenance);
+      lastProvenance = provenance;
       if (job.abort) throw new Error('cancelled');
       if (lastUrl) URL.revokeObjectURL(lastUrl);
       lastBlob = blob; lastUrl = URL.createObjectURL(blob); lastPrintSpec = {...sp};
@@ -2705,7 +2854,7 @@ void main(){
         (colophon ? '-with-code' : '') + (smoothing.applied ? '-smooth-'+smoothing.requested : '') + '.png';
       img.src = lastUrl; img.hidden = false;
       const quality=printQualityReport(e,sp,lay,usedVector,smoothing);
-      lastPrintJob={schemaVersion:1,capturedAt:new Date().toISOString(),engineApiVersion:S.apiVersion,recipe:S.getRecipe(e.mod.id),printSpec:{...sp},caption:withColophon?JSON.parse(JSON.stringify(coloPrefs)):null,quality,witness:S.getWitness(e.mod.id),note:'Recipe and reporting snapshot, not a simulation-state checkpoint. Finishing choices are recorded when this report is downloaded.'};
+      lastPrintJob={schemaVersion:1,capturedAt:new Date().toISOString(),engineApiVersion:S.apiVersion,recipe:S.getRecipe(e.mod.id),printSpec:{...sp},caption:withColophon?JSON.parse(JSON.stringify(coloPrefs)):null,quality,witness:S.getWitness(e.mod.id),provenance,note:'Recipe and reporting snapshot, not a simulation-state checkpoint. Finishing choices are recorded when this report is downloaded.'};
       $('export-pdf').hidden = false; $('export-tiff').hidden = false; $('export-job-json').disabled=false;
       const size = (blob.size / 1048576).toFixed(1) + ' MB';
       const dims = pw.toLocaleString() + ' × ' + ph.toLocaleString() + ' px, ' + size + '. ';
@@ -2786,7 +2935,11 @@ void main(){
         for (let x=0;x<w;x++) { const p=row*w+x; rgb[p*3]=rgba[p*4];rgb[p*3+1]=rgba[p*4+1];rgb[p*3+2]=rgba[p*4+2]; }
         if (row % 256 === 0) await new Promise(r=>setTimeout(r,0));
       }
-      const blob = await window.GenChasePrintFormats[format](rgb,w,h,sp.wIn,sp.hIn,production);
+      const prov = lastProvenance, F = window.GenChaseDataFormats;
+      const options = format === 'pdf'
+        ? Object.assign({}, production, prov ? { provenance: JSON.stringify(prov), producer: softwareLine(), title: 'GENChase · ' + prov.technique.name } : {})
+        : (prov ? { description: F.asciiJSON(prov), software: softwareLine() } : {});
+      const blob = await window.GenChasePrintFormats[format](rgb,w,h,sp.wIn,sp.hIn,options);
       downloadBlob(blob,name); toast('Saved ' + name);
     } catch (err) { toast('Could not make ' + format.toUpperCase() + ': ' + err.message); }
     finally {
@@ -2808,10 +2961,17 @@ void main(){
       cx.fillStyle = '#fff';
       cx.fillRect(0, 0, c.width, c.height);
       cx.drawImage(im, 0, 0);
-      const blob = await new Promise((res, rej) => c.toBlob(
+      let blob = await new Promise((res, rej) => c.toBlob(
         b => b ? res(b) : rej(new Error('this browser cannot encode ' + label)),
         type, quality
       ));
+      // JPEG keeps the provenance in a comment segment; WebP has no text field this writer adds.
+      if (type === 'image/jpeg' && lastProvenance) {
+        try {
+          const F = window.GenChaseDataFormats;
+          blob = new Blob([F.jpegWithComment(new Uint8Array(await blob.arrayBuffer()), 'GENChase provenance ' + F.asciiJSON(lastProvenance))], { type });
+        } catch (err) { console.warn('Provenance could not be embedded in the JPEG:', err); }
+      }
       const name = lastName.replace(/\.png$/i, '.' + ext);
       downloadBlob(blob, name);
       toast('Saved ' + name + ' (' + (blob.size / 1048576).toFixed(1) + ' MB)');
@@ -3010,9 +3170,10 @@ void main(){
       // sequential tab strip is what a tablist without this costs a keyboard user.
       const seen = m.familiarity ? (FAMILIARITY_LABEL[m.familiarity] || m.familiarity) : '';
       const hay = [m.id, m.name, m.tab, m.subtitle, m.equation, m.credit, m.blurb, m.familiarity, seen].join(' ').toLowerCase();
-      tabs.appendChild(h('button', { class: 'tab', role: 'tab', type: 'button', 'data-id': m.id, 'data-hay': hay, 'data-seen': m.familiarity || '', 'aria-selected': 'false', tabindex: '-1', title: m.subtitle || m.name, onclick: () => switchTo(m.id) }, [
+      const ev = evidenceOf(m.id);
+      tabs.appendChild(h('button', { class: 'tab', role: 'tab', type: 'button', 'data-id': m.id, 'data-hay': hay, 'data-seen': m.familiarity || '', 'aria-selected': 'false', tabindex: '-1', title: (m.subtitle || m.name) + (ev ? ' · ' + ev.short : ''), onclick: () => switchTo(m.id) }, [
         h('span', { class: 'tab-name', text: m.tab || m.name }),
-      ]));
+      ].concat(ev ? [h('span', { class: 'tab-evidence', 'aria-hidden': 'true', 'data-status': S.validationStatus(m.id), text: ev.glyph })] : [])));
     }
     const find = $('find'), findN = $('find-n'), seenSel = $('seen'), seenHint = $('seen-hint');
     const applyFind = () => {
@@ -3051,7 +3212,7 @@ void main(){
       });
     }
     if (seenSel) seenSel.addEventListener('change', applyFind);
-    if (window.ModuleBrowser) ModuleBrowser.mount({ modules, onSelect: switchTo, loadRecords: loadScienceRecords });
+    if (window.ModuleBrowser) ModuleBrowser.mount({ modules, onSelect: switchTo, loadRecords: loadScienceRecords, statuses: BUILD.validation || {} });
     bindDragScroll($('history'));
     bindViewControls();
     // top bar wiring

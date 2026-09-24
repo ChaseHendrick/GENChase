@@ -87,6 +87,11 @@ disturb(p)         only on living fields; p = { x, y, yGL, dx, dy } with x, y in
 exportPNG(w, h)    -> Promise<Blob> of exactly w x h pixels
 exportSVG(w, h)    -> string or Blob; implement it when the picture is discrete marks, omit it when
                    the picture is accumulated density and there is no geometry to emit
+exportData()       -> Promise<{ arrays: { name: { data, shape, units?, description? } }, meta: {...} }>
+                   optional; the simulation state as typed arrays (row-major, row 0 at the top) plus
+                   grid, units, step and time. The engine packs it into an .npz with provenance for the
+                   science report's "Download data (.npz)" and for node tools/run.js. Read GPU state
+                   with G.readTarget(target). Implement it for any field or particle state.
 ```
 
 ## GL helpers (`G = Studio.gl`)
@@ -96,6 +101,7 @@ exportSVG(w, h)    -> string or Blob; implement it when the picture is discrete 
 - `new G.Target(gl, w, h, { type: 'rgba32f' | 'rgba16f' | 'rgba8', filter: 'nearest' | 'linear', wrap: 'repeat' | 'clamp', data })` with `.tex`, `.fbo`, `.w`, `.h`, `.upload(data)`, `.clear(r, g, b, a)`, `.dispose()`.
 - `new G.PingPong(gl, w, h, opts)` with `.read`, `.write`, `.swap()`, `.dispose()`.
 - `G.rampTexture(gl, s.palette, s.bg)` builds the 256x1 LUT that `G.GLSL.ramp` samples; rebuild only when palette or bg changes.
+- `G.readTarget(target)` reads a render target back as a `Float32Array` of `w*h*4` values, rows top to bottom; byte targets are scaled to 0..1. For `exportData()`, not for the frame loop.
 - `G.GLSL.hash` defines `hash21(vec2)` and `hash22(vec2)`. `G.GLSL.noise` defines `vnoise` and `fbm` and needs `hash` spliced in first. `G.GLSL.ramp` declares `uniform sampler2D u_ramp` and `vec3 ramp(float t)`. `G.GLSL.splatFS` is the shared brush used by `disturb`.
 - The vertex stage is fixed; fragment shaders start with `#version 300 es`, `precision highp float;`, `in vec2 v_uv; out vec4 outColor;` and `v_uv` runs 0..1.
 - `rgba32f` render targets need `gl.floatExt`. Otherwise use `rgba16f` after `gl.getExtension('EXT_color_buffer_half_float')` and upload with `toHalf` (copy the function from the pde block). Do the same `texType` selection the pde block does.
@@ -106,7 +112,9 @@ exportSVG(w, h)    -> string or Blob; implement it when the picture is discrete 
 
 ## Util (`U = Studio.util`)
 
-`TAU, makeRng, makeNoise(rng), clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor(bg), inkRgba(bg, a), mixHex, makeRamp(colors, bg), makeRampLUT(colors, bg, size), toBlob(canvas), upscale(srcCanvas, w, h, smooth), escapeHtml, svgEsc, svgDoc, svgBlob`.
+`TAU, makeRng, makeNoise(rng), clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor(bg), inkRgba(bg, a), mixHex, makeRamp(colors, bg), makeRampLUT(colors, bg, size), toBlob(canvas), upscale(srcCanvas, w, h, smooth), escapeHtml, svgEsc, svgDoc, svgBlob, stats`.
+
+`U.stats` is the uncertainty harness (`src/shared/stats.js`): `compare(record)` builds a status-line comparison span; `seriesMean(x)` and `tauInt(x)` for a correlated time series; `fieldMean(values, W, H)` for one correlated field; `blocking`, `blockBootstrap(x, stat, { seed })`, `slopeBootstrap(xs, ys, { seed })`, `sampleMean`, `ensemble`, `hill(values, k)`. Seed every resampling with `s.seed + '/<tag>'`.
 
 `U.makeRng(seedString)` returns `rng()` in [0, 1) with `rng.range(lo, hi)`, `rng.int(lo, hi)` (inclusive), `rng.pick(array)`, `rng.gauss()`. Every random draw goes through `U.makeRng(s.seed + '/<tag>')`. `Math.random` is forbidden in a module. On the GPU, per-site randomness is `hash21(site + seedOffset + step)` with the offset drawn from the seeded RNG.
 
@@ -159,11 +167,13 @@ Default seed lands a finished image in about three seconds on a laptop. Chunk lo
 
 ## Measured numbers
 
-If your technique prints a measured quantity beside a theoretical one, an uncertainty beside it is worth
-having, and a comparison in sigmas says more than two bare numbers. `AGENTS.md`, under "A measured number
-carries an error bar", covers how to get one honestly for a mean, a fitted exponent, a ratio, a power-law
-tail and an exact count. Worth reading before you write the status line rather than after. It is guidance,
-not a gate: nothing checks it.
+If your technique prints a measured quantity beside a theoretical one, build that span with
+`U.stats.compare({ label, measured, expected, reference, basis, uncertainty, method })`. The basis is
+required: `sampled` (with an uncertainty and a method, or `pending` and the reason), `exact`,
+`deterministic` or `construction`. `tools/lint.js` fails a hand-written comparison and a `compare()` or
+`setWitness()` call without a basis. `AGENTS.md`, under "A measured number carries an error bar", covers
+how to get an uncertainty honestly for a mean, a fitted exponent, a ratio, a power-law tail and an exact
+count. Read it before you write the status line rather than after.
 
 The two failure modes that matter most: an ordinary least squares error on a fit along one autocorrelated
 trajectory is far too small, and a check whose answer is forced by construction is not a check at all.

@@ -84,6 +84,33 @@ preset must report failure. Reuleaux publishes a boundary sampling regression wi
 which is not a pixel-width measurement. Other legacy modules return `null` until explicitly
 migrated. No HTML diagnostic is automatically parsed or promoted into scientific data.
 
+The witness also takes optional `basis` (`sampled`, `exact`, `deterministic` or `construction`),
+`uncertainty` (one standard error, finite and nonnegative, or `null`) and `method` (text). They are
+additive: a record without them is still valid, but `tools/lint.js` requires a `basis` in every
+`setWitness()` call in `src/modules/`. A status-line comparison uses `Studio.util.stats.compare()` with the
+same fields; see AGENTS.md, "A measured number carries an error bar".
+
+## Provenance and research data
+
+These are additive API version 1 surfaces.
+
+| Surface | Contract |
+| --- | --- |
+| `Studio.build` | Frozen build facts from `tools/build.js`: `build` (12 hex characters), `fingerprint` (SHA-256 of the assembled source), `sources` (SHA-256 per script), `sourceOf` (tab id to source file) and `validation` (tab id to status). |
+| `Studio.validationStatus(id?)` | The tab's status from `validation/techniques.json` at build time, or `null`. |
+| `Studio.getProvenance(id?)` | A detached record of what made the current plate: software, API and recipe versions, build, source file and its SHA-256, validation status, recipe and link, the witness, and the device (WebGL2 renderer and vendor, or CPU; which render-target precisions the state used). Nothing time-dependent, so it is deterministic for a given recipe, build and device. |
+| `Studio.exportData(id?)` | A `Promise<Blob>` of an uncompressed `.npz` that `numpy.load` reads: one `.npy` per array from the instance's `exportData()`, plus `meta.json` (provenance, arrays with shape, dtype and units, the module's grid metadata and the status text). A technique without `exportData()` yields `meta.json` only and says so. |
+| `Studio.util.stats` | The uncertainty harness, `src/shared/stats.js`. |
+| `Studio.gl.readTarget(target)` | A render target as a `Float32Array`, rows top to bottom. |
+
+Every export embeds the provenance: PNG as a `Software` tEXt chunk and a `GENChase provenance` iTXt
+chunk, PDF in its Info dictionary (`/Producer`, `/Title`, `/GENChaseProvenance`), TIFF in its
+ImageDescription (270) and Software (305) tags, JPEG in a comment segment, SVG in a `<metadata>` element,
+and the print-job JSON under `provenance`. WebP carries none. The renderer string can identify the
+graphics hardware; it is recorded because precision and driver differences are part of what made the
+file. `node tools/provenance-check.js` reads every one back through the real export buttons.
+`node tools/run.js <hash> --out plate.npz --steps N` runs a recipe headlessly through `Studio.exportData()`.
+
 ## Contributor on-ramp and checks
 
 Copy the single [`src/modules/_template.js`](../src/modules/_template.js). Its witness

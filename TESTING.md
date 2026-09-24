@@ -14,6 +14,9 @@ The authoritative numerical acceptance rules are in [validation/README.md](valid
 | Local validation app | `npm run test:validator` | Local command restrictions, process control, hardware-card allowlists, privacy redaction and recorded job behavior match regression fixtures; not a science verdict |
 | Native Apple GPU wave | `node apps/validate/native.js --verify-only` on Apple Silicon | Bounded Metal/CPU, failure-control, convergence and checkpoint fixtures pass on the identified GPU |
 | Numerical module | Its recorded command in `validation/techniques.json`; `node tools/check.js ID 12000`; `node tools/export.js ID 8 300` | Only the numerical test establishes its documented science claim; the other two check runtime/export behavior |
+| A status line that prints a measurement against theory | `npm run lint`, `node tools/stats-check.js`, `node tools/check.js ID 12000` | The comparison goes through `U.stats.compare()` with a basis, and the harness recovers known autocorrelation times, standard errors, slopes and tail exponents, with negative controls that must undercover; not proof that a given tab's error bar is adequate |
+| Exports, provenance, research data | `npm run test:provenance` | PNG, PDF, TIFF, JPEG and the .npz carry the recipe, build, source hash, device and precision, read back from the real export buttons; the .npz loads and a tab without `exportData()` says so |
+| Scope | `npm run lint` | The catalog does not grow past `validation/scope.json` while at least half the tabs are unvalidated |
 
 ## Setup
 

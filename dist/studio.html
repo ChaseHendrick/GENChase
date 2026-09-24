@@ -920,6 +920,16 @@
   .modal:not([hidden]) > .card, .module-browser[open] { animation: interface-reveal 150ms cubic-bezier(.2,.7,.2,1); }
   @keyframes interface-reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 }
+
+/* Validation status on every tab and on the stage (docs/RESEARCH-GRADE.md, section 6). The glyph carries
+   the meaning; color only reinforces it. */
+.tab-evidence { margin-left: 5px; font-size: 10px; font-weight: 600; opacity: .8; }
+.tab-evidence[data-status="validated within stated limits"] { color: #2f7d32; }
+.tab-evidence[data-status="partially validated"] { color: #9a6a00; }
+.tab-evidence[data-status="unvalidated"] { color: var(--muted); }
+#btn-science-report[data-status="validated within stated limits"] { border-color: #2f7d32; }
+#btn-science-report[data-status="partially validated"] { border-color: #9a6a00; }
+#btn-science-report[data-status="unvalidated"] { border-style: dashed; }
 </style>
 <script type="text/plain" id="license-notices">LICENSE
 
@@ -2145,7 +2155,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "cyclic",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a \u003c 1 \u003c b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
     "equation": "∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v)",
     "status": "validated within stated limits",
@@ -2550,7 +2560,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "vegetation",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n², because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
     "equation": "∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n",
     "status": "validated within stated limits",
@@ -3025,7 +3035,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "excitable",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
     "equation": "Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b)",
     "status": "validated within stated limits",
@@ -3133,7 +3143,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "cyclicca",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "25975c4c12a36e25ea28f09df64a78ae0bc3814d46d3c6df190400858f5ccec6",
+    "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
     "reference": "Robert Fisch, Janko Gravner and David Griffeath, Statistics and Computing 1, 23 (1991), on threshold-range scaling of excitable automata; David Griffeath, Notices of the AMS, 1988, for the cyclic cellular automaton; James M. Greenberg and Stuart P. Hastings, SIAM J. Appl. Math. 34, 515 (1978), for the excitable rest-excited-refractory rule. In the cyclic automaton every state eats the one below it, so k colors chase each other around the cycle and a random soup organizes into spirals. Greenberg-Hastings is the same cycle with one excitable state: waves propagate, refractory tails follow, and broken fronts curl into spiral pairs.",
     "equation": "cyclic: s → s+1 (mod k) if ≥ θ neighbors within range r are in state s+1;   GH: 0 → 1 if ≥ θ excited, 1 → 2 → … → k−1 → 0",
     "status": "unvalidated",
@@ -3221,7 +3231,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "amb",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "Elsen Tjhung, Cesare Nardini and Michael E. Cates, Physical Review X 8, 031080 (2018). Cahn-Hilliard describes a passive mixture relaxing toward equilibrium. Two extra gradient terms, λ|∇φ|² in the chemical potential and a current ζ(∇²φ)∇φ that cannot come from any free energy, are the leading ways an active system (motile bacteria, self-propelled colloids) can break time-reversal symmetry while still conserving φ. They give the two phases different interfacial tensions, and when the tension felt by the minority phase turns negative the Ostwald process runs backward: large droplets shed material to small ones and coarsening stops.",
     "equation": "∂φ/∂t = M ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ|∇φ|²",
     "status": "validated within stated limits",
@@ -3314,7 +3324,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "cahn",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ max(1−c²,0) suppresses mobility near pure phases; it does not imply pure surface diffusion for this polynomial free energy (Lee, Munch and Suli, 2015).",
     "equation": "∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c",
     "status": "validated within stated limits",
@@ -3418,7 +3428,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "ohta",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). The long-range penalty can frustrate ordinary coarsening and favor microstructured states. Pattern selection depends on composition and parameters; a finite preview does not prove equilibrium.",
     "equation": "∂u/∂t = ∇·[M(u)∇μ] − σ(u−m),   μ = u³ − u − ε²Δu",
     "status": "validated within stated limits",
@@ -3550,7 +3560,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "swift",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is a phenomenological pattern-forming model motivated by convection near onset: a real scalar field with a preferred wavenumber k₀. Quadratic and cubic nonlinearities affect the available branches. Localized patterns can exist in suitable subcritical regimes; this display does not establish branch stability.",
     "equation": "∂u/∂t = r u − (k₀² + ∇²)² u + g u² − b u³",
     "status": "validated within stated limits",
@@ -3624,7 +3634,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "pfc",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "K. R. Elder, M. Katakowski, M. Haataja and M. Grant, Phys. Rev. Lett. 88, 245701 (2002); Elder and Grant, Phys. Rev. E 70, 051605 (2004). The phase-field crystal model is Swift–Hohenberg’s free energy evolved with conserved (Cahn–Hilliard) dynamics. The field represents time-averaged atomic-scale density, not individual particle trajectories. The model supports crystalline order and defects on diffusive time scales; this finite-grid display does not locate a material melting line.",
     "equation": "∂ψ/∂t = M ∇²(δF/δψ),   F = ∫ ½ ψ [r + (k₀²+∇²)²] ψ + ψ⁴/4",
     "status": "validated within stated limits",
@@ -3909,7 +3919,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "sandpile",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "25975c4c12a36e25ea28f09df64a78ae0bc3814d46d3c6df190400858f5ccec6",
+    "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
     "reference": "Per Bak, Chao Tang and Kurt Wiesenfeld, Phys. Rev. Lett. 59, 381 (1987); Deepak Dhar, Phys. Rev. Lett. 64, 1613 (1990). Bak, Tang and Wiesenfeld dropped grains one at a time on a lattice with a toppling threshold and found avalanches of every size, a power law with no tuning: self-organized criticality. Dhar showed the toppling operators commute, so the final stable state does not depend on the order of toppling, and the recurrent configurations form an Abelian group. The identity of that group, computed on a square, is the fractal plate in the second mode.",
     "equation": "if hᵢ ≥ 4: hᵢ −= 4, hⱼ += 1 for each neighbor j;   identity e = (2m − (2m)°)°, m = all 3",
     "status": "unvalidated",
@@ -3947,7 +3957,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "ks",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "Yoshiki Kuramoto and Toshio Tsuzuki, Prog. Theor. Phys. 55, 356 (1976); G. I. Sivashinsky, Acta Astronautica 4, 1177 (1977). Independently derived for reaction-diffusion phase turbulence and for laminar flame fronts. It is the simplest PDE that produces extensive spatiotemporal chaos: a band of unstable modes, a stabilizing biharmonic, and a Burgers-like nonlinearity. In two dimensions the cells of a flame.",
     "equation": "∂u/∂t = −ν ∇⁴u − ∇²u − (α/2)|∇u|²",
     "status": "validated within stated limits",
@@ -4079,7 +4089,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "turing",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry.",
     "equation": "Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v",
     "status": "validated within stated limits",
@@ -4338,7 +4348,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "chemotaxis",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) \u003c c/2 − D − a.",
     "equation": "∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²)",
     "status": "validated within stated limits",
@@ -4445,7 +4455,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "percolation",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "25975c4c12a36e25ea28f09df64a78ae0bc3814d46d3c6df190400858f5ccec6",
+    "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
     "reference": "S. R. Broadbent and J. M. Hammersley, Proc. Cambridge Philos. Soc. 53, 629 (1957); J. Hoshen and R. Kopelman, Phys. Rev. B 14, 3438 (1976); Harry Kesten, Comm. Math. Phys. 74, 41 (1980). Broadbent and Hammersley asked how a fluid spreads through a random porous medium and found a sharp threshold: below p_c every cluster is finite, above it one cluster spans the lattice. Kesten proved the bond threshold on the square lattice is exactly 1/2. The site threshold, about 0.592746, is known only numerically. Hoshen and Kopelman gave the one-pass labeling that finds the clusters.",
     "equation": "site occupied iff rᵢ \u003c p;   bond open iff rᵢⱼ \u003c p;   p_c(site) ≈ 0.5927,   p_c(bond) = 1/2",
     "status": "unvalidated",
@@ -4807,7 +4817,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "ising",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "25975c4c12a36e25ea28f09df64a78ae0bc3814d46d3c6df190400858f5ccec6",
+    "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
     "reference": "Ernst Ising, Z. Phys. 31, 253 (1925); Lars Onsager, Phys. Rev. 65, 117 (1944); Nicholas Metropolis, Arianna W. Rosenbluth, Marshall N. Rosenbluth, Augusta H. Teller and Edward Teller, J. Chem. Phys. 21, 1087 (1953). Ising solved the chain and found no transition. Onsager solved the square lattice exactly and found one at T_c = 2/ln(1+√2). The Metropolis algorithm samples the Boltzmann distribution by proposing single flips and accepting them with probability min(1, exp(−ΔE/T)). Here the lattice is updated as a checkerboard: two half-sweeps per step, each parity with its neighbors held fixed, so the GPU can flip every site of one color at once.",
     "equation": "E = −J Σ⟨ij⟩ sᵢsⱼ − h Σᵢ sᵢ,   P(flip) = min(1, e^{−ΔE/T}),   T_c = 2/ln(1+√2) ≈ 2.269",
     "status": "unvalidated",
@@ -6254,6 +6264,7 @@ shall not be misrepresented as the original profile.
     }
   }
 ]</script>
+<script type="application/json" id="build-info">{"build":"ee855f1a810b","fingerprint":"ee855f1a810b88a5e1afd7a62a0130228bf80f98cbfd2aa84113c65bf1bc32c6","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"a84197737dd6c83940054aecc7c1d3ff86fb5d43b12f4f8da3c4224f07ae3ac0","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"65eff38428e01bdf5e8d64ced24f2706be9561c7ed04c217ad6f59a1ee1f5092","src/modules/attractors.js":"b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"2a673daa8172051fc117948ce2caac2f9ecc99353bba100dc2c0ef28d8ca8a70","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760","src/modules/aztec.js":"d3cb40f6561fe895da5d7b12762f529af4b3e31e9f8561095f280d61851c31fb","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"b45f9d8257ec669aa62929c91cc1a40f7f68e3de2a8a3101daf6fdd0944bb701","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"30b2393368ab389e0e5fabc4e17215de292e0dbfb945dc92b3b04d2aab57fb19","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"b3c1e3f924fad80deda39c85f1fd2606fe01c1cb3d7c4d033aa8853d40d78b62","src/modules/tonertu.js":"be0f91a16da5e11522b787d1bd4975ef415d7e62e921fd80553886a4a94bd31e","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"c53780ea0ee6831557cfd89ff5b1fb913e749451eeb07b8559aa235ca4d95d62","src/modules/growdomain.js":"6ed99960b38288382cc77834580ecc4b8113d601d2302c7bc909d07a06024708","src/modules/sandpile.js":"0dc76ac4faf5c36f0c12c37fd436ec4189b150c715151451acb63c9ed8da21a1","src/modules/skyrmion.js":"c4006ffc3d97ca506cd57ef802b6067a54c2fca8ba390d59ca856ad6c69ac4b8","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"b8b0aec62a48d48fcc42d7524ddd734e85f7df75786fd94860370492248ba8f0","src/modules/lens.js":"609139547acb15a97d4272143d5f8b1c6141348d4f73b92e77071f7dfecffd46","src/modules/timecrystal.js":"b5704db157a328d7b03b8f821141307570e4e5741b17658432a34862e096b03c","src/modules/spinice.js":"e42fb2916740320bbc429cf3e719f54f1b6fd7fb978fc366b69db95bfb224a21","src/modules/skin.js":"4795322865f333524fa265e40e10939bc947090d3c58a4c60fc60b66b01c37a4","src/modules/stealth.js":"a45d5bf1ddc129ea01667167f37912c8bf47b5593de93de6a7ca2eb8225a3c30","src/modules/arago.js":"def471f2df1ae32559f6444a166db0e7fb9a1f8be05b3a91820617a7b6678566","src/modules/rogue.js":"63a5c263919c63e7d5bd224cde99e16a17ace1f61e6ffb88030d8fc1f8b42834","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"e3a71c358f0c08209a1f494a5da3d484b8b5a07e14266f83a6505a654a8a4dce","src/modules/fput.js":"607417802982b99de7ea1912c083757cefdec471ed8561df9363faa99f7c118a","src/modules/soliton.js":"37cf9cfbd76b979fdaa91eaf9dc6b98b4c3d130304076f7abfc3242597cddb1e","src/modules/ssh.js":"1fa05fe97e929dad52fd9c3367b4ec2f1f097a38cf4297d78bf7a94b3c6924a9","src/modules/aubry.js":"fab98cf5c44a3d1907ba0c9a8289fe824d1d4456f0d7d0bac63e686621d84556","src/modules/hopf.js":"62a4457707adf41bb37623379ec36e93e3bc455d11e87cf95aaea2880b86b85a","src/modules/cloak.js":"525c48f41781dd1011f8b3b03c23a5f2f29cfed8cc50152ff1d9298f672e0541","src/modules/vortex.js":"fc8e66a17fe114da9a663f0827171ea70461c784e10802fac2bbd3d2205027f0","src/modules/darkroom.js":"0875413599232914f3c72df7d04830eb69454400d710f30ce11d026654de990b","src/modules/kakeya.js":"03d9a92edaf8824847e6c3ca03df4b9d52db0d1a1c14dab3eaa4e12c6aa184c1","src/modules/breather.js":"09aab868ea80869b383f11d53275eaa86dd914f926be6cf446ce304f5c7c4879","src/modules/klein.js":"cd8bba95fae1502891662da51bbd20fdb71fd929c40d37337d66d21524e09822","src/modules/gyroid.js":"267c0cd0e13360c490c9593cd4a58410dd30d9c7e8b21fd3cd8532221de4e87e","src/modules/purcell.js":"ce0ba0ed90bdfe3a32c54511616eed3d38da1dc597dd3263d916041614a69236","src/modules/exceptional.js":"ad94987a5e8ecf2776e680f74a319acf39ec4943e7274a14a1a0773fd0cbd3db","src/modules/meissner.js":"ec8af35f812d14da83411239abfa6331350b56c8a89b3e8256eb2aa35fd0f398","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"f33fefde24a7ec594dbd108370c21337b533eaaf0b0f69ee2312f82f4ca0fd77","src/modules/weierstrass.js":"62896cc45ed4ef272eed1ec89ca5a0d4977173dc464aa522c5b84fac08ae2e1d","src/modules/kitaev.js":"1416d69aa96ef5e12b1ab7748bac756742d6d22cd0a0d45642b4ac6be1e7d8a2","src/modules/veselago.js":"acffd62c4377107f0710caf58976f5c161cbb78d3e61eae49b9048665af3dacf","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"242d6a0460fa061507460e3ef4279511b99d9379dc3b698de5539503aa2a6165","src/modules/boy.js":"45238c4577983543da955979ed6579f315fa596d371c7df974725a50138cd30c","src/modules/thouless.js":"2d393e8f18660c4cf634576e096810d06d99ed7b21197c04292c064b9f75a7b9","src/modules/reuleaux.js":"179cef420e5bc881718b9904dc73240b446f54178ee8a1f592f786caf710e4f9","src/modules/apollonian.js":"78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34","src/modules/knotlight.js":"aa2f0b0173a44e44c7b7d9bdb80d5910bab2e85ac7f056eb5eece9113bc1d1c2","src/modules/causticsea.js":"1aa15625af54f76a1cfdf619fc72233522a655f56c675f43cfcfb5d355b6082e","src/modules/track.js":"7d731f0d2cc21a0dfe4502f49f7be6fc8627434f7401298c6360000e098f4322","src/modules/kp.js":"44075d6ab4ad2f25ae7fda38c1a92a226e1e078e9bd06aafacaf5a224fadaf1f","src/modules/gerstner.js":"18fa85720739ce503e313b5d928da01f65e3f9f163136050d276a9fc3e970a7a","src/modules/eight.js":"00e15b29caba92c9cf360487ddce8471e0f351e54168633c80d650e75a1c01b3","src/modules/peakon.js":"4834e70598cd058b068254df6dc94a59a4fa98058fa00064aa94eccc9b40f410","src/modules/photon.js":"3636ca8433248c1afb594d76a13d78734592778668cb54dc37ca693af775fb84","src/modules/crapper.js":"19bf94596e6ddc63063735b53dd99216b50e6580dd1ae6ea8d4f59995f1f3e32","src/modules/hasimoto.js":"88499871add56cf578919868f1ac033824f0594629abb241d77e41f5bb459765","src/modules/lump.js":"cfeadd37892269236b7c41a450f223568dc65f5304da461655cb01040d5cbc3d","src/modules/three-vortex-bound.js":"616006e58a131d8a309e01ac7037f8e0af1261a4e16fac3c2f7705bd7b872f54","src/modules/parallelogram-lock.js":"6d9f5d8842a30373d5b82d257572c193aba611027cb6263853417411cfb2231e","src/modules/quincunx-lock.js":"311a76734eed2af26b028ad2f03feef7f247934f320de3a8c5d94767bafa4600","src/modules/double-triangle-bound.js":"20778362fcd32e7be2631ff81c81d0a618bca87d3064bec7196dda059d7940d4","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"237cfe67009ed638ec3b021c6f872dd1190e13e0ea0fd85ac49f6ea9c62dbdd4","src/modules/shallow.js":"65d975766f9266e6c68ae53af438b1f624a6e8907228fd781d45db9ef497c0a9","src/modules/nonreciprocal.js":"0f5427d1446138675dd4be67d1c3df9896ec06ffa1103d9dbc94060332a7c1b0","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"b0152563304cd2f85948d12def42b459c6f110f8730f0f55b86a45dd145f814a","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"unvalidated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"unvalidated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"unvalidated","skin":"unvalidated","rmt":"unvalidated","stealth":"unvalidated","lozenge":"unvalidated","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"unvalidated","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"partially validated","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"unvalidated","percolation":"unvalidated","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"unvalidated","caustics":"unvalidated","veselago":"unvalidated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"unvalidated","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
 <script>/* The shared uncertainty harness. Every measured number the studio prints against theory gets its
    error bar from here, in the browser and in the Node tools alike, so there is one method per kind of
    number instead of one per tab. AGENTS.md ("A measured number carries an error bar") says which method
@@ -6758,7 +6769,7 @@ shall not be misrepresented as the original profile.
     return out;
   }
 
-  const api = Object.freeze({ crc32, asciiJSON, npy, readNpy, zipStore, readZip, pngWithText, readPngText, jpegWithComment, readJpegComments });
+  const api = Object.freeze({ crc32, asciiJSON, dtypeOf, npy, readNpy, zipStore, readZip, pngWithText, readPngText, jpegWithComment, readJpegComments });
   root.GenChaseDataFormats = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : globalThis);
@@ -6810,19 +6821,36 @@ shall not be misrepresented as the original profile.
       [bytes('<< /N 3 /Alternate /DeviceRGB /Length ' + icc.length + ' >>\nstream\n'), icc, bytes('\nendstream')],
       [bytes('<< /Length ' + content.length + ' >>\nstream\n'), content, bytes('endstream')]
     ];
+    // Provenance: an Info dictionary naming the software, plus the full provenance record as a text
+    // string under a private key. Text strings are UTF-16BE hex with a byte-order mark, so any recipe
+    // text survives. Nothing time-dependent is written, so the same plate gives the same file.
+    const info = options.provenance ? '<< /Producer ' + pdfText(options.producer || 'GENChase') +
+      (options.title ? ' /Title ' + pdfText(options.title) : '') + ' /GENChaseProvenance ' + pdfText(options.provenance) + ' >>' : null;
+    if (info) objects.push([bytes(info)]);
+    const n = objects.length + 1;
     const chunks = [bytes('%PDF-1.7\n')], offsets = [0]; let offset = chunks[0].length;
     objects.forEach((parts, i) => {
       offsets.push(offset);
       for (const chunk of [bytes((i + 1) + ' 0 obj\n'), ...parts, bytes('\nendobj\n')]) { chunks.push(chunk); offset += chunk.length; }
     });
-    chunks.push(bytes('xref\n0 7\n0000000000 65535 f \n' + offsets.slice(1).map(n => String(n).padStart(10, '0') + ' 00000 n \n').join('') +
-      'trailer\n<< /Size 7 /Root 1 0 R >>\nstartxref\n' + offset + '\n%%EOF\n'));
+    chunks.push(bytes('xref\n0 ' + n + '\n0000000000 65535 f \n' + offsets.slice(1).map(o => String(o).padStart(10, '0') + ' 00000 n \n').join('') +
+      'trailer\n<< /Size ' + n + ' /Root 1 0 R' + (info ? ' /Info ' + (n - 1) + ' 0 R' : '') + ' >>\nstartxref\n' + offset + '\n%%EOF\n'));
     return new Blob(chunks, {type:'application/pdf'});
   }
-  function tiff(rgb, width, height, wIn, hIn) {
+  function pdfText(text) {
+    let hex = 'FEFF';
+    for (const unit of String(text)) for (let i = 0; i < unit.length; i++) hex += unit.charCodeAt(i).toString(16).toUpperCase().padStart(4, '0');
+    return '<' + hex + '>';
+  }
+  // options.description and options.software become the ImageDescription (270) and Software (305) ASCII
+  // tags, which is where TIFF readers look for provenance. Non-ASCII text must be escaped by the caller.
+  function tiff(rgb, width, height, wIn, hIn, options = {}) {
     validate(rgb, width, height, wIn, hIn);
-    const icc = profile(), count = 14, bits = 8 + 2 + count * 12 + 4, xr = bits + 6, yr = xr + 8, iccAt = yr + 8;
-    const pixelAt = (iccAt + icc.length + 3) & ~3;
+    const ascii = text => { if (!/^[\x20-\x7e]*$/.test(text)) throw new Error('TIFF text tags must be printable ASCII'); return bytes(text.padEnd(4) + '\0'); };
+    const desc = options.description ? ascii(options.description) : null, soft = options.software ? ascii(options.software) : null;
+    const icc = profile(), count = 14 + (desc ? 1 : 0) + (soft ? 1 : 0), bits = 8 + 2 + count * 12 + 4, xr = bits + 6, yr = xr + 8, iccAt = yr + 8;
+    const descAt = iccAt + icc.length, softAt = descAt + (desc ? desc.length : 0);
+    const pixelAt = (softAt + (soft ? soft.length : 0) + 3) & ~3;
     const header = new Uint8Array(pixelAt), v = new DataView(header.buffer);
     v.setUint16(0, 0x4949, true); v.setUint16(2, 42, true); v.setUint32(4, 8, true); v.setUint16(8, count, true);
     let at = 10;
@@ -6832,13 +6860,15 @@ shall not be misrepresented as the original profile.
       at += 12;
     };
     tag(256,4,1,width); tag(257,4,1,height); tag(258,3,3,bits); tag(259,3,1,1);
-    tag(262,3,1,2); tag(273,4,1,pixelAt); tag(277,3,1,3); tag(278,4,1,height);
+    tag(262,3,1,2); if (desc) tag(270,2,desc.length,descAt); tag(273,4,1,pixelAt); tag(277,3,1,3); tag(278,4,1,height);
     tag(279,4,1,rgb.length); tag(282,5,1,xr); tag(283,5,1,yr); tag(284,3,1,1);
-    tag(296,3,1,2); tag(34675,7,icc.length,iccAt);
+    tag(296,3,1,2); if (soft) tag(305,2,soft.length,softAt); tag(34675,7,icc.length,iccAt);
     for (let i=0;i<3;i++) v.setUint16(bits+i*2,8,true);
     v.setUint32(xr,width*10000,true); v.setUint32(xr+4,Math.round(wIn*10000),true);
     v.setUint32(yr,height*10000,true); v.setUint32(yr+4,Math.round(hIn*10000),true);
     header.set(icc,iccAt);
+    if (desc) header.set(desc,descAt);
+    if (soft) header.set(soft,softAt);
     return new Blob([header,rgb], {type:'image/tiff'});
   }
   root.GenChasePrintFormats = Object.freeze({pdf,tiff});
@@ -7212,6 +7242,8 @@ shall not be misrepresented as the original profile.
       this.gl = gl; this.w = w; this.h = h;
       const type = opts.type || (gl.floatExt ? 'rgba32f' : 'rgba8');
       this.type = type;
+      // Provenance reports which precisions a technique's state actually used on this device.
+      (gl.__targetTypes || (gl.__targetTypes = new Set())).add(type);
       this.tex = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, this.tex);
       const filter = opts.filter === 'nearest' ? gl.NEAREST : gl.LINEAR;
@@ -7333,7 +7365,25 @@ void main(){
     const t = new Target(gl, 256, 1, { type: 'rgba8', filter: 'linear', data });
     return t;
   }
-  const glh = { createGL, compile, Pass, Target, PingPong, glToCanvas, rampTexture, GLSL, QUAD_VS };
+  // Read a float or byte render target back as a Float32Array of w*h*4 values, rows top to bottom (the
+  // image convention, not GL's bottom-up order). Byte targets are scaled to 0..1. For exportData().
+  function readTarget(target) {
+    const gl = target.gl, w = target.w, h = target.h, out = new Float32Array(w * h * 4);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, target.fbo);
+    if (target.type === 'rgba8') {
+      const px = new Uint8Array(w * h * 4);
+      gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, px);
+      for (let i = 0; i < px.length; i++) out[i] = px[i] / 255;
+    } else gl.readPixels(0, 0, w, h, gl.RGBA, gl.FLOAT, out);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    const row = w * 4, tmp = new Float32Array(row);
+    for (let y = 0; y < h >> 1; y++) {
+      const a = y * row, b = (h - 1 - y) * row;
+      tmp.set(out.subarray(a, a + row)); out.copyWithin(a, b, b + row); out.set(tmp, b);
+    }
+    return out;
+  }
+  const glh = { createGL, compile, Pass, Target, PingPong, glToCanvas, rampTexture, readTarget, GLSL, QUAD_VS };
 
   /* ================================================================
      Palettes (original)
@@ -7611,6 +7661,109 @@ void main(){
     return e && e.scienceWitness ? JSON.parse(JSON.stringify(e.scienceWitness)) : null;
   };
 
+  /* ---- provenance and research data ---- */
+  // Build facts written by tools/build.js: a fingerprint of the assembled source, each script's SHA-256
+  // and each tab's validation status. Every exported file carries them, so a print says what made it.
+  const BUILD = (() => {
+    try { return Object.freeze(JSON.parse(document.getElementById('build-info').textContent)); }
+    catch (err) { return Object.freeze({}); }
+  })();
+  S.build = BUILD;
+  S.validationStatus = id => (BUILD.validation && BUILD.validation[id || currentId]) || null;
+  function computeInfo(e) {
+    const gl = glContexts.get(e.canvas);
+    if (!gl) return { api: 'CPU', precision: 'JavaScript numbers (float64) unless the technique stores typed arrays' };
+    let renderer = '', vendor = '';
+    try {
+      const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+      renderer = String(gl.getParameter(dbg ? dbg.UNMASKED_RENDERER_WEBGL : gl.RENDERER) || '');
+      vendor = String(gl.getParameter(dbg ? dbg.UNMASKED_VENDOR_WEBGL : gl.VENDOR) || '');
+    } catch (err) { /* a lost context has no renderer to report */ }
+    const types = [...(gl.__targetTypes || [])].sort();
+    const precision = types.includes('rgba32f') ? 'float32 state' : types.includes('rgba16f') ? 'float16 state (half-float fallback)' : 'no float state targets';
+    return { api: 'WebGL2', renderer, vendor, floatRenderTargets: !!gl.floatExt, targetTypes: types, precision };
+  }
+  // Deterministic for a given recipe, build and device: nothing time-dependent, so the same plate
+  // exported twice gives the same bytes.
+  S.getProvenance = id => {
+    const e = instances[id || currentId]; if (!e) return null;
+    const source = e.mod.source || (BUILD.sourceOf && BUILD.sourceOf[e.mod.id]) || null;
+    return JSON.parse(JSON.stringify({
+      schemaVersion: 1, software: 'GENChase', engineApiVersion: S.apiVersion, recipeVersion: RECIPE_V,
+      build: BUILD.build || null, buildFingerprint: BUILD.fingerprint || null,
+      technique: { id: e.mod.id, name: e.mod.name, source, sourceSha256: (source && BUILD.sources && BUILD.sources[source]) || null,
+        validation: S.validationStatus(e.mod.id) },
+      link: encodeRecipe(e), recipe: S.getRecipe(e.mod.id), compute: computeInfo(e), witness: S.getWitness(e.mod.id),
+      note: 'What made this file. The link reprints the recipe; exact pixels can differ across solver revisions, GPUs and resolutions.',
+    }));
+  };
+  // Validation status is shown where the plate is, not only in a report: a research user trusts the
+  // weakest tab they happen to open, so every tab and the stage say how far its numerics were checked.
+  const EVIDENCE = {
+    'validated within stated limits': { glyph: '✓', short: 'Validated within stated limits' },
+    'partially validated': { glyph: '◐', short: 'Partially validated' },
+    unvalidated: { glyph: '○', short: 'Unvalidated' },
+  };
+  const evidenceOf = id => EVIDENCE[S.validationStatus(id)] || null;
+  function renderEvidenceBadge(id) {
+    const badge = document.getElementById('btn-science-report'), status = S.validationStatus(id), ev = evidenceOf(id);
+    if (!badge || badge.dataset.status === (status || '')) return;
+    badge.dataset.status = status || '';
+    badge.textContent = ev ? ev.glyph + ' ' + ev.short + ' · Science report' : 'Science report';
+    badge.title = ev ? 'Validation status from validation/techniques.json. Open the evidence, limits and data export.' : 'Open the science report';
+  }
+  const softwareLine = () => 'GENChase, engine API ' + S.apiVersion + ', recipe v' + RECIPE_V + ', build ' + (BUILD.build || 'unknown');
+  function statusText(e) {
+    const d = document.createElement('div');
+    d.innerHTML = e.statusHtml + scienceWitnessHtml(e.scienceWitness);
+    const parts = [...d.children].map(c => c.textContent.replace(/\s+/g, ' ').trim()).filter(Boolean);
+    return (parts.length ? parts.join(' · ') : d.textContent).replace(/\s+/g, ' ').trim();
+  }
+  // A research copy of the plate's state: an uncompressed .npz that numpy.load reads, holding one .npy
+  // per array the technique exports and meta.json with the provenance, units and grid. A technique that
+  // does not implement exportData() still yields meta.json, and says that its state is not included.
+  async function dataPackage(e) {
+    const F = window.GenChaseDataFormats;
+    let out = null, failure = '';
+    if (typeof e.inst.exportData === 'function') {
+      try { out = await e.inst.exportData(); } catch (err) { failure = String((err && err.message) || err); }
+    }
+    const members = [], arrays = {};
+    for (const [name, a] of Object.entries((out && out.arrays) || {})) {
+      if (!/^[a-z][a-z0-9_]{0,40}$/.test(name)) throw new Error('Invalid data array name: ' + name);
+      members.push({ name: name + '.npy', data: F.npy(a.data, a.shape) });
+      arrays[name] = { file: name + '.npy', shape: a.shape, dtype: F.dtypeOf(a.data), units: a.units || '', description: a.description || '' };
+    }
+    const meta = {
+      schemaVersion: 1, kind: 'genchase-data', provenance: S.getProvenance(e.mod.id), stateExported: members.length > 0,
+      arrays, grid: (out && out.meta) || null, status: statusText(e),
+      note: members.length ? 'Arrays are row-major (C order); a 2D field has row 0 at the top of the plate.'
+        : failure ? 'The state could not be exported: ' + failure
+        : 'This technique does not export its state yet. The recipe, provenance and printed measurements are included.',
+    };
+    members.unshift({ name: 'meta.json', data: new TextEncoder().encode(JSON.stringify(meta, null, 2) + '\n') });
+    return new Blob([F.zipStore(members)], { type: 'application/zip' });
+  }
+  S.exportData = id => {
+    const e = instances[id || currentId];
+    return e ? dataPackage(e) : Promise.reject(new Error('No technique is loaded'));
+  };
+  async function pngWithProvenance(blob, prov) {
+    try {
+      const F = window.GenChaseDataFormats, bytes = new Uint8Array(await blob.arrayBuffer());
+      return new Blob([F.pngWithText(bytes, { Software: softwareLine(), 'GENChase provenance': JSON.stringify(prov) })], { type: 'image/png' });
+    } catch (err) { console.warn('Provenance could not be embedded in the PNG:', err); return blob; }
+  }
+  async function svgWithProvenance(blob, prov) {
+    try {
+      const text = await blob.text(), at = text.search(/<svg\b[^>]*>/);
+      if (at < 0) return blob;
+      const end = text.indexOf('>', at) + 1;
+      const xml = JSON.stringify(prov).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return new Blob([text.slice(0, end) + '<metadata id="genchase-provenance">' + xml + '</metadata>' + text.slice(end)], { type: 'image/svg+xml' });
+    } catch (err) { console.warn('Provenance could not be embedded in the SVG:', err); return blob; }
+  }
+
   function normalizeScienceWitness(record) {
     if (!record || typeof record !== 'object' || Array.isArray(record)) throw new TypeError('Witness must be an object or null');
     const number = key => {
@@ -7625,8 +7778,14 @@ void main(){
     const text = key => { if (record[key] == null) return ''; if (typeof record[key] !== 'string') throw new TypeError('Witness ' + key + ' must be text'); return record[key]; };
     const comparable = measured !== null && expected !== null && tol !== null;
     const valid = record.valid === false ? false : record.valid === null ? null : comparable ? Math.abs(measured - expected) <= tol : null;
+    // basis, uncertainty and method are additive (API version 1): the same gate compare() applies to
+    // status lines. tools/lint.js requires a basis in every setWitness() call in the modules.
+    const basis = record.basis == null ? null : record.basis;
+    if (basis !== null && !Object.prototype.hasOwnProperty.call(util.stats.BASES, basis)) throw new TypeError('Witness basis must be sampled, exact, deterministic or construction');
+    const uncertainty = number('uncertainty');
+    if (uncertainty !== null && uncertainty < 0) throw new TypeError('Witness uncertainty must be nonnegative');
     return { schemaVersion: 1, label: text('label') || 'Scientific check', measured, expected, tol, valid,
-      units: text('units'), missWhen: text('missWhen'), step: number('step') };
+      units: text('units'), missWhen: text('missWhen'), step: number('step'), basis, uncertainty, method: text('method') };
   }
   function scienceWitnessHtml(record) {
     if (!record) return '';
@@ -7636,7 +7795,9 @@ void main(){
     return '<span class="science-witness" data-valid="' + String(record.valid) + '">' + escapeHtml(record.label) +
       ': measured <b>' + escapeHtml(fmt(record.measured)) + '</b>, expected ' + escapeHtml(fmt(record.expected)) +
       ' ± ' + escapeHtml(fmt(record.tol)) + (record.units ? ' ' + escapeHtml(record.units) : '') +
-      ' · ' + verdict + (record.missWhen ? ' · miss when ' + escapeHtml(record.missWhen) : '') + '</span>';
+      ' · ' + verdict + (record.basis === 'sampled' && record.uncertainty !== null ? ' · measured ± ' + escapeHtml(fmt(record.uncertainty)) : '') +
+      (record.basis && record.basis !== 'sampled' ? ' · ' + escapeHtml(util.stats.BASES[record.basis]) : '') +
+      (record.missWhen ? ' · miss when ' + escapeHtml(record.missWhen) : '') + '</span>';
   }
 
   const WORDS = ['kiln', 'harbor', 'moss', 'ember', 'slate', 'tide', 'quartz', 'loam', 'gale', 'reed', 'ochre', 'flint', 'delta', 'fern', 'basalt', 'wren', 'spore', 'lichen', 'coral', 'nacre'];
@@ -8251,6 +8412,7 @@ void main(){
     // every integrator with a time step shows it, so a preset that changes dt says so
     const dt = Number(e.state.dt);
     const dtHtml = isFinite(dt) && dt > 0 && !/\bdt\b/.test(e.statusHtml) ? '<span>dt <b>' + (dt >= 1 ? dt.toFixed(1) : dt.toFixed(3).replace(/0+$/, '').replace(/\.$/, '')) + '</b></span>' : '';
+    renderEvidenceBadge(e.mod.id);
     const html = e.statusHtml + scienceWitnessHtml(e.scienceWitness) + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
     const status = $('status');
     // Preserve text selection and avoid rebuilding identical measurement rows.
@@ -9002,6 +9164,18 @@ void main(){
       const download = h('button',{class:'btn',type:'button',text:'Download science report JSON'});
       download.addEventListener('click',()=>downloadBlob(new Blob([JSON.stringify(snapshot,null,2)],{type:'application/json'}),'genchase-'+e.mod.id+'-science.json'));
       body.appendChild(download);
+      body.appendChild(h('h3',{text:'Research data'}));
+      body.appendChild(h('p',{text: typeof e.inst.exportData === 'function'
+        ? 'The simulation state as NumPy arrays (.npz, read with numpy.load), with meta.json holding the provenance, grid, units and printed measurements.'
+        : 'This technique does not export its state yet. The .npz still carries meta.json with the recipe, provenance and printed measurements.'}));
+      const data = h('button',{class:'btn',type:'button',id:'science-data',text:'Download data (.npz)'});
+      data.addEventListener('click',async()=>{
+        data.disabled = true;
+        try { downloadBlob(await S.exportData(e.mod.id),'genchase-'+e.mod.id+'-'+String(e.state.seed).replace(/[^a-z0-9_-]+/gi,'_')+'.npz'); }
+        catch (err) { toast('Could not export data: ' + err.message); }
+        finally { data.disabled = false; }
+      });
+      body.appendChild(data);
     } catch (err) {
       if (request !== scienceReportRequest) return;
       body.textContent = 'Report unavailable: ' + err.message;
@@ -9431,7 +9605,7 @@ void main(){
   }
 
   /* ---- export ---- */
-  let lastUrl = null, lastBlob = null, lastName = '', lastPrintSpec = null;
+  let lastUrl = null, lastBlob = null, lastName = '', lastPrintSpec = null, lastProvenance = null;
   let printFormatBusy = false, lastPrintJob = null;
   function setExpertPrint(on) {
     $('expert-print').checked=!!on;
@@ -9634,6 +9808,11 @@ void main(){
       if (withColophon) blob = await composeSheet(blob, lay, captionBg);
       else blob = await fitPrintSheet(blob, sp, e.state.bg || '#fff');
       if (svgBlob) svgBlob = await fitPrintSVG(svgBlob, sp, e.state.bg || '#fff');
+      // Every file says what made it: recipe link, build fingerprint, source hash, device and precision.
+      const provenance = S.getProvenance(e.mod.id);
+      blob = await pngWithProvenance(blob, provenance);
+      if (svgBlob) svgBlob = await svgWithProvenance(svgBlob, provenance);
+      lastProvenance = provenance;
       if (job.abort) throw new Error('cancelled');
       if (lastUrl) URL.revokeObjectURL(lastUrl);
       lastBlob = blob; lastUrl = URL.createObjectURL(blob); lastPrintSpec = {...sp};
@@ -9642,7 +9821,7 @@ void main(){
         (colophon ? '-with-code' : '') + (smoothing.applied ? '-smooth-'+smoothing.requested : '') + '.png';
       img.src = lastUrl; img.hidden = false;
       const quality=printQualityReport(e,sp,lay,usedVector,smoothing);
-      lastPrintJob={schemaVersion:1,capturedAt:new Date().toISOString(),engineApiVersion:S.apiVersion,recipe:S.getRecipe(e.mod.id),printSpec:{...sp},caption:withColophon?JSON.parse(JSON.stringify(coloPrefs)):null,quality,witness:S.getWitness(e.mod.id),note:'Recipe and reporting snapshot, not a simulation-state checkpoint. Finishing choices are recorded when this report is downloaded.'};
+      lastPrintJob={schemaVersion:1,capturedAt:new Date().toISOString(),engineApiVersion:S.apiVersion,recipe:S.getRecipe(e.mod.id),printSpec:{...sp},caption:withColophon?JSON.parse(JSON.stringify(coloPrefs)):null,quality,witness:S.getWitness(e.mod.id),provenance,note:'Recipe and reporting snapshot, not a simulation-state checkpoint. Finishing choices are recorded when this report is downloaded.'};
       $('export-pdf').hidden = false; $('export-tiff').hidden = false; $('export-job-json').disabled=false;
       const size = (blob.size / 1048576).toFixed(1) + ' MB';
       const dims = pw.toLocaleString() + ' × ' + ph.toLocaleString() + ' px, ' + size + '. ';
@@ -9723,7 +9902,11 @@ void main(){
         for (let x=0;x<w;x++) { const p=row*w+x; rgb[p*3]=rgba[p*4];rgb[p*3+1]=rgba[p*4+1];rgb[p*3+2]=rgba[p*4+2]; }
         if (row % 256 === 0) await new Promise(r=>setTimeout(r,0));
       }
-      const blob = await window.GenChasePrintFormats[format](rgb,w,h,sp.wIn,sp.hIn,production);
+      const prov = lastProvenance, F = window.GenChaseDataFormats;
+      const options = format === 'pdf'
+        ? Object.assign({}, production, prov ? { provenance: JSON.stringify(prov), producer: softwareLine(), title: 'GENChase · ' + prov.technique.name } : {})
+        : (prov ? { description: F.asciiJSON(prov), software: softwareLine() } : {});
+      const blob = await window.GenChasePrintFormats[format](rgb,w,h,sp.wIn,sp.hIn,options);
       downloadBlob(blob,name); toast('Saved ' + name);
     } catch (err) { toast('Could not make ' + format.toUpperCase() + ': ' + err.message); }
     finally {
@@ -9745,10 +9928,17 @@ void main(){
       cx.fillStyle = '#fff';
       cx.fillRect(0, 0, c.width, c.height);
       cx.drawImage(im, 0, 0);
-      const blob = await new Promise((res, rej) => c.toBlob(
+      let blob = await new Promise((res, rej) => c.toBlob(
         b => b ? res(b) : rej(new Error('this browser cannot encode ' + label)),
         type, quality
       ));
+      // JPEG keeps the provenance in a comment segment; WebP has no text field this writer adds.
+      if (type === 'image/jpeg' && lastProvenance) {
+        try {
+          const F = window.GenChaseDataFormats;
+          blob = new Blob([F.jpegWithComment(new Uint8Array(await blob.arrayBuffer()), 'GENChase provenance ' + F.asciiJSON(lastProvenance))], { type });
+        } catch (err) { console.warn('Provenance could not be embedded in the JPEG:', err); }
+      }
       const name = lastName.replace(/\.png$/i, '.' + ext);
       downloadBlob(blob, name);
       toast('Saved ' + name + ' (' + (blob.size / 1048576).toFixed(1) + ' MB)');
@@ -9947,9 +10137,10 @@ void main(){
       // sequential tab strip is what a tablist without this costs a keyboard user.
       const seen = m.familiarity ? (FAMILIARITY_LABEL[m.familiarity] || m.familiarity) : '';
       const hay = [m.id, m.name, m.tab, m.subtitle, m.equation, m.credit, m.blurb, m.familiarity, seen].join(' ').toLowerCase();
-      tabs.appendChild(h('button', { class: 'tab', role: 'tab', type: 'button', 'data-id': m.id, 'data-hay': hay, 'data-seen': m.familiarity || '', 'aria-selected': 'false', tabindex: '-1', title: m.subtitle || m.name, onclick: () => switchTo(m.id) }, [
+      const ev = evidenceOf(m.id);
+      tabs.appendChild(h('button', { class: 'tab', role: 'tab', type: 'button', 'data-id': m.id, 'data-hay': hay, 'data-seen': m.familiarity || '', 'aria-selected': 'false', tabindex: '-1', title: (m.subtitle || m.name) + (ev ? ' · ' + ev.short : ''), onclick: () => switchTo(m.id) }, [
         h('span', { class: 'tab-name', text: m.tab || m.name }),
-      ]));
+      ].concat(ev ? [h('span', { class: 'tab-evidence', 'aria-hidden': 'true', 'data-status': S.validationStatus(m.id), text: ev.glyph })] : [])));
     }
     const find = $('find'), findN = $('find-n'), seenSel = $('seen'), seenHint = $('seen-hint');
     const applyFind = () => {
@@ -9988,7 +10179,7 @@ void main(){
       });
     }
     if (seenSel) seenSel.addEventListener('change', applyFind);
-    if (window.ModuleBrowser) ModuleBrowser.mount({ modules, onSelect: switchTo, loadRecords: loadScienceRecords });
+    if (window.ModuleBrowser) ModuleBrowser.mount({ modules, onSelect: switchTo, loadRecords: loadScienceRecords, statuses: BUILD.validation || {} });
     bindDragScroll($('history'));
     bindViewControls();
     // top bar wiring
@@ -10445,7 +10636,7 @@ void main(){
       return fallback;
     };
   }
-  function mount({ modules, onSelect, loadRecords }) {
+  function mount({ modules, onSelect, loadRecords, statuses }) {
     const byId = Object.fromEntries(modules.map(m=>[m.id,m]));
     const tabs=document.getElementById('tabs'), sort=document.getElementById('module-sort');
     const orderTabs=()=>{for(const m of modules.slice().sort(compare(sort.value))){const b=tabs.querySelector('[data-id="'+m.id+'"]');if(b)tabs.appendChild(b);}};
@@ -10461,12 +10652,13 @@ void main(){
     field('topic','Topic',[['','All topics'],...Object.keys(groups).map(k=>[k,k]),['Other','Other']]);
     field('seen','Familiarity',[['','Any familiarity'],['ubiquitous','Ubiquitous'],['common','Common'],['occasional','Occasional'],['rare','Rare'],['unseen','Almost unseen']]);
     field('era','Reference year',[['','Any date'],['early','Before 1900'],['modern','1900 to 1949'],['late','1950 to 1999'],['recent','2000 onward'],['unknown','Date not listed']]);
-    field('science','Science evidence',[['','Any evidence status'],['unvalidated','Unvalidated'],['partially validated','Partially validated'],['validated within stated limits','Validated within stated limits']]);fields.science.disabled=true;
+    field('science','Science evidence',[['','Any evidence status'],['unvalidated','Unvalidated'],['partially validated','Partially validated'],['validated within stated limits','Validated within stated limits']]);fields.science.disabled=!(statuses&&Object.keys(statuses).length);
     field('favorites','Saved choices',[['','All modules'],['yes','Favorites only']]);
     const reset=el('button',{type:'button',class:'btn'},'Clear filters');controls.append(reset);
     const count=el('p',{'aria-live':'polite',id:'module-browser-count'}), note=el('p',{class:'browser-note'},'Dates come from the listed reference year, not the date a module was added. Familiarity and topics are editorial categories. Science labels apply only to their recorded limits.'), results=el('div',{class:'module-results'});
     dialog.append(controls,count,note,results);document.body.append(dialog);
-    let records={},loadError='',opener=null;
+    // Statuses embedded at build time make the evidence filter work before the full inventory loads.
+    let records=Object.assign({},statuses||{}),loadError='',opener=null;
     function render(){
       const bits=fields.query.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
       const selected=modules.filter(m=>{
@@ -21024,6 +21216,24 @@ void main(){ outColor=texture(u_c,v_uv); }`;
           // reference: the reaction subsequently relaxes the added zero mode.
           refreshChem(host.getState()); render(); startLoop();
         },
+        // The field itself for research use: the state texture read back unrounded, in lattice units
+        // (cell spacing 1, as the stencils use it). The engine packs these into an .npz with provenance.
+        async exportData() {
+          if (!C) throw new Error('nothing to export');
+          const s = host.getState(), st = G.readTarget(C.read), aux = G.readTarget(midT || muT);
+          const n = gw * gh, field = new Float32Array(n), auxField = new Float32Array(n);
+          for (let i = 0; i < n; i++) { field[i] = st[i * 4]; auxField[i] = aux[i * 4]; }
+          return {
+            arrays: {
+              field: { data: field, shape: [gh, gw], description: 'the evolved field, channel 0 of the state texture (the order parameter of this tab\'s equation)' },
+              state: { data: st, shape: [gh, gw, 4], description: 'all four channels of the state texture as stored' },
+              auxiliary: { data: auxField, shape: [gh, gw], description: 'channel 0 of the auxiliary texture the step reads (the chemical potential for the Cahn-Hilliard family)' },
+            },
+            meta: { tab: spec.id, grid: [gw, gh], cellSpacing: 1, units: 'dimensionless lattice units', boundary: s.bc === 'noflux' ? 'no-flux' : 'periodic',
+              steps: stepCount, dt: s.dt, time: stepCount * s.dt, timeNote: 'steps times the current dt; exact only if dt was not changed during the run',
+              precision: texType, guard: guardMessage || null },
+          };
+        },
         async exportPNG(w, h) {
           if (!C) throw new Error('nothing to export');
           const max = gl.getParameter(gl.MAX_TEXTURE_SIZE);
@@ -24618,6 +24828,11 @@ void main(){
       let C = null, B = null, reduceT = null, gw = 0, gh = 0, ramp = null, rampPal = null, rampKey = '';
       const redBuf = new Uint8Array(RED * RED * 4);
       let raf = 0, chunkTimer = 0, sweeps = 0, tick0 = 0, meanM = 0;
+      // |m| is sampled every SAMPLE sweeps into a time series, so its error bar can account for the
+      // autocorrelation of the Markov chain. Near T_c single-flip Metropolis decorrelates slowly (critical
+      // slowing down), and a naive error on those samples would be far too small; tau_int says how slow.
+      const SAMPLE = 24;
+      let mSeries = [], nextSample = SAMPLE, fieldBuf = null;
 
       function ensureGrid(s) {
         const [W, H] = gridSize(s);
@@ -24669,6 +24884,50 @@ void main(){
         });
       }
       function measure() { meanM = gpuMeasure(gl, reducePass, reduceT, C.read, gw, gh, redBuf).mean; }
+      // Magnetization over every site from the float spin field. The 8-bit block reduction above is
+      // enough for the picture but rounds each block, which biases |m| by up to about 0.004 when every
+      // block agrees; a half-float device falls back to it and the method says so.
+      function exactMag() {
+        if (texType !== 'rgba32f') return null;
+        const n = gw * gh * 4;
+        if (!fieldBuf || fieldBuf.length !== n) fieldBuf = new Float32Array(n);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, C.read.fbo);
+        gl.readPixels(0, 0, gw, gh, gl.RGBA, gl.FLOAT, fieldBuf);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        let sum = 0;
+        for (let i = 0; i < n; i += 4) sum += fieldBuf[i] > 0 ? 1 : -1;
+        return sum / (gw * gh);
+      }
+      function sample() {
+        if (sweeps < nextSample) return;
+        const m = exactMag();
+        if (m === null) measure();
+        mSeries.push(Math.abs(m === null ? meanM : m));
+        if (mSeries.length > 4096) mSeries = mSeries.slice(-2048);
+        nextSample = sweeps + SAMPLE;
+      }
+      function resetSeries() { mSeries = []; nextSample = sweeps + SAMPLE; }
+      // Onsager's T_c and Yang's spontaneous magnetization for the infinite square lattice at h = 0
+      // (C. N. Yang, Phys. Rev. 85, 808, 1952): M(T) = (1 - sinh(2J/T)^-4)^(1/8) below T_c.
+      const yangM = T => T < T_C ? Math.pow(1 - Math.pow(Math.sinh(2 / T), -4), 1 / 8) : 0;
+      function magnetization(s, r) {
+        // The first half of the series is discarded as equilibration: a hot start quenched below T_c
+        // coarsens for a long time before |m| settles, and those samples would drag the mean down.
+        const eq = mSeries.slice(Math.floor(mSeries.length / 2));
+        const clean = s.h === 0 && s.hMode === 'uniform';
+        const withYang = clean && r < 0.95;
+        const near = r >= 0.95 && r < 1.05;
+        const base = { label: '|m|', measured: eq.length ? U.stats.mean(eq) : Math.abs(meanM) };
+        if (withYang) Object.assign(base, { expected: yangM(s.T), reference: 'Yang, infinite lattice', digits: 4 });
+        if (eq.length < 20) return U.stats.compare(Object.assign(base, { basis: 'sampled', pending: eq.length + ' samples after equilibration; let it run' }));
+        const est = U.stats.seriesMean(eq), tauSweeps = Math.round(est.tau * SAMPLE);
+        const method = 'τ_int ' + est.tau.toFixed(1) + ' samples of ' + SAMPLE + ' sweeps (' + tauSweeps + ' sweeps), n_eff ' +
+          Math.round(est.nEff) + ' of ' + eq.length + ', first half of the run discarded as equilibration' +
+          (texType === 'rgba32f' ? ', every site counted' : ', 8-bit block reduction on a half-float device');
+        if (!est.reliable) return U.stats.compare(Object.assign(base, { basis: 'sampled', pending: 'run shorter than 50 τ_int (τ_int ≈ ' + tauSweeps + ' sweeps)' }));
+        return U.stats.compare(Object.assign(base, { basis: 'sampled', measured: est.mean, uncertainty: est.se, method,
+          note: near ? 'τ_int ' + tauSweeps + ' sweeps, critical slowing down' : withYang ? 'finite L' : undefined }));
+      }
       function status(extra) {
         const s = host.getState(), r = s.T / T_C;
         const phase = r < 0.93 ? 'ordered' : r < 1.07 ? 'critical' : 'disordered';
@@ -24676,6 +24935,7 @@ void main(){
           '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
           '<span>T <b>' + s.T.toFixed(2) + '</b> · ' + r.toFixed(2) + ' T<sub>c</sub> · ' + phase + '</span>' +
           '<span>m <b>' + (meanM >= 0 ? '+' : '') + meanM.toFixed(2) + '</b></span>' +
+          magnetization(s, r) +
           '<span>sweep <b>' + sweeps.toLocaleString() + '</b></span>' +
           (extra ? '<span>' + extra + '</span>' : '')
         );
@@ -24684,7 +24944,7 @@ void main(){
       function frame() {
         raf = 0;
         const s = host.getState();
-        step(s.steps); render();
+        step(s.steps); sample(); render();
         if (sweeps % 16 < s.steps) { measure(); status(); }
         raf = requestAnimationFrame(frame);
       }
@@ -24699,7 +24959,7 @@ void main(){
         let left = total;
         (function chunk() {
           const n = Math.min(24, left); left -= n;
-          step(n); render();
+          step(n); sample(); render();
           if (left > 0) chunkTimer = setTimeout(chunk, 0);
           else { measure(); status(); startLoop(); }
         })();
@@ -24707,7 +24967,7 @@ void main(){
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
         regenerate() {
-          stop(); sweeps = 0;
+          stop(); sweeps = 0; resetSeries();
           const s = host.getState();
           tick0 = U.makeRng(s.seed + '/ising/tick').int(0, 1e6);
           ensureGrid(s);
@@ -24718,7 +24978,11 @@ void main(){
           else { render(); measure(); status(); startLoop(); }
         },
         repaint() { if (C) render(); },
-        live(key) { if (key === 'running') startLoop(); else if (!raf) startLoop(); },
+        live(key) {
+          // a new temperature or field starts a new ensemble: samples from the old one would bias the mean
+          if (key === 'T' || key === 'h' || key === 'hMode' || key === 'bands') resetSeries();
+          if (key === 'running') startLoop(); else if (!raf) startLoop();
+        },
         resize() { if (C) render(); },
         pause() { stop(); },
         resume() { if (C) { render(); startLoop(); } },
@@ -24731,7 +24995,21 @@ void main(){
           // paint a disk of the minority spin so the poke is visible whatever the plate's majority
           const v = meanM > 0 ? -1 : 1;
           splatPass.draw(C.write, { u_src: C.read, u_pos: [p.x, p.yGL], u_add: [v, 0, 0, 1], u_rad: 0.05, u_amt: 1, u_mode: { int: 0 } });
-          C.swap(); render(); startLoop();
+          C.swap(); resetSeries(); render(); startLoop();
+        },
+        // The spin configuration and the |m| time series behind the printed error bar, for research use.
+        async exportData() {
+          if (!C) throw new Error('nothing to export');
+          const s = host.getState(), st = G.readTarget(C.read), n = gw * gh, spins = new Int8Array(n);
+          for (let i = 0; i < n; i++) spins[i] = st[i * 4] > 0 ? 1 : -1;
+          return {
+            arrays: {
+              spins: { data: spins, shape: [gh, gw], description: 'spin at each site, +1 or -1' },
+              abs_m_series: { data: Float64Array.from(mSeries), shape: [mSeries.length], description: '|m| sampled every ' + SAMPLE + ' sweeps since the last reset; the printed error bar discards the first half' },
+            },
+            meta: { tab: 'ising', grid: [gw, gh], boundary: 'periodic', T: s.T, h: s.h, hMode: s.hMode, J: 1, kB: 1, sweeps,
+              update: 'checkerboard Metropolis, two half-sweeps per sweep', sampleEverySweeps: SAMPLE, T_c: T_C },
+          };
         },
         exportPNG(w, h) {
           if (!C) return Promise.reject(new Error('nothing to export'));
@@ -27955,6 +28233,18 @@ void main(){
             u_add: spec.pokeAdd, u_rad: spec.pokeRad, u_amt: 1, u_mode: { int: spec.pokeMode == null ? 1 : spec.pokeMode },
           });
           C.swap(); render(); startLoop();
+        },
+        // The species concentrations for research use, read back unrounded from the state texture.
+        async exportData() {
+          if (!C) throw new Error('nothing to export');
+          const s = host.getState(), st = G.readTarget(C.read), n = gw * gh, k = spec.n;
+          const species = new Float32Array(n * k);
+          for (let i = 0; i < n; i++) for (let c = 0; c < k; c++) species[i * k + c] = st[i * 4 + c];
+          return {
+            arrays: { species: { data: species, shape: [gh, gw, k], description: k + ' species in state-texture channel order (the order of the equation)' } },
+            meta: { tab: spec.id, grid: [gw, gh], species: k, units: 'the model\'s dimensionless units on the step shader\'s lattice', boundary: 'periodic',
+              steps: stepCount, dt: s.dt, precision: texType },
+          };
         },
         async exportPNG(w, h) {
           if (!C) throw new Error('nothing to export');

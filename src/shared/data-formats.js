@@ -214,7 +214,7 @@
     return out;
   }
 
-  const api = Object.freeze({ crc32, asciiJSON, npy, readNpy, zipStore, readZip, pngWithText, readPngText, jpegWithComment, readJpegComments });
+  const api = Object.freeze({ crc32, asciiJSON, dtypeOf, npy, readNpy, zipStore, readZip, pngWithText, readPngText, jpegWithComment, readJpegComments });
   root.GenChaseDataFormats = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : globalThis);

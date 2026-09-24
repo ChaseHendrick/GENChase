@@ -18,7 +18,8 @@ assert.ok(!/Studio\.register\s*\(/.test(index), 'Index must not embed simulation
 const scripts = [...index.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\b[^>]*>/gi)];
 assert.ok(scripts.some(m => /src\s*=/.test(m[1])), 'Index must load the shared engine externally');
 assert.ok(scripts.every(m => !/src\/modules\//.test(m[1])), 'Index must load modules lazily');
-const executable = scripts.filter(m => !/\btype\s*=\s*["'](?:application\/ld\+json|text\/plain)["']/i.test(m[1]));
+// JSON data blocks (structured data, the embedded build facts) are not executable and do not count.
+const executable = scripts.filter(m => !/\btype\s*=\s*["'](?:application\/ld\+json|application\/json|text\/plain)["']/i.test(m[1]));
 assert.ok(executable.reduce((sum, m) => sum + m[2].length, 0) < 4096, 'Index contains more than a small inline bootstrap');
 for (const entry of manifest.techniques) {
   assert.match(entry.id, /^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Unsafe technique ID');

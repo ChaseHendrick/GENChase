@@ -23,7 +23,7 @@
       return fallback;
     };
   }
-  function mount({ modules, onSelect, loadRecords }) {
+  function mount({ modules, onSelect, loadRecords, statuses }) {
     const byId = Object.fromEntries(modules.map(m=>[m.id,m]));
     const tabs=document.getElementById('tabs'), sort=document.getElementById('module-sort');
     const orderTabs=()=>{for(const m of modules.slice().sort(compare(sort.value))){const b=tabs.querySelector('[data-id="'+m.id+'"]');if(b)tabs.appendChild(b);}};
@@ -39,12 +39,13 @@
     field('topic','Topic',[['','All topics'],...Object.keys(groups).map(k=>[k,k]),['Other','Other']]);
     field('seen','Familiarity',[['','Any familiarity'],['ubiquitous','Ubiquitous'],['common','Common'],['occasional','Occasional'],['rare','Rare'],['unseen','Almost unseen']]);
     field('era','Reference year',[['','Any date'],['early','Before 1900'],['modern','1900 to 1949'],['late','1950 to 1999'],['recent','2000 onward'],['unknown','Date not listed']]);
-    field('science','Science evidence',[['','Any evidence status'],['unvalidated','Unvalidated'],['partially validated','Partially validated'],['validated within stated limits','Validated within stated limits']]);fields.science.disabled=true;
+    field('science','Science evidence',[['','Any evidence status'],['unvalidated','Unvalidated'],['partially validated','Partially validated'],['validated within stated limits','Validated within stated limits']]);fields.science.disabled=!(statuses&&Object.keys(statuses).length);
     field('favorites','Saved choices',[['','All modules'],['yes','Favorites only']]);
     const reset=el('button',{type:'button',class:'btn'},'Clear filters');controls.append(reset);
     const count=el('p',{'aria-live':'polite',id:'module-browser-count'}), note=el('p',{class:'browser-note'},'Dates come from the listed reference year, not the date a module was added. Familiarity and topics are editorial categories. Science labels apply only to their recorded limits.'), results=el('div',{class:'module-results'});
     dialog.append(controls,count,note,results);document.body.append(dialog);
-    let records={},loadError='',opener=null;
+    // Statuses embedded at build time make the evidence filter work before the full inventory loads.
+    let records=Object.assign({},statuses||{}),loadError='',opener=null;
     function render(){
       const bits=fields.query.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
       const selected=modules.filter(m=>{

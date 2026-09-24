@@ -21,6 +21,9 @@ Never use `sharpie@users.noreply.github.com`. GitHub maps that address to github
 - It is a real simulation (PDE, lattice, growth, tiling, dynamical system) that can reprint from a seed.
 - It should share the existing seed / palette / print / witness shell.
 - Someone needs to verify the plate is computed, not a still or a loop.
+- The catalog is not paused. While unvalidated records are at least half of the catalog, it may not grow
+  past the ceiling in `validation/scope.json`, and `tools/lint.js` fails if it does. Validate existing tabs
+  to lift the pause, or propose the new one as a replacement.
 
 ## Do not
 
@@ -38,9 +41,11 @@ There is a harness. Use it; this project has shipped bugs that a thumbnail hid.
 node tools/build.js                # assemble maintained source
 node tools/science.js              # verify validation records and coverage
 node tools/index.js                # regenerate TECHNIQUES.md and techniques.json from the file
-node tools/lint.js                 # structure, ids, Math.random, doc drift. One second.
+node tools/lint.js                 # structure, ids, Math.random, doc drift, the uncertainty gate, scope
+node tools/stats-check.js          # the error-bar harness against closed-form answers. Two seconds.
 node tools/check.js <id> 12000     # the plate: non-blank, deterministic, survives a tab switch
 node tools/export.js <id> 8 300    # the print path, at 8 inches and 300 ppi
+node tools/provenance-check.js     # provenance in every export, and the .npz data path
 ```
 
 `tools/modules/CONTRACT.md` is the real contract: the register keys, the instance methods, the GL
@@ -68,9 +73,24 @@ near 6 however the model behaved. A self-check without an error bar is decoratio
 So where a measured quantity is printed against theory, it is worth an uncertainty, and a comparison
 reads better in standard deviations: `0.307 +/- 0.012 against 1/3, 2.2 sigma low`.
 
-This is guidance rather than a gate. Nothing enforces it, `lint.js` cannot check it, and a tab that would
-rather show a number than a confidence interval is still a tab. What follows is here because the wrong
-method is easy, looks fine, and is hard to spot later.
+This is a gate. A status line builds every measured-against-theory span with
+`Studio.util.stats.compare({ label, measured, expected, reference, basis, uncertainty, method })` from the
+shared harness `src/shared/stats.js`, and `compare()` refuses to print one without a basis:
+
+- `sampled`: the number estimates something from random draws. It needs an `uncertainty` and a `method`,
+  or `pending` with the reason no honest error bar exists yet; a pending comparison prints no verdict.
+- `exact`: an exact count or integer invariant. Prints "exact, no sampling error".
+- `deterministic`: no randomness enters; the error is numerical only. Prints "deterministic, no sampling error".
+- `construction`: the agreement is forced by how the plate is built. Prints "true by construction; a
+  regression test, not a prediction".
+
+`tools/lint.js` fails a module line that prints a value against a reference by hand (theory, expected,
+surmise, Euler, vs, against, drift, residual, a value followed by "· 0", a hand-typed ± or σ) and any
+`compare()` or `setWitness()` call without a `basis`. It reads source lines, so it catches the phrasings
+this codebase has used, not every sentence a person could write; the comparisons that existed when the
+gate arrived are listed in [validation/COMPARISON-AUDIT.md](validation/COMPARISON-AUDIT.md). The harness
+itself is checked against closed-form answers, with negative controls, by `node tools/stats-check.js`.
+What follows is here because the wrong method is easy, looks fine, and is hard to spot later.
 
 How to get an uncertainty honestly depends on what the number is.
 
@@ -184,6 +204,12 @@ Keep physical print settings in the engine and scientific parameters in modules.
 
 - Edit the canonical module in `src/modules/`. Copy a neighbor `Studio.register({ id, name, schema, defaults, create })`. Do not start a parallel architecture.
 - All randomness through `U.makeRng(seed)`. `Math.random` in a sim breaks reprinting.
+- Error bars through `U.stats` (`seriesMean`, `fieldMean`, `blockBootstrap`, `slopeBootstrap`, `hill`),
+  resampled with a seeded generator (`seed: s.seed + '/<tag>'`) so an error bar reprints with its plate.
+- A technique whose state is a field or a particle set implements `exportData()` (see
+  `tools/modules/CONTRACT.md`), so the science report's "Download data (.npz)" and `node tools/run.js`
+  give researchers the numbers, not only the picture. Every export (PNG, PDF, TIFF, JPEG, SVG, .npz)
+  carries the provenance from `Studio.getProvenance()`; do not strip it.
 - The share format is the URL hash, with encoded settings when needed. Settings JSON is the fallback. Preserve recipe version information and document changes to numerical results. Seeds do not guarantee identical pixels across solver revisions, hardware or arbitrary simulation resolutions.
 - Witness: still plates start Still and stay Still. Live means the pixels changed twice in a row. Never greet a still plate with Live.
 - Timeline snapshots happen on pointer up, and only if the recipe hash changed.

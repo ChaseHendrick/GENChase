@@ -332,6 +332,25 @@ for (const name of ['MODULE_SPEC.md']) {
   }
 }
 
+/* ---- scope: no new tabs while most are unvalidated ---- */
+// validation/scope.json sets a ceiling on the catalog. While unvalidated records are at least half of it,
+// adding a technique fails here; validating existing ones lifts the pause. docs/RESEARCH-GRADE.md, section 6.
+{
+  const scopePath = path.join(root, 'validation', 'scope.json'), recordsPath = path.join(root, 'validation', 'techniques.json');
+  if (!fs.existsSync(scopePath)) fail('validation/scope.json is missing');
+  else if (fs.existsSync(recordsPath)) {
+    const scope = JSON.parse(fs.readFileSync(scopePath, 'utf8'));
+    const records = JSON.parse(fs.readFileSync(recordsPath, 'utf8'));
+    const unvalidated = records.filter(r => r.status === 'unvalidated').length;
+    if (!Number.isInteger(scope.catalogCeiling) || scope.catalogCeiling < 1) fail('validation/scope.json needs an integer catalogCeiling');
+    else if (mods.length > scope.catalogCeiling && unvalidated * 2 >= mods.length) {
+      fail('The catalog is paused at ' + scope.catalogCeiling + ' techniques while ' + unvalidated + ' of ' + mods.length +
+        ' are unvalidated (validation/scope.json). Validate existing tabs until fewer than half are unvalidated, or propose the new one as a replacement.');
+    }
+    notes.push('scope: ' + unvalidated + ' of ' + mods.length + ' unvalidated; ' + (unvalidated * 2 >= mods.length ? 'catalog paused at ' + scope.catalogCeiling : 'catalog open'));
+  }
+}
+
 /* ---- the uncertainty gate ---- */
 // AGENTS.md: a measured number printed against theory carries an error bar, or says why it has none.
 // Status lines build those comparisons with Studio.util.stats.compare(), which refuses a comparison

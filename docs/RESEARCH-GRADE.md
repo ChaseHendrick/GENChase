@@ -108,6 +108,8 @@ results file under `validation/results/`.
 
 ## 3. Make uncertainty a gate, not guidance
 
+Status: done, see **Done**. The findings below are kept as the audit that motivated it.
+
 - **Finding:** AGENTS.md ("A measured number carries an error bar") says error bars are
   "guidance rather than a gate". Changing that is the maintainer's decision; this is the proposal.
 - **Shared harness:** one ensemble harness under `tools/lib/` that every stochastic witness uses:
@@ -154,6 +156,8 @@ results file under `validation/results/`.
 
 ## 5. Make it an instrument, not only a printer
 
+Status: done for provenance, the headless run and the first `exportData()` tabs; see **Done**.
+
 **5a. Raw data export.**
 - **Finding:** exports are PNG, PDF, TIFF and SVG. There is no way to get the field arrays or the
   measured time series out.
@@ -184,6 +188,8 @@ results file under `validation/results/`.
 
 ## 6. Scope discipline
 
+Status: done, see **Done**.
+
 A research user trusts the weakest tab they happen to open. Consider pausing new tabs until the
 unvalidated count is below half the catalog. Alternatively, make the validation status
 impossible to miss on the tab itself, if it is not already.
@@ -200,4 +206,36 @@ impossible to miss on the tab itself, if it is not already.
 
 ## Done
 
-Nothing yet. Move items here with the pull request that finished them.
+**Section 3, uncertainty as a gate** ([SharpMeow/GENChase#146](https://github.com/SharpMeow/GENChase/pull/146)).
+- `src/shared/stats.js` is the shared harness: tau_int with Sokal's window, series and field means with
+  honest standard errors, blocking, moving-block and slope bootstraps, the Hill estimator, and `compare()`.
+  `node tools/stats-check.js` checks it against closed-form answers, with negative controls: the naive
+  error on an AR(1) series and the OLS error on one trajectory must undercover, and do.
+- `compare()` will not print a comparison without a basis (sampled with an error bar or a pending reason,
+  exact, deterministic, construction). `tools/lint.js` fails hand-written comparisons and any `compare()` or
+  `setWitness()` without a basis. AGENTS.md now calls it a gate.
+- The 121 candidate comparisons the audit found are converted or classified; see
+  [validation/COMPARISON-AUDIT.md](../validation/COMPARISON-AUDIT.md), which also lists the reference
+  problems found and not fixed.
+- Ising reports |m| with a tau_int error bar and, near T_c, tau_int itself in sweeps; below 0.95 T_c at
+  h = 0 it is compared with Yang's exact magnetization. Wolff updates were not added.
+
+**Section 5, data out and provenance in** (same pull request).
+- Every PNG, PDF, TIFF, JPEG and SVG export and the print-job JSON carry `Studio.getProvenance()`: recipe
+  link, build fingerprint, source SHA-256, validation status, witness, renderer and precision. WebP carries
+  none.
+- `Studio.exportData()` and the science report's "Download data (.npz)" give the state as NumPy arrays with
+  `meta.json`. Implemented for the six `pde` tabs, the five `rdx` tabs and `ising`; other tabs export
+  `meta.json` only and say so.
+- `node tools/run.js <hash> --out plate.npz --steps N [--set key=value]` runs a recipe headlessly.
+- `node tools/provenance-check.js` reads the provenance back from the real export buttons.
+
+**Section 6, scope** (same pull request).
+- Every tab in the strip carries a status glyph, the stage's science-report button names the status, and the
+  module browser's evidence filter works without loading the inventory.
+- `validation/scope.json` sets a ceiling of 130; `tools/lint.js` fails a larger catalog while at least half of
+  it is unvalidated.
+
+Still open from these sections: seed ensembles run from the tools for the tabs whose error bar is pending,
+Wolff cluster updates for near-critical measurement runs, and `exportData()` for the remaining field and
+particle tabs.
