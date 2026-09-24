@@ -1576,7 +1576,7 @@
       "subtitle": "localisation without disorder · 1980",
       "equation": "ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localised for λ>2",
       "credit": "S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 2 every eigenstate localises. The model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 2. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.",
-      "blurb": "Anderson needed randomness. Aubry and André did not: a cosine at an irrational period is enough, and the transition is sharp. Below λ = 2 the ground state is extended; above, it sits in a well. The status line reports the inverse participation ratio against 1/N, and whether λ sits past the dual point 2.",
+      "blurb": "Anderson needed randomness. Aubry and André did not: a cosine at an irrational period is enough, and the transition is sharp. Below λ = 2 the ground state is extended; above, it sits in a well. The status line reports the inverse participation ratio against 1/N.",
       "order": 56,
       "seed": "",
       "presets": [
@@ -1983,7 +1983,7 @@
       "subtitle": "a needle rotated in arbitrarily small area · 1919",
       "equation": "K_ε ⊃ a unit segment in every direction,   |K_ε| → 0 as ε → 0",
       "credit": "S. Kakeya asked in 1917 for the smallest set in which a unit needle can be rotated. Besicovitch (1919/1928) showed the infimum of the area is zero: a Perron tree of overlapping triangles contains a unit segment in a dense set of directions and can be made as thin as one likes. The plate is a finite Perron-like union, not the infinite construction.",
-      "blurb": "To turn a needle through every angle you would think you need a disk of area π/4. Besicovitch built a set of area as small as you please that still contains a unit segment in every direction. The plate is a finite sprouting of those needles, packed so they share area. The status line reports occupied fraction against π/4 for a spinning disk.",
+      "blurb": "To turn a needle through every angle you would think you need a disk of area π/4. Besicovitch built a set of area as small as you please that still contains a unit segment in every direction. The plate is a finite sprouting of those needles, packed so they share area. The status line reports the occupied fraction of the sheet against the disk one needle sweeps as it turns.",
       "order": 61,
       "seed": "",
       "presets": [
@@ -2884,7 +2884,7 @@
       "subtitle": "a gas that unmixes when you flip every arrow · 1876",
       "equation": "x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1",
       "credit": "J. Loschmidt, Sitzungsber. Kais. Akad. Wiss. Wien 73, 128 (1876), objected to Boltzmann: reverse every velocity and the entropy decrease is as lawful as the increase. The objection is correct for a finite isolated system; the catch is the exponential sensitivity that makes the reversal unprepareable. The plate is non-interacting tracers on a ring, reversed on cue, so the echo is exact and visible.",
-      "blurb": "Mix a gas, then flip every velocity. The movie of mixing, played backwards, is a valid trajectory of Newton's laws, so the gas unmixes. Boltzmann's H-theorem looks violated; it is not, because the reversed state is one of measure zero. The plate is that movie as spacetime. The status line reports overlap with the initial condition at the end of the echo, against 1.",
+      "blurb": "Mix a gas, then flip every velocity. The movie of mixing, played backwards, is a valid trajectory of Newton's laws, so the gas unmixes. Boltzmann's H-theorem looks violated; it is not, because the reversed state is one of measure zero. The plate is that movie as spacetime. The status line reports the overlap of the last row with the initial condition; it is 1 by construction when the flip is at half time, and the echo falls elsewhere otherwise.",
       "order": 96,
       "seed": "",
       "presets": [
@@ -3017,7 +3017,7 @@
       "subtitle": "a clock that pumps a whole electron per turn · 1983",
       "equation": "P(φ) = (1/2π) ∮ A(k,φ) dk,   ΔP over a cycle = C₁ ∈ ℤ",
       "credit": "D. J. Thouless, Phys. Rev. B 27, 6083 (1983). An adiabatic cycle of a 1D insulator pumps a quantized charge equal to the Chern number of the (k, t) torus. Rice and Mele (1982) wrote the two-band lattice that makes the winding visible. The plate is the occupied-band density versus cycle angle; the centre of mass walks one cell when the loop in (u, v, δ) encloses the origin, and stands still when it does not.",
-      "blurb": "A closed cycle in parameter space that returns every hopping to itself, and yet a whole electron has moved by one cell. The amount is an integer, a Chern number, so disorder cannot change it by a little. Run the same cycle the other way around the degeneracy and nothing moves. The status line reports ΔP against 1 for the topological loop and 0 for the trivial one.",
+      "blurb": "A closed cycle in parameter space that returns every hopping to itself, and yet a whole electron has moved by one cell. The amount is an integer, a Chern number, so disorder cannot change it by a little. Run the same cycle the other way around the degeneracy and nothing moves. The status line names the cycle you chose; the plate draws the transported density for it, and pumping is not computed from a Hamiltonian here.",
       "order": 98,
       "seed": "",
       "presets": [
@@ -3292,7 +3292,7 @@
       "subtitle": "trochoidal waves, the exact Euler deep-water solution · 1802",
       "equation": "X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1",
       "credit": "Gerstner, Theorie der Wellen, Abh. Bohm. Ges. Wiss. (1802), found the unique exact periodic deep-water gravity wave of finite amplitude: every particle traces a circle, the free surface is an inverted trochoid, and the pressure is constant along it. Rankine, On the exact form of waves near the surface of deep water, Phil. Trans. Roy. Soc. 153, 127 (1863), rediscovered the same motion. Superposing two Gerstners (the Two trains control) is graphics practice, Tessendorf, Simulating Ocean Water, SIGGRAPH course notes (2001), and is not an Euler solution. This plate is a seeded print of the exact Lagrangian map. It is not a new equation.",
-      "blurb": "In deep water a periodic gravity wave of finite height has an exact Euler solution, and only one: Gerstner (1802), rediscovered by Rankine. Each particle labeled (a, b) goes in a circle of radius A e^{k b}, so the orbits shrink exponentially with depth, and the free surface is an inverted trochoid, pointed at the crests, round in the troughs. At steepness σ = k A → 1 the crests cusp and the curve is a cycloid. The status line reports the RMS radial deviation from a circle, against 0, and the surface radius against A. If the map were a stacked sine, both would fail. Two trains superposes a second Gerstner; that is a rendering trick, not a solution, and the orbits stop being circles.",
+      "blurb": "In deep water a periodic gravity wave of finite height has an exact Euler solution, and only one: Gerstner (1802), rediscovered by Rankine. Each particle labeled (a, b) goes in a circle of radius A e^{k b}, so the orbits shrink exponentially with depth, and the free surface is an inverted trochoid, pointed at the crests, round in the troughs. At steepness σ = k A → 1 the crests cusp and the curve is a cycloid. The status line reports the RMS radial deviation from a circle and the mean orbit radius against A e^{kb}; for one train both hold by construction of the map, so they are regression tests, not predictions. Two trains superposes a second Gerstner; that is a rendering trick, not a solution, and the orbits stop being circles.",
       "order": 110,
       "seed": "",
       "presets": [
@@ -3320,7 +3320,7 @@
       "subtitle": "three equal masses chasing on a planar figure-eight · 1993 / 2000",
       "equation": "r̈_i = −Σ_{j≠i} (r_i−r_j)/|r_i−r_j|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0",
       "credit": "Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.",
-      "blurb": "Three equal masses chase each other around a single figure-eight. Moore found the orbit; Chenciner and Montgomery proved it. The plate is that choreography as worldlines: a three-metal ribbon on a dark sheet, time as fade, or wrapped as a wreath with angle for time. Shape space kills rotation and scale, and the curve is still an eight. Braid is x against t. Broken is a nearby Euler initial condition that does not close, kept so the status line can miss. The check is |L| against 0, energy drift against 0, and the return to the initial configuration at t = T against 0.",
+      "blurb": "Three equal masses chase each other around a single figure-eight. Moore found the orbit; Chenciner and Montgomery proved it. The plate is that choreography as worldlines: a three-metal ribbon on a dark sheet, time as fade, or wrapped as a wreath with angle for time. Shape space kills rotation and scale, and the curve is still an eight. Braid is x against t. Broken is a nearby Euler initial condition that does not close, kept so the status line can miss. The status line prints energy drift against 0 and the return to the initial configuration at t = T against 0; |L| is zero by construction and stays there as a regression test.",
       "order": 111,
       "seed": "",
       "presets": [

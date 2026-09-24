@@ -347,7 +347,7 @@
   {
     "id": "potts",
     "source": "src/modules/potts.js",
-    "sourceSha256": "b3c1e3f924fad80deda39c85f1fd2606fe01c1cb3d7c4d033aa8853d40d78b62",
+    "sourceSha256": "04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6",
     "reference": "The extended, area-constrained Potts model is François Graner and James Glazier, 'Simulation of biological cell sorting using a two-dimensional extended Potts model', Physical Review Letters 69, 2013 (1992), building on Malcolm Anderson, David Srolovitz, Gary Grest and Paul Sahni, Acta Metallurgica 32, 783 (1984), who used the plain q-state Potts model for grain growth. The law the plate measures is John von Neumann's, in Metal Interfaces (1952), as extended by William Mullins, J. Appl. Phys. 27, 900 (1956): a two-dimensional cell with n sides changes area at a rate proportional to n − 6. The average side count being exactly six is Euler's formula, not a fit. Differential adhesion as the explanation for cell sorting is Malcolm Steinberg, Science 141, 401 (1963).",
     "equation": "H = Σ_⟨ij⟩ J(1 − δ_{σi σj}) + λ Σ_c (a_c − A)²;   accept a copy with min(1, e^{−ΔH/T})",
     "status": "unvalidated",
@@ -423,7 +423,7 @@
   {
     "id": "tonertu",
     "source": "src/modules/tonertu.js",
-    "sourceSha256": "be0f91a16da5e11522b787d1bd4975ef415d7e62e921fd80553886a4a94bd31e",
+    "sourceSha256": "982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257",
     "reference": "John Toner and Yuhai Tu, 'Long-range order in a two-dimensional dynamical XY model: how birds fly together', Physical Review Letters 75, 4326 (1995), and Phys. Rev. E 58, 4828 (1998). The particle model it coarse-grains is Tamás Vicsek, András Czirók, Eshel Ben-Jacob, Inon Cohen and Ofer Shochet, Phys. Rev. Lett. 75, 1226 (1995). That the ordered state phase separates into traveling bands rather than ordering uniformly is Guillaume Grégoire and Hugues Chaté, Phys. Rev. Lett. 92, 025702 (2004), and Chaté, Francesco Ginelli, Grégoire and Franck Raynaud, Phys. Rev. E 77, 046113 (2008). Giant number fluctuations in active matter are Sriram Ramaswamy, R. Aditi Simha and John Toner, Europhysics Letters 62, 196 (2003).",
     "equation": "∂ρ/∂t + ∇·(ρv) = 0;   ∂v/∂t + λ(v·∇)v = (α(ρ) − β|v|²)v − σ∇ρ + ν∇²v + η",
     "status": "unvalidated",
@@ -518,7 +518,7 @@
   {
     "id": "rotor",
     "source": "src/modules/sandpile.js",
-    "sourceSha256": "0dc76ac4faf5c36f0c12c37fd436ec4189b150c715151451acb63c9ed8da21a1",
+    "sourceSha256": "72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3",
     "reference": "Lionel Levine and Yuval Peres, 'Strong spherical asymptotics for rotor-router aggregation and the divisible sandpile', Potential Analysis 30, 1 (2009), is the theorem this plate measures. For an aggregate of n particles in d dimensions, written as n = ω_d r^d, they prove the inradius is at least r − O(log r) and the outradius at most r + O(r^α) for every α > 1 − 1/d, which in the plane is r + O(r^α) for every α > 1/2. The two sides of that sandwich are not the same strength, and the plate does not pretend they are: the inner bound is logarithmic and proved, the outer bound proved here is a power, and the status line reports what this lattice actually measures rather than what the tighter of the two would suggest. There is no probability anywhere in the statement. The rotor-router walk and the aggregation model are James Propp's; they are studied in Ander Holroyd and James Propp, 'Rotor walks and Markov chains', Contemporary Mathematics 520 (2010), and in Joshua Cooper and Joel Spencer, 'Simulating a random walk with constant error', Combinatorics, Probability and Computing 15 (2006). Internal diffusion limited aggregation, the random counterpart drawn beside it, is Gregory Lawler, Maury Bramson and David Griffeath, 'Internal diffusion limited aggregation', Annals of Probability 20, 2117 (1992), who proved its limit shape is a disk; David Jerison, Lionel Levine and Scott Sheffield, Journal of the American Mathematical Society 25, 271 (2012), showed its fluctuations are logarithmic as well, so the gap the plate measures between the two is one of constants and of certainty, not of orders. That a finished aggregate does not depend on the order the particles were routed in is the abelian property of Persi Diaconis and William Fulton, Rendiconti del Seminario Matematico dell'Università e del Politecnico di Torino (1991); it is the same argument Deepak Dhar, Physical Review Letters 64, 1613 (1990), made for the abelian sandpile of Per Bak, Chao Tang and Kurt Wiesenfeld, Physical Review Letters 59, 381 (1987).",
     "equation": "at an occupied site turn the rotor a quarter turn and follow it; stop at the first unoccupied site.   inradius ≥ r − O(log r),  outradius ≤ r + O(r^α) for every α > 1 − 1/d,  r = √(n/π) in d = 2",
     "status": "unvalidated",
@@ -758,7 +758,7 @@
   {
     "id": "stealth",
     "source": "src/modules/stealth.js",
-    "sourceSha256": "a45d5bf1ddc129ea01667167f37912c8bf47b5593de93de6a7ca2eb8225a3c30",
+    "sourceSha256": "286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7",
     "reference": "Uche, Stillinger and Torquato, Phys. Rev. E 70, 046122 (2004), and Torquato, Stillinger, Phys. Rev. E 68, 041113 (2003). A stealthy hyperuniform point process is disordered in real space and yet has a crystal's forbidden disk in Fourier space: S(k) = 0 in a finite neighbourhood of the origin. No Bragg peaks, no Poisson small-k catastrophe. The construction is collective-coordinate descent on a torus, which is what this plate runs.",
     "equation": "χ = (1 / dN) #{ k : 0 < |k| < k_C },   S(k) = 0  for |k| < k_C",
     "status": "unvalidated",
@@ -2372,7 +2372,7 @@
   {
     "id": "meissner",
     "source": "src/modules/meissner.js",
-    "sourceSha256": "ec8af35f812d14da83411239abfa6331350b56c8a89b3e8256eb2aa35fd0f398",
+    "sourceSha256": "18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7",
     "reference": "W. Meissner and R. Ochsenfeld, Naturwissenschaften 21, 787 (1933). A perfect conductor would freeze the flux it was born with. A superconductor expels it. The London brothers (1935) wrote ∇²B = B/λ². The plate is a Jacobi relax of that Helmholtz problem on a disk.",
     "equation": "∇²B = B/λ²,   B(r) = B0 I0(r/λ) / I0(R/λ)   (cylinder)",
     "status": "unvalidated",
@@ -2851,7 +2851,7 @@
   {
     "id": "loschmidt",
     "source": "src/modules/loschmidt.js",
-    "sourceSha256": "242d6a0460fa061507460e3ef4279511b99d9379dc3b698de5539503aa2a6165",
+    "sourceSha256": "e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d",
     "reference": "J. Loschmidt, Sitzungsber. Kais. Akad. Wiss. Wien 73, 128 (1876), objected to Boltzmann: reverse every velocity and the entropy decrease is as lawful as the increase. The objection is correct for a finite isolated system; the catch is the exponential sensitivity that makes the reversal unprepareable. The plate is non-interacting tracers on a ring, reversed on cue, so the echo is exact and visible.",
     "equation": "x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1",
     "status": "unvalidated",
@@ -2927,7 +2927,7 @@
   {
     "id": "thouless",
     "source": "src/modules/thouless.js",
-    "sourceSha256": "2d393e8f18660c4cf634576e096810d06d99ed7b21197c04292c064b9f75a7b9",
+    "sourceSha256": "d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae",
     "reference": "D. J. Thouless, Phys. Rev. B 27, 6083 (1983). An adiabatic cycle of a 1D insulator pumps a quantized charge equal to the Chern number of the (k, t) torus. Rice and Mele (1982) wrote the two-band lattice that makes the winding visible. The plate is the occupied-band density versus cycle angle; the centre of mass walks one cell when the loop in (u, v, δ) encloses the origin, and stands still when it does not.",
     "equation": "P(φ) = (1/2π) ∮ A(k,φ) dk,   ΔP over a cycle = C₁ ∈ ℤ",
     "status": "unvalidated",
@@ -3249,7 +3249,7 @@
   {
     "id": "gerstner",
     "source": "src/modules/gerstner.js",
-    "sourceSha256": "18fa85720739ce503e313b5d928da01f65e3f9f163136050d276a9fc3e970a7a",
+    "sourceSha256": "418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e",
     "reference": "Gerstner, Theorie der Wellen, Abh. Bohm. Ges. Wiss. (1802), found the unique exact periodic deep-water gravity wave of finite amplitude: every particle traces a circle, the free surface is an inverted trochoid, and the pressure is constant along it. Rankine, On the exact form of waves near the surface of deep water, Phil. Trans. Roy. Soc. 153, 127 (1863), rediscovered the same motion. Superposing two Gerstners (the Two trains control) is graphics practice, Tessendorf, Simulating Ocean Water, SIGGRAPH course notes (2001), and is not an Euler solution. This plate is a seeded print of the exact Lagrangian map. It is not a new equation.",
     "equation": "X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1",
     "status": "validated within stated limits",
@@ -3299,7 +3299,7 @@
   {
     "id": "eight",
     "source": "src/modules/eight.js",
-    "sourceSha256": "00e15b29caba92c9cf360487ddce8471e0f351e54168633c80d650e75a1c01b3",
+    "sourceSha256": "5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab",
     "reference": "Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.",
     "equation": "r̈_i = −Σ_{j≠i} (r_i−r_j)/|r_i−r_j|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0",
     "status": "validated within stated limits",
@@ -3407,7 +3407,7 @@
   {
     "id": "photon",
     "source": "src/modules/photon.js",
-    "sourceSha256": "3636ca8433248c1afb594d76a13d78734592778668cb54dc37ca693af775fb84",
+    "sourceSha256": "a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3",
     "reference": "K. Schwarzschild, Sitzungsber. Preuss. Akad. Wiss. (1916). The unstable circular photon orbit at r = 3M is a textbook consequence of that metric. C. Darwin, Proc. R. Soc. Lond. A 249, 180 (1959) and J. L. Synge, Mon. Not. R. Astron. Soc. 131, 463 (1966) integrated the null geodesics and the capture cross-section. The plate is a seeded print of those equatorial (or slightly inclined) rays. It is not a new black hole.",
     "equation": "d²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M",
     "status": "validated within stated limits",
@@ -4075,7 +4075,7 @@
   {
     "id": "nonreciprocal",
     "source": "src/modules/nonreciprocal.js",
-    "sourceSha256": "0f5427d1446138675dd4be67d1c3df9896ec06ffa1103d9dbc94060332a7c1b0",
+    "sourceSha256": "3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9",
     "reference": "S. Saha and R. Golestanian, Effervescence in a binary mixture with nonlinear non-reciprocal interactions, Nature Communications 16, 7310 (2025), doi:10.1038/s41467-025-61728-8, equation 5. Original finite-difference implementation; the paper uses a different spectral solver.",
     "equation": "∂t ψ = ∇²[(-1+iα₀)ψ + (1−iα₁)|ψ|²ψ − K∇²ψ]",
     "status": "validated within stated limits",

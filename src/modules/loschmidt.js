@@ -40,7 +40,7 @@
     order: 96,
     equation: 'x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1',
     credit: 'J. Loschmidt, Sitzungsber. Kais. Akad. Wiss. Wien 73, 128 (1876), objected to Boltzmann: reverse every velocity and the entropy decrease is as lawful as the increase. The objection is correct for a finite isolated system; the catch is the exponential sensitivity that makes the reversal unprepareable. The plate is non-interacting tracers on a ring, reversed on cue, so the echo is exact and visible.',
-    blurb: 'Mix a gas, then flip every velocity. The movie of mixing, played backwards, is a valid trajectory of Newton\'s laws, so the gas unmixes. Boltzmann\'s H-theorem looks violated; it is not, because the reversed state is one of measure zero. The plate is that movie as spacetime. The status line reports overlap with the initial condition at the end of the echo, against 1.',
+    blurb: 'Mix a gas, then flip every velocity. The movie of mixing, played backwards, is a valid trajectory of Newton\'s laws, so the gas unmixes. Boltzmann\'s H-theorem looks violated; it is not, because the reversed state is one of measure zero. The plate is that movie as spacetime. The status line reports the overlap of the last row with the initial condition; it is 1 by construction when the flip is at half time, and the echo falls elsewhere otherwise.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: { Gas: 'No reverse is the control: the same trajectories, never flipped, stay mixed. Reverse at 0.5 for a symmetric echo.' },
     palette: true, defaultPalette: 'harbor', surprise, sanitize,

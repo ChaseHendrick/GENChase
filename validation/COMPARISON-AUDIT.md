@@ -116,6 +116,10 @@ With honest uncertainties several tabs now print a clear miss. These are reporte
 | `faraday` | wavelength 12 to 17σ from the printed linear estimate (Noise presets), 2 to 4 times off on the others | the estimate formula (above) |
 | `kpz` | ballistic Rings and Wide presets 4.6 to 5.3σ below β = 1/3 | the slow crossover the tab's hint already documents |
 | `rmt` | GOE spacing spread 7σ above the Wigner surmise; the low end of the β sweep 9σ below the Poisson value | the surmise is the 2×2 approximation, and unfolding over ±12 levels biases the spread; open |
+| `potts` | mean side count 6.13 on the default plate and up to 6.86 mid-run, against Euler's 6, which should hold by construction | the side count uses 4-neighbour bonds while the energy uses 8, and lattice four-fold vertices and repeated contacts break the trivalent assumption |
+| `meissner` | B(0)/B₀ between 0.41 and 0.97 on every preset against a steady state between 1.1e-4 and 0.63 | the relaxation stops far from convergence, so the "expelled" verdict never fires |
+| `rotor` | random-to-rotor rim ratio 8σ above equal rims; the random rim's growth exponent 9σ below √n | expected: the rotor aggregate is far rounder than IDLA; the √n line is a foil, not a prediction |
+| `photon` | deflection at b = 50M reads 1.0635 against the second-order 1.0589 | the third-order term (128/3)(M/b)³ ≈ +0.0043 and the fourth ≈ +0.0003 account for it |
 
 - `tennis`, `swarm`, `devil`, `gyroid`, `hyperbolic`, `apollonian`: verdict labels from thresholds or parameters,
   not measured comparisons; left as labels.
