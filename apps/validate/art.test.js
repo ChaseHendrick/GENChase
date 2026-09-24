@@ -251,3 +251,18 @@ test('shareable thumbnails are plain Chromium JPEGs and nothing that can carry t
   assert.throws(() => tabs.jpegInfo(Buffer.from('\x89PNG\r\n', 'latin1')), /not a JPEG/);
   assert.throws(() => tabs.jpegInfo(jpeg(jfif, sof(10, 10), ...scan), { maxBytes: 20 }), /larger/);
 });
+
+test('the runner finds clamps, refuses out-of-schema requests and does not bill pauses', () => {
+  const { clampedKeys, outOfSchema, parseArgs, ActiveClock } = require('./art');
+  const defaults = { grid: 512, warmup: 2000, dt: 0.014, palette: ['#1A1A1A'] };
+  assert.deepEqual(clampedKeys({ v: 1, grid: 128, warmup: 2000, palette: ['#1a1a1a'] }, { id: 'cahn', v: 2, grid: 128 }, defaults), [], 'defaults, v and palette case are not clamps');
+  assert.deepEqual(clampedKeys({ warmup: 2500, grid: 130, dt: 0.02 }, { id: 'cahn', warmup: 2000, grid: 130, dt: 0.0115 }, defaults), ['warmup', 'dt']);
+  const fields = [{ key: 'warmup', type: 'range', min: 0, max: 2000 }, { key: 'grid', type: 'seg', options: [128, 512] }, { key: 'running', type: 'toggle' }];
+  assert.deepEqual(outOfSchema({ warmup: 2000, grid: 128, running: false }, fields), []);
+  assert.deepEqual(outOfSchema({ warmup: 2500, grid: '128', running: 0 }, fields).map(s => s.split(' ')[0]), ['warmup', 'grid', 'running']);
+  const { input, out } = parseArgs(['--mode', 'art-evolve', '--parent', '#cahn/a', '--parent', '#cahn/b', '--samples', '4', '--out', '/tmp/x']);
+  assert.deepEqual(input, { mode: 'art-evolve', parents: ['#cahn/a', '#cahn/b'], samples: 4 }); assert.equal(out, '/tmp/x');
+  assert.throws(() => parseArgs(['--shell', 'x'])); assert.throws(() => parseArgs(['--mode']));
+  const clock = new ActiveClock();
+  try { clock.last -= 60000; assert(clock.seconds() < 1, 'a minute-long pause counts as a tenth of a second'); } finally { clock.stop(); }
+});

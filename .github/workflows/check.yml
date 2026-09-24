@@ -181,6 +181,25 @@ jobs:
           node tools/harvest-browser-check.js
           node tools/validator-process-check.js
 
+  art:
+    name: art modes (hunt, deep render, evolve)
+    runs-on: ubuntu-latest
+    needs: lint
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install the validator's browser
+        run: |
+          npm install --no-save --package-lock=false playwright@1.58.2
+          npx playwright install --with-deps chromium
+      # Small grids on the software renderer: verified step counts, the engine's own hash and print path,
+      # repeatable metrics on one renderer, resume, refusals, the flat gate and tab eligibility.
+      - name: Art modes end to end
+        run: node tools/art-check.js
+
   complete-reviews:
     name: completed numerical and print reviews
     runs-on: ubuntu-latest

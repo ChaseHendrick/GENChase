@@ -7,7 +7,7 @@ const num = (v, d = 3) => v === null || v === undefined || !Number.isFinite(Numb
 const island = value => JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
 
 function galleryHtml({ job, records, controls, counts, scoring, headline }) {
-  const cards = records.filter(r => r.status === 'scored' && r.thumb);
+  const cards = records.filter(r => r.status !== 'failed' && r.thumb);
   const evolve = job.mode === 'art-evolve';
   const card = r => {
     const m = r.metrics || {};
@@ -15,7 +15,7 @@ function galleryHtml({ job, records, controls, counts, scoring, headline }) {
       '" data-contrast="' + esc(m.contrast) + '" data-feature="' + esc(m.featurePx ?? '') + '" data-index="' + esc(r.index) + '">' +
       '<img src="' + esc(r.thumb) + '" alt="Candidate ' + esc(r.index) + ' thumbnail" width="160">' +
       '<p><b>#' + esc(r.rank) + '</b> ' + esc(m.class) + ' · entropy ' + esc(num(m.entropy)) + ' bits · edge ' + esc(num(m.edge)) + ' · acuity ' + esc(num(m.acuity)) +
-      (r.operator ? ' · ' + esc(r.operator) : '') + (r.print ? ' · print kept' : '') + '</p>' +
+      (r.operator ? ' · ' + esc(r.operator) : '') + (r.print ? ' · print kept' : '') + (r.status === 'rejected' ? ' · rejected: ' + esc(r.reason) : '') + (r.label ? ' · ' + esc(r.label) : '') + '</p>' +
       '<p class="muted">seed ' + esc(r.seed) + ' · ' + esc(r.steps) + ' steps · grid ' + esc((r.grid || []).join('×')) + (r.clamped && r.clamped.length ? ' · clamped: ' + esc(r.clamped.join(', ')) : '') + '</p>' +
       '<label>Recipe hash <input readonly value="' + esc(r.hash) + '"></label>' +
       '<p><a href="../../../../dist/studio.html' + esc(r.hash) + '">Open in the studio</a> (commit ' + esc(String(job.commit || 'unknown').slice(0, 12)) + ')</p>' +
