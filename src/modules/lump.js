@@ -195,8 +195,10 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
       function status() {
+        // The residual is a finite-difference evaluation of KP-I at a fixed set of points, with no
+        // randomness in it: its only error is the difference step, which the next span reports.
         host.setStatus(
-          '<span>sampled KP-I residual <b>' + metric.toExponential(1) + '</b></span>' +
+          U.stats.compare({ label: 'KP-I residual', measured: metric, expected: 0, reference: 'KP-I solution', basis: 'deterministic', note: 'rms at fixed points' }) +
           '<span>step sensitivity <b>' + residualChange.toExponential(1) + '</b></span>' +
           '<span>visible grid peak <b>' + f2(extra) + '</b></span>' +
           '<span>' + kindLabel + '</span>'

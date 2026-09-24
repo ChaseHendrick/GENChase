@@ -125,7 +125,13 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>|μ|/2t <b>' + f2(extra) + '</b> · topo < 1</span><span>end weight <b>' + f2(metric) + '</b></span><span>' + (extra < 1 && metric > 0.4 ? 'Majorana ends' : (extra < 1 ? 'topo, finite-size' : 'trivial')) + '</span>'); }
+      // The end-mode rows are an assumed profile (an exponential with a decay chosen from μ, or a sine
+      // in the trivial phase), not eigenvectors of the chain, so their end weight is set by that choice.
+      function status() {
+        host.setStatus('<span>|μ|/2t <b>' + f2(extra) + '</b> · topo < 1</span>' +
+          U.stats.compare({ label: 'end weight', measured: metric, basis: 'construction', digits: 2, note: 'assumed end-mode profile' }) +
+          '<span>' + (extra < 1 && metric > 0.4 ? 'Majorana ends' : (extra < 1 ? 'topo, finite-size' : 'trivial')) + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

@@ -231,15 +231,21 @@
       function report() {
         const m = data.m, valid = !data.broken && m.tc > 0 && m.residual < 1e-9;
         const miss = !valid || data.formulaError > 1e-8 || data.shapeError > 1e-5 || data.exactError > 1e-5;
-        const score = valid ? (m.product / data.family.floor).toFixed(6) : 'n/a';
-        host.setStatus('<span>n = ' + data.n + ' · ω₀t_c / F_n <b>' + score + '</b> · ≥ 1</span>' +
-          '<span>formula <b>' + (valid ? sci(data.formulaError) : 'off family') + '</b></span>' +
-          '<span>shape <b>' + sci(data.shapeError) + '</b> · 0</span>' +
+        // Every number here comes from pairwise Biot-Savart velocities and a fixed-step integrator: no
+        // randomness enters, so each comparison is deterministic and its only error is numerical.
+        // The step-doubling ODE estimate is a size of numerical error, not a comparison, and stays plain.
+        host.setStatus('<span>n = ' + data.n + ' · ' + (valid
+            ? U.stats.compare({ label: 'ω₀t_c / F_n', measured: m.product / data.family.floor, expected: '≥ 1', expectedValue: 1, reference: 'derived floor', basis: 'deterministic', digits: 7 })
+            : 'ω₀t_c / F_n <b>n/a</b>') + '</span>' +
+          (valid
+            ? U.stats.compare({ label: 'formula error', measured: data.formulaError, expected: 0, reference: 'exact agreement', basis: 'deterministic' })
+            : '<span>closed form <b>off family</b></span>') +
+          U.stats.compare({ label: 'shape change', measured: data.shapeError, expected: 0, reference: 'self-similar', basis: 'deterministic' }) +
           '<span>ODE Δ/15 <b>' + sci(data.odeError) + '</b></span>' +
           '<span>' + (miss ? 'miss · off family or numerical disagreement' : 'bound held · no sampling error') + ' · priority open</span>');
         if (host.setWitness) host.setWitness({
           label: 'Self-similar velocity residual', measured: Number.isFinite(m.residual) ? m.residual : null,
-          expected: 0, tol: 1e-9, valid,
+          expected: 0, tol: 1e-9, valid, basis: 'deterministic',
           missWhen: 'Off the two-polygon family, nonpositive collapse time, or relative residual at least 1e-9.'
         });
       }

@@ -124,7 +124,13 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>E1 final / initial <b>' + f3(metric) + '</b></span><span>sampled minimum <b>' + f3(extra) + '</b></span><span>sampled energy drift <b>' + drift.toExponential(1) + '</b></span><span>time <b>' + f2(elapsed) + '</b>, linear period <b>' + f2(linearPeriod) + '</b></span>'); }
+      // The chain starts from a formula and is stepped by velocity Verlet with no randomness, so the
+      // total-energy drift (the largest |E/E0 - 1| over the recorded rows) is integration error only.
+      function status() {
+        host.setStatus('<span>E1 final / initial <b>' + f3(metric) + '</b></span><span>sampled minimum <b>' + f3(extra) + '</b></span>' +
+          U.stats.compare({ label: 'energy drift', measured: drift, expected: 0, reference: 'exact flow', basis: 'deterministic', note: 'max over recorded rows' }) +
+          '<span>time <b>' + f2(elapsed) + '</b>, linear period <b>' + f2(linearPeriod) + '</b></span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

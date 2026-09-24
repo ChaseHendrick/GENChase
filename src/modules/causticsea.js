@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -71,7 +70,7 @@
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
       let W = 0, H = 0, hh, hn, lin, II, step = 0, raf = 0, paused = false, buf, img;
-      let corr = 0, lam = 0, lamTh = 0;
+      let corr = 0, lam = 0, lamTh = 0, lamStat = null;
 
       function sizeFrom(s) {
         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
@@ -181,14 +180,20 @@
           num += a * b; dh += a * a; dI += b * b;
         }
         corr = num / Math.sqrt((dh * dI) || 1e-12);
-        const y = (H / 2) | 0;
-        let crossings = 0, last = hh[idx(0, y)];
-        for (let x = 1; x < W; x++) {
-          const v = hh[idx(x, y)];
-          if ((last < 0 && v >= 0) || (last > 0 && v <= 0)) crossings++;
-          last = v;
+        // Zero-crossing wavelength on every row that crosses at least twice. Neighboring rows of one
+        // field are correlated, so the mean's error bar comes from tau_int over the row sequence.
+        const rows = [];
+        for (let y = 0; y < H; y++) {
+          let crossings = 0, last = hh[idx(0, y)];
+          for (let x = 1; x < W; x++) {
+            const v = hh[idx(x, y)];
+            if ((last < 0 && v >= 0) || (last > 0 && v <= 0)) crossings++;
+            last = v;
+          }
+          if (crossings > 1) rows.push(2 * W / crossings);
         }
-        lam = crossings > 1 ? (2 * W / crossings) : 0;
+        lamStat = rows.length ? U.stats.seriesMean(rows) : null;
+        lam = lamStat ? lamStat.mean : 0;
         lamTh = s.waves;
       }
 
@@ -233,9 +238,15 @@
       function status() {
         const s = host.getState();
         const loop = (s.eta > 0.08) && (corr > 0.12);
+        const n = lamStat ? lamStat.n : 0;
         host.setStatus(
-          '<span>corr(h, I) <b>' + f3(corr) + '</b> · η=0 ⇒ ~0</span>' +
-          '<span>λ <b>' + (lam ? lam.toFixed(1) : '—') + '</b> · k₀ ' + lamTh.toFixed(0) + '</span>' +
+          U.stats.compare({ label: 'corr(h, I)', measured: corr, basis: 'sampled', digits: 3,
+            pending: 'one snapshot; the η = 0 control is not computed' }) +
+          (lam
+            ? U.stats.compare({ label: 'λ', measured: lam, expected: lamTh, reference: 'preferred wavelength', units: 'cells', basis: 'sampled',
+                uncertainty: lamStat.se, method: 'τ_int over ' + n + ' rows',
+                pending: lamStat.se === 0 ? 'every row gives the same crossing count' : 'too few rows to estimate τ_int' })
+            : '<span>λ <b>—</b></span>') +
           '<span>' + (s.eta < 0.05 ? 'open loop' : (loop ? 'fold lock' : 'writing')) + '</span>'
         );
       }

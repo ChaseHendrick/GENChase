@@ -145,6 +145,30 @@
       if (local > 1e-12) out.push((lam[i + 1] - lam[i]) / local);
     }
   }
+  // One row's spacings appended to the pooled sample, with that row's count, sum and sum of squares
+  // recorded beside it for the bootstrap below.
+  function rowInto(lam, n, out, rowsOut) {
+    const start = out.length;
+    unfolded(lam, n, out);
+    let S = 0, Q = 0;
+    for (let i = start; i < out.length; i++) { S += out[i]; Q += out[i] * out[i]; }
+    rowsOut.push({ n: out.length - start, S, Q });
+  }
+  // Standard error of the pooled coefficient of variation. Rows are independent spectra, so rows are
+  // the resampling unit: draw row indices with replacement, pool their spacings, recompute the spread.
+  // The spacings within one row are correlated and stay together. Seeded, so the bar reprints.
+  function cvBootstrap(rowStats, seed) {
+    const R = rowStats.length;
+    if (R < 2) return NaN;
+    const rng = U.makeRng(seed), reps = 200, draws = [];
+    for (let r = 0; r < reps; r++) {
+      let N = 0, S = 0, Q = 0;
+      for (let k = 0; k < R; k++) { const q = rowStats[Math.floor(rng() * R)]; N += q.n; S += q.S; Q += q.Q; }
+      const m = S / N;
+      if (N > 0 && m > 0) draws.push(Math.sqrt(Math.max(0, Q / N - m * m)) / m);
+    }
+    return draws.length > 1 ? U.stats.sd(draws) : NaN;
+  }
   const SURMISE = { '1.00': 0.523, '2.00': 0.422 };
 
   /* ---------- Random Matrices ---------- */
@@ -236,6 +260,7 @@
       const canvas = host.canvas, ctx = canvas.getContext('2d');
       let series = null;        // array of { lam: [...], beta } for rows/sweep, or paths for dyson
       let scaleG = 1, cv = null, cvLo = null, cvHi = null, timer = 0, building = false, capped = false, note = '';
+      let cvSE = NaN, cvLoSE = NaN, cvHiSE = NaN, nAll = 0, nLo = 0, nHi = 0;
 
       function stop() { clearTimeout(timer); }
 
@@ -252,7 +277,7 @@
         const n = s.n, rows = s.rows;
         const d = new Float64Array(n), e = new Float64Array(n);
         series = []; scaleG = 0;
-        const uLo = [], uHi = [], uAll = [];
+        const uLo = [], uHi = [], uAll = [], rLo = [], rHi = [], rAll = [];
         let j = 0;
         (function chunk() {
           const t0 = performance.now();
@@ -263,8 +288,10 @@
             for (let i = 0; i < n; i++) mx = Math.max(mx, Math.abs(lam[i]));
             scaleG = Math.max(scaleG, mx);
             series.push({ lam, beta: b, scale: mx || 1 });
-            if (s.mode === 'sweep') { if (j < rows * 0.08) unfolded(lam, n, uLo); else if (j > rows * 0.92) unfolded(lam, n, uHi); }
-            else if (uAll.length < 40000) unfolded(lam, n, uAll);
+            // Each row's unfolded spacings go into the pooled sample exactly as before, and the row's
+            // count, sum and sum of squares are kept so the pooled spread can be bootstrapped by row.
+            if (s.mode === 'sweep') { if (j < rows * 0.08) rowInto(lam, n, uLo, rLo); else if (j > rows * 0.92) rowInto(lam, n, uHi, rHi); }
+            else if (uAll.length < 40000) rowInto(lam, n, uAll, rAll);
             j++;
           }
           if (j < rows) { note = 'sampling ' + j + ' / ' + rows; status(); timer = setTimeout(chunk, 0); }
@@ -276,6 +303,10 @@
               return m > 0 ? Math.sqrt(v) / m : null;
             };
             cv = stat(uAll); cvLo = stat(uLo); cvHi = stat(uHi);
+            cvSE = cv !== null ? cvBootstrap(rAll, s.seed + '/rmt-cv') : NaN;
+            cvLoSE = cvLo !== null ? cvBootstrap(rLo, s.seed + '/rmt-cv-lo') : NaN;
+            cvHiSE = cvHi !== null ? cvBootstrap(rHi, s.seed + '/rmt-cv-hi') : NaN;
+            nAll = rAll.length; nLo = rLo.length; nHi = rHi.length;
             note = ''; building = false; done();
           }
         })();
@@ -318,7 +349,7 @@
             unfolded(series[series.length - 1].lam, n, u);
             const m = u.length ? u.reduce((x, y) => x + y, 0) / u.length : 0;
             const v = u.length ? u.reduce((x, y) => x + (y - m) * (y - m), 0) / u.length : 0;
-            cv = m > 0 ? Math.sqrt(v) / m : null; cvLo = cvHi = null;
+            cv = m > 0 ? Math.sqrt(v) / m : null; cvLo = cvHi = null; cvSE = cvLoSE = cvHiSE = NaN;
             note = ''; building = false; done();
           }
         })();
@@ -334,12 +365,20 @@
         } else if (s.mode === 'sweep') {
           P.push('<span><b>' + s.rows + '</b> spectra of <b>' + s.n + '</b></span>');
           P.push('<span>β <b>' + s.betaLo.toFixed(2) + ' → ' + s.betaHi.toFixed(2) + '</b>' + (s.logSweep ? ' (log)' : '') + '</span>');
-          if (cvLo !== null && cvHi !== null) P.push('<span>spacing spread <b>' + cvLo.toFixed(2) + ' → ' + cvHi.toFixed(2) + '</b> (1.00 is independent)</span>');
+          // Poisson (uncorrelated levels) gives a spread of 1 and is the β → 0 limit, so it is the
+          // reference for the low end only; the high end is printed with its error bar and no reference.
+          if (cvLo !== null && cvHi !== null) P.push('<span>' +
+            U.stats.compare({ label: 'spacing spread, low-β end', measured: cvLo, expected: 1, reference: 'Poisson', basis: 'sampled',
+              uncertainty: cvLoSE, method: 'bootstrap over ' + nLo + ' rows', pending: 'fewer than 2 rows', note: 'β → 0 limit' }) + ' → ' +
+            U.stats.compare({ label: 'high-β end', measured: cvHi, basis: 'sampled',
+              uncertainty: cvHiSE, method: 'bootstrap over ' + nHi + ' rows', pending: 'fewer than 2 rows' }) + '</span>');
         } else {
           P.push('<span><b>' + s.rows + '</b> spectra of <b>' + s.n + '</b> · β <b>' + s.beta.toFixed(2) + '</b></span>');
           if (cv !== null) {
             const sur = SURMISE[s.beta.toFixed(2)];
-            P.push('<span>unfolded spacing spread <b>' + cv.toFixed(3) + '</b>' + (sur ? ' · surmise ' + sur.toFixed(3) : '') + '</span>');
+            P.push(U.stats.compare({ label: 'unfolded spacing spread', measured: cv, expected: sur, reference: 'Wigner surmise', basis: 'sampled',
+              uncertainty: cvSE, method: 'bootstrap over ' + nAll + ' rows', pending: 'fewer than 2 rows',
+              note: sur ? 'the surmise is the 2×2 approximation' : undefined }));
           }
         }
         P.push('<span>' + (series ? series.length.toLocaleString() : 0) + ' rows</span>');
