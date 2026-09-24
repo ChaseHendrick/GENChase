@@ -74,6 +74,33 @@
 
   const ASPECT = 1;
 
+  // Angular sectors the free part of the diamond is counted in, for the error bar; see polarCompare().
+  const NB = 60;
+
+  // Integrated autocorrelation time of a circular series, 1 + 2 sum rho_l with the window closed at the
+  // first non-positive rho, floored at 2 (the split weighting below hands every cell to two neighboring
+  // sectors, so neighbors share data by construction) and capped at a quarter of the circle. The same
+  // estimator as acTime in src/modules/lozenge.js, which measures its boundary the same way.
+  function acTime(x) {
+    const n = x.length;
+    let m = 0;
+    for (let i = 0; i < n; i++) m += x[i];
+    m /= n;
+    let c0 = 0;
+    for (let i = 0; i < n; i++) c0 += (x[i] - m) * (x[i] - m);
+    c0 /= n;
+    if (!(c0 > 0)) return { sd: 0, tau: 1 };
+    let tau = 1;
+    for (let l = 1; l <= Math.floor(n / 4); l++) {
+      let c = 0;
+      for (let k = 0; k < n; k++) c += (x[k] - m) * (x[(k + l) % n] - m);
+      const rho = c / n / c0;
+      if (!(rho > 0)) break;
+      tau += 2 * rho;
+    }
+    return { sd: Math.sqrt(c0 * n / (n - 1)), tau: Math.min(Math.max(tau, 2), n / 4) };
+  }
+
   /* ---------- Arctic Circle ---------- */
   Studio.register({
     id: 'aztec',
@@ -123,7 +150,7 @@
     },
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d');
-      let grid = null, order = 0, list = null, frozen = null, polarByType = null, timer = 0, building = false;
+      let grid = null, order = 0, list = null, frozen = null, polarByType = null, freeBins = null, timer = 0, building = false;
 
       function build(s, done) {
         clearTimeout(timer); building = true;
@@ -170,17 +197,40 @@
         }
         polarByType = [0, 0, 0, 0];
         list.forEach((d, k) => { if (frozen[k]) polarByType[d[2] - 1]++; });
+        // The free cells (outside every polar region) counted in NB angular sectors around the center of the
+        // diamond, each cell split between the two nearest sector centers by angle so that no row of cells
+        // crosses a hard sector edge at once.
+        freeBins = new Float64Array(NB);
+        list.forEach((d, k) => {
+          if (frozen[k]) return;
+          for (const [cx, cy] of cellsOf(d)) {
+            let th = Math.atan2(cy + 0.5 - order, cx + 0.5 - order); if (th < 0) th += 2 * Math.PI;
+            const x = th / (2 * Math.PI) * NB - 0.5, i0 = Math.floor(x), fr = x - i0;
+            freeBins[((i0 % NB) + NB) % NB] += 1 - fr;
+            freeBins[((i0 + 1) % NB + NB) % NB] += fr;
+          }
+        });
       }
-      // The share of the diamond in the polar regions, against the arctic-circle limit 1 - pi/4. The four regions
-      // fluctuate nearly independently (each follows its own arc of the boundary), so four times each region's
-      // share gives four estimates of the total, and their spread is the plate's error bar; tools/aztec-science.js
-      // checks that bar against the scatter over seeds. At finite n the frozen boundary sits inside the circle by
-      // about n^(1/3) cells, so the share exceeds the limit by a term that shrinks as n^(-2/3).
+      // The share of the diamond in the polar regions, against the arctic-circle limit 1 - pi/4. The share is one
+      // minus the free cells over the cells of the diamond, a number the order fixes, and the free cells are the
+      // sum of the NB sector counts. Those counts are correlated around the circle, so the error bar is the
+      // standard error of their sum from the integrated autocorrelation time, sd sqrt(NB tau).
+      //
+      // It used to be the spread of the four polar regions, four times each region's share taken as four estimates
+      // of the total. That assumed the regions fluctuate independently, and they do not: the shares of two
+      // neighboring regions are anticorrelated (correlation -0.31 at order 40, -0.12 at 320, over 1,950 training
+      // plates), presumably because neighbors trade area where they meet near the circle's tangency points. The
+      // spread therefore overstated the error by a factor that changes with the order: the scatter over seeds was
+      // 0.65 to 0.98 of it at orders 40 to 320, furthest off at the small orders. Counting free cells by angle does
+      // not ask which region a frozen cell belongs to, so a trade between neighbors does not enter it.
+      // tools/aztec-science.js checks this bar against the scatter over seeds and validation/AZTEC.md gives the
+      // ratios. At finite n the frozen boundary sits inside the circle by about n^(1/3) cells, so the share exceeds
+      // the limit by a term that shrinks as n^(-2/3).
       function polarCompare() {
-        const D = list.length, q = polarByType.map(c => 4 * c / D), f = q.reduce((a, b) => a + b, 0) / 4, se = U.stats.sd(q) / 2;
+        const D = list.length, f = polarByType.reduce((a, b) => a + b, 0) / D, st = acTime(freeBins), se = st.sd * Math.sqrt(NB * st.tau) / (2 * D);
         return U.stats.compare({ label: 'polar regions', measured: f, expected: 1 - Math.PI / 4, reference: '1 − π/4, n → ∞', basis: 'sampled',
-          uncertainty: se > 0 && isFinite(se) ? se : undefined, pending: 'the four polar regions are equal, so they give no spread',
-          method: 'spread of the four polar regions', digits: 3,
+          uncertainty: se > 0 && isFinite(se) ? se : undefined, pending: 'the free cells are spread evenly over the sectors, so they give no spread',
+          method: 'free cells counted in ' + NB + ' angular sectors; standard error of their sum from the integrated autocorrelation time, τ ' + st.tau.toFixed(1) + ', floored at 2', digits: 3,
           note: 'finite n: the excess shrinks as n^(−2/3)' });
       }
       function status(extra) {

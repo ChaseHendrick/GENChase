@@ -171,14 +171,69 @@ through the SVG, grain never reaches the print. The fixtures therefore use grain
 
 ## Changed after this review (2026-09-24)
 
-The module's frozen test is now the theorem's: a domino is in a polar region when a chain of edge-adjacent
-dominoes of its own type connects it to the boundary of the diamond, the definition of Jockusch, Propp and
-Shor as Johansson (Ann. Probab. 33, 2005, arXiv:math/0306216) states it. `tools/aztec-science.js` checks the
-module's flags against an independent union-find on every plate (all match), and the corner-attached variant
-used above gives the same fraction at every order measured. The tab's fraction now extrapolates to
-0.2141 +/- 0.0014 against 1 - pi/4 = 0.2146 (-0.3 sigma). The status line prints it through `compare()`,
-with the spread of the four polar regions as the per-plate error bar and a note on the n^(-2/3) excess.
-That bar is conservative: the scatter over seeds is 0.68 to 0.98 of it (orders 40 to 320), because the four
-regions are anticorrelated, which fails the calibration band set before the run. The record stays partially
-validated for that reason alone. The "Frozen versus free" plates change; no key or default moved, so no
-legacy entry is needed.
+Two module changes followed this review. The tool, rerun on the changed module (SHA-256 `38ffddc9…b6da01`),
+passes every check; it took 336 s on the shared 4-core machine (load near 6).
+
+**The frozen test.** The module's frozen test is now the theorem's: a domino is in a polar region when a chain of
+edge-adjacent dominoes of its own type connects it to the boundary of the diamond, the definition of Jockusch,
+Propp and Shor as Johansson (Ann. Probab. 33, 2005, arXiv:math/0306216) states it. `tools/aztec-science.js`
+checks the module's flags against an independent union-find on every plate (all 2,350 match), and the
+corner-attached variant used above gives the same fraction at every order measured. The "Frozen versus free"
+plates change; no key or default moved, so no legacy entry is needed.
+
+**The error bar.** The status line first printed the polar fraction with the spread of the four polar regions
+as its per-plate error bar, four times each region's share taken as four independent estimates of the total.
+The regions are not independent. Over the tool's seeds the correlation of two neighboring regions' shares is
+-0.28 at order 40 and weakens steadily to -0.06 at 320 (opposite regions: -0.05 to +0.12), presumably because
+neighbors trade area where they meet near the tangency points, so the spread overstated the error by a factor
+that drifts with n: the scatter over seeds is 0.68, 0.71, 0.77, 0.74, 0.87, 0.88 and 0.88 of the spread bar at
+orders 40 to 320, below the calibration band (0.75 to 1.33) at 40, 57 and 113. A constant correction for the
+correlation could not hold across that drift, so the bar was replaced by a different estimator. The free cells
+(outside every polar region) are counted in 60 angular sectors about the center of the diamond, each cell split
+between the two nearest sector centers, and the error bar is the standard error of their sum, sd sqrt(60 tau)
+over the number of cells, with tau the integrated autocorrelation time around the circle (1 + 2 sum rho_l, the
+window closed at the first non-positive rho, floored at 2 and capped at 15). It is the estimator the lozenge tab
+uses for its boundary. Counting by angle does not ask which region a frozen cell belongs to, so a trade between
+neighbors does not enter it. `tools/lib/aztec-reference.js` recomputes it from the definition and the printed
+value and bar match on every plate.
+
+The choice between the two estimators was made on a separate training family (seeds `aztec-train-n<n>-<i>`,
+1,950 plates at the same seven orders): there the spread bar read 0.65 to 0.88 with the same drift, and the
+sector bar 0.82 to 0.90 with none. The tool's own seeds were not used to choose. The band was not changed; the
+seed counts at orders 113 to 320 were raised to 400, 300, 250 and 200 before the calibration run so that every
+ratio is known to about 5 per cent. On the tool's seeds, with a 95 per cent interval from the chi-square
+distribution of the sample variance:
+
+| order | seeds | scatter over RMS bar | 95% interval | mean tau | spread bar (old) | neighbor correlation |
+|---|---|---|---|---|---|---|
+| 40 | 400 | 0.894 | 0.84 to 0.96 | 4.66 | 0.678 | -0.280 |
+| 57 | 400 | 0.883 | 0.83 to 0.95 | 4.46 | 0.710 | -0.237 |
+| 80 | 400 | 0.895 | 0.84 to 0.96 | 4.39 | 0.765 | -0.227 |
+| 113 | 400 | 0.833 | 0.78 to 0.90 | 4.39 | 0.741 | -0.227 |
+| 160 | 300 | 0.910 | 0.84 to 0.99 | 4.01 | 0.874 | -0.151 |
+| 226 | 250 | 0.889 | 0.82 to 0.97 | 3.95 | 0.881 | -0.105 |
+| 320 | 200 | 0.875 | 0.80 to 0.97 | 3.94 | 0.880 | -0.062 |
+
+Every ratio is inside the band, so the bar is calibrated by the tool's criterion. It overstates the scatter by
+10 to 20 per cent, and the intervals exclude 1, so this is a real, conservative offset rather than noise. Two causes were
+measured on the training family: the window stops at the first non-positive autocorrelation and so leaves out a
+negative lobe at lags of about 8 to 15 sectors (the full ensemble sum 1 + 2 sum rho_l is 3.6 to 4.3 against 4.3
+to 5.7 for the truncated one), and the four-fold pattern of the mean sector counts, which is the same on every
+plate, enters each plate's variance (19 to 44 per cent of the random part, growing with n). Subtracting the
+ensemble pattern brings the ratio to 0.89 to 1.01, which a single plate cannot do. About 13 to 15 of the 60
+sectors are independent on a typical plate.
+
+With the larger seed counts the extrapolated limits moved within their errors. The polar fraction extrapolates
+to 0.2127 +/- 0.0013 against 1 - pi/4 = 0.2146 (-1.5 sigma; fit chi-square 3.1 on 4) and the axis radius to
+0.7097 +/- 0.0016 against 1/sqrt(2) (+1.7 sigma; 6.8 on 4). The two-parameter form over orders 113 to 320 gives
+0.2156 +/- 0.0007 (+1.4 sigma) and 0.7049 +/- 0.0008 (-2.6 sigma), so the dependence on the finite-size form
+stated above stands, at the level of about 0.003 in area and 0.005 in radius. The deviation of the polar
+fraction times n^(2/3) runs 1.30 to 1.39. The single-axis fluctuation exponent is 0.337 +/- 0.011 (0.3 sigma from
+1/3), the north-south minus east-west radius is within 2.1 standard errors of zero at every order, and the
+controls and the five print recipes behave as in sections 4 and 5.
+
+**Status.** Every numerical check passes, both failure controls fail as they must, and the print path is
+checked, so the record is now "validated within stated limits" for its domain: exhaustive uniformity at orders 1
+to 5, the arctic statistics and the bar calibration at orders 40 to 320, and the five print recipes. The bar is
+not calibrated below order 40 (the UI starts at 8), the extrapolation depends on the stated form, and the print
+evidence covers one renderer.

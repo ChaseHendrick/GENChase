@@ -145,6 +145,46 @@ function frozenBall(R, orient, ring) {
   });
 }
 
+// Frozen as the tab defines it from recipe v4: a rhombus is frozen when a chain of edge-adjacent rhombi of
+// its own orientation joins it to the rim of the hexagon (the lozenge analogue of the Jockusch-Propp-Shor
+// polar regions). Written independently of the module, which floods triangles outward from the rim:
+// here union-find runs over rhombi, joining two rhombi of one orientation whenever a triangle of one
+// shares an edge with a triangle of the other, and a component is frozen when one of its rhombi has a
+// triangle with an edge on the rim (fewer than three neighbors inside the hexagon). Returns per-face and
+// per-triangle flags.
+function rimFrozen(R, faceTris, faceOrient) {
+  const nF = faceTris.length, parent = Array.from({ length: nF }, (_, i) => i), faceOf = new Int32Array(R.tris.length).fill(-1);
+  faceTris.forEach((pair, f) => { for (const t of pair) faceOf[t] = f; });
+  const find = k => { while (parent[k] !== k) { parent[k] = parent[parent[k]]; k = parent[k]; } return k; };
+  const rim = new Uint8Array(nF);
+  faceTris.forEach((pair, f) => {
+    for (const t of pair) {
+      if (R.adj[t].length < 3) rim[f] = 1;
+      for (const u of R.adj[t]) { const g = faceOf[u]; if (g !== f && faceOrient[g] === faceOrient[f]) { const x = find(f), y = find(g); if (x !== y) parent[x] = y; } }
+    }
+  });
+  const rootRim = new Uint8Array(nF);
+  for (let f = 0; f < nF; f++) if (rim[f]) rootRim[find(f)] = 1;
+  const faces = new Uint8Array(nF), tris = new Uint8Array(R.tris.length);
+  for (let f = 0; f < nF; f++) { faces[f] = rootRim[find(f)]; for (const t of faceTris[f]) tris[t] = faces[f]; }
+  return { faces, tris };
+}
+
+// The same frozen set read off the height function, as a third route with no tiling in it at all. Two
+// tops share an edge exactly when two neighboring columns have one height, and the only tops on the rim
+// are full columns (h = c) in the first row or column and empty ones (h = 0) in the last, so the frozen
+// tops are the columns with h = c or h = 0 (each set is a staircase containing its corner column). The
+// same holds for the faces with normal +x, indexed by row j and level k with m(j, k) = #{i : h(i, j) > k}
+// in [0, a], and for the faces with normal +y, with q(i, k) = #{j : h(i, j) > k} in [0, b]. Returns the
+// number of frozen rhombi of each orientation.
+function extremeLevelCounts(h, a, b, c) {
+  let tops = 0, right = 0, left = 0;
+  for (let j = 0; j < b; j++) for (let i = 0; i < a; i++) { const z = h[j * a + i]; if (z === c || z === 0) tops++; }
+  for (let k = 0; k < c; k++) for (let j = 0; j < b; j++) { let m = 0; for (let i = 0; i < a; i++) if (h[j * a + i] > k) m++; if (m === a || m === 0) right++; }
+  for (let k = 0; k < c; k++) for (let i = 0; i < a; i++) { let q = 0; for (let j = 0; j < b; j++) if (h[j * a + i] > k) q++; if (q === b || q === 0) left++; }
+  return [tops, right, left];
+}
+
 // The ellipse inscribed in the hexagon and tangent to its six sides, solved from the tangency
 // conditions: center at the hexagon's center of symmetry, and n' A n = d^2 for each side with unit
 // normal n at distance d, three independent equations (opposite sides repeat) for A = [[p, q], [q, r]].
@@ -169,4 +209,4 @@ function inscribedEllipse(a, b, c) {
   return { cx: C[0], cy: C[1], A11: p, A12: q, A22: r, det: p * r - q * q, l11, l21, l22, tangencyResidual: residual, hexArea, areaFraction: Math.PI * Math.sqrt(p * r - q * q) / hexArea, sides };
 }
 
-module.exports = { S3, hull, region, enumerateTilings, enumeratePartitions, macmahon, faces, tilingOfFaces, frozenBall, inscribedEllipse };
+module.exports = { S3, hull, region, enumerateTilings, enumeratePartitions, macmahon, faces, tilingOfFaces, frozenBall, rimFrozen, extremeLevelCounts, inscribedEllipse };

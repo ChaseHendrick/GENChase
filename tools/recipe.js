@@ -65,7 +65,7 @@ function cases(src) {
   if (!cs.length) { console.log('no legacy declarations to check'); return; }
   const b = await chromium.launch({ args: glArgs() });
   const jobs = [];
-  const LABEL = { grid: 'Grid', stream: 'Random stream' };
+  const LABEL = { grid: 'Grid', stream: 'Random stream', ring: 'Frozen test' };
   for (const c of cs) {
     const label = LABEL[c.key] || c.key;
     // The values were parsed out of the source as text, so they have to go back into a recipe as the

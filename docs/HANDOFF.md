@@ -31,9 +31,8 @@ Coverage now: 54 validated within stated limits, 8 partially validated, 68 unval
 
 | What | Where its result lands | If it is lost |
 |---|---|---|
-| Research: best arXiv license, GitHub rename effects, reading still owed for paper 1 | workflow run `wf_5cf514e4-0c9` | Ask a new session to rerun it; the questions are below |
-| Aztec/lozenge frozen-region readouts (code-work item 2) | agent `aac7d4ce008bf295a`, worktree `.claude/worktrees/agent-aac7d4ce008bf295a`, committed locally only | Rerun from the task text in "Code work left" |
-| Vegetation step bound and float16 policy for chemotaxis, pfc and amb (items 3 and 4) | agent `a1326c9d84e5f0d6b`, worktree `.claude/worktrees/agent-a1326c9d84e5f0d6b`, committed locally only | Same |
+| Vegetation step bound and float16 policy for chemotaxis, pfc and amb (items 3 and 4) | agent `a1326c9d84e5f0d6b`, still running its final PDE-order rerun | Its unfinished work is saved as [wip/vegetation-float16.patch](wip/vegetation-float16.patch) (16 source, tool and doc files, against main at 7140ab1; generated files and results left out, so rebuild and rerun). Apply with `git apply`, finish, and rerun `node tools/pde-order.js --full --write`, `tools/half-float-check.js` and `node tools/recipe.js`. It also edits `src/shared/engine.js`, which now carries recipe v4 from the lozenge change, so merge that by hand. |
+| Research: license, rename, reading | stopped after all eight research tracks finished; verification only just started | Saved, unverified, in [wip/research-2026-09-24-unverified.md](wip/research-2026-09-24-unverified.md). Next: verify the load-bearing claims, then write the answer. |
 | Fresh-ideas sweep (publication, protection, legal, engineering, visibility) | stopped to save usage | Rerun on request |
 
 ## Your to-dos (only you can do these)
@@ -76,7 +75,7 @@ Not needed: the signing key (dropped by your choice).
 
 ## Code work left from your list
 
-- **2 (running).** Change the Aztec frozen-region definition to corner-attached clusters, checked against Jockusch, Propp and Shor. Fix the lozenge arctic readout and its error bar, and calibrate the Aztec per-plate error bar.
+- **2: done**, on this branch. Lozenge is frozen when connected to the rim; the Aztec and lozenge error bars are calibrated; both are validated within stated limits. Recipe v4.
 - **3 and 4 (running).** Compute the vegetation tab's combined step bound. Decide and document a float16 policy for chemotaxis, pfc and amb.
 - **7.** Add Done-list entries in `docs/RESEARCH-GRADE.md` for sections 1 and 4 (section 2 is done), and refresh the Atlas map artifact (https://claude.ai/artifact/GXYHX9XMdak9vhwgiLC1Gq).
 - **Recorded defects, not fixed:**
