@@ -15,7 +15,7 @@ The model is dz_j/dt = (i/2π) Σ Γ_k (z_j − z_k)/|z_j − z_k|^(2β), with �
 
 1. **Lemma 2 (circulations).** A self-similar motion that changes size needs a scalene, non-collinear triangle, with Γ_i = c r_i²/(f_j − f_k), where f = r^(−2β) and the indices are cyclic. Exactly one orientation of each such triangle collapses. On scalene triangles this is equivalent to zero angular impulse together with Σ Γ_jΓ_k r_i^(−α) = 0; for α = 0 that sum becomes the harmonic condition Σ Γ_jΓ_k = 0.
 2. **Lemma 3 (rates).** 2π Im κ is half the sum of the isolated pair rates, and P = |S|/(8·Area), where S = Σ_cyc r_i² coth(β ln(r_k/r_j)). The circulations drop out.
-3. **Theorem 1.** For α > α₀ = −0.8960874362…, P > √(3+α)/(2+α), sharp and not attained. The bound is approached by a weak opposite-signed dipole spiralling into a strong vortex. Corollary 1 gives the path ratio (4+α)/(2+α), the spiral angle arccos((2+α)/(4+α)), and |ω₀|t_c > 2√(3+α)/(2+α)².
+3. **Theorem 1.** For every α > −1 (every kernel whose velocity decays with distance), P > √(3+α)/(2+α), sharp and not attained. The bound is approached by a weak opposite-signed dipole spiralling into a strong vortex. Corollary 1 gives the path ratio (4+α)/(2+α), the spiral angle arccos((2+α)/(4+α)), and |ω₀|t_c > 2√(3+α)/(2+α)².
 4. **Section 5 (Euler, N ≥ 4, numerical).** Four vortices reach P₄ = 0.7978967838…, a strict local minimum. Two-arm families reach P = 0.5172291322… at N = 33 and 0.4981844392… at N = 61. Whether P can tend to 0 as N grows is open.
 
 ## How each claim was checked
@@ -26,11 +26,15 @@ The explorer derived the proof, a separate checker verified it, and it was then 
 - **Exact identities:** every exact identity of the proof checks in SymPy.
 - **The inequality chain:** 20,000 random points, run with precision adapted to ρ^(2β).
 - **Sharpness:** near-extremal configurations.
-- **α below α₀:** the scan there, which is not claimed as a result.
+- **α ≤ −1:** the scan there, which is not claimed as a result.
 
-Two traps: in double precision, step (i) appears to fail at small ρ and large β, and the α < α₀ scan dips below the bound. Both are rounding errors, and both disappear once the precision grows with |ln ρ|.
+Two traps: in double precision, step (i) appears to fail at small ρ and large β, and the α ≤ −1 scan dips below the bound. Both are rounding errors, and both disappear once the precision grows with |ln ρ|.
 
 The N-vortex data and their checks are in [`generalizations-2026-09-24/`](generalizations-2026-09-24/).
+
+## Range of the theorem
+
+The first version of the proof needed α > −0.896, because its m ≥ 2 case used the crude bound 12β² − 3β − 2 > 0. Keeping m in that case gives D(m) = ((1+β)m − 2)² + (1 + 6β − βm² − m)/3, which is convex and increasing from m = 2, where D(2) = 4β² + (2β − 1)/3 > 0. So the proof now covers every β > 1/2, that is α > −1, which is exactly where the velocity decays with distance. Check [2] verifies D symbolically; check [3] now samples β from just above 1/2.
 
 ## Read
 

@@ -53,18 +53,17 @@ d1 = sp.simplify(sp.diff(g, x) - x ** 3 * (24 - x) / ((12 + 6 * x - x ** 2) ** 2
 Lam = b * m + 2 / m + rho - rho ** 2 * m / 6
 d2 = sp.simplify(sp.expand(Lam ** 2 - (1 + 2 * b) * (4 - (m - rho) ** 2)
                            - (((1 + b) * m - 2 / m - rho) ** 2 + (rho ** 2 / 3) * (1 + 6 * b - b * m ** 2 - rho * m + rho ** 2 * m ** 2 / 12))))
-h = rho ** 2 * (1 + 6 * b - b * (2 + rho) ** 2 - rho * (2 + rho))
-q = sp.factor(sp.cancel((h - h.subs(rho, 1)) / (1 - rho)))
+D = ((1 + b) * m - 2) ** 2 + (1 + 6 * b - b * m ** 2 - m) / 3                  # case m >= 2 of step (iii)
 Pc = (b * m ** 2 + 2) / (2 * b * m * sp.sqrt(4 - m ** 2)); ms = sp.sqrt(2 / (1 + b))
 d3 = sp.simplify(sp.diff(Pc, m).subs(m, ms)); d4 = sp.simplify(Pc.subs(m, ms) - sp.sqrt(1 + 2 * b) / (2 * b))
-root = sp.nsolve(12 * b ** 2 - 3 * b - 2, b, 0.5)
-say(f"[2] g'(x) identity residual {d1}; identity (4) residual {d2}; h(1) = {sp.expand(h.subs(rho, 1))}, "
-    f"(h - h(1))/(1 - rho) = {q}; limit P_0'(m*) = {d3}, P_0(m*) - B = {d4}; beta_0 = {root:.10f}, alpha_0 = {2 * (root - 1):.10f}")
+say(f"[2] g'(x) identity residual {d1}; identity residual {d2}; case m >= 2: D(2) = {sp.expand(D.subs(m, 2))}, "
+    f"D'(2) = {sp.expand(sp.diff(D, m).subs(m, 2))}, D'' = {sp.expand(sp.diff(D, m, 2))} (all > 0 for beta >= 1/2); "
+    f"limit P_0'(m*) = {d3}, P_0(m*) - B = {d4}")
 
 # 3. The chain S >= rho m + rho^2 coth b > (rho/beta) Lam, Lam/(4 beta sin psi) > B, at precision scaled to rho^(2 beta).
 random.seed(5); bad = 0; n = 0; margin = mm.inf
 for t in range(20000):
-    b0 = random.choice([0.56, 0.75, 1, 1.25, 1.5, 2, 3, 6, 20]) * (1 + 0.02 * random.random())
+    b0 = random.choice([0.5 + 1e-3 * random.random(), 0.5 + 0.05 * random.random(), 0.75, 1, 1.25, 1.5, 2, 3, 6, 20]) * (1 + 0.02 * random.random())
     lr = -random.random() * 8 if random.random() < .5 else float(mm.log10(random.random() + 1e-300))
     mm.mp.dps = int(40 + 2.4 * b0 * abs(lr))
     be = mm.mpf(b0); r = mm.mpf(10) ** mm.mpf(lr); mx = mm.mpf(random.random()) * (2 + r); cp = (r - mx) / 2
@@ -74,7 +73,7 @@ for t in range(20000):
     L = be * mx + 2 / mx + r - r ** 2 * mx / 6; B = mm.sqrt(1 + 2 * be) / (2 * be); s = mm.sqrt(1 - cp ** 2)
     ok = S >= r * mx + r ** 2 * mm.coth(bh) > (r / be) * L and L > 0 and L / (4 * be * s) > B and S / (4 * r * s) > B
     bad += not ok; n += 1; margin = min(margin, (S / (4 * r * s) - B) / B)
-say(f"[3] proof chain at {n} random points (beta from 0.56 to 20, rho down to 1e-8): {bad} violations; smallest (P - B)/B = {mm.nstr(margin, 3)}")
+say(f"[3] proof chain at {n} random points (beta from just above 1/2 to 20, rho down to 1e-8): {bad} violations; smallest (P - B)/B = {mm.nstr(margin, 3)}")
 
 # 4. Sharpness: configurations near the limit, built from Lemma 2 and checked by Biot-Savart.
 mm.mp.dps = 60
@@ -98,7 +97,7 @@ for al in [0, 0.5, 1, 1.5, 2]:
         f"spiral angle arctan(2B) = {mm.nstr(mm.degrees(mm.atan(2 * B)), 6)} deg, |omega_0| t_c bound 2B/(2+alpha) = {mm.nstr(2 * B / (2 + al), 10)}")
 open('research/artifacts/verify_alpha_winding.txt', 'w').write('\n'.join(out) + '\n')
 
-# 6. Below alpha_0 (not covered by the theorem): minimize P - B with precision growing with |log rho|.
+# 6. alpha <= -1 (not covered by the theorem): minimize P - B with precision growing with |log rho|.
 from scipy.optimize import minimize
 def P_minus_B(al, lr, m):
     mm.mp.dps = int(40 + 3 * abs(lr))
@@ -107,7 +106,7 @@ def P_minus_B(al, lr, m):
     X = r ** (2 * be); Y = (1 + r * m) ** be; bh = be / 2 * mm.log(1 + r * m)
     S = (1 + r * m) * (1 + X) / (1 - X) + r ** 2 * mm.coth(bh) - (Y + X) / (Y - X)
     return float(abs(S) / (4 * r * mm.sqrt(1 - ((r - m) / 2) ** 2)) - mm.sqrt(1 + 2 * be) / (2 * be))
-for al in [-0.85, -1.0, -1.2, -1.5, -1.8]:
+for al in [-1.0, -1.2, -1.5, -1.8]:
     best = min(((P_minus_B(al, lr, m), lr, m) for lr in [x / 4 for x in range(-40, 0)] for m in [0.05 + 0.1 * k for k in range(19)]))
     r = minimize(lambda v: P_minus_B(al, v[0], v[1]), [best[1], best[2]], method='Nelder-Mead', options={'xatol': 1e-10, 'fatol': 1e-40})
     say(f"[6] alpha = {al}: minimum of P - B found = {r.fun:.3e} ({'positive' if r.fun > 0 else 'NEGATIVE'}) at rho = 1e{r.x[0]:.1f}, m = {r.x[1]:.6f}")
