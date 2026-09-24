@@ -13,8 +13,10 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // The Grid slider and sanitize() read the same bounds, so no slider position is clamped away.
+  const GRID_MIN = 96, GRID_MAX = 160;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Lattice', 'Wdis', 'Disorder W', GEOM, 0, 8, 0.1, f2, { hint: 'W = 0 is a plane wave. In 2D any W > 0 localises, but the length is exponential in 1/W² so a small grid looks extended until W is a few hoppings.' }),
     RANGE('Lattice', 'hop', 'Hopping t', GEOM, 0.4, 2, 0.05, f2),
@@ -33,7 +35,7 @@
   };
 
   function surprise(rng) { return { Wdis: rng.range(0.5, 6.5), hop: rng.range(0.7, 1.4) }; }
-  function sanitize(s) { s.grid = Math.max(64, Math.min(160, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'anderson', name: 'Anderson', tab: 'Anderson',
     subtitle: 'waves that refuse to diffuse · 1958',
