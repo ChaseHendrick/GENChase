@@ -2,7 +2,9 @@
 
 Tab `percolation` in `src/modules/lattice.js`. Reviewed 2026-09-24 with
 `node tools/percolation-science.js --write`; results in
-[results/percolation-science.json](results/percolation-science.json).
+[results/percolation-science.json](results/percolation-science.json). Rerun the same day on the
+`lattice.js` that fixed the sandpile toppling count (which touches no percolation code): every result is
+identical to the first run except the recipe version the studio records, now 3.
 
 The tool loads the real module in Node (through `tools/lib/lattice-harness.js`, in the pattern of
 `tools/ust-review.js`) and calls the tab's own `ensureField()`, which draws one seeded random number per site
@@ -140,8 +142,8 @@ credited value, which is a description, not a measurement.
 - Prints: the five recipes above, raster PNG through Chromium with a software renderer; other renderers are
   not covered. The percolation tab has no vector export.
 - Precision: float32 random field compared with a double p, integer cluster data, RGBA8 raster.
-- Runtime on the review machine: 856 s wall, 605 s of CPU over the four worker threads, while other jobs
-  shared the machine; from the CPU time, an idle 4-core machine should take about four minutes.
+- Runtime on the review machine: 272 s wall, 567 s of CPU over the four worker threads, while other jobs
+  shared the machine (the first run took 856 s wall on a busier machine).
 
 ```sh
 node tools/percolation-science.js --write

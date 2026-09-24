@@ -1364,7 +1364,7 @@
   {
     "id": "cyclicca",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "dc91a54f2d1f6b58a1ded79dafc0ff38f77cec029c7cbd7e32e6d5002566392c",
+    "sourceSha256": "d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836",
     "reference": "Robert Fisch, Janko Gravner and David Griffeath, Statistics and Computing 1, 23 (1991), on threshold-range scaling of excitable automata; David Griffeath, Notices of the AMS, 1988, for the cyclic cellular automaton; James M. Greenberg and Stuart P. Hastings, SIAM J. Appl. Math. 34, 515 (1978), for the excitable rest-excited-refractory rule. In the cyclic automaton every state eats the one below it, so k colors chase each other around the cycle and a random soup organizes into spirals. Greenberg-Hastings is the same cycle with one excitable state: waves propagate, refractory tails follow, and broken fronts curl into spiral pairs.",
     "equation": "cyclic: s → s+1 (mod k) if ≥ θ neighbors within range r are in state s+1;   GH: 0 → 1 if ≥ θ excited, 1 → 2 → … → k−1 → 0",
     "status": "unvalidated",
@@ -2142,21 +2142,50 @@
   {
     "id": "sandpile",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "dc91a54f2d1f6b58a1ded79dafc0ff38f77cec029c7cbd7e32e6d5002566392c",
+    "sourceSha256": "d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836",
     "reference": "Per Bak, Chao Tang and Kurt Wiesenfeld, Phys. Rev. Lett. 59, 381 (1987); Deepak Dhar, Phys. Rev. Lett. 64, 1613 (1990). Bak, Tang and Wiesenfeld dropped grains one at a time on a lattice with a toppling threshold and found avalanches of every size, a power law with no tuning: self-organized criticality. Dhar showed the toppling operators commute, so the final stable state does not depend on the order of toppling, and the recurrent configurations form an Abelian group. The identity of that group, computed on a square, is the fractal plate in the second mode.",
     "equation": "if hᵢ ≥ 4: hᵢ −= 4, hⱼ += 1 for each neighbor j;   identity e = (2m − (2m)°)°, m = all 3",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the finite domain in validation/SANDPILE.md: square n x n grids with the tab's sink boundary, exhaustive recurrent counts up to 3x3, the identity at 64, 96, 128, 192 and 256, the six menu grain counts of the single-source pile, two random-drop runs and six printed recipes.",
+      "The recurrent count does not detect a threshold raised to five while toppling still removes four grains (that model is the sandpile shifted by one grain); the stability range check does.",
+      "Fixed 2026-09-24: the status line's topplings and random-drop avalanche numbers counted pops of floor(h/4) topplings (and, for the single-source pile, only the octant's own cells), so they undercounted and depended on toppling order. They now count topplings, the order-independent odometer total, and tools/sandpile-science.js checks every printed number exactly against independent odometers, with the pre-fix counter as a failure control; the plates are unchanged. Avalanche-size statistics and self-organized-criticality exponents are not tested.",
+      "Print evidence is raster PNG through Chromium with a software renderer; pixels within 0.01 cell of a cell boundary may show the neighboring cell (fixed-point scaling), and other renderers are not covered."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add avalanche-size statistics with error bars (for example a maximum-likelihood tail exponent over independent seeds) if the tab is to print them against theory.",
+      "Repeat the print check on other rendering platforms."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/sandpile-science.js",
+        "command": "node tools/sandpile-science.js --write",
+        "results": "validation/results/sandpile-science.json",
+        "scope": "Abelian property on 100 configurations (8x8 to 64x64) in five toppling orders; Dhar's count on 1x1, 2x2, 3x3 by three recurrence tests; the identity at every UI grid; the octant single-source pile against a full plane; random drops against one batch relaxation; the toppling counts the status line prints and every random-drop avalanche size against independent odometers. All with the tab's own toppler and jobs.",
+        "criteria": "Exact integer equality: final states and per-site odometers identical across orders and satisfying h = h0 - (4I - A)u; recurrent sets identical across the three tests and their size equal to det(4I - A) and to the enumerated spanning trees; identity equal to an independent computation, in the Laplacian image, recurrent, symmetric, with (e + e) = e and (c + e) = c; octant pile equal cell by cell and conserving every grain; random-drop heights and marks equal to the references; the tab's toppling count equal to the reference odometer total in every order, at every identity size and for the pile (full plane up to 2^16, and a quarter of the final second moment sum |x|^2 h at all six counts); every avalanche size, the largest and the sum equal to the reference; the numbers read from the studio status line equal to the references.",
+        "benchmark": "Dhar (1990): order independence of toppling and |recurrent| = det of the toppling matrix = number of spanning trees (Kirchhoff); Bareiss determinant in BigInt; exhaustive spanning-tree enumeration; Dhar's burning test; independent FIFO and synchronous toppling references; a full-plane single-source reference; for the pile's toppling count, the summation-by-parts identity sum |x|^2 h(x) = 4 sum u(x), which follows from h = N delta_0 - (4I - A) u because (4I - A)|x|^2 = -4.",
+        "failureControl": "An order-dependent rule (grains above 4t all to one neighbor) gives different final states in the tab's two orders on 80 of 100 configurations (every one with more than one initially unstable site) and breaks conservation on all 100; a threshold of five with five grains removed gives 5 and 525 recurrent configurations instead of 4 and 192 (det(5I - A)); (2m)° used as the identity fails (c + e) = c; the pre-fix counter (one per pop, not floor(h/4)) disagrees with the odometer total on 100 of 100 configurations, prints 11,709,876 for 11,709,974 topplings on the random drops preset and 9,853,706 for 77,107,818 on the 2^16 pile; an octant count without the orbit weight fails the second-moment check at 2^12, 2^14 and 2^16.",
+        "limitations": "Only the domain in validation/SANDPILE.md: square grids with the sink boundary; exhaustive Dhar counts only up to 3x3; the abelian property on 100 configurations up to 64x64; the identity at the five UI sizes; six menu grain counts; two random-drop runs; six printed recipes in Chromium."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/sandpile-science.js",
+        "command": "node tools/sandpile-science.js --write",
+        "results": "validation/results/sandpile-science.json",
+        "scope": "Six recipes (the default medallion 2^16 and five presets: 2^14 ink, identity 128 and 96, random drops, avalanche patches), grain off, exported by the tab at 2400 x 2400; studio state and the status line the tab printed read back and compared with the independent states.",
+        "criteria": "Every pixel equal to the independently computed cell color (maximum channel error 0 measured, 1 allowed); pixels within 0.01 cell of a boundary equal to one of the two cells; printed topplings (and, for random drops, drops, largest avalanche and mean) equal to the references exactly; recipe and full state unchanged by export; displaced and wrong-state controls fail on over 70,000 pixels.",
+        "limitations": "Raster PNG through Chromium with a software renderer only; the tab has no vector export. Near-boundary pixels are checked against either adjacent cell."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/sandpile-science.json",
+    "domain": {
+      "parameters": "Modes pile (grains 2^12, 2^14, 2^16, 2^17, 2^18, 2^20), identity (size 64, 96, 128, 192, 256) and soc (128 with 30,000 drops, 192 with 50,000 drops); exhaustive grids 1x1 to 3x3; the six printed recipes recorded in the results file.",
+      "conditions": "Square grid, each site with four toppling neighbors, grains leaving the grid lost to a sink; threshold 4; single source on the infinite plane truncated at R = ceil(0.4 sqrt(N)) + 6 (no grain reaches it); random drops from the seeded start of 0 to 3 grains per site. Seeds recorded; grain off.",
+      "resolution": "Every stable configuration on the exhaustive grids; every site of every tested configuration; prints at 8 in and 300 ppi.",
+      "precision": "Exact integer heights and odometers (Int32 and integer-valued Float64), BigInt determinants, RGBA8 raster; Chromium 141 with SwiftShader recorded."
+    }
   },
   {
     "id": "kakeya",
@@ -2678,21 +2707,50 @@
   {
     "id": "percolation",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "dc91a54f2d1f6b58a1ded79dafc0ff38f77cec029c7cbd7e32e6d5002566392c",
+    "sourceSha256": "d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836",
     "reference": "S. R. Broadbent and J. M. Hammersley, Proc. Cambridge Philos. Soc. 53, 629 (1957); J. Hoshen and R. Kopelman, Phys. Rev. B 14, 3438 (1976); Harry Kesten, Comm. Math. Phys. 74, 41 (1980). Broadbent and Hammersley asked how a fluid spreads through a random porous medium and found a sharp threshold: below p_c every cluster is finite, above it one cluster spans the lattice. Kesten proved the bond threshold on the square lattice is exactly 1/2. The site threshold, about 0.592746, is known only numerically. Hoshen and Kopelman gave the one-pass labeling that finds the clusters.",
     "equation": "site occupied iff rᵢ < p;   bond open iff rᵢⱼ < p;   p_c(site) ≈ 0.5927,   p_c(bond) = 1/2",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the finite domain in validation/PERCOLATION.md: labeling on 240 enumerated recipes (every grid and aspect the UI offers), spanning thresholds on square L = 128, 256 and 512, and five printed recipes.",
+      "The bond crossing agrees with Kesten's exact 1/2 to 0.50017 +/- 0.00027 (0.6 sigma) and the site crossing with the credited numerical value 0.592746 to 0.59273 +/- 0.00034; finite-size shifts smaller than about 3e-4 are not resolved, and the site reference is itself numerical.",
+      "Sampling error bars assume the seeded generator's streams for different seed strings behave as independent draws; the generator's statistical quality is not otherwise established.",
+      "Print evidence is raster PNG through Chromium with a software renderer; pixels within 0.01 cell of a cell boundary may show the neighboring cell (fixed-point scaling), and other renderers are not covered. The rank view orders equal-size clusters by union-find representative, which is reproduced, not tested."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend the threshold measurement to non-square aspects, other lattice sizes and a finite-size scaling fit of the crossings.",
+      "Repeat the print check on other rendering platforms."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/percolation-science.js",
+        "command": "node tools/percolation-science.js --write",
+        "results": "validation/results/percolation-science.json",
+        "scope": "Hoshen-Kopelman labeling of the tab against breadth-first search on 240 recipes (22,001,408 sites); the p sweep; exact per-seed spanning thresholds for 7,000 seeds per type at L = 128, 256, 512 checked seed by seed against an independent reference; crossings of R_L(p) with bootstrap errors.",
+        "criteria": "Partitions, sizes, counts, spanning decision and lit cluster identical on every lattice; every seed's tab threshold equal to the reference; bond crossing within 2 standard errors and inside the 95% bootstrap interval of 1/2; site crossing reported against 0.592746 with its error; each failure control moves the crossing by more than 10 standard errors.",
+        "benchmark": "Kesten (1980): bond threshold exactly 1/2 on the square lattice; site threshold 0.592746 as credited (Newman and Ziff 2000: 0.59274621(13)); independent breadth-first labeling and an independent Newman-Ziff threshold reference.",
+        "failureControl": "Diagonal neighbors injected into the site labeler (partitions change on 120/120 lattices; crossing 0.4083 +/- 0.0013, 144 sigma from 0.592746, at the matching-lattice value 0.407254) and vertical bonds opened with probability 0.9 p (crossing 0.5274 +/- 0.0014, 20 sigma from 1/2, at the anisotropic prediction 0.526316).",
+        "limitations": "Only the domain in validation/PERCOLATION.md: labeling on 240 enumerated recipes; thresholds on square L = 128, 256, 512; five printed recipes in Chromium. The crossing is a finite-size estimator (agreement at 3e-4 does not exclude smaller finite-size shifts), the site reference is numerical, and the error bars assume independent seeded streams."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/percolation-science.js",
+        "command": "node tools/percolation-science.js --write",
+        "results": "validation/results/percolation-science.json",
+        "scope": "Five recipes (four presets and a 4:5 occupied plate), grain off, exported by the tab at 2400 x 2400 or 1920 x 2400; studio state read back and compared with the independent labeling.",
+        "criteria": "Every pixel equal to the independently computed cell color (maximum channel error 0 measured, 1 allowed); pixels within 0.01 cell of a boundary equal to one of the two cells; recipe and full state unchanged by export; displaced and wrong-state controls fail on over 100,000 pixels.",
+        "limitations": "Raster PNG through Chromium with a software renderer only; the tab has no vector export. Near-boundary pixels are checked against either adjacent cell."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/percolation-science.json",
+    "domain": {
+      "parameters": "Labeling: the 240 recipes in validation/results/percolation-science.json (type site and bond, grid 128 to 512, all five aspects, p 0.3 to 0.8). Thresholds: aspect 1:1, grid 128, 256 and 512, both types, all p. Prints: the five recipes recorded in the results file.",
+      "conditions": "Free boundaries; spanning means one cluster touching the top and bottom rows. One seeded float32 random number per site and two per site for bonds, drawn once per seed and reused as p changes. Seeds perc-science/<type>/L<L>/<i>, perc-partition-<k>, perc-print-<k>; grain off.",
+      "resolution": "4,000, 2,000 and 1,000 seeds at L = 128, 256, 512 per type; bootstrap 1,000 replicates; controls 400 seeds at L = 128 and 256; prints at 8 in and 300 ppi.",
+      "precision": "Float32 field against a double p, integer union-find and breadth-first labels, exact thresholds (float32 values), Binary64 statistics, RGBA8 raster; Chromium 141 with SwiftShader recorded."
+    }
   },
   {
     "id": "attractors",
@@ -3070,7 +3128,7 @@
   {
     "id": "ising",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "dc91a54f2d1f6b58a1ded79dafc0ff38f77cec029c7cbd7e32e6d5002566392c",
+    "sourceSha256": "d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836",
     "reference": "Ernst Ising, Z. Phys. 31, 253 (1925); Lars Onsager, Phys. Rev. 65, 117 (1944); Nicholas Metropolis, Arianna W. Rosenbluth, Marshall N. Rosenbluth, Augusta H. Teller and Edward Teller, J. Chem. Phys. 21, 1087 (1953). Ising solved the chain and found no transition. Onsager solved the square lattice exactly and found one at T_c = 2/ln(1+√2). The Metropolis algorithm samples the Boltzmann distribution by proposing single flips and accepting them with probability min(1, exp(−ΔE/T)). Here the lattice is updated as a checkerboard: two half-sweeps per step, each parity with its neighbors held fixed, so the GPU can flip every site of one color at once.",
     "equation": "E = −J Σ⟨ij⟩ sᵢsⱼ − h Σᵢ sᵢ,   P(flip) = min(1, e^{−ΔE/T}),   T_c = 2/ln(1+√2) ≈ 2.269",
     "status": "validated within stated limits",

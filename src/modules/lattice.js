@@ -537,10 +537,12 @@ void main(){
   /* ---------- Abelian Sandpile ---------- */
   // Topple every unstable site of an n x n grid with a sink boundary until none is left. Sites are taken from a
   // LIFO stack and toppled floor(h/4) times at once; the Abelian property makes the final state independent of order.
+  // topplings() counts every one of those floor(h/4) topplings, not the pops, so it is the total of the odometer
+  // (topplings per site), which by the same property does not depend on the order either.
   // Runs for at most `ms` milliseconds and returns whether it finished. `mark`, when given, records the drop index.
   function makeGridToppler(n) {
     const N = n * n, stack = new Int32Array(N), inq = new Uint8Array(N);
-    let sp = 0, pops = 0;
+    let sp = 0, count = 0;
     function push(i) { if (!inq[i]) { inq[i] = 1; stack[sp++] = i; } }
     function run(h, ms, mark, tag) {
       const t0 = performance.now();
@@ -548,7 +550,7 @@ void main(){
       while (sp > 0) {
         const p = stack[--sp]; inq[p] = 0;
         const v = h[p]; if (v < 4) continue;
-        const t = v >> 2; h[p] = v - 4 * t; pops++;
+        const t = v >> 2; h[p] = v - 4 * t; count += t;
         if (mark) mark[p] = tag;
         const x = p % n, y = (p / n) | 0;
         if (x > 0) { const q = p - 1; if ((h[q] += t) >= 4) push(q); }
@@ -560,18 +562,20 @@ void main(){
       return true;
     }
     function seedAll(h) { sp = 0; for (let i = 0; i < N; i++) { inq[i] = 0; if (h[i] >= 4) { inq[i] = 1; stack[sp++] = i; } } }
-    return { push, run, seedAll, pops: () => pops };
+    return { push, run, seedAll, topplings: () => count };
   }
   // Single-source pile: one octant 0 <= y <= x of the square lattice, using its 8-fold symmetry. When a representative
-  // topples, its whole orbit topples, so each folded neighbor receives |orbit(p)| / |orbit(q)| grains per toppling.
+  // topples, its whole orbit topples, so each folded neighbor receives |orbit(p)| / |orbit(q)| grains per toppling,
+  // and topplings() adds |orbit(p)| topplings per toppling of p: the count is for the whole plane, not the octant.
   function makeOctantPile(N) {
     const R = Math.ceil(0.4 * Math.sqrt(N)) + 6;      // measured: the pile radius is about 0.367 sqrt(N)
     const cells = (R + 1) * (R + 2) / 2;
     const idx = (x, y) => x * (x + 1) / 2 + y;
     const orb = (x, y) => x === 0 ? 1 : (y === 0 || y === x) ? 4 : 8;
-    const nq = new Int32Array(cells * 4).fill(-1), nw = new Int32Array(cells * 4);
+    const nq = new Int32Array(cells * 4).fill(-1), nw = new Int32Array(cells * 4), ow = new Uint8Array(cells);
     for (let x = 0; x <= R; x++) for (let y = 0; y <= x; y++) {
       const p = idx(x, y), op = orb(x, y);
+      ow[p] = op;
       const qs = [], ws = [];
       for (let d = 0; d < 4; d++) {
         let fx = Math.abs(x + (d === 0 ? 1 : d === 1 ? -1 : 0)), fy = Math.abs(y + (d === 2 ? 1 : d === 3 ? -1 : 0));
@@ -584,7 +588,7 @@ void main(){
       for (let k = 0; k < qs.length; k++) { nq[p * 4 + k] = qs[k]; nw[p * 4 + k] = Math.round(ws[k]); }
     }
     const h = new Float64Array(cells), inq = new Uint8Array(cells), stack = new Int32Array(cells);
-    let sp = 0, pops = 0;
+    let sp = 0, count = 0;
     h[0] = N; stack[sp++] = 0; inq[0] = 1;
     function run(ms) {
       const t0 = performance.now();
@@ -592,7 +596,7 @@ void main(){
       while (sp > 0) {
         const p = stack[--sp]; inq[p] = 0;
         const t = Math.floor(h[p] / 4); if (t <= 0) continue;
-        h[p] -= 4 * t; pops++;
+        h[p] -= 4 * t; count += ow[p] * t;
         for (let d = 0; d < 4; d++) {
           const q = nq[p * 4 + d]; if (q < 0) break;
           h[q] += nw[p * 4 + d] * t;
@@ -612,7 +616,7 @@ void main(){
       if (y > x) { const t = x; x = y; y = t; }
       return x > R ? 0 : h[idx(x, y)];
     }
-    return { run, extent, at, pops: () => pops, R };
+    return { run, extent, at, topplings: () => count, R };
   }
   const SAND_MODE = { pile: 'Single source', identity: 'Group identity', soc: 'Random drops' };
   Studio.register({
@@ -733,7 +737,7 @@ void main(){
         return {
           run(ms) {
             const fin = pile.run(ms);
-            topples = pile.pops();
+            topples = pile.topplings();
             if (fin) {
               radius = pile.extent();
               // crop the plate to the pile plus a margin
@@ -754,7 +758,7 @@ void main(){
         return {
           run(ms) {
             const fin = top.run(heights, ms);
-            topples = top.pops();
+            topples = top.topplings();
             if (!fin) return false;
             if (phase === 0) {
               phase = 1;
@@ -774,7 +778,7 @@ void main(){
         for (let i = 0; i < N; i++) heights[i] = rng.int(0, 3);
         setBuffer(n, n);
         const top = makeGridToppler(n), total = s.drops | 0;
-        let pops0 = 0, touched = [];
+        let before = 0;
         drops = 0; maxAv = 0; sumAv = 0;
         return {
           run(ms) {
@@ -784,13 +788,13 @@ void main(){
               if (++heights[i] >= 4) {
                 top.push(i);
                 top.run(heights, 1e9, marks, drops);
-                const size = top.pops() - pops0; pops0 = top.pops();
+                const size = top.topplings() - before; before = top.topplings();
                 sumAv += size; if (size > maxAv) maxAv = size;
               }
               drops++;
-              if ((drops & 31) === 0 && performance.now() - t0 > ms) { topples = top.pops(); return false; }
+              if ((drops & 31) === 0 && performance.now() - t0 > ms) { topples = top.topplings(); return false; }
             }
-            topples = top.pops();
+            topples = top.topplings();
             return true;
           },
           label: () => 'dropping ' + drops.toLocaleString() + ' / ' + total.toLocaleString(),
