@@ -296,7 +296,7 @@ The [research folder](research/) holds one preprint, *Minimal winding in the sel
 
 ### Contribute computer time
 
-Anyone can lend their computer to the project's open questions without a model, an account or any AI tokens. [The local validator](apps/validate/HEADLESS.md) runs registered science checks and research searches, pauses on battery or heat, resumes from checkpoints, and shares results only when you ask. The first open-problem search looks for [the least winding in self-similar vortex collapse](experiments/VORTEX-COLLAPSE.md). Every submitted minimum is re-verified from its positions and circulations before it is recorded. Each job measures its own CPU time and, where the operating system allows, its energy, and [COMPUTE.md](COMPUTE.md) totals what the project has used.
+Anyone can lend their computer to the project's open questions without a model, an account or any AI tokens. [The local validator](apps/validate/HEADLESS.md) runs on macOS or Linux. It runs registered science checks and research searches, resumes from checkpoints, pauses on battery or heat on Apple Silicon Macs, and shares results only when you ask. The first open-problem search looks for [the least winding in self-similar vortex collapse](experiments/VORTEX-COLLAPSE.md). Every submitted minimum is re-verified from its positions and circulations before it is recorded. Each job measures its own CPU time and, where the operating system allows, its energy. [COMPUTE.md](COMPUTE.md) totals the computer time of shared jobs and recorded vortex results.
 
 Built by Chaos.
 
