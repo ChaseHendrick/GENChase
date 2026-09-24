@@ -1,0 +1,32 @@
+three-polygons -- working log (DK 2014 Sect. 4: n-gon + m-gon on radius R1, n-gon on radius R3 = r R1, Gamma0 at 0)
+All paths relative to this folder. Scripts print PASS/FAIL. mpmath 1.3.0, sympy 1.14.0.
+
+2026-09-24
+- Read DK pp. 362-365 (p06-p09.png). Sect. 4 ansatz: b1 = b3 = 1 (Gamma1 and Gamma3 n-gons aligned, DK's explicit
+  assumption), m = n forced. Branches: delta1 != 0 -> (41) Omega real (rel. eq.), families (42)-(45) and (46)-(48)
+  with b2 = -1 [text says "b1 = -1", a typo for b2]; delta1 = 0: (50)-(52) b2 = -1 and (53)-(55) b2 = -1 (both real
+  Omega); third family (56)-(58), b2 != -1, cos(n phi2) from (57): the only collapsing branch.
+- derive.py: re-derived from Biot-Savart root-of-unity sums (E1-E3 at z = 1, e^{i phi2}, r). Im parts force (57) and
+  delta1 = 0; real parts: 4x4 linear system, det = 1 - r^2 != 0 -> unique (Re Omega, G0, G1, G2) per G3 = DK (58);
+  Omega = DK (56). So within the DK ansatz the collapse set is exactly the one-parameter family r in (r_min(n), 1).
+- Existence: |cos n phi2| < 1 <=> r < 1 and W = 4q - r^2 (1+q)^2 > 0 (q = r^n). DK state 0 < r < 1 as necessary;
+  for n >= 3 there is also r > r_min(n): r_min(3) = 0.2587 (s^5+s^4+s^3+s^2+s = 1, r = s^2), r_min(4) = 0.5437
+  (r^3 + r^2 + r = 1), r_min(n) -> 1.
+- Closed form (derive.py, family.py):
+    P(n,r) = [n^2 r^4 (1+q)^2 + n (1-q^2)(1-r^2)(2-r^2) + (2+r^2)(1-q)^2] / [2 n r (1-r^2)((n-1)q + n + 1) sqrt(W)]
+  n = 2 (u = r^2): P = (2u^4 + 15u^3 + 2u^2 - 9u + 6)/(4u ((1-u)(3+u))^{3/2}), cos 2phi2 = (1+u)/2.
+- Table 1 (Fig. 1a) = n = 2, r = 2/3: P = 12433/(1240 sqrt 155) = 0.80535692872941680341 (Biot-Savart, 7 vortices).
+- family.py: min over r per n, certified (n = 2..10 exact critical-point isolation; n >= 11 rigorous bound B(n) > 0.98):
+    n = 2: u* root of 9u^5 + 7u^4 + 65u^3 + 3u^2 + 30u - 18 (irreducible), r* = 0.644976525458363412378,
+           P_min = 0.798068668128010280200654864267495495 ; P_min^2 root of
+           990677827584 X^5 + 225267941376 X^4 + 165964505088 X^3 - 240538548480 X^2 - 71025340864 X - 40969403281
+    n = 3: 0.97107457880961579876 ; n = 4: 1.3762128410964018714 ; n = 5: 2.3089285379301161226 ; increasing
+    large n: P_min(n) ~ n^3/(24 sqrt 3) (ratio 0.99993 at n = 400), q* = r*^n ~ 1 - 6/n.
+  Family inf = P_min(2) = 0.79807: 0.00729 below Table 1, 0.0680 below sqrt3/2, 1.72e-4 ABOVE the 4-vortex 0.7978968.
+- g0zero.py: Gamma0 = 0 members (no central vortex): n = 2 r = 0.46160 P = 1.2614 ; n = 3 r = 0.51828 P = 1.4072 ; none n >= 4.
+- Extension (not in DK): drop b3 = b1 (Gamma3 n-gon rotated by gamma/n). 2-parameter surface det M4(r, beta, gamma) = 0.
+  ext_scan.py n (coarse grid), ext_refine.py n r b g (Lagrange at 60 digits + Biot-Savart certificate).
+  n = 2: min P = 0.76019444254642170436096609 at r = 0.7511083354736862848, beta = 0.5178569153405368702,
+         gamma = 0.4271060197662678535 ; G0 = 3.99779431, G1 = -1.44516691, G2 = 0.88100318, G3 = 1 (this sign
+         scatters; Gamma -> -Gamma collapses, same P). Local min on the surface (margin > 0 at h = 1e-4).
+         Below 0.7979 (4 vortices) and below the DK family 0.79807.

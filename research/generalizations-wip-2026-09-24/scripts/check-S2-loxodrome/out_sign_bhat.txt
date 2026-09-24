@@ -1,0 +1,5 @@
+mu 0.01 counts (orient, sign ahat, sign bhat): {(-1, -1, 1): 10023, (-1, 1, 1): 19810, (1, -1, 1): 19810, (1, 1, 1): 10023}  min P0 on grid 0.86615817
+mu 0.2 counts (orient, sign ahat, sign bhat): {(-1, -1, 1): 11303, (-1, 1, 1): 18174, (1, -1, 1): 18174, (1, 1, 1): 11303}  min P0 on grid 0.90835494
+mu 0.5 counts (orient, sign ahat, sign bhat): {(-1, -1, 1): 12842, (-1, 1, 1): 16382, (1, -1, 1): 16382, (1, 1, 1): 12842}  min P0 on grid 1.064706
+mu 1 counts (orient, sign ahat, sign bhat): {(-1, -1, 1): 14562, (-1, 1, 1): 14573, (1, -1, 1): 14573, (1, 1, 1): 14562}  min P0 on grid 1.4142136
+mu 4 counts (orient, sign ahat, sign bhat): {(-1, -1, 1): 17807, (-1, 1, 1): 11608, (1, -1, 1): 11608, (1, 1, 1): 17807}  min P0 on grid 0.92889015

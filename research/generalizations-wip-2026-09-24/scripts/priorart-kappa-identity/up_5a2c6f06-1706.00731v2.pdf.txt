@@ -1,0 +1,1128 @@
+=====PAGE 1
+Evolving geometry of a vortex triangle
+Vikas S. Krishnamurthy
+Departamento de F´ısica, Universidade Federal de Pernambuco, 50670-901 Recife, Brazil∗
+Hassan Aref
+Department of Engineering Science & Mechanics,
+Virginia Tech, Blacksburg, VA 24061, USA (Deceased)
+Mark A. Stremler
+Department of Biomedical Engineering & Mechanics,
+Virginia Tech, Blacksburg, VA 24061, USA
+(Dated: November 14, 2018)
+Abstract
+The motion of three interacting point vortices in the plane can be thought of as the motion of
+three geometrical points endowed with a dynamics. This motion can therefore be re-formulated in
+terms of dynamically evolving geometric quantities, viz. the circle that circumscribes the vortex
+triangle and the angles of the vortex triangle. In this study, we develop the equations of motion
+for the center, Z, and radius, R, of this circumcircle, and for the angles of the vortex triangle, A,
+B, and C. The equations of motion for R, A, B and C form an autonomous dynamical system. A
+number of known results in the three-vortex problem follow readily from the equations, giving a
+new geometrical perspective on the problem.
+∗skvikas@imperial.ac.uk
+1
+arXiv:1706.00731v2  [physics.flu-dyn]  19 Jun 2017
+
+=====PAGE 2
+I.
+INTRODUCTION
+Interacting regions of concentrated vorticity play a central role in the dynamics of a vast
+many ﬂuid systems. A classic example of such interactions is the vortex tripole [1], in which
+three vortices move around each other for an extended period of time. A collection of three
+vortices is arguably the most fundamental of the vortex conﬁgurations, as it contains the
+smallest number of vortices capable of exhibiting relative motion. For modeling purposes,
+three point vortices in the plane, with positions (xα, yα) and circulations Γα (for α = 1, 2, 3),
+provide the simplest reduced-order representation of a three-vortex system. A number of
+fundamental observations regarding vortex motion can be ascertained by considering the
+dynamics of three point vortices in the plane [2–5].
+The motion of three interacting point vortices in the plane was solved by Gr¨obli in his
+thesis of 1877 [2]. More than 70 years later his solutions were classiﬁed in terms of the vortex
+circulations (or strengths) by Synge [3] using a geometrical approach. This work showed
+that the various possible regimes of motion are largely determined by the signs of the three
+symmetric functions of the circulations of the three interacting vortices, namely:
+γ1 = Γ1 + Γ2 + Γ3,
+γ2 = Γ1Γ2 + Γ2Γ3 + Γ3Γ1,
+γ3 = Γ1Γ2Γ3.
+(1)
+While Gr¨obli’s approach leads to detailed solutions of the initial value problem, typically
+in terms of elliptic or hyperelliptic functions, Synge’s approach is more in line with the
+qualitative, geometrical methods of modern dynamical systems theory. The two approaches
+intersect for the case of identical vortices, where Gr¨obli discusses a geometrical solution that
+is closely related to Synge’s method for the general case. Both the work of Gr¨obli and of
+Synge lay dormant until Novikov revived interest in the three-vortex problem in 1975 [4].
+Novikov re-discovered, independently and yet almost word for word, the geometrical solution
+to the problem of three identical vortices that Gr¨obli had given almost a century before.
+Generalizing Novikov’s work, Aref re-discovered Synge’s geometrical approach for general
+vortex strengths, albeit in a slightly diﬀerent form [5]. The contorted history of re-discovery
+of solutions, and some background on the little known career of Gr¨obli, has been recounted
+elsewhere [6].
+In each of these previous geometrical solutions, the focus has been on describing the
+2
+
+=====PAGE 3
+evolution of the vortex triangle in terms of the lengths of the sides, s1, s2, s3, and the area, ∆.
+Alternatively, the geometry of the vortex triangle can be given in terms of the interior angles
+and the properties of the circumcircle that passes through the vortex locations [7]. In Ref. 7,
+this alternative geometrical description was used merely to arrive at a concise derivation of
+the existing equations for the lengths of the triangle sides. In Sec. III A and III B we develop
+and explore the autonomous dynamical system given by the evolution of the circumcircle
+and the interior angles. In Sec. III C we discuss how the integrals of motion, including the
+Hamiltonian for the three vortex system, can be written purely in terms of the geometric
+variables.
+In Sec. III E we derive and discuss simple equations relating the center and
+radius of the circumcircle through the constants of motion, which are valid throughout the
+dynamical evolution of the system. In Sec. IV we retrieve some of the well known results in
+three vortex motion through simple application of the equations of motion for the geometrical
+variables.
+II.
+BASIC EQUATIONS
+The motion of three vortices in the plane is given by six coupled, nonlinear, ﬁrst order
+ODEs, two for the cartesian coordinates of each of the vortices, (xα, yα), α = 1, 2, 3. If we
+concatenate the coordinates into complex positions zα = xα + iyα, we have the equations of
+motion of these complex positions as:
+dz1
+dt =
+1
+2πi
+
+Γ2
+z1 −z2
++
+Γ3
+z1 −z3
+
+,
+(2a)
+dz2
+dt =
+1
+2πi
+
+Γ1
+z2 −z1
++
+Γ3
+z2 −z3
+
+,
+(2b)
+dz3
+dt =
+1
+2πi
+
+Γ1
+z3 −z1
++
+Γ2
+z3 −z2
+
+,
+(2c)
+where the overbar denotes complex conjugation. We shall assume the basic equations (2) to
+be known. For background on the information presented in this section we refer the reader
+to the textbook and monograph literature [8–11].
+Equations (2) have a number of well-known integrals. Two of these are the components
+of linear impulse,
+Q = Γ1x1 + Γ2x2 + Γ3x3,
+P = Γ1y1 + Γ2y2 + Γ3y3,
+(3)
+3
+
+=====PAGE 4
+which pertain to the absolute positions of the vortices. The linear impulse determines the
+center of vorticity,
+zcv = Q + iP
+γ1
+.
+(4)
+For γ1̸ = 0, the origin may be shifted to zcv under the coordinate transformation zα = zcv+z′
+α.
+The linear impulse with respect to the center of vorticity is clearly zero, i.e.
+Γ1z′
+1 + Γ2z′
+2 + Γ3z′
+3 = 0.
+Another integral of (2) is the angular impulse,
+I0 = Γ1(x2
+1 + y2
+1) + Γ2(x2
+2 + y2
+2) + Γ3(x2
+3 + y2
+3),
+(5a)
+which also by deﬁnition requires the absolute positions of the vortices. The subscript 0
+signiﬁes that I0 is computed relative to the chosen origin of coordinates; the angular impulse
+with respect to an arbitrary point z can be written as
+Iz =
+3
+X
+α=1
+Γα |zα −z|2 .
+(5b)
+One can also employ the above coordinate transformation to arrive at a parallel axis theorem
+for the angular impulse,
+Iz = Icv + γ1 |z −zcv|2 ,
+(6)
+where Icv is the angular impulse calculated relative to the center of vorticity (4).
+The angular impulse is related to the quantity
+L = Γ1Γ2s2
+3 + Γ2Γ3s2
+1 + Γ3Γ1s2
+2 = γ1I0 −Q2 −P 2.
+(7)
+If we deﬁne the angular impulse with respect to zcv, we have L = γ1Icv.
+Gr¨obli discovered that one can isolate within this system of six real ﬁrst-order ODEs a
+subsystem of three ODEs for the sides of the vortex triangle, sα, deﬁned by
+s2
+1 = |z2 −z3|2 = (x2 −x3)2 + (y2 −y3)2,
+s2
+2 = |z3 −z1|2 = (x3 −x1)2 + (y3 −y1)2,
+s2
+3 = |z1 −z2|2 = (x1 −x2)2 + (y1 −y2)2.
+(8)
+These equations are [2]
+ds2
+1
+dt = 2∆
+π Γ1
+s2
+3 −s2
+2
+s2
+2s2
+3
+,
+ds2
+2
+dt = 2∆
+π Γ2
+s2
+1 −s2
+3
+s2
+3s2
+1
+,
+ds2
+3
+dt = 2∆
+π Γ3
+s2
+2 −s2
+1
+s2
+1s2
+2
+,
+(9a)
+4
+
+=====PAGE 5
+where the area of the vortex triangle, ∆, is given by Heron’s formula [12],
+16∆2 = 2s2
+2s2
+3 + 2s2
+3s2
+1 + 2s2
+1s2
+2 −s4
+1 −s4
+2 −s4
+3.
+(9b)
+The sign of ∆needed in (9a) is indeterminate from (9b) since a triangle and its mirror
+image have the same absolute area. One needs to “step outside” the reduced system (9a)
+whenever the vortices become collinear and consider the triangle area with orientation,
+∆= 1
+2(x1y2 + x2y3 + x3y1 −x1y3 −x3y2 −x2y1).
+(9b′)
+This deﬁnition makes ∆> 0 when vortices 123 appear counter-clockwise and ∆< 0 when
+they appear clock-wise. The evolution of ∆may now be traced via (2). The subsystem
+(9a,9b), then, is “closed” except for instants when the vortices become collinear. In order
+to know how to continue the motion through such instants, one needs to either appeal to
+the full equations of motion (2) or develop a fourth equation of motion for ∆itself in terms
+of s1, s2, s3. This equation is [13]
+d∆
+dt = 1
+8π
+
+(Γ1 + Γ2)s2
+1 −s2
+2
+s2
+3
++ (Γ2 + Γ3)s2
+2 −s2
+3
+s2
+1
++ (Γ3 + Γ1)s2
+3 −s2
+1
+s2
+2
+
+.
+(9c)
+We do not include derivations of either (9a) or (9c) in this paper, but the solution proce-
+dure is as follows. Given equations for the velocities of the three corners of a triangle, it is
+clear, in principle, that one can write equations for the time-rate-of-change of the triangle
+sides and the triangle area. The geometrical considerations required for such a “direct”
+derivation are, however, somewhat involved. A straightforward algebraic development can
+be achieved by appealing to the Hamiltonian formulation [14] of (2) introduced already by
+Kirchhoﬀin 1876 and well covered in the texts cited [8–11]. If we set
+H = −1
+4π(Γ1Γ2 log s2
+3 + Γ2Γ3 log s2
+1 + Γ3Γ1 log s2
+2),
+(10)
+it is not diﬃcult to verify that (2) may be written
+Γα
+dxα
+dt = ∂H
+∂yα
+,
+Γα
+dyα
+dt = −∂H
+∂xα
+(α = 1, 2, 3).
+(11)
+Thus, xα and Γαyα are canonically conjugate variables, and one can introduce a Poisson
+bracket [15, 16]
+[f, g] =
+3
+X
+α=1
+1
+Γα
+ ∂f
+∂xα
+∂g
+∂yα
+−∂f
+∂yα
+∂g
+∂xα
+
+.
+(12)
+5
+
+=====PAGE 6
+In the context of point vortex dynamics this development dates back at least to a 1905 paper
+by Laura [17]. From the fundamental Poisson brackets,
+[x1, Γ1y1] = [x2, Γ2y2] = [x3, Γ3y3] = 1,
+(13)
+with all other brackets of two coordinates equal to zero, one builds up the algebra to produce
+results such as [13]
+[s2
+1, s2
+2] = −8 ∆
+Γ3
+,
+[s2
+2, s2
+3] = −8 ∆
+Γ1
+,
+[s2
+3, s2
+1] = −8 ∆
+Γ2
+.
+(14)
+Then, since the evolution of any function of the coordinates is given by
+df
+dt = ∂f
+∂t + [f, H],
+(15)
+and H is given by (10), one ﬁnds (9a) and (9c) after straightforward calculation of Poisson
+brackets.
+III.
+EVOLUTION OF VORTEX TRIANGLE GEOMETRY
+One can show [7] that the vortex velocities may be written quite simply in terms of the
+interior angles of the vortex triangle and the radius of the circumscribed circle, R. These
+results allow us to derive equations of motion for R and for the velocity of the center of the
+circumcircle, Z. If the angles of the triangle are denoted A, B, C as shown in Fig. 1, then
+we have the geometrical relations
+s1 = 2R sin A,
+s2 = 2R sin B,
+s3 = 2R sin C.
+(16)
+For later reference, we also note the relation
+R = s1s2s3
+4|∆|
+(17)
+and the fundamental relation between the interior angles
+A + B + C = π.
+(18)
+These relations allow us to derive equations for the evolution of the triangle shape.
+When the vortices become collinear, both the radius and the center of the circumcircle go
+to inﬁnity, and the positions of the vortices in terms of the circumcircle become ill-deﬁned.
+Since this geometrical approach breaks down as the vortices pass through a collinear state,
+we can choose, without any loss of generality, to always label the vortices such that they are
+oriented counterclockwise, which gives ∆> 0 in all of the subsequent analysis.
+6
+
+=====PAGE 7
+y
+x
+A
+B
+C
+Z
+R
+FIG. 1. Deﬁnition of the geometrical variables. Open circles mark the vortex locations z1, z2, z3.
+Filled circle marks the center of the circumcircle, Z.
+A.
+Evolution of the radius and center of the circumcircle
+As shown in Fig. 1, the vortex co-ordinates can be written as
+z1 = Z + Reiϕ1,
+z2 = Z + Reiϕ2,
+z3 = Z + Reiϕ3,
+(19)
+where ϕα measures the angle made by the position vector of vortex α with respect to the
+x (horizontal) axis. If the three vortices appear counterclockwise, as we have assumed, it
+follows from elementary geometry that the interior angles of the vortex triangle are given by
+ϕ2 −ϕ1 = 2C,
+ϕ3 −ϕ2 = 2A,
+ϕ1 −ϕ3 = 2B −2π.
+With this notation, we can write the equation of motion for, e.g., vortex 1 as
+˙z1 =
+1
+2πiR
+
+Γ2
+eiϕ1 −eiϕ2 +
+Γ3
+eiϕ1 −eiϕ3
+
+= e−iϕ1
+2πiR
+
+Γ2
+1 −ei2C +
+Γ3
+1 −e−i2B
+
+,
+where the overdot denotes the time-derivative. This expression may be written as
+˙z1 = eiϕ1
+4πR
+
+Γ2 cot C −Γ3 cot B + i(Γ2 + Γ3)
+
+.
+(20)
+The real multiple of eiϕ1 in (20) gives the radial velocity of vortex 1 relative to the circum-
+circle, namely
+( ˙z1)rad = Γ2 cot C −Γ3 cot B
+4πR
+.
+(21a)
+The real multiple of ieiϕ1 in (20) gives the tangential velocity in the positive (counterclock-
+wise) direction, namely
+( ˙z1)tan = Γ2 + Γ3
+4πR
+.
+(21b)
+7
+
+=====PAGE 8
+Let the center of the circumcircle be Z = X + iY .
+We may then equate ( ˙z1)rad in
+equation (21a) to the sum of the rate of change of R plus the projection of ˙Z onto the radial
+direction from Z to z1, giving
+˙R + ˙X cos ϕ1 + ˙Y sin ϕ1 = Γ2 cot C −Γ3 cot B
+4πR
+.
+(22a)
+Similarly, we may equate ( ˙z1)tan in equation (21b) to the sum of R ˙ϕ1 and the tangential
+component of ˙Z at the position of vortex 1, giving
+R ˙ϕ1 −˙X sin ϕ1 + ˙Y cos ϕ1 = Γ2 + Γ3
+4πR
+.
+(22b)
+Alternatively, we may simply diﬀerentiate (19) to ﬁnd that
+e−iϕ1 ˙z1 = e−iϕ1 ˙Z + ˙R + iR ˙ϕ1.
+The real and imaginary parts of this equation give (22a) and (22b), respectively. Similar
+relations hold for the velocity components of vortices 2 and 3.
+From equations (22) and the corresponding equations for vortices 2 and 3, we have a
+system of equations that may be written in matrix form using the Cartesian coordinates of
+the vortices as
+
+
+˙X
+˙Y
+˙R
+
+=
+1
+8π∆
+
+
+y2 −y3
+y3 −y1
+y1 −y2
+x3 −x2
+x1 −x3
+x2 −x1
+R sin(2A) R sin(2B) R sin(2C)
+
+
+
+
+Γ2 cot C −Γ3 cot B
+Γ3 cot A −Γ1 cot C
+Γ1 cot B −Γ2 cot A
+
+,
+(23)
+where we have used the assumption that ∆> 0. To write the equation for ˙R in its most
+transparent form, we collect terms proportional to each of the circulations Γ1, Γ2 and Γ3,
+giving
+˙R =
+1
+16πR sin A sin B sin C
+(
+Γ1[cot B sin(2C) −cot C sin(2B)]
++ Γ2[cot C sin(2A) −cot A sin(2C)] + Γ3[cot A sin(2B) −cot B sin(2A)]
+)
+,
+(24a)
+or, again using equation (18),
+dR2
+dt = 1
+4π
+h
+Γ1 cot B cot C(cot B −cot C)
++ Γ2 cot C cot A(cot C −cot A) + Γ3 cot A cot B(cot A −cot B)
+i
+.
+(24b)
+8
+
+=====PAGE 9
+For the motion of the center of the circumcircle we ﬁnd from (23) that
+˙Z = ˙X + i ˙Y =
+1
+8πi∆
+h
+(z1 −z2)(Γ1 cot B −Γ2 cot A)
++ (z2 −z3)(Γ2 cot C −Γ3 cot B) + (z3 −z1)(Γ3 cot A −Γ1 cot C)
+i
+.
+(25a)
+By re-grouping terms, we ﬁnd
+˙Z =
+1
+8πi∆
+h
+(Q + iP)(cot A + cot B + cot C) −γ1(z1 cot A + z2 cot B + z3 cot C)
+i
+,
+(25b)
+where γ1 is given in (1). The advantage of using this form of the equation is that, if γ1 = 0,
+the second term in square brackets vanishes; if instead γ1̸ = 0, we can arrange for the
+center of vorticity (4) to be at the origin, in which case Q + iP = 0.
+Note that since
+A + B + C = π (18),
+cot A + cot B + cot C = 1
+2(sin2 A + sin2 B + sin2 C) ≥0,
+with the equality occurring only when the vortices are collinear.
+B.
+Evolution of triangle shape
+Next, we seek equations of motion for the interior angles A, B, C. From (16), we have
+cot AdA
+dt =
+1
+2R sin A
+ds1
+dt −1
+R
+dR
+dt .
+(26)
+Here, from (9a),
+ds1
+dt = Γ1∆
+πs1
+s2
+3 −s2
+2
+s2
+3s2
+2
+
+= Γ1
+8πR
+cos(2B) −cos(2C)
+sin B sin C
+
+= Γ1
+4πR sin A(cot B −cot C).
+(27)
+Combining (24b), (26) and (27) gives
+cot AdA
+dt =
+1
+8πR2
+h
+Γ1(1 −cot B cot C)(cot B −cot C) −
+Γ2 cot C cot A(cot C −cot A) −Γ3 cot A cot B(cot A −cot B)
+i
+.
+(28a)
+For completeness we write out the corresponding equations for dB/dt and dC/dt:
+cot B dB
+dt =
+1
+8πR2
+h
+Γ2(1 −cot C cot A)(cot C −cot A) −
+Γ3 cot A cot B(cot A −cot B) −Γ1 cot B cot C(cot B −cot C)
+i
+,
+(28b)
+9
+
+=====PAGE 10
+cot C dC
+dt =
+1
+8πR2
+h
+Γ3(1 −cot A cot B)(cot A −cot B) −
+Γ1 cot B cot C(cot B −cot C) −Γ2 cot C cot A(cot C −cot A)
+i
+.
+(28c)
+Equations (24b) and (28) form an autonomous four-dimensional dynamical system embedded
+in the six-dimensional system (2).
+There is, in addition, the obvious constraint on the three angles (18), so the system con-
+sisting of (24b) and (28) may be thought of as three-dimensional. We saw earlier that the
+system comprised of (9a) and (9c) was also three-dimensional because of (9b), except for
+those instants when the three vortices become collinear. The role of collinear conﬁgurations
+shows up in a diﬀerent way in the system consisting of (24b) with (28): Collinear conﬁgu-
+rations are singularities of these equations wherein R →∞. It is thus clear that one has to
+stop and consider how to continue the solution beyond such a singularity in this formulation.
+C.
+Integrals of motion
+We return to a consideration of the integrals of motion.
+In the reduced description
+provided by (9a), conservation of L (7) follows immediately by dividing the left hand sides
+in (9a) by Γ1, Γ2 and Γ3, respectively, and adding. The Hamiltonian (10) is also an integral
+of the motion. This again follows easily from (9a) by dividing the left hand sides by Γ1s2
+1,
+Γ2s2
+2 and Γ3s2
+3, respectively, and adding.
+In terms of the variables R, A, B, C we have from (16) that
+L = 4γ3R2
+sin2 A
+Γ1
++ sin2 B
+Γ2
++ sin2 C
+Γ3
+
+(29a)
+and
+H = −1
+2π
+"
+γ2 log R + γ3
+log sin A
+Γ1
++ log sin B
+Γ2
++ log sin C
+Γ3
+ #
+.
+(29b)
+These must be integrals of (24b) and (28), as may be veriﬁed directly. The veriﬁcation,
+however, takes a few steps of not entirely transparent algebra, and one may wonder if
+these integrals would have been discovered working within the dynamical system (24b), (28)
+without the general background we have given. We leave the details to the reader.
+In addition we have a purely geometrical integral, viz A + B + C = π (18). That the
+sum A+B +C has vanishing time derivative also follows by adding the equations of motion
+for A, B and C, (28), and noting that the net coeﬃcient of each of Γ1, Γ2 and Γ3 vanishes.
+10
+
+=====PAGE 11
+Here one needs to use relations such as
+1
+cot A = cot B + cot C
+1 −cot B cot C ,
+which holds when A + B + C = π.
+D.
+EoM for the center of the circumcircle revisited
+We have already derived the equation of motion for the center of the circumcircle Z.
+In this subsection we show how that result can be obtained using the canonical formalism.
+In the next subsection we then show how the equation of motion for R follows from the
+equation of motion for Z.
+We return to the coordinates of the vortices and note that (9b) is equivalent to
+4i∆= z1(z2 −z3) + z2(z3 −z1) + z3(z1 −z2).
+(30)
+From the fundamental Poisson brackets (13), which in terms of the complex vortex coordi-
+nates read
+[zα, zβ] = 0,
+[zα, zβ] = −2i
+Γα
+δαβ,
+(31)
+it follows that
+[z1, ∆] = −z2 −z3
+2Γ1
+,
+(32a)
+[z2, ∆] = −z3 −z1
+2Γ2
+,
+(32b)
+[z3, ∆] = −z1 −z2
+2Γ3
+.
+(32c)
+Next, we pause to derive a well known expression for the center of the circumcircle in
+terms of the positions of the vertices of the triangle. By deﬁnition of the circumcircle and
+its radius we have |z1 −Z| = |z2 −Z| = |z3 −Z| = R. Thus,
+z1z1 + |Z|2 −z1Z −z1Z = R2,
+z2z2 + |Z|2 −z2Z −z2Z = R2,
+z3z3 + |Z|2 −z3Z −z3Z = R2.
+(33)
+By eliminating |Z|2 −R2 from these relations we obtain
+(z1 −z2)Z + (z1 −z2)Z = z1z1 −z2z2,
+(34a)
+(z2 −z3)Z + (z2 −z3)Z = z2z2 −z3z3,
+(34b)
+11
+
+=====PAGE 12
+and solving these two linear equations for Z and Z we ﬁnd
+Z = |z1|2(z2 −z3) + |z2|2(z3 −z1) + |z3|2(z1 −z2)
+z1(z2 −z3) + z2(z3 −z1) + z3(z1 −z2)
+.
+(35)
+From (30) the denominator is seen to be 4i∆.
+Since we have equations of motion for the vortex positions and for ∆(9c), we can, in
+principle, derive an equation of motion for Z from (35). In order to do so we calculate the
+Poisson bracket [Z, H]. Using (32a) we get
+[z1, 4i∆Z] = 4i([z1, ∆]Z + [z1, Z]∆) = 4i
+z3 −z2
+2Γ1
+Z + [z1, Z]∆
+
+.
+However, from the fundamental Poisson brackets, and in view of (35), the left hand side is
+clearly
+[z1, 4i∆Z] = [z1, |z1|2(z2 −z3)] = z1(z3 −z2) 2i
+Γ1
+.
+Thus,
+[z1, Z] = −(z2 −z3)(z1 −Z)
+2∆Γ1
+,
+(36a)
+and by permutation of indices,
+[z2, Z] = −(z3 −z1)(z2 −Z)
+2∆Γ2
+,
+(36b)
+[z3, Z] = −(z1 −z2)(z3 −Z)
+2∆Γ3
+.
+(36c)
+As a corollary
+[Γ1z1 + Γ2z2 + Γ3z3, Z] = 0.
+(37)
+Taking the Poisson bracket of (34a) with z3, we get
+(z1 −z2)[z3, Z] + (z1 −z2)[z3, Z] = 0.
+Here [z3, Z] = [z3, Z], since the Poisson bracket operations are all in terms of real-valued
+quantities. Thus,
+(z1 −z2)[z3, Z] −(z1 −z2)(z1 −z2)(z3 −Z)
+2∆Γ3
+= 0,
+or
+[z3, Z] = (z1 −z2)(z3 −Z)
+2∆Γ3
+.
+(38a)
+12
+
+=====PAGE 13
+By permutation of indices,
+[z2, Z] = (z3 −z1)(z2 −Z)
+2∆Γ2
+,
+(38b)
+[z1, Z] = (z2 −z3)(z1 −Z)
+2∆Γ1
+.
+(38c)
+We are now in a position to calculate
+Γ1Γ2[Z, log s2
+3] = Γ1Γ2
+s2
+3
+[Z, (z1 −z2)(z1 −z2)] =
+Γ1Γ2
+s2
+3
+ [Z, z1 −z2](z1 −z2) + [Z, z1 −z2](z1 −z2)
+
+.
+Here, by (36a) and (38c),
+[Z,z1](z1 −z2) + [Z, z1](z1 −z2) =
+(z2 −z3)
+2∆Γ1
+[(z1 −Z)(z1 −z2) −(z1 −Z)(z1 −z2)] =
+−(z2 −z3)(z1 −z2)
+∆Γ1
+[Z −1
+2(z1 + z2)],
+where in the last step (34a) has been used in the form
+(z1 −z2)Z = −(z1 −z2)Z + |z1|2 −|z2|2.
+Thus,
+[Z,z1](z1 −z2) + [Z, z1](z1 −z2) =
+(z2 −z3)
+2∆Γ1
+[2Z(z1 −z2) −z1z2 + z1z2 + |z1|2 −|z2|2] =
+−(z2 −z3)(z1 −z2)
+∆Γ1
+[Z −1
+2(z1 + z2)].
+Similarly,
+[Z,z2](z1 −z2) + [Z, z2](z1 −z2) =
+(z3 −z1)
+2∆Γ2
+[(z2 −Z)(z1 −z2) −(z2 −Z)(z1 −z2)] =
+−(z3 −z1)(z1 −z2)
+∆Γ2
+[Z −1
+2(z1 + z2)].
+13
+
+=====PAGE 14
+Subtracting we have
+Γ1Γ2[Z, log s2
+3] = Γ1Γ2(z1 −z2)
+∆s2
+3
+×
+
+−(z2 −z3)
+Γ1
++ (z3 −z1)
+Γ2
+
+[Z −1
+2(z1 + z2)] =
+z1 −z2
+∆s2
+3
+[γ1z3 −(Q + iP)][Z −1
+2(z1 + z2)] =
+γ1z3 −(Q + iP)
+∆
+Z −1
+2(z1 + z2)
+z1 −z2
+,
+with similar terms from the other two terms in the Hamiltonian.
+Now, in terms of the angles in the vortex triangle
+Z −1
+2(z1 + z2)
+z1 −z2
+= −1
+2
+eiϕ1 + eiϕ2
+eiϕ1 −eiϕ2 =
+−1
+2
+1 + e2iC
+1 −e2iC = 1
+2i
+cos C
+sin C = −1
+2i cot C.
+Thus,
+−Γ1Γ2
+4π [Z, log s2
+3] = (Q + iP) −γ1z3
+8πi∆
+cot C.
+The contributions to [Z, H] from the other two terms in the Hamiltonian follows by permu-
+tation of indices, and we obtain again (25b):
+˙Z = [Z, H] =
+1
+8πi∆[(Q + iP)(cot A + cot B + cot C)−
+γ1(z1 cot A + z2 cot B + z3 cot C) ].
+However, it is clear that the geometrical derivation is much simpler than the direct algebraic
+approach!
+E.
+EoM for the radius of the circumcircle revisited
+In Section III A we derived the equation of motion for R. A diﬀerent derivation is obtained
+by starting from the geometrical result (17) and using the equations of motion for the sides,
+(9a), and for the area, (9c). These may then be combined to produce (24b).
+Here we pursue a somewhat diﬀerent avenue. We note the following relation between Z
+and R: Multiply the ﬁrst of (33) by Γ1, the second by Γ2, and the third by Γ3, and add the
+results. This gives
+I0 + γ1ZZ −(Q + iP)Z −(Q −iP)Z = γ1R2,
+(39a)
+14
+
+=====PAGE 15
+where Q and P are as in (3), I0 as in (5a).
+If the sum of the vortex circulations, γ1, vanishes, the projection of the vector from the
+origin to the circumcenter, Z, onto the (constant) linear impulse is constant. Thus, the
+circumcenter travels along a line perpendicular to Q + iP. Analysis [18, 19] shows that
+the vortices periodically become collinear for all initial conditions. As the vortices become
+collinear, Z recedes to inﬁnity along a line perpendicular to Q + iP. In other words, the
+collinear vortices are situated along Q+iP. If Q = P = 0, the vortices must remain collinear
+and will, as the analysis shows [18, 19], rotate like a rigid body.
+The same conclusions are reached from (25b). For γ1 = 0 in that equation, the second
+term in square brackets is absent and ˙Z is an imaginary number times Q + iP.
+In the general case, γ1̸ = 0, we may view (39a) as an example of the parallel axis
+theorem (6). Using (5b) to write IZ = Icv + γ1|Z −zcv|2, and combining this equation
+with (5a) allows us to write (39a) as (for γ1̸ = 0)
+|Z −zcv|2 = R2 −Icv
+γ1
+.
+(39b)
+Since zcv and Icv are dynamical invariants, this equation shows that if we have determined
+the evolution of Z, we also have the evolution of R. If we place zcv at the origin, which
+requires γ1̸ = 0, we have that |Z|2 −R2 is a constant of the motion.
+Equation (39b) has an interesting geometrical interpretation. By (7), L = γ1Icv, and the
+sign of Icv/γ1 is the same as the sign of L. If L = 0, (39b) reduces to
+|Z −zcv|2 = R2.
+(40)
+Thus, while the circumcircle is, in general, time dependent, it evolves in such a way that
+one point on the circumcircle is always at the center of vorticity.
+If L > 0, then (39b) can be written as
+|Z −zcv|2 +
+
+Icv
+γ1
+ = R2,
+(41)
+and we see that the center of vorticity must lie inside the circumcircle for all times. Further-
+more, the circumradius R has a lower bound, namely Rmin =
+p
+Icv/γ1, which corresponds
+to the circumcenter coinciding with the center of vorticity. On the other hand, if L < 0,
+(39b) may be written as
+|Z −zcv|2 = R2 +
+
+Icv
+γ1
+ ,
+(42)
+15
+
+=====PAGE 16
+and we see that the center of vorticity must lie outside the circumcircle for all times. In
+this case, there is a disk of radius
+p
+Icv/γ1 centerd at zcv that is a forbidden region for the
+circumcenter.
+IV.
+SPECIAL SOLUTIONS
+The equations of motion for R, A, B, C and Z provide a diﬀerent perspective on three-
+vortex motion than given by (2) or (9a). We utilize this feature to extract some results on
+three-vortex motion that are more diﬃcult to derive from other forms.
+A.
+Motions with constant R
+Motions for which R is constant exist, e.g., the relative equilibria (and for the collinear
+relative equilibria R is inﬁnite). One might ask if there are others. When R is a constant,
+from (26) and (27) we have simpliﬁed expressions for ˙A, ˙B and ˙C, viz
+dA
+dt =
+Γ1
+8πR2
+cot B −cot C
+cot A
+,
+dB
+dt =
+Γ2
+8πR2
+cot C −cot A
+cot B
+,
+dC
+dt =
+Γ3
+8πR2
+cot A −cot B
+cot C
+.
+(43)
+Now, the two dynamical integrals of these equations, (29), take the reduced forms
+sin2 A
+Γ1
++ sin2 B
+Γ2
++ sin2 C
+Γ3
+= constant,
+(44a)
+and
+log sin A
+Γ1
++ log sin B
+Γ2
++ log sin C
+Γ3
+= −2πH
+γ3
+= λ,
+(44b)
+where λ is a constant. These integrals deﬁne surfaces in a (sin A, sin B, sin C)-space, and
+these two surfaces intersect (at most) in a curve. Adding to these equations the condition
+A + B + C = π (18), we see that we can at most expect isolated triples (A, B, C) to
+give solutions, so that
+˙A =
+˙B =
+˙C = 0. It then follows from (43) that we must have
+cot A = cot B = cot C. This restriction yields the equilateral triangle, A = B = C = π
+3.
+The collinear relative equilibria are singular limits. Thus, there are no three-vortex motions
+with constant, ﬁnite R other than the equilateral triangle conﬁgurations.
+16
+
+=====PAGE 17
+We note that when A = B = C = π/3 (and for the collinear equilibria), λ = 0, and thus
+H = 0 is a necessary condition for relative equilibria.
+B.
+Motions with invariant triangle shape
+By (24b), motions for which A, B, C are constant imply either that R2 is constant or that
+it grows linearly with time. The former case yields the equilateral triangle relative equilibria.
+In the latter case we have
+R(t) = R0
+r
+1 −t
+τ ,
+(45)
+where R0 is the initial value of R and the time scale τ is given by
+4πR2
+0
+τ
+= −[Γ1 cot B cot C(cot B −cot C) +
+Γ2 cot C cot A(cot C −cot A) +
+Γ3 cot A cot B(cot A −cot B)].
+(46a)
+But when A, B, C are constants we have from (28) that the term in square brackets can be
+written in either of the forms
+Γ1(cot B −cot C) = Γ2(cot C −cot A) = Γ3(cot A −cot B).
+Thus, we have
+−4πR2
+0
+τ
+= Γ1(cot B −cot C) = Γ2(cot C −cot A) = Γ3(cot A −cot B).
+(46b)
+These may be the simplest expressions known for τ which, when positive, gives the time of
+collapse [20]. When τ < 0 we have self-similar expansion.
+Equations (29) enable us to read oﬀthe necessary and suﬃcient conditions for self-similar
+motion. The condition that the angles A, B, C be constant (but R is not constant) means
+that L = 0 and γ2 = 0 in order for (29) to be constants of motion. On the other hand, if
+L = 0 and γ2 = 0, we get the following set of equations
+sin2 A
+Γ1
++ sin2 B
+Γ2
++ sin2 C
+Γ3
+= 0
+(47a)
+log sin A
+Γ1
++ log sin B
+Γ2
++ log sin C
+Γ3
+= const. = λ
+(47b)
+17
+
+=====PAGE 18
+These two equations intersect in a curve, as we saw in the previous section. Together with
+the condition A + B + C = π (18), this means that there can at most be isolated triples as
+solutions. Thus, the angles A, B, C must be constant. We conclude that L = 0 and γ2 = 0
+are necessary and suﬃcient conditions for self-similar motion.
+We have seen in the previous section that H = 0 is a necessary condition for equilibria.
+If we use λ = 0 in (47), the equations become completely symmetrical in A, B, C. One
+solution to these pair of equations is the line, sin A = sin B = sin C. Since these equations
+must meet in one curve, we conclude that this is the only solution (which takes the form of
+a curve). One solution consistent with A + B + C = π is then A = B = C = π/3. The
+other solutions are of course the collinear equilibria, with one of the angles being π and the
+other angles being zero. Thus, we conclude that the conditions H = 0, L = 0 and γ2 = 0
+are necessary and suﬃcient conditions for relative equilibria of three vortices.
+V.
+SUMMARY AND OUTLOOK
+Starting from geometry and using the known equations of motion, we have shown that
+the motion of three vortices can be regarded as the motion of the center of vorticity with
+respect to a chosen origin of co-ordinates, plus a motion of the three vortices about the center
+of vorticity. This latter motion is determined by the four autonomous equations (24b) and
+(28), along with the condition that the sum of the angles be equal to π. The transformation
+from the variables zα to Z, R, and ϕα is not a canonical transformation. What this implies,
+however, is not clear. Also, the number of variables in going from Z, R, and ϕα to Z, R, and
+A, B, C is reduced by one. One of the implications of this reduction is that rigid rotations
+of the relative equilibria conﬁgurations are lost in this representation.
+We have examined some of the simple solutions to these equations and have shown that
+these solutions exist under simple conditions that can be read oﬀfrom the constants of
+motion. One might expect to ﬁnd other solutions to these equations that throw light on the
+three vortex problem from a diﬀerent perspective.
+18
+
+=====PAGE 19
+ACKNOWLEDGMENTS
+The authors dedicate this work to the memory of Hassan Aref, who passed away unex-
+pectedly during the development of this manuscript, which was subsequently delayed for
+several years. He is remembered fondly for his inspiration, insight, and friendship.
+[1] van Heijst, G. J. F., Kloosterziel, R. C., & Williams, C. W. M. 1991 Laboratory experiments
+on the tripolar vortex in a rotating ﬂuid. Journal of Fluid Mechanics 225, 301–333.
+[2] Gr¨obli, W. 1877 Spezielle probleme ¨uber die Bewegung geradliniger paralleler Wirbelf¨aden.
+Vierteljahrsschrift der Naturforschenden Gesellschaft in Z¨urich 22, 37-81, 129-165.
+[3] Synge, J. L. 1949 On the motion of three vortices. Canadian Journal of Mathematics (Journal
+canadien de mathmatiques) 1, 257–270. (doi:10.4153/CJM-1949-022-2)
+[4] Novikov, E. A. 1975 Dynamics and statistics of a system of vortices. Soviet Physics JETP 41,
+937–943.
+[5] Aref, H. 1979 Motion of three vortices. Physics of Fluids 22, 393–400. (doi: 10.1063/1.862605)
+[6] Aref, H., Rott, N., & Thomann, H. 1992 Gr¨obli’s solution of the three-vortex problem. Annual
+Review of Fluid Mechanics 24, 1–20. (doi: 10.1146/annurev.ﬂ.24.010192.000245)
+[7] Aref, H. 2002 A transformation of the point vortex equations. Physics of Fluids 14, 2395–2401.
+(doi: 10.1063/1.1483875)
+[8] Lamb, H. 1932 Hydrodynamics, 6th edition. (Cambridge University Press, Cambridge)
+[9] Batchelor, G. K. 1967 An Introduction to Fluid Dynamics (Cambridge University Press, ISBN
+0-5210-9817-3)
+[10] Saﬀman, P. G. 1992 Vortex Dynamics. (Cambridge University Press; ISBN 052142058X)
+[11] Newton, P. K. 2001 The N-vortex Problem: Analytical Techniques. Applied Mathematical
+Sciences, vol. 145 (Springer-Verlag, New York, ISBN 0387952268)
+[12] Coxeter, H. S. M. 1969 Introduction to Geometry, 2nd. ed. (Wiley)
+[13] Borisov, A. V. & Palmov, A. E. 1998 Dynamics and statics of vortices on a plane and a sphere
+I. Regular and Chaotic Dynamics 3, 28–38. (doi: 10.1070/rd1998v003n01ABEH000059)
+[14] Aref, H. 1983 Integrable, chaotic and turbulent vortex motion in two-dimensional ﬂows. Annual
+Review of Fluid Mechanics 15, 345–389. (doi: 10.1146/annurev.ﬂ.15.010183.002021)
+19
+
+=====PAGE 20
+[15] Goldstein, H., Poole, C. P. & Safko, J. L. 2002 Classical Mechanics (3rd ed.) (Addison-Wesley;
+ISBN 0201657023)
+[16] Landau, L. D. & Lifschitz, E. M. 1960 Mechanics (Pergamon Press; reprinted by Butterworth-
+Heinemann, Oxford; ISBN 0750628960)
+[17] Laura, E. 1905 Sulle equazioni diﬀerenziali canoniche del moto di un sistema di vortici ele-
+mentari, rettilinei e paralleli in un ﬂuido incompressibile indeﬁnito. Atti dell’Accademia delle
+Scienze di Torino. Classe di Scienze Fisiche, Matematiche e Naturali 40, 296-312.
+[18] Rott, N. 1989 Three-vortex motion with zero total circulation. Journal of Applied Math-
+ematics and Physics (ZAMP) 40, 473–494. [With an Addendum by H. Aref (1989)]
+(doi:10.1007/BF00944801)
+[19] Aref, H. 1989 Three-vortex motion with zero total circulation: Addendum. Journal of Applied
+Mathematics and Physics (ZAMP) 40, 495–500. (doi:10.1007/BF00944802)
+[20] Aref, H. 2010 Self-similar motion of three point vortices. Physics of Fluids 22, 057104, 12pp.
+(doi: 10.1063/1.3425649)
+20

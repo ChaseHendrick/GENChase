@@ -1,0 +1,4 @@
+beta0=0.3: equal-radius extra minus claim = 1.34212770600979e-16 ; equal-time extra / claim = 0.499999999999972
+beta0=1: equal-radius extra minus claim = 2.31904681384630e-17 ; equal-time extra / claim = 0.500000000000000
+beta0=2: equal-radius extra minus claim = 1.34212770600979e-16 ; equal-time extra / claim = 0.500000000000000
+beta0=3: equal-radius extra minus claim = 4.35306026417657e-15 ; equal-time extra / claim = 0.500000000000000

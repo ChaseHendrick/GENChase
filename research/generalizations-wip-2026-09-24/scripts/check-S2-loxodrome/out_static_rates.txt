@@ -1,0 +1,17 @@
+configurations 1764
+orientation normal sign relative to placement normal equals sign of planar area: checked via n_c choice
+psi-rate sign equals sign(bhat) in all cases (azimuth right-handed about p): {True}
+M=sum GiGj                                 3.341e-52
+planar self-sim spread                     3.2642e-50
+planar L                                   1.7106e-48
+zc on circumcircle                         2.7885e-51
+|x|-R                                      1.0691e-50
+J/S - p                                    6.1177e-51
+x.v                                        2.4612e-51
+orient normal = +-n                        7.6417e-47
+dcos/dt - |ahat|/R^2  (rel)                1.2642e-42
+dpsi/dt - bhat/(R^2 sin^2 b) (rel)         1.5596e-42
+tan(angle to meridian) - 2P0 (rel)         1.7644e-42
+chord log-rate spread                      8.5237e-39
+similarity-about-p residual                1.7803e-48
+Om.phat - psidot (rel)                     5.848e-43

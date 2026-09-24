@@ -1,0 +1,1148 @@
+=====PAGE 1
+Theor. Comput. Fluid Dyn. (2014) 28:357–368
+DOI 10.1007/s00162-014-0319-4
+ORIGINAL ARTICLE
+M. V. Demina · N. A. Kudryashov
+Rotation, collapse, and scattering of point vortices
+Received: 9 May 2013 / Accepted: 16 January 2014 / Published online: 29 January 2014
+© Springer-Verlag Berlin Heidelberg 2014
+Abstract Relative equilibria, collapse, and scattering of point vortices in the plane are studied. Vortex systems
+with arbitrary choice of circulations are considered. An ordinary differential equation satisﬁed by polynomials
+with roots at the vortex positions is found. Explicit expressions for vortex double-ring conﬁgurations in the
+cases of two regular polygons, three regular polygons, and a quadrangle with a digon are obtained.
+Keywords Point vortices · Relative equilibrium · Collapse · Scattering
+1 Introduction
+The Helmholtz’s system describing the motion of point vortices in the plane has been intensively studied in
+recent years [1–14]. This system induces complicated dynamics and is not integrable in the case of four or more
+vortices with generic choice of circulations [15,16]. That is why, some particular motions such as rotation,
+collapse, and scattering are of great interest. Relative equilibrium conﬁgurations were observed in superﬂuid
+Helium, plasmas, and hurricanes (see [1,10] and references therein). The collapse phenomenon may turn to
+be a mechanism contributing to the emergence of large atmospheric whirlwinds [17]. Analytic description of
+relative equilibrium, collapse, and scattering conﬁgurations is a difﬁcult problem.
+It is known since Thomson that M identical point vortices placed at the vertices of a regular M–gon are in
+relative equilibrium [18]. Relative equilibria of identical point vortices located at the vertices of two and three
+regular polygons with or without a vortex at the origin were constructed explicitly [2]. Less is known about
+such conﬁgurations if the circulations of the vortices differ from polygon to polygon. Aref studied the case of
+two polygons without a vortex at the origin [1]. O’Neil [5] established ﬁniteness of conﬁgurations with three
+regular polygons whenever certain restrictions on circulations hold. In recent work, Celli et al. [10] showed
+that point vortices with different circulations located at the vertices of a regular polygon cannot be in relative
+equilibrium, when the number of vortices is more than three (two if there is an addition vortex at the origin).
+Relative equilibria of identical point vortices placed on two perpendicular lines (the x and y axes) were
+investigated by Aref et al. [12]. The general motion of point vortices located at the vertices of two concentric
+regular M–gons was studied by Aref [19]. Further, the Aref’s results were developed by Koiller et al. [20].
+Only few collapse conﬁgurations are known explicitly. Novikov and Sedov constructed collapse conﬁgu-
+rations containing three point vortices or four point vortices with certain choices of circulations and derived
+necessary conditions for the existence of homogeneous collapse conﬁgurations in the general case [17]. O’Neil
+Communicated by M. Yousuff Hussaini.
+M. V. Demina · N. A. Kudryashov (B)
+Department of applied mathematics, National Research Nuclear University MEPhI,
+Kashirskoe sh., 31 115409, Moscow, Russia
+E-mail: nakudr@gmail.com
+Tel.: +7-495-3241181
+Fax: +7-495-3241181
+
+=====PAGE 2
+358
+M. V. Demina, N. A. Kudryashov
+established ﬁniteness of collapse conﬁgurations for point vortices placed at the vertices of three concentric
+regular M–gons whenever some restrictions on circulations hold [5].
+In this article, we study the problem of ﬁnding relative equilibrium, collapse, and scattering conﬁgurations
+of point vortices with arbitrary choice of circulations. We derive an ordinary differential equation satisﬁed
+by polynomials with roots at the vortex positions. This equation enables one to calculate the conﬁgurations
+explicitly what is much simpler than direct solution of the Helmholtz’s system.
+This article is organized as follows. In Sect. 2, we consider multivortex systems in the plane and obtain a
+differential equation satisﬁed by generating polynomials describing relative equilibria, collapse, and scattering.
+In Sects. 3–5, we present several explicit examples.
+2 Differential equation describing rotation, collapse, and scattering of point vortices
+The motion of M point vortices with circulations (or strengths) k at positions zk, k = 1, . . . , M, M > 1 in
+the plane is described by the following system of differential equations
+dz∗
+k
+d t =
+1
+2πi
+M
+
+j=1
+′
+ j
+zk −z j
+,
+k = 1, . . . , M.
+(1)
+The prime in this expression means that we exclude the case j = k and the symbol ∗stands for complex
+conjugation. Let us take the functions zk in the form
+zk = z0
+k f (t) + g(t),
+f (0) = 1,
+g(0) = 0,
+(2)
+where z0
+k, k = 1, . . . , M are the initial positions of the vortices. We see that this arrangement of point vortices
+remains similar to the original one at any time. Such a conﬁguration is usually called homographic. Substituting
+relations (2) into system (1), we obtain the equalities
+
+z0
+k ˙f + ˙g
+∗f =
+1
+2πi
+M
+
+j=1
+′
+ j
+z0
+k −z0
+j
+,
+k = 1, . . . , M,
+(3)
+where the dot denotes the derivative with respect to t. Introducing notation
+A∗
+k =
+1
+2πi
+M
+
+j=1
+′
+ j
+z0
+k −z0
+j
+,
+k = 1, . . . , M,
+(4)
+we can rewrite system (3) in the form
+
+z0
+k ˙f + ˙g
+
+f ∗= Ak,
+k = 1, . . . , M.
+(5)
+Subtracting any two equations one from the other yields
+
+z0
+k −z0
+l
+ ˙f f ∗= Ak −Al.
+(6)
+Initial positions of the vortices are distinct: z0
+k̸ = z0
+l whenever k̸ = l. In addition, the values Ak, k = 1, . . . , M
+do not depend on t. Consequently, it follows from equalities (5), (6) that the functions f (t), g(t) satisfy the
+equations
+f ∗˙f = c1,
+f ∗˙g = c2
+(7)
+with c1, c2 being complex-valued constants. Substituting relations (7) into equalities (3) yields the algebraic
+system
+
+z0
+kc1 + c2
+∗=
+1
+2πi
+M
+
+j=1
+′
+ j
+z0
+k −z0
+j
+,
+k = 1, . . . , M.
+(8)
+Further, it is necessary to consider two cases: ˙f = 0 and ˙f̸ = 0. If ˙f = 0, then we get c1=0 and
+f (t) = 1,
+g(t) = c2t,
+(9)
+
+=====PAGE 3
+Rotation, collapse, and scattering of point vortices
+359
+where initial conditions for the functions f (t), g(t) have been taken into account. This motion is a rigid
+translation with constant velocity c2. The vortex arrangements given by (2), (9) are referred to as stationary
+equilibria whenever c2 = 0 and translating relative equilibria if c2̸ = 0; for more details, see [1,13,16,22,23].
+In the case ˙f̸ = 0, we can divide the second equation in (7) by the ﬁrst. Integrating the result, we express the
+function g(t) via the function f (t). Further, we substitute the function f (t) in the form f (t) = κ(t) exp[iψ(t)],
+where κ(t), ψ(t) are the modulus and argument of f (t), into the ﬁrst equation in (7). This yields κ ˙κ = α,
+κ2 ˙ψ = β, where we use notation c1 = α + iβ, α, β ∈R. Solving these two equations, we obtain
+f (t) =
+⎧
+⎪⎨
+⎪⎩
+exp [iβt] ,
+α = 0;
+√
+2αt + 1 exp
+ βi
+2α ln{2αt + 1}
+
+,
+α̸ = 0
+g(t) = c2
+c1
+[ f (t) −1].
+(10)
+In the case c1̸ = 0, the function g(t) can be absorbed by shifting zk(t) and z0
+k, k = 1, . . . , M. Thus, in what
+follows, we set g(t) = 0 (c2 = 0). For the initial vortex positions, we get the system
+
+
+z0
+k
+∗=
+M
+
+j=1
+′
+ j
+z0
+k −z0
+j
+,
+k = 1, . . . , M,
+(11)
+where  = 2π(β + iα). If α = 0, then the vortices rotate around the origin with constant angular velocity
+β. These vortex arrangements are referred to as rotating relative equilibria. If α̸ = 0, we see that the vortices
+collapse (α < 0) or scatter (α > 0). Interestingly, that vortices collapse or scatter along ﬁxed rays whenever
+β = 0. In the case α < 0, relations (10) are valid in the interval 0 ≤t < tc, where the time of collapse tc is
+given by
+tc =
+1
+2|α|.
+(12)
+Solving algebraic Eq. (11) directly involves huge computations, especially if a multivortex systems with generic
+choice of circulations is consider. In order to simplify calculations, we shall use the so-called polynomial
+method. Our aim is to drive a differential equation satisﬁed by polynomials with the roots at vortex initial
+positions [3,8,11–14,23]. The polynomial method provides a remarkable and rather unexpected connection
+between the dynamics of point vortices and the theory of integrable differential equations [11,24–26].
+Let us subdivide the vortices into groups according to the values of circulations and the absolute values
+of their initial positions. Suppose the vortices at initial positions a( j)
+1 , . . . , a( j)
+l j
+have the circulation  j, j =
+1, . . . , N, N ≤M. In addition, suppose that |a( j)
+i
+| = R j, R j̸ = 0, i = 1, . . . ,l j. Let us deﬁne the monic
+polynomials
+Pj(z) =
+l j
+
+i=1
+(z −a( j)
+i
+),
+|a( j)
+i
+| = R j,
+i = 1, . . . ,l j,
+j = 1, . . . , N.
+(13)
+We see that the roots of the polynomial Pj(z) give equal in absolute value initial positions of the vortices
+with the circulation  j. Note that the polynomials Pj(z), j = 1, . . . , N do not have multiple and common
+roots. Along with this, let a vortex with circulation 0 be situated at the origin. Thus, the total amount of the
+vortices is
+M =
+
+l1 + · · · + lN + 1,
+0̸ = 0;
+l1 + · · · + lN,
+0 = 0.
+(14)
+From Eq. (11), we ﬁnd the system of algebraic relations
+
+
+a( j0)
+i0
+∗
+=
+N
+
+j=1
+l j
+
+i=1
+′
+ j
+a( j0)
+i0
+−a( j)
+i
++ 0
+a( j0)
+i0
+,
+i0 = 1, . . . ,l j0,
+j0 = 1, . . . , N,
+(15)
+
+=====PAGE 4
+360
+M. V. Demina, N. A. Kudryashov
+where the case ( j0, i0) = ( j, i) in the sum is excluded. If 0̸ = 0, we get an additional algebraic equation
+N
+
+j=1
+l j
+
+i=1
+ j
+a( j)
+i
+= 0.
+(16)
+Using properties of the logarithmic derivative, we obtain the following equalities
+Pj,z = Pj
+l j
+
+i=1
+1
+z −a( j)
+i
+,
+Pj,zz = 2Pj
+l j
+
+i=1
+l j
+
+k=1
+′
+1
+(z −a( j)
+i
+)(a( j)
+i
+−a( j)
+k )
+.
+(17)
+Now let z tend to one of the roots of the polynomial Pj0(z). Calculating the limit z →a( j0)
+i0
+in the expression
+for Pj0,zz yields (see also [8])
+Pj0,zz(a( j0)
+i0
+) = 2Pj0,z(a( j0)
+i0
+)
+l j0
+
+i=1
+′
+1
+a( j0)
+i0
+−a( j0)
+i
+.
+(18)
+Multiplying Eq. (15) by a( j0)
+i0
+and using expressions (17), (18), we get the equalities
+ j0a( j0)
+i0
+Pj0,zz(a( j0)
+i0
+)
+Pj0,z(a( j0)
+i0
+)
+= −2a( j0)
+i0
+N
+
+j=1, j̸= j0
+ j
+Pj,z(a( j0)
+i0
+)
+Pj(a( j0)
+i0
+)
++ 2R2
+j0 −20,
+(19)
+which are valid for any root a( j0)
+i0
+of the polynomial Pj0(z). Furthermore, on the use of (18), (19), we see that
+the polynomial
+N
+
+i=1
+Pi(z)
+⎧
+⎨
+⎩z
+⎡
+⎣
+N
+
+j=1
+2
+j
+Pj,zz
+Pj
++ 2
+N
+
+k< j
+k j
+Pk,z
+Pk
+Pj,z
+Pj
+⎤
+⎦+ 2
+N
+
+j=1
+
+0 −R2
+j
+
+ j
+Pj,z
+Pj
+⎫
+⎬
+⎭
+(20)
+being of degree M −1 possesses M roots a( j)
+i
+, i = 1, . . . ,l j, j = 1, . . . , N. Thus, this polynomial identi-
+cally equals zero. Consequently, the generating polynomials Pj(z), j = 1, . . . , N of the vortices satisfy the
+differential equation
+z
+⎡
+⎣
+N
+
+j=1
+2
+j
+Pj,zz
+Pj
++ 2
+N
+
+k< j
+k j
+Pk,z
+Pk
+Pj,z
+Pj
+⎤
+⎦+ 2
+N
+
+j=1
+
+0 −R2
+j
+
+ j
+Pj,z
+Pj
+= 0.
+(21)
+Relation (16) can be rewritten in the form
+0
+⎧
+⎨
+⎩
+N
+
+j=1
+ j
+c( j)
+1
+c( j)
+0
+⎫
+⎬
+⎭= 0,
+(22)
+where the parameters c( j)
+k , k = 0, 1 are the coefﬁcients of the polynomial Pj(z):
+Pj(z) =
+l j
+
+k=0
+c( j)
+k zk,
+c( j)
+l j
+= 1.
+(23)
+Consequently, we have proved that the generating polynomials Pj(z), j = 1, . . . , N of point vortices are
+solutions of differential Eq. (21) and constraint (22). The reverse result is also valid. Suppose N polynomials
+Pj(z), j = 1, . . . , N of the form (13) do not have common and multiple roots and satisfy Eq. (21) and
+constraint (22), then the roots of these polynomials give initial positions of point vortices with circulations
+ j, j = 1, . . . , N. In addition, a point vortex of circulation 0, possibly zero, is placed at the origin.
+
+=====PAGE 5
+Rotation, collapse, and scattering of point vortices
+361
+We would like to note that adding the polynomial
+P0(z) =
+
+z,
+0̸ = 0;
+1,
+0 = 0.
+(24)
+to the list of generating polynomials, we can present Eq. (21) in the form
+z
+⎡
+⎣
+N
+
+j=1
+2
+j
+Pj,zz
+Pj
++ 2
+N
+
+k=0
+N
+
+j>k
+k j
+Pk,z
+Pk
+Pj,z
+Pj
+⎤
+⎦−2
+N
+
+j=1
+R2
+j j
+Pj,z
+Pj
+= 0.
+(25)
+Let us obtain necessary conditions for the existence of collapse and scattering conﬁgurations. Recall that l j
+denotes the degree of the polynomial Pj(z). Finding the Laurent series in a neighborhood of inﬁnity for the
+expression in the left-hand side of (25) and setting the highest-order coefﬁcient to zero produces the relation
+U −2V = 0,
+(26)
+where we use notation
+U def
+=
+N
+
+j=1
+l j(l j −1)2
+j + 2
+N
+
+k=0
+N
+
+j>k
+l jlk jk,
+V def
+=
+N
+
+j=1
+l j R2
+j j.
+(27)
+Since the collapse and scattering imply Im ̸ = 0, we obtain necessary conditions for the existence of
+conﬁgurations in question. These conditions are the following
+U = 0,
+V = 0.
+(28)
+In the case V̸ = 0, we can calculate the angular velocity β = /(2π) for rotating relative equilibrium
+conﬁgurations:
+β =
+U
+4πV .
+(29)
+In the next sections, we shall consider several explicit examples.
+3 Vortex double rings: two regular polygons
+A set of point vortices placed on a single circle is usually called a point vortex ring. In this section, we shall
+consider vortex double-ring conﬁgurations with vortices of circulations 1 and 2 occupying the vertices of
+two concentric regular polygons. In addition, let us suppose that there is a vortex of circulation 0, possibly
+zero, at the origin. In this situation, the generating polynomials are the following
+P0(z) = z, P1(z) = zn −Rn
+1b1, P2(z) = zm −Rm
+2 b2,
+nm > 1,
+(30)
+where b1 = exp[inϕ1] and b2 = exp[imϕ2]. The vortices of circulation 1 are located on the circle of radius
+R1, and the vortices of circulation 2 are located on the circle of radius R2. Since the system of Eq. (11)
+is invariant under the transformation z0
+k 	→exp[iϕ0]z0
+k, we can set ϕ1 = 0 and b1 = 1. In the degenerate
+case R1 = R2, we suppose that b2̸ = 1. Substituting polynomials (30) into expression (25), we obtain three
+algebraic equations in the case n̸ = m and two algebraic equations in the case m = n. If n̸ = m, these equations
+are inconsistent. In what follows we set m = n and use the ratio r = R2/R1 instead of R2. Note that condition
+(22) is automatically satisﬁed whenever n > 1. The algebraic system takes the form
+2R2
+1
+
+1 + 2r2
+ −(n −1)
+
+2
+1 + 2
+2
+
+−2n12 −20(1 + 2) = 0,
+2R2
+1
+
+1rnb2 + 2r2
+ −rn1 {(n −1)1 + 20} b2 −2 {(n −1)2 + 20} = 0
+(31)
+The ﬁrst equation in (31) is in fact the relation (26). Supposing 1 + 2r2̸ = 0, we solve the ﬁrst equation
+with respect to :
+ = (n −1)
+
+2
+1 + 2
+2
+
++ 2n12 + 20(1 + 2)
+2R2
+1
+
+1 + 2r2
+(32)
+
+=====PAGE 6
+362
+M. V. Demina, N. A. Kudryashov
+and substitute the result into the second equation. We see that there are three possibilities: b2 = 1, b2 = −1, and
+b2 disappears from the equation in question. The latter possibility does not give any solutions. Conﬁgurations
+with b2 = 1 (ϕ2 = 0) are called symmetric and are characterized by the following equation
+G(1)rn+2 −F(1, 2)rn −F(2, 1)r2 + G(2) = 0
+(33)
+Conﬁgurations with b2 = −1 (ϕ2 = π/n) are called staggered and are described by the equation of the form
+G(1)rn+2 −F(1, 2)rn + F(2, 1)r2 −G(2) = 0
+(34)
+In expressions (33), (34), we use notation F(i,  j) = 2ni + (n −1) j + 20, G(i) = (n −1)i + 20.
+Since the value of  is real, the conﬁgurations given by (33), (34) are rotating relative equilibria unless  = 0.
+Equations (33), (34) appeared in article [1] in the cases 0 = 0 and 1 = 2 = 0. Note that for symmetric
+conﬁgurations, we suppose that r̸ = 1. Let us consider several interesting partial cases of Eq. (34):
+(i) n = 2,
+0 = −2
+2 :
+(1 −2)(r2 −3)r2 = 0,
+(ii) n = 4,
+0 = 0 :
+(1r2 −2)(3r4 −8r2 + 3) = 0.
+(35)
+If r =
+√
+3 in the case (i), then the corresponding equilibrium exists at any values of circulations 1, 2
+provided that 1 + 2r2̸ = 0. Along with this, we obtain a continuum of relative equilibria (the parameter r
+can take any positive value) if 1 = 2. Originally, such a conﬁguration was found by Roberts [21]. In the
+case (ii), there exists a conﬁguration with almost arbitrary values of circulations 1, 2 and the ﬁxed value
+of the parameter r (again the condition 1 + 2r2̸ = 0 should be valid). Since Eq. (34) is invariant under
+the transformation r 	→1/r, 1 ↔2, we may suppose that r ≥1. Consequently, solving the equation
+3r4 −8r2 + 3 = 0 yields r = (
+√
+7 + 1)
+√
+6/6 (see also [20]).
+Further, let us consider the possibility 1 + 2r2 = 0. Finding solutions of system (31), we see that the
+value of  takes the form
+ =
+
+2(n1 + 0)r2 −(n −1)1
+
+rnb2 + (n −1)1 −20r2
+2R2
+1r4(rnb2 −1)
+,
+(36)
+the parameter r > 0 is given by
+{(n −1)1 + 20}r4 −2 {n1 + 0}r2 + (n −1)1 = 0
+(37)
+and the parameter b2 is an arbitrary complex constant of unit modulus. If b2 = 1 or b2 = −1, we obtain rotating
+relative equilibrium conﬁgurations (̸ = 0) or absolute equilibrium conﬁgurations ( = 0). Otherwise, it can
+be shown by direct calculations that Im ̸ = 0. Consequently, conﬁgurations in question describe collapse or
+scattering.
+4 Vortex double rings: three regular polygons
+We continue to study vortex double-ring conﬁgurations. Let us consider two concentric circles of radii R1 and
+R3 containing 2n + m vortices: n + m vortices are placed on the circle of radius R1 at the vertices of regular n
+and m–gons, n vortices are located on the circle of radius R3 at the vertices of a regular n–gon. The circulations
+of vortices on the circle of radius R1 are equal to 1 (2) for the vortices of the n–gon (the m–gon), and the
+circulations of vortices on the circle of radius R3 are equal to 3. In addition, suppose that the vortices with
+circulations 1 and 3 are arranged symmetrically and a vortex of circulation 0, possibly zero, is placed at
+the origin. Generating polynomials of such conﬁgurations are the following
+P0(z) = z,
+P1(z) = zn −Rn
+1b1,
+P2(z) = zm −Rm
+1 b2,
+P3(z) = zn −Rn
+3b3,
+nm > 1
+(38)
+
+=====PAGE 7
+Rotation, collapse, and scattering of point vortices
+363
+where b3 = b1 = exp[nϕ1i], b2 = exp[mϕ2i], and b2̸ = b1. Without the loss of generality, we set ϕ1 = 0,
+b3 = b1 = 1, b2̸ = 1. The ratio of the radii R3/R1 we denote as r, r > 0, r̸ = 1. Substituting polynomials
+(38) into Eq. (25) gives m = n and the algebraic system
+2R2
+1δ1 −(n −1)
+
+2
+1 + 2
+2 + 2
+3
+
+−2n{12 + 13 + 23} −2γ10 = 0
+
+2R2
+1
+
+1 + 3r2
+ −L(1, 3)
+
+b2 + 2γ2R2
+1 −L(1, 2)rn −L(2, 3) = 0,
+(2R2
+1
+
+1rn + 3r2
+ −γ3)b2 −{2R2
+1 −(n −1)2 −20}2rn = 0.
+(39)
+In relations (39), we use notation of the form
+L(i,  j) = (n −1){2
+i + 2
+j} + 2ni j + 20{i +  j},
+δ1 = 1 + 2 + 3r2,
+γ1 = 1 + 2 + 3,
+(40)
+γ2 = 2 + 3r2 + {1 + 2}rn,
+γ3 = (n −1){2
+1rn + 2
+3} + 20{1rn + 3}.
+Note that condition (22) is automatically satisﬁed whenever n > 1. We begin with the case δ1̸ = 0 correspond-
+ing to rotating relative equilibria (̸ = 0) or absolute equilibria ( = 0). Solving the ﬁrst equation in system
+(39) yields
+ = (n −1)
+
+2
+1 + 2
+2 + 2
+3
+
++ 2n{12 + 13 + 23} + 2{1 + 2 + 3}0
+2R2
+1
+
+1 + 2 + 3r2
+.
+(41)
+The second and the third equations in system (39) possess two families of solutions. For all the families, we
+obtain b1 = −1. By δ2, γ4, we denote the following values
+δ2 = (1 −2)rn −(1 + 2),
+γ4 = (n −1){1 + 2}2
+3 −[(n −1)r2 −2n]{2
+1 −2
+2}3 + 2{1 −2}12.
+(42)
+The ﬁrst family of conﬁgurations exists in the case δ2̸ = 0. The parameter r > 0, r̸ = 1 is given by
+(1 −2)q2 + 4n3q −(1 −2) = 0,
+q = rn.
+(43)
+In addition, the following restriction on the circulation of the vortex at the origin
+0 = γ4rn + (n −1){2
+1 + 2
+2}3r2 + (2nr2 −n + 1){1 + 2}2
+3 + 2n23r2
+23(r2 −1)δ2
+(44)
+should hold. The condition δ2̸ = 0 can be rewritten in the form
+12 + n3(1 + 2)̸ = 0.
+(45)
+Let us consider the case δ2 = 0. The second family of conﬁgurations exists under the following restrictions
+on circulations
+1 = −2n3rn
+rn −1 ,
+2 = −2n3rn
+rn + 1 .
+(46)
+The parameter r > 0, r̸ = 1 is a solution of the algebraic equation
+2[n(2n −1)3 −0]r4n+2 + [20 −(8n2 −n + 1)3]r4n
++ 4[0 −n(n −1)3]r2n+2 −2[20 + (4n2 + n −1)3]r2n
+−2(0 + n3)r2 + (n −1)3 + 20 = 0
+(47)
+and the constraint δ1̸ = 0 becomes
+r2n+2 −4nr2n −r2̸ = 0.
+(48)
+
+=====PAGE 8
+364
+M. V. Demina, N. A. Kudryashov
+Now, let us suppose that δ1 = 0. Note that this relation is a necessary condition for the conﬁgurations of
+collapse and scattering to exist. For further convenience, we introduce notation of the form
+δ3 = 3(rn + 1)r2 + 21,
+γ5 = [(n −1)(rn + r2) −(n + 1)(rn+2 + 1)]r2,
+γ6 = (2rn + (n + 3)r2 −n −1)2
+13 + (2rn+2 + (n + 1)r4 −2nr2 + n + 1)2
+31,
+γ7 = 23
+1 + [(n + 1)r2 −(n −1)]rn+23
+3.
+(49)
+We ﬁnd three families of solutions. If δ3̸ = 0, we obtain conﬁgurations with b2 = −1 (Fig. 3),
+ = γ53
+3 −2(3r2 + rn)32
+1 −2[(rn + r2 −n + 1)r2 + n + 1]2
+31 −43
+1
+2R2
+13(r2 −1)δ3
+,
+(50)
+and
+3r2n+2 + 21r2n + 4n3rn −3r2 −21 = 0.
+(51)
+The restrictions on circulations are the following
+0 = 3{(n −1)r4 −2nr2 + n −1} −231r2 −22
+1
+23(r2 −1)
+,
+2 = −1 −3r2.
+(52)
+These conﬁgurations correspond to rotating relative equilibria unless ̸ = 0.
+In the case δ3 = 0, we get another family of relative or absolute equilibrium conﬁgurations. The parameter
+ is given by
+ = −3{r4 + 3nr2 −n + 1}
+2R2
+1(r2 −1)
+.
+(53)
+This family exists under three constraints on circulations
+0 = 3{(n −1)(rn + 1) −4nr2}
+2(r2 −1)
+,
+1 = −3r2(rn + 1)
+2
+,
+(54)
+2 = 3r2(rn −1)
+2
+.
+The parameter r > 0, r̸ = 1 satisﬁes the equation
+r2n+2 −r2 −4n = 0
+(55)
+and b2 = −1. The third family of solutions is characterized by
+ = (1 + 3r2){[(n −1)r2 −(n + 1)](1 + 3)3 −22
+1}b2 + γ6 + γ7
+2R2
+13(r2 −1)[(1 + 3r2)b2 −1 −3rn+2]
+,
+(56)
+where b2̸ = −1. The parameter ϕ2 can be found using the relation
+cos nϕ2 = r2n+2 −2rn + r2
+2rn(r2 −1)
+.
+(57)
+The conﬁgurations of the third family exist provided that the following constrains on circulations
+0 = (n −1)2
+3r4 −2(1 + n3)3r2 + (n −1)2
+3 −22
+1
+23(r2 −1)
+,
+(58)
+1 = −3r2[(n + 1)rn + n −1]
+2(rn −1)
+,
+2 = 3r2[(n −1)rn + n + 1]
+2(rn −1)
+are valid. Note that in order to avoid cumbersome relations, we do not substitute the expression for 1 into
+equality (56) and the relation for 0. The right-hand side in (57) should be less than 1 in absolute value. This
+yields the necessary condition of the form 0 < r < 1. Several plots are given in Figs. 1, 2.
+Concluding this section, let us mention that in the case b2 = −1, two regular n–gons inscribed in the circle
+of radius R1 form one regular 2n–gon. The circulations of two neighbor vortices placed at the vertices of the
+regular 2n–gon are 1 and 2.
+
+=====PAGE 9
+Rotation, collapse, and scattering of point vortices
+365
+(a)
+(b)
+Fig. 1 Trajectories of the vortices: the collapse of seven vortices. Solid blue curves correspond to the vortices with circulation
+1. Dashed red curves correspond to the vortices with circulation 2. Long-dashed green curves correspond to the vortices with
+circulation 3. A vortex of circulation 0 is located at the origin. Explicit values of the parameters are given in Table 1
+(a)
+(b)
+Fig. 2 Examples of homographic conﬁgurations. The vortices marked with ﬁlled brown boxes, open blue circles, ﬁlled red
+diamond, and ﬁlled green circles have circulations 0, 1, 2, and 3, respectively. The values of the parameters are given in
+Table 2
+Table 1 Examples of collapse conﬁgurations
+Figure 1a:
+Relations (56) – (58): n = 2, 0 = 6383
+2250, 1 = 14
+15, 2 = −62
+45, 3 = 1,
+R1 = 2, r = 2
+3, ϕ2 = arccos 13
+18
+2
+,  = 12433
+9000 −31
+√
+155
+450
+i.
+Figure 1b:
+Relations (56) – (58): n = 2, 0 = −6383
+2250, 1 = −14
+15, 2 = 62
+45, 3 = −1,
+R1 = 2,r = 2
+3, ϕ2 = −arccos 13
+18
+2
+,  = −12433
+9000 −31
+√
+155
+450
+i.
+Exact values of the parameters
+
+=====PAGE 10
+366
+M. V. Demina, N. A. Kudryashov
+Table 2 Examples of homographic conﬁgurations
+Figure 2a:
+Relations (41), (43)–(45): n = 4, 0 = 170467
+1958401, 2 = −1, 3 = −255
+1281,
+R1 = 2, r = 2, ϕ2 = π
+4 ,  = −164347
+7833601.
+Figure 2b:
+Relations (56)–(58):
+n = 4, 0 = 128653
+42250 3, 1 = 646
+5853, 2 = −302
+1953,
+R1 = 2, r = 2
+3, ϕ2 = π−arccos 197
+648
+4
+,  =
+
+835109
+507000 −151
+√
+2255
+12675
+i
+
+3.
+Exact values of the parameters
+5 Vortex double rings: beyond regular polygons
+Let us apply our approach to conﬁgurations in which the vortices occupy two circles: two vortices are situated
+on the circle of radius R1 and have the circulation 1 and four vortices are situated on the circle of radius R2
+and have the circulation 2. In addition, we place a vortex of circulation 0, possibly zero, at the origin. We
+suppose that the vortices on the circle of radius R1 form a digon and the vortices on the circle of radius R2 are
+located symmetrically with respect to the real axis. The generating polynomials of these conﬁgurations are the
+following
+P0(z) = z, P1(z) = z2 −R2
+1b1, P2(z) = (z −R2b2)
+
+z −R2
+b2
+
+(z −R2b3)
+
+z −R2
+b3
+
+,
+(59)
+where b1 = exp[nϕ1i], b2 = exp[nϕ2i], b3 = exp[nϕ3i], b3̸ = b2, b3̸ = 1/b2. Without the loss of generality,
+we set b1 = 1, ϕ1 = 0. Substituting polynomials (59) into Eq. (25), we obtain six algebraic equations.
+Solving this system, we see that b3 = −b2 or b3 = −1/b2. The second possibility is equivalent to the ﬁrst.
+Thus, the vortices on the circle of radius R2 form a rectangle. Without the loss of generality, we may suppose
+0 < ϕ2 < π/2. Along with this, we see that condition (22) is automatically satisﬁed. For further convenience,
+we introduce notation r = R2/R1 and
+μ1 = 1 + 22r2,
+μ2 = {2 + 20}1 −{2
+1 + 42
+2 + 2(42 + 0)1}r2,
+(60)
+In the case μ1̸ = 0, we ﬁnd two families of solutions. For all the families, the parameter  is given by
+ = 2
+1 + 62
+2 + 812 + 210 + 420
+2R2
+1{1 + 22r2}
+.
+(61)
+The ﬁrst family exists if the following condition is valid μ2̸ = 0. The parameter r > 0 is given by
+{1 + 20}{2
+1 −42
+2 + 210}r8 −4ν1r6 + ν2r4 + 4ν3r2 −{2 + 20}{32 + 20}1 = 0,
+(62)
+where we use notation of the form
+ν1 = 23
+1 + {22 + 50}2
+1 + 2{2
+0 −22
+2 + 220}1 −22
+20 −32
+2,
+ν2 = 153
+1 + 4{42 + 30}2
+1 −{532 + 160}12 −8{42 + 0}2
+2,
+ν3 = {2 + 0}2
+1 + 2{42
+2 + 2
+0 + 520}1 + {32 + 20}2
+2.
+(63)
+The parameter ϕ2 we ﬁnd through the relation
+cos 2ϕ2 = {41 + 32 + 20 −(1 + 20)r2}1r2
+μ2
+.
+(64)
+The right-hand side in (64) should be less than 1 in absolute value.
+In the case μ2 = 0, we ﬁnd another family of solutions. This family exists under the following restrictions
+on the circulations:
+2 = −21,
+0 = 1(2 + r2)
+2(1 −r2) .
+(65)
+
+=====PAGE 11
+Rotation, collapse, and scattering of point vortices
+367
+The parameter ϕ2 is given by
+cos 2ϕ2 = 1
+r2 .
+(66)
+The right-hand side in (66) should be less than 1 in absolute value. Consequently, we see that r > 1 in (65),
+(66).
+Now, let us consider the possibility μ1 = 0, which provides a necessary condition for collapse conﬁgura-
+tions to exist. We get three families of solutions. For the ﬁrst family, we obtain
+ = −161
+3R2
+1
+,
+cos 2ϕ2 = 4
+5,
+r =
+√
+2
+2 ,
+2 = −1,
+0 = −1
+2 .
+(67)
+The second family is given by
+ = −61
+R2
+1
+,
+cos 2ϕ2 = 1
+4,
+r = 1
+2,
+2 = −21,
+0 = 31
+2 .
+(68)
+These two families correspond to the rotating relative equilibria. The third family of solutions exists under the
+conditions r̸ = 1, r̸ =
+√
+2/2, and cos 2ϕ2̸ = r2. The value of cos 2ϕ2 we ﬁnd as a root s, −1 < s < 1 of the
+equation
+2r2(2r2 −1)s2 + (r4 + 1)s −4r4 = 0,
+s = cos 2ϕ2.
+(69)
+The parameters , 2, 0 are the following
+ = 1{(2r4 −7r2 + 2) cos 2ϕ2 + 3r4(2r2 −1)}
+4R2
+1r4(r2 −1)(r2 −cos 2ϕ2)
+,
+2 = −1
+2r2 ,
+0 = 1(2r4 −8r2 + 3)
+4r2(1 −r2)
+.
+(70)
+All the conﬁgurations found in this section correspond to rotating relative equilibria unless ̸ = 0. Several
+plots are given in Fig. 3.
+(a)
+(b)
+Fig. 3 Examples of relative equilibrium conﬁgurations. The vortices marked with ﬁlled brown boxes, open blue circles, and ﬁlled
+red diamond have circulations 0, 1, and 2, respectively
+
+=====PAGE 12
+368
+M. V. Demina, N. A. Kudryashov
+6 Conclusion
+In this article, we have studied the problem of ﬁnding relative equilibrium, collapse, and scattering conﬁgura-
+tions of point vortices with generic choice of circulations. We have found a differential equation satisﬁed by
+generating polynomials of vortex arrangements. This equation enables one to calculate any such conﬁguration
+explicitly. In detail, we have considered vortex double-ring conﬁgurations in the cases of two regular polygons,
+three regular polygons, and a quadrangle with a digon. We have found a number of new conﬁgurations.
+Acknowledgments We would like to thank the reviewers for helpful comments and suggestions. This work is supported by grant
+for Scientiﬁc Schools 2296.2014.1.
+References
+1. Aref, H., Newton, P.K., Stremler, M.A., Tokieda, T., Vainchtein, D.: Vortex crystals. Adv. Appl. Math. 39, 1–79 (2003)
+2. Aref, H., Buren, M.van : Vortex triple rings. Phys. Fluids. 17, 057104 (2005)
+3. O’Neil, K.A.: Minimal polynomial systems for point vortex equilibria. Phys. D. 219, 69–79 (2006)
+4. Aref, H.: Point vortex dynamics: a classical mathematics playground. J. Math. Phys. 48, 065401 (2007)
+5. O’Neil, K.A.: Relative equilibrium and collapse conﬁgurations of heterogeneous vortex triple rings. Phys. D. 236, 123–
+130 (2007)
+6. O’Neil,K.A.:Relativeequilibriumandcollapseconﬁgurationsoffourpointvortices.Regul.ChaoticDyn.12,117–126(2007)
+7. Aref, H.: Stability of relative equilibria of three vortices. Phys. Fluids. 21, 094101 (2009)
+8. Aref, H.: Relative equilibria of point vortices and the fundamental theorem of algebra. Proc. R. Soc. A. 467, 2168–2184 (2011)
+9. O’Neil, K.A.: Clustered equilibria of point vortices. Regul. Chaotic Dyn. 16, 555–561 (2011)
+10. Celli, M., Lacomba, E.A., Pérez–Chavela, E.: On polygonal relative equilibria in the N–vortex problem. J. Math.
+Phys. 52, 103101 (2011)
+11. Demina, M.V., Kudryashov, N.A.: Point vortices and polynomials of the Sawada—Kotera and Kaup–Kupershmidt equa-
+tions. Regul. Chaotic Dyn. 16, 562–576 (2011)
+12. Aref, H., Beelen, P., Brøns, M.: Bilinear relative equilibria of identical point vortices. J. Nonlin. Sci. 22, 849–885 (2012)
+13. Demina, M.V., Kudryashov, N.A.: Vortices and polynomials: non-uniqueness of the Adler–Moser polynomials for the
+Tkachenko equation. J. Phys. A. Math. Theor. 45, 195205 (2012)
+14. Demina, M.V., Kudryashov, N.A.: Point vortices and classical orthogonal polynomials. Regul. Chaotic Dyn. 17(5), 371–
+384 (2012)
+15. Aref, H., Pomphrey, N.: Integrable and chaotic motions of four vortices I. The case of identical vortices. Proc. R. Soc. Lond.
+A. 380(1779), 359–387 (1082)
+16. Borisov, A.V., Mamaev, I.S.: Mathematical Methods of Dynamics of Vortex Structures. Regular and Chaotic Dynamics,
+ICS, Moscow-Izhevsk (2005) (in Russian)
+17. Novikov, E.A., Sedov Yu, B.: Vortex collapse. Sov. Phys. JETP. 50, 297–301 (1979)
+18. Thomson, W.: On vortex atoms. Proc. R. Soc. Edinburgh 6, 94–105 (1867)
+19. Aref, H.: Point vortex motions with a center of symmetry. Phys. Fluids. 25, 2183 (1982)
+20. Koiller, J., Pintode Carvalho, S., Rodriguesda Silva, R., Goncalvesde Oliveira, L.C.: On Aref’s vortex motions with a
+symmetry cente. Physica D. 16, 27–61 (1985)
+21. Roberts, G.: A continuum of relative equilibria in the ﬁve-body problem. Physica D. 127(3-4), 141–145 (1999)
+22. O’Neil, K.A.: Symmetric conﬁgurations of vortices. Phys. Lett. A. 124, 503–507 (1987)
+23. Demina, M.V., Kudryashov, N.A.: Polynomial method for constructing equilibrium conﬁgurations of point vortices in the
+plane. Model. Anal. Inf. Sist. 19(5), 50–55 (2012)
+24. Bartman, A.B.: A new interpretation of the Adler–Moser KdV polynomials: interaction of vortices. In: Sagdeev, R.Z. (eds.)
+Nonlinear and Turbulent Processes in Physics, vol. 3, pp. 1175–1181. Harwood Academic Publishers, New York, NY (1984)
+25. Demina, M.V., Kudryashov, N.A.: Special polynomials and rational solutions of the hierarchy of the second Painlevé
+equation. Theor. Math. Phys. 153(1), 1398–406 (2007)
+26. Demina, M.V., Kudryashov, N.A.: The generalized Yablonskii–Vorob’ev polynomials and their properties. Phys. Lett.
+A. 372(29), 4885–4890 (2008)

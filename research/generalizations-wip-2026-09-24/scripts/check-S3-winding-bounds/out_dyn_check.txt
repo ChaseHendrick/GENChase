@@ -1,0 +1,18 @@
+mu=0.5 th=0.7 beta0=3.0 R=1.0
+   P0=1.412164081933  tc_pred=83.9263481376 tc_num=83.9263481376  rel 9.90e-14  beta_end=1.995e-02 status=0
+   max errs: cos 3.33e-13  psi 5.70e-11  chord-ratio 2.13e-10  radius 4.61e-13  m1 1.71e-10  m2 9.29e-10  int(omega)dt vs psi 1.77e-07
+mu=0.5 th=4.0 beta0=3.0 R=2.0
+   P0=2.206293126490  tc_pred=269.519580649 tc_num=269.519580649  rel 5.06e-14  beta_end=1.995e-02 status=0
+   max errs: cos 5.35e-13  psi 7.30e-10  chord-ratio 1.70e-10  radius 1.19e-12  m1 4.21e-12  m2 2.41e-10  int(omega)dt vs psi 1.77e-07
+mu=1.0 th=0.4 beta0=2.9 R=1.0
+   P0=1.605404428758  tc_pred=20.9433079602 tc_num=20.9433079602  rel 6.37e-14  beta_end=1.985e-02 status=0
+   max errs: cos 1.14e-12  psi 8.60e-10  chord-ratio 2.45e-10  radius 1.35e-12  m1 6.73e-11  m2 2.64e-10  int(omega)dt vs psi 5.85e-08
+mu=0.05 th=1.3 beta0=3.05 R=0.6
+   P0=39.516509017453  tc_pred=934.49151178 tc_num=934.49151175  rel 3.14e-11  beta_end=1.998e-02 status=0
+   max errs: cos 1.77e-10  psi 4.68e-06  chord-ratio 2.13e-08  radius 5.00e-12  m1 1.59e-07  m2 6.11e-07  int(omega)dt vs psi 7.88e-07
+mu=0.2 th=5.0 beta0=2.5 R=1.5
+   P0=27.316773097701  tc_pred=3878.38492671 tc_num=3878.38492648  rel 6.08e-11  beta_end=1.898e-02 status=0
+   max errs: cos 2.66e-10  psi 6.13e-06  chord-ratio 8.14e-09  radius 2.38e-12  m1 2.36e-07  m2 8.83e-07  int(omega)dt vs psi 4.82e-08
+mu=2.0 th=2.2 beta0=3.1 R=1.0
+   P0=2.300812407265  tc_pred=76.2577632371 tc_num=76.2577632371  rel 1.61e-13  beta_end=2.000e-02 status=0
+   max errs: cos 7.87e-13  psi 8.51e-10  chord-ratio 3.55e-10  radius 6.01e-13  m1 6.85e-10  m2 2.65e-09  int(omega)dt vs psi 1.61e-05

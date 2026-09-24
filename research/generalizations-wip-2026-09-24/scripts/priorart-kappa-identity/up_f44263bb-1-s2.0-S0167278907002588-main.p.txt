@@ -1,0 +1,1030 @@
+=====PAGE 1
+Physica D 236 (2007) 123–130
+www.elsevier.com/locate/physd
+Relative equilibrium and collapse conﬁgurations of heterogeneous vortex
+triple rings
+Kevin A. O’Neil
+Department of Mathematics, The University of Tulsa, 600 S. College Ave., Tulsa, OK 74104, USA
+Received 15 June 2007; accepted 28 July 2007
+Available online 1 August 2007
+Communicated by M. Vergassola
+Abstract
+Conﬁgurations of point vortices in a 2D ﬂuid that are placed at the vertices of concentric regular m-gons, i.e. point vortex rings, are considered.
+The number of conﬁgurations that rotate uniformly – relative equilibria – is shown to be ﬁnite in the case of three rings with arbitrary circulations,
+subject to a few circulation constraints. Similar ﬁniteness results for collapse conﬁgurations of three rings are also obtained, and an effective
+computational method is described.
+c⃝2007 Elsevier B.V. All rights reserved.
+Keywords: Point vortex; Relative equilibrium; Collapse
+1. Introduction
+Point vortex rings, which are arrangements of point vortices
+at the vertices of concentric regular polygons, have been studied
+since the nineteenth century; many references can be found
+in [1–3]. An arrangement is a relative equilibrium if all vortices
+rotate uniformly about the central point, so that the intervortex
+distances are constant. These arrangements are analogous to
+central conﬁgurations of point masses in celestial mechanics.
+Relative equilibria of rings of identical point vortices
+have been observed in plasmas and rotating superﬂuids [2],
+and have been the object of additional investigation. An
+extensive catalog of relative equilibria obtained numerically [4]
+contains many ring relative equilibria. More recent work
+has focused on analytic descriptions. For example, all such
+arrangements containing fewer than 8 identical vortices have
+been characterized as the zeros of certain polynomials [5];
+many of these are ring conﬁgurations. All relative equilibria of
+two and three identical rings, with and without an additional
+central vortex, have been determined analytically [3]. The
+number of relative equilibria was found to be a function of the
+number m of vortices per ring, stabilizing for large m.
+E-mail address: koneil@utulsa.edu.
+Less is known about heterogeneous point vortex ring
+conﬁgurations, where the circulations of the vortices differ from
+ring to ring. A lower bound on the number of relative equilibria
+can be established when all circulations are positive, by a
+simple extension of the topological arguments in [11]. Having
+circulations of differing sign opens up the possibility of vortex
+collapse [2], and indeed collapse conﬁgurations of two rings
+are known to exist [7]. For two rings of two vortices each and a
+central vortex, one choice of circulations produces a continuous
+family of relative equilibria [12].
+In
+this
+paper
+the
+relative
+equilibrium
+and
+collapse
+conﬁgurations of heterogeneous triple rings are studied, both
+with and without a ﬁxed central vortex. It is proved that
+for generic choice of circulations the number of relative
+equilibrium conﬁgurations is ﬁnite. The result is obtained
+by applying some tools of algebraic geometry, and may be
+compared to recent proofs of ﬁniteness of relative equilibria
+for the system of four point vortices [6,10]. The same
+argument shows that the number of collapse conﬁgurations
+corresponding to a given value of the collapse parameter
+ω is also generically ﬁnite. (The total number of collapse
+conﬁgurations will be inﬁnite, however, as ω may be varied
+continuously.) Propositions 5 and 6 below include conditions
+on the circulations that are needed to prevent certain degenerate
+0167-2789/$ - see front matter c⃝2007 Elsevier B.V. All rights reserved.
+doi:10.1016/j.physd.2007.07.015
+
+=====PAGE 2
+124
+K.A. O’Neil / Physica D 236 (2007) 123–130
+conﬁgurations from occurring, such as a complete merger of all
+three rings when the sum of the three circulations tends to zero.
+The system of equations used to obtain the ﬁniteness proof
+also provide a method for calculating relative equilibrium
+and collapse conﬁgurations that is signiﬁcantly simpler than
+direct solution of the equations of motion, Eq. (2.3) below. A
+few examples of relative equilibria and collapse that illustrate
+some points of difference from previously known examples are
+presented in the last section of this paper.
+2. Preliminaries
+In this paper an array of identical point vortices located
+at the vertices of a regular m-gon with center at the origin
+of the complex plane will be called a point vortex ring. The
+ring is completely described by three parameters: the integer
+m ≥2, the nonzero real circulation Γ and the nonzero complex
+coordinate z of one of the vortices. The other vortices in the
+ring will be found at positions zηk, k = 1, . . . , m −1 where
+η = exp(2πi/m). Two values z, z′ describe the same ring if
+zm = (z′)m; this gives an equivalence relation on the punctured
+plane and we may use zm as a coordinate.
+Now consider an arrangement of point vortices correspond-
+ing to n different rings. That is, let z1, . . . , zn be nonzero com-
+plex numbers and place point vortices of nonzero circulation Γ j
+at positions z j ηk, 1 ≤k ≤m, 1 ≤j ≤n. In addition, place
+a single vortex of strength Γ0 (possibly zero) at the origin. The
+complex conjugate of the ﬂuid velocity induced at location z in
+the complex plane due to the point vortex with circulation Γ j
+at position z jηk is (2πi)−1Γ j(z −z jηk)−1, and each point vor-
+tex moves with velocity equal to the sum of the ﬂuid velocities
+induced by all the others. The velocity v j of the vortex at z j is
+therefore given by
+2πi¯v j = Γ0
+z j
++
+m−1
+X
+p=1
+Γ j
+z j −z jηp +
+X
+k̸= j
+m
+X
+p=1
+Γk
+z j −zkηp .
+(2.1)
+Using the identities [1]
+m−1
+X
+p=1
+1
+1 −ηp = m −1
+2
+,
+m
+X
+p=1
+1
+z j −zkηp = m
+z j
+zm
+j
+zm
+j −zm
+k
+and the abbreviations w j = zm
+j and γ j = Γ0 +Γ j(m −1)/2 we
+have [1,7]
+2πi¯v jz j = γ j + mw j
+X
+k̸= j
+Γk
+w j −wk
+.
+(2.2)
+It follows from (2.2) that the motion preserves the symmetry of
+the vortex arrangement. Thus (2.2) deﬁnes a dynamical system
+of n points on the cylinder that is different from the more widely
+known system of point vortices on the cylinder, i.e. singly
+periodic point vortex arrays [2].
+The objects of study in this paper are homographic
+arrangements of point vortex rings, for which there is some
+constant ω so that v j = iωz j for each j. If ω is real the
+arrangement is a relative equilibrium, i.e. the vortices rotate
+uniformly around the origin, while ω with positive imaginary
+part signiﬁes a collapse that rotates while shrinking to reach
+a collision at the origin in ﬁnite time. Relative equilibria are
+critical points of the vortex interaction energy restricted to a
+level set of the conserved quantity P Γ j|z j|2 [2]. If the vortex
+ring arrangement determined by the positions z1, . . . , zn is
+homographic then so is λz1, . . . , λzn for any nonzero complex
+number λ; all these arrangements are representatives of the
+equivalence class [zm
+1 , . . . , zm
+n ] in complex projective space
+Pn−1. Points in Pn−1 will be called conﬁgurations.
+Lemma 1. If w1, . . . , wn are complex numbers such that
+[w1, . . . , wn] is a homographic conﬁguration, then for some
+constant ω the following identity holds:
+mz
+X
+j<k
+Γ jΓk
+(z −w j)(z −wk)
+=
+X
+Γ j
+(z −w j)(2π ¯ω|w j|2/m −γ j),
+(L1)
+that is to say, the two sides of (L1) agree as rational functions
+of the complex variable z.
+Proof. By (2.2), homographic conﬁgurations are exactly those
+points [w1, . . . , wn] ∈Pn−1 where the w j are all nonzero and
+satisfy
+m
+X
+k̸= j
+Γkw j
+w j −wk
+= 2π ¯ω|w j|2/m −γ j
+(2.3)
+for some ω and all j. Using the partial fraction expansion
+z(w j −wk)
+(z −w j)(z −wk) =
+w j
+z −w j
+−
+wk
+z −wk
+one can easily verify the identity:
+mz
+X
+j<k
+Γ jΓk
+(z −w j)(z −wk)
+=
+X
+j
+Γ j
+(z −w j)
+ 
+m
+X
+k̸= j
+Γkw j
+w j −wk
+!
+.
+(2.4)
+Combining (2.3) and (2.4) proves the lemma.
+□
+Eq. (2.3) may be recovered from (L1) by equating the
+residues of the two sides at each pole. However, a different
+system of equations may be extracted from (L1), as follows.
+Each side of (L1) is a rational function of z, so that clearing
+denominators yields a polynomial equation of degree n−1 in z.
+The coefﬁcients of powers of z in this equation are expressions
+in the w j, ω and the circulations. For example, deﬁne the two
+quantities:
+˜K := m
+X
+j<k
+Γ jΓk +
+X
+Γ jγ j,
+I :=
+X
+Γ j|w j|2/m;
+then equating the coefﬁcients of zn−1 yields the relation
+˜K = 2π ¯ωI.
+(2.5)
+(This relation can also be obtained by multiplying (2.3) by Γ j
+and summing over j.) If the circulations are chosen so that
+
+=====PAGE 3
+K.A. O’Neil / Physica D 236 (2007) 123–130
+125
+˜K̸ = 0, it is clear that ω must be nonzero and real so that every
+homographic conﬁguration is a relative equilibrium. Eq. (2.5)
+can be used to eliminate ω in (L1), proving:
+Lemma 2. If
+˜K̸ = 0 then every homographic conﬁguration
+[w1, . . . , wn] is a relative equilibrium and satisﬁes the equation
+mzI
+X
+j<k
+Γ jΓk
+(z −w j)(z −wk)
+=
+X
+Γ j
+(z −w j)
+
+˜K|w j|2/m −Iγ j
+
+,
+(L2)
+that is to say, the two sides of (L2) agree as rational functions
+of the complex variable z.
+There are n coefﬁcient equations determined by (L2), but
+the equation corresponding to zn−1 is trivial. Thus (L2) is
+equivalent to a system of n −1 equations in the variables
+w1, . . . , wn.
+To obtain polynomial expressions as the coefﬁcients, one
+may eliminate complex conjugation by introducing new
+variables ξ j to take the place of the conjugates ¯w j in the
+expressions above. Also introduce variables u j to eliminate the
+mth roots:
+um
+j = w jξ j,
+1 ≤j ≤n.
+(2.6)
+We can now write M := P Γ ju j in place of I. The next
+lemma will establish that the relative equilibrium conﬁgurations
+in Pn−1 are contained in an algebraic set, i.e. the solution set to
+a system of polynomial equations.
+Lemma 3. Suppose
+˜K̸ = 0 and [w1, . . . , wn] is a relative
+equilibrium conﬁguration. Let ξ j = ¯w j for j = 1, . . . , n, and
+suppose u1, . . . , un satisfy (2.6). Then
+[w1, . . . , wn] × [ξ1, . . . , ξn] × [u1, . . . , un]
+∈Pn−1 × Pn−1 × Pn−1
+is a solution to the system of homogeneous polynomial
+coefﬁcient equations derived from the two rational equations
+mzM
+X
+j<k
+Γ jΓk
+(z −w j)(z −wk)
+=
+X
+Γ j
+(z −w j)
+
+˜Ku j −Mγ j
+
+,
+(L3a)
+mzM
+X
+j<k
+Γ jΓk
+(z −ξ j)(z −ξk)
+=
+X
+Γ j
+(z −ξ j)
+
+˜Ku j −Mγ j
+
+,
+(L3b)
+and the n −1 polynomials
+um
+j w1ξ1 = um
+1 w jξ j,
+1 < j ≤n.
+(L3c)
+Proof. Under the hypotheses, Eq. (L2) is clearly equivalent to
+(L3a), and taking complex conjugates yields (L3b). Since the n
+equations (2.6) hold then certainly the n−1 equations (L3c) are
+also satisﬁed. The coefﬁcient equations associated with (L3a)
+and (L3b) are all polynomial equations homogeneous in the
+w j, ξ j and u j separately, as are Eq. (L3c). This proves the
+lemma.
+□
+The solution set V to Eqs. (L3a)–(L3c) is an algebraic
+subset of Pn−1 × Pn−1 × Pn−1; thus the projection of V onto
+the ﬁrst factor Pn−1 is also an algebraic set. This algebraic set
+contains all the relative equilibrium conﬁgurations.
+If the quantity
+˜K vanishes, homographic conﬁgurations
+are not necessarily relative equilibria: by (2.5) they may be
+stationary, with ω = 0, or they may be collapsing or expanding
+conﬁgurations, with ω having positive or negative imaginary
+part respectively, and M = 0. (An expanding conﬁguration
+becomes a collapsing one under complex conjugation or if
+all circulations are replaced by their negatives.) Stationary
+conﬁgurations are easier to characterize because complex
+conjugation plays no part in the deﬁning equations; some
+ﬁniteness results for arbitrary m and n have been established [8]
+and some inﬁnite families of stationary conﬁgurations are also
+known [9]. Relative equilibria and collapsing conﬁgurations
+in the case
+˜K
+= 0 may be handled by a slight variation
+of Lemma 3, established by comparing Eq. (L1) to Eqs.
+(L4a)–(L4c) below with u0 = 1. The proof is omitted.
+Lemma 4. Suppose ˜K = 0, the value of ω is ﬁxed and nonzero,
+and [w1, . . . , wn] is a solution of (L1). Let ξ j and u j be given
+as in Lemma 2. Then
+[w1, . . . , wn] × [ξ1, . . . , ξn] × [u0, u1, . . . , un]
+∈Pn−1 × Pn−1 × Pn
+is a solution to the system of homogeneous polynomial
+coefﬁcient equations derived from the two rational equations
+mzu0
+X
+j<k
+Γ jΓk
+(z −w j)(z −wk)
+=
+X
+Γ j
+(z −w j)
+ 2π ¯ωu j −γ ju0
+
+,
+(L4a)
+mzu0
+X
+j<k
+Γ jΓk
+(z −ξ j)(z −ξk)
+=
+X
+Γ j
+(z −ξ j)
+ 2πωu j −γ ju0
+
+,
+(L4b)
+and the polynomials
+um
+j w1ξ1 = w jξ jum
+1 ,
+1 < j ≤n.
+(L4c)
+The solutions to Eqs. (L4a)–(L4c) form an algebraic set,
+because after clearing denominators the coefﬁcient equations
+are polynomials homogeneous in the w j, ξ j and u j separately.
+The necessary condition M = 0, ﬁrst seen in Eq. (2.5), here is
+the highest-order coefﬁcient equation in both (L4a) and (L4b).
+Thus Eqs. (L4a)–(L4c) yield (3n −2) different polynomial
+equations, with solutions in Pn−1 × Pn−1 × Pn. The projection
+onto the ﬁrst factor is again an algebraic set that contains all the
+solutions to (L1) corresponding to the chosen value for ω.
+
+=====PAGE 4
+126
+K.A. O’Neil / Physica D 236 (2007) 123–130
+3. Finiteness of relative equilibria of triple rings, ˜K̸ = 0
+The objective of this section is to prove that the number of
+relative equilibrium conﬁgurations of three rings is ﬁnite for
+the case covered by Lemma 2, where the circulations satisfy
+˜K̸ = 0. The proof offered below imposes some additional
+conditions on the circulations; it is likely that not all of them are
+necessary conditions for ﬁniteness. However, the existence of
+two-ring systems with an inﬁnite number of relative equilibrium
+conﬁgurations [12] makes it plausible that at least some of the
+circulation conditions are necessary.
+It will be useful below to express the Eqs. (L3a) and (L3b)
+in terms of new variables v j, deﬁned by the relations
+mKv j = ˜Ku j −Mγ j,
+(3.1)
+where K := Γ1(Γ2 + Γ3) + Γ2Γ3. It is easy to check that
+P Γ jv j
+= P Γ ju j
+= M so that (3.1) may be inverted
+when K is nonzero, expressing the u j in terms of the v j. Thus
+[v1, . . . , vn] may be used as an alternative set of coordinates on
+the third factor Pn−1. In terms of these variables, Eqs. (L3a)
+and (L3b) take a slightly simpler form,
+zM
+X
+j<k
+Γ jΓk
+(z −w j)(z −wk) = K
+X
+Γ jv j
+(z −w j),
+(L3a′)
+zM
+X
+j<k
+Γ jΓk
+(z −ξ j)(z −ξk) = K
+X
+Γ jv j
+(z −ξ j).
+(L3b′)
+Finally, deﬁne constants ˜K jk = mΓ jΓk + Γ jγ j + Γkγk and
+η = exp(2πi/m).
+Proposition 5. Suppose the circulations Γ0, Γ1, Γ2, Γ3 are
+chosen so that the following quantities are nonzero:
+(i) Γ j for j > 0, Γ1 + Γ2, Γ2 + Γ3,
+(ii) ˜K, K, ˜K23, ˜K −˜K23,
+(iii) γ1, mΓ1Γ2 −Γ3γ3, mΓ1Γ3 −Γ2γ2,
+(iv) (−Γ j/Γk)m −1 for 0 < j < k,
+(v) Γ1 + Γ2ηp + Γ3ηq for integers 0 ≤p, q < m.
+Then the number of relative equilibrium conﬁgurations,
+i.e. solutions [w1, w2, w3] to Eq. (L2), is ﬁnite.
+Proof. Let H be the hyperplane w2 = w3 in Pn−1, and H′ =
+H × Pn−1 × Pn−1. That is, H′ = π−1(H), writing π for
+projection onto the ﬁrst factor. It will be proved below that
+there is a set W ⊂Pn−1 with the properties: (i) every relative
+equilibrium conﬁguration [w1, w2, w3] is contained in W, (ii)
+W is algebraic, and (iii) W ∩H consists of a single isolated
+point. Now, a positive-dimensional algebraic set in Pn−1 must
+intersect every hyperplane at a non-isolated point [13] so
+properties (ii), (iii) imply that W is zero-dimensional, i.e. ﬁnite.
+Together with property (i), this proves the theorem.
+The set W will be constructed as follows. Let V be the set
+of solutions to (L3) in Pn−1 × Pn−1 × Pn−1, and recall that
+π(V ) contains all relative equilibrium conﬁgurations. Deﬁne
+V0 to be the subset of V on which M = 0, and V∗= V −V0.
+First we show that V0 ∩H′ consists of a pair of complex lines
+V1 = Lw ∪Lξ that contain no points corresponding to relative
+equilibrium conﬁgurations. The next step is to prove that V1 is
+an isolated subset of V , so that V −V1 and W := π(V −V1) are
+algebraic sets. This establishes (i) and (ii). Finally we compute
+all points of V∗∩H′ = (V −V1) ∩H′ and show that they are
+regular points of V , hence isolated. This proves property (iii).
+Step 1: computation of V0∩H′. On V0, Eqs. (L3a) and (L3b)
+become
+0 =
+X Γ ju j
+z −w j
+,
+(3.2a)
+0 =
+X Γ ju j
+z −ξ j
+.
+(3.2b)
+Suppose [w1, w2, w3] has the form [a, b, b] with a, b not both
+zero, and consider ﬁrst the case a̸ = b. Eq. (3.2a) implies
+u1 = 0, and hence [u1, u2, u3] = [0, Γ3, −Γ2]. From these
+values Eq. (3.2b) is equivalent to the single relation ξ2 = ξ3.
+Eq. (L3c) now reads:
+Γ m
+3 aξ1 = 0 = (−Γ2)maξ1,
+that is, a = 0 or ξ1 = 0. These two cases determine two
+complex lines in V0,
+Lξ : [0, 1, 1] × [t, 1, 1] × [0, Γ3, −Γ2],
+(3.3a)
+Lw : [t, 1, 1] × [0, 1, 1] × [0, Γ3, −Γ2],
+(3.3b)
+parametrized by t ∈C∞. The other case to consider is a = b,
+i.e. [w1, w2, w3] = [1, 1, 1]. One such solution lies on Lw at
+the parameter value t = 1. A simple calculation uncovers all
+further solutions [w]×[ξ]×[u], the existence of which depends
+on the circulations:
+[1, 1, 1] × [1, 1, 0] × [Γ2, −Γ1, 0]
+if (−Γ1/Γ2)m = 1,
+[1, 1, 1] × [1, 0, 1] × [Γ3, 0, −Γ1]
+if (−Γ1/Γ3)m = 1;
+and for arbitrary integers p, q,
+[1, 1, 1] × [1, 1, 1] × [1, ηp, ηq]
+if (Γ1 + Γ2ηp + Γ3ηq) = 0.
+These are all ruled out by the hypotheses on the circulations.
+The conclusion therefore is that V1 := V0 ∩H′ consists of two
+lines Lw ∪Lξ.
+Step 2: verify that V1 is an isolated component of V . First
+consider a point P on V1 where the parameter t in Eq. (3.3a)
+or (3.3b) is ﬁnite, P = [a, 1, 1] × [b, 1, 1] × [0, Γ3, −Γ2],
+with ab = 0. Points near P may be described by ﬁxing
+w3 = ξ3 = 1, u3 = −Γ2 and using the remaining variables
+as afﬁne coordinates on the projective spaces. Eqs. (L3c) now
+read:
+um
+2 w1ξ1 = um
+1 w2ξ2,
+(−Γ2)mw1ξ1 = um
+1 .
+Substituting the second equation into the ﬁrst gives the relation
+0 = w1ξ1
+ w2ξ2(−Γ2)m −um
+2
+
+.
+(3.4)
+The point P has a neighborhood (in the standard topology) in
+which the quantity w2ξ2(−Γ2)m −um
+2 is nonzero, because of
+the hypothesis (−Γ2/Γ3)m̸ = 1. Consequently for points of V
+in this neighborhood, (3.4) implies w1ξ1 = 0, which in turn
+shows u1 = 0. Assume w1 = 0; the case ξ1 = 0 is similar.
+
+=====PAGE 5
+K.A. O’Neil / Physica D 236 (2007) 123–130
+127
+For these points, consideration of the residues at z = 0 of both
+sides of (L3a) gives the relation 0 = Γ1Mγ1. Since γ1̸ = 0 by
+hypothesis, this shows M = 0 and hence u2 = Γ3. Eqs. (3.2)
+now show w2 = ξ2 = 1 i.e. the only points of V near P lie on
+V1.
+There are two more points of V1 that need to be considered,
+the two points where the parameter t is inﬁnite. Suppose P =
+[0, 1, 1] × [1, 0, 0] × [0, Γ3, −Γ2]. At points of V , the residue
+at w1 on the left side of (L3a) is equal to the residue at ξ1 on
+the left side of (L3b), hence
+mMw1
+
+Γ2
+w1 −w2
++
+Γ3
+w1 −w3
+
+= mMξ1
+
+Γ2
+ξ1 −ξ2
++
+Γ3
+ξ1 −ξ3
+
+,
+which may be rewritten in the form
+mM
+ w1Γ2
+w1 −w2
++
+w1Γ3
+w1 −w3
+−
+ξ1Γ2
+ξ1 −ξ2
++
+ξ1Γ3
+ξ1 −ξ3
+
+= 0.
+Near P the quantity in parentheses is nonzero, so M must
+vanish. Eq. (3.2a) then shows that w2 = w3, and thus once
+again all points of V near P are contained in V1. The argument
+for the point [1, 0, 0]×[0, 1, 1]×[0, Γ3, −Γ2] is the same. This
+completes the argument that V1 is an isolated component of V .
+Step 3: calculate the set (V −V1) ∩H′ = V∗∩H′. Consider
+points in V∗that satisfy w2 = w3. If w1 = w2 = w3, i.e. [w] =
+[1, 1, 1], then there is a double pole on the left side of (L3a)
+since K̸ = 0; however there is no double pole on the right side
+of (L3a), so this case is ruled out. If 0̸ = w2 = w3̸ = w1 then
+again there is a double pole on the left side of (L3a), so this too
+is ruled out. Thus points in V∗satisfying w2 = w3 will have
+[w] = [1, 0, 0]. Each side of (L3a′) then has a simple pole at
+z = 1; matching the residues yields the equation
+MΓ1(Γ2 + Γ3) = KΓ1v1
+(3.5)
+showing that v1 is nonzero. Eq. (L3c) now read um
+2 ξ1 =
+0 = um
+3 ξ1, so that either [u1, u2, u3] = [1, 0, 0] or ξ1 = 0.
+But in the former case mKv1 =
+˜K −Γ1γ1; substituting this
+into (3.5) leads to the equation ˜K23 = 0 which contradicts
+our hypothesis. Hence Eqs. (L3a) and (L3c) imply ξ1 = 0.
+Now we look for solutions to (3.5) and (L3b) of the form
+[1, 0, 0] × [0, ξ2, ξ3] × [u1, u2, u3] with M̸ = 0. If ξ2 and
+ξ3 are both nonzero, then comparing residues of both sides of
+(L3b′) at z = 0 shows 0 = Kv1, contradicting (3.5). So we
+must have [ξ1, ξ2, ξ3] = [0, 1, 0] or [0, 0, 1]. Substituting these
+into (L3b′) and solving for v j leads to exactly two values for
+[w] × [ξ] × [v]:
+p2 = [1, 0, 0] × [0, 1, 0] × [Γ2 + Γ3, Γ1 + Γ3, −Γ1Γ2/Γ3].
+p3 = [1, 0, 0] × [0, 0, 1] × [Γ2 + Γ3, −Γ1Γ3/Γ2, Γ1 + Γ2].
+It is easy to check that M takes the value K at both these points,
+and to verify that u1u3 and u1u2 are nonzero at the points p2,
+p3 respectively since the quantities ˜K −˜K23, mΓ1Γ2 −Γ3γ3,
+and mΓ1Γ3 −Γ2γ2 are nonzero.
+Step 4: show that p2 and p3 are regular points of V ,
+and thus isolated. Let f1,
+f2 and g1, g2 be the coefﬁcient
+polynomials derived from Eqs. (L3a′), (L3b′) respectively, and
+h j = um
+j w1ξ1 −um
+1 w jξ j. A straightforward calculation shows
+that at the point p3 the following three Jacobian determinants
+are nonzero:
+∂( f1, f2)
+∂(w2, v2) = −K 2Γ2Γ3(Γ1 + Γ2),
+∂(g1, g2)
+∂(ξ2, v1) = −K 2Γ 2
+1 (Γ2 + Γ3),
+∂(h2, h3)
+∂(w3, ξ1) = (u1u2)m.
+Since the variables w2, w3, ξ1, ξ2, v1, v2 form an afﬁne
+coordinate system for P2 × P2 × P2 in a neighborhood of p3,
+we conclude that p3 is a regular point of V , and is isolated.
+Similarly, at the point p2 we have
+∂( f1, f2)
+∂(w3, v2) = −K 2Γ 2
+2 (Γ1 + Γ2),
+∂(g1, g2)
+∂(ξ3, v1) = −K 2Γ 2
+1 (Γ2 + Γ3),
+−∂(h2, h3)
+∂(w2, ξ1) = (u1u3)m
+so p2 is also a regular, isolated point of V . It follows that
+W ∩H = π(V∗∩H′) = {[1, 0, 0]} and this is an isolated
+point of W. This completes the proof.
+□
+4. Finiteness of relative equilibrium and collapse conﬁgu-
+rations, ˜K = 0
+In the next proposition, a ﬁniteness result is proved for
+the circulation condition
+˜K
+=
+0. Relative equilibrium
+conﬁgurations and collapse conﬁgurations for triple rings are
+treated in a uniﬁed way. The proposition shows that for a given
+value of ω, Eq. (L1) holds for a ﬁnite number of conﬁgurations.
+Since the argument of ω can vary through a continuum of
+values, one could expect to ﬁnd a continuum of collapse
+conﬁgurations whenever the condition ˜K = 0 holds; numerical
+experiments support this view.
+It may be noted that in the case of collapse (ω not real)
+hypothesis (iv) below can be simpliﬁed, e.g. replaced by the
+list γ2, γ3.
+Proposition 6. Let the constant ω in (L1) have nonzero real
+part, and suppose the circulations Γ0, Γ1, Γ2, Γ3 are chosen so
+that ˜K = 0 and the following quantities are nonzero:
+(i) K; ˜K23; Γ2 + Γ3; γ1;
+(ii) (−Γ j/Γk)m −1 for j̸ = k;
+(iii) Γ1 + Γ2ηp + Γ3ηq for integers 0 ≤p, q < m;
+(iv) ( ¯ω/ω) ˜Ki j −Γkγk for distinct i, j, k; ( ¯ω/ω) ˜K13 + ˜K23;
+( ¯ω/ω) ˜K12 + ˜K23.
+Then the number of conﬁgurations satisfying Eq. (L1) with
+the given value of ω is ﬁnite.
+Proof. The proof is very similar to that of Proposition 5; only
+the portions that are different will be detailed here. Observe that
+u0 plays the role in Eq. (L4) that M played in (L3), so that
+
+=====PAGE 6
+128
+K.A. O’Neil / Physica D 236 (2007) 123–130
+setting u0 = 0 gives exactly the same set of Eqs. (3.2a) and
+(3.2b) considered before. When u0 is nonzero, the equivalents
+of ˜K/M in (L3) are 2π ¯ω/u0, 2πω/u0 in (L4a) and (L4b)
+respectively.
+To begin, set u0 = 0; the system of Eqs. (L4) reduces to
+M = 0 and Eq. (3.2). The argument yields the same two lines
+V1 as before.
+In order to show that V1 is an isolated component of V ,
+the previous argument applies without change for the points
+corresponding to nonzero values of the parameter t. As for
+the two remaining points, consider points of V near P =
+[0, 1, 1] × [1, 0, 0] × [0, 0, Γ3, −Γ2]. Equating the residues of
+the two sides of Eq. (L4a) at w1 and of (L4b) at ξ1 produces
+the two equations
+u0
+
+γ1 + mw1
+
+Γ2
+w1 −w2
++
+Γ3
+w1 −w3
+
+= 2π ¯ωu1
+u0
+
+γ1 + mξ1
+
+Γ2
+ξ1 −ξ2
++
+Γ3
+ξ1 −ξ3
+
+= 2πωu1.
+Since by hypothesis Re(ω)(Γ2 + Γ3)̸ = 0, it is easy to verify
+that this linear system in u0 and u1 has only the trivial solution
+u0 = u1 = 0 near P. It follows that points in V near P lie in V1.
+The argument for the point [0, 1, 1]×[1, 0, 0]×[0, 0, Γ3, −Γ2]
+is similar.
+Finally set u0 = 1; the same analysis as above shows the
+only points of V∗with w2 = w3 have [w] = [1, 0, 0]. By
+looking at the residues of (L4a) at z = 0, and using M = 0, we
+ﬁnd
+˜K23 = 2π ¯ω(−Γ1u1).
+(4.1)
+Eq. (L4c) now reads um
+2 ξ1 = 0 = um
+3 ξ1. If ξ1̸ = 0 then u2 =
+u3 = 0; but this is not consistent with (4.1) and the conditions
+M = 0, ˜K23̸ = 0. So ξ1 = 0 must hold. Next, suppose that
+ξ2, ξ3 are both nonzero. Comparing the residues at z = 0 on
+both sides of (L4b) gives the equation Γ1u1 = Γ1γ1/(2πω).
+Combining this with (4.1) leads to the conclusion that either
+iω is real or Γ2 + Γ3 = 0, both of which are ruled out by
+hypothesis. Thus [ξ] has the form [0, 1, 0] or [0, 0, 1], and
+Eqs. (L4a) and (L4b) determine [w] × [ξ] × [u]. Again, there
+are two points:
+p2 = [1, 0, 0] × [0, 1, 0]
+×
+"
+1, −˜K23
+2π ¯ωΓ1
+, −˜K13
+2πωΓ2
+,
+˜K23
+2π ¯ωΓ3
++
+˜K13
+2πωΓ3
+#
+,
+p3 = [1, 0, 0] × [0, 0, 1]
+×
+"
+1, −˜K23
+2π ¯ωΓ1
+,
+˜K23
+2π ¯ωΓ2
++
+˜K12
+2πωΓ2
+, −˜K12
+2πωΓ3
+#
+.
+Computation of Jacobians analogous to the earlier section
+shows that these two points are regular points of V .
+□
+5. Computation of homographic conﬁgurations
+In this section some matters concerning the computation of
+relative equilibrium and collapse conﬁgurations are addressed.
+Ideally, a numerical scheme for ﬁnding all homographic
+conﬁgurations would be computationally efﬁcient, even for
+large m, and also comprehensive so as to generate the complete
+set of solutions. Some tradeoff between these attributes is
+necessary in practice, as will be seen below.
+5.1. An upper bound
+The ﬁrst question that arises is: how many solutions do we
+expect? Given that the number of homographic conﬁgurations
+of three rings is ﬁnite, an upper bound for the number of
+conﬁgurations can be obtained through the use of the Bezout
+theorem for products of projective spaces [13]. Consider the
+case ˜K̸ = 0; the other case is similar. Eqs. (L3a) and (L3b)
+each consist of two coefﬁcient equations, each linear in the u j,
+and either linear or quadratic in the other variables (w j or ξ j
+as it may be). Eq. (L3c) are linear in the w j and ξ j and have
+degree m in the u j. Accordingly, an upper bound for the isolated
+solutions to this system of equations is the coefﬁcient of x2y2z2
+in the formal product
+(x + z)(2x + z)(y + z)(2y + z)(x + y + mz)2,
+which is 4m2 + 24m + 22. This upper bound grows rapidly
+with m, and in addition one must recall that the system of
+equations will have solutions that are not relative equilibrium
+conﬁgurations. Experience suggests that these “spurious”
+solutions greatly outnumber the physically relevant ones. For
+example, numerical solution (via a Groebner basis) of the
+system (L3) for m = 3 and various circulations have suggested
+that no more than 22 relative equilibrium conﬁgurations exist,
+whereas the Bezout bound is 130.
+A somewhat tighter bound, m2 + 6m + 2, can be obtained
+for “symmetrical” conﬁgurations, in which the w j are real, by
+using only Eqs. (L3a) and (L3c) with the substitution of w j
+for ξ j throughout. For m = 3 this is not too much bigger than
+the number of conﬁgurations (14) that actually exist for some
+circulation choices. It seems clear however that the spurious
+solutions to Eq. (L3) greatly outnumber the solutions that
+correspond to relative equilibria, especially for larger m. This
+situation may be compared with that found for homogeneous
+triple rings [3], where the number of conﬁgurations stabilizes
+for large m. Thus a Groebner basis approach to solving these
+equations, although having the beneﬁt of completeness, would
+be quite inefﬁcient.
+5.2. Alternative calculation method
+A
+more
+effective
+way
+to
+ﬁnd
+relative
+equilibrium
+conﬁgurations is to reduce the system (L3) to a smaller set
+of equations involving the ring radii only, i.e. the variables
+[u1, u2, u3], and to restrict to positive real values for the u j.
+This approach was used in [3] in the case of identical vortices.
+The Eq. (L3) are homogeneous, so we need only two equations
+in the two positive real ratios u2/u1, u3/u1. By plotting the zero
+sets of each equation, the relative equilibrium conﬁgurations
+can be detected as the intersections of two curves in the space
+R+ × R+. The curves of course depend on m and the Γ j, so
+no comprehensive classiﬁcation, as obtained for homogeneous
+
+=====PAGE 7
+K.A. O’Neil / Physica D 236 (2007) 123–130
+129
+Fig. 1. A relative equilibrium conﬁguration of three rings. The origin is marked
+with a “+”; the vortices marked with open circles, ﬁlled circles and dots have
+vortex strengths −6, 3, and 4 respectively. This conﬁguration rotates very
+rapidly, with ω = 6.54. [w1, w2, w3] = [1, 0.646 + 0.201i, 0.627 −0.147i].
+Fig. 2. Relative equilibrium conﬁguration of three rings with a central vortex.
+The central vortex has circulation Γ0 = 1; the other vortices marked with open
+circles, ﬁlled circles and dots have vortex strengths 5, 4, and −2 respectively.
+This conﬁguration resembles Fig. 8(b) of [3]. [w1, w2, w3] = [1, −1.056
+−0.728i, 1.110 −3.266i].
+triple rings [3], can be expected. We now describe the details
+of such a computational scheme; the procedure for solving
+Eq. (L4) for collapse conﬁgurations is similar.
+To ﬁnd the two needed equations, begin with the two
+coefﬁcient equations in Eq. (L3a′):
+(M/K) (Γ1Γ2w3 + Γ1Γ3w2 + Γ2Γ2w1)
+= Γ1v1(w2 + w3) + Γ2v2(w1 + w3) + Γ3v3(w1 + w2),
+0 = Γ1v1w2w3 + Γ2v2w1w3 + Γ3v3w1w2.
+The ﬁrst equation is linear in the w j; it simpliﬁes to:
+0 = Γ1w1(Kv1 −M(Γ2 + Γ3))
++ Γ2w2(Kv2 −M(Γ1 + Γ3))
++ Γ3w3(Kv3 −M(Γ1 + Γ2)).
+(5.1)
+The second equation can be rewritten:
+0 = Γ1v1/w1 + Γ2v2/w2 + Γ3v3/w3.
+This can be put into the form that is linear in w j by using the
+relations 1/ ¯w j = w ju−m
+j
+and the fact that the Γ j, v j and u j are
+real:
+0 = Γ1w1(v1u−m
+1
+) + Γ2w2(v2u−m
+2
+) + Γ3w3(v3u−m
+3
+).
+(5.2)
+Finally, the two Eqs. (L3c) may be expressed
+u2
+u1
+m
+=
+
+w2
+w1
+
+2
+,
+u3
+u1
+m
+=
+
+w3
+w1
+
+2
+.
+(5.3)
+Eqs. (5.1) and (5.2) form a system of two linear equations in the
+variables [w1, w2, w3] with coefﬁcients in the u j, v j. As in [3]
+there are two distinct types of solutions.
+First, if the two linear Eqs. (5.1) and (5.2) are assumed to
+be independent, application of Cramer’s rule allows w2/w1
+and w3/w1 to be expressed as rational functions of the u j.
+These ratios are real of course, since the u j are positive reals.
+Substitution of these rational functions into Eqs. (5.3) yields
+the desired two equations in the u j. Since the ratios u j/u1 are
+positive real, solution of this system amounts to ﬁnding the
+intersections of two curves in R+ × R+.
+The “degenerate” case arises if the two linear equations are
+assumed dependent. Dependency is equivalent to two equations
+in the coefﬁcients, which are functions of the u j only:
+um
+1 (K −M(Γ2 + Γ3)/v1) = um
+2 (K −M(Γ1 + Γ3)/v2)
+= um
+3 (K −M(Γ1 + Γ2)/v3).
+(Recall that by Eq. (L3′) the v j are linear functions of the u j.)
+So begin with the system of two equations:
+u2
+u1
+m
+= K −(Γ2 + Γ3)M/v1
+K −(Γ1 + Γ3)M/v2
+,
+u3
+u1
+m
+= K −(Γ2 + Γ3)M/v1
+K −(Γ1 + Γ2)M/v3
+.
+(5.4)
+After ﬁnding the positive ratios u2/u1 and u3/u1 that satisfy
+(5.4), Eqs. (5.2) and (5.3) are used to compute the ratios w j/w1,
+although these equations may be inconsistent. (There can be no
+more than (m + 2)2 solutions to (5.4), although one expects
+fewer when restricting to real solutions.)
+5.3. Examples
+A few representative conﬁgurations, chosen to show some
+of the different types of conﬁgurations that can arise given
+different circulations, are displayed in Figs. 1–5.
+Fig. 1 shows a relative equilibrium conﬁguration where the
+three ring circulations have a sum that is close to zero. One
+of the six relative equilibrium conﬁgurations is shown; each
+small triangle is a perturbation of a relative equilibrium of
+
+=====PAGE 8
+130
+K.A. O’Neil / Physica D 236 (2007) 123–130
+Fig. 3. Same circulations as in Fig. 2. [w1, w2, w3]
+=
+[1, 0.285 +
+0.997i, 0.716 + 0.626i].
+Fig. 4. Same circulations as in Fig. 2. This is a symmetric conﬁguration.
+[w1, w2, w3] = [1, 231.4, −0.0763].
+three vortices. This conﬁguration rotates very rapidly, due to
+the proximity of the vortices. One often ﬁnds such a solution
+conﬁguration when the sum Γ1 + Γ2 + Γ3 is close to zero.
+When the sum is precisely zero, Eq. (L3) has a solution with the
+three ring coordinates equal; of course this is not a solution to
+Eq. (2.3).
+Figs. 2 through 4 show three quite different relative
+equilibrium conﬁgurations for three rings with two positive and
+one negative circulation. The conﬁgurations shown in Figs. 2
+and 3 seem relatively robust, in the sense that similar relative
+equilibrium conﬁgurations are observed for a wide range of
+circulations. Fig. 4 is a bit unusual, with a subset of the
+Fig. 5. Collapse conﬁguration with ω proportional to 1 + (4/9)i. No central
+vortex; vortices marked with circles and points have circulations 1 and −1
+respectively. [w1, w2, w3] = [1, 2.743 −4.869i, 8.45 −0.180i].
+vortices form a near-stationary conﬁguration. In all, there are
+16 different relative equilibrium conﬁgurations for this choice
+of circulations; all but 4 of them are symmetrical (having real
+w j.)
+Finally, Fig. 5 shows a vortex collapse conﬁguration with all
+circulations ±1. This is interesting because in the absence of
+circular symmetry, these point vortices have an inﬁnite number
+of equilibrium conﬁgurations (i.e. all vortex velocities vanish),
+with vortex positions computed as the zeros of two consecutive
+Adler–Moser polynomials [2].
+References
+[1] H. Aref, Point vortex motion with a center of symmetry, Phys. Fluids 25
+(1982) 2183–2187.
+[2] H. Aref, P.K. Newton, M. Stremler, T. Tokieda, D. Vainchtein, Vortex
+crystals, Adv. Appl. Mech. 39 (2003) 1–79.
+[3] H. Aref, M. van Buren, Vortex triple rings, Phys. Fluids 17 (5) (2005)
+057104. (21 pp).
+[4] L. Cambell, R. Ziff, Vortex patterns and energies in a rotating superﬂuid,
+Phys. Rev. B 20 (1979) 1886–1902.
+[5] J.-C. Faugere, 2007, Personal communication.
+[6] M. Hampton, R. Moeckel, Finiteness of stationary conﬁgurations of the
+four-vortex problem, 2006, Preprint.
+[7] J. Koiller, S. Pinto de Carvalho, R. Rodrigues da Silva, L.C. Goncalves de
+Oliveira, On Aref’s vortex motions with a symmetry center, Physica D 16
+(1985) 27–61.
+[8] K. O’Neil, Symmetric conﬁgurations of vortices, Phys. Lett. A 124 (9)
+(1987) 503–507.
+[9] K. O’Neil, Minimal polynomial systems for point vortex equilibria,
+Physica D 219 (2006) 69–79.
+[10] K. O’Neil, Relative equilibrium and collapse conﬁgurations of four point
+vortices, Regul. Chaotic Dyn. 12 (2) (2007) 117–126.
+[11] J.I. Palmore, Relative equilibria of vortices in two dimensions, Proc. Natl.
+Acad. Sci. USA 79 (1982) 716–718.
+[12] G. Roberts, A continuum of relative equilibria in the ﬁve-body problem,
+Physica D 127 (3–4) (1999) 141–145.
+[13] I.R. Shafarevich, Basic Algebraic Geometry, Springer-Verlag, Berlin,
+1977.

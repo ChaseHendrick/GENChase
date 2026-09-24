@@ -1,0 +1,7 @@
+dpsi/dbeta = -B/(A*sin(beta))
+check psi = -(B/A) ln tan(beta/2): 0
+tan(angle to meridian) = sin(beta) dpsi/dbeta = B*sin(beta)/(A*Abs(sin(beta)))  (= 2 P0 with P0 = B/(2A))
+d ln r / d psi = -A/B  (planar: -1/(2P) = -A/B)
+time beta -> 0: R**2*(1 - cos(beta0))/A ; lifetime: 2*R**2/A
+extra, equal initial chord radius   : B*(-log(sin(beta0)) + log(tan(beta0/2)) + log(2))/A  vs claimed 2P0 ln(2/(1+cos b0)) = B*(-log(1/(cos(beta0) + 1)) - log(sin(beta0)) + log(tan(beta0/2)))/A
+extra, equal time to collapse       : B*(-log(1 - cos(beta0)) + 2*log(tan(beta0/2)) + log(2))/(2*A) ; ratio to claim: (-log(1 - cos(beta0)) + 2*log(tan(beta0/2)) + log(2))/(2*log(2/(cos(beta0) + 1)))

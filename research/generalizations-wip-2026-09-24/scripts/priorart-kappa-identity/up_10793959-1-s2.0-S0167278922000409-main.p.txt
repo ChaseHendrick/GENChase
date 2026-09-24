@@ -1,0 +1,1393 @@
+=====PAGE 1
+Physica D 434 (2022) 133226
+Contents lists available at ScienceDirect
+Physica D
+journal homepage: www.elsevier.com/locate/physd
+Self-similar collapse of three vortices in the generalised Euler and
+quasi-geostrophic equations
+Jean N. Reinaud ∗, David G. Dritschel, Richard K. Scott
+Mathematical Institute, University of St Andrews, St Andrews, KY169 SS, UK
+a r t i c l e
+i n f o
+Article history:
+Received 9 September 2021
+Received in revised form 28 February 2022
+Accepted 1 March 2022
+Available online 16 March 2022
+Communicated by Stephen Wiggins
+Keywords:
+Vortex dynamics
+Point vortices
+Vortex collapse
+Generalised Euler equations
+a b s t r a c t
+We revisit the classical problem of the self-similar, finite-time collapse of three vortices. We extend the
+study to the generalised two-dimensional Euler equations as well as the generalised three-dimensional
+quasi-geostrophic equations. In both these situations, the flow is fully controlled by a materially-
+conserved field of a generalised vorticity (or potential vorticity) related to the streamfunction by a
+modified Poisson’s equation, in which the standard Laplacian is replaced by a fractional Laplacian. We
+first determine the conditions for the self-similar collapse of three point vortices, as well as the collapse
+time in a broad parameter space. We then consider the evolution of finite-core, two-dimensional and
+three-dimensional vortices under initial conditions corresponding to the collapse of equivalent point
+vortices. We show that the interaction precipitates the merger of the two like-signed vortices in the
+vortex triad.
+© 2022 The Authors. Published by Elsevier B.V. This is an open access article under the CC BY license
+(http://creativecommons.org/licenses/by/4.0/).
+1. Introduction
+Vortices, or swirling masses of fluid, are ubiquitous in the fluid
+dynamics of both two-dimensional (2D) and three-dimensional
+(3D) flows, and their interactions play a central role in many
+fundamental processes. For example, they collectively drive the
+dynamics of 2D incompressible turbulence, see e.g. [1], where the
+distribution of vortex sizes has been shown to play a fundamental
+role in the evolution of energy across scales in both the freely-
+decaying and forced cases [2,3]. In the oceans, vortices contribute
+a large part of the mass transport, see [4], while in Jupiter’s
+atmosphere, stable arrays of vortices have recently been observed
+in polar latitudes [5].
+The merger of two like-signed vortices is associated with the
+inverse energy cascade in 2D turbulence through the generation
+of larger vortices, while also contributing to the direct enstrophy
+cascade through the generation of small-scale debris and fila-
+ments. Vortex merger also plays a fundamental role in the mixing
+of heat and chemical constituents in oceanic and atmospheric
+flows.
+In this paper we consider a type of interaction between three
+vortices that leads to their collapse toward a single point in
+finite time. The collapse of three vortices is a special case of the
+general collapse of N vortices, albeit arguably the most likely
+∗Corresponding author.
+E-mail addresses:
+jean.reinaud@st-andrews.ac.uk (J.N. Reinaud),
+david.dritschel@st-andrews.ac.uk (D.G. Dritschel),
+richard.scott@st-andrews.ac.uk (R.K. Scott).
+case statistically. For point vortices, this collapse takes the form
+of an exact self-similar reduction of the vortex separations to
+zero. For equivalent finite-core vortices, the collapse does not
+remain exactly self-similar but precipitates a strong interaction
+between the vortices, and in particular the merger of the two like-
+signed vortices of the vortex triad. While the natural setting in
+which to study these interactions is in the context of 2D flow, the
+same ideas can be applied to 3D quasi-geostrophic flows. These
+introduce a vertical structure to the vorticity distribution while
+retaining a layerwise 2D flow, and can therefore be regarded as
+lying somewhere between the 2D and fully 3D systems.
+The mathematical formalism to study flows with vorticity
+was first introduced by Helmholtz [6]. Kirchhoff [7] introduced
+and used the notion of point vortices in a 2D flow. Poincaré [8]
+proved that a system of three 2D point vortices was integrable.
+Gröbli [9] studied for the first time the self-similar motion of
+three point vortices. Later Synge [10] provided a classification
+of their motion. The motion of three point vortices was also
+independently studied by Novikov [11], Aref [12], Tavantzis and
+Ting [13]. The problem of the self-similar collapse for 2D vortices
+has been extensively studied in the literature, e.g. by Novikov
+and Sedov [14], Kimura [15,16,17], Aref [18], and more recently
+by Krishnamurthy and Stremler [19]. The collapse interaction
+of finite-area 2D vortices has been studied by Vosbeek et al.
+[20]. Badin and Barry [21] extended the study of the collapse
+of three point vortices to the 2D generalised Euler equations,
+including the so-called ‘surface quasi-geostrophic’ (SQG) equa-
+tions. The SQG equations are relevant to the surface potential
+temperature dynamics in rotating stratified environments such as
+https://doi.org/10.1016/j.physd.2022.133226
+0167-2789/© 2022 The Authors. Published by Elsevier B.V. This is an open access article under the CC BY license (http://creativecommons.org/licenses/by/4.0/).
+
+=====PAGE 2
+J.N. Reinaud, D.G. Dritschel and R.K. Scott
+Physica D 434 (2022) 133226
+Table 1
+Summary of the classical models.
+n
+α
+β
+Name
+Green’s function
+2
+1
+1/2
+0
+1
+2D EulerSQG
+(2π)−1 log r−(2πr)−1
+3
+1
+3/2
+1
+0
+3D QGNone
+−(4πr)−1(2π 2)−1 log r
+planetary atmospheres and oceans. The general motion of three
+SQG point vortices has been studied by [22] while the motion
+of three ageostrophic point vortices is addressed in [23]. More
+recently, Reinaud [24] revisited the collapse of point vortices
+and the collapse interaction of finite-core vortices in both the
+3D quasi-geostrophic (QG) and the SQG equations. The present
+contribution is the natural extension to the latter study beyond
+the classical 2D Euler, SQG and 3D QG systems.
+The 2D Euler and SQG equations are only two members of a
+family of 2D dynamical models depending on a single parame-
+ter, α, defined fully in the following section. Here, we refer to
+this family as the generalised Euler equations. The important
+dynamical feature is that the locality of vortex interactions de-
+creases as the parameter α increases [25]. Similarly, the 3D QG
+system can be viewed as a single member of a family of 3D
+models with layerwise-2D flow fields. A remarkable feature of
+the subsequent analysis for point vortices is that the three-vortex
+evolution in both the 2D and 3D generalised systems is identical
+and dependent only on a single parameter β.
+The paper is organised as follows. Section 2 describes the
+governing equations of the system. The conditions leading to the
+self-similar collapse of a triad of point vortices are derived in
+Section 3. Results for the collapse of point vortices are presented
+in Section 4, while the results for the collapse interaction of three
+2D finite-area vortices and three 3D finite-volume vortices are
+presented in Sections 5 and 6 respectively. Concluding remarks
+are given in Section 7.
+2. Mathematical model
+We consider the following dynamical system in Rn,
+−(−∇2)αϕ = q,
+(1)
+∂q
+∂t + u∂q
+∂x + v ∂q
+∂y = 0.
+(2)
+u = −∂ϕ
+∂y ,
+&
+v = ∂ϕ
+∂x ,
+(3)
+where ϕ is the streamfunction, q is the active scalar, x, y are the
+first two coordinates of Rn and u, v are the first two components
+of the velocity field. ∇2 is n-dimensional Laplacian and 0 < α <
+n/2. The special though important limiting case α = n/2 will
+also be discussed. Although the results presented in the paper are
+valid for all n ≥2, we are primarily concerned with the cases
+n = 2 and n = 3, relevant to physical systems such as fluids.
+For n = 2, the equations are known as the generalised 2D Euler
+equations, with the special case α = n/2 = 1 corresponding
+to the standard Euler equations governing the evolution of a 2D
+incompressible flow. Another important case is the surface quasi-
+geostrophic (SQG) model, discussed in [26], corresponding to n =
+2 and α = 1/2. For n = 3, the equations are the generalised 3D
+Quasi-Geostrophic (QG) equations. For reference, the standard 3D
+QG equations correspond to n = 3 and α = 1. The parameters
+for the three main standard physical models are summarised in
+Table 1.
+For n = 2, the flow is planar and 2D in the (x, y)−plane. Even
+for n > 2, Eq. (2) implies that advection remains 2D, i.e. restricted
+to the (x, y)−plane.
+Eq. (1) can be formally inverted using the appropriate Green’s
+function
+G(x; x′) = −
+Cn,−α
+|x −x′|β ,
+(4)
+given e.g. by Stinga [27] in an unbounded domain with
+β = n −2α,
+for β̸ = 0,
+(5)
+and
+Cn,−α = Γ (n/2 −α)
+4αΓ (α)π n/2 ,
+(6)
+where Γ is the standard Gamma function, Γ (x) =
+∫∞
+0
+ux−1e−u du
+for x ∈(0, ∞).
+As mentioned above, the standard 2D Euler equations cor-
+respond to α =
+n/2 =
+1, hence β =
+0. In this case, the
+Green’s function G(x; x′) = (2π)−1 log |x −x′|. A similar Green’s
+function is obtained for n = 3 and α = 1.5, namely G(x; x′) =
+(2π 2)−1 log |x −x′|. The general formulae to recover these Green’s
+functions are given in [27]. We will see that the relations derived
+in the next section to determine the conditions for collapse with
+β̸ = 0 are in fact also valid for the case β = 0.
+3. Conditions for self-similar collapse
+We consider 3 active particles of strength κ′
+i located at xi in an
+unbounded domain. As these particles induce a circulating flow
+around them, we will henceforth call these active particles ‘point
+vortices’ for all α for simplicity. The strength κ′
+i of vortex i is
+the space-integrated active scalar multiplied by Cn,−α. The active
+scalar field is therefore
+q(x) =
+1
+Cn,−α
+3
+∑
+i=1
+κ′
+i δ(x −xi),
+(7)
+where δ() is the Dirac distribution in Rn. The streamfunction
+induced by the three vortices then follows from the definition of
+Green’s function:
+ϕ(x) = −
+3
+∑
+i=1
+κ′
+i
+|x −xi|β ,
+∀x̸ = xi.
+(8)
+Following [24] we denote ℓij = xi −xj. Since the vortices move
+only horizontally, parallel to the (x, y)-plane, vortex collapse to
+a single point can occur iff all three vortices are initially in the
+same (x, y)-plane. The two non-zero velocity components of point
+vortex i are given by
+(ui, vi) =
+3
+∑
+j=1,j̸=i
+κj
+|ℓij|β+2 (−ℓ
+y
+ij, ℓx
+ij),
+(9)
+where κi = βκ′
+i , and ℓx
+ij and ℓ
+y
+ij are the x and y-components of ℓij.
+Eq. (9) and the formulae derived from it are formally valid even
+for β = 0, i.e. for α = n/2. Furthermore, this dynamical system
+is Hamiltonian, and may be written
+ui = dxi
+dt = −1
+κi
+∂H
+∂yi
+,
+vi = dyi
+dt = 1
+κi
+∂H
+∂xi
+,
+(10)
+where
+H = −1
+2
+3
+∑
+i=1
+3
+∑
+j=1,j̸=i
+κiκj
+|ℓij|β .
+(11)
+is the ‘excess energy’.
+The equations governing the evolution of the squared dis-
+tances between the vortices s2
+1 = |ℓ23|2, s2
+2 = |ℓ13|2 and s3 = |ℓ12|
+2
+
+=====PAGE 3
+J.N. Reinaud, D.G. Dritschel and R.K. Scott
+Physica D 434 (2022) 133226
+follow from (9) and read
+ds2
+1
+dt = 2κ1∆
+(
+1
+sβ+2
+2
+−
+1
+sβ+2
+3
+)
+,
+(12)
+ds2
+2
+dt = 2κ2∆
+(
+1
+sβ+2
+3
+−
+1
+sβ+2
+1
+)
+,
+(13)
+ds2
+3
+dt = 2κ3∆
+(
+1
+sβ+2
+1
+−
+1
+sβ+2
+2
+)
+,
+(14)
+where ∆= ℓx
+12ℓ
+y
+23−ℓ
+y
+12ℓx
+23 is twice the area of the triangle formed
+by the three vortices, assuming the vortices 1 →2 →3 are
+organised in a counter-clockwise direction. We assume that the
+collapse evolution of the distances si is self-similar, i.e. si(t) =
+f (t) si, where si ≡si(0). Heron’s formula for the squared area of
+a triangle, 4∆2 = 2(s2
+1s2
+2 + s2
+1s2
+3 + s2
+2s2
+3) −s4
+1 −s4
+2 −s4
+3, implies that
+∆(t) = f 2(t) d, where d ≡∆(0). Substituting in (12), we find
+ds2
+1
+dt = s2
+1
+df 2
+dt = 2κ1d
+1
+f β(t)
+(
+1
+sβ+2
+2
+−
+1
+sβ+2
+3
+)
+.
+(15)
+Solving Eq. (15) gives
+f (t) =
+(
+1 −t
+τ
+)
+1
+β+2
+,
+(16)
+where f (t) reduces to 0 at the finite collapse time
+τ = −
+s2
+1
+(β + 2)κ1d
+(
+1
+sβ+2
+2
+−
+1
+sβ+2
+3
+).
+(17)
+The uniqueness of τ implies Eqs. (13) and (14) must also lead
+to the same value. This results in the following two constraints
+κ1sβ
+1 (sβ+2
+3
+−sβ+2
+2
+) = κ2sβ
+2 (sβ+2
+1
+−sβ+2
+3
+) = κ3sβ
+3 (sβ+2
+2
+−sβ+2
+1
+). (18)
+A further constraint comes from the fact that the scaled Hamilto-
+nian
+H′ = −2H = κ1κ2
+sβ
+3
++ κ1κ3
+sβ
+2
++ κ2κ3
+sβ
+1
+(19)
+is invariant by construction. This invariance implies
+κ1κ2
+sβ
+3 (t)
++ κ1κ3
+sβ
+2 (t)
++ κ2κ3
+sβ
+1 (t)
+=
+1
+f β(t)
+(
+κ1κ2
+sβ
+3
++ κ1κ3
+sβ
+2
++ κ2κ3
+sβ
+1
+)
+,
+leading to
+κ1κ2
+sβ
+3
++ κ1κ3
+sβ
+2
++ κ2κ3
+sβ
+1
+= 0,
+(20)
+or the trivial solution f (t) = 1 which corresponds to a relative
+equilibrium. Note that for α = n/2, corresponding to β = 0, the
+scaled Hamiltonian H′ has the form
+κ1κ2 log s3(t) + κ1κ3 log s2(t) + κ2κ3 log s1(t)
+= (κ1κ2 + κ1κ3 + κ2κ3) log f (t)+
+κ1κ2 log s3 + κ1κ3 log s2 + κ2κ3 log s1
+(21)
+which is invariant iff
+κ1κ2 + κ1κ3 + κ2κ3 = 0.
+This condition is formally equivalent to Eq. (20) with β = 0.
+Hence Eq. (20) is also valid in this special case.
+One might expect additional constraints to arise from conser-
+vation of linear and angular impulse. Their conservation arises
+from the fact that the Green’s function G(x; x′) depends only on
+the difference x −x′. This implies
+∂G
+∂x = −∂G
+∂x′ ,
+&
+∂G
+∂y = −∂G
+∂y′ .
+(22)
+This anti-symmetry, also present in the special case β
+=
+0,
+implies conservation of the linear impulse, I = κ1x1+κ2x2+κ3x3.
+Since only the x and y-components of the position xi of vortex
+i are time-dependent, the only two non-trivial constraints are
+given by Ix and Iy, the x and y-components of I respectively.
+The anti-symmetry of G also implies conservation of the angular
+impulse, J = κ1(x2
+1+y2
+1)+κ2(x2
+2+y2
+2)+κ3(x2
+3+y2
+3). These quantities
+however are not functions only of the distances s1, s2 and s3.
+Nonetheless, following [18], we can combine Ix, Iy and J to form
+an invariant quantity L = (κ1 +κ2 +κ3)J −I2
+x −I2
+y depending only
+on these distances. For self-similar collapse, L takes the form
+L = f 2(t) (
+κ1κ2s2
+3 + κ1κ3s2
+2 + κ2κ3s2
+1
+)
+,
+which is invariant iff
+κ1κ2s2
+3 + κ1κ3s2
+2 + κ2κ3s2
+1 = 0,
+(23)
+or again if the point vortices are in relative equilibrium, f (t) = 1.
+We have thus determined three scalar constraints, Eqs. (18),
+(20) and (23), on the rescaled vortex strengths κi and the dis-
+tances si separating them. The constraints, however, are not in-
+dependent: one can show that (20) and (23) imply (18).
+Without loss of generality, we take κ1 = 1 and s3 = 1, which
+sets a time and a length scale for the problem. We then choose
+values for β, κ2 and s1, and use these to solve Eqs. (20) and (23)
+to find s2 and κ3. Eq. (23) gives
+κ3 = −
+κ2
+s2
+2 + κ2s2
+1
+.
+(24)
+Note that this implies that κ3 and κ2 have opposite signs. The
+fact that not all vortices can have the same sign is a requirement
+for vortex collapse, see e.g. [14]. Basically, the angular impulse
+J = κ1(x2
+1 + y2
+1) + κ2(x2
+2 + y2
+2) + κ3(x2
+3 + y2
+3) must be zero, and this
+can only be achieved if the strengths have opposite signs.
+Substituting κ3 into (20) leads to an equation to determine s2,
+sβ+2
+2
++ κ2
+sβ+2
+1
+−1
+sβ
+1
+sβ
+2 −1 = 0,
+(25)
+which is solved numerically by dichotomy until the value of s2
+changes by less than 10−12. (Newton–Raphson does not always
+converge.) Not all solutions to these equations correspond to a
+physical vortex triad. The physically relevant solutions are those
+for which x3 and y3 are real numbers. Geometrically, this means
+that the circle centred at x1 and of radius s2, and the circle centred
+at x2 and of radius s1 intersect at x3, by definition. If the two
+circles do not intersect, collapse is not possible. Without loss of
+generality, we take x1(0) = (−0.5, 0, 0) and x2(0) = (0.5, 0, 0).
+Then the initial location of the third vortex is determined from
+the distances s1 and s2
+x3(0) = s2
+2 −s2
+1
+2
+.
+(26)
+Then y3 > 0 (counter-clockwise orientation) is given by
+y3(0) =
+√
+s2
+1 −(0.5 −x3(0))2,
+(27)
+which is real-valued provided s2
+1 −(0.5 −x3(0))2 ≥0. Without
+loss of generality, we can set 0 < κ2 ≤κ1 so that the second
+vortex is the weaker of the two positive vortices. Then, Eq. (24)
+implies κ3 < 0. For vortex collapse, ds2
+i /dt < 0, i = 1, 2, 3, imply
+s1 < s3 < s2. In particular s1 < 1.
+3
+
+=====PAGE 4
+J.N. Reinaud, D.G. Dritschel and R.K. Scott
+Physica D 434 (2022) 133226
+Fig. 1. Evolution of the three point vortices for β = 0.5, κ = 0.5 and s = 0.75 over the interval 0 ≤t ≤1.289: (a) trajectories of the point vortices, with vortex 1
+in red, vortex 2 in blue and vortex 3 in black, (b) distances si(t) between the vortices, (c) distance ratios, (d) geometrical functions gi(t). For panels (b) & (d), i = 1
+is in red, i = 2 is in blue and i = 3 is in black. In panel (c), s1/s2 is in red, s3/s2 is in blue and s1/s3 is in black.
+Table 2
+Parameters for the finite-time collapse of three point vortices with κ2 = 0.5 and s1 = 0.75.
+Case
+β
+κ3
+s2
+τ
+I
+0.5
+−0.32799934672702413
+1.1149633536646144
+1.2890703487205131
+II
+1.5
+−0.31486239284668249
+1.1431296077175070
+0.58167602508973415
+4. Results for point vortices
+We next present a selection of results for the finite-time col-
+lapse of three point vortices. The conditions for collapse depend
+on three parameters, β, κ2 and s1, offering a very large parameter
+space. Recall that 0 < s1 ≤1 and 0 < β < n.
+We first focus on two specific cases. We set κ2/κ1 = 0.5
+and s1/s3 = 0.75. then take β = 0.5 for the first case (I) and
+β = 1.5 for the second case (II). Note β = 0.5 corresponds to
+an intermediate regime between the standard 2D Euler dynamics
+(β = 0) and the SQG/3D QG dynamics (β = 1), while β = 1.5
+corresponds to a regime beyond SQG/3D QG. In general, the flow
+characteristics vary continuously with β. The values of κ3 and s2
+resulting in a finite-time collapse are given in Table 2 along with
+the collapse time τ.
+We use these values as the initial conditions in numerical
+simulations to determine the trajectories of the point vortices.
+Eqs. (10) are integrated in time using the standard fourth-order
+Runge–Kutta scheme with an adaptive time step ∆t, controlled
+by the maximum vortex velocity umax, specifically ∆t umax(t) =
+10−4 umax(0). Following Reinaud [24] we introduce the geometric
+functions
+gi(t) = 1 −
+(
+si(t)
+si
+)β+2
+,
+i = 1, 2, 3.
+(28)
+As follows from (16), if the collapse is exactly self-similar, then
+g1(t) = g2(t) = g3(t) = t/τ, for t < τ.
+Results are presented in Fig. 1 for case I and in Fig. 2 for case II.
+They show the expected behaviour, validating the equations used
+to obtain the initial conditions. In both cases, the trajectories of
+the vortices are spirals and evidently converge to a single point.
+The evolution of the distances si(t) confirms the collapse of the
+vortex triad at the predicted collapse time t = τ in Eq. (17)
+and listed in Table 2. The results also confirm that three distance
+ratios s1(t)/s2(t), s3(t)/s2(t) and s1(t)/s3(t) are time independent,
+indicating that the evolution of the vortex triad is self-similar.
+Moreover, as predicted, the geometrical functions gi(t) all fall
+onto the same straight line t/τ.
+Table 2 indicates that the values of κ3 and s2 are similar for
+both cases. The tangential velocity induced by each point vortex
+falls off as 1/dβ+1, where d is the distance from the vortex. Hence,
+when the vortices are sufficiently close together, the velocity of
+the point vortices increases as β is increased. This explains why
+the collapse occurs earlier for β = 1.5 than it does for β = 0.5.
+We next provide an overview of the conditions which lead to
+vortex collapse for β = 0.25, 0.5, 0.75 and 1.5. (The case β = 1,
+which models both SQG dynamics (n = 2, α = 1/2), and 3D
+QG dynamics (n = 3, α = 1), is discussed in [24].) Recall that
+0 < β < n, with β →0 as α →n/2, and β →n as α →0. For
+each value of β, we determine s2 and κ3 in the (κ2, s1) parameter
+plane. We use 500 values for κ2 and for s1, both equally spaced
+4
+
+=====PAGE 5
+J.N. Reinaud, D.G. Dritschel and R.K. Scott
+Physica D 434 (2022) 133226
+Fig. 2. Evolution of the three point vortices for β = 1.5, κ2 = 0.5 and s1 = 0.75 over the interval 0 ≤t ≤0.5816: (a) trajectories of the point vortices, with vortex
+1 in red, vortex 2 in blue and vortex 3 in black, (b) distances si(t) between the vortices, (c) distance ratios, (d) geometrical functions gi(t). For panels (b) & (d), i = 1
+is in red, i = 2 is in blue and i = 3 is in black. In panel (c), s1/s2 is in red, s3/s2 is in blue and s1/s3 is in black.
+in the interval (0, 1]. Results are shown in Fig. 3 (recall we have
+taken s3 = 1, so all distances are effectively scaled by s3.)
+For a given value of β, and for each value of κ2, there is a
+threshold s1 = Sc below which no physical solution exists —
+collapse cannot occur. The threshold corresponds to s2
+1 −(0.5 −
+x3(0))2 = 0, i.e. y3(0) = 0 with the three vortices aligned (∆= 0)
+and in mutual equilibrium, τ →∞. For smaller s1 the solution
+for y3(0) is purely imaginary and thus not physical. The threshold
+Sc increases as κ2 increases. Moreover, for fixed κ2, the threshold
+Sc increases as β increases. This means that the range of s1 where
+collapse is possible decreases as both κ2 and β increase. The
+left panels of Fig. 3 show that s2 remains between 1 and 1.5
+throughout parameter space, generally increasing with κ2 and de-
+creasing with s1. The middle panels indicate that κ3 is only weakly
+dependent on s1, and roughly proportional to κ2. The right panels
+show that the collapse time τ reaches a local minimum (along the
+red dotted line indicated), but over most of the parameter space τ
+increases with s1 and decreases with κ2. Comparing the different
+values of β (recall β increases downward), τ generally decreases
+as β increases. This is consistent with the fact that increasing β
+means stronger short-range interactions.
+The upshot is that, for all κ2, we can always find vortex
+triad configurations which collapse self-similarly in finite time.
+The size of the region of the parameter space where collapse is
+possible decreases as β increases and as κ2 increases.
+It is worth remarking that β can be larger than 2 if n > 2. We
+have also computed the conditions for collapse when 2 < β < 3.
+The results exhibit the same trends discussed for β ≤2 (not
+shown).
+5. Collapse interactions of finite-area vortices, n = 2
+We next consider the motion of three 2D finite-area vortices,
+n =
+2. The initial locations xi and the rescaled strengths κi
+are chosen to coincide with those of equivalent point vortices
+collapsing in finite time. Since the far-field flow induced by a
+finite-area vortex is close to that of an equivalent strength point
+vortex, the evolution of three well-separated finite-area vortices
+will closely resemble that of the equivalent point vortex system,
+provided vortex separations remain large compared with the
+vortex radii. As vortex separations approach the order of the
+vortex radii, however, deformations develop on the shape of the
+vortices. In particular, as two like-signed vortices approach one
+another a critical separation exists, below which the deformations
+become large enough that an irreversible (partial) merging of
+the two like-signed vortices takes place. Since the inward spi-
+ralling motion of the vortices collapses their separation, and to
+the extent that the finite-area vortices follow the point vortex
+evolution for separations larger than the critical merger distance,
+we can be confident that vortex merger will always occur for
+initial conditions coinciding with collapsing point vortices.
+We consider vortices with an initially parabolic distribution of
+the active scalar,
+qi(x) =
+{
+qi
+m
+√
+1 −(r′/ri)2,
+r′ ≤ri,
+0,
+r > rj.
+(29)
+where qi
+m is the maximum value of the active scalar in the ith
+vortex, ri is its radius and r′ = |x −xi| is the radial distance, in
+R2, from its centre. In SQG (n = 2, α = 0.5), this distribution
+corresponds to a solid-body rotation for r′ <
+ri for a single
+5
+
+=====PAGE 6
+J.N. Reinaud, D.G. Dritschel and R.K. Scott
+Physica D 434 (2022) 133226
+Fig. 3. Conditions for the collapse of three point vortices in the (κ2, s1) parameter plane, with 0 ≤κ2, s1 ≤1. Each row is for fixed β, with β = 0.25, 0.5, 0.75 and
+1.5 from top to bottom. The first column gives the distance s2, the second column gives the rescaled vortex strength κ3, and the third column gives the collapse
+time τ. The red solid line shows the limit of the parameter space where collapse is possible. Local minima in τ are indicated by the dotted lines in the panels in
+the right column.
+elliptical vortex, see [28] and avoids a logarithmic singularity
+in tangential velocity that exists in the simpler uniform-patch
+distribution.
+By considering finite-area vortices, we introduce a length scale
+to the problem: the vortex size. In the examples considered in this
+section we set r1/s3 = 0.2, unless stated otherwise. The smaller
+this ratio, the closer the initial system resembles the equivalent
+point vortex system, and the longer we expect the finite-area
+vortex evolution to follow the point vortex evolution. Similarly
+to the point vortices, vortex 1 is initially located at (x1, y1) =
+(−0.5, 0) and vortex 2 at (x2, y2) = (0.5, 0), giving s3 = ℓ12 =
+|x1 −x2| = 1. We next set values for the three parameters β, κ2
+and s1, then determine κ3 and s2 satisfying the collapse conditions
+for equivalent point vortices. This allows us to determine the
+location x3 of the centre of vortex 3. To fully determine vortices
+2 and 3, we also need to set qi
+m and ri, i = 2, 3 in order to recover
+the targeted rescaled strengths κ2 and κ3, respectively. There are
+infinitely many choices. Here we set |qi
+m| =
+1, i =
+1, 2, 3.
+6
+
+=====PAGE 7
+J.N. Reinaud, D.G. Dritschel and R.K. Scott
+Physica D 434 (2022) 133226
+Fig. 4. Top view of the field q showing the collapse of three finite-area vortices in two dimensions, with β = 0.2 (α = 0.9) κ2/κ1 = 1 and s1 = 0.75, t = 0, 70, 77.25
+and 100. Only the domain [−π/2, π/2]2 is shown in the computational domain [−π, π]2. Positive q is shown in red, negative q is shown in blue. Dark colours
+correspond to relatively large |q|.
+Fig. 5. (a) Trajectories of the three finite-core vortex centres until the like-signed vortices merge (solid lines) and full trajectories for the equivalent point vortices
+(dotted lines), with vortex 1 in red, vortex 2 in blue and vortex 3 in black, (b) evolution of the distances si(t), (c) geometrical functions gi(t) for β = 0.2 (n = 2, α = 0.1)
+κ2/κ1 = 1 and s1 = 0.75 (until the two like-signed vortices merge). The dashed black line in (c) shows t/τpv. In (b) and (c), i = 1 is represented in red, i = 2 in
+blue and i = 3 in black.
+Fig. 6. As in Fig. 4 but for the case β = 0.5 (α = 0.75); the other parameters κ2/κ1 = 1 and s1 = 0.75 are identical. The times shown are t = 0, 39.75, 43, and 100.
+Noting that the surface-integrated active scalar for vortex i is
+2qi
+m πr2
+i /3, we obtain κi = 2βC2,−αqi
+m πr2
+i /3. This implies that
+|κi/κ1| = (ri/r1)2, and we set ri such that ri = r1
+√|κi/κ1|. Because
+the focus in this and the following section is on the triggering
+of vortex merger during the collapse, we present cases mostly of
+configurations with κ1 = κ2; it is in such cases that vortex merger
+tends to be most efficient and complete.
+The equations are solved using the Combined-Lagrangian Ad-
+vection Method (CLAM), developed by [29], using its standard
+settings. The fluid domain is [−π, π]2 and doubly-periodic. The
+velocity field resolution is 10242, while the active scalar is actu-
+ally resolved down to a scale 16 times finer. In CLAM, Eq. (1) is
+inverted in spectral space (making use of FFTs).
+As a diagnostic, we track the location of the vortex centres.
+Vortices are identified on the 10242 grid as contiguous regions S
+of active scalar whose value exceeds the root mean square (rms)
+of the field over the full periodic domain. Their centres (xq, yq) are
+defined as the active scalar-weighted centres of these regions, i.e.
+(xq, yq) =
+∫∫
+S(x, y) q dA
+∫∫
+S q dA
+.
+(30)
+It should be noted that the vortices are well confined near the
+centre of the domain at all times, thus limiting the influence of
+the periodic images. Because the area-average vorticity is zero,
+the influence of the periodic images falls off at least as fast as the
+dipole contribution in the far-field moment expansion.
+Fig. 4 shows snapshots of the evolution of the vortex triad
+for β
+=
+0.2 (n
+=
+2, α
+=
+0.9), κ2/κ1
+=
+1 and s1
+=
+0.75. In this case κ1 ≃1.3635 × 10−2 and the collapse time
+of equivalent point vortices is τpv = 73.64. Fig. 5 shows the
+trajectories of the vortex centres, the evolution of the distances
+si(t) and the geometrical functions gi(t) until the two like-signed
+vortices merge. The merger time tm is simply detected as the first
+time when the diagnostic tool identifying the vortices present in
+the flow only finds two vortices, one being the merged vortex
+resulting from the fusion of the two like-signed vortices. In this
+case tm = 53. The left panel of the figure also includes the full
+trajectories, until t →τ, of the equivalent point vortices for
+direct comparison. For t < tm, we see that the vortices start
+to spiral inwards and closely approach. The match between the
+trajectories of the finite-area vortex centres and the trajectories
+of the equivalent point vortices is remarkable. The motion of
+the vortex centres is very nearly self-similar, as shown in Fig. 5.
+In particular, the geometrical functions gi(t) almost fall onto a
+single straight line which closely agrees with the point vortex
+prediction, t/τpv. This is remarkable considering that, near the
+merger event, the two like-signed vortices have become strongly
+deformed. The evolution of the vortices shown in Fig. 4 shows the
+7
+
+=====PAGE 8
+J.N. Reinaud, D.G. Dritschel and R.K. Scott
+Physica D 434 (2022) 133226
+Fig. 7. (a) Trajectories of the three finite-core vortex centres until the like-signed vortices merge (solid lines) and full trajectories for the equivalent point vortices
+(dotted lines), with vortex 1 in red, vortex 2 in blue and vortex 3 in black, (b) evolution of the distances si(t), (c) geometrical functions gi(t) for β = 0.5
+(n = 2, α = 0.75), κ2/κ1 = 1 and s1 = 0.75 (until the two like-signed vortices merge). The dashed black line in (c) shows t/τpv. In (b) and (c), i = 1 is
+represented in red, i = 2 in blue and i = 3 in black.
+Fig. 8. As in Fig. 6 but for κ2/κ1 = 0.5; the other parameters β = 0.5 (α = 0.75) and s1 = 0.75 are identical. The times shown are t = 0, 49.75, 70, 77.25 and 100.
+Fig. 9. (a) Trajectories of the three finite-core vortex centres until the like-signed vortices merge (solid lines) and full trajectories for the equivalent point vortices
+(dotted lines), with vortex 1 in red, vortex 2 in blue and vortex 3 in black, (b) evolution of the distances si(t), (c) geometrical functions gi(t) for β = 0.5
+(n = 2, α = 0.75), κ2/κ1 = 0.5 and s1 = 0.75 (until the two like-signed vortices merge). The dashed black line in (c) shows t/τpv. In (b) and (c), i = 1 is
+represented in red, i = 2 in blue and i = 3 in black.
+Fig. 10. As in Fig. 4 but for the case β = 1.5 (α = 0.25); the other parameters κ2/κ1 = 1 and s1 = 0.75 are identical. The times shown are t = 0, 31, 33.5 and
+44.25.
+formation of long filaments that partially wrap around the large
+coherent vortices. The tail of the largest filament is expelled from
+the main dipole and experiences a weaker shear than the rest of
+the filament. It is therefore less stretched and rolls-up as a small
+secondary positive vortex.
+In the next examples we examine the effect of increasing β.
+Fig. 6 shows snapshots of the evolution of the vortex triad for
+β = 0.5 (n = 2, α = 0.75), with otherwise identical parameters
+to those considered previously (κ2 = κ1 and s1 = 0.75). In this
+case κ1 ≃1.3947×10−2 and the collapse time of equivalent point
+vortices is τpv ≃54.4. Fig. 9 shows the trajectories of the vortex
+centres, the evolution of the distances si(t) and the geometrical
+functions gi(t) until the two like-signed vortices merge at tm =
+42.
+8
+
+=====PAGE 9
+J.N. Reinaud, D.G. Dritschel and R.K. Scott
+Physica D 434 (2022) 133226
+Fig. 11. (a) Trajectories of the three finite-core vortex centres until the like-signed vortices merge (solid lines) and full trajectories for the equivalent point vortices
+(dotted lines), with vortex 1 in red, vortex 2 in blue and vortex 3 in black, (b) evolution of the distances si(t), (c) geometrical functions gi(t) for β = 1.5
+(n = 2, α = 0.25), κ2/κ1 = 1 and s1 = 0.75 (until the two like-signed vortices merge). The dashed black line in (c) shows t/τpv. In (b) and (c), i = 1 is
+represented in red, i = 2 in blue and i = 3 in black.
+Fig. 12. Evolution of the aspect ratio b/a of the best-fit ellipses for the three
+vortices for the case β = 1.5 (n = 2, α = 0.25), κ2/κ1 = 1 and s1 = 0.75 (until
+the two like-signed vortices merge). The red line corresponds to vortex 1, the
+blue line to vortex 2 and the black line to vortex 3.
+As before, the early evolution of the finite-area vortices is
+remarkably close to that of equivalent point vortices, and the vor-
+tices spiral inwardly in a nearly self-similar manner, as shown in
+panel (c) of Fig. 7. Similarly, the three geometrical functions gi(t),
+i = 1, 2, 3 nearly fall onto the straight line t/τpv of the exact self-
+similar point vortex collapse. Again, large filaments of positive q
+form and are stretched by the differential rotation induced by the
+large vortex dipole formed after the merger of the two like-signed
+vortices. We see that the filament is more sensitive however
+to perturbations in this case, and Kelvin–Helmholtz like roll-ups
+form along the filament. This is a consequence of the increase
+in β. The increased sensitivity of filaments has been observed
+previously when comparing the stability properties of sheared
+and stretched vortex strips in the standard 2D Euler equations
+(β = 0) and in the SQG system (β = 1), see [30]. This sensitivity
+is due to shorter-range interactions occurring with increasing β.
+Both the stabilising effects of adverse shear and stretching [31,32]
+are reduced, leading to an increased propensity for vortex roll-up.
+It is also instructive to consider a case with κ2̸ = 1. To this
+end, Fig. 8 shows snapshots of the evolution of the vortex triad
+for β = 0.5 (n = 2, α = 0.75), κ2 = 0.5κ1 and s1 = 0.75.
+As in the previous case, κ1 ≃1.3947 × 10−2 but the collapse
+time of equivalent point vortices is delayed to τpv = 92.42. Fig. 9
+shows the trajectories of the vortex centres, the evolution of the
+distances si(t) and the geometrical functions gi(t) until the two
+like-signed vortices merge at tm = 75.5. Then, most of the smaller
+(weaker) vortex is absorbed by the larger (stronger) one while
+shedding some of its material into a stretched filament which
+breaks into smaller vortices. As in the two previous cases, the
+three geometrical functions gi(t), i = 1, 2, 3 nearly fall onto the
+straight line t/τpv of the exact self-similar point vortex collapse.
+We next revert back to κ2/κ1 = 1 and increase β further.
+Fig. 10 shows snapshots of the evolution of the vortex triad for
+β = 1.5 (n = 2, α = 0.25), κ2/κ1 = 1 and s1 = 0.75. In
+this case κ1 ≃9.5598 × 10−3 and τ = 38.18. Fig. 11 shows the
+trajectories of the vortex centres, the evolution of the distances
+si(t) and the geometrical functions gi(t) until the two like-signed
+vortices merge at tm = 31.
+Initially, the evolution of the gi(t) closely follows the straight
+line t/τpv before slowly departing from it. Typically gi(t) > t/τ,
+indicating that the bigger departures of si(t) seen in panel (b) of
+Fig. 11 are due to a time-scale mismatch arising from the defor-
+mation of the vortices. The three curves gi(t), i = 1, 2, 3 remain
+however very close together. It is nonetheless remarkable how
+closely the trajectories of the finite-area vortex centres and of the
+point vortices match, indicating that the difference between the
+two cases is related to a time-scale mismatch. The thin filaments
+generated during the strong interactions between the vortices
+rapidly destabilise and break into series of small-scale roll-ups.
+We also measure the leading-order deformation of the vortices
+by determining the aspect ratio b/a, b ≤a, of the ellipses best-fit
+to the vortices. The best-fit ellipse is the ellipse having the same
+geometrical centre
+(xg, yg) =
+∫∫
+S(x, y) dA
+∫∫
+S dA
+,
+(31)
+and the same geometrical second order moments Mxx, Mxy and
+Myy,
+Mxx =
+∫∫
+S
+(x −xg)2dA,
+Mxy =
+∫∫
+S
+(x −xg)(y −yg)dA,
+Myy =
+∫∫
+S
+(y −yg)2dA,
+(32)
+as the vortex. Results are shown in Fig. 12. The rapid oscillations
+of the aspect ratio show that the vortices pulsate. This is a
+consequence of initially circular vortices rapidly adjusting in the
+deformation field induced by the other vortices, and then freely
+pulsating. Note that the pulsation has no discernible impact on
+the vortex trajectories at any stage of the evolution. Near the
+merger time the deformation rapidly increases, in particular for
+vortex 2 which is, at the onset of merger, approximately located
+between vortices 1 and 3.
+To further investigate the small departure of the functions gi(t)
+from the analytical prediction of the point vortex triad in this
+9
+
+=====PAGE 10
+J.N. Reinaud, D.G. Dritschel and R.K. Scott
+Physica D 434 (2022) 133226
+Fig. 13. Same as Fig. 11 but for smaller vortices, with r1/s3 = 0.1.
+Fig. 14. Close up showing the destabilisation of the shear zone formed between
+the two like-signed vortices when they merge for β = 1.8 (α = 0.1) κ2/κ1 = 1
+at t = 54.4.
+case, we repeat the simulation with smaller, more compact vor-
+tices. For a given distance between the vortices, smaller vortices
+with the same qm are less sensitive to deformation. We set the
+radii of all vortices to be half of their previous values by taking
+r1/s3 = 0.1. Consequently, κ1, proportional to r2
+1 , is 2.3899×10−3
+or four times smaller, and τpv
+=
+152.7 is four times larger.
+The trajectories of the vortex centres, the distances si(t) between
+the vortices, and the geometric functions gi(t) are presented in
+Fig. 13. Since the vortices are smaller, they travel further along
+the spiral trajectories before the two like-signed vortices merge.
+In this case, the two like-signed vortices merge by t = 146.75.
+The closer agreement with the point vortex trajectories seen here
+confirms that the small departure observed for r1/s3 = 0.2 is due
+to finite-core effects, i.e. vortex deformation.
+The same general trends are observed if we further increase
+β. An additional numerical simulation, performed for a vortex
+triad with β = 1.8 (n = 2, α = 0.1), κ2 = κ1 and s1 = 0.75,
+exhibits a new route for the generation of small scales when β
+is large. In this case r1/s3 = 0.2, κ1 ≃4.4694 × 10−3, and
+τpv = 65.49. As before, the trajectories closely approximate those
+of the equivalent point vortices at early times, but spiral inward
+more rapidly at later times (not shown).
+The novel feature in this case is shown in Fig. 14, presenting
+a close up of the vortex interaction at t = 54.4. As the two
+like-signed vortices merge, a strong shear zone develops between
+them. This shear zone then breaks up into a series of small
+roll-ups which develop inside the merging structure, leading to
+a rapid generation of small scales in the flow. This typically
+happens at larger values of β, when interactions are short range.
+6. Collapse interaction of finite-volume vortices, n = 3
+We next focus on the evolution of finite-volume 3D vortices,
+n = 3. We consider spheres of uniform q. Vortex i is thus initially
+specified by
+qi(x) =
+{
+qi
+m,
+r′ < ri,
+0,
+r′ > ri
+(33)
+where r′ = |x −xi| is the radial distance, in R3, from the centre
+of vortex i. In QG (n = 3, β = 1), this corresponds to solid-
+body rotation for r < ri for an isolated vortex. It is noteworthy
+that the uniform distribution (33) is related to the active scalar
+distribution (29) used in the previous section for n = 2, if we
+flatten the sphere to a disk, but assign the active scalar in the
+disk half the vertical integral of q over the sphere [28].
+To enable collapse, the centres of all three vortices are taken
+to lie in the plane z =
+0. As before, vortex 1 is centred at
+(−0.5, 0, 0) and vortex 2 is centred at (0, 5, 0, 0) such that s3 = 1.
+Inside all three vortices, q takes the same magnitude, |qi
+m| =
+2π. The scaled vortex strength is κi = 4C3,−αβqi
+mπr3
+i /3, where
+Cn,−α is the constant defined by Eq. (6). We set r1/s3 = 0.2 so
+that the vortices behave point-like at least for the early stages
+of the evolution. Since |κi/κ1| = (ri/r1)3, setting a value for κ2
+determines the radius r2 of vortex 2. Then, setting values for s1
+and β allows one to determine the location and the radius of
+vortex 3, using the conditions (25) and (24) for the collapse of
+point vortices of the same scaled strengths.
+The flow evolution is simulated using the Contour-Advective
+Semi-Lagrangian (CASL) algorithm, introduced in [33] and first
+adapted to 3D QG dynamics in [34]. As for n = 2, Eq. (1) is
+inverted in spectral space. The flow domain is a triply-periodic
+cube, with side length 2π.
+Vortices are identified as contiguous volumes of uniform q.
+Their centres are again the active-scalar weighted centres of
+the vortex volumes, which now coincide with their geometrical
+centres.
+The first example illustrated is for β = 0.5 (n = 3, α =
+1.25), κ2 = κ1 ≃1.33687 × 10−2 and s1 = 0.75. The collapse
+time for equivalent point vortices is τpv = 56.76. Fig. 15 shows
+snapshots of the flow and Fig. 16 shows the trajectories of the
+vortex centres, the evolution of the distances si(t) and of the
+geometrical functions gi(t) until the vortices merge. The two like-
+signed vortices merge at tm = 52. By this time, the vortices have
+already strongly deformed and have departed from the trajecto-
+ries of the equivalent point vortices. This explains why in this
+case merger occurs at a later time than the actual collapse time
+(τpv = 56.76) of the equivalent point vortices. The early evolution
+of the vortices does however conform to the self-similar motion
+of the equivalent point vortices, as shown by the near matching
+of the geometrical functions gi(t) with the straight line t/τpv at
+early times. Again, large filaments are produced during the strong
+10
+
+=====PAGE 11
+J.N. Reinaud, D.G. Dritschel and R.K. Scott
+Physica D 434 (2022) 133226
+Fig. 15. Top view of the vortex bounding contours in the collapse of three vortices in 3D, for β = 0.5 (α = 0.75), κ2/κ1 = 1 and s1 = 0.75. Times shown (top row)
+are t = 0, 15, 26 and 35. Orthographic view (bottom row) at an angle
+of 60◦from the vertical at t = 35 (bottom row). The shade of the contours indicates the
+depth: dark contours are near the bottom, while light contours are near the top of the vortices.
+Fig. 16. (a) Trajectories of the three finite-core vortex centres until the like-signed vortices merge (solid lines) and full trajectories for the equivalent point vortices
+(dotted lines), with vortex 1 in red, vortex 2 in blue and vortex 3 in black, (b) evolution of the distances si(t), (c) geometrical functions gi(t) for β = 0.5
+(n = 3, α = 0.75) κ2/κ1 = 1 and s1 = 0.75 (until the two like-signed vortices merge). The dashed black line in (c) shows t/τpv. In (b) and (c), i = 1 is
+represented in blue, i = 2 in red and i = 3 in black.
+interaction. Filamentation occurs at nearly all heights occupied
+by the vortices. This produces a highly-convoluted distribution of
+active scalar.
+The last example illustrated is for β = 1.5 (n = 3, α = 0.25),
+κ2 = κ1 ≃2 × 10−2 and s1 = 0.75. The collapse time for
+equivalent point vortices is τpv = 18.2. The two like-signed finite-
+volume vortices merge at tm = 16. Fig. 17 shows snapshots of
+the vortices while Fig. 18 shows the trajectories of the vortex
+centres, the evolution of the distances si(t) and of the geometrical
+functions gi(t). Results show a very good match between the mo-
+tion of the vortex centres and the motion of the equivalent point
+vortices until the like-signed vortices merge, see in particular
+panel (c) of Fig. 18. Fig. 17 again shows that, during the initial
+stage of the merger, the vortices are less deformed in this case for
+β = 1.5 than in the previous case for β = 0.5 (having otherwise
+identical parameters). For n = 3 (i.e. 3D), the deformation of
+the vortices does not affect the geometrical functions gi(t) as
+much as it does for n = 2 (i.e. 2D). For β = 1.5, the filaments
+generated by the interaction are thinner compared to the ones
+occurring for β = 0.5, and they break rapidly into small-scale
+structures. This generates more small-scale secondary coherent
+vortices and debris. Similarly to the 2D cases, we estimate the
+vortex deformation by evaluating the aspect ratios b/a and c/a,
+c < b < a, of the best-fit ellipsoids. The best-fit ellipsoid is the
+ellipsoid having the same geometrical centre and second order
+moments as the vortex.
+Results are shown in Fig. 19. As in the 2D cases, the vortices
+pulsate weakly. (It should be noted that in this case, by symmetry,
+the vertical axis of the vortices does not tilt. The intermediate
+semi-axis length b of the initially spherical vortices, remains con-
+stant and corresponds to the vortex half-height. This is a direct
+consequence of the lack of vertical advection of the vortices. The
+horizontal aspect ratio is therefore a/c.) Again, at the onset of
+merger the most deformed vortex is vortex 2.
+To quantify the effect of deformation on the vortex trajecto-
+ries, we measure the difference |∆s(t)| between the finite core
+and equivalent point vortex centres by
+|∆s(t)| =
+(
+3
+∑
+i=1
+(si(t) −li(t))2
+)1/2
+(34)
+11
+
+=====PAGE 12
+J.N. Reinaud, D.G. Dritschel and R.K. Scott
+Physica D 434 (2022) 133226
+Fig. 17. As in Fig. 15 but for β = 1.5 (α = 0.25); all other parameters are the same, namely κ2/κ1 = 1 and s1 = 0.75. Times shown (top row) are t = 0, 15, 26
+and 35. The bottom row again provides an orthographic view of the interaction at t = 35.
+Fig. 18. (a) Trajectories of the three finite-core vortex centres until the like-signed vortices merge (solid lines) and full trajectories for the equivalent point vortices
+(dotted lines), with vortex 1 in red, vortex 2 in blue and vortex 3 in black, (b) evolution of the distances si(t), (c) geometrical functions gi(t) for β = 1.5
+(n = 3, α = 0.25), κ2/κ1 = 1 and s1 = 0.75 (until the two like-signed vortices merge). The dashed black line in (c) shows t/τpv. In (b) and (c), i = 1 is
+represented in blue, i = 2 in red and i = 3 in black.
+Fig. 19. Evolution of aspect ratios b/a, panel (a), and c/b, panel (b), of the best-fit ellipsoid for the case β = 1.5 (n = 3, α = 0.25), κ2 = κ1 ≃2×10−2 and s1 = 0.75
+(until the two like-signed vortices merge). The black line corresponds to vortex 1, the red line to vortex 2, the blue line to vortex 3. The jaggedness of the curve is
+due to the coarse time sampling.
+12
+
+=====PAGE 13
+J.N. Reinaud, D.G. Dritschel and R.K. Scott
+Physica D 434 (2022) 133226
+Fig. 20. Scaled difference |∆s(t)|/r2
+h (see text for definition) between the finite core and equivalent point vortex trajectories plotted against a measure of the
+separation of the finite core vortices |s| for (a) β = 0.5 and (b) β = 1.5. All simulations are for otherwise identical parameters: n = 3, κ2 = κ1 and s1 = 0.75. Results
+are shown for rh = 0.1 (black solid line), 0.15 (red solid line), 0.2 (blue solid line), 0.25 (black dotted line) and 0.3 (red dotted line). Indicative slopes are indicated
+by black dashed lines: |s|−2.5 in (a) and |s|−3.5 in (b).
+where si and li are, respectively, the distances between the finite
+core vortex centres and between the point vortex centres. We
+also examine |s(t)|, a measure of the distance between the finite
+core vortex centres, defined similarly (using si in place of si −li
+on the r.h.s. above). As the vortices spiral toward each other,
+|s(t)| decreases while |∆s(t)| is expected to increase due to the
+increasing deformation of the vortex cores.
+To check this, we have performed additional simulations vary-
+ing the common radius rh of the initial vortices while keeping
+all other parameters fixed. Varying rh affects the vortex vol-
+umes hence their strengths κi. In order to compare the results,
+therefore, we define an equivalent time T
+T =
+( rh
+0.2
+)3
+t
+(35)
+so that T
+=
+t for the reference case rh =
+0.2. Results are
+presented in Fig. 20. Here we show |∆s|/r2
+h vs |s| before the
+vortices merge for (a) β = 0.5 and (b) β = 1.5, both for n = 3,
+κ2 = κ1 and s1 = 0.75. Each curve corresponds to a different
+radius rh as indicated. The black dashed lines in these panels give
+an indicative slope in the middle range of |s| or T (since |s| ∝
+(Tc −T)1/(β+2) for the point vortices). The collapse of the curves
+indicates that the difference in the finite-core and point-vortex
+trajectories scales like r2
+h . On the other hand, the dependence on
+|s| is not a simple power law; there is a much steeper dependence
+for large |s| than for intermediate values. We cannot provide a
+theory for this behaviour, but a cursory examination indicates
+that it is likely to involve a complicated analysis.
+7. Conclusion
+We have revisited the problem of the finite-time collapse of
+three vortices in the generalised 2D Euler and 3D QG flow models.
+For point vortices, the evolution in the two models is identical
+and only depends on the parameter β = n −2α, where n is
+the dimension of space and α is the power of the Laplacian in
+the inversion relation between the streamfunction and the active
+scalar.
+We have derived the relations that determine the conditions
+for finite-time, self-similar collapse from first principles. We
+then used these conditions to initialise numerical simulations for
+finite-core vortices in both the 2D and 3D models.
+Instead of complete collapse of all three vortices to a point,
+the interaction leads to the merger of the two like-signed vor-
+tices at a time earlier than the point vortex collapse time. We
+observe both the creation of large scales through vortex merger,
+and the creation of smaller scales through filamentation and the
+generation of small-scale debris. These physical processes have
+been associated with both an inverse energy cascade as well as
+a direct enstrophy (or active scalar variance) cascade in the past,
+see e.g. [35]. Indeed, they are likely to be the primary processes
+for energy and enstrophy transfers in any destructive vortex
+interaction, not just in turbulent flows. As β = n −2α increases,
+shear induced by the vortices falls off more rapidly, as 1/dβ+2
+where d is the distance from the vortex. During strong vortex
+interactions, the size of the filaments decreases as β increases,
+and the filaments break down into small-scale structure more
+rapidly. This offers a rapid route for the generation of small scales
+in these flows.
+The agreement between the finite-core and point vortex evo-
+lutions down to vortex separations approaching the critical merger
+distance, in both the n = 2 (2D) and n = 3 (3D) cases, is
+remarkable. As the critical merger distance is approached, vortex
+deformations inevitably lead to departures from the point vortex
+trajectories. At that point, qualitative differences in the finite-core
+deformations between the n = 2 and n = 3 cases become more
+pronounced.
+In 3D, there is much more freedom for these deformations, and
+they vary with height. The upper and lower extremities of the
+vortices are generally more weakly interacting than their mid-
+planes, and are further apart. This has no analogue in 2D, where
+interactions are on-average at closer range even with the same β.
+This results in a closer match to the point-vortex dynamics in 3D
+than in 2D.
+The collapse of three vortices is a special case of the more
+general collapse of N vortices which has been addressed in the
+literature for 2D flows governed by the standard Euler equa-
+tions [36] and references therein. The study of the collapse of
+more than three vortices in generalised Euler and QG flow models
+is a potential extension of the present work.
+CRediT authorship contribution statement
+Jean N. Reinaud: Conception and design, Analysis and inter-
+pretation of the data, Writing – original draft, Writing – review
+& editing. David G. Dritschel: Conception and design, Analysis
+and interpretation of the data, Writing – original draft, Writing
+– review & editing. Richard K. Scott: Conception and design,
+Analysis and interpretation of the data, Writing – original draft,
+Writing – review & editing.
+Declaration of competing interest
+The authors declare that they have no known competing finan-
+cial interests or personal relationships that could have appeared
+to influence the work reported in this paper.
+13
+
+=====PAGE 14
+J.N. Reinaud, D.G. Dritschel and R.K. Scott
+Physica D 434 (2022) 133226
+Acknowledgement
+All authors approved the version of the manuscript to be
+published.
+References
+[1] J.C. McWilliams, The vortices of two-dimensinal turbulence, J. Fluid Mech.
+219 (1990) 361–385.
+[2] D.G. Dritschel, R.K. Scott, C. Macaskill, G.A. Gottwald, C.V. Tran, Unifying
+scaling theory for vortex dynamics in two-dimensional turbulence, Phys.
+Rev. Lett. 101 (2008) 094501.
+[3] B.H. Burgess, R.K. Scott, Scaling theory for vortices in the two-dimensional
+inverse energy cascade, J. Fluid Mech. 811 (2017) 742–756.
+[4] Z. Zhang, W. Wang, B. Qiu, Oceanic mass transport by mesoscale eddies,
+Science 345 (2014) 322–324.
+[5] A. Adriani, A. Mura, G. Orton, C. Hansen, F. Altieri, M.L. Moriconi, J.
+Rogers, G. Eichtäst, T. Momary, A.P. Ingersoll, G. Filacchione, G. Sindoni, F.
+Tabataba-Vakili, B.M. Dinelli, F. Fabiano, S.J. Bolton, J.E.P. Connerney, S.K.
+Atreya, J.I. Lunine, F. Tosi, A. Migliorini, D. Grassi, G. Piccioni, R. Noschese,
+A. Cicchetti, C. Plainaki, A. Olivieri, M.E. O’Neill, D. Turrini, S. Stefani, R.
+Sordini, M. Amoroso, Clusters of cyclones encircling Jupiter’s poles, Nature
+555 (2018) 216–219.
+[6] H. von Helmholtz, Über Integrale der hydrodynamischen Gleichungen,
+welche der Wirbelbewegung entsprechen, J. Reine Angew. Math. 55 (1858)
+25–55.
+[7] G. Kirchhoff, Vorlesungen Über Mathematische Physik - Mechanik, Druck
+und Verlag con B.G. Teubner, Leipzig, 1876.
+[8] H. Poincaré, Théorie des Tourbillons, George Carré, Paris, 1893.
+[9] W. Gröbli, Spezielle Probleme Über die Bewegung Geradliniger Paralleler
+Wirbelfäden, Druck von Zürcher und Furrer, Zürich, 1877.
+[10] J.L. Synge, On the motion of three vortices, Canad. J. Math. 1 (3) (1949)
+257–270.
+[11] E.A. Novikov, Dynamics and statistics of a system of vortices, Sov. Phys.
+JETP 41 (1975) 937–943.
+[12] H. Aref, Motion of three vortices, Phys. Fluids 22 (1979) 393–400.
+[13] J. Tavantzis, L. Ting, The dynamics of three vortices revisited, Phys. Fluids
+31 (1988) 1392–1409.
+[14] E.A. Novikov, Y.B. Sedov, Vortex collapse, Sov. Phys. JETP 50 (1979)
+297–301.
+[15] Y. Kimura, Similarity solution of two-dimensional point vortices, J. Phys.
+Soc. Japan 56 (1987) 2024–2030.
+[16] Y. Kimura, Parametric motion of complex-time singularity toward real
+collapse, Physica D 46 (1990) 439–448.
+[17] Y. Kimura, Vortex collapse from the viewpoint of complex-time singularity,
+Physica D 51 (1991) 512–519.
+[18] H. Aref, Self-similar motion of three point vortices, Phys. Fluids 22 (2010)
+057104, http://dx.doi.org/10.1063/1.3425649.
+[19] V.S. Krishnamurthy, M.A. Stremler, Finite-time collapse of three point
+vortices in the plane, Regul. Chaotic Dyn. 23 (5) (2018) 530–550.
+[20] P.W.C. Vosbeek, J.H.G.M. van Geffen, V.V. Meleshko, G. J.F. van Heijst,
+Collapse interactions of finite-sized two-dimensional vortices, Phys. Fluids
+9 (1997) 3315–3322.
+[21] G.
+Badin,
+A.M.
+Barry,
+Collapse
+of
+generalized
+Euler
+and
+surface
+quasigeostrophic point vortices, Phys. Rev. E 98 (2018) 023110.
+[22] C.K. Taylor, s.G. Llewellyn Smith, Dynamics and transport properties of
+three surface quasigeostrophic point vortices, Chaos 26 (2016) 113117.
+[23] J.B. Weiss, Point vortex dynamics in three-dimensional ageostrophic
+balanced flows, J. Fluid Mech. 936 (2022) A19.
+[24] J.N. Reinaud, The self-similar collapse of three geophysical vortices,
+Geophys. Astrophys. Fluid Dyn. 115 (4) (2021) 369–392.
+[25] R.T. Pierrehumbert, I.M. Held, K.L. Swanson, Spectra of local and nonlocal
+two-dimensional turbulence, Chaos Solitons Fractals 4 (1994) 1111–1116.
+[26] I.M.
+Held,
+R.T.
+Pierrehumbert,
+S.T.
+Garner,
+K.L.
+Swanson,
+Surface
+quasi-geostrophic dynamics, J. Fluid Mech. 282 (1995) 1–20.
+[27] P.R. Stinga, User’s guide to the fractional Laplacian and the method of
+semigroups, in: A. Kochubei, Y. Luchko (Eds.), Partial Differential Equations,
+Walter De Gruyter GmbH, Berlin/Munich/Boston, 2019, pp. 235–266.
+[28] D.G.
+Dritschel,
+An
+exact
+steadily
+rotating
+surface
+quasi-geostrophic
+elliptical vortex, Geophys. Astrophys. Fluid Dyn. 105 (4–5) (2011) 368–376.
+[29] D.G. Dritschel, J. Fontane, The combined Lagrangian advection method, J.
+Comput. Phys. 229 (2010) 5408–5417.
+[30] B.J. Harvey, M.H.P. Ambaum, Instability of surface-temperature filaments
+in strain and shear, Q. J. R. Meterol. Soc. 136 (651) (2010) 1506–1513.
+[31] D.G. Dritschel, P.H. Haynes, M.N. Juckes, T.G. Shepherd, The stability of
+a two-dimensional vorticity filament under uniform strain, J. Fluid Mech.
+230 (1991) 647–665.
+[32] D.W. Waugh, D.G. Dritschel, The stability of filamentary vorticity in
+two-dimensional geophysical vortex-dynamics models, J. Fluid Mech. 231
+(1991) 575–598.
+[33] D.G. Dritschel, M.H. Ambaum, A contour-advective semi-Lagrangian nu-
+merical algorithm for simulating fins-scale conservative dynamical fields,
+Q. J. R. Meterol. Soc. (1997) 1097–1130.
+[34] D.G. Dritschel, Vortex merger in rotating stratified flows, J. Fluid Mech.
+455 (2002) 83–101.
+[35] A.H. Nielsen, X. He, J. Juul Rasmussen, T. Bohr, Vortex merging and spectral
+cascade of two-dimensional flows, Phys. Fluids 8 (9) (1996) 2263–2265.
+[36] H. Kudela, Collapse of n point vortices, formation of the vortex sheets and
+transport of passive markers, Energies 14 (2021) 943.
+14

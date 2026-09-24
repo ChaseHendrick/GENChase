@@ -1,0 +1,1327 @@
+=====PAGE 1
+On the collapse of three point vortices on surfaces
+Theodore D. Drivas, Boris A. Khanikati, and Valeriya A. Khanikati
+Abstract. Point vortices represent an important reduced model describing two-dimensional ideal
+fluid dynamics.
+It is well known that there exist three-vortex configurations on the Euclidean
+plane R2 that exhibit finite-time singularities, i.e., collapse to a single point.
+Moreover, in R2,
+such collapses occur only self-similarly. Here, we investigate the extent to which this phenomenon
+persists on curved surfaces. We show that self-similar collapse is a universal feature of surfaces of
+nonnegative constant curvature, namely the plane and the sphere. In contrast, on the hyperbolic
+plane, it is shown that self-similar collapsing solutions do not exist with respect to any distance
+variable defined by an analytic function of the geodesic distance. Finally, we establish the existence
+of nearly self-similar collapse of three vortices on arbitrary smooth surfaces embedded in R3.
+1. Introduction
+The point vortex model is one of the simplest mathematical models for studying two-dimensional
+(2D) turbulence. By concentrating vorticity into finitely many Dirac masses of prescribed circula-
+tions, it thereby reduces the Euler evolution to a finite-dimensional system of ordinary differential
+equations. This reduction originates in the nineteenth century and was later recognized as a rich
+Hamiltonian system [1, 2, 3, 4], where the resulting equations have widely been used as a “math-
+ematical playground” to study interesting and non-trivial phenomena [4, 5, 6, 7].
+A central appeal of the point vortex model is that it preserves several structural features of
+ideal hydrodynamics while being far more analytically tractable. First, as mentioned previously,
+the governing equations are Hamiltonian. Second, the dynamics possesses conserved quantities
+associated with Euclidean symmetries, which largely constrain motion at low vortex numbers. For
+example, for N = 3 vortices on the plane, the system is integrable. Moreover, when expressed
+in trilinear coordinates for the vortex triangle, the reduced problem is governed by an integrable
+two-dimensional system [8]. Given how amenable the three-vortex problem is to detailed analysis,
+a thorough classification of various solutions has been done, including equilibria, periodic motion,
+and singular solutions [9].
+Among these singular solutions are those of finite-time collapse: configurations in which vortices
+coalesce to a single point in finite time. This type of phenomenon shall be the focus of this paper.
+The collapse of three point vortices on the plane is a classical and well-understood phenomenon
+[10, 11, 12]. Owing to the conservation laws of the system, the necessary and sufficient conditions
+for collapse imply that the motion is necessarily self-similar: the triangle formed by the vortices
+remains similar to itself throughout the evolution.
+It is perhaps natural to extend the motion of point vortices to surfaces beyond the plane; one
+such motivation is that the Earth may be idealized as a sphere supporting a nearly two-dimensional
+fluid atmosphere. The behavior of point vortices on surfaces is relatively well studied, particularly
+for closed surfaces [13, 14, 15, 16, 17, 18, 19]. In fact, on the sphere specifically, the existence
+of collapsing configurations has been known for quite some time now [20].
+1
+arXiv:2607.16490v1  [physics.flu-dyn]  17 Jul 2026
+
+=====PAGE 2
+2
+THEODORE D. DRIVAS, BORIS A. KHANIKATI, AND VALERIYA A. KHANIKATI
+Kidambi and Newton studied self-similar collapse on the sphere and derived necessary and
+sufficient conditions for its occurrence. Since the relevant first integrals on the sphere depend on
+the mutual chord lengths in exactly the same way as in the planar problem, we here show that
+the classical planar argument extends directly to the spherical setting. As a consequence, every
+collapsing three-vortex configuration on the sphere collapses self-similarly with respect to chord
+length.
+It is then interesting to consider on which surfaces specifically collapse persists self-similarly.
+The existence of curvature essentially introduces some length-scale, and given that curvature is not
+constant, such collapse is quite unlikely. A natural hypothesis would be that self-similar collapse
+exists on surfaces of constant curvature, e.g., the plane, sphere, or hyperbolic plane. We show
+that such an assumption is not true, and the answer depends on the sign of the curvature: while
+collapse on the plane and sphere is necessarily self-similar, the hyperbolic plane admits no self-
+similar collapsing solutions. This result is summarized in the following theorem.
+Theorem 1.1. For the three-vortex problem, every collapsing configuration on the plane or
+sphere is self-similar, where self-similarity is understood with respect to Euclidean distance in the
+planar case and chord length in the spherical case. By contrast, the hyperbolic plane admits no
+self-similar collapsing solutions with respect to any distance variable given by an analytic function
+of the geodesic distance.
+We remark that Vil`as [21] proved a similar result for the real projective plane, namely that there
+is no self similar collapse (in terms of the Euclidean chord distance inherited from the standard
+representation of RP2 as S2/Z2) of three vortices in RP2. This result, along with ours for the
+hyperbolic plane, disentangles the issue of integrability of vortex motion (which holds in all cases
+for three vortices [22]) and self-similar collapse.
+This, however, does not rule out collapse on surfaces in general, i.e., it is possible that solutions
+that collapse in finite time do exist on arbitrary surfaces. Recent work has shown that self-similar
+collapses (and bursts) are robust with respect to sufficiently regular perturbations [23]. Consid-
+ering three point vortices on a surface locally, the motion is essentially planar with higher order
+corrections, and with the aforementioned work in hand, our second main result is the existence of
+collapsing configurations on a closed surface S.
+Even though collapse will not, in general, be self-similar, the motion will asymptotically ap-
+proach self-similarity. With this motivation, the work of Vil`as [21] introduced the notion of asymp-
+totically (or, near) self-similar collapse:
+Definition 1.2 (Asymptotically self-similar collapse). We say that a three point vortex system
+undergoes asymptotically self-similar collapse in terms of a variable ℓij if all sides decay at the same
+rate as the time approaches the time of collapse, tc. That is,
+˙ℓij/ℓij
+˙ℓkm/ℓkm
+→1,
+as t →tc.
+(1)
+Hence, our second main result is summarized in the following theorem.
+Theorem 1.3. Let S be a surface embedded in R3 and fix p ∈S. Let (Γ1, Γ2, Γ3) admit a
+planar self-similar collapse. Then, there exists ε0 > 0 such that for every 0 < ε < ε0 there are
+initial positions zi(0) ∈S with dS(zi(0), p) < ε for i = 1, 2, 3 so that the solution of the point vortex
+equations on S with these initial data collapses to p in an asymptotically self-similar fashion.
+Remark 1.4. As will be seen from the proof of the theorem below, the existence of collapse
+hinges on local data. As such, it is sufficient to assume that S is a Riemannian surface, but for the
+sake of concreteness, we treat embedded surfaces. Moreover, if S is a surface of higher genus (g ≥1),
+collapsing configurations will still exist. For g ≥1, the equations of motion must be modified to
+
+=====PAGE 3
+ON THE COLLAPSE OF THREE POINT VORTICES ON SURFACES
+3
+accommodate a non-trivial irrotational part of the velocity [24]. However, the procedure of proof of
+the proposition remains the same, as for sufficiently small neighborhoods on S, the irrotational part
+will be perturbative and the conclusion holds. Collapse on surfaces with boundary follow similarly.
+Let us now review briefly the point vortex model, collapsing solutions in the Euclidean plane,
+sphere and hyperbolic plane, and point vortices on surfaces.
+2. Point vortex model
+2.1. Point vortices on the plane. Point vortices are a description of 2D turbulence by
+representing the vorticity profile as being concentrated in finitely many points:
+ω(x, t) =
+X
+i
+Γiδzi(t)(x),
+(2)
+where zi ∈R2, denotes the ith vortex with corresponding circulation Γi ∈R. As mentioned previ-
+ously, the point vortex dynamics form a Hamiltonian system with Hamiltonian function
+H = −1
+4π
+X
+i̸=j
+ΓiΓj log |zi −zj|.
+(3)
+Here, | · | is the Euclidean distance in R2. The system also has two other first integrals of motion,
+the linear and angular momenta:
+P ≡
+X
+i
+Γizi(t) = const.,
+J ≡
+X
+i
+Γiz2
+i (t) = const.
+For three vortices, a useful conserved quantity L depending only on relative distances may be
+formed from a linear combination of P and J:
+L =
+X
+i<j
+ΓiΓj ℓ2
+ij,
+where ℓij = |zi −zj| is the Euclidean distance between the vortices. Three point vortex collapse
+can be completely characterized in terms of this invariant L [11]. Namely,
+Lemma 2.1. The necessary and sufficient conditions for collapse are that L = 0 and
+Γ1Γ2 + Γ2Γ3 + Γ3Γ1 = 0.
+Furthermore, these conditions force the collapse to be self-similar.
+Proof. We include the proof, which follows [11], for the sake of completeness. Let us rewrite
+the point vortex triangle in terms of the radius of the circumcircle, R(t), and the interior angles
+α + β + γ = π. We may write
+L = R2
+sin2 α
+Γ1
++ sin2 β
+Γ2
++ sin2 γ
+Γ3
+
+.
+Since we assume that collapse occurs at some finite time, there exists a time tc such that R(tc) = 0.
+It then follows that L(tc) = 0, and by its invariance, L = 0. Hence,
+sin2 α
+Γ1
++ sin2 β
+Γ2
++ sin2 γ
+Γ3
+= 0.
+(4)
+Let us call M = Γ1Γ2 + Γ2Γ3 + Γ3Γ1. We may rewrite the Hamiltonian as
+e−2πH/Γ1Γ2Γ3 =
+ R(t)
+R(0)
+M/Γ1Γ2Γ3
+(sin α)1/Γ1(sin β)1/Γ2(sin γ)1/Γ3.
+
+=====PAGE 4
+4
+THEODORE D. DRIVAS, BORIS A. KHANIKATI, AND VALERIYA A. KHANIKATI
+Assume for the sake of contradiction that M̸ = 0. As t →tc, R(t) →0. Hence, for the quantity
+to remain constant and positive, it would require at least one angle to approach 0 or π, forcing the
+triangle to become collinear. However, in this case, R →∞, a contradiction. Hence, M = 0.
+With these conditions in hand, we may rewrite
+H = −Γ1Γ2Γ3
+2π
+log sin α
+Γ1
++ log sin β
+Γ2
++ log sin γ
+Γ3
+
+.
+(5)
+Now, we have three equations for the three angles: they sum to π, (4), and (5). Three independent
+equations for three variables, hence we get that α, β, γ are constant. Hence, the motion is self-
+similar; i.e. there exists a common scaling λ(t) such that
+ℓij(t) = λ(t)ℓij(0).
+(6)
+At t = 0, of course, λ(0) = 1. For finite-time collapse to occur, there must exist a finite time tc
+where λ(tc) = 0. This is observed to occur when the stated conditions are met.
+□
+Remark 2.2. We note that the collapse of two vortices cannot occur: this is easy to see from the
+conserved quantity L. Particularly, if collapse occurs, then L = Γ1Γ2ℓ12(t)2 = 0 for all t. However,
+this would imply that at least one of the circulations must be zero.
+2.2. Motion of point vortices on surfaces. Here, we generalize the motion in the above
+subsection to surfaces. The Hamiltonian of the point vortex system is given in terms of the Green’s
+function of the Laplace-Beltrami operator,
+H(z1, . . . , zn) = 1
+2
+X
+i̸=j
+ΓiΓjGS(zi, zj) + 1
+2
+X
+ℓ
+Γ2
+ℓRS(zℓ, zℓ),
+(7)
+where RS(·, ·) represents the Robin function, the regular part of the Green’s function:
+RS(p, q) =
+(
+GS(p, q) + log(dS(p, q)/2π),
+p̸ = q
+limp→q[GS(p, q) + log(dS(p, q)/2π)],
+p = q.
+(8)
+Here, dS(·, ·) is the geodesic distance on surface S. Let us introduce the notation that if a function
+depends on all vortex coordinates, we shall write f(z1, . . . , zn) ≡f(z). The equations of motion
+corresponding to our Hamiltonian are given by
+Γi ˙zi = J(zi)e∇ziH(z),
+(9)
+where e∇is the covariant derivative associated with the induced metric, and J represents the almost
+complex structure on S (rotation by ninety degrees in the tangent plane).
+The above Hamiltonian is true for closed surfaces of genus g = 0 (so that there are no non-
+trivial harmonic vector fields). For surfaces of higher genus or non-compact surfaces, modifications
+must be made. For example, recent work has derived the equations of motion for point vortices
+on a torus [19], and the recent work [25] gives a comprehensive review on how the vortex system
+couples to evolving potential flow. Our proof of the existence of collapsing configurations deals with
+surfaces of genus zero, but can be naturally extended to surfaces for g ≥1 since it is, in essence,
+perturbative. Similarly, on surfaces with boundary, the effect of the Robin function is perturbative
+in the interior, see e.g. [26], and the collapse will again follow.
+Now that we have reviewed some of the existing theory for point vortices, we proceed to our
+discussion on the self-similar motion of point vortices on surfaces of constant curvature.
+
+=====PAGE 5
+ON THE COLLAPSE OF THREE POINT VORTICES ON SURFACES
+5
+3. Surfaces of constant curvature
+We consider here surfaces of constant curvature: (i) of constant positive curvature, the unit
+sphere S2, and (ii) constant negative curvature, the hyperbolic plane H2. The Green’s functions on
+these surfaces are given by [13]
+GS2(p, q) = −1
+2π log
+
+sin dS2(p, q)
+2
+
+,
+for p, q ∈S2,
+(10)
+GH2(p, q) = −1
+2π log
+
+tanh dH2(p, q)
+2
+
+,
+for p, q ∈H2.
+(11)
+One may notice that the Green’s functions on S2 and H2 are not directly analogous. Unlike the
+hyperbolic plane, S2 is a compact manifold without boundary, and hence there exists no distribution
+satisfying ∆pG(p, q) = δq(p). Rather, one defines the normalized Green’s function by ∆pG(p, q) =
+δq(p) −1/Area(S2).
+As a result, one may add a uniform vorticity background to the Green’s
+function without affecting the equations. Indeed, writing G(dS2) = −1
+2π log(tan dS2/2) differs only
+by such a background, and hence reproduces the same equation. On the other hand, G(dH2) =
+−1
+2π log(tanh dH2/2) is the unique choice on H2, since any (radially symmetric) harmonic addition
+must satisfy the prescribed behavior at infinity.
+3.1. The sphere. Given that the explicit form of the Green’s function is known, it is possible
+to simplify the form of the Hamiltonian. First, we may calculate the Robin function as
+RS2(p, q) = −1
+2π log
+sin(dS2(p, q)/2)
+dS2(p, q)
+
+.
+The diagonal term is evaluated as the limit
+RS2(q, q) = lim
+p→q RS2(p, q) = 1
+2π log 2.
+Hence, we arrive at
+HS2(z) = −1
+2π
+X
+i<j
+ΓiΓj log
+
+sin dS(zi, zj)
+2
+
++ log 2
+4π
+N
+X
+ℓ=1
+Γ2
+ℓ.
+(12)
+Note that the argument of the logarithm in the above equation is proportional to the chord length
+between two points on the sphere, ℓij, with which we rewrite
+HS2(z) = −1
+2π
+X
+i<j
+ΓjΓj log ℓij + const.,
+(13)
+where the constant does not affect the dynamics. Correspondingly, the equations of motion are
+˙zi = 1
+2π
+X
+j̸=i
+Γj
+zi × zj
+|zi −zj|2 = 1
+4π
+X
+j̸=i
+Γj
+zi × zj
+1 −zi · zj
+,
+(14)
+which reproduces the equations given in [20]. We may also write equations for length,
+dℓ2
+ij
+dt = ΓkV
+πR
+ 
+1
+ℓ2
+jk
+−1
+ℓ2
+ki
+!
+,
+(15)
+where V is the volume of the parallelepiped formed by the vectors.
+The motion of point vortices on a sphere was studied extensively by Kidambi and Newton [20],
+including the case of three point vortex collapse. In particular, they prove the following theorem
+with regard to the necessary and sufficient conditions for self-similar collapse on the sphere:
+
+=====PAGE 6
+6
+THEODORE D. DRIVAS, BORIS A. KHANIKATI, AND VALERIYA A. KHANIKATI
+Lemma 3.1 (Kidambi and Newton [20]). The necessary and sufficient conditions for self-similar
+collapse on a sphere in terms of the chord length ℓij are
+L =
+X
+i<j
+ΓiΓjℓ2
+ij = 0
+and
+X
+i
+1
+Γi
+= 0,
+(16)
+and that the vortices do not form an equilibrium.
+While it is shown that these conditions are necessary and sufficient, it is also possible to demon-
+strate that collapse always occurs self-similarly, by analogy with the planar motion. It will be useful
+to note that the quantity L given in (16) is conserved. We sketch the proof here.
+Proof. The planar proof of Lemma 2.1 relies only on the conserved quantities L and H. On the
+sphere, these quantities have exactly the same dependence on the mutual distances when expressed
+in terms of chord lengths ℓij. Therefore, the planar argument applies verbatim: if collapse occurs,
+then L = 0, and conservation of the Hamiltonian forces the ratios of the three chord lengths to
+remain constant. Hence, all three chord lengths shrink by a single common scale factor, so the
+collapse is self-similar.
+□
+We next remark that this collapse, while it is self-similar in terms of chord lengths (an extrinsic
+concept), it is not so in terms of the intrinsic geodesic length:
+Corollary 3.2. Collapse on the sphere is not self-similar in terms of the geodesic length.
+Proof. Given collapse on S2, there exists λ(t) such that ℓij(t) = λ(t)ℓij(0). Using the relation
+between geodesic distance and chord length dij = 2 arcsin(ℓij/2),
+dij(t) = 2 arcsin
+ℓij(0)
+2
+λ(t)
+
+.
+However, arcsin(λx)̸ = µ(λ) arcsin(x), hence there does not exist a function µ(t) such that dij(t) =
+µ(t)dij(0).
+□
+3.2. The hyperbolic plane. We now switch to the surface of constant negative curvature,
+the hyperbolic plane. Following the same procedure as with the sphere, we find
+RH2(p, q) = −1
+2π log
+tanh(dH2(p, q)/2)
+dH2(p, q)
+
+,
+and
+RH2(q, q) = log 2
+2π .
+Thus, the Hamiltonian for the vortex system is
+HH2(z) = −1
+2π
+X
+i<j
+ΓiΓj log
+
+tanh dH2(zi, zj)
+2
+
++ log 2
+4π
+N
+X
+ℓ=1
+Γ2
+ℓ.
+(17)
+Henceforth, let us ignore the constant term in the Hamiltonian. Here, the argument of the logarithm
+is known as the pseudohyperbolic distance, and we shall denote it as
+ρij ≡tanh
+dH2(zi, zj)
+2
+
+.
+(18)
+Remark 3.3 (Potential flows on the hyperbolic plane). It is important to note a subtlety
+regarding the point vortex system defined by (17). In the space of L2 velocity fields, the velocity
+is not uniquely determined by the vorticity. Rather, one may decompose the velocity field into a
+vorticity-induced part K[ω] and a harmonic part, that is, u = K[ω]+uh, where uh is an L2-harmonic
+vector field. On H2, the space of such harmonic fields is infinite-dimensional [27]. Therefore, the
+point vortex system taken above retains only the vorticity-induced component K[ω] of the velocity
+field, corresponding to the choice uh = 0. However, it is not automatic from this construction that
+an initial choice uh(0) = 0 remains zero throughout the Euler dynamics, see discussion in [28].
+
+=====PAGE 7
+ON THE COLLAPSE OF THREE POINT VORTICES ON SURFACES
+7
+As such, flows with nontrivial harmonic component are not necessarily represented by this point
+vortex model. A more honest reduced model for highly concentrated vortices should follow from
+considerations similar to those in [25].
+In principle, one could define self-similar collapse with respect to any two-point function f(·, ·).
+However, the structure of the Hamiltonian singles out a natural choice: the quantity appearing
+inside the logarithm. In the hyperbolic plane H2, this is (up to a linear rescaling) the pseudohy-
+perbolic distance ρij. It is therefore most natural to define self-similarity in terms of said variable.
+Indeed, this choice is consistent with the Euclidean and spherical cases, where the Hamiltonian
+depends logarithmically on the chord length, and self-similar collapse correspondingly occurs in
+terms of that quantity.
+We would like to make use of the conserved quantities. We already have the Hamiltonian.
+Furthermore, following [29], there exists a momentum map J = P
+i ΓiXi which is conserved. The
+Hyperbolic plane is endowed with the Lorentz inner product
+⟨x, y⟩= x1y1 + x2y2 −x3y3.
+The Lorentz norm of the momentum map J must be conserved as well:
+⟨J, J⟩L =
+X
+i
+Γ2
+i ⟨Xi, Xi⟩L + 2
+X
+i<j
+ΓiΓj⟨Xi, Xj⟩L.
+Since Xi ∈H2, one has ⟨Xi, Xi⟩L = −1, while
+⟨Xi, Xj⟩L = −cosh dij = −
+1 + ρ2
+ij
+1 −ρ2
+ij
+, .
+Therefore
+⟨J, J⟩L = −
+X
+i
+Γ2
+i −2
+X
+i<j
+ΓiΓj
+1 + ρ2
+ij
+1 −ρ2
+ij
+= −
+ X
+i
+Γi
+!2
+−4
+X
+i<j
+ΓiΓj
+ρ2
+ij
+1 −ρ2
+ij
+.
+Since ⟨J, J⟩L and P
+i Γi are conserved, it follows that
+L ≡
+X
+i<j
+ΓiΓj
+ρ2
+ij
+1 −ρ2
+ij
+(19)
+is also conserved. With two conserved quantities now known, we may write the necessary conditions
+for self-similar collapse on H2 in terms of the pseudohyperbolic distance.
+Lemma 3.4. If a three point vortex configuration collapses self-similarly in terms of ρij, the
+necessary conditions for collapse on H2 are that (i):
+X
+i<j
+ΓiΓj = 0,
+(20)
+and (ii):
+X
+i<j
+ΓiΓj
+ρ2
+ij
+1 −ρ2
+ij
+= 0.
+(21)
+Proof. First, consider the conserved quantity L. Since ρij must go to zero for collapse to
+occur, and given that it is conserved, L = 0 for all times. For conservation of the Hamiltonian, it
+must be true that
+X
+ΓiΓj log ρij(t) = const.
+
+=====PAGE 8
+8
+THEODORE D. DRIVAS, BORIS A. KHANIKATI, AND VALERIYA A. KHANIKATI
+If collapse is self-similar, there exists λ(t) such that ρij(t) = λ(t)ρij(0). Substituting this into H,
+H = −1
+2π log λ(t)
+X
+i<j
+ΓiΓj + const.
+The Hamiltonian is an integral of motion, and since λ(t) is nonconstant, the coefficient in front of
+λ(t) must vanish. We conclude that
+X
+i<j
+ΓiΓj = 0.
+□
+However, the conditions become too restrictive.
+Proposition 3.5. There does not exist self-similar collapse in terms of the pseudohyperbolic
+distance on H2.
+Proof. By Lemma 3.4, any solution collapsing self-similarly must satisfy
+X
+i<j
+ΓiΓj
+ρ2
+ij
+1 −ρ2
+ij
+= 0,
+which is conserved. Suppose, for the sake of contradiction, that a self-similar collapsing solution
+exists. Then there is a function λ(t) such that
+ρij(t) = λ(t)ρij(0).
+Substituting into the conserved quantity gives
+X
+i<j
+ΓiΓj
+λ2(t)ρ2
+ij(0)
+1 −λ2(t)ρ2
+ij(0) = 0.
+We expand
+λ2x
+1−λ2x = P∞
+k=1 λ2kxk to obtain
+∞
+X
+k=1
+λ2k(t)
+X
+i<j
+ΓiΓj[ρij(0)]2k = 0.
+Given that λ(t) is nonconstant, which is must be for collapse to occur, it follows that each coefficient
+must vanish:
+X
+i<j
+ΓiΓj[ρij(0)]2k = 0,
+for all k ∈N.
+Take the first three equations corresponding to k = 1, 2, 3, that is, P ΓiΓj[ρij(0)]2 = 0,
+P ΓiΓj[ρij(0)]4 = 0, and P ΓiΓj[ρij(0)]6 = 0. The equations may be written in matrix form,
+
+
+ρ12(0)2
+ρ2
+13(0)
+ρ2
+23(0)
+ρ12(0)4
+ρ4
+13(0)
+ρ4
+23(0)
+ρ12(0)6
+ρ6
+13(0)
+ρ6
+23(0)
+
+
+
+
+Γ1Γ2
+Γ1Γ3
+Γ2Γ3
+
+=
+
+
+0
+0
+0
+
+.
+Assume that ρij are pairwise distinct for all pairs i, j. The determinant of the coefficient matrix is
+nonzero, hence such a system only has a solution if ΓiΓj = 0 for all pairs i, j, which is impossible
+since the circulations are nonzero.
+Hence, suppose that two squared distances are equal. Then, we obtain ΓiΓj + ΓiΓk = 0 and
+ΓjΓk = 0. Again, since the circulations are nonzero, this is impossible.
+As such, the only remaining possibility is if all initial lengths are equal, that is, ρij = ρkm.
+However, such a configuration is a relative equilibrium [29], which contradicts the assumption that
+collapse occurs. Therefore, self-similar collapse does not occur on H2 in terms of the pseudohyper-
+bolic distance.
+□
+
+=====PAGE 9
+ON THE COLLAPSE OF THREE POINT VORTICES ON SURFACES
+9
+Thus far, we have considered self-similar collapse with respect to the variable analogous to the
+planar and spherical cases. Perhaps, it could be that self-similar collapse exists in some different
+variable that is a function of the geodesic (or equivalently, pseudohyperbolic) distance. Let us
+consider a more general case.
+In particular, we shall defined distance through analytic functions of ρij, f(ρ), and rule out self-
+similar collapse with respect to this distance. Note that the pseudohyperbolic distance is related
+to the geodesic distance by an analytic function on H2, hence f(ρ(d)) is itself an analytic function,
+so the following proposition also holds for distance functions defined in terms of analytic functions
+of the geodesic distance g(dij).
+Proposition 3.6. Let f(x) be a strictly increasing analytic function such that f(0) = 0. Then,
+there exists no self-similar collapse in terms of rij = f(ρij) distance on H2.
+Proof. Since f is analytic and f(0) = 0, it admits a Taylor expansion of the form
+f(x) = amxm + am+1xm+1 + · · · ,
+(22)
+where m ≥1 is the order of zero of f at zero. Since f is strictly increasing, the first nonzero
+coefficient is positive am > 0. Let us define the function F(x) = [f(x)]1/m = x(am+am+1x+· · · )1/m.
+Indeed, F is itself analytic at zero, F(0) = 0, and F ′(0) = a1/m
+m̸
+= 0. Hence, by the inverse function
+theorem, h = F −1 is analytic in a neighborhood of zero. Let us define Rij = F(ρij).
+Suppose there exists self-similar collapse with respect to f, that is, rij(t) = λ(t)rij(0). Then,
+Rij(t) = [λ(t)]1/mRij(0), hence self-similarity in r = f(ρ) implies self-similarity in terms of R =
+F(ρ). It is therefore sufficient to show that there exists no self-similar collapse in terms of F(ρij).
+By definition, h has a simple zero at 0. Since it is analytic, we may Taylor expand it and find
+h′(x)
+h(x) = 1
+x +
+∞
+X
+n=0
+cnxn.
+Conservation of the Hamiltonian dH/dt = 0 yields the condition
+0 = −1
+2π
+X
+i<j
+ΓiΓjRij(0)h′(µ(t)Rij(0))
+h(µ(t)Rij(0))
+where we have denoted µ(t) = [λ(t)]1/m. Substituting the expansion yields
+0 = 1
+µ
+X
+i<j
+ΓiΓj +
+X
+n≥0
+cnµn X
+i<j
+ΓiΓj[Rij(0)]n+1.
+Since this holds for an interval of values of µ, all coefficients must vanish: P
+i<j ΓiΓj = 0 and
+X
+i<j
+ΓiΓj[Rij(0)]n+1 = 0
+for all n with cn̸ = 0.
+Since L →0 at collapse, it follows that L = 0 for all times. Recall that h has a simple zero at 0.
+Then, let us write
+h2/(1 −h2) =
+X
+n≥2
+bnxn.
+Indeed, since h has a simple zero at the origin, b2 > 0. Moreover, because L = 0, we also have
+0 =
+∞
+X
+n=2
+bnµn X
+i<j
+ΓiΓj[Rij(0)]n.
+Thus, whenever bn̸ = 0, this implies that P
+i<j ΓiΓj[Rij(0)]n = 0.
+
+=====PAGE 10
+10
+THEODORE D. DRIVAS, BORIS A. KHANIKATI, AND VALERIYA A. KHANIKATI
+To draw a contradiction similar to that in Prop. 3.5, we wish to show that we are guaranteed
+an equation of the form P ΓiΓj[Rij(0)]q = 0 for some q̸ = 0, 2. If bq̸ = 0 for some q̸ = 2, this is
+immediate. Otherwise,
+h2(x)
+1 −h2(x) = b2x2.
+Since b2 > 0,
+h(x) =
+√b2x
+√
+1 + b2x2 .
+Consequently,
+h′(x)
+h(x) = 1
+x −b2x + b2
+2x3 −· · · .
+Thus, let c3 = b2
+2̸ = 0, and the Hamiltonian supplies an equation with exponent q = 4.
+We therefore arrive at three conditions:
+(i) :
+X
+i<j
+ΓiΓj = 0,
+(ii) :
+X
+i<j
+ΓiΓj[Rij(0)]2 = 0,
+(iii) :
+X
+i<j
+[Rij(0)]q = 0
+for some q̸ = 0, 2. Now, an analogous argument to that of Prof. 3.5 follows. If Rij(0) are pairwise
+distinct for all pairs i, j, then the system is invertible and it follows that ΓiΓj = 0 for all pairs i, j,
+leading to trivial circulations. The system only has a non-trivial solution if the initial configuration
+is equilateral; however, such a configuration on H2 is a relative equilibrium [29], thus collapse does
+not occur.
+□
+The absence of such self-similar collapses in H2 highlights a fundamental difference between
+negative and nonnegative curvature.
+Let us try to interpret this difference geometrically.
+On
+surfaces, the separation of nearby geodesics (the geodesic deviation) satisfies the Jacobi equation.
+For a surface of constant curvature K (we take K = {±1, 0} for simplicity), we may write it as
+S′′(r) + K S(r) = 0. The solution to this equation is
+S(r) =
+
+
+
+
+
+sin r,
+K = 1,
+r,
+K = 0,
+sinh(r),
+K < 0.
+The function S(r) defines the angular component of the metric. Equivalently, 2πS(r) is the cir-
+cumference of a geodesic circle of radius r, so S(r)dr may be thought of the “density” of geodesic
+circles.
+The collapse of three point vortices hinges on two conserved quantities: the Hamiltonian and
+L, which arise from the Green’s function and momentum map, respectively.
+Indeed, both the
+Green’s function and momentum map probe this same density in two complementary ways. The
+momentum map, which is associated with rotations, may be thought of as measuring circulation
+weighted by the enclosed area, obtained by integrating this density. Consequently, the pairwise
+momentum invariant L naturally involves sin2(ds/2) and sinh2(ds/2) for the sphere and hyperbolic
+plane, respectively. The Green’s function is the potential generated by a point source. Conservation
+of flux implies that its radial derivative is inversely proportional to the circumference of a geodesic
+circle, so the Green’s functions naturally involve tan(ds/2) and tanh(ds/2).
+The absence of self-similar collapses above suggests that self-similarity is compatible with the
+conservation of L and H only when they depend on the same distance variable, or on variables
+related by sufficiently simple functions.
+In that case, the scale factor “separates”, and conser-
+vation reduces to conditions on the initial data. On the contrary, if the variables do not agree,
+requiring conservation generates additional shape-dependent constraints, which may form general
+obstructions.
+
+=====PAGE 11
+ON THE COLLAPSE OF THREE POINT VORTICES ON SURFACES
+11
+As discussed previously, the sphere admits a uniform vorticity background, allowing one to
+“match” the form of the Green’s function to the variable in L, namely, equation (10). On the other
+hand, this is not possible on surfaces of negative curvature, owing to the exponential growth of
+volume on H2 and the prescribed behaviour of the Green’s function at infinity.
+Remark 3.7 (Collapse in terms of extrinsic distances). On the sphere, the collapse is self-
+similar in terms of an extrinsic distance (Euclidean chord distance), rather than an intrinsic one
+(geodesic distance). We have shown the lack of self-similar collapses in terms of analytic functions
+of intrinsic distance on the hyperbolic plane. But one may consider embedding H2 in R3, and
+seeking extrinsically self-similar collapse. By embedding into Euclidean three-space, the equations
+work only locally, but this is sufficient for considering collapse. Given two points on the hyperbolic
+plane, the Euclidean chord length is then a function not only of the intrinsic geodesic distance,
+but also on the specific location of the points.
+It might be possible then that one may find a
+specific collapsing configuration which does so self-similarly in terms of the extrinsic distance, yet
+this need not be a generic feature of the collapse. Perhaps a more natural embedding of H2 is into
+Minkowski space R2,1 (e.g. R3 endowed with the Minokowski metric). Now, the extrinsic distance
+is Lorentzian. Indeed, this “matching” of geometries resolves the dependence of chord length on
+position, is related to the intrinsic geodesic distance as 2 sinh(dij/2), and becomes a more direct
+analog of the embedding of S2 in R3. However, this then falls under the assumptions of Theorem
+1.1, and as such no collapses in terms of this extrinsic distance can occur.
+All this said, we leave open the interesting possibility that, upon discovery of the “right notion”
+of inter-vortex distance, the collapse could be self-similar.
+4. Proof of existence
+In the previous section, we considered specifically the motion that is self-similar. However, as
+mentioned previously, one would not generally expect collapse to be self-similar. As such, we wish
+to prove the existence of collapsing three-vortex configurations on a general surface S. To do this,
+we shall show that any planar self-similar three vortex collapse can be (approximately) realized
+in a sufficiently small geodesic neighborhood of a point p ∈S, and that for a sufficiently small
+initial configuration, the surface dynamics remain close to the planar dynamics up to a rescaling in
+time. We show that for sufficiently small neighborhoods, the “non-planar” terms are bounded, and
+therefore by the results of [23], the dynamics remains regular and we have collapsing configurations
+that are approximately planar. In principle, any configuration can then be found by using time-
+reversal symmetry and evolving infinitesimal configurations in time.
+Furthermore, as the configuration shrinks, the non-planar corrections to the equations of motion
+become smaller. As such, as the configuration approaches collapse, the motion tends to become
+self-similar, and so the collapse is asymptotically self-similarly.
+We work with point vortices of nonzero circulation on a surface S embedded in R3. Throughout,
+we shall assume that S is oriented. Let g denote the metric induced by the embedding of S. The
+tangent bundle TS is endowed with the metric g and the corresponding almost complex structure
+(rotation by π/2) J(p) : TpS 7→TpS that rotates the tangent plane by 90 degrees.
+Following [23], introduce the space of functions
+ET = C([0, T), C2(R2, R2)) ∩Lip([0, T), C(R2, R2))
+for time T > 0 endowed with the norm ∥f∥ET = supt∈[0,T)∥ft∥C2 + [f]Lip. Here, ∥f∥Ck is the
+sum of supremum norms of the first k-derivatives of f for some f : R2 7→R2 with continuous
+k-th derivative, and [f]Lip denotes the Lipschitz seminorm. It is then proven that, given that a
+perturbation is sufficiently well-behaved with respect to the ET norm, the self-similar motion of
+point vortices persists under said perturbation, as stated in Lemma 4.1.
+
+=====PAGE 12
+12
+THEODORE D. DRIVAS, BORIS A. KHANIKATI, AND VALERIYA A. KHANIKATI
+Lemma 4.1. Let M, ρ > 0. Then there exists T ∗> 0 such that for every T < T ∗and every
+f ∈ET with ∥f∥ET ≤M, the system
+˙zj(t) = 1
+2π
+X
+k̸=j
+Γk
+(zj(t) −zk(t))⊥
+|zj(t) −zk(t)|2 + f(t, zj(t)),
+j = 1, 2, 3,
+admits a C1 solution z : (0, T) →R6 \ ∆3 satisfying
+lim
+t→0 zj(t) = 0,
+[zj]C1/2
+T
+≤3[wj]C1/2,
+j = 1, 2, 3,
+and
+sup
+0<t<T
+|z(t)| ≤ρ.
+To apply this result, we must first control the behavior of the Green’s function. Following [15],
+the singular behavior of the Green’s function may be isolated.
+Lemma 4.2. The Green’s function of the surface Laplacian may be written as
+GS(p, q) = −1
+2π log dS(p, q) + RS(p, q).
+where, for all α ∈(0, 1), there is a constant C = C(S, α) such that the “regular part” satisfies
+∥RS(·, q)∥C2,α(S) ≤C
+for all
+q ∈S.
+Using this decomposition, we write the Hamiltonian for any finite number of vortices as
+H(z) = −1
+2π
+X
+i<j
+ΓiΓj log∥zi −zj∥+ RegS(z),
+(23)
+where
+RegS(z) := −1
+2π
+X
+i<j
+ΓiΓj log dS(zi, zj)
+∥zi −zj∥+
+X
+i<j
+ΓiΓjRS(zi, zj) + 1
+2
+X
+ℓ
+Γ2
+ℓRS(zℓ, zℓ).
+(24)
+Now, we aim to switch to local coordinates for some point on the surface, with respect to which
+we shall do our analysis.
+Lemma 4.3. Let S be a surface embedded in R3, and fix a point p ∈S. Let expp : TpS ⊃
+BR0(0) 7→S be the exponential map at let φ = exp−1
+p
+be the normal coordinates on U := expp(BR0(0)).
+We write ζi = φ(zi). Then, there exists constants r1 > 0 and C > 0 depending on S, p, and the cir-
+culations, such that the following holds: For every configuration in the neighborhood, the equations
+of motion may be written as
+˙ζi = −1
+2πJ(0)
+X
+j̸=i
+Γj
+ζi −ζj
+|ζi −ζj|2 + Ei(ζ),
+(25)
+where the remainder satisfies
+|Ei| ≤C
+
+|ζi|
+X
+j̸=i
+1
+|ζi −ζj| +
+X
+j̸=i
+(|ζi| + |ζj| + |ζi −ζj|) + 1
+
+.
+In particular, for some fixed R, κ > 0, and some ε ∈(0, r1/R], suppose
+|ζi| ≤Rε,
+|ζi −ζj| ≥κs(ζ),
+s(ζ) := max
+1≤ℓ≤3 |ζℓ|.
+Then
+|Ei(ζ)| ≤CR,κ
+for all i.
+
+=====PAGE 13
+ON THE COLLAPSE OF THREE POINT VORTICES ON SURFACES
+13
+Proof. We work in normal coordinates centered at p. In these coordinates, for a sufficiently
+small neighborhood, the metric satisfies
+gij(ζ) = δij + Qij(ζ),
+|Qij(ζ)| ≤Cg|ζ|2,
+and the almost complex structure satisfies
+J(ζ) = J(0) + RJ(ζ),
+|RJ(ζ)| ≤CJ|ζ|.
+We write the Hamiltonian in the form
+H(ζ) = −1
+2π
+X
+i<j
+ΓiΓj log |ζi −ζj| + RegS(ζ) + Err(ζ),
+where
+Err(ζ) = −1
+2π
+X
+i<j
+ΓiΓj log
+∥expp(ζi) −expp(ζj)∥
+|ζi −ζj|
+
+.
+We first bound the contribution from RegS.
+By definition, RegS contains the Robin terms
+together with the correction
+−1
+2π
+X
+i<j
+ΓiΓj log
+dS(zi, zj)
+∥zi −zj∥
+
+.
+In normal coordinates, the geodesic distance and the ambient Euclidean distance satisfy
+dS(expp ζi, expp ζj) = |ζi −ζj|
+
+1 + Dg
+ij(ζi, ζj)
+
+,
+and
+∥expp(ζi) −expp(ζj)∥= |ζi −ζj|
+ 1 + De
+ij(ζi, ζj)
+
+.
+After shrinking the coordinate neighborhood if necessary, these errors satisfy
+|Dg
+ij| + |De
+ij| ≤C
+ (|ζi| + |ζj|)2 + |ζi −ζj|2
+,
+and
+|∇ζiDg
+ij| + |∇ζiDe
+ij| ≤C (|ζi| + |ζj| + |ζi −ζj|) .
+Therefore,
+log
+ dS(expp ζi, expp ζj)
+∥expp(ζi) −expp(ζj)∥
+
+= log
+ 
+1 + Dg
+ij
+1 + De
+ij
+!
+,
+and hence
+∇ζi log
+ dS(expp ζi, expp ζj)
+∥expp(ζi) −expp(ζj)∥
+ ≤C (|ζi| + |ζj| + |ζi −ζj|) .
+Together with the regularity of the Robin terms, this gives
+|∇ζiRegS(ζ)| ≤C.
+Next, we estimate Err. By the expansion of the ambient Euclidean distance in normal coordinates,
+∥expp(ζi) −expp(ζj)∥= |ζi −ζj|
+ 1 + De
+ij(ζi, ζj)
+
+,
+with De
+ij satisfying the bounds above. Hence
+log
+∥expp(ζi) −expp(ζj)∥
+|ζi −ζj|
+
+= log(1 + De
+ij).
+Since De
+ij is small on U, we obtain
+∇ζi log
+∥expp(ζi) −expp(ζj)∥
+|ζi −ζj|
+ ≤C (|ζi| + |ζj| + |ζi −ζj|) .
+
+=====PAGE 14
+14
+THEODORE D. DRIVAS, BORIS A. KHANIKATI, AND VALERIYA A. KHANIKATI
+Therefore,
+|∇ζiErr(ζ)| ≤C
+X
+j̸=i
+(|ζi| + |ζj| + |ζi −ζj|) .
+Let us denote the flat Hamiltonian by
+H0 := −1
+2π
+X
+i<j
+ΓiΓj log |ζi −ζj|.
+Thus H = H0 + RegS + Err. We have the bound on the surface derivative
+e∇ζiH = ∇ζiH + Gi(ζ),
+with
+|Gi(ζ)| ≤C|ζi|2|∇ζiH(ζ)|.
+Using
+|∇ζiH0| ≤C
+X
+j̸=i
+1
+|ζi −ζj|,
+together with the bounds on ∇ζiRegS and ∇ζiErr, we get
+|Gi(ζ)| ≤C|ζi|2
+
+X
+j̸=i
+1
+|ζi −ζj| +
+X
+j̸=i
+(|ζi| + |ζj| + |ζi −ζj|) + 1
+
+.
+Since we may assume |ζi| ≤r1 ≤1 by shrinking r1 if necessary, this implies
+|Gi(ζ)| ≤C
+
+|ζi|
+X
+j̸=i
+1
+|ζi −ζj| + 1
+
+,
+where the remaining lower-order terms have been absorbed into the constant.
+Using J(ζi) = J(0) + RJ(ζi), we write
+Γi ˙ζi = J(0)∇ζiH0 + RJ(ζi)∇ζiH0 + J(ζi) (∇ζiRegS + ∇ζiErr + Gi) .
+The leading term is
+J(0)∇ζiH0 = −Γi
+2πJ(0)
+X
+j̸=i
+Γj
+ζi −ζj
+|ζi −ζj|2 .
+For the second term, we use the bound on RJ together with the estimate for ∇H0 to obtain
+|RJ(ζi)∇ζiH0| ≤C|ζi|
+X
+j̸=i
+1
+|ζi −ζj|.
+Since J(ζi) is bounded on U, the remaining terms satisfy
+|J(ζi) (∇ζiRegS + ∇ζiErr + Gi)| ≤C
+
+|ζi|
+X
+j̸=i
+1
+|ζi −ζj| +
+X
+j̸=i
+(|ζi| + |ζj| + |ζi −ζj|) + 1
+
+.
+Combining these estimates and dividing by |Γi|, we obtain
+˙ζi = −1
+2πJ(0)
+X
+j̸=i
+Γj
+ζi −ζj
+|ζi −ζj|2 + Ei(ζ),
+(26)
+where
+|Ei(ζ)| ≤C
+
+|ζi|
+X
+j̸=i
+1
+|ζi −ζj| +
+X
+j̸=i
+(|ζi| + |ζj| + |ζi −ζj|) + 1
+
+.
+
+=====PAGE 15
+ON THE COLLAPSE OF THREE POINT VORTICES ON SURFACES
+15
+Finally, suppose that
+|ζi| ≤Rε,
+|ζi −ζj| ≥κs(ζ),
+s(ζ) := max
+1≤ℓ≤3 |ζℓ|.
+Then
+|ζi|
+X
+j̸=i
+1
+|ζi −ζj| ≤s(ζ)
+X
+j̸=i
+1
+κs(ζ) ≤2
+κ.
+Moreover,
+X
+j̸=i
+(|ζi| + |ζj| + |ζi −ζj|) ≤CRε ≤CR.
+Hence
+|Ei(ζ)| ≤CR,κ
+for all i, completing the proof.
+□
+We now complete the main proof of Theorem 1.3.
+Proof. Introduce the scaled variables
+ζi(t) = εξi(τ),
+τ = t
+ε2 .
+Then, ˙ζi(t) = 1
+ε
+dξi
+dτ . Substituting this into the local equation (26) from the lemma yields
+dξi
+dτ = −1
+2πJ(0)
+X
+j̸=i
+Γj
+ξi −ξj
+|ξi −ξj|2 + fi(ξ).
+(27)
+where fi(ξ) := εEi(εξ). Hence, the rescaled dynamics is now a planar three-vortex system plus a
+perturbation fi. In rescaled coordinates, we use the scale-invariant nondegeneracy region
+Cκ :=
+
+ξ ∈(R2)3 \ ∆3 : 0 < r(ξ) ≤1,
+|ξi −ξj| ≥κr(ξ) for all i̸ = j
+	
+,
+where
+r(ξ) := max
+1≤ℓ≤3 |ξℓ|.
+If ξ ∈Cκ, then for ζi = εξi we have
+|ζi| ≤ε,
+|ζi −ζj| = ε|ξi −ξj| ≥εκr(ξ) = κs(ζ).
+Therefore, by the previous lemma, applied with unit radius,
+|Ei(εξ)| ≤Cκ.
+Hence
+|fi(ξ)| ≤Cκε.
+Since the planar collapsing profile ξ∗is self-similar and nondegenerate, we may normalize it so that
+r(ξ∗(τ)) ≤1 on the time interval under consideration. The ratios
+|ξ∗
+i (τ) −ξ∗
+j (τ)|
+r(ξ∗(τ))
+are constant in τ and strictly positive. Thus, after choosing κ > 0 appropriately, we have
+ξ∗(τ) ∈Cκ
+for 0 < τ < T. By taking the perturbed solution sufficiently close to ξ∗, and replacing κ by a
+smaller constant if necessary, we may assume that
+ξ(τ) ∈Cκ
+for 0 < τ < T. Hence, the bounds on Ei remain valid along the trajectory.
+
+=====PAGE 16
+16
+THEODORE D. DRIVAS, BORIS A. KHANIKATI, AND VALERIYA A. KHANIKATI
+Since ∥fi∥ET →0 as ε →0, there exists ε0 such that for every 0 < ε < ε0, the rescaled
+perturbed system admits a solution ξ(τ) remaining close to ξ∗(τ), corresponding to a collapsing
+trajectory. Returning to the original surface variables by
+ζi(t) = εξi(τ),
+τ = t
+ε2 ,
+it follows that
+ζi(t) →0
+as t →t∗,
+and hence
+zi(t) →p.
+Thus, the three vortices collapse to p.
+It remains to verify that the collapse is asymptotically self-similar. Starting with the rescaled
+equation of motion (27), let us define qij = ξi −ξj. Then,
+d
+dτ q2
+ij = 2ΓkA
+π
+ 
+1
+q2
+jk
+−1
+q2
+ik
+!
++ 2qij · (fi −fj),
+(28)
+where A is the signed area of the triangle, A =
+1
+2qij · J(0)rA =
+1
+2qij · J(0)qik.
+The first term
+is precisely the same as on the plane, whereas the second term is the error from the surface.
+Using the same bounds as before, |2qij · (fi −fj)| ≤4Cκε|qij|. Hence, as τ →τc, the error term
+vanishes. Equivalently, the conditions in Definition 1.2 is satisfied, hence collapse is asymptotically
+self-similar. Furthermore, due to the local Euclidean nature of S, every collapse of three vortices
+on S must be asymptotically self-similar.
+□
+Acknowledgements
+We would like to thank Nathan Carlson, Daniil Glukhovskiy, and Boris Khesin for helpful
+discussions. In particular, we would like to thank B. Khesin for informing us of [21]. The work of
+TDD was supported by the NSF CAREER award #2235395, a Stony Brook University Trustee’s
+award as well as an Alfred P. Sloan Fellowship. TDD acknowledges support of the Institut Henri
+Poincar´e (UAR 839 CNRS-Sorbonne Universit´e), and LabEx CARMIN (ANR-10-LABX-59-01).
+References
+[1] H. Helmholtz. ¨Uber Integrale der hydrodynamischen Gleichungen, welche den Wirbelbewegungen entsprechen.
+Journal f¨ur die reine und angewandte Mathematik, 55:25–55, 1858.
+[2] W. Thomson. On vortex motion. Transactions of the Royal Society of Edinburgh, 25:217–260, 1869.
+[3] Gustav Kirchhoff. Vorlesungen ¨uber mathematische Physik. Mechanik. B.G. Teubner, Leipzig, 1876.
+[4] Hassan Aref. Point vortex dynamics: A classical mathematics playground. Journal of Mathematical Physics,
+48(6):065401, 06 2007.
+[5] E. A. Novikov. Dynamics and statistics of a system of vortices. Zhurnal Eksperimentalnoi i Teoreticheskoi Fiziki,
+68:1868–1882, May 1975.
+[6] H Aref. Integrable, chaotic, and turbulent vortex motion in two-dimensional flows. Annual Review of Fluid
+Mechanics, 15(Volume 15, 1983):345–389, 1983.
+[7] Hassan Aref, James B Kadtke, Ireneusz Zawadzki, Laurence J Campbell, and Bruno Eckhardt. Point vortex
+dynamics: recent results and open problems. Fluid Dynamics Research, 3(1-4):63, sep 1988.
+[8] J. L. Synge. On the motion of three vortices. Canadian Journal of Mathematics, 1:257–270, 6 1949.
+[9] Walter Gr¨obli. Speciale Probleme ¨uber die Bewegung Geradliniger Paralleler Wirbelf¨aden. Z¨urcher and Furrer,
+Z¨urich, 1877.
+[10] X. Leoncini, L. Kuznetsov, and G. M. Zaslavsky. Motion of three vortices near collapse. Physics of Fluids,
+12(8):1911–1927, 08 2000.
+[11] V. S. Krishnamurthy and M. A. Stremler. Finite-time collapse of three point vortices in the plane. Regular and
+Chaotic Dynamics, 23(5):530–550, 2018.
+[12] Hassan Aref. Self-similar motion of three point vortices. Physics of Fluids, 22(5):057104, 05 2010.
+[13] Yoshifumi Kimura. Vortex motion on surfaces with constant curvature. Proceedings of the Royal Society A:
+Mathematical, Physical and Engineering Sciences, 455(1981):245–259, 01 1999.
+
+=====PAGE 17
+ON THE COLLAPSE OF THREE POINT VORTICES ON SURFACES
+17
+[14] Yoshifumi Kimura and Hisashi Okamoto. Vortex motion on a sphere. Journal of the Physical Society of Japan,
+56:4203–4206, 1987.
+[15] Theodore D Drivas, Daniil Glukhovskiy, and Boris Khesin. Singular vortex pairs follow magnetic geodesics.
+International Mathematics Research Notices, 2024(14):10880–10894, 05 2024.
+[16] Stefanella Boatto and Jair Koiller. Vortices on closed surfaces, page 185–237. Springer New York, 2015.
+[17] D. G. Dritschel and S. Boatto. The motion of point vortices on closed surfaces. Proceedings of the Royal Society
+A: Mathematical, Physical and Engineering Sciences, 471(2176):20140890, 04 2015.
+[18] Bj¨orn Gustafsson. Vortex pairs and dipoles on closed surfaces. Journal of Nonlinear Science, 32, 07 2022.
+[19] Takashi Sakajo and Yuuki Shimizu. Point vortex interactions on a toroidal surface. Proceedings of the Royal
+Society A: Mathematical, Physical and Engineering Sciences, 472(2191):20160271, 07 2016.
+[20] Rangachari Kidambi and Paul K. Newton. Motion of three point vortices on a sphere. Physica D: Nonlinear
+Phenomena, 116(1):143–175, 1998.
+[21] Enric Sim´o Vil`as. The N-vortex problem on the projective plane. Thesis, Universitat Polit`ecnica de Catalunya,
+Barcelona, Spain, 2022.
+[22] Klas Modin and Milo Viviani. Integrability of point-vortex dynamics via symplectic reduction: a survey. arXiv
+preprint arXiv:2003.00716, 2020.
+[23] Francesco Grotto and Umberto Pappalettera. Burst of point vortices and non-uniqueness of 2d Euler equations.
+Archive for Rational Mechanics and Analysis, 245(1):89–125, 2022.
+[24] B. Gustafsson. Vortex pairs and dipoles on closed surfaces. Journal of Nonlinear Science, 32(5), 2022.
+[25] Clodoaldo Grotta-Ragazzo, Bj¨orn Gustafsson, and Jair Koiller. On the interplay between vortices and harmonic
+flows: Hodge decomposition of Euler’s equations in 2d. Regular and Chaotic Dynamics, 29(2):241–303, 2024.
+[26] Theodore D. Drivas, Daniil Glukhovskiy, and Boris Khesin. Pensive billiards, point vortices, and the silver ratio.
+In Forum of Mathematics, Sigma, volume 13, page e171. Cambridge University Press, 2025.
+[27] Boris Khesin and Gerard Misio lek. Euler and Navier–Stokes equations on the hyperbolic plane. Proceedings of
+the National Academy of Sciences, 109(45):18324–18326, 2012.
+[28] Theodore D Drivas and Tarek M Elgindi. Singularity formation in the incompressible euler equation in finite
+and infinite time. EMS Surveys in Mathematical Sciences, 10(1):1–100, 2023.
+[29] James Montaldi and Citlalitl Nava-Gaxiola. Point vortices on the hyperbolic plane. Journal of Mathematical
+Physics, 55(10):102702, 10 2014.
+Department of Mathematics, Stony Brook University, Stony Brook, NY, 11790
+Email address: tdrivas@math.stonybrook.edu
+Department of Physics, Harvard University, Cambridge, MA 02138, USA
+Department of Mathematics, Stony Brook University, Stony Brook, NY, 11790
+Email address: bkhanikaev@g.harvard.edu
+Department of Mathematics, University of Toronto, Toronto, M5S 2E4 ON, Canada
+Department of Mathematics, Stony Brook University, Stony Brook, NY, 11790
+Email address: valeriya.khanikaeva@stonybrook.edu

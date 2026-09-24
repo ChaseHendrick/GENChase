@@ -1,0 +1,2 @@
+same chord triangle : 2*P0*(-log(sin(beta0)) + log(tan(beta0/2)) + log(2))  check vs 2P ln(2/(1+cos b0)): 5.52456724274274e-17  vs P ln(2/(1+cos b0)): 0.272646032413275
+same chord n_c-p : 2*P0*(-log(sin(beta0/2)) + log(tan(beta0/2)))  check vs 2P ln(2/(1+cos b0)): -0.272646032413275  vs P ln(2/(1+cos b0)): -3.33066907387547e-16

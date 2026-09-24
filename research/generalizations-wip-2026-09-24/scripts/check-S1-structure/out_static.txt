@@ -1,0 +1,30 @@
+seed 12345: 400 configurations, dps=60, construction failures (no L=0 circle) 15
+  mu range [-29.785, 29.921], negative mu count 132
+  d range [-1.0, 1.0], d<0 count 200, rho<1e-2 count 76
+  worst absp       = 2.33e-61
+  worst inplane    = 2.33e-61
+  worst L          = 4.08e-58
+  worst kspread    = 4.31e-49
+  worst resB       = 2.43e-48
+  worst chord      = 4.57e-49
+  worst ndot       = 1.83e-54
+  worst np         = 7.4e-57
+  worst Omp        = 5.39e-61
+  worst az         = 2.17e-48
+  worst pdot       = 1.17e-61
+  worst planediff  = 3.11e-61
+seed 777: 400 configurations, dps=60, construction failures (no L=0 circle) 16
+  mu range [-29.963, 29.572], negative mu count 133
+  d range [-1.0, 1.0], d<0 count 203, rho<1e-2 count 70
+  worst absp       = 2.33e-61
+  worst inplane    = 1.85e-61
+  worst L          = 7.45e-58
+  worst kspread    = 2.31e-49
+  worst resB       = 1.05e-48
+  worst chord      = 9.52e-50
+  worst ndot       = 2.23e-54
+  worst np         = 8.57e-58
+  worst Omp        = 5.26e-61
+  worst az         = 9.2e-49
+  worst pdot       = 1.18e-61
+  worst planediff  = 2.33e-61

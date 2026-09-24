@@ -1,0 +1,11 @@
+configurations 180
+L              8.0183e-51
+|p|-1          5.3455e-51
+p in plane     3.341e-51
+planar ss      1.0991e-49
+rho^2+d^2-1    2.1382e-50
+ddot           9.709e-50
+psidot         7.4543e-50
+chord rate     1.549e-47
+azimuth rate   1.2187e-49
+speed          4.8286e-49

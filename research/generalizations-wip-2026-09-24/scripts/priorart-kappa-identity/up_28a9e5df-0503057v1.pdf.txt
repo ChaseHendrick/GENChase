@@ -1,0 +1,587 @@
+=====PAGE 1
+arXiv:nlin/0503057v1  [nlin.CD]  25 Mar 2005
+DYNAMICS OF THREE VORTICES ON A PLANE
+AND A SPHERE — III
+Noncompact case.
+Problems of collaps and scat-
+tering
+1
+A. V. BORISOV
+Faculty of Mechanics and Mathematics,
+Department of Theoretical Mechanics Moscow State University
+Vorob’ievy gory, 119899 Moscow, Russia
+E-mail: borisov@uni.udm.ru
+V. G. LEBEDEV
+Physical Faculty,
+Department of Theoretical Physics Udmurt State University
+Universitetskaya, 1, Izhevsk, Russia, 426034
+E-mail: lvg@uni.udm.ru
+Abstract
+In this article we considered the integrable problems of three vortices on
+a plane and sphere for noncompact case. We investigated explicitly the prob-
+lems of a collapse and a scattering of vortices and obtained the conditions
+of its realization. We completed the bifurcation analysis and investigated for
+collinear and Thomson’s conﬁgurations the dependence of stability in linear
+approximation and frequency of rotation in relative coordinates from value of
+a full moment. We indicated the geometric interpretation for characteristic
+situations. We constructed a phase portrait and geometric projection for the
+integrable conﬁguration of four vortices on a plane.
+1
+Motion of vortices on a plane
+Let us consider motion of vortices on a plane under the following condition (ak are
+inverse intensities of point vortices ak = 1/Γk)
+A = A1a2 + a2a3 + a1a3 ≤0 .
+(1)
+In case A < 0 algebra of Poisson brackets is the algebra R ⊕so(2, 1), and in case
+A = 0 it is solvable algebra. As indicated in [12], the symplectic sheet in both cases
+1REGULAR AND CHAOTIC DYNAMICS V.3, No. 4, 1998
+Received October 25, 1998
+AMS MSC 76C05
+1
+
+=====PAGE 2
+is noncompact (in the ﬁrst case the symplectic sheet is hyperboloid, in second it is
+paraboloid), and the trajectories of a representing point on it can be both ﬁnite and
+inﬁnite (this also concerns the dynamics of three vortices in relative distances). In
+the second case one can speak about a scattering of vortices.
+Let us consider, at ﬁrst, the case A < 0. Without loss of generality let us put
+Γ2, Γ3 > 0, Γ1 < 0, −Γ1 < Γ2 + Γ3 > 0. Further, D is the central linear function
+of algebras of Lie–Poisson brackets (D = P akMk, Mk are quadrates of mutual
+distances between vortices). From
+λ2 = −3a1a2a3
+D2
+(a1 + a2 + a3)3,
+(2)
+for a stability coeﬃcient of Thomson’s conﬁgurations, it follows, that the stability of
+such conﬁguration in a linear approximation for various D is determined by sign of
+the sum of inverse intensities S = P ak. Therefore, we shall consider three separate
+cases corresponding to the values S > 0, S < 0, and S = 0.
+The geometric interpretation and the bifurcation diagrams for various charac-
+teristic combinations of parameters A, S and D are indicated correspondingly in a
+Fig. 1 and Fig. 2.
+Case A < 0 and S > 0. The geometric interpretation shows that in this case for
+D ≤0 only ﬁnite motions are possible for which trajectory on a plane of an integral
+of the full moment is limited from both sides by the condition ∆2 > 0.
+The bifurcation diagram (Fig. 2a) in this case reminds the diagram for vortices
+on a plane in compact case for positive intensities with the exclusion, that there is
+only one collinear conﬁguration. Another diﬀerence from compact case is that the
+type of stability varies: Thomson’s conﬁgurations are stable for positive intensities in
+compact case and are unstable in this case (Fig. 3a), and the collinear conﬁgurations
+are stable. Both Thomson’s, and the collinear solutions are determined only in area
+D > 0 (Fig. 1c). For positive values of the full moment both ﬁnite, and inﬁnite
+motions are possible. By virtue of instability of Thomson’s solution, the solutions
+with any positive energy are allowed.
+Case A < 0 and S < 0. In this case for any value of the full moment the motion
+is ﬁnite (Fig. 1d–f). Thomson’s and the collinear solutions are determined only for
+D < 0. That solutions are remarkable because the energy of all conﬁgurations tends
+to inﬁnity with decrease of the absolute value of the full moment down to zero (see
+Fig. 2b). The curve of Thomson’s conﬁgurations is situated above of the curve for
+collinear conﬁgurations and limits from above the area of possible movements. They
+are accordingly stable and unstable in a linear approximation (Fig. 3b).
+Case A < 0 and S = 0. For the value D < 0 the tangency of the trajectory
+with the boundary of area is possible. This trajectory corresponds to stable (see
+Fig. 3c) collinear conﬁguration (Fig. 2c), which energy tends to zero with decrease
+of D. Thomson’s solutions are presented only for D = 0 and are degenerated, and
+2
+
+=====PAGE 3
+have a neutral equilibrium (λ2 = 0). Such solutions are possible for any distances
+between vortices and ﬁll the whole straight line at Fig. 1h. The dependence of an
+angular velocity from the distance between vortices is determined by the formula
+[10]
+Ω= (Γ1 + Γ2 + Γ3)
+2πM
+,
+(3)
+where M is quadrate of the distance between vortices. This straight line, corre-
+sponding to Thomson’s conﬁgurations, divides areas of scattering and collapsing
+behavior of three vortices. Under a “collapse” we understand the process of simul-
+taneous collision of (in this case, three) vortices. More detailed study of emergence
+of a collapse is indicated further.
+For D̸ = 0 the ﬁnite motions are presented for any value of the moment, and
+inﬁnite motions occurred only for negative values.
+The dependence of an angular velocity of rotation both Thomson’s and collinear
+conﬁgurations in ﬁrst and second cases is qualitatively identical and is deﬁned by
+functions monotonically decreasing, with increase of absolute value of a moment.
+For case S = 0 the angular velocity of rotation of a collinear conﬁguration is slowly
+increased with increase of the absolute value D.
+The last case corresponding to noncompact motion of vortices arises under con-
+dition of A = 0 (solvable algebra). The motion is possible only for positive values of
+D. There are only two stationary conﬁgurations: one Thomson’s and one collinear
+(Fig. 2d). For D = 0 three vortices are placed on one straight line, and each vor-
+tex is placed at center of a vorticity of two remaining. It is a corollary of general
+possibility of reducing of a problem of n + 1 vortices to problem of n vortices.
+2
+Motion of vortices on a sphere
+Similarly to Section 1 we shall construct the bifurcation diagrams for the sphere, and
+also plots of absolute motion, using for small D appropriate dependencies for a plane
+and the method of a continuation on the parameter. The values dk = 4R2(ai + aj)
+determine those values of the full moment, which can arise in problem of two vortices.
+The geometric interpretation for motion on the sphere is indicated in a Fig. 5.
+Case A < 0 and S > 0. In addition to Thomson’s and collinear conﬁgurations
+that exists in plane case, for D > 0 there are two collinear conﬁgurations, appearing
+from a problem of two vortices (Fig. 4a). By continuation on the moment one of them
+merges with Thomson’s, which disappears for value dT. The collinear conﬁguration
+continues and merges with another collinear conﬁguration, that has an analog on
+the plane. After this both conﬁgurations disappears also. For D > d3 and D < d1
+the stationary conﬁgurations do not exist. Thomson’s conﬁguration are in this case
+always unstable (Fig. 6a), and the collinear conﬁgurations are stable.
+3
+
+=====PAGE 4
+Case A < 0 and S < 0. In this case the conﬂuence of Thomson’s and one of
+collinear (closest to Thomson’s on energy) conﬁgurations (Fig. 4b) are happened.
+Besides there are collinear conﬁgurations from a problem of two vortices (for one
+of them E 7→∞by coincidence of vortices because of existence of one negative
+intensity).
+One of them extended into area of positive values of D. Thomson’s
+conﬁguration, as well as in plane case, is stable in the linear approximation (Fig. 6b).
+Some of collinear conﬁgurations are also stable. One of them becomes stable in
+conﬂuence with Thomson’s conﬁguration, and other loses stability in conﬂuence
+with unstable collinear conﬁguration.
+Case A < 0 and S = 0. Instead of one collinear conﬁguration in case of a plane
+in this case there are three various branches of collinear conﬁgurations, as for D > 0
+and for D < 0 (see Fig. 4c). The solution with higher energy is unstable for D > 0
+and disappears merging with collinear conﬁguration with lower energy. The solution
+with the lowest energy is stable. For D < 0 situation is reversed. Thus collinear
+solution with lower energy merges with the solution, appeared at D = d2. As well
+as on the plane, the Tomson solution are present only for D = 0. In this case all
+trajectories are collapsing (Fig. 5h).
+At last, under condition of A = 0, the bifurcation diagram is indicated in a
+Fig. 4d. As well as in plane case, the stationary solutions exist only for D > 0,
+(Fig. 5 j–l).
+The diﬀerence consists in emerging of collinear conﬁgurations of a
+problem of two vortices. One such conﬁguration merges with Thomson’s, then both
+disappear. All collinear solutions are stable, and Thomson’s is unstable (Fig. 6d).
+The dependence of angular velocity of rotation for the listed situations is repre-
+sented in a Fig. 7. As well as in compact case, the frequency of rotation increasing
+with creation of the third vortex from the problem of two vortices.
+Remark 1. Such magniﬁcation, as well as in compact case, is explained by the
+fact, that for the birth of a pair of vortices from one vortex of total intensity there is
+a rotation of a collinear conﬁguration around an axis, which is passing through the
+third vortex. In the result this vortex actually does not inﬂuence on rotation of two
+appearing vortices, which angular velocity depends on the mutual distance between
+them as
+Ω=
+1
+2πM3
+r
+(Γ1 + Γ2)2 −Γ1Γ2M3
+R2
+,
+(4)
+Where M3 is quadrate of the distance between ﬁrst two vortices, and Γ1, Γ2 are
+intensities, corresponding to it. As the last expression shows the angular velocity
+tends to inﬁnity with M 7→0.
+The study of dynamics of angles of declination of rotation axis to the plane of
+vortices shows, that in ﬁrst and second listed cases the angle of declination of axes
+increasing from zero up to π/2.
+So, therefore the rotation axis tends to take a
+position in the plane of vortices and appropriate Thomson’s a conﬁguration turned
+into collinear (Fig. 8).
+4
+
+=====PAGE 5
+Remark 2. Note, that a condition of existence of static conﬁgurations on a
+sphere for a speciﬁc collection of intensities is
+a1a2a3(a1 + a2 + a3) > 0 ,
+(5)
+which determines stability of Thomson’s conﬁguration
+λ2 = D −3R2(a1 + a2 + a3)
+9D2
+a1a2a3(a1 + a2 + a3) .
+(6)
+This correlation is easy for understanding from the geometric interpretation (see
+Fig. 5d), which illustrates a possibility of reaching of function H to its extremum.
+Let us note, that as well as in compact case, that was considered in [12], the static
+conﬁgurations on a sphere are observed only under fulﬁllment of the condition Γ1Γ2+
+Γ2Γ3 + Γ1Γ3 > 0, (Fig. 7).
+3
+The condition of a collapse of vortices on a
+plane and a sphere
+Let us consider conditions of emergence of a collapse of three vortices on a plane and
+a sphere. It is known, that the collapse is impossible for any pairs of vortices taken
+separately, because with the approach of such pair inﬂuence of the third (remote)
+vortex negligible small, and two vortices on a plane (sphere) move relatively each
+other so, that the distance between them did not change. The necessary condition of
+the collapse is the fulﬁllment of D = 0, since it follows Mk = 0. The condition D = 0
+allows to proceed from four-dimensional to three-dimensional Lie algebra, for which
+actual dynamics takes place on the singular symplectic sheet, so that the nontrivial
+singular symplectic sheet (surface of a cone) will correspond only to algebra so(2, 1).
+The similar statements are valid also for a simultaneous collapse n vortices, which
+is not almost investigated (except for cases n = 4, 5) [1, 10].
+The conditions of a collapse of vortices on a sphere, obviously, will coincide
+with conditions for a plane, since on small distances the inﬂuence of curvature to
+dynamics of vortices is insigniﬁcant.
+Remark 3.The problem of the collapse is one of the most interesting problems
+connected to vortices and represents large interest for the theoretical hydromechanics
+as one of the models, which can be used for understanding of the transition to the
+turbulence contained in a nonuniqueness of solutions of the hydrodynamic equations
+of the Euler. Really, the theorem of existence and uniquenesses for these equations
+are proved in the supposition of suﬃcient smoothness of an initial ﬁeld of velocities.
+From a mathematical point of view the process of the collapse of vortices represent-
+ing conﬂuence of the special solutions of Euler equation of δ-function type, under
+5
+
+=====PAGE 6
+inverting of time will determine disintegration of vortices with corresponding loss of
+uniqueness. Therefore large interest represents the study of this problem from the
+point of view of a regularization of collisions in the similar way, how it is done in
+classical celestial mechanics [3]. For physics of atmosphere the phenomenon of the
+collapse can be considered as a model of forming of large atmospheric vortices.
+We research at ﬁrst possibility of a homogeneous collapse for three vortices.
+For the homogeneous collapse all distances between vortices depend on time in the
+identical way and are in the constant proportion [10]. Using isomorphism with a
+problem of Lottka–Voltera (both for a plane, and a sphere [11]), we shall consider a
+homogeneous system of equations in the form֒
+→˙M1 = Γ1M1(M2 −M3) .
+(7)
+The homogeneous asymptotic solutions (7) we shall search as
+Mk = Ck
+τ .
+(8)
+Let’s note, that such solutions are used in Kovalevskaya method for construction
+of full-parametric Laurent expansion.
+The nontrivial solutions of such form are
+possible only under condition of S = 0. If this condition is fullﬁled, the solution can
+be written as
+M1 = C
+τ ,
+M2 = C + a3
+τ
+,
+M3 = C −a2
+τ
+,
+(9)
+where C is arbirary constant.
+The solution (9) is full-parametric and contains only collapsing and running
+up (for a plane) trajectories.
+However, there is still the special solution M1 =
+M2 = M3 = const, describing the Thomson’s conﬁguration, which in this case are
+degenerate. Using the relation
+dt = 2πM1M2M3
+∆
+dτ ,
+(10)
+it is possible to receive an asymptotics of the solution (9) in real time
+1. for a plane: t = D
+τ , Mk = C∗
+kt;
+2. for a sphere: t = AR2 
+1 −
+q
+1 −
+B
+τR2
+
+, Mk = DkR2 
+1 −
+ 1 −
+t
+AR2
+2
+,
+where A, B, C∗
+k, D, Dk = const, R is radius of a sphere. For a sphere the absolute
+motion of vortices for conditions D = 0 and S = 0 consists in scattering of vortices
+from one point up to the moment of reaching of equator and further approach in
+some other point. Let us analyze the possibility of the collapse in the system of three
+6
+
+=====PAGE 7
+vortices on a plane in general inhomogeneous case. Writing the necessary condition
+of the collapse D = 0 in absolute variables
+X
+Γk
+
+I −P 2 −Q2 = 0 ,
+(11)
+where the uninvolute integrals of motion P, Q, I are equal
+P =
+X
+Γkxk ,
+Q =
+X
+Γkyk ,
+I =
+X
+Γk(x2
+k + y2
+k) ,
+(12)
+we found two special cases P Γk = 0 and P Γk̸ = 0. Without loss of generality let
+us assume Γ1 = −1, Γ2, Γ3 > 0. Under conditions P Γk = 0, from (12) it follows
+that P = Q = 0. It means, that the third vortex is at center of vorticity of ﬁrst two
+vortices, rotating uniformly with frequency
+Ω= 1
+2π
+Γ1 + Γ2
+M3
+
+1 + Γ1
+Γ2
++ Γ2
+Γ1
+
+,
+around the point with the radius-vector⃗
+r = Γ′
+1⃗r1 + Γ′
+2⃗r2
+Γ′
+1 + Γ′
+2
+,
+Γ′
+1 = Γ1 −(Γ1 + Γ2)2
+Γ1
+,
+Γ′
+2 = Γ2 −(Γ1 + Γ2)2
+Γ2
+,
+where M3 is quadrate of the distance between the ﬁrst and second vortices, and⃗
+rk, Γk are the radius-vector and intensity correspondingly. Therefore, collapse for
+case of zero total intensity is impossible.
+Under condition of P Γk̸ = 0 the collapse is possible only under condition of
+noncompactness of algebra of vortices A = a1a2 −a1 −a2 < 0, as in compact case
+a symplectic sheet (the sphere) does not pass through a beginning of coordinates
+Mk = 0.
+For the determination of suﬃcient conditions of the collapse we shall consider
+the projection of trajectories on a plane M1, M2. Let us express M3 from the integral
+of the full moment (for D = 0)
+M3 = a1M1 + a2M2 .
+(13)
+The physical area on a plane M1, M2 for D = 0 is limited by straight lines, passing
+through the zero with coeﬃcient of declination
+K1,2 =
+1 ±
+√
+−A
+1 −a2
+
+.
+(14)
+The trajectory of regularized system is determined by the relation (13) and equation
+for energy of the system, which can be presented as
+M−a1
+1
+M−a2
+2
+(a1M1 + a2M2) = const(E) .
+(15)
+The analysis of the equation (15) shows, that for various values of parameters a1, a2
+there are three various kinds of trajectories:
+7
+
+=====PAGE 8
+1. if a1 + a2 < 1, then all trajectories are compact, looks like closed loops,
+which are going out the origin of coordinates, tangentcing axes OM1 and OM2
+(Fig. 9a, curves b, c);
+2. if a1 + a2 > 1, then all trajectories are noncompact, going to inﬁnity, asymp-
+totically press oneself to axeses OM1 and OM2;
+3. if a1 + a2 = 1, then all trajectories are straight lines which are going out from
+the origin of coordinates under diﬀerent angles (the Fig. 9a, curve a);
+Let us mark on a plane of parameters a1, a2, areas appropriate to given types of
+trajectories. It is necessary to mark on this plane also values of parameters describing
+various forms of physical area. By (15), the physical area for a1̸ = 1, a2̸ = 1 (such,
+that A < 0), represents an interior of an sharp angle located inside a quadrant
+M1 > 0, M2 > 0. If a1 = 1 (a2 = 1), one of the sides of physical area coincides
+with an axes OM2 (OM1). In case a1 = a2 = 1 the motion is allowed in the whole
+quadrant M1 > 0, M2 > 0.
+Comparing possible types of trajectories (for A < 0, D = 0) with types of areas
+of motion with consideration, that on reaching of the boundary motion continues
+on the same trajectory in the opposite direction, we conclude:
+1. In the system of three vortices the homogeneous collapse (scattering) is possi-
+ble, it happens when the relation a1+a2 = 1 is executed for inverse intensities;
+2. Scattering of vortices is possible only under conditions a1 = 1, a2 = 1, a1 =
+a2 = 1 (in this case the vortex motion never passes through the collinear
+conﬁguration);
+3. For other values of inverse intensities ai the motion of vortices is bounded
+between two collinear conﬁgurations, and the distance between them is limited
+(see Fig. 9b).
+4
+Scattering of vortices on a plane
+In the system of three vortices we shall name scattering trajectories, such trajec-
+tories that at least one of mutual distances (M1, M2, M3) is inﬁnitely increased. In
+diﬀerence from the collapse, the scattering can happen for D̸ = 0.
+Let us deﬁne new variables, with the help of which scattering problem of vortices
+on a plane can be reduced to the research of collapse:֒
+→X1 =
+1
+M2M3
+.
+(16)
+8
+
+=====PAGE 9
+Their equations of motion have a form֒
+→˙x1 = x1((Γ2 −Γ3)x1 + Γ3x2 −Γ2x3) ,
+(17)
+and the bounding physical area relation ∆2 ≥0, will not be changed
+2(x1x2 + x1x3 + x2x3) −x2
+1 −x2
+2 −x2
+3 ≥0 .
+(18)
+Let us select, as above a3 = −1, a1, a2 > 0. The trajectory in space of variables
+x1, x2, x3 is set by integrals of the moment D and the energy E, which can be
+presented in the form
+a1x1 + a2x2 + a3x3 = D√x1x2x3 ,
+(19)
+xa2−a1−1
+1
+xa1−a2−1
+2
+x1+a1+a2
+1
+= C(E) ,
+(20)
+where C(E) is some function of energy.
+For D = 0 the type of trajectories, deﬁned by (19), is similar to the one investi-
+gated above. In this case to scattering 2) in a system of three vortices corresponds an
+inhomogeneous collapse in a system (17), for conditions a1 = 1, a2 = 1, a1 = a2 = 1
+(see Fig. 9b).
+It is interesting to note, that the homogeneous collapse and the scattering in
+variables Mk remains homogeneous in variables xk, only direction of motion on
+trajectories varies.
+Obvious quadratures and the analysis of absolute motion is in this case indicated
+in [10].
+The numerical research for D̸ = 0 shows, that in variables Mk there are only
+trajectories of types 1), 3) of the previous section. In this connection, it seems,
+that the availability of vortex pairs (a1 = 1, a2 = 1, a1 = a2 = 1) in the system is
+necessary and suﬃcient condition of scattering.
+Remark 4. In a work [6] reducing of the order is executed and the phase portraits
+of integrable case of a problem with zero total intensity and zero total moment are
+indicated.
+In this work the canonical form of equations of motion is used.
+For
+the indicated conditions on a level of algebra of brackets there is an reduction of a
+problem of four vortices to a problem of three vortices with the reduced Hamiltonian.
+On a symplectic sheet of three-dimensional vortex algebra, deﬁned by introduced
+(as a corollary of the integrability) an invariant relation such as an integral of the
+moment with a constant D1, standard canonical variables L, l are presented. The
+condition of compactness of a symplectic sheet will have a very simple form, if three
+vortices of four have intensities of same sign. In compact case, for various values
+of intensities the phase portraits are represented at Fig. 10. In a general situation
+of unequal intensities there are six collinear stable solutions and three uncollinear
+9
+
+=====PAGE 10
+unstable ones. The last solutions generalize of Thomson’s conﬁguration, however
+distances between vortices are not equal.
+The connection between energy E and
+moment D1 for these solutions is determined by relation
+E = F(Γ1, Γ2, Γ3)D
+1
+8π (Γ2
+1+Γ2
+2+Γ2
+3)
+1
+,
+where f(Γ1, Γ2, Γ3) is some function dependent on intensities. The bifurcation analy-
+sis, consisting in a determination of an explicit form of function f(Γ1, Γ2, Γ3), can be
+executed similarly to Section 1. In case if there are only two intensities of the same
+sign, the symplectic sheet is noncompact and the scattering is possible. The regular
+scattering, for example, is possible in case of interaction two (generally speaking,
+various) vortex pairs [4]. As far as we know, in general case the conditions of a
+collapse and a scattering in considered problem are not investigated.
+After submission of the article in the journal the authors have received prints of
+articles [13, 14, 15] from J.E.Marsden and P.K.Newton. Their results were received
+with the help of the “canonical” approach and are contained some results of our
+work. We are extremely grateful to them. The authors thank I. S. Mamaev and
+N. N. Simakov for useful discussions and help in work.
+The work is carried out
+under the support of Russian Fond of Fundamental Research (96–01–00747) and
+Federal program “States Support of Integration High Education and Fundamental
+Science” (project No. 294).
+References
+[1] E. A. Novikov, Yu. B. Sedov Collaps of vortices. Zh. Eksp. Teor. Fiz., V. 77,
+1979, No. 2(8), P. 588–597.
+[2] H. Aref, N. Pomphrey. Integrable and chaotic motions of four vortices I.The
+case of identical vortices Proc. R.Soc. Lond., A380, 1982, P. 359–387.
+[3] V. I. Arnold, V. V. Kozlov, A. I. Neishtadt Mathematical aspects of the classical
+and selestial mechanics. Moskow: VINITI. Results of a science and engineering.
+Contemparary problems of mathematics. Fundamental directions, V. 3, 1985,
+304 p.
+[4] B. Eckhardt Irregular Scattering of Vortex Pairs. Europhys. Lett., 5(2), 1988,
+P. 107–111.
+[5] B. Eckhardt, H. Aref Integrable and Chaotic Motion of Four Vortices II: Colli-
+sion Dynamics of Vortex Pairs. Philos. Trans. R. Soc. London, V. 31(10), 1988,
+P. 2796–2801.
+10
+
+=====PAGE 11
+[6] B. Eckhardt Integrable four vortex motion. Phys. Fluids, V. 31(10), 1988,
+P. 2796–2801.
+[7] H. Aref. Motion of three vortices revisited. Phys. Fluids. V. 31, 1988, No. 6,
+P. 1392–1409.
+[8] N. Rott, H. Aref. Three-vortex motion with zero total circulation. J.of Appl.
+Math. And Phys. (ZAMP), V. 40, 1989, P. 473–500.
+[9] T. P. Konovalyuk Classiﬁcation of interaction of a vortex pair with a point vor-
+tex in an ideal ﬂuid. Hydromechanics, Resp. meshved. sbornik, AN USSR, 1990,
+No. 62, V. 2(8), P. 588–597.
+[10] V. V. Meleshko, M. Yu. Konstantinov Dynamics of vorticity structure. Kiev,
+Naukova dumka, 1993, 277 p.
+[11] A. V. Borisov, A. E. Pavlov Dynamics and statics of vortices on a plane and a
+sphere. Reg.& Chaot. Dyn., 1998, V. 3, No. 1, P. 28–38.
+[12] A. V. Borisov, V. G. Lebedev Dynamics and statics of vortices on a plane and
+a sphere. II — General compact case Reg.& Chaot. Dyn., 1998, V. 3, No. 2,
+P. 103–120.
+[13] S. Pekarsky, J. E. Marsden Point vortices on a sphere: stabilite of relative equlib-
+ria. J. Math.Phys., V. 39, No. 11, 1998, P. 5894–5907.
+[14] R. Kidambi, P. K. Newton Motion of three vortices on a sphere. Physica D,
+No. 116, 1998, P. 149–175.
+[15] R. Kidambi, P. K. Newton Collaps of three vortices on a sphere. Proc. at Int.
+Workshop on Vortex Dynamics in Geophysics Flow, Castro Marina, Italy, June,
+1998.
+11
+
+=====PAGE 12
+Figure 1: The geometric interpretation for various values of parameters A, S, D.
+The dark color designates area of positive values Mk ≥0, for which ∆2 > 0. For
+ﬁgure h) the bold line corresponds to a set of Thomson’s conﬁgurations.
+12
+
+=====PAGE 13
+Figure 2: Bifurcation curves on a plane for cases a) A < 0 and S > 0; b) A < 0 and
+S < 0; c) A < 0 and S = 0; d) A = 0 and S > 0. Here and further dot-dashed line
+corresponds to Thomson’s conﬁgurations, and solid lines to collinear.
+Figure 3: The stability coeﬃcient on a plane for cases a) A < 0 and S > 0; b) A < 0
+and S < 0; c) A < 0 and S = 0; d) A = 0 and S > 0.
+13
+
+=====PAGE 14
+Figure 4: Bifurcation curves on a sphere for cases a) A < 0 and S > 0; b) A < 0
+and S < 0; c) A < 0 and S = 0; b) A = 0 and S > 0.
+14
+
+=====PAGE 15
+Figure 5: The geometric interpretation for a sphere for various values of parameters
+A, S, D. The dark color designates area of positive values Mk ≥0, which for ∆2 > 0.
+15
+
+=====PAGE 16
+Figure 6: Stability coeﬃcient on a sphere for cases a) A < 0 and S > 0; b) A < 0
+and S < 0; c) A < 0 and S = 0; b) A = 0 and S > 0.
+Figure 7: An angular velocity on a sphere for cases a) A < 0 and S > 0; b) A < 0
+and S < 0; c) A < 0 and S = 0; b) A = 0 and S > 0.
+16
+
+=====PAGE 17
+Figure 8: The angle of declination on a sphere for cases a) A < 0 and S > 0; b)
+A < 0 and S < 0.
+Figure 9: 1) Possible asymptoticses of a behavior of trajectories of the system of three
+vortices near to zero on a plane (M1, M2) in case of the collapse (the nonphysical
+area is shaded); 2) Planes of parameters (a1, a2 for a3 = 1). The collapse is possible
+on straight line a2 = a1 −1, scattering corresponds to asymptotes a1 = 1, a2 = 1.
+Figure 10: The geometric projection for case of four vortices on a plane with zero
+full intensity for a) a1 = −a2 = a3 = −a4; b) a1 = a2 = a3̸ = a4; c) a1̸ = a2̸ = a3.
+17
+
+=====PAGE 18
+Figure 11: The phase portrait of motion of four vortices on a plane with zero total
+intensity for a) a1̸ = a2̸ = a3̸ = a1; b) a1 = a2 = a3.
+18

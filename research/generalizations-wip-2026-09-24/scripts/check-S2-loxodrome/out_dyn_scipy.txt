@@ -1,0 +1,24 @@
+mu=0.5  R=1 b0=2 orient=1 ahat=-0.00678228 bhat=0.0594958 P0=4.38612  predicted lifetime 2R^2/|ahat| = 294.8860704
+   dir +1  t_end=208.8008404  cos(beta)_end=0.999999000026  beta_end=1.414e-03  total dpsi=67.523099  max|cos err|=2.56e-11  max psi err(rel)=1.24e-07  |J/S-p|=1.1e-15  ratio err=4.6e-07  max|x_i-p|/R=2.822e-03 status=0
+   dir -1  t_end=-86.08493508  cos(beta)_end=-0.999999000021  beta_end=3.140e+00  total dpsi=-59.750479  max|cos err|=2.10e-11  max psi err(rel)=1.14e-07  |J/S-p|=1.0e-15  ratio err=3.8e-07  max|x_i-p|/R=2.822e-03 status=0
+   integrated span (t_end fwd - t_end bwd) = 294.8857755 ; + 2e-6 R^2/|ahat| = 294.8860704
+mu=0.5  R=1 b0=0.4 orient=-1 ahat=0.00678228 bhat=0.0594958 P0=4.38612  predicted lifetime 2R^2/|ahat| = 294.8860704
+   dir +1  t_end=283.2469163  cos(beta)_end=0.999999000012  beta_end=1.414e-03  total dpsi=77.637047  max|cos err|=1.19e-11  max psi err(rel)=4.76e-08  |J/S-p|=1.3e-15  ratio err=2.1e-07  max|x_i-p|/R=2.822e-03 status=0
+   dir -1  t_end=-11.6388592  cos(beta)_end=-0.999999000001  beta_end=3.140e+00  total dpsi=-49.636392  max|cos err|=6.91e-13  max psi err(rel)=1.33e-09  |J/S-p|=7.8e-16  ratio err=1.5e-08  max|x_i-p|/R=2.822e-03 status=0
+   integrated span (t_end fwd - t_end bwd) = 294.8857755 ; + 2e-6 R^2/|ahat| = 294.8860704
+mu=1  R=1 b0=1 orient=1 ahat=-0.0177004 bhat=0.0874516 P0=2.47033  predicted lifetime 2R^2/|ahat| = 112.9919897
+   dir +1  t_end=25.97102207  cos(beta)_end=0.999999000003  beta_end=1.414e-03  total dpsi=32.854191  max|cos err|=3.10e-12  max psi err(rel)=6.06e-09  |J/S-p|=6.9e-16  ratio err=1.5e-07  max|x_i-p|/R=2.761e-03 status=0
+   dir -1  t_end=-87.02085468  cos(beta)_end=-0.999999000003  beta_end=3.140e+00  total dpsi=-38.828273  max|cos err|=3.49e-12  max psi err(rel)=6.32e-09  |J/S-p|=7.4e-16  ratio err=1.6e-07  max|x_i-p|/R=2.761e-03 status=0
+   integrated span (t_end fwd - t_end bwd) = 112.9918768 ; + 2e-6 R^2/|ahat| = 112.9919897
+mu=0.05  R=1 b0=2.8 orient=-1 ahat=0.00519192 bhat=0.0416486 P0=4.0109  predicted lifetime 2R^2/|ahat| = 385.2135799
+   dir +1  t_end=11.12817689  cos(beta)_end=0.999999000000  beta_end=1.414e-03  total dpsi=44.094567  max|cos err|=4.91e-14  max psi err(rel)=3.68e-09  |J/S-p|=4.5e-16  ratio err=1.3e-09  max|x_i-p|/R=2.817e-03 status=0
+   dir -1  t_end=-374.0850178  cos(beta)_end=-0.999999000000  beta_end=3.140e+00  total dpsi=-72.291113  max|cos err|=1.16e-12  max psi err(rel)=4.47e-09  |J/S-p|=6.8e-16  ratio err=9.6e-09  max|x_i-p|/R=2.817e-03 status=0
+   integrated span (t_end fwd - t_end bwd) = 385.2131947 ; + 2e-6 R^2/|ahat| = 385.2135799
+(-10,-15,6)  R=2.5 b0=1.2 orient=1 ahat=0.278699 bhat=-1.29811 P0=2.32888  predicted lifetime 2R^2/|ahat| = 44.85123356
+   dir +1  t_end=30.55169049  cos(beta)_end=0.999999000001  beta_end=1.414e-03  total dpsi=-35.556929  max|cos err|=1.13e-12  max psi err(rel)=4.70e-09  |J/S-p|=1.0e-15  ratio err=1.1e-07  max|x_i-p|/R=2.599e-03 status=0
+   dir -1  t_end=-14.29949821  cos(beta)_end=-0.999999000001  beta_end=3.140e+00  total dpsi=32.020789  max|cos err|=1.13e-12  max psi err(rel)=5.52e-09  |J/S-p|=1.3e-15  ratio err=1.1e-07  max|x_i-p|/R=2.599e-03 status=0
+   integrated span (t_end fwd - t_end bwd) = 44.8511887 ; + 2e-6 R^2/|ahat| = 44.85123356
+(1,-0.3,3/7)  R=0.7 b0=2 orient=-1 ahat=0.0382867 bhat=0.200712 P0=2.62117  predicted lifetime 2R^2/|ahat| = 25.59633663
+   dir +1  t_end=7.472238258  cos(beta)_end=0.999999000000  beta_end=1.414e-03  total dpsi=35.707184  max|cos err|=7.96e-13  max psi err(rel)=2.94e-08  |J/S-p|=6.8e-16  ratio err=6.2e-08  max|x_i-p|/R=1.733e-03 status=0
+   dir -1  t_end=-18.12407277  cos(beta)_end=-0.999998999999  beta_end=3.140e+00  total dpsi=-40.352135  max|cos err|=1.10e-12  max psi err(rel)=3.03e-08  |J/S-p|=1.0e-15  ratio err=4.0e-08  max|x_i-p|/R=1.733e-03 status=0
+   integrated span (t_end fwd - t_end bwd) = 25.59631103 ; + 2e-6 R^2/|ahat| = 25.59633663

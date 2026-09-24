@@ -1,0 +1,16 @@
+equilateral mu=0.5 beta=0.3: impulse L=3.34e-52, planar Re k=-4.39e-53, max |d l^2/dt| = 1.17e-51 (vortex speed 0.39363), |p|-1 = 1.34e-51
+equilateral mu=0.5 beta=1.2: impulse L=3.34e-52, planar Re k=-4.39e-53, max |d l^2/dt| = 6.68e-52 (vortex speed 0.068886), |p|-1 = 0.0
+equilateral mu=0.5 beta=2.5: impulse L=3.34e-52, planar Re k=-4.39e-53, max |d l^2/dt| = 1.09e-51 (vortex speed 0.16434), |p|-1 = 2.67e-51
+equilateral mu=1.0 beta=0.3: impulse L=0.0, planar Re k=-1.94e-53, max |d l^2/dt| = 6.68e-52 (vortex speed 0.5145), |p|-1 = 1.34e-51
+equilateral mu=1.0 beta=1.2: impulse L=0.0, planar Re k=-1.94e-53, max |d l^2/dt| = 4.18e-52 (vortex speed 0.075542), |p|-1 = 2.67e-51
+equilateral mu=1.0 beta=2.5: impulse L=0.0, planar Re k=-1.94e-53, max |d l^2/dt| = 1.09e-51 (vortex speed 0.21305), |p|-1 = 0.0
+equilateral mu=0.01 beta=0.3: impulse L=4.57e-54, planar Re k=-1.78e-53, max |d l^2/dt| = 1.17e-51 (vortex speed 0.30199), |p|-1 = 0.0
+equilateral mu=0.01 beta=1.2: impulse L=4.57e-54, planar Re k=-1.78e-53, max |d l^2/dt| = 1.67e-52 (vortex speed 0.058451), |p|-1 = 2.67e-51
+equilateral mu=0.01 beta=2.5: impulse L=4.57e-54, planar Re k=-1.78e-53, max |d l^2/dt| = 6.68e-52 (vortex speed 0.13173), |p|-1 = 2.41e-50
+
+individual-vortex azimuth about p per unit ln chord^2 vs pole psi (minimizing-like shape, mu=0.01)
+beta=0.01  pole m1=0.86619732  floor P0 sec(beta)=0.86619732  vortex azimuth windings ['0.86619732', '0.86621908', '0.86621887']
+beta=0.3   pole m1=0.9066481  floor P0 sec(beta)=0.9066481  vortex azimuth windings ['0.90664418', '0.92792703', '0.92773119']
+beta=0.8   pole m1=1.2432118  floor P0 sec(beta)=1.2432118  vortex azimuth windings ['1.2431802', '1.5041195', '1.5031585']
+beta=1.2   pole m1=2.3903283  floor P0 sec(beta)=2.3903283  vortex azimuth windings ['2.3902256', '3.873131', '3.8860193']
+beta=1.5   pole m1=12.244675  floor P0 sec(beta)=12.244675  vortex azimuth windings ['12.244072', '24.12793', '24.359584']

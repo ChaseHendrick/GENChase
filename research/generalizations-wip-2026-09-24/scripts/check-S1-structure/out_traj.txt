@@ -1,0 +1,24 @@
+case 0 mu=+0.2200: d0=-0.9281 ahat=+0.032935 bhat=+0.375879 spans t in [-52.69,1.965] (d runs over [+0.807,-0.993])
+   worst: p=9.31e-16, shape=6.53e-13, ahat=2.28e-11, bhat=2.29e-11, dlin=1.32e-12, psi=4.14e-11, scale=3.81e-12, kspread=5.30e-13
+case 1 mu=+6.7228: d0=-0.8700 ahat=-0.005017 bhat=+0.378106 spans t in [-23.32,335.5] (d runs over [-0.987,+0.813])
+   worst: p=1.49e-15, shape=1.54e-11, ahat=3.16e-10, bhat=1.66e-11, dlin=6.54e-11, psi=7.65e-09, scale=6.33e-11, kspread=2.92e-12
+case 2 mu=+6.4604: d0=+0.5751 ahat=-0.017137 bhat=+0.408175 spans t in [-82.72,22.32] (d runs over [-0.842,+0.958])
+   worst: p=1.37e-15, shape=3.94e-12, ahat=3.74e-11, bhat=1.17e-11, dlin=1.03e-12, psi=2.18e-10, scale=3.42e-12, kspread=1.00e-12
+case 3 mu=+7.3076: d0=+0.8109 ahat=-0.100155 bhat=+1.414837 spans t in [-16.27,1.699] (d runs over [-0.819,+0.981])
+   worst: p=1.26e-15, shape=7.37e-13, ahat=7.41e-12, bhat=7.48e-12, dlin=1.46e-12, psi=4.61e-11, scale=2.01e-12, kspread=1.15e-12
+case 4 mu=+7.0808: d0=+0.3040 ahat=-0.035288 bhat=+0.553878 spans t in [-33.26,17.75] (d runs over [-0.870,+0.930])
+   worst: p=7.51e-16, shape=1.66e-12, ahat=1.95e-11, bhat=1.36e-11, dlin=8.93e-13, psi=2.95e-11, scale=2.63e-12, kspread=2.88e-12
+case 5 mu=-2.7359: d0=-0.2383 ahat=+0.124316 bhat=-0.279426 spans t in [-8.965,5.515] (d runs over [+0.876,-0.924])
+   worst: p=5.00e-16, shape=3.60e-13, ahat=3.46e-13, bhat=4.45e-13, dlin=7.39e-14, psi=2.45e-13, scale=2.52e-13, kspread=1.63e-13
+case 6 mu=+0.9497: d0=+0.4174 ahat=+0.002574 bhat=+0.077880 spans t in [-203.7,495.6] (d runs over [+0.942,-0.858])
+   worst: p=2.71e-15, shape=4.20e-12, ahat=1.38e-10, bhat=2.73e-12, dlin=1.16e-11, psi=1.49e-09, scale=3.18e-11, kspread=9.01e-13
+case 7 mu=+0.6213: d0=-0.7464 ahat=-0.002061 bhat=+0.064957 spans t in [-110.7,762.4] (d runs over [-0.975,+0.825])
+   worst: p=2.55e-15, shape=6.03e-12, ahat=1.84e-10, bhat=2.24e-12, dlin=2.31e-11, psi=1.27e-09, scale=3.38e-11, kspread=1.50e-12
+case 8 mu=-1.8983: d0=-0.3578 ahat=+0.099957 bhat=-0.300863 spans t in [-12.23,5.783] (d runs over [+0.864,-0.936])
+   worst: p=8.49e-16, shape=5.95e-13, ahat=2.77e-12, bhat=2.29e-12, dlin=8.32e-13, psi=9.76e-13, scale=1.11e-12, kspread=6.97e-13
+case 9 mu=+3.8920: d0=+0.3060 ahat=+0.104724 bhat=+0.230227 spans t in [-5.964,11.22] (d runs over [+0.931,-0.869])
+   worst: p=5.12e-16, shape=8.72e-13, ahat=3.28e-13, bhat=7.82e-13, dlin=8.87e-14, psi=1.89e-13, scale=3.70e-13, kspread=5.02e-13
+case 10 mu=+6.9361: d0=+0.7519 ahat=-0.046451 bhat=+0.632239 spans t in [-33.94,4.807] (d runs over [-0.825,+0.975])
+   worst: p=8.01e-16, shape=1.05e-12, ahat=6.21e-12, bhat=5.78e-12, dlin=8.31e-13, psi=2.28e-11, scale=1.23e-12, kspread=1.83e-12
+case 11 mu=+9.6263: d0=+0.0857 ahat=+0.047861 bhat=+0.427511 spans t in [-17.19,20.42] (d runs over [+0.909,-0.891])
+   worst: p=7.95e-16, shape=1.33e-11, ahat=2.06e-11, bhat=5.25e-12, dlin=1.27e-12, psi=3.76e-11, scale=2.75e-12, kspread=2.60e-12

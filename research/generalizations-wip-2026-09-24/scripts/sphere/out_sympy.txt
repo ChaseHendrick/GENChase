@@ -1,0 +1,8 @@
+|x|^2 - 1          : 0
+xdot - (s w + Om x w): [0, 0, 0]
+xdot . x            : 0
+ndot.p + rho^2 alpha: 0
+ndot.eperp - rho beta: 0
+Om.p - beta         : 0
+bp + eperp          : [0, 0, 0]
+identity (N)        : 0

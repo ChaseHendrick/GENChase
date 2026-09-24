@@ -1,0 +1,22 @@
+configurations checked: 2001
+  max planar spread              9.8951e-50
+  max planar L                   5.4738e-48
+  max zc on circle               9.0538e-51
+  max |x|-R                      2.1382e-50
+  max |p|-R                      1.6037e-50
+  max tangency                   2.2386e-45
+  max Mdot                       8.6064e-51
+  max M/S-p                      1.6313e-50
+  max chord-rate spread          7.6666e-39
+  max similarity fit resid       1.912e-44
+  max orientation sign (+1 ccw)  0.0
+  max normal = n                 2.3745e-43
+  max cosb - cos(beta)           2.7797e-49
+  max dcosb/dt + K a             7.0045e-35
+  max psidot - b/rho^2           1.0929e-38
+  max Om.p - psidot              1.0929e-38
+  max m1 - P0|sec b|             1.0928e-38
+  max m1 - P0/sqrt(1-K rho^2)    1.0928e-38
+  max m2 - P0 sec^2(b/2)         4.7448e-37
+  max m3 - P0                    6.9806e-35
+min P0 over all sampled collapses: 0.96485044540738550615  (sqrt3/2 = 0.86602540378443864676 )

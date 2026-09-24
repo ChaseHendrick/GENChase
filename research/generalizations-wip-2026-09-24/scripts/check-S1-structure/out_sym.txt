@@ -1,0 +1,17 @@
+(A) split residual: [0, 0, 0]
+(A2) d(x_j-x_i)xn == d n x (x_i-x_j): [0, 0, 0]
+(A3) second term = [0, 0, -u1*v2 + u2*v1] (only z component nonzero)
+(N) residual: 0
+(P) M = 0
+(P) L numerator: -mu*(mu*x**2 - 2*mu*x + mu*y**2 + x**2 + y**2 - 1)
+(P) u1 w2 - u2 w1 numerator mod L: [0, 0]
+(P) u1 w3 - u3 w1 numerator mod L: [0, 0]
+(P) u2 w3 - u3 w2 numerator mod L: [0, 0]
+(B) residual (free d, rho independent): [0, 0, 0]
+(B) |w|^2 + 2 rho w.a = 0
+(C) Omega x n + rho(alpha a + beta b') = [0, 0, 0]
+(C) d(n.p)/dt + rho^2 alpha = 0
+(C) Omega.p - beta = 0
+(C) azimuthal rate of n about p = beta  (|n_perp| = sqrt(1 - d2**2) )
+(C) rate - beta = 0
+ALL SYMBOLIC CHECKS PASS: True

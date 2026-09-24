@@ -1,0 +1,24 @@
+mu=0.5 phi=1.0 kappa spread=9.7e-17,1.1e-16 Re kappa=-0.034453 P0=2.698392743824 |p|=1.000000000000000
+  t range [-123.0150,57.5763], cos beta range [-0.999999,0.999999], samples 3872
+  max |J/S - p| = 3.09e-15
+  cos beta linear in t: slope 0.011074718490, max deviation 2.95e-13
+  psi vs ln tan(beta/2): slope -5.396785487577  vs 2*P0 = 5.396785487649, ratio 0.999999999987, max dev 2.01e-08, psi span 77.808
+  extrapolated cos beta at start/end times of full loxodrome: burst t=-123.015114, collapse t=57.576384
+mu=1.0 phi=2.2 kappa spread=6.9e-17,5.6e-17 Re kappa=0.076724 P0=1.737770944771 |p|=1.000000000000000
+  t range [-2.7255,66.3302], cos beta range [-0.999998,0.999998], samples 1616
+  max |J/S - p| = 1.12e-15
+  cos beta linear in t: slope 0.028962052702, max deviation 9.66e-15
+  psi vs ln tan(beta/2): slope -3.475541889662  vs 2*P0 = 3.475541889542, ratio 1.000000000034, max dev 5.06e-09, psi span 48.925
+  extrapolated cos beta at start/end times of full loxodrome: burst t=-2.725601, collapse t=66.330278
+mu=0.2 phi=-0.7 kappa spread=2.8e-17,2.8e-17 Re kappa=0.028463 P0=2.837546188362 |p|=1.000000000000000
+  t range [-169.5781,69.9141], cos beta range [-0.999998,0.999998], samples 5041
+  max |J/S - p| = 2.38e-15
+  cos beta linear in t: slope 0.008350990773, max deviation 1.61e-13
+  psi vs ln tan(beta/2): slope -5.675092376985  vs 2*P0 = 5.675092376725, ratio 1.000000000046, max dev 2.86e-08, psi span 79.761
+  extrapolated cos beta at start/end times of full loxodrome: burst t=-169.578302, collapse t=69.914239
+mu=0.8 phi=2.9 kappa spread=9.7e-17,3.3e-16 Re kappa=0.065484 P0=2.875912521950 |p|=1.000000000000000
+  t range [-6.5352,6.5365], cos beta range [-0.999977,0.999977], samples 645
+  max |J/S - p| = 9.40e-16
+  cos beta linear in t: slope 0.152998587735, max deviation 5.47e-14
+  psi vs ln tan(beta/2): slope -5.751825044332  vs 2*P0 = 5.751825043900, ratio 1.000000000075, max dev 1.01e-08, psi span 65.373
+  extrapolated cos beta at start/end times of full loxodrome: burst t=-6.535378, collapse t=6.536638

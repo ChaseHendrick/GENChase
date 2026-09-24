@@ -1,0 +1,2572 @@
+=====PAGE 1
+Self-similar motion of three point vortices
+Hassan Arefa
+Department of Engineering Science and Mechanics, Virginia Tech, Blacksburg, Virginia 24061, USA
+and Center for Fluid Dynamics, Technical University of Denmark, Kgs. Lyngby DK-2800, Denmark
+Received 9 February 2010; accepted 29 March 2010; published online 19 May 2010
+One of the counter-intuitive results in the three-vortex problem is that the vortices can converge on
+and meet at a point in a ﬁnite time for certain sets of vortex circulations and for certain initial
+conditions. This result was already included in Gröbli’s thesis of 1877 and has since been elaborated
+by several authors. It arises from an investigation of motions where the vortex triangle retains its
+shape for all time, but not its size. We revisit these self-similar motions, develop a new derivation
+of the initial conditions that lead to them, and derive a number of formulae pertaining to the rate of
+expansion or collapse and the angular frequency of rotation, some of which appear to be new. We
+also pursue the problem of linear stability of these motions in detail and, again, provide a number
+of formulae, some of which are new. In particular, we determine all eigenmodes analytically.
+© 2010 American Institute of Physics. doi:10.1063/1.3425649
+I. INTRODUCTION
+The point vortex equations on the unbounded plane,
+taken as the complex plane, without background ﬂow are
+z¯˙ =
+1
+2i
+=1
+N
+
+
+z −z
+,
+1
+where the dot signiﬁes a time derivative, the line over a
+symbol means complex conjugation, and the prime on the
+summation means . The time-dependent vortex posi-
+tions have been denoted zt, =1, ... ,N. The constant cir-
+culations of the vortices are . These equations may be
+found in many places in the literature.1–3
+The general theory of point vortex dynamics is exten-
+sive, and we shall only list what we need here. From Eq. 1
+one may derive4–6 equations of motion for the intervortex
+separations s1=z2−z3, s2=z3−z1, and s3=z1−z2, thus
+ds1
+2
+dt = 21
+ s3
+2 −s2
+2
+s2
+2s3
+2 ,
+ds2
+2
+dt = 22
+ s1
+2 −s3
+2
+s3
+2s1
+2 ,
+2
+ds3
+2
+dt = 23
+ s2
+2 −s1
+2
+s1
+2s2
+2 ,
+where  is given up to its sign by Heron’s formula for the
+area of a triangle in terms of its sides:
+162 = 2s2
+2s3
+2 + 2s3
+2s1
+2 + 2s1
+2s2
+2 −s1
+4 −s2
+4 −s3
+4.
+3a
+Care must be taken with the sign of  in Eq. 2. Gröbli4
+ﬁnds
+ = 1
+2x1y2 + x2y3 + x3y1 −x1y3 −x3y2 −x2y1.
+3b
+This makes 0 when vortices 123 appear counterclock-
+wise, and negative when they appear clockwise. The magni-
+tude of  is given by Eq. 3b for either orientation, so the
+system 2 is “closed” in the three variables s1,s2,s3 except
+for instants when the vortices become collinear.
+Equations 1 have four known general integrals. They
+are i the two real components, X and Y, of the linear
+impulse
+X + iY = 
+=1
+N
+z;
+ii the angular impulse,
+I = 
+=1
+N
+z2;
+and iii the Hamiltonian of the point vortex system
+H = −1
+2
+
+1N
+ logz −z.
+The combination,
+L = 
+=1
+N
+I −X2 −Y2,
+is extremely useful since it only involves the vortex separa-
+tions. For three vortices
+L = 23s1
+2 + 31s2
+2 + 12s3
+2.
+4a
+The Hamiltonian for three vortices is
+aElectronic mail: prof.hassan.aref@gmail.com.
+PHYSICS OF FLUIDS 22, 057104 2010
+1070-6631/2010/225/057104/12/$30.00
+© 2010 American Institute of Physics
+22, 057104-1
+Author complimentary copy. Redistribution subject to AIP license or copyright, see http://phf.aip.org/phf/copyright.jsp
+
+=====PAGE 2
+H = −1
+223 log s1 + 31 log s2 + 12 log s3.
+4b
+It is not difﬁcult to verify that L and H are, indeed, conserved
+by Eqs. 2.
+We shall also ﬁnd the following notation convenient.
+The three symmetric functions of the vortex strengths are
+designated
+	1 = 1 + 2 + 3,
+5a
+	2 = 12 + 23 + 31,
+5b
+	3 = 123.
+5c
+We shall say that the motion of N point vortices is self-
+similar if the vortex conﬁguration remains of the same shape
+for all time although the size of the conﬁguration may
+change. The relative equilibria of such a system may, of
+course, be thought of as a special case of self-similar motion
+when, in fact, both the shape and the size of the conﬁguration
+remain invariant. Self-similar motions of point vortices are,
+indeed, closely related to relative equilibria.
+Self-similar motions of three point vortices were con-
+ceived, identiﬁed and explored by Gröbli.4 Later Synge7
+studied them in some detail as part of a general classiﬁcation
+of solutions to the three-vortex problem. These solutions
+were rediscovered independently by Aref6 and studied by
+Novikov and Sedov.8 They have subsequently been studied
+by several authors. Of particular importance to the present
+paper are the analyses by Tavantzis and Ting9 and Kimura.10
+For a given triple of circulations consider an initial con-
+dition that leads to self-similar expansion of a vortex con-
+ﬁguration we shall determine necessary and sufﬁcient con-
+ditions momentarily. Now, consider the same conﬁguration
+reﬂected in one of the sides of the triangle. The time evolu-
+tion of the vortex separations in the second system will be
+the exact reverse of the ﬁrst system, since the reﬂection will
+ﬂip the sign of  while retaining the values of s1,s2,s3. Thus,
+if we can ﬁnd self-similar motions that are not relative equi-
+libria for three vortices with given circulations, we must be
+able to ﬁnd both expanding and collapsing conﬁgurations. If
+the collapse is sufﬁciently rapid, and we shall see below that
+it is, we arrive at the notion of a singularity after a ﬁnite time
+in the point vortex equations. This is the phenomenon of
+vortex collapse.
+Vortex collapse, of course, contradicts the intuitive no-
+tion that “the distance between any two vortices can never be
+much less than the smallest distance between any pair of
+vortices initially.”1 We shall see, however, that the set of
+vortex strengths and the initial conditions for which this type
+of motion arises are, indeed, quite limited. The feature of the
+N-vortex problem that it has a “singularity after a ﬁnite time”
+for certain initial conditions is in sharp contrast with the
+two-dimensional 2D Euler equation with smooth initial
+data, which may be shown to remain regular for all time.
+This result is due to a classical paper by Wolibner11 and has
+its own mathematical literature that we shall not review. The
+reader desiring a starting point in English may ﬁnd the paper
+by Schaeffer12 useful. The difference is not terribly surpris-
+ing since the vorticity distribution in the point vortex prob-
+lem is, of course, singular when viewed as a 2D vorticity
+ﬁeld. It is, nevertheless, true that arbitrarily smooth solutions
+of the 2D Euler equation, representing three concentrated
+vortices, may be found such that the solution tracks the col-
+lapse solution for three point vortices for a very long time.
+Only as the three concentrated vortices approach one another
+very closely do they “discover” that they cannot collide as in
+three-vortex collapse, and a rapid, in some cases quite dra-
+matic, departure from the three-vortex solution takes places.
+The study by Vosbeek et al.13 is a good starting point for this
+set of issues.
+If the point vortices are thought of as a set of rectilinear
+vortices in three dimensions, the 2D collapse solutions be-
+come collapse solutions in three-dimensional 3D albeit
+with vorticity extending to inﬁnity. Even if the vortices are
+made to “close up” at large distances, one would still expect
+the rectilinear portions to execute a near-collapse motion for
+a considerable interval of time before possibly deviating
+from it. Such considerations motivated searches for 3D vor-
+tex collapse models that attempt to address ﬁnite-time singu-
+larity formation in the 3D Euler equation.14
+II. DETERMINATION OF SELF-SIMILAR MOTIONS
+We seek motions for which st= fts0 with the
+same function ft for =1,2,3. Substituting this into the
+ﬁrst of Eqs. 2, we ﬁnd
+ds1
+2
+dt = df2
+dt s1
+20 = 21
+ 0s3
+20 −s2
+20
+s2
+20s3
+20 .
+6a
+The right hand side in Eq. 6a is a constant, so f2 must be
+linear in t. For consistency the constants obtained from the
+ﬁrst, second, and third of Eqs. 2 must give the same rate of
+change of f2, i.e., we must require that
+1s3
+2 −s2
+2 = 2s1
+2 −s3
+2 = 3s2
+2 −s1
+2.
+6b
+We shall soon understand condition 6b in terms of the con-
+servation of L, Eq. 4a. In any event, our ﬁrst necessary
+condition for self-similar motion, is that
+ft =1 −t
+
+ ,
+7
+where the aforementioned constant rate of change of f2 has
+been called −1/
+, and we used the initial condition f0=1.
+The physical interpretation of 
+ is that its magnitude sets a
+time scale for the relative motion. If 
+0, it may be inter-
+preted as the collapse time. In particular, we note that the
+necessary condition gives a ﬁnite time to collapse.
+During self-similar motion the integrals H and L, Eqs.
+4a and 4b respectively, must be conserved as for any
+motion. With the intervortex distances changing as ft, we
+see that H will evolve according to
+057104-2
+Hassan Aref
+Phys. Fluids 22, 057104 2010
+Author complimentary copy. Redistribution subject to AIP license or copyright, see http://phf.aip.org/phf/copyright.jsp
+
+=====PAGE 3
+Ht = H0 −	2
+2log ft,
+where 	2 was given by Eq. 5b. Thus, as a further necessary
+condition for self-similar motion, the three vortex circula-
+tions must satisfy 	2=0.
+Further, since L will be multiplied by f2t during the
+motion, a second necessary condition is that the initial posi-
+tions of the vortices satisfy L=0. The necessary conditions
+	2=0 and L=0 turn out also to be sufﬁcient to determine the
+self-similar motions of three vortices. We ﬁrst note that the
+right hand sides in Eq. 6a, and its variants for s2 and s3
+determining −1/
+ will, indeed, all have the same value when
+	2=0 and L=0. This follows by using 	2=0 to write
+L = 12s3
+2 + 23s1
+2 + 31s2
+2 = 0
+as
+−23 + 31s3
+2 + 23s1
+2 + 31s2
+2 = 0,
+from which one easily deduces Eq. 6b. Thus, if L=0 for
+three vortices with strengths that satisfy 	2=0, we have
+1
+s1
+2
+ds1
+2
+dt = 1
+s2
+2
+ds2
+2
+dt = 1
+s3
+2
+ds3
+2
+dt .
+We may set the common value of these three relative rates of
+change to 2log f, and we have established that the motion
+is self-similar. The conditions 	2=0 and L=0 are, thus, both
+necessary and sufﬁcient for three vortices to evolve in a self-
+similar motion.
+A. Initial conditions for self-similar motion
+Assuming 	2=0, we can now explicitly construct initial
+conditions for three vortices with L=0. Consider a system of
+coordinates with the x-axis chosen as the line through vorti-
+ces 1 and 2, and the origin at the center of vorticity of these
+two vortices. Thus, the y-axis is chosen such that vortex 1 is
+at x1=−2d/1+2, and vortex 2 is at x2=1d/1+2.
+Here d is the distance between vortices 1 and 2. In order to
+have L=0, the coordinates, x3,y3, of vortex 3 must satisfy
+12d2 + 23x2 −x32 + y3
+2 + 31x1 −x32 + y3
+2
+= 0,
+or
+12d2 + 31x1
+2 + 2x2
+2 −231x1 + 2x2x3
++ 31 + 2x3
+2 + y3
+2 = 0,
+or, ﬁnally,
+x3
+2 + y3
+2 = 1 + 2 + 3
+1 + 2
+d2.
+8
+This is the equation of a circle, shown in Fig. 1, centered at
+the origin, which is also the center of vorticity of vortices 1
+and 2, with a radius that is the distance between these two
+vortices multiplied by 	1/1+2. This geometric con-
+struction was ﬁrst presented by Aref.6 Kimura provides fur-
+ther discussion.15
+The bisector of the segment connecting 1 and 2 is the
+line
+x3 = 1
+2x1 + x2 = 1 −2
+1 + 2
+d
+2 .
+It intersects the circle at y3= d3/2, i.e., at the two
+points on the circle where triangle 123 is equilateral. Thus,
+the circle 8 may be constructed knowing just the center of
+vorticity of vortices 1 and 2 and the distance between them.
+The equilateral triangle based on the positions of vortices 1
+and 2 provides a point on the circle and, hence, its radius.
+The x-axis intersects the circle in the points E1 and E3 of Fig.
+1 with coordinates d	1/1+2,0, respectively. These
+points correspond to the two rotating, collinear relative equi-
+libria discussed in Ref. 16 and in what follows. The points E2
+and E4 clearly correspond to equilateral triangle relative
+equilibria.
+Except for the four points, indicated as E1, E2, E3, and
+E4 in Fig. 1, any initial condition with vortex 3 on the circle
+will lead to self-similar collapse or expansion of the vortex
+triangle with time. The sign of 
+ is best determined from the
+equation
+ds3
+2
+dt = 23
+ 0s2
+20 −s1
+20
+s1
+20s2
+20
+= −s3
+20
+
+.
+For vortex 3 on the arc E1E2, we have s2s1 and, since
+vortices 123 appear counterclockwise, 0. Since 30,
+we have 
+0 and the vortex triangle will collapse. On the
+arc E2E3 we have s2s1 but  is still positive. Thus, 
+0
+and the vortex triangle expands self-similarly. We get self-
+similar collapse for vortex 3 on the arc E3E4, self-similar
+expansion on E4E1.
+Consider perturbations of the relative equilibria in which
+we displace vortex 3 inﬁnitesimally along the circle in Fig. 1.
+The integral L retains its value 0 by construction. Since each
+relative equilibrium conﬁguration sits at the crossover be-
+tween expansion and collapse conﬁgurations, the perturbed
+conﬁguration will either expand or collapse depending on
+which way vortex 3 is displaced along the circle. This ex-
+plains qualitatively why in a linear perturbation analysis the
+E
+E
+E
+E
+1
+2
+3
+4
+1
+2
+3
+x
+y
+FIG. 1. Construction of initial conditions leading to self-similar collapse/
+expansion for three vortices with 	2=0.
+057104-3
+Self-similar motion of three point vortices
+Phys. Fluids 22, 057104 2010
+Author complimentary copy. Redistribution subject to AIP license or copyright, see http://phf.aip.org/phf/copyright.jsp
+
+=====PAGE 4
+four relative equilibria for 	2=0 that are “adjacent” to self-
+similar motions show up as marginally stable.
+B. Central conﬁgurations
+Gröbli4 showed that the ODEs for the polar coordinates
+of three vortices can be written in a form where, apart from
+the ﬁrst derivative of any given polar coordinate, only the
+sides of the vortex triangle appear. If the self-similar evolu-
+tion of the sides is substituted in his formulae, they lead to
+the complex positions of the vortices evolving as
+zt = z01 −t
+
+	
+1/2−i
+,
+9
+where 
+ has already been introduced, and  is a second real
+parameter. The signs have been set such that both 
+ and 
+are positive when the conﬁguration collapses as it rotates in
+the counterclockwise direction about the center of vorticity.
+In the limit 
+→ we obtain steadily rotating conﬁgurations,
+i.e., relative equilibria.
+We may, thus, approach the problem of self-similar mo-
+tion by asking that the vortices move so that the conﬁgura-
+tion rotates—translation is ruled out since the sum of circu-
+lations is nonzero—while changing scale. We are then led to
+the ansatz
+zt = tz0.
+10a
+This ansatz corresponds to what we might call central con-
+ﬁgurations of three point vortices by analogy with celestial
+mechanics. Substitution into the point vortex equations now
+gives
+¯˙ = const.
+10b
+If the constant, which is in general complex, is written as
+−1/2
+−i, with two real parameters  and 
+, and if we
+use the initial condition 0=1, the solution to Eq. 10b is
+t =1 −t
+
+	
+1/2−i
+,
+11
+i.e., we obtain Eq. 9.
+We easily get the following necessary conditions on the
+known integrals for such conﬁgurations:
+
+=1
+N
+z = 0, 
+=1
+N
+z2 = 0,
+12
+along with the condition 	2=0 from conservation of the
+Hamiltonian. Combining the two conditions Eq. 12 gives
+L=0.
+The equations to be satisﬁed by the initial positions of
+the vortices are, cf. Eq. 1,
+−1
+2
+ −i	z¯ =
+1
+2i
+=1
+N
+
+
+z −z
+.
+13
+Note that if 
+z1,z2,z3 is a solution to these equations for
+certain values of  and 
+, then the reﬂected conﬁguration,
+
+z¯1,z¯2,z¯3, is also a solution with parameters  and −
+. From
+Eq. 13 we have the condition that
+1
+z¯
+=1
+N
+
+
+z −z
+be independent of . For three vortices this gives
+1
+z¯1
+2
+z1 −z2
++
+3
+z1 −z3 = 1
+z¯2
+1
+z2 −z1
++
+3
+z2 −z3
+= 1
+z¯3
+1
+z3 −z1
++
+2
+z3 −z2.
+Comparing any two of these, and using 1z1+2z2+3z3
+=0, gives an analog of “Gröbli’s relation” for relative equi-
+libria, cf. Eq. 28b of Ref. 16:
+z¯1
+z2 −z3
++
+z¯2
+z3 −z1
++
+z¯3
+z1 −z2
+= 0.
+14
+We can now proceed as we did for the collinear relative
+equilibria16 by introducing variables
+1 = z2 −z3,
+2 = z3 −z1,
+3 = z1 −z2,
+15a
+which are, once again, not independent but sum to 0. We
+then have
+z¯1
+1
++ z¯2
+2
++ z¯3
+3
+= 0,
+15b
+and the representation inverse to Eq. 15a:
+z1 = 23 −32
+	1
+,
+16a
+z2 = 31 −13
+	1
+,
+16b
+z3 = 12 −21
+	1
+.
+16c
+Since 	2=0 we are assured of the denominator 	10 in
+these formulae. Equation 15b now becomes
+1¯2
+3
+−¯3
+2	 + 2¯3
+1
+−¯1
+3	 + 3¯1
+2
+−¯2
+1	 = 0.
+If we set
+z = ¯1
+3
+17
+and assume the coordinates rotated such that 3 is real, we
+have
+¯3
+1
+= 1
+z¯ ,
+¯2
+3
+= −z −1,
+¯3
+2
+= −
+1
+z¯ + 1 ,
+¯1
+2
+= −
+z
+z¯ + 1,
+¯2
+1
+= −z + 1
+z¯
+.
+Thus,
+057104-4
+Hassan Aref
+Phys. Fluids 22, 057104 2010
+Author complimentary copy. Redistribution subject to AIP license or copyright, see http://phf.aip.org/phf/copyright.jsp
+
+=====PAGE 5
+1−z −1 +
+1
+1 + z¯	 + 2
+1
+z¯ −z	 + 3−
+z
+z¯ + 1 + z + 1
+z¯ 	
+= 0.
+Multiplying through by z¯z¯+1 we get
+11 −z + 12z¯ + 21 −z2z¯ + 1 + 3z + 12 −z2
+= 0.
+18
+Unless z is real, in which case we return to the collinear
+relative equilibria, the imaginary part of this equation gives
+11 −z + 12 + 21 −z2 = 0.
+19a
+There then remains
+21 −z2 + 3z + 12 −z2 = 0.
+19b
+Introducing the real and imaginary parts of z as z=x+iy,
+where x and y are real, we obtain from Eq. 19a
+1 + 2x2 + y2 + 21x = 2,
+and from Eq. 19b
+2x2 + y2 −23x = 2 + 3.
+Since 	2=0, these two equations are, in fact, the same equa-
+tion multiply the ﬁrst by 3 and the second by 1, and may
+be written
+x +
+1
+1 + 2	
+2
++ y2 =
+
+1 + 2	
+2
+,
+20a
+where
+ = 1
+2 + 12 + 2
+2.
+20b
+This deﬁnes a circle in the x,y-plane, centered at
+−1/1+2,0 with radius /1+2.
+In our earlier treatment we had placed vortices 1 and 2 at
+z1 = −
+2d
+1 + 2
+,
+z2 =
+1d
+1 + 2
+,
+21a
+respectively. We then found that vortex 3 should be situated
+on the circle
+z3 = d
+	1
+1 + 2
+ei,
+0    2,
+21b
+in order to have self-similar motion. Using 3=−d, and
+	1 = 1 + 2 −
+12
+2 + 2
+=
+
+2
+1 + 2
+,
+which follows from 	2=0, we get
+1 = z2 −z3 = 1 −ei
+1 + 2
+d,
+22
+z = −1 + e−i
+1 + 2
+,
+i.e., that z orbits the circle 20a.
+The
+point
+E2
+in
+Fig.
+1
+corresponds
+to
+z3−z2
+=z2−z1ei2/3, or 1=3ei2/3, or z=e−i2/3. The correspond-
+ing value of the angle  in Eq. 21b or Eq. 22 is 0 given
+by
+e−i0 = 1/21 −2 −i3/21 + 2,
+or
+cos 0 = 1 −2
+2
+,
+sin 0 = 3
+2
+1 + 2
+
+.
+The point E4 corresponds to the angle −0 as determined
+from these formulae.
+To determine the parameters  and 
+ we return to Eq.
+13 which gives the conditions for a conﬁguration to lead to
+self-similar motion:
+2 −i
+
+	z¯1 = 2
+3
+−3
+2
+,
+2 −i
+
+	z¯2 = 3
+1
+−1
+3
+,
+2 −i
+
+	z¯3 = 1
+2
+−2
+1
+.
+Subtracting the second of these from the ﬁrst gives
+2 −i
+
+	¯3 = 1 + 2
+3
+−3
+1
+1
++ 1
+2	
+= 1 + 2
+3
++ 3
+3
+12
+,
+or
+2 −i
+
+ −1 + 2
+s3
+2
+= 3
+s3
+2
+3
+2
+12
+,
+23a
+and similarly
+2 −i
+
+ −2 + 3
+s1
+2
+= 1
+s1
+2
+1
+2
+23
+,
+23b
+2 −i
+
+ −3 + 1
+s2
+2
+= 2
+s2
+2
+2
+2
+31
+.
+23c
+Multiplying Eqs. 23a–23c, we see that 2−i/
+ must
+be a root of the cubic equation
+Z −1 + 2
+s3
+2 	Z −2 + 3
+s1
+2 	Z −3 + 1
+s2
+2 	 = 123
+s1
+2s2
+2s3
+2 .
+24
+This equation has the solution Z=0 since 1+22+3
+3+1=−123, when 	2=0. Indeed, one possible so-
+lution to Eq. 13 is that we have a stationary conﬁguration,
+=0, 
+=, i.e., the left hand sides of these equations are all
+0. For such a conﬁguration we must have 11=22=33.
+This conﬁguration is the stationary collinear relative equilib-
+rium that we studied in Ref. 16.
+057104-5
+Self-similar motion of three point vortices
+Phys. Fluids 22, 057104 2010
+Author complimentary copy. Redistribution subject to AIP license or copyright, see http://phf.aip.org/phf/copyright.jsp
+
+=====PAGE 6
+The polynomial in Eq. 24 has real coefﬁcients. The
+remaining two roots must then be complex conjugates, i.e.,
+2i/
+. Comparing the polynomial,
+ZZ −2 −i
+
+	Z −2 + i
+
+	,
+to the polynomial in Eq. 24, we read off general relations
+for  and 
+:
+ = 1
+4
+2 + 3
+s1
+2
++ 3 + 1
+s2
+2
++ 1 + 2
+s3
+2 ,
+25a
+22 +
+
+
+	
+2
+= 1
+2
+s2
+2s3
+2 + 2
+2
+s3
+2s1
+2 + 3
+2
+s1
+2s2
+2 .
+25b
+Now,
+
+2 + 3
+s1
+2
++ 3 + 1
+s2
+2
++ 1 + 2
+s3
+2 
+2
+= 2 + 32
+s1
+4
++ 3 + 12
+s2
+4
++ 1 + 22
+s3
+4
++ 2
+1
+2
+s2
+2s3
+2 + 2
+2
+s3
+2s1
+2 + 3
+2
+s1
+2s2
+2.
+Thus, from Eqs. 25a and 25b,
+22 −
+
+
+	
+2
+= 1
+2
+2 + 32
+s1
+4
++ 3 + 12
+s2
+4
++ 1 + 22
+s3
+4 .
+25c
+Subtracting Eq. 25c from Eq. 25b, we obtain
+
+
+
+	
+2
+= 1
+2
+1
+2
+s2
+2s3
+2 + 2
+2
+s3
+2s1
+2 + 3
+2
+s1
+2s2
+2
+−1
+4
+2 + 32
+s1
+4
++ 3 + 12
+s2
+4
++ 1 + 22
+s3
+4 .
+25d
+The relations 25a and 25d cannot accommodate a com-
+pletely stationary conﬁguration as is seen, for example, by
+considering Eq. 25b or Eq. 25c with 0 on the left hand
+side. Also note that while  is always positive according to
+Eq. 25a, 
+ can have either sign, as we have seen, but Eq.
+25d does not give the sign of 
+. In fact, for given circula-
+tions a vortex triangle and its mirror image would have op-
+posite values of 
+, since one would expand while the other
+would collapse.
+C. Relative equilibria
+For an equilateral vortex triangle, s1=s2=s3=s, Eq. 25a
+reproduces the known expression for its angular velocity of
+rotation, =	1/2s2. In this case we also get 
+= from
+Eq. 25d.
+For a collinear relative equilibrium conﬁguration, with
+the vortices along the x-axis, the quantities 1,2,3 are all
+real. In Ref. 16 we denoted the corresponding variables
+1,2,3 and we shall use that notation here also. In the
+formulae above we now have s1
+2=1
+2, s2
+2=2
+2, and s3
+2=3
+2.
+The stationary equilibrium is given by 11=22
+=33. It is not part of the present family of solutions in the
+sense that it does not arise as a limiting case of self-similarly
+expanding or collapsing solutions. It was shown to be lin-
+early unstable.16
+We have just shown, as a special case of the preceding
+analysis, that the two collinear relative equilibria correspond-
+ing to points E1 and E3 in Fig. 1 both rotate with angular
+frequency
+ = 1
+4
+2 + 3
+1
+2
++ 3 + 1
+2
+2
++ 1 + 2
+3
+2 .
+26
+This expression appears to differ from Eq. 67 of Ref. 16.
+To reconcile our current and former results, we note some
+useful consequences of the relation L=0, viz.,
+123
+2 + 231
+2 + 312
+2 = 0,
+27
+for collinear conﬁgurations. First, using 1+2+3=0, we re-
+write this equation as
+121 + 22 + 232 + 32 + 313 + 12 = 0.
+Expanding the three squares and using 	2=0, we see that the
+terms containing a square cancel one another by Eq. 27. We
+are left with the mixed terms
+1212 + 2323 + 3131 = 0.
+28a
+This is our ﬁrst useful relation. We may write it in the
+equally useful form
+12
+3
++ 23
+1
++ 31
+2
+= 0.
+28b
+Squaring, we get
+1
+22
+2
+3
+2
++ 2
+23
+3
+1
+2
++ 3
+21
+2
+2
+2
++ 2123
+1
+23
++ 2
+31
++ 3
+12
+= 0.
+Dividing through by 123, and using 	2=0, now gives the
+second useful relation
+1 + 2
+3
+2
++ 2 + 3
+1
+2
++ 3 + 1
+2
+2
+= 2
+1
+23
++ 2
+31
++ 3
+12.
+28c
+This identity reconciles Eq. 25a with our earlier result for
+the angular frequency of rotation of the two collinear, rotat-
+ing, relative equilibria.16 We repeat that Eq. 25a immedi-
+ately shows that the angular frequency is positive, i.e., that
+the two collinear relative equilibria rotate counterclockwise
+with the same frequency.
+We also note that marginal stability of these two relative
+equilibria now follows, since according our earlier analysis
+in Ref. 16, in particular Eq. 61a of that paper, the sum of 
+and the third eigenvalue, , is twice the right hand side of
+Eq. 25a. Thus, = and we have marginal stability of
+both rotating, collinear relative equilibria. This derivation is
+simpler than the one given previously.16
+057104-6
+Hassan Aref
+Phys. Fluids 22, 057104 2010
+Author complimentary copy. Redistribution subject to AIP license or copyright, see http://phf.aip.org/phf/copyright.jsp
+
+=====PAGE 7
+D. Shape of the trajectories
+We obtain the shape of a vortex trajectory by eliminating
+time between the expression for the radial variable,
+ = z01 −t
+
+ ,
+29a
+and the expression for the polar angle,
+ = −
+ log1 −t
+
+	.
+29b
+This gives
+ = 0exp−
+2
+	,
+29c
+which we recognize as the equation for a logarithmic spiral.
+The trajectories of the vortices in a self-similar motion are
+similar logarithmic spirals winding into the center of vortic-
+ity. The trajectory of any vortex can, thus, be obtained by
+taking the trajectory of vortex 1 and rotating it through a
+suitable angle. We emphasize that this argument concerning
+the shape of trajectories derives directly from the scaling
+form of the vortex positions, Eq. 10a and so applies to
+self-similar motions in the N-vortex problem. Figure 2, simi-
+lar to an illustration in Gröbli’s thesis,4 shows a case of self-
+similar collapse. Kimura17 gives two illustrations, one for
+three vortices and one for four.
+Self-similar motions with more than three vortices have
+not been studied in much detail. Novikov and Sedov8 gave
+limited results for N=4. See also O’Neil18 for a recent study.
+The necessary conditions 	2=0 and L=0 apply for all N but
+are no longer sufﬁcient to determine the conﬁgurations that
+evolve self-similarly when N4. One then has to return to
+Eq. 13 which is similar to the equations for relative equi-
+libria. Based on our experiences with the latter problem, we
+conjecture that conﬁgurations leading to self-similar motions
+exist for all N3. In particular, collapse to a point in a ﬁnite
+time remains a possibility for arbitrarily large N.
+III. LINEAR STABILITY OF SELF-SIMILAR MOTIONS
+The linear stability problem for self-similar motions may
+be approached in much the same way as we did for relative
+equilibria in Ref. 16. The base solution is given by Eq. 10a.
+Let us designate it z
+0t=tz
+00. We take the perturbed
+solution in the form zt=z
+0t+tt, where the 
+are inﬁnitesimal. Factoring out t is a matter of conve-
+nience. Now we obtain from Eq. 1 by expanding to linear
+order:
+z¯˙ = ¯˙z0 + ¯  + ¯¯˙ 
+=
+1
+2i
+=1
+N
+
+
+z0 −z0 +  −
+=
+1
+2i
+=1
+N
+
+
+z0 −z0 −
+ −
+z0 −z02.
+In an easily understood matrix-vector notation16 we have
+2¯˙ + ¯˙¯ = iA,
+30a
+where A is given in terms of the variables 1, 3, 3, all
+evaluated at t=0, by
+A = 1
+2
+2
+3
+2 + 3
+2
+2
+−2
+3
+2
+−3
+2
+2
+−1
+3
+2
+1
+3
+2 + 3
+1
+2
+−3
+1
+2
+−1
+2
+2
+−2
+1
+2
+1
+2
+2 + 2
+1
+2
+.
+30b
+As in the linear stability analysis for relative equilibria,16
+where we wrote the inﬁnitesimal perturbation as teit,
+the beneﬁt of factoring out t is that the matrix 30b be-
+comes independent of time. In Eq. 30a we have 2=1
+−t/
+, and ¯˙ =−1/2
+−i. Thus, we get
+1 −t
+
+	¯˙ −1
+2
+¯ = i¯ + A.
+31a
+This is the counterpart of Eq. 50a in Ref. 16.
+Setting
+t =1 −t
+
+t,
+31b
+we get for t
+ when 
+ is positive
+˙ = −
+1
+2
+1 −t
+
+¯ +1 −t
+
+˙
+=
+1
+1 −t
+
+1 −t
+
+	˙ −1
+2
+¯.
+Thus, Eq. 31a becomes
+1
+2
+3
+1'
+'
+'2
+3
+FIG. 2. Self-similar collapse of three vortices with 1:2:3=15:10:−6.
+After Fig. 6 of Ref. 4. Labeling of the vortices conforms to the convention
+3021. Initial condition 123; later positions 123.
+057104-7
+Self-similar motion of three point vortices
+Phys. Fluids 22, 057104 2010
+Author complimentary copy. Redistribution subject to AIP license or copyright, see http://phf.aip.org/phf/copyright.jsp
+
+=====PAGE 8
+1 −t
+
+	¯˙ = i¯ + A.
+31c
+Here we change independent variable from t to s by
+s = −
+ log1 −t
+
+	,
+ds =
+dt
+1 −t
+
+, 1 −t
+
+	
+d
+dt = d
+ds .
+Then Eq. 31c becomes
+d¯
+ds = i¯ + A.
+31d
+We differentiate this equation once more with respect to s
+and use Eq. 31d in the result to obtain a second order ODE:
+d2
+ds2 = −2 + A¯ A.
+31e
+This is the counterpart of Eq. 51 in Ref. 16.
+We see by inspection that e=1,1,1 is an eigenvector
+of A with eigenvalue 0. Also, from Eq. 13 the vector z0
+satisﬁes
+Az0 = −i
+2
+	z¯0,
+such that
+A¯ Az0 = −i
+2
+	Az0
+= −i
+2
+	 + i
+2
+	z0 =2 +
+1
+2
+	
+2z0.
+Thus, we know two eigenvalues, 0 and 2+1/2
+2, of A¯ A.
+Since the trace of A¯ A is real, it follows that the third eigen-
+value, , is also real. We calculate it in the next subsection.
+The eigenmode e leads to  evolving according to
+d2
+ds2 = −2,
+s = 0expis,
+t =1 −t
+
+	
+i
+0.
+Thus, the amplitude of  remains constant in time. Since
+t=t1−t/
+−1/2, we see that if 
+0, corresponding
+to self-similar expansion, the amplitude of  will decrease
+with time. On the other hand, if 
+0, corresponding to self-
+similar collapse, the amplitude of  will diverge as t→
+.
+A similar conclusion is reached for the eigenmode z0.
+A perturbation proportional to z0 leads to  evolving
+according to
+d2
+ds2 =
+1
+2
+	
+2
+,
+s = 0exp s
+2
+	,
+t =1 −t
+
+	
+1/2
+0,
+in other words to  evolving as
+t = 0,
+or
+t = 0
+1 −t
+
+.
+The ﬁrst of these is marginally stable it does not grow be-
+yond the initial perturbation. The second will either grow or
+decay depending on the sign of 
+. For self-similar expansion,
+
+0, the perturbation decays as t→. For collapse, 
+0,
+the perturbation grows algebraically as t→
+.
+We now consider to what extent these formal results
+signal stability or instability of the self-similar motions. Both
+perturbations considered are very simple and what is happen-
+ing in the dynamics is quite transparent. The perturbation e
+corresponds to a rigid displacement of the original ﬂuid tri-
+angle. The initial vortex separations are unchanged by such a
+perturbation. Thus, as far as Eq. 2 is concerned, the dynam-
+ics is unchanged. At the level of Eq. 10a we have a base
+solution, z
+0t, with initial positions z
+00. The perturbed
+solution, zt, evolves from initial positions z0=z
+00
++a, where a is an arbitrary displacement that is the same for
+all three vortices. The right hand sides in the dynamical
+equation 1 are unchanged by a common displacement of
+the vortices. Hence, zt will evolve as z
+0t+a. In the
+expanding self-similar motion, a becomes negligible com-
+pared to z
+0t as t→, which implies stability in the linear
+analysis. For the collapse motion, on the other hand, z
+0t
+→0 as t→
+, whereas zt→a, and this ﬁnite deviation
+shows up as an instability in the linear analysis. The insta-
+bility is algebraic rather than exponential precisely because
+the variation of positions in the collapsing motion is alge-
+braic. The instability simply measures the deviation from
+collapse at the original center of vorticity the origin of co-
+ordinates relative to collapse at the displaced center of
+vorticity.
+For the perturbation z0 we are considering a change
+from the base solution, z
+0t, to zt=1+z
+0t, where 
+is a parameter that may be complex and that, in the context
+of linear stability, we would consider to be inﬁnitesimal. In
+such a perturbation the initial vortex triangle is similar to the
+triangle formed by the base solution. Hence, the self-similar
+motion proceeds as for the base solution, although with 
+multiplied and  divided by 1+2. In particular, the product
+
+, which appears in the exponent of t, is invariant under
+this perturbation even when the perturbation is not inﬁni-
+tesimal. We are, thus, comparing the base solution,
+z
+0t = z
+001 −t
+
+	
+1/2−i
+,
+to the perturbed solution,
+zt = z
+001 −t
+
+	
+1/2−i
+,
+where 
+=1+2
+. In other words,
+057104-8
+Hassan Aref
+Phys. Fluids 22, 057104 2010
+Author complimentary copy. Redistribution subject to AIP license or copyright, see http://phf.aip.org/phf/copyright.jsp
+
+=====PAGE 9
+zt = z
+0t 
+
+	
+= z
+00
+t
+1 + 2	
+ z
+0t −2 Rez
+00˙t,
+to ﬁrst order in . Here
+˙ =
+−1
+2
+ + i
+¯
+=
+−1
+2
+ + i
+2
+ =
+−1
+2
+ + i
+1 −t
+
+,
+so
+zt  z
+0t
+1 + 2 Re
+1
+2
+ −i
+1 −t
+
+ 
+.
+If 
+0, corresponding to a self-similarly expanding motion,
+the addition becomes ever more negligible as t→. On the
+other hand, if 
+0, that is, for a collapsing motion, it di-
+verges as t→
+. Our previous conclusions, that the expanding
+motions are stable while the collapse motions are unstable,
+are recovered.
+The self-similar motions exist in a subspace of the full
+conﬁguration space for three vortices with circulations such
+that 	2=0, viz., the subspace deﬁned by the conditions in Eq.
+12. If we introduce a perturbation that violates these con-
+ditions, the motion will clearly deviate from the self-similar
+solution which is, in this sense, unstable to such perturba-
+tions. However, violating Eq. 12 corresponds to changing
+the linear and angular impulse of the motion. We would gen-
+erally deem such perturbations to be impermissible in a sta-
+bility calculation since they represent forces or torques ap-
+plied to the system by external agents, and not the intrinsic
+stability of the system due to ﬂuctuations that do not add
+momentum, angular momentum, or mechanical energy to the
+system. A perturbation proportional to the eigenvector e, i.e.,
+z=a, violates the conditions in Eq. 12 since it changes
+the linear impulse by 	1a, and 	10, when 	2=0.
+In general, a perturbation, z, to a given “base” con-
+ﬁguration, z
+0, changes the linear and angular impulse by
+X + iY = 
+=1
+3
+z = 
+=1
+3
+z,
+32a
+I = 
+=1
+3
+z2 = 
+=1
+3
+z
+0z¯ + zz¯
+0,
+32b
+respectively. The change in the value of the Hamiltonian is
+H = 
+=1
+N 
+H
+x
+x + H
+y
+y
+= 
+=1
+N
+
+dx
+0
+dt y −dy
+0
+dt x	 = 
+=1
+N
+ Imz¯˙
+0z
+= Im−1
+2
+ −i	
+=1
+N
+z¯
+0z.
+32c
+For z=a we see that X+iY=a	1, as just stated, and
+I=a¯X+iY+aX−iY, which vanishes when X=Y =0. We
+also see that H is linear in X and Y, and so vanishes. This
+perturbation, then, would be disallowed since it implies a
+change in the linear impulse of the vortex system, although
+the angular impulse and the Hamiltonian are not changed.
+For z=z
+0, on the other hand, X+iY becomes pro-
+portional to X+iY, which vanishes for the base solution.
+Similarly, I becomes proportional to I, which also vanishes
+for the base solution. Further, H also becomes proportional
+to I, and so vanishes. This perturbation, then, would be al-
+lowed since it preserves the integrals of motion. Hence, from
+a partial analysis based on just two of the three eigenmodes
+we conclude that the self-similarly collapsing motions are
+unstable.
+A. The third eigenvalue
+In order to explore the problem further and, in particular,
+ascertain the linear stability of the self-similarly expanding
+motions, we seek the third eigenvalue, , of A¯ A and its
+corresponding eigenvector. The eigenvalue may be found by
+calculating the trace of A¯ A. The 11-element of the product
+matrix A¯ A is
+
+2
+3
+2 + 3
+2
+2
+2
++ 12
+s3
+4
++ 31
+s2
+4
+= 21 + 2
+s3
+4
++ 33 + 1
+s2
+4
++ 23
+s2
+4s3
+4 2
+2¯
+3
+2 + ¯
+2
+23
+2.
+Permuting indices to ﬁnd the other two diagonal elements of
+the product matrix, we obtain after a brief calculation
+TrA¯ A =
+1
+2	
+2
+1 + 22
+s3
+4
++ 2 + 32
+s1
+4
++ 3 + 12
+s2
+4
++ 12
+s1
+4s2
+4 1
+2¯
+2
+2 + ¯
+1
+22
+2 + 23
+s2
+4s3
+4 2
+2¯
+3
+2 + ¯
+2
+23
+2
++ 31
+s3
+4s1
+4 3
+2¯
+1
+2 + ¯
+3
+21
+2.
+33
+Here, since 1+2+3=0,
+1
+2¯
+2
+2 + ¯
+1
+22
+2 = 1¯2 + ¯122 −2s1
+2s2
+2
+= 1 + 22 −s1
+2 −s2
+22 −2s1
+2s2
+2
+= s3
+2 −s1
+2 −s2
+22 −2s1
+2s2
+2
+= s1
+4 + s2
+4 + s3
+4 −2s3
+2s1
+2 + s2
+2.
+057104-9
+Self-similar motion of three point vortices
+Phys. Fluids 22, 057104 2010
+Author complimentary copy. Redistribution subject to AIP license or copyright, see http://phf.aip.org/phf/copyright.jsp
+
+=====PAGE 10
+Hence, the sum of the last three terms in the expression for
+the trace, Eq. 33, is
+
+12
+s1
+4s2
+4 + 23
+s2
+4s3
+4 + 31
+s3
+4s1
+4	s1
+4 + s2
+4 + s3
+4
+−2
+12s3
+2s1
+2 + s2
+2
+s1
+4s2
+4
++ 23s1
+2s2
+2 + s3
+2
+s2
+4s3
+4
++ 31s2
+2s3
+2 + s1
+2
+s3
+4s1
+4
+	.
+34a
+In the last bracketed term of this expression we use 23s1
+2
++31s2
+2+12s3
+2=0, and then 	2=0, to rewrite the numera-
+tors, e.g.,
+12s3
+2s1
+2 + s2
+2
+s1
+4s2
+4
+= −23s1
+2 + 31s2
+2s1
+2 + s2
+2
+s1
+4s2
+4
+= 12
+s1
+2s2
+2 −31
+s1
+4
+−23
+s2
+4 .
+Thus we obtain, upon applying 	2=0 and 23s1
+2+31s2
+2
++12s3
+2=0 once more, that
+12s3
+2s1
+2 + s2
+2
+s1
+4s2
+4
++ 23s1
+2s2
+2 + s3
+2
+s2
+4s3
+4
++ 31s2
+2s3
+2 + s1
+2
+s3
+4s1
+4
+= 23
+s1
+4
++ 31
+s2
+4
++ 12
+s3
+4 .
+34b
+Using 	2=0, the nine terms resulting from the product in the
+ﬁrst term of Eq. 34a may be written as
+12s3
+4
+s1
+4s2
+4
++ 23s1
+4
+s2
+4s3
+4
++ 31s2
+4
+s3
+4s1
+4
+−
+12
+s3
+4
++ 23
+s1
+4
++ 31
+s2
+4 	.
+We may further transform the ﬁrst three quantities in this
+expression as follows:
+12s3
+4
+s1
+4s2
+4
+= 23s1
+2 + 31s2
+22
+12s1
+4s2
+4
+= 23
+2
+1s2
+4 + 3
+21
+2s1
+4 + 23
+2
+s1
+2s2
+2
+= −2 + 33
+s2
+4
+−3 + 13
+s1
+4
++ 23
+2
+s1
+2s2
+2 .
+Similarly,
+23s1
+4
+s2
+4s3
+4
+= −3 + 11
+s3
+4
+−1 + 21
+s2
+4
++ 21
+2
+s2
+2s3
+2 ,
+31s2
+4
+s3
+4s1
+4
+= −1 + 22
+s1
+4
+−2 + 32
+s3
+4
++ 22
+2
+s3
+2s1
+2 .
+Adding these three equations we have
+12s3
+4
+s1
+4s2
+4
++ 23s1
+4
+s2
+4s3
+4
++ 31s2
+4
+s3
+4s1
+4
+−
+23
+s1
+4
++ 31
+s2
+4
++ 12
+s3
+4 	
+= −
+2
+2 + 3
+2
+s1
+4
++ 3
+2 + 1
+2
+s2
+4
++ 1
+2 + 2
+2
+s3
+4 	
++ 2
+1
+2
+s2
+2s3
+2 + 2
+2
+s3
+2s1
+2 + 3
+2
+s1
+2s2
+2	.
+34c
+Putting these partial results into the expression for the trace,
+Eq. 33, and using the obvious relation
+2 + 32
+s1
+4
++ 3 + 12
+s2
+4
++ 1 + 22
+s3
+4
+= 2
+2 + 3
+2
+s1
+4
++ 3
+2 + 1
+2
+s2
+4
++ 1
+2 + 2
+2
+s3
+4
++ 2
+23
+s1
+4
++ 31
+s2
+4
++ 12
+s3
+4 	,
+we ﬁnally arrive at
+TrA¯ A = 2
+1
+2	
+2
+1
+2
+s2
+2s3
+2 + 2
+2
+s3
+2s1
+2 + 3
+2
+s1
+2s2
+2
+= 22 +
+1
+2
+	
+2,
+35
+where the last step follows from Eq. 25b. Since the trace is
+also the sum of the eigenvalues, 0+2+1/2
+2+, we con-
+clude that
+ = 2 +
+1
+2
+	
+2
+.
+36
+The temporal evolution of the third eigenmode, then, is iden-
+tical to the evolution of the eigenmode z0, that is, it implies
+linear stability for self-similar expansion, linear instability
+for self-similar collapse.
+B. The third eigenmode
+To determine the third eigenmode we return to the ma-
+trix A in Eq. 30b. It has the eigenvalue 0, and we denote its
+other two eigenvalues 1 and 2. Consider the characteristic
+polynomial of the matrix 2A:
+pAz =
+2
+3
+2 + 3
+2
+2 −z
+−2
+3
+2
+−3
+2
+2
+−1
+3
+2
+3
+1
+2 + 1
+3
+2 −z
+−3
+1
+2
+−1
+2
+2
+−2
+1
+2
+1
+2
+2 + 2
+1
+2 −z
+.
+37a
+The coefﬁcient of z2 is given by the trace of 2A and equals
+2 times the sum of the eigenvalues of A. From this we
+conclude that
+057104-10
+Hassan Aref
+Phys. Fluids 22, 057104 2010
+Author complimentary copy. Redistribution subject to AIP license or copyright, see http://phf.aip.org/phf/copyright.jsp
+
+=====PAGE 11
+1 + 2 = 1
+2
+2 + 3
+1
+2
++ 3 + 1
+2
+2
++ 1 + 2
+3
+2 	.
+37b
+The coefﬁcient of z in pAz is simply −2212 since one
+eigenvalue is 0. From this observation we get, after a brief
+calculation, that
+12 =
+	1
+22
+1
+2
+23
+2 + 2
+3
+21
+2 + 3
+1
+22
+2	.
+37c
+From the algebra of linear stability of the relative
+equilibria16 we are led to try if the vector,
+v = ¯1
+1
+, ¯2
+2
+, ¯3
+3	,
+38
+is an eigenvector of A¯ A. Hence, we proceed to calculate Av.
+In view of Eqs. 23a–23c, it is expedient to include a
+prefactor 2−i/
+. Thus, for the ﬁrst component we
+consider
+2 −i
+
+	
+2
+3
+2 + 3
+2
+2	
+¯1
+1
+−2
+3
+2
+¯2
+2
+−3
+2
+2
+¯3
+3
+= 1
+1
+2
+3
+2 + 3
+2
+2	
+2 + 3
+1
++ 11
+23	
+−1
+3
+2
+3 + 1
+2
++ 22
+31	 −1
+2
+2
+1 + 2
+3
++ 33
+12	.
+Straightforward simpliﬁcation, using 1+2+3=0, gives the
+result
+2 −i
+
+	
+2
+3
+2 + 3
+2
+2	
+¯1
+1
+−2
+3
+2
+¯2
+2
+−3
+2
+2
+¯3
+3
+= 	1
+2
+1
+23
+2 + 3
+1
+22
+2 + 1
+2
+23
+2	
+1
+1
+.
+Corresponding results hold for indices 2 and 3, and we
+conclude that
+ −i
+2
+	Av =
+	1
+22
+2
+1
+23
+2 + 3
+1
+22
+2 + 1
+2
+23
+2	v¯ = 12v¯ .
+Then,
+2 +
+1
+2
+	
+2A¯ Av = 12 + i
+2
+	Av
+= 12 −i
+2
+	Av = 122v.
+From our calculation in the previous subsection we
+know that =2+1/2
+2 is the only nonzero eigenvalue of
+A¯ A, i.e., that 12=2+1/2
+2. For a direct proof of this
+we transcribe
+
+1
+2
+23
+2 + 2
+3
+21
+2 + 3
+1
+22
+2
+2
+= 1
+2
+s2
+4s3
+4 + 2
+2
+s3
+4s1
+4 + 3
+2
+s1
+4s2
+4 +
+1
+s1
+4s2
+4s3
+4121
+2¯
+2
+2 + ¯
+1
+22
+2
++ 232
+2¯
+3
+2 + ¯
+2
+23
+2 + 313
+2¯
+1
+2 + ¯
+3
+21
+2
+39
+along the lines of the calculation of TrA¯ A. The terms in
+square brackets may be rewritten as
+121
+2¯
+2
+2 + ¯
+1
+22
+2 = 12s1
+4 + s2
+4 + s3
+4 −2s3
+2s1
+2 + s2
+2,
+232
+2¯
+3
+2 + ¯
+2
+23
+2 = 23s1
+4 + s2
+4 + s3
+4 −2s1
+2s2
+2 + s3
+2,
+313
+2¯
+1
+2 + ¯
+1
+23
+2 = 31s1
+4 + s2
+4 + s3
+4 −2s2
+2s3
+2 + s1
+2.
+Thus, since 	2=0, the square bracket in Eq. 39 reduces to
+−212s3
+2s1
+2 + s2
+2 + 23s1
+2s2
+2 + s3
+2 + 31s2
+2s3
+2 + s1
+2
+= 212s1
+2s2
+2 + 23s2
+2s3
+2 + 31s3
+2s1
+2
+= 2s1
+2s2
+2s3
+2
+12
+s3
+2
++ 31
+s2
+2
++ 23
+s1
+2 	.
+We now have
+
+1
+2
+23
+2 + 2
+3
+21
+2 + 3
+1
+22
+2
+2
+=
+1
+s2
+2s3
+2 + 2
+s3
+2s1
+2 + 3
+s1
+2s2
+2	
+2
+.
+Multiplying by 	1
+2, and taking the square root, we get
+12 =
+1
+22
+1
+2
+s2
+2s3
+2 + 2
+2
+s3
+2s1
+2 + 3
+2
+s1
+2s2
+2	 = 2 +
+1
+2
+	
+2
+,
+as desired. Inside the parentheses we ﬁrst get 	11=1
+2
++12+3=1
+2−23, etc., but the sum of the three terms
+with mixed subscripts vanishes since L=0. Finally,
+A¯ Av =2 +
+1
+2
+	
+2v,
+40
+with the eigenvector, v, given by Eq. 38.
+Returning to the considerations in Eqs. 32a–32c, we
+see that perturbations proportional to v conserve both linear
+and angular impulse and conserve the Hamiltonian:
+
+=1
+3
+z = 
+=1
+3
+z
+= 
+=1
+3
+
+¯
+
+0
+
+= ¯
+1
+0 + ¯
+2
+0 + ¯
+3
+0 = 0
+shows that the linear impulse is preserved.
+
+=1
+3
+z
+02 = 
+=1
+3
+z
+0z¯ + zz¯
+0
+= 
+=1
+3
+¯z
+0
+0 + 
+0z
+0 = 0,
+where the last step follows from
+057104-11
+Self-similar motion of three point vortices
+Phys. Fluids 22, 057104 2010
+Author complimentary copy. Redistribution subject to AIP license or copyright, see http://phf.aip.org/phf/copyright.jsp
+
+=====PAGE 12
+
+=1
+3
+z
+0
+0 = z1
+0z2
+0 −z3
+0 + z2
+0z3
+0 −z1
+0
++ z3
+0z1
+0 −z2
+0 = 0,
+shows that the angular impulse is preserved. Finally, the
+change in the Hamiltonian is
+H = Im
+=1
+3
+−1
+2
+ −i	z¯
+0z
+= Im−1
+2
+ −i	
+=1
+3
+z
+0
+0 = 0.
+Thus, such perturbations are permissible according to our
+previous discussion. It is particularly interesting that the per-
+turbation v is not a simple afﬁne transformation of the vortex
+positions as were the perturbations e and z0.
+In summary, within the subspace of initial conditions for
+which L=0 we have found a nontrivial, algebraically grow-
+ing instability of the self-similar collapse motions. The self-
+similarly expanding motions are linearly stable. These con-
+clusions were reached by Tavantzis and Ting9 and, using an
+approach more similar to this paper, by Kimura.10 However,
+the explicit expressions for the third eigenmode and the for-
+mulae for  and 
+ in terms of the conﬁguration geometry
+appear to be new.
+ACKNOWLEDGMENTS
+This paper was stimulated by discussions with Y.
+Kimura following the publication of Ref. 16. I thank him for
+calling his papers on the subject to my attention. I thank M.
+A. Stremler for asking a question that led me to think more
+deeply about what the term “instability” means in the present
+context. This work was partially supported by a Niels Bohr
+Visiting
+Professorship
+at
+the
+Technical
+University
+of
+Denmark sponsored by the Danish National Research
+Foundation.
+1G. K. Batchelor, An Introduction to Fluid Dynamics Cambridge Univer-
+sity Press, Cambridge, 1967.
+2H. Aref, “Integrable, chaotic and turbulent vortex motion in two-
+dimensional ﬂows,” Annu. Rev. Fluid Mech. 15, 345 1983.
+3P. K. Newton, The N-Vortex Problem: Analytical Techniques, Applied
+Mathematical Sciences Vol. 145 Springer-Verlag, New York, 2001.
+4W. Gröbli, Spezielle Probleme über die Bewegung Geradliniger Paralleler
+Wirbel Fäden Zürcher ung Furrer, Zürich, 1877 Vierteljahrsschr. Nat-
+forsch. Ges. Zur. 22, 129 1877.
+5E. A. Novikov, “Dynamics and statistics of a system of vortices,” Sov.
+Phys. JETP 41, 937 1975.
+6H. Aref, “Motion of three vortices,” Phys. Fluids 22, 393 1979.
+7J. L. Synge, “On the motion of three vortices,” Can. J. Math. 1, 257
+1949.
+8E. A. Novikov and Yu. B. Sedov, “Vortex collapse,” Sov. Phys. JETP 50,
+297 1979.
+9J. Tavantzis and L. Ting, “The dynamics of three vortices revisited,” Phys.
+Fluids 31, 1392 1988.
+10Y. Kimura, “Parametric motion of complex-time singularity toward real
+collapse,” Physica D 46, 439 1990.
+11W. Wolibner, “Un theorème sur l’existence du mouvement plan d’un ﬂu-
+ide parfait, homogène, incompressible, pendant un temps inﬁniment long,”
+Math. Z. 37, 698 1933.
+12A. C. Schaeffer, “Existence theorem for the ﬂow of an ideal incompress-
+ible ﬂuid in two dimensions,” Trans. Am. Math. Soc. 42, 497 1937.
+13P. W. C. Vosbeek, J. H. G. M. van Geffen, V. V. Meleshko, and G. J. F. van
+Heijst, “Collapse interactions of ﬁnite-sized two-dimensional vortices,”
+Phys. Fluids 9, 3315 1997.
+14Y. Kimura, “Self-similar collapse of 2D and 3D vortex ﬁlament models,”
+Theor. Comput. Fluid Dyn. 24, 389 2010.
+15Y. Kimura, “Similarity solution of two-dimensional point vortices,” J.
+Phys. Soc. Jpn. 56, 2024 1987.
+16H. Aref, “Stability of relative equilibria of three vortices,” Phys. Fluids
+21, 094101 2009.
+17Y. Kimura, “Vortex collapse from the viewpoint of complex-time singu-
+larity,” Physica D 51, 512 1991.
+18K. A. O’Neil, “Relative equilibrium and collapse conﬁgurations of four
+point vortices,” Regular Chaotic Dyn. 12, 117 2007.
+057104-12
+Hassan Aref
+Phys. Fluids 22, 057104 2010
+Author complimentary copy. Redistribution subject to AIP license or copyright, see http://phf.aip.org/phf/copyright.jsp

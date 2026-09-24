@@ -1,0 +1,2409 @@
+=====PAGE 1
+arXiv:1407.1641v1  [nlin.SI]  7 Jul 2014
+Multi–particle dynamical systems and
+polynomials
+Maria V. Demina and Nikolai A. Kudryashov
+Department of Applied Mathematics
+National Research Nuclear University ”MEPhI”
+31 Kashirskoe Shosse, 115409, Moscow,
+Russian Federation
+Abstract
+Polynomial dynamical systems describing interacting particles in the plane are stud-
+ied. A method replacing integration of a polynomial multi–particle dynamical system by
+ﬁnding polynomial solutions of a partial diﬀerential equations is described. The method
+enables one to integrate a wide class of polynomial multi–particle dynamical systems.
+The general solutions of certain dynamical systems related to linear second–order partial
+diﬀerential equations are found. As a by-product of our results, new families of orthogo-
+nal polynomials are derived. Our approach is also applicable to dynamical systems that
+are not multi–particle by their nature but that can be regarded as multi–particle (for
+example, the Darboux–Halphen system and its generalizations). A wide class of two and
+three–particle polynomial dynamical systems is integrated.
+Keywords: Multi–particle dynamical systems, polynomial solutions of partial diﬀerential
+equations, orthogonal polynomials
+1
+Introduction
+Integrating an ordinary diﬀerential equation is one of the major problems of analysis. With
+the exception of certain classes of ordinary diﬀerential equations this problem is rather com-
+plicated. A. Cauchy suggested to study ordinary diﬀerential equations within the framework
+of complex analysis, what allowed him to obtain signiﬁcant results on local existence and
+uniqueness of solutions. S.V. Kovalevskaya was one of the ﬁrst mathematicians who noted a
+remarkable connection between explicit integrability of an ordinary diﬀerential equation and
+the singularity structure of its general solution [1,2]. Ideas of S.V. Kovalevskaya were extended
+and developed by E. Picard, G. Mittag–Leﬄer, P. Painlev´e, B. Gambier, F.J. Bureau.
+If the general solution of an ordinary diﬀerential equation does not have movable critical
+points, then it can be uniformized to ﬁt the deﬁnition of a function (as a single valued mapping).
+Absence of movable critical points in the general solution of an ordinary diﬀerential equation
+is now called the Painlev´e property in honor of French mathematician P. Painlev´e. It can be
+concluded that an ordinary diﬀerential equation possessing the Painlev´e property is integrable
+in known functions or itself gives rise to a new function. L. Fuchs and H. Poincar´e suggested to
+look for new functions deﬁned by ordinary diﬀerential equations. This problem can be solved
+in two steps. The ﬁrst step is to make a classiﬁcation of ordinary diﬀerential equations in a
+certain class, whose general solutions do not have movable critical points and, consequently,
+1
+
+=====PAGE 2
+deﬁne functions.
+The second step consists in selection of those equations that possess the
+general solutions not expressible via known functions.
+All linear equations generate functions. Nonlinear ﬁrst–order algebraic ordinary diﬀerential
+equations give rise to only one new class of functions, the elliptic functions. A considerable
+contribution into the classiﬁcation of second–order ordinary diﬀerential equations with the
+general solutions without movable critical points was done by P. Painlev´e.
+At the turn of the twentieth century the research group headed by P. Painlev´e performed
+the classiﬁcation of second–order ordinary diﬀerential equations of the form
+wtt = R(wt, w, t),
+(1.1)
+where R is rational in wt and w [3, 4]. P. Painlev´e and his colleagues found ﬁfty canonical
+equations with the general solutions possessing the Painlev´e property. Forty four equations can
+be integrated in terms of previously known functions and six equations required the introduction
+of new special functions.
+Nowadays these equations are called the Painlev´e equations and
+their general solutions are referred to as the Painlev´e transcendents.
+The complete list of
+equations (1.1) with the Painlev´e property can be found in [5].
+The classiﬁcation programm did not ﬁnish at second–order equations. J. Chazy made the
+classiﬁcation of third–order ordinary diﬀerential equations in the polynomial class possessing
+the Painlev´e property [6]. J. Chazy considered equations in the form
+wttt = R(wtt, wt, w, t),
+(1.2)
+where R is a polynomial in wtt, wt, w. The work of J. Chazy was developed by F.J. Bureau,
+H. Exton, I. P. Martynov, C.M. Cosgrove, see [7] and references therein. The classiﬁcation of
+ordinary diﬀerential equations is still going on. There exists a number of fourth and higher–
+order nonlinear equations that are supposed to deﬁne new functions [8–11].
+However, this
+hypothesis is not proved yet [11].
+The problem of integrating a system of nonlinear ordinary diﬀerential equations, especially
+if one can not obtain a single equation satisﬁed by some dependent function expressing all other
+functions from given equations, is even more diﬃcult. In this article we consider systems of
+ordinary diﬀerential equations that can be regarded as multi–particle in the sense that given
+equations describe dynamics of point particles in the plane. Our aim is to integrate certain
+classes of multi–particle dynamical systems.
+Multi-particle dynamical systems, such as collections of interacting point vortices in the
+plane and on a sphere, have been attracting much attention during recent years. The point
+vortex system, an elegant and visual model of ﬂuid dynamics, is not integrable in the case
+of four or more vortices with generic choice of circulations [12, 13]. That is why particular
+motions, including relative and absolute equilibria, collapse, and scattering are of great impor-
+tance. A well–known class of absolute equilibria involving point vortices with equal in absolute
+value circulations is given by the roots of two neighbor Adler–Moser polynomials [14]. It is a
+remarkable fact that the roots of the Adler–Moser polynomials themselves provide solutions of
+another multi–particle system, the Airault–McKean–Moser dynamical system, related to the
+Korteweg – de Vries equation [15,16].
+Not long ago a method enabling one to ﬁnd absolute and relative equilibrium conﬁgurations
+of point vortices in the plane and on a sphere was introduced and developed [17–24]. The
+starting point of the method is a polynomial or a system of polynomials with roots at the
+vortex positions. Further these polynomials are shown to obey certain ordinary diﬀerential
+equations. The strength of the method lies in the fact that it works in both directions: from,
+for example, point vortex relative equilibria to a diﬀerential equation and vice versa.
+In this article we generalize the polynomial method to the case of polynomial multi–particle
+dynamical systems. In fact, we shall study two problems. The ﬁrst problem consists in ﬁnding
+2
+
+=====PAGE 3
+a dynamical system satisﬁed by the roots of a polynomial that obeys a partial diﬀerential
+equation.
+The second problem is opposite to the ﬁrst.
+Suppose that one originates with
+a polynomial multi–particle dynamical system. The problem is to ﬁnd a partial diﬀerential
+equation of degree less than the amount of particles such that the polynomial having roots
+coinciding with the particle positions in the plane satisﬁes this equation.
+The ﬁrst problem has been considered previously (see [15,25], works by F. Calogero [26,27]
+and references therein). However, most of the authors deal with the case of rational solutions.
+In other words, there have been subsequent studies devoted to dynamical systems satisﬁed by
+the poles of rational solutions of integrable partial diﬀerential equations [15, 25–27]. While it
+seems that the second problem yet has not attracted any attention.
+Using the polynomial method we ﬁnd solutions of some interesting dynamical systems re-
+lated to linear second–order partial diﬀerential equations. As a byproduct of our results we
+derive new families of orthogonal polynomials.
+Our area of consideration includes not only dynamical systems multi–particle by their na-
+ture, but also systems that can be regarded as multi–particle. We integrate a wide class of
+two and three–particle polynomial dynamical systems. This class includes a number of systems
+interesting from physical point of view, such as the Euler’s and Darboux–Halphen systems.
+The Euler’s equations arise in rigid body dynamics. The Darboux–Halphen system ﬁnds appli-
+cations in mathematical physics in relation to magnetic monopole dynamics, self–dual Einstein
+equations, topological ﬁeld theory and in other ﬁelds of science [28–32]. Some generalizations of
+these systems also have a number of applications [32,33]. For a class of two and three–particle
+polynomial dynamical systems including the aforementioned examples and their generalizations
+we present the cases, when such systems can be regarded as integrable in the sense that one can
+obtain their general solutions. For some other cases we give a number of exact elliptic solutions.
+In fact, we ﬁnd all second–order elliptic solutions of a third–order diﬀerential equation arisen
+after application of the polynomial method.
+The problem of ﬁnding and classifying exact solutions of nonlinear ordinary and partial
+diﬀerential equations is of great theoretical and practical importance.
+In the past decades
+there has been a signiﬁcant progress in the development of these methods. Group theoretical
+techniques provide exact solutions of equations possessing certain symmetries. Several powerful
+methods, such as the Hirota bilinear method, algorithms based on Darboux transformations and
+Wronskian representations, are designed mainly for partial diﬀerential equations integrable by
+inverse scattering method. An enormous number of methods deal with traveling wave solutions.
+Let us name only a few: the tanh–function method, the exponential method, the Jacobi elliptic–
+function method and their various extensions and modiﬁcations. Most of these methods use
+ﬁxed expressions of unknown solutions.
+Consequently, all solutions lying outside supposed
+representations are lost. Along with this, such methods usually give the same solutions, but
+written in a diﬀerent way. Consequently, this class of methods cannot be used if one wishes to
+perform a classiﬁcation of exact solutions with given properties. In this article we shall use a
+method of ﬁnding exact elliptic solutions, which is free from these disadvantages.
+Our approach is based on Mittag–Leﬄer’s expansions of a meromorphic functions. This
+method allows one to ﬁnd explicitly any elliptic solution of an algebraic ordinary diﬀerential
+equation. Consequently, the method can be used if one needs to classify elliptic solutions.
+This article is organized as follows. In section 2 we present our method and study the
+problem of ﬁnding dynamical systems related to polynomial solutions of partial diﬀerential
+equations. Section 3 is devoted to the problem of constructing a partial diﬀerential equation
+possessing polynomial solutions with the roots obeying a given polynomial multi–particle dy-
+namical system. In section 4 we consider multi–particle dynamical systems related to linear
+second–order partial diﬀerential equations. In section 5 we study a class of two and three–
+particle polynomial dynamical systems, including physically meaningful ones.
+3
+
+=====PAGE 4
+2
+Method applied
+We begin with some preliminary remarks. Consider a polynomial in z with time–dependent
+coeﬃcients:
+p(z, t) = c0(t)zM +
+M−1
+X
+j=0
+cM−j(t)zj,
+c0(t)̸ ≡0.
+(2.1)
+We suppose that the polynomial p(z, t) does not have multiple roots. This assumption gives a
+representation
+p(z, t) = c0(t)
+M
+Y
+j=1
+{z −aj(t)} ,
+(2.2)
+where aj(t)̸ ≡ak(t), j̸ = k. Unless otherwise is stated, let z be a complex variable and let aj(t),
+cj(t) be complex–valued functions of a complex variable t. If we are interested in physically
+relevant solutions, then we shall restrict ourselves with real values of t. Calculating logarithmic
+derivatives of the polynomial p(z, t) yields relations
+pz
+p =
+M
+X
+j=1
+1
+z −aj
+,
+pzz
+p −p2
+z
+p2 =
+M
+X
+j=1
+(−1)
+{z −aj}2,
+dn
+dzn log p =
+M
+X
+j=1
+(−1)n+1(n −1)!
+{z −aj}n
+(2.3)
+and
+pt
+p =
+M
+X
+j=1
+(−aj,t)
+z −aj
++ c0,t
+c0
+,
+ptz
+p −ptpz
+p2
+=
+M
+X
+j=1
+ −a2
+j,t
+
+{z −aj}2,
+ptt
+p −p2
+t
+p2 =
+M
+X
+j=1
+(−aj,tt)
+z −aj
++
+M
+X
+j=1
+ −a2
+j,t
+
+{z −aj}2 + c0,tt
+c0
+−c2
+0,t
+c2
+0
+(2.4)
+For further convenience we introduce notation
+Lm =
+M
+X
+j=1,j̸=k
+1
+{ak −aj}m,
+Gm =
+M
+X
+j=1,j̸=k
+aj,t
+{ak −aj}m,
+m ∈N.
+(2.5)
+The derivatives of the function ak(t) and the quantities Lm, Gm can be expressed through
+the derivatives of the polynomial p(z, t). Let us consider in detail the derivation of ak,t, ak,tt,
+L1. Multiplying the ﬁrst relation in (2.4) by p and calculating the limit z →ak we easily
+get ak,t = −{pt/pz}z=ak. In order to ﬁnd the limit in the right–hand side of the relation we
+have applied the l’Hˆopital’s rule. Since the polynomial p(z, t) does not have multiple roots, the
+following condition is valid {pz}z=ak̸ ≡0. Further, taking the second relation in (2.4) we ﬁnd
+ak,tt{pz}z=ak = lim
+z→ak
+(p2
+t −pttp) {z −ak}2 −a2
+k,tp
+{z −ak}2 p
+=
+2ptpzptz −p2
+tpzz −p2
+zptt
+p2z
+
+z=ak
+.
+(2.6)
+Let us calculate the quantity L1. For this aim we take the ﬁrst relation in (2.3), subtract from
+both sides the expression {z−ak}−1 and use the l’Hˆopital’s rule to obtain L1 = {pzz/(2pz)}z=ak.
+Analogously one can calculate higher–order derivatives of the function ak, if necessary, and
+quantities Lm, Gm. Let us write down those that we shall use later
+ak,t = −pt
+pz
+,
+ak,tt = 2ptptz
+p2z
+−p2
+tpzz
+p3z
+−ptt
+pz
+,
+G1 = ptpzz
+2p2z
+−ptz
+pz
++ c0,t
+c0
+,
+L1 = pzz
+2pz
+,
+L2 = p2
+zz
+4p2z
+−pzzz
+3pz
+,
+L3 = pzzzz
+8pz
+−pzzpzzz
+4p2z
++ p3
+zz
+8p3z
+.
+(2.7)
+4
+
+=====PAGE 5
+In expressions (2.7) all the derivatives of the polynomial p(z, t) are taken at its root ak. Obtained
+relations are of rather general character. They are valid for any polynomial with simple roots.
+Further let us note that any derivative of the polynomial p(z, t) at its root ak divided by
+(pz)z=ak can be expressed through the quantities ak,t, ak,tt, Lm, Gm (and their analogues arising
+in the case one wishes to ﬁnd pttt, pzzt etc). Such relations can be obtained expressing step by
+step the corresponding derivatives from the equalities (2.7). For further purposes let us give
+several of them
+pt = −ak,tpz, ptz = −(G1 + ak,tL1 −{log c0}t)pz, ptt = (2ak,t[G1 −{log c0}t]
+−ak,tt)pz,
+pzz = 2L1pz,
+pzzz = 3(L2
+1 −L2)pz,
+pzzzz = 4(2L3 −3L1L2 + L3
+1)pz.
+(2.8)
+Here again all the derivatives of the polynomial p(z, t) are taken at its root ak. In addition we
+have
+{pz}z=ak =
+M
+Y
+j=1,j̸=k
+{ak −aj}
+(2.9)
+Now let us describe the polynomial method. In this section we shall mainly address the
+ﬁrst problem from those stated in the introduction. Consider a partial diﬀerential equation
+E(t, z, pz, pt, ptz, ptt, pzz, . . .) = 0,
+(2.10)
+where E is a polynomial in z, p(z, t) and its derivatives. Here and in what follows we suppose
+that all the coeﬃcient functions of partial diﬀerential equations and dynamical systems are
+well-behaved functions of the parameter t (i.e. entire or meromorphic).
+Suppose that a polynomial p(z, t) with simple roots solves this equation; then substituting
+z = ak and relations of the form (2.8) into equation (2.10), one obtains dynamical equations
+satisﬁed by the roots of the polynomial p(z, t). Thus the M zeros of the polynomial p(z, t) are
+interpreted as the coordinates of M point particles.
+The strength of the polynomial method lies in the fact that it enables one to restore original
+equation (2.10). Indeed, introducing a polynomial p(z, t) with the roots at particle positions
+and substituting equalities of the form (2.7) into the equations of motion and getting rid of the
+denominators, one arrives at the following relations
+{F(t, z, pz, pt, ptz, ptt, pzz, . . .)}z=ak = 0,
+k = 1 . . . M,
+(2.11)
+where F is a polynomial in z, p, its derivatives and, consequently, a polynomial in z. This
+polynomial possesses M roots a1, . . ., aM. Thus we conclude that
+F(t, z, pz, pt, ptz, ptt, pzz, . . .) −P(z, t)p = 0.
+(2.12)
+In this relation P(z, t) is a polynomial in z such that deg P = deg F −M. If deg F < M then
+P(z, t) ≡0. In nonlinear cases the polynomial P may depend on p(z, t) and its derivatives. At
+this step equation (2.12) may appear to be more general than the original equation (2.10). In
+other words, equations (2.10), (2.12) coincide accurate to the polynomial P(z, t). If we wish
+to identify the polynomial P(z, t) and to establish a correspondence between the polynomial
+solution p(z, t) of equation (2.10) and a dynamical system, then obtained dynamical equations
+may need additional constrains. In order to ﬁnd them one can, for example, repeat the described
+procedure taking the diﬀerential consequences of original equation (2.10). The complete list of
+this constrains can be derived in the following way. Making the substitutions pz = up, pt = vp
+into equation (2.10) gives a partial diﬀerential equation with dependent variables p(z, t), u(z, t)
+and v(z, t) satisfying in addition the equation ut = vz. If p(z, t) is a polynomial with simple
+roots, then the functions u(z, t), v(z, t) are given by
+u(z, t) =
+M
+X
+j=1
+1
+z −aj
+,
+v(z, t) =
+M
+X
+j=1
+(−aj,t)
+z −aj
++ c0,t
+c0
+.
+(2.13)
+5
+
+=====PAGE 6
+Calculating the generalized Laurent series in a neighborhood of the pole ak for the functions
+u(z, t), v(z, t) yields
+u(z, t) =
+1
+z −ak
++
+∞
+X
+m=0
+(−1)mLm+1{z −ak}m,
+z →ak
+v(z, t) = (−ak,t)
+z −ak
++ c0,t
+c0
++
+∞
+X
+m=0
+(−1)m+1Gm+1{z −ak}m,
+z →ak.
+(2.14)
+The generalized Laurent series in a neighborhood of inﬁnity are the following
+u(z, t) = M
+z +
+∞
+X
+m=1
+( M
+X
+j=1
+am
+j
+)
+z−m−1,
+z →∞
+v(z, t) = c0,t
+c0
+−
+∞
+X
+m=0
+( M
+X
+j=1
+aj,tam
+j
+)
+z−m−1,
+z →∞.
+(2.15)
+Substituting series (2.14), (2.15),
+p(z, t) = {pz}z=ak(z −ak) + {pzz}z=ak
+2
+(z −ak)2 + . . . + (z −ak)M,
+z →ak,
+(2.16)
+and relation (2.1), which is in fact the generalized Laurent series of the polynomial p(z, t) in
+a neighborhood of inﬁnity, into the partial diﬀerential equation relating u, v, p and setting
+to zero the corresponding coeﬃcients at negative and zero powers of {z −ak}, k = 1, . . ., M
+and z−1 gives the desired system. Indeed, the left–hand side of the equation relating u, v, p
+is a rational function without poles provided that this system is satisﬁed. From the Liouville
+theorem it immediately follows that such a function is a constant, which equals zero since the
+coeﬃcients at zero powers of {z −ak}, k = 1, . . ., M, z vanish. Note that one may take only
+one correlation at the zero level {z −ak}0, k = 1, . . ., M, z0. The coeﬃcients {cm(t)} of the
+polynomial p(z, t) are expressible via the dynamical variables a1(t), . . ., am(t) as follows
+cm = (−1)mSmc0,
+m = 1 . . . M,
+(2.17)
+where Sm are the elementary symmetric functions, see formulae (3.4) of section 3.
+As soon as the dynamical system is supplemented with additional constrains, then they can
+be used to identify the polynomial P(z, t) in (2.12). For this aim one rewrites these constrainers
+via {pz}z=ak, {pt}z=ak, etc., diﬀerentiates equation (2.12) with respect to z, and substitutes the
+corresponding derivatives expressed from the additional constrains into the resulting equation
+(see example below).
+For more details on constructing a partial diﬀerential equation related to a polynomial
+multi–particle dynamical system see section 3.
+Interestingly, the similar algorithm can be used to relate rational solutions of a partial
+diﬀerential equation and a dynamical system obeyed by the poles of its rational solutions.
+Let us consider several examples. It is known that the heat equation
+pt −pzz = 0.
+(2.18)
+possesses an inﬁnite series of monic polynomial solutions, the so–called heat polynomials. Sub-
+stituting relations (2.8) into equation (2.18) we immediately get ak,t = −2L1 or explicitly
+ak,t = −2
+M
+X
+j=1,j̸=k
+1
+ak −aj
+,
+k = 1 . . . M.
+(2.19)
+6
+
+=====PAGE 7
+If a starting point is the system (2.19) then introducing a monic polynomial p(z, t) with roots
+at the particle positions and using equalities (2.7) we obtain
+{pt −pzz}z=ak = 0.
+(2.20)
+The following inequality deg(pt −pzz) < M is valid whenever p(z, t) is a monic polynomial.
+Consequently, the polynomial p(z, t) satisﬁes the heat equation. In addition, we see that system
+(2.19) does not need any additional constraint (with the only exception for initial conditions).
+If all the functions a1(t), . . ., aM(t) are real then the corresponding system describes dynamics
+of identical point vortices on a line.
+As an illustrative nonlinear example let us take the following bilinear partial diﬀerential
+equation
+pptz −pzpt + ppzzzz −4pzpzzz + 3p2
+zz = 0.
+(2.21)
+Each polynomial from the sequence of the Adler–Moser polynomials is a monic polynomial
+solution of this equation. For some properties of the Adler–Moser polynomials see [15, 16, 34,
+35]. Substituting relations (2.8) into equation (2.21) we obtain the following multi–particle
+dynamical equations
+ak,t = −12
+M
+X
+j=1,j̸=k
+1
+{ak −aj}2,
+k = 1 . . . M.
+(2.22)
+Our goal is to establish a correspondence between monic polynomials with simple roots that
+satisfy equation (2.21) and a dynamical system. Substituting pz = up, pt = vp into equation
+(2.21), we obtain
+ut + 6u2
+z + uzzz = 0.
+(2.23)
+Note that diﬀerentiating this equation with respect to z and introducing the new variable
+˜u = 2uz yields the Korteweg – de Vries equation
+˜ut + 6˜u˜uz + ˜uzzz = 0.
+(2.24)
+Substituting series (2.14) into equation (2.23) and setting to zero coeﬃcients at {z −ak}−2 and
+{z −ak}−1 gives (2.22) and constrains of the form
+M
+X
+j=1,j̸=k
+1
+{ak −aj}3 = 0,
+k = 1 . . . M.
+(2.25)
+An additional equation at the level z0 is automatically satisﬁed. Originally dynamical system
+(2.22), (2.25) was found by Airault, McKean, and Moser [15]. Note that equations (2.22), (2.25)
+are compatible provided that M is a triangular number [15].
+Now let us construct bilinear equation (2.21) originating from system (2.22), (2.25). In-
+troducing a monic polynomial p(z, t) with roots at the particle positions and making use of
+relations (2.7) we get
+
+ptpz + 4pzpzzz −3p2
+zz
+	
+z=ak = 0,
+k = 1 . . . M;
+
+p2
+zpzzzz −2pzpzzpzzz + p3
+zz
+	
+z=ak = 0,
+k = 1 . . . M.
+(2.26)
+From the ﬁrst set of these relations we obtain
+ptpz + 4pzpzzz −3p2
+zz −P(z, t)p = 0,
+(2.27)
+where P(z, t) is a polynomial in z of degree M −2. Diﬀerentiating this equation with respect
+to z and setting z = ak yields
+{ptzpz + ptpzz + 4pzpzzzz −2pzzpzzz −P(z, t)pz}z=ak = 0,
+(2.28)
+7
+
+=====PAGE 8
+Our goal is to create an expression with a common multiplier pz. Consequently, we express pt
+from the ﬁrst set of relations in (2.26) and ﬁnd p3
+zz from the second set of relations in (2.26)
+and substitute the results into expressions (2.28) to obtain
+{[ptz + pzzzz −P(z, t)]pz}z=ak = 0,
+(2.29)
+The polynomial ptz +pzzzz −P(z, t) is of degree M −2 and possesses M roots a1, . . ., aM. Thus
+this polynomial identically equals zero and we conclude that
+P(z, t) = ptz + pzzzz.
+(2.30)
+This completes the derivation of equation (2.21).
+Finishing this section let us note that all our constructions are valid provided that aj(t)̸ ≡
+ak(t), j̸ = k. However, we do not exclude the cases when there exists an isolated point t = t0
+such that aj(t0) = ak(t0). This coincidence gives rise to collisions of particles. In order to derive
+dynamical systems we perform the polynomial method in domains of the complex plane t, where
+aj(t)̸ = ak(t) and further we use the principle establishing uniqueness of analytic continuation.
+3
+Polynomial multi–particle dynamical systems
+In this section we shall originate with a multi–particle dynamical system and study the
+problem of ﬁnding a partial diﬀerential equation of degree less than the amount of particles
+such that the monic polynomial having roots coinciding with the particle positions in the plane
+satisﬁes this equation. Note that if a starting point is a multi–particle dynamical system, then
+we do not need to introduce non–monic polynomials. Let us consider the following dynamical
+system
+R(ak,tt, ak,t, ak; a1, . . . , ak−1, ak+1, . . . , aM) = 0,
+k = 1 . . . M,
+(3.1)
+where the function R is a polynomial of its arguments with, possibly, t–dependent coeﬃcients.
+In addition suppose that R is symmetric with respect to the variables a1, . . ., ak−1, ak+1,
+. . ., aM. In the case ak̸ ≡aj, k̸ = j the system (3.1) can be regarded as a multi–particle
+dynamical system and the complex–valued functions a1(t), . . ., aM(t) can be interpreted as
+particle positions in the plane. In what follows we shall call such a system polynomial multi–
+particle dynamical system. Note that we restrict ourselves we the ﬁrst–order and second–order
+dynamical systems, since such systems are of great practical importance. While the polynomial
+method is applicable to polynomial multi–particle dynamical systems of arbitrary order.
+It is known that any symmetric polynomial of M −1 variables a1, . . ., ak−1, ak+1, . . ., aM
+can be represented as the polynomial in the following symmetric functions
+s
+′
+m =
+M
+X
+j=1, j̸=k
+am
+j ,
+m ∈N+
+(3.2)
+This representation is unique and involves ﬁnite amount of these functions. Let us introduce
+a monic polynomial p(z, t) with roots at the particle positions, see (2.1), (2.2) at cM(t) ≡1.
+Coeﬃcients c1, . . ., cM of the polynomial p(z, t) are symmetric polynomials with respect to the
+variables a1, . . ., aM. Indeed,
+cm = (−1)mSm,
+m = 1 . . . M,
+(3.3)
+where the elementary symmetric functions Sm are given by
+S1 = a1 + a2 + . . . + aM,
+S2 = a1a2 + a1a3 + . . . ,
+S3 = a1a2a3 + a1a2a4 + . . . ,
+SM = a1a2 . . . aM
+(3.4)
+8
+
+=====PAGE 9
+In other words Sm is the sum of all Cm
+M products, containing m factors aj with distinct indices
+each. Equalities (3.3) should be replaced by (2.17) whenever one wishes to consider the non–
+monic case.
+It can be easily proved by induction that all the elementary symmetric functions S1, . . .,
+SM can be expressed via ak and the derivatives
+∂p
+∂z
+
+z=ak
+,
+∂2 p
+∂z2
+
+z=ak
+, . . . ,
+∂M−1 p
+∂zM−1
+
+z=ak
+.
+(3.5)
+Calculating the z–derivatives of the polynomial p(z, t) and setting z = ak, we get
+∂m p
+∂zm
+
+z=ak
+=
+M!
+(M −m)!aM−m
+k
++
+(M −1)!
+(M −m −1)!c1aM−m−1
+k
++ . . .
++m!cM−m, m = 1 . . . M.
+(3.6)
+Relation (3.6) at m = M −1 can be solved with respect to c1. This gives
+c1 =
+1
+(M −1)!
+∂M−1 p
+∂zM−1
+
+z=ak
+−Mak.
+(3.7)
+Analogously, solving relation (3.6) at m = M −2 with respect to c2 yields
+c2 =
+1
+(M −2)!
+∂M−2 p
+∂zM−2
+
+z=ak
+−M(M −1)
+2
+a2
+k −(M −1)akc1.
+(3.8)
+Further, we substitute expression (3.7) into equality (3.8). We solve relation (3.6) at m = M −l
+with respect to cl. The coeﬃcient cM is given by
+cM = −
+
+aM
+k + c1aM−1
+k
++ . . . + cM−1ak
+	
+.
+(3.9)
+With the help of expressions (3.3), (3.6), (3.9) we can calculate all the functions S1, . . ., SM.
+As soon as these functions are known, we use the Newton formulae
+sm −sm−1S1 + sm−2S2 −. . . + (−1)m−1s1Sm−1 + (−1)mmSm = 0,
+1 ≤m ≤M;
+sm −sm−1S1 + sm−2S2 −. . . + (−1)Msm−MSM = 0,
+m > M
+(3.10)
+to obtain the symmetric functions
+sm =
+M
+X
+j=1
+am
+j ,
+m ∈N.
+(3.11)
+Consequently, the symmetric functions s
+′
+m = sm −am
+k of M −1 variables a1, . . ., ak−1, ak+1, . . .,
+aM are polynomially expressible via ak and the derivatives (3.6). As we have already mentioned
+dynamical equations (3.1) can be rewritten in terms of symmetric polynomials s
+′
+m:
+˜R(ak,tt, ak,t, ak; {s
+′
+m}) = 0,
+k = 1 . . . M,
+(3.12)
+Substituting expressions of the form (3.7), (3.8) and relations for ak,t, ak,tt, see (2.6), into
+the resulting dynamical equations (3.12) and getting read of the denominators, we obtain the
+identities
+{F(t, z, p, pz, pt, . . .)}z=ak = 0,
+k = 1 . . . M,
+(3.13)
+9
+
+=====PAGE 10
+where F is a polynomial in z, p(z, t), its derivatives and, consequently, a polynomial in z with
+M roots a1, . . ., aM. As a result we get the following partial diﬀerential equation
+F(t, z, p, pz, pt, . . .) −P(z, t)p = 0
+(3.14)
+with P being a polynomial in z of degree: deg P = deg F −M. The converse result is also
+valid. Suppose that we originate with a partial diﬀerential equation (3.14) and its polynomial
+solution p(z, t), see (2.2) with cM(t) ≡1. Setting z = ak in equation (3.14), we substitute
+relations (2.8) (also see expressions (3.3), (3.6)) into the resulting equality.
+This gives the
+symmetric dynamical system.
+The same approach is applicable to polynomial dynamical systems depending symmetrically
+not only on the variables a1, . . ., ak−1, ak+1, . . ., aM but also on the variables a1,t, . . ., ak−1,t,
+ak+1,t, . . ., aM,t in such a way that the system can be rewritten in the form
+˜R(ak,tt, ak,t, ak; {s
+′
+m}, {s
+′
+m,t}) = 0,
+k = 1 . . . M,
+(3.15)
+In order to express the functions s
+′
+m,t via ak, ak,t and the derivatives
+ ∂2 p
+∂z∂t
+
+z=ak
+,
+ ∂3 p
+∂z2∂t
+
+z=ak
+, . . . ,
+
+∂M p
+∂zM−1∂t
+
+z=ak
+(3.16)
+we consider the polynomial pt and calculate its z derivatives at the point z = ak
+∂m+1 p
+∂zm∂t
+
+z=ak
+=
+(M −1)!
+(M −m −1)!c1,taM−m−1
+k
++ . . . + m!cM−m,t,
+m = 0 . . . M.
+(3.17)
+Further, we step by step express the quantities c1,t, . . ., cM,t from these relations and diﬀerentiate
+the Newton formulae (3.10) to ﬁnd sm,t and s
+′
+m,t = sm,t −mam−1
+k
+ak,t.
+Thus, the polynomial method enables one to place the study of polynomial multi–particle
+dynamical systems in the framework of the theory of partial diﬀerential equations.
+For a
+wide class of symmetric polynomial dynamical systems this approach yields only one ordinary
+diﬀerential equation for a certain coeﬃcient of the polynomial p(z, t), see section 5. In this case
+the problem of integrating a symmetric polynomial dynamical system reduces to the problem
+of solving one ordinary diﬀerential equation and an M-th order algebraic equation.
+If a polynomial dynamical system with the dependent variables ξ = (ξ1, . . . , ξM)T is not of
+multi–particle type, then one may look for an invertible transformation ξ = B(a) making the
+system in variables a = (a1, . . . , aM)T symmetric as in (3.12) or (3.15).
+In conclusion let us mention that we have studied dynamical systems describing identical
+particle, i.e. particles possessing the same characteristics (such as mass, charge or circulation).
+The polynomial method is also applicable to systems of distinct particles. In the latter case
+one should divide the particles into groups according to the values of mass, charge, circulation
+etc. and introduce polynomials for each group separately [19–24]. Along with this it can be
+seen that polynomials with multiple roots satisfying partial diﬀerential equations give rise to
+dynamical systems describing behavior of distinct particles.
+4
+Multi–particle dynamical systems corresponding to lin-
+ear partial diﬀerential equations
+The polynomial method of solving a polynomial multi–particle dynamical system consists in
+ﬁnding polynomial solutions of the corresponding partial diﬀerential equation. In many cases
+10
+
+=====PAGE 11
+obtaining polynomial solutions of a linear partial diﬀerential equations is easier than those of
+nonlinear equations, especially at large values of the parameter M.
+In this section we shall construct and solve a number of multi–particle dynamical systems
+that originate from linear partial diﬀerential equations. Restricting ourselves with two–particle
+interactions (in the case M > 2) we consider second–order equations
+α0,2(z, t)ptt + α0,1(z, t)pt + α1,1(z, t)ptz + α2,0(z, t)pzz + α1,0(z, t)pz + α0,0(z, t)p = 0,
+(4.1)
+where the coeﬃcient functions {α(z, t)} are polynomials in z. Suppose that a polynomial p(z, t)
+with simple roots is a solution of this equation. Substituting relations (2.8) into equation (4.1)
+gives the following multi–particle dynamical system
+α0,2(ak, t)ak,tt + [α0,1(ak, t) + 2α0,2(ak, t){log c0}t] ak,t = α1,0(ak, t) −α1,1(ak, t){log c0}t
++
+M
+X
+j=1,j̸=k
+1
+ak −aj
+{[2α0,2(ak, t)ak,t −α1,1(ak, t)]aj,t + [2α2,0(ak, t) −α1,1(ak, t)ak,t]} ,
+(4.2)
+where k = 1 . . . M. Conversely, starting from system (4.2) we introduce a polynomial p(z, t) of
+degree M with roots at the particle positions (see (2.1)). By means of relations (2.7) we obtain
+equalities F[t, z, pz, pt, ptz, ptt, pzz]z=ak = 0, k = 1 . . . M, where the polynomial F is given by
+F = α0,2(z, t)ptt + α0,1(z, t)pt + α1,1(z, t)ptz + α2,0(z, t)pzz + α1,0(z, t)pz.
+(4.3)
+Thus we see that the polynomial p(z, t) satisﬁes the equation
+α0,2(z, t)ptt + α0,1(z, t)pt + α1,1(z, t)ptz + α2,0(z, t)pzz + α1,0(z, t)pz −P(z, t)p = 0,
+(4.4)
+where P(z, t) is a polynomial in z of degree: deg P = deg F −M. Note that in the linear case
+the polynomial P does not depend on p and its derivatives. In order to identify P as α0,0(z, t)
+system (4.2) should be supplied by additional constrains, which we derive as described in the
+previous section. This procedure is equivalent to substituting equality (2.1) into equation (4.1)
+and setting to zero the coeﬃcients at zM+deg α0,0, . . ., zM.
+A necessary and suﬃcient condition for a polynomial p(z, t) to satisfy equation (4.1) or
+(2.10) is existence of truncated Laurent series in a neighborhood of the points z = 0 and
+z = ∞. In fact, these series coincide and are given by (2.1). Substituting expression (2.1)
+into equation (4.1) and setting to zero coeﬃcients at diﬀerent powers of z one obtains a linear
+system for the coeﬃcients c0(t), . . ., cM(t). As a rule these equations are diﬀerential. As soon
+as a polynomial p(z, t) with simple roots that solves equation (4.1) is found it is an algebraic
+problem to obtain solutions of the corresponding dynamical system.
+Let us consider several examples. The following linear partial diﬀerential equation
+β2ptt + β1pt + σ(z)pzz + τ(z)pz + λp = 0
+(4.5)
+with β1, β2, λ being constants and σ(z), τ(z) being polynomials such that deg σ ≤2, deg τ ≤1
+possesses stationary polynomial solutions given by classical orthogonal polynomials (of course,
+under appropriate choices of the parameter λ). Equation (4.5) necessarily admits polynomial
+solutions if the coeﬃcient cM(t) satisﬁes the equation
+β2c0,tt + β1c0,t +
+M(M −1)
+2
+σzz + Mτz + λ
+
+c0 = 0
+(4.6)
+This equation helps to ﬁnd the polynomial P(z, t) in expression (4.4) and to establish a cor-
+respondence between polynomial solutions of equation (4.5) given by (2.2) and the following
+multi–particle dynamical system
+β2ak,tt + [β1 + 2β2{log c0}t]ak,t = τ(ak) + 2
+M
+X
+j=1,j̸=k
+β2ak,taj,t + σ(ak)
+ak −aj
+,
+k = 1 . . . M.
+(4.7)
+11
+
+=====PAGE 12
+Table 4.1: Classical orthogonal polynomials.
+pm(z)
+ρcop(z)
+[a, b]
+σ(z)
+τ(z)
+λm
+Hermite
+Hm(z)
+exp(−z2)
+(−∞, +∞)
+1
+−2z
+2m
+Laguerre
+L(α)
+m (z), α > −1
+zα exp(−z)
+[0, +∞)
+z
+α + 1 −z
+m
+Jacobi
+P (α,β)
+m
+(z), α > −1
+(1 −z)α(1 + z)β
+[−1, 1]
+1 −z2
+β −α −(α
+m(m + α
+β > −1
++β + 2)z
++β + 1)
+By {pm(z)} we denote a sequence of classical orthogonal polynomials satisfying the equation
+σ(z)pm,zz + τ(z)pm,z + λmpm = 0
+(4.8)
+The polynomials {pm(z)} are orthogonal with respect to the weight function
+ρcop(z) = 1
+σ exp
+Z τ
+σdz
+
+.
+(4.9)
+on the real interval [a, b], which may be inﬁnite or half–inﬁnite, see table 4.1.
+In these designations polynomial in z solutions of equation (4.5) can be presented in the
+form
+p(z, t) =
+M
+X
+m=0
+bm(t)pm(z),
+(4.10)
+where the coeﬃcients b0(t), . . ., bM(t) satisfy the following linear ordinary diﬀerential equations
+β2bm,tt(t) + β1bm,t(t) + (λ −λm)bm = 0,
+m = 0 . . . M
+(4.11)
+Let us solve these equations. If β2 = 0, then we obtain
+bm(t) = Cm exp
+(λm −λ)t
+β1
+
+,
+m = 0 . . . M,
+(4.12)
+where {Cm} are arbitrary constants. In the case β2̸ = 0 ﬁnding solutions of the quadratic
+equations
+β2κ2 + β1κ + (λ −λm) = 0,
+m = 0 . . . M,
+(4.13)
+we get
+κ(1)
+m̸ = κ(2)
+m
+⇒
+bm(t) = C(1)
+m exp[κ(1)
+m t] + C(2)
+m exp[κ(1)
+m t],
+m = 0 . . . M
+κ(1)
+m = κ(2)
+m
+⇒
+bm(t) =
+
+C(1)
+m + C(2)
+m t
+
+exp[κ(1)
+m t],
+m = 0 . . . M,
+(4.14)
+where again {C(1)
+m }, {C(2)
+m } are arbitrary constants.
+Stationary equilibria of dynamical system (4.7) is described by algebraic relations
+τ(ak) + 2σ(ak)
+M
+X
+j=1,j̸=k
+1
+ak −aj
+= 0,
+k = 1 . . . M.
+(4.15)
+The unique solution of this system is given by the roots of the classical orthogonal polyno-
+mial pM(z). Indeed, it follows from our results that the variables a1, . . ., aM are solutions of
+this system if and only if the monic polynomial p(z) with roots at the points a1, . . ., aM satisﬁes
+equation (4.8) with m = M. The unique (up to a constant multiplier, which does not aﬀect the
+rools) polynomial solution of the latter equation is pM(z). Note that algebraic system (4.15)
+being considered in the complex plane possesses only real solutions.
+12
+
+=====PAGE 13
+Further let us study some other interesting examples involving classical orthogonal poly-
+nomials.
+It was proved in article [21] that the Wronskians P(z) = W[pi1, . . . , pik, pik+1],
+Q(z) = W[pi1, . . . , pik], where i1, . . . , ik+1, k ∈N+ is a sequence of pairwise diﬀerent non-
+negative integer numbers, satisfy the following equation
+σ {PzzQ −2PxQz + PQzz} +
+
+τ +
+
+k −1
+2
+
+σz
+
+{PxQ −PQz} + σz
+2 {PxQ + PQz}
++
+k(k −1)
+2
+σzz + kτz + λik+1
+
+PQ = 0.
+(4.16)
+In the case k = 0 we set P(z) = pi1, Q(z) = 1. For further purposes we need the following
+theorem.
+Theorem 4.1. Neither the polynomials P(z) = W[pi1, . . . , pik, pik+1], nor the polynomial Q(z) =
+W[pi1, . . . , pik] have common roots with the polynomial σ(z).
+Proof. First of all let us prove that if the polynomial Q(z) does not have common roots with
+the polynomial σ(z) then neither does the polynomial P(z). Suppose z = z0 is a root of the
+polynomial σ(z). Substituting the Tailor series in a neighborhood of the point z = z0:
+σ(z) = σ1(z −z0) + σ2(z −z0)2,
+τ(z) = τ0 + τ1(z −z0),
+Q(z) = κ0 +
+deg Q
+X
+m=1
+κm(z −z0)m,
+P(z) = µr(z −z0)r +
+deg P
+X
+m=r+1
+µm(z −z0)m,
+(4.17)
+where κ0̸ = 0, µr̸ = 0, r ∈N+, into equation (4.16) and setting the lowest–order coeﬃcient to
+zero yields the equality
+rκ0µr {(r + k −1)σ1 + τ0} = 0.
+(4.18)
+In the case of the Jacobi entries of the Wronskians we get
+z0 = 1,
+σ1 = −2,
+τ0 = −2(α + 1)
+⇒
+rκ0µr {r + k + α} = 0,
+z0 = −1,
+σ1 = 2,
+τ0 = 2(β + 1)
+⇒
+rκ0µr {r + k + β} = 0.
+(4.19)
+From the conditions α > −1, β > −1 it follows that r = 0. In the case of the Laguerre entries
+of the Wronskians we have
+z0 = 0,
+σ1 = 1,
+τ0 = α + 1
+⇒
+rκ0µr {r + k + α} = 0.
+(4.20)
+The condition α > −1 gives r = 0. Further we use induction over k. For k = 1, there is nothing
+to prove since the classical orthogonal polynomial pi1 does not have common roots with the
+polynomial σ(z). This completes the proof.
+Fixing the sequence i1, . . . , ik let us consider the polynomials Pl(z) = W[pi1, . . . , pik, pl],
+l ∈N+ \ I, I = {i1, . . . , ik}. It turns out that such sequences of polynomials form orthogonal
+systems.
+Theorem 4.2. The polynomials Pl(z), l ∈N+ \ {i1, . . . , ik} are orthogonal with respect to the
+weight–function ˜ρ(z) = (σkρcop)/q2 on any simple directed smooth or piecewise smooth curve
+Γ with parametrization γ(s) : [sa, sb] →C, [sa, sb] ⊆R provided that Γ avoids the zeros of the
+polynomial q(z) = W[pi1, . . . , pik], the integrals
+Z
+Γ
+zn˜ρ(z)dz,
+n ∈N+
+(4.21)
+are ﬁnite, and the endpoints a = γ(sa), b = γ(sb) are chosen in such a way that
+lim
+s→sa+0 ˜ρ(γ(s))σ(γ(s))γn(s) = 0,
+lim
+s→sb−0 ˜ρ(γ(s))σ(γ(s))γn(s) = 0,
+n ∈N+.
+(4.22)
+13
+
+=====PAGE 14
+Remark 1. In theorem 4.2 orthogonality is understood in the non–Hermitian sense
+Z
+Γ
+Pl(z)Pn(z)˜ρ(z)dz = 0,
+n̸ = l
+(4.23)
+unless the curve Γ is an interval [a, b], possibly inﬁnite or half–inﬁnite, of the real line and
+˜ρ(z)dz is a positive measure on [a, b].
+Remark 2. If the parameters α, β are not integers, then one should introduce cetrain cuts
+in the complex plane in order to ensure possibilities of choosing single valued branches of the
+functions zα, (1 −z)α, (1 + z)β.
+Remark 3. We do not exclude the case of closed curves, i.e. γ(sa) = γ(sb). For example,
+one can use this theorem to ﬁnd polynomials orthogonal on a circle in the complex plane.
+Proof. We begin the proof by observing that substituting P = qψ, Q = q, ik+1 = l into
+expression (4.16) gives the following linear second order equation for the rational function ψ(z):
+σψl,zz + (τ + kσz) ψl,z + (uk + λl) ψl = 0,
+(4.24)
+where we have introduced notation
+uk(z) = kτz + k(k −1)
+2
+σzz + σz{log q}z + 2σ{log q}zz.
+(4.25)
+Further using the standard technic designed for equations satisﬁed by the sequences of classical
+orthogonal polynomials we rewrite equation (4.24) in the form
+d
+dz (σρψl,z) + (uk + λl) ρψl = 0,
+(4.26)
+where the function ρ(z) is deﬁned by the relation
+d
+dz (σρ) = (τ + kσz) ρ.
+(4.27)
+Dividing this equality by σρ and integrating the result, we get ρ(z) = σkρcop.
+Multiplying equation by ψn, n̸ = l yields
+(σρψl, z)z ψn + (uk + λl) ρψlψn = 0,
+(4.28)
+Reversing the subscripts, subtracting one equality from the other, and integrating the result
+gives
+(λn −λl)
+Z
+Γ
+ψn(z)ψl(z)ρ(z)dz = −
+
+ρσW[Pn, Pl]
+q2
+b
+a
+,
+(4.29)
+The path of integration Γ is chosen as given in the statement of the theorem.
+It follows
+from relations (4.22) that the right–hand side of expression (4.29) equals zero. Consequently,
+the sequence of rational functions ψl(z), l ∈N+ \ {i1, . . . , ik} is an orthogonal system with
+weight ρ(z) on the curve Γ. Recalling the deﬁnition of the function ψl(z), we obtain that the
+polynomials Pl(z), l ∈N+ \ {i1, . . . , ik} are orthogonal with weight ˜ρ(z) = ρ(z)/q(z)2 on the
+curve Γ. This completes the proof.
+Polynomials, whose orthogonality we have proved in theorem 4.2, seem to belong to the class
+of exceptional orthogonal polynomials (for deﬁnitions and review of properties see [36,37]). If
+the polynomial q(z) does not have real zeros, then the curve Γ in orthogonality condition (4.23)
+can be chosen as the real interval [a, b] and the endpoints may be taken as in the classical case.
+14
+
+=====PAGE 15
+(a) q(z)
+(b) P7(z)
+(c) P12(z)
+Figure 1: Roots of the polynomials q(z), {Pm(z)}, α = 2.
+The degrees of the polynomials Pl(z) = W[pi1, . . . , pik, pl], l ∈N+ \ {i1, . . . , ik}, q =
+W[pi1, . . . , pik] can be calculated ﬁnding the highest powers of the Wronskians.
+The result
+is
+deg Pl =
+k
+X
+m=1
+im + l −k(k + 1)
+2
+,
+deg q =
+k
+X
+m=1
+im −k(k −1)
+2
+.
+(4.30)
+Note that the following condition: deg Pl = l is valid not for all sequences of orthogonal
+polynomials.
+As an example let us take the Laguerre entries of the Wronskians. The polynomial W[L(α)
+1 , L(α)
+2 ] =
+−{z2 −2(α + 1)z + (α + 1)(α + 2)}/2 does not have real zeros provided that the inequality
+α > −1 is satisﬁed. Consequently, setting QL = W[L(α)
+1 , L(α)
+2 ] we obtain a family of poly-
+nomials PLm = W[L(α)
+1 , L(α)
+2 , L(α)
+m ], m ∈N+ \ {1, 2}, α > −1 orthogonal with the weight
+˜ρ(z) = (zα+2 exp[−z])/q2 on the real interval [0, +∞):
+Z ∞
+0
+PLl(z)PLn(z)zα+2e−z
+QL2
+dz = 0,
+n̸ = l.
+(4.31)
+According to relation (4.30) we have deg PLm = m. Let us mention an interesting property of
+these polynomials. We observe that the polynomial PLm(z) possesses m−deg QL simple zeros
+on the interval of orthogonality. For several plots see ﬁgure 1. Roots that are located on the
+curve of orthogonality are called regular.
+If the degrees of the polynomials in coeﬃcients of equation (4.1) are the same as in expression
+(4.5), i.e. deg α0,2 = 0, deg α0,1 = 0, deg α0,0 = 0, deg α1,1 ≤1, deg α1,0 ≤1, deg α2,0 ≤2,
+then substituting equality (2.1) into equation (4.1) yields M + 1 linear second–order ordinary
+diﬀerential equations on M + 1 coeﬃcients c0(t), . . ., cM(t). In principle, these equations can
+be solved step by step (exact resolution, of course, depends on the functions of t involved in the
+coeﬃcients {α(z, t)}). However, if the polynomials in coeﬃcients of equation (4.1) are of higher
+degrees, then one obtains more than M + 1 equations on M + 1 coeﬃcients c0(t), . . ., cM(t).
+The problem to construct polynomial solutions of corresponding partial diﬀerential equations
+(or to prove their existence) becomes more complicated. As a result, it is not an easy task to
+ﬁnd solutions of related dynamical systems (at least, by means of the polynomial method). We
+can use orthogonal polynomials Pl(z), l ∈N+ \ {i1, . . . , ik} to solve this problem whenever the
+z–part of a partial diﬀerential equation coincides with the equation for the system of orthogonal
+polynomials in question and α0,2 = β2q, α0,1 = β1q.
+15
+
+=====PAGE 16
+Polynomials with simple roots that solve the following linear partial diﬀerential equation
+q{β2ptt + β1pt + σpzz} + [(τ + kσz)q −2σqz]pz +
+
+σqzz −(τ + (k −1)σz)qz
++
+k(k −1)
+2
+σzz + kτz + λ
+
+q
+
+p = 0
+(4.32)
+give rise to the dynamical system of the form
+q(ak) {β2ak,tt + [β1 + 2β2{log c0}t]ak,t} = 2q(ak)
+M
+X
+j=1,j̸=k
+β2ak,taj,t + σ(ak)
+ak −aj
++ {τ(ak) + kσz(ak)} q(ak) −2σ(ak)qz(ak),
+k = 1 . . . M.
+(4.33)
+Suppose we wish to establish a correspondence between polynomials with simple roots that
+satisfy equation (4.32) and a dynamical system. It means that we should identify the polynomial
+P(z, t) in (4.4) as it is given in equation (4.32). For this aim we substitute expression (2.1)
+into equation (4.32) and set to zero the coeﬃcients at diﬀerent powers of z. We need to take
+equations at zM+deg q, . . ., zM. This gives additional constrains on dynamical variables a1(t),
+. . ., aM(t). For example, in the case σ = z, τ = α + 1 −z, q = W[L(α)
+1 , L(α)
+2 ], k = 2 we obtain
+β2c0,tt + β1c0,t + (λ −M)c0 = 0,
+β2c1,tt + β1c1,t + (λ + 1 −M)c1 + δ2c0 = 0,
+β2c2,tt + β1c2,t + (λ + 2 −M)c2 + δ3c1 −4(α + 1)Mc0 = 0
+(4.34)
+where δl = (M −l)2 + 2(M −l) + Mα.
+Further, we note that c1 = −{a1 + . . . + aM}c0,
+c2 = {a1a2 + a1a3 + . . . + aM−1aM}c0, see also relations (2.17) in section 3.
+Equation (4.32) possesses polynomial solutions of the form
+p(z, t) =
+M
+X
+m=0, m̸∈I
+bm(t)Pm(z)
+(4.35)
+with coeﬃcients bm(t), m ∈N+ \ {I} given by (4.12), (4.14). Thus, we see that if such a
+polynomial does not have multiple roots, then these roots satisfy dynamical equations (4.33).
+We would like to remark that derived systems of orthogonal polynomials miss polynomials
+of certain degrees.
+Consequently, as soon as polynomial solution (4.35) is constructed one
+comes across a question whether expression (4.35) is the most general polynomial solution of
+partial diﬀerential equation (4.32). For certain systems of orthogonal polynomials including
+the family PLm = W[L(α)
+1 , L(α)
+2 , L(α)
+m ], m ∈N+ \ {1, 2} we have checked that it is indeed
+the case. For this aim one can substitute the general expression for polynomial solutions (in
+terms of orthogonal polynomials under consideration and powers of z) into equation (4.32)
+and set to zero the corresponding coeﬃcients. For example, in the case of the polynomials
+PLm = W[L(α)
+1 , L(α)
+2 , L(α)
+m ], m ∈N+ \ {1, 2} we have substituted the following representation
+p(z, t) =
+M
+X
+m=0, m̸=1,2
+bm(t)PLm(z) + d2(t)z2 + d1(t)z + d0(t),
+(4.36)
+where for d0(t) we can take a partial solution of the corresponding ordinary diﬀerential equation.
+Further, we have shown that d2(t) = 0, d1(t) = 0, d0(t) = 0.
+16
+
+=====PAGE 17
+5
+Two and three–particle dynamical systems
+In this section we consider the problem of integrating a class of two and three–particle
+polynomial dynamical systems. We begin with the two–particle non–autonomous dynamical
+systems given by
+a1,t = β1(t)a2
+1 + β2(t)a2
+2 + β3(t)a1a2 + β4(t)a1 + β5(t)a2 + β6(t),
+a2,t = β1(t)a2
+2 + β2(t)a2
+1 + β3(t)a1a2 + β4(t)a2 + β5(t)a1 + β6(t).
+(5.1)
+Let us suppose that the functions β1(t), . . ., β6(t) are entire or meromorphic. In order to apply
+the polynomial method we need the following relation: aj = {z −pz}x=ak, j̸ = k. Applying the
+polynomial method we obtain the following partial diﬀerential equation
+pt + β2p3
+z −{(2β2 + β3)z + β5}p2
+z + {(β1 + β2 + β3)z2 + (β4 + β5)z + β6(t)}pz
+−{f0(t)z + f1(t)}p = 0.
+(5.2)
+For subsequent convenience we introduce the new function: γ(t) = β1(t) + β2(t) −β3(t). Sub-
+stituting (2.1) with c0(t) = 1, M = 2 into this equation yields the equalities
+f0 = 2γ,
+f1 = (3β2 −β1 −β3)w + 2(β4 −β5),
+c1 = w,
+c2 = 1
+2γ{wt + (β2 + β1)w2 −(β4 + β5)w + 2β6(t)}
+(5.3)
+valid in the case γ̸ ≡0. Note that we do not exclude the situations, when the function γ(t)
+possesses isolated zeros. The function w(t) satisﬁes the following ordinary diﬀerential equation
+wtt + (4β1 −γ)wwt + {β1 −β2}{2(β1 + β2) −γ}w3 + {β5 −3β4 −h}wt
++{(β4 −β5)γ + 4(β2β5 −β1β4) + (β1 + β2)t −(β1 + β2)h}w2 + {2(β2
+4 −β2
+5)
++4(β1 −β2)β6 −(β4 + β5)t + (β4 + β5)h}w + 2{β0,t −h}β6} + 4(β5 −β4) = 0,
+(5.4)
+where h(t) = (log γ)t. This equation belongs to the class of second–order diﬀerential equations
+studied by P. Painlev´e, B. Gambier, and their colleagues [3,4], see the introduction.
+Consequently, if the functions β1(t), . . ., β6(t) are taken in such a way that equation (5.4)
+becomes one of the canonical equations found by P. Painlev´e and B. Gambier or is reducible
+to a canonical equation via the M¨obius transformation
+w(t) = λ1(t)W(˜t) + λ2(t)W(˜t)
+λ3(t)W(˜t) + λ4(t)W(˜t),
+˜t = Ψ(t),
+λ1λ4 −λ2λ3̸ = 0,
+(5.5)
+where Ψ(t), λj(t), j = 1 . . . 4 are locally analytic functions, then we conclude that polynomial
+solution (2.1) with c0(t) = 1, M = 2 of equation (5.4) is constructed. The original dynamical
+system can be integrated ﬁnding the roots of the quadratic equation.
+For example, equation (5.4) coincides with the second Painlev´e equation
+wtt −2w3 −tw ± 1
+2 = 0
+(5.6)
+provided that the functions β1(t), . . ., β5(t) are constants and
+β2 = β1 ± 1,
+β3 = −2β1 ± 1,
+β4 = 0,
+β5 = 0,
+β6(t) = ± t
+4.
+(5.7)
+Note that the second Painlev´e equation in the form (5.6) possesses one–parametric family of
+exact solutions expressible via the Airy functions. Some exact solutions of equation (5.4) in
+autonomous case are given in article [38].
+17
+
+=====PAGE 18
+If γ ≡0, then the functions f0, f1 take the form
+f0 = 0,
+f1 = 2(β2 −β1)w + 2(β4 −β5).
+(5.8)
+The coeﬃcient c1 = w satisﬁes the ﬁrst–order ordinary diﬀerential equation
+wt + (β1 + β2)w2 −(β4 + β5)w + 2β6 = 0,
+(5.9)
+which is linear whenever β1 ≡−β2 and a Riccati equation in the case β1̸ ≡−β2. The coeﬃcient
+c2 = y solves the following linear nonhomogeneous diﬀerential equation
+yt + 2{(β1 −β2)w + β5 −β4}y + β2w3 −β5w2 + β6w = 0
+(5.10)
+Note that Riccati equation (5.9) is linearizable via the substitution
+w =
+ψt
+(β1 + β2)ψ,
+β1̸ = −β2
+(5.11)
+with the function ψ(t) satisfying the equation
+ψtt −{β4 + β5 + (log[β1 + β2])t}ψt + 2{β1 + β2}β6ψ = 0.
+(5.12)
+Further let us turn to a three–dimensional case. The following polynomial multi–particle
+dynamical system
+ak,t = β1
+3
+Y
+j=1,j̸=k
+aj + β2ak
+3
+X
+j=1,j̸=k
+aj + β3
+3
+X
+j=1,j̸=k
+a2
+j + β4a2
+k
++β5
+3
+X
+j=1,j̸=k
+aj + β6ak + β7,
+k = 1, 2, 3
+(5.13)
+contains as partial cases several systems of great practical importance. If β1 = 1, β2 = −1, and
+βj = 0, j = 2, . . ., 7 system (5.13) is exactly the classical Darboux–Halphen system
+ak,t =
+3
+Y
+j=1,j̸=k
+aj −ak
+3
+X
+j=1,j̸=k
+aj,
+k = 1, 2, 3,
+(5.14)
+which ﬁrst appeared in Darboux’s works on triply orthogonal surfaces [28] and was later solved
+by Halphen [29,30]. In successive studies, the classical Darboux–Halphen system has arisen as
+the Einstein ﬁeld equations for a diagonal self–dual Bianchi–IX metric with Euclidean signature
+and in the similarity reductions of associativity equations on a three–dimensional Frobenius
+manifold [31].
+The Euler’s dynamical system
+ξ1,t = σ1ξ2ξ3 + β6ξ1 + √σ1β7,
+ξ2,t = σ2ξ1ξ3 + β6ξ2 + √σ2β7,
+ξ3,t = σ3ξ1ξ2 + β6ξ3 + √σ3β7,
+(5.15)
+describing the rotation of a rigid body can be transformed into the multi–particle form
+ak,t = β1
+3
+Y
+j=1,j̸=k
+aj + β6ak + β7,
+k = 1, 2, 3
+(5.16)
+18
+
+=====PAGE 19
+by means of the transformation ξ = Ba with B = diag(√σ1, √σ2, √σ3). In equations (5.16) we
+use the designation β1 = det B. Dynamical system (5.16) is also of the form (5.13).
+In order to apply the polynomial method to system (5.16) we need the following equalities
+3
+X
+j=1,j̸=k
+aj =
+
+2z −1
+2pzz
+
+z=ak
+,
+3
+Y
+j=1,j̸=k
+aj =
+
+pz −1
+2zpzz + z2
+
+z=ak
+,
+3
+X
+j=1,j̸=k
+a2
+j =
+1
+4p2
+zz −zpzz −2pz + 2z2
+
+z=ak
+.
+(5.17)
+The polynomial method gives the partial diﬀerential equation of the form
+pt + β3
+4 pzp2
+zz −1
+2 {(2β3 + β2 + β1)z + β5} pzpzz + {β1 −2β3}p2
+z + {(β1 + β4
++2β2 + 2β3)z2 + (2β5 + β6)z + β7}pz −{f0(t)z + f1(t)}p = 0.
+(5.18)
+We are interested in third–degree polynomials with simple roots that solve this equation. Sub-
+stituting (2.1) with c0(t) = 1, M = 3 into equation (5.18), we get relations
+f0 = 3(β1 + β4 −β2 −β3),
+f1 = (β3 −β4 + 2β1 −2β2)c1 + 3(β6 −β5)
+(5.19)
+and three equations for the coeﬃcient functions c1(t), c2(t), c3(t):
+c1,t + (2β3 + β4)c2
+1 −(2β5 + β6)c1 + γ1c2 + 3β7 = 0,
+c2,t + 2β3c3
+1 −2β5c2
+1 + (β1 + β2 + β4 −5β3)c1c2 + 2β7c1 + 2(β5 −β6)c2 + 3γ2c3 = 0,
+c3,t + β3c2
+1c2 −β5c1c2 + (2β2 + β4 −2β1 −β3)c1c3 + (β1 −2β3)c2
+2 + β7c2 + 3(β5 −β6)c3 = 0.
+(5.20)
+Here we have introduced notation γ1 = β1 + 2β2 −2β4 −4β3, γ2 = β3 + β2 −β1 −β4. If γ1̸ ≡0
+and γ2̸ ≡0, then we solve the ﬁrst equation with respect to c2, the second equation with respect
+to c3 and substitute the resulting relations into the third equation. This yields the following
+third–order ordinary diﬀerential equation
+γ1wttt + (δ1w + δ5)wtt + δ2w2
+t + (δ3w2 + δ6w + δ7)wt + δ4w4
++δ8w3 + δ9w2 + δ10w + δ11 = 0.
+(5.21)
+for the function c1 = w. The coeﬃcients of equation (5.21) are given in table 5.1. As soon
+as a solution w(t) of this equation is found, the coeﬃcients c2, c3 are polynomially expressible
+via w(t) and its derivatives. Again we do not exclude the situations, when the functions γ1(t),
+γ2(t) possess isolated zeros.
+Let us consider the case γ1 ≡0. If β4 ≡−2β3, then the ﬁrst equation in (5.20) is linear,
+otherwise this equation is the Riccati equation linearizable via the substitution
+c1 =
+ψt
+(2β3 + β4)ψ,
+β4̸ = −2β3
+(5.22)
+with the function ψ(t) satisfying the equation
+ψtt −(2β5 + β6)ψt + 3(2β3 + β4)β7ψ = 0.
+(5.23)
+Further, if γ2̸ ≡0, then solving the second equation in (5.20) with respect to c3 and substi-
+tuting the result into the third equation, we obtain a second–order non-autonomous ordinary
+diﬀerential equation for the function c2. If in addition to γ1 the coeﬃcient γ2 identically equals
+zero, then the second equation in (5.20) is a ﬁrst–order linear inhomogeneous equation. Solving
+19
+
+=====PAGE 20
+this equation we are left with the third equation in (5.20), which also becomes a ﬁrst–order
+linear inhomogeneous equation.
+Ordinary diﬀerential equation (5.21) belongs to the class of third–degree equations studied
+by J. Chazy [6], see the introduction. In article [7] C.M. Cosgrove developed the works of J.
+Chazy and collected all third–order ordinary diﬀerential equations in polynomial class having
+the Painlev´e property. The general solutions of these equations are known. If the parameters of
+dynamical system (5.13) are taken in such a way that equation (5.21) is exactly one from those
+given in [7] or equation (5.21) is equivalent to one of the equations from article [7], then one can
+ﬁnd the coeﬃcient c1(t) and, consequently, coeﬃcients c2(t), c3(t). Thus we come to a conclusion
+that polynomial solution (2.1) with c0(t) = 1, M = 3 of equation (5.18) is constructed. The
+original dynamical system can be integrated ﬁnding the roots of this polynomial. Recall that
+two equations in polynomial class are regarded as equivalent if their solutions w, ˜w are related
+via the transformation
+w(t) = λ0(t)W(˜t) + λ1(t),
+˜t = Ψ(t).
+(5.24)
+In principle one may consider M¨obius transformation (5.5), but with possible loss of polynomial
+dependance of the function R in (1.2).
+It is an interesting fact that C.M. Cosgrove has also given a number of third–order equations
+of the form (5.21) that are not of Painlev´e–type but nevertheless that are integrable in the sense
+that one can ﬁnd their general solutions [7].
+Let us examine some interesting partial cases. In what follows we shall consider the au-
+tonomous case, i.e. we suppose that all the functions βj(t), j = 1, . . ., 7 are constants.
+Setting β2 = β1, β3 = −β1, β4 = −β1, β1̸ = 0 in (5.21) we obtain the linear third–order
+equation
+wttt + 3(β5 −2β6)wtt + (4β5 + 11β6)(β6 −β5)wt −6{(2β5 + β6)w −3β7}(β5 −β6)2 = 0.
+(5.25)
+If all the parameters in (5.13) are chosen in such a way that system (5.13) becomes the
+classical Darboux–Halphen system (5.16), then the function y = 2w satisﬁes the Chazy-III
+equation
+yttt −2yytt + 3y2
+t = 0.
+(5.26)
+This equation is a famous Painlev´e–type equation admitting a movable natural barrier. Its gen-
+eral solution can be obtained inverting a hypergeometric function or using Schwarzian triangle
+functions [7]. Setting β3 = −(β1 + β2)/2, β5 = 0, β6 = 0, β7 = 0 in equation (5.21), we see that
+the function y = −2(β4 + β2)w, β2̸ = −β4 satisﬁes the following third–order equation
+yttt −2yytt + 3y2
+t + σ(6yt −y2)2 = 0,
+σ = (2β4 −β1)2 −β2(7β2 + 4β4 + 6β1)
+16(β2 + β4)(3β1 −2β4 + 4β2)
+,
+(5.27)
+which is the Chazy-XII equation if σ = 4/(n2 −36), n ∈N/{1, 6}. System (5.13) with β3 =
+−(β1 + β2)/2, β5 = 0, β6 = 0, β7 = 0 can be regarded as a generalization of the classical
+Darboux–Halphen system. For details on the Chazy-XII equation see [7].
+In the case of the Euler’s dynamical system (5.16) equation (5.21) takes the form
+wttt −(β1w + 6β6)wtt −2β1w2
+t −(2β2
+1w2 −7β1β6w + 14β7β1 −11β2
+6)wt + 2β6β2
+1w3
+−2β1(2β2
+6 + β7β1)w2 + 6β6(4β7β1 −β2
+6)w + 18β7(β2
+6 −β7β1) = 0.
+(5.28)
+The function y = −β1w satisﬁes the Chazy-VII equation
+yttt + yytt + 2y2
+t −2y2yt = 0
+(5.29)
+provided that the parameters β6, β7 vanish. The general solution of the Chazy-VII equation is
+known: y = {log ℘t(t −t0; g2, g3)}t [7]. Here ℘(t −t0; g2, g3) is the Weierstrass elliptic function
+and t0, g2, g3 are arbitrary constants.
+20
+
+=====PAGE 21
+δ1 = γ1
+3 (2γ1 + 5γ2 + 21β4 −3β3)
+δ2 = 2
+3(γ2
+1 + γ1γ2 −3γ2
+2) + 2γ1(β3 + 2β4)
+δ3 = 2
+3γ1γ2(2γ1 −γ2) + 18γ1(β2
+4 −β2
+3) + 8γ2(β4γ1 −β3γ2) + 4β4(γ2
+1 −γ2
+2) + 4γ1β3(γ2 −γ1)
+δ4 = 2
+3(γ1 + 6β3 + 3β4)(3γ1{β3 −β4}2 + 2γ1γ2{β3 −β4} −2β3γ2
+2)
+δ5 = 3γ1(β5 −2β6) −2γ1,t −γ1h2
+δ6 = 6γ1{β3 + β4}t −3(β3 + 3β4)γ1,t −2γ1(β3 + 2β4)h2 −1
+3(2γ1h2 + 5γ2h1) + 10
+3 (β5 −β6)γ2
+1
+−1
+3(19β6 + 2β5)γ1γ2 + 4(2β5 + β6)γ2
+2 + ({22β5 −β6}β3 + {8β5 −29β6}β4)γ1
+δ7 = −γ1,tt + (2h1 + h2 + 7β6 −β5)γ1,t + (3β6h2 −2{2β6 + β5}t)γ1 + 6β7(γ1 −6γ2)γ2
++(β6{11β6 −7β5} + 6β7{β4 −β3} −4β2
+5)γ1
+δ8 = 5
+3(2β3 + β4)(3{β3 −β4} −γ2)γ1,t + 2
+3(β3 −β4)(3{2β3 + β4} + γ1)γ1h2 + 1
+3(2γ1 + 5γ2
+−3β3 + 21β4)γ1β4,t + 2
+3(5γ2 −γ1 −21β3 + 12β4)γ1β3,t + 2
+3(2β5 + β6)(6β4 + 12β3 + γ1)γ2
+2
+−4
+3(β5 −β6)(3{β3 −β4} −γ2)γ2
+1 + 4({4β3 −β4}β5 −{β3 + 2β4}β6)γ1γ2
++18(β4 −β3)(2β5β3 −{β3 + β4}β6)γ1
+δ9 = l(β3, β4) + (2{7β5 −4β6}β3,t + {β5 −7β6}β4,t)γ1 + 2{ 1
+3(γ1 −5γ2) + 7β3 −4β4}β5,t
++5
+1
+3(2β5 + β6γ2) + (β3 + 2β4)β6 + (4β3 −β4)β5
+	
+γ1,t −{ 1
+3(2γ1 + 5γ2) −β3 + 7β4}β6,t
++2
+1
+3(β5 −β6)γ1 −(β3 + 2β4)β6 + (4β3 −β4)β5
+	
+γ1h2 + 2(β5 −β6)2γ2
+1
+−2({2β5 + β6}2 + {6(β4 + 2β3) + γ1}β7)γ2
+2 + 4({β6 −β5}{β6 + 2β5} + 3{β4 −β3}β7)γ1γ2
++18({β2
+6 −β2
+5}β4 + {β3 −β4}2β7 + 2{β5 −β6}β3β5)γ1
+δ10 = l(β5, β6) −5β7γ2γ1,t + {2β2
+5 −β2
+6 −β5β6 + 3(β3 −β4)β7}{5h1 + 2h2}γ1 + {6(β4 −β3)tβ7
++2(4β6 −7β5)β5,t + (7β6 −β5)β6,t + 5(γ2 −3[β3 −β4])β7,t}γ1 + 12(2β5 + β6)β7γ2
+2
+−6(β5 −β6)2(2β5 + β6)γ1 + 12(β5 −β6)(3{β4 −β3} + γ2)β7γ1
+δ11 = 3β7,ttγ1 −3β7γ1,tt + 3(2h2
+1γ1 + h2)β7 −3(2γ1,t + γ1h2)β7,t + 6{β5 −β6}tβ7γ1
++{β6 −β5}{15(β7γ1,t −β7,tγ1) + 6β7γ1h2} + 18({β5 −β6}2γ1 −β7γ2)β7
+Table 5.1: Coeﬃcients of equation (5.21). Designations: h1 = {log γ1}t, h2 = {log γ2}t, l(f, g) =
+{2f + g}ttγ1 + {(2h1 + h2)γ1h1 −γ1,tt}{2f + g} −{2f + g}t{2h1 + h2}γ1.
+Suppose that the present status concerning integrability of equation (5.21) at particular
+choice of the parameters is unknown; then one comes across a problem of ﬁnding some exact
+solutions. Let us derive certain well–behaved (meromorphic) exact solutions of equation (5.21).
+For this aim we shall use the method based on Mittag–Leﬄer’s expansions of meromorphic
+functions, see also [39–42]. In autonomous case equation (5.21) is invariant under the trans-
+formation t 7→t −t0, where t0 is an arbitrary parameter. Thus equation (5.21) may admit
+periodic meromorphic solutions.
+A single-valued function f(t) of one complex variable t is called meromorphic (in the complex
+plane) if it does not possess singularities in the ﬁnite points other than (isolated) poles. A
+meromorphic function holomorphic in the whole complex plane is entire. Any meromorphic
+functions is characterized by its behavior at inﬁnity. There are three possibilities: (a) a point
+at inﬁnity is a removable singularity or an (isolated) pole; (b) a point at inﬁnity inﬁnity is an
+(isolated) essential singularity; (c) a point at inﬁnity inﬁnity is a non–isolated singularity. In
+the case (a) the function f(t) is rational. In the case (b) the function f(t) is transcendental
+entire. Finally, in the remaining case (c) the function f(t) possesses inﬁnitely many poles and
+is called transcendental meromorphic.
+The set of periods of a nonconstant meromorphic function f(t) is a discrete additive group:
+Ω= Z τ1 + Z τ2. The parameters τ1, τ2 are called fundamental (or principal) periods. If
+τ1τ2̸ = 0, then the meromorphic function is said to be doubly periodic (or elliptic). Note that
+the ratio τ1/τ2 cannot be real. If one of the fundamental periods, for example, τ2 is zero, then
+the meromorphic function is said to be simply periodic.
+All the values an elliptic function takes in the parallelogram built on the periods τ1, τ2
+periodically arise in other point of the complex plane. The number of poles in a parallelogram
+21
+
+=====PAGE 22
+of periods, counting multiplicity, is called the order of an elliptic function. Analogously, behavior
+of a simply periodic meromorphic function in the complex plane is characterized by its behavior
+in a stripe built on the period τ1.
+In what follows the fundamental period of a simply periodic meromorphic function we denote
+as T. Let us construct simply periodic meromorphic functions with one simple pole in a stripe
+of periods. Without loss of generality we place this pole at the origin. Using Mittag–Leﬄer’s
+expansions of meromorphic functions, we get
+f(t) = c−1
+t
++
+X
+n∈Z, n̸=0
+
+c−1
+t −nT + c−1
+nT
+
++ h(t),
+(5.30)
+where h(t) is a periodic entire function with the fundamental period T. Note that this function
+can be presented in the form
+h(t) =
+∞
+X
+k=−∞
+hk exp
+2πik
+T
+t
+
+.
+(5.31)
+The series in expression (5.30) is uniformly convergent in any domain not including the points
+t = ZT. The constant term is added to each item in order to provide convergence. Implementing
+the summation yields
+f(t) = π
+T cot
+πt
+T
+
++ h(t),
+(5.32)
+Calculating the derivative of expression (5.30) we ﬁnd a simply periodic meromorphic function
+possessing (in a stripe of periods) one double pole with zero residue. In similar way we can
+construct simply periodic meromorphic functions with triple, etc pole in a stripe of periods. Any
+simply periodic meromorphic function with ﬁnite amount of poles b1, . . ., bM in the fundamental
+stripe of periods is given by
+f(t) = π
+T
+( M
+X
+i=1
+pi
+X
+k=1
+(−1)k−1c(i)
+−k
+(k −1)!
+dk−1
+dtk−1
+)
+cot
+π{t −bi}
+T
+
++ h(t),
+(5.33)
+where pi is the order of the pole z = bi and h(t) is again a periodic entire function.
+The simplest example of an elliptic function is the Weierstrass ℘–function deﬁned as
+℘(t) = 1
+t2 +
+X
+(n, m)̸=(0, 0)
+
+1
+(t −nτ1 −mτ2)2 −
+1
+(nτ1 + mτ2)2
+
+.
+(5.34)
+The series in expression (5.34) is uniformly convergent in any domain not including the points
+t = Zτ1 + Zτ2. The Weierstrass elliptic function satisﬁes the following ﬁrst–order ordinary
+diﬀerential equation
+(℘t)2 = 4℘3 −g2℘−g3.
+(5.35)
+Integrating the expression in (5.34), multiplying the result by −1 and using normalizing con-
+dition
+lim
+t→0
+Z
+℘(t)dt + 1
+t
+
+= 0.
+(5.36)
+we obtain the Weierstrass ζ–function
+ζ(t) = 1
+t +
+X
+(n, m)̸=(0, 0)
+
+1
+t −nτ1 −mτ2
++
+1
+nτ1 + mτ2
++
+t
+(nτ1 + mτ2)2
+
+.
+(5.37)
+22
+
+=====PAGE 23
+Note that the path of integration in (5.36) avoids the poles of ℘(t). Thus we see that ζt(t) =
+−℘(t). The Weierstrass ζ–function is not elliptic since the sum of the residues of any elliptic
+function at its poles in a fundamental parallelogram should be zero. But in combinations
+f(t) =
+M
+X
+i=1
+κiζ(t −bi) + h0
+(5.38)
+such that the condition κ1 + . . . + κM = 0 is satisﬁed the Weierstrass ζ–function produces an
+elliptic function with M simple poles in a parallelogram of periods: b1, . . ., bM.
+Using expression (5.38) and the relation ℘(t) = −ζt(t) we can construct the general expres-
+sion for an elliptic function with M poles in a parallelogram of periods. It is
+f(t) =
+( M
+X
+i=1
+pi
+X
+k=1
+(−1)k−1c(i)
+−k
+(k −1)!
+dk−1
+dtk−1
+)
+ζ(t −bi) + h0,
+M
+X
+i=1
+c(i)
+−1 = 0.
+(5.39)
+Let us consider a nonlinear ordinary diﬀerential equation
+K[w(t)] = 0,
+(5.40)
+where the expression K[w(t)] is a polynomial in w(t) and its derivatives. Note that equation
+(5.21) in autonomous case is of the form (5.40). Behavior of a meromorphic function in a
+neighborhood of a pole can be characterized by means of its Laurent series. If one wishes to
+ﬁnd its elliptic (5.43) or simply periodic (5.33) solutions explicitly it is necessary to construct
+families of Laurent series satisfying equation (5.40). For this aim the Painlev´e methods can be
+used. Taking equation (5.21) and applying these methods one can get
+w(j)(t) =
+pj
+X
+k=1
+c(j)
+−k
+{t −t0}k +
+∞
+X
+k=0
+c(j)
+k {t −t0}k ,
+t →t0,
+j ∈J.
+(5.41)
+Here pi is the order of the pole t = t0 and the index j numerates diﬀerent families of admissible
+series. The coeﬃcients of the series can be sequently calculated, some of them may turn to be
+arbitrary. Note that particular series may exist under certain restrictions on the parameters of
+the original equation.
+Simply periodic solutions with ﬁnite amount of poles in a stripe of periods can be presented
+as follows
+w(t) = π
+T
+X
+j⊆J
+
+
+
+Mj
+X
+i=1
+pj
+X
+k=1
+(−1)k−1c(j)
+−k
+(k −1)!
+dk−1
+dtk−1
+
+
+cot
+
+
+π
+n
+t −b(j)
+i
+o
+T
+
++ h(t),
+(5.42)
+where T is the fundamental period, Mj is the number of poles of type j ⊆J, and h(t) is a
+periodic entire function, see (5.31). The general expression for elliptic solutions is the following
+w(t) =
+X
+j⊆J
+
+
+
+Mj
+X
+i=1
+pj
+X
+k=1
+(−1)k−1c(j)
+−k
+(k −1)!
+dk−1
+dtk−1
+
+
+ζ(t −b(j)
+i ) + h0.
+(5.43)
+The theorem on total sum of the residues of any elliptic function gives a necessary condition
+for an elliptic solution to exist
+X
+j⊆J
+Mj
+X
+i=1
+c(j)
+−1 = 0.
+(5.44)
+23
+
+=====PAGE 24
+Note that we omit arbitrary constant t0 resulting from the invariance of equation (5.40) under
+the transformation t 7→t −t0.
+Further let us discuss the problem of ﬁnding solutions (5.42), (5.43) in explicit form. In
+this article we shall set h(t) = h0 in the case of simply periodic solutions (5.42), the possibility
+h(t)̸ = h0 requires additional treatment. First of all let us mention that partial derivatives
+of relations (5.43) are polynomials in cot
+h
+π
+
+t −b(j)
+i
+
+/T
+i
+and elliptic functions, accordingly.
+Consequently, substituting relations (5.42), (5.43) into equation (5.40), we obtain a polynomial
+in cot
+h
+π
+
+t −b(j)
+i
+
+/T
+i
+and an elliptic function, respectively. If the resulting function does no
+have poles, then from the Liouville theorem it immediately follows that such a function is a
+constant. Instead of substituting the solutions themselves we may substitute their Laurent
+series in a neighborhood of the poles b(j)
+i .
+Our algorithm can be subdivided into several steps.
+Step 1. Perform local singularity analysis for solutions of equation (5.40). Construct all the
+Laurent series of the form (5.41).
+Step 2. Write down general expressions (5.42), (5.43).
+Step 3. Take any solutions of step 2 and ﬁnd its Laurent series in a neighborhood of the
+poles.
+Step 4.
+Substitute all those Laurent found at step 3 that are captured by a supposed
+solution into the original equation and set to zero coeﬃcients at negative and zero powers of
+the expression
+n
+t −b(j)
+i
+o
+.
+Step 5. Solve obtained algebraic system.
+As a rule, it is not an easy task to ﬁnd the positions of the poles b(j)
+i . It turns out that it is
+suﬃcient to obtain the values B(j)
+i
+= cot
+h
+lb(j)
+i
+i
+, l = π/T in the case of simply periodic solutions
+and the values A(j)
+i
+= ℘(b(j)
+i ; g2, g3) and B(j)
+i
+= ℘t(b(j)
+i ; g2, g3) in the case of elliptic solutions
+instead. Note that the parameters A(j)
+i , B(j)
+i
+(in the elliptic case) are not independent, they are
+related by the equalities
+n
+B(j)
+i
+o2
+= 4
+n
+A(j)
+i
+o3
+−g2A(j)
+i
+−g3.
+(5.45)
+Subsequently, addition formulae for periodic meromorphic functions can be used to rewrite
+solutions (5.42), (5.43) in terms of the new parameters, see [39–42].
+As soon as a solution is found it is necessary to verify that its Laurent series in a neighbor-
+hood of diﬀerent poles in the principle parallelogram of periods are in fact distinct.
+Now we pass on to ﬁnding well–behaved solutions of equation (5.21). In detail we shall
+consider the case of elliptic solutions only. If at least one of the parameters δ1, δ2, δ3, δ4 is
+non–zero and some conditions on these parameters are satisﬁed, then equation (5.21) may have
+solutions with simple poles. Thus the simplest (second–order) elliptic solution is of the form
+w(t) = c−1ζ(t −t0; g2, g3) −c−1ζ(t −b −t0; g2, g3) + ˜h0,
+(5.46)
+where g2, g3, c−1, ˜h0 are constants to be found, and t0 is an arbitrary constant resulting from
+autonomy of equation (5.21). In what follows we omit this constant. Function (5.46) possesses
+two simple poles (t = 0 and t = b) in the principle parallelogram of periods. According to the
+preceding remarks we introduce the parameters: A = ℘(b; g2, g3) and B = ℘t(b; g2, g3) related
+by the equality B2 = 4A3 −g2A −g3. Using addition formulae for the Weierstrass ζ–function,
+we rewrite relation (5.46) as follows
+w(z) = −c−1{℘t(t; g2, g3) + B}
+2{℘(t; g2, g3) −A}
++ h0,
+h0 = ˜h0 + c−1A.
+(5.47)
+24
+
+=====PAGE 25
+Let us turn to ﬁnding solutions (5.47) in explicit form. Substituting elliptic function (5.46)
+into equation (5.21), we get another elliptic function. If the resulting function does no have
+poles, it immediately follows that such a function is a constant since an elliptic function without
+poles does not exist. Instead of substituting the solution itself we shall substitute its Laurent
+series in a neighborhood of the poles t = 0, t = b. These Laurent series take the form
+w(t) = c−1
+t
++ h0 + c−1At −c−1B
+2
+t2 + c−1
+
+A2 −g2
+10
+
+t3 + . . . ,
+t →0
+w(t) = −c−1
+t −b + h0 −c−1A{t −b} −c−1B
+2
+{t −b}2
+−c−1
+
+A2 −g2
+10
+
+{t −b}3 + . . . ,
+t →b.
+(5.48)
+In order to calculate these series we have used expression (5.46). Substituting series (5.48) into
+equation (5.21) we set to zero coeﬃcients at negative and zero powers of t and t −b. We need
+only ﬁve ﬁrst coeﬃcients from each of the series. The resulting system contains nine equations
+including B2 = 4A3 −g2A −g3. For all the solutions we ﬁnd
+c−1 = ε
+r
+−6
+δ3
+, h0 = −δ6
+2δ3
+, g3 = 4A3 −g2A −B2, A = 4δ3δ7 −δ2
+6
+24δ3
+, ε = ±1
+(5.49)
+and the following restrictions on the parameters of the original equation
+δ9 = (4δ3δ7 −δ2
+6)δ2δ3 + 12(δ6δ8 + 2δ4δ7)δ3 −18δ4δ2
+6
+8δ2
+3
+,
+δ5 = 12δ8δ3 −18δ4δ6 −δ2δ3δ6
+4δ2
+3
+,
+δ1 = 3δ4
+δ3
+−δ2
+2 ,
+δ3̸ = 0.
+(5.50)
+The ﬁrst family exists under additional restrictions: δ2 = 0, δ4 = 0, δ8 = 0, δ10 = 0, δ11 = 0. In
+this case the parameters g2, B are arbitrary and solution (5.47) is the general solution of the
+equation in question.
+For the second family we get δ2 = 0, δ4 = 0, δ10 = (3δ8δ7)/δ3, δ8̸ = 0. The parameter g2 is
+arbitrary and the parameter B is given by
+B = ε
+r
+−6
+δ3
+δ8δ3
+6 + 4δ11δ3
+3 −2δ10δ6δ2
+3
+144δ3δ8
+.
+(5.51)
+The third family exists provided that δ2 = 0, δ4̸ = 0 and
+δ11 = (2δ8δ3 −3δ4δ6)(2δ10δ2
+3 −6δ8δ7δ3 + 9δ7δ6δ4)
+4δ3
+3δ4
+.
+(5.52)
+The parameter g2 is arbitrary and the parameter B takes the form
+B = ε
+r
+−6
+δ3
+(4δ10δ3 −12δ7δ8)δ2
+3 + (δ2
+6 + 12δ7δ3)δ4δ6
+144δ3δ4
+.
+(5.53)
+If the following conditions
+δ4 = −δ2δ3
+2 ,
+δ10 = (2δ2δ6 + 3δ8)δ7
+δ3
+,
+δ2̸ = 0
+(5.54)
+are valid, then we obtain the fourth family of solutions.
+The parameter B is an arbitrary
+constant and the parameter g2 reads as
+g2 =
+
+δ6 + δ8
+δ2
+
+B + ε
+r
+−6
+δ3
+(6δ7δ3 −δ2
+6)δ8δ6 −2(δ2δ2
+7 + 2δ11δ3)δ2
+3 + (6δ7δ3 −δ2
+6)δ2
+6δ2
+144δ2δ3
+25
+
+=====PAGE 26
+Finally, under the conditions δ2̸ = 0, δ4̸ = −(δ2δ3)/2 equation (5.21) possesses the ﬁfth family
+of solutions with the parameters B and g2 given by
+B = ε
+r
+−6
+δ3
+(δ2δ3 + 2δ4)δ3
+6 −4(δ2δ3 −6δ4)δ3δ6δ7 + 8(δ10δ3 −3δ7δ8)δ2
+3
+144(δ2δ3 + 2δ4)δ3
+,
+g2 = (6δ4 −δ2δ3)(18δ4 + δ2δ3)δ7δ2
+6 + 4{µ2δ3 −µ1δ6}δ3
+48(δ2δ3 + 2δ4)δ2
+3δ2
+,
+(5.55)
+where we have used notation
+µ1 = (δ2δ3 −6δ4)δ3δ10 + 2(18δ4 −δ2δ3)δ7δ8,
+µ2 = (δ2δ3 + 2δ4)(2δ3δ11 + δ2δ2
+7) + 4(3δ8δ7 −δ3δ10)δ8
+(5.56)
+Further, let us note that if δ3 = 0, δ4 = 0 and certain conditions on the parameters δ1, δ2, δ6,
+δ8 are satisﬁed, then equation (5.21) may have solutions with second–order poles. Second–order
+elliptic functions having one double pole in the fundamental parallelogram of periods are the
+following
+w(z) = c−2℘(t −t0; g2, g3) + h0,
+(5.57)
+Without loss of generality, let us omit the arbitrary constant t0. Finding the Laurent series of
+this function in a neighborhood of its pole t = 0, we obtain
+w(z) = c−2
+t2 + h0 + c−2
+20 g2t2 + c−2
+28 g3t4 + . . . ,
+t →0
+(5.58)
+Here we have written down all the coeﬃcients essential for further calculations. Substituting
+series (5.58) into equation (5.21) with δ3 = 0, δ4 = 0 and setting to zero the coeﬃcients at
+negative and zero powers of t yields six families of solutions. For all the families the parameters
+c−2, h0 are following
+c−2 = −12
+α6
+,
+h0 = −α7
+α6
+,
+α6̸ = 0.
+(5.59)
+Along with this we ﬁnd two restrictions on the parameters of the original equation
+α8 = α6
+6 (2α2 + 3α1),
+α9 = 1
+2α5α6 + (α1 + α2)α7.
+(5.60)
+The ﬁrst family of solutions exists under additional constrains α2̸ = 0, α1̸ = −2α2.
+The
+invariants g2, g3 are given by
+g2 = α2
+7
+12 + (α5α7 −α10)α6
+6(α1 + 2α2)
+,
+g3 = α3
+7
+216 + α2
+6α11
+144α2
++ (α5α6 + 2α2α7)(α5α7 −α10)α6
+144(α1 + 2α2)α2
+(5.61)
+If α2 = 0, α1̸ = 0, and α11 = (α10 −α5α7)α5/α1 we obtain the second family of elliptic solutions
+with an arbitrary parameter g3 and the following value of the parameter g2:
+g2 = α2
+7
+12 + (α5α7 −α10)α6
+6α1
+.
+(5.62)
+The third family of solutions exists whenever α1 = −2α2, α2̸ = 0, α10 = α5α7. In this case the
+parameter g2 is arbitrary and the parameter g3 is given by
+g3 = 1
+12
+
+α7 + α5α6
+2α2
+
+g2 −α3
+7
+432 + (2α6α11 −α5α2
+7)α6
+288α2
+.
+(5.63)
+26
+
+=====PAGE 27
+Further, if α1 = 0, α2 = 0, α10 = α5α7, α5̸ = 0, then we obtain the fourth family of solutions
+with an arbitrary parameter g3 and the following value of the parameter g2:
+g2 = α2
+7
+12 −α6α11
+6α5
+.
+(5.64)
+Finally, under the restrictions α1 = 0, α2 = 0, α5 = 0, α10 = 0, α11 = 0 expression (5.57) is the
+general solution of the corresponding equation. In this case the invariants g2, g3 are arbitrary,
+the third arbitrary constant is the parameter t0.
+According to results of articles [39–42] we have classiﬁed all second–order elliptic solutions
+of equation (5.21). Note that in the case g3
+2 −27g2
+3 = 0 elliptic solutions degenerate to simply
+periodic or rational. On use of obtained families of elliptic solutions one may construct exact
+solutions of the corresponding dynamical systems.
+6
+Conclusion
+In this article we have considered polynomial multi–particle dynamical systems in the plane.
+We have presented a method, the polynomial method, which replaces integration of polynomial
+multi–particle dynamical systems by constructing polynomial solutions of partial diﬀerential
+equations.
+With the help of the polynomial method we have studied several interesting dynamical
+systems possessing equilibria given by the roots of classical and some other families of orthogonal
+polynomials. As a by–product of our results we have obtained several new families of orthogonal
+polynomials.
+We have integrated a wide class of two and three–particle polynomial dynamical systems
+including a number of physically relevant systems, such as, the Euler’s system, the Darboux–
+Halphen system, and their generalizations.
+7
+Acknowledgements
+This research was partially supported by Russian Science Foundation, project to support
+research carried out by individual research groups No. 14-11-00258
+References
+[1] Kowalevski S. Sur le probleme de la rotation d’un corps solide autour d’un point ﬁxe, Acta
+Math. 12(1) (1889) 177–232.
+[2] Kowalevski S. Sur une propri´et´e du syst`eme d’´equations diﬀ´erentielles qui d´eﬁnit la rotation
+d’un corps solide autour d’un point ﬁxe, Acta Math. 14(1) (1890-1891) 81–93.
+[3] Painlev´e P. Sur les ´equations diﬀ´erentielles du second ordre et d’ordre superieur dont
+l’int´egrale g´en´erale est uniforme, Acta Math. 25(1) (1902) 1–85.
+[4] Gambier B. Sur les ´equations diﬀ´erentielles du second ordre et du premier degr´e dont
+l’int´egrale g´en´erale est points critiques ﬁxes, Acta Math. 33(1) (1910) 1–55.
+[5] Ince E. L. Ordinary diﬀerential equations (Longmans, Green, and co., London and New
+York, 1926). Reprinted (Dover, New York, 1956). Russian translation (GTIU, Khar’kov,
+1939).
+27
+
+=====PAGE 28
+[6] Chazy J. Sur les ´equations diﬀ´erentielles du troisi`eme et d’ordre sup´erieur dont l’int´egrale
+g´en´erale `a ses points critiques ﬁxes, Acta Math., 34(1) (1911), pp. 317–385.
+[7] Cosgrove C.M. Chazy Classes IX–XI Of Third–Order Diﬀerential Equations, Studies in
+Applied Mathematics, 104(3) (2000) 171–228.
+[8] Airault H. Rational solutions of the Painlev´e equations, Stud. Appl. Math. 61 (1979) 31–53.
+[9] Flaschka H., Newell A.C. Monodromy- and spectrum-preserving deformations. I, Commun.
+Math. Phys. 76 (1980) 65–116.
+[10] Kudryashov N.A. The ﬁrst and second Painlev´e equations of higher order and some rela-
+tions between them, Phys Lett A 224 (1997) 353–360.
+[11] Kudryashov N.A. On the new transcendents deﬁned by nonlinear ordinary diﬀerential
+equations, J. Phys. A.: Math. Gen. 31 (1998) L129.
+[12] Aref, H., Newton, P.K., Stremler, M.A., Tokieda, T., Vainchtein, D.: Vortex Crystals.
+Adv. Appl. Math. 39 (2003) 1–79.
+[13] Borisov A.V., Pavlov A.E. Dynamics and statics of vortices on a plane and a sphere - I,
+Regular and Chaotic Dynamics, 3 (1) (1998) pp. 28–38.
+[14] Bartman, A. B.: A new interpretation of the Adler–Moser KdV polynomials: interaction
+of vortices. In Nonlinear and turbulent processes in physics, vol. 3 (ed. R. Z. Sagdeev), pp.
+11751181. New York, NY: Harwood Academic Publishers (1984).
+[15] Airault H., McKean H. P., and Moser J. Rational and elliptic solutions of the Korteweg de
+Vries equation and a related many-body problem, Comm. Pure Appl. Math. 30(1) (1977)
+95-148.
+[16] Adler M., and Moser J. On a Class of Polynomials Connected with the KdV Equation,
+Commin. Math. Phys. 61 (1978) 1-30.
+[17] O’Neil K.A. Minimal polynomial systems for point vortex equilibria, Physica D, 219 (2006)
+69 – 79.
+[18] Aref H. Relative equilibria of point vortices and the fundamental theorem of algebra, Proc.
+R. Soc. A., 467 (2011) 2168 – 2184.
+[19] Demina M.V., Kudryashov N.A. Point vortices and polynomials of the Sawada – Kotera
+and Kaup – Kupershmidt equations, R&C Dynamics, 16(6) (2011) 562-576.
+[20] Demina M.V., Kudryashov N.A. Vortices and polynomials: non–uniqueness of the Adler–
+Moser polynomials for the Tkachenko equation J. Phys. A: Math. Theor. 45 (2012) 195205.
+[21] Demina M.V., Kudryashov N.A. Point Vortices and Classical Orthogonal Polynomials,
+R&C Dynamics, 17(5) (2012) 371-384.
+[22] Demina M.V., Kudryashov N.A. Relative equilibrium conﬁgurations of point vortices on
+a sphere, R&C Dynamics, 18(4) (2013) 344–355.
+[23] Demina M.V., Kudryashov N.A. Polynomial Method for Constructing Equilibrium Con-
+ﬁgurations of Point Vortices in the Plane, Model. Anal. Inform. Sist. 47(7) (2013) 545–548.
+[24] Demina M.V., Kudryashov N.A. Rotation, collapse, and scattering of point vortices, The-
+oretical and Computational Fluid Dynamics, 28(3) (2014) 357–368.
+28
+
+=====PAGE 29
+[25] Choodnovsky D.V. and Choodnovsky G. V. Pole expansions of nonlinear partial diﬀerential
+equations, Nuovo Cimento B 40 (1977) 339-353.
+[26] Calogero F. Motion of poles and zeros of nonlinear and linear partial diﬀerential equations,
+and related solvable many-body problems, Nuovo Cimento B 43 (1978) 177-241.
+[27] Calogero F. Classical Many–Body Problems Amenable to Exact Treatments, Springer,
+Berlin, 2001.
+[28] Darboux G. Sur la th´eories des coordonn´eres curvilignes et les syst`emes orthogonaux, Ann.
+Ec. Normale Sup´er 7, 101–150 (1878).
+[29] Halphen G. Sur certains syst`emes d’´equations diﬀ´erentielles, C. R. Acad. Sci. Paris 92,
+1404–1406 (1881).
+[30] Halphen G. Sur syst`eme d’´equations diﬀ´erentielles, C. R. Acad. Sci. Paris 92, 1101–1103
+(1881).
+[31] Gibbons G. W. and Pope C. N. The positive action conjecture and asymptotically Eu-
+clidean metrics in quantum gravity, Commun. Math. Phys., 66 (1979), pp. 267–290.
+[32] Levi D., Ragnisco O. (Editors) SIDE III: Symmetries and Integrability of Diﬀerence Equa-
+tions. American Mathematical Soc., 200– 444 p.
+[33] Ablowitz M.J., Chakravarty S., and Halburd R. The generalized Chazy equation and
+Schwarzian triangle functions, Asian J. Math. 2 (1998) 619–624.
+[34] Demina M.V., Kudryashov N.A.: Special polynomials and rational solutions of the hier-
+archy of the second Painlev´e equation. Theor. Math. Phys. 153(1) 1398–406 (2007)
+[35] Demina M.V., Kudryashov N.A.: The generalized Yablonskii–Vorob’ev polynomials and
+their properties. Phys. Lett. A. 372 (29) 4885–4890 (2008)
+[36] G´omez-Ullate D., Kamran N., Milson R. A Conjecture on Exceptional Orthogonal Poly-
+nomials, Foundations of Computational Mathematics 13(4) (2013) 615-666.
+[37] G´omez-Ullate D., Kamran N., Milson R. Exceptional orthogonal polynomials and the
+Darboux transformation, J. Phys. A: Math. Theor. 43 (2010) 434016.
+[38] Mittag–Leﬄer G. Sur l’int´egration de l’´equations diﬀ´erentielles y
+′′ = Ay3 + By2 + Cy +
+D + (Ey + F)y
+′ (Extrait d’une lettre `a M. E. Picard) Acta Math. 18(1) (1894) 233–245.
+[39] Demina M.V., Kudryashov N.A. Explicit expressions for meromorphic solutions of au-
+tonomous nonlinear ordinary diﬀerential equations. Commun. Nonlinear Sci. Numer. Sim-
+ulat. – 2011. – Vol. 16. P. 1127–1134.
+[40] Demina M.V., Kudryashov N.A. From Laurent series to exact meromorphic solutions: The
+Kawahara equation. Phys. Lett. A. – 2010. – Vol. 374. P. 4023–4029.
+[41] Demina M.V., Kudryashov N.A. On elliptic solutions of nonlinear ordinary diﬀerential
+equations. Appl. Math. and Comp. 2011. – Vol. 217 (23). P. 9849–9853.
+[42] Demina M.V., Kudryashov N.A. Elliptic solutions in the H´enon–Heiles model. Commun.
+Nonlinear Sci. Numer. Simulat. – 2014. – Vol. 19(3). P. 471–482.
+29

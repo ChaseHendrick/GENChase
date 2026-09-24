@@ -1,0 +1,14 @@
+mu 0.2 j=2  min path/geo = 2.07374843778385 at theta=3.317740069 d0=0.99999 ; planar floor sqrt(1+4P_-^2)=2.07374722439 (theta*=3.31773964)
+mu 0.2 j=3  min path/geo = 2.05900670761604 at theta=3.349869733 d0=0.58907726 ; planar floor sqrt(1+4P_-^2)=2.07374722439 (theta*=3.31773964)
+mu 0.1 j=2  min path/geo = 2.02035396658906 at theta=3.230509459 d0=0.99999 ; planar floor sqrt(1+4P_-^2)=2.02035340267 (theta*=3.2305092)
+mu 0.1 j=3  min path/geo = 2.01411014974223 at theta=3.240920373 d0=0.71615703 ; planar floor sqrt(1+4P_-^2)=2.02035340267 (theta*=3.2305092)
+mu 0.05 j=2  min path/geo = 2.00535029953486 at theta=3.185713535 d0=0.99999 ; planar floor sqrt(1+4P_-^2)=2.00535003215 (theta*=3.185713396)
+mu 0.05 j=3  min path/geo = 2.00340754029536 at theta=3.188442279 d0=0.83594347 ; planar floor sqrt(1+4P_-^2)=2.00535003215 (theta*=3.185713396)
+mu 0.02 j=2  min path/geo = 2.00088226151438 at theta=3.159069265 d0=0.99999 ; planar floor sqrt(1+4P_-^2)=2.00088215859 (theta*=3.159069208)
+mu 0.02 j=3  min path/geo = 2.00053305372012 at theta=3.1595064 d0=0.92881346 ; planar floor sqrt(1+4P_-^2)=2.00088215859 (theta*=3.159069208)
+mu 0.01 j=2  min path/geo = 2.00022281062129 at theta=3.150294082 d0=0.99999 ; planar floor sqrt(1+4P_-^2)=2.00022275988 (theta*=3.150294053)
+mu 0.01 j=3  min path/geo = 2.00013225283588 at theta=3.150402937 d0=0.96345875 ; planar floor sqrt(1+4P_-^2)=2.00022275988 (theta*=3.150294053)
+mu 0.001 j=2  min path/geo = 2.00000225276517 at theta=3.142459113 d0=0.99999 ; planar floor sqrt(1+4P_-^2)=2.00000224775 (theta*=3.14245911)
+mu 0.001 j=3  min path/geo = 2.00000131349833 at theta=3.142460193 d0=0.99625964 ; planar floor sqrt(1+4P_-^2)=2.00000224775 (theta*=3.14245911)
+
+[exited with code 0]
