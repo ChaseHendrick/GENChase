@@ -56,7 +56,8 @@ function loadModule(src, label) {
     .replace(MARK_REGISTER, '  hooks.tqli = tqli; hooks.tred = tred; hooks.betaHermite = betaHermite; hooks.unfolded = unfolded; hooks.goeInto = goeInto; hooks.SURMISE = SURMISE;\n' + MARK_REGISTER)
     .replace(MARK_TRIDIAG, '    if (hooks.onTridiag) hooks.onTridiag(d, e, n);\n' + MARK_TRIDIAG)
     .replace(MARK_RETURN, AUDIT + MARK_RETURN);
-  const util = { clamp, makeRng, makeRamp: () => () => [0, 0, 0] };
+  // The module's error bars go through the shared harness, as they do in the studio.
+  const util = { clamp, makeRng, makeRamp: () => () => [0, 0, 0], stats: require('../src/shared/stats.js') };
   new Function('Studio', 'hooks', 'performance', code)({ util, PALETTES: {}, register(m) { hooks.mod = m; } }, hooks, performance);
   assert(hooks.mod && hooks.mod.id === 'rmt');
   return hooks;
@@ -267,16 +268,21 @@ assert(spacing.find(r => r.n === 400 && r.beta === 1).tab.ksSurmise > spacing.fi
 /* ---------------- 5. the status line's spacing spread ---------------- */
 log('5. printed spacing spread');
 async function printedSpread(recipe) {
-  const run = await runTab(MOD, recipe), m = /unfolded spacing spread <b>([\d.]+)<\/b>/.exec(run.statusHtml);
-  assert(m, 'status line carries no spacing spread');
+  // The status line prints the spread through compare(): "<b>value ± error</b>", to the error's precision.
+  const run = await runTab(MOD, recipe), m = /unfolded spacing spread <b>([\d.]+) ± ([\d.]+)<\/b>/.exec(run.statusHtml);
+  assert(m, 'status line carries no spacing spread with an error bar');
   // Rebuild what buildSpectra pooled: whole rows while fewer than 40000 spacings were held.
   const rows = [];
   let held = 0;
   for (const r of run.audit.series) { if (held >= 40000) break; const u = []; MOD.unfolded(r.lam, run.state.n, u); rows.push(u); held += u.length; }
   const all = rows.flat(), mu = mean(all), cvPop = Math.sqrt(all.reduce((a, b) => a + (b - mu) ** 2, 0) / all.length) / mu;
-  assert.equal(cvPop.toFixed(3), m[1], 'recomputed spread differs from the printed one');
+  const digits = (m[1].split('.')[1] || '').length;
+  assert(Math.abs(cvPop - Number(m[1])) <= 0.5 * 10 ** -digits + 1e-12, 'recomputed spread differs from the printed one');
   const t = spacingTest(rows, run.state.beta, 'rmt-science/printed/' + run.state.beta, 2000), X = exact[run.state.beta];
-  return { recipe, seed: run.state.seed, printed: Number(m[1]), printedSurmise: MOD.SURMISE[run.state.beta.toFixed(2)], rows: rows.length, spacings: all.length, cvSe: t.cvSe,
+  // The printed error bar is the module's own row bootstrap (200 draws); it must agree with this one (2000 draws).
+  const barRatio = Number(m[2]) / t.cvSe;
+  assert(barRatio > 0.67 && barRatio < 1.5, 'printed error bar ' + m[2] + ' disagrees with the row bootstrap ' + t.cvSe.toFixed(4));
+  return { recipe, seed: run.state.seed, printed: Number(m[1]), printedError: Number(m[2]), errorRatio: round(barRatio, 3), printedSurmise: MOD.SURMISE[run.state.beta.toFixed(2)], rows: rows.length, spacings: all.length, cvSe: t.cvSe,
     gaudinMehtaCv: round(X.cv), zGaudinMehta: round((cvPop - X.cv) / t.cvSe, 3), surmiseCv: round(X.surmiseCv), zSurmise: round((cvPop - X.surmiseCv) / t.cvSe, 3), statusHtml: run.statusHtml };
 }
 

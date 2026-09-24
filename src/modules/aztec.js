@@ -109,7 +109,7 @@
     },
     hints: {
       Diamond: 'The seed decides every coin flip in the shuffle, so the same seed and order reprint the same tiling exactly.',
-      Tiles: 'Domino type is the four directions the shuffle uses, which is also the four frozen phases. Frozen versus free colors a domino by whether all its neighbors share its type.',
+      Tiles: 'Domino type is the four directions the shuffle uses, which is also the four frozen phases. Frozen versus free colors the four polar regions: a domino is frozen when a chain of edge-adjacent dominoes of its own type connects it to the boundary of the diamond (Jockusch, Propp and Shor).',
     },
     palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (N, S, W, E)',
     headline: 'n', headlineLabel: 'order',
@@ -123,7 +123,7 @@
     },
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d');
-      let grid = null, order = 0, list = null, frozen = null, timer = 0, building = false;
+      let grid = null, order = 0, list = null, frozen = null, polarByType = null, timer = 0, building = false;
 
       function build(s, done) {
         clearTimeout(timer); building = true;
@@ -141,26 +141,51 @@
           else { building = false; finish(); done(); }
         })();
       }
+      // The polar regions of Jockusch, Propp and Shor (1998), in the form Johansson states them (Annals of
+      // Probability 33, 2005): the north polar region is the union of the N dominoes connected to the boundary of
+      // the diamond by a chain of edge-adjacent N dominoes, and likewise for S, W and E. Their union is the frozen
+      // part of the plate. A local test (all neighbors share the type) also counts brickwork patches inside the
+      // circle, and read 0.278 against the limit 0.215 (validation/AZTEC.md); this one is the theorem's region.
       function finish() {
         list = dominoes(grid, order);
-        // frozen: every neighboring domino cell shares this domino's type
-        const w = 2 * order; frozen = new Uint8Array(list.length);
+        const w = 2 * order, owner = new Int32Array(w * w).fill(-1);
+        list.forEach((d, k) => { const [x, y, , hz] = d; owner[y * w + x] = k; owner[(hz ? y : y + 1) * w + (hz ? x + 1 : x)] = k; });
+        const cellsOf = d => d[3] ? [[d[0], d[1]], [d[0] + 1, d[1]]] : [[d[0], d[1]], [d[0], d[1] + 1]];
+        const out = (x, y) => x < 0 || y < 0 || x >= w || y >= w || !inside(x, y, order);
+        frozen = new Uint8Array(list.length);
+        const queue = [];
         list.forEach((d, k) => {
-          const [x, y, t, hz] = d; let ok = true;
-          const cells = hz ? [[x, y], [x + 1, y]] : [[x, y], [x, y + 1]];
-          for (const [cx, cy] of cells) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
-            const nx = cx + dx, ny = cy + dy;
-            if (nx < 0 || ny < 0 || nx >= w || ny >= w || !inside(nx, ny, order)) continue;
-            if (grid[ny * w + nx] !== t) { ok = false; break; }
+          for (const [cx, cy] of cellsOf(d)) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+            if (out(cx + dx, cy + dy) && !frozen[k]) { frozen[k] = 1; queue.push(k); }
           }
-          frozen[k] = ok ? 1 : 0;
         });
+        while (queue.length) {
+          const k = queue.pop(), t = list[k][2];
+          for (const [cx, cy] of cellsOf(list[k])) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+            const nx = cx + dx, ny = cy + dy;
+            if (out(nx, ny)) continue;
+            const j = owner[ny * w + nx];
+            if (j >= 0 && !frozen[j] && list[j][2] === t) { frozen[j] = 1; queue.push(j); }
+          }
+        }
+        polarByType = [0, 0, 0, 0];
+        list.forEach((d, k) => { if (frozen[k]) polarByType[d[2] - 1]++; });
+      }
+      // The share of the diamond in the polar regions, against the arctic-circle limit 1 - pi/4. The four regions
+      // fluctuate nearly independently (each follows its own arc of the boundary), so four times each region's
+      // share gives four estimates of the total, and their spread is the plate's error bar; tools/aztec-science.js
+      // checks that bar against the scatter over seeds. At finite n the frozen boundary sits inside the circle by
+      // about n^(1/3) cells, so the share exceeds the limit by a term that shrinks as n^(-2/3).
+      function polarCompare() {
+        const D = list.length, q = polarByType.map(c => 4 * c / D), f = q.reduce((a, b) => a + b, 0) / 4, se = U.stats.sd(q) / 2;
+        return U.stats.compare({ label: 'polar regions', measured: f, expected: 1 - Math.PI / 4, reference: '1 − π/4, n → ∞', basis: 'sampled',
+          uncertainty: se > 0 && isFinite(se) ? se : undefined, pending: 'the four polar regions are equal, so they give no spread',
+          method: 'spread of the four polar regions', digits: 3,
+          note: 'finite n: the excess shrinks as n^(−2/3)' });
       }
       function status(extra) {
-        const s = host.getState();
-        const fr = frozen ? Math.round(100 * frozen.reduce((a, b) => a + b, 0) / Math.max(1, frozen.length)) : 0;
         host.setStatus('<span>order <b>' + order + '</b> · ' + (2 * order * (order + 1)).toLocaleString() + ' cells</span>' +
-          (list ? '<span>' + list.length.toLocaleString() + ' dominoes · frozen <b>' + fr + '%</b></span>' : '') +
+          (list ? '<span>' + list.length.toLocaleString() + ' dominoes</span>' + polarCompare() : '') +
           (extra ? '<span>' + extra + '</span>' : ''));
       }
       function colorOf(s, d, k) {

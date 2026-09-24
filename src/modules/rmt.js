@@ -112,8 +112,9 @@
   const chi = (rng, k) => Math.sqrt(2 * gammaRand(rng, k / 2));
 
   // Dumitriu and Edelman, J. Math. Phys. 43, 5830 (2002). The symmetric tridiagonal with N(0,2) on the
-  // diagonal and chi_{(n-k)beta} below it has eigenvalue density proportional to
-  // prod |lambda_i - lambda_j|^beta exp(-sum lambda^2 / 2), for any beta > 0 rather than only 1, 2 and 4.
+  // diagonal and chi_{(n-k)beta} below it is their model without its overall factor 1/sqrt(2), so its
+  // eigenvalue density is proportional to prod |lambda_i - lambda_j|^beta exp(-sum lambda^2 / 4), for any
+  // beta > 0 rather than only 1, 2 and 4, with spectral edge 2 sqrt(beta n) (validation/RMT.md).
   // Checked against a directly built GOE at beta = 1: same spectral edge and same second moment.
   function betaHermite(rng, n, beta, d, e) {
     for (let i = 0; i < n; i++) d[i] = Math.SQRT2 * rng.gauss();
@@ -135,8 +136,9 @@
 
   // Unfolded nearest-neighbor spacings. The raw gaps mix level repulsion with the semicircle's varying
   // density, so each gap is divided by the local mean spacing before the statistics are taken. The
-  // coefficient of variation is then comparable with the Wigner surmise, which gives sqrt(4/pi - 1) = 0.523
-  // at beta = 1 and sqrt(3 pi/8 - 1) = 0.422 at beta = 2, against 1 for an uncorrelated (Poisson) sequence.
+  // coefficient of variation is then comparable with the exact large-n (Gaudin-Mehta) law, 0.534 at beta = 1
+  // and 0.424 at beta = 2, against 1 for an uncorrelated (Poisson) sequence. Wigner's 2x2 surmise gives
+  // sqrt(4/pi - 1) = 0.523 and sqrt(3 pi/8 - 1) = 0.422, and a large sample resolves the beta = 1 difference.
   function unfolded(lam, n, out) {
     const K = 12;
     for (let i = Math.floor(n * 0.2); i < Math.floor(n * 0.8); i++) {
@@ -170,6 +172,9 @@
     return draws.length > 1 ? U.stats.sd(draws) : NaN;
   }
   const SURMISE = { '1.00': 0.523, '2.00': 0.422 };
+  // The exact bulk spacing CV, from the Gaudin-Mehta Fredholm determinants evaluated by Nystrom quadrature
+  // (Bornemann, Math. Comp. 79, 871, 2010): 0.53435 at beta = 1, 0.42426 at beta = 2 (tools/rmt-science.js).
+  const GAUDIN_MEHTA = { '1.00': 0.53435, '2.00': 0.42426 };
 
   /* ---------- Random Matrices ---------- */
   Studio.register({
@@ -178,8 +183,8 @@
     tab: 'Matrices',
     subtitle: 'beta-ensemble spectra and Dyson Brownian motion · 1962',
     order: 48,
-    equation: 'p(λ) ∝ ∏_{i<j} |λ_i − λ_j|^β · e^{−Σλ_i²/2};   dλ_i = √(2/β) dB_i + Σ_{j≠i} dt/(λ_i − λ_j)',
-    credit: "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The spacing forms quoted in the status line are Wigner's surmise; the exact answers are the Gaudin-Mehta determinantal formulae, Michel Mehta, Random Matrices. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
+    equation: 'p(λ) ∝ ∏_{i<j} |λ_i − λ_j|^β · e^{−Σλ_i²/4};   Dyson (β = 1): dλ_i = √2 dB_i + (Σ_{j≠i} 1/(λ_i − λ_j) − λ_i/2) dt',
+    credit: "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The status line compares the spacing spread with the exact Gaudin-Mehta law (Michel Mehta, Random Matrices), evaluated as Fredholm determinants by Folkmar Bornemann's method, Math. Comp. 79, 871 (2010); Wigner's surmise is its 2×2 approximation. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
     blurb: 'Eigenvalues of a random matrix are not scattered independently. They push each other apart, and the strength of that push is a single number, β: the exponent on |λᵢ − λⱼ| in their joint density. At β = 0 the levels are independent, and independence looks clumpy, with gaps and coincidences everywhere. At β = 1, 2 and 4 you get the three classical ensembles that describe real symmetric, complex Hermitian and quaternionic systems. Push β higher and the spectrum stops being random-looking and freezes into something close to a crystal. Because the tridiagonal models sample any β at all, that whole road from independence to rigidity is one slider, and the sweep plate draws every point on it at once. Dyson\'s other idea is the third mode: let the matrix itself diffuse, and its eigenvalues become paths that never cross.',
     schema: [
       { group: 'Ensemble', key: 'mode', label: 'Plate', type: 'seg', kind: GEOM, wrap: true,
@@ -375,10 +380,10 @@
         } else {
           P.push('<span><b>' + s.rows + '</b> spectra of <b>' + s.n + '</b> · β <b>' + s.beta.toFixed(2) + '</b></span>');
           if (cv !== null) {
-            const sur = SURMISE[s.beta.toFixed(2)];
-            P.push(U.stats.compare({ label: 'unfolded spacing spread', measured: cv, expected: sur, reference: 'Wigner surmise', basis: 'sampled',
+            const key = s.beta.toFixed(2), gm = GAUDIN_MEHTA[key], sur = SURMISE[key];
+            P.push(U.stats.compare({ label: 'unfolded spacing spread', measured: cv, expected: gm, reference: 'Gaudin-Mehta, large n', basis: 'sampled',
               uncertainty: cvSE, method: 'bootstrap over ' + nAll + ' rows', pending: 'fewer than 2 rows',
-              note: sur ? 'the surmise is the 2×2 approximation' : undefined }));
+              note: sur ? 'Wigner surmise ' + sur.toFixed(3) + ', the 2×2 approximation' : undefined }));
           }
         }
         P.push('<span>' + (series ? series.length.toLocaleString() : 0) + ' rows</span>');
@@ -505,7 +510,7 @@
               const pts = [];
               for (let t = 0; t < T; t++) pts.push(r(L.x0 + L.w * t / (T - 1)) + ',' + r(L.y0 + L.h * (0.5 - 0.5 * series[t].lam[i] / sc)));
               body += '<polyline fill="none" stroke="' + colorOf(s, i, i, n, series[T - 1].lam, sc, n) +
-                '" stroke-width="' + r(lw) + '" stroke-linejoin="round" points="' + pts.join(' ') + '"/>';
+                '" stroke-width="' + r(lw) + '" stroke-linejoin="round" stroke-linecap="round" points="' + pts.join(' ') + '"/>';
             }
           } else {
             const rows = series.length, n = series[0].lam.length;

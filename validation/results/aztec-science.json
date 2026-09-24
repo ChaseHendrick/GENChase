@@ -1,12 +1,13 @@
 {
   "date": "2026-09-24",
   "tool": "tools/aztec-science.js",
-  "sourceSha256": "d3cb40f6561fe895da5d7b12762f529af4b3e31e9f8561095f280d61851c31fb",
-  "engineSha256": "a84197737dd6c83940054aecc7c1d3ff86fb5d43b12f4f8da3c4224f07ae3ac0",
-  "scope": "Domino shuffling as implemented in src/modules/aztec.js (build, shuffle, dominoes, the frozen test) run from the unmodified source. Exhaustive enumeration and sampled frequencies at orders 1 to 5; polar-region area, axis radius and the tab's frozen fraction over independent seeds at seven orders from 40 to 320; five complete rendered recipes with every SVG rectangle, every PNG byte and the shell's vector RIP checked.",
+  "sourceSha256": "f71c42ea92eef62abe321d79eda9e0b05d56316fa1a088f73adf688ced95ae56",
+  "engineSha256": "99cc63fff9a1f75e68abce1e66e07bfd72dc5e1c25ff057218fe6c8a65dfaa63",
+  "scope": "Domino shuffling as implemented in src/modules/aztec.js (build, shuffle, dominoes, the polar regions) run from the unmodified source. Exhaustive enumeration and sampled frequencies at orders 1 to 5; polar-region area, axis radius and the tab's frozen fraction over independent seeds at seven orders from 40 to 320; five complete rendered recipes with every SVG rectangle, every PNG byte and the shell's vector RIP checked.",
   "references": {
     "count": "N. Elkies, G. Kuperberg, M. Larsen and J. Propp, J. Algebraic Combin. 1, 111 and 219 (1992): 2^{n(n+1)/2} tilings; domino shuffling samples them uniformly.",
     "arcticCircle": "W. Jockusch, J. Propp and P. Shor, arXiv:math/9801068 (1998): the boundary of the four polar regions converges to the inscribed circle, so the polar area fraction tends to 1 - pi/4 and the axis radius to n/sqrt(2).",
+    "polarRegions": "The north polar region is the union of the north-going dominoes connected to the boundary by a sequence of adjacent north-going dominoes, as K. Johansson, Ann. Probab. 33, 1 (2005), arXiv:math/0306216, states the definition of Jockusch, Propp and Shor; likewise for the other three.",
     "fluctuations": "K. Johansson, Ann. Probab. 33, 1 (2005): the arctic boundary fluctuates on the scale n^{1/3} (Airy process); used only to choose the finite-size form n^{-2/3} and as the reference exponent 1/3."
   },
   "uniformity": {
@@ -60,7 +61,7 @@
             "count": 1993
           }
         ],
-        "ms": 290
+        "ms": 205
       },
       {
         "order": 2,
@@ -176,7 +177,7 @@
             "count": 2015
           }
         ],
-        "ms": 352
+        "ms": 171
       },
       {
         "order": 3,
@@ -448,7 +449,7 @@
             "count": 1567
           }
         ],
-        "ms": 390
+        "ms": 301
       },
       {
         "order": 4,
@@ -474,7 +475,7 @@
         "passes": true,
         "minCount": 21,
         "maxCount": 61,
-        "ms": 1584
+        "ms": 1325
       },
       {
         "order": 5,
@@ -500,7 +501,7 @@
         "passes": true,
         "minCount": 4,
         "maxCount": 39,
-        "ms": 58995
+        "ms": 32291
       }
     ],
     "interpretation": "Seeds are distinct recipe strings through U.makeRng; the probability statements assume those streams behave as independent uniform draws, which a fixed PRNG regression does not prove."
@@ -557,7 +558,7 @@
               "count": 1229
             }
           ],
-          "ms": 126
+          "ms": 207
         },
         {
           "order": 2,
@@ -673,7 +674,7 @@
               "count": 768
             }
           ],
-          "ms": 242
+          "ms": 264
         },
         {
           "order": 3,
@@ -945,7 +946,7 @@
               "count": 335
             }
           ],
-          "ms": 346
+          "ms": 435
         },
         {
           "order": 4,
@@ -971,7 +972,7 @@
           "passes": false,
           "minCount": 0,
           "maxCount": 1144,
-          "ms": 1963
+          "ms": 2636
         }
       ],
       "caught": true
@@ -1250,7 +1251,7 @@
               "count": 1567
             }
           ],
-          "ms": 1293
+          "ms": 920
         },
         {
           "order": 4,
@@ -1277,7 +1278,7 @@
           "passes": false,
           "minCount": 0,
           "maxCount": 60,
-          "ms": 4592
+          "ms": 2020
         }
       ],
       "caught": true
@@ -1320,12 +1321,12 @@
           "max": 0.27534937888198757
         },
         "tabFrozenFraction": {
-          "mean": 0.2804871894409938,
-          "sd": 0.003736313051551173,
-          "se": 0.000590762964715791,
+          "mean": 0.26344720496894414,
+          "sd": 0.0067803282051557235,
+          "se": 0.0010720640205886755,
           "n": 40,
-          "min": 0.2720885093167702,
-          "max": 0.2889363354037267
+          "min": 0.2498835403726708,
+          "max": 0.27534937888198757
         }
       },
       "biased0.7": {
@@ -1365,12 +1366,12 @@
           "max": 0.34281832298136644
         },
         "tabFrozenFraction": {
-          "mean": 0.345927795031056,
-          "sd": 0.0046982356103638006,
-          "se": 0.0007428562756430498,
+          "mean": 0.32541149068322983,
+          "sd": 0.007247577213271124,
+          "se": 0.0011459425755936338,
           "n": 40,
-          "min": 0.337111801242236,
-          "max": 0.3560947204968944
+          "min": 0.3109083850931677,
+          "max": 0.34281832298136644
         }
       }
     }
@@ -1383,7 +1384,12 @@
         "seedPattern": "'aztec-arctic-n40-<i>'",
         "cornerTypeMismatches": 0,
         "frozenDefinitionMismatches": 0,
-        "printedPercentMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.018663687842360985,
+          "rmsBar": 0.027545198826399525,
+          "ratio": 0.6775659148436992
+        },
         "northSouthMinusEastWest": {
           "mean": 0.0004062499999999998,
           "sd": 0.047627687088299335,
@@ -1392,7 +1398,7 @@
           "min": -0.125,
           "max": 0.125
         },
-        "ms": 4015
+        "ms": 2172
       },
       {
         "order": 57,
@@ -1400,7 +1406,12 @@
         "seedPattern": "'aztec-arctic-n57-<i>'",
         "cornerTypeMismatches": 0,
         "frozenDefinitionMismatches": 0,
-        "printedPercentMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.014080369221719723,
+          "rmsBar": 0.019819393780598635,
+          "ratio": 0.7104339001278187
+        },
         "northSouthMinusEastWest": {
           "mean": -0.0007456140350877202,
           "sd": 0.03647583441577446,
@@ -1409,7 +1420,7 @@
           "min": -0.10526315789473684,
           "max": 0.10526315789473684
         },
-        "ms": 7604
+        "ms": 4318
       },
       {
         "order": 80,
@@ -1417,7 +1428,12 @@
         "seedPattern": "'aztec-arctic-n80-<i>'",
         "cornerTypeMismatches": 0,
         "frozenDefinitionMismatches": 0,
-        "printedPercentMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.01145907315241668,
+          "rmsBar": 0.01498515063307713,
+          "ratio": 0.7646952261609408
+        },
         "northSouthMinusEastWest": {
           "mean": 0.000859374999999999,
           "sd": 0.030697556593504358,
@@ -1426,7 +1442,7 @@
           "min": -0.0625,
           "max": 0.075
         },
-        "ms": 18058
+        "ms": 8890
       },
       {
         "order": 113,
@@ -1434,7 +1450,12 @@
         "seedPattern": "'aztec-arctic-n113-<i>'",
         "cornerTypeMismatches": 0,
         "frozenDefinitionMismatches": 0,
-        "printedPercentMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.007967662518779756,
+          "rmsBar": 0.011542222920459689,
+          "ratio": 0.6903057213230838
+        },
         "northSouthMinusEastWest": {
           "mean": 0.0010324483775811216,
           "sd": 0.02369681142860526,
@@ -1443,7 +1464,7 @@
           "min": -0.06637168141592921,
           "max": 0.0752212389380531
         },
-        "ms": 40243
+        "ms": 14338
       },
       {
         "order": 160,
@@ -1451,7 +1472,12 @@
         "seedPattern": "'aztec-arctic-n160-<i>'",
         "cornerTypeMismatches": 0,
         "frozenDefinitionMismatches": 0,
-        "printedPercentMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.006911959879168816,
+          "rmsBar": 0.00811993820702826,
+          "ratio": 0.851233063964222
+        },
         "northSouthMinusEastWest": {
           "mean": 0.002203124999999999,
           "sd": 0.018477918870595696,
@@ -1460,7 +1486,7 @@
           "min": -0.05,
           "max": 0.04375
         },
-        "ms": 46300
+        "ms": 25029
       },
       {
         "order": 226,
@@ -1468,7 +1494,12 @@
         "seedPattern": "'aztec-arctic-n226-<i>'",
         "cornerTypeMismatches": 0,
         "frozenDefinitionMismatches": 0,
-        "printedPercentMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.005865414232027859,
+          "rmsBar": 0.005984827441694867,
+          "ratio": 0.9800473429133336
+        },
         "northSouthMinusEastWest": {
           "mean": -0.00033923303834808245,
           "sd": 0.013577095809270657,
@@ -1477,7 +1508,7 @@
           "min": -0.033185840707964605,
           "max": 0.03761061946902655
         },
-        "ms": 82070
+        "ms": 42761
       },
       {
         "order": 320,
@@ -1485,7 +1516,12 @@
         "seedPattern": "'aztec-arctic-n320-<i>'",
         "cornerTypeMismatches": 0,
         "frozenDefinitionMismatches": 0,
-        "printedPercentMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.0035226463021089047,
+          "rmsBar": 0.004637395256798204,
+          "ratio": 0.7596174376003146
+        },
         "northSouthMinusEastWest": {
           "mean": -0.00043749999999999985,
           "sd": 0.011743355901456911,
@@ -1494,7 +1530,7 @@
           "min": -0.0296875,
           "max": 0.0265625
         },
-        "ms": 109891
+        "ms": 67207
       }
     ],
     "polarFraction": {
@@ -1740,72 +1776,72 @@
         {
           "order": 40,
           "seeds": 400,
-          "mean": 0.27221951219512214,
-          "sd": 0.015425701190045852,
-          "se": 0.0007712850595022927,
-          "deviation": 0.057617675592570416,
-          "deviationTimesN23": 0.6739004218690815,
-          "sigmaFromExact": 74.70347685685871
+          "mean": 0.3256036585365855,
+          "sd": 0.018663687842360985,
+          "se": 0.0009331843921180492,
+          "deviation": 0.1110018219340338,
+          "deviationTimesN23": 1.298285185236243,
+          "sigmaFromExact": 118.94950544778497
         },
         {
           "order": 57,
           "seeds": 400,
-          "mean": 0.2766598608590442,
-          "sd": 0.011029630000234622,
-          "se": 0.0005514815000117311,
-          "deviation": 0.06205802425649248,
-          "deviationTimesN23": 0.9191389743587031,
-          "sigmaFromExact": 112.52965739589159
+          "mean": 0.30501134301270416,
+          "sd": 0.014080369221719723,
+          "se": 0.0007040184610859862,
+          "deviation": 0.09040950641015244,
+          "deviationTimesN23": 1.3390516696220849,
+          "sigmaFromExact": 128.41922677807474
         },
         {
           "order": 80,
           "seeds": 400,
-          "mean": 0.27781983024691387,
-          "sd": 0.008313833447651287,
-          "se": 0.00041569167238256433,
-          "deviation": 0.06321799364436215,
-          "deviationTimesN23": 1.1737277335322998,
-          "sigmaFromExact": 152.07904763168344
+          "mean": 0.2871913580246914,
+          "sd": 0.01145907315241668,
+          "se": 0.0005729536576208339,
+          "deviation": 0.0725895214221397,
+          "deviationTimesN23": 1.347722848281197,
+          "sigmaFromExact": 126.69353002049877
         },
         {
           "order": 113,
           "seeds": 300,
-          "mean": 0.2788863012989702,
-          "sd": 0.005526141341231593,
-          "se": 0.000319051919093998,
-          "deviation": 0.06428446469641846,
-          "deviationTimesN23": 1.5025363732556785,
-          "sigmaFromExact": 201.48590511213692
+          "mean": 0.272717228173679,
+          "sd": 0.007967662518779756,
+          "se": 0.00046001321000295833,
+          "deviation": 0.05811539157112727,
+          "deviationTimesN23": 1.3583451319690332,
+          "sigmaFromExact": 126.33417977443199
         },
         {
           "order": 160,
           "seeds": 200,
-          "mean": 0.2797156444099378,
-          "sd": 0.004225625644972931,
-          "se": 0.0002987968548316138,
-          "deviation": 0.06511380780738607,
-          "deviationTimesN23": 1.9190505516706124,
-          "sigmaFromExact": 217.91999063738737
+          "mean": 0.2621764363354038,
+          "sd": 0.006911959879168816,
+          "se": 0.0004887493701849619,
+          "deviation": 0.04757459973285205,
+          "deviationTimesN23": 1.4021305916082836,
+          "sigmaFromExact": 97.33945992574468
         },
         {
           "order": 226,
           "seeds": 150,
-          "mean": 0.27950424284953157,
-          "sd": 0.003087521765293427,
-          "se": 0.00025209509649020204,
-          "deviation": 0.06490240624697985,
-          "deviationTimesN23": 2.408055125370123,
-          "sigmaFromExact": 257.4520772144505
+          "mean": 0.2516958403181162,
+          "sd": 0.005865414232027859,
+          "se": 0.0004789090666175571,
+          "deviation": 0.03709400371556448,
+          "deviationTimesN23": 1.3762880443576777,
+          "sigmaFromExact": 77.4552129020073
         },
         {
           "order": 320,
           "seeds": 100,
-          "mean": 0.2798139602803739,
-          "sd": 0.00195519288611482,
-          "se": 0.000195519288611482,
-          "deviation": 0.0652121236778222,
-          "deviationTimesN23": 3.0509025020877325,
-          "sigmaFromExact": 333.5329426622749
+          "mean": 0.24477910825545166,
+          "sd": 0.0035226463021089047,
+          "se": 0.00035226463021089045,
+          "deviation": 0.030177271652899934,
+          "deviationTimesN23": 1.4118220416631628,
+          "sigmaFromExact": 85.66648214109289
         }
       ],
       "exact": 0.21460183660255172,
@@ -1820,17 +1856,17 @@
           226,
           320
         ],
-        "limit": 0.2778197935119135,
-        "limitSe": 0.0009418772053533557,
+        "limit": 0.21412228977844203,
+        "limitSe": 0.0014294540237418624,
         "coefficients": [
-          0.2778197935119135,
-          0.23824501531648556,
-          -1.0183326329838474
+          0.21412228977844203,
+          1.5475183673863875,
+          -0.8145414218867078
         ],
-        "chiSquare": 3.26727720597267,
+        "chiSquare": 5.087552835048425,
         "dof": 4,
-        "fitPValue": 0.5141335544510097,
-        "sigmaFromExact": 67.11910698130215,
+        "fitPValue": 0.27843142649220476,
+        "sigmaFromExact": -0.33547551452854096,
         "bootstrapReplicates": 1000
       },
       "two": {
@@ -1841,16 +1877,16 @@
           226,
           320
         ],
-        "limit": 0.2805774074999276,
-        "limitSe": 0.0004915761909553897,
+        "limit": 0.2165634796776752,
+        "limitSe": 0.0007924676537867779,
         "coefficients": [
-          0.2805774074999276,
-          -0.03539106086624581
+          0.2165634796776752,
+          1.3200103866229471
         ],
-        "chiSquare": 1.8204449538373457,
+        "chiSquare": 4.1986206525559675,
         "dof": 2,
-        "fitPValue": 0.4024346816455082,
-        "sigmaFromExact": 134.21229935719796,
+        "fitPValue": 0.12254091236352674,
+        "sigmaFromExact": 2.475360433640207,
         "bootstrapReplicates": 1000
       }
     },
@@ -1886,7 +1922,9 @@
     "biasedCoinFailsUniformity": true,
     "missingDestructionRejected": true,
     "frozenFlagsMatchDefinitionOnEveryPlate": true,
-    "printedPercentMatchesFraction": true,
+    "printedValueAndBarMatch": true,
+    "tabPolarLimitWithin3Sigma": true,
+    "printedBarCalibrated": false,
     "cornerTypesAsExpected": true,
     "polarLimitWithin3Sigma": true,
     "axisLimitWithin3Sigma": true,
@@ -1916,11 +1954,11 @@
             "#FAF3E3"
           ],
           "bg": "#F5E6C8",
-          "v": 2
+          "v": 3
         },
         "order": 8,
         "dominoes": 72,
-        "frozenDominoes": 14,
+        "frozenDominoes": 36,
         "gridSha256": "a8fc017ab7892477b54e75d3b602e2e5145e84155bc1e9a590ab4d0961d11a68",
         "browserEqualsNode": true,
         "chunkingPreserved": true,
@@ -1989,11 +2027,11 @@
             "#FFFBF2"
           ],
           "bg": "#F1E8D8",
-          "v": 2
+          "v": 3
         },
         "order": 28,
         "dominoes": 812,
-        "frozenDominoes": 216,
+        "frozenDominoes": 276,
         "gridSha256": "6e783db1f58114edb3ea8f5d9967156ddaf90ab2b498d17878c6876208ec6088",
         "browserEqualsNode": true,
         "chunkingPreserved": true,
@@ -2062,11 +2100,11 @@
             "#1B2A2A"
           ],
           "bg": "#EFEADF",
-          "v": 2
+          "v": 3
         },
         "order": 60,
         "dominoes": 3660,
-        "frozenDominoes": 1070,
+        "frozenDominoes": 1145,
         "gridSha256": "d604dabdb86177efd940b8fddd94e1c76dd0fe999354b20b627adc12fad83ecf",
         "browserEqualsNode": true,
         "chunkingPreserved": true,
@@ -2078,7 +2116,7 @@
           "channelsChecked": 23040000,
           "maxChannelError": 0,
           "meanChannelError": 0,
-          "shiftedPrintFailureChannels": 1094164,
+          "shiftedPrintFailureChannels": 1087417,
           "ok": true
         },
         "moduleSvg": {
@@ -2091,9 +2129,9 @@
         },
         "wrongTilingSvgRejected": {
           "fail": [
-            "fill of rect 125",
-            "fill of rect 126",
-            "fill of rect 141"
+            "fill of rect 142",
+            "fill of rect 143",
+            "fill of rect 160"
           ]
         },
         "shellExport": {
@@ -2135,11 +2173,11 @@
             "#FFFBF2"
           ],
           "bg": "#F1E8D8",
-          "v": 2
+          "v": 3
         },
         "order": 120,
         "dominoes": 14520,
-        "frozenDominoes": 3988,
+        "frozenDominoes": 3859,
         "gridSha256": "43700b1f5e5d3ef2a3f4daeae0d0b7e1fabdb825b8c0992e5b5f9f07ac2b5db4",
         "browserEqualsNode": true,
         "chunkingPreserved": true,
@@ -2208,11 +2246,11 @@
             "#E63B2E"
           ],
           "bg": "#E9E7E2",
-          "v": 2
+          "v": 3
         },
         "order": 180,
         "dominoes": 32580,
-        "frozenDominoes": 9001,
+        "frozenDominoes": 8186,
         "gridSha256": "e27c039234d3c5bdf2622cd1b4a9bb367ab3d6e447f5a85aeb7d4a073595750e",
         "browserEqualsNode": true,
         "chunkingPreserved": true,
@@ -2224,7 +2262,7 @@
           "channelsChecked": 23040000,
           "maxChannelError": 0,
           "meanChannelError": 0,
-          "shiftedPrintFailureChannels": 1923963,
+          "shiftedPrintFailureChannels": 1925766,
           "ok": true
         },
         "moduleSvg": {
@@ -2237,9 +2275,9 @@
         },
         "wrongTilingSvgRejected": {
           "fail": [
-            "fill of rect 1450",
-            "fill of rect 1451",
-            "fill of rect 1461"
+            "fill of rect 1505",
+            "fill of rect 1506",
+            "fill of rect 1517"
           ]
         },
         "shellExport": {
@@ -2268,7 +2306,7 @@
     "chromium": "141.0.7390.37",
     "platform": "linux",
     "cpus": 4,
-    "seconds": 458
+    "seconds": 255
   },
-  "passed": true
+  "passed": false
 }

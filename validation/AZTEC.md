@@ -168,3 +168,17 @@ through the SVG, grain never reaches the print. The fixtures therefore use grain
 - The extrapolated limits assume the stated finite-size form; the two-parameter variant differs by 2.5
   to 3 sigma, as reported above.
 - Print evidence covers the five recipes and one renderer (headless Chromium 141, SwiftShader, Linux).
+
+## Changed after this review (2026-09-24)
+
+The module's frozen test is now the theorem's: a domino is in a polar region when a chain of edge-adjacent
+dominoes of its own type connects it to the boundary of the diamond, the definition of Jockusch, Propp and
+Shor as Johansson (Ann. Probab. 33, 2005, arXiv:math/0306216) states it. `tools/aztec-science.js` checks the
+module's flags against an independent union-find on every plate (all match), and the corner-attached variant
+used above gives the same fraction at every order measured. The tab's fraction now extrapolates to
+0.2141 +/- 0.0014 against 1 - pi/4 = 0.2146 (-0.3 sigma). The status line prints it through `compare()`,
+with the spread of the four polar regions as the per-plate error bar and a note on the n^(-2/3) excess.
+That bar is conservative: the scatter over seeds is 0.68 to 0.98 of it (orders 40 to 320), because the four
+regions are anticorrelated, which fails the calibration band set before the run. The record stays partially
+validated for that reason alone. The "Frozen versus free" plates change; no key or default moved, so no
+legacy entry is needed.

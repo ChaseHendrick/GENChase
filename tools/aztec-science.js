@@ -11,11 +11,13 @@
 //    have p >= 0.001, and every tiling probability and every domino placement probability must sit
 //    inside a simultaneous Hoeffding bound (alpha 0.001) and a Bonferroni z bound.
 // 3. Arctic circle (Jockusch, Propp and Shor 1998). At seven orders from 40 to 320 the tab's plates
-//    are measured over independent seeds: the tab's own "frozen" fraction (read from the module), the
-//    fraction of the diamond in the four polar regions (the brickwork clusters connected to the
-//    corners, computed here), and the boundary radius along the four axes. The polar fraction and the
-//    axis radius are extrapolated in n with a stated finite-size form and compared with 1 - pi/4 and
-//    1/sqrt(2); the tab's local frozen fraction is reported against 1 - pi/4 as the disagreement it is.
+//    are measured over independent seeds. The tab's frozen flags are the polar regions of the theorem
+//    (a domino connected to the boundary through edge-adjacent dominoes of its own type), and must equal
+//    an independent union-find implementation on every plate. Measured: the tab's polar fraction, the
+//    corner-attached variant (the cluster containing each corner domino, computed here), and the boundary
+//    radius along the four axes; each is extrapolated in n with a stated finite-size form and compared
+//    with 1 - pi/4 and 1/sqrt(2). The status line's per-plate error bar (the spread of the four polar
+//    regions) is calibrated against the scatter of the printed fraction over seeds.
 // 4. Failure controls. A coin biased to 0.7 must fail the uniformity test and move the boundary; a
 //    shuffle with the destruction step removed must be rejected by the independent tiling check.
 // 5. Print. Five recipes are built in a temporary copy of dist/studio.html with an auditRead() hook:
@@ -99,14 +101,16 @@ const F_EXACT = 1 - Math.PI / 4, R_EXACT = Math.SQRT1_2;
 
 function measurePlate(sm, n, seed) {
   const a = sm.draw(n, seed), r = R.inspect(a.list, a.grid, n);
-  const local = R.localFrozen(a.list, r.types, n);
-  let same = local.length === a.frozen.length;
-  for (let k = 0; same && k < local.length; k++) if (local[k] !== a.frozen[k]) same = false;
+  const pb = R.polarBoundary(a.list, n);
+  let same = pb.flags.length === a.frozen.length;
+  for (let k = 0; same && k < pb.flags.length; k++) if (pb.flags[k] !== a.frozen[k]) same = false;
   const tabFrozen = a.frozen.reduce((x, y) => x + y, 0) / a.list.length;
-  // the status line prints this same fraction as a rounded percentage
-  const printed = Number(/frozen <b>(\d+)%<\/b>/.exec(a.status)[1]);
+  // the status line prints this fraction and its error bar through compare(): "<b>value ± error</b>"
+  const m = /polar regions <b>([\d.]+) ± ([\d.]+)<\/b>/.exec(a.status);
+  assert(m, 'status line carries no polar fraction with an error bar');
   const p = R.polar(a.list, r.partner, r.types, n);
-  return { tabFrozen, printedPercent: printed, frozenMatchesDefinition: same, polar: p.fraction, radius: p.radius, cornerType: p.cornerType };
+  return { tabFrozen, printed: Number(m[1]), printedSe: Number(m[2]), se4: pb.se4, frozenMatchesDefinition: same,
+    polar: p.fraction, radius: p.radius, cornerType: p.cornerType };
 }
 
 // Weighted least squares y = X b with weights 1/se^2; returns b, chi-square and degrees of freedom.
@@ -176,12 +180,14 @@ function arctic(sm) {
     perOrder[n] = plates.map(p => Object.assign({}, p, { axis: (p.radius.N + p.radius.S + p.radius.E + p.radius.W) / (4 * n) }));
     const wrongCorner = plates.filter(p => p.cornerType.N !== 1 || p.cornerType.S !== 2 || p.cornerType.W !== 3 || p.cornerType.E !== 4).length;
     const definitionMismatch = plates.filter(p => !p.frozenMatchesDefinition).length;
-    const printedMismatch = plates.filter(p => p.printedPercent !== Math.round(100 * p.tabFrozen)).length;
+    const printedMismatch = plates.filter(p => Math.abs(p.printed - p.tabFrozen) > 5e-4 + 1e-12 || Math.abs(p.printedSe - p.se4) > 5e-4 + 1e-12).length;
+    // Calibration of the printed error bar: the scatter of the fraction over seeds against the RMS per-plate bar.
+    const scatter = S.stats.sd(plates.map(p => p.tabFrozen)), rmsBar = Math.sqrt(plates.reduce((a, p) => a + p.se4 * p.se4, 0) / plates.length);
     const nsew = plates.map(p => (p.radius.N + p.radius.S - p.radius.E - p.radius.W) / (2 * n));
     rows.push({ order: n, seeds: plates.length, seedPattern: "'aztec-arctic-n" + n + "-<i>'", cornerTypeMismatches: wrongCorner, frozenDefinitionMismatches: definitionMismatch,
-      printedPercentMismatches: printedMismatch, northSouthMinusEastWest: S.stats.ensemble(nsew), ms: Date.now() - t0 });
+      printedMismatches: printedMismatch, errorBarCalibration: { scatter, rmsBar, ratio: scatter / rmsBar }, northSouthMinusEastWest: S.stats.ensemble(nsew), ms: Date.now() - t0 });
     log('arctic n=' + n + ' seeds ' + plates.length + ' polar ' + S.stats.ensemble(plates.map(p => p.polar)).mean.toFixed(4) + ' tab ' + S.stats.ensemble(plates.map(p => p.tabFrozen)).mean.toFixed(4) +
-      ' axis ' + S.stats.ensemble(perOrder[n].map(p => p.axis)).mean.toFixed(4) + ' (' + (Date.now() - t0) + ' ms)');
+      ' axis ' + S.stats.ensemble(perOrder[n].map(p => p.axis)).mean.toFixed(4) + ' bar calibration ' + (scatter / rmsBar).toFixed(2) + ' (' + (Date.now() - t0) + ' ms)');
   }
   const rng = S.util.makeRng('aztec-science-bootstrap'), B = 1000;
   return {
@@ -293,8 +299,9 @@ async function browser() {
       assert.deepEqual(Array.from(nd.frozen), a.frozen);
       const chunked = node.draw(n, s.seed, 20);
       assert.deepEqual(Array.from(chunked.grid), a.grid, 'chunking one shuffle per timer slice changed the tiling');
-      const insp = R.inspect(a.list, a.grid, n), local = R.localFrozen(a.list, insp.types, n);
-      assert.deepEqual(local, a.frozen, 'frozen flags differ from the stated definition');
+      R.inspect(a.list, a.grid, n);
+      const local = R.polarBoundary(a.list, n).flags;
+      assert.deepEqual(local, a.frozen, 'frozen flags differ from the polar regions of the theorem');
       const W = 2400, H = 2400, geo = R.geometry(s, a.list, local, n, W, H);
       const before = await page.evaluate(() => JSON.stringify({ recipe: Studio.getRecipe(), a: Studio.auditInstances().aztec.inst.auditRead() }));
       const module = await page.evaluate(PRINT, { geo, w: W, h: H, ink: s.circle ? inkRgba(s.bg, 0.8) : null });
@@ -302,7 +309,7 @@ async function browser() {
       assert(svg.ok, 'module SVG: ' + svg.fail.join('; '));
       // control: the SVG must not match the geometry of another seed's tiling of the same order
       const other = node.draw(n, s.seed + '-other'), otherInsp = R.inspect(other.list, other.grid, n);
-      const wrong = checkSvg(module.svg, R.geometry(s, other.list, R.localFrozen(other.list, otherInsp.types, n), n, W, H), s, W, H);
+      const wrong = checkSvg(module.svg, R.geometry(s, other.list, R.polarBoundary(other.list, n).flags, n, W, H), s, W, H);
       assert(!wrong.ok, 'a different tiling passed the SVG check');
       // the shell's export, as a user presses it
       const shell = await page.evaluate(SHELL, { ref: referenceSvg(geo, s, W, H), w: W, h: H });
@@ -396,7 +403,9 @@ async function main() {
     biasedCoinFailsUniformity: biasCaught,
     missingDestructionRejected: brokenCaught,
     frozenFlagsMatchDefinitionOnEveryPlate: arc.orders.every(r => r.frozenDefinitionMismatches === 0),
-    printedPercentMatchesFraction: arc.orders.every(r => r.printedPercentMismatches === 0),
+    printedValueAndBarMatch: arc.orders.every(r => r.printedMismatches === 0),
+    tabPolarLimitWithin3Sigma: Math.abs(arc.tabFrozenFraction.three.sigmaFromExact) < 3,
+    printedBarCalibrated: arc.orders.every(r => r.errorBarCalibration.ratio > 0.75 && r.errorBarCalibration.ratio < 1.33),
     cornerTypesAsExpected: arc.orders.every(r => r.cornerTypeMismatches === 0),
     polarLimitWithin3Sigma: Math.abs(arc.polarFraction.three.sigmaFromExact) < 3,
     axisLimitWithin3Sigma: Math.abs(arc.axisRadius.three.sigmaFromExact) < 3,
@@ -410,10 +419,11 @@ async function main() {
   const result = {
     date: new Date().toISOString().slice(0, 10), tool: 'tools/aztec-science.js',
     sourceSha256: S.sha256(SOURCE), engineSha256: S.sha256(S.engine),
-    scope: 'Domino shuffling as implemented in src/modules/aztec.js (build, shuffle, dominoes, the frozen test) run from the unmodified source. Exhaustive enumeration and sampled frequencies at orders 1 to 5; polar-region area, axis radius and the tab\'s frozen fraction over independent seeds at seven orders from 40 to 320; five complete rendered recipes with every SVG rectangle, every PNG byte and the shell\'s vector RIP checked.',
+    scope: 'Domino shuffling as implemented in src/modules/aztec.js (build, shuffle, dominoes, the polar regions) run from the unmodified source. Exhaustive enumeration and sampled frequencies at orders 1 to 5; polar-region area, axis radius and the tab\'s frozen fraction over independent seeds at seven orders from 40 to 320; five complete rendered recipes with every SVG rectangle, every PNG byte and the shell\'s vector RIP checked.',
     references: {
       count: 'N. Elkies, G. Kuperberg, M. Larsen and J. Propp, J. Algebraic Combin. 1, 111 and 219 (1992): 2^{n(n+1)/2} tilings; domino shuffling samples them uniformly.',
       arcticCircle: 'W. Jockusch, J. Propp and P. Shor, arXiv:math/9801068 (1998): the boundary of the four polar regions converges to the inscribed circle, so the polar area fraction tends to 1 - pi/4 and the axis radius to n/sqrt(2).',
+      polarRegions: 'The north polar region is the union of the north-going dominoes connected to the boundary by a sequence of adjacent north-going dominoes, as K. Johansson, Ann. Probab. 33, 1 (2005), arXiv:math/0306216, states the definition of Jockusch, Propp and Shor; likewise for the other three.',
       fluctuations: 'K. Johansson, Ann. Probab. 33, 1 (2005): the arctic boundary fluctuates on the scale n^{1/3} (Airy process); used only to choose the finite-size form n^{-2/3} and as the reference exponent 1/3.',
     },
     uniformity: { alpha: ALPHA, rows: uniform, interpretation: 'Seeds are distinct recipe strings through U.makeRng; the probability statements assume those streams behave as independent uniform draws, which a fixed PRNG regression does not prove.' },

@@ -65,6 +65,12 @@ float siteHash(ivec2 site, int t){
   uint h = uhash(uint(site.x + 65536) * 0x9E3779B1u + uhash(uint(site.y + 65536) * 0x85EBCA77u + uhash(uint(t + 1048576))));
   return (float(h >> 8u) + 0.5) / 16777216.0;
 }
+// The same hash with a per-seed key folded into the tick term. siteHash alone gives every seed a window of one
+// shared sequence, so two seeds whose windows overlap reuse the same numbers; with the key they never do.
+float siteHashKeyed(ivec2 site, int t, uint key){
+  uint h = uhash(uint(site.x + 65536) * 0x9E3779B1u + uhash(uint(site.y + 65536) * 0x85EBCA77u + (uhash(uint(t + 1048576)) ^ key)));
+  return (float(h >> 8u) + 0.5) / 16777216.0;
+}
 `;
   const TONE = `
 vec3 tone(vec3 col, float exposure, float gamma, float contrast, float grain){
@@ -156,7 +162,7 @@ void main(){
   const T_C = 2 / Math.log(1 + Math.SQRT2);
   const ISING_STEP = HEAD + `
 uniform sampler2D u_s; uniform vec2 u_res;
-uniform int u_parity, u_tick, u_hMode;
+uniform int u_parity, u_tick, u_hMode, u_keyed, u_key;
 uniform float u_T, u_h, u_bands;
 ${HASH_U}
 float sg(float v){ return v >= 0.0 ? 1.0 : -1.0; }
@@ -172,7 +178,7 @@ void main(){
   else if (u_hMode == 2) h *= 2.0 * v_uv.x - 1.0;
   else if (u_hMode == 3) h *= sg(sin(6.28318530718 * u_bands * v_uv.x) * sin(6.28318530718 * u_bands * v_uv.y * u_res.y / u_res.x));
   float dE = 2.0 * s * (nb + h);
-  float r = siteHash(site, u_tick);
+  float r = u_keyed == 1 ? siteHashKeyed(site, u_tick, uint(u_key)) : siteHash(site, u_tick);
   if (dE <= 0.0 || r < exp(-dE / u_T)) s = -s;
   outColor = vec4(s, 0.0, 0.0, 1.0);
 }`;
@@ -253,6 +259,8 @@ void main(){
       RANGE('Model', 'bands', 'Bands', LIVE, 1, 12, 1, String, { dimUnless: s => s.hMode === 'stripes' || s.hMode === 'checks' }),
       { group: 'Model', key: 'init', label: 'Start', type: 'seg', kind: GEOM, options: [['hot', 'Hot'], ['cold', 'Cold'], ['split', 'Split']],
         hint: 'Hot is random spins (a quench when T is low). Cold is all up. Split is two halves.' },
+      { group: 'Model', key: 'stream', label: 'Random stream', type: 'seg', kind: GEOM, options: [['keyed', 'Per seed'], ['shared', 'Shared']],
+        hint: 'Per seed gives every seed its own random numbers, so runs with different seeds are independent. Shared is the stream recipes made before recipe v3 used, where different seeds read windows of one sequence and can overlap; old links keep it so they reprint.' },
     ]).concat(simFields('Sweeps per frame')).concat([
       { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, wrap: true,
         options: [['spins', 'Spins'], ['mag', 'Magnetization'], ['walls', 'Domain walls'], ['energy', 'Bond energy']] },
@@ -263,9 +271,11 @@ void main(){
       RANGE('Picture', 'wall', 'Wall gain', PAINT, 0.3, 4, 0.05, f2, { dimUnless: s => s.view === 'walls' }),
       { group: 'Picture', key: 'pixelate', label: 'Pixelate', type: 'toggle', kind: PAINT },
     ]).concat(toneFields()),
+    // Recipes older than v3 were made on the shared random stream; they keep it, so they reprint exactly.
+    legacy: { 3: { stream: 'shared' } },
     defaults: {
       grid: 256, aspect: '1:1',
-      T: 2.27, h: 0, hMode: 'uniform', bands: 6, init: 'hot',
+      T: 2.27, h: 0, hMode: 'uniform', bands: 6, init: 'hot', stream: 'keyed',
       running: true, steps: 2, warmup: 250,
       view: 'spins', blur: 3, lo: -1, hi: 1, wall: 1.2, pixelate: true,
       exposure: 1, gamma: 1, contrast: 1.05, grain: 0,
@@ -320,7 +330,7 @@ void main(){
 
       let C = null, B = null, reduceT = null, gw = 0, gh = 0, ramp = null, rampPal = null, rampKey = '';
       const redBuf = new Uint8Array(RED * RED * 4);
-      let raf = 0, chunkTimer = 0, sweeps = 0, tick0 = 0, meanM = 0;
+      let raf = 0, chunkTimer = 0, sweeps = 0, tick0 = 0, streamKey = 0, meanM = 0;
       // |m| is sampled every SAMPLE sweeps into a time series, so its error bar can account for the
       // autocorrelation of the Markov chain. Near T_c single-flip Metropolis decorrelates slowly (critical
       // slowing down), and a naive error on those samples would be far too small; tau_int says how slow.
@@ -347,7 +357,8 @@ void main(){
       }
       function step(n) {
         const s = host.getState();
-        const u = { u_res: [gw, gh], u_T: s.T, u_h: s.h, u_bands: s.bands, u_hMode: { int: ISING_HMODES[s.hMode] || 0 } };
+        const u = { u_res: [gw, gh], u_T: s.T, u_h: s.h, u_bands: s.bands, u_hMode: { int: ISING_HMODES[s.hMode] || 0 },
+          u_keyed: { int: s.stream === 'shared' ? 0 : 1 }, u_key: { int: streamKey } };
         for (let i = 0; i < n; i++) {
           for (let parity = 0; parity < 2; parity++) {
             u.u_s = C.read; u.u_parity = { int: parity }; u.u_tick = { int: tick0 + 2 * (sweeps + i) + parity };
@@ -403,15 +414,22 @@ void main(){
       // Onsager's T_c and Yang's spontaneous magnetization for the infinite square lattice at h = 0
       // (C. N. Yang, Phys. Rev. 85, 808, 1952): M(T) = (1 - sinh(2J/T)^-4)^(1/8) below T_c.
       const yangM = T => T < T_C ? Math.pow(1 - Math.pow(Math.sinh(2 / T), -4), 1 / 8) : 0;
+      const UNORDERED = 'not a Yang comparison: a ' + 'hot or split start is still coarsening; start Cold to compare';
       function magnetization(s, r) {
         // The first half of the series is discarded as equilibration: a hot start quenched below T_c
         // coarsens for a long time before |m| settles, and those samples would drag the mean down.
         const eq = mSeries.slice(Math.floor(mSeries.length / 2));
+        // Yang's M is the equilibrium of the ordered phase. Only a cold (ordered) start samples it: from a hot or
+        // split start the lattice coarsens and can sit in a stripe state, two walls across the periodic box,
+        // for far longer than any run here, so |m| is printed with its error bar and not compared.
         const clean = s.h === 0 && s.hMode === 'uniform';
-        const withYang = clean && r < 0.95;
+        const ordered = s.init === 'cold';
+        const withYang = clean && r < 0.95 && ordered;
+        const unordered = clean && r < 0.95 && !ordered;
         const near = r >= 0.95 && r < 1.05;
         const base = { label: '|m|', measured: eq.length ? U.stats.mean(eq) : Math.abs(meanM) };
         if (withYang) Object.assign(base, { expected: yangM(s.T), reference: 'Yang, infinite lattice', digits: 4 });
+        if (unordered) base.note = UNORDERED;
         if (eq.length < 20) return U.stats.compare(Object.assign(base, { basis: 'sampled', pending: eq.length + ' samples after equilibration; let it run' }));
         const est = U.stats.seriesMean(eq), tauSweeps = Math.round(est.tau * SAMPLE);
         const method = 'τ_int ' + est.tau.toFixed(1) + ' samples of ' + SAMPLE + ' sweeps (' + tauSweeps + ' sweeps), n_eff ' +
@@ -419,7 +437,7 @@ void main(){
           (texType === 'rgba32f' ? ', every site counted' : ', 8-bit block reduction on a half-float device');
         if (!est.reliable) return U.stats.compare(Object.assign(base, { basis: 'sampled', pending: 'run shorter than 50 τ_int (τ_int ≈ ' + tauSweeps + ' sweeps)' }));
         return U.stats.compare(Object.assign(base, { basis: 'sampled', measured: est.mean, uncertainty: est.se, method,
-          note: near ? 'τ_int ' + tauSweeps + ' sweeps, critical slowing down' : withYang ? 'finite L' : undefined }));
+          note: near ? 'τ_int ' + tauSweeps + ' sweeps, critical slowing down' : withYang ? 'finite L' : unordered ? UNORDERED : undefined }));
       }
       function status(extra) {
         const s = host.getState(), r = s.T / T_C;
@@ -459,10 +477,14 @@ void main(){
       }
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
+        // The plate is a magnified spin grid: the shell prints it without supersampling and states its resolution.
+        fieldCells() { return gw && gh ? [gw, gh] : null; },
         regenerate() {
           stop(); sweeps = 0; resetSeries();
           const s = host.getState();
           tick0 = U.makeRng(s.seed + '/ising/tick').int(0, 1e6);
+          // A 31-bit key per seed (a GLSL int uniform), folded into the hash by siteHashKeyed.
+          streamKey = U.makeRng(s.seed + '/ising/stream').int(1, 2147483647);
           ensureGrid(s);
           upload(C.read, isingSeed(s, gw, gh));
           B.read.clear(0, 0, 0, 1);

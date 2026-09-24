@@ -169,6 +169,9 @@ const Z_PASS = 3.5;   // two-sided p = 4.7e-4 per comparison; about 1% family-wi
 // a number. Every run here gets a seed whose window [tick0, tick0 + 2 sweeps) is disjoint from every other
 // run of the same parity class: globally when that fits, otherwise within its statistical group (runs that
 // are pooled or compared as independent). The scope reached is recorded per run.
+// That describes the shared stream. Since recipe v3 the tab folds a per-seed key into the hash
+// (siteHashKeyed), so different seeds no longer share numbers; the runs here load v3 recipes, and the disjoint
+// windows are kept as a second guard. streamCheck() below shows both behaviors directly.
 const windows = [];
 function allocate(label, group, sweeps) {
   const len = 2 * sweeps, free = (t0, scope) => !windows.some(w => (scope === 'global' || w.group === group) &&
@@ -285,12 +288,13 @@ async function openStudio(browser, file) {
   await page.evaluate(PAGE_RUNNER);
   return { page, errors };
 }
-async function loadRecipe(page, seed, params) {
-  // The seed is URI-encoded and the payload is URL-safe base64, as the engine's own links are.
-  await page.evaluate(({ seed, params }) => {
-    const b64 = btoa(JSON.stringify(Object.assign({}, params, { v: 2 }))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+async function loadRecipe(page, seed, params, v = 3) {
+  // The seed is URI-encoded and the payload is URL-safe base64, as the engine's own links are. Recipe v3 selects
+  // the keyed random stream; a v2 recipe keeps the shared stream it was made on (legacy).
+  await page.evaluate(({ seed, params, v }) => {
+    const b64 = btoa(JSON.stringify(Object.assign({}, params, { v }))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
     location.hash = 'ising/' + encodeURIComponent(seed) + '/' + b64;
-  }, { seed, params });
+  }, { seed, params, v });
   await page.waitForFunction(({ seed, L }) => {
     const r = Studio.getRecipe('ising'), e = Studio.auditInstances().ising;
     return r && r.seed === seed && e && e.inst && e.inst.auditHook && e.inst.auditHook().size()[0] === L && e.inst.auditHook().sweeps() === 0;
@@ -531,6 +535,44 @@ const PIXEL_CHECK = async ({ url, W, H, spins, shift }) => {
     wrongPixels: wrong + (upInk === downInk ? checked : 0) };
 };
 
+// Random streams. On the shared stream (recipes before v3) every seed reads a window of one hash sequence,
+// tick = tick0 + 2 sweep + parity with tick0 = makeRng(seed + '/ising/tick').int(0, 1e6), so two seeds with the
+// same tick0 draw the same numbers. From a cold start (the same initial state) such a pair must run identical
+// chains on the shared stream, which shows the check can see the overlap, and independent chains on the keyed
+// stream of a v3 recipe: at T = 3, well above T_c, independent chains agree on about half the sites.
+const STREAM_SWEEPS = 300;
+async function streamCheck(browser) {
+  const byTick = new Map();
+  let pair = null;
+  for (let k = 0; k < 200000 && !pair; k++) {
+    const seed = 'ising-science/stream/' + k, t = makeRng(seed + '/ising/tick').int(0, 1e6);
+    if (byTick.has(t)) pair = { seeds: [byTick.get(t), seed], tick0: t }; else byTick.set(t, seed);
+  }
+  assert(pair, 'no two seeds share a tick0');
+  const { page, errors } = await openStudio(browser, studioCopy());
+  const params = { grid: 128, aspect: '1:1', T: 3, h: 0, hMode: 'uniform', init: 'cold', running: false, warmup: 0, steps: 1 };
+  const out = { seeds: pair.seeds, tick0: pair.tick0, L: 128, T: 3, sweeps: STREAM_SWEEPS };
+  for (const v of [2, 3]) {
+    const spins = [], streams = [], ticks = [];
+    for (const seed of pair.seeds) {
+      const state = await loadRecipe(page, seed, params, v);
+      streams.push(state.stream);
+      ticks.push((await page.evaluate(() => isingAudit.info())).tick0);
+      await page.evaluate(n => isingAudit.run(n, n), STREAM_SWEEPS);
+      spins.push((await page.evaluate(() => isingAudit.spins())).spins);
+    }
+    let same = 0;
+    for (let i = 0; i < spins[0].length; i++) if (spins[0][i] === spins[1][i]) same++;
+    out['v' + v] = { streams, tick0: ticks, agreement: same / spins[0].length };
+  }
+  assert.deepEqual(errors, [], 'page errors in the stream check');
+  out.sharedOverlapSeen = out.v2.streams.every(x => x === 'shared') && out.v2.tick0[0] === out.v2.tick0[1] && out.v2.agreement === 1;
+  out.keyedIndependent = out.v3.streams.every(x => x === 'keyed') && Math.abs(out.v3.agreement - 0.5) < 0.05;
+  out.pass = out.sharedOverlapSeen && out.keyedIndependent;
+  await page.close();
+  return out;
+}
+
 async function printEvidence(browser) {
   const t0 = Date.now(), { page, errors } = await openStudio(browser, studioCopy(null)), P = PLAN.print;
   const run = { seed: allocate('print', 'print', P.sweeps).seed };
@@ -604,7 +646,7 @@ async function main() {
     runs.filter(r => r.scope === 'global').length + ' globally disjoint, ' + runs.filter(r => r.scope === 'group').length + ' disjoint within group');
   if (process.argv.includes('--plan')) { for (const r of runs) console.log(r.label, r.sweeps, r.seed, r.tick0, r.scope); return; }
   const browser = await chromium.launch({ args: BROWSER_ARGS }), pages = {};
-  let environment, printResult;
+  let environment, printResult, streamResult;
   const loaded = LOAD_SERIES ? JSON.parse(fs.readFileSync(LOAD_SERIES, 'utf8')) : null;
   try {
     for (const run of runs.slice().sort((a, b) => (a.mutant || '').localeCompare(b.mutant || '') || a.L - b.L)) {
@@ -623,6 +665,9 @@ async function main() {
     if (SAVE_SERIES) fs.writeFileSync(SAVE_SERIES, JSON.stringify(runs.map(r => ({ label: r.label, seed: r.seed, sim: r.sim }))));
     printResult = await printEvidence(browser);
     log('print: ' + (printResult.pass ? 'PASS' : 'FAIL') + ' in ' + printResult.seconds.toFixed(0) + ' s');
+    streamResult = await streamCheck(browser);
+    log('streams: seeds ' + streamResult.seeds.join(' and ') + ' share tick0 ' + streamResult.tick0 + '; site agreement ' +
+      streamResult.v2.agreement.toFixed(4) + ' on the shared stream (v2), ' + streamResult.v3.agreement.toFixed(4) + ' on the keyed stream (v3): ' + (streamResult.pass ? 'PASS' : 'FAIL'));
     for (const [k, p] of Object.entries(pages)) assert.deepEqual(p.errors, [], 'page errors in ' + k);
   } finally { await browser.close(); fs.rmSync(tmp, { recursive: true, force: true }); }
 
@@ -658,6 +703,7 @@ async function main() {
   const controlsOk = controlFailures.every(c => c.detected);
   // A conclusive T_c estimate that disagrees with Onsager fails the run; an inconclusive one is reported as such.
   for (const [name, t] of [['Binder crossing T_c', binder.crossing.combined], ['Binder fixed-point T_c', binder.fixedPoint.combined]]) if (t.conclusive) tests.push([name, t.pass]);
+  tests.push(['seeds with overlapping shared windows run independent chains on the keyed stream', streamResult.pass]);
   const numericalPass = tests.every(t => t[1]) && controlsOk;
   const verdict = t => t.conclusive ? (t.pass ? 'consistent with Onsager' : 'disagrees with Onsager') :
     t.estimate === null ? 'inconclusive (no size or pair with a reliable tau_int)' : 'inconclusive (bootstrap se ' + t.se.toPrecision(2) + ' > ' + CONCLUSIVE_SE + ')';
@@ -674,7 +720,7 @@ async function main() {
     scope: 'Actual ISING_STEP checkerboard Metropolis in the real studio (periodic square lattice, h = 0, float32 spins), ' +
       'against Yang M(T), Onsager u(T) and Onsager T_c by Binder crossings; wrong-rule controls; module PNG, shell print and exportData state checks.',
     criteria: { zPass: Z_PASS, reliability: 'tau_int from stats.seriesMean with n >= 50 tau_int', finiteSizeQualify: QUALIFY },
-    exact, below, above, controls, controlFailures, binder, print: printResult, summary,
+    exact, below, above, controls, controlFailures, binder, streams: streamResult, print: printResult, summary,
     environment: Object.assign({ node: process.version, chromium: browser.version(), platform: process.platform, cpus: os.cpus().length,
       browserArgs: BROWSER_ARGS }, environment ? { renderer: environment.renderer, texType: environment.texType } : {}),
     wallSeconds: (Date.now() - started) / 1000,

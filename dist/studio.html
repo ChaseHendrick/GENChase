@@ -2642,12 +2642,13 @@ shall not be misrepresented as the original profile.
   {
     "id": "aztec",
     "source": "src/modules/aztec.js",
-    "sourceSha256": "d3cb40f6561fe895da5d7b12762f529af4b3e31e9f8561095f280d61851c31fb",
+    "sourceSha256": "f71c42ea92eef62abe321d79eda9e0b05d56316fa1a088f73adf688ced95ae56",
     "reference": "Noam Elkies, Greg Kuperberg, Michael Larsen and James Propp, Journal of Algebraic Combinatorics 1, 111 and 219 (1992), counted the domino tilings of the Aztec diamond of order n (there are 2^{n(n+1)/2}) and gave the shuffling algorithm that samples one uniformly. William Jockusch, James Propp and Peter Shor, 'Random domino tilings and the arctic circle theorem' (1998), proved that a uniformly random tiling is frozen outside the inscribed circle and disordered inside it. James Propp, Theoretical Computer Science 303, 267 (2003), on generalized domino shuffling.",
     "equation": "order n → n+1: delete colliding pairs, slide N↑ S↓ W← E→, fill each empty 2×2 block with a random pair",
     "status": "partially validated",
     "limitations": [
-      "The tab's own frozen share on the status line and its Frozen versus free coloring use a local test (every adjacent cell in the diamond carries the domino's type). Over independent seeds it tends to 0.2778 ± 0.0009 of the diamond, 67 standard errors above the arctic-circle area 1 - pi/4 = 0.2146, so it is not a measurement of the arctic region. This disagreement is why the status is partial; see validation/AZTEC.md.",
+      "Since 2026-09-24 the tab's frozen regions are the theorem's polar regions (a domino connected to the boundary through edge-adjacent dominoes of its own type, as Johansson 2005 states the definition of Jockusch, Propp and Shor); they equal an independent union-find on every plate, and the polar fraction extrapolates to 0.2141 +/- 0.0014 against 1 - pi/4 (-0.3 sigma). The earlier local test read 0.2778 +/- 0.0009, 67 sigma high.",
+      "The status line's per-plate error bar (the spread of the four polar regions) is conservative: the scatter of the fraction over seeds is 0.68 to 0.98 of it at orders 40 to 320, because the four regions are anticorrelated. It fails the tool's calibration band (0.75 to 1.33, set before the data), so the record stays partially validated. At finite n the printed fraction exceeds the limit by a term that shrinks as n^(-2/3), and the status line says so.",
       "Exact uniformity is established by exhaustive enumeration only at orders 1 to 5, run through the tab's build() and shuffle() below the UI range of 8 to 320; larger orders are tested only through the arctic boundary statistics.",
       "The polar-region area and the axis radius agree with 1 - pi/4 and 1/sqrt(2) only after extrapolation in n with the stated form q_inf + A n^-2/3 + B n^-1 (0.3 and 0.7 sigma); a two-parameter n^-2/3 fit over orders 113 to 320 differs by 2.5 and 3.1 sigma, and at order 320 the polar area is still 0.030 above its limit.",
       "Uniformity probabilities assume the seeded U.makeRng streams behave as independent uniform draws; fixed PRNG samples do not prove it.",
@@ -2712,21 +2713,54 @@ shall not be misrepresented as the original profile.
   {
     "id": "rmt",
     "source": "src/modules/rmt.js",
-    "sourceSha256": "f49ae253935fca62af479a4b2585c3a5ff287b038ef4e60d788f357028d9ff3b",
+    "sourceSha256": "2e101e58cdfe5ba8e27f6642622072abe9fbdcc283009472644935b81ca1e17d",
     "reference": "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The spacing forms quoted in the status line are Wigner's surmise; the exact answers are the Gaudin-Mehta determinantal formulae, Michel Mehta, Random Matrices. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
     "equation": "p(λ) ∝ ∏_{i\u003cj} |λ_i − λ_j|^β · e^{−Σλ_i²/2};   dλ_i = √(2/β) dB_i + Σ_{j≠i} dt/(λ_i − λ_j)",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the domain in validation/RMT.md: sampler, solver and exact moments for n 24-400 and beta 0.1-12, semicircle for beta 1-12, Gaudin-Mehta spacing law at beta 1 and 2 with n 400, the printed spread of two presets, Dyson mode at 24 paths, and five complete prints.",
+      "The code samples the Dumitriu-Edelman matrix without its 1/sqrt(2), so the eigenvalue density is exp(-sum l^2/4); since 2026-09-24 the displayed equation says so, and it shows the Dyson mode's -l/2 Ornstein-Uhlenbeck drift at beta = 1.",
+      "At n 150 the local unfolding (24-gap window) biases the spacing scale: the CV agrees with Gaudin-Mehta but the pooled KS distance (0.0043, 0.0044) exceeds its bootstrap critical value (0.0027, 0.0025). The spacing-distribution claim is limited to n 400.",
+      "Since 2026-09-24 the status line prints the unfolded CV through compare() with its row-bootstrap error against the exact Gaudin-Mehta values (0.53435 at beta 1, 0.42426 at beta 2), with the Wigner surmise as a note; at beta 1 the tab's own sample resolves the surmise's 0.012 error. Only beta 1 and 2 have an exact reference in the status line.",
+      "Finite samples from one seeded PRNG; error bars assume independent draws. Beta 4 spacings, edge statistics, beta outside 0.05-20 and the sweep plate's printed spread are not tested.",
+      "The shell's SVG raster differs from the canvas only where ticks overlap (group versus per-mark opacity); since 2026-09-24 the Dyson polylines carry round caps, as the canvas does."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend the spacing test to beta 4 and to a global (semicircle) unfolding that removes the n 150 scale bias.",
+      "The color ramp wraps t = 1 to the first stop, because the palette shift is applied modulo 1; the largest level can take the lowest color. It does not move any mark."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/rmt-science.js",
+        "command": "node tools/rmt-science.js --write",
+        "results": "validation/results/rmt-science.json",
+        "scope": "Module tqli against Sturm bisection (60 matrices); exact E Tr H^2 and E Tr H^4 over 25 seeded ensembles (n 24-400, beta 0.1-12, 1000-2000 matrices each); semicircle KS convergence and one-eigenvalue-per-matrix KS tests; unfolded spacings against Fredholm-determinant Gaudin-Mehta laws at beta 1 and 2 (n 150 and 400); printed spread of two presets; Dyson OU statistics over 48 seeds.",
+        "criteria": "Eigenvalues within 4 n eps ||T||; moment |z| \u003c 4.265 (Bonferroni, 50 tests, alpha 0.001); semicircle KS below the Kolmogorov critical value at alpha 5e-5 per test and monotone convergence; n 400 spacing KS below the matrix-bootstrap 99th percentile and CV |z| \u003c 3.662; Dyson Jacobi agreement within 8 n eps ||H||_F and stationarity and e^{-t/2} decay within |z| \u003c 3.719.",
+        "benchmark": "Closed-form moments of the tridiagonal model derived by closed-walk counting; independent Sturm-sequence and Jacobi eigenvalue solvers; the semicircle CDF; Gaudin-Mehta spacing laws evaluated as Fredholm determinants of the sine kernel (Bornemann 2010); exact Ornstein-Uhlenbeck autocorrelation of Tr H.",
+        "failureControl": "chi degrees of freedom beta(n-i+1) (smallest |z| 31) and beta n (semicircle and moments fail); early QL deflation (9e7 times tolerance); gaps without unfolding over the whole spectrum (KS 0.044 and 0.059, over 30 times critical); wrong OU decay e^{-d} (|z| 24). The Wigner surmise is also rejected at beta 1.",
+        "limitations": "Only the domain in validation/RMT.md; the n 150 spacing distribution disagrees through the local unfolding's scale bias; seeded PRNG samples do not prove independence."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/rmt-science.js",
+        "command": "node tools/rmt-science.js --write",
+        "results": "validation/results/rmt-science.json",
+        "scope": "Five studio recipes (GUE, GOE comb, beta sweep, crystal, Dyson) through dist/studio.html with an auditRead() hook at 2400 px on the long side: every SVG tick rectangle and polyline vertex, the fallback PNG, a displaced control, and recipe and spectra before and after export.",
+        "criteria": "Studio spectra within solver tolerance of the Node run and of independent Sturm or Jacobi eigenvalues; printed spread equal to Node; SVG coordinates within 0.00501 px and every fill equal; PNG channels within 1 of an independent painting; displaced painting fails; state unchanged.",
+        "benchmark": "Geometry and inks rebuilt in the page from independently computed eigenvalues with an independent layout and color rule.",
+        "failureControl": "One-pixel displaced painting must differ on at least 100 channels (it differs on 2.2 to 5.1 million).",
+        "limitations": "Five recipes, grain off, one Chromium build; the vector RIP raster is recorded, not asserted, and differs where ticks overlap and at Dyson path ends."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/rmt-science.json",
+    "domain": {
+      "parameters": "Tridiagonal sampler and solver: n 24-400, beta 0.1-12 (eigenvalue check 0.05-20); semicircle beta 1-12; spacing law beta 1 and 2 at n 400 (CV also at n 140-260); Dyson paths 24, 480 slices, span 24; prints: the five recipes in validation/results/rmt-science.json.",
+      "conditions": "Seeded Dumitriu-Edelman matrices in the tab's normalization (N(0,2) diagonal, chi_{beta(n-i)} subdiagonal, density exp(-sum l^2/4)); stationary GOE Ornstein-Uhlenbeck process for Dyson mode; grain off for prints; exports preserve recipe and spectra.",
+      "resolution": "Matrix sizes and sample sizes as listed (1000-3000 matrices per ensemble, 48 Dyson seeds); spacing CDF on 1001 points over [0, 5]; prints 2400 x 2400, 1920 x 2400, 2400 x 1920 and 2400 x 1600 px.",
+      "precision": "Binary64 in module and references; eigenvalues within 4 n eps ||T||; RGBA8 raster; SVG rounded to 0.01 px; Node and Chromium versions recorded."
+    }
   },
   {
     "id": "stealth",
@@ -3239,7 +3273,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "cyclicca",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
+    "sourceSha256": "dc91a54f2d1f6b58a1ded79dafc0ff38f77cec029c7cbd7e32e6d5002566392c",
     "reference": "Robert Fisch, Janko Gravner and David Griffeath, Statistics and Computing 1, 23 (1991), on threshold-range scaling of excitable automata; David Griffeath, Notices of the AMS, 1988, for the cyclic cellular automaton; James M. Greenberg and Stuart P. Hastings, SIAM J. Appl. Math. 34, 515 (1978), for the excitable rest-excited-refractory rule. In the cyclic automaton every state eats the one below it, so k colors chase each other around the cycle and a random soup organizes into spirals. Greenberg-Hastings is the same cycle with one excitable state: waves propagate, refractory tails follow, and broken fronts curl into spiral pairs.",
     "equation": "cyclic: s → s+1 (mod k) if ≥ θ neighbors within range r are in state s+1;   GH: 0 → 1 if ≥ θ excited, 1 → 2 → … → k−1 → 0",
     "status": "unvalidated",
@@ -4017,7 +4051,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "sandpile",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
+    "sourceSha256": "dc91a54f2d1f6b58a1ded79dafc0ff38f77cec029c7cbd7e32e6d5002566392c",
     "reference": "Per Bak, Chao Tang and Kurt Wiesenfeld, Phys. Rev. Lett. 59, 381 (1987); Deepak Dhar, Phys. Rev. Lett. 64, 1613 (1990). Bak, Tang and Wiesenfeld dropped grains one at a time on a lattice with a toppling threshold and found avalanches of every size, a power law with no tuning: self-organized criticality. Dhar showed the toppling operators commute, so the final stable state does not depend on the order of toppling, and the recurrent configurations form an Abelian group. The identity of that group, computed on a square, is the fractal plate in the second mode.",
     "equation": "if hᵢ ≥ 4: hᵢ −= 4, hⱼ += 1 for each neighbor j;   identity e = (2m − (2m)°)°, m = all 3",
     "status": "unvalidated",
@@ -4553,7 +4587,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "percolation",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
+    "sourceSha256": "dc91a54f2d1f6b58a1ded79dafc0ff38f77cec029c7cbd7e32e6d5002566392c",
     "reference": "S. R. Broadbent and J. M. Hammersley, Proc. Cambridge Philos. Soc. 53, 629 (1957); J. Hoshen and R. Kopelman, Phys. Rev. B 14, 3438 (1976); Harry Kesten, Comm. Math. Phys. 74, 41 (1980). Broadbent and Hammersley asked how a fluid spreads through a random porous medium and found a sharp threshold: below p_c every cluster is finite, above it one cluster spans the lattice. Kesten proved the bond threshold on the square lattice is exactly 1/2. The site threshold, about 0.592746, is known only numerically. Hoshen and Kopelman gave the one-pass labeling that finds the clusters.",
     "equation": "site occupied iff rᵢ \u003c p;   bond open iff rᵢⱼ \u003c p;   p_c(site) ≈ 0.5927,   p_c(bond) = 1/2",
     "status": "unvalidated",
@@ -4915,21 +4949,53 @@ shall not be misrepresented as the original profile.
   {
     "id": "ising",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
+    "sourceSha256": "dc91a54f2d1f6b58a1ded79dafc0ff38f77cec029c7cbd7e32e6d5002566392c",
     "reference": "Ernst Ising, Z. Phys. 31, 253 (1925); Lars Onsager, Phys. Rev. 65, 117 (1944); Nicholas Metropolis, Arianna W. Rosenbluth, Marshall N. Rosenbluth, Augusta H. Teller and Edward Teller, J. Chem. Phys. 21, 1087 (1953). Ising solved the chain and found no transition. Onsager solved the square lattice exactly and found one at T_c = 2/ln(1+√2). The Metropolis algorithm samples the Boltzmann distribution by proposing single flips and accepting them with probability min(1, exp(−ΔE/T)). Here the lattice is updated as a checkerboard: two half-sweeps per step, each parity with its neighbors held fixed, so the GPU can flip every site of one color at once.",
     "equation": "E = −J Σ⟨ij⟩ sᵢsⱼ − h Σᵢ sᵢ,   P(flip) = min(1, e^{−ΔE/T}),   T_c = 2/ln(1+√2) ≈ 2.269",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the domain in validation/ISING.md: h = 0, uniform field shape, periodic square grids of 128 (and 192 for the Binder cumulant), equilibrium averages at T = 1.5, 1.8, 2.0, 2.1, 2.5 and 3.0, float32 spins on SwiftShader.",
+      "T_c agrees with Onsager at 0.13% through the Binder fixed-point estimator, which assumes the universal U* = 0.61069; the model-free crossing between grid sizes is inconclusive in quick mode.",
+      "Since recipe v3 (2026-09-24) each seed's Metropolis numbers come from its own keyed stream (siteHashKeyed); tools/ising-science.js shows two seeds whose shared-stream windows coincide run identical chains on the shared stream (site agreement 1.0000) and independent ones on the keyed stream (0.5046). Recipes older than v3 keep the shared stream through legacy, where seeds read windows of one hash sequence; the tool still allocates disjoint windows.",
+      "Nonzero or patterned fields, non-square aspects, coarsening dynamics, critical exponents, the rgba16f fallback and the Magnetization, Domain walls and Bond energy views are not validated.",
+      "Since 2026-09-24 the status line compares |m| with Yang only for a cold (ordered) start at h = 0 below 0.95 T_c; a hot or split start below T_c coarsens and can sit in a stripe state, so it prints |m| with its error bar and a note instead of a comparison."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Run node tools/ising-science.js --full --write on a local machine for the model-free Binder crossing at L = 128, 192 and 256, T = 2.2 and 2.4 at L = 256, and three seeds per temperature.",
+      "Test the half-float fallback, nonzero and patterned fields and the other views."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/ising-science.js",
+        "command": "node tools/ising-science.js --write",
+        "results": "validation/results/ising-science.json",
+        "scope": "The actual ISING_STEP checkerboard Metropolis in the real studio at h = 0 on the periodic 128 x 128 grid: \u003c|m|> against Yang at T = 1.5, 1.8, 2.0, 2.1 and u against Onsager at those and T = 2.5, 3.0; T_c from Binder cumulants at L = 128 and 192 reweighted around T0 = 2.27; the tab's own |m| series against the read-back.",
+        "criteria": "Each comparison passes when the series is at least 50 tau_int long and |measured - exact| \u003c= 3.5 standard errors (stats.seriesMean, Sokal window); a T_c estimate counts when its moving-block bootstrap error is below 0.005 and fails the run if it is then more than 3.5 errors from Onsager; the tab series must equal the read-back exactly; u(T_c) must equal -sqrt 2 within 1e-14.",
+        "benchmark": "Yang, Phys. Rev. 85, 808 (1952): M = (1 - sinh(2/T)^-4)^(1/8). Onsager, Phys. Rev. 65, 117 (1944): u(T) with the elliptic integral by the AGM, checked at T_c (u = -sqrt 2), against direct quadrature, against Onsager's double integral and against the low-temperature series; T_c = 2/ln(1 + sqrt 2) via the Binder crossing and the fixed point U* = 0.61069 (Kamieniarz and Bloete 1993; Salas and Sokal 2000). Temperatures count only where the exponential finite-size bound is below 1e-6.",
+        "failureControl": "The same shader with acceptance exp(-dE/2T), and with the neighbor sum dropped from dE, injected into copies of the studio: both fail every magnetization and energy test they enter (|z| from 1212 to infinity).",
+        "limitations": "h = 0, uniform field, periodic square grids, equilibrium averages, float32 on SwiftShader. The model-free Binder crossing is inconclusive in quick mode (L = 192 is shorter than 50 tau_int); T_c rests on the fixed-point estimator, which assumes the universal U*."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/ising-science.js",
+        "command": "node tools/ising-science.js --write",
+        "results": "validation/results/ising-science.json",
+        "scope": "Default plate (grid 256, T = 2.27, Spins view, Pixelate, graphite) after 500 sweeps: the module exportPNG at 2400 x 2400, Studio.exportData() and the shell print export at 8 in and 300 ppi.",
+        "criteria": "Every unambiguous module PNG pixel carries the ink of the spin under its center (0 wrong of 5,607,424) and a one-cell displacement is detected; exported spins.npy and abs_m_series.npy identical to the read-back; every one of 65,536 cell centers in the shell sheet classified as its spin; spins, sweep count, series and recipe unchanged by all exports.",
+        "benchmark": "The read-back float32 spin texture itself, independently mapped to print pixels.",
+        "failureControl": "The spin field shifted by one cell must mismatch over 10% of the checked pixels (measured 19%).",
+        "limitations": "Spins view only; the shell supersamples this tab because it does not declare fieldCells(), so sheet cell edges are blended and only cell centers are checked there."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/ising-science.json",
+    "domain": {
+      "parameters": "grid 128 x 128 (Binder also 192 x 192, print 256 x 256), aspect 1:1, h = 0, hMode uniform, T in {1.5, 1.8, 2.0, 2.1} from the Cold start and {2.5, 3.0} from the Hot start; Binder at T0 = 2.27 reweighted over 2.2628 to 2.2772; seeds and tick0 values in validation/results/ising-science.json.",
+      "conditions": "Periodic boundaries, J = k_B = 1; 1000 burn-in sweeps then 8000 (below T_c) or 6000 (above) measured; Binder 4000 + 40000 (L = 128) and 6000 + 28000 (L = 192) sweeps from Cold; running false, warmup 0, the tab's own step() and sample().",
+      "resolution": "Samples every 4 sweeps (Binder every 8 and 12); standard errors 3.6e-5 to 6.7e-4; T_c to 0.0030; print at 2400 x 2400 px (8 in at 300 ppi).",
+      "precision": "float32 (rgba32f) spin textures on SwiftShader, 24-bit uniform random numbers from the integer site hash, binary64 analysis in the page and in Node, RGBA8 print."
+    }
   },
   {
     "id": "thouless",
@@ -6362,7 +6428,7 @@ shall not be misrepresented as the original profile.
     }
   }
 ]</script>
-<script type="application/json" id="build-info">{"build":"ce38d165de89","fingerprint":"ce38d165de89d0d2ac795e6560e52bca1853ef4c1d65ff6241918bf6580ba8f0","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"7af4b65a0177f0853ee6d7a20486e7d7527abc938c3cba276b8895b585e54ddb","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"65eff38428e01bdf5e8d64ced24f2706be9561c7ed04c217ad6f59a1ee1f5092","src/modules/attractors.js":"b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760","src/modules/aztec.js":"d3cb40f6561fe895da5d7b12762f529af4b3e31e9f8561095f280d61851c31fb","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"f49ae253935fca62af479a4b2585c3a5ff287b038ef4e60d788f357028d9ff3b","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"e7beea07d24d9bc485fdface9d33a4806d55190cd219273b7ba26239fcc8ef8b","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"1676978773d9d615778f1a035a465d5ac63a9c79bc01b5106669b285d9cee23a","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"0831c9cf2d31401025a82f41df10d17095d2f09b0a8d2b7fed8b5f9288592f1d","src/modules/hopf.js":"ae591b50d5062c9a122bdd7270ff4e4e45e43e4d37ba047e6bda6d23d74967ce","src/modules/cloak.js":"3f1c2b4adc3ca5692b31dcdf2178be8f825abe15fba109aa699f98f5515c543d","src/modules/vortex.js":"fc8e66a17fe114da9a663f0827171ea70461c784e10802fac2bbd3d2205027f0","src/modules/darkroom.js":"d6734878edd1e64e7e955a61519038f9caaa46bdba4fc2ff48bd6831c97ad24d","src/modules/kakeya.js":"d1032c40c96cb013ba2a97d5ab176553ad803893c93321a1305360248c10dbb0","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"267c0cd0e13360c490c9593cd4a58410dd30d9c7e8b21fd3cd8532221de4e87e","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"62896cc45ed4ef272eed1ec89ca5a0d4977173dc464aa522c5b84fac08ae2e1d","src/modules/kitaev.js":"23971f485942877ff2a79335d64471c4e53ca2e39948d011dc4e1a71dbe64b61","src/modules/veselago.js":"d43e80339587c7273e1cab5cd6f629826cd1d2b46cab3c74539f8b9ee3164191","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"45238c4577983543da955979ed6579f315fa596d371c7df974725a50138cd30c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"b7c4b23da19c1f5bcb5ffa43fff089b158b77a8e54bbb9b6e11daf2e4499fc9f","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"unvalidated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"partially validated","skin":"unvalidated","rmt":"unvalidated","stealth":"unvalidated","lozenge":"partially validated","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"unvalidated","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"partially validated","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"unvalidated","percolation":"unvalidated","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"unvalidated","caustics":"unvalidated","veselago":"unvalidated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"unvalidated","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
+<script type="application/json" id="build-info">{"build":"7941c56e2471","fingerprint":"7941c56e2471eec532ac48dc2959de0cbf0dbe21d00bce84418d7deffe6e5f2d","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"99cc63fff9a1f75e68abce1e66e07bfd72dc5e1c25ff057218fe6c8a65dfaa63","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"65eff38428e01bdf5e8d64ced24f2706be9561c7ed04c217ad6f59a1ee1f5092","src/modules/attractors.js":"b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"dc91a54f2d1f6b58a1ded79dafc0ff38f77cec029c7cbd7e32e6d5002566392c","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760","src/modules/aztec.js":"f71c42ea92eef62abe321d79eda9e0b05d56316fa1a088f73adf688ced95ae56","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"2e101e58cdfe5ba8e27f6642622072abe9fbdcc283009472644935b81ca1e17d","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"e7beea07d24d9bc485fdface9d33a4806d55190cd219273b7ba26239fcc8ef8b","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"1676978773d9d615778f1a035a465d5ac63a9c79bc01b5106669b285d9cee23a","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"0831c9cf2d31401025a82f41df10d17095d2f09b0a8d2b7fed8b5f9288592f1d","src/modules/hopf.js":"ae591b50d5062c9a122bdd7270ff4e4e45e43e4d37ba047e6bda6d23d74967ce","src/modules/cloak.js":"3f1c2b4adc3ca5692b31dcdf2178be8f825abe15fba109aa699f98f5515c543d","src/modules/vortex.js":"fc8e66a17fe114da9a663f0827171ea70461c784e10802fac2bbd3d2205027f0","src/modules/darkroom.js":"d6734878edd1e64e7e955a61519038f9caaa46bdba4fc2ff48bd6831c97ad24d","src/modules/kakeya.js":"d1032c40c96cb013ba2a97d5ab176553ad803893c93321a1305360248c10dbb0","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"267c0cd0e13360c490c9593cd4a58410dd30d9c7e8b21fd3cd8532221de4e87e","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"62896cc45ed4ef272eed1ec89ca5a0d4977173dc464aa522c5b84fac08ae2e1d","src/modules/kitaev.js":"23971f485942877ff2a79335d64471c4e53ca2e39948d011dc4e1a71dbe64b61","src/modules/veselago.js":"d43e80339587c7273e1cab5cd6f629826cd1d2b46cab3c74539f8b9ee3164191","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"45238c4577983543da955979ed6579f315fa596d371c7df974725a50138cd30c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"b7c4b23da19c1f5bcb5ffa43fff089b158b77a8e54bbb9b6e11daf2e4499fc9f","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"unvalidated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"partially validated","skin":"unvalidated","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"partially validated","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"unvalidated","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"partially validated","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"unvalidated","percolation":"unvalidated","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"unvalidated","caustics":"unvalidated","veselago":"unvalidated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
 <script>/* The shared uncertainty harness. Every measured number the studio prints against theory gets its
    error bar from here, in the browser and in the Node tools alike, so there is one method per kind of
    number instead of one per tab. AGENTS.md ("A measured number carries an error bar") says which method
@@ -7744,7 +7810,8 @@ void main(){
   // changed a default therefore declare the old value under the version that changed it, and
   // legacyFill gives it back to any recipe written before that version. Reprinting a seed years
   // later is the product; a default is allowed to move, a finished plate is not.
-  const RECIPE_V = 2;
+  // v3 (2026-09-24): Ising's Metropolis random numbers are keyed by the seed; older recipes keep the shared stream.
+  const RECIPE_V = 3;
   // Public compatibility versions, independent of each technique's scientific status.
   Object.defineProperties(S, {
     apiVersion: { value: 1, enumerable: true },
@@ -24673,6 +24740,12 @@ float siteHash(ivec2 site, int t){
   uint h = uhash(uint(site.x + 65536) * 0x9E3779B1u + uhash(uint(site.y + 65536) * 0x85EBCA77u + uhash(uint(t + 1048576))));
   return (float(h >> 8u) + 0.5) / 16777216.0;
 }
+// The same hash with a per-seed key folded into the tick term. siteHash alone gives every seed a window of one
+// shared sequence, so two seeds whose windows overlap reuse the same numbers; with the key they never do.
+float siteHashKeyed(ivec2 site, int t, uint key){
+  uint h = uhash(uint(site.x + 65536) * 0x9E3779B1u + uhash(uint(site.y + 65536) * 0x85EBCA77u + (uhash(uint(t + 1048576)) ^ key)));
+  return (float(h >> 8u) + 0.5) / 16777216.0;
+}
 `;
   const TONE = `
 vec3 tone(vec3 col, float exposure, float gamma, float contrast, float grain){
@@ -24764,7 +24837,7 @@ void main(){
   const T_C = 2 / Math.log(1 + Math.SQRT2);
   const ISING_STEP = HEAD + `
 uniform sampler2D u_s; uniform vec2 u_res;
-uniform int u_parity, u_tick, u_hMode;
+uniform int u_parity, u_tick, u_hMode, u_keyed, u_key;
 uniform float u_T, u_h, u_bands;
 ${HASH_U}
 float sg(float v){ return v >= 0.0 ? 1.0 : -1.0; }
@@ -24780,7 +24853,7 @@ void main(){
   else if (u_hMode == 2) h *= 2.0 * v_uv.x - 1.0;
   else if (u_hMode == 3) h *= sg(sin(6.28318530718 * u_bands * v_uv.x) * sin(6.28318530718 * u_bands * v_uv.y * u_res.y / u_res.x));
   float dE = 2.0 * s * (nb + h);
-  float r = siteHash(site, u_tick);
+  float r = u_keyed == 1 ? siteHashKeyed(site, u_tick, uint(u_key)) : siteHash(site, u_tick);
   if (dE <= 0.0 || r < exp(-dE / u_T)) s = -s;
   outColor = vec4(s, 0.0, 0.0, 1.0);
 }`;
@@ -24861,6 +24934,8 @@ void main(){
       RANGE('Model', 'bands', 'Bands', LIVE, 1, 12, 1, String, { dimUnless: s => s.hMode === 'stripes' || s.hMode === 'checks' }),
       { group: 'Model', key: 'init', label: 'Start', type: 'seg', kind: GEOM, options: [['hot', 'Hot'], ['cold', 'Cold'], ['split', 'Split']],
         hint: 'Hot is random spins (a quench when T is low). Cold is all up. Split is two halves.' },
+      { group: 'Model', key: 'stream', label: 'Random stream', type: 'seg', kind: GEOM, options: [['keyed', 'Per seed'], ['shared', 'Shared']],
+        hint: 'Per seed gives every seed its own random numbers, so runs with different seeds are independent. Shared is the stream recipes made before recipe v3 used, where different seeds read windows of one sequence and can overlap; old links keep it so they reprint.' },
     ]).concat(simFields('Sweeps per frame')).concat([
       { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, wrap: true,
         options: [['spins', 'Spins'], ['mag', 'Magnetization'], ['walls', 'Domain walls'], ['energy', 'Bond energy']] },
@@ -24871,9 +24946,11 @@ void main(){
       RANGE('Picture', 'wall', 'Wall gain', PAINT, 0.3, 4, 0.05, f2, { dimUnless: s => s.view === 'walls' }),
       { group: 'Picture', key: 'pixelate', label: 'Pixelate', type: 'toggle', kind: PAINT },
     ]).concat(toneFields()),
+    // Recipes older than v3 were made on the shared random stream; they keep it, so they reprint exactly.
+    legacy: { 3: { stream: 'shared' } },
     defaults: {
       grid: 256, aspect: '1:1',
-      T: 2.27, h: 0, hMode: 'uniform', bands: 6, init: 'hot',
+      T: 2.27, h: 0, hMode: 'uniform', bands: 6, init: 'hot', stream: 'keyed',
       running: true, steps: 2, warmup: 250,
       view: 'spins', blur: 3, lo: -1, hi: 1, wall: 1.2, pixelate: true,
       exposure: 1, gamma: 1, contrast: 1.05, grain: 0,
@@ -24928,7 +25005,7 @@ void main(){
 
       let C = null, B = null, reduceT = null, gw = 0, gh = 0, ramp = null, rampPal = null, rampKey = '';
       const redBuf = new Uint8Array(RED * RED * 4);
-      let raf = 0, chunkTimer = 0, sweeps = 0, tick0 = 0, meanM = 0;
+      let raf = 0, chunkTimer = 0, sweeps = 0, tick0 = 0, streamKey = 0, meanM = 0;
       // |m| is sampled every SAMPLE sweeps into a time series, so its error bar can account for the
       // autocorrelation of the Markov chain. Near T_c single-flip Metropolis decorrelates slowly (critical
       // slowing down), and a naive error on those samples would be far too small; tau_int says how slow.
@@ -24955,7 +25032,8 @@ void main(){
       }
       function step(n) {
         const s = host.getState();
-        const u = { u_res: [gw, gh], u_T: s.T, u_h: s.h, u_bands: s.bands, u_hMode: { int: ISING_HMODES[s.hMode] || 0 } };
+        const u = { u_res: [gw, gh], u_T: s.T, u_h: s.h, u_bands: s.bands, u_hMode: { int: ISING_HMODES[s.hMode] || 0 },
+          u_keyed: { int: s.stream === 'shared' ? 0 : 1 }, u_key: { int: streamKey } };
         for (let i = 0; i < n; i++) {
           for (let parity = 0; parity < 2; parity++) {
             u.u_s = C.read; u.u_parity = { int: parity }; u.u_tick = { int: tick0 + 2 * (sweeps + i) + parity };
@@ -25011,15 +25089,22 @@ void main(){
       // Onsager's T_c and Yang's spontaneous magnetization for the infinite square lattice at h = 0
       // (C. N. Yang, Phys. Rev. 85, 808, 1952): M(T) = (1 - sinh(2J/T)^-4)^(1/8) below T_c.
       const yangM = T => T < T_C ? Math.pow(1 - Math.pow(Math.sinh(2 / T), -4), 1 / 8) : 0;
+      const UNORDERED = 'not a Yang comparison: a ' + 'hot or split start is still coarsening; start Cold to compare';
       function magnetization(s, r) {
         // The first half of the series is discarded as equilibration: a hot start quenched below T_c
         // coarsens for a long time before |m| settles, and those samples would drag the mean down.
         const eq = mSeries.slice(Math.floor(mSeries.length / 2));
+        // Yang's M is the equilibrium of the ordered phase. Only a cold (ordered) start samples it: from a hot or
+        // split start the lattice coarsens and can sit in a stripe state, two walls across the periodic box,
+        // for far longer than any run here, so |m| is printed with its error bar and not compared.
         const clean = s.h === 0 && s.hMode === 'uniform';
-        const withYang = clean && r < 0.95;
+        const ordered = s.init === 'cold';
+        const withYang = clean && r < 0.95 && ordered;
+        const unordered = clean && r < 0.95 && !ordered;
         const near = r >= 0.95 && r < 1.05;
         const base = { label: '|m|', measured: eq.length ? U.stats.mean(eq) : Math.abs(meanM) };
         if (withYang) Object.assign(base, { expected: yangM(s.T), reference: 'Yang, infinite lattice', digits: 4 });
+        if (unordered) base.note = UNORDERED;
         if (eq.length < 20) return U.stats.compare(Object.assign(base, { basis: 'sampled', pending: eq.length + ' samples after equilibration; let it run' }));
         const est = U.stats.seriesMean(eq), tauSweeps = Math.round(est.tau * SAMPLE);
         const method = 'τ_int ' + est.tau.toFixed(1) + ' samples of ' + SAMPLE + ' sweeps (' + tauSweeps + ' sweeps), n_eff ' +
@@ -25027,7 +25112,7 @@ void main(){
           (texType === 'rgba32f' ? ', every site counted' : ', 8-bit block reduction on a half-float device');
         if (!est.reliable) return U.stats.compare(Object.assign(base, { basis: 'sampled', pending: 'run shorter than 50 τ_int (τ_int ≈ ' + tauSweeps + ' sweeps)' }));
         return U.stats.compare(Object.assign(base, { basis: 'sampled', measured: est.mean, uncertainty: est.se, method,
-          note: near ? 'τ_int ' + tauSweeps + ' sweeps, critical slowing down' : withYang ? 'finite L' : undefined }));
+          note: near ? 'τ_int ' + tauSweeps + ' sweeps, critical slowing down' : withYang ? 'finite L' : unordered ? UNORDERED : undefined }));
       }
       function status(extra) {
         const s = host.getState(), r = s.T / T_C;
@@ -25067,10 +25152,14 @@ void main(){
       }
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
+        // The plate is a magnified spin grid: the shell prints it without supersampling and states its resolution.
+        fieldCells() { return gw && gh ? [gw, gh] : null; },
         regenerate() {
           stop(); sweeps = 0; resetSeries();
           const s = host.getState();
           tick0 = U.makeRng(s.seed + '/ising/tick').int(0, 1e6);
+          // A 31-bit key per seed (a GLSL int uniform), folded into the hash by siteHashKeyed.
+          streamKey = U.makeRng(s.seed + '/ising/stream').int(1, 2147483647);
           ensureGrid(s);
           upload(C.read, isingSeed(s, gw, gh));
           B.read.clear(0, 0, 0, 1);
@@ -29160,7 +29249,7 @@ void main(){
     },
     hints: {
       Diamond: 'The seed decides every coin flip in the shuffle, so the same seed and order reprint the same tiling exactly.',
-      Tiles: 'Domino type is the four directions the shuffle uses, which is also the four frozen phases. Frozen versus free colors a domino by whether all its neighbors share its type.',
+      Tiles: 'Domino type is the four directions the shuffle uses, which is also the four frozen phases. Frozen versus free colors the four polar regions: a domino is frozen when a chain of edge-adjacent dominoes of its own type connects it to the boundary of the diamond (Jockusch, Propp and Shor).',
     },
     palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (N, S, W, E)',
     headline: 'n', headlineLabel: 'order',
@@ -29174,7 +29263,7 @@ void main(){
     },
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d');
-      let grid = null, order = 0, list = null, frozen = null, timer = 0, building = false;
+      let grid = null, order = 0, list = null, frozen = null, polarByType = null, timer = 0, building = false;
 
       function build(s, done) {
         clearTimeout(timer); building = true;
@@ -29192,26 +29281,51 @@ void main(){
           else { building = false; finish(); done(); }
         })();
       }
+      // The polar regions of Jockusch, Propp and Shor (1998), in the form Johansson states them (Annals of
+      // Probability 33, 2005): the north polar region is the union of the N dominoes connected to the boundary of
+      // the diamond by a chain of edge-adjacent N dominoes, and likewise for S, W and E. Their union is the frozen
+      // part of the plate. A local test (all neighbors share the type) also counts brickwork patches inside the
+      // circle, and read 0.278 against the limit 0.215 (validation/AZTEC.md); this one is the theorem's region.
       function finish() {
         list = dominoes(grid, order);
-        // frozen: every neighboring domino cell shares this domino's type
-        const w = 2 * order; frozen = new Uint8Array(list.length);
+        const w = 2 * order, owner = new Int32Array(w * w).fill(-1);
+        list.forEach((d, k) => { const [x, y, , hz] = d; owner[y * w + x] = k; owner[(hz ? y : y + 1) * w + (hz ? x + 1 : x)] = k; });
+        const cellsOf = d => d[3] ? [[d[0], d[1]], [d[0] + 1, d[1]]] : [[d[0], d[1]], [d[0], d[1] + 1]];
+        const out = (x, y) => x < 0 || y < 0 || x >= w || y >= w || !inside(x, y, order);
+        frozen = new Uint8Array(list.length);
+        const queue = [];
         list.forEach((d, k) => {
-          const [x, y, t, hz] = d; let ok = true;
-          const cells = hz ? [[x, y], [x + 1, y]] : [[x, y], [x, y + 1]];
-          for (const [cx, cy] of cells) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
-            const nx = cx + dx, ny = cy + dy;
-            if (nx < 0 || ny < 0 || nx >= w || ny >= w || !inside(nx, ny, order)) continue;
-            if (grid[ny * w + nx] !== t) { ok = false; break; }
+          for (const [cx, cy] of cellsOf(d)) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+            if (out(cx + dx, cy + dy) && !frozen[k]) { frozen[k] = 1; queue.push(k); }
           }
-          frozen[k] = ok ? 1 : 0;
         });
+        while (queue.length) {
+          const k = queue.pop(), t = list[k][2];
+          for (const [cx, cy] of cellsOf(list[k])) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+            const nx = cx + dx, ny = cy + dy;
+            if (out(nx, ny)) continue;
+            const j = owner[ny * w + nx];
+            if (j >= 0 && !frozen[j] && list[j][2] === t) { frozen[j] = 1; queue.push(j); }
+          }
+        }
+        polarByType = [0, 0, 0, 0];
+        list.forEach((d, k) => { if (frozen[k]) polarByType[d[2] - 1]++; });
+      }
+      // The share of the diamond in the polar regions, against the arctic-circle limit 1 - pi/4. The four regions
+      // fluctuate nearly independently (each follows its own arc of the boundary), so four times each region's
+      // share gives four estimates of the total, and their spread is the plate's error bar; tools/aztec-science.js
+      // checks that bar against the scatter over seeds. At finite n the frozen boundary sits inside the circle by
+      // about n^(1/3) cells, so the share exceeds the limit by a term that shrinks as n^(-2/3).
+      function polarCompare() {
+        const D = list.length, q = polarByType.map(c => 4 * c / D), f = q.reduce((a, b) => a + b, 0) / 4, se = U.stats.sd(q) / 2;
+        return U.stats.compare({ label: 'polar regions', measured: f, expected: 1 - Math.PI / 4, reference: '1 − π/4, n → ∞', basis: 'sampled',
+          uncertainty: se > 0 && isFinite(se) ? se : undefined, pending: 'the four polar regions are equal, so they give no spread',
+          method: 'spread of the four polar regions', digits: 3,
+          note: 'finite n: the excess shrinks as n^(−2/3)' });
       }
       function status(extra) {
-        const s = host.getState();
-        const fr = frozen ? Math.round(100 * frozen.reduce((a, b) => a + b, 0) / Math.max(1, frozen.length)) : 0;
         host.setStatus('<span>order <b>' + order + '</b> · ' + (2 * order * (order + 1)).toLocaleString() + ' cells</span>' +
-          (list ? '<span>' + list.length.toLocaleString() + ' dominoes · frozen <b>' + fr + '%</b></span>' : '') +
+          (list ? '<span>' + list.length.toLocaleString() + ' dominoes</span>' + polarCompare() : '') +
           (extra ? '<span>' + extra + '</span>' : ''));
       }
       function colorOf(s, d, k) {
@@ -30193,8 +30307,9 @@ void main(){
   const chi = (rng, k) => Math.sqrt(2 * gammaRand(rng, k / 2));
 
   // Dumitriu and Edelman, J. Math. Phys. 43, 5830 (2002). The symmetric tridiagonal with N(0,2) on the
-  // diagonal and chi_{(n-k)beta} below it has eigenvalue density proportional to
-  // prod |lambda_i - lambda_j|^beta exp(-sum lambda^2 / 2), for any beta > 0 rather than only 1, 2 and 4.
+  // diagonal and chi_{(n-k)beta} below it is their model without its overall factor 1/sqrt(2), so its
+  // eigenvalue density is proportional to prod |lambda_i - lambda_j|^beta exp(-sum lambda^2 / 4), for any
+  // beta > 0 rather than only 1, 2 and 4, with spectral edge 2 sqrt(beta n) (validation/RMT.md).
   // Checked against a directly built GOE at beta = 1: same spectral edge and same second moment.
   function betaHermite(rng, n, beta, d, e) {
     for (let i = 0; i < n; i++) d[i] = Math.SQRT2 * rng.gauss();
@@ -30216,8 +30331,9 @@ void main(){
 
   // Unfolded nearest-neighbor spacings. The raw gaps mix level repulsion with the semicircle's varying
   // density, so each gap is divided by the local mean spacing before the statistics are taken. The
-  // coefficient of variation is then comparable with the Wigner surmise, which gives sqrt(4/pi - 1) = 0.523
-  // at beta = 1 and sqrt(3 pi/8 - 1) = 0.422 at beta = 2, against 1 for an uncorrelated (Poisson) sequence.
+  // coefficient of variation is then comparable with the exact large-n (Gaudin-Mehta) law, 0.534 at beta = 1
+  // and 0.424 at beta = 2, against 1 for an uncorrelated (Poisson) sequence. Wigner's 2x2 surmise gives
+  // sqrt(4/pi - 1) = 0.523 and sqrt(3 pi/8 - 1) = 0.422, and a large sample resolves the beta = 1 difference.
   function unfolded(lam, n, out) {
     const K = 12;
     for (let i = Math.floor(n * 0.2); i < Math.floor(n * 0.8); i++) {
@@ -30251,6 +30367,9 @@ void main(){
     return draws.length > 1 ? U.stats.sd(draws) : NaN;
   }
   const SURMISE = { '1.00': 0.523, '2.00': 0.422 };
+  // The exact bulk spacing CV, from the Gaudin-Mehta Fredholm determinants evaluated by Nystrom quadrature
+  // (Bornemann, Math. Comp. 79, 871, 2010): 0.53435 at beta = 1, 0.42426 at beta = 2 (tools/rmt-science.js).
+  const GAUDIN_MEHTA = { '1.00': 0.53435, '2.00': 0.42426 };
 
   /* ---------- Random Matrices ---------- */
   Studio.register({
@@ -30259,8 +30378,8 @@ void main(){
     tab: 'Matrices',
     subtitle: 'beta-ensemble spectra and Dyson Brownian motion · 1962',
     order: 48,
-    equation: 'p(λ) ∝ ∏_{i<j} |λ_i − λ_j|^β · e^{−Σλ_i²/2};   dλ_i = √(2/β) dB_i + Σ_{j≠i} dt/(λ_i − λ_j)',
-    credit: "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The spacing forms quoted in the status line are Wigner's surmise; the exact answers are the Gaudin-Mehta determinantal formulae, Michel Mehta, Random Matrices. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
+    equation: 'p(λ) ∝ ∏_{i<j} |λ_i − λ_j|^β · e^{−Σλ_i²/4};   Dyson (β = 1): dλ_i = √2 dB_i + (Σ_{j≠i} 1/(λ_i − λ_j) − λ_i/2) dt',
+    credit: "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The status line compares the spacing spread with the exact Gaudin-Mehta law (Michel Mehta, Random Matrices), evaluated as Fredholm determinants by Folkmar Bornemann's method, Math. Comp. 79, 871 (2010); Wigner's surmise is its 2×2 approximation. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
     blurb: 'Eigenvalues of a random matrix are not scattered independently. They push each other apart, and the strength of that push is a single number, β: the exponent on |λᵢ − λⱼ| in their joint density. At β = 0 the levels are independent, and independence looks clumpy, with gaps and coincidences everywhere. At β = 1, 2 and 4 you get the three classical ensembles that describe real symmetric, complex Hermitian and quaternionic systems. Push β higher and the spectrum stops being random-looking and freezes into something close to a crystal. Because the tridiagonal models sample any β at all, that whole road from independence to rigidity is one slider, and the sweep plate draws every point on it at once. Dyson\'s other idea is the third mode: let the matrix itself diffuse, and its eigenvalues become paths that never cross.',
     schema: [
       { group: 'Ensemble', key: 'mode', label: 'Plate', type: 'seg', kind: GEOM, wrap: true,
@@ -30456,10 +30575,10 @@ void main(){
         } else {
           P.push('<span><b>' + s.rows + '</b> spectra of <b>' + s.n + '</b> · β <b>' + s.beta.toFixed(2) + '</b></span>');
           if (cv !== null) {
-            const sur = SURMISE[s.beta.toFixed(2)];
-            P.push(U.stats.compare({ label: 'unfolded spacing spread', measured: cv, expected: sur, reference: 'Wigner surmise', basis: 'sampled',
+            const key = s.beta.toFixed(2), gm = GAUDIN_MEHTA[key], sur = SURMISE[key];
+            P.push(U.stats.compare({ label: 'unfolded spacing spread', measured: cv, expected: gm, reference: 'Gaudin-Mehta, large n', basis: 'sampled',
               uncertainty: cvSE, method: 'bootstrap over ' + nAll + ' rows', pending: 'fewer than 2 rows',
-              note: sur ? 'the surmise is the 2×2 approximation' : undefined }));
+              note: sur ? 'Wigner surmise ' + sur.toFixed(3) + ', the 2×2 approximation' : undefined }));
           }
         }
         P.push('<span>' + (series ? series.length.toLocaleString() : 0) + ' rows</span>');
@@ -30586,7 +30705,7 @@ void main(){
               const pts = [];
               for (let t = 0; t < T; t++) pts.push(r(L.x0 + L.w * t / (T - 1)) + ',' + r(L.y0 + L.h * (0.5 - 0.5 * series[t].lam[i] / sc)));
               body += '<polyline fill="none" stroke="' + colorOf(s, i, i, n, series[T - 1].lam, sc, n) +
-                '" stroke-width="' + r(lw) + '" stroke-linejoin="round" points="' + pts.join(' ') + '"/>';
+                '" stroke-width="' + r(lw) + '" stroke-linejoin="round" stroke-linecap="round" points="' + pts.join(' ') + '"/>';
             }
           } else {
             const rows = series.length, n = series[0].lam.length;

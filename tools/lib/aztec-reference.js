@@ -129,6 +129,34 @@ function polar(list, partner, types, n) {
   return { fraction: total / list.length, regionSize, depth, radius: Object.fromEntries(Object.entries(depth).map(([k, v]) => [k, n - v])), cornerType };
 }
 
+// The polar regions as Jockusch, Propp and Shor define them, in Johansson's statement (Annals of Probability
+// 33, 2005): the north polar region is the union of the N dominoes connected to the boundary of the diamond
+// by a chain of edge-adjacent N dominoes, and likewise for S, W and E. Written independently of the module
+// (which floods from the boundary): union-find joins every pair of edge-adjacent dominoes of one type, and a
+// domino is polar when its component contains a domino with an edge on the boundary.
+function polarBoundary(list, n) {
+  const w = 2 * n, owner = new Int32Array(w * w).fill(-1), parent = list.map((_, k) => k);
+  list.forEach(([x, y, , hz], k) => { owner[y * w + x] = k; owner[(hz ? y : y + 1) * w + (hz ? x + 1 : x)] = k; });
+  const find = k => { while (parent[k] !== k) { parent[k] = parent[parent[k]]; k = parent[k]; } return k; };
+  const touches = new Uint8Array(list.length);
+  list.forEach(([x, y, t, hz], k) => {
+    for (const [cx, cy] of hz ? [[x, y], [x + 1, y]] : [[x, y], [x, y + 1]]) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+      const nx = cx + dx, ny = cy + dy;
+      if (!inDiamond(nx, ny, n)) { touches[k] = 1; continue; }
+      const o = owner[ny * w + nx];
+      if (o !== k && list[o][2] === t) { const a = find(k), b = find(o); if (a !== b) parent[a] = b; }
+    }
+  });
+  const rootTouches = new Uint8Array(list.length);
+  list.forEach((_, k) => { if (touches[k]) rootTouches[find(k)] = 1; });
+  const flags = list.map((_, k) => rootTouches[find(k)]);
+  const byType = [0, 0, 0, 0];
+  list.forEach((d, k) => { if (flags[k]) byType[d[2] - 1]++; });
+  const q = byType.map(c => 4 * c / list.length), f = q.reduce((a, b) => a + b, 0) / 4;
+  const sd = Math.sqrt(q.reduce((a, b) => a + (b - f) ** 2, 0) / 3);
+  return { flags, byType, fraction: f, se4: sd / 2 };
+}
+
 // Print geometry written from the documented layout: a square of side min(W, H)(1 - 2 margin) centered
 // on the sheet, 2n cells across, each domino a rectangle inset by inset * cell on every side. Colors
 // by fill mode from the palette with the offset; frozen flags come from localFrozen.
@@ -142,4 +170,4 @@ function geometry(s, list, frozen, n, W, H) {
   return { rects, stroke, circle, cell };
 }
 
-module.exports = { inDiamond, cells, enumerate, keyOf, inspect, localFrozen, polar, geometry };
+module.exports = { inDiamond, cells, enumerate, keyOf, inspect, localFrozen, polar, polarBoundary, geometry };

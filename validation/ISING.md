@@ -213,3 +213,15 @@ guaranteed independent for runs longer than their tick0 separation.
 - The error bars assume the tau_int estimate is adequate (runs of at least 50 tau_int). Independence of
   seeds relies on disjoint random windows, as described above.
 - Temperatures outside the listed ones, and T = 2.2 and 2.4 at L = 128, are outside the tested domain.
+
+## Changed after this review (2026-09-24)
+
+This review found that the status line compared the hot-start presets below T_c (`quench`, `walls`,
+`below`) with Yang's spontaneous magnetization. A hot or split start coarsens and can sit in a stripe
+state, two walls across the periodic box, so that comparison measured the start rather than the sampler.
+The status line now compares with Yang only for a cold (ordered) start at h = 0 below 0.95 T_c, the case
+tested above. Other starts print |m| with its error bar and a note that says why there is no comparison.
+The sampler, the shader and the plates are unchanged, and `tools/ising-science.js --write` was rerun on the
+changed module. The same day, recipe v3 gave each seed its own keyed random stream (older recipes keep the
+shared one through `legacy`), which the tool's stream check confirms, and the tab declares `fieldCells()`, so
+the shell prints the spin grid without supersampling.

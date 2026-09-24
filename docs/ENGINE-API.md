@@ -2,7 +2,9 @@
 
 The maintained engine is [`src/shared/engine.js`](../src/shared/engine.js). The old
 `src/shared/studio.js` name is retired. `Studio.apiVersion` is **1** and
-`Studio.recipeVersion` is **2**. Both version properties are read-only.
+`Studio.recipeVersion` is **3**. Both version properties are read-only. Version 3 (2026-09-24) keys the Ising
+tab's Metropolis random numbers by the seed, so runs with different seeds are independent; recipes older than
+v3 keep the shared stream through `legacy: { 3: { stream: 'shared' } }` and reprint as they were made.
 
 ## Compatibility boundary
 
@@ -26,8 +28,8 @@ Recipe `v` is separate from the API version. Before a default changes, advance t
 engine recipe version and declare the old value at that transition:
 
 ```js
-// Example for a future recipe version 3, not an instruction to change version now:
-legacy: { 2: { grid: 192 }, 3: { grid: 256 } },
+// Example for a future recipe version 4, not an instruction to change version now:
+legacy: { 2: { grid: 192 }, 4: { grid: 256 } },
 defaults: { grid: 512 }
 ```
 

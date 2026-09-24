@@ -1,8 +1,8 @@
 {
   "date": "2026-09-24",
   "tool": "tools/rmt-science.js",
-  "sourceSha256": "b45f9d8257ec669aa62929c91cc1a40f7f68e3de2a8a3101daf6fdd0944bb701",
-  "engineSha256": "a84197737dd6c83940054aecc7c1d3ff86fb5d43b12f4f8da3c4224f07ae3ac0",
+  "sourceSha256": "2e101e58cdfe5ba8e27f6642622072abe9fbdcc283009472644935b81ca1e17d",
+  "engineSha256": "99cc63fff9a1f75e68abce1e66e07bfd72dc5e1c25ff057218fe6c8a65dfaa63",
   "referenceSha256": "2cb24549bb39a095928ec27e9545b88702ebe325e55cc109ed6ab8661664a35e",
   "scope": "Dumitriu-Edelman tridiagonal sampler and QL eigenvalues of src/modules/rmt.js: exact second and fourth spectral moments, semicircle convergence, Gaudin-Mehta spacing law and the printed spacing spread at beta 1 and 2, exact Ornstein-Uhlenbeck Dyson statistics, and five complete studio prints. Finite samples from the seeded generator.",
   "normalization": "The tab samples diagonal N(0,2) and subdiagonal chi_{beta(n-i)} without the 1/sqrt(2) of Dumitriu and Edelman, so its eigenvalue density is proportional to prod|l_i - l_j|^beta exp(-sum l^2 / 4) and the spectrum edge is 2 sqrt(beta n). The displayed equation writes exp(-sum l^2 / 2).",
@@ -1400,7 +1400,9 @@
         "seed": "dyson-1962"
       },
       "seed": "dyson-1962",
-      "printed": 0.428,
+      "printed": 0.4278,
+      "printedError": 0.0027,
+      "errorRatio": 1.04,
       "printedSurmise": 0.422,
       "rows": 180,
       "spacings": 15120,
@@ -1409,7 +1411,7 @@
       "zGaudinMehta": 1.36,
       "surmiseCv": 0.422016,
       "zSurmise": 2.22,
-      "statusHtml": "<span><b>180</b> spectra of <b>140</b> · β <b>2.00</b></span><span>unfolded spacing spread <b>0.428</b> · surmise 0.422</span><span>180 rows</span>"
+      "statusHtml": "<span><b>180</b> spectra of <b>140</b> · β <b>2.00</b></span><span class=\"cmp\" data-basis=\"sampled\" title=\"bootstrap over 180 rows\">unfolded spacing spread <b>0.4278 ± 0.0027</b> · Gaudin-Mehta, large n 0.4243 · 1.3σ high · Wigner surmise 0.422, the 2×2 approximation</span><span>180 rows</span>"
     },
     {
       "recipe": {
@@ -1420,7 +1422,9 @@
         "seed": "dyson-1962"
       },
       "seed": "dyson-1962",
-      "printed": 0.535,
+      "printed": 0.5353,
+      "printedError": 0.0018,
+      "errorRatio": 0.947,
       "printedSurmise": 0.523,
       "rows": 257,
       "spacings": 40092,
@@ -1429,7 +1433,7 @@
       "zGaudinMehta": 0.487,
       "surmiseCv": 0.522723,
       "zSurmise": 6.61,
-      "statusHtml": "<span><b>260</b> spectra of <b>260</b> · β <b>1.00</b></span><span>unfolded spacing spread <b>0.535</b> · surmise 0.523</span><span>260 rows</span>"
+      "statusHtml": "<span><b>260</b> spectra of <b>260</b> · β <b>1.00</b></span><span class=\"cmp\" data-basis=\"sampled\" title=\"bootstrap over 257 rows\">unfolded spacing spread <b>0.5353 ± 0.0018</b> · Gaudin-Mehta, large n 0.5343 · 0.5σ high · Wigner surmise 0.523, the 2×2 approximation</span><span>260 rows</span>"
     }
   ],
   "dyson": {
@@ -1543,7 +1547,7 @@
         "margin": 0.06,
         "grain": 0,
         "seed": "rmt-science-gue",
-        "v": 2,
+        "v": 3,
         "palette": [
           "#1A1A1A",
           "#4A4A4A",
@@ -1559,7 +1563,7 @@
       "studioVsNodeOverTolerance": 0.05845,
       "bitIdenticalToNode": 0.4942063492063492,
       "worstIndependentErrorOverTolerance": 0.03879,
-      "printedSpread": 0.425,
+      "printedSpread": null,
       "print": {
         "width": 2400,
         "height": 2400,
@@ -1602,7 +1606,7 @@
         "margin": 0.06,
         "grain": 0,
         "seed": "rmt-science-semicircle",
-        "v": 2,
+        "v": 3,
         "palette": [
           "#1A1A1A",
           "#4A4A4A",
@@ -1618,7 +1622,7 @@
       "studioVsNodeOverTolerance": 0.04683,
       "bitIdenticalToNode": 0.20294378698224852,
       "worstIndependentErrorOverTolerance": 0.03313,
-      "printedSpread": 0.535,
+      "printedSpread": null,
       "print": {
         "width": 1920,
         "height": 2400,
@@ -1661,7 +1665,7 @@
         "margin": 0.06,
         "grain": 0,
         "seed": "rmt-science-sweep",
-        "v": 2,
+        "v": 3,
         "palette": [
           "#1A1A1A",
           "#4A4A4A",
@@ -1720,7 +1724,7 @@
         "margin": 0.06,
         "grain": 0,
         "seed": "rmt-science-crystal",
-        "v": 2,
+        "v": 3,
         "palette": [
           "#1A1A1A",
           "#4A4A4A",
@@ -1736,7 +1740,7 @@
       "studioVsNodeOverTolerance": 0.06063,
       "bitIdenticalToNode": 0.8271875,
       "worstIndependentErrorOverTolerance": 0.04797,
-      "printedSpread": 0.162,
+      "printedSpread": null,
       "print": {
         "width": 2400,
         "height": 2400,
@@ -1779,7 +1783,7 @@
         "margin": 0.06,
         "grain": 0,
         "seed": "rmt-science-dyson",
-        "v": 2,
+        "v": 3,
         "palette": [
           "#1A1A1A",
           "#4A4A4A",
@@ -1807,9 +1811,9 @@
         "channelsChecked": 15360000,
         "displacedPrintFailureChannels": 2208503,
         "vectorRip": {
-          "maxChannelDifference": 173,
-          "meanChannelDifference": 0.111766015625,
-          "fractionOver2Levels": 0.00312109375
+          "maxChannelDifference": 46,
+          "meanChannelDifference": 0.10892473958333333,
+          "fractionOver2Levels": 0.0030505208333333335
         }
       },
       "statePreserved": true
@@ -1822,6 +1826,6 @@
     "arch": "x64",
     "cpus": 4
   },
-  "runtimeSeconds": 569.4,
+  "runtimeSeconds": 257,
   "passed": true
 }

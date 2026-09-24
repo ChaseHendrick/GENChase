@@ -679,7 +679,8 @@ void main(){
   // changed a default therefore declare the old value under the version that changed it, and
   // legacyFill gives it back to any recipe written before that version. Reprinting a seed years
   // later is the product; a default is allowed to move, a finished plate is not.
-  const RECIPE_V = 2;
+  // v3 (2026-09-24): Ising's Metropolis random numbers are keyed by the seed; older recipes keep the shared stream.
+  const RECIPE_V = 3;
   // Public compatibility versions, independent of each technique's scientific status.
   Object.defineProperties(S, {
     apiVersion: { value: 1, enumerable: true },

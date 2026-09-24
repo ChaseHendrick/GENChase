@@ -213,3 +213,19 @@ path. Both are cosmetic and do not move any mark.
 - The displayed equation's Gaussian weight (exp(-sum l^2 / 2)) does not match the code's normalization
   (exp(-sum l^2 / 4)). The status line compares with the surmise, not the exact law, and prints no error
   bar. The SVG Dyson paths lack round caps. None of these was changed here.
+
+## Changed after this review (2026-09-24)
+
+Three of the findings above were fixed in `src/modules/rmt.js` when this review was merged. None moves a
+sample, an eigenvalue or a mark, and `tools/rmt-science.js --write` was rerun on the changed module:
+
+- The displayed equation now gives the weight the code samples, exp(-sum l_i^2 / 4), and the Dyson
+  equation at beta = 1 with its drift, dl_i = sqrt(2) dB_i + (sum_{j != i} 1/(l_i - l_j) - l_i/2) dt.
+  The comment above `betaHermite` says the same.
+- The status line compares the unfolded spacing spread with the exact Gaudin-Mehta CV computed above,
+  0.53435 at beta = 1 and 0.42426 at beta = 2, through `compare()` with the row-bootstrap error. The Wigner
+  surmise is shown as a note, the 2x2 approximation it is.
+- The Dyson SVG polylines carry `stroke-linecap="round"`, as the canvas strokes do.
+
+Still open: the color ramp applies the palette shift modulo 1, so a level at exactly t = 1 takes the first
+stop; the beta = 4 spacing law; and a global unfolding without the n = 150 scale bias.
