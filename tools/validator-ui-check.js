@@ -57,8 +57,9 @@ const root = path.resolve(__dirname, '..');
     // Wait for the request itself, so a click the form refuses names the field it refused.
     const artRequest = page.waitForResponse(r => r.url().endsWith('/api/start'), { timeout: 10000 }).catch(() => null);
     await page.click('#start');
-    if (!await artRequest) throw Error('Start sent no request. Fields the form refused: ' + JSON.stringify(await page.evaluate(() => [...document.querySelectorAll('.settings input, .settings textarea, #machine-slug')]
-      .filter(i => !i.closest('[hidden]') && !i.checkValidity()).map(i => i.id + ' ' + JSON.stringify(i.value) + ': ' + i.validationMessage))));
+    if (!await artRequest) throw Error('Start sent no request. Invalid fields: ' + JSON.stringify(await page.evaluate(() => [...document.querySelectorAll('.settings input, .settings textarea, #machine-slug')]
+      .filter(i => !i.checkValidity()).map(i => i.id + (i.closest('[hidden]') ? ' (hidden) ' : ' ') + JSON.stringify(i.value) + ': ' + i.validationMessage)))
+      + '; error text ' + JSON.stringify(await page.textContent('#error')) + '; page errors ' + JSON.stringify(errors));
     await page.waitForFunction(() => document.querySelector('#error').textContent.includes('recipe hash'), null, { timeout: 10000 })
       .catch(async () => { throw Error('Expected a recipe hash error; the page shows ' + JSON.stringify(await page.textContent('#error'))); });
     assert.equal(app.jobs.current, null, 'a malformed recipe does not launch a job');
