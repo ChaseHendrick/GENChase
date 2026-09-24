@@ -1,0 +1,1782 @@
+{
+  "date": "2026-09-24",
+  "tool": "tools/lozenge-science.js",
+  "sourceSha256": "e7beea07d24d9bc485fdface9d33a4806d55190cd219273b7ba26239fcc8ef8b",
+  "engineSha256": "a84197737dd6c83940054aecc7c1d3ff86fb5d43b12f4f8da3c4224f07ae3ac0",
+  "scope": "Coupling from the past as implemented in src/modules/lozenge.js (makeJob, runJob, sweep, buildTiling, corners, classify, measureArctic, ellipseOf, macmahonLog10, samplerSelfTest), run from the unmodified source. Exhaustive enumeration of tilings and plane partitions up to 4x4x4 with sampled frequencies on four boxes and the volume law on 4x4x4; the arctic radius and free area over independent seeds on four hexagons; seven complete rendered recipes with every SVG rhombus and curve point, every PNG byte and the shell vector RIP checked.",
+  "references": {
+    "sampler": "J. Propp and D. Wilson, Random Structures and Algorithms 9, 223 (1996): monotone coupling from the past returns an exact draw from the stationary measure.",
+    "count": "P. MacMahon, Phil. Trans. R. Soc. A 211, 345 (1912): prod (i+j+k-1)/(i+j+k-2) boxed plane partitions.",
+    "limitShape": "H. Cohn, M. Larsen and J. Propp, New York J. Math. 4, 137 (1998): the frozen regions converge to the complement of the ellipse inscribed in the hexagon and tangent to its six sides."
+  },
+  "counting": {
+    "rows": [
+      {
+        "box": [
+          2,
+          2,
+          2
+        ],
+        "triangles": 24,
+        "directTilings": 20,
+        "planePartitions": 20,
+        "macmahon": "20",
+        "moduleLog10": 1.3010299956639813,
+        "exactLog10": 1.3010299956639813,
+        "log10Error": 0,
+        "drawnTilingsDistinctAndInEnumeration": true,
+        "ms": 23
+      },
+      {
+        "box": [
+          2,
+          2,
+          3
+        ],
+        "triangles": 32,
+        "directTilings": 50,
+        "planePartitions": 50,
+        "macmahon": "50",
+        "moduleLog10": 1.698970004336019,
+        "exactLog10": 1.6989700043360187,
+        "log10Error": 2.220446049250313e-16,
+        "drawnTilingsDistinctAndInEnumeration": true,
+        "ms": 22
+      },
+      {
+        "box": [
+          2,
+          3,
+          4
+        ],
+        "triangles": 52,
+        "directTilings": 490,
+        "planePartitions": 490,
+        "macmahon": "490",
+        "moduleLog10": 2.690196080028513,
+        "exactLog10": 2.690196080028514,
+        "log10Error": 8.881784197001252e-16,
+        "drawnTilingsDistinctAndInEnumeration": true,
+        "ms": 309
+      },
+      {
+        "box": [
+          3,
+          3,
+          3
+        ],
+        "triangles": 54,
+        "directTilings": 980,
+        "planePartitions": 980,
+        "macmahon": "980",
+        "moduleLog10": 2.9912260756924933,
+        "exactLog10": 2.991226075692495,
+        "log10Error": 1.7763568394002505e-15,
+        "drawnTilingsDistinctAndInEnumeration": true,
+        "ms": 110
+      },
+      {
+        "box": [
+          4,
+          4,
+          4
+        ],
+        "triangles": 96,
+        "directTilings": 232848,
+        "planePartitions": 232848,
+        "macmahon": "232848",
+        "moduleLog10": 5.367072512001649,
+        "exactLog10": 5.367072512001651,
+        "log10Error": 1.7763568394002505e-15,
+        "drawnTilingsDistinctAndInEnumeration": true,
+        "ms": 16504
+      }
+    ]
+  },
+  "ellipse": {
+    "rows": [
+      {
+        "box": [
+          11,
+          11,
+          11
+        ],
+        "relativeMatrixError": 1.5659344038790085e-16,
+        "centerError": 2.220446049250313e-16,
+        "tangencyResidual": 1.4210854715202004e-14,
+        "predictedFreeArea": 0.9068996821171089,
+        "independentFreeArea": 0.9068996821171089,
+        "freeAreaError": 0
+      },
+      {
+        "box": [
+          24,
+          24,
+          24
+        ],
+        "relativeMatrixError": 2.631639762074445e-16,
+        "centerError": 0,
+        "tangencyResidual": 5.684341886080802e-14,
+        "predictedFreeArea": 0.9068996821171089,
+        "independentFreeArea": 0.9068996821171087,
+        "freeAreaError": 2.220446049250313e-16
+      },
+      {
+        "box": [
+          32,
+          32,
+          32
+        ],
+        "relativeMatrixError": 2.9605947323337506e-16,
+        "centerError": 8.881784197001252e-16,
+        "tangencyResidual": 1.1368683772161603e-13,
+        "predictedFreeArea": 0.9068996821171089,
+        "independentFreeArea": 0.9068996821171088,
+        "freeAreaError": 1.1102230246251565e-16
+      },
+      {
+        "box": [
+          48,
+          48,
+          48
+        ],
+        "relativeMatrixError": 2.631639762074445e-16,
+        "centerError": 0,
+        "tangencyResidual": 2.2737367544323206e-13,
+        "predictedFreeArea": 0.9068996821171089,
+        "independentFreeArea": 0.9068996821171087,
+        "freeAreaError": 2.220446049250313e-16
+      },
+      {
+        "box": [
+          24,
+          40,
+          46
+        ],
+        "relativeMatrixError": 1.3312276079814523e-16,
+        "centerError": 8.881784197001252e-16,
+        "tangencyResidual": 2.2737367544323206e-13,
+        "predictedFreeArea": 0.8867903182969252,
+        "independentFreeArea": 0.8867903182969252,
+        "freeAreaError": 0
+      },
+      {
+        "box": [
+          20,
+          20,
+          40
+        ],
+        "relativeMatrixError": 7.105427357601002e-17,
+        "centerError": 0,
+        "tangencyResidual": 0,
+        "predictedFreeArea": 0.8885765876316734,
+        "independentFreeArea": 0.8885765876316732,
+        "freeAreaError": 1.1102230246251565e-16
+      },
+      {
+        "box": [
+          48,
+          48,
+          8
+        ],
+        "relativeMatrixError": 1.3158198810372225e-16,
+        "centerError": 0,
+        "tangencyResidual": 2.2737367544323206e-13,
+        "predictedFreeArea": 0.707948337446186,
+        "independentFreeArea": 0.7079483374461858,
+        "freeAreaError": 2.220446049250313e-16
+      },
+      {
+        "box": [
+          16,
+          16,
+          48
+        ],
+        "relativeMatrixError": 1.1842378929335e-16,
+        "centerError": 0,
+        "tangencyResidual": 1.1368683772161603e-13,
+        "predictedFreeArea": 0.869095430565774,
+        "independentFreeArea": 0.8690954305657739,
+        "freeAreaError": 1.1102230246251565e-16
+      },
+      {
+        "box": [
+          3,
+          5,
+          7
+        ],
+        "relativeMatrixError": 1.6758083390568402e-16,
+        "centerError": 2.220446049250313e-16,
+        "tangencyResidual": 7.105427357601002e-15,
+        "predictedFreeArea": 0.8780147410633184,
+        "independentFreeArea": 0.8780147410633184,
+        "freeAreaError": 0
+      }
+    ],
+    "ok": true
+  },
+  "uniformity": {
+    "alpha": 0.001,
+    "rows": [
+      {
+        "box": [
+          2,
+          2,
+          2
+        ],
+        "tilings": 20,
+        "seeds": "'lozenge-uniform-2x2x2-<i>', i = 0..7999",
+        "rhombusPositions": 30,
+        "draws": 8000,
+        "outcomes": 20,
+        "df": 19,
+        "chiSquare": 23.785,
+        "pValue": 0.2045291649240587,
+        "missing": 0,
+        "maxOutcomeDeviation": 0.006875000000000006,
+        "marginals": 30,
+        "maxMarginalDeviation": 0.008750000000000036,
+        "maxMarginalZ": 1.597524126056741,
+        "bonferroniZCritical": 4.149409984614891,
+        "simultaneousHoeffdingAlpha": 0.001,
+        "hoeffdingBound": 0.026824575328616842,
+        "passes": true,
+        "tilingCounts": [
+          408,
+          365,
+          426,
+          436,
+          390,
+          425,
+          402,
+          382,
+          430,
+          345,
+          423,
+          392,
+          409,
+          389,
+          395,
+          398,
+          393,
+          392,
+          387,
+          413
+        ],
+        "ms": 42
+      },
+      {
+        "box": [
+          2,
+          2,
+          3
+        ],
+        "tilings": 50,
+        "seeds": "'lozenge-uniform-2x2x3-<i>', i = 0..9999",
+        "rhombusPositions": 41,
+        "draws": 10000,
+        "outcomes": 50,
+        "df": 49,
+        "chiSquare": 53.219999999999985,
+        "pValue": 0.31505690508345907,
+        "missing": 0,
+        "maxOutcomeDeviation": 0.002999999999999999,
+        "marginals": 41,
+        "maxMarginalDeviation": 0.007399999999999962,
+        "maxMarginalZ": 1.7000000000000002,
+        "bonferroniZCritical": 4.220369295055659,
+        "simultaneousHoeffdingAlpha": 0.001,
+        "hoeffdingBound": 0.02460869964672954,
+        "passes": true,
+        "tilingCounts": [
+          188,
+          193,
+          200,
+          205,
+          190,
+          174,
+          187,
+          180,
+          207,
+          220,
+          181,
+          211,
+          229,
+          193,
+          194,
+          229,
+          199,
+          210,
+          187,
+          201,
+          176,
+          188,
+          207,
+          207,
+          173,
+          194,
+          230,
+          197,
+          215,
+          225,
+          191,
+          204,
+          187,
+          214,
+          207,
+          190,
+          199,
+          201,
+          181,
+          189,
+          192,
+          225,
+          206,
+          192,
+          200,
+          208,
+          218,
+          193,
+          193,
+          220
+        ],
+        "ms": 26
+      },
+      {
+        "box": [
+          2,
+          3,
+          4
+        ],
+        "tilings": 490,
+        "seeds": "'lozenge-uniform-2x3x4-<i>', i = 0..19599",
+        "rhombusPositions": 69,
+        "draws": 19600,
+        "outcomes": 490,
+        "df": 489,
+        "chiSquare": 486.44999999999993,
+        "pValue": 0.5240628177720519,
+        "missing": 0,
+        "maxOutcomeDeviation": 0.0009183673469387757,
+        "marginals": 69,
+        "maxMarginalDeviation": 0.007959183673469428,
+        "maxMarginalZ": 2.306118344357434,
+        "bonferroniZCritical": 4.336259955641123,
+        "simultaneousHoeffdingAlpha": 0.001,
+        "hoeffdingBound": 0.018848924029201283,
+        "passes": true,
+        "minCount": 22,
+        "maxCount": 57,
+        "ms": 104
+      },
+      {
+        "box": [
+          3,
+          3,
+          3
+        ],
+        "tilings": 980,
+        "seeds": "'lozenge-uniform-3x3x3-<i>', i = 0..39199",
+        "rhombusPositions": 72,
+        "draws": 39200,
+        "outcomes": 980,
+        "df": 979,
+        "chiSquare": 1066.75,
+        "pValue": 0.026086254080035717,
+        "missing": 0,
+        "maxOutcomeDeviation": 0.0007397959183673469,
+        "marginals": 72,
+        "maxMarginalDeviation": 0.0063775510204081565,
+        "maxMarginalZ": 2.649616545135802,
+        "bonferroniZCritical": 4.345610411993206,
+        "simultaneousHoeffdingAlpha": 0.001,
+        "hoeffdingBound": 0.01362739908331803,
+        "passes": true,
+        "minCount": 21,
+        "maxCount": 69,
+        "ms": 369
+      }
+    ],
+    "volume4x4x4": {
+      "box": [
+        4,
+        4,
+        4
+      ],
+      "draws": 400000,
+      "seeds": "'lozenge-volume-4x4x4-<i>'",
+      "classes": 57,
+      "chiSquare": 59.77345728585836,
+      "df": 56,
+      "pValue": 0.3403337558599106,
+      "meanVolume": 31.9832875,
+      "meanVolumeSe": 0.012638349666808166,
+      "exactMeanVolume": 32,
+      "sigma": -1.3223641092865364,
+      "passes": true
+    },
+    "interpretation": "Seeds are distinct recipe strings through U.makeRng and the module counter hash; the probability statements assume those draws behave as independent uniform variates, which a fixed PRNG regression does not prove."
+  },
+  "controls": {
+    "biasedUpdate": {
+      "description": "heat-bath uniform u replaced by u^2 in every site update (monotone, so CFTP still coalesces, on a non-uniform measure)",
+      "rows": [
+        {
+          "box": [
+            2,
+            2,
+            2
+          ],
+          "tilings": 20,
+          "seeds": "'lozenge-uniform-2x2x2-<i>', i = 0..7999",
+          "rhombusPositions": 30,
+          "draws": 8000,
+          "outcomes": 20,
+          "df": 19,
+          "chiSquare": 20293.97999999999,
+          "pValue": 0,
+          "missing": 0,
+          "maxOutcomeDeviation": 0.304875,
+          "marginals": 30,
+          "maxMarginalDeviation": 0.45087499999999997,
+          "maxMarginalZ": 88.00178907813398,
+          "bonferroniZCritical": 4.149409984614891,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.026824575328616842,
+          "passes": false,
+          "tilingCounts": [
+            2839,
+            1271,
+            602,
+            569,
+            265,
+            113,
+            734,
+            295,
+            266,
+            292,
+            129,
+            49,
+            78,
+            47,
+            222,
+            101,
+            33,
+            47,
+            24,
+            24
+          ],
+          "ms": 43
+        },
+        {
+          "box": [
+            3,
+            3,
+            3
+          ],
+          "tilings": 980,
+          "seeds": "'lozenge-uniform-3x3x3-<i>', i = 0..39199",
+          "rhombusPositions": 72,
+          "draws": 39200,
+          "outcomes": 980,
+          "df": 979,
+          "chiSquare": 2044984.4999999967,
+          "pValue": 0,
+          "missing": 389,
+          "maxOutcomeDeviation": 0.18081632653061222,
+          "marginals": 72,
+          "maxMarginalDeviation": 0.6476275510204081,
+          "maxMarginalZ": 334.7938415619769,
+          "bonferroniZCritical": 4.345610411993206,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.01362739908331803,
+          "passes": false,
+          "minCount": 0,
+          "maxCount": 7128,
+          "ms": 366
+        }
+      ],
+      "caught": true,
+      "tabSelfTest": {
+        "chi": 9890.140000000003,
+        "df": 19,
+        "z": 65.243210083281,
+        "distinct": 20
+      }
+    },
+    "readAtMeeting": {
+      "description": "the state is read at the meeting time instead of being carried on to time 0",
+      "rows": [
+        {
+          "box": [
+            2,
+            2,
+            2
+          ],
+          "tilings": 20,
+          "seeds": "'lozenge-uniform-2x2x2-<i>', i = 0..7999",
+          "rhombusPositions": 30,
+          "draws": 8000,
+          "outcomes": 20,
+          "df": 19,
+          "chiSquare": 1754.0900000000001,
+          "pValue": 0,
+          "missing": 0,
+          "maxOutcomeDeviation": 0.03912499999999999,
+          "marginals": 30,
+          "maxMarginalDeviation": 0.19562500000000005,
+          "maxMarginalZ": 38.18209035411137,
+          "bonferroniZCritical": 4.149409984614891,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.026824575328616842,
+          "passes": false,
+          "tilingCounts": [
+            131,
+            153,
+            159,
+            166,
+            95,
+            131,
+            546,
+            526,
+            544,
+            519,
+            415,
+            414,
+            420,
+            475,
+            483,
+            403,
+            451,
+            622,
+            634,
+            713
+          ],
+          "ms": 57
+        },
+        {
+          "box": [
+            3,
+            3,
+            3
+          ],
+          "tilings": 980,
+          "seeds": "'lozenge-uniform-3x3x3-<i>', i = 0..39199",
+          "rhombusPositions": 72,
+          "draws": 39200,
+          "outcomes": 980,
+          "df": 979,
+          "chiSquare": 8886.550000000007,
+          "pValue": 0,
+          "missing": 0,
+          "maxOutcomeDeviation": 0.0016581632653061224,
+          "marginals": 72,
+          "maxMarginalDeviation": 0.1613265306122449,
+          "maxMarginalZ": 63.88204691748181,
+          "bonferroniZCritical": 4.345610411993206,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.01362739908331803,
+          "passes": false,
+          "minCount": 4,
+          "maxCount": 105,
+          "ms": 321
+        }
+      ],
+      "caught": true,
+      "tabSelfTest": {
+        "chi": 1003.0200000000001,
+        "df": 19,
+        "z": 25.54865820918373,
+        "distinct": 20
+      }
+    },
+    "halfCoalescenceCheck": {
+      "description": "the coalescence check compares only the first half of the sites, so it can stop early",
+      "rows": [
+        {
+          "box": [
+            2,
+            2,
+            2
+          ],
+          "tilings": 20,
+          "seeds": "'lozenge-uniform-2x2x2-<i>', i = 0..7999",
+          "rhombusPositions": 30,
+          "draws": 8000,
+          "outcomes": 20,
+          "df": 19,
+          "chiSquare": 63.165,
+          "pValue": 0.0000012093261618555007,
+          "missing": 0,
+          "maxOutcomeDeviation": 0.011749999999999997,
+          "marginals": 30,
+          "maxMarginalDeviation": 0.015250000000000097,
+          "maxMarginalZ": 2.9764952224930448,
+          "bonferroniZCritical": 4.149409984614891,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.026824575328616842,
+          "passes": false,
+          "tilingCounts": [
+            414,
+            373,
+            428,
+            444,
+            394,
+            425,
+            415,
+            384,
+            441,
+            366,
+            416,
+            379,
+            407,
+            381,
+            494,
+            403,
+            376,
+            343,
+            344,
+            373
+          ],
+          "ms": 56
+        },
+        {
+          "box": [
+            3,
+            3,
+            3
+          ],
+          "tilings": 980,
+          "seeds": "'lozenge-uniform-3x3x3-<i>', i = 0..39199",
+          "rhombusPositions": 72,
+          "draws": 39200,
+          "outcomes": 980,
+          "df": 979,
+          "chiSquare": 1294.399999999998,
+          "pValue": 4.152796606308285e-11,
+          "missing": 0,
+          "maxOutcomeDeviation": 0.0008928571428571427,
+          "marginals": 72,
+          "maxMarginalDeviation": 0.018622448979591866,
+          "maxMarginalZ": 7.37411357523115,
+          "bonferroniZCritical": 4.345610411993206,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.01362739908331803,
+          "passes": false,
+          "minCount": 19,
+          "maxCount": 75,
+          "ms": 417
+        }
+      ],
+      "caught": true,
+      "tabSelfTest": {
+        "chi": 63.230000000000004,
+        "df": 19,
+        "z": 4.666627481626974,
+        "distinct": 20
+      }
+    }
+  },
+  "tabSelfTestUnmodified": {
+    "chi": 30.23,
+    "df": 19,
+    "z": 1.6562430705873343,
+    "distinct": 20
+  },
+  "limitShape": {
+    "shapes": [
+      {
+        "box": [
+          24,
+          24,
+          24
+        ],
+        "seeds": 200,
+        "seedPattern": "'lozenge-arctic-24x24x24-<i>'",
+        "ring": 3,
+        "radius": {
+          "mean": 1.0059941934283814,
+          "se": 0.00042011380258850256,
+          "sd": 0.005941306373607934,
+          "expected": 1,
+          "sigma": 14.268023072435499,
+          "calibration": {
+            "sdAcrossSeeds": 0.005941306373607934,
+            "rmsPerPlateSe": 0.007397770711157699,
+            "ratio": 0.8031211841490233,
+            "ratio95": [
+              0.7313722549000116,
+              0.8906010961319166
+            ],
+            "sdOfPerPlateZ": 0.9390308679147423,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "freeArea": {
+          "mean": 0.9185315393518519,
+          "se": 0.0007599342049214313,
+          "sd": 0.01074709259111103,
+          "expected": 0.9068996821171089,
+          "sigma": 15.306400421791293,
+          "calibration": {
+            "sdAcrossSeeds": 0.01074709259111103,
+            "rmsPerPlateSe": 0.010947093923925165,
+            "ratio": 0.9817301893814003,
+            "ratio95": [
+              0.8940247580096948,
+              1.088665073248314
+            ],
+            "sdOfPerPlateZ": 1.1245289149190372,
+            "verdict": "consistent with calibrated"
+          }
+        },
+        "perPlateSigmaRadius": {
+          "mean": 1.0203315354405118,
+          "sd": 1.089749895097412,
+          "se": 0.07705695406207089,
+          "n": 200,
+          "min": -1.0934390493235555,
+          "max": 5.084026649123902
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": 1.2992833205111096,
+          "sd": 1.292092722706669,
+          "se": 0.0913647526147675,
+          "n": 200,
+          "min": -1.2591894008023143,
+          "max": 5.830508532938003
+        },
+        "tau": {
+          "mean": 3.970012058639751,
+          "sd": 1.018528117508978,
+          "se": 0.0720208138719767,
+          "n": 200,
+          "min": 2,
+          "max": 8.826275871319082
+        },
+        "cftpStartBack": {
+          "mean": 2001.92,
+          "sd": 374.3461886338946,
+          "se": 26.470272849436537,
+          "n": 200,
+          "min": 1024,
+          "max": 4096
+        },
+        "meetingSweep": {
+          "mean": 1261.94,
+          "sd": 228.6140378267644,
+          "se": 16.1654536421743,
+          "n": 200,
+          "min": 907,
+          "max": 2046
+        },
+        "allExact": true,
+        "freeAreaIndependentlyChecked": 2,
+        "ms": 23739
+      },
+      {
+        "box": [
+          32,
+          32,
+          32
+        ],
+        "seeds": 150,
+        "seedPattern": "'lozenge-arctic-32x32x32-<i>'",
+        "ring": 3,
+        "radius": {
+          "mean": 1.0016317332787843,
+          "se": 0.0004577934247357581,
+          "sd": 0.0056068014910191115,
+          "expected": 1,
+          "sigma": 3.564344070092633,
+          "calibration": {
+            "sdAcrossSeeds": 0.0056068014910191115,
+            "rmsPerPlateSe": 0.006111683146107382,
+            "ratio": 0.9173907345949639,
+            "ratio95": [
+              0.8240041013772564,
+              1.0348389741923028
+            ],
+            "sdOfPerPlateZ": 1.0723636541179427,
+            "verdict": "consistent with calibrated"
+          }
+        },
+        "freeArea": {
+          "mean": 0.9103808593750004,
+          "se": 0.0008290564257414467,
+          "sd": 0.010153826055210785,
+          "expected": 0.9068996821171089,
+          "sigma": 4.198963001557011,
+          "calibration": {
+            "sdAcrossSeeds": 0.010153826055210785,
+            "rmsPerPlateSe": 0.009000437780118038,
+            "ratio": 1.1281480193819662,
+            "ratio95": [
+              1.013307154602771,
+              1.2725782974358817
+            ],
+            "sdOfPerPlateZ": 1.2833194811920627,
+            "verdict": "per-plate bar narrower than the scatter"
+          }
+        },
+        "perPlateSigmaRadius": {
+          "mean": 0.36633757662381117,
+          "sd": 1.0974089675778955,
+          "se": 0.08960306699067776,
+          "n": 150,
+          "min": -2.1432020675018437,
+          "max": 4.484528174626865
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": 0.49323489915886237,
+          "sd": 1.3110401422038878,
+          "se": 0.1070459793568474,
+          "n": 150,
+          "min": -2.5020614292678833,
+          "max": 5.2186002955812905
+        },
+        "tau": {
+          "mean": 3.8435831563539016,
+          "sd": 0.98655856973147,
+          "se": 0.08055216990706929,
+          "n": 150,
+          "min": 2,
+          "max": 6.867715662171055
+        },
+        "cftpStartBack": {
+          "mean": 3727.36,
+          "sd": 890.0181528953325,
+          "se": 72.66967788026491,
+          "n": 150,
+          "min": 2048,
+          "max": 8192
+        },
+        "meetingSweep": {
+          "mean": 2386.16,
+          "sd": 487.06838514943735,
+          "se": 39.76896711525044,
+          "n": 150,
+          "min": 1693,
+          "max": 4077
+        },
+        "allExact": true,
+        "freeAreaIndependentlyChecked": 2,
+        "ms": 75386
+      },
+      {
+        "box": [
+          48,
+          48,
+          48
+        ],
+        "seeds": 60,
+        "seedPattern": "'lozenge-arctic-48x48x48-<i>'",
+        "ring": 3,
+        "radius": {
+          "mean": 0.997944396537844,
+          "se": 0.0006053911321647273,
+          "sd": 0.004689339545631285,
+          "expected": 1,
+          "sigma": -3.395496486388442,
+          "calibration": {
+            "sdAcrossSeeds": 0.004689339545631285,
+            "rmsPerPlateSe": 0.00456224269990662,
+            "ratio": 1.0278584139610254,
+            "ratio95": [
+              0.8712477916425266,
+              1.2536397844916443
+            ],
+            "sdOfPerPlateZ": 1.1397750190249618,
+            "verdict": "consistent with calibrated"
+          }
+        },
+        "freeArea": {
+          "mean": 0.9034746334876542,
+          "se": 0.0010901063803472688,
+          "sd": 0.008443927713358841,
+          "expected": 0.9068996821171089,
+          "sigma": -3.141939806244964,
+          "calibration": {
+            "sdAcrossSeeds": 0.008443927713358841,
+            "rmsPerPlateSe": 0.006672954375740149,
+            "ratio": 1.265395691008641,
+            "ratio95": [
+              1.0725924761336354,
+              1.5433549600080227
+            ],
+            "sdOfPerPlateZ": 1.3672937515936001,
+            "verdict": "per-plate bar narrower than the scatter"
+          }
+        },
+        "perPlateSigmaRadius": {
+          "mean": -0.4432650812787449,
+          "sd": 1.1133739595218994,
+          "se": 0.14373596011097758,
+          "n": 60,
+          "min": -3.3652340918492287,
+          "max": 1.6767509290989966
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": -0.4987763046416122,
+          "sd": 1.3428410174081704,
+          "se": 0.17336002990086893,
+          "n": 60,
+          "min": -3.977414391017433,
+          "max": 1.9818659459617693
+        },
+        "tau": {
+          "mean": 3.802180621170118,
+          "sd": 1.4395876082272698,
+          "se": 0.18584996106902613,
+          "n": 60,
+          "min": 2,
+          "max": 10.418152607309985
+        },
+        "cftpStartBack": {
+          "mean": 8601.6,
+          "sd": 1800.47198331767,
+          "se": 232.4399335567458,
+          "n": 60,
+          "min": 8192,
+          "max": 16384
+        },
+        "meetingSweep": {
+          "mean": 6067.166666666667,
+          "sd": 789.9313887104732,
+          "se": 101.97970377073868,
+          "n": 60,
+          "min": 4843,
+          "max": 8153
+        },
+        "allExact": true,
+        "freeAreaIndependentlyChecked": 2,
+        "ms": 203686
+      },
+      {
+        "box": [
+          24,
+          40,
+          46
+        ],
+        "seeds": 60,
+        "seedPattern": "'lozenge-arctic-24x40x46-<i>'",
+        "ring": 3,
+        "radius": {
+          "mean": 0.9978104351540164,
+          "se": 0.0008705594013726381,
+          "sd": 0.006743324126801051,
+          "expected": 1,
+          "sigma": -2.5151240024877044,
+          "calibration": {
+            "sdAcrossSeeds": 0.006743324126801051,
+            "rmsPerPlateSe": 0.007051210216949676,
+            "ratio": 0.9563357096617926,
+            "ratio95": [
+              0.8106227120336819,
+              1.1664062644016393
+            ],
+            "sdOfPerPlateZ": 1.0571351486594236,
+            "verdict": "consistent with calibrated"
+          }
+        },
+        "freeArea": {
+          "mean": 0.8835275785519126,
+          "se": 0.0015199118651538141,
+          "sd": 0.01177318668288755,
+          "expected": 0.8867903182969252,
+          "sigma": -2.146663776904255,
+          "calibration": {
+            "sdAcrossSeeds": 0.01177318668288755,
+            "rmsPerPlateSe": 0.009974652911311286,
+            "ratio": 1.1803104115569496,
+            "ratio95": [
+              1.0004712960015396,
+              1.4395796832321357
+            ],
+            "sdOfPerPlateZ": 1.283456587542929,
+            "verdict": "per-plate bar narrower than the scatter"
+          }
+        },
+        "perPlateSigmaRadius": {
+          "mean": -0.19892832807302613,
+          "sd": 1.0024174331252724,
+          "se": 0.12941153414807224,
+          "n": 60,
+          "min": -2.4482719552887247,
+          "max": 2.3966257869288237
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": -0.19103282159400242,
+          "sd": 1.2305834835307208,
+          "se": 0.15886764459441302,
+          "n": 60,
+          "min": -2.827021316730174,
+          "max": 3.0067308638711787
+        },
+        "tau": {
+          "mean": 4.1631412025832155,
+          "sd": 1.25001008823292,
+          "se": 0.1613756084772454,
+          "n": 60,
+          "min": 2.060601255515598,
+          "max": 8.188838223817827
+        },
+        "cftpStartBack": {
+          "mean": 4061.866666666667,
+          "sd": 704.5881467191847,
+          "se": 90.96193860595167,
+          "n": 60,
+          "min": 2048,
+          "max": 8192
+        },
+        "meetingSweep": {
+          "mean": 2577.9333333333334,
+          "sd": 405.71522394144034,
+          "se": 52.37761018760037,
+          "n": 60,
+          "min": 1789,
+          "max": 3402
+        },
+        "allExact": true,
+        "freeAreaIndependentlyChecked": 2,
+        "ms": 38804
+      }
+    ],
+    "selfTest": {
+      "plates": 470,
+      "drawsPerPlate": 4000,
+      "meanZ": -0.002285934411199166,
+      "sdZ": 1.0073366737425162,
+      "fractionAbove2": 0.02553191489361702,
+      "fractionAbove3": 0,
+      "pooledChiSquare": 8927.679999999997,
+      "pooledDf": 8930,
+      "pooledPValue": 0.5049359043218746,
+      "note": "Each plate draws its own 4,000 self-test tilings with keys offset from its own seed; the pooled chi-square treats the plates as independent."
+    },
+    "chunkCheck": {
+      "seed": "lozenge-arctic-24x24x24-0",
+      "T": 2048,
+      "meetingSweep": 1370,
+      "identical": true,
+      "note": "every timer slice limited to one sweep"
+    }
+  },
+  "checks": {
+    "countsMatchMacMahon": true,
+    "moduleLog10Matches": true,
+    "drawnTilingsAreABijection": true,
+    "ellipseMatchesTangencySolution": true,
+    "uniformityPasses": true,
+    "volumeDistributionPasses": true,
+    "controlsFailUniformity": true,
+    "everyPlateExactAndSound": true,
+    "selfTestCalibrated": true,
+    "chunkingPreserved": true
+  },
+  "print": {
+    "cases": [
+      {
+        "seed": "lozenge-print-0",
+        "parameters": {
+          "a": 11,
+          "b": 11,
+          "c": 11,
+          "aspect": "fit",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "shade",
+          "shift": 0,
+          "inset": 0.05,
+          "strokeWidth": 1.2,
+          "strokeColor": 3,
+          "ring": 3,
+          "arctic": "off",
+          "curveW": 1.6,
+          "margin": 0.07,
+          "grain": 0,
+          "seed": "lozenge-print-0",
+          "palette": [
+            "#D94F30",
+            "#F2A541",
+            "#3C6E71",
+            "#284B63",
+            "#FAF3E3"
+          ],
+          "bg": "#F5E6C8",
+          "v": 2
+        },
+        "box": [
+          11,
+          11,
+          11
+        ],
+        "rhombi": 363,
+        "heightsSha256": "2e910da694455c60462ac1dd503834c2755b98e4bfdbaba1c4fc9e2c949d2cf6",
+        "cftp": {
+          "T": 256,
+          "coal": 193,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 1.02985888093796,
+          "rSe": 0.006439336849059127,
+          "disFrac": 0.9628099173553719,
+          "disSe": 0.009844807567213034,
+          "predDisFrac": 0.9068996821171089
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 2078,
+          "height": 2400,
+          "channelsChecked": 19948800,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 402071,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 363,
+          "matched": 363,
+          "curves": 0,
+          "coordinates": 2904,
+          "maxCoordinateError": 0.004942627066782279
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "rhombus not found at 1526.39,496.52 (Infinity)",
+            "rhombus not found at 1688.85,684.11 (Infinity)",
+            "rhombus not found at 1770.08,1106.20 (Infinity)"
+          ]
+        },
+        "shellExport": {
+          "width": 2078,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 363,
+            "matched": 363,
+            "curves": 0,
+            "coordinates": 2904,
+            "maxCoordinateError": 0.004942627066782279
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "lozenge-print-1",
+        "parameters": {
+          "a": 24,
+          "b": 40,
+          "c": 46,
+          "aspect": "fit",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "shade",
+          "shift": 1,
+          "inset": 0.03,
+          "strokeWidth": 0,
+          "strokeColor": 3,
+          "ring": 3,
+          "arctic": "both",
+          "curveW": 1.8,
+          "margin": 0.06,
+          "grain": 0,
+          "seed": "lozenge-print-1",
+          "palette": [
+            "#2A6F6B",
+            "#63A69F",
+            "#B8860B",
+            "#8C3B2F",
+            "#1B2A2A"
+          ],
+          "bg": "#EFEADF",
+          "v": 2
+        },
+        "box": [
+          24,
+          40,
+          46
+        ],
+        "rhombi": 3904,
+        "heightsSha256": "364f6881a0f69ccb2cf667ac491a238bd3e7599d01939f0d276e36ae80933545",
+        "cftp": {
+          "T": 4096,
+          "coal": 2426,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 1.000169721196639,
+          "rSe": 0.0037844902457272217,
+          "disFrac": 0.8872950819672131,
+          "disSe": 0.005443126895981284,
+          "predDisFrac": 0.8867903182969252
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 1705,
+          "height": 2400,
+          "channelsChecked": 16368000,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 1259674,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 3904,
+          "matched": 3904,
+          "curves": 2,
+          "coordinates": 31740,
+          "maxCoordinateError": 0.005000000000109139
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "rhombus not found at 1321.38,320.21 (Infinity)",
+            "rhombus not found at 1344.82,360.81 (Infinity)",
+            "rhombus not found at 1391.71,469.10 (Infinity)"
+          ]
+        },
+        "shellExport": {
+          "width": 1705,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 3904,
+            "matched": 3904,
+            "curves": 2,
+            "coordinates": 31740,
+            "maxCoordinateError": 0.005000000000109139
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "lozenge-print-2",
+        "parameters": {
+          "a": 48,
+          "b": 48,
+          "c": 8,
+          "aspect": "fit",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "frozen",
+          "shift": 0,
+          "inset": 0.02,
+          "strokeWidth": 0,
+          "strokeColor": 3,
+          "ring": 3,
+          "arctic": "pred",
+          "curveW": 1.6,
+          "margin": 0.05,
+          "grain": 0,
+          "seed": "lozenge-print-2",
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110",
+          "v": 2
+        },
+        "box": [
+          48,
+          48,
+          8
+        ],
+        "rhombi": 3072,
+        "heightsSha256": "3089fd53cf4da9609b8b56b684f1fe862cffed19bec0266255c7727ccd8457da",
+        "cftp": {
+          "T": 4096,
+          "coal": 3127,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 0.9630107123840458,
+          "rSe": 0.01829783656910235,
+          "disFrac": 0.6591796875,
+          "disSe": 0.017861351709916706,
+          "predDisFrac": 0.707948337446186
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 2400,
+          "height": 1617,
+          "channelsChecked": 15523200,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 692013,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 3072,
+          "matched": 3072,
+          "curves": 1,
+          "coordinates": 24962,
+          "maxCoordinateError": 0.005000000000109139
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "fill #3F3A36 vs #25221F",
+            "fill #3F3A36 vs #25221F",
+            "fill #3F3A36 vs #25221F"
+          ]
+        },
+        "shellExport": {
+          "width": 2400,
+          "height": 1617,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 3072,
+            "matched": 3072,
+            "curves": 1,
+            "coordinates": 24962,
+            "maxCoordinateError": 0.005000000000109139
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "lozenge-print-3",
+        "parameters": {
+          "a": 32,
+          "b": 32,
+          "c": 32,
+          "aspect": "fit",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "shade",
+          "shift": 0,
+          "inset": 0.04,
+          "strokeWidth": 0,
+          "strokeColor": 3,
+          "ring": 3,
+          "arctic": "off",
+          "curveW": 1.6,
+          "margin": 0.06,
+          "grain": 0,
+          "seed": "lozenge-print-3",
+          "palette": [
+            "#C4472B",
+            "#E8A33C",
+            "#2E4A62",
+            "#1E1B18",
+            "#FFFBF2"
+          ],
+          "bg": "#F1E8D8",
+          "v": 2
+        },
+        "box": [
+          32,
+          32,
+          32
+        ],
+        "rhombi": 3072,
+        "heightsSha256": "c8cf2d13fb071a23645c064b19cfddbe267cdabf089cb9f234c9aa370072c100",
+        "cftp": {
+          "T": 4096,
+          "coal": 2561,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 1.0039499818825397,
+          "rSe": 0.00456006755547009,
+          "disFrac": 0.9143880208333334,
+          "disSe": 0.006514283741412752,
+          "predDisFrac": 0.9068996821171089
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 2078,
+          "height": 2400,
+          "channelsChecked": 19948800,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 1276675,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 3072,
+          "matched": 3072,
+          "curves": 0,
+          "coordinates": 24576,
+          "maxCoordinateError": 0.005000000000109139
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "rhombus not found at 1439.02,424.67 (Infinity)",
+            "rhombus not found at 1467.59,441.17 (Infinity)",
+            "rhombus not found at 1496.16,457.66 (Infinity)"
+          ]
+        },
+        "shellExport": {
+          "width": 2078,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 3072,
+            "matched": 3072,
+            "curves": 0,
+            "coordinates": 24576,
+            "maxCoordinateError": 0.005000000000109139
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "lozenge-print-4",
+        "parameters": {
+          "a": 20,
+          "b": 20,
+          "c": 40,
+          "aspect": "fit",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "flat",
+          "shift": 0,
+          "inset": 0.06,
+          "strokeWidth": 0.6,
+          "strokeColor": 3,
+          "ring": 3,
+          "arctic": "off",
+          "curveW": 1.6,
+          "margin": 0.06,
+          "grain": 0,
+          "seed": "lozenge-print-4",
+          "palette": [
+            "#FF5E5B",
+            "#00CECB",
+            "#FFED66",
+            "#2B2B2B"
+          ],
+          "bg": "#FBF7EE",
+          "v": 2
+        },
+        "box": [
+          20,
+          20,
+          40
+        ],
+        "rhombi": 2000,
+        "heightsSha256": "052e80962ca26d767479eefa13096e869dd0e134e7fcd6801f5a612f745e686c",
+        "cftp": {
+          "T": 1024,
+          "coal": 896,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 1.003260536801627,
+          "rSe": 0.006273979053591816,
+          "disFrac": 0.895,
+          "disSe": 0.009365099052236207,
+          "predDisFrac": 0.8885765876316734
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 1386,
+          "height": 2400,
+          "channelsChecked": 13305600,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 1082667,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 2000,
+          "matched": 2000,
+          "curves": 0,
+          "coordinates": 16000,
+          "maxCoordinateError": 0.004993892457491711
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "rhombus not found at 875.90,302.40 (Infinity)",
+            "rhombus not found at 906.39,320.00 (Infinity)",
+            "rhombus not found at 936.87,337.60 (Infinity)"
+          ]
+        },
+        "shellExport": {
+          "width": 1386,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 2000,
+            "matched": 2000,
+            "curves": 0,
+            "coordinates": 16000,
+            "maxCoordinateError": 0.004993892457491711
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "lozenge-print-5",
+        "parameters": {
+          "a": 36,
+          "b": 36,
+          "c": 36,
+          "aspect": "1:1",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "frozen",
+          "shift": 2,
+          "inset": 0.02,
+          "strokeWidth": 0,
+          "strokeColor": 3,
+          "ring": 3,
+          "arctic": "both",
+          "curveW": 2,
+          "margin": 0.06,
+          "grain": 0,
+          "seed": "lozenge-print-5",
+          "palette": [
+            "#1A1A1A",
+            "#4A4A4A",
+            "#8C8C8C",
+            "#C8C4BB",
+            "#E63B2E"
+          ],
+          "bg": "#E9E7E2",
+          "v": 2
+        },
+        "box": [
+          36,
+          36,
+          36
+        ],
+        "rhombi": 3888,
+        "heightsSha256": "f4ffdece8b40a686b8495ff9b7e0a9c0f7f8531b8c9a3e71383a6b3f0ae7ec83",
+        "cftp": {
+          "T": 4096,
+          "coal": 2972,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 1.006449832622349,
+          "rSe": 0.006048907510646874,
+          "disFrac": 0.9191100823045267,
+          "disSe": 0.00948055027866451,
+          "predDisFrac": 0.906899682117109
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 2400,
+          "height": 2400,
+          "channelsChecked": 23040000,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 1090933,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 3888,
+          "matched": 3888,
+          "curves": 2,
+          "coordinates": 31612,
+          "maxCoordinateError": 0.004991037033050816
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "fill #D4D3CF vs #8C8C8C",
+            "fill #D4D3CF vs #8C8C8C",
+            "fill #D4D3CF vs #8C8C8C"
+          ]
+        },
+        "shellExport": {
+          "width": 2400,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 3888,
+            "matched": 3888,
+            "curves": 2,
+            "coordinates": 31612,
+            "maxCoordinateError": 0.004991037033050816
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "lozenge-print-6",
+        "parameters": {
+          "a": 16,
+          "b": 16,
+          "c": 16,
+          "aspect": "fit",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "height",
+          "shift": 0,
+          "inset": 0,
+          "strokeWidth": 0,
+          "strokeColor": 3,
+          "ring": 3,
+          "arctic": "off",
+          "curveW": 1.6,
+          "margin": 0.05,
+          "grain": 0,
+          "seed": "lozenge-print-6",
+          "palette": [
+            "#1B4F72",
+            "#2E86C1",
+            "#7FB3D5",
+            "#D6EAF8",
+            "#F4F6F7"
+          ],
+          "bg": "#0F1B2D",
+          "v": 2
+        },
+        "box": [
+          16,
+          16,
+          16
+        ],
+        "rhombi": 768,
+        "heightsSha256": "d5c51c5efce7f41eada10c0457429e0291aef64899289ae1fad9d1c8798c1d16",
+        "cftp": {
+          "T": 512,
+          "coal": 362,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 1.0200190177449966,
+          "rSe": 0.009094026528896479,
+          "disFrac": 0.9446614583333334,
+          "disSe": 0.014624488581751825,
+          "predDisFrac": 0.9068996821171089
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 2078,
+          "height": 2400,
+          "channelsChecked": 19948800,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 295226,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 768,
+          "matched": 768,
+          "curves": 0,
+          "coordinates": 6144,
+          "maxCoordinateError": 0.0049999999999954525
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "rhombus not found at 1448.11,390.18 (Infinity)",
+            "fill #F1F6F9 vs #ECF3FA",
+            "stroke"
+          ]
+        },
+        "shellExport": {
+          "width": 2078,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 768,
+            "matched": 768,
+            "curves": 0,
+            "coordinates": 6144,
+            "maxCoordinateError": 0.0049999999999954525
+          }
+        },
+        "statePreserved": true
+      }
+    ],
+    "chromium": "141.0.7390.37"
+  },
+  "environment": {
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
+    "platform": "linux",
+    "cpus": 4,
+    "seconds": 527
+  },
+  "passed": true
+}
