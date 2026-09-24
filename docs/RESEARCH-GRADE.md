@@ -220,6 +220,16 @@ impossible to miss on the tab itself, if it is not already.
 - Ising reports |m| with a tau_int error bar and, near T_c, tau_int itself in sweeps; below 0.95 T_c at
   h = 0 it is compared with Yang's exact magnetization. Wolff updates were not added.
 
+**Section 2, the exactly solvable tabs** ([SharpMeow/GENChase#146](https://github.com/SharpMeow/GENChase/pull/146), [#147](https://github.com/SharpMeow/GENChase/pull/147), [#148](https://github.com/SharpMeow/GENChase/pull/148) and [#150](https://github.com/SharpMeow/GENChase/pull/150)).
+- Validated within stated limits: `ising` (Onsager's T_c by Binder crossings, Yang's magnetization),
+  `percolation` (bond 1/2 and site 0.5927 by spanning probability, with diagonal and anisotropic controls),
+  `sandpile` (the abelian property and exact toppling counts against independent references, after the
+  counter was fixed), `rmt` (the semicircle and the Gaudin-Mehta spacing laws) and `kitaev` (the
+  Bogoliubov-de Gennes spectrum and its edge modes).
+- Partially validated, each for its stated reason: `aztec`, `lozenge` and `sle`.
+- Still open: `ssh` has its tool but its record is unvalidated, and the Aztec and lozenge frozen-region
+  readouts are being reworked.
+
 **Section 5, data out and provenance in** (same pull request).
 - Every PNG, PDF, TIFF, JPEG and SVG export and the print-job JSON carry `Studio.getProvenance()`: recipe
   link, build fingerprint, source SHA-256, validation status, witness, renderer and precision. WebP carries
