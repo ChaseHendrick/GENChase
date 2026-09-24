@@ -122,5 +122,7 @@ Completed follow-ups: [positive peakon fields and prints](PEAKON-FIELD-REVIEW.md
 
 The [complete PDE field review](PDE-FIELD-REVIEW.md) checks six finite solvers and all their print views. The [spanning-tree review](UST.md) combines exact graph enumeration, measured sampling frequencies, and independent print geometry.
 
+The exactly solvable tabs of [RESEARCH-GRADE.md](../docs/RESEARCH-GRADE.md), section 2, each have a review of the same kind: [Ising](ISING.md) against Yang's magnetization, Onsager's energy and the Binder cumulant; [random matrices](RMT.md) against exact moments, the semicircle and the Gaudin-Mehta spacing law; [SLE](SLE.md) against closed-form drivers and the dimension 1 + kappa/8; the [Aztec diamond](AZTEC.md) and [lozenge tilings](LOZENGE.md) against exact counts, uniformity and the arctic limit shapes. Each states the disagreements it found.
+
 The [complete finite FPUT review](FPUT-FIELD-REVIEW.md) covers independent chain
 trajectories, energy diagnostics, working duration controls and real print output.

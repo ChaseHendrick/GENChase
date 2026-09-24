@@ -464,18 +464,50 @@
     "sourceSha256": "26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8",
     "reference": "Oded Schramm, Israel Journal of Mathematics 118, 221 (2000), 'Scaling limits of loop-erased random walks and uniform spanning trees'. Charles Loewner's 1923 equation grows a curve into the upper half plane from a real driving function; Schramm showed that the only conformally invariant random curves with the domain Markov property come from driving it with Brownian motion of variance κ, and identified κ with the critical models whose interfaces they describe. Gregory Lawler, Schramm and Wendelin Werner computed the exponents; Stanislav Smirnov proved the percolation case. The curve is computed here as a composition of vertical slit maps, after Tom Kennedy, Journal of Statistical Physics 137, 839 (2009).",
     "equation": "∂g_t/∂t = 2 / (g_t(z) − √κ B_t),   γ(t) = g_t⁻¹(√κ B_t);   κ = 2 loop-erased walk, 8/3 self-avoiding walk, 4 level lines, 6 percolation, 8 Peano curve",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The trace dimension disagrees with Beffara's min(2, 1 + kappa/8) at every tested point: at the tab's maximum N 8000 box counting gives 1.2236 +/- 0.0063 (kappa 2, -4.2 sigma), 1.3765 +/- 0.0076 (kappa 4, -16 sigma) and 1.4780 +/- 0.0055 (kappa 6, -50 sigma), rising slowly with N. The estimator recovers known dimensions on Koch curves of comparable size, so the shortfall is the uniform-capacity-time discretization of the tab's trace, not the driver or the model.",
+      "Numerical agreement is established for the Loewner solver (zero, linear and square-root drivers, first order in dt, N 300-8000) and for the driver variance (kappa 2, 4, 6); the random curve's law beyond its box-counting dimension is not tested.",
+      "Print evidence covers five recipes (kappa 2, 6, 8, the sweep and a 12-seed bundle) on one Chromium build; kappa values other than 2, 4, 6 appear only in print recipes.",
+      "Finite samples from one seeded PRNG; error bars assume independent seeds."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Resolve the trace finely enough for its fractal dimension to converge (adaptive capacity steps or a much larger N, as in Kennedy 2009), then repeat the box-counting test; or state in the tab that the plate is a coarse discretization whose dimension is below 1 + kappa/8.",
+      "Test a distributional property of the trace (for example Schramm's left-passage probability) at kappa 8/3 and 6.",
+      "Extend the dimension ensemble to kappa 8/3 and 8 once the resolution is adequate."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/sle-science.js",
+        "command": "node tools/sle-science.js --write",
+        "results": "validation/results/sle-science.json",
+        "scope": "Module makeTrace against closed-form traces for xi = 0, c t (c 2, -3, 0.5) and c sqrt t (alpha 1/4, 1/3, 0.4, 0.6) with N 300-8000 at capacity time 1; quadratic variation of the module's driver over 16 seeds for kappa 2, 4, 6 at N 2000-8000; box-counting dimension over the same ensembles with a fixed relative fit range and a Koch-curve calibration of the estimator.",
+        "criteria": "Zero driver relative error <= N eps; linear error <= |c| dt at every point with order in (0.9, 1.1); square-root relative error <= 1/N at t = 1 with order in (0.9, 1.1) and scale covariance to 1e-9; driver QV/kappa within |z| < 3.86; dimension within |z| < 3.59 of 1 + kappa/8 (fails).",
+        "benchmark": "Exact Loewner traces (vertical segment; Kager-Nienhuis-Kadanoff linear-driver curve; straight-ray square-root driver), exact Brownian quadratic variation, Beffara's dimension theorem, and generalized Koch curves of known dimension for the estimator.",
+        "failureControl": "Slit capacity dt instead of 2 dt (zero-driver error 0.29); reversed composition order (linear error 2473 driver steps); driver variance 2 kappa (dimension shifts +0.159 and +0.193, 19 and 20 sigma; QV ratio 2.00).",
+        "limitations": "The dimension test disagrees with theory at N <= 8000 because of the discretization; only the solver and driver agree with their exact references."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/sle-science.js",
+        "command": "node tools/sle-science.js --write",
+        "results": "validation/results/sle-science.json",
+        "scope": "Five studio recipes through dist/studio.html with an auditRead() hook at 2400 px on the long side: every SVG path vertex, axis and stroke attribute, the fallback PNG, a displaced control, and recipe and traces before and after export.",
+        "criteria": "Studio drivers within 1e-12 and traces within 1e-9 of the curve size of the Node run; trace recomputed from the studio driver; SVG coordinates within 0.00501 px and every ink equal; PNG channels within 1 of an independent painting; displaced painting fails; state unchanged.",
+        "benchmark": "Page transform, segmenting and inks rebuilt independently in the page from the traces.",
+        "failureControl": "One-pixel displaced painting must differ on at least 100 channels (it differs on 62,159 to 604,069).",
+        "limitations": "Five recipes, one Chromium build; the vector RIP raster is recorded, not asserted."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/sle-science.json",
+    "domain": {
+      "parameters": "Solver: capacity time 1, N 300-8000, deterministic drivers listed in validation/SLE.md; driver and dimension: kappa 2, 4, 6 at N 2000, 4000, 8000 with 16 seeds each; prints: the five recipes in validation/results/sle-science.json.",
+      "conditions": "Chordal Loewner evolution in the upper half plane from 0, piecewise-constant driver sampled at step ends, Brownian driver of variance kappa from the recorded seeds; no grain; exports preserve recipe and traces.",
+      "resolution": "dt = 1/N; box counts at eps = D 2^{-k/2}, k 8-14, D the curve diameter; prints 2400 x 1920, 1920 x 2400, 2400 x 1600 and 2400 x 2400 px.",
+      "precision": "Binary64 solver and references; RGBA8 raster; SVG rounded to 0.01 px; Node and Chromium versions recorded."
+    }
   },
   {
     "id": "fractal",
@@ -704,18 +736,50 @@
     "sourceSha256": "d3cb40f6561fe895da5d7b12762f529af4b3e31e9f8561095f280d61851c31fb",
     "reference": "Noam Elkies, Greg Kuperberg, Michael Larsen and James Propp, Journal of Algebraic Combinatorics 1, 111 and 219 (1992), counted the domino tilings of the Aztec diamond of order n (there are 2^{n(n+1)/2}) and gave the shuffling algorithm that samples one uniformly. William Jockusch, James Propp and Peter Shor, 'Random domino tilings and the arctic circle theorem' (1998), proved that a uniformly random tiling is frozen outside the inscribed circle and disordered inside it. James Propp, Theoretical Computer Science 303, 267 (2003), on generalized domino shuffling.",
     "equation": "order n → n+1: delete colliding pairs, slide N↑ S↓ W← E→, fill each empty 2×2 block with a random pair",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The tab's own frozen share on the status line and its Frozen versus free coloring use a local test (every adjacent cell in the diamond carries the domino's type). Over independent seeds it tends to 0.2778 ± 0.0009 of the diamond, 67 standard errors above the arctic-circle area 1 - pi/4 = 0.2146, so it is not a measurement of the arctic region. This disagreement is why the status is partial; see validation/AZTEC.md.",
+      "Exact uniformity is established by exhaustive enumeration only at orders 1 to 5, run through the tab's build() and shuffle() below the UI range of 8 to 320; larger orders are tested only through the arctic boundary statistics.",
+      "The polar-region area and the axis radius agree with 1 - pi/4 and 1/sqrt(2) only after extrapolation in n with the stated form q_inf + A n^-2/3 + B n^-1 (0.3 and 0.7 sigma); a two-parameter n^-2/3 fit over orders 113 to 320 differs by 2.5 and 3.1 sigma, and at order 320 the polar area is still 0.030 above its limit.",
+      "Uniformity probabilities assume the seeded U.makeRng streams behave as independent uniform draws; fixed PRNG samples do not prove it.",
+      "Print evidence covers five recipes on one renderer (headless Chromium 141, SwiftShader, Linux). Grain is a raster finish that the vector print omits."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Replace or relabel the local frozen test and the printed frozen share (for example with the corner-connected polar regions in tools/lib/aztec-reference.js), rerun node tools/aztec-science.js --write, and review promotion.",
+      "Extend print evidence to other renderers and more recipes; extend exhaustive uniformity beyond order 5 only with a different method (the count is 2^{n(n+1)/2})."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/aztec-science.js",
+        "command": "node tools/aztec-science.js --write",
+        "results": "validation/results/aztec-science.json",
+        "scope": "The tab's own build(), shuffle(), dominoes() and frozen test run unmodified in Node: exhaustive enumeration and sampled frequencies at orders 1 to 5; polar-region area, axis radius, fluctuation exponent and the tab's frozen share over 1,950 independent seeds at orders 40, 57, 80, 113, 160, 226 and 320; five complete rendered recipes (orders 8 to 180) with every SVG rectangle, every PNG byte and the shell vector RIP at 8 in and 300 ppi.",
+        "criteria": "Tiling counts equal 2^{n(n+1)/2}; per order, Pearson chi-square p >= 0.001, no tiling undrawn, all tiling and domino-placement probabilities inside a simultaneous Hoeffding bound and a Bonferroni z bound at alpha 0.001; extrapolated polar area and axis radius within 3 sigma of 1 - pi/4 and 1/sqrt(2); four-fold symmetry within 3 sigma; tab frozen flags equal the stated definition on every plate; SVG coordinates <= 0.00501 px, PNG bytes <= 1, shell print equal to the rasterized reference SVG, state unchanged.",
+        "benchmark": "Backtracking enumeration of every tiling (Elkies, Kuperberg, Larsen and Propp 1992 count), exact domino placement probabilities from that enumeration, and the Jockusch-Propp-Shor arctic circle for the corner-connected polar regions measured independently of the module, with Johansson's n^{1/3} fluctuation scale for the finite-size form; geometry rebuilt from the documented layout.",
+        "failureControl": "A creation coin biased to 0.7 fails uniformity at orders 1 to 4 (chi-square up to 138,442 on 1,023) and moves the axis radii apart by 113 standard errors at order 160; removing the destruction step is rejected by the independent tiling check (26,830 of 40,960 draws at order 4); another seed's tiling fails the SVG check; a one-pixel shift fails the PNG check.",
+        "limitations": "The tab's local frozen share tends to 0.278, not 1 - pi/4; exhaustive uniformity only at orders 1 to 5; the arctic comparison depends on the stated extrapolation; one renderer."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/aztec-science.js",
+        "command": "node tools/aztec-science.js --write",
+        "results": "validation/results/aztec-science.json",
+        "scope": "Five recipes loaded through the recipe hash in a temporary copy of dist/studio.html (orders 8, 28, 60, 120 and 180; type, orientation and frozen coloring; inset 0 to 0.12; stroke on and off; circle on and off; grain 0), exported at 2,400 by 2,400 px by the module and by the shell's own Export.",
+        "criteria": "Browser tiling equals the Node run byte for byte and survives one-shuffle chunking; every SVG rectangle within 0.00501 px of independently computed geometry with every fill, stroke and circle ink right; module PNG within one level of an independent painting everywhere; shell PNG identical to the rasterized reference SVG; shell SVG carries the same geometry and provenance; recipe and tiling unchanged after export.",
+        "benchmark": "Backtracking enumeration of every tiling (Elkies, Kuperberg, Larsen and Propp 1992 count), exact domino placement probabilities from that enumeration, and the Jockusch-Propp-Shor arctic circle for the corner-connected polar regions measured independently of the module, with Johansson's n^{1/3} fluctuation scale for the finite-size form; geometry rebuilt from the documented layout.",
+        "failureControl": "Another seed's tiling of the same order fails the SVG check; the reference painting shifted by one pixel differs in 99,001 to 1,923,963 channels.",
+        "limitations": "Five recipes, one renderer; grain is not printed by the vector path."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/aztec-science.json",
+    "domain": {
+      "parameters": "Orders 1 to 5 (exhaustive uniformity, below the UI range) and 40, 57, 80, 113, 160, 226, 320 (arctic statistics); the five print recipes in validation/results/aztec-science.json.",
+      "conditions": "Uniform domino shuffling from the order-1 tiling with seeded U.makeRng streams (recipe seeds aztec-uniform-n<n>-<i>, aztec-arctic-n<n>-<i>, aztec-print-<k>); no grain in the print fixtures; exports must preserve recipe and tiling.",
+      "resolution": "Exact integer tilings; sampling errors as stated (standard errors over 100 to 400 independent seeds per order, 1,000-replicate seed bootstrap for extrapolations); prints at 2,400 by 2,400 px (8 in, 300 ppi).",
+      "precision": "Integer tilings and Binary64 statistics; SVG coordinates rounded to 0.01 px; RGBA8 raster; Node 22 and headless Chromium 141 with SwiftShader recorded in the results."
+    }
   },
   {
     "id": "skin",
@@ -780,18 +844,50 @@
     "sourceSha256": "e7beea07d24d9bc485fdface9d33a4806d55190cd219273b7ba26239fcc8ef8b",
     "reference": "The sampler is James Propp and David Wilson, 'Exact sampling with coupled Markov chains and applications to statistical mechanics', Random Structures and Algorithms 9, 223 to 252 (1996); random tilings are one of their own worked examples. The limit shape measured on the plate is Henry Cohn, Michael Larsen and James Propp, 'The shape of a typical boxed plane partition', New York Journal of Mathematics 4, 137 to 165 (1998). The count of boxed plane partitions is Percy MacMahon, 'Memoir on the theory of the partitions of numbers, Part VI: partitions in two-dimensional space, to which is added an adumbration of the theory of partitions in three-dimensional space', Philosophical Transactions of the Royal Society A 211, 345 to 373 (1912). The height function that turns a tiling into a stack of cubes is William Thurston, 'Conway's tiling groups', American Mathematical Monthly 97, 757 to 773 (1990). How long this chain needs is David Wilson, 'Mixing times of lozenge tiling and card shuffling Markov chains', Annals of Applied Probability 14, 274 to 325 (2004).",
     "equation": "h(x, y) ∈ [0, c] weakly decreasing;  heat bath h(x, y) ~ U{max(h(x+1,y), h(x,y+1)) … min(h(x−1,y), h(x,y−1))};  run −T → 0 from ⊥ and ⊤ on one fixed set of maps, doubling T until they agree, and read the common value at 0",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The arctic radius and free area the plate prints against the limit shape come from a local ring-3 frozen test and disagree with the Cohn-Larsen-Propp ellipse beyond their error bars at every size tested: over independent seeds the radius reads 1.0060 ± 0.0004 at 24,24,24, 1.0016 ± 0.0005 at 32,32,32 and 0.9979 ± 0.0006 at 48,48,48 (free area 0.9185, 0.9104 and 0.9035 against 0.9069), crossing the limit rather than converging to it. This is one of the two reasons the status is partial; see validation/LOZENGE.md.",
+      "The per-plate free-area error bar undercovers: the scatter across seeds is 1.13, 1.27 and 1.18 times the root-mean-square bar at 32,32,32, 48,48,48 and 24,40,46 (95 per cent intervals exclude or touch 1). The radius bar is calibrated or conservative. This is the second reason for the partial status.",
+      "Exhaustive uniformity covers the boxes 2,2,2, 2,2,3, 2,3,4 and 3,3,3 plus the volume law on 4,4,4; larger hexagons use the same code but are not enumerated here.",
+      "Uniformity probabilities assume the seeded draws behave as independent uniform variates; fixed PRNG samples do not prove it.",
+      "Print evidence covers seven recipes on one renderer (headless Chromium 141, SwiftShader, Linux). Grain is omitted from the vector sheet by design."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Either scope the arctic readout out of the validated claim as a finite-size diagnostic or measure a boundary that converges (for example corner-connected frozen regions with a finite-size extrapolation), and make the free-area bar cover or say where it does not; then rerun node tools/lozenge-science.js --write and review promotion.",
+      "Extend print evidence to other renderers and more recipes."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/lozenge-science.js",
+        "command": "node tools/lozenge-science.js --write",
+        "results": "validation/results/lozenge-science.json",
+        "scope": "The tab's own makeJob, runJob, buildTiling, corners, classify, measureArctic, ellipseOf, macmahonLog10 and samplerSelfTest run unmodified in Node: exhaustive enumeration of tilings and plane partitions up to 4,4,4 and the drawn-tiling bijection; sampled frequencies on four boxes and the 4,4,4 volume law; the arctic radius, free area and self-test over 470 independent full-regenerate plates on 24,24,24, 32,32,32, 48,48,48 and 24,40,46; seven complete rendered recipes with every SVG rhombus and curve point, every PNG byte and the shell vector RIP.",
+        "criteria": "Direct tiling count = plane partition count = MacMahon product (BigInt) on five boxes; drawn tilings distinct and in the enumeration; ellipseOf equal to the tangency solution within 1e-12; per box, Pearson chi-square p >= 0.001, no tiling undrawn, tiling and rhombus-placement probabilities inside a simultaneous Hoeffding bound and a Bonferroni z bound at alpha 0.001; volume chi-square p >= 0.001 and mean within 3.29 sigma of 32; every plate exact and sound; self-test deviations mean within 3 standard errors of 0 and pooled p >= 0.001; SVG coordinates <= 0.00501 px, PNG bytes <= 1, shell print equal to the rasterized reference SVG, state unchanged. The limit-shape readings and their bar calibration are reported, not pass criteria.",
+        "benchmark": "Direct enumeration of lozenge tilings of the hexagon's unit triangles and separate enumeration of plane partitions against MacMahon's product (1912); exact rhombus placement probabilities and the exact 4,4,4 volume distribution from those enumerations; the Cohn-Larsen-Propp inscribed ellipse solved independently from its tangency; the Propp-Wilson exactness claim tested against all of these; geometry rebuilt from the cube stack.",
+        "failureControl": "A biased monotone update (u^2), reading the state at the meeting time, and a coalescence check over half the sites each fail uniformity on 2,2,2 and 3,3,3 (chi-square 63 to 2,044,985) and are flagged by the tab's own self-test (z 4.7 to 65); another seed's tiling fails the SVG check; a one-pixel shift fails the PNG check.",
+        "limitations": "The arctic readout disagrees with the limit shape beyond its error bars at every size and its free-area bar undercovers at 32 and 48; exhaustive uniformity only up to 3,3,3 plus the 4,4,4 volume law; one renderer."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/lozenge-science.js",
+        "command": "node tools/lozenge-science.js --write",
+        "results": "validation/results/lozenge-science.json",
+        "scope": "Seven recipes loaded through the recipe hash in a temporary copy of dist/studio.html (11,11,11 with strokes; 24,40,46 with both curves; 48,48,8 frozen with the predicted ellipse; 32,32,32; 20,20,40 flat with strokes; 36,36,36 frozen at 1:1 with both curves; 16,16,16 height color with the hairline seam; grain 0), exported at 8 in and 300 ppi by the module and by the shell's own Export.",
+        "criteria": "Browser heights, CFTP times, sector radii and bars equal the Node regenerate() run; orientations and frozen flags equal the independent reconstruction; every SVG rhombus and curve point within 0.00501 px of geometry rebuilt from the cube stack with the documented colors, strokes and dashes; module PNG within one level of an independent painting; shell PNG identical to the rasterized reference SVG; shell SVG carries the same geometry and provenance; state unchanged after export.",
+        "benchmark": "Direct enumeration of lozenge tilings of the hexagon's unit triangles and separate enumeration of plane partitions against MacMahon's product (1912); exact rhombus placement probabilities and the exact 4,4,4 volume distribution from those enumerations; the Cohn-Larsen-Propp inscribed ellipse solved independently from its tangency; the Propp-Wilson exactness claim tested against all of these; geometry rebuilt from the cube stack.",
+        "failureControl": "Another seed's tiling of the same hexagon fails the SVG check; the reference painting shifted by one pixel differs in 295,226 to 1,276,675 channels.",
+        "limitations": "Seven recipes, one renderer; grain is not in the vector sheet."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/lozenge-science.json",
+    "domain": {
+      "parameters": "Boxes 2,2,2, 2,2,3, 2,3,4, 3,3,3 and 4,4,4 (exhaustive; the smallest are below the UI minimum of 3 and run through the same makeJob and runJob); hexagons 24,24,24, 32,32,32, 48,48,48 and 24,40,46 at ring 3 with the exact sampler; the seven print recipes in validation/results/lozenge-science.json.",
+      "conditions": "Coupling from the past from the empty and full boxes with the module counter hash keyed as build() keys it (recipe seeds lozenge-uniform-<box>-<i>, lozenge-volume-4x4x4-<i>, lozenge-arctic-<box>-<i>, lozenge-print-<k>); every plate exact, none fell back to the heat bath; no grain in the print fixtures; exports must preserve recipe and state.",
+      "resolution": "Exact integer tilings and heights; sampling errors as stated (standard errors over 60 to 200 independent seeds per hexagon; chi-square intervals for calibration ratios); prints from 1,386 by 2,400 to 2,400 by 2,400 px at 8 in and 300 ppi.",
+      "precision": "Integer heights and Binary64 statistics; SVG coordinates rounded to 0.01 px; RGBA8 raster; Node 22 and headless Chromium 141 with SwiftShader recorded in the results."
+    }
   },
   {
     "id": "arago",
