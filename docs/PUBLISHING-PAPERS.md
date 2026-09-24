@@ -89,9 +89,12 @@ the result; reveal it, and any others you want on record. List their ids in the 
 
 ## 4. The journal
 
-1. Read the journal's current author instructions: its preprint policy, its policy on AI assistance
-   (the manuscripts state that AI assistance was used), whether it asks for suggested reviewers, the
-   source format it wants, and whether it charges a publication fee.
+1. Read the journal's current author instructions: its preprint policy, its policy on AI assistance,
+   whether it asks for suggested reviewers, the source format it wants, and whether it charges a
+   publication fee. Keep the manuscripts' one-line AI statement: arXiv requires significant use of
+   generative AI to be reported in the work, Springer Nature asks for it in the manuscript (copy
+   editing alone is exempt), and JOSS requires a fuller "AI usage disclosure" section, which the
+   software paper has. A Zenodo-only record, such as the identities note, needs none.
 2. **Submit to one journal at a time.** arXiv plus one journal is normal; the same paper at two
    journals at once is not allowed.
 3. Fill the cover letter's placeholders only in the copy you send, never in the repository.

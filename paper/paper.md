@@ -177,13 +177,20 @@ bound. `node tools/provenance-check.js` reads the provenance back from every exp
   given error bar is adequate.
 - The survey of comparable projects rests mostly on search snippets.
 
-# AI assistance
+# AI usage disclosure
 
-The software and its documentation were developed, and this draft was prepared, with the
-assistance of an AI model (Anthropic's Claude, used through Claude Code); the repository's commit
-trailers record that assistance. The author takes full responsibility for the content of the software and of this paper.
-<!-- Owner: confirm this statement, and check the journal's current policy on AI assistance before
-submitting. -->
+Generative AI was used to develop the software, its documentation and this paper: Anthropic's
+Claude, used through the Claude Code tool. It was used for code generation and refactoring, for the
+test and verification harnesses, for documentation, and for drafting and copy-editing this paper;
+the repository's commit trailers record the sessions. Its output was checked as all code in the
+repository is: by the numerical validation records and the failure controls that must fail, by the
+continuous-integration checks, and by the author's review. The author made the design decisions,
+reviewed and validated the AI-assisted output, and takes full responsibility for the accuracy,
+originality and licensing of the software and of this paper.
+<!-- Owner: JOSS requires this section. Add the model names and versions it asks for after
+"Claude", and confirm that the last sentence is true before you submit. arXiv and Springer Nature
+journals also require AI use to be reported in the manuscript, which is why the research papers
+keep their one-line statement. -->
 
 # Acknowledgements
 
