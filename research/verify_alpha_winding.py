@@ -110,5 +110,28 @@ def P_minus_B(al, lr, m):
 for al in [-0.85, -1.0, -1.2, -1.5, -1.8]:
     best = min(((P_minus_B(al, lr, m), lr, m) for lr in [x / 4 for x in range(-40, 0)] for m in [0.05 + 0.1 * k for k in range(19)]))
     r = minimize(lambda v: P_minus_B(al, v[0], v[1]), [best[1], best[2]], method='Nelder-Mead', options={'xatol': 1e-10, 'fatol': 1e-40})
-    say(f"[6] alpha = {al}: minimum of P - B found = {r.fun:.3e} ({"positive" if r.fun > 0 else "NEGATIVE"}) at rho = 1e{r.x[0]:.1f}, m = {r.x[1]:.6f}")
+    say(f"[6] alpha = {al}: minimum of P - B found = {r.fun:.3e} ({'positive' if r.fun > 0 else 'NEGATIVE'}) at rho = 1e{r.x[0]:.1f}, m = {r.x[1]:.6f}")
+open('research/artifacts/verify_alpha_winding.txt', 'w').write('\n'.join(out) + '\n')
+
+# 7. Lemma 2 at SQG against Badin-Barry, Phys. Rev. E 98 (2018) 023110, Lemma 1 and Eq. (93): circulations (1, -G, 1)
+#    collapse self-similarly exactly for 0.387464... < G < 1/2, and at G = 0.49 the side ratio is 0.751484.
+import numpy as np
+from scipy.optimize import brentq
+def circ_f(r1, r2, r3, be=1.5):
+    r = [r1, r2, r3]; f = [x ** (-2 * be) for x in r]
+    return [r[i] ** 2 / (f[(i + 1) % 3] - f[(i + 2) % 3]) for i in range(3)]
+pairs = []
+with np.errstate(divide='ignore', invalid='ignore'):
+    for r1 in np.linspace(0.005, 0.9995, 3000):      # r2 = |z3 - z1| = 1 joins the two equal circulations
+        F = lambda r3: (lambda G: (G[0] - G[2]) / (abs(G[0]) + abs(G[2])))(circ_f(r1, 1.0, r3))
+        grid = np.linspace(1 - r1 + 1e-12, 1 + r1 - 1e-12, 600); v = [F(x) for x in grid]
+        for i in range(len(grid) - 1):
+            if np.isfinite(v[i]) and np.isfinite(v[i + 1]) and np.sign(v[i]) != np.sign(v[i + 1]):
+                try: r3 = brentq(F, grid[i], grid[i + 1], xtol=1e-15)
+                except ValueError: continue
+                if abs(F(r3)) < 1e-9:
+                    G = circ_f(r1, 1.0, r3); pairs.append((-G[1] / G[0], r1, r3))
+g = [p[0] for p in pairs]; o = min(pairs, key=lambda p: abs(p[0] - 0.49))
+say(f"[7] SQG, two equal circulations: {len(pairs)} collapsing triangles, -G2/G1 from {min(g):.6f} to {max(g):.6f} "
+    f"(Badin-Barry: 0.387464... to 1/2); at G = {o[0]:.5f} the side ratio is {min(o[1] / o[2], o[2] / o[1]):.6f} (Badin-Barry: 0.751484)")
 open('research/artifacts/verify_alpha_winding.txt', 'w').write('\n'.join(out) + '\n')
