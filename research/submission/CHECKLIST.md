@@ -39,10 +39,10 @@ submission.
 
 ## Inconsistencies to resolve first
 
-1. **Page count.** `arxiv-metadata.md` and `PRIVATE-COPIES.md` say the LaTeX build has 12 pages and
-   the Typst build 13, but the v0.6.2 entry in `CHANGELOG.md` says both PDFs were rebuilt at 13 pages
-   after three citations were added (#139). The repository Typst PDF has 13 pages. Build the private
-   LaTeX copy, count its pages, and correct the "Comments" line and PRIVATE-COPIES.md to match.
+1. **Page count. Resolved 2026-09-24.** The LaTeX build has 13 pages, both the repository `.tex` and
+   a private copy with the email line, built with pdflatex (TeX Live 2023) three times and no warnings.
+   The "Comments" line in `arxiv-metadata.md` and `PRIVATE-COPIES.md` said 12 and now say 13.
+   `node tools/paper-check.js` repeats this check wherever pdflatex is installed.
 2. **`identities/refs.bib` disagrees with the manuscript's bibliography** on three works cited in
    both. The manuscript is not built from `refs.bib` (it serves the identities note), but the two
    should agree. Check each against the source and fix whichever is wrong:

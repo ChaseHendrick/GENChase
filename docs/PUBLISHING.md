@@ -1,7 +1,7 @@
 # Publishing: the owner's checklist
 
 This is the part of [RESEARCH-GRADE.md](RESEARCH-GRADE.md), section 1, that needs a person with the
-project's accounts. Everything that could be done inside the repository is done; each step below is
+project's accounts. For a manuscript (arXiv, a journal), follow [PUBLISHING-PAPERS.md](PUBLISHING-PAPERS.md). Everything that could be done inside the repository is done; each step below is
 one action, and says how to check it worked.
 
 Decide one thing first: **the name you publish under.** The software metadata (`CITATION.cff`,
