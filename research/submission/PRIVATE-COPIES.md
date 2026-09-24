@@ -24,7 +24,7 @@ cp research/unequal-mu-n5-floors-2026-09-23.typ research/_private.typ
 # In research/_private.typ, replace
 #   #text(size: 9.5pt)[Independent researcher]
 # with
-#   #text(size: 9.5pt)[GENChase \ #link("mailto:you@example.com")[you\@example.com]]
+#   #text(size: 9.5pt)[Independent researcher \ #link("mailto:you@example.com")[you\@example.com]]
 # (the @ in the visible text must be escaped as \@)
 python3 -c "import typst; typst.compile('research/_private.typ', output='../Hendrick-minimal-winding-v1.pdf', root='.')"
 rm research/_private.typ
