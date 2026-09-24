@@ -6254,6 +6254,515 @@ shall not be misrepresented as the original profile.
     }
   }
 ]</script>
+<script>/* The shared uncertainty harness. Every measured number the studio prints against theory gets its
+   error bar from here, in the browser and in the Node tools alike, so there is one method per kind of
+   number instead of one per tab. AGENTS.md ("A measured number carries an error bar") says which method
+   fits which number; tools/lint.js enforces that printed comparisons go through compare().
+
+   Conventions. tau_int = 1/2 + sum_{t>=1} rho(t), so an uncorrelated series has tau_int = 1/2 and the
+   effective sample size is n / (2 tau_int). Every resampling draw comes from a seeded generator, so an
+   error bar reprints with its plate. */
+(function (root) {
+  'use strict';
+
+  function mean(x) { let s = 0; for (let i = 0; i < x.length; i++) s += x[i]; return x.length ? s / x.length : NaN; }
+  function variance(x) {
+    const n = x.length; if (n < 2) return NaN;
+    const m = mean(x); let s = 0;
+    for (let i = 0; i < n; i++) { const d = x[i] - m; s += d * d; }
+    return s / (n - 1);
+  }
+  const sd = x => Math.sqrt(variance(x));
+
+  // Small seeded generator (mulberry32) for resampling when the caller has no Studio.util.makeRng.
+  function seeded(seed) {
+    let h = 1779033703 ^ String(seed).length;
+    for (const ch of String(seed)) { h = Math.imul(h ^ ch.charCodeAt(0), 3432918353); h = (h << 13) | (h >>> 19); }
+    let a = h >>> 0;
+    return () => {
+      a = (a + 0x6d2b79f5) >>> 0;
+      let t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  const rngOf = opts => (opts && typeof opts.rng === 'function') ? opts.rng : seeded((opts && opts.seed) || 'genchase-stats');
+
+  /* ---- a correlated time series ---- */
+  // Normalized autocorrelation rho(t) for t = 0..maxLag, by direct sums.
+  function autocorr(x, maxLag) {
+    const n = x.length, m = mean(x);
+    let c0 = 0;
+    for (let i = 0; i < n; i++) { const d = x[i] - m; c0 += d * d; }
+    const L = Math.min(maxLag, n - 1), rho = new Float64Array(L + 1);
+    rho[0] = 1;
+    if (!(c0 > 0)) return rho;
+    for (let t = 1; t <= L; t++) {
+      let s = 0;
+      for (let i = 0; i + t < n; i++) s += (x[i] - m) * (x[i + t] - m);
+      rho[t] = s / c0;
+    }
+    return rho;
+  }
+  // Integrated autocorrelation time with Sokal's automatic window: the smallest W with W >= c tau(W).
+  // Lags are computed one at a time and stop at the window, so the cost is O(n W), not O(n^2).
+  // reliable is false when the series is shorter than 50 tau, where the estimate itself is poor.
+  function tauInt(x, opts) {
+    const c = (opts && opts.c) || 5, n = x.length;
+    if (n < 4) return { tau: NaN, window: 0, n, reliable: false };
+    const m = mean(x), d = new Float64Array(n);
+    let c0 = 0;
+    for (let i = 0; i < n; i++) { d[i] = x[i] - m; c0 += d[i] * d[i]; }
+    let tau = 0.5, W = 0;
+    if (c0 > 0) {
+      const maxLag = Math.floor(n / 2);
+      for (let t = 1; t <= maxLag; t++) {
+        let s = 0;
+        for (let i = 0; i + t < n; i++) s += d[i] * d[i + t];
+        tau += s / c0;
+        W = t;
+        if (t >= c * tau) break;
+      }
+    }
+    tau = Math.max(0.5, tau);
+    return { tau, window: W, n, reliable: n >= 50 * tau };
+  }
+  // Mean of a correlated series with its standard error from tau_int.
+  function seriesMean(x, opts) {
+    const n = x.length, m = mean(x), v = variance(x), t = tauInt(x, opts);
+    const nEff = n / (2 * t.tau);
+    return { mean: m, se: Math.sqrt(v / nEff), tau: t.tau, window: t.window, n, nEff, reliable: t.reliable };
+  }
+  // Flyvbjerg-Petersen blocking: halve the series repeatedly and recompute the naive error of the block
+  // means. The estimate rises while blocks are shorter than the correlation time and then levels off.
+  // The reported se is the largest among levels that keep at least 32 blocks: conservative by design.
+  function blocking(x) {
+    let y = Array.from(x), size = 1;
+    const levels = [];
+    while (y.length >= 4) {
+      const n = y.length, se = Math.sqrt(variance(y) / n);
+      levels.push({ blockSize: size, blocks: n, se, seErr: se / Math.sqrt(2 * (n - 1)) });
+      const next = [];
+      for (let i = 0; i + 1 < n; i += 2) next.push(0.5 * (y[i] + y[i + 1]));
+      y = next; size *= 2;
+    }
+    const usable = levels.filter(l => l.blocks >= 32);
+    const se = usable.length ? Math.max(...usable.map(l => l.se)) : NaN;
+    return { mean: mean(x), se, levels };
+  }
+  // Moving-block bootstrap of any statistic of a series. Blocks are drawn circularly, so every point is
+  // equally likely to appear. The default block length is the larger of 2 tau_int and n^(1/3).
+  function blockBootstrap(x, stat, opts) {
+    const n = x.length, rng = rngOf(opts), reps = (opts && opts.reps) || 400;
+    const b = Math.max(1, Math.min(n, Math.round((opts && opts.blockSize) || Math.max(2 * tauInt(x).tau, Math.cbrt(n)))));
+    const est = stat(Array.from(x)), draws = new Float64Array(reps), buf = new Array(n);
+    for (let r = 0; r < reps; r++) {
+      let k = 0;
+      while (k < n) {
+        const start = Math.floor(rng() * n);
+        for (let j = 0; j < b && k < n; j++) buf[k++] = x[(start + j) % n];
+      }
+      draws[r] = stat(buf);
+    }
+    const sorted = Array.from(draws).filter(Number.isFinite).sort((p, q) => p - q);
+    const q = f => sorted.length ? sorted[Math.min(sorted.length - 1, Math.max(0, Math.round(f * (sorted.length - 1))))] : NaN;
+    return { estimate: est, se: sd(sorted), lo: q(0.025), hi: q(0.975), reps: sorted.length, blockSize: b };
+  }
+
+  /* ---- a correlated field ---- */
+  // Averaged autocorrelation along rows (dir 'x') or columns ('y') of a W x H field, over up to 64
+  // evenly spaced lines, with the field's global mean removed.
+  function lineAutocorr(at, W, H, dir, maxLag, m) {
+    const lines = dir === 'x' ? H : W, len = dir === 'x' ? W : H, L = Math.min(maxLag, len - 1);
+    const pick = Math.min(64, lines), num = new Float64Array(L + 1), cnt = new Float64Array(L + 1);
+    const line = new Float64Array(len);
+    for (let q = 0; q < pick; q++) {
+      const k = Math.floor((q + 0.5) * lines / pick);
+      for (let i = 0; i < len; i++) line[i] = (dir === 'x' ? at(k * W + i) : at(i * W + k)) - m;
+      for (let t = 0; t <= L; t++) { let s = 0; for (let i = 0; i + t < len; i++) s += line[i] * line[i + t]; num[t] += s; cnt[t] += len - t; }
+    }
+    const rho = new Float64Array(L + 1), c0 = num[0] / cnt[0];
+    for (let t = 0; t <= L; t++) rho[t] = c0 > 0 ? (num[t] / cnt[t]) / c0 : (t ? 0 : 1);
+    return rho;
+  }
+  function windowTau(rho, c) {
+    let tau = 0.5, W = 0;
+    for (let t = 1; t < rho.length; t++) { tau += rho[t]; W = t; if (t >= c * tau) break; }
+    return { tau: Math.max(0.5, tau), window: W };
+  }
+  // Mean of one W x H field with an honest standard error. Cells in one field are correlated, so the
+  // naive sd / sqrt(W H) is too small. The effective number of independent cells is taken as
+  // N / (2 tau_x)(2 tau_y), with tau_x and tau_y the integrated autocorrelation lengths along rows and
+  // columns (Sokal window). That is exact for separable correlations and a close approximation for
+  // smooth isotropic ones. reliable is false when either side spans fewer than 20 correlation lengths.
+  // seTiles, from the scatter of 8 x 8 tile means, is a cross-check that needs no model of the correlation.
+  function fieldMean(values, W, H, opts) {
+    const at = (opts && opts.at) || (i => values[i]), c = (opts && opts.c) || 5, N = W * H;
+    let s = 0, s2 = 0;
+    for (let i = 0; i < N; i++) { const v = at(i); s += v; s2 += v * v; }
+    const m = s / N, v = Math.max(0, (s2 - N * m * m) / (N - 1));
+    const lag = Math.max(8, Math.floor(Math.min(W, H) / 4));
+    const tx = windowTau(lineAutocorr(at, W, H, 'x', lag, m), c), ty = windowTau(lineAutocorr(at, W, H, 'y', lag, m), c);
+    const nEff = N / (4 * tx.tau * ty.tau);
+    let seTiles = NaN;
+    if (W >= 8 && H >= 8) {
+      const means = [];
+      for (let qy = 0; qy < 8; qy++) for (let qx = 0; qx < 8; qx++) {
+        const x0 = Math.floor(qx * W / 8), x1 = Math.floor((qx + 1) * W / 8), y0 = Math.floor(qy * H / 8), y1 = Math.floor((qy + 1) * H / 8);
+        let a = 0, k = 0;
+        for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) { a += at(y * W + x); k++; }
+        means.push(a / k);
+      }
+      seTiles = Math.sqrt(variance(means) / means.length);
+    }
+    return { mean: m, se: Math.sqrt(v / nEff), nEff, tauX: tx.tau, tauY: ty.tau, seTiles,
+      reliable: W >= 40 * tx.tau && H >= 40 * ty.tau };
+  }
+
+  /* ---- independent samples and seed ensembles ---- */
+  function sampleMean(x) { return { mean: mean(x), se: Math.sqrt(variance(x) / x.length), n: x.length }; }
+  // Summary of one number measured on several independent seeds.
+  function ensemble(values) {
+    const v = values.filter(Number.isFinite);
+    return { mean: mean(v), sd: sd(v), se: Math.sqrt(variance(v) / v.length), n: v.length, min: Math.min(...v), max: Math.max(...v) };
+  }
+  // Run fn(seed) over seeds (sync or async) and summarize the number it returns. For the Node tools.
+  async function runEnsemble(seeds, fn) {
+    const values = [];
+    for (const seed of seeds) values.push(await fn(seed));
+    return Object.assign(ensemble(values), { values, seeds: Array.from(seeds) });
+  }
+
+  /* ---- fits ---- */
+  function ols(xs, ys) {
+    const n = xs.length; let sx = 0, sy = 0, sxx = 0, sxy = 0;
+    for (let i = 0; i < n; i++) { sx += xs[i]; sy += ys[i]; sxx += xs[i] * xs[i]; sxy += xs[i] * ys[i]; }
+    const den = n * sxx - sx * sx;
+    if (!(Math.abs(den) > 1e-12)) return { slope: NaN, intercept: NaN, n };
+    const slope = (n * sxy - sx * sy) / den;
+    return { slope, intercept: (sy - slope * sx) / n, n };
+  }
+  // Slope along one trajectory with a moving-block bootstrap over (x, y) pairs. The ordinary least
+  // squares error assumes independent residuals, which one trajectory does not have; the blocks keep
+  // neighboring points together so the resampled scatter includes their correlation.
+  function slopeBootstrap(xs, ys, opts) {
+    const n = xs.length, idx = Array.from({ length: n }, (_, i) => i);
+    const residuals = (() => { const f = ols(xs, ys); return idx.map(i => ys[i] - f.intercept - f.slope * xs[i]); })();
+    // Blocks of four residual correlation times: shorter blocks cut the low-frequency noise that
+    // dominates a trend's error, and the interval undercovers (tools/stats-check.js measures this).
+    const tauR = tauInt(residuals).tau;
+    const b = Math.max(2, Math.round((opts && opts.blockSize) || Math.max(4 * tauR, Math.cbrt(n))));
+    const boot = blockBootstrap(idx, sample => ols(sample.map(i => xs[i]), sample.map(i => ys[i])).slope,
+      Object.assign({}, opts, { blockSize: b }));
+    return { slope: ols(xs, ys).slope, se: boot.se, lo: boot.lo, hi: boot.hi, blockSize: b, reps: boot.reps, n, nEff: n / (2 * tauR) };
+  }
+  // Hill estimator of a power-law tail exponent alpha from the k largest values; se = alpha / sqrt(k).
+  function hill(values, k) {
+    const v = Array.from(values).filter(x => x > 0).sort((a, b) => b - a);
+    if (k < 2 || k >= v.length) return { alpha: NaN, se: NaN, k };
+    let s = 0;
+    for (let i = 0; i < k; i++) s += Math.log(v[i] / v[k]);
+    const alpha = k / s;
+    return { alpha, se: alpha / Math.sqrt(k), k, xmin: v[k] };
+  }
+
+  /* ---- printing a comparison ---- */
+  const BASES = Object.freeze({
+    sampled: 'sampled',
+    exact: 'exact, no sampling error',
+    deterministic: 'deterministic, no sampling error',
+    construction: 'true by construction; a regression test, not a prediction',
+  });
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  // A value and its error to matching decimals: the error to two significant figures.
+  function formatPair(value, err) {
+    if (!Number.isFinite(value)) return ['unavailable', ''];
+    if (!(err > 0) || !Number.isFinite(err)) return [String(Number(value.toPrecision(4))), ''];
+    const place = Math.floor(Math.log10(err)) - 1;
+    const decimals = Math.max(0, -place);
+    if (decimals > 8 || Math.abs(value) >= 1e6) return [value.toExponential(2), err.toExponential(1)];
+    return [value.toFixed(decimals), err.toFixed(decimals)];
+  }
+  function formatValue(value, digits) {
+    if (!Number.isFinite(value)) return 'unavailable';
+    if (value !== 0 && (Math.abs(value) < 1e-3 || Math.abs(value) >= 1e6)) return value.toExponential(2);
+    return String(Number(value.toPrecision(digits || 4)));
+  }
+  function sigmas(measured, expected, err) {
+    if (!Number.isFinite(measured) || !Number.isFinite(expected) || !(err > 0)) return null;
+    return (measured - expected) / err;
+  }
+  function sigmaText(z) {
+    if (z === null) return '';
+    const a = Math.abs(z);
+    return a < 0.05 ? 'within 0.1σ' : a.toFixed(1) + 'σ ' + (z < 0 ? 'low' : 'high');
+  }
+  // compare({ label, measured, expected, reference, basis, uncertainty, method, units, pending, digits, z, note })
+  // basis is required: 'sampled' (uncertainty and method required), 'exact', 'deterministic' or
+  // 'construction'. reference is how the expected value is named ("Euler", "Onsager", "surmise").
+  // A sampled comparison whose uncertainty cannot be computed yet must pass pending with the reason:
+  // it prints the value and the reason, never a verdict. z overrides the computed (measured - expected) /
+  // uncertainty when the caller has a better calibrated deviation (a Student t turned into a normal
+  // deviate, say). note is a short qualifier printed at the end ("one draw", "finite window").
+  function compare(o) {
+    if (!o || !Object.prototype.hasOwnProperty.call(BASES, o.basis)) throw new TypeError('compare(): basis must be sampled, exact, deterministic or construction');
+    const units = o.units ? ' ' + esc(o.units) : '';
+    const ref = o.expected === undefined || o.expected === null ? '' :
+      ' · ' + (o.reference ? esc(o.reference) + ' ' : 'theory ') + esc(typeof o.expected === 'string' ? o.expected : formatValue(o.expected, o.digits));
+    const expectedNum = typeof o.expected === 'number' ? o.expected : Number.isFinite(o.expectedValue) ? o.expectedValue : null;
+    let value, tail, title;
+    if (o.basis === 'sampled') {
+      if (!(o.uncertainty > 0) || !Number.isFinite(o.uncertainty)) {
+        if (!o.pending) throw new TypeError('compare(): a sampled comparison needs an uncertainty, or pending with the reason');
+        value = formatValue(o.measured, o.digits);
+        tail = ' · error bar pending: ' + esc(o.pending);
+      } else {
+        if (!o.method) throw new TypeError('compare(): a sampled comparison must name its method');
+        const [v, e] = formatPair(o.measured, o.uncertainty);
+        value = v + ' ± ' + e;
+        const z = sigmaText(Number.isFinite(o.z) ? o.z : sigmas(o.measured, expectedNum, o.uncertainty));
+        tail = z ? ' · ' + z : '';
+        title = o.method;
+      }
+    } else {
+      value = formatValue(o.measured, o.digits);
+      tail = ' · ' + BASES[o.basis];
+    }
+    return '<span class="cmp" data-basis="' + o.basis + '"' + (title ? ' title="' + esc(title) + '"' : '') + '>' +
+      esc(o.label) + ' <b>' + value + '</b>' + units + ref + tail + (o.note ? ' · ' + esc(o.note) : '') + '</span>';
+  }
+
+  const api = Object.freeze({
+    mean, variance, sd, seeded, autocorr, tauInt, seriesMean, blocking, blockBootstrap,
+    fieldMean, sampleMean, ensemble, runEnsemble, ols, slopeBootstrap, hill,
+    BASES, formatPair, formatValue, sigmas, sigmaText, compare,
+  });
+  root.GenChaseStats = api;
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>/* Data containers for research use: NumPy .npy arrays in an uncompressed .npz (zip) archive, and
+   provenance text embedded in PNG and JPEG files. Dependency-free; runs in the browser and in Node so
+   the tools test the same bytes the studio writes. Print containers (PDF, TIFF) are in print-formats.js. */
+(function (root) {
+  'use strict';
+  const enc = typeof TextEncoder !== 'undefined' ? new TextEncoder() : null;
+  const utf8 = text => enc.encode(String(text));
+  const latin1 = text => Uint8Array.from(String(text), c => {
+    const code = c.charCodeAt(0);
+    if (code > 255) throw new Error('Latin-1 text expected');
+    return code;
+  });
+
+  const CRC_TABLE = (() => {
+    const t = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) {
+      let c = n;
+      for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes, start) {
+    let c = start === undefined ? 0xffffffff : (start ^ 0xffffffff) >>> 0;
+    for (let i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xff] ^ (c >>> 8);
+    return (c ^ 0xffffffff) >>> 0;
+  }
+  function concat(parts) {
+    let n = 0;
+    for (const p of parts) n += p.length;
+    const out = new Uint8Array(n);
+    let at = 0;
+    for (const p of parts) { out.set(p, at); at += p.length; }
+    return out;
+  }
+
+  // JSON with every non-ASCII character escaped, for containers whose text fields are ASCII only
+  // (TIFF ASCII tags, JPEG comments read by naive tools). JSON.parse restores the original text.
+  function asciiJSON(value) {
+    return JSON.stringify(value).replace(/[\u007f-￿]/g, c => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
+  }
+
+  /* ---- NumPy .npy, format version 1.0 ---- */
+  const DTYPES = [
+    ['Float32Array', '<f4'], ['Float64Array', '<f8'], ['Int32Array', '<i4'], ['Uint32Array', '<u4'],
+    ['Int16Array', '<i2'], ['Uint16Array', '<u2'], ['Int8Array', '|i1'], ['Uint8Array', '|u1'], ['Uint8ClampedArray', '|u1'],
+  ];
+  function dtypeOf(data) {
+    for (const [name, descr] of DTYPES) if (typeof root[name] === 'function' && data instanceof root[name]) return descr;
+    throw new Error('Unsupported array type for .npy: ' + Object.prototype.toString.call(data));
+  }
+  function littleEndian() { return new Uint8Array(new Uint16Array([1]).buffer)[0] === 1; }
+  function npy(data, shape) {
+    const descr = dtypeOf(data);
+    if (!Array.isArray(shape) || !shape.length || !shape.every(n => Number.isInteger(n) && n >= 0)) throw new Error('Invalid .npy shape');
+    if (shape.reduce((a, b) => a * b, 1) !== data.length) throw new Error('Shape ' + JSON.stringify(shape) + ' does not match ' + data.length + ' values');
+    if (!littleEndian() && data.BYTES_PER_ELEMENT > 1) throw new Error('Big-endian hosts are not supported');
+    const dims = shape.length === 1 ? '(' + shape[0] + ',)' : '(' + shape.join(', ') + ')';
+    let header = "{'descr': '" + descr + "', 'fortran_order': False, 'shape': " + dims + ', }';
+    const pad = 64 - ((10 + header.length + 1) % 64);
+    header += ' '.repeat(pad === 64 ? 0 : pad) + '\n';
+    const head = new Uint8Array(10);
+    head.set([0x93, 0x4e, 0x55, 0x4d, 0x50, 0x59, 1, 0]);
+    head[8] = header.length & 0xff; head[9] = header.length >> 8;
+    const body = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
+    return concat([head, latin1(header), body]);
+  }
+  function readNpy(bytes) {
+    if (bytes[0] !== 0x93 || String.fromCharCode(...bytes.subarray(1, 6)) !== 'NUMPY') throw new Error('Not a .npy file');
+    const len = bytes[8] | (bytes[9] << 8);
+    const header = String.fromCharCode(...bytes.subarray(10, 10 + len));
+    const descr = /'descr': '([^']+)'/.exec(header)[1];
+    const shape = /'shape': \(([^)]*)\)/.exec(header)[1].split(',').map(s => s.trim()).filter(Boolean).map(Number);
+    const name = (DTYPES.find(d => d[1] === descr) || [])[0];
+    if (!name) throw new Error('Unsupported dtype ' + descr);
+    const body = bytes.slice(10 + len);
+    return { descr, shape, data: new root[name](body.buffer, 0, body.byteLength / root[name].BYTES_PER_ELEMENT) };
+  }
+
+  /* ---- zip, stored (no compression), which is what numpy.load reads as .npz ---- */
+  function zipStore(entries) {
+    const local = [], central = [];
+    let offset = 0;
+    // A fixed DOS timestamp (1980-01-01 00:00) keeps the archive byte-identical for identical content.
+    const time = 0, date = (0 << 9) | (1 << 5) | 1;
+    for (const { name, data } of entries) {
+      if (!/^[A-Za-z0-9_.-]{1,80}$/.test(name)) throw new Error('Invalid archive member name: ' + name);
+      const nameBytes = latin1(name), crc = crc32(data), size = data.length;
+      if (size >= 0xffffffff) throw new Error('Member too large for a zip without Zip64');
+      const lh = new DataView(new ArrayBuffer(30));
+      lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0, true); lh.setUint16(8, 0, true);
+      lh.setUint16(10, time, true); lh.setUint16(12, date, true); lh.setUint32(14, crc, true);
+      lh.setUint32(18, size, true); lh.setUint32(22, size, true); lh.setUint16(26, nameBytes.length, true); lh.setUint16(28, 0, true);
+      local.push(new Uint8Array(lh.buffer), nameBytes, data);
+      const ch = new DataView(new ArrayBuffer(46));
+      ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0, true);
+      ch.setUint16(10, 0, true); ch.setUint16(12, time, true); ch.setUint16(14, date, true); ch.setUint32(16, crc, true);
+      ch.setUint32(20, size, true); ch.setUint32(24, size, true); ch.setUint16(28, nameBytes.length, true);
+      ch.setUint32(42, offset, true);
+      central.push(new Uint8Array(ch.buffer), nameBytes);
+      offset += 30 + nameBytes.length + size;
+    }
+    const cd = concat(central);
+    const end = new DataView(new ArrayBuffer(22));
+    end.setUint32(0, 0x06054b50, true); end.setUint16(8, entries.length, true); end.setUint16(10, entries.length, true);
+    end.setUint32(12, cd.length, true); end.setUint32(16, offset, true);
+    return concat([...local, cd, new Uint8Array(end.buffer)]);
+  }
+  function readZip(bytes) {
+    const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    const out = {};
+    let at = 0;
+    while (at + 30 <= bytes.length && view.getUint32(at, true) === 0x04034b50) {
+      if (view.getUint16(at + 8, true) !== 0) throw new Error('Only stored zip members are supported');
+      const size = view.getUint32(at + 18, true), nlen = view.getUint16(at + 26, true), xlen = view.getUint16(at + 28, true);
+      const name = String.fromCharCode(...bytes.subarray(at + 30, at + 30 + nlen));
+      const data = bytes.slice(at + 30 + nlen + xlen, at + 30 + nlen + xlen + size);
+      if (crc32(data) !== view.getUint32(at + 14, true)) throw new Error('CRC mismatch in ' + name);
+      out[name] = data;
+      at += 30 + nlen + xlen + size;
+    }
+    return out;
+  }
+
+  /* ---- PNG text chunks ---- */
+  const PNG_SIG = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
+  function pngChunks(bytes) {
+    for (let i = 0; i < 8; i++) if (bytes[i] !== PNG_SIG[i]) throw new Error('Not a PNG file');
+    const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength), chunks = [];
+    let at = 8;
+    while (at + 12 <= bytes.length) {
+      const len = view.getUint32(at), type = String.fromCharCode(...bytes.subarray(at + 4, at + 8));
+      chunks.push({ type, start: at, end: at + 12 + len, data: bytes.subarray(at + 8, at + 8 + len) });
+      at += 12 + len;
+      if (type === 'IEND') break;
+    }
+    return chunks;
+  }
+  function chunk(type, data) {
+    const out = new Uint8Array(12 + data.length), view = new DataView(out.buffer);
+    view.setUint32(0, data.length);
+    out.set(latin1(type), 4); out.set(data, 8);
+    view.setUint32(8 + data.length, crc32(out.subarray(4, 8 + data.length)));
+    return out;
+  }
+  function textKeyword(chunkData) {
+    const zero = chunkData.indexOf(0);
+    return zero < 0 ? '' : String.fromCharCode(...chunkData.subarray(0, zero));
+  }
+  // entries: { keyword: text }. Latin-1 text goes in tEXt, anything else in uncompressed iTXt.
+  // A chunk with the same keyword is replaced, so provenance is never stacked twice.
+  function pngWithText(bytes, entries) {
+    const chunks = pngChunks(bytes);
+    const iend = chunks.find(c => c.type === 'IEND');
+    if (!iend) throw new Error('PNG has no IEND');
+    const replace = new Set(Object.keys(entries));
+    const kept = [bytes.subarray(0, 8)];
+    for (const c of chunks) {
+      if (c.type === 'IEND') break;
+      if ((c.type === 'tEXt' || c.type === 'iTXt') && replace.has(textKeyword(c.data))) continue;
+      kept.push(bytes.subarray(c.start, c.end));
+    }
+    for (const [keyword, text] of Object.entries(entries)) {
+      if (!/^[\x20-\x7e]{1,79}$/.test(keyword) || /^ | $|  /.test(keyword)) throw new Error('Invalid PNG keyword: ' + keyword);
+      const plain = /^[\x09\x0a\x20-\x7e\xa0-\xff]*$/.test(text);
+      kept.push(plain
+        ? chunk('tEXt', concat([latin1(keyword), new Uint8Array([0]), latin1(text)]))
+        : chunk('iTXt', concat([latin1(keyword), new Uint8Array([0, 0, 0, 0, 0]), utf8(text)])));
+    }
+    kept.push(bytes.subarray(iend.start, iend.end));
+    return concat(kept);
+  }
+  function readPngText(bytes) {
+    const out = {}, dec = new TextDecoder();
+    for (const c of pngChunks(bytes)) {
+      if (c.type === 'tEXt') {
+        const k = textKeyword(c.data);
+        out[k] = String.fromCharCode(...c.data.subarray(k.length + 1));
+      } else if (c.type === 'iTXt') {
+        const k = textKeyword(c.data);
+        let at = k.length + 1;
+        if (c.data[at] !== 0) continue; // compressed iTXt is not written here
+        at += 2;
+        at = c.data.indexOf(0, at) + 1; // language tag
+        at = c.data.indexOf(0, at) + 1; // translated keyword
+        out[k] = dec.decode(c.data.subarray(at));
+      }
+    }
+    return out;
+  }
+
+  /* ---- JPEG comment segment ---- */
+  function jpegWithComment(bytes, text) {
+    if (bytes[0] !== 0xff || bytes[1] !== 0xd8) throw new Error('Not a JPEG file');
+    const body = latin1(text);
+    if (body.length > 65533) throw new Error('JPEG comment too long');
+    // After SOI and an APP0 (JFIF) segment when present, so JFIF readers still see APP0 first.
+    let at = 2;
+    if (bytes[2] === 0xff && bytes[3] === 0xe0) at = 4 + ((bytes[4] << 8) | bytes[5]);
+    const seg = new Uint8Array(4 + body.length);
+    seg[0] = 0xff; seg[1] = 0xfe; seg[2] = (body.length + 2) >> 8; seg[3] = (body.length + 2) & 0xff; seg.set(body, 4);
+    return concat([bytes.subarray(0, at), seg, bytes.subarray(at)]);
+  }
+  function readJpegComments(bytes) {
+    const out = [];
+    let at = 2;
+    while (at + 4 <= bytes.length && bytes[at] === 0xff) {
+      const marker = bytes[at + 1];
+      if (marker === 0xda || marker === 0xd9) break;
+      const len = (bytes[at + 2] << 8) | bytes[at + 3];
+      if (marker === 0xfe) out.push(String.fromCharCode(...bytes.subarray(at + 4, at + 2 + len)));
+      at += 2 + len;
+    }
+    return out;
+  }
+
+  const api = Object.freeze({ crc32, asciiJSON, npy, readNpy, zipStore, readZip, pngWithText, readPngText, jpegWithComment, readJpegComments });
+  root.GenChaseDataFormats = api;
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
 <script>/* Lossless print containers. ICC sRGB2014 profile: see licenses/ICC-sRGB.txt. */
 (function (root) {
   'use strict';
@@ -6613,7 +7122,10 @@ shall not be misrepresented as the original profile.
     return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
-  const util = { TAU, makeRng, makeNoise, clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor, inkRgba, mixHex, makeRamp, makeRampLUT, toBlob, upscale, escapeHtml, svgEsc, svgDoc, svgBlob };
+  // stats is the shared uncertainty harness (src/shared/stats.js). A status line that prints a measured
+  // number against theory builds that span with util.stats.compare(), which refuses to print a
+  // comparison without an error bar or a stated basis; tools/lint.js checks the modules use it.
+  const util = { TAU, makeRng, makeNoise, clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor, inkRgba, mixHex, makeRamp, makeRampLUT, toBlob, upscale, escapeHtml, svgEsc, svgDoc, svgBlob, stats: window.GenChaseStats };
 
   /* ================================================================
      gl — small WebGL2 helper for fullscreen-pass simulations

@@ -185,7 +185,10 @@
     return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
-  const util = { TAU, makeRng, makeNoise, clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor, inkRgba, mixHex, makeRamp, makeRampLUT, toBlob, upscale, escapeHtml, svgEsc, svgDoc, svgBlob };
+  // stats is the shared uncertainty harness (src/shared/stats.js). A status line that prints a measured
+  // number against theory builds that span with util.stats.compare(), which refuses to print a
+  // comparison without an error bar or a stated basis; tools/lint.js checks the modules use it.
+  const util = { TAU, makeRng, makeNoise, clamp, lerp, smoothstep, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, hslToHex, luminance, isLight, inkFor, inkRgba, mixHex, makeRamp, makeRampLUT, toBlob, upscale, escapeHtml, svgEsc, svgDoc, svgBlob, stats: window.GenChaseStats };
 
   /* ================================================================
      gl — small WebGL2 helper for fullscreen-pass simulations
