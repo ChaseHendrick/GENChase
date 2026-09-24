@@ -17,7 +17,10 @@ test('command allowlist rejects injection and defaults to full evidence',()=>{
   const vortex=command(root,{workspace:'contribute',mode:'vortex-collapse',alpha:1,n:6,samples:20,start:40});
   assert.deepEqual(vortex.args,['tools/vortex-collapse-search.js','--alpha','1','--n','6','--start','40','--count','20','--threads','1']);
   assert.deepEqual(command(root,{workspace:'contribute',mode:'vortex-threshold',alpha:1,n:16,to:3}).args,['tools/vortex-collapse-search.js','--continue','--alpha','1','--n','16','--to','3']);
-  for(const bad of [{to:1},{to:4},{n:2},{alpha:0.12345},{threads:0},{threads:1.5},{threads:100000}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-threshold',alpha:1,n:16,to:3,...bad}));
+  for(const bad of [{to:1},{to:4},{n:2},{alpha:0.12345}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-threshold',alpha:1,n:16,to:3,...bad}));
+  assert.equal(command(root,{workspace:'contribute',mode:'vortex-threshold',alpha:1,n:16,to:1.005}).input.to,1.005,'three decimals survive binary rounding');
+  for(const bad of [{threads:0},{threads:1.5},{threads:100000}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-collapse',alpha:1,n:6,...bad}));
+  assert.doesNotThrow(()=>command(root,{workspace:'contribute',mode:'derive',threads:100000}),'threads only concern the vortex jobs');
   assert(Number.isInteger(command(root,{workspace:'contribute',mode:'vortex-collapse'}).input.start),'a random seed block is recorded in the job input');
   assert.deepEqual(command(root,{workspace:'contribute',mode:'vortex-grow',alpha:0,n:30,samples:8,start:0}).args,['tools/vortex-collapse-search.js','--grow','--alpha','0','--n','30','--start','0','--count','8','--threads','1']);
   for(const bad of [{n:129},{n:4},{samples:0}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-grow',...bad}));

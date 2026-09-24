@@ -17,7 +17,7 @@ const PROTOCOL = {
   gauge: 'z_1 = 0, z_2 = 1, G_1 = 1; unknowns z_3..z_N, G_2..G_N, kappa. Residual v_j - v_1 - kappa (z_j - z_1), j = 2..N.',
   landingAttempts: 24, newtonIterations: 250,
   limits: { feasibility: 1e-11, reducedGradient: 1e-8, soscRelative: 1e-7, licq: 1e-7, minSeparation: 1e-6, circulationSpread: 1e8,
-    odeShrink: 0.5, odeAmplification: 1e4, odeShape: 1e-6, odeWinding: 1e-6, invariant: 1e-8, center: 1e-8, trivialModes: 1e-7 },
+    odeShrink: 0.5, odeAmplification: 1e4, odeShape: 1e-6, odeWinding: 1e-6, invariant: 1e-8, center: 1e-8, trivialModes: 1e-7, thresholdWidth: 1e-4 },
 };
 // Values this repository's Python searches found; numerical, priority unconfirmed. The N = 3 entry is
 // the sharp infimum sqrt(3 + alpha)/(2 + alpha), which no configuration attains.
@@ -249,7 +249,9 @@ function minimize(mdl, x0) {
     history.push(f); grads.push(norm(state.reduced) / gscale);
     const k = history.length;
     if (k > 30 && history[k - 16] - f < 1e-2 * f && grads[k - 16] < 10 * grads[k - 1]) break;
-    if (norm(state.reduced) / gscale < PROTOCOL.limits.reducedGradient * 1e-2) { status = 'stationary'; break; }
+    // P >= 0, so a point with P below the zero-winding tolerance is a global minimum; the gradient test, which is
+    // relative to sqrt(P^2) = P, stops meaning anything as P -> 0.
+    if (Math.sqrt(f) < ZERO_WINDING || norm(state.reduced) / gscale < PROTOCOL.limits.reducedGradient * 1e-2) { status = 'stationary'; break; }
     const R = reducedHessian(mdl, x, state.Z, state.lambda), { values, vectors } = jacobiEigen(R);
     const big = Math.max(...values.map(Math.abs), 1e-300), dir = new Float64Array(mdl.n);
     for (let e = 0; e < values.length; e++) {
@@ -488,11 +490,11 @@ function margins(results) {
     worstInvariant: worst(r => Math.max(r.certificate.invariants.angularImpulse, r.certificate.invariants.energy)),
     worstSymmetryMode: worst(r => r.certificate.stability.trivialModeError), worstPairing: worst(r => r.certificate.stability.pairingError) };
 }
-function computeSummary(results, wallSeconds, measuredJoules) {
-  const cpuSeconds = results.reduce((a, r) => a + (r.cpuMs || 0), 0) / 1000, hours = cpuSeconds / 3600;
+function computeSummary(results, wallSeconds, measuredJoules, block = {}) {
+  const threads = block.threads || 1, cpuSeconds = Number.isFinite(block.cpuSeconds) ? block.cpuSeconds : results.reduce((a, r) => a + (r.cpuMs || 0), 0) / 1000, hours = cpuSeconds / 3600;
   const tally = results.reduce((a, r) => (a[r.status] = (a[r.status] || 0) + 1, a), {}), certified = (tally['certified-local-minimum'] || 0) + (tally['zero-winding'] || 0);
   return { seeds: results.length, wallSeconds, cpuSeconds, cpuSecondsPerSeed: results.length ? cpuSeconds / results.length : null,
-    utilization: wallSeconds > 0 ? Math.min(1, cpuSeconds / wallSeconds) : null, peakMemoryMiB: +(process.resourceUsage().maxRSS / 1024).toFixed(1),
+    utilization: wallSeconds > 0 ? cpuSeconds / (wallSeconds * threads) : null, peakMemoryMiB: +(process.resourceUsage().maxRSS / 1024).toFixed(1),
     seedsPerCpuHour: hours > 0 ? results.length / hours : null, certifiedPerCpuHour: hours > 0 ? certified / hours : null,
     yield: Object.fromEntries(Object.entries(tally).map(([k, v]) => [k, v / results.length])),
     energy: energy(cpuSeconds, measuredJoules ?? undefined) };
@@ -503,9 +505,10 @@ function run(opt) {
 }
 // One seed of either kind, with its own CPU time. Worker threads measure their own thread; the main thread measures itself.
 function runSeed(spec, seed) {
-  const clock = process.threadCpuUsage ? () => process.threadCpuUsage() : () => process.cpuUsage(), c0 = clock();
-  const r = spec.kind === 'grow' ? growSeed(spec.alpha, spec.parent, seed) : searchSeed(spec.alpha, spec.N, seed), c1 = clock();
-  r.cpuMs = (c1.user - c0.user + c1.system - c0.system) / 1000;
+  // A worker thread has no honest per-seed CPU without a per-thread clock: process.cpuUsage would count every thread.
+  const clock = process.threadCpuUsage ? () => process.threadCpuUsage() : isMainThread ? () => process.cpuUsage() : null, c0 = clock && clock();
+  const r = spec.kind === 'grow' ? growSeed(spec.alpha, spec.parent, seed) : searchSeed(spec.alpha, spec.N, seed), c1 = clock && clock();
+  r.cpuMs = clock ? (c1.user - c0.user + c1.system - c0.system) / 1000 : null;
   return r;
 }
 // Run seeds on up to `threads` worker threads. Seeds are independent and deterministic, so the results, their order and
@@ -534,7 +537,7 @@ async function runBlock({ alpha, N, start, count, file, spec, method, threads = 
       else console.log('Vortex checkpoint changed or damaged; restarting this seed block.');
     } catch { console.log('Vortex checkpoint could not be read; restarting this seed block.'); }
   }
-  const t0 = Date.now(), e0 = energyCounter(), pending = new Map();
+  const t0 = Date.now(), e0 = energyCounter(), pending = new Map(), cpu0 = process.cpuUsage(), resumedCpuMs = results.reduce((a, r) => a + (r.cpuMs || 0), 0);
   const seeds = Array.from({ length: count - results.length }, (_, i) => start + results.length + i);
   // Buffer out-of-order results and commit them in seed order, so the checkpoint is always a clean prefix.
   await mapSeeds(spec, seeds, threads, r => {
@@ -555,7 +558,9 @@ async function runBlock({ alpha, N, start, count, file, spec, method, threads = 
     boundaryApproach: lowest(results.filter(r => ['stalled', 'degenerate'].includes(r.status))),
     belowN3Infimum: N === 3 ? (lowest(results) ?? Infinity) < infimum3(alpha) * (1 - 1e-9) : undefined, elapsedSeconds: (Date.now() - t0) / 1000,
     // CPU time covers every seed, including seeds finished before a resume; wall time and energy cover this run only.
-    compute: computeSummary(results, (Date.now() - t0) / 1000, energyBetween(e0, energyCounter())),
+    // The block's CPU is the whole process over this run (main thread, workers, GC and compiler threads), plus the
+    // recorded CPU of seeds resumed from a checkpoint; per-seed cpuMs is each seed's own thread.
+    compute: computeSummary(results, (Date.now() - t0) / 1000, energyBetween(e0, energyCounter()), { cpuSeconds: (resumedCpuMs + (u => (u.user + u.system) / 1000)(process.cpuUsage(cpu0))) / 1000, threads }),
     certificateMargins: margins(results), resultsDigest: digest(results), runtime: { ...runtimeCard(), threads } };
   const out = { ...header(alpha, N), method, summary, minima, results };
   fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, JSON.stringify(out, null, 1) + '\n');
@@ -651,7 +656,9 @@ async function continueAlpha(opt) {
   if (bracket) {
     let { a, xa, b, xb } = bracket; const aZero = xa.status === 'zero-winding';
     while (Math.abs(b - a) > tol) {
-      const mid = (a + b) / 2, got = atAlpha(N, mid, (aZero ? xb : xa).x);
+      const mid = (a + b) / 2;
+      let got = atAlpha(N, mid, (aZero ? xb : xa).x);
+      if (!got.x) got = atAlpha(N, mid, (aZero ? xa : xb).x);
       if (!got.x) break;
       if ((got.status === 'zero-winding') === aZero) { a = mid; xa = got; } else { b = mid; xb = got; }
     }
@@ -663,7 +670,8 @@ async function continueAlpha(opt) {
     const lowSide = bracket.xa.status === 'zero-winding' ? { at: bracket.b, r: bracket.xb } : { at: bracket.a, r: bracket.xa };
     const zeroSide = bracket.xa.status === 'zero-winding' ? { at: bracket.a, r: bracket.xa } : { at: bracket.b, r: bracket.xb };
     threshold = { positive: { ...side(lowSide.r), alpha: lowSide.at }, zero: { ...side(zeroSide.r), alpha: zeroSide.at }, width: Math.abs(bracket.b - bracket.a),
-      certified: lowSide.r.status === 'certified-local-minimum' && zeroSide.r.status === 'zero-winding' };
+      converged: Math.abs(bracket.b - bracket.a) <= tol + 1e-12,
+      certified: lowSide.r.status === 'certified-local-minimum' && zeroSide.r.status === 'zero-winding' && Math.abs(bracket.b - bracket.a) <= tol + 1e-12 };
   }
   const dc = process.cpuUsage(c0), cpuSeconds = (dc.user + dc.system) / 1e6;
   const out = { experiment: 'vortex-threshold', protocol: PROTOCOL.version, N, fromAlpha: a0, toAlpha: to, source, step, tol,
@@ -673,7 +681,7 @@ async function continueAlpha(opt) {
   const file = opt.out || path.join(root, 'run/vortex-collapse', `vortex-threshold-n${N}-a${a0}-to${to}.json`);
   fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, JSON.stringify(out, null, 1) + '\n');
   if (process.env.GENCHASE_JOB_DIR) { const dest = path.join(process.env.GENCHASE_JOB_DIR, 'outputs/validation/results', path.basename(file)); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.copyFileSync(file, dest); }
-  console.log(threshold ? `N ${N}: zero winding between alpha ${threshold.positive.alpha.toFixed(6)} (P = ${threshold.positive.P.toExponential(3)}) and ${threshold.zero.alpha.toFixed(6)}${threshold.certified ? ', both sides certified' : ', NOT both certified'}.` : `N ${N}: no crossing between alpha ${a0} and ${to}${end ? ` (branch lost at ${end.alpha}: ${end.lost})` : ''}.`);
+  console.log(threshold ? `N ${N}: zero winding between alpha ${threshold.positive.alpha.toFixed(6)} (P = ${threshold.positive.P.toExponential(3)}) and ${threshold.zero.alpha.toFixed(6)}${threshold.certified ? ', both sides certified' : threshold.converged ? ', NOT both certified' : `, bisection stopped at width ${threshold.width.toExponential(2)} (NOT converged)`}.` : `N ${N}: no crossing between alpha ${a0} and ${to}${end ? ` (branch lost at ${end.alpha}: ${end.lost})` : ''}.`);
   console.log('Result: ' + path.relative(root, file));
   return out;
 }
@@ -696,7 +704,7 @@ function verifyFiles(files, write) {
     if (Number.isFinite(c?.energy?.joules)) { spent.measuredJoules += c.energy.joules; spent.filesMeasured++; }
     const cell = (spent.byCase ||= {})[data.alpha + '/' + data.N] ||= { alpha: Number(data.alpha), N: Number(data.N), seeds: 0, cpuSeconds: 0, digests: [] };
     cell.seeds += data.results?.length || 0; cell.cpuSeconds += Number.isFinite(c?.cpuSeconds) ? c.cpuSeconds : Number(data.summary?.elapsedSeconds) || 0;
-    if (data.summary?.resultsDigest && data.summary.seeds) cell.digests.push({ block: data.summary.seeds, digest: data.summary.resultsDigest, machine: data.machine || 'unlabelled', runtime: data.summary.runtime ? data.summary.runtime.cpuModel + ', ' + data.summary.runtime.node : null });
+    if (data.summary?.resultsDigest && data.summary.seeds) cell.digests.push({ block: data.summary.seeds, key: [data.protocol?.version ?? 1, data.method?.kind || 'multistart', data.method?.parentN ?? '', data.method?.parentP ?? '', data.summary.seeds.start, data.summary.seeds.count].join('/'), digest: data.summary.resultsDigest, machine: data.machine || 'unlabelled', runtime: data.summary.runtime ? data.summary.runtime.cpuModel + ', ' + data.summary.runtime.node : null });
     const alpha = Number(data.alpha), N = Number(data.N); assert(Number.isFinite(alpha) && Number.isInteger(N) && N >= 3 && N <= 128, f + ': bad alpha or N.');
     const mdl = model(N, alpha), key = alpha + '/' + N;
     for (const m of data.minima || []) {
@@ -725,7 +733,7 @@ function verifyFiles(files, write) {
   const busy = spent.cpuSeconds + spent.wallSecondsWithoutCpuRecord;
   // The same seed block run twice must give the same digest on the same protocol; list any block that disagreed.
   const byCase = Object.values(spent.byCase || {}).map(c => { const seen = {}, disagreements = [];
-    for (const d of c.digests) { const k = d.block.start + '+' + d.block.count; if (seen[k] && seen[k].digest !== d.digest) disagreements.push({ block: d.block, a: seen[k], b: d }); seen[k] ||= d; }
+    for (const d of c.digests) { const k = d.key || d.block.start + '+' + d.block.count; if (seen[k] && seen[k].digest !== d.digest) disagreements.push({ block: d.block, a: seen[k], b: d }); seen[k] ||= d; }
     return { alpha: c.alpha, N: c.N, seeds: c.seeds, cpuHours: c.cpuSeconds / 3600, independentReruns: c.digests.length - Object.keys(seen).length, disagreements }; }).sort((a, b) => a.alpha - b.alpha || a.N - b.N);
   delete spent.byCase;
   leaderboard.compute = { ...spent, machines: spent.machines.size, cpuHours: busy / 3600, byCase,
@@ -747,17 +755,34 @@ function table(board) {
 
 // A threshold is re-derived from its two configurations alone: the low side must re-certify as a strict local minimum
 // with P > 0 at its alpha, and the high side as a zero-winding collapse at its alpha.
+// Nothing in the file is trusted except the two configurations: the width limit is the protocol's, the P on each side
+// must reproduce, the two sides must be one branch, and the family label is checked by following the positive side
+// back to the family's alpha, where it must reproduce the first point of the recorded path.
 function verifyThreshold(f, data, thresholds, rejected) {
-  const t = data.threshold, N = Number(data.N), name = path.basename(f);
+  const t = data.threshold, name = path.basename(f), N = Number(data.N), fromAlpha = Number(data.fromAlpha);
+  const reject = reason => { console.log(`${name}: threshold rejected (${reason})`); rejected.push({ file: name, reason }); };
   if (!t) return;
-  const check = (sideData, want) => { const mdl = model(N, Number(sideData.alpha)); let x; try { x = project(mdl, fromConfig(mdl, sideData.config), 200, false).x; } catch (e) { return { ok: false, why: e.message }; }
-    const opt = minimize(mdl, x), so = secondOrder(mdl, opt.x), cert = certify(mdl, opt.x), status = certifiedStatus(so, cert);
-    return { ok: status === want && (want === 'zero-winding' || cert.P > ZERO_WINDING), P: cert.P, status }; };
-  const lo = check(t.positive, 'certified-local-minimum'), hi = check(t.zero, 'zero-winding');
-  const ok = lo.ok && hi.ok && Math.abs(t.zero.alpha - t.positive.alpha) <= 2 * (data.tol || 1e-4) + 1e-12;
-  console.log(`${name} N=${N}: zero winding between alpha ${t.positive.alpha} and ${t.zero.alpha}: ${ok ? 'certified' : 'NOT certified'} (low ${lo.status}, high ${hi.status})`);
-  if (!ok) { rejected.push({ file: name, reason: 'threshold did not re-certify' }); return; }
-  thresholds.push({ N, fromAlpha: data.fromAlpha, positiveAlpha: t.positive.alpha, zeroAlpha: t.zero.alpha, machine: data.machine || 'unlabelled', commit: data.commit });
+  const aLo = Number(t.positive?.alpha), aHi = Number(t.zero?.alpha), inRange = a => Number.isFinite(a) && a > -2 && a <= 3;
+  if (!(Number.isInteger(N) && N >= 3 && N <= 128 && inRange(aLo) && inRange(aHi) && inRange(fromAlpha))) return reject('bad N or alpha');
+  if (!(Math.abs(aHi - aLo) <= PROTOCOL.limits.thresholdWidth + 1e-12)) return reject('bracket wider than ' + PROTOCOL.limits.thresholdWidth);
+  const check = (sideData, alpha, want) => { const mdl = model(N, alpha); let x; try { x = project(mdl, fromConfig(mdl, sideData.config), 200, false).x; } catch (e) { return { ok: false, status: e.message }; }
+    const opt = minimize(mdl, x), so = secondOrder(mdl, opt.x), cert = certify(mdl, opt.x), status = certifiedStatus(so, cert) || 'uncertified';
+    return { ok: status === want, P: cert.P, status, x: opt.x, mdl }; };
+  const lo = check(t.positive, aLo, 'certified-local-minimum'), hi = check(t.zero, aHi, 'zero-winding');
+  if (!lo.ok || !hi.ok) return reject(`low side ${lo.status}, high side ${hi.status}`);
+  if (!(lo.P > ZERO_WINDING) || Math.abs(lo.P - Number(t.positive.P)) > 1e-6 * Math.max(lo.P, 1e-6)) return reject('low-side P does not reproduce');
+  // One branch: the two gauge-fixed configurations must nearly coincide, since their alphas differ by at most 1e-4.
+  const gap = Math.max(...lo.x.map((v, k) => Math.abs(v - hi.x[k]))) / Math.max(1, ...lo.x.map(Math.abs));
+  if (!(gap < 0.05)) return reject('the two sides are not one branch');
+  // Family label: follow the positive side back to fromAlpha and compare with the recorded start of the path.
+  let back = { x: lo.x, P: lo.P }, a = aLo; const dir = Math.sign(fromAlpha - aLo);
+  // Only P is compared on the way back, so each step projects and re-minimizes without the full certificate.
+  const light = (alpha, x0) => { const mdl = model(N, alpha), pr = project(mdl, x0, 200, false); if (!(pr.feasibility < 1e-12)) return {}; const opt = minimize(mdl, pr.x); return opt.status === 'degenerate' ? {} : { x: opt.x, P: Math.sqrt(opt.f) }; };
+  while (dir && Math.abs(fromAlpha - a) > 1e-12) { a = dir > 0 ? Math.min(a + 0.1, fromAlpha) : Math.max(a - 0.1, fromAlpha); back = light(a, back.x); if (!back.x) return reject('branch lost on the way back to its family'); }
+  const P0 = Number(data.path?.[0]?.P);
+  if (!(Number.isFinite(P0) && Math.abs(back.P - P0) <= 1e-6 * Math.max(P0, 1e-6))) return reject(`family label: P at alpha ${fromAlpha} is ${back.P}, file says ${P0}`);
+  console.log(`${name} N=${N}: zero winding between alpha ${aLo} and ${aHi}: certified (family alpha ${fromAlpha} reproduced)`);
+  thresholds.push({ N, fromAlpha, positiveAlpha: aLo, zeroAlpha: aHi, width: aHi - aLo, machine: data.machine || 'unlabelled', commit: data.commit });
 }
 
 function thresholdTable(board) {
