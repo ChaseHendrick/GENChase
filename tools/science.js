@@ -86,7 +86,8 @@ try {
   assert(catalog.every(m => ids.has(m.id)), 'Missing technique validation records');
   const counts = statuses.map(s => `${records.filter(r => r.status === s).length} ${s}`).join('; ');
   const safe = s => s.replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/\n/g, ' ');
-  const cell = s => safe(s.trim()).replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+  // One pass, so each backslash, pipe and bracket is escaped exactly once (a link label inside a table cell).
+  const cell = s => s.trim().replace(/[\\|[\]]/g, c => '\\' + c).replace(/\n/g, ' ');
   const link = s => /^https:/.test(s.trim()) ? s.trim() : encodeURI(s.trim());
   const outside = records.filter(r => r.reviewers);
   const reviewCell = r => r.reviewers ? r.reviewers.map(v => '[' + cell(v.name) + ', ' + cell(v.affiliation) + ', ' + v.date + '](' + link(v.evidence) + ')').join('; ') : 'none';
