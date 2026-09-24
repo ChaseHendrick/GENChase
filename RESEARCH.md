@@ -214,6 +214,14 @@ Copies supplied by the owner, not committed.
   - **Dismissed:** Aref 1979 and Kudela 2014 (low risk, see above), Kimura 1990/1991, Novikov 1975 and 1980, the reductions that remove rotation (Anurag–Goodman–O'Grady 2024, Luo–Chen–Liu 2022, Ohsawa 2019), and the desingularization, regularity and tracer papers.
 - **Still unread:** every item in the sweep lists above, all judged from abstracts only; the three must-reads come first.
 
+### O. Generalizations of the winding bound (2026-09-24, later)
+
+- **What was searched.** Agents searched reference lists and ran web searches for five directions: N >= 4 vortices, the sphere, the alpha-models, the three-vortex shape sphere, and consequences for scattering. They also searched the DK 2014 central-vortex rings. Notes, statuses and local re-check scripts are in `research/generalizations-2026-09-24/`.
+- **Conclusion.** No source found minimizes the winding for N = 4, for any N, in the alpha-models, on the sphere, or for the central-vortex rings. Each is still unconfirmed, not new.
+  - **Unread risks.** O'Neil 2007 (RCD 12, 117-126) computes four-vortex collapse configurations and is the first to read before stating the N = 4 minimum P_4 = 0.7978968 < sqrt(3)/2. The n = 2 central-vortex literature publishes both rates; nobody checked whether it prints their ratio.
+  - **Sphere.** The time law and the collapsing shapes are classical (Borisov-Lebedev 1998; Kidambi-Newton 1998, 1999). Credit them.
+- **Do not** call the bound universal. It fails at N = 4, as DK 2014's Table 1 already shows at N = 7 (entry N).
+
 ## Do this, do not do that
 
 **Do**
