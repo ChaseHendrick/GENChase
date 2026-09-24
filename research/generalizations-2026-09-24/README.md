@@ -44,6 +44,8 @@ a claim of originality.
   risk is O'Neil 2007 (Regul. Chaotic Dyn. 12, 117-126), which computes four-vortex collapse
   configurations with a given kappa. It was not read in full. Read it before making any claim.
 - **Gotoda 2020 (arXiv:2002.09624), read in full for N >= 4:** computes collapsing families at fixed circulations (uniform (1, ..., 1, -(N-2)/2) for N = 4..10, and one seven-vortex set) and plots only the expansion rate A against the energy H. It never forms the ratio B/A or minimizes it, so it does not anticipate the N = 4 minimum, but it should be credited for the families and the continuation method.
+- **Lewkowicz-Kudela (arXiv:1512.05116), read in full:** numerical collapsing configurations, one seven-vortex example with P ~ 4.4. Nothing on the rotation, its minimum or dependence on N.
+- **Conte-de Seze (arXiv:1511.00069; a 1980 report), read in the zero-impulse section:** writes three-vortex collapse as the exact spiral (1 - t/t_c)^(1/2 - i omega t_c) and gives the complex rate in closed form for arbitrary strengths. It also describes the J != 0 orbits qualitatively, arriving from and leaving on logarithmic spirals. It has no bound on omega t_c and no rotation law, but the scattering law C1 should credit it for the qualitative picture.
 - **Decrease with N:** no source found. The N-vortex collapse papers (Kudela 2014 and 2021,
   Lewkowicz and others) find configurations; none minimizes this quantity.
 - **alpha-models:** judged probably not stated. Self-similar collapse in the alpha-models is
