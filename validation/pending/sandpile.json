@@ -1,0 +1,48 @@
+{
+ "id": "sandpile",
+ "source": "src/modules/lattice.js",
+ "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
+ "reference": "Per Bak, Chao Tang and Kurt Wiesenfeld, Phys. Rev. Lett. 59, 381 (1987); Deepak Dhar, Phys. Rev. Lett. 64, 1613 (1990). Bak, Tang and Wiesenfeld dropped grains one at a time on a lattice with a toppling threshold and found avalanches of every size, a power law with no tuning: self-organized criticality. Dhar showed the toppling operators commute, so the final stable state does not depend on the order of toppling, and the recurrent configurations form an Abelian group. The identity of that group, computed on a square, is the fractal plate in the second mode.",
+ "equation": "if hᵢ ≥ 4: hᵢ −= 4, hⱼ += 1 for each neighbor j;   identity e = (2m − (2m)°)°, m = all 3",
+ "status": "validated within stated limits",
+ "limitations": [
+  "Complete evidence covers only the finite domain in validation/SANDPILE.md: square n x n grids with the tab's sink boundary, exhaustive recurrent counts up to 3x3, the identity at 64, 96, 128, 192 and 256, the six menu grain counts of the single-source pile, two random-drop runs and six printed recipes.",
+  "The recurrent count does not detect a threshold raised to five while toppling still removes four grains (that model is the sandpile shifted by one grain); the stability range check does.",
+  "The status line's topplings and random-drop avalanche numbers count toppling events of floor(h/4) at once, not topplings, and depend on toppling order; they are not the order-independent avalanche sizes and are not validated. Avalanche statistics and self-organized-criticality exponents are not tested.",
+  "Print evidence is raster PNG through Chromium with a software renderer; pixels within 0.01 cell of a cell boundary may show the neighboring cell (fixed-point scaling), and other renderers are not covered."
+ ],
+ "remaining": [
+  "Count the status topplings as topplings (sum of floor(h/4)) or relabel them as toppling events, then add avalanche-size statistics with error bars if the tab is to print them against theory.",
+  "Repeat the print check on other rendering platforms."
+ ],
+ "numerical": [
+  {
+   "test": "tools/sandpile-science.js",
+   "command": "node tools/sandpile-science.js --write",
+   "results": "validation/results/sandpile-science.json",
+   "scope": "Abelian property on 100 configurations (8x8 to 64x64) in five toppling orders; Dhar's count on 1x1, 2x2, 3x3 by three recurrence tests; the identity at every UI grid; the octant single-source pile against a full plane; random drops against one batch relaxation. All with the tab's own toppler and jobs.",
+   "criteria": "Exact integer equality: final states and per-site odometers identical across orders and satisfying h = h0 - (4I - A)u; recurrent sets identical across the three tests and their size equal to det(4I - A) and to the enumerated spanning trees; identity equal to an independent computation, in the Laplacian image, recurrent, symmetric, with (e + e) = e and (c + e) = c; octant pile equal cell by cell and conserving every grain; random-drop heights and marks equal to the references.",
+   "benchmark": "Dhar (1990): order independence of toppling and |recurrent| = det of the toppling matrix = number of spanning trees (Kirchhoff); Bareiss determinant in BigInt; exhaustive spanning-tree enumeration; Dhar's burning test; independent FIFO and synchronous toppling references; a full-plane single-source reference.",
+   "failureControl": "An order-dependent rule (grains above 4t all to one neighbor) gives different final states in the tab's two orders on 80 of 100 configurations (every one with more than one initially unstable site) and breaks conservation on all 100; a threshold of five with five grains removed gives 5 and 525 recurrent configurations instead of 4 and 192 (det(5I - A)); (2m)° used as the identity fails (c + e) = c.",
+   "limitations": "Only the domain in validation/SANDPILE.md: square grids with the sink boundary; exhaustive Dhar counts only up to 3x3; the abelian property on 100 configurations up to 64x64; the identity at the five UI sizes; six menu grain counts; two random-drop runs; six printed recipes in Chromium."
+  }
+ ],
+ "print": [
+  {
+   "test": "tools/sandpile-science.js",
+   "command": "node tools/sandpile-science.js --write",
+   "results": "validation/results/sandpile-science.json",
+   "scope": "Six recipes (the default medallion 2^16 and five presets: 2^14 ink, identity 128 and 96, random drops, avalanche patches), grain off, exported by the tab at 2400 x 2400; studio state read back and compared with the independent states.",
+   "criteria": "Every pixel equal to the independently computed cell color (maximum channel error 0 measured, 1 allowed); pixels within 0.01 cell of a boundary equal to one of the two cells; recipe and full state unchanged by export; displaced and wrong-state controls fail on over 70,000 pixels.",
+   "limitations": "Raster PNG through Chromium with a software renderer only; the tab has no vector export. Near-boundary pixels are checked against either adjacent cell."
+  }
+ ],
+ "reviewed": "2026-09-24",
+ "results": "validation/results/sandpile-science.json",
+ "domain": {
+  "parameters": "Modes pile (grains 2^12, 2^14, 2^16, 2^17, 2^18, 2^20), identity (size 64, 96, 128, 192, 256) and soc (128 with 30,000 drops, 192 with 50,000 drops); exhaustive grids 1x1 to 3x3; the six printed recipes recorded in the results file.",
+  "conditions": "Square grid, each site with four toppling neighbors, grains leaving the grid lost to a sink; threshold 4; single source on the infinite plane truncated at R = ceil(0.4 sqrt(N)) + 6 (no grain reaches it); random drops from the seeded start of 0 to 3 grains per site. Seeds recorded; grain off.",
+  "resolution": "Every stable configuration on the exhaustive grids; every site of every tested configuration; prints at 8 in and 300 ppi.",
+  "precision": "Exact integer heights and odometers (Int32 and integer-valued Float64), BigInt determinants, RGBA8 raster; Chromium 141 with SwiftShader recorded."
+ }
+}
