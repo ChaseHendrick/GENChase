@@ -156,6 +156,64 @@ The owner downloaded four arXiv papers; the copies are not committed. For each, 
   - The cited Tavantzis–Ting 1988, Kimura 1987 and Aref 1979: abstracts only.
   - The full texts of Kudela 2014 and Reinaud–Dritschel–Scott 2022.
 
+### L. Four more papers read, and four citations added (2026-09-24, later)
+
+- **Borisov and Lebedev 1998 (nlin/0503057), read in full by two independent readers.** Conditions for collapse and scattering in the Lie–Poisson formulation. Collapse needs D = 0 (zero angular impulse) and is impossible when ΣΓ = 0; homogeneous collapse needs Σ1/Γ = 0. The scattering condition for D ≠ 0 is a numerical conjecture, and collapse sufficiency is a qualitative phase-plane argument. No rotation during collapse, spirals, path length, extrema or rings. **DOES NOT KILL.** Now cited as "obtained conditions" (not "derived the conditions").
+- **Krishnamurthy, Aref and Stremler 2018 (1706.00731), read in full by two independent readers.** Equations of motion for the circumcircle and the angles. Eq. (40): for L = 0 the circumcircle passes through the center of vorticity at all times. Eq. (46b): the collapse time, which agrees with the paper's t_c. No rotation rate, P, spirals, path length or minimum. **DOES NOT KILL.** Now cited, and its Eq. (40) explains why Krishnamurthy–Stremler's normalized circumcenter path length is √(1 + 4P²).
+- **Reinaud, Dritschel and Scott 2022 (Physica D 434, 133226), open access, point-vortex sections read.** Collapse conditions and collapse time in generalized Euler/QG models. The collapse-time maps (Fig. 3, β = 0.25–1.5) have local minima in a normalization that fixes the like-signed pair's separation; P is scale-free. Nothing on the rotation rate or bounds. **DOES NOT KILL.** Now cited to draw that contrast.
+- **Leoncini, Kuznetsov and Zaslavsky 2000 (physics/9908055), read in full.** Near-collapse dynamics for two identical vortices. Their fastest collapse (Fig. 18, collapse time 4π/3) is the maximum collapse rate at a fixed distance between the identical vortices. Direct Biot–Savart confirms t_c = 4π/3 there, at cos 2β = 3/5, with P = 3/2 (`verify_general_mu.py` 10f). The √3/2 in their caption is the energy parameter Λ = e^{4πH}. **DOES NOT KILL.** Now clarified in the Discussion.
+  - Side note, not in the paper: evaluating Λ = Y^k/X = R₂R₃/R₁² at that configuration gives √(2/5), not √3/2. Their Eq. (49), as printed, does not match Biot–Savart either. There seems to be an internal inconsistency or misprint in their paper; it is not pursued.
+- **Still unread:**
+  - Demina–Kudryashov 2014, which the owner has decided not to buy for now; the main risk, for the rings.
+  - The cited Tavantzis–Ting 1988, Kimura 1987 and Aref 1979, known from abstracts.
+  - Kudela 2014.
+
+### M. Kimura 1987, Gallay–Šverák 2026 and Anurag–Goodman 2026 read (2026-09-24, later)
+
+Copies supplied by the owner, not committed.
+
+- **Kimura 1987 (J. Phys. Soc. Jpn. 56, 2024–2030), read in full; pages also read as images.**
+  - What it has: the similarity solution z = k f(t) with f f̄′ = C = A + iB. Up to his 2π, C is the paper's κ; his spirals (3.7) and collision time t* = −1/(2A) (3.9) are the paper's.
+  - He also gives the conditions (3.20)–(3.21) and (3.33), and the zero-impulse circle (3.34)–(3.35), split into two arcs of collapse and two of expansion.
+  - Sect. 4 treats Γ = (2, 2, −1) in exactly the parametrization of Remark 2 and of the `three-vortex-bound` tab. Eq. (4.4) gives A and B. The committed check `verify_general_mu.py` 10g confirms κ = (A + iB)/(4π) for Γ = (1, 1, −1/2), to 2 × 10⁻⁵¹. So the Remark 2 formula for P, and the tab's closed form, are the ratio B/(−2A) of his published rates.
+  - What it does not have: he minimizes t* (Eq. 4.6, cos 2θ = 3/5, where P = 3/2), not the product. He never forms P, and has no minimum √2, no general-μ minimum, no bound √3/2 and no rings.
+  - **DOES NOT KILL Theorem 1, Corollary 1 or the ring results.** It does take the closed form of the equal-circulation case, which the paper never claimed as new. The paper and the tab credit now name him, and the `three-vortex-bound` priority rows further down are updated.
+- **Gallay and Šverák 2026 (arXiv:2609.10847), read in full by two independent readers.**
+  - Prop. 5.2 proves that every collision is a self-similar collapse, z_j(t) = (1 − t/T)^(1/2 + is) a_j. They call this well known, citing Tavantzis–Ting, Leoncini et al. and Aref 2010.
+  - The rates are in closed form, (5.10), (5.11), (E.1). In the paper's notation T = t_c and s = −ω₀t_c, so |s| = P. They show only s ≠ 0 (Remark E.2).
+  - Both readers recomputed the minima of |s| from their formulas and reproduced Theorem 1's values.
+  - Regularization of collisions holds only up to rotations, because the triangle makes infinitely many turns (Sect. 5.2). Whether it holds at all depends on the perturbation (Theorems 5.8, 5.10, 5.15).
+  - No bound or extremum of s, no path length, no rings. **DOES NOT KILL.**
+  - Now cited, with Corollary 1 stated as sharpening s ≠ 0 to |s| > √3/2. A reader warned against suggesting that minimal-winding collapses are the regularizable ones: by that reader's reading of their Prop. 5.4 and Theorem 5.8, no collision on the arc A₊ is regularizable by perturbing positions. The paper does not suggest it.
+- **Anurag and Goodman 2026 (arXiv:2504.16038v2), read in full by two independent readers.**
+  - A Jacobi and Lie–Poisson reduction removes translations and rotations. At Γ = (2/3, 2/3, −1/3) with zero angular impulse, collapsing triangles are rays through the triple-collision point (Fig. 5.6).
+  - The reduction removes the rotation, so P cannot appear. No rates, bounds or rings. **DOES NOT KILL.**
+  - Context only; not cited. Readers note that their Eq. (5.1) and a sign convention are internally inconsistent as printed.
+- **Kudela 2021 (Energies 14, 943, open access, CC BY), full text layer read; figures not viewed.** The owner supplied it as a free stand-in for the paywalled Kudela 2014.
+  - It restates, citing his two 2014 papers (J. Nonlinear Sci. and Fluid Dyn. Res. 46, 031414) and Demina–Kudryashov 2014, the self-similar solution z_k(t) = √(1 − t/T_c) e^{−iλ_i(0) T_c ln(1 − t/T_c)} z_k(0) with T_c = −1/(2λ_r(0)) (Eqs. 14–16). That is a logarithmic spiral whose coefficient λ_i(0)T_c is ±P, but it is never named, bounded or minimized.
+  - The method, attributed to the 2014 papers: Newton's method from a Levenberg–Marquardt start finds collapse positions for given circulations. Stepping the Hamiltonian then traces collapse curves, with T_c plotted against H (Figs. 4b, 21b). The examples are n = 50 vortices with one, two or four strong vortices, forming vortex sheets that trap passive tracers.
+  - There is no minimization of P or of T_c, no bound, and no concentric rings. **DOES NOT KILL.**
+  - It lowers but does not remove the Kudela 2014 risk. It describes the 2014 method in a way consistent with no minimization of P, but that is indirect. The 2026-09-20 entries say, from summaries, that Kudela 2014 has collapse-time minima; nothing in the 2021 paper shows one.
+- **Still unread:**
+  - Demina–Kudryashov 2014: the main risk, for the rings.
+  - Tavantzis–Ting 1988 and Aref 1979: abstracts only.
+  - Kudela 2014 (J. Nonlinear Sci.; also Fluid Dyn. Res. 46, 031414): summaries, plus his 2021 restatement.
+
+### N. Demina–Kudryashov 2014 read, and a completeness sweep (2026-09-24, later)
+
+- **Demina and Kudryashov 2014 (Theor. Comput. Fluid Dyn. 28, 357–368), read in full.** The owner bought it; the copy is not committed. Two independent readings from the page images (the text layer drops the Greek letters), an independent numerical check at 50 digits, two referees and a reconciliation.
+  - Sect. 3 gives the two-ring collapse family with an optional central vortex Γ₀. At Γ₀ = 0, their Eq. (37) is the paper's circulation condition with x = r², and their Eq. (36) is the paper's constant S as a function of e^{inθ}; the difference is a multiple of the circulation condition, checked exactly and against Biot–Savart for n = 2 to 8 (`verify_general_mu.py` 10h).
+  - They state that every relative rotation other than e^{inθ} = ±1 collapses or scatters, without saying which. For this family they never separate the two rates or evaluate their ratio (their Eq. (10) does contain the coefficient β/(2α), whose absolute value is P, for the general solution), and they minimize or bound nothing. No K_n, F_n, table, or three-vortex result.
+  - **DOES NOT KILL** any result. It under-credited them, though: the paper now credits their Eqs. (36)–(37) in the Introduction, Section 4 and the Discussion, their general-N solution (7)–(12) in Section 2, and their conditions (26)–(28) in the proof of Lemma 2. The paper must not say that they "do not form the ratio".
+  - Their Table 1 seven-vortex collapse (Fig. 1a) is self-similar with the printed Ω to 50-digit precision (residual 1e-50) and has P = 12433/(1240√155) = 0.805 < √3/2 (10i). The paper now says that the bound of Corollary 1 does not carry over to larger systems. Their Table 2, Fig. 2a has a misprinted sign of Γ₀; do not cite it.
+- **The Introduction's [1, 14] for "every zero-impulse configuration moves self-similarly"** rested on Aref 1979, which was not read. It now cites Gallay–Šverák Sect. 4.5.2 and Krishnamurthy–Aref–Stremler, both read in full.
+- **Completeness sweep.** One agent mined the reference lists of every paper read (Borisov–Lebedev, Krishnamurthy–Aref–Stremler, Kimura, Leoncini et al., Reinaud et al., Drivas et al., Gallay–Šverák, Anurag–Goodman, Demina–Kudryashov 2014 and 1407.1641, Kudela 2021, Gotoda, Aref 2010, O'Neil 2007, Aref 1982). A second ran about 70 WebSearch queries: forward citations of Kimura 1987, Koiller 1985, Demina–Kudryashov 2014, Aref 2010, Krishnamurthy–Stremler 2018 and O'Neil 2007; "three point vortices" collapse "angular velocity" minimum; "self-similar collapse" logarithmic spiral bound; rotation angle, rotation number, winding number, pitch angle, minimal winding; concentric polygons collapse rate; collapse path length; Hiraoka; Hernández-Garduño–Lacomba; Gallay–Šverák follow-ups; generalized Euler and SQG collapse (Badin–Barry, Reinaud, Chen–Liu, Taylor–Llewellyn Smith); sphere; 2025–2026 arXiv collapse papers; a Russian-language query. WebFetch was refused for arxiv.org, ntrs.nasa.gov, vtechworks.lib.vt.edu and others, so every item below is judged from abstracts and search summaries only.
+  - **Must read before submission:** Stremler 2021 (RCD 26, 482–504; his review after Krishnamurthy–Stremler 2018; paywalled); Conte–de Seze 2015 (Mod. Phys. Lett. B 29, 1530017; arXiv:1511.00069, free); the zero-impulse section of Tavantzis–Ting 1988.
+  - **Cite after reading:** Hernández-Garduño–Lacomba 2007 (arXiv:math-ph/0412024), Hiraoka 2008 and 2009, Synge 1949, Grotto–Romito–Viviani 2024 (arXiv:2307.05133).
+  - **Optional:** O'Neil 2007 RCD, Chen–Liu 2024 Physica D (authors Jiahe Chen and Qihuai Liu, which settles entry J's "authors not confirmed"), the reviews [4] and [16].
+  - **Dismissed:** Aref 1979 and Kudela 2014 (low risk, see above), Kimura 1990/1991, Novikov 1975 and 1980, the reductions that remove rotation (Anurag–Goodman–O'Grady 2024, Luo–Chen–Liu 2022, Ohsawa 2019), and the desingularization, regularity and tracer papers.
+- **Still unread:** every item in the sweep lists above, all judged from abstracts only; the three must-reads come first.
+
 ## Do this, do not do that
 
 **Do**
@@ -630,7 +688,7 @@ Familiarity is listed so you do not confuse it with prior-art status.
 
 The statements are in [`IDENTITIES.md`](IDENTITIES.md). Do not duplicate them here.
 
-**`three-vortex-bound` (Three-vortex collapse bound).** `#three-vortex-bound` still opens it. Classical specialization implemented here; historical originality unconfirmed. Search notes: Aref 2010 eqs. 25a and 25d give Omega and tau separately. Aref eq. 29c already writes the product as the pitch of the logarithmic spiral. Kudela 2014 and Reinaud-Dritschel 2022 minimize collapse time, not the product. Krishnamurthy-Stremler 2018 give dimensionless tau-tilde as a function of angles, no min sqrt(2). Closed form and min: not in those papers. Off the L=0 circle the check marks miss on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum.
+**`three-vortex-bound` (Three-vortex collapse bound).** `#three-vortex-bound` still opens it. Classical specialization implemented here; historical originality unconfirmed. Search notes: Aref 2010 eqs. 25a and 25d give Omega and tau separately. Aref eq. 29c already writes the product as the pitch of the logarithmic spiral. Kudela 2014 and Reinaud-Dritschel 2022 minimize collapse time, not the product. Krishnamurthy-Stremler 2018 give dimensionless tau-tilde as a function of angles, no min sqrt(2). Closed form and min: not in those papers. **Update 2026-09-24:** Kimura 1987 (J. Phys. Soc. Jpn. 56, 2024), Sect. 4, Eq. (4.4), gives A and B in exactly this parametrization for Γ = (2, 2, −1), so the closed form is B/(−2A) of his rates, one division away; he minimizes the collision time (Eq. 4.6, cos 2θ = 3/5), not the product, and the min √2 is not in his paper. The module credit now names Kimura. Off the L=0 circle the check marks miss on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum.
 
 **`parallelogram-lock` (Parallelogram lock).** Classical specialization implemented here; historical originality unconfirmed. Search notes: Novikov-Sedov 1979 give t_* and ω separately for the parallelogram family. Gotoda 2020 eq. (3.13) writes A(θ) and B(θ) separately and plots Hamiltonian against collapse rate. Neither forms the product ω t_c or states min 3√5/4 at cos 2θ = 1/4. Off the parallelogram the check marks miss on purpose. Re-search: YES do not re-derive; reopen only if a newly named paper states this closed form or this minimum. Do not claim Novikov-Sedov's t_* or ω separately.
 
@@ -696,7 +754,7 @@ Write the query next time. These are the families that were already run, reconst
 | `landscape` | browser stream-power / Braun-Willett / FastScape | Research codes are Python/C++/Fortran. Browser erosion is droplet CG. |
 | `kp` | browser KP-II resonant soliton webs from the exact tau function | Notebooks in the papers. No seeded print plate found. |
 | `gerstner` `eight` `peakon` `photon` `crapper` `hasimoto` `lump` | seeded print-ready browser plate of the exact solution, with the self-check | Papers and some demos. Combined studio object not found in the search that was run. |
-| `three-vortex-bound` | the closed form of omega t_c on Gamma=(1,1,-1/2) and its min sqrt(2) | Product as spiral pitch: Aref 2010 eq. 29c. Closed form and min: not in Gröbli 1877, Aref 2010, Krishnamurthy-Stremler 2018, Kudela 2014. |
+| `three-vortex-bound` | the closed form of omega t_c on Gamma=(1,1,-1/2) and its min sqrt(2) | Product as spiral pitch: Aref 2010 eq. 29c. The rates A and B in this very parametrization: Kimura 1987 Eq. (4.4), so the closed form is their ratio (read 2026-09-24). Min √2: not in Gröbli 1877, Kimura 1987, Aref 2010, Krishnamurthy-Stremler 2018, Kudela 2014. |
 | `track` `causticsea` | is a published PDE plus a feedback term an invention | No. Named prior art in both cases. |
 | self-checking gen-art | a generative art tool that measures an observable against theory | Not found on art platforms (seed + traits). Physics teaching tools do this routinely. |
 

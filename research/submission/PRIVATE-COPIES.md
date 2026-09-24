@@ -11,7 +11,7 @@ The paper in this repository has no contact email, and that is deliberate: the a
 | `Hendrick-minimal-winding-v1-latex.pdf` | the private `.tex` | checking what arXiv will build |
 | `Hendrick-minimal-winding-v1-latex.zip` | the private `.tex` and `figures/minimal-winding.pdf` | the arXiv source upload |
 
-Each private copy differs from the repository version only in the author block, which gains the email as a `mailto:` link. The private `.tex` also drops the four maintenance comment lines at the top of the repository `.tex`, so its source shows nothing that its PDF does not. The page counts match the repository builds: 12 pages for Typst, 11 for LaTeX.
+Each private copy differs from the repository version only in the author block, which gains the email as a `mailto:` link. The private `.tex` also drops the four maintenance comment lines at the top of the repository `.tex`, so its source shows nothing that its PDF does not. The page counts match the repository builds: 13 pages for Typst, 12 for LaTeX.
 
 ## Rebuilding them after the paper changes
 
@@ -41,7 +41,7 @@ cp research/figures/minimal-winding.pdf ~/private-paper/figures/
 # with
 #   \author{Chase Hendrick\\[0.2em] {\small GENChase}\\ {\small\href{mailto:you@example.com}{\texttt{you@example.com}}}}
 cd ~/private-paper
-pdflatex Hendrick-minimal-winding-v1.tex && pdflatex Hendrick-minimal-winding-v1.tex
+for i in 1 2 3; do pdflatex Hendrick-minimal-winding-v1.tex; done   # the third run settles the cross-references
 zip Hendrick-minimal-winding-v1-latex.zip Hendrick-minimal-winding-v1.tex figures/minimal-winding.pdf
 ```
 
