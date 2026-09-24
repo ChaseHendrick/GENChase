@@ -13,8 +13,10 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // The Grid slider and sanitize() read the same bounds, so no slider position is clamped away.
+  const GRID_MIN = 96, GRID_MAX = 192;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('GL', 'B', 'Field B', GEOM, 0.4, 3.2, 0.05, f2),
     RANGE('GL', 'kappa', 'κ', GEOM, 0.5, 4, 0.05, f2),
@@ -57,7 +59,7 @@
   }
 
   function surprise(rng) { return { B: rng.range(0.7, 2.4), kappa: rng.range(0.8, 2.8) }; }
-  function sanitize(s) { s.grid = Math.max(80, Math.min(192, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'vortex', name: 'Abrikosov', tab: 'Vortex',
     subtitle: 'fixed-field order-parameter relaxation · 1957',

@@ -3,8 +3,8 @@
   "date": "2026-09-24",
   "passed": true,
   "source": "src/modules/kitaev.js",
-  "sourceSha256": "9927bcc6b318388f7730f7e86cfe975ea2cb99dc98ce28c6e1cfd0a12f4e569e",
-  "engineSha256": "7af4b65a0177f0853ee6d7a20486e7d7527abc938c3cba276b8895b585e54ddb",
+  "sourceSha256": "f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6",
+  "engineSha256": "d4ab4d63c01bca7c4c8a0e3ec0dafe996b1ed2844f2ad969ed3c20de73322f16",
   "harness": "tools/kitaev-science.js",
   "command": "node tools/kitaev-science.js --write",
   "precision": "IEEE 754 binary64 throughout the solver; the plate field is stored as Float32 and painted to RGBA8.",
@@ -1645,7 +1645,7 @@
           96,
           120
         ],
-        "computeMs": 603,
+        "computeMs": 399,
         "identicalToExtractedCode": true,
         "maxFieldDifferenceVsJacobi": 8.388845840201498e-9,
         "endWeight": 0.999999999590274,
@@ -1681,7 +1681,7 @@
           128,
           128
         ],
-        "computeMs": 149,
+        "computeMs": 112,
         "identicalToExtractedCode": true,
         "maxFieldDifferenceVsJacobi": 1.489904150053789e-8,
         "endWeight": 0.9999999999999385,
@@ -1717,7 +1717,7 @@
           112,
           90
         ],
-        "computeMs": 128,
+        "computeMs": 80,
         "identicalToExtractedCode": true,
         "maxFieldDifferenceVsJacobi": 9.309473747443064e-10,
         "endWeight": 0.02375311672957949,
@@ -1753,7 +1753,7 @@
           96,
           96
         ],
-        "computeMs": 64,
+        "computeMs": 54,
         "identicalToExtractedCode": true,
         "maxFieldDifferenceVsJacobi": 1.4759292454868955e-8,
         "endWeight": 0.9999999999976499,
@@ -1789,7 +1789,7 @@
           144,
           180
         ],
-        "computeMs": 215,
+        "computeMs": 145,
         "identicalToExtractedCode": true,
         "maxFieldDifferenceVsJacobi": 7.02244104533456e-9,
         "endWeight": 0.9574658428145596,
@@ -1825,7 +1825,7 @@
           96,
           120
         ],
-        "computeMs": 76,
+        "computeMs": 56,
         "identicalToExtractedCode": true,
         "maxFieldDifferenceVsJacobi": 3.6323739571741953e-9,
         "endWeight": 0.999999999999648,
@@ -1861,7 +1861,7 @@
           160,
           90
         ],
-        "computeMs": 219,
+        "computeMs": 194,
         "identicalToExtractedCode": true,
         "maxFieldDifferenceVsJacobi": 1.3907726303941104e-8,
         "endWeight": 0.9985068887045647,
@@ -1889,7 +1889,7 @@
     "platform": "linux x64",
     "cpus": 4
   },
-  "runSeconds": 69.422,
+  "runSeconds": 62.203,
   "domain": {
     "parameters": "Rings: N = 64, 96, 160 with twelve (μ, t, Δ) sets, periodic and antiperiodic. Open: μ −2.4..2.4 (step 0.05) × three t × six Δ at N = 64; splitting from N = 4 to the largest N still above 1000 floors (97 at most) for six sets and the Δ = t identity for N = 3..160; seven studio recipes covering the presets, all four sheets and every grid the tab allows (96 to 160 in steps of 16; the schema minimum is 96).",
     "conditions": "Spinless single-band Kitaev chain in the BdG mean-field form of the tab equation, real t, Δ and μ, no disorder or self-consistency. Open ends in the tab; rings only in the band check. No randomness is drawn.",

@@ -11,8 +11,10 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // The Grid slider and sanitize() read the same bounds, so no slider position is clamped away.
+  const GRID_MIN = 96, GRID_MAX = 160;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Chain', 'mu', 'Chemical μ', GEOM, -2.4, 2.4, 0.05, f2, { hint: '|μ| < 2t is the topological phase: unpaired Majoranas live on the ends.' }),
     RANGE('Chain', 'tHop', 'Hopping t', GEOM, 0.4, 1.6, 0.05, f2),
@@ -31,7 +33,7 @@
   };
 
   function surprise(rng) { return { mu: rng.range(-1.6, 2.2), delta: rng.range(0.2, 1.1), tHop: rng.range(0.7, 1.3) }; }
-  function sanitize(s) { s.grid = Math.max(64, Math.min(160, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
 
   /* ---- exact diagonalization ----
      Householder tridiagonalization (tred2) and implicit QL with shifts (tql2), after the EISPACK routines

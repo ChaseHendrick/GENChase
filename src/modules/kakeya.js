@@ -13,8 +13,10 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // The Grid slider and sanitize() read the same bounds, so no slider position is clamped away.
+  const GRID_MIN = 128, GRID_MAX = 224;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Set', 'needles', 'Needles', GEOM, 12, 90, 2, v => v + ''),
     RANGE('Set', 'overlap', 'Overlap', GEOM, 0.15, 0.9, 0.05, f2),
@@ -33,7 +35,7 @@
   };
 
   function surprise(rng) { return { needles: rng.int(18, 70), overlap: rng.range(0.25, 0.8), thick: rng.range(0.8, 2.2) }; }
-  function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'kakeya', name: 'Kakeya', tab: 'Kakeya',
     subtitle: 'a needle rotated in arbitrarily small area · 1919',
