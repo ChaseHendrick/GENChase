@@ -217,14 +217,6 @@
     const c = U.hexToRgb(hex);
     return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')';
   }
-  function sci(v) {
-    const a = Math.abs(v);
-    if (!isFinite(v)) return '∞';
-    if (a === 0) return '0';
-    if (a >= 0.01 && a < 100) return v.toFixed(3);
-    return v.toExponential(1);
-  }
-
   function mapPoint(view, tr, b, k, lift) {
     const x = tr.px[b][k], y = tr.py[b][k], t = tr.tt[k];
     if (view === 'shape') return shapeAt(tr.px, tr.py, k);
@@ -507,10 +499,13 @@
         if (traj.dead) tag = 'escaped';
         else if (s.kind === 'broken') tag = closed ? 'closed, unexpectedly' : 'broken';
         else tag = (closed && conserved) ? 'choreography' : 'drifting';
+        // L is zero in the initial condition and the symplectic splitting conserves it exactly for
+        // central forces, so only round-off is left: a regression test. Energy and the return at Simó's
+        // period are deterministic residuals of the integrator, with no sampling in them.
         host.setStatus(
-          '<span>|L| <b>' + sci(L) + '</b> · 0</span>' +
-          '<span>|ΔE|/|E| <b>' + sci(traj.dE) + '</b> · 0</span>' +
-          '<span>|q(T)−q(0)| <b>' + sci(traj.dq) + '</b> · 0</span>' +
+          U.stats.compare({ label: '|L|', measured: L, expected: 0, basis: 'construction' }) +
+          U.stats.compare({ label: '|ΔE|/|E|', measured: traj.dE, expected: 0, basis: 'deterministic' }) +
+          U.stats.compare({ label: '|q(T)−q(0)|', measured: traj.dq, expected: 0, reference: 'Simó’s period', basis: 'deterministic' }) +
           '<span>' + tag + '</span>'
         );
       }

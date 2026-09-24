@@ -116,7 +116,19 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>overlap(end, 0) <b>' + f2(metric) + '</b></span><span>theory ' + (host.getState().kind === 'mix' ? '~ 0' : '1') + '</span><span>' + (host.getState().kind !== 'mix' && metric > 0.55 ? 'echo' : 'mixed') + '</span>'); }
+      // The tracers are free and the reversal is exact, so the echo returns at t = 2·flip·T. That is the
+      // last row only when flip is one half, and there the overlap of 1 is a regression test of the
+      // reversal, not a prediction. At any other flip the last row is not the echo, and without a
+      // reversal the tracers, which start in 22% of the ring, spread and leave an overlap near 0.2 rather
+      // than 0, so neither of those cases is printed against a value.
+      function status() {
+        const s = host.getState(), mix = s.kind === 'mix';
+        const echoRow = !mix && Math.abs(s.flipAt - 0.5) < 1e-9;
+        const ov = echoRow
+          ? U.stats.compare({ label: 'overlap(end, 0)', measured: metric, expected: 1, reference: 'time-reversed ballistic tracers', basis: 'construction' })
+          : '<span>overlap(end, 0) <b>' + f2(metric) + '</b>' + (mix ? '' : ' · echo at t = 2·flip·T, not the last row') + '</span>';
+        host.setStatus(ov + '<span>' + (!mix && metric > 0.55 ? 'echo' : 'mixed') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

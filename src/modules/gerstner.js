@@ -638,10 +638,17 @@
         const ok = trainsN === 1 && m.orbit < 1e-8 && Math.abs(m.rSurfOverA - 1) < 1e-6;
         const twoTr = trainsN === 2;
         const tag = twoTr ? 'two trains, graphics' : (ok ? 'Gerstner' : 'map failed');
+        // One train: the map is Gerstner's own formula, so circular orbits of radius A e^{kb} are what it
+        // draws, and both orbit numbers are regression tests of the map. Two trains is not an Euler
+        // solution, and the orbit numbers are then deterministic measurements of how far the superposition
+        // misses. The along-surface pressure gradient vanishes because ω² = g k is what the map codes; the
+        // cross terms of two such trains cancel pairwise at b = 0 as well, so it is a regression test in
+        // both cases.
+        const orbitBasis = twoTr ? 'deterministic' : 'construction';
         host.setStatus(
-          '<span>orbit RMS/r <b>' + m.orbit.toExponential(1) + '</b> · exact 0</span>' +
-          '<span>r / A e^{kb} <b>' + m.rMean.toFixed(6) + '</b> · 1</span>' +
-          '<span>surface p <b>' + m.pressure.toExponential(1) + '</b> · const</span>' +
+          U.stats.compare({ label: 'orbit RMS/r', measured: m.orbit, expected: 0, reference: 'circle', basis: orbitBasis }) +
+          U.stats.compare({ label: 'r / A e^{kb}', measured: m.rMean, expected: 1, basis: orbitBasis, digits: 7 }) +
+          U.stats.compare({ label: 'surface ∂p/∂a (RMS)', measured: m.pressure, expected: 0, reference: 'constant pressure', basis: 'construction' }) +
           '<span>σ <b>' + f2(s.steep) + '</b> · ' + tag + '</span>'
         );
       }

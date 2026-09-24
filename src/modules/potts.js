@@ -87,7 +87,7 @@
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d');
       let W = 0, H = 0, N = 0, lab = null, area = null, target = 0, nLab = 0;
-      let sides = null, aliveCount = 0, meanSides = 0, mullins = null, mullinsR = null;
+      let sides = null, aliveCount = 0, meanSides = 0, mullins = null;
       let timer = 0, building = false, sweepNo = 0, areaAt = null;
 
       function stop() { clearTimeout(timer); }
@@ -186,10 +186,14 @@
       }
 
       // von Neumann-Mullins, measured rather than asserted: regress the area change over the last stretch
-      // of the run against n - 6. The slope is the constant in dA/dt = k(n - 6) and the correlation says
-      // how cleanly the froth obeys it; a lattice that is too cold or a run that is too short shows it.
-      function fitMullins(dt) {
-        mullins = null; mullinsR = null;
+      // of the run on n - 6 by least squares, dA/dt = k (n - 6) + c. The law does not predict k, which
+      // depends on the boundary mobility and the lattice, so k is printed as a measurement with its bar.
+      // What the law does predict is that a six-sided cell neither grows nor shrinks, so the intercept c is
+      // the number compared with zero. Both bars come from a seeded bootstrap over the surviving cells,
+      // resampled as pairs; the cells are close to independent, so blocks of one are used.
+      const MULLINS_MIN = 20, MULLINS_REPS = 200;
+      function fitMullins(dt, seed) {
+        mullins = null;
         if (!areaAt || !sides || dt <= 0) return;
         const xs = [], ys = [];
         for (let k = 0; k < nLab; k++) {
@@ -198,17 +202,39 @@
         }
         const n = xs.length;
         if (n < 12) return;
-        let sx = 0, sy = 0, sxx = 0, sxy = 0, syy = 0;
-        for (let i = 0; i < n; i++) { sx += xs[i]; sy += ys[i]; sxx += xs[i] * xs[i]; sxy += xs[i] * ys[i]; syy += ys[i] * ys[i]; }
-        const den = n * sxx - sx * sx;
-        if (Math.abs(den) < 1e-9) return;
-        mullins = (n * sxy - sx * sy) / den;
-        const r2 = (n * syy - sy * sy) * den;
-        if (r2 > 1e-12) mullinsR = (n * sxy - sx * sy) / Math.sqrt(r2);
+        const f = U.stats.ols(xs, ys);
+        if (!Number.isFinite(f.slope)) return;
+        const fit = { k: f.slope, c: f.intercept, n, kSe: NaN, cSe: NaN };
+        if (n >= MULLINS_MIN) {
+          const rng = U.stats.seeded(seed + '/mullins');
+          const ks = [], cs = [], bx = new Array(n), by = new Array(n);
+          for (let r = 0; r < MULLINS_REPS; r++) {
+            for (let i = 0; i < n; i++) { const j = (rng() * n) | 0; bx[i] = xs[j]; by[i] = ys[j]; }
+            const b = U.stats.ols(bx, by);
+            if (Number.isFinite(b.slope)) { ks.push(b.slope); cs.push(b.intercept); }
+          }
+          if (ks.length > 1) { fit.kSe = U.stats.sd(ks); fit.cSe = U.stats.sd(cs); }
+        }
+        mullins = fit;
+      }
+      function mullinsSpans() {
+        const f = mullins;
+        if (!f) return '';
+        const units = 'sites/sweep';
+        const kLabel = 'dA/dt = k·(n−6) + c, k';
+        if (f.n < MULLINS_MIN || !(f.kSe > 0) || !(f.cSe > 0)) {
+          const why = f.n < MULLINS_MIN ? 'only ' + f.n + ' cells survive' : 'bootstrap failed';
+          return U.stats.compare({ label: kLabel, measured: f.k, units, basis: 'sampled', pending: why }) +
+            U.stats.compare({ label: 'c', measured: f.c, units, expected: 0, reference: 'von Neumann–Mullins', basis: 'sampled', pending: why });
+        }
+        const method = 'bootstrap over ' + f.n + ' cells, ' + MULLINS_REPS + ' resamples';
+        return U.stats.compare({ label: kLabel, measured: f.k, units, basis: 'sampled', uncertainty: f.kSe, method }) +
+          U.stats.compare({ label: 'c', measured: f.c, units, expected: 0, reference: 'von Neumann–Mullins', basis: 'sampled', uncertainty: f.cSe, method });
       }
 
       function build(s, doneCb) {
-        stop(); building = true;
+        // A new plate starts without a fit, so a run still coarsening never shows the previous plate's law.
+        stop(); building = true; mullins = null;
         init(s);
         const rng = U.makeRng(s.seed + '/potts/mc');
         const markAt = Math.max(1, Math.floor(s.sweeps * 0.75));
@@ -222,7 +248,7 @@
           if (sweepNo < s.sweeps) { countSides(s); status('coarsening'); timer = setTimeout(chunk, 0); }
           else {
             countSides(s);
-            fitMullins(s.sweeps - markAt);
+            fitMullins(s.sweeps - markAt, s.seed);
             building = false; doneCb();
           }
         })();
@@ -234,10 +260,12 @@
           '<span>lattice <b>' + W + '×' + H + '</b>' + (s.wrap ? ' torus' : '') + '</span>' +
           '<span>sweep <b>' + sweepNo.toLocaleString() + '</b> / ' + s.sweeps + '</span>' +
           '<span><b>' + aliveCount.toLocaleString() + '</b> cells of ' + nLab.toLocaleString() + ' · mean area ' + (aliveCount ? Math.round(N / aliveCount).toLocaleString() : 0) + '</span>' +
-          '<span>mean sides <b>' + meanSides.toFixed(2) + '</b>' + (s.wrap ? ' (Euler: 6)' : '') + '</span>' +
-          (mullins !== null
-            ? '<span>dA/dt = <b>' + mullins.toFixed(2) + '</b>·(n−6), r = ' + (mullinsR === null ? '?' : mullinsR.toFixed(2)) + '</span>'
-            : '') +
+          // On the torus Euler's formula forces a mean of six sides on any map with threefold vertices,
+          // whatever the dynamics did: a regression test of the side count, not a measurement.
+          (s.wrap
+            ? U.stats.compare({ label: 'mean sides', measured: meanSides, expected: 6, reference: 'Euler', basis: 'construction' })
+            : '<span>mean sides <b>' + meanSides.toFixed(2) + '</b></span>') +
+          mullinsSpans() +
           (extra ? '<span>' + extra + '</span>' : '')
         );
       }

@@ -410,7 +410,10 @@ void main(){
           '<span>step bound <b>' + b.dt.toFixed(3) + '</b> (' +
             (b.dtReact <= b.dtCfl && b.dtReact <= b.dtVisc ? 'saturation' : b.dtCfl <= b.dtVisc ? 'Courant' : 'viscous') +
             ') · using ' + dtOf(s).toFixed(3) + '</span>' +
-          (gnf !== null ? '<span>ΔN ~ N<sup>' + gnf.toFixed(2) + '</sup> (equilibrium: 0.50)</span>' : '') +
+          // One snapshot of one run, fitted over 3 to 6 box sizes: no independent draws to take a spread
+          // over, so the exponent is printed with its bar pending.
+          (gnf !== null ? U.stats.compare({ label: 'fluctuation exponent (ΔN ~ N^p)', measured: gnf, expected: 0.5, reference: 'equilibrium',
+            basis: 'sampled', pending: 'one snapshot, 3 to 6 box sizes' }) : '') +
           '<span>step <b>' + stepCount.toLocaleString() + '</b></span>' +
           (extra ? '<span>' + extra + '</span>' : '')
         );

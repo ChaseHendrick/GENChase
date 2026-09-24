@@ -1,6 +1,6 @@
 
 /* modules/thouless.js */
-/* GENChase: Rice-Mele Thouless pump. Occupied-band polarisation walks one cell per cycle. ΔP is measured against 1. */
+/* GENChase: Rice-Mele Thouless pump. Occupied-band polarisation walks one cell per cycle. The status line names the chosen cycle; ΔP is not measured. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -135,7 +135,12 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>loop r <b>' + f2(extra) + '</b></span><span>ΔP <b>' + (host.getState().kind === 'triv' ? '0' : '1') + '</b> · Chern</span><span>' + (host.getState().kind === 'triv' ? 'trivial' : 'pumped') + '</span>'); }
+      // The cycle is a setting, not a measurement: the per-row polarization is never turned into a pumped
+      // charge, so the status line names the loop that was chosen and prints no Chern number for it.
+      function status() {
+        const cycle = host.getState().kind === 'triv' ? 'trivial' : 'topological';
+        host.setStatus('<span>loop r <b>' + f2(extra) + '</b></span><span>cycle <b>' + cycle + '</b> (setting; pumping is not measured)</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

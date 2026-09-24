@@ -6,8 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
-  const f4 = v => v.toFixed(4);
   const TAU = U.TAU;
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
@@ -19,6 +17,8 @@
   const RS = 2 * M;
   const BC_TH = 3 * Math.sqrt(3) * M;
   const RPH_TH = 3 * M;
+  // Impact parameter of the weak-field deflection check, in units of M.
+  const WEAK_B = 50;
 
   const SCHEMA = [
     RANGE('Field', 'grid', 'Grid', GEOM, 128, 256, 16, v => v + ''),
@@ -541,7 +541,7 @@
         const sz = sizeFrom(s); W = sz.W; H = sz.H;
         bMeas = searchBc();
         rPh = searchRph();
-        const weakB = 50;
+        const weakB = WEAK_B;
         const weak = integrate(weakB, { r0: 900, h: 0.005, maxPhi: 8 });
         deflRatio = (weak.defl || 0) / (4 * M / weakB);
         field = new Float32Array(W * H);
@@ -605,13 +605,18 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
+      // All three are deterministic: a bisection and an RK4 quadrature with no sampling in them, so their
+      // error is numerical only. The deflection at b = 50M is compared with the weak-field series to second
+      // order, δ = 4M/b + (15π/4)(M/b)², whose ratio to 4M/b is 1 + 15πM/(16b); the leading term alone
+      // would miss by that 6 percent at this b. The verdict still reads only the two strong-field numbers.
       function status() {
         const br = bMeas / BC_TH, rr = rPh / RPH_TH;
         const okB = Math.abs(br - 1) < 0.02, okR = Math.abs(rr - 1) < 0.02;
         host.setStatus(
-          '<span>b_meas / (3√3 M) <b>' + f4(br) + '</b></span>' +
-          '<span>r_ph / 3M <b>' + f4(rr) + '</b></span>' +
-          '<span>δ(50M)/(4M/b) <b>' + f3(deflRatio) + '</b></span>' +
+          U.stats.compare({ label: 'b_meas / (3√3 M)', measured: br, expected: 1, basis: 'deterministic', digits: 6 }) +
+          U.stats.compare({ label: 'r_ph / 3M', measured: rr, expected: 1, basis: 'deterministic', digits: 6 }) +
+          U.stats.compare({ label: 'δ(50M)/(4M/b)', measured: deflRatio, expected: 1 + 15 * Math.PI * M / (16 * WEAK_B),
+            reference: 'second-order weak field', basis: 'deterministic', digits: 5, note: 'third and higher orders omitted' }) +
           '<span>' + (okB && okR ? kindLabel : 'integrator missed') + '</span>'
         );
       }

@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -31,6 +30,19 @@
     small: pre('Small disk', { R: 22, lambda: 10 }, Pal.kiln),
     tight: pre('Tight', { lambda: 6, R: 60, relax: 130 }, Pal.thermal),
   };
+
+  // Modified Bessel I0 from its power series, sum_k (z/2)^{2k} / (k!)^2. Every term is positive, so
+  // there is no cancellation, and the sum stops once a term falls below 1e-16 of it.
+  function besselI0(z) {
+    const q = z * z / 4;
+    let term = 1, sum = 1;
+    for (let k = 1; k < 500; k++) {
+      term *= q / (k * k);
+      sum += term;
+      if (term < 1e-16 * sum) break;
+    }
+    return sum;
+  }
 
   function surprise(rng) { return { lambda: rng.int(6, 28), R: rng.int(24, 64) }; }
   function sanitize(s) { s.grid = Math.max(96, Math.min(224, Math.round(s.grid / 16) * 16)); }
@@ -81,8 +93,7 @@
           if (dx * dx + dy * dy < 4) { csum += B[i]; nc++; }
         }
         metric = csum / Math.max(1, nc);
-        const z = R / lam;
-        extra = 1 / (1 + z * z / 4 + z * z * z * z / 64); // crude I0 padé
+        extra = 1 / besselI0(R / lam);
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
@@ -113,7 +124,12 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>B(0)/B0 <b>' + f3(metric) + '</b></span><span>~ 1/I0(R/λ) ' + f3(extra) + '</span><span>' + (metric < 0.35 ? 'expelled' : 'leaking') + '</span>'); }
+      // The relaxation runs a fixed number of Jacobi sweeps and is not converged, so B(0) is a
+      // deterministic number that approaches the steady state from above; the gap is the finite relaxation.
+      function status() {
+        host.setStatus(U.stats.compare({ label: 'B(0)/B0', measured: metric, expected: extra, reference: 'steady state 1/I0(R/λ)', basis: 'deterministic', note: 'finite relaxation' }) +
+          '<span>' + (metric < 0.35 ? 'expelled' : 'leaking') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
