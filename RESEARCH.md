@@ -256,6 +256,28 @@ The owner provided the PDFs; none is committed. Text was extracted and searched 
 - **Still unread, free.** O'Neil 1987 (Trans. AMS 302, 383-425) is free from ams.org. Still paywalled: O'Neil 2007, Kimura 1987 Sects. other than 4, and Novikov-Sedov 1979.
 - **Volunteer search (PR #141).** Growth from certified minima gives, at alpha = 2, P = 0.0676 (N = 9), 0.0237 (N = 10) and P = 0 (N = 11). The N = 11 point is a collapse without rotation, confirmed at 60 digits by tools/vortex-precision-check.py. Priority is unconfirmed: search for non-rotating (kappa real) self-similar collapse before any claim.
 
+### Q. A dedicated search for collapse without rotation (2026-09-24, late)
+
+- **Why.** The volunteer search now has two collapses with P = 0, that is with kappa real, so that every vortex moves straight at the centre: alpha = 2 at N = 11 (entry P), and SQG, alpha = 1, at N = 60 (experiments/VORTEX-COLLAPSE.md). Entry P asked for this search before any claim.
+- **Queries (WebSearch).**
+  - "point vortices" collapse "without rotation" OR "non-rotating" OR "purely radial" self-similar configuration;
+  - point vortices self-similar collapse without rotation real collapse rate "homothetic";
+  - homothetic collapse configuration point vortices real eigenvalue no rotation O'Neil collapse configurations;
+  - point vortices "complex circulations" collapse configurations relative equilibria O'Neil imaginary circulation self-similar;
+  - Kudela self-similar collapse many point vortices rotation angular velocity zero;
+  - surface quasi-geostrophic point vortices collapse many vortices self-similar spiral rotation vanishes;
+  - generalized SQG alpha point vortex N-vortex collapse configuration existence many vortices 2025 2026 arXiv;
+  - N point vortices alpha model collapse "zero angular velocity" OR "no rotation" OR "non-rotating collapse" SQG many vortices numerical;
+  - O'Neil 1987 "Stationary configurations of point vortices" Transactions AMS pdf collapse;
+  - one Russian-language query (коллапс точечных вихрей автомодельный без вращения конфигурация), which returned nothing on point vortices.
+- **Access.** The egress proxy refused arxiv.org, ams.org and osti.gov, both to WebFetch and to curl, and the Hugging Face paper index does not hold these papers. Everything new here is judged from search summaries and abstracts, together with the papers already read in entries I to P.
+- **What was found.** No source reports a self-similar collapse with kappa real, for any alpha or N.
+  - The alpha-model papers (Badin-Barry 2018, Reinaud-Dritschel-Scott 2022, Chen-Liu 2024, Grotto-Pappalettera 2025) treat three vortices, where the bound P > sqrt(3+alpha)/(2+alpha) of the draft in #140 rules out P = 0, or bursts and collapses built from three.
+  - The N-vortex papers are all Euler: O'Neil 1987 and 2007 as Lewkowicz-Kudela (arXiv:1512.05116) summarize them, Kudela 2014 and 2021, Gotoda 2020 and 2024, Lewkowicz 2011. No summary or text read mentions kappa real.
+- **Why O'Neil 1987 is the risk for Euler but not for alpha != 0.** At alpha = 0 the law is holomorphic: the conjugate velocity of vortex j is (1/2 pi i) sum_k Gamma_k/(z_j - z_k). A self-similar configuration with rate kappa therefore satisfies sum_k Gamma_k/(z_j - z_k) = 2 pi i conj(kappa) (conj(z_j) - conj(z_c)). Multiplying every circulation by e^(i phi) with phi = arg(kappa) - pi/2 turns this into the relative-equilibrium equation with real angular velocity |kappa|. So an Euler collapse with kappa real is a relative equilibrium of purely imaginary circulations. O'Neil 1987 works with complex circulations, so it may treat this case. This is a standard observation, not a new result. For alpha != 0 the kernel (z_j - z_k)|z_j - z_k|^(-alpha-2) is not holomorphic, the phase trick fails, and O'Neil's algebraic framework does not apply. Both zero-winding collapses found here have alpha != 0.
+- **Conclusion.** Nothing found anticipates a collapse without rotation for alpha = 1 or alpha = 2. That is a statement about this search, not a priority claim.
+- **Still unread:** O'Neil 1987 (Trans. AMS 302, 383-425, free at ams.org, blocked here; the owner should fetch it), O'Neil 2007, O'Neil's 1985 thesis, Kudela 2014, and Sections 2-4 of Chen-Liu 2024. Re-search: no. Read O'Neil 1987 once it is supplied.
+
 ## Do this, do not do that
 
 **Do**

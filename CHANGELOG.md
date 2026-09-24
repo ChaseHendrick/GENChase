@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- **Vortex solver, protocol 2.** The search runs seeds on worker threads (`--threads`), and the block's digest does not depend on the thread count. It is 2 to 3 times faster per seed, from a Cholesky solve, a chord retraction, a reduced Hessian along the tangent directions and a stall rule. Protocol 2 seeds are new starts; protocol 1 files still verify.
+- **Where collapse stops rotating.** `--continue`, and the `vortex-threshold` job in the validator, follow a certified minimum as α changes and bracket the α at which it first reaches zero winding, to 10⁻⁴. `--verify` re-derives both ends and the family the branch started from.
+  - 69 thresholds are recorded, all certified at both ends: the SQG family for N = 9 to 59 and the Euler family for N = 13 to 30.
+  - From N = 40 on, the SQG family's thresholds follow α*(N) ≈ α∞ + 11/N. Fits put α∞ between 0.69 and 0.90; the Euler family's limit is not yet pinned down.
+- **Sixty SQG vortices that collapse without rotating.** Growing the deepest SQG family reaches P = 0 at N = 60, where the thresholds predicted it. The point passes every binary64 test that applies at P = 0 and converges quadratically at 60 digits. This is strong numerical evidence, not a proof, and its priority is unconfirmed. RESEARCH.md entry Q logs a literature search that found no earlier report of such a collapse for α = 1 or α = 2.
+- **Fixes from review.** The threshold verifier no longer trusts the tolerance written in a file, and checks the low-side P and the family label. A block's CPU time is no longer multiplied by its thread count. A run whose winding reaches zero is recorded as stationary rather than stalled. The threshold bracket follows P, so a point that fails one certificate test cannot hide the crossing. Threshold files are re-verified in pull requests. Reruns are compared only on the same protocol and parent.
+
 ## v0.6.2
 
 The publication date is recorded in the GitHub release notes.

@@ -707,7 +707,7 @@ function verifyFiles(files, write) {
     if (Number.isFinite(c?.energy?.joules)) { spent.measuredJoules += c.energy.joules; spent.filesMeasured++; }
     const cell = (spent.byCase ||= {})[data.alpha + '/' + data.N] ||= { alpha: Number(data.alpha), N: Number(data.N), seeds: 0, cpuSeconds: 0, digests: [] };
     cell.seeds += data.results?.length || 0; cell.cpuSeconds += Number.isFinite(c?.cpuSeconds) ? c.cpuSeconds : Number(data.summary?.elapsedSeconds) || 0;
-    if (data.summary?.resultsDigest && data.summary.seeds) cell.digests.push({ block: data.summary.seeds, key: [data.protocol?.version ?? 1, data.method?.kind || 'multistart', data.method?.parentN ?? '', data.method?.parentP ?? '', data.summary.seeds.start, data.summary.seeds.count].join('/'), digest: data.summary.resultsDigest, machine: data.machine || 'unlabelled', runtime: data.summary.runtime ? data.summary.runtime.cpuModel + ', ' + data.summary.runtime.node : null });
+    if (data.summary?.resultsDigest && data.summary.seeds) cell.digests.push({ block: data.summary.seeds, key: [data.protocol?.version ?? 1, data.method?.kind || 'multistart', data.method?.parentN ?? '', data.method?.parentP ?? data.method?.source ?? '', data.summary.seeds.start, data.summary.seeds.count].join('/'), digest: data.summary.resultsDigest, machine: data.machine || 'unlabelled', runtime: data.summary.runtime ? data.summary.runtime.cpuModel + ', ' + data.summary.runtime.node : null });
     const alpha = Number(data.alpha), N = Number(data.N); assert(Number.isFinite(alpha) && Number.isInteger(N) && N >= 3 && N <= 128, f + ': bad alpha or N.');
     const mdl = model(N, alpha), key = alpha + '/' + N;
     for (const m of data.minima || []) {
