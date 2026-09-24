@@ -1,6 +1,6 @@
 {
  "experiment": "vortex-collapse-leaderboard",
- "protocol": 1,
+ "protocol": 2,
  "generatedFrom": [
   "vortex-collapse-a0-n10-s0-c40.json",
   "vortex-collapse-a0-n4-s0-c80.json",
@@ -61,7 +61,41 @@
   "vortex-grow-a1-n9-s0-c10.json",
   "vortex-grow-a2-n10-s0-c12.json",
   "vortex-grow-a2-n11-s0-c12.json",
-  "vortex-grow-a2-n9-s0-c12.json"
+  "vortex-grow-a2-n9-s0-c12.json",
+  "vortex-threshold-n10-a1.json",
+  "vortex-threshold-n11-a1.json",
+  "vortex-threshold-n12-a1.json",
+  "vortex-threshold-n13-a0.json",
+  "vortex-threshold-n13-a1.json",
+  "vortex-threshold-n14-a0.json",
+  "vortex-threshold-n14-a1.json",
+  "vortex-threshold-n15-a0.json",
+  "vortex-threshold-n15-a1.json",
+  "vortex-threshold-n16-a0.json",
+  "vortex-threshold-n16-a1.json",
+  "vortex-threshold-n17-a0.json",
+  "vortex-threshold-n17-a1.json",
+  "vortex-threshold-n18-a0.json",
+  "vortex-threshold-n18-a1.json",
+  "vortex-threshold-n19-a0.json",
+  "vortex-threshold-n19-a1.json",
+  "vortex-threshold-n20-a0.json",
+  "vortex-threshold-n20-a1.json",
+  "vortex-threshold-n21-a0.json",
+  "vortex-threshold-n21-a1.json",
+  "vortex-threshold-n22-a0.json",
+  "vortex-threshold-n22-a1.json",
+  "vortex-threshold-n23-a0.json",
+  "vortex-threshold-n23-a1.json",
+  "vortex-threshold-n24-a0.json",
+  "vortex-threshold-n24-a1.json",
+  "vortex-threshold-n25-a0.json",
+  "vortex-threshold-n26-a0.json",
+  "vortex-threshold-n27-a0.json",
+  "vortex-threshold-n28-a0.json",
+  "vortex-threshold-n29-a0.json",
+  "vortex-threshold-n30-a0.json",
+  "vortex-threshold-n9-a1.json"
  ],
  "scope": "Each entry was re-projected, re-polished and re-certified from submitted positions and circulations only. Numerical candidates; priority unconfirmed.",
  "entries": [
@@ -78,7 +112,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.04077888931954331,
+     "soscRatio": 0.04077889003161044,
      "stability": {
       "maxShapeExponent": 11.84887931358635,
       "unstableShapeModes": 1,
@@ -142,7 +176,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00558375030478218,
+     "soscRatio": 0.005583749186440616,
      "stability": {
       "maxShapeExponent": 17.823757504899636,
       "unstableShapeModes": 2,
@@ -213,7 +247,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00729328076952931,
+     "soscRatio": 0.007293281855791774,
      "stability": {
       "maxShapeExponent": 23.239825823494005,
       "unstableShapeModes": 3,
@@ -276,7 +310,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0015408493603778727,
+     "soscRatio": 0.0015408491491336108,
      "stability": {
       "maxShapeExponent": 8.881594319942902,
       "unstableShapeModes": 4,
@@ -354,7 +388,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.019350383220983813,
+     "soscRatio": 0.019350353199460775,
      "stability": {
       "maxShapeExponent": 28.52936329457161,
       "unstableShapeModes": 4,
@@ -424,7 +458,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.01620682951332383,
+     "soscRatio": 0.016206829134331142,
      "stability": {
       "maxShapeExponent": 7.484461959828923,
       "unstableShapeModes": 5,
@@ -494,7 +528,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00008002412477729871,
+     "soscRatio": 0.00008002398522464924,
      "stability": {
       "maxShapeExponent": 13.780217031069515,
       "unstableShapeModes": 5,
@@ -579,7 +613,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.003159673590422546,
+     "soscRatio": 0.0031596744193985,
      "stability": {
       "maxShapeExponent": 33.82927034678694,
       "unstableShapeModes": 5,
@@ -656,7 +690,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.01592415426524433,
+     "soscRatio": 0.01592415362811774,
      "stability": {
       "maxShapeExponent": 11.839028450826909,
       "unstableShapeModes": 6,
@@ -733,7 +767,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0015208630602864457,
+     "soscRatio": 0.001520863169612254,
      "stability": {
       "maxShapeExponent": 17.846561931785164,
       "unstableShapeModes": 6,
@@ -825,7 +859,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0007992800246702708,
+     "soscRatio": 0.0007992786679405982,
      "stability": {
       "maxShapeExponent": 39.14432799915837,
       "unstableShapeModes": 6,
@@ -924,7 +958,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0016368856084281605,
+     "soscRatio": 0.0016368855735824784,
      "stability": {
       "maxShapeExponent": 15.374137934309136,
       "unstableShapeModes": 8,
@@ -1015,7 +1049,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0003034229786099883,
+     "soscRatio": 0.0003034229304421142,
      "stability": {
       "maxShapeExponent": 44.47003604761371,
       "unstableShapeModes": 7,
@@ -1121,7 +1155,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.002093114274540279,
+     "soscRatio": 0.0020931142342127044,
      "stability": {
       "maxShapeExponent": 15.331044744873337,
       "unstableShapeModes": 9,
@@ -1234,7 +1268,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0036066208393614914,
+     "soscRatio": 0.0036066207517294595,
      "stability": {
       "maxShapeExponent": 18.75750941579469,
       "unstableShapeModes": 10,
@@ -1354,7 +1388,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.004351817329001377,
+     "soscRatio": 0.004351817005003656,
      "stability": {
       "maxShapeExponent": 18.839774543741402,
       "unstableShapeModes": 11,
@@ -1466,7 +1500,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0005662688491896936,
+     "soscRatio": 0.0005662688997754411,
      "stability": {
       "maxShapeExponent": 21.616874198168944,
       "unstableShapeModes": 11,
@@ -1593,7 +1627,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.002651635733919653,
+     "soscRatio": 0.002651635701637897,
      "stability": {
       "maxShapeExponent": 22.121573982976653,
       "unstableShapeModes": 12,
@@ -1727,7 +1761,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.001228382077427865,
+     "soscRatio": 0.001228382008843414,
      "stability": {
       "maxShapeExponent": 22.323882317209648,
       "unstableShapeModes": 13,
@@ -1868,7 +1902,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0014061508970482166,
+     "soscRatio": 0.0014061508302283276,
      "stability": {
       "maxShapeExponent": 25.492273902132347,
       "unstableShapeModes": 14,
@@ -2016,7 +2050,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0013526160260106752,
+     "soscRatio": 0.0013526158321058395,
      "stability": {
       "maxShapeExponent": 25.81855619551162,
       "unstableShapeModes": 15,
@@ -2171,7 +2205,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00145811602677328,
+     "soscRatio": 0.0014581158035973526,
      "stability": {
       "maxShapeExponent": 28.86386173938709,
       "unstableShapeModes": 16,
@@ -2333,7 +2367,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0010252693506442815,
+     "soscRatio": 0.0010252692015711548,
      "stability": {
       "maxShapeExponent": 29.326904438043695,
       "unstableShapeModes": 17,
@@ -2502,7 +2536,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0006656875428336746,
+     "soscRatio": 0.0006656876272397003,
      "stability": {
       "maxShapeExponent": 32.22451797624326,
       "unstableShapeModes": 18,
@@ -2678,7 +2712,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0005998642423718671,
+     "soscRatio": 0.0005998643180764784,
      "stability": {
       "maxShapeExponent": 32.84760276908583,
       "unstableShapeModes": 19,
@@ -2861,7 +2895,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00041067813240327746,
+     "soscRatio": 0.00041067834580109044,
      "stability": {
       "maxShapeExponent": 35.55641307997683,
       "unstableShapeModes": 20,
@@ -3051,7 +3085,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0006015035323907091,
+     "soscRatio": 0.0006015035287179922,
      "stability": {
       "maxShapeExponent": 36.37844541094697,
       "unstableShapeModes": 21,
@@ -3248,7 +3282,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00019902876820083762,
+     "soscRatio": 0.00019902910959430461,
      "stability": {
       "maxShapeExponent": 38.8238264448764,
       "unstableShapeModes": 22,
@@ -3452,7 +3486,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0004775733810882492,
+     "soscRatio": 0.0004775734321170629,
      "stability": {
       "maxShapeExponent": 39.917186184389195,
       "unstableShapeModes": 23,
@@ -3663,7 +3697,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.000041676914787638955,
+     "soscRatio": 0.0000416774066415458,
      "stability": {
       "maxShapeExponent": 41.85281715366207,
       "unstableShapeModes": 24,
@@ -3881,7 +3915,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0005209861668925571,
+     "soscRatio": 0.0005209860945514039,
      "stability": {
       "maxShapeExponent": 43.46193988767598,
       "unstableShapeModes": 25,
@@ -4106,7 +4140,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00019348933138637464,
+     "soscRatio": 0.00019348976136272496,
      "stability": {
       "maxShapeExponent": 45.160894024411355,
       "unstableShapeModes": 26,
@@ -4338,7 +4372,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00056156482062753,
+     "soscRatio": 0.0005615645808251338,
      "stability": {
       "maxShapeExponent": 47.01123309930576,
       "unstableShapeModes": 27,
@@ -4577,7 +4611,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0004013769528789471,
+     "soscRatio": 0.00040137734503299525,
      "stability": {
       "maxShapeExponent": 48.73095281969093,
       "unstableShapeModes": 28,
@@ -4823,7 +4857,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0016032267605164876,
+     "soscRatio": 0.0016032266242611102,
      "stability": {
       "maxShapeExponent": 12.770314745827875,
       "unstableShapeModes": 1,
@@ -4887,7 +4921,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.001267384489698709,
+     "soscRatio": 0.0012673844673447854,
      "stability": {
       "maxShapeExponent": 23.842127052634986,
       "unstableShapeModes": 2,
@@ -4958,7 +4992,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.002064067275987374,
+     "soscRatio": 0.002064068122662292,
      "stability": {
       "maxShapeExponent": 36.3369847620067,
       "unstableShapeModes": 3,
@@ -5036,7 +5070,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0009517360632615309,
+     "soscRatio": 0.0009517360494709126,
      "stability": {
       "maxShapeExponent": 51.02313394311524,
       "unstableShapeModes": 4,
@@ -5106,7 +5140,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.008115025244326881,
+     "soscRatio": 0.008115025251852143,
      "stability": {
       "maxShapeExponent": 9.954786280388152,
       "unstableShapeModes": 5,
@@ -5191,7 +5225,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0007549038257073072,
+     "soscRatio": 0.0007549038232127119,
      "stability": {
       "maxShapeExponent": 68.0022235700025,
       "unstableShapeModes": 5,
@@ -5268,7 +5302,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.005159975601721024,
+     "soscRatio": 0.005159975695618893,
      "stability": {
       "maxShapeExponent": 18.205215147568413,
       "unstableShapeModes": 6,
@@ -5360,7 +5394,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0005211199121290429,
+     "soscRatio": 0.0005211198955216231,
      "stability": {
       "maxShapeExponent": 87.24529253609292,
       "unstableShapeModes": 6,
@@ -5444,7 +5478,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.004683557870403779,
+     "soscRatio": 0.004683557966315611,
      "stability": {
       "maxShapeExponent": 18.06668137719992,
       "unstableShapeModes": 7,
@@ -5543,7 +5577,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0003981158538728198,
+     "soscRatio": 0.0003981158385262498,
      "stability": {
       "maxShapeExponent": 108.72769511427745,
       "unstableShapeModes": 7,
@@ -5634,7 +5668,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.011321224234743415,
+     "soscRatio": 0.011321223014188494,
      "stability": {
       "maxShapeExponent": 27.102755742759502,
       "unstableShapeModes": 8,
@@ -5744,7 +5778,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0003337822010759782,
+     "soscRatio": 0.00033378218735017836,
      "stability": {
       "maxShapeExponent": 132.4285037213925,
       "unstableShapeModes": 8,
@@ -5857,7 +5891,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0001485073429557557,
+     "soscRatio": 0.00014850734523049936,
      "stability": {
       "maxShapeExponent": 158.33248135624638,
       "unstableShapeModes": 9,
@@ -5977,7 +6011,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0001220346242693602,
+     "soscRatio": 0.00012203462116432403,
      "stability": {
       "maxShapeExponent": 186.4288916480212,
       "unstableShapeModes": 10,
@@ -6089,7 +6123,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0034088739116405527,
+     "soscRatio": 0.0034088738850626948,
      "stability": {
       "maxShapeExponent": 49.030143278298134,
       "unstableShapeModes": 11,
@@ -6216,7 +6250,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00007898820785201245,
+     "soscRatio": 0.0000789882090953885,
      "stability": {
       "maxShapeExponent": 216.710415832622,
       "unstableShapeModes": 11,
@@ -6350,7 +6384,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00006863814671965585,
+     "soscRatio": 0.00006863814800327564,
      "stability": {
       "maxShapeExponent": 249.1723779103013,
       "unstableShapeModes": 12,
@@ -6476,7 +6510,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.004180523898206834,
+     "soscRatio": 0.004180523869837915,
      "stability": {
       "maxShapeExponent": 50.0530670311935,
       "unstableShapeModes": 13,
@@ -6617,7 +6651,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.000060989159127480413,
+     "soscRatio": 0.00006098915971867345,
      "stability": {
       "maxShapeExponent": 283.81218930049744,
       "unstableShapeModes": 13,
@@ -6765,7 +6799,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00005524959421424583,
+     "soscRatio": 0.00005524959144639964,
      "stability": {
       "maxShapeExponent": 320.6289449347689,
       "unstableShapeModes": 14,
@@ -6920,7 +6954,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.000050894312494177816,
+     "soscRatio": 0.00005089430962695802,
      "stability": {
       "maxShapeExponent": 359.6231221606544,
       "unstableShapeModes": 15,
@@ -7067,7 +7101,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0017891842231462741,
+     "soscRatio": 0.0017891842029427168,
      "stability": {
       "maxShapeExponent": 78.57364128101852,
       "unstableShapeModes": 16,
@@ -7229,7 +7263,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00004756257881303473,
+     "soscRatio": 0.0000475625798077236,
      "stability": {
       "maxShapeExponent": 400.7963512205456,
       "unstableShapeModes": 16,
@@ -7383,7 +7417,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0011160019612638068,
+     "soscRatio": 0.0011160022498890377,
      "stability": {
       "maxShapeExponent": 93.2248864981405,
       "unstableShapeModes": 17,
@@ -7552,7 +7586,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00004499948319377208,
+     "soscRatio": 0.00004499948618776909,
      "stability": {
       "maxShapeExponent": 444.1512368503154,
       "unstableShapeModes": 17,
@@ -7713,7 +7747,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.001386897458384811,
+     "soscRatio": 0.0013868974381455162,
      "stability": {
       "maxShapeExponent": 95.52322846223657,
       "unstableShapeModes": 18,
@@ -7889,7 +7923,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.000043020641435497495,
+     "soscRatio": 0.00004302064250213317,
      "stability": {
       "maxShapeExponent": 489.6912175156248,
       "unstableShapeModes": 18,
@@ -8057,7 +8091,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.001100766483070902,
+     "soscRatio": 0.001100766449164598,
      "stability": {
       "maxShapeExponent": 96.90071652531006,
       "unstableShapeModes": 19,
@@ -8240,7 +8274,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00004149005441074002,
+     "soscRatio": 0.000041490058260834414,
      "stability": {
       "maxShapeExponent": 537.4204519427423,
       "unstableShapeModes": 19,
@@ -8415,7 +8449,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.000817680842092613,
+     "soscRatio": 0.0008176807847870952,
      "stability": {
       "maxShapeExponent": 114.09557575261242,
       "unstableShapeModes": 20,
@@ -8605,7 +8639,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00004030575663224038,
+     "soscRatio": 0.000040305757876269745,
      "stability": {
       "maxShapeExponent": 587.3437284940012,
       "unstableShapeModes": 20,
@@ -8787,7 +8821,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0009140075048080481,
+     "soscRatio": 0.000914007502646113,
      "stability": {
       "maxShapeExponent": 115.8475149101533,
       "unstableShapeModes": 21,
@@ -8984,7 +9018,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00003939023501804173,
+     "soscRatio": 0.00003939023593704872,
      "stability": {
       "maxShapeExponent": 639.4663893109753,
       "unstableShapeModes": 21,
@@ -9178,23 +9212,23 @@
   {
    "alpha": 2,
    "N": 4,
-   "best": 0.4116738600453334,
+   "best": 0.41167386004533335,
    "minima": [
     {
-     "P": 0.4116738600453334,
+     "P": 0.41167386004533335,
      "status": "certified-local-minimum",
      "confirmations": 1,
      "reportedBasinSeeds": 78,
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.00031902840123279813,
+     "soscRatio": 0.00031902842015580263,
      "stability": {
-      "maxShapeExponent": 15.258918171029878,
+      "maxShapeExponent": 15.258918171029807,
       "unstableShapeModes": 1,
       "shapeExponents": [
-       15.258918171029878,
-       -13.25891817102989
+       15.258918171029807,
+       -13.258918171029826
       ]
      },
      "config": {
@@ -9208,23 +9242,23 @@
         0
        ],
        [
-        -0.3681705358374629,
-        -0.33277261349413984
+        -0.3681705358374654,
+        -0.3327726134941439
        ],
        [
-        -0.3988572728499549,
-        0.09606204367621686
+        -0.39885727284995887,
+        0.09606204367621667
        ]
       ],
       "G": [
        1,
-       24.261257593815003,
-       -2.17062328907167,
-       1.6998177652281068
+       24.2612575938141,
+       -2.1706232890716524,
+       1.699817765228091
       ],
       "kappa": [
-       -2.776625689022583,
-       2.2861284306019205
+       -2.7766256890224787,
+       2.2861284306018343
       ]
      },
      "commit": "11bf354dc253c5da58b23853fb66f7302206fd78"
@@ -9252,7 +9286,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0002825987986547412,
+     "soscRatio": 0.00028259880750507383,
      "stability": {
       "maxShapeExponent": 33.306844651860516,
       "unstableShapeModes": 2,
@@ -9323,7 +9357,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0007953868969170589,
+     "soscRatio": 0.0007953871619569542,
      "stability": {
       "maxShapeExponent": 57.17408777873131,
       "unstableShapeModes": 3,
@@ -9401,7 +9435,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0003732344501299072,
+     "soscRatio": 0.0003732344456604854,
      "stability": {
       "maxShapeExponent": 89.24246852554964,
       "unstableShapeModes": 4,
@@ -9471,7 +9505,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.002084154624197448,
+     "soscRatio": 0.002084154663533302,
      "stability": {
       "maxShapeExponent": 13.187067341538128,
       "unstableShapeModes": 5,
@@ -9556,7 +9590,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0004913825670135316,
+     "soscRatio": 0.0004913825606634825,
      "stability": {
       "maxShapeExponent": 130.4594867424911,
       "unstableShapeModes": 5,
@@ -9633,7 +9667,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.003803555440976226,
+     "soscRatio": 0.0038035554239152936,
      "stability": {
       "maxShapeExponent": 27.613267290837143,
       "unstableShapeModes": 6,
@@ -9725,7 +9759,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0003646353993223849,
+     "soscRatio": 0.000364635495968414,
      "stability": {
       "maxShapeExponent": 181.99341660069595,
       "unstableShapeModes": 6,
@@ -9809,7 +9843,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.002864848421212702,
+     "soscRatio": 0.0028648484093423032,
      "stability": {
       "maxShapeExponent": 27.470800695805956,
       "unstableShapeModes": 7,
@@ -9893,7 +9927,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0002522210125778489,
+     "soscRatio": 0.0002522210442593022,
      "stability": {
       "maxShapeExponent": 46.61711289685833,
       "unstableShapeModes": 7,
@@ -9996,7 +10030,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.000313105824187926,
+     "soscRatio": 0.00031310606045435003,
      "stability": {
       "maxShapeExponent": 245.2551324250219,
       "unstableShapeModes": 7,
@@ -10087,7 +10121,7 @@
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": 0.0030733851831696306,
+     "soscRatio": 0.003073385151770756,
      "stability": {
       "maxShapeExponent": 46.3206796512981,
       "unstableShapeModes": 8,
@@ -10187,37 +10221,37 @@
   {
    "alpha": 2,
    "N": 11,
-   "best": 2.9123922827736443e-167,
+   "best": 6.608640976652015e-166,
    "minima": [
     {
-     "P": 2.9123922827736443e-167,
+     "P": 6.608640976652015e-166,
      "status": "zero-winding",
      "confirmations": 1,
      "reportedBasinSeeds": 11,
      "machines": [
       "maintainer-cloud"
      ],
-     "soscRatio": -3.330073812530667e-18,
+     "soscRatio": -3.3583429154269434e-11,
      "stability": {
-      "maxShapeExponent": 258.149127292978,
+      "maxShapeExponent": 258.14912729297754,
       "unstableShapeModes": 8,
       "shapeExponents": [
-       258.149127292978,
-       223.36808570693177,
-       182.1915743759171,
-       122.76421588896743,
-       81.9886836758496,
-       47.91643130977963,
-       24.866925229602458,
-       8.425038776495493,
-       -6.425038776495489,
-       -22.866925229602458,
-       -45.91643130977957,
-       -79.98868367584959,
-       -120.76421588896767,
-       -180.1915743759176,
-       -221.36808570693182,
-       -256.14912729297816
+       258.14912729297754,
+       223.36808570693208,
+       182.19157437591642,
+       122.7642158889672,
+       81.98868367584939,
+       47.91643130977964,
+       24.866925229602437,
+       8.425038776495468,
+       -6.4250387764954775,
+       -22.866925229602476,
+       -45.916431309779696,
+       -79.98868367584939,
+       -120.76421588896746,
+       -180.19157437591696,
+       -221.36808570693194,
+       -256.14912729297777
       ]
      },
      "config": {
@@ -10236,7 +10270,7 @@
        ],
        [
         -1.801909884889756,
-        -0.6111065687537268
+        -0.6111065687537269
        ],
        [
         -4.071878335847853,
@@ -10251,8 +10285,8 @@
         -2.0689896653107644
        ],
        [
-        -0.9393983674980174,
-        -0.25082521503878674
+        -0.9393983674980173,
+        -0.2508252150387867
        ],
        [
         1.9462767162883428,
@@ -10260,7 +10294,7 @@
        ],
        [
         3.54947459625179,
-        -1.50267873916129
+        -1.5026787391612901
        ],
        [
         2.660832966029472,
@@ -10269,20 +10303,20 @@
       ],
       "G": [
        1,
-       0.8758511312778298,
-       -8.944321379267029,
+       0.8758511312778301,
+       -8.944321379267027,
        0.7228403384807817,
-       1.3030705402891023,
+       1.303070540289102,
        0.8515999321981906,
        27.63636767708222,
-       0.7038704820257767,
-       0.9203945701619222,
+       0.703870482025777,
+       0.920394570161922,
        2.2933450141458946,
-       0.379613540868129
+       0.37961354086812904
       ],
       "kappa": [
-       0.004549069384233999,
-       -2.6497349136889905e-169
+       0.004549069384234001,
+       6.012633267656393e-168
       ]
      },
      "commit": "6ae0c9a6f069d43c66d569ed3c4fcad1128b7d21"
@@ -10298,16 +10332,290 @@
    ]
   }
  ],
+ "thresholds": [
+  {
+   "N": 13,
+   "fromAlpha": 0,
+   "positiveAlpha": 2.880273437499998,
+   "zeroAlpha": 2.880371093749998,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 14,
+   "fromAlpha": 0,
+   "positiveAlpha": 2.6072265624999984,
+   "zeroAlpha": 2.6073242187499988,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 15,
+   "fromAlpha": 0,
+   "positiveAlpha": 2.4116210937499996,
+   "zeroAlpha": 2.4117187499999995,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 16,
+   "fromAlpha": 0,
+   "positiveAlpha": 2.24521484375,
+   "zeroAlpha": 2.2453125,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 17,
+   "fromAlpha": 0,
+   "positiveAlpha": 2.1166015625000005,
+   "zeroAlpha": 2.1166992187500004,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 18,
+   "fromAlpha": 0,
+   "positiveAlpha": 2.004785156250001,
+   "zeroAlpha": 2.004882812500001,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 19,
+   "fromAlpha": 0,
+   "positiveAlpha": 1.9138671875000008,
+   "zeroAlpha": 1.913964843750001,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 20,
+   "fromAlpha": 0,
+   "positiveAlpha": 1.833398437500001,
+   "zeroAlpha": 1.8334960937500009,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 21,
+   "fromAlpha": 0,
+   "positiveAlpha": 1.7657226562500008,
+   "zeroAlpha": 1.765820312500001,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 22,
+   "fromAlpha": 0,
+   "positiveAlpha": 1.7050781250000009,
+   "zeroAlpha": 1.7051757812500008,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 23,
+   "fromAlpha": 0,
+   "positiveAlpha": 1.652636718750001,
+   "zeroAlpha": 1.652734375000001,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 24,
+   "fromAlpha": 0,
+   "positiveAlpha": 1.6051757812500007,
+   "zeroAlpha": 1.6052734375000006,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 25,
+   "fromAlpha": 0,
+   "positiveAlpha": 1.5632812500000006,
+   "zeroAlpha": 1.5633789062500005,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 26,
+   "fromAlpha": 0,
+   "positiveAlpha": 1.5250976562500007,
+   "zeroAlpha": 1.5251953125000008,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 27,
+   "fromAlpha": 0,
+   "positiveAlpha": 1.4909179687500007,
+   "zeroAlpha": 1.4910156250000006,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 28,
+   "fromAlpha": 0,
+   "positiveAlpha": 1.4594726562500004,
+   "zeroAlpha": 1.4595703125000006,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 29,
+   "fromAlpha": 0,
+   "positiveAlpha": 1.4309570312500006,
+   "zeroAlpha": 1.4310546875000008,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 30,
+   "fromAlpha": 0,
+   "positiveAlpha": 1.4045898437500006,
+   "zeroAlpha": 1.4046875000000005,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 9,
+   "fromAlpha": 1,
+   "positiveAlpha": 2.3,
+   "zeroAlpha": 2.3000976562499997,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 10,
+   "fromAlpha": 1,
+   "positiveAlpha": 2.0913085937500004,
+   "zeroAlpha": 2.0914062500000004,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 11,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.9372070312500007,
+   "zeroAlpha": 1.9373046875000008,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 12,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.8185546875000005,
+   "zeroAlpha": 1.8186523437500006,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 13,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.7241210937500004,
+   "zeroAlpha": 1.7242187500000006,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 14,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.6471679687500007,
+   "zeroAlpha": 1.6472656250000006,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 15,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.5831054687500008,
+   "zeroAlpha": 1.5832031250000007,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 16,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.5288085937500004,
+   "zeroAlpha": 1.5289062500000004,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 17,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.4823242187500005,
+   "zeroAlpha": 1.4824218750000004,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 18,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.4418945312500004,
+   "zeroAlpha": 1.4419921875000006,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 19,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.4063476562500004,
+   "zeroAlpha": 1.4064453125000005,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 20,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.3750000000000004,
+   "zeroAlpha": 1.3750976562500004,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 21,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.3469726562500002,
+   "zeroAlpha": 1.3470703125000003,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 22,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.32177734375,
+   "zeroAlpha": 1.3218750000000001,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 23,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.2990234375000003,
+   "zeroAlpha": 1.2991210937500002,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  },
+  {
+   "N": 24,
+   "fromAlpha": 1,
+   "positiveAlpha": 1.2783203125000004,
+   "zeroAlpha": 1.2784179687500004,
+   "machine": "maintainer-cloud",
+   "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc"
+  }
+ ],
  "rejected": [],
  "compute": {
-  "files": 60,
+  "files": 94,
   "seeds": 1596,
-  "cpuSeconds": 2139.8710469999996,
+  "cpuSeconds": 2400.3554989999993,
   "wallSecondsWithoutCpuRecord": 1379.5790000000002,
   "measuredJoules": 0,
   "filesMeasured": 0,
   "machines": 1,
-  "cpuHours": 0.9776250130555555,
+  "cpuHours": 1.0499818052777776,
   "byCase": [
    {
     "alpha": 0,
@@ -10759,8 +11067,8 @@
    }
   ],
   "estimatedWattHours": [
-   0.9776250130555555,
-   19.55250026111111
+   1.0499818052777776,
+   20.999636105555556
   ],
   "method": "As reported by each submission. CPU time is measured by the job; files without a CPU record count their single-threaded wall time. Energy is an estimate of 1 to 20 W per busy core unless a file measured it."
  }

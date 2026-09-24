@@ -15,10 +15,12 @@ test('command allowlist rejects injection and defaults to full evidence',()=>{
   for(const input of [{workspace:'validate',mode:'plate',id:'fixture; touch /tmp/oops'},{workspace:'validate',mode:'shell'},{workspace:'validate',command:'whoami'},{workspace:'contribute',mode:'derive',slug:'../bad'},{workspace:'contribute',mode:'metal',grid:999}])assert.throws(()=>command(root,input));
   assert.equal(command(root,{workspace:'validate',mode:'plate',id:'fixture'}).args.at(-1),'12000');
   const vortex=command(root,{workspace:'contribute',mode:'vortex-collapse',alpha:1,n:6,samples:20,start:40});
-  assert.deepEqual(vortex.args,['tools/vortex-collapse-search.js','--alpha','1','--n','6','--start','40','--count','20']);
+  assert.deepEqual(vortex.args,['tools/vortex-collapse-search.js','--alpha','1','--n','6','--start','40','--count','20','--threads','1']);
+  assert.deepEqual(command(root,{workspace:'contribute',mode:'vortex-threshold',alpha:1,n:16,to:3}).args,['tools/vortex-collapse-search.js','--continue','--alpha','1','--n','16','--to','3']);
+  for(const bad of [{to:1},{to:4},{n:2},{alpha:0.12345},{threads:0},{threads:1.5},{threads:100000}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-threshold',alpha:1,n:16,to:3,...bad}));
   assert(Number.isInteger(command(root,{workspace:'contribute',mode:'vortex-collapse'}).input.start),'a random seed block is recorded in the job input');
-  assert.deepEqual(command(root,{workspace:'contribute',mode:'vortex-grow',alpha:0,n:30,samples:8,start:0}).args,['tools/vortex-collapse-search.js','--grow','--alpha','0','--n','30','--start','0','--count','8']);
-  for(const bad of [{n:65},{n:4},{samples:0}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-grow',...bad}));
+  assert.deepEqual(command(root,{workspace:'contribute',mode:'vortex-grow',alpha:0,n:30,samples:8,start:0}).args,['tools/vortex-collapse-search.js','--grow','--alpha','0','--n','30','--start','0','--count','8','--threads','1']);
+  for(const bad of [{n:129},{n:4},{samples:0}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-grow',...bad}));
   for(const bad of [{alpha:-2},{alpha:'1; rm'},{alpha:0.12345},{n:2},{n:17},{samples:0},{start:-1},{start:2**31}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-collapse',...bad}));
  }finally{fs.rmSync(root,{recursive:true,force:true});}
 });

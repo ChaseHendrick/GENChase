@@ -53,8 +53,68 @@ the centre and the cluster shrinks without rotating. Such points were found by
     circulations stay within a factor of 40 of one another.
 
 This is strong numerical evidence that zero-winding collapse exists for 11 vortices at α = 2, and so that
-the least winding for α = 2 is 0 from N = 11 on. It is not an interval-arithmetic proof. Whether zero
-winding already occurs at α = 2 for fewer vortices, and for which α it first appears, are open.
+the least winding for α = 2 is 0 from N = 11 on. It is not an interval-arithmetic proof.
+
+## Where zero winding begins
+
+`--continue` follows a certified minimum as α changes. At each step it re-minimizes P from the previous
+point, and it bisects the α at which the branch first reaches P = 0 to a bracket of 10⁻⁴. The low end of
+the bracket is a certified strict minimum with P > 0 and the high end is a certified zero-winding
+collapse, and `--verify` re-derives both from their positions and circulations.
+
+Following every recorded SQG and Euler family upward in α gives the thresholds below. Each is an upper
+bound for its N, since another branch could reach zero at smaller α.
+
+- **On every branch, P falls to zero linearly.** At the N = 16 SQG threshold, P = 4 × 10⁻⁵ at a
+  distance of 10⁻⁴ in α. That is a transversal crossing, not a fold.
+- **The thresholds fall steadily with N**, and the step from one N to the next shrinks slightly faster
+  than 1/N². So α*(N) appears to approach a finite limit α∞, not zero, but the data cannot pin it down.
+  Fits of the form a + b/N, a + b/N + c/N² and a + bN⁻ᵖ over different N windows put α∞ anywhere from
+  0.27 to 1.09. A slow logarithmic approach, which would allow α∞ ≤ 0, is not excluded by N ≤ 30.
+- **For SQG**, if the step size keeps behaving like C/N², the grown family would reach zero winding at
+  α = 1 near N ≈ 58. Growing that family to large N tests this directly, and is a good long job for
+  volunteers.
+- **For Euler**, a positive α∞ would mean a positive winding floor for Euler collapse at every N, which
+  is open question 1.
+
+<!-- thresholds:start -->
+| Family grown at α | N | Last α with P > 0 (certified) | First α with P = 0 (certified) |
+|---:|---:|---:|---:|
+| 0 | 13 | 2.880273 | 2.880371 |
+| 0 | 14 | 2.607227 | 2.607324 |
+| 0 | 15 | 2.411621 | 2.411719 |
+| 0 | 16 | 2.245215 | 2.245312 |
+| 0 | 17 | 2.116602 | 2.116699 |
+| 0 | 18 | 2.004785 | 2.004883 |
+| 0 | 19 | 1.913867 | 1.913965 |
+| 0 | 20 | 1.833398 | 1.833496 |
+| 0 | 21 | 1.765723 | 1.765820 |
+| 0 | 22 | 1.705078 | 1.705176 |
+| 0 | 23 | 1.652637 | 1.652734 |
+| 0 | 24 | 1.605176 | 1.605273 |
+| 0 | 25 | 1.563281 | 1.563379 |
+| 0 | 26 | 1.525098 | 1.525195 |
+| 0 | 27 | 1.490918 | 1.491016 |
+| 0 | 28 | 1.459473 | 1.459570 |
+| 0 | 29 | 1.430957 | 1.431055 |
+| 0 | 30 | 1.404590 | 1.404688 |
+| 1 | 9 | 2.300000 | 2.300098 |
+| 1 | 10 | 2.091309 | 2.091406 |
+| 1 | 11 | 1.937207 | 1.937305 |
+| 1 | 12 | 1.818555 | 1.818652 |
+| 1 | 13 | 1.724121 | 1.724219 |
+| 1 | 14 | 1.647168 | 1.647266 |
+| 1 | 15 | 1.583105 | 1.583203 |
+| 1 | 16 | 1.528809 | 1.528906 |
+| 1 | 17 | 1.482324 | 1.482422 |
+| 1 | 18 | 1.441895 | 1.441992 |
+| 1 | 19 | 1.406348 | 1.406445 |
+| 1 | 20 | 1.375000 | 1.375098 |
+| 1 | 21 | 1.346973 | 1.347070 |
+| 1 | 22 | 1.321777 | 1.321875 |
+| 1 | 23 | 1.299023 | 1.299121 |
+| 1 | 24 | 1.278320 | 1.278418 |
+<!-- thresholds:end -->
 
 ## What one job does
 
@@ -133,6 +193,13 @@ npm run validator:headless -- --mode vortex-collapse --alpha 1 --n 6 --samples 2
 Leave out `--start` to get a random block; the block is recorded in the job so that `--resume`
 continues it. The local app (`npm run validator`) has the same jobs under **Run experiments**.
 
+**Threads.** `--threads k` (or the Worker threads field in the app) runs seeds on k worker threads.
+Seeds are independent, so the results and the block's digest do not depend on k; only the speed and the
+heat do. The controls check that one and three threads give the same digest.
+
+**Thresholds.** `--mode vortex-threshold --alpha 1 --n 16 --to 3` follows the recorded minimum at that α
+and N and brackets its zero-winding threshold, as described above.
+
 **Growing a family.** Random starts rarely find the deep basins beyond eight vortices: at α = 2 they
 found 0.261 at N = 9, and growth found 0.0676. The growth job starts from the lowest recorded minimum
 below the target and adds one vortex at a time. It places each new vortex just outside one of the three
@@ -157,6 +224,7 @@ their digests test reproducibility.
 | 1. Euler lower bound | `--mode vortex-grow --alpha 0 --n 40`, or `--alpha 0 --n 7` up to `--n 16` |
 | 2. Four-vortex global minimum | `--alpha 0 --n 4 --samples 5000` |
 | 3. Three-vortex bound below −59/40 | `--alpha -1.6 --n 3`, `--alpha -1.8 --n 3`, `--alpha -1.95 --n 3` |
+| Where zero winding begins | `--mode vortex-threshold` for any recorded (α, N); `--mode vortex-grow --alpha 1 --n 70 --threads 4` to test SQG zero winding near N ≈ 58 |
 | 4. Least winding for α ≠ 0 | `--mode vortex-grow --alpha 1 --n 40`; `--mode vortex-grow --alpha 1.5 --n 20` and other α between 1 and 2, to find where zero winding first appears |
 
 A job writes `run/vortex-collapse/vortex-collapse-a<α>-n<N>-s<start>-c<count>.json` (growth writes
@@ -280,6 +348,18 @@ minimum, out of every seed recorded for that case. The reference column comes fr
 <!-- leaderboard:end -->
 
 ## Limitations
+
+- **Protocol 2 changed the solver**, not the model or the certificate:
+  - a Cholesky solve on a symmetric Gram matrix, with the factorization reused while retracting onto
+    the manifold;
+  - a reduced Hessian from differences along the N − 1 tangent directions instead of all 3N − 3
+    coordinates;
+  - a stall rule that stops a run whose P² and reduced gradient have both stopped improving.
+
+  On the same machine it is 2 to 3 times faster per seed and finds the same distinct minima. Seed
+  streams are labelled by protocol version, so a protocol 2 seed is a new start, not a rerun of the
+  protocol 1 seed with the same number. Files from protocol 1 still verify, because review uses only
+  positions and circulations.
 
 - The search and its certificate use binary64 throughout. A certificate says that a nondegenerate strict
   local minimum, or a zero-winding collapse, lies within numerical tolerance of the reported point. The

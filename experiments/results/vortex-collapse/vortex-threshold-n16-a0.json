@@ -1,0 +1,464 @@
+{
+ "experiment": "vortex-threshold",
+ "protocol": 2,
+ "N": 16,
+ "fromAlpha": 0,
+ "toAlpha": 3,
+ "source": "vortex-grow-a0-n16-s0-c10.json",
+ "step": 0.05,
+ "tol": 0.0001,
+ "sourceSha256": "79b6ca86a2879ddabedd83e60a35408e8ca2a14cc49a3bbad1951f8fbfa24b48",
+ "commit": "6f7783a6e192665603cd88fa0931dadc9325e7fc",
+ "machine": "maintainer-cloud",
+ "path": [
+  {
+   "alpha": 0,
+   "P": 0.5671672973793931,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.05,
+   "P": 0.54645151666217,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.1,
+   "P": 0.5264838876331019,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.15000000000000002,
+   "P": 0.5072135569858409,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.2,
+   "P": 0.48859429057939574,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.25,
+   "P": 0.47058394230514533,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.3,
+   "P": 0.4531439911963035,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.35,
+   "P": 0.4362391369537195,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.39999999999999997,
+   "P": 0.41983694566657265,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.44999999999999996,
+   "P": 0.40390753881994856,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.49999999999999994,
+   "P": 0.3884233197599532,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.5499999999999999,
+   "P": 0.3733587326757866,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.6,
+   "P": 0.358690049893036,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.65,
+   "P": 0.3443951838820031,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.7000000000000001,
+   "P": 0.3304535208923985,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.7500000000000001,
+   "P": 0.31684577354986326,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.8000000000000002,
+   "P": 0.30355385010562297,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.8500000000000002,
+   "P": 0.2905607383304472,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.9000000000000002,
+   "P": 0.2778504022979117,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 0.9500000000000003,
+   "P": 0.26540769051795277,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.0000000000000002,
+   "P": 0.2532182540662558,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.0500000000000003,
+   "P": 0.24126847351388217,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.1000000000000003,
+   "P": 0.22954539359875395,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.1500000000000004,
+   "P": 0.218036664699997,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.2000000000000004,
+   "P": 0.2067304902804946,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.2500000000000004,
+   "P": 0.19561557955468267,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.3000000000000005,
+   "P": 0.18468110471941313,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.3500000000000005,
+   "P": 0.17391666215722634,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.4000000000000006,
+   "P": 0.16331223708440587,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.4500000000000006,
+   "P": 0.15285817117154404,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.5000000000000007,
+   "P": 0.1425451327131669,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.5500000000000007,
+   "P": 0.1323640889641487,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.6000000000000008,
+   "P": 0.12230628029581757,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.6500000000000008,
+   "P": 0.11236319585268247,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.7000000000000008,
+   "P": 0.1025265504120457,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.7500000000000009,
+   "P": 0.09278826216283557,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.800000000000001,
+   "P": 0.0831404311267814,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.850000000000001,
+   "P": 0.07357531794386005,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.900000000000001,
+   "P": 0.06408532273455739,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 1.950000000000001,
+   "P": 0.05466296373268649,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 2.000000000000001,
+   "P": 0.04530085535350964,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 2.0500000000000007,
+   "P": 0.03599168532075645,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 2.1000000000000005,
+   "P": 0.02672819042054039,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 2.1500000000000004,
+   "P": 0.017503130376616136,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 2.2,
+   "P": 0.008309259245453691,
+   "status": "certified-local-minimum"
+  },
+  {
+   "alpha": 2.25,
+   "P": 1.5777283043815745e-161,
+   "status": "zero-winding"
+  }
+ ],
+ "end": null,
+ "threshold": {
+  "positive": {
+   "alpha": 2.24521484375,
+   "P": 1.605488461872331e-05,
+   "status": "certified-local-minimum",
+   "config": {
+    "z": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      0
+     ],
+     [
+      0.9613933970637991,
+      0.6651205279345546
+     ],
+     [
+      0.7052463368582826,
+      -0.02386412771292612
+     ],
+     [
+      -0.732208654466672,
+      -0.1126205389326155
+     ],
+     [
+      -2.1751638282733015,
+      -0.1969554174317502
+     ],
+     [
+      0.39407402267757247,
+      -0.010992035710403917
+     ],
+     [
+      -1.4603938076295586,
+      -0.22160444842180232
+     ],
+     [
+      -1.8641675211017164,
+      -0.21218616809821772
+     ],
+     [
+      -2.5332445819880167,
+      -0.9120094596170795
+     ],
+     [
+      -2.455453155822004,
+      -0.207662808087299
+     ],
+     [
+      1.309813097338599,
+      0.10583441517910015
+     ],
+     [
+      1.6529701580447,
+      0.40149463262975743
+     ],
+     [
+      -2.732001232537453,
+      -0.2711775395758048
+     ],
+     [
+      -3.015829561941056,
+      -0.42844426524137225
+     ],
+     [
+      -3.3031589455132164,
+      -0.7831360640993584
+     ]
+    ],
+    "G": [
+     1,
+     0.6008144754175428,
+     -5.036833333140785,
+     0.5434966326520835,
+     4.850806848594115,
+     0.6063732361305559,
+     0.6141081180124603,
+     1.1934845217641272,
+     0.7281063719985065,
+     -6.550677794933304,
+     0.6073597379838305,
+     0.8141657229119877,
+     1.589920710761511,
+     0.703297512070949,
+     0.9642391582848107,
+     1.8721544766399332
+    ],
+    "kappa": [
+     -0.850898838224574,
+     2.7322165339802495e-05
+    ]
+   },
+   "soscRatio": 0.0018931831964559634,
+   "unstableShapeModes": 14
+  },
+  "zero": {
+   "alpha": 2.2453125,
+   "P": 5.396640379020052e-169,
+   "status": "zero-winding",
+   "config": {
+    "z": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      0
+     ],
+     [
+      0.9610695011012316,
+      0.6647938484637574
+     ],
+     [
+      0.7053180999849935,
+      -0.02392076028084784
+     ],
+     [
+      -0.7309166450614302,
+      -0.11244828062668723
+     ],
+     [
+      -2.1726000682422537,
+      -0.1972715676139574
+     ],
+     [
+      0.39414392664543135,
+      -0.011038738938489579
+     ],
+     [
+      -1.4577244244589422,
+      -0.2220291600536085
+     ],
+     [
+      -1.8614966417632248,
+      -0.21278438796140844
+     ],
+     [
+      -2.5335269005074545,
+      -0.9115339415103184
+     ],
+     [
+      -2.4531157547310127,
+      -0.20742210921909449
+     ],
+     [
+      1.3097083915145715,
+      0.10592720760662751
+     ],
+     [
+      1.652574762892757,
+      0.4016948608714887
+     ],
+     [
+      -2.730106888568437,
+      -0.2703148618610941
+     ],
+     [
+      -3.014566160026754,
+      -0.4271161742341738
+     ],
+     [
+      -3.302479194934232,
+      -0.7814512308605132
+     ]
+    ],
+    "G": [
+     1,
+     0.6000844078314239,
+     -5.03094005687981,
+     0.5431445526576251,
+     4.816059023097531,
+     0.6053546203406446,
+     0.6139028761499781,
+     1.1901550799815777,
+     0.7264015083790267,
+     -6.531599986071729,
+     0.6070065562921726,
+     0.8135899084537925,
+     1.5868321163972061,
+     0.7035657572389253,
+     0.9644632577349728,
+     1.8679832338035902
+    ],
+    "kappa": [
+     -0.8512097765678223,
+     9.187346102485092e-169
+    ]
+   },
+   "soscRatio": -4.482539491312021e-12,
+   "unstableShapeModes": 14
+  },
+  "width": 9.765624999991118e-05,
+  "certified": true
+ },
+ "compute": {
+  "wallSeconds": 3.448,
+  "cpuSeconds": 3.995819,
+  "energy": {
+   "method": "estimate: CPU seconds times 1 to 20 W per busy core; not measured on this machine",
+   "wattHoursLow": 0.0011099497222222222,
+   "wattHoursHigh": 0.022198994444444446
+  }
+ },
+ "runtime": {
+  "cpuModel": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+  "logicalCores": 4,
+  "memoryGiB": 15.7,
+  "os": "Linux",
+  "osRelease": "6.18.44-fc-v37",
+  "arch": "x64",
+  "node": "v22.22.2",
+  "v8": "12.4.254.21-node.39"
+ },
+ "scope": "Continuation of one certified branch. The zero-winding threshold is an upper bound on the least alpha at which N vortices can collapse without rotating; other branches may reach zero at smaller alpha. Numerical, not a proof."
+}

@@ -11,7 +11,7 @@ No job has been shared through an evidence pull request yet.
 
 ## Least-winding vortex search
 
-1596 seeds in 60 result files from 1 machine label(s): 0.98 CPU hours, about 1.0 to 19.6 Wh estimated. The maintainers' own runs are included.
+1596 seeds in 94 result files from 1 machine label(s): 1.05 CPU hours, about 1.0 to 21.0 Wh estimated. The maintainers' own runs are included.
 
 | α | N | Seeds | CPU hours | Independent reruns of a block | Reruns that disagreed |
 |---:|---:|---:|---:|---:|---:|
