@@ -877,6 +877,18 @@ check('10b Remark 2: on both arcs min P = sqrt 2 at cos 2beta = 1/3',
       all(abs(pm - mp.sqrt(2)) < mp.mpf('1e-30') and abs(cb - mp.mpf(1)/3) < mp.mpf('1e-15') for pm, cb in r2min),
       [(mp.nstr(pm, 20), mp.nstr(cb, 15)) for pm, cb in r2min])
 
+# 10f. Equal circulations: the fastest collapse at a fixed distance between the two identical vortices
+#      (the configuration of Leoncini, Kuznetsov and Zaslavsky 2000, Fig. 18) has t_c = 4 pi/3 and P = 3/2.
+mp.mp.dps = 50
+rate_b = lambda bb: -kappa_beta(bb)[0].real         # collapse rate; z1 = 0, z2 = 1 fixed
+bfast = mp.findroot(lambda bb: mp.diff(rate_b, bb), mp.mpf('0.46'))
+tc_fast = 1/(2*rate_b(bfast))
+P_fast = P_of_kappa(kappa_beta(bfast)[0])
+check('10f mu = 1: the fastest collapse at |z1 - z2| = 1 has t_c = 4 pi/3, P = 3/2, cos 2beta = 3/5',
+      abs(tc_fast - 4*mp.pi/3) < mp.mpf('1e-40') and abs(P_fast - mp.mpf(3)/2) < mp.mpf('1e-40')
+      and abs(mp.cos(2*bfast) - mp.mpf(3)/5) < mp.mpf('1e-40'),
+      'beta=%s t_c=%s P=%s' % (mp.nstr(bfast, 15), mp.nstr(tc_fast, 15), mp.nstr(P_fast, 15)))
+
 # 10c. Section 4, exact and for general n.
 n_, x_, rho_, al_ = sp.symbols('n x rho alpha', positive=True)
 Eh, mexp, zt, ztb = sp.symbols('E m zeta zetabar', positive=True)

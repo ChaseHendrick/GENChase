@@ -156,6 +156,18 @@ The owner downloaded four arXiv papers; the copies are not committed. For each, 
   - The cited Tavantzis–Ting 1988, Kimura 1987 and Aref 1979: abstracts only.
   - The full texts of Kudela 2014 and Reinaud–Dritschel–Scott 2022.
 
+### L. Four more papers read, and four citations added (2026-09-24, later)
+
+- **Borisov and Lebedev 1998 (nlin/0503057), read in full by two independent readers.** Conditions for collapse and scattering in the Lie–Poisson formulation. Collapse needs D = 0 (zero angular impulse) and is impossible when ΣΓ = 0; homogeneous collapse needs Σ1/Γ = 0. The scattering condition for D ≠ 0 is a numerical conjecture, and collapse sufficiency is a qualitative phase-plane argument. No rotation during collapse, spirals, path length, extrema or rings. **DOES NOT KILL.** Now cited as "obtained conditions" (not "derived the conditions").
+- **Krishnamurthy, Aref and Stremler 2018 (1706.00731), read in full by two independent readers.** Equations of motion for the circumcircle and the angles. Eq. (40): for L = 0 the circumcircle passes through the center of vorticity at all times. Eq. (46b): the collapse time, which agrees with the paper's t_c. No rotation rate, P, spirals, path length or minimum. **DOES NOT KILL.** Now cited, and its Eq. (40) explains why Krishnamurthy–Stremler's normalized circumcenter path length is √(1 + 4P²).
+- **Reinaud, Dritschel and Scott 2022 (Physica D 434, 133226), open access, point-vortex sections read.** Collapse conditions and collapse time in generalized Euler/QG models. The collapse-time maps (Fig. 3, β = 0.25–1.5) have local minima in a normalization that fixes the like-signed pair's separation; P is scale-free. Nothing on the rotation rate or bounds. **DOES NOT KILL.** Now cited to draw that contrast.
+- **Leoncini, Kuznetsov and Zaslavsky 2000 (physics/9908055), read in full.** Near-collapse dynamics for two identical vortices. Their fastest collapse (Fig. 18, collapse time 4π/3) is the maximum collapse rate at a fixed distance between the identical vortices. Direct Biot–Savart confirms t_c = 4π/3 there, at cos 2β = 3/5, with P = 3/2 (`verify_general_mu.py` 10f). The √3/2 in their caption is the energy parameter Λ = e^{4πH}. **DOES NOT KILL.** Now clarified in the Discussion.
+  - Side note, not in the paper: evaluating Λ = Y^k/X = R₂R₃/R₁² at that configuration gives √(2/5), not √3/2. Their Eq. (49), as printed, does not match Biot–Savart either. There seems to be an internal inconsistency or misprint in their paper; it is not pursued.
+- **Still unread:**
+  - Demina–Kudryashov 2014, which the owner has decided not to buy for now; the main risk, for the rings.
+  - The cited Tavantzis–Ting 1988, Kimura 1987 and Aref 1979, known from abstracts.
+  - Kudela 2014.
+
 ## Do this, do not do that
 
 **Do**

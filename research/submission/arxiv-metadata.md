@@ -3,7 +3,7 @@
 Fill the arXiv form with the fields below.
 
 - **Files to upload:** the author's private copy, which adds a contact email under the affiliation. The public repository deliberately leaves out the email; [`PRIVATE-COPIES.md`](PRIVATE-COPIES.md) describes the private copies and how to rebuild them. Either format works:
-  - **LaTeX source (preferred by arXiv).** Upload the private `.tex` together with `figures/minimal-winding.pdf`, keeping that folder path. It is [`../unequal-mu-n5-floors-2026-09-23.tex`](../unequal-mu-n5-floors-2026-09-23.tex) with the email added and the four comment lines at the top removed. The source is plain `article` with standard packages, and it compiles without warnings in two `pdflatex` runs. arXiv makes the source downloadable. The private copy then has no comments, so the source shows nothing that the PDF does not.
+  - **LaTeX source (preferred by arXiv).** Upload the private `.tex` together with `figures/minimal-winding.pdf`, keeping that folder path. It is [`../unequal-mu-n5-floors-2026-09-23.tex`](../unequal-mu-n5-floors-2026-09-23.tex) with the email added and the four comment lines at the top removed. The source is plain `article` with standard packages, and it compiles without warnings after three `pdflatex` runs (arXiv reruns LaTeX as needed). arXiv makes the source downloadable. The private copy then has no comments, so the source shows nothing that the PDF does not.
   - **PDF only.** arXiv accepts a PDF that was not produced from TeX. Typst embeds its fonts as CID fonts, not Type 3.
 - **Title:** Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons
 - **Authors:** Chase Hendrick

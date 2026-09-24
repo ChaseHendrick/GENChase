@@ -41,7 +41,7 @@ cp research/figures/minimal-winding.pdf ~/private-paper/figures/
 # with
 #   \author{Chase Hendrick\\[0.2em] {\small GENChase}\\ {\small\href{mailto:you@example.com}{\texttt{you@example.com}}}}
 cd ~/private-paper
-pdflatex Hendrick-minimal-winding-v1.tex && pdflatex Hendrick-minimal-winding-v1.tex
+for i in 1 2 3; do pdflatex Hendrick-minimal-winding-v1.tex; done   # the third run settles the cross-references
 zip Hendrick-minimal-winding-v1-latex.zip Hendrick-minimal-winding-v1.tex figures/minimal-winding.pdf
 ```
 

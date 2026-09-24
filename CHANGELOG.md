@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.6.1
+
+The publication date is recorded in the GitHub release notes.
+
+- The paper cites four more papers, each read for the purpose: Borisov and Lebedev (1998), Krishnamurthy, Aref and Stremler (2018), Reinaud, Dritschel and Scott (2022), and a clarification of Leoncini, Kuznetsov and Zaslavsky (2000). None anticipates the results.
+  - The Discussion now explains why Krishnamurthy and Stremler's normalized path length equals √(1 + 4P²): the circumcircle passes through the collision point.
+  - It contrasts collapse-time minima, which depend on the chosen scale, with P, which does not.
+  - It notes that the √3/2 in Leoncini et al. is an energy parameter, and that their fastest collapse has P = 3/2.
+- `verify_general_mu.py` adds a check of that fastest collapse (116 checks in all), and Table 1 gains a row for it.
+- The LaTeX build instructions now say three `pdflatex` runs, which is what settles the cross-references from a clean directory.
+
 ## v0.6.0
 
 The publication date is recorded in the GitHub release notes.
