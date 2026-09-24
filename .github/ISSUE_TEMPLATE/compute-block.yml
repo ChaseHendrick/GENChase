@@ -1,0 +1,55 @@
+name: Claim a seed block
+description: Say which vortex-collapse seed block your computer is running, so others can pick a different one.
+title: "[compute] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Claiming is optional. A job without `--start` picks a random block among two billion seeds, so collisions are rare. Claim a block when you plan a long run or want a specific range. The questions, the suggested jobs and the certificate are in [experiments/VORTEX-COLLAPSE.md](https://github.com/SharpMeow/GENChase/blob/main/experiments/VORTEX-COLLAPSE.md).
+
+        Share the result file when the run ends, including blocks that found nothing new, then close this issue with a link to the evidence pull request. Rerunning somebody else's block on purpose is useful too: its results digest should match.
+  - type: dropdown
+    id: job
+    attributes:
+      label: Job
+      options:
+        - vortex-collapse (multistart search at one N)
+        - vortex-grow (continue the deepest family to a target N)
+    validations:
+      required: true
+  - type: input
+    id: alpha
+    attributes:
+      label: Kernel exponent alpha
+      placeholder: "0"
+    validations:
+      required: true
+  - type: input
+    id: n
+    attributes:
+      label: Vortices (or growth target)
+      placeholder: "8"
+    validations:
+      required: true
+  - type: input
+    id: block
+    attributes:
+      label: Seed block
+      description: First seed and number of seeds, as passed to --start and --samples.
+      placeholder: "start 5000, 500 seeds"
+    validations:
+      required: true
+  - type: input
+    id: machine
+    attributes:
+      label: Machine label
+      description: The pseudonymous --machine label. Not your name or email.
+      placeholder: lab-mac-2
+  - type: dropdown
+    id: rerun
+    attributes:
+      label: Is this a deliberate rerun of a recorded block?
+      options:
+        - "No, a new block"
+        - "Yes, a reproducibility rerun"

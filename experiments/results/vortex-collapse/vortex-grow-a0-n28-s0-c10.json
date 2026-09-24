@@ -1,0 +1,358 @@
+{
+ "experiment": "vortex-collapse-search",
+ "protocol": {
+  "version": 1,
+  "frozenDate": "2026-09-24",
+  "gauge": "z_1 = 0, z_2 = 1, G_1 = 1; unknowns z_3..z_N, G_2..G_N, kappa. Residual v_j - v_1 - kappa (z_j - z_1), j = 2..N.",
+  "landingAttempts": 24,
+  "newtonIterations": 250,
+  "limits": {
+   "feasibility": 1e-11,
+   "reducedGradient": 1e-08,
+   "soscRelative": 1e-07,
+   "licq": 1e-07,
+   "minSeparation": 1e-06,
+   "circulationSpread": 100000000,
+   "odeShrink": 0.5,
+   "odeAmplification": 10000,
+   "odeShape": 1e-06,
+   "odeWinding": 1e-06,
+   "invariant": 1e-08,
+   "center": 1e-08,
+   "trivialModes": 1e-07
+  }
+ },
+ "alpha": 0,
+ "N": 28,
+ "sourceSha256": "d824a25e7aa821e1ecd35eafb326c3790776b8f8b1cab933585d6ffc1c1edb2b",
+ "commit": "e3dbbe1c65c82faa06627b0d81e9e55810a42dd9",
+ "machine": "maintainer-cloud",
+ "node": "v22.22.2",
+ "platform": "linux",
+ "arch": "x64",
+ "reference": null,
+ "scope": "Binary64 multistart search. A certified strict local minimum is a numerical candidate with a second-order certificate, not a proof of a global minimum. Priority unconfirmed.",
+ "method": {
+  "kind": "grow",
+  "parentN": 27,
+  "parentP": 0.5269459052576635,
+  "source": "leaderboard alpha 0, N 10, P 0.6377055919488629"
+ },
+ "summary": {
+  "seeds": {
+   "start": 0,
+   "count": 10
+  },
+  "tally": {
+   "certified-local-minimum": 6,
+   "stalled": 4
+  },
+  "distinctMinima": 1,
+  "best": {
+   "P": 0.5250320549087871,
+   "basinSeeds": 6,
+   "firstSeed": 3
+  },
+  "comparison": null,
+  "boundaryApproach": 0.6334084817675986,
+  "elapsedSeconds": 181.927,
+  "compute": {
+   "seeds": 10,
+   "wallSeconds": 181.927,
+   "cpuSeconds": 218.302765,
+   "cpuSecondsPerSeed": 21.8302765,
+   "utilization": 1,
+   "peakMemoryMiB": 142.9,
+   "seedsPerCpuHour": 164.9085846439004,
+   "certifiedPerCpuHour": 98.94515078634025,
+   "yield": {
+    "certified-local-minimum": 0.6,
+    "stalled": 0.4
+   },
+   "energy": {
+    "method": "estimate: CPU seconds times 1 to 20 W per busy core; not measured on this machine",
+    "wattHoursLow": 0.06063965694444444,
+    "wattHoursHigh": 1.2127931388888888
+   }
+  },
+  "certificateMargins": {
+   "certified": 6,
+   "limits": {
+    "feasibility": 1e-11,
+    "reducedGradient": 1e-08,
+    "soscRelative": 1e-07,
+    "licq": 1e-07,
+    "minSeparation": 1e-06,
+    "circulationSpread": 100000000,
+    "odeShrink": 0.5,
+    "odeAmplification": 10000,
+    "odeShape": 1e-06,
+    "odeWinding": 1e-06,
+    "invariant": 1e-08,
+    "center": 1e-08,
+    "trivialModes": 1e-07
+   },
+   "worstFeasibility": 7.245061587465409e-15,
+   "worstReducedGradient": 2.2045497680972395e-10,
+   "smallestSoscRatio": 9.526430812418972e-05,
+   "smallestLicq": 0.0007896718637427428,
+   "worstOdeShape": 1.6303977201927394e-12,
+   "worstOdeWinding": 1.7339567587940656e-14,
+   "worstInvariant": 1.672340454732858e-15,
+   "worstSymmetryMode": 2.6768641801207795e-12,
+   "worstPairing": 7.542443549825006e-15
+  },
+  "resultsDigest": "20eb349c0f995c2d520efd6a97e9db69e9a6ab78231136d75c0d138ce6bf1b75",
+  "runtime": {
+   "cpuModel": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+   "logicalCores": 4,
+   "memoryGiB": 15.7,
+   "os": "Linux",
+   "osRelease": "6.18.44-fc-v37",
+   "arch": "x64",
+   "node": "v22.22.2",
+   "v8": "12.4.254.21-node.39"
+  }
+ },
+ "minima": [
+  {
+   "P": 0.5250320549087871,
+   "status": "certified-local-minimum",
+   "basinSeeds": 6,
+   "firstSeed": 3,
+   "soscRatio": 0.00019348932751171843,
+   "config": {
+    "z": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      0
+     ],
+     [
+      2.035778269953194,
+      1.3311526850508808
+     ],
+     [
+      0.6894662951731996,
+      0.015626443727301407
+     ],
+     [
+      -0.4140696380673786,
+      -0.06261387193638848
+     ],
+     [
+      -2.3790748867074303,
+      -0.8115614553212571
+     ],
+     [
+      0.3608489932718241,
+      0.02003813956690669
+     ],
+     [
+      -0.9193265799623109,
+      -0.197068182147057
+     ],
+     [
+      -1.593225724256071,
+      -0.4568239592489369
+     ],
+     [
+      -6.008078880605032,
+      -2.599538099480884
+     ],
+     [
+      -3.558230972733955,
+      -1.2057715425262854
+     ],
+     [
+      1.609644089498181,
+      -0.02119971160489758
+     ],
+     [
+      1.3035079003620533,
+      -0.015793945704896752
+     ],
+     [
+      -3.972300610766959,
+      -1.2683854144423274
+     ],
+     [
+      -4.333149604016152,
+      -1.2884235539984605
+     ],
+     [
+      -4.661766905901482,
+      -1.2840118581538862
+     ],
+     [
+      -3.052974030898591,
+      -1.0713172323541393
+     ],
+     [
+      -4.972300610716211,
+      -1.2683854144253606
+     ],
+     [
+      1.9277419868084522,
+      -0.004467799528208095
+     ],
+     [
+      2.2680356477155614,
+      0.04985909288437957
+     ],
+     [
+      2.6442680722106022,
+      0.16628650498967987
+     ],
+     [
+      -5.275808511068585,
+      -1.2525914687216642
+     ],
+     [
+      -5.581944700196504,
+      -1.247185702824309
+     ],
+     [
+      3.08449758929893,
+      0.3966033431974764
+     ],
+     [
+      -5.900042597499285,
+      -1.2639176149043083
+     ],
+     [
+      -6.2403362583988775,
+      -1.3182445073201265
+     ],
+     [
+      -6.616568682885593,
+      -1.4346719194276107
+     ],
+     [
+      -7.056798199963789,
+      -1.6649887576347082
+     ]
+    ],
+    "G": [
+     1,
+     1.0257853903546768,
+     -9.620261479924652,
+     0.9719665207880143,
+     1.135040332044292,
+     2.1901525761760534,
+     0.9575676160803893,
+     1.4533003650972764,
+     2.190152576620504,
+     -9.620261479980018,
+     1.135040331942787,
+     1.216314347649263,
+     1.109252980243706,
+     0.9999999999481848,
+     0.9575676160522246,
+     0.9719665207714424,
+     1.4533003648715692,
+     1.0257853903418772,
+     1.3425694842065428,
+     1.4831828469246442,
+     1.6290925198555666,
+     1.1092529802301716,
+     1.2163143476327523,
+     1.7584462769984504,
+     1.3425694841844826,
+     1.483182846895086,
+     1.6290925198160482,
+     1.7584462769481084
+    ],
+    "kappa": [
+     -0.20706408715443422,
+     0.21743056635300959
+    ]
+   }
+  }
+ ],
+ "results": [
+  {
+   "seed": 0,
+   "status": "certified-local-minimum",
+   "P": 0.5250320549087908,
+   "cpuMs": 2013.721,
+   "iterations": 14,
+   "attempts": 1
+  },
+  {
+   "seed": 1,
+   "status": "stalled",
+   "P": 0.6377486275649177,
+   "cpuMs": 25597.064,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 2,
+   "status": "certified-local-minimum",
+   "P": 0.5250320549087915,
+   "cpuMs": 1576.181,
+   "iterations": 10,
+   "attempts": 2
+  },
+  {
+   "seed": 3,
+   "status": "certified-local-minimum",
+   "P": 0.5250320549087871,
+   "cpuMs": 2057.476,
+   "iterations": 12,
+   "attempts": 3
+  },
+  {
+   "seed": 4,
+   "status": "stalled",
+   "P": 0.7639805386014888,
+   "cpuMs": 53088.758,
+   "iterations": 89,
+   "attempts": 1
+  },
+  {
+   "seed": 5,
+   "status": "certified-local-minimum",
+   "P": 0.5250320549087889,
+   "cpuMs": 2343.765,
+   "iterations": 10,
+   "attempts": 4
+  },
+  {
+   "seed": 6,
+   "status": "certified-local-minimum",
+   "P": 0.5250320549087916,
+   "cpuMs": 2050.591,
+   "iterations": 15,
+   "attempts": 1
+  },
+  {
+   "seed": 7,
+   "status": "stalled",
+   "P": 0.6334084817675986,
+   "cpuMs": 84546.45,
+   "iterations": 136,
+   "attempts": 1
+  },
+  {
+   "seed": 8,
+   "status": "certified-local-minimum",
+   "P": 0.5250320549087918,
+   "cpuMs": 1753.623,
+   "iterations": 12,
+   "attempts": 1
+  },
+  {
+   "seed": 9,
+   "status": "stalled",
+   "P": 0.6344643458924644,
+   "cpuMs": 43275.136,
+   "iterations": 83,
+   "attempts": 2
+  }
+ ]
+}
