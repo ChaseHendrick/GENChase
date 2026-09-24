@@ -47,6 +47,39 @@ spectra, analytic comparisons, topology cases and deliberate failure controls.
 - Scrambled bond pattern (each bond independently \(v\) or \(w\)) and globally
   reversed dimerization destroy the ordered edge-mode signature.
 
+## The studio plate
+
+The plate in `src/modules/ssh.js` is a display heuristic, not an eigensolve, and
+nothing above measures it.
+
+- **Open chain with \(w>v+0.04\):** every row is the same analytic left zero mode
+  \(\psi_{2j}\propto(v/w)^j\), so the plate is nearly black apart from a line at
+  the left edge. The right zero mode is never drawn.
+- **Otherwise:** every row is an open-chain sine profile that depends on neither
+  \(v\) nor \(w\).
+- **Status line:** the end weight and its "edge modes" or "trivial" verdict follow
+  from that branch by construction. They are a regression readout, not a
+  measurement of localization.
+
+**Recipe key (2026-09-24).** Until this date the intra hopping was keyed `v`. The
+engine uses `v` for the recipe version and writes 2 over it after the schema
+clamps. Every plate opened from a hash, a preset, Surprise or a reload therefore
+ran at \(v=2\). Because \(w\le 1.6\), the edge branch never ran there, and every
+preset drew the trivial picture whatever its controls said. Dragging the slider
+did change the plate on screen, but its hash still recorded only `v: 2`. Reopened,
+it drew the trivial picture. The key is now `vIntra`, and `node tools/lint.js` rejects a
+control keyed `v`, `seed`, `palette`, `bg` or `id`.
+
+A hash written before the rename never stored the intra hopping. The engine
+skips `v` when it writes a recipe, and the hopping was never readable anyway.
+Such a hash therefore reprints at the default \(v=0.45\) with its stored \(w\) and
+boundary, and its pixels change. No `legacy` value is declared, for two reasons:
+- The default did not move, and every SSH hash carries recipe version 2. SSH was
+  added a day after version 2 existed, so no older SSH hash exists.
+- Reproducing the old pixels would need a recipe version 3 and a legacy
+  \(v\ge 1.56\). That would pin every old link to a picture its parameters never
+  controlled.
+
 ## Limitations
 
 Finite open/periodic chains only; no interactions, phonons, continuum limit,

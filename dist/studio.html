@@ -3171,18 +3171,20 @@ shall not be misrepresented as the original profile.
   {
     "id": "ssh",
     "source": "src/modules/ssh.js",
-    "sourceSha256": "1fa05fe97e929dad52fd9c3367b4ec2f1f097a38cf4297d78bf7a94b3c6924a9",
+    "sourceSha256": "176ab62faba73edfe496e3da36842a30274ee4e8a936450ffb9575c6887e2661",
     "reference": "W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)| of every eigenmode, stacked.",
     "equation": "H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open)",
     "status": "unvalidated",
     "limitations": [
       "Independent Float64 SSH spectrum/edge checks in validation/SSH.md do not certify the production visualization heuristic, print path, interactions or experiment.",
+      "The studio plate is a display heuristic, not an eigensolve. On an open chain with w > v + 0.04 every row is the same analytic left zero mode and the right one is never drawn, so those plates are nearly black apart from a line at the left edge; otherwise every row is a sine profile that depends on neither v nor w. The status end weight and its edge-modes or trivial verdict follow from that branch by construction; they are not a measurement.",
+      "Until 2026-09-24 the intra hopping was keyed v, which the engine overwrites with the recipe version (2). Every plate opened from a hash, a preset, Surprise or a reload therefore ran at v = 2 and drew the trivial picture whatever the controls said. Dragging the slider changed the plate on screen, but its hash still recorded only v = 2. The key is now vIntra. A hash written before the rename never stored the intra hopping, so it reprints at the default 0.45 with its stored w, and its pixels change.",
       "Finite open/periodic chains only; catalog equation and citation remain review targets for full paper equivalence.",
       "No print-state evidence is registered; status stays unvalidated."
     ],
     "remaining": [
       "Add print-path evidence and review before any status promotion.",
-      "Optionally compare studio end-weight metric against independent eigenvectors on shared presets.",
+      "Replace the display heuristic with an eigensolve of the finite chain, so the plate stacks real eigenmodes and the end weight is measured, then compare it with tools/ssh-science.js on the shared presets.",
       "Extend parameter, disorder and larger-N surveys beyond the registered fixtures."
     ],
     "numerical": [
@@ -41269,23 +41271,27 @@ void main(){
   const SCHEMA = [
     RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
-    RANGE('Chain', 'v', 'Intra v', GEOM, 0.1, 1.6, 0.05, f2),
+    // Keyed vIntra, not v: the recipe owns v (its version number) and sanitize writes 2 over it. Until the
+    // rename, every plate opened from a link, a preset, Surprise or a reload ran at v = 2; dragging the
+    // slider changed the plate on screen, but its link still recorded v = 2. A recipe written before the
+    // rename never stored the intra hopping, so it reprints at the default below.
+    RANGE('Chain', 'vIntra', 'Intra v', GEOM, 0.1, 1.6, 0.05, f2),
     RANGE('Chain', 'w', 'Inter w', GEOM, 0.1, 1.6, 0.05, f2),
     { group: 'Chain', key: 'bc', label: 'Ends', type: 'seg', kind: GEOM, options: [['open', 'Open'], ['periodic', 'Periodic']] },
     { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['int', 'Field'], ['log', 'Log']] },
     RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.4, 2.2, 0.05, f2),
   ];
-  const DEFAULTS = { grid: 96, aspect: '4:5', v: 0.45, w: 1.15, bc: 'open', view: 'int', exposure: 1.05 };
+  const DEFAULTS = { grid: 96, aspect: '4:5', vIntra: 0.45, w: 1.15, bc: 'open', view: 'int', exposure: 1.05 };
   const PRESETS = {
-    topo: pre('Topological', { v: 0.4, w: 1.2, bc: 'open' }, Pal.ember),
-    triv: pre('Trivial', { v: 1.2, w: 0.4, bc: 'open' }, Pal.graphite),
-    ring: pre('Periodic', { v: 0.4, w: 1.2, bc: 'periodic' }, Pal.harbor),
-    edge: pre('Deep edge', { v: 0.2, w: 1.4, bc: 'open' }, Pal.nightshade),
-    crit: pre('Critical', { v: 0.9, w: 0.95, bc: 'open' }, Pal.kiln),
-    log: pre('Log |ψ|', { v: 0.35, w: 1.25, view: 'log', bc: 'open' }, Pal.thermal),
+    topo: pre('Topological', { vIntra: 0.4, w: 1.2, bc: 'open' }, Pal.ember),
+    triv: pre('Trivial', { vIntra: 1.2, w: 0.4, bc: 'open' }, Pal.graphite),
+    ring: pre('Periodic', { vIntra: 0.4, w: 1.2, bc: 'periodic' }, Pal.harbor),
+    edge: pre('Deep edge', { vIntra: 0.2, w: 1.4, bc: 'open' }, Pal.nightshade),
+    crit: pre('Critical', { vIntra: 0.9, w: 0.95, bc: 'open' }, Pal.kiln),
+    log: pre('Log |ψ|', { vIntra: 0.35, w: 1.25, view: 'log', bc: 'open' }, Pal.thermal),
   };
 
-  function surprise(rng) { return { v: rng.range(0.2, 1.3), w: rng.range(0.2, 1.3), bc: rng() < 0.2 ? 'periodic' : 'open' }; }
+  function surprise(rng) { return { vIntra: rng.range(0.2, 1.3), w: rng.range(0.2, 1.3), bc: rng() < 0.2 ? 'periodic' : 'open' }; }
   function sanitize(s) { s.grid = Math.max(64, Math.min(160, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'ssh', name: 'SSH Edges', tab: 'SSH',
@@ -41310,7 +41316,7 @@ void main(){
         field = new Float32Array(W * H);
         const rng = U.makeRng(String(s.seed) + '/x');
 
-        const n = W, v = s.v, w = s.w, open = s.bc !== 'periodic';
+        const n = W, v = s.vIntra, w = s.w, open = s.bc !== 'periodic';
         const dim = n; // sites; two sublattices packed even/odd
         function modeAt(nIdx) {
           const k = Math.PI * (nIdx + 1) / (n / 2 + 1);
@@ -41378,7 +41384,7 @@ void main(){
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>w/v <b>' + f2(host.getState().w / Math.max(0.05, host.getState().v)) + '</b></span><span>end weight <b>' + f2(metric) + '</b></span><span>' + (host.getState().bc === 'periodic' ? 'ring' : (metric > 0.45 ? 'edge modes' : 'trivial')) + '</span>'); }
+      function status() { host.setStatus('<span>w/v <b>' + f2(host.getState().w / Math.max(0.05, host.getState().vIntra)) + '</b></span><span>end weight <b>' + f2(metric) + '</b></span><span>' + (host.getState().bc === 'periodic' ? 'ring' : (metric > 0.45 ? 'edge modes' : 'trivial')) + '</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

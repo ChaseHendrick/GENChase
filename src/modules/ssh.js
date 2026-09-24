@@ -16,23 +16,27 @@
   const SCHEMA = [
     RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
-    RANGE('Chain', 'v', 'Intra v', GEOM, 0.1, 1.6, 0.05, f2),
+    // Keyed vIntra, not v: the recipe owns v (its version number) and sanitize writes 2 over it. Until the
+    // rename, every plate opened from a link, a preset, Surprise or a reload ran at v = 2; dragging the
+    // slider changed the plate on screen, but its link still recorded v = 2. A recipe written before the
+    // rename never stored the intra hopping, so it reprints at the default below.
+    RANGE('Chain', 'vIntra', 'Intra v', GEOM, 0.1, 1.6, 0.05, f2),
     RANGE('Chain', 'w', 'Inter w', GEOM, 0.1, 1.6, 0.05, f2),
     { group: 'Chain', key: 'bc', label: 'Ends', type: 'seg', kind: GEOM, options: [['open', 'Open'], ['periodic', 'Periodic']] },
     { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['int', 'Field'], ['log', 'Log']] },
     RANGE('Picture', 'exposure', 'Exposure', PAINT, 0.4, 2.2, 0.05, f2),
   ];
-  const DEFAULTS = { grid: 96, aspect: '4:5', v: 0.45, w: 1.15, bc: 'open', view: 'int', exposure: 1.05 };
+  const DEFAULTS = { grid: 96, aspect: '4:5', vIntra: 0.45, w: 1.15, bc: 'open', view: 'int', exposure: 1.05 };
   const PRESETS = {
-    topo: pre('Topological', { v: 0.4, w: 1.2, bc: 'open' }, Pal.ember),
-    triv: pre('Trivial', { v: 1.2, w: 0.4, bc: 'open' }, Pal.graphite),
-    ring: pre('Periodic', { v: 0.4, w: 1.2, bc: 'periodic' }, Pal.harbor),
-    edge: pre('Deep edge', { v: 0.2, w: 1.4, bc: 'open' }, Pal.nightshade),
-    crit: pre('Critical', { v: 0.9, w: 0.95, bc: 'open' }, Pal.kiln),
-    log: pre('Log |ψ|', { v: 0.35, w: 1.25, view: 'log', bc: 'open' }, Pal.thermal),
+    topo: pre('Topological', { vIntra: 0.4, w: 1.2, bc: 'open' }, Pal.ember),
+    triv: pre('Trivial', { vIntra: 1.2, w: 0.4, bc: 'open' }, Pal.graphite),
+    ring: pre('Periodic', { vIntra: 0.4, w: 1.2, bc: 'periodic' }, Pal.harbor),
+    edge: pre('Deep edge', { vIntra: 0.2, w: 1.4, bc: 'open' }, Pal.nightshade),
+    crit: pre('Critical', { vIntra: 0.9, w: 0.95, bc: 'open' }, Pal.kiln),
+    log: pre('Log |ψ|', { vIntra: 0.35, w: 1.25, view: 'log', bc: 'open' }, Pal.thermal),
   };
 
-  function surprise(rng) { return { v: rng.range(0.2, 1.3), w: rng.range(0.2, 1.3), bc: rng() < 0.2 ? 'periodic' : 'open' }; }
+  function surprise(rng) { return { vIntra: rng.range(0.2, 1.3), w: rng.range(0.2, 1.3), bc: rng() < 0.2 ? 'periodic' : 'open' }; }
   function sanitize(s) { s.grid = Math.max(64, Math.min(160, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'ssh', name: 'SSH Edges', tab: 'SSH',
@@ -57,7 +61,7 @@
         field = new Float32Array(W * H);
         const rng = U.makeRng(String(s.seed) + '/x');
 
-        const n = W, v = s.v, w = s.w, open = s.bc !== 'periodic';
+        const n = W, v = s.vIntra, w = s.w, open = s.bc !== 'periodic';
         const dim = n; // sites; two sublattices packed even/odd
         function modeAt(nIdx) {
           const k = Math.PI * (nIdx + 1) / (n / 2 + 1);
@@ -125,7 +129,7 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>w/v <b>' + f2(host.getState().w / Math.max(0.05, host.getState().v)) + '</b></span><span>end weight <b>' + f2(metric) + '</b></span><span>' + (host.getState().bc === 'periodic' ? 'ring' : (metric > 0.45 ? 'edge modes' : 'trivial')) + '</span>'); }
+      function status() { host.setStatus('<span>w/v <b>' + f2(host.getState().w / Math.max(0.05, host.getState().vIntra)) + '</b></span><span>end weight <b>' + f2(metric) + '</b></span><span>' + (host.getState().bc === 'periodic' ? 'ring' : (metric > 0.45 ? 'edge modes' : 'trivial')) + '</span>'); }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

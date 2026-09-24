@@ -227,6 +227,8 @@ Complete labels apply only within each record's reviewed domain.
 ### ssh
 
 - Independent Float64 SSH spectrum/edge checks in validation/SSH.md do not certify the production visualization heuristic, print path, interactions or experiment.
+- The studio plate is a display heuristic, not an eigensolve. On an open chain with w > v + 0.04 every row is the same analytic left zero mode and the right one is never drawn, so those plates are nearly black apart from a line at the left edge; otherwise every row is a sine profile that depends on neither v nor w. The status end weight and its edge-modes or trivial verdict follow from that branch by construction; they are not a measurement.
+- Until 2026-09-24 the intra hopping was keyed v, which the engine overwrites with the recipe version (2). Every plate opened from a hash, a preset, Surprise or a reload therefore ran at v = 2 and drew the trivial picture whatever the controls said. Dragging the slider changed the plate on screen, but its hash still recorded only v = 2. The key is now vIntra. A hash written before the rename never stored the intra hopping, so it reprints at the default 0.45 with its stored w, and its pixels change.
 - Finite open/periodic chains only; catalog equation and citation remain review targets for full paper equivalence.
 - No print-state evidence is registered; status stays unvalidated.
 

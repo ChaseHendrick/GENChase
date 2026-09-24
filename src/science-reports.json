@@ -1272,18 +1272,20 @@
   {
     "id": "ssh",
     "source": "src/modules/ssh.js",
-    "sourceSha256": "1fa05fe97e929dad52fd9c3367b4ec2f1f097a38cf4297d78bf7a94b3c6924a9",
+    "sourceSha256": "176ab62faba73edfe496e3da36842a30274ee4e8a936450ffb9575c6887e2661",
     "reference": "W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)| of every eigenmode, stacked.",
     "equation": "H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open)",
     "status": "unvalidated",
     "limitations": [
       "Independent Float64 SSH spectrum/edge checks in validation/SSH.md do not certify the production visualization heuristic, print path, interactions or experiment.",
+      "The studio plate is a display heuristic, not an eigensolve. On an open chain with w > v + 0.04 every row is the same analytic left zero mode and the right one is never drawn, so those plates are nearly black apart from a line at the left edge; otherwise every row is a sine profile that depends on neither v nor w. The status end weight and its edge-modes or trivial verdict follow from that branch by construction; they are not a measurement.",
+      "Until 2026-09-24 the intra hopping was keyed v, which the engine overwrites with the recipe version (2). Every plate opened from a hash, a preset, Surprise or a reload therefore ran at v = 2 and drew the trivial picture whatever the controls said. Dragging the slider changed the plate on screen, but its hash still recorded only v = 2. The key is now vIntra. A hash written before the rename never stored the intra hopping, so it reprints at the default 0.45 with its stored w, and its pixels change.",
       "Finite open/periodic chains only; catalog equation and citation remain review targets for full paper equivalence.",
       "No print-state evidence is registered; status stays unvalidated."
     ],
     "remaining": [
       "Add print-path evidence and review before any status promotion.",
-      "Optionally compare studio end-weight metric against independent eigenvectors on shared presets.",
+      "Replace the display heuristic with an eigensolve of the finite chain, so the plate stacks real eigenmodes and the end weight is measured, then compare it with tools/ssh-science.js on the shared presets.",
       "Extend parameter, disorder and larger-N surveys beyond the registered fixtures."
     ],
     "numerical": [

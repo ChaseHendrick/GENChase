@@ -325,7 +325,7 @@ const result = {
   },
   limitations: [
     'Finite open/periodic chains only; no thermodynamic-limit proof, interactions, phonons, or experimental polyacetylene claim.',
-    'Does not certify the production ssh.js visualization heuristic (stacked approximate modes), print path, or GPU/CPU studio path.',
+    'Does not certify the production ssh.js visualization heuristic (one analytic left zero mode on every row when w > v + 0.04 on an open chain, otherwise sine profiles independent of v and w), its by-construction end-weight verdict, print path, or GPU/CPU studio path.',
     'Jacobi dense eigensolve is an independent numerical reference, not a published table lookup.',
     'End weight uses a fixed 10% site window; localization length vs |v/w| is sampled, not exhaustively mapped.',
   ],
