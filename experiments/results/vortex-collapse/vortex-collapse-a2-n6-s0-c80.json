@@ -1,0 +1,666 @@
+{
+ "experiment": "vortex-collapse-search",
+ "protocol": {
+  "version": 1,
+  "frozenDate": "2026-09-24",
+  "gauge": "z_1 = 0, z_2 = 1, G_1 = 1; unknowns z_3..z_N, G_2..G_N, kappa. Residual v_j - v_1 - kappa (z_j - z_1), j = 2..N.",
+  "landingAttempts": 24,
+  "newtonIterations": 250,
+  "limits": {
+   "feasibility": 1e-11,
+   "reducedGradient": 1e-08,
+   "soscRelative": 1e-07,
+   "licq": 1e-07,
+   "minSeparation": 1e-06,
+   "circulationSpread": 100000000,
+   "odeShrink": 0.5,
+   "odeAmplification": 10000,
+   "odeShape": 1e-06,
+   "odeWinding": 1e-06,
+   "invariant": 1e-08,
+   "center": 1e-08,
+   "trivialModes": 1e-07
+  }
+ },
+ "alpha": 2,
+ "N": 6,
+ "sourceSha256": "1793940ea396616ed5e2d1861e295c5d4b393908a3f0b2e1fda7211842d1c9bd",
+ "commit": "11bf354dc253c5da58b23853fb66f7302206fd78",
+ "machine": "maintainer-cloud",
+ "node": "v22.22.2",
+ "platform": "linux",
+ "arch": "x64",
+ "reference": null,
+ "scope": "Binary64 multistart search. A certified strict local minimum is a numerical candidate with a second-order certificate, not a proof of a global minimum. Priority unconfirmed.",
+ "summary": {
+  "seeds": {
+   "start": 0,
+   "count": 80
+  },
+  "tally": {
+   "certified-local-minimum": 21,
+   "degenerate": 8,
+   "stalled": 49,
+   "unverified-stationary": 2
+  },
+  "distinctMinima": 1,
+  "best": {
+   "P": 0.22802960270478942,
+   "basinSeeds": 21,
+   "firstSeed": 55
+  },
+  "comparison": null,
+  "boundaryApproach": 0.4116738601359671,
+  "elapsedSeconds": 75.864
+ },
+ "minima": [
+  {
+   "P": 0.22802960270478942,
+   "basinSeeds": 21,
+   "firstSeed": 55,
+   "soscRatio": 0.0007953868968894587,
+   "config": {
+    "z": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      0
+     ],
+     [
+      2.5512565001526872,
+      -0.6244847621081825
+     ],
+     [
+      0.6210117976013408,
+      -1.2830570789619455
+     ],
+     [
+      5.1710907806042545,
+      -0.8530980350235882
+     ],
+     [
+      1.7488549230497397,
+      -0.262041231388207
+     ]
+    ],
+    "G": [
+     1,
+     0.5368001686753798,
+     0.5308100380521437,
+     -2.1800509430099058,
+     11.979190008149931,
+     0.4344617534806009
+    ],
+    "kappa": [
+     -0.02117983716756313,
+     0.009659259709343105
+    ]
+   }
+  }
+ ],
+ "results": [
+  {
+   "seed": 0,
+   "status": "certified-local-minimum",
+   "P": 0.2280296027047978,
+   "iterations": 14,
+   "attempts": 1
+  },
+  {
+   "seed": 1,
+   "status": "degenerate",
+   "P": 0.4116738633897299,
+   "iterations": 14,
+   "attempts": 6
+  },
+  {
+   "seed": 2,
+   "status": "stalled",
+   "P": 0.4116925323431256,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 3,
+   "status": "stalled",
+   "P": 0.4551130952711767,
+   "iterations": 60,
+   "attempts": 3
+  },
+  {
+   "seed": 4,
+   "status": "degenerate",
+   "P": 0.4116738603445218,
+   "iterations": 17,
+   "attempts": 3
+  },
+  {
+   "seed": 5,
+   "status": "degenerate",
+   "P": 0.4116738601359671,
+   "iterations": 29,
+   "attempts": 1
+  },
+  {
+   "seed": 6,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479777,
+   "iterations": 16,
+   "attempts": 1
+  },
+  {
+   "seed": 7,
+   "status": "certified-local-minimum",
+   "P": 0.2280296027047966,
+   "iterations": 22,
+   "attempts": 1
+  },
+  {
+   "seed": 8,
+   "status": "stalled",
+   "P": 0.4116739653967508,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 9,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479497,
+   "iterations": 20,
+   "attempts": 2
+  },
+  {
+   "seed": 10,
+   "status": "stalled",
+   "P": 0.41997941518467974,
+   "iterations": 60,
+   "attempts": 9
+  },
+  {
+   "seed": 11,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479603,
+   "iterations": 32,
+   "attempts": 3
+  },
+  {
+   "seed": 12,
+   "status": "stalled",
+   "P": 0.45514202637870976,
+   "iterations": 60,
+   "attempts": 6
+  },
+  {
+   "seed": 13,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479777,
+   "iterations": 22,
+   "attempts": 6
+  },
+  {
+   "seed": 14,
+   "status": "stalled",
+   "P": 0.45517199604987807,
+   "iterations": 60,
+   "attempts": 3
+  },
+  {
+   "seed": 15,
+   "status": "stalled",
+   "P": 0.4116738629178813,
+   "iterations": 60,
+   "attempts": 4
+  },
+  {
+   "seed": 16,
+   "status": "stalled",
+   "P": 0.4551142587493392,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 17,
+   "status": "stalled",
+   "P": 0.45515894959402686,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 18,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479786,
+   "iterations": 31,
+   "attempts": 1
+  },
+  {
+   "seed": 19,
+   "status": "stalled",
+   "P": 1.1134175155943007,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 20,
+   "status": "stalled",
+   "P": 0.47743727203675335,
+   "iterations": 104,
+   "attempts": 1
+  },
+  {
+   "seed": 21,
+   "status": "stalled",
+   "P": 0.45514045949276544,
+   "iterations": 60,
+   "attempts": 13
+  },
+  {
+   "seed": 22,
+   "status": "stalled",
+   "P": 0.4116756032926981,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 23,
+   "status": "certified-local-minimum",
+   "P": 0.2280296027047955,
+   "iterations": 16,
+   "attempts": 1
+  },
+  {
+   "seed": 24,
+   "status": "stalled",
+   "P": 0.45512427738923256,
+   "iterations": 60,
+   "attempts": 8
+  },
+  {
+   "seed": 25,
+   "status": "stalled",
+   "P": 0.41167501791670236,
+   "iterations": 60,
+   "attempts": 4
+  },
+  {
+   "seed": 26,
+   "status": "stalled",
+   "P": 0.41167386104284576,
+   "iterations": 55,
+   "attempts": 5
+  },
+  {
+   "seed": 27,
+   "status": "stalled",
+   "P": 0.41167586448947074,
+   "iterations": 60,
+   "attempts": 10
+  },
+  {
+   "seed": 28,
+   "status": "degenerate",
+   "P": 0.4116738603690761,
+   "iterations": 14,
+   "attempts": 1
+  },
+  {
+   "seed": 29,
+   "status": "stalled",
+   "P": 0.4116750902246654,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 30,
+   "status": "stalled",
+   "P": 0.41167386257133926,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 31,
+   "status": "stalled",
+   "P": 0.5590263244703261,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 32,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479739,
+   "iterations": 13,
+   "attempts": 3
+  },
+  {
+   "seed": 33,
+   "status": "degenerate",
+   "P": 0.411673860517589,
+   "iterations": 27,
+   "attempts": 5
+  },
+  {
+   "seed": 34,
+   "status": "stalled",
+   "P": 0.4116738605557838,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 35,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479786,
+   "iterations": 19,
+   "attempts": 1
+  },
+  {
+   "seed": 36,
+   "status": "stalled",
+   "P": 0.41167500347792696,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 37,
+   "status": "stalled",
+   "P": 0.45511316373797467,
+   "iterations": 60,
+   "attempts": 5
+  },
+  {
+   "seed": 38,
+   "status": "stalled",
+   "P": 0.41167570042079016,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 39,
+   "status": "stalled",
+   "P": 0.4551596969648622,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 40,
+   "status": "stalled",
+   "P": 0.41167386085306856,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 41,
+   "status": "stalled",
+   "P": 0.8017400158166006,
+   "iterations": 114,
+   "attempts": 4
+  },
+  {
+   "seed": 42,
+   "status": "stalled",
+   "P": 0.455199512842236,
+   "iterations": 60,
+   "attempts": 8
+  },
+  {
+   "seed": 43,
+   "status": "stalled",
+   "P": 0.4116742859210914,
+   "iterations": 60,
+   "attempts": 3
+  },
+  {
+   "seed": 44,
+   "status": "unverified-stationary",
+   "P": 0.3046313047850057,
+   "iterations": 59,
+   "attempts": 6
+  },
+  {
+   "seed": 45,
+   "status": "degenerate",
+   "P": 0.4116738601992228,
+   "iterations": 20,
+   "attempts": 5
+  },
+  {
+   "seed": 46,
+   "status": "certified-local-minimum",
+   "P": 0.2280296027047976,
+   "iterations": 20,
+   "attempts": 2
+  },
+  {
+   "seed": 47,
+   "status": "stalled",
+   "P": 0.4116738643865298,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 48,
+   "status": "degenerate",
+   "P": 0.5605390601145273,
+   "iterations": 39,
+   "attempts": 2
+  },
+  {
+   "seed": 49,
+   "status": "stalled",
+   "P": 0.45618256166131305,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 50,
+   "status": "stalled",
+   "P": 0.4199183141386595,
+   "iterations": 20,
+   "attempts": 5
+  },
+  {
+   "seed": 51,
+   "status": "degenerate",
+   "P": 0.41167386114189064,
+   "iterations": 19,
+   "attempts": 1
+  },
+  {
+   "seed": 52,
+   "status": "stalled",
+   "P": 0.4551137109265138,
+   "iterations": 60,
+   "attempts": 4
+  },
+  {
+   "seed": 53,
+   "status": "stalled",
+   "P": 0.4116738606840529,
+   "iterations": 60,
+   "attempts": 3
+  },
+  {
+   "seed": 54,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479794,
+   "iterations": 20,
+   "attempts": 15
+  },
+  {
+   "seed": 55,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270478942,
+   "iterations": 14,
+   "attempts": 5
+  },
+  {
+   "seed": 56,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479775,
+   "iterations": 26,
+   "attempts": 1
+  },
+  {
+   "seed": 57,
+   "status": "stalled",
+   "P": 0.4551910731987151,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 58,
+   "status": "stalled",
+   "P": 0.46005411655526046,
+   "iterations": 110,
+   "attempts": 7
+  },
+  {
+   "seed": 59,
+   "status": "stalled",
+   "P": 0.41167386096903574,
+   "iterations": 60,
+   "attempts": 17
+  },
+  {
+   "seed": 60,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479777,
+   "iterations": 19,
+   "attempts": 3
+  },
+  {
+   "seed": 61,
+   "status": "stalled",
+   "P": 0.4551312986893683,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 62,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479788,
+   "iterations": 19,
+   "attempts": 2
+  },
+  {
+   "seed": 63,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479722,
+   "iterations": 18,
+   "attempts": 3
+  },
+  {
+   "seed": 64,
+   "status": "stalled",
+   "P": 0.5598032114664037,
+   "iterations": 75,
+   "attempts": 3
+  },
+  {
+   "seed": 65,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479686,
+   "iterations": 18,
+   "attempts": 1
+  },
+  {
+   "seed": 66,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479625,
+   "iterations": 20,
+   "attempts": 3
+  },
+  {
+   "seed": 67,
+   "status": "stalled",
+   "P": 0.4551147444153935,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 68,
+   "status": "stalled",
+   "P": 0.41167386080150187,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 69,
+   "status": "stalled",
+   "P": 0.4119470617798583,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 70,
+   "status": "stalled",
+   "P": 0.4116738617996819,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 71,
+   "status": "stalled",
+   "P": 0.45511375946499966,
+   "iterations": 60,
+   "attempts": 6
+  },
+  {
+   "seed": 72,
+   "status": "certified-local-minimum",
+   "P": 0.22802960270479175,
+   "iterations": 26,
+   "attempts": 4
+  },
+  {
+   "seed": 73,
+   "status": "stalled",
+   "P": 0.4116738608284525,
+   "iterations": 60,
+   "attempts": 4
+  },
+  {
+   "seed": 74,
+   "status": "stalled",
+   "P": 0.4116738621016889,
+   "iterations": 60,
+   "attempts": 3
+  },
+  {
+   "seed": 75,
+   "status": "stalled",
+   "P": 0.41167386150472823,
+   "iterations": 60,
+   "attempts": 4
+  },
+  {
+   "seed": 76,
+   "status": "unverified-stationary",
+   "P": 0.411676364562112,
+   "iterations": 60,
+   "attempts": 6
+  },
+  {
+   "seed": 77,
+   "status": "stalled",
+   "P": 0.41167391081771754,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 78,
+   "status": "stalled",
+   "P": 0.45511560342258656,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 79,
+   "status": "certified-local-minimum",
+   "P": 0.2280296027047975,
+   "iterations": 19,
+   "attempts": 2
+  }
+ ]
+}

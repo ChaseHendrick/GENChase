@@ -1,0 +1,665 @@
+{
+ "experiment": "vortex-collapse-search",
+ "protocol": {
+  "version": 1,
+  "frozenDate": "2026-09-24",
+  "gauge": "z_1 = 0, z_2 = 1, G_1 = 1; unknowns z_3..z_N, G_2..G_N, kappa. Residual v_j - v_1 - kappa (z_j - z_1), j = 2..N.",
+  "landingAttempts": 24,
+  "newtonIterations": 250,
+  "limits": {
+   "feasibility": 1e-11,
+   "reducedGradient": 1e-08,
+   "soscRelative": 1e-07,
+   "licq": 1e-07,
+   "minSeparation": 1e-06,
+   "circulationSpread": 100000000,
+   "odeShrink": 0.5,
+   "odeAmplification": 10000,
+   "odeShape": 1e-06,
+   "odeWinding": 1e-06,
+   "invariant": 1e-08,
+   "center": 1e-08,
+   "trivialModes": 1e-07
+  }
+ },
+ "alpha": 1,
+ "N": 6,
+ "sourceSha256": "1793940ea396616ed5e2d1861e295c5d4b393908a3f0b2e1fda7211842d1c9bd",
+ "commit": "11bf354dc253c5da58b23853fb66f7302206fd78",
+ "machine": "maintainer-cloud",
+ "node": "v22.22.2",
+ "platform": "linux",
+ "arch": "x64",
+ "reference": null,
+ "scope": "Binary64 multistart search. A certified strict local minimum is a numerical candidate with a second-order certificate, not a proof of a global minimum. Priority unconfirmed.",
+ "summary": {
+  "seeds": {
+   "start": 0,
+   "count": 80
+  },
+  "tally": {
+   "certified-local-minimum": 18,
+   "stalled": 54,
+   "degenerate": 8
+  },
+  "distinctMinima": 1,
+  "best": {
+   "P": 0.41219138366542357,
+   "basinSeeds": 18,
+   "firstSeed": 66
+  },
+  "comparison": null,
+  "boundaryApproach": 0.5499151189007897,
+  "elapsedSeconds": 58.772
+ },
+ "minima": [
+  {
+   "P": 0.41219138366542357,
+   "basinSeeds": 18,
+   "firstSeed": 66,
+   "soscRatio": 0.002064067276317321,
+   "config": {
+    "z": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      0
+     ],
+     [
+      -1.1707400817432938,
+      -0.35593128918086797
+     ],
+     [
+      2.1010947508421314,
+      -0.0678321245487438
+     ],
+     [
+      5.710824293586017,
+      1.301679106245656
+     ],
+     [
+      -0.024493016086393357,
+      -1.7277780337618753
+     ]
+    ],
+    "G": [
+     1,
+     0.7950994572038231,
+     1.5246156799805686,
+     0.7885147018901624,
+     12.786821877592164,
+     -3.3072788501794044
+    ],
+    "kappa": [
+     -0.02094944871353433,
+     0.017270364504519086
+    ]
+   }
+  }
+ ],
+ "results": [
+  {
+   "seed": 0,
+   "status": "certified-local-minimum",
+   "P": 0.4121913836654367,
+   "iterations": 18,
+   "attempts": 2
+  },
+  {
+   "seed": 1,
+   "status": "stalled",
+   "P": 0.5502593144630444,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 2,
+   "status": "degenerate",
+   "P": 0.6667640967747379,
+   "iterations": 42,
+   "attempts": 2
+  },
+  {
+   "seed": 3,
+   "status": "stalled",
+   "P": 0.549915118960695,
+   "iterations": 38,
+   "attempts": 1
+  },
+  {
+   "seed": 4,
+   "status": "stalled",
+   "P": 0.5757394463935297,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 5,
+   "status": "stalled",
+   "P": 0.5499190852040509,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 6,
+   "status": "stalled",
+   "P": 0.5757394092657291,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 7,
+   "status": "certified-local-minimum",
+   "P": 0.41219138366543673,
+   "iterations": 17,
+   "attempts": 1
+  },
+  {
+   "seed": 8,
+   "status": "stalled",
+   "P": 0.5757393947622254,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 9,
+   "status": "stalled",
+   "P": 0.575759990470374,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 10,
+   "status": "stalled",
+   "P": 0.5757394023101312,
+   "iterations": 60,
+   "attempts": 4
+  },
+  {
+   "seed": 11,
+   "status": "certified-local-minimum",
+   "P": 0.4121913836654366,
+   "iterations": 15,
+   "attempts": 5
+  },
+  {
+   "seed": 12,
+   "status": "stalled",
+   "P": 0.5499151191501467,
+   "iterations": 38,
+   "attempts": 1
+  },
+  {
+   "seed": 13,
+   "status": "certified-local-minimum",
+   "P": 0.41219138366543706,
+   "iterations": 24,
+   "attempts": 3
+  },
+  {
+   "seed": 14,
+   "status": "stalled",
+   "P": 0.549919136626683,
+   "iterations": 34,
+   "attempts": 5
+  },
+  {
+   "seed": 15,
+   "status": "certified-local-minimum",
+   "P": 0.41219138366543717,
+   "iterations": 18,
+   "attempts": 2
+  },
+  {
+   "seed": 16,
+   "status": "stalled",
+   "P": 0.5499191595286141,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 17,
+   "status": "certified-local-minimum",
+   "P": 0.41219138366543684,
+   "iterations": 10,
+   "attempts": 1
+  },
+  {
+   "seed": 18,
+   "status": "stalled",
+   "P": 0.5757394105994827,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 19,
+   "status": "stalled",
+   "P": 0.5757394048835108,
+   "iterations": 60,
+   "attempts": 3
+  },
+  {
+   "seed": 20,
+   "status": "degenerate",
+   "P": 0.549915118958379,
+   "iterations": 14,
+   "attempts": 3
+  },
+  {
+   "seed": 21,
+   "status": "stalled",
+   "P": 0.5499151189781045,
+   "iterations": 62,
+   "attempts": 1
+  },
+  {
+   "seed": 22,
+   "status": "certified-local-minimum",
+   "P": 0.41219138366543717,
+   "iterations": 25,
+   "attempts": 1
+  },
+  {
+   "seed": 23,
+   "status": "stalled",
+   "P": 0.5500748984203389,
+   "iterations": 47,
+   "attempts": 1
+  },
+  {
+   "seed": 24,
+   "status": "stalled",
+   "P": 0.5757394282143579,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 25,
+   "status": "stalled",
+   "P": 0.5503068202296824,
+   "iterations": 30,
+   "attempts": 1
+  },
+  {
+   "seed": 26,
+   "status": "degenerate",
+   "P": 0.5499151189007897,
+   "iterations": 36,
+   "attempts": 4
+  },
+  {
+   "seed": 27,
+   "status": "certified-local-minimum",
+   "P": 0.41219138366543556,
+   "iterations": 19,
+   "attempts": 2
+  },
+  {
+   "seed": 28,
+   "status": "stalled",
+   "P": 0.5757394192431579,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 29,
+   "status": "stalled",
+   "P": 0.575739427160007,
+   "iterations": 58,
+   "attempts": 1
+  },
+  {
+   "seed": 30,
+   "status": "certified-local-minimum",
+   "P": 0.4121913836654371,
+   "iterations": 21,
+   "attempts": 4
+  },
+  {
+   "seed": 31,
+   "status": "stalled",
+   "P": 0.9376353093308215,
+   "iterations": 250,
+   "attempts": 11
+  },
+  {
+   "seed": 32,
+   "status": "stalled",
+   "P": 0.5499422338715161,
+   "iterations": 33,
+   "attempts": 6
+  },
+  {
+   "seed": 33,
+   "status": "certified-local-minimum",
+   "P": 0.41219138366543695,
+   "iterations": 20,
+   "attempts": 5
+  },
+  {
+   "seed": 34,
+   "status": "certified-local-minimum",
+   "P": 0.41219138366543656,
+   "iterations": 25,
+   "attempts": 3
+  },
+  {
+   "seed": 35,
+   "status": "stalled",
+   "P": 0.5499151189947334,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 36,
+   "status": "stalled",
+   "P": 0.5757394302986896,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 37,
+   "status": "stalled",
+   "P": 0.5499166852985778,
+   "iterations": 60,
+   "attempts": 5
+  },
+  {
+   "seed": 38,
+   "status": "stalled",
+   "P": 0.5757394160998786,
+   "iterations": 60,
+   "attempts": 4
+  },
+  {
+   "seed": 39,
+   "status": "stalled",
+   "P": 0.5499151202893399,
+   "iterations": 53,
+   "attempts": 1
+  },
+  {
+   "seed": 40,
+   "status": "stalled",
+   "P": 0.5501232563427974,
+   "iterations": 94,
+   "attempts": 3
+  },
+  {
+   "seed": 41,
+   "status": "stalled",
+   "P": 0.5499264537921726,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 42,
+   "status": "stalled",
+   "P": 0.5499151191426996,
+   "iterations": 80,
+   "attempts": 1
+  },
+  {
+   "seed": 43,
+   "status": "stalled",
+   "P": 0.5757394195946063,
+   "iterations": 50,
+   "attempts": 12
+  },
+  {
+   "seed": 44,
+   "status": "stalled",
+   "P": 0.5757394272643894,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 45,
+   "status": "certified-local-minimum",
+   "P": 0.41219138366543656,
+   "iterations": 13,
+   "attempts": 2
+  },
+  {
+   "seed": 46,
+   "status": "certified-local-minimum",
+   "P": 0.412191383665437,
+   "iterations": 21,
+   "attempts": 4
+  },
+  {
+   "seed": 47,
+   "status": "stalled",
+   "P": 0.5499170942872952,
+   "iterations": 60,
+   "attempts": 6
+  },
+  {
+   "seed": 48,
+   "status": "stalled",
+   "P": 0.6675409112457752,
+   "iterations": 86,
+   "attempts": 4
+  },
+  {
+   "seed": 49,
+   "status": "certified-local-minimum",
+   "P": 0.41219138366543706,
+   "iterations": 20,
+   "attempts": 1
+  },
+  {
+   "seed": 50,
+   "status": "degenerate",
+   "P": 0.5499151191963728,
+   "iterations": 22,
+   "attempts": 5
+  },
+  {
+   "seed": 51,
+   "status": "degenerate",
+   "P": 0.670348458078354,
+   "iterations": 100,
+   "attempts": 4
+  },
+  {
+   "seed": 52,
+   "status": "stalled",
+   "P": 0.5499153239591975,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 53,
+   "status": "stalled",
+   "P": 0.5505979895389801,
+   "iterations": 165,
+   "attempts": 4
+  },
+  {
+   "seed": 54,
+   "status": "stalled",
+   "P": 0.5499178264689226,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 55,
+   "status": "certified-local-minimum",
+   "P": 0.4121913836654359,
+   "iterations": 25,
+   "attempts": 4
+  },
+  {
+   "seed": 56,
+   "status": "degenerate",
+   "P": 0.5499151189274842,
+   "iterations": 18,
+   "attempts": 5
+  },
+  {
+   "seed": 57,
+   "status": "stalled",
+   "P": 0.549915118982664,
+   "iterations": 39,
+   "attempts": 4
+  },
+  {
+   "seed": 58,
+   "status": "certified-local-minimum",
+   "P": 0.41219138366543434,
+   "iterations": 19,
+   "attempts": 7
+  },
+  {
+   "seed": 59,
+   "status": "stalled",
+   "P": 0.5499158928673091,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 60,
+   "status": "stalled",
+   "P": 0.5499349946023904,
+   "iterations": 60,
+   "attempts": 7
+  },
+  {
+   "seed": 61,
+   "status": "certified-local-minimum",
+   "P": 0.4121913836654252,
+   "iterations": 19,
+   "attempts": 4
+  },
+  {
+   "seed": 62,
+   "status": "stalled",
+   "P": 0.5499151196537415,
+   "iterations": 60,
+   "attempts": 6
+  },
+  {
+   "seed": 63,
+   "status": "degenerate",
+   "P": 0.5499151189411416,
+   "iterations": 35,
+   "attempts": 4
+  },
+  {
+   "seed": 64,
+   "status": "stalled",
+   "P": 0.5603087031039373,
+   "iterations": 236,
+   "attempts": 1
+  },
+  {
+   "seed": 65,
+   "status": "degenerate",
+   "P": 0.5499151189010966,
+   "iterations": 39,
+   "attempts": 2
+  },
+  {
+   "seed": 66,
+   "status": "certified-local-minimum",
+   "P": 0.41219138366542357,
+   "iterations": 18,
+   "attempts": 3
+  },
+  {
+   "seed": 67,
+   "status": "stalled",
+   "P": 0.5499151189460628,
+   "iterations": 38,
+   "attempts": 6
+  },
+  {
+   "seed": 68,
+   "status": "stalled",
+   "P": 0.5499151190766562,
+   "iterations": 60,
+   "attempts": 8
+  },
+  {
+   "seed": 69,
+   "status": "stalled",
+   "P": 0.5757394361459413,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 70,
+   "status": "stalled",
+   "P": 0.575739443484664,
+   "iterations": 60,
+   "attempts": 2
+  },
+  {
+   "seed": 71,
+   "status": "stalled",
+   "P": 0.549915118985509,
+   "iterations": 41,
+   "attempts": 2
+  },
+  {
+   "seed": 72,
+   "status": "stalled",
+   "P": 0.5559570256442451,
+   "iterations": 112,
+   "attempts": 1
+  },
+  {
+   "seed": 73,
+   "status": "stalled",
+   "P": 0.5499227064858268,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 74,
+   "status": "stalled",
+   "P": 0.5757393936852048,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 75,
+   "status": "stalled",
+   "P": 0.5499190509265696,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 76,
+   "status": "stalled",
+   "P": 0.5499159607284967,
+   "iterations": 60,
+   "attempts": 1
+  },
+  {
+   "seed": 77,
+   "status": "stalled",
+   "P": 0.5499151201756475,
+   "iterations": 59,
+   "attempts": 4
+  },
+  {
+   "seed": 78,
+   "status": "stalled",
+   "P": 0.5499151205482734,
+   "iterations": 50,
+   "attempts": 3
+  },
+  {
+   "seed": 79,
+   "status": "stalled",
+   "P": 0.5499178458040319,
+   "iterations": 60,
+   "attempts": 1
+  }
+ ]
+}
