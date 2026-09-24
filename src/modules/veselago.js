@@ -129,7 +129,15 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>n <b>' + f2(host.getState().n) + '</b></span><span>image Δx/W <b>' + f3(metric) + '</b> · 2L−d</span><span>' + (Math.abs(metric) < 0.12 ? 'Veselago focus' : 'shifted') + '</span>'); }
+      // 2L − d is the exact image only for n = −1 with the source closer than the slab is thick (d < L), so
+      // that a real image forms behind the slab. Otherwise the offset is printed with no reference.
+      function status() {
+        const s = host.getState(), perfect = Math.abs(s.n + 1) < 1e-9 && s.src < s.L;
+        const offset = perfect
+          ? U.stats.compare({ label: 'image Δx/W', measured: metric, expected: 0, reference: 'Veselago image 2L−d', basis: 'deterministic', digits: 3 })
+          : '<span>image Δx/W <b>' + f3(metric) + '</b></span>';
+        host.setStatus('<span>n <b>' + f2(s.n) + '</b></span>' + offset + '<span>' + (Math.abs(metric) < 0.12 ? 'Veselago focus' : 'shifted') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

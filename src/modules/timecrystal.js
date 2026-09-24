@@ -82,7 +82,7 @@
     create(host) {
       const canvas = host.canvas;
       const ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, field, mag, m2 = 0, mAbs = 0, buf, img;
+      let W = 0, H = 0, field, mag, m2 = 0, m2Stat = null, mAbs = 0, buf, img;
 
       function sizeFrom(s) {
         const aspect = ASPECTS[s.aspect] || 1;
@@ -154,6 +154,11 @@
         }
         m2 = acc2 / H;
         mAbs = accA / H;
+        // m2 is the mean over H periods of (-1)^t m(t). Successive periods are correlated, so its
+        // standard error uses the integrated autocorrelation time of that series, not sd / sqrt(H).
+        const staggered = new Float64Array(H);
+        for (let t = 0; t < H; t++) staggered[t] = (t & 1 ? -1 : 1) * mag[t];
+        m2Stat = U.stats.seriesMean(staggered);
         buf = document.createElement('canvas');
         buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
@@ -204,9 +209,16 @@
 
       function status() {
         const rigid = Math.abs(m2) >= 0.45;
+        const st = m2Stat || { se: NaN, reliable: false };
+        const m2Span = U.stats.compare(H < 20
+          ? { label: 'm₂', measured: m2, basis: 'sampled', pending: 'fewer than 20 periods', digits: 3 }
+          : st.se > 0
+            ? { label: 'm₂', measured: m2, basis: 'sampled', uncertainty: st.se, method: 'τ_int over ' + H + ' periods of one row',
+              note: st.reliable ? '' : 'series shorter than 50 τ_int' }
+            : { label: 'm₂', measured: m2, basis: 'sampled', pending: 'no fluctuation over ' + H + ' periods', digits: 3 });
         host.setStatus(
           '<span>chain <b>' + W + '</b> · periods <b>' + H + '</b></span>' +
-          '<span>m₂ <b>' + f3(m2) + '</b> · |m| ' + f3(mAbs) + '</span>' +
+          m2Span + '<span>|m| ' + f3(mAbs) + '</span>' +
           '<span>' + (rigid ? 'period-doubled' : (Math.abs(m2) < 0.12 ? 'melted' : 'prethermal')) + '</span>'
         );
       }

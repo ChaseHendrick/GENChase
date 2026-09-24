@@ -125,7 +125,13 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>w/v <b>' + f2(host.getState().w / Math.max(0.05, host.getState().v)) + '</b></span><span>end weight <b>' + f2(metric) + '</b></span><span>' + (host.getState().bc === 'periodic' ? 'ring' : (metric > 0.45 ? 'edge modes' : 'trivial')) + '</span>'); }
+      // The edge profile is drawn from the open-chain w > v test, not from a diagonalized Hamiltonian, so the end
+      // weight follows from how the plate is built.
+      function status() {
+        host.setStatus('<span>w/v <b>' + f2(host.getState().w / Math.max(0.05, host.getState().v)) + '</b></span>' +
+          U.stats.compare({ label: 'end weight', measured: metric, basis: 'construction', digits: 3 }) +
+          '<span>' + (host.getState().bc === 'periodic' ? 'ring' : (metric > 0.45 ? 'edge modes' : 'trivial')) + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

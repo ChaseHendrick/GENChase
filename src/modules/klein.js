@@ -111,7 +111,15 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>θ <b>' + f2(extra) + '°</b></span><span>T <b>' + f2(metric) + '</b> · theory 1 at 0°</span><span>' + (host.getState().theta < 4 && metric > 0.9 ? 'Klein' : 'partial') + '</span>'); }
+      function status() {
+        // compute() sets T = 1 outright at normal incidence, so that value agrees by construction. Off
+        // normal the transmission is an ad hoc expression, not a Dirac-equation solution: no reference.
+        const normal = Math.abs(Math.sin(extra * Math.PI / 180)) < 1e-3;
+        const tSpan = normal
+          ? U.stats.compare({ label: 'T', measured: metric, expected: 1, reference: 'normal incidence', basis: 'construction', digits: 3 })
+          : '<span>T <b>' + f2(metric) + '</b></span>';
+        host.setStatus('<span>θ <b>' + f2(extra) + '°</b></span>' + tSpan + '<span>' + (host.getState().theta < 4 && metric > 0.9 ? 'Klein' : 'partial') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
