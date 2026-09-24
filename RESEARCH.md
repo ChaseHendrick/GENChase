@@ -241,6 +241,20 @@ Copies supplied by the owner, not committed.
 - **Local re-checks (same day).** Independent scripts in `research/generalizations-2026-09-24/checks/` confirm the N = 4..25 minimizers, the alpha-model floor, the central-vortex ring infimum, the shape-sphere formula, the scattering rotation law and the sphere loxodrome law. That is verification of the mathematics, not of priority.
 - **Do not** call the bound universal. It fails at N = 4, as DK 2014's Table 1 already shows at N = 7 (entry N).
 
+### P. Six more free papers read for the N-vortex and zero-winding results (2026-09-24, night)
+
+The owner provided the PDFs; none is committed. Text was extracted and searched for rotation, winding, spirals, angular velocity, minimization, parallelograms and four- or five-vortex collapse, then the matching passages were read.
+
+- **Gotoda 2024** (arXiv:2410.14973, enstrophy variations in collapse). Sect. 2.3 says that for N >= 4 "explicit formulae for configurations leading to self-similar collapse have not been established in general". It uses the Novikov-Sedov (1979) parallelogram examples for four and five vortices and studies enstrophy dissipation, not the rate or the winding.
+- **Gotoda-Sakajo 2017** (arXiv:1705.00146). This covers three-vortex enstrophy dissipation in Euler-Poincaré models, and mentions a numerically found quadruple collapse. Nothing on winding.
+- **Hernández-Garduño-Lacomba 2006** (arXiv:math-ph/0609016). Zero virial is necessary for a regular total collision of N vortices, illustrated on the Novikov-Sedov parallelogram. They also classify partial four-vortex collisions. Nothing on winding or on the rate kappa.
+- **Yu 2021** (arXiv:2103.06037 and 2111.07292). Finiteness of four-vortex stationary configurations, which are relative equilibria and collapse configurations at fixed kappa. There is no minimum over kappa.
+- **Drivas-Khanikati-Khanikati 2026** (arXiv:2607.16490). This covers three-vortex collapse on surfaces. It bears on the sphere notes but gives no winding law.
+- **Conclusion.** None of these gives a minimum or bound on the winding for N >= 4, or a collapse that does not rotate. The four- and five-vortex minima found here, a strong central vortex with the others around it, are not Novikov-Sedov parallelograms.
+- **New numerical fact.** Within the four-vortex Novikov-Sedov parallelogram family (Gamma = (1, 1, b, b), b^2 + 4b + 1 = 0), the least winding is 3 sqrt(5)/4 = 1.67705098312484 to 15 digits. It occurs where the diagonals meet at cos theta = sqrt(5/8), for both roots b. It is not derived symbolically yet.
+- **Still unread, free.** arXiv:1512.04668 (the set of self-similar quadruples in the plane) is the most direct test of the four-vortex minimum. O'Neil 1987 (Trans. AMS 302, 383-425) is free from ams.org. Still paywalled: O'Neil 2007, Kimura 1987 Sects. other than 4, and Novikov-Sedov 1979.
+- **Volunteer search (PR #141).** Growth from certified minima gives, at alpha = 2, P = 0.0676 (N = 9), 0.0237 (N = 10) and P = 0 (N = 11). The N = 11 point is a collapse without rotation, confirmed at 60 digits by tools/vortex-precision-check.py. Priority is unconfirmed: search for non-rotating (kappa real) self-similar collapse before any claim.
+
 ## Do this, do not do that
 
 **Do**
