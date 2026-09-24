@@ -43,8 +43,10 @@ submission.
    a private copy with the email line, built with pdflatex (TeX Live 2023) three times and no warnings.
    The "Comments" line in `arxiv-metadata.md` and `PRIVATE-COPIES.md` said 12 and now say 13.
    `node tools/paper-check.js` repeats this check wherever pdflatex is installed.
-2. **`identities/refs.bib` disagrees with the manuscript's bibliography** on three works cited in
-   both. The manuscript is not built from `refs.bib` (it serves the identities note), but the two
+2. **`identities/refs.bib` disagreed with the manuscript's bibliography** on three works cited in
+   both. **Resolved 2026-09-24:** `refs.bib` now matches the manuscript, checked against the JPSJ
+   page for Kimura (doi:10.1143/JPSJ.56.2024) and the English translation of Gröbli (arXiv:2404.01305).
+   The entry key `Gotoda2020` is kept so that existing citations still resolve. The manuscript is not built from `refs.bib` (it serves the identities note), but the two
    should agree. Check each against the source and fix whichever is wrong:
    - Gotoda: `refs.bib` (`Gotoda2020`) gives the year 2020 and no volume or pages; the manuscript
      gives J. Dyn. Differ. Equ. 33 (2021) 1759-1777.
