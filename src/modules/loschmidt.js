@@ -40,7 +40,7 @@
     order: 96,
     equation: 'x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1',
     credit: 'J. Loschmidt, Sitzungsber. Kais. Akad. Wiss. Wien 73, 128 (1876), objected to Boltzmann: reverse every velocity and the entropy decrease is as lawful as the increase. The objection is correct for a finite isolated system; the catch is the exponential sensitivity that makes the reversal unprepareable. The plate is non-interacting tracers on a ring, reversed on cue, so the echo is exact and visible.',
-    blurb: 'Mix a gas, then flip every velocity. The movie of mixing, played backwards, is a valid trajectory of Newton\'s laws, so the gas unmixes. Boltzmann\'s H-theorem looks violated; it is not, because the reversed state is one of measure zero. The plate is that movie as spacetime. The status line reports overlap with the initial condition at the end of the echo, against 1.',
+    blurb: 'Mix a gas, then flip every velocity. The movie of mixing, played backwards, is a valid trajectory of Newton\'s laws, so the gas unmixes. Boltzmann\'s H-theorem looks violated; it is not, because the reversed state is one of measure zero. The plate is that movie as spacetime. The status line reports the overlap of the last row with the initial condition; it is 1 by construction when the flip is at half time, and the echo falls elsewhere otherwise.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: { Gas: 'No reverse is the control: the same trajectories, never flipped, stay mixed. Reverse at 0.5 for a symmetric echo.' },
     palette: true, defaultPalette: 'harbor', surprise, sanitize,
@@ -116,7 +116,19 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>overlap(end, 0) <b>' + f2(metric) + '</b></span><span>theory ' + (host.getState().kind === 'mix' ? '~ 0' : '1') + '</span><span>' + (host.getState().kind !== 'mix' && metric > 0.55 ? 'echo' : 'mixed') + '</span>'); }
+      // The tracers are free and the reversal is exact, so the echo returns at t = 2·flip·T. That is the
+      // last row only when flip is one half, and there the overlap of 1 is a regression test of the
+      // reversal, not a prediction. At any other flip the last row is not the echo, and without a
+      // reversal the tracers, which start in 22% of the ring, spread and leave an overlap near 0.2 rather
+      // than 0, so neither of those cases is printed against a value.
+      function status() {
+        const s = host.getState(), mix = s.kind === 'mix';
+        const echoRow = !mix && Math.abs(s.flipAt - 0.5) < 1e-9;
+        const ov = echoRow
+          ? U.stats.compare({ label: 'overlap(end, 0)', measured: metric, expected: 1, reference: 'time-reversed ballistic tracers', basis: 'construction' })
+          : '<span>overlap(end, 0) <b>' + f2(metric) + '</b>' + (mix ? '' : ' · echo at t = 2·flip·T, not the last row') + '</span>';
+        host.setStatus(ov + '<span>' + (!mix && metric > 0.55 ? 'echo' : 'mixed') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

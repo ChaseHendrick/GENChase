@@ -3,7 +3,7 @@
   "date": "2026-09-24",
   "passed": true,
   "source": "src/modules/ssh.js",
-  "sourceSha256": "4cdabf9e4f57e7a1f808ff2b80acdf69ff50e18ac217229cf83fe07ce9666ee4",
+  "sourceSha256": "269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877",
   "harness": "tools/ssh-science.js",
   "command": "node tools/ssh-science.js --write",
   "precision": "Float64",

@@ -1,11 +1,12 @@
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 // Actual maintained shader against exact semidiscrete plane waves. Bounded regression evidence only.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');
 (async()=>{
  const root=path.resolve(__dirname,'..'),source=fs.readFileSync(path.join(root,'src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js'),'utf8');
  const a=source.indexOf('  const CGL_HEAD ='),b=source.indexOf('  const CGL_DRAW =',a);assert(a>0&&b>a);
- const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+ const browser=await chromium.launch({args:glArgs()});
  try{
  const page=await browser.newPage();await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/cgl-audit');
  const result=await page.evaluate(code=>{

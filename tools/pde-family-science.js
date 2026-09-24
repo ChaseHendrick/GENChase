@@ -1,6 +1,7 @@
 // Actual maintained PDE shaders against independent float64 discrete references.
 // node tools/pde-family-science.js [--write]
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'..'),source=fs.readFileSync(path.join(root,'src/modules/pde.js'),'utf8');
@@ -48,7 +49,7 @@ const mean=a=>a.reduce((x,y)=>x+y,0)/a.length;
 const params=id=>({id,W:16,H:12,bc:'periodic',M:.7,eps:1.1,sigma:.12,mean:.2,deg:false,lambda:.8,zeta:-1.2,r:id==='pfc'?-.25:.3,k0:.7,g:.45,cub:1.1,nu:1.1,alpha:.9});
 function field(p){return Float32Array.from({length:p.W*p.H},(_,j)=>{const x=j%p.W,y=Math.floor(j/p.W);return .2+.15*Math.cos(2*Math.PI*(2*x/p.W+y/p.H))+.07*Math.sin(2*Math.PI*(3*x/p.W-2*y/p.H));});}
 (async()=>{
- const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+ const browser=await chromium.launch({args:glArgs()});
  try{
   const page=await browser.newPage();await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/pde-family-science');
   await page.evaluate(source.slice(0,source.indexOf('  Studio.register({'))+'\nwindow.pdeAudit={MU_CH,STEP_CH,STEP_OK,MU_AMB,STEP_AMB,MU_SH,STEP_SH,MU_KS,STEP_KS,MU_PFC,MID_PFC,STEP_PFC,chMaxDt,shMaxDt,ksMaxDt,pfcMaxDt};\n})();');

@@ -2,6 +2,7 @@
 // Independent geometry and every-cell checks, then the real 8 in / 300 ppi PNG path.
 // Requires Playwright Chromium. See validation/REULEAUX.md for the finite review domain.
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const assert = require('node:assert/strict');
 const fs = require('node:fs'), path = require('node:path'), os = require('node:os'), crypto = require('node:crypto');
 const { chromium } = require('playwright');
@@ -149,7 +150,7 @@ async function main() {
     '      return {\n        auditRead() { return { W, H, field: Array.from(field), mean: extra, pixels: Array.from(img.data) }; },\n        aspect');
   assert.notEqual(instrumented, source);
   const file = path.join(temp, 'studio.html'); fs.writeFileSync(file, portable.replace(source, instrumented).replace('generatePalette, register, boot,', 'generatePalette, register, auditInstances: () => instances, boot,'));
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   try {
     const page = await browser.newPage(), errors = [];
     page.on('pageerror', e => errors.push(e.message));

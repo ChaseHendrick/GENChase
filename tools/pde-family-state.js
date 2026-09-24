@@ -1,6 +1,7 @@
 // Actual maintained instances: prepared presets, guard rollback and export preservation.
 // node tools/pde-family-state.js [--write]
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict'),{chromium}=require('playwright');
 const root=path.resolve(__dirname,'..'),raw=fs.readFileSync(path.join(root,'src/modules/pde.js'),'utf8'),hash=x=>crypto.createHash('sha256').update(x).digest('hex');
 const marker='        fieldCells()';assert(raw.includes(marker));
@@ -21,7 +22,7 @@ const source=raw.replace(marker,`        auditAdvance(n) { return step(n); },
         },
 ${marker}`);
 (async()=>{
- const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+ const browser=await chromium.launch({args:glArgs()});
  const rows=[],guards=[];
  try{
   for(const id of['cahn','ohta','amb','swift','ks','pfc']){

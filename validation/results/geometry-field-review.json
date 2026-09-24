@@ -2,16 +2,16 @@
   "date": "2026-09-24",
   "scope": "Nine enumerated complete Hopf, Apollonian and finite Weierstrass fields and actual prints; no infinite-series or arbitrary-parameter claim.",
   "sourceSha256": {
-    "hopf": "4732427222cb6acb822f2368a2e1e9f14b522cfb12745084c81c0380e5481e03",
+    "hopf": "2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00",
     "apollonian": "33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8",
     "weierstrass": "1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008"
   },
-  "engineSha256": "ce99dfbdd830b8a7abd742b610f1014fea65411163767f9f57fa94843f8d3a66",
+  "engineSha256": "d4ab4d63c01bca7c4c8a0e3ec0dafe996b1ed2844f2ad969ed3c20de73322f16",
   "geometry": {
     "scope": "Bounded geometric maps and sampled integral/support/packing checks; no global immersion proof or physical rolling model.",
     "sourceSha256": {
-      "hopf": "4732427222cb6acb822f2368a2e1e9f14b522cfb12745084c81c0380e5481e03",
-      "reuleaux": "179cef420e5bc881718b9904dc73240b446f54178ee8a1f592f786caf710e4f9",
+      "hopf": "2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00",
+      "reuleaux": "eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707",
       "apollonian": "33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8"
     },
     "hopf": {
@@ -230,7 +230,7 @@
           "view": "int",
           "exposure": 1,
           "seed": "geometry-field-hopf-0",
-          "v": 2,
+          "v": 3,
           "palette": [
             "#3A2E5C",
             "#7A4FBF",
@@ -270,7 +270,7 @@
           "view": "int",
           "exposure": 1,
           "seed": "geometry-field-hopf-1",
-          "v": 2,
+          "v": 3,
           "palette": [
             "#3A2E5C",
             "#7A4FBF",
@@ -310,7 +310,7 @@
           "view": "log",
           "exposure": 1,
           "seed": "geometry-field-hopf-2",
-          "v": 2,
+          "v": 3,
           "palette": [
             "#3A2E5C",
             "#7A4FBF",
@@ -350,7 +350,7 @@
           "view": "int",
           "exposure": 1,
           "seed": "geometry-field-apollonian-0",
-          "v": 2,
+          "v": 3,
           "palette": [
             "#C4472B",
             "#E8A33C",
@@ -390,7 +390,7 @@
           "view": "int",
           "exposure": 1,
           "seed": "geometry-field-apollonian-1",
-          "v": 2,
+          "v": 3,
           "palette": [
             "#C4472B",
             "#E8A33C",
@@ -430,7 +430,7 @@
           "view": "log",
           "exposure": 1,
           "seed": "geometry-field-apollonian-2",
-          "v": 2,
+          "v": 3,
           "palette": [
             "#C4472B",
             "#E8A33C",
@@ -473,7 +473,7 @@
           "view": "int",
           "exposure": 1,
           "seed": "geometry-field-weierstrass-0",
-          "v": 2,
+          "v": 3,
           "palette": [
             "#1A1A1A",
             "#4A4A4A",
@@ -516,7 +516,7 @@
           "view": "int",
           "exposure": 1,
           "seed": "geometry-field-weierstrass-1",
-          "v": 2,
+          "v": 3,
           "palette": [
             "#1A1A1A",
             "#4A4A4A",
@@ -559,7 +559,7 @@
           "view": "log",
           "exposure": 1,
           "seed": "geometry-field-weierstrass-2",
-          "v": 2,
+          "v": 3,
           "palette": [
             "#1A1A1A",
             "#4A4A4A",

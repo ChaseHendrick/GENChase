@@ -1,5 +1,6 @@
 // Complete review of the enumerated polygon recipes, including real PNG and SVG exports.
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'), path=require('node:path'), os=require('node:os'), crypto=require('node:crypto'), assert=require('node:assert/strict'), cp=require('node:child_process');
 const {chromium}=require('playwright');
 const vm=require('node:vm');
@@ -13,7 +14,7 @@ async function main(){
   const instrumented=source.replace('      return {\n        aspect','      return {\n        auditRead() { return {data,time}; },\n        aspect'); assert.notEqual(instrumented,source);
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'polygon-review-')), file=path.join(dir,'studio.html');
   fs.writeFileSync(file,portable.replace(source,instrumented).replace('generatePalette, register, boot,','generatePalette, register, auditInstances: () => instances, boot,'));
-  const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+  const browser=await chromium.launch({args:glArgs()});
   try{
     const page=await browser.newPage(), errors=[]; page.on('pageerror',e=>errors.push(e.message));
     await page.route(/^https?:/,r=>r.abort());

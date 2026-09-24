@@ -1,5 +1,6 @@
 // Actual maintained 3D GPU stencil against analytic discrete modes and float64 updates.
 // Setup: optional Playwright/Chromium as documented in BUILDING.md.
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');
 (async()=>{
@@ -7,7 +8,7 @@ const {chromium}=require('playwright');
   const marker='  Studio.register({';assert.equal(source.split(marker).length,2);
   const instrumented=source.replace('      fieldCells(){',`      _auditRead(){ const a=new Float32Array(shape.w*shape.h*4);gl.bindFramebuffer(gl.FRAMEBUFFER,field.read.fbo);gl.readPixels(0,0,shape.w,shape.h,gl.RGBA,gl.FLOAT,a);gl.bindFramebuffer(gl.FRAMEBUFFER,null);return {values:a,count,n}; },\n      fieldCells(){`);
   const exposed=instrumented.replace(marker,'  window.volumeWaveAudit={STEP_FS,SEED_FS,DISPLAY_FS,layout,timeStep,sanitize,create};\n'+marker);
-  const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+  const browser=await chromium.launch({args:glArgs()});
   try{
     const page=await browser.newPage();await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/volume-audit');await page.evaluate(exposed);
     const result=await page.evaluate(async()=>{

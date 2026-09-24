@@ -55,6 +55,14 @@ A reviewer must run the test, inspect the reference and failure control, and che
 limits match the results before promoting a status. Merely filling these fields cannot validate a
 formula. Never upgrade a status because an export looks good, syntax passes or a source is cited.
 
+An outside review is recorded on a record as an optional `reviewers` array. Each entry is an object with
+exactly `name`, `affiliation`, `date` (a real, nonfuture `YYYY-MM-DD`), `scope` (what was checked, in the
+reviewer's words) and `evidence` (an `https` link to the sign-off, such as the outside-review issue, or a
+file in this repository). The inventory fails a malformed entry and an empty array; omit the field when
+there is none. VALIDATION.md shows the reviews in its Outside review column. A review covers the scope it
+states, which is at most the recorded domain, never the whole tab, and a status is promoted only by the
+evidence rules above. [docs/REVIEWING.md](../docs/REVIEWING.md) is the reviewer's guide.
+
 New formulas use the contributor module workflow in [FORMULA-SUBMISSIONS.md](FORMULA-SUBMISSIONS.md).
 They begin as **unvalidated**. Finite numerical checks, mathematical proof, agreement with experiments
 and historical originality are separate claims.
@@ -93,6 +101,8 @@ The convection component audit and instantaneous-transport limits are in [CONVEC
 Priority: the remaining Cahn-Hilliard/PDE convergence and precision checks, wave/transport solvers, then stochastic measurements and
 the remaining families. The double-triangle/polygon vortex module has a complete review for 16 enumerated recipes;
 unlisted recipes remain outside its validated domain. The inventory deliberately exposes gaps.
+The wider plan, including the exactly solvable tabs that are the cheapest promotions, is in
+[docs/RESEARCH-GRADE.md](../docs/RESEARCH-GRADE.md).
 
 [Parametric surface geometry and print evidence](SURFACES.md) checks three classical families, with independent curvature and finite-mesh controls.
 
@@ -111,6 +121,8 @@ The current PDE family guard and stencil review is recorded in [PDE-FAMILY.md](P
 Completed follow-ups: [positive peakon fields and prints](PEAKON-FIELD-REVIEW.md), [complete MPR recordings](NEURAL-MASS.md), and [discrete inhibitory growth](PHYLLOTAXIS.md).
 
 The [complete PDE field review](PDE-FIELD-REVIEW.md) checks six finite solvers and all their print views. The [spanning-tree review](UST.md) combines exact graph enumeration, measured sampling frequencies, and independent print geometry.
+
+The exactly solvable tabs of [RESEARCH-GRADE.md](../docs/RESEARCH-GRADE.md), section 2, each have a review of the same kind: [Ising](ISING.md) against Yang's magnetization, Onsager's energy and the Binder cumulant; [random matrices](RMT.md) against exact moments, the semicircle and the Gaudin-Mehta spacing law; [SLE](SLE.md) against closed-form drivers and the dimension 1 + kappa/8; the [Aztec diamond](AZTEC.md) and [lozenge tilings](LOZENGE.md) against exact counts, uniformity and the arctic limit shapes. Each states the disagreements it found.
 
 The [complete finite FPUT review](FPUT-FIELD-REVIEW.md) covers independent chain
 trajectories, energy diagnostics, working duration controls and real print output.

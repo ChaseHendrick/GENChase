@@ -1,12 +1,13 @@
 // Actual Cahn-Hilliard GPU passes versus an independent double-precision stencil.
 // This is a bounded discretization check, not continuum or print validation.
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const { chromium } = require('playwright');
 (async () => {
   const root = path.resolve(__dirname, '..');
   const source = fs.readFileSync(path.join(root, 'src/modules/pde.js'), 'utf8');
   const expose = source.slice(0, source.indexOf('  Studio.register({')) + '\nwindow.scienceShaders = { MU_CH, STEP_CH };\n})();';
-  const browser = await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+  const browser = await chromium.launch({args:glArgs()});
   try {
     const page = await browser.newPage();
     await page.goto('file://' + path.join(root, 'dist/studio.html') + '#three-vortex-bound/science');

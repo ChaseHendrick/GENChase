@@ -27,7 +27,7 @@
   #v(0.7em)
   #text(size: 11pt)[Chase Hendrick]
   #v(0.2em)
-  #text(size: 9.5pt)[GENChase]
+  #text(size: 9.5pt)[Independent researcher]
 ]
 
 #v(1em)
@@ -178,6 +178,8 @@ The bound concerns self-similar collapse only; it says nothing about other singu
 
 #v(0.5em)
 #par(justify: false)[*Data availability.* The programs `verify_alpha_winding.py` and `plot_alpha_winding.py` and their output are in the directory `research/` of the repository https://github.com/SharpMeow/GENChase; the many-vortex configurations and their checks are in `research/generalizations-2026-09-24/`.]
+
+#par(justify: false)[*Acknowledgements.* Code and verification programs: #link("https://github.com/SharpMeow/GENChase")[github.com/SharpMeow/GENChase].]
 
 #v(0.3em)
 #text(size: 9pt)[This work was prepared with AI assistance. The author takes full responsibility for its content.]

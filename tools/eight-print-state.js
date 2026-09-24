@@ -1,5 +1,6 @@
 // Actual eight exportPNG/exportSVG state preservation; not numerical accuracy or calibrated color.
 // node tools/eight-print-state.js [--write]
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict'), crypto = require('node:crypto');
 const { chromium } = require('playwright');
 
@@ -46,7 +47,7 @@ ${marker}`);
     { name: 'wreath', aspect: '16:9', overlay: { kind: 'eight', periods: 1, view: 'polar', zoom: 0.95, lift: 0.03, fade: 0.12, weight: 0.85 } },
   ];
 
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   const rows = [];
   try {
     const page = await browser.newPage();

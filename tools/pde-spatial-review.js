@@ -1,8 +1,9 @@
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto'),{chromium}=require('playwright');
 const root=path.resolve(__dirname,'..'),source=fs.readFileSync(path.join(root,'src/modules/pde.js'),'utf8'),sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 async function main(){
- const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']}),rows=[];
+ const browser=await chromium.launch({args:glArgs()}),rows=[];
  try{
  const page=await browser.newPage();await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound/pde-space');
  await page.evaluate(source.slice(0,source.indexOf('  Studio.register({'))+'\nwindow.pdeAudit={MU_CH,STEP_CH,STEP_OK,MU_AMB,STEP_AMB,MU_SH,STEP_SH,MU_KS,STEP_KS,MU_PFC,MID_PFC,STEP_PFC};\n})();');await page.evaluate(require('./lib/pde-gpu-harness'));

@@ -10,6 +10,7 @@
 // and an independently written discrete update. Nothing is read back from the shader to build a reference.
 // Each failure control edits the shader text in the page (never the file) and must fail its criterion.
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
 const { chromium } = require('playwright');
 const root = path.resolve(__dirname, '..');
@@ -157,7 +158,7 @@ function control(technique, name, mutant, value, tolerance, detected, extra) {
 }
 
 (async () => {
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   const report = { schema: 1, date: new Date().toISOString().slice(0, 10), source: { path: SOURCE_PATH, sha256: sha(source) }, harness: { path: 'tools/rdx-science.js', sha256: sha(fs.readFileSync(__filename)) } };
   try {
     const page = await browser.newPage();

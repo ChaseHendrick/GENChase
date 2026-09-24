@@ -1,0 +1,48 @@
+{
+ "id": "percolation",
+ "source": "src/modules/lattice.js",
+ "sourceSha256": "fbc86393275abe3acb0532cf0ee7fb50728c2399c5da1553f8a578bdab7fb7df",
+ "reference": "S. R. Broadbent and J. M. Hammersley, Proc. Cambridge Philos. Soc. 53, 629 (1957); J. Hoshen and R. Kopelman, Phys. Rev. B 14, 3438 (1976); Harry Kesten, Comm. Math. Phys. 74, 41 (1980). Broadbent and Hammersley asked how a fluid spreads through a random porous medium and found a sharp threshold: below p_c every cluster is finite, above it one cluster spans the lattice. Kesten proved the bond threshold on the square lattice is exactly 1/2. The site threshold, about 0.592746, is known only numerically. Hoshen and Kopelman gave the one-pass labeling that finds the clusters.",
+ "equation": "site occupied iff rᵢ < p;   bond open iff rᵢⱼ < p;   p_c(site) ≈ 0.5927,   p_c(bond) = 1/2",
+ "status": "validated within stated limits",
+ "limitations": [
+  "Complete evidence covers only the finite domain in validation/PERCOLATION.md: labeling on 240 enumerated recipes (every grid and aspect the UI offers), spanning thresholds on square L = 128, 256 and 512, and five printed recipes.",
+  "The bond crossing agrees with Kesten's exact 1/2 to 0.50017 +/- 0.00027 (0.6 sigma) and the site crossing with the credited numerical value 0.592746 to 0.59273 +/- 0.00034; finite-size shifts smaller than about 3e-4 are not resolved, and the site reference is itself numerical.",
+  "Sampling error bars assume the seeded generator's streams for different seed strings behave as independent draws; the generator's statistical quality is not otherwise established.",
+  "Print evidence is raster PNG through Chromium with a software renderer; pixels within 0.01 cell of a cell boundary may show the neighboring cell (fixed-point scaling), and other renderers are not covered. The rank view orders equal-size clusters by union-find representative, which is reproduced, not tested."
+ ],
+ "remaining": [
+  "Extend the threshold measurement to non-square aspects, other lattice sizes and a finite-size scaling fit of the crossings.",
+  "Repeat the print check on other rendering platforms."
+ ],
+ "numerical": [
+  {
+   "test": "tools/percolation-science.js",
+   "command": "node tools/percolation-science.js --write",
+   "results": "validation/results/percolation-science.json",
+   "scope": "Hoshen-Kopelman labeling of the tab against breadth-first search on 240 recipes (22,001,408 sites); the p sweep; exact per-seed spanning thresholds for 7,000 seeds per type at L = 128, 256, 512 checked seed by seed against an independent reference; crossings of R_L(p) with bootstrap errors.",
+   "criteria": "Partitions, sizes, counts, spanning decision and lit cluster identical on every lattice; every seed's tab threshold equal to the reference; bond crossing within 2 standard errors and inside the 95% bootstrap interval of 1/2; site crossing reported against 0.592746 with its error; each failure control moves the crossing by more than 10 standard errors.",
+   "benchmark": "Kesten (1980): bond threshold exactly 1/2 on the square lattice; site threshold 0.592746 as credited (Newman and Ziff 2000: 0.59274621(13)); independent breadth-first labeling and an independent Newman-Ziff threshold reference.",
+   "failureControl": "Diagonal neighbors injected into the site labeler (partitions change on 120/120 lattices; crossing 0.4083 +/- 0.0013, 144 sigma from 0.592746, at the matching-lattice value 0.407254) and vertical bonds opened with probability 0.9 p (crossing 0.5274 +/- 0.0014, 20 sigma from 1/2, at the anisotropic prediction 0.526316).",
+   "limitations": "Only the domain in validation/PERCOLATION.md: labeling on 240 enumerated recipes; thresholds on square L = 128, 256, 512; five printed recipes in Chromium. The crossing is a finite-size estimator (agreement at 3e-4 does not exclude smaller finite-size shifts), the site reference is numerical, and the error bars assume independent seeded streams."
+  }
+ ],
+ "print": [
+  {
+   "test": "tools/percolation-science.js",
+   "command": "node tools/percolation-science.js --write",
+   "results": "validation/results/percolation-science.json",
+   "scope": "Five recipes (four presets and a 4:5 occupied plate), grain off, exported by the tab at 2400 x 2400 or 1920 x 2400; studio state read back and compared with the independent labeling.",
+   "criteria": "Every pixel equal to the independently computed cell color (maximum channel error 0 measured, 1 allowed); pixels within 0.01 cell of a boundary equal to one of the two cells; recipe and full state unchanged by export; displaced and wrong-state controls fail on over 100,000 pixels.",
+   "limitations": "Raster PNG through Chromium with a software renderer only; the tab has no vector export. Near-boundary pixels are checked against either adjacent cell."
+  }
+ ],
+ "reviewed": "2026-09-24",
+ "results": "validation/results/percolation-science.json",
+ "domain": {
+  "parameters": "Labeling: the 240 recipes in validation/results/percolation-science.json (type site and bond, grid 128 to 512, all five aspects, p 0.3 to 0.8). Thresholds: aspect 1:1, grid 128, 256 and 512, both types, all p. Prints: the five recipes recorded in the results file.",
+  "conditions": "Free boundaries; spanning means one cluster touching the top and bottom rows. One seeded float32 random number per site and two per site for bonds, drawn once per seed and reused as p changes. Seeds perc-science/<type>/L<L>/<i>, perc-partition-<k>, perc-print-<k>; grain off.",
+  "resolution": "4,000, 2,000 and 1,000 seeds at L = 128, 256, 512 per type; bootstrap 1,000 replicates; controls 400 seeds at L = 128 and 256; prints at 8 in and 300 ppi.",
+  "precision": "Float32 field against a double p, integer union-find and breadth-first labels, exact thresholds (float32 values), Binary64 statistics, RGBA8 raster; Chromium 141 with SwiftShader recorded."
+ }
+}

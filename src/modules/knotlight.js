@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -161,7 +160,12 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
       function status() {
-        host.setStatus('<span>on-knot / bulk |ψ| <b>' + f3(metric) + '</b></span><span>theory 0</span><span>' + (metric < 0.25 ? 'trefoil zeros' : (metric < 0.6 ? 'near knot' : 'off knot')) + '</span>');
+        // The on-knot points are the closed-form zero set of the same polynomial, so the ratio is 0 up to
+        // round-off by construction. Below nine on-knot samples compute() stores a placeholder, not a ratio.
+        host.setStatus(extra > 8
+          ? U.stats.compare({ label: 'on-knot / bulk |ψ|', measured: metric, expected: 0, reference: 'zero set', basis: 'construction' }) +
+            '<span>' + (metric < 0.25 ? 'trefoil zeros' : (metric < 0.6 ? 'near knot' : 'off knot')) + '</span>'
+          : '<span>too few on-knot samples</span>');
       }
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

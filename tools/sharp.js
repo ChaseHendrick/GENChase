@@ -19,6 +19,7 @@
 //
 // Soft means edge below 0.8 AND acuity below 0.15. That is a field a few hundred cells across smeared
 // over two thousand pixels, and on paper at 24 inches it reads as a mistake.
+const { glArgs } = require('./lib/gl-args');
 const path = require('path');
 const { chromium } = require('playwright');
 
@@ -32,7 +33,7 @@ const NOISE = [/willReadFrequently/, /ERR_CERT_AUTHORITY_INVALID/, /ServiceWorke
   if (!id) { console.error('usage: node tools/sharp.js <id> [inches] [dpi] [settleMs]'); process.exit(1); }
 
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
-  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+  const b = await chromium.launch({ args: [...glArgs(), '--ignore-gpu-blocklist'] });
   const p = await b.newPage({ viewport: { width: 1400, height: 900 } });
   p.on('console', () => {});
   // An id with a slash in it is taken as a whole hash, so a tab can be measured at a chosen grid

@@ -593,12 +593,14 @@
         const nearBubble = Math.abs(A - A_STAR) < 0.012 || Math.abs(m.sMeas - S_STAR) < 0.02;
         const ok = Math.abs(m.ratio - 1) < 1e-4;
         const tag = !ok ? 'map failed' : (euler ? 'dual Euler' : (nearBubble ? 'bubble' : (Math.abs(A) <= A_UNI ? 'univalent' : 'Crapper')));
-        const ratioStr = (Math.abs(m.ratio - 1) < 5e-4) ? m.ratio.toFixed(3) : m.ratio.toFixed(3);
+        // The height of the implemented map is 4|A|/(π(1−A²)) algebraically, so the measured steepness
+        // meets it to round-off whatever the physics; and A* is defined by inverting that formula at
+        // s* = 0.7298, so the bubble reference is the same identity. Regression tests, not predictions.
         host.setStatus(
-          '<span>s_meas / (4|A|/(π(1−A²))) <b>' + ratioStr + '</b></span>' +
+          U.stats.compare({ label: 's_meas / (4|A|/(π(1−A²)))', measured: m.ratio, expected: 1, reference: 'identity', basis: 'construction', digits: 6 }) +
           (nearBubble
-            ? '<span>s <b>' + m.sMeas.toFixed(3) + '</b> · bubble 0.730</span>'
-            : '<span>s <b>' + m.sMeas.toFixed(3) + '</b> · 4|A|/(π(1−A²))</span>') +
+            ? U.stats.compare({ label: 's', measured: m.sMeas, expected: S_STAR, reference: 'bubble', basis: 'construction' })
+            : U.stats.compare({ label: 's', measured: m.sMeas, expected: m.sTh, reference: '4|A|/(π(1−A²))', basis: 'construction' })) +
           (euler
             ? '<span>dual Euler <b>same profile</b> · g=0 σ=0</span>'
             : '<span>κ_trough/κ_crest <b>' + (m.kRatio > 99 ? m.kRatio.toExponential(1) : m.kRatio.toFixed(1)) + '</b> · Crapper</span>') +

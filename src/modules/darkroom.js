@@ -49,6 +49,8 @@
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
       let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
+      const GROUPS = 8;
+      let groupHits = null, groupRays = null, groupMetric = [];
       function sizeFrom(s) {
         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
         return { W: g, H: Math.max(48, Math.round(g * a)) };
@@ -89,8 +91,14 @@
           }
           return q ? { q, nrm, t: best } : null;
         }
+        // The window's hits are also tallied by ray index mod 8. Each of those interleaved groups is an
+        // independent stratified sweep of the whole circle, so their scatter gives the error bar.
+        const gx = (dark[0] * W) | 0, gy = (dark[1] * H) | 0;
+        groupHits = new Float64Array(GROUPS); groupRays = new Float64Array(GROUPS);
         for (let r = 0; r < nR; r++) {
           const ang = (r + rng()) * Math.PI * 2 / nR;
+          const grp = r % GROUPS;
+          groupRays[grp]++;
           let p = src.slice(), d = [Math.cos(ang), Math.sin(ang)];
           for (let b = 0; b < bnc; b++) {
             const h = hitEdge(p, d);
@@ -99,7 +107,10 @@
             for (let k = 0; k <= steps; k++) {
               const xx = p[0] + d[0] * h.t * k / steps, yy = p[1] + d[1] * h.t * k / steps;
               const xi = (xx * W) | 0, yi = (yy * H) | 0;
-              if (xi >= 0 && yi >= 0 && xi < W && yi < H) field[yi * W + xi] += 1;
+              if (xi >= 0 && yi >= 0 && xi < W && yi < H) {
+                field[yi * W + xi] += 1;
+                if (Math.abs(xi - gx) <= 3 && Math.abs(yi - gy) <= 3) groupHits[grp] += 1;
+              }
             }
             const nd = d[0] * h.nrm[0] + d[1] * h.nrm[1];
             d = [d[0] - 2 * nd * h.nrm[0], d[1] - 2 * nd * h.nrm[1]];
@@ -113,6 +124,8 @@
         }
         metric = darkHits / Math.max(1, win);
         extra = kind === 'tokarsky' ? 0 : 1;
+        // Each group's estimate of the same per-cell hit count, scaled up to the full ray count.
+        groupMetric = Array.from(groupHits, (g, i) => groupRays[i] ? g / Math.max(1, win) * nR / groupRays[i] : NaN).filter(Number.isFinite);
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
@@ -143,7 +156,20 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>dark-window hits <b>' + f2(metric) + '</b></span><span>theory ' + (host.getState().kind === 'tokarsky' ? '0' : 'lit') + '</span><span>' + (host.getState().kind === 'tokarsky' && metric < 0.4 ? 'unilluminable' : 'lit') + '</span>'); }
+      // Only the Tokarsky-style room is compared with 0, and it is this project's own drawing of a
+      // room with a dark point, not Tokarsky's published construction. The rectangle and the L are
+      // controls with no reference value; their hits are printed plainly.
+      function status() {
+        const tok = host.getState().kind === 'tokarsky';
+        const g = U.stats.sampleMean(groupMetric);
+        host.setStatus((tok
+          ? U.stats.compare({ label: 'dark-window hits', measured: metric, expected: 0, reference: 'dark point', basis: 'sampled', digits: 3,
+              uncertainty: g.se, method: GROUPS + ' interleaved ray groups',
+              pending: groupHits && groupHits.every(v => v === 0) ? 'no hits in any of ' + GROUPS + ' ray groups' : 'ray groups too few',
+              note: 'hand-drawn room, not Tokarsky\'s construction' })
+          : '<span>dark-window hits <b>' + f2(metric) + '</b></span>') +
+          '<span>' + (tok && metric < 0.4 ? 'unilluminable' : 'lit') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

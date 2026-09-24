@@ -101,7 +101,9 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
       function status() {
-        host.setStatus('<span>F <b>' + f2(F) + '</b></span><span>I(0)/I_ring <b>' + f2(metric) + '</b> · theory ~ 1</span><span>' + (metric > 0.3 ? 'Arago spot' : 'geometric') + '</span>');
+        host.setStatus('<span>F <b>' + f2(F) + '</b></span>' +
+          U.stats.compare({ label: 'I(0)/I_ring', measured: metric, expected: '~1', reference: 'open-beam proxy', basis: 'deterministic', digits: 3 }) +
+          '<span>' + (metric > 0.3 ? 'Arago spot' : 'geometric') + '</span>');
       }
       return {
         aspect(s) { return AS[s.aspect] || 1; },

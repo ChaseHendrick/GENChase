@@ -1,5 +1,6 @@
 // Actual membrane PNG preservation and cooperative scheduling, using in-memory test hooks only.
 // node tools/hodgkin-huxley-print.js > validation/results/hodgkin-huxley-print.json
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');
 (async()=>{
@@ -13,7 +14,7 @@ const {chromium}=require('playwright');
         return {arrays,physical,events:JSON.stringify(sim.events),settings:JSON.stringify(host.getState()),display:{paused,timer}};
       },
 ${marker}`);
-  const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']}),rows=[];
+  const browser=await chromium.launch({args:glArgs()}),rows=[];
   try{
     for(const spec of [{n:16,duration:30,start:5,pulse:20,width:2400,height:1600},{n:64,duration:100,start:10,pulse:80,width:2400,height:2400}]){
       const page=await browser.newPage();

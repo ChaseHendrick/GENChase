@@ -1,5 +1,6 @@
 // Actual module export/state and cooperative scheduling, with test-only read-only source hooks.
 // Setup: Playwright + Chromium per BUILDING.md. node tools/plasma-print.js > validation/results/plasma-print.json
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {chromium}=require('playwright');
 (async()=>{
@@ -20,7 +21,7 @@ const {chromium}=require('playwright');
         return {arrays,physical,display:{scale,clipped,remaining,pendingLive,paused,raf,timer},settings:JSON.stringify(host.getState())};
       },
 ${marker}`);
-  const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+  const browser=await chromium.launch({args:glArgs()});
   const rows=[];
   try{
     for(const spec of [{n:4096,grid:64,width:2400,height:2400},{n:16384,grid:256,width:2400,height:3000}]){

@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -271,7 +270,9 @@
         const verdict = sIn < 0.02 ? 'stealthy' : (sIn < 0.08 ? 'partial' : 'not stealthy');
         host.setStatus(
           '<span>' + N + ' points · ' + (ks ? ks.length : 0) + ' constrained k</span>' +
-          '<span>⟨S⟩ disk <b>' + f3(sIn) + '</b> · theory 0</span>' +
+          // One relaxed configuration is one draw from the ensemble the descent reaches, so no spread
+          // can be taken over it here and the bar is pending rather than invented.
+          U.stats.compare({ label: '⟨S⟩ disk', measured: sIn, expected: 0, basis: 'sampled', pending: 'one configuration' }) +
           '<span>' + verdict + '</span>'
         );
         void s0;

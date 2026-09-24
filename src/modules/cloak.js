@@ -119,7 +119,16 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>core hits <b>' + (100 * metric).toFixed(1) + '%</b></span><span>theory ' + (host.getState().on === 'on' ? '0' : 'geometric') + '</span><span>' + (host.getState().on === 'on' && metric < 0.08 ? 'cloaked' : 'visible') + '</span>'); }
+      // With the cloak on, the ray positions are pushed through the Pendry, Schurig and Smith map r -> R1 + r (R2 - R1) / R2,
+      // which sends every point outside R1: the hit count is then a regression test of that map, not
+      // a measurement of the optics. With it off the rays go straight and the count is plain geometry.
+      function status() {
+        const on = host.getState().on === 'on';
+        host.setStatus((on
+          ? U.stats.compare({ label: 'core hits', measured: 100 * metric, units: '%', expected: 0, reference: 'coordinate map', basis: 'construction', digits: 3 })
+          : '<span>core hits <b>' + (100 * metric).toFixed(1) + '%</b></span><span>geometric</span>') +
+          '<span>' + (on && metric < 0.08 ? 'cloaked' : 'visible') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

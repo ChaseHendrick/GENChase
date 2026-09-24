@@ -145,11 +145,14 @@
         const bound = 2 * R * (1 - Math.cos(Math.PI / (6 * 720)));
         const roundoff = 1e-12 * R;
         const mayCrop = s.kind !== 'width' && R / Math.sqrt(3) > Math.min(W, H) / 2;
-        host.setStatus('<span>sampled mean width <b>' + extra.toFixed(6) + '</b> cells · exact ' + R +
-          '</span><span>deficit ' + (R - extra).toExponential(3) + ' · sampling bound ' + bound.toExponential(3) +
-          '</span><span>relative spread ' + metric.toExponential(2) + '</span>' +
+        // The width is measured on the analytic boundary at a fixed set of angles: no randomness, so the
+        // only error against R is the chord deficit, which the next span bounds, plus round-off.
+        host.setStatus(
+          U.stats.compare({ label: 'sampled mean width', measured: extra, expected: R, reference: 'exact', units: 'cells', basis: 'deterministic', digits: 8 }) +
+          '<span>deficit ' + (R - extra).toExponential(3) + ' · sampling bound ' + bound.toExponential(3) + '</span>' +
+          U.stats.compare({ label: 'relative spread', measured: metric, expected: 0, reference: 'constant width', basis: 'deterministic' }) +
           (mayCrop ? '<span>body may be cropped by the field; width check uses the complete mathematical boundary</span>' : ''));
-        host.setWitness({ label: 'Boundary sampling regression (not a pixel-width measurement)',
+        host.setWitness({ label: 'Boundary sampling regression (not a pixel-width measurement)', basis: 'deterministic',
           measured: extra, expected: R, tol: bound + roundoff,
           valid: Number.isFinite(extra) && extra <= R + roundoff && R - extra <= bound + roundoff,
           missWhen: 'Sampled mean exceeds the exact width or its chord-error bound; does not validate printed edge width or rolling physics.' });

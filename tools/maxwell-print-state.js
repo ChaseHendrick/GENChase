@@ -1,5 +1,6 @@
 // Read-only test hooks around actual Maxwell instances; this is print preservation, not PDE validation.
 // Setup: Playwright + Chromium per BUILDING.md. Run: node tools/maxwell-print-state.js
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');
 (async()=>{
@@ -16,7 +17,7 @@ const {chromium}=require('playwright');
         return {fields,metadata:{gw,gh,dt,stepCount,simTime,scale,pending,raf,timer},settings:JSON.stringify(host.getState())};
       },
 ${marker}`);
-  const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+  const browser=await chromium.launch({args:glArgs()});
   const rows=[];
   try {
     for(const spec of [{grid:128,aspect:'1:1',width:2400,height:2400},{grid:256,aspect:'4:5',width:2400,height:3000}]){

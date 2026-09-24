@@ -80,6 +80,11 @@ try {
   for(const reviewed of ['2026-02-30','2026-13-01','9999-01-01','2026-1-1',''])expect({...full,reviewed},false,'Invalid or future review date');
   expect({...full,results:'tools/benchmark.js'},false,'Unstructured full result artifact');
   expect({...full,print:[]},false,'Full status without print evidence');
+  // Outside reviews are optional; when present every entry must name who, where, when, what and the evidence.
+  const review={name:'Fixture Reviewer',affiliation:'Fixture Institute',date:'2026-01-01',scope:'Declared fixture domain only',evidence:'validation/results/fixture.json'};
+  expect({...full,reviewers:[review]},true,'Well-formed outside review');
+  expect({...partial,reviewers:[review,{...review,evidence:'https://example.org/review/1'}]},true,'Outside reviews with a file and an https link');
+  for(const reviewers of [[],review,[null],['Fixture Reviewer'],[{...review,name:' '}],[{...review,affiliation:undefined}],[{...review,scope:'all'}],[{...review,date:'9999-01-01'}],[{...review,date:'2026-02-30'}],[{...review,evidence:'by email'}],[{...review,evidence:'http://example.org/review'}],[{...review,evidence:'validation/results/missing.json'}],[{...review,orcid:'fixture'}]])expect({...full,reviewers},false,'Malformed outside review '+JSON.stringify(reviewers));
   records([record]);fs.appendFileSync(path.join(tmp,record.source),'\n// changed');assert.notEqual(science().status,0);
-  console.log('PASS: folder/portable/manifest parity, family mappings, template exclusion and stale/duplicate/missing/path/orphan controls; coverage/source drift, numerical evidence, smoke-test rejection, result artifacts and reviewed-domain/date controls.');
+  console.log('PASS: folder/portable/manifest parity, family mappings, template exclusion and stale/duplicate/missing/path/orphan controls; coverage/source drift, numerical evidence, smoke-test rejection, result artifacts and reviewed-domain/date and outside-review controls.');
 } finally { fs.rmSync(tmp,{recursive:true,force:true}); }

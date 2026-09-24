@@ -27,7 +27,7 @@
   #v(0.7em)
   #text(size: 11pt)[Chase Hendrick]
   #v(0.2em)
-  #text(size: 9.5pt)[GENChase]
+  #text(size: 9.5pt)[Independent researcher]
 ]
 
 #v(1em)
@@ -320,6 +320,8 @@ For two rings, Aref [2] derived the reduced equations @eq:rings for arbitrary ci
 
 #v(0.5em)
 #par(justify: false)[*Data availability.* The programs `verify_general_mu.py`, `verify_floors_independent.py` and `plot_minimal_winding.py`, used for Section 5 and @fig:minima, and their output are in the directory `research/` of the repository https://github.com/SharpMeow/GENChase.]
+
+#par(justify: false)[*Acknowledgements.* Code and verification programs: #link("https://github.com/SharpMeow/GENChase")[github.com/SharpMeow/GENChase].]
 
 #v(0.3em)
 #text(size: 9pt)[This work was prepared with AI assistance. The author takes full responsibility for its content.]

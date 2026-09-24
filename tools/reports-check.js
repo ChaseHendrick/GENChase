@@ -1,4 +1,5 @@
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
 const {chromium}=require('playwright'),root=path.resolve(__dirname,'..');
 const records=JSON.parse(fs.readFileSync(path.join(root,'validation/techniques.json'),'utf8'));
@@ -11,7 +12,7 @@ const server=http.createServer((req,res)=>{
 });
 (async()=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
- const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+ const browser=await chromium.launch({args:glArgs()});
  try{
   for(const portable of [false,true]){
    const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});

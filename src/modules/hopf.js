@@ -139,7 +139,11 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>'+(extra|0)+' fibres</span><span>sampled |Gauss link| <b>'+metric.toFixed(6)+'</b> · exact 1</span><span>180→360 segment change '+linkChange.toExponential(2)+'</span>'); }
+      function status() {
+        host.setStatus('<span>'+(extra|0)+' fibres</span>' +
+          U.stats.compare({ label: '|Gauss link|, 360 segments', measured: metric, expected: 1, reference: 'linking number', basis: 'deterministic', digits: 7 }) +
+          '<span>refinement change, 180→360 segments '+linkChange.toExponential(2)+'</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

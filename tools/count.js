@@ -91,6 +91,9 @@ function stampRepo(fs, path, root, n, mods) {
   write('CONTRIBUTING.md', t => stampText(t, n));
   write('DESIGN-PLAN.md', t => stampText(t, n));
   write('AGENTS.md', t => stampText(t, n));
+  // Publication metadata and the software paper draft state the count too (docs/PUBLISHING.md).
+  write('.zenodo.json', t => stampText(t, n));
+  write('paper/paper.md', t => stampText(t, n));
   const studioChanged = write('src/studio.html', t => stampStudio(t, n));
   // index.js already verified the current build. Only a changed template needs another
   // assembly; unchanged catalog refreshes need not evaluate every registration again.

@@ -1,6 +1,7 @@
 // node tools/schrodinger-absorber-science.js
 // Actual float32 GPU step with absorber and long-time free phase against independent Float64 refs.
 // Subtract-before-add: wrong-sign damp must fail; correct path must pass stated criteria.
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict'), crypto = require('node:crypto');
 
 (async () => {
@@ -11,7 +12,7 @@ const fs = require('node:fs'), path = require('node:path'), assert = require('no
   assert(closing >= 0, 'Wave module closure is missing');
   const expose = source.slice(0, closing) + 'window.schrodingerShaders = { step: SCH_STEP_FS };\n' + source.slice(closing);
   const { chromium } = require('playwright');
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   let result;
   try {
     const page = await browser.newPage();

@@ -2,13 +2,14 @@
 // Renders one plate at device scale 2 and saves the canvas alone, for README gallery tiles.
 // An optional preset key is applied through the Presets menu before the wait.
 // Set STUDIO=path/to/studio.html to render from a test copy.
+const { glArgs } = require('./lib/gl-args');
 const path = require('path');
 const { chromium } = require('playwright');
 (async () => {
   const hash = process.argv[2], out = process.argv[3], wait = +(process.argv[4] || 9000), cssW = +(process.argv[5] || 900), preset = process.argv[6] || '';
   if (!hash || !out) { console.error('usage: node tools/plate.js <hash> <out.jpg> [waitMs] [cssWidth] [preset]'); process.exit(1); }
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
-  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+  const b = await chromium.launch({ args: [...glArgs(), '--ignore-gpu-blocklist'] });
   const p = await b.newPage({ viewport: { width: cssW + 560, height: cssW + 200 }, deviceScaleFactor: 2 });
   await p.goto('file://' + studio + '#' + hash);
   await p.waitForTimeout(800);

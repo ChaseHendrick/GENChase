@@ -1,8 +1,8 @@
 {
   "scope": "Bounded geometric maps and sampled integral/support/packing checks; no global immersion proof or physical rolling model.",
   "sourceSha256": {
-    "hopf": "4732427222cb6acb822f2368a2e1e9f14b522cfb12745084c81c0380e5481e03",
-    "reuleaux": "179cef420e5bc881718b9904dc73240b446f54178ee8a1f592f786caf710e4f9",
+    "hopf": "2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00",
+    "reuleaux": "eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707",
     "apollonian": "33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8"
   },
   "hopf": {

@@ -1,5 +1,6 @@
 // Real-module field upload, paused print/state checks and shell controls.
 // node tools/shallow-print.js [--write]
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict'), crypto = require('node:crypto');
 const { chromium } = require('playwright');
 (async () => {
@@ -22,7 +23,7 @@ const { chromium } = require('playwright');
       aspect(s)`);
   fs.writeFileSync(temp, built.replace(source, instrumented)); let browser;
   try {
-    browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+    browser = await chromium.launch({ args: glArgs() });
     const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } }), errors = [], rows = [];
     page.on('pageerror', e => errors.push(e.message));
     for (const fixture of [{ grid: 128, aspect: '1:1', view: 'depth', warmup: 180 },

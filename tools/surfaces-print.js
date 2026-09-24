@@ -1,13 +1,14 @@
 // node tools/surfaces-print.js [--write]
 // Actual-instance raster/vector export regression, separate from curvature evidence.
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
 const assert = require('node:assert/strict'), { chromium } = require('playwright');
 (async () => {
   const root = path.resolve(__dirname, '..'), source = fs.readFileSync(path.join(root, 'src/modules/surfaces.js'), 'utf8');
   const instrumented = source.replace('  Studio.register({', '  window.surfaceAudit = { camera };\n  Studio.register({');
   const softwareCanvas = process.argv.includes('--software-canvas');
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
+  const browser = await chromium.launch({ args: [...glArgs(),
     ...(softwareCanvas ? ['--disable-accelerated-2d-canvas'] : [])] });
   try {
     const page = await browser.newPage();

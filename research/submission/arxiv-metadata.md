@@ -10,7 +10,7 @@ Fill the arXiv form with the fields below.
 - **Primary category:** physics.flu-dyn (Fluid Dynamics)
 - **Cross-lists:** math-ph (Mathematical Physics), math.DS (Dynamical Systems)
 - **MSC class:** 76B47, 37N10
-- **Comments:** `12 pages, 1 figure, 1 table. Verification programs and data: https://github.com/SharpMeow/GENChase/tree/main/research`
+- **Comments:** `13 pages, 1 figure, 1 table. Verification programs and data: https://github.com/SharpMeow/GENChase/tree/main/research`
   - The page count is for the LaTeX build. For the PDF-only route with the Typst PDF, write 13 pages.
 - **License:** CC BY 4.0 (Creative Commons Attribution 4.0). It is compatible with most journals, including Regular and Chaotic Dynamics.
 - **Report number, journal reference, DOI:** leave blank.

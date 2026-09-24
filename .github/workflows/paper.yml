@@ -1,0 +1,33 @@
+name: paper
+
+# Builds the Journal of Open Source Software draft in paper/ with the journal's own draft action and
+# keeps the PDF as a workflow artifact. docs/PUBLISHING.md says what to check before submitting.
+
+on:
+  push:
+    paths:
+      - 'paper/**'
+  pull_request:
+    paths:
+      - 'paper/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paper:
+    name: draft PDF
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build draft PDF
+        uses: openjournals/openjournals-draft-action@master
+        with:
+          journal: joss
+          paper-path: paper/paper.md
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper
+          path: paper/paper.pdf

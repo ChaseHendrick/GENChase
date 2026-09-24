@@ -1,9 +1,10 @@
 // Shared navigation, layout and caption zoom checks in Chromium and WebKit.
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const assert=require('node:assert/strict'),path=require('node:path'),{chromium,webkit}=require('playwright');
 (async()=>{
  const name=process.env.BROWSER||'chromium';assert(['chromium','webkit'].includes(name));
- const browser=await ({chromium,webkit}[name]).launch(name==='chromium'?{args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']}:{});
+ const browser=await ({chromium,webkit}[name]).launch(name==='chromium'?{args:glArgs()}:{});
  try{
   for(const width of [1512,1280,1024,768,390]){
    const page=await browser.newPage({viewport:{width,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));

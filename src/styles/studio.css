@@ -767,3 +767,13 @@
   .modal:not([hidden]) > .card, .module-browser[open] { animation: interface-reveal 150ms cubic-bezier(.2,.7,.2,1); }
   @keyframes interface-reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 }
+
+/* Validation status on every tab and on the stage (docs/RESEARCH-GRADE.md, section 6). The glyph carries
+   the meaning; color only reinforces it. */
+.tab-evidence { margin-left: 5px; font-size: 10px; font-weight: 600; opacity: .8; }
+.tab-evidence[data-status="validated within stated limits"] { color: #2f7d32; }
+.tab-evidence[data-status="partially validated"] { color: #9a6a00; }
+.tab-evidence[data-status="unvalidated"] { color: var(--muted); }
+#btn-science-report[data-status="validated within stated limits"] { border-color: #2f7d32; }
+#btn-science-report[data-status="partially validated"] { border-color: #9a6a00; }
+#btn-science-report[data-status="unvalidated"] { border-style: dashed; }

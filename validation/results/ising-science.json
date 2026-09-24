@@ -1,0 +1,1130 @@
+{
+ "date": "2026-09-24",
+ "mode": "quick",
+ "plan": {
+  "mode": "quick",
+  "yang": [
+   {
+    "L": 128,
+    "T": [
+     1.5,
+     1.8,
+     2,
+     2.1
+    ],
+    "seeds": 1,
+    "burn": 1000,
+    "sweeps": 8000,
+    "every": 4
+   }
+  ],
+  "above": [
+   {
+    "L": 128,
+    "T": [
+     2.5,
+     3
+    ],
+    "seeds": 1,
+    "burn": 1000,
+    "sweeps": 6000,
+    "every": 4
+   }
+  ],
+  "controls": {
+   "L": 128,
+   "burn": 500,
+   "sweeps": 2000,
+   "every": 4
+  },
+  "binder": {
+   "T0": 2.27,
+   "sizes": [
+    {
+     "L": 128,
+     "seeds": 1,
+     "burn": 4000,
+     "sweeps": 40000,
+     "every": 8
+    },
+    {
+     "L": 192,
+     "seeds": 1,
+     "burn": 6000,
+     "sweeps": 28000,
+     "every": 12
+    }
+   ],
+   "reps": 400
+  },
+  "print": {
+   "grid": 256,
+   "sweeps": 500
+  }
+ },
+ "commit": "68545915d33c675a2de4e80187c9e764db6af62a",
+ "seriesSource": "simulated in this run",
+ "sourceSha256": "dc91a54f2d1f6b58a1ded79dafc0ff38f77cec029c7cbd7e32e6d5002566392c",
+ "engineSha256": "99cc63fff9a1f75e68abce1e66e07bfd72dc5e1c25ff057218fe6c8a65dfaa63",
+ "statsSha256": "b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db",
+ "scope": "Actual ISING_STEP checkerboard Metropolis in the real studio (periodic square lattice, h = 0, float32 spins), against Yang M(T), Onsager u(T) and Onsager T_c by Binder crossings; wrong-rule controls; module PNG, shell print and exportData state checks.",
+ "criteria": {
+  "zPass": 3.5,
+  "reliability": "tau_int from stats.seriesMean with n >= 50 tau_int",
+  "finiteSizeQualify": 0.000001
+ },
+ "exact": {
+  "uAtTc": -1.414213562373095,
+  "uAtTcError": 2.220446049250313e-16,
+  "uNearTc": [
+   {
+    "T": 2.2691853119438368,
+    "u": -1.414213586055843
+   },
+   {
+    "T": 2.2691853164822073,
+    "u": -1.4142135386903447
+   },
+   {
+    "T": 2.2691830450277077,
+    "u": -1.4142294932405626
+   },
+   {
+    "T": 2.269187583398336,
+    "u": -1.4141976315067097
+   }
+  ],
+  "textbookAtTc": "NaN",
+  "elliptic": [
+   {
+    "k": 0.3,
+    "agm": 1.6080486199305126,
+    "quadrature": 1.6080486199305486,
+    "relError": 2.236948905152424e-14
+   },
+   {
+    "k": 0.8,
+    "agm": 1.9953027776647299,
+    "quadrature": 1.9953027776647505,
+    "relError": 1.0349380800339635e-14
+   },
+   {
+    "k": 0.99,
+    "agm": 3.3566005233611915,
+    "quadrature": 3.356600523361191,
+    "relError": 1.3230326538987905e-16
+   },
+   {
+    "k": 0.9999,
+    "agm": 5.645148216829874,
+    "quadrature": 5.645148216829889,
+    "relError": 2.6746920638659865e-15
+   }
+  ],
+  "energy": [
+   {
+    "T": 1.2,
+    "u": -1.9885966902035597,
+    "textbook": -1.9885966902035597,
+    "integral": -1.9885966902033534,
+    "textbookError": 0,
+    "integralError": 2.0627943797535409e-13
+   },
+   {
+    "T": 1.5,
+    "u": -1.9511165730783768,
+    "textbook": -1.9511165730783768,
+    "integral": -1.9511165730784057,
+    "textbookError": 0,
+    "integralError": 2.886579864025407e-14
+   },
+   {
+    "T": 1.8,
+    "u": -1.8593038057258966,
+    "textbook": -1.859303805725896,
+    "integral": -1.8593038057259188,
+    "textbookError": 6.661338147750939e-16,
+    "integralError": 2.220446049250313e-14
+   },
+   {
+    "T": 2,
+    "u": -1.7455645753125535,
+    "textbook": -1.7455645753125535,
+    "integral": -1.7455645753125457,
+    "textbookError": 0,
+    "integralError": 7.771561172376096e-15
+   },
+   {
+    "T": 2.1,
+    "u": -1.662082413094371,
+    "textbook": -1.66208241309437,
+    "integral": -1.6620824130944425,
+    "textbookError": 8.881784197001252e-16,
+    "integralError": 7.149836278586008e-14
+   },
+   {
+    "T": 2.2,
+    "u": -1.5464891440984545,
+    "textbook": -1.5464891440984543,
+    "integral": -1.5464891440984334,
+    "textbookError": 2.220446049250313e-16,
+    "integralError": 2.1094237467877974e-14
+   },
+   {
+    "T": 2.5,
+    "u": -1.1060792037457912,
+    "textbook": -1.1060792037457934,
+    "integral": -1.1060792037458016,
+    "textbookError": 2.220446049250313e-15,
+    "integralError": 1.0436096431476471e-14
+   },
+   {
+    "T": 3,
+    "u": -0.8173095925024203,
+    "textbook": -0.8173095925024211,
+    "integral": -0.8173095925024343,
+    "textbookError": 7.771561172376096e-16,
+    "integralError": 1.3988810110276972e-14
+   },
+   {
+    "T": 4,
+    "u": -0.5572722406284905,
+    "textbook": -0.5572722406284906,
+    "integral": -0.5572722406284866,
+    "textbookError": 1.1102230246251565e-16,
+    "integralError": 3.885780586188048e-15
+   }
+  ],
+  "integralAtTc": -1.414213561902592,
+  "integralAtTcError": 4.705031919627345e-10,
+  "lowT": [
+   {
+    "T": 0.6,
+    "M": 0.9999967442274907,
+    "series": 0.9999967443171864,
+    "Merror": 8.969569531558363e-11,
+    "z8": 2.6230937696692964e-12,
+    "u": -1.9999869935683068,
+    "useries": -1.9999870432256615,
+    "uerror": 4.965735467266086e-8,
+    "z6": 2.0611536224385566e-9
+   },
+   {
+    "T": 0.8,
+    "M": 0.9999066806626417,
+    "series": 0.999906752921911,
+    "Merror": 7.225926934584237e-8,
+    "z8": 2.0611536224385587e-9,
+    "u": -1.9996293070838325,
+    "useries": -1.9996368005619,
+    "uerror": 0.000007493478067610582,
+    "z6": 3.059023205018259e-7
+   }
+  ],
+  "yangAtTc": 0.03865641527534139
+ },
+ "below": [
+  {
+   "L": 128,
+   "T": 1.5,
+   "init": "cold",
+   "burn": 1000,
+   "sweeps": 8000,
+   "every": 4,
+   "seeds": [
+    {
+     "seed": "ising-science/below-tab-L128-T1.5-s0/0",
+     "tick0": 968323,
+     "windowScope": "global",
+     "seconds": 27.692
+    }
+   ],
+   "finiteSize": {
+    "xi": 0.6302048103699143,
+    "sigma": 0.7933928649426091,
+    "bound": 1.0127768830198167e-84,
+    "qualifies": true
+   },
+   "energy": {
+    "seeds": 1,
+    "mean": -1.9512474365234376,
+    "se": 0.00011635392871524047,
+    "tauSweeps": 2,
+    "nEff": 2000,
+    "n": 2000,
+    "reliable": true,
+    "exact": -1.9511165730783768,
+    "z": -1.1247015593346794,
+    "pass": true
+   },
+   "tabSeries": [
+    {
+     "samples": 375,
+     "matchedOurs": 375,
+     "mismatched": 0,
+     "tabWitness": {
+      "mean": 0.986480712890625,
+      "se": 0.00012242916259975152,
+      "reliable": true,
+      "note": "what the status line would print: second half of the tab series, tau_int error"
+     }
+    }
+   ],
+   "magnetization": {
+    "seeds": 1,
+    "mean": 0.9865309448242188,
+    "se": 0.00003635652842383502,
+    "tauSweeps": 2.0547880754572665,
+    "nEff": 1946.6727726215036,
+    "n": 2000,
+    "reliable": true,
+    "exact": 0.9864996026214945,
+    "z": 0.8620790840888951,
+    "pass": true
+   }
+  },
+  {
+   "L": 128,
+   "T": 1.8,
+   "init": "cold",
+   "burn": 1000,
+   "sweeps": 8000,
+   "every": 4,
+   "seeds": [
+    {
+     "seed": "ising-science/below-tab-L128-T1.8-s0/0",
+     "tick0": 307476,
+     "windowScope": "global",
+     "seconds": 32.437
+    }
+   ],
+   "finiteSize": {
+    "xi": 1.170233016304285,
+    "sigma": 0.42726533351370566,
+    "bound": 5.144562200100134e-44,
+    "qualifies": true
+   },
+   "energy": {
+    "seeds": 1,
+    "mean": -1.8594659423828126,
+    "se": 0.00020700704178184845,
+    "tauSweeps": 2,
+    "nEff": 2000,
+    "n": 2000,
+    "reliable": true,
+    "exact": -1.8593038057258966,
+    "z": -0.7832422294448634,
+    "pass": true
+   },
+   "tabSeries": [
+    {
+     "samples": 375,
+     "matchedOurs": 375,
+     "mismatched": 0,
+     "tabWitness": {
+      "mean": 0.9571500737616356,
+      "se": 0.00033487021121647234,
+      "reliable": true,
+      "note": "what the status line would print: second half of the tab series, tau_int error"
+     }
+    }
+   ],
+   "magnetization": {
+    "seeds": 1,
+    "mean": 0.9569351806640625,
+    "se": 0.00007859584937749746,
+    "tauSweeps": 2,
+    "nEff": 2000,
+    "n": 2000,
+    "reliable": true,
+    "exact": 0.9568570172474183,
+    "z": 0.9944980207378076,
+    "pass": true
+   }
+  },
+  {
+   "L": 128,
+   "T": 2,
+   "init": "cold",
+   "burn": 1000,
+   "sweeps": 8000,
+   "every": 4,
+   "seeds": [
+    {
+     "seed": "ising-science/below-tab-L128-T2-s0/0",
+     "tick0": 68927,
+     "windowScope": "global",
+     "seconds": 28.626
+    }
+   ],
+   "finiteSize": {
+    "xi": 2.1923750615652575,
+    "sigma": 0.2280631670946952,
+    "bound": 7.219768081839506e-22,
+    "qualifies": true
+   },
+   "energy": {
+    "seeds": 1,
+    "mean": -1.746176513671875,
+    "se": 0.0003303816038141876,
+    "tauSweeps": 2.449754293290899,
+    "nEff": 1632.8168138962885,
+    "n": 2000,
+    "reliable": true,
+    "exact": -1.7455645753125535,
+    "z": -1.8522168070400808,
+    "pass": true
+   },
+   "tabSeries": [
+    {
+     "samples": 375,
+     "matchedOurs": 375,
+     "mismatched": 0,
+     "tabWitness": {
+      "mean": 0.9113035810754654,
+      "se": 0.0005394059806664063,
+      "reliable": true,
+      "note": "what the status line would print: second half of the tab series, tau_int error"
+     }
+    }
+   ],
+   "magnetization": {
+    "seeds": 1,
+    "mean": 0.9116765747070312,
+    "se": 0.00020057261398122398,
+    "tauSweeps": 3.488655932400955,
+    "nEff": 1146.5733731004905,
+    "n": 2000,
+    "reliable": true,
+    "exact": 0.911319377877496,
+    "z": 1.7808853484290523,
+    "pass": true
+   }
+  },
+  {
+   "L": 128,
+   "T": 2.1,
+   "init": "cold",
+   "burn": 1000,
+   "sweeps": 8000,
+   "every": 4,
+   "seeds": [
+    {
+     "seed": "ising-science/below-tab-L128-T2.1-s0/0",
+     "tick0": 622130,
+     "windowScope": "global",
+     "seconds": 26.75
+    }
+   ],
+   "finiteSize": {
+    "xi": 3.6070188922620314,
+    "sigma": 0.13861862522334623,
+    "bound": 6.352031099086976e-12,
+    "qualifies": true
+   },
+   "energy": {
+    "seeds": 1,
+    "mean": -1.66058203125,
+    "se": 0.00048138473056360485,
+    "tauSweeps": 3.356107856320876,
+    "nEff": 1191.8568089122705,
+    "n": 2000,
+    "reliable": true,
+    "exact": -1.662082413094371,
+    "z": 3.1168039804968934,
+    "pass": true
+   },
+   "tabSeries": [
+    {
+     "samples": 375,
+     "matchedOurs": 375,
+     "mismatched": 0,
+     "tabWitness": {
+      "mean": 0.8670790652011303,
+      "se": 0.0008433526974355259,
+      "reliable": true,
+      "note": "what the status line would print: second half of the tab series, tau_int error"
+     }
+    }
+   ],
+   "magnetization": {
+    "seeds": 1,
+    "mean": 0.8674127807617188,
+    "se": 0.000462940115820908,
+    "tauSweeps": 6.259083701946138,
+    "nEff": 639.0711788622158,
+    "n": 2000,
+    "reliable": true,
+    "exact": 0.8687476243984027,
+    "z": -2.8834045507525143,
+    "pass": true
+   }
+  }
+ ],
+ "above": [
+  {
+   "L": 128,
+   "T": 2.5,
+   "init": "hot",
+   "burn": 1000,
+   "sweeps": 6000,
+   "every": 4,
+   "seeds": [
+    {
+     "seed": "ising-science/above-tab-L128-T2.5-s0/0",
+     "tick0": 863808,
+     "windowScope": "global",
+     "seconds": 22.206
+    }
+   ],
+   "finiteSize": {
+    "xi": 5.962376979003856,
+    "sigma": 0,
+    "bound": 4.748851277274035e-10,
+    "qualifies": true
+   },
+   "energy": {
+    "seeds": 1,
+    "mean": -1.10616748046875,
+    "se": 0.0005968851860923722,
+    "tauSweeps": 3.457572794662803,
+    "nEff": 867.6606909421765,
+    "n": 1500,
+    "reliable": true,
+    "exact": -1.1060792037457912,
+    "z": -0.14789565064728585,
+    "pass": true
+   },
+   "tabSeries": [
+    {
+     "samples": 291,
+     "matchedOurs": 291,
+     "mismatched": 0,
+     "tabWitness": {
+      "mean": 0.05169844953981165,
+      "se": 0.004853204598998714,
+      "reliable": true,
+      "note": "what the status line would print: second half of the tab series, tau_int error"
+     }
+    }
+   ]
+  },
+  {
+   "L": 128,
+   "T": 3,
+   "init": "hot",
+   "burn": 1000,
+   "sweeps": 6000,
+   "every": 4,
+   "seeds": [
+    {
+     "seed": "ising-science/above-tab-L128-T3-s0/0",
+     "tick0": 623961,
+     "windowScope": "global",
+     "seconds": 21.403
+    }
+   ],
+   "finiteSize": {
+    "xi": 2.1365172552094918,
+    "sigma": 0,
+    "bound": 9.575539383452767e-27,
+    "qualifies": true
+   },
+   "energy": {
+    "seeds": 1,
+    "mean": -0.8176223958333333,
+    "se": 0.00038060711865676094,
+    "tauSweeps": 2,
+    "nEff": 1500,
+    "n": 1500,
+    "reliable": true,
+    "exact": -0.8173095925024203,
+    "z": -0.8218536006812949,
+    "pass": true
+   },
+   "tabSeries": [
+    {
+     "samples": 291,
+     "matchedOurs": 291,
+     "mismatched": 0,
+     "tabWitness": {
+      "mean": 0.02189824352525685,
+      "se": 0.0012754978654217685,
+      "reliable": true,
+      "note": "what the status line would print: second half of the tab series, tau_int error"
+     }
+    }
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "mutant": "twoT",
+   "description": "if (dE <= 0.0 || r < exp(-dE / u_T)) s = -s;  ->  if (dE <= 0.0 || r < exp(-dE / (2.0 * u_T))) s = -s;",
+   "L": 128,
+   "T": 2,
+   "init": "cold",
+   "burn": 500,
+   "sweeps": 2000,
+   "every": 4,
+   "seeds": [
+    {
+     "seed": "ising-science/control-twoT-L128-T2-s0/0",
+     "tick0": 457122,
+     "windowScope": "global",
+     "seconds": 7.189
+    }
+   ],
+   "finiteSize": {
+    "xi": 2.1923750615652575,
+    "sigma": 0.2280631670946952,
+    "bound": 7.219768081839506e-22,
+    "qualifies": true
+   },
+   "energy": {
+    "seeds": 1,
+    "mean": -0.55770458984375,
+    "se": 0.000558051706656643,
+    "tauSweeps": 2,
+    "nEff": 500,
+    "n": 500,
+    "reliable": true,
+    "exact": -1.7455645753125535,
+    "z": 2128.584092297504,
+    "pass": false
+   },
+   "tabSeries": [
+    {
+     "samples": 104,
+     "matchedOurs": 104,
+     "mismatched": 0,
+     "tabWitness": {
+      "mean": 0.01288311298076923,
+      "se": 0.0015132141146387476,
+      "reliable": true,
+      "note": "what the status line would print: second half of the tab series, tau_int error"
+     }
+    }
+   ],
+   "magnetization": {
+    "seeds": 1,
+    "mean": 0.012103271484375,
+    "se": 0.00042827784867078216,
+    "tauSweeps": 2.081201913274458,
+    "nEff": 480.4915821101906,
+    "n": 500,
+    "reliable": true,
+    "exact": 0.911319377877496,
+    "z": -2099.609188716995,
+    "pass": false
+   }
+  },
+  {
+   "mutant": "twoT",
+   "description": "if (dE <= 0.0 || r < exp(-dE / u_T)) s = -s;  ->  if (dE <= 0.0 || r < exp(-dE / (2.0 * u_T))) s = -s;",
+   "L": 128,
+   "T": 2.5,
+   "init": "hot",
+   "burn": 500,
+   "sweeps": 2000,
+   "every": 4,
+   "seeds": [
+    {
+     "seed": "ising-science/control-twoT-L128-T2.5-s0/0",
+     "tick0": 744621,
+     "windowScope": "global",
+     "seconds": 7.428
+    }
+   ],
+   "finiteSize": {
+    "xi": 5.962376979003856,
+    "sigma": 0,
+    "bound": 4.748851277274035e-10,
+    "qualifies": true
+   },
+   "energy": {
+    "seeds": 1,
+    "mean": -0.42786669921875,
+    "se": 0.000548790878618533,
+    "tauSweeps": 2,
+    "nEff": 500,
+    "n": 500,
+    "reliable": true,
+    "exact": -1.1060792037457912,
+    "z": 1235.8304974643534,
+    "pass": false
+   },
+   "tabSeries": [
+    {
+     "samples": 104,
+     "matchedOurs": 104,
+     "mismatched": 0,
+     "tabWitness": {
+      "mean": 0.010561429537259616,
+      "se": 0.0012355743943914183,
+      "reliable": true,
+      "note": "what the status line would print: second half of the tab series, tau_int error"
+     }
+    }
+   ]
+  },
+  {
+   "mutant": "noNeighbors",
+   "description": "float dE = 2.0 * s * (nb + h);  ->  float dE = 2.0 * s * h;",
+   "L": 128,
+   "T": 2,
+   "init": "cold",
+   "burn": 500,
+   "sweeps": 2000,
+   "every": 4,
+   "seeds": [
+    {
+     "seed": "ising-science/control-noNeighbors-L128-T2-s0/0",
+     "tick0": 653717,
+     "windowScope": "global",
+     "seconds": 6.11
+    }
+   ],
+   "finiteSize": {
+    "xi": 2.1923750615652575,
+    "sigma": 0.2280631670946952,
+    "bound": 7.219768081839506e-22,
+    "qualifies": true
+   },
+   "energy": {
+    "seeds": 1,
+    "mean": -2,
+    "se": 0,
+    "tauSweeps": 2,
+    "nEff": 500,
+    "n": 500,
+    "reliable": true,
+    "exact": -1.7455645753125535,
+    "z": "-Infinity",
+    "pass": false
+   },
+   "tabSeries": [
+    {
+     "samples": 104,
+     "matchedOurs": 104,
+     "mismatched": 0,
+     "tabWitness": {
+      "mean": 1,
+      "se": 0,
+      "reliable": true,
+      "note": "what the status line would print: second half of the tab series, tau_int error"
+     }
+    }
+   ],
+   "magnetization": {
+    "seeds": 1,
+    "mean": 1,
+    "se": 0,
+    "tauSweeps": 2,
+    "nEff": 500,
+    "n": 500,
+    "reliable": true,
+    "exact": 0.911319377877496,
+    "z": "Infinity",
+    "pass": false
+   }
+  },
+  {
+   "mutant": "noNeighbors",
+   "description": "float dE = 2.0 * s * (nb + h);  ->  float dE = 2.0 * s * h;",
+   "L": 128,
+   "T": 2.5,
+   "init": "hot",
+   "burn": 500,
+   "sweeps": 2000,
+   "every": 4,
+   "seeds": [
+    {
+     "seed": "ising-science/control-noNeighbors-L128-T2.5-s0/0",
+     "tick0": 36646,
+     "windowScope": "global",
+     "seconds": 5.776
+    }
+   ],
+   "finiteSize": {
+    "xi": 5.962376979003856,
+    "sigma": 0,
+    "bound": 4.748851277274035e-10,
+    "qualifies": true
+   },
+   "energy": {
+    "seeds": 1,
+    "mean": -0.010986328125,
+    "se": 0,
+    "tauSweeps": 2,
+    "nEff": 500,
+    "n": 500,
+    "reliable": true,
+    "exact": -1.1060792037457912,
+    "z": "Infinity",
+    "pass": false
+   },
+   "tabSeries": [
+    {
+     "samples": 104,
+     "matchedOurs": 104,
+     "mismatched": 0,
+     "tabWitness": {
+      "mean": 0.00439453125,
+      "se": 0,
+      "reliable": true,
+      "note": "what the status line would print: second half of the tab series, tau_int error"
+     }
+    }
+   ]
+  }
+ ],
+ "controlFailures": [
+  {
+   "mutant": "twoT",
+   "T": 2,
+   "detected": true
+  },
+  {
+   "mutant": "twoT",
+   "T": 2,
+   "detected": true
+  },
+  {
+   "mutant": "twoT",
+   "T": 2.5,
+   "detected": true
+  },
+  {
+   "mutant": "noNeighbors",
+   "T": 2,
+   "detected": true
+  },
+  {
+   "mutant": "noNeighbors",
+   "T": 2,
+   "detected": true
+  },
+  {
+   "mutant": "noNeighbors",
+   "T": 2.5,
+   "detected": true
+  }
+ ],
+ "binder": {
+  "T0": 2.27,
+  "exact": 2.269185314213022,
+  "reweightRange": [
+   2.2628445589036192,
+   2.277155441096381
+  ],
+  "reps": 400,
+  "conclusiveSe": 0.005,
+  "sizes": [
+   {
+    "L": 128,
+    "samples": 5000,
+    "seeds": [
+     "ising-science/binder-tab-L128-T2.27-s0/0"
+    ],
+    "tauM2Sweeps": [
+     520.3829442234494
+    ],
+    "tauReliable": [
+     true
+    ],
+    "m2Halves": [
+     {
+      "first": 0.3254501700758934,
+      "firstSe": 0.030247365838753357,
+      "second": 0.31616809408664703,
+      "secondSe": 0.029497277453749266,
+      "z": 0.21969841288902944
+     }
+    ],
+    "binderAtT0": 0.6083197881738092,
+    "sdEnergyTotal": 464.71762647946997,
+    "binderAtT0Se": 0.014133622254837079,
+    "curve": [
+     {
+      "T": 2.2628445589036192,
+      "U": 0.6321552128516308
+     },
+     {
+      "T": 2.2664222794518096,
+      "U": 0.6215277976765475
+     },
+     {
+      "T": 2.27,
+      "U": 0.6083197881738092
+     },
+     {
+      "T": 2.2735777205481904,
+      "U": 0.5922651303498265
+     },
+     {
+      "T": 2.277155441096381,
+      "U": 0.5731455943742163
+     }
+    ],
+    "fixedPoint": {
+     "extrapolated": false,
+     "estimate": 2.269409333061721,
+     "se": 0.004421618132421069,
+     "halfWidth68": 0.003253530937805449,
+     "lo95": 2.264411340353649,
+     "hi95": 2.2793749654557027,
+     "draws": 400,
+     "extrapolatedDraws": 18,
+     "z": 0.05066444952725119,
+     "conclusive": true,
+     "pass": true
+    }
+   },
+   {
+    "L": 192,
+    "samples": 2334,
+    "seeds": [
+     "ising-science/binder-tab-L192-T2.27-s0/0"
+    ],
+    "tauM2Sweeps": [
+     709.1575293536773
+    ],
+    "tauReliable": [
+     false
+    ],
+    "m2Halves": [
+     {
+      "first": 0.27116778960327825,
+      "firstSe": 0.0432499735287321,
+      "second": 0.32869655867770053,
+      "secondSe": 0.02806660386667496,
+      "z": -1.1157927580391476
+     }
+    ],
+    "binderAtT0": 0.6070676454022466,
+    "sdEnergyTotal": 720.1372956038228,
+    "binderAtT0Se": 0.0221502149892945,
+    "curve": [
+     {
+      "T": 2.2628445589036192,
+      "U": 0.6438247899704427
+     },
+     {
+      "T": 2.2664222794518096,
+      "U": 0.6297920450951235
+     },
+     {
+      "T": 2.27,
+      "U": 0.6070676454022466
+     },
+     {
+      "T": 2.2735777205481904,
+      "U": 0.5716064756951349
+     },
+     {
+      "T": 2.277155441096381,
+      "U": 0.518772307285557
+     }
+    ],
+    "fixedPoint": {
+     "extrapolated": false,
+     "estimate": 2.2695295229555583,
+     "se": 0.005763064202892191,
+     "halfWidth68": 0.0029267618007897678,
+     "lo95": 2.2650180368786996,
+     "hi95": 2.280526889404145,
+     "draws": 400,
+     "extrapolatedDraws": 19,
+     "z": 0.05972668886172155,
+     "conclusive": false,
+     "pass": null
+    }
+   }
+  ],
+  "crossing": {
+   "method": "model-free: U_L1(T) = U_L2(T); pairs combined with inverse-variance weights, bootstrapped jointly",
+   "weights": null,
+   "pairs": [
+    {
+     "sizes": [
+      128,
+      192
+     ],
+     "extrapolated": false,
+     "binderAtCrossing": 0.6096787291225216,
+     "weightFractionAtCrossing": 0.9990825083765807,
+     "estimate": 2.2696637021511554,
+     "se": 0.27431919304564434,
+     "halfWidth68": 0.006465486156436828,
+     "lo95": 2.221779793911349,
+     "hi95": 2.31950446056976,
+     "draws": 400,
+     "extrapolatedDraws": 130,
+     "z": 0.0017439098330016365,
+     "conclusive": false,
+     "pass": null
+    }
+   ],
+   "combined": {
+    "estimate": null,
+    "se": null,
+    "halfWidth68": null,
+    "draws": 0,
+    "extrapolatedDraws": null,
+    "z": null,
+    "conclusive": false,
+    "pass": null
+   }
+  },
+  "fixedPoint": {
+   "method": "U_L(T) = U* with U* = 0.61069 (assumes the Ising universality class on the periodic square); sizes combined with inverse-variance weights",
+   "weights": [
+    1,
+    0
+   ],
+   "reference": "Kamieniarz and Bloete, J. Phys. A 26, 201 (1993), <m^2>^2/<m^4> = 0.856216 at T_c on the periodic square; Salas and Sokal, J. Stat. Phys. 98, 551 (2000)",
+   "combined": {
+    "estimate": 2.269409333061721,
+    "se": 0.004421618132421069,
+    "halfWidth68": 0.003253530937805449,
+    "lo95": 2.264411340353649,
+    "hi95": 2.2793749654557027,
+    "draws": 400,
+    "extrapolatedDraws": null,
+    "z": 0.05066444952725119,
+    "conclusive": true,
+    "pass": true
+   }
+  }
+ },
+ "streams": {
+  "seeds": [
+   "ising-science/stream/277",
+   "ising-science/stream/670"
+  ],
+  "tick0": 851225,
+  "L": 128,
+  "T": 3,
+  "sweeps": 300,
+  "v2": {
+   "streams": [
+    "shared",
+    "shared"
+   ],
+   "tick0": [
+    851225,
+    851225
+   ],
+   "agreement": 1
+  },
+  "v3": {
+   "streams": [
+    "keyed",
+    "keyed"
+   ],
+   "tick0": [
+    851225,
+    851225
+   ],
+   "agreement": 0.50457763671875
+  },
+  "sharedOverlapSeen": true,
+  "keyedIndependent": true,
+  "pass": true
+ },
+ "print": {
+  "seed": "ising-science/print/0",
+  "recipe": {
+   "id": "ising",
+   "v": 3,
+   "running": false,
+   "steps": 1,
+   "warmup": 0,
+   "seed": "ising-science/print/0",
+   "palette": [
+    "#1A1A1A",
+    "#4A4A4A",
+    "#8C8C8C",
+    "#C8C4BB",
+    "#E63B2E"
+   ],
+   "bg": "#E9E7E2"
+  },
+  "grid": [
+   256,
+   256
+  ],
+  "sweeps": 500,
+  "spinSha256": "dd8800540d0cff5c308fb64cf275fd05dea1ad765a6623a79d2734f68a2e9715",
+  "modulePNG": {
+   "width": 2400,
+   "height": 2400,
+   "bytes": 165161,
+   "checked": 5607424,
+   "ambiguous": 152576,
+   "upInk": "235,56,42",
+   "downInk": "21,21,21",
+   "distinctInks": true,
+   "wrongPixels": 0
+  },
+  "displacedControl": {
+   "wrongPixels": 1060427,
+   "checked": 5607424,
+   "detected": true
+  },
+  "exportData": {
+   "descr": "|i1",
+   "shape": [
+    256,
+    256
+   ],
+   "identical": true,
+   "seriesIdentical": true,
+   "metaGrid": [
+    256,
+    256
+   ],
+   "metaSweeps": 500,
+   "stateExported": true
+  },
+  "shellSheet": {
+   "width": 2400,
+   "height": 2400,
+   "bytes": 166467,
+   "note": "2,400 × 2,400 px, 0.2 MB. Rendered at print pixels. The field is 256 × 256 cells, so one cell is about 9.4 px here and the detail is set by the simulation, not ",
+   "cellsChecked": 65536,
+   "wrongCells": 0,
+   "upLuminance": 93.0446000000468,
+   "downLuminance": 21
+  },
+  "statePreserved": true,
+  "pageErrors": [],
+  "seconds": 14.485,
+  "pass": true
+ },
+ "summary": {
+  "numericalPass": true,
+  "controlsDetected": true,
+  "binderCrossing": "inconclusive (no size or pair with a reliable tau_int)",
+  "binderFixedPoint": "consistent with Onsager",
+  "printPass": true,
+  "failed": [],
+  "nonQualifying": []
+ },
+ "environment": {
+  "node": "v22.22.2",
+  "chromium": "141.0.7390.37",
+  "platform": "linux",
+  "cpus": 4,
+  "browserArgs": [
+   "--use-gl=angle",
+   "--use-angle=swiftshader",
+   "--enable-unsafe-swiftshader"
+  ],
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "texType": "rgba32f"
+ },
+ "wallSeconds": 564.974,
+ "passed": true
+}

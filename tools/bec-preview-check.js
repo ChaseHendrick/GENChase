@@ -1,4 +1,5 @@
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 // Warm-up presentation and batching regression, not a numerical validation claim.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');
@@ -8,7 +9,7 @@ const {chromium}=require('playwright');
  const marker='        fieldCells() {';
  assert.equal(source.split(marker).length,2);
  const exposed=source.replace(marker,`        _snapshot(){const a=new Float32Array(gw*gh*4);gl.bindFramebuffer(gl.FRAMEBUFFER,P.read.fbo);gl.readPixels(0,0,gw,gh,gl.RGBA,gl.FLOAT,a);gl.bindFramebuffer(gl.FRAMEBUFFER,null);return {a,step:stepCount};},\n`+marker);
- const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+ const browser=await chromium.launch({args:glArgs()});
  try{
   const page=await browser.newPage();await page.goto('file://'+path.join(root,'dist/studio.html')+'#three-vortex-bound');
   const result=await page.evaluate(async source=>{

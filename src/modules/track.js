@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -283,10 +282,14 @@
         const torn = metric > 0.2;
         const pave = s.eta > 0.05 && extra > 1.12 && !torn;
         const openOk = s.eta < 0.05 && extra > 0.85 && extra < 1.2 && metric < 0.08;
+        // A deterministic integration with no randomness. The Lorentz boost is the reference only for the
+        // open loop, η = 0, where the medium is unwritten; once η writes the index the breather is meant
+        // to depart from it, so the ratio is printed without a reference.
+        const open = s.eta < 0.05;
         host.setStatus(
-          '<span>v_meas / v <b>' + f2(extra) + '</b> · Lorentz 1</span>' +
-          '<span>E_out / E <b>' + f3(metric) + '</b> · bound 0</span>' +
-          '<span>' + (torn ? 'torn' : (pave ? 'paving' : (openOk ? 'open, Lorentz' : 'running'))) + '</span>'
+          U.stats.compare(Object.assign({ label: 'v_meas / v', measured: extra, basis: 'deterministic' }, open ? { expected: 1, reference: 'Lorentz' } : {})) +
+          U.stats.compare({ label: 'E_out / E', measured: metric, expected: 0, reference: 'bound state', basis: 'deterministic' }) +
+          '<span>' + (torn ? 'torn' : (pave ? 'paving' : (openOk ? 'open loop' : 'running'))) + '</span>'
         );
       }
       return {

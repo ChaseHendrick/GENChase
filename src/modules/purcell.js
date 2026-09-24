@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -129,7 +128,15 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>|Δx|/cycle <b>' + f3(metric) + '</b> of the sheet</span><span>' + (host.getState().kind === 'scallop' ? 'scallop theorem' : 'non-reciprocal gait') + '</span>'); }
+      // The body's advance per step is written into compute() for each gait, zero for the scallop and
+      // 0.08 L amp² cos θ in x for the three-link gait; no Stokes flow is solved. So the
+      // displacement is true by construction, and the scallop's zero is not a test of the theorem.
+      function status() {
+        const scallop = host.getState().kind === 'scallop';
+        host.setStatus(U.stats.compare(Object.assign({ label: '|Δx|/cycle', measured: metric, units: 'of the sheet', basis: 'construction', digits: 3 },
+          scallop ? { expected: 0, reference: 'scallop theorem' } : {})) +
+          '<span>' + (scallop ? 'scallop theorem' : 'non-reciprocal gait') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

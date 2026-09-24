@@ -512,6 +512,24 @@ void main(){ outColor=texture(u_c,v_uv); }`;
           // reference: the reaction subsequently relaxes the added zero mode.
           refreshChem(host.getState()); render(); startLoop();
         },
+        // The field itself for research use: the state texture read back unrounded, in lattice units
+        // (cell spacing 1, as the stencils use it). The engine packs these into an .npz with provenance.
+        async exportData() {
+          if (!C) throw new Error('nothing to export');
+          const s = host.getState(), st = G.readTarget(C.read), aux = G.readTarget(midT || muT);
+          const n = gw * gh, field = new Float32Array(n), auxField = new Float32Array(n);
+          for (let i = 0; i < n; i++) { field[i] = st[i * 4]; auxField[i] = aux[i * 4]; }
+          return {
+            arrays: {
+              field: { data: field, shape: [gh, gw], description: 'the evolved field, channel 0 of the state texture (the order parameter of this tab\'s equation)' },
+              state: { data: st, shape: [gh, gw, 4], description: 'all four channels of the state texture as stored' },
+              auxiliary: { data: auxField, shape: [gh, gw], description: 'channel 0 of the auxiliary texture the step reads (the chemical potential for the Cahn-Hilliard family)' },
+            },
+            meta: { tab: spec.id, grid: [gw, gh], cellSpacing: 1, units: 'dimensionless lattice units', boundary: s.bc === 'noflux' ? 'no-flux' : 'periodic',
+              steps: stepCount, dt: s.dt, time: stepCount * s.dt, timeNote: 'steps times the current dt; exact only if dt was not changed during the run',
+              precision: texType, guard: guardMessage || null },
+          };
+        },
         async exportPNG(w, h) {
           if (!C) throw new Error('nothing to export');
           const max = gl.getParameter(gl.MAX_TEXTURE_SIZE);

@@ -505,10 +505,10 @@
             massAt = stepCount;
           }
           if (massNow) {
-            const drift = massRef ? (massNow - massRef) / massRef * 100 : 0;
-            mass = '<span>mass <b>' + Math.round(massNow).toLocaleString() + '</b> (' +
-              (drift >= 0 ? '+' : '') + drift.toFixed(2) + '%)</span>';
-          } else mass = '<span>mass conserved</span>';
+            const change = massRef ? (massNow - massRef) / massRef * 100 : 0;
+            mass = '<span>mass <b>' + Math.round(massNow).toLocaleString() + '</b></span>' +
+              U.stats.compare({ label: 'relative mass change', measured: change, expected: 0, reference: 'mass conservation', basis: 'deterministic', units: '%', digits: 3 });
+          } else mass = '<span>mass not measured on this device</span>';
         }
         host.setStatus('<span><b>' + MODE_LABEL[s.mode] + (flowing(s) ? ' · flow' : '') + '</b></span><span>grid <b>' + gw + '×' + gh + '</b></span><span>step <b>' + stepCount + '</b></span>' +
           (isLenia(s) ? '<span>R ' + radiusOf(s) + ' μ ' + s.mu.toFixed(3) + ' σ ' + s.sigma.toFixed(4) + '</span>' : '') +

@@ -109,7 +109,8 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
       function status() {
-        host.setStatus('<span>sampled max |ψ|² <b>' + f2(extra) + '</b></span><span>analytic global max <b>' + f2(metric) + '</b></span><span>unit background · finite grid/window</span>');
+        host.setStatus(U.stats.compare({ label: 'max |ψ|² on the grid', measured: extra, expected: metric, reference: 'analytic global max', basis: 'deterministic', note: 'grid sample of the closed form' }) +
+          '<span>unit background · finite grid/window</span>');
       }
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

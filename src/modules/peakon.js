@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -371,12 +370,14 @@
         const vFail = !(Math.abs(m.vRatio - 1) < 0.05);
         const cornerOk = m.cL > 0.7 && m.cR < -0.7 && Math.abs(Math.abs(m.cL) - 1) < 0.12 && Math.abs(Math.abs(m.cR) - 1) < 0.12;
         const hOk = Math.abs(m.hCons - 1) < 0.03;
+        // The single-peakon control reads speed and crest slopes off u = c exp(-|x - c t|), which builds
+        // speed = amplitude and slopes of +/-c in: those agree by construction. The H1 ratio is a
+        // deterministic quadrature of the plate's own multi-peakon field at two times.
         host.setStatus(
-          '<span>single-peakon control v/c <b>' + (isFinite(m.vRatio) ? f3(m.vRatio) : '?') + '</b> ± ' +
-            (isFinite(m.sigmaV) ? m.sigmaV.toExponential(0) : '?') + ' against 1' + (vFail ? ' · miss' : '') + '</span>' +
-          '<span>control slopes/c L/R <b>' + (isFinite(m.cL) ? (m.cL >= 0 ? '+' : '') + f2(m.cL) : '?') + ' / ' +
-            (isFinite(m.cR) ? (m.cR >= 0 ? '+' : '') + f2(m.cR) : '?') + '</b> · ±1' + (cornerOk ? '' : ' · not a corner') + '</span>' +
-          '<span>H1(t+)/H1(t-) <b>' + (isFinite(m.hCons) ? f3(m.hCons) : '?') + '</b>' + (hOk ? ' · conserved' : ' · drifted') + '</span>' +
+          U.stats.compare({ label: 'single-peakon control v/c', measured: m.vRatio, expected: 1, reference: 'closed form', basis: 'construction', digits: 4, note: vFail ? 'miss' : '' }) +
+          U.stats.compare({ label: 'control slope/c L', measured: m.cL, expected: 1, reference: 'closed form', basis: 'construction', digits: 3 }) +
+          U.stats.compare({ label: 'control slope/c R', measured: m.cR, expected: -1, reference: 'closed form', basis: 'construction', digits: 3, note: cornerOk ? '' : 'not a corner' }) +
+          U.stats.compare({ label: 'H1(t+)/H1(t-)', measured: m.hCons, expected: 1, reference: 'H¹ conservation', basis: 'deterministic', digits: 4, note: hOk ? 'conserved' : 'drifted' }) +
           '<span>' + kindLabel + '</span>'
         );
       }

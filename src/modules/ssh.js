@@ -328,7 +328,7 @@
         const { v, w } = spec, gap = 2 * Math.abs(w - v);
         const fE = x => (x < 1e-13 ? '< 1e-13' : x < 1e-3 ? x.toExponential(1) : f3(x));
         host.setStatus('<span>w/v <b>' + f2(w / v) + '</b>' + (Math.abs(w - v) < 1e-9 ? '' : ' · ν <b>' + (w > v ? 1 : 0) + '</b>') + '</span>' +
-          '<span>mid-gap end weight <b>' + f2(mid.endWeight) + '</b>, no sampling error</span>' +
+          U.stats.compare({ label: 'mid-gap end weight', measured: mid.endWeight, basis: 'deterministic', digits: 2 }) +
           '<span>|E| <b>' + fE(mid.energy) + '</b> in gap 2|w−v| <b>' + f2(gap) + '</b></span>' +
           '<span>' + verdict(spec, mid) + '</span>');
       }

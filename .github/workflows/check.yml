@@ -146,6 +146,8 @@ jobs:
           node tools/art-only-check.js
           node tools/direct-gravity-browser.js
           node tools/bec-preview-check.js
+      - name: Provenance in every export, research data and the status badge
+        run: node tools/provenance-check.js
 
   volunteer-ui:
     name: volunteer and navigation (${{ matrix.browser }})

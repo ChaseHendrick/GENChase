@@ -504,6 +504,18 @@ void main(){
           });
           C.swap(); render(); startLoop();
         },
+        // The species concentrations for research use, read back unrounded from the state texture.
+        async exportData() {
+          if (!C) throw new Error('nothing to export');
+          const s = host.getState(), st = G.readTarget(C.read), n = gw * gh, k = spec.n;
+          const species = new Float32Array(n * k);
+          for (let i = 0; i < n; i++) for (let c = 0; c < k; c++) species[i * k + c] = st[i * 4 + c];
+          return {
+            arrays: { species: { data: species, shape: [gh, gw, k], description: k + ' species in state-texture channel order (the order of the equation)' } },
+            meta: { tab: spec.id, grid: [gw, gh], species: k, units: 'the model\'s dimensionless units on the step shader\'s lattice', boundary: 'periodic',
+              steps: stepCount, dt: s.dt, precision: texType },
+          };
+        },
         async exportPNG(w, h) {
           if (!C) throw new Error('nothing to export');
           const max = gl.getParameter(gl.MAX_TEXTURE_SIZE);

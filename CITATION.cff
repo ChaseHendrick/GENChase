@@ -1,18 +1,24 @@
 cff-version: 1.2.0
-title: "GENChase: a single-file studio of seeded scientific simulations, built for print"
+title: "GENChase: a studio of seeded scientific simulations, built for print"
 message: "If you use Three-vortex collapse bound, the parallelogram lock, or the quincunx lock, cite IDENTITIES.md. If you use GENChase or a plate made with it, cite this software and also cite the researchers named in the technique's own credit line."
 type: software
 authors:
   - name: "Chaos"
     website: "https://github.com/SharpMeow"
+# Software DOI: when Zenodo archives a release (docs/PUBLISHING.md), add the concept DOI,
+# which resolves to the latest version, on the next line and delete this comment:
+# doi: 10.5281/zenodo.<number from the Zenodo record>
+version: "v0.6.2"
+date-released: "2026-09-24"
 repository-code: "https://github.com/SharpMeow/GENChase"
 url: "https://github.com/SharpMeow/GENChase"
 license: Apache-2.0
 license-url: "https://github.com/SharpMeow/GENChase/blob/main/LICENSE"
 abstract: >-
-  GENChase is one HTML file containing 130 pattern-forming systems from
-  physics, chemistry, biology and mathematics, each implemented as a real
-  simulation rather than as a style applied to noise. Every plate is
+  GENChase is a folder-based browser studio with one shared engine and
+  130 pattern-forming systems from physics, chemistry, biology and mathematics,
+  each implemented as a real simulation rather than as a style applied to
+  noise. A portable single-file HTML build is also included. Every plate is
   deterministic from a seed, reconstructible from a URL hash, and exportable at
   print resolution in inches, as vectors where the picture is discrete marks.
   Most techniques measure a quantity that theory predicts, from the field
@@ -47,33 +53,32 @@ keywords:
   - parallelogram lock
   - quincunx lock
   - point vortex collapse
-preferred-citation:
-  type: generic
-  title: "Three-vortex collapse bound: an explicit formula and sharp minimum for a classical three-vortex collapse family"
-  authors:
-    - name: "Chaos"
-      website: "https://github.com/SharpMeow"
-  year: 2026
-  month: 9
-  url: "https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md"
-  repository-code: "https://github.com/SharpMeow/GENChase"
-  abstract: >-
-    Three point vortices with circulations (1, 1, -1/2) on the L=0 circle
-    collapse self-similarly. Their dimensionless product of initial angular
-    velocity and collapse time is omega_0 t_c = (2 - cos^2 theta) / sin(2 theta)
-    >= sqrt(2), with equality uniquely at tan theta = 1/sqrt(2), a triangle
-    of interior angles 22.5, 45, and 112.5 degrees. Independently derived
-    in GENChase with AI assistance and recorded here 2026-09-19. The formula
-    specializes Gröbli’s 1877 spiral coefficient; priority of the optimized
-    minimum remains unconfirmed. See identities/ORIGINALITY-FOLLOWUP.md.
-    This descriptive title makes no claim of historical priority.
-  keywords:
-    - Three-vortex collapse bound
-    - point vortex
-    - self-similar collapse
-    - Gröbli
-    - Aref
 references:
+  - type: generic
+    title: "Three-vortex collapse bound: an explicit formula and sharp minimum for a classical three-vortex collapse family"
+    authors:
+      - name: "Chaos"
+        website: "https://github.com/SharpMeow"
+    year: 2026
+    month: 9
+    url: "https://github.com/SharpMeow/GENChase/blob/main/IDENTITIES.md"
+    repository-code: "https://github.com/SharpMeow/GENChase"
+    abstract: >-
+      Three point vortices with circulations (1, 1, -1/2) on the L=0 circle
+      collapse self-similarly. Their dimensionless product of initial angular
+      velocity and collapse time is omega_0 t_c = (2 - cos^2 theta) / sin(2 theta)
+      >= sqrt(2), with equality uniquely at tan theta = 1/sqrt(2), a triangle
+      of interior angles 22.5, 45, and 112.5 degrees. Independently derived
+      in GENChase with AI assistance and recorded here 2026-09-19. The formula
+      specializes Gröbli’s 1877 spiral coefficient; priority of the optimized
+      minimum remains unconfirmed. See identities/ORIGINALITY-FOLLOWUP.md.
+      This descriptive title makes no claim of historical priority.
+    keywords:
+      - Three-vortex collapse bound
+      - point vortex
+      - self-similar collapse
+      - Gröbli
+      - Aref
   - type: generic
     title: "Parallelogram lock: an explicit formula and sharp minimum for the Novikov–Sedov four-vortex parallelogram collapse"
     authors:

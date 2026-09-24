@@ -1,0 +1,11 @@
+# Hash commitments to unpublished results. Written by tools/commit-hash.js; read docs/COMMITMENTS.md.
+#
+# Each commit line fixes a file's exact bytes on the day it was added without revealing them:
+#   commitment = SHA-256("GENChase commitment v1\n" || 32-byte private salt || file bytes)
+# A reveal line points to the folder that later published the file and its salt, so anyone can check it.
+# The date column is written by the author's computer. Independent evidence of the date is the
+# OpenTimestamps proof beside each stamp file in identities/commitments/, and every Zenodo release
+# archive of this repository. This ledger is append-only: never edit or delete a line.
+#
+# commit  <id>  <UTC date>  <commitment>  <public label>
+# reveal  <id>  <UTC date>  <folder>

@@ -3,6 +3,7 @@
 // Subtract-before-add: zero-contrast and ignore-epsilon mutants must fail first.
 // Setup: Playwright + Chromium per BUILDING.md.
 // Run: node tools/maxwell-dielectric-science.js
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
@@ -20,7 +21,7 @@ const { chromium } = require('playwright');
   const outPath = path.join(root, 'validation/results/maxwell-dielectric-science.json');
 
   const browser = await chromium.launch({
-    args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader']
+    args: glArgs()
   });
   try {
     const page = await browser.newPage();

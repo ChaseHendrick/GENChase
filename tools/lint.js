@@ -231,6 +231,8 @@ const llmsTxt = fs.existsSync(path.join(root, 'llms.txt')) ? fs.readFileSync(pat
 const agentsMd = fs.existsSync(path.join(root, 'AGENTS.md')) ? fs.readFileSync(path.join(root, 'AGENTS.md'), 'utf8') : '';
 const researchMd = fs.existsSync(path.join(root, 'RESEARCH.md')) ? fs.readFileSync(path.join(root, 'RESEARCH.md'), 'utf8') : '';
 const contributingMd = fs.existsSync(path.join(root, 'CONTRIBUTING.md')) ? fs.readFileSync(path.join(root, 'CONTRIBUTING.md'), 'utf8') : '';
+const zenodoJson = fs.existsSync(path.join(root, '.zenodo.json')) ? fs.readFileSync(path.join(root, '.zenodo.json'), 'utf8') : '';
+const paperMd = fs.existsSync(path.join(root, 'paper', 'paper.md')) ? fs.readFileSync(path.join(root, 'paper', 'paper.md'), 'utf8') : '';
 if (!researchMd) fail('RESEARCH.md is missing');
 for (const [label, text] of [
   ['studio.html', src],
@@ -242,6 +244,8 @@ for (const [label, text] of [
   ['AGENTS.md', agentsMd],
   ['RESEARCH.md', researchMd],
   ['CONTRIBUTING.md', contributingMd],
+  ['.zenodo.json', zenodoJson],
+  ['paper/paper.md', paperMd],
 ]) {
   if (!text) continue;
   const claims = count.claimsIn(text);
@@ -399,6 +403,80 @@ for (const name of ['MODULE_SPEC.md']) {
     for (const h of src.matchAll(re)) {
       fail('studio.html line ' + lineAt(h.index) + ' has ' + what + '. The file has to work with no network: ' +
         'inline the resource instead, and if it genuinely cannot be inlined, change what About and AGENTS.md promise.');
+    }
+  }
+}
+
+/* ---- scope: no new tabs while most are unvalidated ---- */
+// validation/scope.json sets a ceiling on the catalog. While unvalidated records are at least half of it,
+// adding a technique fails here; validating existing ones lifts the pause. docs/RESEARCH-GRADE.md, section 6.
+{
+  const scopePath = path.join(root, 'validation', 'scope.json'), recordsPath = path.join(root, 'validation', 'techniques.json');
+  if (!fs.existsSync(scopePath)) fail('validation/scope.json is missing');
+  else if (fs.existsSync(recordsPath)) {
+    const scope = JSON.parse(fs.readFileSync(scopePath, 'utf8'));
+    const records = JSON.parse(fs.readFileSync(recordsPath, 'utf8'));
+    const unvalidated = records.filter(r => r.status === 'unvalidated').length;
+    if (!Number.isInteger(scope.catalogCeiling) || scope.catalogCeiling < 1) fail('validation/scope.json needs an integer catalogCeiling');
+    else if (mods.length > scope.catalogCeiling && unvalidated * 2 >= mods.length) {
+      fail('The catalog is paused at ' + scope.catalogCeiling + ' techniques while ' + unvalidated + ' of ' + mods.length +
+        ' are unvalidated (validation/scope.json). Validate existing tabs until fewer than half are unvalidated, or propose the new one as a replacement.');
+    }
+    notes.push('scope: ' + unvalidated + ' of ' + mods.length + ' unvalidated; ' + (unvalidated * 2 >= mods.length ? 'catalog paused at ' + scope.catalogCeiling : 'catalog open'));
+  }
+}
+
+/* ---- the uncertainty gate ---- */
+// AGENTS.md: a measured number printed against theory carries an error bar, or says why it has none.
+// Status lines build those comparisons with Studio.util.stats.compare(), which refuses a comparison
+// without a basis (sampled with an uncertainty and a method, exact, deterministic or construction) and
+// refuses a sampled one without an error bar unless it states why the bar is pending. This rule keeps
+// hand-written comparisons from coming back. It reads module sources line by line, so it recognises the
+// phrasings this codebase has used (theory, expected, surmise, Euler, vs, against, a value followed by
+// "· 0", a hand-typed ± or σ), not every sentence a person could write; validation/COMPARISON-AUDIT.md
+// lists the comparisons that were converted when the rule was introduced.
+{
+  const MARKERS = [
+    /\btheory\b|\bexpected\b|\bpredict|\bsurmise\b|\bEuler[:,]|\bagainst\b|\bvs\.?\s|\bOnsager\b/i,
+    /\bformula\b|\bLorentz\b|\bwhole[- ]line\b|\bequilibrium:|\bEP at\b|\bdisk π|~\s*1\/|⇒\s*~|\bdual [0-9]|analytic global max|\bβ = 1\/[0-9]/i,
+    /\bdrift\b|\bresidual\b|\bconserved\b/i,
+    // a hand-typed uncertainty or significance: ± before a value, σ after one
+    /±\s*(['"`+]|<b>|[0-9])|&plusmn;|\+\/-|[0-9]σ|['"`]σ/,
+    // a value followed by the reference it should equal: "</b> · 0", "</b> · exact 1"
+    /<\/b>[^<'"`]{0,6}·\s*(exact\s+)?[-−]?[0-9.]+\s*(['"`]|<|$)/,
+  ];
+  // Text of the call starting at an opening parenthesis, skipping strings and comments.
+  const callText = (text, open) => {
+    let depth = 0, i = open, q = null;
+    for (; i < text.length; i++) {
+      const c = text[i];
+      if (q) { if (c === '\\') i++; else if (c === q) q = null; continue; }
+      if (c === '"' || c === "'" || c === '`') { q = c; continue; }
+      if (c === '/' && text[i + 1] === '/') { i = text.indexOf('\n', i); if (i < 0) break; continue; }
+      if (c === '(') depth++;
+      else if (c === ')' && --depth === 0) return text.slice(open, i + 1);
+    }
+    return text.slice(open);
+  };
+  const dir = path.join(root, 'src', 'modules');
+  for (const name of fs.readdirSync(dir).filter(f => f.endsWith('.js') && f !== '_template.js').sort()) {
+    const text = fs.readFileSync(path.join(dir, name), 'utf8');
+    text.split('\n').forEach((line, i) => {
+      const code = line.replace(/(^|[^:'"\\])\/\/.*$/, '$1');
+      if (!/<b>|<\/b>|<span/.test(code) || /\bcompare\(/.test(code)) return;
+      if (MARKERS.some(re => re.test(code))) {
+        fail('src/modules/' + name + ':' + (i + 1) + ' prints a measured value against a reference by hand. ' +
+          'Build the span with U.stats.compare({ label, measured, expected, basis, uncertainty, method }) so it carries an error bar or states that it is exact, deterministic or true by construction.');
+      }
+    });
+    for (const [re, what] of [[/\bstats\.compare\(|\bcompare\(\{/g, 'compare()'], [/\bsetWitness\(\{/g, 'setWitness()']]) {
+      for (const h of text.matchAll(re)) {
+        const call = callText(text, h.index + h[0].indexOf('('));
+        if (!/\bbasis\s*:/.test(call)) {
+          fail('src/modules/' + name + ':' + text.slice(0, h.index).split('\n').length + ' calls ' + what +
+            ' without a basis: say sampled (with uncertainty and method), exact, deterministic or construction.');
+        }
+      }
     }
   }
 }

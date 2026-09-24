@@ -88,6 +88,18 @@ PDF/X pages are limited to 200 inches including marks and bleed. Conversion does
 add resolution. These checks are not a full ISO conformance audit or a physical proof.
 Have the shop preflight the final PDF and approve a proof before a production run.
 
+## What a file says about itself
+
+Every file the studio exports carries its provenance: the recipe link that reprints it, the build
+fingerprint and the SHA-256 of the technique's source file, the technique's validation status, the
+scientific measurement shown on the stage, and the device it was computed on (the WebGL2 renderer and
+whether the state was float32 or a half-float fallback). PNG keeps it in text chunks, PDF in its document
+information, TIFF in its description and software tags, JPEG in a comment and SVG in a metadata element;
+WebP carries none. A print shop sees none of it on the paper. It is there so the file can be traced back to
+exactly what made it. Nothing in it is time-dependent, so exporting the same state twice embeds the same record.
+The renderer string names the graphics hardware, so share a file knowing that. For the numbers rather than
+the picture, the science report's **Download data (.npz)** gives the simulation state as NumPy arrays.
+
 ## Verification and sources
 
 `tools/print-formats-check.js` creates deterministic test files. Independent Pillow

@@ -1,5 +1,6 @@
 // Actual browser trace, vector/raster print and shell export checks.
 // Requires Playwright and Chromium. node tools/neural-mass-print.js [--write]
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict'), crypto = require('node:crypto');
 const { chromium } = require('playwright'), reference=require('./lib/mpr-reference');
 (async () => {
@@ -18,7 +19,7 @@ const { chromium } = require('playwright'), reference=require('./lib/mpr-referen
   const built = fs.readFileSync(path.join(root, 'dist/studio.html'), 'utf8'); assert(built.includes(source));
   fs.writeFileSync(temp, built.replace(source, instrumented)); let browser;
   try {
-    browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+    browser = await chromium.launch({ args: glArgs() });
     const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } }), errors = [];
     page.on('pageerror', e => errors.push(e.message));
     const rows = [];

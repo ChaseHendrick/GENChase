@@ -214,12 +214,15 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
+      // Both numbers as fractions. e^{−2J/T} is the Boltzmann weight of one defect vertex, not a
+      // prediction of the density, and the density is read from one snapshot of a correlated field.
       function status(s) {
-        const theory = Math.exp(-2 * s.J / Math.max(0.05, s.temp));
+        const weight = Math.exp(-2 * s.J / Math.max(0.05, s.temp));
         host.setStatus(
           '<span>grid <b>' + W + '×' + H + '</b></span>' +
           '<span>ice <b>' + Math.round(iceFrac * 100) + '%</b></span>' +
-          '<span>monopoles <b>' + (rho * 100).toFixed(1) + '%</b> · e^{−2J/T} ' + theory.toFixed(3) + '</span>' +
+          U.stats.compare({ label: 'monopole density', measured: rho, expected: weight, reference: 'Boltzmann weight e^{−2J/T}', basis: 'sampled', digits: 3,
+            pending: 'one snapshot; e^{−2J/T} is a vertex weight, not a density' }) +
           '<span>step <b>' + step.toLocaleString() + '</b></span>'
         );
       }

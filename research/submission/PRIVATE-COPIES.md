@@ -11,7 +11,7 @@ The paper in this repository has no contact email, and that is deliberate: the a
 | `Hendrick-minimal-winding-v1-latex.pdf` | the private `.tex` | checking what arXiv will build |
 | `Hendrick-minimal-winding-v1-latex.zip` | the private `.tex` and `figures/minimal-winding.pdf` | the arXiv source upload |
 
-Each private copy differs from the repository version only in the author block, which gains the email as a `mailto:` link. The private `.tex` also drops the four maintenance comment lines at the top of the repository `.tex`, so its source shows nothing that its PDF does not. The page counts match the repository builds: 13 pages for Typst, 12 for LaTeX.
+Each private copy differs from the repository version only in the author block, which gains the email as a `mailto:` link. The private `.tex` also drops the four maintenance comment lines at the top of the repository `.tex`, so its source shows nothing that its PDF does not. The page counts match the repository builds: 13 pages for both Typst and LaTeX.
 
 ## Rebuilding them after the paper changes
 
@@ -22,9 +22,9 @@ Typst (the compiler only reads files inside the project, so the temporary file s
 ```
 cp research/unequal-mu-n5-floors-2026-09-23.typ research/_private.typ
 # In research/_private.typ, replace
-#   #text(size: 9.5pt)[GENChase]
+#   #text(size: 9.5pt)[Independent researcher]
 # with
-#   #text(size: 9.5pt)[GENChase \ #link("mailto:you@example.com")[you\@example.com]]
+#   #text(size: 9.5pt)[Independent researcher \ #link("mailto:you@example.com")[you\@example.com]]
 # (the @ in the visible text must be escaped as \@)
 python3 -c "import typst; typst.compile('research/_private.typ', output='../Hendrick-minimal-winding-v1.pdf', root='.')"
 rm research/_private.typ
@@ -37,9 +37,9 @@ mkdir -p ~/private-paper/figures
 tail -n +5 research/unequal-mu-n5-floors-2026-09-23.tex > ~/private-paper/Hendrick-minimal-winding-v1.tex
 cp research/figures/minimal-winding.pdf ~/private-paper/figures/
 # In ~/private-paper/Hendrick-minimal-winding-v1.tex, replace
-#   \author{Chase Hendrick\\[0.2em] {\small GENChase}}
+#   \author{Chase Hendrick\\[0.2em] {\small Independent researcher}}
 # with
-#   \author{Chase Hendrick\\[0.2em] {\small GENChase}\\ {\small\href{mailto:you@example.com}{\texttt{you@example.com}}}}
+#   \author{Chase Hendrick\\[0.2em] {\small Independent researcher}\\ {\small\href{mailto:you@example.com}{\texttt{you@example.com}}}}
 cd ~/private-paper
 for i in 1 2 3; do pdflatex Hendrick-minimal-winding-v1.tex; done   # the third run settles the cross-references
 zip Hendrick-minimal-winding-v1-latex.zip Hendrick-minimal-winding-v1.tex figures/minimal-winding.pdf
