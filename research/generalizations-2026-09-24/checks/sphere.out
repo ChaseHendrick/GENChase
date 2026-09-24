@@ -1,0 +1,4 @@
+theta=2.2 beta0=0.5: p drift 4.6e-16; beta 0.500->0.0175; |dpsi/dln tan^2(b/2)| median 2.243873 range [2.243873,2.243873] vs P0 2.243873; cos(beta) linear-fit rms 6.7e-15
+theta=2.2 beta0=1.2: p drift 6.5e-16; beta 1.200->0.0399; |dpsi/dln tan^2(b/2)| median 2.243873 range [2.243873,2.243873] vs P0 2.243873; cos(beta) linear-fit rms 3.2e-15
+theta=2.8 beta0=0.5: p drift 5.1e-16; beta 0.500->0.0177; |dpsi/dln tan^2(b/2)| median 3.536966 range [3.536966,3.536966] vs P0 3.536966; cos(beta) linear-fit rms 1.0e-13
+theta=2.8 beta0=1.2: p drift 7.7e-16; beta 1.200->0.0400; |dpsi/dln tan^2(b/2)| median 3.536966 range [3.536966,3.536966] vs P0 3.536966; cos(beta) linear-fit rms 1.0e-13
