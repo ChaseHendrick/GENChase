@@ -1,0 +1,6 @@
+alpha 0.0 solutions 614 lowest P [0.93819, 0.93899, 0.94423, 0.94631, 0.95088]
+claimed inf 0.8660254037844386  any below? False
+alpha 0.5 solutions 630 lowest P [0.78403, 0.78861, 0.78879, 0.79084, 0.79416]
+claimed inf 0.7483314773547882  any below? False
+alpha 1.0 solutions 647 lowest P [0.68575, 0.68827, 0.69168, 0.69321, 0.69338]
+claimed inf 0.6666666666666666  any below? False

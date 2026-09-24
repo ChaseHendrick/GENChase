@@ -6,7 +6,7 @@ const storage = {
   get(key) { try { return localStorage.getItem(key); } catch { return null; } },
   set(key, value) { try { localStorage.setItem(key, value); } catch { /* Session controls still work. */ } }
 };
-const fieldIds = ['mode', 'technique', 'slug', 'order', 'samples', 'gpu-grid', 'gpu-steps'];
+const fieldIds = ['mode', 'technique', 'slug', 'order', 'samples', 'gpu-grid', 'gpu-steps', 'vortex-alpha', 'vortex-n', 'vortex-seeds', 'vortex-start'];
 const workspaceFields = {};
 try { Object.assign(workspaceFields, JSON.parse(storage.get('genchase-validator-fields') || '{}')); } catch { /* Ignore damaged preferences. */ }
 function remember() {
@@ -35,8 +35,9 @@ function modeFields() {
   $('technique-field').hidden = workspace !== 'validate' || !['technique', 'plate', 'print', 'witness'].includes($('mode').value);
   for (const id of ['slug-field', 'order-field', 'samples-field']) $(id).hidden = !derive;
   for(const id of ['grid-field','steps-field'])$(id).hidden=workspace!=='contribute'||$('mode').value!=='metal';
+  for(const id of ['vortex-alpha-field','vortex-n-field','vortex-seeds-field','vortex-start-field'])$(id).hidden=workspace!=='contribute'||!['vortex-collapse','vortex-grow'].includes($('mode').value);
   $('start').textContent = derive ? 'Explore candidate' : workspace === 'validate' ? 'Run checks' : 'Run experiment';
-  const hints = {inventory:'Checks the evidence catalog and source fingerprints only. No simulation benchmarks run.',fast:'Runs development checks only. Numerical accuracy and browser rendering are excluded.',all:'Runs all registered numerical and print benchmarks. Missing benchmarks are reported as incomplete coverage.',full:'Runs development checks first, then all registered numerical and print benchmarks. Requires Playwright and Chromium.',numerical:'Runs registered numerical benchmarks. Print checks are excluded.',witnesses:'Collects the measurements exposed by all modules. A missing measurement remains unassessed.',witness:'Collects one module’s exposed measurement. This alone does not establish scientific accuracy.',plate:'Checks that a plate runs, draws and repeats from its seed. This is a runtime check.',print:'Exercises an 8-inch, 300 ppi export. Export success alone does not establish scientific accuracy.',technique:'Runs the chosen technique’s registered numerical and print evidence.',derive:'Explores an existing polygon family for candidate formulas. A fitted result is not proof of originality.',metal:'Runs a bounded native Apple GPU wave workload.'};
+  const hints = {inventory:'Checks the evidence catalog and source fingerprints only. No simulation benchmarks run.',fast:'Runs development checks only. Numerical accuracy and browser rendering are excluded.',all:'Runs all registered numerical and print benchmarks. Missing benchmarks are reported as incomplete coverage.',full:'Runs development checks first, then all registered numerical and print benchmarks. Requires Playwright and Chromium.',numerical:'Runs registered numerical benchmarks. Print checks are excluded.',witnesses:'Collects the measurements exposed by all modules. A missing measurement remains unassessed.',witness:'Collects one module’s exposed measurement. This alone does not establish scientific accuracy.',plate:'Checks that a plate runs, draws and repeats from its seed. This is a runtime check.',print:'Exercises an 8-inch, 300 ppi export. Export success alone does not establish scientific accuracy.',technique:'Runs the chosen technique’s registered numerical and print evidence.',derive:'Explores an existing polygon family for candidate formulas. A fitted result is not proof of originality.','vortex-grow':'Continues the deepest recorded family of vortex collapses one vortex at a time up to the chosen size, running the seed block at each step. Every step is certified like the search.','vortex-collapse':'Searches for self-similar vortex collapses with the least winding. Each minimum is certified to second order, checked against conservation laws and a separate time integration, and given its stability exponents. A certified local minimum is not a proof of a global minimum.',metal:'Runs a bounded native Apple GPU wave workload.'};
   setText('job-help', hints[$('mode').value] || 'Runs the selected bounded research experiment. Read its result limits.');
 }
 function choose(value) {
@@ -46,7 +47,7 @@ function choose(value) {
   $('workspace-title').textContent = value === 'validate' ? 'Check simulations' : 'Run experiments';
   $('workspace-description').textContent = value === 'validate' ? "Compare existing simulations with registered benchmarks and check their exports. Each result names its tested scope." : 'Explore formula candidates, parameter searches and experimental GPU workloads. Candidate formulas still need review.';
   $('contribute-note').hidden = value !== 'contribute';
-  const modes = value === 'validate' ? config.modes : { derive: ['Derive candidate: existing polygon family'], metal: ['Apple GPU wave: verify, compute and checkpoint'], ...config.experiments };
+  const modes = value === 'validate' ? config.modes : { 'vortex-collapse': ['Open problem: least-winding vortex collapse'], 'vortex-grow': ['Open problem: grow the deepest vortex family'], derive: ['Derive candidate: existing polygon family'], metal: ['Apple GPU wave: verify, compute and checkpoint'], ...config.experiments };
   $('mode').replaceChildren(...Object.entries(modes).map(([key, values]) => new Option(values[0], key)));
   $('mode').value = value === 'validate' ? 'all' : 'derive';
   const saved = workspaceFields[value];
@@ -62,7 +63,7 @@ function paint() {
   const j = state.job, active = ['running', 'stopping'].includes(state.status);
   if (active && j && syncedJob !== j.id) {
     syncedJob=j.id;choose(j.input.workspace || 'validate');$('mode').value=j.input.mode;
-    const fields={id:'technique',slug:'slug',n:'order',samples:'samples',grid:'gpu-grid',steps:'gpu-steps'};
+    const fields=['vortex-collapse','vortex-grow'].includes(j.input.mode)?{alpha:'vortex-alpha',n:'vortex-n',samples:'vortex-seeds',start:'vortex-start'}:{id:'technique',slug:'slug',n:'order',samples:'samples',grid:'gpu-grid',steps:'gpu-steps'};
     for(const [key,id] of Object.entries(fields))if(j.input[key]!==undefined)$(id).value=String(j.input[key]);
     $('machine-slug').value=j.input.machineSlug || 'm1pro';$('share-auto').checked=!!j.input.shareAutomatically;restorePower(j.power || j.input.power);modeFields();
   }
@@ -92,7 +93,7 @@ function paint() {
   $('packet').disabled = !j || active; $('download-log').disabled = !j; $('online').disabled = !j?.artifacts?.includes('candidate.json');
   $('stages').hidden = j?.input.mode !== 'derive';
   for (const li of document.querySelectorAll('[data-stage]')) li.classList.toggle('active', li.dataset.stage === j?.stage);
-  if (j?.progress) { $('progress').max = j.progress.total; $('progress').value = j.progress.done; $('progress-label').textContent = j.progress.done + '/' + j.progress.total + (j.progress.unit === 'steps' ? ' GPU steps completed.' : j.progress.unit === 'samples' ? ' sweep samples completed.' : j.progress.unit === 'modules' ? ' modules inspected.' : ' registered checks finished.') + ' This is job progress, not scientific coverage.'; }
+  if (j?.progress) { $('progress').max = j.progress.total; $('progress').value = j.progress.done; $('progress-label').textContent = j.progress.done + '/' + j.progress.total + (j.progress.unit === 'steps' ? ' GPU steps completed.' : j.progress.unit === 'samples' ? ' sweep samples completed.' : j.progress.unit === 'seeds' ? ' seeds searched.' : j.progress.unit === 'modules' ? ' modules inspected.' : ' registered checks finished.') + ' This is job progress, not scientific coverage.'; }
   else if (active) { $('progress').removeAttribute('value'); $('progress-label').textContent = j?.stage ? 'Stage: ' + j.stage + '. No estimated percentage.' : 'Working. Duration is unknown; see elapsed time and log.'; }
   else { $('progress').max = 1; $('progress').value = state.status === 'complete' ? 1 : 0; $('progress-label').textContent = j ? 'Job finished. Completion does not establish accuracy or originality.' : 'No job started.'; }
   const stats = j ? { Command: j.command, PID: j.pid ?? 'not assigned', 'Exit code': j.exitCode ?? 'not available', Commit: j.commit, Node: j.node, Platform: j.platform, Architecture: j.arch, macOS: j.macOS || 'not applicable', 'Last line': j.lastLine || '', 'Log folder': 'apps/validate/.runs/' + j.id } : {};
@@ -112,7 +113,7 @@ async function action(name) {
   }
   busy = true; $('error').textContent = ''; if (state) paint();
   try {
-    const input = name === 'start' ? { workspace, shareAutomatically: $('share-auto').checked, machineSlug: $('machine-slug').value, mode: $('mode').value, power: powerSettings(), ...(workspace === 'validate' ? (['technique','plate','print','witness'].includes($('mode').value) ? { id: $('technique').value } : {}) : $('mode').value === 'derive' ? { slug: $('slug').value, n: Number($('order').value), samples: Number($('samples').value) } : $('mode').value==='metal'?{grid:Number($('gpu-grid').value),steps:Number($('gpu-steps').value)}:{}) } : {};
+    const input = name === 'start' ? { workspace, shareAutomatically: $('share-auto').checked, machineSlug: $('machine-slug').value, mode: $('mode').value, power: powerSettings(), ...(workspace === 'validate' ? (['technique','plate','print','witness'].includes($('mode').value) ? { id: $('technique').value } : {}) : $('mode').value === 'derive' ? { slug: $('slug').value, n: Number($('order').value), samples: Number($('samples').value) } : $('mode').value==='metal'?{grid:Number($('gpu-grid').value),steps:Number($('gpu-steps').value)}:['vortex-collapse','vortex-grow'].includes($('mode').value)?{alpha:Number($('vortex-alpha').value),n:Number($('vortex-n').value),samples:Number($('vortex-seeds').value),...($('vortex-start').value===''?{}:{start:Number($('vortex-start').value)})}:{}) } : {};
     state = await api('/api/' + name, input);
   } catch (e) { $('error').textContent = e.message; }
   finally { busy = false; if (state) paint(); }

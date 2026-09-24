@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- The paper cites three more papers, each read for the purpose; the Typst and LaTeX sources were edited together and both PDFs rebuilt (13 pages each):
+  - Conte and de Seze, a 1980 CEN Saclay report printed in 2015 (arXiv:1511.00069), which writes the zero-impulse collapse as the spiral (1 − t/t_c)^(1/2 − iωt_c), so |ωt_c| = P, and gives the complex rate in closed form for arbitrary circulations before Kimura. It is credited in the Introduction and beside Kimura, and the Discussion says that it, like Aref and Kimura, does not minimize P.
+  - Hernández-Garduño and Lacomba (J. Math. Fluid Mech. 2007), who prove that every motion of three vortices ending in a total collision is self-similar; cited where the paper extends Corollary 1 to every collapse.
+  - Grotto, Romito and Viviani (arXiv:2307.05133), who select a continuation after collapse by vanishing noise; cited beside Gallay and Šverák's regularization.
+  - The Typst reference list grows from 20 to 23 entries and every citation number was remapped; the Typst and LaTeX texts carry the same 80 citations in the same order.
+
 ## v0.6.1
 
 The publication date is recorded in the GitHub release notes.

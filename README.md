@@ -294,6 +294,10 @@ The [technique catalog](TECHNIQUES.md) records the scientific sources behind eac
 
 The [research folder](research/) holds one preprint, *Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons* ([PDF](research/artifacts/unequal-mu-n5-floors-2026-09-23.pdf), with a [LaTeX version](research/unequal-mu-n5-floors-2026-09-23.tex) and a [companion note](research/unequal-mu-product-floor-and-n5-polygon-floor-2026-09-23.md)). A second, *A sharp winding bound for the self-similar collapse of three point vortices in the α-models*, is a draft ([PDF](research/artifacts/alpha-winding-2026-09-24.pdf), [LaTeX](research/alpha-winding-2026-09-24.tex), [companion note](research/alpha-winding-2026-09-24.md)) and is not yet cleared for submission. Every claim it checks numerically maps to a program in the same folder, and the note lists which papers were read and which were not. Its results have not been peer reviewed and their priority is not established. Each release attaches the PDF and its verification programs.
 
+### Contribute computer time
+
+Anyone can lend their computer to the project's open questions without a model, an account or any AI tokens. [The local validator](apps/validate/HEADLESS.md) runs registered science checks and research searches, pauses on battery or heat, resumes from checkpoints, and shares results only when you ask. The first open-problem search looks for [the least winding in self-similar vortex collapse](experiments/VORTEX-COLLAPSE.md). Every submitted minimum is re-verified from its positions and circulations before it is recorded. Each job measures its own CPU time and, where the operating system allows, its energy, and [COMPUTE.md](COMPUTE.md) totals what the project has used.
+
 Built by Chaos.
 
 ### Customize the printed caption

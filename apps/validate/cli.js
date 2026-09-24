@@ -3,21 +3,26 @@
 const { createServer } = require('./server');
 const { MODES, EXPERIMENTS } = require('./commands');
 const { redact } = require('./privacy');
+const { describe } = require('./compute');
 const HELP = `GENChase headless volunteer runner
 
   npm run validator:headless -- --mode inventory --machine m1pro
   npm run validator:headless -- --mode witnesses --machine m1pro
   npm run validator:headless -- --mode metal --grid 128 --steps 10000
+  npm run validator:headless -- --mode vortex-collapse --alpha 1 --n 6 --samples 200
+  npm run validator:headless -- --mode vortex-grow --alpha 0 --n 24 --samples 10
   npm run validator:headless -- --resume
 
---mode       ${Object.keys(MODES).join(', ')}, metal, derive, ${Object.keys(EXPERIMENTS).join(', ')}
+--mode       ${Object.keys(MODES).join(', ')}, metal, derive, vortex-collapse, vortex-grow, ${Object.keys(EXPERIMENTS).join(', ')}
 --machine    Pseudonymous slug, default m1pro. Do not use your name.
 --id         Catalog ID for one-module modes
 --power      light, balanced (default), maximum
 --grid       Metal grid: 32, 64, 128, 192 or 256
 --steps      Metal step budget
---n          Polygon order 2 through 5
---samples    Candidate sweep size
+--n          Polygon order 2 through 5; vortex count 3 through 16 for vortex-collapse; target 5 through 64 for vortex-grow
+--samples    Candidate sweep size; seeds per vortex-collapse job or per vortex-grow step
+--alpha      Vortex kernel exponent in (-2, 3]: 0 Euler, 1 surface quasi-geostrophic
+--start      First seed of a vortex-collapse block; random if omitted
 --slug       Candidate file slug
 --allow-battery  Continue on battery; thermal protection stays enabled
 --no-thermal-pause  Disable thermal pausing when you explicitly choose to run without it
@@ -38,15 +43,15 @@ function parse(args) {
     if (flag === '--share') { input.shareAutomatically = true; continue; }
     if (flag === '--resume') { resume = true; continue; }
     if (flag === '--allow-battery') { input.power.pauseOnBattery = false; continue; }
-    const key = { '--mode': 'mode', '--machine': 'machineSlug', '--id': 'id', '--workspace': 'workspace', '--grid': 'grid', '--steps': 'steps', '--n': 'n', '--samples': 'samples', '--slug': 'slug', '--power': 'power' }[flag];
+    const key = { '--mode': 'mode', '--machine': 'machineSlug', '--id': 'id', '--workspace': 'workspace', '--grid': 'grid', '--steps': 'steps', '--n': 'n', '--samples': 'samples', '--slug': 'slug', '--alpha': 'alpha', '--start': 'start', '--power': 'power' }[flag];
     if (!key || !args[i + 1] || args[i + 1].startsWith('--')) throw Error('Unknown or missing option: ' + flag);
     const value = args[++i];
     if (key === 'power') input.power.mode = value;
-    else input[key] = ['grid', 'steps', 'n', 'samples'].includes(key) ? Number(value) : value;
+    else input[key] = ['grid', 'steps', 'n', 'samples', 'alpha', 'start'].includes(key) ? Number(value) : value;
     if (key === 'workspace') explicitWorkspace = true;
   }
   if (resume && args.length !== 1) throw Error('--resume uses saved settings and must be used alone.');
-  if (!explicitWorkspace && (['metal', 'derive'].includes(input.mode) || EXPERIMENTS[input.mode])) input.workspace = 'contribute';
+  if (!explicitWorkspace && (['metal', 'derive', 'vortex-collapse', 'vortex-grow'].includes(input.mode) || EXPERIMENTS[input.mode])) input.workspace = 'contribute';
   return { input, resume };
 }
 async function main(args = process.argv.slice(2)) {
@@ -67,6 +72,7 @@ async function main(args = process.argv.slice(2)) {
     show(); timer = setInterval(show, 1000); await app.jobs.wait(); show();
     const job = app.jobs.current;
     console.log('Exit: ' + job.exitCode + '. Result folder: ~/GENChase/apps/validate/.runs/' + job.id + '/');
+    console.log('Compute: ' + describe(job.compute) + '.');
     await app.shares.wait();
     const submission = app.shares.state(job.id);
     console.log(submission.status === 'not-shared' ? 'Files remain local. Use --share to submit directly.' : 'Sharing: ' + submission.status + ' ' + (submission.url || submission.message));
