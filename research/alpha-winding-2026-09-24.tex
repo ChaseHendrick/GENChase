@@ -80,7 +80,7 @@ does not depend on $t$, and it is the angle through which the triangle turns whi
 The linear impulse $Q = \sum_j \Gamma_j z_j$ is conserved. If $\sum_j \Gamma_j = 0$, then $Q(t) = b(t) Q(0)$, and since $|b|$ changes, $Q(0) = 0$; then $\Gamma_1(z_1 - z_3) + \Gamma_2(z_2 - z_3) = 0$ with real coefficients not both zero, so the vortices are collinear, and a collinear triangle does not change size under \eqref{eq:bs} (Lemma~\ref{lem:circ} below). Hence $\sum_j \Gamma_j \ne 0$, $z_c$ is conserved, and $z_c = a + b z_c$, so $z_j(t) - z_c = b(t) w_j$ with $w_j = z_j(0) - z_c$. The right side of \eqref{eq:bs} is homogeneous: replacing $z_j - z_c$ by $b w_j$ multiplies it by $b|b|^{-2\beta}$. Writing $\dot z_j(0) = \kappa_0 w_j$, which holds for the same $\kappa_0$ for all $j$ because $\dot b(0) w_j = \dot z_j(0)$, we get $\dot b = \kappa_0 b |b|^{-2\beta}$. With $b = \lambda e^{i\phi}$ this reads $\lambda^{2\beta - 1}\dot\lambda = \re\kappa_0$ and $\dot\phi = \im\kappa_0\,\lambda^{-2\beta}$, which integrate to \eqref{eq:spiral}. The size changes, so $\re\kappa_0 \ne 0$. Along the spiral $r = r_0\lambda$ and $d\phi/d\ln\lambda = 2P$ in absolute value, so the tangent of the angle between the path and the radius is $2P$ and the arc length from $r_0$ to $0$ is $r_0\sqrt{1 + 4P^2}$. Finally $|\omega_0| t_c = |\im\kappa_0|/(2\beta|\re\kappa_0|) = P/\beta$.
 \end{proof}
 
-For $\beta = 1$, $P = |\omega_0| t_c$ is the product studied in \cite{hendrick2026}. For $\beta \ne 1$ the product $|\omega_0| t_c$ is the rotation per unit decrease of $\ln(t_c - t)$, and it differs from $P$ by the factor $1/\beta$; we state the bound for $P$, which measures the geometry of the spiral, and for $|\omega_0| t_c$ in Corollary~\ref{cor:geom}.
+The spiral form \eqref{eq:spiral} of a self-similar collapse in the $\alpha$-models is in \cite{yoi2021} and \cite[Eqs.~(3)--(6)]{iy2023}, in \cite[(A.19)]{dgc2023}, whose H\"older exponent $1/(\alpha + 1)$ is our $1/(2\beta)$, and in \cite[Prop.~2.1]{gp2025}. For $\beta = 1$, $P = |\omega_0| t_c$ is the product studied in \cite{hendrick2026}. For $\beta \ne 1$ the product $|\omega_0| t_c$ is the rotation per unit decrease of $\ln(t_c - t)$, and it differs from $P$ by the factor $1/\beta$; we state the bound for $P$, which measures the geometry of the spiral, and for $|\omega_0| t_c$ in Corollary~\ref{cor:geom}.
 
 \section{Circulations and rates of a collapsing triangle}\label{sec:rates}
 
@@ -213,9 +213,9 @@ The program \texttt{verify\_alpha\_winding.py} checks each step in high-precisio
 
 \section{Discussion}
 
-Self-similar collapse of three vortices in the $\alpha$-models has been studied from several directions: Badin and Barry \cite{bb2018} derive the necessary conditions for collapse in Nambu form and show that in the SQG case collapse is self-similar when the energy vanishes and not self-similar otherwise; for circulations $(1, -\Gamma, 1)$ they find self-similar SQG collapse exactly for $0.387464\ldots < \Gamma < 1/2$ \cite[Lemma~1]{bb2018}, an interval that Lemma~\ref{lem:circ} reproduces; Reinaud, Dritschel and Scott \cite{rds2022} give the conditions for self-similar collapse of three vortices and map the collapse time over the collapsing configurations; Reinaud \cite{reinaud2021} treats the SQG case (see \cite[Prop.~2.1]{gp2025}); Chen and Liu \cite{cl2024} give necessary and sufficient conditions for self-similar motion; and Grotto and Pappalettera \cite[Prop.~2.1]{gp2025} characterize the self-similar motions and write the collapsing spiral, as a step toward bursts out of arbitrary configurations. We have not found a bound on the winding, the spiral angle or the distance traveled in these works, nor the explicit form \eqref{eq:circ} of the circulations or the formula \eqref{eq:S} for $P$, but we have not been able to consult \cite{cl2024} and \cite{reinaud2021} in full. In the Euler case the closed forms of the rates go back to \cite{cds1980} and \cite{kimura1987}, and the bound $P > \sqrt3/2$ with its minimum for each ratio of circulations is in \cite{hendrick2026}; Theorem~\ref{thm:main} gives, for $\alpha = 0$, a shorter proof of that bound through the side lengths.
+Self-similar collapse of three vortices in the $\alpha$-models has been studied from several directions: Badin and Barry \cite{bb2018} derive the necessary conditions for collapse in Nambu form and show that in the SQG case collapse is self-similar when the energy vanishes and not self-similar otherwise; for circulations $(1, -\Gamma, 1)$ they find self-similar SQG collapse exactly for $0.387464\ldots < \Gamma < 1/2$ \cite[Lemma~1]{bb2018}, an interval that Lemma~\ref{lem:circ} reproduces; Reinaud, Dritschel and Scott \cite{rds2022} give the conditions for self-similar collapse of three vortices and map the collapse time over the collapsing configurations; Reinaud \cite{reinaud2021} gives, for SQG, two necessary conditions and the collapse time in terms of the side lengths (as quoted in \cite{cl2024}), which has the form of the rate $\re\kappa$ of Lemma~\ref{lem:circ} at $\alpha = 1$; Chen and Liu \cite{cl2024} prove that the existence of self-similar collapse and expansion depends only on the circulations, give explicit expressions for all nontrivial self-similar solutions \cite[Theorems~2.1, 2.2]{cl2024}, and obtain the interval of Badin and Barry analytically \cite[Theorem~4.1]{cl2024}, a description from the side of the circulations that Lemma~\ref{lem:circ} complements from the side of the shape; Yasunaga, Otobe and Iwayama \cite{yoi2021} give necessary conditions and the orbits of self-similar motion, and Iwayama and Yajima \cite{iy2023} show that the collapsing motions are linearly unstable and the expanding ones stable; Iwayama, Yajima and Watanabe \cite{iyw2025} prove that collapse that is not self-similar can occur for $0 < \alpha < 2$ and cannot for $-1 \le \alpha < 0$; and Grotto and Pappalettera \cite[Prop.~2.1]{gp2025} characterize the self-similar motions and write the collapsing spiral, as a step toward bursts out of arbitrary configurations. We have not found a bound on the winding, the spiral angle or the distance traveled in these works, nor the explicit form \eqref{eq:circ} of the circulations or the formula \eqref{eq:S} for $P$, but we have read only the abstract and introduction of \cite{cl2024} and have not been able to consult \cite{reinaud2021}. In the Euler case the closed forms of the rates go back to \cite{cds1980} and \cite{kimura1987}, and the bound $P > \sqrt3/2$ with its minimum for each ratio of circulations is in \cite{hendrick2026}; Theorem~\ref{thm:main} gives, for $\alpha = 0$, a shorter proof of that bound through the side lengths.
 
-The bound concerns self-similar collapse only; it says nothing about other singular motions of the $\alpha$-models, such as the SQG collapses at nonzero energy found in \cite{bb2018}. Its value lies in the geometry: however the circulations are chosen, a collapsing triangle turns by more than $B(\alpha)$ radians per unit decrease of the logarithm of its squared size, and the infimum is realized only by a degenerate dipole beside a strong vortex.
+The bound concerns self-similar collapse only; it says nothing about other singular motions of the $\alpha$-models, such as the collapses at nonzero energy found in \cite{bb2018,iyw2025}. Its value lies in the geometry: however the circulations are chosen, a collapsing triangle turns by more than $B(\alpha)$ radians per unit decrease of the logarithm of its squared size, and the infimum is realized only by a degenerate dipole beside a strong vortex.
 
 \medskip
 {\sloppy\noindent\textbf{Data availability.} The programs \texttt{verify\_alpha\_winding.py} and \texttt{plot\_alpha\_winding.py} and their output are in the directory \texttt{research/} of the repository \url{https://github.com/SharpMeow/GENChase}; the many-vortex configurations and their checks are in \texttt{research/generalizations-2026-09-24/}.\par}
@@ -223,7 +223,7 @@ The bound concerns self-similar collapse only; it says nothing about other singu
 \smallskip
 \noindent{\small This work was prepared with AI assistance. The author takes full responsibility for its content.}
 
-\begin{thebibliography}{11}
+\begin{thebibliography}{15}
 
 \bibitem{bb2018} G. Badin and A. M. Barry, Collapse of generalized Euler and surface quasigeostrophic point vortices, \emph{Phys. Rev. E} \textbf{98} (2018) 023110; arXiv:1805.10127.
 
@@ -233,11 +233,17 @@ The bound concerns self-similar collapse only; it says nothing about other singu
 
 \bibitem{dk2014} M. V. Demina and N. A. Kudryashov, Rotation, collapse, and scattering of point vortices, \emph{Theor. Comput. Fluid Dyn.} \textbf{28} (2014) 357--368; doi:10.1007/s00162-014-0319-4.
 
+\bibitem{dgc2023} M. Donati and L. Godard-Cadillac, H\"older regularity for collapses of point vortices, \emph{Nonlinearity} \textbf{36} (2023) 5773; arXiv:2111.14230.
+
 \bibitem{gotoda2021} T. Gotoda, Self-similar motions and related relative equilibria in the $N$-point vortex system, \emph{J. Dyn. Differ. Equ.} \textbf{33} (2021) 1759--1777; arXiv:2002.09624.
 
 \bibitem{gp2025} F. Grotto and U. Pappalettera, Collapse and burst of generalized surface quasi-geostrophic point vortices, preprint, arXiv:2505.19782 (2025).
 
 \bibitem{hendrick2026} C. Hendrick, Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons, preprint (2026), \url{https://github.com/SharpMeow/GENChase}.
+
+\bibitem{iy2023} T. Iwayama and T. Yajima, Linear stability of self-similar motions of three point vortices in a generalized two-dimensional fluid system, \emph{J. Phys. Soc. Jpn.} \textbf{92} (2023) 084401.
+
+\bibitem{iyw2025} T. Iwayama, S. Yajima and T. Watanabe, Non-self-similar collapse of three point vortices in a generalized two-dimensional fluid system, \emph{J. Phys. A} \textbf{58} (2025) 075701.
 
 \bibitem{kimura1987} Y. Kimura, Similarity solution of two-dimensional point vortices, \emph{J. Phys. Soc. Jpn.} \textbf{56} (1987) 2024--2030.
 
@@ -246,6 +252,8 @@ The bound concerns self-similar collapse only; it says nothing about other singu
 \bibitem{reinaud2021} J. N. Reinaud, Self-similar collapse of three geophysical vortices, \emph{Geophys. Astrophys. Fluid Dyn.} \textbf{115} (2021) 369--392.
 
 \bibitem{rds2022} J. N. Reinaud, D. G. Dritschel and R. K. Scott, Self-similar collapse of three vortices in the generalised Euler and quasi-geostrophic equations, \emph{Physica D} \textbf{434} (2022) 133226.
+
+\bibitem{yoi2021} T. Yasunaga, N. Otobe and T. Iwayama, \emph{J. Phys. Soc. Jpn.} \textbf{90} (2021) 124401.
 
 \end{thebibliography}
 

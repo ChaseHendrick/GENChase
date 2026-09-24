@@ -36,9 +36,13 @@ The N-vortex data and their checks are in [`generalizations-2026-09-24/`](genera
 
 - **Badin and Barry 2018** (arXiv:1805.10127), read in full. They derive the necessary conditions for collapse in Nambu form. For SQG they show collapse is self-similar when H = 0 and not self-similar when H ≠ 0. For circulations (1, −Γ, 1) they find self-similar SQG collapse exactly for 0.387464… < Γ < 1/2 (their Lemma 1). There is no rotation, spiral or winding bound, so the theorem is not anticipated. Lemma 2 reproduces their interval and their H = 0 side ratio 0.751484 at Γ = 0.49 (check [7] of `verify_alpha_winding.py`), and the paper credits them for this.
 
+- **Chen and Liu 2024** (Physica D 470, 134392): abstract and introduction read (the owner pasted them; the full text is blocked here). They give necessary and sufficient conditions that depend only on the strengths, explicit solutions in Jacobi coordinates (Theorems 2.1–2.2), and the SQG interval analytically (Theorem 4.1). They state no rotation or winding result. Their introduction quotes Reinaud 2021's SQG collapse time in side lengths, which has the form of Lemma 2's Re κ at α = 1, and Donati and Godard-Cadillac's general-α spiral (A.19). Both are now credited. Sections 2–4 are unread; compare Theorems 2.1–2.2 with Lemmas 2–3 before submission.
+- **Iwayama and Yajima 2023** (JPSJ 92, 084401, open access), read in the parts that matter. It is a linear stability analysis: collapse is unstable and expansion stable. The solution f(t) = (1 − τ/τ*)^((1 + iB/A)/(4 − α)) comes from Yasunaga, Otobe and Iwayama 2021 (JPSJ 90, 124401), and Appendix A only defines A + iB (our κ) through the velocities. B/A is never evaluated, bounded or minimized, so the theorem is not anticipated. Both papers are credited for the spiral form.
+- **Donati and Godard-Cadillac 2023** (Nonlinearity 36, 5773; arXiv:2111.14230, free) and **Iwayama, Yajima and Watanabe 2025** (J. Phys. A 58, 075701) are cited from abstracts and Chen and Liu's quotation; read them before submission.
+
 ## Before submission
 
-- **Read Chen and Liu 2024** (Physica D 470, 134392; paywalled). It gives necessary and sufficient conditions for self-similar motion of three vortices in generalized fluids. It may contain Lemma 2 or the rate formula.
+- **Read Chen and Liu 2024 Sections 2–4** (Physica D 470, 134392; paywalled). Theorems 2.1–2.2 may overlap Lemmas 2–3.
 - **Read Reinaud 2021** (GAFD 115, 369–392). It covers the SQG case.
 - **Read the relevant parts of Reinaud, Dritschel and Scott 2022 again.**
 - **Read O'Neil 2007** (RCD 12, 117–126) and **O'Neil's 1985 thesis**. They are the priority risk for the four-vortex value in Section 5.
