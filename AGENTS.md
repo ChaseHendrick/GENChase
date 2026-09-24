@@ -214,3 +214,5 @@ The folder entry needs a local HTTP server so its modules can load. `dist/studio
 ## Scientific validation
 
 Read VALIDATION.md and validation/README.md before modifying numerical methods. Every registered technique requires a record in validation/techniques.json. A source citation, a sharp image or a passing smoke test is not numerical validation. Record assumptions, tolerances, evidence and remaining gaps. Run `node tools/build.js --check` and `node tools/science.js` before committing. See BUILDING.md for the source workflow.
+
+The dated plan for what research grade still needs, in priority order, is [docs/RESEARCH-GRADE.md](docs/RESEARCH-GRADE.md): outside review, the exactly solvable tabs, an uncertainty gate, real-GPU runs, data export and provenance. Read it before choosing validation or infrastructure work, and move an item to its Done list in the pull request that finishes it.

@@ -73,6 +73,21 @@ A wrong potential amplitude must fail. A pleasing localized image is insufficien
 Checks: `node tools/check.js aubry 12000`, `node tools/export.js aubry 8 300`, then
 `node tools/verify.js --print aubry` after registering numerical and print tests.
 
+## Validate an exactly solvable tab
+
+Scope: promote one of `ising`, `percolation`, `aztec`, `lozenge`, `sandpile`, `sle`, `rmt`,
+`ssh` or `kitaev` against the theorem listed for it in the table in
+[RESEARCH-GRADE.md](RESEARCH-GRADE.md), section 2. The answer is known exactly, so these are the
+cheapest promotions in the catalog. Copy the method of `validation/UST.md`: exact enumeration or
+an exact invariant, measured frequencies over independent seeds with a declared sample size, and
+a failure control that must be caught.
+Files: the tab's source in `src/modules/`, a new `tools/<id>-science.js` or `tools/<id>-review.js`,
+its results file under `validation/results/`, and the record in `validation/techniques.json`.
+Acceptance: the record meets every field in `validation/README.md`; a finite-size measurement
+states the sizes and the extrapolation rule; the failure control fails.
+Checks: `node tools/build.js --check`, `node tools/science.js --write`, `node tools/lint.js`,
+`node tools/check.js <id> 12000` and `node tools/export.js <id> 8 300`.
+
 ## New tab proposal: Fisher-KPP invasion front
 
 Paper: R. A. Fisher, [The wave of advance of advantageous genes](https://doi.org/10.1111/j.1469-1809.1937.tb02153.x)

@@ -93,6 +93,8 @@ The convection component audit and instantaneous-transport limits are in [CONVEC
 Priority: the remaining Cahn-Hilliard/PDE convergence and precision checks, wave/transport solvers, then stochastic measurements and
 the remaining families. The double-triangle/polygon vortex module has a complete review for 16 enumerated recipes;
 unlisted recipes remain outside its validated domain. The inventory deliberately exposes gaps.
+The wider plan, including the exactly solvable tabs that are the cheapest promotions, is in
+[docs/RESEARCH-GRADE.md](../docs/RESEARCH-GRADE.md).
 
 [Parametric surface geometry and print evidence](SURFACES.md) checks three classical families, with independent curvature and finite-mesh controls.
 

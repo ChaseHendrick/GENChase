@@ -14,6 +14,7 @@
   - Results stay in the job folder with a local gallery page and a sealed checkpoint for Resume. Opt-in sharing adds the recipe list and at most 12 thumbnails, shared byte for byte and refused if they carry metadata; prints are never shared. The volunteer-results workflow checks art submissions structurally.
   - `tools/art-check.js` runs the three jobs end to end on small grids in a new CI job, with negative controls.
 - AGENTS.md counted six `rdxCreate` tabs; there are five.
+- **A research-grade plan.** `docs/RESEARCH-GRADE.md` records a dated audit of what the project still needs to be research-grade software, in priority order: outside review and publication, the exactly solvable tabs, an uncertainty gate, real-GPU runs, data export and provenance, and scope. RESEARCH.md logs the survey of comparable public projects behind it, with every query, the pages that opened and the hosts that were blocked. No public project combining validation records, citations, seeded recipes and physical print export was found; that negative rests mostly on search snippets.
 
 ## v0.6.2
 
