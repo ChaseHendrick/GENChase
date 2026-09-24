@@ -2748,13 +2748,14 @@
   {
     "id": "veselago",
     "source": "src/modules/veselago.js",
-    "sourceSha256": "8ef1536bf8b6073c871c86da5abb6a95061c211a108b986fa4d54759c2af3117",
+    "sourceSha256": "957c4eea58597afe8d1a0571e01564a7acbf1edec42e6b304b7b850f82087ed4",
     "reference": "V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968), asked what optics would do if ε and μ were both negative: a left-handed medium, a reversed Doppler shift, and a slab that acts as a lens. Pendry, Phys. Rev. Lett. 85, 3966 (2000), showed the same slab can amplify evanescent waves and beat the diffraction limit. The plate traces geometric rays through n < 0, not a fabricated metamaterial.",
     "equation": "n₁ sin θ₁ = n₂ sin θ₂,   n₂ = −1  ⇒  θ₂ = −θ₁,   image at 2L − d",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered.",
+      "The Field view shows ray-crossing counts with white at the 95th percentile of lit pixels, so the source and the foci, where every ray crosses, clip at exposure 1; the Log view scales to the peak and clips nothing."
     ],
     "remaining": [
       "Review assumptions, boundaries, units and deviations against the primary source.",
