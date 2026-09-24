@@ -15,7 +15,7 @@ authors:
   - name: Chaos
     affiliation: 1
 affiliations:
-  - name: GENChase
+  - name: Independent researcher
     index: 1
 date: 24 September 2026
 bibliography: paper.bib
