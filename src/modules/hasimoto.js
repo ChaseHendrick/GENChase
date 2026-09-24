@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -224,8 +223,6 @@
     const c = (pb.sPeak - pk.sPeak) / dt;
     const cTh = 2 * tau0;
     const cRatio = Math.abs(cTh) > 1e-6 ? c / cTh : (Math.abs(c) < 1e-3 ? 1 : 0);
-    const sigS = 0.25 * crv.ds;
-    const cSigma = Math.abs(cTh) > 1e-6 ? (Math.SQRT2 * sigS / dt) / Math.abs(cTh) : 0;
 
     const lia = liaResidual(nu, tau0, t, N_MEAS, span, sCenter);
     const mu = muOf(nu, tau0);
@@ -234,7 +231,7 @@
     else if (mu > 0.5) tag = 'loop';
     return {
       kRatio, kSigma, kPeak: pk.kPeak, kTh,
-      cRatio, cSigma, c, cTh,
+      cRatio, c, cTh,
       tauMean: pk.tauMean, tauSd: pk.tauSd, tau0,
       liaMean: lia.mean, liaMax: lia.max,
       sPeak: pk.sPeak, mu, tag, pk, crv,
@@ -658,12 +655,17 @@
         const cFail = planar ? false : Math.abs(m.cRatio - 1) > 0.04;
         const liaFail = m.liaMean > 0.02;
         const ok = !kFail && !cFail && !liaFail;
+        // Nothing here is random. The peak curvature is a finite difference of the exact filament, and
+        // its change when the stencil is doubled says how much of the gap to 1 is discretization; it is
+        // not a statistical error. The second sample is an exact rigid motion of the first, so the
+        // envelope speed meets 2τ₀ to round-off by construction.
+        const kNote = 'stencil-doubling change ' + sci(m.kSigma) + (kFail ? ' · miss' : '');
         host.setStatus(
-          '<span>κ_max/(2ν) <b>' + f3(m.kRatio) + '</b> ± ' + sci(m.kSigma) + ' · 1' + (kFail ? ' · miss' : '') + '</span>' +
+          U.stats.compare({ label: 'κ_max/(2ν)', measured: m.kRatio, expected: 1, reference: 'Hasimoto', basis: 'deterministic', digits: 6, note: kNote }) +
           (planar
             ? '<span>c · 0 · planar (τ₀ ≈ 0)</span>'
-            : '<span>c/(2τ₀) <b>' + f3(m.cRatio) + '</b> ± ' + sci(m.cSigma) + ' · 1' + (cFail ? ' · miss' : '') + '</span>') +
-          '<span>LIA <b>' + sci(m.liaMean) + '</b> · 0' + (liaFail ? ' · miss' : '') + '</span>' +
+            : U.stats.compare({ label: 'c/(2τ₀)', measured: m.cRatio, expected: 1, reference: 'Hasimoto', basis: 'construction', digits: 6, note: cFail ? 'miss' : '' })) +
+          U.stats.compare({ label: 'LIA residual', measured: m.liaMean, expected: 0, reference: 'local induction', basis: 'deterministic', note: liaFail ? 'miss' : '' }) +
           '<span>' + m.tag + (ok ? '' : ' · drifting') + '</span>'
         );
       }

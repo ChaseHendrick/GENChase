@@ -234,15 +234,21 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
+      // The ring radius is read off the lensed ring test. One mass and SIS involve no randomness, so it
+      // is deterministic; Clumps and Cluster add halos drawn from the seed, one draw of many, and no bar
+      // for that scatter is computed here. The Poisson relaxation runs a fixed number of sweeps and its
+      // convergence is not checked, so it is reported as what it is rather than as solved.
       function status() {
         if (!stats) return;
+        const s = host.getState(), setR = stats.theory;
+        const seeded = s.massKind === 'clumps' || s.massKind === 'cluster';
         const ring = stats.ringN
-          ? ('θ_E <b>' + stats.measured.toFixed(1) + '</b> · set ' + stats.theory)
-          : ('θ_E set <b>' + stats.theory + '</b>');
+          ? U.stats.compare(Object.assign({ label: 'θ_E', measured: stats.measured, expected: setR, reference: 'set R', units: 'cells', digits: 3 },
+            seeded ? { basis: 'sampled', pending: 'one halo draw' } : { basis: 'deterministic' }))
+          : '<span>θ_E set <b>' + setR + '</b></span>';
         host.setStatus(
-          '<span>grid <b>' + W + '×' + H + '</b></span>' +
-          '<span>' + ring + '</span>' +
-          '<span>Poisson <b>solved</b></span>'
+          '<span>grid <b>' + W + '×' + H + '</b></span>' + ring +
+          '<span>Poisson relaxation, <b>' + (s.relax | 0) + '</b> sweeps, convergence not checked</span>'
         );
       }
 

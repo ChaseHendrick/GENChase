@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -111,7 +110,13 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>IPR <b>' + f3(metric) + '</b> · 1/N ' + f3(extra) + '</span><span>' + (metric > 8 * extra ? 'localised' : 'extended on this grid') + '</span>'); }
+      // One disorder draw and one start vector, relaxed for a fixed number of steps, so the IPR scatters
+      // from seed to seed and the relaxation has not been shown to converge: no honest bar from one plate.
+      function status() {
+        host.setStatus(U.stats.compare({ label: 'IPR', measured: metric, expected: extra, reference: 'uniform state', basis: 'sampled',
+          pending: 'one disorder realization, relaxation not converged' }) +
+          '<span>' + (metric > 8 * extra ? 'localised' : 'extended on this grid') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

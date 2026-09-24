@@ -107,7 +107,14 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { const b = U.clamp(host.getState().beta, .05, .95); host.setStatus('<span>ω = α <b>' + f2(extra) + '</b></span><span>sampled energy <b>' + f3(totalEnergy) + '</b> · whole line ' + f3(16 * b) + '</span><span>sampled energy outside |x|=3/β <b>' + f3(metric) + '</b> · finite window, nonzero tails</span>'); }
+      // The energy is a trapezoid quadrature of the exact breather on one time slice: no randomness, so its
+      // only error against the whole-line 16β is the window and the quadrature.
+      function status() {
+        const b = U.clamp(host.getState().beta, .05, .95);
+        host.setStatus('<span>ω = α <b>' + f2(extra) + '</b></span>' +
+          U.stats.compare({ label: 'sampled energy', measured: totalEnergy, expected: 16 * b, reference: 'whole line', basis: 'deterministic', note: 'finite window' }) +
+          '<span>sampled energy outside |x|=3/β <b>' + f3(metric) + '</b> · finite window, nonzero tails</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

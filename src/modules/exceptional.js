@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -91,8 +90,10 @@
             field[y * W + x] = e.re + 0.6 * e.im;
           }
         }
-        const e0 = ev(g0, k0);
-        metric = e0.gap;
+        // |λ+ − λ−| of the dimer itself, 2√|κ² − γ²| in both phases: real split levels below the EP, a
+        // complex conjugate pair above it. ev().gap is the real splitting the gap view draws, which is 0 in
+        // the broken phase and is not this magnitude.
+        metric = 2 * Math.sqrt(Math.abs(k0 * k0 - g0 * g0));
         extra = g0 / Math.max(0.05, k0);
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
@@ -124,7 +125,11 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>γ/κ <b>' + f2(extra) + '</b> · EP at 1</span><span>|λ+−λ−| <b>' + f3(metric) + '</b></span><span>' + (Math.abs(extra - 1) < 0.08 ? 'exceptional' : (extra < 1 ? 'exact PT' : 'broken PT')) + '</span>'); }
+      function status() {
+        host.setStatus('<span>γ/κ <b>' + f2(extra) + '</b> · the EP is where γ = κ</span>' +
+          U.stats.compare({ label: '|λ+−λ−|', measured: metric, reference: 'closed form', basis: 'exact', note: 'closed form 2√|κ²−γ²|' }) +
+          '<span>' + (Math.abs(extra - 1) < 0.08 ? 'exceptional' : (extra < 1 ? 'exact PT' : 'broken PT')) + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

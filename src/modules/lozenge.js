@@ -6,26 +6,22 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
-  const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2), f3 = v => v.toFixed(3);
+  const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2);
   const pct = v => Math.round(v * 100) + '%';
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
-  // "1.4σ high", or "0.3σ from it" when the two agree. A measured number printed beside a theoretical
-  // one without an error bar says nothing at all: there is no way to tell agreement from disagreement.
+  // A deviation in standard errors, which decides when a disagreement needs its cause named; the
+  // status prints it through the shared comparison harness. A measured number printed beside a
+  // theoretical one without an error bar says nothing at all: there is no way to tell agreement from
+  // disagreement.
   // Nothing here is ever rounded toward the theory, and a large deviation is named rather than buried.
   function sigmas(v, se, ref) {
     if (!(isFinite(v) && isFinite(se) && se > 0)) return null;
     return (v - ref) / se;
   }
-  function sigTxt(z) {
-    if (z === null) return 'no uncertainty available';
-    const m = Math.abs(z);
-    return m.toFixed(1) + 'σ ' + (m < 0.05 ? 'from it' : (z > 0 ? 'high' : 'low'));
-  }
-  const pm = (v, se, d) => v.toFixed(d) + ' ± ' + (isFinite(se) && se > 0 ? se.toFixed(d) : '?');
 
   const S3 = Math.sqrt(3) / 2;
   const SIDE = 48;   // largest side the sampler is asked for; see MAXSITE
@@ -728,15 +724,19 @@
         // pile does. There is no sampling error in it, so none is invented for it.
         let out = '<span>hexagon <b>' + s.a + '·' + s.b + '·' + s.c + '</b> · <b>' + nRh.toLocaleString() +
           '</b> rhombi';
-        if (tile) {
-          out += ' = ' + tile.cnt.map(v => v.toLocaleString()).join(' + ') +
-            (tile.sound ? ', an exact count' : ', WHICH IS WRONG: ' + tile.want.map(v => v.toLocaleString()).join(' + ') +
-              ' expected, ' + tile.bad + ' misplaced');
-        }
         // MacMahon's count is an integer with hundreds of digits and this is its base ten logarithm
         // rounded, so it says the size and not the number: "about" rather than a false exactness.
         if (mac > 0) out += ' · MacMahon about <b>10^' + Math.round(mac).toLocaleString() + '</b> tilings';
         out += '</span>';
+        // buildTiling emits a·b tops, b·c right faces and c·a left faces because its loops run exactly
+        // that many times, so the orientation counts agree with ab + bc + ca by construction. What can
+        // fail is the placement, which sound also checks, and then the line says so.
+        if (tile) {
+          const wrong = tile.sound ? '' : 'WHICH IS WRONG: ' + tile.want.map(v => v.toLocaleString()).join(' + ') +
+            ' expected, ' + tile.bad + ' misplaced';
+          out += U.stats.compare({ label: 'rhombi ' + tile.cnt.map(v => v.toLocaleString()).join(' + ') + ' =', measured: tile.M,
+            expected: nRh, reference: 'ab + bc + ca', basis: 'construction', note: wrong });
+        }
         // How this draw was made, and then the exactness claim tested rather than merely made.
         //
         // The count is named "sweep" on purpose. tools/check.js establishes that two loads of one
@@ -755,23 +755,33 @@
             : 'forward run to sweep <b>' + info.total.toLocaleString() + '</b>, <b>not exact</b>' +
               (info.fell ? ', CFTP over budget' : '');
         }
-        if (self) {
-          sp2 += (sp2 ? ' · ' : '') + 'self-test <b>' + self.draws.toLocaleString() + '</b> draws on 2·2·2: <b>' +
-            self.k + ' of ' + self.want + '</b>' + (self.k === self.want ? '' : ' WHICH IS WRONG') +
-            ', χ² <b>' + self.chi.toFixed(1) + '</b>/' + self.df + ' df, <b>' +
-            sigTxt(isFinite(self.z) ? self.z : null) + '</b>';
-        }
         if (sp2) out += '<span>' + sp2 + '</span>';
+        // The self-test: how many of MacMahon's twenty 2·2·2 tilings turned up in the draws, which is a
+        // coverage count with no error bar of its own, and the Pearson χ² of their counts against the
+        // uniform multinomial. Under uniformity χ²/df has mean 1 and standard deviation √(2/df); the
+        // deviation printed is the module's Wilson-Hilferty z, which is better calibrated in the tail.
+        if (self) {
+          out += U.stats.compare({ label: 'self-test, distinct tilings in ' + self.draws.toLocaleString() + ' draws on 2·2·2', measured: self.k,
+            expected: self.want, reference: 'MacMahon', basis: 'sampled', pending: 'coverage count; uniformity is tested by χ² below',
+            note: self.k === self.want ? '' : 'WHICH IS WRONG' });
+          out += U.stats.compare({ label: 'χ²/df, ' + self.df + ' df', measured: self.chi / self.df, expected: 1, reference: 'uniform',
+            basis: 'sampled', uncertainty: Math.sqrt(2 / self.df), z: self.z,
+            method: 'Pearson χ² over ' + self.draws.toLocaleString() + ' draws; σ = √(2/df), deviation by Wilson-Hilferty' });
+        }
         if (meas) {
           // A mean over NB sectors, with its standard error and the number of samples behind it, the
           // sectors counted as the autocorrelation says they should be rather than as sixty
           // independent ones; then a ratio of two counts, bootstrapped rather than propagated.
           const zr = sigmas(meas.rMean, meas.rSe, 1);
           const zf = sigmas(meas.disFrac, meas.disSe, meas.predDisFrac);
-          let sp = '<span>arctic radius <b>' + pm(meas.rMean, meas.rSe, 3) + '</b> over ' + meas.nSect +
-            ' sectors, ~' + Math.round(meas.neff) + ' independent, against 1: <b>' + sigTxt(zr) + '</b>' +
-            ' · free area <b>' + pm(meas.disFrac, meas.disSe, 3) + '</b> of n = ' + meas.nTot.toLocaleString() +
-            ' triangles, against <b>' + f3(meas.predDisFrac) + '</b>: <b>' + sigTxt(zf) + '</b>';
+          out += U.stats.compare({ label: 'arctic radius', measured: meas.rMean, expected: 1, reference: 'limit shape', basis: 'sampled',
+            uncertainty: meas.rSe, note: meas.nSect + ' sectors, ~' + Math.round(meas.neff) + ' independent',
+            method: 'mean of ' + meas.nSect + ' sector radii; standard error from their integrated autocorrelation time, τ ' +
+              meas.tau.toFixed(1) + ', floored at 2' });
+          out += U.stats.compare({ label: 'free area', measured: meas.disFrac, expected: meas.predDisFrac, reference: 'limit shape', basis: 'sampled',
+            uncertainty: meas.disSe, note: 'of n = ' + meas.nTot.toLocaleString() + ' triangles',
+            method: 'circular block bootstrap over the ' + meas.nSect + ' sector counts, blocks of τ sectors, 400 seeded resamples' });
+          let sp = '';
           const worst = Math.max(zr === null ? 0 : Math.abs(zr), zf === null ? 0 : Math.abs(zf));
           // When the draw is not uniform, that is the diagnosis, and it has to be given as one. The
           // limit shape is a statement about the uniform measure, so a forward run that has not
@@ -790,10 +800,10 @@
             const w = notExact
               ? 'the draw is not uniform, which is cause enough: the limit shape describes the uniform measure and a forward run that has not mixed is not from it'
               : whyOff(s);
-            sp += w ? ' · ' + w : ' · a real disagreement, cause not diagnosed';
+            sp += w || 'a real disagreement, cause not diagnosed';
           }
-          if (notExact) sp += ' · from a sample that is not exact';
-          out += sp + '</span>';
+          if (notExact) sp += (sp ? ' · ' : '') + 'from a sample that is not exact';
+          if (sp) out += '<span>' + sp + '</span>';
         }
         if (extra) out += '<span>' + extra + '</span>';
         host.setStatus(out);
