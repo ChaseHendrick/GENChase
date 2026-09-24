@@ -20,6 +20,7 @@
     - **The status line measures instead of assuming.** It reports the end weight of the two states nearest zero energy, over the tenth of the sites at each end (it was 12%). It also reports their energy against the bulk gap 2|w − v|, and a verdict that can disagree with the winding ν. Critical reads "crossover: ξ 18.5 of 48 cells" at the default 96 sites, and edge modes at 160.
     - **This is a documented solver correction.** Every SSH plate's pixels change. No key, default or preset moves, so no `legacy` entry is declared.
     - **Checked against the independent solve.** `tools/ssh-science.js` now evaluates the module's own solver against the independent Jacobi solve on every preset: eigenvalues within 10⁻¹⁰, |ψ|² within 10⁻⁹, end weights within 10⁻⁹. It adds failure controls: swapped hoppings must read trivial, and a wrongly terminated reference and the retired heuristic must both miss.
+  - The Grid slider now stops at 160, where the tab's own sanitize always capped the chain; its top four positions used to change the label and nothing else. Every recipe was clamped to 160 either way, so no plate changes.
   - `tools/lint.js` now evaluates each module block and rejects a control keyed `v`, `seed`, `palette`, `bg` or `id`, and any `v` or `id` in defaults or presets. `tools/registry.js` exposes the sandbox it already used, as `registrations()`.
 
 ## v0.6.2

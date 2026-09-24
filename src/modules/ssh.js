@@ -13,8 +13,12 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  const GRID_MIN = 96, GRID_MAX = 160;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    // The slider offers exactly what sanitize allows. It used to reach 224 while sanitize capped the chain
+    // at 160, so the top four positions moved the label and changed nothing. Every recipe was clamped to
+    // 160 either way, so narrowing the slider reprints every plate as before.
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     // Keyed vIntra, not v: the recipe owns v (its version number) and sanitize writes 2 over it. Until the
     // rename, every plate opened from a link, a preset, Surprise or a reload ran at v = 2; dragging the
@@ -37,7 +41,7 @@
   };
 
   function surprise(rng) { return { vIntra: rng.range(0.2, 1.3), w: rng.range(0.2, 1.3), bc: rng() < 0.2 ? 'periodic' : 'open' }; }
-  function sanitize(s) { s.grid = Math.max(64, Math.min(160, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
 
   // ---- The chain, diagonalised ----
   // Sites 0..n-1 alternate between sublattice A (even) and B (odd). Bond (2j, 2j+1) carries the intra-cell

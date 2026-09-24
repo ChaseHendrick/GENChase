@@ -1272,7 +1272,7 @@
   {
     "id": "ssh",
     "source": "src/modules/ssh.js",
-    "sourceSha256": "a8c99bbdaea0ef9adfe7a64f15a7a847a30c030372193439753e494fa68c844b",
+    "sourceSha256": "4cdabf9e4f57e7a1f808ff2b80acdf69ff50e18ac217229cf83fe07ce9666ee4",
     "reference": "W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)|² of every eigenmode of the finite chain, energy increasing upward, each row scaled to its own peak; the mid-gap pair sits in the middle rows.",
     "equation": "H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open)",
     "status": "unvalidated",
