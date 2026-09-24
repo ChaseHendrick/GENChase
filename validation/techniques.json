@@ -2662,18 +2662,56 @@
     "sourceSha256": "cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357",
     "reference": "Roger Penrose, Pentaplexity, 1974, and Martin Gardner's Mathematical Games, January 1977. Robinson triangles carry the deflation; N. G. de Bruijn's dual multigrid (1981) gives the octagonal Ammann–Beenker and dodecagonal cases. The hat — a single 13-sided polykite that tiles the plane only aperiodically, and only with its reflection — is Smith, Myers, Kaplan and Goodman-Strauss, arXiv:2303.10798 (March 2023). The spectre is the chiral 14-gon from the same authors, arXiv:2305.17743: one handedness, no mirrors.",
     "equation": "Penrose: thick half → 2 thick + 1 thin;   hat: 13-gon + mirror;   spectre: 14-gon, one handedness",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Partially validated: the Penrose P3 and P2, Ammann–Beenker and dodecagonal tiling geometry is established for the 68 enumerated recipes and 11 print recipes in validation/TILINGS.md. Full status is withheld because of two defects in src/modules/tilings.js, which this review did not change (next two items).",
+      "Defect, P3 matching arcs (src/modules/tilings.js:31): the thin-rhomb arcs sit around the acute corners, both in one family. On the module's own legal P3 tilings 127,405 of 542,129 shared edges (in all 25 P3 recipes; 1,539 of 6,567 in the arcs preset) join arcs of different families, and the thin arcs pair the wrong crossings. Positions match; colours and loops do not. Thin arcs around the obtuse corners, one per family, give zero mismatches. The drawn P3 arcs are not a valid Penrose decoration; P3 legality here rests on the de Bruijn window, the vertex census and that reference decoration.",
+      "Defect, grout inset (src/modules/tilings.js:626): insetPoly offsets along the left edge normals, which point outward once the print flips y, so \"Gap inset (grout)\" enlarges every tile instead of leaving grout. Printed fill polygons cover 1.060 (rhombs, inset 0.012) to 1.262 (kilnfloor, inset 0.05) of the page instead of less than 1. The SVG polygons equal the validated tiles offset outward, within 0.005 px.",
+      "Catalog equation and citation are review targets. The deflation rule \"thick half → 2 thick + 1 thin\" is checked by exact counts; the hat and spectre descriptions are not reviewed.",
+      "Hat and spectre are outside the reviewed domain: only congruence to the module's own prototiles, single cover of each supertile and reflection or chirality counts were measured, against no published reference.",
+      "Dodecagonal: de Bruijn duality and tiling validity only. The internal-space window is a necessary condition that a single phason flip passes; no matching rule or vertex-type set is claimed.",
+      "Finite enumerated recipes of the sun-centred Penrose tiling, one Chromium build and a software renderer. Node and Chromium round one sun-wheel sine differently, so Penrose coordinates differ between them by a few ulps (at most 7.1e-15 in five P3 print recipes).",
+      "PNG prints are checked for dimensions, nonblank content, determinism and preserved state, not pixel by pixel against the geometry; colour, jitter and grain are presentation."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Correct ARCS.p3 for the thin rhomb to arcs around the obtuse corners, one per family ({ c: [1, 3], r: [IPHI, IPHI], f: [0, 1] } is the reference decoration used here), then re-run both harnesses and check the drawn arcs.",
+      "Correct insetPoly to offset toward the tile interior in page coordinates, then re-run tools/tilings-print-state.js, whose inward criterion is already in place.",
+      "After both corrections, review the documented domain for \"validated within stated limits\".",
+      "Hat and spectre: an independent substitution or published frequency reference (such as the proportion of reflected hats), legality beyond congruence and single cover, and print evidence.",
+      "Other seeds, patches that do not come from the sun wheel, and pixel-level PNG comparison."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/tilings-science.js",
+        "command": "node tools/tilings-science.js --write",
+        "results": "validation/results/tilings-science.json",
+        "scope": "Actual tilings.js (seedWheel, deflate, glue, multigrid, buildModel) loaded from disk with read-only hooks and the engine makeRng, for the Penrose P3 and P2, Ammann–Beenker and dodecagonal modes: the sun wheel deflated 1 to 10 times without culling, and 68 rendered recipes (the eight P3, P2, AB and dodecagonal presets at four seeds, and a nine-depth sweep per mode over zoom 0.3 to 4, rotations, pans and all five aspects; 1,036,735 tiles). Hat and spectre are measured outside the domain.",
+        "criteria": "Exact: half-tiles classified by their own side lengths number 10F(2k-1) thin and 10F(2k) thick (P3), 10F(2k+1) kite and 10F(2k) dart (P2); zero label, T-junction, repeated-edge and off-decagon defects; decagon area within 1e-12. Rendered: bitwise replay; vertices merged within 1e-9 and at least 0.2 apart; every tile simple, counter-clockwise and congruent to its labelled prototile within 1e-9; the oriented 1-chain cancels, with no boundary in the view and winding 1, so the view is covered exactly once; tile area in the view within 1e-9. P3: Z^5 lift inside the de Bruijn pentagons (within 1e-9) with an index span of at most 4, census inside an independent pentagrid's, a continuous two-family reference arc decoration, completeness against the unculled deflation. P2: Conway's seven vertex stars, the two-colour vertex rule, the module's arcs continuous. AB: octagon window, census inside an independent dual 4-grid's. AB and dodecagonal: tile set identical to an independent de Bruijn construction, and per-pair counts equal to lattice-point counts within rigorous bounds.",
+        "benchmark": "Fibonacci recurrences of the Robinson-triangle substitution and the decagon area; the 1-chain winding identity for single coverage; de Bruijn's cut-and-project theorem (pentagons and octagon from unit-cube slices) and an independent pentagrid with sum gamma = 0; Conway's seven kite-dart vertex stars; de Bruijn duality with lattice-point bounds for the sqrt 2 and 1 : sqrt 3 : 1 frequencies.",
+        "failureControl": "A 0.6 thick-half split, mirrored P3 and P2 children, a swapped label, a dropped child, a wrong multigrid offset (759 repeated AB sub-edges, window 0.207) and swapped kite arcs (2,909 mismatches) are each rejected. A single P3 phason flip leaves a valid tiling but moves the window from -0.0147 to +0.0312 and adds 3 illegal vertex stars and 8 arc mismatches; an AB flip moves the window to +0.0104; a pentagrid with sum gamma = 0.33 is rejected (index span 5; 8 of its 15 vertex classes lie outside the reference).",
+        "limitations": "The module's own P3 arcs fail the arc criterion (127,405 of 542,129 shared edges change family); the dodecagonal window is only a necessary condition, which a single flip passes; finite enumerated recipes of the sun-centred Penrose tiling; hat and spectre outside the domain."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/tilings-print-state.js",
+        "command": "node tools/tilings-print-state.js --write",
+        "results": "validation/results/tilings-print-state.json",
+        "scope": "Actual tilings.js in dist/studio.html (Chromium 141, SwiftShader): the eight P3, P2, AB and dodecagonal presets at seed penrose-1974, the rhombs preset with inset 0, and two rotated, panned, non-square sweep recipes. exportPNG at 2400 px on the longest edge and exportSVG, compared against the Node model that tools/tilings-science.js validates.",
+        "criteria": "Browser model equal to the Node model; regenerate identical; exact PNG dimensions, over 1000 bytes, nonblank and pixel-identical on repeat; no model word or setting changed by any export; every SVG fill and outline vertex, line-work edge, inflation-level segment and arc within 0.005 px of Node geometry. A PNG 1 px narrower, a post-export vertex and type change, and a 0.02 px SVG vertex shift must be rejected.",
+        "benchmark": "The Node model of the same recipe, which itself passes the numerical tiling predicates, with the print geometry recomputed independently (mitred offsets by line intersection, line work as a set of edges).",
+        "failureControl": "A PNG 1 px narrower, a post-export change to one vertex word and one tile type, and one expected SVG vertex moved 0.02 px are rejected in all 11 recipes.",
+        "limitations": "Two criteria missed and are recorded. Word identity with Node fails in five P3 recipes (one sun-wheel sine rounds differently; at most 7.1e-15, integer data identical, and the browser model passes the tiling predicates itself). For inset > 0 the polygons are outward, not inward, offsets (a module defect). PNG pixels are not compared with the geometry; hat and spectre prints are not covered."
+      }
+    ],
+    "domain": {
+      "parameters": "Penrose P3 and P2, Ammann–Beenker and dodecagonal modes only: the rhombs, arcs, kitedart, ammann, inflation, linedrawing, dodeca and kilnfloor presets at seeds penrose-1974, tilings-review-a, tilings-review-b and tilings-review-c, and one sweep recipe per mode at each depth from 1 to 9 (zoom 0.3 to 4, rotation 0 to 311 degrees, pans to ±3, all five aspects), as listed in validation/results/tilings-science.json. Excluded: the P3 arc decoration (defective), hat and spectre.",
+      "conditions": "Exact constructions with no time evolution: Robinson-triangle deflation of the ten-triangle sun wheel with bounding-box culling and gluing; de Bruijn dual 4- and 6-grids with seeded offsets in [0.08, 0.92] over a disk around the seeded crop. Print: real exportPNG at 2400 px on the longest edge and exportSVG, caption-free, for 11 recipes.",
+      "resolution": "Deflation depths 1 to 10 of the full wheel (up to 177,110 half-tiles); rendered patches of 137 to 150,855 tiles, 1,036,735 in all; completeness checked against up to 13 deflation levels; multigrid disks up to radius 106; prints at 2400x2400, 1920x2400, 2400x1920 and 2400x1600, with 60,760 fill and 40,440 outline vertices, 44,321 line-work edges, 11,955 level segments and 6,734 arcs compared.",
+      "precision": "JavaScript binary64 in Node v22.22.2 and Chromium 141; vertices identified within 1e-7 edge units (largest merged spread 3.8e-13); angles and lengths within 1e-9; window slack 1e-9; SVG coordinates printed to 0.01 px and compared within 0.005 px; RGBA8 PNG."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/tilings-science.json"
   },
   {
     "id": "percolation",

@@ -126,3 +126,7 @@ The exactly solvable tabs of [RESEARCH-GRADE.md](../docs/RESEARCH-GRADE.md), sec
 
 The [complete finite FPUT review](FPUT-FIELD-REVIEW.md) covers independent chain
 trajectories, energy diagnostics, working duration controls and real print output.
+
+The [aperiodic tilings review](TILINGS.md) checks the Penrose, Ammann-Beenker and dodecagonal
+geometry exactly and the print path against it. It stays partially validated because of two recorded
+defects: the P3 matching arcs are not a valid decoration, and the grout inset moves tiles outward.
