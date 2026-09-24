@@ -44,7 +44,8 @@ submission.
    in all three places, and `refs.bib` now agrees. Gotoda: J. Dyn. Differ. Equ. 33 (2021) 1759-1777,
    doi 10.1007/s10884-020-09867-y. Kimura: "Similarity solution of two-dimensional point vortices",
    J. Phys. Soc. Jpn. 56 (1987) 2024-2030, doi 10.1143/JPSJ.56.2024. Groebli: "Specielle Probleme ...",
-   Inaugural-Dissertation, Goettingen, printed by Zuercher und Furrer, Zuerich, 1877.
+   Inaugural-Dissertation, Goettingen, printed by Zuercher und Furrer, Zuerich, 1877 (English
+   translation arXiv:2404.01305). The entry key `Gotoda2020` is kept so that existing citations resolve.
 3. **The cover letter's statement** that the manuscript "has not been published and is not under
    consideration elsewhere" is yours to confirm on the day you send it.
 
