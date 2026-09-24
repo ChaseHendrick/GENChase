@@ -266,3 +266,34 @@ test('the runner finds clamps, refuses out-of-schema requests and does not bill 
   const clock = new ActiveClock();
   try { clock.last -= 60000; assert(clock.seconds() < 1, 'a minute-long pause counts as a tenth of a second'); } finally { clock.stop(); }
 });
+
+test('the submission check accepts a shared art folder and names every structural fault', t => {
+  const { checkFolder, context, main } = require('../../tools/art-submission-check');
+  const ctx = context(ROOT), crypto = require('node:crypto');
+  const seg = (m, body) => Buffer.concat([Buffer.from([0xFF, m, (body.length + 2) >> 8, (body.length + 2) & 255]), body]);
+  const jpeg = (...extra) => Buffer.concat([Buffer.from([0xFF, 0xD8]), seg(0xE0, Buffer.from('JFIF\0\x01\x01\0\0\x01\0\x01\0\0', 'latin1')), ...extra,
+    seg(0xDB, Buffer.alloc(65)), seg(0xC0, Buffer.from([8, 0, 200, 1, 64, 1, 1, 0x11, 0])), seg(0xC4, Buffer.alloc(20)), seg(0xDA, Buffer.from([1, 1, 0, 0, 63, 0])), Buffer.from([5, 0xFF, 0xD9])]);
+  const base = fs.mkdtempSync(path.join(os.tmpdir(), 'art-submission-')); t.after(() => fs.rmSync(base, { recursive: true, force: true }));
+  let n = 0;
+  function folder({ payload = { v: 2, grid: 128, running: false, warmup: 300 }, steps = 300, id = 'turing', thumb = jpeg(), extra = null, sha = null } = {}) {
+    const dir = path.join(base, 'validation/submissions/job' + (++n) + '/art'); fs.mkdirSync(path.join(dir, 'thumbs'), { recursive: true });
+    const seed = 'h-' + n, hash = '#' + id + '/' + seed + '/' + b64({ ...payload, seed });
+    fs.writeFileSync(path.join(dir, 'thumbs/c-0001.jpg'), thumb);
+    fs.writeFileSync(path.join(dir, 'share.json'), JSON.stringify({ schemaVersion: 1, kind: 'genchase-art', mode: 'art-hunt', id, thumbs: ['thumbs/c-0001.jpg'],
+      records: [{ rank: 1, index: 0, hash, seed, steps, class: 'ok', metrics: { entropy: 4.2, edge: 0.4 }, thumb: 'thumbs/c-0001.jpg', thumbSha256: sha || crypto.createHash('sha256').update(thumb).digest('hex'), validated: false }] }));
+    if (extra) fs.writeFileSync(path.join(dir, extra), 'x');
+    return dir;
+  }
+  assert.deepEqual(checkFolder(folder(), ctx), []);
+  const cases = [
+    [{ extra: 'gallery.html' }, /gallery.html is not allowed/], [{ payload: { grid: 128, running: false, warmup: 300, score: 1 } }, /outside the turing schema: score/],
+    [{ steps: 299 }, /must equal the recipe warmup 300/], [{ payload: { grid: 128, warmup: 300 } }, /must be paused/], [{ id: 'ising' }, /not an art tab/],
+    [{ thumb: jpeg(seg(0xFE, Buffer.from('comment'))) }, /not allowed/], [{ sha: 'f'.repeat(64) }, /thumbnail hash does not match/],
+  ];
+  for (const [opts, why] of cases) assert.match(checkFolder(folder(opts), ctx).join('\n'), why, JSON.stringify(opts).slice(0, 80));
+  // Defaults count: a recipe that leaves warmup at the tab's default records the default step count.
+  assert.deepEqual(checkFolder(folder({ payload: { grid: 128, running: false }, steps: 1500 }), ctx), []);
+  const cwd = process.cwd(), log = console.log; console.log = () => {};
+  try { process.chdir(base); assert.equal(main(['validation/submissions/job1/art/share.json', 'validation/submissions/job1/job.json']), 0); assert.equal(main(['validation/submissions/job2/art/share.json']), 1); }
+  finally { process.chdir(cwd); console.log = log; }
+});

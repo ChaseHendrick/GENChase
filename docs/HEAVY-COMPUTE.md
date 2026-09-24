@@ -21,6 +21,16 @@ simulations can evolve faster in wall-clock time on high-refresh displays. Numer
 step budgets, CFL limits and responsiveness budgets remain in place. A stopped scientific
 comparison should use the same simulation step or physical time, not the same wall-clock delay.
 
+## Deep renders of a recipe
+
+The volunteer runner's `art-deep` job renders one studio recipe for a chosen number of steps (the
+recipe's `warmup`, with `running` off) and exports it at print size on a contributor's computer. It is
+limited to each tab's existing warm-up maximum (2000 steps on `cahn`, 6000 on `turing`) and to the
+renderer's texture limit. It calibrates first and refuses, rather than trims, a request over its budget
+or over half the machine's memory. An interrupted deep render starts again from step 0. A different grid
+is a different, larger domain with an unrelated initial field, not an enlargement. See
+[the local app guide](../apps/validate/README.md#art-modes).
+
 ## Optional native runner
 
 The browser studio still needs no installed numerical packages. The separate Python runner

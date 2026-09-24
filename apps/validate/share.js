@@ -2,6 +2,7 @@
 // Optional network boundary. Computation never needs GitHub or credentials.
 const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process'), crypto = require('node:crypto');
 const { sanitize, redact } = require('./privacy');
+const { ART_MODES, LIMITS, jpegInfo } = require('./art-tabs');
 const TARGET = 'SharpMeow/GENChase';
 const sha = s => crypto.createHash('sha256').update(s).digest('hex');
 function gh(method, endpoint, body) {
@@ -29,22 +30,50 @@ function folder(data, id) {
 }
 function pack(root, data, id) {
   const dir = folder(data, id), files = []; let total = 0;
-  function add(name) {
+  function safe(name) {
     const file = path.join(dir, name);
-    if (!fs.existsSync(file)) return;
     const rel = path.relative(fs.realpathSync(dir), fs.realpathSync(file));
     if (rel.startsWith('..') || path.isAbsolute(rel) || fs.lstatSync(file).isSymbolicLink() || !fs.statSync(file).isFile()) throw Error('Unsafe result file: ' + name);
     if (fs.statSync(file).size > 8 * 1024 * 1024) throw Error('Result exceeds 8 MB: ' + name + '. Use the downloadable bundle for this run.');
-    const raw = fs.readFileSync(file, 'utf8');
-    const content = name.endsWith('.json') ? JSON.stringify(sanitize(JSON.parse(raw), { root }), null, 2) + '\n' : redact(raw, { root });
-    total += Buffer.byteLength(content);
+    return file;
+  }
+  function count(bytes) {
+    total += bytes;
     if (total > 20 * 1024 * 1024 || files.length >= 500) throw Error('Submission exceeds 20 MB or 500 files. Use the downloadable bundle for this run.');
+  }
+  function add(name) {
+    if (!fs.existsSync(path.join(dir, name))) return;
+    const raw = fs.readFileSync(safe(name), 'utf8');
+    const content = name.endsWith('.json') ? JSON.stringify(sanitize(JSON.parse(raw), { root }), null, 2) + '\n' : redact(raw, { root });
+    count(Buffer.byteLength(content));
     files.push({ name, content, bytes: Buffer.byteLength(content), sha256: sha(content) });
+  }
+  // Images are shared byte for byte, never through text redaction, which would corrupt them. Only small
+  // JPEG thumbnails qualify, and only when they carry no segment that can hold text (see jpegInfo).
+  function addBinary(name) {
+    if (!fs.existsSync(path.join(dir, name))) throw Error('A listed thumbnail is missing: ' + name);
+    const raw = fs.readFileSync(safe(name)), info = jpegInfo(raw);
+    count(raw.length);
+    files.push({ name, binary: true, bytes: raw.length, sha256: sha(raw), base64: raw.toString('base64'), description: 'JPEG thumbnail, ' + info.width + ' × ' + info.height + ' px, ' + raw.length + ' bytes. Shared byte for byte.' });
   }
   const job = JSON.parse(fs.readFileSync(path.join(dir, 'job.json'), 'utf8'));
   if (!['complete', 'failed'].includes(job.status) || !job.ended) throw Error('Wait for the job to finish before sharing.');
   // Allowlisted reports only. Never source snapshots, archives, arbitrary changed files or credentials.
-  for (const name of ['job.json', 'hardware.json', 'witnesses.json', 'harvest-report.json', 'miss.json', 'verify-checkpoint.json', 'source-before.json', 'job.log', 'paste-packet.md']) add(name);
+  for (const name of ['job.json', 'hardware.json', 'witnesses.json', 'harvest-report.json', 'browser-report.json', 'miss.json', 'verify-checkpoint.json', 'source-before.json', 'job.log', 'paste-packet.md']) add(name);
+  // Art jobs share their recipe list and at most 12 thumbnails. Never prints, the gallery page, the full
+  // candidate list or the checkpoint.
+  if (ART_MODES.includes(job.input?.mode) && fs.existsSync(path.join(dir, 'art/share.json'))) {
+    const file = safe('art/share.json');
+    if (fs.statSync(file).size > LIMITS.shareBytes) throw Error('art/share.json exceeds 1 MB. Use the downloadable bundle for this run.');
+    const art = JSON.parse(fs.readFileSync(file, 'utf8')), clean = sanitize(art, { root });
+    if (art.kind !== 'genchase-art' || !Array.isArray(art.records) || !Array.isArray(art.thumbs)) throw Error('art/share.json is not an art result.');
+    // A recipe is published exactly as the studio reprints it, so redaction must not touch it. If it would,
+    // the recipe holds text that looks private, and nothing is shared.
+    art.records.forEach((r, i) => { for (const key of ['hash', 'seed', 'parentHash']) if (r && r[key] !== clean.records[i]?.[key]) throw Error('A recipe in art/share.json contains text that looks private (' + key + ' of record ' + (i + 1) + '). Nothing was shared. Keep this run local.'); });
+    if (art.thumbs.length > LIMITS.thumbs || new Set(art.thumbs).size !== art.thumbs.length || art.thumbs.some(t => typeof t !== 'string' || !/^thumbs\/[a-z0-9-]{1,40}\.jpg$/.test(t))) throw Error('art/share.json lists thumbnails that cannot be shared.');
+    add('art/share.json');
+    for (const t of art.thumbs) addBinary('art/' + t);
+  }
   function walk(relative) {
     const base = path.join(dir, relative); if (!fs.existsSync(base)) return;
     if (fs.lstatSync(base).isSymbolicLink()) throw Error('Symlink in evidence folder.');
@@ -56,7 +85,8 @@ function pack(root, data, id) {
   }
   walk('outputs/validation/results'); walk('misses');
   if (!files.some(f => f.name === 'hardware.json')) throw Error('Hardware evidence missing; repair the run before sharing.');
-  const manifest = {schemaVersion:1, job:id, sourceCommit:job.commit, status:job.status, exitCode:job.exitCode, sourceSnapshotIncluded:false, files:files.map(({name,bytes,sha256})=>({name,bytes,sha256}))};
+  // Binary entries are hashed on their raw bytes; the digest formula below is unchanged.
+  const manifest = {schemaVersion:1, job:id, sourceCommit:job.commit, status:job.status, exitCode:job.exitCode, sourceSnapshotIncluded:false, files:files.map(({name,bytes,sha256,binary})=>binary?{name,bytes,sha256,binary:true}:{name,bytes,sha256})};
   const content=JSON.stringify(manifest,null,2)+'\n'; files.push({name:'manifest.json',content,bytes:Buffer.byteLength(content),sha256:sha(content)}); total+=Buffer.byteLength(content);
   const digest = sha(JSON.stringify(files.map(({ name, sha256 }) => ({ name, sha256 }))));
   return { job, files, bytes: total, digest, target: TARGET };
@@ -64,8 +94,8 @@ function pack(root, data, id) {
 class Shares {
   constructor(root, data, request = gh) { this.root = root; this.data = data; this.request = request; this.pending = new Map(); }
   state(id) { try { const s = JSON.parse(fs.readFileSync(path.join(folder(this.data, id), 'submission.json'))); if (s.status === 'uploading' && !this.pending.has(id)) return { ...s, status: 'interrupted', message: 'Upload interrupted. Retry to recover the existing submission.' }; return s; } catch { return { status: 'not-shared' }; } }
-  read(id, name) { const file=pack(this.root,this.data,id).files.find(f=>f.name===name); if(!file)throw Error('File is not included in this submission.'); return {name:file.name,content:file.content}; }
-  preview(id) { const p = pack(this.root, this.data, id); return { target: p.target, digest: p.digest, bytes: p.bytes, status: p.job.status, files: p.files.map(({ name, bytes, sha256 }) => ({ name, bytes, sha256 })) }; }
+  read(id, name) { const file=pack(this.root,this.data,id).files.find(f=>f.name===name); if(!file)throw Error('File is not included in this submission.'); return file.binary?{name:file.name,content:file.description,binary:true}:{name:file.name,content:file.content}; }
+  preview(id) { const p = pack(this.root, this.data, id); return { target: p.target, digest: p.digest, bytes: p.bytes, status: p.job.status, files: p.files.map(({ name, bytes, sha256, binary }) => binary ? { name, bytes, sha256, binary: true } : { name, bytes, sha256 }) }; }
   save(id, value) { const file = path.join(folder(this.data, id), 'submission.json'); fs.writeFileSync(file + '.tmp', JSON.stringify(value, null, 2), { mode: 0o600 }); fs.renameSync(file + '.tmp', file); }
   start(id, digest) {
     if (this.pending.has(id)) return this.state(id);
@@ -88,7 +118,7 @@ class Shares {
       try { fork = await api('GET', 'repos/' + repo); } catch(e) { if(e.status !== 404) throw e; fork = await api('POST', 'repos/' + TARGET + '/forks', {}); }
       if (fork.full_name?.toLowerCase() !== repo.toLowerCase() || (!fork.fork) || (fork.parent && fork.parent.full_name !== TARGET)) throw Error('Your GENChase repository must be a fork of SharpMeow/GENChase.');
     }
-    const branch = 'evidence/' + id + '-' + p.digest.slice(0, 12);
+    const branch = 'evidence/' + id + '-' + p.digest.slice(0, 12), art = ART_MODES.includes(p.job.input?.mode);
     const query = 'repos/' + TARGET + '/pulls?state=all&head=' + encodeURIComponent(user.login + ':' + branch);
     const finish = pr => {
       if (!new RegExp('^https://github.com/SharpMeow/GENChase/pull/[0-9]+$').test(pr.html_url)) throw Error('Invalid submission URL.');
@@ -101,13 +131,25 @@ class Shares {
     if (!ref) {
       const baseRepo = await api('GET', 'repos/' + TARGET);
       const base = await api('GET', 'repos/' + TARGET + '/commits/' + encodeURIComponent(baseRepo.default_branch));
-      const tree = await api('POST', 'repos/' + repo + '/git/trees', { base_tree:base.commit.tree.sha, tree:p.files.map(f => ({path:'validation/submissions/' + id + '/' + f.name, mode:'100644', type:'blob', content:f.content})) });
-      const commit = await api('POST', 'repos/' + repo + '/git/commits', { message:'Record local validation evidence ' + id, tree:tree.sha, parents:[base.sha], author:{name:'Chaos',email:'326338179+SharpMeow@users.noreply.github.com'} });
+      // Text goes inline in the tree; a binary thumbnail is uploaded as a base64 blob and referenced by sha.
+      const entries = [];
+      for (const f of p.files) {
+        const entry = { path:'validation/submissions/' + id + '/' + f.name, mode:'100644', type:'blob' };
+        if (f.binary) {
+          const blob = await api('POST', 'repos/' + repo + '/git/blobs', { content:f.base64, encoding:'base64' });
+          if (!/^[0-9a-f]{40,64}$/.test(blob.sha || '')) throw Error('Invalid GitHub blob response. Retry the submission.');
+          entries.push({ ...entry, sha:blob.sha });
+        } else entries.push({ ...entry, content:f.content });
+      }
+      const tree = await api('POST', 'repos/' + repo + '/git/trees', { base_tree:base.commit.tree.sha, tree:entries });
+      const commit = await api('POST', 'repos/' + repo + '/git/commits', { message:(art ? 'Record local art results ' : 'Record local validation evidence ') + id, tree:tree.sha, parents:[base.sha], author:{name:'Chaos',email:'326338179+SharpMeow@users.noreply.github.com'} });
       await api('POST', 'repos/' + repo + '/git/refs', { ref:'refs/heads/' + branch, sha:commit.sha });
     }
     progress('Opening the evidence review...');
     const baseRepo = await api('GET', 'repos/' + TARGET);
-    const pr = await api('POST', 'repos/' + TARGET + '/pulls', { title:'Validation evidence: ' + id, head:user.login + ':' + branch, base:baseRepo.default_branch, body:'Local run submitted by @' + user.login + '.\n\nStatus: ' + p.job.status + '; exit: ' + p.job.exitCode + '.\nSource: ' + p.job.commit + '.\nEvidence digest: ' + p.digest + '.\n\nIncludes recorded failures, missing evidence, hardware and available numerical data. No validation status or originality claim is promoted. Files and stated limits require review.' });
+    const pr = await api('POST', 'repos/' + TARGET + '/pulls', art
+      ? { title:'Art results: ' + p.job.input.id + ' (' + p.job.input.mode + ') ' + id, head:user.login + ':' + branch, base:baseRepo.default_branch, body:'Local art run submitted by @' + user.login + '.\n\nMode: ' + p.job.input.mode + '; tab: ' + p.job.input.id + '.\nStatus: ' + p.job.status + '; exit: ' + p.job.exitCode + '.\nSource: ' + p.job.commit + '.\nDigest: ' + p.digest + '.\n\nIncludes recipe hashes with their step counts, print-sharpness proxy scores, repeat controls and up to 12 small thumbnails. The scores are proxies at the recorded print size, grid, step count and renderer: not a measure of beauty and not scientific evidence. Every recipe is unvalidated. No prints are included; each recipe reprints its plate. No validation status changes.' }
+      : { title:'Validation evidence: ' + id, head:user.login + ':' + branch, base:baseRepo.default_branch, body:'Local run submitted by @' + user.login + '.\n\nStatus: ' + p.job.status + '; exit: ' + p.job.exitCode + '.\nSource: ' + p.job.commit + '.\nEvidence digest: ' + p.digest + '.\n\nIncludes recorded failures, missing evidence, hardware and available numerical data. No validation status or originality claim is promoted. Files and stated limits require review.' });
     finish(pr);
   }
 }

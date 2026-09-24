@@ -1,5 +1,5 @@
 'use strict';
-const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path'),crypto=require('node:crypto');
 const {Shares,pack}=require('./share');
 const id='2026-09-22T12-00-00-000Z-1234abcd';
 function fixture(t){const root=fs.mkdtempSync(path.join(os.tmpdir(),'share-test-')),data=path.join(root,'runs'),dir=path.join(data,id);fs.mkdirSync(dir,{recursive:true});t.after(()=>fs.rmSync(root,{recursive:true,force:true}));
@@ -12,6 +12,7 @@ function mock({failPull=false,user='volunteer'}={}){const calls=[],refs=new Map(
  if(url==='repos/SharpMeow/GENChase')return {default_branch:'main'};
  if(url.includes('/git/ref/')){if(refs.has(url.split('/heads/')[1]))return {};const e=Error('missing');e.status=404;throw e;}
  if(url.endsWith('/commits/main'))return {sha:'base',commit:{tree:{sha:'base-tree'}}};
+ if(url.endsWith('/git/blobs'))return {sha:crypto.createHash('sha1').update(Buffer.from(body.content,'base64')).digest('hex')};
  if(url.endsWith('/git/trees'))return {sha:'tree'};
  if(url.endsWith('/git/commits'))return {sha:'commit'};
  if(url.endsWith('/git/refs')){refs.set(body.ref.replace('refs/heads/',''),true);return {};}
@@ -59,4 +60,44 @@ test('automatic sharing is per-run opt-in and completes after a failed job with 
  try {await app.listen();app.jobs.start(input);await app.jobs.wait();await app.shares.wait();assert.equal(m.calls.length,0);
  app.jobs.start({...input,shareAutomatically:true});await app.jobs.wait();await app.shares.wait();assert.equal(app.jobs.current.exitCode,2);assert.equal(app.shares.state(app.jobs.current.id).status,'shared');const tree=m.calls.find(c=>c.url.endsWith('/git/trees')).body.tree;assert(tree.some(x=>x.path.includes('/misses/')));assert(tree.some(x=>x.path.endsWith('/miss.json')));
  }finally{await app.close();}
+});
+
+// A minimal JPEG with the segments Chromium's canvas encoder writes: JFIF, an ICC profile, tables, one frame, one scan.
+function jpeg(extra=[],w=320,h=320){const seg=(m,b)=>Buffer.concat([Buffer.from([0xFF,m,(b.length+2)>>8,(b.length+2)&255]),b]);
+ return Buffer.concat([Buffer.from([0xFF,0xD8]),seg(0xE0,Buffer.from('JFIF\0\x01\x01\0\0\x01\0\x01\0\0','latin1')),seg(0xE2,Buffer.from('ICC_PROFILE\0\x01\x01','latin1')),...extra,
+  seg(0xDB,Buffer.alloc(65)),seg(0xC0,Buffer.from([8,h>>8,h&255,w>>8,w&255,1,1,0x11,0])),seg(0xC4,Buffer.alloc(20)),seg(0xDA,Buffer.from([1,1,0,0,63,0])),Buffer.from([1,2,0xFF,0,3,0xFF,0xD9])]);}
+const b64=o=>Buffer.from(JSON.stringify(o)).toString('base64url');
+function artFixture(t,{thumb=jpeg(),seed='h-1',thumbs=['thumbs/c-0001.jpg']}={}){
+ const f=fixture(t);fs.writeFileSync(path.join(f.dir,'job.json'),JSON.stringify({id,status:'complete',ended:'2026-09-24',exitCode:0,commit:'a'.repeat(40),input:{workspace:'contribute',mode:'art-hunt',id:'turing'}}));
+ fs.writeFileSync(path.join(f.dir,'browser-report.json'),JSON.stringify({browserVersions:{chromium:'141.0.7390.37'},webglRenderer:'SwiftShader'}));
+ const art=path.join(f.dir,'art');for(const d of ['thumbs','prints'])fs.mkdirSync(path.join(art,d),{recursive:true});
+ const hash='#turing/'+encodeURIComponent(seed)+'/'+b64({v:2,grid:128,running:false,warmup:300,seed});
+ fs.writeFileSync(path.join(art,'thumbs/c-0001.jpg'),thumb);fs.writeFileSync(path.join(art,'thumbs/c-0002.jpg'),jpeg());
+ fs.writeFileSync(path.join(art,'share.json'),JSON.stringify({schemaVersion:1,kind:'genchase-art',mode:'art-hunt',id:'turing',thumbs,records:[{rank:1,index:0,hash,seed,steps:300,class:'ok',metrics:{entropy:4.5},thumb:thumbs[0]||null,thumbSha256:crypto.createHash('sha256').update(thumb).digest('hex'),validated:false}]}));
+ for(const name of ['candidates.json','checkpoint.json'])fs.writeFileSync(path.join(art,name),'{"secret":"CANDIDATES"}');
+ fs.writeFileSync(path.join(art,'gallery.html'),'<p>GALLERY</p>');fs.writeFileSync(path.join(art,'prints/c-0001.png'),'PRINT');
+ return {...f,thumb,hash};
+}
+test('art results share share.json and listed thumbnails byte for byte, never prints, gallery or checkpoint',async t=>{
+ const f=artFixture(t),p=pack(f.root,f.data,id),names=p.files.map(x=>x.name);
+ for(const name of ['art/share.json','art/thumbs/c-0001.jpg','browser-report.json','manifest.json'])assert(names.includes(name),name);
+ for(const bad of ['art/candidates.json','art/checkpoint.json','art/gallery.html','art/prints/c-0001.png','art/thumbs/c-0002.jpg'])assert(!names.includes(bad),bad);
+ assert(!JSON.stringify(p.files.filter(x=>!x.binary)).includes('CANDIDATES'));
+ const image=p.files.find(x=>x.name==='art/thumbs/c-0001.jpg');assert.equal(image.binary,true);assert.equal(Buffer.from(image.base64,'base64').compare(f.thumb),0);
+ const manifest=JSON.parse(p.files.find(x=>x.name==='manifest.json').content).files.find(x=>x.name==='art/thumbs/c-0001.jpg');
+ assert.deepEqual(manifest,{name:'art/thumbs/c-0001.jpg',bytes:f.thumb.length,sha256:crypto.createHash('sha256').update(f.thumb).digest('hex'),binary:true},'raw-byte hash and length');
+ const m=mock(),s=new Shares(f.root,f.data,m.request);assert.match(s.read(id,'art/thumbs/c-0001.jpg').content,/^JPEG thumbnail, 320 × 320 px/);
+ s.start(id,s.preview(id).digest);await s.wait();assert.equal(s.state(id).status,'shared');
+ const blob=m.calls.find(c=>c.url.endsWith('/git/blobs'));assert.deepEqual(blob.body,{content:f.thumb.toString('base64'),encoding:'base64'});
+ const tree=m.calls.find(c=>c.url.endsWith('/git/trees')).body.tree,entry=tree.find(x=>x.path.endsWith('art/thumbs/c-0001.jpg'));
+ assert.equal(entry.content,undefined);assert.match(entry.sha,/^[0-9a-f]{40}$/);assert(tree.find(x=>x.path.endsWith('art/share.json')).content.includes(f.hash));
+ const pr=m.calls.find(c=>c.method==='POST'&&c.url.endsWith('/pulls')).body;assert.equal(pr.title,'Art results: turing (art-hunt) '+id);assert.match(pr.body,/not a measure of beauty and not scientific evidence/);assert(!/validated within/.test(pr.body));
+ assert.match(m.calls.find(c=>c.url.endsWith('/git/commits')).body.message,/^Record local art results /);
+});
+test('thumbnails with metadata, private-looking recipes and unlisted paths are refused before upload',t=>{
+ const seg=(m,b)=>Buffer.concat([Buffer.from([0xFF,m,(b.length+2)>>8,(b.length+2)&255]),b]);
+ for(const [thumb,why] of [[jpeg([seg(0xE1,Buffer.from('Exif\0\0GPS'))]),/not allowed/],[jpeg([seg(0xFE,Buffer.from('made by someone'))]),/not allowed/],[jpeg([],321,10),/exceed/]]){const g=artFixture(t,{thumb});assert.throws(()=>pack(g.root,g.data,id),why);}
+ let f=artFixture(t,{seed:'me@example.com'});assert.throws(()=>pack(f.root,f.data,id),/looks private/);
+ for(const thumbs of [['../job.json'],['prints/c-0001.png'],Array.from({length:13},(_,i)=>'thumbs/c-'+String(i).padStart(4,'0')+'.jpg')]){f=artFixture(t,{thumbs});assert.throws(()=>pack(f.root,f.data,id),/cannot be shared/);}
+ f=artFixture(t,{thumbs:['thumbs/c-0009.jpg']});assert.throws(()=>pack(f.root,f.data,id),/missing/);
 });

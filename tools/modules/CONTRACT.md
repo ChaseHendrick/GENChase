@@ -134,6 +134,13 @@ Recency rank, 10 newest to 100 oldest, by publication year of the system. Existi
 
 `host.setStatus('<span>grid <b>256×256</b></span><span>T <b>2.27</b> · critical</span><span>step <b>1,204</b></span>')`. Keep it to three or four spans. The shell appends `dt` on its own when the state has a numeric `dt` and your status does not already mention it, and always appends the seed. Put a `step` (or `sweep`) count in the status of a living plate: the harness reads it to know when the warm-up is done and whether two loads are comparable.
 
+## External runners
+
+The volunteer art modes (`apps/validate/art.js`) depend on two things of every tab in `ART_TABS`
+(`apps/validate/art-tabs.js`, today `cahn` and `turing`): with `running:false` the plate stops at
+exactly `warmup` steps, and the status then reads `grid W×H`, `step N` and `paused`. They also rely on
+`fieldCells()`. Changing either for one of those tabs requires `node tools/art-check.js` to pass.
+
 ## Pause
 
 A tab with a `running` toggle is paused through it (P key, tab switch). A tab without one is paused by the shell calling `pause()` and later `resume()`, so both must be real: `pause()` stops every loop and timer, `resume()` restarts only what was running. A still plate's `pause()` and `resume()` can be no-ops.

@@ -3,7 +3,9 @@ name: volunteer results
 # Volunteer result files are re-verified before a human reviews them, and the leaderboard and compute ledger are
 # rebuilt after they merge. Only positions and circulations are trusted from a submission: the verifier re-projects,
 # re-polishes and re-certifies every claimed minimum. It runs from the base branch, so a pull request cannot pass by
-# editing the verifier it is checked with.
+# editing the verifier it is checked with. Shared art results (validation/submissions/<job>/art/) get a structural
+# check from the base branch too: recipe hashes, schema keys, step counts and plain JPEG thumbnails. Pixels are not
+# compared, because renderers differ.
 
 on:
   pull_request:
@@ -46,6 +48,22 @@ jobs:
           status=$?
           set -e
           cat "$RUNNER_TEMP/verify.log"; cat "$RUNNER_TEMP/verify.log" >> "$GITHUB_STEP_SUMMARY"; echo '```' >> "$GITHUB_STEP_SUMMARY"
+          exit $status
+      - name: Check submitted art results structurally
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          [ -d "$RUNNER_TEMP/base" ] || git worktree add --detach "$RUNNER_TEMP/base" "$BASE"
+          checker="$RUNNER_TEMP/base/tools/art-submission-check.js"; from='the base branch'
+          if [ ! -f "$checker" ]; then checker=tools/art-submission-check.js; from='this pull request, which introduces it'; fi
+          files=$(git diff --name-only --diff-filter=AMR "$BASE"...HEAD -- validation/submissions | grep -E '^validation/submissions/[^/]+/art/' || true)
+          if [ -z "$files" ]; then echo 'No art result files changed.' >> "$GITHUB_STEP_SUMMARY"; exit 0; fi
+          { echo "## Art results checked with the checker from $from"; echo; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          set +e
+          node "$checker" $files > "$RUNNER_TEMP/art.log" 2>&1
+          status=$?
+          set -e
+          cat "$RUNNER_TEMP/art.log"; cat "$RUNNER_TEMP/art.log" >> "$GITHUB_STEP_SUMMARY"; echo '```' >> "$GITHUB_STEP_SUMMARY"
           exit $status
 
   refresh:

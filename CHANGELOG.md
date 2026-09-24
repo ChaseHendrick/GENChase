@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- The volunteer runner gains three art jobs for the `cahn` and `turing` tabs, run on a contributor's computer through the studio's own recipe and print path: a seed hunt, a deep render of one recipe, and one generation of evolved children. Nothing under `src/` or `dist/` changes, and no recipe or engine API changes.
+  - The step count is the recipe's `warmup` with `running:false`, verified from the status before any export. Budgets count active time and never change a plate. A deep render refuses, rather than trims, a request over its budget, over the tab's step maximum or over half the memory.
+  - Candidates are ordered by print-sharpness proxies measured on the real export at every pixel offset. The scores are not a measure of beauty and not scientific evidence, and evolved children are unvalidated recipes. The best candidate and one other are rendered again to measure repeatability.
+  - Results stay in the job folder with a local gallery page and a sealed checkpoint for Resume. Opt-in sharing adds the recipe list and at most 12 thumbnails, shared byte for byte and refused if they carry metadata; prints are never shared. The volunteer-results workflow checks art submissions structurally.
+  - `tools/art-check.js` runs the three jobs end to end on small grids in a new CI job, with negative controls.
+- AGENTS.md counted six `rdxCreate` tabs; there are five.
+
 ## v0.6.2
 
 The publication date is recorded in the GitHub release notes.

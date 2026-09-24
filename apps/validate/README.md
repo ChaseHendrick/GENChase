@@ -53,6 +53,7 @@ Progress counts completed registered checks or native simulation steps when thos
 | Maxwell design search / robustness | Logs from the existing electromagnetic experiments |
 | Molecular preparation / Cahn coarsening | Logs from the existing experiment runners |
 | Apple GPU periodic wave | A native Metal verification report and a configurable three-dimensional workload with checkpoints |
+| Art: seed hunt, deep render, evolve | Studio recipes rendered at print size, print-sharpness proxy scores, kept prints and a local gallery page. See [Art modes](#art-modes). |
 
 The first candidate adapter uses the already documented two-polygon vortex family, with 2 to 5 vertices per polygon. It can recover a known result. It is not a general symbolic theorem prover or an automatic discovery engine. The coefficient fit is numerical, with a stated sample domain and tolerance. The plate check must accept the expected case and reject the deliberately broken case.
 
@@ -61,6 +62,28 @@ The adapter reads `RESEARCH.md` before doing the derivation, then scans availabl
 The offline comparison uses text matching and the existing polygon-family derivation. It does not follow external citations, extract binary PDFs or establish mathematical equivalence through a proof. Its classifications are only **matches known source**, **not found in sources checked**, or **search incomplete**. Priority remains **unconfirmed** in every case.
 
 **Online prior-art** is optional. Opening the panel only shows suggested queries; following a query link opens an external search page and uses the network. No automatic online search or model call occurs. A human must inspect sources and record what was actually checked before making any originality claim.
+
+## Art modes
+
+Three art jobs use this computer to render studio plates at print size. Each plate goes through the studio's own path: the recipe hash, the shell's sanitizer, regeneration and the shell's own export. They cover the `cahn` and `turing` tabs in this release.
+
+| Job | What it does |
+| --- | --- |
+| Art: seed hunt | Renders a block of seeds of one tab (from a base recipe or the defaults) and orders the prints. Seeds are `h-` followed by the seed number in base 36. The first seed is drawn at random unless you choose it, so volunteers cover different seeds without a server. |
+| Art: deep render | Renders one recipe for a chosen number of steps and exports it, 20 in at 300 ppi by default. The steps may not exceed the tab's own warm-up maximum (2000 on `cahn`, 6000 on `turing`). |
+| Art: evolve | Renders 1 to 6 parent recipes and, for one generation, children made by a new seed, a new palette, or a small change drawn from the tab's own surprise settings for the same model. |
+
+**The step count is part of the recipe.** Every job writes `running:false` and `warmup:N` into the recipe, and a plate counts only when its status reads step N and paused. Refresh rate, wall time and budgets cannot change a plate. The same recipe at the same step count gives the same plate on the same renderer and Chromium build, and a statistically similar plate elsewhere; identical pixels across GPUs are not claimed. Jobs refuse to run without WebGL2 and float32 color buffers. Plates are rendered with full motion: a viewer whose browser asks for reduced motion still sees only the first 80 steps of a `cahn` recipe, a known studio limitation.
+
+**What the score means.** Candidates are ordered by print-sharpness class (sharp, ok, soft, using the thresholds of `tools/sharp.js`), then by the entropy of the luminance histogram. The metrics are measured on the real export at native pixels, at every pixel offset, so they are not comparable with the 2026-09-24 print audit. They are proxies for print sharpness and tonal range at that print size, grid, step count and renderer, comparable only within one job. They are not a measure of beauty or composition and not scientific evidence, and they favour high-contrast, fine-grained plates and early coarsening stages. Flat plates, grid-scale checkerboards, numerical-guard stops and failed witnesses are rejected with the reason recorded. At the end the best candidate and one other are rendered again in fresh pages; the gallery says so when the ranking is not informative, and when a repeat did not reproduce its metrics.
+
+**Refusals.** A deep render calibrates at up to 240 steps, then refuses, rather than trims, a request whose estimate exceeds its budget (default 120 active minutes; it prints the largest step count that fits), a step count over the tab's maximum, a grid the tab does not offer, or a print that would need more than half the memory. A different grid is a larger domain with an unrelated initial field: the result is labelled a new plate, not an enlargement. Any recipe key outside the tab's own settings is refused. Refusals exit with code 3.
+
+**Evolve.** Children keep the parent's run, grid, aspect, time-step, boundary and stencil settings, and keep its model; the engine may still lower the time step to its stability ceiling after a change, which the record lists as clamped. The engine's sanitizers still run. Joint physical constraints between settings are not checked, so every child is an unvalidated recipe, not scientific evidence. The gallery lets you tick parents and copy the command for the next generation.
+
+**Budgets and time.** A budget counts active computing time: duty-cycle, battery and thermal pauses are not counted, with about 10% error at the light setting. A hunt that reaches its budget stops starting candidates and exits 0; Resume continues it. Timeouts use the same clock.
+
+**Results** stay in the job folder: `art/gallery.html` (open it from disk), `art/candidates.json` with every candidate and its reason, `art/recipes.txt` in rank order, thumbnails for the best 60, prints and the studio's print-job JSON for the best *Prints kept* candidates, and `browser-report.json` with the browser and renderer. Nothing is written into repository paths. The app cannot show the images itself.
 
 ## Measurement corpus and misses
 
@@ -85,6 +108,8 @@ The native Metal job first verifies the actual Apple GPU against a CPU reference
 | Registered verification runner | Completed registered tests | Source and recorded execution context must match. The interrupted test runs again. Missing evidence remains missing. |
 | Two-polygon sweep | Each 10,000 samples and the completed sweep | Matching adapter/module/settings resume the seeded sweep. The plate and literature stages run again. |
 | Native Metal wave | Periodic saved field state, about every 10 seconds, plus completion | Compatible grid, source signature and verified checkpoint data are required. Work since the last checkpoint may repeat. GPU verification runs before every workload. |
+| Art: seed hunt and evolve | Each rendered candidate, with the thumbnails and prints it kept | The art scripts, `dist/studio.html`, the settings, the Chromium version and the renderer must match. A candidate whose kept image is missing or changed renders again. |
+| Art: deep render | Completion only | No mid-plate checkpoint: an interrupted deep render starts again from step 0. |
 | Other experiment or development jobs | No general internal checkpoint | Use Restart. A nested registered runner can retain its own completed-test checkpoint. |
 
 Checkpoints are local computational state, not independently certified evidence. Keep their accompanying source and reports. The app does not resume arbitrary browser plates or recover every instruction of an interrupted job. A machine sleep or crash can lose work since the last successful checkpoint.
@@ -114,7 +139,7 @@ This boundary applies to recorded runtime metadata and text, not the verbatim re
 
 The app binds only to `127.0.0.1`, checks the loopback host and origin, and requires a per-server token for job control and downloads. Commands come from an allowlist and do not use a shell. This is a local interface to trusted repository code running as your OS user, not a sandbox for untrusted code. Do not expose it through a public tunnel.
 
-Run `npm run test:validator` for the app's regression suite. Browser and native GPU evidence have separate scopes and prerequisites. The studio's scientific CI remains required. No model helper is installed or invoked; a model added in the future would be a helper, not an authority on scientific validity or originality.
+Run `npm run test:validator` for the app's regression suite, and `npm run test:art` to run the art jobs end to end on small grids (Playwright and Chromium required). Browser and native GPU evidence have separate scopes and prerequisites. The studio's scientific CI remains required. No model helper is installed or invoked; a model added in the future would be a helper, not an authority on scientific validity or originality.
 
 ## Share results directly
 
@@ -124,7 +149,7 @@ After a run, choose **Review files to share**, inspect the list and select a fil
 
 To submit unattended, check **Automatically share this run when it finishes** before starting. This choice belongs to that run and is retained by restart/resume. The server submits even if the browser closes. Upload progress and a submission link appear under **Share results**. A failed upload stays local and offers retry; interrupted or ambiguous submissions are looked up before opening another review. There is no background retry loop or automatic merge.
 
-A checksum manifest accompanies every submission. Shared files include job metadata, source fingerprints (without source contents), the hardware card, measurements, numerical JSON outputs, redacted logs and all available misses for the run's source commit. A failure or missing benchmark is not removed to make a submission look successful. Source snapshots, full bundles, arbitrary changed files and credentials are excluded. JSON numeric values retain their types and precision. The file list is checked again before a manual upload. A run is limited to 500 files, 8 MB per file and 20 MB total; larger runs retain the downloadable workflow.
+A checksum manifest accompanies every submission. Shared files include job metadata, source fingerprints (without source contents), the hardware card, measurements, numerical JSON outputs, redacted logs and all available misses for the run's source commit. An art run adds `art/share.json` (its recipes, step counts, proxy scores and repeat controls, at most 200 records) and at most 12 thumbnails of at most 320 px and 64 KB. Thumbnails are shared byte for byte through a Git blob and hashed on their raw bytes; a thumbnail with any segment that can carry text (EXIF, XMP, comments) is refused, and so is a submission whose recipe text redaction would change. Prints, the gallery page, the full candidate list and the checkpoint are never shared: each recipe reprints its plate. The volunteer-results workflow checks art submissions structurally but does not compare pixels. A failure or missing benchmark is not removed to make a submission look successful. Source snapshots, full bundles, arbitrary changed files and credentials are excluded. JSON numeric values retain their types and precision. The file list is checked again before a manual upload. A run is limited to 500 files, 8 MB per file and 20 MB total; larger runs retain the downloadable workflow.
 
 Submissions are public and linked to your GitHub account. Redaction removes common local identifiers; it is not a guarantee that user-written report text contains no personal information. Review files before sharing sensitive work. Formula source contributions still use the documented contributor workflow. Evidence submissions do not change scientific labels.
 
