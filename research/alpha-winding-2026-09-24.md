@@ -36,6 +36,10 @@ The N-vortex data and their checks are in [`generalizations-2026-09-24/`](genera
 
 The first version of the proof needed α > −0.896, because its m ≥ 2 case used the crude bound 12β² − 3β − 2 > 0. Keeping m in that case gives D(m) = ((1+β)m − 2)² + (1 + 6β − βm² − m)/3, which is convex and increasing from m = 2, where D(2) = 4β² + (2β − 1)/3 > 0. So the proof now covers every β > 1/2, that is α > −1, which is exactly where the velocity decays with distance. Check [2] verifies D symbolically; check [3] now samples β from just above 1/2.
 
+## Below α = −1
+
+Remark 1 extends the theorem to α ≥ −59/40 with one computer-assisted step: `verify_alpha_extension.py` subdivides 0.2622 ≤ β ≤ 1/2, 3/2 ≤ m ≤ 2 in interval arithmetic (1205 boxes, all resolved). Remark 2 adds the exact α = 2 equal-circulation formula and the exact SQG endpoint, checked by `generalizations-2026-09-24/checks/symmetric_family.py`. The paper now ends with an Open problems section.
+
 ## Read
 
 - **Badin and Barry 2018** (arXiv:1805.10127), read in full. They derive the necessary conditions for collapse in Nambu form. For SQG they show collapse is self-similar when H = 0 and not self-similar when H ≠ 0. For circulations (1, −Γ, 1) they find self-similar SQG collapse exactly for 0.387464… < Γ < 1/2 (their Lemma 1). There is no rotation, spiral or winding bound, so the theorem is not anticipated. Lemma 2 reproduces their interval and their H = 0 side ratio 0.751484 at Γ = 0.49 (check [7] of `verify_alpha_winding.py`), and the paper credits them for this.
