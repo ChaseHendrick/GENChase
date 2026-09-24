@@ -1,0 +1,3 @@
+n=2 random-search min P = 0.779447 (700 samples), refined by Nelder-Mead to 0.734465
+n=3 random-search min P = 0.968800 (700 samples)
+n=4 random-search min P = 0.877764 (700 samples)
