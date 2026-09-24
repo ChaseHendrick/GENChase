@@ -732,18 +732,21 @@ void main(){
   };
   // Validation status is shown where the plate is, not only in a report: a research user trusts the
   // weakest tab they happen to open, so every tab and the stage say how far its numerics were checked.
+  // label is what fits on the stage button (no wider than "Science report", which the Art only button
+  // is placed beside); full is the status as validation/techniques.json words it.
   const EVIDENCE = {
-    'validated within stated limits': { glyph: '✓', short: 'Validated within stated limits' },
-    'partially validated': { glyph: '◐', short: 'Partially validated' },
-    unvalidated: { glyph: '○', short: 'Unvalidated' },
+    'validated within stated limits': { glyph: '✓', label: 'Validated', short: 'Validated within stated limits' },
+    'partially validated': { glyph: '◐', label: 'Partial', short: 'Partially validated' },
+    unvalidated: { glyph: '○', label: 'Unvalidated', short: 'Unvalidated' },
   };
   const evidenceOf = id => EVIDENCE[S.validationStatus(id)] || null;
   function renderEvidenceBadge(id) {
     const badge = document.getElementById('btn-science-report'), status = S.validationStatus(id), ev = evidenceOf(id);
     if (!badge || badge.dataset.status === (status || '')) return;
     badge.dataset.status = status || '';
-    badge.textContent = ev ? ev.glyph + ' ' + ev.short + ' · Science report' : 'Science report';
-    badge.title = ev ? 'Validation status from validation/techniques.json. Open the evidence, limits and data export.' : 'Open the science report';
+    badge.textContent = ev ? ev.glyph + ' ' + ev.label : 'Science report';
+    if (ev) badge.setAttribute('aria-label', ev.short + ': open the science report'); else badge.removeAttribute('aria-label');
+    badge.title = ev ? ev.short + ' (validation/techniques.json). Open the evidence, limits and data export.' : 'Open the science report';
   }
   const softwareLine = () => 'GENChase, engine API ' + S.apiVersion + ', recipe v' + RECIPE_V + ', build ' + (BUILD.build || 'unknown');
   function statusText(e) {

@@ -112,8 +112,8 @@ async function browserChecks() {
     ok(meta.provenance.technique.sourceSha256 === sha && /step/.test(meta.status), 'data export: meta.json carries provenance and the status line');
 
     // The badge and the tab strip.
-    const badge = await page.locator('#btn-science-report').innerText();
-    ok(/Validated within stated limits/.test(badge), 'stage badge shows the status', badge);
+    const badge = await page.locator('#btn-science-report').innerText(), badgeName = await page.locator('#btn-science-report').getAttribute('aria-label');
+    ok(badge.trim() === '✓ Validated' && /^Validated within stated limits: open the science report$/.test(badgeName), 'stage badge shows the status', badge + ' / ' + badgeName);
     ok(await page.locator('.tab[data-id="ising"] .tab-evidence').innerText() === '○', 'tab strip shows the status glyph');
 
     // A tab without exportData(): meta.json says so rather than inventing arrays.
