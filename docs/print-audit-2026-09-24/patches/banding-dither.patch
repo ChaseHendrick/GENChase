@@ -1,0 +1,157 @@
+diff --git a/src/modules/cppn.js b/src/modules/cppn.js
+index fb4b412..c40847a 100644
+--- a/src/modules/cppn.js
++++ b/src/modules/cppn.js
+@@ -43,6 +43,7 @@
+   ${G.GLSL.hash}
+   ${G.GLSL.noise}
+   ${G.GLSL.ramp}
++  ${G.GLSL.dither}
+   vec4 T(int x, int y){ return texelFetch(u_w, ivec2(x, y), 0); }
+   float actS(float x, int id){
+     if (id == 0) return tanh(clamp(x, -10.0, 10.0));
+@@ -112,7 +113,7 @@ ${inCode}${layers}
+       e *= use;
+       col = mix(col, u_inkColor, max(e.x, max(e.y, e.z)));
+     }
+-    outColor = vec4(col, 1.0);
++    outColor = vec4(dither8(col), 1.0);
+   }`;
+   }
+ 
+diff --git a/src/modules/maxwell.js b/src/modules/maxwell.js
+index 432477f..544d063 100644
+--- a/src/modules/maxwell.js
++++ b/src/modules/maxwell.js
+@@ -66,6 +66,7 @@ uniform sampler2D u_state; uniform vec2 u_res;
+ uniform float u_scale, u_exposure, u_eps, u_ratio; uniform int u_view;
+ ${G.GLSL.bicubic}
+ ${G.GLSL.ramp}
++${G.GLSL.dither}
+ void main(){
+   vec4 q = texCR4(u_state,v_uv,u_res);
+   float z = q.r * u_exposure / max(u_scale,1e-6);
+@@ -73,7 +74,7 @@ void main(){
+   if(u_view == 1) value = clamp(log(1.0+z*z)/log(9.0),0.0,1.0);
+   // Material is displayed from nearest cells, so interpolation does not invent intermediate epsilon.
+   if(u_view == 2) value = (texture(u_state,v_uv).a/u_eps-1.0)/max(u_ratio-1.0,1e-6);
+-  outColor = vec4(ramp(value),1.0);
++  outColor = vec4(dither8(ramp(value)),1.0);
+ }`;
+ 
+   function sizeOf(s) { return [s.grid, Math.max(32, Math.round(s.grid * (ASPECTS[s.aspect] || 1)))]; }
+diff --git a/src/modules/reaction.js b/src/modules/reaction.js
+index d2427c3..4c776d3 100644
+--- a/src/modules/reaction.js
++++ b/src/modules/reaction.js
+@@ -62,6 +62,7 @@
+   uniform float u_exposure, u_gamma, u_contrast, u_low, u_high, u_levels, u_light, u_lightAng, u_smooth;
+   uniform bool u_poster;
+   ${G.GLSL.ramp}
++  ${G.GLSL.dither}
+   vec2 bil(vec2 uv){
+     vec2 p = uv * u_res - 0.5; vec2 i = floor(p), f = fract(p);
+     vec2 a = texture(u_state, (i + 0.5) / u_res).rg, b = texture(u_state, (i + vec2(1.5, 0.5)) / u_res).rg;
+@@ -96,7 +97,7 @@
+       float sh = dot(grad, vec2(cos(u_lightAng), sin(u_lightAng))) * u_light * 7.0;
+       col = clamp(col * (1.0 + sh) + 0.3 * sh, 0.0, 1.0);
+     }
+-    outColor = vec4(col, 1.0);
++    outColor = vec4(dither8(col), 1.0);
+   }`;
+ 
+   /* ---------------- helpers ---------------- */
+diff --git a/src/modules/shallow.js b/src/modules/shallow.js
+index ca84fcf..23a506a 100644
+--- a/src/modules/shallow.js
++++ b/src/modules/shallow.js
+@@ -103,10 +103,11 @@ in vec2 v_uv; out vec4 outColor;
+ uniform sampler2D u_field; uniform vec2 u_res; uniform float u_low,u_high,u_exposure;
+ ${G.GLSL.bicubic}
+ ${G.GLSL.ramp}
++${G.GLSL.dither}
+ void main(){
+   float value=texCR(u_field,v_uv,u_res);
+   float t=clamp((value-u_low)/max(1e-8,u_high-u_low),0.0,1.0);
+-  outColor=vec4(ramp(clamp(0.5+(t-0.5)*u_exposure,0.0,1.0)),1.0);
++  outColor=vec4(dither8(ramp(clamp(0.5+(t-0.5)*u_exposure,0.0,1.0))),1.0);
+ }`;
+   function create(host) {
+     let gl, display;
+diff --git a/src/shared/engine.js b/src/shared/engine.js
+index 259f456..c5dfe00 100644
+--- a/src/shared/engine.js
++++ b/src/shared/engine.js
+@@ -343,6 +343,12 @@
+     // A field of a few hundred cells magnifies to thousands of pixels; nearest sampling turns that into a
+     // mosaic of hard squares and bilinear into mush. Catmull-Rom interpolates smoothly and keeps edges.
+     // Needs no filtering mode on the texture, so simulation passes that sample at exact texel centers are unaffected.
++    // Ordered dither of one code value peak to peak, added just before an 8-bit write. A smooth field
++    // written straight to 8 bits steps one code at a time, and on paper each step is a contour line;
++    // with this the steps become grain far below print resolution. R2 sequence (M. Roberts, 2018): a
++    // fixed function of the pixel, so a reprint is bit-identical and a still plate stays still.
++    dither: (typeof self !== 'undefined' && self.GENCHASE_NODITHER_SHADER) ? `vec3 dither8(vec3 c){ return c; }`
++      : `vec3 dither8(vec3 c){ float d = fract(dot(gl_FragCoord.xy, vec2(0.7548776662, 0.5698402909))); return c + (d - 0.5) / 255.0; }`,
+     bicubic: `float crW(float x){ x = abs(x);
+       if (x < 1.0) return 1.5*x*x*x - 2.5*x*x + 1.0;
+       if (x < 2.0) return -0.5*x*x*x + 2.5*x*x - 4.0*x + 2.0;
+@@ -2431,6 +2437,38 @@ void main(){
+     return lines;
+   }
+ 
++  // Average each 2x2 block of a supersampled render in floating point and quantize once, with the same
++  // R2 ordered dither as GLSL.dither. The canvas downscale this replaces rounded the average straight
++  // back to 8 bits, which re-cut the contour lines a shader's dither had just removed. Premultiplied, so
++  // a transparent pixel does not bleed its color. Strips keep the float work to a few megabytes.
++  async function halveDithered(im, rw, rh, job) {
++    const W = rw * 2, out = document.createElement('canvas'), strip = document.createElement('canvas');
++    out.width = rw; out.height = rh; strip.width = W;
++    const ox = out.getContext('2d'), sx = strip.getContext('2d', { willReadFrequently: true });
++    const rows = Math.max(1, Math.min(128, Math.floor(4e6 / (W * 8))));
++    for (let y0 = 0; y0 < rh; y0 += rows) {
++      if (job && job.abort) throw new Error('cancelled');
++      const n = Math.min(rows, rh - y0);
++      strip.height = 2 * n;
++      sx.drawImage(im, 0, 2 * y0, W, 2 * n, 0, 0, W, 2 * n);
++      const src = sx.getImageData(0, 0, W, 2 * n).data, img = ox.createImageData(rw, n), d = img.data;
++      for (let y = 0; y < n; y++) {
++        const r0 = 2 * y * W * 4, r1 = r0 + W * 4, Y = (y0 + y) * 0.5698402909;
++        for (let x = 0; x < rw; x++) {
++          const i = r0 + 8 * x, j = r1 + 8 * x, o = (y * rw + x) * 4;
++          const a0 = src[i + 3], a1 = src[i + 7], a2 = src[j + 3], a3 = src[j + 7], A = a0 + a1 + a2 + a3;
++          const t = x * 0.7548776662 + Y, dth = t - Math.floor(t) - 0.5;
++          if (A === 0) { d[o] = d[o + 1] = d[o + 2] = d[o + 3] = 0; continue; }
++          for (let k = 0; k < 3; k++) d[o + k] = (src[i + k] * a0 + src[i + 4 + k] * a1 + src[j + k] * a2 + src[j + 4 + k] * a3) / A + dth;
++          d[o + 3] = A * 0.25;
++        }
++      }
++      ox.putImageData(img, 0, y0);
++      await new Promise(r => setTimeout(r, 0));
++    }
++    strip.width = strip.height = 0;
++    return out;
++  }
+   function loadImage(url) {
+     return new Promise((res, rej) => {
+       const img = new Image();
+@@ -2675,11 +2713,15 @@ void main(){
+           const url = URL.createObjectURL(blob);
+           try {
+             const im = await loadImage(url);
+-            const c = document.createElement('canvas');
+-            c.width = rw; c.height = rh;
+-            const cx = c.getContext('2d');
+-            cx.imageSmoothingEnabled = true; cx.imageSmoothingQuality = 'high';
+-            cx.drawImage(im, 0, 0, rw, rh);
++            let c;
++            if (!self.GENCHASE_NODITHER_SS && im.naturalWidth === rw * 2 && im.naturalHeight === rh * 2) c = await halveDithered(im, rw, rh, job);
++            else {
++              c = document.createElement('canvas');
++              c.width = rw; c.height = rh;
++              const cx = c.getContext('2d');
++              cx.imageSmoothingEnabled = true; cx.imageSmoothingQuality = 'high';
++              cx.drawImage(im, 0, 0, rw, rh);
++            }
+             blob = await util.toBlob(c);
+           } catch (ssErr) {
+             blob = await e.inst.exportPNG(rw, rh); ss = 1;

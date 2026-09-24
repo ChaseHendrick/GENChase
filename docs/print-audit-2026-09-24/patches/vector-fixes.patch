@@ -1,0 +1,92 @@
+diff --git a/src/modules/apollonian.js b/src/modules/apollonian.js
+index e90aded..88b7323 100644
+--- a/src/modules/apollonian.js
++++ b/src/modules/apollonian.js
+@@ -65,7 +65,7 @@
+     palette: true, defaultPalette: 'kiln', surprise, sanitize,
+     create(host) {
+       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
+-      let W = 0, H = 0, field, metric = 0, extra = 0, integral = false, truncated = false, buf, img;
++      let W = 0, H = 0, field, circ = null, geo = null, metric = 0, extra = 0, integral = false, truncated = false, buf, img;
+       function sizeFrom(s) {
+         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
+         return { W: g, H: Math.max(48, Math.round(g * a)) };
+@@ -80,11 +80,13 @@
+         const cx = W / 2, cy = H / 2, R0 = Math.min(W, H) * 0.48;
+         field.fill(0);
+         const pack = apollonianPacking(depth,R0/.6), all=pack.circles;
++        circ = []; geo = { cx, cy, R0 };
+         truncated=pack.truncated; integral=all.every(c=>Number.isInteger(c.k));
+         for (let i = 0; i < all.length; i++) {
+           const c = all[i], g = c.g;
+           const circleX=cx+R0*c.x,circleY=cy+R0*c.y;
+           const rPix = R0 * c.r;
++          if (i > 0) circ.push({ x: circleX, y: circleY, r: rPix, v: kind === 'k' ? Math.log(1 + Math.abs(c.k)) : kind === 'fill' ? 1 : 0.2 + 0.8 * (g / Math.max(1, depth)) });
+           const x0 = Math.max(0, (circleX - rPix) | 0), x1 = Math.min(W - 1, (circleX + rPix) | 0);
+           const y0 = Math.max(0, (circleY - rPix) | 0), y1 = Math.min(H - 1, (circleY + rPix) | 0);
+           for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) {
+@@ -139,6 +141,26 @@
+       return {
+         aspect(s) { return ASPECTS[s.aspect] || 1; },
+         fieldCells() { return W && H ? [W, H] : null; },
++        // PROTOTYPE: the same circles, the same colour normalisation, emitted as geometry.
++        exportSVG(w, h) {
++          if (!circ) throw new Error('nothing to export');
++          const s = host.getState();
++          const pal = Array.isArray(s.palette) && s.palette.length ? s.palette : ['#111', '#eee'];
++          const ramp = U.makeRamp(pal, s.bg || '#111');
++          const exp = isFinite(s.exposure) && s.exposure > 0 ? s.exposure : 1, logv = s.view === 'log';
++          let lo = Infinity, hi = -Infinity;
++          for (let i = 0; i < field.length; i++) { const v = field[i]; if (v < lo) lo = v; if (v > hi) hi = v; }
++          const span = (hi - lo) || 1;
++          const col = v => { let t = (v - lo) / span; if (logv) t = Math.log(1.001 + 9 * Math.max(0, t)) / Math.log(10); t = U.clamp(t * exp, 0, 1); const c = ramp(isFinite(t) ? t : 0); return 'rgb(' + Math.round(c[0]) + ',' + Math.round(c[1]) + ',' + Math.round(c[2]) + ')'; };
++          const sx = w / W, sy = h / H, q = v => Math.round(v * 100) / 100;
++          let body = '<rect width="' + w + '" height="' + h + '" fill="' + col(0) + '"/>';
++          body += '<ellipse cx="' + q(geo.cx * sx) + '" cy="' + q(geo.cy * sy) + '" rx="' + q((geo.R0 - 0.6) * sx) + '" ry="' + q((geo.R0 - 0.6) * sy) + '" fill="none" stroke="' + col(0.4) + '" stroke-width="' + q(1.2 * sx) + '"/>';
++          for (const c of circ) {
++            if (c.r <= 1.1) { body += '<circle cx="' + q(c.x * sx) + '" cy="' + q(c.y * sy) + '" r="' + q(c.r * sx) + '" fill="' + col(c.v + 0.35) + '"/>'; continue; }
++            body += '<circle cx="' + q(c.x * sx) + '" cy="' + q(c.y * sy) + '" r="' + q((c.r - 0.55) * sx) + '" fill="' + col(c.v) + '" stroke="' + col(c.v + 0.35) + '" stroke-width="' + q(1.1 * sx) + '"/>';
++          }
++          return U.svgBlob(w, h, s.bg || '#111', body);
++        },
+         regenerate() { compute(); paint(); status(); },
+         repaint() { paint(); status(); },
+         resize() { paint(); },
+diff --git a/src/modules/growth.js b/src/modules/growth.js
+index fce0be0..eb91892 100644
+--- a/src/modules/growth.js
++++ b/src/modules/growth.js
+@@ -611,7 +611,7 @@
+           const s = host.getState();
+           if (!sim || !sim.rings) return null;
+           const Wout = w || 1000, Hout = h || Math.round(Wout * (ASPECTS[s.aspect] || 1));
+-          const sx = Wout / W, sy = Hout / H;
++          const sx = Wout / W, sy = Hout / sim.H;
+           const pal = s.palette || ['#111'];
+           const lw = (s.strokeWidth || 1) * Math.min(sx, sy);
+           let body = '';
+diff --git a/src/modules/stealth.js b/src/modules/stealth.js
+index 240c07d..dd45aa8 100644
+--- a/src/modules/stealth.js
++++ b/src/modules/stealth.js
+@@ -279,7 +279,19 @@
+ 
+       return {
+         aspect(s) { return ASPECTS[s.aspect] || 1; },
+-        fieldCells() { return W && H ? [W, H] : null; },
++        fieldCells() { return W && H && host.getState().view !== 'points' ? [W, H] : null; },
++        // PROTOTYPE: the points view is N discs; emit them.
++        exportSVG(w, h) {
++          const s = host.getState();
++          if (s.view !== 'points') return null;
++          if (!px) throw new Error('nothing to export');
++          const pal = Array.isArray(s.palette) && s.palette.length ? s.palette : ['#C4472B', '#E8A33C', '#1E1B18'];
++          const ink = pal[pal.length - 1] || '#1E1B18';
++          const r = Math.max(0.8, s.dot), sx = w / W, sy = h / H, q = v => Math.round(v * 100) / 100;
++          let body = '<g fill="' + ink + '">';
++          for (let i = 0; i < N; i++) body += '<ellipse cx="' + q(px[i] * W * sx) + '" cy="' + q(py[i] * H * sy) + '" rx="' + q(r * sx) + '" ry="' + q(r * sy) + '"/>';
++          return U.svgBlob(w, h, s.bg || '#F1E8D8', body + '</g>');
++        },
+         regenerate() {
+           const s = host.getState();
+           const sz = sizeFrom(s);
