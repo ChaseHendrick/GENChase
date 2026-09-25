@@ -8,7 +8,7 @@ Fill the arXiv form with the fields below.
 - **Primary category:** physics.flu-dyn (Fluid Dynamics)
 - **Cross-lists:** math-ph (Mathematical Physics), math.DS (Dynamical Systems)
 - **MSC class:** 76B47, 37N10
-- **Comments:** `13 pages, 1 figure, 1 table. Verification programs and data: https://github.com/ChaseHendrick/minimal-winding`
+- **Comments:** `14 pages, 1 figure, 1 table. Verification programs and data: https://github.com/ChaseHendrick/minimal-winding`
   - The page count is the LaTeX build's, which is the PDF in the repository.
 - **License:** arXiv.org perpetual, non-exclusive license (**decided 2026-09-25**). You keep every right: anyone can read and download the paper, nobody may republish or adapt it without your permission, and a journal can still take a copyright transfer when it accepts the paper. CC BY 4.0 would let anyone reuse and republish the text with attribution; choose it only if a funder or journal requires open reuse. The choice is irrevocable for the version you submit, though a later version may carry a different license.
 - **Report number, journal reference, DOI:** leave blank.

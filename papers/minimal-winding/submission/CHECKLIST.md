@@ -14,7 +14,7 @@ submission.
 ## Ready
 
 - The manuscript in both formats, with the figure `paper/figures/minimal-winding.pdf`, and its
-  LaTeX build `paper/minimal-winding.pdf` (13 pages), the same PDF arXiv will build. The author block
+  LaTeX build `paper/minimal-winding.pdf` (14 pages since the direct proof of Corollary 1 was added on 2026-09-25), the same PDF arXiv will build. The author block
   carries the contact email (owner's decision, 2026-09-24).
 - The LaTeX and Typst texts cite the same 26 works in the same places. Every work cited in the
   LaTeX source has an entry in its own bibliography, and every entry is cited.
