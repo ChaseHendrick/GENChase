@@ -120,6 +120,9 @@ const recipes = {
   coincide: Object.assign({}, def.defaults, { kind: 'custom', x2: -0.5 }),
   octant: Object.assign({}, def.defaults),
 };
+// The status line as plain text, for the assertions below: every character outside a tag. A character
+// scan, not a regex replace, so no tag can survive the way a single-pass replace lets one through.
+const textOf = h => { let out = '', inTag = false; for (const ch of h) { if (ch === '<') inTag = true; else if (ch === '>') inTag = false; else if (!inTag) out += ch; } return out; };
 const status = {};
 for (const [name, st] of Object.entries(recipes)) {
   def.sanitize(st);
@@ -127,7 +130,7 @@ for (const [name, st] of Object.entries(recipes)) {
   const inst = def.create({ canvas: { width: 64, height: 64, getContext: () => noop }, getState: () => st, setStatus: x => { html = x; }, reducedMotion: () => true, isActive: () => false });
   inst.regenerate();
   assert(html && !/NaN|undefined<\/b>|unavailable/.test(html.replace('L <b>undefined</b>', '')), name + ': ' + html);
-  status[name] = html.replace(/<[^>]+>/g, '');
+  status[name] = textOf(html);
 }
 assert(/RK4 to t/.test(status.default) && /ΔH/.test(status.default), status.default);
 assert(/collapse · κ/.test(status.projected) && /sharp bound P (>|&gt;) √3\/2/.test(status.projected), status.projected);
