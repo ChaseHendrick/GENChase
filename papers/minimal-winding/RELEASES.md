@@ -5,7 +5,7 @@ has not been peer reviewed.
 
 ## Unreleased
 
-Changes since v1.0.0, to appear in the next release (the paper grows from 14 to 33 pages):
+Changes since v1.0.0, to appear in the next release (the paper grows from 14 to 36 pages):
 
 - **A new title and one paper instead of two.** The paper is now *Minimal Winding in the Self-Similar
   Collapse of Point Vortices*. The separate draft on the α-models (*A sharp winding bound for the
@@ -30,16 +30,25 @@ Changes since v1.0.0, to appear in the next release (the paper grows from 14 to 
   0.4773635.
 - New programs: `code/certify_collapses.py` (92 checks, with its `certify_*.py` modules),
   `code/certify_sqg60.py` (11 checks, reusing those modules), `code/verify_strong_vortex.py`
-  (143 checks), `code/verify_alpha_winding.py`,
+  (143 checks), `code/verify_pairs_bound.py` (69 checks), `code/verify_alpha_winding.py`,
   `code/verify_alpha_below.py`, `code/verify_alpha_equal_circulations.py`,
   `code/verify_many_vortices.py` and `code/plot_alpha_winding.py`, and the stored many-vortex
   configurations in `data/`.
 - **Why the same constant appears twice** (Theorem 3). A strong vortex carrying any number of weak, tight
   pairs of opposite sign has P ≥ √3/2 − o(1) as the pairs weaken, and P comes close to √3/2 only when every
   pair is tilted at 60° to the direction away from the strong vortex and all pairs are at the same
-  distance. This is an asymptotic statement, not a bound at fixed strength. It explains why √3/2 is the
-  limit both for three vortices and for the rings with a central vortex; it credits Krishnamurthy and
-  Stremler (2018), who describe the one-pair picture without the rotation.
+  distance. It explains why √3/2 is the limit both for three vortices and for the rings with a central
+  vortex; it credits Krishnamurthy and Stremler (2018), who describe the one-pair picture without the
+  rotation.
+- **The bound at a fixed strength for weak pairs** (Proposition 4). Once the pairs are weaker than a
+  threshold, which depends only on the number of pairs and the constant of the class but is not explicit,
+  P ≥ √3/2 + (√3/8)c²γ² > √3/2. Near equality the bound sharpens to P ≥ √3/2 + (C* − Kγ)γ², with an
+  explicit coefficient C* ≥ (√3/4) min a_j² built from the directions of the pairs, and a sum-of-squares
+  identity shows that the weighted mean of its terms is positive. The coefficient is attained, up to
+  O(γ³), by the rings with a central vortex and by three vortices, and numerically by the other exact
+  collapses computed (Remark 6). A new
+  program, `code/verify_pairs_bound.py` (69 checks), checks every identity of the proof exactly and the
+  remainder bounds on random configurations and on exact collapses at 50 digits.
 - **A comparison with gravity**, in the Discussion: a Newtonian collapse that keeps its shape needs zero
   angular momentum and then falls straight in (Wintner 1941), whereas three vortices, and the ring
   configurations, cannot collapse without turning.

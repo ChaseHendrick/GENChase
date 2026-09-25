@@ -4,7 +4,7 @@
 
 Preprint, prepared for arXiv (physics.flu-dyn; cross-lists math-ph, math.DS). Not yet peer reviewed.
 
-**[Read the paper (PDF, 33 pages)](paper/minimal-winding.pdf)**
+**[Read the paper (PDF, 36 pages)](paper/minimal-winding.pdf)**
 
 ## Abstract
 
@@ -21,7 +21,7 @@ $\alpha$-models, where a vortex induces the velocity $\Gamma r^{-\alpha-1}/(2\pi
 collapse of three vortices has $P > \sqrt{3 + \alpha}/(2 + \alpha)$ for $\alpha > -2$, again sharply.
 For two concentric regular $n$-gons, with or without a vortex at the center, $P$ has a closed form, and
 its minimum is explicit and exceeds $\sqrt{3}/2$. A strong vortex with weak, tight opposite-signed pairs
-has $P \ge \sqrt{3}/2 - o(1)$ as the pairs weaken. For more vortices the bound fails. Computer-assisted
+has $P > \sqrt{3}/2$ once the pairs are weak enough. For more vortices the bound fails. Computer-assisted
 proofs show that four, five and six Euler vortices collapse self-similarly with $P < \sqrt{3}/2$, that
 $P$ has strict local minima $0.7978967838\ldots$, $0.7448144569\ldots$ and $0.7136801485\ldots$ on these
 collapses, that for $\alpha = 1$ and $\alpha = 2$ four vortices go below the three-vortex bounds, and
@@ -34,7 +34,7 @@ Numerically, sixty-one Euler vortices reach $P = 0.498\ldots$.
 |---|---|
 | [`paper/`](paper/) | The manuscript: [`minimal-winding.tex`](paper/minimal-winding.tex) (LaTeX, the only source, which arXiv and journals receive), its build [`minimal-winding.pdf`](paper/minimal-winding.pdf), and [`figures/`](paper/figures/) |
 | [`code/`](code/) | The programs below and [`requirements.txt`](code/requirements.txt) |
-| [`data/`](data/) | The output of the eleven verification programs, the inputs of the certification, and the stored many-vortex configurations of Section 7 |
+| [`data/`](data/) | The output of the twelve verification programs, the inputs of the certification, and the stored many-vortex configurations of Section 7 |
 
 | Program | What it checks |
 |---|---|
@@ -43,6 +43,7 @@ Numerically, sixty-one Euler vortices reach $P = 0.498\ldots$.
 | [`verify_direct_proof.py`](code/verify_direct_proof.py) | Every identity in the direct proof of Corollary 1, exact, a few seconds |
 | [`verify_central_vortex.py`](code/verify_central_vortex.py) | Proposition 3, two rings with a central vortex, and the leading-order relations used in the proof of Theorem 3: 80 checks, about 10 s |
 | [`verify_strong_vortex.py`](code/verify_strong_vortex.py) | Theorem 3, a strong vortex with weak pairs: every identity in the proof, its explicit constants, exact self-similar solutions checked by Biot–Savart, and negative controls; 143 checks, about 17 s |
+| [`verify_pairs_bound.py`](code/verify_pairs_bound.py) | Proposition 4, the bound at a fixed circulation for weak pairs: every identity in the proof and in Remark 6 exactly (SymPy), the remainder bounds on random configurations with negative controls, and 90 exact self-similar collapses checked by Biot–Savart at 50 digits; 69 checks, about 30 s |
 | [`verify_alpha_winding.py`](code/verify_alpha_winding.py) | The α-models: Lemmas 5 and 6, Theorem 2 and Corollary 2 at high precision, about 15 s |
 | [`verify_alpha_below.py`](code/verify_alpha_below.py) | Remark 4, Theorem 2 for −2 < α ≤ −1: every identity exactly (SymPy), the constants and an independent interval subdivision in Arb ball arithmetic, Biot–Savart at 50 to 950 digits, near-extremal collapses and negative controls; about 15 s |
 | [`verify_alpha_equal_circulations.py`](code/verify_alpha_equal_circulations.py) | Remark 5, two equal circulations in the α-models, exact and at 40 digits, about 10 s |
@@ -62,6 +63,7 @@ python3 code/verify_floors_independent.py --json data/verify-floors-independent-
 python3 code/verify_direct_proof.py
 python3 code/verify_central_vortex.py
 python3 code/verify_strong_vortex.py
+python3 code/verify_pairs_bound.py
 python3 code/verify_alpha_winding.py
 python3 code/verify_alpha_below.py
 python3 code/verify_alpha_equal_circulations.py

@@ -1,6 +1,7 @@
-Checks of Theorem 2 (a strong vortex with m weak tight pairs). Parts 1 and 2 are exact or check the explicit
+Checks of Theorem 3 (a strong vortex with m weak tight pairs). Parts 1 and 2 are exact or check the explicit
 bounds of the proof; parts 3 and 4 are numerical and illustrate the theorem without proving it: P > sqrt(3)/2
-at a fixed gamma and the gamma^2 rate of P_min - sqrt(3)/2 are numerical observations only.
+at the fixed gamma used here is a numerical observation (Proposition 4 proves it only below a threshold that is
+not explicit; verify_pairs_bound.py checks that proof).
 
 1. Identities used in the proof (SymPy, exact)
 OK    [Step 2] (eq:pairZ) sum at Z_1 = 1/Z_1 + gamma b_1/d_1 + sum_{l != 1} f_l(Z_1)
@@ -156,14 +157,14 @@ OK       every solve converged; Biot-Savart residual of all 7 vortices < 1e-40; 
 OK       in (eq:class) with c = 1/2, gamma <= gamma_0 = 0.005208, and the bounds of Steps 1-3 hold on it (|z_c|, |kappa|, |rho_j|, |nu_j|)   [|kappa| = 0.2757 <= 15.28, max |rho_j| = 0.00015 <= 0.211]
 OK       sqrt(3)/2 < P_min < sqrt(3)/2 + 3 gamma^2 (numerical observation)   [P_min - sqrt3/2 = 2.3717e-8]
 OK       every pair agrees with the O(gamma) corrections of part 1 (nu = 1 - gamma a, p = 1/2 - gamma a (y^2 + 1/4)/2) to O(gamma^2)   [largest deviation/gamma^2 = 3.895]
-OK    m = 1 (three vortices): P_min decreases to sqrt(3)/2 as gamma = 1e-2, 1e-3, 1e-4, and u_j -> e^{i pi/3}, nu_j -> 1, |Z_j|/|Z_l| -> 1 (Theorem 2(b))
-OK    m = 1 (three vortices): |P - (y_j^2 + 3/4)/(2 y_j)| -> 0 and p_j -> 1/2 for every pair (Theorem 2(c))
+OK    m = 1 (three vortices): P_min decreases to sqrt(3)/2 as gamma = 1e-2, 1e-3, 1e-4, and u_j -> e^{i pi/3}, nu_j -> 1, |Z_j|/|Z_l| -> 1 (Theorem 3(b))
+OK    m = 1 (three vortices): |P - (y_j^2 + 3/4)/(2 y_j)| -> 0 and p_j -> 1/2 for every pair (Theorem 3(c))
 OK    m = 1 (three vortices): |z_c|/gamma^2, |rho_j|/gamma, the remainder of eq:rate/gamma and eq:imp/gamma stay bounded (Steps 3-4)   [|z_c|/gamma^2 = 0.9924, 0.9992, 0.9999; largest of the others 0.9929, 0.9993, 0.9999]
-OK    m = 3 symmetric: P_min decreases to sqrt(3)/2 as gamma = 1e-2, 1e-3, 1e-4, and u_j -> e^{i pi/3}, nu_j -> 1, |Z_j|/|Z_l| -> 1 (Theorem 2(b))
-OK    m = 3 symmetric: |P - (y_j^2 + 3/4)/(2 y_j)| -> 0 and p_j -> 1/2 for every pair (Theorem 2(c))
+OK    m = 3 symmetric: P_min decreases to sqrt(3)/2 as gamma = 1e-2, 1e-3, 1e-4, and u_j -> e^{i pi/3}, nu_j -> 1, |Z_j|/|Z_l| -> 1 (Theorem 3(b))
+OK    m = 3 symmetric: |P - (y_j^2 + 3/4)/(2 y_j)| -> 0 and p_j -> 1/2 for every pair (Theorem 3(c))
 OK    m = 3 symmetric: |z_c|/gamma^2, |rho_j|/gamma, the remainder of eq:rate/gamma and eq:imp/gamma stay bounded (Steps 3-4)   [|z_c|/gamma^2 = 1.044e-49, 0.0, 1.631e-47; largest of the others 0.9912, 0.9991, 0.9999]
-OK    m = 3 asymmetric: P_min decreases to sqrt(3)/2 as gamma = 1e-2, 1e-3, 1e-4, and u_j -> e^{i pi/3}, nu_j -> 1, |Z_j|/|Z_l| -> 1 (Theorem 2(b))
-OK    m = 3 asymmetric: |P - (y_j^2 + 3/4)/(2 y_j)| -> 0 and p_j -> 1/2 for every pair (Theorem 2(c))
+OK    m = 3 asymmetric: P_min decreases to sqrt(3)/2 as gamma = 1e-2, 1e-3, 1e-4, and u_j -> e^{i pi/3}, nu_j -> 1, |Z_j|/|Z_l| -> 1 (Theorem 3(b))
+OK    m = 3 asymmetric: |P - (y_j^2 + 3/4)/(2 y_j)| -> 0 and p_j -> 1/2 for every pair (Theorem 3(c))
 OK    m = 3 asymmetric: |z_c|/gamma^2, |rho_j|/gamma, the remainder of eq:rate/gamma and eq:imp/gamma stay bounded (Steps 3-4)   [|z_c|/gamma^2 = 1.307, 1.339, 1.342; largest of the others 1.478, 1.498, 1.5]
 OK    m = 1: (P_min - sqrt3/2)/gamma^2 agrees with the expansion (3 sqrt3/4)(1 - gamma) of part 1 to O(gamma^2)   [1.2860809, 1.2977394, 1.2989082; 3 sqrt3/4 = 1.2990381]
 OK    m = 3 symmetric: (P_min - sqrt3/2)/gamma^2 increases to sqrt3 (1 + 2*3^2)/36 = 19 sqrt3/36 (Proposition 3), the gap shrinking like gamma   [0.90490549, 0.91322284, 0.9140465; 19 sqrt3/36 = 0.91413793]
@@ -193,7 +194,7 @@ OK    rings, n = 2, 3, 5, 7, Gamma0 = 1e2..1e6, minimizing theta (m = n, gamma =
 OK       and u_j -> e^{i pi/3}, nu_j -> 1, theta/t -> sqrt(3), P -> sqrt(3)/2 (each deviation < 10/Gamma0)
 5. Negative controls (each must fail as described)
 OK    "P >= sqrt(3)/2 for every self-similar collapse" is false: the seven-vortex collapse of Demina and Kudryashov is self-similar (all 7 vortices, zero impulse) with P = 12433/(1240 sqrt 155) < sqrt(3)/2   [P = 0.805356928729, residual 3.65e-51]
-OK       it is not of the form of Theorem 2 for any c and gamma: its six weaker vortices are 4 positive and 2 negative, not m opposite pairs
+OK       it is not of the form of Theorem 3 for any c and gamma: its six weaker vortices are 4 positive and 2 negative, not m opposite pairs
 OK       its other circulations are 0.33, 0.35, 0.49 times the central one (no dominant vortex), far above gamma_0/c = c^2/(8m) <= 1/24 (m = 3), the largest weak/strong ratio covered by the explicit bounds of the proof
 OK       and its nearest opposite-sign neighbours are separated by 0.38 times their distance from the center (not tight; in the class with gamma <= gamma_0 this is at most gamma_0/c <= 1/24)
 OK    asymmetric m = 3, gamma = 1e-3, parametrized by Im u_1 = sqrt(3)/2 (the fold of part 1): Newton does not converge and the residual test rejects the point   [scaled residual 5.83e-6, Biot-Savart residual 2.09e-6]
@@ -204,5 +205,5 @@ OK    without the angular impulse Case B is not excluded: u = -1, nu = 1 solves 
 OK    "P_min > sqrt(3)/2 + 1e-7" is false at gamma = 1e-4 for m = 1, symmetric and asymmetric m = 3: the constant is sharp
 OK    "u_j = e^{i pi/3} exactly" is false at gamma = 1e-2 (the theorem is asymptotic)
 
-143 checks, runtime 17 s
+143 checks, runtime 25 s
 all checks passed

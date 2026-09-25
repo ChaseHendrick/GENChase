@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""Checks of Theorem 2 of the manuscript (paper/minimal-winding.tex): a strong vortex of circulation 1 at the
+"""Checks of Theorem 3 of the manuscript (paper/minimal-winding.tex): a strong vortex of circulation 1 at the
 origin and m weak pairs, circulation gamma a_j at Z_j and -gamma b_j at W_j, in the class (eq:class) with one
 constant 0 < c <= 1:
     c <= a_j, b_j <= 1/c,  c <= |Z_j| <= 1/c,  c gamma |Z_j| <= |W_j - Z_j| <= gamma |Z_j|/c,  |Z_j - Z_l| >= c.
@@ -42,8 +42,11 @@ with Re kappa < 0, and P = |Im kappa|/(-2 Re kappa).
      with u_j -> e^{i pi/3}, nu_j -> 1 and P -> sqrt(3)/2.
   5. Negative controls: checks that must fail do fail.
 
-Parts 3 and 4 illustrate the theorem; they are not part of its proof. In particular P > sqrt(3)/2 at a fixed
-gamma, and the rate P_min - sqrt(3)/2 ~ K gamma^2, are numerical observations only; the theorem is asymptotic.
+Parts 3 and 4 illustrate the theorem; they are not part of its proof. The theorem is asymptotic. Proposition 4
+proves P >= sqrt(3)/2 + (sqrt(3)/8) c^2 gamma^2 for gamma below a threshold that is not explicit, with the sharper
+coefficient C_* of its Remark 6 near equality (checked by verify_pairs_bound.py); so at the fixed gamma = 1e-2, 1e-3,
+1e-4 used here, P > sqrt(3)/2 is a numerical observation, and so is the exact coefficient of gamma^2 in
+P_min - sqrt(3)/2 for m = 3 unequal pairs.
 Convention (eq:bs): conj(dz_j/dt) = (1/(2 pi i)) sum_{k != j} Gamma_k/(z_j - z_k). Needs sympy and mpmath
 (code/requirements.txt). Run: python3 verify_strong_vortex.py. Prints every check; exits with status 1 if any
 fails. Runs in under a minute.
@@ -71,9 +74,10 @@ def zero(name, e, detail=''):
     check(name, sp.simplify(sp.together(e)) == 0, detail)
 
 
-print('Checks of Theorem 2 (a strong vortex with m weak tight pairs). Parts 1 and 2 are exact or check the explicit')
+print('Checks of Theorem 3 (a strong vortex with m weak tight pairs). Parts 1 and 2 are exact or check the explicit')
 print('bounds of the proof; parts 3 and 4 are numerical and illustrate the theorem without proving it: P > sqrt(3)/2')
-print('at a fixed gamma and the gamma^2 rate of P_min - sqrt(3)/2 are numerical observations only.')
+print('at the fixed gamma used here is a numerical observation (Proposition 4 proves it only below a threshold that is')
+print('not explicit; verify_pairs_bound.py checks that proof).')
 print()
 
 # ============================================================================ 1. identities of the proof
@@ -667,13 +671,13 @@ LAB3 = ('m = 1 (three vortices)', 'm = 3 symmetric', 'm = 3 asymmetric')
 GAMS = ('1e-2', '1e-3', '1e-4')
 for label in LAB3:
     rr = [results[(label, gs)] for gs in GAMS]
-    check('%s: P_min decreases to sqrt(3)/2 as gamma = 1e-2, 1e-3, 1e-4, and u_j -> e^{i pi/3}, nu_j -> 1, |Z_j|/|Z_l| -> 1 (Theorem 2(b))' % label,
+    check('%s: P_min decreases to sqrt(3)/2 as gamma = 1e-2, 1e-3, 1e-4, and u_j -> e^{i pi/3}, nu_j -> 1, |Z_j|/|Z_l| -> 1 (Theorem 3(b))' % label,
           rr[0]['P'] > rr[1]['P'] > rr[2]['P'] > S3 and
           all(max(abs(q - EPI3) for q in rr[i + 1]['us']) < max(abs(q - EPI3) for q in rr[i]['us']) / 5 for i in range(2)) and
           all(max(abs(q - 1) for q in rr[i + 1]['nu']) < max(abs(q - 1) for q in rr[i]['nu']) / 5 for i in range(2)) and
           max(abs(q - EPI3) for q in rr[2]['us']) < mp.mpf('1e-3') and
           max(abs(abs(Z1_)/abs(Z2_) - 1) for Z1_ in rr[2]['Zs'] for Z2_ in rr[2]['Zs']) < mp.mpf('1e-3'))
-    check('%s: |P - (y_j^2 + 3/4)/(2 y_j)| -> 0 and p_j -> 1/2 for every pair (Theorem 2(c))' % label,
+    check('%s: |P - (y_j^2 + 3/4)/(2 y_j)| -> 0 and p_j -> 1/2 for every pair (Theorem 3(c))' % label,
           all(max(abs(rr[i]['P'] - q) for q in rr[i]['gy']) < mp.mpf('1e-3') for i in range(3)) and
           max(abs(rr[2]['P'] - q) for q in rr[2]['gy']) < max(abs(rr[0]['P'] - q) for q in rr[0]['gy'])/50 and
           max(abs(q.real - mp.mpf(1)/2) for q in rr[2]['us']) < mp.mpf('1e-3'))
@@ -791,7 +795,7 @@ check('"P >= sqrt(3)/2 for every self-similar collapse" is false: the seven-vort
       and abs(Pdk - mp.mpf(12433)/(1240*mp.sqrt(155))) < ACCEPT and Pdk < S3, 'P = %s, residual %s' % (mp.nstr(Pdk, 12), mp.nstr(res, 3)))
 npos = sum(1 for G in Gl[1:] if G > 0)
 nneg = sum(1 for G in Gl[1:] if G < 0)
-check('   it is not of the form of Theorem 2 for any c and gamma: its six weaker vortices are %d positive and %d negative, not m opposite pairs'
+check('   it is not of the form of Theorem 3 for any c and gamma: its six weaker vortices are %d positive and %d negative, not m opposite pairs'
       % (npos, nneg), npos != nneg)
 ratios = sorted(set(mp.nstr(abs(G)/G0, 2) for G in Gl[1:]))
 check('   its other circulations are %s times the central one (no dominant vortex), far above gamma_0/c = c^2/(8m) <= 1/24 (m = 3),'
