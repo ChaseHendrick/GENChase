@@ -513,6 +513,8 @@ No record has an outside review yet; every review so far was done inside the pro
 - Completed review covers only the four enumerated family recipes for this module; wider angular samples validate kernels, not every rendering setting.
 - Singular endpoints, expanding orientations, arbitrary broken-family dynamics, animation, bead/space views, captions, custom paper, Canvas2D export fallback and physical-fluid interpretation are excluded.
 - Time-index correction changes old recipes: requested 0.92 now reaches 0.92 collapse times, rather than approximately 0.8464. Historical originality remains unconfirmed.
+- Custom configuration mode (kind custom, added 2026-09-25) computes user-entered circulations and positions; its numbers are computed, not validated beyond the documented checks. tools/three-vortex-custom-check.js is a binary64 formula regression test: Biot-Savart velocities against an independent complex sum on 300 random configurations, kappa and P against Lemma 3 and Eq. (10) of papers/minimal-winding on 936 family cases, the Make it collapse projection on 300 random inputs, and two mutation controls (kernel sign, P without its factor 2). Independent high-precision evidence and a browser plate and print review of the custom mode are pending.
+- The source fingerprint changed on 2026-09-25 to add the custom mode. The code paths of the four reviewed recipes are unchanged, but tools/vortex-family-review.js was not rerun for this fingerprint.
 
 ### parallelogram-lock
 

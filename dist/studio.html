@@ -5911,17 +5911,20 @@ shall not be misrepresented as the original profile.
   {
     "id": "three-vortex-bound",
     "source": "src/modules/three-vortex-bound.js",
-    "sourceSha256": "b7c4b23da19c1f5bcb5ffa43fff089b158b77a8e54bbb9b6e11daf2e4499fc9f",
-    "reference": "Three-vortex collapse bound: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 \u003c θ \u003c π/2. θ is the third vortex's place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula explicitly specializes and reparameterizes the spiral coefficient in Gröbli (1877), section 10. Kimura, J. Phys. Soc. Jpn. 56, 2024 (1987), section 4, gives the collapse and rotation rates A and B in this same parametrization, for circulations (2, 2, −1), and their ratio B/(−2A) is this formula; he minimizes the collision time instead, at cos 2θ = 3/5, where the product is 3/2, the value it also takes at θ = 45°. It was independently derived here and recorded on 2026-09-19. Priority of the optimized minimum remains unconfirmed; see identities/ORIGINALITY-FOLLOWUP.md, identities/NOVELTY-AUDIT.md and IDENTITIES.md. Cite as Three-vortex collapse bound. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 misses and the status line marks miss. The picture still draws.",
+    "sourceSha256": "a82138f54923bcfaf3035eadb054825adcd0dd73e0119a91766e15e8cebc3a3a",
+    "reference": "Three-vortex collapse bound: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 \u003c θ \u003c π/2. θ is the third vortex's place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula explicitly specializes and reparameterizes the spiral coefficient in Gröbli (1877), section 10. Kimura, J. Phys. Soc. Jpn. 56, 2024 (1987), section 4, gives the collapse and rotation rates A and B in this same parametrization, for circulations (2, 2, −1), and their ratio B/(−2A) is this formula; he minimizes the collision time instead, at cos 2θ = 3/5, where the product is 3/2, the value it also takes at θ = 45°. It was independently derived here and recorded on 2026-09-19. Priority of the optimized minimum remains unconfirmed; see identities/ORIGINALITY-FOLLOWUP.md, identities/NOVELTY-AUDIT.md and IDENTITIES.md. Cite as Three-vortex collapse bound. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 misses and the status line marks miss. The picture still draws. Custom takes any three circulations and positions, computes their Biot-Savart velocities in the same convention, and tests the classical conditions for self-similar collapse, Σ ΓᵢΓⱼ = 0 and zero angular impulse about the center of vorticity (Gröbli 1877; Aref, Phys. Fluids 22, 393 (1979) and 057104 (2010)). Its normalization, circulations (1, μ, −μ/(1+μ)) on the zero-impulse circle, is that of Gotoda, J. Dyn. Differ. Equ. 33, 1759 (2021). The bound P = |ω₀| t_c > √3/2 over every three-vortex collapse, printed beside a custom collapse, is from this project's manuscript Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons (papers/minimal-winding), which has not been peer reviewed.",
     "equation": "ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2  on  Γ = (1, 1, −1/2), L = 0;  equality at tan θ = 1/√2",
     "status": "validated within stated limits",
     "limitations": [
       "Completed review covers only the four enumerated family recipes for this module; wider angular samples validate kernels, not every rendering setting.",
       "Singular endpoints, expanding orientations, arbitrary broken-family dynamics, animation, bead/space views, captions, custom paper, Canvas2D export fallback and physical-fluid interpretation are excluded.",
-      "Time-index correction changes old recipes: requested 0.92 now reaches 0.92 collapse times, rather than approximately 0.8464. Historical originality remains unconfirmed."
+      "Time-index correction changes old recipes: requested 0.92 now reaches 0.92 collapse times, rather than approximately 0.8464. Historical originality remains unconfirmed.",
+      "Custom configuration mode (kind custom, added 2026-09-25) computes user-entered circulations and positions; its numbers are computed, not validated beyond the documented checks. tools/three-vortex-custom-check.js is a binary64 formula regression test: Biot-Savart velocities against an independent complex sum on 300 random configurations, kappa and P against Lemma 3 and Eq. (10) of papers/minimal-winding on 936 family cases, the Make it collapse projection on 300 random inputs, and two mutation controls (kernel sign, P without its factor 2). Independent high-precision evidence and a browser plate and print review of the custom mode are pending.",
+      "The source fingerprint changed on 2026-09-25 to add the custom mode. The code paths of the four reviewed recipes are unchanged, but tools/vortex-family-review.js was not rerun for this fingerprint."
     ],
     "remaining": [
-      "Extend recipes, rendering paths and hardware only with additional reviewed evidence."
+      "Extend recipes, rendering paths and hardware only with additional reviewed evidence.",
+      "Custom mode: an independent high-precision (mpmath) check of velocities, self-similarity and P, a browser plate and print review, and a rerun of tools/vortex-family-review.js --write."
     ],
     "numerical": [
       {
@@ -6682,7 +6685,7 @@ shall not be misrepresented as the original profile.
     }
   }
 ]</script>
-<script type="application/json" id="build-info">{"build":"1e458d3eb129","fingerprint":"1e458d3eb12925f3839706e024abcbf2bb91290a79baed560c65dfc686efa2ea","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"15697e484ffa6d7798656f45f37a454771f5c7553a1e54c2dcabcc4cf63bb4a3","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de","src/modules/attractors.js":"b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f","src/modules/aztec.js":"38ffddc95db3b644c9d21cf1c727658e692f0c214bc35ab5fb64bf54ecb6da01","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"8d0b74da1421a27ed96ab181bdec73c7916f555be2864d0fa125052a62dcfbb1","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"0b47f4a2be263c2ebcffd1bd83465a930378e69dbf49310f9ab99d1eeaa0e82e","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"a54ee62f409482114806816788d03c2c54701ea560a286ba45c2a98208b02652","src/modules/hopf.js":"2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00","src/modules/cloak.js":"2ee7bbe0424ab1f6a7fbe8647064fa0ef2d3864f9139a727078160dffcb0947b","src/modules/vortex.js":"0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e","src/modules/darkroom.js":"6ec1d4c99ec1b402dcbc098cb31b1682967fec6272aab18d4501745505f40293","src/modules/kakeya.js":"74020ed1415b3f4bd8b99866d9ab093ba190908a77a7e0e435704941d9b2fbdd","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008","src/modules/kitaev.js":"f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6","src/modules/veselago.js":"eb6d985b791127b6665a1d6b29f0a63e56fc35ae6d75930b62a9d75f3bd07b59","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"00f6c7d38161097ff2293009d10134e8fa072bfda358a1c7613d4a87e297332c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"b7c4b23da19c1f5bcb5ffa43fff089b158b77a8e54bbb9b6e11daf2e4499fc9f","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"partially validated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"validated within stated limits","skin":"unvalidated","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"validated within stated limits","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"validated within stated limits","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"validated within stated limits","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"partially validated","percolation":"validated within stated limits","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"validated within stated limits","caustics":"unvalidated","veselago":"partially validated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
+<script type="application/json" id="build-info">{"build":"837686fc9e43","fingerprint":"837686fc9e435d7b8d17326ba71256ee59e38b2a3111b88917a0d4edd328c5de","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"15697e484ffa6d7798656f45f37a454771f5c7553a1e54c2dcabcc4cf63bb4a3","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de","src/modules/attractors.js":"b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f","src/modules/aztec.js":"38ffddc95db3b644c9d21cf1c727658e692f0c214bc35ab5fb64bf54ecb6da01","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"8d0b74da1421a27ed96ab181bdec73c7916f555be2864d0fa125052a62dcfbb1","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"0b47f4a2be263c2ebcffd1bd83465a930378e69dbf49310f9ab99d1eeaa0e82e","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"a54ee62f409482114806816788d03c2c54701ea560a286ba45c2a98208b02652","src/modules/hopf.js":"2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00","src/modules/cloak.js":"2ee7bbe0424ab1f6a7fbe8647064fa0ef2d3864f9139a727078160dffcb0947b","src/modules/vortex.js":"0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e","src/modules/darkroom.js":"6ec1d4c99ec1b402dcbc098cb31b1682967fec6272aab18d4501745505f40293","src/modules/kakeya.js":"74020ed1415b3f4bd8b99866d9ab093ba190908a77a7e0e435704941d9b2fbdd","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008","src/modules/kitaev.js":"f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6","src/modules/veselago.js":"eb6d985b791127b6665a1d6b29f0a63e56fc35ae6d75930b62a9d75f3bd07b59","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"00f6c7d38161097ff2293009d10134e8fa072bfda358a1c7613d4a87e297332c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"a82138f54923bcfaf3035eadb054825adcd0dd73e0119a91766e15e8cebc3a3a","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"partially validated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"validated within stated limits","skin":"unvalidated","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"validated within stated limits","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"validated within stated limits","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"validated within stated limits","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"partially validated","percolation":"validated within stated limits","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"validated within stated limits","caustics":"unvalidated","veselago":"partially validated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
 <script>/* The shared uncertainty harness. Every measured number the studio prints against theory gets its
    error bar from here, in the browser and in the Node tools alike, so there is one method per kind of
    number instead of one per tab. AGENTS.md ("A measured number carries an error bar") says which method
@@ -52473,11 +52476,21 @@ void main(){
 
   const SCHEMA = [
     { group: 'Sheet', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
-    { group: 'Collapse', key: 'kind', label: 'Kind', type: 'seg', kind: GEOM, options: [['octant', 'Octant'], ['family', 'Family'], ['broken', 'Broken']], hint: 'Octant is the π/8, π/4, 5π/8 triangle, the unique minimizer of ω t_c on this family. Family walks the L=0 circle with the Angle slider. Broken pushes vortex 3 off the circle, so L ≠ 0 and the lock does not hold. The status line then marks miss; the picture still draws.' },
+    { group: 'Collapse', key: 'kind', label: 'Kind', type: 'seg', kind: GEOM, options: [['octant', 'Octant'], ['family', 'Family'], ['broken', 'Broken'], ['custom', 'Custom']], hint: 'Octant is the π/8, π/4, 5π/8 triangle, the unique minimizer of ω t_c on this family. Family walks the L=0 circle with the Angle slider. Broken pushes vortex 3 off the circle, so L ≠ 0 and the lock does not hold. The status line then marks miss; the picture still draws. Custom takes any three circulations and positions from the Configuration group.' },
     RANGE('Collapse', 'theta', 'Angle', GEOM, 8, 172, 0.5, v => Number(v).toFixed(1) + '°', { dimUnless: s => s.kind === 'family', hint: 'Position of vortex 3 on the L=0 circle. Collapse for θ < 90°, rigid rotation at 90°, expansion for θ > 90°. Octant is 35.264°.' }),
     RANGE('Collapse', 't', 'Time t', LIVE, 0, 0.92, 0.01, f2, { hint: 'Fraction of the collapse time. 0 is the initial triangle. The plate stops short of the singularity.' }),
     { group: 'Collapse', key: 'running', label: 'Run', type: 'toggle', kind: LIVE, hint: 'Walk t toward collapse and loop. Reduced motion leaves the still plate.' },
     RANGE('Collapse', 'speed', 'Pace', LIVE, 0.2, 2.4, 0.05, f2, { dimUnless: s => s.running }),
+    RANGE('Configuration', 'gam1', 'Γ₁', GEOM, -3, 3, 0.001, v => Number(v).toFixed(3), { dimUnless: s => s.kind === 'custom' }),
+    RANGE('Configuration', 'gam2', 'Γ₂', GEOM, -3, 3, 0.001, v => Number(v).toFixed(3), { dimUnless: s => s.kind === 'custom' }),
+    RANGE('Configuration', 'gam3', 'Γ₃', GEOM, -3, 3, 0.001, v => Number(v).toFixed(3), { dimUnless: s => s.kind === 'custom' }),
+    RANGE('Configuration', 'x1', 'x₁', GEOM, -2, 2, 0.001, v => Number(v).toFixed(3), { dimUnless: s => s.kind === 'custom' }),
+    RANGE('Configuration', 'y1', 'y₁', GEOM, -2, 2, 0.001, v => Number(v).toFixed(3), { dimUnless: s => s.kind === 'custom' }),
+    RANGE('Configuration', 'x2', 'x₂', GEOM, -2, 2, 0.001, v => Number(v).toFixed(3), { dimUnless: s => s.kind === 'custom' }),
+    RANGE('Configuration', 'y2', 'y₂', GEOM, -2, 2, 0.001, v => Number(v).toFixed(3), { dimUnless: s => s.kind === 'custom' }),
+    RANGE('Configuration', 'x3', 'x₃', GEOM, -2, 2, 0.001, v => Number(v).toFixed(3), { dimUnless: s => s.kind === 'custom' }),
+    RANGE('Configuration', 'y3', 'y₃', GEOM, -2, 2, 0.001, v => Number(v).toFixed(3), { dimUnless: s => s.kind === 'custom' }),
+    { group: 'Configuration', key: 'project', label: 'Make it collapse', type: 'toggle', kind: GEOM, dimUnless: s => s.kind === 'custom', hint: 'Compute on the nearest self-similar collapse instead of the entered numbers: the circulations move to the nearest point with Σ ΓᵢΓⱼ = 0, written as (1, μ, −μ/(1+μ)) times the larger like-signed circulation, and the odd vortex moves radially onto the zero-impulse circle. If that point would expand, its mirror image across the line through the like-signed pair collapses with the same P, and the mirror is used. The sliders keep the entered numbers.' },
     { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, options: [['spiral', 'Spiral'], ['overlay', 'Similar'], ['polar', 'Polar'], ['beads', 'Beads'], ['space', 'Spacetime']] },
     RANGE('Picture', 'zoom', 'View', PAINT, 0.45, 2.8, 0.05, f2),
     RANGE('Picture', 'fade', 'Fade', PAINT, 0, 1, 0.05, f2),
@@ -52489,6 +52502,8 @@ void main(){
     seed: 'octant-root-two',
     aspect: '1:1', kind: 'octant', theta: +THETA_OCTANT.toFixed(3), t: 0.62, running: false, speed: 0.85,
     view: 'spiral', zoom: 1.05, fade: 0.22, weight: 1.12, panX: 0, panY: 0,
+    // Custom configuration only; a recipe that does not choose Custom never reads these.
+    gam1: 1, gam2: 0.5, gam3: -0.25, x1: -0.5, y1: 0, x2: 0.5, y2: 0, x3: 0.2, y3: 0.6, project: false,
   };
   const PRESETS = {
     octant: pre('Octant lock', { kind: 'octant', theta: +THETA_OCTANT.toFixed(3), t: 0.62, view: 'spiral', zoom: 1.05, fade: 0.22, weight: 1.12, panX: 0, panY: 0 }, Pal.ember),
@@ -52497,6 +52512,9 @@ void main(){
     tight: pre('Tight collapse', { kind: 'family', theta: 18, t: 0.7, view: 'spiral', zoom: 0.92, fade: 0.18, weight: 1.05, panX: 0, panY: 0 }, Pal.nightshade),
     overlay: pre('Similar triangles', { kind: 'octant', theta: +THETA_OCTANT.toFixed(3), t: 0.55, view: 'overlay', zoom: 1.2, fade: 0.05, weight: 1.25, panX: 0, panY: 0 }, Pal.glacier),
     polar: pre('Log spiral', { kind: 'octant', theta: +THETA_OCTANT.toFixed(3), t: 0.72, view: 'polar', zoom: 1.08, fade: 0.12, weight: 1.15, panX: 0, panY: 0 }, Pal.graphite),
+    // Circulations (1, 1/2, −1/3) at the positions of the paper's parametrization with cos θ = −0.9243893679,
+    // sin θ < 0, the minimum of P on the arc A−; Make it collapse snaps the rounded numbers back onto the circle.
+    custom: pre('Custom, μ = 1/2', { kind: 'custom', gam1: 1, gam2: 0.5, gam3: -0.333333333333, x1: 0, y1: 0, x2: 1, y2: 0, x3: 1.148568, y3: 0.336408, project: true, t: 0.8, view: 'spiral', zoom: 1.0, fade: 0.2, weight: 1.1, panX: 0, panY: 0 }, Pal.harbor),
     broken: pre('Off the circle', { kind: 'broken', theta: +THETA_OCTANT.toFixed(3), t: 0.55, view: 'spiral', zoom: 0.88, fade: 0.15, weight: 1.0, panX: 0, panY: 0 }, Pal.thermal),
   };
 
@@ -52514,7 +52532,8 @@ void main(){
     };
   }
   function sanitize(s) {
-    if (s.kind !== 'family' && s.kind !== 'broken') s.kind = 'octant';
+    if (s.kind !== 'family' && s.kind !== 'broken' && s.kind !== 'custom') s.kind = 'octant';
+    s.project = !!s.project;
     if (s.kind === 'octant') s.theta = +THETA_OCTANT.toFixed(3);
     s.theta = U.clamp(Number(s.theta) || THETA_OCTANT, 8, 172);
     s.t = U.clamp(Number(s.t) || 0, 0, 0.92);
@@ -52729,6 +52748,232 @@ void main(){
     return U.clamp(Math.round(fraction / extent * (traj.n - 1)), 0, traj.n - 1);
   }
 
+  /* ---------- Custom configuration: any three circulations and positions ---------- */
+  // custom:begin (tools/three-vortex-custom-check.js evaluates this block on its own)
+  // Conventions of papers/minimal-winding: conj(dz_j/dt) = (1/2πi) Σ_k Γ_k/(z_j − z_k), the kernel velOf
+  // uses; κ is the common value of (dz_j/dt)/(z_j − z_c) when the motion is self-similar; a collapse has
+  // t_c = −1/(2 Re κ), ω₀ = Im κ and P = |ω₀| t_c = |Im κ|/(−2 Re κ). The necessary conditions, Σ_{i<j} ΓᵢΓⱼ = 0
+  // and zero angular impulse about the center of vorticity, are Gröbli's and Aref's.
+  const SQRT3_2 = Math.sqrt(3) / 2;       // the sharp lower bound on P over every three-vortex collapse
+  const CUSTOM_TOL = 1e-9;             // relative κ spread and relative condition size that count as zero
+  const MU_MIN = 0.01;                 // the projection keeps μ at least this, since μ → 0 is no collapse
+  const ARC_MARGIN = Math.PI / 180;    // and keeps θ a degree inside its arc, off the relative equilibria at its ends
+  const CUSTOM_CAP = 400000;           // RK4 steps before a close approach stops the integration
+
+  function bsVel(g, z) {
+    const out = z.map(() => [0, 0]);
+    for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) if (i !== j) {
+      const dx = z[i][0] - z[j][0], dy = z[i][1] - z[j][1];
+      const c = g[j] / (2 * Math.PI * (dx * dx + dy * dy));
+      out[i][0] -= c * dy;
+      out[i][1] += c * dx;
+    }
+    return out;
+  }
+  function hamiltonianOf(g, z) {
+    let H = 0;
+    for (let i = 0; i < 3; i++) for (let j = i + 1; j < 3; j++) {
+      const d2 = (z[i][0] - z[j][0]) ** 2 + (z[i][1] - z[j][1]) ** 2;
+      H -= g[i] * g[j] * Math.log(d2) / (4 * Math.PI);
+    }
+    return H;
+  }
+  function sidesAll(z) {
+    const d = (i, j) => Math.hypot(z[i][0] - z[j][0], z[i][1] - z[j][1]);
+    return [d(0, 1), d(1, 2), d(2, 0)];
+  }
+  function sizeOfZ(z) {
+    const s = sidesAll(z);
+    return Math.sqrt((s[0] * s[0] + s[1] * s[1] + s[2] * s[2]) / 3);
+  }
+  function rk4Custom(g, z, dt) {
+    const add = (a, k, h) => a.map((p, i) => [p[0] + h * k[i][0], p[1] + h * k[i][1]]);
+    const k1 = bsVel(g, z), k2 = bsVel(g, add(z, k1, dt / 2)), k3 = bsVel(g, add(z, k2, dt / 2)), k4 = bsVel(g, add(z, k3, dt));
+    return z.map((p, i) => [
+      p[0] + dt * (k1[i][0] + 2 * k2[i][0] + 2 * k3[i][0] + k4[i][0]) / 6,
+      p[1] + dt * (k1[i][1] + 2 * k2[i][1] + 2 * k3[i][1] + k4[i][1]) / 6,
+    ]);
+  }
+
+  // The invariant conditions, κ and its spread across the three vortices, and what the motion does.
+  function analyzeCustom(g, z) {
+    const gmax = Math.max(Math.abs(g[0]), Math.abs(g[1]), Math.abs(g[2]));
+    const side = sidesAll(z), size = sizeOfZ(z);
+    const out = { g, z, gmax, size, dmin: Math.min(side[0], side[1], side[2]) };
+    if (!(gmax > 0)) { out.outcome = 'still'; out.c = [0, 0]; return out; }
+    if (!(out.dmin > 1e-9 * Math.max(size, 1e-300))) { out.outcome = 'coincide'; out.c = [z[0][0], z[0][1]]; return out; }
+    const S = g[0] + g[1] + g[2];
+    out.S = S;
+    out.centered = Math.abs(S) > 1e-12 * gmax;
+    out.c = out.centered
+      ? [(g[0] * z[0][0] + g[1] * z[1][0] + g[2] * z[2][0]) / S, (g[0] * z[0][1] + g[1] * z[1][1] + g[2] * z[2][1]) / S]
+      : [(z[0][0] + z[1][0] + z[2][0]) / 3, (z[0][1] + z[1][1] + z[2][1]) / 3];
+    out.h2 = g[0] * g[1] + g[1] * g[2] + g[2] * g[0];
+    const hAbs = Math.abs(g[0] * g[1]) + Math.abs(g[1] * g[2]) + Math.abs(g[2] * g[0]);
+    let L = 0, LAbs = 0;
+    for (let i = 0; i < 3; i++) {
+      const r2 = (z[i][0] - out.c[0]) ** 2 + (z[i][1] - out.c[1]) ** 2;
+      L += g[i] * r2; LAbs += Math.abs(g[i]) * r2;
+    }
+    out.L = L;
+    out.hRel = hAbs > 0 ? out.h2 / hAbs : 0;
+    out.LRel = LAbs > 0 ? L / LAbs : 0;
+    out.hOk = Math.abs(out.hRel) < CUSTOM_TOL;
+    out.LOk = out.centered && Math.abs(out.LRel) < CUSTOM_TOL;
+    const v = bsVel(g, z);
+    out.v = v;
+    let vmax = 0;
+    for (let i = 0; i < 3; i++) vmax = Math.max(vmax, Math.hypot(v[i][0], v[i][1]));
+    const q = [];
+    let offCenter = false;
+    for (let i = 0; i < 3; i++) {
+      const rx = z[i][0] - out.c[0], ry = z[i][1] - out.c[1], r2 = rx * rx + ry * ry;
+      if (r2 <= 1e-24 * size * size) { if (Math.hypot(v[i][0], v[i][1]) > 1e-9 * vmax) offCenter = true; continue; }
+      q.push([(v[i][0] * rx + v[i][1] * ry) / r2, (v[i][1] * rx - v[i][0] * ry) / r2]);
+    }
+    let kr = 0, ki = 0;
+    for (const p of q) { kr += p[0] / q.length; ki += p[1] / q.length; }
+    const km = Math.hypot(kr, ki);
+    let spread = 0;
+    for (const p of q) spread = Math.max(spread, Math.hypot(p[0] - kr, p[1] - ki));
+    out.kappa = [kr, ki];
+    // Without a center of vorticity (ΣΓ = 0) or with a moving vortex at it, no motion is self-similar about it.
+    out.spread = !out.centered || offCenter ? Infinity : km > 0 ? spread / km : (spread > 0 ? Infinity : 0);
+    out.selfSimilar = out.spread < CUSTOM_TOL;
+    if (!out.selfSimilar) out.outcome = 'general';
+    else if (!(km > 0)) out.outcome = 'still';
+    else if (Math.abs(kr) <= CUSTOM_TOL * km) out.outcome = 'rigid';
+    else out.outcome = kr < 0 ? 'collapse' : 'expand';
+    if (out.outcome === 'collapse') {
+      out.tc = -1 / (2 * kr);
+      out.omega0 = ki;
+      out.P = Math.abs(ki) / (-2 * kr);
+      out.spiral = Math.atan(2 * out.P);       // angle between each path and the direction to the collision point
+      out.path = Math.sqrt(1 + 4 * out.P * out.P);
+    }
+    return out;
+  }
+
+  // Nearest self-similar collapse, in the paper's normalization. Circulations: the nearest point of the cone
+  // Σ_{i<j} ΓᵢΓⱼ = 0, which for Γ = α e + β, e = (1,1,1)/√3, β ⊥ e, is |β| = √2 |α|; then rewritten exactly as
+  // σA(1, μ, −μ/(1+μ)) on (larger like-signed, smaller like-signed, odd). Positions: the like-signed pair stays,
+  // the odd vortex moves radially onto the zero-impulse circle w = μ/(1+μ) − (√R/(1+μ)) e^{iθ}, R = 1 + μ + μ²,
+  // w = (z_odd − z_a)/(z_b − z_a). Collapsing arcs for σ = +1 are (0, θ₀) and (π, 2π − θ₀), cos θ₀ = (μ − 1)/(2√R);
+  // σ = −1 reverses time, which conjugation undoes, so there θ is read as −θ.
+  function projectCollapse(g0, z0) {
+    const e = 1 / Math.sqrt(3);
+    const a0 = (g0[0] + g0[1] + g0[2]) * e;
+    let u = [g0[0] - a0 * e, g0[1] - a0 * e, g0[2] - a0 * e];
+    const bn = Math.hypot(u[0], u[1], u[2]);
+    const sgn = a0 < 0 ? -1 : 1;
+    if (bn > 1e-12 * Math.max(Math.abs(a0), 1e-300)) u = u.map(x => x / bn);
+    else u = [sgn / Math.sqrt(6), sgn / Math.sqrt(6), -2 * sgn / Math.sqrt(6)];   // equal circulations: vortex 3 goes odd
+    const t = (Math.abs(a0) + Math.SQRT2 * bn) / Math.sqrt(3) || 1;
+    const cone = [0, 1, 2].map(i => t * e * (sgn * e + Math.SQRT2 * u[i]));
+    let odd = 0;
+    for (let i = 1; i < 3; i++) if (sgn * cone[i] < sgn * cone[odd]) odd = i;
+    const pair = [0, 1, 2].filter(i => i !== odd);
+    if (Math.abs(cone[pair[1]]) > Math.abs(cone[pair[0]])) pair.reverse();
+    const [a, b] = pair;
+    const A = Math.abs(cone[a]) || 1;
+    const mu = Math.min(1, Math.max(MU_MIN, sgn * cone[b] / A));
+    const g = [0, 0, 0];
+    g[a] = sgn * A; g[b] = sgn * A * mu; g[odd] = -sgn * A * mu / (1 + mu);
+    let ex = z0[b][0] - z0[a][0], ey = z0[b][1] - z0[a][1];
+    if (!(Math.hypot(ex, ey) > 1e-9)) { ex = 1; ey = 0; }
+    const e2 = ex * ex + ey * ey;
+    const dx = z0[odd][0] - z0[a][0], dy = z0[odd][1] - z0[a][1];
+    const wr = (dx * ex + dy * ey) / e2, wi = (dy * ex - dx * ey) / e2;
+    const R = 1 + mu + mu * mu, m = mu / (1 + mu), rho = Math.sqrt(R) / (1 + mu);
+    const th0 = Math.acos((mu - 1) / (2 * Math.sqrt(R)));
+    const wrap = x => ((x % TWOPI) + TWOPI) % TWOPI;
+    let th = wrap(sgn * Math.atan2(-wi, m - wr));   // θ in the paper's σ = +1 normalization
+    const inArc = x => (x > 0 && x < th0) || (x > Math.PI && x < TWOPI - th0);
+    const mirrored = !inArc(th);
+    if (mirrored) th = wrap(-th);
+    th = th <= Math.PI ? Math.min(Math.max(th, ARC_MARGIN), th0 - ARC_MARGIN)
+      : Math.min(Math.max(th, Math.PI + ARC_MARGIN), TWOPI - th0 - ARC_MARGIN);
+    const ph = sgn * th, cr = Math.cos(ph), ci = Math.sin(ph);
+    const w = [m - rho * cr, -rho * ci];
+    const z = [null, null, null];
+    z[a] = [z0[a][0], z0[a][1]];
+    z[b] = [z0[a][0] + ex, z0[a][1] + ey];
+    z[odd] = [z0[a][0] + ex * w[0] - ey * w[1], z0[a][1] + ey * w[0] + ex * w[1]];
+    return { g, z, mu, theta: th, arc: th < Math.PI ? 'A+' : 'A−', odd, mirrored, sigma: sgn };
+  }
+
+  function similarityAt(z0, c, kr, ki, t) {
+    const l2 = 1 + 2 * kr * t;
+    if (!(l2 > 0)) return [[c[0], c[1]], [c[0], c[1]], [c[0], c[1]]];
+    const lam = Math.sqrt(l2), phi = kr === 0 ? ki * t : ki * Math.log1p(2 * kr * t) / (2 * kr);
+    const cs = lam * Math.cos(phi), sn = lam * Math.sin(phi);
+    return z0.map(p => {
+      const rx = p[0] - c[0], ry = p[1] - c[1];
+      return [c[0] + cs * rx - sn * ry, c[1] + sn * rx + cs * ry];
+    });
+  }
+
+  // Worldlines: the exact similarity solution when the motion is self-similar, with an RK4 probe of it; otherwise
+  // RK4 with the step tied to the closest pair (dt = 0.005 · 2π d²/max|Γ|) for four times 2π s²/max|Γ|, s the RMS
+  // side, and the change in the Hamiltonian as the integrator's check.
+  function customPaths(an, nDraw) {
+    const { g, z } = an;
+    const out = { an, custom: true, m: { c: an.c } };
+    const gmax = an.gmax || 1;
+    const record = (n, fill) => {
+      const px = [new Float64Array(n), new Float64Array(n), new Float64Array(n)];
+      const py = [new Float64Array(n), new Float64Array(n), new Float64Array(n)];
+      const tt = new Float64Array(n);
+      for (let k = 0; k < n; k++) {
+        const r = fill(k);
+        tt[k] = r.tf;
+        for (let i = 0; i < 3; i++) { px[i][k] = r.z[i][0]; py[i][k] = r.z[i][1]; }
+      }
+      Object.assign(out, { px, py, tt, n });
+    };
+    out.gamDraw = g.map(x => gmax > 0 ? x / gmax : 0);
+    if (an.outcome === 'still' || an.outcome === 'coincide') {
+      record(2, k => ({ tf: 0.92 * k, z }));
+      return out;
+    }
+    if (an.outcome !== 'general') {
+      const [kr, ki] = an.kappa;
+      const T = an.outcome === 'collapse' ? an.tc : an.outcome === 'expand' ? 1.5 / kr : TWOPI / Math.abs(ki);
+      out.T = T;
+      const n = an.outcome === 'collapse' ? Math.min(6000, Math.max(nDraw, Math.round(nDraw * an.P / SQRT2))) : nDraw;
+      record(n, k => { const tf = 0.92 * k / (n - 1); return { tf, z: similarityAt(z, an.c, kr, ki, tf * T) }; });
+      let zp = z.map(p => p.slice());
+      const steps = 1000, dt = 0.25 * T / steps;
+      for (let s = 0; s < steps; s++) zp = rk4Custom(g, zp, dt);
+      const ex = similarityAt(z, an.c, kr, ki, 0.25 * T);
+      let e = 0;
+      for (let i = 0; i < 3; i++) e += (zp[i][0] - ex[i][0]) ** 2 + (zp[i][1] - ex[i][1]) ** 2;
+      out.odeErr = Math.sqrt(e / 3) / an.size;
+      return out;
+    }
+    const T = 4 * TWOPI * an.size * an.size / gmax;
+    out.T = T;
+    const H0 = hamiltonianOf(g, z), hScale = (Math.abs(g[0] * g[1]) + Math.abs(g[1] * g[2]) + Math.abs(g[2] * g[0])) / (4 * Math.PI) || 1;
+    let zc = z.map(p => p.slice()), t = 0, steps = 0, stopped = false, lo = Infinity, hi = 0, dminAll = Infinity;
+    record(nDraw, k => {
+      const target = T * k / (nDraw - 1);
+      while (!stopped && target - t > 1e-12 * T) {
+        const s = sidesAll(zc), dmin = Math.min(s[0], s[1], s[2]);
+        const dt = Math.min(target - t, 0.005 * TWOPI * dmin * dmin / gmax);
+        const next = rk4Custom(g, zc, dt);
+        if (++steps > CUSTOM_CAP || !next.every(p => isFinite(p[0]) && isFinite(p[1]))) { stopped = true; break; }
+        zc = next; t += dt;
+      }
+      const s = sidesAll(zc), sz = sizeOfZ(zc);
+      lo = Math.min(lo, sz); hi = Math.max(hi, sz); dminAll = Math.min(dminAll, s[0], s[1], s[2]);
+      return { tf: k / (nDraw - 1), z: zc };
+    });
+    Object.assign(out, { steps, stopped, tEnd: t, sizeLo: lo / an.size, sizeHi: hi / an.size, dminRel: dminAll / an.size,
+      dH: (hamiltonianOf(g, zc) - H0) / hScale });
+    return out;
+  }
+  // custom:end
+
   function metalsOf(s) {
     const pal = Array.isArray(s.palette) && s.palette.length ? s.palette : METAL_FALLBACK;
     return [pal[0] || METAL_FALLBACK[0], pal[Math.min(1, pal.length - 1)] || METAL_FALLBACK[1], pal[Math.min(2, pal.length - 1)] || METAL_FALLBACK[2]];
@@ -52835,7 +53080,7 @@ void main(){
         const xy = xf(p[0], p[1]);
         ctx.beginPath();
         ctx.fillStyle = metals[i];
-        ctx.arc(xy[0], xy[1], lw * (2.2 + 1.4 * Math.abs(G[i])), 0, TWOPI);
+        ctx.arc(xy[0], xy[1], lw * (2.2 + 1.4 * Math.abs((traj.gamDraw || G)[i])), 0, TWOPI);
         ctx.fill();
       }
     } else {
@@ -52869,7 +53114,7 @@ void main(){
         const xy = xf(p[0], p[1]);
         ctx.beginPath();
         ctx.fillStyle = metals[i];
-        ctx.arc(xy[0], xy[1], lw * (1.8 + 1.1 * Math.abs(G[i])), 0, TWOPI);
+        ctx.arc(xy[0], xy[1], lw * (1.8 + 1.1 * Math.abs((traj.gamDraw || G)[i])), 0, TWOPI);
         ctx.fill();
       }
     }
@@ -52932,11 +53177,12 @@ void main(){
     subtitle: 'ω₀ t_c ≥ √2 on Gröbli\'s collapsing triangle · Three-vortex collapse bound',
     order: 117,
     equation: 'ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2  on  Γ = (1, 1, −1/2), L = 0;  equality at tan θ = 1/√2',
-    credit: 'Three-vortex collapse bound: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 < θ < π/2. θ is the third vortex\'s place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula explicitly specializes and reparameterizes the spiral coefficient in Gröbli (1877), section 10. Kimura, J. Phys. Soc. Jpn. 56, 2024 (1987), section 4, gives the collapse and rotation rates A and B in this same parametrization, for circulations (2, 2, −1), and their ratio B/(−2A) is this formula; he minimizes the collision time instead, at cos 2θ = 3/5, where the product is 3/2, the value it also takes at θ = 45°. It was independently derived here and recorded on 2026-09-19. Priority of the optimized minimum remains unconfirmed; see identities/ORIGINALITY-FOLLOWUP.md, identities/NOVELTY-AUDIT.md and IDENTITIES.md. Cite as Three-vortex collapse bound. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 misses and the status line marks miss. The picture still draws.',
-    blurb: 'Three-vortex collapse bound. Three point vortices of circulations 1, 1, and −1/2, on the L = 0 circle, collapse self-similarly. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality at tan θ = 1/√2, a triangle of 22.5°, 45°, and 112.5°. θ places the third vortex on the circle; it is not an interior angle. The status line is that ratio against 1, the similarity residual against 0, and signed L against 0. Broken steps off the circle so the lock does not hold and the status line marks miss. That is the check working, not the studio breaking. Cite as Three-vortex collapse bound.',
+    credit: 'Three-vortex collapse bound: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 < θ < π/2. θ is the third vortex\'s place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula explicitly specializes and reparameterizes the spiral coefficient in Gröbli (1877), section 10. Kimura, J. Phys. Soc. Jpn. 56, 2024 (1987), section 4, gives the collapse and rotation rates A and B in this same parametrization, for circulations (2, 2, −1), and their ratio B/(−2A) is this formula; he minimizes the collision time instead, at cos 2θ = 3/5, where the product is 3/2, the value it also takes at θ = 45°. It was independently derived here and recorded on 2026-09-19. Priority of the optimized minimum remains unconfirmed; see identities/ORIGINALITY-FOLLOWUP.md, identities/NOVELTY-AUDIT.md and IDENTITIES.md. Cite as Three-vortex collapse bound. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 misses and the status line marks miss. The picture still draws. Custom takes any three circulations and positions, computes their Biot-Savart velocities in the same convention, and tests the classical conditions for self-similar collapse, Σ ΓᵢΓⱼ = 0 and zero angular impulse about the center of vorticity (Gröbli 1877; Aref, Phys. Fluids 22, 393 (1979) and 057104 (2010)). Its normalization, circulations (1, μ, −μ/(1+μ)) on the zero-impulse circle, is that of Gotoda, J. Dyn. Differ. Equ. 33, 1759 (2021). The bound P = |ω₀| t_c > √3/2 over every three-vortex collapse, printed beside a custom collapse, is from this project\'s manuscript Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons (papers/minimal-winding), which has not been peer reviewed.',
+    blurb: 'Three-vortex collapse bound. Three point vortices of circulations 1, 1, and −1/2, on the L = 0 circle, collapse self-similarly. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality at tan θ = 1/√2, a triangle of 22.5°, 45°, and 112.5°. θ places the third vortex on the circle; it is not an interior angle. The status line is that ratio against 1, the similarity residual against 0, and signed L against 0. Broken steps off the circle so the lock does not hold and the status line marks miss. That is the check working, not the studio breaking. Custom takes your own three circulations and positions: the status line says whether they collapse and, if not, which condition fails and by how much, and Make it collapse moves them to the nearest configuration that does. Cite as Three-vortex collapse bound.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: {
       Collapse: 'Octant is the lock. Family is the rest of Gröbli\'s circle: collapse, then the equilateral relative equilibrium, then expansion. Broken is the control with L ≠ 0. Time is a fraction of t_c.',
+      Configuration: 'Custom only. Circulations Γ and positions (x, y) in any units; P does not depend on them. Type exact values in Settings JSON, since the sliders step by 0.001. The status line gives Σ ΓᵢΓⱼ and the angular impulse L about the center of vorticity, both zero for a collapse, and the spread of κ = (dz/dt)/(z − z_c) across the three vortices, zero when the motion is self-similar. A collapse prints κ, t_c, the angle arctan 2P between each path and the collision point, and P beside the sharp bound √3/2. Anything else is integrated with RK4 and the change in the Hamiltonian is printed.',
       Picture: 'Spiral is the three worldlines. Similar overlays nested snapshots about the center of vorticity; they coincide if the motion is self-similar. Polar is log r against angle, a straight line for a logarithmic spiral. Beads is the triangle now. Spacetime is x against t.',
     },
     palette: true,
@@ -52949,8 +53195,43 @@ void main(){
       const ctx = canvas.getContext('2d', { alpha: false });
       let traj = null, raf = 0, last = 0;
 
+      function customStatus() {
+        const a = traj.an, pr = traj.proj;
+        const deg = r => (r * 180 / Math.PI).toFixed(2) + '°';
+        const cx = (re, im) => sci(re) + (im < 0 ? ' − ' : ' + ') + sci(Math.abs(im)) + 'i';
+        const lead = pr
+          ? '<span>projected · μ <b>' + pr.mu.toFixed(4) + '</b> · θ <b>' + deg(pr.theta) + '</b> on ' + pr.arc + (pr.mirrored ? ', mirrored' : '') + '</span>'
+          : '';
+        if (a.outcome === 'still' || a.outcome === 'coincide') {
+          host.setStatus(lead + '<span>custom · <b>' + (a.outcome === 'still' ? 'all circulations zero' : 'two vortices coincide') + '</b> · nothing to integrate</span>');
+          return;
+        }
+        const fails = (ok, rel, what) => ok ? 'holds' : 'fails by ' + sci(Math.abs(rel)) + ' of ' + what;
+        let html = lead +
+          U.stats.compare({ label: 'ΣΓᵢΓⱼ', measured: a.h2, expected: 0, reference: 'collapse condition', basis: 'deterministic', note: fails(a.hOk, a.hRel, 'Σ|ΓᵢΓⱼ|') }) +
+          (a.centered
+            ? U.stats.compare({ label: 'L', measured: a.L, expected: 0, reference: 'collapse condition', basis: 'deterministic', note: fails(a.LOk, a.LRel, 'Σ|Γᵢ|rᵢ²') })
+            : '<span>L <b>undefined</b> · ΣΓ = 0, no center of vorticity</span>') +
+          U.stats.compare({ label: 'κ spread', measured: a.spread, expected: 0, reference: 'self-similar', basis: 'deterministic', note: a.selfSimilar ? 'self-similar' : 'not self-similar' });
+        const odeOff = isFinite(traj.odeErr) && traj.odeErr > 1e-6 ? ' · ODE off' : '';
+        if (a.outcome === 'collapse') {
+          html += '<span>collapse · κ <b>' + cx(a.kappa[0], a.kappa[1]) + '</b> · t_c <b>' + sci(a.tc) + '</b> · spiral <b>' + deg(a.spiral) + '</b></span>' +
+            U.stats.compare({ label: 'P = |ω₀| t_c', measured: a.P, digits: 10, expected: '√3/2', reference: 'sharp bound P >', basis: 'deterministic',
+              note: (a.P > SQRT3_2 ? 'above by ' + sci(a.P - SQRT3_2) : 'miss, below the bound') + odeOff });
+        } else if (a.outcome === 'expand') {
+          html += '<span>expands self-similarly · κ <b>' + cx(a.kappa[0], a.kappa[1]) + '</b> · Re κ > 0, no collapse' + odeOff + '</span>';
+        } else if (a.outcome === 'rigid') {
+          html += '<span>rigid rotation · ω <b>' + sci(a.kappa[1]) + '</b> · relative equilibrium, no collapse' + odeOff + '</span>';
+        } else {
+          html += '<span>RK4 to t <b>' + sci(traj.tEnd) + '</b>' + (traj.stopped ? ' · stopped at a close approach' : '') +
+            ' · size <b>' + traj.sizeLo.toFixed(3) + '–' + traj.sizeHi.toFixed(3) + '</b> × start</span>' +
+            U.stats.compare({ label: 'ΔH', measured: traj.dH, expected: 0, reference: 'energy invariant', basis: 'deterministic', note: Math.abs(traj.dH) > 1e-6 ? 'integrator off' : 'in units of Σ|ΓᵢΓⱼ|/4π' });
+        }
+        host.setStatus(html);
+      }
       function status() {
         if (!traj) return;
+        if (traj.custom) { customStatus(); return; }
         const m = traj.m;
         const lock = m.wtc / SQRT2;
         const form = m.wtcForm;
@@ -52989,7 +53270,12 @@ void main(){
       }
       function compute() {
         const s = host.getState();
-        traj = integrate(s.kind, s.theta);
+        if (s.kind === 'custom') {
+          let g = [s.gam1, s.gam2, s.gam3], z = [[s.x1, s.y1], [s.x2, s.y2], [s.x3, s.y3]], proj = null;
+          if (s.project) { proj = projectCollapse(g, z); g = proj.g; z = proj.z; }
+          traj = customPaths(analyzeCustom(g, z), N_DRAW);
+          traj.proj = proj;
+        } else traj = integrate(s.kind, s.theta);
       }
       function paint() {
         const s = host.getState();
