@@ -2,7 +2,7 @@
 
 **Read on 2026-09-25 from the owner's PDFs** (RESEARCH.md, same date): Conte-de Seze, Krishnamurthy-Aref-Stremler
 (arXiv v2), Gallay-Sverak, Drivas et al., Hernandez-Garduno-Lacomba, Synge (now cited), Aref 1982 and
-Grotto-Romito-Viviani; later the same day Hiraoka 2009 (now cited), Tavantzis-Ting 1988 and Krishnamurthy-Stremler 2018. Their rows below are done unless a journal version is still named.
+Grotto-Romito-Viviani; later the same day Hiraoka 2009 (now cited), Tavantzis-Ting 1988, Krishnamurthy-Stremler 2018 and Hiraoka 2008. Their rows below are done unless a journal version is still named.
 
 Compiled from the research ledger (RESEARCH.md), the papers' notes and checklists, and web searches on
 2026-09-25. **Paper 2's list was confirmed by two independent checkers. Paper 1's list was not verified**:
@@ -30,7 +30,7 @@ interlibrary loan, or emailing the author for a copy.
 | free | Gallay and Sverak, arXiv:2609.10847; Drivas et al., arXiv:2607.16490 | Newest versions; every theorem, section and equation pinpoint. |
 | done | Hiraoka, RIMS Kokyuroku Bessatsu B13 (2009) 35-43 | Read 2026-09-25: Sect. 3 gives a geometric reason that every triple collision is self-similar (proof in his 2008 paper). Hernandez-Garduno-Lacomba 2007 is earlier, so it keeps the credit; Hiraoka is now cited beside it. |
 | ? | Krishnamurthy, Aref and Stremler, Phys. Rev. Fluids 3 (2018) 024702 (arXiv:1706.00731) | Eq. (40) (and (46b)) in the journal numbering. |
-| paid | Hiraoka, Nonlinearity 21 (2008) 361-379 | The regularization of the triple collision; the Discussion's regularization paragraph. |
+| done | Hiraoka, Nonlinearity 21 (2008) 361-379 | Read 2026-09-25: Theorems 1-2 (regularizable iff the like-signed circulations are equal, near equality) and Prop. 2.8 now cited; nothing on rotation or P. |
 | paid (owned) | Aref, Phys. Fluids 25 (1982) 2183-2187 | You bought it: confirm that Eq. (3) is the ring reduction and the phrase "for arbitrary circulations". |
 | paid | Leoncini, Kuznetsov and Zaslavsky, Phys. Fluids 12 (2000) 1911-1927 | Fig. 18 and its caption in the journal version (read in the arXiv version). |
 | paid | Aref, Rott and Thomann, Annu. Rev. Fluid Mech. 24 (1992) 1-21 | The review of Groebli's thesis; cited without a reading. |
