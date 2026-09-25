@@ -1,0 +1,46 @@
+{
+ "note": "Starting point only; nothing is trusted from it. The best minimum (minima[0]) of a binary64 multistart search for the alpha-model four-vortex minimum of P, copied from the search output vortex-collapse-a2-n4-s0-c80.json of the maintainer's vortex-collapse experiment.",
+ "experiment": "vortex-collapse-search",
+ "sourceSha256": "d64651982c80b230e5916ff517307b385cc3fcba06de99b40649c459ea89ec0d",
+ "commit": "11bf354dc253c5da58b23853fb66f7302206fd78",
+ "gauge": "z_1 = 0, z_2 = 1, G_1 = 1; unknowns z_3..z_N, G_2..G_N, kappa. Residual v_j - v_1 - kappa (z_j - z_1), j = 2..N.",
+ "scope": "Binary64 multistart search. A certified strict local minimum is a numerical candidate with a second-order certificate, not a proof of a global minimum. Priority unconfirmed.",
+ "alpha": 2,
+ "N": 4,
+ "minimum": {
+  "P": 0.41167386004533113,
+  "basinSeeds": 78,
+  "firstSeed": 16,
+  "soscRatio": 0.00031902846207418844,
+  "config": {
+   "z": [
+    [
+     0,
+     0
+    ],
+    [
+     1,
+     0
+    ],
+    [
+     -0.3681705428890126,
+     -0.3327726253642371
+    ],
+    [
+     -0.39885728310904717,
+     0.09606204261271209
+    ]
+   ],
+   "G": [
+    1,
+    24.261255818217613,
+    -2.170623276141274,
+    1.6998177598684492
+   ],
+   "kappa": [
+    -2.776625444033226,
+    2.286128228890479
+   ]
+  }
+ }
+}
