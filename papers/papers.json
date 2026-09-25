@@ -51,6 +51,21 @@
       "commitments": []
     },
     {
+      "id": "stable-expansion",
+      "title": "Linearly Stable Self-Similar Expansion of Four and Five Point Vortices",
+      "status": "draft",
+      "note": "Drafted in this repository by the owner's decision (2026-09-25): computer-assisted proof that four and five Euler vortices have self-similarly expanding configurations that are linearly stable modulo rotation and their family, the missing ingredient Zbarsky names for extending his confinement theorem beyond three vortices. Before 'preparing': a second reader, and the full text of Kallyadan and Shukla, Phys. Rev. Fluids 7 (2022) 114701 (only the abstract has been seen). The public companion repository does not exist yet.",
+      "typst": null,
+      "latex": "papers/stable-expansion/paper/stable-expansion.tex",
+      "pdf": "papers/stable-expansion/paper/stable-expansion.pdf",
+      "companion": "ChaseHendrick/stable-expansion",
+      "textLicense": "all-rights-reserved",
+      "arxiv": null,
+      "journal": null,
+      "codeDoi": null,
+      "commitments": []
+    },
+    {
       "id": "identities-note",
       "title": "Closed forms and sharp minima of ω t_c on three classical point-vortex collapse families",
       "status": "preparing",

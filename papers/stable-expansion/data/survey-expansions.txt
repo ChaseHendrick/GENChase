@@ -1,0 +1,13 @@
+N = 4, seed 11, 800 starts: 342 collapses, 52 whose reversal is linearly stable
+      of those, 37 with every remaining pair on Re k = 1
+      of those, 0 with a quadruple 1 +- x +- i y, 0 < x < 1
+      of those, 15 with a real pair 0 < k < 2
+N = 5, seed 1, 700 starts: 266 collapses, 14 whose reversal is linearly stable
+      of those, 4 with every remaining pair on Re k = 1
+      of those, 7 with a quadruple 1 +- x +- i y, 0 < x < 1
+      of those, 3 with a real pair 0 < k < 2
+N = 5, seed 2, 700 starts: 277 collapses, 18 whose reversal is linearly stable
+      of those, 6 with every remaining pair on Re k = 1
+      of those, 9 with a quadruple 1 +- x +- i y, 0 < x < 1
+      of those, 3 with a real pair 0 < k < 2
+N = 4: 52 of 342; N = 5: 32 of 543
