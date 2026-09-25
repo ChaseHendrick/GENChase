@@ -9,6 +9,11 @@ This repository may be private, so a paper never sends readers here. Each paper 
 repository of its own, its **companion** (for example `ChaseHendrick/minimal-winding`): the paper folder
 without its `notes/` and `submission/`, plus a LICENSE, a CITATION.cff and a .zenodo.json. The
 **publish papers** workflow keeps the companion in step and locked; nobody writes to it by hand.
+Zenodo archives each release as a preprint (resource type Publication, Preprint): the manuscript with
+the programs that check it. Its description, which OpenAIRE and other indexes copy, is the `## Abstract`
+section of the paper's README with its TeX turned into plain text, so a README needs that section before
+it can be published. A record already on Zenodo keeps the type and description it was archived with until
+you edit it there (Edit, change the field, Publish; the DOI stays the same).
 
 Only you can do the steps that need your accounts (GitHub settings, Zenodo, arXiv, a journal's
 submission system) or your judgment. A Claude session can do everything else: edit the sources,
@@ -39,7 +44,18 @@ The identities note is the exception: it goes to Zenodo as a record of its own a
 `tools/paper-check.js` refuses a status whose bookkeeping is missing: an arXiv identifier from
 `on-arxiv` on, a submission date from `submitted` on, and the journal DOI at `published`.
 
-## 0. Is it ready?
+## 0. Is it ready? The quality bar
+
+Nothing is published or preprinted (a companion release, a Zenodo DOI, arXiv, a journal) until the paper meets the
+quality bar, and its record says so. The record is `papers/<id>/notes/QUALITY.md`: the bar's seven items at the top
+(complete proofs, rigorous computation, every claim labelled, sources read, prior art, adversarial second reading,
+reproducible), then one line per item, checked only with its evidence. `notes/` stays in GENChase; the companion does
+not carry it. `node tools/paper-check.js` refuses the status `ready` or later while any item is open, renamed,
+missing or checked without evidence, and its self-test plants each of those mistakes. A proof that adapts another
+paper's argument without writing it out does not meet item 1, and a second reading that is only planned does not
+meet item 6.
+
+Then:
 
 - A second reader in the field has read it. [REVIEWING.md](REVIEWING.md) and
   [REVIEW-REQUEST.md](REVIEW-REQUEST.md) make that one step.

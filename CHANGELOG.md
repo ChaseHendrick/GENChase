@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- **Each paper's Zenodo record is its preprint, with its abstract.** Companion releases were archived as Software. By the owner's decision (2026-09-25) they are archived as Publication, Preprint: the manuscript with the programs that check it. The description in a companion's `.zenodo.json`, which Zenodo shows and OpenAIRE copies, was a one-line placeholder. `tools/paper-sync.js` now writes the `## Abstract` section of the paper's README, with its TeX math turned into plain text (Greek letters, √, ≤, subscripts), followed by one line saying the record holds the manuscript, a preprint not yet peer reviewed, with its programs and their output. Staging refuses a README without an abstract, or one whose abstract keeps TeX with no plain-text form, and the self-test plants both. The records of paper 1 already on Zenodo keep their old type and description until they are edited there.
+
+- **A quality bar for the papers, enforced.** No paper is published or preprinted until its record, `papers/<id>/notes/QUALITY.md`, checks seven items with their evidence: complete proofs (nothing adapted without being written out), rigorous computation, every claim labelled, sources read, prior art logged, an adversarial second reading with its fixes, and reproducible programs. `tools/paper-check.js` refuses the status `ready` or later otherwise, and its self-test plants an open item, a renamed item, a missing item and a checked item without evidence. The records are in the papers' `notes/` folders, which stay in GENChase. Paper 2 meets the bar. Paper 1 goes back to `preparing` until the parts merged in from the alpha-model draft have a recorded adversarial reading, which has started; it stays on Zenodo as released. Paper 3 stays a draft until Theorem 4 is written out in full. `docs/PUBLISHING-PAPERS.md` (section 0) and `AGENTS.md` state the rule.
+
+- **Paper 2 is ready for its companion repository and its first Zenodo release.** `papers/collapse-without-rotation/` is marked ready in `papers/papers.json` (owner's decision, 2026-09-25), with release notes for v1.0.0 in its `RELEASES.md` and the data availability paragraph pointing at `ChaseHendrick/collapse-without-rotation`. Aref, Newton, Stremler, Tokieda and Vainchtein, *Vortex crystals* (2003), read for Lemma 1: it does not contain the construction, and the paper now cites it for the translating equilateral triangle and for the triangular-number restriction on translating configurations with circulations of equal magnitude. The README's reproduce list gains the two programs it was missing.
+
 ## v0.7.1
 
 The publication date is recorded in the GitHub release notes.

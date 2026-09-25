@@ -10,7 +10,10 @@
 //   node tools/paper-sync.js --self-test              the checks against planted mistakes (npm test)
 //
 // The companion holds papers/<id>/ without notes/ and submission/, which are working files that stay
-// here, plus a LICENSE, a CITATION.cff and a .zenodo.json written from papers.json. Staging refuses a
+// here, plus a LICENSE, a CITATION.cff and a .zenodo.json written from papers.json. Zenodo archives each release
+// as a preprint (Publication / Preprint); its description,
+// which OpenAIRE and other indexes copy, is the abstract from the README with its TeX turned into plain text.
+// Staging refuses a paper without an "## Abstract" section, or whose abstract keeps TeX it cannot render, and a
 // paper whose public files point into this repository (a GENChase URL, a research/ or papers/ path, a
 // link out of the folder) or carry an email address outside the manuscript.
 'use strict';
@@ -71,15 +74,49 @@ function citation(reg, p, year) {
     ''].join('\n');
 }
 
-function zenodo(reg, p) {
+// Plain text for the TeX in an abstract: the macros the papers use, square roots, scripts. Anything else is
+// left as it is and reported, so a description never reaches Zenodo with raw TeX in it.
+const TEX_TEXT = { alpha: 'α', beta: 'β', gamma: 'γ', delta: 'δ', varepsilon: 'ε', epsilon: 'ε', kappa: 'κ', lambda: 'λ', mu: 'μ', nu: 'ν',
+  pi: 'π', rho: 'ρ', sigma: 'σ', theta: 'θ', omega: 'ω', Gamma: 'Γ', Omega: 'Ω', infty: '∞', ge: '≥', le: '≤', ne: '≠', to: '→',
+  ldots: '…', cdots: '⋯', cdot: '·', pm: '±', times: '×', approx: '≈' };
+const SUBSCRIPT_DIGITS = '₀₁₂₃₄₅₆₇₈₉';
+function texText(s) {
+  let t = s.replace(/\s+/g, ' ').trim();
+  t = t.replace(/\\([A-Za-z]+)(?![A-Za-z])/g, (m, name) => (Object.prototype.hasOwnProperty.call(TEX_TEXT, name) ? TEX_TEXT[name] : m));
+  t = t.replace(/\\sqrt\{([^{}]*)\}/g, (m, x) => (/^[0-9A-Za-zα-ωΓΩ]{1,3}$/.test(x.trim()) ? '√' + x.trim() : '√(' + x.trim() + ')'));
+  t = t.replace(/\^\{([^{}]*)\}/g, '^($1)').replace(/_\{([^{}]*)\}/g, '_$1').replace(/_([0-9])/g, (m, d) => SUBSCRIPT_DIGITS[+d]);
+  return t;
+}
+
+// The "## Abstract" section of a README as paragraphs of plain text, and what keeps it from being one.
+function abstractOf(readme) {
+  const lines = readme.split('\n'), at = lines.findIndex(l => /^## Abstract\b/.test(l));
+  if (at < 0) return { paragraphs: [], problems: ['README.md: no "## Abstract" section, which the Zenodo description is made from'] };
+  const body = [];
+  for (const l of lines.slice(at + 1)) { if (/^## /.test(l)) break; body.push(l); }
+  const paragraphs = body.join('\n').split(/\n\s*\n/).map(x => x.replace(/\s+/g, ' ').trim()).filter(Boolean)
+    .map(x => x.replace(/\$([^$]+)\$/g, (m, tex) => texText(tex)));
+  const left = paragraphs.join(' ').match(/\\[A-Za-z]+|\$|\\./g);
+  const problems = !paragraphs.length ? ['README.md: the "## Abstract" section is empty']
+    : left ? ['README.md: the abstract keeps TeX that has no plain-text form for the Zenodo description: ' + [...new Set(left)].join(' ')] : [];
+  return { paragraphs, problems };
+}
+
+const HTML_ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;' };
+const html = s => s.replace(/[&<>]/g, c => HTML_ESCAPES[c]);
+
+function zenodo(reg, p, paragraphs) {
   const related = [];
   if (p.arxiv && p.arxiv.id) related.push({ identifier: 'arXiv:' + p.arxiv.id.replace(/v\d+$/, ''), relation: 'isSupplementTo', scheme: 'arxiv', resource_type: 'publication-preprint' });
   if (p.journal && p.journal.doi) related.push({ identifier: p.journal.doi, relation: 'isSupplementTo', scheme: 'doi', resource_type: 'publication-article' });
   const creator = { name: reg.author['family-names'] + ', ' + reg.author['given-names'], affiliation: reg.author.affiliation };
   if (reg.author.orcid) creator.orcid = reg.author.orcid;
+  const holds = 'This record holds the manuscript, a preprint that has not been peer reviewed, with the programs that check its results and their output. README.md describes each program and how to run it.';
   return JSON.stringify({
-    title: p.title, upload_type: 'software',
-    description: 'The manuscript, verification programs and their output for the paper "' + p.title + '" by ' + reg.author.name + '. See README.md.',
+    // Each companion release is the paper's preprint on Zenodo (owner's decision, 2026-09-25): the manuscript with
+    // the programs that check it, typed Publication / Preprint so indexes list it as the paper.
+    title: p.title, upload_type: 'publication', publication_type: 'preprint',
+    description: [...(paragraphs || []), holds].map(x => '<p>' + html(x) + '</p>').join(''),
     creators: [creator], license: 'Apache-2.0', ...(related.length ? { related_identifiers: related } : {}),
   }, null, 2) + '\n';
 }
@@ -123,8 +160,9 @@ function stage(root, id, dir, opts = {}) {
   if (!fs.existsSync(path.join(dir, 'README.md'))) throw new Error('papers/' + id + '/README.md is missing');
   fs.writeFileSync(path.join(dir, 'LICENSE'), license(root, reg, p, year));
   fs.writeFileSync(path.join(dir, 'CITATION.cff'), citation(reg, p, year));
-  fs.writeFileSync(path.join(dir, '.zenodo.json'), zenodo(reg, p));
-  return problems(dir, reg);
+  const abs = abstractOf(fs.readFileSync(path.join(dir, 'README.md'), 'utf8'));
+  fs.writeFileSync(path.join(dir, '.zenodo.json'), zenodo(reg, p, abs.paragraphs));
+  return [...abs.problems, ...problems(dir, reg)];
 }
 
 function check(root, id, opts) {
@@ -139,10 +177,11 @@ function selfTest() {
   const reg = () => ({ author: { name: 'A B', 'given-names': 'A', 'family-names': 'B', affiliation: 'Independent Researcher', email: 'ab@real-domain.org' },
     papers: [{ id: 't', title: 'T', status: 'ready', companion: 'o/t', arxiv: { id: null } }, { id: 'u', title: 'U', status: 'draft', companion: 'o/u' }, { id: 'v', title: 'V', status: 'published' }] });
   const files = ['README.md', 'paper/t.tex', 'code/run.py', 'notes/n.md', 'submission/letter.md'];
+  const ABSTRACT = '# T\n\n## Abstract\n\nWe prove $P > \\sqrt{3}/2$ for\n$0 < \\mu \\le 1$ and $|\\omega_0| t_c \\to \\sqrt{3 + \\alpha}$.\n\nA second paragraph.\n\n## Files\n\n';
   const base = () => {
     fs.rmSync(tmp, { recursive: true, force: true });
     w('LICENSE', 'Apache License\n');
-    w('papers/t/README.md', '# T\n\n[PDF](paper/t.pdf)\n'); w('papers/t/paper/t.tex', '\\author{A B \\texttt{ab@real-domain.org}}\n');
+    w('papers/t/README.md', ABSTRACT + '[PDF](paper/t.pdf)\n'); w('papers/t/paper/t.tex', '\\author{A B \\texttt{ab@real-domain.org}}\n');
     w('papers/t/code/run.py', 'print(1)\n'); w('papers/t/notes/n.md', 'see ../../research/x and me@real-domain.org\n'); w('papers/t/submission/letter.md', 'private\n');
   };
   const expect = (want, what, mutate) => {
@@ -162,6 +201,9 @@ function selfTest() {
     const cff = fs.readFileSync(path.join(out, 'CITATION.cff'), 'utf8'), lic = fs.readFileSync(path.join(out, 'LICENSE'), 'utf8');
     checks++; if (!/family-names: "B"/.test(cff) || !/repository-code: "https:\/\/github.com\/o\/t"/.test(cff)) { failures++; console.log('FAIL CITATION.cff:\n' + cff); }
     checks++; if (!/^The manuscript in paper\/.*All rights reserved\./.test(lic) || !/Apache License/.test(lic)) { failures++; console.log('FAIL LICENSE:\n' + lic); }
+    const zen = JSON.parse(fs.readFileSync(path.join(out, '.zenodo.json'), 'utf8')), desc = zen.description;
+    checks++; if (zen.upload_type !== 'publication' || zen.publication_type !== 'preprint') { failures++; console.log('FAIL .zenodo.json type: ' + zen.upload_type + ' / ' + zen.publication_type); }
+    checks++; if (desc !== '<p>We prove P &gt; √3/2 for 0 &lt; μ ≤ 1 and |ω₀| t_c → √(3 + α).</p><p>A second paragraph.</p><p>This record holds the manuscript, a preprint that has not been peer reviewed, with the programs that check its results and their output. README.md describes each program and how to run it.</p>') { failures++; console.log('FAIL .zenodo.json description: ' + desc); }
     expect(false, 'a GENChase link in the paper', () => w('papers/t/paper/t.tex', 'Code: https://github.com/ChaseHendrick/GENChase\n'));
     expect(false, 'a GENChase link under the old account name', () => w('papers/t/paper/t.tex', 'Code: https://github.com/SharpMeow/GENChase\n'));
     expect(false, 'a research/ path in the code', () => w('papers/t/code/run.py', "open('research/generalizations/x.json')\n"));
@@ -169,7 +211,9 @@ function selfTest() {
     expect(false, 'a link out of the folder', () => w('papers/t/README.md', '[status](../papers.json)\n'));
     expect(false, 'another email address', () => w('papers/t/README.md', 'Write to someone@real-domain.org\n'));
     expect(false, 'the author address outside the manuscript', () => w('papers/t/README.md', 'ab@real-domain.org\n'));
-    expect(true, 'the author address in the manuscript and an example.com placeholder', () => { w('papers/t/paper/t.tex', 'ab@real-domain.org\n'); w('papers/t/README.md', 'you@example.com\n'); });
+    expect(true, 'the author address in the manuscript and an example.com placeholder', () => { w('papers/t/paper/t.tex', 'ab@real-domain.org\n'); w('papers/t/README.md', ABSTRACT + 'you@example.com\n'); });
+    expect(false, 'a README without an abstract', () => w('papers/t/README.md', '# T\n\nIntro.\n'));
+    expect(false, 'an abstract with TeX that has no plain-text form', () => w('papers/t/README.md', '# T\n\n## Abstract\n\nThe bound is $\\mathcal{O}(1)$.\n'));
     expect(false, 'an unknown text license', r => { r.papers[0].textLicense = 'MIT'; });
     const listed = ready(reg()).map(p => p.id).join(' ');
     checks++; if (listed !== 't') { failures++; console.log('FAIL --list gave "' + listed + '", not "t"'); }

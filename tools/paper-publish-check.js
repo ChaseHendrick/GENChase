@@ -39,7 +39,7 @@ try {
   write(path.join(SRC, 'LICENSE'), 'Apache License\n');
   write(path.join(SRC, 'papers', 'papers.json'), JSON.stringify({ author: { name: 'A B', 'given-names': 'A', 'family-names': 'B', affiliation: 'Independent Researcher', email: 'ab@example.org' },
     papers: [{ id: 't', title: 'T', status: 'ready', companion: 'o/t' }] }, null, 2));
-  write(path.join(SRC, 'papers', 't', 'README.md'), '# T\n\nIntro.\n');
+  write(path.join(SRC, 'papers', 't', 'README.md'), '# T\n\n## Abstract\n\nIntro.\n');
   write(path.join(SRC, 'papers', 't', 'paper', 't.tex'), 'line one\nline two\nline three\n');
   write(path.join(SRC, 'papers', 't', 'code', 'run.py'), 'print(1)\n');
   write(path.join(SRC, 'papers', 't', 'notes', 'private.md'), 'working note\n');
@@ -62,7 +62,7 @@ try {
 
   // 3. The owner edits the companion directly; an update here to another file keeps that edit.
   git(tmp, 'clone', '-q', BARE, OWNER);
-  ownerEdit('README.md', '# T\n\nIntro.\n\nErratum: a typo on page 2.\n', 'Erratum in the README');
+  ownerEdit('README.md', '# T\n\n## Abstract\n\nIntro.\n\nErratum: a typo on page 2.\n', 'Erratum in the README');
   write(path.join(SRC, 'papers', 't', 'paper', 't.tex'), 'line one\nline two\nline three, revised\n'); commitSrc('revise line three');
   r = run('paper-publish.sh');
   ok(r.status === 0, 'an update after a direct edit succeeds', r.stdout + r.stderr);
