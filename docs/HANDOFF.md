@@ -8,6 +8,7 @@ Read this first when you come back. Newest state at the top of each list.
 - kpz: the relaxation rule stops at the top of the lattice (ported from the closed PR #123); presets unchanged.
 - `npm run xref`: optional cross-check of cahn, swift and ks against a NumPy spectral reference (tools/xref/); all pass. Not part of `npm test`.
 - Still running: the custom reaction-term box for the rdx tabs.
+- PR #152 merged (547ad2e). GitHub Pages is off by your choice: the deploy job runs only when the repository variable `PAGES` is `on`. Links to chasehendrick.github.io (README, studio, docs) are dead while it is off; fix them if the repository goes public without Pages.
 
 ## Done and merged to main
 
