@@ -21,8 +21,8 @@ paper's programs and data get their DOI from the paper's own public repository i
 
 Already done in the repository: `.zenodo.json` describes the software (upload type software,
 Apache-2.0), the identities note has its own metadata in `identities/zenodo.json`, and
-`CITATION.cff` is valid CFF 1.2 with the version and date of the latest release (v0.6.2,
-2026-09-24) and a comment where the DOI goes. `node tools/index.js` keeps the technique count in
+`CITATION.cff` is valid CFF 1.2 with the version and date of the latest release (v0.7.0,
+2026-09-25) and a comment where the DOI goes. `node tools/index.js` keeps the technique count in
 `.zenodo.json` current, and `node tools/lint.js` fails it if it drifts.
 
 1. **Sign in to Zenodo** at zenodo.org with the GitHub account that owns `ChaseHendrick/GENChase`.
