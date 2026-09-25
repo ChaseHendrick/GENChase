@@ -1805,3 +1805,8 @@ Re-search: reopen when visualpde.com, simunauts.vercel.app, apps.apple.com or so
 - **O'Neil 2007 (Physica D 236) Fig. 5, "omega proportional to 1 + (4/9)i", is not a low-winding collapse.** Read naively as velocity over position it would give P = 2/9. A direct search of triple-ring collapses with circulations +-1 (the harmonic condition forces three triangles, or pentagons with a central vortex) finds nothing below P = 1.0187 (triangles) and 2.477 (pentagons with a centre) from 150 constrained minimizations each, so the figure's omega must follow the other convention, giving P = 9/8, above that minimum. Numerical, and the minima are not certified; scratch triplering/.
 - Not reachable: Kimura 1987, Novikov-Sedov 1979, Newton 2001, Kudela 2014, O'Neil 2007 (RCD 12), Siegel-Moser section numbers, Saari 2005 content.
 - Re-search: no for the theorem and the gravity sources; the N >= 4 questions stay open.
+
+### 2026-09-25  two corrections to the alpha-winding record
+
+- **The stored eleven-vortex zero-winding point expands; its mirror image collapses.** `vortex-grow-a2-n11-s0-c12.json` has kappa = +0.004549 under the alpha-winding paper's Eq. (bs), so as stored it moves outward. Its mirror image z -> conj(z) collapses (for real kappa this is the same as reversing every circulation). Entries P and Q, and the v0.6.2 CHANGELOG, call the stored point a collapse; read that as the mirror image. The existence claim is unaffected.
+- **Section 5 of the alpha-winding draft quoted the Hessian eigenvalues of the Lagrangian of 2P, not of P.** The text minimizes P, so the eigenvalues are half those printed: 1.106, 6.289 and 9.377 instead of 2.21, 12.58 and 18.75. Positive definiteness is unaffected. Corrected in the .tex and .typ, and the PDF rebuilt.

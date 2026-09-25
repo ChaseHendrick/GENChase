@@ -156,7 +156,7 @@ whose minimum, $1.1039451679 dots$, is a root of $27648 y^8 - 29952 y^6 - 3200 y
 
 Self-similar motion of any number of vortices has the same form [4, 6, 12], $dot(z)_j = kappa (z_j - z_c)$ and $P$ defined by @eq:P. In the Euler case the bound of [8] does not extend to more vortices: the seven-vortex collapse of Demina and Kudryashov [4, Table 1] has $P = 12433\/(1240 sqrt(155)) = 0.805 dots$ [8]. A numerical minimization of $op("Im") kappa \/ (-2 op("Re") kappa)$ over the circulations and positions of four vortices, from more than two hundred random starts, ends at a single configuration up to relabeling, with
 $ P_4 = 0.79789678387986348076760587182 dots , $
-a strict local minimum (the Hessian of the Lagrangian on the three-dimensional tangent space of the constraints has eigenvalues $2.21$, $12.58$ and $18.75$). In the normalization $Gamma_1 = 1$, $z_c = 0$, $kappa = -1 + i b$ it has $b = 1.5957935677597269615 dots$ and
+a strict local minimum (the Hessian of the Lagrangian on the three-dimensional tangent space of the constraints has eigenvalues $1.106$, $6.289$ and $9.377$). In the normalization $Gamma_1 = 1$, $z_c = 0$, $kappa = -1 + i b$ it has $b = 1.5957935677597269615 dots$ and
 $ Gamma &= (1, 0.1673914318538, 0.1041331880362, -0.2272513003829), \
 z &= (0.0166495669172, -0.2191226402232 - 0.3290676220068 i, \
   & quad -0.1579874300122 - 0.2864759934272 i, -0.1605333843048 - 0.3736601672808 i) . $
