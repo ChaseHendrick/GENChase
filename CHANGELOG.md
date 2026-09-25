@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **The third vortex paper, nonlinear stability and vortex patches** (draft): `papers/stable-expansion/` is now *Stable Self-Similar Expansion of Four and Five Point Vortices and Confinement of Vortex Patches* (12 pages). Theorem 3 proves that the two certified expansions are nonlinearly stable modulo rotation: every nearby motion stays within a bounded distance of an exactly self-similar expansion of the family member with its own energy, the relative deviation decaying like t^(-1/2); Proposition 1 is the same estimate for motions with a decaying forcing. Theorem 4 uses it in place of the one step of Zbarsky's proof (Commun. Math. Phys. 388, 2021) that needs three vortices, and carries his vortex-patch confinement theorem to the two configurations; it adapts his estimates and still needs a specialist's check. `verify_stable_expansion.py` adds the exact vanishing of the sum of pairwise products of the circulations, the left null vector grad H of the Jacobian, the monotonicity of the energy along the family, and a direct integration showing the 1/size approach to the member with the same energy (57 checks). RESEARCH.md records the prior art, including Davila, del Pino, Musso and Parmeshwar (arXiv:2410.18220), a construction of particular solutions near the three-vortex spiral.
+
 ## v0.7.0
 
 The publication date is recorded in the GitHub release notes.
