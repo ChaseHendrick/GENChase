@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright 2026 Chase Hendrick. Licensed under the Apache License, Version 2.0 (see LICENSE).
 """Plot the two arc minima of P = |omega_0| t_c against the circulation ratio mu.
 
 Circulations (1, mu, -mu/(1+mu)); the squared minima are the two positive roots of

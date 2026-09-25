@@ -1,3 +1,4 @@
+# Copyright 2026 Chase Hendrick. Licensed under the Apache License, Version 2.0 (see LICENSE).
 # Exact (SymPy) checks of every identity in the direct proof of Corollary 1 of the manuscript
 # (paper/minimal-winding.tex): Eq. (Ptheta) from Lemma 3 and from the positions, the three polynomial
 # identities, P in terms of x, y and psi, the Lemma 1 step, the sum-of-squares certificate, and the
