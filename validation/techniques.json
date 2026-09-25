@@ -2160,12 +2160,13 @@
   {
     "id": "fluid",
     "source": "src/modules/fluid.js",
-    "sourceSha256": "65eff38428e01bdf5e8d64ced24f2706be9561c7ed04c217ad6f59a1ee1f5092",
+    "sourceSha256": "459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de",
     "reference": "Stable fluids: Jos Stam, SIGGRAPH 1999. Vorticity confinement comes from Steinhoff and Underhill, 1994, brought into graphics by Fedkiw, Stam and Jensen, 2001.",
-    "equation": "du/dt + (u·grad)u = -grad p + nu·lap u,   div u = 0   (advect -> project -> advect dye)",
+    "equation": "du/dt + (u·grad)u = -grad p - gamma·u + f,   div u ≈ 0   (no viscous term; gamma = -ln(dissipation) per step; f = vorticity confinement + forcing; advect -> force -> Jacobi project -> advect dye)",
     "status": "unvalidated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Since 2026-09-25 the catalog equation matches the code: no explicit viscosity (the old equation listed nu lap u, which no pass computes); velocity is damped by a constant per-step factor, semi-Lagrangian advection adds grid-dependent numerical diffusion, and the Jacobi pressure solve reduces the divergence without removing it. Compare it with a damped, forced incompressible model, not with viscous Navier-Stokes.",
       "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
     ],
     "remaining": [
