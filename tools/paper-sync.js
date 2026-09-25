@@ -64,7 +64,7 @@ function citation(reg, p, year) {
   if (p.arxiv && p.arxiv.id) ids.push('    - type: doi', '      value: ' + yaml('10.48550/arXiv.' + p.arxiv.id.replace(/v\d+$/, '')));
   if (p.journal && p.journal.doi) ids.push('    - type: doi', '      value: ' + yaml(p.journal.doi));
   return ['cff-version: 1.2.0', 'message: "If you use these programs or data, please cite the paper."',
-    'title: ' + yaml(p.title + ': programs and data'), 'type: software', 'authors:', ...who,
+    'title: ' + yaml(p.title), 'type: software', 'authors:', ...who,
     'license: Apache-2.0', 'repository-code: ' + yaml('https://github.com/' + p.companion),
     ...(p.codeDoi ? ['doi: ' + yaml(p.codeDoi)] : []),
     'preferred-citation:', '  type: article', '  title: ' + yaml(p.title), '  authors:', ...who.map(l => '  ' + l), '  year: ' + year,
@@ -79,7 +79,7 @@ function zenodo(reg, p) {
   const creator = { name: reg.author['family-names'] + ', ' + reg.author['given-names'], affiliation: reg.author.affiliation };
   if (reg.author.orcid) creator.orcid = reg.author.orcid;
   return JSON.stringify({
-    title: p.title + ': programs and data', upload_type: 'software',
+    title: p.title, upload_type: 'software',
     description: 'The manuscript, verification programs and their output for the paper "' + p.title + '" by ' + reg.author.name + '. See README.md.',
     creators: [creator], license: 'Apache-2.0', ...(related.length ? { related_identifiers: related } : {}),
   }, null, 2) + '\n';

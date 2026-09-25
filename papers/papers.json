@@ -14,7 +14,7 @@
       "id": "minimal-winding",
       "title": "Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons",
       "status": "ready",
-      "note": "Ready for arXiv once the code DOI is in its data availability paragraph (papers/minimal-winding/submission/CHECKLIST.md).",
+      "note": "Ready for arXiv once the code DOI is in its data availability paragraph (papers/minimal-winding/submission/CHECKLIST.md). Release v1.0.0 of the companion is archived at doi:10.5281/zenodo.22953035 (2026-09-25, before the central-vortex result); the paper will cite the version DOI of v1.1.0.",
       "typst": "papers/minimal-winding/paper/minimal-winding.typ",
       "latex": "papers/minimal-winding/paper/minimal-winding.tex",
       "pdf": "papers/minimal-winding/paper/minimal-winding.pdf",
