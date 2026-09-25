@@ -5,7 +5,7 @@ has not been peer reviewed.
 
 ## Unreleased
 
-Changes since v1.0.0, to appear in the next release (the paper grows from 14 to 31 pages):
+Changes since v1.0.0, to appear in the next release (the paper grows from 14 to 32 pages):
 
 - **A new title and one paper instead of two.** The paper is now *Minimal Winding in the Self-Similar
   Collapse of Point Vortices*. The separate draft on the α-models (*A sharp winding bound for the
@@ -19,13 +19,15 @@ Changes since v1.0.0, to appear in the next release (the paper grows from 14 to 
   through python-flint, 320 bits, the Krawczyk operator): four, five and six Euler vortices can collapse
   self-similarly with P < √3/2, and P has strict local minima 0.7978967838…, 0.7448144569… and
   0.7136801485… on those collapses; four vortices go below the three-vortex bounds at α = 1 and α = 2;
-  and eleven vortices at α = 2 can collapse without rotating at all, each moving straight into the
-  collision point. Whether these local minima are global is not proved.
-- **Numerical results for many vortices**, labelled as such: minima for N = 7 to 12, a two-arm family
-  down to P = 0.4793959201… at N = 603 whose values tend to about 0.47736, and a collapse of sixty SQG
-  vortices without rotation.
+  eleven vortices at α = 2 can collapse without rotating at all, each moving straight into the
+  collision point; and so can sixty vortices in the SQG model. Whether these local minima are global is
+  not proved.
+- **Numerical results for many vortices**, labelled as such: minima for N = 7 to 12, and a two-arm family
+  down to P = 0.4793959201… at N = 603 whose values tend, by cubic Richardson extrapolation, to
+  0.4773635.
 - New programs: `code/certify_collapses.py` (92 checks, with its `certify_*.py` modules),
-  `code/verify_strong_vortex.py` (143 checks), `code/verify_alpha_winding.py`,
+  `code/certify_sqg60.py` (11 checks, reusing those modules), `code/verify_strong_vortex.py`
+  (143 checks), `code/verify_alpha_winding.py`,
   `code/verify_alpha_extension.py`, `code/verify_alpha_equal_circulations.py`,
   `code/verify_many_vortices.py` and `code/plot_alpha_winding.py`, and the stored many-vortex
   configurations in `data/`.

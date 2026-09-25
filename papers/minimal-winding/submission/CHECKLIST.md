@@ -13,7 +13,7 @@ Its reading list in [../../READING-LIST.md](../../READING-LIST.md) now belongs t
 
 - The manuscript, with the figures `paper/figures/minimal-winding.pdf`,
   `paper/figures/minimal-winding-paths.pdf` and `paper/figures/alpha-winding.pdf`, and its LaTeX build
-  `paper/minimal-winding.pdf` (31 pages since the merge of 2026-09-25), the same PDF arXiv will build. The author block
+  `paper/minimal-winding.pdf` (32 pages since the merge of 2026-09-25), the same PDF arXiv will build. The author block
   carries the contact email (owner's decision, 2026-09-24).
 - The bibliography has 36 works. Every work cited in the LaTeX source has an entry, and every entry is
   cited.
@@ -21,7 +21,7 @@ Its reading list in [../../READING-LIST.md](../../READING-LIST.md) now belongs t
   `data/`, a funding statement (no external funding), and the statement
   "This work was prepared with AI assistance. The author takes full responsibility for its content."
 - The arXiv metadata in [arxiv-metadata.md](arxiv-metadata.md): title, author, categories, MSC
-  classes, comments, license, and an abstract that matches the manuscript's abstract (1,845
+  classes, comments, license, and an abstract that matches the manuscript's abstract (1,872
   characters against the 1,920 limit it states).
 - A draft of the [cover letter](cover-letter-rcd.md). No endorsement is needed: the author's arXiv
   account can submit to physics.flu-dyn.

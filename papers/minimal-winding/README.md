@@ -4,7 +4,7 @@
 
 Preprint, prepared for arXiv (physics.flu-dyn; cross-lists math-ph, math.DS). Not yet peer reviewed.
 
-**[Read the paper (PDF, 31 pages)](paper/minimal-winding.pdf)**
+**[Read the paper (PDF, 32 pages)](paper/minimal-winding.pdf)**
 
 ## Abstract
 
@@ -25,8 +25,8 @@ has $P \ge \sqrt{3}/2 - o(1)$ as the pairs weaken. For more vortices the bound f
 proofs show that four, five and six Euler vortices collapse self-similarly with $P < \sqrt{3}/2$, that
 $P$ has strict local minima $0.7978967838\ldots$, $0.7448144569\ldots$ and $0.7136801485\ldots$ on these
 collapses, that for $\alpha = 1$ and $\alpha = 2$ four vortices go below the three-vortex bounds, and
-that eleven vortices in the $\alpha = 2$ model collapse without rotating. Numerically, sixty-one Euler
-vortices reach $P = 0.498\ldots$.
+that eleven vortices in the $\alpha = 2$ model and sixty in the SQG model collapse without rotating.
+Numerically, sixty-one Euler vortices reach $P = 0.498\ldots$.
 
 ## Contents
 
@@ -34,7 +34,7 @@ vortices reach $P = 0.498\ldots$.
 |---|---|
 | [`paper/`](paper/) | The manuscript: [`minimal-winding.tex`](paper/minimal-winding.tex) (LaTeX, the only source, which arXiv and journals receive), its build [`minimal-winding.pdf`](paper/minimal-winding.pdf), and [`figures/`](paper/figures/) |
 | [`code/`](code/) | The programs below and [`requirements.txt`](code/requirements.txt) |
-| [`data/`](data/) | The output of the ten verification programs, the inputs of the certification, and the stored many-vortex configurations of Section 7 |
+| [`data/`](data/) | The output of the eleven verification programs, the inputs of the certification, and the stored many-vortex configurations of Section 7 |
 
 | Program | What it checks |
 |---|---|
@@ -46,8 +46,9 @@ vortices reach $P = 0.498\ldots$.
 | [`verify_alpha_winding.py`](code/verify_alpha_winding.py) | The α-models: Lemmas 5 and 6, Theorem 2 and Corollary 2 at high precision, about 15 s |
 | [`verify_alpha_extension.py`](code/verify_alpha_extension.py) | The interval-arithmetic step of Remark 4 (α ≥ −59/40), under a second |
 | [`verify_alpha_equal_circulations.py`](code/verify_alpha_equal_circulations.py) | Remark 5, two equal circulations in the α-models, exact and at 40 digits, about 10 s |
-| [`certify_collapses.py`](code/certify_collapses.py) | The computer-assisted proofs of Theorems 4 and 5 (four to six Euler vortices, four vortices at α = 1 and 2, eleven vortices without rotation at α = 2) in FLINT/Arb ball arithmetic through python-flint at 320 bits, with the Krawczyk operator and interval second-order automatic differentiation, and controls; its modules are the other `certify_*.py` files and its inputs are in `data/certify-inputs/`; 92 checks, about a minute |
-| [`verify_many_vortices.py`](code/verify_many_vortices.py) | The numerical results of Section 7 from the stored configurations: the minimizers for N = 7 to 12, 33, 61 and 603, the two-arm family and its fit, and the SQG collapse of sixty vortices without rotation; about a minute |
+| [`certify_collapses.py`](code/certify_collapses.py) | The computer-assisted proofs of Theorem 4 and Theorem 5(a) (four to six Euler vortices, four vortices at α = 1 and 2, eleven vortices without rotation at α = 2) in FLINT/Arb ball arithmetic through python-flint at 320 bits, with the Krawczyk operator and interval second-order automatic differentiation, and controls; its modules are the other `certify_*.py` files and its inputs are in `data/certify-inputs/`; 92 checks, about a minute |
+| [`certify_sqg60.py`](code/certify_sqg60.py) | The computer-assisted proof of Theorem 5(b): sixty SQG vortices collapse without rotation, in the same ball arithmetic, reusing the `certify_*.py` modules; its input is `data/collapse-sqg-n60-no-rotation.json`; 11 checks, about half a minute |
+| [`verify_many_vortices.py`](code/verify_many_vortices.py) | The numerical results of Section 7 from the stored configurations: the minimizers for N = 7 to 12, 33, 61 and 603, the two-arm family and its fit, and an independent, non-rigorous refinement of the now-certified SQG collapse of sixty vortices without rotation; about a minute |
 | [`plot_minimal_winding.py`](code/plot_minimal_winding.py), [`plot_alpha_winding.py`](code/plot_alpha_winding.py) | Figures 1 and 2, and Figure 3 |
 
 ## Reproduce
@@ -65,6 +66,7 @@ python3 code/verify_alpha_winding.py
 python3 code/verify_alpha_extension.py
 python3 code/verify_alpha_equal_circulations.py
 python3 code/certify_collapses.py
+python3 code/certify_sqg60.py
 python3 code/verify_many_vortices.py
 python3 code/plot_minimal_winding.py
 python3 code/plot_alpha_winding.py
