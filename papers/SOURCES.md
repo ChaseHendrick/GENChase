@@ -31,3 +31,4 @@ Lewkowicz-Kudela and others) are described in RESEARCH.md without fingerprints.
 | Chen and Liu, Sufficient and necessary conditions for self-similar motions of three point vortices in generalized fluid systems, Physica D 470 (2024) 134392 | Physica D 470, 134392 | publisher copy (paywalled) | 2 | 11 | `63a0e454f09b13c3bdc35ff1d7de60af999000a4791a4ed4e32089ab136e6877` |
 | Xiang Yu, on the planar four-vortex problem (title as on arXiv) | arXiv:2103.06037v4 | arXiv | 2 (not yet read) | 43 | `00756cb774726ef8355eba02fe8125b2be17a66c52c844ab2527d209648446df` |
 | Xiang Yu, on the planar four-vortex problem, second paper (title as on arXiv) | arXiv:2111.07292v1 | arXiv | 2 (not yet read) | 43 | `f463d0bb58492428bc4924d585aafe36fde04794abf88739ad3964078a9b08cb` |
+| Demina and Kudryashov, Multi-particle dynamical systems and polynomials | arXiv:1407.1641v1 | arXiv | 1 (not cited) | 29 | `fd52813b1576034cead5ebd8cc801e36a7615f3a517060da6803b59bbca929bd` |

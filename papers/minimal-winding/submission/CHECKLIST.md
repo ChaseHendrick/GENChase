@@ -1,7 +1,6 @@
 # Submission checklist: the minimal-winding paper
 
-The paper is *Minimal winding in the self-similar collapse of three point vortices and of two
-concentric vortex polygons*, in [`../paper/minimal-winding.tex`](../paper/minimal-winding.tex)
+The paper is *Minimal Winding in the Self-Similar Collapse of Three Point Vortices and of Two Concentric Vortex Polygons*, in [`../paper/minimal-winding.tex`](../paper/minimal-winding.tex)
 (the manuscript, built as [`../paper/minimal-winding.pdf`](../paper/minimal-winding.pdf)) and its Typst copy
 [`../paper/minimal-winding.typ`](../paper/minimal-winding.typ).
 The target is arXiv (physics.flu-dyn) and then *Regular and Chaotic Dynamics*. Checked 2026-09-24
@@ -14,7 +13,7 @@ submission.
 ## Ready
 
 - The manuscript in both formats, with the figures `paper/figures/minimal-winding.pdf` and
-  `paper/figures/minimal-winding-paths.pdf`, and its LaTeX build `paper/minimal-winding.pdf` (16 pages since
+  `paper/figures/minimal-winding-paths.pdf`, and its LaTeX build `paper/minimal-winding.pdf` (17 pages since
   Proposition 3, Remark 4 and Figure 2 were added on 2026-09-25), the same PDF arXiv will build. The author block
   carries the contact email (owner's decision, 2026-09-24).
 - The LaTeX and Typst texts cite the same 26 works in the same places. Every work cited in the

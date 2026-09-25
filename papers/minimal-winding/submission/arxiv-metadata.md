@@ -3,12 +3,12 @@
 Fill the arXiv form with the fields below.
 
 - **Files to upload:** `minimal-winding-arxiv.zip`, which `sh tools/arxiv-bundle.sh minimal-winding` makes: the LaTeX source [`../paper/minimal-winding.tex`](../paper/minimal-winding.tex) without its maintenance comment lines at the top, and the figures `figures/minimal-winding.pdf` and `figures/minimal-winding-paths.pdf` at that folder path. The source is plain `article` with standard packages and compiles without warnings after three `pdflatex` runs (arXiv reruns LaTeX as needed). arXiv's build is the same as [`../paper/minimal-winding.pdf`](../paper/minimal-winding.pdf); compare its preview with that PDF before you submit. arXiv makes the source downloadable.
-- **Title:** Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons
+- **Title:** Minimal Winding in the Self-Similar Collapse of Three Point Vortices and of Two Concentric Vortex Polygons
 - **Authors:** Chase Hendrick
 - **Primary category:** physics.flu-dyn (Fluid Dynamics)
 - **Cross-lists:** math-ph (Mathematical Physics), math.DS (Dynamical Systems)
 - **MSC class:** 76B47, 37N10
-- **Comments:** `16 pages, 2 figures, 1 table. Verification programs and data: https://github.com/ChaseHendrick/minimal-winding`
+- **Comments:** `17 pages, 2 figures, 1 table. Verification programs and data: https://github.com/ChaseHendrick/minimal-winding`
   - The page count is the LaTeX build's, which is the PDF in the repository.
 - **License:** arXiv.org perpetual, non-exclusive license (**decided 2026-09-25**). You keep every right: anyone can read and download the paper, nobody may republish or adapt it without your permission, and a journal can still take a copyright transfer when it accepts the paper. CC BY 4.0 would let anyone reuse and republish the text with attribution; choose it only if a funder or journal requires open reuse. The choice is irrevocable for the version you submit, though a later version may carry a different license.
 - **Report number, journal reference, DOI:** leave blank.

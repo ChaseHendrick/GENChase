@@ -199,7 +199,7 @@ The bound concerns self-similar collapse only; it says nothing about other singu
 + M. Donati and L. Godard-Cadillac, Hölder regularity for collapses of point vortices, _Nonlinearity_ *36* (2023) 5773; arXiv:2111.14230.
 + T. Gotoda, Self-similar motions and related relative equilibria in the $N$-point vortex system, _J. Dyn. Differ. Equ._ *33* (2021) 1759–1777; arXiv:2002.09624.
 + F. Grotto and U. Pappalettera, Collapse and burst of generalized surface quasi-geostrophic point vortices, preprint, arXiv:2505.19782 (2025).
-+ C. Hendrick, Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons, preprint (2026), https://github.com/ChaseHendrick/minimal-winding.
++ C. Hendrick, Minimal Winding in the Self-Similar Collapse of Three Point Vortices and of Two Concentric Vortex Polygons, preprint (2026), https://github.com/ChaseHendrick/minimal-winding.
 + T. Iwayama and T. Yajima, Linear stability of self-similar motions of three point vortices in a generalized two-dimensional fluid system, _J. Phys. Soc. Jpn._ *92* (2023) 084401.
 + T. Iwayama, S. Yajima and T. Watanabe, Non-self-similar collapse of three point vortices in a generalized two-dimensional fluid system, _J. Phys. A_ *58* (2025) 075701.
 + Y. Kimura, Similarity solution of two-dimensional point vortices, _J. Phys. Soc. Jpn._ *56* (1987) 2024–2030.

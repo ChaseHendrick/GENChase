@@ -1,10 +1,10 @@
-# Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons
+# Minimal Winding in the Self-Similar Collapse of Three Point Vortices and of Two Concentric Vortex Polygons
 
 **Chase Hendrick**, Independent Researcher · chasewhendrick@gmail.com
 
 Preprint, prepared for arXiv (physics.flu-dyn; cross-lists math-ph, math.DS). Not yet peer reviewed.
 
-**[Read the paper (PDF, 16 pages)](paper/minimal-winding.pdf)**
+**[Read the paper (PDF, 17 pages)](paper/minimal-winding.pdf)**
 
 ## Abstract
 
@@ -62,7 +62,7 @@ Until the arXiv identifier exists:
 ```bibtex
 @misc{hendrick2026minimal,
   author = {Hendrick, Chase},
-  title  = {Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons},
+  title  = {Minimal Winding in the Self-Similar Collapse of Three Point Vortices and of Two Concentric Vortex Polygons},
   year   = {2026},
   note   = {Preprint},
   url    = {https://github.com/ChaseHendrick/minimal-winding}
