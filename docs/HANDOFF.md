@@ -1,6 +1,13 @@
-# Handoff: where things stand (2026-09-24, evening)
+# Handoff: where things stand (2026-09-25)
 
 Read this first when you come back. Newest state at the top of each list.
+
+## Added on 2026-09-25 (branch claude/optimistic-feynman-agrpck, PR #152)
+
+- Paper 1 now cites Synge 1949 and Hiraoka 2009 (25 references, 13 pages); citations checked against your PDFs (RESEARCH.md, 2026-09-25).
+- kpz: the relaxation rule stops at the top of the lattice (ported from the closed PR #123); presets unchanged.
+- `npm run xref`: optional cross-check of cahn, swift and ks against a NumPy spectral reference (tools/xref/); all pass. Not part of `npm test`.
+- Still running: the custom reaction-term box for the rdx tabs.
 
 ## Done and merged to main
 
