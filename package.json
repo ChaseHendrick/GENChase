@@ -7,7 +7,7 @@
     "index": "node tools/index.js",
     "lint": "node tools/lint.js",
     "science": "node tools/science.js",
-    "test": "node tools/maintenance-check.js && node tools/verify-check.js && node tools/folder-check.js && node tools/verify.js --list --all",
+    "test": "node tools/maintenance-check.js && node tools/verify-check.js && node tools/folder-check.js && node tools/stats-check.js && node tools/gpu-science.js --self-test && node tools/commitment-check.js && node tools/verify-commitment.js --all && node tools/paper-check.js --self-test && node tools/paper-sync.js --self-test && node tools/paper-publish-check.js && node tools/paper-check.js && node tools/verify.js --list --all",
     "test:solvers": "node tools/verify.js --all",
     "test:print": "node tools/verify.js --print --all",
     "test:all": "npm test && npm run build:check && npm run lint && npm run science && node tools/verify.js --print --all",
@@ -21,6 +21,13 @@
     "validator:headless": "node apps/validate/cli.js",
     "test:navigation": "node tools/studio-navigation-check.js",
     "test:validator:ui": "node tools/validator-ui-check.js && node tools/validator-ux-check.js",
+    "test:art": "node tools/art-check.js",
+    "test:provenance": "node tools/provenance-check.js",
+    "test:papers": "node tools/paper-check.js --self-test && node tools/paper-sync.js --self-test && node tools/paper-publish-check.js && node tools/paper-check.js",
+    "test:commitments": "node tools/commitment-check.js && node tools/verify-commitment.js --all",
+    "test:half-float": "node tools/half-float-check.js",
+    "gpu:science": "node tools/build.js && node tools/gpu-science.js",
+    "data": "node tools/run.js",
     "setup:checks": "node tools/setup-checks.js"
   }
 }

@@ -1,5 +1,6 @@
 // Export real PDE instances at 8 x 8 inches, 300 ppi; verify exact state preservation.
 // Test-only instrumentation reads the actual solver textures. It never changes production code.
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');
 (async()=>{
@@ -16,7 +17,7 @@ const {chromium}=require('playwright');
           return pixels;
         },
 ${marker}`);
- const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+ const browser=await chromium.launch({args:glArgs()});
  const rows=[];
  try {
   for(const id of ['cahn','ohta','amb','swift','ks','pfc']){

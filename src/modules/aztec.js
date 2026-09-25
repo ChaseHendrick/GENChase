@@ -74,6 +74,33 @@
 
   const ASPECT = 1;
 
+  // Angular sectors the free part of the diamond is counted in, for the error bar; see polarCompare().
+  const NB = 60;
+
+  // Integrated autocorrelation time of a circular series, 1 + 2 sum rho_l with the window closed at the
+  // first non-positive rho, floored at 2 (the split weighting below hands every cell to two neighboring
+  // sectors, so neighbors share data by construction) and capped at a quarter of the circle. The same
+  // estimator as acTime in src/modules/lozenge.js, which measures its boundary the same way.
+  function acTime(x) {
+    const n = x.length;
+    let m = 0;
+    for (let i = 0; i < n; i++) m += x[i];
+    m /= n;
+    let c0 = 0;
+    for (let i = 0; i < n; i++) c0 += (x[i] - m) * (x[i] - m);
+    c0 /= n;
+    if (!(c0 > 0)) return { sd: 0, tau: 1 };
+    let tau = 1;
+    for (let l = 1; l <= Math.floor(n / 4); l++) {
+      let c = 0;
+      for (let k = 0; k < n; k++) c += (x[k] - m) * (x[(k + l) % n] - m);
+      const rho = c / n / c0;
+      if (!(rho > 0)) break;
+      tau += 2 * rho;
+    }
+    return { sd: Math.sqrt(c0 * n / (n - 1)), tau: Math.min(Math.max(tau, 2), n / 4) };
+  }
+
   /* ---------- Arctic Circle ---------- */
   Studio.register({
     id: 'aztec',
@@ -109,7 +136,7 @@
     },
     hints: {
       Diamond: 'The seed decides every coin flip in the shuffle, so the same seed and order reprint the same tiling exactly.',
-      Tiles: 'Domino type is the four directions the shuffle uses, which is also the four frozen phases. Frozen versus free colors a domino by whether all its neighbors share its type.',
+      Tiles: 'Domino type is the four directions the shuffle uses, which is also the four frozen phases. Frozen versus free colors the four polar regions: a domino is frozen when a chain of edge-adjacent dominoes of its own type connects it to the boundary of the diamond (Jockusch, Propp and Shor).',
     },
     palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (N, S, W, E)',
     headline: 'n', headlineLabel: 'order',
@@ -123,7 +150,7 @@
     },
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d');
-      let grid = null, order = 0, list = null, frozen = null, timer = 0, building = false;
+      let grid = null, order = 0, list = null, frozen = null, polarByType = null, freeBins = null, timer = 0, building = false;
 
       function build(s, done) {
         clearTimeout(timer); building = true;
@@ -141,26 +168,74 @@
           else { building = false; finish(); done(); }
         })();
       }
+      // The polar regions of Jockusch, Propp and Shor (1998), in the form Johansson states them (Annals of
+      // Probability 33, 2005): the north polar region is the union of the N dominoes connected to the boundary of
+      // the diamond by a chain of edge-adjacent N dominoes, and likewise for S, W and E. Their union is the frozen
+      // part of the plate. A local test (all neighbors share the type) also counts brickwork patches inside the
+      // circle, and read 0.278 against the limit 0.215 (validation/AZTEC.md); this one is the theorem's region.
       function finish() {
         list = dominoes(grid, order);
-        // frozen: every neighboring domino cell shares this domino's type
-        const w = 2 * order; frozen = new Uint8Array(list.length);
+        const w = 2 * order, owner = new Int32Array(w * w).fill(-1);
+        list.forEach((d, k) => { const [x, y, , hz] = d; owner[y * w + x] = k; owner[(hz ? y : y + 1) * w + (hz ? x + 1 : x)] = k; });
+        const cellsOf = d => d[3] ? [[d[0], d[1]], [d[0] + 1, d[1]]] : [[d[0], d[1]], [d[0], d[1] + 1]];
+        const out = (x, y) => x < 0 || y < 0 || x >= w || y >= w || !inside(x, y, order);
+        frozen = new Uint8Array(list.length);
+        const queue = [];
         list.forEach((d, k) => {
-          const [x, y, t, hz] = d; let ok = true;
-          const cells = hz ? [[x, y], [x + 1, y]] : [[x, y], [x, y + 1]];
-          for (const [cx, cy] of cells) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
-            const nx = cx + dx, ny = cy + dy;
-            if (nx < 0 || ny < 0 || nx >= w || ny >= w || !inside(nx, ny, order)) continue;
-            if (grid[ny * w + nx] !== t) { ok = false; break; }
+          for (const [cx, cy] of cellsOf(d)) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+            if (out(cx + dx, cy + dy) && !frozen[k]) { frozen[k] = 1; queue.push(k); }
           }
-          frozen[k] = ok ? 1 : 0;
+        });
+        while (queue.length) {
+          const k = queue.pop(), t = list[k][2];
+          for (const [cx, cy] of cellsOf(list[k])) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+            const nx = cx + dx, ny = cy + dy;
+            if (out(nx, ny)) continue;
+            const j = owner[ny * w + nx];
+            if (j >= 0 && !frozen[j] && list[j][2] === t) { frozen[j] = 1; queue.push(j); }
+          }
+        }
+        polarByType = [0, 0, 0, 0];
+        list.forEach((d, k) => { if (frozen[k]) polarByType[d[2] - 1]++; });
+        // The free cells (outside every polar region) counted in NB angular sectors around the center of the
+        // diamond, each cell split between the two nearest sector centers by angle so that no row of cells
+        // crosses a hard sector edge at once.
+        freeBins = new Float64Array(NB);
+        list.forEach((d, k) => {
+          if (frozen[k]) return;
+          for (const [cx, cy] of cellsOf(d)) {
+            let th = Math.atan2(cy + 0.5 - order, cx + 0.5 - order); if (th < 0) th += 2 * Math.PI;
+            const x = th / (2 * Math.PI) * NB - 0.5, i0 = Math.floor(x), fr = x - i0;
+            freeBins[((i0 % NB) + NB) % NB] += 1 - fr;
+            freeBins[((i0 + 1) % NB + NB) % NB] += fr;
+          }
         });
       }
+      // The share of the diamond in the polar regions, against the arctic-circle limit 1 - pi/4. The share is one
+      // minus the free cells over the cells of the diamond, a number the order fixes, and the free cells are the
+      // sum of the NB sector counts. Those counts are correlated around the circle, so the error bar is the
+      // standard error of their sum from the integrated autocorrelation time, sd sqrt(NB tau).
+      //
+      // It used to be the spread of the four polar regions, four times each region's share taken as four estimates
+      // of the total. That assumed the regions fluctuate independently, and they do not: the shares of two
+      // neighboring regions are anticorrelated (correlation -0.31 at order 40, -0.12 at 320, over 1,950 training
+      // plates), presumably because neighbors trade area where they meet near the circle's tangency points. The
+      // spread therefore overstated the error by a factor that changes with the order: the scatter over seeds was
+      // 0.65 to 0.98 of it at orders 40 to 320, furthest off at the small orders. Counting free cells by angle does
+      // not ask which region a frozen cell belongs to, so a trade between neighbors does not enter it.
+      // tools/aztec-science.js checks this bar against the scatter over seeds and validation/AZTEC.md gives the
+      // ratios. At finite n the frozen boundary sits inside the circle by about n^(1/3) cells, so the share exceeds
+      // the limit by a term that shrinks as n^(-2/3).
+      function polarCompare() {
+        const D = list.length, f = polarByType.reduce((a, b) => a + b, 0) / D, st = acTime(freeBins), se = st.sd * Math.sqrt(NB * st.tau) / (2 * D);
+        return U.stats.compare({ label: 'polar regions', measured: f, expected: 1 - Math.PI / 4, reference: '1 − π/4, n → ∞', basis: 'sampled',
+          uncertainty: se > 0 && isFinite(se) ? se : undefined, pending: 'the free cells are spread evenly over the sectors, so they give no spread',
+          method: 'free cells counted in ' + NB + ' angular sectors; standard error of their sum from the integrated autocorrelation time, τ ' + st.tau.toFixed(1) + ', floored at 2', digits: 3,
+          note: 'finite n: the excess shrinks as n^(−2/3)' });
+      }
       function status(extra) {
-        const s = host.getState();
-        const fr = frozen ? Math.round(100 * frozen.reduce((a, b) => a + b, 0) / Math.max(1, frozen.length)) : 0;
         host.setStatus('<span>order <b>' + order + '</b> · ' + (2 * order * (order + 1)).toLocaleString() + ' cells</span>' +
-          (list ? '<span>' + list.length.toLocaleString() + ' dominoes · frozen <b>' + fr + '%</b></span>' : '') +
+          (list ? '<span>' + list.length.toLocaleString() + ' dominoes</span>' + polarCompare() : '') +
           (extra ? '<span>' + extra + '</span>' : ''));
       }
       function colorOf(s, d, k) {

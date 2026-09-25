@@ -1,4 +1,5 @@
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),assert=require('node:assert/strict'),crypto=require('node:crypto'),{execFileSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..'),sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 function reference(W,H,s){
@@ -18,7 +19,7 @@ async function main(){
  const getter=`auditRead(){const data=new Float32Array(gw*gh*4);gl.bindFramebuffer(gl.FRAMEBUFFER,A.read.fbo);gl.readPixels(0,0,gw,gh,gl.RGBA,gl.FLOAT,data);gl.bindFramebuffer(gl.FRAMEBUFFER,null);return {W:gw,H:gh,stepCount,texType,data:Array.from(data)};},`;
  const injected=source.replace('        fieldCells(){ return [gw,gh]; },',getter+'\n        fieldCells(){ return [gw,gh]; },');assert.notEqual(injected,source);
  const original=fs.readFileSync(path.join(root,'dist/studio.html'),'utf8');assert(original.includes(source));const dir=fs.mkdtempSync(path.join(os.tmpdir(),'cgl-field-')),file=path.join(dir,'studio.html');fs.writeFileSync(file,original.replace(source,injected).replace('generatePalette, register, boot,','generatePalette, register, auditInstances:()=>instances, boot,'));
- const {chromium}=require('playwright'),browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']}),cases=[];
+ const {chromium}=require('playwright'),browser=await chromium.launch({args:glArgs()}),cases=[];
  try{const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.route(/^https?:/,r=>r.abort());await page.goto('file://'+file+'#three-vortex-bound/cgl-fields');await page.evaluate(()=>Studio.ready);
  await page.selectOption('#export-inches','8');await page.selectOption('#export-dpi','300');await page.selectOption('#print-smoothing','off',{force:true});await page.locator('#btn-colophon-edit').click();await page.locator('#colo-enabled').uncheck();await page.locator('#colo-close').click();
  const fixtures=[{alpha:2,beta:-.5,lin:1,init:'wave',view:'amp',aspect:'1:1'},{alpha:-2,beta:2,lin:1,init:'vortex',view:'real',aspect:'4:5'},{alpha:0,beta:1.4,lin:.2,init:'spiral',view:'amp',aspect:'5:4'},{alpha:4,beta:-4,lin:1.6,init:'vortex',view:'defects',aspect:'16:9'}];

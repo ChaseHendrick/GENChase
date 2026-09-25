@@ -14,11 +14,29 @@ test('command allowlist rejects injection and defaults to full evidence',()=>{
   assert.equal(command(root,{workspace:'validate'}).display,'node tools/verify.js --print --all');
   for(const input of [{workspace:'validate',mode:'plate',id:'fixture; touch /tmp/oops'},{workspace:'validate',mode:'shell'},{workspace:'validate',command:'whoami'},{workspace:'contribute',mode:'derive',slug:'../bad'},{workspace:'contribute',mode:'metal',grid:999}])assert.throws(()=>command(root,input));
   assert.equal(command(root,{workspace:'validate',mode:'plate',id:'fixture'}).args.at(-1),'12000');
+  assert.equal(command(root,{workspace:'validate',mode:'gpu-science'}).display,'node tools/gpu-science.js','the hardware GPU job takes no free arguments');
+  const vortex=command(root,{workspace:'contribute',mode:'vortex-collapse',alpha:1,n:6,samples:20,start:40});
+  assert.deepEqual(vortex.args,['tools/vortex-collapse-search.js','--alpha','1','--n','6','--start','40','--count','20','--threads','1']);
+  assert.deepEqual(command(root,{workspace:'contribute',mode:'vortex-threshold',alpha:1,n:16,to:3}).args,['tools/vortex-collapse-search.js','--continue','--alpha','1','--n','16','--to','3']);
+  for(const bad of [{to:1},{to:4},{n:2},{alpha:0.12345}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-threshold',alpha:1,n:16,to:3,...bad}));
+  assert.equal(command(root,{workspace:'contribute',mode:'vortex-threshold',alpha:1,n:16,to:1.005}).input.to,1.005,'three decimals survive binary rounding');
+  for(const bad of [{threads:0},{threads:1.5},{threads:100000}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-collapse',alpha:1,n:6,...bad}));
+  assert.doesNotThrow(()=>command(root,{workspace:'contribute',mode:'derive',threads:100000}),'threads only concern the vortex jobs');
+  assert(Number.isInteger(command(root,{workspace:'contribute',mode:'vortex-collapse'}).input.start),'a random seed block is recorded in the job input');
+  assert.deepEqual(command(root,{workspace:'contribute',mode:'vortex-grow',alpha:0,n:30,samples:8,start:0}).args,['tools/vortex-collapse-search.js','--grow','--alpha','0','--n','30','--start','0','--count','8','--threads','1']);
+  for(const bad of [{n:129},{n:4},{samples:0}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-grow',...bad}));
+  for(const bad of [{alpha:-2},{alpha:'1; rm'},{alpha:0.12345},{n:2},{n:17},{samples:0},{start:-1},{start:2**31}])assert.throws(()=>command(root,{workspace:'contribute',mode:'vortex-collapse',...bad}));
  }finally{fs.rmSync(root,{recursive:true,force:true});}
 });
 test('job persists log, actual exit code, source snapshot and portable bundle',async()=>{
  const root=fixture('console.log("FIXTURE began",process.env.GENCHASE_MACHINE_SLUG);require("fs").writeFileSync("result.txt","measured fixture");process.exitCode=2;');const data=fs.mkdtempSync(path.join(os.tmpdir(),'genchase-jobs-')),jobs=new Jobs(root,data);
  try{jobs.start({workspace:'validate',mode:'inventory',power,machineSlug:'lab-fixture'});await jobs.wait();assert.equal(jobs.current.status,'failed');assert.equal(jobs.current.exitCode,2);assert.match(jobs.tail.join('\n'),/FIXTURE began lab-fixture/);assert(jobs.current.filesWritten.some(x=>x.path==='result.txt'));const dir=path.join(data,jobs.current.id);assert.match(fs.readFileSync(path.join(dir,'paste-packet.md'),'utf8'),/FIXTURE began/);assert(fs.existsSync(path.join(dir,'result-bundle.tar.gz')));const list=cp.execFileSync('tar',['-tzf',path.join(dir,'result-bundle.tar.gz')],{encoding:'utf8'});assert.match(list,/source\/tools\/science.js/);assert.match(list,/outputs\/result.txt/);const unpack=require('node:zlib').gunzipSync(fs.readFileSync(path.join(dir,'result-bundle.tar.gz')));for(let at=0;at+512<=unpack.length;){const header=unpack.subarray(at,at+512);if(header.every(v=>v===0))break;assert.equal(header.subarray(265,297).toString().replace(/\0/g,''),'');assert.equal(header.subarray(297,329).toString().replace(/\0/g,''),'');assert.equal(parseInt(header.subarray(108,116).toString(),8),0);assert.equal(parseInt(header.subarray(116,124).toString(),8),0);const size=parseInt(header.subarray(124,136).toString(),8)||0;at+=512+Math.ceil(size/512)*512;}assert.equal(new Jobs(root,data).current.exitCode,2);
+ }finally{jobs.stop();await jobs.wait();fs.rmSync(root,{recursive:true,force:true});fs.rmSync(data,{recursive:true,force:true});}
+});
+test('job records CPU time of the command and its waited-for descendants',async()=>{
+ const root=fixture('const cp=require("child_process");cp.execFileSync(process.execPath,["-e","const t=Date.now();while(Date.now()-t<400){}"]);const t=Date.now();while(Date.now()-t<200){}process.exitCode=3;');const data=fs.mkdtempSync(path.join(os.tmpdir(),'genchase-jobs-')),jobs=new Jobs(root,data);
+ try{jobs.start({workspace:'validate',mode:'inventory',power});await jobs.wait();assert.equal(jobs.current.exitCode,3);const c=jobs.current.compute;assert(c.recorded,'CPU time recorded');assert(c.cpuSeconds>0.45&&c.cpuSeconds<5,'CPU seconds '+c.cpuSeconds);assert.match(c.energy.method,/^(estimate|measured)/);
+  assert.match(fs.readFileSync(path.join(data,jobs.current.id,'paste-packet.md'),'utf8'),/Compute: \d/);
  }finally{jobs.stop();await jobs.wait();fs.rmSync(root,{recursive:true,force:true});fs.rmSync(data,{recursive:true,force:true});}
 });
 test('Stop kills grandchildren and Restart permits only one process group',async()=>{

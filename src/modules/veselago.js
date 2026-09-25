@@ -13,8 +13,10 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // The Grid slider and sanitize() read the same bounds, so no slider position is clamped away.
+  const GRID_MIN = 128, GRID_MAX = 224;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Slab', 'n', 'Index n', GEOM, -2.2, -0.4, 0.05, f2),
     RANGE('Slab', 'L', 'Thickness L', GEOM, 20, 80, 1, v => v + ''),
@@ -34,7 +36,7 @@
   };
 
   function surprise(rng) { return { n: -rng.range(0.7, 1.6), L: rng.int(28, 64), src: rng.int(14, 36), rays: rng.int(18, 48) }; }
-  function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'veselago', name: 'Veselago Lens', tab: 'Veselago',
     subtitle: 'a slab that focuses because n is negative · 1968',
@@ -43,11 +45,14 @@
     credit: 'V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968), asked what optics would do if ε and μ were both negative: a left-handed medium, a reversed Doppler shift, and a slab that acts as a lens. Pendry, Phys. Rev. Lett. 85, 3966 (2000), showed the same slab can amplify evanescent waves and beat the diffraction limit. The plate traces geometric rays through n < 0, not a fabricated metamaterial.',
     blurb: 'Light is not supposed to bend the wrong way at an interface. Give the slab a negative index and Snell\'s law says it must. A source in front of n = −1 focuses inside the slab and again behind it, as if the slab were a lens with no curved surface. The status line reports the brightest point behind the slab against 2L − d.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
-    hints: { Slab: 'n = −1 is Veselago\'s perfect lens. Other negative n still focuses, just not at the textbook point.' },
+    hints: {
+      Slab: 'n = −1 is Veselago\'s perfect lens. Other negative n still focuses, just not at the textbook point.',
+      Picture: 'Brightness counts ray crossings. Exposure 1 puts white at the 95th percentile of lit pixels, so the source and the foci, where every ray crosses, clip. Log shows them unclipped.',
+    },
     palette: true, defaultPalette: 'glacier', surprise, sanitize,
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, field, metric = 0, extra = 0, buf, img;
+      let W = 0, H = 0, field, metric = 0, extra = 0, white = 1, peak = 1, buf, img;
       function sizeFrom(s) {
         const a = ASPECTS[s.aspect] || 1, g = s.grid | 0;
         return { W: g, H: Math.max(48, Math.round(g * a)) };
@@ -100,6 +105,16 @@
         metric = (peakX - theory) / Math.max(1, W);
         extra = 2 * L - d;
 
+        // Field view white point: the 95th percentile of lit pixels, not the maximum. Every ray crosses the
+        // source and each focus, so the maximum is exactly the ray count, and scaling to it put one ray at
+        // 1/rays of the ramp: 48 rays under thermal lit a ray 3 levels above the ground. The foci clip
+        // instead. The log view compresses the range itself, so it keeps the peak and clips nothing.
+        const lit = [];
+        for (let i = 0; i < field.length; i++) if (field[i] > 0) lit.push(field[i]);
+        lit.sort((a, b) => a - b);
+        white = lit.length ? lit[Math.floor(0.95 * (lit.length - 1))] : 1;
+        peak = lit.length ? lit[lit.length - 1] : 1;
+
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
       }
@@ -112,11 +127,9 @@
         const ramp = U.makeRamp(pal, s.bg || '#111');
         const data = img.data;
         const exp = isFinite(s.exposure) && s.exposure > 0 ? s.exposure : 1;
-        let lo = Infinity, hi = -Infinity;
-        for (let i = 0; i < field.length; i++) { const v = field[i]; if (v < lo) lo = v; if (v > hi) hi = v; }
-        const span = (hi - lo) || 1, logv = s.view === 'log';
+        const logv = s.view === 'log';
         for (let i = 0; i < field.length; i++) {
-          let t = (field[i] - lo) / span;
+          let t = field[i] / (logv ? peak : white);
           if (logv) t = Math.log(1.001 + 9 * Math.max(0, t)) / Math.log(10);
           t = U.clamp(t * exp, 0, 1);
           const c = ramp(isFinite(t) ? t : 0);
@@ -129,7 +142,15 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>n <b>' + f2(host.getState().n) + '</b></span><span>image Δx/W <b>' + f3(metric) + '</b> · 2L−d</span><span>' + (Math.abs(metric) < 0.12 ? 'Veselago focus' : 'shifted') + '</span>'); }
+      // 2L − d is the exact image only for n = −1 with the source closer than the slab is thick (d < L), so
+      // that a real image forms behind the slab. Otherwise the offset is printed with no reference.
+      function status() {
+        const s = host.getState(), perfect = Math.abs(s.n + 1) < 1e-9 && s.src < s.L;
+        const offset = perfect
+          ? U.stats.compare({ label: 'image Δx/W', measured: metric, expected: 0, reference: 'Veselago image 2L−d', basis: 'deterministic', digits: 3 })
+          : '<span>image Δx/W <b>' + f3(metric) + '</b></span>';
+        host.setStatus('<span>n <b>' + f2(s.n) + '</b></span>' + offset + '<span>' + (Math.abs(metric) < 0.12 ? 'Veselago focus' : 'shifted') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

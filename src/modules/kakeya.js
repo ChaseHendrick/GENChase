@@ -13,8 +13,10 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // The Grid slider and sanitize() read the same bounds, so no slider position is clamped away.
+  const GRID_MIN = 128, GRID_MAX = 224;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Set', 'needles', 'Needles', GEOM, 12, 90, 2, v => v + ''),
     RANGE('Set', 'overlap', 'Overlap', GEOM, 0.15, 0.9, 0.05, f2),
@@ -33,14 +35,14 @@
   };
 
   function surprise(rng) { return { needles: rng.int(18, 70), overlap: rng.range(0.25, 0.8), thick: rng.range(0.8, 2.2) }; }
-  function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'kakeya', name: 'Kakeya', tab: 'Kakeya',
     subtitle: 'a needle rotated in arbitrarily small area · 1919',
     order: 61,
     equation: 'K_ε ⊃ a unit segment in every direction,   |K_ε| → 0 as ε → 0',
     credit: 'S. Kakeya asked in 1917 for the smallest set in which a unit needle can be rotated. Besicovitch (1919/1928) showed the infimum of the area is zero: a Perron tree of overlapping triangles contains a unit segment in a dense set of directions and can be made as thin as one likes. The plate is a finite Perron-like union, not the infinite construction.',
-    blurb: 'To turn a needle through every angle you would think you need a disk of area π/4. Besicovitch built a set of area as small as you please that still contains a unit segment in every direction. The plate is a finite sprouting of those needles, packed so they share area. The status line reports occupied fraction against π/4 for a spinning disk.',
+    blurb: 'To turn a needle through every angle you would think you need a disk of area π/4. Besicovitch built a set of area as small as you please that still contains a unit segment in every direction. The plate is a finite sprouting of those needles, packed so they share area. The status line reports the occupied fraction of the sheet against the disk one needle sweeps as it turns.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: { Set: 'Overlap slides the triangles together. More needles, more directions, not necessarily more area.' },
     palette: true, defaultPalette: 'kiln', surprise, sanitize,
@@ -77,7 +79,9 @@
         let occ = 0;
         for (let i = 0; i < field.length; i++) if (field[i] > 0.5) occ++;
         metric = occ / (W * H);
-        extra = Math.PI / 4;
+        // Each needle runs from -L to L, length 2L = 0.84 min(W, H), so turning one needle about its
+        // middle sweeps a disk of radius L: that is the area to beat, as a fraction of this sheet.
+        extra = Math.PI * L * L / (W * H);
 
         buf = document.createElement('canvas'); buf.width = W; buf.height = H;
         img = buf.getContext('2d').createImageData(W, H);
@@ -108,7 +112,12 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>occupied <b>' + (100 * metric).toFixed(1) + '%</b></span><span>disk π/4 = ' + (100 * extra).toFixed(0) + '%</span><span>' + (metric < extra * 0.85 ? 'smaller than a disk' : 'not yet thin') + '</span>'); }
+      // The union is drawn by a fixed rule with no randomness, so the occupied fraction is deterministic;
+      // its error is only the rasterization of the needles on this grid.
+      function status() {
+        host.setStatus(U.stats.compare({ label: 'occupied fraction', measured: metric, expected: extra, reference: 'disk swept by one needle', basis: 'deterministic', digits: 3 }) +
+          '<span>' + (metric < extra * 0.85 ? 'smaller than a disk' : 'not yet thin') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

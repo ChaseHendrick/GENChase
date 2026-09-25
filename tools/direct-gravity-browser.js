@@ -1,9 +1,10 @@
 // Runtime, cancellation and selected export checks; not scientific validation by themselves.
+const { glArgs } = require('./lib/gl-args');
 const {chromium}=require('playwright');
 const fs=require('fs'),path=require('path'),assert=require('assert/strict');
 const root=path.resolve(__dirname,'..');
 (async()=>{
- const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+ const browser=await chromium.launch({args:glArgs()});
  try {
  const page=await browser.newPage({viewport:{width:1000,height:800}});
  await page.goto('file://'+path.join(root,'dist/studio.html')+'#direct-gravity');

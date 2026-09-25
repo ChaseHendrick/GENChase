@@ -140,7 +140,8 @@ void main(){
       const s = host.getState(), debye = s.thermal / sim.dx;
       host.setStatus('<span>step <b>' + sim.step.toLocaleString() + '</b> · t <b>' + sim.time.toFixed(2) + '</b>' + (remaining ? ' · preparing' : '') + '</span>' +
         '<span>particles <b>' + sim.n.toLocaleString() + '</b> · grid <b>' + sim.grid + '</b></span>' +
-        '<span>ΔE/E₀ <b>' + sim.drift.toExponential(2) + '</b> · ' + (clipped ? (100 * clipped / sim.n).toFixed(1) + '% outside view' : 'full velocity window') + '</span>' +
+        U.stats.compare({ label: 'ΔE/E₀', measured: sim.drift, expected: 0, reference: 'energy of the initial state', basis: 'deterministic' }) +
+        '<span>' + (clipped ? (100 * clipped / sim.n).toFixed(1) + '% outside view' : 'full velocity window') + '</span>' +
         (s.thermal > 0 && debye < 1 ? '<span>Debye length <b>under one cell</b></span>' : '') +
         (sim.halted ? '<span>Stopped: <b>' + U.escapeHtml(sim.halted) + '</b></span>' : ''));
     }

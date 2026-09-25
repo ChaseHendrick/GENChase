@@ -5,7 +5,7 @@
   'use strict';
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
-  const f2 = v => v.toFixed(2), f3 = v => v.toFixed(3);
+  const f2 = v => v.toFixed(2);
   const pct = v => Math.round(v * 100) + '%';
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -21,11 +21,6 @@
   function sigmas(v, se, ref) {
     if (!(isFinite(v) && isFinite(se) && se > 0)) return null;
     return (v - ref) / se;
-  }
-  function sigTxt(z) {
-    if (z === null) return 'no uncertainty available';
-    const m = Math.abs(z);
-    return m.toFixed(1) + '\u03c3 ' + (m < 0.05 ? 'from it' : (z > 0 ? 'high' : 'low'));
   }
   // A sigma from a fit with one or two degrees of freedom is not a sigma. The residual based standard
   // error is itself a random variable with that many degrees of freedom, so the ratio follows Student's
@@ -46,12 +41,14 @@
     const u = Math.sqrt(-2 * Math.log(q));
     return u - (2.30753 + 0.27061 * u) / (1 + 0.99229 * u + 0.04481 * u * u);
   }
-  function devTxt(v, se, ref, df) {
+  // The deviation of v from ref in standard errors, turned into the equivalent normal deviate when the
+  // error came from a fit on df degrees of freedom (df = 0 reads it as a normal deviate already). It is
+  // passed to the shared comparison as z, which prints it in place of the plain ratio.
+  function devZ(v, se, ref, df) {
     const z = sigmas(v, se, ref);
-    if (z === null) return 'no uncertainty available';
-    return sigTxt(z < 0 ? -tToSigma(z, df) : tToSigma(z, df));
+    if (z === null) return NaN;
+    return z < 0 ? -tToSigma(z, df) : tToSigma(z, df);
   }
-  const pm = (v, se, d) => v.toFixed(d) + ' \u00b1 ' + (isFinite(se) && se > 0 ? se.toFixed(d) : '?');
   // Mean, sample standard deviation and the standard error of the mean, sd / sqrt(N), with N kept so
   // the status line can say how many samples are behind the bar. One sample has no spread to report.
   function meanSe(a) {
@@ -658,11 +655,14 @@
       // error of any kind because there is nothing random in it to sample: the rotor aggregate at a given
       // n and a given starting arrangement is one object, and a cell count is a count. Saying so is more
       // informative than inventing a bar for it, and it is why the rotor numbers below carry no plus or
-      // minus while the random ones do. The status line has a plate to sit under, so it says "exact" and
-      // leaves the sentence explaining what that means to the panel on the left.
+      // minus while the random ones do. One random aggregate is one draw with nothing to take a spread
+      // over, so its radii say that their bar is pending; the ladder below is where the bars come from.
+      // The basis is stated once, on the rim, for the three radii of one aggregate together.
       function line(st, exact) {
-        return 'in <b>' + f2(st.inr) + '</b> out <b>' + f2(st.out) + '</b> rim <b>' + f2(st.out - st.inr) +
-          '</b> ' + (exact ? 'exact' : 'one draw');
+        const rim = exact
+          ? U.stats.compare({ label: 'rim', measured: st.out - st.inr, basis: 'exact' })
+          : U.stats.compare({ label: 'rim', measured: st.out - st.inr, basis: 'sampled', pending: 'one draw' });
+        return 'in <b>' + f2(st.inr) + '</b> out <b>' + f2(st.out) + '</b> ' + rim;
       }
       // Total moves made by all the particles put together. It is the cost of the plate and it grows like
       // n², because the last particle has to cross an aggregate of radius √(n/π) before it can stop.
@@ -682,29 +682,41 @@
         if (c.broken) return '<span><b>the self-check ladder could not be measured: ' + c.bad +
           ' of its aggregates did not hold exactly n cells</b></span>';
         const nT = c.nTop.toLocaleString(), L = c.lnTop;
-        const rimR = c.rExact ? f2(c.rSpread.m) + '</b> exact' : pm(c.rSpread.m, c.rSpread.se, 2) + '</b>';
+        // Every sampled number here is a mean over the c.reps independent aggregates of the top rung, with
+        // the standard error sd/sqrt(reps); a quantity with no error bar says why it has none.
+        const six = c.reps + ' aggregates, standard error sd/\u221a' + c.reps;
+        const sampled = (o, se, method) => U.stats.compare(Object.assign({ basis: 'sampled' }, o,
+          isFinite(se) && se > 0 ? { uncertainty: se, method } : { pending: 'no spread to measure' }));
+        const rotorNum = (o, se) => c.rExact ? U.stats.compare(Object.assign({ basis: 'exact' }, o)) : sampled(o, se, six);
+        let a = '<span>ladder n = ' + nT + ', ' + c.reps + ' random \u00b7 \u221a(n/\u03c0) <b>' + f2(c.rootTop) +
+          '</b> \u00b7 log n <b>' + f2(L) + '</b></span>';
+        a += sampled({ label: 'random rim', measured: c.iSpread.m }, c.iSpread.se, six);
+        a += rotorNum({ label: 'rotor rim', measured: c.rSpread.m }, c.rSpread.se);
+        a += sampled({ label: 'rim ratio random/rotor', measured: c.ratio, expected: 1, reference: 'equal rims', z: c.ratioZ },
+          c.ratioSe, c.rExact ? six : six + ' per side, relative errors in quadrature');
         // The theorem does not say either radius sits at exactly sqrt(n/pi); it says the two offsets are
         // bounded. So zero is not treated as the prediction: each offset is quoted in units of log n,
         // which is the scale the theorem talks in, with its bar carried through a division by an exact
         // constant. The rotor side carries a bar only when the starting arrows are scattered, which is the
         // one setting that gives it an ensemble; otherwise it is one object and says so.
-        let a = '<span>ladder n = ' + nT + ', ' + c.reps + ' random: rim <b>' + pm(c.iSpread.m, c.iSpread.se, 2) +
-          '</b> against rotor <b>' + rimR + ', rounder <b>\u00d7' + pm(c.ratio, c.ratioSe, 2) + '</b>, <b>' +
-          sigTxt(c.ratioZ) + '</b> from 1 \u00b7 \u221a(n/\u03c0) <b>' + f2(c.rootTop) + '</b>: random out <b>+' +
-          pm(c.iOutOff, c.iOutOffSe, 2) + '</b> in <b>\u2212' + pm(c.iInOff, c.iInOffSe, 2) + '</b>, that is <b>' +
-          pm(c.iOutOff / L, c.iOutOffSe / L, 3) + '</b> and <b>' + pm(c.iInOff / L, c.iInOffSe / L, 3) +
-          '</b> of log n ' + f2(L) + '; rotor <b>' +
-          (c.rExact ? '+' + f2(c.rOutOff) + ' \u2212' + f2(c.rInOff) + '</b> exact'
-                    : '+' + pm(c.rOutOff, c.rOutOffSe, 2) + ' \u2212' + pm(c.rInOff, c.rInOffSe, 2) + '</b>') + '</span>';
-        // The fitted exponent, with the standard error of the fit coefficient rather than a guess at it.
-        const rDev = devTxt(c.fr.a, c.fr.se, c.pLog, c.fr.df);
-        const iDev = devTxt(c.fi.a, c.bootSe, c.pLog, c.bootDf);
-        const iRough = devTxt(c.fi.a, c.bootSe, 0.5, c.bootDf);
-        a += '<span>rim \u221d n^p: rotor <b>' + pm(c.fr.a, c.fr.se, 3) + '</b> on ' + c.fr.df +
-          ' d.f., random <b>' + pm(c.fi.a, c.bootSe, 3) + '</b> ' +
-          (c.bootDf ? 'on ' + c.bootDf + ' d.f.' : 'bootstrapped') + ', against <b>' + f3(c.pLog) +
-          '</b> for growth \u221d log n: <b>' + rDev + '</b> and <b>' + iDev + '</b> \u00b7 \u221an, p = 0.5, is <b>' +
-          iRough + '</b></span>';
+        a += sampled({ label: 'random out \u2212 \u221a(n/\u03c0)', measured: c.iOutOff }, c.iOutOffSe, six);
+        a += sampled({ label: 'per log n', measured: c.iOutOff / L }, c.iOutOffSe / L, six + ', divided by log n');
+        a += sampled({ label: 'random \u221a(n/\u03c0) \u2212 in', measured: c.iInOff }, c.iInOffSe, six);
+        a += sampled({ label: 'per log n', measured: c.iInOff / L }, c.iInOffSe / L, six + ', divided by log n');
+        a += rotorNum({ label: 'rotor out \u2212 \u221a(n/\u03c0)', measured: c.rOutOff }, c.rOutOffSe);
+        a += rotorNum({ label: 'rotor \u221a(n/\u03c0) \u2212 in', measured: c.rInOff }, c.rInOffSe);
+        // The fitted exponent, with the standard error of the fit coefficient rather than a guess at it,
+        // and the deviation read through Student's t where that error has few degrees of freedom.
+        const rotorFit = 'least squares on ' + LADDER.length + ' rungs, residual standard error on ' + c.fr.df + ' d.f., read through Student\u2019s t';
+        const randomFit = c.bootDf
+          ? 'least squares on ' + LADDER.length + ' rung means, residual standard error on ' + c.bootDf + ' d.f. (larger than the bootstrap), read through Student\u2019s t'
+          : BOOT + '-resample bootstrap over the ' + c.reps + ' aggregates at each rung (larger than the residual error)';
+        a += sampled({ label: 'rim \u221d n^p, rotor p', measured: c.fr.a, expected: c.pLog, reference: 'growth \u221d log n',
+          z: devZ(c.fr.a, c.fr.se, c.pLog, c.fr.df) }, c.fr.se, rotorFit);
+        a += sampled({ label: 'random p', measured: c.fi.a, expected: c.pLog, reference: 'growth \u221d log n',
+          z: devZ(c.fi.a, c.bootSe, c.pLog, c.bootDf) }, c.bootSe, randomFit);
+        a += sampled({ label: 'random p', measured: c.fi.a, expected: 0.5, reference: 'growth \u221d \u221an',
+          z: devZ(c.fi.a, c.bootSe, 0.5, c.bootDf) }, c.bootSe, randomFit);
         if (c.bad) a += '<span><b>' + c.bad + ' ladder runs discarded for not holding exactly n cells</b></span>';
         return a;
       }
@@ -719,9 +731,15 @@
         const pieces = [];
         if (s.mode !== 'idla' && statRotor) pieces.push('rotor ' + line(statRotor, s.rot0 !== 'random'));
         if (s.mode !== 'rotor' && statIdla) pieces.push('IDLA ' + line(statIdla, false));
-        const cells = (statRotor || statIdla || {}).cells;
-        if (pieces.length) spans.push('<span>plate ' + pieces.join(' · ') + ' · cells <b>' +
-          (cells || 0).toLocaleString() + '</b> = n, exact' + (abelian ? ' · abelian ' + abelian : '') + '</span>');
+        // Every particle comes to rest on its own site, so each aggregate holds n cells by construction; the
+        // count is printed as counted, and a mismatch also raises the warning below.
+        const aggs = [];
+        if (s.mode !== 'idla' && statRotor) aggs.push(['rotor cells', statRotor]);
+        if (s.mode !== 'rotor' && statIdla) aggs.push(['IDLA cells', statIdla]);
+        const cellCmp = (label, st) => U.stats.compare({ label, measured: st.cells, expected: st.n, reference: 'n', basis: 'construction', digits: 12 });
+        const cells = aggs.length === 1 || (aggs.length === 2 && aggs[0][1].cells === aggs[1][1].cells)
+          ? cellCmp('cells', aggs[0][1]) : aggs.map(g => cellCmp(g[0], g[1])).join(' · ');
+        if (pieces.length) spans.push('<span>plate ' + pieces.join(' · ') + ' · ' + cells + (abelian ? ' · ' + abelian : '') + '</span>');
 
         let tail = extra ? '<span>' + extra + '</span>' : '';
         if (!extra) {
@@ -791,11 +809,9 @@
               // number of them does not, and the occupied set, the final rotor at each site and the
               // number of particles that left each site are all compared, not just the silhouette.
               abelian = verify.escaped()
-                ? '<b>the second order reached the edge of the lattice; not a valid comparison</b>'
-                : diff === 0
-                  ? '<b>identical</b> over ' + N.toLocaleString() +
-                    ' cells under two firing orders, exact'
-                  : '<b>' + diff.toLocaleString() + ' of ' + N.toLocaleString() + ' cells differ</b>, exact';
+                ? 'abelian <b>the second order reached the edge of the lattice; not a valid comparison</b>'
+                : U.stats.compare({ label: 'cells differing under two firing orders', measured: diff, units: 'of ' + N.toLocaleString(),
+                  expected: 0, reference: 'abelian property', basis: 'exact', digits: 12 });
               verify = null;
               status();
             },

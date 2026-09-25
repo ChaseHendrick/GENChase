@@ -227,12 +227,19 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
+      // On the clean open chain the rows are the closed-form modes e^{gj} sin(k j), so the weight on the
+      // last tenth follows from the formula that drew them. With disorder or periodic ends the rows come
+      // from subspace iteration with Gram-Schmidt, which returns an orthonormal basis rather than the
+      // right eigenvectors, so the number is printed with that caveat and no reference.
       function status(s) {
-        const theory = s.bc === 'periodic' ? '0 (ring)' : 'e^{2gN} pile';
+        const exact = s.disorder < 0.04 && s.bc !== 'periodic';
         const verdict = s.bc === 'periodic' ? (skinW > 0.35 ? 'skin leaked' : 'no skin') : (skinW > 0.45 ? 'skinned' : (s.g < 0.01 ? 'Hermitian' : 'partial'));
         host.setStatus(
           '<span>chain <b>' + W + '</b> · modes <b>' + H + '</b></span>' +
-          '<span>skin weight <b>' + f3(skinW) + '</b> · ' + theory + '</span>' +
+          (exact
+            ? U.stats.compare({ label: 'skin weight', measured: skinW, basis: 'construction', digits: 3, note: 'closed-form modes' })
+            : U.stats.compare({ label: 'skin weight', measured: skinW, basis: 'sampled', digits: 3,
+                pending: 'Gram–Schmidt basis is orthonormal, not the right eigenvectors' })) +
           '<span>' + verdict + '</span>'
         );
         void ipr;

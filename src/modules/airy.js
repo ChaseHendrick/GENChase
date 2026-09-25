@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -151,7 +150,12 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>peak vs z²/4  ⟨|Δx|⟩ <b>' + f3(metric) + '</b></span><span>theory 0</span><span>' + (metric < 1.5 ? 'accelerating' : 'off caustic') + '</span>'); }
+      // The field is Ai(x − z²/4) evaluated directly, so the parabolic path is an input, not a result: the
+      // offset of the intensity peak from z²/4 is fixed by the shape of Ai and the apodization.
+      function status() {
+        host.setStatus(U.stats.compare({ label: 'peak offset from z²/4, ⟨|Δx|⟩', measured: metric, basis: 'construction', digits: 3, note: 'shift built into the formula' }) +
+          '<span>' + (metric < 1.5 ? 'accelerating' : 'off caustic') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

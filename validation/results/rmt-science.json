@@ -1,0 +1,1831 @@
+{
+  "date": "2026-09-24",
+  "tool": "tools/rmt-science.js",
+  "sourceSha256": "1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4",
+  "engineSha256": "d4ab4d63c01bca7c4c8a0e3ec0dafe996b1ed2844f2ad969ed3c20de73322f16",
+  "referenceSha256": "2cb24549bb39a095928ec27e9545b88702ebe325e55cc109ed6ab8661664a35e",
+  "scope": "Dumitriu-Edelman tridiagonal sampler and QL eigenvalues of src/modules/rmt.js: exact second and fourth spectral moments, semicircle convergence, Gaudin-Mehta spacing law and the printed spacing spread at beta 1 and 2, exact Ornstein-Uhlenbeck Dyson statistics, and five complete studio prints. Finite samples from the seeded generator.",
+  "normalization": "The tab samples diagonal N(0,2) and subdiagonal chi_{beta(n-i)} without the 1/sqrt(2) of Dumitriu and Edelman, so its eigenvalue density is proportional to prod|l_i - l_j|^beta exp(-sum l^2 / 4) and the spectrum edge is 2 sqrt(beta n). The displayed equation writes exp(-sum l^2 / 2).",
+  "eigenvalues": {
+    "tolerance": "4 n eps ||T||_inf (Gershgorin norm)",
+    "cases": [
+      [
+        24,
+        0.05
+      ],
+      [
+        24,
+        1
+      ],
+      [
+        24,
+        2
+      ],
+      [
+        24,
+        20
+      ],
+      [
+        150,
+        0.05
+      ],
+      [
+        150,
+        1
+      ],
+      [
+        150,
+        2
+      ],
+      [
+        150,
+        20
+      ],
+      [
+        400,
+        0.05
+      ],
+      [
+        400,
+        1
+      ],
+      [
+        400,
+        2
+      ],
+      [
+        400,
+        20
+      ]
+    ],
+    "perCase": 5,
+    "matrices": 60,
+    "worstErrorOverTolerance": 0.06817544545995914,
+    "worstErrorOverNorm": 7.876678842968293e-15,
+    "control": {
+      "rule": "deflate when |e| <= 1e-4 (|d_m| + |d_m+1|)",
+      "matrices": 60,
+      "worstErrorOverTolerance": 90991124.91491137,
+      "worstErrorOverNorm": 0.000029839745302727415,
+      "detected": true
+    }
+  },
+  "moments": {
+    "familyAlpha": 0.001,
+    "tests": 50,
+    "zThreshold": 4.2649,
+    "formulae": {
+      "trH2": "2n + beta n (n - 1)",
+      "trH4": "12n + 10 beta n (n - 1) + beta^2 n (n - 1)(2n - 3)",
+      "varTrH2": "8n + 4 beta n (n - 1)"
+    },
+    "ensembles": [
+      {
+        "n": 24,
+        "beta": 0.1,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/24/0.1",
+        "trH2": {
+          "exact": 103.2,
+          "mean": 103.5969,
+          "se": 0.4611686,
+          "z": 0.860664,
+          "sampleVariance": 425.353,
+          "exactVariance": 412.8,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 1088.4,
+          "mean": 1102.848,
+          "se": 11.01141,
+          "z": 1.312067,
+          "pass": true
+        }
+      },
+      {
+        "n": 24,
+        "beta": 1,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/24/1",
+        "trH2": {
+          "exact": 600,
+          "mean": 600.0099,
+          "se": 1.094074,
+          "z": 0.009005608,
+          "sampleVariance": 2393.994,
+          "exactVariance": 2400,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 30648,
+          "mean": 30726.99,
+          "se": 120.0001,
+          "z": 0.6582098,
+          "pass": true
+        }
+      },
+      {
+        "n": 24,
+        "beta": 2,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/24/2",
+        "trH2": {
+          "exact": 1152,
+          "mean": 1150.915,
+          "se": 1.550062,
+          "z": -0.7000152,
+          "sampleVariance": 4805.382,
+          "exactVariance": 4608,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 110688,
+          "mean": 110556.1,
+          "se": 315.6268,
+          "z": -0.4180387,
+          "pass": true
+        }
+      },
+      {
+        "n": 24,
+        "beta": 4,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/24/4",
+        "trH2": {
+          "exact": 2256,
+          "mean": 2255.931,
+          "se": 2.110417,
+          "z": -0.03268627,
+          "sampleVariance": 8907.72,
+          "exactVariance": 9024,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 419808,
+          "mean": 420168.9,
+          "se": 824.1033,
+          "z": 0.4378915,
+          "pass": true
+        }
+      },
+      {
+        "n": 24,
+        "beta": 12,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/24/12",
+        "trH2": {
+          "exact": 6672,
+          "mean": 6674.804,
+          "se": 3.666944,
+          "z": 0.7646265,
+          "sampleVariance": 26892.95,
+          "exactVariance": 26688,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 3643488,
+          "mean": 3647475,
+          "se": 4246.397,
+          "z": 0.9389837,
+          "pass": true
+        }
+      },
+      {
+        "n": 50,
+        "beta": 0.1,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/50/0.1",
+        "trH2": {
+          "exact": 345,
+          "mean": 344.6673,
+          "se": 0.8492167,
+          "z": -0.3917503,
+          "sampleVariance": 1442.338,
+          "exactVariance": 1380,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 5426.5,
+          "mean": 5415.646,
+          "se": 29.14889,
+          "z": -0.3723809,
+          "pass": true
+        }
+      },
+      {
+        "n": 50,
+        "beta": 1,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/50/1",
+        "trH2": {
+          "exact": 2550,
+          "mean": 2550.172,
+          "se": 2.363221,
+          "z": 0.07290118,
+          "sampleVariance": 11169.63,
+          "exactVariance": 10200,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 262750,
+          "mean": 262871.7,
+          "se": 514.5885,
+          "z": 0.236527,
+          "pass": true
+        }
+      },
+      {
+        "n": 50,
+        "beta": 2,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/50/2",
+        "trH2": {
+          "exact": 5000,
+          "mean": 5000.32,
+          "se": 3.181633,
+          "z": 0.1006278,
+          "sampleVariance": 20245.58,
+          "exactVariance": 20000,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 1000200,
+          "mean": 1000475,
+          "se": 1367.379,
+          "z": 0.2008271,
+          "pass": true
+        }
+      },
+      {
+        "n": 50,
+        "beta": 4,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/50/4",
+        "trH2": {
+          "exact": 9900,
+          "mean": 9896.04,
+          "se": 4.521666,
+          "z": -0.8758442,
+          "sampleVariance": 40890.93,
+          "exactVariance": 39600,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 3901000,
+          "mean": 3897105,
+          "se": 3758.874,
+          "z": -1.036328,
+          "pass": true
+        }
+      },
+      {
+        "n": 50,
+        "beta": 12,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/50/12",
+        "trH2": {
+          "exact": 29500,
+          "mean": 29503.99,
+          "se": 7.475601,
+          "z": 0.5339463,
+          "sampleVariance": 111769.2,
+          "exactVariance": 118000,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 34516200,
+          "mean": 34530410,
+          "se": 18332.4,
+          "z": 0.7751007,
+          "pass": true
+        }
+      },
+      {
+        "n": 100,
+        "beta": 0.1,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/100/0.1",
+        "trH2": {
+          "exact": 1190,
+          "mean": 1194.591,
+          "se": 1.518238,
+          "z": 3.024082,
+          "sampleVariance": 4610.096,
+          "exactVariance": 4760,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 30603,
+          "mean": 30912.6,
+          "se": 86.45051,
+          "z": 3.581277,
+          "pass": true
+        }
+      },
+      {
+        "n": 100,
+        "beta": 1,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/100/1",
+        "trH2": {
+          "exact": 10100,
+          "mean": 10094.37,
+          "se": 4.608661,
+          "z": -1.222031,
+          "sampleVariance": 42479.5,
+          "exactVariance": 40400,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 2050500,
+          "mean": 2047528,
+          "se": 1981.864,
+          "z": -1.499552,
+          "pass": true
+        }
+      },
+      {
+        "n": 100,
+        "beta": 2,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/100/2",
+        "trH2": {
+          "exact": 20000,
+          "mean": 20002.31,
+          "se": 6.382216,
+          "z": 0.3624416,
+          "sampleVariance": 81465.36,
+          "exactVariance": 80000,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 8000400,
+          "mean": 8004712,
+          "se": 5365.437,
+          "z": 0.8035694,
+          "pass": true
+        }
+      },
+      {
+        "n": 100,
+        "beta": 4,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/100/4",
+        "trH2": {
+          "exact": 39800,
+          "mean": 39799.69,
+          "se": 8.861213,
+          "z": -0.03552906,
+          "sampleVariance": 157042.2,
+          "exactVariance": 159200,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 31602000,
+          "mean": 31600880,
+          "se": 15087.77,
+          "z": -0.07394275,
+          "pass": true
+        }
+      },
+      {
+        "n": 100,
+        "beta": 12,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/100/12",
+        "trH2": {
+          "exact": 119000,
+          "mean": 119004.4,
+          "se": 15.36695,
+          "z": 0.2864711,
+          "sampleVariance": 472286.1,
+          "exactVariance": 476000,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 282032400,
+          "mean": 282007700,
+          "se": 78431.86,
+          "z": -0.3143287,
+          "pass": true
+        }
+      },
+      {
+        "n": 200,
+        "beta": 0.1,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/200/0.1",
+        "trH2": {
+          "exact": 4380,
+          "mean": 4378.893,
+          "se": 3.018216,
+          "z": -0.3667532,
+          "sampleVariance": 18219.25,
+          "exactVariance": 17520,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 200206,
+          "mean": 200035.7,
+          "se": 295.7367,
+          "z": -0.5756978,
+          "pass": true
+        }
+      },
+      {
+        "n": 200,
+        "beta": 1,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/200/1",
+        "trH2": {
+          "exact": 40200,
+          "mean": 40210.8,
+          "se": 8.969796,
+          "z": 1.204288,
+          "sampleVariance": 160914.5,
+          "exactVariance": 160800,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 16201000,
+          "mean": 16212620,
+          "se": 7683.473,
+          "z": 1.51233,
+          "pass": true
+        }
+      },
+      {
+        "n": 200,
+        "beta": 2,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/200/2",
+        "trH2": {
+          "exact": 80000,
+          "mean": 79999.78,
+          "se": 13.19332,
+          "z": -0.01698846,
+          "sampleVariance": 348127.3,
+          "exactVariance": 320000,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 64000800,
+          "mean": 64002760,
+          "se": 22214.6,
+          "z": 0.08828008,
+          "pass": true
+        }
+      },
+      {
+        "n": 200,
+        "beta": 4,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/200/4",
+        "trH2": {
+          "exact": 159600,
+          "mean": 159603.2,
+          "se": 18.14256,
+          "z": 0.1750212,
+          "sampleVariance": 658304.7,
+          "exactVariance": 638400,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 254404000,
+          "mean": 254412100,
+          "se": 61214.58,
+          "z": 0.1319079,
+          "pass": true
+        }
+      },
+      {
+        "n": 200,
+        "beta": 12,
+        "matrices": 2000,
+        "seed": "rmt-science/ensemble/200/12",
+        "trH2": {
+          "exact": 478000,
+          "mean": 477996.5,
+          "se": 30.8983,
+          "z": -0.1135905,
+          "sampleVariance": 1909410,
+          "exactVariance": 1912000,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 2280065000,
+          "mean": 2280005000,
+          "se": 311078.8,
+          "z": -0.1931926,
+          "pass": true
+        }
+      },
+      {
+        "n": 400,
+        "beta": 0.1,
+        "matrices": 1000,
+        "seed": "rmt-science/ensemble/400/0.1",
+        "trH2": {
+          "exact": 16760,
+          "mean": 16761.12,
+          "se": 8.088491,
+          "z": 0.1378642,
+          "sampleVariance": 65423.69,
+          "exactVariance": 67040,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 1436412,
+          "mean": 1436610,
+          "se": 1449.031,
+          "z": 0.1366798,
+          "pass": true
+        }
+      },
+      {
+        "n": 400,
+        "beta": 1,
+        "matrices": 1000,
+        "seed": "rmt-science/ensemble/400/1",
+        "trH2": {
+          "exact": 160400,
+          "mean": 160409.4,
+          "se": 25.76328,
+          "z": 0.3667467,
+          "sampleVariance": 663746.4,
+          "exactVariance": 641600,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 128802000,
+          "mean": 128803000,
+          "se": 43430.92,
+          "z": 0.02215801,
+          "pass": true
+        }
+      },
+      {
+        "n": 400,
+        "beta": 2,
+        "matrices": 1000,
+        "seed": "rmt-science/ensemble/400/2",
+        "trH2": {
+          "exact": 320000,
+          "mean": 319981.2,
+          "se": 34.54865,
+          "z": -0.5431066,
+          "sampleVariance": 1193609,
+          "exactVariance": 1280000,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 512001600,
+          "mean": 511943600,
+          "se": 117864.6,
+          "z": -0.4917887,
+          "pass": true
+        }
+      },
+      {
+        "n": 400,
+        "beta": 4,
+        "matrices": 1000,
+        "seed": "rmt-science/ensemble/400/4",
+        "trH2": {
+          "exact": 639200,
+          "mean": 639193.7,
+          "se": 51.73779,
+          "z": -0.1221252,
+          "sampleVariance": 2676799,
+          "exactVariance": 2556800,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 2041608000,
+          "mean": 2041744000,
+          "se": 352126.5,
+          "z": 0.3870949,
+          "pass": true
+        }
+      },
+      {
+        "n": 400,
+        "beta": 12,
+        "matrices": 1000,
+        "seed": "rmt-science/ensemble/400/12",
+        "trH2": {
+          "exact": 1916000,
+          "mean": 1916093,
+          "se": 85.43652,
+          "z": 1.090406,
+          "sampleVariance": 7299399,
+          "exactVariance": 7664000,
+          "pass": true
+        },
+        "trH4": {
+          "exact": 18336130000,
+          "mean": 18337470000,
+          "se": 1738282,
+          "z": 0.7716951,
+          "pass": true
+        }
+      }
+    ],
+    "controls": [
+      {
+        "rule": "beta (n - i + 1)",
+        "n": 24,
+        "beta": 1,
+        "matrices": 2000,
+        "trH2z": 42.18,
+        "trH4z": 30.77,
+        "detected": true
+      },
+      {
+        "rule": "beta (n - i + 1)",
+        "n": 24,
+        "beta": 2,
+        "matrices": 2000,
+        "trH2z": 59.68,
+        "trH4z": 43.62,
+        "detected": true
+      },
+      {
+        "rule": "beta (n - i + 1)",
+        "n": 50,
+        "beta": 1,
+        "matrices": 2000,
+        "trH2z": 42.61,
+        "trH4z": 30.67,
+        "detected": true
+      },
+      {
+        "rule": "beta (n - i + 1)",
+        "n": 50,
+        "beta": 2,
+        "matrices": 2000,
+        "trH2z": 58.17,
+        "trH4z": 42.45,
+        "detected": true
+      },
+      {
+        "rule": "beta (n - i + 1)",
+        "n": 100,
+        "beta": 1,
+        "matrices": 2000,
+        "trH2z": 44.97,
+        "trH4z": 31.86,
+        "detected": true
+      },
+      {
+        "rule": "beta (n - i + 1)",
+        "n": 100,
+        "beta": 2,
+        "matrices": 2000,
+        "trH2z": 60.23,
+        "trH4z": 43.3,
+        "detected": true
+      },
+      {
+        "rule": "beta (n - i + 1)",
+        "n": 200,
+        "beta": 1,
+        "matrices": 2000,
+        "trH2z": 44.94,
+        "trH4z": 31.97,
+        "detected": true
+      },
+      {
+        "rule": "beta (n - i + 1)",
+        "n": 200,
+        "beta": 2,
+        "matrices": 2000,
+        "trH2z": 62.35,
+        "trH4z": 43.39,
+        "detected": true
+      },
+      {
+        "rule": "beta (n - i + 1)",
+        "n": 400,
+        "beta": 1,
+        "matrices": 1000,
+        "trH2z": 31.01,
+        "trH4z": 22.71,
+        "detected": true
+      },
+      {
+        "rule": "beta (n - i + 1)",
+        "n": 400,
+        "beta": 2,
+        "matrices": 1000,
+        "trH2z": 46.52,
+        "trH4z": 34.4,
+        "detected": true
+      },
+      {
+        "rule": "beta n",
+        "n": 24,
+        "beta": 1,
+        "matrices": 1000,
+        "trH2z": 263.1,
+        "trH4z": 176.2,
+        "semicircleIidKS": 0.1612,
+        "semicircleCritical": 0.07251,
+        "detected": true
+      },
+      {
+        "rule": "beta n",
+        "n": 24,
+        "beta": 2,
+        "matrices": 1000,
+        "trH2z": 358.4,
+        "trH4z": 242.2,
+        "semicircleIidKS": 0.1539,
+        "semicircleCritical": 0.07251,
+        "detected": true
+      },
+      {
+        "rule": "beta n",
+        "n": 100,
+        "beta": 1,
+        "matrices": 1000,
+        "trH2z": 1084,
+        "trH4z": 725.7,
+        "semicircleIidKS": 0.1645,
+        "semicircleCritical": 0.07251,
+        "detected": true
+      },
+      {
+        "rule": "beta n",
+        "n": 100,
+        "beta": 2,
+        "matrices": 1000,
+        "trH2z": 1556,
+        "trH4z": 1038,
+        "semicircleIidKS": 0.1812,
+        "semicircleCritical": 0.07251,
+        "detected": true
+      }
+    ]
+  },
+  "semicircle": {
+    "scaling": "x = lambda / (2 sqrt(beta n))",
+    "familyAlpha": 0.001,
+    "tests": 20,
+    "iidTest": "one eigenvalue per matrix at a uniformly drawn index, Kolmogorov critical value with Stephens correction",
+    "ensembles": [
+      {
+        "n": 24,
+        "beta": 0.1,
+        "matrices": 2000,
+        "radius": 3.098387,
+        "singleSpectrumKS": 0.1645537,
+        "singleSpectrumKSse": 0.0008811098,
+        "nTimesKS": 3.949288,
+        "iidKS": 0.0885533,
+        "note": "beta n = 2.4: outside the semicircle regime (needs beta n >> 1); reported, not tested"
+      },
+      {
+        "n": 24,
+        "beta": 1,
+        "matrices": 2000,
+        "radius": 9.797959,
+        "singleSpectrumKS": 0.07704983,
+        "singleSpectrumKSse": 0.0003210828,
+        "nTimesKS": 1.849196,
+        "iidKS": 0.0261757,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 24,
+        "beta": 2,
+        "matrices": 2000,
+        "radius": 13.85641,
+        "singleSpectrumKS": 0.06285997,
+        "singleSpectrumKSse": 0.0002330559,
+        "nTimesKS": 1.508639,
+        "iidKS": 0.02070784,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 24,
+        "beta": 4,
+        "matrices": 2000,
+        "radius": 19.59592,
+        "singleSpectrumKS": 0.05182769,
+        "singleSpectrumKSse": 0.0001711131,
+        "nTimesKS": 1.243865,
+        "iidKS": 0.02041939,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 24,
+        "beta": 12,
+        "matrices": 2000,
+        "radius": 33.94113,
+        "singleSpectrumKS": 0.04010987,
+        "singleSpectrumKSse": 0.0001045998,
+        "nTimesKS": 0.9626369,
+        "iidKS": 0.02113192,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 50,
+        "beta": 0.1,
+        "matrices": 2000,
+        "radius": 4.472136,
+        "singleSpectrumKS": 0.09750064,
+        "singleSpectrumKSse": 0.0004650304,
+        "nTimesKS": 4.875032,
+        "iidKS": 0.05371144,
+        "note": "beta n = 5.0: outside the semicircle regime (needs beta n >> 1); reported, not tested"
+      },
+      {
+        "n": 50,
+        "beta": 1,
+        "matrices": 2000,
+        "radius": 14.14214,
+        "singleSpectrumKS": 0.04282967,
+        "singleSpectrumKSse": 0.0001599041,
+        "nTimesKS": 2.141484,
+        "iidKS": 0.02908556,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 50,
+        "beta": 2,
+        "matrices": 2000,
+        "radius": 20,
+        "singleSpectrumKS": 0.03408951,
+        "singleSpectrumKSse": 0.0001194442,
+        "nTimesKS": 1.704476,
+        "iidKS": 0.01768425,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 50,
+        "beta": 4,
+        "matrices": 2000,
+        "radius": 28.28427,
+        "singleSpectrumKS": 0.02779265,
+        "singleSpectrumKSse": 0.00008687175,
+        "nTimesKS": 1.389633,
+        "iidKS": 0.03026448,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 50,
+        "beta": 12,
+        "matrices": 2000,
+        "radius": 48.98979,
+        "singleSpectrumKS": 0.0208754,
+        "singleSpectrumKSse": 0.0000496948,
+        "nTimesKS": 1.04377,
+        "iidKS": 0.02127007,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 100,
+        "beta": 0.1,
+        "matrices": 2000,
+        "radius": 6.324555,
+        "singleSpectrumKS": 0.05749053,
+        "singleSpectrumKSse": 0.00024187,
+        "nTimesKS": 5.749053,
+        "iidKS": 0.0358886,
+        "note": "beta n = 10.0: outside the semicircle regime (needs beta n >> 1); reported, not tested"
+      },
+      {
+        "n": 100,
+        "beta": 1,
+        "matrices": 2000,
+        "radius": 20,
+        "singleSpectrumKS": 0.02398047,
+        "singleSpectrumKSse": 0.00008287091,
+        "nTimesKS": 2.398047,
+        "iidKS": 0.01872049,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 100,
+        "beta": 2,
+        "matrices": 2000,
+        "radius": 28.28427,
+        "singleSpectrumKS": 0.01907488,
+        "singleSpectrumKSse": 0.00006033053,
+        "nTimesKS": 1.907488,
+        "iidKS": 0.01606024,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 100,
+        "beta": 4,
+        "matrices": 2000,
+        "radius": 40,
+        "singleSpectrumKS": 0.01526363,
+        "singleSpectrumKSse": 0.00004281792,
+        "nTimesKS": 1.526363,
+        "iidKS": 0.0139296,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 100,
+        "beta": 12,
+        "matrices": 2000,
+        "radius": 69.28203,
+        "singleSpectrumKS": 0.01126576,
+        "singleSpectrumKSse": 0.00002558765,
+        "nTimesKS": 1.126576,
+        "iidKS": 0.01468584,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 200,
+        "beta": 0.1,
+        "matrices": 2000,
+        "radius": 8.944272,
+        "singleSpectrumKS": 0.0330974,
+        "singleSpectrumKSse": 0.0001251146,
+        "nTimesKS": 6.619481,
+        "iidKS": 0.02540424,
+        "note": "beta n = 20.0: outside the semicircle regime (needs beta n >> 1); reported, not tested"
+      },
+      {
+        "n": 200,
+        "beta": 1,
+        "matrices": 2000,
+        "radius": 28.28427,
+        "singleSpectrumKS": 0.01337649,
+        "singleSpectrumKSse": 0.00004147696,
+        "nTimesKS": 2.675299,
+        "iidKS": 0.01797329,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 200,
+        "beta": 2,
+        "matrices": 2000,
+        "radius": 40,
+        "singleSpectrumKS": 0.01054567,
+        "singleSpectrumKSse": 0.00003103957,
+        "nTimesKS": 2.109133,
+        "iidKS": 0.01810803,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 200,
+        "beta": 4,
+        "matrices": 2000,
+        "radius": 56.56854,
+        "singleSpectrumKS": 0.008324322,
+        "singleSpectrumKSse": 0.00002132039,
+        "nTimesKS": 1.664864,
+        "iidKS": 0.01851176,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 200,
+        "beta": 12,
+        "matrices": 2000,
+        "radius": 97.97959,
+        "singleSpectrumKS": 0.00604095,
+        "singleSpectrumKSse": 0.00001269774,
+        "nTimesKS": 1.20819,
+        "iidKS": 0.02310092,
+        "critical": 0.05132942,
+        "pass": true
+      },
+      {
+        "n": 400,
+        "beta": 0.1,
+        "matrices": 1000,
+        "radius": 12.64911,
+        "singleSpectrumKS": 0.01857086,
+        "singleSpectrumKSse": 0.00009203041,
+        "nTimesKS": 7.428343,
+        "iidKS": 0.02245712,
+        "note": "beta n = 40.0: outside the semicircle regime (needs beta n >> 1); reported, not tested"
+      },
+      {
+        "n": 400,
+        "beta": 1,
+        "matrices": 1000,
+        "radius": 40,
+        "singleSpectrumKS": 0.00737661,
+        "singleSpectrumKSse": 0.00002998975,
+        "nTimesKS": 2.950644,
+        "iidKS": 0.02512904,
+        "critical": 0.07250642,
+        "pass": true
+      },
+      {
+        "n": 400,
+        "beta": 2,
+        "matrices": 1000,
+        "radius": 56.56854,
+        "singleSpectrumKS": 0.005737559,
+        "singleSpectrumKSse": 0.00002142501,
+        "nTimesKS": 2.295023,
+        "iidKS": 0.02149691,
+        "critical": 0.07250642,
+        "pass": true
+      },
+      {
+        "n": 400,
+        "beta": 4,
+        "matrices": 1000,
+        "radius": 80,
+        "singleSpectrumKS": 0.00450336,
+        "singleSpectrumKSse": 0.00001541985,
+        "nTimesKS": 1.801344,
+        "iidKS": 0.03472197,
+        "critical": 0.07250642,
+        "pass": true
+      },
+      {
+        "n": 400,
+        "beta": 12,
+        "matrices": 1000,
+        "radius": 138.5641,
+        "singleSpectrumKS": 0.003221615,
+        "singleSpectrumKSse": 0.000009155548,
+        "nTimesKS": 1.288646,
+        "iidKS": 0.01955662,
+        "critical": 0.07250642,
+        "pass": true
+      }
+    ],
+    "convergence": [
+      {
+        "beta": 1,
+        "n": [
+          24,
+          50,
+          100,
+          200,
+          400
+        ],
+        "ks": [
+          0.07705,
+          0.04283,
+          0.02398,
+          0.01338,
+          0.007377
+        ],
+        "nTimesKS": [
+          1.849,
+          2.141,
+          2.398,
+          2.675,
+          2.951
+        ],
+        "logLogSlope": -0.8349,
+        "monotone": true
+      },
+      {
+        "beta": 2,
+        "n": [
+          24,
+          50,
+          100,
+          200,
+          400
+        ],
+        "ks": [
+          0.06286,
+          0.03409,
+          0.01907,
+          0.01055,
+          0.005738
+        ],
+        "nTimesKS": [
+          1.509,
+          1.704,
+          1.907,
+          2.109,
+          2.295
+        ],
+        "logLogSlope": -0.8499,
+        "monotone": true
+      },
+      {
+        "beta": 4,
+        "n": [
+          24,
+          50,
+          100,
+          200,
+          400
+        ],
+        "ks": [
+          0.05183,
+          0.02779,
+          0.01526,
+          0.008324,
+          0.004503
+        ],
+        "nTimesKS": [
+          1.244,
+          1.39,
+          1.526,
+          1.665,
+          1.801
+        ],
+        "logLogSlope": -0.8686,
+        "monotone": true
+      },
+      {
+        "beta": 12,
+        "n": [
+          24,
+          50,
+          100,
+          200,
+          400
+        ],
+        "ks": [
+          0.04011,
+          0.02088,
+          0.01127,
+          0.006041,
+          0.003222
+        ],
+        "nTimesKS": [
+          0.9626,
+          1.044,
+          1.127,
+          1.208,
+          1.289
+        ],
+        "logLogSlope": -0.8959,
+        "monotone": true
+      }
+    ]
+  },
+  "spacings": {
+    "unfolding": "module unfolded(): central 60 percent of each spectrum, each gap over the mean of the 24 gaps around it",
+    "grid": {
+      "points": 1001,
+      "sMax": 5
+    },
+    "bootstrap": "whole matrices resampled; KS critical value = 99th percentile of sup|F*-F_hat|; CV error = bootstrap standard deviation",
+    "exact": {
+      "1": {
+        "cv": 0.5343507,
+        "variance": 0.2855307,
+        "surmiseCv": 0.5227232,
+        "ksExactVsSurmise": 0.006567,
+        "cdfAtZero": 2.7434712279728046e-9,
+        "quadratureNodeChange30to40": 3.3306690738754696e-16
+      },
+      "2": {
+        "cv": 0.4242569,
+        "variance": 0.1799939,
+        "surmiseCv": 0.4220157,
+        "ksExactVsSurmise": 0.001552,
+        "cdfAtZero": 5.661249247168598e-12,
+        "quadratureNodeChange30to40": 4.440892098500626e-16
+      }
+    },
+    "zThreshold": 3.6623,
+    "runs": [
+      {
+        "n": 400,
+        "beta": 1,
+        "tab": {
+          "spacings": 720000,
+          "matrices": 3000,
+          "bootstrapReps": 2000,
+          "meanSpacing": 1.00024,
+          "meanSpacingSe": 0.0000583,
+          "cv": 0.534406,
+          "cvSe": 0.000468,
+          "zExact": 0.1184,
+          "zSurmise": 24.99,
+          "ksExact": 0.0006248,
+          "ksSurmise": 0.006617,
+          "ksCritical99": 0.001283
+        },
+        "noUnfoldingWindow": {
+          "spacings": 720000,
+          "matrices": 3000,
+          "bootstrapReps": 2000,
+          "meanSpacing": 1,
+          "meanSpacingSe": 4.97e-18,
+          "cv": 0.536277,
+          "cvSe": 0.000466,
+          "zExact": 4.137,
+          "zSurmise": 29.11,
+          "ksExact": 0.001319,
+          "ksSurmise": 0.007658,
+          "ksCritical99": 0.001292
+        },
+        "noUnfoldingWholeSpectrum": {
+          "spacings": 1197000,
+          "matrices": 3000,
+          "bootstrapReps": 2000,
+          "meanSpacing": 1,
+          "meanSpacingSe": 1.4e-17,
+          "cv": 0.678658,
+          "cvSe": 0.000821,
+          "zExact": 175.7,
+          "zSurmise": 189.9,
+          "ksExact": 0.0439,
+          "ksSurmise": 0.04984,
+          "ksCritical99": 0.001018
+        }
+      },
+      {
+        "n": 400,
+        "beta": 2,
+        "tab": {
+          "spacings": 720000,
+          "matrices": 3000,
+          "bootstrapReps": 2000,
+          "meanSpacing": 0.999823,
+          "meanSpacingSe": 0.000043,
+          "cv": 0.424023,
+          "cvSe": 0.000355,
+          "zExact": -0.6592,
+          "zSurmise": 5.655,
+          "ksExact": 0.0006732,
+          "ksSurmise": 0.001864,
+          "ksCritical99": 0.001306
+        },
+        "noUnfoldingWindow": {
+          "spacings": 720000,
+          "matrices": 3000,
+          "bootstrapReps": 2000,
+          "meanSpacing": 1,
+          "meanSpacingSe": 7.02e-18,
+          "cv": 0.426076,
+          "cvSe": 0.00036,
+          "zExact": 5.06,
+          "zSurmise": 11.29,
+          "ksExact": 0.00161,
+          "ksSurmise": 0.002989,
+          "ksCritical99": 0.001336
+        },
+        "noUnfoldingWholeSpectrum": {
+          "spacings": 1197000,
+          "matrices": 3000,
+          "bootstrapReps": 2000,
+          "meanSpacing": 1,
+          "meanSpacingSe": 1.49e-17,
+          "cv": 0.572512,
+          "cvSe": 0.00058,
+          "zExact": 255.7,
+          "zSurmise": 259.5,
+          "ksExact": 0.05874,
+          "ksSurmise": 0.06009,
+          "ksCritical99": 0.0009875
+        }
+      },
+      {
+        "n": 150,
+        "beta": 1,
+        "tab": {
+          "spacings": 180000,
+          "matrices": 2000,
+          "bootstrapReps": 1000,
+          "meanSpacing": 0.995998,
+          "meanSpacingSe": 0.000188,
+          "cv": 0.534298,
+          "cvSe": 0.000902,
+          "zExact": -0.0581,
+          "zSurmise": 12.83,
+          "ksExact": 0.004274,
+          "ksSurmise": 0.008233,
+          "ksCritical99": 0.00265
+        },
+        "noUnfoldingWindow": {
+          "spacings": 180000,
+          "matrices": 2000,
+          "bootstrapReps": 1000,
+          "meanSpacing": 1,
+          "meanSpacingSe": 0,
+          "cv": 0.535707,
+          "cvSe": 0.000919,
+          "zExact": 1.475,
+          "zSurmise": 14.13,
+          "ksExact": 0.001883,
+          "ksSurmise": 0.00682,
+          "ksCritical99": 0.002611
+        },
+        "noUnfoldingWholeSpectrum": {
+          "spacings": 298000,
+          "matrices": 2000,
+          "bootstrapReps": 1000,
+          "meanSpacing": 1,
+          "meanSpacingSe": 7.03e-18,
+          "cv": 0.651582,
+          "cvSe": 0.00124,
+          "zExact": 94.19,
+          "zSurmise": 103.5,
+          "ksExact": 0.04047,
+          "ksSurmise": 0.0459,
+          "ksCritical99": 0.002282
+        }
+      },
+      {
+        "n": 150,
+        "beta": 2,
+        "tab": {
+          "spacings": 180000,
+          "matrices": 2000,
+          "bootstrapReps": 1000,
+          "meanSpacing": 0.995891,
+          "meanSpacingSe": 0.000141,
+          "cv": 0.423207,
+          "cvSe": 0.00067,
+          "zExact": -1.566,
+          "zSurmise": 1.777,
+          "ksExact": 0.004403,
+          "ksSurmise": 0.004917,
+          "ksCritical99": 0.0025
+        },
+        "noUnfoldingWindow": {
+          "spacings": 180000,
+          "matrices": 2000,
+          "bootstrapReps": 1000,
+          "meanSpacing": 1,
+          "meanSpacingSe": 8.6e-18,
+          "cv": 0.425124,
+          "cvSe": 0.000698,
+          "zExact": 1.241,
+          "zSurmise": 4.45,
+          "ksExact": 0.001811,
+          "ksSurmise": 0.003328,
+          "ksCritical99": 0.002567
+        },
+        "noUnfoldingWholeSpectrum": {
+          "spacings": 298000,
+          "matrices": 2000,
+          "bootstrapReps": 1000,
+          "meanSpacing": 1,
+          "meanSpacingSe": 0,
+          "cv": 0.538547,
+          "cvSe": 0.000967,
+          "zExact": 118.1,
+          "zSurmise": 120.5,
+          "ksExact": 0.05054,
+          "ksSurmise": 0.0519,
+          "ksCritical99": 0.002023
+        }
+      }
+    ]
+  },
+  "printedSpread": [
+    {
+      "recipe": {
+        "mode": "rows",
+        "n": 140,
+        "beta": 2,
+        "rows": 180,
+        "seed": "dyson-1962"
+      },
+      "seed": "dyson-1962",
+      "printed": 0.4278,
+      "printedError": 0.0027,
+      "errorRatio": 1.04,
+      "printedSurmise": 0.422,
+      "rows": 180,
+      "spacings": 15120,
+      "cvSe": 0.00259,
+      "gaudinMehtaCv": 0.424257,
+      "zGaudinMehta": 1.36,
+      "surmiseCv": 0.422016,
+      "zSurmise": 2.22,
+      "statusHtml": "<span><b>180</b> spectra of <b>140</b> · β <b>2.00</b></span><span class=\"cmp\" data-basis=\"sampled\" title=\"bootstrap over 180 rows\">unfolded spacing spread <b>0.4278 ± 0.0027</b> · Gaudin-Mehta, large n 0.4243 · 1.3σ high · Wigner surmise 0.422, the 2×2 approximation</span><span>180 rows</span>"
+    },
+    {
+      "recipe": {
+        "mode": "rows",
+        "n": 260,
+        "beta": 1,
+        "rows": 260,
+        "seed": "dyson-1962"
+      },
+      "seed": "dyson-1962",
+      "printed": 0.5353,
+      "printedError": 0.0018,
+      "errorRatio": 0.947,
+      "printedSurmise": 0.523,
+      "rows": 257,
+      "spacings": 40092,
+      "cvSe": 0.0019,
+      "gaudinMehtaCv": 0.534351,
+      "zGaudinMehta": 0.487,
+      "surmiseCv": 0.522723,
+      "zSurmise": 6.61,
+      "statusHtml": "<span><b>260</b> spectra of <b>260</b> · β <b>1.00</b></span><span class=\"cmp\" data-basis=\"sampled\" title=\"bootstrap over 257 rows\">unfolded spacing spread <b>0.5353 ± 0.0018</b> · Gaudin-Mehta, large n 0.5343 · 0.5σ high · Wigner surmise 0.523, the 2×2 approximation</span><span>260 rows</span>"
+    }
+  ],
+  "dyson": {
+    "seeds": 48,
+    "recipe": {
+      "mode": "dyson",
+      "paths": 24,
+      "slices": 480,
+      "span": 24
+    },
+    "jacobiSlices": 1920,
+    "worstJacobiOverTolerance": 0.08689796175488716,
+    "trH2OverExact": {
+      "mean": 1.00449,
+      "se": 0.00339,
+      "z": 1.32
+    },
+    "autocorrelation": [
+      {
+        "lag": 0.5,
+        "exact": 0.778801,
+        "mean": 0.791559,
+        "se": 0.0561,
+        "z": 0.227
+      },
+      {
+        "lag": 1,
+        "exact": 0.606531,
+        "mean": 0.61928,
+        "se": 0.0529,
+        "z": 0.241
+      },
+      {
+        "lag": 2,
+        "exact": 0.367879,
+        "mean": 0.377659,
+        "se": 0.0491,
+        "z": 0.199
+      },
+      {
+        "lag": 4,
+        "exact": 0.135335,
+        "mean": 0.143998,
+        "se": 0.0486,
+        "z": 0.178
+      }
+    ],
+    "zThreshold": 3.719,
+    "control": {
+      "rule": "OU factor exp(-delta) in place of exp(-delta/2)",
+      "trH2OverExact": {
+        "mean": 0.524014,
+        "se": 0.00124,
+        "z": -383
+      },
+      "autocorrelation": [
+        {
+          "lag": 0.5,
+          "exact": 0.778801,
+          "mean": 0.322962,
+          "se": 0.0201,
+          "z": -22.7
+        },
+        {
+          "lag": 1,
+          "exact": 0.606531,
+          "mean": 0.198482,
+          "se": 0.017,
+          "z": -24
+        },
+        {
+          "lag": 2,
+          "exact": 0.367879,
+          "mean": 0.0744755,
+          "se": 0.0148,
+          "z": -19.8
+        },
+        {
+          "lag": 4,
+          "exact": 0.135335,
+          "mean": 0.00899699,
+          "se": 0.0166,
+          "z": -7.61
+        }
+      ],
+      "detected": true
+    }
+  },
+  "print": [
+    {
+      "name": "gue",
+      "seed": "rmt-science-gue",
+      "parameters": {
+        "mode": "rows",
+        "aspect": "1:1",
+        "n": 140,
+        "beta": 2,
+        "rows": 180,
+        "betaLo": 0.04,
+        "betaHi": 12,
+        "logSweep": true,
+        "paths": 40,
+        "slices": 1000,
+        "span": 10,
+        "ink": "spacing",
+        "norm": "global",
+        "tickH": 0.85,
+        "tickW": 1.8,
+        "alpha": 0.95,
+        "shift": 0,
+        "margin": 0.06,
+        "grain": 0,
+        "seed": "rmt-science-gue",
+        "v": 3,
+        "palette": [
+          "#1A1A1A",
+          "#4A4A4A",
+          "#8C8C8C",
+          "#C8C4BB",
+          "#E63B2E"
+        ],
+        "bg": "#E9E7E2"
+      },
+      "spectra": 180,
+      "perSpectrum": 140,
+      "spectraSha256": "b7ed2616c52cd0712ad79ad793b00d3195b75a4471a492752504ae8d018a1bc4",
+      "studioVsNodeOverTolerance": 0.05845,
+      "bitIdenticalToNode": 0.4942063492063492,
+      "worstIndependentErrorOverTolerance": 0.03879,
+      "printedSpread": null,
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "marks": 25200,
+        "svgCoordinates": 100800,
+        "maxSvgCoordinateError": 0.004999872617418077,
+        "maxChannelError": 0,
+        "meanChannelError": 0,
+        "channelsChecked": 23040000,
+        "displacedPrintFailureChannels": 3116362,
+        "vectorRip": {
+          "maxChannelDifference": 10,
+          "meanChannelDifference": 0.10831723090277778,
+          "fractionOver2Levels": 0.0005884982638888888
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "semicircle",
+      "seed": "rmt-science-semicircle",
+      "parameters": {
+        "mode": "rows",
+        "aspect": "4:5",
+        "n": 260,
+        "beta": 1,
+        "rows": 260,
+        "betaLo": 0.04,
+        "betaHi": 12,
+        "logSweep": true,
+        "paths": 40,
+        "slices": 1000,
+        "span": 10,
+        "ink": "position",
+        "norm": "global",
+        "tickH": 1,
+        "tickW": 1,
+        "alpha": 0.95,
+        "shift": 0,
+        "margin": 0.06,
+        "grain": 0,
+        "seed": "rmt-science-semicircle",
+        "v": 3,
+        "palette": [
+          "#1A1A1A",
+          "#4A4A4A",
+          "#8C8C8C",
+          "#C8C4BB",
+          "#E63B2E"
+        ],
+        "bg": "#E9E7E2"
+      },
+      "spectra": 260,
+      "perSpectrum": 260,
+      "spectraSha256": "c1ee1e8a83553fe0cf6abbef59c7cce0669825572de80b0006ebbcd9623ecdce",
+      "studioVsNodeOverTolerance": 0.04683,
+      "bitIdenticalToNode": 0.20294378698224852,
+      "worstIndependentErrorOverTolerance": 0.03313,
+      "printedSpread": null,
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "marks": 67600,
+        "svgCoordinates": 270400,
+        "maxSvgCoordinateError": 0.004999895671062404,
+        "maxChannelError": 0,
+        "meanChannelError": 0,
+        "channelsChecked": 18432000,
+        "displacedPrintFailureChannels": 5138906,
+        "vectorRip": {
+          "maxChannelDifference": 8,
+          "meanChannelDifference": 0.16101692708333334,
+          "fractionOver2Levels": 0.0023499891493055556
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "sweep",
+      "seed": "rmt-science-sweep",
+      "parameters": {
+        "mode": "sweep",
+        "aspect": "5:4",
+        "n": 150,
+        "beta": 2,
+        "rows": 200,
+        "betaLo": 0.04,
+        "betaHi": 12,
+        "logSweep": true,
+        "paths": 40,
+        "slices": 1000,
+        "span": 10,
+        "ink": "row",
+        "norm": "row",
+        "tickH": 0.9,
+        "tickW": 1.6,
+        "alpha": 0.95,
+        "shift": 0,
+        "margin": 0.06,
+        "grain": 0,
+        "seed": "rmt-science-sweep",
+        "v": 3,
+        "palette": [
+          "#1A1A1A",
+          "#4A4A4A",
+          "#8C8C8C",
+          "#C8C4BB",
+          "#E63B2E"
+        ],
+        "bg": "#E9E7E2"
+      },
+      "spectra": 200,
+      "perSpectrum": 150,
+      "spectraSha256": "54581c8103a091e208c3b12d871be79c0f57599552ad53a5c1049a8a791bdb6e",
+      "studioVsNodeOverTolerance": 0.05897,
+      "bitIdenticalToNode": 0.32143333333333335,
+      "worstIndependentErrorOverTolerance": 0.04939,
+      "printedSpread": null,
+      "print": {
+        "width": 2400,
+        "height": 1920,
+        "marks": 30000,
+        "svgCoordinates": 120000,
+        "maxSvgCoordinateError": 0.004999641014137524,
+        "maxChannelError": 0,
+        "meanChannelError": 0,
+        "channelsChecked": 18432000,
+        "displacedPrintFailureChannels": 2697725,
+        "vectorRip": {
+          "maxChannelDifference": 11,
+          "meanChannelDifference": 0.12746885850694445,
+          "fractionOver2Levels": 0.004153645833333333
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "crystal",
+      "seed": "rmt-science-crystal",
+      "parameters": {
+        "mode": "rows",
+        "aspect": "1:1",
+        "n": 120,
+        "beta": 18,
+        "rows": 160,
+        "betaLo": 0.04,
+        "betaHi": 12,
+        "logSweep": true,
+        "paths": 40,
+        "slices": 1000,
+        "span": 10,
+        "ink": "position",
+        "norm": "row",
+        "tickH": 0.95,
+        "tickW": 2,
+        "alpha": 0.95,
+        "shift": 3,
+        "margin": 0.06,
+        "grain": 0,
+        "seed": "rmt-science-crystal",
+        "v": 3,
+        "palette": [
+          "#1A1A1A",
+          "#4A4A4A",
+          "#8C8C8C",
+          "#C8C4BB",
+          "#E63B2E"
+        ],
+        "bg": "#E9E7E2"
+      },
+      "spectra": 160,
+      "perSpectrum": 120,
+      "spectraSha256": "dcf2984814208fe6b60941a9b807f785f46987d8469767eda813fa0e32b7d5cd",
+      "studioVsNodeOverTolerance": 0.06063,
+      "bitIdenticalToNode": 0.8271875,
+      "worstIndependentErrorOverTolerance": 0.04797,
+      "printedSpread": null,
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "marks": 19200,
+        "svgCoordinates": 76800,
+        "maxSvgCoordinateError": 0.004999691701527809,
+        "maxChannelError": 0,
+        "meanChannelError": 0,
+        "channelsChecked": 23040000,
+        "displacedPrintFailureChannels": 2925587,
+        "vectorRip": {
+          "maxChannelDifference": 5,
+          "meanChannelDifference": 0.10730486111111111,
+          "fractionOver2Levels": 0.0002140625
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "dyson",
+      "seed": "rmt-science-dyson",
+      "parameters": {
+        "mode": "dyson",
+        "aspect": "3:2",
+        "n": 150,
+        "beta": 2,
+        "rows": 200,
+        "betaLo": 0.04,
+        "betaHi": 12,
+        "logSweep": true,
+        "paths": 40,
+        "slices": 1000,
+        "span": 10,
+        "ink": "row",
+        "norm": "global",
+        "tickH": 0.9,
+        "tickW": 1.3,
+        "alpha": 0.9,
+        "shift": 0,
+        "margin": 0.06,
+        "grain": 0,
+        "seed": "rmt-science-dyson",
+        "v": 3,
+        "palette": [
+          "#1A1A1A",
+          "#4A4A4A",
+          "#8C8C8C",
+          "#C8C4BB",
+          "#E63B2E"
+        ],
+        "bg": "#E9E7E2"
+      },
+      "spectra": 1000,
+      "perSpectrum": 40,
+      "spectraSha256": "70864461cce477c390cb781cea18d8503fbb62d26aa347b582c4705ce1feefbb",
+      "studioVsNodeOverTolerance": 0.01706,
+      "bitIdenticalToNode": 0.065375,
+      "worstIndependentErrorOverTolerance": 0.06336,
+      "printedSpread": null,
+      "print": {
+        "width": 2400,
+        "height": 1600,
+        "marks": 40,
+        "svgCoordinates": 80000,
+        "maxSvgCoordinateError": 0.004999999773644959,
+        "maxChannelError": 0,
+        "meanChannelError": 0,
+        "channelsChecked": 15360000,
+        "displacedPrintFailureChannels": 2189913,
+        "vectorRip": {
+          "maxChannelDifference": 46,
+          "meanChannelDifference": 0.1091173828125,
+          "fractionOver2Levels": 0.0029900390625
+        }
+      },
+      "statePreserved": true
+    }
+  ],
+  "environment": {
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
+    "platform": "linux",
+    "arch": "x64",
+    "cpus": 4
+  },
+  "runtimeSeconds": 189.9,
+  "passed": true
+}

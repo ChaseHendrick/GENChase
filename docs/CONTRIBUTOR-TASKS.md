@@ -4,6 +4,18 @@ These are issue drafts for maintainer review, not published GitHub issues or com
 Check current source and the validation inventory before starting. A passing image check
 does not establish scientific accuracy. Preserve the shared engine and scientific CI.
 
+## Contribute computer time: least-winding vortex collapse
+
+Scope: run seed blocks of the vortex-collapse search on your own machine and share the result
+files, including blocks that found nothing new. The open questions, the certificate and the
+suggested jobs are in `experiments/VORTEX-COLLAPSE.md`. No code change is needed.
+Command: `npm run validator:headless -- --mode vortex-collapse --alpha 0 --n 7 --samples 200 --machine <label>`,
+or `--mode vortex-grow --alpha 0 --n 30 --samples 10` to continue the deepest family. Long runs can be
+announced with the "Claim a seed block" issue template.
+Acceptance: the maintainer re-verifies every submitted minimum from its positions and circulations
+with `node tools/vortex-collapse-search.js --verify <file> --write`. A lower value is recorded only
+after it survives that check. It remains a numerical candidate with priority unconfirmed.
+
 ## Good first: explain the portable fallback
 
 Scope: improve the launcher message when Python is unavailable. Keep it short, identify
@@ -60,6 +72,21 @@ Acceptance: residual norms, at least two chain lengths, and explicit finite-size
 A wrong potential amplitude must fail. A pleasing localized image is insufficient evidence.
 Checks: `node tools/check.js aubry 12000`, `node tools/export.js aubry 8 300`, then
 `node tools/verify.js --print aubry` after registering numerical and print tests.
+
+## Validate an exactly solvable tab
+
+Scope: promote one of `ising`, `percolation`, `aztec`, `lozenge`, `sandpile`, `sle`, `rmt`,
+`ssh` or `kitaev` against the theorem listed for it in the table in
+[RESEARCH-GRADE.md](RESEARCH-GRADE.md), section 2. The answer is known exactly, so these are the
+cheapest promotions in the catalog. Copy the method of `validation/UST.md`: exact enumeration or
+an exact invariant, measured frequencies over independent seeds with a declared sample size, and
+a failure control that must be caught.
+Files: the tab's source in `src/modules/`, a new `tools/<id>-science.js` or `tools/<id>-review.js`,
+its results file under `validation/results/`, and the record in `validation/techniques.json`.
+Acceptance: the record meets every field in `validation/README.md`; a finite-size measurement
+states the sizes and the extrapolation rule; the failure control fails.
+Checks: `node tools/build.js --check`, `node tools/science.js --write`, `node tools/lint.js`,
+`node tools/check.js <id> 12000` and `node tools/export.js <id> 8 300`.
 
 ## New tab proposal: Fisher-KPP invasion front
 

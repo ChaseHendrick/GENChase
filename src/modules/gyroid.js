@@ -13,8 +13,10 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // The Grid slider and sanitize() read the same bounds, so no slider position is clamped away.
+  const GRID_MIN = 128, GRID_MAX = 224;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Surface', 'z0', 'Slice z', GEOM, 0, 6.28, 0.05, f2),
     RANGE('Surface', 'scale', 'Scale', GEOM, 1, 6, 0.1, f2),
@@ -34,7 +36,7 @@
   };
 
   function surprise(rng) { return { z0: rng.range(0, 6), scale: rng.range(1.6, 4.5), kind: rng.pick(['level','field','abs']) }; }
-  function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
   function nodalMeanCurvature(x, y, z) {
     const sx=Math.sin(x), sy=Math.sin(y), sz=Math.sin(z), cx=Math.cos(x), cy=Math.cos(y), cz=Math.cos(z);
     const g=[cx*cy-sz*sx, cy*cz-sx*sy, cz*cx-sy*sz];

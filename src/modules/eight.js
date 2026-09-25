@@ -217,14 +217,6 @@
     const c = U.hexToRgb(hex);
     return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')';
   }
-  function sci(v) {
-    const a = Math.abs(v);
-    if (!isFinite(v)) return '∞';
-    if (a === 0) return '0';
-    if (a >= 0.01 && a < 100) return v.toFixed(3);
-    return v.toExponential(1);
-  }
-
   function mapPoint(view, tr, b, k, lift) {
     const x = tr.px[b][k], y = tr.py[b][k], t = tr.tt[k];
     if (view === 'shape') return shapeAt(tr.px, tr.py, k);
@@ -482,7 +474,7 @@
     order: 111,
     equation: 'r̈_i = −Σ_{j≠i} (r_i−r_j)/|r_i−r_j|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0',
     credit: 'Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.',
-    blurb: 'Three equal masses chase each other around a single figure-eight. Moore found the orbit; Chenciner and Montgomery proved it. The plate is that choreography as worldlines: a three-metal ribbon on a dark sheet, time as fade, or wrapped as a wreath with angle for time. Shape space kills rotation and scale, and the curve is still an eight. Braid is x against t. Broken is a nearby Euler initial condition that does not close, kept so the status line can miss. The check is |L| against 0, energy drift against 0, and the return to the initial configuration at t = T against 0.',
+    blurb: 'Three equal masses chase each other around a single figure-eight. Moore found the orbit; Chenciner and Montgomery proved it. The plate is that choreography as worldlines: a three-metal ribbon on a dark sheet, time as fade, or wrapped as a wreath with angle for time. Shape space kills rotation and scale, and the curve is still an eight. Braid is x against t. Broken is a nearby Euler initial condition that does not close, kept so the status line can miss. The status line prints energy drift against 0 and the return to the initial configuration at t = T against 0; |L| is zero by construction and stays there as a regression test.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: {
       Orbit: 'Eight is Simó’s choreography. Broken scales the same Euler velocities by 1.08: still zero angular momentum, not periodic. Run walks the beads along the stored trail.',
@@ -507,10 +499,13 @@
         if (traj.dead) tag = 'escaped';
         else if (s.kind === 'broken') tag = closed ? 'closed, unexpectedly' : 'broken';
         else tag = (closed && conserved) ? 'choreography' : 'drifting';
+        // L is zero in the initial condition and the symplectic splitting conserves it exactly for
+        // central forces, so only round-off is left: a regression test. Energy and the return at Simó's
+        // period are deterministic residuals of the integrator, with no sampling in them.
         host.setStatus(
-          '<span>|L| <b>' + sci(L) + '</b> · 0</span>' +
-          '<span>|ΔE|/|E| <b>' + sci(traj.dE) + '</b> · 0</span>' +
-          '<span>|q(T)−q(0)| <b>' + sci(traj.dq) + '</b> · 0</span>' +
+          U.stats.compare({ label: '|L|', measured: L, expected: 0, basis: 'construction' }) +
+          U.stats.compare({ label: '|ΔE|/|E|', measured: traj.dE, expected: 0, basis: 'deterministic' }) +
+          U.stats.compare({ label: '|q(T)−q(0)|', measured: traj.dq, expected: 0, reference: 'Simó’s period', basis: 'deterministic' }) +
           '<span>' + tag + '</span>'
         );
       }

@@ -1,8 +1,9 @@
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs'),{chromium,webkit}=require('playwright');
 (async()=>{
  const name=process.env.BROWSER||'chromium';
- const browser=await ({chromium,webkit}[name]).launch(name==='chromium'?{args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']}:{});
+ const browser=await ({chromium,webkit}[name]).launch(name==='chromium'?{args:glArgs()}:{});
  try {
   const page=await browser.newPage({viewport:{width:390,height:844},hasTouch:true});
   const errors=[];page.on('pageerror',e=>{errors.push(e.message);console.error('Page error:',e.message);});

@@ -85,7 +85,7 @@
     create(host) {
       const canvas = host.canvas;
       const ctx = canvas.getContext('2d', { alpha: false });
-      let W = 0, H = 0, hh, vv, step = 0, raf = 0, paused = false, buf, img, lam = 0, lamTh = 0;
+      let W = 0, H = 0, hh, vv, step = 0, raf = 0, paused = false, buf, img, lam = 0, lamTh = 0, lamStat = null;
 
       function sizeFrom(s) {
         const aspect = ASPECTS[s.aspect] || 1;
@@ -161,16 +161,31 @@
         }
       }
 
-      function measure(s) {
-        // Zero-crossing wavelength along the mid row, against 2π sqrt(κ / ω).
-        const y = (H / 2) | 0;
+      // Zero-crossing wavelength along one row, or 0 when the row crosses fewer than twice.
+      function rowLam(y) {
         let crossings = 0, last = hh[idx(0, y)];
         for (let x = 1; x < W; x++) {
           const v = hh[idx(x, y)];
           if (last === 0 || (last < 0 && v >= 0) || (last > 0 && v <= 0)) crossings++;
           last = v;
         }
-        lam = crossings > 1 ? (2 * W / crossings) : 0;
+        return crossings > 1 ? (2 * W / crossings) : 0;
+      }
+      function measure(s) {
+        // Zero-crossing wavelength, against 2π sqrt(κ / ω). The Stripe, Oscillon and Two-spot seeds
+        // start from a formula with no randomness, so their mid row is read as before. The Noise seed
+        // is a random draw: there the wavelength is averaged over every row that crosses at least
+        // twice, with its error bar from tau_int over the row sequence, since neighboring rows of one
+        // field are correlated.
+        lamStat = null;
+        if (s.init === 'noise') {
+          const rows = [];
+          for (let y = 0; y < H; y++) { const v = rowLam(y); if (v) rows.push(v); }
+          lamStat = rows.length ? U.stats.seriesMean(rows) : null;
+          lam = lamStat ? lamStat.mean : 0;
+        } else {
+          lam = rowLam((H / 2) | 0);
+        }
         lamTh = s.omega > 0.05 ? (2 * Math.PI * Math.sqrt(Math.max(1e-4, s.tension) / s.omega)) : 0;
       }
 
@@ -209,7 +224,12 @@
       function status() {
         host.setStatus(
           '<span>grid <b>' + W + '×' + H + '</b></span>' +
-          '<span>λ <b>' + (lam ? lam.toFixed(1) : '—') + '</b> · est ' + lamTh.toFixed(1) + '</span>' +
+          (!lam ? '<span>λ <b>—</b> · linear estimate ' + lamTh.toFixed(1) + '</span>'
+            : lamStat
+              ? U.stats.compare({ label: 'λ', measured: lam, expected: lamTh, reference: 'linear estimate', basis: 'sampled', digits: 3,
+                  uncertainty: lamStat.se, method: 'τ_int over ' + lamStat.n + ' rows',
+                  pending: lamStat.se === 0 ? 'every row gives the same crossing count' : 'too few rows to estimate τ_int' })
+              : U.stats.compare({ label: 'λ', measured: lam, expected: lamTh, reference: 'linear estimate', basis: 'deterministic', digits: 3 })) +
           '<span>step <b>' + step.toLocaleString() + '</b></span>'
         );
       }

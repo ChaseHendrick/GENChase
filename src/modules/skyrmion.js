@@ -393,13 +393,16 @@
       }
 
       function status(s) {
-        const qStr = Math.abs(Q) < 0.04 ? '0' : f2(Q);
+        // The reference is the charge of the seeded texture, not a prediction for the relaxed state. On a
+        // periodic lattice the Berg-Luscher total is an exact integer, so only float round-off is removed.
+        const integral = s.wrap === 'periodic' && Math.abs(Q - Math.round(Q)) < 1e-6;
+        const q = integral ? Math.round(Q) : Q;
         const expect = (s.init === 'ferro' || s.init === 'spiral') ? '0'
           : (s.init === 'lattice' ? '~' + s.count
           : (s.init === 'bimeron' ? '~0' : (s.init === 'noise' ? 'integer' : '±1')));
         host.setStatus(
           '<span>grid <b>' + W + '×' + H + '</b></span>' +
-          '<span>Q <b>' + qStr + '</b> · theory ' + expect + '</span>' +
+          U.stats.compare({ label: 'Q', measured: q, expected: expect, reference: 'seeded texture', basis: integral ? 'exact' : 'deterministic', digits: 3 }) +
           '<span>E/site <b>' + f3(E) + '</b></span>' +
           '<span>step <b>' + step.toLocaleString() + '</b></span>'
         );

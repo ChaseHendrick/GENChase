@@ -6,26 +6,22 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
-  const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2), f3 = v => v.toFixed(3);
+  const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2);
   const pct = v => Math.round(v * 100) + '%';
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
-  // "1.4σ high", or "0.3σ from it" when the two agree. A measured number printed beside a theoretical
-  // one without an error bar says nothing at all: there is no way to tell agreement from disagreement.
+  // A deviation in standard errors, which decides when a disagreement needs its cause named; the
+  // status prints it through the shared comparison harness. A measured number printed beside a
+  // theoretical one without an error bar says nothing at all: there is no way to tell agreement from
+  // disagreement.
   // Nothing here is ever rounded toward the theory, and a large deviation is named rather than buried.
   function sigmas(v, se, ref) {
     if (!(isFinite(v) && isFinite(se) && se > 0)) return null;
     return (v - ref) / se;
   }
-  function sigTxt(z) {
-    if (z === null) return 'no uncertainty available';
-    const m = Math.abs(z);
-    return m.toFixed(1) + 'σ ' + (m < 0.05 ? 'from it' : (z > 0 ? 'high' : 'low'));
-  }
-  const pm = (v, se, d) => v.toFixed(d) + ' ± ' + (isFinite(se) && se > 0 ? se.toFixed(d) : '?');
 
   const S3 = Math.sqrt(3) / 2;
   const SIDE = 48;   // largest side the sampler is asked for; see MAXSITE
@@ -37,6 +33,12 @@
   // has no upper bound on its running time, only an expectation, so a budget is the only honest way to
   // stop an unlucky seed at the largest hexagon from hanging the page.
   const MAXSITE = 3.2e8;
+  // A plate whose free tiles are none at all, or the same in every sector, has no spread to give an error bar:
+  // on a small box every tile can be frozen (an empty or a full box is), and compare() then prints the value
+  // with this reason and no verdict.
+  const NOSPREAD = 'no spread over the sectors: the free tiles are none, or the same in every sector';
+  // Why the rim-connected measurement reads away from the limit shape on one plate; see whyOff().
+  const FINITE_RIM = 'finite size: the frozen regions reach past the ellipse, by about one tile at 12 a side and 1.4 at 48, a distance that grows only as n^(1/3), so the radius and the free area read low by a term that shrinks as n^(−2/3); averaged over many seeds the free area of a regular hexagon reads 0.752 at 12 a side and 0.847 at 48, and extrapolated in the size it reaches π/(2√3) = 0.907 within its error (validation/LOZENGE.md)';
 
   const rot = (P, k) => { const n = P.length, i = ((k % n) + n) % n; return P.slice(i).concat(P.slice(0, i)); };
 
@@ -325,13 +327,64 @@
     return s;
   }
 
-  /* Frozen or disordered, decided locally. A triangle is frozen at radius R when every triangle within
-     R steps of it, through shared edges, carries the same rhombus orientation. Deep in a corner of the
-     hexagon the tiling is a brickwork of one orientation and nothing within any radius disagrees; in
-     the middle the three orientations mix on every scale. Rather than walk a ball around every
-     triangle, use f_R(x) = f_1(x) and f_{R-1}(y) for every neighbor y, which is the same set and costs
-     three reads per triangle per radius. Triangles off the hexagon are absent rather than disagreeing,
-     so a corner sitting against the rim is frozen, as it should be. */
+  /* Frozen or disordered, decided globally. A rhombus is frozen when a chain of edge-adjacent rhombi of
+     its own orientation connects it to the rim of the hexagon. This is the lozenge analogue of the polar
+     regions of Jockusch, Propp and Shor for the Aztec diamond, in the form Johansson states them (Annals
+     of Probability 33, 2005): there, the north polar region is the union of the north-going dominoes
+     joined to the boundary by a chain of adjacent north-going dominoes, and src/modules/aztec.js uses
+     that definition. Cohn, Larsen and Propp prove the lozenge limit shape for the height function; this
+     boundary-connected reading of "frozen" is adopted here by analogy, not quoted from their paper.
+     On the cube picture it is concrete: two tops share an edge exactly when two neighboring columns have
+     the same height, and the only tops on the rim are full columns against the near walls and empty
+     ones against the far walls, so the frozen tops are the Young diagram of full columns at one corner
+     and the region of empty columns at the opposite one, and likewise for the two side orientations.
+     Those six regions have no holes, so unlike a local test this one never calls a brickwork patch in
+     the disordered middle frozen, and the edge of each region is the first level line of a height
+     function, which is what the arctic curve is the limit of.
+
+     It is computed on triangles: a triangle with an edge on the rim seeds the flood, and the flood
+     crosses an edge only into a triangle of the same orientation. The two triangles of one rhombus
+     always share an edge and an orientation, so they are always frozen together, and a flood between
+     triangles of two rhombi of one orientation is exactly a shared edge between those rhombi.
+     tools/lozenge-science.js holds the result to an independent union-find over rhombi on every plate. */
+  function frozenRim(T) {
+    const TA = T.TA, TB = T.TB, UW = T.UW, VW = T.VW, nS = UW * VW;
+    const fA = new Uint8Array(nS), fB = new Uint8Array(nS);
+    const stack = [];
+    // neighbors of A(u, v) are B(u, v), B(u, v-1), B(u+1, v); of B(u, v) they are A(u, v), A(u, v+1), A(u-1, v).
+    // A slot outside the arrays or holding -1 is off the hexagon.
+    const nbrs = (k, s, out) => {
+      const uu = (k / VW) | 0, vv = k - uu * VW;
+      if (s === 0) { out[0] = k; out[1] = vv > 0 ? k - 1 : -1; out[2] = uu + 1 < UW ? k + VW : -1; }
+      else { out[0] = k; out[1] = vv + 1 < VW ? k + 1 : -1; out[2] = uu > 0 ? k - VW : -1; }
+    };
+    const nb = [0, 0, 0];
+    for (let k = 0; k < nS; k++) for (let s = 0; s < 2; s++) {
+      if ((s === 0 ? TA : TB)[k] < 0) continue;
+      nbrs(k, s, nb);
+      const other = s === 0 ? TB : TA;
+      if (nb.some(j => j < 0 || other[j] < 0)) { (s === 0 ? fA : fB)[k] = 1; stack.push(2 * k + s); }
+    }
+    while (stack.length) {
+      const e = stack.pop(), k = e >> 1, s = e & 1, o = (s === 0 ? TA : TB)[k];
+      nbrs(k, s, nb);
+      const other = s === 0 ? TB : TA, fo = s === 0 ? fB : fA;
+      for (const j of nb) if (j >= 0 && other[j] === o && !fo[j]) { fo[j] = 1; stack.push(2 * j + (1 - s)); }
+    }
+    return { fA, fB };
+  }
+
+  /* The local tests that recipes made before recipe v4 used, kept so those recipes reprint exactly (the
+     Frozen test control, key ring 1 to 4; legacy below). A triangle is frozen at radius R when every
+     triangle within R steps of it, through shared edges, carries the same rhombus orientation. Deep in
+     a corner of the hexagon the tiling is a brickwork of one orientation and nothing within any radius
+     disagrees; in the middle the three orientations mix on every scale. This is not the arctic
+     boundary: it also calls small brickwork patches inside the disordered region frozen, and over
+     independent seeds at radius 3 its readings cross the limit shape as the hexagon grows rather than
+     converge to it (validation/LOZENGE.md). Rather than walk a ball around every triangle, use
+     f_R(x) = f_1(x) and f_{R-1}(y) for every neighbor y, which is the same set and costs three reads
+     per triangle per radius. Triangles off the hexagon are absent rather than disagreeing, so a corner
+     sitting against the rim is frozen. */
   function classify(T, ring) {
     const TA = T.TA, TB = T.TB, UW = T.UW, VW = T.VW, nS = UW * VW;
     const fA = new Uint8Array(nS), fB = new Uint8Array(nS);
@@ -377,43 +430,24 @@
 
      The sixty sector radii are one measurement each, but they are not sixty independent numbers, and
      sd/sqrt(60) would be a flattering lie. Two things tie neighbors together: the split weighting hands
-     every triangle to the two nearest sectors on purpose, and the arctic boundary is a smooth curve
-     whose excursions run over a finite angle rather than jumping from sector to sector. The effective
-     count is 60/tau with tau the integrated autocorrelation around the circle, the usual
-     1 + 2 sum rho_l with the window closed at the first non-positive rho. Averaged over seeds tau comes
-     out near 4 at every size tried; on one plate it runs from the floor of 2 up to about 10. Counted
-     over twenty-five seeds at each of the eight shapes the presets use, the effective count lands
-     between 5.8 and 30.0 of the sixty, the ceiling being where the floor on tau binds, with a mean
-     near 16 on the regular hexagons and near 10 at 48, 48, 8. A second, independent family of forty
-     to a hundred and twenty seeds per shape reached 5.0 at 48, 48, 8, where tau came out 12.1 on one
-     plate, so the status line can print five; call the range five to thirty rather than six to thirty.
-     The ceiling on tau, n/4, did not bind on any of the 540 plates of that family. The status line
-     prints which.
+     every triangle to the two nearest sectors on purpose, and the frozen boundary is a curve whose
+     excursions run over a finite angle rather than jumping from sector to sector. The effective count
+     is 60/tau with tau the integrated autocorrelation around the circle, the usual 1 + 2 sum rho_l with
+     the window closed at the first non-positive rho, floored at 2 and capped at 15.
 
-     Checked rather than asserted, by drawing many tilings at one size and comparing the scatter of the
-     mean radius across seeds with this single-tiling estimate averaged over the same seeds:
+     The free area is the sum of the sixty sector counts over the number of triangles, which is fixed by
+     the box, so it is the same kind of number and gets the same treatment: the standard error of the
+     sum is sd sqrt(60 tau), with tau measured on the counts themselves. The free area used to be
+     bootstrapped instead, in circular blocks of tau sectors. A block bootstrap with blocks about as long
+     as the correlation keeps only the sum over |l| < L of (1 - |l|/L) times the autocovariance, which
+     for a correlation decaying like rho^l with tau near 4 is about three fifths of the full sum, and
+     the bar came out 13 to 27 per cent narrow at 32, 48 and 24, 40, 46 while the radius bar, from tau,
+     did not.
 
-       a,b,c      seeds   sd over seeds   this estimate   ratio
-       11,11,11    120       0.0084          0.0094        1.12
-       12,12,12    120       0.0084          0.0092        1.10
-       24,24,24    120       0.0054          0.0071        1.31
-       32,32,32     80       0.0051          0.0062        1.20
-       40,40,40     60       0.0044          0.0051        1.17
-       48,48,48     60       0.0039          0.0044        1.13
-       24,40,46     60       0.0059          0.0071        1.21
-       20,20,40     60       0.0085          0.0079        0.92
-       48,48, 8     60       0.0152          0.0226        1.49
-
-     It runs a little wide except at 20,20,40, and wide is the safe direction for an error bar. It is
-     quoted as it comes out rather than scaled to make the table read better.
-
-     Rebuilt from scratch on a second, independent family of seeds, forty to a hundred and twenty per
-     shape, the ratio came out 1.27 at 32,32,32, 1.54 at 40,40,40, 1.05 at 24,40,46, 1.11 at 11,11,11,
-     1.82 at 48,48,8, 1.07 at 48,48,48, 0.86 at 20,20,40 and 1.10 at 36,36,36. Sixty seeds only pin an
-     sd to about nine per cent of itself, so a single ratio moves by that much between seed families,
-     and what survives both is the shape of the answer: wide nearly everywhere, and narrow at 20,20,40
-     on both families. The floor on tau bound on 1 run in 60 at 32,32,32 and 48,48,48, 2 in 60 at
-     40,40,40, 12 in 120 at 11,11,11 and on none of the rest; the ceiling at n/4 never bound at all. */
+     Whether either bar is the right size is not argued here but measured: tools/lozenge-science.js
+     compares the scatter of each printed number over independent seeds with the root-mean-square bar
+     at every hexagon it runs, against a band of 0.75 to 1.33 fixed before that run, and
+     validation/LOZENGE.md gives the ratios. */
   function acTime(x) {
     const n = x.length;
     let m = 0;
@@ -434,61 +468,11 @@
     // Floored at 2 rather than 1. The split weighting hands every triangle to two adjacent sectors
     // by construction, so consecutive sectors literally share data and tau cannot honestly be 1;
     // on the small hexagons the estimator can return it anyway when the sample is too short to see
-    // its own correlation. Averaged over forty plates tau lands between 3.2 and 6.8 at every shape
-    // these presets use, so the floor is not what sets the bar in the ordinary case; counted plate by
-    // plate it binds on 4 of 40 at 11, 11, 11, 1 of 40 at 40, 40, 40 and at 24, 40, 46, and on none
-    // at 32, 32, 32 or 48, 48, 48. A second family of seeds put it at 12 of 120 at 11, 11, 11, 2 of
-    // 60 at 40, 40, 40, 1 of 60 at 32, 32, 32, 1 of 40 at 48, 48, 48 and none at the other four
-    // shapes, so "none" above is that family and not a rule: the honest reading is a few plates in a
-    // hundred everywhere except 11, 11, 11, where it is nearer one in ten. Where it binds the status
-    // line says about thirty independent sectors, which is the most this ever claims.
+    // its own correlation. Where the floor binds the status line says about thirty independent
+    // sectors, which is the most this ever claims.
     tau = Math.min(Math.max(tau, 2), n / 4);
     const sd = Math.sqrt(c0 * n / (n - 1));
     return { mean: m, sd, tau, neff: n / tau, se: sd * Math.sqrt(tau / n) };
-  }
-
-  /* The free area fraction is a ratio of two counts that are neither independent nor Poisson: frozen
-     and free are large connected regions, so a binomial bar on the roughly 5,570 free triangles out of
-     the 6,144 that a 32 by 32 by 32 plate carries comes out near 0.004, when the real seed to seed
-     scatter is 0.0093: more than twice too small.
-     Propagating anything through that would be a guess. Resample instead, in the one direction the
-     fluctuation lives in: a circular block bootstrap over the sixty sector counts, blocks of tau
-     consecutive sectors drawn with replacement from any starting angle, four hundred resamples, every
-     draw off U.makeRng so the error bar reprints with the plate. Against the scatter across seeds, as
-     above: 11,11,11 0.0151 measured and 0.0141 estimated; 24,24,24 0.0098 and 0.0105; 32,32,32 0.0093
-     and 0.0092; 40,40,40 0.0079 and 0.0075; 48,48,48 0.0070 and 0.0064; 24,40,46 0.0102 and 0.0101;
-     20,20,40 0.0150 and 0.0112; 48,48,8 0.0192 and 0.0230.
-
-     On a second, independent family of seeds the same ratios read 1.04 at 32,32,32, 1.24 at 40,40,40,
-     0.85 at 24,40,46, 0.91 at 11,11,11, 1.50 at 48,48,8, 0.87 at 48,48,48, 0.71 at 20,20,40 and 0.90
-     at 36,36,36. Both families put 20,20,40 near 0.7, which is too far below one to be seed noise: an
-     sd over sixty seeds carries about nine per cent of itself, and 0.71 sits three of those below.
-     That shortfall is not a windowing choice that could be tuned away. A tall box's boundary has a
-     mode in which the whole ring moves in or out together, and a shared offset changes the spread of
-     the sixty sector counts not at all, so no resampling of one plate's own sectors can see it. The
-     bar is left as it comes out and the Arctic hint says where it runs narrow; inflating it by a
-     factor picked to make the table read better would be inventing the part that is missing. Counted
-     over sixty seeds at 20,20,40 the free area reads past three sigma on 5 of them and the radius on
-     3, against a mean deviation of only +0.7 and +0.5 sigma, which is what a bar that size does. */
-  function blockBoot(bins, tau, rng, B) {
-    const n = bins.length;
-    const Lb = Math.max(2, Math.min(Math.round(tau), Math.floor(n / 3)));
-    const nb = Math.max(1, Math.round(n / Lb));
-    let tot = 0;
-    for (let i = 0; i < n; i++) tot += bins[i];
-    if (!(tot > 0)) return 0;
-    const scale = n / (nb * Lb);
-    let s1 = 0, s2 = 0;
-    for (let b = 0; b < B; b++) {
-      let s = 0;
-      for (let q = 0; q < nb; q++) {
-        const st = Math.min(n - 1, Math.floor(rng() * n));
-        for (let l = 0; l < Lb; l++) s += bins[(st + l) % n];
-      }
-      s *= scale; s1 += s; s2 += s * s;
-    }
-    const m = s1 / B, v = Math.max(0, (s2 / B - m * m)) * B / (B - 1);
-    return Math.sqrt(v) / tot;          // relative standard error of the total, hence of the fraction
   }
 
   /* The measurement. Map the plane by the inverse of the Cholesky factor of A, which carries the
@@ -506,9 +490,9 @@
      that way comes back with a six-fold ripple of three per cent, which is the size of the effect
      being looked for. The same disk through the split weighting comes back flat to a few parts in a
      thousand, so what is left in the number below is the tiling and not the bookkeeping. */
-  function measureArctic(T, a, b, c, ring, seed) {
+  function measureArctic(T, a, b, c, ring) {
     const TA = T.TA, TB = T.TB, U0 = T.U0, V0 = T.V0, UW = T.UW, VW = T.VW;
-    const cl = classify(T, ring), fA = cl.fA, fB = cl.fB;
+    const cl = ring > 0 ? classify(T, ring) : frozenRim(T), fA = cl.fA, fB = cl.fB;
     const el = ellipseOf(a, b, c);
     const bins = new Float64Array(NB);
     let nTot = 0, nDis = 0;
@@ -532,14 +516,13 @@
     const dth = 2 * Math.PI / NB;
     const rs = new Float64Array(NB);
     for (let k = 0; k < NB; k++) rs[k] = Math.sqrt(2 * bins[k] / (rho * dth));
-    const st = acTime(rs);
+    const st = acTime(rs), sc = acTime(bins);
     const disFrac = nDis / Math.max(1, nTot);
-    const relSe = blockBoot(bins, st.tau, U.makeRng(String(seed) + '/arctic-boot'), 400);
     const hexArea = (a * b + b * c + c * a) * S3;
     return {
       ring, el, fA, fB, rs,
       rMean: st.mean, rSe: st.se, tau: st.tau, neff: st.neff, nSect: NB,
-      nTot, nDis, disFrac, disSe: disFrac * relSe,
+      nTot, nDis, disFrac, disSe: NB * sc.se / Math.max(1, nTot), tauF: sc.tau,
       predDisFrac: Math.PI * Math.sqrt(el.det) / hexArea,
     };
   }
@@ -552,8 +535,8 @@
     subtitle: 'random lozenge tilings of a hexagon, exact by coupling from the past · 1996',
     order: 48.5,
     equation: 'h(x, y) ∈ [0, c] weakly decreasing;  heat bath h(x, y) ~ U{max(h(x+1,y), h(x,y+1)) … min(h(x−1,y), h(x,y−1))};  run −T → 0 from ⊥ and ⊤ on one fixed set of maps, doubling T until they agree, and read the common value at 0',
-    credit: "The sampler is James Propp and David Wilson, 'Exact sampling with coupled Markov chains and applications to statistical mechanics', Random Structures and Algorithms 9, 223 to 252 (1996); random tilings are one of their own worked examples. The limit shape measured on the plate is Henry Cohn, Michael Larsen and James Propp, 'The shape of a typical boxed plane partition', New York Journal of Mathematics 4, 137 to 165 (1998). The count of boxed plane partitions is Percy MacMahon, 'Memoir on the theory of the partitions of numbers, Part VI: partitions in two-dimensional space, to which is added an adumbration of the theory of partitions in three-dimensional space', Philosophical Transactions of the Royal Society A 211, 345 to 373 (1912). The height function that turns a tiling into a stack of cubes is William Thurston, 'Conway's tiling groups', American Mathematical Monthly 97, 757 to 773 (1990). How long this chain needs is David Wilson, 'Mixing times of lozenge tiling and card shuffling Markov chains', Annals of Applied Probability 14, 274 to 325 (2004).",
-    blurb: 'Cut a hexagon with sides a, b, c, a, b, c out of the triangular grid and cover it with the three rhombi that fit, every covering equally likely. What comes out is a stack of unit cubes in the corner of an a by b by c room, seen from the corner: the three rhombi are the three visible faces of the cubes, and the tiling is nothing but the shape of the pile. Near each of the six corners of the hexagon the rhombi lock into a single orientation and stay there, and in the middle all three mix. The boundary between the two is nowhere in the rule and is not a hexagon: as the box grows it becomes the ellipse inscribed in the hexagon and tangent to all six sides, a circle when a, b and c are equal. This plate measures that boundary from the tiling on screen and prints it beside the prediction. The sampler is exact rather than merely long. Coupling from the past runs the empty box and the full box forward from further and further back on one fixed set of random choices, and once the two have met, what the pair of them has become by the present moment is a perfectly uniform draw, with no burn-in to judge and no bias left over. The present moment is the point: reading the tiling off at the moment the two met instead would quietly favor the tilings that are easy to meet in, and the plate would look exactly the same. The status line says how far back it had to start and how long the two took to meet, which is a fact about this hexagon and this seed rather than a number anyone chose. Two numbers there carry error bars, because a measurement printed beside a prediction without one cannot be read: the arctic radius is a mean over sixty angular sectors and the free area is a ratio of two counts, and both are compared with the prediction in standard deviations. A third number, how many rhombi of each orientation the tiling holds, is a plain count fixed by the box, so it is labeled exact and given no error bar at all. The agreement is a limit statement, so it improves as a, b and c grow together; where it does not agree the status line says so and, when the reason is known, gives it.',
+    credit: "The sampler is James Propp and David Wilson, 'Exact sampling with coupled Markov chains and applications to statistical mechanics', Random Structures and Algorithms 9, 223 to 252 (1996); random tilings are one of their own worked examples. The limit shape measured on the plate is Henry Cohn, Michael Larsen and James Propp, 'The shape of a typical boxed plane partition', New York Journal of Mathematics 4, 137 to 165 (1998). The count of boxed plane partitions is Percy MacMahon, 'Memoir on the theory of the partitions of numbers, Part VI: partitions in two-dimensional space, to which is added an adumbration of the theory of partitions in three-dimensional space', Philosophical Transactions of the Royal Society A 211, 345 to 373 (1912). The height function that turns a tiling into a stack of cubes is William Thurston, 'Conway's tiling groups', American Mathematical Monthly 97, 757 to 773 (1990). How long this chain needs is David Wilson, 'Mixing times of lozenge tiling and card shuffling Markov chains', Annals of Applied Probability 14, 274 to 325 (2004). The frozen test is the lozenge form of the polar regions of William Jockusch, James Propp and Peter Shor, 'Random domino tilings and the arctic circle theorem' (1998), as Kurt Johansson states them in 'The arctic circle boundary and the Airy process', Annals of Probability 33, 1 (2005).",
+    blurb: 'Cut a hexagon with sides a, b, c, a, b, c out of the triangular grid and cover it with the three rhombi that fit, every covering equally likely. What comes out is a stack of unit cubes in the corner of an a by b by c room, seen from the corner: the three rhombi are the three visible faces of the cubes, and the tiling is nothing but the shape of the pile. Near each of the six corners of the hexagon the rhombi lock into a single orientation and stay there, and in the middle all three mix. The boundary between the two is nowhere in the rule and is not a hexagon: as the box grows it becomes the ellipse inscribed in the hexagon and tangent to all six sides, a circle when a, b and c are equal. This plate measures that boundary from the tiling on screen and prints it beside the prediction: a tile counts as frozen when a chain of tiles of its own orientation, each sharing an edge with the next, joins it to the rim, the rule Jockusch, Propp and Shor use for the frozen corners of the Aztec diamond. The sampler is exact rather than merely long. Coupling from the past runs the empty box and the full box forward from further and further back on one fixed set of random choices, and once the two have met, what the pair of them has become by the present moment is a perfectly uniform draw, with no burn-in to judge and no bias left over. The present moment is the point: reading the tiling off at the moment the two met instead would quietly favor the tilings that are easy to meet in, and the plate would look exactly the same. The status line says how far back it had to start and how long the two took to meet, which is a fact about this hexagon and this seed rather than a number anyone chose. Two numbers there carry error bars, because a measurement printed beside a prediction without one cannot be read: the arctic radius is a mean over sixty angular sectors and the free area is the free tiles counted in the same sectors, and both are compared with the prediction in standard deviations. A third number, how many rhombi of each orientation the tiling holds, is a plain count fixed by the box, so it is labeled exact and given no error bar at all. The agreement is a limit statement, so it improves as a, b and c grow together, and at the sizes the tab offers it has not arrived: the frozen corners reach about a tile past the ellipse, so an exact plate reads low, the radius by three per cent at 48 a side and by nine at 12. Where it does not agree the status line says so and, when the reason is known, gives it.',
     schema: [
       RANGE('Hexagon', 'a', 'Side a', GEOM, 3, SIDE, 1, String, { hint: 'The three sides of the box. The hexagon reads a, b, c, a, b, c around its rim and the tiling holds ab + bc + ca rhombi however the pieces fall.' }),
       RANGE('Hexagon', 'b', 'Side b', GEOM, 3, SIDE, 1, String),
@@ -572,18 +555,23 @@
       RANGE('Tiles', 'inset', 'Gap inset (grout)', PAINT, 0, 0.3, 0.01, f2),
       RANGE('Tiles', 'strokeWidth', 'Stroke weight', PAINT, 0, 3, 0.1, f1),
       RANGE('Tiles', 'strokeColor', 'Stroke color index', PAINT, 0, 15, 1, String, { dimUnless: s => s.strokeWidth > 0 }),
-      RANGE('Arctic', 'ring', 'Frozen test radius', PAINT, 1, 4, 1, String, { hint: 'A tile counts as frozen when every tile within this many steps of it carries the same orientation. This is a systematic choice, not a statistical one, so it moves the answer rather than scattering it and it sits outside the error bar. Measured at 48, 48, 48 over thirty seeds, the arctic radius against 1 and then the free area against the predicted 0.9069: radius 1 gives 0.9104 ± 0.0007 and 0.7521 ± 0.0012, radius 2 gives 0.9835 ± 0.0006 and 0.8775 ± 0.0011, radius 3 gives 0.9984 ± 0.0007 and 0.9042 ± 0.0013, radius 4 gives 1.0073 ± 0.0007 and 0.9205 ± 0.0014. Both printed numbers move together, so this setting shifts the whole measurement rather than one half of it. Those bars are on the mean of thirty plates, about five times tighter than the bar a single plate carries, which is why the status line on one plate can call radius 3 perfect agreement while thirty plates together show it is two sigma low. None of the four settings agrees once enough plates are averaged, because none of them is the arctic boundary itself; 3 is simply the one that lands closest, and where it lands depends on the size: over forty seeds at 32, 32, 32 it reads 1.0026 ± 0.0009, three sigma high, against two sigma low at 48, 48, 48, so it crosses somewhere between the two.' }),
+      { group: 'Arctic', key: 'ring', label: 'Frozen test', type: 'seg', kind: PAINT, wrap: true,
+        options: [[0, 'Connected to the rim'], [1, 'Local, 1'], [2, 'Local, 2'], [3, 'Local, 3'], [4, 'Local, 4']],
+        hint: 'Which tiles count as frozen. Connected to the rim, the default, is the arctic definition: a rhombus is frozen when a chain of rhombi of its own orientation, each sharing an edge with the next, joins it to the rim of the hexagon. It is the lozenge form of the polar regions Jockusch, Propp and Shor use for the Aztec diamond, and on the pile of cubes its six regions are the full corner, the empty corner and their counterparts in the two side views. The radius and free area on the status line are measured on it. The local settings call a tile frozen when every tile within that many steps has its orientation; the tab used them before recipe v4, and a link made then keeps its setting, radius 3 unless it named another, so it reprints as it was made. They are not the arctic boundary: they also call brickwork patches in the disordered middle frozen, and averaged over many seeds radius 3 reads 1.006 at 24, 24, 24 and 0.998 at 48, 48, 48, crossing the limit as the hexagon grows instead of converging to it.' },
       { group: 'Arctic', key: 'arctic', label: 'Draw the boundary', type: 'seg', kind: PAINT,
         options: [['off', 'Off'], ['pred', 'Predicted ellipse'], ['both', 'Predicted and measured']] },
       RANGE('Arctic', 'curveW', 'Curve weight', PAINT, 0.4, 5, 0.2, f1, { dimUnless: s => s.arctic !== 'off' }),
       RANGE('Finish', 'margin', 'Margin', PAINT, 0, 0.2, 0.01, f2),
       RANGE('Finish', 'grain', 'Grain', PAINT, 0, 0.6, 0.02, pct),
     ],
+    // Recipes older than v4 were made with the local radius-3 frozen test, which colors the Frozen versus
+    // free plates and places the measured curve; they keep it, so they reprint exactly.
+    legacy: { 4: { ring: 3 } },
     defaults: {
       a: 32, b: 32, c: 32, aspect: 'fit',
       sampler: 'cftp', sweeps: 4000,
       fill: 'shade', shift: 0, inset: 0.04, strokeWidth: 0, strokeColor: 3,
-      ring: 3, arctic: 'off', curveW: 1.6,
+      ring: 0, arctic: 'off', curveW: 1.6,
       margin: 0.06, grain: 0.04,
       seed: 'propp-wilson-1996',
     },
@@ -594,18 +582,18 @@
       // The sheets are not quite flat: with inset at zero the hairline below narrows the seam between
       // abutting rhombi without closing it, so a faint lattice of the paper still shows through the
       // corners. On this plate it reads as the weave of a tiled surface rather than as a fault.
-      circle: pre('Arctic circle, a = b = c = 40', { a: 40, b: 40, c: 40, aspect: 'fit', sampler: 'cftp', fill: 'shade', shift: 0, inset: 0, strokeWidth: 0, ring: 3, arctic: 'off', margin: 0.06, grain: 0.03 }, Pal.harbor),
-      ellipse: pre('Skewed hexagon, the ellipse', { a: 24, b: 40, c: 46, aspect: 'fit', sampler: 'cftp', fill: 'shade', shift: 1, inset: 0.03, strokeWidth: 0, ring: 3, arctic: 'both', curveW: 1.8, margin: 0.06, grain: 0.03 }, Pal.verdigris),
-      cubes: pre('Stack of cubes, a = b = c = 11', { a: 11, b: 11, c: 11, aspect: 'fit', sampler: 'cftp', fill: 'shade', shift: 0, inset: 0.05, strokeWidth: 1.2, strokeColor: 3, ring: 3, arctic: 'off', margin: 0.07, grain: 0 }, Pal.tram),
-      flat: pre('Flattened box, wide frozen wedges', { a: 48, b: 48, c: 8, aspect: 'fit', sampler: 'cftp', fill: 'frozen', shift: 0, inset: 0.02, strokeWidth: 0, ring: 3, arctic: 'pred', curveW: 1.6, margin: 0.05, grain: 0.04 }, Pal.ember),
-      fine: pre('Fine, a = b = c = 48', { a: 48, b: 48, c: 48, aspect: 'fit', sampler: 'cftp', fill: 'height', shift: 0, inset: 0, strokeWidth: 0, ring: 3, arctic: 'off', margin: 0.05, grain: 0.05 }, Pal.glacier),
-      tower: pre('Tall box, a = b = 20, c = 40', { a: 20, b: 20, c: 40, aspect: 'fit', sampler: 'cftp', fill: 'flat', shift: 0, inset: 0.06, strokeWidth: 0.6, strokeColor: 3, ring: 3, arctic: 'off', margin: 0.06, grain: 0.03 }, Pal.risograph),
-      proof: pre('Frozen versus free', { a: 36, b: 36, c: 36, aspect: '1:1', sampler: 'cftp', fill: 'frozen', shift: 2, inset: 0.02, strokeWidth: 0, ring: 3, arctic: 'both', curveW: 2, margin: 0.06, grain: 0.03 }, Pal.graphite),
+      circle: pre('Arctic circle, a = b = c = 40', { a: 40, b: 40, c: 40, aspect: 'fit', sampler: 'cftp', fill: 'shade', shift: 0, inset: 0, strokeWidth: 0, ring: 0, arctic: 'off', margin: 0.06, grain: 0.03 }, Pal.harbor),
+      ellipse: pre('Skewed hexagon, the ellipse', { a: 24, b: 40, c: 46, aspect: 'fit', sampler: 'cftp', fill: 'shade', shift: 1, inset: 0.03, strokeWidth: 0, ring: 0, arctic: 'both', curveW: 1.8, margin: 0.06, grain: 0.03 }, Pal.verdigris),
+      cubes: pre('Stack of cubes, a = b = c = 11', { a: 11, b: 11, c: 11, aspect: 'fit', sampler: 'cftp', fill: 'shade', shift: 0, inset: 0.05, strokeWidth: 1.2, strokeColor: 3, ring: 0, arctic: 'off', margin: 0.07, grain: 0 }, Pal.tram),
+      flat: pre('Flattened box, wide frozen wedges', { a: 48, b: 48, c: 8, aspect: 'fit', sampler: 'cftp', fill: 'frozen', shift: 0, inset: 0.02, strokeWidth: 0, ring: 0, arctic: 'pred', curveW: 1.6, margin: 0.05, grain: 0.04 }, Pal.ember),
+      fine: pre('Fine, a = b = c = 48', { a: 48, b: 48, c: 48, aspect: 'fit', sampler: 'cftp', fill: 'height', shift: 0, inset: 0, strokeWidth: 0, ring: 0, arctic: 'off', margin: 0.05, grain: 0.05 }, Pal.glacier),
+      tower: pre('Tall box, a = b = 20, c = 40', { a: 20, b: 20, c: 40, aspect: 'fit', sampler: 'cftp', fill: 'flat', shift: 0, inset: 0.06, strokeWidth: 0.6, strokeColor: 3, ring: 0, arctic: 'off', margin: 0.06, grain: 0.03 }, Pal.risograph),
+      proof: pre('Frozen versus free', { a: 36, b: 36, c: 36, aspect: '1:1', sampler: 'cftp', fill: 'frozen', shift: 2, inset: 0.02, strokeWidth: 0, ring: 0, arctic: 'both', curveW: 2, margin: 0.06, grain: 0.03 }, Pal.graphite),
     },
     hints: {
       Hexagon: 'The seed fixes every random choice the sampler makes, so a seed and a, b, c reprint exactly the same tiling. MacMahon counted how many there are to choose from, and the status line reports it.',
       Sampler: 'Coupling from the past has no fixed running time. It doubles how far back it starts until the two extreme tilings, run forward on the same random choices, arrive at the same place. At the largest hexagons an unlucky seed can run past the work budget, and the plate then falls back to a plain forward run and says in the status line that it is no longer exact. The status line also tests the exactness claim instead of only making it: four thousand draws from the 2 by 2 by 2 box, which MacMahon says has exactly twenty tilings, against the uniform distribution over those twenty. It is a real statistical test with a real null distribution, so about one seed in twenty reads past two sigma and about one in a hundred and fifty past three; that is the test working, not the sampler failing. A reading that large on seed after seed would be something else.',
-      Arctic: 'The measured boundary is read off the plate itself: every tile is called frozen or free from its own neighborhood, the free ones are counted in sixty angular sectors around the center of the predicted ellipse, and the radius that would enclose them is compared with the ellipse. In the coordinates that comparison is made in, the prediction is a radius of exactly 1 at every angle. The sixty sectors are not sixty independent numbers, so the error bar on their mean is widened by the measured autocorrelation around the circle, which over the shapes these presets use leaves somewhere between five and thirty of them and the status line says how many; the error bar on the free area comes from a seeded bootstrap over the same sectors, since a binomial bar on that many tiles would be more than twice too small. Both estimates were checked against the scatter across many seeds, at the eight shapes these presets use, and neither is exact: the radius bar comes out between about 0.9 and 1.8 times that scatter and the free area bar between about 0.7 and 1.5 of it. Wide is the safe direction and most shapes sit there, but on a tall box like 20, 20, 40 the free area bar runs about thirty per cent narrow, because resampling one plate\'s own sectors cannot see the whole boundary breathing in or out together, and on such a box a reading of three sigma is nearer two. Read these bars as the right size rather than as an exact one. It is a limit statement, so the agreement improves as a, b and c grow together and is poor when one of them is small: averaged over many seeds the radius reads 1.023 at 11, 11, 11 and 0.954 at 48, 48, 8, against 1.000 wherever the limit has been reached.',
+      Arctic: 'The measured boundary is read off the plate itself: a tile is frozen when a chain of tiles of its own orientation, each sharing an edge with the next, joins it to the rim, the free tiles are counted in sixty angular sectors around the center of the predicted ellipse, and the radius that would enclose them is compared with the ellipse. In the coordinates that comparison is made in, the prediction is a radius of exactly 1 at every angle. The sixty sectors are not sixty independent numbers, so both error bars, on the mean radius and on the free area, come from the measured autocorrelation around the circle, which leaves somewhere between five and thirty of them independent; the status line says how many. Checked against the scatter across many seeds at eleven hexagons from 12 to 48 a side, that scatter comes out between 0.77 and 1.03 times the bar: the bars are the right size, or somewhat wide. The limit is a statement about large hexagons, and at the sizes the tab offers it has not arrived. The frozen corners reach past the ellipse, by about one tile at 12 a side and 1.4 at 48, so an exact plate reads low, by about seven of its own error bars on a regular hexagon at every size from 12 to 48: averaged over many seeds the radius reads 0.909 at 12, 12, 12, 0.966 at 48, 48, 48 and 0.909 at 48, 48, 8, where the short side keeps the hexagon small. The shortfall shrinks as n^(−2/3), and extrapolated over sizes the free area reaches π/(2√3) = 0.907 within its error. The local frozen tests that recipes before v4 use read closer at these sizes but do not converge: the same extrapolation puts radius 3 about six and a half sigma below the limit.',
       Tiles: 'Cube faces shades the three orientations light, middle and dark so the pile reads as solid, as if the light came from over your left shoulder. Height colors every face by how far above the floor of the box it sits and keeps the same shading over it.',
     },
     palette: true, defaultPalette: 'kiln', paletteLabel: 'Colors (tops, right faces, left faces)',
@@ -615,7 +603,7 @@
       s.a = U.clamp(Math.round(Number(s.a) || 32), 3, SIDE);
       s.b = U.clamp(Math.round(Number(s.b) || 32), 3, SIDE);
       s.c = U.clamp(Math.round(Number(s.c) || 32), 3, SIDE);
-      s.ring = U.clamp(Math.round(Number(s.ring) || 3), 1, 4);
+      s.ring = U.clamp(Math.round(Number(s.ring)) || 0, 0, 4);
       s.sweeps = U.clamp(Math.round(Number(s.sweeps) || 4000), 200, 20000);
     },
     surprise(rng) {
@@ -631,7 +619,7 @@
         fill: rng.pick(['shade', 'shade', 'flat', 'height', 'frozen']), shift: rng.int(0, 4),
         inset: a < 16 ? rng.pick([0.05, 0.08]) : rng.pick([0, 0.02, 0.04]),
         strokeWidth: a < 16 ? rng.pick([0, 0.8, 1.2]) : 0, strokeColor: rng.int(0, 4),
-        ring: 3, arctic: rng() < 0.25 ? 'both' : 'off', curveW: 1.6,
+        ring: 0, arctic: rng() < 0.25 ? 'both' : 'off', curveW: 1.6,
         margin: 0.06, grain: rng.pick([0, 0.03, 0.06]),
       };
     },
@@ -680,16 +668,18 @@
 
       function ensureMeas(s) {
         if (!tile) return null;
-        if (!meas || meas.ring !== s.ring) meas = measureArctic(tile, s.a, s.b, s.c, s.ring, s.seed);
+        if (!meas || meas.ring !== s.ring) meas = measureArctic(tile, s.a, s.b, s.c, s.ring);
         return meas;
       }
 
       // Three per cent out on a limit shape can be flawless agreement or a plain disagreement, and
       // only the error bar tells them apart, so a deviation past three sigma is named out loud and,
-      // where the cause is known, the cause is given. All three causes below are systematic: they
-      // shift the number rather than scatter it, so none of them belongs inside the error bar, and
-      // where the cause is not known this says nothing rather than inventing one.
+      // where the cause is known, the cause is given. Every cause below is systematic: it shifts the
+      // number rather than scattering it, so none of them belongs inside the error bar, and where the
+      // cause is not known this says nothing rather than inventing one.
       function whyOff(s) {
+        if (s.ring === 0) return FINITE_RIM;
+        // The rest is about the local tests that recipes before v4 use.
         // Measured at radius 1, twelve seeds each: 0.902 at 11, 11, 11, 0.912 at 24, 24, 24, 0.908 at
         // 48, 48, 48, 0.896 at 20, 20, 40 and 0.777 at 48, 48, 8. So the offset is a property of the
         // test rather than of this hexagon, but it is not one number everywhere, and a lopsided box
@@ -728,15 +718,19 @@
         // pile does. There is no sampling error in it, so none is invented for it.
         let out = '<span>hexagon <b>' + s.a + '·' + s.b + '·' + s.c + '</b> · <b>' + nRh.toLocaleString() +
           '</b> rhombi';
-        if (tile) {
-          out += ' = ' + tile.cnt.map(v => v.toLocaleString()).join(' + ') +
-            (tile.sound ? ', an exact count' : ', WHICH IS WRONG: ' + tile.want.map(v => v.toLocaleString()).join(' + ') +
-              ' expected, ' + tile.bad + ' misplaced');
-        }
         // MacMahon's count is an integer with hundreds of digits and this is its base ten logarithm
         // rounded, so it says the size and not the number: "about" rather than a false exactness.
         if (mac > 0) out += ' · MacMahon about <b>10^' + Math.round(mac).toLocaleString() + '</b> tilings';
         out += '</span>';
+        // buildTiling emits a·b tops, b·c right faces and c·a left faces because its loops run exactly
+        // that many times, so the orientation counts agree with ab + bc + ca by construction. What can
+        // fail is the placement, which sound also checks, and then the line says so.
+        if (tile) {
+          const wrong = tile.sound ? '' : 'WHICH IS WRONG: ' + tile.want.map(v => v.toLocaleString()).join(' + ') +
+            ' expected, ' + tile.bad + ' misplaced';
+          out += U.stats.compare({ label: 'rhombi ' + tile.cnt.map(v => v.toLocaleString()).join(' + ') + ' =', measured: tile.M,
+            expected: nRh, reference: 'ab + bc + ca', basis: 'construction', note: wrong });
+        }
         // How this draw was made, and then the exactness claim tested rather than merely made.
         //
         // The count is named "sweep" on purpose. tools/check.js establishes that two loads of one
@@ -755,45 +749,62 @@
             : 'forward run to sweep <b>' + info.total.toLocaleString() + '</b>, <b>not exact</b>' +
               (info.fell ? ', CFTP over budget' : '');
         }
-        if (self) {
-          sp2 += (sp2 ? ' · ' : '') + 'self-test <b>' + self.draws.toLocaleString() + '</b> draws on 2·2·2: <b>' +
-            self.k + ' of ' + self.want + '</b>' + (self.k === self.want ? '' : ' WHICH IS WRONG') +
-            ', χ² <b>' + self.chi.toFixed(1) + '</b>/' + self.df + ' df, <b>' +
-            sigTxt(isFinite(self.z) ? self.z : null) + '</b>';
-        }
         if (sp2) out += '<span>' + sp2 + '</span>';
+        // The self-test: how many of MacMahon's twenty 2·2·2 tilings turned up in the draws, which is a
+        // coverage count with no error bar of its own, and the Pearson χ² of their counts against the
+        // uniform multinomial. Under uniformity χ²/df has mean 1 and standard deviation √(2/df); the
+        // deviation printed is the module's Wilson-Hilferty z, which is better calibrated in the tail.
+        if (self) {
+          out += U.stats.compare({ label: 'self-test, distinct tilings in ' + self.draws.toLocaleString() + ' draws on 2·2·2', measured: self.k,
+            expected: self.want, reference: 'MacMahon', basis: 'sampled', pending: 'coverage count; uniformity is tested by χ² below',
+            note: self.k === self.want ? '' : 'WHICH IS WRONG' });
+          out += U.stats.compare({ label: 'χ²/df, ' + self.df + ' df', measured: self.chi / self.df, expected: 1, reference: 'uniform',
+            basis: 'sampled', uncertainty: Math.sqrt(2 / self.df), z: self.z,
+            method: 'Pearson χ² over ' + self.draws.toLocaleString() + ' draws; σ = √(2/df), deviation by Wilson-Hilferty' });
+        }
         if (meas) {
           // A mean over NB sectors, with its standard error and the number of samples behind it, the
           // sectors counted as the autocorrelation says they should be rather than as sixty
-          // independent ones; then a ratio of two counts, bootstrapped rather than propagated.
+          // independent ones; then the summed sector counts over a number of triangles the box fixes,
+          // with the same autocorrelation treatment. A local frozen test (recipes before v4) is named
+          // as such, because it is not the arctic boundary.
           const zr = sigmas(meas.rMean, meas.rSe, 1);
           const zf = sigmas(meas.disFrac, meas.disSe, meas.predDisFrac);
-          let sp = '<span>arctic radius <b>' + pm(meas.rMean, meas.rSe, 3) + '</b> over ' + meas.nSect +
-            ' sectors, ~' + Math.round(meas.neff) + ' independent, against 1: <b>' + sigTxt(zr) + '</b>' +
-            ' · free area <b>' + pm(meas.disFrac, meas.disSe, 3) + '</b> of n = ' + meas.nTot.toLocaleString() +
-            ' triangles, against <b>' + f3(meas.predDisFrac) + '</b>: <b>' + sigTxt(zf) + '</b>';
+          const local = meas.ring > 0 ? ' · local frozen test ' + meas.ring + ', not the arctic boundary' : '';
+          out += U.stats.compare({ label: 'arctic radius', measured: meas.rMean, expected: 1, reference: 'limit shape', basis: 'sampled',
+            uncertainty: meas.rSe, note: meas.nSect + ' sectors, ~' + Math.round(meas.neff) + ' independent', pending: NOSPREAD,
+            method: 'mean of ' + meas.nSect + ' sector radii; standard error from their integrated autocorrelation time, τ ' +
+              meas.tau.toFixed(1) + ', floored at 2' });
+          out += U.stats.compare({ label: 'free area', measured: meas.disFrac, expected: meas.predDisFrac, reference: 'limit shape', basis: 'sampled',
+            uncertainty: meas.disSe, note: 'of n = ' + meas.nTot.toLocaleString() + ' triangles' + local, pending: NOSPREAD,
+            method: 'sum of the ' + meas.nSect + ' sector counts; standard error from their integrated autocorrelation time, τ ' +
+              meas.tauF.toFixed(1) + ', floored at 2' });
+          let sp = '';
           const worst = Math.max(zr === null ? 0 : Math.abs(zr), zf === null ? 0 : Math.abs(zf));
           // When the draw is not uniform, that is the diagnosis, and it has to be given as one. The
           // limit shape is a statement about the uniform measure, so a forward run that has not
           // mixed disagrees with it for a reason that is already known, and saying "cause not
           // diagnosed" next to "not exact" would be claiming ignorance of something on the same
-          // line. It is not a corner case. Measured over eight seeds on a 48, 48, 48 hexagon, the
-          // heat bath at the 200 sweeps the schema allows reads minus 4.4 to minus 5.4 sigma on the
-          // radius and minus 5.4 to minus 6.5 on the free area, and trips this on 8 seeds of 8: a
-          // short forward run is short in one direction, the plate is not yet spread out, and both
-          // numbers come in low together. By 1,000 sweeps it is minus 0.9 to minus 1.9 and trips on
-          // none, and by 4,000 it is scattered about zero, minus 2.2 to plus 0.9, which is a chain
-          // that has mixed. Those later readings are the ordinary scatter of one plate and not a
-          // signature of the sweep count, so no single value is quoted for them.
+          // line. It is not a corner case. Measured with the local radius-3 test (recipes before v4)
+          // over eight seeds on a 48, 48, 48 hexagon, the heat bath at the 200 sweeps the schema allows
+          // read minus 4.4 to minus 5.4 sigma on the radius and minus 5.4 to minus 6.5 on the free
+          // area, and tripped this on 8 seeds of 8: a short forward run is short in one direction, the
+          // plate is not yet spread out, and both numbers come in low together. By 1,000 sweeps it was
+          // minus 0.9 to minus 1.9 and tripped on none, and by 4,000 it was scattered about zero, minus
+          // 2.2 to plus 0.9, which is a chain that has mixed. With the rim-connected test a plate at
+          // that size reads low even when it is exact, a free area near 0.85 against 0.907 for a
+          // finite-size reason, while over six seeds a 200-sweep forward run reads 0.41 to 0.46 and a
+          // 1,000-sweep one 0.77 to 0.81 before it settles near 0.85 by 4,000; the unmixed draw is the
+          // larger effect, and it is named first.
           const notExact = !info || !info.exact;
           if (worst > 3) {
             const w = notExact
               ? 'the draw is not uniform, which is cause enough: the limit shape describes the uniform measure and a forward run that has not mixed is not from it'
               : whyOff(s);
-            sp += w ? ' · ' + w : ' · a real disagreement, cause not diagnosed';
+            sp += w || 'a real disagreement, cause not diagnosed';
           }
-          if (notExact) sp += ' · from a sample that is not exact';
-          out += sp + '</span>';
+          if (notExact) sp += (sp ? ' · ' : '') + 'from a sample that is not exact';
+          if (sp) out += '<span>' + sp + '</span>';
         }
         if (extra) out += '<span>' + extra + '</span>';
         host.setStatus(out);

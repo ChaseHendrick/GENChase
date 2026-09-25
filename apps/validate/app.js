@@ -6,7 +6,25 @@ const storage = {
   get(key) { try { return localStorage.getItem(key); } catch { return null; } },
   set(key, value) { try { localStorage.setItem(key, value); } catch { /* Session controls still work. */ } }
 };
-const fieldIds = ['mode', 'technique', 'slug', 'order', 'samples', 'gpu-grid', 'gpu-steps'];
+const fieldIds = ['mode', 'technique', 'slug', 'order', 'samples', 'gpu-grid', 'gpu-steps', 'vortex-alpha', 'vortex-n', 'vortex-seeds', 'vortex-start', 'vortex-threads', 'vortex-to',
+  'art-id', 'art-recipe', 'art-parents', 'art-steps', 'art-grid', 'art-samples', 'art-start', 'art-keep', 'art-inches', 'art-ppi', 'art-budget'];
+// Which art settings each art job uses. The runner and the command allowlist check every value again.
+const ART_FIELDS = { 'art-id': ['art-hunt'], 'art-recipe': ['art-hunt', 'art-deep'], 'art-parents': ['art-evolve'], 'art-steps': ['art-deep'], 'art-grid': ['art-deep'],
+  'art-samples': ['art-hunt', 'art-evolve'], 'art-start': ['art-hunt'], 'art-keep': ['art-hunt', 'art-evolve'], 'art-inches': ['art-hunt', 'art-deep', 'art-evolve'],
+  'art-ppi': ['art-hunt', 'art-deep', 'art-evolve'], 'art-budget': ['art-hunt', 'art-deep', 'art-evolve'] };
+// A hunt's drawn seed block is left out: copied into the form, it would be sent again with the next hunt,
+// which would repeat the same seeds. Resume and Restart reuse the stored block on the server.
+const ART_INPUT = { id: 'art-id', recipe: 'art-recipe', steps: 'art-steps', grid: 'art-grid', samples: 'art-samples', keep: 'art-keep', inches: 'art-inches', ppi: 'art-ppi', budget: 'art-budget' };
+function artInput(mode) {
+  // A blank print size or budget is left to the runner's default for the job (20 in and 120 minutes for a deep render).
+  const text = id => $(id).value.trim(), number = id => Number(text(id)), out = { ppi: number('art-ppi') };
+  if (text('art-inches') !== '') out.inches = number('art-inches');
+  if (text('art-budget') !== '') out.budget = number('art-budget');
+  if (mode === 'art-hunt') { Object.assign(out, { samples: number('art-samples'), keep: number('art-keep') }); if (text('art-recipe')) out.recipe = text('art-recipe'); else out.id = $('art-id').value; if (text('art-start') !== '') out.start = number('art-start'); }
+  if (mode === 'art-deep') { Object.assign(out, { recipe: text('art-recipe'), steps: number('art-steps') }); if (text('art-grid')) out.grid = number('art-grid'); }
+  if (mode === 'art-evolve') Object.assign(out, { parents: text('art-parents').split(/\s+/).filter(Boolean), samples: number('art-samples'), keep: number('art-keep') });
+  return out;
+}
 const workspaceFields = {};
 try { Object.assign(workspaceFields, JSON.parse(storage.get('genchase-validator-fields') || '{}')); } catch { /* Ignore damaged preferences. */ }
 function remember() {
@@ -35,8 +53,18 @@ function modeFields() {
   $('technique-field').hidden = workspace !== 'validate' || !['technique', 'plate', 'print', 'witness'].includes($('mode').value);
   for (const id of ['slug-field', 'order-field', 'samples-field']) $(id).hidden = !derive;
   for(const id of ['grid-field','steps-field'])$(id).hidden=workspace!=='contribute'||$('mode').value!=='metal';
-  $('start').textContent = derive ? 'Explore candidate' : workspace === 'validate' ? 'Run checks' : 'Run experiment';
-  const hints = {inventory:'Checks the evidence catalog and source fingerprints only. No simulation benchmarks run.',fast:'Runs development checks only. Numerical accuracy and browser rendering are excluded.',all:'Runs all registered numerical and print benchmarks. Missing benchmarks are reported as incomplete coverage.',full:'Runs development checks first, then all registered numerical and print benchmarks. Requires Playwright and Chromium.',numerical:'Runs registered numerical benchmarks. Print checks are excluded.',witnesses:'Collects the measurements exposed by all modules. A missing measurement remains unassessed.',witness:'Collects one module’s exposed measurement. This alone does not establish scientific accuracy.',plate:'Checks that a plate runs, draws and repeats from its seed. This is a runtime check.',print:'Exercises an 8-inch, 300 ppi export. Export success alone does not establish scientific accuracy.',technique:'Runs the chosen technique’s registered numerical and print evidence.',derive:'Explores an existing polygon family for candidate formulas. A fitted result is not proof of originality.',metal:'Runs a bounded native Apple GPU wave workload.'};
+  const vm=workspace==='contribute'?$('mode').value:'';
+  for(const id of ['vortex-alpha-field','vortex-n-field'])$(id).hidden=!['vortex-collapse','vortex-grow','vortex-threshold'].includes(vm);
+  for(const id of ['vortex-seeds-field','vortex-start-field','vortex-threads-field'])$(id).hidden=!['vortex-collapse','vortex-grow'].includes(vm);
+  $('vortex-to-field').hidden=vm!=='vortex-threshold';
+  for (const [id, modes] of Object.entries(ART_FIELDS)) $(id + '-field').hidden = workspace !== 'contribute' || !modes.includes($('mode').value);
+  $('art-recipe').required = $('mode').value === 'art-deep'; $('art-parents').required = $('mode').value === 'art-evolve';
+  $('art-samples').max = $('mode').value === 'art-evolve' ? '200' : '5000';
+  $('art-budget').placeholder = $('mode').value === 'art-deep' ? '120' : 'none';
+  // setText leaves an unchanged label alone. A field's change event fires on the mousedown that moves focus
+  // to Start, and WebKit drops the click if the button's text node is replaced between mousedown and mouseup.
+  setText('start', derive ? 'Explore candidate' : workspace === 'validate' ? 'Run checks' : 'Run experiment');
+  const hints = {inventory:'Checks the evidence catalog and source fingerprints only. No simulation benchmarks run.',fast:'Runs development checks only. Numerical accuracy and browser rendering are excluded.',all:'Runs all registered numerical and print benchmarks. Missing benchmarks are reported as incomplete coverage.',full:'Runs development checks first, then all registered numerical and print benchmarks. Requires Playwright and Chromium.',numerical:'Runs registered numerical benchmarks. Print checks are excluded.','gpu-science':'Runs the registered GPU science and print-state tools on this computer\u2019s own GPU and writes validation/results/gpu/<platform>-<renderer>.json. Refuses, and writes nothing, if the browser only has a software renderer.',witnesses:'Collects the measurements exposed by all modules. A missing measurement remains unassessed.',witness:'Collects one module’s exposed measurement. This alone does not establish scientific accuracy.',plate:'Checks that a plate runs, draws and repeats from its seed. This is a runtime check.',print:'Exercises an 8-inch, 300 ppi export. Export success alone does not establish scientific accuracy.',technique:'Runs the chosen technique’s registered numerical and print evidence.',derive:'Explores an existing polygon family for candidate formulas. A fitted result is not proof of originality.','vortex-grow':'Continues the deepest recorded family of vortex collapses one vortex at a time up to the chosen size, running the seed block at each step. Every step is certified like the search.','vortex-collapse':'Searches for self-similar vortex collapses with the least winding. Each minimum is certified to second order, checked against conservation laws and a separate time integration, and given its stability exponents. A certified local minimum is not a proof of a global minimum.',metal:'Runs a bounded native Apple GPU wave workload.','art-hunt':'Renders a block of seeds of one tab through the studio\u2019s own recipe and print path, then orders the prints by print-sharpness proxies. The scores are not a measure of beauty and not scientific evidence. Open art/gallery.html in the job folder for the results.','art-deep':'Renders one recipe for the chosen number of steps (its warm-up, with running off) and exports it at print size. It refuses, rather than trims, a step count above the tab\u2019s maximum or an estimate above the budget. Open art/gallery.html in the job folder.','art-evolve':'Makes children of parent recipes: a new seed, a new palette, or a small change drawn from the tab\u2019s own surprise settings for the same model. Every child is an unvalidated recipe, not scientific evidence. Open art/gallery.html in the job folder.'};
   setText('job-help', hints[$('mode').value] || 'Runs the selected bounded research experiment. Read its result limits.');
 }
 function choose(value) {
@@ -46,7 +74,8 @@ function choose(value) {
   $('workspace-title').textContent = value === 'validate' ? 'Check simulations' : 'Run experiments';
   $('workspace-description').textContent = value === 'validate' ? "Compare existing simulations with registered benchmarks and check their exports. Each result names its tested scope." : 'Explore formula candidates, parameter searches and experimental GPU workloads. Candidate formulas still need review.';
   $('contribute-note').hidden = value !== 'contribute';
-  const modes = value === 'validate' ? config.modes : { derive: ['Derive candidate: existing polygon family'], metal: ['Apple GPU wave: verify, compute and checkpoint'], ...config.experiments };
+  const modes = value === 'validate' ? config.modes : { 'vortex-collapse': ['Open problem: least-winding vortex collapse'], 'vortex-grow': ['Open problem: grow the deepest vortex family'], 'vortex-threshold': ['Open problem: zero-winding threshold in alpha'], derive: ['Derive candidate: existing polygon family'], metal: ['Apple GPU wave: verify, compute and checkpoint'],
+    'art-hunt': ['Art: seed hunt for print-sharp plates'], 'art-deep': ['Art: deep render of one recipe'], 'art-evolve': ['Art: evolve children from parent recipes'], ...config.experiments };
   $('mode').replaceChildren(...Object.entries(modes).map(([key, values]) => new Option(values[0], key)));
   $('mode').value = value === 'validate' ? 'all' : 'derive';
   const saved = workspaceFields[value];
@@ -62,11 +91,13 @@ function paint() {
   const j = state.job, active = ['running', 'stopping'].includes(state.status);
   if (active && j && syncedJob !== j.id) {
     syncedJob=j.id;choose(j.input.workspace || 'validate');$('mode').value=j.input.mode;
-    const fields={id:'technique',slug:'slug',n:'order',samples:'samples',grid:'gpu-grid',steps:'gpu-steps'};
+    const art=String(j.input.mode).startsWith('art-');
+    const fields=art?ART_INPUT:['vortex-collapse','vortex-grow','vortex-threshold'].includes(j.input.mode)?{alpha:'vortex-alpha',n:'vortex-n',samples:'vortex-seeds',start:'vortex-start',threads:'vortex-threads',to:'vortex-to'}:{id:'technique',slug:'slug',n:'order',samples:'samples',grid:'gpu-grid',steps:'gpu-steps'};
     for(const [key,id] of Object.entries(fields))if(j.input[key]!==undefined)$(id).value=String(j.input[key]);
+    if(art&&Array.isArray(j.input.parents))$('art-parents').value=j.input.parents.join('\n');
     $('machine-slug').value=j.input.machineSlug || 'm1pro';$('share-auto').checked=!!j.input.shareAutomatically;restorePower(j.power || j.input.power);modeFields();
   }
-  for(const element of document.querySelectorAll('.settings input,.settings select,#machine-slug,#share-auto,#validate-tab,#contribute-tab'))element.disabled=active;
+  for(const element of document.querySelectorAll('.settings input,.settings select,.settings textarea,#machine-slug,#share-auto,#validate-tab,#contribute-tab'))element.disabled=active;
   if (!initializedPower) { if (active) restorePower(j?.power || j?.input.power); initializedPower = true; }
   const hasMisses = (state.misses || []).some(m=>m.jobId===j?.id || (!m.jobId && m.commit===j?.commit && m.recorded>=j?.started && m.recorded<=(j?.ended || new Date().toISOString())));
   const incomplete = !!j?.incomplete;
@@ -92,7 +123,7 @@ function paint() {
   $('packet').disabled = !j || active; $('download-log').disabled = !j; $('online').disabled = !j?.artifacts?.includes('candidate.json');
   $('stages').hidden = j?.input.mode !== 'derive';
   for (const li of document.querySelectorAll('[data-stage]')) li.classList.toggle('active', li.dataset.stage === j?.stage);
-  if (j?.progress) { $('progress').max = j.progress.total; $('progress').value = j.progress.done; $('progress-label').textContent = j.progress.done + '/' + j.progress.total + (j.progress.unit === 'steps' ? ' GPU steps completed.' : j.progress.unit === 'samples' ? ' sweep samples completed.' : j.progress.unit === 'modules' ? ' modules inspected.' : ' registered checks finished.') + ' This is job progress, not scientific coverage.'; }
+  if (j?.progress) { $('progress').max = j.progress.total; $('progress').value = j.progress.done; $('progress-label').textContent = j.progress.done + '/' + j.progress.total + (j.progress.unit === 'steps' ? (j.input.mode === 'art-deep' ? ' simulation steps.' : ' GPU steps completed.') : j.progress.unit === 'candidates' ? ' candidates rendered and scored.' : j.progress.unit === 'samples' ? ' sweep samples completed.' : j.progress.unit === 'seeds' ? ' seeds searched.' : j.progress.unit === 'modules' ? ' modules inspected.' : ' registered checks finished.') + ' This is job progress, not scientific coverage.'; }
   else if (active) { $('progress').removeAttribute('value'); $('progress-label').textContent = j?.stage ? 'Stage: ' + j.stage + '. No estimated percentage.' : 'Working. Duration is unknown; see elapsed time and log.'; }
   else { $('progress').max = 1; $('progress').value = state.status === 'complete' ? 1 : 0; $('progress-label').textContent = j ? 'Job finished. Completion does not establish accuracy or originality.' : 'No job started.'; }
   const stats = j ? { Command: j.command, PID: j.pid ?? 'not assigned', 'Exit code': j.exitCode ?? 'not available', Commit: j.commit, Node: j.node, Platform: j.platform, Architecture: j.arch, macOS: j.macOS || 'not applicable', 'Last line': j.lastLine || '', 'Log folder': 'apps/validate/.runs/' + j.id } : {};
@@ -106,13 +137,13 @@ function paint() {
 async function action(name) {
   if (busy || !connected) return;
   if (name === 'start') {
-    for (const input of document.querySelectorAll('.settings input, #machine-slug')) if (!input.closest('[hidden]') && !input.reportValidity()) return;
+    for (const input of document.querySelectorAll('.settings input, .settings textarea, #machine-slug')) if (!input.closest('[hidden]') && !input.reportValidity()) return;
     remember();
     storage.set('genchase-validator-machine', $('machine-slug').value);
   }
   busy = true; $('error').textContent = ''; if (state) paint();
   try {
-    const input = name === 'start' ? { workspace, shareAutomatically: $('share-auto').checked, machineSlug: $('machine-slug').value, mode: $('mode').value, power: powerSettings(), ...(workspace === 'validate' ? (['technique','plate','print','witness'].includes($('mode').value) ? { id: $('technique').value } : {}) : $('mode').value === 'derive' ? { slug: $('slug').value, n: Number($('order').value), samples: Number($('samples').value) } : $('mode').value==='metal'?{grid:Number($('gpu-grid').value),steps:Number($('gpu-steps').value)}:{}) } : {};
+    const input = name === 'start' ? { workspace, shareAutomatically: $('share-auto').checked, machineSlug: $('machine-slug').value, mode: $('mode').value, power: powerSettings(), ...(workspace === 'validate' ? (['technique','plate','print','witness'].includes($('mode').value) ? { id: $('technique').value } : {}) : $('mode').value === 'derive' ? { slug: $('slug').value, n: Number($('order').value), samples: Number($('samples').value) } : $('mode').value==='metal'?{grid:Number($('gpu-grid').value),steps:Number($('gpu-steps').value)}:$('mode').value.startsWith('art-')?artInput($('mode').value):$('mode').value==='vortex-threshold'?{alpha:Number($('vortex-alpha').value),n:Number($('vortex-n').value),to:Number($('vortex-to').value)}:['vortex-collapse','vortex-grow'].includes($('mode').value)?{alpha:Number($('vortex-alpha').value),n:Number($('vortex-n').value),samples:Number($('vortex-seeds').value),threads:Number($('vortex-threads').value),...($('vortex-start').value===''?{}:{start:Number($('vortex-start').value)})}:{}) } : {};
     state = await api('/api/' + name, input);
   } catch (e) { $('error').textContent = e.message; }
   finally { busy = false; if (state) paint(); }
@@ -194,7 +225,7 @@ $('online').onclick = async () => {
 };
 (async () => {
   try {
-    config = await api('/api/config');setText('setup-status',config.setup?.message || '');$('setup-status').dataset.ready=String(config.setup?.ready===true); $('technique').replaceChildren(...config.ids.map(id => new Option(id, id)));
+    config = await api('/api/config');setText('setup-status',config.setup?.message || '');$('setup-status').dataset.ready=String(config.setup?.ready===true); $('technique').replaceChildren(...config.ids.map(id => new Option(id, id))); $('art-id').replaceChildren(...(config.artTabs || []).map(id => new Option(id, id)));
     choose(storage.get('genchase-validator-workspace') === 'contribute' ? 'contribute' : 'validate');
     const poll = async () => { try { state = await api('/api/state'); connected = true; setText('connection', 'Connected locally'); paint(); } catch (e) { connected = false; setText('connection', 'Server unavailable. Reopen the server terminal.'); if (state) paint(); } finally { setTimeout(poll, 1000); } };
     await poll();

@@ -185,9 +185,12 @@
       function status() {
         if (!sim) return;
         const halt = sim.halted ? '<span>Stopped: <b>' + U.escapeHtml(sim.halted) + '</b></span>' : '';
+        // Energy change since the start over the initial energy scale: the integration error of a
+        // deterministic velocity Verlet run from a seeded start, not a sampled quantity.
         host.setStatus('<span>step <b>' + sim.step.toLocaleString() + '</b> · particles <b>' + sim.n.toLocaleString() + '</b>' +
           (remaining && !sim.halted ? ' · preparing' : '') + '</span><span>T <b>' + sim.temperature.toFixed(4) + '</b> · E/N <b>' +
-          ((sim.kinetic + sim.potential) / sim.n).toFixed(5) + '</b></span><span>ΔE/scale <b>' + sim.drift.toExponential(2) + '</b></span>' + halt);
+          ((sim.kinetic + sim.potential) / sim.n).toFixed(5) + '</b></span>' +
+          U.stats.compare({ label: 'ΔE/scale', measured: sim.drift, expected: 0, reference: 'energy conservation', basis: 'deterministic' }) + halt);
       }
       // Render the current coordinates directly at the target resolution. A
       // non-square export letterboxes the same physical square rather than

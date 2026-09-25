@@ -2,6 +2,7 @@
 // Deterministic, dependency-free assembly. Source order and whitespace are explicit.
 const fs = require('node:fs');
 const path = require('node:path');
+const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
 function generate() {
   const seen = new Set();
@@ -35,8 +36,17 @@ function generate() {
   });
   if (folder.includes('{{include:')) throw Error('Unresolved folder include');
   const manifest = require('./registry.js').metadata(root, [...seen].filter(name => name.startsWith('modules/')), bodies);
-  const portable = result.replace('{{science-reports}}', () => science.replace(/</g, '\\u003c')).replace('href="VALIDATION.md"', 'href="../VALIDATION.md"');
-  return { manifest, files: { 'index.html': folder.replace('{{science-reports}}', '[]'), 'src/science-reports.json': science + '\n', 'dist/studio.html': portable, 'src/module-manifest.json': JSON.stringify({ techniques: manifest.techniques }, null, 2) + '\n' } };
+  // Build facts every export carries as provenance: a fingerprint of the exact assembled source, each
+  // script's SHA-256 (the same fingerprint validation/techniques.json records), and each tab's
+  // validation status so the stage can show it without loading the evidence inventory.
+  const sha = text => crypto.createHash('sha256').update(text).digest('hex');
+  const fingerprint = sha(template + '\n' + [...bodies].map(([name, body]) => name + '\n' + body).join('\n'));
+  const sources = Object.fromEntries([...bodies].filter(([name]) => name.endsWith('.js')).map(([name, body]) => ['src/' + name, sha(body)]));
+  const validation = Object.fromEntries(JSON.parse(science).map(r => [r.id, r.status]));
+  const sourceOf = Object.fromEntries(manifest.techniques.map(t => [t.id, t.source]));
+  const buildInfo = JSON.stringify({ build: fingerprint.slice(0, 12), fingerprint, sources, sourceOf, validation }).replace(/</g, '\\u003c');
+  const portable = result.replace('{{science-reports}}', () => science.replace(/</g, '\\u003c')).replace('{{build-info}}', () => buildInfo).replace('href="VALIDATION.md"', 'href="../VALIDATION.md"');
+  return { manifest, files: { 'index.html': folder.replace('{{science-reports}}', '[]').replace('{{build-info}}', () => buildInfo), 'src/science-reports.json': science + '\n', 'dist/studio.html': portable, 'src/module-manifest.json': JSON.stringify({ techniques: manifest.techniques }, null, 2) + '\n' } };
 }
 function outputs() { return generate().files; }
 function assemble() { return outputs()['dist/studio.html']; }

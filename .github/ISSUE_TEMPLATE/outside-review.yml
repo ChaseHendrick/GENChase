@@ -1,0 +1,75 @@
+name: Outside review
+description: Report an outside review of a validation record, whether it signs off or finds a problem.
+title: "[review] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. [docs/REVIEWING.md](https://github.com/SharpMeow/GENChase/blob/main/docs/REVIEWING.md) lists, for each family, what to read, what to run and what to compare with the primary source.
+
+        A review covers the domain each record states and the scope you write below, not the whole tab. A problem report is as welcome as a sign-off. Do not post an email address or anything you do not want public.
+  - type: input
+    id: techniques
+    attributes:
+      label: Techniques reviewed
+      description: The ids, as in validation/techniques.json.
+      placeholder: cahn, ohta, pfc
+    validations:
+      required: true
+  - type: input
+    id: commit
+    attributes:
+      label: Commit reviewed
+      description: The output of `git rev-parse HEAD` in the checkout you used.
+    validations:
+      required: true
+  - type: textarea
+    id: commands
+    attributes:
+      label: Commands run and results
+      description: Each command, whether it passed, and anything unexpected in its output.
+      placeholder: |
+        node tools/verify.js --print cahn ohta pfc: passed
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, Node.js version, browser, and the GPU or "software rendering".
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: What you compared with the primary source
+      description: The equations, tables or results you checked, with the paper and the equation or page numbers.
+    validations:
+      required: true
+  - type: textarea
+    id: problems
+    attributes:
+      label: Problems found
+      description: Disagreements with the source, weak benchmarks or failure controls, limits that do not match the results, wording that claims too much. Write "none" if there were none.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope of your sign-off
+      description: In your own words, what you are prepared to say you checked. This text is recorded as the review's scope. Leave it empty if you are not signing off.
+  - type: input
+    id: name
+    attributes:
+      label: Name and affiliation as they should be recorded
+      description: Leave empty to stay unnamed; an unnamed review is still read and acted on, but is not recorded as an outside review.
+  - type: dropdown
+    id: consent
+    attributes:
+      label: May the project record your name, affiliation, the date and your scope in VALIDATION.md?
+      options:
+        - "Yes"
+        - "No"
+    validations:
+      required: true

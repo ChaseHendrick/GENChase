@@ -1,6 +1,7 @@
 // node tools/nonreciprocal-science.js [--write]
 // Actual GPU kernels versus independent float64 derivatives/RK4 and exact plane waves.
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
 const assert = require('node:assert/strict'), { chromium } = require('playwright');
 const root = path.resolve(__dirname, '..');
@@ -82,7 +83,7 @@ function plane(p, mx, my, continuum = false, time = 0) {
   }
   const flat = new Float32Array(16 * 16 * 4); for (let i = 0; i < flat.length; i += 4) { flat[i] = .3; flat[i + 1] = -.2; flat[i + 3] = 1; }
   fixtures.push({ name: 'uniform-stationary', p: nonlinear, initial: [...flat], expected: [...flat], dt: .001, steps: 100, tolerance: 1e-7 });
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   try {
     const page = await browser.newPage();
     await page.goto('file://' + path.join(root, 'dist/studio.html') + '#three-vortex-bound/nonreciprocal-science');

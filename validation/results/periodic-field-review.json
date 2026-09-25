@@ -1,11 +1,11 @@
 {
-  "date": "2026-09-22",
+  "date": "2026-09-24",
   "scope": "Nine enumerated gyroid nodal-approximation and finite circle-map fields, diagnostics and actual PNG prints; no exact-minimality or infinite-time locking claim.",
   "sourceSha256": {
-    "gyroid": "267c0cd0e13360c490c9593cd4a58410dd30d9c7e8b21fd3cd8532221de4e87e",
+    "gyroid": "56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b",
     "devil": "b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc"
   },
-  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "engineSha256": "ce99dfbdd830b8a7abd742b610f1014fea65411163767f9f57fa94843f8d3a66",
   "kernels": {
     "curvatures": [
       {
@@ -72,13 +72,13 @@
         "errors": [
           0.0000342500958826486,
           0.000008562433946424086,
-          0.000002140599752342709
+          0.000002140599541733401
         ],
         "orders": [
           2.000015168215005,
-          2.000005886599139
+          2.000006028543012
         ],
-        "missingHalfError": 0.3544644311091264
+        "missingHalfError": 0.3544644311087052
       }
     ],
     "periodError": 1.887379141862766e-15,
@@ -323,16 +323,16 @@
         "rows": [
           {
             "iterations": 40,
-            "actual": 0.6230717087928856,
-            "independentError": 4.440892098500626e-16,
-            "finiteTimeError": 0.0006485897554785458,
+            "actual": 0.6230717087928859,
+            "independentError": 6.661338147750939e-16,
+            "finiteTimeError": 0.0006485897554787678,
             "bound": 0.0250152587890625
           },
           {
             "iterations": 120,
-            "actual": 0.6227297850093383,
-            "independentError": 1.1102230246251565e-15,
-            "finiteTimeError": 0.00030666597193118594,
+            "actual": 0.6227297850093384,
+            "independentError": 9.992007221626409e-16,
+            "finiteTimeError": 0.00030666597193129697,
             "bound": 0.008348592122395833
           },
           {
@@ -407,9 +407,9 @@
         "rows": [
           {
             "iterations": 40,
-            "actual": 0.28879942837830413,
-            "independentError": 1.1102230246251565e-16,
-            "finiteTimeError": 0.0030842137383075285,
+            "actual": 0.2887994283783042,
+            "independentError": 5.551115123125783e-17,
+            "finiteTimeError": 0.003084213738307584,
             "bound": 0.0250152587890625
           },
           {
@@ -616,7 +616,7 @@
       ],
       "fieldError": 0,
       "displacedFieldError": 0.9963700175285243,
-      "diagnosticError": 2.663803011504484e-9,
+      "diagnosticError": 2.6624995819179986e-9,
       "diagnostic": {
         "metric": 0.019299957945955876,
         "extra": 916
@@ -670,7 +670,7 @@
       ],
       "fieldError": 0,
       "displacedFieldError": 1.3332682847976685,
-      "diagnosticError": 2.4354185855501864e-9,
+      "diagnosticError": 2.4311978749635976e-9,
       "diagnostic": {
         "metric": 0.019635019890226528,
         "extra": 3792
@@ -724,7 +724,7 @@
       ],
       "fieldError": 0,
       "displacedFieldError": 1.1622164137661457,
-      "diagnosticError": 4.870082850882973e-9,
+      "diagnosticError": 4.870981160087773e-9,
       "diagnostic": {
         "metric": 0.08853034960045038,
         "extra": 1731
@@ -778,7 +778,7 @@
       ],
       "fieldError": 0,
       "displacedFieldError": 0.648133173584938,
-      "diagnosticError": 3.6471346914757063e-9,
+      "diagnosticError": 3.646861895800768e-9,
       "diagnostic": {
         "metric": 0.08298335989029998,
         "extra": 800
@@ -1075,9 +1075,9 @@
     }
   ],
   "environment": {
-    "node": "v24.21.0",
-    "chromium": "145.0.7632.6",
-    "platform": "darwin"
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
+    "platform": "linux"
   },
   "passed": true
 }

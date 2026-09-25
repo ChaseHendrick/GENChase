@@ -612,7 +612,7 @@
     order: 110,
     equation: 'X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1',
     credit: 'Gerstner, Theorie der Wellen, Abh. Bohm. Ges. Wiss. (1802), found the unique exact periodic deep-water gravity wave of finite amplitude: every particle traces a circle, the free surface is an inverted trochoid, and the pressure is constant along it. Rankine, On the exact form of waves near the surface of deep water, Phil. Trans. Roy. Soc. 153, 127 (1863), rediscovered the same motion. Superposing two Gerstners (the Two trains control) is graphics practice, Tessendorf, Simulating Ocean Water, SIGGRAPH course notes (2001), and is not an Euler solution. This plate is a seeded print of the exact Lagrangian map. It is not a new equation.',
-    blurb: 'In deep water a periodic gravity wave of finite height has an exact Euler solution, and only one: Gerstner (1802), rediscovered by Rankine. Each particle labeled (a, b) goes in a circle of radius A e^{k b}, so the orbits shrink exponentially with depth, and the free surface is an inverted trochoid, pointed at the crests, round in the troughs. At steepness σ = k A → 1 the crests cusp and the curve is a cycloid. The status line reports the RMS radial deviation from a circle, against 0, and the surface radius against A. If the map were a stacked sine, both would fail. Two trains superposes a second Gerstner; that is a rendering trick, not a solution, and the orbits stop being circles.',
+    blurb: 'In deep water a periodic gravity wave of finite height has an exact Euler solution, and only one: Gerstner (1802), rediscovered by Rankine. Each particle labeled (a, b) goes in a circle of radius A e^{k b}, so the orbits shrink exponentially with depth, and the free surface is an inverted trochoid, pointed at the crests, round in the troughs. At steepness σ = k A → 1 the crests cusp and the curve is a cycloid. The status line reports the RMS radial deviation from a circle and the mean orbit radius against A e^{kb}; for one train both hold by construction of the map, so they are regression tests, not predictions. Two trains superposes a second Gerstner; that is a rendering trick, not a solution, and the orbits stop being circles.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: {
       Wave: 'σ = k A is the steepness. At σ → 1 the crests cusp and the surface is a cycloid. Two trains superposes two Gerstners; that is graphics, not Euler, and the orbits are no longer circles.',
@@ -638,10 +638,17 @@
         const ok = trainsN === 1 && m.orbit < 1e-8 && Math.abs(m.rSurfOverA - 1) < 1e-6;
         const twoTr = trainsN === 2;
         const tag = twoTr ? 'two trains, graphics' : (ok ? 'Gerstner' : 'map failed');
+        // One train: the map is Gerstner's own formula, so circular orbits of radius A e^{kb} are what it
+        // draws, and both orbit numbers are regression tests of the map. Two trains is not an Euler
+        // solution, and the orbit numbers are then deterministic measurements of how far the superposition
+        // misses. The along-surface pressure gradient vanishes because ω² = g k is what the map codes; the
+        // cross terms of two such trains cancel pairwise at b = 0 as well, so it is a regression test in
+        // both cases.
+        const orbitBasis = twoTr ? 'deterministic' : 'construction';
         host.setStatus(
-          '<span>orbit RMS/r <b>' + m.orbit.toExponential(1) + '</b> · exact 0</span>' +
-          '<span>r / A e^{kb} <b>' + m.rMean.toFixed(6) + '</b> · 1</span>' +
-          '<span>surface p <b>' + m.pressure.toExponential(1) + '</b> · const</span>' +
+          U.stats.compare({ label: 'orbit RMS/r', measured: m.orbit, expected: 0, reference: 'circle', basis: orbitBasis }) +
+          U.stats.compare({ label: 'r / A e^{kb}', measured: m.rMean, expected: 1, basis: orbitBasis, digits: 7 }) +
+          U.stats.compare({ label: 'surface ∂p/∂a (RMS)', measured: m.pressure, expected: 0, reference: 'constant pressure', basis: 'construction' }) +
           '<span>σ <b>' + f2(s.steep) + '</b> · ' + tag + '</span>'
         );
       }

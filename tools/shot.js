@@ -1,5 +1,6 @@
 // node tools/shot.js <hash, e.g. ising or "ising/my-seed"> [waitMs=6000] [outName]
 // Set STUDIO=path/to/studio.html to shoot a different file (used for testing a single block in isolation).
+const { glArgs } = require('./lib/gl-args');
 const path = require('path'), fs = require('fs');
 const { chromium } = require('playwright');
 (async () => {
@@ -7,7 +8,7 @@ const { chromium } = require('playwright');
   const out = process.argv[4] || hash.replace(/[^a-z0-9]+/gi, '_');
   const dir = path.join(__dirname, 'shots'); fs.mkdirSync(dir, { recursive: true });
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
-  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+  const b = await chromium.launch({ args: [...glArgs(), '--ignore-gpu-blocklist'] });
   const p = await b.newPage({ viewport: { width: 1400, height: 900 } });
   const errs = [];
   p.on('console', m => { if (m.type() === 'error' || m.type() === 'warning') errs.push(m.type() + ': ' + m.text()); });

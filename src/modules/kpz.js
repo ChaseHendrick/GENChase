@@ -95,7 +95,7 @@
     create(host) {
       const canvas = host.canvas, ctx = canvas.getContext('2d');
       let W = 0, H = 0, cell = null, h = null, snaps = null, nPart = 0, target = 0;
-      let timer = 0, building = false, betaFit = null, wFinal = 0, radial = false, pointsUsed = 0;
+      let timer = 0, building = false, betaFit = null, betaSE = NaN, wFinal = 0, radial = false, pointsUsed = 0;
       let perim = null, nPerim = 0;
 
       function stop() { clearTimeout(timer); }
@@ -222,14 +222,21 @@
           // fluctuates by tens of percent between samples, so a single decade is noise and the fitted
           // number swung between 0.09 and 0.41 on runs of the same model. Over the full run it is stable.
           const pts = widths.filter(p => p[0] >= 4 && p[1] > 0.4 && p[1] < W * 0.06);
-          betaFit = null; pointsUsed = pts.length;
+          betaFit = null; betaSE = NaN; pointsUsed = pts.length;
           if (pts.length > 5) {
             let sx = 0, sy = 0, sxx = 0, sxy = 0;
             for (const [t, w] of pts) { const X = Math.log(t), Y = Math.log(w); sx += X; sy += Y; sxx += X * X; sxy += X * Y; }
             const n = pts.length, den = n * sxx - sx * sx;
             if (Math.abs(den) > 1e-9) betaFit = (n * sxy - sx * sy) / den;
+            // The samples lie along one growing interface, so their residuals are correlated and the
+            // ordinary least squares error would be far too small. A moving-block bootstrap over the
+            // same points keeps neighbors together; its draws are seeded, so the bar reprints.
+            if (betaFit !== null && n >= 8) {
+              betaSE = U.stats.slopeBootstrap(pts.map(p => Math.log(p[0])), pts.map(p => Math.log(p[1])),
+                { seed: s.seed + '/kpz-beta', reps: 300 }).se;
+            }
           }
-        } else { betaFit = null; wFinal = 0; pointsUsed = 0; }
+        } else { betaFit = null; betaSE = NaN; wFinal = 0; pointsUsed = 0; }
       }
 
       function status(extra) {
@@ -239,7 +246,10 @@
           '<span><b>' + nPart.toLocaleString() + '</b> particles</span>' +
           (radial ? '' : '<span>interface width <b>' + wFinal.toFixed(1) + '</b></span>') +
           (betaFit !== null
-            ? '<span>fitted β <b>' + betaFit.toFixed(3) + '</b> over ' + pointsUsed + ' samples · ' + C.cls + '</span>'
+            ? U.stats.compare({ label: 'fitted β', measured: betaFit, expected: C.cls.split('β = ')[1], expectedValue: C.beta,
+                reference: C.cls.split(',')[0], basis: 'sampled', uncertainty: betaSE, digits: 3,
+                method: 'block bootstrap over ' + pointsUsed + ' log-spaced samples of one run',
+                pending: pointsUsed < 8 ? 'fewer than 8 samples' : 'bootstrap gave no spread', note: pointsUsed + ' samples' })
             : '<span>' + C.cls + '</span>') +
           (extra ? '<span>' + extra + '</span>' : '')
         );

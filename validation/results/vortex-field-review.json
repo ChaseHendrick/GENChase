@@ -1,8 +1,8 @@
 {
-  "date": "2026-09-22",
+  "date": "2026-09-24",
   "scope": "Fixed-field unit-grid GL: four enumerated full fields and prints; no physical vortex-count or continuum claim.",
-  "sourceSha256": "fc8e66a17fe114da9a663f0827171ea70461c784e10802fac2bbd3d2205027f0",
-  "engineSha256": "475347301a35c47e319a6a82166f580ad9b4089cb6a5e9ffced0d50e1b9f36eb",
+  "sourceSha256": "0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e",
+  "engineSha256": "ce99dfbdd830b8a7abd742b610f1014fea65411163767f9f57fa94843f8d3a66",
   "kernel": {
     "stencilError": 1.6653345369377348e-16,
     "maxAmplitude": 0.9952067912339703,
@@ -184,9 +184,9 @@
     }
   ],
   "environment": {
-    "node": "v24.21.0",
-    "chromium": "145.0.7632.6",
-    "platform": "darwin"
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
+    "platform": "linux"
   },
   "passed": true
 }

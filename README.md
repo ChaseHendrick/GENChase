@@ -292,6 +292,12 @@ The source migration and license provenance review are recorded in [BUILDING.md]
 
 The [technique catalog](TECHNIQUES.md) records the scientific sources behind each simulation. Derivations and proofs are in [IDENTITIES.md](IDENTITIES.md), and the [research ledger](RESEARCH.md) records literature checks and their limits. Credit the original scientific sources when using their mathematics.
 
+The [research folder](research/) holds one preprint, *Minimal winding in the self-similar collapse of three point vortices and of two concentric vortex polygons* ([PDF](papers/minimal-winding/paper/minimal-winding.pdf), with a [LaTeX version](papers/minimal-winding/paper/minimal-winding.tex) and a [companion note](papers/minimal-winding/notes/unequal-mu-product-floor-and-n5-polygon-floor-2026-09-23.md)). A second, *A sharp winding bound for the self-similar collapse of three point vortices in the α-models*, is a draft ([PDF](papers/alpha-winding/paper/alpha-winding.pdf), [LaTeX](papers/alpha-winding/paper/alpha-winding.tex), [companion note](papers/alpha-winding/notes/alpha-winding-2026-09-24.md)) and is not yet cleared for submission. Every claim it checks numerically maps to a program in the same folder, and the note lists which papers were read and which were not. Its results have not been peer reviewed and their priority is not established. Each release attaches the PDF and its verification programs.
+
+### Contribute computer time
+
+Anyone can lend their computer to the project's open questions without a model, an account or any AI tokens. [The local validator](apps/validate/HEADLESS.md) runs on macOS or Linux. It runs registered science checks and research searches, resumes from checkpoints, pauses on battery or heat on Apple Silicon Macs, and shares results only when you ask. The first open-problem search looks for [the least winding in self-similar vortex collapse](experiments/VORTEX-COLLAPSE.md). Every submitted minimum is re-verified from its positions and circulations before it is recorded. Each job measures its own CPU time and, where the operating system allows, its energy. [COMPUTE.md](COMPUTE.md) totals the computer time of shared jobs and recorded vortex results.
+
 Built by Chaos.
 
 ### Customize the printed caption

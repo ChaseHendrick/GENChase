@@ -1,5 +1,6 @@
 // Frozen domain-extension experiment, not a claim of novel physics or device performance.
 // Requires Playwright + Chromium per BUILDING.md. Run from the repository root.
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto'), assert = require('node:assert/strict');
 const ROOT = path.resolve(__dirname, '..');
 const SAVED = 'experiments/results/maxwell-search.json';
@@ -40,7 +41,7 @@ async function main() {
   assert.equal(source.split(marker).length, 2, 'Maintained shader hook changed');
   const instrumented = source.replace(marker, '  window.maxwellBoundaryShaders = {H_FS,E_FS};\n' + marker);
   const { chromium } = require('playwright');
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   try {
     const page = await browser.newPage();
     await page.goto('file://' + path.join(ROOT, 'dist/studio.html') + '#three-vortex-bound/maxwell-boundary');

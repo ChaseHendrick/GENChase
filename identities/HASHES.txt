@@ -1,10 +1,12 @@
 # SHA-256 of corrected files and statement blocks, 2026-09-21.
 # Dates and fingerprints establish file provenance, not mathematical priority.
+# 2026-09-24: note.typ and note.pdf refingerprinted after the affiliation line changed to "Independent researcher"; no mathematical text changed.
+# 2026-09-24 (later): refingerprinted again after "Independent Researcher" was capitalized and three references in refs.bib were corrected against their publishers (Gotoda, Kimura, Groebli); no mathematical text changed.
 # UTF-8 LF. Block bytes: Name: through Recorded here:, including final newline.
 
 STATEMENTS.txt  d84bfcc71c223d8765bdaaa7381d7cfa4aace1e8783eafd4f41c7532f35e6704
-note.typ  bd3150e1094de82d7614ebacd22b2ce9d614b040a6811573c37ee2b9fda85381
-note.pdf  5931036579af0c8800b5d108d81d74a548e77b596ec876d502868a892cb42436
+note.typ  1c4443e7a063d826303f7ac60e5d3bf2353bc8672e7b4b7a6ff5bc3a6a59ce36
+note.pdf  fbff75e33e79e1e558dd1971593e55713d4b4693647c7c01385c51a1ed1e10a6
 
 Three-vortex collapse bound  2cc88a7367826744af6ec683c2c2f40e682f5eda6896fe0ce3e813c672e75ee1
 Parallelogram lock  8071f9d9ca1ed3315af0d5be219d1b2cf0158d316a3748a2f922761d45beed2f

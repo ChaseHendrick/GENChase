@@ -1,4 +1,5 @@
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {model,error}=require('./lib/pde-reference'),printReference=require('./lib/pde-print-reference'),{chromium}=require('playwright');
 const root=path.resolve(__dirname,'..'),sha=x=>crypto.createHash('sha256').update(x).digest('hex');
@@ -7,7 +8,7 @@ async function main(){
  const injection=`auditRead(){if(texType!=='rgba32f')throw Error('Float32 required');const read=t=>{const a=new Float32Array(gw*gh*4);gl.bindFramebuffer(gl.FRAMEBUFFER,t.fbo);gl.readPixels(0,0,gw,gh,gl.RGBA,gl.FLOAT,a);gl.bindFramebuffer(gl.FRAMEBUFFER,null);if(gl.getError()!==gl.NO_ERROR)throw Error('Readback failed');return Array.from({length:gw*gh},(_,i)=>a[4*i]);};return {W:gw,H:gh,stepCount,guardMessage,field:read(C.read),chem:read(midT||muT)};},auditAdvance(n){step(n);render();},`;
  const modified=source.replace('        fieldCells()',injection+'\n        fieldCells()');assert.notEqual(source,modified);
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'pde-review-')),file=path.join(dir,'studio.html');fs.writeFileSync(file,original.replace(source,modified).replace('generatePalette, register, boot,','generatePalette, register, auditInstances:()=>instances, boot,'));
- const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']}),cases=[];
+ const browser=await chromium.launch({args:glArgs()}),cases=[];
  try{
   const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.route(/^https?:/,r=>r.abort());await page.goto('file://'+file+'#three-vortex-bound/pde-review');await page.evaluate(()=>Studio.ready);
   await page.selectOption('#export-inches','8');await page.selectOption('#export-dpi','300');await page.selectOption('#print-smoothing','off',{force:true});await page.locator('#btn-colophon-edit').click();await page.locator('#colo-enabled').uncheck();await page.locator('#colo-close').click();

@@ -1,0 +1,1481 @@
+{
+  "date": "2026-09-24",
+  "tool": "tools/sle-science.js",
+  "sourceSha256": "26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8",
+  "engineSha256": "a84197737dd6c83940054aecc7c1d3ff86fb5d43b12f4f8da3c4224f07ae3ac0",
+  "referenceSha256": "16972e2aa4fe136f7bd31bdfa04e4e3699470f965bc96560639260b5327a2687",
+  "scope": "Vertical-slit Loewner solver and Brownian driver of src/modules/sle.js at capacity time 1: closed-form traces for zero, linear and square-root drivers under step refinement, driver quadratic variation, box-counting dimension at kappa 2, 4 and 6 over seeded ensembles, and five complete studio prints with SVG geometry.",
+  "deterministic": {
+    "tolerances": {
+      "zero": "relative error <= N eps (the composition is exact for a constant driver)",
+      "linear": "error <= |c| dt (one driver increment) at every step, observed order in (0.9, 1.1)",
+      "sqrt": "relative error at t = 1 <= 1/N, observed order in (0.9, 1.1), scale covariance at step 500 to 1e-9"
+    },
+    "module": {
+      "zero": [
+        {
+          "N": 300,
+          "maxRelativeError": 2.1595427728392337e-15,
+          "tolerance": 6.661338147750939e-14,
+          "pass": true
+        },
+        {
+          "N": 1000,
+          "maxRelativeError": 1.0787593946389734e-15,
+          "tolerance": 2.220446049250313e-13,
+          "pass": true
+        },
+        {
+          "N": 3000,
+          "maxRelativeError": 2.3671433705789008e-14,
+          "tolerance": 6.661338147750939e-13,
+          "pass": true
+        },
+        {
+          "N": 8000,
+          "maxRelativeError": 6.065230366613093e-14,
+          "tolerance": 1.7763568394002505e-12,
+          "pass": true
+        }
+      ],
+      "linear": [
+        {
+          "c": 2,
+          "observedOrders": [
+            0.9936,
+            0.9956,
+            0.997,
+            0.9979
+          ],
+          "pass": true,
+          "rows": [
+            {
+              "N": 500,
+              "maxError": 0.00197148109733204,
+              "errorOverDriverStep": 0.49287
+            },
+            {
+              "N": 1000,
+              "maxError": 0.0009901135034372718,
+              "errorOverDriverStep": 0.49506
+            },
+            {
+              "N": 2000,
+              "maxError": 0.0004965616141815873,
+              "errorOverDriverStep": 0.49656
+            },
+            {
+              "N": 4000,
+              "maxError": 0.0002488006245719923,
+              "errorOverDriverStep": 0.4976
+            },
+            {
+              "N": 8000,
+              "maxError": 0.00012458054116207552,
+              "errorOverDriverStep": 0.49832
+            }
+          ]
+        },
+        {
+          "c": -3,
+          "observedOrders": [
+            0.9945,
+            0.9964,
+            0.9976,
+            0.9984
+          ],
+          "pass": true,
+          "rows": [
+            {
+              "N": 500,
+              "maxError": 0.002966207843772229,
+              "errorOverDriverStep": 0.49437
+            },
+            {
+              "N": 1000,
+              "maxError": 0.001488788529784262,
+              "errorOverDriverStep": 0.49626
+            },
+            {
+              "N": 2000,
+              "maxError": 0.0007462490300576142,
+              "errorOverDriverStep": 0.4975
+            },
+            {
+              "N": 4000,
+              "maxError": 0.0003737344814100982,
+              "errorOverDriverStep": 0.49831
+            },
+            {
+              "N": 8000,
+              "maxError": 0.0001870696304938458,
+              "errorOverDriverStep": 0.49885
+            }
+          ]
+        },
+        {
+          "c": 0.5,
+          "observedOrders": [
+            0.9922,
+            0.9945,
+            0.9961,
+            0.9973
+          ],
+          "pass": true,
+          "rows": [
+            {
+              "N": 500,
+              "maxError": 0.000490935033346189,
+              "errorOverDriverStep": 0.49094
+            },
+            {
+              "N": 1000,
+              "maxError": 0.00024678987357993086,
+              "errorOverDriverStep": 0.49358
+            },
+            {
+              "N": 2000,
+              "maxError": 0.00012386386853842043,
+              "errorOverDriverStep": 0.49546
+            },
+            {
+              "N": 4000,
+              "maxError": 0.00006209805086716664,
+              "errorOverDriverStep": 0.49678
+            },
+            {
+              "N": 8000,
+              "maxError": 0.000031107830392688495,
+              "errorOverDriverStep": 0.49773
+            }
+          ]
+        }
+      ],
+      "sqrt": [
+        {
+          "alpha": 0.25,
+          "c": 2.3094010767585034,
+          "observedOrders": [
+            0.9945,
+            0.9962,
+            0.9974,
+            0.9982
+          ],
+          "step500Spread": 2.475125139567158e-15,
+          "pass": true,
+          "rows": [
+            {
+              "N": 500,
+              "relativeErrorAtT1": 0.000570200437820585,
+              "angleOverPi": 0.24991050177791965,
+              "relativeErrorAtStep500": 0.000570200437820585
+            },
+            {
+              "N": 1000,
+              "relativeErrorAtT1": 0.000286197090572958,
+              "angleOverPi": 0.24995489775521182,
+              "relativeErrorAtStep500": 0.0005702004378230601
+            },
+            {
+              "N": 2000,
+              "relativeErrorAtT1": 0.00014347480098131333,
+              "angleOverPi": 0.24997732476416606,
+              "relativeErrorAtStep500": 0.000570200437820585
+            },
+            {
+              "N": 4000,
+              "relativeErrorAtT1": 0.00007186731012835352,
+              "angleOverPi": 0.24998861870080324,
+              "relativeErrorAtStep500": 0.0005702004378230601
+            },
+            {
+              "N": 8000,
+              "relativeErrorAtT1": 0.00003597874977191561,
+              "angleOverPi": 0.2499942939592379,
+              "relativeErrorAtStep500": 0.000570200437820585
+            }
+          ]
+        },
+        {
+          "alpha": 0.3333333333333333,
+          "c": 1.4142135623730951,
+          "observedOrders": [
+            0.9922,
+            0.9945,
+            0.9962,
+            0.9973
+          ],
+          "step500Spread": 1.8230317429257514e-15,
+          "pass": true,
+          "rows": [
+            {
+              "N": 500,
+              "relativeErrorAtT1": 0.0004490099106341782,
+              "angleOverPi": 0.3332260868659427,
+              "relativeErrorAtStep500": 0.0004490099106341782
+            },
+            {
+              "N": 1000,
+              "relativeErrorAtT1": 0.00022572957142933856,
+              "angleOverPi": 0.3332793892567555,
+              "relativeErrorAtStep500": 0.0004490099106360012
+            },
+            {
+              "N": 2000,
+              "relativeErrorAtT1": 0.00011329309966454783,
+              "angleOverPi": 0.33330624927726865,
+              "relativeErrorAtStep500": 0.0004490099106341782
+            },
+            {
+              "N": 4000,
+              "relativeErrorAtT1": 0.000056796732610319424,
+              "angleOverPi": 0.3333197520683934,
+              "relativeErrorAtStep500": 0.0004490099106360012
+            },
+            {
+              "N": 8000,
+              "relativeErrorAtT1": 0.0000284511320660774,
+              "angleOverPi": 0.33332652892267545,
+              "relativeErrorAtStep500": 0.0004490099106341782
+            }
+          ]
+        },
+        {
+          "alpha": 0.4,
+          "c": 0.8164965809277259,
+          "observedOrders": [
+            0.9907,
+            0.9935,
+            0.9954,
+            0.9968
+          ],
+          "step500Spread": 4.1340628836872284e-16,
+          "pass": true,
+          "rows": [
+            {
+              "N": 500,
+              "relativeErrorAtT1": 0.00029284884972997455,
+              "angleOverPi": 0.39991559746488287,
+              "relativeErrorAtStep500": 0.00029284884972997455
+            },
+            {
+              "N": 1000,
+              "relativeErrorAtT1": 0.0001473715781398309,
+              "angleOverPi": 0.3999575241583728,
+              "relativeErrorAtStep500": 0.00029284884972956114
+            },
+            {
+              "N": 2000,
+              "relativeErrorAtT1": 0.00007401953013272386,
+              "angleOverPi": 0.3999786655385666,
+              "relativeErrorAtStep500": 0.00029284884972997455
+            },
+            {
+              "N": 4000,
+              "relativeErrorAtT1": 0.00003712745038931224,
+              "angleOverPi": 0.39998929877807365,
+              "relativeErrorAtStep500": 0.00029284884972956114
+            },
+            {
+              "N": 8000,
+              "relativeErrorAtT1": 0.00001860524984956107,
+              "angleOverPi": 0.39999463740785873,
+              "relativeErrorAtStep500": 0.00029284884972997455
+            }
+          ]
+        },
+        {
+          "alpha": 0.6,
+          "c": -0.8164965809277259,
+          "observedOrders": [
+            0.9907,
+            0.9935,
+            0.9954,
+            0.9968
+          ],
+          "step500Spread": 4.125931367393587e-16,
+          "pass": true,
+          "rows": [
+            {
+              "N": 500,
+              "relativeErrorAtT1": 0.0002928488497300672,
+              "angleOverPi": 0.6000844025351172,
+              "relativeErrorAtStep500": 0.0002928488497300672
+            },
+            {
+              "N": 1000,
+              "relativeErrorAtT1": 0.00014737157813992353,
+              "angleOverPi": 0.6000424758416272,
+              "relativeErrorAtStep500": 0.0002928488497296546
+            },
+            {
+              "N": 2000,
+              "relativeErrorAtT1": 0.00007401953013281645,
+              "angleOverPi": 0.6000213344614335,
+              "relativeErrorAtStep500": 0.0002928488497300672
+            },
+            {
+              "N": 4000,
+              "relativeErrorAtT1": 0.000037127450389404854,
+              "angleOverPi": 0.6000107012219263,
+              "relativeErrorAtStep500": 0.0002928488497296546
+            },
+            {
+              "N": 8000,
+              "relativeErrorAtT1": 0.000018605249849653664,
+              "angleOverPi": 0.6000053625921413,
+              "relativeErrorAtStep500": 0.0002928488497300672
+            }
+          ]
+        }
+      ]
+    },
+    "controls": {
+      "wrongCapacity": {
+        "zeroDriverPasses": false,
+        "linearPasses": false,
+        "sqrtPasses": false,
+        "worstZeroRelativeError": 0.29284902602056595,
+        "worstLinearErrorOverDriverStep": 9462.376628518487,
+        "detected": true
+      },
+      "reversedComposition": {
+        "zeroDriverPasses": true,
+        "linearPasses": false,
+        "sqrtPasses": false,
+        "worstZeroRelativeError": 6.065230366613093e-14,
+        "worstLinearErrorOverDriverStep": 2473.4175646396484,
+        "detected": true
+      }
+    }
+  },
+  "dimension": {
+    "theory": "min(2, 1 + kappa/8), Beffara, Ann. Probab. 36, 1421 (2008)",
+    "estimator": "box counting of the polyline from 0 through the N trace points by exact grid traversal; OLS slope of log count on log(1/eps)",
+    "fitRange": "eps = D 2^{-k/2}, k = 8..14 (D/16 down to D/128), D = the curve diameter; fixed before measurement",
+    "estimatorCalibration": [
+      {
+        "curve": "generalized Koch",
+        "exactDimension": 1.25,
+        "spikeAngleDegrees": 58.95,
+        "level": 6,
+        "vertices": 4096,
+        "offsets": 16,
+        "measured": 1.2462,
+        "offsetSd": 0.0436,
+        "offsetSe": 0.0109,
+        "bias": -0.003833
+      },
+      {
+        "curve": "generalized Koch",
+        "exactDimension": 1.25,
+        "spikeAngleDegrees": 58.95,
+        "level": 7,
+        "vertices": 16384,
+        "offsets": 16,
+        "measured": 1.2496,
+        "offsetSd": 0.0557,
+        "offsetSe": 0.0139,
+        "bias": -0.000449
+      },
+      {
+        "curve": "generalized Koch",
+        "exactDimension": 1.5,
+        "spikeAngleDegrees": 74.93,
+        "level": 6,
+        "vertices": 4096,
+        "offsets": 16,
+        "measured": 1.4661,
+        "offsetSd": 0.0252,
+        "offsetSe": 0.00629,
+        "bias": -0.03391
+      },
+      {
+        "curve": "generalized Koch",
+        "exactDimension": 1.5,
+        "spikeAngleDegrees": 74.93,
+        "level": 7,
+        "vertices": 16384,
+        "offsets": 16,
+        "measured": 1.4852,
+        "offsetSd": 0.0274,
+        "offsetSe": 0.00685,
+        "bias": -0.01484
+      },
+      {
+        "curve": "generalized Koch",
+        "exactDimension": 1.75,
+        "spikeAngleDegrees": 84.03,
+        "level": 6,
+        "vertices": 4096,
+        "offsets": 16,
+        "measured": 1.6921,
+        "offsetSd": 0.0207,
+        "offsetSe": 0.00517,
+        "bias": -0.05795
+      },
+      {
+        "curve": "generalized Koch",
+        "exactDimension": 1.75,
+        "spikeAngleDegrees": 84.03,
+        "level": 7,
+        "vertices": 16384,
+        "offsets": 16,
+        "measured": 1.7271,
+        "offsetSd": 0.0186,
+        "offsetSe": 0.00465,
+        "bias": -0.02286
+      }
+    ],
+    "familyZ": 3.5879,
+    "quadraticVariationFamilyZ": 3.865,
+    "sets": [
+      {
+        "kappa": 2,
+        "N": 2000,
+        "seeds": 16,
+        "seedPattern": "sle-science/dim/2/<i>",
+        "theory": 1.25,
+        "dimension": {
+          "mean": 1.20862,
+          "se": 0.00471,
+          "sd": 0.0189,
+          "z": -8.777,
+          "values": [
+            1.2262,
+            1.1851,
+            1.1872,
+            1.1956,
+            1.2151,
+            1.2284,
+            1.2203,
+            1.2422,
+            1.2204,
+            1.2105,
+            1.1882,
+            1.1925,
+            1.2069,
+            1.1794,
+            1.2305,
+            1.2094
+          ],
+          "agrees": false
+        },
+        "quadraticVariationOverKappa": {
+          "mean": 0.9952741,
+          "se": 0.00806,
+          "exactSe": 0.00791,
+          "z": -0.5978
+        },
+        "medianStepOverSmallestBox": 0.2099,
+        "p90StepOverSmallestBox": 0.5417,
+        "meanDiameter": 1.809
+      },
+      {
+        "kappa": 4,
+        "N": 2000,
+        "seeds": 16,
+        "seedPattern": "sle-science/dim/4/<i>",
+        "theory": 1.5,
+        "dimension": {
+          "mean": 1.32083,
+          "se": 0.00638,
+          "sd": 0.0255,
+          "z": -28.08,
+          "values": [
+            1.3355,
+            1.3367,
+            1.3062,
+            1.2986,
+            1.3483,
+            1.3196,
+            1.2784,
+            1.3559,
+            1.2752,
+            1.3254,
+            1.3074,
+            1.3631,
+            1.3156,
+            1.307,
+            1.3171,
+            1.3433
+          ],
+          "agrees": false
+        },
+        "quadraticVariationOverKappa": {
+          "mean": 1.013129,
+          "se": 0.00735,
+          "exactSe": 0.00791,
+          "z": 1.661
+        },
+        "medianStepOverSmallestBox": 0.3577,
+        "p90StepOverSmallestBox": 1.129,
+        "meanDiameter": 2.464
+      },
+      {
+        "kappa": 6,
+        "N": 2000,
+        "seeds": 16,
+        "seedPattern": "sle-science/dim/6/<i>",
+        "theory": 1.75,
+        "dimension": {
+          "mean": 1.39731,
+          "se": 0.00808,
+          "sd": 0.0323,
+          "z": -43.66,
+          "values": [
+            1.4097,
+            1.4136,
+            1.3717,
+            1.4072,
+            1.3985,
+            1.3635,
+            1.3674,
+            1.4766,
+            1.3799,
+            1.4086,
+            1.3994,
+            1.3732,
+            1.3761,
+            1.3707,
+            1.3823,
+            1.4586
+          ],
+          "agrees": false
+        },
+        "quadraticVariationOverKappa": {
+          "mean": 0.9894372,
+          "se": 0.00806,
+          "exactSe": 0.00791,
+          "z": -1.336
+        },
+        "medianStepOverSmallestBox": 0.5406,
+        "p90StepOverSmallestBox": 1.822,
+        "meanDiameter": 2.381
+      },
+      {
+        "kappa": 2,
+        "N": 4000,
+        "seeds": 16,
+        "seedPattern": "sle-science/dim/2/<i>",
+        "theory": 1.25,
+        "dimension": {
+          "mean": 1.21525,
+          "se": 0.00481,
+          "sd": 0.0192,
+          "z": -7.229,
+          "values": [
+            1.2284,
+            1.1998,
+            1.1673,
+            1.2246,
+            1.2503,
+            1.21,
+            1.2462,
+            1.2179,
+            1.2018,
+            1.2231,
+            1.2229,
+            1.2103,
+            1.2181,
+            1.2042,
+            1.2081,
+            1.2109
+          ],
+          "agrees": false
+        },
+        "quadraticVariationOverKappa": {
+          "mean": 0.9963456,
+          "se": 0.00554,
+          "exactSe": 0.00559,
+          "z": -0.6537
+        },
+        "medianStepOverSmallestBox": 0.1213,
+        "p90StepOverSmallestBox": 0.3178,
+        "meanDiameter": 1.79
+      },
+      {
+        "kappa": 4,
+        "N": 4000,
+        "seeds": 16,
+        "seedPattern": "sle-science/dim/4/<i>",
+        "theory": 1.5,
+        "dimension": {
+          "mean": 1.35379,
+          "se": 0.00484,
+          "sd": 0.0193,
+          "z": -30.24,
+          "values": [
+            1.3573,
+            1.3718,
+            1.361,
+            1.3271,
+            1.3839,
+            1.3515,
+            1.3625,
+            1.3753,
+            1.3212,
+            1.3352,
+            1.3322,
+            1.3619,
+            1.3417,
+            1.339,
+            1.3809,
+            1.3581
+          ],
+          "agrees": false
+        },
+        "quadraticVariationOverKappa": {
+          "mean": 1.00554,
+          "se": 0.00544,
+          "exactSe": 0.00559,
+          "z": 0.9911
+        },
+        "medianStepOverSmallestBox": 0.2118,
+        "p90StepOverSmallestBox": 0.6991,
+        "meanDiameter": 2.476
+      },
+      {
+        "kappa": 6,
+        "N": 4000,
+        "seeds": 16,
+        "seedPattern": "sle-science/dim/6/<i>",
+        "theory": 1.75,
+        "dimension": {
+          "mean": 1.44738,
+          "se": 0.00748,
+          "sd": 0.0299,
+          "z": -40.45,
+          "values": [
+            1.4764,
+            1.4585,
+            1.468,
+            1.4846,
+            1.4204,
+            1.4461,
+            1.4417,
+            1.467,
+            1.416,
+            1.4849,
+            1.4171,
+            1.4367,
+            1.4434,
+            1.428,
+            1.3828,
+            1.4865
+          ],
+          "agrees": false
+        },
+        "quadraticVariationOverKappa": {
+          "mean": 0.9996549,
+          "se": 0.00496,
+          "exactSe": 0.00559,
+          "z": -0.06174
+        },
+        "medianStepOverSmallestBox": 0.3278,
+        "p90StepOverSmallestBox": 1.135,
+        "meanDiameter": 2.541
+      },
+      {
+        "kappa": 2,
+        "N": 8000,
+        "seeds": 16,
+        "seedPattern": "sle-science/dim/2/<i>",
+        "theory": 1.25,
+        "dimension": {
+          "mean": 1.22361,
+          "se": 0.0063,
+          "sd": 0.0252,
+          "z": -4.186,
+          "values": [
+            1.2613,
+            1.2483,
+            1.2016,
+            1.2244,
+            1.2267,
+            1.1975,
+            1.2591,
+            1.2007,
+            1.2521,
+            1.1959,
+            1.1773,
+            1.2295,
+            1.2114,
+            1.2486,
+            1.2197,
+            1.2237
+          ],
+          "agrees": false
+        },
+        "quadraticVariationOverKappa": {
+          "mean": 0.9996995,
+          "se": 0.00328,
+          "exactSe": 0.00395,
+          "z": -0.07603
+        },
+        "medianStepOverSmallestBox": 0.06458,
+        "p90StepOverSmallestBox": 0.174,
+        "meanDiameter": 1.877,
+        "localSlopes": [
+          {
+            "epsOverDiameter": 0.25,
+            "slope": 0.9777
+          },
+          {
+            "epsOverDiameter": 0.1768,
+            "slope": 1.208
+          },
+          {
+            "epsOverDiameter": 0.125,
+            "slope": 1.128
+          },
+          {
+            "epsOverDiameter": 0.08839,
+            "slope": 1.178
+          },
+          {
+            "epsOverDiameter": 0.0625,
+            "slope": 1.153
+          },
+          {
+            "epsOverDiameter": 0.04419,
+            "slope": 1.172
+          },
+          {
+            "epsOverDiameter": 0.03125,
+            "slope": 1.189
+          },
+          {
+            "epsOverDiameter": 0.0221,
+            "slope": 1.237
+          },
+          {
+            "epsOverDiameter": 0.01563,
+            "slope": 1.246
+          },
+          {
+            "epsOverDiameter": 0.01105,
+            "slope": 1.224
+          },
+          {
+            "epsOverDiameter": 0.007813,
+            "slope": 1.219
+          },
+          {
+            "epsOverDiameter": 0.005524,
+            "slope": 1.218
+          },
+          {
+            "epsOverDiameter": 0.003906,
+            "slope": 1.211
+          },
+          {
+            "epsOverDiameter": 0.002762,
+            "slope": 1.191
+          },
+          {
+            "epsOverDiameter": 0.001953,
+            "slope": 1.178
+          },
+          {
+            "epsOverDiameter": 0.001381,
+            "slope": 1.16
+          },
+          {
+            "epsOverDiameter": 0.0009766,
+            "slope": 1.137
+          },
+          {
+            "epsOverDiameter": 0.0006905,
+            "slope": 1.112
+          },
+          {
+            "epsOverDiameter": 0.0004883,
+            "slope": 1.087
+          }
+        ]
+      },
+      {
+        "kappa": 4,
+        "N": 8000,
+        "seeds": 16,
+        "seedPattern": "sle-science/dim/4/<i>",
+        "theory": 1.5,
+        "dimension": {
+          "mean": 1.37651,
+          "se": 0.00764,
+          "sd": 0.0305,
+          "z": -16.17,
+          "values": [
+            1.3558,
+            1.4122,
+            1.4064,
+            1.353,
+            1.3966,
+            1.3331,
+            1.3959,
+            1.3828,
+            1.3302,
+            1.3661,
+            1.3743,
+            1.3704,
+            1.3529,
+            1.3557,
+            1.4435,
+            1.3954
+          ],
+          "agrees": false
+        },
+        "quadraticVariationOverKappa": {
+          "mean": 1.003985,
+          "se": 0.00466,
+          "exactSe": 0.00395,
+          "z": 1.008
+        },
+        "medianStepOverSmallestBox": 0.1181,
+        "p90StepOverSmallestBox": 0.4083,
+        "meanDiameter": 2.582,
+        "localSlopes": [
+          {
+            "epsOverDiameter": 0.25,
+            "slope": 1.269
+          },
+          {
+            "epsOverDiameter": 0.1768,
+            "slope": 1.29
+          },
+          {
+            "epsOverDiameter": 0.125,
+            "slope": 1.358
+          },
+          {
+            "epsOverDiameter": 0.08839,
+            "slope": 1.4
+          },
+          {
+            "epsOverDiameter": 0.0625,
+            "slope": 1.365
+          },
+          {
+            "epsOverDiameter": 0.04419,
+            "slope": 1.41
+          },
+          {
+            "epsOverDiameter": 0.03125,
+            "slope": 1.393
+          },
+          {
+            "epsOverDiameter": 0.0221,
+            "slope": 1.398
+          },
+          {
+            "epsOverDiameter": 0.01563,
+            "slope": 1.378
+          },
+          {
+            "epsOverDiameter": 0.01105,
+            "slope": 1.364
+          },
+          {
+            "epsOverDiameter": 0.007813,
+            "slope": 1.351
+          },
+          {
+            "epsOverDiameter": 0.005524,
+            "slope": 1.334
+          },
+          {
+            "epsOverDiameter": 0.003906,
+            "slope": 1.304
+          },
+          {
+            "epsOverDiameter": 0.002762,
+            "slope": 1.261
+          },
+          {
+            "epsOverDiameter": 0.001953,
+            "slope": 1.226
+          },
+          {
+            "epsOverDiameter": 0.001381,
+            "slope": 1.184
+          },
+          {
+            "epsOverDiameter": 0.0009766,
+            "slope": 1.147
+          },
+          {
+            "epsOverDiameter": 0.0006905,
+            "slope": 1.112
+          },
+          {
+            "epsOverDiameter": 0.0004883,
+            "slope": 1.083
+          }
+        ]
+      },
+      {
+        "kappa": 6,
+        "N": 8000,
+        "seeds": 16,
+        "seedPattern": "sle-science/dim/6/<i>",
+        "theory": 1.75,
+        "dimension": {
+          "mean": 1.47804,
+          "se": 0.0055,
+          "sd": 0.022,
+          "z": -49.47,
+          "values": [
+            1.4717,
+            1.5021,
+            1.5054,
+            1.5108,
+            1.4712,
+            1.4829,
+            1.4502,
+            1.4918,
+            1.4543,
+            1.4858,
+            1.4592,
+            1.4665,
+            1.4584,
+            1.4407,
+            1.4967,
+            1.5011
+          ],
+          "agrees": false
+        },
+        "quadraticVariationOverKappa": {
+          "mean": 0.9994797,
+          "se": 0.0037,
+          "exactSe": 0.00395,
+          "z": -0.1316
+        },
+        "medianStepOverSmallestBox": 0.2093,
+        "p90StepOverSmallestBox": 0.7426,
+        "meanDiameter": 2.62,
+        "localSlopes": [
+          {
+            "epsOverDiameter": 0.25,
+            "slope": 1.217
+          },
+          {
+            "epsOverDiameter": 0.1768,
+            "slope": 1.391
+          },
+          {
+            "epsOverDiameter": 0.125,
+            "slope": 1.52
+          },
+          {
+            "epsOverDiameter": 0.08839,
+            "slope": 1.519
+          },
+          {
+            "epsOverDiameter": 0.0625,
+            "slope": 1.547
+          },
+          {
+            "epsOverDiameter": 0.04419,
+            "slope": 1.546
+          },
+          {
+            "epsOverDiameter": 0.03125,
+            "slope": 1.523
+          },
+          {
+            "epsOverDiameter": 0.0221,
+            "slope": 1.514
+          },
+          {
+            "epsOverDiameter": 0.01563,
+            "slope": 1.481
+          },
+          {
+            "epsOverDiameter": 0.01105,
+            "slope": 1.455
+          },
+          {
+            "epsOverDiameter": 0.007813,
+            "slope": 1.421
+          },
+          {
+            "epsOverDiameter": 0.005524,
+            "slope": 1.383
+          },
+          {
+            "epsOverDiameter": 0.003906,
+            "slope": 1.332
+          },
+          {
+            "epsOverDiameter": 0.002762,
+            "slope": 1.283
+          },
+          {
+            "epsOverDiameter": 0.001953,
+            "slope": 1.229
+          },
+          {
+            "epsOverDiameter": 0.001381,
+            "slope": 1.18
+          },
+          {
+            "epsOverDiameter": 0.0009766,
+            "slope": 1.135
+          },
+          {
+            "epsOverDiameter": 0.0006905,
+            "slope": 1.1
+          },
+          {
+            "epsOverDiameter": 0.0004883,
+            "slope": 1.072
+          }
+        ]
+      }
+    ],
+    "doubledVarianceControls": [
+      {
+        "kappa": 2,
+        "labeledKappa": 2,
+        "drivenWithVariance": 4,
+        "dimension": {
+          "mean": 1.38262,
+          "se": 0.00551,
+          "sd": 0.022,
+          "z": 24.08,
+          "values": [
+            1.4023,
+            1.3986,
+            1.3498,
+            1.403,
+            1.3762,
+            1.4114,
+            1.3983,
+            1.4053,
+            1.39,
+            1.3921,
+            1.3677,
+            1.3713,
+            1.3451,
+            1.3935,
+            1.3454,
+            1.372
+          ]
+        },
+        "quadraticVariationOverKappa": {
+          "mean": 1.999399,
+          "se": 0.00656,
+          "exactSe": 0.00395,
+          "z": 252.8
+        },
+        "dimensionShift": 0.15901,
+        "zShift": 19,
+        "detected": true
+      },
+      {
+        "kappa": 4,
+        "labeledKappa": 4,
+        "drivenWithVariance": 8,
+        "dimension": {
+          "mean": 1.56904,
+          "se": 0.00581,
+          "sd": 0.0232,
+          "z": 11.89,
+          "values": [
+            1.5626,
+            1.5557,
+            1.5699,
+            1.5543,
+            1.5645,
+            1.5569,
+            1.6072,
+            1.5757,
+            1.542,
+            1.541,
+            1.595,
+            1.6009,
+            1.5645,
+            1.5372,
+            1.6107,
+            1.5665
+          ]
+        },
+        "quadraticVariationOverKappa": {
+          "mean": 2.007969,
+          "se": 0.00933,
+          "exactSe": 0.00395,
+          "z": 255
+        },
+        "dimensionShift": 0.19253,
+        "zShift": 20.06,
+        "detected": true
+      }
+    ]
+  },
+  "print": [
+    {
+      "name": "percolation",
+      "seed": "sle-science-percolation",
+      "parameters": {
+        "kappa": 6,
+        "N": 3000,
+        "mode": "single",
+        "curves": 6,
+        "color": "time",
+        "width": 1.4,
+        "alpha": 1,
+        "axis": true,
+        "margin": 0.08,
+        "aspect": "5:4",
+        "seed": "sle-science-percolation",
+        "v": 2,
+        "palette": [
+          "#2C0F4A",
+          "#8A1C6B",
+          "#E63946",
+          "#FF9F1C",
+          "#FFF1A8"
+        ],
+        "bg": "#0A0710"
+      },
+      "curves": [
+        {
+          "kappa": 6,
+          "N": 3000
+        }
+      ],
+      "tracesSha256": "ff8d7462b364ec73e29c0ccdc1b829e0221bc9d16a8c5abc54ce47b4ed9feebd",
+      "studioVsNode": {
+        "maxDriverDifference": 1.1102230246251565e-15,
+        "maxTraceDifference": 2.192176124274751e-12,
+        "curveSize": 1.9406385997364153
+      },
+      "recomputedFromStudioDriver": 0,
+      "print": {
+        "width": 2400,
+        "height": 1920,
+        "paths": 48,
+        "svgCoordinates": 6101,
+        "maxSvgCoordinateError": 0.004998165060243309,
+        "maxHalfPlaneError": 0.000004845041315720079,
+        "scale": 1031.6042185288306,
+        "maxChannelError": 0,
+        "meanChannelError": 0,
+        "channelsChecked": 18432000,
+        "displacedPrintFailureChannels": 236843,
+        "vectorRip": {
+          "maxChannelDifference": 76,
+          "meanChannelDifference": 0.003489203559027778,
+          "fractionOver2Levels": 0.00022352430555555556
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "lerw",
+      "seed": "sle-science-lerw",
+      "parameters": {
+        "kappa": 2,
+        "N": 5000,
+        "mode": "single",
+        "curves": 6,
+        "color": "ink",
+        "width": 2,
+        "alpha": 1,
+        "axis": true,
+        "margin": 0.08,
+        "aspect": "4:5",
+        "seed": "sle-science-lerw",
+        "v": 2,
+        "palette": [
+          "#2C0F4A",
+          "#8A1C6B",
+          "#E63946",
+          "#FF9F1C",
+          "#FFF1A8"
+        ],
+        "bg": "#0A0710"
+      },
+      "curves": [
+        {
+          "kappa": 2,
+          "N": 5000
+        }
+      ],
+      "tracesSha256": "8434734b3f89abd284e16af6e12427ae023e6280d6137afe54087c9e32e908c9",
+      "studioVsNode": {
+        "maxDriverDifference": 6.661338147750939e-16,
+        "maxTraceDifference": 5.379455263729125e-13,
+        "curveSize": 2.2485335517690035
+      },
+      "recomputedFromStudioDriver": 0,
+      "print": {
+        "width": 1920,
+        "height": 2400,
+        "paths": 1,
+        "svgCoordinates": 10007,
+        "maxSvgCoordinateError": 0.004999138836467409,
+        "maxHalfPlaneError": 0.000005068466363537094,
+        "scale": 986.3217939910913,
+        "maxChannelError": 0,
+        "meanChannelError": 0,
+        "channelsChecked": 18432000,
+        "displacedPrintFailureChannels": 62159,
+        "vectorRip": {
+          "maxChannelDifference": 62,
+          "meanChannelDifference": 0.0031786024305555556,
+          "fractionOver2Levels": 0.00022553168402777779
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "sweep",
+      "seed": "sle-science-sweep",
+      "parameters": {
+        "kappa": 6,
+        "N": 3000,
+        "mode": "sweep",
+        "curves": 6,
+        "color": "curve",
+        "width": 1.2,
+        "alpha": 0.9,
+        "axis": true,
+        "margin": 0.08,
+        "aspect": "5:4",
+        "seed": "sle-science-sweep",
+        "v": 2,
+        "palette": [
+          "#2C0F4A",
+          "#8A1C6B",
+          "#E63946",
+          "#FF9F1C",
+          "#FFF1A8"
+        ],
+        "bg": "#0A0710"
+      },
+      "curves": [
+        {
+          "kappa": 1,
+          "N": 3000
+        },
+        {
+          "kappa": 2,
+          "N": 3000
+        },
+        {
+          "kappa": 2.6666666666666665,
+          "N": 3000
+        },
+        {
+          "kappa": 4,
+          "N": 3000
+        },
+        {
+          "kappa": 6,
+          "N": 3000
+        },
+        {
+          "kappa": 8,
+          "N": 3000
+        }
+      ],
+      "tracesSha256": "b20129e0ec1583326e564e72fac70eb28503cbbd0708f19907b81fbeda8f9b0f",
+      "studioVsNode": {
+        "maxDriverDifference": 8.881784197001252e-16,
+        "maxTraceDifference": 3.688998334793897e-12,
+        "curveSize": 1.9177260196222081
+      },
+      "recomputedFromStudioDriver": 0,
+      "print": {
+        "width": 2400,
+        "height": 1920,
+        "paths": 6,
+        "svgCoordinates": 36017,
+        "maxSvgCoordinateError": 0.0049999316057665055,
+        "maxHalfPlaneError": 0.000005925410935273677,
+        "scale": 843.8117896603865,
+        "maxChannelError": 0,
+        "meanChannelError": 0,
+        "channelsChecked": 18432000,
+        "displacedPrintFailureChannels": 604069,
+        "vectorRip": {
+          "maxChannelDifference": 55,
+          "meanChannelDifference": 0.008952094184027778,
+          "fractionOver2Levels": 0.0005555555555555556
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "bundle",
+      "seed": "sle-science-bundle",
+      "parameters": {
+        "kappa": 6,
+        "N": 2000,
+        "mode": "seeds",
+        "curves": 12,
+        "color": "curve",
+        "width": 1,
+        "alpha": 0.75,
+        "axis": true,
+        "margin": 0.08,
+        "aspect": "3:2",
+        "seed": "sle-science-bundle",
+        "v": 2,
+        "palette": [
+          "#2C0F4A",
+          "#8A1C6B",
+          "#E63946",
+          "#FF9F1C",
+          "#FFF1A8"
+        ],
+        "bg": "#0A0710"
+      },
+      "curves": [
+        {
+          "kappa": 6,
+          "N": 2000
+        },
+        {
+          "kappa": 6,
+          "N": 2000
+        },
+        {
+          "kappa": 6,
+          "N": 2000
+        },
+        {
+          "kappa": 6,
+          "N": 2000
+        },
+        {
+          "kappa": 6,
+          "N": 2000
+        },
+        {
+          "kappa": 6,
+          "N": 2000
+        },
+        {
+          "kappa": 6,
+          "N": 2000
+        },
+        {
+          "kappa": 6,
+          "N": 2000
+        },
+        {
+          "kappa": 6,
+          "N": 2000
+        },
+        {
+          "kappa": 6,
+          "N": 2000
+        },
+        {
+          "kappa": 6,
+          "N": 2000
+        },
+        {
+          "kappa": 6,
+          "N": 2000
+        }
+      ],
+      "tracesSha256": "562f134a8cdde49cbc6f3205b084f201842aeee3f3080fc0973e050345e7dc15",
+      "studioVsNode": {
+        "maxDriverDifference": 1.7763568394002505e-15,
+        "maxTraceDifference": 5.966034010609821e-13,
+        "curveSize": 4.230562875120203
+      },
+      "recomputedFromStudioDriver": 0,
+      "print": {
+        "width": 2400,
+        "height": 1600,
+        "paths": 12,
+        "svgCoordinates": 48029,
+        "maxSvgCoordinateError": 0.004999826210678293,
+        "maxHalfPlaneError": 0.000018183343148220724,
+        "scale": 274.96737920647644,
+        "maxChannelError": 0,
+        "meanChannelError": 0,
+        "channelsChecked": 15360000,
+        "displacedPrintFailureChannels": 569683,
+        "vectorRip": {
+          "maxChannelDifference": 69,
+          "meanChannelDifference": 0.010035872395833333,
+          "fractionOver2Levels": 0.0005935546875
+        }
+      },
+      "statePreserved": true
+    },
+    {
+      "name": "peano",
+      "seed": "sle-science-peano",
+      "parameters": {
+        "kappa": 8,
+        "N": 6000,
+        "mode": "single",
+        "curves": 6,
+        "color": "time",
+        "width": 1,
+        "alpha": 1,
+        "axis": false,
+        "margin": 0.08,
+        "aspect": "1:1",
+        "seed": "sle-science-peano",
+        "v": 2,
+        "palette": [
+          "#2C0F4A",
+          "#8A1C6B",
+          "#E63946",
+          "#FF9F1C",
+          "#FFF1A8"
+        ],
+        "bg": "#0A0710"
+      },
+      "curves": [
+        {
+          "kappa": 8,
+          "N": 6000
+        }
+      ],
+      "tracesSha256": "a17d2eeb05301e24c4220e5892129482aba37c89d546f026ba6ac10e1dfb260c",
+      "studioVsNode": {
+        "maxDriverDifference": 4.996003610813204e-16,
+        "maxTraceDifference": 1.7179798288992493e-12,
+        "curveSize": 1.914752323978079
+      },
+      "recomputedFromStudioDriver": 0,
+      "print": {
+        "width": 2400,
+        "height": 2400,
+        "paths": 48,
+        "svgCoordinates": 12096,
+        "maxSvgCoordinateError": 0.0049984383533683285,
+        "maxHalfPlaneError": 0.000004484787818954259,
+        "scale": 1114.5317359816233,
+        "maxChannelError": 0,
+        "meanChannelError": 0,
+        "channelsChecked": 23040000,
+        "displacedPrintFailureChannels": 403920,
+        "vectorRip": {
+          "maxChannelDifference": 216,
+          "meanChannelDifference": 0.004441232638888889,
+          "fractionOver2Levels": 0.00027122395833333333
+        }
+      },
+      "statePreserved": true
+    }
+  ],
+  "environment": {
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
+    "platform": "linux",
+    "arch": "x64",
+    "cpus": 4
+  },
+  "runtimeSeconds": 360.6,
+  "passed": true
+}

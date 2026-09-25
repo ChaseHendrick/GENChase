@@ -1,6 +1,6 @@
 
 /* modules/thouless.js */
-/* GENChase: Rice-Mele Thouless pump. Occupied-band polarisation walks one cell per cycle. ΔP is measured against 1. */
+/* GENChase: Rice-Mele Thouless pump. Occupied-band polarisation walks one cell per cycle. The status line names the chosen cycle; ΔP is not measured. */
 (function () {
   'use strict';
   const U = Studio.util;
@@ -40,7 +40,7 @@
     order: 98,
     equation: 'P(φ) = (1/2π) ∮ A(k,φ) dk,   ΔP over a cycle = C₁ ∈ ℤ',
     credit: 'D. J. Thouless, Phys. Rev. B 27, 6083 (1983). An adiabatic cycle of a 1D insulator pumps a quantized charge equal to the Chern number of the (k, t) torus. Rice and Mele (1982) wrote the two-band lattice that makes the winding visible. The plate is the occupied-band density versus cycle angle; the centre of mass walks one cell when the loop in (u, v, δ) encloses the origin, and stands still when it does not.',
-    blurb: 'A closed cycle in parameter space that returns every hopping to itself, and yet a whole electron has moved by one cell. The amount is an integer, a Chern number, so disorder cannot change it by a little. Run the same cycle the other way around the degeneracy and nothing moves. The status line reports ΔP against 1 for the topological loop and 0 for the trivial one.',
+    blurb: 'A closed cycle in parameter space that returns every hopping to itself, and yet a whole electron has moved by one cell. The amount is an integer, a Chern number, so disorder cannot change it by a little. Run the same cycle the other way around the degeneracy and nothing moves. The status line names the cycle you chose; the plate draws the transported density for it, and pumping is not computed from a Hamiltonian here.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: { Pump: 'Topological: the (r, Δ) loop winds around the origin of the Rice–Mele plane. Trivial: it does not.' },
     palette: true, defaultPalette: 'ember', surprise, sanitize,
@@ -135,7 +135,12 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>loop r <b>' + f2(extra) + '</b></span><span>ΔP <b>' + (host.getState().kind === 'triv' ? '0' : '1') + '</b> · Chern</span><span>' + (host.getState().kind === 'triv' ? 'trivial' : 'pumped') + '</span>'); }
+      // The cycle is a setting, not a measurement: the per-row polarization is never turned into a pumped
+      // charge, so the status line names the loop that was chosen and prints no Chern number for it.
+      function status() {
+        const cycle = host.getState().kind === 'triv' ? 'trivial' : 'topological';
+        host.setStatus('<span>loop r <b>' + f2(extra) + '</b></span><span>cycle <b>' + cycle + '</b> (setting; pumping is not measured)</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

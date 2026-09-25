@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint', LIVE = 'live';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const sci = v => {
     if (!isFinite(v)) return '-';
     const a = Math.abs(v);
@@ -513,14 +512,23 @@
         else if (onLock && !lockFail && !simFail && !IFail) tag = 'lock held';
         else if (traj.collapsing) tag = 'collapsing';
         else tag = 'drifting';
+        // The spread of the four rotation rates about their mean says how rigidly the figure turns. It is
+        // not an error bar: ω t_c comes from Biot-Savart velocities at t = 0 with no randomness in it.
         const sig = (isFinite(m.tau) && isFinite(m.wSig)) ? sci(m.wSig * Math.abs(m.tau) / LOCK) : '0';
-        const lockStr = isFinite(lock) ? f3(lock) : 'inf';
-        const wtcStr = isFinite(m.wtc) ? f3(Math.abs(m.wtc)) : 'inf';
+        const miss = fail => fail ? ' · miss' : '';
+        // Lock and Family frames come from the analytic similarity map and are placed on L = 0, so
+        // those two checks hold by construction there. Broken integrates the ODE off the family.
+        const built = traj.broken ? 'deterministic' : 'construction';
         host.setStatus(
-          '<span>ω t_c / (3√5/4) <b>' + lockStr + '</b> ± ' + sig + ' · 1' + (onLock && lockFail ? ' · miss' : '') + '</span>' +
-          '<span>similar <b>' + sci(traj.simMax) + '</b> · 0' + (simFail ? ' · miss' : '') + '</span>' +
-          '<span>L <b>' + sci(m.I) + '</b> · 0' + (IFail ? ' · miss' : '') + '</span>' +
-          '<span>' + tag + (odeFail ? ' · ODE off' : '') + ' · ω t_c ' + wtcStr + '</span>'
+          (isFinite(lock)
+            ? U.stats.compare({ label: 'ω t_c / (3√5/4)', measured: lock, expected: 1, reference: 'sharp minimum', basis: 'deterministic',
+                note: 'rotation-rate spread ' + sig + miss(onLock && lockFail) })
+            : '<span>ω t_c / (3√5/4) <b>inf</b></span>') +
+          U.stats.compare({ label: 'similar', measured: traj.simMax, expected: 0, reference: 'self-similar', basis: built, note: simFail ? 'miss' : undefined }) +
+          U.stats.compare({ label: 'L', measured: m.I, expected: 0, reference: 'collapse condition', basis: built, note: IFail ? 'miss' : undefined }) +
+          '<span>' + tag + ' · ' + (isFinite(m.wtc)
+            ? U.stats.compare({ label: 'ω t_c', measured: Math.abs(m.wtc), expected: isFinite(form) ? form : undefined, reference: 'closed form', basis: 'deterministic', note: odeFail ? 'ODE off' : undefined })
+            : 'ω t_c inf' + (odeFail ? ' · ODE off' : '')) + '</span>'
         );
       }
       function compute() {

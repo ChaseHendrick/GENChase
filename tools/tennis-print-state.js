@@ -1,5 +1,6 @@
 // Actual tennis exportPNG state preservation; not numerical accuracy or calibrated color.
 // node tools/tennis-print-state.js [--write]
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict'), crypto = require('node:crypto');
 const { chromium } = require('playwright');
 
@@ -38,7 +39,7 @@ ${marker}`);
     { name: 'square', aspect: '1:1', overlay: { I2: 1.4, eps: 0.02, T: 60, view: 'int' } },
   ];
 
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   const rows = [];
   try {
     const page = await browser.newPage();

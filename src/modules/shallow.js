@@ -133,9 +133,12 @@ void main(){
     }
     function status() {
       const halted = sim.halted ? '<span>Stopped: <b>' + U.escapeHtml(sim.halted) + '</b></span>' : '';
+      // The finite-volume update is in flux form, so every face flux leaves one cell and enters its
+      // neighbor and the total volume is conserved to round-off whatever the flow: a regression test.
       host.setStatus('<span>grid <b>' + sim.nx + '×' + sim.ny + '</b> · step <b>' + sim.step.toLocaleString() + '</b>' +
         (remaining && !sim.halted ? ' · preparing' : '') + '</span><span>time <b>' + sim.time.toFixed(4) + '</b></span><span>depth <b>' +
-        sim.minDepth.toFixed(3) + '–' + sim.maxDepth.toFixed(3) + '</b></span><span>volume drift <b>' + sim.massDrift.toExponential(1) + '</b></span>' + halted);
+        sim.minDepth.toFixed(3) + '–' + sim.maxDepth.toFixed(3) + '</b></span>' +
+        U.stats.compare({ label: 'volume drift', measured: sim.massDrift, expected: 0, reference: 'flux form', basis: 'construction' }) + halted);
     }
     function draw() { if (!sim) return; upload(); render(); status(); }
     function chunk() {

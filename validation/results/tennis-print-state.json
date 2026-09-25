@@ -2,7 +2,7 @@
   "pass": true,
   "source": "src/modules/tennis.js",
   "sourceSha256": "9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d",
-  "harnessSha256": "47b1358531887d841f2038af5ccef73224c4d6f25365f0b9659ca21eb73895e7",
+  "harnessSha256": "2d3b22b2ced42ee5e4e19ff3c78d6bfc33050c63ce97962c0fa9be3ed0a2f3d2",
   "command": "node tools/tennis-print-state.js --write",
   "scope": "Actual tennis exportPNG at 2400 longest edge for flip, stable1, log and square fixtures (1920x2400 and 2400x2400). Exact Float32 field words, ω2 flip count, I2 extra, cells, buffer size and settings preserved; deterministic regenerate replay; nonblank reduced raster.",
   "criteria": "Zero changed/nonfinite field words; metric/extra/settings/cells unchanged across export; exact requested PNG dimensions and >1000-byte blobs; luminance spread >12/255; wrong dimensions and deliberate post-export field+metric mutation rejected.",
@@ -22,7 +22,7 @@
       "export": {
         "width": 1920,
         "height": 2400,
-        "bytes": 417508,
+        "bytes": 127063,
         "flips": 2,
         "I2": 1.4,
         "cells": [
@@ -69,7 +69,7 @@
       "export": {
         "width": 1920,
         "height": 2400,
-        "bytes": 383906,
+        "bytes": 122666,
         "flips": 1,
         "I2": 1.05,
         "cells": [
@@ -116,7 +116,7 @@
       "export": {
         "width": 1920,
         "height": 2400,
-        "bytes": 428845,
+        "bytes": 127562,
         "flips": 2,
         "I2": 1.45,
         "cells": [
@@ -163,7 +163,7 @@
       "export": {
         "width": 2400,
         "height": 2400,
-        "bytes": 466815,
+        "bytes": 137815,
         "flips": 2,
         "I2": 1.4,
         "cells": [

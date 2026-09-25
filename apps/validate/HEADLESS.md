@@ -31,6 +31,13 @@ Then choose work to contribute:
 | Run registered numerical and print checks | `npm run validator:headless -- --mode all --machine m1pro` |
 | Verify and run a small Apple GPU wave workload | `npm run validator:headless -- --mode metal --grid 32 --steps 1000 --machine m1pro` |
 | Explore the existing polygon candidate adapter | `npm run validator:headless -- --mode derive --machine m1pro` |
+| Search an open problem: least-winding vortex collapse ([protocol](../../experiments/VORTEX-COLLAPSE.md)) | `npm run validator:headless -- --mode vortex-collapse --alpha 0 --n 7 --samples 200 --machine m1pro` |
+| Grow the deepest vortex family toward many vortices | `npm run validator:headless -- --mode vortex-grow --alpha 0 --n 30 --samples 10 --machine m1pro` |
+| Hunt a block of seeds for print-sharp plates | `npm run validator:headless -- --mode art-hunt --id turing --samples 24 --keep 6 --machine m1pro` |
+| Render one recipe deeply at print size | `npm run validator:headless -- --mode art-deep --recipe '#cahn/cahn-1958' --steps 2000 --inches 20 --budget 60 --machine m1pro` |
+| Evolve children from recipes you like | `npm run validator:headless -- --mode art-evolve --parent '#turing/h-1a/…' --parent '#turing/h-2b/…' --samples 12 --machine m1pro` |
+
+Art jobs take recipe hashes as the studio copies them (from `#` onward, in single quotes), render the `cahn` and `turing` tabs, and write `art/gallery.html` in the job folder. Their scores are print-sharpness proxies, not a measure of beauty and not scientific evidence. Add `--budget` for a limit in active minutes, `--recipe` to hunt around a base recipe, `--start` to choose the seed block, and `--inches`/`--ppi` for the print size. Every art job refuses, before rendering, a print size that would need more than half this computer's memory. [Art modes](README.md#art-modes) explains the step count, refusals and what is shared.
 
 Witness collection records what the module actually exposes. A missing witness is missing evidence, not a passing result. An observed witness pass still needs its scientific assumptions, independence and convergence reviewed. The polygon adapter can recover a known formula and never establishes originality by itself.
 
@@ -67,11 +74,11 @@ To request the latest supported checkpoint:
 npm run validator:headless -- --resume
 ```
 
-Resume is available for completed registered-test boundaries, polygon sweep chunks and compatible native Metal field checkpoints. It does not resume every kind of job. A changed source/context can require rerunning work, and an interrupted test runs again. [The local app guide](README.md#stop-restart-and-resume) explains the boundaries.
+Resume is available for completed registered-test boundaries, polygon sweep chunks, vortex-collapse seeds, art hunt and evolve candidates, and compatible native Metal field checkpoints. A deep render has no mid-plate checkpoint. It does not resume every kind of job. A changed source/context can require rerunning work, and an interrupted test runs again. [The local app guide](README.md#stop-restart-and-resume) explains the boundaries.
 
 ## 4. Inspect the results
 
-The terminal reports the job result and its files. The job folder under `apps/validate/.runs/` holds a paste packet, pseudonymous `hardware.json`, redacted log and available reports/checkpoints. A result bundle keeps the source snapshot and artifacts together for local review. Job status preserves an incomplete-evidence exit even when registered checks passed.
+The terminal reports the job result, its files and the computer time it used. Each job records its CPU time, including every process it started and waited for, and an energy figure: measured where Linux exposes a RAPL counter, otherwise an estimate of 1 to 20 W per busy core that the record labels as such. Shared records are totalled in [COMPUTE.md](../../COMPUTE.md). The job folder under `apps/validate/.runs/` holds a paste packet, pseudonymous `hardware.json`, redacted log and available reports/checkpoints. A result bundle keeps the source snapshot and artifacts together for local review. Job status preserves an incomplete-evidence exit even when registered checks passed.
 
 Witness collection writes `validation/results/witnesses-<commit>-<machine-slug>.json`. Scientific misses write `run/validator/misses/<commit>-<id>.json`; execution failures use a separate job suffix. These paths are Git-ignored until you deliberately stage selected files. Repeating a corpus for the same commit and machine replaces that corpus file, while each job keeps its own copy and previous miss packets remain visible.
 

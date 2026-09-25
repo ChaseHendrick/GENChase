@@ -9,6 +9,23 @@
 <label id="slug-field" hidden>Candidate slug<input id="slug" required value="polygon-candidate" pattern="[a-z0-9]+(-[a-z0-9]+)*" maxlength="64"></label>
 <label id="order-field" hidden>Vertices per polygon<select id="order"><option>2</option><option>3</option><option>4</option><option selected>5</option></select></label>
 <label id="grid-field" hidden>Metal grid<select id="gpu-grid"><option>32</option><option>64</option><option selected>128</option><option>192</option><option>256</option></select></label><label id="steps-field" hidden>GPU steps<input id="gpu-steps" required type="number" min="1" max="100000000" value="1000"></label>
+<label id="vortex-alpha-field" hidden>Kernel exponent alpha<select id="vortex-alpha"><option value="-1.95">-1.95</option><option value="-1.8">-1.8</option><option value="-1.6">-1.6</option><option value="-1">-1</option><option value="-0.5">-0.5</option><option value="0" selected>0: Euler</option><option value="0.5">0.5</option><option value="1">1: surface quasi-geostrophic</option><option value="1.5">1.5</option><option value="2">2</option></select></label>
+<label id="vortex-n-field" hidden>Vortices (search 3 to 16, growth or threshold up to 128)<input id="vortex-n" required type="number" min="3" max="128" value="5"></label>
+<label id="vortex-seeds-field" hidden>Seeds<input id="vortex-seeds" required type="number" min="1" max="100000" value="100"></label>
+<label id="vortex-threads-field" hidden>Worker threads (results do not depend on it)<input id="vortex-threads" required type="number" min="1" max="64" value="1"></label>
+<label id="vortex-to-field" hidden>End alpha<input id="vortex-to" required type="number" min="-1.999" max="3" step="0.001" value="3"></label>
+<label id="vortex-start-field" hidden>First seed (blank: random block)<input id="vortex-start" type="number" min="0" max="2147383647" placeholder="random"></label>
+<label id="art-id-field" hidden>Tab<select id="art-id"></select></label>
+<label id="art-recipe-field" class="wide" hidden>Recipe hash (the studio's Copy link, from # onward)<input id="art-recipe" maxlength="1000" spellcheck="false" autocomplete="off" placeholder="#cahn/seed/…"></label>
+<label id="art-parents-field" class="wide" hidden>Parent recipe hashes, one per line, up to 6, all for one tab<textarea id="art-parents" rows="4" spellcheck="false" autocomplete="off"></textarea></label>
+<label id="art-steps-field" hidden>Simulation steps (the recipe's warm-up)<input id="art-steps" required type="number" min="1" max="100000" value="2000"></label>
+<label id="art-grid-field" hidden>Grid<select id="art-grid"><option value="">The recipe's own grid</option><option>128</option><option>192</option><option>256</option><option>384</option><option>512</option><option>768</option><option>1024</option></select></label>
+<label id="art-samples-field" hidden>Candidates (hunt) or children (evolve)<input id="art-samples" required type="number" min="1" max="5000" value="24"></label>
+<label id="art-start-field" hidden>First seed (blank: random block)<input id="art-start" type="number" min="0" max="2147483647" placeholder="random"></label>
+<label id="art-keep-field" hidden>Prints kept<input id="art-keep" required type="number" min="0" max="24" value="6"></label>
+<label id="art-inches-field" hidden>Print long edge, inches<select id="art-inches"><option value="" selected>Default: 8, or 20 for a deep render</option><option>8</option><option>10</option><option>11</option><option>12</option><option>14</option><option>16</option><option>18</option><option>20</option><option>24</option><option>28</option><option>30</option><option>36</option><option>40</option><option>44</option><option>48</option><option>60</option></select></label>
+<label id="art-ppi-field" hidden>Print resolution<select id="art-ppi"><option value="300">300 ppi</option><option value="360">360 ppi</option><option value="450">450 ppi</option><option value="600">600 ppi</option></select></label>
+<label id="art-budget-field" hidden>Active-time budget, minutes (blank: none, or 120 for a deep render)<input id="art-budget" type="number" min="1" max="1440" placeholder="none"></label>
 <label id="samples-field" hidden>Sweep samples<input id="samples" required type="number" min="100" max="5000000" step="100" value="10000"></label></div>
 <p id="job-help" class="muted"></p>
 <p id="contribute-note" hidden>The first adapter fits a candidate in the existing two-polygon vortex family, checks a seeded plate, then compares local sources. It can recover a known formula. No job establishes originality.</p>

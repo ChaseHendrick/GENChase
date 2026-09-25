@@ -1,0 +1,2417 @@
+{
+  "date": "2026-09-24",
+  "tool": "tools/aztec-science.js",
+  "sourceSha256": "38ffddc95db3b644c9d21cf1c727658e692f0c214bc35ab5fb64bf54ecb6da01",
+  "engineSha256": "ab2b5e7b2547701f593054b32f19c75a40c1cc066e48dd2f7105d316d60b4294",
+  "scope": "Domino shuffling as implemented in src/modules/aztec.js (build, shuffle, dominoes, the polar regions) run from the unmodified source. Exhaustive enumeration and sampled frequencies at orders 1 to 5; polar-region area, axis radius and the tab's frozen fraction over independent seeds at seven orders from 40 to 320; five complete rendered recipes with every SVG rectangle, every PNG byte and the shell's vector RIP checked.",
+  "references": {
+    "count": "N. Elkies, G. Kuperberg, M. Larsen and J. Propp, J. Algebraic Combin. 1, 111 and 219 (1992): 2^{n(n+1)/2} tilings; domino shuffling samples them uniformly.",
+    "arcticCircle": "W. Jockusch, J. Propp and P. Shor, arXiv:math/9801068 (1998): the boundary of the four polar regions converges to the inscribed circle, so the polar area fraction tends to 1 - pi/4 and the axis radius to n/sqrt(2).",
+    "polarRegions": "The north polar region is the union of the north-going dominoes connected to the boundary by a sequence of adjacent north-going dominoes, as K. Johansson, Ann. Probab. 33, 1 (2005), arXiv:math/0306216, states the definition of Jockusch, Propp and Shor; likewise for the other three.",
+    "fluctuations": "K. Johansson, Ann. Probab. 33, 1 (2005): the arctic boundary fluctuates on the scale n^{1/3} (Airy process); used only to choose the finite-size form n^{-2/3} and as the reference exponent 1/3."
+  },
+  "uniformity": {
+    "alpha": 0.001,
+    "rows": [
+      {
+        "order": 1,
+        "exactTilings": 2,
+        "formula": "2^1",
+        "cells": 4,
+        "seeds": "'aztec-uniform-n1-<i>', i = 0..3999",
+        "invalidTilings": 0,
+        "dominoPositions": 4,
+        "draws": 4000,
+        "outcomes": 2,
+        "df": 1,
+        "chiSquare": 0.049,
+        "pValue": 0.8248125741940135,
+        "missing": 0,
+        "maxOutcomeDeviation": 0.0017500000000000293,
+        "marginals": 4,
+        "maxMarginalDeviation": 0.0017500000000000293,
+        "maxMarginalZ": 0.22135943621179027,
+        "bonferroniZCritical": 3.662259927289605,
+        "simultaneousHoeffdingAlpha": 0.001,
+        "hoeffdingBound": 0.034264890793584434,
+        "passes": true,
+        "tilingCounts": [
+          2007,
+          1993
+        ],
+        "placementProbabilities": [
+          {
+            "domino": "0:1",
+            "exact": 0.5,
+            "count": 2007
+          },
+          {
+            "domino": "2:3",
+            "exact": 0.5,
+            "count": 2007
+          },
+          {
+            "domino": "0:2",
+            "exact": 0.5,
+            "count": 1993
+          },
+          {
+            "domino": "1:3",
+            "exact": 0.5,
+            "count": 1993
+          }
+        ],
+        "ms": 124
+      },
+      {
+        "order": 2,
+        "exactTilings": 8,
+        "formula": "2^3",
+        "cells": 12,
+        "seeds": "'aztec-uniform-n2-<i>', i = 0..7999",
+        "invalidTilings": 0,
+        "dominoPositions": 16,
+        "draws": 8000,
+        "outcomes": 8,
+        "df": 7,
+        "chiSquare": 4.223999999999999,
+        "pValue": 0.7536457799126632,
+        "missing": 0,
+        "maxOutcomeDeviation": 0.0061250000000000054,
+        "marginals": 16,
+        "maxMarginalDeviation": 0.005124999999999991,
+        "maxMarginalZ": 1.0586154479633587,
+        "bonferroniZCritical": 4.003167570299946,
+        "simultaneousHoeffdingAlpha": 0.001,
+        "hoeffdingBound": 0.02595543812225343,
+        "passes": true,
+        "tilingCounts": [
+          1019,
+          1019,
+          996,
+          978,
+          951,
+          1022,
+          1009,
+          1006
+        ],
+        "placementProbabilities": [
+          {
+            "domino": "1:2",
+            "exact": 0.75,
+            "count": 5985
+          },
+          {
+            "domino": "4:5",
+            "exact": 0.25,
+            "count": 2038
+          },
+          {
+            "domino": "6:7",
+            "exact": 0.25,
+            "count": 1970
+          },
+          {
+            "domino": "8:9",
+            "exact": 0.25,
+            "count": 2038
+          },
+          {
+            "domino": "10:11",
+            "exact": 0.25,
+            "count": 1970
+          },
+          {
+            "domino": "13:14",
+            "exact": 0.75,
+            "count": 6016
+          },
+          {
+            "domino": "6:10",
+            "exact": 0.25,
+            "count": 2041
+          },
+          {
+            "domino": "7:11",
+            "exact": 0.75,
+            "count": 6030
+          },
+          {
+            "domino": "4:8",
+            "exact": 0.75,
+            "count": 5962
+          },
+          {
+            "domino": "5:6",
+            "exact": 0.25,
+            "count": 1974
+          },
+          {
+            "domino": "9:10",
+            "exact": 0.25,
+            "count": 2005
+          },
+          {
+            "domino": "9:13",
+            "exact": 0.25,
+            "count": 1984
+          },
+          {
+            "domino": "10:14",
+            "exact": 0.25,
+            "count": 1984
+          },
+          {
+            "domino": "5:9",
+            "exact": 0.25,
+            "count": 1973
+          },
+          {
+            "domino": "1:5",
+            "exact": 0.25,
+            "count": 2015
+          },
+          {
+            "domino": "2:6",
+            "exact": 0.25,
+            "count": 2015
+          }
+        ],
+        "ms": 191
+      },
+      {
+        "order": 3,
+        "exactTilings": 64,
+        "formula": "2^6",
+        "cells": 24,
+        "seeds": "'aztec-uniform-n3-<i>', i = 0..12799",
+        "invalidTilings": 0,
+        "dominoPositions": 36,
+        "draws": 12800,
+        "outcomes": 64,
+        "df": 63,
+        "chiSquare": 58.38000000000003,
+        "pValue": 0.6414325598635602,
+        "missing": 0,
+        "maxOutcomeDeviation": 0.002812499999999999,
+        "marginals": 36,
+        "maxMarginalDeviation": 0.005703124999999976,
+        "maxMarginalZ": 1.4901062601930937,
+        "bonferroniZCritical": 4.190959065955414,
+        "simultaneousHoeffdingAlpha": 0.001,
+        "hoeffdingBound": 0.021835743924034794,
+        "passes": true,
+        "tilingCounts": [
+          219,
+          180,
+          172,
+          223,
+          191,
+          209,
+          212,
+          207,
+          190,
+          226,
+          193,
+          210,
+          183,
+          197,
+          216,
+          212,
+          189,
+          190,
+          206,
+          181,
+          200,
+          220,
+          198,
+          202,
+          186,
+          219,
+          213,
+          211,
+          200,
+          193,
+          173,
+          224,
+          202,
+          219,
+          183,
+          191,
+          202,
+          196,
+          209,
+          197,
+          205,
+          212,
+          202,
+          187,
+          199,
+          177,
+          209,
+          201,
+          184,
+          196,
+          236,
+          198,
+          197,
+          184,
+          208,
+          194,
+          188,
+          197,
+          205,
+          209,
+          201,
+          192,
+          191,
+          184
+        ],
+        "placementProbabilities": [
+          {
+            "domino": "2:3",
+            "exact": 0.875,
+            "count": 11233
+          },
+          {
+            "domino": "7:8",
+            "exact": 0.5,
+            "count": 6445
+          },
+          {
+            "domino": "9:10",
+            "exact": 0.5,
+            "count": 6398
+          },
+          {
+            "domino": "12:13",
+            "exact": 0.125,
+            "count": 1594
+          },
+          {
+            "domino": "14:15",
+            "exact": 0.25,
+            "count": 3163
+          },
+          {
+            "domino": "16:17",
+            "exact": 0.125,
+            "count": 1589
+          },
+          {
+            "domino": "18:19",
+            "exact": 0.125,
+            "count": 1594
+          },
+          {
+            "domino": "20:21",
+            "exact": 0.25,
+            "count": 3176
+          },
+          {
+            "domino": "22:23",
+            "exact": 0.125,
+            "count": 1589
+          },
+          {
+            "domino": "25:26",
+            "exact": 0.5,
+            "count": 6450
+          },
+          {
+            "domino": "27:28",
+            "exact": 0.5,
+            "count": 6377
+          },
+          {
+            "domino": "32:33",
+            "exact": 0.875,
+            "count": 11211
+          },
+          {
+            "domino": "16:22",
+            "exact": 0.125,
+            "count": 1607
+          },
+          {
+            "domino": "17:23",
+            "exact": 0.875,
+            "count": 11211
+          },
+          {
+            "domino": "14:20",
+            "exact": 0.25,
+            "count": 3180
+          },
+          {
+            "domino": "15:16",
+            "exact": 0.25,
+            "count": 3202
+          },
+          {
+            "domino": "21:22",
+            "exact": 0.25,
+            "count": 3181
+          },
+          {
+            "domino": "21:27",
+            "exact": 0.25,
+            "count": 3244
+          },
+          {
+            "domino": "22:28",
+            "exact": 0.5,
+            "count": 6423
+          },
+          {
+            "domino": "15:21",
+            "exact": 0.25,
+            "count": 3199
+          },
+          {
+            "domino": "12:18",
+            "exact": 0.875,
+            "count": 11206
+          },
+          {
+            "domino": "13:14",
+            "exact": 0.25,
+            "count": 3268
+          },
+          {
+            "domino": "19:20",
+            "exact": 0.25,
+            "count": 3273
+          },
+          {
+            "domino": "19:25",
+            "exact": 0.5,
+            "count": 6350
+          },
+          {
+            "domino": "26:27",
+            "exact": 0.125,
+            "count": 1590
+          },
+          {
+            "domino": "26:32",
+            "exact": 0.125,
+            "count": 1589
+          },
+          {
+            "domino": "27:33",
+            "exact": 0.125,
+            "count": 1589
+          },
+          {
+            "domino": "20:26",
+            "exact": 0.25,
+            "count": 3171
+          },
+          {
+            "domino": "13:19",
+            "exact": 0.125,
+            "count": 1583
+          },
+          {
+            "domino": "9:15",
+            "exact": 0.25,
+            "count": 3236
+          },
+          {
+            "domino": "10:16",
+            "exact": 0.5,
+            "count": 6402
+          },
+          {
+            "domino": "7:13",
+            "exact": 0.5,
+            "count": 6355
+          },
+          {
+            "domino": "8:9",
+            "exact": 0.125,
+            "count": 1599
+          },
+          {
+            "domino": "8:14",
+            "exact": 0.25,
+            "count": 3189
+          },
+          {
+            "domino": "2:8",
+            "exact": 0.125,
+            "count": 1567
+          },
+          {
+            "domino": "3:9",
+            "exact": 0.125,
+            "count": 1567
+          }
+        ],
+        "ms": 344
+      },
+      {
+        "order": 4,
+        "exactTilings": 1024,
+        "formula": "2^10",
+        "cells": 40,
+        "seeds": "'aztec-uniform-n4-<i>', i = 0..40959",
+        "invalidTilings": 0,
+        "dominoPositions": 64,
+        "draws": 40960,
+        "outcomes": 1024,
+        "df": 1023,
+        "chiSquare": 1044.35,
+        "pValue": 0.31437996744396113,
+        "missing": 0,
+        "maxOutcomeDeviation": 0.0005126953124999999,
+        "marginals": 64,
+        "maxMarginalDeviation": 0.004833984374999989,
+        "maxMarginalZ": 2.1106870919205383,
+        "bonferroniZCritical": 4.319687930921653,
+        "simultaneousHoeffdingAlpha": 0.001,
+        "hoeffdingBound": 0.013346804615499216,
+        "passes": true,
+        "minCount": 21,
+        "maxCount": 61,
+        "ms": 1236
+      },
+      {
+        "order": 5,
+        "exactTilings": 32768,
+        "formula": "2^15",
+        "cells": 60,
+        "seeds": "'aztec-uniform-n5-<i>', i = 0..655359",
+        "invalidTilings": 0,
+        "dominoPositions": 100,
+        "draws": 655360,
+        "outcomes": 32768,
+        "df": 32767,
+        "chiSquare": 32726.099999999922,
+        "pValue": 0.5624682484264161,
+        "missing": 0,
+        "maxOutcomeDeviation": 0.00002899169921875,
+        "marginals": 100,
+        "maxMarginalDeviation": 0.001170349121093761,
+        "maxMarginalZ": 2.4020911863015604,
+        "bonferroniZCritical": 4.4171734162610035,
+        "simultaneousHoeffdingAlpha": 0.001,
+        "hoeffdingBound": 0.003705913259878998,
+        "passes": true,
+        "minCount": 4,
+        "maxCount": 39,
+        "ms": 30476
+      }
+    ],
+    "interpretation": "Seeds are distinct recipe strings through U.makeRng; the probability statements assume those streams behave as independent uniform draws, which a fixed PRNG regression does not prove."
+  },
+  "controls": {
+    "biasedCoin": {
+      "description": "creation step fills a block with two horizontals with probability 0.7 instead of 1/2 (order-1 seed tiling too)",
+      "rows": [
+        {
+          "order": 1,
+          "exactTilings": 2,
+          "formula": "2^1",
+          "cells": 4,
+          "seeds": "'aztec-uniform-n1-<i>', i = 0..3999",
+          "invalidTilings": 0,
+          "dominoPositions": 4,
+          "draws": 4000,
+          "outcomes": 2,
+          "df": 1,
+          "chiSquare": 594.441,
+          "pValue": 2.709786527586519e-131,
+          "missing": 0,
+          "maxOutcomeDeviation": 0.19274999999999998,
+          "marginals": 4,
+          "maxMarginalDeviation": 0.19274999999999998,
+          "maxMarginalZ": 24.381160759898204,
+          "bonferroniZCritical": 3.662259927289605,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.034264890793584434,
+          "passes": false,
+          "tilingCounts": [
+            2771,
+            1229
+          ],
+          "placementProbabilities": [
+            {
+              "domino": "0:1",
+              "exact": 0.5,
+              "count": 2771
+            },
+            {
+              "domino": "2:3",
+              "exact": 0.5,
+              "count": 2771
+            },
+            {
+              "domino": "0:2",
+              "exact": 0.5,
+              "count": 1229
+            },
+            {
+              "domino": "1:3",
+              "exact": 0.5,
+              "count": 1229
+            }
+          ],
+          "ms": 79
+        },
+        {
+          "order": 2,
+          "exactTilings": 8,
+          "formula": "2^3",
+          "cells": 12,
+          "seeds": "'aztec-uniform-n2-<i>', i = 0..7999",
+          "invalidTilings": 0,
+          "dominoPositions": 16,
+          "draws": 8000,
+          "outcomes": 8,
+          "df": 7,
+          "chiSquare": 4532.338,
+          "pValue": 0,
+          "missing": 0,
+          "maxOutcomeDeviation": 0.22149999999999997,
+          "marginals": 16,
+          "maxMarginalDeviation": 0.24975000000000003,
+          "maxMarginalZ": 51.5881381714828,
+          "bonferroniZCritical": 4.003167570299946,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.02595543812225343,
+          "passes": false,
+          "tilingCounts": [
+            2772,
+            1226,
+            1139,
+            495,
+            1103,
+            497,
+            533,
+            235
+          ],
+          "placementProbabilities": [
+            {
+              "domino": "1:2",
+              "exact": 0.75,
+              "count": 7232
+            },
+            {
+              "domino": "4:5",
+              "exact": 0.25,
+              "count": 3998
+            },
+            {
+              "domino": "6:7",
+              "exact": 0.25,
+              "count": 3875
+            },
+            {
+              "domino": "8:9",
+              "exact": 0.25,
+              "count": 3998
+            },
+            {
+              "domino": "10:11",
+              "exact": 0.25,
+              "count": 3875
+            },
+            {
+              "domino": "13:14",
+              "exact": 0.75,
+              "count": 7270
+            },
+            {
+              "domino": "6:10",
+              "exact": 0.25,
+              "count": 1723
+            },
+            {
+              "domino": "7:11",
+              "exact": 0.75,
+              "count": 4125
+            },
+            {
+              "domino": "4:8",
+              "exact": 0.75,
+              "count": 4002
+            },
+            {
+              "domino": "5:6",
+              "exact": 0.25,
+              "count": 1634
+            },
+            {
+              "domino": "9:10",
+              "exact": 0.25,
+              "count": 1672
+            },
+            {
+              "domino": "9:13",
+              "exact": 0.25,
+              "count": 730
+            },
+            {
+              "domino": "10:14",
+              "exact": 0.25,
+              "count": 730
+            },
+            {
+              "domino": "5:9",
+              "exact": 0.25,
+              "count": 1600
+            },
+            {
+              "domino": "1:5",
+              "exact": 0.25,
+              "count": 768
+            },
+            {
+              "domino": "2:6",
+              "exact": 0.25,
+              "count": 768
+            }
+          ],
+          "ms": 167
+        },
+        {
+          "order": 3,
+          "exactTilings": 64,
+          "formula": "2^6",
+          "cells": 24,
+          "seeds": "'aztec-uniform-n3-<i>', i = 0..12799",
+          "invalidTilings": 0,
+          "dominoPositions": 36,
+          "draws": 12800,
+          "outcomes": 64,
+          "df": 63,
+          "chiSquare": 18795.539999999994,
+          "pValue": 0,
+          "missing": 0,
+          "maxOutcomeDeviation": 0.1034375,
+          "marginals": 36,
+          "maxMarginalDeviation": 0.29000000000000004,
+          "maxMarginalZ": 75.58147921283361,
+          "bonferroniZCritical": 4.190959065955414,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.021835743924034794,
+          "passes": false,
+          "tilingCounts": [
+            1524,
+            643,
+            666,
+            264,
+            656,
+            282,
+            682,
+            261,
+            296,
+            125,
+            262,
+            110,
+            634,
+            285,
+            285,
+            128,
+            601,
+            286,
+            258,
+            119,
+            278,
+            111,
+            294,
+            99,
+            297,
+            103,
+            111,
+            39,
+            129,
+            53,
+            123,
+            55,
+            277,
+            128,
+            114,
+            52,
+            132,
+            48,
+            51,
+            18,
+            258,
+            136,
+            108,
+            44,
+            120,
+            53,
+            286,
+            112,
+            116,
+            42,
+            118,
+            51,
+            52,
+            19,
+            55,
+            16,
+            117,
+            46,
+            47,
+            20,
+            55,
+            23,
+            17,
+            10
+          ],
+          "placementProbabilities": [
+            {
+              "domino": "2:3",
+              "exact": 0.875,
+              "count": 12465
+            },
+            {
+              "domino": "7:8",
+              "exact": 0.5,
+              "count": 10059
+            },
+            {
+              "domino": "9:10",
+              "exact": 0.5,
+              "count": 10031
+            },
+            {
+              "domino": "12:13",
+              "exact": 0.125,
+              "count": 4428
+            },
+            {
+              "domino": "14:15",
+              "exact": 0.25,
+              "count": 4113
+            },
+            {
+              "domino": "16:17",
+              "exact": 0.125,
+              "count": 4376
+            },
+            {
+              "domino": "18:19",
+              "exact": 0.125,
+              "count": 4428
+            },
+            {
+              "domino": "20:21",
+              "exact": 0.25,
+              "count": 4081
+            },
+            {
+              "domino": "22:23",
+              "exact": 0.125,
+              "count": 4376
+            },
+            {
+              "domino": "25:26",
+              "exact": 0.5,
+              "count": 10054
+            },
+            {
+              "domino": "27:28",
+              "exact": 0.5,
+              "count": 10112
+            },
+            {
+              "domino": "32:33",
+              "exact": 0.875,
+              "count": 12473
+            },
+            {
+              "domino": "16:22",
+              "exact": 0.125,
+              "count": 1893
+            },
+            {
+              "domino": "17:23",
+              "exact": 0.875,
+              "count": 8424
+            },
+            {
+              "domino": "14:20",
+              "exact": 0.25,
+              "count": 3301
+            },
+            {
+              "domino": "15:16",
+              "exact": 0.25,
+              "count": 3762
+            },
+            {
+              "domino": "21:22",
+              "exact": 0.25,
+              "count": 3843
+            },
+            {
+              "domino": "21:27",
+              "exact": 0.25,
+              "count": 1565
+            },
+            {
+              "domino": "22:28",
+              "exact": 0.5,
+              "count": 2688
+            },
+            {
+              "domino": "15:21",
+              "exact": 0.25,
+              "count": 3311
+            },
+            {
+              "domino": "12:18",
+              "exact": 0.875,
+              "count": 8372
+            },
+            {
+              "domino": "13:14",
+              "exact": 0.25,
+              "count": 3800
+            },
+            {
+              "domino": "19:20",
+              "exact": 0.25,
+              "count": 3795
+            },
+            {
+              "domino": "19:25",
+              "exact": 0.5,
+              "count": 2746
+            },
+            {
+              "domino": "26:27",
+              "exact": 0.125,
+              "count": 796
+            },
+            {
+              "domino": "26:32",
+              "exact": 0.125,
+              "count": 327
+            },
+            {
+              "domino": "27:33",
+              "exact": 0.125,
+              "count": 327
+            },
+            {
+              "domino": "20:26",
+              "exact": 0.25,
+              "count": 1623
+            },
+            {
+              "domino": "13:19",
+              "exact": 0.125,
+              "count": 1831
+            },
+            {
+              "domino": "9:15",
+              "exact": 0.25,
+              "count": 1614
+            },
+            {
+              "domino": "10:16",
+              "exact": 0.5,
+              "count": 2769
+            },
+            {
+              "domino": "7:13",
+              "exact": 0.5,
+              "count": 2741
+            },
+            {
+              "domino": "8:9",
+              "exact": 0.125,
+              "count": 820
+            },
+            {
+              "domino": "8:14",
+              "exact": 0.25,
+              "count": 1586
+            },
+            {
+              "domino": "2:8",
+              "exact": 0.125,
+              "count": 335
+            },
+            {
+              "domino": "3:9",
+              "exact": 0.125,
+              "count": 335
+            }
+          ],
+          "ms": 312
+        },
+        {
+          "order": 4,
+          "exactTilings": 1024,
+          "formula": "2^10",
+          "cells": 40,
+          "seeds": "'aztec-uniform-n4-<i>', i = 0..40959",
+          "invalidTilings": 0,
+          "dominoPositions": 64,
+          "draws": 40960,
+          "outcomes": 1024,
+          "df": 1023,
+          "chiSquare": 138442.40000000023,
+          "pValue": 0,
+          "missing": 20,
+          "maxOutcomeDeviation": 0.026953125,
+          "marginals": 64,
+          "maxMarginalDeviation": 0.339453125,
+          "maxMarginalZ": 148.90856394669404,
+          "bonferroniZCritical": 4.319687930921653,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.013346804615499216,
+          "passes": false,
+          "minCount": 0,
+          "maxCount": 1144,
+          "ms": 1257
+        }
+      ],
+      "caught": true
+    },
+    "noDestruction": {
+      "description": "destruction step removed",
+      "rows": [
+        {
+          "order": 3,
+          "exactTilings": 64,
+          "formula": "2^6",
+          "cells": 24,
+          "seeds": "'aztec-uniform-n3-<i>', i = 0..12799",
+          "invalidTilings": 3249,
+          "firstInvalidReason": "domino leaves the diamond",
+          "dominoPositions": 36,
+          "draws": 9551,
+          "outcomes": 64,
+          "df": 63,
+          "chiSquare": 3241.153282378809,
+          "pValue": 0,
+          "missing": 16,
+          "maxOutcomeDeviation": 0.015625,
+          "marginals": 36,
+          "maxMarginalDeviation": 0.08855093707465186,
+          "maxMarginalZ": 19.985588812059795,
+          "bonferroniZCritical": 4.190959065955414,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.02527834022709356,
+          "passes": false,
+          "tilingCounts": [
+            219,
+            180,
+            172,
+            223,
+            191,
+            209,
+            0,
+            0,
+            190,
+            226,
+            0,
+            0,
+            183,
+            197,
+            216,
+            212,
+            189,
+            190,
+            206,
+            181,
+            200,
+            220,
+            198,
+            202,
+            0,
+            0,
+            213,
+            211,
+            0,
+            0,
+            173,
+            224,
+            202,
+            219,
+            183,
+            191,
+            202,
+            196,
+            209,
+            197,
+            0,
+            0,
+            202,
+            187,
+            0,
+            0,
+            209,
+            201,
+            184,
+            196,
+            0,
+            0,
+            197,
+            184,
+            0,
+            0,
+            188,
+            197,
+            205,
+            209,
+            201,
+            192,
+            191,
+            184
+          ],
+          "placementProbabilities": [
+            {
+              "domino": "2:3",
+              "exact": 0.875,
+              "count": 7984
+            },
+            {
+              "domino": "7:8",
+              "exact": 0.5,
+              "count": 4825
+            },
+            {
+              "domino": "9:10",
+              "exact": 0.5,
+              "count": 4783
+            },
+            {
+              "domino": "12:13",
+              "exact": 0.125,
+              "count": 1594
+            },
+            {
+              "domino": "14:15",
+              "exact": 0.25,
+              "count": 3163
+            },
+            {
+              "domino": "16:17",
+              "exact": 0.125,
+              "count": 1589
+            },
+            {
+              "domino": "18:19",
+              "exact": 0.125,
+              "count": 1594
+            },
+            {
+              "domino": "20:21",
+              "exact": 0.25,
+              "count": 3176
+            },
+            {
+              "domino": "22:23",
+              "exact": 0.125,
+              "count": 1589
+            },
+            {
+              "domino": "25:26",
+              "exact": 0.5,
+              "count": 4775
+            },
+            {
+              "domino": "27:28",
+              "exact": 0.5,
+              "count": 4738
+            },
+            {
+              "domino": "32:33",
+              "exact": 0.875,
+              "count": 7962
+            },
+            {
+              "domino": "16:22",
+              "exact": 0.125,
+              "count": 1607
+            },
+            {
+              "domino": "17:23",
+              "exact": 0.875,
+              "count": 7962
+            },
+            {
+              "domino": "14:20",
+              "exact": 0.25,
+              "count": 3180
+            },
+            {
+              "domino": "15:16",
+              "exact": 0.25,
+              "count": 1587
+            },
+            {
+              "domino": "21:22",
+              "exact": 0.25,
+              "count": 1542
+            },
+            {
+              "domino": "21:27",
+              "exact": 0.25,
+              "count": 1634
+            },
+            {
+              "domino": "22:28",
+              "exact": 0.5,
+              "count": 4813
+            },
+            {
+              "domino": "15:21",
+              "exact": 0.25,
+              "count": 3199
+            },
+            {
+              "domino": "12:18",
+              "exact": 0.875,
+              "count": 7957
+            },
+            {
+              "domino": "13:14",
+              "exact": 0.25,
+              "count": 1648
+            },
+            {
+              "domino": "19:20",
+              "exact": 0.25,
+              "count": 1598
+            },
+            {
+              "domino": "19:25",
+              "exact": 0.5,
+              "count": 4776
+            },
+            {
+              "domino": "26:27",
+              "exact": 0.125,
+              "count": 1590
+            },
+            {
+              "domino": "26:32",
+              "exact": 0.125,
+              "count": 1589
+            },
+            {
+              "domino": "27:33",
+              "exact": 0.125,
+              "count": 1589
+            },
+            {
+              "domino": "20:26",
+              "exact": 0.25,
+              "count": 1597
+            },
+            {
+              "domino": "13:19",
+              "exact": 0.125,
+              "count": 1583
+            },
+            {
+              "domino": "9:15",
+              "exact": 0.25,
+              "count": 1602
+            },
+            {
+              "domino": "10:16",
+              "exact": 0.5,
+              "count": 4768
+            },
+            {
+              "domino": "7:13",
+              "exact": 0.5,
+              "count": 4726
+            },
+            {
+              "domino": "8:9",
+              "exact": 0.125,
+              "count": 1599
+            },
+            {
+              "domino": "8:14",
+              "exact": 0.25,
+              "count": 1560
+            },
+            {
+              "domino": "2:8",
+              "exact": 0.125,
+              "count": 1567
+            },
+            {
+              "domino": "3:9",
+              "exact": 0.125,
+              "count": 1567
+            }
+          ],
+          "ms": 479
+        },
+        {
+          "order": 4,
+          "exactTilings": 1024,
+          "formula": "2^10",
+          "cells": 40,
+          "seeds": "'aztec-uniform-n4-<i>', i = 0..40959",
+          "invalidTilings": 26830,
+          "firstInvalidReason": "domino leaves the diamond",
+          "dominoPositions": 64,
+          "draws": 14130,
+          "outcomes": 1024,
+          "df": 1023,
+          "chiSquare": 28178.665251238534,
+          "pValue": 0,
+          "missing": 672,
+          "maxOutcomeDeviation": 0.003269722001061571,
+          "marginals": 64,
+          "maxMarginalDeviation": 0.19896496815286624,
+          "maxMarginalZ": 51.0253903212964,
+          "bonferroniZCritical": 4.319687930921653,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.022724074054787942,
+          "passes": false,
+          "minCount": 0,
+          "maxCount": 60,
+          "ms": 1914
+        }
+      ],
+      "caught": true
+    },
+    "biasedBoundary": {
+      "uniform": {
+        "order": 160,
+        "seeds": 40,
+        "northSouthRadius": {
+          "mean": 0.6797656249999999,
+          "sd": 0.011255952396085754,
+          "se": 0.001779722340303036,
+          "n": 40,
+          "min": 0.65625,
+          "max": 0.709375
+        },
+        "eastWestRadius": {
+          "mean": 0.6809375000000001,
+          "sd": 0.009877048635275104,
+          "se": 0.001561698512386352,
+          "n": 40,
+          "min": 0.6625,
+          "max": 0.703125
+        },
+        "difference": {
+          "mean": -0.0011718750000000138,
+          "sd": 0.015866522759292713,
+          "se": 0.002508717523313225,
+          "n": 40,
+          "min": -0.046875,
+          "max": 0.018750000000000044
+        },
+        "differenceSigma": -0.4671211442140909,
+        "polarFraction": {
+          "mean": 0.26344720496894414,
+          "sd": 0.0067803282051557235,
+          "se": 0.0010720640205886755,
+          "n": 40,
+          "min": 0.2498835403726708,
+          "max": 0.27534937888198757
+        },
+        "tabFrozenFraction": {
+          "mean": 0.26344720496894414,
+          "sd": 0.0067803282051557235,
+          "se": 0.0010720640205886755,
+          "n": 40,
+          "min": 0.2498835403726708,
+          "max": 0.27534937888198757
+        }
+      },
+      "biased0.7": {
+        "order": 160,
+        "seeds": 40,
+        "northSouthRadius": {
+          "mean": 0.5233593749999998,
+          "sd": 0.011692411641059103,
+          "se": 0.001848732606300695,
+          "n": 40,
+          "min": 0.5,
+          "max": 0.54375
+        },
+        "eastWestRadius": {
+          "mean": 0.8151562499999999,
+          "sd": 0.010604476785047686,
+          "se": 0.0016767150017565247,
+          "n": 40,
+          "min": 0.79375,
+          "max": 0.8375
+        },
+        "difference": {
+          "mean": -0.29179687500000007,
+          "sd": 0.016348436751406653,
+          "se": 0.0025849148158824486,
+          "n": 40,
+          "min": -0.328125,
+          "max": -0.2593749999999999
+        },
+        "differenceSigma": -112.88452261835378,
+        "polarFraction": {
+          "mean": 0.32541149068322983,
+          "sd": 0.007247577213271124,
+          "se": 0.0011459425755936338,
+          "n": 40,
+          "min": 0.3109083850931677,
+          "max": 0.34281832298136644
+        },
+        "tabFrozenFraction": {
+          "mean": 0.32541149068322983,
+          "sd": 0.007247577213271124,
+          "se": 0.0011459425755936338,
+          "n": 40,
+          "min": 0.3109083850931677,
+          "max": 0.34281832298136644
+        }
+      }
+    }
+  },
+  "arctic": {
+    "orders": [
+      {
+        "order": 40,
+        "seeds": 400,
+        "seedPattern": "'aztec-arctic-n40-<i>'",
+        "cornerTypeMismatches": 0,
+        "frozenDefinitionMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.018663687842360985,
+          "rmsBar": 0.020871177754342177,
+          "ratio": 0.8942326140880128,
+          "ratio95": [
+            0.8362615414180561,
+            0.960905751157224
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 4.661150993442423
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.2801715098431193,
+          "correlationOpposite": 0.09174391149517439,
+          "spreadBarRatio": 0.6775659148436992,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
+        },
+        "northSouthMinusEastWest": {
+          "mean": 0.0004062499999999998,
+          "sd": 0.047627687088299335,
+          "se": 0.002381384354414967,
+          "n": 400,
+          "min": -0.125,
+          "max": 0.125
+        },
+        "ms": 1695
+      },
+      {
+        "order": 57,
+        "seeds": 400,
+        "seedPattern": "'aztec-arctic-n57-<i>'",
+        "cornerTypeMismatches": 0,
+        "frozenDefinitionMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.014080369221719723,
+          "rmsBar": 0.01593742316688552,
+          "ratio": 0.8834784064073578,
+          "ratio95": [
+            0.8262045046358242,
+            0.9493497199337156
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 4.461512168499606
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.23736581865033116,
+          "correlationOpposite": 0.050306153203946845,
+          "spreadBarRatio": 0.7104339001278187,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
+        },
+        "northSouthMinusEastWest": {
+          "mean": -0.0007456140350877202,
+          "sd": 0.03647583441577446,
+          "se": 0.0018237917207887234,
+          "n": 400,
+          "min": -0.10526315789473684,
+          "max": 0.10526315789473684
+        },
+        "ms": 3417
+      },
+      {
+        "order": 80,
+        "seeds": 400,
+        "seedPattern": "'aztec-arctic-n80-<i>'",
+        "cornerTypeMismatches": 0,
+        "frozenDefinitionMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.01145907315241668,
+          "rmsBar": 0.012798699206753831,
+          "ratio": 0.895331077580897,
+          "ratio95": [
+            0.8372887940134981,
+            0.9620861150481398
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 4.39077852074663
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.2267958315897756,
+          "correlationOpposite": 0.10551937031646234,
+          "spreadBarRatio": 0.7646952261609408,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
+        },
+        "northSouthMinusEastWest": {
+          "mean": 0.000859374999999999,
+          "sd": 0.030697556593504358,
+          "se": 0.0015348778296752179,
+          "n": 400,
+          "min": -0.0625,
+          "max": 0.075
+        },
+        "ms": 7537
+      },
+      {
+        "order": 113,
+        "seeds": 400,
+        "seedPattern": "'aztec-arctic-n113-<i>'",
+        "cornerTypeMismatches": 0,
+        "frozenDefinitionMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.008525920019894648,
+          "rmsBar": 0.010231422291164307,
+          "ratio": 0.833307410960595,
+          "ratio95": [
+            0.7792859810595205,
+            0.8954380225670925
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 4.388481704593361
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.2267646975680242,
+          "correlationOpposite": 0.07317762690907471,
+          "spreadBarRatio": 0.7412341531771524,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
+        },
+        "northSouthMinusEastWest": {
+          "mean": 0.0012721238938053106,
+          "sd": 0.023401085005509466,
+          "se": 0.0011700542502754733,
+          "n": 400,
+          "min": -0.07079646017699115,
+          "max": 0.0752212389380531
+        },
+        "ms": 17610
+      },
+      {
+        "order": 160,
+        "seeds": 300,
+        "seedPattern": "'aztec-arctic-n160-<i>'",
+        "cornerTypeMismatches": 0,
+        "frozenDefinitionMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.006857716452817,
+          "rmsBar": 0.007539562197009874,
+          "ratio": 0.9095642788830247,
+          "ratio95": [
+            0.8421399643874292,
+            0.9888153766033011
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 4.00978348037524
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.15139546228636283,
+          "correlationOpposite": 0.11603342691923159,
+          "spreadBarRatio": 0.874330208384816,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
+        },
+        "northSouthMinusEastWest": {
+          "mean": 0.0021979166666666657,
+          "sd": 0.018132419650568877,
+          "se": 0.0010468757366315202,
+          "n": 300,
+          "min": -0.05,
+          "max": 0.04375
+        },
+        "ms": 33181
+      },
+      {
+        "order": 226,
+        "seeds": 250,
+        "seedPattern": "'aztec-arctic-n226-<i>'",
+        "cornerTypeMismatches": 0,
+        "frozenDefinitionMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.005349848784130087,
+          "rmsBar": 0.0060168647019401495,
+          "ratio": 0.8891422774397799,
+          "ratio95": [
+            0.8174363704636282,
+            0.9747453131586662
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 3.9541163329102673
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.1050531664491712,
+          "correlationOpposite": 0.0317116165055382,
+          "spreadBarRatio": 0.8814479159159456,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
+        },
+        "northSouthMinusEastWest": {
+          "mean": -0.00011504424778761045,
+          "sd": 0.01320032738594589,
+          "se": 0.0008348620079897109,
+          "n": 250,
+          "min": -0.033185840707964605,
+          "max": 0.03761061946902655
+        },
+        "ms": 68055
+      },
+      {
+        "order": 320,
+        "seeds": 200,
+        "seedPattern": "'aztec-arctic-n320-<i>'",
+        "cornerTypeMismatches": 0,
+        "frozenDefinitionMismatches": 0,
+        "printedMismatches": 0,
+        "errorBarCalibration": {
+          "scatter": 0.004231105402763724,
+          "rmsBar": 0.004835175531635778,
+          "ratio": 0.8750675906345654,
+          "ratio95": [
+            0.7968911411924192,
+            0.9703842593000875
+          ],
+          "band": [
+            0.75,
+            1.33
+          ],
+          "meanTau": 3.938564741333017
+        },
+        "fourRegions": {
+          "correlationAdjacent": -0.06245128874503935,
+          "correlationOpposite": -0.05410410930531146,
+          "spreadBarRatio": 0.8800665323538481,
+          "note": "the spread of the four polar regions, the bar before this review, against the same scatter"
+        },
+        "northSouthMinusEastWest": {
+          "mean": -0.00036718750000000016,
+          "sd": 0.011960295918197346,
+          "se": 0.0008457206348755127,
+          "n": 200,
+          "min": -0.0359375,
+          "max": 0.0296875
+        },
+        "ms": 130847
+      }
+    ],
+    "polarFraction": {
+      "summary": [
+        {
+          "order": 40,
+          "seeds": 400,
+          "mean": 0.3256036585365855,
+          "sd": 0.018663687842360985,
+          "se": 0.0009331843921180492,
+          "deviation": 0.1110018219340338,
+          "deviationTimesN23": 1.298285185236243,
+          "sigmaFromExact": 118.94950544778497
+        },
+        {
+          "order": 57,
+          "seeds": 400,
+          "mean": 0.30501134301270416,
+          "sd": 0.014080369221719723,
+          "se": 0.0007040184610859862,
+          "deviation": 0.09040950641015244,
+          "deviationTimesN23": 1.3390516696220849,
+          "sigmaFromExact": 128.41922677807474
+        },
+        {
+          "order": 80,
+          "seeds": 400,
+          "mean": 0.2871913580246914,
+          "sd": 0.01145907315241668,
+          "se": 0.0005729536576208339,
+          "deviation": 0.0725895214221397,
+          "deviationTimesN23": 1.347722848281197,
+          "sigmaFromExact": 126.69353002049877
+        },
+        {
+          "order": 113,
+          "seeds": 400,
+          "mean": 0.27293976090669164,
+          "sd": 0.008525920019894648,
+          "se": 0.0004262960009947324,
+          "deviation": 0.05833792430413992,
+          "deviationTimesN23": 1.363546443470506,
+          "sigmaFromExact": 136.84839681351076
+        },
+        {
+          "order": 160,
+          "seeds": 300,
+          "mean": 0.26196726190476183,
+          "sd": 0.006857716452817,
+          "se": 0.00039593044400600206,
+          "deviation": 0.04736542530221011,
+          "deviationTimesN23": 1.3959657500787228,
+          "sigmaFromExact": 119.63067255695063
+        },
+        {
+          "order": 226,
+          "seeds": 250,
+          "mean": 0.25184959650695854,
+          "sd": 0.005349848784130087,
+          "se": 0.0003383541459066708,
+          "deviation": 0.03724775990440682,
+          "deviationTimesN23": 1.3819928155673953,
+          "sigmaFromExact": 110.08512930910258
+        },
+        {
+          "order": 320,
+          "seeds": 200,
+          "mean": 0.2443322624610592,
+          "sd": 0.004231105402763724,
+          "se": 0.00029918433222092674,
+          "deviation": 0.029730425858507492,
+          "deviationTimesN23": 1.3909166811983737,
+          "sigmaFromExact": 99.37160023658474
+        }
+      ],
+      "exact": 0.21460183660255172,
+      "three": {
+        "model": "q_inf + A n^-2/3 + B n^-1, all orders",
+        "orders": [
+          40,
+          57,
+          80,
+          113,
+          160,
+          226,
+          320
+        ],
+        "limit": 0.2126549752968936,
+        "limitSe": 0.001291046506838285,
+        "coefficients": [
+          0.2126549752968936,
+          1.6367436873421781,
+          -1.0681796387887705
+        ],
+        "chiSquare": 3.113434159956913,
+        "dof": 4,
+        "fitPValue": 0.5390251573266511,
+        "sigmaFromExact": -1.5079714753467,
+        "bootstrapReplicates": 1000
+      },
+      "two": {
+        "model": "q_inf + A n^-2/3, orders >= 113",
+        "orders": [
+          113,
+          160,
+          226,
+          320
+        ],
+        "limit": 0.21557429807939435,
+        "limitSe": 0.0007030332992110338,
+        "coefficients": [
+          0.21557429807939435,
+          1.3494900191813397
+        ],
+        "chiSquare": 3.2542894620424225,
+        "dof": 2,
+        "fitPValue": 0.19648980518651404,
+        "sigmaFromExact": 1.3832367228322695,
+        "bootstrapReplicates": 1000
+      }
+    },
+    "axisRadius": {
+      "summary": [
+        {
+          "order": 40,
+          "seeds": 400,
+          "mean": 0.6544218750000002,
+          "sd": 0.020595709768944415,
+          "se": 0.001029785488447221,
+          "deviation": -0.05268490618654742,
+          "deviationTimesN23": -0.6162064009021816,
+          "sigmaFromExact": -51.16104934241133
+        },
+        {
+          "order": 57,
+          "seeds": 400,
+          "mean": 0.6609429824561412,
+          "sd": 0.016154342788911296,
+          "se": 0.0008077171394455648,
+          "deviation": -0.046163798730406325,
+          "deviationTimesN23": -0.6837302206431131,
+          "sigmaFromExact": -57.153422251376504
+        },
+        {
+          "order": 80,
+          "seeds": 400,
+          "mean": 0.6693984375,
+          "sd": 0.012581751678894594,
+          "se": 0.0006290875839447297,
+          "deviation": -0.03770834368654752,
+          "deviationTimesN23": -0.7001065079580475,
+          "sigmaFromExact": -59.94132557838003
+        },
+        {
+          "order": 113,
+          "seeds": 400,
+          "mean": 0.6765542035398251,
+          "sd": 0.010267331114046983,
+          "se": 0.0005133665557023492,
+          "deviation": -0.03055257764672248,
+          "deviationTimesN23": -0.7141128020231694,
+          "sigmaFromExact": -59.514156711908825
+        },
+        {
+          "order": 160,
+          "seeds": 300,
+          "mean": 0.6808281250000002,
+          "sd": 0.008197121897647448,
+          "se": 0.0004732610534186929,
+          "deviation": -0.026278656186547344,
+          "deviationTimesN23": -0.7744911770654517,
+          "sigmaFromExact": -55.52676687996694
+        },
+        {
+          "order": 226,
+          "seeds": 250,
+          "mean": 0.6865619469026552,
+          "sd": 0.006482362898397126,
+          "se": 0.00040998062757411155,
+          "deviation": -0.02054483428389242,
+          "deviationTimesN23": -0.7622690183310288,
+          "sigmaFromExact": -50.1117196816295
+        },
+        {
+          "order": 320,
+          "seeds": 200,
+          "mean": 0.69067578125,
+          "sd": 0.005309148955576443,
+          "se": 0.0003754135228817579,
+          "deviation": -0.01643099993654762,
+          "deviationTimesN23": -0.7687125643366352,
+          "sigmaFromExact": -43.76773593668017
+        }
+      ],
+      "exact": 0.7071067811865476,
+      "three": {
+        "model": "q_inf + A n^-2/3 + B n^-1, all orders",
+        "orders": [
+          40,
+          57,
+          80,
+          113,
+          160,
+          226,
+          320
+        ],
+        "limit": 0.7097344340484872,
+        "limitSe": 0.001581003558194947,
+        "coefficients": [
+          0.7097344340484872,
+          -1.1330257053794262,
+          1.6402648904955532
+        ],
+        "chiSquare": 6.7866325602239,
+        "dof": 4,
+        "fitPValue": 0.14760257497666207,
+        "sigmaFromExact": 1.662015779989574,
+        "bootstrapReplicates": 1000
+      },
+      "two": {
+        "model": "q_inf + A n^-2/3, orders >= 113",
+        "orders": [
+          113,
+          160,
+          226,
+          320
+        ],
+        "limit": 0.7049190753752939,
+        "limitSe": 0.0008407888399290621,
+        "coefficients": [
+          0.7049190753752939,
+          -0.6798268779669709
+        ],
+        "chiSquare": 7.250361507332982,
+        "dof": 2,
+        "fitPValue": 0.026644280849615197,
+        "sigmaFromExact": -2.601968184352082,
+        "bootstrapReplicates": 1000
+      }
+    },
+    "tabFrozenFraction": {
+      "summary": [
+        {
+          "order": 40,
+          "seeds": 400,
+          "mean": 0.3256036585365855,
+          "sd": 0.018663687842360985,
+          "se": 0.0009331843921180492,
+          "deviation": 0.1110018219340338,
+          "deviationTimesN23": 1.298285185236243,
+          "sigmaFromExact": 118.94950544778497
+        },
+        {
+          "order": 57,
+          "seeds": 400,
+          "mean": 0.30501134301270416,
+          "sd": 0.014080369221719723,
+          "se": 0.0007040184610859862,
+          "deviation": 0.09040950641015244,
+          "deviationTimesN23": 1.3390516696220849,
+          "sigmaFromExact": 128.41922677807474
+        },
+        {
+          "order": 80,
+          "seeds": 400,
+          "mean": 0.2871913580246914,
+          "sd": 0.01145907315241668,
+          "se": 0.0005729536576208339,
+          "deviation": 0.0725895214221397,
+          "deviationTimesN23": 1.347722848281197,
+          "sigmaFromExact": 126.69353002049877
+        },
+        {
+          "order": 113,
+          "seeds": 400,
+          "mean": 0.27293976090669164,
+          "sd": 0.008525920019894648,
+          "se": 0.0004262960009947324,
+          "deviation": 0.05833792430413992,
+          "deviationTimesN23": 1.363546443470506,
+          "sigmaFromExact": 136.84839681351076
+        },
+        {
+          "order": 160,
+          "seeds": 300,
+          "mean": 0.26196726190476183,
+          "sd": 0.006857716452817,
+          "se": 0.00039593044400600206,
+          "deviation": 0.04736542530221011,
+          "deviationTimesN23": 1.3959657500787228,
+          "sigmaFromExact": 119.63067255695063
+        },
+        {
+          "order": 226,
+          "seeds": 250,
+          "mean": 0.25184959650695854,
+          "sd": 0.005349848784130087,
+          "se": 0.0003383541459066708,
+          "deviation": 0.03724775990440682,
+          "deviationTimesN23": 1.3819928155673953,
+          "sigmaFromExact": 110.08512930910258
+        },
+        {
+          "order": 320,
+          "seeds": 200,
+          "mean": 0.2443322624610592,
+          "sd": 0.004231105402763724,
+          "se": 0.00029918433222092674,
+          "deviation": 0.029730425858507492,
+          "deviationTimesN23": 1.3909166811983737,
+          "sigmaFromExact": 99.37160023658474
+        }
+      ],
+      "exact": 0.21460183660255172,
+      "three": {
+        "model": "q_inf + A n^-2/3 + B n^-1, all orders",
+        "orders": [
+          40,
+          57,
+          80,
+          113,
+          160,
+          226,
+          320
+        ],
+        "limit": 0.2126549752968936,
+        "limitSe": 0.0013354315228456192,
+        "coefficients": [
+          0.2126549752968936,
+          1.6367436873421781,
+          -1.0681796387887705
+        ],
+        "chiSquare": 3.113434159956913,
+        "dof": 4,
+        "fitPValue": 0.5390251573266511,
+        "sigmaFromExact": -1.457851842159335,
+        "bootstrapReplicates": 1000
+      },
+      "two": {
+        "model": "q_inf + A n^-2/3, orders >= 113",
+        "orders": [
+          113,
+          160,
+          226,
+          320
+        ],
+        "limit": 0.21557429807939435,
+        "limitSe": 0.0007006631890012641,
+        "coefficients": [
+          0.21557429807939435,
+          1.3494900191813397
+        ],
+        "chiSquare": 3.2542894620424225,
+        "dof": 2,
+        "fitPValue": 0.19648980518651404,
+        "sigmaFromExact": 1.3879157519731984,
+        "bootstrapReplicates": 1000
+      }
+    },
+    "axisFluctuation": {
+      "orders": [
+        40,
+        57,
+        80,
+        113,
+        160,
+        226,
+        320
+      ],
+      "pooledAxisSd": [
+        1.725463052157565,
+        1.9416116732560893,
+        2.254014449898419,
+        2.45315094549918,
+        2.6546550477452837,
+        3.0018903013811307,
+        3.6266678713725944
+      ],
+      "exponent": 0.33691963699819627,
+      "exponentSe": 0.010694147250976335,
+      "reference": 0.3333333333333333,
+      "sigmaFromReference": 0.33535199962161916,
+      "bootstrapReplicates": 1000
+    }
+  },
+  "checks": {
+    "enumerationMatchesFormula": true,
+    "uniformityPasses": true,
+    "biasedCoinFailsUniformity": true,
+    "missingDestructionRejected": true,
+    "frozenFlagsMatchDefinitionOnEveryPlate": true,
+    "printedValueAndBarMatch": true,
+    "tabPolarLimitWithin3Sigma": true,
+    "printedBarCalibrated": true,
+    "cornerTypesAsExpected": true,
+    "polarLimitWithin3Sigma": true,
+    "axisLimitWithin3Sigma": true,
+    "fourfoldSymmetryWithin3Sigma": true,
+    "biasMovesBoundaryOver5Sigma": true
+  },
+  "print": {
+    "cases": [
+      {
+        "seed": "aztec-print-0",
+        "parameters": {
+          "n": 8,
+          "fill": "type",
+          "shift": 0,
+          "inset": 0.12,
+          "strokeWidth": 1,
+          "strokeColor": 3,
+          "circle": false,
+          "margin": 0.05,
+          "grain": 0,
+          "seed": "aztec-print-0",
+          "palette": [
+            "#D94F30",
+            "#F2A541",
+            "#3C6E71",
+            "#284B63",
+            "#FAF3E3"
+          ],
+          "bg": "#F5E6C8",
+          "v": 4
+        },
+        "order": 8,
+        "dominoes": 72,
+        "frozenDominoes": 36,
+        "gridSha256": "a8fc017ab7892477b54e75d3b602e2e5145e84155bc1e9a590ab4d0961d11a68",
+        "browserEqualsNode": true,
+        "chunkingPreserved": true,
+        "frozenMatchesDefinition": true,
+        "validTiling": true,
+        "modulePng": {
+          "width": 2400,
+          "height": 2400,
+          "channelsChecked": 23040000,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 242244,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rects": 72,
+          "coordinates": 288,
+          "fillsMatched": 72,
+          "maxCoordinateError": 0
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "fill of rect 5",
+            "fill of rect 6",
+            "fill of rect 7"
+          ]
+        },
+        "shellExport": {
+          "width": 2400,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rects": 72,
+            "coordinates": 288,
+            "fillsMatched": 72,
+            "maxCoordinateError": 0
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "aztec-print-1",
+        "parameters": {
+          "n": 28,
+          "fill": "orient",
+          "shift": 2,
+          "inset": 0,
+          "strokeWidth": 0,
+          "strokeColor": 3,
+          "circle": true,
+          "margin": 0.08,
+          "grain": 0,
+          "seed": "aztec-print-1",
+          "palette": [
+            "#C4472B",
+            "#E8A33C",
+            "#2E4A62",
+            "#1E1B18",
+            "#FFFBF2"
+          ],
+          "bg": "#F1E8D8",
+          "v": 4
+        },
+        "order": 28,
+        "dominoes": 812,
+        "frozenDominoes": 276,
+        "gridSha256": "6e783db1f58114edb3ea8f5d9967156ddaf90ab2b498d17878c6876208ec6088",
+        "browserEqualsNode": true,
+        "chunkingPreserved": true,
+        "frozenMatchesDefinition": true,
+        "validTiling": true,
+        "modulePng": {
+          "width": 2400,
+          "height": 2400,
+          "channelsChecked": 23040000,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 99001,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rects": 812,
+          "coordinates": 3252,
+          "fillsMatched": 812,
+          "maxCoordinateError": 0
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "fill of rect 49",
+            "fill of rect 50",
+            "fill of rect 53"
+          ]
+        },
+        "shellExport": {
+          "width": 2400,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rects": 812,
+            "coordinates": 3252,
+            "fillsMatched": 812,
+            "maxCoordinateError": 0
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "aztec-print-2",
+        "parameters": {
+          "n": 60,
+          "fill": "frozen",
+          "shift": 1,
+          "inset": 0.03,
+          "strokeWidth": 0.8,
+          "strokeColor": 4,
+          "circle": true,
+          "margin": 0.04,
+          "grain": 0,
+          "seed": "aztec-print-2",
+          "palette": [
+            "#2A6F6B",
+            "#63A69F",
+            "#B8860B",
+            "#8C3B2F",
+            "#1B2A2A"
+          ],
+          "bg": "#EFEADF",
+          "v": 4
+        },
+        "order": 60,
+        "dominoes": 3660,
+        "frozenDominoes": 1145,
+        "gridSha256": "d604dabdb86177efd940b8fddd94e1c76dd0fe999354b20b627adc12fad83ecf",
+        "browserEqualsNode": true,
+        "chunkingPreserved": true,
+        "frozenMatchesDefinition": true,
+        "validTiling": true,
+        "modulePng": {
+          "width": 2400,
+          "height": 2400,
+          "channelsChecked": 23040000,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 1087417,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rects": 3660,
+          "coordinates": 14644,
+          "fillsMatched": 3660,
+          "maxCoordinateError": 0.0040000000000048885
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "fill of rect 142",
+            "fill of rect 143",
+            "fill of rect 160"
+          ]
+        },
+        "shellExport": {
+          "width": 2400,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rects": 3660,
+            "coordinates": 14644,
+            "fillsMatched": 3660,
+            "maxCoordinateError": 0.0040000000000048885
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "aztec-print-3",
+        "parameters": {
+          "n": 120,
+          "fill": "type",
+          "shift": 0,
+          "inset": 0.08,
+          "strokeWidth": 0,
+          "strokeColor": 3,
+          "circle": false,
+          "margin": 0.05,
+          "grain": 0,
+          "seed": "aztec-print-3",
+          "palette": [
+            "#C4472B",
+            "#E8A33C",
+            "#2E4A62",
+            "#1E1B18",
+            "#FFFBF2"
+          ],
+          "bg": "#F1E8D8",
+          "v": 4
+        },
+        "order": 120,
+        "dominoes": 14520,
+        "frozenDominoes": 3859,
+        "gridSha256": "43700b1f5e5d3ef2a3f4daeae0d0b7e1fabdb825b8c0992e5b5f9f07ac2b5db4",
+        "browserEqualsNode": true,
+        "chunkingPreserved": true,
+        "frozenMatchesDefinition": true,
+        "validTiling": true,
+        "modulePng": {
+          "width": 2400,
+          "height": 2400,
+          "channelsChecked": 23040000,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 1296657,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rects": 14520,
+          "coordinates": 58080,
+          "fillsMatched": 14520,
+          "maxCoordinateError": 8.881784197001252e-16
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "fill of rect 731",
+            "fill of rect 732",
+            "fill of rect 758"
+          ]
+        },
+        "shellExport": {
+          "width": 2400,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rects": 14520,
+            "coordinates": 58080,
+            "fillsMatched": 14520,
+            "maxCoordinateError": 8.881784197001252e-16
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "aztec-print-4",
+        "parameters": {
+          "n": 180,
+          "fill": "frozen",
+          "shift": 3,
+          "inset": 0.03,
+          "strokeWidth": 0,
+          "strokeColor": 3,
+          "circle": true,
+          "margin": 0.06,
+          "grain": 0,
+          "seed": "aztec-print-4",
+          "palette": [
+            "#1A1A1A",
+            "#4A4A4A",
+            "#8C8C8C",
+            "#C8C4BB",
+            "#E63B2E"
+          ],
+          "bg": "#E9E7E2",
+          "v": 4
+        },
+        "order": 180,
+        "dominoes": 32580,
+        "frozenDominoes": 8186,
+        "gridSha256": "e27c039234d3c5bdf2622cd1b4a9bb367ab3d6e447f5a85aeb7d4a073595750e",
+        "browserEqualsNode": true,
+        "chunkingPreserved": true,
+        "frozenMatchesDefinition": true,
+        "validTiling": true,
+        "modulePng": {
+          "width": 2400,
+          "height": 2400,
+          "channelsChecked": 23040000,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 1925766,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rects": 32580,
+          "coordinates": 130324,
+          "fillsMatched": 32580,
+          "maxCoordinateError": 0.004666666666666153
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "fill of rect 1505",
+            "fill of rect 1506",
+            "fill of rect 1517"
+          ]
+        },
+        "shellExport": {
+          "width": 2400,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rects": 32580,
+            "coordinates": 130324,
+            "fillsMatched": 32580,
+            "maxCoordinateError": 0.004666666666666153
+          }
+        },
+        "statePreserved": true
+      }
+    ],
+    "chromium": "141.0.7390.37"
+  },
+  "environment": {
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
+    "platform": "linux",
+    "cpus": 4,
+    "seconds": 336
+  },
+  "passed": true
+}

@@ -1,5 +1,6 @@
 // Actual GPU coarsening measurements; analysis is independently implemented in Python.
 // node tools/cahn-scaling.js [--write | --controls]
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto'), assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '..'), hash = v => crypto.createHash('sha256').update(v).digest('hex');
 const protocol = {
@@ -82,7 +83,7 @@ if (process.argv.includes('--controls')) { console.log(JSON.stringify(controls, 
   const shared = fs.readFileSync(path.join(root, 'src/shared/engine.js'), 'utf8');
   const source = fs.readFileSync(path.join(root, 'src/modules/pde.js'), 'utf8');
   const expose = source.slice(0, source.indexOf('  Studio.register({')) + '\nwindow.cahnScalingShaders={MU_CH,STEP_CH,chMaxDt};})();';
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   const runs = [], start = Date.now(); let gpuControls, renderer;
   try {
     const page = await browser.newPage();

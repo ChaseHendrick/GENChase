@@ -1,5 +1,6 @@
 // Actual-instance regression tests for potential bounds, time levels and hard-wall projection.
 // Setup: Playwright + Chromium, as described in BUILDING.md.
+const { glArgs } = require('./lib/gl-args');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');
 (async()=>{
@@ -30,7 +31,7 @@ const {chromium}=require('playwright');
         return {values,backend};
       },
 ${marker}`);
- const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+ const browser=await chromium.launch({args:glArgs()});
  const rows=[];
  try{
   for(const fixture of ['well-corrected','well-retired-bound','dt-edit','hard-wall','hard-wall-stationary']){

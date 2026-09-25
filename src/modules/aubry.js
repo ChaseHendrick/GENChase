@@ -6,15 +6,16 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // The Grid slider and sanitize() read the same bounds, so no slider position is clamped away.
+  const GRID_MIN = 96, GRID_MAX = 192;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Chain', 'lambda', 'Potential λ', GEOM, 0, 4.5, 0.05, f2, { hint: 'Self-dual at λ = 2. Below, extended. Above, localised. No randomness is required.' }),
     RANGE('Chain', 'relax', 'Relax steps', GEOM, 40, 300, 10, v => v + ''),
@@ -32,14 +33,14 @@
   };
 
   function surprise(rng) { return { lambda: rng.range(0.4, 3.8) }; }
-  function sanitize(s) { s.grid = Math.max(64, Math.min(192, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'aubry', name: 'Aubry–André', tab: 'Aubry',
     subtitle: 'localisation without disorder · 1980',
     order: 56,
     equation: 'ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localised for λ>2',
     credit: 'S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 2 every eigenstate localises. The model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 2. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.',
-    blurb: 'Anderson needed randomness. Aubry and André did not: a cosine at an irrational period is enough, and the transition is sharp. Below λ = 2 the ground state is extended; above, it sits in a well. The status line reports the inverse participation ratio against 1/N, and whether λ sits past the dual point 2.',
+    blurb: 'Anderson needed randomness. Aubry and André did not: a cosine at an irrational period is enough, and the transition is sharp. Below λ = 2 the ground state is extended; above, it sits in a well. The status line reports the inverse participation ratio against 1/N.',
     schema: SCHEMA, defaults: DEFAULTS, presets: PRESETS, closedGroups: ['Picture'],
     hints: { Chain: 'The golden ratio keeps the potential from ever repeating. λ = 2 is the self-dual critical line.' },
     palette: true, defaultPalette: 'nightshade', surprise, sanitize,
@@ -113,7 +114,17 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>λ <b>' + f2(extra) + '</b> · dual 2</span><span>IPR <b>' + f3(metric) + '</b> · 1/N ' + f3(1 / W) + '</span><span>' + (extra > 2 ? (metric > 4 / W ? 'localised' : 'finite-size') : 'extended') + '</span>'); }
+      // λ is printed as a setting only. With unit hopping and the potential 2λ cos(2πβn) implemented
+      // here the self-dual point is λ = 1, not the 2 this line used to print, and the localised or
+      // extended verdict keyed on λ > 2 went with it: an IPR from one unconverged relaxation cannot
+      // classify the state on its own (λ = 0.8 reads about 5/N). Reconciling the convention with the
+      // primary model is open in validation/MATERIAL-WAVES.md. One Gaussian start vector relaxed for a
+      // fixed number of steps gives no honest error bar on the IPR from one plate.
+      function status() {
+        host.setStatus('<span>λ <b>' + f2(extra) + '</b></span>' +
+          U.stats.compare({ label: 'IPR', measured: metric, expected: 1 / W, reference: 'uniform state', basis: 'sampled',
+            pending: 'one start vector, relaxation not converged' }));
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

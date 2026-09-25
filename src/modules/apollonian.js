@@ -13,8 +13,10 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // The Grid slider and sanitize() read the same bounds, so no slider position is clamped away.
+  const GRID_MIN = 128, GRID_MAX = 224;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Pack', 'depth', 'Generations', GEOM, 3, 10, 1, v => v + ''),
     { group: 'Pack', key: 'kind', label: 'Color', type: 'seg', kind: GEOM, options: [['gen', 'Generation'], ['k', 'Curvature'], ['fill', 'Fill']] },
@@ -32,7 +34,7 @@
   };
 
   function surprise(rng) { return { depth: rng.int(5, 9), kind: rng.pick(['gen','k','fill']) }; }
-  function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
   // Integer curvature-center coordinates; reflection changes one tangent circle.
   // Initial unit-disk Descartes quadruple has curvatures (-1,2,2,3).
   function apollonianPacking(depth, maxCurvature=160, maxCircles=2000) {

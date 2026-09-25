@@ -1,0 +1,3716 @@
+{
+  "date": "2026-09-24",
+  "tool": "tools/lozenge-science.js",
+  "sourceSha256": "8d0b74da1421a27ed96ab181bdec73c7916f555be2864d0fa125052a62dcfbb1",
+  "engineSha256": "ab2b5e7b2547701f593054b32f19c75a40c1cc066e48dd2f7105d316d60b4294",
+  "scope": "Coupling from the past as implemented in src/modules/lozenge.js (makeJob, runJob, sweep, buildTiling, corners, frozenRim, classify, measureArctic, ellipseOf, macmahonLog10, samplerSelfTest), run from the unmodified source. Exhaustive enumeration of tilings and plane partitions up to 4x4x4 with sampled frequencies on four boxes and the volume law on 4x4x4; the rim-connected frozen regions, arctic radius and free area over independent seeds on seven regular hexagons (12 to 48) and a skewed 3:5:6 family at four sizes, extrapolated in the size; seven complete rendered recipes, one of them an old (v3) recipe on the local test, with every SVG rhombus and curve point, every PNG byte and the shell vector RIP checked.",
+  "references": {
+    "sampler": "J. Propp and D. Wilson, Random Structures and Algorithms 9, 223 (1996): monotone coupling from the past returns an exact draw from the stationary measure.",
+    "count": "P. MacMahon, Phil. Trans. R. Soc. A 211, 345 (1912): prod (i+j+k-1)/(i+j+k-2) boxed plane partitions.",
+    "limitShape": "H. Cohn, M. Larsen and J. Propp, New York J. Math. 4, 137 (1998): the frozen regions converge to the complement of the ellipse inscribed in the hexagon and tangent to its six sides.",
+    "frozenRegions": "A rhombus is frozen when a chain of edge-adjacent rhombi of its own orientation joins it to the rim of the hexagon: the lozenge analogue, adopted here, of the polar regions of W. Jockusch, J. Propp and P. Shor (1998) for the Aztec diamond as K. Johansson, Ann. Probab. 33, 1 (2005), arXiv:math/0306216, states them. It is not quoted from Cohn, Larsen and Propp.",
+    "fluctuations": "The n^(1/3) scale of the frozen boundary is K. Johansson, Ann. Probab. 33, 1 (2005), for the Aztec diamond; for the hexagon it is assumed by analogy, used only to choose the finite-size form, and measured here through the depth of the frozen corners."
+  },
+  "counting": {
+    "rows": [
+      {
+        "box": [
+          2,
+          2,
+          2
+        ],
+        "triangles": 24,
+        "directTilings": 20,
+        "planePartitions": 20,
+        "macmahon": "20",
+        "moduleLog10": 1.3010299956639813,
+        "exactLog10": 1.3010299956639813,
+        "log10Error": 0,
+        "drawnTilingsDistinctAndInEnumeration": true,
+        "ms": 10
+      },
+      {
+        "box": [
+          2,
+          2,
+          3
+        ],
+        "triangles": 32,
+        "directTilings": 50,
+        "planePartitions": 50,
+        "macmahon": "50",
+        "moduleLog10": 1.698970004336019,
+        "exactLog10": 1.6989700043360187,
+        "log10Error": 2.220446049250313e-16,
+        "drawnTilingsDistinctAndInEnumeration": true,
+        "ms": 11
+      },
+      {
+        "box": [
+          2,
+          3,
+          4
+        ],
+        "triangles": 52,
+        "directTilings": 490,
+        "planePartitions": 490,
+        "macmahon": "490",
+        "moduleLog10": 2.690196080028513,
+        "exactLog10": 2.690196080028514,
+        "log10Error": 8.881784197001252e-16,
+        "drawnTilingsDistinctAndInEnumeration": true,
+        "ms": 53
+      },
+      {
+        "box": [
+          3,
+          3,
+          3
+        ],
+        "triangles": 54,
+        "directTilings": 980,
+        "planePartitions": 980,
+        "macmahon": "980",
+        "moduleLog10": 2.9912260756924933,
+        "exactLog10": 2.991226075692495,
+        "log10Error": 1.7763568394002505e-15,
+        "drawnTilingsDistinctAndInEnumeration": true,
+        "ms": 48
+      },
+      {
+        "box": [
+          4,
+          4,
+          4
+        ],
+        "triangles": 96,
+        "directTilings": 232848,
+        "planePartitions": 232848,
+        "macmahon": "232848",
+        "moduleLog10": 5.367072512001649,
+        "exactLog10": 5.367072512001651,
+        "log10Error": 1.7763568394002505e-15,
+        "drawnTilingsDistinctAndInEnumeration": true,
+        "ms": 11717
+      }
+    ]
+  },
+  "ellipse": {
+    "rows": [
+      {
+        "box": [
+          11,
+          11,
+          11
+        ],
+        "relativeMatrixError": 1.5659344038790085e-16,
+        "centerError": 2.220446049250313e-16,
+        "tangencyResidual": 1.4210854715202004e-14,
+        "predictedFreeArea": 0.9068996821171089,
+        "independentFreeArea": 0.9068996821171089,
+        "freeAreaError": 0
+      },
+      {
+        "box": [
+          24,
+          24,
+          24
+        ],
+        "relativeMatrixError": 2.631639762074445e-16,
+        "centerError": 0,
+        "tangencyResidual": 5.684341886080802e-14,
+        "predictedFreeArea": 0.9068996821171089,
+        "independentFreeArea": 0.9068996821171087,
+        "freeAreaError": 2.220446049250313e-16
+      },
+      {
+        "box": [
+          32,
+          32,
+          32
+        ],
+        "relativeMatrixError": 2.9605947323337506e-16,
+        "centerError": 8.881784197001252e-16,
+        "tangencyResidual": 1.1368683772161603e-13,
+        "predictedFreeArea": 0.9068996821171089,
+        "independentFreeArea": 0.9068996821171088,
+        "freeAreaError": 1.1102230246251565e-16
+      },
+      {
+        "box": [
+          48,
+          48,
+          48
+        ],
+        "relativeMatrixError": 2.631639762074445e-16,
+        "centerError": 0,
+        "tangencyResidual": 2.2737367544323206e-13,
+        "predictedFreeArea": 0.9068996821171089,
+        "independentFreeArea": 0.9068996821171087,
+        "freeAreaError": 2.220446049250313e-16
+      },
+      {
+        "box": [
+          24,
+          40,
+          46
+        ],
+        "relativeMatrixError": 1.3312276079814523e-16,
+        "centerError": 8.881784197001252e-16,
+        "tangencyResidual": 2.2737367544323206e-13,
+        "predictedFreeArea": 0.8867903182969252,
+        "independentFreeArea": 0.8867903182969252,
+        "freeAreaError": 0
+      },
+      {
+        "box": [
+          20,
+          20,
+          40
+        ],
+        "relativeMatrixError": 7.105427357601002e-17,
+        "centerError": 0,
+        "tangencyResidual": 0,
+        "predictedFreeArea": 0.8885765876316734,
+        "independentFreeArea": 0.8885765876316732,
+        "freeAreaError": 1.1102230246251565e-16
+      },
+      {
+        "box": [
+          48,
+          48,
+          8
+        ],
+        "relativeMatrixError": 1.3158198810372225e-16,
+        "centerError": 0,
+        "tangencyResidual": 2.2737367544323206e-13,
+        "predictedFreeArea": 0.707948337446186,
+        "independentFreeArea": 0.7079483374461858,
+        "freeAreaError": 2.220446049250313e-16
+      },
+      {
+        "box": [
+          16,
+          16,
+          48
+        ],
+        "relativeMatrixError": 1.1842378929335e-16,
+        "centerError": 0,
+        "tangencyResidual": 1.1368683772161603e-13,
+        "predictedFreeArea": 0.869095430565774,
+        "independentFreeArea": 0.8690954305657739,
+        "freeAreaError": 1.1102230246251565e-16
+      },
+      {
+        "box": [
+          3,
+          5,
+          7
+        ],
+        "relativeMatrixError": 1.6758083390568402e-16,
+        "centerError": 2.220446049250313e-16,
+        "tangencyResidual": 7.105427357601002e-15,
+        "predictedFreeArea": 0.8780147410633184,
+        "independentFreeArea": 0.8780147410633184,
+        "freeAreaError": 0
+      }
+    ],
+    "ok": true
+  },
+  "uniformity": {
+    "alpha": 0.001,
+    "rows": [
+      {
+        "box": [
+          2,
+          2,
+          2
+        ],
+        "tilings": 20,
+        "seeds": "'lozenge-uniform-2x2x2-<i>', i = 0..7999",
+        "rhombusPositions": 30,
+        "draws": 8000,
+        "outcomes": 20,
+        "df": 19,
+        "chiSquare": 23.785,
+        "pValue": 0.2045291649240587,
+        "missing": 0,
+        "maxOutcomeDeviation": 0.006875000000000006,
+        "marginals": 30,
+        "maxMarginalDeviation": 0.008750000000000036,
+        "maxMarginalZ": 1.597524126056741,
+        "bonferroniZCritical": 4.149409984614891,
+        "simultaneousHoeffdingAlpha": 0.001,
+        "hoeffdingBound": 0.026824575328616842,
+        "passes": true,
+        "tilingCounts": [
+          408,
+          365,
+          426,
+          436,
+          390,
+          425,
+          402,
+          382,
+          430,
+          345,
+          423,
+          392,
+          409,
+          389,
+          395,
+          398,
+          393,
+          392,
+          387,
+          413
+        ],
+        "ms": 32
+      },
+      {
+        "box": [
+          2,
+          2,
+          3
+        ],
+        "tilings": 50,
+        "seeds": "'lozenge-uniform-2x2x3-<i>', i = 0..9999",
+        "rhombusPositions": 41,
+        "draws": 10000,
+        "outcomes": 50,
+        "df": 49,
+        "chiSquare": 53.219999999999985,
+        "pValue": 0.31505690508345907,
+        "missing": 0,
+        "maxOutcomeDeviation": 0.002999999999999999,
+        "marginals": 41,
+        "maxMarginalDeviation": 0.007399999999999962,
+        "maxMarginalZ": 1.7000000000000002,
+        "bonferroniZCritical": 4.220369295055659,
+        "simultaneousHoeffdingAlpha": 0.001,
+        "hoeffdingBound": 0.02460869964672954,
+        "passes": true,
+        "tilingCounts": [
+          188,
+          193,
+          200,
+          205,
+          190,
+          174,
+          187,
+          180,
+          207,
+          220,
+          181,
+          211,
+          229,
+          193,
+          194,
+          229,
+          199,
+          210,
+          187,
+          201,
+          176,
+          188,
+          207,
+          207,
+          173,
+          194,
+          230,
+          197,
+          215,
+          225,
+          191,
+          204,
+          187,
+          214,
+          207,
+          190,
+          199,
+          201,
+          181,
+          189,
+          192,
+          225,
+          206,
+          192,
+          200,
+          208,
+          218,
+          193,
+          193,
+          220
+        ],
+        "ms": 24
+      },
+      {
+        "box": [
+          2,
+          3,
+          4
+        ],
+        "tilings": 490,
+        "seeds": "'lozenge-uniform-2x3x4-<i>', i = 0..19599",
+        "rhombusPositions": 69,
+        "draws": 19600,
+        "outcomes": 490,
+        "df": 489,
+        "chiSquare": 486.44999999999993,
+        "pValue": 0.5240628177720519,
+        "missing": 0,
+        "maxOutcomeDeviation": 0.0009183673469387757,
+        "marginals": 69,
+        "maxMarginalDeviation": 0.007959183673469428,
+        "maxMarginalZ": 2.306118344357434,
+        "bonferroniZCritical": 4.336259955641123,
+        "simultaneousHoeffdingAlpha": 0.001,
+        "hoeffdingBound": 0.018848924029201283,
+        "passes": true,
+        "minCount": 22,
+        "maxCount": 57,
+        "ms": 93
+      },
+      {
+        "box": [
+          3,
+          3,
+          3
+        ],
+        "tilings": 980,
+        "seeds": "'lozenge-uniform-3x3x3-<i>', i = 0..39199",
+        "rhombusPositions": 72,
+        "draws": 39200,
+        "outcomes": 980,
+        "df": 979,
+        "chiSquare": 1066.75,
+        "pValue": 0.026086254080035717,
+        "missing": 0,
+        "maxOutcomeDeviation": 0.0007397959183673469,
+        "marginals": 72,
+        "maxMarginalDeviation": 0.0063775510204081565,
+        "maxMarginalZ": 2.649616545135802,
+        "bonferroniZCritical": 4.345610411993206,
+        "simultaneousHoeffdingAlpha": 0.001,
+        "hoeffdingBound": 0.01362739908331803,
+        "passes": true,
+        "minCount": 21,
+        "maxCount": 69,
+        "ms": 313
+      }
+    ],
+    "volume4x4x4": {
+      "box": [
+        4,
+        4,
+        4
+      ],
+      "draws": 400000,
+      "seeds": "'lozenge-volume-4x4x4-<i>'",
+      "classes": 57,
+      "chiSquare": 59.77345728585836,
+      "df": 56,
+      "pValue": 0.3403337558599106,
+      "meanVolume": 31.9832875,
+      "meanVolumeSe": 0.012638349666808166,
+      "exactMeanVolume": 32,
+      "sigma": -1.3223641092865364,
+      "passes": true
+    },
+    "interpretation": "Seeds are distinct recipe strings through U.makeRng and the module counter hash; the probability statements assume those draws behave as independent uniform variates, which a fixed PRNG regression does not prove."
+  },
+  "controls": {
+    "biasedUpdate": {
+      "description": "heat-bath uniform u replaced by u^2 in every site update (monotone, so CFTP still coalesces, on a non-uniform measure)",
+      "rows": [
+        {
+          "box": [
+            2,
+            2,
+            2
+          ],
+          "tilings": 20,
+          "seeds": "'lozenge-uniform-2x2x2-<i>', i = 0..7999",
+          "rhombusPositions": 30,
+          "draws": 8000,
+          "outcomes": 20,
+          "df": 19,
+          "chiSquare": 20293.97999999999,
+          "pValue": 0,
+          "missing": 0,
+          "maxOutcomeDeviation": 0.304875,
+          "marginals": 30,
+          "maxMarginalDeviation": 0.45087499999999997,
+          "maxMarginalZ": 88.00178907813398,
+          "bonferroniZCritical": 4.149409984614891,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.026824575328616842,
+          "passes": false,
+          "tilingCounts": [
+            2839,
+            1271,
+            602,
+            569,
+            265,
+            113,
+            734,
+            295,
+            266,
+            292,
+            129,
+            49,
+            78,
+            47,
+            222,
+            101,
+            33,
+            47,
+            24,
+            24
+          ],
+          "ms": 31
+        },
+        {
+          "box": [
+            3,
+            3,
+            3
+          ],
+          "tilings": 980,
+          "seeds": "'lozenge-uniform-3x3x3-<i>', i = 0..39199",
+          "rhombusPositions": 72,
+          "draws": 39200,
+          "outcomes": 980,
+          "df": 979,
+          "chiSquare": 2044984.4999999967,
+          "pValue": 0,
+          "missing": 389,
+          "maxOutcomeDeviation": 0.18081632653061222,
+          "marginals": 72,
+          "maxMarginalDeviation": 0.6476275510204081,
+          "maxMarginalZ": 334.7938415619769,
+          "bonferroniZCritical": 4.345610411993206,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.01362739908331803,
+          "passes": false,
+          "minCount": 0,
+          "maxCount": 7128,
+          "ms": 319
+        }
+      ],
+      "caught": true,
+      "tabSelfTest": {
+        "chi": 9890.140000000003,
+        "df": 19,
+        "z": 65.243210083281,
+        "distinct": 20
+      }
+    },
+    "readAtMeeting": {
+      "description": "the state is read at the meeting time instead of being carried on to time 0",
+      "rows": [
+        {
+          "box": [
+            2,
+            2,
+            2
+          ],
+          "tilings": 20,
+          "seeds": "'lozenge-uniform-2x2x2-<i>', i = 0..7999",
+          "rhombusPositions": 30,
+          "draws": 8000,
+          "outcomes": 20,
+          "df": 19,
+          "chiSquare": 1754.0900000000001,
+          "pValue": 0,
+          "missing": 0,
+          "maxOutcomeDeviation": 0.03912499999999999,
+          "marginals": 30,
+          "maxMarginalDeviation": 0.19562500000000005,
+          "maxMarginalZ": 38.18209035411137,
+          "bonferroniZCritical": 4.149409984614891,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.026824575328616842,
+          "passes": false,
+          "tilingCounts": [
+            131,
+            153,
+            159,
+            166,
+            95,
+            131,
+            546,
+            526,
+            544,
+            519,
+            415,
+            414,
+            420,
+            475,
+            483,
+            403,
+            451,
+            622,
+            634,
+            713
+          ],
+          "ms": 26
+        },
+        {
+          "box": [
+            3,
+            3,
+            3
+          ],
+          "tilings": 980,
+          "seeds": "'lozenge-uniform-3x3x3-<i>', i = 0..39199",
+          "rhombusPositions": 72,
+          "draws": 39200,
+          "outcomes": 980,
+          "df": 979,
+          "chiSquare": 8886.550000000007,
+          "pValue": 0,
+          "missing": 0,
+          "maxOutcomeDeviation": 0.0016581632653061224,
+          "marginals": 72,
+          "maxMarginalDeviation": 0.1613265306122449,
+          "maxMarginalZ": 63.88204691748181,
+          "bonferroniZCritical": 4.345610411993206,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.01362739908331803,
+          "passes": false,
+          "minCount": 4,
+          "maxCount": 105,
+          "ms": 255
+        }
+      ],
+      "caught": true,
+      "tabSelfTest": {
+        "chi": 1003.0200000000001,
+        "df": 19,
+        "z": 25.54865820918373,
+        "distinct": 20
+      }
+    },
+    "halfCoalescenceCheck": {
+      "description": "the coalescence check compares only the first half of the sites, so it can stop early",
+      "rows": [
+        {
+          "box": [
+            2,
+            2,
+            2
+          ],
+          "tilings": 20,
+          "seeds": "'lozenge-uniform-2x2x2-<i>', i = 0..7999",
+          "rhombusPositions": 30,
+          "draws": 8000,
+          "outcomes": 20,
+          "df": 19,
+          "chiSquare": 63.165,
+          "pValue": 0.0000012093261618555007,
+          "missing": 0,
+          "maxOutcomeDeviation": 0.011749999999999997,
+          "marginals": 30,
+          "maxMarginalDeviation": 0.015250000000000097,
+          "maxMarginalZ": 2.9764952224930448,
+          "bonferroniZCritical": 4.149409984614891,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.026824575328616842,
+          "passes": false,
+          "tilingCounts": [
+            414,
+            373,
+            428,
+            444,
+            394,
+            425,
+            415,
+            384,
+            441,
+            366,
+            416,
+            379,
+            407,
+            381,
+            494,
+            403,
+            376,
+            343,
+            344,
+            373
+          ],
+          "ms": 32
+        },
+        {
+          "box": [
+            3,
+            3,
+            3
+          ],
+          "tilings": 980,
+          "seeds": "'lozenge-uniform-3x3x3-<i>', i = 0..39199",
+          "rhombusPositions": 72,
+          "draws": 39200,
+          "outcomes": 980,
+          "df": 979,
+          "chiSquare": 1294.399999999998,
+          "pValue": 4.152796606308285e-11,
+          "missing": 0,
+          "maxOutcomeDeviation": 0.0008928571428571427,
+          "marginals": 72,
+          "maxMarginalDeviation": 0.018622448979591866,
+          "maxMarginalZ": 7.37411357523115,
+          "bonferroniZCritical": 4.345610411993206,
+          "simultaneousHoeffdingAlpha": 0.001,
+          "hoeffdingBound": 0.01362739908331803,
+          "passes": false,
+          "minCount": 19,
+          "maxCount": 75,
+          "ms": 384
+        }
+      ],
+      "caught": true,
+      "tabSelfTest": {
+        "chi": 63.230000000000004,
+        "df": 19,
+        "z": 4.666627481626974,
+        "distinct": 20
+      }
+    },
+    "biasedBoundary": {
+      "uniform": {
+        "box": [
+          24,
+          24,
+          24
+        ],
+        "seeds": 40,
+        "fullMinusEmptyShare": {
+          "mean": -0.007899305555555555,
+          "sd": 0.0397918321434187,
+          "se": 0.006291641092215149,
+          "n": 40,
+          "min": -0.078125,
+          "max": 0.08159722222222222
+        },
+        "sigma": -1.2555238672672573
+      },
+      "biasedUpdate": {
+        "box": [
+          24,
+          24,
+          24
+        ],
+        "seeds": 40,
+        "fullMinusEmptyShare": {
+          "mean": -0.9831163194444447,
+          "sd": 0.0066136900386479435,
+          "se": 0.001045716213024727,
+          "n": 40,
+          "min": -0.9965277777777778,
+          "max": -0.9670138888888888
+        },
+        "sigma": -940.136824120559
+      }
+    }
+  },
+  "tabSelfTestUnmodified": {
+    "chi": 30.23,
+    "df": 19,
+    "z": 1.6562430705873343,
+    "distinct": 20
+  },
+  "limitShape": {
+    "shapes": [
+      {
+        "box": [
+          12,
+          12,
+          12
+        ],
+        "family": "regular",
+        "size": 12,
+        "seeds": 400,
+        "seedPattern": "'lozenge-arctic-12x12x12-<i>'",
+        "ring": 0,
+        "frozenFlagMismatches": 0,
+        "levelSetMismatches": 0,
+        "printedMismatches": 0,
+        "localTestCheckedPlates": 2,
+        "radius": {
+          "mean": 0.9085274030814587,
+          "se": 0.0006239158204387056,
+          "sd": 0.012478316408774113,
+          "expected": 1,
+          "sigma": -146.6104784043181,
+          "calibration": {
+            "sdAcrossSeeds": 0.012478316408774113,
+            "rmsPerPlateSe": 0.015019573774573105,
+            "ratio": 0.8308036297207628,
+            "ratio95": [
+              0.7769445142800617,
+              0.8927475617685362
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 0.9633306248404213,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "freeArea": {
+          "mean": 0.7515567129629623,
+          "se": 0.0009975950267140368,
+          "sd": 0.019951900534280736,
+          "expected": 0.9068996821171089,
+          "sigma": -155.71746549882917,
+          "calibration": {
+            "sdAcrossSeeds": 0.019951900534280736,
+            "rmsPerPlateSe": 0.024143175234154414,
+            "ratio": 0.8263991931788474,
+            "ratio95": [
+              0.7728256073719564,
+              0.8880147346080665
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 0.9480179922455889,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "localRing3": {
+          "radius": 1.020902325820221,
+          "radiusSe": 0.00040136504896600377,
+          "freeArea": 0.9466087962962956,
+          "freeAreaSe": 0.0007278647621089293,
+          "note": "the local test recipes before v4 use, on the same tilings"
+        },
+        "perPlateSigmaRadius": {
+          "mean": -6.723951794207747,
+          "sd": 1.7553321581931247,
+          "se": 0.08776660790965624,
+          "n": 400,
+          "min": -13.020955680114065,
+          "max": -3.1327779456536784
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": -7.0710838091314505,
+          "sd": 1.8535911930036384,
+          "se": 0.09267955965018192,
+          "n": 400,
+          "min": -13.738194641462911,
+          "max": -3.343613071958179
+        },
+        "tauRadius": {
+          "mean": 4.021355233207988,
+          "sd": 1.0265647299765894,
+          "se": 0.05132823649882948,
+          "n": 400,
+          "min": 2.167464645693738,
+          "max": 8.3319929460654
+        },
+        "tauFreeArea": {
+          "mean": 4.004862821212689,
+          "sd": 1.0165481148154794,
+          "se": 0.05082740574077396,
+          "n": 400,
+          "min": 2.1355230842613313,
+          "max": 8.34945207265836
+        },
+        "tauFloorBinds": 0,
+        "tauCeilingBinds": 0,
+        "cftpStartBack": {
+          "mean": 408.96,
+          "sd": 133.30981647245562,
+          "se": 6.66549082362278,
+          "n": 400,
+          "min": 256,
+          "max": 1024
+        },
+        "meetingSweep": {
+          "mean": 261.0725,
+          "sd": 63.01753937931532,
+          "se": 3.150876968965766,
+          "n": 400,
+          "min": 155,
+          "max": 502
+        },
+        "allExact": true,
+        "ms": 3163
+      },
+      {
+        "box": [
+          16,
+          16,
+          16
+        ],
+        "family": "regular",
+        "size": 16,
+        "seeds": 400,
+        "seedPattern": "'lozenge-arctic-16x16x16-<i>'",
+        "ring": 0,
+        "frozenFlagMismatches": 0,
+        "levelSetMismatches": 0,
+        "printedMismatches": 0,
+        "localTestCheckedPlates": 2,
+        "radius": {
+          "mean": 0.9261804808336247,
+          "se": 0.000534807322465745,
+          "sd": 0.0106961464493149,
+          "expected": 1,
+          "sigma": -138.03012050401298,
+          "calibration": {
+            "sdAcrossSeeds": 0.0106961464493149,
+            "rmsPerPlateSe": 0.012283286462823189,
+            "ratio": 0.8707886510412376,
+            "ratio95": [
+              0.8143373973356589,
+              0.9357138284218421
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.017813774369679,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "freeArea": {
+          "mean": 0.7799218749999995,
+          "se": 0.0008777215141376556,
+          "sd": 0.017554430282753112,
+          "expected": 0.9068996821171089,
+          "sigma": -144.6675341459103,
+          "calibration": {
+            "sdAcrossSeeds": 0.017554430282753112,
+            "rmsPerPlateSe": 0.020254690695535864,
+            "ratio": 0.866684687839845,
+            "ratio95": [
+              0.8104994847627434,
+              0.931303877609684
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.0061160009372612,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "localRing3": {
+          "radius": 1.01386112987049,
+          "radiusSe": 0.00039458374323580255,
+          "freeArea": 0.9333382161458336,
+          "freeAreaSe": 0.000714094720846771,
+          "note": "the local test recipes before v4 use, on the same tilings"
+        },
+        "perPlateSigmaRadius": {
+          "mean": -6.650118453498129,
+          "sd": 1.7868177782029526,
+          "se": 0.08934088891014763,
+          "n": 400,
+          "min": -13.014708009281906,
+          "max": -3.620072045997413
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": -6.913498271047379,
+          "sd": 1.8717214403231814,
+          "se": 0.09358607201615908,
+          "n": 400,
+          "min": -13.622532815994122,
+          "max": -3.86423226840672
+        },
+        "tauRadius": {
+          "mean": 4.093327384589713,
+          "sd": 1.0925045139267286,
+          "se": 0.05462522569633643,
+          "n": 400,
+          "min": 2,
+          "max": 10.2016521738685
+        },
+        "tauFreeArea": {
+          "mean": 4.082987719609906,
+          "sd": 1.088944105223693,
+          "se": 0.05444720526118465,
+          "n": 400,
+          "min": 2,
+          "max": 10.177762569936725
+        },
+        "tauFloorBinds": 1,
+        "tauCeilingBinds": 0,
+        "cftpStartBack": {
+          "mean": 792.32,
+          "sd": 277.3686193091136,
+          "se": 13.86843096545568,
+          "n": 400,
+          "min": 512,
+          "max": 2048
+        },
+        "meetingSweep": {
+          "mean": 488.625,
+          "sd": 89.62953200546568,
+          "se": 4.481476600273284,
+          "n": 400,
+          "min": 327,
+          "max": 862
+        },
+        "allExact": true,
+        "ms": 6283
+      },
+      {
+        "box": [
+          20,
+          20,
+          20
+        ],
+        "family": "regular",
+        "size": 20,
+        "seeds": 300,
+        "seedPattern": "'lozenge-arctic-20x20x20-<i>'",
+        "ring": 0,
+        "frozenFlagMismatches": 0,
+        "levelSetMismatches": 0,
+        "printedMismatches": 0,
+        "localTestCheckedPlates": 2,
+        "radius": {
+          "mean": 0.9379035867445106,
+          "se": 0.000528440633595891,
+          "sd": 0.00915286026171972,
+          "expected": 1,
+          "sigma": -117.5087782953795,
+          "calibration": {
+            "sdAcrossSeeds": 0.00915286026171972,
+            "rmsPerPlateSe": 0.01012874360576123,
+            "ratio": 0.9036520834147259,
+            "ratio95": [
+              0.8366660290134071,
+              0.9823880465901684
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 0.9938934302276824,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "freeArea": {
+          "mean": 0.7991499999999997,
+          "se": 0.0008816268407254995,
+          "sd": 0.015270224814529993,
+          "expected": 0.9068996821171088,
+          "sigma": -122.21688036226396,
+          "calibration": {
+            "sdAcrossSeeds": 0.015270224814529993,
+            "rmsPerPlateSe": 0.017004635141759702,
+            "ratio": 0.8980036729532425,
+            "ratio95": [
+              0.8314363247524607,
+              0.9762474853925138
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 0.9842985540768908,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "localRing3": {
+          "radius": 1.009758398857074,
+          "radiusSe": 0.00041431572619169207,
+          "freeArea": 0.9255569444444444,
+          "freeAreaSe": 0.0007470924542888778,
+          "note": "the local test recipes before v4 use, on the same tilings"
+        },
+        "perPlateSigmaRadius": {
+          "mean": -6.8219758995271595,
+          "sd": 1.9061973438065993,
+          "se": 0.11005435495752898,
+          "n": 300,
+          "min": -13.492170570298853,
+          "max": -2.8886600178505444
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": -7.037170827271666,
+          "sd": 1.982974507069986,
+          "se": 0.11448708654530218,
+          "n": 300,
+          "min": -13.857921242598,
+          "max": -2.9304072870841558
+        },
+        "tauRadius": {
+          "mean": 3.977880574646674,
+          "sd": 1.0188298650226708,
+          "se": 0.0588221696829269,
+          "n": 300,
+          "min": 2,
+          "max": 9.888779950122172
+        },
+        "tauFreeArea": {
+          "mean": 3.9745009897409873,
+          "sd": 1.0188875888046738,
+          "se": 0.05882550236703471,
+          "n": 300,
+          "min": 2,
+          "max": 9.97520921127375
+        },
+        "tauFloorBinds": 1,
+        "tauCeilingBinds": 0,
+        "cftpStartBack": {
+          "mean": 1194.6666666666667,
+          "sd": 382.2598997961945,
+          "se": 22.069785604773227,
+          "n": 300,
+          "min": 1024,
+          "max": 2048
+        },
+        "meetingSweep": {
+          "mean": 823.22,
+          "sd": 114.61591349118177,
+          "se": 6.617352850754866,
+          "n": 300,
+          "min": 596,
+          "max": 1271
+        },
+        "allExact": true,
+        "ms": 9076
+      },
+      {
+        "box": [
+          24,
+          24,
+          24
+        ],
+        "family": "regular",
+        "size": 24,
+        "seeds": 300,
+        "seedPattern": "'lozenge-arctic-24x24x24-<i>'",
+        "ring": 0,
+        "frozenFlagMismatches": 0,
+        "levelSetMismatches": 0,
+        "printedMismatches": 0,
+        "localTestCheckedPlates": 2,
+        "radius": {
+          "mean": 0.9455460757146703,
+          "se": 0.0004336996655645781,
+          "sd": 0.007511898559834795,
+          "expected": 1,
+          "sigma": -125.55675876402415,
+          "calibration": {
+            "sdAcrossSeeds": 0.007511898559834795,
+            "rmsPerPlateSe": 0.009111546776828877,
+            "ratio": 0.8244372491109777,
+            "ratio95": [
+              0.7633232435849416,
+              0.896271157401403
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 0.9428884890156242,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "freeArea": {
+          "mean": 0.8119309413580241,
+          "se": 0.0007345923960327882,
+          "sd": 0.012723513527825473,
+          "expected": 0.9068996821171089,
+          "sigma": -129.28086551394946,
+          "calibration": {
+            "sdAcrossSeeds": 0.012723513527825473,
+            "rmsPerPlateSe": 0.015478694440963413,
+            "ratio": 0.8220017247807074,
+            "ratio95": [
+              0.7610682601600459,
+              0.8936234237955711
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 0.9345168796666392,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "localRing3": {
+          "radius": 1.006362038460544,
+          "radiusSe": 0.0003545162016589849,
+          "freeArea": 0.9192187499999994,
+          "freeAreaSe": 0.0006412258563472767,
+          "note": "the local test recipes before v4 use, on the same tilings"
+        },
+        "perPlateSigmaRadius": {
+          "mean": -6.647932212007511,
+          "sd": 1.8834005423385742,
+          "se": 0.1087381810111063,
+          "n": 300,
+          "min": -13.294307633017945,
+          "max": -2.6833356662576886
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": -6.824797323859005,
+          "sd": 1.9523419136319784,
+          "se": 0.11271851293856118,
+          "n": 300,
+          "min": -13.706949141442491,
+          "max": -2.730123852950519
+        },
+        "tauRadius": {
+          "mean": 3.9693900153128627,
+          "sd": 0.9941448659364326,
+          "se": 0.05739698059618838,
+          "n": 300,
+          "min": 2.025051028565229,
+          "max": 9.26686255511158
+        },
+        "tauFreeArea": {
+          "mean": 3.9588512570673733,
+          "sd": 0.9828962440389298,
+          "se": 0.056747541108134826,
+          "n": 300,
+          "min": 2.021874207221374,
+          "max": 9.26470919951532
+        },
+        "tauFloorBinds": 0,
+        "tauCeilingBinds": 0,
+        "cftpStartBack": {
+          "mean": 2007.04,
+          "sd": 352.93996722987896,
+          "se": 20.37699850879483,
+          "n": 300,
+          "min": 1024,
+          "max": 4096
+        },
+        "meetingSweep": {
+          "mean": 1276.6366666666668,
+          "sd": 230.9769523073956,
+          "se": 13.335460559127421,
+          "n": 300,
+          "min": 907,
+          "max": 2047
+        },
+        "allExact": true,
+        "ms": 30876
+      },
+      {
+        "box": [
+          32,
+          32,
+          32
+        ],
+        "family": "regular",
+        "size": 32,
+        "seeds": 200,
+        "seedPattern": "'lozenge-arctic-32x32x32-<i>'",
+        "ring": 0,
+        "frozenFlagMismatches": 0,
+        "levelSetMismatches": 0,
+        "printedMismatches": 0,
+        "localTestCheckedPlates": 2,
+        "radius": {
+          "mean": 0.9549059440844723,
+          "se": 0.00047183260441489275,
+          "sd": 0.0066727206833336085,
+          "expected": 1,
+          "sigma": -95.57214887989288,
+          "calibration": {
+            "sdAcrossSeeds": 0.0066727206833336085,
+            "rmsPerPlateSe": 0.0071433747093721245,
+            "ratio": 0.9341132104660537,
+            "ratio95": [
+              0.8506617663115685,
+              1.0358614186399093
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.171587594200225,
+            "verdict": "consistent with calibrated"
+          }
+        },
+        "freeArea": {
+          "mean": 0.8276888020833338,
+          "se": 0.0008132569887175029,
+          "sd": 0.011501190631389957,
+          "expected": 0.9068996821171089,
+          "sigma": -97.39956881119429,
+          "calibration": {
+            "sdAcrossSeeds": 0.011501190631389957,
+            "rmsPerPlateSe": 0.012277171990686968,
+            "ratio": 0.9367947797843312,
+            "ratio95": [
+              0.8531037706288341,
+              1.0388350776858255
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.1608056096269324,
+            "verdict": "consistent with calibrated"
+          }
+        },
+        "localRing3": {
+          "radius": 1.0014889218954763,
+          "radiusSe": 0.00039797227056944935,
+          "freeArea": 0.9101220703125005,
+          "freeAreaSe": 0.0007205235916994973,
+          "note": "the local test recipes before v4 use, on the same tilings"
+        },
+        "perPlateSigmaRadius": {
+          "mean": -6.891336420466034,
+          "sd": 1.8170354798677344,
+          "se": 0.12848381094710273,
+          "n": 200,
+          "min": -13.412360677061,
+          "max": -2.97309215072722
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": -7.044592728259247,
+          "sd": 1.8782710955690771,
+          "se": 0.13281382285835802,
+          "n": 200,
+          "min": -13.757261840706594,
+          "max": -2.982738327737097
+        },
+        "tauRadius": {
+          "mean": 3.7491502648654746,
+          "sd": 0.9036919470550685,
+          "se": 0.06390067038663134,
+          "n": 200,
+          "min": 2.066559438152928,
+          "max": 7.421054526621675
+        },
+        "tauFreeArea": {
+          "mean": 3.7507044810711228,
+          "sd": 0.9067716478440565,
+          "se": 0.06411843811782324,
+          "n": 200,
+          "min": 2.0581454807459587,
+          "max": 7.404384688372103
+        },
+        "tauFloorBinds": 0,
+        "tauCeilingBinds": 0,
+        "cftpStartBack": {
+          "mean": 3758.08,
+          "sd": 840.9729670187285,
+          "se": 59.46576877735137,
+          "n": 200,
+          "min": 2048,
+          "max": 8192
+        },
+        "meetingSweep": {
+          "mean": 2420.65,
+          "sd": 498.5309348122984,
+          "se": 35.25146046370449,
+          "n": 200,
+          "min": 1693,
+          "max": 4077
+        },
+        "allExact": true,
+        "ms": 65424
+      },
+      {
+        "box": [
+          40,
+          40,
+          40
+        ],
+        "family": "regular",
+        "size": 40,
+        "seeds": 120,
+        "seedPattern": "'lozenge-arctic-40x40x40-<i>'",
+        "ring": 0,
+        "frozenFlagMismatches": 0,
+        "levelSetMismatches": 0,
+        "printedMismatches": 0,
+        "localTestCheckedPlates": 2,
+        "radius": {
+          "mean": 0.9616443623444716,
+          "se": 0.0005412112398477404,
+          "sd": 0.005928672088798925,
+          "expected": 1,
+          "sigma": -70.86999461858746,
+          "calibration": {
+            "sdAcrossSeeds": 0.005928672088798925,
+            "rmsPerPlateSe": 0.005782450448477798,
+            "ratio": 1.0252871410873257,
+            "ratio95": [
+              0.9099324463787349,
+              1.1744007970153714
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.1332527236777097,
+            "verdict": "consistent with calibrated"
+          }
+        },
+        "freeArea": {
+          "mean": 0.8391840277777778,
+          "se": 0.0009379394632570266,
+          "sd": 0.010274612032003227,
+          "expected": 0.9068996821171088,
+          "sigma": -72.19618855164289,
+          "calibration": {
+            "sdAcrossSeeds": 0.010274612032003227,
+            "rmsPerPlateSe": 0.010039302847151012,
+            "ratio": 1.0234387973383023,
+            "ratio95": [
+              0.9082920591331541,
+              1.1722836375533796
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.1263347981355671,
+            "verdict": "consistent with calibrated"
+          }
+        },
+        "localRing3": {
+          "radius": 0.9992051534770207,
+          "radiusSe": 0.00047233637399713124,
+          "freeArea": 0.9058324652777778,
+          "freeAreaSe": 0.0008512731956712158,
+          "note": "the local test recipes before v4 use, on the same tilings"
+        },
+        "perPlateSigmaRadius": {
+          "mean": -7.082608168897683,
+          "sd": 1.6781304611410015,
+          "se": 0.1531916513339122,
+          "n": 120,
+          "min": -11.243604027008857,
+          "max": -3.635690334802723
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": -7.209279890051333,
+          "sd": 1.7433370661196137,
+          "se": 0.15914417274143128,
+          "n": 120,
+          "min": -11.45562893685828,
+          "max": -3.659887406210798
+        },
+        "tauRadius": {
+          "mean": 3.5501357378808946,
+          "sd": 0.7206387615853217,
+          "se": 0.06578501758881135,
+          "n": 120,
+          "min": 2.009617395330847,
+          "max": 5.78845208463645
+        },
+        "tauFreeArea": {
+          "mean": 3.563320503515358,
+          "sd": 0.7538658719848498,
+          "se": 0.06881822390323401,
+          "n": 120,
+          "min": 2.01012855612198,
+          "max": 5.898202598372301
+        },
+        "tauFloorBinds": 0,
+        "tauCeilingBinds": 0,
+        "cftpStartBack": {
+          "mean": 6007.466666666666,
+          "sd": 2052.0117570278185,
+          "se": 187.3221879316577,
+          "n": 120,
+          "min": 4096,
+          "max": 8192
+        },
+        "meetingSweep": {
+          "mean": 3860.2833333333333,
+          "sd": 692.0720706547781,
+          "se": 63.177247419488516,
+          "n": 120,
+          "min": 2924,
+          "max": 6789
+        },
+        "allExact": true,
+        "ms": 99021
+      },
+      {
+        "box": [
+          48,
+          48,
+          48
+        ],
+        "family": "regular",
+        "size": 48,
+        "seeds": 100,
+        "seedPattern": "'lozenge-arctic-48x48x48-<i>'",
+        "ring": 0,
+        "frozenFlagMismatches": 0,
+        "levelSetMismatches": 0,
+        "printedMismatches": 0,
+        "localTestCheckedPlates": 2,
+        "radius": {
+          "mean": 0.9663495487656324,
+          "se": 0.0005154975677211663,
+          "sd": 0.005154975677211663,
+          "expected": 1,
+          "sigma": -65.2776139820105,
+          "calibration": {
+            "sdAcrossSeeds": 0.005154975677211663,
+            "rmsPerPlateSe": 0.005239382054170454,
+            "ratio": 0.9838900129660129,
+            "ratio95": [
+              0.8638621665100354,
+              1.142960681991934
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.105810431847475,
+            "verdict": "consistent with calibrated"
+          }
+        },
+        "freeArea": {
+          "mean": 0.847306134259259,
+          "se": 0.0009005878866610596,
+          "sd": 0.009005878866610596,
+          "expected": 0.9068996821171089,
+          "sigma": -66.17182924677532,
+          "calibration": {
+            "sdAcrossSeeds": 0.009005878866610596,
+            "rmsPerPlateSe": 0.009127949777361422,
+            "ratio": 0.9866266890453781,
+            "ratio95": [
+              0.8662649868413749,
+              1.1461398108750833
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.1059349919021035,
+            "verdict": "consistent with calibrated"
+          }
+        },
+        "localRing3": {
+          "radius": 0.9975929294529564,
+          "radiusSe": 0.00044737769611057104,
+          "freeArea": 0.9028421585648146,
+          "freeAreaSe": 0.0008066662651620121,
+          "note": "the local test recipes before v4 use, on the same tilings"
+        },
+        "perPlateSigmaRadius": {
+          "mean": -7.066936222503549,
+          "sd": 1.9940805915683846,
+          "se": 0.19940805915683849,
+          "n": 100,
+          "min": -12.562958394128028,
+          "max": -3.358304192160415
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": -7.1828658761475745,
+          "sd": 2.0429227694306293,
+          "se": 0.20429227694306296,
+          "n": 100,
+          "min": -12.795379184830306,
+          "max": -3.409409990657187
+        },
+        "tauRadius": {
+          "mean": 3.6018909313986596,
+          "sd": 1.1721105667518001,
+          "se": 0.11721105667518002,
+          "n": 100,
+          "min": 2.19092400849744,
+          "max": 9.493296494491432
+        },
+        "tauFreeArea": {
+          "mean": 3.599748269722592,
+          "sd": 1.172149205766759,
+          "se": 0.11721492057667592,
+          "n": 100,
+          "min": 2.1933275146133813,
+          "max": 9.49087404540073
+        },
+        "tauFloorBinds": 0,
+        "tauCeilingBinds": 0,
+        "cftpStartBack": {
+          "mean": 8765.44,
+          "sd": 2100.6942206053814,
+          "se": 210.0694220605381,
+          "n": 100,
+          "min": 8192,
+          "max": 16384
+        },
+        "meetingSweep": {
+          "mean": 6056.01,
+          "sd": 764.3819645816992,
+          "se": 76.43819645816993,
+          "n": 100,
+          "min": 4781,
+          "max": 8153
+        },
+        "allExact": true,
+        "ms": 174691
+      },
+      {
+        "box": [
+          12,
+          20,
+          24
+        ],
+        "family": "skew 3:5:6",
+        "size": 4,
+        "seeds": 300,
+        "seedPattern": "'lozenge-arctic-12x20x24-<i>'",
+        "ring": 0,
+        "frozenFlagMismatches": 0,
+        "levelSetMismatches": 0,
+        "printedMismatches": 0,
+        "localTestCheckedPlates": 2,
+        "radius": {
+          "mean": 0.925390516616464,
+          "se": 0.0007133297489273606,
+          "sd": 0.012355233676925394,
+          "expected": 1,
+          "sigma": -104.59325928257844,
+          "calibration": {
+            "sdAcrossSeeds": 0.012355233676925394,
+            "rmsPerPlateSe": 0.0160201824545193,
+            "ratio": 0.7712292735742206,
+            "ratio95": [
+              0.7140594766759352,
+              0.8384271263744939
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 0.9678517313709323,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "freeArea": {
+          "mean": 0.7605324074074078,
+          "se": 0.0011283921320921942,
+          "sd": 0.01954432503644652,
+          "expected": 0.8850434659350882,
+          "sigma": -110.34378474158605,
+          "calibration": {
+            "sdAcrossSeeds": 0.01954432503644652,
+            "rmsPerPlateSe": 0.02530197992173915,
+            "ratio": 0.7724425162338493,
+            "ratio95": [
+              0.7151827839054449,
+              0.8397460798836018
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 0.9432912229082948,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "localRing3": {
+          "radius": 1.0073668542733547,
+          "radiusSe": 0.0005616716223186166,
+          "freeArea": 0.8996494708994711,
+          "freeAreaSe": 0.0009839034542845951,
+          "note": "the local test recipes before v4 use, on the same tilings"
+        },
+        "perPlateSigmaRadius": {
+          "mean": -5.436926450589258,
+          "sd": 1.6626736619290092,
+          "se": 0.09599450862892143,
+          "n": 300,
+          "min": -11.376363031814996,
+          "max": -2.1998466130341936
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": -5.6797387051035635,
+          "sd": 1.7206463316721983,
+          "se": 0.09934156227710858,
+          "n": 300,
+          "min": -11.724749169547568,
+          "max": -2.106741822809422
+        },
+        "tauRadius": {
+          "mean": 4.8765375874295245,
+          "sd": 1.5048258318332528,
+          "se": 0.0868811599092431,
+          "n": 300,
+          "min": 2,
+          "max": 9.608625234539394
+        },
+        "tauFreeArea": {
+          "mean": 4.83749098393226,
+          "sd": 1.489796631687132,
+          "se": 0.08601344863423634,
+          "n": 300,
+          "min": 2,
+          "max": 9.582718320013528
+        },
+        "tauFloorBinds": 2,
+        "tauCeilingBinds": 0,
+        "cftpStartBack": {
+          "mean": 877.2266666666667,
+          "sd": 242.9922482947277,
+          "se": 14.029163996395342,
+          "n": 300,
+          "min": 512,
+          "max": 2048
+        },
+        "meetingSweep": {
+          "mean": 531.64,
+          "sd": 108.82840840018005,
+          "se": 6.283211088532249,
+          "n": 300,
+          "min": 358,
+          "max": 952
+        },
+        "allExact": true,
+        "ms": 8109
+      },
+      {
+        "box": [
+          15,
+          25,
+          30
+        ],
+        "family": "skew 3:5:6",
+        "size": 5,
+        "seeds": 300,
+        "seedPattern": "'lozenge-arctic-15x25x30-<i>'",
+        "ring": 0,
+        "frozenFlagMismatches": 0,
+        "levelSetMismatches": 0,
+        "printedMismatches": 0,
+        "localTestCheckedPlates": 2,
+        "radius": {
+          "mean": 0.9368842090450901,
+          "se": 0.0006369982806255346,
+          "sd": 0.011033133863774434,
+          "expected": 1,
+          "sigma": -99.08314178325568,
+          "calibration": {
+            "sdAcrossSeeds": 0.011033133863774434,
+            "rmsPerPlateSe": 0.01308711457962588,
+            "ratio": 0.8430532029536061,
+            "ratio95": [
+              0.7805592312661216,
+              0.9165091349001824
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.163833126529053,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "freeArea": {
+          "mean": 0.7786349206349203,
+          "se": 0.0010290160617907767,
+          "sd": 0.01782308100826061,
+          "expected": 0.8850434659350882,
+          "sigma": -103.40805090543206,
+          "calibration": {
+            "sdAcrossSeeds": 0.01782308100826061,
+            "rmsPerPlateSe": 0.021123695201686193,
+            "ratio": 0.8437482570207643,
+            "ratio95": [
+              0.7812027622632741,
+              0.9172647496105806
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.1365041078477283,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "localRing3": {
+          "radius": 1.0036966055649335,
+          "radiusSe": 0.0005241083077628334,
+          "freeArea": 0.8926761904761901,
+          "freeAreaSe": 0.0009200859043754541,
+          "note": "the local test recipes before v4 use, on the same tilings"
+        },
+        "perPlateSigmaRadius": {
+          "mean": -5.516504893674459,
+          "sd": 1.5447400205453286,
+          "se": 0.08918560666898334,
+          "n": 300,
+          "min": -12.06801324220938,
+          "max": -2.5045741197309965
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": -5.709509201857662,
+          "sd": 1.585044208156039,
+          "se": 0.09151257002563463,
+          "n": 300,
+          "min": -12.368444756304632,
+          "max": -2.6022869364815344
+        },
+        "tauRadius": {
+          "mean": 4.90305941280512,
+          "sd": 1.3685052382768144,
+          "se": 0.07901068677065316,
+          "n": 300,
+          "min": 2.245305281847118,
+          "max": 8.799362607395926
+        },
+        "tauFreeArea": {
+          "mean": 4.886673307658947,
+          "sd": 1.3596086426914138,
+          "se": 0.07849704158504295,
+          "n": 300,
+          "min": 2.233432044344721,
+          "max": 8.806499310851235
+        },
+        "tauFloorBinds": 0,
+        "tauCeilingBinds": 0,
+        "cftpStartBack": {
+          "mean": 1303.8933333333334,
+          "sd": 457.1291416321223,
+          "se": 26.39236329757284,
+          "n": 300,
+          "min": 1024,
+          "max": 2048
+        },
+        "meetingSweep": {
+          "mean": 874.9333333333333,
+          "sd": 117.02266119431262,
+          "se": 6.756306494182276,
+          "n": 300,
+          "min": 639,
+          "max": 1329
+        },
+        "allExact": true,
+        "ms": 15631
+      },
+      {
+        "box": [
+          18,
+          30,
+          36
+        ],
+        "family": "skew 3:5:6",
+        "size": 6,
+        "seeds": 200,
+        "seedPattern": "'lozenge-arctic-18x30x36-<i>'",
+        "ring": 0,
+        "frozenFlagMismatches": 0,
+        "levelSetMismatches": 0,
+        "printedMismatches": 0,
+        "localTestCheckedPlates": 2,
+        "radius": {
+          "mean": 0.9456830078964066,
+          "se": 0.0006719779044779381,
+          "sd": 0.009503202661277521,
+          "expected": 1,
+          "sigma": -80.8315150567227,
+          "calibration": {
+            "sdAcrossSeeds": 0.009503202661277521,
+            "rmsPerPlateSe": 0.011417102591499903,
+            "ratio": 0.8323655310194645,
+            "ratio95": [
+              0.7580039816379579,
+              0.9230308811911588
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.0317398692554791,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "freeArea": {
+          "mean": 0.7928924162257489,
+          "se": 0.0011018413901272433,
+          "sd": 0.01558239037501972,
+          "expected": 0.8850434659350883,
+          "sigma": -83.63367952505176,
+          "calibration": {
+            "sdAcrossSeeds": 0.01558239037501972,
+            "rmsPerPlateSe": 0.018706898997076126,
+            "ratio": 0.832975597797114,
+            "ratio95": [
+              0.7585595465061439,
+              0.9237073994447074
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.0124701072264148,
+            "verdict": "per-plate bar wider than the scatter (conservative)"
+          }
+        },
+        "localRing3": {
+          "radius": 1.001537088978755,
+          "radiusSe": 0.0005411794944155709,
+          "freeArea": 0.8886243386243382,
+          "freeAreaSe": 0.0009473919244637267,
+          "note": "the local test recipes before v4 use, on the same tilings"
+        },
+        "perPlateSigmaRadius": {
+          "mean": -5.49344855667429,
+          "sd": 1.697198875944819,
+          "se": 0.12001008342027676,
+          "n": 200,
+          "min": -13.504902891937245,
+          "max": -1.9353056331109726
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": -5.650948925394811,
+          "sd": 1.7415036489708744,
+          "se": 0.12314290396484222,
+          "n": 200,
+          "min": -13.800753774043963,
+          "max": -1.87918125602012
+        },
+        "tauRadius": {
+          "mean": 4.786903118667903,
+          "sd": 1.380607543063499,
+          "se": 0.09762369558574985,
+          "n": 200,
+          "min": 2,
+          "max": 10.73647055448202
+        },
+        "tauFreeArea": {
+          "mean": 4.784656028907044,
+          "sd": 1.3880776310244551,
+          "se": 0.09815191057107507,
+          "n": 200,
+          "min": 2,
+          "max": 10.875950513818156
+        },
+        "tauFloorBinds": 3,
+        "tauCeilingBinds": 0,
+        "cftpStartBack": {
+          "mean": 2104.32,
+          "sd": 358.52862013692305,
+          "se": 25.351801854827407,
+          "n": 200,
+          "min": 1024,
+          "max": 4096
+        },
+        "meetingSweep": {
+          "mean": 1382.32,
+          "sd": 223.99393746282618,
+          "se": 15.838763212463984,
+          "n": 200,
+          "min": 948,
+          "max": 2015
+        },
+        "allExact": true,
+        "ms": 23281
+      },
+      {
+        "box": [
+          24,
+          40,
+          48
+        ],
+        "family": "skew 3:5:6",
+        "size": 8,
+        "seeds": 100,
+        "seedPattern": "'lozenge-arctic-24x40x48-<i>'",
+        "ring": 0,
+        "frozenFlagMismatches": 0,
+        "levelSetMismatches": 0,
+        "printedMismatches": 0,
+        "localTestCheckedPlates": 2,
+        "radius": {
+          "mean": 0.9550234564696214,
+          "se": 0.000861875924724989,
+          "sd": 0.008618759247249889,
+          "expected": 1,
+          "sigma": -52.18447602504956,
+          "calibration": {
+            "sdAcrossSeeds": 0.008618759247249889,
+            "rmsPerPlateSe": 0.009656461793117138,
+            "ratio": 0.8925380156728944,
+            "ratio95": [
+              0.783654487545234,
+              1.0368393272149803
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.1373505776615205,
+            "verdict": "consistent with calibrated"
+          }
+        },
+        "freeArea": {
+          "mean": 0.8082242063492064,
+          "se": 0.0014338894524454336,
+          "sd": 0.014338894524454335,
+          "expected": 0.8850434659350882,
+          "sigma": -53.57404607089479,
+          "calibration": {
+            "sdAcrossSeeds": 0.014338894524454335,
+            "rmsPerPlateSe": 0.016035911746662742,
+            "ratio": 0.8941739485089412,
+            "ratio95": [
+              0.7850908477739064,
+              1.038739749909936
+            ],
+            "band": [
+              0.75,
+              1.33
+            ],
+            "inBand": true,
+            "sdOfPerPlateZ": 1.1179515400935156,
+            "verdict": "consistent with calibrated"
+          }
+        },
+        "localRing3": {
+          "radius": 0.9969795043744887,
+          "radiusSe": 0.0007017309172779494,
+          "freeArea": 0.8803633432539685,
+          "freeAreaSe": 0.0012237561737899157,
+          "note": "the local test recipes before v4 use, on the same tilings"
+        },
+        "perPlateSigmaRadius": {
+          "mean": -5.200294450510594,
+          "sd": 1.3745418074281228,
+          "se": 0.13745418074281227,
+          "n": 100,
+          "min": -9.878094891595074,
+          "max": -1.9382413299742003
+        },
+        "perPlateSigmaFreeArea": {
+          "mean": -5.326087939040194,
+          "sd": 1.4077779666453152,
+          "se": 0.14077779666453152,
+          "n": 100,
+          "min": -10.128135753595295,
+          "max": -1.868198261643358
+        },
+        "tauRadius": {
+          "mean": 4.885562342573464,
+          "sd": 1.3954364726000303,
+          "se": 0.13954364726000304,
+          "n": 100,
+          "min": 2.1308595737834235,
+          "max": 7.85777233024717
+        },
+        "tauFreeArea": {
+          "mean": 4.874478768855739,
+          "sd": 1.3912807426796319,
+          "se": 0.1391280742679632,
+          "n": 100,
+          "min": 2.117354191910386,
+          "max": 7.869175022788743
+        },
+        "tauFloorBinds": 0,
+        "tauCeilingBinds": 0,
+        "cftpStartBack": {
+          "mean": 4034.56,
+          "sd": 614.3999999999996,
+          "se": 61.43999999999997,
+          "n": 100,
+          "min": 2048,
+          "max": 8192
+        },
+        "meetingSweep": {
+          "mean": 2579.82,
+          "sd": 431.7433623219828,
+          "se": 43.17433623219828,
+          "n": 100,
+          "min": 1912,
+          "max": 3724
+        },
+        "allExact": true,
+        "ms": 36187
+      }
+    ],
+    "selfTest": {
+      "plates": 2720,
+      "drawsPerPlate": 4000,
+      "meanZ": -0.011556827995774583,
+      "sdZ": 1.0026218776249345,
+      "fractionAbove2": 0.02610294117647059,
+      "fractionAbove3": 0.0007352941176470588,
+      "pooledChiSquare": 51502.569999999956,
+      "pooledDf": 51680,
+      "pooledPValue": 0.708993396760418,
+      "note": "Each plate draws its own 4,000 self-test tilings with keys offset from its own seed; the pooled chi-square treats the plates as independent."
+    },
+    "chunkCheck": {
+      "seed": "lozenge-arctic-24x24x24-0",
+      "T": 2048,
+      "meetingSweep": 1370,
+      "identical": true,
+      "note": "every timer slice limited to one sweep"
+    },
+    "extrapolation": {
+      "regular": {
+        "freeArea": {
+          "summary": [
+            {
+              "size": 12,
+              "box": [
+                12,
+                12,
+                12
+              ],
+              "seeds": 400,
+              "mean": 0.7515567129629623,
+              "sd": 0.019951900534280736,
+              "se": 0.0009975950267140368,
+              "deviation": -0.15534296915414658,
+              "deviationTimesN23": -0.8142274991231754,
+              "sigmaFromExact": -155.71746549882917
+            },
+            {
+              "size": 16,
+              "box": [
+                16,
+                16,
+                16
+              ],
+              "seeds": 400,
+              "mean": 0.7799218749999995,
+              "sd": 0.017554430282753112,
+              "se": 0.0008777215141376556,
+              "deviation": -0.12697780711710938,
+              "deviationTimesN23": -0.8062588183772581,
+              "sigmaFromExact": -144.6675341459103
+            },
+            {
+              "size": 20,
+              "box": [
+                20,
+                20,
+                20
+              ],
+              "seeds": 300,
+              "mean": 0.7991499999999997,
+              "sd": 0.015270224814529993,
+              "se": 0.0008816268407254995,
+              "deviation": -0.10774968211710922,
+              "deviationTimesN23": -0.7939064457758382,
+              "sigmaFromExact": -122.21688036226409
+            },
+            {
+              "size": 24,
+              "box": [
+                24,
+                24,
+                24
+              ],
+              "seeds": 300,
+              "mean": 0.8119309413580241,
+              "sd": 0.012723513527825473,
+              "se": 0.0007345923960327882,
+              "deviation": -0.09496874075908479,
+              "deviationTimesN23": -0.7901717653943291,
+              "sigmaFromExact": -129.28086551394946
+            },
+            {
+              "size": 32,
+              "box": [
+                32,
+                32,
+                32
+              ],
+              "seeds": 200,
+              "mean": 0.8276888020833338,
+              "sd": 0.011501190631389957,
+              "se": 0.0008132569887175029,
+              "deviation": -0.07921088003377508,
+              "deviationTimesN23": -0.7983956410820058,
+              "sigmaFromExact": -97.39956881119429
+            },
+            {
+              "size": 40,
+              "box": [
+                40,
+                40,
+                40
+              ],
+              "seeds": 120,
+              "mean": 0.8391840277777778,
+              "sd": 0.010274612032003227,
+              "se": 0.0009379394632570266,
+              "deviation": -0.06771565433933113,
+              "deviationTimesN23": -0.792007097771581,
+              "sigmaFromExact": -72.196188551643
+            },
+            {
+              "size": 48,
+              "box": [
+                48,
+                48,
+                48
+              ],
+              "seeds": 100,
+              "mean": 0.847306134259259,
+              "sd": 0.009005878866610596,
+              "se": 0.0009005878866610596,
+              "deviation": -0.05959354785784987,
+              "deviationTimesN23": -0.7870942381205619,
+              "sigmaFromExact": -66.17182924677532
+            }
+          ],
+          "exact": 0.9068996821171089,
+          "three": {
+            "model": "q_inf + A n^-2/3 + B n^-1, all sizes",
+            "sizes": [
+              12,
+              16,
+              20,
+              24,
+              32,
+              40,
+              48
+            ],
+            "limit": 0.900519873432766,
+            "limitSe": 0.005198261477324738,
+            "coefficients": [
+              0.900519873432766,
+              -0.5840963184811154,
+              -0.4509619702215119
+            ],
+            "chiSquare": 1.958915074256014,
+            "dof": 4,
+            "fitPValue": 0.743315495101013,
+            "sigmaFromExact": -1.2272966091013755,
+            "bootstrapReplicates": 1000
+          },
+          "two": {
+            "model": "q_inf + A n^-2/3, sizes >= 24",
+            "sizes": [
+              24,
+              32,
+              40,
+              48
+            ],
+            "limit": 0.9070160084900927,
+            "limitSe": 0.0023686064358770745,
+            "coefficients": [
+              0.9070160084900927,
+              -0.7933528794824214
+            ],
+            "chiSquare": 0.8636424896447743,
+            "dof": 2,
+            "fitPValue": 0.6493254365954306,
+            "sigmaFromExact": 0.04911173558501299,
+            "bootstrapReplicates": 1000
+          }
+        },
+        "radius": {
+          "summary": [
+            {
+              "size": 12,
+              "box": [
+                12,
+                12,
+                12
+              ],
+              "seeds": 400,
+              "mean": 0.9085274030814587,
+              "sd": 0.012478316408774113,
+              "se": 0.0006239158204387056,
+              "deviation": -0.09147259691854126,
+              "deviationTimesN23": -0.47945204236041244,
+              "sigmaFromExact": -146.6104784043181
+            },
+            {
+              "size": 16,
+              "box": [
+                16,
+                16,
+                16
+              ],
+              "seeds": 400,
+              "mean": 0.9261804808336247,
+              "sd": 0.0106961464493149,
+              "se": 0.000534807322465745,
+              "deviation": -0.0738195191663753,
+              "deviationTimesN23": -0.46872472952196326,
+              "sigmaFromExact": -138.03012050401298
+            },
+            {
+              "size": 20,
+              "box": [
+                20,
+                20,
+                20
+              ],
+              "seeds": 300,
+              "mean": 0.9379035867445106,
+              "sd": 0.00915286026171972,
+              "se": 0.000528440633595891,
+              "deviation": -0.062096413255489424,
+              "deviationTimesN23": -0.45753028477162694,
+              "sigmaFromExact": -117.5087782953795
+            },
+            {
+              "size": 24,
+              "box": [
+                24,
+                24,
+                24
+              ],
+              "seeds": 300,
+              "mean": 0.9455460757146703,
+              "sd": 0.007511898559834795,
+              "se": 0.0004336996655645781,
+              "deviation": -0.05445392428532969,
+              "deviationTimesN23": -0.45307490803043005,
+              "sigmaFromExact": -125.55675876402415
+            },
+            {
+              "size": 32,
+              "box": [
+                32,
+                32,
+                32
+              ],
+              "seeds": 200,
+              "mean": 0.9549059440844723,
+              "sd": 0.0066727206833336085,
+              "se": 0.00047183260441489275,
+              "deviation": -0.04509405591552773,
+              "deviationTimesN23": -0.45451960218487847,
+              "sigmaFromExact": -95.57214887989288
+            },
+            {
+              "size": 40,
+              "box": [
+                40,
+                40,
+                40
+              ],
+              "seeds": 120,
+              "mean": 0.9616443623444716,
+              "sd": 0.005928672088798925,
+              "se": 0.0005412112398477404,
+              "deviation": -0.03835563765552841,
+              "deviationTimesN23": -0.4486102594609216,
+              "sigmaFromExact": -70.86999461858746
+            },
+            {
+              "size": 48,
+              "box": [
+                48,
+                48,
+                48
+              ],
+              "seeds": 100,
+              "mean": 0.9663495487656324,
+              "sd": 0.005154975677211663,
+              "se": 0.0005154975677211663,
+              "deviation": -0.03365045123436761,
+              "deviationTimesN23": -0.44444536747343283,
+              "sigmaFromExact": -65.2776139820105
+            }
+          ],
+          "exact": 1,
+          "three": {
+            "model": "q_inf + A n^-2/3 + B n^-1, all sizes",
+            "sizes": [
+              12,
+              16,
+              20,
+              24,
+              32,
+              40,
+              48
+            ],
+            "limit": 0.9949235282257711,
+            "limitSe": 0.00330071143037097,
+            "coefficients": [
+              0.9949235282257711,
+              -0.25786447937751555,
+              -0.44647294131428417
+            ],
+            "chiSquare": 2.055555212215896,
+            "dof": 4,
+            "fitPValue": 0.7255413681614264,
+            "sigmaFromExact": -1.5379932118629118,
+            "bootstrapReplicates": 1000
+          },
+          "two": {
+            "model": "q_inf + A n^-2/3, sizes >= 24",
+            "sizes": [
+              24,
+              32,
+              40,
+              48
+            ],
+            "limit": 1.001571078903272,
+            "limitSe": 0.0013962884838471085,
+            "coefficients": [
+              1.001571078903272,
+              -0.46725988340338687
+            ],
+            "chiSquare": 0.6125147601771876,
+            "dof": 2,
+            "fitPValue": 0.7361971125914383,
+            "sigmaFromExact": 1.1251821679021567,
+            "bootstrapReplicates": 1000
+          }
+        },
+        "localRing3FreeArea": {
+          "summary": [
+            {
+              "size": 12,
+              "box": [
+                12,
+                12,
+                12
+              ],
+              "seeds": 400,
+              "mean": 0.9466087962962956,
+              "sd": 0.014557295242178586,
+              "se": 0.0007278647621089293,
+              "deviation": 0.039709114179186655,
+              "deviationTimesN23": 0.2081346385135238,
+              "sigmaFromExact": 54.555621107597936
+            },
+            {
+              "size": 16,
+              "box": [
+                16,
+                16,
+                16
+              ],
+              "seeds": 400,
+              "mean": 0.9333382161458336,
+              "sd": 0.01428189441693542,
+              "se": 0.000714094720846771,
+              "deviation": 0.026438534028724647,
+              "deviationTimesN23": 0.16787422691877815,
+              "sigmaFromExact": 37.023847476948056
+            },
+            {
+              "size": 20,
+              "box": [
+                20,
+                20,
+                20
+              ],
+              "seeds": 300,
+              "mean": 0.9255569444444444,
+              "sd": 0.012940020887796654,
+              "se": 0.0007470924542888778,
+              "deviation": 0.018657262327335444,
+              "deviationTimesN23": 0.13746788418460085,
+              "sigmaFromExact": 24.97316392399441
+            },
+            {
+              "size": 24,
+              "box": [
+                24,
+                24,
+                24
+              ],
+              "seeds": 300,
+              "mean": 0.9192187499999994,
+              "sd": 0.011106357623203455,
+              "se": 0.0006412258563472767,
+              "deviation": 0.0123190678828905,
+              "deviationTimesN23": 0.10249877527311518,
+              "sigmaFromExact": 19.211745379491855
+            },
+            {
+              "size": 32,
+              "box": [
+                32,
+                32,
+                32
+              ],
+              "seeds": 200,
+              "mean": 0.9101220703125005,
+              "sd": 0.010189742353912033,
+              "se": 0.0007205235916994973,
+              "deviation": 0.0032223881953915567,
+              "deviationTimesN23": 0.0324796377464526,
+              "sigmaFromExact": 4.472286865432008
+            },
+            {
+              "size": 40,
+              "box": [
+                40,
+                40,
+                40
+              ],
+              "seeds": 120,
+              "mean": 0.9058324652777778,
+              "sd": 0.009325230637372681,
+              "se": 0.0008512731956712158,
+              "deviation": -0.0010672168393310866,
+              "deviationTimesN23": -0.012482243874894267,
+              "sigmaFromExact": -1.2536713768951724
+            },
+            {
+              "size": 48,
+              "box": [
+                48,
+                48,
+                48
+              ],
+              "seeds": 100,
+              "mean": 0.9028421585648146,
+              "sd": 0.008066662651620121,
+              "se": 0.0008066662651620121,
+              "deviation": -0.004057523552294273,
+              "deviationTimesN23": -0.053590590321408726,
+              "sigmaFromExact": -5.029990378337383
+            }
+          ],
+          "exact": 0.9068996821171089,
+          "three": {
+            "model": "q_inf + A n^-2/3 + B n^-1, all sizes",
+            "sizes": [
+              12,
+              16,
+              20,
+              24,
+              32,
+              40,
+              48
+            ],
+            "limit": 0.87578302189274,
+            "limitSe": 0.0047109974200723985,
+            "coefficients": [
+              0.87578302189274,
+              0.3137860414674397,
+              0.13244547819448943
+            ],
+            "chiSquare": 2.855683978428675,
+            "dof": 4,
+            "fitPValue": 0.5822594170997935,
+            "sigmaFromExact": -6.605110860767713,
+            "bootstrapReplicates": 1000
+          },
+          "two": {
+            "model": "q_inf + A n^-2/3, sizes >= 24",
+            "sizes": [
+              24,
+              32,
+              40,
+              48
+            ],
+            "limit": 0.8740441869778435,
+            "limitSe": 0.0021967618901815476,
+            "coefficients": [
+              0.8740441869778435,
+              0.37267103351580033
+            ],
+            "chiSquare": 2.4324090335075876,
+            "dof": 2,
+            "fitPValue": 0.2963528372668508,
+            "sigmaFromExact": -14.956329716986378,
+            "bootstrapReplicates": 1000
+          }
+        },
+        "localRing3Radius": {
+          "summary": [
+            {
+              "size": 12,
+              "box": [
+                12,
+                12,
+                12
+              ],
+              "seeds": 400,
+              "mean": 1.020902325820221,
+              "sd": 0.008027300979320076,
+              "se": 0.00040136504896600377,
+              "deviation": 0.020902325820221,
+              "deviationTimesN23": 0.1095591810245892,
+              "sigmaFromExact": 52.078091687528726
+            },
+            {
+              "size": 16,
+              "box": [
+                16,
+                16,
+                16
+              ],
+              "seeds": 400,
+              "mean": 1.01386112987049,
+              "sd": 0.007891674864716052,
+              "se": 0.00039458374323580255,
+              "deviation": 0.013861129870490041,
+              "deviationTimesN23": 0.08801268855153489,
+              "sigmaFromExact": 35.12848693871976
+            },
+            {
+              "size": 20,
+              "box": [
+                20,
+                20,
+                20
+              ],
+              "seeds": 300,
+              "mean": 1.009758398857074,
+              "sd": 0.007176158881388061,
+              "se": 0.00041431572619169207,
+              "deviation": 0.009758398857073969,
+              "deviationTimesN23": 0.07190049753151369,
+              "sigmaFromExact": 23.553049619359694
+            },
+            {
+              "size": 24,
+              "box": [
+                24,
+                24,
+                24
+              ],
+              "seeds": 300,
+              "mean": 1.006362038460544,
+              "sd": 0.006140400733796958,
+              "se": 0.0003545162016589849,
+              "deviation": 0.006362038460544062,
+              "deviationTimesN23": 0.05293429313364697,
+              "sigmaFromExact": 17.945691708227805
+            },
+            {
+              "size": 32,
+              "box": [
+                32,
+                32,
+                32
+              ],
+              "seeds": 200,
+              "mean": 1.0014889218954763,
+              "sd": 0.005628177824877302,
+              "se": 0.00039797227056944935,
+              "deviation": 0.0014889218954763361,
+              "deviationTimesN23": 0.015007392302080078,
+              "sigmaFromExact": 3.7412704491844924
+            },
+            {
+              "size": 40,
+              "box": [
+                40,
+                40,
+                40
+              ],
+              "seeds": 120,
+              "mean": 0.9992051534770207,
+              "sd": 0.005174185735368507,
+              "se": 0.00047233637399713124,
+              "deviation": -0.0007948465229793422,
+              "deviationTimesN23": -0.009296581329393667,
+              "sigmaFromExact": -1.682797613601043
+            },
+            {
+              "size": 48,
+              "box": [
+                48,
+                48,
+                48
+              ],
+              "seeds": 100,
+              "mean": 0.9975929294529564,
+              "sd": 0.00447377696110571,
+              "se": 0.00044737769611057104,
+              "deviation": -0.0024070705470435882,
+              "deviationTimesN23": -0.031791887317179676,
+              "sigmaFromExact": -5.38039908553839
+            }
+          ],
+          "exact": 1,
+          "three": {
+            "model": "q_inf + A n^-2/3 + B n^-1, all sizes",
+            "sizes": [
+              12,
+              16,
+              20,
+              24,
+              32,
+              40,
+              48
+            ],
+            "limit": 0.9828738636552464,
+            "limitSe": 0.002577592715232054,
+            "coefficients": [
+              0.9828738636552464,
+              0.17524079410192195,
+              0.055607013103712806
+            ],
+            "chiSquare": 2.8205724138257215,
+            "dof": 4,
+            "fitPValue": 0.5882867920516426,
+            "sigmaFromExact": -6.644236788670374,
+            "bootstrapReplicates": 1000
+          },
+          "two": {
+            "model": "q_inf + A n^-2/3, sizes >= 24",
+            "sizes": [
+              24,
+              32,
+              40,
+              48
+            ],
+            "limit": 0.982179825409832,
+            "limitSe": 0.0011664376167329258,
+            "coefficients": [
+              0.982179825409832,
+              0.19948857814352278
+            ],
+            "chiSquare": 2.2909989062498104,
+            "dof": 2,
+            "fitPValue": 0.31806501954467514,
+            "sigmaFromExact": -15.277434759074866,
+            "bootstrapReplicates": 1000
+          }
+        }
+      },
+      "skew": {
+        "freeArea": {
+          "summary": [
+            {
+              "size": 4,
+              "box": [
+                12,
+                20,
+                24
+              ],
+              "seeds": 300,
+              "mean": 0.7605324074074078,
+              "sd": 0.01954432503644652,
+              "se": 0.0011283921320921942,
+              "deviation": -0.12451105852768041,
+              "deviationTimesN23": -0.3137482071674342,
+              "sigmaFromExact": -110.34378474158605
+            },
+            {
+              "size": 5,
+              "box": [
+                15,
+                25,
+                30
+              ],
+              "seeds": 300,
+              "mean": 0.7786349206349203,
+              "sd": 0.01782308100826061,
+              "se": 0.0010290160617907767,
+              "deviation": -0.10640854530016786,
+              "deviationTimesN23": -0.3111404739551181,
+              "sigmaFromExact": -103.40805090543206
+            },
+            {
+              "size": 6,
+              "box": [
+                18,
+                30,
+                36
+              ],
+              "seeds": 200,
+              "mean": 0.7928924162257489,
+              "sd": 0.01558239037501972,
+              "se": 0.0011018413901272433,
+              "deviation": -0.0921510497093393,
+              "deviationTimesN23": -0.3042760620495107,
+              "sigmaFromExact": -83.63367952505166
+            },
+            {
+              "size": 8,
+              "box": [
+                24,
+                40,
+                48
+              ],
+              "seeds": 100,
+              "mean": 0.8082242063492064,
+              "sd": 0.014338894524454335,
+              "se": 0.0014338894524454336,
+              "deviation": -0.07681925958588176,
+              "deviationTimesN23": -0.307277038343527,
+              "sigmaFromExact": -53.57404607089479
+            }
+          ],
+          "exact": 0.8850434659350882,
+          "three": {
+            "model": "q_inf + A n^-2/3 + B n^-1, all sizes",
+            "sizes": [
+              4,
+              5,
+              6,
+              8
+            ],
+            "limit": 0.8655401108337016,
+            "limitSe": 0.031627399448690634,
+            "coefficients": [
+              0.8655401108337016,
+              -0.08479369386205403,
+              -0.286270476729101
+            ],
+            "chiSquare": 0.946509798212534,
+            "dof": 1,
+            "fitPValue": 0.330609292124601,
+            "sigmaFromExact": -0.6166600935061703,
+            "bootstrapReplicates": 1000
+          },
+          "two": {
+            "model": "q_inf + A n^-2/3, sizes >= 5",
+            "sizes": [
+              5,
+              6,
+              8
+            ],
+            "limit": 0.8900117527156653,
+            "limitSe": 0.006144807732212375,
+            "coefficients": [
+              0.8900117527156653,
+              -0.324135106615505
+            ],
+            "chiSquare": 1.437202554616198,
+            "dof": 1,
+            "fitPValue": 0.23059256486053514,
+            "sigmaFromExact": 0.8085341311058997,
+            "bootstrapReplicates": 1000
+          }
+        },
+        "radius": {
+          "summary": [
+            {
+              "size": 4,
+              "box": [
+                12,
+                20,
+                24
+              ],
+              "seeds": 300,
+              "mean": 0.925390516616464,
+              "sd": 0.012355233676925394,
+              "se": 0.0007133297489273606,
+              "deviation": -0.07460948338353601,
+              "deviationTimesN23": -0.18800411727339758,
+              "sigmaFromExact": -104.59325928257844
+            },
+            {
+              "size": 5,
+              "box": [
+                15,
+                25,
+                30
+              ],
+              "seeds": 300,
+              "mean": 0.9368842090450901,
+              "sd": 0.011033133863774434,
+              "se": 0.0006369982806255346,
+              "deviation": -0.06311579095490993,
+              "deviationTimesN23": -0.1845516923134918,
+              "sigmaFromExact": -99.08314178325568
+            },
+            {
+              "size": 6,
+              "box": [
+                18,
+                30,
+                36
+              ],
+              "seeds": 200,
+              "mean": 0.9456830078964066,
+              "sd": 0.009503202661277521,
+              "se": 0.0006719779044779381,
+              "deviation": -0.05431699210359342,
+              "deviationTimesN23": -0.1793507563048494,
+              "sigmaFromExact": -80.8315150567227
+            },
+            {
+              "size": 8,
+              "box": [
+                24,
+                40,
+                48
+              ],
+              "seeds": 100,
+              "mean": 0.9550234564696214,
+              "sd": 0.008618759247249889,
+              "se": 0.000861875924724989,
+              "deviation": -0.04497654353037861,
+              "deviationTimesN23": -0.1799061741215144,
+              "sigmaFromExact": -52.18447602504956
+            }
+          ],
+          "exact": 1,
+          "three": {
+            "model": "q_inf + A n^-2/3 + B n^-1, all sizes",
+            "sizes": [
+              4,
+              5,
+              6,
+              8
+            ],
+            "limit": 0.9843781461864921,
+            "limitSe": 0.019633770441384216,
+            "coefficients": [
+              0.9843781461864921,
+              0.0075601354155079336,
+              -0.24847009266909362
+            ],
+            "chiSquare": 0.8493872466585513,
+            "dof": 1,
+            "fitPValue": 0.35672574050955363,
+            "sigmaFromExact": -0.7956624459956008,
+            "bootstrapReplicates": 1000
+          },
+          "two": {
+            "model": "q_inf + A n^-2/3, sizes >= 5",
+            "sizes": [
+              5,
+              6,
+              8
+            ],
+            "limit": 1.005130394750296,
+            "limitSe": 0.003709101306879584,
+            "coefficients": [
+              1.005130394750296,
+              -0.1985295932969069
+            ],
+            "chiSquare": 1.6230300703036655,
+            "dof": 1,
+            "fitPValue": 0.20266980462602768,
+            "sigmaFromExact": 1.3831907855361913,
+            "bootstrapReplicates": 1000
+          }
+        }
+      }
+    },
+    "fluctuation": {
+      "sizes": [
+        12,
+        16,
+        20,
+        24,
+        32,
+        40,
+        48
+      ],
+      "pooledDepthSd": [
+        0.8214503647539424,
+        0.8594127213184063,
+        0.9106945418168407,
+        0.9377681704894107,
+        1.0754863338375604,
+        1.111989032249481,
+        1.1128950325773554
+      ],
+      "meanDepth": [
+        2.5825,
+        3.34,
+        3.95,
+        4.513333333333334,
+        5.8075,
+        7.029166666666667,
+        8.115
+      ],
+      "exponent": 0.24783904342033455,
+      "exponentSe": 0.030191283751532967,
+      "reference": 0.3333333333333333,
+      "sigmaFromReference": -2.8317540458562904,
+      "bootstrapReplicates": 1000
+    },
+    "reportedShapes": [
+      {
+        "box": [
+          11,
+          11,
+          11
+        ],
+        "seeds": 30,
+        "seedPattern": "'lozenge-hint-11x11x11-<i>'",
+        "radius": 0.9016527814899192,
+        "radiusSe": 0.002695911858006227,
+        "freeArea": 0.7411386593204775,
+        "freeAreaSe": 0.00421734190885339,
+        "predictedFreeArea": 0.9068996821171089
+      },
+      {
+        "box": [
+          48,
+          48,
+          8
+        ],
+        "seeds": 30,
+        "seedPattern": "'lozenge-hint-48x48x8-<i>'",
+        "radius": 0.9092835257190721,
+        "radiusSe": 0.004770993505772501,
+        "freeArea": 0.5911024305555554,
+        "freeAreaSe": 0.005748737055928004,
+        "predictedFreeArea": 0.707948337446186
+      }
+    ]
+  },
+  "checks": {
+    "countsMatchMacMahon": true,
+    "moduleLog10Matches": true,
+    "drawnTilingsAreABijection": true,
+    "ellipseMatchesTangencySolution": true,
+    "uniformityPasses": true,
+    "volumeDistributionPasses": true,
+    "controlsFailUniformity": true,
+    "everyPlateExactAndSound": true,
+    "frozenFlagsMatchUnionFindOnEveryPlate": true,
+    "frozenCountsMatchLevelSetsOnEveryPlate": true,
+    "printedValuesAndBarsMatch": true,
+    "radiusBarCalibrated": true,
+    "freeAreaBarCalibrated": true,
+    "regularFreeAreaLimitWithin3Sigma": true,
+    "regularRadiusLimitWithin3Sigma": true,
+    "skewFreeAreaLimitWithin3Sigma": true,
+    "skewRadiusLimitWithin3Sigma": true,
+    "uniformCornersSymmetricWithin3Sigma": true,
+    "biasMovesBoundaryOver5Sigma": true,
+    "selfTestCalibrated": true,
+    "chunkingPreserved": true
+  },
+  "print": {
+    "cases": [
+      {
+        "seed": "lozenge-print-0",
+        "recipeVersion": 4,
+        "frozenTest": 0,
+        "parameters": {
+          "a": 11,
+          "b": 11,
+          "c": 11,
+          "aspect": "fit",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "shade",
+          "shift": 0,
+          "inset": 0.05,
+          "strokeWidth": 1.2,
+          "strokeColor": 3,
+          "ring": 0,
+          "arctic": "off",
+          "curveW": 1.6,
+          "margin": 0.07,
+          "grain": 0,
+          "seed": "lozenge-print-0",
+          "palette": [
+            "#D94F30",
+            "#F2A541",
+            "#3C6E71",
+            "#284B63",
+            "#FAF3E3"
+          ],
+          "bg": "#F5E6C8",
+          "v": 4
+        },
+        "box": [
+          11,
+          11,
+          11
+        ],
+        "rhombi": 363,
+        "heightsSha256": "2e910da694455c60462ac1dd503834c2755b98e4bfdbaba1c4fc9e2c949d2cf6",
+        "cftp": {
+          "T": 256,
+          "coal": 193,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 0.9077657187746176,
+          "rSe": 0.009861782386809294,
+          "disFrac": 0.7493112947658402,
+          "disSe": 0.01608312073656932,
+          "predDisFrac": 0.9068996821171089
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 2078,
+          "height": 2400,
+          "channelsChecked": 19948800,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 402071,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 363,
+          "matched": 363,
+          "curves": 0,
+          "coordinates": 2904,
+          "maxCoordinateError": 0.004942627066782279
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "rhombus not found at 1526.39,496.52 (Infinity)",
+            "rhombus not found at 1688.85,684.11 (Infinity)",
+            "rhombus not found at 1770.08,1106.20 (Infinity)"
+          ]
+        },
+        "shellExport": {
+          "width": 2078,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 363,
+            "matched": 363,
+            "curves": 0,
+            "coordinates": 2904,
+            "maxCoordinateError": 0.004942627066782279
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "lozenge-print-1",
+        "recipeVersion": 4,
+        "frozenTest": 0,
+        "parameters": {
+          "a": 24,
+          "b": 40,
+          "c": 46,
+          "aspect": "fit",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "shade",
+          "shift": 1,
+          "inset": 0.03,
+          "strokeWidth": 0,
+          "strokeColor": 3,
+          "ring": 0,
+          "arctic": "both",
+          "curveW": 1.8,
+          "margin": 0.06,
+          "grain": 0,
+          "seed": "lozenge-print-1",
+          "palette": [
+            "#2A6F6B",
+            "#63A69F",
+            "#B8860B",
+            "#8C3B2F",
+            "#1B2A2A"
+          ],
+          "bg": "#EFEADF",
+          "v": 4
+        },
+        "box": [
+          24,
+          40,
+          46
+        ],
+        "rhombi": 3904,
+        "heightsSha256": "364f6881a0f69ccb2cf667ac491a238bd3e7599d01939f0d276e36ae80933545",
+        "cftp": {
+          "T": 4096,
+          "coal": 2426,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 0.9571297373876502,
+          "rSe": 0.004877496929317045,
+          "disFrac": 0.8127561475409836,
+          "disSe": 0.008207179492902462,
+          "predDisFrac": 0.8867903182969252
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 1705,
+          "height": 2400,
+          "channelsChecked": 16368000,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 1260718,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 3904,
+          "matched": 3904,
+          "curves": 2,
+          "coordinates": 31740,
+          "maxCoordinateError": 0.005000000000109139
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "rhombus not found at 1321.38,320.21 (Infinity)",
+            "rhombus not found at 1344.82,360.81 (Infinity)",
+            "rhombus not found at 1391.71,469.10 (Infinity)"
+          ]
+        },
+        "shellExport": {
+          "width": 1705,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 3904,
+            "matched": 3904,
+            "curves": 2,
+            "coordinates": 31740,
+            "maxCoordinateError": 0.005000000000109139
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "lozenge-print-2",
+        "recipeVersion": 4,
+        "frozenTest": 0,
+        "parameters": {
+          "a": 48,
+          "b": 48,
+          "c": 8,
+          "aspect": "fit",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "frozen",
+          "shift": 0,
+          "inset": 0.02,
+          "strokeWidth": 0,
+          "strokeColor": 3,
+          "ring": 0,
+          "arctic": "pred",
+          "curveW": 1.6,
+          "margin": 0.05,
+          "grain": 0,
+          "seed": "lozenge-print-2",
+          "palette": [
+            "#3F3A36",
+            "#8C2F0D",
+            "#F25C05",
+            "#F2A20C",
+            "#FFF3D6"
+          ],
+          "bg": "#121110",
+          "v": 4
+        },
+        "box": [
+          48,
+          48,
+          8
+        ],
+        "rhombi": 3072,
+        "heightsSha256": "3089fd53cf4da9609b8b56b684f1fe862cffed19bec0266255c7727ccd8457da",
+        "cftp": {
+          "T": 4096,
+          "coal": 3127,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 0.9201490030406893,
+          "rSe": 0.02285431130991724,
+          "disFrac": 0.6025390625,
+          "disSe": 0.028813263364107253,
+          "predDisFrac": 0.707948337446186
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 2400,
+          "height": 1617,
+          "channelsChecked": 15523200,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 687246,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 3072,
+          "matched": 3072,
+          "curves": 1,
+          "coordinates": 24962,
+          "maxCoordinateError": 0.005000000000109139
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "rhombus not found at 2167.50,678.60 (Infinity)",
+            "rhombus not found at 2212.50,756.54 (Infinity)",
+            "rhombus not found at 2235.00,795.51 (Infinity)"
+          ]
+        },
+        "shellExport": {
+          "width": 2400,
+          "height": 1617,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 3072,
+            "matched": 3072,
+            "curves": 1,
+            "coordinates": 24962,
+            "maxCoordinateError": 0.005000000000109139
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "lozenge-print-3",
+        "recipeVersion": 4,
+        "frozenTest": 0,
+        "parameters": {
+          "a": 32,
+          "b": 32,
+          "c": 32,
+          "aspect": "fit",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "shade",
+          "shift": 0,
+          "inset": 0.04,
+          "strokeWidth": 0,
+          "strokeColor": 3,
+          "ring": 0,
+          "arctic": "off",
+          "curveW": 1.6,
+          "margin": 0.06,
+          "grain": 0,
+          "seed": "lozenge-print-3",
+          "palette": [
+            "#C4472B",
+            "#E8A33C",
+            "#2E4A62",
+            "#1E1B18",
+            "#FFFBF2"
+          ],
+          "bg": "#F1E8D8",
+          "v": 4
+        },
+        "box": [
+          32,
+          32,
+          32
+        ],
+        "rhombi": 3072,
+        "heightsSha256": "c8cf2d13fb071a23645c064b19cfddbe267cdabf089cb9f234c9aa370072c100",
+        "cftp": {
+          "T": 4096,
+          "coal": 2561,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 0.9562756313492621,
+          "rSe": 0.005323868369901995,
+          "disFrac": 0.8297526041666666,
+          "disSe": 0.009231987842978006,
+          "predDisFrac": 0.9068996821171089
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 2078,
+          "height": 2400,
+          "channelsChecked": 19948800,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 1276675,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 3072,
+          "matched": 3072,
+          "curves": 0,
+          "coordinates": 24576,
+          "maxCoordinateError": 0.005000000000109139
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "rhombus not found at 1439.02,424.67 (Infinity)",
+            "rhombus not found at 1467.59,441.17 (Infinity)",
+            "rhombus not found at 1496.16,457.66 (Infinity)"
+          ]
+        },
+        "shellExport": {
+          "width": 2078,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 3072,
+            "matched": 3072,
+            "curves": 0,
+            "coordinates": 24576,
+            "maxCoordinateError": 0.005000000000109139
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "lozenge-print-4",
+        "recipeVersion": 4,
+        "frozenTest": 0,
+        "parameters": {
+          "a": 20,
+          "b": 20,
+          "c": 40,
+          "aspect": "fit",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "flat",
+          "shift": 0,
+          "inset": 0.06,
+          "strokeWidth": 0.6,
+          "strokeColor": 3,
+          "ring": 0,
+          "arctic": "off",
+          "curveW": 1.6,
+          "margin": 0.06,
+          "grain": 0,
+          "seed": "lozenge-print-4",
+          "palette": [
+            "#FF5E5B",
+            "#00CECB",
+            "#FFED66",
+            "#2B2B2B"
+          ],
+          "bg": "#FBF7EE",
+          "v": 4
+        },
+        "box": [
+          20,
+          20,
+          40
+        ],
+        "rhombi": 2000,
+        "heightsSha256": "052e80962ca26d767479eefa13096e869dd0e134e7fcd6801f5a612f745e686c",
+        "cftp": {
+          "T": 1024,
+          "coal": 896,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 0.9410139549823319,
+          "rSe": 0.009512471973461898,
+          "disFrac": 0.788,
+          "disSe": 0.01582063577390038,
+          "predDisFrac": 0.8885765876316734
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 1386,
+          "height": 2400,
+          "channelsChecked": 13305600,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 1082667,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 2000,
+          "matched": 2000,
+          "curves": 0,
+          "coordinates": 16000,
+          "maxCoordinateError": 0.004993892457491711
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "rhombus not found at 875.90,302.40 (Infinity)",
+            "rhombus not found at 906.39,320.00 (Infinity)",
+            "rhombus not found at 936.87,337.60 (Infinity)"
+          ]
+        },
+        "shellExport": {
+          "width": 1386,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 2000,
+            "matched": 2000,
+            "curves": 0,
+            "coordinates": 16000,
+            "maxCoordinateError": 0.004993892457491711
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "lozenge-print-5",
+        "recipeVersion": 3,
+        "frozenTest": 3,
+        "parameters": {
+          "a": 36,
+          "b": 36,
+          "c": 36,
+          "aspect": "1:1",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "frozen",
+          "shift": 2,
+          "inset": 0.02,
+          "strokeWidth": 0,
+          "strokeColor": 3,
+          "ring": 3,
+          "arctic": "both",
+          "curveW": 2,
+          "margin": 0.06,
+          "grain": 0,
+          "seed": "lozenge-print-5",
+          "palette": [
+            "#1A1A1A",
+            "#4A4A4A",
+            "#8C8C8C",
+            "#C8C4BB",
+            "#E63B2E"
+          ],
+          "v": 4,
+          "bg": "#E9E7E2"
+        },
+        "box": [
+          36,
+          36,
+          36
+        ],
+        "rhombi": 3888,
+        "heightsSha256": "f4ffdece8b40a686b8495ff9b7e0a9c0f7f8531b8c9a3e71383a6b3f0ae7ec83",
+        "cftp": {
+          "T": 4096,
+          "coal": 2972,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 1.006449832622349,
+          "rSe": 0.006048907510646874,
+          "disFrac": 0.9191100823045267,
+          "disSe": 0.011145698407927625,
+          "predDisFrac": 0.906899682117109
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 2400,
+          "height": 2400,
+          "channelsChecked": 23040000,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 1090933,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 3888,
+          "matched": 3888,
+          "curves": 2,
+          "coordinates": 31612,
+          "maxCoordinateError": 0.004991037033050816
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "fill #D4D3CF vs #8C8C8C",
+            "fill #D4D3CF vs #8C8C8C",
+            "fill #D4D3CF vs #8C8C8C"
+          ]
+        },
+        "shellExport": {
+          "width": 2400,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 3888,
+            "matched": 3888,
+            "curves": 2,
+            "coordinates": 31612,
+            "maxCoordinateError": 0.004991037033050816
+          }
+        },
+        "statePreserved": true
+      },
+      {
+        "seed": "lozenge-print-6",
+        "recipeVersion": 4,
+        "frozenTest": 0,
+        "parameters": {
+          "a": 16,
+          "b": 16,
+          "c": 16,
+          "aspect": "fit",
+          "sampler": "cftp",
+          "sweeps": 4000,
+          "fill": "height",
+          "shift": 0,
+          "inset": 0,
+          "strokeWidth": 0,
+          "strokeColor": 3,
+          "ring": 0,
+          "arctic": "off",
+          "curveW": 1.6,
+          "margin": 0.05,
+          "grain": 0,
+          "seed": "lozenge-print-6",
+          "palette": [
+            "#1B4F72",
+            "#2E86C1",
+            "#7FB3D5",
+            "#D6EAF8",
+            "#F4F6F7"
+          ],
+          "bg": "#0F1B2D",
+          "v": 4
+        },
+        "box": [
+          16,
+          16,
+          16
+        ],
+        "rhombi": 768,
+        "heightsSha256": "d5c51c5efce7f41eada10c0457429e0291aef64899289ae1fad9d1c8798c1d16",
+        "cftp": {
+          "T": 512,
+          "coal": 362,
+          "exact": true,
+          "total": 4000,
+          "fell": false
+        },
+        "arctic": {
+          "rMean": 0.9361685088538706,
+          "rSe": 0.013782090043982847,
+          "disFrac": 0.796875,
+          "disSe": 0.02351521196576306,
+          "predDisFrac": 0.9068996821171089
+        },
+        "browserEqualsNode": true,
+        "orientationsAndFrozenFlagsIndependent": true,
+        "modulePng": {
+          "width": 2078,
+          "height": 2400,
+          "channelsChecked": 19948800,
+          "maxChannelError": 0,
+          "channelsOverOne": 0,
+          "meanChannelError": 0,
+          "shiftedPrintFailureChannels": 295226,
+          "ok": true
+        },
+        "moduleSvg": {
+          "ok": true,
+          "fail": [],
+          "rhombi": 768,
+          "matched": 768,
+          "curves": 0,
+          "coordinates": 6144,
+          "maxCoordinateError": 0.0049999999999954525
+        },
+        "wrongTilingSvgRejected": {
+          "fail": [
+            "rhombus not found at 1448.11,390.18 (Infinity)",
+            "fill #F1F6F9 vs #ECF3FA",
+            "stroke"
+          ]
+        },
+        "shellExport": {
+          "width": 2078,
+          "height": 2400,
+          "vectorRip": true,
+          "maxChannelError": 0,
+          "channelsDiffering": 0,
+          "meanChannelError": 0,
+          "provenance": true,
+          "svg": {
+            "ok": true,
+            "fail": [],
+            "rhombi": 768,
+            "matched": 768,
+            "curves": 0,
+            "coordinates": 6144,
+            "maxCoordinateError": 0.0049999999999954525
+          }
+        },
+        "statePreserved": true
+      }
+    ],
+    "chromium": "141.0.7390.37"
+  },
+  "environment": {
+    "node": "v22.22.2",
+    "chromium": "141.0.7390.37",
+    "platform": "linux",
+    "cpus": 4,
+    "seconds": 589
+  },
+  "passed": true
+}

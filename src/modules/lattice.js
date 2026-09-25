@@ -65,6 +65,12 @@ float siteHash(ivec2 site, int t){
   uint h = uhash(uint(site.x + 65536) * 0x9E3779B1u + uhash(uint(site.y + 65536) * 0x85EBCA77u + uhash(uint(t + 1048576))));
   return (float(h >> 8u) + 0.5) / 16777216.0;
 }
+// The same hash with a per-seed key folded into the tick term. siteHash alone gives every seed a window of one
+// shared sequence, so two seeds whose windows overlap reuse the same numbers; with the key they never do.
+float siteHashKeyed(ivec2 site, int t, uint key){
+  uint h = uhash(uint(site.x + 65536) * 0x9E3779B1u + uhash(uint(site.y + 65536) * 0x85EBCA77u + (uhash(uint(t + 1048576)) ^ key)));
+  return (float(h >> 8u) + 0.5) / 16777216.0;
+}
 `;
   const TONE = `
 vec3 tone(vec3 col, float exposure, float gamma, float contrast, float grain){
@@ -156,7 +162,7 @@ void main(){
   const T_C = 2 / Math.log(1 + Math.SQRT2);
   const ISING_STEP = HEAD + `
 uniform sampler2D u_s; uniform vec2 u_res;
-uniform int u_parity, u_tick, u_hMode;
+uniform int u_parity, u_tick, u_hMode, u_keyed, u_key;
 uniform float u_T, u_h, u_bands;
 ${HASH_U}
 float sg(float v){ return v >= 0.0 ? 1.0 : -1.0; }
@@ -172,7 +178,7 @@ void main(){
   else if (u_hMode == 2) h *= 2.0 * v_uv.x - 1.0;
   else if (u_hMode == 3) h *= sg(sin(6.28318530718 * u_bands * v_uv.x) * sin(6.28318530718 * u_bands * v_uv.y * u_res.y / u_res.x));
   float dE = 2.0 * s * (nb + h);
-  float r = siteHash(site, u_tick);
+  float r = u_keyed == 1 ? siteHashKeyed(site, u_tick, uint(u_key)) : siteHash(site, u_tick);
   if (dE <= 0.0 || r < exp(-dE / u_T)) s = -s;
   outColor = vec4(s, 0.0, 0.0, 1.0);
 }`;
@@ -253,6 +259,8 @@ void main(){
       RANGE('Model', 'bands', 'Bands', LIVE, 1, 12, 1, String, { dimUnless: s => s.hMode === 'stripes' || s.hMode === 'checks' }),
       { group: 'Model', key: 'init', label: 'Start', type: 'seg', kind: GEOM, options: [['hot', 'Hot'], ['cold', 'Cold'], ['split', 'Split']],
         hint: 'Hot is random spins (a quench when T is low). Cold is all up. Split is two halves.' },
+      { group: 'Model', key: 'stream', label: 'Random stream', type: 'seg', kind: GEOM, options: [['keyed', 'Per seed'], ['shared', 'Shared']],
+        hint: 'Per seed gives every seed its own random numbers, so runs with different seeds are independent. Shared is the stream recipes made before recipe v3 used, where different seeds read windows of one sequence and can overlap; old links keep it so they reprint.' },
     ]).concat(simFields('Sweeps per frame')).concat([
       { group: 'Picture', key: 'view', label: 'View', type: 'seg', kind: PAINT, wrap: true,
         options: [['spins', 'Spins'], ['mag', 'Magnetization'], ['walls', 'Domain walls'], ['energy', 'Bond energy']] },
@@ -263,9 +271,11 @@ void main(){
       RANGE('Picture', 'wall', 'Wall gain', PAINT, 0.3, 4, 0.05, f2, { dimUnless: s => s.view === 'walls' }),
       { group: 'Picture', key: 'pixelate', label: 'Pixelate', type: 'toggle', kind: PAINT },
     ]).concat(toneFields()),
+    // Recipes older than v3 were made on the shared random stream; they keep it, so they reprint exactly.
+    legacy: { 3: { stream: 'shared' } },
     defaults: {
       grid: 256, aspect: '1:1',
-      T: 2.27, h: 0, hMode: 'uniform', bands: 6, init: 'hot',
+      T: 2.27, h: 0, hMode: 'uniform', bands: 6, init: 'hot', stream: 'keyed',
       running: true, steps: 2, warmup: 250,
       view: 'spins', blur: 3, lo: -1, hi: 1, wall: 1.2, pixelate: true,
       exposure: 1, gamma: 1, contrast: 1.05, grain: 0,
@@ -320,7 +330,12 @@ void main(){
 
       let C = null, B = null, reduceT = null, gw = 0, gh = 0, ramp = null, rampPal = null, rampKey = '';
       const redBuf = new Uint8Array(RED * RED * 4);
-      let raf = 0, chunkTimer = 0, sweeps = 0, tick0 = 0, meanM = 0;
+      let raf = 0, chunkTimer = 0, sweeps = 0, tick0 = 0, streamKey = 0, meanM = 0;
+      // |m| is sampled every SAMPLE sweeps into a time series, so its error bar can account for the
+      // autocorrelation of the Markov chain. Near T_c single-flip Metropolis decorrelates slowly (critical
+      // slowing down), and a naive error on those samples would be far too small; tau_int says how slow.
+      const SAMPLE = 24;
+      let mSeries = [], nextSample = SAMPLE, fieldBuf = null;
 
       function ensureGrid(s) {
         const [W, H] = gridSize(s);
@@ -342,7 +357,8 @@ void main(){
       }
       function step(n) {
         const s = host.getState();
-        const u = { u_res: [gw, gh], u_T: s.T, u_h: s.h, u_bands: s.bands, u_hMode: { int: ISING_HMODES[s.hMode] || 0 } };
+        const u = { u_res: [gw, gh], u_T: s.T, u_h: s.h, u_bands: s.bands, u_hMode: { int: ISING_HMODES[s.hMode] || 0 },
+          u_keyed: { int: s.stream === 'shared' ? 0 : 1 }, u_key: { int: streamKey } };
         for (let i = 0; i < n; i++) {
           for (let parity = 0; parity < 2; parity++) {
             u.u_s = C.read; u.u_parity = { int: parity }; u.u_tick = { int: tick0 + 2 * (sweeps + i) + parity };
@@ -372,6 +388,57 @@ void main(){
         });
       }
       function measure() { meanM = gpuMeasure(gl, reducePass, reduceT, C.read, gw, gh, redBuf).mean; }
+      // Magnetization over every site from the float spin field. The 8-bit block reduction above is
+      // enough for the picture but rounds each block, which biases |m| by up to about 0.004 when every
+      // block agrees; a half-float device falls back to it and the method says so.
+      function exactMag() {
+        if (texType !== 'rgba32f') return null;
+        const n = gw * gh * 4;
+        if (!fieldBuf || fieldBuf.length !== n) fieldBuf = new Float32Array(n);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, C.read.fbo);
+        gl.readPixels(0, 0, gw, gh, gl.RGBA, gl.FLOAT, fieldBuf);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        let sum = 0;
+        for (let i = 0; i < n; i += 4) sum += fieldBuf[i] > 0 ? 1 : -1;
+        return sum / (gw * gh);
+      }
+      function sample() {
+        if (sweeps < nextSample) return;
+        const m = exactMag();
+        if (m === null) measure();
+        mSeries.push(Math.abs(m === null ? meanM : m));
+        if (mSeries.length > 4096) mSeries = mSeries.slice(-2048);
+        nextSample = sweeps + SAMPLE;
+      }
+      function resetSeries() { mSeries = []; nextSample = sweeps + SAMPLE; }
+      // Onsager's T_c and Yang's spontaneous magnetization for the infinite square lattice at h = 0
+      // (C. N. Yang, Phys. Rev. 85, 808, 1952): M(T) = (1 - sinh(2J/T)^-4)^(1/8) below T_c.
+      const yangM = T => T < T_C ? Math.pow(1 - Math.pow(Math.sinh(2 / T), -4), 1 / 8) : 0;
+      const UNORDERED = 'not a Yang comparison: a ' + 'hot or split start is still coarsening; start Cold to compare';
+      function magnetization(s, r) {
+        // The first half of the series is discarded as equilibration: a hot start quenched below T_c
+        // coarsens for a long time before |m| settles, and those samples would drag the mean down.
+        const eq = mSeries.slice(Math.floor(mSeries.length / 2));
+        // Yang's M is the equilibrium of the ordered phase. Only a cold (ordered) start samples it: from a hot or
+        // split start the lattice coarsens and can sit in a stripe state, two walls across the periodic box,
+        // for far longer than any run here, so |m| is printed with its error bar and not compared.
+        const clean = s.h === 0 && s.hMode === 'uniform';
+        const ordered = s.init === 'cold';
+        const withYang = clean && r < 0.95 && ordered;
+        const unordered = clean && r < 0.95 && !ordered;
+        const near = r >= 0.95 && r < 1.05;
+        const base = { label: '|m|', measured: eq.length ? U.stats.mean(eq) : Math.abs(meanM) };
+        if (withYang) Object.assign(base, { expected: yangM(s.T), reference: 'Yang, infinite lattice', digits: 4 });
+        if (unordered) base.note = UNORDERED;
+        if (eq.length < 20) return U.stats.compare(Object.assign(base, { basis: 'sampled', pending: eq.length + ' samples after equilibration; let it run' }));
+        const est = U.stats.seriesMean(eq), tauSweeps = Math.round(est.tau * SAMPLE);
+        const method = 'τ_int ' + est.tau.toFixed(1) + ' samples of ' + SAMPLE + ' sweeps (' + tauSweeps + ' sweeps), n_eff ' +
+          Math.round(est.nEff) + ' of ' + eq.length + ', first half of the run discarded as equilibration' +
+          (texType === 'rgba32f' ? ', every site counted' : ', 8-bit block reduction on a half-float device');
+        if (!est.reliable) return U.stats.compare(Object.assign(base, { basis: 'sampled', pending: 'run shorter than 50 τ_int (τ_int ≈ ' + tauSweeps + ' sweeps)' }));
+        return U.stats.compare(Object.assign(base, { basis: 'sampled', measured: est.mean, uncertainty: est.se, method,
+          note: near ? 'τ_int ' + tauSweeps + ' sweeps, critical slowing down' : withYang ? 'finite L' : unordered ? UNORDERED : undefined }));
+      }
       function status(extra) {
         const s = host.getState(), r = s.T / T_C;
         const phase = r < 0.93 ? 'ordered' : r < 1.07 ? 'critical' : 'disordered';
@@ -379,6 +446,7 @@ void main(){
           '<span>grid <b>' + gw + '×' + gh + '</b></span>' +
           '<span>T <b>' + s.T.toFixed(2) + '</b> · ' + r.toFixed(2) + ' T<sub>c</sub> · ' + phase + '</span>' +
           '<span>m <b>' + (meanM >= 0 ? '+' : '') + meanM.toFixed(2) + '</b></span>' +
+          magnetization(s, r) +
           '<span>sweep <b>' + sweeps.toLocaleString() + '</b></span>' +
           (extra ? '<span>' + extra + '</span>' : '')
         );
@@ -387,7 +455,7 @@ void main(){
       function frame() {
         raf = 0;
         const s = host.getState();
-        step(s.steps); render();
+        step(s.steps); sample(); render();
         if (sweeps % 16 < s.steps) { measure(); status(); }
         raf = requestAnimationFrame(frame);
       }
@@ -402,17 +470,21 @@ void main(){
         let left = total;
         (function chunk() {
           const n = Math.min(24, left); left -= n;
-          step(n); render();
+          step(n); sample(); render();
           if (left > 0) chunkTimer = setTimeout(chunk, 0);
           else { measure(); status(); startLoop(); }
         })();
       }
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },
+        // The plate is a magnified spin grid: the shell prints it without supersampling and states its resolution.
+        fieldCells() { return gw && gh ? [gw, gh] : null; },
         regenerate() {
-          stop(); sweeps = 0;
+          stop(); sweeps = 0; resetSeries();
           const s = host.getState();
           tick0 = U.makeRng(s.seed + '/ising/tick').int(0, 1e6);
+          // A 31-bit key per seed (a GLSL int uniform), folded into the hash by siteHashKeyed.
+          streamKey = U.makeRng(s.seed + '/ising/stream').int(1, 2147483647);
           ensureGrid(s);
           upload(C.read, isingSeed(s, gw, gh));
           B.read.clear(0, 0, 0, 1);
@@ -421,7 +493,11 @@ void main(){
           else { render(); measure(); status(); startLoop(); }
         },
         repaint() { if (C) render(); },
-        live(key) { if (key === 'running') startLoop(); else if (!raf) startLoop(); },
+        live(key) {
+          // a new temperature or field starts a new ensemble: samples from the old one would bias the mean
+          if (key === 'T' || key === 'h' || key === 'hMode' || key === 'bands') resetSeries();
+          if (key === 'running') startLoop(); else if (!raf) startLoop();
+        },
         resize() { if (C) render(); },
         pause() { stop(); },
         resume() { if (C) { render(); startLoop(); } },
@@ -434,7 +510,21 @@ void main(){
           // paint a disk of the minority spin so the poke is visible whatever the plate's majority
           const v = meanM > 0 ? -1 : 1;
           splatPass.draw(C.write, { u_src: C.read, u_pos: [p.x, p.yGL], u_add: [v, 0, 0, 1], u_rad: 0.05, u_amt: 1, u_mode: { int: 0 } });
-          C.swap(); render(); startLoop();
+          C.swap(); resetSeries(); render(); startLoop();
+        },
+        // The spin configuration and the |m| time series behind the printed error bar, for research use.
+        async exportData() {
+          if (!C) throw new Error('nothing to export');
+          const s = host.getState(), st = G.readTarget(C.read), n = gw * gh, spins = new Int8Array(n);
+          for (let i = 0; i < n; i++) spins[i] = st[i * 4] > 0 ? 1 : -1;
+          return {
+            arrays: {
+              spins: { data: spins, shape: [gh, gw], description: 'spin at each site, +1 or -1' },
+              abs_m_series: { data: Float64Array.from(mSeries), shape: [mSeries.length], description: '|m| sampled every ' + SAMPLE + ' sweeps since the last reset; the printed error bar discards the first half' },
+            },
+            meta: { tab: 'ising', grid: [gw, gh], boundary: 'periodic', T: s.T, h: s.h, hMode: s.hMode, J: 1, kB: 1, sweeps,
+              update: 'checkerboard Metropolis, two half-sweeps per sweep', sampleEverySweeps: SAMPLE, T_c: T_C },
+          };
         },
         exportPNG(w, h) {
           if (!C) return Promise.reject(new Error('nothing to export'));
@@ -447,10 +537,12 @@ void main(){
   /* ---------- Abelian Sandpile ---------- */
   // Topple every unstable site of an n x n grid with a sink boundary until none is left. Sites are taken from a
   // LIFO stack and toppled floor(h/4) times at once; the Abelian property makes the final state independent of order.
+  // topplings() counts every one of those floor(h/4) topplings, not the pops, so it is the total of the odometer
+  // (topplings per site), which by the same property does not depend on the order either.
   // Runs for at most `ms` milliseconds and returns whether it finished. `mark`, when given, records the drop index.
   function makeGridToppler(n) {
     const N = n * n, stack = new Int32Array(N), inq = new Uint8Array(N);
-    let sp = 0, pops = 0;
+    let sp = 0, count = 0;
     function push(i) { if (!inq[i]) { inq[i] = 1; stack[sp++] = i; } }
     function run(h, ms, mark, tag) {
       const t0 = performance.now();
@@ -458,7 +550,7 @@ void main(){
       while (sp > 0) {
         const p = stack[--sp]; inq[p] = 0;
         const v = h[p]; if (v < 4) continue;
-        const t = v >> 2; h[p] = v - 4 * t; pops++;
+        const t = v >> 2; h[p] = v - 4 * t; count += t;
         if (mark) mark[p] = tag;
         const x = p % n, y = (p / n) | 0;
         if (x > 0) { const q = p - 1; if ((h[q] += t) >= 4) push(q); }
@@ -470,18 +562,20 @@ void main(){
       return true;
     }
     function seedAll(h) { sp = 0; for (let i = 0; i < N; i++) { inq[i] = 0; if (h[i] >= 4) { inq[i] = 1; stack[sp++] = i; } } }
-    return { push, run, seedAll, pops: () => pops };
+    return { push, run, seedAll, topplings: () => count };
   }
   // Single-source pile: one octant 0 <= y <= x of the square lattice, using its 8-fold symmetry. When a representative
-  // topples, its whole orbit topples, so each folded neighbor receives |orbit(p)| / |orbit(q)| grains per toppling.
+  // topples, its whole orbit topples, so each folded neighbor receives |orbit(p)| / |orbit(q)| grains per toppling,
+  // and topplings() adds |orbit(p)| topplings per toppling of p: the count is for the whole plane, not the octant.
   function makeOctantPile(N) {
     const R = Math.ceil(0.4 * Math.sqrt(N)) + 6;      // measured: the pile radius is about 0.367 sqrt(N)
     const cells = (R + 1) * (R + 2) / 2;
     const idx = (x, y) => x * (x + 1) / 2 + y;
     const orb = (x, y) => x === 0 ? 1 : (y === 0 || y === x) ? 4 : 8;
-    const nq = new Int32Array(cells * 4).fill(-1), nw = new Int32Array(cells * 4);
+    const nq = new Int32Array(cells * 4).fill(-1), nw = new Int32Array(cells * 4), ow = new Uint8Array(cells);
     for (let x = 0; x <= R; x++) for (let y = 0; y <= x; y++) {
       const p = idx(x, y), op = orb(x, y);
+      ow[p] = op;
       const qs = [], ws = [];
       for (let d = 0; d < 4; d++) {
         let fx = Math.abs(x + (d === 0 ? 1 : d === 1 ? -1 : 0)), fy = Math.abs(y + (d === 2 ? 1 : d === 3 ? -1 : 0));
@@ -494,7 +588,7 @@ void main(){
       for (let k = 0; k < qs.length; k++) { nq[p * 4 + k] = qs[k]; nw[p * 4 + k] = Math.round(ws[k]); }
     }
     const h = new Float64Array(cells), inq = new Uint8Array(cells), stack = new Int32Array(cells);
-    let sp = 0, pops = 0;
+    let sp = 0, count = 0;
     h[0] = N; stack[sp++] = 0; inq[0] = 1;
     function run(ms) {
       const t0 = performance.now();
@@ -502,7 +596,7 @@ void main(){
       while (sp > 0) {
         const p = stack[--sp]; inq[p] = 0;
         const t = Math.floor(h[p] / 4); if (t <= 0) continue;
-        h[p] -= 4 * t; pops++;
+        h[p] -= 4 * t; count += ow[p] * t;
         for (let d = 0; d < 4; d++) {
           const q = nq[p * 4 + d]; if (q < 0) break;
           h[q] += nw[p * 4 + d] * t;
@@ -522,7 +616,7 @@ void main(){
       if (y > x) { const t = x; x = y; y = t; }
       return x > R ? 0 : h[idx(x, y)];
     }
-    return { run, extent, at, pops: () => pops, R };
+    return { run, extent, at, topplings: () => count, R };
   }
   const SAND_MODE = { pile: 'Single source', identity: 'Group identity', soc: 'Random drops' };
   Studio.register({
@@ -643,7 +737,7 @@ void main(){
         return {
           run(ms) {
             const fin = pile.run(ms);
-            topples = pile.pops();
+            topples = pile.topplings();
             if (fin) {
               radius = pile.extent();
               // crop the plate to the pile plus a margin
@@ -664,7 +758,7 @@ void main(){
         return {
           run(ms) {
             const fin = top.run(heights, ms);
-            topples = top.pops();
+            topples = top.topplings();
             if (!fin) return false;
             if (phase === 0) {
               phase = 1;
@@ -684,7 +778,7 @@ void main(){
         for (let i = 0; i < N; i++) heights[i] = rng.int(0, 3);
         setBuffer(n, n);
         const top = makeGridToppler(n), total = s.drops | 0;
-        let pops0 = 0, touched = [];
+        let before = 0;
         drops = 0; maxAv = 0; sumAv = 0;
         return {
           run(ms) {
@@ -694,13 +788,13 @@ void main(){
               if (++heights[i] >= 4) {
                 top.push(i);
                 top.run(heights, 1e9, marks, drops);
-                const size = top.pops() - pops0; pops0 = top.pops();
+                const size = top.topplings() - before; before = top.topplings();
                 sumAv += size; if (size > maxAv) maxAv = size;
               }
               drops++;
-              if ((drops & 31) === 0 && performance.now() - t0 > ms) { topples = top.pops(); return false; }
+              if ((drops & 31) === 0 && performance.now() - t0 > ms) { topples = top.topplings(); return false; }
             }
-            topples = top.pops();
+            topples = top.topplings();
             return true;
           },
           label: () => 'dropping ' + drops.toLocaleString() + ' / ' + total.toLocaleString(),

@@ -1,6 +1,7 @@
 // Browser distribution regressions, not evidence of scientific accuracy or cross-device identity.
 // node tools/folder-browser.js
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const http = require('node:http');
@@ -58,7 +59,7 @@ async function settledPlate(page) {
   const origin = 'http://127.0.0.1:' + server.address().port;
   let browser;
   try {
-    browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+    browser = await chromium.launch({ args: glArgs() });
     const context = await browser.newContext({ viewport: { width: 1000, height: 720 }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
     await context.addInitScript(() => {
       window.__schedulerBefore = { request: window.requestAnimationFrame, cancel: window.cancelAnimationFrame };

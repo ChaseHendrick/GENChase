@@ -13,8 +13,10 @@
   const Pal = Studio.PALETTES;
   const pre = (label, p, pal) => ({ label, p, palette: pal });
 
+  // The Grid slider and sanitize() read the same bounds, so no slider position is clamped away.
+  const GRID_MIN = 128, GRID_MAX = 224;
   const SCHEMA = [
-    RANGE('Field', 'grid', 'Grid', GEOM, 96, 224, 16, v => v + ''),
+    RANGE('Field', 'grid', 'Grid', GEOM, GRID_MIN, GRID_MAX, 16, v => v + ''),
     { group: 'Field', key: 'aspect', label: 'Sheet', type: 'seg', kind: GEOM, options: [['1:1', '1:1'], ['4:5', '4:5'], ['5:4', '5:4'], ['16:9', '16:9']] },
     RANGE('Cloak', 'R1', 'Core R1', GEOM, 8, 40, 1, v => v + ''),
     RANGE('Cloak', 'R2', 'Shell R2', GEOM, 20, 80, 1, v => v + ''),
@@ -34,7 +36,7 @@
   };
 
   function surprise(rng) { return { on: rng() < 0.25 ? 'off' : 'on', R1: rng.int(12, 28), R2: rng.int(36, 64), rays: rng.int(24, 56) }; }
-  function sanitize(s) { s.grid = Math.max(128, Math.min(256, Math.round(s.grid / 16) * 16)); }
+  function sanitize(s) { s.grid = Math.max(GRID_MIN, Math.min(GRID_MAX, Math.round(s.grid / 16) * 16)); }
   Studio.register({
     id: 'cloak', name: 'Pendry Cloak', tab: 'Cloak',
     subtitle: 'a disk that light goes around · 2006',
@@ -117,7 +119,16 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>core hits <b>' + (100 * metric).toFixed(1) + '%</b></span><span>theory ' + (host.getState().on === 'on' ? '0' : 'geometric') + '</span><span>' + (host.getState().on === 'on' && metric < 0.08 ? 'cloaked' : 'visible') + '</span>'); }
+      // With the cloak on, the ray positions are pushed through the Pendry, Schurig and Smith map r -> R1 + r (R2 - R1) / R2,
+      // which sends every point outside R1: the hit count is then a regression test of that map, not
+      // a measurement of the optics. With it off the rays go straight and the count is plain geometry.
+      function status() {
+        const on = host.getState().on === 'on';
+        host.setStatus((on
+          ? U.stats.compare({ label: 'core hits', measured: 100 * metric, units: '%', expected: 0, reference: 'coordinate map', basis: 'construction', digits: 3 })
+          : '<span>core hits <b>' + (100 * metric).toFixed(1) + '%</b></span><span>geometric</span>') +
+          '<span>' + (on && metric < 0.08 ? 'cloaked' : 'visible') + '</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

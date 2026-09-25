@@ -45,19 +45,36 @@
       [bytes('<< /N 3 /Alternate /DeviceRGB /Length ' + icc.length + ' >>\nstream\n'), icc, bytes('\nendstream')],
       [bytes('<< /Length ' + content.length + ' >>\nstream\n'), content, bytes('endstream')]
     ];
+    // Provenance: an Info dictionary naming the software, plus the full provenance record as a text
+    // string under a private key. Text strings are UTF-16BE hex with a byte-order mark, so any recipe
+    // text survives. Nothing time-dependent is written, so the same plate gives the same file.
+    const info = options.provenance ? '<< /Producer ' + pdfText(options.producer || 'GENChase') +
+      (options.title ? ' /Title ' + pdfText(options.title) : '') + ' /GENChaseProvenance ' + pdfText(options.provenance) + ' >>' : null;
+    if (info) objects.push([bytes(info)]);
+    const n = objects.length + 1;
     const chunks = [bytes('%PDF-1.7\n')], offsets = [0]; let offset = chunks[0].length;
     objects.forEach((parts, i) => {
       offsets.push(offset);
       for (const chunk of [bytes((i + 1) + ' 0 obj\n'), ...parts, bytes('\nendobj\n')]) { chunks.push(chunk); offset += chunk.length; }
     });
-    chunks.push(bytes('xref\n0 7\n0000000000 65535 f \n' + offsets.slice(1).map(n => String(n).padStart(10, '0') + ' 00000 n \n').join('') +
-      'trailer\n<< /Size 7 /Root 1 0 R >>\nstartxref\n' + offset + '\n%%EOF\n'));
+    chunks.push(bytes('xref\n0 ' + n + '\n0000000000 65535 f \n' + offsets.slice(1).map(o => String(o).padStart(10, '0') + ' 00000 n \n').join('') +
+      'trailer\n<< /Size ' + n + ' /Root 1 0 R' + (info ? ' /Info ' + (n - 1) + ' 0 R' : '') + ' >>\nstartxref\n' + offset + '\n%%EOF\n'));
     return new Blob(chunks, {type:'application/pdf'});
   }
-  function tiff(rgb, width, height, wIn, hIn) {
+  function pdfText(text) {
+    let hex = 'FEFF';
+    for (const unit of String(text)) for (let i = 0; i < unit.length; i++) hex += unit.charCodeAt(i).toString(16).toUpperCase().padStart(4, '0');
+    return '<' + hex + '>';
+  }
+  // options.description and options.software become the ImageDescription (270) and Software (305) ASCII
+  // tags, which is where TIFF readers look for provenance. Non-ASCII text must be escaped by the caller.
+  function tiff(rgb, width, height, wIn, hIn, options = {}) {
     validate(rgb, width, height, wIn, hIn);
-    const icc = profile(), count = 14, bits = 8 + 2 + count * 12 + 4, xr = bits + 6, yr = xr + 8, iccAt = yr + 8;
-    const pixelAt = (iccAt + icc.length + 3) & ~3;
+    const ascii = text => { if (!/^[\x20-\x7e]*$/.test(text)) throw new Error('TIFF text tags must be printable ASCII'); return bytes(text.padEnd(4) + '\0'); };
+    const desc = options.description ? ascii(options.description) : null, soft = options.software ? ascii(options.software) : null;
+    const icc = profile(), count = 14 + (desc ? 1 : 0) + (soft ? 1 : 0), bits = 8 + 2 + count * 12 + 4, xr = bits + 6, yr = xr + 8, iccAt = yr + 8;
+    const descAt = iccAt + icc.length, softAt = descAt + (desc ? desc.length : 0);
+    const pixelAt = (softAt + (soft ? soft.length : 0) + 3) & ~3;
     const header = new Uint8Array(pixelAt), v = new DataView(header.buffer);
     v.setUint16(0, 0x4949, true); v.setUint16(2, 42, true); v.setUint32(4, 8, true); v.setUint16(8, count, true);
     let at = 10;
@@ -67,13 +84,15 @@
       at += 12;
     };
     tag(256,4,1,width); tag(257,4,1,height); tag(258,3,3,bits); tag(259,3,1,1);
-    tag(262,3,1,2); tag(273,4,1,pixelAt); tag(277,3,1,3); tag(278,4,1,height);
+    tag(262,3,1,2); if (desc) tag(270,2,desc.length,descAt); tag(273,4,1,pixelAt); tag(277,3,1,3); tag(278,4,1,height);
     tag(279,4,1,rgb.length); tag(282,5,1,xr); tag(283,5,1,yr); tag(284,3,1,1);
-    tag(296,3,1,2); tag(34675,7,icc.length,iccAt);
+    tag(296,3,1,2); if (soft) tag(305,2,soft.length,softAt); tag(34675,7,icc.length,iccAt);
     for (let i=0;i<3;i++) v.setUint16(bits+i*2,8,true);
     v.setUint32(xr,width*10000,true); v.setUint32(xr+4,Math.round(wIn*10000),true);
     v.setUint32(yr,height*10000,true); v.setUint32(yr+4,Math.round(hIn*10000),true);
     header.set(icc,iccAt);
+    if (desc) header.set(desc,descAt);
+    if (soft) header.set(soft,softAt);
     return new Blob([header,rgb], {type:'image/tiff'});
   }
   root.GenChasePrintFormats = Object.freeze({pdf,tiff});

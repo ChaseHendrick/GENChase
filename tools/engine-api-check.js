@@ -1,18 +1,19 @@
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const assert=require('node:assert/strict'),path=require('node:path');
 const {chromium}=require('playwright');
 (async()=>{
- const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+ const browser=await chromium.launch({args:glArgs()});
  try{
  const page=await browser.newPage();await page.goto('file://'+path.resolve(__dirname,'../dist/studio.html')+'#three-vortex-bound/api-baseline');
  await page.waitForFunction(()=>Studio.ready);await page.evaluate(()=>Studio.ready);
  const result=await page.evaluate(async()=>{
   const check=(ok,msg)=>{if(!ok)throw Error(msg);};
-  check(Studio.apiVersion===1&&Studio.recipeVersion===2,'versions');
+  check(Studio.apiVersion===1&&Studio.recipeVersion===4,'versions');
   check(Object.getOwnPropertyDescriptor(Studio,'apiVersion').writable===false,'immutable version');
   check(Studio.getWitness()===null,'legacy is unknown');
   for(const id of ['missing','__proto__','constructor','toString'])check(Studio.getRecipe(id)===null&&Studio.getWitness(id)===null,'unknown module lookup '+id);
-  const recipe=Studio.getRecipe();check(recipe.v===2&&recipe.seed==='api-baseline','versioned recipe');recipe.seed='mutated';check(Studio.getRecipe().seed==='api-baseline','recipe clone');
+  const recipe=Studio.getRecipe();check(recipe.v===4&&recipe.seed==='api-baseline','versioned recipe');recipe.seed='mutated';check(Studio.getRecipe().seed==='api-baseline','recipe clone');
   const rng=Studio.util.makeRng('engine-api-v1'),random=Array.from({length:6},()=>rng());
   check(Studio.util.svgEsc('a<b & "c"')==='a&lt;b &amp; &quot;c&quot;','svg escape');
   const inches=document.getElementById('export-inches'),dpi=document.getElementById('export-dpi');inches.value='12';inches.dispatchEvent(new Event('change'));dpi.value='300';dpi.dispatchEvent(new Event('change'));
@@ -41,6 +42,9 @@ const {chromium}=require('playwright');
   host.setWitness({measured:1,expected:1,tol:0,valid:null});check(Studio.getWitness().valid===null,'explicit unknown');
   host.setWitness({measured:null,expected:1,tol:.1});check(Studio.getWitness().valid===null,'missing measurement');
   let rejects=0;for(const value of [{measured:NaN},{tol:-1},{measured:Infinity},{valid:'yes'},{label:{}},[]]){try{host.setWitness(value);}catch(_){rejects++;}check(Studio.getWitness()===null,'invalid input clears prior result');}check(rejects===6,'invalid input rejected');
+  host.setWitness({measured:1,expected:1,tol:0,basis:'deterministic'});check(Studio.getWitness().basis==='deterministic'&&Studio.getWitness().uncertainty===null,'witness keeps its basis');
+  host.setWitness({measured:1.1,expected:1,tol:.2,basis:'sampled',uncertainty:.04,method:'8 seeds'});check(Studio.getWitness().uncertainty===.04&&Studio.getWitness().method==='8 seeds','witness keeps its error bar');
+  let basisRejects=0;for(const value of [{basis:'guess'},{basis:'sampled',uncertainty:-1},{uncertainty:NaN}]){try{host.setWitness(value);}catch(_){basisRejects++;}}check(basisRejects===3,'invalid basis or uncertainty rejected');
   host.setWitness({measured:1,expected:1,tol:0});host.setStatus('new state');check(Studio.getWitness()===null,'legacy status invalidates');
   host.setWitness({measured:1,expected:1,tol:0});host.setWitness(null);check(Studio.getWitness()===null,'explicit clear');
   host.setWitness({measured:1,expected:1,tol:0});

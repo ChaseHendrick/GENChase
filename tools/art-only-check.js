@@ -1,6 +1,7 @@
 'use strict';
+const { glArgs } = require('./lib/gl-args');
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),path=require('node:path');
-(async()=>{const b=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});try{
+(async()=>{const b=await chromium.launch({args:glArgs()});try{
  for(const viewport of [{width:390,height:844},{width:740,height:720},{width:1024,height:768}]){
   const p=await b.newPage({viewport,hasTouch:true,isMobile:true});await p.goto('file://'+path.resolve(__dirname,'../dist/studio.html')+'#three-vortex-bound/art-only');await p.evaluate(()=>Studio.ready);
   await p.locator('#btn-colophon-edit').click();await p.locator('#colo-enabled').check();await p.locator('#colo-close').click();

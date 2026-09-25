@@ -112,8 +112,9 @@
   const chi = (rng, k) => Math.sqrt(2 * gammaRand(rng, k / 2));
 
   // Dumitriu and Edelman, J. Math. Phys. 43, 5830 (2002). The symmetric tridiagonal with N(0,2) on the
-  // diagonal and chi_{(n-k)beta} below it has eigenvalue density proportional to
-  // prod |lambda_i - lambda_j|^beta exp(-sum lambda^2 / 2), for any beta > 0 rather than only 1, 2 and 4.
+  // diagonal and chi_{(n-k)beta} below it is their model without its overall factor 1/sqrt(2), so its
+  // eigenvalue density is proportional to prod |lambda_i - lambda_j|^beta exp(-sum lambda^2 / 4), for any
+  // beta > 0 rather than only 1, 2 and 4, with spectral edge 2 sqrt(beta n) (validation/RMT.md).
   // Checked against a directly built GOE at beta = 1: same spectral edge and same second moment.
   function betaHermite(rng, n, beta, d, e) {
     for (let i = 0; i < n; i++) d[i] = Math.SQRT2 * rng.gauss();
@@ -135,8 +136,9 @@
 
   // Unfolded nearest-neighbor spacings. The raw gaps mix level repulsion with the semicircle's varying
   // density, so each gap is divided by the local mean spacing before the statistics are taken. The
-  // coefficient of variation is then comparable with the Wigner surmise, which gives sqrt(4/pi - 1) = 0.523
-  // at beta = 1 and sqrt(3 pi/8 - 1) = 0.422 at beta = 2, against 1 for an uncorrelated (Poisson) sequence.
+  // coefficient of variation is then comparable with the exact large-n (Gaudin-Mehta) law, 0.534 at beta = 1
+  // and 0.424 at beta = 2, against 1 for an uncorrelated (Poisson) sequence. Wigner's 2x2 surmise gives
+  // sqrt(4/pi - 1) = 0.523 and sqrt(3 pi/8 - 1) = 0.422, and a large sample resolves the beta = 1 difference.
   function unfolded(lam, n, out) {
     const K = 12;
     for (let i = Math.floor(n * 0.2); i < Math.floor(n * 0.8); i++) {
@@ -145,7 +147,34 @@
       if (local > 1e-12) out.push((lam[i + 1] - lam[i]) / local);
     }
   }
+  // One row's spacings appended to the pooled sample, with that row's count, sum and sum of squares
+  // recorded beside it for the bootstrap below.
+  function rowInto(lam, n, out, rowsOut) {
+    const start = out.length;
+    unfolded(lam, n, out);
+    let S = 0, Q = 0;
+    for (let i = start; i < out.length; i++) { S += out[i]; Q += out[i] * out[i]; }
+    rowsOut.push({ n: out.length - start, S, Q });
+  }
+  // Standard error of the pooled coefficient of variation. Rows are independent spectra, so rows are
+  // the resampling unit: draw row indices with replacement, pool their spacings, recompute the spread.
+  // The spacings within one row are correlated and stay together. Seeded, so the bar reprints.
+  function cvBootstrap(rowStats, seed) {
+    const R = rowStats.length;
+    if (R < 2) return NaN;
+    const rng = U.makeRng(seed), reps = 200, draws = [];
+    for (let r = 0; r < reps; r++) {
+      let N = 0, S = 0, Q = 0;
+      for (let k = 0; k < R; k++) { const q = rowStats[Math.floor(rng() * R)]; N += q.n; S += q.S; Q += q.Q; }
+      const m = S / N;
+      if (N > 0 && m > 0) draws.push(Math.sqrt(Math.max(0, Q / N - m * m)) / m);
+    }
+    return draws.length > 1 ? U.stats.sd(draws) : NaN;
+  }
   const SURMISE = { '1.00': 0.523, '2.00': 0.422 };
+  // The exact bulk spacing CV, from the Gaudin-Mehta Fredholm determinants evaluated by Nystrom quadrature
+  // (Bornemann, Math. Comp. 79, 871, 2010): 0.53435 at beta = 1, 0.42426 at beta = 2 (tools/rmt-science.js).
+  const GAUDIN_MEHTA = { '1.00': 0.53435, '2.00': 0.42426 };
 
   /* ---------- Random Matrices ---------- */
   Studio.register({
@@ -154,8 +183,8 @@
     tab: 'Matrices',
     subtitle: 'beta-ensemble spectra and Dyson Brownian motion · 1962',
     order: 48,
-    equation: 'p(λ) ∝ ∏_{i<j} |λ_i − λ_j|^β · e^{−Σλ_i²/2};   dλ_i = √(2/β) dB_i + Σ_{j≠i} dt/(λ_i − λ_j)',
-    credit: "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The spacing forms quoted in the status line are Wigner's surmise; the exact answers are the Gaudin-Mehta determinantal formulae, Michel Mehta, Random Matrices. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
+    equation: 'p(λ) ∝ ∏_{i<j} |λ_i − λ_j|^β · e^{−Σλ_i²/4};   Dyson (β = 1): dλ_i = √2 dB_i + (Σ_{j≠i} 1/(λ_i − λ_j) − λ_i/2) dt',
+    credit: "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The status line compares the spacing spread with the exact Gaudin-Mehta law (Michel Mehta, Random Matrices), evaluated as Fredholm determinants by Folkmar Bornemann's method, Math. Comp. 79, 871 (2010); Wigner's surmise is its 2×2 approximation. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
     blurb: 'Eigenvalues of a random matrix are not scattered independently. They push each other apart, and the strength of that push is a single number, β: the exponent on |λᵢ − λⱼ| in their joint density. At β = 0 the levels are independent, and independence looks clumpy, with gaps and coincidences everywhere. At β = 1, 2 and 4 you get the three classical ensembles that describe real symmetric, complex Hermitian and quaternionic systems. Push β higher and the spectrum stops being random-looking and freezes into something close to a crystal. Because the tridiagonal models sample any β at all, that whole road from independence to rigidity is one slider, and the sweep plate draws every point on it at once. Dyson\'s other idea is the third mode: let the matrix itself diffuse, and its eigenvalues become paths that never cross.',
     schema: [
       { group: 'Ensemble', key: 'mode', label: 'Plate', type: 'seg', kind: GEOM, wrap: true,
@@ -236,6 +265,7 @@
       const canvas = host.canvas, ctx = canvas.getContext('2d');
       let series = null;        // array of { lam: [...], beta } for rows/sweep, or paths for dyson
       let scaleG = 1, cv = null, cvLo = null, cvHi = null, timer = 0, building = false, capped = false, note = '';
+      let cvSE = NaN, cvLoSE = NaN, cvHiSE = NaN, nAll = 0, nLo = 0, nHi = 0;
 
       function stop() { clearTimeout(timer); }
 
@@ -252,7 +282,7 @@
         const n = s.n, rows = s.rows;
         const d = new Float64Array(n), e = new Float64Array(n);
         series = []; scaleG = 0;
-        const uLo = [], uHi = [], uAll = [];
+        const uLo = [], uHi = [], uAll = [], rLo = [], rHi = [], rAll = [];
         let j = 0;
         (function chunk() {
           const t0 = performance.now();
@@ -263,8 +293,10 @@
             for (let i = 0; i < n; i++) mx = Math.max(mx, Math.abs(lam[i]));
             scaleG = Math.max(scaleG, mx);
             series.push({ lam, beta: b, scale: mx || 1 });
-            if (s.mode === 'sweep') { if (j < rows * 0.08) unfolded(lam, n, uLo); else if (j > rows * 0.92) unfolded(lam, n, uHi); }
-            else if (uAll.length < 40000) unfolded(lam, n, uAll);
+            // Each row's unfolded spacings go into the pooled sample exactly as before, and the row's
+            // count, sum and sum of squares are kept so the pooled spread can be bootstrapped by row.
+            if (s.mode === 'sweep') { if (j < rows * 0.08) rowInto(lam, n, uLo, rLo); else if (j > rows * 0.92) rowInto(lam, n, uHi, rHi); }
+            else if (uAll.length < 40000) rowInto(lam, n, uAll, rAll);
             j++;
           }
           if (j < rows) { note = 'sampling ' + j + ' / ' + rows; status(); timer = setTimeout(chunk, 0); }
@@ -276,6 +308,10 @@
               return m > 0 ? Math.sqrt(v) / m : null;
             };
             cv = stat(uAll); cvLo = stat(uLo); cvHi = stat(uHi);
+            cvSE = cv !== null ? cvBootstrap(rAll, s.seed + '/rmt-cv') : NaN;
+            cvLoSE = cvLo !== null ? cvBootstrap(rLo, s.seed + '/rmt-cv-lo') : NaN;
+            cvHiSE = cvHi !== null ? cvBootstrap(rHi, s.seed + '/rmt-cv-hi') : NaN;
+            nAll = rAll.length; nLo = rLo.length; nHi = rHi.length;
             note = ''; building = false; done();
           }
         })();
@@ -318,7 +354,7 @@
             unfolded(series[series.length - 1].lam, n, u);
             const m = u.length ? u.reduce((x, y) => x + y, 0) / u.length : 0;
             const v = u.length ? u.reduce((x, y) => x + (y - m) * (y - m), 0) / u.length : 0;
-            cv = m > 0 ? Math.sqrt(v) / m : null; cvLo = cvHi = null;
+            cv = m > 0 ? Math.sqrt(v) / m : null; cvLo = cvHi = null; cvSE = cvLoSE = cvHiSE = NaN;
             note = ''; building = false; done();
           }
         })();
@@ -334,12 +370,20 @@
         } else if (s.mode === 'sweep') {
           P.push('<span><b>' + s.rows + '</b> spectra of <b>' + s.n + '</b></span>');
           P.push('<span>β <b>' + s.betaLo.toFixed(2) + ' → ' + s.betaHi.toFixed(2) + '</b>' + (s.logSweep ? ' (log)' : '') + '</span>');
-          if (cvLo !== null && cvHi !== null) P.push('<span>spacing spread <b>' + cvLo.toFixed(2) + ' → ' + cvHi.toFixed(2) + '</b> (1.00 is independent)</span>');
+          // Poisson (uncorrelated levels) gives a spread of 1 and is the β → 0 limit, so it is the
+          // reference for the low end only; the high end is printed with its error bar and no reference.
+          if (cvLo !== null && cvHi !== null) P.push('<span>' +
+            U.stats.compare({ label: 'spacing spread, low-β end', measured: cvLo, expected: 1, reference: 'Poisson', basis: 'sampled',
+              uncertainty: cvLoSE, method: 'bootstrap over ' + nLo + ' rows', pending: 'fewer than 2 rows', note: 'β → 0 limit' }) + ' → ' +
+            U.stats.compare({ label: 'high-β end', measured: cvHi, basis: 'sampled',
+              uncertainty: cvHiSE, method: 'bootstrap over ' + nHi + ' rows', pending: 'fewer than 2 rows' }) + '</span>');
         } else {
           P.push('<span><b>' + s.rows + '</b> spectra of <b>' + s.n + '</b> · β <b>' + s.beta.toFixed(2) + '</b></span>');
           if (cv !== null) {
-            const sur = SURMISE[s.beta.toFixed(2)];
-            P.push('<span>unfolded spacing spread <b>' + cv.toFixed(3) + '</b>' + (sur ? ' · surmise ' + sur.toFixed(3) : '') + '</span>');
+            const key = s.beta.toFixed(2), gm = GAUDIN_MEHTA[key], sur = SURMISE[key];
+            P.push(U.stats.compare({ label: 'unfolded spacing spread', measured: cv, expected: gm, reference: 'Gaudin-Mehta, large n', basis: 'sampled',
+              uncertainty: cvSE, method: 'bootstrap over ' + nAll + ' rows', pending: 'fewer than 2 rows',
+              note: sur ? 'Wigner surmise ' + sur.toFixed(3) + ', the 2×2 approximation' : undefined }));
           }
         }
         P.push('<span>' + (series ? series.length.toLocaleString() : 0) + ' rows</span>');
@@ -362,7 +406,10 @@
         }
         lutKey = key;
       }
-      const pick = (s, t) => lut[Math.max(0, Math.min(255, Math.round((((t + s.shift / 16) % 1) + 1) % 1 * 255)))];
+      // The palette offset turns the ramp by 16 of its 256 entries per step. It wraps in index space, where
+      // the two ends of the ramp are different entries; wrapping t itself modulo 1 gave t = 1 the colour of
+      // t = 0, so the top level and the last row took the lowest colour.
+      const pick = (s, t) => lut[(Math.max(0, Math.min(255, Math.round(t * 255))) + 16 * (((Math.round(s.shift) % 16) + 16) % 16)) % 256];
       function colorOf(s, rowIdx, i, n, lam, rowScale, rows) {
         if (s.ink === 'flat') return pick(s, 0.72);
         if (s.ink === 'row') return pick(s, rows > 1 ? rowIdx / (rows - 1) : 0.5);
@@ -466,7 +513,7 @@
               const pts = [];
               for (let t = 0; t < T; t++) pts.push(r(L.x0 + L.w * t / (T - 1)) + ',' + r(L.y0 + L.h * (0.5 - 0.5 * series[t].lam[i] / sc)));
               body += '<polyline fill="none" stroke="' + colorOf(s, i, i, n, series[T - 1].lam, sc, n) +
-                '" stroke-width="' + r(lw) + '" stroke-linejoin="round" points="' + pts.join(' ') + '"/>';
+                '" stroke-width="' + r(lw) + '" stroke-linejoin="round" stroke-linecap="round" points="' + pts.join(' ') + '"/>';
             }
           } else {
             const rows = series.length, n = series[0].lam.length;

@@ -2,7 +2,12 @@
 
 The maintained engine is [`src/shared/engine.js`](../src/shared/engine.js). The old
 `src/shared/studio.js` name is retired. `Studio.apiVersion` is **1** and
-`Studio.recipeVersion` is **2**. Both version properties are read-only.
+`Studio.recipeVersion` is **4**. Both version properties are read-only. Version 3 (2026-09-24) keys the Ising
+tab's Metropolis random numbers by the seed, so runs with different seeds are independent; recipes older than
+v3 keep the shared stream through `legacy: { 3: { stream: 'shared' } }` and reprint as they were made.
+Version 4 (2026-09-24) makes the lozenge tab's frozen test the rim-connected one (a rhombus is frozen when rhombi
+of its own orientation join it to the rim); recipes older than v4 keep the local radius-3 test through
+`legacy: { 4: { ring: 3 } }` and reprint as they were made.
 
 ## Compatibility boundary
 
@@ -26,17 +31,21 @@ Recipe `v` is separate from the API version. Before a default changes, advance t
 engine recipe version and declare the old value at that transition:
 
 ```js
-// Example for a future recipe version 3, not an instruction to change version now:
-legacy: { 2: { grid: 192 }, 3: { grid: 256 } },
+// Example for a future recipe version 5, not an instruction to change version now:
+legacy: { 2: { grid: 192 }, 5: { grid: 256 } },
 defaults: { grid: 512 }
 ```
 
-Recipes older than version 2 get 192; version 2 gets 256; version 3 gets 512.
+Recipes older than version 2 get 192; versions 2 to 4 get 256; version 5 gets 512.
 An explicitly saved `grid` always wins. Migrations apply newer transitions first,
 so the earliest applicable historical default wins for old hashes. The API test
 covers successive changes and explicit overrides; `tools/recipe.js` covers existing
 module declarations. This does not guarantee identical pixels after a documented
 solver correction or across GPU implementations.
+
+The recipe owns the keys `v`, `seed`, `palette`, `bg` and `id`, and `sanitize` writes
+`v` after the schema clamps. A module may not key a control with any of them, or set
+`v` or `id` in its defaults or presets; `tools/lint.js` rejects both.
 
 ## Scientific witness data
 
@@ -83,6 +92,33 @@ its existing off-family failure condition through this API. The deliberately bro
 preset must report failure. Reuleaux publishes a boundary sampling regression witness,
 which is not a pixel-width measurement. Other legacy modules return `null` until explicitly
 migrated. No HTML diagnostic is automatically parsed or promoted into scientific data.
+
+The witness also takes optional `basis` (`sampled`, `exact`, `deterministic` or `construction`),
+`uncertainty` (one standard error, finite and nonnegative, or `null`) and `method` (text). They are
+additive: a record without them is still valid, but `tools/lint.js` requires a `basis` in every
+`setWitness()` call in `src/modules/`. A status-line comparison uses `Studio.util.stats.compare()` with the
+same fields; see AGENTS.md, "A measured number carries an error bar".
+
+## Provenance and research data
+
+These are additive API version 1 surfaces.
+
+| Surface | Contract |
+| --- | --- |
+| `Studio.build` | Frozen build facts from `tools/build.js`: `build` (12 hex characters), `fingerprint` (SHA-256 of the assembled source), `sources` (SHA-256 per script), `sourceOf` (tab id to source file) and `validation` (tab id to status). |
+| `Studio.validationStatus(id?)` | The tab's status from `validation/techniques.json` at build time, or `null`. |
+| `Studio.getProvenance(id?)` | A detached record of what made the current plate: software, API and recipe versions, build, source file and its SHA-256, validation status, recipe and link, the witness, and the device (WebGL2 renderer and vendor, or CPU; which render-target precisions the state used). Nothing time-dependent, so it is deterministic for a given recipe, build and device. |
+| `Studio.exportData(id?)` | A `Promise<Blob>` of an uncompressed `.npz` that `numpy.load` reads: one `.npy` per array from the instance's `exportData()`, plus `meta.json` (provenance, arrays with shape, dtype and units, the module's grid metadata and the status text). A technique without `exportData()` yields `meta.json` only and says so. |
+| `Studio.util.stats` | The uncertainty harness, `src/shared/stats.js`. |
+| `Studio.gl.readTarget(target)` | A render target as a `Float32Array`, rows top to bottom. |
+
+Every export embeds the provenance: PNG as a `Software` tEXt chunk and a `GENChase provenance` iTXt
+chunk, PDF in its Info dictionary (`/Producer`, `/Title`, `/GENChaseProvenance`), TIFF in its
+ImageDescription (270) and Software (305) tags, JPEG in a comment segment, SVG in a `<metadata>` element,
+and the print-job JSON under `provenance`. WebP carries none. The renderer string can identify the
+graphics hardware; it is recorded because precision and driver differences are part of what made the
+file. `node tools/provenance-check.js` reads every one back through the real export buttons.
+`node tools/run.js <hash> --out plate.npz --steps N` runs a recipe headlessly through `Studio.exportData()`.
 
 ## Contributor on-ramp and checks
 

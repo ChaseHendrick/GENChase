@@ -1,5 +1,6 @@
 // Actual PDE instances, fixed elapsed times and deliberately restored old failures.
 // Test instrumentation changes neither the checked-in solver nor its generated build.
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const { chromium } = require('playwright');
 (async () => {
@@ -19,7 +20,7 @@ const { chromium } = require('playwright');
           return pixels;
         },
 ${marker}`);
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   const rows = [], mixing = [];
   try {
     for (const fixture of ['real-click', 'uniform-mode']) for (const legacy of [false, true]) {

@@ -81,7 +81,9 @@ void main(){vec2 z=texCR4(u_state,v_uv,u_res).rg; float a=length(z),v=0.5+0.45*t
       }
       steps+=n;drift=Math.max(Math.abs(m.mean[0]-initialMean[0]),Math.abs(m.mean[1]-initialMean[1]));
     }
-    function status(){host.setStatus('<span>step <b>'+steps.toLocaleString()+'</b>'+(pending?' · warming up':'')+'</span><span>grid <b>'+gw+'×'+gh+'</b> · t '+(steps*dt).toFixed(3)+'</span><span>dt <b>'+dt.toExponential(2)+'</b> · mean drift '+drift.toExponential(1)+'</span>'+(stopped?'<span>Stopped: '+stopped+'</span>':''));}
+    // The periodic discrete Laplacian conserves both field means exactly, so the drift is float32
+    // round-off: a regression test of the conservative form, not a measurement of the physics.
+    function status(){host.setStatus('<span>step <b>'+steps.toLocaleString()+'</b>'+(pending?' · warming up':'')+'</span><span>grid <b>'+gw+'×'+gh+'</b> · t '+(steps*dt).toFixed(3)+'</span><span>dt <b>'+dt.toExponential(2)+'</b></span>'+U.stats.compare({label:'mean drift',measured:drift,expected:0,basis:'construction'})+(stopped?'<span>Stopped: '+stopped+'</span>':''));}
     function render(target){if(!field)return;const s=host.getState(),key=s.bg+'|'+s.palette.join(',');if(!ramp||key!==rampKey){if(ramp)ramp.dispose();ramp=G.rampTexture(gl,s.palette,s.bg);rampKey=key;}display.draw(target||null,{u_state:field.read,u_res:[gw,gh],u_ramp:ramp,u_view:{int:{first:0,second:1,amplitude:2,phase:3,coupling:4}[s.view]||0},u_a0:s.alpha0,u_a1:s.alpha1,u_gain:s.exposure});}
     function animate(){const s=host.getState();if(stopped||!s.running||host.reducedMotion()||!host.isActive())return;raf=requestAnimationFrame(()=>{raf=0;advance(s.steps);render();status();animate();});}
     function warm(){stop();if(stopped)return;const n=Math.min(16,pending);pending-=n;if(n)advance(n);render();status();if(pending)timer=setTimeout(warm,0);else animate();}

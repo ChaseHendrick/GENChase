@@ -1,5 +1,6 @@
 // node tools/preset.js <id> <presetKey> [waitMs=12000] [outName]
 // Applies one preset and measures the plate, like shot.js but through the Presets menu. STUDIO selects the file.
+const { glArgs } = require('./lib/gl-args');
 const path = require('path'), fs = require('fs');
 const { chromium } = require('playwright');
 (async () => {
@@ -7,7 +8,7 @@ const { chromium } = require('playwright');
   if (!id || !key) { console.error('usage: node tools/preset.js <id> <presetKey> [waitMs] [outName]'); process.exit(1); }
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
   const dir = path.join(__dirname, 'shots'); fs.mkdirSync(dir, { recursive: true });
-  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+  const b = await chromium.launch({ args: [...glArgs(), '--ignore-gpu-blocklist'] });
   const p = await b.newPage({ viewport: { width: 1400, height: 900 } });
   const errs = [];
   p.on('pageerror', e => { if (!/ServiceWorker/.test(e.message)) errs.push(e.message); });

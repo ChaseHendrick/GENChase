@@ -1,6 +1,7 @@
 // node tools/schrodinger-science.js
 // Actual float32 GPU recurrence against independent Fourier-mode calculations.
 // Periodic, static real potentials only; no absorber, wall, kick or display validation here.
+const { glArgs } = require('./lib/gl-args');
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const { chromium } = require('playwright');
 
@@ -10,7 +11,7 @@ const { chromium } = require('playwright');
   const closing = source.lastIndexOf('})();');
   assert(closing >= 0, 'Wave module closure is missing');
   const expose = source.slice(0, closing) + 'window.schrodingerShaders = { step: SCH_STEP_FS };\n' + source.slice(closing);
-  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const browser = await chromium.launch({ args: glArgs() });
   let result;
   try {
     const page = await browser.newPage();

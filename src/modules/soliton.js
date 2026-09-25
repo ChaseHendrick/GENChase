@@ -6,7 +6,6 @@
   const U = Studio.util;
   const GEOM = 'geom', PAINT = 'paint';
   const f2 = v => v.toFixed(2);
-  const f3 = v => v.toFixed(3);
   const ASPECTS = { '1:1': 1, '4:5': 1.25, '5:4': 0.8, '3:2': 2 / 3, '16:9': 9 / 16 };
   const RANGE = (group, key, label, kind, min, max, step, fmt, extra) =>
     Object.assign({ group, key, label, type: 'range', kind, min, max, step, fmt }, extra || {});
@@ -119,7 +118,12 @@
         ctx.drawImage(buf, 0, 0, canvas.width, canvas.height);
       }
 
-      function status() { host.setStatus('<span>sampled middle-row mass <b>' + f3(extra) + '</b></span><span>whole-line formula <b>' + f3(metric) + '</b></span><span>finite quadrature · moving frame</span>'); }
+      // A trapezoid quadrature of the exact two-soliton field on one row, with no randomness: its only
+      // error against the whole-line mass is the finite window and the quadrature.
+      function status() {
+        host.setStatus(U.stats.compare({ label: 'sampled middle-row mass', measured: extra, expected: metric, reference: 'whole line', basis: 'deterministic', digits: 6, note: 'finite window' }) +
+          '<span>finite quadrature · moving frame</span>');
+      }
 
       return {
         aspect(s) { return ASPECTS[s.aspect] || 1; },

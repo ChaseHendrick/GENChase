@@ -2,7 +2,7 @@
   {
     "id": "life",
     "source": "src/modules/life.js",
-    "sourceSha256": "2a673daa8172051fc117948ce2caac2f9ecc99353bba100dc2c0ef28d8ca8a70",
+    "sourceSha256": "ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f",
     "reference": "Lenia: Bert Wang-Chak Chan, 2018-19. The discrete rules go back to John Conway's Game of Life, 1970, and Stanislaw Ulam and John von Neumann's cellular automata in the 1940s.",
     "equation": "A <- clamp(A + (1/T)·G(K*A)),   G(u) = 2·exp(-(u-mu)^2 / 2·sigma^2) - 1",
     "status": "unvalidated",
@@ -246,7 +246,7 @@
   {
     "id": "cyclic",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a < 1 < b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
     "equation": "∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v)",
     "status": "validated within stated limits",
@@ -315,7 +315,7 @@
   {
     "id": "kpz",
     "source": "src/modules/kpz.js",
-    "sourceSha256": "30b2393368ab389e0e5fabc4e17215de292e0dbfb945dc92b3b04d2aab57fb19",
+    "sourceSha256": "ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4",
     "reference": "Mehran Kardar, Giorgio Parisi and Yi-Cheng Zhang, 'Dynamic scaling of growing interfaces', Physical Review Letters 56, 889 (1986). The scaling form W(L, t) = L^α f(t/L^z) is Fereydoon Family and Tamás Vicsek, J. Phys. A 18, L75 (1985). Ballistic deposition is Murray Vold (1959) and Michael Sutherland (1966); the restricted solid-on-solid model is Jin Min Kim and Joel Kosterlitz, Phys. Rev. Lett. 62, 2289 (1989); surface relaxation is Family, J. Phys. A 19, L441 (1986); the cluster model is Murray Eden, in the Berkeley Symposium proceedings (1961). That the edge fluctuations follow the Tracy-Widom distributions is Michael Prähofer and Herbert Spohn, Phys. Rev. Lett. 84, 4882 (2000), and Kazumasa Takeuchi and Masaki Sano measured it in turbulent liquid crystal, Phys. Rev. Lett. 104, 230601 (2010).",
     "equation": "∂h/∂t = ν∇²h + (λ/2)(∇h)² + η,   W(t) ~ t^β with β = 1/3 in 1+1 dimensions",
     "status": "partially validated",
@@ -347,7 +347,7 @@
   {
     "id": "potts",
     "source": "src/modules/potts.js",
-    "sourceSha256": "b3c1e3f924fad80deda39c85f1fd2606fe01c1cb3d7c4d033aa8853d40d78b62",
+    "sourceSha256": "04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6",
     "reference": "The extended, area-constrained Potts model is François Graner and James Glazier, 'Simulation of biological cell sorting using a two-dimensional extended Potts model', Physical Review Letters 69, 2013 (1992), building on Malcolm Anderson, David Srolovitz, Gary Grest and Paul Sahni, Acta Metallurgica 32, 783 (1984), who used the plain q-state Potts model for grain growth. The law the plate measures is John von Neumann's, in Metal Interfaces (1952), as extended by William Mullins, J. Appl. Phys. 27, 900 (1956): a two-dimensional cell with n sides changes area at a rate proportional to n − 6. The average side count being exactly six is Euler's formula, not a fit. Differential adhesion as the explanation for cell sorting is Malcolm Steinberg, Science 141, 401 (1963).",
     "equation": "H = Σ_⟨ij⟩ J(1 − δ_{σi σj}) + λ Σ_c (a_c − A)²;   accept a copy with min(1, e^{−ΔH/T})",
     "status": "unvalidated",
@@ -388,23 +388,57 @@
     "sourceSha256": "726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48",
     "reference": "Peter Cundall and Otto Strack, 'A discrete numerical model for granular assemblies', Geotechnique 29, 47 (1979), gave the distinct element method used here: rigid disks, a linear normal spring with a dashpot, a tangential spring capped by Coulomb friction, and an explicit step bounded by the contact period. Trushant Majmudar and Robert Behringer, Nature 435, 1079 (2005), measured the grain-scale normal and tangential forces inside a two-dimensional photoelastic packing and showed the filamentary chains directly. Farhang Radjai, Michel Jean, Jean-Jacques Moreau and Stephane Roux, Physical Review Letters 77, 274 (1996), found that the contact force distribution decays exponentially above the mean and as a power law below it; Radjai, Dietrich Wolf, Jean and Moreau, Physical Review Letters 80, 61 (1998), split the packing into a strong network above the mean force, which carries the deviatoric stress, and a weak network below it, which does not.",
     "equation": "F_n = k_n δ − γ_n v_n  for δ = r_i + r_j − |x_ij| > 0,   |F_t| ≤ μ F_n;   m ẍ = Σ F − m g ŷ;   Δt = T/35,  T = 2π√(m_eff/k_n)",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Partially validated, not validated: two criteria fixed before the run were missed. Production-step restitution reached -10.6% against a 10% bound, and incline slip at tan θ/3μ = 1.05 reached +8.67% against 3%. Both misses are reported in validation/GRAINS.md.",
+      "Catalog equation and citation are review targets, not verified paper equivalence. The displayed equation of motion omits the background drag −c m v and −c I ω (c = ζ√(g/r0)/2) that grains.js applies to every grain; it does not enter the static balance.",
+      "Complete evidence covers only the documented domain in validation/GRAINS.md and the grains-science / grains-print-state results artifacts: rigid walls, no top load, the pour, arch, disks and column presets at seed cundall-1979.",
+      "The settle is not time-accurate at its production step: the restitution coefficient depends on where in a step contact begins, −12.1% to +5.7% of the analytic value at damping ≤ 0.5 (the pre-registered 10% bound was missed); it converges at first order to the analytic contact law.",
+      "The top load does not load the packing: at photo, strong and slip the lid carries at most 3.4% of the weight at any step and nothing at the end, so presets with a top load, and the periodic sides only they use, are outside the domain.",
+      "The starting lattice overlaps (255 to 562 pairs, up to 1.29 r0), so every packing is prepared by an explosive decompression and settling, not a pour. The same seed settles to a different packing in Node and Chromium because Math.cos differs by one ulp between them; each engine reprints its own packing exactly.",
+      "No Radjai force-distribution, Janssen, photoelastic or experimental claim: side-wall friction carries −6.2% to +7.0% of the weight depending on history, and the column preset carries −0.1% in its printed packing. Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Fix the top-load protocol (let the gravity settle reach rest before the lid moves, and reference the strain to the settled top), then validate presets with a top load and periodic sides.",
+      "Start from a non-overlapping lattice or document the decompression; test force-distribution statistics over seeds, fully mobilized Janssen wall loads, and print colour."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/grains-science.js",
+        "command": "node tools/grains-science.js --write",
+        "results": "validation/results/grains-science.json",
+        "scope": "Actual grains.js (derive, makeSim, forces, contact, wall, step, network and the instance settle) run headless in Node with the engine util and makeRng. Binary normal collisions (r0–r0, rmin–rmin and rmin–rmax pairs and a disk on the floor) at damping 0.05 to 0.9 refined from the production step to h/64, and over 16 contact phases; hardness 800, 4000 and 12000; a disk sliding into rolling (friction 0.1, 0.4, 0.8); a disk on an incline at tan θ/3μ = 0.8, 0.95, 1.05, 1.25 (friction 0.2, 0.4, 0.8); an oblique grain–grain collision in gross sliding; the seven presets at seed cundall-1979 through the production settle plus the pour geometry without friction; coordination at the pour geometry for friction 0, 0.4 and 0.8 over four seeds; the lid during the three top-load settles; the starting lattice.",
+        "criteria": "Fixed before the first run and committed first. Collisions: e and contact duration within 0.5% of the no-tension analytic values at h/64 in every case; refinement to h/64 reduces the e error tenfold or below 0.1%; e within 10% at the production step for damping ≤ 0.5; the tensile formula off by more than ten times the clamped error at damping ≥ 0.2; e identical (1e-9) across hardness. Friction: displacements within 1%, stick time within 2% plus two steps, no slip beyond the elastic range of the tangential spring after sticking or below the incline threshold, total slip within 3% above it, |J_t/J_n| and the slip change within 2% of μ and 3J_t/m_eff. Statics: vertical and horizontal wall balance within 1% of the floor load, dashpot share of the normal forces below 1%, kinetic energy below the module's at-rest threshold, contacts, backbone and Z identical and the other status quantities within 1e-12 of a brute-force rebuild; Z bands [3.8, 4.6], [3.0, 4.0], [2.8, 3.6] at friction 0, 0.4, 0.8, separated by more than 3 standard errors; column side walls carry more than 5% of the weight. Misses (production e for rmin–rmax at damping 0.5, −10.6%; incline slip at tan θ/3μ = 1.05, +8.7% at every friction) are recorded and reproduced exactly; follow-ups with criteria fixed before they ran test their causes.",
+        "benchmark": "The linear spring–dashpot with the F_n ≥ 0 clamp has e = exp(−ζω0 t_c), ω_d t_c = π − 2 asin ζ (Schwager and Pöschel, Granular Matter 9, 465 (2007)); rigid-disk Coulomb friction with I = m r²/2 (sliding to rolling, the incline threshold tan θ = 3μ, and impulse theory in gross sliding) including the module's background drag; Newton's static balance of the settled packing against the total weight; isostatic coordination (4 without friction, falling toward 3 with it); a brute-force contact rebuild for the status line.",
+        "failureControl": "A flipped dashpot sign (e = 2.475 against 0.404) and a dashpot allowed to pull (e = 0.309, the tensile value) fail the collision criteria; wall friction off, a flipped wall torque, incline friction off and a flipped torque on the second grain of a pair (slip change −66.7%) fail the friction criteria; a settle cut to 5% of its budget (vertical residual 116%), gravity on the mean mass (5.9%) and a Verlet list that is never rebuilt (36165 contacts missing) fail the statics.",
+        "limitations": "Contact tests isolate one or two disks through a hand-built D. The production step restitutes within −12.1% to +5.7% of the analytic value over contact phases at damping ≤ 0.5 (swing ≈ 2ζω0h); the undamped tangential spring overshoots the rigid Coulomb slip by an amount scaling as 1/√k_n (8.7% at hardness 4000 just above the threshold) while sustained sliding matches μF_n to 1.4e-4. The static balance follows from Newton's third law once the pile is at rest and does not test force-chain statistics."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/grains-print-state.js",
+        "command": "node tools/grains-print-state.js --write",
+        "results": "validation/results/grains-print-state.json",
+        "scope": "Actual grains.js in dist/studio.html (Chromium 141, SwiftShader) for the seven presets at seed cundall-1979 with their own paint settings and palettes; pour, arch, disks and column are in the validated domain. exportPNG and exportSVG at 2400 px on the longest edge (2400x2400 and 1920x2400 in the domain), the browser settle compared word for word with the Node production settle started from the browser's initial velocities, the static checks of tools/grains-science.js applied to the printed packing, an export pressed mid-settle, and every SVG circle and contact line compared with a brute-force contact rebuild.",
+        "criteria": "Initial positions and radii identical in Node and Chromium and the Node replay from the browser's initial velocities identical in every word; the printed packing passes the static checks; regenerate with a mid-settle export lands on the chunked packing; exact PNG dimensions, image/png over 1000 bytes, luminance spread over 12/255 with more than 0.1% of pixels off the background; zero changed state, spring or drawn-network words across every export; SVG exactly the requested size, one circle per grain where grains are drawn, and the multiset of contact lines equal to the rebuild with zero coordinate error and widths within 0.01.",
+        "benchmark": "Node replay of the production settle, the pre-registered static checks of tools/grains-science.js, and a brute-force contact rebuild from the settled positions for the vector geometry.",
+        "failureControl": "A PNG requested 1 px narrower, a post-export change to one position and one drawn force, and the expected plate rebuilt with one drawn grain moved by 0.1 r0 must each be rejected by the same predicate; all are, for every preset.",
+        "limitations": "State, dimensions and vector geometry at one seed in one browser build and software renderer; colours and PNG pixels are not compared with an independent ramp. The printed packing differs from the Node packing of the same seed (one-ulp Math.cos differences in the initial kicks). The top-load presets pass these print checks but lie outside the validated domain."
+      }
+    ],
+    "domain": {
+      "parameters": "Rigid walls, no top load: the pour (1100 grains, polydispersity 0.32, friction 0.4, 1:1, chains), arch (1300, 0.3, 0.8, 4:5, chains), disks (700, 0.42, 0.35, 1:1, grains) and column (1500, 0.3, 0.6, 4:5, both) presets at seed cundall-1979, hardness 4000, damping 0.3 to 0.35, gravity 1; the pour geometry at friction 0 and at friction 0, 0.4, 0.8 over four seeds. Contact-law tests at the default derived r0, rmin, rmax and k_n, damping 0.05 to 0.9 and hardness 800, 4000, 12000.",
+      "conditions": "Grains start on the module's staggered lattice with seeded jitter and kicks (the lattice overlaps; see limitations), settle under gravity between a floor and side walls with an open top until kinetic energy per grain falls below 2e-7 m0 g r0 or the step budget ends; the static network is read as k_n δ per contact. Print: real exportPNG and exportSVG at 2400 px on the longest edge in Chromium, each engine settling its own packing.",
+      "resolution": "Production step h = T_min/35 (1.67e-4 at the default, ω0h 0.086 to 0.18 across the tested pairs), refined to h/64; 22262 to 27071 settle steps at the in-domain presets in either engine; vertical wall-balance residuals 1.8e-3 to 7.4e-3 of the floor load and dashpot shares 2.6e-5 to 9.8e-5 there; 2400x2400 and 1920x2400 prints with up to 1500 circles and 2134 lines compared exactly (validation/results/grains-science.json, validation/results/grains-print-state.json).",
+      "precision": "Float64 state and contact forces; SVG coordinates rounded to 0.01 px; RGBA8 PNG. Node 22.22.2 and Chromium 141.0.7390.37 recorded in the results artifacts with the failure controls."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/grains-science.json"
   },
   {
     "id": "skyrmion",
     "source": "src/modules/skyrmion.js",
-    "sourceSha256": "c4006ffc3d97ca506cd57ef802b6067a54c2fca8ba390d59ca856ad6c69ac4b8",
+    "sourceSha256": "0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e",
     "reference": "A. N. Bogdanov and D. A. Yablonskii, Sov. Phys. JETP 68, 101 (1989), predicted localized chiral solitons in magnets with Dzyaloshinskii-Moriya coupling. S. Muhlbauer, B. Binz, F. Jonietz, C. Pfleiderer, A. Rosch, A. Neubauer, R. Georgii and P. Boni, Science 323, 915 (2009), observed the skyrmion lattice in MnSi. The topological charge on the plate is the Berg-Luscher lattice invariant, Berg and Luscher, Nucl. Phys. B 190, 412 (1981).",
     "equation": "dn/dt = -n x (n x H),   H = J sum_nn n_j + H_DMI + 2K n_z zhat + B zhat,   Q = (1/4pi) int n · (dx n x dy n) dA",
     "status": "unvalidated",
@@ -423,7 +457,7 @@
   {
     "id": "tonertu",
     "source": "src/modules/tonertu.js",
-    "sourceSha256": "be0f91a16da5e11522b787d1bd4975ef415d7e62e921fd80553886a4a94bd31e",
+    "sourceSha256": "982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257",
     "reference": "John Toner and Yuhai Tu, 'Long-range order in a two-dimensional dynamical XY model: how birds fly together', Physical Review Letters 75, 4326 (1995), and Phys. Rev. E 58, 4828 (1998). The particle model it coarse-grains is Tamás Vicsek, András Czirók, Eshel Ben-Jacob, Inon Cohen and Ofer Shochet, Phys. Rev. Lett. 75, 1226 (1995). That the ordered state phase separates into traveling bands rather than ordering uniformly is Guillaume Grégoire and Hugues Chaté, Phys. Rev. Lett. 92, 025702 (2004), and Chaté, Francesco Ginelli, Grégoire and Franck Raynaud, Phys. Rev. E 77, 046113 (2008). Giant number fluctuations in active matter are Sriram Ramaswamy, R. Aditi Simha and John Toner, Europhysics Letters 62, 196 (2003).",
     "equation": "∂ρ/∂t + ∇·(ρv) = 0;   ∂v/∂t + λ(v·∇)v = (α(ρ) − β|v|²)v − σ∇ρ + ν∇²v + η",
     "status": "unvalidated",
@@ -464,18 +498,50 @@
     "sourceSha256": "26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8",
     "reference": "Oded Schramm, Israel Journal of Mathematics 118, 221 (2000), 'Scaling limits of loop-erased random walks and uniform spanning trees'. Charles Loewner's 1923 equation grows a curve into the upper half plane from a real driving function; Schramm showed that the only conformally invariant random curves with the domain Markov property come from driving it with Brownian motion of variance κ, and identified κ with the critical models whose interfaces they describe. Gregory Lawler, Schramm and Wendelin Werner computed the exponents; Stanislav Smirnov proved the percolation case. The curve is computed here as a composition of vertical slit maps, after Tom Kennedy, Journal of Statistical Physics 137, 839 (2009).",
     "equation": "∂g_t/∂t = 2 / (g_t(z) − √κ B_t),   γ(t) = g_t⁻¹(√κ B_t);   κ = 2 loop-erased walk, 8/3 self-avoiding walk, 4 level lines, 6 percolation, 8 Peano curve",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The trace dimension disagrees with Beffara's min(2, 1 + kappa/8) at every tested point: at the tab's maximum N 8000 box counting gives 1.2236 +/- 0.0063 (kappa 2, -4.2 sigma), 1.3765 +/- 0.0076 (kappa 4, -16 sigma) and 1.4780 +/- 0.0055 (kappa 6, -50 sigma), rising slowly with N. The estimator recovers known dimensions on Koch curves of comparable size, so the shortfall is the uniform-capacity-time discretization of the tab's trace, not the driver or the model.",
+      "Numerical agreement is established for the Loewner solver (zero, linear and square-root drivers, first order in dt, N 300-8000) and for the driver variance (kappa 2, 4, 6); the random curve's law beyond its box-counting dimension is not tested.",
+      "Print evidence covers five recipes (kappa 2, 6, 8, the sweep and a 12-seed bundle) on one Chromium build; kappa values other than 2, 4, 6 appear only in print recipes.",
+      "Finite samples from one seeded PRNG; error bars assume independent seeds."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Resolve the trace finely enough for its fractal dimension to converge (adaptive capacity steps or a much larger N, as in Kennedy 2009), then repeat the box-counting test; or state in the tab that the plate is a coarse discretization whose dimension is below 1 + kappa/8.",
+      "Test a distributional property of the trace (for example Schramm's left-passage probability) at kappa 8/3 and 6.",
+      "Extend the dimension ensemble to kappa 8/3 and 8 once the resolution is adequate."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/sle-science.js",
+        "command": "node tools/sle-science.js --write",
+        "results": "validation/results/sle-science.json",
+        "scope": "Module makeTrace against closed-form traces for xi = 0, c t (c 2, -3, 0.5) and c sqrt t (alpha 1/4, 1/3, 0.4, 0.6) with N 300-8000 at capacity time 1; quadratic variation of the module's driver over 16 seeds for kappa 2, 4, 6 at N 2000-8000; box-counting dimension over the same ensembles with a fixed relative fit range and a Koch-curve calibration of the estimator.",
+        "criteria": "Zero driver relative error <= N eps; linear error <= |c| dt at every point with order in (0.9, 1.1); square-root relative error <= 1/N at t = 1 with order in (0.9, 1.1) and scale covariance to 1e-9; driver QV/kappa within |z| < 3.86; dimension within |z| < 3.59 of 1 + kappa/8 (fails).",
+        "benchmark": "Exact Loewner traces (vertical segment; Kager-Nienhuis-Kadanoff linear-driver curve; straight-ray square-root driver), exact Brownian quadratic variation, Beffara's dimension theorem, and generalized Koch curves of known dimension for the estimator.",
+        "failureControl": "Slit capacity dt instead of 2 dt (zero-driver error 0.29); reversed composition order (linear error 2473 driver steps); driver variance 2 kappa (dimension shifts +0.159 and +0.193, 19 and 20 sigma; QV ratio 2.00).",
+        "limitations": "The dimension test disagrees with theory at N <= 8000 because of the discretization; only the solver and driver agree with their exact references."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/sle-science.js",
+        "command": "node tools/sle-science.js --write",
+        "results": "validation/results/sle-science.json",
+        "scope": "Five studio recipes through dist/studio.html with an auditRead() hook at 2400 px on the long side: every SVG path vertex, axis and stroke attribute, the fallback PNG, a displaced control, and recipe and traces before and after export.",
+        "criteria": "Studio drivers within 1e-12 and traces within 1e-9 of the curve size of the Node run; trace recomputed from the studio driver; SVG coordinates within 0.00501 px and every ink equal; PNG channels within 1 of an independent painting; displaced painting fails; state unchanged.",
+        "benchmark": "Page transform, segmenting and inks rebuilt independently in the page from the traces.",
+        "failureControl": "One-pixel displaced painting must differ on at least 100 channels (it differs on 62,159 to 604,069).",
+        "limitations": "Five recipes, one Chromium build; the vector RIP raster is recorded, not asserted."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/sle-science.json",
+    "domain": {
+      "parameters": "Solver: capacity time 1, N 300-8000, deterministic drivers listed in validation/SLE.md; driver and dimension: kappa 2, 4, 6 at N 2000, 4000, 8000 with 16 seeds each; prints: the five recipes in validation/results/sle-science.json.",
+      "conditions": "Chordal Loewner evolution in the upper half plane from 0, piecewise-constant driver sampled at step ends, Brownian driver of variance kappa from the recorded seeds; no grain; exports preserve recipe and traces.",
+      "resolution": "dt = 1/N; box counts at eps = D 2^{-k/2}, k 8-14, D the curve diameter; prints 2400 x 1920, 1920 x 2400, 2400 x 1600 and 2400 x 2400 px.",
+      "precision": "Binary64 solver and references; RGBA8 raster; SVG rounded to 0.01 px; Node and Chromium versions recorded."
+    }
   },
   {
     "id": "fractal",
@@ -499,7 +565,7 @@
   {
     "id": "lens",
     "source": "src/modules/lens.js",
-    "sourceSha256": "609139547acb15a97d4272143d5f8b1c6141348d4f73b92e77071f7dfecffd46",
+    "sourceSha256": "5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d",
     "reference": "A. Einstein, Science 84, 506 (1936), computed the deflection of starlight by the sun and noted the ring that appears when source and lens align. The plate is the thin-lens equation as in Schneider, Ehlers and Falco, Gravitational Lenses (1992). The potential is solved by Jacobi iteration on the Poisson equation for the seeded convergence.",
     "equation": "β = θ − α(θ),   α = ∇ψ,   ∇²ψ = 2κ,   θ_E² = 4GM D_ls / (c² D_l D_s)",
     "status": "unvalidated",
@@ -518,7 +584,7 @@
   {
     "id": "rotor",
     "source": "src/modules/sandpile.js",
-    "sourceSha256": "0dc76ac4faf5c36f0c12c37fd436ec4189b150c715151451acb63c9ed8da21a1",
+    "sourceSha256": "72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3",
     "reference": "Lionel Levine and Yuval Peres, 'Strong spherical asymptotics for rotor-router aggregation and the divisible sandpile', Potential Analysis 30, 1 (2009), is the theorem this plate measures. For an aggregate of n particles in d dimensions, written as n = ω_d r^d, they prove the inradius is at least r − O(log r) and the outradius at most r + O(r^α) for every α > 1 − 1/d, which in the plane is r + O(r^α) for every α > 1/2. The two sides of that sandwich are not the same strength, and the plate does not pretend they are: the inner bound is logarithmic and proved, the outer bound proved here is a power, and the status line reports what this lattice actually measures rather than what the tighter of the two would suggest. There is no probability anywhere in the statement. The rotor-router walk and the aggregation model are James Propp's; they are studied in Ander Holroyd and James Propp, 'Rotor walks and Markov chains', Contemporary Mathematics 520 (2010), and in Joshua Cooper and Joel Spencer, 'Simulating a random walk with constant error', Combinatorics, Probability and Computing 15 (2006). Internal diffusion limited aggregation, the random counterpart drawn beside it, is Gregory Lawler, Maury Bramson and David Griffeath, 'Internal diffusion limited aggregation', Annals of Probability 20, 2117 (1992), who proved its limit shape is a disk; David Jerison, Lionel Levine and Scott Sheffield, Journal of the American Mathematical Society 25, 271 (2012), showed its fluctuations are logarithmic as well, so the gap the plate measures between the two is one of constants and of certainty, not of orders. That a finished aggregate does not depend on the order the particles were routed in is the abelian property of Persi Diaconis and William Fulton, Rendiconti del Seminario Matematico dell'Università e del Politecnico di Torino (1991); it is the same argument Deepak Dhar, Physical Review Letters 64, 1613 (1990), made for the abelian sandpile of Per Bak, Chao Tang and Kurt Wiesenfeld, Physical Review Letters 59, 381 (1987).",
     "equation": "at an occupied site turn the rotor a quarter turn and follow it; stop at the first unoccupied site.   inradius ≥ r − O(log r),  outradius ≤ r + O(r^α) for every α > 1 − 1/d,  r = √(n/π) in d = 2",
     "status": "unvalidated",
@@ -556,7 +622,7 @@
   {
     "id": "faraday",
     "source": "src/modules/faraday.js",
-    "sourceSha256": "b8b0aec62a48d48fcc42d7524ddd734e85f7df75786fd94860370492248ba8f0",
+    "sourceSha256": "bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14",
     "reference": "M. Faraday, Philos. Trans. R. Soc. 121, 299 (1831), saw crisp standing waves on a shaken plate of liquid. P. Umbanhowar, F. Melo and H. L. Swinney, Nature 382, 793 (1996), found oscillons: localized, subharmonic bouncing spots on a granular layer. The sheet here is a damped, parametrically driven conservation law with a cubic saturation, not a box of brass beads.",
     "equation": "∂tt h + γ ∂t h + (g − Γ cos ωt) ∇²h + κ ∇⁴h + u h³ = 0",
     "status": "unvalidated",
@@ -594,7 +660,7 @@
   {
     "id": "timecrystal",
     "source": "src/modules/timecrystal.js",
-    "sourceSha256": "b5704db157a328d7b03b8f821141307570e4e5741b17658432a34862e096b03c",
+    "sourceSha256": "fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b",
     "reference": "Frank Wilczek, Phys. Rev. Lett. 109, 160401 (2012), named the time crystal. Watanabe and Oshikawa, Phys. Rev. Lett. 114, 251603 (2015), proved an equilibrium one cannot exist. Else, Bauer and Nayak, Phys. Rev. Lett. 117, 090402 (2016), and Khemani, Lazarides, Moessner and Sondhi, Phys. Rev. Lett. 116, 250401 (2016), showed a periodically driven, many-body-localised spin chain can still lock at twice the drive period. Zhang et al., Nature 543, 217 (2017), saw it in trapped ions. This plate is the classical Floquet-Ising analog of that chain, not a quantum register.",
     "equation": "U(T) = exp(−i T H_Ising) · exp(−i π(1−ε) Σ X_i),   m₂ = ⟨(−1)^n m(nT)⟩",
     "status": "unvalidated",
@@ -613,7 +679,7 @@
   {
     "id": "growdomain",
     "source": "src/modules/growdomain.js",
-    "sourceSha256": "6ed99960b38288382cc77834580ecc4b8113d601d2302c7bc909d07a06024708",
+    "sourceSha256": "1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f",
     "reference": "Alan M. Turing, 'The chemical basis of morphogenesis', Philosophical Transactions of the Royal Society of London B 237, 37 (1952), showed that two substances which react and diffuse at different rates can break a uniform state into a pattern with a wavelength of its own. Edward J. Crampin, Eamonn A. Gaffney and Philip K. Maini, 'Reaction and diffusion on growing domains: scenarios for robust pattern formation', Bulletin of Mathematical Biology 61, 1093 (1999), wrote the same problem in fixed Lagrangian coordinates on a domain of changing length L(t); the diffusion coefficients pick up a factor 1/L², and a dilution term d(L̇/L) appears because growth carries material apart. That is the formulation integrated here. Shigeru Kondo and Rihito Asai, 'A reaction-diffusion wave on the skin of the marine angelfish Pomacanthus', Nature 376, 765 (1995), measured the consequence on a live animal: as the fish grows its stripes do not widen, new ones are inserted between the old, at the spacing the reaction-diffusion wavelength fixes. The kinetics are Schnakenberg's trimolecular scheme and the Gierer-Meinhardt activator-inhibitor pair.",
     "equation": "∂u/∂t = (D_u/L²)∂²u/∂ξ² + f(u,v) − d(L̇/L)u,  ∂v/∂t = (D_v/L²)∂²v/∂ξ² + g(u,v) − d(L̇/L)v",
     "status": "unvalidated",
@@ -632,7 +698,7 @@
   {
     "id": "spinice",
     "source": "src/modules/spinice.js",
-    "sourceSha256": "e42fb2916740320bbc429cf3e719f54f1b6fd7fb978fc366b69db95bfb224a21",
+    "sourceSha256": "2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f",
     "reference": "Linus Pauling, J. Am. Chem. Soc. 57, 2680 (1935), counted the residual entropy of ice. Castelnovo, Moessner and Sondhi, Nature 451, 42 (2008), showed that the same two-in/two-out rule on a pyrochlore magnet fractionalises a dipole into a pair of magnetic monopoles. The plate is square ice, the 2-D vertex model, not a 3-D crystal of Dy₂Ti₂O₇.",
     "equation": "E = (J/2) Σ_v Q_v² − h Σ σ,   Q_v = n_in − 2,   ice: Q = 0",
     "status": "unvalidated",
@@ -651,7 +717,7 @@
   {
     "id": "vegetation",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n², because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
     "equation": "∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n",
     "status": "validated within stated limits",
@@ -701,26 +767,60 @@
   {
     "id": "aztec",
     "source": "src/modules/aztec.js",
-    "sourceSha256": "d3cb40f6561fe895da5d7b12762f529af4b3e31e9f8561095f280d61851c31fb",
+    "sourceSha256": "38ffddc95db3b644c9d21cf1c727658e692f0c214bc35ab5fb64bf54ecb6da01",
     "reference": "Noam Elkies, Greg Kuperberg, Michael Larsen and James Propp, Journal of Algebraic Combinatorics 1, 111 and 219 (1992), counted the domino tilings of the Aztec diamond of order n (there are 2^{n(n+1)/2}) and gave the shuffling algorithm that samples one uniformly. William Jockusch, James Propp and Peter Shor, 'Random domino tilings and the arctic circle theorem' (1998), proved that a uniformly random tiling is frozen outside the inscribed circle and disordered inside it. James Propp, Theoretical Computer Science 303, 267 (2003), on generalized domino shuffling.",
     "equation": "order n → n+1: delete colliding pairs, slide N↑ S↓ W← E→, fill each empty 2×2 block with a random pair",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "The tab's frozen regions are the theorem's polar regions (a domino connected to the boundary through edge-adjacent dominoes of its own type, as Johansson 2005 states the definition of Jockusch, Propp and Shor); they equal an independent union-find on all 2,350 arctic plates. The earlier local test read 0.2778 +/- 0.0009 in the limit, 67 sigma above 1 - pi/4.",
+      "The status line's per-plate error bar is the standard error of the free cells summed over 60 angular sectors, from their integrated autocorrelation time (window closed at the first non-positive autocorrelation, floored at 2, capped at 15). The scatter of the printed fraction over seeds is 0.83 to 0.91 of it at orders 40 to 320, inside the calibration band 0.75 to 1.33 fixed before the run, but conservative, overstating the scatter by 10 to 20 per cent with 95 per cent intervals that exclude 1: the truncated window leaves out a negative autocorrelation lobe and the four-fold mean pattern of the sector counts enters each plate's variance. The bar is not calibrated below order 40, although the UI starts at 8.",
+      "The spread of the four polar regions, the bar it replaced, was too wide: the scatter was 0.68 to 0.88 of it because neighboring regions are anticorrelated (-0.28 at order 40 to -0.06 at 320); the estimator was chosen on a separate training family of 1,950 plates, not on the tool's seeds.",
+      "Exact uniformity is established by exhaustive enumeration only at orders 1 to 5, run through the tab's build() and shuffle() below the UI range of 8 to 320; larger orders are tested only through the arctic boundary statistics.",
+      "The polar-region area and the axis radius agree with 1 - pi/4 and 1/sqrt(2) only after extrapolation in n with the stated form q_inf + A n^-2/3 + B n^-1 (0.2127 +/- 0.0013, -1.5 sigma; 0.7097 +/- 0.0016, +1.7 sigma); a two-parameter n^-2/3 fit over orders 113 to 320 gives +1.4 and -2.6 sigma, so the agreement holds at about 0.003 in area and 0.005 in radius, and at order 320 the polar area is still 0.030 above its limit, which the status line attributes to finite n.",
+      "Uniformity probabilities assume the seeded U.makeRng streams behave as independent uniform draws; fixed PRNG samples do not prove it.",
+      "Print evidence covers five recipes on one renderer (headless Chromium 141, SwiftShader, Linux). Grain is a raster finish that the vector print omits."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Calibrate the per-plate bar below order 40 (the UI starts at 8) or say on the status line that it is uncalibrated there.",
+      "Extend print evidence to other renderers and more recipes; extend exhaustive uniformity beyond order 5 only with a different method (the count is 2^{n(n+1)/2})."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/aztec-science.js",
+        "command": "node tools/aztec-science.js --write",
+        "results": "validation/results/aztec-science.json",
+        "scope": "The tab's own build(), shuffle(), dominoes(), polar-region test and status line run unmodified in Node: exhaustive enumeration and sampled frequencies at orders 1 to 5; polar-region area, axis radius, fluctuation exponent, the printed fraction and its per-plate error bar over 2,350 independent seeds at orders 40, 57, 80, 113, 160, 226 and 320; five complete rendered recipes (orders 8 to 180) with every SVG rectangle, every PNG byte and the shell vector RIP at 8 in and 300 ppi.",
+        "criteria": "Tiling counts equal 2^{n(n+1)/2}; per order, Pearson chi-square p >= 0.001, no tiling undrawn, all tiling and domino-placement probabilities inside a simultaneous Hoeffding bound and a Bonferroni z bound at alpha 0.001; tab frozen flags equal an independent union-find on every plate; the printed fraction and bar equal an independent recomputation on every plate; the per-plate bar's calibration (scatter over seeds over RMS bar) inside 0.75 to 1.33 at every order, a band fixed before the run; extrapolated polar area and axis radius (and the tab's printed fraction) within 3 sigma of 1 - pi/4 and 1/sqrt(2); four-fold symmetry within 3 sigma; SVG coordinates <= 0.00501 px, PNG bytes <= 1, shell print equal to the rasterized reference SVG, state unchanged.",
+        "benchmark": "Backtracking enumeration of every tiling (Elkies, Kuperberg, Larsen and Propp 1992 count), exact domino placement probabilities from that enumeration, and the Jockusch-Propp-Shor arctic circle for the polar regions measured independently of the module, with Johansson's n^{1/3} fluctuation scale for the finite-size form; the scatter of the printed fraction over independent seeds for its error bar; geometry rebuilt from the documented layout.",
+        "failureControl": "A creation coin biased to 0.7 fails uniformity at orders 1 to 4 (chi-square up to 138,442 on 1,023) and moves the axis radii apart by 113 standard errors at order 160; removing the destruction step is rejected by the independent tiling check (26,830 of 40,960 draws at order 4); the old four-region spread bar falls outside the calibration band at orders 40, 57 and 113 on the same plates; another seed's tiling fails the SVG check; a one-pixel shift fails the PNG check.",
+        "limitations": "Exhaustive uniformity only at orders 1 to 5; the arctic comparison depends on the stated extrapolation; the per-plate bar is calibrated at orders 40 to 320 and overstates the scatter by 10 to 20 per cent there; one renderer."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/aztec-science.js",
+        "command": "node tools/aztec-science.js --write",
+        "results": "validation/results/aztec-science.json",
+        "scope": "Five recipes loaded through the recipe hash in a temporary copy of dist/studio.html (orders 8, 28, 60, 120 and 180; type, orientation and frozen coloring; inset 0 to 0.12; stroke on and off; circle on and off; grain 0), exported at 2,400 by 2,400 px by the module and by the shell's own Export.",
+        "criteria": "Browser tiling equals the Node run byte for byte and survives one-shuffle chunking; every SVG rectangle within 0.00501 px of independently computed geometry with every fill, stroke and circle ink right; module PNG within one level of an independent painting everywhere; shell PNG identical to the rasterized reference SVG; shell SVG carries the same geometry and provenance; recipe and tiling unchanged after export.",
+        "benchmark": "Backtracking enumeration of every tiling (Elkies, Kuperberg, Larsen and Propp 1992 count), exact domino placement probabilities from that enumeration, and the Jockusch-Propp-Shor arctic circle for the polar regions measured independently of the module, with Johansson's n^{1/3} fluctuation scale for the finite-size form; the scatter of the printed fraction over independent seeds for its error bar; geometry rebuilt from the documented layout.",
+        "failureControl": "Another seed's tiling of the same order fails the SVG check; the reference painting shifted by one pixel differs in 99,001 to 1,923,963 channels.",
+        "limitations": "Five recipes, one renderer; grain is not printed by the vector path."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/aztec-science.json",
+    "domain": {
+      "parameters": "Orders 1 to 5 (exhaustive uniformity, below the UI range) and 40, 57, 80, 113, 160, 226, 320 (arctic statistics and the calibration of the per-plate error bar); the five print recipes in validation/results/aztec-science.json.",
+      "conditions": "Uniform domino shuffling from the order-1 tiling with seeded U.makeRng streams (recipe seeds aztec-uniform-n<n>-<i>, aztec-arctic-n<n>-<i>, aztec-print-<k>); no grain in the print fixtures; exports must preserve recipe and tiling.",
+      "resolution": "Exact integer tilings; sampling errors as stated (standard errors over 200 to 400 independent seeds per order, 1,000-replicate seed bootstrap for extrapolations, chi-square intervals for calibration ratios); prints at 2,400 by 2,400 px (8 in, 300 ppi).",
+      "precision": "Integer tilings and Binary64 statistics; SVG coordinates rounded to 0.01 px; RGBA8 raster; Node 22 and headless Chromium 141 with SwiftShader recorded in the results."
+    }
   },
   {
     "id": "skin",
     "source": "src/modules/skin.js",
-    "sourceSha256": "4795322865f333524fa265e40e10939bc947090d3c58a4c60fc60b66b01c37a4",
+    "sourceSha256": "7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0",
     "reference": "N. Hatano and D. R. Nelson, Phys. Rev. Lett. 77, 570 (1996), wrote a directed-hopping chain whose bulk spectrum is that of Hermitian tight-binding while every eigenvector piles onto a boundary. Yao and Wang, Phys. Rev. Lett. 121, 086803 (2018), named this the non-Hermitian skin effect and showed it breaks the usual bulk-boundary correspondence. Hermitian quantum mechanics cannot do it: a similarity transform that is not unitary has no counterpart when H = H†.",
     "equation": "H_{j,j+1} = e^{g},   H_{j+1,j} = e^{−g},   ψ_n(j) ∝ e^{g j} sin(π n j / (N+1))",
     "status": "unvalidated",
@@ -739,26 +839,59 @@
   {
     "id": "rmt",
     "source": "src/modules/rmt.js",
-    "sourceSha256": "b45f9d8257ec669aa62929c91cc1a40f7f68e3de2a8a3101daf6fdd0944bb701",
-    "reference": "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The spacing forms quoted in the status line are Wigner's surmise; the exact answers are the Gaudin-Mehta determinantal formulae, Michel Mehta, Random Matrices. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
-    "equation": "p(λ) ∝ ∏_{i<j} |λ_i − λ_j|^β · e^{−Σλ_i²/2};   dλ_i = √(2/β) dB_i + Σ_{j≠i} dt/(λ_i − λ_j)",
-    "status": "unvalidated",
+    "sourceSha256": "1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4",
+    "reference": "Eugene Wigner's semicircle law, Annals of Mathematics 62, 548 (1955), and Freeman Dyson's threefold way and Brownian-motion model, J. Math. Phys. 3, 140 and 1191 (1962). The tridiagonal matrix models that make a general β cheap to sample are Ioana Dumitriu and Alan Edelman, 'Matrix models for beta ensembles', J. Math. Phys. 43, 5830 (2002). The status line compares the spacing spread with the exact Gaudin-Mehta law (Michel Mehta, Random Matrices), evaluated as Fredholm determinants by Folkmar Bornemann's method, Math. Comp. 79, 871 (2010); Wigner's surmise is its 2×2 approximation. The gamma sampler is George Marsaglia and Wai Wan Tsang, ACM TOMS 26, 363 (2000).",
+    "equation": "p(λ) ∝ ∏_{i<j} |λ_i − λ_j|^β · e^{−Σλ_i²/4};   Dyson (β = 1): dλ_i = √2 dB_i + (Σ_{j≠i} 1/(λ_i − λ_j) − λ_i/2) dt",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the domain in validation/RMT.md: sampler, solver and exact moments for n 24-400 and beta 0.1-12, semicircle for beta 1-12, Gaudin-Mehta spacing law at beta 1 and 2 with n 400, the printed spread of two presets, Dyson mode at 24 paths, and five complete prints.",
+      "The code samples the Dumitriu-Edelman matrix without its 1/sqrt(2), so the eigenvalue density is exp(-sum l^2/4); since 2026-09-24 the displayed equation says so, and it shows the Dyson mode's -l/2 Ornstein-Uhlenbeck drift at beta = 1.",
+      "At n 150 the local unfolding (24-gap window) biases the spacing scale: the CV agrees with Gaudin-Mehta but the pooled KS distance (0.0043, 0.0044) exceeds its bootstrap critical value (0.0027, 0.0025). The spacing-distribution claim is limited to n 400.",
+      "Since 2026-09-24 the status line prints the unfolded CV through compare() with its row-bootstrap error against the exact Gaudin-Mehta values (0.53435 at beta 1, 0.42426 at beta 2), with the Wigner surmise as a note; at beta 1 the tab's own sample resolves the surmise's 0.012 error. Only beta 1 and 2 have an exact reference in the status line.",
+      "Finite samples from one seeded PRNG; error bars assume independent draws. Beta 4 spacings, edge statistics, beta outside 0.05-20 and the sweep plate's printed spread are not tested.",
+      "The shell's SVG raster differs from the canvas only where ticks overlap (group versus per-mark opacity); since 2026-09-24 the Dyson polylines carry round caps, as the canvas does.",
+      "Colour is not evidence. Since 2026-09-24 the ramp no longer wraps its top to its bottom colour at palette offset 0 (the top level and the last row had taken the lowest colour). A nonzero offset rotates the ramp cyclically by 16 of 256 entries per step, so the two ends of the data range take neighbouring colours. No mark moves."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend the spacing test to beta 4 and to a global (semicircle) unfolding that removes the n 150 scale bias."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/rmt-science.js",
+        "command": "node tools/rmt-science.js --write",
+        "results": "validation/results/rmt-science.json",
+        "scope": "Module tqli against Sturm bisection (60 matrices); exact E Tr H^2 and E Tr H^4 over 25 seeded ensembles (n 24-400, beta 0.1-12, 1000-2000 matrices each); semicircle KS convergence and one-eigenvalue-per-matrix KS tests; unfolded spacings against Fredholm-determinant Gaudin-Mehta laws at beta 1 and 2 (n 150 and 400); printed spread of two presets; Dyson OU statistics over 48 seeds.",
+        "criteria": "Eigenvalues within 4 n eps ||T||; moment |z| < 4.265 (Bonferroni, 50 tests, alpha 0.001); semicircle KS below the Kolmogorov critical value at alpha 5e-5 per test and monotone convergence; n 400 spacing KS below the matrix-bootstrap 99th percentile and CV |z| < 3.662; Dyson Jacobi agreement within 8 n eps ||H||_F and stationarity and e^{-t/2} decay within |z| < 3.719.",
+        "benchmark": "Closed-form moments of the tridiagonal model derived by closed-walk counting; independent Sturm-sequence and Jacobi eigenvalue solvers; the semicircle CDF; Gaudin-Mehta spacing laws evaluated as Fredholm determinants of the sine kernel (Bornemann 2010); exact Ornstein-Uhlenbeck autocorrelation of Tr H.",
+        "failureControl": "chi degrees of freedom beta(n-i+1) (smallest |z| 31) and beta n (semicircle and moments fail); early QL deflation (9e7 times tolerance); gaps without unfolding over the whole spectrum (KS 0.044 and 0.059, over 30 times critical); wrong OU decay e^{-d} (|z| 24). The Wigner surmise is also rejected at beta 1.",
+        "limitations": "Only the domain in validation/RMT.md; the n 150 spacing distribution disagrees through the local unfolding's scale bias; seeded PRNG samples do not prove independence."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/rmt-science.js",
+        "command": "node tools/rmt-science.js --write",
+        "results": "validation/results/rmt-science.json",
+        "scope": "Five studio recipes (GUE, GOE comb, beta sweep, crystal, Dyson) through dist/studio.html with an auditRead() hook at 2400 px on the long side: every SVG tick rectangle and polyline vertex, the fallback PNG, a displaced control, and recipe and spectra before and after export.",
+        "criteria": "Studio spectra within solver tolerance of the Node run and of independent Sturm or Jacobi eigenvalues; printed spread equal to Node; SVG coordinates within 0.00501 px and every fill equal; PNG channels within 1 of an independent painting; displaced painting fails; state unchanged.",
+        "benchmark": "Geometry and inks rebuilt in the page from independently computed eigenvalues with an independent layout and color rule.",
+        "failureControl": "One-pixel displaced painting must differ on at least 100 channels (it differs on 2.2 to 5.1 million).",
+        "limitations": "Five recipes, grain off, one Chromium build; the vector RIP raster is recorded, not asserted, and differs where ticks overlap and at Dyson path ends."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/rmt-science.json",
+    "domain": {
+      "parameters": "Tridiagonal sampler and solver: n 24-400, beta 0.1-12 (eigenvalue check 0.05-20); semicircle beta 1-12; spacing law beta 1 and 2 at n 400 (CV also at n 140-260); Dyson paths 24, 480 slices, span 24; prints: the five recipes in validation/results/rmt-science.json.",
+      "conditions": "Seeded Dumitriu-Edelman matrices in the tab's normalization (N(0,2) diagonal, chi_{beta(n-i)} subdiagonal, density exp(-sum l^2/4)); stationary GOE Ornstein-Uhlenbeck process for Dyson mode; grain off for prints; exports preserve recipe and spectra.",
+      "resolution": "Matrix sizes and sample sizes as listed (1000-3000 matrices per ensemble, 48 Dyson seeds); spacing CDF on 1001 points over [0, 5]; prints 2400 x 2400, 1920 x 2400, 2400 x 1920 and 2400 x 1600 px.",
+      "precision": "Binary64 in module and references; eigenvalues within 4 n eps ||T||; RGBA8 raster; SVG rounded to 0.01 px; Node and Chromium versions recorded."
+    }
   },
   {
     "id": "stealth",
     "source": "src/modules/stealth.js",
-    "sourceSha256": "a45d5bf1ddc129ea01667167f37912c8bf47b5593de93de6a7ca2eb8225a3c30",
+    "sourceSha256": "286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7",
     "reference": "Uche, Stillinger and Torquato, Phys. Rev. E 70, 046122 (2004), and Torquato, Stillinger, Phys. Rev. E 68, 041113 (2003). A stealthy hyperuniform point process is disordered in real space and yet has a crystal's forbidden disk in Fourier space: S(k) = 0 in a finite neighbourhood of the origin. No Bragg peaks, no Poisson small-k catastrophe. The construction is collective-coordinate descent on a torus, which is what this plate runs.",
     "equation": "χ = (1 / dN) #{ k : 0 < |k| < k_C },   S(k) = 0  for |k| < k_C",
     "status": "unvalidated",
@@ -777,26 +910,60 @@
   {
     "id": "lozenge",
     "source": "src/modules/lozenge.js",
-    "sourceSha256": "c53780ea0ee6831557cfd89ff5b1fb913e749451eeb07b8559aa235ca4d95d62",
-    "reference": "The sampler is James Propp and David Wilson, 'Exact sampling with coupled Markov chains and applications to statistical mechanics', Random Structures and Algorithms 9, 223 to 252 (1996); random tilings are one of their own worked examples. The limit shape measured on the plate is Henry Cohn, Michael Larsen and James Propp, 'The shape of a typical boxed plane partition', New York Journal of Mathematics 4, 137 to 165 (1998). The count of boxed plane partitions is Percy MacMahon, 'Memoir on the theory of the partitions of numbers, Part VI: partitions in two-dimensional space, to which is added an adumbration of the theory of partitions in three-dimensional space', Philosophical Transactions of the Royal Society A 211, 345 to 373 (1912). The height function that turns a tiling into a stack of cubes is William Thurston, 'Conway's tiling groups', American Mathematical Monthly 97, 757 to 773 (1990). How long this chain needs is David Wilson, 'Mixing times of lozenge tiling and card shuffling Markov chains', Annals of Applied Probability 14, 274 to 325 (2004).",
+    "sourceSha256": "8d0b74da1421a27ed96ab181bdec73c7916f555be2864d0fa125052a62dcfbb1",
+    "reference": "The sampler is James Propp and David Wilson, 'Exact sampling with coupled Markov chains and applications to statistical mechanics', Random Structures and Algorithms 9, 223 to 252 (1996); random tilings are one of their own worked examples. The limit shape measured on the plate is Henry Cohn, Michael Larsen and James Propp, 'The shape of a typical boxed plane partition', New York Journal of Mathematics 4, 137 to 165 (1998). The count of boxed plane partitions is Percy MacMahon, 'Memoir on the theory of the partitions of numbers, Part VI: partitions in two-dimensional space, to which is added an adumbration of the theory of partitions in three-dimensional space', Philosophical Transactions of the Royal Society A 211, 345 to 373 (1912). The height function that turns a tiling into a stack of cubes is William Thurston, 'Conway's tiling groups', American Mathematical Monthly 97, 757 to 773 (1990). How long this chain needs is David Wilson, 'Mixing times of lozenge tiling and card shuffling Markov chains', Annals of Applied Probability 14, 274 to 325 (2004). The frozen test is the lozenge form of the polar regions of William Jockusch, James Propp and Peter Shor, 'Random domino tilings and the arctic circle theorem' (1998), as Kurt Johansson states them in 'The arctic circle boundary and the Airy process', Annals of Probability 33, 1 (2005).",
     "equation": "h(x, y) ∈ [0, c] weakly decreasing;  heat bath h(x, y) ~ U{max(h(x+1,y), h(x,y+1)) … min(h(x−1,y), h(x,y−1))};  run −T → 0 from ⊥ and ⊤ on one fixed set of maps, doubling T until they agree, and read the common value at 0",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Since recipe v4 a rhombus is frozen when a chain of edge-adjacent rhombi of its own orientation joins it to the rim, the lozenge analogue of the Jockusch-Propp-Shor polar regions (as Johansson 2005 states them) adopted by analogy; Cohn, Larsen and Propp state their theorem for the height function, and the definition is not quoted from them. The module's flags equal an independent union-find over rhombi and the extreme level sets of the height function on all 2,720 limit-shape plates.",
+      "At every size the tab offers an exact plate reads below the limit shape, about seven of its own error bars on a regular hexagon (radius 0.9085 at 12, 12, 12 and 0.9663 at 48, 48, 48; free area 0.7516 and 0.8473 against 0.9069), because the frozen regions reach one to one and a half tiles past the ellipse; the status line names this finite-size cause. Agreement with the limit holds only after extrapolation with the stated form q_inf + A n^-2/3 + B n^-1: free area 0.9005 +/- 0.0052 (-1.2 sigma) and radius 0.9949 +/- 0.0033 (-1.5 sigma) for regular hexagons 12 to 48; 0.866 +/- 0.032 and 0.984 +/- 0.020 for the 3:5:6 family, whose three-parameter fit has one degree of freedom. The two-parameter form moves the regular limits by 0.006 in area and 0.007 in radius, well inside 3 sigma of the limit either way.",
+      "The n^(1/3) boundary scale behind that form is assumed by analogy with the Aztec diamond; the spread of the corner depth grows as n^0.248 +/- 0.030 over sizes 12 to 48, 2.8 sigma below 1/3, with depths of only 3 to 8 cells.",
+      "Both per-plate error bars (integrated autocorrelation time over 60 angular sectors, the free area now included) are checked against the scatter over seeds at the eleven hexagons measured, which is 0.77 to 1.03 of the bar, inside the band 0.75 to 1.33 fixed before the run; they are about right at 40 and 48 a side and overstate the scatter by up to 30 per cent elsewhere, and the lowest ratio, 0.77 at 12, 20, 24, is near the lower edge of the band. Lopsided boxes such as 48, 48, 8 and all other shapes are outside the calibrated domain.",
+      "The local radius 1 to 4 tests remain for recipes made before v4 (legacy ring 3) and are not the arctic boundary: on the same tilings radius 3 extrapolates 6.6 sigma below the limit in both radius and free area.",
+      "Exhaustive uniformity covers the boxes 2,2,2, 2,2,3, 2,3,4 and 3,3,3 plus the volume law on 4,4,4; larger hexagons use the same code but are not enumerated here. Uniformity probabilities assume the seeded draws behave as independent uniform variates; fixed PRNG samples do not prove it.",
+      "Print evidence covers seven recipes on one renderer (headless Chromium 141, SwiftShader, Linux). Grain is omitted from the vector sheet by design."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Calibrate the bars and extend the extrapolation to lopsided boxes (one short side, as in the flattened preset) and to other skewed shapes; derive or cite the n^(1/3) scale of the lozenge boundary rather than assume it.",
+      "Extend print evidence to other renderers and more recipes."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/lozenge-science.js",
+        "command": "node tools/lozenge-science.js --write",
+        "results": "validation/results/lozenge-science.json",
+        "scope": "The tab's own makeJob, runJob, buildTiling, corners, frozenRim, classify, measureArctic, ellipseOf, macmahonLog10, samplerSelfTest and status line run unmodified in Node: exhaustive enumeration of tilings and plane partitions up to 4,4,4 and the drawn-tiling bijection; sampled frequencies on four boxes and the 4,4,4 volume law; the rim-connected frozen regions, arctic radius, free area, their per-plate bars and the self-test over 2,720 independent full-regenerate plates on regular hexagons 12 to 48 and the 3:5:6 family 12,20,24 to 24,40,48; seven complete rendered recipes with every SVG rhombus and curve point, every PNG byte and the shell vector RIP.",
+        "criteria": "Direct tiling count = plane partition count = MacMahon product (BigInt) on five boxes; drawn tilings distinct and in the enumeration; ellipseOf equal to the tangency solution within 1e-12; per box, Pearson chi-square p >= 0.001, no tiling undrawn, tiling and rhombus-placement probabilities inside a simultaneous Hoeffding bound and a Bonferroni z bound at alpha 0.001; volume chi-square p >= 0.001 and mean within 3.29 sigma of 32; every plate exact and sound; frozen flags equal an independent union-find and the extreme level sets on every plate; printed values and bars equal the measurement; per-plate bar calibration inside 0.75 to 1.33 at every hexagon for both numbers (band fixed before the run); extrapolated radius and free area within 3 sigma of the limit shape for the regular and the 3:5:6 families; the full and empty corners symmetric within 3 sigma; self-test deviations mean within 3 standard errors of 0 and pooled p >= 0.001; SVG coordinates <= 0.00501 px, PNG bytes <= 1, shell print equal to the rasterized reference SVG, state unchanged.",
+        "benchmark": "Direct enumeration of lozenge tilings of the hexagon's unit triangles and separate enumeration of plane partitions against MacMahon's product (1912); exact rhombus placement probabilities and the exact 4,4,4 volume distribution from those enumerations; the Cohn-Larsen-Propp inscribed ellipse solved independently from its tangency, and its area fraction pi/(2 sqrt 3) for a regular hexagon, reached by extrapolation in the size; the Propp-Wilson exactness claim tested against all of these; the scatter over independent seeds for the error bars; geometry rebuilt from the cube stack.",
+        "failureControl": "A biased monotone update (u^2), reading the state at the meeting time, and a coalescence check over half the sites each fail uniformity on 2,2,2 and 3,3,3 (chi-square 63 to 2,044,985) and are flagged by the tab's own self-test (z 4.7 to 65); the u^2 update separates the full and empty corners by 940 standard errors; the local ring-3 frozen test, run through the same extrapolation on the same tilings, lands 6.6 sigma below the limit; another seed's tiling fails the SVG check; a one-pixel shift fails the PNG check.",
+        "limitations": "Plates read below the limit at every offered size and agree only after the stated extrapolation; the bars are calibrated on eleven hexagons and overstate the scatter by up to 30 per cent; exhaustive uniformity only up to 3,3,3 plus the 4,4,4 volume law; one renderer."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/lozenge-science.js",
+        "command": "node tools/lozenge-science.js --write",
+        "results": "validation/results/lozenge-science.json",
+        "scope": "Seven recipes loaded through the recipe hash in a temporary copy of dist/studio.html (11,11,11 with strokes; 24,40,46 with both curves; 48,48,8 frozen with the predicted ellipse; 32,32,32; 20,20,40 flat with strokes; 36,36,36 frozen at 1:1 with both curves, loaded as a v3 recipe on the local radius-3 test; 16,16,16 height color with the hairline seam stroke; grain 0), exported at 8 in and 300 ppi by the module and by the shell's own Export.",
+        "criteria": "Browser heights, CFTP times, sector radii and bars equal the Node regenerate() run; a v4 recipe loads the rim-connected test and a v3 recipe the radius-3 test; orientations and frozen flags equal the independent reconstruction (union-find, or the ball test for the old recipe); every SVG rhombus and curve point within 0.00501 px of geometry rebuilt from the cube stack with the documented colors, strokes and dashes; module PNG within one level of an independent painting; shell PNG identical to the rasterized reference SVG; shell SVG carries the same geometry and provenance; state unchanged after export.",
+        "benchmark": "Direct enumeration of lozenge tilings of the hexagon's unit triangles and separate enumeration of plane partitions against MacMahon's product (1912); exact rhombus placement probabilities and the exact 4,4,4 volume distribution from those enumerations; the Cohn-Larsen-Propp inscribed ellipse solved independently from its tangency, and its area fraction pi/(2 sqrt 3) for a regular hexagon, reached by extrapolation in the size; the Propp-Wilson exactness claim tested against all of these; the scatter over independent seeds for the error bars; geometry rebuilt from the cube stack.",
+        "failureControl": "Another seed's tiling of the same hexagon fails the SVG check; the reference painting shifted by one pixel differs in 295,226 to 1,276,675 channels.",
+        "limitations": "Seven recipes, one renderer; grain is not in the vector sheet."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/lozenge-science.json",
+    "domain": {
+      "parameters": "Boxes 2,2,2, 2,2,3, 2,3,4, 3,3,3 and 4,4,4 (exhaustive; the smallest are below the UI minimum of 3 and run through the same makeJob and runJob); regular hexagons 12, 16, 20, 24, 32, 40 and 48 and the 3:5:6 hexagons 12,20,24, 15,25,30, 18,30,36 and 24,40,48 with the exact sampler and the rim-connected frozen test (ring 0); the seven print recipes in validation/results/lozenge-science.json.",
+      "conditions": "Coupling from the past from the empty and full boxes with the module counter hash keyed as build() keys it (recipe seeds lozenge-uniform-<box>-<i>, lozenge-volume-4x4x4-<i>, lozenge-arctic-<box>-<i>, lozenge-print-<k>); every plate exact, none fell back to the heat bath; no grain in the print fixtures; exports must preserve recipe and state.",
+      "resolution": "Exact integer tilings and heights; sampling errors as stated (standard errors over 100 to 400 independent seeds per hexagon, 1,000-replicate seed bootstrap for extrapolations, chi-square intervals for calibration ratios); prints from 1,386 by 2,400 to 2,400 by 2,400 px at 8 in and 300 ppi.",
+      "precision": "Integer heights and Binary64 statistics; SVG coordinates rounded to 0.01 px; RGBA8 raster; Node 22 and headless Chromium 141 with SwiftShader recorded in the results."
+    }
   },
   {
     "id": "arago",
     "source": "src/modules/arago.js",
-    "sourceSha256": "def471f2df1ae32559f6444a166db0e7fb9a1f8be05b3a91820617a7b6678566",
+    "sourceSha256": "63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06",
     "reference": "S. D. Poisson argued in 1818 that Fresnel's wave theory implied a bright spot on axis in the shadow of an opaque disk, which he took as a reductio. D. F. J. Arago performed the experiment and found the spot. The plate is a Fresnel propagator through a circular stop.",
     "equation": "U(0) = (e^{ikz}/iλz) ∫_{|ρ|>R} exp(ik|ρ|²/2z) dρ,   I(0) ≃ I_open",
     "status": "unvalidated",
@@ -882,7 +1049,7 @@
   {
     "id": "rogue",
     "source": "src/modules/rogue.js",
-    "sourceSha256": "63a5c263919c63e7d5bd224cde99e16a17ace1f61e6ffb88030d8fc1f8b42834",
+    "sourceSha256": "91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f",
     "reference": "D. H. Peregrine, J. Austral. Math. Soc. Ser. B 25, 16 (1983). Akhmediev, Eleonskii and Kulagin (1987); Kuznetsov (1977) and Ma (1979). Draupner measured a rogue wave in 1995. Formula conventions: Haragus and Pelinovsky, arXiv:2112.14426, Eqs1.1–1.4. The plate samples these established analytic solutions.",
     "equation": "i ψ_t + ½ ψ_xx + |ψ|² ψ = 0,   ψ_P = [1 − 4(1+2it)/(1+4x²+4t²)] e^{it},   |ψ|²_max / |ψ|²_∞ = 9",
     "status": "validated within stated limits",
@@ -979,7 +1146,7 @@
   {
     "id": "anderson",
     "source": "src/modules/anderson.js",
-    "sourceSha256": "e3a71c358f0c08209a1f494a5da3d484b8b5a07e14266f83a6505a654a8a4dce",
+    "sourceSha256": "0b47f4a2be263c2ebcffd1bd83465a930378e69dbf49310f9ab99d1eeaa0e82e",
     "reference": "P. W. Anderson, Phys. Rev. 109, 1492 (1958). A random potential can trap a wave that classical intuition says must spread. Abrahams, Anderson, Licciardello and Ramakrishnan (1979) argued that in two dimensions all states localise. The plate is imaginary-time relaxation to the ground state of a tight-binding square, not a wave-packet detector (that lives on Schrödinger).",
     "equation": "H = t Σ_<ij> |i><j| + Σ_i ε_i |i><i|,   ε ~ U[-W/2,W/2],   IPR = Σ |ψ|⁴",
     "status": "unvalidated",
@@ -998,7 +1165,7 @@
   {
     "id": "fput",
     "source": "src/modules/fput.js",
-    "sourceSha256": "607417802982b99de7ea1912c083757cefdec471ed8561df9363faa99f7c118a",
+    "sourceSha256": "a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc",
     "reference": "Fermi, Pasta, Ulam and Tsingou, Los Alamos report LA-1940 (1955). A weakly nonlinear string, started in one Fourier mode, was expected to thermalise. It did not: the energy came back. Zabusky and Kruskal (1965) met the soliton in the continuum limit. This plate records finite fixed-end displacement histories and harmonic first-mode energy relative to its initial value. It does not reproduce the original long recurrence experiment.",
     "equation": "ẍ_i = (q_{i+1}-2q_i+q_{i-1}) + α[(q_{i+1}-q_i)²-(q_i-q_{i-1})²],   E_1 = (P_1² + ω_1² Q_1²)/2",
     "status": "validated within stated limits",
@@ -1126,7 +1293,7 @@
   {
     "id": "excitable",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
     "equation": "Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b)",
     "status": "validated within stated limits",
@@ -1176,7 +1343,7 @@
   {
     "id": "soliton",
     "source": "src/modules/soliton.js",
-    "sourceSha256": "37cf9cfbd76b979fdaa91eaf9dc6b98b4c3d130304076f7abfc3242597cddb1e",
+    "sourceSha256": "baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1",
     "reference": "J. S. Russell, Report of the 14th Meeting of the British Association (1844), chased a heap of water that would not spread. Korteweg and de Vries (1895) wrote the equation. Zabusky and Kruskal, Phys. Rev. Lett. 15, 240 (1965), collided two and named them solitons. The plate evaluates the established Hirota two-soliton tau function, including its interaction term; Benes, Kasman and Young, On Decompositions of the KdV 2-Soliton (2006), provide a reference.",
     "equation": "u_t + 6 u u_x + ν² u_xxx = 0; u = 2ν² ∂xx log τ, τ = 1+e^η1+e^η2+A12 e^(η1+η2)",
     "status": "validated within stated limits",
@@ -1234,7 +1401,7 @@
   {
     "id": "cyclicca",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "25975c4c12a36e25ea28f09df64a78ae0bc3814d46d3c6df190400858f5ccec6",
+    "sourceSha256": "d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836",
     "reference": "Robert Fisch, Janko Gravner and David Griffeath, Statistics and Computing 1, 23 (1991), on threshold-range scaling of excitable automata; David Griffeath, Notices of the AMS, 1988, for the cyclic cellular automaton; James M. Greenberg and Stuart P. Hastings, SIAM J. Appl. Math. 34, 515 (1978), for the excitable rest-excited-refractory rule. In the cyclic automaton every state eats the one below it, so k colors chase each other around the cycle and a random soup organizes into spirals. Greenberg-Hastings is the same cycle with one excitable state: waves propagate, refractory tails follow, and broken fronts curl into spiral pairs.",
     "equation": "cyclic: s → s+1 (mod k) if ≥ θ neighbors within range r are in state s+1;   GH: 0 → 1 if ≥ θ excited, 1 → 2 → … → k−1 → 0",
     "status": "unvalidated",
@@ -1272,18 +1439,20 @@
   {
     "id": "ssh",
     "source": "src/modules/ssh.js",
-    "sourceSha256": "1fa05fe97e929dad52fd9c3367b4ec2f1f097a38cf4297d78bf7a94b3c6924a9",
-    "reference": "W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)| of every eigenmode, stacked.",
+    "sourceSha256": "269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877",
+    "reference": "W. P. Su, J. R. Schrieffer and A. J. Heeger, Phys. Rev. Lett. 42, 1698 (1979), on dimerised polyacetylene. The winding of the Bloch Hamiltonian in the Brillouin zone is a topological invariant; when it is 1 an open chain hosts a zero mode at each end, inside the bulk gap. Periodic boundaries have nowhere to put them. The plate is |ψ_n(x)|² of every eigenmode of the finite chain, energy increasing upward, each row scaled to its own peak; the mid-gap pair sits in the middle rows.",
     "equation": "H = v Σ_i (a†_i b_i + h.c.) + w Σ_i (b†_i a_{i+1} + h.c.),   ν = 1 for w > v (open)",
     "status": "unvalidated",
     "limitations": [
-      "Independent Float64 SSH spectrum/edge checks in validation/SSH.md do not certify the production visualization heuristic, print path, interactions or experiment.",
+      "The studio solver is compared with an independent Float64 Jacobi solve on every registered preset (N = 96, and Critical at N = 160). Other grids, the plate's row mapping, per-row scaling and palette, and the print path are not compared pixel by pixel. No interactions or experiment.",
+      "The end weight and the verdict are measured from the eigenvectors of one finite chain and carry no sampling error; they are finite-size quantities with a fixed 10% window at each end. Mid-gap energies under 1e-13 are not resolved in double precision and are printed as a bound. Critical (w/v 1.06) reads crossover at the default 96 sites, because its localisation length of 18.5 cells is comparable to the 48-cell chain; at 160 sites it reads edge modes.",
+      "Until 2026-09-24 the intra hopping was keyed v, which the engine overwrites with the recipe version (2). Every plate opened from a hash, a preset, Surprise or a reload therefore ran at v = 2 and drew the trivial picture whatever the controls said. Dragging the slider changed the plate on screen, but its hash still recorded only v = 2. The key is now vIntra. A hash written before the rename never stored the intra hopping, so it reprints at the default 0.45 with its stored w, and its pixels change.",
       "Finite open/periodic chains only; catalog equation and citation remain review targets for full paper equivalence.",
       "No print-state evidence is registered; status stays unvalidated."
     ],
     "remaining": [
       "Add print-path evidence and review before any status promotion.",
-      "Optionally compare studio end-weight metric against independent eigenvectors on shared presets.",
+      "Review the studio comparison in validation/results/ssh-science.json before any promotion to partially validated.",
       "Extend parameter, disorder and larger-N surveys beyond the registered fixtures."
     ],
     "numerical": [
@@ -1291,11 +1460,11 @@
         "test": "tools/ssh-science.js",
         "command": "node tools/ssh-science.js --write",
         "results": "validation/results/ssh-science.json",
-        "scope": "Independent Float64 dimerized SSH Hamiltonian: periodic spectrum vs analytic Bloch energies, open mid-gap edge localization/end weight, nontrivial vs trivial regimes, open-vs-periodic control.",
-        "criteria": "Periodic spectrum max error <1e-10 and gap error <1e-10; nontrivial mid-gap |E|<1e-8 with mean end weight >0.55 and analytic left-edge subspace overlap >0.98; trivial mid-gap |E|>0.1 and end weight <0.35; all failure controls separate.",
-        "benchmark": "Independent Float64 real-symmetric Jacobi diagonalization compared with analytic Bloch energies E(k)=±sqrt(v²+w²+2vw cos k), bulk gap 2|w-v|, and analytic open-chain left zero mode ψ_{2j}∝(-v/w)^j.",
-        "failureControl": "Equal hoppings v=w must close the periodic gap and keep open near-zero end weight bulk-like; trivial dimerization must not look topological; scrambled and reversed hop patterns must destroy ordered edge-mode signatures.",
-        "limitations": "Finite even N in {24,32,40,48}; single-particle nearest-neighbour SSH only. Does not validate the production ssh.js display heuristic, print exports, interactions or experimental systems."
+        "scope": "Independent Float64 dimerized SSH Hamiltonian: periodic spectrum vs analytic Bloch energies, open mid-gap edge localization/end weight, nontrivial vs trivial regimes, open-vs-periodic control; and the studio solver in src/modules/ssh.js (eigenvalues, mode densities, mid-gap end weight and energy, verdict) against the independent solve on every registered preset.",
+        "criteria": "Periodic spectrum max error <1e-10 and gap error <1e-10; nontrivial mid-gap |E|<1e-8 with mean end weight >0.55 and analytic left-edge subspace overlap >0.98; trivial mid-gap |E|>0.1 and end weight <0.35. Studio solver on each preset: eigenvalues within 1e-10, residual and orthonormality within 1e-12, |psi|^2 summed over degenerate groups within 1e-9, rows mirror-symmetric within 1e-10, end weight within 1e-9 and mid-gap |E| within 1e-10 of the reference, verdict as expected; all failure controls separate.",
+        "benchmark": "Independent Float64 real-symmetric Jacobi diagonalization compared with analytic Bloch energies E(k)=±sqrt(v²+w²+2vw cos k), bulk gap 2|w-v|, and analytic open-chain left zero mode ψ_{2j}∝(-v/w)^j. The same Jacobi solve is the reference for the studio's Householder and implicit-QL solver.",
+        "failureControl": "Equal hoppings v=w must close the periodic gap and keep open near-zero end weight bulk-like; trivial dimerization must not look topological; scrambled and reversed hop patterns must destroy ordered edge-mode signatures. The studio verdict must read trivial for the edge-mode presets with v and w swapped; a reference chain terminated on the wrong bond must miss the studio eigenvalues by more than 0.1; the retired display heuristic must miss the reference densities by more than 0.1.",
+        "limitations": "Finite even N in {24,32,40,48} for the reference checks and N in {96,160} for the studio comparison; single-particle nearest-neighbour SSH only. Does not compare plate pixels or print exports, interactions or experimental systems."
       }
     ],
     "print": []
@@ -1322,7 +1491,7 @@
   {
     "id": "amb",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "Elsen Tjhung, Cesare Nardini and Michael E. Cates, Physical Review X 8, 031080 (2018). Cahn-Hilliard describes a passive mixture relaxing toward equilibrium. Two extra gradient terms, λ|∇φ|² in the chemical potential and a current ζ(∇²φ)∇φ that cannot come from any free energy, are the leading ways an active system (motile bacteria, self-propelled colloids) can break time-reversal symmetry while still conserving φ. They give the two phases different interfacial tensions, and when the tension felt by the minority phase turns negative the Ostwald process runs backward: large droplets shed material to small ones and coarsening stops.",
     "equation": "∂φ/∂t = M ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ|∇φ|²",
     "status": "validated within stated limits",
@@ -1396,7 +1565,7 @@
   {
     "id": "aubry",
     "source": "src/modules/aubry.js",
-    "sourceSha256": "fab98cf5c44a3d1907ba0c9a8289fe824d1d4456f0d7d0bac63e686621d84556",
+    "sourceSha256": "a54ee62f409482114806816788d03c2c54701ea560a286ba45c2a98208b02652",
     "reference": "S. Aubry and G. André, Ann. Israel Phys. Soc. 3, 133 (1980). A quasiperiodic potential is deterministic, yet past λ = 2 every eigenstate localises. The model is self-dual: momentum-space at λ is real-space at 1/λ, so the transition sits exactly at 2. The plate is the ground state of a golden-ratio chain by imaginary-time relaxation.",
     "equation": "ψ_{n+1}+ψ_{n-1} + 2λ cos(2π β n) ψ_n = E ψ_n,   β = (√5-1)/2,   localised for λ>2",
     "status": "unvalidated",
@@ -1415,7 +1584,7 @@
   {
     "id": "cahn",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ max(1−c²,0) suppresses mobility near pure phases; it does not imply pure surface diffusion for this polynomial free energy (Lee, Munch and Suli, 2015).",
     "equation": "∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c",
     "status": "validated within stated limits",
@@ -1519,7 +1688,7 @@
   {
     "id": "ohta",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). The long-range penalty can frustrate ordinary coarsening and favor microstructured states. Pattern selection depends on composition and parameters; a finite preview does not prove equilibrium.",
     "equation": "∂u/∂t = ∇·[M(u)∇μ] − σ(u−m),   μ = u³ − u − ε²Δu",
     "status": "validated within stated limits",
@@ -1593,7 +1762,7 @@
   {
     "id": "hopf",
     "source": "src/modules/hopf.js",
-    "sourceSha256": "62a4457707adf41bb37623379ec36e93e3bc455d11e87cf95aaea2880b86b85a",
+    "sourceSha256": "2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00",
     "reference": "H. Hopf, Math. Ann. 104, 637 (1931). The third homotopy group of the 2-sphere is not zero: π₃(S²) = ℤ, generated by this map. Stereographic projection from S³ turns the fibres into a nesting of linked circles in R³, then onto the plate. No two fibres are unlinked.",
     "equation": "η: S³ → S²,   η(z1,z2) = (2 z1 z2-bar, |z1|²-|z2|²),   fibres = circles,   lk = 1",
     "status": "validated within stated limits",
@@ -1651,7 +1820,7 @@
   {
     "id": "swift",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is a phenomenological pattern-forming model motivated by convection near onset: a real scalar field with a preferred wavenumber k₀. Quadratic and cubic nonlinearities affect the available branches. Localized patterns can exist in suitable subcritical regimes; this display does not establish branch stability.",
     "equation": "∂u/∂t = r u − (k₀² + ∇²)² u + g u² − b u³",
     "status": "validated within stated limits",
@@ -1725,7 +1894,7 @@
   {
     "id": "pfc",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "K. R. Elder, M. Katakowski, M. Haataja and M. Grant, Phys. Rev. Lett. 88, 245701 (2002); Elder and Grant, Phys. Rev. E 70, 051605 (2004). The phase-field crystal model is Swift–Hohenberg’s free energy evolved with conserved (Cahn–Hilliard) dynamics. The field represents time-averaged atomic-scale density, not individual particle trajectories. The model supports crystalline order and defects on diffusive time scales; this finite-grid display does not locate a material melting line.",
     "equation": "∂ψ/∂t = M ∇²(δF/δψ),   F = ∫ ½ ψ [r + (k₀²+∇²)²] ψ + ψ⁴/4",
     "status": "validated within stated limits",
@@ -1818,7 +1987,7 @@
   {
     "id": "cloak",
     "source": "src/modules/cloak.js",
-    "sourceSha256": "525c48f41781dd1011f8b3b03c23a5f2f29cfed8cc50152ff1d9298f672e0541",
+    "sourceSha256": "2ee7bbe0424ab1f6a7fbe8647064fa0ef2d3864f9139a727078160dffcb0947b",
     "reference": "J. B. Pendry, D. Schurig and D. R. Smith, Science 312, 1780 (2006). A coordinate transformation that blows a point into a disk pulls every ray around the hole. In the virtual plane the rays are straight; in the physical plane they miss the core. The plate traces that map, not a fabricated metamaterial.",
     "equation": "r = R1 + r' (R2-R1)/R2,   n_r = (r-R1)/r · R2/(R2-R1),   n_θ = r / (r-R1)",
     "status": "unvalidated",
@@ -1904,7 +2073,7 @@
   {
     "id": "vortex",
     "source": "src/modules/vortex.js",
-    "sourceSha256": "fc8e66a17fe114da9a663f0827171ea70461c784e10802fac2bbd3d2205027f0",
+    "sourceSha256": "0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e",
     "reference": "A. A. Abrikosov, Zh. Eksp. Teor. Fiz. 32, 1442 (1957). Type-II superconductors were supposed to be like type I, expelling all flux until a catastrophic jump. Abrikosov found a lattice of flux tubes instead, each carrying one quantum. This plate is a reduced fixed-field Ginzburg-Landau relaxation with unit-modulus lattice links in Landau gauge and zero order parameter at the boundary. It does not evolve the magnetic field or establish critical fields.",
     "equation": "∂ψ/∂t = κ⁻²(∇ − iA)²ψ + (1 − |ψ|²)ψ,   A = (−0.08 B y, 0),   Δx = 1",
     "status": "validated within stated limits",
@@ -1972,7 +2141,7 @@
   {
     "id": "darkroom",
     "source": "src/modules/darkroom.js",
-    "sourceSha256": "0875413599232914f3c72df7d04830eb69454400d710f30ce11d026654de990b",
+    "sourceSha256": "6ec1d4c99ec1b402dcbc098cb31b1682967fec6272aab18d4501745505f40293",
     "reference": "G. W. Tokarsky, Amer. Math. Monthly 102, 867 (1995), built a polygonal room with two points that do not illuminate each other via mirrored walls. Penrose (1958) had a smooth unilluminable room with elliptical pockets. The plate traces billiard rays from a source; a marked vertex stays dark in the Tokarsky geometry and lights up in a rectangle.",
     "equation": "billiard in a polygon,   ∃ p,q: no reflected ray from p meets q",
     "status": "unvalidated",
@@ -2010,26 +2179,55 @@
   {
     "id": "sandpile",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "25975c4c12a36e25ea28f09df64a78ae0bc3814d46d3c6df190400858f5ccec6",
+    "sourceSha256": "d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836",
     "reference": "Per Bak, Chao Tang and Kurt Wiesenfeld, Phys. Rev. Lett. 59, 381 (1987); Deepak Dhar, Phys. Rev. Lett. 64, 1613 (1990). Bak, Tang and Wiesenfeld dropped grains one at a time on a lattice with a toppling threshold and found avalanches of every size, a power law with no tuning: self-organized criticality. Dhar showed the toppling operators commute, so the final stable state does not depend on the order of toppling, and the recurrent configurations form an Abelian group. The identity of that group, computed on a square, is the fractal plate in the second mode.",
     "equation": "if hᵢ ≥ 4: hᵢ −= 4, hⱼ += 1 for each neighbor j;   identity e = (2m − (2m)°)°, m = all 3",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the finite domain in validation/SANDPILE.md: square n x n grids with the tab's sink boundary, exhaustive recurrent counts up to 3x3, the identity at 64, 96, 128, 192 and 256, the six menu grain counts of the single-source pile, two random-drop runs and six printed recipes.",
+      "The recurrent count does not detect a threshold raised to five while toppling still removes four grains (that model is the sandpile shifted by one grain); the stability range check does.",
+      "Fixed 2026-09-24: the status line's topplings and random-drop avalanche numbers counted pops of floor(h/4) topplings (and, for the single-source pile, only the octant's own cells), so they undercounted and depended on toppling order. They now count topplings, the order-independent odometer total, and tools/sandpile-science.js checks every printed number exactly against independent odometers, with the pre-fix counter as a failure control; the plates are unchanged. Avalanche-size statistics and self-organized-criticality exponents are not tested.",
+      "Print evidence is raster PNG through Chromium with a software renderer; pixels within 0.01 cell of a cell boundary may show the neighboring cell (fixed-point scaling), and other renderers are not covered."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Add avalanche-size statistics with error bars (for example a maximum-likelihood tail exponent over independent seeds) if the tab is to print them against theory.",
+      "Repeat the print check on other rendering platforms."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/sandpile-science.js",
+        "command": "node tools/sandpile-science.js --write",
+        "results": "validation/results/sandpile-science.json",
+        "scope": "Abelian property on 100 configurations (8x8 to 64x64) in five toppling orders; Dhar's count on 1x1, 2x2, 3x3 by three recurrence tests; the identity at every UI grid; the octant single-source pile against a full plane; random drops against one batch relaxation; the toppling counts the status line prints and every random-drop avalanche size against independent odometers. All with the tab's own toppler and jobs.",
+        "criteria": "Exact integer equality: final states and per-site odometers identical across orders and satisfying h = h0 - (4I - A)u; recurrent sets identical across the three tests and their size equal to det(4I - A) and to the enumerated spanning trees; identity equal to an independent computation, in the Laplacian image, recurrent, symmetric, with (e + e) = e and (c + e) = c; octant pile equal cell by cell and conserving every grain; random-drop heights and marks equal to the references; the tab's toppling count equal to the reference odometer total in every order, at every identity size and for the pile (full plane up to 2^16, and a quarter of the final second moment sum |x|^2 h at all six counts); every avalanche size, the largest and the sum equal to the reference; the numbers read from the studio status line equal to the references.",
+        "benchmark": "Dhar (1990): order independence of toppling and |recurrent| = det of the toppling matrix = number of spanning trees (Kirchhoff); Bareiss determinant in BigInt; exhaustive spanning-tree enumeration; Dhar's burning test; independent FIFO and synchronous toppling references; a full-plane single-source reference; for the pile's toppling count, the summation-by-parts identity sum |x|^2 h(x) = 4 sum u(x), which follows from h = N delta_0 - (4I - A) u because (4I - A)|x|^2 = -4.",
+        "failureControl": "An order-dependent rule (grains above 4t all to one neighbor) gives different final states in the tab's two orders on 80 of 100 configurations (every one with more than one initially unstable site) and breaks conservation on all 100; a threshold of five with five grains removed gives 5 and 525 recurrent configurations instead of 4 and 192 (det(5I - A)); (2m)° used as the identity fails (c + e) = c; the pre-fix counter (one per pop, not floor(h/4)) disagrees with the odometer total on 100 of 100 configurations, prints 11,709,876 for 11,709,974 topplings on the random drops preset and 9,853,706 for 77,107,818 on the 2^16 pile; an octant count without the orbit weight fails the second-moment check at 2^12, 2^14 and 2^16.",
+        "limitations": "Only the domain in validation/SANDPILE.md: square grids with the sink boundary; exhaustive Dhar counts only up to 3x3; the abelian property on 100 configurations up to 64x64; the identity at the five UI sizes; six menu grain counts; two random-drop runs; six printed recipes in Chromium."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/sandpile-science.js",
+        "command": "node tools/sandpile-science.js --write",
+        "results": "validation/results/sandpile-science.json",
+        "scope": "Six recipes (the default medallion 2^16 and five presets: 2^14 ink, identity 128 and 96, random drops, avalanche patches), grain off, exported by the tab at 2400 x 2400; studio state and the status line the tab printed read back and compared with the independent states.",
+        "criteria": "Every pixel equal to the independently computed cell color (maximum channel error 0 measured, 1 allowed); pixels within 0.01 cell of a boundary equal to one of the two cells; printed topplings (and, for random drops, drops, largest avalanche and mean) equal to the references exactly; recipe and full state unchanged by export; displaced and wrong-state controls fail on over 70,000 pixels.",
+        "limitations": "Raster PNG through Chromium with a software renderer only; the tab has no vector export. Near-boundary pixels are checked against either adjacent cell."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/sandpile-science.json",
+    "domain": {
+      "parameters": "Modes pile (grains 2^12, 2^14, 2^16, 2^17, 2^18, 2^20), identity (size 64, 96, 128, 192, 256) and soc (128 with 30,000 drops, 192 with 50,000 drops); exhaustive grids 1x1 to 3x3; the six printed recipes recorded in the results file.",
+      "conditions": "Square grid, each site with four toppling neighbors, grains leaving the grid lost to a sink; threshold 4; single source on the infinite plane truncated at R = ceil(0.4 sqrt(N)) + 6 (no grain reaches it); random drops from the seeded start of 0 to 3 grains per site. Seeds recorded; grain off.",
+      "resolution": "Every stable configuration on the exhaustive grids; every site of every tested configuration; prints at 8 in and 300 ppi.",
+      "precision": "Exact integer heights and odometers (Int32 and integer-valued Float64), BigInt determinants, RGBA8 raster; Chromium 141 with SwiftShader recorded."
+    }
   },
   {
     "id": "kakeya",
     "source": "src/modules/kakeya.js",
-    "sourceSha256": "03d9a92edaf8824847e6c3ca03df4b9d52db0d1a1c14dab3eaa4e12c6aa184c1",
+    "sourceSha256": "74020ed1415b3f4bd8b99866d9ab093ba190908a77a7e0e435704941d9b2fbdd",
     "reference": "S. Kakeya asked in 1917 for the smallest set in which a unit needle can be rotated. Besicovitch (1919/1928) showed the infimum of the area is zero: a Perron tree of overlapping triangles contains a unit segment in a dense set of directions and can be made as thin as one likes. The plate is a finite Perron-like union, not the infinite construction.",
     "equation": "K_ε ⊃ a unit segment in every direction,   |K_ε| → 0 as ε → 0",
     "status": "unvalidated",
@@ -2048,7 +2246,7 @@
   {
     "id": "ks",
     "source": "src/modules/pde.js",
-    "sourceSha256": "4e0364dc1142b1a9c86cf09597fc0f3f1c365469847f73d1ddcea5d14145036e",
+    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
     "reference": "Yoshiki Kuramoto and Toshio Tsuzuki, Prog. Theor. Phys. 55, 356 (1976); G. I. Sivashinsky, Acta Astronautica 4, 1177 (1977). Independently derived for reaction-diffusion phase turbulence and for laminar flame fronts. It is the simplest PDE that produces extensive spatiotemporal chaos: a band of unstable modes, a stabilizing biharmonic, and a Burgers-like nonlinearity. In two dimensions the cells of a flame.",
     "equation": "∂u/∂t = −ν ∇⁴u − ∇²u − (α/2)|∇u|²",
     "status": "validated within stated limits",
@@ -2122,7 +2320,7 @@
   {
     "id": "breather",
     "source": "src/modules/breather.js",
-    "sourceSha256": "09aab868ea80869b383f11d53275eaa86dd914f926be6cf446ce304f5c7c4879",
+    "sourceSha256": "29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70",
     "reference": "The sine-Gordon breather is an exact, time-periodic, spatially localised solution; see Seeger, Donth and Kochendörfer (1953) and the inverse-scattering account of Faddeev and Takhtajan. Linear waves radiate. This one does not: the envelope sech(β x) holds a bound oscillation forever. The plate is spacetime of u.",
     "equation": "u_tt − u_xx + sin u = 0,   u = 4 arctan[ (β/α) sin(α t) sech(β x) ],   α²+β² = 1",
     "status": "validated within stated limits",
@@ -2180,7 +2378,7 @@
   {
     "id": "turing",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry.",
     "equation": "Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v",
     "status": "validated within stated limits",
@@ -2249,7 +2447,7 @@
   {
     "id": "klein",
     "source": "src/modules/klein.js",
-    "sourceSha256": "cd8bba95fae1502891662da51bbd20fdb71fd929c40d37337d66d21524e09822",
+    "sourceSha256": "42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29",
     "reference": "O. Klein, Z. Phys. 53, 157 (1929), found that a relativistic electron can pass a tall barrier as if it were not there. Katsnelson, Novoselov and Geim, Nature Phys. 2, 620 (2006), showed the same for graphene at normal incidence: chirality forbids backscattering. The plate is |ψ|² of a 2-component Dirac wave on a line, stacked in time, not a carbon lattice.",
     "equation": "H = v_F σ · p + V(x),   T(θ=0) = 1  (massless)",
     "status": "unvalidated",
@@ -2268,7 +2466,7 @@
   {
     "id": "gyroid",
     "source": "src/modules/gyroid.js",
-    "sourceSha256": "267c0cd0e13360c490c9593cd4a58410dd30d9c7e8b21fd3cd8532221de4e87e",
+    "sourceSha256": "56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b",
     "reference": "A. H. Schoen, NASA Technical Note D-5541 (1970), discovered the exact gyroid minimal surface. This module uses a three-term trigonometric nodal approximation, as distinguished from exact minimal geometry by Gandy, Bardhan, Mackay and Klinowski, Chemical Physics Letters 336, 187-195 (2001), doi:10.1016/S0009-2614(00)01418-4.",
     "equation": "F = sin x cos y + sin y cos z + sin z cos x; F = level; H = ½ div(∇F/|∇F|)",
     "status": "validated within stated limits",
@@ -2335,7 +2533,7 @@
   {
     "id": "purcell",
     "source": "src/modules/purcell.js",
-    "sourceSha256": "ce0ba0ed90bdfe3a32c54511616eed3d38da1dc597dd3263d916041614a69236",
+    "sourceSha256": "f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52",
     "reference": "E. M. Purcell, Am. J. Phys. 45, 3 (1977), \"Life at low Reynolds number.\" Time-reversible stroking (a scallop) produces no net motion in Stokes flow. A three-link swimmer that traces a loop in shape space does. The plate is the trail of that gait, not a bacterium.",
     "equation": "Re → 0,   scallop theorem: a reciprocal gait gives Δx = 0,   three-link square gait: Δx ≠ 0",
     "status": "unvalidated",
@@ -2353,7 +2551,7 @@
   {
     "id": "exceptional",
     "source": "src/modules/exceptional.js",
-    "sourceSha256": "ad94987a5e8ecf2776e680f74a319acf39ec4943e7274a14a1a0773fd0cbd3db",
+    "sourceSha256": "aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6",
     "reference": "C. M. Bender and S. Boettcher, Phys. Rev. Lett. 80, 5243 (1998), on PT-symmetric spectra; Heiss (2004) and many others on exceptional points, where both eigenvalues and eigenvectors coalesce. Hermitian matrices cannot do this. The plate is Re λ (and the gap) over the (κ, γ) plane, or the two modes of one dimer.",
     "equation": "H = [[iγ, κ],[κ, −iγ]],   λ = ±√(κ²−γ²),   EP at γ = κ",
     "status": "unvalidated",
@@ -2372,7 +2570,7 @@
   {
     "id": "meissner",
     "source": "src/modules/meissner.js",
-    "sourceSha256": "ec8af35f812d14da83411239abfa6331350b56c8a89b3e8256eb2aa35fd0f398",
+    "sourceSha256": "18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7",
     "reference": "W. Meissner and R. Ochsenfeld, Naturwissenschaften 21, 787 (1933). A perfect conductor would freeze the flux it was born with. A superconductor expels it. The London brothers (1935) wrote ∇²B = B/λ². The plate is a Jacobi relax of that Helmholtz problem on a disk.",
     "equation": "∇²B = B/λ²,   B(r) = B0 I0(r/λ) / I0(R/λ)   (cylinder)",
     "status": "unvalidated",
@@ -2394,28 +2592,48 @@
     "sourceSha256": "9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d",
     "reference": "L. Poinsot (1834) drew the polhode. The tennis-racket (or intermediate-axis) theorem says a rotation about the middle principal axis is unstable. V. Dzhanibekov saw a wingnut flip in free fall in 1985; video from 1991 made it famous. The plate is spacetime of the body-frame ω, with the middle component across the page.",
     "equation": "I1 ω1' = (I2−I3) ω2 ω3  (cyc.),   I1 < I2 < I3,   ω2 flips",
-    "status": "partially validated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Finite parameter/time fixtures only; no exact flip-time, all-control or print accuracy claim.",
-      "RK4 is not exactly symplectic and does not establish indefinite energy preservation. Corrected trajectories change prior recipe images."
+      "Catalog equation and citation are review targets, not verified paper equivalence.",
+      "Complete evidence covers only the documented domain in validation/CPU-DYNAMICS.md and the rigid-body-audit / tennis-print-state results artifacts.",
+      "No exact flip-time, all-control, calibrated color or indefinite energy-preservation claim; RK4 is not exactly symplectic.",
+      "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Broaden inertia, tilt, duration and sampling coverage and test flip-count resolution.",
-      "Audit the actual print path and numerical resolution separately."
+      "Extend beyond the documented I2, tilt, duration, grid and aspect fixtures with independent evidence for broader parameters, other presets and SVG or calibrated print output."
     ],
     "numerical": [
       {
         "test": "tools/rigid-body-audit.js",
-        "scope": "RK4 torque-free rotation at I2 1.05, 1.4 and 1.7; nine conservation fixtures to time 120 and three refined trajectories to time 20.",
-        "criteria": "Energy and squared angular momentum relative drift below 1e-7; production final-state error below 1e-6. Helper finest state error below 1e-7 and fourth-order convergence.",
-        "benchmark": "Independent angular-momentum-vector evolution L prime = L cross inverse(I)L, refined reference and torque-free conserved quantities.",
-        "failureControl": "Reinstating forward Euler must produce more than 4% energy drift on the default fixture.",
-        "limitations": "Finite parameter/time fixtures only; no exact flip-time, all-control or print accuracy claim. RK4 is not exactly symplectic and does not establish indefinite energy preservation. Corrected trajectories change prior recipe images.",
+        "scope": "RK4 torque-free rotation at I2 1.05, 1.4 and 1.7; nine conservation fixtures to time 120 and three refined trajectories to time 20. The four print fixtures (flip, stable1, log, square) at their own I2, tilt, duration and aspect, with every plate row compared against an independent reference.",
+        "criteria": "Energy and squared angular momentum relative drift below 1e-7; production final-state error below 1e-6. Helper finest state error below 1e-7 and fourth-order convergence. Print fixtures: every Float32 field word within 2e-6 of the independently sampled reference field, identical ω2 flip counts with minimum sampled |ω2| above 1e-4, reference refinement change below 1e-9.",
+        "benchmark": "Independent angular-momentum-vector evolution L prime = L cross inverse(I)L, sampled at every plate row and refined from 32 to 64 substeps per row, plus torque-free conserved quantities.",
+        "failureControl": "Reinstating forward Euler must produce more than 4% energy drift on the default fixture and more than 1e-3 field error on every print fixture; a reference with I2 raised by 1% must differ from the production field by more than 1e-3.",
+        "limitations": "Finite parameter/time fixtures only; no exact flip-time or all-control claim. RK4 is not exactly symplectic and does not establish indefinite energy preservation. Corrected trajectories change prior recipe images.",
         "command": "node tools/rigid-body-audit.js --write",
         "results": "validation/results/rigid-body-audit.json"
       }
     ],
-    "print": []
+    "print": [
+      {
+        "test": "tools/tennis-print-state.js",
+        "command": "node tools/tennis-print-state.js --write",
+        "results": "validation/results/tennis-print-state.json",
+        "scope": "Actual tennis exportPNG at 2400 longest edge for flip, stable1, log and square fixtures (1920x2400 and 2400x2400). Exact Float32 field words, ω2 flip count, I2 extra, cells, buffer size and settings preserved; deterministic regenerate replay; nonblank reduced raster.",
+        "criteria": "Zero changed/nonfinite field words; metric/extra/settings/cells unchanged across export; exact requested PNG dimensions and >1000-byte blobs; luminance spread >12/255; wrong dimensions and deliberate post-export field+metric mutation rejected.",
+        "benchmark": "In-harness auditSnapshot of the private Float32 field, flip count, I2, cells, buffer and settings against the same module exportPNG path; the field itself is checked word for word against the independent reference by tools/rigid-body-audit.js.",
+        "failureControl": "Requested PNG width reduced by one pixel must fail acceptance; mutating field[0] and the flip count after export must fail the identical preservation predicate.",
+        "limitations": "State preservation and declared dimensions only. Does not establish calibrated color, SVG output, printed numerical resolution beyond the recorded grid, or every control, aspect or hardware."
+      }
+    ],
+    "domain": {
+      "parameters": "Numerical: I2 1.05, 1.4, 1.7 with tilt 0.02 at durations 20, 60, 120 (grid 160, 4:5), plus the four print fixtures flip (I2 1.4, tilt 0.02, T 70, 4:5), stable1 (1.05, 0.01, 50, 4:5), log (1.45, 0.02, 60, 4:5, log view) and square (1.4, 0.02, 60, 1:1), all at grid 160 with I1 = 1, I3 = 2.",
+      "conditions": "Initial ω = (tilt, 1, 0.4 tilt); torque-free Euler equations; eight RK4 steps per plate row, dt = T / rows / 8. Print: real exportPNG at 2400 longest edge; field, flip count, I2, cells and settings preserved; deterministic regenerate replay; wrong-dimension and post-export mutation rejected.",
+      "resolution": "160x200 plate cells for 4:5 and 160x160 for 1:1; field words within 2e-6 of the independent reference (measured 5.96e-8, the Float32 rounding level), exact PNG dimensions 1920x2400 and 2400x2400 (validation/results/rigid-body-audit.json, validation/results/tennis-print-state.json).",
+      "precision": "Float64 integration stored in a Float32 field; RGBA8 PNG output. Renderer environment and failure controls recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/rigid-body-audit.json"
   },
   {
     "id": "flow",
@@ -2439,7 +2657,7 @@
   {
     "id": "chemotaxis",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "8a8a6f885eaa2a48bcd68726b52b619f12cc32223301971bba473da333733aa2",
+    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
     "reference": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) < c/2 − D − a.",
     "equation": "∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²)",
     "status": "validated within stated limits",
@@ -2530,37 +2748,104 @@
     "sourceSha256": "cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357",
     "reference": "Roger Penrose, Pentaplexity, 1974, and Martin Gardner's Mathematical Games, January 1977. Robinson triangles carry the deflation; N. G. de Bruijn's dual multigrid (1981) gives the octagonal Ammann–Beenker and dodecagonal cases. The hat — a single 13-sided polykite that tiles the plane only aperiodically, and only with its reflection — is Smith, Myers, Kaplan and Goodman-Strauss, arXiv:2303.10798 (March 2023). The spectre is the chiral 14-gon from the same authors, arXiv:2305.17743: one handedness, no mirrors.",
     "equation": "Penrose: thick half → 2 thick + 1 thin;   hat: 13-gon + mirror;   spectre: 14-gon, one handedness",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Partially validated: the Penrose P3 and P2, Ammann–Beenker and dodecagonal tiling geometry is established for the 68 enumerated recipes and 11 print recipes in validation/TILINGS.md. Full status is withheld because of two defects in src/modules/tilings.js, which this review did not change (next two items).",
+      "Defect, P3 matching arcs (src/modules/tilings.js:31): the thin-rhomb arcs sit around the acute corners, both in one family. On the module's own legal P3 tilings 127,405 of 542,129 shared edges (in all 25 P3 recipes; 1,539 of 6,567 in the arcs preset) join arcs of different families, and the thin arcs pair the wrong crossings. Positions match; colours and loops do not. Thin arcs around the obtuse corners, one per family, give zero mismatches. The drawn P3 arcs are not a valid Penrose decoration; P3 legality here rests on the de Bruijn window, the vertex census and that reference decoration.",
+      "Defect, grout inset (src/modules/tilings.js:626): insetPoly offsets along the left edge normals, which point outward once the print flips y, so \"Gap inset (grout)\" enlarges every tile instead of leaving grout. Printed fill polygons cover 1.060 (rhombs, inset 0.012) to 1.262 (kilnfloor, inset 0.05) of the page instead of less than 1. The SVG polygons equal the validated tiles offset outward, within 0.005 px.",
+      "Catalog equation and citation are review targets. The deflation rule \"thick half → 2 thick + 1 thin\" is checked by exact counts; the hat and spectre descriptions are not reviewed.",
+      "Hat and spectre are outside the reviewed domain: only congruence to the module's own prototiles, single cover of each supertile and reflection or chirality counts were measured, against no published reference.",
+      "Dodecagonal: de Bruijn duality and tiling validity only. The internal-space window is a necessary condition that a single phason flip passes; no matching rule or vertex-type set is claimed.",
+      "Finite enumerated recipes of the sun-centred Penrose tiling, one Chromium build and a software renderer. Node and Chromium round one sun-wheel sine differently, so Penrose coordinates differ between them by a few ulps (at most 7.1e-15 in five P3 print recipes).",
+      "PNG prints are checked for dimensions, nonblank content, determinism and preserved state, not pixel by pixel against the geometry; colour, jitter and grain are presentation."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Correct ARCS.p3 for the thin rhomb to arcs around the obtuse corners, one per family ({ c: [1, 3], r: [IPHI, IPHI], f: [0, 1] } is the reference decoration used here), then re-run both harnesses and check the drawn arcs.",
+      "Correct insetPoly to offset toward the tile interior in page coordinates, then re-run tools/tilings-print-state.js, whose inward criterion is already in place.",
+      "After both corrections, review the documented domain for \"validated within stated limits\".",
+      "Hat and spectre: an independent substitution or published frequency reference (such as the proportion of reflected hats), legality beyond congruence and single cover, and print evidence.",
+      "Other seeds, patches that do not come from the sun wheel, and pixel-level PNG comparison."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/tilings-science.js",
+        "command": "node tools/tilings-science.js --write",
+        "results": "validation/results/tilings-science.json",
+        "scope": "Actual tilings.js (seedWheel, deflate, glue, multigrid, buildModel) loaded from disk with read-only hooks and the engine makeRng, for the Penrose P3 and P2, Ammann–Beenker and dodecagonal modes: the sun wheel deflated 1 to 10 times without culling, and 68 rendered recipes (the eight P3, P2, AB and dodecagonal presets at four seeds, and a nine-depth sweep per mode over zoom 0.3 to 4, rotations, pans and all five aspects; 1,036,735 tiles). Hat and spectre are measured outside the domain.",
+        "criteria": "Exact: half-tiles classified by their own side lengths number 10F(2k-1) thin and 10F(2k) thick (P3), 10F(2k+1) kite and 10F(2k) dart (P2); zero label, T-junction, repeated-edge and off-decagon defects; decagon area within 1e-12. Rendered: bitwise replay; vertices merged within 1e-9 and at least 0.2 apart; every tile simple, counter-clockwise and congruent to its labelled prototile within 1e-9; the oriented 1-chain cancels, with no boundary in the view and winding 1, so the view is covered exactly once; tile area in the view within 1e-9. P3: Z^5 lift inside the de Bruijn pentagons (within 1e-9) with an index span of at most 4, census inside an independent pentagrid's, a continuous two-family reference arc decoration, completeness against the unculled deflation. P2: Conway's seven vertex stars, the two-colour vertex rule, the module's arcs continuous. AB: octagon window, census inside an independent dual 4-grid's. AB and dodecagonal: tile set identical to an independent de Bruijn construction, and per-pair counts equal to lattice-point counts within rigorous bounds.",
+        "benchmark": "Fibonacci recurrences of the Robinson-triangle substitution and the decagon area; the 1-chain winding identity for single coverage; de Bruijn's cut-and-project theorem (pentagons and octagon from unit-cube slices) and an independent pentagrid with sum gamma = 0; Conway's seven kite-dart vertex stars; de Bruijn duality with lattice-point bounds for the sqrt 2 and 1 : sqrt 3 : 1 frequencies.",
+        "failureControl": "A 0.6 thick-half split, mirrored P3 and P2 children, a swapped label, a dropped child, a wrong multigrid offset (759 repeated AB sub-edges, window 0.207) and swapped kite arcs (2,909 mismatches) are each rejected. A single P3 phason flip leaves a valid tiling but moves the window from -0.0147 to +0.0312 and adds 3 illegal vertex stars and 8 arc mismatches; an AB flip moves the window to +0.0104; a pentagrid with sum gamma = 0.33 is rejected (index span 5; 8 of its 15 vertex classes lie outside the reference).",
+        "limitations": "The module's own P3 arcs fail the arc criterion (127,405 of 542,129 shared edges change family); the dodecagonal window is only a necessary condition, which a single flip passes; finite enumerated recipes of the sun-centred Penrose tiling; hat and spectre outside the domain."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/tilings-print-state.js",
+        "command": "node tools/tilings-print-state.js --write",
+        "results": "validation/results/tilings-print-state.json",
+        "scope": "Actual tilings.js in dist/studio.html (Chromium 141, SwiftShader): the eight P3, P2, AB and dodecagonal presets at seed penrose-1974, the rhombs preset with inset 0, and two rotated, panned, non-square sweep recipes. exportPNG at 2400 px on the longest edge and exportSVG, compared against the Node model that tools/tilings-science.js validates.",
+        "criteria": "Browser model equal to the Node model; regenerate identical; exact PNG dimensions, over 1000 bytes, nonblank and pixel-identical on repeat; no model word or setting changed by any export; every SVG fill and outline vertex, line-work edge, inflation-level segment and arc within 0.005 px of Node geometry. A PNG 1 px narrower, a post-export vertex and type change, and a 0.02 px SVG vertex shift must be rejected.",
+        "benchmark": "The Node model of the same recipe, which itself passes the numerical tiling predicates, with the print geometry recomputed independently (mitred offsets by line intersection, line work as a set of edges).",
+        "failureControl": "A PNG 1 px narrower, a post-export change to one vertex word and one tile type, and one expected SVG vertex moved 0.02 px are rejected in all 11 recipes.",
+        "limitations": "Two criteria missed and are recorded. Word identity with Node fails in five P3 recipes (one sun-wheel sine rounds differently; at most 7.1e-15, integer data identical, and the browser model passes the tiling predicates itself). For inset > 0 the polygons are outward, not inward, offsets (a module defect). PNG pixels are not compared with the geometry; hat and spectre prints are not covered."
+      }
+    ],
+    "domain": {
+      "parameters": "Penrose P3 and P2, Ammann–Beenker and dodecagonal modes only: the rhombs, arcs, kitedart, ammann, inflation, linedrawing, dodeca and kilnfloor presets at seeds penrose-1974, tilings-review-a, tilings-review-b and tilings-review-c, and one sweep recipe per mode at each depth from 1 to 9 (zoom 0.3 to 4, rotation 0 to 311 degrees, pans to ±3, all five aspects), as listed in validation/results/tilings-science.json. Excluded: the P3 arc decoration (defective), hat and spectre.",
+      "conditions": "Exact constructions with no time evolution: Robinson-triangle deflation of the ten-triangle sun wheel with bounding-box culling and gluing; de Bruijn dual 4- and 6-grids with seeded offsets in [0.08, 0.92] over a disk around the seeded crop. Print: real exportPNG at 2400 px on the longest edge and exportSVG, caption-free, for 11 recipes.",
+      "resolution": "Deflation depths 1 to 10 of the full wheel (up to 177,110 half-tiles); rendered patches of 137 to 150,855 tiles, 1,036,735 in all; completeness checked against up to 13 deflation levels; multigrid disks up to radius 106; prints at 2400x2400, 1920x2400, 2400x1920 and 2400x1600, with 60,760 fill and 40,440 outline vertices, 44,321 line-work edges, 11,955 level segments and 6,734 arcs compared.",
+      "precision": "JavaScript binary64 in Node v22.22.2 and Chromium 141; vertices identified within 1e-7 edge units (largest merged spread 3.8e-13); angles and lengths within 1e-9; window slack 1e-9; SVG coordinates printed to 0.01 px and compared within 0.005 px; RGBA8 PNG."
+    },
+    "reviewed": "2026-09-23",
+    "results": "validation/results/tilings-science.json"
   },
   {
     "id": "percolation",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "25975c4c12a36e25ea28f09df64a78ae0bc3814d46d3c6df190400858f5ccec6",
+    "sourceSha256": "d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836",
     "reference": "S. R. Broadbent and J. M. Hammersley, Proc. Cambridge Philos. Soc. 53, 629 (1957); J. Hoshen and R. Kopelman, Phys. Rev. B 14, 3438 (1976); Harry Kesten, Comm. Math. Phys. 74, 41 (1980). Broadbent and Hammersley asked how a fluid spreads through a random porous medium and found a sharp threshold: below p_c every cluster is finite, above it one cluster spans the lattice. Kesten proved the bond threshold on the square lattice is exactly 1/2. The site threshold, about 0.592746, is known only numerically. Hoshen and Kopelman gave the one-pass labeling that finds the clusters.",
     "equation": "site occupied iff rᵢ < p;   bond open iff rᵢⱼ < p;   p_c(site) ≈ 0.5927,   p_c(bond) = 1/2",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the finite domain in validation/PERCOLATION.md: labeling on 240 enumerated recipes (every grid and aspect the UI offers), spanning thresholds on square L = 128, 256 and 512, and five printed recipes.",
+      "The bond crossing agrees with Kesten's exact 1/2 to 0.50017 +/- 0.00027 (0.6 sigma) and the site crossing with the credited numerical value 0.592746 to 0.59273 +/- 0.00034; finite-size shifts smaller than about 3e-4 are not resolved, and the site reference is itself numerical.",
+      "Sampling error bars assume the seeded generator's streams for different seed strings behave as independent draws; the generator's statistical quality is not otherwise established.",
+      "Print evidence is raster PNG through Chromium with a software renderer; pixels within 0.01 cell of a cell boundary may show the neighboring cell (fixed-point scaling), and other renderers are not covered. The rank view orders equal-size clusters by union-find representative, which is reproduced, not tested."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Extend the threshold measurement to non-square aspects, other lattice sizes and a finite-size scaling fit of the crossings.",
+      "Repeat the print check on other rendering platforms."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/percolation-science.js",
+        "command": "node tools/percolation-science.js --write",
+        "results": "validation/results/percolation-science.json",
+        "scope": "Hoshen-Kopelman labeling of the tab against breadth-first search on 240 recipes (22,001,408 sites); the p sweep; exact per-seed spanning thresholds for 7,000 seeds per type at L = 128, 256, 512 checked seed by seed against an independent reference; crossings of R_L(p) with bootstrap errors.",
+        "criteria": "Partitions, sizes, counts, spanning decision and lit cluster identical on every lattice; every seed's tab threshold equal to the reference; bond crossing within 2 standard errors and inside the 95% bootstrap interval of 1/2; site crossing reported against 0.592746 with its error; each failure control moves the crossing by more than 10 standard errors.",
+        "benchmark": "Kesten (1980): bond threshold exactly 1/2 on the square lattice; site threshold 0.592746 as credited (Newman and Ziff 2000: 0.59274621(13)); independent breadth-first labeling and an independent Newman-Ziff threshold reference.",
+        "failureControl": "Diagonal neighbors injected into the site labeler (partitions change on 120/120 lattices; crossing 0.4083 +/- 0.0013, 144 sigma from 0.592746, at the matching-lattice value 0.407254) and vertical bonds opened with probability 0.9 p (crossing 0.5274 +/- 0.0014, 20 sigma from 1/2, at the anisotropic prediction 0.526316).",
+        "limitations": "Only the domain in validation/PERCOLATION.md: labeling on 240 enumerated recipes; thresholds on square L = 128, 256, 512; five printed recipes in Chromium. The crossing is a finite-size estimator (agreement at 3e-4 does not exclude smaller finite-size shifts), the site reference is numerical, and the error bars assume independent seeded streams."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/percolation-science.js",
+        "command": "node tools/percolation-science.js --write",
+        "results": "validation/results/percolation-science.json",
+        "scope": "Five recipes (four presets and a 4:5 occupied plate), grain off, exported by the tab at 2400 x 2400 or 1920 x 2400; studio state read back and compared with the independent labeling.",
+        "criteria": "Every pixel equal to the independently computed cell color (maximum channel error 0 measured, 1 allowed); pixels within 0.01 cell of a boundary equal to one of the two cells; recipe and full state unchanged by export; displaced and wrong-state controls fail on over 100,000 pixels.",
+        "limitations": "Raster PNG through Chromium with a software renderer only; the tab has no vector export. Near-boundary pixels are checked against either adjacent cell."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/percolation-science.json",
+    "domain": {
+      "parameters": "Labeling: the 240 recipes in validation/results/percolation-science.json (type site and bond, grid 128 to 512, all five aspects, p 0.3 to 0.8). Thresholds: aspect 1:1, grid 128, 256 and 512, both types, all p. Prints: the five recipes recorded in the results file.",
+      "conditions": "Free boundaries; spanning means one cluster touching the top and bottom rows. One seeded float32 random number per site and two per site for bonds, drawn once per seed and reused as p changes. Seeds perc-science/<type>/L<L>/<i>, perc-partition-<k>, perc-print-<k>; grain off.",
+      "resolution": "4,000, 2,000 and 1,000 seeds at L = 128, 256, 512 per type; bootstrap 1,000 replicates; controls 400 seeds at L = 128 and 256; prints at 8 in and 300 ppi.",
+      "precision": "Float32 field against a double p, integer union-find and breadth-first labels, exact thresholds (float32 values), Binary64 statistics, RGBA8 raster; Chromium 141 with SwiftShader recorded."
+    }
   },
   {
     "id": "attractors",
@@ -2584,7 +2869,7 @@
   {
     "id": "airy",
     "source": "src/modules/airy.js",
-    "sourceSha256": "f33fefde24a7ec594dbd108370c21337b533eaaf0b0f69ee2312f82f4ca0fd77",
+    "sourceSha256": "7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f",
     "reference": "M. V. Berry and N. L. Balazs, Am. J. Phys. 47, 264 (1979). A free Schrödinger (or paraxial Helmholtz) packet is not supposed to accelerate: there is no force. The Airy packet does, its intensity maximum riding the parabola x = z²/4, a consequence of the linear potential in the Airy ODE rather than of a force in the wave equation. Siviloglou, Broky, Dogariu and Christodoulides, Phys. Rev. Lett. 99, 213901 (2007), flew one in the lab. The plate is the exact finite-energy Airy beam, not a cannonball.",
     "equation": "ψ(x,z) = Ai(x − z²/4 + i a) exp(a x − a z²/2 + i(x z/2 − z³/12)),   x_peak = z²/4",
     "status": "unvalidated",
@@ -2641,7 +2926,7 @@
   {
     "id": "weierstrass",
     "source": "src/modules/weierstrass.js",
-    "sourceSha256": "62896cc45ed4ef272eed1ec89ca5a0d4977173dc464aa522c5b84fac08ae2e1d",
+    "sourceSha256": "1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008",
     "reference": "K. Weierstrass, presented to the Prussian Academy in 1872 (published 1875). Analysts had assumed a continuous function was differentiable except at isolated points; Weierstrass wrote a Fourier series that is continuous everywhere and differentiable nowhere. Hardy (1916) weakened the condition to ab ≥ 1. The plate uses a finite, seeded phase-shifted sum inspired by that series. Each finite sum is smooth; the classical infinite-series theorem is not established for this displayed field.",
     "equation": "W_N(x) = Σ_{n=0}^{N−1} a^n cos(b^n π x + φ_n),   0<a<1,   N finite; seeded phases",
     "status": "validated within stated limits",
@@ -2708,21 +2993,51 @@
   {
     "id": "kitaev",
     "source": "src/modules/kitaev.js",
-    "sourceSha256": "1416d69aa96ef5e12b1ab7748bac756742d6d22cd0a0d45642b4ac6be1e7d8a2",
-    "reference": "A. Yu. Kitaev, Phys.-Usp. 44, 131 (2001). A 1D p-wave superconductor hosts two Majorana operators, one at each end, that together make a single nonlocal fermion. They sit at zero energy, inside the gap, and are their own antiparticles. The plate is the near-zero BdG mode of a finite chain, obtained by imaginary-time relaxation of the Nambu Hamiltonian.",
+    "sourceSha256": "f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6",
+    "reference": "A. Yu. Kitaev, Phys.-Usp. 44, 131 (2001). A 1D p-wave superconductor hosts two Majorana operators, one at each end, that together make a single nonlocal fermion. They sit at zero energy, inside the gap, and are their own antiparticles. The plate is computed: the 2N × 2N Bogoliubov-de Gennes matrix of an open chain of N sites, one per column, is diagonalized exactly in double precision (Householder reduction and implicit QL, after Wilkinson and Reinsch, 1971), and each row is |u(x)|² + |v(x)|² of one ± pair of quasiparticle modes, scaled to its own peak, on a linear |E| axis from zero at the top.",
     "equation": "H = −μ Σ c†c − t Σ (c†_i c_{i+1}+h.c.) + Δ Σ (c_i c_{i+1}+h.c.),   |μ|<2t ⇒ unpaired γ_L, γ_R",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers the finite domain in validation/KITAEV.md: mean-field BdG Kitaev chains of 96 to 160 sites in the studio (the grids the tab allows), open in the tab and periodic or antiperiodic in the band check; shorter chains only in the Node tests of the module code.",
+      "Splittings below about 4Nε‖H‖ (1e-13 to 4e-13) are not resolved by double precision and are flagged; for most topological presets the exact splitting is far below that. An exact finite-N splitting is used only at Δ = t; elsewhere the rate and oscillation are tested, not the prefactor.",
+      "No self-consistent Δ, interactions, disorder, spin or nanowire experiment."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "An exact finite-N splitting for general Δ (for example the closed forms of Leumer et al., J. Phys.: Condens. Matter 32, 445502, 2020) would turn the rate test into a value test.",
+      "Disorder and multi-band chains are outside this review."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/kitaev-science.js",
+        "command": "node tools/kitaev-science.js --write",
+        "results": "validation/results/kitaev-science.json",
+        "scope": "The module's own BdG matrix and exact diagonalization (Householder plus implicit QL), pairing rule and status measurements, extracted from the source: 72 periodic and antiperiodic rings against the exact band, 1492 open chains against the winding criterion with the exact bulk gap, the splitting decay for six parameter sets, the Δ = t SSH identity on 773 chains, the Majorana profile, and an independent Jacobi solver on a separately built matrix.",
+        "criteria": "Ring eigenvalues within 1e-12 of ±sqrt((2t cos k + μ)² + 4Δ² sin² k) on k = 2πm/N or 2π(m+½)/N, residual and orthonormality < 1e-12; in-gap count = 2 × winding at every tested point; split / (max|x±|^N, times |sin((N+1)θ)| for complex roots) constant to 1e-3 relative with drift below 1e-4 per site; at Δ = t, splitting within 4Nε‖H‖ of twice the SSH edge root; |u| = |v|, profile and pair density within 1e-9 + 4 max|x±|^N of the closed form; Jacobi eigenvalues within 1e-11 and field within 1e-6; every failure control fails.",
+        "benchmark": "Exact BdG band of the ring; closed-form bulk gap; numerically computed winding of (−μ − 2t cos k, 2Δ sin k); closed-form Majorana roots x± of (t + Δ)x² + μx + (t − Δ) = 0 and profile φ_j (A. Yu. Kitaev, Phys.-Usp. 44, 131, 2001); exact SSH edge root at Δ = t (Majorana chain with v = |μ|, w = 2t); independent Float64 Jacobi diagonalization of a BdG matrix built in the interleaved Nambu basis.",
+        "failureControl": "Injected into copies of the module: pairing Δ dropped (band off by up to 1.5, 38 of 46 criterion points disagree); ring closed with the opposite boundary sign (band off by 0.087); open chain given a closing bond (all 38 topological points lose the pair); one QL eigenvector rotation dropped (residual 2.0, profile fails). All must fail and do.",
+        "limitations": "Finite chains only; unresolved splittings are flagged, not measured; mean-field BdG only."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/kitaev-science.js",
+        "command": "node tools/kitaev-science.js --write",
+        "results": "validation/results/kitaev-science.json",
+        "scope": "Seven studio recipes (the presets, all four sheets, every allowed grid 96 to 160, both views) in a temporary copy of dist/studio.html: plate field, status numbers and the module's exportPNG at 300 ppi sheet sizes.",
+        "criteria": "Browser field identical bit for bit to the extracted code and within 1e-6 of the Jacobi field; status prints the measured end weight and splitting; every exported pixel within one channel level of its nearest-neighbor cell (a neighboring cell on boundaries), none unmatched; a one-cell displacement mismatches more than 1% of pixels; recipe and plate state unchanged by export.",
+        "benchmark": "Colors rebuilt in the page from the independently checked field through the shared ramp and the stated paint formula (each row scaled to its own peak).",
+        "failureControl": "Displaced-print comparison (one cell in x or y) must mismatch; the numerical failure controls change the field and would fail the field equality.",
+        "limitations": "Raster density plate; no vector output. Chromium with SwiftShader only."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/kitaev-science.json",
+    "domain": {
+      "parameters": "Rings: N = 64, 96, 160 with twelve (μ, t, Δ). Open: μ −2.40 to 2.40 (step 0.05) × t ∈ {0.4, 1, 1.6} × Δ ∈ {0.05, 0.2, 0.5, 0.8, 1.1, 1.4} at N = 64; splitting N = 4 to the largest N above 1000 floors (97 at most) for six sets; Δ = t identity N = 3 to 160; seven studio recipes listed in validation/results/kitaev-science.json.",
+      "conditions": "Spinless mean-field BdG Kitaev chain with real μ, t, Δ; open ends in the tab, periodic and antiperiodic rings in the band check; no disorder or self-consistency; no randomness; exports preserve the state.",
+      "resolution": "Exact diagonalization of the 2N × 2N BdG matrix; eigenvalues to about 1e-14 absolute; splittings below 4Nε‖H‖ unresolved and flagged. Print sheets 2400 × 2400, 1920 × 2400, 2400 × 1920, 2400 × 1350.",
+      "precision": "Binary64 solver and references; Float32 plate field; RGBA8 raster; Chromium and Node versions recorded."
+    }
   },
   {
     "id": "caustics",
@@ -2746,21 +3061,57 @@
   {
     "id": "veselago",
     "source": "src/modules/veselago.js",
-    "sourceSha256": "acffd62c4377107f0710caf58976f5c161cbb78d3e61eae49b9048665af3dacf",
+    "sourceSha256": "eb6d985b791127b6665a1d6b29f0a63e56fc35ae6d75930b62a9d75f3bd07b59",
     "reference": "V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968), asked what optics would do if ε and μ were both negative: a left-handed medium, a reversed Doppler shift, and a slab that acts as a lens. Pendry, Phys. Rev. Lett. 85, 3966 (2000), showed the same slab can amplify evanescent waves and beat the diffraction limit. The plate traces geometric rays through n < 0, not a fabricated metamaterial.",
     "equation": "n₁ sin θ₁ = n₂ sin θ₂,   n₂ = −1  ⇒  θ₂ = −θ₁,   image at 2L − d",
-    "status": "unvalidated",
+    "status": "partially validated",
     "limitations": [
       "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Evidence covers only the documented domain in validation/VESELAGO.md and the veselago-science / veselago-print-state results artifacts: the geometric ray trace, the drawn rays, the n = −1 image metric and the print path.",
+      "The status label is not validated and is wrong over part of the slider domain. It reads \"Veselago focus\" whenever |Δx|/W < 0.12 (veselago.js:152): in 11,829 of the 16,468 in-domain sweep configurations where no ray crosses the axis behind the slab, including n = −2.20 to −2.00 at the default slab, and at n = +1. This defect blocks full validation.",
+      "When the back face lies beyond the last drawn column (grid 128 or 144 with a thick slab and a distant source), the exit segment is drawn backwards from the back face to W − 2 (veselago.js:84–87). That inks cells no ray reaches: 1,767 of 2,368 such sweep configurations, 24,214 stray cells. These plates are outside the domain, and the defect blocks full validation.",
+      "Transmitted geometric rays only: no Fresnel reflection, wave optics, evanescent-wave amplification (Pendry), absorption or dispersion. At n = −0.40, rays with |sin θ| > 0.4 have no transmitted ray and are skipped entirely at veselago.js:79, incident segment included, with nothing on the plate or status line to say so: 2 of 12, 4 of 28, 6 of 48 and 6 of 64 rays.",
+      "Refocusing at n = −1 (slab0 + d inside, slab0 + 2L − d behind) is a geometric identity of the flat slab. It is recorded as a regression check, not a prediction.",
+      "Hash-only indices between −0.43497 and −0.4 reach the 0.05 slope clamp (veselago.js:88) for near-grazing rays: 322.85 px vertex error at n = −0.43527. These indices are outside the domain."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Fix the status label (veselago.js:152) so it reports a focus only when rays cross the axis behind the slab. Measure against the paraxial image L/|n| − d or use a pixel-scale tolerance, then re-run both harnesses and review for full promotion.",
+      "Guard the exit segment when the back face lies beyond W − 2 (veselago.js:84–87), or keep the slab on the plate.",
+      "Say when total reflection removes rays, or draw the reflected rays.",
+      "Extend print fixtures to more exposures, palettes and hardware; the plate does not depend on the seed."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/veselago-science.js",
+        "command": "node tools/veselago-science.js --write",
+        "results": "validation/results/veselago-science.json",
+        "scope": "Actual veselago.js run headless, with read-only hooks on every ray. 59,200 sweep configurations: 37 slider n values from −2.20 to −0.40, L 20/36/48/64/80, source 8/16/24/36/50, 12/28/48/64 rays, grid 128/144/192/224 and all four aspects. 56,832 of them keep the back face on the plate. Plus 2,931 seeded continuous-valued configurations with n from −2.2 to −0.44. Checked per ray: entry, exit and end vertices, axis crossings and total-reflection drops, plus lit cells against the traced rays. n = −1: inside and behind images over 4,440 layouts and the brightest-point metric over 2,412. Closed-form crossings, paraxial image and aberration at n −0.8, −1.2, −1.5, −2.2, −0.4 and +1.5. The status label is measured, not validated.",
+        "criteria": "Vertices, crossings and layout within 1e-9 px of the reference. Identical total-reflection sets. Zero lit cells more than half a cell from every traced ray, and every ray segment inks at least 70% of its eligible columns. n = −1: every crossing within 1e-9 px of slab0 + d and slab0 + 2L − d, and no crossing behind the slab when d > L. Where L − d ≥ 5 and the image lies at or before W − 5, the brightest point is within 2.5 px of slab0 + 2L − d and the recorded peak equals the independent window maximum. n ≠ −1: crossings within 1e-9 px of the closed form. The innermost ray is within twice the third-order term of the paraxial image L/|n| − d. The aberration has the sign of 1/n² − 1, and the brightest point lies inside the crossing range ± 2.5 px.",
+        "benchmark": "Independent vector Snell refraction at both faces. The tangential wavevector is continuous, n1 sin θ1 = n2 sin θ2, so n2 < 0 puts the refracted ray on the incident side of the normal while energy leaves the interface. Line-plane and line-axis intersections, and the closed-form flat-slab crossing L|tan θ2|/|tan θ| − d with paraxial limit L/|n| − d.",
+        "failureControl": "n = +1 is rejected: no ray crosses the axis behind the slab, and the brightest point is 21.99 px from 2L − d. A wrong-sign refraction (46.37 px vertex error at n = −1) and an exit ray that keeps the slab angle (88.26 px) are rejected at every tested n. An inverted index ratio (sin θ2 = n sin θ) is identical at n = −1 and rejected only at n −0.8, −1.2 and −1.5 (10.70 to 26.78 px), which is why n = −1 alone is not evidence. The n = −1.2 preset is 9.94 px from 2L − d and fails the 2.5 px image predicate.",
+        "limitations": "Geometric transmitted rays only. The n = −1 images are an identity (regression check). The status label is measured, not validated, and is wrong where no image exists. Back faces beyond the last drawn column and hash-only near-grazing indices are outside the domain."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/veselago-print-state.js",
+        "command": "node tools/veselago-print-state.js --write",
+        "results": "validation/results/veselago-print-state.json",
+        "scope": "Actual veselago.js in dist/studio.html (Chromium 141, SwiftShader) at seed veselago-1968. Fixtures: the six presets perfect, shallow, deep, n12, many and log, plus wide (16:9, grid 144, 144x81 cells), portrait (4:5, grid 224, n −1.5) and tir (5:4, grid 160, n −0.4, 6 of 64 rays removed). exportPNG at 2400 px on the longest edge, with every print pixel compared against the paint buffer. The browser field is compared word for word with the module run in Node and checked against the independent Snell trace.",
+        "criteria": "Browser field words, metric and cells identical to the Node run, and regenerate identical. Exact requested PNG dimensions; image/png over 1000 bytes; luminance spread over 12/255 with more than 0.1% of pixels off the background. Zero changed field words, metric, extra, cells, buffer size or settings across every export. Every print pixel equals the buffer cell containing its centre (either cell on an exact boundary), all opaque. Empty field cells share one colour, and no other colour appears where the field is empty. Zero lit cells off the traced rays. At n = −1 with the axis on a cell centre, every maximal cell lies within 2.5 px (x) and 0.5 px (y) of slab0 + 2L − d.",
+        "benchmark": "The module run headless in Node for the field; the independent Snell trace of tools/veselago-science.js for the lit cells and the n = −1 brightest cells; the paint buffer for every print pixel.",
+        "failureControl": "A PNG requested 1 px narrower, and a post-export change to one field word and the metric, must each be rejected by the one predicate they target.",
+        "limitations": "Nine fixtures at one seed (the plate does not depend on the seed), one browser build and a software renderer. The print is a nearest-neighbour magnification of the field; colour is not calibrated. The brightest-cell check is skipped on the odd-height 16:9 fixture, where the image splits across two rows and ties the source cell. veselago has no SVG export."
+      }
+    ],
+    "domain": {
+      "parameters": "Slider n from −2.20 to −0.40 in 0.05 steps, with L 20–80, source 8–50, 12–64 rays, grid 128–224 and all four aspects (the sweep axes in the results), restricted to plates whose back face lies at or before W − 2. Also 2,931 continuous-valued configurations with n from −2.2 to −0.44. The n = −1 image metric covers configurations where L − d ≥ 5 and the image lies at or before W − 5. Print fixtures: six presets, wide, portrait and tir. Excluded: the status label, back faces beyond the last drawn column, and hash-only n between −0.43497 and −0.4.",
+      "conditions": "Point source on the axis at x0 = 0.12 W + 0.15 d, fan ±0.45 rad, vacuum on both sides of a flat slab of index n, rays drawn to W − 2. Transmitted rays only, no reflection. Print: real exportPNG at 2400 px on the longest edge.",
+      "resolution": "Vertices and crossings agree to 3.98e-12 px or better over 2,152,704 in-domain sweep rays. The n = −1 brightest point lies within 1 px (even plate height) and 1.998 px (odd plate height) of the analytic image. Prints: 2400x2400, 2400x1350, 1920x2400 and 2400x1920, every pixel compared (validation/results/veselago-science.json, validation/results/veselago-print-state.json).",
+      "precision": "Float64 ray geometry, Float32 field accumulation, RGBA8 PNG. Renderer environment and failure controls are recorded in the results artifacts."
+    },
+    "reviewed": "2026-09-24",
+    "results": "validation/results/veselago-science.json"
   },
   {
     "id": "devil",
@@ -2851,7 +3202,7 @@
   {
     "id": "loschmidt",
     "source": "src/modules/loschmidt.js",
-    "sourceSha256": "242d6a0460fa061507460e3ef4279511b99d9379dc3b698de5539503aa2a6165",
+    "sourceSha256": "e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d",
     "reference": "J. Loschmidt, Sitzungsber. Kais. Akad. Wiss. Wien 73, 128 (1876), objected to Boltzmann: reverse every velocity and the entropy decrease is as lawful as the increase. The objection is correct for a finite isolated system; the catch is the exponential sensitivity that makes the reversal unprepareable. The plate is non-interacting tracers on a ring, reversed on cue, so the echo is exact and visible.",
     "equation": "x_i(t) = x_i + v_i t  (t < T),   v_i ← −v_i  at T,   overlap(2T) = 1",
     "status": "unvalidated",
@@ -2870,7 +3221,7 @@
   {
     "id": "boy",
     "source": "src/modules/boy.js",
-    "sourceSha256": "45238c4577983543da955979ed6579f315fa596d371c7df974725a50138cd30c",
+    "sourceSha256": "00f6c7d38161097ff2293009d10134e8fa072bfda358a1c7613d4a87e297332c",
     "reference": "W. Boy, Math. Ann. 57, 151 (1903), constructed an immersion of the real projective plane in three-space at Hilbert's request; RP² is non-orientable and was not supposed to sit in R³ without a boundary. R. Bryant and R. Kusner (1980s) gave the smooth parametrisation used here. The plate is a z-buffer density of that immersion, not a glass model.",
     "equation": "Bryant–Kusner immersion RP² ↪ R³,   one triple point,   no boundary",
     "status": "unvalidated",
@@ -2908,26 +3259,58 @@
   {
     "id": "ising",
     "source": "src/modules/lattice.js",
-    "sourceSha256": "25975c4c12a36e25ea28f09df64a78ae0bc3814d46d3c6df190400858f5ccec6",
+    "sourceSha256": "d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836",
     "reference": "Ernst Ising, Z. Phys. 31, 253 (1925); Lars Onsager, Phys. Rev. 65, 117 (1944); Nicholas Metropolis, Arianna W. Rosenbluth, Marshall N. Rosenbluth, Augusta H. Teller and Edward Teller, J. Chem. Phys. 21, 1087 (1953). Ising solved the chain and found no transition. Onsager solved the square lattice exactly and found one at T_c = 2/ln(1+√2). The Metropolis algorithm samples the Boltzmann distribution by proposing single flips and accepting them with probability min(1, exp(−ΔE/T)). Here the lattice is updated as a checkerboard: two half-sweeps per step, each parity with its neighbors held fixed, so the GPU can flip every site of one color at once.",
     "equation": "E = −J Σ⟨ij⟩ sᵢsⱼ − h Σᵢ sᵢ,   P(flip) = min(1, e^{−ΔE/T}),   T_c = 2/ln(1+√2) ≈ 2.269",
-    "status": "unvalidated",
+    "status": "validated within stated limits",
     "limitations": [
-      "Catalog equation and citation are review targets, not verified paper equivalence.",
-      "No complete numerical convergence, parameter-domain or print-state accuracy audit is registered."
+      "Complete evidence covers only the domain in validation/ISING.md: h = 0, uniform field shape, periodic square grids of 128 (and 192 for the Binder cumulant), equilibrium averages at T = 1.5, 1.8, 2.0, 2.1, 2.5 and 3.0, float32 spins on SwiftShader.",
+      "T_c agrees with Onsager at 0.13% through the Binder fixed-point estimator, which assumes the universal U* = 0.61069; the model-free crossing between grid sizes is inconclusive in quick mode.",
+      "Since recipe v3 (2026-09-24) each seed's Metropolis numbers come from its own keyed stream (siteHashKeyed); tools/ising-science.js shows two seeds whose shared-stream windows coincide run identical chains on the shared stream (site agreement 1.0000) and independent ones on the keyed stream (0.5046). Recipes older than v3 keep the shared stream through legacy, where seeds read windows of one hash sequence; the tool still allocates disjoint windows.",
+      "Nonzero or patterned fields, non-square aspects, coarsening dynamics, critical exponents, the rgba16f fallback and the Magnetization, Domain walls and Bond energy views are not validated.",
+      "Since 2026-09-24 the status line compares |m| with Yang only for a cold (ordered) start at h = 0 below 0.95 T_c; a hot or split start below T_c coarsens and can sit in a stripe state, so it prints |m| with its error bar and a note instead of a comparison."
     ],
     "remaining": [
-      "Review assumptions, boundaries, units and deviations against the primary source.",
-      "Add an independent benchmark with tolerances and a failure control appropriate to this model.",
-      "Record resolution/precision or statistical uncertainty and validate the actual print path."
+      "Run node tools/ising-science.js --full --write on a local machine for the model-free Binder crossing at L = 128, 192 and 256, T = 2.2 and 2.4 at L = 256, and three seeds per temperature.",
+      "Test the half-float fallback, nonzero and patterned fields and the other views."
     ],
-    "numerical": [],
-    "print": []
+    "numerical": [
+      {
+        "test": "tools/ising-science.js",
+        "command": "node tools/ising-science.js --write",
+        "results": "validation/results/ising-science.json",
+        "scope": "The actual ISING_STEP checkerboard Metropolis in the real studio at h = 0 on the periodic 128 x 128 grid: <|m|> against Yang at T = 1.5, 1.8, 2.0, 2.1 and u against Onsager at those and T = 2.5, 3.0; T_c from Binder cumulants at L = 128 and 192 reweighted around T0 = 2.27; the tab's own |m| series against the read-back.",
+        "criteria": "Each comparison passes when the series is at least 50 tau_int long and |measured - exact| <= 3.5 standard errors (stats.seriesMean, Sokal window); a T_c estimate counts when its moving-block bootstrap error is below 0.005 and fails the run if it is then more than 3.5 errors from Onsager; the tab series must equal the read-back exactly; u(T_c) must equal -sqrt 2 within 1e-14.",
+        "benchmark": "Yang, Phys. Rev. 85, 808 (1952): M = (1 - sinh(2/T)^-4)^(1/8). Onsager, Phys. Rev. 65, 117 (1944): u(T) with the elliptic integral by the AGM, checked at T_c (u = -sqrt 2), against direct quadrature, against Onsager's double integral and against the low-temperature series; T_c = 2/ln(1 + sqrt 2) via the Binder crossing and the fixed point U* = 0.61069 (Kamieniarz and Bloete 1993; Salas and Sokal 2000). Temperatures count only where the exponential finite-size bound is below 1e-6.",
+        "failureControl": "The same shader with acceptance exp(-dE/2T), and with the neighbor sum dropped from dE, injected into copies of the studio: both fail every magnetization and energy test they enter (|z| from 1212 to infinity).",
+        "limitations": "h = 0, uniform field, periodic square grids, equilibrium averages, float32 on SwiftShader. The model-free Binder crossing is inconclusive in quick mode (L = 192 is shorter than 50 tau_int); T_c rests on the fixed-point estimator, which assumes the universal U*."
+      }
+    ],
+    "print": [
+      {
+        "test": "tools/ising-science.js",
+        "command": "node tools/ising-science.js --write",
+        "results": "validation/results/ising-science.json",
+        "scope": "Default plate (grid 256, T = 2.27, Spins view, Pixelate, graphite) after 500 sweeps: the module exportPNG at 2400 x 2400, Studio.exportData() and the shell print export at 8 in and 300 ppi.",
+        "criteria": "Every unambiguous module PNG pixel carries the ink of the spin under its center (0 wrong of 5,607,424) and a one-cell displacement is detected; exported spins.npy and abs_m_series.npy identical to the read-back; every one of 65,536 cell centers in the shell sheet classified as its spin; spins, sweep count, series and recipe unchanged by all exports.",
+        "benchmark": "The read-back float32 spin texture itself, independently mapped to print pixels.",
+        "failureControl": "The spin field shifted by one cell must mismatch over 10% of the checked pixels (measured 19%).",
+        "limitations": "Spins view only; the shell supersamples this tab because it does not declare fieldCells(), so sheet cell edges are blended and only cell centers are checked there."
+      }
+    ],
+    "reviewed": "2026-09-24",
+    "results": "validation/results/ising-science.json",
+    "domain": {
+      "parameters": "grid 128 x 128 (Binder also 192 x 192, print 256 x 256), aspect 1:1, h = 0, hMode uniform, T in {1.5, 1.8, 2.0, 2.1} from the Cold start and {2.5, 3.0} from the Hot start; Binder at T0 = 2.27 reweighted over 2.2628 to 2.2772; seeds and tick0 values in validation/results/ising-science.json.",
+      "conditions": "Periodic boundaries, J = k_B = 1; 1000 burn-in sweeps then 8000 (below T_c) or 6000 (above) measured; Binder 4000 + 40000 (L = 128) and 6000 + 28000 (L = 192) sweeps from Cold; running false, warmup 0, the tab's own step() and sample().",
+      "resolution": "Samples every 4 sweeps (Binder every 8 and 12); standard errors 3.6e-5 to 6.7e-4; T_c to 0.0030; print at 2400 x 2400 px (8 in at 300 ppi).",
+      "precision": "float32 (rgba32f) spin textures on SwiftShader, 24-bit uniform random numbers from the integer site hash, binary64 analysis in the page and in Node, RGBA8 print."
+    }
   },
   {
     "id": "thouless",
     "source": "src/modules/thouless.js",
-    "sourceSha256": "2d393e8f18660c4cf634576e096810d06d99ed7b21197c04292c064b9f75a7b9",
+    "sourceSha256": "d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae",
     "reference": "D. J. Thouless, Phys. Rev. B 27, 6083 (1983). An adiabatic cycle of a 1D insulator pumps a quantized charge equal to the Chern number of the (k, t) torus. Rice and Mele (1982) wrote the two-band lattice that makes the winding visible. The plate is the occupied-band density versus cycle angle; the centre of mass walks one cell when the loop in (u, v, δ) encloses the origin, and stands still when it does not.",
     "equation": "P(φ) = (1/2π) ∮ A(k,φ) dk,   ΔP over a cycle = C₁ ∈ ℤ",
     "status": "unvalidated",
@@ -3006,7 +3389,7 @@
   {
     "id": "reuleaux",
     "source": "src/modules/reuleaux.js",
-    "sourceSha256": "179cef420e5bc881718b9904dc73240b446f54178ee8a1f592f786caf710e4f9",
+    "sourceSha256": "eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707",
     "reference": "F. Reuleaux, The Kinematics of Machinery (Kennedy translation, 1876), described the curved triangle of constant width now named for him. The intersection of three radius-R disks centered at an equilateral triangle has constant support width R. The plate shows this body, rotated overlays or a sampled support-width rose.",
     "equation": "width(θ) = R  for all θ,   W ≠ a disk,   area = ½(π − √3) R²",
     "status": "validated within stated limits",
@@ -3065,7 +3448,7 @@
   {
     "id": "apollonian",
     "source": "src/modules/apollonian.js",
-    "sourceSha256": "78c8e6d3ba15c59c44ab1b89a3fbe097c1b50210abe541bcbc88293f409e0b34",
+    "sourceSha256": "33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8",
     "reference": "Descartes' circle theorem (1643, in a letter to Princess Elisabeth of the Palatinate) gives the fourth curvature from three mutually tangent circles. The Apollonian gasket iterates that packing to infinity. Soddy (1936) wrote the poem; Graham, Lagarias, Mallows, Wilks and Yan (2003) proved the integer curvatures are a well-defined subset of the integers. The plate is a finite generation of the packing inside a disk of curvature −1.",
     "equation": "k₄ = k₁+k₂+k₃ ± 2√(k₁k₂+k₁k₃+k₂k₃)   (Descartes),   k ∈ ℤ if the seeds are",
     "status": "validated within stated limits",
@@ -3173,7 +3556,7 @@
   {
     "id": "track",
     "source": "src/modules/track.js",
-    "sourceSha256": "7d731f0d2cc21a0dfe4502f49f7be6fc8627434f7401298c6360000e098f4322",
+    "sourceSha256": "b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7",
     "reference": "The sine-Gordon breather is exact; Seeger, Donth and Kochendörfer (1953), Faddeev and Takhtajan. A prescribed index n(x) is an inhomogeneous Josephson junction. A beam that writes the index it travels in is a self-written waveguide: Monro, de Sterke and Poladian, J. Mod. Opt. 45, 1998, and the photorefractive soliton of Segev. This plate puts that idea on a sine-Gordon breather, writes n from strain, and checks the open loop against the Lorentz speed. It is not a new law and it is not named as one.",
     "equation": "φ_tt = ∂x(n ∂x φ) − sin φ,   ∂t n = η ((φ_x)²/⟨φ_x²⟩ − 1)",
     "status": "unvalidated",
@@ -3192,7 +3575,7 @@
   {
     "id": "knotlight",
     "source": "src/modules/knotlight.js",
-    "sourceSha256": "aa2f0b0173a44e44c7b7d9bdb80d5910bab2e85ac7f056eb5eece9113bc1d1c2",
+    "sourceSha256": "779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb",
     "reference": "The polynomial whose zeros are a trefoil in R³ is M. V. Berry and M. R. Dennis, Proc. R. Soc. A 457, 2251 (2001); J. Leach, M. R. Dennis, J. Courtial and M. J. Padgett flew a knotted optical vortex in Nature 432, 165 (2004). The open-book fibration of the trefoil singularity is J. Milnor, Singular Points of Complex Hypersurfaces, 1968. The bark is Weierstrass, 1872. No paper draws the three on one seed. That arrangement, and this print, are the artifact; the science is not a claim.",
     "equation": "ψ = (x+iy)³ − (z−ia)²,   zeros ≃ (2,3) torus knot;   pages = arg ψ;   bark = Σ α^n cos(β^n s)",
     "status": "unvalidated",
@@ -3211,7 +3594,7 @@
   {
     "id": "causticsea",
     "source": "src/modules/causticsea.js",
-    "sourceSha256": "1aa15625af54f76a1cfdf619fc72233522a655f56c675f43cfcfb5d355b6082e",
+    "sourceSha256": "bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f",
     "reference": "The sea is Swift and Hohenberg, Phys. Rev. A 15, 319 (1977). The brightness after a thin phase screen is Berry’s catastrophe optics, the ray map x ↦ x + s ∇h. Intensity writing a height is the photothermal / Marangoni class. Laser-induced surface patterns are already modelled with Swift–Hohenberg (Rudenko, Colombier, Itina, Stoian, Phys. Rev. Lett. 130, 226201, 2023). This plate is that family with the caustic in the loop, and it reports corr(h, I) against the open-loop control. It is not a new equation and it is not named as one.",
     "equation": "∂t h = −(∇²+k₀²)² h + r h − h³ + η(I−⟨I⟩),   X = x + s ∇h,   I(X) = 1/|det(I + s Hess h)|",
     "status": "unvalidated",
@@ -3230,7 +3613,7 @@
   {
     "id": "kp",
     "source": "src/modules/kp.js",
-    "sourceSha256": "44075d6ab4ad2f25ae7fda38c1a92a226e1e078e9bd06aafacaf5a224fadaf1f",
+    "sourceSha256": "3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329",
     "reference": "The KP equation is Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). The tau function as a Wronskian of exponentials is Sato and Hirota. Resonant Y-junctions are Miles, J. Fluid Mech. 79, 171 (1977). The classification of the webs by totally nonnegative Grassmannians is Biondini and Chakravarty, J. Math. Phys. 47, 033514 (2006), and Kodama. Asymptotic webs expand and keep their morphology: Horowitz and Zarmi, Physica D 300, 1 (2015). This plate evaluates the exact tau function. It is not a new equation.",
     "equation": "(−4 u_t + u_xxx + 6 u u_x)_x + 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = Σ_I det(A_I) Δ(k_I) e^{Σ θ}",
     "status": "unvalidated",
@@ -3249,7 +3632,7 @@
   {
     "id": "gerstner",
     "source": "src/modules/gerstner.js",
-    "sourceSha256": "18fa85720739ce503e313b5d928da01f65e3f9f163136050d276a9fc3e970a7a",
+    "sourceSha256": "418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e",
     "reference": "Gerstner, Theorie der Wellen, Abh. Bohm. Ges. Wiss. (1802), found the unique exact periodic deep-water gravity wave of finite amplitude: every particle traces a circle, the free surface is an inverted trochoid, and the pressure is constant along it. Rankine, On the exact form of waves near the surface of deep water, Phil. Trans. Roy. Soc. 153, 127 (1863), rediscovered the same motion. Superposing two Gerstners (the Two trains control) is graphics practice, Tessendorf, Simulating Ocean Water, SIGGRAPH course notes (2001), and is not an Euler solution. This plate is a seeded print of the exact Lagrangian map. It is not a new equation.",
     "equation": "X = a + A e^{k b} sin(k a − ω t),   Z = b − A e^{k b} cos(k a − ω t),   ω² = g k,   σ = k A < 1",
     "status": "validated within stated limits",
@@ -3299,7 +3682,7 @@
   {
     "id": "eight",
     "source": "src/modules/eight.js",
-    "sourceSha256": "00e15b29caba92c9cf360487ddce8471e0f351e54168633c80d650e75a1c01b3",
+    "sourceSha256": "5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab",
     "reference": "Cris Moore, Phys. Rev. Lett. 70, 3675 (1993), found the orbit numerically. Alain Chenciner and Richard Montgomery, Ann. of Math. 152, 881 (2000), proved it exists: three equal masses, Newtonian gravity, a periodic choreography on a figure-eight, zero angular momentum. The 16-digit Euler initial conditions and the period T = 6.325913982926396 used here are C. Simó’s set, Contemp. Math. 292, 209 (2002). This plate is a print of that orbit. It is not a new solution.",
     "equation": "r̈_i = −Σ_{j≠i} (r_i−r_j)/|r_i−r_j|³,   m_i = G = 1,   r_i(t) = r(t+(i−1)T/3),   L = 0",
     "status": "validated within stated limits",
@@ -3349,7 +3732,7 @@
   {
     "id": "peakon",
     "source": "src/modules/peakon.js",
-    "sourceSha256": "4834e70598cd058b068254df6dc94a59a4fa98058fa00064aa94eccc9b40f410",
+    "sourceSha256": "cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23",
     "reference": "The Camassa–Holm equation and the peakon u = c exp(−|x − c t|) are R. Camassa and D. D. Holm, Phys. Rev. Lett. 71, 1661 (1993). Multi-peakon collisions, including the Stieltjes / Hankel closed form used here, are R. Beals, D. H. Sattinger and J. Szmigielski, Inverse Problems 15, L1 (1999) and Adv. Math. 154, 229 (2000). This plate evaluates that exact N-peakon formula. It is not a new soliton.",
     "equation": "u_t − u_xxt + 3 u u_x = 2 u_x u_xx + u u_xxx,   u = Σ m_i e^{−|x−x_i|},   m = u − u_xx",
     "status": "validated within stated limits",
@@ -3407,7 +3790,7 @@
   {
     "id": "photon",
     "source": "src/modules/photon.js",
-    "sourceSha256": "3636ca8433248c1afb594d76a13d78734592778668cb54dc37ca693af775fb84",
+    "sourceSha256": "a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3",
     "reference": "K. Schwarzschild, Sitzungsber. Preuss. Akad. Wiss. (1916). The unstable circular photon orbit at r = 3M is a textbook consequence of that metric. C. Darwin, Proc. R. Soc. Lond. A 249, 180 (1959) and J. L. Synge, Mon. Not. R. Astron. Soc. 131, 463 (1966) integrated the null geodesics and the capture cross-section. The plate is a seeded print of those equatorial (or slightly inclined) rays. It is not a new black hole.",
     "equation": "d²u/dφ² = 3M u² − u,   u = 1/r,   r_ph = 3M,   b_c = 3√3 M",
     "status": "validated within stated limits",
@@ -3457,7 +3840,7 @@
   {
     "id": "crapper",
     "source": "src/modules/crapper.js",
-    "sourceSha256": "19bf94596e6ddc63063735b53dd99216b50e6580dd1ae6ea8d4f59995f1f3e32",
+    "sourceSha256": "463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92",
     "reference": "Crapper, An exact solution for progressive capillary waves of arbitrary amplitude, J. Fluid Mech. 2, 532 (1957), found the unique closed-form finite-amplitude pure-capillary wave on deep water: crests flatten, troughs sharpen, and at s* ≈ 0.730 the trough pinches a bubble of air. Hur and Vanden-Broeck, Eur. J. Mech. B/Fluids 83, 190 (2020), arXiv:2003.00950, showed that the same profile is a periodic traveling wave of a constant-vorticity Euler flow with g=0 and σ=0. The flows underneath differ. Constantin and Martín, On Crapper's wave, J. Nonlinear Math. Phys. (2011), proved the interior map is a diffeomorphism only for |A| ≤ 3−2√2 ≈ 0.172, a smaller range than the bubble. This plate is a seeded print of the exact map. It is not a new equation.",
     "equation": "X = φ − (2/π) A sin(2πφ) / (1+A²−2A cos 2πφ),   Y = −(2/π) A (cos 2πφ − A) / (1+A²−2A cos 2πφ),   s = 4|A|/(π(1−A²))",
     "status": "unvalidated",
@@ -3476,7 +3859,7 @@
   {
     "id": "hasimoto",
     "source": "src/modules/hasimoto.js",
-    "sourceSha256": "88499871add56cf578919868f1ac033824f0594629abb241d77e41f5bb459765",
+    "sourceSha256": "984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741",
     "reference": "H. Hasimoto, J. Fluid Mech. 51, 477 (1972), mapped the local-induction approximation for a thin vortex filament to the cubic nonlinear Schrödinger equation and found the sech soliton: a loop of helical motion that travels along a line vortex at speed equal to twice the torsion. The explicit traveling-wave curve sampled here is the solitary-wave member of S. Kida, J. Fluid Mech. 112, 397 (1981). This plate is a print of that curve. It is not a new law of vortex motion.",
     "equation": "γ_t = γ_s × γ_ss,   ψ = κ exp(i ∫ τ ds),   κ = 2ν sech(ν(s−2τ₀ t)),   c = 2τ₀",
     "status": "validated within stated limits",
@@ -3526,7 +3909,7 @@
   {
     "id": "lump",
     "source": "src/modules/lump.js",
-    "sourceSha256": "cfeadd37892269236b7c41a450f223568dc65f5304da461655cb01040d5cbc3d",
+    "sourceSha256": "7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4",
     "reference": "Kadomtsev and Petviashvili, Sov. Phys. Dokl. 15, 539 (1970). Algebraically localized lumps of KP-I: Manakov, Zakharov, Bordag, Its and Matveev, Phys. Lett. A 63, 205 (1977). Exact multi-lump solutions are studied by Satsuma and Ablowitz, J. Math. Phys. 20, 1496 (1979). This module implements single rational lumps; its multiple-lump modes are illustrative sums, not those interacting solutions. Completely different from the studio’s KP-II line-soliton webs. This plate evaluates the rational tau function. It is not a new equation.",
     "equation": "(u_t + 6 u u_x + u_xxx)_x − 3 u_yy = 0,   u = 2 (log τ)_xx,   τ = X² + b² Y² + 1/b²",
     "status": "validated within stated limits",
@@ -3584,7 +3967,7 @@
   {
     "id": "three-vortex-bound",
     "source": "src/modules/three-vortex-bound.js",
-    "sourceSha256": "616006e58a131d8a309e01ac7037f8e0af1261a4e16fac3c2f7705bd7b872f54",
+    "sourceSha256": "b7c4b23da19c1f5bcb5ffa43fff089b158b77a8e54bbb9b6e11daf2e4499fc9f",
     "reference": "Three-vortex collapse bound: an explicit formula and sharp minimum for a classical three-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −1/2), positions z₁ = 0, z₂ = 1, z₃ = 1/2 + (√3/2) e^{iθ} on the L = 0 circle, 0 < θ < π/2. θ is the third vortex's place on that circle, not an interior angle. ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2, equality uniquely at tan θ = 1/√2 (interior angles 22.5°, 45°, 112.5°). With u = tan θ the product is u + 1/(2u), and ω₀ t_c − √2 = (√2 u − 1)² / (2u) ≥ 0. At θ = 45° the product is 3/2. Three-vortex collapse is Gröbli (1877). Aref, Phys. Fluids 22, 057104 (2010), gives rotation and collapse separately and writes their product as the pitch of the log spiral. The formula explicitly specializes and reparameterizes the spiral coefficient in Gröbli (1877), section 10. Kimura, J. Phys. Soc. Jpn. 56, 2024 (1987), section 4, gives the collapse and rotation rates A and B in this same parametrization, for circulations (2, 2, −1), and their ratio B/(−2A) is this formula; he minimizes the collision time instead, at cos 2θ = 3/5, where the product is 3/2, the value it also takes at θ = 45°. It was independently derived here and recorded on 2026-09-19. Priority of the optimized minimum remains unconfirmed; see identities/ORIGINALITY-FOLLOWUP.md, identities/NOVELTY-AUDIT.md and IDENTITIES.md. Cite as Three-vortex collapse bound. If the vortices leave the circle, or the kernel is wrong, the ratio against √2 misses and the status line marks miss. The picture still draws.",
     "equation": "ω₀ t_c = (2 − cos²θ)/sin(2θ) ≥ √2  on  Γ = (1, 1, −1/2), L = 0;  equality at tan θ = 1/√2",
     "status": "validated within stated limits",
@@ -3632,7 +4015,7 @@
   {
     "id": "parallelogram-lock",
     "source": "src/modules/parallelogram-lock.js",
-    "sourceSha256": "6d9f5d8842a30373d5b82d257572c193aba611027cb6263853417411cfb2231e",
+    "sourceSha256": "0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc",
     "reference": "A closed form and sharp minimum for the scale-invariant product on the classical four-vortex parallelogram collapse family, independently derived in this project with AI assistance. Circulations Γ = (1, 1, −2 − √3, −2 − √3), diagonals in ratio √(2 + √3), angle θ between the diagonals, 0 < θ < π/2. ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4, equality uniquely at cos 2θ = 1/4. With φ = 2θ the quotient is (4 − cos φ)/sin φ, and the critical point is cos φ = 1/4. Four-vortex parallelogram collapse is Novikov and Sedov, Sov. Phys. JETP 50, 297 (1979). Gotoda, arXiv:2002.09624 (2020 preprint), eq. (3.13), gives the collapse rate A(θ) and the spin B(θ) separately after those authors. The product −B/(2A) simplifies to the formula above. The formula and minimum were derived here and recorded on 2026-09-20. Historical priority is unconfirmed; see identities/NOVELTY-AUDIT.md and IDENTITIES.md. The reciprocal pair Γ = (1, 1, −2 + √3, −2 + √3) is the same family with the diagonals swapped. If the vortices leave the parallelogram, or the kernel is wrong, the ratio against 3√5/4 misses and the status line marks miss. The picture still draws.",
     "equation": "ω₀ t_c = (√3/4)(4 − cos 2θ)/sin(2θ) ≥ 3√5/4  on the Novikov–Sedov parallelogram;  equality at cos 2θ = 1/4",
     "status": "validated within stated limits",
@@ -3680,7 +4063,7 @@
   {
     "id": "quincunx-lock",
     "source": "src/modules/quincunx-lock.js",
-    "sourceSha256": "311a76734eed2af26b028ad2f03feef7f247934f320de3a8c5d94767bafa4600",
+    "sourceSha256": "2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e",
     "reference": "A closed form and sharp minimum for the scale-invariant product on a classical five-vortex collapse family, independently derived in this project with AI assistance. Circulations Γ = (−1, −1, 1/2, 1/2, −3/4), four vortices at the vertices of a parallelogram whose diagonals meet at the fifth, diagonals in ratio 1/√2, angle θ between the diagonals, 0 < θ < π/2. ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16, equality uniquely at cos 2θ = 4/7. With φ = 2θ the quotient is (7 − 4 cos φ)/sin φ, and the critical point is cos φ = 4/7. Five-vortex parallelogram-plus-center collapse is Novikov and Sedov, Sov. Phys. JETP 50, 297 (1979). Gotoda, arXiv:2002.09624 (2020 preprint), eq. (3.13), gives the collapse rate A(θ) and the spin B(θ) separately after those authors, and plots this family (γ1 = −1, γ2 = 1/2, γ3 = −3/4) as Hamiltonian against collapse rate. The product −B/(2A) on that slice simplifies to the formula above. The formula and minimum were derived here and recorded on 2026-09-20. Historical priority is unconfirmed; see identities/NOVELTY-AUDIT.md and IDENTITIES.md. The reciprocal pair with the diagonals swapped is the same family. If the vortices leave the quincunx, or the kernel is wrong, the ratio against 3√33/16 misses and the status line marks miss. The picture still draws. This is not Novikov and Sedov's t_* or ω separately under a new name, and it is not the four-vortex parallelogram lock.",
     "equation": "ω₀ t_c = (3/16)(7 − 4 cos 2θ)/sin(2θ) ≥ 3√33/16  on the Novikov–Sedov five-vortex quincunx;  equality at cos 2θ = 4/7",
     "status": "validated within stated limits",
@@ -3728,7 +4111,7 @@
   {
     "id": "double-triangle-bound",
     "source": "src/modules/double-triangle-bound.js",
-    "sourceSha256": "20778362fcd32e7be2631ff81c81d0a618bca87d3064bec7196dda059d7940d4",
+    "sourceSha256": "93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8",
     "reference": "Classical two-ring collapse: Aref, Physics of Fluids 25, 2183 (1982); Koiller, Pinto de Carvalho, Rodrigues da Silva and Gonçalves de Oliveira, Physica D 16, 27–61 (1985), §11. Two regular n-gons with outer circulation −1, inner circulation x = (n + √(2n−1))/(n−1), and squared radius ratio x. GENChase derives the product and its sharp minimum in identities/polygon-collapse.md. The n = 4 value √322/9 illustrates the general theorem. Historical priority of these explicit bounds is unconfirmed; the collapse family is classical.",
     "equation": "ω₀t_c = (K_n − √(2n−1) cos nθ)/(2n sin nθ) ≥ F_n; F₃ = √29/3, F₄ = √322/9",
     "status": "validated within stated limits",
@@ -3857,7 +4240,7 @@
   {
     "id": "molecular",
     "source": "src/modules/molecular.js",
-    "sourceSha256": "b0152563304cd2f85948d12def42b459c6f110f8730f0f55b86a45dd145f814a",
+    "sourceSha256": "5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874",
     "reference": "J. E. Lennard-Jones, Proceedings of the Royal Society A (1924). L. Verlet, Physical Review (1967). Force shifting and molecular dynamics: M. P. Allen and D. J. Tildesley, Computer Simulation of Liquids, second edition (2017).",
     "equation": "V(r) = 4(r^-12 - r^-6) - V_LJ(rc) + (r-rc)F_LJ(rc), r < rc = 2.5;  m r̈ = -∇V",
     "status": "validated within stated limits",
@@ -3963,7 +4346,7 @@
   {
     "id": "plasma",
     "source": "src/modules/plasma.js",
-    "sourceSha256": "237cfe67009ed638ec3b021c6f872dd1190e13e0ea0fd85ac49f6ea9c62dbdd4",
+    "sourceSha256": "07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e",
     "reference": "Standard cloud-in-cell electrostatic plasma model. C. K. Birdsall and A. B. Langdon, Plasma Physics via Computer Simulation (1985). CIC field centering and conservation limitations: J. U. Brackbill, arXiv:1510.08741 (2015), sections 3.1–3.5. Original implementation; not the GEMPIC geometric scheme.",
     "equation": "∂f/∂t + v ∂f/∂x − E ∂f/∂v = 0; ∂E/∂x = 1 − ∫f dv; x ∈ [0, 2π), periodic",
     "status": "validated within stated limits",
@@ -4019,7 +4402,7 @@
   {
     "id": "shallow",
     "source": "src/modules/shallow.js",
-    "sourceSha256": "65d975766f9266e6c68ae53af438b1f624a6e8907228fd781d45db9ef497c0a9",
+    "sourceSha256": "764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6",
     "reference": "A. J. C. de Saint-Venant (1871), shallow-water equations. Rusanov/local Lax–Friedrichs conservative finite-volume flux. Exact wave benchmarks follow D. I. Ketcheson, R. J. LeVeque and M. J. del Razo, Riemann Problems and Jupyter Solutions (2020). Original implementation of established equations; no Clawpack code is included.",
     "equation": "h_t + ∇·(h u) = 0; (h u)_t + ∇·(h u⊗u + ½h² I) = 0, g = 1",
     "status": "validated within stated limits",
@@ -4075,7 +4458,7 @@
   {
     "id": "nonreciprocal",
     "source": "src/modules/nonreciprocal.js",
-    "sourceSha256": "0f5427d1446138675dd4be67d1c3df9896ec06ffa1103d9dbc94060332a7c1b0",
+    "sourceSha256": "3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9",
     "reference": "S. Saha and R. Golestanian, Effervescence in a binary mixture with nonlinear non-reciprocal interactions, Nature Communications 16, 7310 (2025), doi:10.1038/s41467-025-61728-8, equation 5. Original finite-difference implementation; the paper uses a different spectral solver.",
     "equation": "∂t ψ = ∇²[(-1+iα₀)ψ + (1−iα₁)|ψ|²ψ − K∇²ψ]",
     "status": "validated within stated limits",

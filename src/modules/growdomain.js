@@ -403,25 +403,13 @@
     return u - (2.30753 + 0.27061 * u) / (1 + 0.99229 * u + 0.04481 * u * u);
   }
   // The deviation as it is printed: a t on the sample's own degrees of freedom, expressed as the
-  // normal deviate that carries the same probability.
-  function devTxt(v, se, ref, df) {
+  // normal deviate that carries the same probability. The shared compare() prints it, with the value
+  // and its error bar to matching decimals, so the sign and size come from here and nothing else.
+  function devZ(v, se, ref, df) {
     const z = sigmas(v, se, ref);
-    if (z === null) return 'no uncertainty available';
-    return sigTxt(z < 0 ? -tToSigma(z, df) : tToSigma(z, df));
+    if (z === null) return undefined;
+    return z < 0 ? -tToSigma(z, df) : tToSigma(z, df);
   }
-
-  function sigTxt(z) {
-    if (z === null) return 'no uncertainty available';
-    const m = Math.abs(z);
-    return m.toFixed(1) + 'σ ' + (m < 0.05 ? 'from it' : (z > 0 ? 'high' : 'low'));
-  }
-  // Enough decimals to show the error bar. A value printed to two places beside an uncertainty of
-  // four thousandths reads as "± 0.00", which is exactly the sort of decoration this tab is trying
-  // not to print.
-  const pm = (v, se) => {
-    const d = !isFinite(se) || se >= 0.05 ? 2 : (se >= 0.005 ? 3 : 4);
-    return v.toFixed(d) + ' ± ' + (isFinite(se) ? se.toFixed(d) : '?');
-  };
 
   // The plane has no single row to count, so the mode index is read off the cosine transform instead.
   // Zero flux walls make cos(m pi xi) cos(n pi eta) the natural basis, so the amplitudes are a plain
@@ -963,10 +951,19 @@
         // divide one by the other, which on the plane preset would read as a twenty sigma
         // disagreement from a number that cannot support the comparison. The sigma against theory is
         // quoted once, on the k term of the self-check, where the sample is the run's own snapshots.
-        const meas = !measN ? 'not yet'
-          : (P.plane ? '<b>' + pm(measN, modeMN ? modeMN.se : NaN) + '</b> ('
-              + (modeMN ? modeMN.sectors : 0) + ' sectors)'
-                     : '<b>' + measN + '</b> exact');
+        //
+        // So the plane's ring radius goes through compare() with its sector error bar and the
+        // prediction passed as text: printed beside it, but with no sigma formed from a sample that
+        // cannot support one. The sheet's count is one integer read off one realization; it is
+        // printed beside the prediction with the error bar stated as pending for that reason.
+        const lbl = P.plane ? 'ρ' : 'n';
+        const meas = !measN ? '<span>' + lbl + ' not yet · dispersion peak <b>' + pred.toFixed(1) + '</b></span>'
+          : (P.plane
+            ? U.stats.compare({ label: lbl, measured: measN, expected: pred.toFixed(1), reference: 'dispersion peak', basis: 'sampled',
+                uncertainty: modeMN ? modeMN.se : NaN, method: (modeMN ? modeMN.sectors : 0) + ' angular sectors of one snapshot (ring roundness)',
+                pending: 'fewer than 2 sectors', note: (modeMN ? modeMN.sectors : 0) + ' sectors, roundness only' })
+            : U.stats.compare({ label: lbl, measured: measN, expected: pred.toFixed(1), reference: 'dispersion peak', basis: 'sampled',
+                pending: 'one realization' }));
 
         // The self-check. Every measured quantity beside a theoretical one carries an uncertainty and
         // every comparison is in standard deviations; where no uncertainty can be formed, because
@@ -986,19 +983,22 @@
         // is the other answer to the same question.
         const span = expRange && isFinite(expRange[0]) && isFinite(expRange[1])
           ? ' over L ' + expRange[0].toFixed(1) + '-' + expRange[1].toFixed(1) : '';
+        const expLabel = expVar + ' ∝ L^a';
         if (expStat && isFinite(expStat.a) && isFinite(expStat.se) && expStat.se > 0) {
-          chk = expVar + ' ∝ L^<b>' + pm(expStat.a, expStat.se) + '</b>, ' + expStat.n + ' '
-            + expSample + span + (expStat.df <= 2 ? ' (' + expStat.df + ' d.f.)' : '')
-            + ', <b>' + devTxt(expStat.a, expStat.se, 1, expStat.df) + '</b> of 1';
+          chk = U.stats.compare({ label: expLabel, measured: expStat.a, expected: 1, reference: 'fixed wavelength', basis: 'sampled',
+            uncertainty: expStat.se, z: devZ(expStat.a, expStat.se, 1, expStat.df),
+            method: 'least squares slope over ' + expStat.n + ' ' + expSample + ' (' + expStat.df + ' d.f.), row quantization in quadrature, Student t as a normal deviate',
+            note: expStat.n + ' ' + expSample + span + (expStat.df <= 2 ? ' (' + expStat.df + ' d.f.)' : '') });
         } else {
-          chk = expVar + ' ∝ L not fitted, ' + (expStat ? expStat.n : 0) + ' '
-            + (expSample || 'samples') + ' is too few for an error bar';
+          chk = U.stats.compare({ label: expLabel, measured: expStat ? expStat.a : NaN, expected: 1, reference: 'fixed wavelength', basis: 'sampled',
+            pending: 'not fitted, ' + (expStat ? expStat.n : 0) + ' ' + (expSample || 'samples') + ' is too few for an error bar' });
         }
         if (kStat && isFinite(kStat.mean) && isFinite(kStat.se) && kStat.se > 0) {
-          const z0 = sigmas(kStat.mean, kStat.se, P.kSel);
-          const z = z0 === null ? 0 : (z0 < 0 ? -tToSigma(z0, kStat.n - 1) : tToSigma(z0, kStat.n - 1));
-          chk += ' · k <b>' + pm(kStat.mean, kStat.se) + '</b>, ' + kStat.n + ' ' + kSample
-            + ' vs ' + P.kSel.toFixed(2) + ', <b>' + sigTxt(z) + '</b>';
+          const z = devZ(kStat.mean, kStat.se, P.kSel, kStat.n - 1) || 0;
+          chk += ' · ' + U.stats.compare({ label: 'k', measured: kStat.mean, expected: P.kSel, reference: 'dispersion peak', basis: 'sampled',
+            uncertainty: kStat.se, z,
+            method: 'mean over ' + kStat.n + ' ' + kSample + ', Student t on ' + (kStat.n - 1) + ' d.f. as a normal deviate',
+            note: kStat.n + ' ' + kSample + (Math.abs(z) > 3 ? ', growth lag' : '') });
           // A large deviation is named, and the reason given where it is known. The peak of the
           // dispersion relation is the fastest growing mode of a FIXED domain; on a growing one the
           // pattern holds a count while k slides down the band and then splits, so the realized k
@@ -1006,11 +1006,11 @@
           // only integer numbers of half wavelengths fit.
           // A large deviation is named and its cause given, in the few words the bar has room for.
           // The Growth hint carries the rest: the count is held while k slides down the band and
-          // jumps back at each insertion, so a faster domain lags further behind the peak.
-          if (Math.abs(z) > 3) chk += ', growth lag';
+          // jumps back at each insertion, so a faster domain lags further behind the peak. The note on
+          // the span above carries those two words.
         } else if (kStat && isFinite(kStat.mean)) {
-          chk += ' · k <b>' + kStat.mean.toFixed(2) + '</b>, one ' + (kSample || 'sample')
-            + ', no uncertainty claimed';
+          chk += ' · ' + U.stats.compare({ label: 'k', measured: kStat.mean, expected: P.kSel, reference: 'dispersion peak', basis: 'sampled',
+            pending: 'one ' + (kSample ? kSample.replace(/s$/, '') : 'sample') + ', no uncertainty claimed' });
         }
 
         // Four spans, and short ones. The shell gives the bar about two lines before the text starts
@@ -1027,8 +1027,7 @@
             stepsDone.toLocaleString() + '</b></span>' +
           '<span>' + KIN_LABEL[P.K.kind] + ', ' + LAW_LABEL[s.law] + ' · ' + win +
             ' · L <b>' + P.L0.toFixed(2) + ' → ' + L.toFixed(2) + '</b></span>' +
-          '<span>' + (P.plane ? 'ρ' : 'n') + ' ' + meas + ' of <b>' + pred.toFixed(1) + '</b> · ' +
-            tr + '</span>' +
+          '<span>' + meas + ' · ' + tr + '</span>' +
           '<span>' + chk + (P.clamped ? ' · run trimmed to fit' : '') + (extra ? ' · ' + extra : '') + '</span>'
         );
       }

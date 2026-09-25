@@ -13,7 +13,7 @@ body:
     id: about
     attributes:
       label: Tab or topic
-      placeholder: hendricks-identity, cortex, self-checking gen-art
+      placeholder: three-vortex-bound, cortex, self-checking gen-art
     validations:
       required: true
   - type: input

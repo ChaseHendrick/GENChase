@@ -82,6 +82,9 @@ jobs:
           node tools/maxwell-robust.js --check
           node tools/molecular-memory.js --controls
           node tools/cahn-scaling.js --controls
+          node tools/vortex-collapse-search.js --controls > /dev/null
+          # A merged submission makes the ledger stale until the volunteer-results workflow refreshes it.
+          node tools/compute-ledger.js --check || echo '::warning::COMPUTE.md is behind the recorded jobs; the volunteer-results workflow refreshes it after merge.'
           python3 tools/cahn-scaling.py --controls
           node tools/build.js --check
           node tools/science.js
@@ -143,6 +146,8 @@ jobs:
           node tools/art-only-check.js
           node tools/direct-gravity-browser.js
           node tools/bec-preview-check.js
+      - name: Provenance in every export, research data and the status badge
+        run: node tools/provenance-check.js
 
   volunteer-ui:
     name: volunteer and navigation (${{ matrix.browser }})
@@ -177,6 +182,25 @@ jobs:
         run: |
           node tools/harvest-browser-check.js
           node tools/validator-process-check.js
+
+  art:
+    name: art modes (hunt, deep render, evolve)
+    runs-on: ubuntu-latest
+    needs: lint
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install the validator's browser
+        run: |
+          npm install --no-save --package-lock=false playwright@1.58.2
+          npx playwright install --with-deps chromium
+      # Small grids on the software renderer: verified step counts, the engine's own hash and print path,
+      # repeatable metrics on one renderer, resume, refusals, the flat gate and tab eligibility.
+      - name: Art modes end to end
+        run: node tools/art-check.js
 
   complete-reviews:
     name: completed numerical and print reviews

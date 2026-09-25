@@ -262,9 +262,12 @@
       function status() {
         const ok = metric < 1e-6;
         const dead = extra < 0.12 || extra > 8;
+        // Both numbers come from the closed-form tau function with no randomness. The Hirota residual is
+        // round-off in the bilinear identity; the peak is read against (k_M − k_1)²/2, the amplitude of
+        // the [1,M] line soliton.
         host.setStatus(
-          '<span>Hirota <b>' + metric.toExponential(1) + '</b> · exact 0</span>' +
-          '<span>peak / (Δk)²/2 <b>' + f2(extra) + '</b></span>' +
+          U.stats.compare({ label: 'Hirota residual', measured: metric, expected: 0, reference: 'Hirota identity', basis: 'deterministic' }) +
+          U.stats.compare({ label: 'peak / (Δk)²/2', measured: extra, expected: 1, reference: '[1,M] line soliton', basis: 'deterministic', digits: 6 }) +
           '<span>' + (!ok ? 'tau failed' : (dead ? kindLabel + ', flat' : kindLabel)) + '</span>'
         );
       }

@@ -1,6 +1,7 @@
 // node tools/check.js <id> [waitMs=8000]
 // Full check for one tab: default plate, every preset, the same hash loaded twice, and a tab switch away and back.
 // Set STUDIO=path/to/studio.html to check a test copy built with tools/inject.js.
+const { glArgs } = require('./lib/gl-args');
 const path = require('path');
 const { chromium } = require('playwright');
 
@@ -113,7 +114,7 @@ async function settle(p, maxMs, seed) {
   if (!id) { console.error('usage: node tools/check.js <id> [waitMs]'); process.exit(1); }
   const studio = process.env.STUDIO ? path.resolve(process.env.STUDIO) : path.resolve(__dirname, '..', 'dist', 'studio.html');
   const url = 'file://' + studio;
-  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+  const b = await chromium.launch({ args: [...glArgs(), '--ignore-gpu-blocklist'] });
   const fails = [];
   const errs = [];
   const open = async hash => {

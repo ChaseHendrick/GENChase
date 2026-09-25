@@ -8,6 +8,7 @@
 //
 // The cases are derived from studio.html itself rather than listed here, so this cannot drift from
 // the file it checks: every legacy declaration in the source becomes five assertions.
+const { glArgs } = require('./lib/gl-args');
 const path = require('path'), fs = require('fs');
 const { chromium } = require('playwright');
 const b64 = o => Buffer.from(JSON.stringify(o)).toString('base64url');
@@ -62,9 +63,9 @@ function cases(src) {
   const src = fs.readFileSync(studio, 'utf8');
   const cs = cases(src);
   if (!cs.length) { console.log('no legacy declarations to check'); return; }
-  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const b = await chromium.launch({ args: glArgs() });
   const jobs = [];
-  const LABEL = { grid: 'Grid' };
+  const LABEL = { grid: 'Grid', stream: 'Random stream', ring: 'Frozen test' };
   for (const c of cs) {
     const label = LABEL[c.key] || c.key;
     // The values were parsed out of the source as text, so they have to go back into a recipe as the
@@ -104,10 +105,13 @@ function cases(src) {
             seg && seg.querySelector('button[aria-pressed="true"]');
         }, { id: c.id, label: c.label }, { timeout: 90000 });
         if (settle) await p.waitForTimeout(settle);
-        const got = await p.evaluate(label => {
+        // The pressed button's id is the control id plus '-' plus the option's value, so the value is read
+        // from the id: a button's text is a label ('Per seed') that need not spell the value ('keyed').
+        const got = await p.evaluate(({ label, key }) => {
           const seg = [...document.querySelectorAll('.seg')].filter(x => x.getAttribute('aria-label') === label).pop();
-          return seg.querySelector('button[aria-pressed="true"]').textContent.trim();
-        }, c.label);
+          const b = seg.querySelector('button[aria-pressed="true"]'), mark = '-' + key + '-';
+          return b.id.slice(b.id.lastIndexOf(mark) + mark.length);
+        }, { label: c.label, key: c.key });
         results[i] = { ...c, got, ok: String(got) === String(c.want) && !errors.length, errors };
       } catch (error) {
         results[i] = { ...c, got: 'ERROR', ok: false, errors: [...errors, error.message] };
