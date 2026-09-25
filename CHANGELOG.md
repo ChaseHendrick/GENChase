@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **The stage badge follows a user-typed mode.** In Turing Patterns' Custom reaction mode the badge now reads Unvalidated and the export provenance records `validation: unvalidated`, with the tab's own status in `tabValidation` and the reason in `validationNote`. A module reports such a mode through the new optional instance method `evidence()`, which can only lower the status, never raise it. The tab strip keeps the tab's status.
+
 - The GitHub Pages deploy is off by the owner's choice and runs only when the repository variable `PAGES` is `on`, so a merge no longer fails on a disabled Pages site. The site build still runs as a check.
 
 - **Rough growth: the relaxation rule stops at the top of the lattice.** It was the only column rule without the stop, so on a thin, nearly full lattice particles landed above the last row, where the write was silently dropped while the heights, width and particle count still counted them. Ported from the closed PR #123. All six column presets are bit-identical before and after; the kpz record stays partially validated, because that branch's promotion missed its own pre-registered 5-standard-error test at 16 seeds and passed only in a 64-seed follow-up (`validation/KPZ.md`).

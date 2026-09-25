@@ -593,6 +593,9 @@ void main(){
         // band-limited field is a second low-pass for twice the memory, and it can state on the sheet
         // what the real limit on detail is.
         fieldCells() { return gw && gh ? [gw, gh] : null; },
+        // Typed reaction terms are outside this tab's validation record, so the stage badge and the
+        // provenance say unvalidated while that mode is on.
+        evidence() { return isCustom(host.getState()) ? { status: 'unvalidated', why: 'Custom reaction: the reaction terms are typed by the user and are not covered by this tab\'s validation record' } : null; },
         aspect(s) { return ASPECTS[s.aspect] || 1; },
         regenerate() {
           stop(); stepCount = 0; measStep = -1; measView = ''; measOK = false;

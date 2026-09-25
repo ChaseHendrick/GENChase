@@ -96,6 +96,9 @@ disturb(p)         only on living fields; p = { x, y, yGL, dx, dy } with x, y in
 exportPNG(w, h)    -> Promise<Blob> of exactly w x h pixels
 exportSVG(w, h)    -> string or Blob; implement it when the picture is discrete marks, omit it when
                    the picture is accumulated density and there is no geometry to emit
+evidence()         -> null or { status, why }; optional. A mode the tab's validation record does not
+                   cover (equations the user typed) returns { status: 'unvalidated', why: '...' }. The
+                   stage badge and the provenance then show it; it can only lower the tab's status.
 exportData()       -> Promise<{ arrays: { name: { data, shape, units?, description? } }, meta: {...} }>
                    optional; the simulation state as typed arrays (row-major, row 0 at the top) plus
                    grid, units, step and time. The engine packs it into an .npz with provenance for the
