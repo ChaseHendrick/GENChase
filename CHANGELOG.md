@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## v0.7.1
+
+The publication date is recorded in the GitHub release notes.
 
 - **Paper 2: sharpness for every number of weak vortices, and O'Neil 2010 read** (draft, 24 pages). `papers/collapse-without-rotation/` proves that the constant sqrt(3)/2 of its Theorem 1(a) cannot be increased for any number of weak vortices (Corollary 3), where only even numbers and three were proved before: Lemma 1 builds a nondegenerate translating cluster of every size from a pair or the triangle (1, 1, -2) by placing weak vortices +-eps at simple stagnation points, and Theorem 3 turns any such cluster into collapses with P tending to sqrt(3)/2. `verify_sharpness_all_n.py` (37 checks) checks the starting clusters exactly and grows clusters of 4 to 15 vortices, and with `--large` one of 101, with their collapse families at forty digits. O'Neil, Theor. Comput. Fluid Dyn. 24 (2010), supplied by the owner and read in full, found collapsing vortex sheets with point vortices first, including the S-shaped sheet between two negative point vortices at P = 1/2; Section 6 now credits him and claims only the direct continuum solution and the minimum P_inf along the family. RESEARCH.md records both.
 

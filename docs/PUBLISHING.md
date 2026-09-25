@@ -21,7 +21,7 @@ paper's programs and data get their DOI from the paper's own public repository i
 
 Already done in the repository: `.zenodo.json` describes the software (upload type software,
 Apache-2.0), the identities note has its own metadata in `identities/zenodo.json`, and
-`CITATION.cff` is valid CFF 1.2 with the version and date of the latest release (v0.7.0,
+`CITATION.cff` is valid CFF 1.2 with the version and date of the latest release (v0.7.1,
 2026-09-25) and a comment where the DOI goes. `node tools/index.js` keeps the technique count in
 `.zenodo.json` current, and `node tools/lint.js` fails it if it drifts.
 
