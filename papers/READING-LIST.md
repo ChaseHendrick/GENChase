@@ -24,16 +24,16 @@ interlibrary loan, or emailing the author for a copy.
 
 | | Item | What to check |
 |---|---|---|
-| free | Synge, "On the motion of three vortices", Canad. J. Math. 1(3) (1949) 257-270 | The classical collapse family; not cited yet. |
+| done | Synge, "On the motion of three vortices", Canad. J. Math. 1(3) (1949) 257-270 | Read 2026-09-25 and cited (Sect. 4, Theorem 8). |
 | free | Conte and de Seze, Mod. Phys. Lett. B 29 (2015) 1530017, doi:10.1142/S0217984915300173 (arXiv:1511.00069) | Add the journal printing; the "pp. 24-25" pinpoint is arXiv pagination. |
 | free | Grotto, Romito and Viviani, journal version in Physica D 457 (2024) 133947 (arXiv:2307.05133) | The bibliography cites the preprint; the published title differs. |
 | free | Gallay and Sverak, arXiv:2609.10847; Drivas et al., arXiv:2607.16490 | Newest versions; every theorem, section and equation pinpoint. |
 | done | Hiraoka, RIMS Kokyuroku Bessatsu B13 (2009) 35-43 | Read 2026-09-25: Sect. 3 gives a geometric reason that every triple collision is self-similar (proof in his 2008 paper). Hernandez-Garduno-Lacomba 2007 is earlier, so it keeps the credit; Hiraoka is now cited beside it. |
 | optional | Krishnamurthy, Aref and Stremler, Phys. Rev. Fluids 3 (2018) 024702 (arXiv:1706.00731) | Not needed: since 2026-09-25 the bibliography says the arXiv v2 equation numbers are cited. Only if you want journal numbering: https://doi.org/10.1103/PhysRevFluids.3.024702 |
 | done | Hiraoka, Nonlinearity 21 (2008) 361-379 | Read 2026-09-25: Theorems 1-2 (regularizable iff the like-signed circulations are equal, near equality) and Prop. 2.8 now cited; nothing on rotation or P. |
-| paid (owned) | Aref, Phys. Fluids 25 (1982) 2183-2187 | You bought it: confirm that Eq. (3) is the ring reduction and the phrase "for arbitrary circulations". |
+| done | Aref, Phys. Fluids 25 (1982) 2183-2187 | Read 2026-09-25: Eqs. (3a, 3b) are the ring reduction for arbitrary circulations, as cited. |
 | done | Leoncini, Kuznetsov and Zaslavsky, Phys. Fluids 12 (2000) 1911-1927 | Read 2026-09-25 in the journal version: Fig. 18 and Lambda = e^{4 pi H} as cited; no change. |
-| paid | Aref, Rott and Thomann, Annu. Rev. Fluid Mech. 24 (1992) 1-21 | The review of Groebli's thesis; cited without a reading. |
+| done | Aref, Rott and Thomann, Annu. Rev. Fluid Mech. 24 (1992) 1-21 | Read 2026-09-25: p. 17 and Fig. 3 cover Groebli's self-similar collapse; cited with that pinpoint. Paper 1's list is complete. |
 
 **Optional**: Borisov and Lebedev, Regul. Chaotic Dyn. 3(4) (1998) (free on arXiv; add pages); Aref,
 Phys. Fluids 22 (2010) 057104 (six pinpoints against print); Gotoda, J. Dyn. Differ. Equ. 33 (2021) (paid;
