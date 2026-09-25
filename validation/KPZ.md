@@ -49,3 +49,25 @@ schedule as production (`nextMeasure` starts at `4L`, multiplies by 1.25).
   are out of scope.
 - Family–Vicsek α uses wide bands at small `L`; undersaturation and noise remain.
 - No print-state preservation audit is registered yet; status stays **partially validated**.
+
+## Relaxation top-of-lattice stop (2026-09-25)
+
+Ported from the closed branch `claude/stoic-brahmagupta-xpt636` (PR #123). The relaxation
+rule had no top-of-lattice stop, unlike the random, ballistic and RSOS rules: it placed a
+particle at `h[best] + 1` even above row `H - 2`, and where that index fell past the lattice
+the typed-array write was silently dropped, so the particle was missing from the plate but
+still counted in the heights, the width and the particle total. Relaxation now stops at the
+top like the other three rules.
+
+A before-and-after run of the real module source with the engine RNG, on all six column
+presets at the default seed, gave bit-identical cells, heights, width samples, particle
+counts and fitted exponents, so no preset output changes. On a thin, nearly full relaxation
+lattice (700 columns, 16:9, fill 0.95, three seeds) the old rule placed 28,550 particles
+above the top row and drove the tallest column to 439 in a 394-row lattice; the fixed rule
+stops at row 392. That check was a scratch comparison, not a registered tool.
+
+The status stays **partially validated**. The same branch promoted kpz to validated, but its
+own criterion, fixed before the first run, required ballistic over relaxation to separate by
+at least 5 standard errors at 16 seeds per class, and it reached 3.2. It passed only in a
+64-seed follow-up added after that miss (7.8 standard errors), which is not the
+pre-registered test. A promotion needs a criterion that is set in advance and then met.

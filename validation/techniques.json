@@ -315,7 +315,7 @@
   {
     "id": "kpz",
     "source": "src/modules/kpz.js",
-    "sourceSha256": "ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4",
+    "sourceSha256": "539a6e43be0857f29d57ac8260957512088f20f512eaad3c478f849e6429f43f",
     "reference": "Mehran Kardar, Giorgio Parisi and Yi-Cheng Zhang, 'Dynamic scaling of growing interfaces', Physical Review Letters 56, 889 (1986). The scaling form W(L, t) = L^α f(t/L^z) is Fereydoon Family and Tamás Vicsek, J. Phys. A 18, L75 (1985). Ballistic deposition is Murray Vold (1959) and Michael Sutherland (1966); the restricted solid-on-solid model is Jin Min Kim and Joel Kosterlitz, Phys. Rev. Lett. 62, 2289 (1989); surface relaxation is Family, J. Phys. A 19, L441 (1986); the cluster model is Murray Eden, in the Berkeley Symposium proceedings (1961). That the edge fluctuations follow the Tracy-Widom distributions is Michael Prähofer and Herbert Spohn, Phys. Rev. Lett. 84, 4882 (2000), and Kazumasa Takeuchi and Masaki Sano measured it in turbulent liquid crystal, Phys. Rev. Lett. 104, 230601 (2010).",
     "equation": "∂h/∂t = ν∇²h + (λ/2)(∇h)² + η,   W(t) ~ t^β with β = 1/3 in 1+1 dimensions",
     "status": "partially validated",
@@ -323,6 +323,7 @@
       "Independent Float64 twin of column deposition kernels (random, relax, ballistic, RSOS) measuring W(t)~t^β; not a browser UI replay or Eden radial audit.",
       "Finite L=512 and five seeds per class; KPZ ballistic crossover often fits under 1/3. RSOS is the KPZ gate with a wider acceptance band.",
       "Family–Vicsek α at small L uses coarse bands only; no Tracy–Widom edge law or liquid-crystal experiment claim.",
+      "The relaxation rule now stops at the top lattice row like the other column rules (closed PR #123); the six column presets were bit-identical before and after in a scratch run of the real module, but no registered tool exercises a lattice thin enough to reach the top row (validation/KPZ.md).",
       "No print-state accuracy audit is registered."
     ],
     "remaining": [

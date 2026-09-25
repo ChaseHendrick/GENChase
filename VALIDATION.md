@@ -175,6 +175,7 @@ No record has an outside review yet; every review so far was done inside the pro
 - Independent Float64 twin of column deposition kernels (random, relax, ballistic, RSOS) measuring W(t)~t^β; not a browser UI replay or Eden radial audit.
 - Finite L=512 and five seeds per class; KPZ ballistic crossover often fits under 1/3. RSOS is the KPZ gate with a wider acceptance band.
 - Family–Vicsek α at small L uses coarse bands only; no Tracy–Widom edge law or liquid-crystal experiment claim.
+- The relaxation rule now stops at the top lattice row like the other column rules (closed PR #123); the six column presets were bit-identical before and after in a scratch run of the real module, but no registered tool exercises a lattice thin enough to reach the top row (validation/KPZ.md).
 - No print-state accuracy audit is registered.
 
 ### grains
