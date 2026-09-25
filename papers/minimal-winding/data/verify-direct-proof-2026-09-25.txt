@@ -1,0 +1,39 @@
+OK   Lemma 3: |(sqrt R - mu e^{i th})(sqrt R + e^{i th})|^2 = D
+OK   Lemma 3: Re kappa = -(1+mu)^3 mu M sin(th) / (2 pi sqrt(R) D)
+OK   Lemma 3: Im kappa = (1+mu)^3 N / (2 pi R D)
+OK   eq:pos: sum Gamma_j z_j = 0, so z_c = 0
+OK   Biot-Savart on eq:pos: zdot_1/(z_1 - z_c) = Lemma 3 kappa
+OK   Biot-Savart on eq:pos: zdot_2/(z_2 - z_c) = Lemma 3 kappa
+OK   Biot-Savart on eq:pos: zdot_3/(z_3 - z_c) = Lemma 3 kappa
+OK   eq:Ptheta
+OK   (d1)  k^2 + 27 mu^2 (1+mu)^2 = 4 R^3
+OK   (d2)  T^2 = R M^2 + V
+OK   (d3)  9 (1+mu)^2 N = 2R (T^2 + V) + k M T
+      (d1): k = -2*mu**3 - 3*mu**2 + 3*mu + 2 ;  4R^3 - 27mu^2(1+mu)^2 = 4*mu**6 + 12*mu**5 - 3*mu**4 - 26*mu**3 - 3*mu**2 + 12*mu + 4 ; k^2 = 4*mu**6 + 12*mu**5 - 3*mu**4 - 26*mu**3 - 3*mu**2 + 12*mu + 4
+      (d2)  [C^0]  lhs = 4*(mu**2 + mu + 1)**2   rhs = 4*(mu**2 + mu + 1)**2
+      (d2)  [C^1]  lhs = -4*(mu - 1)*(mu**2 + mu + 1)   rhs = -4*(mu - 1)*(mu**2 + mu + 1)
+      (d2)  [C^2]  lhs = (mu - 1)**2   rhs = (mu - 1)**2
+      (d3)  [C^0]  lhs = 18*(mu + 1)**2*(mu**2 + 1)*(mu**2 + mu + 1)   rhs = 18*(mu + 1)**2*(mu**2 + 1)*(mu**2 + mu + 1)
+      (d3)  [C^1]  lhs = -9*(mu - 1)*(mu + 1)**2*(2*mu**2 + mu + 2)   rhs = -9*(mu - 1)*(mu + 1)**2*(2*mu**2 + mu + 2)
+      (d3)  [C^2]  lhs = -18*mu*(mu + 1)**2   rhs = -18*mu*(mu + 1)**2
+OK   cos^2 psi + sin^2 psi = 1  (from d1)
+OK   x^2 + y^2 = 1  (from d2)
+OK   (d3)/(2RT^2): 9(1+mu)^2 N/(2RT^2) = 2 - x^2 + x cos psi
+OK   P^2 = (2 - x^2 + x cos psi)^2 / (4 x^2 y^2 sin^2 psi)
+      ratio (2 - x^2 + x cos psi)/N = 9*(mu + 1)**2/(2*(mu**2 + mu + 1)*(C*mu - C - 2*mu**2 - 2*mu - 2)**2) (> 0)
+OK   Lemma 1 identity
+OK   (2 - x^2)^2 - x^2 = 3x^2y^2 + 4y^4 on x^2 + y^2 = 1
+OK   a - |b| = (1 - |x|)(2 + |x|)
+OK   y^2/x^2 = 3(1+mu)^2 sin^2(theta)/M^2
+OK   (SOS)  4R^3 (N^2 - 3mu^2 (R-C^2) M^2) = (kN + 3mu^2 M T)^2 + 48 mu^2 (1+mu)^2 R^2 (R-C^2)^2
+OK   P^2 - 3/4 - 3(1+mu)^2 sin^2/M^2 = (kN + 3mu^2 MT)^2/(16 mu^2 R^3 (R-C^2) M^2)
+OK   Lagrange: W^2 - 3s^2u^2V = (c(T^2+V) + uT)^2 + 4s^2V^2  [c^2+s^2=1, u^2+V=T^2]
+OK   C + sqrt R = 3 mu^2/8 + O(mu^3)
+OK   N(sqrt R) N(-sqrt R) = 3 mu^2 (1+mu)^2 R  (Lemma 3 proof)
+OK   N(sqrt R) = 4 + O(mu)
+OK   N(-sqrt R) = 3 mu^2/4 + O(mu^3)
+OK   N'(-1) = 2 + O(mu)
+OK   N(C) = 3 mu^2/2 + O(mu^3)
+      P along the family = sqrt(3)/2 + 13*sqrt(3)*mu**2/16 + O(mu**3)
+OK   P -> sqrt(3)/2 as mu -> 0
+all identities verified

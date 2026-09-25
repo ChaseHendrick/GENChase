@@ -55,9 +55,12 @@ jobs:
         with:
           path: ${{ runner.temp }}/pages
 
+  # Off unless the repository variable PAGES is set to "on" (Settings > Secrets and variables >
+  # Actions > Variables) and Pages is enabled with source "GitHub Actions". The site is off by the
+  # owner's choice (2026-09-25), and a free-plan repository can serve Pages only while it is public.
   deploy:
     name: deploy Pages
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: vars.PAGES == 'on' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10

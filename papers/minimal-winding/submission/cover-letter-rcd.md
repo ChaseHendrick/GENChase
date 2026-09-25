@@ -16,7 +16,7 @@ Consequently every self-similar three-vortex collapse satisfies |ω₀|t_c > √
 
 The proofs are self-contained. The algebraic steps were verified in exact arithmetic, and the formulas for P, its minima and the vortex paths were checked against direct Biot–Savart computations in high-precision arithmetic. The code and data are publicly available. The manuscript is also posted on arXiv as [arXiv identifier].
 
-The manuscript has not been published and is not under consideration elsewhere. Preparation of the work was AI-assisted, as stated in the manuscript, and the author takes full responsibility for its content.
+The manuscript has not been published in a journal and is not under consideration elsewhere. It is available as the arXiv preprint [arXiv identifier]. Preparation of the work was AI-assisted, as stated in the manuscript, and the author takes full responsibility for its content.
 
 Possible reviewers, all with expertise in point-vortex collapse:
 - [name, affiliation, email]

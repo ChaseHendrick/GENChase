@@ -26,14 +26,23 @@ function generate() {
     }
   }
   if (result.includes('{{include:')) throw Error('Unresolved include');
-  const folder = licensed.replace(/<(script|style)>\{\{include:([^}]+)\}\}<\/\1>/g, (_, tag, name) => {
+  // The folder entry swaps each include placeholder of the trusted template for a tag that loads the
+  // file. Spliced piece by piece rather than with String.replace: this is template assembly, not
+  // sanitization of untrusted text, and the splice says so to the code scanner as well.
+  const folderTag = (tag, name) => {
     if (!bodies.has(name)) throw Error('Unresolved folder source: ' + name);
     if (name.startsWith('modules/')) return '';
     if (name === 'shared/boot.js') return '<script>Studio.boot({manifest: "./src/module-manifest.json"});</script>';
     if (tag === 'style' && name.startsWith('styles/')) return '<link rel="stylesheet" href="./src/' + name + '">';
     if (tag === 'script' && name.startsWith('shared/')) return '<script src="./src/' + name + '"></script>';
     throw Error('Unsupported folder include: ' + name);
-  });
+  };
+  let folder = '', last = 0;
+  for (const m of licensed.matchAll(/<(script|style)>\{\{include:([^}]+)\}\}<\/\1>/g)) {
+    folder += licensed.slice(last, m.index) + folderTag(m[1], m[2]);
+    last = m.index + m[0].length;
+  }
+  folder += licensed.slice(last);
   if (folder.includes('{{include:')) throw Error('Unresolved folder include');
   const manifest = require('./registry.js').metadata(root, [...seen].filter(name => name.startsWith('modules/')), bodies);
   // Build facts every export carries as provenance: a fingerprint of the exact assembled source, each

@@ -8,6 +8,7 @@ Read this first when you come back. Newest state at the top of each list.
 - kpz: the relaxation rule stops at the top of the lattice (ported from the closed PR #123); presets unchanged.
 - `npm run xref`: optional cross-check of cahn, swift and ks against a NumPy spectral reference (tools/xref/); all pass. Not part of `npm test`.
 - Still running: the custom reaction-term box for the rdx tabs.
+- PR #152 merged (547ad2e). GitHub Pages is off by your choice: the deploy job runs only when the repository variable `PAGES` is `on`. Links to chasehendrick.github.io (README, studio, docs) are dead while it is off; fix them if the repository goes public without Pages.
 
 ## Done and merged to main
 
@@ -49,11 +50,7 @@ Coverage now: 54 validated within stated limits, 8 partially validated, 68 unval
    git push origin --delete claude/affectionate-fermi-89ndh4 claude/eloquent-brahmagupta-wz6g26 docs/readme-check-and-print-tagline docs/readme-check-and-print-tagline-v2 grok/hendrick-name grok/here-plates grok/print-and-gpu grok/soliton-web lit/aref1982-read printbound/eight-print-state-r109 promote-lozenge wip-sle
    ```
 
-2. **Decide on `research/generalizations-wip`** (draft PR #136). It is public and holds:
-   - full-text copies of 14 papers, some paywalled;
-   - your unpublished generalization results.
-
-   Making GENChase private hides it immediately. Deleting the branch alone does not, because PR #136 keeps the commits reachable.
+2. **`research/generalizations-wip`**: PR #136 was closed unmerged on 2026-09-25 at your request; the branch is kept as the backup (reopen the PR any time). It holds unpublished results and full-text paper copies, so it stays off `main`, and it is hidden only while the repository is private.
 3. **Decisions left from PR #123** (`claude/stoic-brahmagupta-xpt636`):
    - the kpz module change and its promotion;
    - the SSH harnesses, which test a different solver key than main's;
@@ -71,7 +68,7 @@ Not needed: the signing key (dropped by your choice).
 
 ## Open questions being researched
 
-- **Is the arXiv license the best?** The current setup recommends the arXiv perpetual non-exclusive license, with CC BY 4.0 as the alternative. Companion repos mark the manuscript "all rights reserved" and the code and data Apache-2.0. One wrinkle is being checked: paper v1 sat in the public GENChase repo under its Apache-2.0 license, and the v0.6.x releases attached the PDF. Whether that license covers the paper text, and what it means for a journal, is part of the research. Do not rely on the restrictive license to protect the text until that answer is in.
+- **Is the arXiv license the best?** The current setup recommends the arXiv perpetual non-exclusive license, with CC BY 4.0 as the alternative. Companion repos mark the manuscript "all rights reserved" and the code and data Apache-2.0. One wrinkle is being checked: an earlier draft of the paper sat in the public GENChase repo under its Apache-2.0 license, and the v0.6.x releases attached the PDF. Whether that license covers the paper text, and what it means for a journal, is part of the research. Do not rely on the restrictive license to protect the text until that answer is in.
 - **Renaming GitHub from ChaseHendrick.** Repo URLs redirect, but the Pages site (`chasehendrick.github.io`) and the profile URL do not. If you rename, do it before creating the companion repos and before arXiv or Zenodo, because those records are permanent and the papers print `github.com/ChaseHendrick/...` URLs. 62 files mention ChaseHendrick. The research is verifying the details.
 - **Reading still owed for paper 1.** Per the ledger, `RESEARCH.md` as updated in #149:
   - Stremler 2021, *Regul. Chaotic Dyn.* 26, 482 to 504 (paywalled; a review of the path-length observation Corollary 1 proves);

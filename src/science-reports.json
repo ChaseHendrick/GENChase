@@ -246,7 +246,7 @@
   {
     "id": "cyclic",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
+    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
     "reference": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a < 1 < b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
     "equation": "∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v)",
     "status": "validated within stated limits",
@@ -718,7 +718,7 @@
   {
     "id": "vegetation",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
+    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
     "reference": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n², because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
     "equation": "∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n",
     "status": "validated within stated limits",
@@ -1305,7 +1305,7 @@
   {
     "id": "excitable",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
+    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
     "reference": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
     "equation": "Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b)",
     "status": "validated within stated limits",
@@ -2403,8 +2403,8 @@
   {
     "id": "turing",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
-    "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry.",
+    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
+    "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry. Typed reaction terms follow VisualPDE (Walker, Townsend, Chudasama and Krause, Bull. Math. Biol., 2023).",
     "equation": "Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v",
     "status": "validated within stated limits",
     "limitations": [
@@ -2412,7 +2412,8 @@
       "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
       "Linear regime only within this domain; status-line wavelength is the onset-critical value, not a saturated nonlinear pattern measurement.",
       "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
-      "Broader settings require additional independent evidence."
+      "Broader settings require additional independent evidence.",
+      "The Custom reaction mode steps reaction terms f(u, v) and g(u, v) the viewer types, u_t = D_u lap u + f and v_t = D_v lap v + g on the same periodic stencils, by forward Euler without the clamps or implicit loss terms of the built-in kinetics. A user-defined reaction is not validated: the status line says so and prints no comparison with theory in that mode, and none of the evidence above covers it. Its step ceiling, 0.8 of 2/(lambda_D + rho_J) with lambda_D = Q c^2 max(D_u, D_v) from the stencil symbol (Q = 8 or 16/3) and rho_J the largest eigenvalue magnitude of the finite-difference Jacobian over 2048 field samples refreshed every 50 steps, is an estimate, not a stability proof: summed magnitudes do not bound the eigenvalues of a non-normal sum, forward Euler amplifies imaginary eigenvalues at any step, and the field can stiffen between samples. A field found non-finite (or past 1e30) at a sample stops the plate (validation/RDX.md, Custom reaction)."
     ],
     "remaining": [
       "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, float16 fallback, evolved/running exports, other grids and hardware."
@@ -2683,7 +2684,7 @@
   {
     "id": "chemotaxis",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
+    "sourceSha256": "f8833512e2b066eb82a7cb3f27616295140728fe8a063c0337f36b272258b49b",
     "reference": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) < c/2 − D − a.",
     "equation": "∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²)",
     "status": "validated within stated limits",

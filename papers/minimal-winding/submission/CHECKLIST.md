@@ -14,9 +14,9 @@ submission.
 ## Ready
 
 - The manuscript in both formats, with the figure `paper/figures/minimal-winding.pdf`, and its
-  LaTeX build `paper/minimal-winding.pdf` (13 pages), the same PDF arXiv will build. The author block
+  LaTeX build `paper/minimal-winding.pdf` (14 pages since the direct proof of Corollary 1 was added on 2026-09-25), the same PDF arXiv will build. The author block
   carries the contact email (owner's decision, 2026-09-24).
-- The LaTeX and Typst texts cite the same 23 works in the same places. Every work cited in the
+- The LaTeX and Typst texts cite the same 26 works in the same places. Every work cited in the
   LaTeX source has an entry in its own bibliography, and every entry is cited.
 - A data availability paragraph naming the verification programs in `code/` and their output in
   `data/`, a funding statement (no external funding), and the statement
@@ -54,8 +54,7 @@ submission.
 0. Before the arXiv upload (license decided 2026-09-25: arXiv.org perpetual, non-exclusive):
    - Ask the *Regular and Chaotic Dynamics* editorial office in writing whether an arXiv posting counts
      as prior publication under its "not published previously" condition. Keep the reply.
-   - Tell the journal at submission that version 1 of the manuscript was briefly public, from 2026-09-23,
-     in a repository under the Apache License 2.0, and attached to its releases v0.6.0 to v0.6.2.
+   - Owner's decision (2026-09-25): the earlier drafts in the GENChase repository are not disclosed in the cover letter. The cover letter names the arXiv preprint. Answer any direct question on the submission form truthfully.
    - Finish the must-read items in [../../READING-LIST.md](../../READING-LIST.md).
 1. Read the current author instructions of *Regular and Chaotic Dynamics*, including its policies on
    AI assistance, suggested reviewers, preprints and the preferred source format. Nothing in this

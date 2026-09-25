@@ -2,7 +2,7 @@
 
 **Read on 2026-09-25 from the owner's PDFs** (RESEARCH.md, same date): Conte-de Seze, Krishnamurthy-Aref-Stremler
 (arXiv v2), Gallay-Sverak, Drivas et al., Hernandez-Garduno-Lacomba, Synge (now cited), Aref 1982 and
-Grotto-Romito-Viviani; later the same day Hiraoka 2009 (now cited). Their rows below are done unless a journal version is still named.
+Grotto-Romito-Viviani; later the same day Hiraoka 2009 (now cited), Tavantzis-Ting 1988, Krishnamurthy-Stremler 2018, Hiraoka 2008 and Stremler 2021. Every must-read for paper 1 is done. Their rows below are done unless a journal version is still named.
 
 Compiled from the research ledger (RESEARCH.md), the papers' notes and checklists, and web searches on
 2026-09-25. **Paper 2's list was confirmed by two independent checkers. Paper 1's list was not verified**:
@@ -16,24 +16,24 @@ interlibrary loan, or emailing the author for a copy.
 
 | | Item | What to check |
 |---|---|---|
-| free | Krishnamurthy and Stremler, "Finite-time collapse of three point vortices in the plane", Regul. Chaotic Dyn. 23(5) (2018) 530-550, doi:10.1134/S1560354718050040 | The manuscript cites it three times; only one citation rests on a recorded reading. Check the other two. |
-| paid | Stremler, "Something old, something new: Three point vortices on the plane", Regul. Chaotic Dyn. 26(5) (2021) 482-504 | His review of the path-length observation that Corollary 1 proves. Does it state a bound? Is the Discussion's credit right? |
-| paid | Tavantzis and Ting, "The dynamics of three vortices revisited", Phys. Fluids 31(6) (1988) 1392-1409, doi:10.1063/1.866732 | The sum Gamma_j Gamma_k = 0 section: the self-similar families and their stability; cited from the abstract only. |
+| done | Krishnamurthy and Stremler, "Finite-time collapse of three point vortices in the plane", Regul. Chaotic Dyn. 23(5) (2018) 530-550, doi:10.1134/S1560354718050040 | Read 2026-09-25: all four citations hold and now carry pinpoints. Their tau~ K_1 is P; they find s~(1) > 2 numerically and state no bound. |
+| done | Stremler, "Something old, something new: Three point vortices on the plane", Regul. Chaotic Dyn. 26(5) (2021) 482-504, doi:10.1134/S1560354721050038 | Read 2026-09-25: one paragraph on self-similar motion, deferring to Krishnamurthy-Stremler 2018; no bound, no path-length statement. The Discussion's credit is right; not cited. |
+| done | Tavantzis and Ting, "The dynamics of three vortices revisited", Phys. Fluids 31(6) (1988) 1392-1409, doi:10.1063/1.866732 | Read 2026-09-25 (Sects. I-II): contracting family unstable, expanding stable, in side-ratio terms; nothing on rotation or collapse time, so no priority issue. Now cited as [Sect. II]. |
 
 **Should read or check**
 
 | | Item | What to check |
 |---|---|---|
-| free | Synge, "On the motion of three vortices", Canad. J. Math. 1(3) (1949) 257-270 | The classical collapse family; not cited yet. |
+| done | Synge, "On the motion of three vortices", Canad. J. Math. 1(3) (1949) 257-270 | Read 2026-09-25 and cited (Sect. 4, Theorem 8). |
 | free | Conte and de Seze, Mod. Phys. Lett. B 29 (2015) 1530017, doi:10.1142/S0217984915300173 (arXiv:1511.00069) | Add the journal printing; the "pp. 24-25" pinpoint is arXiv pagination. |
 | free | Grotto, Romito and Viviani, journal version in Physica D 457 (2024) 133947 (arXiv:2307.05133) | The bibliography cites the preprint; the published title differs. |
 | free | Gallay and Sverak, arXiv:2609.10847; Drivas et al., arXiv:2607.16490 | Newest versions; every theorem, section and equation pinpoint. |
 | done | Hiraoka, RIMS Kokyuroku Bessatsu B13 (2009) 35-43 | Read 2026-09-25: Sect. 3 gives a geometric reason that every triple collision is self-similar (proof in his 2008 paper). Hernandez-Garduno-Lacomba 2007 is earlier, so it keeps the credit; Hiraoka is now cited beside it. |
-| ? | Krishnamurthy, Aref and Stremler, Phys. Rev. Fluids 3 (2018) 024702 (arXiv:1706.00731) | Eq. (40) (and (46b)) in the journal numbering. |
-| paid | Hiraoka, Nonlinearity 21 (2008) 361-379 | The regularization of the triple collision; the Discussion's regularization paragraph. |
-| paid (owned) | Aref, Phys. Fluids 25 (1982) 2183-2187 | You bought it: confirm that Eq. (3) is the ring reduction and the phrase "for arbitrary circulations". |
-| paid | Leoncini, Kuznetsov and Zaslavsky, Phys. Fluids 12 (2000) 1911-1927 | Fig. 18 and its caption in the journal version (read in the arXiv version). |
-| paid | Aref, Rott and Thomann, Annu. Rev. Fluid Mech. 24 (1992) 1-21 | The review of Groebli's thesis; cited without a reading. |
+| optional | Krishnamurthy, Aref and Stremler, Phys. Rev. Fluids 3 (2018) 024702 (arXiv:1706.00731) | Not needed: since 2026-09-25 the bibliography says the arXiv v2 equation numbers are cited. Only if you want journal numbering: https://doi.org/10.1103/PhysRevFluids.3.024702 |
+| done | Hiraoka, Nonlinearity 21 (2008) 361-379 | Read 2026-09-25: Theorems 1-2 (regularizable iff the like-signed circulations are equal, near equality) and Prop. 2.8 now cited; nothing on rotation or P. |
+| done | Aref, Phys. Fluids 25 (1982) 2183-2187 | Read 2026-09-25: Eqs. (3a, 3b) are the ring reduction for arbitrary circulations, as cited. |
+| done | Leoncini, Kuznetsov and Zaslavsky, Phys. Fluids 12 (2000) 1911-1927 | Read 2026-09-25 in the journal version: Fig. 18 and Lambda = e^{4 pi H} as cited; no change. |
+| done | Aref, Rott and Thomann, Annu. Rev. Fluid Mech. 24 (1992) 1-21 | Read 2026-09-25: p. 17 and Fig. 3 cover Groebli's self-similar collapse; cited with that pinpoint. Paper 1's list is complete. |
 
 **Optional**: Borisov and Lebedev, Regul. Chaotic Dyn. 3(4) (1998) (free on arXiv; add pages); Aref,
 Phys. Fluids 22 (2010) 057104 (six pinpoints against print); Gotoda, J. Dyn. Differ. Equ. 33 (2021) (paid;

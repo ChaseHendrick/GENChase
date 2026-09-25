@@ -106,6 +106,21 @@ const {chromium}=require('playwright');
   check(await until(()=>/diverged during burn-in.*stopped/.test(document.getElementById('status').textContent)),'custom ODE divergence guard stops and says so');
   location.hash='attractors/ode-lorenz/'+b64({v:4,system:'custom',a:10,b:28,c:2.667,dt:0.002,points:500000});
   check(await until(()=>Studio.getRecipe()?.seed==='ode-lorenz'&&document.getElementById('status').textContent.includes('user-defined, not validated')),'custom ODE status');
+  // Turing's custom reaction: labeled user-defined, its step held under the ceiling measured from the field,
+  // an out-of-range constant refused, and a reaction that runs away stopped with the reason on the status line.
+  const tst=()=>document.getElementById('status').textContent;
+  location.hash='turing/react-check/'+b64({v:5,tmodel:'custom',grid:128,warmup:100,running:false});
+  check(await until(()=>tst().includes('seed react-check')&&/step 100\s*paused/.test(tst())&&tst().includes('user-defined, not validated')&&/clamped to 0\.8 × 2\/\(λD \+ ρJ\)/.test(tst()),20000),'custom reaction status and step ceiling');
+  { const badge=document.getElementById('btn-science-report'), prov=Studio.getProvenance();
+    check(/Unvalidated/.test(badge.textContent)&&prov.technique.validation==='unvalidated'&&prov.technique.tabValidation==='validated within stated limits'&&/Custom reaction/.test(prov.technique.validationNote||''),'custom reaction lowers the stage badge and the provenance to unvalidated'); }
+  check(Studio.getRecipe().reactF===undefined&&!/λ ≈/.test(tst()),'default formulas stay out of the hash and no theory is printed');
+  const reactF=document.getElementById('p-turing-reactF');
+  reactF.value='u*1e39';reactF.dispatchEvent(new Event('input'));reactF.dispatchEvent(new Event('change'));
+  check(document.getElementById('p-turing-reactF-error').textContent.includes('out of range')&&Studio.getRecipe().reactF===undefined,'a constant the GPU cannot hold is refused');
+  location.hash='turing/react-blowup/'+b64({v:5,tmodel:'custom',reactF:'u^2 + 1',reactG:'0',grid:128,warmup:600,running:false});
+  check(await until(()=>tst().includes('seed react-blowup')&&/stopped at step [0-9,]+: the field was found non-finite/.test(tst())&&tst().includes('no uniform state found'),20000),'custom reaction stops on a non-finite field and says so');
+  location.hash='turing/react-builtin/'+b64({v:5,tmodel:'schnak',grid:128,warmup:20,running:false});
+  check(await until(()=>tst().includes('seed react-builtin')&&/Validated/.test(document.getElementById('btn-science-report').textContent)&&Studio.getProvenance().technique.validation==='validated within stated limits'&&Studio.getProvenance().technique.validationNote===null,20000),'a built-in reaction keeps the tab status on the badge and in the provenance');
   check(!document.querySelector('img[src="x"]')&&!alerted,'no markup from typed text in the real modules');
   return {random,rejects};
  });

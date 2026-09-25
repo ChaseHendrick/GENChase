@@ -743,7 +743,7 @@ void main(){
       schemaVersion: 1, software: 'GENChase', engineApiVersion: S.apiVersion, recipeVersion: RECIPE_V,
       build: BUILD.build || null, buildFingerprint: BUILD.fingerprint || null,
       technique: { id: e.mod.id, name: e.mod.name, source, sourceSha256: (source && BUILD.sources && BUILD.sources[source]) || null,
-        validation: S.validationStatus(e.mod.id) },
+        validation: stageEvidence(e).status, tabValidation: S.validationStatus(e.mod.id), validationNote: stageEvidence(e).why },
       link: encodeRecipe(e), recipe: S.getRecipe(e.mod.id), compute: computeInfo(e), witness: S.getWitness(e.mod.id),
       note: 'What made this file. The link reprints the recipe; exact pixels can differ across solver revisions, GPUs and resolutions.',
     }));
@@ -758,13 +758,29 @@ void main(){
     unvalidated: { glyph: '○', label: 'Unvalidated', short: 'Unvalidated' },
   };
   const evidenceOf = id => EVIDENCE[S.validationStatus(id)] || null;
-  function renderEvidenceBadge(id) {
-    const badge = document.getElementById('btn-science-report'), status = S.validationStatus(id), ev = evidenceOf(id);
-    if (!badge || badge.dataset.status === (status || '')) return;
+  // A mode the tab's validation record does not cover (equations the user typed) reports itself through
+  // the optional instance method evidence(): { status, why } or null. It can only lower the status the
+  // stage and the provenance show, never raise it; the tab strip keeps the tab's own status.
+  const EVIDENCE_RANK = { unvalidated: 0, 'partially validated': 1, 'validated within stated limits': 2 };
+  function stageEvidence(e) {
+    const tab = S.validationStatus(e.mod.id);
+    let own = null;
+    if (e.inst && typeof e.inst.evidence === 'function') { try { own = e.inst.evidence(); } catch (err) { own = null; } }
+    if (own && EVIDENCE[own.status] && typeof own.why === 'string' && own.why &&
+        (tab == null || EVIDENCE_RANK[own.status] < EVIDENCE_RANK[tab])) return { status: own.status, why: own.why };
+    return { status: tab, why: null };
+  }
+  function renderEvidenceBadge(e) {
+    const badge = document.getElementById('btn-science-report'), { status, why } = stageEvidence(e), ev = EVIDENCE[status] || null;
+    const key = (status || '') + '|' + (why || '');
+    if (!badge || badge.dataset.evidenceKey === key) return;
+    badge.dataset.evidenceKey = key;
     badge.dataset.status = status || '';
     badge.textContent = ev ? ev.glyph + ' ' + ev.label : 'Science report';
-    if (ev) badge.setAttribute('aria-label', ev.short + ': open the science report'); else badge.removeAttribute('aria-label');
-    badge.title = ev ? ev.short + ' (validation/techniques.json). Open the evidence, limits and data export.' : 'Open the science report';
+    if (ev) badge.setAttribute('aria-label', ev.short + (why ? ' in this mode' : '') + ': open the science report'); else badge.removeAttribute('aria-label');
+    badge.title = !ev ? 'Open the science report'
+      : why ? ev.short + ': ' + why + '. The tab is ' + (EVIDENCE[S.validationStatus(e.mod.id)] || { short: 'unrecorded' }).short.toLowerCase() + ' (validation/techniques.json) outside this mode.'
+      : ev.short + ' (validation/techniques.json). Open the evidence, limits and data export.';
   }
   const softwareLine = () => 'GENChase, engine API ' + S.apiVersion + ', recipe v' + RECIPE_V + ', build ' + (BUILD.build || 'unknown');
   function statusText(e) {
@@ -1481,7 +1497,7 @@ void main(){
     // every integrator with a time step shows it, so a preset that changes dt says so
     const dt = Number(e.state.dt);
     const dtHtml = isFinite(dt) && dt > 0 && !/\bdt\b/.test(e.statusHtml) ? '<span>dt <b>' + (dt >= 1 ? dt.toFixed(1) : dt.toFixed(3).replace(/0+$/, '').replace(/\.$/, '')) + '</b></span>' : '';
-    renderEvidenceBadge(e.mod.id);
+    renderEvidenceBadge(e);
     const html = e.statusHtml + scienceWitnessHtml(e.scienceWitness) + halfFloatHtml(e) + dtHtml + '<span>seed <b>' + escapeHtml(e.state.seed) + '</b></span>';
     const status = $('status');
     // Preserve text selection and avoid rebuilding identical measurement rows.
