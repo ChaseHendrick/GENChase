@@ -39,6 +39,8 @@ Releases are made through the "Publish offline studio" workflow ([docs/PUBLISHIN
   `node tools/commit-hash.js` instead ([docs/COMMITMENTS.md](docs/COMMITMENTS.md)). The owner decides
   what is published: by the owner's decision (2026-09-25), the two vortex-collapse papers are merged into
   `papers/minimal-winding/`, and its computer-assisted proofs and verification programs are committed with it.
+  By the same owner's decision, the follow-up paper `papers/collapse-without-rotation/` is drafted in this
+  repository with status "draft".
 
 ## Verify before you commit
 
