@@ -2,7 +2,7 @@
 
 **Read on 2026-09-25 from the owner's PDFs** (RESEARCH.md, same date): Conte-de Seze, Krishnamurthy-Aref-Stremler
 (arXiv v2), Gallay-Sverak, Drivas et al., Hernandez-Garduno-Lacomba, Synge (now cited), Aref 1982 and
-Grotto-Romito-Viviani; later the same day Hiraoka 2009 (now cited) and Tavantzis-Ting 1988. Their rows below are done unless a journal version is still named.
+Grotto-Romito-Viviani; later the same day Hiraoka 2009 (now cited), Tavantzis-Ting 1988 and Krishnamurthy-Stremler 2018. Their rows below are done unless a journal version is still named.
 
 Compiled from the research ledger (RESEARCH.md), the papers' notes and checklists, and web searches on
 2026-09-25. **Paper 2's list was confirmed by two independent checkers. Paper 1's list was not verified**:
@@ -16,7 +16,7 @@ interlibrary loan, or emailing the author for a copy.
 
 | | Item | What to check |
 |---|---|---|
-| free | Krishnamurthy and Stremler, "Finite-time collapse of three point vortices in the plane", Regul. Chaotic Dyn. 23(5) (2018) 530-550, doi:10.1134/S1560354718050040 | The manuscript cites it three times; only one citation rests on a recorded reading. Check the other two. |
+| done | Krishnamurthy and Stremler, "Finite-time collapse of three point vortices in the plane", Regul. Chaotic Dyn. 23(5) (2018) 530-550, doi:10.1134/S1560354718050040 | Read 2026-09-25: all four citations hold and now carry pinpoints. Their tau~ K_1 is P; they find s~(1) > 2 numerically and state no bound. |
 | paid | Stremler, "Something old, something new: Three point vortices on the plane", Regul. Chaotic Dyn. 26(5) (2021) 482-504 | His review of the path-length observation that Corollary 1 proves. Does it state a bound? Is the Discussion's credit right? |
 | done | Tavantzis and Ting, "The dynamics of three vortices revisited", Phys. Fluids 31(6) (1988) 1392-1409, doi:10.1063/1.866732 | Read 2026-09-25 (Sects. I-II): contracting family unstable, expanding stable, in side-ratio terms; nothing on rotation or collapse time, so no priority issue. Now cited as [Sect. II]. |
 
