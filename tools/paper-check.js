@@ -30,6 +30,18 @@ const read = (root, f) => fs.readFileSync(path.join(root, f), 'utf8');
 const norm = s => s.replace(/\$\\?([A-Za-z]+)\$/g, '$1').replace(/\\\\(\[[^\]]*\])?/g, ' ').replace(/\\(Large|large|bfseries|textbf|emph)\b/g, ' ').replace(/[{}]/g, '').replace(/\s+/g, ' ').trim();
 // The page count is the largest /Count on a /Type /Pages node (the root holds the total). pdflatex
 // keeps those nodes in compressed object streams, so Flate streams are inflated and searched too.
+// The quality bar (papers/<id>/notes/QUALITY.md): seven items, each checked with its evidence before a paper is
+// "ready" or later, which is when it goes public as its own repository and gets a DOI.
+const BAR = ['Complete proofs', 'Rigorous computation', 'Every claim labelled', 'Sources read', 'Prior art', 'Adversarial second reading', 'Reproducible'];
+
+function quality(root, p) {
+  const file = ['papers', p.id, 'notes', 'QUALITY.md'].join('/');
+  if (!fs.existsSync(path.join(root, file))) return { file, items: null };
+  const items = [...read(root, file).matchAll(/^- \[([ xX])\] \*\*(\d+)\. ([^*]+?)\.\*\*[ \t]*(.*)$/gm)]
+    .map(m => ({ done: m[1] !== ' ', n: +m[2], title: m[3].trim(), evidence: m[4].trim() }));
+  return { file, items };
+}
+
 function pdfPages(buf) {
   const counts = [], scan = text => { for (const m of text.matchAll(/\/Type\s*\/Pages\b[^>]*?\/Count\s+(\d+)|\/Count\s+(\d+)[^>]*?\/Type\s*\/Pages\b/g)) counts.push(+(m[1] || m[2])); };
   const raw = buf.toString('latin1');
@@ -74,6 +86,21 @@ function checkPaper(root, p, opts = {}) {
   if (rank >= ORDER.indexOf('on-arxiv') && p.arxiv && !/^\d{4}\.\d{4,5}(v\d+)?$/.test(p.arxiv.id || '')) bad('status ' + p.status + ' needs arxiv.id (for example 2610.01234)');
   if (rank >= ORDER.indexOf('submitted') && p.journal && !/^\d{4}-\d{2}-\d{2}$/.test(p.journal.submitted || '')) bad('status ' + p.status + ' needs journal.submitted as YYYY-MM-DD');
   if (p.status === 'published' && p.journal && !/^10\.\d{4,}\//.test(p.journal.doi || '')) bad('status published needs journal.doi');
+  if (p.id) {
+    const q = quality(root, p), due = rank >= ORDER.indexOf('ready'), say = due ? bad : note;
+    if (!q.items) { if (due) bad('status ' + p.status + ' needs ' + q.file + ', the quality record, with every item checked'); }
+    else {
+      const open = [];
+      BAR.forEach((title, i) => {
+        const it = q.items.find(x => x.n === i + 1);
+        if (!it || it.title !== title) say(q.file + ': item ' + (i + 1) + ' "' + title + '" is missing or renamed');
+        else if (!it.done) open.push(i + 1);
+        else if (!it.evidence) say(q.file + ': item ' + (i + 1) + ' is checked but gives no evidence');
+      });
+      if (open.length) say(q.file + ': the quality bar is not met (open: item ' + open.join(', ') + ')' + (due ? '; a paper is "ready" or later only when every item is checked' : ''));
+      else if (q.items.length >= BAR.length) note(q.file + ': the quality bar is met');
+    }
+  }
   const files = [p.typst, p.latex, p.markdown, p.pdf, p.arxiv && p.arxiv.metadata, p.journal && p.journal.coverLetter, p.zenodo && p.zenodo.metadata].filter(Boolean);
   const missing = files.filter(f => !fs.existsSync(path.join(root, f)));
   missing.forEach(f => bad('missing file ' + f));
@@ -177,6 +204,7 @@ function selfTest() {
   const w = (f, s) => { fs.mkdirSync(path.dirname(path.join(tmp, f)), { recursive: true }); fs.writeFileSync(path.join(tmp, f), s); };
   const abstract = 'We bound $P$ for every collapse.';
   const base = () => {
+    fs.rmSync(path.join(tmp, 'papers'), { recursive: true, force: true });
     w('p.typ', '#set document(title: "A Test Paper", author: "A")\nText [1] and [2, Sect. 3], with $[0, 1]$ math.\n#heading[References]\n+ A. One, J. 22 (1979) 1.\n+ B. Two, J. 25 (1982) 2.\n');
     w('p.tex', '\\title{\\Large\\bfseries A Test\\\\ Paper}\nText \\cite{one} and \\cite[Sect.~3]{two}.\n\\begin{thebibliography}{9}\n\\bibitem{one} A. One, J. 22 (1979) 1.\n\\bibitem{two} B. Two, J. 25 (1982) 2.\n\\end{thebibliography}\n');
     w('p.pdf', '%PDF-1.7\n<< /Type/Pages/Count 3 >>\n');
@@ -191,6 +219,7 @@ function selfTest() {
     checks++; if (!ok) { failures++; console.log('FAIL ' + what + (r.problems.length ? ': ' + r.problems.join('; ') : ': no problem found')); }
   };
   try {
+    const record = open => 'Quality record\n\n' + BAR.map((t, i) => '- [' + (open.includes(i + 1) ? ' ' : 'x') + '] **' + (i + 1) + '. ' + t + '.** Evidence ' + (i + 1) + '.\n').join('');
     expect(true, 'a consistent paper passes');
     expect(false, 'an email address in the LaTeX source', () => w('p.tex', read(tmp, 'p.tex').replace('Text', 'Mail me@real-domain.org. Text')));
     expect(true, 'a you@example.com placeholder is allowed', () => w('letter.md', 'Write to you@example.com.\n'));
@@ -208,9 +237,16 @@ function selfTest() {
     expect(false, 'a different title in the metadata', () => w('meta.md', read(tmp, 'meta.md').replace('**Title:** A Test Paper', '**Title:** A Tested Paper')));
     expect(false, 'an unknown status', p => { p.status = 'done'; });
     expect(false, 'on arXiv without an identifier', p => { p.status = 'on-arxiv'; });
-    expect(true, 'on arXiv with an identifier', p => { p.status = 'on-arxiv'; p.arxiv.id = '2610.01234'; });
-    expect(false, 'submitted without a date', p => { p.status = 'submitted'; p.arxiv.id = '2610.01234'; });
+    expect(true, 'on arXiv with an identifier', p => { p.status = 'on-arxiv'; p.arxiv.id = '2610.01234'; w('papers/t/notes/QUALITY.md', record([])); });
+    expect(false, 'submitted without a date', p => { p.status = 'submitted'; p.arxiv.id = '2610.01234'; w('papers/t/notes/QUALITY.md', record([])); });
     expect(false, 'a missing file', p => { p.pdf = 'nope.pdf'; });
+    expect(false, 'ready without a quality record', p => { p.status = 'ready'; });
+    expect(true, 'ready with every item of the bar checked', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([])); });
+    expect(false, 'ready with an open item', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([6])); });
+    expect(false, 'ready with an item renamed', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([]).replace('Prior art', 'Prior work')); });
+    expect(false, 'ready with an item missing', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([]).split('\n').filter(l => !l.includes('**7.')).join('\n')); });
+    expect(false, 'ready with a checked item and no evidence', p => { p.status = 'ready'; w('papers/t/notes/QUALITY.md', record([]).replace('Evidence 4.', '')); });
+    expect(true, 'a draft may have open items', p => { p.status = 'draft'; w('papers/t/notes/QUALITY.md', record([1, 6])); });
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
   console.log((failures ? 'PAPER CHECK SELF-TEST FAILED: ' + failures + ' of ' : 'Paper check self-test OK: ') + checks + ' cases, including the planted mistakes');
   return failures;
