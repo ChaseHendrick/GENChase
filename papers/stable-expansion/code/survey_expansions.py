@@ -16,11 +16,11 @@
 #
 """The random sample of Section 4 of paper/stable-expansion.tex. NUMERICAL (binary64), not part of any proof.
 
-Newton's method (scipy least_squares) from seeded random starts on the collapse equations
+A least-squares solver (scipy least_squares, trust-region reflective) from seeded random starts on the collapse equations
 E = 2 pi V(zeta) + (1 - i b) zeta = 0 in the gauge z_1 real, Gamma_1 = 1; the circulations Gamma_2..Gamma_N and b are
 unknowns. Solutions that nearly collide, have a nearly vanishing circulation or total circulation are discarded
 (thresholds below). For each collapse the eigenvalues of DE are computed, the six of Lemma 1 (0, 0, 2, 2, 1 +- i b)
-removed by nearest match, and the collapse counted when every remaining eigenvalue has positive real part (for N = 4,
+removed by nearest match, and the collapse counted (converged solutions are not checked for duplicates) when every remaining eigenvalue has positive real part (for N = 4,
 equivalently c = 3 + 3 b^2 - tr(A conj A) > 0). The seeds and trial counts are those of the paper: N = 4, seed 11,
 800 starts; N = 5, seeds 1 and 2, 700 starts each. About ten minutes. Output: data/survey-expansions.txt.
 """
@@ -60,6 +60,7 @@ def survey(N, seed, trials, dtol, gtol):
         return np.concatenate([e.real, e.imag])
 
     n_all = n_stable = 0
+    kinds = {'every remaining pair on Re k = 1': 0, 'a quadruple 1 +- x +- i y, 0 < x < 1': 0, 'a real pair 0 < k < 2': 0}
     for _ in range(trials):
         u0 = np.concatenate([rng.normal(size=2*N-1), rng.normal(size=N-1)*1.5, [rng.normal()*2]])
         s = least_squares(res, u0, xtol=1e-15, ftol=1e-15, gtol=1e-15, max_nfev=400)
@@ -80,9 +81,20 @@ def survey(N, seed, trials, dtol, gtol):
         for sv in [0, 0, 2, 2, 1 + 1j*b, 1 - 1j*b]:
             ev.pop(int(np.argmin([abs(e - sv) for e in ev])))
         n_all += 1
-        n_stable += min(e.real for e in ev) > 0
+        if min(e.real for e in ev) > 0:
+            n_stable += 1
+            real = [e for e in ev if abs(e.imag) < 1e-7]
+            offline = [e for e in ev if abs(e.imag) >= 1e-7 and abs(e.real - 1) > 1e-6]
+            if real:
+                kinds['a real pair 0 < k < 2'] += 1
+            elif offline:
+                kinds['a quadruple 1 +- x +- i y, 0 < x < 1'] += 1
+            else:
+                kinds['every remaining pair on Re k = 1'] += 1
     say('N = %d, seed %d, %d starts: %d collapses, %d whose reversal is linearly stable' % (N, seed, trials, n_all, n_stable))
-    return n_all, n_stable
+    for k_, v in kinds.items():
+        say('      of those, %d with %s' % (v, k_))
+    return n_all, n_stable, kinds
 
 
 a4 = survey(4, 11, 800, 1e-2, 1e-2)

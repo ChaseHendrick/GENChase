@@ -18,7 +18,7 @@ OK    side condition I_contains_0
 OK    side condition lambda_j_contain_2P_minus_i
 OK    side condition P_positive
 OK    Gamma_4 = -4/5 (forced by sum_{j<k} Gamma_j Gamma_k = 0 with Gamma = (1, 5/2, 1/9, Gamma_4))   [[-0.80000000000000000000 +/- 3e-25]]
-OK    P > sqrt(3)/2 and b = 2P != 0 (so 1 +- i b differs from 0 and 2)   [[2.525846474134490910727064 +/- 3.14e-25]]
+OK    P > sqrt(3)/2 (the winding; Lemma 1 needs no condition on b)   [[2.525846474134490910727064 +/- 3.14e-25]]
 
 2. Lemma 1 on the certified box
 OK    rotation: DE (i zeta) contains 0 (eigenvalue 0)
@@ -33,6 +33,7 @@ OK    trace consistency: tr DE = 2N = 8 = 0 + 0 + 2 + 2 + (1 + i b) + (1 - i b) 
 OK    Im tr(A conj A) contains 0 (the trace of DE^2 is real)
 OK    c = 3 + 3 b^2 - tr(A conj A) > 1, so the pair is 1 +- i omega with omega = sqrt(c - 1) real   [[20.8814511933587 +/- 1.37e-14]]
       omega = [4.45886209624818 +/- 3.11e-15]
+OK    the pair 1 +- i omega is simple and differs from the translations 1 +- i b: omega != b and omega > 0   [omega = [4.4588621 +/- 3.76e-9], b = [5.0516929 +/- 4.83e-8]]
 OK    second enclosure: (k - 1)^2 = (tr (DE - I)^2 - 4 + 2 b^2)/2 = 1 - c   [[-19.8814511934 +/- 4.14e-11]]
 
 3b. Five vortices: existence, Lemma 1 and the four remaining exponents
@@ -47,27 +48,30 @@ OK    five vortices: side condition I_contains_0
 OK    five vortices: side condition lambda_j_contain_2P_minus_i
 OK    five vortices: side condition P_positive
 OK    five vortices: Gamma_5 = 47/35 (forced by sum_{j<k} Gamma_j Gamma_k = 0)   [[1.3428571428571428571 +/- 4.29e-20]]
-OK    five vortices: P > 0, so b != 0   [[2.402347035417138410455931 +/- 3.88e-25]]
+OK    five vortices: P > 0   [[2.402347035417138410455931 +/- 3.88e-25]]
 OK    five vortices: rotation, scaling and translation vectors as in Lemma 1 (exact identities contain 0)
 OK    five vortices: the family tangent keeps the circulations and satisfies DE v = b' (i zeta), v independent of i zeta
 OK    five vortices: the discriminant of u^2 - s u + p is positive, so u1 < u2 are real   [[3.105190743 +/- 1.02e-10]]
 OK    five vortices: u2 < 0 < 1, so the four remaining exponents are 1 +- i sqrt(-u1) and 1 +- i sqrt(-u2): real part 1   [u1 = [-11.92911826 +/- 7.89e-10], u2 = [-10.16696312 +/- 7.65e-10]]
       exponents 1 +- i [3.453855565 +/- 4.48e-10] and 1 +- i [3.188567565 +/- 4.19e-10]
+OK    five vortices: the four exponents on Re k = 1 are simple and differ from 1 +- i b (w1 != w2, both != b)   [b = [4.8046941 +/- 2.92e-8]]
 
 4. Controls
 OK    unstable control: Krawczyk certifies a four-vortex collapse with x4 = 149/125, Gamma_2 = -1003/1000, Gamma_3 = 13/10
+OK    unstable control: every side condition holds on the box
 OK    unstable control: c < 0, so a real pair k < 0 < 2 < 2 - k and the reversed expansion is unstable   [[-47.73460073 +/- 4.50e-9]]
 OK    three-vortex control: Krawczyk certifies a collapse
+OK    three-vortex control: every side condition holds on the box (P signed: P != 0 instead of P > 0)   [P = [-1.343479654 +/- 3.11e-10]]
 OK    three-vortex control: 2N - 6 = 0, and tr (DE - I)^2 = 4 - 2 b^2, the six symmetric exponents alone   [[+/- 6.69e-92]]
 
 5. Illustration in binary64 (not part of the proof)
       eigenvalues of DE: -0.000000+0.000000i, 0.000000+0.000000i, 1.000000-4.458862i, 1.000000+4.458862i, 1.000000-5.051693i, 1.000000+5.051693i, 2.000000+0.000000i, 2.000000+0.000000i
 OK    binary64: the eigenvalues match {0, 0, 2, 2, 1 +- i b, 1 +- i omega} one to one within 1e-6 (defective double eigenvalues split by about 1e-8)   [8.9e-08]
-      expanding (circulations negated), unperturbed: size x1 dev 2.5e-16; size x1.15 dev 3.2e-16; size x5.73 dev 2.8e-15; size x56.4 dev 3.8e-15
+      expanding (circulations negated), unperturbed: size x1 dev 2.5e-16; size x1.02 dev 4.1e-16; size x1.15 dev 3.2e-16; size x2.05 dev 1.9e-15; size x5.73 dev 2.8e-15; size x17.9 dev 3.7e-15; size x56.4 dev 3.8e-15; size x178 dev 3.7e-15
 OK    binary64: unperturbed expansion keeps its shape to 1e-10 while it grows over 100-fold
-      expanding, perturbed 1e-5: size x1 dev 3.3e-05; size x1.15 dev 3.0e-05; size x5.73 dev 1.0e-04; size x56.4 dev 1.1e-04
-OK    binary64: a 1e-5 perturbation stays below 1e-3 while the size grows 56-fold (it settles on a nearby member of the family, a neutral direction, instead of growing)
-      unstable control expanding, perturbed 1e-8: size x1 dev 1.5e-08; size x1.04 dev 1.6e-08; size x1.81 dev 2.3e-07; size x7.9 dev 1.5e-03
+      expanding, perturbed 1e-5: size x1 dev 3.3e-05; size x1.02 dev 3.1e-05; size x1.15 dev 3.0e-05; size x2.05 dev 8.1e-05; size x5.73 dev 1.0e-04; size x17.9 dev 1.1e-04; size x56.4 dev 1.1e-04; size x178 dev 1.1e-04
+OK    binary64: a 1e-5 perturbation stays below 1e-3 while the size grows 178-fold (it settles on a nearby member of the family, a neutral direction, instead of growing)
+      unstable control expanding, perturbed 1e-8: size x1 dev 1.5e-08; size x1.01 dev 1.5e-08; size x1.04 dev 1.6e-08; size x1.2 dev 2.6e-08; size x1.81 dev 2.3e-07; size x3.59 dev 1.3e-05; size x7.9 dev 1.5e-03; size x16.4 dev 3.1e-01
 OK    binary64: in the unstable control a 1e-8 perturbation grows by at least 100 while the size grows
 
-46 checks, 0 failed
+50 checks, 0 failed

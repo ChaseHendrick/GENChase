@@ -35,7 +35,7 @@ Sections:
      Krawczyk test in ball arithmetic (FLINT/Arb through python-flint); its side conditions; Gamma_4 = -4/5.
   2. Lemma 1 on the certified box: the invariant vectors of the symmetries (exact identities, checked to contain 0),
      the tangent v of the family from the implicit function theorem (DE v = b' i zeta, v independent of i zeta),
-     b != 0, and consistency of the trace with the sum of the known exponents.
+     and consistency of the trace with the sum of the known exponents.
   3. The stability number c: its enclosure, c > 1, and the pair 1 +- i omega; a second enclosure of c from
      tr((DE - I)^2).
   3b. Five vortices (x2 = 3/5, Gamma = (1, -3/7, -7/8, 9/7, 47/35)): existence, Lemma 1, and the four remaining
@@ -170,7 +170,7 @@ check('Gamma_4 = -4/5 (forced by sum_{j<k} Gamma_j Gamma_k = 0 with Gamma = (1, 
       G4.contains(arb(-4)/5) and G4.rad() < 1e-30, G4.str(20, radius=True))
 z, G, P = balls(full, N, names)
 b = 2*P
-check('P > sqrt(3)/2 and b = 2P != 0 (so 1 +- i b differs from 0 and 2)', bool(P > CP.SQRT3_2), P.str(25, radius=True))
+check('P > sqrt(3)/2 (the winding; Lemma 1 needs no condition on b)', bool(P > CP.SQRT3_2), P.str(25, radius=True))
 
 # ------------------------------------------------------------------------------------------------ 2. Lemma 1
 say('\n2. Lemma 1 on the certified box')
@@ -221,6 +221,8 @@ check('c = 3 + 3 b^2 - tr(A conj A) > 1, so the pair is 1 +- i omega with omega 
       bool(c > 1), c.str(15, radius=True))
 omega = (c - 1).sqrt()
 say('      omega = %s' % omega.str(15, radius=True))
+check('the pair 1 +- i omega is simple and differs from the translations 1 +- i b: omega != b and omega > 0',
+      bool(omega > 0) and bool((omega - b).abs_lower() > 0), 'omega = %s, b = %s' % (omega.str(8), b.str(8)))
 B = [[M[i][j] - (1 if i == j else 0) for j in range(2*N)] for i in range(2*N)]
 t2 = tr_power(B, 2)
 u = (t2 - 4 + 2*b*b)/2          # (k - 1)^2 for the remaining pair
@@ -242,7 +244,7 @@ if r5['ok']:
     check('five vortices: Gamma_5 = 47/35 (forced by sum_{j<k} Gamma_j Gamma_k = 0)', G5.contains(arb(47)/35), G5.str(20, radius=True))
     z5, Gb5, P5 = balls(f5, 5, n5)
     b5 = 2*P5
-    check('five vortices: P > 0, so b != 0', bool(P5 > 0), P5.str(25, radius=True))
+    check('five vortices: P > 0', bool(P5 > 0), P5.str(25, radius=True))
     M5 = DE_mat(z5, Gb5, b5)
     zeta5 = as_real(z5)
     izeta5 = as_real([acb(0, 1)*c_ for c_ in z5])
@@ -273,7 +275,11 @@ if r5['ok']:
     u1, u2 = (s5 - disc.sqrt())/2, (s5 + disc.sqrt())/2
     check('five vortices: u2 < 0 < 1, so the four remaining exponents are 1 +- i sqrt(-u1) and 1 +- i sqrt(-u2): '
           'real part 1', bool(u2 < 0), 'u1 = %s, u2 = %s' % (u1.str(10, radius=True), u2.str(10, radius=True)))
-    say('      exponents 1 +- i %s and 1 +- i %s' % ((-u1).sqrt().str(10, radius=True), (-u2).sqrt().str(10, radius=True)))
+    w1, w2 = (-u1).sqrt(), (-u2).sqrt()
+    say('      exponents 1 +- i %s and 1 +- i %s' % (w1.str(10, radius=True), w2.str(10, radius=True)))
+    check('five vortices: the four exponents on Re k = 1 are simple and differ from 1 +- i b (w1 != w2, both != b)',
+          bool((w1 - w2).abs_lower() > 0) and bool((w1 - b5).abs_lower() > 0) and bool((w2 - b5).abs_lower() > 0),
+          'b = %s' % b5.str(8))
 
 # ------------------------------------------------------------------------------------------------ 4. controls
 say('\n4. Controls')
@@ -286,6 +292,7 @@ x4 = fmpq(round(cu['z'][3][0]*1000), 1000)
 m2, r2 = certify(cu, ['x4', 'G2', 'G3'], [x4, g2, g3])
 check('unstable control: Krawczyk certifies a four-vortex collapse with x4 = %s, Gamma_2 = %s, Gamma_3 = %s' % (x4, g2, g3), r2['ok'])
 if r2['ok']:
+    check('unstable control: every side condition holds on the box', all(bool(r2['side'][k_]) for k_ in CP.GENUINE))
     z2, Gc2, P2 = balls(r2['full'], 4, m2.names)
     A2 = A_mat(z2, Gc2)
     tr2 = sum((A2[j][k]*A2[k][j].conjugate() for j in range(4) for k in range(4)), acb(0))
@@ -296,6 +303,12 @@ c3 = ctl['three']
 m3, r3 = certify(c3, ['G2', 'x2'], [fmpq(round(c3['G'][1]*1000), 1000), fmpq(round(c3['z'][1][0]*1000), 1000)])
 check('three-vortex control: Krawczyk certifies a collapse', r3['ok'])
 if r3['ok']:
+    # P is the signed winding in this gauge (lam = 2P - i); this triangle turns the other way, so P < 0. The collapse
+    # condition is Im lam = -1, exact in the gauge; what matters here is P != 0.
+    bad3 = [k_ for k_ in CP.GENUINE if k_ != 'P_positive' and not r3['side'][k_]]
+    P3b = r3['side']['P_ball']
+    check('three-vortex control: every side condition holds on the box (P signed: P != 0 instead of P > 0)',
+          not bad3 and not P3b.contains(0), 'P = %s' % P3b.str(10, radius=True))
     z3, G3c, P3 = balls(r3['full'], 3, m3.names)
     M3 = DE_mat(z3, G3c, 2*P3)
     B3 = [[M3[i][j] - (1 if i == j else 0) for j in range(6)] for i in range(6)]
@@ -350,18 +363,18 @@ def run(zs, Gs, eps, seed, tmax):
 
 
 rows = run(zf, -Gf, 0.0, 0, 1e5)
-say('      expanding (circulations negated), unperturbed: ' + '; '.join('size x%.3g dev %.1e' % (r_[2], r_[1]) for r_ in rows[::2]))
+say('      expanding (circulations negated), unperturbed: ' + '; '.join('size x%.3g dev %.1e' % (r_[2], r_[1]) for r_ in rows))
 check('binary64: unperturbed expansion keeps its shape to 1e-10 while it grows over 100-fold',
       max(r_[1] for r_ in rows) < 1e-10 and rows[-1][2] > 100)
 rows = run(zf, -Gf, 1e-5, 3, 1e5)
-say('      expanding, perturbed 1e-5: ' + '; '.join('size x%.3g dev %.1e' % (r_[2], r_[1]) for r_ in rows[::2]))
-check('binary64: a 1e-5 perturbation stays below 1e-3 while the size grows 56-fold (it settles on a nearby '
+say('      expanding, perturbed 1e-5: ' + '; '.join('size x%.3g dev %.1e' % (r_[2], r_[1]) for r_ in rows))
+check('binary64: a 1e-5 perturbation stays below 1e-3 while the size grows 178-fold (it settles on a nearby '
       'member of the family, a neutral direction, instead of growing)', max(r_[1] for r_ in rows) < 1e-3)
 if r2['ok']:
     zu = np.array([complex(float(q.real.mid()), float(q.imag.mid())) for q in z2])
     Gu = np.array([float(g.mid()) for g in Gc2])
     rows = run(zu, -Gu, 1e-8, 3, 1e3)
-    say('      unstable control expanding, perturbed 1e-8: ' + '; '.join('size x%.3g dev %.1e' % (r_[2], r_[1]) for r_ in rows[::2]))
+    say('      unstable control expanding, perturbed 1e-8: ' + '; '.join('size x%.3g dev %.1e' % (r_[2], r_[1]) for r_ in rows))
     check('binary64: in the unstable control a 1e-8 perturbation grows by at least 100 while the size grows',
           max(r_[1] for r_ in rows) > 1e-6)
 

@@ -11,19 +11,21 @@ Point Vortices* ([ChaseHendrick/minimal-winding](https://github.com/ChaseHendric
 ## Abstract
 
 Point vortices can move self-similarly, keeping their shape while the configuration grows like $\sqrt{t}$ and turns.
-For three vortices such expanding configurations are stable, and Zbarsky used this to show that vortex patches placed
-at the three vortices stay confined for all time; he noted that the extension to four or more vortices needs a
-self-similarly expanding configuration with good stability, and that none was known. We give two. For the
-circulations $(-1, -5/2, -1/9, 4/5)$ and $(-1, 3/7, 7/8, -9/7, -47/35)$ there are self-similarly expanding
-configurations of four and five Euler point vortices whose linearization in similarity variables has, besides the
-double eigenvalue $0$ of the rotation and of the one-parameter family of such configurations, only eigenvalues with
-real part $-1$ or $-2$: every perturbation transverse to the rotation and to the family decays at least like the
-inverse of the size of the configuration. The proof is computer-assisted: the configurations are enclosed by the
-Krawczyk method in ball arithmetic, and the spectrum is controlled through an exact lemma, which shows that six
-eigenvalues are forced by the symmetries and that the others come in pairs $k$, $2 - k$, together with enclosures of
-traces of powers of the Jacobian. The property is open, so such configurations form open sets; in a random sample
-about one four-vortex collapse in seven and one five-vortex collapse in seventeen reverses into a stable expansion.
-We do not address whether this linear stability suffices for Zbarsky's confinement argument.
+For three vortices such expanding configurations are stable, and Zbarsky used this to show that vortex patches
+placed at the three vortices stay confined for all time; he wrote that the result would most likely carry over to
+stably growing systems of four or more vortices, given sufficiently good stability. We give two such configurations
+that are linearly stable modulo their symmetries. For the circulations $(-1, -5/2, -1/9, 4/5)$ and $(-1, 3/7, 7/8,
+-9/7, -47/35)$ there are self-similarly expanding configurations of four and five Euler point vortices whose
+linearization in similarity variables has, besides the double eigenvalue $0$ of the rotation and of the
+one-parameter family of such configurations, only eigenvalues with real part $-1$ or $-2$: in the invariant
+complement of the rotation and the family, every solution of the linearized equation decays, relative to the size of
+the configuration, at least like the inverse of the size. The proof is computer-assisted: the configurations are
+enclosed by the Krawczyk method in ball arithmetic, and the spectrum is controlled through an exact lemma, which
+shows that six eigenvalues are forced by the rotation, the scaling, the translations and the family (one of them
+through a pairing) and that the others come in pairs $k$, $2 - k$, together with enclosures of traces of powers of
+the Jacobian. The property is open, so such configurations form open sets; in a random sample about one four-vortex
+collapse in seven and one five-vortex collapse in seventeen reverses into a linearly stable expansion. We do not
+address whether this linear stability suffices for Zbarsky's confinement argument.
 
 ## Status of the results
 
@@ -45,7 +47,7 @@ We do not address whether this linear stability suffices for Zbarsky's confineme
 
 | Program | What it checks | Checks | Time |
 |---|---|---:|---|
-| [`verify_stable_expansion.py`](code/verify_stable_expansion.py) | Theorems 1 and 2: existence by the Krawczyk test, the hypotheses of Lemma 1 on the certified boxes, the stability numbers; an unstable four-vortex control and a three-vortex control; direct integrations (binary64) | 46 | 1 min |
+| [`verify_stable_expansion.py`](code/verify_stable_expansion.py) | Theorems 1 and 2: existence by the Krawczyk test, the hypotheses of Lemma 1 on the certified boxes, the stability numbers and the simplicity of the eigenvalues on Re k = 1; an unstable four-vortex control and a three-vortex control, with their side conditions; direct integrations (binary64) | 50 | 1 min |
 | [`survey_expansions.py`](code/survey_expansions.py) | The random sample of Section 4 (numerical) | | 10 min |
 
 ## Reproduce
