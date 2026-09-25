@@ -8,7 +8,9 @@
 // Studio.exportData() gives a readable .npz (a tab without exportData() says so instead of inventing
 // arrays); and the PNG, PDF, TIFF and JPEG from the real export buttons carry the same provenance.
 // The status badge and the tab strip show the validation status, and a tab forced onto its rgba16f
-// fallback says so in its status line and its provenance. Needs Playwright (see TESTING.md).
+// fallback says so in its status line and its provenance; a tab that stores its float16 state as a
+// deviation from a base (amb) exports the field with the base added back and names the base, and a tab
+// that refuses float16 state (pfc) says why on the stage and runs nothing. Needs Playwright (see TESTING.md).
 'use strict';
 const { glArgs } = require('./lib/gl-args');
 const assert = require('node:assert/strict');
@@ -139,6 +141,26 @@ async function browserChecks() {
     ok(halfPrecision === 'float16 state (half-float fallback)', 'provenance records the half-float fallback', halfPrecision);
     ok(halfSpans.filter(x => /half-float/.test(x.cls)).length === 1 && halfSpans.some(x => /half-float/.test(x.cls) && /measurements carry half-float rounding/.test(x.text)), 'the status line says measurements carry half-float rounding', JSON.stringify(halfSpans));
     ok(JSON.stringify(shape(halfSpans)) === JSON.stringify(shape(full)), 'the half-float span is additive: every other status span keeps its form', JSON.stringify(shape(halfSpans)) + ' vs ' + JSON.stringify(shape(full)));
+    const halfMeta = JSON.parse(new TextDecoder().decode(F.readZip(await exportData(half))['meta.json']));
+    ok(JSON.stringify(halfMeta).includes('"stateBase":null'), 'control: a tab without a declared base stores float16 state as it is');
+
+    // amb stores float16 state as the deviation from its mean composition. The export must add the base back
+    // (a field near c0, not near zero) and name it, so research data is the field and says how it was kept.
+    await half.evaluate(r => { location.hash = '#amb/provenance-check/' + r; }, halfRecipe);
+    await half.waitForFunction(() => Studio.getRecipe() && Studio.getRecipe().id === 'amb' && /step/.test(document.querySelector('#status').innerText), null, { timeout: 90000 });
+    const ambSpans = await readStatus(half), ambPrecision = await half.evaluate(() => Studio.getProvenance().compute.precision);
+    ok(ambPrecision === 'float16 state (half-float fallback)' && ambSpans.filter(x => /half-float/.test(x.cls)).length === 1, 'a tab storing deviations still reports float16 state and the half-float span', ambPrecision);
+    const ambZip = F.readZip(await exportData(half)), ambMeta = JSON.parse(new TextDecoder().decode(ambZip['meta.json'])), ambField = F.readNpy(ambZip['field.npy']);
+    const ambBase = JSON.stringify(ambMeta).match(/"stateBase":(-?[\d.e-]+)/), ambMean = Array.from(ambField.data).reduce((a, b) => a + b, 0) / ambField.data.length;
+    ok(ambBase && Math.abs(Number(ambBase[1]) + 0.4) < 1e-6 && Math.abs(ambMean + 0.4) < 0.01, 'data export: the deviation storage is named and the base is added back', 'stateBase ' + (ambBase && ambBase[1]) + ', field mean ' + ambMean);
+
+    // pfc refuses the float16 fallback: the refusal is on the stage and in the status line, and nothing runs.
+    await half.evaluate(r => { location.hash = '#pfc/provenance-check/' + r; }, halfRecipe);
+    await half.waitForFunction(() => Studio.getRecipe() && Studio.getRecipe().id === 'pfc' && /cannot run/.test(document.querySelector('#status').innerText), null, { timeout: 90000 });
+    const refusal = await half.evaluate(() => ({ status: document.querySelector('#status').innerText, fault: !document.getElementById('fault').hidden, msg: document.getElementById('fault-msg').textContent, precision: Studio.getProvenance().compute.precision }));
+    ok(refusal.fault && /cannot run the phase-field crystal faithfully/.test(refusal.msg) && /EXT_color_buffer_float/.test(refusal.status) && !/\bstep\s*[\d,]+/.test(refusal.status), 'a tab that refuses half-float state says why on the stage and in the status line, and runs no step', JSON.stringify(refusal));
+    const pfcZip = F.readZip(await exportData(half));
+    ok(Object.keys(pfcZip).join() === 'meta.json' && refusal.precision === 'no float state targets', 'the refused tab exports no state and its provenance names no state precision', refusal.precision);
     await halfCtx.close();
 
     // A tab without exportData(): meta.json says so rather than inventing arrays.

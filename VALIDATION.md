@@ -45,7 +45,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [timecrystal](src/modules/timecrystal.js) | unvalidated | None registered | Not scientifically validated | none |
 | [growdomain](src/modules/growdomain.js) | unvalidated | None registered | Not scientifically validated | none |
 | [spinice](src/modules/spinice.js) | unvalidated | None registered | Not scientifically validated | none |
-| [vegetation](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded | none |
+| [vegetation](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js), [pde-order.js](tools/pde-order.js) | Limited evidence recorded | none |
 | [aztec](src/modules/aztec.js) | validated within stated limits | [aztec-science.js](tools/aztec-science.js) | Limited evidence recorded | none |
 | [skin](src/modules/skin.js) | unvalidated | None registered | Not scientifically validated | none |
 | [rmt](src/modules/rmt.js) | validated within stated limits | [rmt-science.js](tools/rmt-science.js) | Limited evidence recorded | none |
@@ -66,7 +66,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [chimera](src/modules/chimera.js) | unvalidated | None registered | Not scientifically validated | none |
 | [ssh](src/modules/ssh.js) | unvalidated | [ssh-science.js](tools/ssh-science.js) | Not scientifically validated | none |
 | [swarm](src/modules/swarm.js) | unvalidated | None registered | Not scientifically validated | none |
-| [amb](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded | none |
+| [amb](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js), [half-float-check.js](tools/half-float-check.js) | Limited evidence recorded | none |
 | [aubry](src/modules/aubry.js) | unvalidated | None registered | Not scientifically validated | none |
 | [cahn](src/modules/pde.js) | validated within stated limits | [pde-science.js](tools/pde-science.js), [pde-convergence.js](tools/pde-convergence.js), [pde-stability.js](tools/pde-stability.js), [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded | none |
 | [ohta](src/modules/pde.js) | validated within stated limits | [pde-family-science.js](tools/pde-family-science.js), [pde-field-review.js](tools/pde-field-review.js), [pde-spatial-review.js](tools/pde-spatial-review.js) | Limited evidence recorded | none |
@@ -95,7 +95,7 @@ No record has an outside review yet; every review so far was done inside the pro
 | [meissner](src/modules/meissner.js) | unvalidated | None registered | Not scientifically validated | none |
 | [tennis](src/modules/tennis.js) | validated within stated limits | [rigid-body-audit.js](tools/rigid-body-audit.js) | Limited evidence recorded | none |
 | [flow](src/modules/flow.js) | unvalidated | None registered | Not scientifically validated | none |
-| [chemotaxis](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js) | Limited evidence recorded | none |
+| [chemotaxis](src/modules/rdx.js) | validated within stated limits | [rdx-science.js](tools/rdx-science.js), [half-float-check.js](tools/half-float-check.js) | Limited evidence recorded | none |
 | [smectic](src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js) | unvalidated | None registered | Not scientifically validated | none |
 | [reaction](src/modules/reaction.js) | unvalidated | None registered | Not scientifically validated | none |
 | [tilings](src/modules/tilings.js) | partially validated | [tilings-science.js](tools/tilings-science.js) | Limited evidence recorded | none |
@@ -199,6 +199,7 @@ No record has an outside review yet; every review so far was done inside the pro
 - Catalog equation and citation are review targets, not verified paper equivalence.
 - Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.
 - Linear regime and uniform states only within this domain; float32 implicit denominator 1 + dt quantizes water loss (modelled in the discrete reference).
+- Time step: from recipe v5 the step is at most 0.8 of the combined explicit bound 2/(Q D_w c^2 + 2 v c) of the water row, and of the plant row. Recipes made before v5 keep the pre-v5 step where it was under the bare-soil bound 2/(R - 1), so they reprint, and take the combined step where it was not, which corrects plates that were growing grid-scale checkerboards. Kept pre-v5 steps can lie within 0.03% of the bound at the corner of the ranges (validation/PDE-ORDER.md). The bound is linear and frozen-coefficient, not a nonlinear stability proof.
 - No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.
 - Broader settings require additional independent evidence.
 
@@ -283,7 +284,8 @@ No record has an outside review yet; every review so far was done inside the pro
 ### amb
 
 - Complete evidence covers only the finite recipes and benchmark domain in validation/PDE-FIELD-REVIEW.md
-- No Float16, stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.
+- No stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.
+- Float16 fallback, measured, not validated: the state is stored as the deviation from the mean composition c0. At the default recipe the fluctuations then grow as in float32 (standard deviation equal to float32's to three figures at 1000 steps), where the plain fallback shrank them to 0.80 of it (validation/HALF-FLOAT.md). Phase-separated states far from c0 get no finer float16 spacing than before; other recipes are not measured.
 - Broader settings require additional independent evidence.
 
 ### cahn
@@ -313,7 +315,8 @@ No record has an outside review yet; every review so far was done inside the pro
 ### pfc
 
 - Complete evidence covers only the finite recipes and benchmark domain in validation/PDE-FIELD-REVIEW.md
-- No Float16, stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.
+- No stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.
+- Refuses float16 state: on a device without EXT_color_buffer_float the tab says why on the stage and in the status line and runs nothing, because float16 storage breaks the conservation of the mean density. At the default recipe between steps 100 and 1000 the mean drifted 30 times as far as in float32 stored plainly and 9.4 times stored as the deviation from psi0, against an acceptance limit of 3 (tools/half-float-check.js, validation/HALF-FLOAT.md).
 - The orientation view encodes a local gradient direction, not crystallographic orientation.
 
 ### cgl
@@ -373,7 +376,8 @@ No record has an outside review yet; every review so far was done inside the pro
 - Catalog equation and citation are review targets, not verified paper equivalence.
 - Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.
 - Logistic growth means total mass is not conserved; the balance, not conservation, is tested. No aggregate shape or coarsening statistics.
-- No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.
+- No noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.
+- Float16 fallback, measured, not validated: the state is stored as the deviation from the uniform state (1, 1/a). At the default recipe this ends the freeze of the plain fallback (its state stopped changing, so the aggregation never started) and keeps each species' standard deviation within 3% of float32's at 1000 steps; the plate is a different realization (validation/HALF-FLOAT.md). Other recipes and a live change of a, after which the stored deviations are larger, are not measured.
 - Broader settings require additional independent evidence.
 
 ### tilings

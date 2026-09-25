@@ -170,5 +170,6 @@ than about the physics. A failure is recorded as a failure and is worth reading,
 passes. Identical pixels across GPUs are not claimed anywhere in this project, and a hardware run does not
 change a technique's validation status by itself.
 
-A device without float32 color buffers runs the pde and rdx tabs on float16 state instead; see
+A device without float32 color buffers runs the pde and rdx tabs on float16 state instead (chemotaxis and amb
+store it as the deviation from their uniform state, and pfc refuses to run on it); see
 `validation/HALF-FLOAT.md` for what that does to the plates and the status line.

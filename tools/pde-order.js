@@ -63,6 +63,12 @@
 // (-4 to -3.9, or -20 to -19.9 for the 9-point stencils), an inconsistent stencil that the spatial ladder and the
 // manufactured solution must fail. A missed control sets a nonzero exit code; a ladder outside the band does not,
 // because a mismatch is a finding to report.
+//
+// Step ceiling (vegetation, the `ceiling` section). The water row combines explicit diffusion and upwind advection,
+// so its grid-mode bound is dt (Q D_w c^2 + 2 v c - loss) < 2, not the smaller of two separate limits. The section
+// sweeps the UI ranges under both of the module's rules (recipe v5 on, and the 'v4' rule older recipes keep), scans
+// every Fourier mode at each step taken, runs the actual instance from a 1e-6 water checkerboard, and brackets the
+// computed bound on the actual shader (see ceilingCheck). A step past the bound fails the run (exit code 1).
 'use strict';
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto'), os = require('node:os');
 const stats = require('../src/shared/stats.js');
@@ -250,11 +256,20 @@ function pageRuntime() {
     return { defaults: JSON.parse(JSON.stringify(def.defaults)), sanitized: s, dt0 };
   };
   window.orderDtMax = (key, state) => { const spec = window.__ordSpec[key]; return spec.dtMax ? spec.dtMax(state) : null; };
-  window.orderRun = async ({ key, variant, mutations, uniforms, textures, state, W, H, init, steps }) => {
-    const [fam, id] = key.split('/'), ik = key + '|' + variant;
+  // The step the instance takes for each state: the module's own sanitize (as the shell calls it after its schema
+  // clamps; every value passed is inside the UI ranges), then step()'s min(s.dt, spec.dtMax(s)).
+  window.orderStepSweep = (key, states) => {
+    const [, id] = key.split('/'), def = window.__ordDefs[id], spec = window.__ordSpec[key];
+    return states.map(p => { const s = Object.assign(JSON.parse(JSON.stringify(def.defaults)), p); if (def.sanitize) def.sanitize(s); return { sanitizedDt: s.dt, dtMax: spec.dtMax(s), step: Math.min(s.dt, spec.dtMax(s)) }; });
+  };
+  window.orderRun = async ({ key, variant, mutations, uniforms, textures, state, W, H, init, steps, unclamped }) => {
+    const [fam, id] = key.split('/'), ik = key + '|' + variant + (unclamped ? '|unclamped' : '');
     let rec = instances.get(ik);
     if (!rec) {
       const spec = mutate(window.__ordSpec[key], mutations);
+      // A failure control only: the rdx step takes min(dt, spec.dtMax(s)), so a step past the module's own
+      // ceiling needs the ceiling removed in this copy of the spec. The shaders are untouched.
+      if (unclamped) spec.dtMax = () => Infinity;
       const canvas = document.createElement('canvas'); canvas.width = 8; canvas.height = 8;
       rec = { canvas, state: null, extra: {} };
       const own = spec.stepUniforms;
@@ -681,7 +696,10 @@ async function main() {
       // ===================== float32 floor probe (time ladder carried to dt0/128) =====================
       if (want('floor') && tab === 'cahn') out.floorProbe = await floorProbe(tab, T, base, info, run, lattice, log);
       // ===================== step ceiling against the combined explicit bound (vegetation) =====================
-      if (want('ceiling') && tab === 'vegetation') out.ceiling = await ceilingCheck(tab, base, run, key, page, log);
+      if (want('ceiling') && tab === 'vegetation') {
+        out.ceiling = await ceilingCheck(tab, base, run, key, page, log);
+        for (const c of out.ceiling.checks) report.checks.push(Object.assign({ tab }, c));
+      }
 
       await page.evaluate(p => window.orderDispose(p), key + '|');
       out.seconds = Math.round((Date.now() - tabStart) / 1000);
@@ -696,8 +714,11 @@ async function main() {
   report.mode = opts.full ? 'full' : 'quick';
   printTable(report);
   if (opts.write) writeReport(report, tabs);
-  const failed = report.checks.filter(c => 'pass' in c && !c.pass), missed = report.checks.filter(c => 'detected' in c && !c.detected);
+  const failed = report.checks.filter(c => 'pass' in c && !c.pass && !c.gate), missed = report.checks.filter(c => 'detected' in c && !c.detected);
+  const gates = report.checks.filter(c => c.gate && !c.pass);
   if (failed.length) process.stderr.write('\n' + failed.length + ' ladder(s) outside |observed - formal| <= ' + BAND + '; see the table and validation/PDE-ORDER.md. A mismatch is a finding, not a harness error.\n');
+  // A step ceiling past the bound it is meant to respect is a defect in the module, not a finding: fail the run.
+  if (gates.length) { process.stderr.write(gates.length + ' step-ceiling check(s) FAILED: ' + gates.map(c => c.tab + ' ' + c.ladder).join('; ') + '\n'); process.exitCode = 1; }
   // A failure control that is not detected means the harness cannot see a wrong integrator: that is an error.
   if (missed.length) { process.stderr.write(missed.length + ' failure control(s) MISSED\n'); process.exitCode = 1; }
 }
@@ -826,33 +847,148 @@ function summarizeMms(tab, solution, setup, res, formal, finestBase, note) {
     note, pass, controls };
 }
 
-// vegetation's dtMax is the minimum of a diffusion limit and an advection limit taken separately, but forward Euler
-// on the water row at the grid mode needs them combined, dt (Q D_w c^2 + 2 v c - loss) < 2. For water diffusion
-// settings inside the UI range, compare the module's own ceiling with the computed bound, and run the actual
-// instance at that ceiling from a smooth field carrying a 1e-6 water checkerboard. The presets are checked too.
+// vegetation's step ceiling against the explicit bound of the scheme it clamps. The water row of the step is forward
+// Euler in diffusion and upwind advection, with the loss w (1 + n^2) implicit. At the (pi, pi) grid mode the Laplacian
+// symbol is -Q c^2 (Q = 8 for the 5-point stencil, 16/3 for the 9-point) and the upwind difference (e^{ik} - 1) c is
+// -2c, so the mode is multiplied by |1 - dt R| / (1 + dt (1 + n^2)) with R = Q D_w c^2 + 2 v c. It is not amplified
+// when dt R < 2 whatever the loss, and when dt (R - 1) < 2 at the smallest loss (bare soil, n = 0). Until recipe v5
+// the module took the smaller of a diffusion limit and an advection limit, each alone, which overshoots 2/(R - 1) by
+// up to 1.6 when the two are comparable. The module now takes 0.8 of 2/R; recipes older than v5 (ceiling 'v4') keep
+// the pre-v5 step where it was under 2/(R - 1) and take the combined step where it was not. Four parts:
+//   sweep     every combination of a grid over the UI ranges and both rules: the step the instance takes (the
+//             module's sanitize, then step()'s min(dt, dtMax)) against 0.8 * 2/R (rule 'combined'), and against
+//             2/(R - 1) (rule 'v4'), which must also give back the pre-v5 step wherever that step was under 2/(R - 1)
+//             and the combined step elsewhere. The pre-v5 rule is transcribed here from the module before v5.
+//   modes     at every swept step, every Fourier mode of the linearized water row (bare soil) and plant row on a
+//             17 x 17 grid of wavenumbers in [0, pi]^2, from the stencil and upwind symbols: none may be amplified.
+//             This checks that (pi, pi) is the binding mode rather than assuming it.
+//   instance  the actual instance, 32 x 32 cells, slope 40, scale 1, D_w = 1, 5, 10, 20 (5-point) and 10 (9-point),
+//             a smooth water field carrying a 1e-6 checkerboard on bare soil (n = 0, so the water row is decoupled
+//             and its bound is exactly 2/(R - 1)), 200 steps: the checkerboard must decay at the module's step under
+//             both rules. Controls, with the ceiling removed from a copy of the spec: the pre-v5 step must grow where
+//             it exceeds the bound, and 0.98 and 1.02 of the computed bound must decay and grow.
+//   twin      the Float64 twin's bound (both species linearized over water 0.2 to 1.5 and plants 0 to 2.5, as for
+//             the other tabs) at the instance settings and at every preset, against the step under both rules.
+const CEILING_SWEEP = { scale: [0.3, 0.5, 0.8, 1, 1.25, 1.5, 2, 3], slope: [0, 1, 12, 25, 40, 60, 100, 120], Dw: [0, 0.5, 1, 2, 2.5, 5, 10, 20, 40],
+  Dn: [0.2, 1, 3], m: [0.05, 0.45, 1.2], lap: [5, 9], dt: [0.001, 0.01, 0.02, 0.05, 0.25], ceiling: ['combined', 'v4'] };
+const vegQ = p => (Number(p.lap) === 9 ? 16 / 3 : 8);
+const vegRate = p => vegQ(p) * p.Dw * p.scale * p.scale + 2 * p.slope * p.scale;
+// The ceiling before recipe v5, as src/modules/rdx.js had it, and the step the instance then took: sanitize clamped
+// s.dt to min(dt, ceiling) within [0.0005, 0.25], and step() took min(s.dt, ceiling).
+function preV5Step(p) {
+  const c = p.scale, diff = (Number(p.lap) === 9 ? 0.3 : 0.2) / Math.max(Math.max(p.Dw, p.Dn, 0.05) * c * c, 1e-6);
+  const adv = p.slope > 0 ? 0.8 / (p.slope * c) : 1, ceil = Math.min(diff, adv, 0.5 / Math.max(p.m, 0.05), 0.25);
+  return Math.min(Math.min(Math.max(Math.min(p.dt, ceil), 0.0005), 0.25), ceil);
+}
+// Largest amplification over wavenumbers in [0, pi]^2 (the rest follow by symmetry) of the water row on bare soil,
+// (1 + dt (D_w c^2 sigma(k) + v c (e^{i kx} - 1))) / (1 + dt), and of the plant row, (1 + dt D_n c^2 sigma(k)) / (1 + dt m).
+// The plant uptake w n^2 is left out: its growth is the model's own instability, not the scheme's.
+function modeScan(p, dt, K = 17) {
+  const c = p.scale, nine = Number(p.lap) === 9;
+  let water = 0, plant = 0, at = null;
+  for (let i = 0; i < K; i++) for (let j = 0; j < K; j++) {
+    const kx = Math.PI * i / (K - 1), ky = Math.PI * j / (K - 1), cx = Math.cos(kx), cy = Math.cos(ky);
+    const sigma = nine ? (4 * (2 * cx + 2 * cy) + 4 * cx * cy - 20) / 6 : 2 * cx + 2 * cy - 4;
+    const re = 1 + dt * (p.Dw * c * c * sigma + p.slope * c * (cx - 1)), im = dt * p.slope * c * Math.sin(kx);
+    const gw = Math.hypot(re, im) / (1 + dt), gp = Math.abs(1 + dt * p.Dn * c * c * sigma) / (1 + dt * p.m);
+    if (gw > water) { water = gw; at = [i, j]; }
+    plant = Math.max(plant, gp);
+  }
+  return { water, plant, waterMode: at && at.map(x => x / (K - 1)) };
+}
+
 async function ceilingCheck(tab, base, run, key, page, log) {
-  const N = 32, envelope = [[0.2, 0], [0.2, 2.5], [1.5, 0], [1.5, 2.5]], chk = (x, y) => ((x + y) % 2 ? 1 : -1);
-  const boundOf = st => { const L = rdxLattice(tab, st, 2, 2); return stabilityBound((f, dt) => L.step(f, dt, true), envelope, 2); };
-  const rows = [];
-  for (const Dw of [1, 5, 10, 20]) {
-    const st = Object.assign({}, base, { Dw }), dtMax = await page.evaluate(([k, x]) => window.orderDtMax(k, x), [key, st]), bnd = boundOf(st);
-    const init = new Float64Array(N * N * 4);
-    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) { const i = (y * N + x) * 4; init[i] = Math.fround(0.6 + 0.05 * Math.cos(TAU * x / N) + 1e-6 * chk(x, y)); init[i + 1] = 0.9; init[i + 3] = 1; }
-    const amp = [];
-    for (const steps of [0, 20, 40]) {
-      const r = await run({ key, variant: 'ceiling', state: Object.assign({}, st, { dt: dtMax }), W: N, H: N, init, steps });
+  const t0 = Date.now(), checks = [];
+  const out = { rule: 'recipe v5 on (ceiling combined): min(1.6/R, 1.6/(Q D_n c^2), 0.5/m, 0.25) with R = Q D_w c^2 + 2 v c; recipes older than v5 (ceiling v4): the pre-v5 min(separate limits) where its step s satisfies s (R - 1) < 2, the combined ceiling elsewhere' };
+  const gate = (name, pass, extra) => { checks.push(Object.assign({ ladder: 'ceiling: ' + name, gate: true, pass: !!pass }, extra || {})); log('  ceiling ' + (pass ? 'pass' : 'FAIL') + ': ' + name); };
+  const ctl = (name, detected, extra) => { checks.push(Object.assign({ ladder: 'ceiling control: ' + name, detected: !!detected }, extra || {})); log('  ceiling control ' + (detected ? 'detected' : 'MISSED') + ': ' + name); };
+
+  // ---- sweep and modes
+  const S = CEILING_SWEEP, states = [];
+  for (const scale of S.scale) for (const slope of S.slope) for (const Dw of S.Dw) for (const Dn of S.Dn) for (const m of S.m) for (const lap of S.lap) for (const dt of S.dt) for (const ceiling of S.ceiling)
+    states.push({ scale, slope, Dw, Dn, m, lap, dt, ceiling, agrad: 0.6, a: 1.1 });
+  const steps = await page.evaluate(([k, st]) => window.orderStepSweep(k, st), [key, states]);
+  const worst = { combined: { ratio: 0, at: null }, v4: { ratio: 0, at: null }, preV5: { ratio: 0, at: null }, modes: { water: 0, plant: 0, at: null } };
+  let combinedOver = 0, v4Over = 0, v4Mismatch = 0, preUnstable = 0, corrected = 0, kept = 0;
+  const pairs = states.length / 2;
+  for (let i = 0; i < states.length; i++) {
+    const p = states[i], st = steps[i].step, R = vegRate(p), plantRate = vegQ(p) * Math.max(p.Dn, 0.05) * p.scale * p.scale;
+    if (p.ceiling === 'combined') {
+      const ratio = Math.max(st * R / 2, st * plantRate / 2);
+      if (ratio > worst.combined.ratio) worst.combined = { ratio, at: p };
+      if (ratio > 0.8 * (1 + 1e-12)) combinedOver++;
+    } else {
+      const pre = preV5Step(p), stable = pre * (R - 1) < 2, ratio = st * (R - 1) / 2;
+      if (ratio > worst.v4.ratio) worst.v4 = { ratio, at: p };
+      if (!(st * (R - 1) < 2) || st * plantRate / 2 > 0.8 * (1 + 1e-12)) v4Over++;
+      // the same state under rule 'combined' is the previous entry (ceiling is the innermost loop)
+      const combinedStep = steps[i - 1].step;
+      if (stable ? Math.abs(st - pre) > 1e-12 * pre : Math.abs(st - combinedStep) > 1e-12 * combinedStep) v4Mismatch++;
+      if (stable) kept++; else { corrected++; preUnstable++; }
+      const preRatio = pre * (R - 1) / 2;
+      if (preRatio > worst.preV5.ratio) worst.preV5 = { ratio: preRatio, at: Object.assign({}, p, { ceiling: 'pre-v5' }) };
+    }
+    const ms = modeScan(p, st);
+    if (ms.water > worst.modes.water) worst.modes = Object.assign({}, worst.modes, { water: ms.water, at: p, waterMode: ms.waterMode });
+    worst.modes.plant = Math.max(worst.modes.plant, ms.plant);
+  }
+  out.sweep = { grid: S, states: states.length, combinedOverMargin: combinedOver, v4OverBound: v4Over, v4Mismatch, preV5Unstable: preUnstable, v4Kept: kept, v4Corrected: corrected, worst };
+  gate('rule combined: step at most 0.8 of 2/R and of the plant bound over the UI sweep', combinedOver === 0, { observed: worst.combined.ratio, limit: 0.8, states: pairs });
+  gate('rule v4: step under 2/(R - 1), the pre-v5 step kept where it was stable and the combined step elsewhere', v4Over === 0 && v4Mismatch === 0, { observed: worst.v4.ratio, limit: 1, kept, corrected, states: pairs });
+  gate('no Fourier mode of the water row (bare soil) or the plant row amplified at the step taken', worst.modes.water <= 1 + 1e-12 && worst.modes.plant <= 1 + 1e-12, { observed: [worst.modes.water, worst.modes.plant], limit: 1 });
+  log('  ceiling sweep: ' + states.length + ' states; worst step/(2/R) under combined ' + worst.combined.ratio.toFixed(4) + '; worst step/(2/(R-1)) under v4 ' + worst.v4.ratio.toFixed(4) + ', pre-v5 ' + worst.preV5.ratio.toFixed(4) +
+    ' (' + preUnstable + ' of ' + pairs + ' pre-v5 steps past the bound); largest mode amplification ' + worst.modes.water.toFixed(6) + ' water, ' + worst.modes.plant.toFixed(6) + ' plants');
+
+  // ---- the actual instance
+  const N = 32, chk = (x, y) => ((x + y) % 2 ? 1 : -1), snaps = [0, 25, 50, 100, 200];
+  const boundOf = st => { const L = rdxLattice(tab, st, 2, 2); return stabilityBound((f, dt) => L.step(f, dt, true), [[0.2, 0], [0.2, 2.5], [1.5, 0], [1.5, 2.5]], 2); };
+  const init = new Float64Array(N * N * 4);
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) { const i = (y * N + x) * 4; init[i] = Math.fround(0.6 + 0.05 * Math.cos(TAU * x / N) + 1e-6 * chk(x, y)); init[i + 3] = 1; }
+  const board = async (state, unclamped) => {
+    const amp = []; let dtUsed = null;
+    for (const n of snaps) {
+      const r = await run({ key, variant: 'ceiling', state, W: N, H: N, init, steps: n, unclamped });
+      if (n) dtUsed = r.dtUsed;
       let a = 0; for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) a += r.field[(y * N + x) * 2] * chk(x, y);
       amp.push(Math.abs(a / (N * N)));
     }
-    rows.push({ Dw, slope: st.slope, scale: st.scale, lap: st.lap, moduleDtMax: dtMax, explicitBound: bnd, ratio: dtMax / bnd, checkerboardAfter0_20_40: amp, grows: amp[1] > 1e-5 || amp[2] > 1e-5 });
-    log('  ceiling Dw ' + Dw + ': dtMax ' + dtMax.toFixed(4) + ' bound ' + bnd.toFixed(4) + ' | checkerboard ' + amp.map(v => v.toExponential(2)).join(' '));
+    const later = amp.slice(1);
+    return { dt: dtUsed, amplitude: amp, decays: later.every(a => a < amp[0]) && amp[amp.length - 1] < 0.1 * amp[0], grows: later.some(a => !(a <= 10 * amp[0])) };
+  };
+  const rows = [];
+  for (const [Dw, lap] of [[1, 5], [5, 5], [10, 5], [20, 5], [10, 9]]) {
+    const st = Object.assign({}, base, { Dw, lap, dt: 0.02 }), R = vegRate(st), bare = 2 / (R - 1), twin = boundOf(st);
+    const row = { Dw, lap, slope: st.slope, scale: st.scale, R, bound: bare, boundNoLoss: 2 / R, twinBound: twin };
+    row.combined = await board(Object.assign({}, st, { ceiling: 'combined' }), false);
+    row.v4 = await board(Object.assign({}, st, { ceiling: 'v4' }), false);
+    const pre = preV5Step(st);
+    row.preV5 = Object.assign(await board(Object.assign({}, st, { dt: pre }), true), { overBound: pre / bare });
+    row.below = await board(Object.assign({}, st, { dt: 0.98 * bare }), true);
+    row.above = await board(Object.assign({}, st, { dt: 1.02 * bare }), true);
+    for (const k of ['combined', 'v4']) row[k].overBound = row[k].dt / bare;
+    rows.push(row);
+    log('  ceiling Dw ' + Dw + ' (' + lap + '-point): bound ' + bare.toFixed(5) + ', twin ' + twin.toFixed(5) + ' | combined ' + row.combined.dt.toFixed(5) + (row.combined.decays ? ' decays' : ' DOES NOT DECAY') +
+      ' | v4 ' + row.v4.dt.toFixed(5) + (row.v4.decays ? ' decays' : ' DOES NOT DECAY') + ' | pre-v5 ' + pre.toFixed(5) + ' (' + (pre / bare).toFixed(2) + ' of the bound)' + (row.preV5.grows ? ' grows' : row.preV5.decays ? ' decays' : ' neither') +
+      ' | 0.98 ' + (row.below.decays ? 'decays' : 'NO') + ', 1.02 ' + (row.above.grows ? 'grows' : 'NO'));
   }
+  out.instance = { grid: [N, N], init: 'water 0.6 + 0.05 cos(2 pi x/N) + 1e-6 (-1)^(x+y), plants 0 (bare soil)', snapshots: snaps,
+    criteria: 'decays: every later checkerboard amplitude below the initial one and the last below a tenth of it; grows: some later amplitude above ten times the initial one', rows };
+  gate('the actual instance: the checkerboard decays at the module step under both rules', rows.every(r => r.combined.decays && r.v4.decays), { rows: rows.length });
+  ctl('pre-v5 separate ceiling, clamp removed: the checkerboard grows wherever that step is past the bound, and decays where it is not', rows.every(r => r.preV5.overBound > 1 ? r.preV5.grows : r.preV5.decays) && rows.some(r => r.preV5.grows));
+  ctl('the computed bound brackets the actual shader: 0.98 of it decays, 1.02 of it grows', rows.every(r => r.below.decays && r.above.grows));
+
+  // ---- the twin bound at the presets (both species, the envelope of the other tabs), under both rules
   const presets = await page.evaluate(id => JSON.parse(JSON.stringify(window.__ordDefs[id].presets)), tab), pres = [];
   for (const [name, pr] of Object.entries(presets)) {
-    const st = Object.assign({}, base, pr.p), dtMax = await page.evaluate(([k, x]) => window.orderDtMax(k, x), [key, st]), eff = Math.min(st.dt, dtMax), bnd = boundOf(st);
-    pres.push({ preset: name, effectiveDt: eff, explicitBound: bnd, ratio: eff / bnd });
+    const st = Object.assign({}, base, pr.p), twin = boundOf(st), R = vegRate(st);
+    const [cmb, old] = await page.evaluate(([k, s]) => window.orderStepSweep(k, [Object.assign({}, s, { ceiling: 'combined' }), Object.assign({}, s, { ceiling: 'v4' })]), [key, st]);
+    pres.push({ preset: name, requestedDt: st.dt, combinedStep: cmb.step, v4Step: old.step, preV5Step: preV5Step(st), twinBound: twin, combinedOverTwin: cmb.step / twin, v4OverTwin: old.step / twin, combinedOverNoLoss: cmb.step * R / 2 });
   }
-  return { rule: 'module ceiling = min(diffusion limit, advection limit, mortality limit, 0.25); explicit bound from the Float64 twin at the (pi, pi) mode over water 0.2 to 1.5 and plants 0 to 2.5', envelope, settings: rows, presets: pres };
+  out.presets = pres;
+  gate('every preset under the twin bound under both rules, and v4 reprints the pre-v5 step', pres.every(p => p.combinedOverTwin < 1 && p.v4OverTwin < 1 && Math.abs(p.v4Step - p.preV5Step) <= 1e-12 * p.preV5Step));
+  out.checks = checks;
+  out.seconds = Math.round((Date.now() - t0) / 1000);
+  return out;
 }
 
 // The time ladder carried until float32 rounding dominates, to show the floor rule acting.
@@ -883,7 +1019,12 @@ function printTable(report) {
       lines.push(tab.padEnd(12) + name.padEnd(14) + String(s.formal).padEnd(8) + f(s.observed, 3).padEnd(10) + f(s.halfRange, 3).padEnd(18) + f(s.finestPairwise, 3).padEnd(13) + f(s.seed && s.seed.sd, 3).padEnd(9) + (/^space./.test(name) ? 'recorded' : s.pass ? 'yes' : 'NO'));
     }
     if (t.mms) lines.push(tab.padEnd(12) + 'mms'.padEnd(14) + String(t.mms.formal).padEnd(8) + f(t.mms.order, 3).padEnd(10) + f(t.mms.halfRange, 3).padEnd(18) + f(t.mms.pairwise[t.mms.pairwise.length - 1], 3).padEnd(13) + '-'.padEnd(9) + (t.mms.pass ? 'yes' : 'NO'));
-    if (t.ceiling) for (const c of t.ceiling.settings) lines.push(tab.padEnd(12) + ('ceiling Dw ' + c.Dw).padEnd(14) + 'dtMax ' + f(c.moduleDtMax, 4) + ', bound ' + f(c.explicitBound, 4) + ', ratio ' + f(c.ratio) + (c.grows ? ', checkerboard grows' : ', checkerboard decays'));
+    if (t.ceiling) {
+      const sw = t.ceiling.sweep;
+      lines.push(tab.padEnd(12) + 'ceiling'.padEnd(14) + sw.states + ' swept states: step/(2/R) at most ' + f(sw.worst.combined.ratio, 3) + ' (combined), step/(2/(R-1)) at most ' + f(sw.worst.v4.ratio, 3) + ' (v4), ' + f(sw.worst.preV5.ratio, 3) + ' before v5');
+      for (const r of t.ceiling.instance.rows) lines.push(tab.padEnd(12) + ('ceiling Dw ' + r.Dw + (r.lap === 9 ? ' L9' : '')).padEnd(14) + 'bound ' + f(r.bound, 4) + ', combined ' + f(r.combined.dt, 4) + ' (' + f(r.combined.overBound) + '), v4 ' + f(r.v4.dt, 4) + ' (' + f(r.v4.overBound) + '), pre-v5 ' + f(r.preV5.overBound) + (r.preV5.grows ? ' grows' : ' decays'));
+      for (const c of t.ceiling.checks) if (c.gate) lines.push(tab.padEnd(12) + 'ceiling'.padEnd(14) + (c.pass ? 'pass  ' : 'FAIL  ') + c.ladder.replace(/^ceiling: /, ''));
+    }
     if (t.floorProbe) lines.push(tab.padEnd(12) + 'floor'.padEnd(14) + '1'.padEnd(8) + f(t.floorProbe.fittedAccepted, 3).padEnd(10) + ('all points ' + f(t.floorProbe.fittedAll, 3)).padEnd(31) + '-'.padEnd(9) + 'probe');
   }
   lines.push('', 'time = successive differences, time* = true error against Float64 RK4 of the same semi-discrete system');
@@ -918,6 +1059,7 @@ function writeReport(report, tabs) {
       { tab, ladder: 'time control: clock doubled', detected: t.time.controls.clock.detected, selfConvergenceDetects: t.time.controls.clock.selfConvergenceDetects, mode: t.mode });
     if (t.space) allChecks.push({ tab, ladder: 'space, successive differences', observed: t.space.self.observed, formal: t.formal.space, pass: t.space.self.pass, mode: t.mode },
       { tab, ladder: 'space control: center weight', detected: t.space.controls.weight.detected, mode: t.mode });
+    if (t.ceiling) for (const c of t.ceiling.checks) allChecks.push(Object.assign({ tab }, c, { mode: t.mode }));
     if (t.mms) { allChecks.push({ tab, ladder: 'manufactured solution, true error', observed: t.mms.order, formal: t.mms.formal, pass: t.mms.pass, mode: t.mode });
       for (const [k, c] of Object.entries(t.mms.controls)) allChecks.push({ tab, ladder: 'manufactured-solution control: ' + k, detected: c.detected, mode: t.mode }); }
   }

@@ -682,7 +682,9 @@ void main(){
   // v3 (2026-09-24): Ising's Metropolis random numbers are keyed by the seed; older recipes keep the shared stream.
   // v4 (2026-09-24): the lozenge tab calls a rhombus frozen when it is joined to the rim by rhombi of its own
   // orientation; older recipes keep the local radius-3 test they were made with.
-  const RECIPE_V = 4;
+  // v5 (2026-09-25): vegetation's step ceiling combines water diffusion and advection; older recipes keep the
+  // separate-limit ceiling wherever their step was stable, and take the combined one where it was not.
+  const RECIPE_V = 5;
   // Public compatibility versions, independent of each technique's scientific status.
   Object.defineProperties(S, {
     apiVersion: { value: 1, enumerable: true },

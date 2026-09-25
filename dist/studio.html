@@ -2155,7 +2155,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "cyclic",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
+    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
     "reference": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a \u003c 1 \u003c b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
     "equation": "∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v)",
     "status": "validated within stated limits",
@@ -2199,7 +2199,7 @@ shall not be misrepresented as the original profile.
       "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
       "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
     },
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/rdx-science.json"
   },
   {
@@ -2626,7 +2626,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "vegetation",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
+    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
     "reference": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n², because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
     "equation": "∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n",
     "status": "validated within stated limits",
@@ -2634,6 +2634,7 @@ shall not be misrepresented as the original profile.
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
       "Linear regime and uniform states only within this domain; float32 implicit denominator 1 + dt quantizes water loss (modelled in the discrete reference).",
+      "Time step: from recipe v5 the step is at most 0.8 of the combined explicit bound 2/(Q D_w c^2 + 2 v c) of the water row, and of the plant row. Recipes made before v5 keep the pre-v5 step where it was under the bare-soil bound 2/(R - 1), so they reprint, and take the combined step where it was not, which corrects plates that were growing grid-scale checkerboards. Kept pre-v5 steps can lie within 0.03% of the bound at the corner of the ranges (validation/PDE-ORDER.md). The bound is linear and frozen-coefficient, not a nonlinear stability proof.",
       "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
       "Broader settings require additional independent evidence."
     ],
@@ -2650,6 +2651,16 @@ shall not be misrepresented as the original profile.
         "failureControl": "Plant uptake sign flip, water advected the wrong way, water diffusion 5% high and a broken stencil; each must fail.",
         "command": "node tools/rdx-science.js --write",
         "results": "validation/results/rdx-science.json"
+      },
+      {
+        "test": "tools/pde-order.js",
+        "scope": "Vegetation step ceiling, the ceiling section of the order-of-accuracy harness: the step the actual instance takes (the module sanitize, then min(dt, dtMax)) over 51,840 settings spanning the UI ranges (scale, slope, D_w, D_n, m, stencil, requested dt) under both ceiling rules; every Fourier mode of the linearized water and plant rows at each step taken; the actual rdx.js step shader on a 32 x 32 lattice from a 1e-6 water checkerboard on bare soil at slope 40, scale 1, D_w = 1, 5, 10, 20 (5-point) and 10 (9-point); the Float64 twin two-species bound at those settings and at every preset.",
+        "criteria": "Rule combined (recipe v5 on): step at most 0.8 of 2/R, R = Q D_w c^2 + 2 v c, and of the plant bound, over the whole sweep. Rule v4 (older recipes): step below 2/(R - 1), equal to the pre-v5 step wherever that step was below 2/(R - 1) and to the combined step elsewhere. No Fourier mode amplified at any swept step. The checkerboard decays at the module step under both rules (every later amplitude below the initial one, the last below a tenth of it), and every preset is under the twin bound under both rules. A failing gate fails the run.",
+        "limitations": "Linear frozen-coefficient stability of the decoupled water (bare soil) and plant rows over all Fourier modes, and of the coupled system only at the corners of the twin envelope (water 0.2 to 1.5, plants 0 to 2.5). Not a nonlinear stability proof; the sweep is a finite grid over the UI ranges; SwiftShader float32 only.",
+        "benchmark": "The forward Euler bound of the water row derived from the step shader, |1 - dt R| \u003c= 1 + dt (1 + n^2) at the (pi, pi) mode, shown in validation/PDE-ORDER.md to bind for both stencils with or without the implicit loss; the exact stencil and upwind symbols for every other mode; the bound computed numerically from the Float64 twin of the update.",
+        "failureControl": "The pre-v5 separate-limit step, run on the actual shader with the ceiling removed from a copy of the spec, must grow the checkerboard where it exceeds the bound (1.19 to 1.59 times it at the four settings past it) and decay where it does not; 0.98 and 1.02 of the computed bound must decay and grow on the actual shader.",
+        "command": "ORDER_ONLY=ceiling node tools/pde-order.js --tab vegetation (recorded by node tools/pde-order.js --full --write)",
+        "results": "validation/results/pde-order.json"
       }
     ],
     "print": [
@@ -2670,7 +2681,7 @@ shall not be misrepresented as the original profile.
       "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
       "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
     },
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/rdx-science.json"
   },
   {
@@ -3202,7 +3213,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "excitable",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
+    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
     "reference": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
     "equation": "Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b)",
     "status": "validated within stated limits",
@@ -3246,7 +3257,7 @@ shall not be misrepresented as the original profile.
       "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
       "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
     },
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/rdx-science.json"
   },
   {
@@ -3400,13 +3411,14 @@ shall not be misrepresented as the original profile.
   {
     "id": "amb",
     "source": "src/modules/pde.js",
-    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
+    "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
     "reference": "Elsen Tjhung, Cesare Nardini and Michael E. Cates, Physical Review X 8, 031080 (2018). Cahn-Hilliard describes a passive mixture relaxing toward equilibrium. Two extra gradient terms, λ|∇φ|² in the chemical potential and a current ζ(∇²φ)∇φ that cannot come from any free energy, are the leading ways an active system (motile bacteria, self-propelled colloids) can break time-reversal symmetry while still conserving φ. They give the two phases different interfacial tensions, and when the tension felt by the minority phase turns negative the Ostwald process runs backward: large droplets shed material to small ones and coarsening stops.",
     "equation": "∂φ/∂t = M ∇²μ − ζ ∇·[(∇²φ)∇φ],   μ = φ³ − φ − ε²∇²φ + λ|∇φ|²",
     "status": "validated within stated limits",
     "limitations": [
       "Complete evidence covers only the finite recipes and benchmark domain in validation/PDE-FIELD-REVIEW.md",
-      "No Float16, stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "No stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "Float16 fallback, measured, not validated: the state is stored as the deviation from the mean composition c0. At the default recipe the fluctuations then grow as in float32 (standard deviation equal to float32's to three figures at 1000 steps), where the plain fallback shrank them to 0.80 of it (validation/HALF-FLOAT.md). Phase-separated states far from c0 get no finer float16 spacing than before; other recipes are not measured.",
       "Broader settings require additional independent evidence."
     ],
     "remaining": [
@@ -3442,6 +3454,16 @@ shall not be misrepresented as the original profile.
         "benchmark": "Independent continuum linearized Fourier rates at fixed physical domain/time.",
         "failureControl": "Deliberately unscaled coarse lattice must exceed ten times the correct coarse-grid error.",
         "limitations": "Smooth small-mode convergence only; not nonlinear sharp-interface convergence."
+      },
+      {
+        "test": "tools/half-float-check.js",
+        "scope": "The real studio at the default recipe (seed half-float-check, default grid 512 x 512, warm-up 100 and 1000 steps, paused) with EXT_color_buffer_float hidden, so the tab takes its float16 fallback, against the float32 run of the same recipe. Storage: the field as its deviation from c0, added back for the local potential, the guard, the picture, the reduction, the brush and the data export.",
+        "criteria": "Fixed before the runs: at 1000 steps the float16 state is not bit for bit its state at 100 steps, the standard deviation of every exported channel is within 10% of float32's and has moved the same way as float32's since step 100; the fallback export names its base and the float32 export none.",
+        "limitations": "Pattern-level moments of one seed at the default recipe, 512 x 512, 100 and 1000 steps, on SwiftShader with the extension hidden, not a device that lacks it. The float16 plate is a different realization of the pattern, not the float32 plate.",
+        "benchmark": "The float32 run of the same instance and recipe, whose numerics the other entries of this record validate; the float32 run repeats bit for bit.",
+        "failureControl": "A patched copy of the studio without the base storage, which is the fallback as it was, must fail the same criteria: its standard deviation fell from step 100 to 1000 while float32's grew, ending at 0.80 of float32's.",
+        "command": "node tools/half-float-check.js --write",
+        "results": "validation/results/half-float.json"
       }
     ],
     "print": [
@@ -3462,7 +3484,7 @@ shall not be misrepresented as the original profile.
         "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
     ],
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/pde-field-review.json",
     "domain": {
       "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
@@ -3493,7 +3515,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "cahn",
     "source": "src/modules/pde.js",
-    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
+    "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
     "reference": "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ max(1−c²,0) suppresses mobility near pure phases; it does not imply pure surface diffusion for this polynomial free energy (Lee, Munch and Suli, 2015).",
     "equation": "∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c",
     "status": "validated within stated limits",
@@ -3585,7 +3607,7 @@ shall not be misrepresented as the original profile.
         "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
     ],
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/pde-field-review.json",
     "domain": {
       "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
@@ -3597,7 +3619,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "ohta",
     "source": "src/modules/pde.js",
-    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
+    "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
     "reference": "Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). The long-range penalty can frustrate ordinary coarsening and favor microstructured states. Pattern selection depends on composition and parameters; a finite preview does not prove equilibrium.",
     "equation": "∂u/∂t = ∇·[M(u)∇μ] − σ(u−m),   μ = u³ − u − ε²Δu",
     "status": "validated within stated limits",
@@ -3659,7 +3681,7 @@ shall not be misrepresented as the original profile.
         "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
     ],
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/pde-field-review.json",
     "domain": {
       "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
@@ -3729,7 +3751,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "swift",
     "source": "src/modules/pde.js",
-    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
+    "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
     "reference": "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is a phenomenological pattern-forming model motivated by convection near onset: a real scalar field with a preferred wavenumber k₀. Quadratic and cubic nonlinearities affect the available branches. Localized patterns can exist in suitable subcritical regimes; this display does not establish branch stability.",
     "equation": "∂u/∂t = r u − (k₀² + ∇²)² u + g u² − b u³",
     "status": "validated within stated limits",
@@ -3791,7 +3813,7 @@ shall not be misrepresented as the original profile.
         "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
     ],
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/pde-field-review.json",
     "domain": {
       "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
@@ -3803,13 +3825,14 @@ shall not be misrepresented as the original profile.
   {
     "id": "pfc",
     "source": "src/modules/pde.js",
-    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
+    "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
     "reference": "K. R. Elder, M. Katakowski, M. Haataja and M. Grant, Phys. Rev. Lett. 88, 245701 (2002); Elder and Grant, Phys. Rev. E 70, 051605 (2004). The phase-field crystal model is Swift–Hohenberg’s free energy evolved with conserved (Cahn–Hilliard) dynamics. The field represents time-averaged atomic-scale density, not individual particle trajectories. The model supports crystalline order and defects on diffusive time scales; this finite-grid display does not locate a material melting line.",
     "equation": "∂ψ/∂t = M ∇²(δF/δψ),   F = ∫ ½ ψ [r + (k₀²+∇²)²] ψ + ψ⁴/4",
     "status": "validated within stated limits",
     "limitations": [
       "Complete evidence covers only the finite recipes and benchmark domain in validation/PDE-FIELD-REVIEW.md",
-      "No Float16, stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "No stochastic forcing, long-time phase diagram, nonlinear continuum-interface or universal hardware claim. UI quantized status means are approximate.",
+      "Refuses float16 state: on a device without EXT_color_buffer_float the tab says why on the stage and in the status line and runs nothing, because float16 storage breaks the conservation of the mean density. At the default recipe between steps 100 and 1000 the mean drifted 30 times as far as in float32 stored plainly and 9.4 times stored as the deviation from psi0, against an acceptance limit of 3 (tools/half-float-check.js, validation/HALF-FLOAT.md).",
       "The orientation view encodes a local gradient direction, not crystallographic orientation."
     ],
     "remaining": [
@@ -3865,7 +3888,7 @@ shall not be misrepresented as the original profile.
         "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
     ],
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/pde-field-review.json",
     "domain": {
       "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
@@ -4156,7 +4179,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "ks",
     "source": "src/modules/pde.js",
-    "sourceSha256": "c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed",
+    "sourceSha256": "5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167",
     "reference": "Yoshiki Kuramoto and Toshio Tsuzuki, Prog. Theor. Phys. 55, 356 (1976); G. I. Sivashinsky, Acta Astronautica 4, 1177 (1977). Independently derived for reaction-diffusion phase turbulence and for laminar flame fronts. It is the simplest PDE that produces extensive spatiotemporal chaos: a band of unstable modes, a stabilizing biharmonic, and a Burgers-like nonlinearity. In two dimensions the cells of a flame.",
     "equation": "∂u/∂t = −ν ∇⁴u − ∇²u − (α/2)|∇u|²",
     "status": "validated within stated limits",
@@ -4218,7 +4241,7 @@ shall not be misrepresented as the original profile.
         "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
       }
     ],
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/pde-field-review.json",
     "domain": {
       "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
@@ -4288,7 +4311,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "turing",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
+    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
     "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry.",
     "equation": "Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v",
     "status": "validated within stated limits",
@@ -4332,7 +4355,7 @@ shall not be misrepresented as the original profile.
       "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
       "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
     },
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/rdx-science.json"
   },
   {
@@ -4567,7 +4590,7 @@ shall not be misrepresented as the original profile.
   {
     "id": "chemotaxis",
     "source": "src/modules/rdx.js",
-    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
+    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
     "reference": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) \u003c c/2 − D − a.",
     "equation": "∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²)",
     "status": "validated within stated limits",
@@ -4575,11 +4598,12 @@ shall not be misrepresented as the original profile.
       "Catalog equation and citation are review targets, not verified paper equivalence.",
       "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
       "Logistic growth means total mass is not conserved; the balance, not conservation, is tested. No aggregate shape or coarsening statistics.",
-      "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "No noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
+      "Float16 fallback, measured, not validated: the state is stored as the deviation from the uniform state (1, 1/a). At the default recipe this ends the freeze of the plain fallback (its state stopped changing, so the aggregation never started) and keeps each species' standard deviation within 3% of float32's at 1000 steps; the plate is a different realization (validation/HALF-FLOAT.md). Other recipes and a live change of a, after which the stored deviations are larger, are not measured.",
       "Broader settings require additional independent evidence."
     ],
     "remaining": [
-      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, float16 fallback, evolved/running exports, other grids and hardware."
+      "Extend beyond the documented linear/uniform/front and paused-initial-print domain with independent evidence for nonlinear pattern statistics, noise, the float16 fallback beyond the default recipe, evolved/running exports, other grids and hardware."
     ],
     "numerical": [
       {
@@ -4591,6 +4615,16 @@ shall not be misrepresented as the original profile.
         "failureControl": "Non-conservative flux (sensitivity at the cell instead of the face), chemotactic flux sign flip, attractant diffusion 5% high and a broken stencil; each must fail.",
         "command": "node tools/rdx-science.js --write",
         "results": "validation/results/rdx-science.json"
+      },
+      {
+        "test": "tools/half-float-check.js",
+        "scope": "The real studio at the default recipe (seed half-float-check, default grid 512 x 512, warm-up 100 and 1000 steps, paused) with EXT_color_buffer_float hidden, so the tab takes its float16 fallback, against the float32 run of the same recipe. Storage: each species as its deviation from (1, 1/a), added back in every read, the picture, the reduction and the data export.",
+        "criteria": "Fixed before the runs: at 1000 steps the float16 state is not bit for bit its state at 100 steps, the standard deviation of every exported channel is within 10% of float32's and has moved the same way as float32's since step 100; the fallback export names its base and the float32 export none.",
+        "limitations": "Pattern-level moments of one seed at the default recipe, 512 x 512, 100 and 1000 steps, on SwiftShader with the extension hidden, not a device that lacks it. The float16 plate is a different realization of the pattern, not the float32 plate.",
+        "benchmark": "The float32 run of the same instance and recipe, whose numerics the other entries of this record validate; the float32 run repeats bit for bit.",
+        "failureControl": "A patched copy of the studio without the base storage, which is the fallback as it was, must fail the same criteria: its float16 state froze between steps 100 and 1000, with standard deviations 1.3% and 0.4% of float32's.",
+        "command": "node tools/half-float-check.js --write",
+        "results": "validation/results/half-float.json"
       }
     ],
     "print": [
@@ -4611,7 +4645,7 @@ shall not be misrepresented as the original profile.
       "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
       "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
     },
-    "reviewed": "2026-09-22",
+    "reviewed": "2026-09-25",
     "results": "validation/results/rdx-science.json"
   },
   {
@@ -6648,7 +6682,7 @@ shall not be misrepresented as the original profile.
     }
   }
 ]</script>
-<script type="application/json" id="build-info">{"build":"301dd9a1f426","fingerprint":"301dd9a1f4260af979025cfaca60e21c2c064c9d7d809122e1bceffd89b613bd","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"ab2b5e7b2547701f593054b32f19c75a40c1cc066e48dd2f7105d316d60b4294","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de","src/modules/attractors.js":"b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"c84066dd103b32dafbdc2e911a52563c0b66317605c2c608c10d1180ce6697ed","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760","src/modules/aztec.js":"38ffddc95db3b644c9d21cf1c727658e692f0c214bc35ab5fb64bf54ecb6da01","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"8d0b74da1421a27ed96ab181bdec73c7916f555be2864d0fa125052a62dcfbb1","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"0b47f4a2be263c2ebcffd1bd83465a930378e69dbf49310f9ab99d1eeaa0e82e","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"a54ee62f409482114806816788d03c2c54701ea560a286ba45c2a98208b02652","src/modules/hopf.js":"2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00","src/modules/cloak.js":"2ee7bbe0424ab1f6a7fbe8647064fa0ef2d3864f9139a727078160dffcb0947b","src/modules/vortex.js":"0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e","src/modules/darkroom.js":"6ec1d4c99ec1b402dcbc098cb31b1682967fec6272aab18d4501745505f40293","src/modules/kakeya.js":"74020ed1415b3f4bd8b99866d9ab093ba190908a77a7e0e435704941d9b2fbdd","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008","src/modules/kitaev.js":"f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6","src/modules/veselago.js":"eb6d985b791127b6665a1d6b29f0a63e56fc35ae6d75930b62a9d75f3bd07b59","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"00f6c7d38161097ff2293009d10134e8fa072bfda358a1c7613d4a87e297332c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"b7c4b23da19c1f5bcb5ffa43fff089b158b77a8e54bbb9b6e11daf2e4499fc9f","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"partially validated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"validated within stated limits","skin":"unvalidated","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"validated within stated limits","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"validated within stated limits","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"validated within stated limits","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"partially validated","percolation":"validated within stated limits","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"validated within stated limits","caustics":"unvalidated","veselago":"partially validated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
+<script type="application/json" id="build-info">{"build":"1e458d3eb129","fingerprint":"1e458d3eb12925f3839706e024abcbf2bb91290a79baed560c65dfc686efa2ea","sources":{"src/shared/stats.js":"b8c3e6737e5022eb36b89cda8c1b8a6f689f3dcebf1da555d7a77c942acdf0db","src/shared/data-formats.js":"03349eb8ff724c7c479a0aac4d180091b8670fe951ce04ac5c575a466e2a27ed","src/shared/print-formats.js":"e03b9be39b4fd5593505322c163eb02dc96bd11772a84e1367cc52ee0d1ef4d1","src/shared/print-smoothing.js":"0e30f7dd410341b06c8ce4f33ca5678f2a7dc18c58fc116dc3e8a235e9f8f138","src/shared/engine.js":"15697e484ffa6d7798656f45f37a454771f5c7553a1e54c2dcabcc4cf63bb4a3","src/shared/module-browser.js":"6fcba6094345536e1bf3921bce0aa0c6dd32a01e74941d060c0f13d6a80ecc1a","src/modules/flow.js":"e471e248b5336427ac1eae97d3411be5310a71d60d238472ef79bae7cfd9f873","src/modules/physarum.js":"4847f89a6319746162764aa2721397d772c8dce6cb062d99fb5e3669628f0d3e","src/modules/reaction.js":"baa44a15217152befd1567e6b0f3403a8522333e526fb0360da4a2672a9b792c","src/modules/growth.js":"c5df3b80a3254d7ce4940b97b3bcf2f25bf2e2e281d656ff8d177c52e97e8d7e","src/modules/fluid.js":"459e16a77b169821439340ca850cafd7d208dd04b2e20c153ba11f81ed9192de","src/modules/attractors.js":"b213036e4283416fd2d4e1470c67c103c09d1c6e726f857b8fcf4d786a395ad7","src/modules/tilings.js":"cfd9c65b10670ea7b31ad82e998c9a01f566250e21e590bae02b929dd7a67357","src/modules/physarum3d.js":"df4bf560435ee79e12ccc1913e1a7c67a0dd9d8712db22bc89b1dbf951478df8","src/modules/life.js":"ec4e24c59625d56666def5c174d69c4186d7f87dfddd7a64d86a539302b99f8f","src/modules/cppn.js":"364e56be546c4cdd22af7f8910285bd861ac7224d3da512f63615dca542988d3","src/modules/fractal.js":"beb8cf6adeae82b8a81d80d988f4e6060bdc2464cf3d2587f69156782ba12f5c","src/modules/chimera.js":"2026ed5b766f2bff6720701975000ec1f77eb873efa3262dfdc6b292b989c7f0","src/modules/dendrite.js":"e9b621840c0325ac12d599a950b57f69dc212899a7be4547cc177535eff1d480","src/modules/chladni.js":"fd4ece9213752b46344a844289a19daa37e966b3e4850e75109a946f6a722509","src/modules/xy.js":"fd11d4f383ef1c7f1cdcff441cfe9dc54b7a58bc77fa441a74824ad3fbd8f34d","src/modules/nematic.js":"bf441415104c09899ffd58f62df58029f6bdccfcdaf3cc678027d9b4ac32d1f8","src/modules/pde.js":"5835110864e631de16ef291d0e90f24e29b1bd3096090a42416ec22b14eea167","src/modules/swarm.js":"f9d68c5bb8347ef82e1b674851f365d228e5d3fa8387b22002ada97829a4b90c","src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js":"6e37d9481639c913e897c399e614569af5418d8dd00c71330bfaaa1634ae4f7d","src/modules/lattice.js":"d75842d16ded56b51177da2f7c0e3cacc36ced42c12886501dbf34bc507a3836","src/modules/wavesflow.js":"3a87c8e1bd20541eee270871e1c84553bfd55504f9eccb2773277b4bae3959d6","src/modules/dynamics.js":"f3f176a2f69ccf756c87476318a0dadcbae96884de6a138a629b0d138f2bce60","src/modules/rdx.js":"85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f","src/modules/aztec.js":"38ffddc95db3b644c9d21cf1c727658e692f0c214bc35ab5fb64bf54ecb6da01","src/modules/sle.js":"26a5ea2e13cfc32289cc5fc3ce2ec7ca7a79fb905a34f165ec790113e03f61f8","src/modules/cortex.js":"dccc6df094b2d6115f9d2a0dcab9b4382d39d5cec2bcbc4070b209e9df15bd19","src/modules/rmt.js":"1c586f01033c1951dc4915d5893e584c8e8bafa149048b155511d8dd56893bf4","src/modules/landscape.js":"a846f8f04252334226a5592b64257b94fbd4112509d12db78cb3b4cf811d180a","src/modules/kpz.js":"ae0ddd3b5ebea79dce1a955c7700f6c3f4b53e98085627468a95af7671effdf4","src/modules/bec.js":"ea2efa6e07abb13acaf13a20ed0e02e77e5321d258d9707239793e898424ca77","src/modules/potts.js":"04f3931b9feb9bdc4d8f779fd062614bfffcca5bdf5ff92c904fa7920cd49fe6","src/modules/tonertu.js":"982697a3942b6bcbeca72b293551c1bfa254a2bb8e26ac59a9b5bd96b807a257","src/modules/hyperbolic.js":"c93934b5cbd3a5c0ca6f383d10d962a45dc99bfe3aaf1947d76636b24a853ec2","src/modules/ust.js":"5788b8faea304f4d7f0dbaad255efefea187d1aa39777d7bf3d64655d95813ef","src/modules/grains.js":"726e2a911001c92aba57246112ced483c185878c0493029296976879e7b79f48","src/modules/liesegang.js":"babd32226425e811a0a50d10e64efa22bdc6f5ba20bf19f9e8cfc300db7a98f1","src/modules/lozenge.js":"8d0b74da1421a27ed96ab181bdec73c7916f555be2864d0fa125052a62dcfbb1","src/modules/growdomain.js":"1f6d76c7b1244c86fecb3768acacc5f859a1d5b664743dbd620f5cd399f5348f","src/modules/sandpile.js":"72f2034b07efbf841b1af0a56d73c7f8e5b135c7ddcabd9f669320ae914d59c3","src/modules/skyrmion.js":"0846859a576218b453fa6c50874475c54bc87cd07c532317df830393404dc89e","src/modules/web.js":"f6b353b01063c1cc08fceb1547e52d182b928681d792491fb78bbc7c8f799af3","src/modules/film.js":"93db678a238066a00bc26c185ffb48474e222e1310d885e5891486550f4be2d8","src/modules/faraday.js":"bf2c5594391bdf4e6cb6b4366d988900adb85011b2b06bc5f4fd98a0c7315a14","src/modules/lens.js":"5149acd1a9be6820624231f1c8d941644702361cc9fd27562644c2bf1edf750d","src/modules/timecrystal.js":"fc8c4632b713fa1bd475c868f3a823ecd9b4db3d6b51978307663e87ac29f59b","src/modules/spinice.js":"2a34f7cd6a87f3cbe9078feffb57272236fbef59917c422f071930a0e393969f","src/modules/skin.js":"7a52207224b907997f31fafc9139586bb4d6a42bc98f44e71d63d5b97b9cc6d0","src/modules/stealth.js":"286b9f2cbea85005382489ddfdaf2aea8d0354784869015d3c7feff34306d7e7","src/modules/arago.js":"63ab649e93936b8dd11681b0f2178899884e0913b824ff96acb82f8a939b0d06","src/modules/rogue.js":"91f0520b752cc51019569eddd236915107ca99e78e2d9bf69857a8f5e30bb40f","src/modules/aharonov.js":"1236ae5a9558fb0aec4b122d8129f9459daf0be02ef228053bb2a4d0d24c67cf","src/modules/anderson.js":"0b47f4a2be263c2ebcffd1bd83465a930378e69dbf49310f9ab99d1eeaa0e82e","src/modules/fput.js":"a7823c5b46e117311e49b66cf4a37a4c06fd64fc865ab2cf042929fe0ee8f4fc","src/modules/soliton.js":"baaeffed2a2345efa09025415a208c9f232d19fbca0a37beced40fa4a46232b1","src/modules/ssh.js":"269dfc0400eaac78c7f2eaae8be015bbfaed97ea9193437ca8360a9055cc9877","src/modules/aubry.js":"a54ee62f409482114806816788d03c2c54701ea560a286ba45c2a98208b02652","src/modules/hopf.js":"2b6e3be6a3e0b8dc23d415a1e46aa845f4c1a71896313941bda3e4e764458b00","src/modules/cloak.js":"2ee7bbe0424ab1f6a7fbe8647064fa0ef2d3864f9139a727078160dffcb0947b","src/modules/vortex.js":"0acb1b4e96356c379c2cc7faa0a3459ade100efbc476569bc01ccce789692e6e","src/modules/darkroom.js":"6ec1d4c99ec1b402dcbc098cb31b1682967fec6272aab18d4501745505f40293","src/modules/kakeya.js":"74020ed1415b3f4bd8b99866d9ab093ba190908a77a7e0e435704941d9b2fbdd","src/modules/breather.js":"29dcd04f6681f1fb0a92e99f172b5ab2ea52395a7072b193e4de52dc75b1bc70","src/modules/klein.js":"42310983a09eddeddab4ac1565d1b9db1b8b09dd80aee3712d3677e48a093d29","src/modules/gyroid.js":"56c73a5a0530f2347c6df1f7548b972794faccac909dd08a180449d5aaab8b3b","src/modules/purcell.js":"f30df3b5f3cfa37d4c8e5ed36830dc79e36d0a64a79452e36b3eb651b1776e52","src/modules/exceptional.js":"aef9aad18c1acd3ee200d3ef30b13a490ba28c6ed6fdbc044b2576a5ccdf49e6","src/modules/meissner.js":"18e1de323c37a59e162059cc373b0fe7014bd1c6c0d1b1d2677f730c2c9d27a7","src/modules/tennis.js":"9dea605ded11faa7a06d452e19e8028556e9edbf78a90fe7a0eb3119b3aa7e6d","src/modules/airy.js":"7f3c6b7b9d23d29e30725c33cf672c04244313e881e8f59bd7369eb31789ce9f","src/modules/weierstrass.js":"1e59555c79a785f23bff9e4926bfb91cf1869b387bbf0321f9df2f6f31bbb008","src/modules/kitaev.js":"f6ea15b58f3847d5a2b685553c8dd9b8ffac4a098a40a2fca582185ee65b41f6","src/modules/veselago.js":"eb6d985b791127b6665a1d6b29f0a63e56fc35ae6d75930b62a9d75f3bd07b59","src/modules/devil.js":"b9c68c7e3cbb97c05ab1a3b65a193b2282a7fde4678bbc748fff1aa19540f2bc","src/modules/loschmidt.js":"e13705f7ae4cd40aff049191515c365f817518097ccbf06a3dafbfd9cb46966d","src/modules/boy.js":"00f6c7d38161097ff2293009d10134e8fa072bfda358a1c7613d4a87e297332c","src/modules/thouless.js":"d8fbe221e8ca0f61e68f189b367c6de526ea274f9d43815d71375acd6735e0ae","src/modules/reuleaux.js":"eb812023a9bc14e3fc2b64f0dd236806b7b40af17df2160847611f9a83b5c707","src/modules/apollonian.js":"33e5753b5f1c41bb2e53d907ac23c3a7712a78e5e027bdacdc67a813271859c8","src/modules/knotlight.js":"779c1c226c5f23cf97b8bde9d47cecf738a642b0db240d2e4f02c91302134fbb","src/modules/causticsea.js":"bceec502d7e92c1c7566fb869e61136b5642424ce05755b979a90f4a5631271f","src/modules/track.js":"b740bc6ad06d792d02c3252bd0281281fe970287ef3c87ee6adc579dcab727a7","src/modules/kp.js":"3925442fd8ace719ad188395a7a09227963dca006a1eb90e8321399a424dc329","src/modules/gerstner.js":"418beed99df7264d60bb4fd123c92dd201c76a1db8e1885fc3501081914aa72e","src/modules/eight.js":"5a20539fff09f498a38d24820e59578cb4e58aa363d92f8bd25ac15440c750ab","src/modules/peakon.js":"cba119432fa3bcf511537ffe38fd017f6c0541fbdd25690e526997d3bc14bb23","src/modules/photon.js":"a2fe355f6eae4f942252ddb20c0fe8daa1371779e6a660559b4c6595863888e3","src/modules/crapper.js":"463fc277ee1c07af7ee54e9fe9c7874d658786bdef1f6efe77df7d8f4eb4fd92","src/modules/hasimoto.js":"984ef7278375ea40224e52e5203f72386c7f82784f346908e848a8c376633741","src/modules/lump.js":"7c8b265ca1c76408a1f68114cad6fb1c93c4c8d2fb2dbe9ef68d5e768958ccf4","src/modules/three-vortex-bound.js":"b7c4b23da19c1f5bcb5ffa43fff089b158b77a8e54bbb9b6e11daf2e4499fc9f","src/modules/parallelogram-lock.js":"0866a41e6997dbdd28881e32497e338caf18112713a4a6375edfd087a3384bdc","src/modules/quincunx-lock.js":"2a96dc0b3d766f32a9cc5a3d93cbaac82cfbd1eb9f4d0ce17b339e3bf1f4367e","src/modules/double-triangle-bound.js":"93385091cfa9587c67b8fb4629bce825d98a615fb7bfc062ab96c7bc4aca60e8","src/modules/surfaces.js":"133811c1fa821f789155fe8ad8432930dd6be41677d21b9024e9446c05a9fd7e","src/modules/plasma.js":"07f2e5490c70b5021093fd44927fcfab4ccd3f618fb4cb2bbec7d08c64589b5e","src/modules/shallow.js":"764119ee685b04aeda2b2eb18f5174a9920c2eca5872641abf424d72b1abf5f6","src/modules/nonreciprocal.js":"3d9c55e413d38c46ba36112296dc4276fb51d6cd7532402577982a9ffb37cff9","src/modules/maxwell.js":"17831bf855b8444d9f7e67f466846bf554bbce425f8deb0e7aad309b818e084c","src/modules/molecular.js":"5ccf67cd47b6ce65fa78ff4d78d070edd8379b8bdc8eaaac229840ee409ce874","src/modules/hodgkin-huxley.js":"ebdba852f29047bfcdd1f861731bbf47d774dad543f77248a64bfca042087bd8","src/modules/neural-mass.js":"9fd3caec34c8b8faa0ca731bb94d9e0d15c2e2ce8e5ca4d730764cee6ed008a1","src/modules/direct-gravity.js":"240e80aa218a6c121f7d0e5a42d28a73f39f75a333f019eebba253a7ac3f2041","src/modules/volume-wave.js":"5f8c2589822192e1661faf9ad5385bad45d8a18c148b1ce2341231dcec598234","src/shared/boot.js":"776c803a5e846249cb38089a7feca6a280225f8c15ac078a9456905e072973ac"},"sourceOf":{"life":"src/modules/life.js","physarum3d":"src/modules/physarum3d.js","cortex":"src/modules/cortex.js","nonreciprocal":"src/modules/nonreciprocal.js","bec":"src/modules/bec.js","physarum":"src/modules/physarum.js","phyllotaxis":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","hl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","lichtenberg":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","snowflake":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","growth":"src/modules/growth.js","cyclic":"src/modules/rdx.js","landscape":"src/modules/landscape.js","kpz":"src/modules/kpz.js","potts":"src/modules/potts.js","liesegang":"src/modules/liesegang.js","grains":"src/modules/grains.js","skyrmion":"src/modules/skyrmion.js","neural-mass":"src/modules/neural-mass.js","tonertu":"src/modules/tonertu.js","hyperbolic":"src/modules/hyperbolic.js","sle":"src/modules/sle.js","fractal":"src/modules/fractal.js","lens":"src/modules/lens.js","rotor":"src/modules/sandpile.js","web":"src/modules/web.js","faraday":"src/modules/faraday.js","film":"src/modules/film.js","timecrystal":"src/modules/timecrystal.js","growdomain":"src/modules/growdomain.js","spinice":"src/modules/spinice.js","vegetation":"src/modules/rdx.js","aztec":"src/modules/aztec.js","skin":"src/modules/skin.js","rmt":"src/modules/rmt.js","stealth":"src/modules/stealth.js","lozenge":"src/modules/lozenge.js","arago":"src/modules/arago.js","ust":"src/modules/ust.js","cppn":"src/modules/cppn.js","rogue":"src/modules/rogue.js","hodgkin-huxley":"src/modules/hodgkin-huxley.js","aharonov":"src/modules/aharonov.js","pendulum":"src/modules/dynamics.js","anderson":"src/modules/anderson.js","fput":"src/modules/fput.js","schrodinger":"src/modules/wavesflow.js","maxwell":"src/modules/maxwell.js","plasma":"src/modules/plasma.js","excitable":"src/modules/rdx.js","soliton":"src/modules/soliton.js","cyclicca":"src/modules/lattice.js","chimera":"src/modules/chimera.js","ssh":"src/modules/ssh.js","swarm":"src/modules/swarm.js","amb":"src/modules/pde.js","aubry":"src/modules/aubry.js","cahn":"src/modules/pde.js","ohta":"src/modules/pde.js","hopf":"src/modules/hopf.js","swift":"src/modules/pde.js","pfc":"src/modules/pde.js","lp":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","cloak":"src/modules/cloak.js","xy":"src/modules/xy.js","cgl":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","vortex":"src/modules/vortex.js","nematic":"src/modules/nematic.js","darkroom":"src/modules/darkroom.js","fluid":"src/modules/fluid.js","sandpile":"src/modules/lattice.js","kakeya":"src/modules/kakeya.js","ks":"src/modules/pde.js","breather":"src/modules/breather.js","turing":"src/modules/rdx.js","holomorphic":"src/modules/dynamics.js","klein":"src/modules/klein.js","gyroid":"src/modules/gyroid.js","dendrite":"src/modules/dendrite.js","purcell":"src/modules/purcell.js","exceptional":"src/modules/exceptional.js","direct-gravity":"src/modules/direct-gravity.js","meissner":"src/modules/meissner.js","tennis":"src/modules/tennis.js","flow":"src/modules/flow.js","chemotaxis":"src/modules/rdx.js","smectic":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","reaction":"src/modules/reaction.js","molecular":"src/modules/molecular.js","tilings":"src/modules/tilings.js","percolation":"src/modules/lattice.js","shallow":"src/modules/shallow.js","attractors":"src/modules/attractors.js","airy":"src/modules/airy.js","chirikov":"src/modules/swarm.js","hofstadter":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","weierstrass":"src/modules/weierstrass.js","scars":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","kitaev":"src/modules/kitaev.js","caustics":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","veselago":"src/modules/veselago.js","devil":"src/modules/devil.js","talbot":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","orbitals":"src/modules/dynamics.js","loschmidt":"src/modules/loschmidt.js","volume-wave":"src/modules/volume-wave.js","boy":"src/modules/boy.js","pearls":"src/modules/cgl-hofstadter-scars-caustics-smectic-hl-phyllotaxis.js","ising":"src/modules/lattice.js","thouless":"src/modules/thouless.js","convection":"src/modules/wavesflow.js","reuleaux":"src/modules/reuleaux.js","surfaces":"src/modules/surfaces.js","apollonian":"src/modules/apollonian.js","chladni":"src/modules/chladni.js","track":"src/modules/track.js","knotlight":"src/modules/knotlight.js","causticsea":"src/modules/causticsea.js","kp":"src/modules/kp.js","gerstner":"src/modules/gerstner.js","eight":"src/modules/eight.js","peakon":"src/modules/peakon.js","photon":"src/modules/photon.js","crapper":"src/modules/crapper.js","hasimoto":"src/modules/hasimoto.js","lump":"src/modules/lump.js","three-vortex-bound":"src/modules/three-vortex-bound.js","parallelogram-lock":"src/modules/parallelogram-lock.js","quincunx-lock":"src/modules/quincunx-lock.js","double-triangle-bound":"src/modules/double-triangle-bound.js"},"validation":{"life":"unvalidated","physarum3d":"unvalidated","cortex":"unvalidated","bec":"partially validated","physarum":"unvalidated","phyllotaxis":"validated within stated limits","hl":"unvalidated","lichtenberg":"unvalidated","snowflake":"unvalidated","growth":"unvalidated","cyclic":"validated within stated limits","landscape":"unvalidated","kpz":"partially validated","potts":"unvalidated","liesegang":"unvalidated","grains":"partially validated","skyrmion":"unvalidated","tonertu":"unvalidated","hyperbolic":"unvalidated","sle":"partially validated","fractal":"unvalidated","lens":"unvalidated","rotor":"unvalidated","web":"unvalidated","faraday":"unvalidated","film":"unvalidated","timecrystal":"unvalidated","growdomain":"unvalidated","spinice":"unvalidated","vegetation":"validated within stated limits","aztec":"validated within stated limits","skin":"unvalidated","rmt":"validated within stated limits","stealth":"unvalidated","lozenge":"validated within stated limits","arago":"unvalidated","ust":"validated within stated limits","cppn":"unvalidated","rogue":"validated within stated limits","aharonov":"unvalidated","pendulum":"unvalidated","anderson":"unvalidated","fput":"validated within stated limits","schrodinger":"validated within stated limits","excitable":"validated within stated limits","soliton":"validated within stated limits","cyclicca":"unvalidated","chimera":"unvalidated","ssh":"unvalidated","swarm":"unvalidated","amb":"validated within stated limits","aubry":"unvalidated","cahn":"validated within stated limits","ohta":"validated within stated limits","hopf":"validated within stated limits","swift":"validated within stated limits","pfc":"validated within stated limits","lp":"unvalidated","cloak":"unvalidated","xy":"unvalidated","cgl":"validated within stated limits","vortex":"validated within stated limits","nematic":"unvalidated","darkroom":"unvalidated","fluid":"unvalidated","sandpile":"validated within stated limits","kakeya":"unvalidated","ks":"validated within stated limits","breather":"validated within stated limits","turing":"validated within stated limits","holomorphic":"unvalidated","klein":"unvalidated","gyroid":"validated within stated limits","dendrite":"unvalidated","purcell":"unvalidated","exceptional":"unvalidated","meissner":"unvalidated","tennis":"validated within stated limits","flow":"unvalidated","chemotaxis":"validated within stated limits","smectic":"unvalidated","reaction":"unvalidated","tilings":"partially validated","percolation":"validated within stated limits","attractors":"unvalidated","airy":"unvalidated","chirikov":"unvalidated","hofstadter":"unvalidated","weierstrass":"validated within stated limits","scars":"unvalidated","kitaev":"validated within stated limits","caustics":"unvalidated","veselago":"partially validated","devil":"validated within stated limits","talbot":"unvalidated","orbitals":"unvalidated","loschmidt":"unvalidated","boy":"unvalidated","pearls":"unvalidated","ising":"validated within stated limits","thouless":"unvalidated","convection":"validated within stated limits","reuleaux":"validated within stated limits","apollonian":"validated within stated limits","chladni":"validated within stated limits","track":"unvalidated","knotlight":"unvalidated","causticsea":"unvalidated","kp":"unvalidated","gerstner":"validated within stated limits","eight":"validated within stated limits","peakon":"validated within stated limits","photon":"validated within stated limits","crapper":"unvalidated","hasimoto":"validated within stated limits","lump":"validated within stated limits","three-vortex-bound":"validated within stated limits","parallelogram-lock":"validated within stated limits","quincunx-lock":"validated within stated limits","double-triangle-bound":"validated within stated limits","maxwell":"validated within stated limits","molecular":"validated within stated limits","surfaces":"validated within stated limits","plasma":"validated within stated limits","shallow":"validated within stated limits","nonreciprocal":"validated within stated limits","hodgkin-huxley":"validated within stated limits","neural-mass":"validated within stated limits","volume-wave":"validated within stated limits","direct-gravity":"validated within stated limits"}}</script>
 <script>/* The shared uncertainty harness. Every measured number the studio prints against theory gets its
    error bar from here, in the browser and in the Node tools alike, so there is one method per kind of
    number instead of one per tab. AGENTS.md ("A measured number carries an error bar") says which method
@@ -8033,7 +8067,9 @@ void main(){
   // v3 (2026-09-24): Ising's Metropolis random numbers are keyed by the seed; older recipes keep the shared stream.
   // v4 (2026-09-24): the lozenge tab calls a rhombus frozen when it is joined to the rim by rhombi of its own
   // orientation; older recipes keep the local radius-3 test they were made with.
-  const RECIPE_V = 4;
+  // v5 (2026-09-25): vegetation's step ceiling combines water diffusion and advection; older recipes keep the
+  // separate-limit ceiling wherever their step was stable, and take the combined one where it was not.
+  const RECIPE_V = 5;
   // Public compatibility versions, independent of each technique's scientific status.
   Object.defineProperties(S, {
     apiVersion: { value: 1, enumerable: true },
@@ -21128,9 +21164,20 @@ void main(){
     return out;
   }
 
+  // On a device without float32 color buffers the state is float16. A tab that declares halfBase then stores
+  // the deviation of its field from that base value, and every pass that needs the field itself (a local
+  // nonlinearity, the guard, the picture, the reduction) adds it back through ABSV. Differences, Laplacians and
+  // increments do not see the base. Without STATE_BASE (every float32 device, every other tab) ABSV is the
+  // identity, and the compiled passes are the ones the float32 evidence was measured on.
   const HEAD = `#version 300 es
 precision highp float;
 in vec2 v_uv; out vec4 outColor;
+#ifdef STATE_BASE
+uniform float u_base;
+#define ABSV(x) ((x) + u_base)
+#else
+#define ABSV(x) (x)
+#endif
 float crossed(float value, float limit){
   return isnan(value) || isinf(value) || abs(value) > limit ? 1.0 : 0.0;
 }
@@ -21203,7 +21250,7 @@ void main(){
 uniform sampler2D u_c; uniform vec2 u_res; uniform float u_eps2, u_lambda;
 void main(){
   vec2 px = 1.0 / u_res;
-  float c = texture(u_c, v_uv).r;
+  float c = ABSV(texture(u_c, v_uv).r);
   float L = lap(u_c, v_uv, px);
   float gx = 0.5 * (texture(u_c, v_uv + vec2(px.x, 0.0)).r - texture(u_c, v_uv - vec2(px.x, 0.0)).r);
   float gy = 0.5 * (texture(u_c, v_uv + vec2(0.0, px.y)).r - texture(u_c, v_uv - vec2(0.0, px.y)).r);
@@ -21228,7 +21275,7 @@ void main(){
   float n = 0.0;
   if (u_noise > 0.0) n = (hash21(v_uv * u_res + vec2(u_nOff, u_step)) - 0.5) * 2.0 * u_noise;
   c += u_dt * (u_M * lap(u_mu, v_uv, px) - u_zeta * div + n);
-  outColor = vec4(c, max(texture(u_c, v_uv).g, crossed(c, 1.7)), 0.0, 1.0);
+  outColor = vec4(c, max(texture(u_c, v_uv).g, crossed(ABSV(c), 1.7)), 0.0, 1.0);
 }`;
 
   const MU_SH = HEAD + `
@@ -21301,7 +21348,7 @@ uniform float u_r, u_k0;
 
 void main(){
   vec2 px = 1.0 / u_res;
-  float psi = texture(u_c, v_uv).r;
+  float psi = ABSV(texture(u_c, v_uv).r);
   float v = texture(u_v, v_uv).r;
   float w = lap9(u_v, v_uv, px);
   float k2 = u_k0 * u_k0;
@@ -21321,7 +21368,7 @@ void main(){
   float n = 0.0;
   if (u_noise > 0.0) n = (hash21(v_uv * u_res + vec2(u_nOff, u_step)) - 0.5) * 2.0 * u_noise;
   psi += u_dt * u_M * lmu + u_dt * n;
-  outColor = vec4(psi, max(texture(u_c, v_uv).g, crossed(psi, 2.8)), 0.0, 1.0);
+  outColor = vec4(psi, max(texture(u_c, v_uv).g, crossed(ABSV(psi), 2.8)), 0.0, 1.0);
 }`;
 
   const RENDER_FS = HEAD + `
@@ -21336,7 +21383,7 @@ ${G.GLSL.bicubic}
 void main(){
   vec2 px = 1.0 / u_res;
   // the grid is far coarser than the plate, so the displayed value is interpolated rather than blocked up
-  float u = texCR(u_c, v_uv, u_res);
+  float u = ABSV(texCR(u_c, v_uv, u_res));
   float gx = 0.5 * (texture(u_c, v_uv + vec2(px.x, 0.0)).r - texture(u_c, v_uv - vec2(px.x, 0.0)).r);
   float gy = 0.5 * (texture(u_c, v_uv + vec2(0.0, px.y)).r - texture(u_c, v_uv - vec2(0.0, px.y)).r);
   float t;
@@ -21375,7 +21422,7 @@ void main(){
   float sm = 0.0, sa = 0.0;
   for (int y = 0; y < 8; y++) for (int x = 0; x < 8; x++) {
     vec2 uv = (o + vec2(x, y) * u_block * 0.125 + 0.5) / u_res;
-    float v = texture(u_c, uv).r;
+    float v = ABSV(texture(u_c, uv).r);
     sm += v; sa += abs(v);
   }
   outColor = vec4(0.5 + 0.5 * clamp(sm / 64.0, -1.0, 1.0), clamp(sa / 64.0, 0.0, 4.0) / 4.0, 0.0, 1.0);
@@ -21392,7 +21439,7 @@ void main(){
     ivec2 p = base + ivec2(x,y);
     if(p.x<u_size.x && p.y<u_size.y) {
       vec2 v = texelFetch(u_c,p,0).rg;
-      bad = max(bad, max(v.g, crossed(v.r, u_limit)));
+      bad = max(bad, max(v.g, crossed(ABSV(v.r), u_limit)));
     }
   }
   outColor=vec4(bad,0.0,0.0,1.0);
@@ -21417,16 +21464,23 @@ void main(){ outColor=texture(u_c,v_uv); }`;
       if (!gl) return dead('WebGL2 is not available in this browser');
       const texType = gl.floatExt ? 'rgba32f' : 'rgba16f';
       if (!gl.floatExt) gl.getExtension('EXT_color_buffer_half_float');
+      // A tab whose float16 state is known not to run the model refuses the fallback instead of drawing
+      // something that looks like it (validation/HALF-FLOAT.md).
+      if (texType === 'rgba16f' && spec.halfRefuse) return dead(spec.halfRefuse);
+      // halfBase: on float16 state, store the deviation from a base value (see HEAD).
+      const offset = texType === 'rgba16f' && !!spec.halfBase;
+      const src = fs => offset ? fs.replace('#version 300 es\n', '#version 300 es\n#define STATE_BASE 1\n') : fs;
+      let base = 0;
       let muPass, stepPass, renderPass, reducePass, splatPass, guardPass, copyPass, midPass = null;
       try {
-        guardPass = new G.Pass(gl, GUARD_FS);
+        guardPass = new G.Pass(gl, src(GUARD_FS));
         copyPass = new G.Pass(gl, COPY_FS);
-        muPass = new G.Pass(gl, spec.muFS);
-        stepPass = new G.Pass(gl, spec.stepFS);
-        renderPass = new G.Pass(gl, RENDER_FS);
-        reducePass = new G.Pass(gl, REDUCE_FS);
+        muPass = new G.Pass(gl, src(spec.muFS));
+        stepPass = new G.Pass(gl, src(spec.stepFS));
+        renderPass = new G.Pass(gl, src(RENDER_FS));
+        reducePass = new G.Pass(gl, src(REDUCE_FS));
         splatPass = new G.Pass(gl, G.GLSL.splatFS);
-        if (spec.midFS) midPass = new G.Pass(gl, spec.midFS);
+        if (spec.midFS) midPass = new G.Pass(gl, src(spec.midFS));
       } catch (err) { console.error(err); return dead('Shader compilation failed on this GPU'); }
 
       let backupT = null, guardT = null, guardBuf = null, guardMessage = '', reactionMean = 0;
@@ -21459,7 +21513,10 @@ void main(){ outColor=texture(u_c,v_uv); }`;
       function upload(target, f32) {
         gl.bindTexture(gl.TEXTURE_2D, target.tex);
         if (texType === 'rgba32f') gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.FLOAT, f32);
-        else gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.HALF_FLOAT, toHalf(f32));
+        else {
+          if (base) { f32 = Float32Array.from(f32); for (let i = 0; i < f32.length; i += 4) f32[i] -= base; }
+          gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.HALF_FLOAT, toHalf(f32));
+        }
       }
       function ensureRamp(s) {
         const cyclic = s.view === 'orient';
@@ -21469,11 +21526,11 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         ramp = cyclic ? G.rampTexture(gl, [...s.palette, s.palette[0]], null) : G.rampTexture(gl, s.palette, s.bg); rampKey = key;
       }
       function refreshChem(s) {
-        muPass.draw(muT, Object.assign({ u_c: C.read, u_res: [gw, gh] }, spec.muUniforms(s)));
-        if (midPass) midPass.draw(midT, Object.assign({ u_c: C.read, u_v: muT, u_res: [gw, gh] }, spec.midUniforms(s)));
+        muPass.draw(muT, Object.assign({ u_c: C.read, u_res: [gw, gh], u_base: base }, spec.muUniforms(s)));
+        if (midPass) midPass.draw(midT, Object.assign({ u_c: C.read, u_v: muT, u_res: [gw, gh], u_base: base }, spec.midUniforms(s)));
       }
       function crossedGuard() {
-        guardPass.draw(guardT, { u_c: C.read, u_size: { ivec: [gw, gh] }, u_limit: spec.id === 'ks' ? 10000 : spec.id === 'swift' ? 4 : spec.id === 'pfc' ? 2.8 : 1.7 });
+        guardPass.draw(guardT, { u_c: C.read, u_size: { ivec: [gw, gh] }, u_base: base, u_limit: spec.id === 'ks' ? 10000 : spec.id === 'swift' ? 4 : spec.id === 'pfc' ? 2.8 : 1.7 });
         gl.bindFramebuffer(gl.FRAMEBUFFER, guardT.fbo);
         gl.readPixels(0, 0, guardT.w, guardT.h, gl.RGBA, gl.UNSIGNED_BYTE, guardBuf);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -21486,11 +21543,11 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         const s = host.getState();
         copyPass.draw(backupT, { u_c: C.read });
         for (let i = 0; i < n; i++) {
-          muPass.draw(muT, Object.assign({ u_c: C.read, u_res: [gw, gh] }, spec.muUniforms(s)));
+          muPass.draw(muT, Object.assign({ u_c: C.read, u_res: [gw, gh], u_base: base }, spec.muUniforms(s)));
           const chem = midPass ? midT : muT;
-          if (midPass) midPass.draw(midT, Object.assign({ u_c: C.read, u_v: muT, u_res: [gw, gh] }, spec.midUniforms(s)));
+          if (midPass) midPass.draw(midT, Object.assign({ u_c: C.read, u_v: muT, u_res: [gw, gh], u_base: base }, spec.midUniforms(s)));
           stepPass.draw(C.write, Object.assign({
-            u_c: C.read, u_mu: chem, u_res: [gw, gh],
+            u_c: C.read, u_mu: chem, u_res: [gw, gh], u_base: base,
             u_dt: s.dt, u_noise: s.noise, u_step: (stepCount + i) * 1.17, u_nOff: nOff,
           }, spec.stepUniforms(s), spec.id === 'ohta' ? { u_m: reactionMean } : {}));
           C.swap();
@@ -21511,7 +21568,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         ensureRamp(s);
         const V = spec.views;
         renderPass.draw(target || null, {
-          u_c: C.read, u_mu: midT || muT, u_ramp: ramp, u_res: [gw, gh],
+          u_c: C.read, u_mu: midT || muT, u_ramp: ramp, u_res: [gw, gh], u_base: base,
           u_view: { int: V[s.view] || 0 },
           u_exposure: s.exposure, u_gamma: s.gamma, u_contrast: s.contrast, u_grain: s.grain,
           u_lo: s.lo, u_hi: s.hi, u_bump: s.bump, u_lightAng: s.lightAng,
@@ -21519,7 +21576,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         });
       }
       function measure() {
-        reducePass.draw(reduceT, { u_c: C.read, u_res: [gw, gh], u_block: [gw / RED, gh / RED] });
+        reducePass.draw(reduceT, { u_c: C.read, u_res: [gw, gh], u_block: [gw / RED, gh / RED], u_base: base });
         gl.bindFramebuffer(gl.FRAMEBUFFER, reduceT.fbo);
         gl.readPixels(0, 0, RED, RED, gl.RGBA, gl.UNSIGNED_BYTE, redBuf);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -21580,6 +21637,9 @@ void main(){ outColor=texture(u_c,v_uv); }`;
           const rng = U.makeRng(s.seed + '/' + spec.id + '/off');
           nOff = rng.range(0, 900);
           ensureGrid(s);
+          // The base is fixed for the life of this state: a later change of the parameter it came from moves
+          // nothing, because every pass adds back the same value the upload took off.
+          base = offset ? Math.fround(spec.halfBase(s)) : 0;
           const initial = spec.seed(s, gw, gh);
           reactionMean = 0;
           for (let i = 0; i < initial.length; i += 4) reactionMean += initial[i];
@@ -21603,9 +21663,12 @@ void main(){ outColor=texture(u_c,v_uv); }`;
         disturb(p) {
           if (!C || !splatPass || guardMessage) return;
           copyPass.draw(backupT, { u_c: C.read });
+          // Mode 0 mixes the field toward u_add, so a stored deviation mixes toward u_add minus the base;
+          // mode 1 adds, which the base does not change.
+          const add = base && (spec.pokeMode ?? 1) === 0 ? [spec.pokeAdd[0] - base].concat(spec.pokeAdd.slice(1)) : spec.pokeAdd;
           splatPass.draw(C.write, {
             u_src: C.read, u_pos: [p.x, p.yGL],
-            u_add: spec.pokeAdd, u_rad: spec.pokeRad, u_amt: 1, u_mode: { int: spec.pokeMode ?? 1 },
+            u_add: add, u_rad: spec.pokeRad, u_amt: 1, u_mode: { int: spec.pokeMode ?? 1 },
           });
           C.swap();
           if (crossedGuard()) {
@@ -21623,16 +21686,17 @@ void main(){ outColor=texture(u_c,v_uv); }`;
           if (!C) throw new Error('nothing to export');
           const s = host.getState(), st = G.readTarget(C.read), aux = G.readTarget(midT || muT);
           const n = gw * gh, field = new Float32Array(n), auxField = new Float32Array(n);
+          if (base) for (let i = 0; i < n; i++) st[i * 4] += base;
           for (let i = 0; i < n; i++) { field[i] = st[i * 4]; auxField[i] = aux[i * 4]; }
           return {
             arrays: {
               field: { data: field, shape: [gh, gw], description: 'the evolved field, channel 0 of the state texture (the order parameter of this tab\'s equation)' },
-              state: { data: st, shape: [gh, gw, 4], description: 'all four channels of the state texture as stored' },
+              state: { data: st, shape: [gh, gw, 4], description: base ? 'all four channels of the state texture, channel 0 with the base added back (stored as the deviation from ' + base + ')' : 'all four channels of the state texture as stored' },
               auxiliary: { data: auxField, shape: [gh, gw], description: 'channel 0 of the auxiliary texture the step reads (the chemical potential for the Cahn-Hilliard family)' },
             },
             meta: { tab: spec.id, grid: [gw, gh], cellSpacing: 1, units: 'dimensionless lattice units', boundary: s.bc === 'noflux' ? 'no-flux' : 'periodic',
               steps: stepCount, dt: s.dt, time: stepCount * s.dt, timeNote: 'steps times the current dt; exact only if dt was not changed during the run',
-              precision: texType, guard: guardMessage || null },
+              precision: texType, stateBase: base || null, guard: guardMessage || null },
           };
         },
         async exportPNG(w, h) {
@@ -22003,6 +22067,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     },
     create: pdeCreate({
       id: 'amb', muFS: MU_AMB, stepFS: STEP_AMB,
+      halfBase: s => s.c0,
       views: { field: 0, abs: 1, grad: 2, shade: 3, mu: 4 },
       pokeAdd: [1, 0, 0, 1], pokeRad: 0.06, pokeMode: 0,
       muUniforms: s => ({ u_eps2: s.eps * s.eps, u_lambda: s.lambda }),
@@ -22205,6 +22270,7 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     }),
   });
 
+  const PFC_HALF_REFUSAL = 'Half-float state cannot run the phase-field crystal faithfully. This device lacks float32 color buffers (EXT_color_buffer_float), so the density would be stored as float16, and rounding it every step breaks the conservation of the mean density that the model is built on: in the recorded test it drifts about ten to thirty times as far as in float32. The tab stops here rather than show a plate that is not the simulation.';
   function triPsi(x, y, theta, k, A, psi0) {
     const c = Math.cos(theta), s = Math.sin(theta);
     const xr = c * x + s * y, yr = -s * x + c * y;
@@ -22286,6 +22352,9 @@ void main(){ outColor=texture(u_c,v_uv); }`;
     },
     create: pdeCreate({
       id: 'pfc', muFS: MU_PFC, midFS: MID_PFC, stepFS: STEP_PFC,
+      // Float16 state breaks the conservation the model is built on, stored as it is or as the deviation
+      // from psi0 (tools/half-float-check.js, validation/HALF-FLOAT.md), so the tab does not run on it.
+      halfRefuse: PFC_HALF_REFUSAL,
       views: { field: 0, abs: 1, grad: 2, shade: 3, mu: 4, orient: 5 },
       pokeAdd: [0.7, 0, 0, 1], pokeRad: 0.09, pokeMode: 1,
       muUniforms: () => ({}),
@@ -28181,6 +28250,21 @@ void main(){
   }
 
   // ---- shared GLSL ----
+  // On a device without float32 color buffers the state is float16. A tab that declares halfBase then stores
+  // each species as its deviation from a base state (the uniform state of the model): every read adds the
+  // base back (ABS4) and every step writes the new state minus the base (REL4), so the shaders compute with
+  // the concentrations themselves and only the storage changes. Without STATE_BASE (every float32 device,
+  // every other tab) both macros are the identity.
+  const BASE_GLSL = `
+#ifdef STATE_BASE
+uniform vec4 u_base;
+#define ABS4(x) ((x) + u_base)
+#define REL4(x) ((x) - u_base)
+#else
+#define ABS4(x) (x)
+#define REL4(x) (x)
+#endif
+`;
   // Every step shader starts here: the state texture holds up to four species in RGBA,
   // u_c is cells per length unit (so a physical Laplacian is the cell Laplacian times u_c^2),
   // and the Laplacian is the 5-point or the 9-point (Mehrstellen) stencil.
@@ -28191,7 +28275,8 @@ uniform sampler2D u_s; uniform vec2 u_res;
 uniform float u_dt, u_c, u_c2, u_noise, u_step, u_nOff;
 uniform int u_lap9;
 ${G.GLSL.hash}
-vec4 S(vec2 d){ return texture(u_s, v_uv + d / u_res); }
+${BASE_GLSL}
+vec4 S(vec2 d){ return ABS4(texture(u_s, v_uv + d / u_res)); }
 vec4 lapOf(vec4 c, vec4 e, vec4 w, vec4 n, vec4 s){
   if (u_lap9 == 1) {
     vec4 ne = S(vec2(1.0, 1.0)), nw = S(vec2(-1.0, 1.0)), se = S(vec2(1.0, -1.0)), sw = S(vec2(-1.0, -1.0));
@@ -28225,7 +28310,7 @@ void main(){
     u = clamp(u + u_dt * fu + nz.r, -3.0, 3.0);
     v = clamp(v + u_dt * fv + nz.g, -3.0, 3.0);
   }
-  outColor = vec4(u, v, 0.0, 1.0);
+  outColor = REL4(vec4(u, v, 0.0, 1.0));
 }`;
 
   // Schnakenberg (0), Brusselator (1), Gierer-Meinhardt with saturation (2), Lengyel-Epstein (3).
@@ -28256,7 +28341,7 @@ void main(){
   }
   u = clamp(un + nz.r, 0.0, 40.0);
   v = clamp(vn + nz.g, 0.0, 40.0);
-  outColor = vec4(u, v, 0.0, 1.0);
+  outColor = REL4(vec4(u, v, 0.0, 1.0));
 }`;
 
   // May-Leonard cyclic competition, three species in R, G, B.
@@ -28273,7 +28358,7 @@ void main(){
   u = clamp(u + u_dt * fu + nz.r, 0.0, 2.0);
   v = clamp(v + u_dt * fv + nz.g, 0.0, 2.0);
   x = clamp(x + u_dt * fx + nz.b, 0.0, 2.0);
-  outColor = vec4(u, v, x, 1.0);
+  outColor = REL4(vec4(u, v, x, 1.0));
 }`;
 
   // Keller-Segel, saturating chemotactic sensitivity, logistic growth. The chemotactic flux is
@@ -28296,7 +28381,7 @@ void main(){
   float fv = u_D * L.g + u - u_a * v;
   u = clamp(u + u_dt * fu + nz.r, 0.0, 60.0);
   v = clamp(v + u_dt * fv + nz.g, 0.0, 200.0);
-  outColor = vec4(u, v, 0.0, 1.0);
+  outColor = REL4(vec4(u, v, 0.0, 1.0));
 }`;
 
   // Klausmeier 1999: water w in R, plants n in G. Water runs downhill (toward -x) at speed v,
@@ -28315,7 +28400,7 @@ void main(){
   float pn = (pl + u_dt * (wa * pl * pl + u_Dn * L.g)) / (1.0 + u_dt * u_m);
   wa = clamp(wn + nz.r, 0.0, 40.0);
   pl = clamp(pn + nz.g, 0.0, 40.0);
-  outColor = vec4(wa, pl, 0.0, 1.0);
+  outColor = REL4(vec4(wa, pl, 0.0, 1.0));
 }`;
 
   // The scalar each view shows. Views: 0..3 one species, 4 difference, 5 interfaces |grad|,
@@ -28324,12 +28409,14 @@ void main(){
 uniform sampler2D u_s; uniform vec2 u_res;
 uniform int u_view, u_prim, u_sec, u_n, u_smooth;
 ${G.GLSL.bicubic}
+${BASE_GLSL}
 float ch(vec4 v, int i){ return i == 0 ? v.r : (i == 1 ? v.g : (i == 2 ? v.b : v.a)); }
 // A few hundred cells shown across a few thousand pixels: bilinear leaves the diamond creases of the grid
-// on every front, so the smooth view is Catmull-Rom. It interpolates, so a tap at a texel center is exact.
+// on every front, so the smooth view is Catmull-Rom. It interpolates, so a tap at a texel center is exact
+// (and its weights sum to one, so interpolating a stored deviation and adding the base is the same thing).
 vec4 fetch(vec2 uv){
-  if (u_smooth == 0) return texture(u_s, uv);
-  return texCR4(u_s, uv, u_res);
+  if (u_smooth == 0) return ABS4(texture(u_s, uv));
+  return ABS4(texCR4(u_s, uv, u_res));
 }
 float scalarAt(vec2 uv){
   vec4 v = fetch(uv);
@@ -28447,11 +28534,18 @@ void main(){
       if (!gl) return dead('WebGL2 is not available in this browser');
       const texType = gl.floatExt ? 'rgba32f' : 'rgba16f';
       if (!gl.floatExt) gl.getExtension('EXT_color_buffer_half_float');
+      // A tab whose float16 state is known not to run the model refuses the fallback instead of drawing
+      // something that looks like it (validation/HALF-FLOAT.md).
+      if (texType === 'rgba16f' && spec.halfRefuse) return dead(spec.halfRefuse);
+      // halfBase: on float16 state, store each species as its deviation from a base state (see BASE_GLSL).
+      const offset = texType === 'rgba16f' && !!spec.halfBase;
+      const src = fs => offset ? fs.replace('#version 300 es\n', '#version 300 es\n#define STATE_BASE 1\n') : fs;
+      let base = [0, 0, 0, 0];
       let stepPass, renderPass, reducePass, splatPass;
       try {
-        stepPass = new G.Pass(gl, spec.stepFS);
-        renderPass = new G.Pass(gl, RENDER_FS);
-        reducePass = new G.Pass(gl, REDUCE_FS);
+        stepPass = new G.Pass(gl, src(spec.stepFS));
+        renderPass = new G.Pass(gl, src(RENDER_FS));
+        reducePass = new G.Pass(gl, src(REDUCE_FS));
         splatPass = new G.Pass(gl, G.GLSL.splatFS);
       } catch (err) { console.error(err); return dead('Shader compilation failed on this GPU'); }
 
@@ -28485,7 +28579,10 @@ void main(){
       function upload(target, f32) {
         gl.bindTexture(gl.TEXTURE_2D, target.tex);
         if (texType === 'rgba32f') gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.FLOAT, f32);
-        else gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.HALF_FLOAT, toHalf(f32));
+        else {
+          if (offset) { f32 = Float32Array.from(f32); for (let i = 0; i < f32.length; i++) f32[i] -= base[i & 3]; }
+          gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, target.w, target.h, gl.RGBA, gl.HALF_FLOAT, toHalf(f32));
+        }
       }
       function ensureRamp(s) {
         const key = (s.bg || '') + '|' + (s.palette || []).join(',');
@@ -28499,7 +28596,7 @@ void main(){
         dtEff = Math.min(s.dt, spec.dtMax(s));
         const uni = Object.assign({
           u_res: [gw, gh], u_dt: dtEff, u_c: c, u_c2: c * c, u_noise: s.noise || 0, u_nOff: nOff,
-          u_lap9: { int: Number(s.lap) === 9 ? 1 : 0 },
+          u_lap9: { int: Number(s.lap) === 9 ? 1 : 0 }, u_base: base,
         }, spec.stepUniforms(s));
         for (let i = 0; i < n; i++) {
           uni.u_s = C.read; uni.u_step = (stepCount + i) * 1.17;
@@ -28511,7 +28608,7 @@ void main(){
       function viewUniforms(s) {
         const v = spec.views[s.view];
         return {
-          u_s: C.read, u_res: [gw, gh],
+          u_s: C.read, u_res: [gw, gh], u_base: base,
           u_view: { int: v == null ? 0 : v }, u_prim: { int: spec.prim || 0 }, u_sec: { int: spec.sec == null ? 1 : spec.sec },
           u_n: { int: spec.n }, u_smooth: { int: 0 },
         };
@@ -28637,6 +28734,9 @@ void main(){
           const rng = U.makeRng(s.seed + '/' + spec.id + '/off');
           nOff = rng.range(0, 900);
           ensureGrid(s);
+          // The base is fixed for the life of this state: a later change of a parameter it came from moves
+          // nothing, because every read adds back the same values the upload took off.
+          base = offset ? Array.from(Float32Array.from(spec.halfBase(s))) : [0, 0, 0, 0];
           upload(C.read, spec.seed(s, gw, gh));
           settle(() => { render(); if (s.warmup > 0) burst(s.warmup); else { status(); startLoop(); } });
         },
@@ -28655,9 +28755,12 @@ void main(){
         },
         disturb(p) {
           if (!C || !splatPass) return;
+          // Mode 0 mixes toward u_add, so a stored deviation mixes toward u_add minus the base; mode 1 adds,
+          // which the base does not change. (Mode 2, a maximum, is not used by any tab here.)
+          const mode = spec.pokeMode == null ? 1 : spec.pokeMode;
           splatPass.draw(C.write, {
             u_src: C.read, u_pos: [p.x, p.yGL],
-            u_add: spec.pokeAdd, u_rad: spec.pokeRad, u_amt: 1, u_mode: { int: spec.pokeMode == null ? 1 : spec.pokeMode },
+            u_add: offset && mode === 0 ? spec.pokeAdd.map((a, i) => a - base[i]) : spec.pokeAdd, u_rad: spec.pokeRad, u_amt: 1, u_mode: { int: mode },
           });
           C.swap(); render(); startLoop();
         },
@@ -28666,11 +28769,11 @@ void main(){
           if (!C) throw new Error('nothing to export');
           const s = host.getState(), st = G.readTarget(C.read), n = gw * gh, k = spec.n;
           const species = new Float32Array(n * k);
-          for (let i = 0; i < n; i++) for (let c = 0; c < k; c++) species[i * k + c] = st[i * 4 + c];
+          for (let i = 0; i < n; i++) for (let c = 0; c < k; c++) species[i * k + c] = offset ? st[i * 4 + c] + base[c] : st[i * 4 + c];
           return {
-            arrays: { species: { data: species, shape: [gh, gw, k], description: k + ' species in state-texture channel order (the order of the equation)' } },
+            arrays: { species: { data: species, shape: [gh, gw, k], description: k + ' species in state-texture channel order (the order of the equation)' + (offset ? ', the stored deviations with the base state added back' : '') } },
             meta: { tab: spec.id, grid: [gw, gh], species: k, units: 'the model\'s dimensionless units on the step shader\'s lattice', boundary: 'periodic',
-              steps: stepCount, dt: s.dt, precision: texType },
+              steps: stepCount, dt: s.dt, precision: texType, stateBase: offset ? base.slice(0, k) : null },
           };
         },
         async exportPNG(w, h) {
@@ -29257,6 +29360,8 @@ void main(){
     },
     create: rdxCreate({
       id: 'chemotaxis', stepFS: STEP_KS, n: 2, prim: 0, sec: 1,
+      // the uniform state u = 1, v = u/a
+      halfBase: s => [1, 1 / Math.max(s.a, 1e-3), 0, 0],
       views: { u: 0, v: 1, diff: 4, grad: 5, shade: 6 },
       pokeAdd: [0.8, 0, 0, 0], pokeRad: 0.05, pokeMode: 1,
       dtMax: ksDtMax,
@@ -29270,11 +29375,41 @@ void main(){
   });
 
   /* ---------- Vegetation Bands ---------- */
-  function vegDtMax(s) {
+  // The water row of the step is forward Euler in diffusion and upwind advection, with the loss w(1 + n^2)
+  // implicit. At the (pi, pi) grid mode the Laplacian symbol is -Q (Q = 8 for the 5-point stencil, 16/3 for
+  // the 9-point) and the upwind difference (e^{ik} - 1) gives -2, so the explicit factor is 1 - dt R with
+  // R = Q D_w c^2 + 2 v c and the mode is amplified by |1 - dt R| / (1 + dt (1 + n^2)). The two terms act
+  // together: the step needs dt R < 2 before the implicit loss is counted, and dt (R - 1) < 2 with the
+  // smallest loss (bare soil, n = 0). Every other mode is less restrictive (validation/PDE-ORDER.md).
+  const vegQ = s => (Number(s.lap) === 9 ? 16 / 3 : 8);
+  function vegWaterRate(s) {
+    const c = Number(s.scale) || 1;
+    return vegQ(s) * Math.max(Number(s.Dw) || 0, 0) * c * c + 2 * Math.max(Number(s.slope) || 0, 0) * c;
+  }
+  // Recipe v5 on: 0.8 of the combined bound 2/R (the margin the other tabs use), the plant diffusion row
+  // at the same margin, and the mortality and absolute caps.
+  function vegCombinedDtMax(s) {
+    const c = Number(s.scale) || 1;
+    const water = 1.6 / Math.max(vegWaterRate(s), 1e-6);
+    const plants = 1.6 / Math.max(vegQ(s) * Math.max(Number(s.Dn) || 0, 0.05) * c * c, 1e-6);
+    return Math.min(water, plants, 0.5 / Math.max(s.m, 0.05), 0.25);
+  }
+  // Before recipe v5: the smaller of a diffusion limit and an advection limit, each taken alone. When the two
+  // are comparable that overshoots 2/R by up to a factor 1.6 and a water checkerboard grows.
+  function vegSeparateDtMax(s) {
     const c = Number(s.scale) || 1, lap9 = Number(s.lap) === 9;
     const diff = dtDiff(Math.max(s.Dw, s.Dn, 0.05), c, lap9);
     const adv = s.slope > 0 ? 0.8 / (s.slope * c) : 1;
     return Math.min(diff, adv, 0.5 / Math.max(s.m, 0.05), 0.25);
+  }
+  // A recipe made before v5 (ceiling 'v4') keeps the step it was made at wherever that step was stable, so it
+  // reprints. Where it was not, the plate was a growing grid-scale checkerboard rather than the model, and
+  // the recipe takes the combined ceiling: a solver correction, not a change to a finished plate.
+  function vegDtMax(s) {
+    const combined = vegCombinedDtMax(s);
+    if (s.ceiling !== 'v4') return combined;
+    const old = vegSeparateDtMax(s), made = Math.min(Number(s.dt) || 0.02, old);
+    return made * (vegWaterRate(s) - 1) < 2 ? old : combined;
   }
   function seedVegetation(s, W, H) {
     const rng = U.makeRng(s.seed + '/vegetation');
@@ -29317,15 +29452,21 @@ void main(){
       { group: 'Seeding', key: 'init', label: 'Seeding', type: 'seg', kind: GEOM,
         options: [['noise', 'Noisy cover'], ['patches', 'Patches'], ['stripes', 'Stripes']] },
       RANGE('Seeding', 'amp', 'Seed noise', GEOM, 0, 0.8, 0.01, f2),
-    ]).concat(simFields(0.001, 0.25, 0.001, 6000)).concat(pictureFields([
+    ]).concat(simFields(0.001, 0.25, 0.001, 6000).flatMap(f => f.key !== 'dt' ? [f] : [f,
+      { group: 'Simulation', key: 'ceiling', label: 'Step ceiling', type: 'seg', kind: LIVE,
+        options: [['combined', 'Combined'], ['v4', 'Recipe v4']],
+        hint: 'Combined keeps the step under 0.8 of the explicit bound set by water diffusion and downhill flow acting together. Recipe v4 is the ceiling recipes made before recipe v5 used, the smaller of the two limits taken separately; old links keep it where their step was stable, so they reprint, and take the combined ceiling where it was not.' },
+    ])).concat(pictureFields([
       ['v', 'Plants n'], ['u', 'Water w'], ['diff', 'w − n'], ['grad', 'Band edges'], ['shade', 'Relief'],
     ])),
-    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
+    // grid raised for print sharpness at v2 (see "Print sharpness" in AGENTS.md); the combined step ceiling
+    // arrived at v5, and recipes older than v5 keep the separate-limit ceiling wherever it was stable.
+    legacy: { 2: { grid: 192 }, 5: { ceiling: 'v4' } },
     defaults: Object.assign({
       grid: 512, aspect: '1:1', lap: 5, scale: 1,
       a: 1.1, agrad: 0.6, m: 0.45, slope: 40, Dw: 1, Dn: 1,
       init: 'noise', amp: 0.5,
-      running: true, steps: 8, dt: 0.02, warmup: 1800, noise: 0,
+      running: true, steps: 8, dt: 0.02, warmup: 1800, noise: 0, ceiling: 'combined',
       view: 'v', seed: 'klausmeier-1999',
     }, PICTURE_DEFAULTS),
     presets: {

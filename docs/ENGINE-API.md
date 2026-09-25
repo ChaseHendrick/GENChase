@@ -2,12 +2,17 @@
 
 The maintained engine is [`src/shared/engine.js`](../src/shared/engine.js). The old
 `src/shared/studio.js` name is retired. `Studio.apiVersion` is **1** and
-`Studio.recipeVersion` is **4**. Both version properties are read-only. Version 3 (2026-09-24) keys the Ising
+`Studio.recipeVersion` is **5**. Both version properties are read-only. Version 3 (2026-09-24) keys the Ising
 tab's Metropolis random numbers by the seed, so runs with different seeds are independent; recipes older than
 v3 keep the shared stream through `legacy: { 3: { stream: 'shared' } }` and reprint as they were made.
 Version 4 (2026-09-24) makes the lozenge tab's frozen test the rim-connected one (a rhombus is frozen when rhombi
 of its own orientation join it to the rim); recipes older than v4 keep the local radius-3 test through
 `legacy: { 4: { ring: 3 } }` and reprint as they were made.
+Version 5 (2026-09-25) gives the vegetation tab a time-step ceiling that combines water diffusion and upwind
+advection. Recipes older than v5 get `ceiling: 'v4'` through `legacy: { 5: { ceiling: 'v4' } }`: they keep
+the step the separate limits gave them wherever that step was stable, and so reprint, and take the combined
+ceiling where it was past the explicit bound, where the plate was a growing grid-scale checkerboard
+([validation/PDE-ORDER.md](../validation/PDE-ORDER.md)).
 
 ## Compatibility boundary
 
@@ -31,12 +36,12 @@ Recipe `v` is separate from the API version. Before a default changes, advance t
 engine recipe version and declare the old value at that transition:
 
 ```js
-// Example for a future recipe version 5, not an instruction to change version now:
-legacy: { 2: { grid: 192 }, 5: { grid: 256 } },
+// Example for a future recipe version 6, not an instruction to change version now:
+legacy: { 2: { grid: 192 }, 6: { grid: 256 } },
 defaults: { grid: 512 }
 ```
 
-Recipes older than version 2 get 192; versions 2 to 4 get 256; version 5 gets 512.
+Recipes older than version 2 get 192; versions 2 to 5 get 256; version 6 gets 512.
 An explicitly saved `grid` always wins. Migrations apply newer transitions first,
 so the earliest applicable historical default wins for old hashes. The API test
 covers successive changes and explicit overrides; `tools/recipe.js` covers existing
