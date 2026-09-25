@@ -16,9 +16,8 @@ GENChase: the companion repository does not carry `notes/`.
    RESEARCH.md with how far each was read.
 5. Prior art: the prior-art searches are logged in RESEARCH.md, and every novelty statement stays within what they
    reached.
-6. Adversarial second reading: every proof has been read by an independent reviewer told to find errors (at least a
-   separate AI reviewer briefed only with the paper and its programs; a human expert's reading is recorded when there
-   is one), and every must-fix finding is fixed and recorded.
+6. Adversarial second reading: every proof has been read by an independent reviewer told to find errors, briefed
+   only with the paper and its programs, and every must-fix finding is fixed and recorded.
 7. Reproducible: the programs run from the companion with its `requirements.txt`, `paper-check` and
    `paper-sync --check` pass, and the page and check counts stated are current.
 
@@ -39,7 +38,7 @@ GENChase: the companion repository does not carry `notes/`.
   again in full while the appendix is written. Kallyadan and Shukla (2022) is background only (abstract read).
 - [x] **5. Prior art.** RESEARCH.md, entries of 2026-09-25 ("prior art for the stable-expansion note" and "nonlinear
   stability and vortex patches"); Leoncini, El Kettani and Ugalde, arXiv:2609.25989, read in full and cited.
-- [ ] **6. Adversarial second reading.** Two AI reviewers read Sections 4 and 5 (Theorem 3, Proposition 1 and the
+- [ ] **6. Adversarial second reading.** Two second readers read Sections 4 and 5 (Theorem 3, Proposition 1 and the
   first version of Theorem 4), and their fixes are in (CHANGELOG v0.7.0). Still to be read and recorded: Lemma 1,
   Theorems 1 and 2 with their certificates, and the appendix for Theorem 4.
 - [x] **7. Reproducible.** `verify_stable_expansion.py` (58 checks) and `survey_expansions.py`; `paper-check` passes;

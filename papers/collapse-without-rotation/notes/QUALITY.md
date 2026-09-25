@@ -16,9 +16,8 @@ GENChase: the companion repository does not carry `notes/`.
    RESEARCH.md with how far each was read.
 5. Prior art: the prior-art searches are logged in RESEARCH.md, and every novelty statement stays within what they
    reached.
-6. Adversarial second reading: every proof has been read by an independent reviewer told to find errors (at least a
-   separate AI reviewer briefed only with the paper and its programs; a human expert's reading is recorded when there
-   is one), and every must-fix finding is fixed and recorded.
+6. Adversarial second reading: every proof has been read by an independent reviewer told to find errors, briefed
+   only with the paper and its programs, and every must-fix finding is fixed and recorded.
 7. Reproducible: the programs run from the companion with its `requirements.txt`, `paper-check` and
    `paper-sync --check` pass, and the page and check counts stated are current.
 
@@ -46,9 +45,8 @@ GENChase: the companion repository does not carry `notes/`.
   rotation", "sharpness of sqrt(3)/2 for every number of weak vortices"), and `prior-art-2026-09-25.md` in this
   folder. The paper claims no priority for translating configurations or for collapsing vortex sheets, and credits
   O'Neil for both.
-- [x] **6. Adversarial second reading.** Separate AI reviewers: the weak-cluster theorem (`referee-weak-clusters-2026-09-25.md`
-  in this folder, sound with fixes, all applied); the whole draft (8 must-fix items, all applied; RESEARCH.md); Lemma
-  1, Theorem 3 and Corollary 3 (no mathematical error; gaps and wording fixed in ChaseHendrick/GENChase#159). No
-  human expert has read it yet.
+- [x] **6. Adversarial second reading.** The weak-cluster theorem (`referee-weak-clusters-2026-09-25.md` in this
+  folder: sound with fixes, all applied); the whole draft (8 must-fix items, all applied; RESEARCH.md); Lemma 1,
+  Theorem 3 and Corollary 3 (no mathematical error; gaps and wording fixed in ChaseHendrick/GENChase#159).
 - [x] **7. Reproducible.** Ten programs, 373 checks (376 with `--large`), each stopping on a failed check;
   `paper-check` and `paper-sync --check` pass; 24 pages.

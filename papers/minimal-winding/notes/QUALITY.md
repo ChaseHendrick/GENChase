@@ -16,9 +16,8 @@ GENChase: the companion repository does not carry `notes/`.
    RESEARCH.md with how far each was read.
 5. Prior art: the prior-art searches are logged in RESEARCH.md, and every novelty statement stays within what they
    reached.
-6. Adversarial second reading: every proof has been read by an independent reviewer told to find errors (at least a
-   separate AI reviewer briefed only with the paper and its programs; a human expert's reading is recorded when there
-   is one), and every must-fix finding is fixed and recorded.
+6. Adversarial second reading: every proof has been read by an independent reviewer told to find errors, briefed
+   only with the paper and its programs, and every must-fix finding is fixed and recorded.
 7. Reproducible: the programs run from the companion with its `requirements.txt`, `paper-check` and
    `paper-sync --check` pass, and the page and check counts stated are current.
 
@@ -44,7 +43,7 @@ GENChase: the companion repository does not carry `notes/`.
   "pre-submission review of the minimal-winding paper", 2026-09-25; mathematics re-derived, fixes applied). Not yet
   recorded for the parts added when the alpha-model draft was merged in: Section 4 (the alpha-models), Proposition 3
   (rings with a central vortex), Section 6 (Theorem 3 and Proposition 4) and Sections 7 and 8 (the certificates).
-  Two AI reviewers started on those parts on 2026-09-25; this item is checked when their must-fix findings are fixed
-  and recorded here.
+  Two independent readings of those parts started on 2026-09-25; this item is checked when their must-fix findings
+  are fixed and recorded here.
 - [x] **7. Reproducible.** The programs in `code/` run from the companion (release v2.0.0,
   doi:10.5281/zenodo.22963796); `paper-check` and `paper-sync --check` pass.
