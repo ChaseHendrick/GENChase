@@ -58,8 +58,8 @@ Its reading list in [../../READING-LIST.md](../../READING-LIST.md) now belongs t
 1. Read the current author instructions of *Regular and Chaotic Dynamics*, including its policies on
    AI assistance, suggested reviewers, preprints and the preferred source format. Nothing in this
    repository records those policies.
-2. Get the code DOI from a Zenodo release (docs/PUBLISHING-PAPERS.md, section 1) and put it in the
-   data availability paragraph of both sources; rebuild with `sh tools/paper-build.sh minimal-winding`.
+2. **Done 2026-09-25.** The code DOI of release v2.0.0, 10.5281/zenodo.22963796, is in the data
+   availability paragraph and in `papers.json` (`codeDoi`), and the PDF is rebuilt.
 3. Make the upload with `sh tools/arxiv-bundle.sh minimal-winding` and submit it to physics.flu-dyn
    with the fields in arxiv-metadata.md.
 4. When arXiv announces it, record the identifier in `cover-letter-rcd.md` and in

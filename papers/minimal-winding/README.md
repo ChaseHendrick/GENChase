@@ -87,9 +87,13 @@ Until the arXiv identifier exists:
   title  = {Minimal Winding in the Self-Similar Collapse of Point Vortices},
   year   = {2026},
   note   = {Preprint},
+  doi    = {10.5281/zenodo.22963796},
   url    = {https://github.com/ChaseHendrick/minimal-winding}
 }
 ```
+
+Release v2.0.0, with the programs and data of this version, is archived at
+[doi:10.5281/zenodo.22963796](https://doi.org/10.5281/zenodo.22963796).
 
 ## License
 
