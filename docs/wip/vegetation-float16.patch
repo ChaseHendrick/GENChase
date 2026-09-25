@@ -1,39 +1,76 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 940a2a1..e1ab20c 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -2,6 +2,8 @@
+ 
+ ## Unreleased
+ 
++- **Recipe v5: vegetation's step ceiling is the combined explicit bound.** The water row is forward Euler in diffusion and upwind advection together, so its grid-mode bound is `dt (Q D_w c^2 + 2 v c - 1) < 2`, not the smaller of two separate limits, which overshot it by up to 1.6 and grew a water checkerboard for D_w >= 5 at slope 40. The ceiling is now 0.8 of `2/(Q D_w c^2 + 2 v c)`, with the plant row at the same margin; the default and every preset but flat ground take a smaller step (0.01818 instead of 0.02 at the defaults). The new Step ceiling control records the rule, and `legacy: { 5: { ceiling: 'v4' } }` keeps older links on their old step wherever it was stable, so they reprint (checked by a before-and-after float32 hash), and gives them the combined step where it was not. `tools/pde-order.js` gates it: 103,680 swept states, every Fourier mode, the actual shader from a 1e-6 checkerboard, and every preset under the bound, with the old ceiling as a failure control (`validation/PDE-ORDER.md`, Findings 1).
++- **A float16 policy for chemotaxis, amb and pfc.** On a device without float32 color buffers chemotaxis and amb now store their state as the deviation from their uniform state, which ends the chemotaxis freeze (standard deviations 0.98 of float32's at step 1000) and amb's shrinking fluctuations (1.00). pfc refuses the fallback with a message on the stage and in the status line, because neither storage keeps its conserved mean (drift 30 and 9.4 times float32's). `tools/half-float-check.js` holds both to criteria fixed before the runs, with the old fallbacks as failure controls, and `tools/provenance-check.js` checks the export and the refusal (`validation/HALF-FLOAT.md`). Float32 devices compute exactly what they did before.
+ - **Recipe v4: lozenge frozen regions connected to the rim.** A rhombus is frozen when a chain of edge-adjacent rhombi of its own orientation joins it to the rim, the analogue of the Jockusch-Propp-Shor polar regions. Plates read low at the offered sizes for a stated finite-size reason; extrapolated over sizes 12 to 48 the free area reaches 0.9005 ± 0.0052 against π/(2√3), while the old radius-3 test lands 6.6σ low. The `ring` key is now the Frozen test control (0 = rim, the default); `legacy: { 4: { ring: 3 } }` keeps older links reprinting as made, and `tools/recipe.js` checks it.
+ - **Calibrated per-plate error bars on both tiling tabs.** The Aztec polar-fraction bar is now the autocorrelation-time standard error of free cells in 60 angular sectors, replacing the four-region spread that anticorrelated regions made 1.1 to 1.5 times too wide; the lozenge free-area bar uses the same estimator. Scatter over bar is 0.83 to 0.91 (Aztec) and 0.77 to 1.03 (lozenge), inside the band 0.75 to 1.33 fixed before the runs. Aztec and lozenge are validated within stated limits.
+ - **Random matrices: the top of the color ramp keeps its color.** The palette offset was applied to the ramp position modulo 1, so at the default offset the top level and, in "Color by: row", the last row took the lowest color. The offset now turns the 256-entry ramp in index space; at offset 0 every other level keeps its exact color. `tools/rmt-science.js` reran and passes with its print check's color rule updated, and the old rule put back in the module fails it. No mark moves.
 diff --git a/docs/ENGINE-API.md b/docs/ENGINE-API.md
-index bd47b66..9e4645d 100644
+index 161ca60..edf727f 100644
 --- a/docs/ENGINE-API.md
 +++ b/docs/ENGINE-API.md
-@@ -2,9 +2,14 @@
+@@ -2,12 +2,17 @@
  
  The maintained engine is [`src/shared/engine.js`](../src/shared/engine.js). The old
  `src/shared/studio.js` name is retired. `Studio.apiVersion` is **1** and
--`Studio.recipeVersion` is **3**. Both version properties are read-only. Version 3 (2026-09-24) keys the Ising
-+`Studio.recipeVersion` is **4**. Both version properties are read-only. Version 3 (2026-09-24) keys the Ising
+-`Studio.recipeVersion` is **4**. Both version properties are read-only. Version 3 (2026-09-24) keys the Ising
++`Studio.recipeVersion` is **5**. Both version properties are read-only. Version 3 (2026-09-24) keys the Ising
  tab's Metropolis random numbers by the seed, so runs with different seeds are independent; recipes older than
  v3 keep the shared stream through `legacy: { 3: { stream: 'shared' } }` and reprint as they were made.
-+Version 4 (2026-09-24) gives the vegetation tab a time-step ceiling that combines water diffusion and upwind
-+advection. Recipes older than v4 get `ceiling: 'v3'` through `legacy: { 4: { ceiling: 'v3' } }`: they keep
+ Version 4 (2026-09-24) makes the lozenge tab's frozen test the rim-connected one (a rhombus is frozen when rhombi
+ of its own orientation join it to the rim); recipes older than v4 keep the local radius-3 test through
+ `legacy: { 4: { ring: 3 } }` and reprint as they were made.
++Version 5 (2026-09-25) gives the vegetation tab a time-step ceiling that combines water diffusion and upwind
++advection. Recipes older than v5 get `ceiling: 'v4'` through `legacy: { 5: { ceiling: 'v4' } }`: they keep
 +the step the separate limits gave them wherever that step was stable, and so reprint, and take the combined
 +ceiling where it was past the explicit bound, where the plate was a growing grid-scale checkerboard
 +([validation/PDE-ORDER.md](../validation/PDE-ORDER.md)).
  
  ## Compatibility boundary
  
-@@ -28,12 +33,12 @@ Recipe `v` is separate from the API version. Before a default changes, advance t
+@@ -31,12 +36,12 @@ Recipe `v` is separate from the API version. Before a default changes, advance t
  engine recipe version and declare the old value at that transition:
  
  ```js
--// Example for a future recipe version 4, not an instruction to change version now:
--legacy: { 2: { grid: 192 }, 4: { grid: 256 } },
-+// Example for a future recipe version 5, not an instruction to change version now:
-+legacy: { 2: { grid: 192 }, 5: { grid: 256 } },
+-// Example for a future recipe version 5, not an instruction to change version now:
+-legacy: { 2: { grid: 192 }, 5: { grid: 256 } },
++// Example for a future recipe version 6, not an instruction to change version now:
++legacy: { 2: { grid: 192 }, 6: { grid: 256 } },
  defaults: { grid: 512 }
  ```
  
--Recipes older than version 2 get 192; version 2 gets 256; version 3 gets 512.
-+Recipes older than version 2 get 192; versions 2 to 4 get 256; version 5 gets 512.
+-Recipes older than version 2 get 192; versions 2 to 4 get 256; version 5 gets 512.
++Recipes older than version 2 get 192; versions 2 to 5 get 256; version 6 gets 512.
  An explicitly saved `grid` always wins. Migrations apply newer transitions first,
  so the earliest applicable historical default wins for old hashes. The API test
  covers successive changes and explicit overrides; `tools/recipe.js` covers existing
+diff --git a/docs/HANDOFF.md b/docs/HANDOFF.md
+index 0adacfb..496fc0b 100644
+--- a/docs/HANDOFF.md
++++ b/docs/HANDOFF.md
+@@ -31,7 +31,6 @@ Coverage now: 54 validated within stated limits, 8 partially validated, 68 unval
+ 
+ | What | Where its result lands | If it is lost |
+ |---|---|---|
+-| Vegetation step bound and float16 policy for chemotaxis, pfc and amb (items 3 and 4) | agent `a1326c9d84e5f0d6b`, still running its final PDE-order rerun | Its unfinished work is saved as [wip/vegetation-float16.patch](wip/vegetation-float16.patch) (16 source, tool and doc files, against main at 7140ab1; generated files and results left out, so rebuild and rerun). Apply with `git apply`, finish, and rerun `node tools/pde-order.js --full --write`, `tools/half-float-check.js` and `node tools/recipe.js`. It also edits `src/shared/engine.js`, which now carries recipe v4 from the lozenge change, so merge that by hand. |
+ | Research: license, rename, reading | stopped after all eight research tracks finished; verification only just started | Saved, unverified, in [wip/research-2026-09-24-unverified.md](wip/research-2026-09-24-unverified.md). Next: verify the load-bearing claims, then write the answer. |
+ | Fresh-ideas sweep (publication, protection, legal, engineering, visibility) | stopped to save usage | Rerun on request |
+ 
+@@ -76,7 +75,7 @@ Not needed: the signing key (dropped by your choice).
+ ## Code work left from your list
+ 
+ - **2: done**, on this branch. Lozenge is frozen when connected to the rim; the Aztec and lozenge error bars are calibrated; both are validated within stated limits. Recipe v4.
+-- **3 and 4 (running).** Compute the vegetation tab's combined step bound. Decide and document a float16 policy for chemotaxis, pfc and amb.
++- **3 and 4: done**, on the branch `vegetation-float16` (committed, not pushed). Vegetation's step ceiling is the combined explicit bound of its water row, recipe v5, with `legacy: { 5: { ceiling: 'v4' } }` for older links (`validation/PDE-ORDER.md`, Findings 1). On float16 state chemotaxis and amb store the deviation from their uniform state and pfc refuses to run (`validation/HALF-FLOAT.md`).
+ - **7.** Add Done-list entries in `docs/RESEARCH-GRADE.md` for sections 1 and 4 (section 2 is done), and refresh the Atlas map artifact (https://claude.ai/artifact/GXYHX9XMdak9vhwgiLC1Gq).
+ - **Recorded defects, not fixed:**
+   - tilings: the P3 matching arcs (tilings.js:31) and the grout inset (tilings.js:626);
 diff --git a/docs/HARDWARE-GPU.md b/docs/HARDWARE-GPU.md
 index 77afde8..ce590dc 100644
 --- a/docs/HARDWARE-GPU.md
@@ -295,7 +332,7 @@ index 99aba38..777219a 100644
        pokeAdd: [0.7, 0, 0, 1], pokeRad: 0.09, pokeMode: 1,
        muUniforms: () => ({}),
 diff --git a/src/modules/rdx.js b/src/modules/rdx.js
-index e2fa43a..f39461f 100644
+index e2fa43a..89d5814 100644
 --- a/src/modules/rdx.js
 +++ b/src/modules/rdx.js
 @@ -24,6 +24,21 @@
@@ -509,7 +546,7 @@ index e2fa43a..f39461f 100644
 +    const c = Number(s.scale) || 1;
 +    return vegQ(s) * Math.max(Number(s.Dw) || 0, 0) * c * c + 2 * Math.max(Number(s.slope) || 0, 0) * c;
 +  }
-+  // Recipe v4 on: 0.8 of the combined bound 2/R (the margin the other tabs use), the plant diffusion row
++  // Recipe v5 on: 0.8 of the combined bound 2/R (the margin the other tabs use), the plant diffusion row
 +  // at the same margin, and the mortality and absolute caps.
 +  function vegCombinedDtMax(s) {
 +    const c = Number(s.scale) || 1;
@@ -517,7 +554,7 @@ index e2fa43a..f39461f 100644
 +    const plants = 1.6 / Math.max(vegQ(s) * Math.max(Number(s.Dn) || 0, 0.05) * c * c, 1e-6);
 +    return Math.min(water, plants, 0.5 / Math.max(s.m, 0.05), 0.25);
 +  }
-+  // Before recipe v4: the smaller of a diffusion limit and an advection limit, each taken alone. When the two
++  // Before recipe v5: the smaller of a diffusion limit and an advection limit, each taken alone. When the two
 +  // are comparable that overshoots 2/R by up to a factor 1.6 and a water checkerboard grows.
 +  function vegSeparateDtMax(s) {
      const c = Number(s.scale) || 1, lap9 = Number(s.lap) === 9;
@@ -525,12 +562,12 @@ index e2fa43a..f39461f 100644
      const adv = s.slope > 0 ? 0.8 / (s.slope * c) : 1;
      return Math.min(diff, adv, 0.5 / Math.max(s.m, 0.05), 0.25);
    }
-+  // A recipe made before v4 (ceiling 'v3') keeps the step it was made at wherever that step was stable, so it
++  // A recipe made before v5 (ceiling 'v4') keeps the step it was made at wherever that step was stable, so it
 +  // reprints. Where it was not, the plate was a growing grid-scale checkerboard rather than the model, and
 +  // the recipe takes the combined ceiling: a solver correction, not a change to a finished plate.
 +  function vegDtMax(s) {
 +    const combined = vegCombinedDtMax(s);
-+    if (s.ceiling !== 'v3') return combined;
++    if (s.ceiling !== 'v4') return combined;
 +    const old = vegSeparateDtMax(s), made = Math.min(Number(s.dt) || 0.02, old);
 +    return made * (vegWaterRate(s) - 1) < 2 ? old : combined;
 +  }
@@ -544,15 +581,15 @@ index e2fa43a..f39461f 100644
 -    ]).concat(simFields(0.001, 0.25, 0.001, 6000)).concat(pictureFields([
 +    ]).concat(simFields(0.001, 0.25, 0.001, 6000).flatMap(f => f.key !== 'dt' ? [f] : [f,
 +      { group: 'Simulation', key: 'ceiling', label: 'Step ceiling', type: 'seg', kind: LIVE,
-+        options: [['combined', 'Combined'], ['v3', 'Recipe v3']],
-+        hint: 'Combined keeps the step under 0.8 of the explicit bound set by water diffusion and downhill flow acting together. Recipe v3 is the ceiling recipes made before recipe v4 used, the smaller of the two limits taken separately; old links keep it where their step was stable, so they reprint, and take the combined ceiling where it was not.' },
++        options: [['combined', 'Combined'], ['v4', 'Recipe v4']],
++        hint: 'Combined keeps the step under 0.8 of the explicit bound set by water diffusion and downhill flow acting together. Recipe v4 is the ceiling recipes made before recipe v5 used, the smaller of the two limits taken separately; old links keep it where their step was stable, so they reprint, and take the combined ceiling where it was not.' },
 +    ])).concat(pictureFields([
        ['v', 'Plants n'], ['u', 'Water w'], ['diff', 'w − n'], ['grad', 'Band edges'], ['shade', 'Relief'],
      ])),
 -    legacy: { 2: { grid: 192 } },   // raised for print sharpness at v2; see "Print sharpness" in AGENTS.md
 +    // grid raised for print sharpness at v2 (see "Print sharpness" in AGENTS.md); the combined step ceiling
-+    // arrived at v4, and recipes older than v4 keep the separate-limit ceiling wherever it was stable.
-+    legacy: { 2: { grid: 192 }, 4: { ceiling: 'v3' } },
++    // arrived at v5, and recipes older than v5 keep the separate-limit ceiling wherever it was stable.
++    legacy: { 2: { grid: 192 }, 5: { ceiling: 'v4' } },
      defaults: Object.assign({
        grid: 512, aspect: '1:1', lap: 5, scale: 1,
        a: 1.1, agrad: 0.6, m: 0.45, slope: 40, Dw: 1, Dn: 1,
@@ -563,33 +600,38 @@ index e2fa43a..f39461f 100644
      }, PICTURE_DEFAULTS),
      presets: {
 diff --git a/src/shared/engine.js b/src/shared/engine.js
-index 7eeca7d..ccc2af8 100644
+index c492eca..7922c93 100644
 --- a/src/shared/engine.js
 +++ b/src/shared/engine.js
-@@ -680,7 +680,9 @@ void main(){
-   // legacyFill gives it back to any recipe written before that version. Reprinting a seed years
-   // later is the product; a default is allowed to move, a finished plate is not.
+@@ -682,7 +682,9 @@ void main(){
    // v3 (2026-09-24): Ising's Metropolis random numbers are keyed by the seed; older recipes keep the shared stream.
--  const RECIPE_V = 3;
-+  // v4 (2026-09-24): vegetation's step ceiling combines water diffusion and advection; older recipes keep the
+   // v4 (2026-09-24): the lozenge tab calls a rhombus frozen when it is joined to the rim by rhombi of its own
+   // orientation; older recipes keep the local radius-3 test they were made with.
+-  const RECIPE_V = 4;
++  // v5 (2026-09-25): vegetation's step ceiling combines water diffusion and advection; older recipes keep the
 +  // separate-limit ceiling wherever their step was stable, and take the combined one where it was not.
-+  const RECIPE_V = 4;
++  const RECIPE_V = 5;
    // Public compatibility versions, independent of each technique's scientific status.
    Object.defineProperties(S, {
      apiVersion: { value: 1, enumerable: true },
 diff --git a/tools/engine-api-check.js b/tools/engine-api-check.js
-index ca18c6f..a4c1334 100644
+index bffde34..5030728 100644
 --- a/tools/engine-api-check.js
 +++ b/tools/engine-api-check.js
-@@ -9,7 +9,7 @@ const {chromium}=require('playwright');
+@@ -9,11 +9,11 @@ const {chromium}=require('playwright');
   await page.waitForFunction(()=>Studio.ready);await page.evaluate(()=>Studio.ready);
   const result=await page.evaluate(async()=>{
    const check=(ok,msg)=>{if(!ok)throw Error(msg);};
--  check(Studio.apiVersion===1&&Studio.recipeVersion===3,'versions');
-+  check(Studio.apiVersion===1&&Studio.recipeVersion===4,'versions');
+-  check(Studio.apiVersion===1&&Studio.recipeVersion===4,'versions');
++  check(Studio.apiVersion===1&&Studio.recipeVersion===5,'versions');
    check(Object.getOwnPropertyDescriptor(Studio,'apiVersion').writable===false,'immutable version');
    check(Studio.getWitness()===null,'legacy is unknown');
    for(const id of ['missing','__proto__','constructor','toString'])check(Studio.getRecipe(id)===null&&Studio.getWitness(id)===null,'unknown module lookup '+id);
+-  const recipe=Studio.getRecipe();check(recipe.v===4&&recipe.seed==='api-baseline','versioned recipe');recipe.seed='mutated';check(Studio.getRecipe().seed==='api-baseline','recipe clone');
++  const recipe=Studio.getRecipe();check(recipe.v===5&&recipe.seed==='api-baseline','versioned recipe');recipe.seed='mutated';check(Studio.getRecipe().seed==='api-baseline','recipe clone');
+   const rng=Studio.util.makeRng('engine-api-v1'),random=Array.from({length:6},()=>rng());
+   check(Studio.util.svgEsc('a<b & "c"')==='a&lt;b &amp; &quot;c&quot;','svg escape');
+   const inches=document.getElementById('export-inches'),dpi=document.getElementById('export-dpi');inches.value='12';inches.dispatchEvent(new Event('change'));dpi.value='300';dpi.dispatchEvent(new Event('change'));
 diff --git a/tools/half-float-check.js b/tools/half-float-check.js
 index c85fda8..3642b30 100644
 --- a/tools/half-float-check.js
@@ -867,7 +909,7 @@ index c0bfc70..ef1af7b 100644
  - Nothing in the shell samples with mipmaps; use `nearest` for simulation state and `linear` only for display LUTs.
  - `G.GLSL.bicubic` defines `crW`, `texCR(sampler2D, uv, res)` for the red channel and `texCR4` for all four. Splice it into any render shader that draws a simulation grid coarser than the canvas. A few hundred cells across a few thousand print pixels is a 10x magnification, where nearest gives a mosaic and bilinear leaves the lattice crease on every front. Catmull-Rom interpolates, so a tap at a texel centre is exact and the simulation passes are unaffected. Use it in the reduce pass too, or the black and white points will not match what is drawn.
 diff --git a/tools/pde-order.js b/tools/pde-order.js
-index 2150dc1..e0d9333 100644
+index 2150dc1..91efaee 100644
 --- a/tools/pde-order.js
 +++ b/tools/pde-order.js
 @@ -63,6 +63,12 @@
@@ -877,7 +919,7 @@ index 2150dc1..e0d9333 100644
 +//
 +// Step ceiling (vegetation, the `ceiling` section). The water row combines explicit diffusion and upwind advection,
 +// so its grid-mode bound is dt (Q D_w c^2 + 2 v c - loss) < 2, not the smaller of two separate limits. The section
-+// sweeps the UI ranges under both of the module's rules (recipe v4 on, and the 'v3' rule older recipes keep), scans
++// sweeps the UI ranges under both of the module's rules (recipe v5 on, and the 'v4' rule older recipes keep), scans
 +// every Fourier mode at each step taken, runs the actual instance from a 1e-6 water checkerboard, and brackets the
 +// computed bound on the actual shader (see ceilingCheck). A step past the bound fails the run (exit code 1).
  'use strict';
@@ -943,31 +985,31 @@ index 2150dc1..e0d9333 100644
 +// Euler in diffusion and upwind advection, with the loss w (1 + n^2) implicit. At the (pi, pi) grid mode the Laplacian
 +// symbol is -Q c^2 (Q = 8 for the 5-point stencil, 16/3 for the 9-point) and the upwind difference (e^{ik} - 1) c is
 +// -2c, so the mode is multiplied by |1 - dt R| / (1 + dt (1 + n^2)) with R = Q D_w c^2 + 2 v c. It is not amplified
-+// when dt R < 2 whatever the loss, and when dt (R - 1) < 2 at the smallest loss (bare soil, n = 0). Until recipe v4
++// when dt R < 2 whatever the loss, and when dt (R - 1) < 2 at the smallest loss (bare soil, n = 0). Until recipe v5
 +// the module took the smaller of a diffusion limit and an advection limit, each alone, which overshoots 2/(R - 1) by
-+// up to 1.6 when the two are comparable. The module now takes 0.8 of 2/R; recipes older than v4 (ceiling 'v3') keep
-+// the pre-v4 step where it was under 2/(R - 1) and take the combined step where it was not. Four parts:
++// up to 1.6 when the two are comparable. The module now takes 0.8 of 2/R; recipes older than v5 (ceiling 'v4') keep
++// the pre-v5 step where it was under 2/(R - 1) and take the combined step where it was not. Four parts:
 +//   sweep     every combination of a grid over the UI ranges and both rules: the step the instance takes (the
 +//             module's sanitize, then step()'s min(dt, dtMax)) against 0.8 * 2/R (rule 'combined'), and against
-+//             2/(R - 1) (rule 'v3'), which must also give back the pre-v4 step wherever that step was under 2/(R - 1)
-+//             and the combined step elsewhere. The pre-v4 rule is transcribed here from the module before v4.
++//             2/(R - 1) (rule 'v4'), which must also give back the pre-v5 step wherever that step was under 2/(R - 1)
++//             and the combined step elsewhere. The pre-v5 rule is transcribed here from the module before v5.
 +//   modes     at every swept step, every Fourier mode of the linearized water row (bare soil) and plant row on a
 +//             17 x 17 grid of wavenumbers in [0, pi]^2, from the stencil and upwind symbols: none may be amplified.
 +//             This checks that (pi, pi) is the binding mode rather than assuming it.
 +//   instance  the actual instance, 32 x 32 cells, slope 40, scale 1, D_w = 1, 5, 10, 20 (5-point) and 10 (9-point),
 +//             a smooth water field carrying a 1e-6 checkerboard on bare soil (n = 0, so the water row is decoupled
 +//             and its bound is exactly 2/(R - 1)), 200 steps: the checkerboard must decay at the module's step under
-+//             both rules. Controls, with the ceiling removed from a copy of the spec: the pre-v4 step must grow where
++//             both rules. Controls, with the ceiling removed from a copy of the spec: the pre-v5 step must grow where
 +//             it exceeds the bound, and 0.98 and 1.02 of the computed bound must decay and grow.
 +//   twin      the Float64 twin's bound (both species linearized over water 0.2 to 1.5 and plants 0 to 2.5, as for
 +//             the other tabs) at the instance settings and at every preset, against the step under both rules.
 +const CEILING_SWEEP = { scale: [0.3, 0.5, 0.8, 1, 1.25, 1.5, 2, 3], slope: [0, 1, 12, 25, 40, 60, 100, 120], Dw: [0, 0.5, 1, 2, 2.5, 5, 10, 20, 40],
-+  Dn: [0.2, 1, 3], m: [0.05, 0.45, 1.2], lap: [5, 9], dt: [0.001, 0.01, 0.02, 0.05, 0.25], ceiling: ['combined', 'v3'] };
++  Dn: [0.2, 1, 3], m: [0.05, 0.45, 1.2], lap: [5, 9], dt: [0.001, 0.01, 0.02, 0.05, 0.25], ceiling: ['combined', 'v4'] };
 +const vegQ = p => (Number(p.lap) === 9 ? 16 / 3 : 8);
 +const vegRate = p => vegQ(p) * p.Dw * p.scale * p.scale + 2 * p.slope * p.scale;
-+// The ceiling before recipe v4, as src/modules/rdx.js had it, and the step the instance then took: sanitize clamped
++// The ceiling before recipe v5, as src/modules/rdx.js had it, and the step the instance then took: sanitize clamped
 +// s.dt to min(dt, ceiling) within [0.0005, 0.25], and step() took min(s.dt, ceiling).
-+function preV4Step(p) {
++function preV5Step(p) {
 +  const c = p.scale, diff = (Number(p.lap) === 9 ? 0.3 : 0.2) / Math.max(Math.max(p.Dw, p.Dn, 0.05) * c * c, 1e-6);
 +  const adv = p.slope > 0 ? 0.8 / (p.slope * c) : 1, ceil = Math.min(diff, adv, 0.5 / Math.max(p.m, 0.05), 0.25);
 +  return Math.min(Math.min(Math.max(Math.min(p.dt, ceil), 0.0005), 0.25), ceil);
@@ -1001,7 +1043,7 @@ index 2150dc1..e0d9333 100644
 -    for (const steps of [0, 20, 40]) {
 -      const r = await run({ key, variant: 'ceiling', state: Object.assign({}, st, { dt: dtMax }), W: N, H: N, init, steps });
 +  const t0 = Date.now(), checks = [];
-+  const out = { rule: 'recipe v4 on (ceiling combined): min(1.6/R, 1.6/(Q D_n c^2), 0.5/m, 0.25) with R = Q D_w c^2 + 2 v c; recipes older than v4 (ceiling v3): the pre-v4 min(separate limits) where its step s satisfies s (R - 1) < 2, the combined ceiling elsewhere' };
++  const out = { rule: 'recipe v5 on (ceiling combined): min(1.6/R, 1.6/(Q D_n c^2), 0.5/m, 0.25) with R = Q D_w c^2 + 2 v c; recipes older than v5 (ceiling v4): the pre-v5 min(separate limits) where its step s satisfies s (R - 1) < 2, the combined ceiling elsewhere' };
 +  const gate = (name, pass, extra) => { checks.push(Object.assign({ ladder: 'ceiling: ' + name, gate: true, pass: !!pass }, extra || {})); log('  ceiling ' + (pass ? 'pass' : 'FAIL') + ': ' + name); };
 +  const ctl = (name, detected, extra) => { checks.push(Object.assign({ ladder: 'ceiling control: ' + name, detected: !!detected }, extra || {})); log('  ceiling control ' + (detected ? 'detected' : 'MISSED') + ': ' + name); };
 +
@@ -1010,8 +1052,8 @@ index 2150dc1..e0d9333 100644
 +  for (const scale of S.scale) for (const slope of S.slope) for (const Dw of S.Dw) for (const Dn of S.Dn) for (const m of S.m) for (const lap of S.lap) for (const dt of S.dt) for (const ceiling of S.ceiling)
 +    states.push({ scale, slope, Dw, Dn, m, lap, dt, ceiling, agrad: 0.6, a: 1.1 });
 +  const steps = await page.evaluate(([k, st]) => window.orderStepSweep(k, st), [key, states]);
-+  const worst = { combined: { ratio: 0, at: null }, v3: { ratio: 0, at: null }, preV4: { ratio: 0, at: null }, modes: { water: 0, plant: 0, at: null } };
-+  let combinedOver = 0, v3Over = 0, v3Mismatch = 0, preUnstable = 0, corrected = 0, kept = 0;
++  const worst = { combined: { ratio: 0, at: null }, v4: { ratio: 0, at: null }, preV5: { ratio: 0, at: null }, modes: { water: 0, plant: 0, at: null } };
++  let combinedOver = 0, v4Over = 0, v4Mismatch = 0, preUnstable = 0, corrected = 0, kept = 0;
 +  const pairs = states.length / 2;
 +  for (let i = 0; i < states.length; i++) {
 +    const p = states[i], st = steps[i].step, R = vegRate(p), plantRate = vegQ(p) * Math.max(p.Dn, 0.05) * p.scale * p.scale;
@@ -1020,26 +1062,26 @@ index 2150dc1..e0d9333 100644
 +      if (ratio > worst.combined.ratio) worst.combined = { ratio, at: p };
 +      if (ratio > 0.8 * (1 + 1e-12)) combinedOver++;
 +    } else {
-+      const pre = preV4Step(p), stable = pre * (R - 1) < 2, ratio = st * (R - 1) / 2;
-+      if (ratio > worst.v3.ratio) worst.v3 = { ratio, at: p };
-+      if (!(st * (R - 1) < 2) || st * plantRate / 2 > 0.8 * (1 + 1e-12)) v3Over++;
++      const pre = preV5Step(p), stable = pre * (R - 1) < 2, ratio = st * (R - 1) / 2;
++      if (ratio > worst.v4.ratio) worst.v4 = { ratio, at: p };
++      if (!(st * (R - 1) < 2) || st * plantRate / 2 > 0.8 * (1 + 1e-12)) v4Over++;
 +      // the same state under rule 'combined' is the previous entry (ceiling is the innermost loop)
 +      const combinedStep = steps[i - 1].step;
-+      if (stable ? Math.abs(st - pre) > 1e-12 * pre : Math.abs(st - combinedStep) > 1e-12 * combinedStep) v3Mismatch++;
++      if (stable ? Math.abs(st - pre) > 1e-12 * pre : Math.abs(st - combinedStep) > 1e-12 * combinedStep) v4Mismatch++;
 +      if (stable) kept++; else { corrected++; preUnstable++; }
 +      const preRatio = pre * (R - 1) / 2;
-+      if (preRatio > worst.preV4.ratio) worst.preV4 = { ratio: preRatio, at: Object.assign({}, p, { ceiling: 'pre-v4' }) };
++      if (preRatio > worst.preV5.ratio) worst.preV5 = { ratio: preRatio, at: Object.assign({}, p, { ceiling: 'pre-v5' }) };
 +    }
 +    const ms = modeScan(p, st);
 +    if (ms.water > worst.modes.water) worst.modes = Object.assign({}, worst.modes, { water: ms.water, at: p, waterMode: ms.waterMode });
 +    worst.modes.plant = Math.max(worst.modes.plant, ms.plant);
 +  }
-+  out.sweep = { grid: S, states: states.length, combinedOverMargin: combinedOver, v3OverBound: v3Over, v3Mismatch, preV4Unstable: preUnstable, v3Kept: kept, v3Corrected: corrected, worst };
++  out.sweep = { grid: S, states: states.length, combinedOverMargin: combinedOver, v4OverBound: v4Over, v4Mismatch, preV5Unstable: preUnstable, v4Kept: kept, v4Corrected: corrected, worst };
 +  gate('rule combined: step at most 0.8 of 2/R and of the plant bound over the UI sweep', combinedOver === 0, { observed: worst.combined.ratio, limit: 0.8, states: pairs });
-+  gate('rule v3: step under 2/(R - 1), the pre-v4 step kept where it was stable and the combined step elsewhere', v3Over === 0 && v3Mismatch === 0, { observed: worst.v3.ratio, limit: 1, kept, corrected, states: pairs });
++  gate('rule v4: step under 2/(R - 1), the pre-v5 step kept where it was stable and the combined step elsewhere', v4Over === 0 && v4Mismatch === 0, { observed: worst.v4.ratio, limit: 1, kept, corrected, states: pairs });
 +  gate('no Fourier mode of the water row (bare soil) or the plant row amplified at the step taken', worst.modes.water <= 1 + 1e-12 && worst.modes.plant <= 1 + 1e-12, { observed: [worst.modes.water, worst.modes.plant], limit: 1 });
-+  log('  ceiling sweep: ' + states.length + ' states; worst step/(2/R) under combined ' + worst.combined.ratio.toFixed(4) + '; worst step/(2/(R-1)) under v3 ' + worst.v3.ratio.toFixed(4) + ', pre-v4 ' + worst.preV4.ratio.toFixed(4) +
-+    ' (' + preUnstable + ' of ' + pairs + ' pre-v4 steps past the bound); largest mode amplification ' + worst.modes.water.toFixed(6) + ' water, ' + worst.modes.plant.toFixed(6) + ' plants');
++  log('  ceiling sweep: ' + states.length + ' states; worst step/(2/R) under combined ' + worst.combined.ratio.toFixed(4) + '; worst step/(2/(R-1)) under v4 ' + worst.v4.ratio.toFixed(4) + ', pre-v5 ' + worst.preV5.ratio.toFixed(4) +
++    ' (' + preUnstable + ' of ' + pairs + ' pre-v5 steps past the bound); largest mode amplification ' + worst.modes.water.toFixed(6) + ' water, ' + worst.modes.plant.toFixed(6) + ' plants');
 +
 +  // ---- the actual instance
 +  const N = 32, chk = (x, y) => ((x + y) % 2 ? 1 : -1), snaps = [0, 25, 50, 100, 200];
@@ -1064,21 +1106,21 @@ index 2150dc1..e0d9333 100644
 +    const st = Object.assign({}, base, { Dw, lap, dt: 0.02 }), R = vegRate(st), bare = 2 / (R - 1), twin = boundOf(st);
 +    const row = { Dw, lap, slope: st.slope, scale: st.scale, R, bound: bare, boundNoLoss: 2 / R, twinBound: twin };
 +    row.combined = await board(Object.assign({}, st, { ceiling: 'combined' }), false);
-+    row.v3 = await board(Object.assign({}, st, { ceiling: 'v3' }), false);
-+    const pre = preV4Step(st);
-+    row.preV4 = Object.assign(await board(Object.assign({}, st, { dt: pre }), true), { overBound: pre / bare });
++    row.v4 = await board(Object.assign({}, st, { ceiling: 'v4' }), false);
++    const pre = preV5Step(st);
++    row.preV5 = Object.assign(await board(Object.assign({}, st, { dt: pre }), true), { overBound: pre / bare });
 +    row.below = await board(Object.assign({}, st, { dt: 0.98 * bare }), true);
 +    row.above = await board(Object.assign({}, st, { dt: 1.02 * bare }), true);
-+    for (const k of ['combined', 'v3']) row[k].overBound = row[k].dt / bare;
++    for (const k of ['combined', 'v4']) row[k].overBound = row[k].dt / bare;
 +    rows.push(row);
 +    log('  ceiling Dw ' + Dw + ' (' + lap + '-point): bound ' + bare.toFixed(5) + ', twin ' + twin.toFixed(5) + ' | combined ' + row.combined.dt.toFixed(5) + (row.combined.decays ? ' decays' : ' DOES NOT DECAY') +
-+      ' | v3 ' + row.v3.dt.toFixed(5) + (row.v3.decays ? ' decays' : ' DOES NOT DECAY') + ' | pre-v4 ' + pre.toFixed(5) + ' (' + (pre / bare).toFixed(2) + ' of the bound)' + (row.preV4.grows ? ' grows' : row.preV4.decays ? ' decays' : ' neither') +
++      ' | v4 ' + row.v4.dt.toFixed(5) + (row.v4.decays ? ' decays' : ' DOES NOT DECAY') + ' | pre-v5 ' + pre.toFixed(5) + ' (' + (pre / bare).toFixed(2) + ' of the bound)' + (row.preV5.grows ? ' grows' : row.preV5.decays ? ' decays' : ' neither') +
 +      ' | 0.98 ' + (row.below.decays ? 'decays' : 'NO') + ', 1.02 ' + (row.above.grows ? 'grows' : 'NO'));
    }
 +  out.instance = { grid: [N, N], init: 'water 0.6 + 0.05 cos(2 pi x/N) + 1e-6 (-1)^(x+y), plants 0 (bare soil)', snapshots: snaps,
 +    criteria: 'decays: every later checkerboard amplitude below the initial one and the last below a tenth of it; grows: some later amplitude above ten times the initial one', rows };
-+  gate('the actual instance: the checkerboard decays at the module step under both rules', rows.every(r => r.combined.decays && r.v3.decays), { rows: rows.length });
-+  ctl('pre-v4 separate ceiling, clamp removed: the checkerboard grows wherever that step is past the bound, and decays where it is not', rows.every(r => r.preV4.overBound > 1 ? r.preV4.grows : r.preV4.decays) && rows.some(r => r.preV4.grows));
++  gate('the actual instance: the checkerboard decays at the module step under both rules', rows.every(r => r.combined.decays && r.v4.decays), { rows: rows.length });
++  ctl('pre-v5 separate ceiling, clamp removed: the checkerboard grows wherever that step is past the bound, and decays where it is not', rows.every(r => r.preV5.overBound > 1 ? r.preV5.grows : r.preV5.decays) && rows.some(r => r.preV5.grows));
 +  ctl('the computed bound brackets the actual shader: 0.98 of it decays, 1.02 of it grows', rows.every(r => r.below.decays && r.above.grows));
 +
 +  // ---- the twin bound at the presets (both species, the envelope of the other tabs), under both rules
@@ -1087,12 +1129,12 @@ index 2150dc1..e0d9333 100644
 -    const st = Object.assign({}, base, pr.p), dtMax = await page.evaluate(([k, x]) => window.orderDtMax(k, x), [key, st]), eff = Math.min(st.dt, dtMax), bnd = boundOf(st);
 -    pres.push({ preset: name, effectiveDt: eff, explicitBound: bnd, ratio: eff / bnd });
 +    const st = Object.assign({}, base, pr.p), twin = boundOf(st), R = vegRate(st);
-+    const [cmb, old] = await page.evaluate(([k, s]) => window.orderStepSweep(k, [Object.assign({}, s, { ceiling: 'combined' }), Object.assign({}, s, { ceiling: 'v3' })]), [key, st]);
-+    pres.push({ preset: name, requestedDt: st.dt, combinedStep: cmb.step, v3Step: old.step, preV4Step: preV4Step(st), twinBound: twin, combinedOverTwin: cmb.step / twin, v3OverTwin: old.step / twin, combinedOverNoLoss: cmb.step * R / 2 });
++    const [cmb, old] = await page.evaluate(([k, s]) => window.orderStepSweep(k, [Object.assign({}, s, { ceiling: 'combined' }), Object.assign({}, s, { ceiling: 'v4' })]), [key, st]);
++    pres.push({ preset: name, requestedDt: st.dt, combinedStep: cmb.step, v4Step: old.step, preV5Step: preV5Step(st), twinBound: twin, combinedOverTwin: cmb.step / twin, v4OverTwin: old.step / twin, combinedOverNoLoss: cmb.step * R / 2 });
    }
 -  return { rule: 'module ceiling = min(diffusion limit, advection limit, mortality limit, 0.25); explicit bound from the Float64 twin at the (pi, pi) mode over water 0.2 to 1.5 and plants 0 to 2.5', envelope, settings: rows, presets: pres };
 +  out.presets = pres;
-+  gate('every preset under the twin bound under both rules, and v3 reprints the pre-v4 step', pres.every(p => p.combinedOverTwin < 1 && p.v3OverTwin < 1 && Math.abs(p.v3Step - p.preV4Step) <= 1e-12 * p.preV4Step));
++  gate('every preset under the twin bound under both rules, and v4 reprints the pre-v5 step', pres.every(p => p.combinedOverTwin < 1 && p.v4OverTwin < 1 && Math.abs(p.v4Step - p.preV5Step) <= 1e-12 * p.preV5Step));
 +  out.checks = checks;
 +  out.seconds = Math.round((Date.now() - t0) / 1000);
 +  return out;
@@ -1106,8 +1148,8 @@ index 2150dc1..e0d9333 100644
 -    if (t.ceiling) for (const c of t.ceiling.settings) lines.push(tab.padEnd(12) + ('ceiling Dw ' + c.Dw).padEnd(14) + 'dtMax ' + f(c.moduleDtMax, 4) + ', bound ' + f(c.explicitBound, 4) + ', ratio ' + f(c.ratio) + (c.grows ? ', checkerboard grows' : ', checkerboard decays'));
 +    if (t.ceiling) {
 +      const sw = t.ceiling.sweep;
-+      lines.push(tab.padEnd(12) + 'ceiling'.padEnd(14) + sw.states + ' swept states: step/(2/R) at most ' + f(sw.worst.combined.ratio, 3) + ' (combined), step/(2/(R-1)) at most ' + f(sw.worst.v3.ratio, 3) + ' (v3), ' + f(sw.worst.preV4.ratio, 3) + ' before v4');
-+      for (const r of t.ceiling.instance.rows) lines.push(tab.padEnd(12) + ('ceiling Dw ' + r.Dw + (r.lap === 9 ? ' L9' : '')).padEnd(14) + 'bound ' + f(r.bound, 4) + ', combined ' + f(r.combined.dt, 4) + ' (' + f(r.combined.overBound) + '), v3 ' + f(r.v3.dt, 4) + ' (' + f(r.v3.overBound) + '), pre-v4 ' + f(r.preV4.overBound) + (r.preV4.grows ? ' grows' : ' decays'));
++      lines.push(tab.padEnd(12) + 'ceiling'.padEnd(14) + sw.states + ' swept states: step/(2/R) at most ' + f(sw.worst.combined.ratio, 3) + ' (combined), step/(2/(R-1)) at most ' + f(sw.worst.v4.ratio, 3) + ' (v4), ' + f(sw.worst.preV5.ratio, 3) + ' before v5');
++      for (const r of t.ceiling.instance.rows) lines.push(tab.padEnd(12) + ('ceiling Dw ' + r.Dw + (r.lap === 9 ? ' L9' : '')).padEnd(14) + 'bound ' + f(r.bound, 4) + ', combined ' + f(r.combined.dt, 4) + ' (' + f(r.combined.overBound) + '), v4 ' + f(r.v4.dt, 4) + ' (' + f(r.v4.overBound) + '), pre-v5 ' + f(r.preV5.overBound) + (r.preV5.grows ? ' grows' : ' decays'));
 +      for (const c of t.ceiling.checks) if (c.gate) lines.push(tab.padEnd(12) + 'ceiling'.padEnd(14) + (c.pass ? 'pass  ' : 'FAIL  ') + c.ladder.replace(/^ceiling: /, ''));
 +    }
      if (t.floorProbe) lines.push(tab.padEnd(12) + 'floor'.padEnd(14) + '1'.padEnd(8) + f(t.floorProbe.fittedAccepted, 3).padEnd(10) + ('all points ' + f(t.floorProbe.fittedAll, 3)).padEnd(31) + '-'.padEnd(9) + 'probe');
@@ -1188,7 +1230,7 @@ index 99db024..2bec08d 100644
  
      // A tab without exportData(): meta.json says so rather than inventing arrays.
 diff --git a/tools/recipe.js b/tools/recipe.js
-index 94d1cff..50b0845 100644
+index 27d3749..0509500 100644
 --- a/tools/recipe.js
 +++ b/tools/recipe.js
 @@ -21,7 +21,9 @@ function cases(src) {
@@ -1196,7 +1238,7 @@ index 94d1cff..50b0845 100644
      const a = regs[i].index, b = i + 1 < regs.length ? regs[i + 1].index : src.length;
      const own = src.slice(a, b);
 -    const leg = own.match(/legacy:\s*\{([^}]*\{[^}]*\}[^}]*)\}/);
-+    // One or more transitions, { 2: { grid: 192 }, 4: { ceiling: 'v3' } }: every inner object is captured,
++    // One or more transitions, { 2: { grid: 192 }, 5: { ceiling: 'v4' } }: every inner object is captured,
 +    // not only the first (a single-object pattern once dropped the second transition without a word).
 +    const leg = own.match(/legacy:\s*\{((?:[^{}]*\{[^{}]*\})+[^{}]*)\}/);
      if (!leg) continue;
@@ -1206,13 +1248,13 @@ index 94d1cff..50b0845 100644
    if (!cs.length) { console.log('no legacy declarations to check'); return; }
    const b = await chromium.launch({ args: glArgs() });
    const jobs = [];
--  const LABEL = { grid: 'Grid', stream: 'Random stream' };
-+  const LABEL = { grid: 'Grid', stream: 'Random stream', ceiling: 'Step ceiling' };
+-  const LABEL = { grid: 'Grid', stream: 'Random stream', ring: 'Frozen test' };
++  const LABEL = { grid: 'Grid', stream: 'Random stream', ring: 'Frozen test', ceiling: 'Step ceiling' };
    for (const c of cs) {
      const label = LABEL[c.key] || c.key;
      // The values were parsed out of the source as text, so they have to go back into a recipe as the
 diff --git a/validation/HALF-FLOAT.md b/validation/HALF-FLOAT.md
-index 01a06c2..de70806 100644
+index 01a06c2..80aa4d4 100644
 --- a/validation/HALF-FLOAT.md
 +++ b/validation/HALF-FLOAT.md
 @@ -5,12 +5,22 @@ A WebGL2 device without `EXT_color_buffer_float` cannot render into float32 text
@@ -1237,7 +1279,7 @@ index 01a06c2..de70806 100644
  ```
 -node tools/half-float-check.js --write     # 22 tab and step-count pairs; 11 to 39 min here, on SwiftShader
 -node tools/half-float-check.js --only cahn,turing --steps 100
-+node tools/half-float-check.js --write                              # 22 tab and step-count pairs, 4 failure controls; 496 s here
++node tools/half-float-check.js --write                              # 22 tab and step-count pairs, 4 failure controls; 467 s here
 +node tools/half-float-check.js --only cahn,turing --steps 100 --no-controls
  ```
  
@@ -1308,7 +1350,7 @@ index 01a06c2..de70806 100644
  | ks | 100 | 9.6e-4 | 5.9e-4 | 0.246 | 0.0609 | 0.0609 |  | ν 1.00; α 1.00 |
  | ks | 1000 | 1.6e-2 | 2.1e-1 | 10.3 | 2.28 | 2.30 | no | ν 1.00; α 1.00 |
  | excitable | 100 | 7.3e-4 | 4.1e-3 | 1.00 | 0.157, 0.0939 | 0.157, 0.0939 |  | Barkley · ε 0.020 |
-@@ -60,53 +92,118 @@ seed, with no sampling error; how much they vary from seed to seed is not measur
+@@ -60,53 +92,116 @@ seed, with no sampling error; how much they vary from seed to seed is not measur
  | turing | 1000 | 3.0e-1 | 1.3e1 | 13.9 | 1.61, 0.141 | 1.61, 0.144 | no | Schnakenberg · D 100.0; λ ≈ 12 cells |
  | cyclic | 100 | 4.3e-4 | 9.4e-4 | 0.825 | 0.330, 0.298, 0.346 | 0.330, 0.298, 0.346 |  | a 0.60 · b 1.60 · heteroclinic |
  | cyclic | 1000 | 5.5e-3 | 1.7e-2 | 0.999 | 0.392, 0.341, 0.395 | 0.391, 0.341, 0.395 | no | a 0.60 · b 1.60 · heteroclinic |
@@ -1322,15 +1364,13 @@ index 01a06c2..de70806 100644
 +| vegetation | 1000 | 1.3e-1 | 9.7e0 | 10.6 | 0.199, 1.70 | 0.193, 1.68 | no | a 0.44–1.76 · 2m = 0.90 · bare → bands → cover |
  
 -Renderer: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver); recipe version 2; 22 pairs in 638 s on a shared four-core machine.
-+seconds 496 renderer ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver) recipe 4
++Renderer: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver); recipe version 5; 22 pairs and 4 failure controls in 467 s on a shared four-core machine.
  
 -The sd columns list one value per exported channel: the field for the pde tabs, each species in state order for the rdx tabs. The float32 repeat at 1000 steps matched bit for bit on all eleven tabs.
-+Renderer: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver); recipe version 4; 22 pairs and 4 failure controls in 496 s on a shared four-core machine.
-+
 +The sd columns list one value per exported channel: the field for the pde tabs, each species in state order for the
 +rdx tabs. "(base)" marks a tab whose float16 state is stored as a deviation from a base state; the other float16
 +columns are the plain fallback. The float32 repeat at 1000 steps matched bit for bit on all eleven tabs. The
-+vegetation rows differ from the first measurement because its default recipe now takes the recipe v4 step,
++vegetation rows differ from the first measurement because its default recipe now takes the recipe v5 step,
 +0.01818 instead of 0.02 ([PDE-ORDER.md](PDE-ORDER.md), Findings).
  
  ## What it means
@@ -1424,9 +1464,9 @@ index 01a06c2..de70806 100644
 +  concentrations themselves.
 +- Differences, Laplacians and fluxes do not see the base.
 +
-+On a float32 device the macro is the identity and the passes compute what they computed before. During this change
-+the float32 exports of all eleven tabs at the default recipe (recipe v3, grid 256, 150 steps) hashed identical
-+before and after; that comparison was a one-off, not a recorded tool.
++On a float32 device the macro is the identity and the passes compute what they computed before. The float32 exports
++of all eleven tabs at the default recipe (recipe v4, grid 256, 150 steps) hash identical on main before this change
++(a3b5e98) and after it; that comparison was a one-off, not a recorded tool.
 +
 +Both tabs meet the acceptance criteria:
 +
@@ -1469,7 +1509,7 @@ index 01a06c2..de70806 100644
  
  ## The status line says so
  
-@@ -114,21 +211,40 @@ When a tab's provenance precision is `float16 state (half-float fallback)`, the
+@@ -114,21 +209,40 @@ When a tab's provenance precision is `float16 state (half-float fallback)`, the
  status line: **half-float state: measurements carry half-float rounding**, with a tooltip naming the
  missing extension. The classification is the same function the provenance record uses (`statePrecision` in
  `src/shared/engine.js`), so the two cannot disagree. The span is appended beside the module's own spans;
@@ -1526,7 +1566,7 @@ index 01a06c2..de70806 100644
 +  quantized means (from an 8-bit reduction), or parameters and regime labels, not the full state. That the printed
 +  values agree does not mean the plates agree.
 diff --git a/validation/PDE-ORDER.md b/validation/PDE-ORDER.md
-index 99aeb29..48f4703 100644
+index 99aeb29..12f3524 100644
 --- a/validation/PDE-ORDER.md
 +++ b/validation/PDE-ORDER.md
 @@ -11,12 +11,12 @@ renderer string are in [results/pde-order.json](results/pde-order.json).
@@ -1534,7 +1574,7 @@ index 99aeb29..48f4703 100644
  node tools/build.js
  node tools/pde-order.js                 # quick: cahn and turing, every ladder; 60 s here
 -node tools/pde-order.js --full --write  # every tab, every ladder, three seeds; 548 s here
-+node tools/pde-order.js --full --write  # every tab, every ladder, three seeds; 464 s here
++node tools/pde-order.js --full --write  # every tab, every ladder, three seeds; 437 s here
  node tools/pde-order.js --tab ks        # one tab (add --full for the full ladder)
  ```
  
@@ -1558,7 +1598,7 @@ index 99aeb29..48f4703 100644
    | swift | 0.01514 |
    | turing | 0.008333 |
    | chemotaxis | 0.019995 |
-+  | vegetation | 0.01818 (recipe v4 ceiling; 0.02 before, Findings) |
++  | vegetation | 0.01818 (recipe v5 ceiling; 0.02 before, Findings) |
  
  - **Ladder.** `dt0, dt0/2, ..., dt0/16` (`--full`; quick stops at `dt0/8`) at `T = n0 dt0`. `n0` is 32, except
    16 for excitable and 64 for turing and PFC.
@@ -1587,7 +1627,7 @@ index 99aeb29..48f4703 100644
    - Turing's successive differences keep only their first pair above the float32 floor, so its
      self-convergence order, 0.89, rests on one pair per seed; the `+/-` there is that pair's spread across seeds.
      Its true error, which the floor rule keeps at more levels, gives 1.03.
-@@ -238,29 +239,78 @@ difference on. The fit over the accepted points gives 1.02; the fit over all poi
+@@ -238,29 +239,79 @@ difference on. The fit over the accepted points gives 1.02; the fit over all poi
  
  ## Findings
  
@@ -1608,7 +1648,7 @@ index 99aeb29..48f4703 100644
 -   section (`ORDER_ONLY=ceiling node tools/pde-order.js --tab vegetation`), recorded under
 -   `tabs.vegetation.ceiling`. A combined ceiling, `0.8 * 2/(Q D_w c^2 + 2 v c)`, would close the gap. The module is
 -   not changed here.
-+1. **Vegetation's step ceiling exceeded the explicit bound; corrected at recipe v4.**
++1. **Vegetation's step ceiling exceeded the explicit bound; corrected at recipe v5.**
 +   - **The bound, from the shader.** The water update is
 +     `w' = (w + dt (a + v c (w_E - w) + D_w L w)) / (1 + dt (1 + n^2))`, with `w_E` the neighbor at `+x` and `L`
 +     the 5- or 9-point Laplacian times `c^2`. On a Fourier mode the explicit part multiplies by `1 + dt lambda`,
@@ -1625,17 +1665,18 @@ index 99aeb29..48f4703 100644
 +   - **What the module did.** `vegDtMax` took the smaller of `0.2/(D c^2)` (0.3 for the 9-point stencil) and
 +     `0.8/(v c)`, each 0.8 of its own term's bound. When the two terms are comparable, the smaller limit
 +     overshoots the combined bound by up to a factor 1.6.
-+   - **The fix.** From recipe v4 the ceiling is `min(1.6/R, 1.6/(Q D_n c^2), 0.5/m, 0.25)`: 0.8 of the combined
++   - **The fix.** From recipe v5 the ceiling is `min(1.6/R, 1.6/(Q D_n c^2), 0.5/m, 0.25)`: 0.8 of the combined
 +     bound before the implicit loss is counted, which is the margin the other tabs use, with the plant row at
 +     the same margin.
-+   - **Older recipes.** A recipe made before v4 gets `ceiling: 'v3'` through `legacy: { 4: { ceiling: 'v3' } }`.
-+     - Where its pre-v4 step satisfied `dt (R - 1) < 2`, it was stable, and it keeps that step. It reprints:
-+       float32 exports at recipe v3 (grid 256, 150 steps) of the default recipe, of `D_w` = 2 and 2.5 at slope 40,
-+       and of settings like the gentle and steep presets were bit for bit unchanged by this change (a
-+       before-and-after hash, not a recorded tool).
++   - **Older recipes.** A recipe made before v5 gets `ceiling: 'v4'` through `legacy: { 5: { ceiling: 'v4' } }`.
++     - Where its pre-v5 step satisfied `dt (R - 1) < 2`, it was stable, and it keeps that step. It reprints:
++       float32 exports at recipe v4 (grid 256, 150 steps) of the default recipe, of `D_w` = 2 and 2.5 at slope 40,
++       and of the gentle, steep and flat preset settings are bit for bit the same as on main before this change
++       (a3b5e98), while `D_w` = 5, past the bound, differs as it should (a before-and-after hash, not a recorded
++       tool).
 +     - Where the step was past the bound, the plate was a growing grid-scale checkerboard, not the model. Such a
 +       recipe takes the combined ceiling. That is a solver correction and its plate changes.
-+     - A recipe at v4 gets the combined ceiling. The default and six of the seven presets take a smaller step
++     - A recipe at v5 gets the combined ceiling. The default and six of the seven presets take a smaller step
 +       than before: the default, tiger, sparse, runoff and relief 0.01818 instead of 0.02, steep 0.00969 instead
 +       of 0.01, gentle 0.04 instead of 0.05. Flat ground is unchanged at 0.03.
 +   - **The regression check.** The tool's `ceiling` section (`ORDER_ONLY=ceiling node tools/pde-order.js --tab
@@ -1643,9 +1684,9 @@ index 99aeb29..48f4703 100644
 +     - **Sweep.** 51,840 settings spanning the UI ranges (eight scales from 0.3 to 3, eight slopes from 0 to 120,
 +       nine values of `D_w` from 0 to 40, `D_n` 0.2, 1 and 3, `m` 0.05, 0.45 and 1.2, both stencils, requested `dt`
 +       0.001 to 0.25), each under both rules, through the module's own sanitize and step clamp. Under the combined
-+       rule the step is at most 0.800 of `2/R` and of the plant bound. Under the v3 rule the step is below
-+       `2/(R - 1)` everywhere: it keeps the pre-v4 step in 42,600 settings and corrects it in 9,240 (17.8%), where
-+       the pre-v4 step was up to 1.599 times the bound.
++       rule the step is at most 0.800 of `2/R` and of the plant bound. Under the v4 rule the step is below
++       `2/(R - 1)` everywhere: it keeps the pre-v5 step in 42,600 settings and corrects it in 9,240 (17.8%), where
++       the pre-v5 step was up to 1.599 times the bound.
 +     - **Modes.** At every swept step, every Fourier mode of the linearized water row (bare soil) and plant row,
 +       on a 17 x 17 grid of wavenumbers in `[0, pi]^2`, from the stencil and upwind symbols. The largest
 +       amplification is 0.99956 for water (the uniform mode at the smallest step, damped only by the implicit
@@ -1654,7 +1695,7 @@ index 99aeb29..48f4703 100644
 +       checkerboard on bare soil (`n = 0`, so the water row is decoupled and its bound is exactly `2/(R - 1)`),
 +       at slope 40 and scale 1, for 200 steps:
 +
-+       | `D_w`, stencil | bound `2/(R - 1)` | step, recipe v4 | step, v3 rule | pre-v4 step / bound | checkerboard at step 200: v4 step, pre-v4 step, 1.02 x bound |
++       | `D_w`, stencil | bound `2/(R - 1)` | step, recipe v5 | step, v4 rule | pre-v5 step / bound | checkerboard at step 200: v5 step, pre-v5 step, 1.02 x bound |
 +       |---|---|---|---|---|---|
 +       | 1, 5-point | 0.02299 | 0.01818 | 0.02000 (kept) | 0.87 | 5.2e-10, 2.6e-9, 2.1e-3 |
 +       | 5, 5-point | 0.01681 | 0.01333 | 0.01333 (corrected) | 1.19 | 2.0e-9, 20, 2.2e-3 |
@@ -1665,13 +1706,13 @@ index 99aeb29..48f4703 100644
 +       The checkerboard starts at 1e-6. An amplitude of 20 is the field saturated at the shader's clamp of 40. The
 +       Float64 twin, with both species linearized over the envelope, gives the same bound at all five settings.
 +
-+       The module's step decays the checkerboard under both rules. The pre-v4 step, run with the ceiling removed,
++       The module's step decays the checkerboard under both rules. The pre-v5 step, run with the ceiling removed,
 +       grows it wherever it is past the bound, and 0.98 and 1.02 of the computed bound decay and grow on the
 +       actual shader.
 +     - **Presets.** Under the combined rule every preset takes 0.8 of `2/R`, 0.78 to 0.80 of the twin bound. Under
-+       the v3 rule each keeps its pre-v4 step, 0.785 to 0.975 of the twin bound (`gentle` at 0.975).
-+   - **Margin of the kept steps.** The kept pre-v4 steps can have almost no margin. At the corner of the ranges
-+     (scale 3, slope 120, `D_w` = 40, 5-point) the step is 0.9997 of the bare-soil bound, as it always was. A v4
++       the v4 rule each keeps its pre-v5 step, 0.785 to 0.975 of the twin bound (`gentle` at 0.975).
++   - **Margin of the kept steps.** The kept pre-v5 steps can have almost no margin. At the corner of the ranges
++     (scale 3, slope 120, `D_w` = 40, 5-point) the step is 0.9997 of the bare-soil bound, as it always was. A v5
 +     recipe with those settings takes 0.8 of `2/R`.
  2. **Vegetation's time ladder starts pre-asymptotic.** At the studio's own step the Courant number of the upwind
 -   advection is `v dt c = 0.8`. At a Courant number of 1, the time and space errors of pure upwind advection
@@ -1679,16 +1720,16 @@ index 99aeb29..48f4703 100644
 -   and `dt0/4`, are 1.3 to 2.0; the finest are 1.0 to 1.1. The fit over the whole ladder, 1.26 +/- 0.51, is outside the
 -   band. It is recorded as a mismatch, explained by the starting point rather than by the scheme. The true error
 -   gives 1.05 +/- 0.43.
-+   advection is `v dt c = 0.73` (0.8 before recipe v4). At a Courant number of 1, the time and space errors of
++   advection is `v dt c = 0.73` (0.8 before recipe v5). At a Courant number of 1, the time and space errors of
 +   pure upwind advection cancel, so the error is not yet linear in `dt` at 0.73. The first pairwise orders, between
 +   `dt0`, `dt0/2` and `dt0/4`, are 1.3 to 1.9; the finest are 0.96 to 1.13. The fit over the whole ladder,
 +   1.30 +/- 0.45, is outside the band. It is recorded as a mismatch, explained by the starting point rather than
-+   by the scheme. The true error gives 1.10 +/- 0.36, inside the band. (Before recipe v4, from `dt0 = 0.02`, the
++   by the scheme. The true error gives 1.10 +/- 0.36, inside the band. (Before recipe v5, from `dt0 = 0.02`, the
 +   two were 1.26 +/- 0.51 and 1.05 +/- 0.43.)
  3. **Vegetation's default recipe has no asymptotic range on its own lattice.** Two properties cause this:
     - The rainfall ramp `a (1 + agrad (2y - 1))` jumps by `2 agrad a` (1.32 at the defaults) across the periodic
       seam in `y`, which forces an internal layer into the water field.
-@@ -270,12 +320,12 @@ difference on. The fit over the accepted points gives 1.02; the fit over all poi
+@@ -270,12 +321,12 @@ difference on. The fit over the accepted points gives 1.02; the fit over all poi
  
     | ladder | observed order | what it isolates |
     |---|---|---|
@@ -1707,36 +1748,37 @@ index 99aeb29..48f4703 100644
     rainfall step.
  4. **The implicit denominators set a float32 floor that rises as `dt` falls.** turing and vegetation form
 diff --git a/validation/RDX.md b/validation/RDX.md
-index 9681ed7..3f872a1 100644
+index 9681ed7..8cda690 100644
 --- a/validation/RDX.md
 +++ b/validation/RDX.md
-@@ -60,8 +60,9 @@ numbers are in [results/rdx-science.json](results/rdx-science.json).
+@@ -60,8 +60,10 @@ numbers are in [results/rdx-science.json](results/rdx-science.json).
    Richardson order is 1.99, with its limit 3.4e-4 from the continuum.
  - The chemotaxis threshold is c* = 1.6 at the defaults. At 0.95c* the critical mode decays at −0.0164, and
    at 1.05c* it grows at +0.0168.
 -- For vegetation, the fastest band mode on the default slope travels uphill at 0.768, against 0.831 in the
 -  continuum (0.765 on the lattice at the step used).
 +- For vegetation, the fastest band mode on the default slope travels uphill at 0.769, against 0.831 in the
-+  continuum and 0.769 from the exact one-step map at the step used (0.9 of the module's ceiling, which recipe v4
-+  lowered from 0.02 to 0.01818; the run before it measured 0.768).
++  continuum and 0.769 from the exact one-step map at the step used. That step is 0.9 of the module's ceiling at
++  the test's 1.47 cells per unit: 0.01070 under the recipe v5 ceiling, where it was 0.01227 before; the run
++  before the change measured 0.768.
  
  ## Findings
  
-@@ -78,8 +79,12 @@ numbers are in [results/rdx-science.json](results/rdx-science.json).
+@@ -78,8 +80,12 @@ numbers are in [results/rdx-science.json](results/rdx-science.json).
    ceiling, record a worst-case rounding bound per run, and do not measure dt-refinement on the GPU. The
    dt → 0 limit is taken from the exact discrete map.
  - **Implicit denominators.** The vegetation water loss divides by 1 + dt, formed in float32. That quantizes
 -  the effective loss rate by up to ulp(1)/(2dt): about 3e-5 relative at dt = 1e-3, and 1.5e-6 at the default
 +  the effective loss rate by up to ulp(1)/(2dt): about 3e-5 relative at dt = 1e-3, and 1.6e-6 at the default
    step. The exact discrete reference uses the float32 denominator and records the unrounded one alongside it.
-+- **Vegetation step ceiling.** Until recipe v4 the tab took the smaller of separate diffusion and advection
++- **Vegetation step ceiling.** Until recipe v5 the tab took the smaller of separate diffusion and advection
 +  limits, which overshoots the combined explicit bound of the water row by up to 1.6 and grows a grid-scale
 +  checkerboard. The ceiling now combines them; the derivation, the treatment of older recipes and the regression
 +  check are in [PDE-ORDER.md](PDE-ORDER.md), Findings.
  - **Turing status line.** The status line reports the onset-critical wavelength 2π(D_u D_v/det)^(1/4),
    12 cells at the defaults. The fastest-growing wavelength is 10.8 cells, the dominant wavelength measured
    in the linear regime is 11.4 cells, and the saturated pattern measures 9.2 cells. This is recorded, not
-@@ -92,7 +97,7 @@ the well-mixed May-Leonard limit, all on one software renderer. They do not cove
+@@ -92,7 +98,7 @@ the well-mixed May-Leonard limit, all on one software renderer. They do not cove
  
  - nonlinear pattern selection, spiral periods, band spacing or migration speed;
  - the noise term;
@@ -1746,7 +1788,7 @@ index 9681ed7..3f872a1 100644
  - the print path.
  
 diff --git a/validation/techniques.json b/validation/techniques.json
-index 3d7a963..3cf71ff 100644
+index f377a96..59295ec 100644
 --- a/validation/techniques.json
 +++ b/validation/techniques.json
 @@ -246,7 +246,7 @@
@@ -1754,7 +1796,7 @@ index 3d7a963..3cf71ff 100644
      "id": "cyclic",
      "source": "src/modules/rdx.js",
 -    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
-+    "sourceSha256": "3306ca12ae2642e4d3095a4bcc7bc09cb49d3eb41611531e2e8e3f184f418736",
++    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
      "reference": "Robert May and Warren Leonard, SIAM Journal on Applied Mathematics 29, 243 (1975), the three-species competition with a heteroclinic cycle for a < 1 < b. Tobias Reichenbach, Mauro Mobilia and Erwin Frey, Nature 448, 1046 (2007), showed that mobility in the spatial rock-paper-scissors game organizes the populations into rotating spirals, and that biodiversity survives exactly when those spirals fit in the arena.",
      "equation": "∂u/∂t = D∇²u + u(1 − u − a v − b w),  ∂v/∂t = D∇²v + v(1 − v − a w − b u),  ∂w/∂t = D∇²w + w(1 − w − a u − b v)",
      "status": "validated within stated limits",
@@ -1763,28 +1805,28 @@ index 3d7a963..3cf71ff 100644
        "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
      },
 -    "reviewed": "2026-09-22",
-+    "reviewed": "2026-09-24",
++    "reviewed": "2026-09-25",
      "results": "validation/results/rdx-science.json"
    },
    {
-@@ -683,7 +683,7 @@
+@@ -717,7 +717,7 @@
    {
      "id": "vegetation",
      "source": "src/modules/rdx.js",
 -    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
-+    "sourceSha256": "3306ca12ae2642e4d3095a4bcc7bc09cb49d3eb41611531e2e8e3f184f418736",
++    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
      "reference": "Christopher Klausmeier, Science 284, 1826 (1999). Water w rains in at rate a, evaporates, runs downhill at speed v and is taken up by plants n in proportion to n², because roots make the soil take water faster. Plants die at rate m and spread slowly. On a slope the model makes bands of vegetation perpendicular to the flow that creep uphill: the tiger bush of Niger, Australia and the Horn of Africa seen from the air. Diffusion of water is not in the original; here it is a small optional term.",
      "equation": "∂w/∂t = a − w − w n² + v ∂w/∂x + D_w∇²w,   ∂n/∂t = w n² − m n + ∇²n",
      "status": "validated within stated limits",
-@@ -691,6 +691,7 @@
+@@ -725,6 +725,7 @@
        "Catalog equation and citation are review targets, not verified paper equivalence.",
        "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
        "Linear regime and uniform states only within this domain; float32 implicit denominator 1 + dt quantizes water loss (modelled in the discrete reference).",
-+      "Time step: from recipe v4 the step is at most 0.8 of the combined explicit bound 2/(Q D_w c^2 + 2 v c) of the water row, and of the plant row. Recipes made before v4 keep the pre-v4 step where it was under the bare-soil bound 2/(R - 1), so they reprint, and take the combined step where it was not, which corrects plates that were growing grid-scale checkerboards. Kept pre-v4 steps can lie within 0.03% of the bound at the corner of the ranges (validation/PDE-ORDER.md). The bound is linear and frozen-coefficient, not a nonlinear stability proof.",
++      "Time step: from recipe v5 the step is at most 0.8 of the combined explicit bound 2/(Q D_w c^2 + 2 v c) of the water row, and of the plant row. Recipes made before v5 keep the pre-v5 step where it was under the bare-soil bound 2/(R - 1), so they reprint, and take the combined step where it was not, which corrects plates that were growing grid-scale checkerboards. Kept pre-v5 steps can lie within 0.03% of the bound at the corner of the ranges (validation/PDE-ORDER.md). The bound is linear and frozen-coefficient, not a nonlinear stability proof.",
        "No Float16 fallback, noise, nonlinear pattern-selection statistics, spiral/band spacing claims, evolved/running exports, or universal hardware claim.",
        "Broader settings require additional independent evidence."
      ],
-@@ -707,6 +708,16 @@
+@@ -741,6 +742,16 @@
          "failureControl": "Plant uptake sign flip, water advected the wrong way, water diffusion 5% high and a broken stencil; each must fail.",
          "command": "node tools/rdx-science.js --write",
          "results": "validation/results/rdx-science.json"
@@ -1792,43 +1834,43 @@ index 3d7a963..3cf71ff 100644
 +      {
 +        "test": "tools/pde-order.js",
 +        "scope": "Vegetation step ceiling, the ceiling section of the order-of-accuracy harness: the step the actual instance takes (the module sanitize, then min(dt, dtMax)) over 51,840 settings spanning the UI ranges (scale, slope, D_w, D_n, m, stencil, requested dt) under both ceiling rules; every Fourier mode of the linearized water and plant rows at each step taken; the actual rdx.js step shader on a 32 x 32 lattice from a 1e-6 water checkerboard on bare soil at slope 40, scale 1, D_w = 1, 5, 10, 20 (5-point) and 10 (9-point); the Float64 twin two-species bound at those settings and at every preset.",
-+        "criteria": "Rule combined (recipe v4 on): step at most 0.8 of 2/R, R = Q D_w c^2 + 2 v c, and of the plant bound, over the whole sweep. Rule v3 (older recipes): step below 2/(R - 1), equal to the pre-v4 step wherever that step was below 2/(R - 1) and to the combined step elsewhere. No Fourier mode amplified at any swept step. The checkerboard decays at the module step under both rules (every later amplitude below the initial one, the last below a tenth of it), and every preset is under the twin bound under both rules. A failing gate fails the run.",
++        "criteria": "Rule combined (recipe v5 on): step at most 0.8 of 2/R, R = Q D_w c^2 + 2 v c, and of the plant bound, over the whole sweep. Rule v4 (older recipes): step below 2/(R - 1), equal to the pre-v5 step wherever that step was below 2/(R - 1) and to the combined step elsewhere. No Fourier mode amplified at any swept step. The checkerboard decays at the module step under both rules (every later amplitude below the initial one, the last below a tenth of it), and every preset is under the twin bound under both rules. A failing gate fails the run.",
 +        "limitations": "Linear frozen-coefficient stability of the decoupled water (bare soil) and plant rows over all Fourier modes, and of the coupled system only at the corners of the twin envelope (water 0.2 to 1.5, plants 0 to 2.5). Not a nonlinear stability proof; the sweep is a finite grid over the UI ranges; SwiftShader float32 only.",
 +        "benchmark": "The forward Euler bound of the water row derived from the step shader, |1 - dt R| <= 1 + dt (1 + n^2) at the (pi, pi) mode, shown in validation/PDE-ORDER.md to bind for both stencils with or without the implicit loss; the exact stencil and upwind symbols for every other mode; the bound computed numerically from the Float64 twin of the update.",
-+        "failureControl": "The pre-v4 separate-limit step, run on the actual shader with the ceiling removed from a copy of the spec, must grow the checkerboard where it exceeds the bound (1.19 to 1.59 times it at the four settings past it) and decay where it does not; 0.98 and 1.02 of the computed bound must decay and grow on the actual shader.",
++        "failureControl": "The pre-v5 separate-limit step, run on the actual shader with the ceiling removed from a copy of the spec, must grow the checkerboard where it exceeds the bound (1.19 to 1.59 times it at the four settings past it) and decay where it does not; 0.98 and 1.02 of the computed bound must decay and grow on the actual shader.",
 +        "command": "ORDER_ONLY=ceiling node tools/pde-order.js --tab vegetation (recorded by node tools/pde-order.js --full --write)",
 +        "results": "validation/results/pde-order.json"
        }
      ],
      "print": [
-@@ -727,7 +738,7 @@
+@@ -761,7 +772,7 @@
        "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
        "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
      },
 -    "reviewed": "2026-09-22",
-+    "reviewed": "2026-09-24",
++    "reviewed": "2026-09-25",
      "results": "validation/results/rdx-science.json"
    },
    {
-@@ -1256,7 +1267,7 @@
+@@ -1293,7 +1304,7 @@
    {
      "id": "excitable",
      "source": "src/modules/rdx.js",
 -    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
-+    "sourceSha256": "3306ca12ae2642e4d3095a4bcc7bc09cb49d3eb41611531e2e8e3f184f418736",
++    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
      "reference": "Richard FitzHugh, Biophysical Journal 1, 445 (1961); Jin-ichi Nagumo, Suguru Arimoto and Shuji Yoshizawa, Proceedings of the IRE 50, 2061 (1962); Dwight Barkley, Physica D 49, 61 (1991). FitzHugh reduced the Hodgkin-Huxley neuron to a fast activator u and a slow recovery variable v; Nagumo built it as a circuit. Barkley wrote the same excitable kinetics as a cubic with a threshold that the recovery variable raises, chosen so that spiral waves can be computed fast. Both are the standard models of spiral waves in heart tissue and in the Belousov-Zhabotinsky reaction.",
      "equation": "Barkley: ∂u/∂t = ∇²u + u(1−u)(u − (v+b)/a)/ε,  ∂v/∂t = u − v;   FHN: ∂u/∂t = ∇²u + u − u³ − v,  ∂v/∂t = D∇²v + ε(u − a v − b)",
      "status": "validated within stated limits",
-@@ -1300,7 +1311,7 @@
+@@ -1337,7 +1348,7 @@
        "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
        "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
      },
 -    "reviewed": "2026-09-22",
-+    "reviewed": "2026-09-24",
++    "reviewed": "2026-09-25",
      "results": "validation/results/rdx-science.json"
    },
    {
-@@ -1454,13 +1465,14 @@
+@@ -1491,13 +1502,14 @@
    {
      "id": "amb",
      "source": "src/modules/pde.js",
@@ -1845,7 +1887,7 @@ index 3d7a963..3cf71ff 100644
        "Broader settings require additional independent evidence."
      ],
      "remaining": [
-@@ -1496,6 +1508,16 @@
+@@ -1533,6 +1545,16 @@
          "benchmark": "Independent continuum linearized Fourier rates at fixed physical domain/time.",
          "failureControl": "Deliberately unscaled coarse lattice must exceed ten times the correct coarse-grid error.",
          "limitations": "Smooth small-mode convergence only; not nonlinear sharp-interface convergence."
@@ -1853,7 +1895,7 @@ index 3d7a963..3cf71ff 100644
 +      {
 +        "test": "tools/half-float-check.js",
 +        "scope": "The real studio at the default recipe (seed half-float-check, default grid 512 x 512, warm-up 100 and 1000 steps, paused) with EXT_color_buffer_float hidden, so the tab takes its float16 fallback, against the float32 run of the same recipe. Storage: the field as its deviation from c0, added back for the local potential, the guard, the picture, the reduction, the brush and the data export.",
-+        "criteria": "Fixed before the runs: at 1000 steps the float16 state is not bit for bit its state at 100 steps, the standard deviation of every exported channel is within 10% of float32's and has moved the same way as float32's since step 100; the fallback export names its base and the float32 export none. ",
++        "criteria": "Fixed before the runs: at 1000 steps the float16 state is not bit for bit its state at 100 steps, the standard deviation of every exported channel is within 10% of float32's and has moved the same way as float32's since step 100; the fallback export names its base and the float32 export none.",
 +        "limitations": "Pattern-level moments of one seed at the default recipe, 512 x 512, 100 and 1000 steps, on SwiftShader with the extension hidden, not a device that lacks it. The float16 plate is a different realization of the pattern, not the float32 plate.",
 +        "benchmark": "The float32 run of the same instance and recipe, whose numerics the other entries of this record validate; the float32 run repeats bit for bit.",
 +        "failureControl": "A patched copy of the studio without the base storage, which is the fallback as it was, must fail the same criteria: its standard deviation fell from step 100 to 1000 while float32's grew, ending at 0.80 of float32's.",
@@ -1862,16 +1904,16 @@ index 3d7a963..3cf71ff 100644
        }
      ],
      "print": [
-@@ -1516,7 +1538,7 @@
+@@ -1553,7 +1575,7 @@
          "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
        }
      ],
 -    "reviewed": "2026-09-22",
-+    "reviewed": "2026-09-24",
++    "reviewed": "2026-09-25",
      "results": "validation/results/pde-field-review.json",
      "domain": {
        "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
-@@ -1547,7 +1569,7 @@
+@@ -1584,7 +1606,7 @@
    {
      "id": "cahn",
      "source": "src/modules/pde.js",
@@ -1880,16 +1922,16 @@ index 3d7a963..3cf71ff 100644
      "reference": "John W. Cahn and John E. Hilliard, J. Chem. Phys. 28, 258 (1958). A binary mixture whose free energy has two wells is unstable inside the spinodal: infinitesimal fluctuations grow, then the domains coarsen. With constant mobility the late-stage length grows as t^{1/3}. Degenerate mobility M ∝ max(1−c²,0) suppresses mobility near pure phases; it does not imply pure surface diffusion for this polynomial free energy (Lee, Munch and Suli, 2015).",
      "equation": "∂c/∂t = ∇·[M ∇μ],   μ = c³ − c − ε² ∇²c",
      "status": "validated within stated limits",
-@@ -1639,7 +1661,7 @@
+@@ -1676,7 +1698,7 @@
          "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
        }
      ],
 -    "reviewed": "2026-09-22",
-+    "reviewed": "2026-09-24",
++    "reviewed": "2026-09-25",
      "results": "validation/results/pde-field-review.json",
      "domain": {
        "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
-@@ -1651,7 +1673,7 @@
+@@ -1688,7 +1710,7 @@
    {
      "id": "ohta",
      "source": "src/modules/pde.js",
@@ -1898,16 +1940,16 @@ index 3d7a963..3cf71ff 100644
      "reference": "Takao Ohta and Kyozi Kawasaki, Macromolecules 19, 2621 (1986). A diblock melt is Cahn–Hilliard plus a long-range Coulomb term from the incompressibility of the chains: the inverse Laplacian turns, after one more Laplacian in the dynamics, into −σ(u−m). The long-range penalty can frustrate ordinary coarsening and favor microstructured states. Pattern selection depends on composition and parameters; a finite preview does not prove equilibrium.",
      "equation": "∂u/∂t = ∇·[M(u)∇μ] − σ(u−m),   μ = u³ − u − ε²Δu",
      "status": "validated within stated limits",
-@@ -1713,7 +1735,7 @@
+@@ -1750,7 +1772,7 @@
          "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
        }
      ],
 -    "reviewed": "2026-09-22",
-+    "reviewed": "2026-09-24",
++    "reviewed": "2026-09-25",
      "results": "validation/results/pde-field-review.json",
      "domain": {
        "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
-@@ -1783,7 +1805,7 @@
+@@ -1820,7 +1842,7 @@
    {
      "id": "swift",
      "source": "src/modules/pde.js",
@@ -1916,16 +1958,16 @@ index 3d7a963..3cf71ff 100644
      "reference": "J. Swift and P. C. Hohenberg, Phys. Rev. A 15, 319 (1977). The Swift–Hohenberg equation is a phenomenological pattern-forming model motivated by convection near onset: a real scalar field with a preferred wavenumber k₀. Quadratic and cubic nonlinearities affect the available branches. Localized patterns can exist in suitable subcritical regimes; this display does not establish branch stability.",
      "equation": "∂u/∂t = r u − (k₀² + ∇²)² u + g u² − b u³",
      "status": "validated within stated limits",
-@@ -1845,7 +1867,7 @@
+@@ -1882,7 +1904,7 @@
          "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
        }
      ],
 -    "reviewed": "2026-09-22",
-+    "reviewed": "2026-09-24",
++    "reviewed": "2026-09-25",
      "results": "validation/results/pde-field-review.json",
      "domain": {
        "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
-@@ -1857,13 +1879,14 @@
+@@ -1894,13 +1916,14 @@
    {
      "id": "pfc",
      "source": "src/modules/pde.js",
@@ -1942,16 +1984,16 @@ index 3d7a963..3cf71ff 100644
        "The orientation view encodes a local gradient direction, not crystallographic orientation."
      ],
      "remaining": [
-@@ -1919,7 +1942,7 @@
+@@ -1956,7 +1979,7 @@
          "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
        }
      ],
 -    "reviewed": "2026-09-22",
-+    "reviewed": "2026-09-24",
++    "reviewed": "2026-09-25",
      "results": "validation/results/pde-field-review.json",
      "domain": {
        "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
-@@ -2180,7 +2203,7 @@
+@@ -2246,7 +2269,7 @@
    {
      "id": "ks",
      "source": "src/modules/pde.js",
@@ -1960,43 +2002,43 @@ index 3d7a963..3cf71ff 100644
      "reference": "Yoshiki Kuramoto and Toshio Tsuzuki, Prog. Theor. Phys. 55, 356 (1976); G. I. Sivashinsky, Acta Astronautica 4, 1177 (1977). Independently derived for reaction-diffusion phase turbulence and for laminar flame fronts. It is the simplest PDE that produces extensive spatiotemporal chaos: a band of unstable modes, a stabilizing biharmonic, and a Burgers-like nonlinearity. In two dimensions the cells of a flame.",
      "equation": "∂u/∂t = −ν ∇⁴u − ∇²u − (α/2)|∇u|²",
      "status": "validated within stated limits",
-@@ -2242,7 +2265,7 @@
+@@ -2308,7 +2331,7 @@
          "limitations": "Only the enumerated domain in validation/PDE-FIELD-REVIEW.md; no all-parameter, all-hardware or continuum-statistical certification."
        }
      ],
 -    "reviewed": "2026-09-22",
-+    "reviewed": "2026-09-24",
++    "reviewed": "2026-09-25",
      "results": "validation/results/pde-field-review.json",
      "domain": {
        "parameters": "Exactly the enumerated effective recipes in validation/results/pde-field-review.json and validation/PDE-FIELD-REVIEW.md",
-@@ -2312,7 +2335,7 @@
+@@ -2378,7 +2401,7 @@
    {
      "id": "turing",
      "source": "src/modules/rdx.js",
 -    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
-+    "sourceSha256": "3306ca12ae2642e4d3095a4bcc7bc09cb49d3eb41611531e2e8e3f184f418736",
++    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
      "reference": "Alan Turing, Philosophical Transactions of the Royal Society B 237, 37 (1952). J. Schnakenberg, Journal of Theoretical Biology 81, 389 (1979). Ilya Prigogine and René Lefever, Journal of Chemical Physics 48, 1695 (1968), the Brusselator. Alfred Gierer and Hans Meinhardt, Kybernetik 12, 30 (1972), activator-inhibitor with saturation. István Lengyel and Irving Epstein, Science 251, 650 (1991), the model of the chlorite-iodide-malonic acid reaction in which Turing patterns were first seen in a real chemistry.",
      "equation": "Schnakenberg: ∂u/∂t = ∇²u + a − u + u²v,  ∂v/∂t = D∇²v + b − u²v;   Brusselator: ∂u/∂t = ∇²u + a − (b+1)u + u²v,  ∂v/∂t = D∇²v + bu − u²v",
      "status": "validated within stated limits",
-@@ -2356,7 +2379,7 @@
+@@ -2422,7 +2445,7 @@
        "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
        "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
      },
 -    "reviewed": "2026-09-22",
-+    "reviewed": "2026-09-24",
++    "reviewed": "2026-09-25",
      "results": "validation/results/rdx-science.json"
    },
    {
-@@ -2571,7 +2594,7 @@
+@@ -2657,7 +2680,7 @@
    {
      "id": "chemotaxis",
      "source": "src/modules/rdx.js",
 -    "sourceSha256": "ec02c031413d06cffb3ae466e1b4fa423e64180bc5925495ec0f8f505edde760",
-+    "sourceSha256": "3306ca12ae2642e4d3095a4bcc7bc09cb49d3eb41611531e2e8e3f184f418736",
++    "sourceSha256": "85b0fdfe9b4ce15846c151865c2cafb436c04a8b7427caa0169f63a7a7f8577f",
      "reference": "Evelyn Keller and Lee Segel, Journal of Theoretical Biology 26, 399 (1970), the continuum model of slime mold amoebae climbing the gradient of a chemical they secrete. This form adds a sensitivity that saturates at high density and logistic growth, so aggregates stay finite instead of collapsing to points: the uniform state loses stability when 2√(aD) < c/2 − D − a.",
      "equation": "∂u/∂t = ∇²u − ∇·(χ(u)∇v) + u(1 − u),   ∂v/∂t = D∇²v + u − a v,   χ(u) = c u/(1 + u²)",
      "status": "validated within stated limits",
-@@ -2579,11 +2602,12 @@
+@@ -2665,11 +2688,12 @@
        "Catalog equation and citation are review targets, not verified paper equivalence.",
        "Complete evidence covers only the documented domain in validation/RDX.md and validation/results/rdx-science.json plus paused-initial print preservation in validation/results/rdx-print-state.json.",
        "Logistic growth means total mass is not conserved; the balance, not conservation, is tested. No aggregate shape or coarsening statistics.",
@@ -2011,7 +2053,7 @@ index 3d7a963..3cf71ff 100644
      ],
      "numerical": [
        {
-@@ -2595,6 +2619,16 @@
+@@ -2681,6 +2705,16 @@
          "failureControl": "Non-conservative flux (sensitivity at the cell instead of the face), chemotactic flux sign flip, attractant diffusion 5% high and a broken stencil; each must fail.",
          "command": "node tools/rdx-science.js --write",
          "results": "validation/results/rdx-science.json"
@@ -2019,7 +2061,7 @@ index 3d7a963..3cf71ff 100644
 +      {
 +        "test": "tools/half-float-check.js",
 +        "scope": "The real studio at the default recipe (seed half-float-check, default grid 512 x 512, warm-up 100 and 1000 steps, paused) with EXT_color_buffer_float hidden, so the tab takes its float16 fallback, against the float32 run of the same recipe. Storage: each species as its deviation from (1, 1/a), added back in every read, the picture, the reduction and the data export.",
-+        "criteria": "Fixed before the runs: at 1000 steps the float16 state is not bit for bit its state at 100 steps, the standard deviation of every exported channel is within 10% of float32's and has moved the same way as float32's since step 100; the fallback export names its base and the float32 export none. ",
++        "criteria": "Fixed before the runs: at 1000 steps the float16 state is not bit for bit its state at 100 steps, the standard deviation of every exported channel is within 10% of float32's and has moved the same way as float32's since step 100; the fallback export names its base and the float32 export none.",
 +        "limitations": "Pattern-level moments of one seed at the default recipe, 512 x 512, 100 and 1000 steps, on SwiftShader with the extension hidden, not a device that lacks it. The float16 plate is a different realization of the pattern, not the float32 plate.",
 +        "benchmark": "The float32 run of the same instance and recipe, whose numerics the other entries of this record validate; the float32 run repeats bit for bit.",
 +        "failureControl": "A patched copy of the studio without the base storage, which is the fallback as it was, must fail the same criteria: its float16 state froze between steps 100 and 1000, with standard deviations 1.3% and 0.4% of float32's.",
@@ -2028,12 +2070,12 @@ index 3d7a963..3cf71ff 100644
        }
      ],
      "print": [
-@@ -2615,7 +2649,7 @@
+@@ -2701,7 +2735,7 @@
        "resolution": "Numerical acceptance as recorded in each rdx-science section (update, modes, fronts, linear rates, mass balance). Print: zero changed/nonfinite field components, retained 256x256 grid, correct 2400x2400 plate, nonzero seeded field, mutating-export control rejected (validation/results/rdx-print-state.json).",
        "precision": "Float32 GPU fields versus Binary64 independent references; RGBA8 PNG plate. Renderer environment and failure controls recorded in the results artifacts."
      },
 -    "reviewed": "2026-09-22",
-+    "reviewed": "2026-09-24",
++    "reviewed": "2026-09-25",
      "results": "validation/results/rdx-science.json"
    },
    {
