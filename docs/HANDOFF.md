@@ -49,11 +49,7 @@ Coverage now: 54 validated within stated limits, 8 partially validated, 68 unval
    git push origin --delete claude/affectionate-fermi-89ndh4 claude/eloquent-brahmagupta-wz6g26 docs/readme-check-and-print-tagline docs/readme-check-and-print-tagline-v2 grok/hendrick-name grok/here-plates grok/print-and-gpu grok/soliton-web lit/aref1982-read printbound/eight-print-state-r109 promote-lozenge wip-sle
    ```
 
-2. **Decide on `research/generalizations-wip`** (draft PR #136). It is public and holds:
-   - full-text copies of 14 papers, some paywalled;
-   - your unpublished generalization results.
-
-   Making GENChase private hides it immediately. Deleting the branch alone does not, because PR #136 keeps the commits reachable.
+2. **`research/generalizations-wip`**: PR #136 was closed unmerged on 2026-09-25 at your request; the branch is kept as the backup (reopen the PR any time). It holds unpublished results and full-text paper copies, so it stays off `main`, and it is hidden only while the repository is private.
 3. **Decisions left from PR #123** (`claude/stoic-brahmagupta-xpt636`):
    - the kpz module change and its promotion;
    - the SSH harnesses, which test a different solver key than main's;
