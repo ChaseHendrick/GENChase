@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # Copyright 2026 Chase Hendrick. Licensed under the Apache License, Version 2.0 (see LICENSE).
+# SPDX-License-Identifier: Apache-2.0
 """
 verify_mu.py -- zero-angular-impulse three-vortex collapse with
 Gamma = (1, mu, -mu/(1+mu)),  mu > 0   (so 1/G1 + 1/G2 + 1/G3 = 0).

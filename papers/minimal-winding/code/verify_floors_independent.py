@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # Copyright 2026 Chase Hendrick. Licensed under the Apache License, Version 2.0 (see LICENSE).
+# SPDX-License-Identifier: Apache-2.0
 """Independent validation of the P* and F_n collapse floors (2026-09-23).
 
 Nothing here reuses Gotoda's rate formulas or the repo's JS checks. Each floor is
