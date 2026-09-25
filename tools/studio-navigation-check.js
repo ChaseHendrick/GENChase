@@ -50,5 +50,15 @@ const assert=require('node:assert/strict'),path=require('node:path'),{chromium,w
   assert.equal(await detail.locator('#expert-print').isChecked(),false,'saved advanced-print opt-out survives reload');
   assert.equal(await detail.evaluate(()=>Studio.getComputeBudget().mode),'light','saved lower-power preference survives reload');
   await detail.close();console.log('PASS',name,'vector preview sampling, maximum/advanced defaults and saved preference opt-outs');
+  // A hash set from outside (the address bar, a link, a test) is applied by its hashchange event, which the browser
+  // delivers as a later task. A studio hash write in between, the debounced write after a switch or Copy link, must not
+  // replace it, or the event applies the old tab again: print-smoothing-browser.js timed out that way in WebKit.
+  const race=await browser.newPage({viewport:{width:1280,height:900}});
+  await race.goto('file://'+path.resolve(__dirname,'../dist/studio.html')+'#reuleaux/hash-race');await race.evaluate(()=>Studio.ready);
+  await race.waitForFunction(()=>Studio.getRecipe()?.id==='reuleaux');
+  await race.evaluate(()=>{location.hash='tilings/hash-race';document.getElementById('btn-copy-link').click();});
+  await race.waitForFunction(()=>Studio.getRecipe()?.id==='tilings',null,{timeout:10000}).catch(async()=>{
+   throw new Error('a hash set from outside was overwritten before its hashchange; the studio shows '+await race.evaluate(()=>location.hash));});
+  await race.close();console.log('PASS',name,'a hash set from outside survives a studio hash write that lands before its hashchange');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
