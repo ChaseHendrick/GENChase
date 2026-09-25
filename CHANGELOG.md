@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- The workflows use `actions/checkout@v5` and `actions/setup-node@v5`, which run on Node 24; GitHub is retiring Node 20 for Actions.
+
 - **The stage badge follows a user-typed mode.** In Turing Patterns' Custom reaction mode the badge now reads Unvalidated and the export provenance records `validation: unvalidated`, with the tab's own status in `tabValidation` and the reason in `validationNote`. A module reports such a mode through the new optional instance method `evidence()`, which can only lower the status, never raise it. The tab strip keeps the tab's status.
 
 - The GitHub Pages deploy is off by the owner's choice and runs only when the repository variable `PAGES` is `on`, so a merge no longer fails on a disabled Pages site. The site build still runs as a check.
