@@ -12,7 +12,7 @@ This repository belongs to Chase Hendrick (GitHub account ChaseHendrick, formerl
 
 Never use `sharpie@users.noreply.github.com`. GitHub maps that address to github.com/Sharpie (Charlie Sharpsteen), who does not work here. Do not put it in `Co-authored-by` or `Signed-off-by`. Do not guess `login@users.noreply.github.com` from the display name. Squash-merge copies those trailers onto `main` and pins a stranger on the log. If you did not write the commit as a second person, omit `Co-authored-by`.
 
-Releases are made through the "Publish offline studio" workflow ([docs/PUBLISHING.md](docs/PUBLISHING.md)). By the owner's decision (2026-09-25), an agent may run that workflow to make a release when merged work calls for one, after updating the CHANGELOG and choosing the next version; an agent never moves, deletes or hand-pushes a tag.
+Releases are made through the "Publish offline studio" workflow ([docs/PUBLISHING.md](docs/PUBLISHING.md)). By the owner's decision (2026-09-25), an agent may run that workflow to make a release when merged work calls for one, after updating the CHANGELOG, `CITATION.cff` (`version`, `date-released`) and choosing the next version by the amount and kind of work since the last release: a patch (v0.6.2 to v0.6.3) for fixes and documentation, a minor version (v0.6.2 to v0.7.0) for new features, modes, tabs or a new recipe version, and a major version only for a breaking change to the engine API; an agent never moves, deletes or hand-pushes a tag.
 
 ## What is in here
 
